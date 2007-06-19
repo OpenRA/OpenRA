@@ -41,19 +41,6 @@ namespace MixBrowser
 
 			foreach (MixEntry e in file.Content)
 				Console.WriteLine(e);
-
-			try
-			{
-				Stream s = file.GetContent("rules.ini");
-				StreamReader reader = new StreamReader(s);
-
-				while( !reader.EndOfStream )
-					Console.WriteLine(reader.ReadLine());
-			}
-			catch (FileNotFoundException)
-			{
-				Console.WriteLine("FAIL at finding rules.ini");
-			}
 		}
 	}
 }

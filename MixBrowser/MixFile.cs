@@ -120,6 +120,9 @@ namespace MixBrowser
 					using (Stream s = File.OpenRead(filename))
 					{
 						s.Seek(2 + 4 + (isRmix ? 4 : 0), SeekOrigin.Begin);
+
+						s.Seek(2, SeekOrigin.Current);	//dword align
+
 						if (isEncrypted)
 							s.Seek(80, SeekOrigin.Current);
 
