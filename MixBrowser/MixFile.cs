@@ -43,7 +43,10 @@ namespace MixBrowser
 		List<MixEntry> ParseRaHeader(Stream s)
 		{
 			if (!isEncrypted)
+			{
+				Console.WriteLine("RA, not encrypted");
 				return ParseTdHeader(s);
+			}
 
 			long headerStart = 84;
 			BinaryReader reader = new BinaryReader(s);
@@ -64,8 +67,8 @@ namespace MixBrowser
 			ms.Position = 0;
 			BinaryReader reader2 = new BinaryReader(ms);
 
-			ushort numFiles = reader.ReadUInt16();
-			uint datasize = reader.ReadUInt32();
+			ushort numFiles = reader2.ReadUInt16();
+			uint datasize = reader2.ReadUInt32();
 
 			Console.WriteLine("{0} files, {1} kb", numFiles, datasize >> 10);
 
