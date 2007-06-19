@@ -57,5 +57,7 @@ namespace MixBrowser
 			uint hash = HashFilename(s);
 			Names.Add(hash, s);
 		}
+
+		public const int Size = 12;
 	}
 }
