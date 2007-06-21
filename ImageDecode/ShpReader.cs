@@ -10,8 +10,11 @@ namespace ImageDecode
 	{
 		public uint Offset;
 		public Format Format;
+
 		public uint RefOffset;
 		public Format RefFormat;
+		public ImageHeader RefImage;
+
 		public byte[] Image;
 
 		public ImageHeader( BinaryReader reader )
@@ -32,53 +35,125 @@ namespace ImageDecode
 		Format80 = 0x80,
 	}
 
-	public static class ShpReader
+	public class ShpReader : IEnumerable<ImageHeader>
 	{
-		public static IEnumerable<byte[]> Read( Stream stream )
+		public readonly int ImageCount;
+		public readonly ushort Width;
+		public readonly ushort Height;
+
+		private readonly List<ImageHeader> headers = new List<ImageHeader>();
+
+		int recurseDepth = 0;
+
+		public ShpReader( Stream stream )
 		{
 			BinaryReader reader = new BinaryReader( stream );
 
-			ushort numImages = reader.ReadUInt16();
+			ImageCount = reader.ReadUInt16();
 			reader.ReadUInt16();
 			reader.ReadUInt16();
-			ushort width = reader.ReadUInt16();
-			ushort height = reader.ReadUInt16();
+			Width = reader.ReadUInt16();
+			Height = reader.ReadUInt16();
 			reader.ReadUInt32();
 
-			List<ImageHeader> headers = new List<ImageHeader>();
-			for( int i = 0 ; i < numImages ; i++ )
+			for( int i = 0 ; i < ImageCount ; i++ )
 				headers.Add( new ImageHeader( reader ) );
 
 			new ImageHeader( reader ); // end-of-file header
 			new ImageHeader( reader ); // all-zeroes header
 
+			Dictionary<uint, ImageHeader> offsets = new Dictionary<uint, ImageHeader>();
 			foreach( ImageHeader h in headers )
-			{
-				reader.BaseStream.Position = h.Offset;
-				switch( h.Format )
-				{
-					case Format.Format20:
-						//throw new NotImplementedException();
-						break;
-					case Format.Format40:
-						//throw new NotImplementedException();
-						break;
-					case Format.Format80:
-						{
-							byte[] compressedBytes = reader.ReadBytes( (int)( reader.BaseStream.Length - reader.BaseStream.Position ) );
-							MemoryStream ms = new MemoryStream( compressedBytes );
-							byte[] imageBytes = new byte[ width * height ];
-							Format80.DecodeInto( ms, imageBytes );
-							h.Image = imageBytes;
-							break;
-						}
-					default:
-						throw new InvalidDataException();
-				}
+				offsets.Add( h.Offset, h );
 
-				if( h.Image != null )
-					yield return h.Image;
+			for( int i = 0 ; i < ImageCount ; i++ )
+			{
+				ImageHeader h = headers[ i ];
+				if( h.Format == Format.Format20 )
+					h.RefImage = headers[ i - 1 ];
+
+				else if( h.Format == Format.Format40 )
+				{
+					if( !offsets.TryGetValue( h.RefOffset, out h.RefImage ) )
+						throw new InvalidDataException( string.Format( "Reference doesnt point to image data {0}->{1}", h.Offset, h.RefOffset ) );
+				}
 			}
+
+			foreach( ImageHeader h in headers )
+				Decompress( stream, h );
+		}
+
+		public ImageHeader this[ int index ]
+		{
+			get { return headers[ index ]; }
+		}
+
+		void Decompress( Stream stream, ImageHeader h )
+		{
+			if( recurseDepth > ImageCount )
+				throw new InvalidDataException( "Format20/40 headers contain infinite loop" );
+
+			switch( h.Format )
+			{
+				case Format.Format20:
+				case Format.Format40:
+					{
+						if( h.RefImage.Image == null )
+						{
+							++recurseDepth;
+							Decompress( stream, h.RefImage );
+							--recurseDepth;
+						}
+
+						h.Image = CopyImageData( h.RefImage.Image );
+
+						MemoryStream ms = ReadCompressedData( stream, h );
+						Format40.DecodeInto( ms, h.Image );
+						break;
+					}
+				case Format.Format80:
+					{
+						MemoryStream ms = ReadCompressedData( stream, h );
+						byte[] imageBytes = new byte[ Width * Height ];
+						Format80.DecodeInto( ms, imageBytes );
+						h.Image = imageBytes;
+						break;
+					}
+				default:
+					throw new InvalidDataException();
+			}
+		}
+
+		private static MemoryStream ReadCompressedData( Stream stream, ImageHeader h )
+		{
+			stream.Position = h.Offset;
+			// Actually, far too big. There's no length field with the correct length though :(
+			int compressedLength = (int)( stream.Length - stream.Position );
+
+			byte[] compressedBytes = new byte[ compressedLength ];
+			stream.Read( compressedBytes, 0, compressedLength );
+
+			MemoryStream ms = new MemoryStream( compressedBytes );
+			return ms;
+		}
+
+		private byte[] CopyImageData( byte[] baseImage )
+		{
+			byte[] imageData = new byte[ Width * Height ];
+			for( int i = 0 ; i < Width * Height ; i++ )
+				imageData[ i ] = baseImage[ i ];
+
+			return imageData;
+		}
+
+		public IEnumerator<ImageHeader> GetEnumerator()
+		{
+			return headers.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }

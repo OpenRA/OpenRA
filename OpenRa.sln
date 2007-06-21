@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+# Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixBrowser", "MixBrowser\MixBrowser.csproj", "{E183D00B-FD2C-4001-8336-DF345DE281DA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MixDecrypt", "MixDecrypt\MixDecrypt.vcproj", "{6F5D4280-3D23-41FF-AE2A-511B5553E377}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDecode", "ImageDecode\ImageDecode.csproj", "{39352FD2-28B0-4DF5-97C7-499CE1AECCB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShpViewer", "ShpViewer\ShpViewer.csproj", "{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,16 @@ Global
 		{39352FD2-28B0-4DF5-97C7-499CE1AECCB9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{39352FD2-28B0-4DF5-97C7-499CE1AECCB9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{39352FD2-28B0-4DF5-97C7-499CE1AECCB9}.Release|Win32.ActiveCfg = Release|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

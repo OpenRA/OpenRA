@@ -22,18 +22,6 @@ namespace ImageDecode
 			return inp + ( ReadByte( input ) << 8 );
 		}
 
-		//static void ReplicatePrevious( byte[] dest, int destIndex, int srcIndex, int count )
-		//{
-		//      for( int i = 0 ; i < Math.Min( count, destIndex - srcIndex ) ; i++ )
-		//            dest[ destIndex + i ] = dest[ srcIndex + i ];
-
-		//      if( srcIndex + count <= destIndex )
-		//            return;
-
-		//      for( int i = destIndex + destIndex - srcIndex ; i < destIndex + count ; i++ )
-		//            dest[ i ] = dest[ destIndex - 1 ];
-		//}
-
 		public static int DecodeInto( MemoryStream input, byte[] dest )
 		{
 			int destIndex = 0;
