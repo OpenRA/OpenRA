@@ -1,0 +1,988 @@
+ 
+THE RED ALERT FILE FORMATS GUIDE
+			
+Release v1.4
+Last Updated: 18th April 1997
+(c) 1997 Gavin Pugh
+(email - rascenedit@geocities.com)
+(WWW - http://www.geocities.com/TimesSquare/Arcade/5553)
+ 
+ 
+ 
+ 
+ 
+     The purpose of this guide is to detail the structure of files used
+in the Game Red Alert, for use to create utilities or editors.
+ 
+     Command & Conquer : Red Alert is a trademark and copyright of
+Westwood Studios, and is so acknowledged.
+Any trademarks not mentioned here are still acknowledged.
+ 
+ 
+ 
+If you intend to use quite a bit of this guide in your FAQ or similar
+text then I would quite like to hear from you, as I can create a reference
+to it in my guide. Also I want be credited if you use parts of this guide in your own.
+ 
+Any use of information in this guide should credit the relevant author,
+(me in most cases), in such programs as utilities and editors.
+ 
+If you have a contribution then please email it to the above address, it'll be more than
+welcome, and of course, you'll be credited for it, any help is appreciated.
+ 
+Web Site Authors : You are welcome (and encouraged) to have my guide on your page(s), as
+long as you do not modify the HTML file in any way whatsoever, and also I request that you include
+a link on your site to my site at the address at the bottom of this document.
+ 
+Enough of the legal crap, enjoy....
+ 
+MIX Files
+ 
+All MIX files I have seen can be used with the old C&C utilites, with the MIX headers
+following this format, In Red Alert only the more minor MIX files hidden in the CD
+directories follow the normal MIX format, the others are RMIX files.
+ 
++--------+------------------------+------+
+| HEADER | ARRAY OF OFFSETS/SIZES | BODY |
++--------+------------------------+------+
+ 
+struct MIXheader {
+    WORD   NumFiles;  //Number Of Files In the MIX
+    LONG   DataSize;  //Size Of The Body
+};
+ 
+The Array of offsets has one entry for each file:
+ 
+struct MIXrec {
+    LONG   FileID;  //The ID Of The File, derived from the name of the file
+    LONG   Offset;  //Offset Of The FIle From The Start Of The Body
+    LONG   Size;    //Size Of The File
+};
+ 
+If you know how the ID is calculated, I'd like to hear it, just for completeness.
+ 
+ 
+RMIX Files
+ 
+However, the two which don't though are : MAIN.MIX and REDALERT.MIX. These both contain
+other MIX files which also can't be read by Mixman.
+I'll refer to these 'special' MIX files as RMIX from now on, as a few others working
+on MIX files have done.
+ 
+Here is a list of all the RMIX files I have found:
+MAIN.MIX          ;Contains most other MIX files
+REDALERT.MIX
+MOVIES1.MIX
+MOVIES2.MIX
+GENERAL.MIX
+SCORES.MIX
+CONQUER.MIX
+SPEECH.MIX
+SOUNDS.MIX
+RUSSIAN.MIX
+ALLIES.MIX
+LOCAL.MIX
+LORES.MIX
+HIRES.MIX
+NCHIRES.MIX
+EDITOR.MIX
+EDHI.MIX
+EDLO.MIX
+TRANSIT.MIX
+and SC*.MIX and SS*.MIX, probably used on Counterstrike
+ 
+Well, so far I can amount the structure of an RMIX to:
+ 
++--------+------+
+| HEADER | BODY |
++--------+------+
+ 
+The header is an encoded representation of where and how long each file is in
+the body section.
+The body where all the contained files are, stored one after the other, with
+nothing inbetween.
+RMIX Header
+I can almost definately say that the headers include at least:
+* The offsets of the files, from the start of the body.
+* The lengths of the files
+* And some sort of ID, similar to the C&C one.
+ 
+Looking at MAIN.MIX, it is structured like this:
+ 
+         +--------+-------------+----------+----------- ...
+         | HEADER | CONQUER.MIX | EDHI.MIX | EDLO.MIX .....
+         +--------+-------------+----------+----------- ...
+OFFSETS: 0        EC         213903      220D42     222D68
+LENGTHS:     EC        213817       D43F       2026
+ 
+Here is the header in HEX View:
+00 00 02 00 6E 3A 77 4B 7A BB E8 57 DB 10 8B 77
+EC 67 5C 0C D9 8A 6B 50 47 AC 8D A4 31 FD 0A A1
+EB CF F1 5F 93 19 4D FD C6 49 3F 10 67 A5 7B E2
+5D 11 98 3C B4 D8 35 40 3B 36 E6 B3 13 37 70 9C
+3F 3C E0 70 97 47 1F BC CE 1B B0 D1 68 D4 F3 B7
+E2 F6 8A 32 C2 4B 7D BF 43 87 0B 40 63 27 77 9E
+9E 94 40 86 9A B6 59 09 15 52 D2 8E FB E6 BA B8
+6A 15 FC 31 5A 1C 4A 9E 54 B3 F6 98 66 24 DB 5E
+33 14 82 3D 6E 6B 7C 37 EF 3D 58 83 A5 08 D8 2F
+9C A0 D0 86 6F C7 65 5F 56 EF E8 7E 13 5F 08 5A
+1E E3 E1 E7 47 0E 72 34 4C 65 BD DD 71 AC 83 FD
+4C 4C D2 A3 85 E5 06 C3 55 18 BE FA 70 01 81 F1
+40 31 5E 71 64 BB 54 04 95 1E 51 10 B6 DF 96 6F
+71 C4 6A 19 CE 19 DC 3E 85 1C 4B B1 B3 DC 21 79
+D7 B1 65 C1 B8 73 C9 77 A5 14 7B 0C
+ 
+(still in progess, I'm uploading my site now, so I'll be stopping here for the mo)
+ 
+ 
+RMT Files (TMP files in Red Alert) Thanks To Moritz Mertinkat, (and Andrew Griffin for the Xdim/Ydim Info)
+ 
+My Note: These RTM files are used in Red Alert for the map tiles, the 3 theater RMIX files
+contain many of these tiles to put over your maps. These tiles are those you can place
+using the RA Terrain Editor, but using this method you could also extract the graphics
+for the INDOOR theater.
+ 
+The header (in pascal):
+ 
+TRMTHeader = record
+    Width    : Word;    {Width of images, always 24 (18h)}
+    Height   : Word;    {Heigth of images, always 24 (18h)}
+    NumTil   : Word;    {Number of Tiles}
+    Unknown1 : Word;
+    XDim     : Word;
+    YDim     : Word;
+    Size     : LongInt; {Size of file}
+    ImgStart : LongInt; {Start of image-data}
+    Unknown3 : LongInt;
+    Unknown4 : LongInt;
+    Index2   : LongInt;
+    Unknown5 : LongInt;
+    Index1   : LongInt; {Offset of "Index"}
+  end;
+ 
+  You can use XDim and YDim to determine how the tiles should be used
+  to construct the uber-tile. For example, say XDim = 3 and YDim = 2, then
+  the uber-tile would be a 3x2 tile. This is probably only of use when
+  placing the uber-tile in the first place, as the individual sub-tiles
+  would be placed when the map is being drawn. XDim and YDim give you the
+  dimensions of the uber-tile.
+ 
+  If XDim and YDim are both equal to 1, then there is no uber-tile. If
+  this RMT file holds more than 1 tile, then they are all individual tiles
+  and have no special relationship to each other in regards to being parts
+  of a larger tile.
+ 
+  Index2-Index1 should be the number of tiles!
+ 
+  Index1 is an offset for an array of bytes:
+    Index: ARRAY[1..NumTil] of Byte;
+ 
+  Every entry in this array which points to a specified tile.
+  If the entry is 255 (FFh) then the tile is empty!
+  An example:
+    If you want to display tile 8 of a RMT-file you have to do
+    the following:
+      - open the file
+      - read the header
+      - seek to pos. INDEX1
+      - read the index
+      - read the 9th byte of it (for tile 8, because the index
+                                 starts with 0!}
+      - seek to: SizeOf(Header) + Index[9] * (24*24)
+      - read 576 byte (24*24) and display them!
+      - close the file
+ 
+  All the graphics-data is uncompressed!
+ 
+ 
+PCX-files (Documentation by Moritz Mertinkat)
+ 
+My Note: These PCX files are used for 640x400 images in the Windows 95' version of
+Red Alert, where CPS files are used for the 320x200 ones in DOS.
+ 
+PCX-Header (in pascal):
+-----------------------
+ 
+  TPCXHeader = RECORD
+    Signature : Byte;
+    Version   : Byte;
+    Encoding  : Byte;
+    BitsPixel : Byte;
+    XMin      : Word;
+    YMin      : Word;
+    XMax      : Word;
+    YMax      : Word;
+    HRes      : Word;
+    VRes      : Word;
+    Palette16 : ARRAY[1..48] of Byte;
+    Reserved  : Byte;
+    NumPlanes : Byte;
+    BytesLine : Word;
+    PalType   : Word;
+    Dummy     : ARRAY[1..58] of Byte;
+  end;
+ 
+Description:
+------------
+  Signature:
+    10 = ZSoft PCX-files
+ 
+  Version:
+    0 = PC Paintbrush v2.5
+    2 = Version 2.8 with palette information
+    3 = Version 2.8 without palette information
+    4 = PC Paintbrush for Windows (Plus for Windows uses Ver 5)
+    5 = Version 3.0: Used by Paintbrush in Win3.x and Win95,
+        Can be used for 24-bit images!!
+        >>>> NOTE: Version 5 is standard!!
+ 
+  PalType:
+    1 = Color/BW   (use this one for 256-color images!)
+    2 = Grayscale
+ 
+  XMin, XMax, YMin and YMax are the image dimensions.
+  HRes and VRes are the horizantal and vertical Resultion
+  of the image in DPI. If you create your own PCX-files, set
+  HRes and VRes to 300.
+ 
+  The image data is encoded with RLE (Run Length Encoding) and
+  follows directly after the header.
+ 
+ 
+Decoding the PCX-data:
+----------------------
+First you have to calculate the X- and Y-dimension of the image.
+X-dimension:
+  Width:= BytesLine*NumPlanes
+  (But I've seen, that there's another way doing this:
+   Width:= XMax-XMin+1)
+ 
+Y-dimension:
+  Height:= YMax-YMin+1
+ 
+Now, read a single byte (B1) from the PCX-file. If the top two bits of
+this byte (B1) are set, then the remaining six bits show how many times
+you have to duplicate the next byte (after B1) in the file.
+[That means: If the byte (B1) is > 192, then it is a "Repeat-byte" and
+ you have to duplicate the next byte (after B1) RepeatByte-192 times]
+ 
+If the top two bits are not set, the byte (B1) itself is the data with
+a count of one.
+[That means: If the byte B1 < 192 then this byte represents a pixel
+ itself]
+ 
+Simply do this with all bytes (and don't forget the linebreaks after
+Width decoded bytes).
+ 
+If FileSize(PCXFile)-(768+1) = 12 [the byte before the pal-array],
+then the following 768 bytes contain the palette information - otherwise
+there's no palette.
+ 
+(If you have any questions, comments, ect. please email me:
+ Moritz Mertinkat)
+ 
+Some sample-code (in pascal) at:
+  http://home.t-online.de/home/moehrchen (TP Programmers Page)
+  (Download-area, "PCX-viewer 4.0b for 256-color-bitmaps")
+ 
+ 
+SHP Files
+The SHP files are stored in the MIX files. They are used for the units, icons in the sidebar,
+structures and other graphics.
+ 
+A 6 image SHP would look like:
+ 
+[Header][ImgInfo1][ImgInfo2]....[ImgInfo5][ImgInfo6][ImgInfo7][ImgInfo8][THE SHP DATA]
+ 
+Note that the two extra Imginfo parts are special, the last one is all nulls, where
+the offset in the penultimate one points to the end of the file.
+ 
+The header for these SHP files is as follows:
+ 
+struct SHPheader {
+    WORD   NumImages;  //Number Of Images In SHP file
+    WORD   A;          //Unknown (please email me if you know what they are)
+    WORD   B;          //Unknown
+    WORD   Width;      //Width Of The Images, in pixels
+    WORD   Height;     //Height Of The Images, in pixels
+    LONG   C;          //Unknown
+};
+ 
+Each Image (and those 2 special bits), are represented by a info part here.
+ 
+struct ImgInfo {
+ 3 BYTES   Offset;     //Offset of image in file
+    CHAR   Format;     //Format Of Image (&h80 is Format80, &h40 is Format40, etc..)
+    WORD   RefOff;     //Offset of reference image for Format20/40
+    WORD   RefForm;    //Format of reference image
+};
+ 
+Note that the Offset field is different from C&C, with it being 3 bytes, the RefOff
+field may also be 3 bytes now as well, but the Refform can be a word, so it is most
+likely not 3 bytes.
+ 
+ 
+ 
+ 
+ 
+Packed Sections
+ 
+First, in relation to C&C1 where each cell is represented by 2 bytes, as the total map size in
+RA seems to be 128x128 then the binary file for the map which could then be fiddled with and read
+by third-party editors would be a 128x128x3 byte binary file (=48k). Note that 3 bytes per cell
+in a map section are used in RA.
+ 
+(This would definately be needed if an editor was created allowing the creation of INDOOR maps)
+To think about.....Maybe putting a 48k SCG01EA.BIN file along with the INI (a'la C&C1), this would
+be a solution, but unfortunately the RA terrain editor only handles packed maps :(
+(note that NewINIFormat=1 would be needed for this way to work, and the OVERLAY section used instead
+of the OverlayPack)
+ 
+This would be a 2-part process:
+ 
+[MapPack]
+1=983704304RREREW84790.......
+2=8743907547054.........         >    Compressed Binary          >    48k Map Binary
+3=.....                               6 8K Chunks In Format80         3 bytes per cell
+.....        And So On
+..
+  <      70 chars a line    >
+ 
+ 
+Aha! Looked in GAME.DAT for the full alphabet and saw:
+                       ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+(This most probably is the same as Base64, but for completeness, I've decoded it myself)
+ 
+Theory:
+-------
+The GAME.DAT sequence shows that A would be 0, B=1, C=2..... +=62 and /=63
+Each character represents 6 bits, arranged as follows
+ 
+6 bits [000000][111111][000000][111111]
+ 
+So in the compressed Binary form:
+ 
+8 bits [00000011][11110000][00111111]
+ 
+The '=' character means take off 2 bits from the byte sequence, this means that
+the whole sequence is MOD 8, so doesn't leave any stray bits behind.
+ 
+Now all the data can be handled in normal hex byte form.
+ 
+This Process In Reverse
+-----------------------
+If you want to get from the byte sequence to the ASCII string again (maybe for a
+map tile placing utility), use this:
+ 
+Convert the hex bytes into a long string of bits: (example only here.)
+ 
+09 00 00 20
+ 
+00001001 00000000 00000000 00100000
+ 
+00001001000000000000000000100000
+ 
+Then start pulling out 6 bits at a time and compare with the ASCII table I made
+earlier until you've got less than 6 bits left.
+ 
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+(Where A=0, B=1, C=2,..... +=62, /=63)
+ 
+000010 010000 000000 000000 001000 00
+ 
+>>>>>>>> C Q A A I .....
+ 
+So after making 5 characters, there are 2 bits left, Red Alert needs this to be 6 bits,
+so you would need another 4 bits.
+As you know, each character means 6 bits, and the '=' character means take the last 2
+bits off.
+So you would use this idea to pad 4 bits onto the end using 'A=' which means 0000
+ 
+The final string therefore would be:
+CQAAIA=
+ 
+And remember that 2 bits could also be left behind, you would use 'A==' in this case.
+ 
+How To Decode The OverlayPack in HEX Form
+ 
+Well, it will produce a 16k binary, with 1 byte representing each cell
+ 
+Here is the format of the packed section
+ 
+[aa bb cc] 20 [.....]
+ 
+Where ccbbaa is the length of the [...] section
+ 
+The &h20 may have a special meaning, but I've no idea yet.
+ 
+There are two of these in each [OverlayPack], with each representing 8k.
+ 
+After a VERY VERY VERY long time, I was able to work out how the [....]
+part was coded, just by luck really. Use Format80 to decode this, using
+an 8K destination buffer in each case, then join both these together to
+get a 16k file.
+Look at Appendix A (the Format80 images) for more information on this algorithm.
+ 
+This 16k file produced by the algorithm then reads from left to right like this:
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+-+
++FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+ ......
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+-+
++FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+FF+ ...
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+........
+ 
+The top left cell would be offset 0, the one below 128, and the one below
+that 256, (the same as the cell number).
+ 
+Here is a table of what each Hex represents in the OverlayPacks:
+FF - Blank
+00 - Sandbags (SBAG)
+01 - Chain-link Fence (CYCL)
+02 - Concrete Wall (BRIK)
+03 - C&C Barbed Wire (FENC)
+04 - Wooden Fence (WOOD)
+05 - Ore (GOLD01) Most Dense
+06 - Ore (GOLD02)                        The Ore/Gem tiles do not SEEM to be
+07 - Ore (GOLD03)                        any different, but they must be, both
+08 - Ore (GOLD04) Least Dense            RA and the editor seem to make single
+09 - Gems (GEM01) Most Dense             cell gem/ore tiles look the same, and
+0A - Gems (GEM02)                        they only look different in clumps.
+0B - Gems (GEM03)
+0C - Gems (GEM04) Least Dense
+0D - Haystacks (V12)
+0E - Haystack (V13)
+0F - Wheat Field (V14)
+10 - Fallow Field (V15)
+11 - Corn Field (V16)
+12 - Celery Field (V17)
+13 - Potato Field (V18)
+14 - Circular Thing (FPLS)
+15 - Wood Crate (WCRATE)
+16 - Silver Crate (SCRATE)
+17 - RA Barbed Wire (BARB)
+18 - RA Sandbags (exactly same as C&C ones) (SBAG)
+ 
+19
+.. - I've only tested 19h and 1Ah, but I assume the rest also crash RA
+FE
+ 
+I've noticed that the Water Crate (WWCRATE) is missing, I've tried 19h and 1Ah
+onto Water tiles, but it still crashes. Also the concrete floor tile (CONC) is
+not there either, although if you look at my scenario creation guide, you can
+put both these on using the [OVERLAY] section.
+ 
+Recompressing Overlay Data To An Overlaypack
+ 
+ 
+ 
+ 
+How To Get The 'Compressed' Binary To A Map File
+ 
+It is nearly exactly the same as the overlaypacks,
+ 
+with 6 [....] parts though instead of the two mentioned above.
+The map should be 48k when expanded (i.e 3 bytes per cell, 128x128x3)
+Using Format80 again for each [...] section, an 8k destination buffer,
+and again, splice all these 6 together to make 48k.
+ 
+Here is a simple BASIC-like representation of how it is done:
+ 
+DIM MAP(0 to 127,0 to 127,1 to 3) as byte
+ 
+FOR Y=0 to 127
+	FOR X=0 to 127
+		GET 1 BYTE, PUT IT INTO MAP(X,Y,1)
+		GET 1 BYTE, PUT IT INTO MAP(X,Y,2)
+	NEXT
+NEXT
+FOR Y=0 to 127
+	FOR X=0 to 127
+		GET 1 BYTE, PUT IT INTO MAP(X,Y,3)
+	NEXT
+NEXT
+ 
+It is quite strange, but It's Westwood's solution to use more than 256 tiles,
+which was the limit in C&C.
+ 
+Well the hex from the new 48k file is 3 bytes per cell, with them meaning
+the following :
+ 
+[ xx xx ]  [ xx ]
+Tile I.D.  Part Of That Tile
+           To Show In That Cell
+ 
+Here are some of them, I'll probably get round to doing a full list sometime,
+but I havent checked the old C&C resources for this *yet*.
+ 
+Remember the Tile ID is a word, so I've switched it round (as you should), just
+in case you think it looks wrong :)
+ 
+TILE ID  NO. OF PARTS
+-------  ------------
+FFFF 		? 	- Blank Tile
+0001 		? 	- Water
+ 
+Recompressing Map Data back into a MapPack
+ 
+ 
+ 
+ 
+Appendix A : Format80/40/20 Images (thanks to Vladan Bato)
+ 
+I will call the three image formats Format80, Format40 and Format20.
+ 
+The Format80 images are compressed with a compression method I'll explain
+later.
+ 
+The Format40 images must be xor-ed with a Format80 image. That's what the
+RefOffs and RefForm fields are used for. They tell which Format80 image they
+are based upon. The Format40 will be explained in detail later.
+ 
+The Format20 images use the same format as the Format40, the difference is
+that they are xor-ed with the image that precedes them in the file. That can
+be either in Format20 or in Format40.
+The RefOffs field contains the number of the first Format40 image in the
+chain, and the RefForm field is always 4800h.
+ 
+Here's an example :
+ 
+0) Off0 8000h 0000h 0000h
+1) Off1 8000h 0000h 0000h
+2) Off2 4000h Off1  8000h
+3) Off3 8000h 0000h 0000h
+4) Off4 4000h Off1  8000h
+5) Off5 2000h 0400h 4800h
+6) Off6 2000h 0400h 4800h
+7) Off7 4000h Off3  8000h
+ 
+For example to draw image 7, you have to draw the image 3 first (whose offset
+and format are given) and then xor image 7 over it.
+ 
+To draw image 6, you have to xor it over the previous image, i.e. 5, which is
+format20 again, that means that it has to be xor-ed over image 4, which is in
+format40, i.e. it must be xor-ed over the image in format80 it has a reference
+to. In this case it's image 1. Thus the chain is 1,4,5,6.
+This is one way to see it, the other could be :
+Image 6 is in Format20, the RefOffs field contains the number of the first
+Format40 image in the chain, in this case image 4. To draw Image 4, the Image
+1 has to be drawn first, next is image 4, and then all the images from the 4th
+to the 6th have to be xor-ed over the previous.
+ 
+I made some experiments and found out that you don't have to use the Format40
+and Format20 images. I tried converting all of them into Format80 and it
+worked.
+ 
+Also, when changing graphics, note that all the unit and structure graphics
+should be drawn using the GDI colors, which will be automatically converted
+for the other sides.
+The palette you should use is one of those found in DESERT.MIX, WINTER.MIX
+and TEMPERAT.MIX. The GDI colors are colors 0B0h-0BFh. The other colors
+won't be converted and will remain the same for all the sides (be sure to
+use only the colors that are the same all three palettes).
+ 
+The above applies only to the graphics that appear in all three theaters
+(the .SHP file found in CONQUER.MIX). The graphics for the structures and
+overlays that appear in a single theater (found inside the theater specific
+MIX) can use the palette entries that are unique for that theater (and will
+be shown with garbled colors in the others).
+ 
+Also a special color is used for shadows. It's color 04h. In the palettes
+it's bright green, but C&C puts a shadow instead of it. I don't know how
+the shadows are calculated however.
+ 
+You should've noticed that the array has NumImages+2 elements when only
+NumImages elements are needed. The last one contains zeros, and the one before
+that points to the end of the file. These two can be used to identify the file
+as a .SHP.
+ 
+Here's the description of the compression formats : Format80 and Format40.
+ 
+----------
+ Format80
+----------
+ 
+There are several different commands, with different sizes : form 1 to 5
+bytes.
+The positions mentioned below always refer to the destination buffer (i.e.
+the uncompressed image). The relative positions are relative to the current
+position in the destination buffer, which is one byte beyond the last written
+byte.
+ 
+I will give some sample code at the end.
+ 
+(1) 1 byte
+      +---+---+---+---+---+---+---+---+
+      | 1 | 0 |   |   |   |   |   |   |
+      +---+---+---+---+---+---+---+---+
+              \_______________________/
+                         |
+                       Count
+ 
+      This one means : copy next Count bytes as is from Source to Dest.
+ 
+(2) 2 bytes
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+  | 0 |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+      \___________/\__________________________________________________/
+            |                             |
+         Count-3                    Relative Pos.
+ 
+  This means copy Count bytes from Dest at Current Pos.-Rel. Pos. to
+  Current position.
+  Note that you have to add 3 to the number you find in the bits 4-6 of the
+  first byte to obtain the Count.
+  Note that if the Rel. Pos. is 1, that means repeat Count times the previous
+  byte.
+ 
+(3) 3 bytes
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+  | 1 | 1 |   |   |   |   |   |   |   |               |               |
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+          \_______________________/                  Pos
+                     |
+                 Count-3
+ 
+  Copy Count bytes from Pos, where Pos is absolute from the start of the
+  destination buffer. (Pos is a word, that means that the images can't be
+  larger than 64K)
+ 
+(4) 4 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 |   |       |       |  |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+                                            Count          Color
+ 
+  Write Color Count times.
+  (Count is a word, color is a byte)
+ 
+(5) 5 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |   |       |       |  |       |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+                                            Count               Pos
+ 
+  Copy Count bytes from Dest. starting at Pos. Pos is absolute from the start
+  of the Destination buffer.
+  Both Count and Pos are words.
+ 
+These are all the commands I found out. Maybe there are other ones, but I
+haven't seen them yet.
+ 
+All the images end with a 80h command.
+ 
+To make things more clearer here's a piece of code that will uncompress the
+image.
+ 
+  DP = destination pointer
+  SP = source pointer
+  Source and Dest are the two buffers
+ 
+ 
+  SP:=0;
+  DP:=0;
+  repeat
+    Com:=Source[SP];
+    inc(SP);
+    b7:=Com shr 7;  {b7 is bit 7 of Com}
+    case b7 of
+      0 : begin  {copy command (2)}
+            {Count is bits 4-6 + 3}
+            Count:=(Com and $7F) shr 4 + 3;
+            {Position is bits 0-3, with bits 0-7 of next byte}
+            Posit:=(Com and $0F) shl 8+Source[SP];
+            Inc(SP);
+            {Starting pos=Cur pos. - calculated value}
+            Posit:=DP-Posit;
+            for i:=Posit to Posit+Count-1 do
+            begin
+              Dest[DP]:=Dest[i];
+              Inc(DP);
+            end;
+          end;
+      1 : begin
+            {Check bit 6 of Com}
+            b6:=(Com and $40) shr 6;
+            case b6 of
+              0 : begin  {Copy as is command (1)}
+                    Count:=Com and $3F;  {mask 2 topmost bits}
+                    if Count=0 then break; {EOF marker}
+                    for i:=1 to Count do
+                    begin
+                      Dest[DP]:=Source[SP];
+                      Inc(DP);
+                      Inc(SP);
+                    end;
+                  end;
+              1 : begin  {large copy, very large copy and fill commands}
+                    {Count = (bits 0-5 of Com) +3}
+                    {if Com=FEh then fill, if Com=FFh then very large copy}
+                    Count:=Com and $3F;
+                    if Count<$3E then {large copy (3)}
+                    begin
+                      Inc(Count,3);
+                      {Next word = pos. from start of image}
+                      Posit:=Word(Source[SP]);
+                      Inc(SP,2);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end
+                    else if Count=$3F then   {very large copy (5)}
+                    begin
+                      {next 2 words are Count and Pos}
+                      Count:=Word(Source[SP]);
+                      Posit:=Word(Source[SP+2]);
+                      Inc(SP,4);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end else
+                    begin   {Count=$3E, fill (4)}
+                      {Next word is count, the byte after is color}
+                      Count:=Word(Source[SP]);
+                      Inc(SP,2);
+                      b:=Source[SP];
+                      Inc(SP);
+                      for i:=0 to Count-1 do
+                      begin
+                        Dest[DP]:=b;
+                        inc(DP);
+                      end;
+                    end;
+                  end;
+            end;
+          end;
+    end;
+  until false;
+ 
+Note that you won't be able to compile this code, because the typecasting
+won't work. (But I'm sure you'll be able to fix it).
+ 
+ 
+----------
+ Format40
+----------
+ 
+As I said before the images in Format40 must be xor-ed over a previous image,
+or against a black screen (as in the .WSA format).
+It is used when there are only minor changes between an image and a following
+one.
+ 
+Here I'll assume that the old image is in Dest, and that the Dest pointer is
+set to the beginning of that buffer.
+ 
+As for the Format80, there are many commands :
+ 
+ 
+(1) 1 byte
+               byte
+  +---+---+---+---+---+---+---+---+
+  | 1 |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+
+      \___________________________/
+                   |
+                 Count
+ 
+  Skip count bytes in Dest (move the pointer forward).
+ 
+(2) 3 bytes
+              byte                           word
+  +---+---+---+---+---+---+---+---+  +---+-----+-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 0 | ... |       |
+  +---+---+---+---+---+---+---+---+  +---+-----+-------+
+                                         \_____________/
+                                                |
+                                              Count
+ 
+  Skip count bytes.
+ 
+(3) 3 bytes
+                byte                              word
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 1 | 0 | ... |       |
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+
+                                             \_____________/
+                                                   |
+                                                 Count
+ 
+ Xor next count bytes. That means xor count bytes from Source with bytes
+ in Dest.
+ 
+(4) 4 bytes
+              byte                               word           byte
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+  +-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 1 | 1 | ... |       |  |       |
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+  +-------+
+                                             \_____________/    value
+                                                   |
+                                                 Count
+ 
+  Xor next count bytes in Dest with value.
+ 
+5) 1 byte
+               byte
+  +---+---+---+---+---+---+---+---+
+  | 0 |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+
+      \___________________________/
+                   |
+                 Count
+ 
+  Xor next count bytes from source with dest.
+ 
+6) 3 bytes
+              byte                     byte       byte
+  +---+---+---+---+---+---+---+---+  +-------+  +-------+
+  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  |       |  |       |
+  +---+---+---+---+---+---+---+---+  +-------+  +-------+
+                                       Count      Value
+ 
+  Xor next count bytes with value.
+ 
+ 
+All images end with a 80h 00h 00h command.
+ 
+I think these are all the commands, but there might be some other.
+If you find anything new, please e-mail me.
+ 
+As before here's some code :
+ 
+  DP = destination pointer
+  SP = source pointer
+  Source is buffer containing the Format40 data
+  Dest   is the buffer containing the image over which the second has
+         to be xor-ed
+ 
+ 
+  SP:=0;
+  DP:=0;
+  repeat
+    Com:=Source[SP];
+    Inc(SP);
+ 
+    if (Com and $80)<>0 then {if bit 7 set}
+    begin
+      if Com<>$80 then  {small skip command (1)}
+      begin
+        Count:=Com and $7F;
+        Inc(DP,Count);
+      end
+      else  {Big commands}
+      begin
+        Count:=Word(Source[SP]);
+        if Count=0 then break;
+        Inc(SP,2);
+ 
+        Tc:=(Count and $C000) shr 14;  {Tc=two topmost bits of count}
+ 
+        case Tc of
+          0,1 : begin  {Big skip (2)}
+                  Inc(DP,Count);
+                end;
+          2 : begin {big xor (3)}
+                Count:=Count and $3FFF;
+                for i:=1 to Count do
+                begin
+                  Dest[DP]:=Dest[DP] xor Source[SP];
+                  Inc(DP);
+                  Inc(SP);
+                end;
+              end;
+          3 : begin  {big repeated xor (4)}
+                Count:=Count and $3FFF;
+                b:=Source[SP];
+                Inc(SP);
+                for i:=1 to Count do
+                begin
+                  Dest[DP]:=Dest[DP] xor b;
+                  Inc(DP);
+                end;
+              end;
+        end;
+      end;
+    end else  {xor command}
+    begin
+      Count:=Com;
+      if Count=0 then
+      begin {repeated xor (6)}
+        Count:=Source[SP];
+        Inc(SP);
+        b:=Source[SP];
+        Inc(SP);
+        for i:=1 to Count do
+        begin
+          Dest[DP]:=Dest[DP] xor b;
+          Inc(DP);
+        end;
+      end else  {copy xor (5)}
+        for i:=1 to Count do
+        begin
+          Dest[DP]:=Dest[DP] xor Source[SP];
+          Inc(DP);
+          Inc(SP);
+        end;
+    end;
+  until false;
+ 
+ 
+ 
+ 
+Appendix B : CPS Files
+The .CPS files contain 320x200x256 images. The images are compressed with the
+Format80 compression method. They may or may not contain a palette.
+ 
+The header has the following structure :
+ 
+  Header : record
+             Size    : word;  {File size - 2}
+             Unknown : word;  {Always 0004h}
+             ImSize  : word;  {Size of uncompressed image (always 0FA00h)}
+             Palette : longint; {Is there a palette ?}
+           end;
+ 
+If Palette is 03000000h then there's a palette after the header, otherwise
+the image follows.
+CPS file without palette can be found in the SETUP.MIX file, and they all use
+the Palette that can be found inside the same .MIX.
+ 
+The image that follows the palette (or the Header) is in Format80 which is
+explained above.
+ 
+My Note : The CPS files contain all the full screen Red Alert Images, where
+PCX files are used for the 640x400 images used in the Windows '95 version.
+ 
+ 
+Thanks to:
+Westwood for making the great game
+ 
+Everyone who contributed to the "Scenario Creation Guide"
+ 
+Mike Cocca for help on the MapPacks.
+ 
+Moritz Mertinkat for writing RA-MiXer 3.0, I found this very
+handy when looking for the offsets, as I myself only could find the SHP files reliably :), and for the RMT/PCX info!
+ 
+Vladan Bato for the C&C Format80/40/20 images
+and for the great work on the old C&C MIX files.
+ 
+Andrew Griffin for the correction of the RMT files.
+ 
+Anyone who thinks they deserve it.
+ 
+ 
+ 
+Also, email me if you see anything that is wrong, or missing, or should be included, I'll
+give you credit for that particular part of course :)
+ 
+ 
+You'll find the latest version of this text here:
+http://www.geocities.com/TimesSquare/Arcade/5553
+ 
+ 
+(c)Gavin Pugh 1997
+rascenedit@geocities.com
