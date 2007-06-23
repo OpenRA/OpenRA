@@ -33,15 +33,15 @@ namespace MixBrowser
 				return;
 			}
 
-			MixFile file = new MixFile(fn);
+			Package file = new Package(fn);
 
 			if (File.Exists("files.txt"))
 				foreach (string filename in File.ReadAllLines("files.txt"))
-					MixEntry.AddStandardName(filename);
+					PackageEntry.AddStandardName(filename);
 			else
 				Console.WriteLine("-- files.txt doesnt exist --");
 
-			foreach (MixEntry e in file.Content)
+			foreach (PackageEntry e in file.Content)
 				Console.WriteLine(e);
 		}
 	}

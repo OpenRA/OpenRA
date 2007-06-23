@@ -37,8 +37,8 @@
     <Compile Include="Blowfish.cs" />
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
-    <Compile Include="MixEntry.cs" />
-    <Compile Include="MixFile.cs" />
+    <Compile Include="PackageEntry.cs" />
+    <Compile Include="Package.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShpReader.cs" />

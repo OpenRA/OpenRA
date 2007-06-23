@@ -5,18 +5,18 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
-	public class MixFile
+	public class Package
 	{
 		readonly string filename;
-		readonly List<MixEntry> index;
+		readonly List<PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
 
-		public ICollection<MixEntry> Content
+		public ICollection<PackageEntry> Content
 		{
 			get { return index.AsReadOnly(); }
 		}
 
-		public MixFile(string filename)
+		public Package(string filename)
 		{
 			this.filename = filename;
 			using (Stream s = File.OpenRead(filename))
@@ -40,7 +40,7 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		List<MixEntry> ParseRaHeader(Stream s)
+		List<PackageEntry> ParseRaHeader(Stream s)
 		{
 			if (!isEncrypted)
 			{
@@ -75,7 +75,7 @@ namespace OpenRa.FileFormats
 			s.Position = headerStart;
 			reader = new BinaryReader(s);
 
-			h = ReadUints(reader, 2 + numFiles * MixEntry.Size / 4);
+			h = ReadUints(reader, 2 + numFiles * PackageEntry.Size / 4);
 			decrypted = fish.Decrypt(h);
 
 			ms = new MemoryStream();
@@ -98,23 +98,23 @@ namespace OpenRa.FileFormats
 			return ret;
 		}
 
-		List<MixEntry> ParseTdHeader(Stream s)
+		List<PackageEntry> ParseTdHeader(Stream s)
 		{
-			List<MixEntry> items = new List<MixEntry>();
+			List<PackageEntry> items = new List<PackageEntry>();
 
 			BinaryReader reader = new BinaryReader(s);
 			ushort numFiles = reader.ReadUInt16();
 			uint dataSize = reader.ReadUInt32();
 
 			for (int i = 0; i < numFiles; i++)
-				items.Add(new MixEntry(reader));
+				items.Add(new PackageEntry(reader));
 
 			return items;
 		}
 
 		public Stream GetContent(uint hash)
 		{
-			foreach( MixEntry e in index )
+			foreach( PackageEntry e in index )
 				if (e.Hash == hash)
 				{
 					using (Stream s = File.OpenRead(filename))
@@ -126,7 +126,7 @@ namespace OpenRa.FileFormats
 						if (isEncrypted)
 							s.Seek(80, SeekOrigin.Current);
 
-						s.Seek(index.Count * MixEntry.Size + e.Offset, SeekOrigin.Current);
+						s.Seek(index.Count * PackageEntry.Size + e.Offset, SeekOrigin.Current);
 						byte[] data = new byte[ e.Length ];
 						s.Read( data, 0, (int)e.Length );
 						return new MemoryStream(data);
@@ -138,7 +138,7 @@ namespace OpenRa.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			return GetContent(MixEntry.HashFilename(filename));
+			return GetContent(PackageEntry.HashFilename(filename));
 		}
 
 	}

@@ -5,13 +5,13 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
-	public class MixEntry
+	public class PackageEntry
 	{
 		public readonly uint Hash;
 		public readonly uint Offset;
 		public readonly uint Length;
 
-		public MixEntry(BinaryReader r)
+		public PackageEntry(BinaryReader r)
 		{
 			Hash = r.ReadUInt32();
 			Offset = r.ReadUInt32();
