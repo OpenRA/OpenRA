@@ -34,18 +34,16 @@ namespace ShpViewer
 			}
 
 			InitializeComponent();
-		}
 
-		protected override void OnPaint( PaintEventArgs e )
-		{
-			base.OnPaint( e );
-
-			int y = 10;
-			foreach( Bitmap b in bitmaps )
+			foreach (Bitmap b in bitmaps)
 			{
-				e.Graphics.DrawImage( b, 10, y );
-				y += 10 + b.Height;
+				PictureBox p = new PictureBox();
+				p.Image = b;
+				p.Size = b.Size;
+				flowLayoutPanel1.Controls.Add(p);
 			}
+
+			Focus();
 		}
 	}
 }

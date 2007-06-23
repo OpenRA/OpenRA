@@ -1,0 +1,229 @@
+
+                         THE AUD FILE FORMAT
+
+Revision 3
+
+by Vladan Bato (bat22@geocities.com)
+
+
+In this document I'll try to describe the AUD file format used in
+Command & Conquer and Redalert.
+
+Command & Conquer is a trademark of Westwood Studios, Inc.
+Command & Conquer is Copyright (C)1995 Westwood Studios, Inc.
+Command & Conquer: Red Alert is a trademark of Westwood Studios, Inc.
+Command & Conquer: Red Alert is Copyright (C)1995,1996 Westwood Studios, Inc.
+
+The information provided here is for anyone who would like to make an
+AUD player program or AUD to WAV or WAV to AUD converters.
+
+Most information about AUD files and IMA-ADPCM compression has been
+provided by Douglas McFadyen.
+
+I won't explain here the format of the WAV files. You'll have to find this
+info yourself. I'll just tell you how to obtain 16-bit PCM data and how
+to encode it.
+
+I will use Pascal-like notation throughout this document.
+
+===============================
+ 0. IMPRTANT NOTE - WHAT'S NEW
+===============================
+
+This revision contains an important difference in the IMA-ADPCM compression
+routine. Instead of computing the diffrence between the current and
+previous sample, it computes the difference between the current sample
+and the value that the decoding routine will predict for the previous
+sample.
+This is the way the algorithm is implemented in C&C.
+If you implement it the way it was in previous revisions of this document,
+the sound will be the same but there will be a "pop" sound at the end.
+
+
+==============
+ 1. AUD FILES
+==============
+
+The AUD files have the following header :
+
+  Header : record
+                SamplesPerSec : word;      {Frequency}
+                Size          : longint;   {Size of file (without header)}
+                OutSize       : longint;   {Size of ouput data}
+                Flags         : byte;      {bit 0=stereo, bit 1=16bit}
+                Typ           : byte;      {1=WW compressed, 99=IMA ADPCM}
+              end;
+
+There are two types of compression. The first is the IMA-ADPCM compression
+used for 16-bit sound. It's used in most AUD files.
+
+The other one is a Westwood's proprietary compression for 8-bit sound and
+is used only for death screams. I won't describe it in this document
+because I don't know how it works.
+
+The rest of the AUD files is divided in chunks. These are usually 512
+bytes long, except for the last one.
+
+Each chunk has the following header :
+
+  ChunkHd : record
+              Size          : word;    {Size of compressed data}
+              OutSize       : word;    {Size of ouput data}
+              ID            : longint; {Always $0000DEAF}
+            end;
+
+The IMA-ADPCM compression compresses 16-bit samples to 4 bits. This means
+that OutSize will be apporximately 4*Size.
+
+The IMA-ADPCM compression and decompression are described in the following
+sections.
+
+Note that the current sample value and index into the Step Table should
+be initialized to 0 at the start and are mantained across the chunks
+(see below).
+
+==========================
+ 2. IMA-ADPCM COMPRESSION
+==========================
+
+I won't describe the theory behind the IMA-ADPCM compression. I will just
+give some pseudo code to compress and decompress data.
+
+The compression algorithm takes a stream of signed 16-bit samples in input
+and produces a stream of 4-bit codes in output.
+The 4-bit codes are stored in pairs (two codes in one byte). The first one
+is stored in the lower four bits.
+
+Two varaibles must be mantained while compressing : the previous sample
+value and the current index into the step table.
+
+You can find the Step Table in Appendix B.
+The Index adjustment table is in Appendix A.
+
+Here's the pseudo-code that will do the compression :
+
+  Index:=0;
+  Prev_Sample:=0;
+
+  while there_is_more_data do
+  begin
+    Cur_Sample:=Get_Next_Sample;
+    Delta:=Cur_Sample-Prev_Sample;
+    if Delta<0 then
+    begin
+      Delta:=-Delta;
+      Sb:=1;
+    end else Sb:=0;
+    {Sb is bit 4 of the output Code (sign bit)}
+
+    Code := 4*Delta div Step_Table[Index];
+    if Code>7 then Code:=7;
+    {These are the 3 low-order bits of output code}
+
+    Index:=Index+Index_Adjust[Code];
+    if Index<0 then Index:=0;
+    if Index>88 the Index:=88;
+
+    Predicted_Delta:=(Step_Table[Index]*Code) div 4 +
+                      Step_Table[Index] div 8;
+
+    {This is the Delta that decoding routine will compute}
+
+    Prev_Sample:=Prev_Sample+Predicted_Delta;
+    if Prev_Sample>32767 then Prev_Sample:=32767
+    else if Prev_Sample<-32768 then Prev_Sample:=-32768;
+
+    {Prev_Sample is the sample value that the decoding routine
+    will compute}
+
+
+    Output_Code(Code+Sb*8);
+  end;
+
+Note that this code is usually implemented in more efficient manner
+(No need to divide).
+
+The Get_Next_Sample function should return the next sample from the input
+buffer.
+The Output_Code function should store the 4-bit code to the output buffer.
+One byte contains two 4-bit codes, and this function should take care of
+this.
+
+============================
+ 3. IMA-ADPCM DECOMPRESSION
+============================
+
+It is the exact opposite of the above. It receives 4-bit codes in input
+and produce 16-bit samples in output.
+
+Again you have to mantain an Index into the Step Table an the current
+sample value.
+
+The tables used are the same as for compression.
+
+Here's the code :
+
+  Index:=0;
+  Cur_Sample:=0;
+
+  while there_is_more_data do
+  begin
+    Code:=Get_Next_Code;
+
+    if (Code and $8) <> 0 then Sb:=1 else Sb:=0;
+    Code:=Code and $7;
+    {Separate the sign bit from the rest}
+
+    Delta:=(Step_Table[Index]*Code) div 4 + Step_Table[Index] div 8;
+    {The last one is to minimize errors}
+
+    if Sb=1 then Delta:=-Delta;
+
+    Cur_Sample:=Cur_Sample+Delta;
+    if Cur_Sample>32767 then Cur_Sample:=32767
+    else if Cur_Sample<-32768 then Cur_Sample:=-32768;
+
+    Output_Sample(Cur_Sample);
+
+    Index:=Index+Index_Adjust[Code];
+    if Index<0 then Index:=0;
+    if Index>88 the Index:=88;
+  end;
+
+Again, this can be done more efficiently (no need for multiplication).
+
+The Get_Next_Code function should return the next 4-bit code. It must
+extract it from the input buffer (note that two 4-bit codes are stored
+in the same byte, the first one in the lower bits).
+
+The Output_Sample function should write the signed 16-bit sample to the
+output buffer.
+
+=========================================
+ Appendix A : THE INDEX ADJUSTMENT TABLE
+=========================================
+
+  Index_Adjust : array [0..7] of integer = (-1,-1,-1,-1,2,4,6,8);
+
+=============================
+ Appendix B : THE STEP TABLE
+=============================
+
+  Steps_Table : array [0..88] of integer =(
+        7,     8,     9,     10,    11,    12,     13,    14,    16,
+        17,    19,    21,    23,    25,    28,     31,    34,    37,
+        41,    45,    50,    55,    60,    66,     73,    80,    88,
+        97,    107,   118,   130,   143,   157,    173,   190,   209,
+        230,   253,   279,   307,   337,   371,    408,   449,   494,
+        544,   598,   658,   724,   796,   876,    963,   1060,  1166,
+        1282,  1411,  1552,  1707,  1878,  2066,   2272,  2499,  2749,
+        3024,  3327,  3660,  4026,  4428,  4871,   5358,  5894,  6484,
+        7132,  7845,  8630,  9493,  10442, 11487,  12635, 13899, 15289,
+        16818, 18500, 20350, 22385, 24623, 27086,  29794, 32767 );
+
+
+---
+
+Vladan Bato (bat22@geocities.com)
+http://www.geocities.com/SiliconValley/8682
+
