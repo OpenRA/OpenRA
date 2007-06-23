@@ -7,16 +7,16 @@ namespace OpenRa.Core
 {
 	public static class FileSystem
 	{
-		static List<IMountable> packages = new List<IMountable>();
+		static List<IPackage> packages = new List<IPackage>();
 
-		public static void Mount(IMountable package)
+		public static void Mount(IPackage package)
 		{
 			packages.Add(package);
 		}
 
 		internal static Stream GetItem(string filename)
 		{
-			foreach (IMountable package in packages)
+			foreach (IPackage package in packages)
 			{
 				Stream s = package.GetItem(filename);
 				if (s != null)

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace OpenRa.Core
 {
-	public interface IMountable
+	public interface IPackage
 	{
 		Stream GetItem(string filename);
 	}
