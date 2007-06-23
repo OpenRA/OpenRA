@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 
-namespace ImageDecode
+namespace OpenRa.FileFormats
 {
 	public class Palette
 	{

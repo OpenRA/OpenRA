@@ -66,9 +66,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImageDecode\ImageDecode.csproj">
-      <Project>{39352FD2-28B0-4DF5-97C7-499CE1AECCB9}</Project>
-      <Name>ImageDecode</Name>
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
+      <Name>OpenRa.FileFormats</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

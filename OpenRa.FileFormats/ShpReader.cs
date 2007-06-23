@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.IO;
 
-namespace ImageDecode
+namespace OpenRa.FileFormats
 {
 	public class ImageHeader
 	{

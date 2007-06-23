@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace MixBrowser
+namespace OpenRa.FileFormats
 {
-	class MixEntry
+	public class MixEntry
 	{
 		public readonly uint Hash;
 		public readonly uint Offset;

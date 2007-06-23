@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MixBrowser
+namespace OpenRa.FileFormats
 {
 	class Blowfish
 	{

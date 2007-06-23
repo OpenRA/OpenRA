@@ -5,8 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using ImageDecode;
 using System.IO;
+
+using OpenRa.FileFormats;
 
 namespace ShpViewer
 {

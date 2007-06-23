@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace ImageDecode
+namespace OpenRa.FileFormats
 {
 	public static class Format80
 	{

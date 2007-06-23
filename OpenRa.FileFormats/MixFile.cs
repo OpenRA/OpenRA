@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace MixBrowser
+namespace OpenRa.FileFormats
 {
-	class MixFile
+	public class MixFile
 	{
 		readonly string filename;
 		readonly List<MixEntry> index;
