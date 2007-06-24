@@ -28,12 +28,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MixDecrypt, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\debug\MixDecrypt.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapBuilder.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
@@ -42,12 +47,7 @@
     <Compile Include="Palette.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShpReader.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MixDecrypt\MixDecrypt.vcproj">
-      <Project>{6F5D4280-3D23-41FF-AE2A-511B5553E377}</Project>
-      <Name>MixDecrypt</Name>
-    </ProjectReference>
+    <Compile Include="Terrain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

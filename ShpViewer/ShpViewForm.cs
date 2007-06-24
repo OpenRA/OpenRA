@@ -13,27 +13,46 @@ namespace ShpViewer
 {
 	public partial class ShpViewForm : Form
 	{
-		ShpReader shpReader;
 		List<Bitmap> bitmaps = new List<Bitmap>();
 
 		public ShpViewForm( string filename )
 		{
-			shpReader = new ShpReader( File.OpenRead( filename ) );
-
-			foreach( ImageHeader h in shpReader )
-			{
-				byte[] imageBytes = h.Image;
-
-				Palette pal = new Palette(File.OpenRead("../../../temperat.pal"));
-
-				Bitmap bitmap = new Bitmap( shpReader.Width, shpReader.Height );
-				for( int x = 0 ; x < shpReader.Width ; x++ )
-					for( int y = 0 ; y < shpReader.Height ; y++ )
-						bitmap.SetPixel( x, y, pal.GetColor(imageBytes[ x + shpReader.Width * y ]) );
-				bitmaps.Add( bitmap );
-			}
-
 			InitializeComponent();
+
+			string ext = Path.GetExtension( filename );
+			if( ext == ".shp" )
+			{
+				ShpReader shpReader = new ShpReader( File.OpenRead( filename ) );
+
+				Palette pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
+
+				foreach( ImageHeader h in shpReader )
+					bitmaps.Add( BitmapBuilder.FromBytes( h.Image, shpReader.Width, shpReader.Height, pal ) );
+			}
+			else if( ext == ".tem" || ext == ".sno" || ext == ".int" )
+			{
+				Palette pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
+				switch( ext )
+				{
+					case ".sno":
+						pal = new Palette( File.OpenRead( "../../../snow.pal" ) );
+						break;
+					case ".int":
+						pal = new Palette( File.OpenRead( "../../../interior.pal" ) );
+						break;
+				}
+
+				Terrain t = new Terrain( File.OpenRead( filename ), pal );
+
+				Bitmap bigTile = new Bitmap( 24 * t.XDim, 24 * t.YDim );
+				using( Graphics g = Graphics.FromImage( bigTile ) )
+				{
+					for( int x = 0 ; x < t.XDim ; x++ )
+						for( int y = 0 ; y < t.YDim ; y++ )
+							g.DrawImageUnscaled( t.GetTile( x + y * t.XDim ) ?? new Bitmap( 24, 24 ), x * 24, y * 24 );
+				}
+				bitmaps.Add( bigTile );
+			}
 
 			foreach (Bitmap b in bitmaps)
 			{
@@ -44,6 +63,7 @@ namespace ShpViewer
 			}
 
 			Focus();
+			BringToFront();
 		}
 	}
 }

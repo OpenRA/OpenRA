@@ -19,7 +19,7 @@ namespace ShpViewer
 			try
 			{
 				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.Filter = "SHP Files|*.shp";
+				ofd.Filter = "SHP Files (*.shp)|*.shp|Terrain Files (*.tem; *.sno; *.int)|*.tem;*.sno;*.int|All Files (*.*)|*.*";
 				ofd.RestoreDirectory = true;
 				if( ofd.ShowDialog() == DialogResult.OK )
 					Application.Run( new ShpViewForm( ofd.FileName ) );
