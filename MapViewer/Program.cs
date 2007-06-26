@@ -69,6 +69,8 @@ namespace MapViewer
 					byte[] src = reader.ReadBytes((int)length);
 
 					int actualLength = Format80.DecodeInto(new MemoryStream(src), dest);
+
+					chunks.Add(dest);
 					Console.WriteLine("Chunk length: {0}", actualLength);
 				}
 			}
