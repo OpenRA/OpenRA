@@ -50,7 +50,7 @@ static void init_bignum(bignum n, dword val, dword len)
 static void move_key_to_big(bignum n, char *key, dword klen, dword blen)
 {
 	dword sign;
-	int i;
+	unsigned i;
 	
 	if (key[0] & 0x80) sign = 0xff;
 	else sign = 0;
@@ -154,7 +154,7 @@ static void mov_bignum(bignum dest, bignum src, dword len)
   memmove(dest, src, len*4);
 }
 
-static void shr_bignum(bignum n, dword bits, long int len)
+static void shr_bignum(bignum n, dword bits, unsigned long int len)
 {
   dword i, i2;
 
