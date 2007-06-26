@@ -18,6 +18,14 @@ namespace MapViewer
 			return (DialogResult.OK == ofd.ShowDialog()) ? ofd.OpenFile() : null;
 		}
 
+		static byte ReadByte( Stream s )
+		{
+			int ret = s.ReadByte();
+			if( ret == -1 )
+				throw new NotImplementedException ();
+			return (byte)ret;
+		}
+
 		static void Main(string[] args)
 		{
 			Stream s = GetFile();
@@ -88,17 +96,22 @@ namespace MapViewer
 
 			ms.Position = 0;
 
-			TileReference[,] tiles = new TileReference[width, height];
-			for( int i = 0; i < width; i++ )
-				for (int j = 0; j < height; j++)
-					tiles[i, j].tile = (ushort)((ms.ReadByte() << 8) | ms.ReadByte());
+			TileReference[ , ] tiles = new TileReference[ 128, 128 ];
+			for( int i = 0 ; i < 128 ; i++ )
+			{
+				for( int j = 0 ; j < 128 ; j++ )
+				{
+					tiles[ i, j ].tile = ReadByte( ms );
+					tiles[ i, j ].tile |= (ushort)( ReadByte( ms ) << 8 );
+				}
+			}
 
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					tiles[i, j].image = (byte)ms.ReadByte();
+			for( int i = 0 ; i < 128 ; i++ )
+				for( int j = 0 ; j < 128 ; j++ )
+					tiles[ i, j ].image = ReadByte( ms );
 
 			foreach( TileReference r in tiles )
-				Console.Write("{0:x4}.{1:x2} ", r.tile, r.image);
+				Console.Write( "{0:x4}.{1:x2} ", r.tile, r.image );
 		}
 	}
 
