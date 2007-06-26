@@ -40,6 +40,12 @@ namespace MapViewer
 				map.GetValue("X", "0"), map.GetValue("Y", "0"),
 				map.GetValue("Width", "0"), map.GetValue("Height", "0"));
 
+			int width = int.Parse(map.GetValue("Width", "0"));
+			int height = int.Parse(map.GetValue("Height", "0"));
+
+			int x = int.Parse(map.GetValue("X", "0"));
+			int y = int.Parse(map.GetValue("Y", "0"));
+
 			// parse MapPack section
 			IniSection mapPackSection = iniFile.GetSection("MapPack");
 
@@ -75,6 +81,30 @@ namespace MapViewer
 				}
 			}
 			catch (EndOfStreamException) { }
+
+			MemoryStream ms = new MemoryStream();
+			foreach (byte[] chunk in chunks)
+				ms.Write(chunk, 0, chunk.Length);
+
+			ms.Position = 0;
+
+			TileReference[,] tiles = new TileReference[width, height];
+			for( int i = 0; i < width; i++ )
+				for (int j = 0; j < height; j++)
+					tiles[i, j].tile = (ushort)((ms.ReadByte() << 8) | ms.ReadByte());
+
+			for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
+					tiles[i, j].image = (byte)ms.ReadByte();
+
+			foreach( TileReference r in tiles )
+				Console.Write("{0:x4}.{1:x2} ", r.tile, r.image);
 		}
+	}
+
+	struct TileReference
+	{
+		public ushort tile;
+		public byte image;
 	}
 }
