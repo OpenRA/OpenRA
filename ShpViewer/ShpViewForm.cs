@@ -19,7 +19,7 @@ namespace ShpViewer
 		{
 			InitializeComponent();
 
-			string ext = Path.GetExtension( filename );
+			string ext = Path.GetExtension( filename ).ToLowerInvariant();
 			if( ext == ".shp" )
 			{
 				ShpReader shpReader = new ShpReader( File.OpenRead( filename ) );
@@ -53,6 +53,37 @@ namespace ShpViewer
 				}
 				bitmaps.Add( bigTile );
 			}
+			else if( ext == ".ini" || ext == ".mpr" )
+			{
+				IniFile iniFile = new IniFile( File.OpenRead( filename ) );
+				Map map = new Map( iniFile );
+				TileSet tileSet = LoadTileSet( map );
+
+				flowLayoutPanel1.Visible = false;
+				flowLayoutPanel1.BackColor = Color.Blue;
+				mapViewControl1.Visible = true;
+				mapViewControl1.Map = map;
+				mapViewControl1.TileSet = tileSet;
+				mapViewControl1.Invalidate();
+
+				mapViewControl1.MouseClick += delegate( object sender, MouseEventArgs e )
+				{
+					if( e.Button == MouseButtons.Left )
+					{
+						mapViewControl1.Map = new Map( iniFile );
+						mapViewControl1.TileSet = LoadTileSet( map );
+					}
+					else if( e.Button == MouseButtons.Middle )
+					{
+						int dx = ( e.X * 2 - mapViewControl1.Width ) / 24;
+						int dy = ( e.Y * 2 - mapViewControl1.Height ) / 24;
+
+						mapViewControl1.XScroll += dx;
+						mapViewControl1.YScroll += dy;
+					}
+					mapViewControl1.Invalidate();
+				};
+			}
 
 			foreach (Bitmap b in bitmaps)
 			{
@@ -64,6 +95,25 @@ namespace ShpViewer
 
 			Focus();
 			BringToFront();
+		}
+
+		TileSet LoadTileSet( Map currentMap )
+		{
+			Palette pal;
+			switch( currentMap.Theater.ToLowerInvariant() )
+			{
+				case "temperate":
+					pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
+					return new TileSet( new Package( "../../../temperat.mix" ), ".tem", pal );
+				case "snow":
+					pal = new Palette( File.OpenRead( "../../../snow.pal" ) );
+					return new TileSet( new Package( "../../../snow.mix" ), ".sno", pal );
+				case "interior":
+					pal = new Palette( File.OpenRead( "../../../interior.pal" ) );
+					return new TileSet( new Package( "../../../interior.mix" ), ".int", pal );
+			}
+
+			throw new NotImplementedException();
 		}
 	}
 }

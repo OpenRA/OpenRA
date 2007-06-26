@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using OpenRa.Core;
 
 namespace OpenRa.FileFormats
 {
@@ -122,11 +123,13 @@ namespace OpenRa.FileFormats
 						s.Seek(2 + 4 + (isRmix ? 4 : 0), SeekOrigin.Begin);
 
 						s.Seek(2, SeekOrigin.Current);	//dword align
+						s.Seek( 4, SeekOrigin.Current );	//wtf, i dont know why i need this either :(
 
-						if (isEncrypted)
+						if( isEncrypted )
 							s.Seek(80, SeekOrigin.Current);
 
-						s.Seek(index.Count * PackageEntry.Size + e.Offset, SeekOrigin.Current);
+						s.Seek( index.Count * PackageEntry.Size + e.Offset, SeekOrigin.Current );
+
 						byte[] data = new byte[ e.Length ];
 						s.Read( data, 0, (int)e.Length );
 						return new MemoryStream(data);
@@ -140,7 +143,6 @@ namespace OpenRa.FileFormats
 		{
 			return GetContent(PackageEntry.HashFilename(filename));
 		}
-
 	}
 
 	[Flags]

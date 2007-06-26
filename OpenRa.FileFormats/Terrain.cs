@@ -24,7 +24,7 @@ namespace OpenRa.FileFormats
 			Height = reader.ReadUInt16();
 
 			if( Width != 24 || Height != 24 )
-				throw new InvalidDataException();
+				throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
 
 			NumTiles = reader.ReadUInt16();
 			reader.ReadUInt16();
@@ -58,7 +58,10 @@ namespace OpenRa.FileFormats
 
 		public Bitmap GetTile( int index )
 		{
-			return TileBitmaps[ index ];
+			if( index < TileBitmaps.Count )
+				return TileBitmaps[ index ];
+			else
+				return null;
 		}
 
 		public Bitmap[ , ] GetTiles( int tileNum )

@@ -27,14 +27,16 @@ namespace OpenRa.FileFormats
 			if( srcIndex >= destIndex )
 				throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
 
-			for( int i = 0 ; i < Math.Min( count, destIndex - srcIndex ) ; i++ )
-				dest[ destIndex + i ] = dest[ srcIndex + i ];
-
-			if( srcIndex + count <= destIndex )
-				return;
-
-			for( int i = destIndex + destIndex - srcIndex ; i < destIndex + count ; i++ )
-				dest[ i ] = dest[ destIndex - 1 ];
+			if( destIndex - srcIndex == 1 )
+			{
+				for( int i = 0 ; i < count ; i++ )
+					dest[ destIndex + i ] = dest[ destIndex - 1 ];
+			}
+			else
+			{
+				for( int i = 0 ; i < count ; i++ )
+					dest[ destIndex + i ] = dest[ srcIndex + i ];
+			}
 		}
 
 		public static int DecodeInto( MemoryStream input, byte[] dest )

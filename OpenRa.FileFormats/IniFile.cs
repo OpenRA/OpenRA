@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace MapViewer
+namespace OpenRa.FileFormats
 {
 	public class IniFile
 	{

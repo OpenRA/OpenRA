@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using MapViewer;
 
 namespace OpenRa.FileFormats
 {
@@ -98,14 +97,14 @@ namespace OpenRa.FileFormats
 			{
 				for( int j = 0 ; j < 128 ; j++ )
 				{
-					MapTiles[ i, j ].tile = ReadByte( ms );
-					MapTiles[ i, j ].tile |= (ushort)( ReadByte( ms ) << 8 );
+					MapTiles[ j, i ].tile = ReadByte( ms );
+					MapTiles[ j, i ].tile |= (ushort)( ReadByte( ms ) << 8 );
 				}
 			}
 
 			for( int i = 0 ; i < 128 ; i++ )
 				for( int j = 0 ; j < 128 ; j++ )
-					MapTiles[ i, j ].image = ReadByte( ms );
+					MapTiles[ j, i ].image = ReadByte( ms );
 		}
 	}
 

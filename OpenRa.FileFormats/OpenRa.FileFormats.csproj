@@ -35,7 +35,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapBuilder.cs" />
@@ -50,6 +49,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShpReader.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="TileSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRa.Core\OpenRa.Core.csproj">
+      <Project>{1B60782F-B2DD-43F1-B51D-B798485F317C}</Project>
+      <Name>OpenRa.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
