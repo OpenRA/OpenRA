@@ -29,13 +29,13 @@ namespace ShpViewer
 				for( int x = 50 ; x >= 0 ; x-- )
 				{
 					int tX = x + Map.XOffset + XScroll;
-					if( tX < 1 || tX > 127 )
+					if( tX < Map.XOffset || tX >= Map.XOffset + Map.Width )
 						continue;
 
 					for( int y = 50 ; y >= 0 ; y-- )
 					{
 						int tY = y + Map.YOffset + YScroll;
-						if( tY < 1 || tY > 127 )
+						if( tY < Map.YOffset || tY >= Map.YOffset + Map.Height )
 							continue;
 						
 						Terrain t;
