@@ -11,6 +11,7 @@ namespace OpenRa.FileFormats
 		readonly string filename;
 		readonly List<PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
+		readonly long dataStart;
 
 		public ICollection<PackageEntry> Content
 		{
@@ -30,26 +31,23 @@ namespace OpenRa.FileFormats
 				if (isRmix)
 				{
 					isEncrypted = 0 != (signature & (uint)MixFileFlags.Encrypted);
-					index = ParseRaHeader(s);
+					if( isEncrypted )
+					{
+						index = ParseRaHeader( s, out dataStart );
+						return;
+					}
 				}
-				else
-				{
-					isEncrypted = false;
-					s.Seek(0, SeekOrigin.Begin);
-					index = ParseTdHeader(s);
-				}
+
+				isEncrypted = false;
+				s.Seek(0, SeekOrigin.Begin);
+				index = ParseTdHeader(s, out dataStart);
 			}
 		}
 
-		List<PackageEntry> ParseRaHeader(Stream s)
-		{
-			if (!isEncrypted)
-			{
-				Console.WriteLine("RA, not encrypted");
-				return ParseTdHeader(s);
-			}
+		const long headerStart = 84;
 
-			long headerStart = 84;
+		List<PackageEntry> ParseRaHeader(Stream s, out long dataStart)
+		{
 			BinaryReader reader = new BinaryReader(s);
 			byte[] keyblock = reader.ReadBytes(80);
 			byte[] blowfishKey = MixDecrypt.MixDecrypt.BlowfishKey(keyblock);
@@ -57,15 +55,7 @@ namespace OpenRa.FileFormats
 			uint[] h = ReadUints(reader, 2);
 
 			Blowfish fish = new Blowfish(blowfishKey);
-			uint[] decrypted = fish.Decrypt(h);
-
-			MemoryStream ms = new MemoryStream();
-			BinaryWriter writer = new BinaryWriter(ms);
-			foreach (uint t in decrypted)
-				writer.Write(t);
-			writer.Flush();
-
-			ms.Position = 0;
+			MemoryStream ms = Decrypt( h, fish );
 			BinaryReader reader2 = new BinaryReader(ms);
 
 			ushort numFiles = reader2.ReadUInt16();
@@ -76,18 +66,29 @@ namespace OpenRa.FileFormats
 			s.Position = headerStart;
 			reader = new BinaryReader(s);
 
-			h = ReadUints(reader, 2 + numFiles * PackageEntry.Size / 4);
-			decrypted = fish.Decrypt(h);
+			int byteCount = 6 + numFiles * PackageEntry.Size;
+			h = ReadUints( reader, ( byteCount + 3 ) / 4 );
 
-			ms = new MemoryStream();
-			writer = new BinaryWriter(ms);
-			foreach (uint t in decrypted)
-				writer.Write(t);
+			ms = Decrypt( h, fish );
+
+			dataStart = headerStart + byteCount + ( ( ~byteCount + 1 ) & 7 );
+
+			long ds;
+			return ParseTdHeader( ms, out ds );
+		}
+
+		static MemoryStream Decrypt( uint[] h, Blowfish fish )
+		{
+			uint[] decrypted = fish.Decrypt( h );
+
+			MemoryStream ms = new MemoryStream();
+			BinaryWriter writer = new BinaryWriter( ms );
+			foreach( uint t in decrypted )
+				writer.Write( t );
 			writer.Flush();
 
 			ms.Position = 0;
-
-			return ParseTdHeader(ms);
+			return ms;
 		}
 
 		uint[] ReadUints(BinaryReader r, int count)
@@ -99,7 +100,7 @@ namespace OpenRa.FileFormats
 			return ret;
 		}
 
-		List<PackageEntry> ParseTdHeader(Stream s)
+		List<PackageEntry> ParseTdHeader(Stream s, out long dataStart)
 		{
 			List<PackageEntry> items = new List<PackageEntry>();
 
@@ -110,6 +111,7 @@ namespace OpenRa.FileFormats
 			for (int i = 0; i < numFiles; i++)
 				items.Add(new PackageEntry(reader));
 
+			dataStart = s.Position;
 			return items;
 		}
 
@@ -120,16 +122,7 @@ namespace OpenRa.FileFormats
 				{
 					using (Stream s = File.OpenRead(filename))
 					{
-						s.Seek(2 + 4 + (isRmix ? 4 : 0), SeekOrigin.Begin);
-
-						s.Seek(2, SeekOrigin.Current);	//dword align
-						s.Seek( 4, SeekOrigin.Current );	//wtf, i dont know why i need this either :(
-
-						if( isEncrypted )
-							s.Seek(80, SeekOrigin.Current);
-
-						s.Seek( index.Count * PackageEntry.Size + e.Offset, SeekOrigin.Current );
-
+						s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
 						byte[] data = new byte[ e.Length ];
 						s.Read( data, 0, (int)e.Length );
 						return new MemoryStream(data);

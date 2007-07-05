@@ -52,7 +52,6 @@ namespace OpenRa.FileFormats
 			}
 
 			byte[] data = Convert.FromBase64String( sb.ToString() );
-			Console.WriteLine( "Format80 data: {0}", data.Length );
 
 			List<byte[]> chunks = new List<byte[]>();
 
@@ -69,7 +68,6 @@ namespace OpenRa.FileFormats
 					int actualLength = Format80.DecodeInto( new MemoryStream( src ), dest );
 
 					chunks.Add( dest );
-					Console.WriteLine( "Chunk length: {0}", actualLength );
 				}
 			}
 			catch( EndOfStreamException ) { }
