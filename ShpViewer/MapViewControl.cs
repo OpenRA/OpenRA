@@ -29,7 +29,7 @@ namespace ShpViewer
 
 			Graphics g = e.Graphics;
 
-			for (int x = 50; x >= 0; x--)
+			for (int x = 55; x >= 0; x--)
 			{
 				int tX = x + Map.XOffset + XScroll;
 				if (tX < Map.XOffset || tX >= Map.XOffset + Map.Width)

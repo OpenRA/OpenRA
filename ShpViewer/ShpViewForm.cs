@@ -66,20 +66,41 @@ namespace ShpViewer
 				mapViewControl1.TileSet = tileSet;
 				mapViewControl1.Invalidate();
 
+				int ux = 0, uy = 0;
+				int vx = 0, vy = 0;
+
+				mapViewControl1.MouseDown += delegate(object sender, MouseEventArgs e)
+				{
+					if (e.Button == MouseButtons.Right)
+					{
+						ux = e.X;
+						uy = e.Y;
+
+						vx = mapViewControl1.XScroll;
+						vy = mapViewControl1.YScroll;
+					}
+				};
+
+				mapViewControl1.MouseMove += delegate(object sender, MouseEventArgs e)
+				{
+					if (e.Button == MouseButtons.Right)
+					{
+						int dx = e.X - ux;
+						int dy = e.Y - uy;
+
+						mapViewControl1.XScroll = vx + dx / 24;
+						mapViewControl1.YScroll = vy + dy / 24;
+
+						mapViewControl1.Invalidate();
+					}
+				};
+
 				mapViewControl1.MouseClick += delegate( object sender, MouseEventArgs e )
 				{
 					if( e.Button == MouseButtons.Left )
 					{
 						mapViewControl1.Map = new Map( iniFile );
 						mapViewControl1.TileSet = LoadTileSet( map );
-					}
-					else if( e.Button == MouseButtons.Middle )
-					{
-						int dx = ( e.X * 2 - mapViewControl1.Width ) / 24;
-						int dy = ( e.Y * 2 - mapViewControl1.Height ) / 24;
-
-						mapViewControl1.XScroll += dx;
-						mapViewControl1.YScroll += dy;
 					}
 					mapViewControl1.Invalidate();
 				};
