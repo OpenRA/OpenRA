@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
 using System.Drawing;
+using System.IO;
 
 namespace ShpViewer
 {
@@ -11,8 +12,22 @@ namespace ShpViewer
 	{
 		public int XScroll, YScroll;
 
-		public Map Map;
-		public TileSet TileSet;
+		Map map;
+		public Map Map
+		{
+			get { return map; }
+			set
+			{
+				map = value;
+				TileSet = LoadTileSet( Map );
+			}
+		}
+
+		Palette pal;
+		TileSet TileSet;
+		Package TileMix;
+		string TileSuffix;
+		Dictionary<string, Bitmap> TreeCache = new Dictionary<string, Bitmap>();
 
 		public MapViewControl()
 		{
@@ -62,6 +77,50 @@ namespace ShpViewer
 					}
 				}
 			}
+
+			foreach( TreeReference tr in Map.Trees )
+			{
+				int tX = tr.X - Map.XOffset - XScroll;
+				int tY = tr.Y - Map.YOffset - YScroll;
+				g.DrawImage( GetTree( tr.Image, TileMix ), tX * 24, tY * 24 );
+			}
+		}
+
+		Bitmap GetTree( string name, Package mix )
+		{
+			Bitmap ret;
+			if( !TreeCache.TryGetValue( name, out ret ) )
+			{
+				ShpReader shp = new ShpReader( TileSet.MixFile.GetContent( name + TileSuffix ) );
+				ret = BitmapBuilder.FromBytes( shp[ 0 ].Image, shp.Width, shp.Height, pal ); ;
+				TreeCache.Add( name, ret );
+			}
+			return ret;
+		}
+
+		TileSet LoadTileSet( Map currentMap )
+		{
+			switch( currentMap.Theater.ToLowerInvariant() )
+			{
+				case "temperate":
+					pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
+					TileMix = new Package( "../../../temperat.mix" );
+					TileSuffix = ".tem";
+					break;
+				case "snow":
+					pal = new Palette( File.OpenRead( "../../../snow.pal" ) );
+					TileMix = new Package( "../../../snow.mix" );
+					TileSuffix = ".sno";
+					break;
+				case "interior":
+					pal = new Palette( File.OpenRead( "../../../interior.pal" ) );
+					TileMix = new Package( "../../../interior.mix" );
+					TileSuffix = ".int";
+					break;
+				default:
+					throw new NotImplementedException();
+			}
+			return new TileSet( TileMix, TileSuffix, pal );
 		}
 	}
 }

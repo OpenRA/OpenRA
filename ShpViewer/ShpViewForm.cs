@@ -57,13 +57,11 @@ namespace ShpViewer
 			{
 				IniFile iniFile = new IniFile( File.OpenRead( filename ) );
 				Map map = new Map( iniFile );
-				TileSet tileSet = LoadTileSet( map );
 
 				flowLayoutPanel1.Visible = false;
 				flowLayoutPanel1.BackColor = Color.Blue;
 				mapViewControl1.Visible = true;
 				mapViewControl1.Map = map;
-				mapViewControl1.TileSet = tileSet;
 				mapViewControl1.Invalidate();
 
 				int ux = 0, uy = 0;
@@ -104,9 +102,8 @@ namespace ShpViewer
 					if( e.Button == MouseButtons.Left )
 					{
 						mapViewControl1.Map = new Map( iniFile );
-						mapViewControl1.TileSet = LoadTileSet( map );
+						mapViewControl1.Invalidate();
 					}
-					mapViewControl1.Invalidate();
 				};
 			}
 
@@ -120,25 +117,6 @@ namespace ShpViewer
 
 			Focus();
 			BringToFront();
-		}
-
-		TileSet LoadTileSet( Map currentMap )
-		{
-			Palette pal;
-			switch( currentMap.Theater.ToLowerInvariant() )
-			{
-				case "temperate":
-					pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
-					return new TileSet( new Package( "../../../temperat.mix" ), ".tem", pal );
-				case "snow":
-					pal = new Palette( File.OpenRead( "../../../snow.pal" ) );
-					return new TileSet( new Package( "../../../snow.mix" ), ".sno", pal );
-				case "interior":
-					pal = new Palette( File.OpenRead( "../../../interior.pal" ) );
-					return new TileSet( new Package( "../../../interior.mix" ), ".int", pal );
-			}
-
-			throw new NotImplementedException();
 		}
 	}
 }

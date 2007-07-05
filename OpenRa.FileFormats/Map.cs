@@ -17,6 +17,7 @@ namespace OpenRa.FileFormats
 		public readonly int Height;
 
 		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
+		public readonly List<TreeReference> Trees = new List<TreeReference>();
 
 		public Map( IniFile file )
 		{
@@ -35,6 +36,8 @@ namespace OpenRa.FileFormats
 			MemoryStream ms = ReadMapPack( file );
 
 			UnpackTileData( ms );
+
+			ReadTrees( file );
 		}
 
 		static MemoryStream ReadMapPack( IniFile file )
@@ -104,11 +107,35 @@ namespace OpenRa.FileFormats
 				for( int j = 0 ; j < 128 ; j++ )
 					MapTiles[ j, i ].image = ReadByte( ms );
 		}
+
+		void ReadTrees( IniFile file )
+		{
+			IniSection terrain = file.GetSection( "TERRAIN" );
+			foreach( KeyValuePair<string, string> kv in terrain )
+			{
+				int xy = int.Parse( kv.Key );
+				Trees.Add( new TreeReference( xy % 128, xy / 128, kv.Value ) );
+			}
+		}
 	}
 
 	public struct TileReference
 	{
 		public ushort tile;
 		public byte image;
+	}
+
+	public struct TreeReference
+	{
+		public readonly int X;
+		public readonly int Y;
+		public readonly string Image;
+
+		public TreeReference( int x, int y, string image )
+		{
+			X = x;
+			Y = y;
+			Image = image;
+		}
 	}
 }

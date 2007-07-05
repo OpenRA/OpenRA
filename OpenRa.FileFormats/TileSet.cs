@@ -9,9 +9,11 @@ namespace OpenRa.FileFormats
 	public class TileSet
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
+		public readonly Package MixFile;
 
 		public TileSet( Package mixFile, string suffix, Palette pal )
 		{
+			MixFile = mixFile;
 			StreamReader tileIdFile = File.OpenText( "../../../tileSet.til" );
 
 			while( true )

@@ -63,7 +63,7 @@ namespace OpenRa.FileFormats
 		}
 	}
 
-	public class IniSection
+	public class IniSection : IEnumerable<KeyValuePair<string, string>>
 	{
 		string name;
 		Dictionary<string, string> values = new Dictionary<string, string>();
@@ -82,6 +82,16 @@ namespace OpenRa.FileFormats
 		{
 			string s;
 			return values.TryGetValue( key, out s ) ? s : defaultValue;
+		}
+
+		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+		{
+			return values.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }
