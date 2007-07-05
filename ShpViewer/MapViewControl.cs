@@ -19,7 +19,7 @@ namespace ShpViewer
 			set
 			{
 				map = value;
-				TileSet = LoadTileSet( Map );
+				TileSet = LoadTileSet(Map);
 			}
 		}
 
@@ -35,7 +35,7 @@ namespace ShpViewer
 			UpdateStyles();
 		}
 
-		static Font font = new Font( FontFamily.GenericMonospace, 10 );
+		static Font font = new Font(FontFamily.GenericMonospace, 10);
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
@@ -78,49 +78,91 @@ namespace ShpViewer
 				}
 			}
 
-			foreach( TreeReference tr in Map.Trees )
+			foreach (TreeReference tr in Map.Trees)
 			{
 				int tX = tr.X - Map.XOffset - XScroll;
 				int tY = tr.Y - Map.YOffset - YScroll;
-				g.DrawImage( GetTree( tr.Image, TileMix ), tX * 24, tY * 24 );
+				g.DrawImage(GetTree(tr.Image, TileMix), tX * 24, tY * 24);
 			}
 		}
 
-		Bitmap GetTree( string name, Package mix )
+		Bitmap GetTree(string name, Package mix)
 		{
 			Bitmap ret;
-			if( !TreeCache.TryGetValue( name, out ret ) )
+			if (!TreeCache.TryGetValue(name, out ret))
 			{
-				ShpReader shp = new ShpReader( TileSet.MixFile.GetContent( name + TileSuffix ) );
-				ret = BitmapBuilder.FromBytes( shp[ 0 ].Image, shp.Width, shp.Height, pal ); ;
-				TreeCache.Add( name, ret );
+				ShpReader shp = new ShpReader(TileSet.MixFile.GetContent(name + TileSuffix));
+				ret = BitmapBuilder.FromBytes(shp[0].Image, shp.Width, shp.Height, pal); ;
+				TreeCache.Add(name, ret);
 			}
 			return ret;
 		}
 
-		TileSet LoadTileSet( Map currentMap )
+		TileSet LoadTileSet(Map currentMap)
 		{
-			switch( currentMap.Theater.ToLowerInvariant() )
+			switch (currentMap.Theater.ToLowerInvariant())
 			{
 				case "temperate":
-					pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
-					TileMix = new Package( "../../../temperat.mix" );
+					pal = new Palette(File.OpenRead("../../../temperat.pal"));
+					TileMix = new Package("../../../temperat.mix");
 					TileSuffix = ".tem";
 					break;
 				case "snow":
-					pal = new Palette( File.OpenRead( "../../../snow.pal" ) );
-					TileMix = new Package( "../../../snow.mix" );
+					pal = new Palette(File.OpenRead("../../../snow.pal"));
+					TileMix = new Package("../../../snow.mix");
 					TileSuffix = ".sno";
 					break;
 				case "interior":
-					pal = new Palette( File.OpenRead( "../../../interior.pal" ) );
-					TileMix = new Package( "../../../interior.mix" );
+					pal = new Palette(File.OpenRead("../../../interior.pal"));
+					TileMix = new Package("../../../interior.mix");
 					TileSuffix = ".int";
 					break;
 				default:
 					throw new NotImplementedException();
 			}
-			return new TileSet( TileMix, TileSuffix, pal );
+			return new TileSet(TileMix, TileSuffix, pal);
 		}
+
+		int ux,uy, vx, vy;
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+
+			if (e.Button == MouseButtons.Right)
+			{
+				ux = e.X;
+				uy = e.Y;
+
+				vx = XScroll;
+				vy = YScroll;
+
+				Cursor = Cursors.NoMove2D;
+			}
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+
+			if (e.Button == MouseButtons.Right)
+			{
+				int dx = ux - e.X;
+				int dy = uy - e.Y;
+
+				XScroll = vx + dx / 24;
+				YScroll = vy + dy / 24;
+
+				Invalidate();
+			}
+		}
+
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
+
+			Cursor = Cursors.Default;
+		}
+
 	}
 }

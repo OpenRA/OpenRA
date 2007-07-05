@@ -59,43 +59,9 @@ namespace ShpViewer
 				Map map = new Map( iniFile );
 
 				flowLayoutPanel1.Visible = false;
-				flowLayoutPanel1.BackColor = Color.Blue;
 				mapViewControl1.Visible = true;
 				mapViewControl1.Map = map;
 				mapViewControl1.Invalidate();
-
-				int ux = 0, uy = 0;
-				int vx = 0, vy = 0;
-
-				mapViewControl1.MouseDown += delegate(object sender, MouseEventArgs e)
-				{
-					if (e.Button == MouseButtons.Right)
-					{
-						ux = e.X;
-						uy = e.Y;
-
-						vx = mapViewControl1.XScroll;
-						vy = mapViewControl1.YScroll;
-
-						mapViewControl1.Cursor = Cursors.NoMove2D;
-					}
-				};
-
-				mapViewControl1.MouseMove += delegate(object sender, MouseEventArgs e)
-				{
-					if (e.Button == MouseButtons.Right)
-					{
-						int dx = ux - e.X;
-						int dy = uy - e.Y;
-
-						mapViewControl1.XScroll = vx + dx / 24;
-						mapViewControl1.YScroll = vy + dy / 24;
-
-						mapViewControl1.Invalidate();
-					}
-				};
-
-				mapViewControl1.MouseUp += delegate { mapViewControl1.Cursor = Cursors.Default; };
 
 				mapViewControl1.MouseClick += delegate( object sender, MouseEventArgs e )
 				{
