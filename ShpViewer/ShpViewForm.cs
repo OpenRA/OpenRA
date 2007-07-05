@@ -78,6 +78,8 @@ namespace ShpViewer
 
 						vx = mapViewControl1.XScroll;
 						vy = mapViewControl1.YScroll;
+
+						mapViewControl1.Cursor = Cursors.NoMove2D;
 					}
 				};
 
@@ -85,8 +87,8 @@ namespace ShpViewer
 				{
 					if (e.Button == MouseButtons.Right)
 					{
-						int dx = e.X - ux;
-						int dy = e.Y - uy;
+						int dx = ux - e.X;
+						int dy = uy - e.Y;
 
 						mapViewControl1.XScroll = vx + dx / 24;
 						mapViewControl1.YScroll = vy + dy / 24;
@@ -94,6 +96,8 @@ namespace ShpViewer
 						mapViewControl1.Invalidate();
 					}
 				};
+
+				mapViewControl1.MouseUp += delegate { mapViewControl1.Cursor = Cursors.Default; };
 
 				mapViewControl1.MouseClick += delegate( object sender, MouseEventArgs e )
 				{
