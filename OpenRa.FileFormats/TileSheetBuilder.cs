@@ -31,12 +31,15 @@ namespace OpenRa.FileFormats
 			if (current == null)
 				current = pageProvider();
 
-			if (imageSize.Height > rowHeight || rowHeight == 0 || imageSize.Width + x > pageSize.Width)
+			if (rowHeight == 0 || imageSize.Width + x > pageSize.Width)
 			{
 				y += rowHeight;
 				rowHeight = imageSize.Height;
 				x = 0;
 			}
+
+			if (imageSize.Height > rowHeight)
+				rowHeight = imageSize.Height;
 
 			if (y + imageSize.Height > pageSize.Height)
 			{
