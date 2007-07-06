@@ -33,8 +33,6 @@ namespace TileSheetTest
 
 			List<Bitmap> sheets = new List<Bitmap>();
 
-			MessageBox.Show(tileSet.tiles.Values.Count.ToString());
-
 			foreach (Terrain t in tileSet.tiles.Values)
 				for (int i = 0; i < t.NumTiles; i++)
 				{
