@@ -10,7 +10,7 @@ namespace OpenRa.Game
 
 	public delegate T Provider<T>();
 
-	class TileSheetBuilder<T>
+	public class TileSheetBuilder<T>
 		where T : class
 	{
 		readonly Size pageSize;
