@@ -26,6 +26,9 @@ namespace ShpViewer
 
 				Palette pal = new Palette( File.OpenRead( "../../../temperat.pal" ) );
 
+				PaletteRemap remap = new PaletteRemap(File.OpenRead("../../../blue.rem"));
+				pal = new Palette(pal, remap);
+
 				foreach( ImageHeader h in shpReader )
 					bitmaps.Add( BitmapBuilder.FromBytes( h.Image, shpReader.Width, shpReader.Height, pal ) );
 			}
