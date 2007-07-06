@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace OpenRa.Game
+namespace OpenRa.FileFormats
 {
 	// T is probably going to be BluntDirectX.Direct3D.Texture
 	public delegate T Provider<T>();

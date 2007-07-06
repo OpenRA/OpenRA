@@ -53,6 +53,7 @@
     <Compile Include="ShpReader.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TileSet.cs" />
+    <Compile Include="TileSheetBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.Core\OpenRa.Core.csproj">
