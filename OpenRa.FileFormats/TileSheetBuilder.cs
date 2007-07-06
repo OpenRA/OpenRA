@@ -54,9 +54,9 @@ namespace OpenRa.FileFormats
 	public class SheetRectangle<T>
 		where T : class
 	{
-		readonly Point origin;
-		readonly Size size;
-		readonly T sheet;
+		public readonly Point origin;
+		public readonly Size size;
+		public readonly T sheet;
 
 		internal SheetRectangle(T sheet, Point origin, Size size)
 		{
