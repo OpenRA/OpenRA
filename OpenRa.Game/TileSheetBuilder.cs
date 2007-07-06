@@ -11,19 +11,19 @@ namespace OpenRa.Game
 	public class TileSheetBuilder<T>
 		where T : class
 	{
-		readonly SizeF pageSize;
+		readonly Size pageSize;
 		readonly Provider<T> pageProvider;
 
-		public TileSheetBuilder(SizeF pageSize, Provider<T> pageProvider)
+		public TileSheetBuilder(Size pageSize, Provider<T> pageProvider)
 		{
 			this.pageSize = pageSize;
 			this.pageProvider = pageProvider;
 		}
 
 		T current = null;
-		float x = 0, y = 0, rowHeight = 0;
+		int x = 0, y = 0, rowHeight = 0;
 
-		public SheetRectangle<T> AddImage(SizeF imageSize)
+		public SheetRectangle<T> AddImage(Size imageSize)
 		{
 			if (imageSize.Width > pageSize.Width || imageSize.Height > pageSize.Height)
 				return null;
@@ -44,7 +44,7 @@ namespace OpenRa.Game
 				x = y = rowHeight = 0;
 			}
 
-			SheetRectangle<T> rect = new SheetRectangle<T>(current, new PointF(x, y), imageSize);
+			SheetRectangle<T> rect = new SheetRectangle<T>(current, new Point(x, y), imageSize);
 			x += imageSize.Width;
 
 			return rect;
@@ -54,11 +54,11 @@ namespace OpenRa.Game
 	public class SheetRectangle<T>
 		where T : class
 	{
-		readonly PointF origin;
-		readonly SizeF size;
+		readonly Point origin;
+		readonly Size size;
 		readonly T sheet;
 
-		internal SheetRectangle(T sheet, PointF origin, SizeF size)
+		internal SheetRectangle(T sheet, Point origin, Size size)
 		{
 			this.origin = origin;
 			this.size = size;
