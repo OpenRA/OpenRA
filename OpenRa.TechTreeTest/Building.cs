@@ -10,6 +10,7 @@ namespace OpenRa.TechTreeTest
 	[Flags]
 	public enum BuildingRace
 	{
+		None = 0,
 		Allies = 1,
 		Soviet = 2
 	}

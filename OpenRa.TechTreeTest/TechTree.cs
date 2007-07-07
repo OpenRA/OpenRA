@@ -31,17 +31,25 @@ namespace OpenRa.TechTreeTest
 				string s = section.GetValue("Prerequisite", "").ToUpper();
 				b.Prerequisites = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				b.TechLevel = int.Parse(section.GetValue("TechLevel", "-1"));
-				s = section.GetValue("Owner", "allies");
-				if (string.IsNullOrEmpty(s)) continue;
-				string[] frags = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				if (frags.Length > 1)
+				s = section.GetValue("Owner", "");
+				
+				if (string.IsNullOrEmpty(s))
+				{
+					b.Owner = BuildingRace.None;
+					continue;
+				}
+				
+				if (s.Equals("Both", StringComparison.InvariantCultureIgnoreCase))
 				{
 					b.Owner = BuildingRace.Allies | BuildingRace.Soviet;
+					continue;
 				}
+				
+				string[] frags = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				if (frags.Length > 1)
+					b.Owner = BuildingRace.Allies | BuildingRace.Soviet;
 				else
-				{
 					b.Owner = (BuildingRace)Enum.Parse(typeof(BuildingRace), frags[0], true);
-				}
 			}
 		}
 
