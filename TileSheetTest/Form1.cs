@@ -50,12 +50,7 @@ namespace TileSheetTest
 					SheetRectangle<Bitmap> item = builder.AddImage(tileImage.Size);
 
 					using (Graphics g = Graphics.FromImage(item.sheet))
-					{
 						g.DrawImage(tileImage, item.origin);
-					}
-
-					if (!sheets.Contains(item.sheet))
-						sheets.Add(item.sheet);
 				}
 
 			foreach (Bitmap b in sheets)
