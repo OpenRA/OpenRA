@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Game", "OpenRa.Game\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileSheetTest", "TileSheetTest\TileSheetTest.csproj", "{8A2FF5A6-D2CC-4CC4-844A-A1E7D3F69D0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.TechTreeTest", "OpenRa.TechTreeTest\OpenRa.TechTreeTest.csproj", "{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{8A2FF5A6-D2CC-4CC4-844A-A1E7D3F69D0B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8A2FF5A6-D2CC-4CC4-844A-A1E7D3F69D0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8A2FF5A6-D2CC-4CC4-844A-A1E7D3F69D0B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C0DA4050-CF36-494B-AEB8-BFFC3F65B2AA}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
