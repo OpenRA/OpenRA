@@ -15,11 +15,6 @@ namespace TileSheetTest
 		static readonly Size pageSize = new Size(256,256);
 		const int sheetBorder = 4;
 
-		Bitmap CreateNewPage()
-		{
-			return new Bitmap(pageSize.Width, pageSize.Height);
-		}
-
 		public Form1()
 		{
 			InitializeComponent();
@@ -28,10 +23,21 @@ namespace TileSheetTest
 			Palette palette = new Palette(File.OpenRead("../../../snow.pal"));
 			TileSet tileSet = new TileSet(package, ".sno", palette);
 
-			TileSheetBuilder<Bitmap> builder = 
-				new TileSheetBuilder<Bitmap>(pageSize, CreateNewPage);
-
 			List<Bitmap> sheets = new List<Bitmap>();
+
+			Provider<Bitmap> sheetProvider = delegate
+			{
+				Bitmap b = new Bitmap(pageSize.Width, pageSize.Height);
+
+				using (Graphics g = Graphics.FromImage(b))
+					g.FillRectangle(Brushes.Violet, 0, 0, pageSize.Width, pageSize.Height);
+
+				sheets.Add(b);
+				return b;
+			};
+
+			TileSheetBuilder<Bitmap> builder = 
+				new TileSheetBuilder<Bitmap>(pageSize, sheetProvider);
 
 			foreach (Terrain t in tileSet.tiles.Values)
 				for (int i = 0; i < t.NumTiles; i++)
@@ -46,7 +52,6 @@ namespace TileSheetTest
 					using (Graphics g = Graphics.FromImage(item.sheet))
 					{
 						g.DrawImage(tileImage, item.origin);
-						g.DrawRectangle(Pens.Red, new Rectangle(item.origin, item.size));
 					}
 
 					if (!sheets.Contains(item.sheet))
