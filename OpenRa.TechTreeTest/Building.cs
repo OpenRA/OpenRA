@@ -46,6 +46,12 @@ namespace OpenRa.TechTreeTest
 
 		public bool ShouldMakeBuildable(IEnumerable<string> buildings)
 		{
+			if (techLevel > 10 || techLevel < 0)
+				return false;
+
+			if (prerequisites.Length == 0)
+				return true;
+
 			List<string> p = new List<string>(prerequisites);
 			foreach (string b in buildings)
 				p.Remove(b);
@@ -55,6 +61,9 @@ namespace OpenRa.TechTreeTest
 
 		public bool ShouldMakeUnbuildable(IEnumerable<string> buildings)
 		{
+			if (prerequisites.Length == 0)
+				return false;
+
 			List<string> p = new List<string>(prerequisites);
 			foreach (string b in buildings)
 				p.Remove(b);

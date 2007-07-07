@@ -29,7 +29,7 @@ namespace OpenRa.TechTreeTest
 				IniSection section = rulesFile.GetSection(key);
 				Building b = buildings[key];
 				string s = section.GetValue("Prerequisite", "").ToUpper();
-				b.Prerequisites = s.Split(',');
+				b.Prerequisites = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				b.TechLevel = int.Parse(section.GetValue("TechLevel", "-1"));
 			}
 		}
