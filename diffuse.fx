@@ -4,6 +4,7 @@
 
 shared texture DiffuseTexture;
 shared float2 Scroll;
+const float2 ScreenSize = { 640, 400 };
 
 sampler s_DiffuseTexture = sampler_state {
 	Texture = <DiffuseTexture>;
@@ -32,7 +33,10 @@ struct FragmentIn {
 
 VertexOut Simple_vp(VertexIn v) {
 	VertexOut o;
-	o.Position = float4( v.Position.x / 320.0f - 0.5f - Scroll.x, Scroll.y - v.Position.y / 240.0f, 0, 1 );
+	o.Position = float4( 
+		v.Position.x / ScreenSize.x - 0.5f - Scroll.x, 
+		Scroll.y - v.Position.y / ScreenSize.y, 
+		0, 1 );
 	o.Tex0 = v.Tex0;
 	return o;
 }
