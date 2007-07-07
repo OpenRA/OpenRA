@@ -89,5 +89,16 @@ namespace OpenRa.TechTreeTest
 
 			return p.Count == prerequisites.Length;
 		}
+
+		bool buildable = false;
+		public bool Buildable { get { return buildable; } }
+
+		public void CheckPrerequisites(IEnumerable<string> buildings)
+		{
+			if (buildable && ShouldMakeUnbuildable(buildings))
+				buildable = false;
+			else if (!buildable && ShouldMakeBuildable(buildings))
+				buildable = true;
+		}
 	}
 }
