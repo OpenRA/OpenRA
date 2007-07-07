@@ -28,7 +28,7 @@ namespace OpenRa.TechTreeTest
 				box.SizeMode = PictureBoxSizeMode.AutoSize;
 				box.Image = b.Icon;
 
-				toolTip1.SetToolTip(box, b.Tag);
+				toolTip1.SetToolTip(box, b.Tag + "\n" + b.Owner.ToString());
 
 				buildableItems.Controls.Add(box);
 

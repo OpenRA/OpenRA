@@ -7,6 +7,13 @@ using System.IO;
 
 namespace OpenRa.TechTreeTest
 {
+	[Flags]
+	public enum BuildingRace
+	{
+		Allies = 1,
+		Soviet = 2
+	}
+
 	class Building
 	{
 		readonly string friendlyName;
@@ -36,6 +43,14 @@ namespace OpenRa.TechTreeTest
 		{
 			get { return techLevel; }
 			set { techLevel = value; }
+		}
+
+		BuildingRace owner;
+
+		public BuildingRace Owner
+		{
+			get { return owner; }
+			set { owner = value; }
 		}
 
 		public Building(string tag, string friendlyName)
