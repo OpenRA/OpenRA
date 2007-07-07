@@ -63,7 +63,18 @@ namespace OpenRa.Game
 
 		void LoadVertexBuffer()
 		{
-			Vertex[] vertices = new Vertex[4 * map.Width * map.Height];
+			Vertex[] vertices = new Vertex[4 * 128 * 128];//map.Width * map.Height];
+
+			for( int i = 0; i < 128; i++ )
+				for (int j = 0; j < 128; j++)
+				{
+					int offset = 4 * (i * 128 + j);
+
+					vertices[offset] = new Vertex(24 * i, 24 * j, 0, 0, 0);
+					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, 1, 0);
+					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, 0, 1);
+					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, 1, 1);
+				}
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Length, Vertex.Format);
 			vertexBuffer.SetData(vertices);
