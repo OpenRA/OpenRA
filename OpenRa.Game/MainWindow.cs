@@ -31,7 +31,7 @@ namespace OpenRa.Game
 		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
 
 		Effect effect;
-		IntPtr textureParameter;
+		IntPtr texture, scroll;
 		SpriteHelper spriteHelper;
 		FontHelper fontHelper;
 
@@ -144,7 +144,8 @@ namespace OpenRa.Game
 			LoadVertexBuffer();
 
 			effect = new Effect(device, File.OpenRead("../../../" + shaderName));
-			textureParameter = effect.GetHandle("DiffuseTexture");
+			texture = effect.GetHandle("DiffuseTexture");
+			scroll = effect.GetHandle("Scroll");
 
 			spriteHelper = new SpriteHelper(device);
 			fontHelper = new FontHelper(device, "Tahoma", 10, false);
@@ -159,6 +160,33 @@ namespace OpenRa.Game
 			}
 		}
 
+		PointF scrollPos = new PointF(1, 5);
+		PointF oldPos;
+		int x1,y1;
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+
+			x1 = e.X;
+			y1 = e.Y;
+			oldPos = scrollPos;
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+
+			if (e.Button != 0)
+			{
+				int dx = x1 - e.X;
+				int dy = y1 - e.Y;
+				scrollPos = oldPos;
+				scrollPos.X += (float)dx / 320.0f;
+				scrollPos.Y += (float)dy / 240.0f;
+			}
+		}
+
 		void Frame()
 		{
 			device.Begin();
@@ -170,9 +198,11 @@ namespace OpenRa.Game
 			effect.Begin();
 			effect.BeginPass(0);
 
+			effect.SetValue(scroll, scrollPos);
+
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
-				effect.SetTexture(textureParameter, batch.Key.texture);
+				effect.SetTexture(texture, batch.Key.texture);
 				effect.Commit();
 
 				batch.Value.Bind();
