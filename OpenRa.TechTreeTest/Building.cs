@@ -90,9 +90,9 @@ namespace OpenRa.TechTreeTest
 		bool buildable = false;
 		public bool Buildable { get { return buildable; } }
 
-		public void CheckPrerequisites(IEnumerable<string> buildings)
+		public void CheckPrerequisites(IEnumerable<string> buildings, BuildingRace currentRace)
 		{
-			if (buildable && ShouldMakeUnbuildable(buildings))
+			if ((buildable && ShouldMakeUnbuildable(buildings)) || !((owner & currentRace) == currentRace))
 				buildable = false;
 			else if (!buildable && ShouldMakeBuildable(buildings))
 				buildable = true;

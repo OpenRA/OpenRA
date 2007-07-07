@@ -10,7 +10,7 @@ namespace OpenRa.TechTreeTest
 {
 	public partial class Form1 : Form
 	{
-		TechTree techTree = new TechTree();
+		TechTree techTree = new TechTree(BuildingRace.Soviet);
 
 		public Form1()
 		{

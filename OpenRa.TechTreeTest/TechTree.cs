@@ -11,8 +11,11 @@ namespace OpenRa.TechTreeTest
 	{
 		Dictionary<string, Building> buildings = new Dictionary<string, Building>();
 		public ICollection<string> built = new List<string>();
-		public TechTree()
+		readonly BuildingRace currentRace;
+
+		public TechTree(BuildingRace race)
 		{
+			this.currentRace = race;
 			LoadBuildings();
 			LoadRules();
 
@@ -85,7 +88,7 @@ namespace OpenRa.TechTreeTest
 		void CheckAll()
 		{
 			foreach (Building building in buildings.Values)
-				building.CheckPrerequisites(built);
+				building.CheckPrerequisites(built, currentRace);
 		}
 
 		public IEnumerable<Building> BuildableItems
