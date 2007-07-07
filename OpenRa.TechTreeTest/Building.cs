@@ -17,6 +17,11 @@ namespace OpenRa.TechTreeTest
 			get { return friendlyName; }
 		}
 
+		public string Tag
+		{
+			get { return tag; }
+		}
+
 		string[] prerequisites;
 
 		public string[] Prerequisites

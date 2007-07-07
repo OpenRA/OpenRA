@@ -15,12 +15,15 @@ namespace OpenRa.TechTreeTest
 		{
 			LoadBuildings();
 			LoadRules();
+
+			built.Add("FACT");
+			CheckAll();
 		}
 
 		void LoadRules()
 		{
 			IniFile rulesFile;
-			rulesFile = new IniFile(File.OpenRead("rules.ini"));
+			rulesFile = new IniFile(File.OpenRead("../../../rules.ini"));
 			foreach (string key in buildings.Keys)
 			{
 				IniSection section = rulesFile.GetSection(key);
@@ -33,7 +36,7 @@ namespace OpenRa.TechTreeTest
 
 		void LoadBuildings()
 		{
-			foreach (string line in File.ReadAllLines("buildings.txt"))
+			foreach (string line in File.ReadAllLines("../../../buildings.txt"))
 			{
 				Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
 				Match m = pattern.Match(line);

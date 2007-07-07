@@ -23,7 +23,7 @@ namespace OpenRa.FileFormats
 		}
 
 		Regex sectionPattern = new Regex( @"\[([^]]*)\]" );
-		Regex entryPattern = new Regex( @"([^=]+)=([^;]*)" );
+		Regex entryPattern = new Regex( @"([^=;]+)=([^;]*)" );
 
 		bool ProcessSection( string line )
 		{
@@ -75,7 +75,8 @@ namespace OpenRa.FileFormats
 
 		public void Add( string key, string value )
 		{
-			values.Add( key, value );
+			values[key] = value;
+			//values.Add( key, value );
 		}
 
 		public string GetValue( string key, string defaultValue )
