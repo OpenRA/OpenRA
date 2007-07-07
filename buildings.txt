@@ -1,0 +1,40 @@
+IRON,Iron Curtain
+FCOM,Forward Command Center
+ATEK,Allied Tech Center
+PDOX,Chronosphere
+WEAP,War Factory
+SYRD,Shipyard
+SPEN,Sub Pen
+PBOX,Pillbox
+HBOX,Camo Pillbox
+TSLA,Tesla Coil
+GUN,Turret
+AGUN,AA Gun
+FTUR,Flame Turret
+FACT,Construction Yard
+PROC,Ore Refinery
+SILO,Silo
+HPAD,Helipad
+DOME,Radar Dome
+GAP,Gap Generator
+SAM,SAM Site
+MSLO,Missile Silo
+AFLD,Airstrip
+POWR,Power Plant
+APWR,Advanced Power Plant
+STEK,Soviet Tech Center
+HOSP,Hospital
+BIO,Bio-research Laboratory
+BARR,Soviet Barracks
+TENT,Allied Barracks
+KENN,Kennel
+FIX,Service Depot
+SBAG,Sandbags
+BRIK,Concrete Wall
+FENC,Wire Fence
+CYCL,Chain Link Fence
+FACF,Fake Construction Yard
+WEAF,Fake War Factory
+SYRF,Fake Shipyard
+SPEF,Fake Sub Pen
+DOMF,Fake Radar Dome
