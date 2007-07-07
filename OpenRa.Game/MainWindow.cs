@@ -89,17 +89,17 @@ namespace OpenRa.Game
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
 			Vertex[] vertices = new Vertex[4 * 128 * 128];//map.Width * map.Height];
 
-			for( int i = 0; i < 128; i++ )
-				for (int j = 0; j < 128; j++)
+			for( int i = map.XOffset; i < map.XOffset+ map.Width; i++ )
+				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
 				{
 					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i, j]];
 
 					ushort offset = (ushort)(4 * (i * 128 + j));
 
-					vertices[offset] = new Vertex(24 * i, 24 * j, 0, U(tile,0), V(tile,0));
-					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, U(tile,1), V(tile,0));
-					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, U(tile,0), V(tile,1));
-					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile,1), V(tile,1));
+					vertices[offset] = new Vertex(24 * i, 24 * j, 0, U(tile, 0), V(tile, 0));
+					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, U(tile, 1), V(tile, 0));
+					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, U(tile, 0), V(tile, 1));
+					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile, 1), V(tile, 1));
 
 					List<ushort> indexList;
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
@@ -149,6 +149,8 @@ namespace OpenRa.Game
 
 			spriteHelper = new SpriteHelper(device);
 			fontHelper = new FontHelper(device, "Tahoma", 10, false);
+
+			Clock.Reset();
 		}
 
 		internal void Run()
@@ -182,15 +184,16 @@ namespace OpenRa.Game
 				int dx = x1 - e.X;
 				int dy = y1 - e.Y;
 				scrollPos = oldPos;
-				scrollPos.X += (float)dx / 320.0f;
-				scrollPos.Y += (float)dy / 240.0f;
+				scrollPos.X += (float)dx / (ClientSize.Width / 2);
+				scrollPos.Y += (float)dy / (ClientSize.Height / 2);
 			}
 		}
 
 		void Frame()
 		{
+			Clock.StartFrame();
 			device.Begin();
-			device.Clear( Color.Red.ToArgb(), Surfaces.Color );
+			device.Clear( 0, Surfaces.Color );
 
 			vertexBuffer.Bind(0);
 
@@ -215,7 +218,7 @@ namespace OpenRa.Game
 			effect.End();
 
 			spriteHelper.Begin();
-			fontHelper.Draw(spriteHelper, "fps: 1337", 0, 0, Color.White.ToArgb());
+			fontHelper.Draw(spriteHelper, "fps: " + Clock.FrameRate, 0, 0, Color.White.ToArgb());
 			spriteHelper.End();
 
 			device.End();
