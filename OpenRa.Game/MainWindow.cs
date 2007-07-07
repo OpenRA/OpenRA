@@ -27,6 +27,8 @@ namespace OpenRa.Game
 
 		FvfVertexBuffer<Vertex> vertexBuffer;
 
+		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
+
 		void LoadTextures()
 		{
 			List<Sheet> tempSheets = new List<Sheet>();
@@ -63,7 +65,6 @@ namespace OpenRa.Game
 		void LoadVertexBuffer()
 		{
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
-
 			Vertex[] vertices = new Vertex[4 * 128 * 128];//map.Width * map.Height];
 
 			for( int i = 0; i < 128; i++ )
@@ -94,8 +95,12 @@ namespace OpenRa.Game
 			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Length, Vertex.Format);
 			vertexBuffer.SetData(vertices);
 
-			Dictionary<Sheet, IndexBuffer> indexBuffers = new Dictionary<Sheet, IndexBuffer>();
-
+			foreach (KeyValuePair<Sheet, List<ushort>> p in indexMap)
+			{
+				IndexBuffer indexBuffer = new IndexBuffer(device, p.Value.Count);
+				indexBuffer.SetData(p.Value.ToArray());
+				drawBatches.Add(p.Key, indexBuffer);
+			}
 		}
 
 		public MainWindow()
@@ -133,10 +138,16 @@ namespace OpenRa.Game
 
 			// render something :)
 
-			//vertexBuffer.Bind(0);
-			//indexBuffer.Bind();
+			vertexBuffer.Bind(0);
 
-			//device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 2 * map.Width * map.Height);
+			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
+			{
+				//todo: bind texture!
+
+				batch.Value.Bind();
+				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 
+					vertexBuffer.Size, batch.Value.Size / 3);
+			}
 
 			device.End();
 			device.Present();
