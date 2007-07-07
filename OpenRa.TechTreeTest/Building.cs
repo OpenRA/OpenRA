@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OpenRa.FileFormats;
+using System.Drawing;
+using System.IO;
 
 namespace OpenRa.TechTreeTest
 {
 	class Building
 	{
 		readonly string friendlyName;
+		readonly string tag;
 
 		public string FriendlyName
 		{
@@ -29,9 +33,10 @@ namespace OpenRa.TechTreeTest
 			set { techLevel = value; }
 		}
 
-		public Building(string friendlyName)
+		public Building(string tag, string friendlyName)
 		{
 			this.friendlyName = friendlyName;
+			this.tag = tag;
 		}
 
 		public bool ShouldMakeBuildable(IEnumerable<string> buildings)
@@ -61,6 +66,31 @@ namespace OpenRa.TechTreeTest
 				buildable = false;
 			else if (!buildable && ShouldMakeBuildable(buildings))
 				buildable = true;
+		}
+
+		Bitmap icon;
+		public Bitmap Icon
+		{
+			get { return icon ?? (icon = LoadIcon(tag)); }
+		}
+
+		static Package package = new Package("../../../hires.mix");
+		static Palette palette = new Palette( File.OpenRead("../../../temperat.pal"));
+
+		static Bitmap LoadIcon(string tag)
+		{
+			string filename = tag + "icon.shp";
+
+			try
+			{
+				Stream s = package.GetContent(filename);
+				ShpReader reader = new ShpReader(s);
+				foreach (ImageHeader h in reader)
+					return BitmapBuilder.FromBytes(h.Image, reader.Width, reader.Height, palette);
+
+				return null;
+			}
+			catch (FileNotFoundException) { return LoadIcon("dog"); }
 		}
 	}
 }

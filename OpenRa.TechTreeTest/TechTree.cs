@@ -9,8 +9,8 @@ namespace OpenRa.TechTreeTest
 {
 	class TechTree
 	{
-		Dictionary<string, Building> buildings = new Dictionary<string,Building>();
-		List<string> built;
+		Dictionary<string, Building> buildings = new Dictionary<string, Building>();
+		public ICollection<string> built = new List<string>();
 		public TechTree()
 		{
 			LoadBuildings();
@@ -38,7 +38,7 @@ namespace OpenRa.TechTreeTest
 				Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
 				Match m = pattern.Match(line);
 				if (!m.Success) continue;
-				buildings.Add(m.Groups[0].Value, new Building(m.Groups[1].Value));
+				buildings.Add(m.Groups[1].Value, new Building(m.Groups[1].Value, m.Groups[2].Value));
 			}
 		}
 
@@ -63,8 +63,16 @@ namespace OpenRa.TechTreeTest
 		void CheckAll()
 		{
 			foreach (Building building in buildings.Values)
-			{
 				building.CheckPrerequisites(built);
+		}
+
+		public IEnumerable<Building> BuildableItems
+		{
+			get
+			{
+				foreach (Building b in buildings.Values)
+					if (b.Buildable)
+						yield return b;
 			}
 		}
 	}
