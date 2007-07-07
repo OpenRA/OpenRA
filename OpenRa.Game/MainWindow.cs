@@ -26,7 +26,6 @@ namespace OpenRa.Game
 			new Dictionary<TileReference, SheetRectangle<Sheet>>();
 
 		FvfVertexBuffer<Vertex> vertexBuffer;
-		IndexBuffer indexBuffer;
 
 		void LoadTextures()
 		{
@@ -63,26 +62,40 @@ namespace OpenRa.Game
 
 		void LoadVertexBuffer()
 		{
+			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
+
 			Vertex[] vertices = new Vertex[4 * 128 * 128];//map.Width * map.Height];
 
 			for( int i = 0; i < 128; i++ )
 				for (int j = 0; j < 128; j++)
 				{
-					int offset = 4 * (i * 128 + j);
+					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i, j]];
+
+					ushort offset = (ushort)(4 * (i * 128 + j));
 
 					vertices[offset] = new Vertex(24 * i, 24 * j, 0, 0, 0);
 					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, 1, 0);
 					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, 0, 1);
 					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, 1, 1);
+
+					List<ushort> indexList;
+					if (!indexMap.TryGetValue(tile.sheet, out indexList))
+						indexMap.Add(tile.sheet, indexList = new List<ushort>());
+
+					indexList.Add(offset);
+					indexList.Add((ushort)(offset + 1));
+					indexList.Add((ushort)(offset + 2));
+
+					indexList.Add((ushort)(offset + 1));
+					indexList.Add((ushort)(offset + 3));
+					indexList.Add((ushort)(offset + 2));
 				}
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Length, Vertex.Format);
 			vertexBuffer.SetData(vertices);
 
-			ushort[] indices = new ushort[6 * map.Width * map.Height];
+			Dictionary<Sheet, IndexBuffer> indexBuffers = new Dictionary<Sheet, IndexBuffer>();
 
-			indexBuffer = new IndexBuffer(device, indices.Length);
-			indexBuffer.SetData(indices);
 		}
 
 		public MainWindow()

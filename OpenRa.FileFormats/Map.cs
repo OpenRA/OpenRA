@@ -123,6 +123,30 @@ namespace OpenRa.FileFormats
 	{
 		public ushort tile;
 		public byte image;
+
+		public override int GetHashCode()
+		{
+			return tile.GetHashCode() ^ image.GetHashCode();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
+
+			TileReference r = (TileReference)obj;
+			return (r.image == image && r.tile == tile);
+		}
+
+		public static bool operator ==(TileReference a, TileReference b)
+		{
+			return a.Equals(b);
+		}
+
+		public static bool operator !=(TileReference a, TileReference b)
+		{
+			return !a.Equals(b);
+		}
 	}
 
 	public struct TreeReference
