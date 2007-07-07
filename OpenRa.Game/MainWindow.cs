@@ -21,6 +21,7 @@ namespace OpenRa.Game
 		string TileSuffix;
 
 		const string mapName = "scm12ea.ini";
+		const string shaderName = "diffuse.fx";
 
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
 			new Dictionary<TileReference, SheetRectangle<Sheet>>();
@@ -28,6 +29,11 @@ namespace OpenRa.Game
 		FvfVertexBuffer<Vertex> vertexBuffer;
 
 		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
+
+		Effect effect;
+		IntPtr textureParameter;
+		SpriteHelper spriteHelper;
+		FontHelper fontHelper;
 
 		void LoadTextures()
 		{
@@ -62,6 +68,22 @@ namespace OpenRa.Game
 				s.LoadTexture(device);
 		}
 
+		float U(SheetRectangle<Sheet> s, float u)
+		{
+			float u0 = (float)s.origin.X / (float)s.sheet.bitmap.Width;
+			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
+
+			return (1 - u) * u0 + u * u1;
+		}
+
+		float V(SheetRectangle<Sheet> s, float v)
+		{
+			float v0 = (float)s.origin.Y / (float)s.sheet.bitmap.Height;
+			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
+
+			return (1 - v) * v0 + v * v1;
+		}
+
 		void LoadVertexBuffer()
 		{
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
@@ -74,10 +96,10 @@ namespace OpenRa.Game
 
 					ushort offset = (ushort)(4 * (i * 128 + j));
 
-					vertices[offset] = new Vertex(24 * i, 24 * j, 0, 0, 0);
-					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, 1, 0);
-					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, 0, 1);
-					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, 1, 1);
+					vertices[offset] = new Vertex(24 * i, 24 * j, 0, U(tile,0), V(tile,0));
+					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, U(tile,1), V(tile,0));
+					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, U(tile,0), V(tile,1));
+					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile,1), V(tile,1));
 
 					List<ushort> indexList;
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
@@ -120,6 +142,12 @@ namespace OpenRa.Game
 
 			LoadTextures();
 			LoadVertexBuffer();
+
+			effect = new Effect(device, File.OpenRead("../../../" + shaderName));
+			textureParameter = effect.GetHandle("DiffuseTexture");
+
+			spriteHelper = new SpriteHelper(device);
+			fontHelper = new FontHelper(device, "Tahoma", 10, false);
 		}
 
 		internal void Run()
@@ -134,20 +162,31 @@ namespace OpenRa.Game
 		void Frame()
 		{
 			device.Begin();
-			device.Clear(0);
-
-			// render something :)
+			device.Clear( Color.Red.ToArgb(), Surfaces.Color );
 
 			vertexBuffer.Bind(0);
 
+			effect.Quality = ShaderQuality.Low;
+			effect.Begin();
+			effect.BeginPass(0);
+
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
-				//todo: bind texture!
+				effect.SetTexture(textureParameter, batch.Key.texture);
+				effect.Commit();
 
 				batch.Value.Bind();
+
 				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 
 					vertexBuffer.Size, batch.Value.Size / 3);
 			}
+
+			effect.EndPass();
+			effect.End();
+
+			spriteHelper.Begin();
+			fontHelper.Draw(spriteHelper, "fps: 1337", 0, 0, Color.White.ToArgb());
+			spriteHelper.End();
 
 			device.End();
 			device.Present();
