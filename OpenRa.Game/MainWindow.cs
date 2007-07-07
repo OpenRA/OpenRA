@@ -73,7 +73,7 @@ namespace OpenRa.Game
 			float u0 = (float)s.origin.X / (float)s.sheet.bitmap.Width;
 			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
 
-			return (1 - u) * u0 + u * u1;
+			return (u > 0) ? u1 : u0;// (1 - u) * u0 + u * u1;
 		}
 
 		float V(SheetRectangle<Sheet> s, float v)
@@ -81,13 +81,13 @@ namespace OpenRa.Game
 			float v0 = (float)s.origin.Y / (float)s.sheet.bitmap.Height;
 			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
 
-			return (1 - v) * v0 + v * v1;
+			return (v > 0) ? v1 : v0;// return (1 - v) * v0 + v * v1;
 		}
 
 		void LoadVertexBuffer()
 		{
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
-			Vertex[] vertices = new Vertex[4 * 128 * 128];//map.Width * map.Height];
+			Vertex[] vertices = new Vertex[4 * 128 * 128];
 
 			for( int i = map.XOffset; i < map.XOffset+ map.Width; i++ )
 				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
@@ -131,7 +131,9 @@ namespace OpenRa.Game
 
 			Visible = true;
 
-			device = GraphicsDevice.Create(this, ClientSize.Width, ClientSize.Height, true, false);
+			//device = GraphicsDevice.Create(this, ClientSize.Width, ClientSize.Height, true, false);
+
+			device = GraphicsDevice.Create(this, 1280, 800, false, false);
 
 			IniFile mapFile = new IniFile(File.OpenRead("../../../" + mapName));
 			map = new Map(mapFile);
@@ -189,6 +191,22 @@ namespace OpenRa.Game
 			}
 		}
 
+		static T First<T>(IEnumerable<T> src)
+		{
+			IEnumerator<T> enumerator = src.GetEnumerator();
+			return enumerator.MoveNext() ? enumerator.Current : default(T);
+		}
+
+		static T Nth<T>(IEnumerable<T> src, int n)
+		{
+			IEnumerator<T> enumerator = src.GetEnumerator();
+			bool ok = false;
+			while (n-- > 0)
+				ok = enumerator.MoveNext();
+
+			return ok ? enumerator.Current : default(T);
+		}
+
 		void Frame()
 		{
 			Clock.StartFrame();
@@ -223,6 +241,14 @@ namespace OpenRa.Game
 
 			device.End();
 			device.Present();
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			base.OnKeyDown(e);
+
+			if (e.KeyCode == Keys.C)
+				Clock.Reset();
 		}
 
 		TileSet LoadTileSet(Map currentMap)
