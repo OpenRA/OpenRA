@@ -10,6 +10,7 @@ namespace OpenRa.TechTreeTest
 	class TechTree
 	{
 		Dictionary<string, Building> buildings = new Dictionary<string,Building>();
+		List<string> built;
 		public TechTree()
 		{
 			LoadBuildings();
@@ -40,65 +41,31 @@ namespace OpenRa.TechTreeTest
 				buildings.Add(m.Groups[0].Value, new Building(m.Groups[1].Value));
 			}
 		}
-	}
 
-	class Building
-	{
-		readonly string friendlyName;
-
-		public string FriendlyName
+		public bool Build(string key)
 		{
-			get { return friendlyName; }
-		} 
-
-		string[] prerequisites;
-
-		public string[] Prerequisites
-		{
-			get { return prerequisites; }
-			set { prerequisites = value; }
+			Building b = buildings[key];
+			if (!b.Buildable) return false;
+			built.Add(key);
+			CheckAll();
+			return true;
 		}
 
-		int techLevel;
-
-		public int TechLevel
+		public bool Unbuild(string key)
 		{
-			get { return techLevel; }
-			set { techLevel = value; }
+			Building b = buildings[key];
+			if (!built.Contains(key)) return false;
+			built.Remove(key);
+			CheckAll();
+			return true;
 		}
 
-		public Building(string friendlyName)
+		void CheckAll()
 		{
-			this.friendlyName = friendlyName;
-		}
-
-		public bool ShouldMakeBuildable(IEnumerable<string> buildings)
-		{
-			List<string> p = new List<string>(prerequisites);
-			foreach (string b in buildings)
-				p.Remove(b);
-
-			return p.Count == 0;
-		}
-
-		public bool ShouldMakeUnbuildable(IEnumerable<string> buildings)
-		{
-			List<string> p = new List<string>(prerequisites);
-			foreach (string b in buildings)
-				p.Remove(b);
-
-			return p.Count == prerequisites.Length;
-		}
-
-		bool buildable = false;
-		public bool Buildable { get { return buildable; } }
-
-		public void CheckPrerequisites(IEnumerable<string> buildings)
-		{
-			if (buildable && ShouldMakeUnbuildable(buildings))
-				buildable = false;
-			else if (!buildable && ShouldMakeBuildable(buildings))
-				buildable = true;
+			foreach (Building building in buildings.Values)
+			{
+				building.CheckPrerequisites(built);
+			}
 		}
 	}
 }

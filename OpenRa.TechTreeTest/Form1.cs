@@ -10,6 +10,7 @@ namespace OpenRa.TechTreeTest
 {
 	public partial class Form1 : Form
 	{
+		TechTree techTree;
 		public Form1()
 		{
 			InitializeComponent();
