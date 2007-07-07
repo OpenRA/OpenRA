@@ -71,5 +71,23 @@ namespace OpenRa.TechTreeTest
 		{
 			this.friendlyName = friendlyName;
 		}
+
+		public bool ShouldMakeBuildable(IEnumerable<string> buildings)
+		{
+			List<string> p = new List<string>(prerequisites);
+			foreach (string b in buildings)
+				p.Remove(b);
+
+			return p.Count == 0;
+		}
+
+		public bool ShouldMakeUnbuildable(IEnumerable<string> buildings)
+		{
+			List<string> p = new List<string>(prerequisites);
+			foreach (string b in buildings)
+				p.Remove(b);
+
+			return p.Count == prerequisites.Length;
+		}
 	}
 }
