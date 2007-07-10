@@ -54,6 +54,7 @@
     <Compile Include="Terrain.cs" />
     <Compile Include="TileSet.cs" />
     <Compile Include="TileSheetBuilder.cs" />
+    <Compile Include="Tuple.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.Core\OpenRa.Core.csproj">
