@@ -39,14 +39,16 @@ namespace OpenRa.Game
 		{
 			List<Sheet> tempSheets = new List<Sheet>();
 
+			Size pageSize = new Size(1024,512);
+
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet t = new Sheet( new Bitmap(256, 256));
+				Sheet t = new Sheet( new Bitmap(pageSize.Width, pageSize.Height));
 				tempSheets.Add(t);
 				return t;
 			};
 
-			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>( new Size(256,256), sheetProvider );
+			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>( pageSize, sheetProvider );
 
 			for( int i = 0; i < 128; i++ )
 				for (int j = 0; j < 128; j++)
