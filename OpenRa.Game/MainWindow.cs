@@ -31,7 +31,7 @@ namespace OpenRa.Game
 		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
 
 		Effect effect;
-		IntPtr texture, scroll;
+		IntPtr texture, scroll, r1h, r2h;
 
 		void LoadTextures()
 		{
@@ -148,6 +148,9 @@ namespace OpenRa.Game
 			effect = new Effect(device, File.OpenRead("../../../" + shaderName));
 			texture = effect.GetHandle("DiffuseTexture");
 			scroll = effect.GetHandle("Scroll");
+
+			r1h = effect.GetHandle("r1");
+			r2h = effect.GetHandle("r2");
 		}
 
 		internal void Run()
@@ -178,11 +181,9 @@ namespace OpenRa.Game
 
 			if (e.Button != 0)
 			{
-				int dx = x1 - e.X;
-				int dy = y1 - e.Y;
 				scrollPos = oldPos;
-				scrollPos.X += (float)dx / (ClientSize.Width / 2);
-				scrollPos.Y += (float)dy / (ClientSize.Height / 2);
+				scrollPos.X += x1 - e.X;
+				scrollPos.Y += y1 - e.Y;
 			}
 		}
 
@@ -198,6 +199,9 @@ namespace OpenRa.Game
 
 		void Frame()
 		{
+			PointF r1 = new PointF(2.0f / ClientSize.Width, -2.0f / ClientSize.Height);
+			PointF r2 = new PointF(-1, 1);
+
 			device.Begin();
 			device.Clear( 0, Surfaces.Color );
 
@@ -208,6 +212,8 @@ namespace OpenRa.Game
 			effect.BeginPass(0);
 
 			effect.SetValue(scroll, scrollPos);
+			effect.SetValue(r1h, r1);
+			effect.SetValue(r2h, r2);
 
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
@@ -219,9 +225,9 @@ namespace OpenRa.Game
 				int indicesPerRow = map.Width * 6;
 				int verticesPerRow = map.Width * 4;
 
-				int visibleRows = (int)Math.Ceiling(800.0f / 24.0f) + 3;
+				int visibleRows = (int)(ClientSize.Height / 24.0f + 2);
 
-				int firstRow = (int)((scrollPos.Y - 1) * 16.0f);
+				int firstRow = (int)(scrollPos.Y / 24.0f);
 				int lastRow = firstRow + visibleRows;
 
 				if (firstRow < 0)
