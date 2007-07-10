@@ -70,7 +70,7 @@ namespace OpenRa.Game
 
 		float U(SheetRectangle<Sheet> s, float u)
 		{
-			float u0 = (float)s.origin.X / (float)s.sheet.bitmap.Width;
+			float u0 = (float)(s.origin.X + 0.5f) / (float)s.sheet.bitmap.Width;
 			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
 
 			return (u > 0) ? u1 : u0;// (1 - u) * u0 + u * u1;
@@ -78,7 +78,7 @@ namespace OpenRa.Game
 
 		float V(SheetRectangle<Sheet> s, float v)
 		{
-			float v0 = (float)s.origin.Y / (float)s.sheet.bitmap.Height;
+			float v0 = (float)(s.origin.Y + 0.5f) / (float)s.sheet.bitmap.Height;
 			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
 
 			return (v > 0) ? v1 : v0;// return (1 - v) * v0 + v * v1;
