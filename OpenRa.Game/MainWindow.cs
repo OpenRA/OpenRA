@@ -207,6 +207,8 @@ namespace OpenRa.Game
 			return ok ? enumerator.Current : default(T);
 		}
 
+		int n = 1;
+
 		void Frame()
 		{
 			Clock.StartFrame();
@@ -221,7 +223,8 @@ namespace OpenRa.Game
 
 			effect.SetValue(scroll, scrollPos);
 
-			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
+			KeyValuePair<Sheet, IndexBuffer> batch = Nth(drawBatches, n);
+			//foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
 				effect.SetTexture(texture, batch.Key.texture);
 				effect.Commit();
@@ -249,33 +252,26 @@ namespace OpenRa.Game
 
 			if (e.KeyCode == Keys.C)
 				Clock.Reset();
+
+			if (e.KeyCode == Keys.A)
+				n++;
+
+			if (e.KeyCode == Keys.Z)
+				if (--n < 0)
+					n = 0;
 		}
 
 		TileSet LoadTileSet(Map currentMap)
 		{
-			switch (currentMap.Theater.ToLowerInvariant())
-			{
-				case "temperate":
-					pal = new Palette(File.OpenRead("../../../temperat.pal"));
-					TileMix = new Package("../../../temperat.mix");
-					TileSuffix = ".tem";
-					break;
-				case "snow":
-					pal = new Palette(File.OpenRead("../../../snow.pal"));
-					TileMix = new Package("../../../snow.mix");
-					TileSuffix = ".sno";
-					break;
-				case "interior":
-					pal = new Palette(File.OpenRead("../../../interior.pal"));
-					TileMix = new Package("../../../interior.mix");
-					TileSuffix = ".int";
-					break;
-				default:
-					throw new NotImplementedException();
-			}
+			string theaterName = currentMap.Theater;
+			if (theaterName.Length > 8)
+				theaterName = theaterName.Substring(0, 8);
+
+			pal = new Palette(File.OpenRead("../../../" + theaterName + ".pal"));
+			TileMix = new Package("../../../" + theaterName + ".mix");
+			TileSuffix = "." + theaterName.Substring(0, 3);
+
 			return new TileSet(TileMix, TileSuffix, pal);
 		}
-
-		
 	}
 }
