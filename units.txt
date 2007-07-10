@@ -1,0 +1,36 @@
+V2RL,V2 Rocket
+1TNK,Light Tank
+3TNK,Heavy Tank
+2TNK,Medium Tank
+4TNK,Mammoth Tank
+MRJ,Radar Jammer
+MGG,Mobile Gap Generator
+ARTY,Artillery
+HARV,Ore Truck
+MCV,Mobile Construction Vehicle
+JEEP,Ranger
+APC,Armored Personnel Carrier
+MNLY,Minelayer
+TRUK,Convoy Truck
+SS,Submarine
+DD,Destroyer
+CA,Cruiser
+LST,Transport
+PT,Gunboat
+DOG,Attack Dog
+E1,Rifle Infantry
+E2,Grenadier
+E3,Rocket Soldier
+E4,Flamethrower
+E6,Engineer
+SPY,Spy
+THF,Thief
+E7,Tanya
+MEDI,Medic
+BADR,Badger
+U2,Spy Plane
+MIG,Mig Attack Plane
+YAK,Yak Attack Plane
+TRAN,Transport Helicopter
+HELI,Longbow
+HIND,Hind
