@@ -218,6 +218,7 @@ namespace OpenRa.Game
 			effect.SetValue(scroll, scrollPos);
 
 			KeyValuePair<Sheet, IndexBuffer> batch = Nth(drawBatches, n);
+			if (batch.Key != null)
 			//foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
 				effect.SetTexture(texture, batch.Key.texture);
