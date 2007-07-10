@@ -16,18 +16,14 @@ namespace OpenRa.TechTreeTest
 
 			owner = ParseOwner(section);
 			techLevel = ParseTechLevel(section);
-			prerequisites = ParsePrerequisites(section);
+			Tuple<string[], string[]> pre = ParsePrerequisites(section, tag);
+			alliedPrerequisites = pre.a;
+			sovietPrerequisites = pre.b;
 		}
 
 		static int ParseTechLevel(IniSection section)
 		{
 			return int.Parse(section.GetValue("TechLevel", "-1"));
-		}
-
-		static string[] ParsePrerequisites(IniSection section)
-		{
-			return section.GetValue("Prerequisite", "").ToUpper().Split(
-				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 		}
 
 		static Race ParseOwner(IniSection section)
@@ -44,43 +40,85 @@ namespace OpenRa.TechTreeTest
 			return race;
 		}
 
+		static Tuple<string[],string[]> ParsePrerequisites(IniSection section, string tag)
+		{
+			List<string> allied = new List<string>(section.GetValue("Prerequisite", "").ToUpper().Split(
+				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+
+			List<string> soviet = new List<string>(allied);
+
+			if (allied.Remove("STEK"))
+				allied.Add("ATEK");
+
+			if (soviet.Remove("ATEK"))
+				soviet.Add("STEK");
+
+			if (soviet.Remove("TENT"))
+				soviet.Add("BARR");
+
+			if (allied.Remove("BARR"))
+				allied.Add("TENT");
+
+			if ((tag.Length == 2 && tag[0] == 'E') || tag == "MEDI" || tag == "THF" || tag == "SPY")
+			{
+				if (!allied.Contains("TENT"))
+					allied.Add("TENT");
+				if (!soviet.Contains("BARR"))
+					soviet.Add("BARR");
+			}
+
+			if (tag == "LST")
+			{
+				if (!soviet.Contains("SPEN"))
+					soviet.Add("SPEN");
+
+				if (!allied.Contains("SYRD"))
+					allied.Add("SYRD");
+			}
+
+			return new Tuple<string[], string[]>(
+				allied.ToArray(), soviet.ToArray());
+		}
+
 		public readonly string tag, friendlyName;
 		readonly int techLevel;
 		readonly Race owner;
-		readonly string[] prerequisites;
+		readonly string[] alliedPrerequisites, sovietPrerequisites;
 
-		bool ShouldMakeBuildable(IEnumerable<string> buildings)
+		bool ShouldMakeBuildable(IEnumerable<string> buildings, string[] racePrerequisites)
 		{
 			if (techLevel < 0)
 				return false;
 
-			if (prerequisites.Length == 0)
+			if (racePrerequisites.Length == 0)
 				return true;
 
-			List<string> p = new List<string>(prerequisites);
+			List<string> p = new List<string>(racePrerequisites);
 			foreach (string b in buildings)
 				p.Remove(b);
 
 			return p.Count == 0;
 		}
 
-		bool ShouldMakeUnbuildable(IEnumerable<string> buildings)
+		bool ShouldMakeUnbuildable(IEnumerable<string> buildings, string[] racePrerequisites)
 		{
-			if (prerequisites.Length == 0)
+			if (racePrerequisites.Length == 0)
 				return false;
 
-			List<string> p = new List<string>(prerequisites);
+			List<string> p = new List<string>(racePrerequisites);
 			foreach (string b in buildings)
 				p.Remove(b);
 
-			return p.Count == prerequisites.Length;
+			return p.Count == racePrerequisites.Length;
 		}
 
 		public void CheckPrerequisites(IEnumerable<string> buildings, Race currentRace)
 		{
-			if ((canBuild && ShouldMakeUnbuildable(buildings)) || !((owner & currentRace) == currentRace))
+			string[] racePrerequisites = (currentRace == Race.Allies) ? alliedPrerequisites : sovietPrerequisites;
+
+			if ((canBuild && ShouldMakeUnbuildable(buildings, racePrerequisites)) || !((owner & currentRace) == currentRace))
 				canBuild = false;
-			else if (!canBuild && ShouldMakeBuildable(buildings))
+			else if (!canBuild && ShouldMakeBuildable(buildings, racePrerequisites))
 				canBuild = true;
 		}
 
