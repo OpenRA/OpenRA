@@ -191,12 +191,6 @@ namespace OpenRa.Game
 			}
 		}
 
-		static T First<T>(IEnumerable<T> src)
-		{
-			IEnumerator<T> enumerator = src.GetEnumerator();
-			return enumerator.MoveNext() ? enumerator.Current : default(T);
-		}
-
 		static T Nth<T>(IEnumerable<T> src, int n)
 		{
 			IEnumerator<T> enumerator = src.GetEnumerator();
