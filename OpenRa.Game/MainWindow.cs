@@ -150,11 +150,6 @@ namespace OpenRa.Game
 			effect = new Effect(device, File.OpenRead("../../../" + shaderName));
 			texture = effect.GetHandle("DiffuseTexture");
 			scroll = effect.GetHandle("Scroll");
-
-			spriteHelper = new SpriteHelper(device);
-			fontHelper = new FontHelper(device, "Tahoma", 10, false);
-
-			Clock.Reset();
 		}
 
 		internal void Run()
@@ -203,11 +198,8 @@ namespace OpenRa.Game
 			return ok ? enumerator.Current : default(T);
 		}
 
-		int n = 1;
-
 		void Frame()
 		{
-			Clock.StartFrame();
 			device.Begin();
 			device.Clear( 0, Surfaces.Color );
 
@@ -219,9 +211,8 @@ namespace OpenRa.Game
 
 			effect.SetValue(scroll, scrollPos);
 
-			KeyValuePair<Sheet, IndexBuffer> batch = Nth(drawBatches, n);
-			if (batch.Key != null)
-			//foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
+			int batchCount = 0;
+			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
 				effect.SetTexture(texture, batch.Key.texture);
 				effect.Commit();
@@ -230,32 +221,15 @@ namespace OpenRa.Game
 
 				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 
 					vertexBuffer.Size, batch.Value.Size / 3);
+
+				++batchCount;
 			}
 
 			effect.EndPass();
 			effect.End();
 
-			spriteHelper.Begin();
-			fontHelper.Draw(spriteHelper, "fps: " + Clock.FrameRate, 0, 0, Color.White.ToArgb());
-			spriteHelper.End();
-
 			device.End();
 			device.Present();
-		}
-
-		protected override void OnKeyDown(KeyEventArgs e)
-		{
-			base.OnKeyDown(e);
-
-			if (e.KeyCode == Keys.C)
-				Clock.Reset();
-
-			if (e.KeyCode == Keys.A)
-				n++;
-
-			if (e.KeyCode == Keys.Z)
-				if (--n < 1)
-					n = 1;
 		}
 
 		TileSet LoadTileSet(Map currentMap)
