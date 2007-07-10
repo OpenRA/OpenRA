@@ -211,7 +211,6 @@ namespace OpenRa.Game
 
 			effect.SetValue(scroll, scrollPos);
 
-			int batchCount = 0;
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 			{
 				effect.SetTexture(texture, batch.Key.texture);
@@ -221,8 +220,6 @@ namespace OpenRa.Game
 
 				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 
 					vertexBuffer.Size, batch.Value.Size / 3);
-
-				++batchCount;
 			}
 
 			effect.EndPass();
