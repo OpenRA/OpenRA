@@ -257,8 +257,8 @@ namespace OpenRa.Game
 				n++;
 
 			if (e.KeyCode == Keys.Z)
-				if (--n < 0)
-					n = 0;
+				if (--n < 1)
+					n = 1;
 		}
 
 		TileSet LoadTileSet(Map currentMap)
