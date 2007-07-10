@@ -89,19 +89,19 @@ namespace OpenRa.Game
 		void LoadVertexBuffer()
 		{
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
-			Vertex[] vertices = new Vertex[4 * 128 * 128];
+			List<Vertex> vertices = new List<Vertex>();// Vertex[] vertices = new Vertex[4 * 128 * 128];
 
-			for( int i = map.XOffset; i < map.XOffset+ map.Width; i++ )
-				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
+			for (int j = 0; j < map.Height; j++)
+				for( int i = 0; i < map.Width; i++ )
 				{
-					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i, j]];
+					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
 
-					ushort offset = (ushort)(4 * (i * 128 + j));
+					ushort offset = (ushort)vertices.Count;
 
-					vertices[offset] = new Vertex(24 * i, 24 * j, 0, U(tile, 0), V(tile, 0));
-					vertices[offset + 1] = new Vertex(24 + 24 * i, 24 * j, 0, U(tile, 1), V(tile, 0));
-					vertices[offset + 2] = new Vertex(24 * i, 24 + 24 * j, 0, U(tile, 0), V(tile, 1));
-					vertices[offset + 3] = new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile, 1), V(tile, 1));
+					vertices.Add(new Vertex(24 * i, 24 * j, 0, U(tile, 0), V(tile, 0)));
+					vertices.Add(new Vertex(24 + 24 * i, 24 * j, 0, U(tile, 1), V(tile, 0)));
+					vertices.Add(new Vertex(24 * i, 24 + 24 * j, 0, U(tile, 0), V(tile, 1)));
+					vertices.Add(new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile, 1), V(tile, 1)));
 
 					List<ushort> indexList;
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
@@ -116,8 +116,8 @@ namespace OpenRa.Game
 					indexList.Add((ushort)(offset + 2));
 				}
 
-			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Length, Vertex.Format);
-			vertexBuffer.SetData(vertices);
+			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Count, Vertex.Format);
+			vertexBuffer.SetData(vertices.ToArray());
 
 			foreach (KeyValuePair<Sheet, List<ushort>> p in indexMap)
 			{
