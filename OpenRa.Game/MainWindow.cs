@@ -20,7 +20,7 @@ namespace OpenRa.Game
 		Package TileMix;
 		string TileSuffix;
 
-		const string mapName = "scm12ea.ini";
+		const string mapName = "scg11eb.ini";
 		const string shaderName = "diffuse.fx";
 
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
@@ -219,7 +219,7 @@ namespace OpenRa.Game
 				int indicesPerRow = map.Width * 6;
 				int verticesPerRow = map.Width * 4;
 
-				int visibleRows = (int)Math.Ceiling(800.0f / 24.0f) + 2;
+				int visibleRows = (int)Math.Ceiling(800.0f / 24.0f) + 3;
 
 				int firstRow = (int)((scrollPos.Y - 1) * 16.0f);
 				int lastRow = firstRow + visibleRows;
