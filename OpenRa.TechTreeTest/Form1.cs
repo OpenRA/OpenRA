@@ -10,7 +10,7 @@ namespace OpenRa.TechTreeTest
 {
 	public partial class Form1 : Form
 	{
-		TechTree techTree = new TechTree(BuildingRace.Soviet);
+		TechTree techTree = new TechTree(Race.Allies);
 
 		public Form1()
 		{
@@ -22,7 +22,7 @@ namespace OpenRa.TechTreeTest
 		{
 			buildableItems.Controls.Clear();
 
-			foreach (Building b in techTree.BuildableItems)
+			foreach (IRAUnit b in techTree.BuildableItems)
 			{
 				PictureBox box = new PictureBox();
 				box.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -32,13 +32,13 @@ namespace OpenRa.TechTreeTest
 
 				buildableItems.Controls.Add(box);
 
-				Building k = b;
+				IRAUnit k = b;
 
 				box.Click += delegate { Build(k); };
 			}
 		}
 
-		void Build(Building b)
+		void Build(IRAUnit b)
 		{
 			techTree.Build(b.Tag);
 			RefreshList();

@@ -8,14 +8,14 @@ using System.IO;
 namespace OpenRa.TechTreeTest
 {
 	[Flags]
-	public enum BuildingRace
+	public enum Race
 	{
 		None = 0,
 		Allies = 1,
 		Soviet = 2
 	}
 
-	class Building
+	class Building : IRAUnit
 	{
 		readonly string friendlyName;
 		readonly string tag;
@@ -46,9 +46,9 @@ namespace OpenRa.TechTreeTest
 			set { techLevel = value; }
 		}
 
-		BuildingRace owner;
+		Race owner;
 
-		public BuildingRace Owner
+		public Race Owner
 		{
 			get { return owner; }
 			set { owner = value; }
@@ -90,7 +90,7 @@ namespace OpenRa.TechTreeTest
 		bool buildable = false;
 		public bool Buildable { get { return buildable; } }
 
-		public void CheckPrerequisites(IEnumerable<string> buildings, BuildingRace currentRace)
+		public void CheckPrerequisites(IEnumerable<string> buildings, Race currentRace)
 		{
 			if ((buildable && ShouldMakeUnbuildable(buildings)) || !((owner & currentRace) == currentRace))
 				buildable = false;

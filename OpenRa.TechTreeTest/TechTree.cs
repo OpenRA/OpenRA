@@ -9,14 +9,15 @@ namespace OpenRa.TechTreeTest
 {
 	class TechTree
 	{
-		Dictionary<string, Building> buildings = new Dictionary<string, Building>();
+		Dictionary<string, IRAUnit> units = new Dictionary<string, IRAUnit>();
 		public ICollection<string> built = new List<string>();
-		readonly BuildingRace currentRace;
+		readonly Race currentRace;
 
-		public TechTree(BuildingRace race)
+		public TechTree(Race race)
 		{
 			this.currentRace = race;
 			LoadBuildings();
+			LoadUnits();
 			LoadRules();
 
 			built.Add("FACT");
@@ -27,10 +28,10 @@ namespace OpenRa.TechTreeTest
 		{
 			IniFile rulesFile;
 			rulesFile = new IniFile(File.OpenRead("../../../rules.ini"));
-			foreach (string key in buildings.Keys)
+			foreach (string key in units.Keys)
 			{
 				IniSection section = rulesFile.GetSection(key);
-				Building b = buildings[key];
+				IRAUnit b = units[key];
 				string s = section.GetValue("Prerequisite", "").ToUpper();
 				b.Prerequisites = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				b.TechLevel = int.Parse(section.GetValue("TechLevel", "-1"));
@@ -38,21 +39,25 @@ namespace OpenRa.TechTreeTest
 				
 				if (string.IsNullOrEmpty(s))
 				{
-					b.Owner = BuildingRace.None;
+					s = section.GetValue("DoubleOwned", "No");
+					if (s.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+						b.Owner = Race.Allies | Race.Soviet;
+					else
+						b.Owner = Race.None;
 					continue;
 				}
 				
 				if (s.Equals("Both", StringComparison.InvariantCultureIgnoreCase))
 				{
-					b.Owner = BuildingRace.Allies | BuildingRace.Soviet;
+					b.Owner = Race.Allies | Race.Soviet;
 					continue;
 				}
 				
 				string[] frags = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				if (frags.Length > 1)
-					b.Owner = BuildingRace.Allies | BuildingRace.Soviet;
+					b.Owner = Race.Allies | Race.Soviet;
 				else
-					b.Owner = (BuildingRace)Enum.Parse(typeof(BuildingRace), frags[0], true);
+					b.Owner = (Race)Enum.Parse(typeof(Race), frags[0], true);
 			}
 		}
 
@@ -63,13 +68,24 @@ namespace OpenRa.TechTreeTest
 				Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
 				Match m = pattern.Match(line);
 				if (!m.Success) continue;
-				buildings.Add(m.Groups[1].Value, new Building(m.Groups[1].Value, m.Groups[2].Value));
+				units.Add(m.Groups[1].Value, new Building(m.Groups[1].Value, m.Groups[2].Value));
+			}
+		}
+
+		void LoadUnits()
+		{
+			foreach (string line in File.ReadAllLines("../../../units.txt"))
+			{
+				Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
+				Match m = pattern.Match(line);
+				if (!m.Success) continue;
+				units.Add(m.Groups[1].Value, new Unit(m.Groups[1].Value, m.Groups[2].Value));
 			}
 		}
 
 		public bool Build(string key)
 		{
-			Building b = buildings[key];
+			IRAUnit b = units[key];
 			if (!b.Buildable) return false;
 			built.Add(key);
 			CheckAll();
@@ -78,7 +94,7 @@ namespace OpenRa.TechTreeTest
 
 		public bool Unbuild(string key)
 		{
-			Building b = buildings[key];
+			IRAUnit b = units[key];
 			if (!built.Contains(key)) return false;
 			built.Remove(key);
 			CheckAll();
@@ -87,15 +103,15 @@ namespace OpenRa.TechTreeTest
 
 		void CheckAll()
 		{
-			foreach (Building building in buildings.Values)
-				building.CheckPrerequisites(built, currentRace);
+			foreach (IRAUnit unit in units.Values)
+				unit.CheckPrerequisites(built, currentRace);
 		}
 
-		public IEnumerable<Building> BuildableItems
+		public IEnumerable<IRAUnit> BuildableItems
 		{
 			get
 			{
-				foreach (Building b in buildings.Values)
+				foreach (IRAUnit b in units.Values)
 					if (b.Buildable)
 						yield return b;
 			}
