@@ -2,6 +2,20 @@
 
 namespace BluntDirectX { namespace Direct3D
 {	
+	generic< typename T >
+	public value class Range
+	{
+		T start, end;
+	public:
+		Range( T start, T end )
+			: start( start ), end( end )
+		{
+		}
+
+		property T Start { T get() { return start; } }
+		property T End { T get() { return end; } }
+	};
+
 	public ref class GraphicsDevice
 	{
 	private:
@@ -163,6 +177,13 @@ namespace BluntDirectX { namespace Direct3D
 		void DrawIndexedPrimitives(PrimitiveType primtype, int vertexPoolSize, int numPrimitives)
 		{
 			device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primtype, 0, 0, vertexPoolSize, 0, numPrimitives );
+		}
+
+		void DrawIndexedPrimitives(PrimitiveType primType, Range<int> vertices, Range<int> indices)
+		{
+			device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primType,
+				0, vertices.Start, vertices.End - vertices.Start, 
+				indices.Start, (indices.End - indices.Start) / 3 );
 		}
 	};
 }}

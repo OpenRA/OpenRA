@@ -87,7 +87,7 @@ namespace OpenRa.Game
 		void LoadVertexBuffer()
 		{
 			Dictionary<Sheet, List<ushort>> indexMap = new Dictionary<Sheet, List<ushort>>();
-			List<Vertex> vertices = new List<Vertex>();// Vertex[] vertices = new Vertex[4 * 128 * 128];
+			List<Vertex> vertices = new List<Vertex>();
 
 			for (int j = 0; j < map.Height; j++)
 				for (int i = 0; i < map.Width; i++)
@@ -127,7 +127,7 @@ namespace OpenRa.Game
 
 		public MainWindow()
 		{
-			ClientSize = new Size(640, 480);
+			ClientSize = new Size(1280, 800);
 
 			Visible = true;
 
@@ -216,8 +216,28 @@ namespace OpenRa.Game
 
 				batch.Value.Bind();
 
-				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 
-					vertexBuffer.Size, batch.Value.Size / 3);
+				int indicesPerRow = map.Width * 6;
+				int verticesPerRow = map.Width * 4;
+
+				int visibleRows = (int)Math.Ceiling(800.0f / 24.0f) + 2;
+
+				int firstRow = (int)((scrollPos.Y - 1) * 16.0f);
+				int lastRow = firstRow + visibleRows;
+
+				if (firstRow < 0)
+					firstRow = 0;
+
+				if (lastRow < 0)
+					lastRow = 0;
+
+				if (lastRow > map.Height)
+					lastRow = map.Height;
+
+				Range<int> indexRange = new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow);
+				Range<int> vertexRange = new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow);
+
+				device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
+					vertexRange, indexRange);
 			}
 
 			effect.EndPass();
