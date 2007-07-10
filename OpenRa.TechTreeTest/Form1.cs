@@ -22,25 +22,25 @@ namespace OpenRa.TechTreeTest
 		{
 			buildableItems.Controls.Clear();
 
-			foreach (IRAUnit b in techTree.BuildableItems)
+			foreach (Item b in techTree.BuildableItems)
 			{
 				PictureBox box = new PictureBox();
 				box.SizeMode = PictureBoxSizeMode.AutoSize;
 				box.Image = b.Icon;
 
-				toolTip1.SetToolTip(box, b.Tag + "\n" + b.Owner.ToString());
+				toolTip1.SetToolTip(box, b.Tooltip);
 
 				buildableItems.Controls.Add(box);
 
-				IRAUnit k = b;
+				Item k = b;
 
 				box.Click += delegate { Build(k); };
 			}
 		}
 
-		void Build(IRAUnit b)
+		void Build(Item b)
 		{
-			techTree.Build(b.Tag);
+			techTree.Build(b.tag);
 			RefreshList();
 		}
 	}
