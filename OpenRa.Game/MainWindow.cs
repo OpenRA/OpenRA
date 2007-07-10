@@ -32,8 +32,6 @@ namespace OpenRa.Game
 
 		Effect effect;
 		IntPtr texture, scroll;
-		SpriteHelper spriteHelper;
-		FontHelper fontHelper;
 
 		void LoadTextures()
 		{
@@ -50,10 +48,10 @@ namespace OpenRa.Game
 
 			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>( pageSize, sheetProvider );
 
-			for( int i = 0; i < 128; i++ )
-				for (int j = 0; j < 128; j++)
+			for( int i = 0; i < map.Width; i++ )
+				for (int j = 0; j < map.Height; j++)
 				{
-					TileReference tileRef = map.MapTiles[i, j];
+					TileReference tileRef = map.MapTiles[i + map.XOffset, j + map.YOffset];
 
 					if (!tileMapping.ContainsKey(tileRef))
 					{
@@ -92,7 +90,7 @@ namespace OpenRa.Game
 			List<Vertex> vertices = new List<Vertex>();// Vertex[] vertices = new Vertex[4 * 128 * 128];
 
 			for (int j = 0; j < map.Height; j++)
-				for( int i = 0; i < map.Width; i++ )
+				for (int i = 0; i < map.Width; i++)
 				{
 					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
 
