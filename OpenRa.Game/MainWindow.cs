@@ -20,7 +20,7 @@ namespace OpenRa.Game
 		Package TileMix;
 		string TileSuffix;
 
-		const string mapName = "scg11eb.ini";
+		const string mapName = "scm12ea.ini";
 		const string shaderName = "diffuse.fx";
 
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
@@ -32,6 +32,9 @@ namespace OpenRa.Game
 
 		Effect effect;
 		IntPtr texture, scroll, r1h, r2h;
+
+		World world;
+		TreeRenderer treeRenderer;
 
 		void LoadTextures()
 		{
@@ -66,6 +69,12 @@ namespace OpenRa.Game
 
 			foreach (Sheet s in tempSheets)
 				s.LoadTexture(device);
+
+			world = new World(device);
+			treeRenderer = new TreeRenderer(device, map, TileMix, pal);
+
+			foreach (TreeReference treeReference in map.Trees)
+				world.Add(new Tree(treeReference, treeRenderer, map));
 		}
 
 		float U(SheetRectangle<Sheet> s, float u)
@@ -127,7 +136,7 @@ namespace OpenRa.Game
 
 		public MainWindow()
 		{
-			ClientSize = new Size(1280, 800);
+			ClientSize = new Size(1280,800);
 
 			Visible = true;
 
@@ -245,6 +254,18 @@ namespace OpenRa.Game
 				device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
 					vertexRange, indexRange);
 			}
+
+			effect.EndPass();
+			effect.End();
+
+			effect.Quality = ShaderQuality.High;
+			effect.Begin();
+			effect.BeginPass(0);
+
+			effect.SetTexture(texture, treeRenderer.sh.texture);
+			effect.Commit();
+
+			world.Draw();
 
 			effect.EndPass();
 			effect.End();

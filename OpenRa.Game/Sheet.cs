@@ -17,7 +17,7 @@ namespace OpenRa.Game
 
 		public void LoadTexture(GraphicsDevice device)
 		{
-			string tempFile = string.Format("../../../block-cache-{0}.bmp", suffix++);
+			string tempFile = string.Format("../../../block-cache-{0}.png", suffix++);
 			bitmap.Save(tempFile);
 
 			using( Stream s = File.OpenRead(tempFile) )

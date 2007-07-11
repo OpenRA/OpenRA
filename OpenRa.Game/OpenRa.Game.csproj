@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>

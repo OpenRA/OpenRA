@@ -56,3 +56,17 @@ technique low_quality {
 		PixelShader = compile ps_2_0 Simple_fp();
 	}
 }
+
+technique high_quality {
+	pass p0	{
+		AlphaBlendEnable = true;
+		ZWriteEnable = true;
+		ZEnable = false;
+		CullMode = None;
+		VertexShader = compile vs_2_0 Simple_vp();
+		PixelShader = compile ps_2_0 Simple_fp();
+		
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+	}
+}
