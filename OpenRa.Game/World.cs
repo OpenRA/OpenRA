@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -47,21 +48,8 @@ namespace OpenRa.Game
 
 				foreach (SheetRectangle<Sheet> image in a.currentImages)
 				{
-					int offset = vertices.Count;
-					vertices.Add(new Vertex(a.location.X, a.location.Y, 0, U(image, 0), V(image, 0)));
-					vertices.Add(new Vertex(a.location.X + image.size.Width, a.location.Y, 0, U(image, 1), V(image, 0)));
-					vertices.Add(new Vertex(a.location.X, a.location.Y + image.size.Height, 0, U(image, 0), V(image, 1)));
-					vertices.Add(new Vertex(a.location.X + image.size.Width, a.location.Y + image.size.Height, 0, U(image, 1), V(image, 1)));
-
-					indices.Add((ushort)offset);
-					indices.Add((ushort)(offset + 1));
-					indices.Add((ushort)(offset + 2));
-
-					indices.Add((ushort)(offset + 1));
-					indices.Add((ushort)(offset + 3));
-					indices.Add((ushort)(offset + 2));
-
 					sheet = image.sheet;
+					Util.CreateQuad(vertices, indices, a.location, image);
 
 					if (++sprites >= spritesPerBatch)
 					{

@@ -31,7 +31,7 @@ namespace OpenRa.Game
 		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
 
 		World world;
-		TreeCache treeRenderer;
+		TreeCache treeCache;
 
 		void LoadTextures()
 		{
@@ -68,26 +68,10 @@ namespace OpenRa.Game
 				s.LoadTexture(renderer.Device);
 
 			world = new World(renderer.Device);
-			treeRenderer = new TreeCache(renderer.Device, map, TileMix, pal);
+			treeCache = new TreeCache(renderer.Device, map, TileMix, pal);
 
 			foreach (TreeReference treeReference in map.Trees)
-				world.Add(new Tree(treeReference, treeRenderer, map));
-		}
-
-		float U(SheetRectangle<Sheet> s, float u)
-		{
-			float u0 = (float)(s.origin.X + 0.5f) / (float)s.sheet.bitmap.Width;
-			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
-
-			return (u > 0) ? u1 : u0;// (1 - u) * u0 + u * u1;
-		}
-
-		float V(SheetRectangle<Sheet> s, float v)
-		{
-			float v0 = (float)(s.origin.Y + 0.5f) / (float)s.sheet.bitmap.Height;
-			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
-
-			return (v > 0) ? v1 : v0;// return (1 - v) * v0 + v * v1;
+				world.Add(new Tree(treeReference, treeCache, map));
 		}
 
 		void LoadVertexBuffer()
@@ -100,24 +84,13 @@ namespace OpenRa.Game
 				{
 					SheetRectangle<Sheet> tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
 
-					ushort offset = (ushort)vertices.Count;
-
-					vertices.Add(new Vertex(24 * i, 24 * j, 0, U(tile, 0), V(tile, 0)));
-					vertices.Add(new Vertex(24 + 24 * i, 24 * j, 0, U(tile, 1), V(tile, 0)));
-					vertices.Add(new Vertex(24 * i, 24 + 24 * j, 0, U(tile, 0), V(tile, 1)));
-					vertices.Add(new Vertex(24 + 24 * i, 24 + 24 * j, 0, U(tile, 1), V(tile, 1)));
-
 					List<ushort> indexList;
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
 						indexMap.Add(tile.sheet, indexList = new List<ushort>());
 
-					indexList.Add(offset);
-					indexList.Add((ushort)(offset + 1));
-					indexList.Add((ushort)(offset + 2));
+					ushort offset = (ushort)vertices.Count;
 
-					indexList.Add((ushort)(offset + 1));
-					indexList.Add((ushort)(offset + 3));
-					indexList.Add((ushort)(offset + 2));
+					Util.CreateQuad(vertices, indexList, new PointF(24 * i, 24 * j), tile);
 				}
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Count, Vertex.Format);
