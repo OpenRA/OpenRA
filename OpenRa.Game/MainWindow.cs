@@ -12,7 +12,8 @@ namespace OpenRa.Game
 {
 	class MainWindow : Form
 	{
-		readonly GraphicsDevice device;
+		readonly Renderer renderer;
+
 		readonly Map map;
 		readonly TileSet tileSet;
 		
@@ -21,7 +22,6 @@ namespace OpenRa.Game
 		string TileSuffix;
 
 		const string mapName = "scm12ea.ini";
-		const string shaderName = "diffuse.fx";
 
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
 			new Dictionary<TileReference, SheetRectangle<Sheet>>();
@@ -30,11 +30,8 @@ namespace OpenRa.Game
 
 		Dictionary<Sheet, IndexBuffer> drawBatches = new Dictionary<Sheet, IndexBuffer>();
 
-		Effect effect;
-		IntPtr texture, scroll, r1h, r2h;
-
 		World world;
-		TreeRenderer treeRenderer;
+		TreeCache treeRenderer;
 
 		void LoadTextures()
 		{
@@ -68,10 +65,10 @@ namespace OpenRa.Game
 				}
 
 			foreach (Sheet s in tempSheets)
-				s.LoadTexture(device);
+				s.LoadTexture(renderer.Device);
 
-			world = new World(device);
-			treeRenderer = new TreeRenderer(device, map, TileMix, pal);
+			world = new World(renderer.Device);
+			treeRenderer = new TreeCache(renderer.Device, map, TileMix, pal);
 
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeRenderer, map));
@@ -123,12 +120,12 @@ namespace OpenRa.Game
 					indexList.Add((ushort)(offset + 2));
 				}
 
-			vertexBuffer = new FvfVertexBuffer<Vertex>(device, vertices.Count, Vertex.Format);
+			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Count, Vertex.Format);
 			vertexBuffer.SetData(vertices.ToArray());
 
 			foreach (KeyValuePair<Sheet, List<ushort>> p in indexMap)
 			{
-				IndexBuffer indexBuffer = new IndexBuffer(device, p.Value.Count);
+				IndexBuffer indexBuffer = new IndexBuffer(renderer.Device, p.Value.Count);
 				indexBuffer.SetData(p.Value.ToArray());
 				drawBatches.Add(p.Key, indexBuffer);
 			}
@@ -136,13 +133,8 @@ namespace OpenRa.Game
 
 		public MainWindow()
 		{
-			ClientSize = new Size(1280,800);
-
+			renderer = new Renderer(this, new Size(1280, 800), false);
 			Visible = true;
-
-			//device = GraphicsDevice.Create(this, ClientSize.Width, ClientSize.Height, true, false);
-
-			device = GraphicsDevice.Create(this, 1280, 800, false, false);
 
 			IniFile mapFile = new IniFile(File.OpenRead("../../../" + mapName));
 			map = new Map(mapFile);
@@ -153,13 +145,6 @@ namespace OpenRa.Game
 
 			LoadTextures();
 			LoadVertexBuffer();
-
-			effect = new Effect(device, File.OpenRead("../../../" + shaderName));
-			texture = effect.GetHandle("DiffuseTexture");
-			scroll = effect.GetHandle("Scroll");
-
-			r1h = effect.GetHandle("r1");
-			r2h = effect.GetHandle("r2");
 		}
 
 		internal void Run()
@@ -211,67 +196,39 @@ namespace OpenRa.Game
 			PointF r1 = new PointF(2.0f / ClientSize.Width, -2.0f / ClientSize.Height);
 			PointF r2 = new PointF(-1, 1);
 
-			device.Begin();
-			device.Clear( 0, Surfaces.Color );
-
-			vertexBuffer.Bind(0);
-
-			effect.Quality = ShaderQuality.Low;
-			effect.Begin();
-			effect.BeginPass(0);
-
-			effect.SetValue(scroll, scrollPos);
-			effect.SetValue(r1h, r1);
-			effect.SetValue(r2h, r2);
+			renderer.BeginFrame(r1, r2, scrollPos);
 
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
+				DrawTerrainBatch(batch);
+
+			world.Draw(renderer);
+
+			renderer.EndFrame();
+		}
+
+		void DrawTerrainBatch(KeyValuePair<Sheet, IndexBuffer> batch)
+		{
+			int indicesPerRow = map.Width * 6;
+			int verticesPerRow = map.Width * 4;
+
+			int visibleRows = (int)(ClientSize.Height / 24.0f + 2);
+
+			int firstRow = (int)(scrollPos.Y / 24.0f);
+			int lastRow = firstRow + visibleRows;
+
+			if (firstRow < 0) firstRow = 0;
+
+			if (lastRow < 0) lastRow = 0;
+
+			if (lastRow > map.Height) lastRow = map.Height;
+
+			Range<int> indexRange = new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow);
+			Range<int> vertexRange = new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow);
+
+			renderer.DrawWithShader(ShaderQuality.Low, delegate
 			{
-				effect.SetTexture(texture, batch.Key.texture);
-				effect.Commit();
-
-				batch.Value.Bind();
-
-				int indicesPerRow = map.Width * 6;
-				int verticesPerRow = map.Width * 4;
-
-				int visibleRows = (int)(ClientSize.Height / 24.0f + 2);
-
-				int firstRow = (int)(scrollPos.Y / 24.0f);
-				int lastRow = firstRow + visibleRows;
-
-				if (firstRow < 0)
-					firstRow = 0;
-
-				if (lastRow < 0)
-					lastRow = 0;
-
-				if (lastRow > map.Height)
-					lastRow = map.Height;
-
-				Range<int> indexRange = new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow);
-				Range<int> vertexRange = new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow);
-
-				device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-					vertexRange, indexRange);
-			}
-
-			effect.EndPass();
-			effect.End();
-
-			effect.Quality = ShaderQuality.High;
-			effect.Begin();
-			effect.BeginPass(0);
-
-			effect.SetTexture(texture, treeRenderer.sh.texture);
-			effect.Commit();
-
-			world.Draw();
-
-			effect.EndPass();
-			effect.End();
-
-			device.End();
-			device.Present();
+				renderer.DrawBatch(vertexBuffer, batch.Value, vertexRange, indexRange, batch.Key.texture);
+			});
 		}
 
 		TileSet LoadTileSet(Map currentMap)

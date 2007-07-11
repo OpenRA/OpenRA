@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Vertex.cs" />
   </ItemGroup>
