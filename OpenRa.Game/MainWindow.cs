@@ -88,8 +88,6 @@ namespace OpenRa.Game
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
 						indexMap.Add(tile.sheet, indexList = new List<ushort>());
 
-					ushort offset = (ushort)vertices.Count;
-
 					Util.CreateQuad(vertices, indexList, new PointF(24 * i, 24 * j), tile);
 				}
 
