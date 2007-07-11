@@ -29,7 +29,7 @@ namespace BluntDirectX { namespace Direct3D
 			void * ib;
 
 			buffer->Lock( 0, sizeof(unsigned short) * size, &ib, D3DLOCK_DISCARD );
-			memcpy( ib, pdata, sizeof(unsigned short) * size );
+			memcpy( ib, pdata, sizeof(unsigned short) * data.Length );
 			buffer->Unlock();
 		}
 

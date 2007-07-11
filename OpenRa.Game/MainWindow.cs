@@ -21,7 +21,7 @@ namespace OpenRa.Game
 		Package TileMix;
 		string TileSuffix;
 
-		const string mapName = "scm12ea.ini";
+		const string mapName = "scg11eb.ini";
 
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
 			new Dictionary<TileReference, SheetRectangle<Sheet>>();
@@ -106,7 +106,7 @@ namespace OpenRa.Game
 
 		public MainWindow()
 		{
-			renderer = new Renderer(this, new Size(1280, 800), false);
+			renderer = new Renderer(this, new Size(1280,800), false);
 			Visible = true;
 
 			IniFile mapFile = new IniFile(File.OpenRead("../../../" + mapName));
