@@ -181,16 +181,6 @@ namespace OpenRa.Game
 			}
 		}
 
-		static T Nth<T>(IEnumerable<T> src, int n)
-		{
-			IEnumerator<T> enumerator = src.GetEnumerator();
-			bool ok = false;
-			while (n-- > 0)
-				ok = enumerator.MoveNext();
-
-			return ok ? enumerator.Current : default(T);
-		}
-
 		void Frame()
 		{
 			PointF r1 = new PointF(2.0f / ClientSize.Width, -2.0f / ClientSize.Height);
@@ -217,17 +207,15 @@ namespace OpenRa.Game
 			int lastRow = firstRow + visibleRows;
 
 			if (firstRow < 0) firstRow = 0;
-
 			if (lastRow < 0) lastRow = 0;
-
 			if (lastRow > map.Height) lastRow = map.Height;
-
-			Range<int> indexRange = new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow);
-			Range<int> vertexRange = new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow);
 
 			renderer.DrawWithShader(ShaderQuality.Low, delegate
 			{
-				renderer.DrawBatch(vertexBuffer, batch.Value, vertexRange, indexRange, batch.Key.texture);
+				renderer.DrawBatch(vertexBuffer, batch.Value, 
+					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow), 
+					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow), 
+					batch.Key.texture);
 			});
 		}
 
