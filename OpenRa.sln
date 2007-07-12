@@ -6,10 +6,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShpViewer", "ShpViewer\ShpViewer.csproj", "{4303FE72-B07F-4EBB-8CD2-5F33E44801B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.FileFormats", "OpenRa.FileFormats\OpenRa.FileFormats.csproj", "{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F5D4280-3D23-41FF-AE2A-511B5553E377} = {6F5D4280-3D23-41FF-AE2A-511B5553E377}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Core", "OpenRa.Core\OpenRa.Core.csproj", "{1B60782F-B2DD-43F1-B51D-B798485F317C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Game", "OpenRa.Game\OpenRa.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4EA97564-C929-4ABE-AC5D-A9D11EDE08E1} = {4EA97564-C929-4ABE-AC5D-A9D11EDE08E1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileSheetTest", "TileSheetTest\TileSheetTest.csproj", "{8A2FF5A6-D2CC-4CC4-844A-A1E7D3F69D0B}"
 EndProject
