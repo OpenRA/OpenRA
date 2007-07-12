@@ -29,6 +29,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluntDx, Version=1.0.2750.2905, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\release\BluntDx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -52,10 +56,6 @@
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BluntDx\BluntDx.vcproj">
-      <Project>{4EA97564-C929-4ABE-AC5D-A9D11EDE08E1}</Project>
-      <Name>BluntDx</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRa.FileFormats</Name>
