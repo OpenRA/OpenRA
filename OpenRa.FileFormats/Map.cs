@@ -104,8 +104,14 @@ namespace OpenRa.FileFormats
 			}
 
 			for( int i = 0 ; i < 128 ; i++ )
+			{
 				for( int j = 0 ; j < 128 ; j++ )
+				{
 					MapTiles[ j, i ].image = ReadByte( ms );
+					if( MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff )
+						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
+				}
+			}
 		}
 
 		void ReadTrees( IniFile file )

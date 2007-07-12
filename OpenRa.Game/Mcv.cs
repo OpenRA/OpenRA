@@ -2,18 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
 	class Mcv : Actor
 	{
-		int facing;
+		//int facing; // not currently used
 
-		static Package unitsPackage = new Package("../../../conquer.mix");
-
-		public Mcv()
+		public Mcv( PointF location )
 		{
+			this.location = location;
+		}
 
+		public override SheetRectangle<Sheet>[] CurrentImages
+		{
+			get { return new SheetRectangle<Sheet>[] { UnitSheetBuilder.McvSheet[ 0 ] }; }
 		}
 	}
 }

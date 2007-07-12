@@ -52,6 +52,7 @@
     <Compile Include="Sheet.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
+    <Compile Include="UnitSheetBuilder.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="World.cs" />

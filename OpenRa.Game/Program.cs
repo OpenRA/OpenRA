@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.IO;
 
 namespace OpenRa.Game
 {
@@ -9,10 +10,18 @@ namespace OpenRa.Game
 		[STAThread]
 		static void Main()
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
+			try
+			{
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault( false );
 
-			new MainWindow().Run();
+				new MainWindow().Run();
+			}
+			catch( Exception e )
+			{
+				File.WriteAllText( "error.log", e.ToString() );
+				throw;
+			}
 		}
 	}
 }

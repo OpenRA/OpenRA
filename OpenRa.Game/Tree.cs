@@ -13,5 +13,11 @@ namespace OpenRa.Game
 			location = new PointF(24 * (r.X - map.XOffset), 24 * (r.Y - map.YOffset));
 			currentImages = new SheetRectangle<Sheet>[] { renderer.GetImage(r.Image) };
 		}
+
+		SheetRectangle<Sheet>[] currentImages;
+		public override SheetRectangle<Sheet>[] CurrentImages
+		{
+			get { return currentImages; }
+		}
 	}
 }

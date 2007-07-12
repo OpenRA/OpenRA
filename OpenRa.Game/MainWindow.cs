@@ -72,6 +72,9 @@ namespace OpenRa.Game
 
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
+
+			UnitSheetBuilder.AddUnit( "mcv", renderer.Device, pal );
+			world.Add( new Mcv( new PointF( 24 * 5, 24 * 5 ) ) );
 		}
 
 		void LoadVertexBuffer()

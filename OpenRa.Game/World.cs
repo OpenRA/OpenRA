@@ -43,11 +43,20 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				if (a.currentImages == null)
+				if (a.CurrentImages == null)
 					continue;
 
-				foreach (SheetRectangle<Sheet> image in a.currentImages)
+				foreach (SheetRectangle<Sheet> image in a.CurrentImages)
 				{
+					if( image.sheet != sheet && sprites > 0 && sheet != null )
+					{
+						DrawBatch( vertices, indices, renderer, sheet );
+
+						vertices = new List<Vertex>();
+						indices = new List<ushort>();
+						sprites = 0;
+					}
+
 					sheet = image.sheet;
 					Util.CreateQuad(vertices, indices, a.location, image);
 

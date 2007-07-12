@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
-	class Actor
+	abstract class Actor
 	{
 		public PointF location;
-		public SheetRectangle<Sheet>[] currentImages;
+		public abstract SheetRectangle<Sheet>[] CurrentImages { get; }
 	}
 }
