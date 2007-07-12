@@ -105,7 +105,7 @@ namespace OpenRa.Game
 		public MainWindow()
 		{
 			FormBorderStyle = FormBorderStyle.None;
-			renderer = new Renderer(this, new Size(1280, 800), false);
+			renderer = new Renderer(this, Screen.PrimaryScreen.Bounds.Size, false);
 			Visible = true;
 
 			IniFile mapFile = new IniFile(File.OpenRead("../../../" + mapName));
@@ -178,8 +178,10 @@ namespace OpenRa.Game
 			int firstRow = (int)(scrollPos.Y / 24.0f);
 			int lastRow = firstRow + visibleRows;
 
+			if (lastRow < 0 || firstRow > map.Height)
+				return;
+
 			if (firstRow < 0) firstRow = 0;
-			if (lastRow < 0) lastRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
 			renderer.DrawWithShader(ShaderQuality.Low, delegate
