@@ -98,25 +98,5 @@ namespace OpenRa.TechTree
 						yield return b;
 			}
 		}
-
-		public IEnumerable<Item> BuildableBuildings
-		{
-			get
-			{
-				foreach (Item i in BuildableItems)
-					if (i.IsStructure)
-						yield return i;
-			}
-		}
-
-		public IEnumerable<Item> BuildableUnits
-		{
-			get
-			{
-				foreach (Item i in BuildableItems)
-					if (!i.IsStructure)
-						yield return i;
-			}
-		}
 	}
 }
