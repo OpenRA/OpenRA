@@ -66,6 +66,10 @@
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRa.FileFormats</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRa.TechTree\OpenRa.TechTree.csproj">
+      <Project>{2BFC3861-E90E-4F77-B254-8FB8285E43AC}</Project>
+      <Name>OpenRa.TechTree</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
