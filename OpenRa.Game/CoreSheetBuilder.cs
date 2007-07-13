@@ -25,4 +25,22 @@ namespace OpenRa.Game
 			return rect;
 		}
 	}
+
+	static class BeedeeSheetBuilder
+	{
+		static Dictionary<string, SheetRectangle<Sheet>> sprites = 
+			new Dictionary<string, SheetRectangle<Sheet>>();
+
+		public static SheetRectangle<Sheet> LoadSprite(Package package, string filename)
+		{
+			SheetRectangle<Sheet> value;
+			if (!sprites.TryGetValue(filename, out value))
+			{
+				ShpReader shp = new ShpReader(package.GetContent(filename));
+				sprites.Add(filename, value = CoreSheetBuilder.Add(shp[0].Image, shp.Size));
+			}
+
+			return value;
+		}
+	}
 }
