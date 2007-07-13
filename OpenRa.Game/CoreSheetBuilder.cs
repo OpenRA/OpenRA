@@ -24,6 +24,15 @@ namespace OpenRa.Game
 			Util.CopyIntoChannel(rect, src);
 			return rect;
 		}
+
+		public static SheetRectangle<Sheet> Add(Size size, byte paletteIndex)
+		{
+			byte[] data = new byte[size.Width * size.Height];
+			for (int i = 0; i < data.Length; i++)
+				data[i] = paletteIndex;
+
+			return Add(data, size);
+		}
 	}
 
 	static class SpriteSheetBuilder

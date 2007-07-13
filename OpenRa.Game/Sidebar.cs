@@ -36,6 +36,8 @@ namespace OpenRa.Game
 			package = new Package("../../../hires.mix");
 			LoadSprites("../../../buildings.txt");
 			LoadSprites("../../../units.txt");
+
+			sprites.Add("BLANK", CoreSheetBuilder.Add(new Size(64, 48), 16));
 			techTree.CurrentRace = race;
 		}
 
@@ -69,7 +71,7 @@ namespace OpenRa.Game
 			}
 			while (y2 < clientSize.Height)
 			{
-				Sprite sprite = sprites["DOG"];
+				Sprite sprite = sprites["BLANK"];
 				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
 				spriteRenderer.DrawSprite(sprite, location);
 				y2 += 48;
