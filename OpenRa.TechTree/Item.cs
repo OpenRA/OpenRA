@@ -117,14 +117,28 @@ namespace OpenRa.TechTree
 			return p.Count == racePrerequisites.Length;
 		}
 
+		void CheckForBoth(IEnumerable<string> buildings)
+		{
+			if (canBuild && (ShouldMakeUnbuildable(buildings, alliedPrerequisites) && ShouldMakeUnbuildable(buildings, sovietPrerequisites)))
+				canBuild = false;
+
+			else if (!canBuild && (ShouldMakeBuildable(buildings, alliedPrerequisites) || ShouldMakeBuildable(buildings, sovietPrerequisites)))
+				canBuild = true;
+		}
+
 		public void CheckPrerequisites(IEnumerable<string> buildings, Race currentRace)
 		{
-			string[] racePrerequisites = (currentRace == Race.Allies) ? alliedPrerequisites : sovietPrerequisites;
+			if (currentRace == Race.None || currentRace == (Race.Allies | Race.Soviet))
+				CheckForBoth(buildings);
+			else
+			{
+				string[] racePrerequisites = (currentRace == Race.Allies) ? alliedPrerequisites : sovietPrerequisites;
 
-			if ((canBuild && ShouldMakeUnbuildable(buildings, racePrerequisites)) || !((owner & currentRace) == currentRace))
-				canBuild = false;
-			else if (!canBuild && ShouldMakeBuildable(buildings, racePrerequisites))
-				canBuild = true;
+				if ((canBuild && ShouldMakeUnbuildable(buildings, racePrerequisites)) || !((owner & currentRace) == currentRace))
+					canBuild = false;
+				else if (!canBuild && ShouldMakeBuildable(buildings, racePrerequisites))
+					canBuild = true;
+			}
 		}
 
 		bool canBuild;

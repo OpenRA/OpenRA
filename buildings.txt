@@ -1,5 +1,4 @@
 IRON,Iron Curtain
-FCOM,Forward Command Center
 ATEK,Allied Tech Center
 PDOX,Chronosphere
 WEAP,War Factory
@@ -23,8 +22,6 @@ AFLD,Airstrip
 POWR,Power Plant
 APWR,Advanced Power Plant
 STEK,Soviet Tech Center
-HOSP,Hospital
-BIO,Bio-research Laboratory
 BARR,Soviet Barracks
 TENT,Allied Barracks
 KENN,Kennel
@@ -32,7 +29,6 @@ FIX,Service Depot
 SBAG,Sandbags
 BRIK,Concrete Wall
 FENC,Wire Fence
-CYCL,Chain Link Fence
 FACF,Fake Construction Yard
 WEAF,Fake War Factory
 SYRF,Fake Shipyard

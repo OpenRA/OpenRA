@@ -5,11 +5,12 @@ using OpenRa.TechTree;
 using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
 using System.Drawing;
+using System.IO;
+
 
 namespace OpenRa.Game
 {
 	using Sprite = SheetRectangle<Sheet>;
-
 	class Sidebar
 	{
 		TechTree.TechTree techTree = new TechTree.TechTree();
@@ -20,33 +21,55 @@ namespace OpenRa.Game
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 
-		void LoadSprite(string name)
-		{
-			sprites.Add(name, SpriteSheetBuilder.LoadSprite(package, name + "icon.shp"));
-		}
-
 		public Sidebar(Race race, Renderer renderer)
 		{
+			techTree.CurrentRace = race;
+			techTree.Build("FACT");
+			techTree.Build("POWR");
+			techTree.Build("BARR");
+			techTree.Build("PROC");
+			techTree.Build("WEAP");
+			techTree.Build("DOME");
 			this.renderer = renderer;
 			this.spriteRenderer = new SpriteRenderer(renderer);
 
 			package = new Package("../../../hires.mix");
-			LoadSprite("E7");
-			LoadSprite("E6");
-			LoadSprite("POWR");
+			LoadSprites();
 			techTree.CurrentRace = race;
 		}
 
-		public void Paint(PointF scrollOffset)
+		void LoadSprites()
 		{
-			int x = 0, y = 0;
+			foreach (string line in File.ReadAllLines("../../../buildings.txt"))
+			{
+				string key = line.Substring(0, line.IndexOf(','));
+				sprites.Add(key, SpriteSheetBuilder.LoadSprite(package, key + "icon.shp"));
+			}
+			foreach (string line in File.ReadAllLines("../../../units.txt"))
+			{
+				string key = line.Substring(0, line.IndexOf(','));
+				sprites.Add(key, SpriteSheetBuilder.LoadSprite(package, key + "icon.shp"));
+			}
+		}
+
+		public void Paint(Size clientSize, PointF scrollOffset)
+		{
+			int y1 = 0, y2 = 0;
 			foreach (Item i in techTree.BuildableBuildings)
 			{
 				Sprite sprite;
 				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
-				PointF location = new PointF(x + scrollOffset.X, y + scrollOffset.Y);
+				PointF location = new PointF(clientSize.Width - 128 + scrollOffset.X, y1 + scrollOffset.Y);
 				spriteRenderer.DrawSprite(sprite, location);
-				y += 48;
+				y1 += 48;
+			}
+			foreach (Item i in techTree.BuildableUnits)
+			{
+				Sprite sprite;
+				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
+				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
+				spriteRenderer.DrawSprite(sprite, location);
+				y2 += 48;
 			}
 
 			spriteRenderer.Flush();

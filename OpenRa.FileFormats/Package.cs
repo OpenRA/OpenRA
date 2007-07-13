@@ -134,7 +134,14 @@ namespace OpenRa.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			return GetContent(PackageEntry.HashFilename(filename));
+			try
+			{
+				return GetContent(PackageEntry.HashFilename(filename));
+			}
+			catch (FileNotFoundException e)
+			{
+				throw new FileNotFoundException("File not found", filename, e);
+			}
 		}
 	}
 

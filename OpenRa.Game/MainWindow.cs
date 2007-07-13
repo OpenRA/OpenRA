@@ -7,6 +7,7 @@ using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
 using System.IO;
 using System.Runtime.InteropServices;
+using OpenRa.TechTree;
 
 namespace OpenRa.Game
 {
@@ -58,7 +59,7 @@ namespace OpenRa.Game
 
 			world.Add(new Refinery(new PointF(24 * 5, 24 * 7), 1));
 
-			sidebar = new Sidebar(OpenRa.TechTree.Race.None, renderer);
+			sidebar = new Sidebar(Race.Soviet, renderer);
 		}
 
 		internal void Run()
@@ -111,7 +112,7 @@ namespace OpenRa.Game
 				new Range<float>(scrollPos.X, scrollPos.X + ClientSize.Width),
 				new Range<float>(scrollPos.Y, scrollPos.Y + ClientSize.Height));
 
-			sidebar.Paint(scrollPos);
+			sidebar.Paint(ClientSize, scrollPos);
 
 			renderer.EndFrame();
 		}
