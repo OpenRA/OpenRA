@@ -7,13 +7,11 @@ using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
 
-
 namespace OpenRa.Game
 {
 	class Sidebar
 	{
 		TechTree.TechTree techTree = new TechTree.TechTree();
-		Renderer renderer;
 
 		SpriteRenderer spriteRenderer;
 		Package package;
@@ -29,15 +27,13 @@ namespace OpenRa.Game
 			//techTree.Build("PROC");
 			//techTree.Build("WEAP");
 			//techTree.Build("DOME");
-			this.renderer = renderer;
-			this.spriteRenderer = new SpriteRenderer(renderer);
+			spriteRenderer = new SpriteRenderer(renderer);
 
 			package = new Package("../../../hires.mix");
 			LoadSprites("../../../buildings.txt");
 			LoadSprites("../../../units.txt");
 
 			sprites.Add("BLANK", SheetBuilder.Add(new Size(64, 48), 16));
-			techTree.CurrentRace = race;
 		}
 
 		void LoadSprites(string filename)
