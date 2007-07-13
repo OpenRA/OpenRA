@@ -27,8 +27,6 @@ namespace OpenRa.TechTree
 		public TechTree()
 		{
 			LoadRules();
-
-			built.Add("FACT");
 			CheckAll();
 		}
 
@@ -65,13 +63,18 @@ namespace OpenRa.TechTree
 				objects.Add(p.a, new Item(p.a, p.b, rulesFile.GetSection(p.a), p.c));
 		}
 
-		public bool Build(string key)
+		public bool Build(string key, bool force)
 		{
 			Item b = objects[key];
-			if (!b.CanBuild) return false;
+			if (!force && !b.CanBuild) return false;
 			built.Add(key);
 			CheckAll();
 			return true;
+		}
+
+		public bool Build(string key)
+		{
+			return Build(key, false);
 		}
 
 		public bool Unbuild(string key)

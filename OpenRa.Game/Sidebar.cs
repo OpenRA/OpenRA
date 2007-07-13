@@ -24,12 +24,12 @@ namespace OpenRa.Game
 		public Sidebar(Race race, Renderer renderer)
 		{
 			techTree.CurrentRace = race;
-			techTree.Build("FACT");
-			techTree.Build("POWR");
-			techTree.Build("BARR");
-			techTree.Build("PROC");
-			techTree.Build("WEAP");
-			techTree.Build("DOME");
+			techTree.Build("FACT", true);
+			//techTree.Build("POWR");
+			//techTree.Build("BARR");
+			//techTree.Build("PROC");
+			//techTree.Build("WEAP");
+			//techTree.Build("DOME");
 			this.renderer = renderer;
 			this.spriteRenderer = new SpriteRenderer(renderer);
 
