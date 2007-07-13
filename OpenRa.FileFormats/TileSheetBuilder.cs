@@ -21,6 +21,24 @@ namespace OpenRa.FileFormats
 
 		T current = null;
 		int x = 0, y = 0, rowHeight = 0;
+		TextureChannel? channel;
+
+		TextureChannel? NextChannel(TextureChannel? t)
+		{
+			if (t == null)
+				return TextureChannel.Red;
+
+			if (t == TextureChannel.Red)
+				return TextureChannel.Green;
+
+			if (t == TextureChannel.Green)
+				return TextureChannel.Blue;
+
+			if (t == TextureChannel.Blue)
+				return TextureChannel.Alpha;
+
+			return null;
+		}
 
 		public SheetRectangle<T> AddImage(Size imageSize)
 		{
@@ -28,7 +46,10 @@ namespace OpenRa.FileFormats
 				return null;
 
 			if (current == null)
+			{
 				current = pageProvider();
+				channel = NextChannel(null);
+			}
 
 			if (rowHeight == 0 || imageSize.Width + x > pageSize.Width)
 			{
@@ -42,11 +63,17 @@ namespace OpenRa.FileFormats
 
 			if (y + imageSize.Height > pageSize.Height)
 			{
-				current = pageProvider();
+				
+				if (null == (channel = NextChannel(channel)))
+				{
+					current = pageProvider();
+					channel = NextChannel(channel);
+				}
+
 				x = y = rowHeight = 0;
 			}
 
-			SheetRectangle<T> rect = new SheetRectangle<T>(current, new Point(x, y), imageSize);
+			SheetRectangle<T> rect = new SheetRectangle<T>(current, new Point(x, y), imageSize, channel.Value);
 			x += imageSize.Width;
 
 			return rect;
@@ -67,11 +94,6 @@ namespace OpenRa.FileFormats
 			this.size = size;
 			this.sheet = sheet;
 			this.channel = channel;
-		}
-
-		internal SheetRectangle(T sheet, Point origin, Size size)
-			: this(sheet, origin, size, TextureChannel.Red)
-		{
 		}
 	}
 

@@ -20,8 +20,8 @@ namespace OpenRa.Game
 			bitmap = new Bitmap(size.Width, size.Height);
 			device = d;
 
-			using (Graphics g = Graphics.FromImage(bitmap))
-				g.FillRectangle(Brushes.Fuchsia, 0, 0, size.Width, size.Height);
+			//using (Graphics g = Graphics.FromImage(bitmap))
+			//    g.FillRectangle(Brushes.Fuchsia, 0, 0, size.Width, size.Height);
 		}
 
 		public Texture Texture

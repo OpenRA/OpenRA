@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Clock.cs" />
+    <Compile Include="CoreSheetBuilder.cs" />
     <Compile Include="HardwarePalette.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>

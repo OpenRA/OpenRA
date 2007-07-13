@@ -24,28 +24,26 @@ namespace OpenRa.FileFormats
 				if( countStr == null || startStr == null || pattern == null )
 					break;
 
-				//try
+				int count = int.Parse( countStr );
+				int start = int.Parse( startStr, NumberStyles.HexNumber );
+				for( int i = 0 ; i < count ; i++ )
 				{
-					int count = int.Parse( countStr );
-					int start = int.Parse( startStr, NumberStyles.HexNumber );
-					for( int i = 0 ; i < count ; i++ )
+					Stream s;
+					try
 					{
-						Stream s;
-						try
-						{
-							s = mixFile.GetContent( string.Format( pattern, i + 1 ) );
-						}
-						catch { continue; }
-						Terrain t = new Terrain( s, pal );
-						if( tiles.ContainsKey( (ushort)( start + i ) ) )
-							continue;
-						tiles.Add( (ushort)( start + i ), t );
+						s = mixFile.GetContent( string.Format( pattern, i + 1 ) );
 					}
+					catch { continue; }
+					Terrain t = new Terrain( s, pal );
+					if( tiles.ContainsKey( (ushort)( start + i ) ) )
+						continue;
+					tiles.Add( (ushort)( start + i ), t );
 				}
-				//catch { }
 			}
 
 			tileIdFile.Close();
 		}
+
+		public byte[] GetBytes(TileReference r) { return tiles[r.tile].TileBitmapBytes[r.image]; }
 	}
 }

@@ -76,15 +76,15 @@ namespace OpenRa.Game
 			indices.Add((ushort)(offset + 2));
 		}
 
-		public static void CopyIntoChannel(Bitmap bitmap, TextureChannel channel, byte[] src, SheetRectangle<Sheet> s)
+		public static void CopyIntoChannel(SheetRectangle<Sheet> dest, byte[] src)
 		{
-			for( int i = 0; i < s.size.Width; i++ )
-				for (int j = 0; j < s.size.Height; j++)
+			for (int i = 0; i < dest.size.Width; i++)
+				for (int j = 0; j < dest.size.Height; j++)
 				{
-					Point p = new Point(s.origin.X + i, s.origin.Y + j);
-					byte b = src[i + s.size.Width * j];
-					Color original = bitmap.GetPixel(p.X, p.Y);
-					bitmap.SetPixel(p.X, p.Y, ReplaceChannel(original, channel, b));
+					Point p = new Point(dest.origin.X + i, dest.origin.Y + j);
+					byte b = src[i + dest.size.Width * j];
+					Color original = dest.sheet.bitmap.GetPixel(p.X, p.Y);
+					dest.sheet.bitmap.SetPixel(p.X, p.Y, ReplaceChannel(original, dest.channel, b));
 				}
 		}
 

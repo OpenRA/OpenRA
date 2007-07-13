@@ -33,18 +33,7 @@ namespace OpenRa.Game
 
 		void LoadTextures()
 		{
-			List<Sheet> sheets = new List<Sheet>();
-
-			Size pageSize = new Size(1024, 512);
-
-			Provider<Sheet> sheetProvider = delegate
-			{
-				Sheet t = new Sheet(pageSize, renderer.Device);
-				sheets.Add(t);
-				return t;
-			};
-
-			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>(pageSize, sheetProvider);
+			Size tileSize = new Size(24, 24);
 
 			for (int i = 0; i < map.Width; i++)
 				for (int j = 0; j < map.Height; j++)
@@ -52,13 +41,7 @@ namespace OpenRa.Game
 					TileReference tileRef = map.MapTiles[i + map.XOffset, j + map.YOffset];
 
 					if (!tileMapping.ContainsKey(tileRef))
-					{
-						SheetRectangle<Sheet> rect = builder.AddImage(new Size(24, 24));
-						Util.CopyIntoChannel(rect.sheet.bitmap, TextureChannel.Red,
-							tileSet.tiles[tileRef.tile].TileBitmapBytes[tileRef.image], rect);
-
-						tileMapping.Add(tileRef, rect);
-					}
+						tileMapping.Add(tileRef, CoreSheetBuilder.Add(tileSet.GetBytes(tileRef), tileSize));
 				}
 
 			world = new World(renderer.Device);
@@ -67,7 +50,6 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			UnitSheetBuilder.Initialize(renderer.Device);
 			UnitSheetBuilder.AddUnit("mcv");
 			UnitSheetBuilder.AddUnit("1tnk");
 			UnitSheetBuilder.AddUnit("2tnk");
@@ -119,6 +101,8 @@ namespace OpenRa.Game
 			FormBorderStyle = FormBorderStyle.None;
 			renderer = new Renderer(this, GetResolution(settings), false);
 			Visible = true;
+
+			CoreSheetBuilder.Initialize(renderer.Device);
 
 			string mapName = settings.GetValue("map", "scm12ea.ini");
 
@@ -177,7 +161,9 @@ namespace OpenRa.Game
 			foreach (KeyValuePair<Sheet, IndexBuffer> batch in drawBatches)
 				DrawTerrainBatch(batch);
 
-			world.Draw(renderer);
+			world.Draw(renderer,
+				new Range<float>(scrollPos.X, scrollPos.X + ClientSize.Width),
+				new Range<float>(scrollPos.Y, scrollPos.Y + ClientSize.Height));
 
 			renderer.EndFrame();
 		}

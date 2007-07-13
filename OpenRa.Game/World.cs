@@ -37,7 +37,7 @@ namespace OpenRa.Game
 
 		// assumption: when people fix these items, they might update the warning comment?
 
-		public void Draw(Renderer renderer)
+		public void Draw(Renderer renderer, Range<float> xr, Range<float> yr)
 		{
 			int sprites = 0;
 			List<Vertex> vertices = new List<Vertex>();
@@ -46,10 +46,18 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				if (a.CurrentImages == null)
+				SheetRectangle<Sheet>[] images = a.CurrentImages;
+
+				if (images == null)
 					continue;
 
-				foreach (SheetRectangle<Sheet> image in a.CurrentImages)
+				if (a.location.X > xr.End || a.location.X < xr.Start - images[0].size.Width)
+					continue;
+
+				if (a.location.Y > yr.End || a.location.Y < yr.Start - images[0].size.Height)
+					continue;
+
+				foreach (SheetRectangle<Sheet> image in images)
 				{
 					if( image.sheet != sheet && sprites > 0 && sheet != null )
 					{
