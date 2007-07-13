@@ -28,16 +28,15 @@ namespace OpenRa.FileFormats
 			if (t == null)
 				return TextureChannel.Red;
 
-			if (t == TextureChannel.Red)
-				return TextureChannel.Green;
+			switch (t.Value)
+			{
+				case TextureChannel.Red: return TextureChannel.Green;
+				case TextureChannel.Green: return TextureChannel.Blue;
+				case TextureChannel.Blue: return TextureChannel.Alpha;
+				case TextureChannel.Alpha: return null;
 
-			if (t == TextureChannel.Green)
-				return TextureChannel.Blue;
-
-			if (t == TextureChannel.Blue)
-				return TextureChannel.Alpha;
-
-			return null;
+				default: return null;
+			}
 		}
 
 		public SheetRectangle<T> AddImage(Size imageSize)

@@ -28,16 +28,13 @@ namespace OpenRa.FileFormats
 				int start = int.Parse( startStr, NumberStyles.HexNumber );
 				for( int i = 0 ; i < count ; i++ )
 				{
-					Stream s;
 					try
 					{
-						s = mixFile.GetContent( string.Format( pattern, i + 1 ) );
+						Stream s = mixFile.GetContent(string.Format(pattern, i + 1));
+						if (!tiles.ContainsKey((ushort)(start + i)))
+							tiles.Add((ushort)(start + i), new Terrain(s, pal));
 					}
-					catch { continue; }
-					Terrain t = new Terrain( s, pal );
-					if( tiles.ContainsKey( (ushort)( start + i ) ) )
-						continue;
-					tiles.Add( (ushort)( start + i ), t );
+					catch { }
 				}
 			}
 
