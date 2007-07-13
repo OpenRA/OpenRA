@@ -26,7 +26,7 @@ namespace OpenRa.Game
 		}
 	}
 
-	static class BeedeeSheetBuilder
+	static class SpriteSheetBuilder
 	{
 		static Dictionary<string, SheetRectangle<Sheet>> sprites = 
 			new Dictionary<string, SheetRectangle<Sheet>>();
