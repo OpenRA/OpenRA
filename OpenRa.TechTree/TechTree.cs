@@ -5,9 +5,9 @@ using OpenRa.FileFormats;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace OpenRa.TechTreeTest
+namespace OpenRa.TechTree
 {
-	class TechTree
+	public class TechTree
 	{
 		Dictionary<string, Item> objects = new Dictionary<string, Item>();
 		public ICollection<string> built = new List<string>();

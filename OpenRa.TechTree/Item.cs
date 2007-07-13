@@ -5,9 +5,9 @@ using System.Drawing;
 using OpenRa.FileFormats;
 using System.IO;
 
-namespace OpenRa.TechTreeTest
+namespace OpenRa.TechTree
 {
-	class Item
+	public class Item
 	{
 		public Item(string tag, string friendlyName, IniSection section, bool isStructure)
 		{

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenRa.TechTreeTest")]
+[assembly: AssemblyTitle("OpenRa.TechTree")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("OpenRa.TechTreeTest")]
-[assembly: AssemblyCopyright("Copyright © 2007")]
+[assembly: AssemblyCompany("TOSHIBA")]
+[assembly: AssemblyProduct("OpenRa.TechTree")]
+[assembly: AssemblyCopyright("Copyright © TOSHIBA 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0a435def-c144-460f-bc7c-668a73a29b4c")]
+[assembly: Guid("af5f7d2f-f905-4a72-9542-f86acbe508ec")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,5 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
