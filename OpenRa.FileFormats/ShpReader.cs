@@ -42,6 +42,8 @@ namespace OpenRa.FileFormats
 		public readonly ushort Width;
 		public readonly ushort Height;
 
+		public Size Size { get { return new Size(Width, Height); } }
+
 		private readonly List<ImageHeader> headers = new List<ImageHeader>();
 
 		int recurseDepth = 0;

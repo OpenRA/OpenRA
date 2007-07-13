@@ -24,7 +24,7 @@ namespace OpenRa.Game
 			this.device = device;
 		}
 
-		public void Resolve()
+		void Resolve()
 		{
 			const string filename = "../../../palette-cache.png";
 			bitmap.Save(filename);

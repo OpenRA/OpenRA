@@ -143,7 +143,7 @@ namespace OpenRa.TechTreeTest
 				Stream s = package.GetContent(filename);
 				ShpReader reader = new ShpReader(s);
 				foreach (ImageHeader h in reader)
-					return BitmapBuilder.FromBytes(h.Image, reader.Width, reader.Height, palette);
+					return BitmapBuilder.FromBytes(h.Image, reader.Size, palette);
 
 				return null;
 			}

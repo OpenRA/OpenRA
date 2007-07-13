@@ -16,6 +16,15 @@ namespace OpenRa.Game
 		Texture texture;
 
 		public Sheet(Bitmap b, GraphicsDevice d) { bitmap = b; device = d; }
+		
+		public Sheet(Size size, GraphicsDevice d)
+		{
+			bitmap = new Bitmap(size.Width, size.Height);
+			device = d;
+
+			using (Graphics g = Graphics.FromImage(bitmap))
+				g.FillRectangle(Brushes.Fuchsia, 0, 0, size.Width, size.Height);
+		}
 
 		public Texture Texture
 		{

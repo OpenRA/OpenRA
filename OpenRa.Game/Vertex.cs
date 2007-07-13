@@ -10,14 +10,18 @@ namespace OpenRa.Game
 	struct Vertex
 	{
 		public float x, y, z, u, v;
+		public float p, c;
 
-		public Vertex(float x, float y, float z, float u, float v)
+		public Vertex(float x, float y, float z, float u, float v, float p, float c)
 		{
 			this.x = x; this.y = y; this.z = z;
 			this.u = u;
 			this.v = v;
+
+			this.p = p;
+			this.c = c;
 		}
 
-		public const VertexFormat Format = VertexFormat.Position | VertexFormat.Texture;
+		public const VertexFormat Format = VertexFormat.Position | VertexFormat.Texture2;
 	}
 }

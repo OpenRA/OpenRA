@@ -92,7 +92,7 @@ namespace ShpViewer
 			if (!TreeCache.TryGetValue(name, out ret))
 			{
 				ShpReader shp = new ShpReader(TileSet.MixFile.GetContent(name + TileSuffix));
-				ret = BitmapBuilder.FromBytes(shp[0].Image, shp.Width, shp.Height, pal); ;
+				ret = BitmapBuilder.FromBytes(shp[0].Image, shp.Size, pal); ;
 				TreeCache.Add(name, ret);
 			}
 			return ret;

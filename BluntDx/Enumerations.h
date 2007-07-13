@@ -17,6 +17,7 @@ namespace BluntDirectX { namespace Direct3D
 		Position = D3DFVF_XYZ,
 		Normal = D3DFVF_NORMAL,
 		Texture = D3DFVF_TEX1,
+		Texture2 = D3DFVF_TEX2,
 	};
 
 	public enum class PrimitiveType

@@ -13,14 +13,14 @@ namespace OpenRa.Game
 
 		public readonly Sheet sh;
 
-		public TreeCache(GraphicsDevice device, Map map, Package package, Palette pal)
+		public TreeCache(GraphicsDevice device, Map map, Package package)
 		{
 			Size pageSize = new Size(1024, 512);
 			List<Sheet> sheets = new List<Sheet>();
 
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), device);
+				Sheet sheet = new Sheet(pageSize, device);
 				sheets.Add(sheet);
 				return sheet;
 			};
@@ -32,13 +32,11 @@ namespace OpenRa.Game
 				if (trees.ContainsKey(r.Image))
 					continue;
 
-				ShpReader reader = new ShpReader(package.GetContent(r.Image + "." + map.Theater.Substring(0, 3)));
-				Bitmap bitmap = BitmapBuilder.FromBytes(reader[0].Image, reader.Width, reader.Height, pal);
+				string filename = r.Image + "." + map.Theater.Substring(0, 3);
 
-				SheetRectangle<Sheet> rect = builder.AddImage(bitmap.Size);
-				using (Graphics g = Graphics.FromImage(rect.sheet.bitmap))
-					g.DrawImage(bitmap, rect.origin);
-
+				ShpReader reader = new ShpReader(package.GetContent(filename));
+				SheetRectangle<Sheet> rect = builder.AddImage(reader.Size);
+				Util.CopyIntoChannel(rect.sheet.bitmap, TextureChannel.Red, reader[0].Image, rect);
 				trees.Add(r.Image, rect);
 			}
 

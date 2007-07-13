@@ -20,7 +20,7 @@ namespace OpenRa.Game
 		{
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), device);
+				Sheet sheet = new Sheet(pageSize, device);
 				sheets.Add(sheet);
 				return sheet;
 			};
@@ -28,17 +28,13 @@ namespace OpenRa.Game
 			builder = new TileSheetBuilder<Sheet>(pageSize, sheetProvider);
 		}
 
-		public static void AddUnit( string name, Palette pal )
+		public static void AddUnit( string name )
 		{
 			ShpReader reader = new ShpReader( unitsPackage.GetContent( name + ".shp" ) );
 			foreach( ImageHeader h in reader )
 			{
-				Bitmap bitmap = BitmapBuilder.FromBytes( h.Image, reader.Width, reader.Height, pal );
-
-				SheetRectangle<Sheet> rect = builder.AddImage( bitmap.Size );
-				using( Graphics g = Graphics.FromImage( rect.sheet.bitmap ) )
-					g.DrawImage( bitmap, rect.origin );
-
+				SheetRectangle<Sheet> rect = builder.AddImage(reader.Size);
+				Util.CopyIntoChannel(rect.sheet.bitmap, TextureChannel.Red, h.Image, rect);
 				McvSheet.Add( rect );
 			}
 		}

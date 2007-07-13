@@ -53,27 +53,25 @@ namespace OpenRa.Game
 
 					if (!tileMapping.ContainsKey(tileRef))
 					{
-						Bitmap srcImage = tileSet.tiles[tileRef.tile].GetTile(tileRef.image);
-						SheetRectangle<Sheet> rect = builder.AddImage(srcImage.Size);
-
-						using (Graphics g = Graphics.FromImage(rect.sheet.bitmap))
-							g.DrawImage(srcImage, rect.origin);
+						SheetRectangle<Sheet> rect = builder.AddImage(new Size(24, 24));
+						Util.CopyIntoChannel(rect.sheet.bitmap, TextureChannel.Red,
+							tileSet.tiles[tileRef.tile].TileBitmapBytes[tileRef.image], rect);
 
 						tileMapping.Add(tileRef, rect);
 					}
 				}
 
 			world = new World(renderer.Device);
-			treeCache = new TreeCache(renderer.Device, map, TileMix, pal);
+			treeCache = new TreeCache(renderer.Device, map, TileMix);
 
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
 			UnitSheetBuilder.Initialize(renderer.Device);
-			UnitSheetBuilder.AddUnit("mcv", playerPal);
-			UnitSheetBuilder.AddUnit("1tnk", playerPal);
-			UnitSheetBuilder.AddUnit("2tnk", playerPal);
-			UnitSheetBuilder.AddUnit("3tnk", playerPal);
+			UnitSheetBuilder.AddUnit("mcv");
+			UnitSheetBuilder.AddUnit("1tnk");
+			UnitSheetBuilder.AddUnit("2tnk");
+			UnitSheetBuilder.AddUnit("3tnk");
 
 			world.Add(new Mcv(new PointF(24 * 5, 24 * 5)));
 		}
@@ -226,7 +224,7 @@ namespace OpenRa.Game
 				hardwarePalette.AddPalette(new Palette(pal, new PaletteRemap(
 					File.OpenRead("../../../" + remap + ".rem"))));
 
-			hardwarePalette.Resolve();
+			renderer.SetPalette(hardwarePalette);
 
 			return new TileSet(TileMix, TileSuffix, pal);
 		}

@@ -13,9 +13,14 @@ namespace OpenRa.Game
 		readonly GraphicsDevice device;
 		readonly Effect shader;
 
-		readonly IntPtr r1Handle, r2Handle, baseTextureHandle, scrollHandle;
+		readonly IntPtr r1Handle, r2Handle, baseTextureHandle, scrollHandle, paletteHandle;
 
 		const string shaderName = "diffuse.fx";
+
+		public void SetPalette(HardwarePalette hp)
+		{
+			shader.SetTexture(paletteHandle, hp.PaletteTexture);
+		}
 
 		public Renderer(Control host, Size resolution, bool windowed)
 		{
@@ -30,6 +35,7 @@ namespace OpenRa.Game
 			scrollHandle = shader.GetHandle("Scroll");
 			r1Handle = shader.GetHandle("r1");
 			r2Handle = shader.GetHandle("r2");
+			paletteHandle = shader.GetHandle("Palette");
 		}
 
 		public GraphicsDevice Device { get { return device; } }

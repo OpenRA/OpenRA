@@ -7,12 +7,12 @@ namespace OpenRa.FileFormats
 {
 	public static class BitmapBuilder
 	{
-		public static Bitmap FromBytes( byte[] imageBytes, int width, int height, Palette pal )
+		public static Bitmap FromBytes(byte[] imageBytes, Size size, Palette pal)
 		{
-			Bitmap bitmap = new Bitmap( width, height );
-			for( int x = 0 ; x < width ; x++ )
-				for( int y = 0 ; y < height ; y++ )
-					bitmap.SetPixel( x, y, pal.GetColor( imageBytes[ x + width * y ] ) );
+			Bitmap bitmap = new Bitmap(size.Width, size.Height);
+			for (int x = 0; x < size.Width; x++)
+				for (int y = 0; y < size.Height; y++)
+					bitmap.SetPixel(x, y, pal.GetColor(imageBytes[x + size.Width * y]));
 
 			return bitmap;
 		}

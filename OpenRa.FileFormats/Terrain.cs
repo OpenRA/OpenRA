@@ -16,6 +16,7 @@ namespace OpenRa.FileFormats
 
 		readonly byte[] index;
 		readonly List<Bitmap> TileBitmaps = new List<Bitmap>();
+		public readonly List<byte[]> TileBitmapBytes = new List<byte[]>();
 
 		public Terrain( Stream stream, Palette pal )
 		{
@@ -44,15 +45,19 @@ namespace OpenRa.FileFormats
 
 			for( int i = 0 ; i < index.Length ; i++ )
 			{
-				if( index[ i ] != 255 )
+				if (index[i] != 255)
 				{
-					byte[] tileData = new byte[ 24 * 24 ];
-					stream.Position = ImgStart + index[ i ] * 24 * 24;
-					stream.Read( tileData, 0, 24 * 24 );
-					TileBitmaps.Add( BitmapBuilder.FromBytes( tileData, 24, 24, pal ) );
+					byte[] tileData = new byte[24 * 24];
+					stream.Position = ImgStart + index[i] * 24 * 24;
+					stream.Read(tileData, 0, 24 * 24);
+					TileBitmaps.Add(BitmapBuilder.FromBytes(tileData, new Size(24, 24), pal));
+					TileBitmapBytes.Add(tileData);
 				}
 				else
-					TileBitmaps.Add( null );
+				{
+					TileBitmaps.Add(null);
+					TileBitmapBytes.Add(null);
+				}
 			}
 		}
 

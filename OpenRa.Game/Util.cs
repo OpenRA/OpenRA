@@ -13,7 +13,7 @@ namespace OpenRa.Game
 			float u0 = (float)(s.origin.X + 0.5f) / (float)s.sheet.bitmap.Width;
 			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
 
-			return (u > 0) ? u1 : u0;// (1 - u) * u0 + u * u1;
+			return (u > 0) ? u1 : u0;
 		}
 
 		public static float V(SheetRectangle<Sheet> s, float v)
@@ -21,7 +21,7 @@ namespace OpenRa.Game
 			float v0 = (float)(s.origin.Y + 0.5f) / (float)s.sheet.bitmap.Height;
 			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
 
-			return (v > 0) ? v1 : v0;// return (1 - v) * v0 + v * v1;
+			return (v > 0) ? v1 : v0;
 		}
 
 		public static Vertex MakeVertex(PointF o, float u, float v, SheetRectangle<Sheet> r)
@@ -29,7 +29,8 @@ namespace OpenRa.Game
 			float x2 = o.X + r.size.Width;
 			float y2 = o.Y + r.size.Height;
 
-			return new Vertex(Lerp(o.X, x2, u), Lerp(o.Y, y2, v), 0, U(r, u), V(r, v));
+			return new Vertex(Lerp(o.X, x2, u), Lerp(o.Y, y2, v), 0, U(r, u), V(r, v), 
+				0, 1);
 		}
 
 		static float Lerp(float a, float b, float t)
@@ -54,5 +55,39 @@ namespace OpenRa.Game
 			indices.Add((ushort)(offset + 3));
 			indices.Add((ushort)(offset + 2));
 		}
+
+		public static void CopyIntoChannel(Bitmap bitmap, TextureChannel channel, byte[] src, SheetRectangle<Sheet> s)
+		{
+			for( int i = 0; i < s.size.Width; i++ )
+				for (int j = 0; j < s.size.Height; j++)
+				{
+					Point p = new Point(s.origin.X + i, s.origin.Y + j);
+					byte b = src[i + s.size.Width * j];
+					Color original = bitmap.GetPixel(p.X, p.Y);
+					bitmap.SetPixel(p.X, p.Y, ReplaceChannel(original, channel, b));
+				}
+		}
+
+		static Color ReplaceChannel(Color o, TextureChannel channel, byte p)
+		{
+			switch (channel)
+			{
+				case TextureChannel.Red: return Color.FromArgb(o.A, p, o.G, o.B);
+				case TextureChannel.Green: return Color.FromArgb(o.A, o.R, p, o.B);
+				case TextureChannel.Blue: return Color.FromArgb(o.A, o.R, o.G, p);
+				case TextureChannel.Alpha: return Color.FromArgb(p, o.R, o.G, o.B);
+
+				default:
+					throw new ArgumentException();
+			}
+		}
+	}
+
+	enum TextureChannel
+	{
+		Red,
+		Green,
+		Blue,
+		Alpha,
 	}
 }

@@ -30,7 +30,7 @@ namespace ShpViewer
 				pal = new Palette(pal, remap);
 
 				foreach( ImageHeader h in shpReader )
-					bitmaps.Add( BitmapBuilder.FromBytes( h.Image, shpReader.Width, shpReader.Height, pal ) );
+					bitmaps.Add( BitmapBuilder.FromBytes( h.Image, shpReader.Size, pal ) );
 			}
 			else if( ext == ".tem" || ext == ".sno" || ext == ".int" )
 			{
