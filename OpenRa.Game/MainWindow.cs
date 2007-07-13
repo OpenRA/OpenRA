@@ -93,7 +93,7 @@ namespace OpenRa.Game
 				x1 = e.X;
 				y1 = e.Y;
 
-				scrollPos.X = Util.Constrain( scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width));
+				scrollPos.X = Util.Constrain(scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width));
 				scrollPos.Y = Util.Constrain(scrollPos.Y, new Range<float>(0, map.Height * 24 - ClientSize.Height));
 			}
 		}

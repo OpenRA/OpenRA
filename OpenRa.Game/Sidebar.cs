@@ -48,6 +48,9 @@ namespace OpenRa.Game
 				y += 48;
 			}
 
+			if (vertices.Count == 0)
+				return;
+
 			renderer.DrawWithShader(ShaderQuality.Low, delegate 
 			{
 				vertexBuffer.SetData(vertices.ToArray());
