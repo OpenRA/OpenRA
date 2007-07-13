@@ -12,11 +12,20 @@ namespace OpenRa.TechTree
 		Dictionary<string, Item> objects = new Dictionary<string, Item>();
 		public ICollection<string> built = new List<string>();
 
-		readonly Race currentRace;
+		Race currentRace = Race.None;
 
-		public TechTree(Race race)
+		public Race CurrentRace
 		{
-			this.currentRace = race;
+			get { return currentRace; }
+			set 
+			{ 
+				currentRace = value;
+				CheckAll();
+			}
+		}
+
+		public TechTree()
+		{
 			LoadRules();
 
 			built.Add("FACT");
@@ -87,6 +96,26 @@ namespace OpenRa.TechTree
 				foreach (Item b in objects.Values)
 					if (b.CanBuild)
 						yield return b;
+			}
+		}
+
+		public IEnumerable<Item> BuildableBuildings
+		{
+			get
+			{
+				foreach (Item i in BuildableItems)
+					if (i.IsStructure)
+						yield return i;
+			}
+		}
+
+		public IEnumerable<Item> BuildableUnits
+		{
+			get
+			{
+				foreach (Item i in BuildableItems)
+					if (!i.IsStructure)
+						yield return i;
 			}
 		}
 	}

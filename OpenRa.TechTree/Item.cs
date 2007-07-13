@@ -9,10 +9,15 @@ namespace OpenRa.TechTree
 {
 	public class Item
 	{
+		readonly bool isStructure;
+
+		public bool IsStructure { get { return isStructure; } }
+
 		public Item(string tag, string friendlyName, IniSection section, bool isStructure)
 		{
 			this.tag = tag;
 			this.friendlyName = friendlyName;
+			this.isStructure = isStructure;
 
 			owner = ParseOwner(section);
 			techLevel = ParseTechLevel(section);
