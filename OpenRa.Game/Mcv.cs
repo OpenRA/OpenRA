@@ -8,10 +8,10 @@ namespace OpenRa.Game
 {
 	class Mcv : Actor
 	{
-		public Mcv( PointF location )
+		public Mcv( PointF location, int palette )
 		{
 			this.location = location;
-			this.palette = 3;
+			this.palette = palette;
 		}
 
 		int GetFacing()

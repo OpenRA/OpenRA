@@ -73,7 +73,9 @@ namespace OpenRa.Game
 			UnitSheetBuilder.AddUnit("2tnk");
 			UnitSheetBuilder.AddUnit("3tnk");
 
-			world.Add(new Mcv(new PointF(24 * 5, 24 * 5)));
+			world.Add(new Mcv(new PointF(24 * 5, 24 * 5), 3));
+			world.Add(new Mcv(new PointF(24 * 7, 24 * 5), 2));
+			world.Add(new Mcv(new PointF(24 * 9, 24 * 5), 1));
 		}
 
 		void LoadVertexBuffer()
