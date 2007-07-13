@@ -8,14 +8,16 @@ namespace OpenRa.Game
 	static class Program
 	{
 		[STAThread]
-		static void Main()
+		static void Main( string[] args )
 		{
 			try
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
 
-				new MainWindow().Run();
+				Settings settings = new Settings(args);
+
+				new MainWindow( settings ).Run();
 			}
 			catch( Exception e )
 			{

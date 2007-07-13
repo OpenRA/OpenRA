@@ -21,8 +21,6 @@ namespace OpenRa.Game
 		Package TileMix;
 		string TileSuffix;
 
-		const string mapName = "scm12ea.ini";
-
 		Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
 			new Dictionary<TileReference, SheetRectangle<Sheet>>();
 
@@ -35,14 +33,14 @@ namespace OpenRa.Game
 
 		void LoadTextures()
 		{
-			List<Sheet> tempSheets = new List<Sheet>();
+			List<Sheet> sheets = new List<Sheet>();
 
 			Size pageSize = new Size(1024,512);
 
 			Provider<Sheet> sheetProvider = delegate
 			{
 				Sheet t = new Sheet( new Bitmap(pageSize.Width, pageSize.Height));
-				tempSheets.Add(t);
+				sheets.Add(t);
 				return t;
 			};
 
@@ -55,8 +53,9 @@ namespace OpenRa.Game
 
 					if (!tileMapping.ContainsKey(tileRef))
 					{
-						SheetRectangle<Sheet> rect = builder.AddImage(new Size(24, 24));
-						Bitmap srcImage = tileSet.tiles[ tileRef.tile ].GetTile( tileRef.image );
+						Bitmap srcImage = tileSet.tiles[tileRef.tile].GetTile(tileRef.image);
+						SheetRectangle<Sheet> rect = builder.AddImage(srcImage.Size);
+						
 						using (Graphics g = Graphics.FromImage(rect.sheet.bitmap))
 							g.DrawImage(srcImage, rect.origin);
 
@@ -64,7 +63,7 @@ namespace OpenRa.Game
 					}
 				}
 
-			foreach (Sheet s in tempSheets)
+			foreach (Sheet s in sheets)
 				s.LoadTexture(renderer.Device);
 
 			world = new World(renderer.Device);
@@ -105,11 +104,21 @@ namespace OpenRa.Game
 			}
 		}
 
-		public MainWindow()
+		static Size GetResolution(Settings settings)
+		{
+			Size desktopResolution = Screen.PrimaryScreen.Bounds.Size;
+
+			return new Size(settings.GetValue("width", desktopResolution.Width),
+				settings.GetValue("height", desktopResolution.Height));
+		}
+
+		public MainWindow( Settings settings )
 		{
 			FormBorderStyle = FormBorderStyle.None;
-			renderer = new Renderer(this, Screen.PrimaryScreen.Bounds.Size, false);
+			renderer = new Renderer(this, GetResolution(settings), false);
 			Visible = true;
+
+			string mapName = settings.GetValue("map", "scm12ea.ini");
 
 			IniFile mapFile = new IniFile(File.OpenRead("../../../" + mapName));
 			map = new Map(mapFile);

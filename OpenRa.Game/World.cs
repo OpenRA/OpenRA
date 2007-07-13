@@ -28,11 +28,14 @@ namespace OpenRa.Game
 			actors.Add(a);	//todo: protect from concurrent modification
 		}
 
-		// assumption: there is only one sheet!
-		// some noob needs to fix this!
-
 		// assumption: its not going to hurt, to draw *all* units.
 		// in reality, 500 tanks is going to hurt our perf.
+
+		// assumption: we dont skip around between sheets much. otherwise, our perf is going to SUCK.
+		// this can be fixed by pooling vertex/index lists, except that breaks z-ordering
+		// across sheets.
+
+		// assumption: when people fix these items, they might update the warning comment?
 
 		public void Draw(Renderer renderer)
 		{

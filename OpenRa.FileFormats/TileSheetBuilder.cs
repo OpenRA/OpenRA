@@ -5,7 +5,6 @@ using System.Drawing;
 
 namespace OpenRa.FileFormats
 {
-	// T is probably going to be BluntDirectX.Direct3D.Texture
 	public delegate T Provider<T>();
 
 	public class TileSheetBuilder<T>

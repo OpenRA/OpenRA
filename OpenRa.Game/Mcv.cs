@@ -8,16 +8,21 @@ namespace OpenRa.Game
 {
 	class Mcv : Actor
 	{
-		//int facing; // not currently used
-
 		public Mcv( PointF location )
 		{
 			this.location = location;
 		}
 
+		int GetFacing()
+		{
+			int x = (Environment.TickCount >> 6) % 64;
+
+			return x < 32 ? x : 63 - x;
+		}
+
 		public override SheetRectangle<Sheet>[] CurrentImages
 		{
-			get { return new SheetRectangle<Sheet>[] { UnitSheetBuilder.McvSheet[ 0 ] }; }
+			get { return new SheetRectangle<Sheet>[] { UnitSheetBuilder.McvSheet[ GetFacing() ] }; }
 		}
 	}
 }
