@@ -35,7 +35,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitmapBuilder.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />

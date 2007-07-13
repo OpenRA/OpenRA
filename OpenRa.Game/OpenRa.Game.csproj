@@ -54,6 +54,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Sidebar.cs" />
+    <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
     <Compile Include="UnitSheetBuilder.cs" />

@@ -124,38 +124,6 @@ namespace OpenRa.TechTree
 
 		bool canBuild;
 		public bool CanBuild { get { return canBuild; } }
-
-		Bitmap icon;
-		public Bitmap Icon
-		{
-			get { return icon ?? (icon = LoadIcon(tag)); }
-		}
-
-		static Package package = new Package("../../../hires.mix");
-		static Palette palette = new Palette(File.OpenRead("../../../temperat.pal"));
-
-		static Bitmap LoadIcon(string tag)
-		{
-			string filename = tag + "icon.shp";
-
-			try
-			{
-				Stream s = package.GetContent(filename);
-				ShpReader reader = new ShpReader(s);
-				foreach (ImageHeader h in reader)
-					return BitmapBuilder.FromBytes(h.Image, reader.Size, palette);
-
-				return null;
-			}
-			catch (FileNotFoundException) { return LoadIcon("dog"); }
-		}
-
-		public string Tooltip
-		{
-			get
-			{
-				return string.Format("{0} ({1})\n{2}", friendlyName, tag, owner);
-			}
-		}
+		public string Tooltip { get { return string.Format("{0} ({1})\n{2}", friendlyName, tag, owner); } }
 	}
 }

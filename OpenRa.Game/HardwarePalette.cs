@@ -19,9 +19,16 @@ namespace OpenRa.Game
 
 		Texture paletteTexture;
 
-		public HardwarePalette(GraphicsDevice device)
+		public HardwarePalette(GraphicsDevice device, Map map)
 		{
 			this.device = device;
+
+			Palette pal = new Palette(File.OpenRead("../../../" + map.Theater + ".pal"));
+			AddPalette(pal);
+
+			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
+				AddPalette(new Palette(pal, new PaletteRemap(
+					File.OpenRead("../../../" + remap + ".rem"))));
 		}
 
 		void Resolve()
@@ -44,7 +51,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public int AddPalette(Palette p)
+		int AddPalette(Palette p)
 		{
 			for (int i = 0; i < 256; i++)
 				bitmap.SetPixel(i, allocated, p.GetColor(i));

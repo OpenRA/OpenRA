@@ -10,7 +10,7 @@ namespace OpenRa.FileFormats
 	{
 		public readonly List<byte[]> TileBitmapBytes = new List<byte[]>();
 
-		public Terrain( Stream stream, Palette pal )
+		public Terrain( Stream stream )
 		{
 			int Width, Height, XDim, YDim, NumTiles;
 

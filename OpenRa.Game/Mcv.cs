@@ -23,7 +23,7 @@ namespace OpenRa.Game
 
 		public override SheetRectangle<Sheet>[] CurrentImages
 		{
-			get { return new SheetRectangle<Sheet>[] { UnitSheetBuilder.McvSheet[ GetFacing() ] }; }
+			get { return new SheetRectangle<Sheet>[] { UnitSheetBuilder.McvSheet[GetFacing()] }; }
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace OpenRa.FileFormats
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
 		public readonly Package MixFile;
 
-		public TileSet( Package mixFile, string suffix, Palette pal )
+		public TileSet( Package mixFile, string suffix )
 		{
 			MixFile = mixFile;
 			StreamReader tileIdFile = File.OpenText( "../../../tileSet.til" );
@@ -32,7 +32,7 @@ namespace OpenRa.FileFormats
 					{
 						Stream s = mixFile.GetContent(string.Format(pattern, i + 1));
 						if (!tiles.ContainsKey((ushort)(start + i)))
-							tiles.Add((ushort)(start + i), new Terrain(s, pal));
+							tiles.Add((ushort)(start + i), new Terrain(s));
 					}
 					catch { }
 				}
