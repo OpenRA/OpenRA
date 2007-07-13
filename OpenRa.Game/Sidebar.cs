@@ -50,32 +50,36 @@ namespace OpenRa.Game
 			}
 		}
 
+		void DrawSprite(Sprite s, ref PointF p)
+		{
+			spriteRenderer.DrawSprite(s, p);
+			p.Y += 48;
+		}
+
+		void Fill(Size clientSize, PointF p)
+		{
+			while (p.Y < clientSize.Height)
+				DrawSprite(sprites["BLANK"], ref p);
+		}
+
 		public void Paint(Size clientSize, PointF scrollOffset)
 		{
-			int y1 = 0, y2 = 0;
-			foreach (Item i in techTree.BuildableBuildings)
+			PointF buildPos = new PointF(clientSize.Width - 128 + scrollOffset.X, scrollOffset.Y);
+			PointF unitPos = new PointF(clientSize.Width - 64 + scrollOffset.X, scrollOffset.Y);
+			
+			foreach (Item i in techTree.BuildableItems)
 			{
 				Sprite sprite;
 				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
-				PointF location = new PointF(clientSize.Width - 128 + scrollOffset.X, y1 + scrollOffset.Y);
-				spriteRenderer.DrawSprite(sprite, location);
-				y1 += 48;
+
+				if (i.IsStructure)
+					DrawSprite( sprite, ref buildPos );
+				else
+					DrawSprite( sprite, ref unitPos );
 			}
-			foreach (Item i in techTree.BuildableUnits)
-			{
-				Sprite sprite;
-				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
-				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
-				spriteRenderer.DrawSprite(sprite, location);
-				y2 += 48;
-			}
-			while (y2 < clientSize.Height)
-			{
-				Sprite sprite = sprites["BLANK"];
-				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
-				spriteRenderer.DrawSprite(sprite, location);
-				y2 += 48;
-			}
+
+			Fill(clientSize, buildPos);
+			Fill(clientSize, unitPos);
 
 			spriteRenderer.Flush();
 		}
