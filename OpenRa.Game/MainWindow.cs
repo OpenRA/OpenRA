@@ -17,7 +17,7 @@ namespace OpenRa.Game
 		readonly Map map;
 		readonly TileSet tileSet;
 		
-		Palette pal;
+		Palette pal, playerPal;
 		Package TileMix;
 		string TileSuffix;
 
@@ -72,7 +72,7 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			UnitSheetBuilder.AddUnit( "mcv", renderer.Device, pal );
+			UnitSheetBuilder.AddUnit( "mcv", renderer.Device, playerPal );
 			world.Add( new Mcv( new PointF( 24 * 5, 24 * 5 ) ) );
 		}
 
@@ -214,6 +214,8 @@ namespace OpenRa.Game
 			pal = new Palette(File.OpenRead("../../../" + theaterName + ".pal"));
 			TileMix = new Package("../../../" + theaterName + ".mix");
 			TileSuffix = "." + theaterName.Substring(0, 3);
+
+			playerPal = new Palette(pal, new PaletteRemap(File.OpenRead("../../../red.rem")));
 
 			return new TileSet(TileMix, TileSuffix, pal);
 		}
