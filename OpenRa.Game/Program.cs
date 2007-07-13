@@ -21,8 +21,8 @@ namespace OpenRa.Game
 			}
 			catch( Exception e )
 			{
-				File.WriteAllText( "error.log", e.ToString() );
-				throw;
+			    File.WriteAllText( "error.log", e.ToString() );
+			    throw;
 			}
 		}
 	}

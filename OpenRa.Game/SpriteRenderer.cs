@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void DrawSprite(SheetRectangle<Sheet> s, PointF location)
+		public void DrawSprite(Sprite s, PointF location)
 		{
 			if (s.sheet != currentSheet)
 				Flush();

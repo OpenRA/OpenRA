@@ -38,7 +38,7 @@ namespace OpenRa.Game
 			renderer = new Renderer(this, GetResolution(settings), false);
 			Visible = true;
 
-			CoreSheetBuilder.Initialize(renderer.Device);
+			SheetBuilder.Initialize(renderer.Device);
 
 			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
 

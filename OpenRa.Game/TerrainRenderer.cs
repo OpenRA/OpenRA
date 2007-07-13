@@ -25,8 +25,8 @@ namespace OpenRa.Game
 
 			tileSet = new TileSet(tilePackage, map.TileSuffix);
 
-			Dictionary<TileReference, SheetRectangle<Sheet>> tileMapping =
-				new Dictionary<TileReference, SheetRectangle<Sheet>>();
+			Dictionary<TileReference, Sprite> tileMapping =
+				new Dictionary<TileReference, Sprite>();
 
 			Size tileSize = new Size(24, 24);
 
@@ -37,10 +37,10 @@ namespace OpenRa.Game
 				for (int i = 0; i < map.Width; i++)
 				{
 					TileReference tileRef = map.MapTiles[i + map.XOffset, j + map.YOffset];
-					SheetRectangle<Sheet> tile;
+					Sprite tile;
 
 					if (!tileMapping.TryGetValue(tileRef, out tile))
-						tileMapping.Add(tileRef, tile = CoreSheetBuilder.Add(tileSet.GetBytes(tileRef), tileSize));
+						tileMapping.Add(tileRef, tile = SheetBuilder.Add(tileSet.GetBytes(tileRef), tileSize));
 
 					terrainSheet = tile.sheet;
 

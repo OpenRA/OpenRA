@@ -10,7 +10,6 @@ using System.IO;
 
 namespace OpenRa.Game
 {
-	using Sprite = SheetRectangle<Sheet>;
 	class Sidebar
 	{
 		TechTree.TechTree techTree = new TechTree.TechTree();
@@ -37,7 +36,7 @@ namespace OpenRa.Game
 			LoadSprites("../../../buildings.txt");
 			LoadSprites("../../../units.txt");
 
-			sprites.Add("BLANK", CoreSheetBuilder.Add(new Size(64, 48), 16));
+			sprites.Add("BLANK", SheetBuilder.Add(new Size(64, 48), 16));
 			techTree.CurrentRace = race;
 		}
 

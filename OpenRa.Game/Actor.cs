@@ -12,6 +12,6 @@ namespace OpenRa.Game
 	{
 		public PointF location;
 		public int palette;
-		public abstract SheetRectangle<Sheet>[] CurrentImages { get; }
+		public abstract Sprite[] CurrentImages { get; }
 	}
 }

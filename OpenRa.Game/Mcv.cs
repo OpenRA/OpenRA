@@ -20,18 +20,13 @@ namespace OpenRa.Game
 				mcvRange = UnitSheetBuilder.AddUnit("mcv");
 		}
 
-		int GetFacing()
-		{
-			int x = (Environment.TickCount >> 6) % 32;
-			return x;
-			//return x < 32 ? x : 63 - x;
-		}
+		int GetFacing() { return (Environment.TickCount >> 6) % 32; }
 
-		public override SheetRectangle<Sheet>[] CurrentImages
+		public override Sprite[] CurrentImages
 		{
 			get
 			{
-				return new SheetRectangle<Sheet>[] 
+				return new Sprite[] 
 				{ 
 					UnitSheetBuilder.sprites[GetFacing() + mcvRange.Value.Start]
 				};

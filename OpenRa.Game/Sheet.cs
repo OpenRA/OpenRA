@@ -15,13 +15,12 @@ namespace OpenRa.Game
 		readonly GraphicsDevice device;
 		Texture texture;
 
+		public Size Size { get { return bitmap.Size; } }
+
 		public Sheet(Size size, GraphicsDevice d)
 		{
 			bitmap = new Bitmap(size.Width, size.Height);
 			device = d;
-
-			//using (Graphics g = Graphics.FromImage(bitmap))
-			//    g.FillRectangle(Brushes.Fuchsia, 0, 0, size.Width, size.Height);
 		}
 
 		public Texture Texture

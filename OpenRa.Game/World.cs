@@ -46,7 +46,7 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				SheetRectangle<Sheet>[] images = a.CurrentImages;
+				Sprite[] images = a.CurrentImages;
 
 				if (images == null)
 					continue;
@@ -57,7 +57,7 @@ namespace OpenRa.Game
 				if (a.location.Y > yr.End || a.location.Y < yr.Start - images[0].size.Height)
 					continue;
 
-				foreach (SheetRectangle<Sheet> image in images)
+				foreach (Sprite image in images)
 				{
 					if( image.sheet != sheet && sprites > 0 && sheet != null )
 					{

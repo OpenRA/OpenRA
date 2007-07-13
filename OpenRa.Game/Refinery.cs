@@ -20,16 +20,13 @@ namespace OpenRa.Game
 			this.palette = palette;
 		}
 
-		int GetFrame()
-		{
-			return 1;//
-		}
+		int GetFrame() { return 1; }
 
-		public override SheetRectangle<Sheet>[] CurrentImages
+		public override Sprite[] CurrentImages
 		{
 			get
 			{
-				return new SheetRectangle<Sheet>[] { UnitSheetBuilder.sprites[refineryRange.Value.Start + GetFrame()] };
+				return new Sprite[] { UnitSheetBuilder.sprites[refineryRange.Value.Start + GetFrame()] };
 			}
 		}
 	}

@@ -9,7 +9,7 @@ namespace OpenRa.Game
 {
 	class TreeCache
 	{
-		Dictionary<string, SheetRectangle<Sheet>> trees = new Dictionary<string, SheetRectangle<Sheet>>();
+		Dictionary<string, Sprite> trees = new Dictionary<string, Sprite>();
 
 		public TreeCache(GraphicsDevice device, Map map, Package package)
 		{
@@ -21,10 +21,10 @@ namespace OpenRa.Game
 				string filename = r.Image + "." + map.Theater.Substring(0, 3);
 
 				ShpReader reader = new ShpReader(package.GetContent(filename));
-				trees.Add(r.Image, CoreSheetBuilder.Add(reader[0].Image, reader.Size));
+				trees.Add(r.Image, SheetBuilder.Add(reader[0].Image, reader.Size));
 			}
 		}
 
-		public SheetRectangle<Sheet> GetImage(string tree) { return trees[tree]; }
+		public Sprite GetImage(string tree) { return trees[tree]; }
 	}
 }

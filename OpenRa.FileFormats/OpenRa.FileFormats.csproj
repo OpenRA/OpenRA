@@ -48,7 +48,6 @@
     <Compile Include="ShpReader.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TileSet.cs" />
-    <Compile Include="TileSheetBuilder.cs" />
     <Compile Include="Tuple.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
-		public static float U(SheetRectangle<Sheet> s, float u)
+		public static float U(Sprite s, float u)
 		{
 			float u0 = (float)(s.origin.X + 0.5f) / (float)s.sheet.bitmap.Width;
 			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
@@ -17,7 +17,7 @@ namespace OpenRa.Game
 			return (u > 0) ? u1 : u0;
 		}
 
-		public static float V(SheetRectangle<Sheet> s, float v)
+		public static float V(Sprite s, float v)
 		{
 			float v0 = (float)(s.origin.Y + 0.5f) / (float)s.sheet.bitmap.Height;
 			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
@@ -48,7 +48,7 @@ namespace OpenRa.Game
 			return new PointF(paletteLine / 16.0f, channelEncoder(channel));
 		}
 
-		public static Vertex MakeVertex(PointF o, float u, float v, SheetRectangle<Sheet> r, int palette)
+		public static Vertex MakeVertex(PointF o, float u, float v, Sprite r, int palette)
 		{
 			float x2 = o.X + r.size.Width;
 			float y2 = o.Y + r.size.Height;
@@ -64,7 +64,7 @@ namespace OpenRa.Game
 			return (1 - t) * a + t * b;
 		}
 
-		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, SheetRectangle<Sheet> r, int palette)
+		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, Sprite r, int palette)
 		{
 			ushort offset = (ushort)vertices.Count;
 
@@ -82,7 +82,7 @@ namespace OpenRa.Game
 			indices.Add((ushort)(offset + 2));
 		}
 
-		public static void CopyIntoChannel(SheetRectangle<Sheet> dest, byte[] src)
+		public static void CopyIntoChannel(Sprite dest, byte[] src)
 		{
 			for (int i = 0; i < dest.size.Width; i++)
 				for (int j = 0; j < dest.size.Height; j++)
