@@ -72,7 +72,13 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			UnitSheetBuilder.AddUnit( "mcv", renderer.Device, playerPal );
+			UnitSheetBuilder.AddUnit( "mcv", playerPal );
+			UnitSheetBuilder.AddUnit("1tnk", playerPal);
+			UnitSheetBuilder.AddUnit("2tnk", playerPal);
+			UnitSheetBuilder.AddUnit("3tnk", playerPal);
+
+			UnitSheetBuilder.Resolve(renderer.Device);
+
 			world.Add( new Mcv( new PointF( 24 * 5, 24 * 5 ) ) );
 		}
 
@@ -216,6 +222,15 @@ namespace OpenRa.Game
 			TileSuffix = "." + theaterName.Substring(0, 3);
 
 			playerPal = new Palette(pal, new PaletteRemap(File.OpenRead("../../../red.rem")));
+
+			HardwarePalette hardwarePalette = new HardwarePalette(renderer.Device);
+			hardwarePalette.AddPalette(pal);
+
+			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
+				hardwarePalette.AddPalette(new Palette(pal, new PaletteRemap(
+					File.OpenRead("../../../" + remap + ".rem"))));
+
+			hardwarePalette.Resolve();
 
 			return new TileSet(TileMix, TileSuffix, pal);
 		}
