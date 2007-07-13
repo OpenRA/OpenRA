@@ -35,18 +35,18 @@ namespace OpenRa.Game
 		{
 			List<Sheet> sheets = new List<Sheet>();
 
-			Size pageSize = new Size(1024,512);
+			Size pageSize = new Size(1024, 512);
 
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet t = new Sheet( new Bitmap(pageSize.Width, pageSize.Height),renderer.Device);
+				Sheet t = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), renderer.Device);
 				sheets.Add(t);
 				return t;
 			};
 
-			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>( pageSize, sheetProvider );
+			TileSheetBuilder<Sheet> builder = new TileSheetBuilder<Sheet>(pageSize, sheetProvider);
 
-			for( int i = 0; i < map.Width; i++ )
+			for (int i = 0; i < map.Width; i++)
 				for (int j = 0; j < map.Height; j++)
 				{
 					TileReference tileRef = map.MapTiles[i + map.XOffset, j + map.YOffset];
@@ -55,7 +55,7 @@ namespace OpenRa.Game
 					{
 						Bitmap srcImage = tileSet.tiles[tileRef.tile].GetTile(tileRef.image);
 						SheetRectangle<Sheet> rect = builder.AddImage(srcImage.Size);
-						
+
 						using (Graphics g = Graphics.FromImage(rect.sheet.bitmap))
 							g.DrawImage(srcImage, rect.origin);
 
@@ -70,12 +70,12 @@ namespace OpenRa.Game
 				world.Add(new Tree(treeReference, treeCache, map));
 
 			UnitSheetBuilder.Initialize(renderer.Device);
-			UnitSheetBuilder.AddUnit( "mcv", playerPal );
+			UnitSheetBuilder.AddUnit("mcv", playerPal);
 			UnitSheetBuilder.AddUnit("1tnk", playerPal);
 			UnitSheetBuilder.AddUnit("2tnk", playerPal);
 			UnitSheetBuilder.AddUnit("3tnk", playerPal);
 
-			world.Add( new Mcv( new PointF( 24 * 5, 24 * 5 ) ) );
+			world.Add(new Mcv(new PointF(24 * 5, 24 * 5)));
 		}
 
 		void LoadVertexBuffer()
