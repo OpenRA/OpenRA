@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
+using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
@@ -22,6 +23,11 @@ namespace OpenRa.Game
 			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
 
 			return (v > 0) ? v1 : v0;
+		}
+
+		public static float Constrain(float x, Range<float> range)
+		{
+			return x < range.Start ? range.Start : x > range.End ? range.End : x;
 		}
 
 		static PointF EncodeVertexAttributes(TextureChannel channel, int paletteLine)

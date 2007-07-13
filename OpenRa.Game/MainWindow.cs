@@ -74,7 +74,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		PointF scrollPos, oldPos;
+		PointF scrollPos;
 		int x1,y1;
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -83,7 +83,6 @@ namespace OpenRa.Game
 
 			x1 = e.X;
 			y1 = e.Y;
-			oldPos = scrollPos;
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -92,9 +91,14 @@ namespace OpenRa.Game
 
 			if (e.Button != 0)
 			{
-				scrollPos = oldPos;
 				scrollPos.X += x1 - e.X;
 				scrollPos.Y += y1 - e.Y;
+
+				x1 = e.X;
+				y1 = e.Y;
+
+				scrollPos.X = Util.Constrain( scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width));
+				scrollPos.Y = Util.Constrain(scrollPos.Y, new Range<float>(0, map.Height * 24 - ClientSize.Height));
 			}
 		}
 
