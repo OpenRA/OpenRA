@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
+using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
 	class Mcv : Actor
 	{
+		static Range<int>? mcvRange = null;
+
 		public Mcv( PointF location, int palette )
 		{
 			this.location = location;
 			this.palette = palette;
+
+			if (mcvRange == null)
+				mcvRange = UnitSheetBuilder.AddUnit("mcv");
 		}
 
 		int GetFacing()
@@ -27,8 +33,7 @@ namespace OpenRa.Game
 			{
 				return new SheetRectangle<Sheet>[] 
 				{ 
-					UnitSheetBuilder.McvSheet[GetFacing()],
-					UnitSheetBuilder.McvSheet[63 - GetFacing()]
+					UnitSheetBuilder.sprites[GetFacing() + mcvRange.Value.Start]
 				};
 			}
 		}

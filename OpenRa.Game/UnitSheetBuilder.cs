@@ -12,7 +12,7 @@ namespace OpenRa.Game
 		static readonly Package unitsPackage = new Package( "../../../conquer.mix" );
 		static readonly Package otherUnitsPackage = new Package("../../../hires.mix");
 
-		public static readonly List<SheetRectangle<Sheet>> McvSheet = new List<SheetRectangle<Sheet>>();
+		public static readonly List<SheetRectangle<Sheet>> sprites = new List<SheetRectangle<Sheet>>();
 
 		static ShpReader Load(string filename)
 		{
@@ -23,11 +23,14 @@ namespace OpenRa.Game
 			throw new NotImplementedException();
 		}
 
-		public static void AddUnit( string name )
+		public static Range<int> AddUnit( string name )
 		{
+			int low = sprites.Count;
 			ShpReader reader = Load(name + ".shp");
 			foreach (ImageHeader h in reader)
-				McvSheet.Add(CoreSheetBuilder.Add(h.Image, reader.Size));
+				sprites.Add(CoreSheetBuilder.Add(h.Image, reader.Size));
+
+			return new Range<int>(low, sprites.Count - 1);
 		}
 	}
 }

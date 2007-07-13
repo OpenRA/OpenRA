@@ -52,15 +52,11 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			//UnitSheetBuilder.AddUnit("e4");
-			//UnitSheetBuilder.AddUnit("mcv");
-			//UnitSheetBuilder.AddUnit("1tnk");
-			//UnitSheetBuilder.AddUnit("2tnk");
-			UnitSheetBuilder.AddUnit("3tnk");
-
 			world.Add(new Mcv(new PointF(24 * 5, 24 * 5), 3));
 			world.Add(new Mcv(new PointF(24 * 7, 24 * 5), 2));
 			world.Add(new Mcv(new PointF(24 * 9, 24 * 5), 1));
+
+			world.Add(new Refinery(new PointF(24 * 5, 24 * 7), 1));
 
 			sidebar = new Sidebar(OpenRa.TechTree.Race.None, renderer);
 		}
