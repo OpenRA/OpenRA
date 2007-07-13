@@ -43,7 +43,7 @@ namespace OpenRa.Game
 		public void BeginFrame( PointF r1, PointF r2, PointF scroll )
 		{
 			device.Begin();
-			//device.Clear(0, Surfaces.Color);
+			//device.Clear(Color.Gray.ToArgb(), Surfaces.Color);
 
 			shader.SetValue(scrollHandle, scroll);
 			shader.SetValue(r1Handle, r1);

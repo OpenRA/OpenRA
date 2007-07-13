@@ -34,18 +34,14 @@ namespace OpenRa.Game
 			this.spriteRenderer = new SpriteRenderer(renderer);
 
 			package = new Package("../../../hires.mix");
-			LoadSprites();
+			LoadSprites("../../../buildings.txt");
+			LoadSprites("../../../units.txt");
 			techTree.CurrentRace = race;
 		}
 
-		void LoadSprites()
+		void LoadSprites(string filename)
 		{
-			foreach (string line in File.ReadAllLines("../../../buildings.txt"))
-			{
-				string key = line.Substring(0, line.IndexOf(','));
-				sprites.Add(key, SpriteSheetBuilder.LoadSprite(package, key + "icon.shp"));
-			}
-			foreach (string line in File.ReadAllLines("../../../units.txt"))
+			foreach (string line in File.ReadAllLines(filename))
 			{
 				string key = line.Substring(0, line.IndexOf(','));
 				sprites.Add(key, SpriteSheetBuilder.LoadSprite(package, key + "icon.shp"));
@@ -67,6 +63,13 @@ namespace OpenRa.Game
 			{
 				Sprite sprite;
 				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
+				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
+				spriteRenderer.DrawSprite(sprite, location);
+				y2 += 48;
+			}
+			while (y2 < clientSize.Height)
+			{
+				Sprite sprite = sprites["DOG"];
 				PointF location = new PointF(clientSize.Width - 64 + scrollOffset.X, y2 + scrollOffset.Y);
 				spriteRenderer.DrawSprite(sprite, location);
 				y2 += 48;

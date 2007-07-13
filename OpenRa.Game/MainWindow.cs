@@ -94,7 +94,7 @@ namespace OpenRa.Game
 				x1 = e.X;
 				y1 = e.Y;
 
-				scrollPos.X = Util.Constrain(scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width));
+				scrollPos.X = Util.Constrain(scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width + 128));
 				scrollPos.Y = Util.Constrain(scrollPos.Y, new Range<float>(0, map.Height * 24 - ClientSize.Height));
 			}
 		}
@@ -106,12 +106,14 @@ namespace OpenRa.Game
 
 			renderer.BeginFrame(r1, r2, scrollPos);
 
+			renderer.Device.EnableScissor(0, 0, ClientSize.Width - 128, ClientSize.Height);
 			terrain.Draw( ClientSize, scrollPos );
 
 			world.Draw(renderer,
 				new Range<float>(scrollPos.X, scrollPos.X + ClientSize.Width),
 				new Range<float>(scrollPos.Y, scrollPos.Y + ClientSize.Height));
 
+			renderer.Device.DisableScissor();
 			sidebar.Paint(ClientSize, scrollPos);
 
 			renderer.EndFrame();
