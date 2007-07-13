@@ -61,7 +61,7 @@ namespace OpenRa.Game
 					}
 
 					sheet = image.sheet;
-					Util.CreateQuad(vertices, indices, a.location, image);
+					Util.CreateQuad(vertices, indices, a.location, image, a.palette);
 
 					if (++sprites >= spritesPerBatch)
 					{

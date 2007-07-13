@@ -24,13 +24,33 @@ namespace OpenRa.Game
 			return (v > 0) ? v1 : v0;
 		}
 
-		public static Vertex MakeVertex(PointF o, float u, float v, SheetRectangle<Sheet> r)
+		static PointF EncodeVertexAttributes(TextureChannel channel, int paletteLine)
+		{
+			Converter<TextureChannel, float> channelEncoder = delegate(TextureChannel c)
+			{
+				switch (c)
+				{
+					case TextureChannel.Red: return 0.75f;
+					case TextureChannel.Green: return 0.25f;
+					case TextureChannel.Blue: return -0.25f;
+					case TextureChannel.Alpha: return -0.75f;
+					default:
+						throw new ArgumentException();
+				}
+			};
+
+			return new PointF(paletteLine / 16.0f, channelEncoder(channel));
+		}
+
+		public static Vertex MakeVertex(PointF o, float u, float v, SheetRectangle<Sheet> r, int palette)
 		{
 			float x2 = o.X + r.size.Width;
 			float y2 = o.Y + r.size.Height;
 
-			return new Vertex(Lerp(o.X, x2, u), Lerp(o.Y, y2, v), 0, U(r, u), V(r, v), 
-				0, 1);
+			PointF p = EncodeVertexAttributes(r.channel, palette);
+
+			return new Vertex(Lerp(o.X, x2, u), Lerp(o.Y, y2, v), 0, U(r, u), V(r, v),
+				p.X, p.Y);
 		}
 
 		static float Lerp(float a, float b, float t)
@@ -38,14 +58,14 @@ namespace OpenRa.Game
 			return (1 - t) * a + t * b;
 		}
 
-		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, SheetRectangle<Sheet> r)
+		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, SheetRectangle<Sheet> r, int palette)
 		{
 			ushort offset = (ushort)vertices.Count;
 
-			vertices.Add(Util.MakeVertex(o, 0, 0, r));
-			vertices.Add(Util.MakeVertex(o, 1, 0, r));
-			vertices.Add(Util.MakeVertex(o, 0, 1, r));
-			vertices.Add(Util.MakeVertex(o, 1, 1, r));
+			vertices.Add(Util.MakeVertex(o, 0, 0, r, palette));
+			vertices.Add(Util.MakeVertex(o, 1, 0, r, palette));
+			vertices.Add(Util.MakeVertex(o, 0, 1, r, palette));
+			vertices.Add(Util.MakeVertex(o, 1, 1, r, palette));
 
 			indices.Add(offset);
 			indices.Add((ushort)(offset + 1));
@@ -81,13 +101,5 @@ namespace OpenRa.Game
 					throw new ArgumentException();
 			}
 		}
-	}
-
-	enum TextureChannel
-	{
-		Red,
-		Green,
-		Blue,
-		Alpha,
 	}
 }

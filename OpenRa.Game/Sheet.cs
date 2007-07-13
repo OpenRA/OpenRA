@@ -15,8 +15,6 @@ namespace OpenRa.Game
 		readonly GraphicsDevice device;
 		Texture texture;
 
-		public Sheet(Bitmap b, GraphicsDevice d) { bitmap = b; device = d; }
-		
 		public Sheet(Size size, GraphicsDevice d)
 		{
 			bitmap = new Bitmap(size.Width, size.Height);

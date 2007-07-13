@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet t = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), renderer.Device);
+				Sheet t = new Sheet(pageSize, renderer.Device);
 				sheets.Add(t);
 				return t;
 			};
@@ -90,7 +90,7 @@ namespace OpenRa.Game
 					if (!indexMap.TryGetValue(tile.sheet, out indexList))
 						indexMap.Add(tile.sheet, indexList = new List<ushort>());
 
-					Util.CreateQuad(vertices, indexList, new PointF(24 * i, 24 * j), tile);
+					Util.CreateQuad(vertices, indexList, new PointF(24 * i, 24 * j), tile, 0);
 				}
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Count, Vertex.Format);

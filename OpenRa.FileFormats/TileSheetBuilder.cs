@@ -59,12 +59,27 @@ namespace OpenRa.FileFormats
 		public readonly Point origin;
 		public readonly Size size;
 		public readonly T sheet;
+		public readonly TextureChannel channel;
 
-		internal SheetRectangle(T sheet, Point origin, Size size)
+		internal SheetRectangle(T sheet, Point origin, Size size, TextureChannel channel)
 		{
 			this.origin = origin;
 			this.size = size;
 			this.sheet = sheet;
+			this.channel = channel;
 		}
+
+		internal SheetRectangle(T sheet, Point origin, Size size)
+			: this(sheet, origin, size, TextureChannel.Red)
+		{
+		}
+	}
+
+	public enum TextureChannel
+	{
+		Red,
+		Green,
+		Blue,
+		Alpha,
 	}
 }

@@ -11,6 +11,7 @@ namespace OpenRa.Game
 	abstract class Actor
 	{
 		public PointF location;
+		public int palette;
 		public abstract SheetRectangle<Sheet>[] CurrentImages { get; }
 	}
 }

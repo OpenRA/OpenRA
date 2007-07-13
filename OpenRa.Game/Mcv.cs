@@ -11,6 +11,7 @@ namespace OpenRa.Game
 		public Mcv( PointF location )
 		{
 			this.location = location;
+			this.palette = 3;
 		}
 
 		int GetFacing()
