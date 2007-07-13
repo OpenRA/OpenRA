@@ -16,22 +16,16 @@ namespace OpenRa.Game
 		static List<Sheet> sheets = new List<Sheet>();
 		static Size pageSize = new Size(1024, 512);
 
-		static UnitSheetBuilder()
+		public static void Initialize( GraphicsDevice device )
 		{
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height));
+				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), device);
 				sheets.Add(sheet);
 				return sheet;
 			};
 
 			builder = new TileSheetBuilder<Sheet>(pageSize, sheetProvider);
-		}
-
-		public static void Resolve( GraphicsDevice device )
-		{
-			foreach (Sheet sheet in sheets)
-				sheet.LoadTexture(device);
 		}
 
 		public static void AddUnit( string name, Palette pal )

@@ -20,7 +20,7 @@ namespace OpenRa.Game
 
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height));
+				Sheet sheet = new Sheet(new Bitmap(pageSize.Width, pageSize.Height), device);
 				sheets.Add(sheet);
 				return sheet;
 			};
@@ -41,9 +41,6 @@ namespace OpenRa.Game
 
 				trees.Add(r.Image, rect);
 			}
-
-			foreach (Sheet sheet in sheets)
-				sheet.LoadTexture(device);
 
 			sh = sheets[0];
 		}

@@ -89,7 +89,7 @@ namespace OpenRa.Game
 					renderer.DrawBatch(vb, ib,
 						new Range<int>(0, vertices.Count),
 						new Range<int>(0, indices.Count),
-						sheet.texture);
+						sheet.Texture);
 				});
 		}
 	}

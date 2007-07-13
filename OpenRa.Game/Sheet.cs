@@ -11,11 +11,24 @@ namespace OpenRa.Game
 	class Sheet
 	{
 		public readonly Bitmap bitmap;
-		public Texture texture;
+		
+		readonly GraphicsDevice device;
+		Texture texture;
 
-		public Sheet(Bitmap b) { bitmap = b; }
+		public Sheet(Bitmap b, GraphicsDevice d) { bitmap = b; device = d; }
 
-		public void LoadTexture(GraphicsDevice device)
+		public Texture Texture
+		{
+			get
+			{
+				if (texture == null)
+					LoadTexture();
+
+				return texture;
+			}
+		}
+
+		void LoadTexture()
 		{
 			string tempFile = string.Format("../../../block-cache-{0}.png", suffix++);
 			bitmap.Save(tempFile);

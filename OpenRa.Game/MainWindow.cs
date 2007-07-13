@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 			Provider<Sheet> sheetProvider = delegate
 			{
-				Sheet t = new Sheet( new Bitmap(pageSize.Width, pageSize.Height));
+				Sheet t = new Sheet( new Bitmap(pageSize.Width, pageSize.Height),renderer.Device);
 				sheets.Add(t);
 				return t;
 			};
@@ -63,21 +63,17 @@ namespace OpenRa.Game
 					}
 				}
 
-			foreach (Sheet s in sheets)
-				s.LoadTexture(renderer.Device);
-
 			world = new World(renderer.Device);
 			treeCache = new TreeCache(renderer.Device, map, TileMix, pal);
 
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
+			UnitSheetBuilder.Initialize(renderer.Device);
 			UnitSheetBuilder.AddUnit( "mcv", playerPal );
 			UnitSheetBuilder.AddUnit("1tnk", playerPal);
 			UnitSheetBuilder.AddUnit("2tnk", playerPal);
 			UnitSheetBuilder.AddUnit("3tnk", playerPal);
-
-			UnitSheetBuilder.Resolve(renderer.Device);
 
 			world.Add( new Mcv( new PointF( 24 * 5, 24 * 5 ) ) );
 		}
@@ -207,7 +203,7 @@ namespace OpenRa.Game
 				renderer.DrawBatch(vertexBuffer, batch.Value, 
 					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow), 
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow), 
-					batch.Key.texture);
+					batch.Key.Texture);
 			});
 		}
 
