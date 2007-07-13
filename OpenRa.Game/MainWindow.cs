@@ -52,9 +52,10 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			UnitSheetBuilder.AddUnit("mcv");
-			UnitSheetBuilder.AddUnit("1tnk");
-			UnitSheetBuilder.AddUnit("2tnk");
+			//UnitSheetBuilder.AddUnit("e4");
+			//UnitSheetBuilder.AddUnit("mcv");
+			//UnitSheetBuilder.AddUnit("1tnk");
+			//UnitSheetBuilder.AddUnit("2tnk");
 			UnitSheetBuilder.AddUnit("3tnk");
 
 			world.Add(new Mcv(new PointF(24 * 5, 24 * 5), 3));

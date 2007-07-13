@@ -71,11 +71,6 @@ namespace BluntDirectX { namespace Direct3D
 			safe_release( device );
 		}
 
-		void Clear( int color )
-		{
-			device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, (D3DCOLOR)color, 1.0f, 0 );
-		}
-
 		void Clear( int color, Surfaces surfaces )
 		{
 			device->Clear( 0, NULL, (DWORD)surfaces, (D3DCOLOR)color, 1.0f, 0 );
@@ -124,8 +119,7 @@ namespace BluntDirectX { namespace Direct3D
 			pp.BackBufferHeight = height;
 			pp.BackBufferFormat = D3DFMT_X8R8G8B8;
 
-			pp.AutoDepthStencilFormat = D3DFMT_D24X8;
-			pp.EnableAutoDepthStencil = true;
+			pp.EnableAutoDepthStencil = false;
 			pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 			
 			pp.Windowed = windowed;
