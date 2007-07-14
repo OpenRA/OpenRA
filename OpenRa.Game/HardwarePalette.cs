@@ -8,7 +8,7 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
-	class HardwarePalette
+	public class HardwarePalette
 	{
 		const int maxEntries = 16;			// dont need anything like this many, 
 											// but the hardware likes square textures better

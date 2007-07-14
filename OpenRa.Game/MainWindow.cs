@@ -44,7 +44,7 @@ namespace OpenRa.Game
 
 			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
 
-			viewport = new Viewport(ClientSize, new float2(map.Size));
+			viewport = new Viewport(ClientSize, new float2(map.Size), renderer);
 
 			SheetBuilder.Initialize(renderer.Device);
 

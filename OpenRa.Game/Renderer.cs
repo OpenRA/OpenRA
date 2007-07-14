@@ -8,7 +8,7 @@ using System.IO;
 
 namespace OpenRa.Game
 {
-	class Renderer
+	public class Renderer
 	{
 		readonly GraphicsDevice device;
 		readonly Effect shader;

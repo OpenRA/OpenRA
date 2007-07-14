@@ -49,7 +49,6 @@ namespace OpenRa.Game
 					break;
 				case AnchorStyles.None:
 					throw new NotImplementedException();
-					break;
 			}
 		}
 

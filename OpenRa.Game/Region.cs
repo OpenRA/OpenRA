@@ -20,7 +20,7 @@ namespace OpenRa.Game
 
 		public void Draw(Renderer renderer, Viewport viewport)
 		{
-			renderer.Device.EnableScissor(location.X, location.Y, size.Width, size.Height);
+			renderer.Device.EnableScissor((int)location.X, (int)location.Y, size.Width, size.Height);
 			drawFunction(renderer, viewport);
 			renderer.Device.DisableScissor();
 		}
