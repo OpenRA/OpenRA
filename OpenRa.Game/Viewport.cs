@@ -10,31 +10,20 @@ namespace OpenRa.Game
 	{
 		readonly Size clientSize;
 		readonly float2 mapSize;
-		PointF scrollPosition;
+		float2 scrollPosition;
 
-		public PointF ScrollPosition
-		{
-			get { return scrollPosition; }
-		}
+		public PointF ScrollPosition { get { return scrollPosition.ToPointF(); } }
+		public Size ClientSize { get { return clientSize; } }
 
 		public void Scroll(float2 delta)
 		{
-			float2 scrollPos = new float2(ScrollPosition) + delta;
-			scrollPos = scrollPos.Constrain(new Range<float2>(float2.Zero, mapSize));
-			scrollPosition = scrollPos.ToPointF();
+			scrollPosition = (scrollPosition + delta).Constrain(new Range<float2>(float2.Zero, mapSize));
 		}
-
-		public Size ClientSize
-		{
-			get { return clientSize; }
-		} 
 
 		public Viewport(Size clientSize, float2 mapSize)
 		{
 			this.clientSize = clientSize;
-			this.mapSize = 24 * mapSize - Size + new float2(128, 0);
+			this.mapSize = 24 * mapSize - new float2(clientSize) + new float2(128, 0);
 		}
-
-		public float2 Size { get { return new float2(clientSize); } }
 	}
 }
