@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -9,9 +10,9 @@ namespace OpenRa.Game
 	{
 		Point location;
 		Size size;
-		Renderable drawFunction;
+		MethodInvoker drawFunction;
 
-		public Region(Point location, Size size, Renderable drawFunction)
+		public Region(Point location, Size size, MethodInvoker drawFunction)
 		{
 			this.location = location;
 			this.size = size;
@@ -21,7 +22,7 @@ namespace OpenRa.Game
 		public void Draw(Renderer renderer, Viewport viewport)
 		{
 			renderer.Device.EnableScissor(location.X, location.Y, size.Width, size.Height);
-			drawFunction(renderer, viewport);
+			drawFunction();
 			renderer.Device.DisableScissor();
 		}
 	}

@@ -7,7 +7,6 @@ using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
-	delegate void Renderable(Renderer renderer, Viewport viewport);
 	class Viewport
 	{
 		readonly Size clientSize;
@@ -34,7 +33,7 @@ namespace OpenRa.Game
 		}
 
 		List<Region> regions = new List<Region>();
-		public void ResquestRegion(AnchorStyles anchor, int distanceFromAnchor, Renderable drawFunction)
+		public void RequestRegion(AnchorStyles anchor, int distanceFromAnchor, MethodInvoker drawFunction)
 		{
 			switch (anchor)
 			{
@@ -57,8 +56,15 @@ namespace OpenRa.Game
 
 		public void DrawRegions()
 		{
+			float2 r1 = new float2(2.0f / clientSize.Width, -2.0f / clientSize.Height);
+			float2 r2 = new float2(-1, 1);
+			
+			renderer.BeginFrame(r1, r2, scrollPosition);
+
 			foreach (Region region in regions)
 				region.Draw(renderer, this);
+
+			renderer.EndFrame();
 		}
 	}
 }

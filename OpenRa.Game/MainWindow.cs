@@ -51,9 +51,9 @@ namespace OpenRa.Game
 			TileMix = new Package("../../../" + map.Theater + ".mix");
 
 			renderer.SetPalette(new HardwarePalette(renderer.Device, map));
-			terrain = new TerrainRenderer(renderer, map, TileMix);
+			terrain = new TerrainRenderer(renderer, map, TileMix, viewport);
 
-			world = new World(renderer);
+			world = new World(renderer, viewport);
 			treeCache = new TreeCache(renderer.Device, map, TileMix);
 
 			foreach (TreeReference treeReference in map.Trees)
@@ -65,7 +65,7 @@ namespace OpenRa.Game
 
 			world.Add(new Refinery(24 * new float2(5, 7), 1));
 
-			sidebar = new Sidebar(Race.Soviet, renderer);
+			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
 		}
 
 		internal void Run()
@@ -99,20 +99,7 @@ namespace OpenRa.Game
 
 		void Frame()
 		{
-			float2 r1 = new float2(2, -2) / viewport.Size;
-			float2 r2 = new float2(-1, 1);
-
-			renderer.BeginFrame(r1, r2, viewport.Location);
-
-			renderer.Device.EnableScissor(0, 0, viewport.ClientSize.Width - 128, viewport.ClientSize.Height);
-			terrain.Draw(viewport);
-
-			world.Draw(renderer, viewport);
-
-			renderer.Device.DisableScissor();
-			sidebar.Paint(viewport);
-
-			renderer.EndFrame();
+			viewport.DrawRegions();
 		}
 	}
 }

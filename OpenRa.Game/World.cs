@@ -4,6 +4,7 @@ using System.Text;
 using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -11,12 +12,20 @@ namespace OpenRa.Game
 	{
 		List<Actor> actors = new List<Actor>();
 		SpriteRenderer spriteRenderer;
+		Renderer renderer;
+		Viewport viewport;
 
-		public World(Renderer renderer) { spriteRenderer = new SpriteRenderer(renderer, true); }
+		public World(Renderer renderer, Viewport viewport)
+		{
+			this.renderer = renderer;
+			this.viewport = viewport;
+			viewport.RequestRegion(AnchorStyles.Left, viewport.ClientSize.Width - 128, Draw);
+			spriteRenderer = new SpriteRenderer(renderer, true);
+		}
 
 		public void Add(Actor a) { actors.Add(a); }
 
-		public void Draw(Renderer renderer, Viewport viewport)
+		public void Draw()
 		{
 			Range<float2> range = new Range<float2>(viewport.Location, viewport.Size);
 

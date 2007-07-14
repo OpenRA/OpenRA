@@ -6,6 +6,7 @@ using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -19,9 +20,12 @@ namespace OpenRa.Game
 		Sprite blank;
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
+		Viewport viewport;
 
-		public Sidebar(Race race, Renderer renderer)
+		public Sidebar(Race race, Renderer renderer, Viewport viewport)
 		{
+			this.viewport = viewport;
+			viewport.RequestRegion(AnchorStyles.Right, 128, Paint);
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
@@ -54,7 +58,7 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
-		public void Paint(Viewport viewport)
+		public void Paint()
 		{
 			float2 buildPos = viewport.Location + new float2(viewport.ClientSize.Width - 128, 0);
 			float2 unitPos = viewport.Location + new float2(viewport.ClientSize.Width - 64, 0);

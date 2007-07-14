@@ -5,6 +5,7 @@ using OpenRa.FileFormats;
 using BluntDirectX.Direct3D;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -14,13 +15,16 @@ namespace OpenRa.Game
 		IndexBuffer indexBuffer;
 		Sheet terrainSheet;
 		TileSet tileSet;
+		Viewport viewport;
 
 		Renderer renderer;
 		Map map;
 
-		public TerrainRenderer(Renderer renderer, Map map, Package tilePackage)
+		public TerrainRenderer(Renderer renderer, Map map, Package tilePackage, Viewport viewport)
 		{
 			this.renderer = renderer;
+			this.viewport = viewport;
+			viewport.RequestRegion(AnchorStyles.Left, viewport.ClientSize.Width - 128, Draw);
 			this.map = map;
 
 			tileSet = new TileSet(tilePackage, map.TileSuffix);
@@ -54,7 +58,7 @@ namespace OpenRa.Game
 			indexBuffer.SetData(indices.ToArray());
 		}
 
-		public void Draw( Viewport viewport )
+		public void Draw()
 		{
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;
