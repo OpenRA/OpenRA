@@ -6,7 +6,6 @@ using System.Drawing;
 using BluntDirectX.Direct3D;
 using OpenRa.FileFormats;
 using System.IO;
-using System.Runtime.InteropServices;
 using OpenRa.TechTree;
 
 namespace OpenRa.Game
