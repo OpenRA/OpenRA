@@ -11,7 +11,6 @@ MCV,Mobile Construction Vehicle
 JEEP,Ranger
 APC,Armored Personnel Carrier
 MNLY,Minelayer
-TRUK,Convoy Truck
 SS,Submarine
 DD,Destroyer
 CA,Cruiser
