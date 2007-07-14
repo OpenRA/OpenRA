@@ -34,7 +34,8 @@ namespace OpenRa.Game
 
 		static Provider<Sheet> pageProvider;
 		static Sheet current = null;
-		static int x = 0, y = 0, rowHeight = 0;
+		static int rowHeight = 0;
+		static Point p;
 		static TextureChannel? channel = null;
 
 		static TextureChannel? NextChannel(TextureChannel? t)
@@ -61,17 +62,16 @@ namespace OpenRa.Game
 				channel = NextChannel(null);
 			}
 
-			if (rowHeight == 0 || imageSize.Width + x > current.Size.Width)
+			if (imageSize.Width + p.X > current.Size.Width)
 			{
-				y += rowHeight;
+				p = new Point(0, p.Y + rowHeight);
 				rowHeight = imageSize.Height;
-				x = 0;
 			}
 
 			if (imageSize.Height > rowHeight)
 				rowHeight = imageSize.Height;
 
-			if (y + imageSize.Height > current.Size.Height)
+			if (p.Y + imageSize.Height > current.Size.Height)
 			{
 
 				if (null == (channel = NextChannel(channel)))
@@ -80,11 +80,12 @@ namespace OpenRa.Game
 					channel = NextChannel(channel);
 				}
 
-				x = y = rowHeight = 0;
+				rowHeight = 0;
+				p = new Point(0,0);
 			}
 
-			Sprite rect = new Sprite(current, new Point(x, y), imageSize, channel.Value);
-			x += imageSize.Width;
+			Sprite rect = new Sprite(current, p, imageSize, channel.Value);
+			p.X += imageSize.Width;
 
 			return rect;
 		}
