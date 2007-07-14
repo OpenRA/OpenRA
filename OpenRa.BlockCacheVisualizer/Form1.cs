@@ -15,6 +15,10 @@ namespace OpenRa.BlockCacheVisualizer
 		public Form1()
 		{
 			InitializeComponent();
+			ClientSize = new Size(525,525);
+			FormBorderStyle = FormBorderStyle.FixedSingle;
+			MaximizeBox = false;
+			Text = "PNG Block Cache Visualizer";
 			Visible = true;
 
 			OpenFileDialog d = new OpenFileDialog();
@@ -23,6 +27,8 @@ namespace OpenRa.BlockCacheVisualizer
 
 			if (DialogResult.OK != d.ShowDialog())
 				return;
+
+			
 
 			string filename = d.FileName;
 			string palname = Path.GetDirectoryName(filename) + "\\palette-cache.png";
@@ -39,6 +45,7 @@ namespace OpenRa.BlockCacheVisualizer
 
 				pb.SizeMode = PictureBoxSizeMode.AutoSize;
 				pb.Image = b;
+				pb.BackColor = Color.White;
 
 				flowLayoutPanel1.Controls.Add(pb);
 			}
@@ -52,18 +59,18 @@ namespace OpenRa.BlockCacheVisualizer
 			return (hax & 0xff) | (hax >> 8);
 		}
 
+		static BitmapData Lock(Bitmap b, ImageLockMode mode)
+		{
+			return b.LockBits(new Rectangle(new Point(), b.Size), mode, b.PixelFormat);
+		}
+
 		Bitmap ExtractChannelToBitmap(Bitmap src, Bitmap pal, uint mask)
 		{
 			Bitmap dest = new Bitmap(src.Width / 2, src.Height / 2, pal.PixelFormat);
 
-			BitmapData destData = dest.LockBits(new Rectangle(new Point(), dest.Size), ImageLockMode.WriteOnly,
-				dest.PixelFormat);
-
-			BitmapData paletteData = pal.LockBits(new Rectangle(new Point(), pal.Size), ImageLockMode.ReadOnly,
-				pal.PixelFormat);
-
-			BitmapData srcData = src.LockBits(new Rectangle(new Point(), src.Size), ImageLockMode.ReadOnly,
-				src.PixelFormat);
+			BitmapData destData = Lock(dest, ImageLockMode.WriteOnly);
+			BitmapData paletteData = Lock(pal, ImageLockMode.ReadOnly);
+			BitmapData srcData = Lock(src, ImageLockMode.ReadOnly);
 
 			int destStride = destData.Stride/4;
 			int srcStride = srcData.Stride/4;
