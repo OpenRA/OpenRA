@@ -63,9 +63,9 @@ namespace OpenRa.Game
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;
 
-			int visibleRows = (int)(viewport.ClientSize.Height / 24.0f + 2);
+			int visibleRows = (int)(viewport.Size.Y / 24.0f + 2);
 
-			int firstRow = (int)(viewport.ScrollPosition.Y / 24.0f);
+			int firstRow = (int)(viewport.Location.Y / 24.0f);
 			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)

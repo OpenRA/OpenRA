@@ -14,15 +14,15 @@ namespace OpenRa.Game
 		float2 scrollPosition;
 		readonly Renderer renderer;
 
-		public PointF ScrollPosition { get { return scrollPosition.ToPointF(); } }
 		public Size ClientSize { get { return clientSize; } }
 
 		public float2 Location { get { return scrollPosition; } }
-		public float2 Size { get { return scrollPosition + new float2(ClientSize); } }
+		public float2 Size { get { return new float2(ClientSize); } }
 
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = (scrollPosition + delta).Constrain(new Range<float2>(float2.Zero, mapSize));
+			scrollPosition = (scrollPosition + delta).Constrain(
+				new Range<float2>(float2.Zero, mapSize));
 		}
 
 		public Viewport(Size clientSize, float2 mapSize, Renderer renderer)
@@ -56,7 +56,7 @@ namespace OpenRa.Game
 
 		public void DrawRegions()
 		{
-			float2 r1 = new float2(2.0f / clientSize.Width, -2.0f / clientSize.Height);
+			float2 r1 = new float2(2, -2) / Size;
 			float2 r2 = new float2(-1, 1);
 			
 			renderer.BeginFrame(r1, r2, scrollPosition);

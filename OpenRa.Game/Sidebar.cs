@@ -52,16 +52,16 @@ namespace OpenRa.Game
 			p.Y += 48;
 		}
 
-		void Fill(Size clientSize, float2 p)
+		void Fill(float height, float2 p)
 		{
-			while (p.Y < clientSize.Height)
+			while (p.Y < height)
 				DrawSprite(blank, ref p);
 		}
 
 		public void Paint()
 		{
-			float2 buildPos = viewport.Location + new float2(viewport.ClientSize.Width - 128, 0);
-			float2 unitPos = viewport.Location + new float2(viewport.ClientSize.Width - 64, 0);
+			float2 buildPos = viewport.Location + new float2(viewport.Size.X - 128, 0);
+			float2 unitPos = viewport.Location + new float2(viewport.Size.X - 64, 0);
 			
 			foreach (Item i in techTree.BuildableItems)
 			{
@@ -74,8 +74,8 @@ namespace OpenRa.Game
 					DrawSprite( sprite, ref unitPos );
 			}
 
-			Fill(viewport.ClientSize, buildPos);
-			Fill(viewport.ClientSize, unitPos);
+			Fill(viewport.Size.Y, buildPos);
+			Fill(viewport.Size.Y, unitPos);
 
 			spriteRenderer.Flush();
 		}
