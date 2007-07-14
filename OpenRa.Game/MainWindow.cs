@@ -89,13 +89,12 @@ namespace OpenRa.Game
 		{
 			base.OnMouseMove(e);
 
-			if (e.Button == 0)
-				return;
-
-			float2 p = new float2(e.Location);
-
-			viewport.Scroll(lastPos - p);
-			lastPos = p;
+			if (e.Button != 0)
+			{
+				float2 p = new float2(e.Location);
+				viewport.Scroll(lastPos - p);
+				lastPos = p;
+			}
 		}
 
 		void Frame()
