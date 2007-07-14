@@ -16,6 +16,8 @@ namespace OpenRa.Game
 		SpriteRenderer spriteRenderer;
 		Package package;
 
+		Sprite blank;
+
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 
 		public Sidebar(Race race, Renderer renderer)
@@ -28,7 +30,7 @@ namespace OpenRa.Game
 			LoadSprites("../../../buildings.txt");
 			LoadSprites("../../../units.txt");
 
-			sprites.Add("BLANK", SheetBuilder.Add(new Size(64, 48), 16));
+			blank = SheetBuilder.Add(new Size(64, 48), 16);
 		}
 
 		void LoadSprites(string filename)
@@ -49,7 +51,7 @@ namespace OpenRa.Game
 		void Fill(Size clientSize, PointF p)
 		{
 			while (p.Y < clientSize.Height)
-				DrawSprite(sprites["BLANK"], ref p);
+				DrawSprite(blank, ref p);
 		}
 
 		public void Paint(Size clientSize, PointF scrollOffset)
