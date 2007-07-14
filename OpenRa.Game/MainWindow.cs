@@ -36,9 +36,12 @@ namespace OpenRa.Game
 		{
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
+			StartPosition = FormStartPosition.Manual;
+			Location = new Point();
+			Visible = true;
+
 			renderer = new Renderer(this, GetResolution(settings), false);
 			viewport = new Viewport(ClientSize);
-			Visible = true;
 
 			SheetBuilder.Initialize(renderer.Device);
 
