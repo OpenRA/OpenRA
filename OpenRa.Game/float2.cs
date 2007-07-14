@@ -12,40 +12,13 @@ namespace OpenRa.Game
 	{
 		public float X, Y;
 
-		public float2(float x, float y)
-		{
-			X = x;
-			Y = y;
-		}
+		public float2(float x, float y) { X = x; Y = y; }
+		public float2(PointF p) { X = p.X; Y = p.Y; }
+		public float2(Point p) { X = p.X; Y = p.Y; }
+		public float2(Size p) { X = p.Width; Y = p.Height; }
+		public float2(SizeF p) { X = p.Width; Y = p.Height; }
 
-		public PointF ToPointF()
-		{
-			return new PointF(X, Y);
-		}
-
-		public float2(PointF p)
-		{
-			X = p.X;
-			Y = p.Y;
-		}
-
-		public float2(Point p)
-		{
-			X = p.X;
-			Y = p.Y;
-		}
-
-		public float2(Size p)
-		{
-			X = p.Width;
-			Y = p.Height;
-		}
-
-		public float2(SizeF p)
-		{
-			X = p.Width;
-			Y = p.Height;
-		}
+		public PointF ToPointF() { return new PointF(X, Y); }
 
 		public static float2 operator +(float2 a, float2 b)
 		{
