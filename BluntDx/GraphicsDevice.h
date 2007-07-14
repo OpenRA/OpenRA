@@ -153,7 +153,7 @@ namespace BluntDirectX { namespace Direct3D
 
 		void EnableScissor( int left, int top, int width, int height )
 		{
-			RECT r = { left, top, width, height };
+			RECT r = { left, top, left + width, top + height };
 			device->SetScissorRect( &r );
 			device->SetRenderState( D3DRS_SCISSORTESTENABLE, true );
 		}
