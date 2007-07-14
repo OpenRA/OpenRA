@@ -19,8 +19,10 @@ namespace OpenRa.Game
 
 		public void Add(Actor a) { actors.Add(a); }
 
-		public void Draw(Renderer renderer, Range<float> xr, Range<float> yr)
+		public void Draw(Renderer renderer, Viewport viewport)
 		{
+			Range<float> xr = new Range<float>(viewport.ScrollPosition.X, viewport.ScrollPosition.X + viewport.ClientSize.Width);
+			Range<float> yr = new Range<float>(viewport.ScrollPosition.Y, viewport.ScrollPosition.Y + viewport.ClientSize.Height);
 			foreach (Actor a in actors)
 			{
 				Sprite[] images = a.CurrentImages;

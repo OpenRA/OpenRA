@@ -22,6 +22,7 @@ namespace OpenRa.Game
 		TreeCache treeCache;
 		TerrainRenderer terrain;
 		Sidebar sidebar;
+		Viewport viewport;
 
 		static Size GetResolution(Settings settings)
 		{
@@ -36,6 +37,7 @@ namespace OpenRa.Game
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			renderer = new Renderer(this, GetResolution(settings), false);
+			viewport = new Viewport(ClientSize);
 			Visible = true;
 
 			SheetBuilder.Initialize(renderer.Device);
@@ -71,7 +73,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		PointF scrollPos;
+		
 		int x1,y1;
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -88,6 +90,7 @@ namespace OpenRa.Game
 
 			if (e.Button != 0)
 			{
+				PointF scrollPos = viewport.ScrollPosition;
 				scrollPos.X += x1 - e.X;
 				scrollPos.Y += y1 - e.Y;
 
@@ -96,25 +99,24 @@ namespace OpenRa.Game
 
 				scrollPos.X = Util.Constrain(scrollPos.X, new Range<float>(0, map.Width * 24 - ClientSize.Width + 128));
 				scrollPos.Y = Util.Constrain(scrollPos.Y, new Range<float>(0, map.Height * 24 - ClientSize.Height));
+				viewport.ScrollPosition = scrollPos;
 			}
 		}
 
 		void Frame()
 		{
-			PointF r1 = new PointF(2.0f / ClientSize.Width, -2.0f / ClientSize.Height);
+			PointF r1 = new PointF(2.0f / viewport.ClientSize.Width, -2.0f / viewport.ClientSize.Height);
 			PointF r2 = new PointF(-1, 1);
 
-			renderer.BeginFrame(r1, r2, scrollPos);
+			renderer.BeginFrame(r1, r2, viewport.ScrollPosition);
 
-			renderer.Device.EnableScissor(0, 0, ClientSize.Width - 128, ClientSize.Height);
-			terrain.Draw( ClientSize, scrollPos );
+			renderer.Device.EnableScissor(0, 0, viewport.ClientSize.Width - 128, viewport.ClientSize.Height);
+			terrain.Draw(viewport);
 
-			world.Draw(renderer,
-				new Range<float>(scrollPos.X, scrollPos.X + ClientSize.Width),
-				new Range<float>(scrollPos.Y, scrollPos.Y + ClientSize.Height));
+			world.Draw(renderer, viewport);
 
 			renderer.Device.DisableScissor();
-			sidebar.Paint(ClientSize, scrollPos);
+			sidebar.Paint(viewport);
 
 			renderer.EndFrame();
 		}

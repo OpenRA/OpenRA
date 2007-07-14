@@ -64,6 +64,7 @@
     <Compile Include="UnitSheetBuilder.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Vertex.cs" />
+    <Compile Include="Viewport.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
