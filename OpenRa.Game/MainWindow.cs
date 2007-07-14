@@ -99,10 +99,10 @@ namespace OpenRa.Game
 
 		void Frame()
 		{
-			PointF r1 = new PointF(2.0f / viewport.ClientSize.Width, -2.0f / viewport.ClientSize.Height);
-			PointF r2 = new PointF(-1, 1);
+			float2 r1 = new float2(2, -2) / viewport.Size;
+			float2 r2 = new float2(-1, 1);
 
-			renderer.BeginFrame(r1, r2, viewport.ScrollPosition);
+			renderer.BeginFrame(r1, r2, viewport.Location);
 
 			renderer.Device.EnableScissor(0, 0, viewport.ClientSize.Width - 128, viewport.ClientSize.Height);
 			terrain.Draw(viewport);

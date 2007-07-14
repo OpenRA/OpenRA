@@ -12,17 +12,14 @@ namespace OpenRa.Game
 		List<Actor> actors = new List<Actor>();
 		SpriteRenderer spriteRenderer;
 
-		public World(Renderer renderer)
-		{
-			spriteRenderer = new SpriteRenderer(renderer, true);
-		}
+		public World(Renderer renderer) { spriteRenderer = new SpriteRenderer(renderer, true); }
 
 		public void Add(Actor a) { actors.Add(a); }
 
 		public void Draw(Renderer renderer, Viewport viewport)
 		{
-			Range<float> xr = new Range<float>(viewport.ScrollPosition.X, viewport.ScrollPosition.X + viewport.ClientSize.Width);
-			Range<float> yr = new Range<float>(viewport.ScrollPosition.Y, viewport.ScrollPosition.Y + viewport.ClientSize.Height);
+			Range<float2> range = new Range<float2>(viewport.Location, viewport.Size);
+
 			foreach (Actor a in actors)
 			{
 				Sprite[] images = a.CurrentImages;
@@ -30,14 +27,14 @@ namespace OpenRa.Game
 				if (images == null)
 					continue;
 
-				if (a.location.X > xr.End || a.location.X < xr.Start - images[0].bounds.Width)
+				if (a.location.X > range.End.X || a.location.X < range.Start.X - images[0].bounds.Width)
 					continue;
 
-				if (a.location.Y > yr.End || a.location.Y < yr.Start - images[0].bounds.Height)
+				if (a.location.Y > range.End.Y || a.location.Y < range.Start.Y - images[0].bounds.Height)
 					continue;
 
 				foreach (Sprite image in images)
-					spriteRenderer.DrawSprite(image, a.location.ToPointF(), a.palette);
+					spriteRenderer.DrawSprite(image, a.location, a.palette);
 			}
 
 			spriteRenderer.Flush();

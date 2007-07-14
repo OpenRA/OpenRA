@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		public float x, y, z, u, v;
 		public float p, c;
 
-		public Vertex(PointF xy, PointF uv, PointF pc)
+		public Vertex(float2 xy, float2 uv, float2 pc)
 		{
 			this.x = xy.X; this.y = xy.Y; this.z = 0;
 			this.u = uv.X; this.v = uv.Y;

@@ -44,7 +44,7 @@ namespace OpenRa.Game
 
 					terrainSheet = tile.sheet;
 
-					Util.CreateQuad(vertices, indices, new PointF(24 * i, 24 * j), tile, 0);
+					Util.CreateQuad(vertices, indices, 24 * new float2(i,j), tile, 0);
 				}
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Count, Vertex.Format);

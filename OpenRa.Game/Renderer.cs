@@ -8,7 +8,7 @@ using System.IO;
 
 namespace OpenRa.Game
 {
-	public class Renderer
+	class Renderer
 	{
 		readonly GraphicsDevice device;
 		readonly Effect shader;
@@ -40,10 +40,9 @@ namespace OpenRa.Game
 
 		public GraphicsDevice Device { get { return device; } }
 
-		public void BeginFrame( PointF r1, PointF r2, PointF scroll )
+		public void BeginFrame( float2 r1, float2 r2, float2 scroll )
 		{
 			device.Begin();
-			//device.Clear(Color.Gray.ToArgb(), Surfaces.Color);
 
 			shader.SetValue(scrollHandle, scroll);
 			shader.SetValue(r1Handle, r1);

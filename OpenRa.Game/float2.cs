@@ -43,5 +43,10 @@ namespace OpenRa.Game
 		}
 
 		public static readonly float2 Zero = new float2(0, 0);
+
+		public static float2 operator /(float2 a, float2 b)
+		{
+			return new float2(a.X / b.X, a.Y / b.Y);
+		}
 	}
 }

@@ -30,11 +30,11 @@ namespace OpenRa.Game
 			}
 		}
 
-		public PointF MapTextureCoords(PointF p)
+		public float2 MapTextureCoords(float2 p)
 		{
 			RectangleF uv = TextureCoords;
 
-			return new PointF(
+			return new float2(
 				p.X > 0 ? uv.Right : uv.Left,
 				p.Y > 0 ? uv.Bottom : uv.Top);
 		}

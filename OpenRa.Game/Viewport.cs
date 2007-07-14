@@ -7,7 +7,7 @@ using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
-	public delegate void Renderable(Renderer renderer, Viewport viewport);
+	delegate void Renderable(Renderer renderer, Viewport viewport);
 	class Viewport
 	{
 		readonly Size clientSize;
@@ -17,6 +17,9 @@ namespace OpenRa.Game
 
 		public PointF ScrollPosition { get { return scrollPosition.ToPointF(); } }
 		public Size ClientSize { get { return clientSize; } }
+
+		public float2 Location { get { return scrollPosition; } }
+		public float2 Size { get { return scrollPosition + new float2(ClientSize); } }
 
 		public void Scroll(float2 delta)
 		{

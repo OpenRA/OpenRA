@@ -42,13 +42,13 @@ namespace OpenRa.Game
 			}
 		}
 
-		void DrawSprite(Sprite s, ref PointF p)
+		void DrawSprite(Sprite s, ref float2 p)
 		{
 			spriteRenderer.DrawSprite(s, p, 0);
 			p.Y += 48;
 		}
 
-		void Fill(Size clientSize, PointF p)
+		void Fill(Size clientSize, float2 p)
 		{
 			while (p.Y < clientSize.Height)
 				DrawSprite(blank, ref p);
@@ -56,8 +56,8 @@ namespace OpenRa.Game
 
 		public void Paint(Viewport viewport)
 		{
-			PointF buildPos = new PointF(viewport.ClientSize.Width - 128 + viewport.ScrollPosition.X, viewport.ScrollPosition.Y);
-			PointF unitPos = new PointF(viewport.ClientSize.Width - 64 + viewport.ScrollPosition.X, viewport.ScrollPosition.Y);
+			float2 buildPos = viewport.Location + new float2(viewport.ClientSize.Width - 128, 0);
+			float2 unitPos = viewport.Location + new float2(viewport.ClientSize.Width - 64, 0);
 			
 			foreach (Item i in techTree.BuildableItems)
 			{

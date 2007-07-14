@@ -14,7 +14,7 @@ namespace OpenRa.Game
 			return x < range.Start ? range.Start : x > range.End ? range.End : x;
 		}
 
-		static PointF EncodeVertexAttributes(TextureChannel channel, int paletteLine)
+		static float2 EncodeVertexAttributes(TextureChannel channel, int paletteLine)
 		{
 			Converter<TextureChannel, float> channelEncoder = delegate(TextureChannel c)
 			{
@@ -29,15 +29,13 @@ namespace OpenRa.Game
 				}
 			};
 
-			return new PointF(paletteLine / 16.0f, channelEncoder(channel));
+			return new float2(paletteLine / 16.0f, channelEncoder(channel));
 		}
 
-		public static Vertex MakeVertex(PointF o, PointF uv, Sprite r, int palette)
+		public static Vertex MakeVertex(float2 o, float2 uv, Sprite r, int palette)
 		{
-			PointF farCorner = new PointF(o.X + r.bounds.Width, o.Y + r.bounds.Height);
-
 			return new Vertex(
-				Lerp( o, farCorner, uv ),
+				Lerp( o, o + new float2(r.bounds.Size), uv ),
 				r.MapTextureCoords(uv), 
 				EncodeVertexAttributes(r.channel, palette));
 		}
@@ -47,26 +45,26 @@ namespace OpenRa.Game
 			return (1 - t) * a + t * b;
 		}
 
-		static PointF Lerp(PointF a, PointF b, PointF t)
+		static float2 Lerp(float2 a, float2 b, float2 t)
 		{
-			return new PointF(
+			return new float2(
 				Lerp(a.X, b.X, t.X),
 				Lerp(a.Y, b.Y, t.Y));
 		}
 
-		static PointF[] uv = 
+		static float2[] uv = 
 		{ 
-			new PointF( 0,0 ),
-			new PointF( 1,0 ),
-			new PointF( 0,1 ),
-			new PointF( 1,1 ),
+			new float2( 0,0 ),
+			new float2( 1,0 ),
+			new float2( 0,1 ),
+			new float2( 1,1 ),
 		};
 
-		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, Sprite r, int palette)
+		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, float2 o, Sprite r, int palette)
 		{
 			ushort offset = (ushort)vertices.Count;
 
-			foreach( PointF p in uv )
+			foreach( float2 p in uv )
 				vertices.Add(Util.MakeVertex(o, p, r, palette));
 
 			indices.Add(offset);

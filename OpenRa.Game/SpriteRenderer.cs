@@ -52,7 +52,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void DrawSprite(Sprite s, PointF location, int palette)
+		public void DrawSprite(Sprite s, float2 location, int palette)
 		{
 			if (s.sheet != currentSheet)
 				Flush();
