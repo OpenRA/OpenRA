@@ -27,8 +27,6 @@ SPY,Spy
 THF,Thief
 E7,Tanya
 MEDI,Medic
-BADR,Badger
-U2,Spy Plane
 MIG,Mig Attack Plane
 YAK,Yak Attack Plane
 TRAN,Transport Helicopter
