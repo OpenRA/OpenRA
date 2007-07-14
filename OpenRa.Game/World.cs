@@ -27,7 +27,7 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
-			Range<float2> range = new Range<float2>(viewport.Location, viewport.Size);
+			Range<float2> range = new Range<float2>(viewport.Location, viewport.Location + viewport.Size);
 
 			foreach (Actor a in actors)
 			{
