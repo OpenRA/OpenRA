@@ -47,7 +47,7 @@ namespace OpenRa.Game
 			renderer.SetPalette(new HardwarePalette(renderer.Device, map));
 			terrain = new TerrainRenderer(renderer, map, TileMix);
 
-			world = new World(renderer.Device);
+			world = new World(renderer);
 			treeCache = new TreeCache(renderer.Device, map, TileMix);
 
 			foreach (TreeReference treeReference in map.Trees)

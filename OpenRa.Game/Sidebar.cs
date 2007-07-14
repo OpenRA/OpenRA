@@ -22,12 +22,7 @@ namespace OpenRa.Game
 		{
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
-			//techTree.Build("POWR");
-			//techTree.Build("BARR");
-			//techTree.Build("PROC");
-			//techTree.Build("WEAP");
-			//techTree.Build("DOME");
-			spriteRenderer = new SpriteRenderer(renderer);
+			spriteRenderer = new SpriteRenderer(renderer, false);
 
 			package = new Package("../../../hires.mix");
 			LoadSprites("../../../buildings.txt");
@@ -47,7 +42,7 @@ namespace OpenRa.Game
 
 		void DrawSprite(Sprite s, ref PointF p)
 		{
-			spriteRenderer.DrawSprite(s, p);
+			spriteRenderer.DrawSprite(s, p, 0);
 			p.Y += 48;
 		}
 

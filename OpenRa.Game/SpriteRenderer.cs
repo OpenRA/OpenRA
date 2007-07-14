@@ -19,20 +19,23 @@ namespace OpenRa.Game
 		List<ushort> indicies = new List<ushort>();
 		Sheet currentSheet = null;
 		int sprites = 0;
+		ShaderQuality quality;
 
-		public SpriteRenderer(Renderer renderer)
+		public SpriteRenderer(Renderer renderer, bool allowAlpha)
 		{
 			this.renderer = renderer;
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, 4 * spritesPerBatch, Vertex.Format);
 			indexBuffer = new IndexBuffer(renderer.Device, 6 * spritesPerBatch);
+
+			quality = allowAlpha ? ShaderQuality.High : ShaderQuality.Low;
 		}
 
 		public void Flush()
 		{
 			if (sprites > 0)
 			{
-				renderer.DrawWithShader(ShaderQuality.Low, delegate
+				renderer.DrawWithShader(quality, delegate
 				{
 					vertexBuffer.SetData(vertices.ToArray());
 					indexBuffer.SetData(indicies.ToArray());
@@ -49,13 +52,13 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void DrawSprite(Sprite s, PointF location)
+		public void DrawSprite(Sprite s, PointF location, int palette)
 		{
 			if (s.sheet != currentSheet)
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.CreateQuad(vertices, indicies, location, s, 0);
+			Util.CreateQuad(vertices, indicies, location, s, palette);
 
 			if (++sprites >= spritesPerBatch)
 				Flush();
