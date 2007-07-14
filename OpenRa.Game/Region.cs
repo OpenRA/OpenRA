@@ -32,7 +32,7 @@ namespace OpenRa.Game
 		public static Region Create(Viewport v, DockStyle d, int size, MethodInvoker f)
 		{
 			Point topLeft = new Point(0, 0);
-			Point bottomRight = new Point(v.ClientSize);
+			Point bottomRight = new Point(v.Width, v.Height);
 
 			Size s = MakeSize(v, d, size);
 

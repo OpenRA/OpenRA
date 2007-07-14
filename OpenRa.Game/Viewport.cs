@@ -14,10 +14,8 @@ namespace OpenRa.Game
 		float2 scrollPosition;
 		readonly Renderer renderer;
 
-		public Size ClientSize { get { return clientSize; } }
-
 		public float2 Location { get { return scrollPosition; } }
-		public float2 Size { get { return new float2(ClientSize); } }
+		public float2 Size { get { return new float2(clientSize); } }
 
 		public int Width { get { return clientSize.Width; } }
 		public int Height { get { return clientSize.Height; } }
