@@ -8,7 +8,7 @@ using BluntDirectX.Direct3D;
 namespace OpenRa.Game
 {
 	[StructLayout(LayoutKind.Sequential)]
-	class float2
+	struct float2
 	{
 		public float X, Y;
 

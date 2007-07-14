@@ -32,7 +32,7 @@ namespace OpenRa.Game
 				settings.GetValue("height", desktopResolution.Height));
 		}
 
-		public MainWindow( Settings settings )
+		public MainWindow(Settings settings)
 		{
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
@@ -59,11 +59,11 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			world.Add(new Mcv(new PointF(24 * 5, 24 * 5), 3));
-			world.Add(new Mcv(new PointF(24 * 7, 24 * 5), 2));
-			world.Add(new Mcv(new PointF(24 * 9, 24 * 5), 1));
+			world.Add(new Mcv(24 * new float2(5, 5), 3));
+			world.Add(new Mcv(24 * new float2(7, 5), 2));
+			world.Add(new Mcv(24 * new float2(9, 5), 1));
 
-			world.Add(new Refinery(new PointF(24 * 5, 24 * 7), 1));
+			world.Add(new Refinery(24 * new float2(5, 7), 1));
 
 			sidebar = new Sidebar(Race.Soviet, renderer);
 		}

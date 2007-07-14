@@ -37,7 +37,7 @@ namespace OpenRa.Game
 					continue;
 
 				foreach (Sprite image in images)
-					spriteRenderer.DrawSprite(image, a.location, a.palette);
+					spriteRenderer.DrawSprite(image, a.location.ToPointF(), a.palette);
 			}
 
 			spriteRenderer.Flush();

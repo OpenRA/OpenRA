@@ -11,7 +11,7 @@ namespace OpenRa.Game
 	{
 		static Range<int>? mcvRange = null;
 
-		public Mcv( PointF location, int palette )
+		public Mcv( float2 location, int palette )
 		{
 			this.location = location;
 			this.palette = palette;

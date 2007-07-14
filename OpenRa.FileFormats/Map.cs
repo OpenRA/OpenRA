@@ -157,5 +157,7 @@ namespace OpenRa.FileFormats
 			Y = xy / 128;
 			Image = image;
 		}
+
+		public Point Location { get { return new Point(X, Y); } }
 	}
 }

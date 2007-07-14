@@ -11,7 +11,7 @@ namespace OpenRa.Game
 	{
 		static Range<int>? refineryRange = null;
 
-		public Refinery(PointF location, int palette)
+		public Refinery(float2 location, int palette)
 		{
 			if (refineryRange == null)
 				refineryRange = UnitSheetBuilder.AddUnit("proc");

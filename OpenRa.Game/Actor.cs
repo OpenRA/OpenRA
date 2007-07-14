@@ -10,7 +10,7 @@ namespace OpenRa.Game
 {
 	abstract class Actor
 	{
-		public PointF location;
+		public float2 location;
 		public int palette;
 		public abstract Sprite[] CurrentImages { get; }
 	}
