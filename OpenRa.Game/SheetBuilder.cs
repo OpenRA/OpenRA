@@ -7,13 +7,11 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
-	delegate T Provider<T>();
-
 	static class SheetBuilder
 	{
-		public static void Initialize(GraphicsDevice device)
+		public static void Initialize(GraphicsDevice d)
 		{
-			pageProvider = delegate { return new Sheet(new Size(512,512), device); };
+			device = d;
 		}
 
 		public static Sprite Add(byte[] src, Size size)
@@ -32,7 +30,12 @@ namespace OpenRa.Game
 			return Add(data, size);
 		}
 
-		static Provider<Sheet> pageProvider;
+		static Sheet NewSheet()
+		{
+			return new Sheet(new Size(512, 512), device);
+		}
+
+		static GraphicsDevice device;
 		static Sheet current = null;
 		static int rowHeight = 0;
 		static Point p;
@@ -58,7 +61,7 @@ namespace OpenRa.Game
 		{
 			if (current == null)
 			{
-				current = pageProvider();
+				current = NewSheet();
 				channel = NextChannel(null);
 			}
 
@@ -76,7 +79,7 @@ namespace OpenRa.Game
 
 				if (null == (channel = NextChannel(channel)))
 				{
-					current = pageProvider();
+					current = NewSheet();
 					channel = NextChannel(channel);
 				}
 
