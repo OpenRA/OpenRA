@@ -25,7 +25,7 @@ namespace OpenRa.Game
 		public Sidebar(Race race, Renderer renderer, Viewport viewport)
 		{
 			this.viewport = viewport;
-			viewport.RequestRegion(AnchorStyles.Right, 128, Paint);
+			viewport.AddRegion( Region.Create(viewport, DockStyle.Right, 128, Paint));
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);

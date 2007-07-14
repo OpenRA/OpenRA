@@ -19,6 +19,9 @@ namespace OpenRa.Game
 		public float2 Location { get { return scrollPosition; } }
 		public float2 Size { get { return new float2(ClientSize); } }
 
+		public int Width { get { return clientSize.Width; } }
+		public int Height { get { return clientSize.Height; } }
+
 		public void Scroll(float2 delta)
 		{
 			scrollPosition = (scrollPosition + delta).Constrain(
@@ -33,25 +36,9 @@ namespace OpenRa.Game
 		}
 
 		List<Region> regions = new List<Region>();
-		public void RequestRegion(AnchorStyles anchor, int distanceFromAnchor, MethodInvoker drawFunction)
+		public void AddRegion(Region r)
 		{
-			switch (anchor)
-			{
-				case AnchorStyles.Top:
-					regions.Add(new Region(new Point(0, 0), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
-					break;
-				case AnchorStyles.Bottom:
-					regions.Add(new Region(new Point(0, clientSize.Height - distanceFromAnchor), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
-					break;
-				case AnchorStyles.Left:
-					regions.Add(new Region(new Point(0, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
-					break;
-				case AnchorStyles.Right:
-					regions.Add(new Region(new Point(clientSize.Width - distanceFromAnchor, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
-					break;
-				case AnchorStyles.None:
-					throw new NotImplementedException();
-			}
+			regions.Add(r);
 		}
 
 		public void DrawRegions()

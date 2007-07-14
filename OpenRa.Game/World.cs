@@ -19,7 +19,7 @@ namespace OpenRa.Game
 		{
 			this.renderer = renderer;
 			this.viewport = viewport;
-			viewport.RequestRegion(AnchorStyles.Left, viewport.ClientSize.Width - 128, Draw);
+			viewport.AddRegion(Region.Create(viewport, DockStyle.Left, viewport.ClientSize.Width - 128, Draw));
 			spriteRenderer = new SpriteRenderer(renderer, true);
 		}
 
