@@ -29,48 +29,38 @@ namespace OpenRa.BlockCacheVisualizer
 			Bitmap palette = new Bitmap(palname);
 			Bitmap block = new Bitmap(filename);
 
-			unchecked
+			uint[] masks = { 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 };
+
+			foreach (uint c in masks)
 			{
-				Color[] masks = { 
-					Color.FromArgb( (int)0xff000000 ), 
-					Color.FromArgb( (int)0x00ff0000 ), 
-					Color.FromArgb( (int)0x0000ff00 ), 
-					Color.FromArgb( (int)0x000000ff ) 
-				};
+				Bitmap b = ExtractChannelToBitmap(block, palette, c);
+				PictureBox pb = new PictureBox();
 
-				foreach (Color c in masks)
-				{
-					Bitmap b = ExtractChannelToBitmap(block, palette, c);
-					PictureBox pb = new PictureBox();
+				pb.SizeMode = PictureBoxSizeMode.AutoSize;
+				pb.Image = b;
 
-					pb.SizeMode = PictureBoxSizeMode.AutoSize;
-					pb.Image = b;
-
-					flowLayoutPanel1.Controls.Add(pb);
-				}
-
+				flowLayoutPanel1.Controls.Add(pb);
 			}
 		}
 
-		int MaskColor(Color c, Color mask)
+		int MaskColor(Color c, uint mask)
 		{
-			int result = 0;
-			if (mask.R > 0) result += c.R;
-			if (mask.G > 0) result += c.G;
-			if (mask.B > 0) result += c.B;
-			if (mask.A > 0) result += c.A;
+			uint hax = (uint)c.ToArgb() & mask;
 
-			return result;
+			hax = ( hax & 0xffff ) | (hax >> 16);
+			hax = (hax & 0xff) | (hax >> 8);
+
+			return (int)hax;
 		}
 
-		Bitmap ExtractChannelToBitmap(Bitmap src, Bitmap pal, Color mask)
+		Bitmap ExtractChannelToBitmap(Bitmap src, Bitmap pal, uint mask)
 		{
-			Bitmap dest = new Bitmap(src.Width, src.Height);
+			Bitmap dest = new Bitmap(src.Width / 2, src.Height / 2);
 
-			for( int i = 0; i < src.Width; i++ )
-				for (int j = 0; j < src.Height; j++)
+			for( int i = 0; i < dest.Width; i++ )
+				for (int j = 0; j < dest.Height; j++)
 				{
-					int index = MaskColor(src.GetPixel(i, j), mask);
+					int index = MaskColor(src.GetPixel(2 * i, 2 * j), mask);
 					dest.SetPixel(i, j, pal.GetPixel(index, 0));
 				}
 
