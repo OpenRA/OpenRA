@@ -21,10 +21,11 @@ namespace OpenRa.Game
 			get { return clientSize; }
 		} 
 
-
 		public Viewport(Size clientSize)
 		{
 			this.clientSize = clientSize;
 		}
+
+		public float2 Size { get { return new float2(clientSize); } }
 	}
 }

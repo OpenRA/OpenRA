@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace OpenRa.FileFormats
 {
@@ -15,6 +16,8 @@ namespace OpenRa.FileFormats
 
 		public readonly int Width;
 		public readonly int Height;
+
+		public PointF Size { get { return new PointF(Width, Height); } }
 
 		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
 		public readonly List<TreeReference> Trees = new List<TreeReference>();

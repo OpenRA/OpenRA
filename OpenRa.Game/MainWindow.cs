@@ -76,28 +76,29 @@ namespace OpenRa.Game
 			}
 		}
 
-		Point lastPos;
+		float2 lastPos;
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
-			lastPos = e.Location;
+			lastPos = new float2(e.Location);
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
 
-			if (e.Button != 0)
-			{
-				PointF scrollPos = viewport.ScrollPosition;
-				scrollPos.X = Util.Constrain(scrollPos.X + lastPos.X - e.X, new Range<float>(0, map.Width * 24 - ClientSize.Width + 128));
-				scrollPos.Y = Util.Constrain(scrollPos.Y + lastPos.Y - e.Y, new Range<float>(0, map.Height * 24 - ClientSize.Height));
+			if (e.Button == 0)
+				return;
 
-				lastPos = e.Location;
+			float2 scrollPos = new float2(viewport.ScrollPosition) + lastPos - new float2(e.Location);
+			float2 mapSize = 24 * new float2(map.Size) - viewport.Size + new float2(128, 0);
 
-				viewport.ScrollPosition = scrollPos;
-			}
+			scrollPos = scrollPos.Constrain(new Range<float2>(float2.Zero, mapSize));
+
+			lastPos = new float2(e.Location);
+
+			viewport.ScrollPosition = scrollPos.ToPointF();
 		}
 
 		void Frame()
