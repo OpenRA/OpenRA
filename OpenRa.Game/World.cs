@@ -30,10 +30,10 @@ namespace OpenRa.Game
 				if (images == null)
 					continue;
 
-				if (a.location.X > xr.End || a.location.X < xr.Start - images[0].size.Width)
+				if (a.location.X > xr.End || a.location.X < xr.Start - images[0].bounds.Width)
 					continue;
 
-				if (a.location.Y > yr.End || a.location.Y < yr.Start - images[0].size.Height)
+				if (a.location.Y > yr.End || a.location.Y < yr.Start - images[0].bounds.Height)
 					continue;
 
 				foreach (Sprite image in images)

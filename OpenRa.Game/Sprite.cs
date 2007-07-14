@@ -7,17 +7,36 @@ namespace OpenRa.Game
 {
 	class Sprite
 	{
-		public readonly Point origin;
-		public readonly Size size;
+		public readonly Rectangle bounds;
 		public readonly Sheet sheet;
 		public readonly TextureChannel channel;
 
-		internal Sprite(Sheet sheet, Point origin, Size size, TextureChannel channel)
+		internal Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 		{
-			this.origin = origin;
-			this.size = size;
+			this.bounds = bounds;
 			this.sheet = sheet;
 			this.channel = channel;
+		}
+
+		RectangleF TextureCoords
+		{
+			get
+			{
+				return new RectangleF(
+					(float)(bounds.Left + 0.5f) / sheet.Size.Width,
+					(float)(bounds.Top + 0.5f) / sheet.Size.Height,
+					(float)(bounds.Width) / sheet.Size.Width,
+					(float)(bounds.Height) / sheet.Size.Height);
+			}
+		}
+
+		public PointF MapTextureCoords(PointF p)
+		{
+			RectangleF uv = TextureCoords;
+
+			return new PointF(
+				p.X > 0 ? uv.Right : uv.Left,
+				p.Y > 0 ? uv.Bottom : uv.Top);
 		}
 	}
 

@@ -9,22 +9,6 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
-		public static float U(Sprite s, float u)
-		{
-			float u0 = (float)(s.origin.X + 0.5f) / (float)s.sheet.bitmap.Width;
-			float u1 = (float)(s.origin.X + s.size.Width) / (float)s.sheet.bitmap.Width;
-
-			return (u > 0) ? u1 : u0;
-		}
-
-		public static float V(Sprite s, float v)
-		{
-			float v0 = (float)(s.origin.Y + 0.5f) / (float)s.sheet.bitmap.Height;
-			float v1 = (float)(s.origin.Y + s.size.Height) / (float)s.sheet.bitmap.Height;
-
-			return (v > 0) ? v1 : v0;
-		}
-
 		public static float Constrain(float x, Range<float> range)
 		{
 			return x < range.Start ? range.Start : x > range.End ? range.End : x;
@@ -48,15 +32,14 @@ namespace OpenRa.Game
 			return new PointF(paletteLine / 16.0f, channelEncoder(channel));
 		}
 
-		public static Vertex MakeVertex(PointF o, float u, float v, Sprite r, int palette)
+		public static Vertex MakeVertex(PointF o, PointF uv, Sprite r, int palette)
 		{
-			float x2 = o.X + r.size.Width;
-			float y2 = o.Y + r.size.Height;
+			PointF farCorner = new PointF(o.X + r.bounds.Width, o.Y + r.bounds.Height);
 
-			PointF p = EncodeVertexAttributes(r.channel, palette);
-
-			return new Vertex(Lerp(o.X, x2, u), Lerp(o.Y, y2, v), 0, U(r, u), V(r, v),
-				p.X, p.Y);
+			return new Vertex(
+				Lerp( o, farCorner, uv ),
+				r.MapTextureCoords(uv), 
+				EncodeVertexAttributes(r.channel, palette));
 		}
 
 		static float Lerp(float a, float b, float t)
@@ -64,14 +47,27 @@ namespace OpenRa.Game
 			return (1 - t) * a + t * b;
 		}
 
+		static PointF Lerp(PointF a, PointF b, PointF t)
+		{
+			return new PointF(
+				Lerp(a.X, b.X, t.X),
+				Lerp(a.Y, b.Y, t.Y));
+		}
+
+		static PointF[] uv = 
+		{ 
+			new PointF( 0,0 ),
+			new PointF( 1,0 ),
+			new PointF( 0,1 ),
+			new PointF( 1,1 ),
+		};
+
 		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, PointF o, Sprite r, int palette)
 		{
 			ushort offset = (ushort)vertices.Count;
 
-			vertices.Add(Util.MakeVertex(o, 0, 0, r, palette));
-			vertices.Add(Util.MakeVertex(o, 1, 0, r, palette));
-			vertices.Add(Util.MakeVertex(o, 0, 1, r, palette));
-			vertices.Add(Util.MakeVertex(o, 1, 1, r, palette));
+			foreach( PointF p in uv )
+				vertices.Add(Util.MakeVertex(o, p, r, palette));
 
 			indices.Add(offset);
 			indices.Add((ushort)(offset + 1));
@@ -84,11 +80,11 @@ namespace OpenRa.Game
 
 		public static void CopyIntoChannel(Sprite dest, byte[] src)
 		{
-			for (int i = 0; i < dest.size.Width; i++)
-				for (int j = 0; j < dest.size.Height; j++)
+			for (int i = 0; i < dest.bounds.Width; i++)
+				for (int j = 0; j < dest.bounds.Height; j++)
 				{
-					Point p = new Point(dest.origin.X + i, dest.origin.Y + j);
-					byte b = src[i + dest.size.Width * j];
+					Point p = new Point(dest.bounds.Left + i, dest.bounds.Top + j);
+					byte b = src[i + dest.bounds.Width * j];
 					Color original = dest.sheet.bitmap.GetPixel(p.X, p.Y);
 					dest.sheet.bitmap.SetPixel(p.X, p.Y, ReplaceChannel(original, dest.channel, b));
 				}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using BluntDirectX.Direct3D;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -12,14 +13,11 @@ namespace OpenRa.Game
 		public float x, y, z, u, v;
 		public float p, c;
 
-		public Vertex(float x, float y, float z, float u, float v, float p, float c)
+		public Vertex(PointF xy, PointF uv, PointF pc)
 		{
-			this.x = x; this.y = y; this.z = z;
-			this.u = u;
-			this.v = v;
-
-			this.p = p;
-			this.c = c;
+			this.x = xy.X; this.y = xy.Y; this.z = 0;
+			this.u = uv.X; this.v = uv.Y;
+			this.p = pc.X; this.c = pc.Y;
 		}
 
 		public const VertexFormat Format = VertexFormat.Position | VertexFormat.Texture2;

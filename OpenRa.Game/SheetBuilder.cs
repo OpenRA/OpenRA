@@ -87,7 +87,7 @@ namespace OpenRa.Game
 				p = new Point(0,0);
 			}
 
-			Sprite rect = new Sprite(current, p, imageSize, channel.Value);
+			Sprite rect = new Sprite(current, new Rectangle(p, imageSize), channel.Value);
 			p.X += imageSize.Width;
 
 			return rect;
