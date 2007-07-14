@@ -9,16 +9,16 @@ namespace OpenRa.Game
 {
 	class Viewport
 	{
-		readonly Size clientSize;
+		readonly float2 size;
 		readonly float2 mapSize;
 		float2 scrollPosition;
 		readonly Renderer renderer;
 
 		public float2 Location { get { return scrollPosition; } }
-		public float2 Size { get { return new float2(clientSize); } }
+		public float2 Size { get { return size; } }
 
-		public int Width { get { return clientSize.Width; } }
-		public int Height { get { return clientSize.Height; } }
+		public int Width { get { return (int)size.X; } }
+		public int Height { get { return (int)size.Y; } }
 
 		public void Scroll(float2 delta)
 		{
@@ -26,10 +26,10 @@ namespace OpenRa.Game
 				new Range<float2>(float2.Zero, mapSize));
 		}
 
-		public Viewport(Size clientSize, float2 mapSize, Renderer renderer)
+		public Viewport(float2 size, float2 mapSize, Renderer renderer)
 		{
-			this.clientSize = clientSize;
-			this.mapSize = 24 * mapSize - new float2(clientSize) + new float2(128, 0);
+			this.size = size;
+			this.mapSize = 24 * mapSize - size + new float2(128, 0);
 			this.renderer = renderer;
 		}
 

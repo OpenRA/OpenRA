@@ -31,21 +31,17 @@ namespace OpenRa.Game
 
 		public static Region Create(Viewport v, DockStyle d, int size, MethodInvoker f)
 		{
-			Point topLeft = new Point(0, 0);
-			Point bottomRight = new Point(v.Width, v.Height);
-
 			Size s = MakeSize(v, d, size);
 
 			switch (d)
 			{
 				case DockStyle.Top:
 				case DockStyle.Left:
-					return new Region(topLeft, s, f);
+					return new Region(new Point(0,0), s, f);
 
 				case DockStyle.Right:
 				case DockStyle.Bottom:
-					Point origin = bottomRight; origin.Offset( -s.Width, -s.Height );
-					return new Region(origin, s, f);
+					return new Region(new Point( v.Width - s.Width, v.Height - s.Height ), s, f);
 
 				default:
 					throw new NotImplementedException();
