@@ -41,11 +41,12 @@ namespace OpenRa.Game
 			Visible = true;
 
 			renderer = new Renderer(this, GetResolution(settings), false);
-			viewport = new Viewport(ClientSize);
-
-			SheetBuilder.Initialize(renderer.Device);
 
 			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
+
+			viewport = new Viewport(ClientSize, new float2(map.Size));
+
+			SheetBuilder.Initialize(renderer.Device);
 
 			TileMix = new Package("../../../" + map.Theater + ".mix");
 
@@ -91,14 +92,10 @@ namespace OpenRa.Game
 			if (e.Button == 0)
 				return;
 
-			float2 scrollPos = new float2(viewport.ScrollPosition) + lastPos - new float2(e.Location);
-			float2 mapSize = 24 * new float2(map.Size) - viewport.Size + new float2(128, 0);
+			float2 p = new float2(e.Location);
 
-			scrollPos = scrollPos.Constrain(new Range<float2>(float2.Zero, mapSize));
-
-			lastPos = new float2(e.Location);
-
-			viewport.ScrollPosition = scrollPos.ToPointF();
+			viewport.Scroll(lastPos - p);
+			lastPos = p;
 		}
 
 		void Frame()
