@@ -37,7 +37,7 @@ namespace OpenRa.Game
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
-			Location = new Point();
+			Location = Point.Empty;
 			Visible = true;
 
 			renderer = new Renderer(this, GetResolution(settings), false);

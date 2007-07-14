@@ -26,10 +26,7 @@ namespace OpenRa.Game
 		{
 			get
 			{
-				return new Sprite[] 
-				{ 
-					UnitSheetBuilder.sprites[GetFacing() + mcvRange.Value.Start]
-				};
+				return new Sprite[] { UnitSheetBuilder.sprites[GetFacing() + mcvRange.Value.Start] };
 			}
 		}
 	}
