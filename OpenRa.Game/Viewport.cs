@@ -36,16 +36,16 @@ namespace OpenRa.Game
 			switch (anchor)
 			{
 				case AnchorStyles.Top:
-					regions.Add(new Region(new PointF(0, 0), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
+					regions.Add(new Region(new Point(0, 0), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
 					break;
 				case AnchorStyles.Bottom:
-					regions.Add(new Region(new PointF(0, clientSize.Height - distanceFromAnchor), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
+					regions.Add(new Region(new Point(0, clientSize.Height - distanceFromAnchor), new Size(clientSize.Width, distanceFromAnchor), drawFunction));
 					break;
 				case AnchorStyles.Left:
-					regions.Add(new Region(new PointF(0, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
+					regions.Add(new Region(new Point(0, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
 					break;
 				case AnchorStyles.Right:
-					regions.Add(new Region(new PointF(clientSize.Width - distanceFromAnchor, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
+					regions.Add(new Region(new Point(clientSize.Width - distanceFromAnchor, 0), new Size(distanceFromAnchor, clientSize.Height), drawFunction));
 					break;
 				case AnchorStyles.None:
 					throw new NotImplementedException();

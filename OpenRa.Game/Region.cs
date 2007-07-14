@@ -7,11 +7,11 @@ namespace OpenRa.Game
 {
 	class Region
 	{
-		PointF location;
+		Point location;
 		Size size;
 		Renderable drawFunction;
 
-		public Region(PointF location, Size size, Renderable drawFunction)
+		public Region(Point location, Size size, Renderable drawFunction)
 		{
 			this.location = location;
 			this.size = size;
@@ -20,7 +20,7 @@ namespace OpenRa.Game
 
 		public void Draw(Renderer renderer, Viewport viewport)
 		{
-			renderer.Device.EnableScissor((int)location.X, (int)location.Y, size.Width, size.Height);
+			renderer.Device.EnableScissor(location.X, location.Y, size.Width, size.Height);
 			drawFunction(renderer, viewport);
 			renderer.Device.DisableScissor();
 		}
