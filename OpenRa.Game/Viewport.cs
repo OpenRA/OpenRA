@@ -30,7 +30,7 @@ namespace OpenRa.Game
 			this.renderer = renderer;
 		}
 
-		List<Region> regions;
+		List<Region> regions = new List<Region>();
 		public void ResquestRegion(AnchorStyles anchor, int distanceFromAnchor, Renderable drawFunction)
 		{
 			switch (anchor)
