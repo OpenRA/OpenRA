@@ -65,8 +65,8 @@ namespace OpenRa.BlockCacheVisualizer
 			BitmapData srcData = src.LockBits(new Rectangle(new Point(), src.Size), ImageLockMode.ReadOnly,
 				src.PixelFormat);
 
-			int strideInts = destData.Stride/4;
-			int strideInts2 = srcData.Stride/4;
+			int destStride = destData.Stride/4;
+			int srcStride = srcData.Stride/4;
 
 			unsafe
 			{
@@ -79,10 +79,10 @@ namespace OpenRa.BlockCacheVisualizer
 				for (int j = 0; j < h; j++)
 					for (int i = 0; i < w; i++)
 					{
-						uint srcc = psrc[2 * j * strideInts2 + 2 * i];
+						uint srcc = psrc[2 * j * srcStride + 2 * i];
 						uint index = MaskColor(srcc, mask);
 						uint data = ppal[index];
-						pdest[j * strideInts + i] = data;
+						pdest[j * destStride + i] = data;
 					}
 			}
 
