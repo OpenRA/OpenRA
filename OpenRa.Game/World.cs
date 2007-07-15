@@ -37,20 +37,17 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				Sprite[] images = a.CurrentImages;
-
 				a.Tick( dt );
 
-				if (images == null)
-					continue;
+				Sprite[] images = a.CurrentImages;
 
-				if (a.location.X > range.End.X || a.location.X < range.Start.X - images[0].bounds.Width)
+				if( a.location.X > range.End.X || a.location.X < range.Start.X - images[ 0 ].bounds.Width )
 					continue;
 
 				if (a.location.Y > range.End.Y || a.location.Y < range.Start.Y - images[0].bounds.Height)
 					continue;
 
-				foreach (Sprite image in images)
+				foreach( Sprite image in images )
 					spriteRenderer.DrawSprite(image, a.location, a.palette);
 			}
 

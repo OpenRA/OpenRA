@@ -72,32 +72,26 @@ namespace OpenRa.Game
 
 		public override void Tick( double t )
 		{
-			if (currentOrder == null)
+			if( currentOrder == null )
 				return;
 
-			if (float2.WithinEpsilon(location, currentOrder.Destination, 1.0f))
+			if( float2.WithinEpsilon( location, currentOrder.Destination, 1.0f ) )
 				return;
 
 			Range<float2> r = new Range<float2>(
-				new float2(-Speed * (float)t, -Speed * (float)t),
-				new float2(Speed * (float)t, Speed * (float)t));
+				new float2( -Speed * (float)t, -Speed * (float)t ),
+				new float2( Speed * (float)t, Speed * (float)t ) );
 
-			float2 d = (currentOrder.Destination - location).Constrain(r);
+			float2 d = ( currentOrder.Destination - location ).Constrain( r );
 
-			int desiredFacing = GetFacing(d);
-			if (desiredFacing == facing)
+			int desiredFacing = GetFacing( d );
+			int df = (desiredFacing - facing + 32) % 32;
+			if( df == 0 )
 				location += d;
+			else if( df > 16 )
+				facing = ( facing + 31 ) % 32;
 			else
-			{
-				int df = desiredFacing - facing;
-				if (df < 0)
-					df = 32 - df;
-
-				if (df < 32 - df)
-					facing = (facing + 1) % 32;
-				else
-					facing = (facing + 31) % 32;
-			}
+				facing = ( facing + 1 ) % 32;
 		}
 	}
 }
