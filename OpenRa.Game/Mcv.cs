@@ -29,5 +29,11 @@ namespace OpenRa.Game
 				return new Sprite[] { UnitSheetBuilder.sprites[GetFacing() + mcvRange.Value.Start] };
 			}
 		}
+
+		public void Accept(MoveOrder o)
+		{
+			// HACK HACK HACK TELEPORT
+			this.location = o.Destination;
+		}
 	}
 }

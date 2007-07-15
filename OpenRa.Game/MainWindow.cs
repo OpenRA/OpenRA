@@ -23,6 +23,8 @@ namespace OpenRa.Game
 		Sidebar sidebar;
 		Viewport viewport;
 
+		Mcv myUnit;
+
 		static Size GetResolution(Settings settings)
 		{
 			Size desktopResolution = Screen.PrimaryScreen.Bounds.Size;
@@ -60,7 +62,7 @@ namespace OpenRa.Game
 
 			world.Add(new Mcv(24 * new float2(5, 5), 3));
 			world.Add(new Mcv(24 * new float2(7, 5), 2));
-			world.Add(new Mcv(24 * new float2(9, 5), 1));
+			world.Add(myUnit = new Mcv(24 * new float2(9, 5), 1));
 
 			world.Add(new Refinery(24 * new float2(5, 7), 1));
 
@@ -82,13 +84,19 @@ namespace OpenRa.Game
 		{
 			base.OnMouseDown(e);
 			lastPos = new float2(e.Location);
+
+			if (e.Button == MouseButtons.Left)
+			{
+				MoveOrder order = new MoveOrder(lastPos + viewport.Location);
+				myUnit.Accept(order);
+			}
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
 
-			if (e.Button != 0)
+			if (e.Button == MouseButtons.Right)
 			{
 				float2 p = new float2(e.Location);
 				viewport.Scroll(lastPos - p);
