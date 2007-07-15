@@ -25,7 +25,7 @@ namespace OpenRa.Game
 
 		public void Add(Actor a) { actors.Add(a); }
 
-		public void Draw()
+		void Draw()
 		{
 			Range<float2> range = new Range<float2>(viewport.Location, viewport.Location + viewport.Size);
 

@@ -74,8 +74,8 @@ namespace OpenRa.Game
 					DrawSprite( sprite, ref unitPos );
 			}
 
-			Fill(viewport.Size.Y, buildPos);
-			Fill(viewport.Size.Y, unitPos);
+			Fill( viewport.Location.Y + viewport.Size.Y, buildPos );
+			Fill( viewport.Location.Y + viewport.Size.Y, unitPos );
 
 			spriteRenderer.Flush();
 		}

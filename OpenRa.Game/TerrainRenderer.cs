@@ -58,7 +58,7 @@ namespace OpenRa.Game
 			indexBuffer.SetData(indices.ToArray());
 		}
 
-		public void Draw()
+		void Draw()
 		{
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;
