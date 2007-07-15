@@ -10,7 +10,7 @@ namespace OpenRa.Game
 
 		public MoveOrder(float2 destination)
 		{
-			this.Destination = destination;
+			this.Destination = destination - new float2(24,24);		//HACK account for MCV size
 		}
 	}
 }

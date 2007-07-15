@@ -48,5 +48,28 @@ namespace OpenRa.Game
 		{
 			return new float2(a.X / b.X, a.Y / b.Y);
 		}
+
+		public static bool WithinEpsilon(float2 a, float2 b, float e)
+		{
+			float2 d = a - b;
+			return Math.Abs(d.X) < e && Math.Abs(d.Y) < e;
+		}
+
+		static float Sign(float f)
+		{
+			if (f > 0) return 1;
+			if (f < 0) return -1;
+			return 0;
+		}
+
+		public float2 Sign()
+		{
+			return new float2(Sign(X), Sign(Y));
+		}
+
+		public static float Dot(float2 a, float2 b)
+		{
+			return a.X * b.X + a.Y * b.Y;
+		}
 	}
 }

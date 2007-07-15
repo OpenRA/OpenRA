@@ -13,5 +13,6 @@ namespace OpenRa.Game
 		public float2 location;
 		public int palette;
 		public abstract Sprite[] CurrentImages { get; }
+		public abstract void Tick( double t );
 	}
 }

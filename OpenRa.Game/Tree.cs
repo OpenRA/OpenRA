@@ -19,5 +19,7 @@ namespace OpenRa.Game
 		{
 			get { return currentImages; }
 		}
+
+		public override void Tick(double t){}
 	}
 }

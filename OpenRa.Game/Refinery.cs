@@ -29,5 +29,7 @@ namespace OpenRa.Game
 				return new Sprite[] { UnitSheetBuilder.sprites[refineryRange.Value.Start + GetFrame()] };
 			}
 		}
+
+		public override void Tick(double t) { }
 	}
 }

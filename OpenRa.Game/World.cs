@@ -25,13 +25,21 @@ namespace OpenRa.Game
 
 		public void Add(Actor a) { actors.Add(a); }
 
+		double lastTime = Environment.TickCount / 1000.0;
+
 		void Draw()
 		{
+			double t = Environment.TickCount / 1000.0;
+			double dt = t - lastTime;
+			lastTime = t;
+
 			Range<float2> range = new Range<float2>(viewport.Location, viewport.Location + viewport.Size);
 
 			foreach (Actor a in actors)
 			{
 				Sprite[] images = a.CurrentImages;
+
+				a.Tick( dt );
 
 				if (images == null)
 					continue;
