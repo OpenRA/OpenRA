@@ -10,14 +10,19 @@ namespace OpenRa.Game
 	class Mcv : Actor, ISelectable
 	{
 		static Range<int>? mcvRange = null;
-		MoveOrder currentOrder = null;
 		int facing = 0;
-		float2 location;
+		int2 fromCell, toCell;
+		int moveFraction, moveFractionTotal;
 
-		public Mcv( float2 location, int palette )
+		delegate void TickFunc( World world, double t );
+		TickFunc currentOrder = null;
+		TickFunc nextOrder = null;
+
+		public Mcv( int2 cell, int palette )
 		{
-			this.location = location;
-			this.renderLocation = this.location - new float2( 12, 12 ); // HACK: display the mcv centered in it's cell
+			fromCell = toCell = cell;
+			float2 location = ( cell * 24 ).ToFloat2();
+			this.renderLocation = location - new float2( 12, 12 ); // HACK: display the mcv centered in it's cell
 			this.palette = palette;
 
 			if (mcvRange == null)
@@ -65,48 +70,106 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void Accept(MoveOrder o)
+		const int Speed = 6;
+
+		public override void Tick( World world, double t )
 		{
-			currentOrder = o;
-		}
-
-		const float Speed = 48.0f;
-
-		public override void Tick( double t )
-		{
-			if( currentOrder == null )
-				return;
-
-			if( float2.WithinEpsilon( location, currentOrder.Destination, 1.0f ) )
+			if( currentOrder == null && nextOrder != null )
 			{
-				currentOrder = null;
-				return;
+				currentOrder = nextOrder;
+				nextOrder = null;
 			}
 
-			Range<float2> r = new Range<float2>(
-				new float2( -Speed * (float)t, -Speed * (float)t ),
-				new float2( Speed * (float)t, Speed * (float)t ) );
-
-			float2 d = ( currentOrder.Destination - location ).Constrain( r );
-
-			int desiredFacing = GetFacing( d );
-			int df = (desiredFacing - facing + 32) % 32;
-			if( df == 0 )
-				location += d;
-			else if( df > 16 )
-				facing = ( facing + 31 ) % 32;
-			else
-				facing = ( facing + 1 ) % 32;
-
-			renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
-
-			renderLocation.X = (float)Math.Round( renderLocation.X );
-			renderLocation.Y = (float)Math.Round( renderLocation.Y );
+			if( currentOrder != null )
+				currentOrder( world, t );
 		}
 
-		public MoveOrder Order( int x, int y )
+		public void AcceptMoveOrder( int2 destination )
 		{
-			return new MoveOrder( this, x, y );
+			nextOrder = delegate( World world, double t )
+			{
+				int speed = (int)( t * ( Speed * 100 ) );
+
+				if( nextOrder != null )
+					destination = toCell;
+
+				int desiredFacing = GetFacing( ( toCell - fromCell ).ToFloat2() );
+				if( facing != desiredFacing )
+				{
+					int df = ( desiredFacing - facing + 32 ) % 32;
+					if( df > 16 )
+						facing = ( facing + 31 ) % 32;
+					else
+						facing = ( facing + 1 ) % 32;
+				}
+				else
+				{
+					moveFraction += speed;
+					if( moveFraction >= moveFractionTotal )
+					{
+						moveFraction = 0;
+						moveFractionTotal = 0;
+						fromCell = toCell;
+
+						if( toCell == destination )
+						{
+							currentOrder = null;
+						}
+						else
+						{
+							int2 dir = destination - fromCell;
+							toCell = fromCell + new int2( Math.Sign( dir.X ), Math.Sign( dir.Y ) );
+							moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
+						}
+					}
+				}
+
+				float2 location;
+				if( moveFraction > 0 )
+				{
+					float frac = (float)moveFraction / moveFractionTotal;
+					location = 24 * ( ( 1 - frac ) * fromCell.ToFloat2() + frac * toCell.ToFloat2() );
+				}
+				else
+					location = 24 * fromCell.ToFloat2();
+
+				renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
+
+				renderLocation.X = (float)Math.Round( renderLocation.X );
+				renderLocation.Y = (float)Math.Round( renderLocation.Y );
+			};
+		}
+
+		public void AcceptDeployOrder()
+		{
+			nextOrder = delegate( World world, double t )
+			{
+				int desiredFacing = 12;
+				if( facing != desiredFacing )
+				{
+					int df = ( desiredFacing - facing + 32 ) % 32;
+					if( df > 16 )
+						facing = ( facing + 31 ) % 32;
+					else
+						facing = ( facing + 1 ) % 32;
+				}
+				else
+				{
+					world.AddFrameEndTask( delegate
+					{
+						world.Add( new Refinery( ( fromCell * 24 - new int2( 24, 24 ) ).ToFloat2(), palette ) );
+					} );
+					currentOrder = null;
+				}
+			};
+		}
+
+		public IOrder Order( int2 xy )
+		{
+			if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
+				return new DeployMcvOrder( this );
+			else
+				return new MoveOrder( this, xy );
 		}
 	}
 }

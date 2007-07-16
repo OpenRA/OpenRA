@@ -60,9 +60,9 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			world.Add(new Mcv(24 * new float2(5, 5), 3));
-			world.Add(new Mcv(24 * new float2(7, 5), 2));
-			Mcv mcv = new Mcv( 24 * new float2( 9, 5 ), 1 );
+			world.Add(new Mcv(new int2(5, 5), 3));
+			world.Add(new Mcv(new int2(7, 5), 2));
+			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
 			myUnit = mcv;
 			world.Add( mcv );
 
@@ -91,7 +91,7 @@ namespace OpenRa.Game
 			{
 				int x = (int)( ( e.X + viewport.Location.X ) / 24 );
 				int y = (int)( ( e.Y + viewport.Location.Y ) / 24 );
-				myUnit.Order( x, y ).Apply();
+				myUnit.Order( new int2( x, y ) ).Apply();
 			}
 		}
 

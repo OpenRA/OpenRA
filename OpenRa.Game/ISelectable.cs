@@ -7,6 +7,6 @@ namespace OpenRa.Game
 	interface ISelectable
 	{
 		//Sprite CurrentCursor( int x, int y );
-		MoveOrder Order( int x, int y );
+		IOrder Order( int2 xy );
 	}
 }

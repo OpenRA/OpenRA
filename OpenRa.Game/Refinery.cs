@@ -30,6 +30,6 @@ namespace OpenRa.Game
 			}
 		}
 
-		public override void Tick(double t) { }
+		public override void Tick( World world, double t ) { }
 	}
 }

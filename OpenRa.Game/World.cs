@@ -11,6 +11,7 @@ namespace OpenRa.Game
 	class World
 	{
 		List<Actor> actors = new List<Actor>();
+		List<Action<World>> frameEndActions = new List<Action<World>>();
 		SpriteRenderer spriteRenderer;
 		Renderer renderer;
 		Viewport viewport;
@@ -24,6 +25,7 @@ namespace OpenRa.Game
 		}
 
 		public void Add(Actor a) { actors.Add(a); }
+		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		double lastTime = Environment.TickCount / 1000.0;
 
@@ -37,7 +39,7 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				a.Tick( dt );
+				a.Tick( this, dt );
 
 				Sprite[] images = a.CurrentImages;
 
@@ -50,6 +52,12 @@ namespace OpenRa.Game
 				foreach( Sprite image in images )
 					spriteRenderer.DrawSprite(image, a.renderLocation, a.palette);
 			}
+
+			foreach( Action<World> a in frameEndActions )
+			{
+				a( this );
+			}
+			frameEndActions.Clear();
 
 			spriteRenderer.Flush();
 		}

@@ -4,17 +4,17 @@ using System.Text;
 
 namespace OpenRa.Game
 {
-	class MoveOrder
+	interface IOrder
+	{
+		void Apply();
+	}
+
+	class MoveOrder : IOrder
 	{
 		public readonly Mcv Unit;
-		public readonly float2 Destination;
+		public readonly int2 Destination;
 
-		public MoveOrder( Mcv unit, int x, int y )
-			: this( unit, new float2( x * 24, y * 24 ) )
-		{
-		}
-
-		public MoveOrder(Mcv unit, float2 destination)
+		public MoveOrder(Mcv unit, int2 destination)
 		{
 			this.Unit = unit;
 			this.Destination = destination;
@@ -22,7 +22,22 @@ namespace OpenRa.Game
 
 		public void Apply()
 		{
-			Unit.Accept( this );
+			Unit.AcceptMoveOrder( Destination );
+		}
+	}
+
+	class DeployMcvOrder : IOrder
+	{
+		public Mcv Unit;
+
+		public DeployMcvOrder( Mcv unit )
+		{
+			this.Unit = unit;
+		}
+
+		public void Apply()
+		{
+			Unit.AcceptDeployOrder();
 		}
 	}
 }
