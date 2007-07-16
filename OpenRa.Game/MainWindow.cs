@@ -89,8 +89,6 @@ namespace OpenRa.Game
 
 			if (e.Button == MouseButtons.Left)
 			{
-				//MoveOrder order = new MoveOrder(lastPos + viewport.Location);
-				//myUnit.Accept(order);
 				int x = (int)( ( e.X + viewport.Location.X ) / 24 );
 				int y = (int)( ( e.Y + viewport.Location.Y ) / 24 );
 				myUnit.Order( x, y ).Apply();

@@ -77,7 +77,7 @@ namespace OpenRa.Game
 			if( currentOrder == null )
 				return;
 
-			if( float2.WithinEpsilon( renderLocation, currentOrder.Destination, 1.0f ) )
+			if( float2.WithinEpsilon( location, currentOrder.Destination, 1.0f ) )
 			{
 				currentOrder = null;
 				return;
@@ -99,6 +99,9 @@ namespace OpenRa.Game
 				facing = ( facing + 1 ) % 32;
 
 			renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
+
+			renderLocation.X = (float)Math.Round( renderLocation.X );
+			renderLocation.Y = (float)Math.Round( renderLocation.Y );
 		}
 
 		public MoveOrder Order( int x, int y )
