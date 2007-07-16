@@ -25,6 +25,7 @@ namespace OpenRa.Game
 		}
 
 		public void Add(Actor a) { actors.Add(a); }
+		public void Remove( Actor a ) { actors.Remove( a ); }
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		double lastTime = Environment.TickCount / 1000.0;
