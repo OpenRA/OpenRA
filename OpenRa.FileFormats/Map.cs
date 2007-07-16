@@ -120,6 +120,9 @@ namespace OpenRa.FileFormats
 		void ReadTrees( IniFile file )
 		{
 			IniSection terrain = file.GetSection( "TERRAIN" );
+			if( terrain == null )
+				return;
+
 			foreach( KeyValuePair<string, string> kv in terrain )
 				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value ) );
 		}
