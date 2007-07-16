@@ -41,14 +41,14 @@ namespace OpenRa.Game
 
 				Sprite[] images = a.CurrentImages;
 
-				if( a.location.X > range.End.X || a.location.X < range.Start.X - images[ 0 ].bounds.Width )
+				if( a.renderLocation.X > range.End.X || a.renderLocation.X < range.Start.X - images[ 0 ].bounds.Width )
 					continue;
 
-				if (a.location.Y > range.End.Y || a.location.Y < range.Start.Y - images[0].bounds.Height)
+				if (a.renderLocation.Y > range.End.Y || a.renderLocation.Y < range.Start.Y - images[0].bounds.Height)
 					continue;
 
 				foreach( Sprite image in images )
-					spriteRenderer.DrawSprite(image, a.location, a.palette);
+					spriteRenderer.DrawSprite(image, a.renderLocation, a.palette);
 			}
 
 			spriteRenderer.Flush();

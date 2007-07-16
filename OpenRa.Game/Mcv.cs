@@ -7,15 +7,17 @@ using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
-	class Mcv : Actor
+	class Mcv : Actor, ISelectable
 	{
 		static Range<int>? mcvRange = null;
 		MoveOrder currentOrder = null;
 		int facing = 0;
+		float2 location;
 
 		public Mcv( float2 location, int palette )
 		{
 			this.location = location;
+			this.renderLocation = this.location - new float2( 12, 12 ); // HACK: display the mcv centered in it's cell
 			this.palette = palette;
 
 			if (mcvRange == null)
@@ -75,8 +77,11 @@ namespace OpenRa.Game
 			if( currentOrder == null )
 				return;
 
-			if( float2.WithinEpsilon( location, currentOrder.Destination, 1.0f ) )
+			if( float2.WithinEpsilon( renderLocation, currentOrder.Destination, 1.0f ) )
+			{
+				currentOrder = null;
 				return;
+			}
 
 			Range<float2> r = new Range<float2>(
 				new float2( -Speed * (float)t, -Speed * (float)t ),
@@ -92,6 +97,13 @@ namespace OpenRa.Game
 				facing = ( facing + 31 ) % 32;
 			else
 				facing = ( facing + 1 ) % 32;
+
+			renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
+		}
+
+		public MoveOrder Order( int x, int y )
+		{
+			return new MoveOrder( this, x, y );
 		}
 	}
 }

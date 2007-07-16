@@ -23,7 +23,7 @@ namespace OpenRa.Game
 		Sidebar sidebar;
 		Viewport viewport;
 
-		Mcv myUnit;
+		ISelectable myUnit;
 
 		static Size GetResolution(Settings settings)
 		{
@@ -62,7 +62,9 @@ namespace OpenRa.Game
 
 			world.Add(new Mcv(24 * new float2(5, 5), 3));
 			world.Add(new Mcv(24 * new float2(7, 5), 2));
-			world.Add(myUnit = new Mcv(24 * new float2(9, 5), 1));
+			Mcv mcv = new Mcv( 24 * new float2( 9, 5 ), 1 );
+			myUnit = mcv;
+			world.Add( mcv );
 
 			world.Add(new Refinery(24 * new float2(5, 7), 1));
 
@@ -87,8 +89,11 @@ namespace OpenRa.Game
 
 			if (e.Button == MouseButtons.Left)
 			{
-				MoveOrder order = new MoveOrder(lastPos + viewport.Location);
-				myUnit.Accept(order);
+				//MoveOrder order = new MoveOrder(lastPos + viewport.Location);
+				//myUnit.Accept(order);
+				int x = (int)( ( e.X + viewport.Location.X ) / 24 );
+				int y = (int)( ( e.Y + viewport.Location.Y ) / 24 );
+				myUnit.Order( x, y ).Apply();
 			}
 		}
 

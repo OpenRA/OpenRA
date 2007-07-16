@@ -16,7 +16,7 @@ namespace OpenRa.Game
 			if (refineryRange == null)
 				refineryRange = UnitSheetBuilder.AddUnit("proc");
 
-			this.location = location;
+			this.renderLocation = location;
 			this.palette = palette;
 		}
 
