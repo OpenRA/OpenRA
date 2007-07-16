@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
-    <Compile Include="Clock.cs" />
+    <Compile Include="ConstructionYard.cs" />
     <Compile Include="float2.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="ISelectable.cs" />

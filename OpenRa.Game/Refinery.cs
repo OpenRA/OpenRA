@@ -9,13 +9,10 @@ namespace OpenRa.Game
 {
 	class Refinery : Actor
 	{
-		static Range<int>? refineryRange = null;
+		static Range<int> sequence = UnitSheetBuilder.GetUnit("proc");
 
 		public Refinery(float2 location, int palette)
 		{
-			if (refineryRange == null)
-				refineryRange = UnitSheetBuilder.AddUnit("proc");
-
 			this.renderLocation = location;
 			this.palette = palette;
 		}
@@ -26,10 +23,8 @@ namespace OpenRa.Game
 		{
 			get
 			{
-				return new Sprite[] { UnitSheetBuilder.sprites[refineryRange.Value.Start + GetFrame()] };
+				return new Sprite[] { UnitSheetBuilder.sprites[sequence.Start + GetFrame()] };
 			}
 		}
-
-		public override void Tick( World world, double t ) { }
 	}
 }

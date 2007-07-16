@@ -22,15 +22,9 @@ namespace OpenRa.Game
 			}
 		}
 
-		public bool Contains(string key)
-		{
-			return settings.ContainsKey(key);
-		}
+		public bool Contains(string key) { return settings.ContainsKey(key); }
 
-		public string GetValue(string key, string defaultValue)
-		{
-			return Contains(key) ? settings[key] : defaultValue;
-		}
+		public string GetValue(string key, string defaultValue) { return Contains(key) ? settings[key] : defaultValue; }
 
 		public int GetValue(string key, int defaultValue)
 		{

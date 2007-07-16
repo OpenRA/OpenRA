@@ -35,7 +35,7 @@ namespace OpenRa.Game
 		public static Vertex MakeVertex(float2 o, float2 uv, Sprite r, int palette)
 		{
 			return new Vertex(
-				Lerp( o, o + new float2(r.bounds.Size), uv ),
+				float2.Lerp( o, o + new float2(r.bounds.Size), uv ),
 				r.MapTextureCoords(uv), 
 				EncodeVertexAttributes(r.channel, palette));
 		}
@@ -45,11 +45,13 @@ namespace OpenRa.Game
 			return (1 - t) * a + t * b;
 		}
 
-		static float2 Lerp(float2 a, float2 b, float2 t)
+		public static T[] MakeArray<T>(int count, Converter<int, T> f)
 		{
-			return new float2(
-				Lerp(a.X, b.X, t.X),
-				Lerp(a.Y, b.Y, t.Y));
+			T[] result = new T[count];
+			for (int i = 0; i < count; i++)
+				result[i] = f(i);
+
+			return result;
 		}
 
 		static float2[] uv = 

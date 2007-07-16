@@ -60,15 +60,28 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
+			PrecacheStructure("proc");
+			PrecacheStructure("fact");
+			PrecacheUnit("mcv");
+
 			world.Add(new Mcv(new int2(5, 5), 3));
 			world.Add(new Mcv(new int2(7, 5), 2));
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
 			myUnit = mcv;
 			world.Add( mcv );
 
-			world.Add(new Refinery(24 * new float2(5, 7), 1));
-
 			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
+		}
+
+		void PrecacheStructure(string name)
+		{
+			UnitSheetBuilder.GetUnit(name);
+			UnitSheetBuilder.GetUnit(name + "make");
+		}
+
+		void PrecacheUnit(string name)
+		{
+			UnitSheetBuilder.GetUnit(name);
 		}
 
 		internal void Run()

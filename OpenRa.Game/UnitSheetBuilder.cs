@@ -14,6 +14,8 @@ namespace OpenRa.Game
 
 		public static readonly List<Sprite> sprites = new List<Sprite>();
 
+		static Dictionary<string, Range<int>> sequences = new Dictionary<string, Range<int>>();
+
 		static ShpReader Load(string filename)
 		{
 			foreach( Package p in new Package[] { unitsPackage, otherUnitsPackage } )
@@ -23,14 +25,25 @@ namespace OpenRa.Game
 			throw new NotImplementedException();
 		}
 
-		public static Range<int> AddUnit( string name )
+		public static Range<int> GetUnit(string name)
+		{
+			Range<int> result;
+			if (sequences.TryGetValue(name, out result))
+				return result;
+
+			return AddUnit(name);
+		}
+
+		static Range<int> AddUnit( string name )
 		{
 			int low = sprites.Count;
 			ShpReader reader = Load(name + ".shp");
 			foreach (ImageHeader h in reader)
 				sprites.Add(SheetBuilder.Add(h.Image, reader.Size));
 
-			return new Range<int>(low, sprites.Count - 1);
+			Range<int> sequence = new Range<int>(low, sprites.Count - 1);
+			sequences.Add(name, sequence);
+			return sequence;
 		}
 	}
 }

@@ -15,11 +15,7 @@ namespace OpenRa.Game
 		}
 
 		Sprite[] currentImages;
-		public override Sprite[] CurrentImages
-		{
-			get { return currentImages; }
-		}
 
-		public override void Tick( World world, double t ) { }
+		public override Sprite[] CurrentImages { get { return currentImages; } }
 	}
 }

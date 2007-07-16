@@ -20,14 +20,30 @@ namespace OpenRa.Game
 
 		public PointF ToPointF() { return new PointF(X, Y); }
 
-		public static float2 operator +(float2 a, float2 b)
+		public static float2 operator +(float2 a, float2 b) { return new float2(a.X + b.X, a.Y + b.Y); }
+		public static float2 operator -(float2 a, float2 b) { return new float2(a.X - b.X, a.Y - b.Y); }
+
+		public static float2 operator -(float2 a) { return new float2(-a.X, -a.Y); }
+
+		static float Lerp(float a, float b, float t) { return (1 - t) * a + t * b; }
+
+		public static float2 Lerp(float2 a, float2 b, float t)
 		{
-			return new float2(a.X + b.X, a.Y + b.Y);
+			return new float2(
+				Lerp(a.X, b.X, t),
+				Lerp(a.Y, b.Y, t));
 		}
 
-		public static float2 operator -(float2 a, float2 b)
+		public static float2 Lerp(float2 a, float2 b, float2 t)
 		{
-			return new float2(a.X - b.X, a.Y - b.Y);
+			return new float2(
+				Lerp(a.X, b.X, t.X),
+				Lerp(a.Y, b.Y, t.Y));
+		}
+
+		public static float2 FromAngle(float a)
+		{
+			return new float2((float)Math.Sin(a), (float)Math.Cos(a));
 		}
 
 		public float2 Constrain(Range<float2> r)
@@ -55,21 +71,8 @@ namespace OpenRa.Game
 			return Math.Abs(d.X) < e && Math.Abs(d.Y) < e;
 		}
 
-		static float Sign(float f)
-		{
-			if (f > 0) return 1;
-			if (f < 0) return -1;
-			return 0;
-		}
-
-		public float2 Sign()
-		{
-			return new float2(Sign(X), Sign(Y));
-		}
-
-		public static float Dot(float2 a, float2 b)
-		{
-			return a.X * b.X + a.Y * b.Y;
-		}
+		public float2 Sign() { return new float2(Math.Sign(X), Math.Sign(Y)); }
+		public static float Dot(float2 a, float2 b) { return a.X * b.X + a.Y * b.Y; }
+		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
 	}
 }

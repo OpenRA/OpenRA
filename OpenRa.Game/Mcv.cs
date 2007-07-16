@@ -9,7 +9,8 @@ namespace OpenRa.Game
 {
 	class Mcv : Actor, ISelectable
 	{
-		static Range<int>? mcvRange = null;
+		static Range<int> mcvRange = UnitSheetBuilder.GetUnit("mcv");
+
 		int facing = 0;
 		int2 fromCell, toCell;
 		int moveFraction, moveFractionTotal;
@@ -18,28 +19,16 @@ namespace OpenRa.Game
 		TickFunc currentOrder = null;
 		TickFunc nextOrder = null;
 
-		public Mcv( int2 cell, int palette )
+		public Mcv(int2 cell, int palette)
 		{
 			fromCell = toCell = cell;
-			float2 location = ( cell * 24 ).ToFloat2();
-			this.renderLocation = location - new float2( 12, 12 ); // HACK: display the mcv centered in it's cell
+			// HACK: display the mcv centered in it's cell;
+			renderLocation = (cell * 24).ToFloat2() - new float2(12, 12);
 			this.palette = palette;
-
-			if (mcvRange == null)
-				mcvRange = UnitSheetBuilder.AddUnit("mcv");
 		}
 
-		static float2[] fvecs;
-
-		static Mcv()
-		{
-			fvecs = new float2[32];
-			for (int i = 0; i < 32; i++)
-			{
-				float angle = i / 16.0f * (float)Math.PI;
-				fvecs[i] = new float2(-(float)Math.Sin(angle), -(float)Math.Cos(angle));
-			}
-		}
+		static float2[] fvecs = Util.MakeArray<float2>(32,
+			delegate(int i) { return -float2.FromAngle(i / 16.0f * (float)Math.PI); });
 
 		int GetFacing(float2 d)
 		{
@@ -49,7 +38,7 @@ namespace OpenRa.Game
 			int highest = -1;
 			float highestDot = -1.0f;
 
-			for (int i = 0; i < 32; i++)
+			for (int i = 0; i < fvecs.Length; i++)
 			{
 				float dot = float2.Dot(fvecs[i], d);
 				if (dot > highestDot)
@@ -64,10 +53,7 @@ namespace OpenRa.Game
 
 		public override Sprite[] CurrentImages
 		{
-			get
-			{
-				return new Sprite[] { UnitSheetBuilder.sprites[facing + mcvRange.Value.Start] };
-			}
+			get { return new Sprite[] { UnitSheetBuilder.sprites[facing + mcvRange.Start] }; }
 		}
 
 		const int Speed = 6;
@@ -95,13 +81,7 @@ namespace OpenRa.Game
 
 				int desiredFacing = GetFacing( ( toCell - fromCell ).ToFloat2() );
 				if( facing != desiredFacing )
-				{
-					int df = ( desiredFacing - facing + 32 ) % 32;
-					if( df > 16 )
-						facing = ( facing + 31 ) % 32;
-					else
-						facing = ( facing + 1 ) % 32;
-				}
+					Turn(desiredFacing);
 				else
 				{
 					moveFraction += speed;
@@ -112,13 +92,11 @@ namespace OpenRa.Game
 						fromCell = toCell;
 
 						if( toCell == destination )
-						{
 							currentOrder = null;
-						}
 						else
 						{
 							int2 dir = destination - fromCell;
-							toCell = fromCell + new int2( Math.Sign( dir.X ), Math.Sign( dir.Y ) );
+							toCell = fromCell + dir.Sign();
 							moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
 						}
 					}
@@ -126,18 +104,21 @@ namespace OpenRa.Game
 
 				float2 location;
 				if( moveFraction > 0 )
-				{
-					float frac = (float)moveFraction / moveFractionTotal;
-					location = 24 * ( ( 1 - frac ) * fromCell.ToFloat2() + frac * toCell.ToFloat2() );
-				}
+					location = 24 * float2.Lerp(fromCell.ToFloat2(), toCell.ToFloat2(), 
+						(float)moveFraction / moveFractionTotal);
 				else
 					location = 24 * fromCell.ToFloat2();
 
 				renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
 
-				renderLocation.X = (float)Math.Round( renderLocation.X );
-				renderLocation.Y = (float)Math.Round( renderLocation.Y );
+				renderLocation = renderLocation.Round();
 			};
+		}
+
+		void Turn(int desiredFacing)
+		{
+			int df = (desiredFacing - facing + 32) % 32;
+			facing = (facing + (df > 16 ? 31 : 1)) % 32;
 		}
 
 		public void AcceptDeployOrder()
@@ -145,20 +126,14 @@ namespace OpenRa.Game
 			nextOrder = delegate( World world, double t )
 			{
 				int desiredFacing = 12;
-				if( facing != desiredFacing )
-				{
-					int df = ( desiredFacing - facing + 32 ) % 32;
-					if( df > 16 )
-						facing = ( facing + 31 ) % 32;
-					else
-						facing = ( facing + 1 ) % 32;
-				}
+				if (facing != desiredFacing)
+					Turn(desiredFacing);
 				else
 				{
-					world.AddFrameEndTask( delegate
+					world.AddFrameEndTask(delegate
 					{
-						world.Add( new Refinery( ( fromCell * 24 - new int2( 24, 24 ) ).ToFloat2(), palette ) );
-					} );
+						world.Add(new ConstructionYard((fromCell * 24 - new int2(24, 24)).ToFloat2(), palette));
+					});
 					currentOrder = null;
 				}
 			};
