@@ -14,12 +14,22 @@ namespace OpenRa.Game
 		public Animation( string name )
 		{
 			this.name = name;
-			PlayToEnd( "idle" );
+			Play( "idle" );
 		}
 
 		public Sprite[] Images { get { return new Sprite[] { currentSequence.GetSprite( frame ) }; } }
 
-		public void PlayToEnd( string sequenceName )
+		public void Play( string sequenceName )
+		{
+			PlayThen( sequenceName, delegate { } );
+		}
+
+		public void PlayRepeating( string sequenceName )
+		{
+			PlayThen( sequenceName, delegate { PlayRepeating( sequenceName ); } );
+		}
+
+		public void PlayThen( string sequenceName, MethodInvoker after )
 		{
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
@@ -30,17 +40,8 @@ namespace OpenRa.Game
 				{
 					frame = currentSequence.Length - 1;
 					tickFunc = delegate { };
+					after();
 				}
-			};
-		}
-
-		public void PlayRepeating( string sequenceName )
-		{
-			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
-			frame = 0;
-			tickFunc = delegate
-			{
-				frame = ( frame + 1 ) % currentSequence.Length;
 			};
 		}
 

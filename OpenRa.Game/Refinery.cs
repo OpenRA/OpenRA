@@ -7,20 +7,11 @@ using System.Drawing;
 
 namespace OpenRa.Game
 {
-	class Refinery : Actor
+	class Refinery : Building
 	{
-		Animation a = new Animation( "proc" );
-
-		public Refinery(float2 location, int palette)
+		public Refinery(int2 location, int palette)
+			: base( "proc", location, palette )
 		{
-			a.PlayToEnd( "idle" );
-			this.renderLocation = location;
-			this.palette = palette;
-		}
-
-		public override Sprite[] CurrentImages
-		{
-			get { return a.Images; }
 		}
 	}
 }

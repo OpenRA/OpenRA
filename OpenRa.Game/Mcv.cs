@@ -133,8 +133,9 @@ namespace OpenRa.Game
 					world.AddFrameEndTask(delegate
 					{
 						world.Remove( this );
-						world.Add(new ConstructionYard((fromCell * 24 - new int2(24, 24)).ToFloat2(), palette));
-					});
+						world.Add( new ConstructionYard( fromCell - new int2( 1, 1 ), palette ) );
+						world.Add( new Refinery( fromCell - new int2( 1, -2 ), palette ) );
+					} );
 					currentOrder = null;
 				}
 			};

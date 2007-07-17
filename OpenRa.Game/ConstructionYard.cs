@@ -5,25 +5,12 @@ using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
-	class ConstructionYard : Actor
+	class ConstructionYard : Building
 	{
-		Animation animation = new Animation( "fact" );
-
-		public ConstructionYard(float2 location, int palette)
+		public ConstructionYard( int2 location, int palette )
+			: base( "fact", location, palette )
 		{
-			this.renderLocation = location;
-			this.palette = palette;
-			animation.PlayToEnd( "make" );
-		}
-
-		public override Sprite[] CurrentImages
-		{
-			get { return animation.Images; }
-		}
-
-		public override void Tick( World world, double t )
-		{
-			animation.Tick( t );
+			animation.PlayThen( "make", delegate { animation.PlayRepeating( "build" ); } );
 		}
 	}
 }

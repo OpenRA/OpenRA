@@ -67,6 +67,7 @@ namespace OpenRa.Game
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
 			myUnit = mcv;
 			world.Add( mcv );
+			world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
 			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
 		}
