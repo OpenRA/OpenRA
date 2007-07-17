@@ -7,10 +7,12 @@ namespace OpenRa.Game
 {
 	class ConstructionYard : Actor
 	{
-		static Range<int> normalSequence = UnitSheetBuilder.GetUnit("fact");
-		static Range<int> makeSequence = UnitSheetBuilder.GetUnit("factmake");
+		const string name = "fact";
 
-		Range<int> sequence = makeSequence;
+		static Sequence idle = SequenceProvider.GetSequence(name, "idle");
+		static Sequence make = SequenceProvider.GetSequence(name, "make");
+
+		Sequence current = make;
 		int frame = -1;
 
 		public ConstructionYard(float2 location, int palette)
@@ -23,16 +25,14 @@ namespace OpenRa.Game
 		{
 			get
 			{
-				if ((sequence.Start == makeSequence.Start) && ++frame >= sequence.End - sequence.Start)
+				if ((current == make) && ++frame >= current.Length)
 				{
 					frame = 0;
-					sequence = normalSequence;
+					current = idle;
 				}
 
-				return new Sprite[] { UnitSheetBuilder.sprites[sequence.Start + frame] };
+				return new Sprite[] { current.GetSprite(frame) };
 			}
 		}
-
-		public override void Tick(World world, double t) { }
 	}
 }

@@ -9,7 +9,8 @@ namespace OpenRa.Game
 {
 	class Refinery : Actor
 	{
-		static Range<int> sequence = UnitSheetBuilder.GetUnit("proc");
+		const string name = "proc";
+		static Sequence idle = SequenceProvider.GetSequence(name, "idle");
 
 		public Refinery(float2 location, int palette)
 		{
@@ -17,14 +18,9 @@ namespace OpenRa.Game
 			this.palette = palette;
 		}
 
-		int GetFrame() { return 1; }
-
 		public override Sprite[] CurrentImages
 		{
-			get
-			{
-				return new Sprite[] { UnitSheetBuilder.sprites[sequence.Start + GetFrame()] };
-			}
+			get { return new Sprite[] { idle.GetSprite(0) }; }
 		}
 	}
 }

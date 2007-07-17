@@ -41,12 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="float2.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="ISelectable.cs" />
     <Compile Include="MoveOrder.cs" />
     <Compile Include="Region.cs" />
+    <Compile Include="SequenceProvider.cs" />
     <Compile Include="SheetBuilder.cs" />
     <Compile Include="HardwarePalette.cs" />
     <Compile Include="MainWindow.cs">

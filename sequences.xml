@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 	openra/sequences.xml
+
+		this file describes animation sequences for structures and units.
+		
+		<sequence src=...> can be used to override the choice of .shp file
+		used to extract a sequence. if it is not present, the .shp matching
+		the unit name is used instead.
+		
+		either of <sequence length=...> or <sequence end=...> are
+		recognized; if neither is present, a 1-frame sequence is assumed
+		
+		also, <sequence length="*"> creates a sequence that includes all frames
+		after `start`.
+		
+		one day, we might support inheritance here too.
+		
+		standard sequence names:
+			idle		- doing nothing
+			make		- deploy (sell is `make` played backwards)
+			build		- production building doing something
+			
+			damaged-idle	- doing nothing while on yellow health (or worse)
+			damaged-build	- production while on yellow health
+			
+		author: C. Forbes
+			
+-->
+
+<sequences>
+
+	<!-- construction yard -->
+
+	<unit name="fact">
+		<sequence name="idle" start="0"/>
+		<sequence name="make" start="0" length="32" src="factmake" />
+		<sequence name="build" start="1" length="25"/>
+		<sequence name="damaged-idle" start="26"/>
+		<sequence name="damaged-build" start="27" length="25"/>
+	</unit>
+	
+	<!-- refinery -->
+	
+	<unit name="proc">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="procmake" />
+	</unit>
+	
+</sequences>
