@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="Animation.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="float2.cs" />
