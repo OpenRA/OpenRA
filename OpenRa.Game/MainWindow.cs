@@ -60,9 +60,7 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map));
 
-			PrecacheStructure("proc");
-			PrecacheStructure("fact");
-			PrecacheUnit("mcv");
+			SequenceProvider.ForcePrecache();
 
 			world.Add(new Mcv(new int2(5, 5), 3));
 			world.Add(new Mcv(new int2(7, 5), 2));

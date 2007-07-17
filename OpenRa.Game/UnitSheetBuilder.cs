@@ -36,6 +36,8 @@ namespace OpenRa.Game
 
 		static Range<int> AddUnit( string name )
 		{
+			Log.Write("Loading SHP for {0}", name);
+
 			int low = sprites.Count;
 			ShpReader reader = Load(name + ".shp");
 			foreach (ImageHeader h in reader)
@@ -43,6 +45,9 @@ namespace OpenRa.Game
 
 			Range<int> sequence = new Range<int>(low, sprites.Count - 1);
 			sequences.Add(name, sequence);
+
+			Log.Write("Loaded SHP for {0}", name);
+
 			return sequence;
 		}
 	}
