@@ -1,151 +1,306 @@
-56
-0003
-sh{0:00}
-2
-0001
-w{0}
-38
-0087
-s{0:00}
-38
-003b
-wc{0:00}
-6
-00f7
-f{0:00}
-43
-00ad
-d{0:00}
-4
-00e7
-rc{0:00}
-1
-00eb
-br1a
-1
-00ee
-br2a
-1
-00f1
-br3a
-1
-017c
-br1x
-1
-017d
-br2x
-1
-00ed
-br1c
-1
-00f0
-br2c
-1
-00f6
-br3f
-13
-0070
-rv{0:00}
-1
-0083
-bridge1
-1
-0084
-bridge1d
-1
-017a
-bridge1h
-1
-017e
-bridge1x
-1
-0085
-bridge2
-1
-0086
-bridge2d
-1
-017f
-bridge2x
-2
-0081
-ford{0}
-1
-00e5
-rv14
-1
-00e6
-rv15
-1
-007e
-falls1a
-1
-007f
-falls2
-1
-0080
-falls2a
-3
-0061
-b{0}
-1
-0067
-p01
-1
-0068
-p02
-1
-0069
-p03
-1
-006a
-p04
-1
-006b
-p07
-1
-006c
-p08
-1
-006d
-p13
-1
-006e
-p14
-11
-00d8
-rf{0:00}
-1
-00e3
-d44
-1
-00e4
-d45
-49
-0149
-wall{0:0000}
-7
-010c
-flor{0:0000}
-16
-0180
-xtra{0:0000}
-11
-013e
-strp{0:0000}
-15
-00fd
-arro{0:0000}
-5
-0113
-gflr{0:0000}
-11
-0118
-gstr{0:0000}
+; clear ground
+TSI
 1
 ff
 clear1
+
+; clear ground
+TSI
 1
 ffff
 clear1
+
+; sandy shorelines
+TS-
+56
+0003
+sh{0:00}
+
+; plain water
+TS-
+2
+0001
+w{0}
+
+; cliffs
+TS-
+38
+0087
+s{0:00}
+
+; rocky coast
+TS-
+38
+003b
+wc{0:00}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; ROADS
+
+; roads
+TS-
+43
+00ad
+d{0:00}
+
+; road
+TS-
+1
+00e3
+d44
+
+; road
+TS-
+1
+00e4
+d45
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; RIVERS
+
+; river emerging from cliff
+TS-
+4
+00e7
+rc{0:00}
+
+; rivers
+TS-
+13
+0070
+rv{0:00}
+
+; river
+TS-
+1
+00e5
+rv14
+
+; river
+TS-
+1
+00e6
+rv15
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; BRIDGES
+
+; long bridge (north end)
+TS-
+1
+00eb
+br1a
+
+; long bridge (south end)
+TS-
+1
+00ee
+br2a
+
+; long bridge (middle)
+TS-
+1
+00f1
+br3a
+
+; long bridge (north surround)
+TS-
+1
+017c
+br1x
+
+; long bridge (south surround)
+TS-
+1
+017d
+br2x
+
+; long bridge (north end, broken)
+TS-
+1
+00ed
+br1c
+
+; long bridge (south end, broken)
+TS-
+1
+00f0
+br2c
+
+; long bridge (water / totally broken)
+TS-
+1
+00f6
+br3f
+
+; short bridge "/"
+TS-
+1
+0083
+bridge1
+
+; short bridge "/" (destroyed)
+TS-
+1
+0084
+bridge1d
+
+; short bridge "/" (damaged)
+TS-
+1
+017a
+bridge1h
+
+; short bridge "/" (surround)
+TS-
+1
+017e
+bridge1x
+
+; short bridge "\"
+TS-
+1
+0085
+bridge2
+
+; short bridge "\" (destroyed)
+TS-
+1
+0086
+bridge2d
+
+; short bridge "\" (damaged)
+TS-
+1
+017f
+bridge2x
+
+; fyords
+TS-
+6
+00f7
+f{0:00}
+
+; short fyord
+TS-
+2
+0081
+ford{0}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; WATERFALLS
+
+; waterfall (E-W)
+TS-
+1
+007d
+falls1
+
+; waterfall (E-W, into sea)
+TS-
+1
+007e
+falls1a
+
+; waterfall (N-S)
+TS-
+1
+007f
+falls2
+
+; waterfall (N-S, into sea)
+TS-
+1
+0080
+falls2a
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; DEBRIS / ROCKS
+
+; random rock chunks (impassable)
+TS-
+3
+0061
+b{0}
+
+; random rock chunks (passable)
+TS-
+11
+00d8
+rf{0:00}
+
+; random debris
+TS-
+4
+0067
+p{0:00}
+
+; random debris
+TS-
+1
+006b
+p07
+
+; random debris
+TS-
+1
+006c
+p08
+
+; random debris
+TS-
+1
+006d
+p13
+
+; random debris
+TS-
+1
+006e
+p14
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; INTERIOR
+
+; walls
+--I
+49
+0149
+wall{0:0000}
+
+; black floor
+--I
+7
+010c
+flor{0:0000}
+
+; walls with stuff, random tiles
+--I
+16
+0180
+xtra{0:0000}
+
+; black/yellow stripe
+--I
+11
+013e
+strp{0:0000}
+
+; red stripe
+--I
+15
+00fd
+arro{0:0000}
+
+; white floor
+--I
+5
+0113
+gflr{0:0000}
+
+; white floor with black/yellow stripe
+--I
+11
+0118
+gstr{0:0000}
 
