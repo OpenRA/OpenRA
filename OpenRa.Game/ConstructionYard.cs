@@ -7,32 +7,23 @@ namespace OpenRa.Game
 {
 	class ConstructionYard : Actor
 	{
-		const string name = "fact";
-
-		static Sequence idle = SequenceProvider.GetSequence(name, "idle");
-		static Sequence make = SequenceProvider.GetSequence(name, "make");
-
-		Sequence current = make;
-		int frame = -1;
+		Animation animation = new Animation( "fact" );
 
 		public ConstructionYard(float2 location, int palette)
 		{
 			this.renderLocation = location;
 			this.palette = palette;
+			animation.PlayToEnd( "make" );
 		}
 
 		public override Sprite[] CurrentImages
 		{
-			get
-			{
-				if ((current == make) && ++frame >= current.Length)
-				{
-					frame = 0;
-					current = idle;
-				}
+			get { return animation.Images; }
+		}
 
-				return new Sprite[] { current.GetSprite(frame) };
-			}
+		public override void Tick( World world, double t )
+		{
+			animation.Tick( t );
 		}
 	}
 }

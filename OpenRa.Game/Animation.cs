@@ -23,31 +23,31 @@ namespace OpenRa.Game
 		{
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
-			//tickFunc = delegate
-			//{
-			//      ++frame;
-			//      if( frame >= currentSequence.Length )
-			//      {
-			//            frame = currentSequence.Length - 1;
-			//            tickFunc = delegate { };
-			//      }
-			//};
+			tickFunc = delegate
+			{
+				++frame;
+				if( frame >= currentSequence.Length )
+				{
+					frame = currentSequence.Length - 1;
+					tickFunc = delegate { };
+				}
+			};
 		}
 
 		public void PlayRepeating( string sequenceName )
 		{
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
-			//tickFunc = delegate
-			//{
-			//      frame = ( frame + 1 ) % currentSequence.Length;
-			//};
+			tickFunc = delegate
+			{
+				frame = ( frame + 1 ) % currentSequence.Length;
+			};
 		}
 
 		Action<double> tickFunc;
 		public void Tick( double t )
 		{
-			//tickFunc( t );
+			tickFunc( t );
 		}
 	}
 }

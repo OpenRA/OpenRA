@@ -9,18 +9,18 @@ namespace OpenRa.Game
 {
 	class Refinery : Actor
 	{
-		const string name = "proc";
-		static Sequence idle = SequenceProvider.GetSequence(name, "idle");
+		Animation a = new Animation( "proc" );
 
 		public Refinery(float2 location, int palette)
 		{
+			a.PlayToEnd( "idle" );
 			this.renderLocation = location;
 			this.palette = palette;
 		}
 
 		public override Sprite[] CurrentImages
 		{
-			get { return new Sprite[] { idle.GetSprite(0) }; }
+			get { return a.Images; }
 		}
 	}
 }
