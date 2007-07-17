@@ -44,6 +44,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="PathFinder.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="float2.cs" />

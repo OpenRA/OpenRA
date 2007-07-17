@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2BFC3861-E90E-4F77-B254-8FB8285E43AC}</ProjectGuid>
+    <ProjectGuid>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.TechTree</RootNamespace>
-    <AssemblyName>OpenRa.TechTree</AssemblyName>
+    <RootNamespace>OpenRa.DataStructures</RootNamespace>
+    <AssemblyName>OpenRa.DataStructures</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,24 +30,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Item.cs" />
+    <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Race.cs" />
-    <Compile Include="TechTree.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
-      <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
-      <Name>OpenRa.DataStructures</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
-      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
-    </ProjectReference>
+    <Compile Include="Tuple.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

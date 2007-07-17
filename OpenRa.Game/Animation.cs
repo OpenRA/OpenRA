@@ -45,10 +45,17 @@ namespace OpenRa.Game
 			};
 		}
 
+		double timeUntilNextFrame;
+
 		Action<double> tickFunc;
 		public void Tick( double t )
 		{
-			tickFunc( t );
+			timeUntilNextFrame -= t;
+			while( timeUntilNextFrame <= 0 )
+			{
+				tickFunc( t );
+				timeUntilNextFrame += ( 40.0 / 1000.0 ); // 25 fps == 40 ms
+			}
 		}
 	}
 }

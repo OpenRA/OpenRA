@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using OpenRa.FileFormats;
 using System.IO;
+using System.Text;
+using OpenRa.DataStructures;
+using OpenRa.FileFormats;
 
 namespace OpenRa.TechTree
 {

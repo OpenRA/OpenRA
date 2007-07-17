@@ -70,6 +70,7 @@ namespace OpenRa.Game
 			world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
 			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
+
 		}
 
 		void PrecacheStructure(string name)
