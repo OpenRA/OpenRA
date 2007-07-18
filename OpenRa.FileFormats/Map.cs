@@ -43,14 +43,12 @@ namespace OpenRa.FileFormats
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
 
-			UnpackTileData(ReadMapPack(file));
+			UnpackTileData( ReadPackedSection( file.GetSection( "MapPack" ) ) );
 			ReadTrees(file);
 		}
 
-		static MemoryStream ReadMapPack(IniFile file)
+		static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
-			IniSection mapPackSection = file.GetSection("MapPack");
-
 			StringBuilder sb = new StringBuilder();
 			for (int i = 1; ; i++)
 			{
@@ -118,6 +116,14 @@ namespace OpenRa.FileFormats
 					if( MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff )
 						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
 				}
+		}
+
+		void UnpackOverlayData( MemoryStream ms )
+		{
+			for( int i = 0 ; i < 128 ; i++ )
+				for( int j = 0 ; j < 128 ; j++ )
+					MapTiles[ j, i ].overlay = ReadByte( ms );
+
 		}
 
 		void ReadTrees( IniFile file )

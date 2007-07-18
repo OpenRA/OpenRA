@@ -8,19 +8,20 @@ namespace OpenRa.FileFormats
 	{
 		public ushort tile;
 		public byte image;
+		public byte overlay;
 
 		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
 
-		public override bool Equals(object obj)
+		public override bool Equals( object obj )
 		{
-			if (obj == null)
+			if( obj == null )
 				return false;
 
 			TileReference r = (TileReference)obj;
-			return (r.image == image && r.tile == tile);
+			return ( r.image == image && r.tile == tile );
 		}
 
-		public static bool operator ==(TileReference a, TileReference b) { return a.Equals(b); }
-		public static bool operator !=(TileReference a, TileReference b) { return !a.Equals(b); }
+		public static bool operator ==( TileReference a, TileReference b ) { return a.Equals( b ); }
+		public static bool operator !=( TileReference a, TileReference b ) { return !a.Equals( b ); }
 	}
 }
