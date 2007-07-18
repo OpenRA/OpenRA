@@ -29,26 +29,16 @@ namespace OpenRa.Game
 			}
 		}
 
-		public PathFinder( Map map, TileSet tileSet )
+		public PathFinder(Map map, TileSet tileSet)
 		{
 			this.map = map;
 
-			for( int x = 0 ; x < 128 ; x++ )
-			{
-				for( int y = 0 ; y < 128 ; y++ )
-				{
-					if (x < map.XOffset || y < map.YOffset || x >= map.XOffset + map.Width || y >= map.YOffset + map.Height)
-						passable[x, y] = false;
-					else
-					{
-						TileReference r = map.MapTiles[x, y];
-						if (r.tile == 0xffff || r.tile == 0xff)
-							r.image = 0;
+			//todo: speed hax for roads
 
-						passable[x, y] = IsPassable(tileSet.walk[r.tile][r.image]);
-					}
-				}
-			}
+			for (int x = 0; x < 128; x++)
+				for (int y = 0; y < 128; y++)
+					passable[x, y] = map.IsInMap(x, y) && 
+						IsPassable(tileSet.GetWalkability(map.MapTiles[x, y]));
 		}
 
 		public List<int2> FindUnitPath( World world, Unit unit, int2 destination )

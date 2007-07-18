@@ -126,6 +126,11 @@ namespace OpenRa.FileFormats
 			foreach( KeyValuePair<string, string> kv in terrain )
 				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value ) );
 		}
+
+		public bool IsInMap(int x, int y)
+		{
+			return (x >= XOffset && y >= YOffset && x < XOffset + Width && y < YOffset + Height);
+		}
 	}
 
 	public struct TileReference

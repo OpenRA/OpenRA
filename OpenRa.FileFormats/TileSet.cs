@@ -9,7 +9,8 @@ namespace OpenRa.FileFormats
 	public class TileSet
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
-		public readonly Dictionary<ushort, Dictionary<int, int>> walk = 
+
+		readonly Dictionary<ushort, Dictionary<int, int>> walk = 
 			new Dictionary<ushort, Dictionary<int, int>>();	// cjf will fix
 
 		public readonly Package MixFile;
@@ -77,6 +78,14 @@ namespace OpenRa.FileFormats
 				missingTile[ i ] = 0x36;
 
 			return missingTile;
+		}
+
+		public int GetWalkability(TileReference r)
+		{
+			if (r.tile == 0xff || r.tile == 0xffff)
+				r.image = 0;
+
+			return walk[r.tile][r.image];
 		}
 	}
 }
