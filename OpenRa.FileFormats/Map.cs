@@ -62,9 +62,7 @@ namespace OpenRa.FileFormats
 			}
 
 			byte[] data = Convert.FromBase64String(sb.ToString());
-
 			List<byte[]> chunks = new List<byte[]>();
-
 			BinaryReader reader = new BinaryReader(new MemoryStream(data));
 
 			try
@@ -99,14 +97,19 @@ namespace OpenRa.FileFormats
 			return (byte)ret;
 		}
 
+		static ushort ReadWord(Stream s)
+		{
+			ushort ret = ReadByte(s);
+			ret |= (ushort)(ReadByte(s) << 8);
+
+			return ret;
+		}
+
 		void UnpackTileData( MemoryStream ms )
 		{
 			for( int i = 0 ; i < 128 ; i++ )
 				for( int j = 0 ; j < 128 ; j++ )
-				{
-					MapTiles[ j, i ].tile = ReadByte( ms );
-					MapTiles[ j, i ].tile |= (ushort)( ReadByte( ms ) << 8 );
-				}
+					MapTiles[j, i].tile = ReadWord(ms);
 
 			for( int i = 0 ; i < 128 ; i++ )
 				for( int j = 0 ; j < 128 ; j++ )
@@ -131,41 +134,5 @@ namespace OpenRa.FileFormats
 		{
 			return (x >= XOffset && y >= YOffset && x < XOffset + Width && y < YOffset + Height);
 		}
-	}
-
-	public struct TileReference
-	{
-		public ushort tile;
-		public byte image;
-
-		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
-
-		public override bool Equals(object obj)
-		{
-			if (obj == null)
-				return false;
-
-			TileReference r = (TileReference)obj;
-			return (r.image == image && r.tile == tile);
-		}
-
-		public static bool operator ==(TileReference a, TileReference b) { return a.Equals(b); }
-		public static bool operator !=(TileReference a, TileReference b) { return !a.Equals(b); }
-	}
-
-	public struct TreeReference
-	{
-		public readonly int X;
-		public readonly int Y;
-		public readonly string Image;
-
-		public TreeReference(int xy, string image)
-		{
-			X = xy % 128;
-			Y = xy / 128;
-			Image = image;
-		}
-
-		public Point Location { get { return new Point(X, Y); } }
 	}
 }
