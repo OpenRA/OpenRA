@@ -15,6 +15,8 @@ namespace OpenRa.Game
 		readonly GraphicsDevice device;
 		Texture texture;
 
+		string filename = string.Format("../../../block-cache-{0}.png", suffix++);
+
 		public Size Size { get { return bitmap.Size; } }
 
 		public Sheet(Size size, GraphicsDevice d)
@@ -36,10 +38,9 @@ namespace OpenRa.Game
 
 		void LoadTexture()
 		{
-			string tempFile = string.Format("../../../block-cache-{0}.png", suffix++);
-			bitmap.Save(tempFile);
+			bitmap.Save(filename);
 
-			using( Stream s = File.OpenRead(tempFile) )
+			using( Stream s = File.OpenRead(filename) )
 				texture = Texture.Create(s, device);
 		}
 

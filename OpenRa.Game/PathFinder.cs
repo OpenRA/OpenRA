@@ -34,8 +34,6 @@ namespace OpenRa.Game
 			}
 		}
 
-		static bool first = true;
-
 		public List<int2> FindUnitPath( World world, Mcv unit, int2 destination )
 		{
 			int2 offset = new int2( map.XOffset, map.YOffset );
@@ -61,24 +59,18 @@ namespace OpenRa.Game
 			queue.Add( new PathDistance( Estimate( startLocation, destination ), startLocation ) );
 			minCost[ startLocation.X, startLocation.Y ] = Estimate( startLocation, destination );
 
-			int hax = 0;
 			int seenCount = 0;
 			int impassableCount = 0;
 
 			while( !queue.Empty )
 			{
-				++hax;
 				PathDistance p = queue.Pop();
 				int2 here = p.Location;
 				seen[ here.X, here.Y ] = true;
 
-				if( hax < 128 )
-					world.AddFrameEndTask( delegate { world.Add( new Mcv( here - offset, 2 ) ); } );
-
 				if( p.Location == destination )
 				{
-					Log.Write( "{0}, {1}, {2}", hax, seenCount, impassableCount );
-					first = false;
+					Log.Write( "{0}, {1}", seenCount, impassableCount );
 					return MakePath( path, destination, offset );
 				}
 
@@ -147,22 +139,22 @@ namespace OpenRa.Game
 			int straight = Math.Abs( d.X - d.Y );
 			return 1.5 * diag + straight;
 		}
+	}
 
-		struct PathDistance : IComparable<PathDistance>
+	struct PathDistance : IComparable<PathDistance>
+	{
+		public double EstTotal;
+		public int2 Location;
+
+		public PathDistance(double estTotal, int2 location)
 		{
-			public double EstTotal;
-			public int2 Location;
+			EstTotal = estTotal;
+			Location = location;
+		}
 
-			public PathDistance( double estTotal, int2 location )
-			{
-				EstTotal = estTotal;
-				Location = location;
-			}
-
-			public int CompareTo( PathDistance other )
-			{
-				return Math.Sign( EstTotal - other.EstTotal );
-			}
+		public int CompareTo(PathDistance other)
+		{
+			return Math.Sign(EstTotal - other.EstTotal);
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace OpenRa.Game
 		const int spritesPerBatch = 1024;
 
 		List<Vertex> vertices = new List<Vertex>();
-		List<ushort> indicies = new List<ushort>();
+		List<ushort> indices = new List<ushort>();
 		Sheet currentSheet = null;
 		int sprites = 0;
 		ShaderQuality quality;
@@ -38,15 +38,15 @@ namespace OpenRa.Game
 				renderer.DrawWithShader(quality, delegate
 				{
 					vertexBuffer.SetData(vertices.ToArray());
-					indexBuffer.SetData(indicies.ToArray());
+					indexBuffer.SetData(indices.ToArray());
 					renderer.DrawBatch(vertexBuffer, indexBuffer,
 						new Range<int>(0, vertices.Count),
-						new Range<int>(0, indicies.Count),
+						new Range<int>(0, indices.Count),
 						currentSheet.Texture);
 				});
 
 				vertices = new List<Vertex>();
-				indicies = new List<ushort>();
+				indices = new List<ushort>();
 				currentSheet = null;
 				sprites = 0;
 			}
@@ -58,7 +58,7 @@ namespace OpenRa.Game
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.CreateQuad(vertices, indicies, location, s, palette);
+			Util.CreateQuad(vertices, indices, location, s, palette);
 
 			if (++sprites >= spritesPerBatch)
 				Flush();

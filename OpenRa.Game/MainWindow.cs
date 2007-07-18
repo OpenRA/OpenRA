@@ -74,22 +74,11 @@ namespace OpenRa.Game
 			PathFinder.Instance = new PathFinder( map, terrain.tileSet );
 		}
 
-		void PrecacheStructure(string name)
-		{
-			UnitSheetBuilder.GetUnit(name);
-			UnitSheetBuilder.GetUnit(name + "make");
-		}
-
-		void PrecacheUnit(string name)
-		{
-			UnitSheetBuilder.GetUnit(name);
-		}
-
 		internal void Run()
 		{
 			while (Created && Visible)
 			{
-				Frame();
+				viewport.DrawRegions();
 				Application.DoEvents();
 			}
 		}
@@ -119,11 +108,6 @@ namespace OpenRa.Game
 				viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}
-		}
-
-		void Frame()
-		{
-			viewport.DrawRegions();
 		}
 	}
 }

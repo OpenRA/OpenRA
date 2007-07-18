@@ -7,6 +7,8 @@ using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
+	delegate void TickFunc(World world, double t);
+
 	class Mcv : Actor, ISelectable
 	{
 		static Range<int> mcvRange = UnitSheetBuilder.GetUnit("mcv");
@@ -15,14 +17,11 @@ namespace OpenRa.Game
 		int2 fromCell, toCell;
 		int moveFraction, moveFractionTotal;
 
-		delegate void TickFunc( World world, double t );
-		TickFunc currentOrder = null;
-		TickFunc nextOrder = null;
+		TickFunc currentOrder, nextOrder;
 
 		public Mcv(int2 cell, int palette)
 		{
 			fromCell = toCell = cell;
-			// HACK: display the mcv centered in it's cell;
 			renderLocation = (cell * 24).ToFloat2() - new float2(12, 12);
 			this.palette = palette;
 		}
@@ -116,9 +115,7 @@ namespace OpenRa.Game
 				else
 					location = 24 * fromCell.ToFloat2();
 
-				renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
-
-				renderLocation = renderLocation.Round();
+				renderLocation = (location - new float2( 12, 12 )).Round();
 			};
 		}
 
