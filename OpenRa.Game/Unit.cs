@@ -14,11 +14,14 @@ namespace OpenRa.Game
 		protected TickFunc currentOrder = null;
 		protected TickFunc nextOrder = null;
 
-		public Unit( int2 cell, int palette )
+		protected readonly float2 renderOffset;
+
+		public Unit( int2 cell, int palette, float2 renderOffset )
 		{
 			fromCell = toCell = cell;
+			this.renderOffset = renderOffset;
 			// HACK: display the mcv centered in it's cell;
-			renderLocation = ( cell * 24 ).ToFloat2() - new float2( 12, 12 );
+			renderLocation = ( cell * 24 ).ToFloat2() - renderOffset;
 			this.palette = palette;
 		}
 
@@ -106,7 +109,7 @@ namespace OpenRa.Game
 				else
 					location = 24 * fromCell.ToFloat2();
 
-				renderLocation = location - new float2( 12, 12 ); // HACK: center mcv in it's cell
+				renderLocation = location - renderOffset;
 
 				renderLocation = renderLocation.Round();
 			};

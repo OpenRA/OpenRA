@@ -15,6 +15,7 @@ namespace OpenRa.Game
 		SpriteRenderer spriteRenderer;
 		Renderer renderer;
 		Viewport viewport;
+		public ISelectable myUnit;
 
 		public World(Renderer renderer, Viewport viewport)
 		{

@@ -35,5 +35,15 @@ namespace OpenRa.Game
 
 			return result;
 		}
+
+		public bool GetValue(string key, bool defaultValue)
+		{
+			bool result;
+
+			if (!bool.TryParse(GetValue(key, defaultValue.ToString()), out result))
+				result = defaultValue;
+
+			return result;
+		}
 	}
 }

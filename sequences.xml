@@ -48,4 +48,22 @@
 		<sequence name="make" start="0" length="*" src="procmake" />
 	</unit>
 	
+	<!-- mcv -->
+	
+	<unit name="mcv">
+		<sequence name="idle" start="0" length="*"/>
+	</unit>
+	
+	<!-- truck -->
+	
+	<unit name="truk">
+		<sequence name="idle" start="0" length="*"/>
+	</unit>
+	
+	<!-- harv -->
+	
+	<unit name="harv">
+		<sequence name="idle" start="0" length="32"/>
+	</unit>
+	
 </sequences>

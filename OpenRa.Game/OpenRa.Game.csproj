@@ -43,6 +43,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
+    <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="Sequence.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
+    <Compile Include="Truck.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitSheetBuilder.cs" />
     <Compile Include="Util.cs" />

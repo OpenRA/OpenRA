@@ -23,8 +23,6 @@ namespace OpenRa.Game
 		Sidebar sidebar;
 		Viewport viewport;
 
-		ISelectable myUnit;
-
 		static Size GetResolution(Settings settings)
 		{
 			Size desktopResolution = Screen.PrimaryScreen.Bounds.Size;
@@ -41,7 +39,9 @@ namespace OpenRa.Game
 			Location = Point.Empty;
 			Visible = true;
 
-			renderer = new Renderer(this, GetResolution(settings), true);
+			bool windowed = !settings.GetValue("fullscreeen", false);
+
+			renderer = new Renderer(this, GetResolution(settings), windowed);
 
 			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
 
@@ -65,7 +65,7 @@ namespace OpenRa.Game
 			world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
 			world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
-			myUnit = mcv;
+			world.myUnit = mcv;
 			world.Add( mcv );
 			world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
@@ -94,7 +94,7 @@ namespace OpenRa.Game
 			{
 				int x = (int)( ( e.X + viewport.Location.X ) / 24 );
 				int y = (int)( ( e.Y + viewport.Location.Y ) / 24 );
-				myUnit.Order( new int2( x, y ) ).Apply();
+				world.myUnit.Order( new int2( x, y ) ).Apply();
 			}
 		}
 
