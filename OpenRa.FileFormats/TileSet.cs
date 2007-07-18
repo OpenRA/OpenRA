@@ -9,6 +9,9 @@ namespace OpenRa.FileFormats
 	public class TileSet
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
+		public readonly Dictionary<ushort, Dictionary<int, int>> walk = 
+			new Dictionary<ushort, Dictionary<int, int>>();	// cjf will fix
+
 		public readonly Package MixFile;
 
 		string NextLine( StreamReader reader )
@@ -27,6 +30,8 @@ namespace OpenRa.FileFormats
 
 		public TileSet( Package mixFile, string suffix )
 		{
+			Walkability walkability = new Walkability();
+
 			char tileSetChar = char.ToUpperInvariant( suffix[ 1 ] );
 			MixFile = mixFile;
 			StreamReader tileIdFile = File.OpenText( "../../../tileSet.til" );
@@ -36,7 +41,7 @@ namespace OpenRa.FileFormats
 				string tileSetStr = NextLine( tileIdFile );
 				string countStr = NextLine( tileIdFile );
 				string startStr = NextLine( tileIdFile );
-				string pattern = NextLine( tileIdFile ) + suffix;
+				string pattern = NextLine( tileIdFile );
 				if( tileSetStr == null || countStr == null || startStr == null || pattern == null )
 					break;
 
@@ -47,7 +52,12 @@ namespace OpenRa.FileFormats
 				int start = int.Parse( startStr, NumberStyles.HexNumber );
 				for( int i = 0 ; i < count ; i++ )
 				{
-					Stream s = mixFile.GetContent(string.Format(pattern, i + 1));
+					string tilename = string.Format(pattern, i + 1);
+
+					if (!walk.ContainsKey((ushort)(start + i)))
+						walk.Add((ushort)(start + i), walkability.GetWalkability(tilename));
+
+					Stream s = mixFile.GetContent(tilename + suffix);
 					if (!tiles.ContainsKey((ushort)(start + i)))
 						tiles.Add((ushort)(start + i), new Terrain(s));
 				}

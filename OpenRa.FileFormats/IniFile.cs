@@ -61,6 +61,8 @@ namespace OpenRa.FileFormats
 			sections.TryGetValue( s, out section );
 			return section;
 		}
+
+		public IEnumerable<IniSection> Sections { get { return sections.Values; } }
 	}
 
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>

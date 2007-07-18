@@ -14,6 +14,21 @@ namespace OpenRa.Game
 		bool[ , ] passable = new bool[ 128, 128 ];
 		Map map;
 
+		static bool IsPassable(int terrainType)
+		{
+			switch (terrainType)
+			{
+				case 0:
+				case 2:
+				case 6:
+				case 8:
+				case 9:
+					return true;
+				default:
+					return false;
+			}
+		}
+
 		public PathFinder( Map map, TileSet tileSet )
 		{
 			this.map = map;
@@ -22,13 +37,15 @@ namespace OpenRa.Game
 			{
 				for( int y = 0 ; y < 128 ; y++ )
 				{
-					if( x < map.XOffset || y < map.YOffset || x >= map.XOffset + map.Width || y >= map.YOffset + map.Height )
-						passable[ x, y ] = false;
+					if (x < map.XOffset || y < map.YOffset || x >= map.XOffset + map.Width || y >= map.YOffset + map.Height)
+						passable[x, y] = false;
 					else
 					{
-						// HACK: water( tiles 1 and 2) are impassable
-						passable[ x, y ] = ( map.MapTiles[ x, y ].tile != 1 && map.MapTiles[ x, y ].tile != 2 );
-						// TODO: implement all the different terrain classes, including bonuses for roads etc
+						TileReference r = map.MapTiles[x, y];
+						if (r.tile == 0xffff || r.tile == 0xff)
+							r.image = 0;
+
+						passable[x, y] = IsPassable(tileSet.walk[r.tile][r.image]);
 					}
 				}
 			}
