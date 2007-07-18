@@ -41,7 +41,7 @@ namespace OpenRa.Game
 			Location = Point.Empty;
 			Visible = true;
 
-			renderer = new Renderer(this, GetResolution(settings), false);
+			renderer = new Renderer(this, GetResolution(settings), true);
 
 			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
 
@@ -71,6 +71,7 @@ namespace OpenRa.Game
 
 			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
 
+			PathFinder.Instance = new PathFinder( map, terrain.tileSet );
 		}
 
 		void PrecacheStructure(string name)

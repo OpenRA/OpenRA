@@ -10,14 +10,15 @@ namespace OpenRa.Game
 		[STAThread]
 		static void Main( string[] args )
 		{
+			if( System.Diagnostics.Debugger.IsAttached )
+			{
+				Run( args );
+				return;
+			}
+
 			try
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault( false );
-
-				Settings settings = new Settings(args);
-
-				new MainWindow( settings ).Run();
+				Run( args );
 			}
 			catch( Exception e )
 			{
@@ -25,6 +26,16 @@ namespace OpenRa.Game
 				Log.Write( "{0}", e.ToString() );
 				throw;
 			}
+		}
+
+		private static void Run( string[] args )
+		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault( false );
+
+			Settings settings = new Settings( args );
+
+			new MainWindow( settings ).Run();
 		}
 	}
 }

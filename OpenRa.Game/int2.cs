@@ -24,6 +24,7 @@ namespace OpenRa.Game
 		public static bool operator !=(int2 me, int2 other) { return !(me == other); }
 
 		public int2 Sign() { return new int2(Math.Sign(X), Math.Sign(Y)); }
+		public int2 Abs() { return new int2( Math.Abs( X ), Math.Abs( Y ) ); }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public override bool Equals(object obj)

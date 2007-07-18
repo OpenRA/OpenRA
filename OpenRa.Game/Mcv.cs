@@ -95,9 +95,16 @@ namespace OpenRa.Game
 							currentOrder = null;
 						else
 						{
-							int2 dir = destination - fromCell;
-							toCell = fromCell + dir.Sign();
-							moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
+							List<int2> res = PathFinder.Instance.FindUnitPath( world, this, destination );
+							if( res.Count != 0 )
+							{
+								toCell = res[ res.Count - 1 ];
+
+								int2 dir = toCell - fromCell;
+								moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
+							}
+							else
+								destination = toCell;
 						}
 					}
 				}
@@ -147,6 +154,11 @@ namespace OpenRa.Game
 				return new DeployMcvOrder( this );
 			else
 				return new MoveOrder( this, xy );
+		}
+
+		public int2 Location
+		{
+			get { return toCell; }
 		}
 	}
 }

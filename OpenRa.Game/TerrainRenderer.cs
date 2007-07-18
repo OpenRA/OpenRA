@@ -14,7 +14,7 @@ namespace OpenRa.Game
 		FvfVertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;
 		Sheet terrainSheet;
-		TileSet tileSet;
+		public TileSet tileSet;
 		Viewport viewport;
 
 		Renderer renderer;
@@ -32,30 +32,30 @@ namespace OpenRa.Game
 			Dictionary<TileReference, Sprite> tileMapping =
 				new Dictionary<TileReference, Sprite>();
 
-			Size tileSize = new Size(24, 24);
+			Size tileSize = new Size( 24, 24 );
 
 			List<Vertex> vertices = new List<Vertex>();
 			List<ushort> indices = new List<ushort>();
 
-			for (int j = 0; j < map.Height; j++)
-				for (int i = 0; i < map.Width; i++)
+			for( int j = 0 ; j < map.Height ; j++ )
+				for( int i = 0 ; i < map.Width ; i++ )
 				{
-					TileReference tileRef = map.MapTiles[i + map.XOffset, j + map.YOffset];
+					TileReference tileRef = map.MapTiles[ i + map.XOffset, j + map.YOffset ];
 					Sprite tile;
 
-					if (!tileMapping.TryGetValue(tileRef, out tile))
-						tileMapping.Add(tileRef, tile = SheetBuilder.Add(tileSet.GetBytes(tileRef), tileSize));
+					if( !tileMapping.TryGetValue( tileRef, out tile ) )
+						tileMapping.Add( tileRef, tile = SheetBuilder.Add( tileSet.GetBytes( tileRef ), tileSize ) );
 
 					terrainSheet = tile.sheet;
 
-					Util.CreateQuad(vertices, indices, 24 * new float2(i,j), tile, 0);
+					Util.CreateQuad( vertices, indices, 24 * new float2( i, j ), tile, 0 );
 				}
 
-			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Count, Vertex.Format);
-			vertexBuffer.SetData(vertices.ToArray());
+			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Count, Vertex.Format );
+			vertexBuffer.SetData( vertices.ToArray() );
 
-			indexBuffer = new IndexBuffer(renderer.Device, indices.Count);
-			indexBuffer.SetData(indices.ToArray());
+			indexBuffer = new IndexBuffer( renderer.Device, indices.Count );
+			indexBuffer.SetData( indices.ToArray() );
 		}
 
 		void Draw()

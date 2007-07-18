@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace OpenRa.DataStructures
 {
-	class PriorityQueue<T>
+	public class PriorityQueue<T>
 		where T : IComparable<T>
 	{
 		List<T[]> items = new List<T[]>();
@@ -36,8 +36,14 @@ namespace OpenRa.DataStructures
 			{
 				index = 0;
 				++level;
-				items.Add( new T[ 1 << level ] );
+				if( items.Count <= level )
+					items.Add( new T[ 1 << level ] );
 			}
+		}
+
+		public bool Empty
+		{
+			get { return ( level == 0 ); }
 		}
 
 		T At( int level, int index )
@@ -123,7 +129,7 @@ namespace OpenRa.DataStructures
 		//                        System.Diagnostics.Debug.Assert( At( i, j ).CompareTo( Above( i, j ) ) < 0, "At( i, j ) > Above( i, j )" );
 		//}
 
-		private int RowLength( int i )
+		int RowLength( int i )
 		{
 			if( i == level )
 				return index;
