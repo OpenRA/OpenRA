@@ -62,8 +62,8 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			world.Add(new Mcv(new int2(5, 5), 3));
-			world.Add(new Mcv(new int2(7, 5), 2));
+			world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
+			world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
 			myUnit = mcv;
 			world.Add( mcv );

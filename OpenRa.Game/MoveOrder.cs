@@ -11,10 +11,10 @@ namespace OpenRa.Game
 
 	class MoveOrder : IOrder
 	{
-		public readonly Mcv Unit;
+		public readonly Unit Unit;
 		public readonly int2 Destination;
 
-		public MoveOrder(Mcv unit, int2 destination)
+		public MoveOrder(Unit unit, int2 destination)
 		{
 			this.Unit = unit;
 			this.Destination = destination;
@@ -28,16 +28,16 @@ namespace OpenRa.Game
 
 	class DeployMcvOrder : IOrder
 	{
-		public Mcv Unit;
+		public Mcv Mcv;
 
-		public DeployMcvOrder( Mcv unit )
+		public DeployMcvOrder( Mcv mcv )
 		{
-			this.Unit = unit;
+			this.Mcv = mcv;
 		}
 
 		public void Apply()
 		{
-			Unit.AcceptDeployOrder();
+			Mcv.AcceptDeployOrder();
 		}
 	}
 }

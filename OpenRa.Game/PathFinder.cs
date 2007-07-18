@@ -34,7 +34,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public List<int2> FindUnitPath( World world, Mcv unit, int2 destination )
+		public List<int2> FindUnitPath( World world, Unit unit, int2 destination )
 		{
 			int2 offset = new int2( map.XOffset, map.YOffset );
 
