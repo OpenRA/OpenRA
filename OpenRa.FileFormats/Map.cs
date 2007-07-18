@@ -44,6 +44,7 @@ namespace OpenRa.FileFormats
 			Height = int.Parse(map.GetValue("Height", "0"));
 
 			UnpackTileData( ReadPackedSection( file.GetSection( "MapPack" ) ) );
+			UnpackOverlayData( ReadPackedSection( file.GetSection( "OverlayPack" ) ) );
 			ReadTrees(file);
 		}
 

@@ -48,23 +48,16 @@ namespace OpenRa.Game
 			destination += offset;
 			int2 startLocation = unit.Location + offset;
 
-			bool[ , ] seen = new bool[ 128, 128 ];
-			int2[ , ] path = new int2[ 128, 128 ];
-			double[ , ] minCost = new double[ 128, 128 ];
+			CellInfo[ , ] cellInfo = new CellInfo[ 128, 128 ];
 
 			for( int x = 0 ; x < 128 ; x++ )
-			{
 				for( int y = 0 ; y < 128 ; y++ )
-				{
-					path[ x, y ] = new int2( x, y );
-					minCost[ x, y ] = double.PositiveInfinity;
-				}
-			}
+					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
 
 			PriorityQueue<PathDistance> queue = new PriorityQueue<PathDistance>();
 
 			queue.Add( new PathDistance( Estimate( startLocation, destination ), startLocation ) );
-			minCost[ startLocation.X, startLocation.Y ] = Estimate( startLocation, destination );
+			cellInfo[ startLocation.X, startLocation.Y ].MinCost = 0;
 
 			int seenCount = 0;
 			int impassableCount = 0;
@@ -73,19 +66,19 @@ namespace OpenRa.Game
 			{
 				PathDistance p = queue.Pop();
 				int2 here = p.Location;
-				seen[ here.X, here.Y ] = true;
+				cellInfo[ here.X, here.Y ].Seen = true;
 
 				if( p.Location == destination )
 				{
 					Log.Write( "{0}, {1}", seenCount, impassableCount );
-					return MakePath( path, destination, offset );
+					return MakePath( cellInfo, destination, offset );
 				}
 
 				foreach( int2 d in directions )
 				{
 					int2 newHere = here + d;
 
-					if( seen[ newHere.X, newHere.Y ] )
+					if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					{
 						++seenCount;
 						continue;
@@ -96,13 +89,13 @@ namespace OpenRa.Game
 						continue;
 					}
 
-					double newCost = minCost[ here.X, here.Y ] + ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 );
+					double newCost = cellInfo[ here.X, here.Y ].MinCost + ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 );
 
-					if( newCost >= minCost[ newHere.X, newHere.Y ] )
+					if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
 						continue;
 
-					path[ newHere.X, newHere.Y ] = here;
-					minCost[ newHere.X, newHere.Y ] = newCost;
+					cellInfo[ newHere.X, newHere.Y ].Path = here;
+					cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
 					queue.Add( new PathDistance( newCost + Estimate( newHere, destination ), newHere ) );
 				}
@@ -112,15 +105,15 @@ namespace OpenRa.Game
 			return new List<int2>();
 		}
 
-		List<int2> MakePath( int2[ , ] path, int2 destination, int2 offset )
+		List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination, int2 offset )
 		{
 			List<int2> ret = new List<int2>();
 			int2 pathNode = destination;
 
-			while( path[ pathNode.X, pathNode.Y ] != pathNode )
+			while( cellInfo[ pathNode.X, pathNode.Y ].Path != pathNode )
 			{
 				ret.Add( pathNode - offset );
-				pathNode = path[ pathNode.X, pathNode.Y ];
+				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
 			}
 
 			Log.Write( "Path Length: {0}", ret.Count );
@@ -145,6 +138,20 @@ namespace OpenRa.Game
 			int diag = Math.Min( d.X, d.Y );
 			int straight = Math.Abs( d.X - d.Y );
 			return 1.5 * diag + straight;
+		}
+	}
+
+	struct CellInfo
+	{
+		public double MinCost;
+		public int2 Path;
+		public bool Seen;
+
+		public CellInfo( double minCost, int2 path, bool seen )
+		{
+			MinCost = minCost;
+			Path = path;
+			Seen = seen;
 		}
 	}
 
