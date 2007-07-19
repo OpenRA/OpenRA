@@ -11,34 +11,19 @@ namespace OpenRa.Game
 	{
 		public static PathFinder Instance;
 
-		bool[ , ] passable = new bool[ 128, 128 ];
+		double[ , ] passableCost = new double[ 128, 128 ];
 		Map map;
-
-		static bool IsPassable(int terrainType)
-		{
-			switch (terrainType)
-			{
-				case 0:
-				case 2:
-				case 6:
-				case 8:
-				case 9:
-					return true;
-				default:
-					return false;
-			}
-		}
 
 		public PathFinder(Map map, TileSet tileSet)
 		{
 			this.map = map;
 
-			//todo: speed hax for roads
+			for( int x = 0 ; x < 128 ; x++ )
+				for( int y = 0 ; y < 128 ; y++ )
 
-			for (int x = 0; x < 128; x++)
-				for (int y = 0; y < 128; y++)
-					passable[x, y] = map.IsInMap(x, y) && 
-						IsPassable(tileSet.GetWalkability(map.MapTiles[x, y]));
+					passableCost[ x, y ] = ( map.IsInMap( x, y ) )
+						? TerrainCosts.Cost( UnitMovementType.Wheel, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
+						: double.PositiveInfinity;
 		}
 
 		public List<int2> FindUnitPath( World world, Unit unit, int2 destination )
@@ -83,13 +68,14 @@ namespace OpenRa.Game
 						++seenCount;
 						continue;
 					}
-					if( !passable[ newHere.X, newHere.Y ] )
+					if( passableCost[ newHere.X, newHere.Y ] == double.PositiveInfinity )
 					{
 						++impassableCount;
 						continue;
 					}
 
-					double newCost = cellInfo[ here.X, here.Y ].MinCost + ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 );
+					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ newHere.X, newHere.Y ];
+					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;
 
 					if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
 						continue;

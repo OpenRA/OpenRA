@@ -70,6 +70,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteRenderer.cs" />
     <Compile Include="SpriteSheetBuilder.cs" />
+    <Compile Include="TerrainCosts.cs" />
     <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
