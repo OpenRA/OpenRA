@@ -20,8 +20,6 @@ namespace OpenRa.Game
 		{
 			fromCell = toCell = cell;
 			this.renderOffset = renderOffset;
-			// HACK: display the mcv centered in it's cell;
-			renderLocation = ( cell * 24 ).ToFloat2() - renderOffset;
 			this.palette = palette;
 		}
 
@@ -101,17 +99,6 @@ namespace OpenRa.Game
 						}
 					}
 				}
-
-				float2 location;
-				if( moveFraction > 0 )
-					location = 24 * float2.Lerp( fromCell.ToFloat2(), toCell.ToFloat2(),
-						(float)moveFraction / moveFractionTotal );
-				else
-					location = 24 * fromCell.ToFloat2();
-
-				renderLocation = location - renderOffset;
-
-				renderLocation = renderLocation.Round();
 			};
 		}
 
@@ -129,6 +116,17 @@ namespace OpenRa.Game
 		public int2 Location
 		{
 			get { return toCell; }
+		}
+
+		public override float2 RenderLocation
+		{
+			get
+			{
+				float fraction = (moveFraction > 0) ? (float)moveFraction / moveFractionTotal : 0f;
+
+				float2 location = 24 * float2.Lerp( fromCell.ToFloat2(), toCell.ToFloat2(), fraction );
+				return ( location - renderOffset ).Round(); ;
+			}
 		}
 	}
 }

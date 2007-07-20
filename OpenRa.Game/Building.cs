@@ -7,10 +7,11 @@ namespace OpenRa.Game
 	class Building : Actor
 	{
 		protected Animation animation;
+		protected int2 location;
 
 		public Building( string name, int2 location, int palette )
 		{
-			this.renderLocation = 24.0f * location.ToFloat2();
+			this.location = location;
 			this.palette = palette;
 
 			animation = new Animation( name );
@@ -25,6 +26,11 @@ namespace OpenRa.Game
 		public override Sprite[] CurrentImages
 		{
 			get { return animation.Images; }
+		}
+
+		public override float2 RenderLocation
+		{
+			get { return 24.0f * location.ToFloat2(); }
 		}
 	}
 }

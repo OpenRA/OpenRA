@@ -13,13 +13,11 @@ namespace OpenRa.Game
 		List<Actor> actors = new List<Actor>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 		SpriteRenderer spriteRenderer;
-		Renderer renderer;
 		Viewport viewport;
 		public ISelectable myUnit;
 
 		public World(Renderer renderer, Viewport viewport)
 		{
-			this.renderer = renderer;
 			this.viewport = viewport;
 			viewport.AddRegion(Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw));
 			spriteRenderer = new SpriteRenderer(renderer, true);
@@ -44,15 +42,16 @@ namespace OpenRa.Game
 				a.Tick( this, dt );
 
 				Sprite[] images = a.CurrentImages;
+				float2 loc = a.RenderLocation;
 
-				if( a.renderLocation.X > range.End.X || a.renderLocation.X < range.Start.X - images[ 0 ].bounds.Width )
+				if( loc.X > range.End.X || loc.X < range.Start.X - images[ 0 ].bounds.Width )
 					continue;
 
-				if (a.renderLocation.Y > range.End.Y || a.renderLocation.Y < range.Start.Y - images[0].bounds.Height)
+				if( loc.Y > range.End.Y || loc.Y < range.Start.Y - images[ 0 ].bounds.Height )
 					continue;
 
 				foreach( Sprite image in images )
-					spriteRenderer.DrawSprite(image, a.renderLocation, a.palette);
+					spriteRenderer.DrawSprite(image, loc, a.palette);
 			}
 
 			foreach( Action<World> a in frameEndActions )
