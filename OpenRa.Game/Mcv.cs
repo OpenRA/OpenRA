@@ -9,10 +9,8 @@ namespace OpenRa.Game
 {
 	class Mcv : Unit
 	{
-		static Sequence sequence = SequenceProvider.GetSequence("mcv", "idle");
-
 		public Mcv( int2 location, int palette )
-			: base(location, palette, new float2(12, 12))
+			: base( "mcv", location, palette, new float2( 12, 12 ) )
 		{
 		}
 
@@ -37,11 +35,6 @@ namespace OpenRa.Game
 					currentOrder = null;
 				}
 			};
-		}
-
-		public override Sprite[] CurrentImages
-		{
-			get { return new Sprite[] { sequence.GetSprite(facing) }; }
 		}
 
 		public override IOrder Order( int2 xy )

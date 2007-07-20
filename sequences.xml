@@ -64,6 +64,14 @@
 	
 	<unit name="harv">
 		<sequence name="idle" start="0" length="32"/>
+		<sequence name="harvest0" start="32" length="8"/>
+		<sequence name="harvest1" start="40" length="8"/>
+		<sequence name="harvest2" start="48" length="8"/>
+		<sequence name="harvest3" start="56" length="8"/>
+		<sequence name="harvest4" start="64" length="8"/>
+		<sequence name="harvest5" start="72" length="8"/>
+		<sequence name="harvest6" start="80" length="8"/>
+		<sequence name="harvest7" start="88" length="8"/>
 	</unit>
 	
 </sequences>

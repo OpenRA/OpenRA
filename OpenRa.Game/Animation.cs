@@ -10,6 +10,7 @@ namespace OpenRa.Game
 		readonly string name;
 		Sequence currentSequence;
 		int frame = 0;
+		bool tickAlways;
 
 		public Animation( string name )
 		{
@@ -31,6 +32,7 @@ namespace OpenRa.Game
 
 		public void PlayThen( string sequenceName, MethodInvoker after )
 		{
+			tickAlways = false;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
 			tickFunc = delegate
@@ -45,16 +47,33 @@ namespace OpenRa.Game
 			};
 		}
 
+		public delegate int IndexFetchFunc();
+		public void PlayFetchIndex( string sequenceName, IndexFetchFunc func )
+		{
+			tickAlways = true;
+			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
+			frame = func();
+			tickFunc = delegate
+			{
+				frame = func();
+			};
+		}
+
 		double timeUntilNextFrame;
 
 		Action<double> tickFunc;
 		public void Tick( double t )
 		{
-			timeUntilNextFrame -= t;
-			while( timeUntilNextFrame <= 0 )
-			{
+			if( tickAlways )
 				tickFunc( t );
-				timeUntilNextFrame += ( 40.0 / 1000.0 ); // 25 fps == 40 ms
+			else
+			{
+				timeUntilNextFrame -= t;
+				while( timeUntilNextFrame <= 0 )
+				{
+					tickFunc( 40.0 / 1000.0 );
+					timeUntilNextFrame += ( 40.0 / 1000.0 ); // 25 fps == 40 ms
+				}
 			}
 		}
 	}

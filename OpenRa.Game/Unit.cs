@@ -6,6 +6,8 @@ namespace OpenRa.Game
 {
 	abstract class Unit : Actor, ISelectable
 	{
+		protected Animation animation;
+
 		protected int facing = 0;
 		protected int2 fromCell, toCell;
 		protected int moveFraction, moveFractionTotal;
@@ -16,11 +18,14 @@ namespace OpenRa.Game
 
 		protected readonly float2 renderOffset;
 
-		public Unit( int2 cell, int palette, float2 renderOffset )
+		public Unit( string name, int2 cell, int palette, float2 renderOffset )
 		{
 			fromCell = toCell = cell;
 			this.renderOffset = renderOffset;
 			this.palette = palette;
+
+			animation = new Animation( name );
+			animation.PlayFetchIndex( "idle", delegate { return facing; } );
 		}
 
 		static float2[] fvecs = Util.MakeArray<float2>( 32,
@@ -51,6 +56,7 @@ namespace OpenRa.Game
 
 		public override void Tick( World world, double t )
 		{
+			animation.Tick( t );
 			if( currentOrder == null && nextOrder != null )
 			{
 				currentOrder = nextOrder;
@@ -127,6 +133,11 @@ namespace OpenRa.Game
 				float2 location = 24 * float2.Lerp( fromCell.ToFloat2(), toCell.ToFloat2(), fraction );
 				return ( location - renderOffset ).Round(); ;
 			}
+		}
+
+		public override Sprite[] CurrentImages
+		{
+			get { return animation.Images; }
 		}
 	}
 }
