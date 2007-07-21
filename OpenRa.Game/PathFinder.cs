@@ -31,8 +31,7 @@ namespace OpenRa.Game
 
 		public List<int2> FindUnitPath( World world, Unit unit, DestinationFunc estimator )
 		{
-			int2 offset = new int2( map.XOffset, map.YOffset );
-			int2 startLocation = unit.Location + offset;
+			int2 startLocation = unit.Location + map.Offset;
 
 			CellInfo[ , ] cellInfo = new CellInfo[ 128, 128 ];
 
@@ -40,7 +39,7 @@ namespace OpenRa.Game
 				for( int y = 0 ; y < 128 ; y++ )
 					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
 
-			return FindUnitPath( startLocation, estimator, offset, cellInfo );
+			return FindUnitPath( startLocation, estimator, map.Offset, cellInfo );
 		}
 
 		List<int2> FindUnitPath( int2 startLocation, DestinationFunc estimator, int2 offset, CellInfo[,] cellInfo )

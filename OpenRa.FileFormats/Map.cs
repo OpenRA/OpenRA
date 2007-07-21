@@ -13,6 +13,7 @@ namespace OpenRa.FileFormats
 
 		public readonly int XOffset;
 		public readonly int YOffset;
+		public int2 Offset { get { return new int2( XOffset, YOffset ); } }
 
 		public readonly int Width;
 		public readonly int Height;

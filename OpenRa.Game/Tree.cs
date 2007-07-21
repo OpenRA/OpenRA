@@ -12,7 +12,7 @@ namespace OpenRa.Game
 
 		public Tree(TreeReference r, TreeCache renderer, Map map)
 		{
-			location = new int2( r.Location ) - new int2( map.XOffset, map.YOffset );
+			location = new int2( r.Location ) - map.Offset;
 			currentImages = new Sprite[] { renderer.GetImage(r.Image) };
 		}
 

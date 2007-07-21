@@ -56,6 +56,12 @@
     <Compile Include="TreeReference.cs" />
     <Compile Include="Walkability.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
+      <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
+      <Name>OpenRa.DataStructures</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
