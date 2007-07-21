@@ -76,7 +76,7 @@ namespace OpenRa.Game
 				if( nextOrder != null )
 					destination = toCell;
 
-				int desiredFacing = GetFacing( ( toCell - fromCell ).ToFloat2() );
+				int desiredFacing = GetFacing( toCell - fromCell );
 				if( facing != desiredFacing )
 					Turn( desiredFacing );
 				else
@@ -92,7 +92,7 @@ namespace OpenRa.Game
 							currentOrder = null;
 						else
 						{
-							List<int2> res = PathFinder.Instance.FindUnitPath( world, this, destination );
+							List<int2> res = PathFinder.Instance.FindUnitPath( world, this, PathFinder.DefaultEstimator( destination ) );
 							if( res.Count != 0 )
 							{
 								toCell = res[ res.Count - 1 ];
@@ -130,7 +130,7 @@ namespace OpenRa.Game
 			{
 				float fraction = (moveFraction > 0) ? (float)moveFraction / moveFractionTotal : 0f;
 
-				float2 location = 24 * float2.Lerp( fromCell.ToFloat2(), toCell.ToFloat2(), fraction );
+				float2 location = 24 * float2.Lerp( fromCell, toCell, fraction );
 				return ( location - renderOffset ).Round(); ;
 			}
 		}

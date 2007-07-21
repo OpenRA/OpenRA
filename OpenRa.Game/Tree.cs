@@ -19,6 +19,6 @@ namespace OpenRa.Game
 		Sprite[] currentImages;
 		public override Sprite[] CurrentImages { get { return currentImages; } }
 
-		public override float2 RenderLocation { get { return 24 * location.ToFloat2(); } }
+		public override float2 RenderLocation { get { return 24 * location; } }
 	}
 }

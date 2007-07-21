@@ -49,7 +49,6 @@
     <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="float2.cs" />
-    <Compile Include="int2.cs" />
     <Compile Include="ISelectable.cs" />
     <Compile Include="MoveOrder.cs" />
     <Compile Include="Region.cs" />

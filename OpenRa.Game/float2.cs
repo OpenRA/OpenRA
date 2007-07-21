@@ -20,6 +20,11 @@ namespace OpenRa.Game
 
 		public PointF ToPointF() { return new PointF(X, Y); }
 
+		public static implicit operator float2( int2 src )
+		{
+			return new float2( src.X, src.Y );
+		}
+
 		public static float2 operator +(float2 a, float2 b) { return new float2(a.X + b.X, a.Y + b.Y); }
 		public static float2 operator -(float2 a, float2 b) { return new float2(a.X - b.X, a.Y - b.Y); }
 

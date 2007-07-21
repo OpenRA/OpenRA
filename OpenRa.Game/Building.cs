@@ -30,7 +30,7 @@ namespace OpenRa.Game
 
 		public override float2 RenderLocation
 		{
-			get { return 24.0f * location.ToFloat2(); }
+			get { return 24.0f * (float2)location; }
 		}
 	}
 }

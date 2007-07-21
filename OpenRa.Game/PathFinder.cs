@@ -26,11 +26,12 @@ namespace OpenRa.Game
 						: double.PositiveInfinity;
 		}
 
-		public List<int2> FindUnitPath( World world, Unit unit, int2 destination )
+		// returns estimate to destination, 0.0 is cell is dest
+		public delegate double DestinationFunc( int2 cell );
+
+		public List<int2> FindUnitPath( World world, Unit unit, DestinationFunc estimator )
 		{
 			int2 offset = new int2( map.XOffset, map.YOffset );
-
-			destination += offset;
 			int2 startLocation = unit.Location + offset;
 
 			CellInfo[ , ] cellInfo = new CellInfo[ 128, 128 ];
@@ -39,9 +40,14 @@ namespace OpenRa.Game
 				for( int y = 0 ; y < 128 ; y++ )
 					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
 
+			return FindUnitPath( startLocation, estimator, offset, cellInfo );
+		}
+
+		List<int2> FindUnitPath( int2 startLocation, DestinationFunc estimator, int2 offset, CellInfo[,] cellInfo )
+		{
 			PriorityQueue<PathDistance> queue = new PriorityQueue<PathDistance>();
 
-			queue.Add( new PathDistance( Estimate( startLocation, destination ), startLocation ) );
+			queue.Add( new PathDistance( estimator( startLocation - offset ), startLocation ) );
 			cellInfo[ startLocation.X, startLocation.Y ].MinCost = 0;
 
 			int seenCount = 0;
@@ -53,10 +59,10 @@ namespace OpenRa.Game
 				int2 here = p.Location;
 				cellInfo[ here.X, here.Y ].Seen = true;
 
-				if( p.Location == destination )
+				if( estimator( here - offset ) == 0.0 )
 				{
 					Log.Write( "{0}, {1}", seenCount, impassableCount );
-					return MakePath( cellInfo, destination, offset );
+					return MakePath( cellInfo, here, offset );
 				}
 
 				foreach( int2 d in directions )
@@ -83,7 +89,7 @@ namespace OpenRa.Game
 					cellInfo[ newHere.X, newHere.Y ].Path = here;
 					cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
-					queue.Add( new PathDistance( newCost + Estimate( newHere, destination ), newHere ) );
+					queue.Add( new PathDistance( newCost + estimator( newHere - offset ), newHere ) );
 				}
 			}
 
@@ -118,12 +124,15 @@ namespace OpenRa.Game
 				new int2(  1,  1 ),
 			};
 
-		double Estimate( int2 here, int2 destination )
+		public static DestinationFunc DefaultEstimator( int2 destination )
 		{
-			int2 d = ( here - destination ).Abs();
-			int diag = Math.Min( d.X, d.Y );
-			int straight = Math.Abs( d.X - d.Y );
-			return 1.5 * diag + straight;
+			return delegate( int2 here )
+			{
+				int2 d = ( here - destination ).Abs();
+				int diag = Math.Min( d.X, d.Y );
+				int straight = Math.Abs( d.X - d.Y );
+				return 1.5 * diag + straight;
+			};
 		}
 	}
 
