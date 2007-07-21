@@ -9,11 +9,6 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
-		public static float Constrain(float x, Range<float> range)
-		{
-			return x < range.Start ? range.Start : x > range.End ? range.End : x;
-		}
-
 		static float2 EncodeVertexAttributes(TextureChannel channel, int paletteLine)
 		{
 			Converter<TextureChannel, float> channelEncoder = delegate(TextureChannel c)

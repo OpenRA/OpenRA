@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
-using BluntDirectX.Direct3D;
 
 namespace OpenRa.Game
 {
@@ -22,8 +21,7 @@ namespace OpenRa.Game
 
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = (scrollPosition + delta).Constrain(
-				new Range<float2>(float2.Zero, mapSize));
+			scrollPosition = (scrollPosition + delta).Constrain(float2.Zero, mapSize);
 		}
 
 		public Viewport(float2 size, float2 mapSize, Renderer renderer)

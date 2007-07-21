@@ -7,7 +7,7 @@
     <ProjectGuid>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.DataStructures</RootNamespace>
+    <RootNamespace>OpenRa</RootNamespace>
     <AssemblyName>OpenRa.DataStructures</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,6 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="float2.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using OpenRa.DataStructures;
 using OpenRa.FileFormats;
 
 namespace OpenRa.TechTree

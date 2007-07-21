@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace OpenRa.DataStructures
+namespace OpenRa
 {
 	public class PriorityQueue<T>
 		where T : IComparable<T>

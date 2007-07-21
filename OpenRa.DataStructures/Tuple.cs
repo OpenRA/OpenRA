@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenRa.DataStructures
+namespace OpenRa
 {
 	public class Tuple<A>
 	{

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
-using BluntDirectX.Direct3D;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	[StructLayout(LayoutKind.Sequential)]
-	struct float2
+	public struct float2
 	{
 		public float X, Y;
 
@@ -20,10 +19,7 @@ namespace OpenRa.Game
 
 		public PointF ToPointF() { return new PointF(X, Y); }
 
-		public static implicit operator float2( int2 src )
-		{
-			return new float2( src.X, src.Y );
-		}
+		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
 
 		public static float2 operator +(float2 a, float2 b) { return new float2(a.X + b.X, a.Y + b.Y); }
 		public static float2 operator -(float2 a, float2 b) { return new float2(a.X - b.X, a.Y - b.Y); }
@@ -46,29 +42,21 @@ namespace OpenRa.Game
 				Lerp(a.Y, b.Y, t.Y));
 		}
 
-		public static float2 FromAngle(float a)
-		{
-			return new float2((float)Math.Sin(a), (float)Math.Cos(a));
-		}
+		public static float2 FromAngle(float a) { return new float2((float)Math.Sin(a), (float)Math.Cos(a)); }
 
-		public float2 Constrain(Range<float2> r)
+		static float Constrain(float x, float a, float b) { return x < a ? a : x > b ? b : x; }
+
+		public float2 Constrain(float2 min, float2 max)
 		{
 			return new float2(
-				Util.Constrain(X, new Range<float>(r.Start.X, r.End.X)),
-				Util.Constrain(Y, new Range<float>(r.Start.Y, r.End.Y)));
+				Constrain(X, min.X, max.X),
+				Constrain(Y, min.Y, max.Y));
 		}
 
-		public static float2 operator *(float a, float2 b)
-		{
-			return new float2(a * b.X, a * b.Y);
-		}
+		public static float2 operator *(float a, float2 b) { return new float2(a * b.X, a * b.Y); }
+		public static float2 operator /(float2 a, float2 b) { return new float2(a.X / b.X, a.Y / b.Y); }
 
 		public static readonly float2 Zero = new float2(0, 0);
-
-		public static float2 operator /(float2 a, float2 b)
-		{
-			return new float2(a.X / b.X, a.Y / b.Y);
-		}
 
 		public static bool WithinEpsilon(float2 a, float2 b, float e)
 		{
