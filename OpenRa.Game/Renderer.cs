@@ -28,7 +28,7 @@ namespace OpenRa.Game
 			device = GraphicsDevice.Create(host, 
 				resolution.Width, resolution.Height, windowed, false);
 
-			shader = new Effect(device, File.OpenRead("../../../" + shaderName));
+			shader = new Effect(device, FileSystem.Open(shaderName));
 			shader.Quality = ShaderQuality.Low;
 
 			baseTextureHandle = shader.GetHandle("DiffuseTexture");

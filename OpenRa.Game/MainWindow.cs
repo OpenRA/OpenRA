@@ -33,6 +33,10 @@ namespace OpenRa.Game
 
 		public MainWindow(Settings settings)
 		{
+			FileSystem.Mount(new Folder("../../../"));
+			FileSystem.Mount(new Package("../../../conquer.mix"));
+			FileSystem.Mount(new Package("../../../hires.mix"));
+
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
@@ -42,14 +46,11 @@ namespace OpenRa.Game
 			bool windowed = !settings.GetValue("fullscreeen", false);
 
 			renderer = new Renderer(this, GetResolution(settings), windowed);
-
-			map = new Map(new IniFile(File.OpenRead("../../../" + settings.GetValue("map", "scm12ea.ini"))));
-
+			map = new Map(new IniFile(FileSystem.Open(settings.GetValue("map", "scm12ea.ini"))));
 			viewport = new Viewport(new float2(ClientSize), new float2(map.Size), renderer);
 
 			SheetBuilder.Initialize(renderer.Device);
-
-			TileMix = new Package("../../../" + map.Theater + ".mix");
+			FileSystem.Mount(TileMix = new Package("../../../" + map.Theater + ".mix"));
 
 			renderer.SetPalette(new HardwarePalette(renderer.Device, map));
 			terrain = new TerrainRenderer(renderer, map, TileMix, viewport);

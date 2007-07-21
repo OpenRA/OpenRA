@@ -23,12 +23,12 @@ namespace OpenRa.Game
 		{
 			this.device = device;
 
-			Palette pal = new Palette(File.OpenRead("../../../" + map.Theater + ".pal"));
+			Palette pal = new Palette(FileSystem.Open(map.Theater + ".pal"));
 			AddPalette(pal);
 
 			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
 				AddPalette(new Palette(pal, new PaletteRemap(
-					File.OpenRead("../../../" + remap + ".rem"))));
+					FileSystem.Open( remap + ".rem" ))));
 		}
 
 		void Resolve()

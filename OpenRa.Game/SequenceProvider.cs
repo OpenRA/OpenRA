@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		static SequenceProvider()
 		{
 			XmlDocument document = new XmlDocument();
-			document.Load("../../../sequences.xml");
+			document.Load(FileSystem.Open("sequences.xml"));
 
 			foreach (XmlElement eUnit in document.SelectNodes("/sequences/unit"))
 				LoadSequencesForUnit(eUnit);

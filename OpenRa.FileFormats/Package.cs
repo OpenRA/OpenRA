@@ -5,7 +5,12 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
-	public class Package
+	public interface IFolder
+	{
+		Stream GetContent(string filename);
+	}
+
+	public class Package : IFolder
 	{
 		readonly string filename;
 		readonly List<PackageEntry> index;

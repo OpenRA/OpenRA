@@ -9,21 +9,8 @@ namespace OpenRa.Game
 {
 	static class UnitSheetBuilder
 	{
-		static readonly Package unitsPackage = new Package( "../../../conquer.mix" );
-		static readonly Package otherUnitsPackage = new Package("../../../hires.mix");
-
 		public static readonly List<Sprite> sprites = new List<Sprite>();
-
 		static Dictionary<string, Range<int>> sequences = new Dictionary<string, Range<int>>();
-
-		static ShpReader Load(string filename)
-		{
-			foreach( Package p in new Package[] { unitsPackage, otherUnitsPackage } )
-				try { return new ShpReader(p.GetContent(filename)); }
-				catch { }
-
-			throw new NotImplementedException();
-		}
 
 		public static Range<int> GetUnit(string name)
 		{
@@ -39,7 +26,8 @@ namespace OpenRa.Game
 			Log.Write("Loading SHP for {0}", name);
 
 			int low = sprites.Count;
-			ShpReader reader = Load(name + ".shp");
+
+			ShpReader reader = new ShpReader(FileSystem.Open(name + ".shp"));
 			foreach (ImageHeader h in reader)
 				sprites.Add(SheetBuilder.Add(h.Image, reader.Size));
 
