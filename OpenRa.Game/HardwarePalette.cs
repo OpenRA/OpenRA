@@ -8,6 +8,7 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
+	// todo: synthesize selection color, and generate duplicate palette block!
 	public class HardwarePalette
 	{
 		const int maxEntries = 16;			// dont need anything like this many, 
@@ -27,8 +28,7 @@ namespace OpenRa.Game
 			AddPalette(pal);
 
 			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
-				AddPalette(new Palette(pal, new PaletteRemap(
-					FileSystem.Open( remap + ".rem" ))));
+				AddPalette(new Palette(pal, new PaletteRemap(FileSystem.Open(remap + ".rem"))));
 		}
 
 		void Resolve()

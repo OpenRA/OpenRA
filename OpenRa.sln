@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.BlockCacheVisualizer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.DataStructures", "OpenRa.DataStructures\OpenRa.DataStructures.csproj", "{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaletteUsage", "PaletteUsage\PaletteUsage.csproj", "{54577061-E2D2-4336-90A2-A9A7106A30CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,16 @@ Global
 		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Win32.ActiveCfg = Release|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

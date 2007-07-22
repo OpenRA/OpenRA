@@ -1,0 +1,64 @@
+OpenRA
+------------------------------------------------------
+
+[ ] Automagically work out unit rendering offsets based on SHP size
+[ ] Ore
+[ ] Better harvester logic - seek out more ore when harvesting, until full
+[ ] Fix weird delegate names - Provider<T>, Comparison<T>, Converter<T>, Action<T>
+	should be used where appropriate. `Func` says nothing, and is damned misleading
+	when the delegate isnt referentially transparent... IE, not a `function`.
+	
+	Note that the lack of referential transparency for Provider<T> cannot be helped,
+	it's in the nature of an object that converts () -> T.
+	
+[ ] Palette hax for selection outlines. Basically, just hijack a palette entry that's not
+	getting used, and draw the selection borders into the SHP images using that color.
+	Then we double up the hardware palettes, and we can draw selection with no extra cost.
+	
+	(Except maybe losing any alpha=0 optimization the backend of the shader hardware does)
+	
+[ ] Weapons
+[ ] Consume more caffeine!
+[ ] Multiplayer!
+
+[ ] Unit turn rate as specified in rules.ini
+[ ] Infantry squishing logic (tracked vehicles do this)
+
+[ ] Time-to-build overlay on sidebar
+[ ] Mod support
+
+[ ] Get rid of all the damned static classes! Makes it REALLY HARD to reuse code,
+	dependencies aren't easily visible (or even substitutable, which matters more)
+
+[ ] Group pathfinding logic
+[ ] Special-case pathing for floating units, flying units...
+	Does existing pathing work for boats? float=?? speeds should tell us everything required..
+
+[ ] Shroud rendering. This is going to be ugly, and it's going to hurt perf, unless we can optimize
+	the hell out of the other rendering based on where shroud blocks happen to be..
+	
+[ ] Optimize ground renderer, so we only submit visible chunks, not whole rows.
+	For machines with severe vertex-rate issues, use 2x2 chunks or larger for some things.
+	
+[ ] Configuration option for choosing which tuned solution to use:
+	- Cope with lack of HW VP
+	- Cope with lack of fast texture memory (although UMA makes this almost a non-issue)
+	- Cope with REALLY WINFUL FAST HEAVENLY HARDWARE (The boss might want to play this :P )
+	
+[ ] Console
+[ ] Ditch special unit classes, use templates extracted from rules.ini instead.
+	Push the special-case logic into code that can be named.
+	
+[ ] Remove all remaining `../../../` bullshit from the code. We should be able to set our datapaths
+	externally, then `just go`. The FileSystem class is there to facilitate this.
+	
+[ ] Read/write distinction on IFolder implementors. I think Package should be read-only,
+	FS folders can be mounted read-only or read-write, (or even write-only, but that's odd...)
+	Use FileSystem.Create() to automatically place output files on sensible mounts.
+	
+[ ] Factor duplication out of Sheet, HardwarePalette. Both contain logic for converting bitmaps to
+	hardware textures on demand.
+[ ] Refresh hardware image of a Sheet if its bitmap content changes. This will kill the prefetch
+	bugs permanently!
+[ ] Solid buildings, units
+

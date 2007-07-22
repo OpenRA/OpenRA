@@ -4,6 +4,7 @@ using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
 using BluntDirectX.Direct3D;
+using System.IO;
 
 namespace OpenRa.Game
 {
@@ -38,6 +39,16 @@ namespace OpenRa.Game
 		static float Lerp(float a, float b, float t)
 		{
 			return (1 - t) * a + t * b;
+		}
+
+		public static string[] ReadAllLines(Stream s)
+		{
+			List<string> result = new List<string>();
+			using (StreamReader reader = new StreamReader(s))
+				while (!reader.EndOfStream)
+					result.Add(reader.ReadLine());
+
+			return result.ToArray();
 		}
 
 		public static T[] MakeArray<T>(int count, Converter<int, T> f)

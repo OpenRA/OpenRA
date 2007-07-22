@@ -15,8 +15,6 @@ namespace OpenRa.Game
 		TechTree.TechTree techTree = new TechTree.TechTree();
 
 		SpriteRenderer spriteRenderer;
-		//Package package;
-
 		Sprite blank;
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
@@ -30,15 +28,15 @@ namespace OpenRa.Game
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
 
-			LoadSprites("../../../buildings.txt");
-			LoadSprites("../../../units.txt");
+			LoadSprites("buildings.txt");
+			LoadSprites("units.txt");
 
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 		}
 
 		void LoadSprites(string filename)
 		{
-			foreach (string line in File.ReadAllLines(filename))
+			foreach (string line in Util.ReadAllLines(FileSystem.Open(filename)))
 			{
 				string key = line.Substring(0, line.IndexOf(','));
 				sprites.Add(key, SpriteSheetBuilder.LoadSprite(key + "icon.shp"));
