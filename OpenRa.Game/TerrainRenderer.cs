@@ -20,14 +20,14 @@ namespace OpenRa.Game
 		Renderer renderer;
 		Map map;
 
-		public TerrainRenderer(Renderer renderer, Map map, Package tilePackage, Viewport viewport)
+		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
 		{
 			this.renderer = renderer;
 			this.viewport = viewport;
 			viewport.AddRegion(Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw));
 			this.map = map;
 
-			tileSet = new TileSet(tilePackage, map.TileSuffix);
+			tileSet = new TileSet( map.TileSuffix );
 
 			Dictionary<TileReference, Sprite> tileMapping =
 				new Dictionary<TileReference, Sprite>();
@@ -58,7 +58,7 @@ namespace OpenRa.Game
 			indexBuffer.SetData( indices.ToArray() );
 		}
 
-		void Draw()
+		void Draw( Game game )
 		{
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;

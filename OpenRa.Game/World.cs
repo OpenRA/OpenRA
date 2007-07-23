@@ -29,7 +29,7 @@ namespace OpenRa.Game
 
 		double lastTime = Environment.TickCount / 1000.0;
 
-		void Draw()
+		void Draw( Game game )
 		{
 			double t = Environment.TickCount / 1000.0;
 			double dt = t - lastTime;
@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 			foreach (Actor a in actors)
 			{
-				a.Tick( this, dt );
+				a.Tick( game, dt );
 
 				Sprite[] images = a.CurrentImages;
 				float2 loc = a.RenderLocation;

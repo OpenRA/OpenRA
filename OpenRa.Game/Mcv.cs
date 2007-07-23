@@ -16,13 +16,14 @@ namespace OpenRa.Game
 
 		public void AcceptDeployOrder()
 		{
-			nextOrder = delegate( World world, double t )
+			nextOrder = delegate( Game game, double t )
 			{
 				int desiredFacing = 12;
 				if( facing != desiredFacing )
 					Turn( desiredFacing );
 				else
 				{
+					World world = game.world;
 					world.AddFrameEndTask( delegate
 					{
 						world.Remove( this );

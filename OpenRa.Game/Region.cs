@@ -10,7 +10,7 @@ namespace OpenRa.Game
 	{
 		Point location;
 		Size size;
-		MethodInvoker drawFunction;
+		Action<Game> drawFunction;
 
 		static Size MakeSize(Viewport v, DockStyle d, int size)
 		{
@@ -29,7 +29,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public static Region Create(Viewport v, DockStyle d, int size, MethodInvoker f)
+		public static Region Create(Viewport v, DockStyle d, int size, Action<Game> f)
 		{
 			Size s = MakeSize(v, d, size);
 
@@ -48,17 +48,17 @@ namespace OpenRa.Game
 			}
 		}
 
-		Region(Point location, Size size, MethodInvoker drawFunction)
+		Region(Point location, Size size, Action<Game> drawFunction)
 		{
 			this.location = location;
 			this.size = size;
 			this.drawFunction = drawFunction;
 		}
 
-		public void Draw(Renderer renderer, Viewport viewport)
+		public void Draw(Renderer renderer, Game game)
 		{
 			renderer.Device.EnableScissor(location.X, location.Y, size.Width, size.Height);
-			drawFunction();
+			drawFunction( game );
 			renderer.Device.DisableScissor();
 		}
 	}

@@ -4,9 +4,9 @@ using System.Text;
 using System.IO;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.FileFormats
 {
-	class Folder : IFolder
+	public class Folder : IFolder
 	{
 		readonly string path;
 
@@ -19,7 +19,7 @@ namespace OpenRa.Game
 		}
 	}
 
-	static class FileSystem
+	public static class FileSystem
 	{
 		static List<IFolder> mountedFolders = new List<IFolder>();
 

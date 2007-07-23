@@ -13,8 +13,6 @@ namespace OpenRa.FileFormats
 		readonly Dictionary<ushort, Dictionary<int, int>> walk = 
 			new Dictionary<ushort, Dictionary<int, int>>();	// cjf will fix
 
-		public readonly Package MixFile;
-
 		string NextLine( StreamReader reader )
 		{
 			string ret;
@@ -29,12 +27,11 @@ namespace OpenRa.FileFormats
 			return ret;
 		}
 
-		public TileSet( Package mixFile, string suffix )
+		public TileSet( string suffix )
 		{
 			Walkability walkability = new Walkability();
 
 			char tileSetChar = char.ToUpperInvariant( suffix[ 1 ] );
-			MixFile = mixFile;
 			StreamReader tileIdFile = File.OpenText( "../../../tileSet.til" );
 
 			while( true )
@@ -58,9 +55,11 @@ namespace OpenRa.FileFormats
 					if (!walk.ContainsKey((ushort)(start + i)))
 						walk.Add((ushort)(start + i), walkability.GetWalkability(tilename));
 
-					Stream s = mixFile.GetContent(tilename + suffix);
-					if (!tiles.ContainsKey((ushort)(start + i)))
-						tiles.Add((ushort)(start + i), new Terrain(s));
+					using( Stream s = FileSystem.Open( tilename + suffix ) )
+					{
+						if( !tiles.ContainsKey( (ushort)( start + i ) ) )
+							tiles.Add( (ushort)( start + i ), new Terrain( s ) );
+					}
 				}
 			}
 

@@ -37,7 +37,7 @@ namespace OpenRa.Game
 			regions.Add(r);
 		}
 
-		public void DrawRegions()
+		public void DrawRegions(Game game)
 		{
 			float2 r1 = new float2(2, -2) / Size;
 			float2 r2 = new float2(-1, 1);
@@ -45,7 +45,7 @@ namespace OpenRa.Game
 			renderer.BeginFrame(r1, r2, scrollPosition);
 
 			foreach (Region region in regions)
-				region.Draw(renderer, this);
+				region.Draw(renderer, game);
 
 			renderer.EndFrame();
 		}

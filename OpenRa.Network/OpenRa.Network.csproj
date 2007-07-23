@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</ProjectGuid>
+    <ProjectGuid>{1F87E186-E380-4F3C-893B-3F1F7A147821}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.FileFormats</RootNamespace>
-    <AssemblyName>OpenRa.FileFormats</AssemblyName>
+    <RootNamespace>OpenRa.Network</RootNamespace>
+    <AssemblyName>OpenRa.Network</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,40 +28,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MixDecrypt, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\release\MixDecrypt.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blowfish.cs" />
-    <Compile Include="FileSystem.cs" />
-    <Compile Include="Format40.cs" />
-    <Compile Include="Format80.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="PackageEntry.cs" />
-    <Compile Include="Package.cs" />
-    <Compile Include="Palette.cs" />
-    <Compile Include="PaletteRemap.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShpReader.cs" />
-    <Compile Include="Terrain.cs" />
-    <Compile Include="TileReference.cs" />
-    <Compile Include="TileSet.cs" />
-    <Compile Include="TreeReference.cs" />
-    <Compile Include="Walkability.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
-      <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
-      <Name>OpenRa.DataStructures</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

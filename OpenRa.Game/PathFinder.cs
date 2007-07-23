@@ -8,8 +8,6 @@ namespace OpenRa.Game
 {
 	class PathFinder
 	{
-		public static PathFinder Instance;
-
 		double[ , ] passableCost = new double[ 128, 128 ];
 		Map map;
 
@@ -28,7 +26,7 @@ namespace OpenRa.Game
 		// returns estimate to destination, 0.0 is cell is dest
 		public delegate double DestinationFunc( int2 cell );
 
-		public List<int2> FindUnitPath( World world, Unit unit, DestinationFunc estimator )
+		public List<int2> FindUnitPath( Unit unit, DestinationFunc estimator )
 		{
 			int2 startLocation = unit.Location + map.Offset;
 
@@ -58,10 +56,7 @@ namespace OpenRa.Game
 				cellInfo[ here.X, here.Y ].Seen = true;
 
 				if( estimator( here - offset ) == 0.0 )
-				{
-					Log.Write( "{0}, {1}", seenCount, impassableCount );
 					return MakePath( cellInfo, here, offset );
-				}
 
 				foreach( int2 d in directions )
 				{
@@ -106,7 +101,6 @@ namespace OpenRa.Game
 				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
 			}
 
-			Log.Write( "Path Length: {0}", ret.Count );
 			return ret;
 		}
 

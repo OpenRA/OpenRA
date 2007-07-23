@@ -55,7 +55,7 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
-		public void Paint()
+		public void Paint( Game game )
 		{
 			float2 buildPos = viewport.Location + new float2(viewport.Size.X - 128, 0);
 			float2 unitPos = viewport.Location + new float2(viewport.Size.X - 64, 0);

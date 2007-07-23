@@ -43,7 +43,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
-    <Compile Include="FileSystem.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="PathFinder.cs" />

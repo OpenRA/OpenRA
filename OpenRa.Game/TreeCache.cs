@@ -11,7 +11,7 @@ namespace OpenRa.Game
 	{
 		Dictionary<string, Sprite> trees = new Dictionary<string, Sprite>();
 
-		public TreeCache(GraphicsDevice device, Map map, Package package)
+		public TreeCache(GraphicsDevice device, Map map)
 		{
 			foreach (TreeReference r in map.Trees)
 			{
@@ -20,7 +20,7 @@ namespace OpenRa.Game
 
 				string filename = r.Image + "." + map.Theater.Substring(0, 3);
 
-				ShpReader reader = new ShpReader(package.GetContent(filename));
+				ShpReader reader = new ShpReader( FileSystem.Open( filename ) );
 				trees.Add(r.Image, SheetBuilder.Add(reader[0].Image, reader.Size));
 			}
 		}

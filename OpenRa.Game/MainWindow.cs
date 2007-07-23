@@ -13,15 +13,10 @@ namespace OpenRa.Game
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
-		readonly Map map;
+		//readonly Map map;
 		
-		Package TileMix;
-
-		World world;
-		TreeCache treeCache;
-		TerrainRenderer terrain;
-		Sidebar sidebar;
-		Viewport viewport;
+		Game game;
+		public readonly Sidebar sidebar;
 
 		static Size GetResolution(Settings settings)
 		{
@@ -44,42 +39,29 @@ namespace OpenRa.Game
 			Visible = true;
 
 			bool windowed = !settings.GetValue("fullscreeen", false);
-
 			renderer = new Renderer(this, GetResolution(settings), windowed);
-			map = new Map(new IniFile(FileSystem.Open(settings.GetValue("map", "scm12ea.ini"))));
-			viewport = new Viewport(new float2(ClientSize), new float2(map.Size), renderer);
 
-			SheetBuilder.Initialize(renderer.Device);
-			FileSystem.Mount(TileMix = new Package("../../../" + map.Theater + ".mix"));
-
-			renderer.SetPalette(new HardwarePalette(renderer.Device, map));
-			terrain = new TerrainRenderer(renderer, map, TileMix, viewport);
-
-			world = new World(renderer, viewport);
-			treeCache = new TreeCache(renderer.Device, map, TileMix);
-
-			foreach (TreeReference treeReference in map.Trees)
-				world.Add(new Tree(treeReference, treeCache, map));
+			game = new Game( settings.GetValue( "map", "scm12ea.ini" ), renderer, new int2( ClientSize ) );
 
 			SequenceProvider.ForcePrecache();
 
-			world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
-			world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
+			game.world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
+			game.world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
-			world.myUnit = mcv;
-			world.Add( mcv );
-			world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
+			game.world.myUnit = mcv;
+			game.world.Add( mcv );
+			game.world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
-			sidebar = new Sidebar(Race.Soviet, renderer, viewport);
+			sidebar = new Sidebar(Race.Soviet, renderer, game.viewport);
 
-			PathFinder.Instance = new PathFinder( map, terrain.tileSet );
+			renderer.SetPalette( new HardwarePalette( renderer.Device, game.map ) );
 		}
 
 		internal void Run()
 		{
 			while (Created && Visible)
 			{
-				viewport.DrawRegions();
+				game.viewport.DrawRegions( game );
 				Application.DoEvents();
 			}
 		}
@@ -93,9 +75,8 @@ namespace OpenRa.Game
 
 			if (e.Button == MouseButtons.Left)
 			{
-				int x = (int)( ( e.X + viewport.Location.X ) / 24 );
-				int y = (int)( ( e.Y + viewport.Location.Y ) / 24 );
-				world.myUnit.Order( new int2( x, y ) ).Apply();
+				float2 xy = ( 1 / 24.0f ) * ( new float2( e.Location ) + game.viewport.Location );
+				game.world.myUnit.Order( new int2( (int)xy.X, (int)xy.Y ) ).Apply();
 			}
 		}
 
@@ -106,7 +87,7 @@ namespace OpenRa.Game
 			if (e.Button == MouseButtons.Right)
 			{
 				float2 p = new float2(e.Location);
-				viewport.Scroll(lastPos - p);
+				game.viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}
 		}
