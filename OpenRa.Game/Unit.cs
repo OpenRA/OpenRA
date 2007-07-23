@@ -29,7 +29,7 @@ namespace OpenRa.Game
 		}
 
 		static float2[] fvecs = Util.MakeArray<float2>( 32,
-			delegate( int i ) { return -float2.FromAngle( i / 16.0f * (float)Math.PI ); } );
+			delegate( int i ) { return -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ); } );
 
 		int GetFacing( float2 d )
 		{
@@ -37,7 +37,7 @@ namespace OpenRa.Game
 				return facing;
 
 			int highest = -1;
-			float highestDot = -1.0f;
+			float highestDot = -1.0f
 
 			for( int i = 0 ; i < fvecs.Length ; i++ )
 			{
@@ -74,12 +74,8 @@ namespace OpenRa.Game
 				if( nextOrder != null )
 					destination = toCell;
 
-				int desiredFacing = GetFacing( toCell - fromCell );
-				if( facing != desiredFacing )
-				{
-					Turn( desiredFacing );
+				if( Turn( GetFacing( toCell - fromCell ) ) )
 					return;
-				}
 
 				moveFraction += (int)( t * ( Speed * 100 ) );
 				if( moveFraction < moveFractionTotal )
@@ -108,10 +104,14 @@ namespace OpenRa.Game
 			};
 		}
 
-		protected void Turn( int desiredFacing )
+		protected bool Turn( int desiredFacing )
 		{
+			if( facing == desiredFacing )
+				return false;
+
 			int df = ( desiredFacing - facing + 32 ) % 32;
 			facing = ( facing + ( df > 16 ? 31 : 1 ) ) % 32;
+			return true;
 		}
 
 		public virtual IOrder Order( int2 xy )

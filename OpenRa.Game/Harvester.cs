@@ -26,12 +26,8 @@ namespace OpenRa.Game
 				// TODO: check that there's actually some ore in this cell :)
 
 				// face in one of the 8 directions
-				int desiredFacing = ( facing + 1 ) & 28;
-				if( facing != desiredFacing )
-				{
-					Turn( desiredFacing );
+				if( Turn( ( facing + 1 ) & ~3 ) )
 					return;
-				}
 
 				currentOrder = delegate { };
 				if( nextOrder == null )
