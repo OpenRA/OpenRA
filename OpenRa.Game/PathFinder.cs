@@ -24,9 +24,9 @@ namespace OpenRa.Game
 		}
 
 		// returns estimate to destination, 0.0 is cell is dest
-		public delegate double DestinationFunc( int2 cell );
+		public delegate double DistanceHeuristic( int2 cell );
 
-		public List<int2> FindUnitPath( Unit unit, DestinationFunc estimator )
+		public List<int2> FindUnitPath( Unit unit, DistanceHeuristic estimator )
 		{
 			int2 startLocation = unit.Location + map.Offset;
 
@@ -39,7 +39,7 @@ namespace OpenRa.Game
 			return FindUnitPath( startLocation, estimator, map.Offset, cellInfo );
 		}
 
-		List<int2> FindUnitPath( int2 startLocation, DestinationFunc estimator, int2 offset, CellInfo[,] cellInfo )
+		List<int2> FindUnitPath( int2 startLocation, DistanceHeuristic estimator, int2 offset, CellInfo[,] cellInfo )
 		{
 			PriorityQueue<PathDistance> queue = new PriorityQueue<PathDistance>();
 
@@ -107,7 +107,7 @@ namespace OpenRa.Game
 				new int2(  1,  1 ),
 			};
 
-		public static DestinationFunc DefaultEstimator( int2 destination )
+		public static DistanceHeuristic DefaultEstimator( int2 destination )
 		{
 			return delegate( int2 here )
 			{

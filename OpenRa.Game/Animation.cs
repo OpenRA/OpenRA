@@ -47,8 +47,7 @@ namespace OpenRa.Game
 			};
 		}
 
-		public delegate int IndexFetchFunc();
-		public void PlayFetchIndex( string sequenceName, IndexFetchFunc func )
+		public void PlayFetchIndex( string sequenceName, Provider<int> func )
 		{
 			tickAlways = true;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );

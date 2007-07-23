@@ -34,6 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Delegates.cs" />
     <Compile Include="float2.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="PriorityQueue.cs" />
