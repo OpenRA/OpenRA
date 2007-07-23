@@ -13,7 +13,6 @@ namespace OpenRa.Game
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
-		//readonly Map map;
 		
 		Game game;
 		public readonly Sidebar sidebar;

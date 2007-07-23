@@ -46,6 +46,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Network\Network.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />

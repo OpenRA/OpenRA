@@ -14,6 +14,7 @@ namespace OpenRa.Game
 		public readonly TerrainRenderer terrain;
 		public readonly Viewport viewport;
 		public readonly PathFinder pathFinder;
+		public readonly Network network;
 
 		public Game( string mapName, Renderer renderer, int2 clientSize )
 		{
@@ -31,6 +32,8 @@ namespace OpenRa.Game
 				world.Add( new Tree( treeReference, treeCache, map ) );
 
 			pathFinder = new PathFinder( map, terrain.tileSet );
+
+			network = new Network();
 		}
 	}
 }
