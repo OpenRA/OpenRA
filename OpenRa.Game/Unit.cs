@@ -37,7 +37,7 @@ namespace OpenRa.Game
 				return facing;
 
 			int highest = -1;
-			float highestDot = -1.0f
+			float highestDot = -1.0f;
 
 			for( int i = 0 ; i < fvecs.Length ; i++ )
 			{
