@@ -59,10 +59,10 @@ namespace OpenRa.Game
 			};
 		}
 
-		double timeUntilNextFrame;
+		int timeUntilNextFrame;
 
-		Action<double> tickFunc;
-		public void Tick( double t )
+		Action<int> tickFunc;
+		public void Tick( int t )
 		{
 			if( tickAlways )
 				tickFunc( t );
@@ -71,8 +71,8 @@ namespace OpenRa.Game
 				timeUntilNextFrame -= t;
 				while( timeUntilNextFrame <= 0 )
 				{
-					tickFunc( 40.0 / 1000.0 );
-					timeUntilNextFrame += ( 40.0 / 1000.0 ); // 25 fps == 40 ms
+					tickFunc( 40 );
+					timeUntilNextFrame += 40; // 25 fps == 40 ms
 				}
 			}
 		}

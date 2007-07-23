@@ -18,7 +18,7 @@ namespace OpenRa.Game
 			animation.PlayThen( "make", delegate { animation.Play( "idle" ); } );
 		}
 
-		public override void Tick( Game game, double t )
+		public override void Tick( Game game, int t )
 		{
 			animation.Tick( t );
 		}

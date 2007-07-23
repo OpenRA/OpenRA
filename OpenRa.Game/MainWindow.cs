@@ -39,6 +39,7 @@ namespace OpenRa.Game
 
 			bool windowed = !settings.GetValue("fullscreeen", false);
 			renderer = new Renderer(this, GetResolution(settings), windowed);
+			SheetBuilder.Initialize( renderer.Device );
 
 			game = new Game( settings.GetValue( "map", "scm12ea.ini" ), renderer, new int2( ClientSize ) );
 
@@ -60,7 +61,7 @@ namespace OpenRa.Game
 		{
 			while (Created && Visible)
 			{
-				game.viewport.DrawRegions( game );
+				game.Tick();
 				Application.DoEvents();
 			}
 		}
@@ -75,7 +76,8 @@ namespace OpenRa.Game
 			if (e.Button == MouseButtons.Left)
 			{
 				float2 xy = ( 1 / 24.0f ) * ( new float2( e.Location ) + game.viewport.Location );
-				game.world.myUnit.Order( new int2( (int)xy.X, (int)xy.Y ) ).Apply();
+				IOrder order = game.world.myUnit.Order( new int2( (int)xy.X, (int)xy.Y ) );
+				game.Issue( order );
 			}
 		}
 

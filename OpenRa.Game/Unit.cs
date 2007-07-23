@@ -12,7 +12,7 @@ namespace OpenRa.Game
 		protected int2 fromCell, toCell;
 		protected int moveFraction, moveFractionTotal;
 
-		protected delegate void TickFunc( Game game, double t );
+		protected delegate void TickFunc( Game game, int t );
 		protected TickFunc currentOrder = null;
 		protected TickFunc nextOrder = null;
 
@@ -54,7 +54,7 @@ namespace OpenRa.Game
 
 		const int Speed = 6;
 
-		public override void Tick( Game game, double t )
+		public override void Tick( Game game, int t )
 		{
 			animation.Tick( t );
 			if( currentOrder == null && nextOrder != null )
@@ -69,7 +69,7 @@ namespace OpenRa.Game
 
 		public void AcceptMoveOrder( int2 destination )
 		{
-			nextOrder = delegate( Game game, double t )
+			nextOrder = delegate( Game game, int t )
 			{
 				if( nextOrder != null )
 					destination = toCell;
@@ -77,7 +77,7 @@ namespace OpenRa.Game
 				if( Turn( GetFacing( toCell - fromCell ) ) )
 					return;
 
-				moveFraction += (int)( t * ( Speed * 100 ) );
+				moveFraction += t * Speed;
 				if( moveFraction < moveFractionTotal )
 					return;
 
@@ -97,7 +97,7 @@ namespace OpenRa.Game
 					toCell = res[ res.Count - 1 ];
 
 					int2 dir = toCell - fromCell;
-					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
+					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 2500 : 2000;
 				}
 				else
 					destination = toCell;

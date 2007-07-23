@@ -16,7 +16,7 @@ namespace OpenRa.Game
 
 		public void AcceptDeployOrder()
 		{
-			nextOrder = delegate( Game game, double t )
+			nextOrder = delegate( Game game, int t )
 			{
 				if( Turn( 12 ) )
 					return;

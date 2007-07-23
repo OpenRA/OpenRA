@@ -13,6 +13,6 @@ namespace OpenRa.Game
 		public abstract float2 RenderLocation { get; }
 		public int palette;
 		public abstract Sprite[] CurrentImages { get; }
-		public virtual void Tick(Game game, double t) { }
+		public virtual void Tick(Game game, int t) { }
 	}
 }

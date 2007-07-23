@@ -9,7 +9,6 @@ namespace OpenRa.Game
 	{
 		public readonly World world;
 		public readonly Map map;
-		public readonly SpriteRenderer SpriteRenderer;
 		public readonly TreeCache treeCache;
 		public readonly TerrainRenderer terrain;
 		public readonly Viewport viewport;
@@ -18,7 +17,6 @@ namespace OpenRa.Game
 
 		public Game( string mapName, Renderer renderer, int2 clientSize )
 		{
-			SheetBuilder.Initialize( renderer.Device );
 			map = new Map( new IniFile( FileSystem.Open( mapName ) ) );
 			FileSystem.Mount( new Package( "../../../" + map.Theater + ".mix" ) );
 
@@ -34,6 +32,16 @@ namespace OpenRa.Game
 			pathFinder = new PathFinder( map, terrain.tileSet );
 
 			network = new Network();
+		}
+
+		public void Tick()
+		{
+			viewport.DrawRegions( this );
+		}
+
+		public void Issue( IOrder order )
+		{
+			order.Apply();
 		}
 	}
 }

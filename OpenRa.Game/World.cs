@@ -27,12 +27,12 @@ namespace OpenRa.Game
 		public void Remove( Actor a ) { actors.Remove( a ); }
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
-		double lastTime = Environment.TickCount / 1000.0;
+		int lastTime = Environment.TickCount;
 
 		void Draw( Game game )
 		{
-			double t = Environment.TickCount / 1000.0;
-			double dt = t - lastTime;
+			int t = Environment.TickCount;
+			int dt = t - lastTime;
 			lastTime = t;
 
 			Range<float2> range = new Range<float2>(viewport.Location, viewport.Location + viewport.Size);
