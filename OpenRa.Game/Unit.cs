@@ -71,40 +71,40 @@ namespace OpenRa.Game
 		{
 			nextOrder = delegate( Game game, double t )
 			{
-				int speed = (int)( t * ( Speed * 100 ) );
-
 				if( nextOrder != null )
 					destination = toCell;
 
 				int desiredFacing = GetFacing( toCell - fromCell );
 				if( facing != desiredFacing )
-					Turn( desiredFacing );
-				else
 				{
-					moveFraction += speed;
-					if( moveFraction >= moveFractionTotal )
-					{
-						moveFraction = 0;
-						moveFractionTotal = 0;
-						fromCell = toCell;
-
-						if( toCell == destination )
-							currentOrder = null;
-						else
-						{
-							List<int2> res = game.pathFinder.FindUnitPath( this, PathFinder.DefaultEstimator( destination ) );
-							if( res.Count != 0 )
-							{
-								toCell = res[ res.Count - 1 ];
-
-								int2 dir = toCell - fromCell;
-								moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
-							}
-							else
-								destination = toCell;
-						}
-					}
+					Turn( desiredFacing );
+					return;
 				}
+
+				moveFraction += (int)( t * ( Speed * 100 ) );
+				if( moveFraction < moveFractionTotal )
+					return;
+
+				moveFraction = 0;
+				moveFractionTotal = 0;
+				fromCell = toCell;
+
+				if( toCell == destination )
+				{
+					currentOrder = null;
+					return;
+				}
+
+				List<int2> res = game.pathFinder.FindUnitPath( this, PathFinder.DefaultEstimator( destination ) );
+				if( res.Count != 0 )
+				{
+					toCell = res[ res.Count - 1 ];
+
+					int2 dir = toCell - fromCell;
+					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 250 : 200;
+				}
+				else
+					destination = toCell;
 			};
 		}
 
