@@ -15,31 +15,31 @@ namespace OpenRa.Game
 		public readonly PathFinder pathFinder;
 		public readonly Network network;
 
-		public Game( string mapName, Renderer renderer, int2 clientSize )
+		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
-			map = new Map( new IniFile( FileSystem.Open( mapName ) ) );
-			FileSystem.Mount( new Package( "../../../" + map.Theater + ".mix" ) );
+			map = new Map(new IniFile(FileSystem.Open(mapName)));
+			FileSystem.Mount(new Package("../../../" + map.Theater + ".mix"));
 
-			viewport = new Viewport( clientSize, new float2( map.Size ), renderer );
-			
-			terrain = new TerrainRenderer( renderer, map, viewport );
-			world = new World( renderer, viewport );
-			treeCache = new TreeCache( renderer.Device, map );
+			viewport = new Viewport(clientSize, map.Size, renderer);
 
-			foreach( TreeReference treeReference in map.Trees )
-				world.Add( new Tree( treeReference, treeCache, map ) );
+			terrain = new TerrainRenderer(renderer, map, viewport);
+			world = new World(renderer, viewport);
+			treeCache = new TreeCache(renderer.Device, map);
 
-			pathFinder = new PathFinder( map, terrain.tileSet );
+			foreach (TreeReference treeReference in map.Trees)
+				world.Add(new Tree(treeReference, treeCache, map));
+
+			pathFinder = new PathFinder(map, terrain.tileSet);
 
 			network = new Network();
 		}
 
 		public void Tick()
 		{
-			viewport.DrawRegions( this );
+			viewport.DrawRegions(this);
 		}
 
-		public void Issue( IOrder order )
+		public void Issue(IOrder order)
 		{
 			order.Apply();
 		}

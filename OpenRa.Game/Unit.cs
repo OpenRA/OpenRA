@@ -114,16 +114,6 @@ namespace OpenRa.Game
 			return true;
 		}
 
-		public virtual IOrder Order( int2 xy )
-		{
-			return new MoveOrder( this, xy );
-		}
-
-		public int2 Location
-		{
-			get { return toCell; }
-		}
-
 		public override float2 RenderLocation
 		{
 			get
@@ -135,9 +125,8 @@ namespace OpenRa.Game
 			}
 		}
 
-		public override Sprite[] CurrentImages
-		{
-			get { return animation.Images; }
-		}
+		public int2 Location { get { return toCell; } }
+		public virtual IOrder Order(int2 xy) { return new MoveOrder(this, xy); }
+		public override Sprite[] CurrentImages { get { return animation.Images; } }
 	}
 }

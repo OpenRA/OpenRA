@@ -1,28 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
 using BluntDirectX.Direct3D;
+using System.Drawing;
 using System.IO;
-using System.Drawing.Imaging;
 
 namespace OpenRa.Game
 {
 	class Sheet
 	{
-		public readonly Bitmap bitmap;
-		
-		readonly GraphicsDevice device;
+		readonly Renderer renderer;
+		protected readonly Bitmap bitmap;
+
 		Texture texture;
+		static int suffix = 0;
 
-		string filename = string.Format("../../../block-cache-{0}.png", suffix++);
-
-		public Size Size { get { return bitmap.Size; } }
-
-		public Sheet(Size size, GraphicsDevice d)
+		public Sheet(Renderer renderer, Size size)
 		{
-			bitmap = new Bitmap(size.Width, size.Height);
-			device = d;
+			this.renderer = renderer;
+			this.bitmap = new Bitmap(size.Width, size.Height);
+		}
+
+		void Resolve()
+		{
+			string filename = string.Format("../../../sheet-{0}.png", suffix++);
+			bitmap.Save(filename);
+
+			using (Stream s = File.OpenRead(filename))
+				texture = Texture.Create(s, renderer.Device);
 		}
 
 		public Texture Texture
@@ -30,20 +35,18 @@ namespace OpenRa.Game
 			get
 			{
 				if (texture == null)
-					LoadTexture();
+					Resolve();
 
 				return texture;
 			}
 		}
 
-		void LoadTexture()
+		public Size Size { get { return bitmap.Size; } }
+
+		public Color this[Point p]
 		{
-			bitmap.Save(filename);
-
-			using( Stream s = File.OpenRead(filename) )
-				texture = Texture.Create(s, device);
+			get { return bitmap.GetPixel(p.X, p.Y); }
+			set { bitmap.SetPixel(p.X, p.Y, value); }
 		}
-
-		static int suffix = 0;
 	}
 }

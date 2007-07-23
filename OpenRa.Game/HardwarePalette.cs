@@ -8,22 +8,14 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
-	// todo: synthesize selection color, and generate duplicate palette block!
-	public class HardwarePalette
+	class HardwarePalette : Sheet
 	{
-		const int maxEntries = 16;			// dont need anything like this many, 
-											// but the hardware likes square textures better
-
-		Bitmap bitmap = new Bitmap(256, maxEntries);
-		GraphicsDevice device;
+		const int maxEntries = 16;
 		int allocated = 0;
 
-		Texture paletteTexture;
-
-		public HardwarePalette(GraphicsDevice device, Map map)
+		public HardwarePalette(Renderer renderer, Map map)
+			: base(renderer,new Size(256, maxEntries))
 		{
-			this.device = device;
-
 			Palette pal = new Palette(FileSystem.Open(map.Theater + ".pal"));
 			AddPalette(pal);
 
@@ -31,30 +23,10 @@ namespace OpenRa.Game
 				AddPalette(new Palette(pal, new PaletteRemap(FileSystem.Open(remap + ".rem"))));
 		}
 
-		void Resolve()
-		{
-			const string filename = "../../../palette-cache.png";
-			bitmap.Save(filename);
-
-			using (Stream s = File.OpenRead(filename))
-				paletteTexture = Texture.Create(s, device);
-		}
-
-		public Texture PaletteTexture
-		{
-			get
-			{
-				if (paletteTexture == null)
-					Resolve();
-
-				return paletteTexture;
-			}
-		}
-
 		int AddPalette(Palette p)
 		{
 			for (int i = 0; i < 256; i++)
-				bitmap.SetPixel(i, allocated, p.GetColor(i));
+				this[new Point(i, allocated)] = p.GetColor(i);
 
 			return allocated++;
 		}

@@ -46,9 +46,6 @@ namespace OpenRa.Game
 			queue.Add( new PathDistance( estimator( startLocation - offset ), startLocation ) );
 			cellInfo[ startLocation.X, startLocation.Y ].MinCost = 0;
 
-			int seenCount = 0;
-			int impassableCount = 0;
-
 			while( !queue.Empty )
 			{
 				PathDistance p = queue.Pop();
@@ -63,15 +60,9 @@ namespace OpenRa.Game
 					int2 newHere = here + d;
 
 					if( cellInfo[ newHere.X, newHere.Y ].Seen )
-					{
-						++seenCount;
 						continue;
-					}
 					if( passableCost[ newHere.X, newHere.Y ] == double.PositiveInfinity )
-					{
-						++impassableCount;
 						continue;
-					}
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ newHere.X, newHere.Y ];
 					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;

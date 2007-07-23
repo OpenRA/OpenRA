@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 			bool windowed = !settings.GetValue("fullscreeen", false);
 			renderer = new Renderer(this, GetResolution(settings), windowed);
-			SheetBuilder.Initialize( renderer.Device );
+			SheetBuilder.Initialize( renderer );
 
 			game = new Game( settings.GetValue( "map", "scm12ea.ini" ), renderer, new int2( ClientSize ) );
 
@@ -54,7 +54,7 @@ namespace OpenRa.Game
 
 			sidebar = new Sidebar(Race.Soviet, renderer, game.viewport);
 
-			renderer.SetPalette( new HardwarePalette( renderer.Device, game.map ) );
+			renderer.SetPalette( new HardwarePalette( renderer, game.map ) );
 		}
 
 		internal void Run()

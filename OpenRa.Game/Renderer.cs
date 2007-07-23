@@ -20,7 +20,7 @@ namespace OpenRa.Game
 
 		public void SetPalette(HardwarePalette hp)
 		{
-			shader.SetTexture(paletteHandle, hp.PaletteTexture);
+			shader.SetTexture(paletteHandle, hp.Texture);
 		}
 
 		public Renderer(Control host, Size resolution, bool windowed)

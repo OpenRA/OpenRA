@@ -17,8 +17,7 @@ namespace OpenRa.FileFormats
 
 		public readonly int Width;
 		public readonly int Height;
-
-		public PointF Size { get { return new PointF(Width, Height); } }
+		public int2 Size { get { return new int2(Width, Height); } }
 
 		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
 		public readonly List<TreeReference> Trees = new List<TreeReference>();

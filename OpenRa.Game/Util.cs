@@ -91,8 +91,7 @@ namespace OpenRa.Game
 				{
 					Point p = new Point(dest.bounds.Left + i, dest.bounds.Top + j);
 					byte b = src[i + dest.bounds.Width * j];
-					Color original = dest.sheet.bitmap.GetPixel(p.X, p.Y);
-					dest.sheet.bitmap.SetPixel(p.X, p.Y, ReplaceChannel(original, dest.channel, b));
+					dest.sheet[p] = ReplaceChannel(dest.sheet[p], dest.channel, b);
 				}
 		}
 

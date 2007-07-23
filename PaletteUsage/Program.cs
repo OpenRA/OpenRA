@@ -23,13 +23,11 @@ namespace PaletteUsage
 			foreach (byte b in ImageBytes(bitmap))
 				++f[b];
 
-			for (int i = 0; i < 256; i++)
-			{
-				if (i % 8 == 0)
-					Console.WriteLine();
+			Console.WriteLine("Unused palette entries:");
 
-				Console.Write("{0} -> {1}", i.ToString().PadLeft(3), f[i].ToString().PadRight(8));
-			}
+			for (int i = 0; i < 256; i++)
+				if (f[i] == 0)
+					Console.WriteLine("0x{0:x}\t\t{0}", i);
 		}
 
 		static IEnumerable<byte> ImageBytes(Bitmap bitmap)

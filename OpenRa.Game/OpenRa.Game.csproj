@@ -44,6 +44,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Sheet.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Network\Network.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="Refinery.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Sheet.cs" />
     <Compile Include="Sidebar.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteRenderer.cs" />

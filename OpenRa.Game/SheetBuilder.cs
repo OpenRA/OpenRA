@@ -9,9 +9,9 @@ namespace OpenRa.Game
 {
 	static class SheetBuilder
 	{
-		public static void Initialize(GraphicsDevice d)
+		public static void Initialize(Renderer r)
 		{
-			device = d;
+			renderer = r;
 		}
 
 		public static Sprite Add(byte[] src, Size size)
@@ -30,12 +30,9 @@ namespace OpenRa.Game
 			return Add(data, size);
 		}
 
-		static Sheet NewSheet()
-		{
-			return new Sheet(new Size(512, 512), device);
-		}
+		static Sheet NewSheet() { return new Sheet(renderer, new Size(512, 512)); }
 
-		static GraphicsDevice device;
+		static Renderer renderer;
 		static Sheet current = null;
 		static int rowHeight = 0;
 		static Point p;
