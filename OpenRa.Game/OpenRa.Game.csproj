@@ -77,6 +77,7 @@
     <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
+    <Compile Include="UiOverlay.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitSheetBuilder.cs" />
     <Compile Include="Util.cs" />

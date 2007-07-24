@@ -73,9 +73,12 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
+		int buildPos = 0;
+		int unitPos = 0;
+
 		void PopulateItemList()
 		{
-			int buildPos = 0, unitPos = 0;
+			buildPos = 0; unitPos = 0;
 
 			items.Clear();
 
@@ -100,7 +103,10 @@ namespace OpenRa.Game
 			foreach (SidebarItem i in items)
 				i.Paint(spriteRenderer, region.Location);
 
-			spriteRenderer.Flush();	//todo: fix filling
+			Fill(region.Size.Y, new float2(region.Location.X, buildPos + region.Location.Y));
+			Fill(region.Size.Y, new float2(region.Location.X + spriteWidth, unitPos + region.Location.Y));
+
+			spriteRenderer.Flush();
 
 			clockRenderer.DrawSprite( clockAnimation.Images[0], region.Location, 0 );
 			clockAnimation.Tick(1);

@@ -16,6 +16,7 @@ namespace OpenRa.Game
 		Game game;
 		Region region;
 		public IOrderGenerator orderGenerator;
+		UiOverlay uiOverlay;
 
 		public World(Renderer renderer, Game game)
 		{
@@ -24,6 +25,8 @@ namespace OpenRa.Game
 			game.viewport.AddRegion(region);
 			
 			spriteRenderer = new SpriteRenderer(renderer, true);
+
+			uiOverlay = new UiOverlay(spriteRenderer, game);
 		}
 
 		public void Add(Actor a) { actors.Add(a); }
@@ -73,6 +76,7 @@ namespace OpenRa.Game
 			}
 			frameEndActions.Clear();
 
+			uiOverlay.Draw();
 			spriteRenderer.Flush();
 		}
 	}

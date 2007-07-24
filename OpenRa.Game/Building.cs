@@ -15,7 +15,7 @@ namespace OpenRa.Game
 			this.owner = owner;
 
 			animation = new Animation( name );
-			animation.PlayThen( "make", delegate { animation.Play( "idle" ); } );
+			animation.PlayThen( "make", delegate { animation.PlayRepeating( "idle" ); } );
 			owner.TechTree.Build( name, true );
 		}
 
