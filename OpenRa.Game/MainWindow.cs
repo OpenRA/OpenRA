@@ -37,7 +37,7 @@ namespace OpenRa.Game
 			Location = Point.Empty;
 			Visible = true;
 
-			bool windowed = !settings.GetValue("fullscreeen", false);
+			bool windowed = !settings.GetValue("fullscreen", false);
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 			SheetBuilder.Initialize( renderer );
 

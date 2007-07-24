@@ -40,10 +40,10 @@ namespace OpenRa.Game
 			for (int i = 0; i < width; i++)
 				for (int j = 0; j < height; j++)
 					spriteRenderer.DrawSprite(blocked ? buildBlocked : buildOk,
-						24 * (position + new int2(i, j)), 0);
+						24 * (position + new int2(i, j)) + game.viewport.Location, 0);
 		}
 
-		bool hasOverlay = false, blocked;
+		bool blocked, hasOverlay;
 		int2 position;
 		int width, height;
 
