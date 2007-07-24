@@ -143,7 +143,6 @@ namespace OpenRa.Game
 
 		public IOrder Order( Game game, int2 xy )
 		{
-			game.world.uiOverlay.KillOverlay();
 			// todo: check that space is free
 			return new PlaceBuildingOrder( this, xy );
 		}
@@ -175,6 +174,7 @@ namespace OpenRa.Game
 						game.world.Add( newBuilding( xy, building.owner ) );
 					}
 					game.world.orderGenerator = null;
+					game.world.uiOverlay.KillOverlay();
 				} );
 			}
 		}

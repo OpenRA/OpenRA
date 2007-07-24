@@ -9,9 +9,21 @@ namespace OpenRa.Game
 {
 	class Refinery : Building
 	{
-		public Refinery( int2 location, Player owner )
-			: base( "proc", location, owner )
+		public Refinery( int2 location, Player owner, Game game )
+			: base( "proc", location, owner, game )
 		{
+			animation.PlayThen("make", delegate
+			{
+				animation.PlayRepeating("idle");
+
+				game.world.AddFrameEndTask(delegate
+				{
+					Unit harvester = new Harvester(location + new int2(1, 2), owner, game);
+					harvester.facing = 8;
+					game.world.Add(harvester);
+					game.world.orderGenerator = harvester;
+				});
+			});
 		}
 	}
 }

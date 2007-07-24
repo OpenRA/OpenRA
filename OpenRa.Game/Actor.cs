@@ -10,9 +10,16 @@ namespace OpenRa.Game
 {
 	abstract class Actor
 	{
+		protected readonly Game game;
+
 		public abstract float2 RenderLocation { get; }
 		public Player owner;
 		public abstract Sprite[] CurrentImages { get; }
 		public virtual void Tick(Game game, int t) { }
+
+		protected Actor(Game game)
+		{
+			this.game = game;
+		}
 	}
 }

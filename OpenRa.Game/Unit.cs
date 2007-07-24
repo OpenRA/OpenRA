@@ -8,7 +8,7 @@ namespace OpenRa.Game
 	{
 		protected Animation animation;
 
-		protected int facing = 0;
+		public int facing = 0;
 		protected int2 fromCell, toCell;
 		protected int moveFraction, moveFractionTotal;
 
@@ -18,7 +18,8 @@ namespace OpenRa.Game
 
 		protected readonly float2 renderOffset;
 
-		public Unit( string name, int2 cell, Player owner, float2 renderOffset )
+		public Unit( string name, int2 cell, Player owner, float2 renderOffset, Game game )
+			: base( game )
 		{
 			fromCell = toCell = cell;
 			this.renderOffset = renderOffset;

@@ -9,7 +9,8 @@ namespace OpenRa.Game
 		protected Animation animation;
 		protected int2 location;
 
-		public Building( string name, int2 location, Player owner )
+		public Building( string name, int2 location, Player owner, Game game )
+			: base( game )
 		{
 			this.location = location;
 			this.owner = owner;

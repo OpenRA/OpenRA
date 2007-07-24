@@ -39,7 +39,7 @@ namespace OpenRa.Game
 			treeCache = new TreeCache(renderer.Device, map);
 
 			foreach (TreeReference treeReference in map.Trees)
-				world.Add(new Tree(treeReference, treeCache, map));
+				world.Add(new Tree(treeReference, treeCache, map, this));
 
 			pathFinder = new PathFinder(map, terrain.tileSet);
 
@@ -48,12 +48,12 @@ namespace OpenRa.Game
 			buildingCreation.Add( "fact",
 				delegate( int2 location, Player owner )
 				{
-					return new ConstructionYard( location, owner );
+					return new ConstructionYard( location, owner, this );
 				} );
 			buildingCreation.Add( "proc",
 				delegate( int2 location, Player owner )
 				{
-					return new Refinery( location, owner );
+					return new Refinery( location, owner, this );
 				} );
 
 			string[] buildings = { "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
@@ -66,7 +66,7 @@ namespace OpenRa.Game
 			buildingCreation.Add( name,
 				delegate( int2 location, Player owner )
 				{
-					return new Building( name, location, owner );
+					return new Building( name, location, owner, this );
 				} );
 		}
 
