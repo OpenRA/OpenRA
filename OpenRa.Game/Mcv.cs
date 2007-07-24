@@ -9,8 +9,8 @@ namespace OpenRa.Game
 {
 	class Mcv : Unit
 	{
-		public Mcv( int2 location, int palette )
-			: base( "mcv", location, palette, new float2( 12, 12 ) )
+		public Mcv( int2 location, Player owner )
+			: base( "mcv", location, owner, new float2( 12, 12 ) )
 		{
 		}
 
@@ -25,10 +25,10 @@ namespace OpenRa.Game
 				world.AddFrameEndTask( delegate
 				{
 					world.Remove( this );
-					world.Add( new ConstructionYard( fromCell - new int2( 1, 1 ), palette ) );
-					world.Add( new Refinery( fromCell - new int2( 1, -2 ), palette ) );
+					world.Add( new ConstructionYard( fromCell - new int2( 1, 1 ), owner ) );
+					world.Add( new Refinery( fromCell - new int2( 1, -2 ), owner ) );
 
-					world.orderGenerator = new Harvester( fromCell - new int2( 0, -4 ), palette );
+					world.orderGenerator = new Harvester( fromCell - new int2( 0, -4 ), owner );
 					world.Add( (Actor)world.orderGenerator );
 				} );
 				currentOrder = null;

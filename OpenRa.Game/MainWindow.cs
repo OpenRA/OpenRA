@@ -45,12 +45,12 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			game.world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
-			game.world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
-			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
+			game.world.Add( new Mcv( new int2( 5, 5 ), game.players[ 3 ] ) );
+			game.world.Add( new Mcv( new int2( 7, 5 ), game.players[ 2 ] ) );
+			Mcv mcv = new Mcv( new int2( 9, 5 ), game.players[ 1 ] );
 			game.world.orderGenerator = mcv;
 			game.world.Add( mcv );
-			game.world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
+			game.world.Add( new Refinery( new int2( 7, 5 ), game.players[ 2 ] ) );
 
 			sidebar = new Sidebar(Race.Soviet, renderer, game);
 

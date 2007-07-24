@@ -46,6 +46,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="IOrderGenerator.cs" />
     <Compile Include="Network\Packet.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TreeCache.cs" />
-    <Compile Include="Truck.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitSheetBuilder.cs" />
     <Compile Include="Util.cs" />

@@ -9,10 +9,10 @@ namespace OpenRa.Game
 		protected Animation animation;
 		protected int2 location;
 
-		public Building( string name, int2 location, int palette )
+		public Building( string name, int2 location, Player owner )
 		{
 			this.location = location;
-			this.palette = palette;
+			this.owner = owner;
 
 			animation = new Animation( name );
 			animation.PlayThen( "make", delegate { animation.Play( "idle" ); } );

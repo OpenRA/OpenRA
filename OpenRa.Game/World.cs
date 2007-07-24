@@ -64,7 +64,7 @@ namespace OpenRa.Game
 					continue;
 
 				foreach( Sprite image in images )
-					spriteRenderer.DrawSprite(image, loc, a.palette);
+					spriteRenderer.DrawSprite(image, loc, (a.owner != null) ? a.owner.Palette : 0);
 			}
 
 			foreach( Action<World> a in frameEndActions )

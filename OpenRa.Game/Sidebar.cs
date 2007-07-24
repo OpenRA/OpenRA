@@ -50,8 +50,8 @@ namespace OpenRa.Game
 
 		public void Build(SidebarItem item)
 		{
-			if (item != null)
-				game.world.orderGenerator = new PlaceBuilding( 1, item.techTreeItem.tag.ToLowerInvariant() );
+			if( item != null )
+				game.world.orderGenerator = new PlaceBuilding( game.players[ 1 ], item.techTreeItem.tag.ToLowerInvariant() );
 		}
 
 		void LoadSprites(string filename)
@@ -128,12 +128,12 @@ namespace OpenRa.Game
 
 	class PlaceBuilding : IOrderGenerator
 	{
-		int palette;
+		Player owner;
 		string buildingName;
 
-		public PlaceBuilding( int palette, string buildingName )
+		public PlaceBuilding( Player owner, string buildingName )
 		{
-			this.palette = palette;
+			this.owner = owner;
 			this.buildingName = buildingName;
 		}
 
@@ -158,10 +158,11 @@ namespace OpenRa.Game
 			{
 				game.world.AddFrameEndTask( delegate
 				{
-					Provider<Building, int2, int> newBuilding;
+					Provider<Building, int2, Player> newBuilding;
 					if( game.buildingCreation.TryGetValue( building.buildingName, out newBuilding ) )
 					{
-						game.world.Add( newBuilding( xy, building.palette ) );
+						Log.Write( "Player \"{0}\" builds {1}", building.owner.PlayerName, building.buildingName );
+						game.world.Add( newBuilding( xy, building.owner ) );
 						game.techTree.Build( building.buildingName );
 					}
 					game.world.orderGenerator = null;

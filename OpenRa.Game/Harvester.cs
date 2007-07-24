@@ -6,8 +6,8 @@ namespace OpenRa.Game
 {
 	class Harvester : Unit
 	{
-		public Harvester( int2 cell, int palette )
-			: base( "harv", cell, palette, new float2( 12, 12 ) )
+		public Harvester( int2 cell, Player owner )
+			: base( "harv", cell, owner, new float2( 12, 12 ) )
 		{
 		}
 

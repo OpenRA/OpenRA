@@ -18,11 +18,11 @@ namespace OpenRa.Game
 
 		protected readonly float2 renderOffset;
 
-		public Unit( string name, int2 cell, int palette, float2 renderOffset )
+		public Unit( string name, int2 cell, Player owner, float2 renderOffset )
 		{
 			fromCell = toCell = cell;
 			this.renderOffset = renderOffset;
-			this.palette = palette;
+			this.owner = owner;
 
 			animation = new Animation( name );
 			animation.PlayFetchIndex( "idle", delegate { return facing; } );

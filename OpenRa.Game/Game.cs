@@ -18,11 +18,16 @@ namespace OpenRa.Game
 		public readonly Network network;
 		public readonly TechTree.TechTree techTree = new TechTree.TechTree();
 
+		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
+
 		// temporary, until we remove all the subclasses of Building
-		public Dictionary<string, Provider<Building, int2, int>> buildingCreation = new Dictionary<string, Provider<Building, int2, int>>();
+		public Dictionary<string, Provider<Building, int2, Player>> buildingCreation = new Dictionary<string, Provider<Building, int2, Player>>();
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
+			for( int i = 0 ; i < 8 ; i++ )
+				players.Add( i, new Player( i, string.Format( "Multi{0}", i ) ) );
+
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package("../../../" + map.Theater + ".mix"));
 
@@ -40,14 +45,14 @@ namespace OpenRa.Game
 			network = new Network();
 
 			buildingCreation.Add( "fact",
-				delegate( int2 location, int palette )
+				delegate( int2 location, Player owner )
 				{
-					return new ConstructionYard( location, palette );
+					return new ConstructionYard( location, owner );
 				} );
 			buildingCreation.Add( "proc",
-				delegate( int2 location, int palette )
+				delegate( int2 location, Player owner )
 				{
-					return new Refinery( location, palette );
+					return new Refinery( location, owner );
 				} );
 
 			string[] buildings = { "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
@@ -55,13 +60,13 @@ namespace OpenRa.Game
 				AddBuilding(s);
 		}
 
-		void AddBuilding(string name)
+		void AddBuilding( string name )
 		{
-			buildingCreation.Add(name,
-				delegate(int2 location, int palette)
+			buildingCreation.Add( name,
+				delegate( int2 location, Player owner )
 				{
-					return new Building(name, location, palette);
-				});
+					return new Building( name, location, owner );
+				} );
 		}
 
 		public void Tick()

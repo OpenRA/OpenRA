@@ -9,8 +9,8 @@ namespace OpenRa.Game
 {
 	class Refinery : Building
 	{
-		public Refinery(int2 location, int palette)
-			: base( "proc", location, palette )
+		public Refinery( int2 location, Player owner )
+			: base( "proc", location, owner )
 		{
 		}
 	}
