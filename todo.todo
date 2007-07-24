@@ -1,5 +1,10 @@
 OpenRA
 ------------------------------------------------------
+[ ] Sidebar
+	[x] Click handling going ~beedee
+	[ ] Building needs to have some sort of timer
+	[ ] Need a better order to sort items in (rather than what the collection chucks at us by default)
+	[ ] Actually make built units appear in the world/allow them to be placed in the world
 
 [ ] Multiplayer!
 

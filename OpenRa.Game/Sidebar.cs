@@ -19,6 +19,13 @@ namespace OpenRa.Game
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 		Viewport viewport;
+		const float spriteWidth = 64, spriteHeight = 48;
+
+		public float Width
+		{
+			get { return spriteWidth * 2; }
+		} 
+
 
 		public Sidebar(Race race, Renderer renderer, Viewport viewport)
 		{
@@ -31,7 +38,12 @@ namespace OpenRa.Game
 			LoadSprites("buildings.txt");
 			LoadSprites("units.txt");
 
-			blank = SheetBuilder.Add(new Size(64, 48), 16);
+			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
+		}
+
+		public bool Build(string key)
+		{
+			return techTree.Build(key);
 		}
 
 		void LoadSprites(string filename)
@@ -46,7 +58,7 @@ namespace OpenRa.Game
 		void DrawSprite(Sprite s, ref float2 p)
 		{
 			spriteRenderer.DrawSprite(s, p, 0);
-			p.Y += 48;
+			p.Y += spriteHeight;
 		}
 
 		void Fill(float height, float2 p)
@@ -55,10 +67,17 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
+		float2 location;
+
+		public float2 Location
+		{
+			get { return location; }
+		}
+
 		public void Paint( Game game )
 		{
-			float2 buildPos = viewport.Location + new float2(viewport.Size.X - 128, 0);
-			float2 unitPos = viewport.Location + new float2(viewport.Size.X - 64, 0);
+			float2 buildPos = location = viewport.Location + new float2(viewport.Size.X - spriteWidth * 2, 0);
+			float2 unitPos = viewport.Location + new float2(viewport.Size.X - spriteWidth, 0);
 			
 			foreach (Item i in techTree.BuildableItems)
 			{
@@ -75,6 +94,27 @@ namespace OpenRa.Game
 			Fill( viewport.Location.Y + viewport.Size.Y, unitPos );
 
 			spriteRenderer.Flush();
+		}
+
+		public string FindSpriteAtPoint(float2 point)
+		{
+			float y1 = 0, y2 = 0;
+			foreach (Item i in techTree.BuildableItems)
+			{
+				RectangleF rect;
+				if (i.IsStructure)
+				{
+					rect = new RectangleF(location.X, location.Y + y1, spriteWidth, spriteHeight);
+					y1 += 48;
+				}
+				else
+				{
+					rect = new RectangleF(location.X + spriteWidth, location.Y + y2, spriteWidth, spriteHeight);
+					y2 += 48;
+				}
+				if (rect.Contains(point.ToPointF())) return i.tag;
+			}
+			return null;
 		}
 	}
 }

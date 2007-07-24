@@ -75,7 +75,14 @@ namespace OpenRa.Game
 
 			if (e.Button == MouseButtons.Left)
 			{
-				float2 xy = ( 1 / 24.0f ) * ( new float2( e.Location ) + game.viewport.Location );
+				float2 point = new float2(e.Location) + game.viewport.Location;
+				RectangleF rect = new RectangleF(sidebar.Location.ToPointF(), new SizeF(sidebar.Width, game.viewport.Height));
+				if (rect.Contains(point.ToPointF()))
+				{
+					sidebar.Build(sidebar.FindSpriteAtPoint(point));
+					return;
+				}
+				float2 xy = (1 / 24.0f) * point;
 				IOrder order = game.world.myUnit.Order( new int2( (int)xy.X, (int)xy.Y ) );
 				game.Issue( order );
 			}

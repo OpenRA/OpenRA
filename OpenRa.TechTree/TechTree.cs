@@ -65,6 +65,7 @@ namespace OpenRa.TechTree
 
 		public bool Build(string key, bool force)
 		{
+			if (string.IsNullOrEmpty(key)) return false;
 			Item b = objects[key];
 			if (!force && !b.CanBuild) return false;
 			built.Add(key);
