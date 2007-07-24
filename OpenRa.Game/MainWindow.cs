@@ -66,12 +66,12 @@ namespace OpenRa.Game
 			}
 		}
 
-		float2 lastPos;
+		int2 lastPos;
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
-			lastPos = new float2(e.Location);
+			lastPos = new int2(e.Location);
 
 			if (e.Button == MouseButtons.Left)
 				foreach (Region region in game.viewport.Regions)
@@ -85,7 +85,7 @@ namespace OpenRa.Game
 
 			if (e.Button == MouseButtons.Right)
 			{
-				float2 p = new float2(e.Location);
+				int2 p = new int2(e.Location);
 				game.viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}

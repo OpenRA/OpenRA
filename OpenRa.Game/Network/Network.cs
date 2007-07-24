@@ -18,7 +18,7 @@ namespace OpenRa.Game
 		int currentFrame = 0;
 
 		public int CurrentFrame { get { return currentFrame; } }
-		public int RemainingNetSyncTime { get { return Math.Min(0, Environment.TickCount - nextSyncTime); } }
+		public int RemainingNetSyncTime { get { return Math.Max(0, nextSyncTime - Environment.TickCount); } }
 
 		Queue<Packet> incomingPackets = new Queue<Packet>();
 
@@ -36,10 +36,8 @@ namespace OpenRa.Game
 					Packet packet = Packet.FromReceivedData(sender, data);
 
 					lock (this)
-					{
 						if (currentFrame <= packet.Frame)
 							incomingPackets.Enqueue(packet);
-					}
 				}
 			});
 
@@ -76,7 +74,9 @@ namespace OpenRa.Game
 						if (p.Frame == currentFrame)
 							toProcess.Enqueue(p);
 					}
+
 					++currentFrame;
+					nextSyncTime = Environment.TickCount + netSyncInterval;
 				}
 
 			return toProcess;

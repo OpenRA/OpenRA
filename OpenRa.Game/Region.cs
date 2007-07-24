@@ -25,19 +25,19 @@ namespace OpenRa.Game
 
 		Action drawFunction;
 		MouseEventHandler mouseHandler;
-		RectangleF rect;
+		Rectangle rect;
 
-		static float2 MakeSize(Viewport v, DockStyle d, float size)
+		static int2 MakeSize(Viewport v, DockStyle d, int size)
 		{
 			switch (d)
 			{
 				case DockStyle.Top:
 				case DockStyle.Bottom:
-					return new float2(v.Width, size);
+					return new int2(v.Width, size);
 
 				case DockStyle.Left:
 				case DockStyle.Right:
-					return new float2(size, v.Height);
+					return new int2(size, v.Height);
 
 				default:
 					throw new NotImplementedException();
@@ -46,42 +46,39 @@ namespace OpenRa.Game
 
 		public void Clicked(MouseEventArgs e)
 		{
-			mouseHandler(this, e);
+			mouseHandler(this, new MouseEventArgs(e.Button, e.Clicks, e.X - rect.Left, e.Y - rect.Top, e.Delta));
 		}
 
-		public static Region Create(Viewport v, DockStyle d, float size, Action f, MouseEventHandler m)
+		public static Region Create(Viewport v, DockStyle d, int size, Action f, MouseEventHandler m)
 		{
-			float2 s = MakeSize(v, d, size);
+			int2 s = MakeSize(v, d, size);
 
 			switch (d)
 			{
 				case DockStyle.Top:
 				case DockStyle.Left:
-					return new Region(new float2(0,0), s, v, f, m);
+					return new Region(int2.Zero, s, v, f, m);
 
 				case DockStyle.Right:
 				case DockStyle.Bottom:
-					return new Region(new float2( v.Width - s.X, v.Height - s.Y ), s, v, f, m);
+					return new Region(new int2( v.Width - s.X, v.Height - s.Y ), s, v, f, m);
 
 				default:
 					throw new NotImplementedException();
 			}
 		}
 
-		Region(float2 location, float2 size, Viewport viewport, Action drawFunction, MouseEventHandler mouseHandler)
+		Region(int2 location, int2 size, Viewport viewport, Action drawFunction, MouseEventHandler mouseHandler)
 		{
 			this.location = location;
 			this.size = size;
 			this.drawFunction = drawFunction;
 			this.viewport = viewport;
 			this.mouseHandler = mouseHandler;
-			rect = new RectangleF(location.ToPointF(), new SizeF(size.ToPointF()));
+			rect = new Rectangle(location.X, location.Y, size.X, size.Y);
 		}
 
-		public bool Contains(float2 point)
-		{
-			return rect.Contains(point.ToPointF());
-		}
+		public bool Contains(int2 point) { return rect.Contains(point.ToPoint()); }
 
 		public void Draw(Renderer renderer)
 		{

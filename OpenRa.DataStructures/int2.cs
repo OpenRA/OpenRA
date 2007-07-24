@@ -33,5 +33,8 @@ namespace OpenRa
 			int2 o = (int2)obj;
 			return o == this;
 		}
+
+		public static readonly int2 Zero = new int2(0, 0);
+		public Point ToPoint() { return new Point(X, Y); }
 	}
 }

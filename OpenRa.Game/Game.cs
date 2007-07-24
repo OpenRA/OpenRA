@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
+using BluntDirectX.Direct3D;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -65,6 +67,7 @@ namespace OpenRa.Game
 		public void Tick()
 		{
 			viewport.DrawRegions(this);
+			Queue<Packet> stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 		}
 
 		public void Issue(IOrder order)

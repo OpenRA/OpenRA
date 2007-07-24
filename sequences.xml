@@ -130,4 +130,10 @@
 		<sequence name="harvest7" start="88" length="8"/>
 	</unit>
 	
+	<!-- build clock - hacked in -->
+	
+	<unit name="clock">
+		<sequence name="idle" start="0" length="*"/>
+	</unit>
+	
 </sequences>

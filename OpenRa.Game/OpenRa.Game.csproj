@@ -68,6 +68,7 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sidebar.cs" />
+    <Compile Include="SidebarItem.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteRenderer.cs" />
     <Compile Include="SpriteSheetBuilder.cs" />

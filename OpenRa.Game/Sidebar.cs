@@ -14,24 +14,20 @@ namespace OpenRa.Game
 	{
 		TechTree.TechTree techTree;
 
-		SpriteRenderer spriteRenderer;
+		SpriteRenderer spriteRenderer, clockRenderer;
 		Sprite blank;
 		Game game;
 		readonly Region region;
 
-		public Region Region
-		{
-			get { return region; }
-		}
+		Animation clockAnimation = new Animation("clock");
+
+		public Region Region { get { return region; } }
+		public float Width { get { return spriteWidth * 2; } }
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
-		const float spriteWidth = 64, spriteHeight = 48;
+		const int spriteWidth = 64, spriteHeight = 48;
 
-		public float Width
-		{
-			get { return spriteWidth * 2; }
-		}
-
+		List<SidebarItem> items = new List<SidebarItem>();
 
 		public Sidebar( Race race, Renderer renderer, Game game )
 		{
@@ -42,17 +38,20 @@ namespace OpenRa.Game
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
+			clockRenderer = new SpriteRenderer(renderer, true);
 
 			LoadSprites("buildings.txt");
 			LoadSprites("units.txt");
 
 			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
+
+			clockAnimation.PlayRepeating("idle");
 		}
 
-		public void Build(string key)
+		public void Build(SidebarItem item)
 		{
-			if (string.IsNullOrEmpty(key)) return;
-			game.world.orderGenerator = new PlaceBuilding( 1, key.ToLowerInvariant() );
+			if (item != null)
+				game.world.orderGenerator = new PlaceBuilding( 1, item.techTreeItem.tag.ToLowerInvariant() );
 		}
 
 		void LoadSprites(string filename)
@@ -76,53 +75,54 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
-		void Paint()
+		void PopulateItemList()
 		{
-			float2 buildPos = region.Location + new float2(region.Size.X - spriteWidth * 2, 0);
-			float2 unitPos = region.Location + new float2(region.Size.X - spriteWidth, 0);
-			
+			int buildPos = 0, unitPos = 0;
+
+			items.Clear();
+
 			foreach (Item i in techTree.BuildableItems)
 			{
 				Sprite sprite;
 				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
 
+				items.Add(new SidebarItem(sprite, i, i.IsStructure ? buildPos : unitPos));
+
 				if (i.IsStructure)
-					DrawSprite( sprite, ref buildPos );
+					buildPos += spriteHeight;
 				else
-					DrawSprite( sprite, ref unitPos );
+					unitPos += spriteHeight;
 			}
-
-			Fill( region.Location.Y + region.Size.Y, buildPos );
-			Fill( region.Location.Y + region.Size.Y, unitPos );
-
-			spriteRenderer.Flush();
 		}
 
-		public string FindSpriteAtPoint(float2 point)
+		void Paint()
 		{
-			float y1 = 0, y2 = 0;
-			foreach (Item i in techTree.BuildableItems)
-			{
-				RectangleF rect;
-				if (i.IsStructure)
-				{
-					rect = new RectangleF(region.Location.X, region.Location.Y + y1, spriteWidth, spriteHeight);
-					y1 += 48;
-				}
-				else
-				{
-					rect = new RectangleF(region.Location.X + spriteWidth, region.Location.Y + y2, spriteWidth, spriteHeight);
-					y2 += 48;
-				}
-				if (rect.Contains(point.ToPointF())) return i.tag;
-			}
+			PopulateItemList();	// todo: do this less often, just when things actually change!
+
+			foreach (SidebarItem i in items)
+				i.Paint(spriteRenderer, region.Location);
+
+			spriteRenderer.Flush();	//todo: fix filling
+
+			clockRenderer.DrawSprite( clockAnimation.Images[0], region.Location, 0 );
+			clockAnimation.Tick(1);
+
+			clockRenderer.Flush();
+		}
+
+		public SidebarItem GetItem(float2 point)
+		{
+			foreach (SidebarItem i in items)
+				if (i.Clicked(point))
+					return i;
+
 			return null;
 		}
 
 		void MouseHandler(object sender, MouseEventArgs e)
 		{
 			float2 point = new float2(e.Location);
-			Build(FindSpriteAtPoint(point));
+			Build(GetItem(point));
 		}
 	}
 

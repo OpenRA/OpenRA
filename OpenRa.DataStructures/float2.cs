@@ -68,5 +68,7 @@ namespace OpenRa
 		public float2 Sign() { return new float2(Math.Sign(X), Math.Sign(Y)); }
 		public static float Dot(float2 a, float2 b) { return a.X * b.X + a.Y * b.Y; }
 		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
+
+		public override string ToString() { return string.Format("({0},{1})", X, Y); }
 	}
 }
