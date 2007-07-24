@@ -16,6 +16,7 @@ namespace OpenRa.Game
 
 		SpriteRenderer spriteRenderer;
 		Sprite blank;
+		Game game;
 		readonly Region region;
 
 		public Region Region
@@ -32,11 +33,12 @@ namespace OpenRa.Game
 		}
 
 
-		public Sidebar( TechTree.TechTree techTree, Race race, Renderer renderer, Viewport viewport )
+		public Sidebar( Race race, Renderer renderer, Game game )
 		{
-			this.techTree = techTree;
-			region = Region.Create(viewport, DockStyle.Right, 128, Paint);
-			viewport.AddRegion( region );
+			this.techTree = game.techTree;
+			this.game = game;
+			region = Region.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
+			game.viewport.AddRegion( region );
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
@@ -47,8 +49,9 @@ namespace OpenRa.Game
 			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
 		}
 
-		public void Build(string key, Game game )
+		public void Build(string key)
 		{
+			if (string.IsNullOrEmpty(key)) return;
 			game.world.orderGenerator = new PlaceBuilding( 1, key.ToLowerInvariant() );
 		}
 
@@ -114,6 +117,12 @@ namespace OpenRa.Game
 				if (rect.Contains(point.ToPointF())) return i.tag;
 			}
 			return null;
+		}
+
+		void MouseHandler(object sender, MouseEventArgs e)
+		{
+			float2 point = new float2(e.Location);
+			Build(FindSpriteAtPoint(point));
 		}
 	}
 

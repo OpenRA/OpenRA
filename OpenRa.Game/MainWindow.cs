@@ -52,7 +52,7 @@ namespace OpenRa.Game
 			game.world.Add( mcv );
 			game.world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
-			sidebar = new Sidebar(game.techTree, Race.Soviet, renderer, game.viewport);
+			sidebar = new Sidebar(Race.Soviet, renderer, game);
 
 			renderer.SetPalette( new HardwarePalette( renderer, game.map ) );
 		}
@@ -74,21 +74,9 @@ namespace OpenRa.Game
 			lastPos = new float2(e.Location);
 
 			if (e.Button == MouseButtons.Left)
-			{
-				float2 point = new float2(e.Location) + game.viewport.Location;
-				RectangleF rect = new RectangleF(sidebar.Region.Location.ToPointF(), new SizeF(sidebar.Width, game.viewport.Height));
-				if (rect.Contains(point.ToPointF()))
-				{
-					sidebar.Build( sidebar.FindSpriteAtPoint( point ), game );
-					return;
-				}
-				float2 xy = (1 / 24.0f) * point;
-				if( game.world.orderGenerator != null )
-				{
-					IOrder order = game.world.orderGenerator.Order( new int2( (int)xy.X, (int)xy.Y ) );
-					game.Issue( order );
-				}
-			}
+				foreach (Region region in game.viewport.Regions)
+					if (region.Contains(lastPos))
+						region.Clicked(e);
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)

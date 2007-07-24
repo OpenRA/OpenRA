@@ -49,5 +49,10 @@ namespace OpenRa.Game
 
 			renderer.EndFrame();
 		}
+
+		public IEnumerable<Region> Regions
+		{
+			get { return regions; }
+		}
 	}
 }

@@ -23,7 +23,7 @@ namespace OpenRa.Game
 		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
 		{
 			this.renderer = renderer;
-			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw);
+			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, delegate { });
 			viewport.AddRegion(region);
 			this.map = map;
 

@@ -19,7 +19,7 @@ namespace OpenRa.Game
 
 		public World(Renderer renderer, Game game)
 		{
-			region = Region.Create(game.viewport, DockStyle.Left, game.viewport.Width - 128, Draw);
+			region = Region.Create(game.viewport, DockStyle.Left, game.viewport.Width - 128, Draw, WorldClicked);
 			this.game = game;
 			game.viewport.AddRegion(region);
 			
@@ -31,6 +31,16 @@ namespace OpenRa.Game
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		int lastTime = Environment.TickCount;
+
+		void WorldClicked(object sender, MouseEventArgs e)
+		{
+			float2 xy = (1 / 24.0f) * (new float2(e.Location) + game.viewport.Location);
+			if (orderGenerator != null)
+			{
+				IOrder order = orderGenerator.Order(new int2((int)xy.X, (int)xy.Y));
+				game.Issue(order);
+			}
+		}
 
 		void Draw()
 		{
