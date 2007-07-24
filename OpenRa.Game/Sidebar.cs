@@ -31,12 +31,10 @@ namespace OpenRa.Game
 
 		public Sidebar( Race race, Renderer renderer, Game game )
 		{
-			this.techTree = game.techTree;
+			this.techTree = game.players[ game.localPlayerIndex ].TechTree;
 			this.game = game;
 			region = Region.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			game.viewport.AddRegion( region );
-			techTree.CurrentRace = race;
-			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);
 
@@ -163,7 +161,6 @@ namespace OpenRa.Game
 					{
 						Log.Write( "Player \"{0}\" builds {1}", building.owner.PlayerName, building.buildingName );
 						game.world.Add( newBuilding( xy, building.owner ) );
-						game.techTree.Build( building.buildingName );
 					}
 					game.world.orderGenerator = null;
 				} );

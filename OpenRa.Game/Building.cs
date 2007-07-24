@@ -16,6 +16,7 @@ namespace OpenRa.Game
 
 			animation = new Animation( name );
 			animation.PlayThen( "make", delegate { animation.Play( "idle" ); } );
+			owner.TechTree.Build( name, true );
 		}
 
 		public override void Tick( Game game, int t )

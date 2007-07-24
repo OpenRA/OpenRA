@@ -16,7 +16,8 @@ namespace OpenRa.Game
 		public readonly Viewport viewport;
 		public readonly PathFinder pathFinder;
 		public readonly Network network;
-		public readonly TechTree.TechTree techTree = new TechTree.TechTree();
+
+		public int localPlayerIndex = 1;
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
@@ -26,7 +27,7 @@ namespace OpenRa.Game
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
 			for( int i = 0 ; i < 8 ; i++ )
-				players.Add( i, new Player( i, string.Format( "Multi{0}", i ) ) );
+				players.Add( i, new Player( i, string.Format( "Multi{0}", i ), OpenRa.TechTree.Race.Soviet ) );
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package("../../../" + map.Theater + ".mix"));
