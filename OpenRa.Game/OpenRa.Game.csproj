@@ -44,6 +44,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Network\Packet.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />
