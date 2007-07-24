@@ -17,6 +17,9 @@ namespace OpenRa.Game
 		int nextSyncTime = 0;
 		int currentFrame = 0;
 
+		public int CurrentFrame { get { return currentFrame; } }
+		public int RemainingNetSyncTime { get { return Math.Min(0, Environment.TickCount - nextSyncTime); } }
+
 		Queue<Packet> incomingPackets = new Queue<Packet>();
 
 		public Network()
@@ -39,6 +42,9 @@ namespace OpenRa.Game
 					}
 				}
 			});
+
+			receiveThread.IsBackground = true;
+			receiveThread.Start();
 		}
 
 		public void Send(byte[] data)

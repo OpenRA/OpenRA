@@ -47,16 +47,19 @@ namespace OpenRa.Game
 				{
 					return new Refinery( location, palette );
 				} );
-			buildingCreation.Add( "powr",
-				delegate( int2 location, int palette )
+
+			string[] buildings = { "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
+			foreach (string s in buildings)
+				AddBuilding(s);
+		}
+
+		void AddBuilding(string name)
+		{
+			buildingCreation.Add(name,
+				delegate(int2 location, int palette)
 				{
-					return new Building( "powr", location, palette );
-				} );
-			buildingCreation.Add( "apwr",
-				delegate( int2 location, int palette )
-				{
-					return new Building( "apwr", location, palette );
-				} );
+					return new Building(name, location, palette);
+				});
 		}
 
 		public void Tick()

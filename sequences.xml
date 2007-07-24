@@ -63,6 +63,46 @@
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="apwrmake" />
 	</unit>
+	
+	<!-- soviet barracks -->
+
+	<unit name="barr">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="barrmake" />
+	</unit>
+	
+	<!-- radar dome -->
+
+	<unit name="dome">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="domemake" />
+	</unit>
+	
+	<!-- allied tech center -->
+
+	<unit name="atek">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="atekmake" />
+	</unit>
+	
+	<!-- soviet tech center -->
+
+	<unit name="stek">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="stekmake" />
+	</unit>
+	
+	<!-- war factory -->
+
+	<unit name="weap">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="weapmake" />
+	</unit>
 
 	<!-- mcv -->
 	
