@@ -103,8 +103,8 @@ namespace OpenRa.Game
 			foreach (SidebarItem i in items)
 				i.Paint(spriteRenderer, region.Location);
 
-			Fill(region.Size.Y, new float2(region.Location.X, buildPos + region.Location.Y));
-			Fill(region.Size.Y, new float2(region.Location.X + spriteWidth, unitPos + region.Location.Y));
+			Fill(region.Size.Y + region.Location.Y, new float2(region.Location.X, buildPos + region.Location.Y));
+			Fill(region.Size.Y + region.Location.Y, new float2(region.Location.X + spriteWidth, unitPos + region.Location.Y));
 
 			spriteRenderer.Flush();
 
