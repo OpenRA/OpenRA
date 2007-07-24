@@ -12,7 +12,7 @@ namespace OpenRa.Game
 {
 	class Sidebar
 	{
-		TechTree.TechTree techTree = new TechTree.TechTree();
+		TechTree.TechTree techTree;
 
 		SpriteRenderer spriteRenderer;
 		Sprite blank;
@@ -24,11 +24,12 @@ namespace OpenRa.Game
 		public float Width
 		{
 			get { return spriteWidth * 2; }
-		} 
+		}
 
 
-		public Sidebar(Race race, Renderer renderer, Viewport viewport)
+		public Sidebar( TechTree.TechTree techTree, Race race, Renderer renderer, Viewport viewport )
 		{
+			this.techTree = techTree;
 			this.viewport = viewport;
 			viewport.AddRegion( Region.Create(viewport, DockStyle.Right, 128, Paint));
 			techTree.CurrentRace = race;
@@ -41,9 +42,9 @@ namespace OpenRa.Game
 			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
 		}
 
-		public bool Build(string key)
+		public void Build(string key, Game game )
 		{
-			return techTree.Build(key);
+			game.world.orderGenerator = new PlaceBuilding( 1, key.ToLowerInvariant() );
 		}
 
 		void LoadSprites(string filename)
@@ -115,6 +116,50 @@ namespace OpenRa.Game
 				if (rect.Contains(point.ToPointF())) return i.tag;
 			}
 			return null;
+		}
+	}
+
+	class PlaceBuilding : IOrderGenerator
+	{
+		int palette;
+		string buildingName;
+
+		public PlaceBuilding( int palette, string buildingName )
+		{
+			this.palette = palette;
+			this.buildingName = buildingName;
+		}
+
+		public IOrder Order( int2 xy )
+		{
+			// todo: check that space is free
+			return new PlaceBuildingOrder( this, xy );
+		}
+
+		class PlaceBuildingOrder : IOrder
+		{
+			PlaceBuilding building;
+			int2 xy;
+
+			public PlaceBuildingOrder( PlaceBuilding building, int2 xy )
+			{
+				this.building = building;
+				this.xy = xy;
+			}
+
+			public void Apply( Game game )
+			{
+				game.world.AddFrameEndTask( delegate
+				{
+					Provider<Building, int2, int> newBuilding;
+					if( game.buildingCreation.TryGetValue( building.buildingName, out newBuilding ) )
+					{
+						game.world.Add( newBuilding( xy, building.palette ) );
+						game.techTree.Build( building.buildingName );
+					}
+					game.world.orderGenerator = null;
+				} );
+			}
 		}
 	}
 }

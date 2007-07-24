@@ -6,7 +6,7 @@ namespace OpenRa.Game
 {
 	interface IOrder
 	{
-		void Apply();
+		void Apply( Game game );
 	}
 
 	class MoveOrder : IOrder
@@ -20,7 +20,7 @@ namespace OpenRa.Game
 			this.Destination = destination;
 		}
 
-		public void Apply()
+		public void Apply( Game game )
 		{
 			Unit.AcceptMoveOrder( Destination );
 		}
@@ -35,7 +35,7 @@ namespace OpenRa.Game
 			this.Mcv = mcv;
 		}
 
-		public void Apply()
+		public void Apply( Game game )
 		{
 			Mcv.AcceptDeployOrder();
 		}

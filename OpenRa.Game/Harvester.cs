@@ -51,7 +51,7 @@ namespace OpenRa.Game
 				harvester = harv;
 			}
 
-			public void Apply()
+			public void Apply( Game game )
 			{
 				harvester.AcceptHarvestOrder();
 			}

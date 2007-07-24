@@ -65,8 +65,9 @@ namespace OpenRa.TechTree
 
 		public bool Build(string key, bool force)
 		{
-			if (string.IsNullOrEmpty(key)) return false;
-			Item b = objects[key];
+			if( string.IsNullOrEmpty( key ) ) return false;
+			key = key.ToUpperInvariant();
+			Item b = objects[ key ];
 			if (!force && !b.CanBuild) return false;
 			built.Add(key);
 			CheckAll();
@@ -80,6 +81,7 @@ namespace OpenRa.TechTree
 
 		public bool Unbuild(string key)
 		{
+			key = key.ToUpperInvariant();
 			Item b = objects[key];
 			if (!built.Contains(key)) return false;
 			built.Remove(key);

@@ -14,7 +14,7 @@ namespace OpenRa.Game
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 		SpriteRenderer spriteRenderer;
 		Viewport viewport;
-		public ISelectable myUnit;
+		public IOrderGenerator orderGenerator;
 
 		public World(Renderer renderer, Viewport viewport)
 		{

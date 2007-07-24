@@ -14,6 +14,10 @@ namespace OpenRa.Game
 		public readonly Viewport viewport;
 		public readonly PathFinder pathFinder;
 		public readonly Network network;
+		public readonly TechTree.TechTree techTree = new TechTree.TechTree();
+
+		// temporary, until we remove all the subclasses of Building
+		public Dictionary<string, Provider<Building, int2, int>> buildingCreation = new Dictionary<string, Provider<Building, int2, int>>();
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
@@ -32,6 +36,27 @@ namespace OpenRa.Game
 			pathFinder = new PathFinder(map, terrain.tileSet);
 
 			network = new Network();
+
+			buildingCreation.Add( "fact",
+				delegate( int2 location, int palette )
+				{
+					return new ConstructionYard( location, palette );
+				} );
+			buildingCreation.Add( "proc",
+				delegate( int2 location, int palette )
+				{
+					return new Refinery( location, palette );
+				} );
+			buildingCreation.Add( "powr",
+				delegate( int2 location, int palette )
+				{
+					return new Building( "powr", location, palette );
+				} );
+			buildingCreation.Add( "apwr",
+				delegate( int2 location, int palette )
+				{
+					return new Building( "apwr", location, palette );
+				} );
 		}
 
 		public void Tick()
@@ -41,7 +66,7 @@ namespace OpenRa.Game
 
 		public void Issue(IOrder order)
 		{
-			order.Apply();
+			order.Apply( this );
 		}
 	}
 }

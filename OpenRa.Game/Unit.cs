@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OpenRa.Game
 {
-	abstract class Unit : Actor, ISelectable
+	abstract class Unit : Actor, IOrderGenerator
 	{
 		protected Animation animation;
 

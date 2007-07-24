@@ -28,8 +28,8 @@ namespace OpenRa.Game
 					world.Add( new ConstructionYard( fromCell - new int2( 1, 1 ), palette ) );
 					world.Add( new Refinery( fromCell - new int2( 1, -2 ), palette ) );
 
-					world.myUnit = new Harvester( fromCell - new int2( 0, -4 ), palette );
-					world.Add( (Actor)world.myUnit );
+					world.orderGenerator = new Harvester( fromCell - new int2( 0, -4 ), palette );
+					world.Add( (Actor)world.orderGenerator );
 				} );
 				currentOrder = null;
 			};

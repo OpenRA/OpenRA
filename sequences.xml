@@ -47,7 +47,23 @@
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="procmake" />
 	</unit>
+
+	<!-- power plant -->
+
+	<unit name="powr">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="powrmake" />
+	</unit>
 	
+	<!-- advanced power plant -->
+
+	<unit name="apwr">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="apwrmake" />
+	</unit>
+
 	<!-- mcv -->
 	
 	<unit name="mcv">

@@ -48,11 +48,11 @@ namespace OpenRa.Game
 			game.world.Add( new Mcv( new int2( 5, 5 ), 3 ) );
 			game.world.Add( new Mcv( new int2( 7, 5 ), 2 ) );
 			Mcv mcv = new Mcv( new int2( 9, 5 ), 1 );
-			game.world.myUnit = mcv;
+			game.world.orderGenerator = mcv;
 			game.world.Add( mcv );
 			game.world.Add( new Refinery( new int2( 7, 5 ), 2 ) );
 
-			sidebar = new Sidebar(Race.Soviet, renderer, game.viewport);
+			sidebar = new Sidebar(game.techTree, Race.Soviet, renderer, game.viewport);
 
 			renderer.SetPalette( new HardwarePalette( renderer, game.map ) );
 		}
@@ -79,12 +79,15 @@ namespace OpenRa.Game
 				RectangleF rect = new RectangleF(sidebar.Location.ToPointF(), new SizeF(sidebar.Width, game.viewport.Height));
 				if (rect.Contains(point.ToPointF()))
 				{
-					sidebar.Build(sidebar.FindSpriteAtPoint(point));
+					sidebar.Build( sidebar.FindSpriteAtPoint( point ), game );
 					return;
 				}
 				float2 xy = (1 / 24.0f) * point;
-				IOrder order = game.world.myUnit.Order( new int2( (int)xy.X, (int)xy.Y ) );
-				game.Issue( order );
+				if( game.world.orderGenerator != null )
+				{
+					IOrder order = game.world.orderGenerator.Order( new int2( (int)xy.X, (int)xy.Y ) );
+					game.Issue( order );
+				}
 			}
 		}
 

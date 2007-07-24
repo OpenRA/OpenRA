@@ -44,6 +44,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IOrderGenerator.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Harvester.cs" />
@@ -52,7 +53,6 @@
     <Compile Include="PathFinder.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="ConstructionYard.cs" />
-    <Compile Include="ISelectable.cs" />
     <Compile Include="MoveOrder.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="SequenceProvider.cs" />
