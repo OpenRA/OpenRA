@@ -8,57 +8,71 @@ namespace OpenRa.Game
 {
 	class Region
 	{
-		Point location;
-		Size size;
-		Action<Game> drawFunction;
+		float2 location;
+		Viewport viewport;
 
-		static Size MakeSize(Viewport v, DockStyle d, int size)
+		public float2 Location
+		{
+			get { return location + viewport.Location; }
+		}
+
+		float2 size;
+
+		public float2 Size
+		{
+			get { return size; }
+		}
+
+		Action drawFunction;
+
+		static float2 MakeSize(Viewport v, DockStyle d, float size)
 		{
 			switch (d)
 			{
 				case DockStyle.Top:
 				case DockStyle.Bottom:
-					return new Size(v.Width, size);
+					return new float2(v.Width, size);
 
 				case DockStyle.Left:
 				case DockStyle.Right:
-					return new Size(size, v.Height);
+					return new float2(size, v.Height);
 
 				default:
 					throw new NotImplementedException();
 			}
 		}
 
-		public static Region Create(Viewport v, DockStyle d, int size, Action<Game> f)
+		public static Region Create(Viewport v, DockStyle d, float size, Action f)
 		{
-			Size s = MakeSize(v, d, size);
+			float2 s = MakeSize(v, d, size);
 
 			switch (d)
 			{
 				case DockStyle.Top:
 				case DockStyle.Left:
-					return new Region(new Point(0,0), s, f);
+					return new Region(new float2(0,0), s, f, v);
 
 				case DockStyle.Right:
 				case DockStyle.Bottom:
-					return new Region(new Point( v.Width - s.Width, v.Height - s.Height ), s, f);
+					return new Region(new float2( v.Width - s.X, v.Height - s.Y ), s, f, v);
 
 				default:
 					throw new NotImplementedException();
 			}
 		}
 
-		Region(Point location, Size size, Action<Game> drawFunction)
+		Region(float2 location, float2 size, Action drawFunction, Viewport viewport)
 		{
 			this.location = location;
 			this.size = size;
 			this.drawFunction = drawFunction;
+			this.viewport = viewport;
 		}
 
-		public void Draw(Renderer renderer, Game game)
+		public void Draw(Renderer renderer)
 		{
-			renderer.Device.EnableScissor(location.X, location.Y, size.Width, size.Height);
-			drawFunction( game );
+			renderer.Device.EnableScissor((int)location.X, (int)location.Y, (int)size.X, (int)size.Y);
+			drawFunction();
 			renderer.Device.DisableScissor();
 		}
 	}

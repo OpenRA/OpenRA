@@ -45,7 +45,7 @@ namespace OpenRa.Game
 			renderer.BeginFrame(r1, r2, scrollPosition);
 
 			foreach (Region region in regions)
-				region.Draw(renderer, game);
+				region.Draw(renderer);
 
 			renderer.EndFrame();
 		}

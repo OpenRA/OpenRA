@@ -76,7 +76,7 @@ namespace OpenRa.Game
 			if (e.Button == MouseButtons.Left)
 			{
 				float2 point = new float2(e.Location) + game.viewport.Location;
-				RectangleF rect = new RectangleF(sidebar.Location.ToPointF(), new SizeF(sidebar.Width, game.viewport.Height));
+				RectangleF rect = new RectangleF(sidebar.Region.Location.ToPointF(), new SizeF(sidebar.Width, game.viewport.Height));
 				if (rect.Contains(point.ToPointF()))
 				{
 					sidebar.Build( sidebar.FindSpriteAtPoint( point ), game );

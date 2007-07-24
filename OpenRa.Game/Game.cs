@@ -27,7 +27,7 @@ namespace OpenRa.Game
 			viewport = new Viewport(clientSize, map.Size, renderer);
 
 			terrain = new TerrainRenderer(renderer, map, viewport);
-			world = new World(renderer, viewport);
+			world = new World(renderer, this);
 			treeCache = new TreeCache(renderer.Device, map);
 
 			foreach (TreeReference treeReference in map.Trees)

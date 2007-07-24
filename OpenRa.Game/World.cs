@@ -13,13 +13,16 @@ namespace OpenRa.Game
 		List<Actor> actors = new List<Actor>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 		SpriteRenderer spriteRenderer;
-		Viewport viewport;
+		Game game;
+		Region region;
 		public IOrderGenerator orderGenerator;
 
-		public World(Renderer renderer, Viewport viewport)
+		public World(Renderer renderer, Game game)
 		{
-			this.viewport = viewport;
-			viewport.AddRegion(Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw));
+			region = Region.Create(game.viewport, DockStyle.Left, game.viewport.Width - 128, Draw);
+			this.game = game;
+			game.viewport.AddRegion(region);
+			
 			spriteRenderer = new SpriteRenderer(renderer, true);
 		}
 
@@ -29,13 +32,13 @@ namespace OpenRa.Game
 
 		int lastTime = Environment.TickCount;
 
-		void Draw( Game game )
+		void Draw()
 		{
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			lastTime = t;
 
-			Range<float2> range = new Range<float2>(viewport.Location, viewport.Location + viewport.Size);
+			Range<float2> range = new Range<float2>(region.Location, region.Location + region.Size);
 
 			foreach (Actor a in actors)
 			{

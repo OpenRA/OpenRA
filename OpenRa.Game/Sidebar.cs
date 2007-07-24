@@ -16,9 +16,14 @@ namespace OpenRa.Game
 
 		SpriteRenderer spriteRenderer;
 		Sprite blank;
+		readonly Region region;
+
+		public Region Region
+		{
+			get { return region; }
+		}
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
-		Viewport viewport;
 		const float spriteWidth = 64, spriteHeight = 48;
 
 		public float Width
@@ -30,8 +35,8 @@ namespace OpenRa.Game
 		public Sidebar( TechTree.TechTree techTree, Race race, Renderer renderer, Viewport viewport )
 		{
 			this.techTree = techTree;
-			this.viewport = viewport;
-			viewport.AddRegion( Region.Create(viewport, DockStyle.Right, 128, Paint));
+			region = Region.Create(viewport, DockStyle.Right, 128, Paint);
+			viewport.AddRegion( region );
 			techTree.CurrentRace = race;
 			techTree.Build("FACT", true);
 			spriteRenderer = new SpriteRenderer(renderer, false);
@@ -68,17 +73,10 @@ namespace OpenRa.Game
 				DrawSprite(blank, ref p);
 		}
 
-		float2 location;
-
-		public float2 Location
+		void Paint()
 		{
-			get { return location; }
-		}
-
-		public void Paint( Game game )
-		{
-			float2 buildPos = location = viewport.Location + new float2(viewport.Size.X - spriteWidth * 2, 0);
-			float2 unitPos = viewport.Location + new float2(viewport.Size.X - spriteWidth, 0);
+			float2 buildPos = region.Location + new float2(region.Size.X - spriteWidth * 2, 0);
+			float2 unitPos = region.Location + new float2(region.Size.X - spriteWidth, 0);
 			
 			foreach (Item i in techTree.BuildableItems)
 			{
@@ -91,8 +89,8 @@ namespace OpenRa.Game
 					DrawSprite( sprite, ref unitPos );
 			}
 
-			Fill( viewport.Location.Y + viewport.Size.Y, buildPos );
-			Fill( viewport.Location.Y + viewport.Size.Y, unitPos );
+			Fill( region.Location.Y + region.Size.Y, buildPos );
+			Fill( region.Location.Y + region.Size.Y, unitPos );
 
 			spriteRenderer.Flush();
 		}
@@ -105,12 +103,12 @@ namespace OpenRa.Game
 				RectangleF rect;
 				if (i.IsStructure)
 				{
-					rect = new RectangleF(location.X, location.Y + y1, spriteWidth, spriteHeight);
+					rect = new RectangleF(region.Location.X, region.Location.Y + y1, spriteWidth, spriteHeight);
 					y1 += 48;
 				}
 				else
 				{
-					rect = new RectangleF(location.X + spriteWidth, location.Y + y2, spriteWidth, spriteHeight);
+					rect = new RectangleF(region.Location.X + spriteWidth, region.Location.Y + y2, spriteWidth, spriteHeight);
 					y2 += 48;
 				}
 				if (rect.Contains(point.ToPointF())) return i.tag;
