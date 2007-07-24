@@ -74,7 +74,7 @@ float4 Palette_fp(FragmentIn f) : COLOR0 {
 technique low_quality {
 	pass p0 {
 		AlphaBlendEnable = false;
-		ZWriteEnable = true;
+		ZWriteEnable = false;
 		ZEnable = false;
 		CullMode = None;
 		VertexShader = compile vs_2_0 Simple_vp();
@@ -85,7 +85,7 @@ technique low_quality {
 technique high_quality {
 	pass p0	{
 		AlphaBlendEnable = true;
-		ZWriteEnable = true;
+		ZWriteEnable = false;
 		ZEnable = false;
 		CullMode = None;
 		VertexShader = compile vs_2_0 Simple_vp();

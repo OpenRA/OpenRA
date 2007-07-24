@@ -40,9 +40,6 @@ OpenRA
 	[ ] Palette hax for selection outlines. Basically, just hijack a palette entry that's not
 		getting used, and draw the selection borders into the SHP images using that color.
 		Then we double up the hardware palettes, and we can draw selection with no extra cost.
-		
-		(Except maybe losing any alpha=0 optimization the backend of the shader hardware does)
-	[ ] Time-to-build overlay on sidebar
 
 [ ] Console
 
