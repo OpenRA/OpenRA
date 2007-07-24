@@ -126,7 +126,9 @@ namespace OpenRa.Game
 		}
 
 		public int2 Location { get { return toCell; } }
-		public virtual IOrder Order(int2 xy) { return new MoveOrder(this, xy); }
+		public virtual IOrder Order(Game game, int2 xy) { return new MoveOrder(this, xy); }
 		public override Sprite[] CurrentImages { get { return animation.Images; } }
+
+		public void PrepareOverlay(Game game, int2 xy) { }
 	}
 }

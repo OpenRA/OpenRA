@@ -35,12 +35,12 @@ namespace OpenRa.Game
 			};
 		}
 
-		public override IOrder Order( int2 xy )
+		public override IOrder Order( Game game, int2 xy )
 		{
 			if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
 				return new DeployMcvOrder( this );
 
-			return base.Order( xy );
+			return base.Order( game, xy );
 		}
 	}
 }

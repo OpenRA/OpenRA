@@ -48,8 +48,8 @@ namespace OpenRa.Game
 
 		public void Build(SidebarItem item)
 		{
-			if( item != null )
-				game.world.orderGenerator = new PlaceBuilding( game.players[ 1 ], item.techTreeItem.tag.ToLowerInvariant() );
+			if (item != null)
+				game.world.orderGenerator = new PlaceBuilding(game.players[1], item.techTreeItem.tag.ToLowerInvariant());
 		}
 
 		void LoadSprites(string filename)
@@ -141,10 +141,16 @@ namespace OpenRa.Game
 			this.buildingName = buildingName;
 		}
 
-		public IOrder Order( int2 xy )
+		public IOrder Order( Game game, int2 xy )
 		{
+			game.world.uiOverlay.KillOverlay();
 			// todo: check that space is free
 			return new PlaceBuildingOrder( this, xy );
+		}
+
+		public void PrepareOverlay(Game game, int2 xy)
+		{
+			game.world.uiOverlay.SetCurrentOverlay(false, xy, 2, 3);
 		}
 
 		class PlaceBuildingOrder : IOrder

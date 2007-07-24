@@ -34,9 +34,31 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
-			spriteRenderer.DrawSprite(buildOk, new float2(48, 48), 0);
-			spriteRenderer.DrawSprite(buildBlocked, new float2(96, 48), 0);
-			spriteRenderer.Flush();
+			if (!hasOverlay)
+				return;
+
+			for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
+					spriteRenderer.DrawSprite(blocked ? buildBlocked : buildOk,
+						24 * (position + new int2(i, j)), 0);
+		}
+
+		bool hasOverlay = false, blocked;
+		int2 position;
+		int width, height;
+
+		public void KillOverlay()
+		{
+			hasOverlay = false;
+		}
+
+		public void SetCurrentOverlay(bool blocked, int2 cell, int width, int height)
+		{
+			hasOverlay = true;
+			position = cell;
+			this.width = width;
+			this.height = height;
+			this.blocked = blocked;
 		}
 	}
 }

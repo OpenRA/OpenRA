@@ -16,7 +16,7 @@ namespace OpenRa.Game
 		Game game;
 		Region region;
 		public IOrderGenerator orderGenerator;
-		UiOverlay uiOverlay;
+		public UiOverlay uiOverlay;
 
 		public World(Renderer renderer, Game game)
 		{
@@ -40,7 +40,7 @@ namespace OpenRa.Game
 			float2 xy = (1 / 24.0f) * (new float2(e.Location) + game.viewport.Location);
 			if (orderGenerator != null)
 			{
-				IOrder order = orderGenerator.Order(new int2((int)xy.X, (int)xy.Y));
+				IOrder order = orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y));
 				game.Issue(order);
 			}
 		}
@@ -52,7 +52,7 @@ namespace OpenRa.Game
 			lastTime = t;
 
 			Range<float2> range = new Range<float2>(region.Location, region.Location + region.Size);
-
+			
 			foreach (Actor a in actors)
 			{
 				a.Tick( game, dt );

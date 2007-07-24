@@ -6,7 +6,7 @@ namespace OpenRa.Game
 {
 	interface IOrderGenerator
 	{
-		//Sprite CurrentCursor( int x, int y );
-		IOrder Order( int2 xy );
+		IOrder Order( Game game, int2 xy );
+		void PrepareOverlay( Game game, int2 xy );
 	}
 }

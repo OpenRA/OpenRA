@@ -89,6 +89,10 @@ namespace OpenRa.Game
 				game.viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}
+
+			if (game.world.orderGenerator != null)
+				game.world.orderGenerator.PrepareOverlay(game, 
+					new int2(e.Location.X / 24, e.Location.Y / 24));
 		}
 	}
 }
