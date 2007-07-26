@@ -86,7 +86,7 @@ namespace OpenRa
 			return ret;
 		}
 
-		public void BubbleInto( int intoLevel, int intoIndex, T val )
+		void BubbleInto( int intoLevel, int intoIndex, T val )
 		{
 			int downLevel = intoLevel + 1;
 			int downIndex = intoIndex << 1;
