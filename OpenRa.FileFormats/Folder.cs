@@ -14,7 +14,7 @@ namespace OpenRa.FileFormats
 		public Stream GetContent(string filename)
 		{
 			try { return File.OpenRead(path + filename); }
-			catch { throw new FileNotFoundException("File not found", filename); }
+			catch { return null; }
 		}
 	}
 }

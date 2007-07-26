@@ -30,7 +30,7 @@ namespace OpenRa.Game
 				players.Add( i, new Player( i, string.Format( "Multi{0}", i ), OpenRa.TechTree.Race.Soviet ) );
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
-			FileSystem.Mount(new Package("../../../" + map.Theater + ".mix"));
+			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
 			viewport = new Viewport(clientSize, map.Size, renderer);
 

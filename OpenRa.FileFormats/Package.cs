@@ -25,7 +25,7 @@ namespace OpenRa.FileFormats
 		public Package(string filename)
 		{
 			this.filename = filename;
-			using (Stream s = File.OpenRead(filename))
+			using (Stream s = FileSystem.Open(filename))
 			{
 				BinaryReader reader = new BinaryReader(s);
 				uint signature = reader.ReadUInt32();
@@ -124,7 +124,7 @@ namespace OpenRa.FileFormats
 			foreach( PackageEntry e in index )
 				if (e.Hash == hash)
 				{
-					using (Stream s = File.OpenRead(filename))
+					using (Stream s = FileSystem.Open(filename))
 					{
 						s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
 						byte[] data = new byte[ e.Length ];
@@ -133,19 +133,12 @@ namespace OpenRa.FileFormats
 					}
 				}
 
-			throw new FileNotFoundException();
+			return null;
 		}
 
 		public Stream GetContent(string filename)
 		{
-			try
-			{
-				return GetContent(PackageEntry.HashFilename(filename));
-			}
-			catch (FileNotFoundException e)
-			{
-				throw new FileNotFoundException("File not found", filename, e);
-			}
+			return GetContent(PackageEntry.HashFilename(filename));
 		}
 	}
 

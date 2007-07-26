@@ -17,9 +17,12 @@ namespace OpenRa.FileFormats
 
 		public static Stream Open(string filename)
 		{
-			foreach (IFolder folder in mountedFolders)
-				try { return folder.GetContent(filename); }
-				catch { }
+			foreach( IFolder folder in mountedFolders )
+			{
+				Stream s = folder.GetContent(filename);
+				if( s != null )
+					return s;
+			}
 
 			throw new FileNotFoundException("File not found", filename);
 		}

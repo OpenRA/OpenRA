@@ -41,7 +41,7 @@ namespace OpenRa.TechTree
 		IEnumerable<Tuple<string, string, bool>> Lines(string filename, bool param)
 		{
 			Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
-			foreach (string s in File.ReadAllLines(filename))
+			foreach (string s in File.ReadAllLines("../../../" + filename))
 			{
 				Match m = pattern.Match(s);
 				if (m == null || !m.Success)
@@ -54,10 +54,10 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			IniFile rulesFile = new IniFile(File.OpenRead("../../../rules.ini"));
+			IniFile rulesFile = new IniFile(FileSystem.Open("rules.ini"));
 			IEnumerable<Tuple<string, string, bool>> definitions = Concat(
-				Lines("../../../buildings.txt", true),
-				Lines("../../../units.txt", false));
+				Lines("buildings.txt", true),
+				Lines("units.txt", false));
 
 			foreach (Tuple<string, string, bool> p in definitions)
 				objects.Add(p.a, new Item(p.a, p.b, rulesFile.GetSection(p.a), p.c));

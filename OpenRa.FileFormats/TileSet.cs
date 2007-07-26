@@ -32,7 +32,7 @@ namespace OpenRa.FileFormats
 			Walkability walkability = new Walkability();
 
 			char tileSetChar = char.ToUpperInvariant( suffix[ 1 ] );
-			StreamReader tileIdFile = File.OpenText( "../../../tileSet.til" );
+			StreamReader tileIdFile = new StreamReader( FileSystem.Open( "tileSet.til" ) );
 
 			while( true )
 			{

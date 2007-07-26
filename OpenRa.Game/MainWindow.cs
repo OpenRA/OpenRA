@@ -28,8 +28,8 @@ namespace OpenRa.Game
 		public MainWindow(Settings settings)
 		{
 			FileSystem.Mount(new Folder("../../../"));
-			FileSystem.Mount(new Package("../../../conquer.mix"));
-			FileSystem.Mount(new Package("../../../hires.mix"));
+			FileSystem.Mount(new Package("conquer.mix"));
+			FileSystem.Mount(new Package("hires.mix"));
 
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;

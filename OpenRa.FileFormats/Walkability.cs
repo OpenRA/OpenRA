@@ -8,14 +8,12 @@ namespace OpenRa.FileFormats
 {
 	public class Walkability
 	{
-		const string src = "../../../templates.ini";
-
 		Dictionary<string, Dictionary<int, int>> walkability =
 			new Dictionary<string, Dictionary<int, int>>();
 
 		public Walkability()
 		{
-			IniFile file = new IniFile(File.OpenRead(src));
+			IniFile file = new IniFile( FileSystem.Open( "templates.ini" ) );
 			Regex pattern = new Regex(@"tiletype(\d+)");
 
 			foreach (IniSection section in file.Sections)
