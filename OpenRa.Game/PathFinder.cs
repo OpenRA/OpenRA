@@ -26,9 +26,9 @@ namespace OpenRa.Game
 		// returns estimate to destination, 0.0 is cell is dest
 		public delegate double DistanceHeuristic( int2 cell );
 
-		public List<int2> FindUnitPath( Unit unit, DistanceHeuristic estimator )
+		public List<int2> FindUnitPath( int2 unitLocation, DistanceHeuristic estimator )
 		{
-			int2 startLocation = unit.Location + map.Offset;
+			int2 startLocation = unitLocation + map.Offset;
 
 			CellInfo[ , ] cellInfo = new CellInfo[ 128, 128 ];
 

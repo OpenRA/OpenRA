@@ -18,7 +18,7 @@ namespace OpenRa.Game
 
 				game.world.AddFrameEndTask(delegate
 				{
-					Unit harvester = new Harvester(location + new int2(1, 2), owner, game);
+					Unit harvester = new Unit( "harv", location + new int2( 1, 2 ), owner, game );
 					harvester.facing = 8;
 					game.world.Add(harvester);
 					game.world.orderGenerator = harvester;

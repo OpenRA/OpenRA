@@ -45,9 +45,9 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			game.world.Add( new Mcv( new int2( 5, 5 ), game.players[ 3 ], game ) );
-			game.world.Add( new Mcv( new int2( 7, 5 ), game.players[ 2 ], game ) );
-			Mcv mcv = new Mcv( new int2( 9, 5 ), game.players[ 1 ], game );
+			game.world.Add( new Unit( "mcv", new int2( 5, 5 ), game.players[ 3 ], game ) );
+			game.world.Add( new Unit( "mcv", new int2( 7, 5 ), game.players[ 2 ], game ) );
+			Unit mcv = new Unit( "mcv", new int2( 9, 5 ), game.players[ 1 ], game );
 			game.world.orderGenerator = mcv;
 			game.world.Add( mcv );
 

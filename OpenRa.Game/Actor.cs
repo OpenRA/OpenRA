@@ -10,7 +10,7 @@ namespace OpenRa.Game
 {
 	abstract class Actor
 	{
-		protected readonly Game game;
+		public readonly Game game;
 
 		public abstract float2 RenderLocation { get; }
 		public Player owner;

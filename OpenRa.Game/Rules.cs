@@ -16,14 +16,14 @@ namespace OpenRa.Game
 
 			foreach (string line in Util.ReadAllLines(FileSystem.Open("units.txt")))
 			{
-				string unit = line.Substring(0, line.IndexOf(','));
-				IniSection section = rulesIni.GetSection(unit.ToUpperInvariant());
+				string unit = line.Substring( 0, line.IndexOf( ',' ) ).ToUpperInvariant();
+				IniSection section = rulesIni.GetSection( unit );
 				if (section == null)
 				{
 					Log.Write("rules.ini doesnt contain entry for unit \"{0}\"", unit);
 					continue;
 				}
-				unitInfos.Add(unit, new UnitInfo(section));
+				unitInfos.Add( unit, new UnitInfo( unit, section ) );
 			}
 		}
 
@@ -36,37 +36,17 @@ namespace OpenRa.Game
 	class UnitInfo
 	{
 		public readonly int Speed;
+		public readonly SupportedMissions supportedMissions;
 
-		public UnitInfo( IniSection ini )
+		public UnitInfo( string unitName, IniSection ini )
 		{
 			Speed = int.Parse( ini.GetValue( "Speed", "0" ) );
+
+			supportedMissions = SupportedMissions.Stop;
+			if( unitName == "MCV" )
+				supportedMissions |= SupportedMissions.Deploy;
+			if( unitName == "HARV" )
+				supportedMissions |= SupportedMissions.Harvest;
 		}
 	}
-
-	//Unit Missions:
-	//{
-	//	Sleep - no-op
-	//	Harmless - no-op, and also not considered a threat
-	//	Sticky
-	//	Attack
-	//	Move
-	//	QMove
-	//	Retreat
-	//	Guard
-	//	Enter
-	//	Capture
-	//	Harvest
-	//	Area Guard
-	//	[Return]
-	//	Stop
-	//	[Ambush]
-	//	Hunt
-	//	Unload
-	//	Sabotage
-	//	Construction
-	//	Selling
-	//	Repair
-	//	Rescue
-	//	Missile
-	//}
 }

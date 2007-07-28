@@ -4,26 +4,26 @@ using System.Text;
 
 namespace OpenRa.Game
 {
-	abstract class Unit : Actor, IOrderGenerator
+	class Unit : PlayerOwned, IOrderGenerator
 	{
-		protected Animation animation;
-
 		public int facing = 0;
-		protected int2 fromCell, toCell;
-		protected int moveFraction, moveFractionTotal;
+		public int2 fromCell;
+		public int2 toCell
+		{
+			get { return location; }
+			set { location = value; }
+		}
 
-		protected delegate void TickFunc( Game game, int t );
-		protected TickFunc currentOrder = null;
-		protected TickFunc nextOrder = null;
+		public int moveFraction, moveFractionTotal;
 
-		protected readonly float2 renderOffset;
-		protected readonly UnitInfo unitInfo;
+		readonly float2 renderOffset;
+		public readonly UnitInfo unitInfo;
 
-		public Unit( string name, int2 cell, Player owner, float2 renderOffset, Game game )
-			: base( game )
+		public Unit( string name, int2 cell, Player owner, Game game )
+			: base( game, name, cell )
 		{
 			fromCell = toCell = cell;
-			this.renderOffset = renderOffset;
+			this.renderOffset = new float2( 12, 12 ); // TODO: pull this from the sprite
 			this.owner = owner;
 			this.unitInfo = Rules.UnitInfo( name );
 
@@ -34,7 +34,7 @@ namespace OpenRa.Game
 		static float2[] fvecs = Util.MakeArray<float2>( 32,
 			delegate( int i ) { return -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ); } );
 
-		int GetFacing( float2 d )
+		public int GetFacing( float2 d )
 		{
 			if( float2.WithinEpsilon( d, float2.Zero, 0.001f ) )
 				return facing;
@@ -65,70 +65,37 @@ namespace OpenRa.Game
 			}
 
 			if( currentOrder != null )
-				currentOrder( game, t );
-		}
-
-		public void AcceptMoveOrder( int2 destination )
-		{
-			nextOrder = delegate( Game game, int t )
-			{
-				if( nextOrder != null )
-					destination = toCell;
-
-				if( Turn( GetFacing( toCell - fromCell ) ) )
-					return;
-
-				moveFraction += t * unitInfo.Speed;
-				if( moveFraction < moveFractionTotal )
-					return;
-
-				moveFraction = 0;
-				moveFractionTotal = 0;
-				fromCell = toCell;
-
-				if( toCell == destination )
-				{
-					currentOrder = null;
-					return;
-				}
-
-				List<int2> res = game.pathFinder.FindUnitPath( this, PathFinder.DefaultEstimator( destination ) );
-				if( res.Count != 0 )
-				{
-					toCell = res[ res.Count - 1 ];
-
-					int2 dir = toCell - fromCell;
-					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 2500 : 2000;
-				}
-				else
-					destination = toCell;
-			};
-		}
-
-		protected bool Turn( int desiredFacing )
-		{
-			if( facing == desiredFacing )
-				return false;
-
-			int df = ( desiredFacing - facing + 32 ) % 32;
-			facing = ( facing + ( df > 16 ? 31 : 1 ) ) % 32;
-			return true;
+				currentOrder( t );
 		}
 
 		public override float2 RenderLocation
 		{
 			get
 			{
-				float fraction = (moveFraction > 0) ? (float)moveFraction / moveFractionTotal : 0f;
+				float fraction = ( moveFraction > 0 ) ? (float)moveFraction / moveFractionTotal : 0f;
 
 				float2 location = 24 * float2.Lerp( fromCell, toCell, fraction );
-				return ( location - renderOffset ).Round(); ;
+				return ( location - renderOffset ).Round();
 			}
 		}
 
-		public int2 Location { get { return toCell; } }
-		public virtual IOrder Order(Game game, int2 xy) { return new MoveOrder(this, xy); }
-		public override Sprite[] CurrentImages { get { return animation.Images; } }
+		bool SupportsMission( SupportedMissions mission )
+		{
+			return mission == ( unitInfo.supportedMissions & mission );
+		}
+
+		public IOrder Order( Game game, int2 xy )
+		{
+			if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
+			{
+				if( SupportsMission( SupportedMissions.Deploy ) )
+					return new DeployMcvOrder( this );
+				if( SupportsMission( SupportedMissions.Harvest ) )
+					return new HarvestOrder( this );
+			}
+			
+			return new MoveOrder( this, xy );
+		}
 
 		public void PrepareOverlay(Game game, int2 xy) { }
 	}

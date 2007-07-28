@@ -22,22 +22,37 @@ namespace OpenRa.Game
 
 		public void Apply( Game game )
 		{
-			Unit.AcceptMoveOrder( Destination );
+			Unit.nextOrder = UnitMissions.Move( Unit, Destination );
 		}
 	}
 
 	class DeployMcvOrder : IOrder
 	{
-		public Mcv Mcv;
+		Unit unit;
 
-		public DeployMcvOrder( Mcv mcv )
+		public DeployMcvOrder( Unit unit )
 		{
-			this.Mcv = mcv;
+			this.unit = unit;
 		}
 
 		public void Apply( Game game )
 		{
-			Mcv.AcceptDeployOrder();
+			unit.nextOrder = UnitMissions.Deploy( unit );
+		}
+	}
+
+	class HarvestOrder : IOrder
+	{
+		Unit unit;
+
+		public HarvestOrder( Unit unit )
+		{
+			this.unit = unit;
+		}
+
+		public void Apply( Game game )
+		{
+			unit.nextOrder = UnitMissions.Harvest( unit );
 		}
 	}
 }
