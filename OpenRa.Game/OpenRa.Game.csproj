@@ -47,6 +47,7 @@
     <Compile Include="IOrderGenerator.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Rules.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="Log.cs" />

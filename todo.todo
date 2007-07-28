@@ -10,9 +10,11 @@ OpenRA
 
 [ ] Rules.ini
 	[ ] Unit turn rate as specified in rules.ini
+	[ ] Load unit/building infos
 
 [ ] Ore
 	[ ] Better harvester logic - seek out more ore when harvesting, until full
+	[ ] Render it :D
 
 [ ] Weapons
 
@@ -52,9 +54,9 @@ OpenRA
 		Use FileSystem.Create() to automatically place output files on sensible mounts.
 
 	[ ] Ditch special unit classes, use templates extracted from rules.ini instead.
-		Push the special-case logic into code that can be named.
+		[ ] Push the special-case logic into code that can be named.
 
-	[ ] Remove all remaining `../../../` bullshit from the code. We should be able to set our datapaths
+	[x] Remove all remaining `../../../` bullshit from the code. We should be able to set our datapaths
 		externally, then `just go`. The FileSystem class is there to facilitate this.
 
 	[ ] Get rid of all the damned static classes! Makes it REALLY HARD to reuse code,

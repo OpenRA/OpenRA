@@ -17,6 +17,7 @@ namespace OpenRa.Game
 		protected TickFunc nextOrder = null;
 
 		protected readonly float2 renderOffset;
+		protected readonly UnitInfo unitInfo;
 
 		public Unit( string name, int2 cell, Player owner, float2 renderOffset, Game game )
 			: base( game )
@@ -24,6 +25,7 @@ namespace OpenRa.Game
 			fromCell = toCell = cell;
 			this.renderOffset = renderOffset;
 			this.owner = owner;
+			this.unitInfo = Rules.UnitInfo( name );
 
 			animation = new Animation( name );
 			animation.PlayFetchIndex( "idle", delegate { return facing; } );
@@ -53,8 +55,6 @@ namespace OpenRa.Game
 			return highest;
 		}
 
-		const int Speed = 6;
-
 		public override void Tick( Game game, int t )
 		{
 			animation.Tick( t );
@@ -78,7 +78,7 @@ namespace OpenRa.Game
 				if( Turn( GetFacing( toCell - fromCell ) ) )
 					return;
 
-				moveFraction += t * Speed;
+				moveFraction += t * unitInfo.Speed;
 				if( moveFraction < moveFractionTotal )
 					return;
 
