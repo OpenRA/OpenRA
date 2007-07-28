@@ -12,25 +12,18 @@ namespace OpenRa.Game
 
 		static Rules()
 		{
-			IniFile rulesIni = new IniFile( FileSystem.Open( "rules.ini" ) );
-			using( Stream s = FileSystem.Open( "units.txt" ) )
-			{
-				StreamReader reader = new StreamReader( s );
+			IniFile rulesIni = new IniFile(FileSystem.Open("rules.ini"));
 
-				while( true )
+			foreach (string line in Util.ReadAllLines(FileSystem.Open("units.txt")))
+			{
+				string unit = line.Substring(0, line.IndexOf(','));
+				IniSection section = rulesIni.GetSection(unit.ToUpperInvariant());
+				if (section == null)
 				{
-					string unit = reader.ReadLine();
-					if( unit == null )
-						break;
-					unit = unit.Substring( 0, unit.IndexOf( ',' ) );
-					IniSection section = rulesIni.GetSection( unit.ToUpperInvariant() );
-					if( section == null )
-					{
-						Log.Write( "rules.ini doesnt contain entry for unit \"{0}\"", unit );
-						continue;
-					}
-					unitInfos.Add( unit, new UnitInfo( section ) );
+					Log.Write("rules.ini doesnt contain entry for unit \"{0}\"", unit);
+					continue;
 				}
+				unitInfos.Add(unit, new UnitInfo(section));
 			}
 		}
 
