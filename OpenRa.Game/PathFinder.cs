@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
 using System.Windows.Forms;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game
 {

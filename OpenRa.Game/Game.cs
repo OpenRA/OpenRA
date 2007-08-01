@@ -4,6 +4,7 @@ using System.Text;
 using OpenRa.FileFormats;
 using BluntDirectX.Direct3D;
 using System.Drawing;
+using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {

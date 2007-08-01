@@ -7,6 +7,7 @@ using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {
