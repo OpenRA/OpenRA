@@ -108,7 +108,7 @@ namespace BluntDirectX { namespace Direct3D
 			return gcnew GraphicsDevice( dev, true );
 		}
 
-		static GraphicsDevice^ Create(Control^ host, int width, int height, bool windowed, bool vsync)
+		static GraphicsDevice^ Create(Control^ host, int width, int height, bool windowed, bool vsync, Surfaces surfs)
 		{
 			IDirect3D9* d3d = Direct3DCreate9( D3D_SDK_VERSION );
 			D3DPRESENT_PARAMETERS pp;
@@ -119,7 +119,11 @@ namespace BluntDirectX { namespace Direct3D
 			pp.BackBufferHeight = height;
 			pp.BackBufferFormat = D3DFMT_X8R8G8B8;
 
-			pp.EnableAutoDepthStencil = false;
+			bool needZ = 0 != (int)(surfs & Surfaces::Depth);
+
+			pp.EnableAutoDepthStencil = needZ;
+			if (needZ)
+				pp.AutoDepthStencilFormat = D3DFMT_D24X8;
 			pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 			
 			pp.Windowed = windowed;
@@ -149,6 +153,11 @@ namespace BluntDirectX { namespace Direct3D
 			}
 
 			throw gcnew ApplicationException("D3D not available.");
+		}
+
+		static GraphicsDevice^ Create(Control^ host, int width, int height, bool windowed, bool vsync)
+		{
+			return Create(host, width, height, windowed, vsync, Surfaces::Color);
 		}
 
 		void EnableScissor( int left, int top, int width, int height )
