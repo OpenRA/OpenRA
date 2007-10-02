@@ -174,19 +174,22 @@ namespace BluntDirectX { namespace Direct3D
 
 		void DrawPrimitives(PrimitiveType primtype, int count)
 		{
-			device->DrawPrimitive( (D3DPRIMITIVETYPE)primtype, 0, count );
+			if (FAILED(device->DrawPrimitive( (D3DPRIMITIVETYPE)primtype, 0, count )))
+				throw gcnew InvalidOperationException("Failure");
 		}
 
 		void DrawIndexedPrimitives(PrimitiveType primtype, int vertexPoolSize, int numPrimitives)
 		{
-			device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primtype, 0, 0, vertexPoolSize, 0, numPrimitives );
+			if (FAILED(device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primtype, 0, 0, vertexPoolSize, 0, numPrimitives )))
+				throw gcnew InvalidOperationException("Failure");
 		}
 
 		void DrawIndexedPrimitives(PrimitiveType primType, Range<int> vertices, Range<int> indices)
 		{
-			device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primType,
+			if (FAILED(device->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primType,
 				0, vertices.Start, vertices.End - vertices.Start, 
-				indices.Start, (indices.End - indices.Start) / 3 );
+				indices.Start, (indices.End - indices.Start) / 3 )))
+				throw gcnew InvalidOperationException("Failure");
 		}
 	};
 }}
