@@ -170,6 +170,10 @@
 			RelativePath="System.dll"
 			AssemblyName="System, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
 		/>
+		<AssemblyReference
+			RelativePath="..\..\IjwFramework\IjwFramework\bin\Debug\IjwFramework.dll"
+			AssemblyName="IjwFramework, Version=1.0.0.0, processorArchitecture=MSIL"
+		/>
 	</References>
 	<Files>
 		<Filter

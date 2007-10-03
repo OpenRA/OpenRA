@@ -1,6 +1,8 @@
 #pragma once
 
 using namespace System::Collections::Generic;
+using namespace IjwFramework::Collections;
+using namespace IjwFramework::Delegates;
 
 namespace BluntDirectX { namespace Direct3D
 {
@@ -11,12 +13,12 @@ namespace BluntDirectX { namespace Direct3D
 		High,
 	};
 
-	public ref class Effect
+	public ref class Shader
 	{
 	private:
 		static ID3DXEffectPool* effectPool;
 
-		static Effect()
+		static Shader()
 		{
 			ID3DXEffectPool* e;
 			D3DXCreateEffectPool( &e );
@@ -25,12 +27,23 @@ namespace BluntDirectX { namespace Direct3D
 
 		ShaderQuality shaderQuality;
 
+		IntPtr GetHandle( String^ symbol )
+		{
+			array<unsigned char>^ chars = System::Text::Encoding::ASCII->GetBytes(symbol);
+			pin_ptr<const unsigned char> p = &chars[0];
+			IntPtr result = IntPtr((void*)effect->GetParameterByName(NULL, (char*)p));
+			return result;
+		}
+
 	internal:
 		ID3DXEffect* effect;
+		Cache<String^,IntPtr>^ parameters;
 
 	public:
-		Effect(GraphicsDevice^ device, Stream^ data)
+		Shader(GraphicsDevice^ device, Stream^ data)
 		{
+			parameters = gcnew Cache<String^,IntPtr>( gcnew Provider<IntPtr,String^>(this, &Shader::GetHandle));
+
 			ID3DXEffect* e;
 			ID3DXBuffer* compilationErrors;
 			HRESULT hr;
@@ -56,15 +69,7 @@ namespace BluntDirectX { namespace Direct3D
 			Quality = ShaderQuality::High;
 		}
 
-		IntPtr GetHandle( String^ symbol )
-		{
-			array<unsigned char>^ chars = System::Text::Encoding::ASCII->GetBytes(symbol);
-			pin_ptr<const unsigned char> p = &chars[0];
-			IntPtr result = IntPtr((void*)effect->GetParameterByName(NULL, (char*)p));
-			return result;
-		}
-
-		~Effect()
+		~Shader()
 		{
 			safe_release( effect );
 		}
@@ -100,37 +105,32 @@ namespace BluntDirectX { namespace Direct3D
 			effect->CommitChanges();
 		}
 
-		int Begin()
+		void Render( IjwFramework::Delegates::Action^ action )
 		{
 			unsigned int passes;
 			effect->Begin( &passes, D3DXFX_DONOTSAVESTATE | D3DXFX_DONOTSAVESHADERSTATE );
-			return passes;
-		}
 
-		void End()
-		{
+			for( unsigned int i = 0; i < passes; i++ )
+			{
+				effect->BeginPass( i );
+				action();
+				effect->EndPass();
+			}
+
 			effect->End();
 		}
 
-		void BeginPass(int pass)
-		{
-			effect->BeginPass( pass );
-		}
-
-		void EndPass()
-		{
-			effect->EndPass();
-		}
-
 		generic< typename T> where T : value class
-		void SetValue( IntPtr handle, T value )
+		void SetValue( String^ name, T value )
 		{
+			IntPtr handle = parameters[name];
 			pin_ptr<T> pvalue = &value;
 			effect->SetValue( (D3DXHANDLE)handle.ToPointer(), pvalue, sizeof(T) );
 		}
 
-		void SetTexture( IntPtr handle, Texture^ texture )
+		void SetValue( String^ name, Texture^ texture )
 		{
+			IntPtr handle = parameters[name];
 			effect->SetTexture( (D3DXHANDLE)handle.ToPointer(), texture->texture );
 		}
 
