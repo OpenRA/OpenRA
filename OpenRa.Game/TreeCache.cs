@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
-using BluntDirectX.Direct3D;
 using System.Drawing;
 
 namespace OpenRa.Game
@@ -11,7 +10,7 @@ namespace OpenRa.Game
 	{
 		Dictionary<string, Sprite> trees = new Dictionary<string, Sprite>();
 
-		public TreeCache(GraphicsDevice device, Map map)
+		public TreeCache(Map map)
 		{
 			foreach (TreeReference r in map.Trees)
 			{

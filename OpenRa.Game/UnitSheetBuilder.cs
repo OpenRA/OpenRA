@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
-using BluntDirectX.Direct3D;
+using Ijw.DirectX;
+
 
 namespace OpenRa.Game
 {

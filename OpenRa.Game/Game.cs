@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
-using BluntDirectX.Direct3D;
+
 using System.Drawing;
 using IjwFramework.Delegates;
 
@@ -37,7 +37,7 @@ namespace OpenRa.Game
 
 			terrain = new TerrainRenderer(renderer, map, viewport);
 			world = new World(renderer, this);
-			treeCache = new TreeCache(renderer.Device, map);
+			treeCache = new TreeCache(map);
 
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Tree(treeReference, treeCache, map, this));

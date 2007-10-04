@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
-using BluntDirectX.Direct3D;
+
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Ijw.DirectX;
 
 namespace OpenRa.Game
 {

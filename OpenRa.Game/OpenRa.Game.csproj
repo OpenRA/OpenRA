@@ -29,9 +29,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BluntDx, Version=1.0.2752.7426, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Ijw.DirectX, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\release\BluntDx.dll</HintPath>
+      <HintPath>..\..\Ijw.DirectX\Release\Ijw.DirectX.dll</HintPath>
     </Reference>
     <Reference Include="IjwFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

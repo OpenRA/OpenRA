@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using BluntDirectX.Direct3D;
 using System.Drawing;
 using System.IO;
+using Ijw.DirectX;
 
 namespace OpenRa.Game
 {

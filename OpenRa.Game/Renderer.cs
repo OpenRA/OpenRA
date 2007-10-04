@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
-using BluntDirectX.Direct3D;
+using Ijw.DirectX;
 using System.IO;
 using OpenRa.FileFormats;
 using IjwFramework.Delegates;

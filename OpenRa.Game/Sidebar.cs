@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenRa.TechTree;
-using BluntDirectX.Direct3D;
+using Ijw.DirectX;
 using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
