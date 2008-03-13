@@ -16,7 +16,8 @@ namespace OpenRa.Game
 		public static Sprite Add(byte[] src, Size size)
 		{
 			Sprite rect = AddImage(size);
-			Util.CopyIntoChannel(rect, src);
+			//Util.CopyIntoChannel(rect, src);
+			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}
 

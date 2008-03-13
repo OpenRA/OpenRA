@@ -4,6 +4,7 @@ using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace OpenRa.Game
 {
@@ -83,29 +84,47 @@ namespace OpenRa.Game
 			indices.Add((ushort)(offset + 2));
 		}
 
-		public static void CopyIntoChannel(Sprite dest, byte[] src)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
-			for (int i = 0; i < dest.bounds.Width; i++)
-				for (int j = 0; j < dest.bounds.Height; j++)
+			var bitmap = dest.sheet.Bitmap;
+			BitmapData bits = null;
+			uint[] channelMasks = { 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 };
+			uint mask = channelMasks[(int)dest.channel];
+
+			try
+			{
+				bits = bitmap.LockBits(dest.bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+				int width = dest.bounds.Width;
+				int height = dest.bounds.Height;
+
+				for (int j = 0; j < height; j++)
 				{
-					Point p = new Point(dest.bounds.Left + i, dest.bounds.Top + j);
-					byte b = src[i + dest.bounds.Width * j];
-					dest.sheet[p] = ReplaceChannel(dest.sheet[p], dest.channel, b);
+					unsafe
+					{
+						uint* p = (uint*)(bits.Scan0.ToInt32() + j * bits.Stride);
+						for (int i = 0; i < width; i++, p++)
+							*p = ReplaceChannel(*p, mask, src[i + width * j]);
+					}
 				}
+			}
+			finally
+			{
+				bitmap.UnlockBits(bits);
+			}
 		}
 
-		static Color ReplaceChannel(Color o, TextureChannel channel, byte p)
+		static uint ReplaceChannel(uint o, uint mask, byte p)
 		{
-			switch (channel)
-			{
-				case TextureChannel.Red: return Color.FromArgb(o.A, p, o.G, o.B);
-				case TextureChannel.Green: return Color.FromArgb(o.A, o.R, p, o.B);
-				case TextureChannel.Blue: return Color.FromArgb(o.A, o.R, o.G, p);
-				case TextureChannel.Alpha: return Color.FromArgb(p, o.R, o.G, o.B);
+			uint pp = (uint)p;
 
-				default:
-					throw new ArgumentException();
-			}
+			pp |= pp << 8;	// copy into all channels
+			pp |= pp << 16;
+
+			o &= ~mask;
+			o |= (mask & pp);
+
+			return o;
 		}
 	}
 }

@@ -48,5 +48,7 @@ namespace OpenRa.Game
 			get { return bitmap.GetPixel(p.X, p.Y); }
 			set { bitmap.SetPixel(p.X, p.Y, value); }
 		}
+
+		public Bitmap Bitmap { get { return bitmap; } }	// for perf
 	}
 }

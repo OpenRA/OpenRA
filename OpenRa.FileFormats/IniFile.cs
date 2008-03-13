@@ -22,7 +22,7 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		Regex sectionPattern = new Regex( @"\[([^]]*)\]" );
+		Regex sectionPattern = new Regex( @"^\[([^]]*)\]" );
 		Regex entryPattern = new Regex( @"([^=;]+)=([^;]*)" );
 
 		bool ProcessSection( string line )
@@ -40,6 +40,9 @@ namespace OpenRa.FileFormats
 
 		bool ProcessEntry( string line )
 		{
+			if (string.IsNullOrEmpty(line) || line.StartsWith(";"))
+				return false;
+
 			Match m = entryPattern.Match( line );
 			if( m == null || !m.Success )
 				return false;
