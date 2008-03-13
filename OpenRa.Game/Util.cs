@@ -10,22 +10,11 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
+		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
+
 		static float2 EncodeVertexAttributes(TextureChannel channel, int paletteLine)
 		{
-			Converter<TextureChannel, float> channelEncoder = delegate(TextureChannel c)
-			{
-				switch (c)
-				{
-					case TextureChannel.Red: return 0.75f;
-					case TextureChannel.Green: return 0.25f;
-					case TextureChannel.Blue: return -0.25f;
-					case TextureChannel.Alpha: return -0.75f;
-					default:
-						throw new ArgumentException();
-				}
-			};
-
-			return new float2(paletteLine / 16.0f, channelEncoder(channel));
+			return new float2(paletteLine / 16.0f, channelSelect[(int)channel]);
 		}
 
 		public static Vertex MakeVertex(float2 o, float2 uv, Sprite r, int palette)
