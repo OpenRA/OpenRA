@@ -89,7 +89,10 @@ namespace OpenRa.Game
 			var bitmap = dest.sheet.Bitmap;
 			BitmapData bits = null;
 			uint[] channelMasks = { 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 };
+			int[] shifts = { 16, 8, 0, 24 };
+
 			uint mask = channelMasks[(int)dest.channel];
+			int shift = shifts[(int)dest.channel];
 
 			try
 			{
@@ -98,13 +101,24 @@ namespace OpenRa.Game
 				int width = dest.bounds.Width;
 				int height = dest.bounds.Height;
 
-				for (int j = 0; j < height; j++)
+				unsafe
 				{
-					unsafe
+					fixed (byte* srcbase = &src[0])
 					{
-						uint* p = (uint*)(bits.Scan0.ToInt32() + j * bits.Stride);
-						for (int i = 0; i < width; i++, p++)
-							*p = ReplaceChannel(*p, mask, src[i + width * j]);
+						byte* s = srcbase;
+						uint * t = (uint*)bits.Scan0.ToPointer();
+						int stride = bits.Stride >> 2;
+
+						for (int j = 0; j < height; j++)
+						{
+							unsafe
+							{
+								uint* p = t;
+								for (int i = 0; i < width; i++, p++)
+									*p = (*p & ~mask) | ((mask & ((uint)*s++) << shift));
+								t += stride;
+							}
+						}
 					}
 				}
 			}
@@ -112,19 +126,6 @@ namespace OpenRa.Game
 			{
 				bitmap.UnlockBits(bits);
 			}
-		}
-
-		static uint ReplaceChannel(uint o, uint mask, byte p)
-		{
-			uint pp = (uint)p;
-
-			pp |= pp << 8;	// copy into all channels
-			pp |= pp << 16;
-
-			o &= ~mask;
-			o |= (mask & pp);
-
-			return o;
 		}
 	}
 }

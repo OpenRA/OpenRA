@@ -27,6 +27,9 @@ namespace OpenRa.FileFormats
 
 		bool ProcessSection( string line )
 		{
+			if (string.IsNullOrEmpty(line) || line.StartsWith(";"))
+				return false;
+
 			Match m = sectionPattern.Match( line );
 			if( m == null || !m.Success )
 				return false;
