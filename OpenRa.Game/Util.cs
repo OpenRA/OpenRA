@@ -31,7 +31,7 @@ namespace OpenRa.Game
 		public static Vertex MakeVertex(float2 o, float2 uv, Sprite r, int palette)
 		{
 			return new Vertex(
-				float2.Lerp( o, o + new float2(r.bounds.Size), uv ),
+				float2.Lerp( o, o + r.Size, uv ),
 				r.MapTextureCoords(uv), 
 				EncodeVertexAttributes(r.channel, palette));
 		}

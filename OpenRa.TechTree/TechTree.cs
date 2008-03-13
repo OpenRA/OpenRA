@@ -9,6 +9,9 @@ namespace OpenRa.TechTree
 {
 	public class TechTree
 	{
+		static IniFile rules;
+		static IniFile Rules { get { return rules ?? (rules = new IniFile(FileSystem.Open("rules.ini"))); } }
+
 		Dictionary<string, Item> objects = new Dictionary<string, Item>();
 		public ICollection<string> built = new List<string>();
 
@@ -54,13 +57,12 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			IniFile rulesFile = new IniFile(FileSystem.Open("rules.ini"));
 			IEnumerable<Tuple<string, string, bool>> definitions = Concat(
 				Lines("buildings.txt", true),
 				Lines("units.txt", false));
 
 			foreach (Tuple<string, string, bool> p in definitions)
-				objects.Add(p.a, new Item(p.a, p.b, rulesFile.GetSection(p.a), p.c));
+				objects.Add(p.a, new Item(p.a, p.b, Rules.GetSection(p.a), p.c));
 		}
 
 		public bool Build(string key, bool force)

@@ -17,8 +17,15 @@ namespace OpenRa.FileFormats
 			while( !reader.EndOfStream )
 			{
 				string line = reader.ReadLine();
-				if( !ProcessEntry( line ) )
-					ProcessSection( line );
+
+				if (line.Length == 0) continue;
+
+				switch (line[0])
+				{
+					case ';': break;
+					case '[': ProcessSection(line); break;
+					default: ProcessEntry(line); break;
+				}
 			}
 		}
 
@@ -27,9 +34,6 @@ namespace OpenRa.FileFormats
 
 		bool ProcessSection( string line )
 		{
-			if (string.IsNullOrEmpty(line) || line.StartsWith(";"))
-				return false;
-
 			Match m = sectionPattern.Match( line );
 			if( m == null || !m.Success )
 				return false;
@@ -43,9 +47,6 @@ namespace OpenRa.FileFormats
 
 		bool ProcessEntry( string line )
 		{
-			if (string.IsNullOrEmpty(line) || line.StartsWith(";"))
-				return false;
-
 			Match m = entryPattern.Match( line );
 			if( m == null || !m.Success )
 				return false;

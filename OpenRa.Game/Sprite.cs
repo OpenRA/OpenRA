@@ -11,6 +11,7 @@ namespace OpenRa.Game
 		public readonly Sheet sheet;
 		public readonly TextureChannel channel;
 		public readonly RectangleF uv;
+		public readonly float2 size;
 
 		internal Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 		{
@@ -23,6 +24,8 @@ namespace OpenRa.Game
 					(float)(bounds.Top + 0.5f) / sheet.Size.Height,
 					(float)(bounds.Width) / sheet.Size.Width,
 					(float)(bounds.Height) / sheet.Size.Height);
+
+			this.size = new float2(bounds.Size);
 		}
 
 		public float2 MapTextureCoords(float2 p)
@@ -31,6 +34,8 @@ namespace OpenRa.Game
 				p.X > 0 ? uv.Right : uv.Left,
 				p.Y > 0 ? uv.Bottom : uv.Top);
 		}
+
+		public float2 Size { get { return size; } }
 	}
 
 	public enum TextureChannel
