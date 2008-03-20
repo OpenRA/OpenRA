@@ -27,14 +27,9 @@ namespace OpenRa.Game
 			}
 		}
 
-		private static void Run( string[] args )
+		static void Run( string[] args )
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault( false );
-
-			Settings settings = new Settings( args );
-
-			new MainWindow( settings ).Run();
+			new MainWindow( new Settings( args ) ).Run();
 		}
 	}
 }
