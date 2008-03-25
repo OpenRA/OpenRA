@@ -72,7 +72,7 @@ namespace OpenRa.FileFormats
 					byte[] dest = new byte[8192];
 					byte[] src = reader.ReadBytes((int)length);
 
-					int actualLength = Format80.DecodeInto(new MemoryStream(src), dest);
+					int actualLength = Format80.DecodeInto(src, dest);
 
 					chunks.Add(dest);
 				}
@@ -113,7 +113,7 @@ namespace OpenRa.FileFormats
 			for( int i = 0 ; i < 128 ; i++ )
 				for( int j = 0 ; j < 128 ; j++ )
 				{
-					MapTiles[ j, i ].image = ReadByte( ms );
+                    MapTiles[j, i].image = (byte)ms.ReadByte();// ReadByte(ms);
 					if( MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff )
 						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
 				}

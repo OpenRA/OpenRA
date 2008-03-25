@@ -10,13 +10,6 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
-		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
-
-		static float2 EncodeVertexAttributes(TextureChannel channel, int paletteLine)
-		{
-			return new float2(paletteLine / 16.0f, channelSelect[(int)channel]);
-		}
-
         static float2 KLerp(float2 o, float2 d, int k)
         {
             switch (k)
@@ -28,14 +21,6 @@ namespace OpenRa.Game
                 default: throw new InvalidOperationException();
             }
         }
-
-		static Vertex MakeVertex(float2 o, int k, Sprite r, float2 attrib)
-		{
-			return new Vertex(
-				KLerp( o, r.size, k ),
-				r.FastMapTextureCoords(k), 
-				attrib);
-		}
 
 		public static string[] ReadAllLines(Stream s)
 		{
@@ -56,28 +41,22 @@ namespace OpenRa.Game
 			return result;
 		}
 
-		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, float2 o, Sprite r, int palette)
-		{
-			ushort offset = (ushort)vertices.Count;
-            float2 attrib = EncodeVertexAttributes(r.channel, palette);
+        static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-            Vertex[] v = new Vertex[]
-            {
-                Util.MakeVertex(o, 0, r, attrib),
-                Util.MakeVertex(o, 1, r, attrib),
-                Util.MakeVertex(o, 2, r, attrib),
-                Util.MakeVertex(o, 3, r, attrib),
-            };
+        public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)
+        {
+            float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
 
-            vertices.AddRange(v);
+            vertices[nv] = new Vertex(KLerp(o, r.size, 0), r.FastMapTextureCoords(0), attrib);
+            vertices[nv + 1] = new Vertex(KLerp(o, r.size, 1), r.FastMapTextureCoords(1), attrib);
+            vertices[nv + 2] = new Vertex(KLerp(o, r.size, 2), r.FastMapTextureCoords(2), attrib);
+            vertices[nv + 3] = new Vertex(KLerp(o, r.size, 3), r.FastMapTextureCoords(3), attrib);
 
-            ushort[] i = new ushort[]
-            {
-                offset, (ushort)(offset + 1), (ushort)(offset + 2), (ushort)(offset + 1), (ushort)(offset + 3), (ushort)(offset + 2)
-            };
-
-            indices.AddRange(i);
-		}
+            indices[ni] = (ushort)(nv);
+            indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);
+            indices[ni + 2] = indices[ni + 5] = (ushort)(nv + 2);
+            indices[ni + 4] = (ushort)(nv + 3);
+        }
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{

@@ -109,16 +109,13 @@ namespace OpenRa.FileFormats
 						}
 
 						h.Image = CopyImageData( h.RefImage.Image );
-
-						MemoryStream ms = ReadCompressedData( stream, h );
-						Format40.DecodeInto( ms, h.Image );
+                        Format40.DecodeInto(ReadCompressedData(stream, h), h.Image);
 						break;
 					}
 				case Format.Format80:
 					{
-						MemoryStream ms = ReadCompressedData( stream, h );
 						byte[] imageBytes = new byte[ Width * Height ];
-						Format80.DecodeInto( ms, imageBytes );
+						Format80.DecodeInto( ReadCompressedData( stream, h ), imageBytes );
 						h.Image = imageBytes;
 						break;
 					}
@@ -127,7 +124,7 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		private static MemoryStream ReadCompressedData( Stream stream, ImageHeader h )
+		static byte[] ReadCompressedData( Stream stream, ImageHeader h )
 		{
 			stream.Position = h.Offset;
 			// Actually, far too big. There's no length field with the correct length though :(
@@ -136,8 +133,8 @@ namespace OpenRa.FileFormats
 			byte[] compressedBytes = new byte[ compressedLength ];
 			stream.Read( compressedBytes, 0, compressedLength );
 
-			MemoryStream ms = new MemoryStream( compressedBytes );
-			return ms;
+			//MemoryStream ms = new MemoryStream( compressedBytes );
+			return compressedBytes;
 		}
 
 		private byte[] CopyImageData( byte[] baseImage )

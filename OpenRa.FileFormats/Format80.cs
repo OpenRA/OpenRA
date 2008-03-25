@@ -5,23 +5,33 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
+    class FastByteReader
+    {
+        readonly byte[] src;
+        int offset = 0;
+
+        public FastByteReader(byte[] src)
+        {
+            this.src = src;
+        }
+
+        public bool Done() { return offset >= src.Length; }
+        public byte ReadByte() { return src[offset++]; }
+        public int ReadWord()
+        {
+            int x = ReadByte();
+            return x | (ReadByte() << 8);
+        }
+
+        public void CopyTo(byte[] dest, int offset, int count)
+        {
+            Array.Copy(src, this.offset, dest, offset, count);
+            this.offset += count;
+        }
+    }
+
 	public static class Format80
 	{
-		static byte ReadByte( MemoryStream input )
-		{
-			int inp = input.ReadByte();
-			if( inp == -1 )
-				throw new InvalidDataException();
-
-			return (byte)inp;
-		}
-
-		static int ReadWord( MemoryStream input )
-		{
-			int inp = ReadByte( input );
-			return inp + ( ReadByte( input ) << 8 );
-		}
-
 		static void ReplicatePrevious( byte[] dest, int destIndex, int srcIndex, int count )
 		{
 			if( srcIndex >= destIndex )
@@ -39,16 +49,18 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		public static int DecodeInto( MemoryStream input, byte[] dest )
+		public static int DecodeInto( byte[] src, byte[] dest )
 		{
+            var ctx = new FastByteReader(src);
 			int destIndex = 0;
+
 			while( true )
 			{
-				byte i = ReadByte( input );
+                byte i = ctx.ReadByte();
 				if( ( i & 0x80 ) == 0 )
 				{
 					// case 2
-					byte secondByte = ReadByte( input );
+                    byte secondByte = ctx.ReadByte();
 					int count = ( ( i & 0x70 ) >> 4 ) + 3;
 					int rpos = ( ( i & 0xf ) << 8 ) + secondByte;
 
@@ -62,7 +74,7 @@ namespace OpenRa.FileFormats
 					if( count == 0 )
 						return destIndex;
 
-					input.Read( dest, destIndex, count );
+					ctx.CopyTo( dest, destIndex, count );
 					destIndex += count;
 				}
 				else
@@ -71,8 +83,8 @@ namespace OpenRa.FileFormats
 					if( count3 == 0x3E )
 					{
 						// case 4
-						int count = ReadWord( input );
-						byte color = ReadByte( input );
+                        int count = ctx.ReadWord();
+                        byte color = ctx.ReadByte();
 
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
 							dest[ destIndex ] = color;
@@ -80,8 +92,8 @@ namespace OpenRa.FileFormats
 					else if( count3 == 0x3F )
 					{
 						// case 5
-						int count = ReadWord( input );
-						int srcIndex = ReadWord( input );
+                        int count = ctx.ReadWord();
+                        int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
 							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
 
@@ -92,7 +104,7 @@ namespace OpenRa.FileFormats
 					{
 						// case 3
 						int count = count3 + 3;
-						int srcIndex = ReadWord( input );
+                        int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
 							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
 

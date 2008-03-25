@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Ijw.DirectX;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game
 {
@@ -30,33 +31,32 @@ namespace OpenRa.Game
 
 			tileSet = new TileSet( map.TileSuffix );
 
-			Dictionary<TileReference, Sprite> tileMapping =
-				new Dictionary<TileReference, Sprite>();
+            Size tileSize = new Size( 24, 24 );
 
-			Size tileSize = new Size( 24, 24 );
+            var tileMapping = new Cache<TileReference, Sprite>(
+                x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
 
-			List<Vertex> vertices = new List<Vertex>();
-			List<ushort> indices = new List<ushort>();
+            Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
+            ushort[] indices = new ushort[6 * map.Height * map.Width];
 
+            int nv = 0;
+            int ni = 0;
 			for( int j = 0 ; j < map.Height ; j++ )
-				for( int i = 0 ; i < map.Width ; i++ )
-				{
-					TileReference tileRef = map.MapTiles[ i + map.XOffset, j + map.YOffset ];
-					Sprite tile;
+                for (int i = 0; i < map.Width; i++)
+                {
+                    Sprite tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
+                    Util.FastCreateQuad(vertices, indices, 24 * new float2(i, j), tile, 0, nv, ni);
+                    nv += 4;
+                    ni += 6;
+                }
 
-					if( !tileMapping.TryGetValue( tileRef, out tile ) )
-						tileMapping.Add( tileRef, tile = SheetBuilder.Add( tileSet.GetBytes( tileRef ), tileSize ) );
+            terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
 
-					terrainSheet = tile.sheet;
+			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
+			vertexBuffer.SetData( vertices );
 
-					Util.CreateQuad( vertices, indices, 24 * new float2( i, j ), tile, 0 );
-				}
-
-			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Count, Vertex.Format );
-			vertexBuffer.SetData( vertices.ToArray() );
-
-			indexBuffer = new IndexBuffer( renderer.Device, indices.Count );
-			indexBuffer.SetData( indices.ToArray() );
+			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );
+			indexBuffer.SetData( indices );
 		}
 
 		void Draw()

@@ -7,35 +7,22 @@ namespace OpenRa.FileFormats
 {
 	public static class Format40
 	{
-		static byte ReadByte( MemoryStream input )
+		public static int DecodeInto( byte[] src, byte[] dest )
 		{
-			int inp = input.ReadByte();
-			if( inp == -1 )
-				throw new InvalidDataException();
-
-			return (byte)inp;
-		}
-
-		static int ReadWord( MemoryStream input )
-		{
-			int inp = ReadByte( input );
-			return inp + ( ReadByte( input ) << 8 );
-		}
-
-		public static int DecodeInto( MemoryStream input, byte[] dest )
-		{
+            var ctx = new FastByteReader(src);
 			int destIndex = 0;
+
 			while( true )
 			{
-				byte i = ReadByte( input );
+                byte i = ctx.ReadByte();
 				if( ( i & 0x80 ) == 0 )
 				{
 					int count = i & 0x7F;
 					if( count == 0 )
 					{
 						// case 6
-						count = ReadByte( input );
-						byte value = ReadByte( input );
+                        count = ctx.ReadByte();
+                        byte value = ctx.ReadByte();
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
 							dest[ destIndex ] ^= value;
 					}
@@ -43,7 +30,7 @@ namespace OpenRa.FileFormats
 					{
 						// case 5
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
-							dest[ destIndex ] ^= ReadByte( input );
+                            dest[destIndex] ^= ctx.ReadByte();
 					}
 				}
 				else
@@ -51,7 +38,7 @@ namespace OpenRa.FileFormats
 					int count = i & 0x7F;
 					if( count == 0 )
 					{
-						count = ReadWord( input );
+                        count = ctx.ReadWord();
 						if( count == 0 )
 							return destIndex;
 
@@ -64,12 +51,12 @@ namespace OpenRa.FileFormats
 						{
 							// case 3
 							for( int end = destIndex + ( count & 0x3FFF ) ; destIndex < end ; destIndex++ )
-								dest[ destIndex ] ^= ReadByte( input );
+                                dest[destIndex] ^= ctx.ReadByte();
 						}
 						else
 						{
 							// case 4
-							byte value = ReadByte( input );
+                            byte value = ctx.ReadByte();
 							for( int end = destIndex + ( count & 0x3FFF ) ; destIndex < end ; destIndex++ )
 								dest[ destIndex ] ^= value;
 						}
