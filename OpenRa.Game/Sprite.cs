@@ -29,20 +29,13 @@ namespace OpenRa.Game
 
             uvhax = new float2[]
             {
-                MapTextureCoords( new float2(0,0) ),
-                MapTextureCoords( new float2(1,0) ),
-                MapTextureCoords( new float2(0,1) ),
-                MapTextureCoords( new float2(1,1) ),
+                new float2( uv.Left, uv.Top ),
+                new float2( uv.Right, uv.Top ),
+                new float2( uv.Left, uv.Bottom ),
+                new float2( uv.Right, uv.Bottom ),
             };
 
 			this.size = new float2(bounds.Size);
-		}
-
-		public float2 MapTextureCoords(float2 p)
-		{
-			return new float2(
-				p.X > 0 ? uv.Right : uv.Left,
-				p.Y > 0 ? uv.Bottom : uv.Top);
 		}
 
         public float2 FastMapTextureCoords(int k)
