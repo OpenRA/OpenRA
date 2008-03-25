@@ -12,7 +12,7 @@ namespace OpenRa.Game
 
 		static Rules()
 		{
-			IniFile rulesIni = new IniFile(FileSystem.Open("rules.ini"));
+            var rulesIni = SharedResources.Rules;
 
 			foreach (string line in Util.ReadAllLines(FileSystem.Open("units.txt")))
 			{

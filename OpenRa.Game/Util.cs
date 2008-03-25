@@ -17,17 +17,24 @@ namespace OpenRa.Game
 			return new float2(paletteLine / 16.0f, channelSelect[(int)channel]);
 		}
 
-		public static Vertex MakeVertex(float2 o, float2 uv, Sprite r, int palette)
+        static float2 KLerp(float2 o, float2 d, int k)
+        {
+            switch (k)
+            {
+                case 0: return o;
+                case 1: return new float2(o.X + d.X, o.Y);
+                case 2: return new float2(o.X, o.Y + d.Y);
+                case 3: return new float2(o.X + d.X, o.Y + d.Y);
+                default: throw new InvalidOperationException();
+            }
+        }
+
+		static Vertex MakeVertex(float2 o, int k, Sprite r, float2 attrib)
 		{
 			return new Vertex(
-				float2.Lerp( o, o + r.Size, uv ),
-				r.MapTextureCoords(uv), 
-				EncodeVertexAttributes(r.channel, palette));
-		}
-
-		static float Lerp(float a, float b, float t)
-		{
-			return (1 - t) * a + t * b;
+				KLerp( o, r.size, k ),
+				r.FastMapTextureCoords(k), 
+				attrib);
 		}
 
 		public static string[] ReadAllLines(Stream s)
@@ -49,28 +56,27 @@ namespace OpenRa.Game
 			return result;
 		}
 
-		static float2[] uv = 
-		{ 
-			new float2( 0,0 ),
-			new float2( 1,0 ),
-			new float2( 0,1 ),
-			new float2( 1,1 ),
-		};
-
 		public static void CreateQuad(List<Vertex> vertices, List<ushort> indices, float2 o, Sprite r, int palette)
 		{
 			ushort offset = (ushort)vertices.Count;
+            float2 attrib = EncodeVertexAttributes(r.channel, palette);
 
-			foreach( float2 p in uv )
-				vertices.Add(Util.MakeVertex(o, p, r, palette));
+            Vertex[] v = new Vertex[]
+            {
+                Util.MakeVertex(o, 0, r, attrib),
+                Util.MakeVertex(o, 1, r, attrib),
+                Util.MakeVertex(o, 2, r, attrib),
+                Util.MakeVertex(o, 3, r, attrib),
+            };
 
-			indices.Add(offset);
-			indices.Add((ushort)(offset + 1));
-			indices.Add((ushort)(offset + 2));
+            vertices.AddRange(v);
 
-			indices.Add((ushort)(offset + 1));
-			indices.Add((ushort)(offset + 3));
-			indices.Add((ushort)(offset + 2));
+            ushort[] i = new ushort[]
+            {
+                offset, (ushort)(offset + 1), (ushort)(offset + 2), (ushort)(offset + 1), (ushort)(offset + 3), (ushort)(offset + 2)
+            };
+
+            indices.AddRange(i);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)

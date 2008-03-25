@@ -13,39 +13,48 @@ namespace OpenRa.FileFormats
 	public class Package : IFolder
 	{
 		readonly string filename;
-		readonly List<PackageEntry> index;
+		readonly Dictionary<uint, PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
 		readonly long dataStart;
+        readonly Stream s;
 
-		public ICollection<PackageEntry> Content
-		{
-			get { return index.AsReadOnly(); }
-		}
+        //public ICollection<PackageEntry> Content
+        //{
+        //    get { return index.AsReadOnly(); }
+        //}
+
+        public static Dictionary<K, V> MakeDict<K,V>(IEnumerable<V> values, Converter<V, K> keyFunc)
+        {
+            var dict = new Dictionary<K, V>();
+            foreach (var v in values)
+                dict.Add(keyFunc(v), v);
+
+            return dict;
+        }
 
 		public Package(string filename)
 		{
 			this.filename = filename;
-			using (Stream s = FileSystem.Open(filename))
+            s = FileSystem.Open(filename);
+
+            BinaryReader reader = new BinaryReader(s);
+			uint signature = reader.ReadUInt32();
+
+			isRmix = 0 == (signature & ~(uint)(MixFileFlags.Checksum | MixFileFlags.Encrypted));
+
+			if (isRmix)
 			{
-				BinaryReader reader = new BinaryReader(s);
-				uint signature = reader.ReadUInt32();
-
-				isRmix = 0 == (signature & ~(uint)(MixFileFlags.Checksum | MixFileFlags.Encrypted));
-
-				if (isRmix)
+				isEncrypted = 0 != (signature & (uint)MixFileFlags.Encrypted);
+				if( isEncrypted )
 				{
-					isEncrypted = 0 != (signature & (uint)MixFileFlags.Encrypted);
-					if( isEncrypted )
-					{
-						index = ParseRaHeader( s, out dataStart );
-						return;
-					}
+					index = MakeDict(ParseRaHeader( s, out dataStart ), x => x.Hash );
+					return;
 				}
-
-				isEncrypted = false;
-				s.Seek(0, SeekOrigin.Begin);
-				index = ParseTdHeader(s, out dataStart);
 			}
+
+			isEncrypted = false;
+			s.Seek(0, SeekOrigin.Begin);
+			index = MakeDict(ParseTdHeader(s, out dataStart), x => x.Hash );
 		}
 
 		const long headerStart = 84;
@@ -121,19 +130,14 @@ namespace OpenRa.FileFormats
 
 		public Stream GetContent(uint hash)
 		{
-			foreach( PackageEntry e in index )
-				if (e.Hash == hash)
-				{
-					using (Stream s = FileSystem.Open(filename))
-					{
-						s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
-						byte[] data = new byte[ e.Length ];
-						s.Read( data, 0, (int)e.Length );
-						return new MemoryStream(data);
-					}
-				}
+            PackageEntry e;
+            if (!index.TryGetValue(hash, out e))
+                return null;
 
-			return null;
+			s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
+			byte[] data = new byte[ e.Length ];
+			s.Read( data, 0, (int)e.Length );
+			return new MemoryStream(data);
 		}
 
 		public Stream GetContent(string filename)

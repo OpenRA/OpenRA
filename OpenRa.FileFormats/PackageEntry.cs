@@ -39,13 +39,11 @@ namespace OpenRa.FileFormats
 			MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
 			BinaryReader reader = new BinaryReader(ms);
 
+            int len = name.Length >> 2; 
 			uint result = 0;
-			try
-			{
-				while(true)
-					result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
-			}
-			catch (EndOfStreamException) { }
+
+            while (len-- != 0)
+                result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
 
 			return result;
 		}

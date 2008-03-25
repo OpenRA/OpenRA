@@ -71,10 +71,13 @@
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IOrderGenerator.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerOwned.cs" />
+    <Compile Include="Race.cs" />
     <Compile Include="Rules.cs" />
+    <Compile Include="SharedResources.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Network\Network.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteRenderer.cs" />
     <Compile Include="SpriteSheetBuilder.cs" />
+    <Compile Include="TechTree.cs" />
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="TerrainRenderer.cs" />
     <Compile Include="Tree.cs" />
@@ -120,10 +124,6 @@
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRa.FileFormats</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRa.TechTree\OpenRa.TechTree.csproj">
-      <Project>{2BFC3861-E90E-4F77-B254-8FB8285E43AC}</Project>
-      <Name>OpenRa.TechTree</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ namespace OpenRa.Game
 
 		static TerrainCosts()
 		{
-			IniFile file = new IniFile(FileSystem.Open("rules.ini"));
+            IniFile file = SharedResources.Rules;
 
 			for( int i = 0 ; i < 10 ; i++ )
 			{

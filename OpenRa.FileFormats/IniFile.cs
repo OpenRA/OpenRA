@@ -47,18 +47,19 @@ namespace OpenRa.FileFormats
 
 		bool ProcessEntry( string line )
 		{
-			Match m = entryPattern.Match( line );
-			if( m == null || !m.Success )
-				return false;
+            int comment = line.IndexOf(';');
+            if (comment >= 0)
+                line = line.Substring(0, comment);
 
-			if( currentSection == null )
-				throw new InvalidOperationException( "No current INI section" );
+            int eq = line.IndexOf('=');
+            if (eq < 0)
+                return false;
 
-			string keyName = m.Groups[ 1 ].Value;
-			string keyValue = m.Groups[ 2 ].Value;
+            if (currentSection == null)
+                throw new InvalidOperationException("No current INI section");
 
-			currentSection.Add( keyName, keyValue );
-
+            currentSection.Add(line.Substring(0, eq), 
+                line.Substring(eq + 1, line.Length - eq - 1));
 			return true;
 		}
 
