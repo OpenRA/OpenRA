@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OpenRa.Game
 {
@@ -102,7 +101,7 @@ namespace OpenRa.Game
 				game.world.AddFrameEndTask( _ =>
 				{
 					game.world.Remove( unit );
-					game.world.Add( new ConstructionYard( unit.fromCell - new int2( 1, 1 ), unit.owner, game ) );
+					game.world.Add( new Building("fact", unit.fromCell - new int2( 1, 1 ), unit.owner, game ) );
 				} );
 				unit.currentOrder = null;
 			};

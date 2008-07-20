@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	static class SequenceProvider
 	{

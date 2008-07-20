@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	static class SheetBuilder
 	{
@@ -16,7 +12,6 @@ namespace OpenRa.Game
 		public static Sprite Add(byte[] src, Size size)
 		{
 			Sprite rect = AddImage(size);
-			//Util.CopyIntoChannel(rect, src);
 			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}

@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Drawing;
 using Ijw.DirectX;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
 	struct Vertex

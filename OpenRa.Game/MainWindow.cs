@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
-
+using System.Windows.Forms;
 using OpenRa.FileFormats;
-using System.IO;
+using OpenRa.Game.Graphics;
 using OpenRa.TechTree;
 
 namespace OpenRa.Game
 {
+	using GRegion = OpenRa.Game.Graphics.Region;
+
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
@@ -74,7 +72,7 @@ namespace OpenRa.Game
 			lastPos = new int2(e.Location);
 
 			if (e.Button == MouseButtons.Left)
-				foreach (Region region in game.viewport.Regions)
+				foreach (GRegion region in game.viewport.Regions)
 					if (region.Contains(lastPos))
 						region.Clicked(e);
 		}

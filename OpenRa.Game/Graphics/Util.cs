@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using OpenRa.FileFormats;
-using System.Drawing;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	static class Util
 	{

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using OpenRa.FileFormats;
-using System.Drawing;
 using System.Windows.Forms;
 using Ijw.DirectX;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -51,7 +49,7 @@ namespace OpenRa.Game
 			int dt = t - lastTime;
 			lastTime = t;
 
-			Range<float2> range = new Range<float2>(region.Location, region.Location + region.Size);
+			var range = new Range<float2>(region.Location, region.Location + region.Size);
 			
 			foreach (Actor a in actors)
 			{
@@ -70,10 +68,7 @@ namespace OpenRa.Game
 					spriteRenderer.DrawSprite(image, loc, (a.owner != null) ? a.owner.Palette : 0);
 			}
 
-			foreach( Action<World> a in frameEndActions )
-			{
-				a( this );
-			}
+			foreach (Action<World> a in frameEndActions) a(this);
 			frameEndActions.Clear();
 
 			uiOverlay.Draw();

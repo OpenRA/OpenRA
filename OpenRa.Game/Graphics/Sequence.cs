@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Ijw.DirectX;
 using System.Xml;
+using Ijw.DirectX;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class Sequence
 	{

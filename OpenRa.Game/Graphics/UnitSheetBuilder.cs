@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using OpenRa.FileFormats;
-using System.Drawing;
 using Ijw.DirectX;
+using OpenRa.FileFormats;
 
-
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	static class UnitSheetBuilder
 	{

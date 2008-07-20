@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class Sprite
 	{

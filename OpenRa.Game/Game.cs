@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenRa.FileFormats;
 
-using System.Drawing;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -45,10 +44,9 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-			buildingCreation.Add("fact", (location, owner) => new ConstructionYard(location, owner, this));
 			buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
 
-			string[] buildings = { "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
+			string[] buildings = { "fact", "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
 			foreach (string s in buildings)
 				AddBuilding(s);
 		}

@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 using Ijw.DirectX;
-using System.IO;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class Renderer
 	{

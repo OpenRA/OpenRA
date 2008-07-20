@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OpenRa.Game.Graphics.Animation">
+    <Position X="15.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCgACAAAAAAAAAAAAAAAAAAAAEABAEgAAAAQQIQAA=</HashCode>
+      <FileName>Graphics\Animation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Images" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.Viewport">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAABAAAgAAAAIYAAEAAAABCAAAAAABgAAAAgAE=</HashCode>
+      <FileName>Graphics\Viewport.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="renderer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.HardwarePalette">
+    <Position X="9.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Graphics\HardwarePalette.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.Region" Collapsed="true">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAggAABAIAIAQCAAAAAGAAAAAAAAAQAAA=</HashCode>
+      <FileName>Graphics\Region.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.Renderer">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAEAAGAAAAAgMAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Graphics\Renderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.Sheet">
+    <Position X="9.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAgAAACAgAAAAIAAAAAgAAAAIAAAAggAA=</HashCode>
+      <FileName>Graphics\Sheet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="renderer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.SheetBuilder">
+    <Position X="1.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIACAAAAAAAIQAAAAAAAAAAgAAAAIAAAEAAAAACgAA=</HashCode>
+      <FileName>Graphics\SheetBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="renderer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.Sprite">
+    <Position X="12.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAIAAAAIAAAAAAAAAAAAABAAACAAAEAgA=</HashCode>
+      <FileName>Graphics\Sprite.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="sheet" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.SpriteRenderer">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQQAAAAECAAAAAAAAAAAAAABAQABAAAAAAAACIwAQ=</HashCode>
+      <FileName>Graphics\SpriteRenderer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="currentSheet" />
+      <Field Name="renderer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.SpriteSheetBuilder">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Graphics\SpriteSheetBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="sprites" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.TerrainRenderer">
+    <Position X="7" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACQEAAAAAAAAgAAAAAACAAAABgAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Graphics\TerrainRenderer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="renderer" />
+      <Field Name="terrainSheet" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Graphics.UnitSheetBuilder">
+    <Position X="15.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAQAAAACAAAA=</HashCode>
+      <FileName>Graphics\UnitSheetBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="sprites" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Struct Name="OpenRa.Game.Graphics.Vertex" Collapsed="true">
+    <Position X="18.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAACAAFJgAQAAAAA=</HashCode>
+      <FileName>Graphics\Vertex.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="OpenRa.Game.Graphics.TextureChannel" Collapsed="true">
+    <Position X="18.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAAABAAAAA=</HashCode>
+      <FileName>Graphics\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

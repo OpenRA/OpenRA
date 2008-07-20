@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class Region
 	{
@@ -13,15 +11,10 @@ namespace OpenRa.Game
 
 		public float2 Location
 		{
-			get { return location + viewport.Location; }
+			get { return location + viewport.Location; }	// WTF HACK HACK HACK
 		}
 
-		float2 size;
-
-		public float2 Size
-		{
-			get { return size; }
-		}
+		public readonly float2 Size;
 
 		Action drawFunction;
 		MouseEventHandler mouseHandler;
@@ -71,7 +64,7 @@ namespace OpenRa.Game
 		Region(int2 location, int2 size, Viewport viewport, Action drawFunction, MouseEventHandler mouseHandler)
 		{
 			this.location = location;
-			this.size = size;
+			this.Size = size;
 			this.drawFunction = drawFunction;
 			this.viewport = viewport;
 			this.mouseHandler = mouseHandler;
@@ -82,7 +75,7 @@ namespace OpenRa.Game
 
 		public void Draw(Renderer renderer)
 		{
-			renderer.Device.EnableScissor((int)location.X, (int)location.Y, (int)size.X, (int)size.Y);
+			renderer.Device.EnableScissor((int)location.X, (int)location.Y, (int)Size.X, (int)Size.Y);
 			drawFunction();
 			renderer.Device.DisableScissor();
 		}

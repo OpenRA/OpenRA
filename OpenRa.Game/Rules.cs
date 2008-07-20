@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using OpenRa.FileFormats;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -30,23 +31,6 @@ namespace OpenRa.Game
 		public static UnitInfo UnitInfo( string name )
 		{
 			return unitInfos[ name.ToUpperInvariant() ];
-		}
-	}
-
-	class UnitInfo
-	{
-		public readonly int Speed;
-		public readonly SupportedMissions supportedMissions;
-
-		public UnitInfo( string unitName, IniSection ini )
-		{
-			Speed = int.Parse( ini.GetValue( "Speed", "0" ) );
-
-			supportedMissions = SupportedMissions.Stop;
-			if( unitName == "MCV" )
-				supportedMissions |= SupportedMissions.Deploy;
-			if( unitName == "HARV" )
-				supportedMissions |= SupportedMissions.Harvest;
 		}
 	}
 }

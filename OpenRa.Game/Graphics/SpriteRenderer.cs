@@ -5,7 +5,7 @@ using OpenRa.FileFormats;
 using System.Drawing;
 using Ijw.DirectX;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class SpriteRenderer
 	{

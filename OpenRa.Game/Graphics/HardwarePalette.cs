@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class HardwarePalette : Sheet
 	{

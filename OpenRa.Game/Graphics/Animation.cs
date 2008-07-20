@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	class Animation
 	{
@@ -19,6 +16,7 @@ namespace OpenRa.Game
 		}
 
 		public Sprite[] Images { get { return new Sprite[] { currentSequence.GetSprite( frame ) }; } }
+		public float2 Center { get { return 0.25f * new float2(currentSequence.GetSprite(0).bounds.Size); } }
 
 		public void Play( string sequenceName )
 		{
@@ -35,13 +33,13 @@ namespace OpenRa.Game
 			tickAlways = false;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
-			tickFunc = _ =>
+			tickFunc = () =>
 			{
 				++frame;
 				if( frame >= currentSequence.Length )
 				{
 					frame = currentSequence.Length - 1;
-					tickFunc = t => { };
+					tickFunc = () => { };
 					after();
 				}
 			};
@@ -52,22 +50,22 @@ namespace OpenRa.Game
 			tickAlways = true;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = func();
-			tickFunc = t => frame = func();
+			tickFunc = () => frame = func();
 		}
 
 		int timeUntilNextFrame;
+		Action tickFunc;
 
-		Action<int> tickFunc;
 		public void Tick( int t )
 		{
 			if( tickAlways )
-				tickFunc( t );
+				tickFunc();
 			else
 			{
 				timeUntilNextFrame -= t;
 				while( timeUntilNextFrame <= 0 )
 				{
-					tickFunc( 40 );
+					tickFunc();
 					timeUntilNextFrame += 40; // 25 fps == 40 ms
 				}
 			}

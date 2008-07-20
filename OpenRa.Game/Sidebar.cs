@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using OpenRa.TechTree;
-using Ijw.DirectX;
-using OpenRa.FileFormats;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
+using OpenRa.FileFormats;
+using OpenRa.Game.Graphics;
+using OpenRa.TechTree;
 
 namespace OpenRa.Game
 {
+	using GRegion = OpenRa.Game.Graphics.Region;
+
 	class Sidebar
 	{
 		TechTree.TechTree techTree;
@@ -17,11 +17,11 @@ namespace OpenRa.Game
 		SpriteRenderer spriteRenderer, clockRenderer;
 		Sprite blank;
 		Game game;
-		readonly Region region;
+		readonly GRegion region;
 
 		Animation clockAnimation = new Animation("clock");
 
-		public Region Region { get { return region; } }
+		public GRegion Region { get { return region; } }
 		public float Width { get { return spriteWidth * 2; } }
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
@@ -33,7 +33,7 @@ namespace OpenRa.Game
 		{
 			this.techTree = game.players[ game.localPlayerIndex ].TechTree;
 			this.game = game;
-			region = Region.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
+			region = GRegion.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			game.viewport.AddRegion( region );
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);

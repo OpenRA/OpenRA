@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -23,12 +22,12 @@ namespace OpenRa.Game
 			: base( game, name, cell )
 		{
 			fromCell = toCell = cell;
-			this.renderOffset = new float2( 12, 12 ); // TODO: pull this from the sprite
+
 			this.owner = owner;
 			this.unitInfo = Rules.UnitInfo( name );
 
-			animation = new Animation( name );
 			animation.PlayFetchIndex( "idle", () => facing );
+			renderOffset = animation.Center;
 		}
 
 		static float2[] fvecs = Util.MakeArray<float2>(32,

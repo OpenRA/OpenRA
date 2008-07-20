@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Text;
 using OpenRa.FileFormats;
 
 namespace OpenRa.TechTree

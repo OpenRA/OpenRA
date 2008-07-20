@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {

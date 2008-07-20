@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Graphics
 {
 	static class SpriteSheetBuilder
 	{

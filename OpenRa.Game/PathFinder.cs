@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using OpenRa.FileFormats;
-using System.Windows.Forms;
 using IjwFramework.Collections;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
