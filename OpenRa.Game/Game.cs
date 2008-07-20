@@ -4,7 +4,6 @@ using System.Text;
 using OpenRa.FileFormats;
 
 using System.Drawing;
-using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {
@@ -23,12 +22,12 @@ namespace OpenRa.Game
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
 		// temporary, until we remove all the subclasses of Building
-		public Dictionary<string, Provider<Building, int2, Player>> buildingCreation = new Dictionary<string, Provider<Building, int2, Player>>();
+		public Dictionary<string, Func<int2, Player, Building>> buildingCreation = new Dictionary<string, Func<int2, Player, Building>>();
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
-			for( int i = 0 ; i < 8 ; i++ )
-				players.Add( i, new Player( i, string.Format( "Multi{0}", i ), OpenRa.TechTree.Race.Soviet ) );
+			for (int i = 0; i < 8; i++)
+				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Soviet));
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
@@ -46,29 +45,17 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-			buildingCreation.Add( "fact",
-				delegate( int2 location, Player owner )
-				{
-					return new ConstructionYard( location, owner, this );
-				} );
-			buildingCreation.Add( "proc",
-				delegate( int2 location, Player owner )
-				{
-					return new Refinery( location, owner, this );
-				} );
+			buildingCreation.Add("fact", (location, owner) => new ConstructionYard(location, owner, this));
+			buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
 
 			string[] buildings = { "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
 			foreach (string s in buildings)
 				AddBuilding(s);
 		}
 
-		void AddBuilding( string name )
+		void AddBuilding(string name)
 		{
-			buildingCreation.Add( name,
-				delegate( int2 location, Player owner )
-				{
-					return new Building( name, location, owner, this );
-				} );
+			buildingCreation.Add(name, (location, owner) => new Building(name, location, owner, this));
 		}
 
 		public void Tick()
@@ -77,9 +64,6 @@ namespace OpenRa.Game
 			Queue<Packet> stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 		}
 
-		public void Issue(IOrder order)
-		{
-			order.Apply( this );
-		}
+		public void Issue(IOrder order) { order.Apply(this); }
 	}
 }

@@ -31,8 +31,7 @@ namespace OpenRa.Game
 	static class TerrainCosts
 	{
 		static double[][] costs = Util.MakeArray<double[]>( 4,
-			delegate { return Util.MakeArray<double>( 10,
-				delegate { return double.PositiveInfinity; } ); } );
+			a => Util.MakeArray<double>( 10, b => double.PositiveInfinity ));
 
 		static TerrainCosts()
 		{

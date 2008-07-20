@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenRa.FileFormats;
-
-using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -12,11 +6,11 @@ namespace OpenRa.Game
 		public Refinery( int2 location, Player owner, Game game )
 			: base( "proc", location, owner, game )
 		{
-			animation.PlayThen("make", delegate
+			animation.PlayThen("make", () =>
 			{
 				animation.PlayRepeating("idle");
 
-				game.world.AddFrameEndTask(delegate
+				game.world.AddFrameEndTask( _ =>
 				{
 					Unit harvester = new Unit( "harv", location + new int2( 1, 2 ), owner, game );
 					harvester.facing = 8;

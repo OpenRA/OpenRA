@@ -10,7 +10,7 @@ namespace OpenRa.Game
 		public ConstructionYard( int2 location, Player owner, Game game )
 			: base( "fact", location, owner, game )
 		{
-			animation.PlayThen( "make", delegate { animation.PlayRepeating( "build" ); } );
+			animation.PlayThen("make", () => animation.PlayRepeating("build"));
 		}
 	}
 }

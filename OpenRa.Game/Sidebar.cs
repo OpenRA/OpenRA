@@ -7,7 +7,6 @@ using OpenRa.FileFormats;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {
@@ -166,9 +165,9 @@ namespace OpenRa.Game
 
 			public void Apply( Game game )
 			{
-				game.world.AddFrameEndTask( delegate
+				game.world.AddFrameEndTask( _ =>
 				{
-					Provider<Building, int2, Player> newBuilding;
+					Func<int2, Player, Building> newBuilding;
 					if( game.buildingCreation.TryGetValue( building.buildingName, out newBuilding ) )
 					{
 						Log.Write( "Player \"{0}\" builds {1}", building.owner.PlayerName, building.buildingName );

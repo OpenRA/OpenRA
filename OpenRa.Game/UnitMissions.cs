@@ -48,12 +48,12 @@ namespace OpenRa.Game
 	{
 		public static UnitMission Sleep()
 		{
-			return delegate { };
+			return t => { };
 		}
 
 		public static UnitMission Move( Unit unit, int2 destination )
 		{
-			return delegate( int t )
+			return t =>
 			{
 				Game game = unit.game;
 
@@ -92,14 +92,14 @@ namespace OpenRa.Game
 
 		public static UnitMission Deploy( Unit unit )
 		{
-			return delegate( int t )
+			return t =>
 			{
 				Game game = unit.game;
 
 				if( Turn( unit, 12 ) )
 					return;
 
-				game.world.AddFrameEndTask( delegate
+				game.world.AddFrameEndTask( _ =>
 				{
 					game.world.Remove( unit );
 					game.world.Add( new ConstructionYard( unit.fromCell - new int2( 1, 1 ), unit.owner, game ) );
@@ -112,7 +112,7 @@ namespace OpenRa.Game
 		public static UnitMission Harvest( Unit unit )
 		{
 			UnitMission order = null;
-			order = delegate
+			order = t =>
 			{
 				// TODO: check that there's actually some ore in this cell :)
 
@@ -120,15 +120,15 @@ namespace OpenRa.Game
 				if( Turn( unit, ( unit.facing + 1 ) & ~3 ) )
 					return;
 
-				unit.currentOrder = delegate { };
+				unit.currentOrder = _ => { };
 				if( unit.nextOrder == null )
 					unit.nextOrder = order;
 
 				string sequenceName = string.Format( "harvest{0}", unit.facing / 4 );
-				unit.animation.PlayThen( sequenceName, delegate
+				unit.animation.PlayThen( sequenceName, () =>
 				{
 					unit.currentOrder = null;
-					unit.animation.PlayFetchIndex( "idle", delegate { return unit.facing; } );
+					unit.animation.PlayFetchIndex("idle", () => unit.facing);
 				} );
 			};
 			return order;

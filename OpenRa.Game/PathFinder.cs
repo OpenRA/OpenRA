@@ -24,10 +24,7 @@ namespace OpenRa.Game
 						: double.PositiveInfinity;
 		}
 
-		// returns estimate to destination, 0.0 is cell is dest
-		public delegate double DistanceHeuristic( int2 cell );
-
-		public List<int2> FindUnitPath( int2 unitLocation, DistanceHeuristic estimator )
+		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator )
 		{
 			int2 startLocation = unitLocation + map.Offset;
 
@@ -40,7 +37,7 @@ namespace OpenRa.Game
 			return FindUnitPath( startLocation, estimator, map.Offset, cellInfo );
 		}
 
-		List<int2> FindUnitPath( int2 startLocation, DistanceHeuristic estimator, int2 offset, CellInfo[,] cellInfo )
+		List<int2> FindUnitPath(int2 startLocation, Func<int2, double> estimator, int2 offset, CellInfo[,] cellInfo)
 		{
 			PriorityQueue<PathDistance> queue = new PriorityQueue<PathDistance>();
 
@@ -108,9 +105,9 @@ namespace OpenRa.Game
 				new int2(  1,  1 ),
 			};
 
-		public static DistanceHeuristic DefaultEstimator( int2 destination )
+		public static Func<int2, double> DefaultEstimator(int2 destination)
 		{
-			return delegate( int2 here )
+			return here =>
 			{
 				int2 d = ( here - destination ).Abs();
 				int diag = Math.Min( d.X, d.Y );

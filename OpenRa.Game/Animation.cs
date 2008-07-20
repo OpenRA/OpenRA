@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {
@@ -23,40 +22,37 @@ namespace OpenRa.Game
 
 		public void Play( string sequenceName )
 		{
-			PlayThen( sequenceName, delegate { } );
+			PlayThen(sequenceName, () => { });
 		}
 
 		public void PlayRepeating( string sequenceName )
 		{
-			PlayThen( sequenceName, delegate { PlayRepeating( sequenceName ); } );
+			PlayThen( sequenceName, () => PlayRepeating( sequenceName ) );
 		}
 
-		public void PlayThen( string sequenceName, MethodInvoker after )
+		public void PlayThen( string sequenceName, Action after )
 		{
 			tickAlways = false;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
-			tickFunc = delegate
+			tickFunc = _ =>
 			{
 				++frame;
 				if( frame >= currentSequence.Length )
 				{
 					frame = currentSequence.Length - 1;
-					tickFunc = delegate { };
+					tickFunc = t => { };
 					after();
 				}
 			};
 		}
 
-		public void PlayFetchIndex( string sequenceName, Provider<int> func )
+		public void PlayFetchIndex( string sequenceName, Func<int> func )
 		{
 			tickAlways = true;
 			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = func();
-			tickFunc = delegate
-			{
-				frame = func();
-			};
+			tickFunc = t => frame = func();
 		}
 
 		int timeUntilNextFrame;

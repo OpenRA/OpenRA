@@ -36,7 +36,7 @@ namespace OpenRa.Game
 		{
 			if (sprites > 0)
 			{
-				renderer.DrawWithShader(quality, delegate
+				renderer.DrawWithShader(quality, () =>
 				{
 					vertexBuffer.SetData(vertices);
 					indexBuffer.SetData(indices);

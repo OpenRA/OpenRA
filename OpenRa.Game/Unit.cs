@@ -28,11 +28,11 @@ namespace OpenRa.Game
 			this.unitInfo = Rules.UnitInfo( name );
 
 			animation = new Animation( name );
-			animation.PlayFetchIndex( "idle", delegate { return facing; } );
+			animation.PlayFetchIndex( "idle", () => facing );
 		}
 
-		static float2[] fvecs = Util.MakeArray<float2>( 32,
-			delegate( int i ) { return -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ); } );
+		static float2[] fvecs = Util.MakeArray<float2>(32,
+			i => -float2.FromAngle(i / 16.0f * (float)Math.PI) * new float2(1f, 1.3f));
 
 		public int GetFacing( float2 d )
 		{

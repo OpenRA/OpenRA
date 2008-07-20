@@ -26,7 +26,7 @@ namespace OpenRa.Game
 		{
 			client.EnableBroadcast = true;
 
-			Thread receiveThread = new Thread(delegate()
+			Thread receiveThread = new Thread( () =>
 			{
 				for (; ; )
 				{

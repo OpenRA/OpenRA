@@ -25,7 +25,7 @@ namespace OpenRa.Game
 		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
 		{
 			this.renderer = renderer;
-			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, delegate { });
+			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, (_, e) => { } );
 			viewport.AddRegion(region);
 			this.map = map;
 
@@ -75,13 +75,11 @@ namespace OpenRa.Game
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-			renderer.DrawWithShader(ShaderQuality.Low, delegate
-			{
-				renderer.DrawBatch(vertexBuffer, indexBuffer, 
-					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow), 
-					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow), 
-					terrainSheet.Texture);
-			});
+			renderer.DrawWithShader(ShaderQuality.Low, () =>
+				renderer.DrawBatch(vertexBuffer, indexBuffer,
+					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
+					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
+					terrainSheet.Texture));
 		}
 	}
 }

@@ -6,7 +6,6 @@ using System.Drawing;
 using Ijw.DirectX;
 using System.IO;
 using OpenRa.FileFormats;
-using IjwFramework.Delegates;
 
 namespace OpenRa.Game
 {
@@ -52,7 +51,7 @@ namespace OpenRa.Game
 		public void DrawWithShader(ShaderQuality quality, Action task)
 		{
 			shader.Quality = quality;
-			shader.Render(task);
+			shader.Render(() => task());
 		}
 
 		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,

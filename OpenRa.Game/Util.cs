@@ -10,17 +10,17 @@ namespace OpenRa.Game
 {
 	static class Util
 	{
-        static float2 KLerp(float2 o, float2 d, int k)
-        {
-            switch (k)
-            {
-                case 0: return o;
-                case 1: return new float2(o.X + d.X, o.Y);
-                case 2: return new float2(o.X, o.Y + d.Y);
-                case 3: return new float2(o.X + d.X, o.Y + d.Y);
-                default: throw new InvalidOperationException();
-            }
-        }
+		static float2 KLerp(float2 o, float2 d, int k)
+		{
+			switch (k)
+			{
+				case 0: return o;
+				case 1: return new float2(o.X + d.X, o.Y);
+				case 2: return new float2(o.X, o.Y + d.Y);
+				case 3: return new float2(o.X + d.X, o.Y + d.Y);
+				default: throw new InvalidOperationException();
+			}
+		}
 
 		public static string[] ReadAllLines(Stream s)
 		{
@@ -41,22 +41,22 @@ namespace OpenRa.Game
 			return result;
 		}
 
-        static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
+		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-        public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)
-        {
-            float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
+		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)
+		{
+			float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
 
-            vertices[nv] = new Vertex(KLerp(o, r.size, 0), r.FastMapTextureCoords(0), attrib);
-            vertices[nv + 1] = new Vertex(KLerp(o, r.size, 1), r.FastMapTextureCoords(1), attrib);
-            vertices[nv + 2] = new Vertex(KLerp(o, r.size, 2), r.FastMapTextureCoords(2), attrib);
-            vertices[nv + 3] = new Vertex(KLerp(o, r.size, 3), r.FastMapTextureCoords(3), attrib);
+			vertices[nv] = new Vertex(KLerp(o, r.size, 0), r.FastMapTextureCoords(0), attrib);
+			vertices[nv + 1] = new Vertex(KLerp(o, r.size, 1), r.FastMapTextureCoords(1), attrib);
+			vertices[nv + 2] = new Vertex(KLerp(o, r.size, 2), r.FastMapTextureCoords(2), attrib);
+			vertices[nv + 3] = new Vertex(KLerp(o, r.size, 3), r.FastMapTextureCoords(3), attrib);
 
-            indices[ni] = (ushort)(nv);
-            indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);
-            indices[ni + 2] = indices[ni + 5] = (ushort)(nv + 2);
-            indices[ni + 4] = (ushort)(nv + 3);
-        }
+			indices[ni] = (ushort)(nv);
+			indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);
+			indices[ni + 2] = indices[ni + 5] = (ushort)(nv + 2);
+			indices[ni + 4] = (ushort)(nv + 3);
+		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
@@ -80,18 +80,15 @@ namespace OpenRa.Game
 					fixed (byte* srcbase = &src[0])
 					{
 						byte* s = srcbase;
-						uint * t = (uint*)bits.Scan0.ToPointer();
+						uint* t = (uint*)bits.Scan0.ToPointer();
 						int stride = bits.Stride >> 2;
 
 						for (int j = 0; j < height; j++)
 						{
-							unsafe
-							{
-								uint* p = t;
-								for (int i = 0; i < width; i++, p++)
-									*p = (*p & ~mask) | ((mask & ((uint)*s++) << shift));
-								t += stride;
-							}
+							uint* p = t;
+							for (int i = 0; i < width; i++, p++)
+								*p = (*p & ~mask) | ((mask & ((uint)*s++) << shift));
+							t += stride;
 						}
 					}
 				}
