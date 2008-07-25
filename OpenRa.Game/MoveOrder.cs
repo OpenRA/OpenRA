@@ -4,12 +4,12 @@ using System.Text;
 
 namespace OpenRa.Game
 {
-	interface IOrder
+	abstract class Order
 	{
-		void Apply( Game game );
+		public abstract void Apply( Game game );
 	}
 
-	class MoveOrder : IOrder
+	class MoveOrder : Order
 	{
 		public readonly Unit Unit;
 		public readonly int2 Destination;
@@ -20,13 +20,13 @@ namespace OpenRa.Game
 			this.Destination = destination;
 		}
 
-		public void Apply( Game game )
+		public override void Apply( Game game )
 		{
 			Unit.nextOrder = UnitMissions.Move( Unit, Destination );
 		}
 	}
 
-	class DeployMcvOrder : IOrder
+	class DeployMcvOrder : Order
 	{
 		Unit unit;
 
@@ -35,13 +35,13 @@ namespace OpenRa.Game
 			this.unit = unit;
 		}
 
-		public void Apply( Game game )
+		public override void Apply( Game game )
 		{
 			unit.nextOrder = UnitMissions.Deploy( unit );
 		}
 	}
 
-	class HarvestOrder : IOrder
+	class HarvestOrder : Order
 	{
 		Unit unit;
 
@@ -50,7 +50,7 @@ namespace OpenRa.Game
 			this.unit = unit;
 		}
 
-		public void Apply( Game game )
+		public override void Apply( Game game )
 		{
 			unit.nextOrder = UnitMissions.Harvest( unit );
 		}

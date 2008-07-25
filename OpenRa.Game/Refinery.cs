@@ -15,7 +15,7 @@ namespace OpenRa.Game
 					Unit harvester = new Unit( "harv", location + new int2( 1, 2 ), owner, game );
 					harvester.facing = 8;
 					game.world.Add(harvester);
-					game.world.orderGenerator = harvester;
+					game.controller.orderGenerator = harvester;
 				});
 			});
 		}

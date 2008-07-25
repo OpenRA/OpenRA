@@ -47,7 +47,7 @@ namespace OpenRa.Game
 			game.world.Add( new Unit( "mcv", new int2( 5, 5 ), game.players[ 3 ], game ) );
 			game.world.Add( new Unit( "mcv", new int2( 7, 5 ), game.players[ 2 ], game ) );
 			Unit mcv = new Unit( "mcv", new int2( 9, 5 ), game.players[ 1 ], game );
-			game.world.orderGenerator = mcv;
+			game.controller.orderGenerator = mcv;
 			game.world.Add( mcv );
 
 			sidebar = new Sidebar(Race.Soviet, renderer, game);
@@ -72,7 +72,7 @@ namespace OpenRa.Game
 			lastPos = new int2(e.Location);
 
 			if (e.Button == MouseButtons.Left)
-				foreach (GRegion region in game.viewport.Regions)
+				foreach (var region in game.viewport.Regions)
 					if (region.Contains(lastPos))
 						region.Clicked(e);
 		}
@@ -88,8 +88,8 @@ namespace OpenRa.Game
 				lastPos = p;
 			}
 
-			if (game.world.orderGenerator != null)
-				game.world.orderGenerator.PrepareOverlay(game, 
+			if (game.controller.orderGenerator != null)
+				game.controller.orderGenerator.PrepareOverlay(game, 
 					new int2(e.Location.X / 24, e.Location.Y / 24));
 		}
 	}

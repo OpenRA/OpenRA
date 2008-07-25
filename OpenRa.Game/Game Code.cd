@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OpenRa.Game.Actor" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAAAAAAAAAAAAAAAAIAAAAAIAAQAA=</HashCode>
+      <FileName>Actor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.World">
+    <Position X="8.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAaAACBBAAAAAiAAAIACBgAAAAAAAAAIAAAAAAgAAAA=</HashCode>
+      <FileName>World.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Building" Collapsed="true">
+    <Position X="4" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Building.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Game" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAEAAAAIAAAgAABAAAIAAQAAAAAQAAJAAAAABAQAA=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.MainWindow" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAKIEAACAAAgAI=</HashCode>
+      <FileName>MainWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.MoveOrder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAIAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>MoveOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.DeployMcvOrder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MoveOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.HarvestOrder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MoveOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.PathFinder" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAABAAAAAAAAAAAAAEEAAAMAAAAAAAAAA=</HashCode>
+      <FileName>PathFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Player" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.PlayerOwned" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAIAAAAAAAAIACAAAAAAAAAgAAAIAAAAA=</HashCode>
+      <FileName>PlayerOwned.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Refinery" Collapsed="true">
+    <Position X="4" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refinery.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Rules" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rules.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Sidebar" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAQAgECAAGAAEAgCAEAACABAiIAIAAAAIAC8AAA=</HashCode>
+      <FileName>Sidebar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.PlaceBuilding" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Sidebar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OpenRa.Game.SidebarItem" Collapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACEBAAACAAAAAAAAAIAAA=</HashCode>
+      <FileName>SidebarItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.TerrainCosts" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TerrainCosts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Tree" Collapsed="true">
+    <Position X="6.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.UiOverlay" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAiQAQAAQIABAQAAgAAAYAAAAAAQAAAA=</HashCode>
+      <FileName>UiOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Unit" Collapsed="true">
+    <Position X="1.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAgDgAAAAAAAAAAAAAAAEAAAEGAAgAAAAERAAAQAA=</HashCode>
+      <FileName>Unit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OpenRa.Game.UnitInfo" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.UnitMissions">
+    <Position X="16.25" Y="2.5" Width="1.5" />
+    <Members>
+      <Method Name="Turn" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAYAAAAAAAAACAAABAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>UnitMissions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Order" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MoveOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.PlaceBuildingOrder" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAABAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sidebar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="OpenRa.Game.CellInfo" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAEAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>PathFinder.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="OpenRa.Game.PathDistance" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAIAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PathFinder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="OpenRa.Game.IOrderGenerator" Collapsed="true">
+    <Position X="11" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>IOrderGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="OpenRa.Game.UnitMovementType" Collapsed="true">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAiAAA=</HashCode>
+      <FileName>TerrainCosts.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenRa.Game.TerrainMovementType" Collapsed="true">
+    <Position X="14.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAIEAAAAAAAABgAAQgAAAAAABQAAA=</HashCode>
+      <FileName>TerrainCosts.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenRa.Game.SupportedMissions" Collapsed="true">
+    <Position X="12.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAIBAAAAAAAAA=</HashCode>
+      <FileName>UnitMissions.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenRa.TechTree.Race" Collapsed="true">
+    <Position X="11" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAEAAAA=</HashCode>
+      <FileName>Race.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="OpenRa.Game.UnitMission" Collapsed="true">
+    <Position X="11" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UnitMissions.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

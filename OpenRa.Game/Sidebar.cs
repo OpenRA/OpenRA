@@ -31,7 +31,7 @@ namespace OpenRa.Game
 
 		public Sidebar( Race race, Renderer renderer, Game game )
 		{
-			this.techTree = game.players[ game.localPlayerIndex ].TechTree;
+			this.techTree = game.LocalPlayer.TechTree;
 			this.game = game;
 			region = GRegion.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			game.viewport.AddRegion( region );
@@ -49,7 +49,7 @@ namespace OpenRa.Game
 		public void Build(SidebarItem item)
 		{
 			if (item != null)
-				game.world.orderGenerator = new PlaceBuilding(game.players[1], item.techTreeItem.tag.ToLowerInvariant());
+				game.controller.orderGenerator = new PlaceBuilding(game.players[1], item.techTreeItem.tag.ToLowerInvariant());
 		}
 
 		void LoadSprites(string filename)
@@ -132,16 +132,16 @@ namespace OpenRa.Game
 
 	class PlaceBuilding : IOrderGenerator
 	{
-		Player owner;
-		string buildingName;
+		public readonly Player Owner;
+		public readonly string Name;
 
-		public PlaceBuilding( Player owner, string buildingName )
+		public PlaceBuilding( Player owner, string name )
 		{
-			this.owner = owner;
-			this.buildingName = buildingName;
+			Owner = owner;
+			Name = name;
 		}
 
-		public IOrder Order( Game game, int2 xy )
+		public Order Order( Game game, int2 xy )
 		{
 			// todo: check that space is free
 			return new PlaceBuildingOrder( this, xy );
@@ -149,34 +149,34 @@ namespace OpenRa.Game
 
 		public void PrepareOverlay(Game game, int2 xy)
 		{
-			game.world.uiOverlay.SetCurrentOverlay(false, xy, 2, 3);
+			game.worldRenderer.uiOverlay.SetCurrentOverlay(false, xy, 2, 3);
+		}
+	}
+
+	class PlaceBuildingOrder : Order
+	{
+		PlaceBuilding building;
+		int2 xy;
+
+		public PlaceBuildingOrder(PlaceBuilding building, int2 xy)
+		{
+			this.building = building;
+			this.xy = xy;
 		}
 
-		class PlaceBuildingOrder : IOrder
+		public override void Apply(Game game)
 		{
-			PlaceBuilding building;
-			int2 xy;
-
-			public PlaceBuildingOrder( PlaceBuilding building, int2 xy )
+			game.world.AddFrameEndTask(_ =>
 			{
-				this.building = building;
-				this.xy = xy;
-			}
-
-			public void Apply( Game game )
-			{
-				game.world.AddFrameEndTask( _ =>
+				Func<int2, Player, Building> newBuilding;
+				if (game.buildingCreation.TryGetValue(building.Name, out newBuilding))
 				{
-					Func<int2, Player, Building> newBuilding;
-					if( game.buildingCreation.TryGetValue( building.buildingName, out newBuilding ) )
-					{
-						Log.Write( "Player \"{0}\" builds {1}", building.owner.PlayerName, building.buildingName );
-						game.world.Add( newBuilding( xy, building.owner ) );
-					}
-					game.world.orderGenerator = null;
-					game.world.uiOverlay.KillOverlay();
-				} );
-			}
+					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);
+					game.world.Add(newBuilding(xy, building.Owner));
+				}
+				game.controller.orderGenerator = null;
+				game.worldRenderer.uiOverlay.KillOverlay();
+			});
 		}
 	}
 }

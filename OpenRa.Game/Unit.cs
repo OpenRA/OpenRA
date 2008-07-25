@@ -83,7 +83,7 @@ namespace OpenRa.Game
 			return mission == ( unitInfo.supportedMissions & mission );
 		}
 
-		public IOrder Order( Game game, int2 xy )
+		public Order Order( Game game, int2 xy )
 		{
 			if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
 			{

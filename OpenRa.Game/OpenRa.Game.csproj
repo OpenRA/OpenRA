@@ -71,9 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="IOrderGenerator.cs" />
     <Compile Include="TechTree\Item.cs" />
     <Compile Include="Network\Packet.cs" />
@@ -81,7 +83,7 @@
     <Compile Include="PlayerOwned.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Rules.cs" />
-    <Compile Include="SharedResources.cs" />
+    <Compile Include="Support\SharedResources.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Network\Network.cs" />
@@ -148,6 +150,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game Code.cd" />
     <None Include="Graphics\Graphics.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -15,13 +15,17 @@ namespace OpenRa.Game
 		public readonly Viewport viewport;
 		public readonly PathFinder pathFinder;
 		public readonly Network network;
+		public readonly WorldRenderer worldRenderer;
+		public readonly Controller controller;
 
-		public int localPlayerIndex = 1;
+		int localPlayerIndex = 1;
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
 		// temporary, until we remove all the subclasses of Building
 		public Dictionary<string, Func<int2, Player, Building>> buildingCreation = new Dictionary<string, Func<int2, Player, Building>>();
+
+		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
@@ -34,7 +38,7 @@ namespace OpenRa.Game
 			viewport = new Viewport(clientSize, map.Size, renderer);
 
 			terrain = new TerrainRenderer(renderer, map, viewport);
-			world = new World(renderer, this);
+			world = new World(this);
 			treeCache = new TreeCache(map);
 
 			foreach (TreeReference treeReference in map.Trees)
@@ -48,20 +52,18 @@ namespace OpenRa.Game
 
 			string[] buildings = { "fact", "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
 			foreach (string s in buildings)
-				AddBuilding(s);
-		}
+				buildingCreation.Add(s, (location, owner) => new Building(s, location, owner, this));
 
-		void AddBuilding(string name)
-		{
-			buildingCreation.Add(name, (location, owner) => new Building(name, location, owner, this));
+			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
+			worldRenderer = new WorldRenderer(renderer, world);
 		}
 
 		public void Tick()
 		{
-			viewport.DrawRegions(this);
-			Queue<Packet> stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
-		}
+			var stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
+			world.Update();
 
-		public void Issue(IOrder order) { order.Apply(this); }
+			viewport.DrawRegions(this);
+		}
 	}
 }

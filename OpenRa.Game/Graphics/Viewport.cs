@@ -28,10 +28,8 @@ namespace OpenRa.Game.Graphics
 		}
 
 		List<Region> regions = new List<Region>();
-		public void AddRegion(Region r)
-		{
-			regions.Add(r);
-		}
+
+		public void AddRegion(Region r) { regions.Add(r); }
 
 		public void DrawRegions(Game game)
 		{
@@ -46,9 +44,6 @@ namespace OpenRa.Game.Graphics
 			renderer.EndFrame();
 		}
 
-		public IEnumerable<Region> Regions
-		{
-			get { return regions; }
-		}
+		public IEnumerable<Region> Regions { get { return regions; } }
 	}
 }

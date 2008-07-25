@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace OpenRa
 {
@@ -18,6 +16,7 @@ namespace OpenRa
 		public float2(SizeF p) { X = p.Width; Y = p.Height; }
 
 		public PointF ToPointF() { return new PointF(X, Y); }
+		public SizeF ToSizeF() { return new SizeF(X, Y); }
 
 		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
 

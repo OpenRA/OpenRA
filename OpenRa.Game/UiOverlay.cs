@@ -39,6 +39,8 @@ namespace OpenRa.Game
 				for (int j = 0; j < height; j++)
 					spriteRenderer.DrawSprite(blocked ? buildBlocked : buildOk,
 						24 * (position + new int2(i, j)) + game.viewport.Location, 0);
+
+			spriteRenderer.Flush();
 		}
 
 		bool blocked, hasOverlay;
