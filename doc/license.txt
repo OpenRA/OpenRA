@@ -1,0 +1,20 @@
+Estrela Editor License
+=========================================================
+
+Estrela Editor is released under the 
+wxWindows license:
+
+http://www.opensource.org/licenses/wxwindows.php
+
+=========================================================
+Estrela Editor is primarily developped by:
+
+  Luxinia DevTeam:
+  Eike Decker & Christoph Kubisch
+  info at luxinia.de
+
+Original wxLua IDE was developped by:
+
+  Lomtick Software
+  J. Winwood & John Labenski
+  luascript at thersgb.net
