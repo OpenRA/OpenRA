@@ -356,7 +356,7 @@ function SetupKeywords(editor, ext, forcespec)
 
 	-- found a spec setup lexers and keywords
 	if spec then
-		editor:SetLexer(spec.lexer)
+		editor:SetLexer(spec.lexer or wxstc.wxSTC_LEX_NULL)
 		lexerstyleconvert = spec.lexerstyleconvert
 		
 		if (spec.keywords) then
