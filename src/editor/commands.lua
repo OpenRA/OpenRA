@@ -71,8 +71,7 @@ function LoadFile(filePath, editor, file_must_exist)
 	return editor
 end
 
-function OpenFile(event)
-
+function getExtsString()
 	local knownexts = ""
 	for i,spec in pairs(ide.specs) do
 		if (spec.exts) then
@@ -85,6 +84,13 @@ function OpenFile(event)
 	
 	local exts = knownexts and "Known Files ("..knownexts..")|"..knownexts.."|" or ""
 	exts = exts.."All files (*)|*"
+	
+	return exts
+end
+
+function OpenFile(event)
+
+	local exts = getExtsString()
 	
 	local fileDialog = wx.wxFileDialog(ide.frame, "Open file",
 									   "",
@@ -138,11 +144,13 @@ function SaveFileAs(editor)
 	local saved    = false
 	local fn       = wx.wxFileName(openDocuments[id].filePath or "")
 	fn:Normalize() -- want absolute path for dialog
+	
+	local exts = getExtsString()
 
 	local fileDialog = wx.wxFileDialog(ide.frame, "Save file as",
 									   fn:GetPath(),
 									   fn:GetFullName(),
-									   "Lua files (*.lua)|*.lua|Text files (*.txt)|*.txt|All files (*)|*",
+									   exts,
 									   wx.wxSAVE)
 
 	if fileDialog:ShowModal() == wx.wxID_OK then
