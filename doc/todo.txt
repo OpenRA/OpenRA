@@ -1,0 +1,59 @@
+Estrela Editor
+-----------------
+Estrela Editor is a wxLua based IDE. It supports multiple 
+fileformats, "api" for autocompletion and tooltips, and custom 
+commandline tools. Focus is extensibility for target applications 
+using Lua. Its main purpose is as IDE for the 3D engine "Luxinia".
+
+BUGS
+====
+
+Z Debugging 
+	not working anymore?
+
+
+FEATURES
+========
+? interpreters
+	interface?
+	loaded externally?
+
+C Find in Files
+	output result: <filename>(<line>):<linetext>
+
+Z autocomplete
+	"reset" dynamicwords
+
+Z defs.lua 
+	add "api"
+
+C SHD/PRT/MTL & Cg specs & apis
+
+Z lua shell:
+	syntax style + ctrl+enter shortcut for run
+	switchable lua states
+	
+Z Autocomplete: 
+	AddDynamicWords (should check for comments)
+	per file dynamic
+	outer file dynamic (only global non commented)
+	
+C FileBrowser
+	full / project toggle
+	project(subdir)
+	
+C Tools: 
+	register custom keybind actions per tool
+	automatic tool generator (+ dialog)
+	dialog to remove/add tools (needs settings)
+	
+? Global Functions/Tables
+	Lists for quick navigation in project
+
+? Settings: 
+	keybinds
+	tools (order/active)
+	dialog version
+
+
+
