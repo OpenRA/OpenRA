@@ -23,9 +23,9 @@ function StylesGetDefault()
 		number 			= {fg = {90,  100,  0 },},
 		
 		keywords0		= {fg = {0,   0,   127},	b = true,},
-		keywords1		= {fg = {0,   0,   95},},
-		keywords2		= {fg = {0,   95,  0},},
-		keywords3		= {fg = {127, 0,   0},},
+		keywords1		= {fg = {127, 0,   0},},
+		keywords2		= {fg = {0,   127, 0},},
+		keywords3		= {fg = {0,   0,   127},},
 		keywords4		= {fg = {127, 0,   95},},
 		keywords5		= {fg = {35,  95,  175},},
 		keywords6		= {fg = {0,   127, 127},},
