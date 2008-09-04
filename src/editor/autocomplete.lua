@@ -128,7 +128,8 @@ local function fillTips(api,apibasename)
 		for key,info in pairs(tab.childs) do
 			traverse(info,key)
 			if info.type == "function" then
-				local inf = (info.returns or "(?)").." "..libname.."."..key.." "..(info.args or "(?)").."\n"..
+				local libstr = libname ~= "" and libname.."." or ""
+				local inf = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)").."\n"..
 					info.description:gsub("("..("."):rep(60)..".-[%s,%)%]:%.])","%1\n")
 				
 				-- add to infoclass 
@@ -153,8 +154,9 @@ local function fillTips(api,apibasename)
 	traverse(apiac,apibasename)
 end
 
-fillTips(apis.lua,"luabase")
-
+for i,api in pairs(apis) do
+	fillTips(api,"")
+end
 
 function GetTipInfo (api,caller,class)
 	local tip = api.tip
