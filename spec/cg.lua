@@ -32,10 +32,16 @@ return {
 		},
 	
 	keywords = {
-		[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 
-		double vector vec matrix half half2 half3 half4 mat string 
-		struct typedef matrix sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE texture 
-		texture1D texture2D texture3D textureRECT textureCUBE decl do double else extern 
+		[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 double vector vec matrix
+		half half2 half3 half4
+		int2 int3 int4
+		bool bool2 bool3 bool4
+		mat string struct typedef matrix
+		usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY
+		isampler isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY
+		sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY
+		texture texture1D texture2D texture3D textureRECT textureCUBE texture1DARRAY texture2DARRAY textureCUBEARRAY
+		decl do double else extern 
 		false for if in inline inout out pass pixelshader return 
 		shared static string technique true uniform vector vertexshader void volatile 
 		while asm bool compile const auto break case catch char 

@@ -79,66 +79,81 @@ sqrt = fn "returns square root of scalars and vectors. - (typeN)(typeN)"
 step = fn "implement a step function returning either zero or one (x >= a). - (typeN)(typeN a, x)"
 tan = fn "returns tangent of scalars and vectors. - (typeN)(typeN)"
 tanh = fn "returns hyperbolic tangent of scalars and vectors. - (typeN)(typeN)"
-tex1D = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAY = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYbias = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYcmpbias = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYcmplod = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYfetch = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYlod = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYproj = fn "descr - (typeN)(typeN a, b)"
-tex1DARRAYsize = fn "descr - (typeN)(typeN a, b)"
-tex1Dbias = fn "descr - (typeN)(typeN a, b)"
-tex1Dcmpbias = fn "descr - (typeN)(typeN a, b)"
-tex1Dcmplod = fn "descr - (typeN)(typeN a, b)"
-tex1Dfetch = fn "descr - (typeN)(typeN a, b)"
-tex1Dlod = fn "descr - (typeN)(typeN a, b)"
-tex1Dproj = fn "descr - (typeN)(typeN a, b)"
-tex1Dsize = fn "descr - (typeN)(typeN a, b)"
-tex2D = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAY = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAYbias = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAYfetch = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAYlod = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAYproj = fn "descr - (typeN)(typeN a, b)"
-tex2DARRAYsize = fn "descr - (typeN)(typeN a, b)"
-tex2Dbias = fn "descr - (typeN)(typeN a, b)"
-tex2Dcmpbias = fn "descr - (typeN)(typeN a, b)"
-tex2Dcmplod = fn "descr - (typeN)(typeN a, b)"
-tex2Dfetch = fn "descr - (typeN)(typeN a, b)"
-tex2Dlod = fn "descr - (typeN)(typeN a, b)"
-tex2Dproj = fn "descr - (typeN)(typeN a, b)"
-tex2Dsize = fn "descr - (typeN)(typeN a, b)"
-tex3D = fn "descr - (typeN)(typeN a, b)"
-tex3Dbias = fn "descr - (typeN)(typeN a, b)"
-tex3Dfetch = fn "descr - (typeN)(typeN a, b)"
-tex3Dlod = fn "descr - (typeN)(typeN a, b)"
-tex3Dproj = fn "descr - (typeN)(typeN a, b)"
-tex3Dsize = fn "descr - (typeN)(typeN a, b)"
-texBUF = fn "descr - (typeN)(typeN a, b)"
-texBUFsize = fn "descr - (typeN)(typeN a, b)"
-texCUBE = fn "descr - (typeN)(typeN a, b)"
-texCUBEARRAY = fn "descr - (typeN)(typeN a, b)"
-texCUBEARRAYsize = fn "descr - (typeN)(typeN a, b)"
-texCUBEbias = fn "descr - (typeN)(typeN a, b)"
-texCUBElod = fn "descr - (typeN)(typeN a, b)"
-texCUBEproj = fn "descr - (typeN)(typeN a, b)"
-texCUBEsize = fn "descr - (typeN)(typeN a, b)"
-texRECT = fn "descr - (typeN)(typeN a, b)"
-texRECTbias = fn "descr - (typeN)(typeN a, b)"
-texRECTfetch = fn "descr - (typeN)(typeN a, b)"
-texRECTlod = fn "descr - (typeN)(typeN a, b)"
-texRECTproj = fn "descr - (typeN)(typeN a, b)"
-texRECTsize = fn "descr - (typeN)(typeN a, b)"
 transpose = fn "returns transpose matrix of a matrix. - (typeRxC)(typeCxR)"
 trunc = fn "returns largest integer not greater than a scalar or each vector component. - (typeN)(typeN)"
+
+tex1D = fn "performs a texture lookup in a given 1D sampler and, in some cases, a shadow comparison (as .y coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler1D, float/float2 s, |float dx, dy|,[int texeloffset])"
+tex1Dbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler1D, float4 s, [int texeloffset])"
+tex1Dcmpbias = fn "performs a texture lookup with bias and shadow compare in a given sampler (compare as .y, bias as .w).  - (float4)(sampler1D, float4 s, [int texeloffset])"
+tex1Dcmplod = fn "performs a texture lookup with a specified level of detail and a shadow compare in a given sampler (compare as .y, lod as .w).  - (float4)(sampler1D, float4 s, [int texeloffset])"
+tex1Dfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler1D, int4 s, [int texeloffset])"
+tex1Dlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler1D, float4 s, [int texeloffset])"
+tex1Dproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .y for float3 coord, proj in .y or .z) - (float4)(sampler1D, float2/float3 s, [int texeloff])"
+tex1Dsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler1D, int lod)"
+
+tex2D = fn "performs a texture lookup in a given 2D sampler and, in some cases, a shadow comparison (as .z coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler2D, float2/float3 s, |float2 dx, dy|,[int texeloffset])"
+tex2Dbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler2D, float4 s, [int texeloffset])"
+tex2Dcmpbias = fn "performs a texture lookup with bias and shadow compare in a given sampler (compare as .z, bias as .w).  - (float4)(sampler2D, float4 s, [int texeloffset])"
+tex2Dcmplod = fn "performs a texture lookup with a specified level of detail and a shadow compare in a given sampler (compare as .y, lod as .w).  - (float4)(sampler2D, float4 s, [int texeloffset])"
+tex2Dfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler2D, int4 s, [int texeloffset])"
+tex2Dlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler2D, float4 s, [int texeloffset])"
+tex2Dproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .z for float3 coord, proj in .z or .w) - (float4)(sampler2D, float3/float4 s, [int texeloff])"
+tex2Dsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler2D, int lod)"
+
+tex3D = fn "performs a texture lookup in a given 3D sampler. May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler3D, float3 s, {float3 dx, dy},[int texeloffset])"
+tex3Dbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler3D, float4 s, [int texeloffset])"
+tex3Dfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler3D, int4 s, [int texeloffset])"
+tex3Dlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler3D, float4 s, [int texeloffset])"
+tex3Dproj = fn "performs a texture lookup with projection in a given sampler. (proj in .w) - (float4)(sampler3D, float4 s, [int texeloff])"
+tex3Dsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler3D, int lod)"
+
+texBUF = fn " performs an unfiltered texture lookup in a given texture buffer sampler. (only gp4 profiles) - (float4)(samplerBUF, int s)"
+texBUFsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerBUF, int lod)"
+
+texCUBE = fn "performs a texture lookup in a given CUBE sampler and, in some cases, a shadow comparison (float4 coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerCUBE, float3/float4 s, |float3 dx, dy|)"
+texCUBEbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler1D, float4 s, [int texeloffset])"
+texCUBElod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler1D, float4 s, [int texeloffset])"
+texCUBEproj = fn "performs a texture lookup with projection in a given sampler. (proj in .w) - (float4)(samplerCUBE, float4 s)"
+texCUBEsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler1D, int lod)"
+
+texRECT = fn "performs a texture lookup in a given RECT sampler and, in some cases, a shadow comparison (as .z). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerRECT, float2/float3 s, |float2 dx, dy|, [int texeloff])"
+texRECTbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(samplerRECT, float4 s, [int texeloffset])"
+texRECTfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(samplerRECT, int4 s, [int texeloffset])"
+texRECTlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(samplerRECT, float4 s, [int texeloffset])"
+texRECTproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .z for float3 coord, proj in .z or .w) - (float4)(samplerRECT, float3/float4 s, [int texeloff])"
+texRECTsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerRECT, int lod)"
+
+tex1DARRAY = fn "performs a texture lookup in a given 1D sampler array and, in some cases, a shadow comparison (as .z). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler1DARRAY, float2/float3 s, {float dx, dy},[int texeloffset])"
+tex1DARRAYbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
+tex1DARRAYcmpbias = fn "performs a texture lookup with bias and shadow compare in a given sampler (layer as .y, compare as .z, bias as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
+tex1DARRAYcmplod = fn "performs a texture lookup with a specified level of detail and a shadow compare in a given sampler (compare as .z, lod as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
+tex1DARRAYfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler1DARRAY, int4 s, [int texeloffset])"
+tex1DARRAYlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
+tex1DARRAYproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .z for float3 coord, proj in .z or .w) - (float4)(sampler1DARRAY, float3/float4 s, [int texeloff])"
+tex1DARRAYsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler1DARRAY, int lod)"
+
+tex2DARRAY = fn "performs a texture lookup in a given 2D sampler array and, in some cases, a shadow comparison (as .w coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler2DARRAY, float3/float4 s, {float2 dx, dy},[int texeloffset])"
+tex2DARRAYbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler2DARRAY, float4 s, [int texeloffset])"
+tex2DARRAYfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler2DARRAY, int4 s, [int texeloffset])"
+tex2DARRAYlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler2DARRAY, float4 s, [int texeloffset])"
+tex2DARRAYproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (proj in .w) - (float4)(sampler2DARRAY, float4 s, [int texeloff])"
+tex2DARRAYsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler2DARRAY, int lod)"
+
+texCUBEARRAY = fn "performs a texture lookup in a given CUBE sampler array. May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerCUBEARRAY, float4 s, {float3 dx, dy},[int texeloffset])"
+texCUBEARRAYsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerCUBEARRAY, int lod)"
+
+
 
 local keyw = 
 [[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 double vector vec matrix
 half half2 half3 half4
+int2 int3 int4
+bool bool2 bool3 bool4
 mat string struct typedef matrix
-sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE 
-texture texture1D texture2D texture3D textureRECT textureCUBE
+usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY
+isampler isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY
+sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY
+texture texture1D texture2D texture3D textureRECT textureCUBE texture1DARRAY texture2DARRAY textureCUBEARRAY
 
 decl do double else extern false for if in inline inout out pass
 pixelshader return shared static string technique true
