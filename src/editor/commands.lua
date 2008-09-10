@@ -26,11 +26,13 @@ end
 
 function LoadFile(filePath, editor, file_must_exist)
 	-- prevent files from being reopened again
+	if (not editor) then
 	for id, doc in pairs(openDocuments) do
 		if doc.filePath == filePath	then
 			notebook:SetSelection(doc.index)
 			return doc.editor
 		end
+	end
 	end
 	-- if not opened yet, try open now
 	local file_text = ""

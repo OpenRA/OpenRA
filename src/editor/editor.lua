@@ -116,8 +116,9 @@ function IsFileAlteredOnDisk(editor)
 				local ret = wx.wxMessageBox(fileName.." has been modified on disk.\nDo you want to reload it?",
 											"Estrela Editor Message",
 											wx.wxYES_NO + wx.wxCENTRE, ide.frame)
+				
 				if ret ~= wx.wxYES or LoadFile(filePath, editor, true) then
-					openDocuments[id].modTime = nil
+					openDocuments[id].modTime = GetFileModTime(filePath)
 				end
 			end
 		end
