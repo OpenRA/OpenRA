@@ -2,14 +2,16 @@ ide.findReplace = {
 	dialog           = nil,   -- the wxDialog for find/replace
 	replace          = false, -- is it a find or replace dialog
 	infiles          = false,
-	oveditor	     = nil,
 	
 	fWholeWord       = false, -- match whole words
 	fMatchCase       = false, -- case sensitive
-	fDown            = true,  -- search downwards in doc
-	fSubDirs		 = false,  -- search in subdirectories
 	fRegularExpr     = false, -- use regex
 	fWrap            = true,  -- search wraps around 
+	
+	fDown            = true,  -- search downwards in doc
+	fSubDirs		 = false, -- search in subdirectories
+	fMakeBak         = true,  -- make bak files for replace in files
+	
 	findTextArray    = {},    -- array of last entered find text
 	findText         = "",    -- string to find
 	replaceTextArray = {},    -- array of last entered replace text
@@ -21,6 +23,7 @@ ide.findReplace = {
 	
 	foundString      = false, -- was the string found for the last search
 	
+	oveditor	     = nil,
 	curfilename		 = "",	  -- for search in files
 	occurrences      = 0,
 
@@ -68,8 +71,10 @@ end
 local function setTargetAll(editor)
 	local s = 0
 	local e = editor:GetLength()
+	
 	editor:SetTargetStart(s)
 	editor:SetTargetEnd(e)
+	
 	return e
 end
 
@@ -158,7 +163,7 @@ function findReplace:ReplaceString(fReplaceAll,inFileRegister)
 		local replaceLen = string.len(findReplace.replaceText)
 		local findLen = string.len(findReplace.findText)
 		local editor = findReplace:GetEditor()
-		local endTarget  = inFileRegister or setTargetAll(editor)
+		local endTarget  = inFileRegister and setTargetAll(editor) or 
 							setTarget(editor, findReplace.fDown, fReplaceAll)
 		
 		if fReplaceAll then
@@ -237,7 +242,9 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 
 			if (replace and findReplace:ReplaceString(true,onFileRegister)) then
 				-- store changed content, make .bak
-				storefile(file..".bak",filetext)
+				if (findReplace.fMakeBak) then
+					storefile(file..".bak",filetext)
+				end
 				storefile(file,findReplace.oveditor:GetText())
 			else
 				findReplace:FindStringAll(onFileRegister)
@@ -263,7 +270,7 @@ function findReplace:RunInFiles(replace)
 	
 	ProcInFiles(startdir, findReplace.filemaskText,findReplace.fSubDirs, replace)
 	
-	DisplayOutput("> FindInFiles End: "..findReplace.occurrences.." occurrence(s) have been found\n")
+	DisplayOutput("> FindInFiles: "..findReplace.occurrences.." occurrence(s) have been found\n\n")
 	findReplace.oveditor = nil
 end
 
@@ -369,15 +376,30 @@ function CreateFindReplaceDialog(replace,infiles)
 
 	-- Create scope radiobox
 	local scopeRadioBox
+	local subDirCheckBox
+	local makeBakCheckBox
+	
+	local scopeSizer
 	if (infiles) then
-		scopeRadioBox = wx.wxRadioBox(findDialog, wx.wxID_ANY, "Directory Scope", wx.wxDefaultPosition, wx.wxDefaultSize,  {"&Only Current", "With &Subdirectories"}, 1, wx.wxRA_SPECIFY_COLS)
-		scopeRadioBox:SetSelection(iff(findReplace.fSubDirs, 1, 0))
+		subDirCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "&Subdirectories")
+		makeBakCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, ".&bak on Replace")
+		subDirCheckBox:SetValue(findReplace.fSubDirs)
+		makeBakCheckBox:SetValue(findReplace.fMakeBak)
+		
+		local optionSizer = wx.wxBoxSizer(wx.wxVERTICAL, findDialog)
+		optionSizer:Add(subDirCheckBox,  0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
+		optionSizer:Add(makeBakCheckBox,  0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
+		
+		scopeSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, "In Files" );
+		scopeSizer:Add(optionSizer, 0, 0, 5)
 	else
 		scopeRadioBox = wx.wxRadioBox(findDialog, wx.wxID_ANY, "Scope", wx.wxDefaultPosition, wx.wxDefaultSize,  {"&Up", "&Down"}, 1, wx.wxRA_SPECIFY_COLS)
 		scopeRadioBox:SetSelection(iff(findReplace.fDown, 1, 0))
+		
+		scopeSizer = wx.wxBoxSizer(wx.wxVERTICAL, findDialog );
+		scopeSizer:Add(scopeRadioBox, 0, 0, 0)
 	end
-	local scopeSizer = wx.wxBoxSizer(wx.wxVERTICAL, findDialog );
-	scopeSizer:Add(scopeRadioBox, 0, 0, 0)
+	
 
 	-- Add all the sizers to the dialog
 	local optionScopeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
@@ -414,9 +436,10 @@ function CreateFindReplaceDialog(replace,infiles)
 		findReplace.fMatchCase   = matchCaseCheckBox:GetValue()
 		findReplace.fWrap        = wrapAroundCheckBox:GetValue()
 		if (findReplace.infiles) then
-			findReplace.fSubDirs     = scopeRadioBox:GetSelection() == 1
+			findReplace.fSubDirs = subDirCheckBox:GetValue()
+			findReplace.fMakeBak = makeBakCheckBox:GetValue()
 		else
-			findReplace.fDown        = scopeRadioBox:GetSelection() == 1
+			findReplace.fDown    = scopeRadioBox:GetSelection() == 1
 		end
 		
 		findReplace.fRegularExpr = regexCheckBox:GetValue()
