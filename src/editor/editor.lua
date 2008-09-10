@@ -33,14 +33,18 @@ function SetEditorSelection(selection)
 	end
 end
 
-function GetEditorFileAndCurInfo()
+function GetEditorFileAndCurInfo(nochecksave)
 	local editor = GetEditor()
-	if (not (editor and SaveIfModified(editor))) then
+	if (not (editor and (nochecksave or SaveIfModified(editor)))) then
 		return
 	end
 	
 	local id = editor:GetId();
 	local filepath = openDocuments[id].filePath
+	if (nochecksave and not filepath) then
+		return
+	end
+	
 	local fn = wx.wxFileName(filepath)
 	fn:Normalize()
 	
