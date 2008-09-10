@@ -29,6 +29,8 @@ ID_FIND             = wx.wxID_FIND
 ID_FINDNEXT         = NewID()
 ID_FINDPREV         = NewID()
 ID_REPLACE          = NewID()
+ID_FIND_IN_FILES    = NewID()
+ID_REPLACE_IN_FILES = NewID()
 ID_GOTOLINE         = NewID()
 ID_SORT             = NewID()
 -- Debug menu

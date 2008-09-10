@@ -12,6 +12,9 @@ local findMenu = wx.wxMenu{
 		{ ID_FINDPREV,   "Find &Previous\tShift-F3", "Repeat the search backwards in the file" },
 		{ ID_REPLACE,    "&Replace\tCtrl-H",         "Replaces the specified text with different text" },
 		{ },
+		{ ID_FIND_IN_FILES, "Find &In Files\tCtrl-Shift-F",		" Find specified text in files"},
+		{ ID_REPLACE_IN_FILES, "Re&place In Files\tCtrl-Shift-H",		" Replace specified text in files"},
+		{ },
 		{ ID_GOTOLINE,   "&Goto line\tCtrl-G",       "Go to a selected line" },
 		{ },
 		{ ID_SORT,       "&Sort",                    "Sort selected lines"}}
@@ -32,6 +35,20 @@ frame:Connect(ID_REPLACE, wx.wxEVT_COMMAND_MENU_SELECTED,
 			findReplace:Show(true)
 		end)
 frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+
+frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			findReplace:GetSelectedString()
+			findReplace:Show(false,true)
+		end)
+frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+
+frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			findReplace:GetSelectedString()
+			findReplace:Show(true,true)
+		end)
+frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
 frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) findReplace:GetSelectedString() findReplace:FindString() end)
 frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, function (event) findReplace:HasText() end)

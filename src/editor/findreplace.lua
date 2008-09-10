@@ -1,6 +1,7 @@
 ide.findReplace = {
 	dialog           = nil,   -- the wxDialog for find/replace
 	replace          = false, -- is it a find or replace dialog
+	infiles          = false,
 	fWholeWord       = false, -- match whole words
 	fMatchCase       = false, -- case sensitive
 	fDown            = true,  -- search downwards in doc
@@ -10,6 +11,11 @@ ide.findReplace = {
 	findText         = "",    -- string to find
 	replaceTextArray = {},    -- array of last entered replace text
 	replaceText      = "",    -- string to replace find string with
+	filemaskText     = "*.*",
+	filemaskTextArray= {},
+	filedirText      = "",
+	filedirTextArray = {},
+	
 	foundString      = false, -- was the string found for the last search
 
 	-- HasText()                 is there a string to search for
@@ -184,21 +190,33 @@ function ReplaceString(fReplaceAll,inFileRegister)
 	return replaced
 end
 
+function FindInFiles()
+
+end
+
+function ReplaceInFiles()
+
+end
+
 function CreateFindReplaceDialog(replace,infiles)
 	local ID_FIND_NEXT   = 1
 	local ID_REPLACE     = 2
 	local ID_REPLACE_ALL = 3
+	local ID_SETDIR      = 4
+	
 	findReplace.replace  = replace
+	findReplace.infiles  = infiles
 
-	local size = infiles and wx.wxSize(430,190) or wx.wxSize(430,140)
-	local findDialog = wx.wxDialog(ide.frame, wx.wxID_ANY, "Find",  wx.wxDefaultPosition, size or wx.wxDefaultSize)
+	local size = infiles and wx.wxSize(600,190)
+	local findDialog = wx.wxDialog(ide.frame, wx.wxID_ANY, infiles and "Find In Files" or "Find",  wx.wxDefaultPosition, size or wx.wxDefaultSize,
+			wx.wxDEFAULT_DIALOG_STYLE)
 
 	-- Create right hand buttons and sizer
-	local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, "&Find Next")
+	local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, infiles and "&Find All" or "&Find Next")
 	findButton:SetDefault()
-	local replaceButton =  wx.wxButton(findDialog, ID_REPLACE, "&Replace")
+	local replaceButton =  wx.wxButton(findDialog, ID_REPLACE, infiles and replace and "&Replace All" or "&Replace")
 	local replaceAllButton = nil
-	if (replace) then
+	if (replace and not infiles) then
 		replaceAllButton =  wx.wxButton(findDialog, ID_REPLACE_ALL, "Replace &All")
 	end
 	local cancelButton =  wx.wxButton(findDialog, wx.wxID_CANCEL, "Cancel")
@@ -206,7 +224,7 @@ function CreateFindReplaceDialog(replace,infiles)
 	local buttonsSizer = wx.wxBoxSizer(wx.wxVERTICAL)
 	buttonsSizer:Add(findButton,    0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
 	buttonsSizer:Add(replaceButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
-	if replace then
+	if replaceAllButton then
 		buttonsSizer:Add(replaceAllButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
 	end
 	buttonsSizer:Add(cancelButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER,  3)
@@ -215,6 +233,17 @@ function CreateFindReplaceDialog(replace,infiles)
 	local findStatText  = wx.wxStaticText( findDialog, wx.wxID_ANY, "Find: ")
 	local findTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.findText,  wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.findTextArray, wx.wxCB_DROPDOWN)
 	findTextCombo:SetFocus()
+	
+	local infilesMaskStat,infilesMaskCombo
+	local infilesDirStat,infilesDirCombo,infilesDirButton
+	if (infiles) then
+		infilesMaskStat  = wx.wxStaticText( findDialog, wx.wxID_ANY, "File Type: ")
+		infilesMaskCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filemaskText,  wx.wxDefaultPosition, wx.wxDefaultSize,  findReplace.filemaskTextArray)
+		
+		infilesDirStat  = wx.wxStaticText( findDialog, wx.wxID_ANY, "Directory: ")
+		infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText,  wx.wxDefaultPosition, wx.wxDefaultSize,  findReplace.filedirTextArray)
+		infilesDirButton =  wx.wxButton(findDialog, ID_SETDIR, "...",wx.wxDefaultPosition, wx.wxSize(26,20))
+	end
 
 	local replaceStatText, replaceTextCombo
 	if (replace) then
@@ -222,15 +251,27 @@ function CreateFindReplaceDialog(replace,infiles)
 		replaceTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.replaceText,  wx.wxDefaultPosition, wx.wxDefaultSize,  findReplace.replaceTextArray)
 	end
 
-	local findReplaceSizer = wx.wxFlexGridSizer(2, 2, 0, 0)
+	local findReplaceSizer = wx.wxFlexGridSizer(2, 3, 0, 0)
 	findReplaceSizer:AddGrowableCol(1)
 	findReplaceSizer:Add(findStatText,  0, wx.wxALL + wx.wxALIGN_LEFT, 0)
 	findReplaceSizer:Add(findTextCombo, 1, wx.wxALL + wx.wxGROW + wx.wxCENTER, 0)
+	findReplaceSizer:Add(16,8,			0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE,0)
+	
+	if (infiles) then
+		findReplaceSizer:Add(infilesMaskStat,  	0, wx.wxTOP + wx.wxALIGN_CENTER, 5)
+		findReplaceSizer:Add(infilesMaskCombo, 	1, wx.wxTOP + wx.wxGROW + wx.wxCENTER, 5)
+		findReplaceSizer:Add(16,8,				0, wx.wxTOP + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE ,5)
+		
+		findReplaceSizer:Add(infilesDirStat,  	0, wx.wxTOP + wx.wxALIGN_CENTER, 5)
+		findReplaceSizer:Add(infilesDirCombo, 	1, wx.wxTOP + wx.wxGROW + wx.wxCENTER, 5)
+		findReplaceSizer:Add(infilesDirButton, 	0, wx.wxTOP + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE, 5)
+	end
 
 	if (replace) then
-		findReplaceSizer:Add(replaceStatText,  0, wx.wxTOP + wx.wxALIGN_CENTER, 5)
-		findReplaceSizer:Add(replaceTextCombo, 1, wx.wxTOP + wx.wxGROW + wx.wxCENTER, 5)
+		findReplaceSizer:Add(replaceStatText,  	0, wx.wxTOP + wx.wxALIGN_CENTER, 5)
+		findReplaceSizer:Add(replaceTextCombo, 	1, wx.wxTOP + wx.wxGROW + wx.wxCENTER, 5)
 	end
+	
 
 	-- Create find/replace option checkboxes
 	local wholeWordCheckBox  = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Match &whole word")
@@ -295,13 +336,24 @@ function CreateFindReplaceDialog(replace,infiles)
 			findReplace.replaceText = replaceTextCombo:GetValue()
 			PrependToArray(findReplace.replaceTextArray, findReplace.replaceText)
 		end
+		if findReplace.infiles then
+			findReplace.filemaskText = infilesMaskCombo:GetValue()
+			PrependToArray(findReplace.filemaskTextArray, findReplace.filemaskText)
+			
+			findReplace.filedirText = infilesDirCombo:GetValue()
+			PrependToArray(findReplace.filedirTextArray, findReplace.filedirText)
+		end
 		return true
 	end
 
 	findDialog:Connect(ID_FIND_NEXT, wx.wxEVT_COMMAND_BUTTON_CLICKED,
 		function(event)
 			TransferDataFromWindow()
-			findReplace:FindString()
+			if (findReplace.infiles) then
+				FindInFiles()
+			else
+				findReplace:FindString()
+			end
 		end)
 
 	findDialog:Connect(ID_REPLACE, wx.wxEVT_COMMAND_BUTTON_CLICKED,
@@ -309,15 +361,19 @@ function CreateFindReplaceDialog(replace,infiles)
 			TransferDataFromWindow()
 			event:Skip()
 			if findReplace.replace then
-				ReplaceString()
+				if (findReplace.infiles) then
+					ReplaceInFiles()
+				else
+					ReplaceString()
+				end
 			else
 				findReplace.dialog:Destroy()
-				findReplace.dialog = CreateFindReplaceDialog(true)
+				findReplace.dialog = CreateFindReplaceDialog(true,infiles)
 				findReplace.dialog:Show(true)
 			end
 		end)
 
-	if replace then
+	if replaceAllButton then
 		findDialog:Connect(ID_REPLACE_ALL, wx.wxEVT_COMMAND_BUTTON_CLICKED,
 			function(event)
 				TransferDataFromWindow()
@@ -337,8 +393,8 @@ function CreateFindReplaceDialog(replace,infiles)
 	return findDialog
 end
 
-function findReplace:Show(replace)
+function findReplace:Show(replace,infiles)
 	self.dialog = nil
-	self.dialog = CreateFindReplaceDialog(replace)
+	self.dialog = CreateFindReplaceDialog(replace,infiles)
 	self.dialog:Show(true)
 end
