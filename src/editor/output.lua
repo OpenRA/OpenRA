@@ -130,6 +130,8 @@ errorLog:Connect(wx.wxEVT_IDLE, function(event)
 	end)
 
 local jumptopatterns = {
+    -- <filename>(line,linepos): 
+	"%s*([%w:/%\\_%-%.]+)%((%d+),(%d+)%):",
 	-- <filename>(line): 
 	"%s*([%w:/%\\_%-%.]+)%((%d+).*%):",
 	-- <filename>:line:
@@ -147,9 +149,10 @@ errorLog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
 			
 			local fname
 			local jumpline 
+			local jumplinepos
 			
 			for i,pattern in ipairs(jumptopatterns) do
-				fname,jumpline = linetx:match(pattern)
+				fname,jumpline,jumplinepos = linetx:match(pattern)
 				if (fname and jumpline) then
 					break
 				end
@@ -160,7 +163,11 @@ errorLog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
 				LoadFile(fname,nil,true)
 				local editor = GetEditor()
 				if (editor) then
-					editor:ScrollToLine(tonumber(jumpline))
+					jumpline = tonumber(jumpline)
+					jumplinepos = tonumber(jumplinepos)
+					
+					--editor:ScrollToLine(jumpline)
+					editor:GotoPos(editor:PositionFromLine(jumpline) + (jumplinepos or 0))
 				end
 			end
 			
