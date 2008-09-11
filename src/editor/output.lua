@@ -1,26 +1,28 @@
 local frame = ide.frame
 local splitter = frame.splitter
-local errorLog = splitter.errorLog
 local notebook = splitter.notebook
 local bottomnotebook = splitter.bottomnotebook
+local errorlog = bottomnotebook.errorlog
+
+
 
 -------
--- setup errorLog
-errorLog:Show(true)
-errorLog:SetFont(ide.font)
-errorLog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
-errorLog:StyleClearAll()
-errorLog:SetMarginWidth(1, 16) -- marker margin
-errorLog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
-errorLog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
-errorLog:SetReadOnly(true)
-StylesApplyToEditor(ide.config.styles,errorLog,ide.font,ide.fontItalic)
+-- setup errorlog
+errorlog:Show(true)
+errorlog:SetFont(ide.font)
+errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
+errorlog:StyleClearAll()
+errorlog:SetMarginWidth(1, 16) -- marker margin
+errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
+errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
+errorlog:SetReadOnly(true)
+StylesApplyToEditor(ide.config.styles,errorlog,ide.font,ide.fontItalic)
 
 
 function ClearOutput(event)
-	errorLog:SetReadOnly(false)
-	errorLog:ClearAll()
-	errorLog:SetReadOnly(true)
+	errorlog:SetReadOnly(false)
+	errorlog:ClearAll()
+	errorlog:SetReadOnly(true)
 end
 
 function DisplayOutput(message, dont_add_marker)
@@ -29,12 +31,12 @@ function DisplayOutput(message, dont_add_marker)
 		splitter:SplitHorizontally(notebook, bottomnotebook, (2 * h) / 3)
 	end
 	if not dont_add_marker then
-		errorLog:MarkerAdd(errorLog:GetLineCount()-1, CURRENT_LINE_MARKER)
+		errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
 	end
-	errorLog:SetReadOnly(false)
-	errorLog:AppendText(message)
-	errorLog:SetReadOnly(true)
-	errorLog:GotoPos(errorLog:GetLength())
+	errorlog:SetReadOnly(false)
+	errorlog:AppendText(message)
+	errorlog:SetReadOnly(true)
+	errorlog:GotoPos(errorlog:GetLength())
 end
 
 
@@ -59,7 +61,7 @@ function RunCommandLine(cmd,wdir,tooutput)
 	local proc = nil
 	
 	if (tooutput) then
-		customproc = wx.wxProcess(errorLog)
+		customproc = wx.wxProcess(errorlog)
 		customproc:Redirect()
 
 		proc = customproc
@@ -112,7 +114,7 @@ local function getStreams()
 	end
 end
 
-errorLog:Connect(wx.wxEVT_END_PROCESS, function(event)
+errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 			if (event:GetPid() == custompid) then
 				getStreams()
 				streamin  = nil
@@ -123,7 +125,7 @@ errorLog:Connect(wx.wxEVT_END_PROCESS, function(event)
 			end
 		end)
 
-errorLog:Connect(wx.wxEVT_IDLE, function(event)
+errorlog:Connect(wx.wxEVT_IDLE, function(event)
 		if (streamin or streamerr) then
 			getStreams()
 		end
@@ -140,10 +142,10 @@ local jumptopatterns = {
 	'.*%[string "([%w:/%\\_%-%.]+)"%]:(%d+):',
 }
 
-errorLog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
+errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
 		function(event)
-			local line = errorLog:GetCurrentLine()
-			local linetx = errorLog:GetLine(line)
+			local line = errorlog:GetCurrentLine()
+			local linetx = errorlog:GetLine(line)
 			-- try to detect a filename + line
 			-- in linetx
 			

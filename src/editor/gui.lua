@@ -29,10 +29,14 @@ local frame            = nil    -- wxFrame the main top level window
 	local statusBar    = nil
 	local menuBar      = nil
 	
-	local splitter     = nil    -- wxSplitterWindow for the notebook and errorLog
+	--local vsplitter    = nil
+	local sidenotebook = nil
+	
+	local splitter     = nil    -- wxSplitterWindow for the notebook and errorlog
 		local notebook = nil    -- wxNotebook of editors
 		local bottomnotebook = nil	-- notebook for the GUIs in the bottom line
-			local errorLog = nil    -- wxStyledTextCtrl log window for messages
+			local errorlog = nil    -- wxStyledTextCtrl log window for messages
+			local shellbox = nil    -- 2 wxStyledTextCtrl for lua shell
 
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
@@ -113,9 +117,9 @@ notebook:Connect(wx.wxEVT_SET_FOCUS, 	-- Notepad tabs shouldn't be selectable,
 bottomnotebook = wx.wxNotebook(splitter, wx.wxID_ANY,
 						 wx.wxDefaultPosition, wx.wxDefaultSize,
 						 wx.wxCLIP_CHILDREN)
-errorLog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,wx.wxDefaultPosition, wx.wxDefaultSize,
+errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,wx.wxDefaultPosition, wx.wxDefaultSize,
 										  wx.wxBORDER_STATIC)
-bottomnotebook:AddPage(errorLog, "Output", true)
+bottomnotebook:AddPage(errorlog, "Output", true)
 
 local shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
 shellbox.output = wxstc.wxStyledTextCtrl(shellbox, ID "shellbox.output")
@@ -134,26 +138,26 @@ gridsizer:Add(shellbox.output, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
 gridsizer:Add(vsizer, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
 shellbox:SetSizer(gridsizer)
 
-
-
 bottomnotebook:AddPage(shellbox, "Lua shell",false)
-ide.shellbox = shellbox
 
-splitter:Initialize(notebook) -- split later to show errorLog
+splitter:Initialize(notebook) -- split later to show errorlog
 
 
 
 
 -------
 -- hierarchy
+bottomnotebook.shellbox = shellbox
+bottomnotebook.errorlog = errorlog
 
-splitter.errorLog = errorLog
 splitter.bottomnotebook = bottomnotebook
 splitter.notebook = notebook
 
-frame.splitter = 	splitter
+--vsplitter.splitter = 	splitter
+--vsplitter.sidenotebook = sidenotebook
+
+frame.splitter = splitter
 frame.toolBar = 	toolBar
-frame.errorLog = 	errorLog
 frame.menuBar = 	menuBar
 
 ide.frame = frame

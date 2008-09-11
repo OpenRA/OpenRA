@@ -2,13 +2,10 @@
 	shellbox - a lua testbed environment within estrela
 ]]
 
-local shellbox = ide.shellbox
-local out = ide.shellbox.output
-local code = ide.shellbox.input
+local shellbox = ide.frame.splitter.bottomnotebook.shellbox
+local out = shellbox.output
+local code = shellbox.input
 local frame = ide.frame
-
-
-
 
 out:WrapCount(80)
 out:SetReadOnly(true)
@@ -32,6 +29,8 @@ end
 
 createenv()
 
+code:SetBufferedDraw(true)
+code:StyleClearAll()
 code:SetFont(ide.font)
 code:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
 code:SetTabWidth(4)

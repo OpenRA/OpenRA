@@ -18,19 +18,13 @@ FEATURES
 	interface?
 	loaded externally?
 
-C Find in Files
-	output result: <filename>(<line>):<linetext>
-
 Z autocomplete
 	"reset" dynamicwords
 
 Z defs.lua 
 	add "api"
 
-C SHD/PRT/MTL & Cg specs & apis
-
 Z lua shell:
-	syntax style + ctrl+enter shortcut for run
 	switchable lua states
 	
 Z Autocomplete: 

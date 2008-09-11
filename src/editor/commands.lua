@@ -2,7 +2,6 @@
 local frame    = ide.frame
 local splitter = ide.frame.splitter
 local notebook = splitter.notebook
-local errorLog = splitter.errorLog
 local openDocuments = ide.openDocuments
 
 function NewFile(event)

@@ -12,7 +12,7 @@
 local frame    = ide.frame
 local menuBar  = frame.menuBar
 local splitter = frame.splitter
-local errorLog = splitter.errorLog
+local errorlog = splitter.bottomnotebook.errorlog
 local notebook = splitter.notebook
 
 local openDocuments = ide.openDocuments
@@ -459,7 +459,7 @@ frame:Connect(ID_SHOWHIDEWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
 				splitter:Unsplit()
 			else
 				local w, h = frame:GetClientSizeWH()
-				splitter:SplitHorizontally(notebook, errorLog, (2 * h) / 3)
+				splitter:SplitHorizontally(notebook, errorlog, (2 * h) / 3)
 			end
 		end)
 
