@@ -5,7 +5,7 @@ local editorID         = 100    -- window id to create editor pages with, increm
 
 local openDocuments 	= ide.openDocuments
 local ignoredFilesList 	= ide.ignoredFilesList
-local notebook			= ide.frame.splitter.notebook
+local notebook			= ide.frame.vsplitter.splitter.notebook
 
 -- ----------------------------------------------------------------------------
 -- Get/Set notebook editor page, use nil for current page, returns nil if none

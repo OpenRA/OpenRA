@@ -418,19 +418,6 @@ function CreateFindReplaceDialog(replace,infiles)
 	findDialog:SetSizer(mainSizer)
 	
 
-
-	local function PrependToArray(t, s)
-		if string.len(s) == 0 then return end
-		for i, v in ipairs(t) do
-			if v == s then
-				table.remove(t, i) -- remove old copy
-				break
-			end
-		end
-		table.insert(t, 1, s)
-		if #t > 15 then table.remove(t, #t) end -- keep reasonable length
-	end
-
 	local function TransferDataFromWindow()
 		findReplace.fWholeWord   = wholeWordCheckBox:GetValue()
 		findReplace.fMatchCase   = matchCaseCheckBox:GetValue()
@@ -447,14 +434,14 @@ function CreateFindReplaceDialog(replace,infiles)
 		PrependToArray(findReplace.findTextArray, findReplace.findText)
 		if findReplace.replace then
 			findReplace.replaceText = replaceTextCombo:GetValue()
-			PrependToArray(findReplace.replaceTextArray, findReplace.replaceText)
+			PrependStringToArray(findReplace.replaceTextArray, findReplace.replaceText)
 		end
 		if findReplace.infiles then
 			findReplace.filemaskText = infilesMaskCombo:GetValue()
-			PrependToArray(findReplace.filemaskTextArray, findReplace.filemaskText)
+			PrependStringToArray(findReplace.filemaskTextArray, findReplace.filemaskText)
 			
 			findReplace.filedirText = infilesDirCombo:GetValue()
-			PrependToArray(findReplace.filedirTextArray, findReplace.filedirText)
+			PrependStringToArray(findReplace.filedirTextArray, findReplace.filedirText)
 		end
 		return true
 	end

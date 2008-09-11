@@ -125,7 +125,7 @@ dofile "src/editor/singleinstance.lua"
 dofile "src/editor/gui.lua"
 dofile "src/editor/output.lua"
 dofile "src/editor/debugger.lua"
-
+dofile "src/editor/filetree.lua"
 
 dofile "src/editor/editor.lua"
 dofile "src/editor/autocomplete.lua"
@@ -154,7 +154,7 @@ SettingsRestoreFileHistory(UpdateFileHistoryUI)
 --for k, v in pairs(arg) do print(k, v) end
 
 if arg then
-	local notebook = ide.frame.splitter.notebook
+	local notebook = ide.frame.vsplitter.splitter.notebook
 	
 	-- arguments pushed into wxLua are
 	--   [C++ app and it's args][lua prog at 0][args for lua start at 1]

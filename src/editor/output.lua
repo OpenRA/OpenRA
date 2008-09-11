@@ -1,5 +1,5 @@
 local frame = ide.frame
-local splitter = frame.splitter
+local splitter = frame.vsplitter.splitter
 local notebook = splitter.notebook
 local bottomnotebook = splitter.bottomnotebook
 local errorlog = bottomnotebook.errorlog

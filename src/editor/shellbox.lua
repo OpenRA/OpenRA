@@ -1,8 +1,8 @@
---[[ 
-	shellbox - a lua testbed environment within estrela
-]]
+-- 
+--	shellbox - a lua testbed environment within estrela
+--
 
-local shellbox = ide.frame.splitter.bottomnotebook.shellbox
+local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
 local out = shellbox.output
 local code = shellbox.input
 local frame = ide.frame

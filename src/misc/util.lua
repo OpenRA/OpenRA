@@ -29,6 +29,22 @@ char_LF  = string.byte("\n")
 char_Tab = string.byte("\t")
 char_Sp  = string.byte(" ")
 
+string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
+stringset_File = '[^"%?%*:\\/<>|]'
+
+
+function PrependStringToArray(t, s, maxstrings)
+	if string.len(s) == 0 then return end
+	for i, v in ipairs(t) do
+		if v == s then
+			table.remove(t, i) -- remove old copy
+			break
+		end
+	end
+	table.insert(t, 1, s)
+	if #t > (maxstrings or 15) then table.remove(t, #t) end -- keep reasonable length
+end
+
 -- ----------------------------------------------------------------------------
 -- Get file modification time, returns a wxDateTime (check IsValid) or nil if
 --   the file doesn't exist
@@ -55,6 +71,11 @@ end
 
 function GetPathWithSep(wxfn)
 	return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
+end
+
+function FileSysHasContent(dir)
+	local f = wx.wxFindFirstFile(dir,wx.wxFILE + wx.wxDIR)
+	return #f>0
 end
 
 function FileSysGet(dir,spec)

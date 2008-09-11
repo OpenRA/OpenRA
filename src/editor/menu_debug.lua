@@ -11,7 +11,7 @@
 
 local frame    = ide.frame
 local menuBar  = frame.menuBar
-local splitter = frame.splitter
+local splitter = frame.vsplitter.splitter
 local errorlog = splitter.bottomnotebook.errorlog
 local notebook = splitter.notebook
 
@@ -40,7 +40,7 @@ local interpreters = {
 				return '"lua" '..(filepath or "")
 			end,
 		fprojdir = function(fname) 
-				return GetPathWithSep(fname)
+				return fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		capture = false,
 		fworkdir = function (filepath) return filepath and filepath:gsub("[\\/]+$","") end,
@@ -65,7 +65,7 @@ local interpreters = {
 					path = GetPathWithSep(fname)
 				end
 				
-				return path
+				return path:sub(0,-2)
 			end,
 	},
 	[ID "debug.interpreter.EstrelaEditor"] = {
@@ -75,7 +75,7 @@ local interpreters = {
 				return editorFilename and '"'..ide.editorFilename..'" '..iff(menuBar:IsChecked(ID_USECONSOLE), " -c ", "")..(filepath or "") or nil
 			end,
 		fprojdir = function(fname)
-				return GetPathWithSep(fname)
+				return fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		fworkdir = function() end, -- better not
 		capture = false,
@@ -127,12 +127,13 @@ debugMenu:Append(0,"Project directory",targetworkdir,"Set the project directory 
 menuBar:Append(debugMenu, "&Project")
 menuBar:Check(ID_USECONSOLE, true)
 
-local function updateProjectDir(projdir)
+function UpdateProjectDir(projdir)
 	ide.config.path.projectdir = projdir
 	menuBar:SetLabel(ID "debug.projectdir.currentdir",projdir)
 	frame:SetStatusText(projdir)
+	ide.filetree:UpdateProjectDir(projdir)
 end
-updateProjectDir(ide.config.path.projectdir)
+UpdateProjectDir(ide.config.path.projectdir)
 
 -- interpreter setup
 local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  or 
@@ -157,43 +158,48 @@ local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  o
 		frame:Connect(id,wx.wxEVT_COMMAND_MENU_SELECTED,evSelectInterpreter)
 	end
 
-frame:Connect(ID "debug.projectdir.choose", wx.wxEVT_COMMAND_MENU_SELECTED,
-	function (event)
-		local editor = GetEditor()
-		local id       = editor:GetId()
-		local saved    = false
-		local fn       = wx.wxFileName(openDocuments[id].filePath or "")
-		fn:Normalize() -- want absolute path for dialog
-		
-		local projectdir = ide.config.path.projectdir
-		
-		--filePicker:Show(true)
-		--local diag = wx.wxDialog()
-		--diag:ShowModal(true)
-		local filePicker = wx.wxDirDialog(frame, "Chose a project directory", 
-				projectdir~="" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
-		local res = filePicker:ShowModal(true)
-		--for i,v in pairs(wx) do if v == res then print(i) end end
-		--print(res)
-		if res == wx.wxID_OK then
-			updateProjectDir(filePicker:GetPath())
-		end
-		--filePicker:Destroy()
-		return true
-	end)
+local function projChoose(event)
+	local editor = GetEditor()
+	local id       = editor:GetId()
+	local saved    = false
+	local fn       = wx.wxFileName(openDocuments[id].filePath or "")
+	fn:Normalize() -- want absolute path for dialog
 	
-frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
-	function (event)
-		local editor = GetEditor()
-		if not editor then return end
-		local id       = editor:GetId()
-		local filepath = openDocuments[id].filePath	
-		if not filepath then return end
-		local fn       = wx.wxFileName(filepath)
-		fn:Normalize() -- want absolute path for dialog
+	local projectdir = ide.config.path.projectdir
+	
+	--filePicker:Show(true)
+	--local diag = wx.wxDialog()
+	--diag:ShowModal(true)
+	local filePicker = wx.wxDirDialog(frame, "Chose a project directory", 
+			projectdir~="" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
+	local res = filePicker:ShowModal(true)
+	--for i,v in pairs(wx) do if v == res then print(i) end end
+	--print(res)
+	if res == wx.wxID_OK then
+		UpdateProjectDir(filePicker:GetPath())
+	end
+	--filePicker:Destroy()
+	return true
+end
+	
+frame:Connect(ID "debug.projectdir.choose", wx.wxEVT_COMMAND_MENU_SELECTED,
+	projChoose)
+frame:Connect(ID "debug.projectdir.choose", wx.wxEVT_COMMAND_BUTTON_CLICKED,
+	projChoose)
 		
-		updateProjectDir(interpreters[curinterpreterid].fprojdir(fn))
-	end)
+local function projFromFile(event)
+	local editor = GetEditor()
+	if not editor then return end
+	local id       = editor:GetId()
+	local filepath = openDocuments[id].filePath	
+	if not filepath then return end
+	local fn       = wx.wxFileName(filepath)
+	fn:Normalize() -- want absolute path for dialog
+	
+	UpdateProjectDir(interpreters[curinterpreterid].fprojdir(fn))
+end
+frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
+	projFromFile)
 	
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)

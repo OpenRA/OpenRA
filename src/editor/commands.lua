@@ -1,6 +1,6 @@
 
 local frame    = ide.frame
-local splitter = ide.frame.splitter
+local splitter = ide.frame.vsplitter.splitter
 local notebook = splitter.notebook
 local openDocuments = ide.openDocuments
 

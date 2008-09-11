@@ -23,7 +23,7 @@ ide.debugger = debugger
 -- ---------------------------------------------------------------------------
 -- Create the watch window
 
-local notebook 		= ide.frame.splitter.notebook
+local notebook 		= ide.frame.vsplitter.splitter.notebook
 local openDocuments = ide.openDocuments
 
 function ProcessWatches()

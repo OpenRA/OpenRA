@@ -29,14 +29,14 @@ local frame            = nil    -- wxFrame the main top level window
 	local statusBar    = nil
 	local menuBar      = nil
 	
-	--local vsplitter    = nil
-	local sidenotebook = nil
+	local vsplitter    = nil
+		local sidenotebook = nil
 	
-	local splitter     = nil    -- wxSplitterWindow for the notebook and errorlog
-		local notebook = nil    -- wxNotebook of editors
-		local bottomnotebook = nil	-- notebook for the GUIs in the bottom line
-			local errorlog = nil    -- wxStyledTextCtrl log window for messages
-			local shellbox = nil    -- 2 wxStyledTextCtrl for lua shell
+		local splitter     = nil    -- wxSplitterWindow for the notebook and errorlog
+			local notebook = nil    -- wxNotebook of editors
+			local bottomnotebook = nil	-- notebook for the GUIs in the bottom line
+				local errorlog = nil    -- wxStyledTextCtrl log window for messages
+				local shellbox = nil    -- 2 wxStyledTextCtrl for lua shell
 
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
@@ -82,7 +82,14 @@ toolBar:Realize()
 -- ----------------------------------------------------------------------------
 -- Add the child windows to the frame
 
-splitter = wx.wxSplitterWindow(frame, wx.wxID_ANY,
+-- vertical splitter (splitter / sidenotebook)
+vsplitter = wx.wxSplitterWindow(frame, wx.wxID_ANY,
+							   wx.wxDefaultPosition, wx.wxDefaultSize,
+							   wx.wxSP_3DSASH)
+
+
+-- horizontal splitter (notebook,bottomnotebook)
+splitter = wx.wxSplitterWindow(vsplitter, wx.wxID_ANY,
 							   wx.wxDefaultPosition, wx.wxDefaultSize,
 							   wx.wxSP_3DSASH)
 local ph
@@ -97,6 +104,7 @@ splitter:Connect(wx.wxEVT_SIZE, function (evt)
 		evt:Skip()
 	end)
 
+-- notebook for editors
 notebook = wx.wxNotebook(splitter, wx.wxID_ANY,
 						 wx.wxDefaultPosition, wx.wxDefaultSize,
 						 wx.wxCLIP_CHILDREN)
@@ -114,6 +122,7 @@ notebook:Connect(wx.wxEVT_SET_FOCUS, 	-- Notepad tabs shouldn't be selectable,
 		SetEditorSelection(current) -- select the currently active one.
 	end)
 
+-- bottomnotebook (errorlog,shellbox)
 bottomnotebook = wx.wxNotebook(splitter, wx.wxID_ANY,
 						 wx.wxDefaultPosition, wx.wxDefaultSize,
 						 wx.wxCLIP_CHILDREN)
@@ -121,7 +130,7 @@ errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,wx.wxDefaultPositi
 										  wx.wxBORDER_STATIC)
 bottomnotebook:AddPage(errorlog, "Output", true)
 
-local shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
+shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
 shellbox.output = wxstc.wxStyledTextCtrl(shellbox, ID "shellbox.output")
 shellbox.input = wxstc.wxStyledTextCtrl(shellbox, ID "shellbox.input")
 shellbox.run = wx.wxButton(shellbox, ID "shellbox.run", "Run")
@@ -140,9 +149,16 @@ shellbox:SetSizer(gridsizer)
 
 bottomnotebook:AddPage(shellbox, "Lua shell",false)
 
-splitter:Initialize(notebook) -- split later to show errorlog
 
+-- sidenotebook
+sidenotebook = wx.wxNotebook(vsplitter, wx.wxID_ANY,
+						 wx.wxDefaultPosition, wx.wxDefaultSize,
+						 wx.wxCLIP_CHILDREN)
+ 
 
+-- init splitters
+splitter:Initialize(notebook)
+vsplitter:SplitVertically(sidenotebook,splitter,150)
 
 
 -------
@@ -153,10 +169,10 @@ bottomnotebook.errorlog = errorlog
 splitter.bottomnotebook = bottomnotebook
 splitter.notebook = notebook
 
---vsplitter.splitter = 	splitter
---vsplitter.sidenotebook = sidenotebook
+vsplitter.splitter = 	splitter
+vsplitter.sidenotebook = sidenotebook
 
-frame.splitter = splitter
+frame.vsplitter = vsplitter
 frame.toolBar = 	toolBar
 frame.menuBar = 	menuBar
 
