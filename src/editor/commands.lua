@@ -143,7 +143,9 @@ end
 function SaveFileAs(editor)
 	local id       = editor:GetId()
 	local saved    = false
-	local fn       = wx.wxFileName(openDocuments[id].filePath or "")
+	local filePath = openDocuments[id].filePath
+	
+	local fn       = wx.wxFileName(filePath or GetFileTreeDir() or "")
 	fn:Normalize() -- want absolute path for dialog
 	
 	local exts = getExtsString()

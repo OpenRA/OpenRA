@@ -87,7 +87,7 @@ local function treeSetRoot(tree,treedata,rootdir)
 	
 	treeAddDir(tree,root_id,rootdir)
 	
-	filetree.newfiledir = rootdir
+	filetree.newfiledir = rootdir..string_Pathsep
 	
 	tree:Expand(root_id)
 end
@@ -138,6 +138,8 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 				-- remove file
 				filetree.newfiledir = wx.wxFileName(filetree.newfiledir):GetPath(wx.wxPATH_GET_VOLUME)
 			end
+			
+			filetree.newfiledir = filetree.newfiledir..string_Pathsep
 		end )
 end
 
@@ -226,7 +228,7 @@ sidenotebook:AddPage(projpanel, "Project",true)
 
 function GetFileTreeDir()
 	-- atm only projtree
-	return filetree.newfiledir
+	return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
 end
 
 function SetProjects(tab)

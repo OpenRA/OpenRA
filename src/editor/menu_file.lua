@@ -53,7 +53,11 @@ frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
 			local editor   = GetEditor()
 			local id       = editor:GetId()
 			local filePath = openDocuments[id].filePath
-			SaveFile(editor, filePath)
+			if (filePath) then
+				SaveFile(editor, filePath)
+			else
+				SaveFileAs(editor)
+			end
 		end)
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -61,7 +65,7 @@ frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
 			if editor then
 				local id = editor:GetId()
 				if openDocuments[id] then
-					event:Enable(openDocuments[id].isModified)
+					event:Enable(openDocuments[id].isModified or not openDocuments[id].filePath)
 				end
 			end
 		end)

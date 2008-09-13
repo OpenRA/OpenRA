@@ -16,7 +16,6 @@ FEATURES
 ========
 C ProjectBrowser
 	rightclick for "new directory, refresh, open, delete?"
-	newfiledirectory from current projectbrowser selection
 	
 ? interpreters
 	interface?
