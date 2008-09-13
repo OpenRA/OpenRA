@@ -430,7 +430,7 @@ function CreateFindReplaceDialog(replace,infiles)
 		
 		findReplace.fRegularExpr = regexCheckBox:GetValue()
 		findReplace.findText     = findTextCombo:GetValue()
-		PrependToArray(findReplace.findTextArray, findReplace.findText)
+		PrependStringToArray(findReplace.findTextArray, findReplace.findText)
 		if findReplace.replace then
 			findReplace.replaceText = replaceTextCombo:GetValue()
 			PrependStringToArray(findReplace.replaceTextArray, findReplace.replaceText)
