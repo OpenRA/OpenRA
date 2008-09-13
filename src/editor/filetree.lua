@@ -204,7 +204,7 @@ function filetree:UpdateProjectDir(newdir, cboxsel)
 	filetree.projdirText = newdir
 	
 	--if (not cboxsel) then
-		PrependStringToArray(filetree.projdirTextArray,newdir)
+		PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)
 		projcombobox:Clear()
 		projcombobox:Append(filetree.projdirTextArray)
 		if (not cboxsel) then

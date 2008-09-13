@@ -87,12 +87,28 @@ config = {
 	styles = {},
 		-- styles table as above
 		
-	interpreter = "wxLuaIDE",
+	interpreter = "EstrelaEditor",
 		-- the default "project" lua interpreter
-		-- wxLuaIDE, Luxinia, Lua
+		-- EstrelaEditor, Luxinia, Lua
 		
 	autocomplete = true,
 		-- whether autocomplete is on by default
+		
+	savebak = false,
+		-- if bak files are created on save
+		
+	filehistorylength = 20,
+		-- historylength for files
+		
+	projecthistorylength = 15,
+		-- historylength for project directories
+
+	singleinstance = true,
+		-- if true creates a UDP server to exchange messages
+		-- for loading commandline passed files
+		
+	singleinstanceport = 0xe493,
+		-- UDP port for single instance communication
 }
 
 

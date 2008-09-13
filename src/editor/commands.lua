@@ -113,9 +113,11 @@ function SaveFile(editor, filePath)
 	if not filePath then
 		return SaveFileAs(editor)
 	else
-		local backPath = filePath..".bak"
-		os.remove(backPath)
-		os.rename(filePath, backPath)
+		if (ide.config.savebak) then
+			local backPath = filePath..".bak"
+			os.remove(backPath)
+			os.rename(filePath, backPath)
+		end
 		
 		local handle = io.open(filePath, "wb")
 		if handle then

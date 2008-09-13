@@ -23,6 +23,8 @@ ide = {
 		interpreter = "EstrelaEditor",
 		autocomplete = true,
 		filehistorylength = 20,
+		projecthistorylength = 15,
+		savebak = false,
 		singleinstance = true,
 		singleinstanceport = 0xe493,
 		
