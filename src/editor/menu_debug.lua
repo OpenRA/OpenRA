@@ -40,13 +40,22 @@ local interpreters = {
 		name = "Lua",
 		description = "Pure lua interpreter",
 		fcmdline = function(filepath) 
-				return '"lua" '..(filepath or "")
+				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
+				local code = ([[
+					require 'lfs'
+					xpcall(function() dofile '%s' end,
+						function(err) print(debug.traceback(err)) end)
+					
+					os.execute 'PAUSE'
+				]]):format(filepath:gsub("\\","/"))
+				return '"'..mainpath..'/lualibs/lua" -e "'..code..'"'
 			end,
 		fprojdir = function(fname) 
-				return fname:GetPath(wx.wxPATH_GET_VOLUME)
+				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		capture = false,
-		fworkdir = function (filepath) return filepath and filepath:gsub("[\\/]+$","") end,
+		fworkdir = function (filepath) end,
+			--return filepath and filepath:gsub("[\\/]+$","") end,
 	},
 	[ID "debug.interpreter.Luxinia"] = {
 		name = "Luxinia",

@@ -28,9 +28,14 @@ function OnUpdateUIEditMenu(event) -- enable if there is a valid focused editor
 	event:Enable(editor ~= nil)
 end
 
+local shellboxeditor = ide.frame.vsplitter.splitter.bottomnotebook.shellbox.input
 function OnEditMenu(event)
+		
 	local menu_id = event:GetId()
 	local editor = GetEditor()
+	if shellboxeditor:FindFocus():GetId() == shellboxeditor:GetId() then
+		editor = shellboxeditor
+	end
 	if editor == nil then return end
 
 	if     menu_id == ID_CUT       then editor:Cut()
