@@ -179,7 +179,7 @@ local function projcomboboxUpdate(event)
 	local fn = wx.wxFileName(cur)
 	fn:Normalize()
 	
-	filetree:UpdateProjectDir(fn:GetFullPath())
+	filetree:UpdateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
 end
 
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
@@ -193,17 +193,25 @@ treeSetConnectorsAndIcons(projtree,filetree.projdata)
 
 
 
-function filetree:UpdateProjectDir(newdir)
-	if ((not newdir) or filetree.projdirText == newdir) then return end
-	
-	-- TODO remove last path separator if exists
-	
+function filetree:UpdateProjectDir(newdir, cboxsel)
+	if (newdir and newdir:sub(-3,-2) == string_Pathsep) then
+		newdir = newdir:sub(0,-2)
+	end
+
+	if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
 	filetree.projdirText = newdir
-	PrependStringToArray(filetree.projdirTextArray,newdir)
-	projcombobox:Clear()
-	projcombobox:Append(filetree.projdirTextArray)
 	
-	projcombobox:SetValue(newdir)
+	--if (not cboxsel) then
+		PrependStringToArray(filetree.projdirTextArray,newdir)
+		projcombobox:Clear()
+		projcombobox:Append(filetree.projdirTextArray)
+		if (not cboxsel) then
+			projcombobox:SetValue(newdir)
+			--projcombobox:SetValue(newdir)
+		else
+			projcombobox:Select(0)
+		end
+	--end
 	
 	treeSetRoot(projtree,filetree.projdata,newdir)
 end
@@ -219,4 +227,15 @@ sidenotebook:AddPage(projpanel, "Project",true)
 function GetFileTreeDir()
 	-- atm only projtree
 	return filetree.newfiledir
+end
+
+function SetProjects(tab)
+	filetree.projdirTextArray = tab
+	if (tab and tab[1]) then
+		filetree:UpdateProjectDir(tab[1])
+	end
+end
+
+function GetProjects()
+	return filetree.projdirTextArray
 end

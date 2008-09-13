@@ -14,9 +14,6 @@ Z Debugging
 
 FEATURES
 ========
-C ProjectHistory
-	stored in settings
-
 C ProjectBrowser
 	rightclick for "new directory, refresh, open, delete?"
 	newfiledirectory from current projectbrowser selection
@@ -24,6 +21,9 @@ C ProjectBrowser
 ? interpreters
 	interface?
 	loaded externally?
+	
+C Syntax
+	reapply (force syntax)
 
 Z autocomplete
 	"reset" dynamicwords
@@ -54,7 +54,7 @@ C Tools:
 ? Settings: 
 	keybinds
 	tools (order/active)
-	dialog version
+	dialog version for colors
 
 
 

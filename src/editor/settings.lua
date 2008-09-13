@@ -9,6 +9,17 @@ if settings then
 	--settings:SetRecordDefaults()
 end
 
+
+local function settingsReadSafe(settings,what,default)
+	local cr,out = settings:Read(what,default)
+	
+	if (cr) then
+		return out
+	else
+		return default
+	end
+end
+
 -- ----------------------------------------------------------------------------
 -- wxConfig load/save preferences functions
 
@@ -168,6 +179,108 @@ function SettingsSaveFileSession(opendocs)
 	for i,doc in ipairs(opendocs) do
 		settings:Write(tostring(i), doc.filename..";"..doc.cursorpos)
 	end
+	
+	settings:SetPath(path)
+end
+
+---
+-- () SettingsRestoreProjectSession (function)
+
+function SettingsRestoreProjectSession(fntab)
+	local listname = "projectsession"
+	local path = settings:GetPath()
+	settings:SetPath("/"..listname)
+	local outtab = {}
+	local couldread = true
+	local id = 1
+	local name 
+	while(couldread) do
+		couldread, name = settings:Read(tostring(id), "")
+		couldread = couldread and name ~= ""
+		if (couldread) then
+			if (wx.wxDirExists(name)) then
+				table.insert(outtab,name)
+			end
+			id = id + 1
+		end
+	end
+	
+	if fntab then fntab(outtab) end
+	
+	settings:SetPath(path)
+	
+	return outtab
+end
+
+---
+-- () SettingsSaveProjectSession  (table projdirs)
+-- saves the list of currently active projects
+-- in the settings.
+function SettingsSaveProjectSession(projdirs)
+	local listname = "projectsession"
+	local path = settings:GetPath()
+	settings:DeleteGroup(listname)
+	settings:SetPath("/"..listname)
+	
+	for i,dir in ipairs(projdirs) do
+		settings:Write(tostring(i), dir)
+	end
+	
+	settings:SetPath(path)
+end
+
+-----------------------------------
+
+function SettingsRestoreView()
+	local listname = "view"
+	local path = settings:GetPath()
+	settings:SetPath("/"..listname)
+	
+	local frame = ide.frame
+	local vsplitter = frame.vsplitter
+	local sidenotebook = vsplitter.sidenotebook
+	local splitter = vsplitter.splitter
+	
+	local treevis   = settingsReadSafe(settings,"filetreevis",1)
+	local outvis    = settingsReadSafe(settings,"outputvis",1)
+	
+	ide.config.view.vsplitterpos   = settingsReadSafe(settings,"filetreewidth",ide.config.view.vsplitterpos)
+	ide.config.view.splitterheight = settingsReadSafe(settings,"outputheight",ide.config.view.splitterheight)
+	
+	
+	local w, h = frame:GetClientSizeWH()
+	
+	if (treevis > 0) then
+		vsplitter:SplitVertically(sidenotebook,splitter,ide.config.view.vsplitterpos)
+	else
+		vsplitter:Initialize(splitter)
+	end
+		
+	if (outvis > 0) then
+		splitter:SplitHorizontally(splitter.notebook, splitter.bottomnotebook, h-ide.config.view.splitterheight)
+	else
+		splitter:Initialize(splitter.notebook)
+	end
+	
+	settings:SetPath(path)
+end
+
+function SettingsSaveView()
+	local listname = "view"
+	local path = settings:GetPath()
+	settings:DeleteGroup(listname)
+	settings:SetPath("/"..listname)
+	
+	local frame = ide.frame
+	local vsplitter = frame.vsplitter
+	local splitter = vsplitter.splitter
+	
+	local w, h = frame:GetClientSizeWH()
+	
+	settings:Write("filetreevis", 	vsplitter:IsSplit())
+	settings:Write("filetreewidth",	vsplitter:IsSplit() and vsplitter:GetSashPosition() or ide.config.view.vsplitterpos)
+	settings:Write("outputvis",	 	splitter:IsSplit())
+	settings:Write("outputheight",	splitter:IsSplit() and (h-splitter:GetSashPosition()) or ide.config.view.splitterheight)
 	
 	settings:SetPath(path)
 end

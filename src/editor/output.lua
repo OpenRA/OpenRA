@@ -26,10 +26,10 @@ function ClearOutput(event)
 end
 
 function DisplayOutput(message, dont_add_marker)
-	if splitter:IsSplit() == false then
-		local w, h = ide.frame:GetClientSizeWH()
-		splitter:SplitHorizontally(notebook, bottomnotebook, (2 * h) / 3)
-	end
+	--if splitter:IsSplit() == false then
+	--	local w, h = ide.frame:GetClientSizeWH()
+	--	splitter:SplitHorizontally(notebook, bottomnotebook, h - ide.config.view.splitterheight)
+	--end
 	if not dont_add_marker then
 		errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
 	end

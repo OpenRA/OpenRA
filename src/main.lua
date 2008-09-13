@@ -23,6 +23,13 @@ ide = {
 		interpreter = "EstrelaEditor",
 		autocomplete = true,
 		filehistorylength = 20,
+		singleinstance = true,
+		singleinstanceport = 0xe493,
+		
+		view = {
+			vsplitterpos = 150,
+			splitterheight = 200,
+		},
 	},
 	specs = {
 		none = {
@@ -34,6 +41,7 @@ ide = {
 	
 	frame            = nil,    -- gui related
 	debugger         = nil,    -- debugger
+	filetree         = nil,    -- filetree
 	findReplace      = nil,    -- find & replace handling
 	settings         = nil,    -- user settings (window pos, last files..)
 	
@@ -144,9 +152,10 @@ dofile "src/editor/menu.lua"
 
 -- load rest of settings
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
-
+SettingsRestoreView()
 SettingsRestoreFileSession(SetOpenFiles)
 SettingsRestoreFileHistory(UpdateFileHistoryUI)
+SettingsRestoreProjectSession(SetProjects)
 
 -- ---------------------------------------------------------------------------
 -- Load the args that this script is run with

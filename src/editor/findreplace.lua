@@ -218,16 +218,15 @@ local function storefile(file,content)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
-	local pathsep = string.char(wx.wxFileName.GetPathSeparator())
 	if (subdirs) then
-		local dirs = FileSysGet(startdir..pathsep.."*.*",wx.wxDIR)
+		local dirs = FileSysGet(startdir..string_Pathsep.."*.*",wx.wxDIR)
 		for i,dir in ipairs(dirs) do
 			--DisplayOutput(dir.."\n")
 			ProcInFiles(dir,mask,true,replace)
 		end
 	end
 	
-	local files = FileSysGet(startdir..pathsep..mask,wx.wxFILE)
+	local files = FileSysGet(startdir..string_Pathsep..mask,wx.wxFILE)
 	for i,file in ipairs(files) do
 		findReplace.curfilename = file
 		

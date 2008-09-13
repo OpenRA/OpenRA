@@ -466,7 +466,9 @@ function CloseWindow(event)
 	end
 	debugger.running = false
 	
+	SettingsSaveProjectSession(GetProjects())
 	SettingsSaveFileSession(GetOpenFiles())
+	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
 	ide.settings:delete() -- always delete the config
 	event:Skip()

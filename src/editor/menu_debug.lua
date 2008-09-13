@@ -11,12 +11,15 @@
 
 local frame    = ide.frame
 local menuBar  = frame.menuBar
-local splitter = frame.vsplitter.splitter
+local vsplitter= frame.vsplitter
+local sidenotebook = vsplitter.sidenotebook
+local splitter = vsplitter.splitter
 local errorlog = splitter.bottomnotebook.errorlog
 local notebook = splitter.notebook
 
 local openDocuments = ide.openDocuments
 local debugger 		= ide.debugger
+local filetree      = ide.filetree
 
 --------------
 -- Interpreters
@@ -101,6 +104,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_VIEWCALLSTACK,    "V&iew Call Stack",       "View the LUA call stack" },
 		{ ID_VIEWWATCHWINDOW,  "View &Watches",          "View the Watch window" },
 		{ },
+		{ ID_SHOWFILETREE,     "View &FileTree Window",  "View or Hide the filetree window" },
 		{ ID_SHOWHIDEWINDOW,   "View &Output Window\tF8", "View or Hide the output window" },
 		{ ID_CLEAROUTPUT,      "C&lear Output Window",    "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 		{},
@@ -461,11 +465,22 @@ frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_SHOWHIDEWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
+			local w, h = frame:GetClientSizeWH()
 			if splitter:IsSplit() then
+				ide.config.view.splitterheight = h - splitter:GetSashPosition()
 				splitter:Unsplit()
 			else
-				local w, h = frame:GetClientSizeWH()
-				splitter:SplitHorizontally(notebook, errorlog, (2 * h) / 3)
+				splitter:SplitHorizontally(notebook, splitter.bottomnotebook, h - ide.config.view.splitterheight)
+			end
+		end)
+		
+frame:Connect(ID_SHOWFILETREE, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			if vsplitter:IsSplit() then
+				ide.config.view.vsplitterpos = vsplitter:GetSashPosition()
+				vsplitter:Unsplit(sidenotebook)
+			else
+				vsplitter:SplitVertically(sidenotebook,splitter,ide.config.view.vsplitterpos)
 			end
 		end)
 
