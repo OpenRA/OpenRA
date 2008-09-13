@@ -87,12 +87,12 @@ loadCFG()
 local function addToTab(tab,file)
 	local cfgfn,err = loadfile(file)
 	if not cfgfn then
-		print("Error while loading configuration file: \n",debug.traceback(err))
+		print("Error while loading file: \n",debug.traceback(err))
 	else
 		local name = file:match("([a-zA-Z_0-9]+)%.lua$")
 		
 		local success
-		success, result = xpcall(cfgfn,function(err)print("Error while executing configuration file: \n",debug.traceback(err))end)
+		success, result = xpcall(cfgfn,function(err)print("Error while executing file: \n",debug.traceback(err))end)
 		if (name and success) then
 			tab[name] = result
 		end

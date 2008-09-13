@@ -10,7 +10,6 @@
 -- i	italic - boolean
 -- fill	fill to end - boolean
 
-
 function StylesGetDefault()
 	return {
 		-- lexer specific (inherit fg/bg from text)
@@ -32,7 +31,7 @@ function StylesGetDefault()
 		keywords7		= {fg = {240, 255, 255},},
 		
 		-- common (inherit fg/bg from text)
-		text 			= nil, -- let os pick
+		text 			= defaultstyle, -- let os pick
 		linenumber 		= {fg = {192, 192, 192},},
 		bracematch 		= {fg = {0,   0,   255},	b = true},
 		bracemiss 		= {fg = {255, 0,   0  },	b = true},
@@ -143,6 +142,7 @@ local defaultmapping = {
 
 
 function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
+	editor:StyleResetDefault()
 	editor:StyleClearAll()
 
 	editor:SetFont(font)
@@ -181,6 +181,56 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 
 	editor:Colourise(0, -1)
 end
+
+
+function ReApplySpecAndStyles()
+	local openDocuments = ide.openDocuments
+	for i,doc in pairs(openDocuments) do
+		if (doc.editor.spec) then
+			SetupKeywords(doc.editor,nil,doc.editor.spec)
+		end
+	end
+	
+	local errorlog = ide.frame.vsplitter.splitter.bottomnotebook.errorlog
+	local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox 
+	
+	SetupKeywords(shellbox.input,"lua")
+	
+	StylesApplyToEditor(ide.config.styles,errorlog,ide.font,ide.fontItalic)
+	StylesApplyToEditor(ide.config.styles,shellbox.output,ide.font,ide.fontItalic)
+end
+
+function LoadConfigStyle()
+	local fileDialog = wx.wxFileDialog(ide.frame, "Open Config File",
+									   "/cfg",
+									   "",
+									   "Lua file (*.lua)|*.lua|All files (*)|*",
+									   wx.wxOPEN + wx.wxFILE_MUST_EXIST)
+	if fileDialog:ShowModal() == wx.wxID_OK then
+		local cfg = {path = {}, editor = {}, view ={},}
+		local cfgfn,err = loadfile(fileDialog:GetPath())
+		if cfgfn then
+			setfenv(cfgfn,cfg)
+			cfgfn = xpcall(cfgfn,function(err)DisplayOutput("Error while executing configuration file: \n",debug.traceback(err))end)
+		end
+		
+		if not cfgfn or not cfg.styles then
+			wx.wxMessageBox("Unable to load config style '"..fileDialog:GetPath().."'.",
+							"wxLua Error",
+							wx.wxOK + wx.wxCENTRE, ide.frame)
+		else
+			ide.config.styles = StylesGetDefault()
+			-- copy
+			for i,s in pairs(cfg.styles) do
+				ide.config.styles[i] = s
+			end
+			ReApplySpecAndStyles()
+		end
+	end
+	fileDialog:Destroy()
+	
+end
+
 -- used lexers ?
 --[=[
 #define wxSTC_POV_DEFAULT 0

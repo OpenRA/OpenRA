@@ -6,9 +6,11 @@ local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
 local out = shellbox.output
 local code = shellbox.input
 local frame = ide.frame
-
+out:StyleClearAll()
+out:SetBufferedDraw(true)
 out:WrapCount(80)
 out:SetReadOnly(true)
+StylesApplyToEditor(ide.config.styles,out,ide.font,ide.fontItalic)
 
 local function print(...)
 	out:SetReadOnly(false)

@@ -402,11 +402,3 @@ function SetupKeywords(editor, ext, forcespec)
 	StylesApplyToEditor(ide.config.styles, editor,
 							ide.font,ide.fontItalic,lexerstyleconvert)
 end
-
-function ReApplySpecAndStyles()
-	for i,doc in ipairs(openDocuments) do
-		if (doc.editor.spec) then
-			SetupKeywords(doc.editor,nil,doc.editor.spec)
-		end
-	end
-end
