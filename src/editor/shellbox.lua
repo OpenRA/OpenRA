@@ -10,7 +10,7 @@ out:StyleClearAll()
 out:SetBufferedDraw(true)
 out:WrapCount(80)
 out:SetReadOnly(true)
-StylesApplyToEditor(ide.config.styles,out,ide.font,ide.fontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,out,ide.font,ide.fontItalic)
 
 local function print(...)
 	out:SetReadOnly(false)
@@ -39,7 +39,7 @@ code:SetTabWidth(4)
 code:SetIndent(4)
 code:SetUseTabs(true)
 code:SetIndentationGuides(true)
-SetupKeywords(code,"lua")
+SetupKeywords(code,"lua",nil,ide.config.stylesoutshell)
 
 local accel = wx.wxAcceleratorTable{
 	{wx.wxACCEL_CTRL,13,ID "shellbox.execute"},

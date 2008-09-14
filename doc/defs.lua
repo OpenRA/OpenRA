@@ -85,7 +85,10 @@ config = {
 	},
 	
 	styles = {},
-		-- styles table as above
+		-- styles table as above for editor
+		
+	stylesoutshell = {},
+		-- styles for output/shell
 		
 	interpreter = "EstrelaEditor",
 		-- the default "project" lua interpreter

@@ -355,7 +355,7 @@ function GetSpec(ext,forcespec)
 	return spec
 end
 
-function SetupKeywords(editor, ext, forcespec)
+function SetupKeywords(editor, ext, forcespec, styles)
 	local lexerstyleconvert = nil
 	local spec = forcespec or GetSpec(ext)
 
@@ -399,6 +399,6 @@ function SetupKeywords(editor, ext, forcespec)
 		editor.spec = ide.specs.none
 	end
 	
-	StylesApplyToEditor(ide.config.styles, editor,
+	StylesApplyToEditor(styles or ide.config.styles, editor,
 							ide.font,ide.fontItalic,lexerstyleconvert)
 end

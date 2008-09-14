@@ -262,6 +262,9 @@ function SettingsRestoreView()
 		splitter:Initialize(splitter.notebook)
 	end
 	
+	frame.menuBar:Check(ID "view.filetree.show", treevis > 0)
+	frame.menuBar:Check(ID "view.output.show", outvis > 0)
+	
 	settings:SetPath(path)
 end
 

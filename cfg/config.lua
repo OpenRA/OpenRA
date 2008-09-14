@@ -33,7 +33,7 @@ styles = {
 	
 	-- common (inherit fg/bg from text)
 	text 			= nil, -- let os pick
-	linenumber 		= {fg = {192, 192, 192},},
+	linenumber 		= {fg = {90, 90, 80},},
 	bracematch 		= {fg = {0,   0,   255},	b = true},
 	bracemiss 		= {fg = {255, 0,   0  },	b = true},
 	ctrlchar 		= nil,

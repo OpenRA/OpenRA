@@ -20,6 +20,7 @@ ide = {
 		}, 
 		editor = {},
 		styles = StylesGetDefault(),
+		stylesoutshell = StylesGetDefault(),
 		interpreter = "EstrelaEditor",
 		autocomplete = true,
 		filehistorylength = 20,

@@ -81,14 +81,14 @@ local specialmapping = {
 			if (style.fg) then
 				editor:SetCaretForeground(wx.wxColour(unpack(style.fg)))
 			end
-			if (style.bg) then
-				editor:SetCaretBackground(wx.wxColour(unpack(style.bg)))
-			end
+			--if (style.bg) then
+			--	editor:SetCaretBackground(wx.wxColour(unpack(style.bg)))
+			--end
 		end,
 		
 	caretlinebg = function(editor,style)
 			if (style.bg) then
-				editor:SetCaretLineBack(wx.wxColour(unpack(style.bg)))
+				editor:SetCaretLineBackground(wx.wxColour(unpack(style.bg)))
 			end
 		end,
 		
@@ -142,11 +142,6 @@ local defaultmapping = {
 
 
 function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
-	editor:StyleResetDefault()
-	editor:StyleClearAll()
-
-	editor:SetFont(font)
-	
 	local function applystyle(style,id)
 		editor:StyleSetFont(id, style.i and fontitalic or font)
 		editor:StyleSetBold(id, style.b or false)
@@ -160,6 +155,13 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 			editor:StyleSetBackground(id, style.bg and wx.wxColour(unpack(style.bg)) or defaultbg)
 		end
 	end
+	
+	editor:StyleResetDefault()
+	if (styles.text) then
+		applystyle(styles.text,defaultmapping["text"])
+	end
+	editor:StyleClearAll()
+	editor:SetFont(font)
 	
 	defaultfg = styles.text and styles.text.fg and wx.wxColour(unpack(styles.text.fg)) or nil
 	defaultbg = styles.text and styles.text.bg and wx.wxColour(unpack(styles.text.bg)) or nil
@@ -194,10 +196,10 @@ function ReApplySpecAndStyles()
 	local errorlog = ide.frame.vsplitter.splitter.bottomnotebook.errorlog
 	local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox 
 	
-	SetupKeywords(shellbox.input,"lua")
+	SetupKeywords(shellbox.input,"lua",nil,ide.config.stylesoutshell)
 	
-	StylesApplyToEditor(ide.config.styles,errorlog,ide.font,ide.fontItalic)
-	StylesApplyToEditor(ide.config.styles,shellbox.output,ide.font,ide.fontItalic)
+	StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font,ide.fontItalic)
+	StylesApplyToEditor(ide.config.stylesoutshell,shellbox.output,ide.font,ide.fontItalic)
 end
 
 function LoadConfigStyle()
@@ -214,15 +216,24 @@ function LoadConfigStyle()
 			cfgfn = xpcall(cfgfn,function(err)DisplayOutput("Error while executing configuration file: \n",debug.traceback(err))end)
 		end
 		
-		if not cfgfn or not cfg.styles then
+		if not (cfgfn and (cfg.styles or cfg.stylesoutshell)) then
 			wx.wxMessageBox("Unable to load config style '"..fileDialog:GetPath().."'.",
 							"wxLua Error",
 							wx.wxOK + wx.wxCENTRE, ide.frame)
 		else
-			ide.config.styles = StylesGetDefault()
-			-- copy
-			for i,s in pairs(cfg.styles) do
-				ide.config.styles[i] = s
+			if (cfg.styles) then
+				ide.config.styles = StylesGetDefault()
+				-- copy
+				for i,s in pairs(cfg.styles) do
+					ide.config.styles[i] = s
+				end
+			end
+			if (cfg.stylesoutshell) then
+				ide.config.stylesoutshell = StylesGetDefault()
+				-- copy
+				for i,s in pairs(cfg.stylesoutshell) do
+					ide.config.stylesoutshell[i] = s
+				end
 			end
 			ReApplySpecAndStyles()
 		end

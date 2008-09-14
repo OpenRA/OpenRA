@@ -16,7 +16,7 @@ errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
 errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
 errorlog:SetReadOnly(true)
-StylesApplyToEditor(ide.config.styles,errorlog,ide.font,ide.fontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font,ide.fontItalic)
 
 
 function ClearOutput(event)

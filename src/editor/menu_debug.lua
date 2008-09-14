@@ -84,7 +84,7 @@ local interpreters = {
 		name = "Estrela Editor",
 		description = "Estrela Editor as run target (IDE development)",
 		fcmdline = function(filepath) 
-				return editorFilename and '"'..ide.editorFilename..'" '..iff(menuBar:IsChecked(ID_USECONSOLE), " -c ", "")..(filepath or "") or nil
+				return ide.editorFilename and '"'..ide.editorFilename..'" '..(filepath or "") or nil
 			end,
 		fprojdir = function(fname)
 				return fname:GetPath(wx.wxPATH_GET_VOLUME)
@@ -101,7 +101,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_RUN,              "&Run\tF6",               "Execute the current file" },
 		{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
 		{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
-		{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
+		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
 		{ ID_STOP_DEBUG,       "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
 		{ ID_STEP,             "St&ep\tF11",             "Step into the next line" },
@@ -110,14 +110,9 @@ local debugMenu = wx.wxMenu{
 		{ ID_CONTINUE,         "Co&ntinue\tF5",          "Run the program at full speed" },
 		{ ID_BREAK,            "&Break\tF12",            "Stop execution of the program at the next executed line of code" },
 		{ },
-		{ ID_VIEWCALLSTACK,    "V&iew Call Stack",       "View the LUA call stack" },
-		{ ID_VIEWWATCHWINDOW,  "View &Watches",          "View the Watch window" },
-		{ },
-		{ ID_SHOWFILETREE,     "View &FileTree Window",  "View or Hide the filetree window" },
-		{ ID_SHOWHIDEWINDOW,   "View &Output Window\tF8", "View or Hide the output window" },
 		{ ID_CLEAROUTPUT,      "C&lear Output Window",    "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
-		{},
 		--{ }, { ID_DEBUGGER_PORT,    "Set debugger socket port...", "Chose what port to use for debugger sockets." }
+		{ },
 		}
 
 local targetargs = {}
@@ -138,7 +133,7 @@ local targetworkdir = wx.wxMenu{
 debugMenu:Append(0,"Lua &interpreter",target,"Set the interpreter to be used")
 debugMenu:Append(0,"Project directory",targetworkdir,"Set the project directory to be used")
 menuBar:Append(debugMenu, "&Project")
-menuBar:Check(ID_USECONSOLE, true)
+--menuBar:Check(ID_USECONSOLE, true)
 
 function UpdateProjectDir(projdir)
 	ide.config.path.projectdir = projdir
@@ -449,50 +444,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
 		function (event)
 			event:Enable((debugger.server ~= nil) and debugger.running)
 		end)
-
-frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			if debugger.server then
-				debugger.server:DisplayStackDialog(frame)
-			end
-		end)
-frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_UPDATE_UI,
-		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
-		end)
-
-frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			if not debugger.watchWindow then
-				CreateWatchWindow()
-			end
-		end)
-frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_UPDATE_UI,
-		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
-		end)
-
-frame:Connect(ID_SHOWHIDEWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			local w, h = frame:GetClientSizeWH()
-			if splitter:IsSplit() then
-				ide.config.view.splitterheight = h - splitter:GetSashPosition()
-				splitter:Unsplit()
-			else
-				splitter:SplitHorizontally(notebook, splitter.bottomnotebook, h - ide.config.view.splitterheight)
-			end
-		end)
 		
-frame:Connect(ID_SHOWFILETREE, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			if vsplitter:IsSplit() then
-				ide.config.view.vsplitterpos = vsplitter:GetSashPosition()
-				vsplitter:Unsplit(sidenotebook)
-			else
-				vsplitter:SplitVertically(sidenotebook,splitter,ide.config.view.vsplitterpos)
-			end
-		end)
-
 frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function(event)
 		end)
