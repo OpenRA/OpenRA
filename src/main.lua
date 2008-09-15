@@ -139,7 +139,6 @@ if arg then
 				print("Comandline: -cfg arg data not passed as string")
 			else
 				addConfig(str,true,true)
-				print(ide.config.singleinstance)
 			end
 			index = index+1
 		else

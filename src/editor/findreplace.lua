@@ -128,21 +128,18 @@ end
 function findReplace:FindStringAll(inFileRegister)
 	local found = false
 	if findReplace:HasText() then
-		local replaceLen = string.len(findReplace.replaceText)
 		local findLen = string.len(findReplace.findText)
 		local editor = findReplace:GetEditor()
-		setTargetAll(editor)
+		local e = setTargetAll(editor)
 		
 		setSearchFlags(editor)
 		local posFind = editor:SearchInTarget(findReplace.findText)
 		if (posFind ~= -1)  then
 			while posFind ~= -1 do
 				inFileRegister(posFind)
-				
 				editor:SetTargetStart(posFind + findLen)
-				
+				editor:SetTargetEnd(e)
 				posFind = editor:SearchInTarget(findReplace.findText)
-				DisplayOutput(tostring(posFind).."\n")
 			end
 			
 			found = true
