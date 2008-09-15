@@ -25,10 +25,10 @@ styles = {
 	bracemiss 		= {fg = {255, 50,   50  },	b = true},
 	ctrlchar 		= nil,
 	indent 			= {fg = {80, 80, 80},bg = {24,24,24},},
-	calltip 		= nil,
+	calltip 		= {fg = {255,255,255},bg = {10,10,10},},
 	
 	-- common special (need custom fg & bg)
-	calltipbg		= nil,
+	calltipbg		= {fg = {240,240,240},bg = {10,10,10},},
 	sel				= {fg = {180,220,140},bg = {70,105,100},},
 	caret			= {fg = {250,250,250},},
 	caretlinebg		= {fg = {180,220,140},bg = {24,44,44},},
