@@ -84,7 +84,7 @@ local interpreters = {
 		name = "Estrela Editor",
 		description = "Estrela Editor as run target (IDE development)",
 		fcmdline = function(filepath) 
-				return ide.editorFilename and '"'..ide.editorFilename..'" '..(filepath or "") or nil
+				return ide.editorFilename and '"'..ide.editorFilename..'" '..(filepath or "")..' -cfg "singleinstance=false;"' or nil
 			end,
 		fprojdir = function(fname)
 				return fname:GetPath(wx.wxPATH_GET_VOLUME)
@@ -253,7 +253,7 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 			local wdir = interpreter.fworkdir(filepath)
 			local capture = interpreter.capture
 			local projectdir = ide.config.path.projectdir
-			DisplayOutput("Running program: "..cmd.." in "..projectdir.."\n")
+			--DisplayOutput("Running program: "..cmd.." in "..projectdir.."\n")
 			--local cwd = wx.wxGetCwd()
 			--wx.wxFileName().SetCwd(projectdir)
 			

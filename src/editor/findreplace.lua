@@ -140,7 +140,9 @@ function findReplace:FindStringAll(inFileRegister)
 				inFileRegister(posFind)
 				
 				editor:SetTargetStart(posFind + findLen)
+				
 				posFind = editor:SearchInTarget(findReplace.findText)
+				DisplayOutput(tostring(posFind).."\n")
 			end
 			
 			found = true

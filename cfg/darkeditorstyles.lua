@@ -4,7 +4,7 @@ styles = {
 	lexerdef	 	= {fg = {128, 128, 128},},
 	comment 		= {fg = {200,   230, 120  },bg = {30,   40, 30 }, fill= true,},
 	stringtxt 		= {fg = {240,128,240},},
-	stringeol 		= {fg = {240,128,240},bg = {25, 10, 25}, fill = true, b = true},
+	stringeol 		= {fg = {240,128,200},bg = {48, 24, 24}, fill = true,},
 	preprocessor	= {fg = {220,175,140},},
 	operator 		= {fg = {210,  230,  240 },},
 	number 			= {fg = {210,  230,  255, },},

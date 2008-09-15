@@ -65,19 +65,18 @@ ide = {
 }
 
 -- load config
-local function loadCFG()
-	local function addConfig(filename,showerror)
-		local cfgfn,err = loadfile(filename)
-		if not cfgfn then
-			if (showerror) then
-				print("Error while loading configuration file: \n",debug.traceback(err))
-			end
-		else
-			setfenv(cfgfn,ide.config)
-			xpcall(cfgfn,function(err)print("Error while executing configuration file: \n",debug.traceback(err))end)
+local function addConfig(filename,showerror,isstring)
+	local cfgfn,err = isstring and loadstring(filename) or loadfile(filename)
+	if not cfgfn then
+		if (showerror) then
+			print("Error while loading configuration file: \n",debug.traceback(err))
 		end
+	else
+		setfenv(cfgfn,ide.config)
+		xpcall(cfgfn,function(err)print("Error while executing configuration file: \n",debug.traceback(err))end)
 	end
-	
+end
+local function loadCFG()
 	addConfig("cfg/config.lua",true)
 	-- TODO alternate search path
 	addConfig("cfg/user.lua",false)
@@ -124,6 +123,30 @@ local function loadTools()
 	end
 end
 loadTools()
+---------------
+-- process args
+local filenames = {}
+if arg then
+	-- arguments pushed into wxLua are
+	--   [C++ app and it's args][lua prog at 0][args for lua start at 1]
+	ide.editorFilename = arg[0] 
+	
+	for index = 1, #arg do
+		if (arg[index] == "-cfg" and index+1 <= #arg) then
+			local str = arg[index+1]
+			
+			if #str < 4 then
+				print("Comandline: -cfg arg data not passed as string")
+			else
+				addConfig(str,true,true)
+				print(ide.config.singleinstance)
+			end
+			index = index+1
+		else
+			table.insert(filenames,arg[index])
+		end
+	end
+end
 
 ---------------
 -- Load App
@@ -165,17 +188,11 @@ SettingsRestoreProjectSession(SetProjects)
 
 --for k, v in pairs(arg) do print(k, v) end
 
-if arg then
+do
 	local notebook = ide.frame.vsplitter.splitter.notebook
-	
-	-- arguments pushed into wxLua are
-	--   [C++ app and it's args][lua prog at 0][args for lua start at 1]
-	ide.editorFilename = arg[0] 
-	
 	local loaded 
 
-	for index = 1, #arg do
-		fileName = arg[index]
+	for i,fileName in ipairs(filenames) do
 		if fileName ~= "--" then
 			LoadFile(fileName, nil, true)
 			loaded = true
@@ -190,9 +207,6 @@ if arg then
 	   local editor = CreateEditor("untitled.lua")
 	   SetupKeywords(editor, "lua")
 	end
-else
-	local editor = CreateEditor("untitled.lua")
-	SetupKeywords(editor, "lua")
 end
 
 ide.frame:Show(true)

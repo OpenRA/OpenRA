@@ -17,7 +17,7 @@ styles = {
 	lexerdef	 	= {fg = {128, 128, 128},},
 	comment 		= {fg = {0,   127, 0  },bg = {240, 240, 220}, fill= true,},
 	stringtxt 		= {fg = {127, 0,   127},},
-	stringeol 		= {fg = {0,   0,   0  },bg = {224, 192, 224}, fill = true, b = true},
+	stringeol 		= {fg = {0,   0,   0  },bg = {224, 192, 224}, fill = true, },
 	preprocessor	= {fg = {127, 127, 0  },},
 	operator 		= {fg = {0,   0,   0  },},
 	number 			= {fg = {90,  100,  0 },},

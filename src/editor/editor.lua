@@ -24,7 +24,7 @@ end
 function SetEditorSelection(selection)
 	local editor = GetEditor(selection)
 	UpdateStatusText(editor) -- update even if nil
-	ide.frame:SetTitle(GetFileInfo(editor))
+	ide.frame:SetTitle(GetFileTitle(editor))
 	
 	if editor then
 		editor:SetFocus()
@@ -86,13 +86,13 @@ function UpdateStatusText(editor)
 	end
 end
 
-function GetFileInfo (editor)
+function GetFileTitle (editor)
 	if not editor or not openDocuments[editor:GetId()] then return "Estrela Editor" end
 	local id = editor:GetId()
 	local filePath   = openDocuments[id].filePath
 	local fileName   = openDocuments[id].fileName
-	if not filePath or not filename then return "Estrela Editor" end
-	return "Estrela Editor ["..filePath.." - "..fileName.."]"
+	if not filePath or not fileName then return "Estrela Editor" end
+	return "Estrela Editor ["..filePath.."]"
 end
 
 -- Check if file is altered, show dialog to reload it
