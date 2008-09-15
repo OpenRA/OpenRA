@@ -158,17 +158,21 @@ for i,api in pairs(apis) do
 	fillTips(api,"")
 end
 
-function GetTipInfo (api,caller,class)
-	local tip = api.tip
-	return (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
+function GetTipInfo(editor, content)
+	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
+	local class  = caller and content:match("([a-zA-Z_0-9]+)%."..caller.."%(%s*$")
+	local tip = editor.api.tip
+	
+	return caller and (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
 end
+
 
 -------------
 -- Dynamic Words
 
 local dywordentries = {}
 local dynamicwords = {}
-function AddDynamicWord (api,word )
+local function addDynamicWord (api,word )
 	if api.tip.staticnames[word] then return end
 	if dywordentries[word] then return end
 	dywordentries[word] = word
@@ -196,13 +200,23 @@ function purgeDynamicWordlist ()
 	dywordentries = {}
 	dynamicwords = {}
 end
+
+function AddDynamicWordsCurrent(editor,content)
+	local api = editor.api
+
+	for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)[^a-zA-Z0-9_\r\n]" do
+		addDynamicWord(api,word)
+	end
+end
+
 function AddDynamicWords (editor)
 	local api = editor.api
 	local content = editor:GetText()
 
+	--
 	-- TODO check if inside comment
-	for word in content:gmatch "[a-zA-Z_0-9]+" do
-		AddDynamicWord(api,word)
+	for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)" do
+		addDynamicWord(api,word)
 	end
 end
 

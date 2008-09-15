@@ -224,9 +224,9 @@ function CreateEditor(name)
 				local linestart = editor:PositionFromLine(line)
 				local localpos = pos-linestart
 				
-				for word in linetx:sub(1,localpos):gmatch "([a-zA-Z0-9_]+)[^a-zA-Z0-9_\r\n]" do
-					AddDynamicWord(editor.api,word)
-				end
+				linetxtopos = linetx:sub(1,localpos)
+				
+				AddDynamicWordsCurrent(editor,linetxtopos)
 
 				if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
 					local pos = editor:GetCurrentPos()
@@ -242,17 +242,14 @@ function CreateEditor(name)
 						end
 					end
 				elseif ch == ("("):byte() then
-					-- todo: improve tipinfo 
-					local caller = linetx:sub(1,localpos):match("([a-zA-Z_0-9]+)%(%s*$")
-					local class  = caller and linetx:sub(1,localpos):match("([a-zA-Z_0-9]+)%."..caller.."%(%s*$")
-					
-					local tip = caller and GetTipInfo(editor.api,caller,class)
+					 
+					local tip = GetTipInfo(editor,linetxtopos)
 					if tip then
 						editor:CallTipShow(pos,tip)
 					end
-					--DisplayOutput(">  dang \n")
+					
 				elseif ide.config.autocomplete then -- code completion prompt
-					-- JUST FIRE THE DAMN EVENT! - defined in menu_edit.lua
+					
 					local linestart = editor:PositionFromLine(line)
 					local cnt = 0
 					local state = ""
@@ -271,14 +268,12 @@ function CreateEditor(name)
 							break
 						end
 					end
-					-- must have "wx.X" otherwise too many items
+					
 					if (cnt > 1)  then
-						--local range = editor:GetTextRange(start_pos-3, start_pos)
-						--if range == "wx." then
-							local commandEvent = wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
-																   ID_AUTOCOMPLETE)
-							wx.wxPostEvent(ide.frame, commandEvent)
-						--end
+						-- defined in menu_edit.lua
+						local commandEvent = wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
+															   ID_AUTOCOMPLETE)
+						wx.wxPostEvent(ide.frame, commandEvent)
 					end
 				end
 			end)
