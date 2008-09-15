@@ -249,6 +249,7 @@ function CreateEditor(name)
 				elseif ide.config.autocomplete then -- code completion prompt
 					
 					local cnt = 0
+					local sep = false
 					local state = ""
 					for i=localpos,1,-1 do
 						local c = linetx:sub(i,i)
@@ -257,8 +258,10 @@ function CreateEditor(name)
 							cnt = cnt + 1
 							state = "word"
 						elseif c:match("[%.:]") then
+							if sep then break end
 							state = "break"
 							cnt = cnt + 1
+							sep = true
 						elseif c:match "%s" then 
 							state = "space"
 						else
