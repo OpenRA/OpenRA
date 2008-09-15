@@ -13,6 +13,7 @@ local editMenu = wx.wxMenu{
 		{ ID_UNDO,      "&Undo\tCtrl-Z",       "Undo the last action" },
 		{ ID_REDO,      "&Redo\tCtrl-Y",       "Redo the last action undone" },
 		{ },
+		{ ID "edit.showtooltip",  "Show &Tooltip\tCtrl+T",			"Show tooltip for current position. Place cursor after opening bracket of function."},
 		{ ID_AUTOCOMPLETE,        "Complete &Identifier\tCtrl+K", "Complete the current identifier" },
 		{ ID_AUTOCOMPLETE_ENABLE, "Auto complete Identifiers",    "Auto complete while typing", wx.wxITEM_CHECK },
 		{ },
@@ -76,6 +77,23 @@ frame:Connect(ID_REDO, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
 			event:Enable(editor and editor:CanRedo())
+		end)
+		
+frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			local editor = GetEditor()
+				local pos = editor:GetCurrentPos()
+				local line = editor:GetCurrentLine()
+				local linetx = editor:GetLine(line)
+				local linestart = editor:PositionFromLine(line)
+				local localpos = pos-linestart
+				
+				linetxtopos = linetx:sub(1,localpos)
+				
+				local tip = GetTipInfo(editor,linetxtopos)
+				if tip then
+					editor:CallTipShow(pos,tip)
+				end
 		end)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,

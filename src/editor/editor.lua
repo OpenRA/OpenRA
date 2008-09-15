@@ -229,8 +229,6 @@ function CreateEditor(name)
 				AddDynamicWordsCurrent(editor,linetxtopos)
 
 				if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
-					local pos = editor:GetCurrentPos()
-					local line = editor:LineFromPosition(pos)
 					if (line > 0) then
 						local indent = editor:GetLineIndentation(line - 1)
 						if indent > 0 then
@@ -250,7 +248,6 @@ function CreateEditor(name)
 					
 				elseif ide.config.autocomplete then -- code completion prompt
 					
-					local linestart = editor:PositionFromLine(line)
 					local cnt = 0
 					local state = ""
 					for i=localpos,1,-1 do
