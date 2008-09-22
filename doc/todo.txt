@@ -45,6 +45,7 @@ C Tools:
 
 ? Settings: 
 	keybinds
+	luxinia path
 	tools (order/active)
 	dialog version for colors
 
