@@ -141,7 +141,7 @@ local function fillTips(api,apibasename)
 				
 				-- fix description
 				local frontname = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)")
-				frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])[^%)]","%1\n   ")
+				frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])([^%)])","%1\n   %2")
 				
 				info.description = info.description:gsub("<br>","\n")
 				info.description = info.description:gsub("\t","  ")
@@ -149,7 +149,9 @@ local function fillTips(api,apibasename)
 				
 				-- build info
 				local inf = frontname.."\n"..info.description
-				local infshort = frontname.."\n"..(info.description:match("^([^%.]+)%.") or info.description:sub(1,32)).."..."
+				local sentence = info.description:match("^([^\n]+)\n.*")
+				local sentence = sentence and sentence:match("([^%.]+)%..*$")
+				local infshort = frontname.."\n"..(sentence and sentence.."..." or info.description)
 				local infshortbatch = (info.returns and info.args) and frontname or infshort
 				
 				-- add to infoclass 
@@ -311,6 +313,7 @@ function CreateAutoCompList(api,key) -- much faster than iterating the wx. table
 	local complete = buildcache(tab.childs)
 
 	local last = key : match "([a-zA-Z0-9_]+)%s*$"
+		
 
 	-- build dynamic word list 
 	-- only if api search couldnt descend
