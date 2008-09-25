@@ -158,7 +158,7 @@ sidenotebook = wx.wxNotebook(vsplitter, wx.wxID_ANY,
 
 -- init splitters
 splitter:Initialize(notebook)
-vsplitter:SplitVertically(sidenotebook,splitter,ide.config.view.vsplitterpos)
+vsplitter:Initialize(splitter)
 
 
 -------

@@ -241,11 +241,11 @@ function SettingsRestoreView()
 	local sidenotebook = vsplitter.sidenotebook
 	local splitter = vsplitter.splitter
 	
-	local treevis   = settingsReadSafe(settings,"filetreevis",1)
-	local outvis    = settingsReadSafe(settings,"outputvis",1)
+	local treevis   = tonumber(settingsReadSafe(settings,"filetreevis",1))
+	local outvis    = tonumber(settingsReadSafe(settings,"outputvis",1))
 	
-	ide.config.view.vsplitterpos   = settingsReadSafe(settings,"filetreewidth",ide.config.view.vsplitterpos)
-	ide.config.view.splitterheight = settingsReadSafe(settings,"outputheight",ide.config.view.splitterheight)
+	ide.config.view.vsplitterpos   = tonumber(settingsReadSafe(settings,"filetreewidth",ide.config.view.vsplitterpos))
+	ide.config.view.splitterheight = tonumber(settingsReadSafe(settings,"outputheight",ide.config.view.splitterheight))
 	
 	
 	local w, h = frame:GetClientSizeWH()
