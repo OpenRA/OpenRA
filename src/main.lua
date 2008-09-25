@@ -22,7 +22,12 @@ ide = {
 		styles = StylesGetDefault(),
 		stylesoutshell = StylesGetDefault(),
 		interpreter = "EstrelaEditor",
+		
 		autocomplete = true,
+		ac = {
+			short = false,
+		},
+		
 		filehistorylength = 20,
 		projecthistorylength = 15,
 		savebak = false,

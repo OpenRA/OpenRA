@@ -9,6 +9,8 @@ local function newAPI()
 			keys = {},
 			finfo = {},
 			finfoclass = {},
+			shortfinfo = {},
+			shortfinfoclass = {},
 		},
 		-- autocomplete hierarchy
 		ac = {
@@ -23,6 +25,7 @@ local apis = {
 	lua = newAPI(),
 }
 
+local config = ide.config.ac
 
 function GetApi(apitype)
 	return apis[apitype] or apis["none"]
@@ -108,6 +111,8 @@ end
 
 ---------
 -- ToolTip and reserved words list
+-- also fixes function descriptions
+
 
 local function fillTips(api,apibasename)
 	local apiac = api.ac
@@ -117,11 +122,15 @@ local function fillTips(api,apibasename)
 	tclass.keys = {}
 	tclass.finfo = {}
 	tclass.finfoclass = {}
+	tclass.shortfinfo = {}
+	tclass.shortfinfoclass = {}
 	
 	local staticnames = tclass.staticnames
 	local keys = tclass.keys
 	local finfo = tclass.finfo
 	local finfoclass = tclass.finfoclass
+	local shortfinfo = tclass.shortfinfo
+	local shortfinfoclass = tclass.shortfinfoclass
 	
 	local function traverse (tab,libname)
 		if not tab.childs then return end
@@ -129,20 +138,42 @@ local function fillTips(api,apibasename)
 			traverse(info,key)
 			if info.type == "function" then
 				local libstr = libname ~= "" and libname.."." or ""
-				local inf = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)").."\n"..
-					info.description:gsub("("..("."):rep(60)..".-[%s,%)%]:%.])","%1\n")
+				
+				-- fix description
+				local frontname = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)")
+				frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])[^%)]","%1\n   ")
+				
+				info.description = info.description:gsub("<br>","\n")
+				info.description = info.description:gsub("\t","  ")
+				info.description = info.description:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])","%1\n")
+				
+				-- build info
+				local inf = frontname.."\n"..info.description
+				local infshort = frontname.."\n"..(info.description:match("^([^%.]+)%.") or info.description:sub(1,32)).."..."
+				local infshortbatch = (info.returns and info.args) and frontname or infshort
 				
 				-- add to infoclass 
 				if not finfoclass[libname] then finfoclass[libname] = {} end
+				if not shortfinfoclass[libname] then shortfinfoclass[libname] = {} end
 				finfoclass[libname][key] = inf
+				shortfinfoclass[libname][key] = infshort
 				
 				-- add to info
 				if not finfo[key] or #finfo[key]<200 then 
-					if finfo[key] then finfo[key] = finfo[key] .. "\n\n" --DisplayOutput("twice: func "..key.."\n")
+					if finfo[key] then finfo[key] = finfo[key] .. "\n\n"
 					else finfo[key] = "" end
 					finfo[key] = finfo[key] .. inf
 				elseif not finfo[key]:match("\n %(%.%.%.%)$") then
 					finfo[key] = finfo[key].."\n (...)"
+				end
+				
+				-- add to shortinfo
+				if not shortfinfo[key] or #shortfinfo[key]<200 then 
+					if shortfinfo[key] then shortfinfo[key] = shortfinfo[key] .. "\n"
+					else shortfinfo[key] = "" end
+					shortfinfo[key] = shortfinfo[key] .. infshortbatch
+				elseif not shortfinfo[key]:match("\n %(%.%.%.%)$") then
+					shortfinfo[key] = shortfinfo[key].."\n (...)"
 				end
 			end
 			if info.type == "keyword" then
@@ -158,12 +189,18 @@ for i,api in pairs(apis) do
 	fillTips(api,"")
 end
 
-function GetTipInfo(editor, content)
+function GetTipInfo(editor, content, short)
 	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
 	local class  = caller and content:match("([a-zA-Z_0-9]+)%."..caller.."%(%s*$")
 	local tip = editor.api.tip
 	
-	return caller and (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
+	DisplayOutput("short:"..tostring(short).."\n")
+	
+	if (not short) then
+		return caller and (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
+	else
+		return caller and (class and tip.shortfinfoclass[class]) and tip.shortfinfoclass[class][caller] or tip.shortfinfo[caller]
+	end
 end
 
 

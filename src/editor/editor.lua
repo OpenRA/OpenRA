@@ -241,7 +241,7 @@ function CreateEditor(name)
 					end
 				elseif ch == ("("):byte() then
 					 
-					local tip = GetTipInfo(editor,linetxtopos)
+					local tip = GetTipInfo(editor,linetxtopos,ide.config.ac.short)
 					if tip then
 						editor:CallTipShow(pos,tip)
 					end

@@ -90,7 +90,7 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 				
 				linetxtopos = linetx:sub(1,localpos)
 				
-				local tip = GetTipInfo(editor,linetxtopos)
+				local tip = GetTipInfo(editor,linetxtopos,false)
 				if tip then
 					editor:CallTipShow(pos,tip)
 				end
