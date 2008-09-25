@@ -88,7 +88,9 @@ end
 
 function UpdateBraceMatch(editor)
 	local pos  = editor:GetCurrentPos()
+	local posp  = pos > 0 and pos-1
 	local char = editor:GetCharAt(pos)
+	local charp = posp and editor:GetCharAt(posp)
 	local match = {	[string.byte("<")] = true, 
 		[string.byte(">")] = true,
 		[string.byte("(")] = true,
@@ -98,8 +100,10 @@ function UpdateBraceMatch(editor)
 		[string.byte("[")] = true,
 		[string.byte("]")] = true,
 		}
-	
-	if (match[char]) then
+		
+	pos = (match[char] and pos) or (charp and match[charp] and posp)
+
+	if (pos) then
 		local pos2 = editor:BraceMatch(pos)
 		if (pos2 == wxstc.wxSTC_INVALID_POSITION) then
 			editor:BraceBadLight(pos)
