@@ -194,8 +194,6 @@ function GetTipInfo(editor, content, short)
 	local class  = caller and content:match("([a-zA-Z_0-9]+)%."..caller.."%(%s*$")
 	local tip = editor.api.tip
 	
-	DisplayOutput("short:"..tostring(short).."\n")
-	
 	if (not short) then
 		return caller and (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
 	else
