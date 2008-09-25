@@ -86,6 +86,34 @@ function UpdateStatusText(editor)
 	end
 end
 
+function UpdateBraceMatch(editor)
+	local pos  = editor:GetCurrentPos()
+	local char = editor:GetCharAt(pos)
+	local match = {	[string.byte("<")] = true, 
+		[string.byte(">")] = true,
+		[string.byte("(")] = true,
+		[string.byte(")")] = true,
+		[string.byte("{")] = true,
+		[string.byte("}")] = true,
+		[string.byte("[")] = true,
+		[string.byte("]")] = true,
+		}
+	
+	if (match[char]) then
+		local pos2 = editor:BraceMatch(pos)
+		if (pos2 == wxstc.wxSTC_INVALID_POSITION) then
+			editor:BraceBadLight(pos)
+		else
+			editor:BraceHighlight(pos,pos2)
+		end
+		editor.matchon = true
+	elseif(editor.matchon) then
+		editor:BraceBadLight(wxstc.wxSTC_INVALID_POSITION)
+		editor:BraceHighlight(wxstc.wxSTC_INVALID_POSITION,-1)
+		editor.matchon = false
+	end
+end
+
 function GetFileTitle (editor)
 	if not editor or not openDocuments[editor:GetId()] then return "Estrela Editor" end
 	local id = editor:GetId()
@@ -145,6 +173,8 @@ function CreateEditor(name)
 										  wx.wxBORDER_STATIC)
 
 	editorID = editorID + 1 -- increment so they're always unique
+	
+	editor.matchon = false
 
 	editor:SetBufferedDraw(true)
 	editor:StyleClearAll()
@@ -299,6 +329,7 @@ function CreateEditor(name)
 	editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
 			function (event)
 				UpdateStatusText(editor)
+				UpdateBraceMatch(editor)
 			end)
 
 	editor:Connect(wx.wxEVT_SET_FOCUS,
@@ -309,7 +340,15 @@ function CreateEditor(name)
 				IsFileAlteredOnDisk(editor)
 				ide.in_evt_focus = false
 			end)
+			
 
+	--[[				
+	editor:Connect(wxstc.wxEVT_STC_POSCHANGED,
+			function (event)
+				-- brace checking
+				
+			end)
+			]]
 	if notebook:AddPage(editor, name, true) then
 		local id            = editor:GetId()
 		local document      = {}

@@ -21,8 +21,8 @@ styles = {
 	-- common (inherit fg/bg from text)
 	text 			= {fg = {240,240,240},bg = {24,24,24},},
 	linenumber 		= {fg = {30, 30, 40},bg = {230, 230, 230},},
-	bracematch 		= {fg = {200, 200,  0},	b = true},
-	bracemiss 		= {fg = {255, 50,   50  },	b = true},
+	bracematch 		= {fg = {255, 127,  0},	b = true},
+	bracemiss 		= {fg = {255, 0,0},	b = true},
 	ctrlchar 		= nil,
 	indent 			= {fg = {80, 80, 80},bg = {24,24,24},},
 	calltip 		= {fg = {255,255,255},bg = {10,10,10},},
