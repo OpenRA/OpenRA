@@ -171,7 +171,7 @@ function findReplace:ReplaceString(fReplaceAll,inFileRegister)
 			if (posFind ~= -1)  then
 				if(not inFileRegister) then editor:BeginUndoAction() end
 				while posFind ~= -1 do
-					inFileRegister(posFind)
+					if(inFileRegister) then inFileRegister(posFind) end
 					
 					editor:ReplaceTarget(findReplace.replaceText)
 					editor:SetTargetStart(posFind + replaceLen)
