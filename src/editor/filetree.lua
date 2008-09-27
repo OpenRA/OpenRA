@@ -214,7 +214,7 @@ function filetree:UpdateProjectDir(newdir, cboxsel)
 			projcombobox:Select(0)
 		end
 	--end
-	
+	UpdateProjectDir(newdir,true)
 	treeSetRoot(projtree,filetree.projdata,newdir)
 end
 

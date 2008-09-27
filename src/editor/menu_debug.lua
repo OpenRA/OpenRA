@@ -135,11 +135,13 @@ debugMenu:Append(0,"Project directory",targetworkdir,"Set the project directory 
 menuBar:Append(debugMenu, "&Project")
 --menuBar:Check(ID_USECONSOLE, true)
 
-function UpdateProjectDir(projdir)
+function UpdateProjectDir(projdir,skiptree)
 	ide.config.path.projectdir = projdir
 	menuBar:SetLabel(ID "debug.projectdir.currentdir",projdir)
 	frame:SetStatusText(projdir)
-	ide.filetree:UpdateProjectDir(projdir)
+	if (not skiptree) then
+		ide.filetree:UpdateProjectDir(projdir)
+	end
 end
 UpdateProjectDir(ide.config.path.projectdir)
 
