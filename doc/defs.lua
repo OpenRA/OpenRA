@@ -79,10 +79,20 @@ config = {
 	editor = {
 		fontname = "Courier New",
 			-- default font 
-			
+		fontsize = 10,
+			-- defailt size
 		caretline = true,
 			-- show active line
 	},
+	
+	
+	outputshell = {
+		-- output and shell settings
+		fontname = "Courier New",
+			-- default font 
+		fontsize = 10,
+			-- defult size
+	}
 	
 	styles = {},
 		-- styles table as above for editor
@@ -96,6 +106,11 @@ config = {
 		
 	autocomplete = true,
 		-- whether autocomplete is on by default
+	
+	acandtip = {
+		shorttip = false,
+		-- tooltips are compact during typing
+	}
 		
 	savebak = false,
 		-- if bak files are created on save

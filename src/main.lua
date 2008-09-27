@@ -5,6 +5,10 @@ require("bit")
 
 dofile "src/misc/util.lua"
 
+function DummyConfig()
+	return {path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
+end
+
 
 -----------
 -- IDE
@@ -13,19 +17,22 @@ dofile "src/misc/util.lua"
 dofile "src/editor/ids.lua"
 dofile "src/editor/style.lua"
 
+
 ide = {
 	config = {
 		path = {
 			projectdir = "",
 		}, 
 		editor = {},
+		outputshell = {},
+		
 		styles = StylesGetDefault(),
 		stylesoutshell = StylesGetDefault(),
 		interpreter = "EstrelaEditor",
 		
 		autocomplete = true,
-		ac = {
-			short = false,
+		acandtip = {
+			shorttip = false,
 		},
 		
 		filehistorylength = 20,
@@ -67,6 +74,8 @@ ide = {
 	ignoredFilesList = {},
 	font			 = nil,
 	fontItalic		 = nil,
+	ofont			 = nil,
+	ofontItalic		 = nil,
 }
 
 -- load config

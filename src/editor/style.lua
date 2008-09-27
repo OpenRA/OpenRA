@@ -196,10 +196,10 @@ function ReApplySpecAndStyles()
 	local errorlog = ide.frame.vsplitter.splitter.bottomnotebook.errorlog
 	local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox 
 	
-	SetupKeywords(shellbox.input,"lua",nil,ide.config.stylesoutshell)
+	SetupKeywords(shellbox.input,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
 	
-	StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font,ide.fontItalic)
-	StylesApplyToEditor(ide.config.stylesoutshell,shellbox.output,ide.font,ide.fontItalic)
+	StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
+	StylesApplyToEditor(ide.config.stylesoutshell,shellbox.output,ide.ofont,ide.ofontItalic)
 end
 
 function LoadConfigStyle()
@@ -209,7 +209,7 @@ function LoadConfigStyle()
 									   "Lua file (*.lua)|*.lua|All files (*)|*",
 									   wx.wxOPEN + wx.wxFILE_MUST_EXIST)
 	if fileDialog:ShowModal() == wx.wxID_OK then
-		local cfg = {path = {}, editor = {}, view ={}, ac = {},}
+		local cfg = DummyConfig()
 		local cfgfn,err = loadfile(fileDialog:GetPath())
 		if cfgfn then
 			setfenv(cfgfn,cfg)

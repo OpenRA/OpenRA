@@ -9,19 +9,30 @@ CURRENT_LINE_MARKER_VALUE = 4 -- = 2^CURRENT_LINE_MARKER
 -- Globals
 local font             = nil    -- fonts to use for the editor
 local fontItalic       = nil
-
+local ofont             = nil   -- fonts to use for the outputshell
+local ofontItalic       = nil
 -- ----------------------------------------------------------------------------
 -- Pick some reasonable fixed width fonts to use for the editor
 if wx.__WXMSW__ then
-	font       = wx.wxFont(10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
-	fontItalic = wx.wxFont(10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
+	font       = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
+	fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
 else
-	font       = wx.wxFont(10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, "")
-	fontItalic = wx.wxFont(10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, "")
+	font       = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "")
+	fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "")
 end
 
-ide.font       = font
-ide.fontItalic = fontItalic
+if wx.__WXMSW__ then
+	ofont       = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New")
+	ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New")
+else
+	ofont       = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "")
+	ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "")
+end
+
+ide.font        = font
+ide.fontItalic  = fontItalic
+ide.ofont       = ofont
+ide.ofontItalic = ofontItalic
 
 -- wxWindow variables
 local frame            = nil    -- wxFrame the main top level window

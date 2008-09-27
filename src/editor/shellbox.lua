@@ -6,11 +6,13 @@ local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
 local out = shellbox.output
 local code = shellbox.input
 local frame = ide.frame
+out:SetFont(ide.ofont)
+out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 out:StyleClearAll()
 out:SetBufferedDraw(true)
 out:WrapCount(80)
 out:SetReadOnly(true)
-StylesApplyToEditor(ide.config.stylesoutshell,out,ide.font,ide.fontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,out,ide.ofont,ide.ofontItalic)
 
 local function print(...)
 	out:SetReadOnly(false)
@@ -32,14 +34,15 @@ end
 createenv()
 
 code:SetBufferedDraw(true)
+code:SetFont(ide.ofont)
+code:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 code:StyleClearAll()
-code:SetFont(ide.font)
-code:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
 code:SetTabWidth(4)
 code:SetIndent(4)
 code:SetUseTabs(true)
 code:SetIndentationGuides(true)
-SetupKeywords(code,"lua",nil,ide.config.stylesoutshell)
+StylesApplyToEditor(ide.config.stylesoutshell,code,ide.ofont,ide.ofontItalic)
+--SetupKeywords(code,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
 
 local accel = wx.wxAcceleratorTable{
 	{wx.wxACCEL_CTRL,13,ID "shellbox.execute"},

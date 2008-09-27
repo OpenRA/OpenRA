@@ -4,19 +4,17 @@ local notebook = splitter.notebook
 local bottomnotebook = splitter.bottomnotebook
 local errorlog = bottomnotebook.errorlog
 
-
-
 -------
 -- setup errorlog
 errorlog:Show(true)
-errorlog:SetFont(ide.font)
-errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
+errorlog:SetFont(ide.ofont)
+errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
 errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
 errorlog:SetReadOnly(true)
-StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font,ide.fontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
 
 function ClearOutput(event)

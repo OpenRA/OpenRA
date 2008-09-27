@@ -275,7 +275,7 @@ function CreateEditor(name)
 					end
 				elseif ch == ("("):byte() then
 					 
-					local tip = GetTipInfo(editor,linetxtopos,ide.config.ac.short)
+					local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
 					if tip then
 						editor:CallTipShow(pos,tip)
 					end
@@ -393,7 +393,7 @@ function GetSpec(ext,forcespec)
 	return spec
 end
 
-function SetupKeywords(editor, ext, forcespec, styles)
+function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
 	local lexerstyleconvert = nil
 	local spec = forcespec or GetSpec(ext)
 
@@ -438,5 +438,5 @@ function SetupKeywords(editor, ext, forcespec, styles)
 	end
 	
 	StylesApplyToEditor(styles or ide.config.styles, editor,
-							ide.font,ide.fontItalic,lexerstyleconvert)
+							font or ide.font,fontitalic or ide.fontItalic,lexerstyleconvert)
 end
