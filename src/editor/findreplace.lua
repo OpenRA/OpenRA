@@ -203,7 +203,7 @@ local function onFileRegister(pos)
 	local editor = findReplace.oveditor
 	local line = editor:LineFromPosition(pos)
 	local linepos = pos - editor:PositionFromLine(line)
-	local result = "("..line..","..linepos.."): "..editor:GetLine(line)
+	local result = "("..(line+1)..","..(linepos+1).."): "..editor:GetLine(line)
 	DisplayOutput(findReplace.curfilename..result)
 	findReplace.occurrences = findReplace.occurrences + 1
 end
