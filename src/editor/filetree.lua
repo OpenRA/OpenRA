@@ -34,7 +34,9 @@ do
 	filetree.imglist = wx.wxImageList(16,16)
 	-- 0 = directory
 	filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_FOLDER,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
-	-- 1 = file
+	-- 1 = file known spec
+	filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_HELP_PAGE ,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+	-- 2 = file rest
 	filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_NORMAL_FILE,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
 end
 
@@ -53,7 +55,9 @@ local function treeAddDir(tree,parent_id,rootdir)
 	-- then append files
 	local files = FileSysGet(search,wx.wxFILE)
 	for i,file in ipairs(files) do
-		tree:AppendItem(parent_id, file:match("%"..string_Pathsep.."("..stringset_File.."+)$"),1)
+		local fname = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
+		local known = GetSpec(GetFileExt(fname))
+		tree:AppendItem(parent_id, fname,known and 1 or 2)
 	end
 end
 

@@ -4,7 +4,7 @@ return {
 	-- and TCL doesnt allow coloring
 	-- behind keywords
 
-	exts = {"glp"},
+	exts = {"glp","vp","fp"},
 	lexer = wxstc.wxSTC_LEX_TCL, 
 	--apitype = "cg",
 	linecomment = "#",
