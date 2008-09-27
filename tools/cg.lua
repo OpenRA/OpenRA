@@ -61,7 +61,11 @@ return cgbinpath and {
 		local function evcompile(event)
 			local filename,info = GetEditorFileAndCurInfo()
 			
-			if (not (filename and info.selword and cgbinpath)) then return end
+			
+			if (not (filename and info.selword and cgbinpath)) then 
+				DisplayOutput("Error: Cg Compile: Insufficient parameters (nofile / not selected entry function!\n")
+				return 
+			end
 			
 			-- TODO popup for custom input
 			local args = data.customarg and wx.wxGetTextFromUser("Compiler Args") or ""
