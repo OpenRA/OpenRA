@@ -167,7 +167,7 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
 					jumplinepos = tonumber(jumplinepos)
 					
 					--editor:ScrollToLine(jumpline)
-					editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1)) + (math.max(0,jumplinepos-1) or 0))
+					editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1)) + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
 					editor:SetFocus()
 				end
 			end
