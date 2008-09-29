@@ -5,6 +5,11 @@ Z Debugging
 	not working anymore?
 Z Output/Shellbox
 	other font family?? 
+Z Interpreter Lua
+	does not seem to work?
+? Editor
+	tooltip/ac popups remain ontop even if app/edi 
+	lost focus
 
 FEATURES
 ========
