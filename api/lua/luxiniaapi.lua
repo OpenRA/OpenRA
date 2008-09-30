@@ -698,7 +698,8 @@ l3dshadowmodel = {type='class',description="A volume model for stencil shadows. 
 ["light"] = {type='function', description = " returns or sets the light that is used. The light should be activated or sun, else its position is not updated.", args="(l3dshadowmodel,[l3dlight])", returns="([l3dlight])"},
 ["extrusionlength"] = {type='function', description = " returns or sets volume extrusion length. A value of 0 (default) means infinite length.", args="(l3dshadowmodel,[float])", returns="([float])"},
 ["new"] = {type='function', description = " creates a new l3dshadowmodel for the given nodes. Can return nil, if sourcemesh is too complex or not closed. When a l3dmodel is used you can specify a substring that is searched for in the l3dmodel's meshes. That way you can mark some meshes with nodraw/neverdraw in the original model, but use them as shadowmeshes and they still use the original animation/skin data. However when the original model is not visible, the animation data is not further updated. For l3dprimitives have in mind that you must not change the mesh after the shadowmodel was created.", args="(string name,|l3dlayerid|,l3dlight,l3dprimitive/l3dmodel,[string meshname])", returns="([l3dshadowmodel])"}}}
-trackid = {type='class',description="trackid - a track within animation contains prskey changes",childs={["updatekey"] = {type='function', description = " computes key for given time", args="(trackid,[matrix4x4],int time,boolean spline)", returns="()"}}}
+djointfixed = {type='class',description="The fixed joint maintains a fixed relative position and orientation between two bodies, or between a body and the static environment. Using this joint is almost never a good idea in practice, except when debugging. If you need two bodies to be glued together it is better to represent that as a single body.",childs={["setfixed"] = {type='function', description = " Call this on the fixed joint after it has been attached to remember the current desired relative offset and desired relative rotation between the bodies.", args="(djointfixed)", returns="()"},
+["new"] = {type='function', description = " creates a new fixedjoint", args="([djointgroup group])", returns="(djointfixed)"}}}
 bonecontrol = {type='class',description="Allows manual control of bones in bonesystems found in l3dmodels.",childs={["rotaxis"] = {type='function', description = " returns or sets rotation axis, make sure they make a orthogonal basis.", args="(bonecontrol,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
 ["activate"] = {type='function', description = " activates bonecontrol on given l3dmodel", args="(bonecontrol,l3dmodel)", returns="()"},
 ["iklookat"] = {type='function', description = " returns or sets if a lookat effect should be applied on the ik root as well (default is false)", args="(bonecontrol,[boolean])", returns="([boolean])"},
@@ -767,20 +768,9 @@ texture = {type='class',description="Bitmaps that store color information.<br> T
 ["datastring"] = {type='function', description = " returns the local data as binary lua string. Type can be 0 = full data as is. 1 = RGB color array (only allowed for uncompressed unsigned byte), luminance values will be expanded. 2 = RGB and split ALPHA string (for 2 or 4 component colors, others will revert to case 1).", args="([int type])", returns="(string,[string])"},
 ["formattype"] = {type='function', description = " the format in which the texture is stored as string, e.g. 1d, 2d, 3d, rect or cube.", args="(texture)", returns="(string)"},
 ["loadcubealpha"] = {type='function', description = " loads a alpha cube texture", args="(string file,[boolean mipmap],[boolean keepdata])", returns="(Texture tex)"}}}
-textype = {type='class',description="For creating textures or renderbuffers this defines the internal storage. Be aware that the rendersystem might not always be able to provide the format you asked for. Some types are baseformats which will leave it up to driver on which internalmode to pick. Formats such as depth and depth_stencil require special capabilities",childs={["abgr"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
-["lumalpha"] = {type='function', description = " baseformat for LUMINANCE_ALPHA", args="()", returns="(textype)"},
-["lum"] = {type='function', description = " baseformat for LUMINANCE", args="()", returns="(textype)"},
-["stencil"] = {type='function', description = " baseformat for STENCIL_INDEX. only for renderbuffers", args="()", returns="(textype)"},
-["bgr"] = {type='function', description = " reverses order of data for RGB, internal remains baseformat", args="()", returns="(textype)"},
-["depth24"] = {type='function', description = " 24 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
-["depth32"] = {type='function', description = " 32 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
-["rgb"] = {type='function', description = " baseformat for RGB", args="()", returns="(textype)"},
-["depthstencil"] = {type='function', description = " baseformat for DEPTH_STENCIL", args="()", returns="(textype)"},
-["depth16"] = {type='function', description = " 16 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
-["bgra"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
-["depth"] = {type='function', description = " baseformat for DEPTH_COMPONENT", args="()", returns="(textype)"},
-["alpha"] = {type='function', description = " baseformat for ALPHA", args="()", returns="(textype)"},
-["rgba"] = {type='function', description = " baseformat for RGBA", args="()", returns="(textype)"}}}
+rcmddrawl3d = {type='class',description="Draws a single l3dnode (l3dmodels allow single or sub series of meshids), only when l3dnode is visible. Useful for greater control over mesh rendering.",childs={["submeshes"] = {type='function', description = " for l3dmodels returns or sets which sub meshid is used as start, as well as how many meshes are drawn (default 1). l3dmodels default to all meshes being drawn. Has no affect on non-l3dmodels.", args="(rcmddrawl3d,[meshid,[int cnt]])", returns="([meshid, int cnt])"},
+["node"] = {type='function', description = " returns or sets which l3dnode is used. l3dmodels default to all meshes being drawn. Be aware that rfNodraw is ignored. Passing a non-l3dnode disables it. l3dlevelmodels are not allowed", args="(rcmddrawl3d,[l3dnode])", returns="([l3dnode])"},
+["new"] = {type='function', description = " returns the rcmd.", args="()", returns="(rcmddrawl3d)"}}}
 djointamotor = {type='class',description="An angular motor (AMotor) allows the relative angular velocities of two bodies to be controlled. The angular velocity can be controlled on up to three axes, allowing torque motors and stops to be set for rotation about those axes. This is mainly useful in conjunction will ball joints (which do not constrain the angular degrees of freedom at all), but it can be used in any situation where angular control is needed. To use an AMotor with a ball joint, simply attach it to the same two bodies that the ball joint is attached to.",childs={["numaxes"] = {type='function', description = " Sets/gets the number of angular axes that will be controlled by the AMotor. The argument num can range from 0 (which effectively deactivates the joint) to 3. This is automatically set to 3 in eulermode", args="([int])", returns="([int])"},
 ["usermode"] = {type='function', description = " If usermode is true, the user directly sets the axes that the AMotor controls. If it is false, eulermode is active which means that the AMotor computes the euler angles corresponding to the relative rotation, allowing euler angle torque motors and stops to be set.", args="(djointamotor,[boolean])", returns="([boolean])"},
 ["anglerate"] = {type='function', description = " Return the current angle rate for axis anum. In usermode this is always zero, as not enough information is available. In euler mode this is the corresponding euler angle rate.", args="(djointamotor,int anum)", returns="(float)"},
@@ -1409,21 +1399,22 @@ l3dview = {type='class',description="l3dview is used to render a l3dset. You can
 ["deactivate"] = {type='function', description = " deactivates the l3dview. Has no effect on defaultviews", args="(l3dview)", returns="()"},
 ["filldrawlayers"] = {type='function', description = " enable/disable filling of drawlayers (l3dtrails, l3dmodels, l3dprimitives, l3dtbterrain, l3dlevelmodel, l3dtext, l3dshadowmodel), particlelayers remain active. Default is true. Useful when a pure fx/l2dnode/particle view is being rendered, or layers are organized to be spread over different l3dviews. When set to false the layerstate of previous l3dview remains active (first l3dview of each l3dset always does a clear). That way you can reuse the data, but it only makes sense if camera visibility stays identical. The layer filling is a rather costly operation, so avoid it when possible.", args="(l3dview,[boolean])", returns="([boolean])"},
 ["defaultcamvisflag"] = {type='function', description = " sets camera visibility bit flag if a default camera is used for this view. It overrides the visflag of the camera itself, however culling is done before and based on the original camera bitid.", args="(l3dview,int id,[boolean])", returns="([boolean])"},
+["fogstate"] = {type='function', description = " returns or sets", args="(l3dview,[boolean])", returns="([boolean])"},
 ["viewsize"] = {type='function', description = " returns or sets the viewport size in pixels. only used when windowsized is false. Warning: viewsize must always be smaller than current window resolution (unless FBO rendering is used).", args="(l3dview,[int width,height])", returns="([int width,height])"},
-["new"] = {type='function', description = " returns a new l3dview.", args="()", returns="(l3dview)"},
+["new"] = {type='function', description = " returns a new l3dview. rcmdbias (default 0) allows you to allow more (>0) or less (<0) than 255 rcmds in this view.", args="([int rcmdbias])", returns="(l3dview)"},
 ["usepolygonoffset"] = {type='function', description = " returns or sets if depth values are changed depending on slope and constant factors when depth testing occurs.", args="(l3dview,[boolean])", returns="([boolean])"},
 ["delete"] = {type='function', description = " deletes the l3dview. Has no effect on defaultviews", args="(l3dview)", returns="()"},
 ["rcmdempty"] = {type='function', description = " empties the rcmd list of this l3dview.", args="(l3dview)", returns="()"},
 ["polygonoffset"] = {type='function', description = " returns or sets the polygonoffset values..", args="(l3dview,[float scale,bias])", returns="([float scale,bias])"},
 ["fogdensity"] = {type='function', description = " returns or sets", args="(l3dview,[float])", returns="([float])"},
 ["depthonly"] = {type='function', description = " returns or sets if a pure Z write should be done.", args="(l3dview,[boolean])", returns="([boolean])"},
-["rcmdadd"] = {type='function', description = " adds the rcmd to the rcmd queue list of this l3dview. You can add a maximum of 255 rcmds. They are processed in the order they are added. If there are no commands, the l3dview will do nothing cept debug drawing. As long as rcmd is assigned it won't be garbagecollected.<br><br>You can insert after a another rcmd, which is searched in the list. When occurance is negative we will search the rcmd from the back first. An absolute value of 1 will be first occurance, 2 second and so on. 0 or passing no occurance value is same as +1. If before is true we will insert before the given rcmd (default is false).<br><br>When only before == true is passed and no ref&occurance, we will insert the command as first.", args="(l3dview,rcmd,|rcmd ref,int occurance|,[boolean before])", returns="(boolean success)"},
+["rcmdadd"] = {type='function', description = " adds the rcmd to the rcmd queue list of this l3dview. You can add a maximum of 255 rcmds to default views, and for custom views you can modify this limit. They are processed in the order they are added. If there are no commands, the l3dview will do nothing cept debug drawing. As long as rcmd is assigned it won't be garbagecollected.<br><br>You can insert after a another rcmd, which is searched in the list. When occurance is negative we will search the rcmd from the back first. An absolute value of 1 will be first occurance, 2 second and so on. 0 or passing no occurance value is same as +1. If before is true we will insert before the given rcmd (default is false).<br><br>When only before == true is passed and no ref&occurance, we will insert the command as first.", args="(l3dview,rcmd,|rcmd ref,int occurance|,[boolean before])", returns="(boolean success)"},
 ["fogend"] = {type='function', description = " returns or sets", args="(l3dview,[float])", returns="([float])"},
 ["drawcamaxis"] = {type='function', description = " draws camera orientation", args="(l3dview,[boolean])", returns="([boolean])"},
 ["camera"] = {type='function', description = " returns or sets camera, disabled when 2nd arg is not a camera. If disabled we will use default camera.", args="(l3dview,[l3dcamera])", returns="(l3dcamera)"},
 ["viewpos"] = {type='function', description = " returns or sets the viewport starting position in GLpixels. 0,0 is bottom left, which is not as in list2d. only used when windowsized is false", args="(l3dview,[int x,y])", returns="([int x,y])"},
 ["bgskyl3dnode"] = {type='function', description = " returns or sets l3dnode to be used as background, disabled when 2nd arg is not a l3dnode. Be aware that the l3dnode must not be used anywhere else. It will automatically set the manual world matrix mode. Camera position is scaled using the 3 floats, that way you can 'fix' the model position around camera. Be aware that background models write into max depth, which means that overlapping geometry might create issues.", args="(l3dview,[l3dnode],[float x,y,z])", returns="([l3dnode])"},
-["fogstate"] = {type='function', description = " returns or sets", args="(l3dview,[boolean])", returns="([boolean])"},
+["rcmdget"] = {type='function', description = "  gets the current rcmd from a specified index, nil if out of bounds. Useful for debugging.", args="(l3dview,int index)", returns="([rcmd])"},
 ["viewrefbounds"] = {type='function', description = " returns or sets the viewport size and position in reference coordinates. only used when windowsized is false. Warning: viewsize must always be smaller than current window refsize.", args="(l3dview,[float  refx,refy,refwidth,refheight])", returns="([float refx,refy,refwidth,refheight])"},
 ["bgmatsurface"] = {type='function', description = " returns or sets matsurface, disabled when 2nd arg is not a matsurface", args="(l3dview,[matsurface])", returns="([matsurface])"},
 ["bgskybox"] = {type='function', description = " returns or sets skybox, disabled when 2nd arg is not a skybox", args="(l3dview,[skybox])", returns="([skybox])"}}}
@@ -1437,8 +1428,8 @@ primitivetype = {type='class',description="Graphics hardware supports rendering 
 ["points"] = {type='function', description = " points. Each index will be a point. Using vertexshaders pointsize can be influenced.", args="()", returns="(primitivetype)"},
 ["trianglefan"] = {type='function', description = " triangle fan. First index becomes center, all others are connected to it and previous index.", args="()", returns="(primitivetype)"},
 ["triangles"] = {type='function', description = " triangle list. Every 3 indices make a triangle.", args="()", returns="(primitivetype)"}}}
-l3dtbterrain = {type='class',description="list3d node of a tbterrain",childs={["getterrain"] = {type='function', description = " gets terrain of this l3dnode", args="(l3dnode node)", returns="(tbterrain)"},
-["new"] = {type='function', description = " new l3dnode of tbterrain", args="(string name,|l3dlayerid|, tbterrain)", returns="(l3dterrain)"}}}
+ContainerMover = {type='class',description="A component that is moving its parent frame if clicked and dragged.",childs={["new"] = {type='function', description = " \
+	Creates a ContainerMover, which is initially not visible", args="(table class, int x,y,w,h)", returns="(ContainerMover)"}}}
 ButtonGroup = {type='class',description="A ButtonGroup is a list of Buttons that are informed when another button \
 	was pressed. A ButtonGroup has only one active button per time. The \
 	ButtonGroup is assigning ActionListeners to the buttons to receive calls \
@@ -1465,11 +1456,6 @@ ButtonGroup = {type='class',description="A ButtonGroup is a list of Buttons that
 	assigned functiosn from the addButton function. Does nothing if the \
 	button is currently marked as active (and is pushed). Calling the click \
 	function with nil will deselect any button (except if you added the button as toggleable).", args="(button)", returns="()"}}}
-rcmddepth = {type='class',description="Sets depthtest environment.",childs={["depthtest"] = {type='function', description = " returns or sets comparemode used for depthtest. Passing any non-comparemode will disable setting and current state remains unchanged (default).", args="(rcmddepth,[comparemode/anything])", returns="([comparemode/false])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddepth)"}}}
-rcmddrawlayer = {type='class',description="Draws a l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawlayer,[int])", returns="([int])"},
-["sort"] = {type='function', description = " returns or sets sorting mode for layer. 0 none 1 material -1 front-to-back -2 back-to-front. Be aware that once camera order is used, the material sortkey is overwritten. Also if you draw the same layer multiple times, you only need to sort it once.", args="(rcmddrawlayer,[int])", returns="([int])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawlayer)"}}}
 MultiLineLabel = {type='class',description="A MultiLineLabel element for displaying longer texts. A text can be marked\
 	with a special syntax (see function description at new) which allows\
 	creating texts with clickable zones, similiar to a hypertext\
@@ -1514,7 +1500,11 @@ called when a Component is now displayable\
 	\"exit\", \"moved\" or \"clicked\" and describe the type of action. The zone is the retrieved zone for that\
 	mouseposition. If no zone was matched it is nil.", args="(self,string what,mouseevent,[zone])", returns="()"},
 ["setColor"] = {type='function', description = " sets color for texts", args="(float r,g,b,[a])", returns="()"}}}
-djointgroup = {type='class',description="djoints can be organized in groups",childs={}}
+rcmddepth = {type='class',description="Sets depthtest environment.",childs={["compare"] = {type='function', description = " returns or sets comparemode used for depthtest. Passing any non-comparemode will disable setting and current state remains unchanged (default).", args="(rcmddepth,[comparemode/anything])", returns="([comparemode/false])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddepth)"}}}
+rcmddrawlayer = {type='class',description="Draws a l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawlayer,[int])", returns="([int])"},
+["sort"] = {type='function', description = " returns or sets sorting mode for layer. 0 none 1 material -1 front-to-back -2 back-to-front. Be aware that once camera order is used, the material sortkey is overwritten. Also if you draw the same layer multiple times, you only need to sort it once.", args="(rcmddrawlayer,[int])", returns="([int])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawlayer)"}}}
 ImageComponent = {type='class',description="A ImageComponent element for displaying simple images (textures, material, plain colors).",childs={["deleteVisibles"] = {type='function', description = " description from overloaded method of Component:\
 \
 called when a Component is no longer displayed", args="(Component self)", returns="()"},
@@ -1547,6 +1537,7 @@ called when a Component is now displayable\
 	(doesn't have to be visible)", args="(Component self,l2dnode basel2d)", returns="()"},
 ["setUVPos"] = {type='function', description = " sets uv translation", args="(ImageComponent,x,y)", returns="()"},
 ["getUVScale"] = {type='function', description = " gets scaling for uv", args="(ImageComponent)", returns="(x,y)"}}}
+djointgroup = {type='class',description="djoints can be organized in groups",childs={}}
 ComboBox = {type='class',description="A ComboBox combines multiple strings that can be selected in a\
 	small rectangle. The current state is very simple but is capable of mimic the\
 	basics of a normal ComboBox.",childs={["getSelected"] = {type='function', description = "\
@@ -1575,42 +1566,15 @@ ComboBox = {type='class',description="A ComboBox combines multiple strings that 
 ["setItems"] = {type='function', description = " sets (and clears previous) all items. Table must be built like the one\
 	retrieved by getItems.", args="(ComboBox,table)", returns="()"},
 ["clearItems"] = {type='function', description = " removes all items from the list", args="(ComboBox)", returns="()"}}}
-l3dtrail = {type='class',description="Contains a collection of points, that are rendered as a quad strip.",childs={["closestpoint"] = {type='function', description = " returns closest active trailpoint and distance to it. Last frame's state is used.", args="(l3dtrail,[float x,y,z])", returns="([float dist,trailpoint])"},
-["normalizedsize"] = {type='function', description = " sets or returns size of an absolute ulength when materialnormalized is used (0 disables).", args="(l3dtrail,[float])", returns="([float])"},
-["color"] = {type='function', description = " sets or returns color interpolater at step. There is 0-2 steps, step 3 or -1 sets all.", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["drawlength"] = {type='function', description = " sets or return drawlength of trail", args="(l3dtrail,[int])", returns="([int])"},
-["tpPrev"] = {type='function', description = " gets previous trailpoint (or null).", args="(l3dtrail,trailpoint)", returns="([trailpoint])"},
-["usevelocity"] = {type='function', description = " sets or returns if velocity vector should be added", args="(l3dtrail,[boolean])", returns="([boolean])"},
-["typeworld"] = {type='function', description = " local transforms are not used on the points, ie all points are in world coordinates. You should do this after a new trail, or after resetting. (default)", args="(l3dtrail)", returns="()"},
-["tpPosarray"] = {type='function', description = " sets or returns position of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
-["typelocal"] = {type='function', description = " local transforms are used on the points, ie points are in local coordinates. You should do this after a new trail, or after resetting. It does not allow spawnstep.", args="(l3dtrail)", returns="()"},
-["size"] = {type='function', description = " sets or returns size interpolater at step. There is 0-2 steps, step 3 or -1 sets all.", args="(l3dtrail,int step,[float size])", returns="([float s])"},
-["materialnormalized"] = {type='function', description = " sets or returns if the material/texture is stretched in such a fashion that its width is the length of the trail. If materialscale was applied before uscale will be applied, too.", args="(l3dtrail,[boolean])", returns="([boolean])"},
-["indexcolor"] = {type='function', description = " sets or returns color at index. There is 0...length-1 steps. The regular color function creates linear interpolated values. This function lets you precisely modify every single value. However if you start using it, the regular color function will be ignored", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["materialscale"] = {type='function', description = " sets how often a material/texture is repeated/minified. length is along x axis ", args="(l3dtrail,float length, width)", returns="()"},
-["closed"] = {type='function', description = " sets or returns if trail ends where it starts. The last added point will be skipped and the first is used instead, so add one more point than the ones you really need.", args="(l3dtrail,[boolean])", returns="([boolean])"},
-["localtime"] = {type='function', description = " sets or returns trail's own localtime (in ms). Only active when uselocaltime is used.", args="(l3dtrail,[int])", returns="([int])"},
-["reset"] = {type='function', description = " clears all points", args="(l3dtrail)", returns="()"},
-["tpVelarray"] = {type='function', description = " sets or returns velocity of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
-["planarmap"] = {type='function', description = " sets or returns planar projection axis. -1 is none/disabled, 0 = x, 1 = y, z = 2. Materials will be projected along these axis.", args="(l3dtrail,[int])", returns="([int])"},
-["planarscale"] = {type='function', description = " sets or returns planarscale multiplier. texcoord = worldpos.projected * planarscale.", args="(l3dtrail,[float])", returns="([float])"},
-["facecamera"] = {type='function', description = " sets or return facecamera flag", args="(l3dtrail,[bool])", returns="([bool])"},
-["uselocaltime"] = {type='function', description = " sets or returns if trail uses its own localtime (in ms). If false(default) the global time by luxinia is used. All events such as spawstep, usevelocity and spawntime for manually created tpoints depend on this.", args="(l3dtrail,[boolean])", returns="([boolean])"},
-["tpTime"] = {type='function', description = " gets or sets trailpoint's spawntime in ms.", args="(l3dtrail,trailpoint,[int])", returns="([int])"},
-["new"] = {type='function', description = " a new trail system", args="(string name,|l3dlayerid|,int length)", returns="(trail)"},
-["indexsize"] = {type='function', description = " sets or returns size at index. There is 0...length-1 steps. The regular size function creates linear interpolated values. This function lets you precisely modify every single value. However if you start using it, the regular size function will be ignored.", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["spawnworldref"] = {type='function', description = " spawns a single particle that is autolinked to the given node. Axis is 0(X),1(Y),2(Z) and will mark the axis used for normals. Only works if typeworldref is used.", args="(l3dtrail,actornode/scenenode,int axis)", returns="(trailpoint)"},
-["tpVel"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
-["spawnstep"] = {type='function', description = " sets or returns spawnstep in ms, one point will be spawned every spawnstep, if spanwstep is greater 0.", args="(l3dtrail,[int])", returns="(int)"},
-["tpPos"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
-["velocity"] = {type='function', description = " sets or returns velocity vector in local space, units per second.", args="(l3dtrail,[float x,y,z])", returns="([float x,y,z])"},
-["matsurface"] = {type='function', description = " sets or returns matsurface", args="(l3dtrail,[matsurface])", returns="([material/texture])"},
-["closestdistance"] = {type='function', description = " returns closest line segment and distance to it. The closest point is fracc*(nexttpoint-tpoint). Last frame's state is used.", args="(l3dtrail,[float x,y,z])", returns="([float dist,trailpoint,float fracc ])"},
-["tpNext"] = {type='function', description = " gets next trailpoint (or null).", args="(l3dtrail,trailpoint)", returns="([trailpoint])"},
-["typeworldref"] = {type='function', description = " points take their world coordinates from linked references. You should do this after a new trail, or after resetting. It does not allow spawnstep.", args="(l3dtrail)", returns="()"},
-["tpNormalarray"] = {type='function', description = " sets or returns normal of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
-["tpNormal"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
-["spawn"] = {type='function', description = " spawns a new point in world/local coordinates, normal is needed when you dont use facecamera, and velocity when you use velocity. You can automaically spawn points with spawnstep. Illegal if typeworldref is used.", args="(l3dtrail,float pos x,y,z,float normal x,y,z,[float vel x,y,z])", returns="(trailpoint)"}}}
+l3dprimitive = {type='class',description="Primitives such as cubes, boxes and user meshes.",childs={["newbox"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float w,d,h)", returns="([l3dprimitive])"},
+["originalmesh"] = {type='function', description = " deletes the usermesh and uses the original mesh again.", args="(l3dprimitive)", returns="()"},
+["newquadcentered"] = {type='function', description = " creates new l3dnode. origin of the quad is center point", args="(string name,|l3dlayerid|,float w,d)", returns="([l3dprimitive])"},
+["newquad"] = {type='function', description = " creates new l3dnode. origin of the quad is lower left corner", args="(string name,|l3dlayerid|,float w,d)", returns="([l3dprimitive])"},
+["matsurface"] = {type='function', description = " returns or sets material", args="(l3dprimitive,[matsurface])", returns="([matsurface])"},
+["usermesh"] = {type='function', description = " gives the l3dprimitive a unique mesh. 		By default the mesh is given by the type which cannot be changed. With this function you can create your own mesh, 		as from this time on you can access it via vertexarray or indexarray interfaces. 		The new usermesh is completely empty, so make sure you fill it with content before it 		gets rendered the first time (don't forget to set indexCount and vertexCount and at the end indexMinmax!). If a previous usermesh existed it will be deleted. Polygonwinding is CCW.", args="(l3dprimitive, vertextype, int numverts, int numindices)", returns="()"},
+["newcylinder"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float size)", returns="([l3dprimitive])"},
+["newsphere"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float size)", returns="([l3dprimitive])"},
+["size"] = {type='function', description = " returns or sets size (modifies l3d's visbbox as well). Visual size will be overriden by calls to renderscale.", args="(l3dprimitive,[float radius/float x,y,z])", returns="([float radius/float x,y,z])"}}}
 Skin2D = {type='class',description="The Skin2D class is a two dimensional graphical representation for\
 	abstract information. It defines the look and feel of components.\
 \
@@ -1994,6 +1958,96 @@ Component = {type='class',description="A Component is a 2D object on the screen 
 	", args="(Component, [Skin2D,[boolean copy] ])", returns="()"},
 ["mouseReleased"] = {type='function', description = "\
 	 called if the mouse was released on the component", args="(Component self, MouseEvent e, boolean mouseover)", returns="()"}}}
+GuiHelpers = {type='class',description="GuiHelpers contain a few functions to aid application development.\
+	",childs={["scrollfield"] = {type='function', description = "\
+	creates and returns groupframe, which gets a vertically scroll slider if content is out of bounds. \".area\" of returned frame should be used to add components to. \".area\" also contains the function \"scrollto(itemY,itemHeight)\" with which you can set the scroll pos (if slider exists, otherwise ignored).", args="(int x,y,w,h)", returns="(GroupFrame)"},
+["getIconUVs"] = {type='function', description = "\
+	returns u,v position and scalings for an icon inside a texture (top =0,0) for setting texture\
+	matrices. Takes rectangle textures into account. Grid and icon dimensions default to 24.\
+	", args="(texture,x,y,[iconwidth],[iconheight],[gridwidth],[gridheight])", returns="(float u,v,uscale,vscale)"},
+["popupYesNo"] = {type='function', description = "\
+	creates a modal popup with description label string, and two buttons for \"yes\" and \"no\".", args="(int w,h, string title, question, function fnyes, [fnno], [string yes], [no], [int buttonwidth])", returns="(GroupFrame)"},
+["sldLabelval"] = {type='value', description = "[int] - default width for value label for addlsider"},
+["addcheckbox"] = {type='function', description = "\
+	adds Checkbox to frame.<br>\
+	Parameters table contains:<br>\
+	* initvalue: boolean\
+	* callback: function, callback(state).\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Checkbox)"},
+["createcolormenu"] = {type='function', description = "\
+	creates a container with a graphical color menu. Initilized with the table value.<br>\
+	Function: onchange(upvalue,r,g,b,alpha)", args="(int x,y,w,h, string title, table colorHSVA, fn onchange, [upvalue], [string alphaname])", returns="(Container)"},
+["filedialog"] = {type='function', description = "\
+	creates and file dialog as popup menu.<br>\
+	Functions: onsave(fileframe,filepath,filetext), oncancel(fileframe). Both must return true if dialog should be destroyed.<br>\
+	addedframe(fileframe) allows to add custom frame to the modal dialog which must be returned by the function.<br><br>\
+	warnonoverwrite will cause yes/no popup and can contain <br>\
+	* width: int <br>\
+	* height: int <br>\
+	* title: string <br>\
+	* descr: string <br>\
+	* yes: string <br>\
+	* no: string <br>", args="(string title,oktext,canceltext,[initpath],[fn onsave], [oncancel], [table strings extensions], [string startname], [fn addedframe], [table warnonoverwrite])", returns="(GroupFrame)"},
+["modaldialog"] = {type='function', description = "\
+	creates a modal titleframe on top of everything, and normally darkens the background (unless nomodal is true). All arguments are optional. x,y,w,h default to 0,0 and window size.\
+	fw/fh are the dimensions of the TitleFrame created. Returns the empty titleframe, mostly used for pop-up menus.", args="([titlename], [int x,y,w,h], [int fw,fh], [boolean nomodal])", returns="(TitleFrame)"},
+["sldLabelwidth"] = {type='value', description = "[int] - width of description label for addslider"},
+["addcolorbutton"] = {type='function', description = "\
+	creates a color button which on execution pops up a colormenu dialog. returns a function, which\
+	can be used to change preview button color, and new y value which is y + h.<br>\
+	Functions: setcolor(table colorRGBA, [boolean noevent]<br>\
+	Parameters table contains:<br>\
+	* initvalue: table, color HSVA\
+	* callback: function, callback(obj,r,g,b,a)\
+	* [obj]: upvalue for function callback\
+	* [alphaname]: string, Alphaname if alpha slider should be available\
+	* [nomodal]: boolean, no darkening modal dialog\
+	* [noalpha]: boolean, no alpha in the preview button color\
+	* [titleicon]: Icon, instead of button label.\
+	* [ok]: string, okay text\
+	* [cancel]: string, cancel text\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, fn setcolor)"},
+["addslider"] = {type='function', description = "\
+	creates a slider with leading description label and following value label.tion. New y value which is y + h.<br>\
+	slidervalue = sliderpos * scale + offset<br>\
+	Parameters table contains:<br>\
+	* initvalue: float, 0-1 position along slider\
+	* callback: function, (outvalue, sliderpos) : callback (slidervalue,numericinput,sliderpos). When allowinput is true and callback is called with \"nil,numericinput,nil\" it must return sliderpos as well. Otherwise only outvalue is taken and (slidervalue, nil, sliderpos) are passed.\
+	* [scale]: float\
+	* [offset]: float\
+	* [increment]: float, Slider increment\
+	* [intmode]: boolean, Slider IntegerMode\
+	\
+	* [labelw]: int, name label widht, defaults to GH.sldLabelwidth\
+	* [valw]: int, value label width, defaults to GH.sldLabelval\
+	* [formatstr]: string, argument to string.format for value label\
+	* [allowinput]: boolean, allows manual popup dialog input, when clicking on value label\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Slider)"},
+["makeLayoutFunc"] = {type='function', description = "\
+	returns a function that computes new rectangles according to \
+	rescaling / repositioning behavior. x,y,w,h returned by fnlayouter (nx,ny,nw,nh).\
+	On call of makeLayoutFunc the current Rectangles and their relative \
+	positions to refbounds are stored.<br>\
+	The params table contains:<br>\
+	* bottom: boolean for anchor.y\
+	* right: boolean for anchor.x\
+	* relscale: {boolean w,h}, required\
+	* relpos: {boolean x,y}, required\
+	<br>\
+	When relscale is true for a dimension the size is changed according to the ratio of \
+	original refsize and newsize. When relpos is true, the position of top left corner\
+	of the component changes relatively to scaling, when false it will keep its original\
+	distance to the anchor point. Anchor point is made from reference dimension of\
+	hostframes and is created from \"right\" and \"bottom\".\
+	", args="(Rectangle hostref, Rectangle ref, table params)", returns="(fnlayouter)"},
+["frameminmax"] = {type='function', description = "\
+	creates a button \"Hide\"/\"Show\" which sets bounds based on the returns of\
+	fnmaxbounds and fnminbounds, which use fninput as input. All functions return x,y,w,h. If\
+	fninput is not specified current window dimensions are taken.\
+	When minimized all children are removed. Once minimized btn.oldcomponents will be set and\
+	hold all temporarily removed Components.\
+	When spaceable is set, focus and space bar will not cause the button to act.\
+	", args="(Container frame, fnminbounds, fnmaxbounds, [fninput], [boolean spaceable])", returns="(Button btn)"}}}
 rcmddrawprt = {type='class',description="Draws the particles of an l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawprt,[int])", returns="([int])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawprt)"}}}
 dworld = {type='class',description="Luxinia uses only one world (ode can simulate multiple worlds) for the sake of simplicity. The dworld class controls the parameters of the ode object. But it also has some special functions like a surfacemanagement system. You can specify 256 different types of surface parametersets that directly set how contacts will react at each other. Each dgeom has a surfaceid and the combination of the two surfaceids will tell the automatic contactgenerator what set of surfaceparameters should be used.",childs={["contactsurfacelayer"] = {type='function', description = " Set and get the depth of the surface layer around all geometry objects. Contacts are allowed to sink into the surface layer up to the given depth before coming to rest. The default value is zero. Increasing this to some small value (e.g. 0.001) can help prevent jittering problems due to contacts being repeatedly made and broken.", args="([float depth])", returns="([float])"},
@@ -2078,7 +2132,7 @@ rendersurface = {type='class',description="For most renderable nodes you can def
 simplecollision = {type='class',description="A very basic collision system just allowing sphere to sphere checks and not very optimized",childs={}}
 rcmddrawl2d = {type='class',description="Draws a l2dnode with its children. Useful for render-to-texture GUIs",childs={["root"] = {type='function', description = " allows l2dnode drawing in this viewport. The given node will be unlinked from rest and made the master root for this view. Previous root becomes unlinked. Passing a non-l2dnode disables it.", args="(rcmddrawl2d,[l2dnode])", returns="([l2dnode])"},
 ["refsize"] = {type='function', description = " The refscreensize width/height while rendering l2droot and its children.", args="(rcmddrawl2d,[float w,h])", returns="([float w,h])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawl2d)"}}}
+["new"] = {type='function', description = " returns the rcmdt", args="()", returns="(rcmddrawl2d)"}}}
 l3dbatchbuffer = {type='class',description="l3dbatchbuffer contains precompiled models. It is meant for efficient rendering of static geometry. Every model affected is transformed using the current hierarchy informatons and its vertices and indices are modified, so that the models are stored in big chunks. Meshes then can be batched to minimize drawcalls.",childs={["delete"] = {type='function', description = " destroys the batchbuffer and all content in it. All linked drawnodes will revert back to their models' meshes and become fully operational again.", args="(l3dbatchbuffer)", returns="()"},
 ["new"] = {type='function', description = " returns a new l3dbatchbuffer for the given l3dset and scenenode. All models, that are part of the given l3dset and either directly or indirectly linked to the given scenenode or its children, will be added to the batchbuffer and get their vertex and index data from it. Animateable models or those marked as nonbatchable will not be added, neither those with unsupported primitive types (triangle fans,line loop,line strip, polygon). Properties such as color and renderscale will be ignored and reset. Note that the matrices are calculated with the latest information for affected l3dnodes and scenenodes, that means make sure the scene is properly set up before. l3dnodes that are linked to bones, will not be added, nor their children, as they are considered animated. You can still modify the resulting worldspace vertexdata via vertexarray/indexarray interface from the affected l3dmodels. <br>It is important that you do not change the models position/rotation after batchcompiling, as visibility culling is still based on those.<br> Avoid using matobject interfaces on batchcompiled geometry.", args="(l3dset,scenenode root)", returns="(l3dbatchbuffer)"}}}
 ftp = {type='class',description="FTP (File Transfer Protocol) is a protocol used to transfer files between hosts. \
@@ -2223,271 +2277,127 @@ describing the reason for failure.\
   source = ltn12.source.file(io.open(\"LOCAL-LOG\", \"r\"))\
  }\
 ",childs={}}
-GuiHelpers = {type='class',description="GuiHelpers contain a few functions to aid application development.\
-	",childs={["scrollfield"] = {type='function', description = "\
-	creates and returns groupframe, which gets a vertically scroll slider if content is out of bounds. \".area\" of returned frame should be used to add components to. \".area\" also contains the function \"scrollto(itemY,itemHeight)\" with which you can set the scroll pos (if slider exists, otherwise ignored).", args="(int x,y,w,h)", returns="(GroupFrame)"},
-["getIconUVs"] = {type='function', description = "\
-	returns u,v position and scalings for an icon inside a texture (top =0,0) for setting texture\
-	matrices. Takes rectangle textures into account. Grid and icon dimensions default to 24.\
-	", args="(texture,x,y,[iconwidth],[iconheight],[gridwidth],[gridheight])", returns="(float u,v,uscale,vscale)"},
-["popupYesNo"] = {type='function', description = "\
-	creates a modal popup with description label string, and two buttons for \"yes\" and \"no\".", args="(int w,h, string title, question, function fnyes, [fnno], [string yes], [no], [int buttonwidth])", returns="(GroupFrame)"},
-["sldLabelval"] = {type='value', description = "[int] - default width for value label for addlsider"},
-["addcheckbox"] = {type='function', description = "\
-	adds Checkbox to frame.<br>\
-	Parameters table contains:<br>\
-	* initvalue: boolean\
-	* callback: function, callback(state).\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Checkbox)"},
-["createcolormenu"] = {type='function', description = "\
-	creates a container with a graphical color menu. Initilized with the table value.<br>\
-	Function: onchange(upvalue,r,g,b,alpha)", args="(int x,y,w,h, string title, table colorHSVA, fn onchange, [upvalue], [string alphaname])", returns="(Container)"},
-["filedialog"] = {type='function', description = "\
-	creates and file dialog as popup menu.<br>\
-	Functions: onsave(fileframe,filepath,filetext), oncancel(fileframe). Both must return true if dialog should be destroyed.<br>\
-	addedframe(fileframe) allows to add custom frame to the modal dialog which must be returned by the function.<br><br>\
-	warnonoverwrite will cause yes/no popup and can contain <br>\
-	* width: int <br>\
-	* height: int <br>\
-	* title: string <br>\
-	* descr: string <br>\
-	* yes: string <br>\
-	* no: string <br>", args="(string title,oktext,canceltext,[initpath],[fn onsave], [oncancel], [table strings extensions], [string startname], [fn addedframe], [table warnonoverwrite])", returns="(GroupFrame)"},
-["modaldialog"] = {type='function', description = "\
-	creates a modal titleframe on top of everything, and normally darkens the background (unless nomodal is true). All arguments are optional. x,y,w,h default to 0,0 and window size.\
-	fw/fh are the dimensions of the TitleFrame created. Returns the empty titleframe, mostly used for pop-up menus.", args="([titlename], [int x,y,w,h], [int fw,fh], [boolean nomodal])", returns="(TitleFrame)"},
-["sldLabelwidth"] = {type='value', description = "[int] - width of description label for addslider"},
-["addcolorbutton"] = {type='function', description = "\
-	creates a color button which on execution pops up a colormenu dialog. returns a function, which\
-	can be used to change preview button color, and new y value which is y + h.<br>\
-	Functions: setcolor(table colorRGBA, [boolean noevent]<br>\
-	Parameters table contains:<br>\
-	* initvalue: table, color HSVA\
-	* callback: function, callback(obj,r,g,b,a)\
-	* [obj]: upvalue for function callback\
-	* [alphaname]: string, Alphaname if alpha slider should be available\
-	* [nomodal]: boolean, no darkening modal dialog\
-	* [noalpha]: boolean, no alpha in the preview button color\
-	* [titleicon]: Icon, instead of button label.\
-	* [ok]: string, okay text\
-	* [cancel]: string, cancel text\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, fn setcolor)"},
-["addslider"] = {type='function', description = "\
-	creates a slider with leading description label and following value label.tion. New y value which is y + h.<br>\
-	slidervalue = sliderpos * scale + offset<br>\
-	Parameters table contains:<br>\
-	* initvalue: float, 0-1 position along slider\
-	* callback: function, (outvalue, sliderpos) : callback (slidervalue,numericinput,sliderpos). When allowinput is true and callback is called with \"nil,numericinput,nil\" it must return sliderpos as well. Otherwise only outvalue is taken and (slidervalue, nil, sliderpos) are passed.\
-	* [scale]: float\
-	* [offset]: float\
-	* [increment]: float, Slider increment\
-	* [intmode]: boolean, Slider IntegerMode\
-	\
-	* [labelw]: int, name label widht, defaults to GH.sldLabelwidth\
-	* [valw]: int, value label width, defaults to GH.sldLabelval\
-	* [formatstr]: string, argument to string.format for value label\
-	* [allowinput]: boolean, allows manual popup dialog input, when clicking on value label\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Slider)"},
-["makeLayoutFunc"] = {type='function', description = "\
-	returns a function that computes new rectangles according to \
-	rescaling / repositioning behavior. x,y,w,h returned by fnlayouter (nx,ny,nw,nh).\
-	On call of makeLayoutFunc the current Rectangles and their relative \
-	positions to refbounds are stored.<br>\
-	The params table contains:<br>\
-	* bottom: boolean for anchor.y\
-	* right: boolean for anchor.x\
-	* relscale: {boolean w,h}, required\
-	* relpos: {boolean x,y}, required\
-	<br>\
-	When relscale is true for a dimension the size is changed according to the ratio of \
-	original refsize and newsize. When relpos is true, the position of top left corner\
-	of the component changes relatively to scaling, when false it will keep its original\
-	distance to the anchor point. Anchor point is made from reference dimension of\
-	hostframes and is created from \"right\" and \"bottom\".\
-	", args="(Rectangle hostref, Rectangle ref, table params)", returns="(fnlayouter)"},
-["frameminmax"] = {type='function', description = "\
-	creates a button \"Hide\"/\"Show\" which sets bounds based on the returns of\
-	fnmaxbounds and fnminbounds, which use fninput as input. All functions return x,y,w,h. If\
-	fninput is not specified current window dimensions are taken.\
-	When minimized all children are removed. Once minimized btn.oldcomponents will be set and\
-	hold all temporarily removed Components.\
-	When spaceable is set, focus and space bar will not cause the button to act.\
-	", args="(Container frame, fnminbounds, fnmaxbounds, [fninput], [boolean spaceable])", returns="(Button btn)"}}}
-matsurface = {type='class',description="Most renderable items allow their material to be changed. A materialsurface can either be just color, a texture or a material.",childs={["contains"] = {type='function', description = " checks if one matsurface contains another or is equal", args="(matsurface self, matsurface other)", returns="(boolean)"},
-["vertexcolor"] = {type='function', description = " removes any previous materialinfo and makes the surface just vertexcolored", args="()", returns="(matsurface)"}}}
-OO = {type='class',description="The objectoriented class provides two functions which\
-		allows a more objectoriented like design using lua functions.\
+rcmdclear = {type='class',description="Clears drawbuffers (stencil,depth,color).",childs={["colorvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["stencil"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
+["stencilvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[int])", returns="([int])"},
+["color"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
+["depthvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[float 0-1])", returns="([float])"},
+["depth"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdclear)"}}}
+FileSystem = {type='class',description="Luxinia used an internal way to gain access to the directory \
+			structures that was located in the luxinia.dir function that \
+			was undocumented. The function returned a table of filenames. \
+			For plattformindependance and other reasons, we decided to use \
+			the Lua File System which is part of the Kepler project \
+			(http://www.keplerproject.org/luafilesystem/). You can use the \
+			lfs lib or this class. This class is a pure wrapper for the \
+			lfs lib and provides only additional documentation in the way \
+			the other classes are described. The function descriptions are \
+			extracts from the lfs documentation that can be found at the \
+			given link.",childs={["touch"] = {type='function', description = "\
+	Set access and modification times of a file. This function is a bind to \
+	utime function. The first argument is the filename, the second argument \
+	(atime) is the access time, and the third argument (mtime) is the \
+	modification time. Both times are provided in seconds (which should be \
+	generated with Lua standard function os.date). If the modification time \
+	is omitted, the access time provided is used; if both times are omitted, \
+	the current time is used.\
 \
-		It implements a simple inheritance model. An object is a table\
-		with a metatable which includes all class information.\
+	Returns true if the operation was successful; in case of error, it returns \
+	nil plus an error string.", args="(string filepath [, atime [, mtime] ])", returns="([boolean success],[string error])"},
+["dir"] = {type='function', description = " \
+	Lua iterator over the entries of a given directory. Each time the \
+	iterator is called it returns a string with an entry of the directory; \
+	nil is returned when there is no more entries. Raises an error if path \
+	is not a directory.", args="(string path)", returns="([function iterator], [string error])"},
+["unlock"] = {type='function', description = "\
+	Unlocks a file or a part of it. This function works on open files; the \
+	file handle should be specified as the first argument. The optional \
+	arguments start and length can be used to specify a starting point and its \
+	length; both should be numbers.\
 \
-		All functions from this class are available as global variables\
-		with the same name.\
+	Returns true if the operation was successful; in case of error, it returns \
+	nil plus an error string. ", args="(filehandle[, start[, length] ])", returns="([boolean success],[string error])"},
+["currentdir"] = {type='function', description = " Returns a string with the current \
+	working directory or nil  plus an error string.", args="()", returns="([string dir], [string error])"},
+["isDir"] = {type='function', description = " return true if the given file is an directory\
+	", args="(file)", returns="(boolean isdir)"},
+["lock"] = {type='function', description = "\
+	Locks a file or a part of it. This function works on open files; the file \
+	handle should be specified as the first argument. The string mode could be \
+	either r (for a read/shared lock) or w (for a write/exclusive lock). The \
+	optional arguments start and length can be used to specify a starting point \
+	and its length; both should be numbers.\
 \
-		!!Examples:\
+	Returns true if the operation was successful; in case of error, it returns \
+	nil plus an error string.", args="(filehandle, mode[, start[, length] ])", returns="([boolean success], [string error])"},
+["attributes"] = {type='function', description = " \
+	Returns a table with the file attributes corresponding to filepath (or nil \
+	followed by an error message in case of error). If the second optional \
+	argument is given, then only the value of the named attribute is returned \
+	(this use is equivalent to lfs.attributes(filepath).aname, but the table is \
+	not created and only one attribute is retrieved from the O.S.). The \
+	attributes are described as follows; attribute mode is a string, all the \
+	others are numbers, and the time related attributes use the same time \
+	reference of os.time:\
 \
-		 class \"Foo\" -- a simple class\
-		 print (Foo)\
-		   -- output: [Class: Foo]\
-		 fobj = new(Foo) -- creates a new object of type foo\
-		 print(fobj) -- print out our class object\
-		   -- output: [Object: Foo 3]\
-\
-		 -- overfloating printing function now\
-		 function Foo:toString()\
-		   return \"Foo object printout!\"\
-		 end\
-		 print(fobj) -- will print \"Foo object printout!\"\
-\
-		 -- creating a class that is derived from Foo\
-		 class \"Test\" : extends \"Foo\"\
-		 tobj = new(Test)\
-		 print(tobj) -- will also print \"Foo object printout!\",\
-		   -- because the toString function is derived from \"Foo\"\
-\
-		!!Constructors\
-\
-		The constructors have the same name as the class has.\
-		The default constructor will delegate its call to the\
-		parent's constructor, however not so if the constructor\
-		is overloaded.\
-\
-		Calling the parent constructor is being done by calling\
-		its classname like a method.\
-\
-		 class \"Foo\"\
-		 function Foo:Foo (v1,v2)\
-		   print(\"Foo constructor\",v1,v2)\
-		 end\
-\
-		 class \"Bar\" : extends \"Foo\"\
-		 new(Bar,1,2)  -- will delegate the constructor call to\
-		   -- Foo:Foo, passing the arguments 1,2 as v1 and v2,\
-		   -- resulting in a printout which looks like this:\
-		   -- Foo constructor 1 2\
-\
-		Calling the constructors is done by calling the parent's\
-		method. This can be problematic in some situations, but\
-		these are not real world examples (i.e. if the object has a\
-		variable with a name of a parent's class). Such situations\
-		can also be avoided either by not using capital letters\
-		for object variables while saving them for class names\
-		(which is similiar to Java's naming convention).\
-\
-		 class \"Foo\"\
-		 function Foo:Foo ()\
-		   Foo:Object () -- call the constructor of Object\
-		     -- as every object is derived from this class\
-		 end\
-\
-		!!Compatibility\
-\
-		The function 'new', which acts as a constructor is\
-		compatible with older code - if a table that is passed as class\
-		has a field named 'new', it will accept it as argument\
-		and will call this function with the passed table as first argument\
-		and returns its return.\
-\
-		This allows us to use the 'new' constructor also for\
-		GUI code:\
-\
-		 btn = new(Button,10,30,20,100,\"Button\")\
-\
-		!!Default parent class: Object\
-\
-		The default parent class is the Object class, a class\
-		that implements some basic operations.\
-\
-		The classes are also derived from the Object type - extending\
-		the Object class with additional functions (which is always possible)\
-		will also result in changing the class objects.\
-\
-		!!Variables\
-\
-		Any variable (functions are variables) can be defined any time.\
-		If a request on an object for a variable is made, it will return\
-		its variable value or will look in the class (or parent class and so on)\
-		if the variable is defined there. Accessing nil values is the worst case,\
-		since the whole class tree is looked up. Avoid nil value access by setting\
-		a variable value to false, if it is looked up more than once and turns out\
-		to be a performance bottleneck.\
-\
-		Example:\
-\
-		 class \"Foo\"\
-		 obj = new (Foo)\
-\
-		 print(obj.x) -- prints nothing or nil\
-		 Foo.x = 10\
-		 print(obj.x) -- prints 10\
-		 obj.x = \"bar\"\
-		 print(obj.bar) -- prints \"bar\"\
-		 obj.x = nil\
-		 print(obj.x) -- prints 10\
-		 Foo.x = nil\
-		 print(obj.x) -- prints nothing again\
-\
-		Variables in classes can be used as default values, as\
-		any object that has no such variable defined will automaticly\
-		return the value of the class' variable. Variables are\
-		inherited to all its child classes, also to objects that\
-		have been defined earlier.\
-\
-		!!Overloading\
-\
-		When a class is extended by another class, it can always redefine\
-		a function, i.e.\
-\
-		 class \"Foo\"\
-		 function Foo:dosomething () print \"do something foo\" end\
-\
-		 class \"Bar\" : extends \"Foo\"\
-		 function Bar:dosomehting() print \"do something bar\" end\
-\
-		We can also overload or redefine functions when objects have already\
-		been created. All objects will call automaticly the new function code.\
-\
-		However, objects can also overload functions or variables:\
-\
-		 class \"Foo\"\
-		 function Foo:dosomething () print \"do something foo\" end\
-\
-		 o = new (Foo)\
-		 function o:dosomething() print \"Object code\" end\
-		 print(o:dosomething) -- prints out \"Object code\"\
-\
-		!!Spaces\
-\
-		Classes can be defined inside other tables:\
-\
-		 somewhere = {}\
-		 class (\"Foo\",somewhere)\
-		 obj = new (somewhere.Foo)\
-\
-		 class (\"Bar\",somewhere) : extends (somewhere.Foo)\
-\
-		The default space is _G, which is why every class is\
-		automaticly available in the global table.\
-		",childs={["class"] = {type='function', description = "\
-				creates a clase in the given space (default _G) and\
-				returns a table, which contains a function named\
-				\"extends\", which accepts a class to be extended, i.e.\
-\
-				 class \"Foo\" : extends \"Object\"\
-\
-				per default, every class is derived from Object.\
-			", args="(name,space = _G)", returns="(table)"},
-["classparent"] = {type='function', description = " returns the parent\
-				of the class or none if it is the Object class.\
-			", args="(class)", returns="([class parent])"},
-["new"] = {type='function', description = " creates an object and calls\
-				class[classname](obj,...)\
-			", args="(class,...)", returns="(object)"}}}
+	* dev: on Unix systems, this represents the device that the inode resides on. \
+		On Windows systems, represents the drive number of the disk containing the file\
+	* ino: on Unix systems, this represents the inode number. On Windows systems \
+		this has no meaning mode string representing the associated protection \
+		mode (the values could be file, directory, link, socket, named pipe, \
+		char device, block device or other)\
+	* nlink: number of hard links to the file\
+	* uid: user-id of owner (Unix only, always 0 on Windows)\
+	* gid: group-id of owner (Unix only, always 0 on Windows)\
+	* rdev: on Unix systems, represents the device type, for special file inodes. \
+		On Windows systems represents the same as dev\
+	* access: time of last access\
+	* modification: time of last data modification\
+	* change: time of last file status change\
+	* size: file size, in bytes\
+	* blocks: block allocated for file; (Unix only)\
+	* blksize: optimal file system I/O blocksize; (Unix only) \
+	", args="(string filepath, [string attributename])", returns="([mixed attributevalues])"},
+["mkdir"] = {type='function', description = "\
+	Creates a new directory. The argument is the name of the new directory.\
+	Returns true if the operation was successful; in case of error, it returns \
+	nil plus an error string.", args="(string dirname)", returns="([boolean success],[string error])"},
+["chdir"] = {type='function', description = "\
+	Changes the current working directory to the given path.\
+	Returns true in case of success or nil plus an error string.", args="(path)", returns="([boolean success], [string error])"},
+["rmdir"] = {type='function', description = "\
+	Removes an existing directory. The argument is the name of the directory.\
+	Returns true if the operation was successful; in case of error, it returns \
+	nil plus an error string.", args="(string dirname)", returns="([boolean success],[string error])"}}}
 L3DIcon = {type='class',description="L3DIcon are displaing l3dmodels.",childs={["l3dScale"] = {type='function', description = " sets scaling of the l3d icon", args="(class, float x,y,z)", returns="()"},
 ["l3dPos"] = {type='function', description = " sets position of the l3d icon", args="(class, float x,y,z)", returns="()"},
 ["l3dRotdeg"] = {type='function', description = " sets rotation of the l3d icon", args="(class, float x,y,z)", returns="()"},
 ["new"] = {type='function', description = "\
 	", args="(class,)", returns="()"}}}
+MouseListener = {type='class',description="A mouselistener reacts on certain type of events and call a eventfunction.",childs={["1"] = {type='value', description = "{[function]} - listener function"},
+["onEnter"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on enterings"},
+["onWheel"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on wheelmoves"},
+["onDragged"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on dragging"},
+["onPressed"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on presses"},
+["onExit"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on mouseexists"},
+["2"] = {type='value', description = "{[int]} - eventmask"},
+["onMoved"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on moves"},
+["onClicked"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on clicks"},
+["eventcall"] = {type='function', description = " same as MouseListener.matches,\
+	but calls the listener's function instantly.", args="(MouseListener self, MouseEvent e)", returns="(boolean)"},
+["matches"] = {type='function', description = " returns true if the mouselistener's\
+	eventmask matches the eventmask of the MouseEvent.", args="(MouseListener self, MouseEvent e)", returns="(boolean)"},
+["onReleased"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on releases"},
+["new"] = {type='function', description = "\
+	creates a new MouseListener. The eventFilter is optional and can be\
+	created by creating the product of the specific events of interest (i.e.\
+	MouseEvent.MOUSE_MOVED*MouseEvent.MOUSE_CLICKED). If eventFilter is not\
+	given, the listenerfunction will be called on every mouseevent.\
+\
+	The callback function's signature is\
+	 function listener (mouselistener, mouseevent)\
+	", args="(function callback, [int eventFilter])", returns="(MouseListener)"}}}
 math = {type='class',description="This library is an interface to the standard C math library. It provides all\
 its functions inside the table math. The library provides the following functions:\
 \
@@ -2544,29 +2454,16 @@ matrix4x4 = {type='class',description="4x4 matrices are used for position and ro
 ["mulfull"] = {type='function', description = " multiplys: a = b*c or a = a*b. accurately takes all 16 values into account.", args="(matrix4x4 a, b ,[c])", returns="(matrix4x4 a)"},
 ["invert"] = {type='function', description = " inverts m, or m = invert of inv", args="(matrix4x4 m,[matrix4x4 inv])", returns="(matrix4x4 m)"},
 ["pos"] = {type='function', description = " sets/gets position of matrix", args="(matrix4x4 m,[float x,y,z])", returns="([float x,y,z])"}}}
-MouseListener = {type='class',description="A mouselistener reacts on certain type of events and call a eventfunction.",childs={["1"] = {type='value', description = "{[function]} - listener function"},
-["onEnter"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on enterings"},
-["onWheel"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on wheelmoves"},
-["onDragged"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on dragging"},
-["onPressed"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on presses"},
-["onExit"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on mouseexists"},
-["2"] = {type='value', description = "{[int]} - eventmask"},
-["onMoved"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on moves"},
-["onClicked"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on clicks"},
-["eventcall"] = {type='function', description = " same as MouseListener.matches,\
-	but calls the listener's function instantly.", args="(MouseListener self, MouseEvent e)", returns="(boolean)"},
-["matches"] = {type='function', description = " returns true if the mouselistener's\
-	eventmask matches the eventmask of the MouseEvent.", args="(MouseListener self, MouseEvent e)", returns="(boolean)"},
-["onReleased"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on releases"},
-["new"] = {type='function', description = "\
-	creates a new MouseListener. The eventFilter is optional and can be\
-	created by creating the product of the specific events of interest (i.e.\
-	MouseEvent.MOUSE_MOVED*MouseEvent.MOUSE_CLICKED). If eventFilter is not\
-	given, the listenerfunction will be called on every mouseevent.\
-\
-	The callback function's signature is\
-	 function listener (mouselistener, mouseevent)\
-	", args="(function callback, [int eventFilter])", returns="(MouseListener)"}}}
+matobject = {type='class',description="Several classes which materials can be applied to, allow the detailed control of some material values. l3dmodels need to pass 2 arguments as matobject: l3dmodel,meshid. If you pass materials, then you will change values for the default matobject. If the node's material is changed, its old materialobject will be lost.",childs={["moPos"] = {type='function', description = " sets or returns position of texture matrix. Returns 0,0,0 if no matrix is set", args="(matobject,[float x,y,z])", returns="([float x,y,z])"},
+["moModoff"] = {type='function', description = " sets or returns modifiers active state", args="(matobject,[boolean])", returns="(boolean)"},
+["moAutotexstage"] = {type='function', description = " sets or returns matautocontrol for a texture stage. Use texgen=true if you want to modify texgenplanes. Note that only matrix controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,int stage,boolean texgen,[matautocontrol])", returns="([matautocontrol])"},
+["moTime"] = {type='function', description = " sets or returns time value, for automatic material values. 0 means systemtime is used.", args="(matobject,[int])", returns="(time)"},
+["moControl"] = {type='function', description = " sets or returns materialcontrol value. Depending on length of control, 1..4 values are required. If the control value has length > 4, as in array values, the array offset is required. Offsets are multiplied by 4.", args="(matobject,matcontrolid,[offset],[float ...])", returns="([float ...])"},
+["moAutocontrol"] = {type='function', description = " sets or returns matautocontrol for this control value. Note that only vector controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,matcontrolid,[matautocontrol])", returns="([matautocontrol])"},
+["moTexmatrix"] = {type='function', description = " sets or returns texturematrix, pass 0 as matrix4x4 to disable.", args="(matobject,[matrix4x4])", returns="(matrix4x4)"},
+["moRotaxis"] = {type='function', description = " 		sets or returns rotaxis of texture matrix. Returns 1,0,0, 0,1,0, 0,0,1 if no matrix is set. May contain scaling!", args="(matobject,[float x1,y1,z1,x2,y2,z2,x3,y3,z3])", returns="([float x1,y1,z1,x2,y2,z2,x3,y3,z3])"},
+["moTexcontrol"] = {type='function', description = " sets or returns material texcontrol value.", args="(matobject,matcontrolid,[texture])", returns="([texture])"},
+["moSeqoff"] = {type='function', description = " sets or returns sequence play state", args="(matobject,[boolean])", returns="(boolean)"}}}
 djoint = {type='class',description="Joints are connecting bodies. They simulate contacts, varius hinges and slider joints. For example if a chair stands on the floor, each of his foots are connected with a djointcontact to the floor or if a car steers with the wheels, ODE uses a jointhinge2 to simulate this. Ragdoll physics is also a typical example.",childs={["cfm2"] = {type='function', description = " same as cfm but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
 ["stoperp3"] = {type='function', description = " same as stoperp", args="(djoint,[float])", returns="([float])"},
 ["geom1"] = {type='function', description = " returns geom1 of the joint it has collided with", args="(djoint)", returns="([dgeom])"},
@@ -2601,11 +2498,6 @@ djoint = {type='class',description="Joints are connecting bodies. They simulate 
 ["lostop3"] = {type='function', description = " same as lostop but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
 ["histop"] = {type='function', description = " High stop angle or position. Setting this to dInfinity (the default value) turns off the high stop. For rotational joints, this stop must be less than pi to be effective. If the high stop is less than the low stop then both stops will be ineffective.", args="(djoint,[float])", returns="([float])"},
 ["cfm"] = {type='function', description = " The constraint force mixing (CFM) value used when not at a stop.", args="(djoint,[float])", returns="([float])"}}}
-l3dlist = {type='class',description="The List3D is the main rendering list, it contains l3dnodes that represent visual items.		It is organised in l3dsets l3dlayerids and l3dviews. l3dviews can render l2dnodes thru		special commands as well.<br><br>		The l3dlist the buffermempool for per-frame results. Various limits such as l3dset,		layer and perlayer draws influence its useage. You can alter some of these limits and the poolsize at runtime.		However these are critical operations and should only be looked into if you exceed limits, or had		quits with error messages regarding buffermempool.",childs={["l3dlayercount"] = {type='function', description = " returns how many l3dlayers exist", args="()", returns="(int)"},
-["maxtotalprojectors"] = {type='function', description = " gets or sets how many total projectors per-frame can be active. Say you have two meshes		that each are affected by the same projector, this would result into two total projectors. It is		the sum of used projectors per mesh, over all meshes. Changing this value influences runtime limits		and rendermempool consumption (4 bytes per cnt).", args="([int])", returns="([int])"},
-["maxdrawsperlayer"] = {type='function', description = " gets or sets how many meshes per l3dlayer in total can ever be rendered.		Changing this value influences runtime limits and rendermempool consumption (8 bytes per l3dset*l3dlayer).", args="([int])", returns="([int])"},
-["l3dsetcount"] = {type='function', description = " returns how many l3dsets exist", args="()", returns="(int)"},
-["fbotest"] = {type='function', description = " performs a test run on current rcmdfbo related setups. It takes enable flags of rcmds into account. Returns an error (+1) or warning(-1) string, or nothing if all is working.", args="()", returns="([int stringtype, string message])"}}}
 Button = {type='class',description="A Button is a Component that reacts on mouseclicks and other mouseactions.\
 \
 	Creating a simple button that reacts on mouseclicks is as easy as this:\
@@ -2707,8 +2599,6 @@ a displayable component should create all it needs to be displayed\
 	(l2dnodes & stuff).", args="(Component self, boolean displayable)", returns="()"},
 ["onAction"] = {type='function', description = " calls directly clicked (invoked by actioncommands such\
 	as ENTER on focused buttons", args="(Button self)", returns="()"}}}
-renderbuffer = {type='class',description="The renderbuffer is for storing results of rendering processes for fbo attachments using rcmdfborb. It cannot be used as texture directly, but allows faster and more complex (multi-sampled) internal storage. Using rcmdbufferblit you can blit the result of a renderbuffer to a texture or backbuffer.",childs={["setup"] = {type='function', description = " returns self if the renderbuffer could be set to the given attributes. Windowsized means width and height are ignored and automatically set to window size, also when changing window resolution. Multisamples can be set to a value >0 if hardware capability for multisample renderbuffers exists.", args="(renderbuffer,textype,int width,height,[boolan windowsized],[int multisamples])", returns="([renderbuffer])"},
-["new"] = {type='function', description = " returns a new renderbuffer. You must setup its attributes prior use or pass directly. When setting failed no rb is returend.", args="([textype,int width,height,[boolan windowsized],[int multisamples]])", returns="([renderbuffer])"}}}
 Checkbox = {type='class',description="A Checkbox component. Basicly it is a slightly modified Button and\
 	works in the same ways like the Button. The checkbox class is using the icon\
 	to display the checkbox next to the text.\
@@ -2749,6 +2639,8 @@ Checkbox = {type='class',description="A Checkbox component. Basicly it is a slig
 	It also activates the autowidth parameter of the skin and makes the\
 	button it was derived from pushable.\
 	", args="(class, float x,y,w,h, string caption, [Skin2D skin,Icon] ])", returns="(Checkbox)"}}}
+renderbuffer = {type='class',description="The renderbuffer is for storing results of rendering processes for fbo attachments using rcmdfborb. It cannot be used as texture directly, but allows faster and more complex (multi-sampled) internal storage. Using rcmdbufferblit you can blit the result of a renderbuffer to a texture or backbuffer.",childs={["setup"] = {type='function', description = " returns self if the renderbuffer could be set to the given attributes. Windowsized means width and height are ignored and automatically set to window size, also when changing window resolution. Multisamples can be set to a value >0 if hardware capability for multisample renderbuffers exists.", args="(renderbuffer,textype,int width,height,[boolan windowsized],[int multisamples])", returns="([renderbuffer])"},
+["new"] = {type='function', description = " returns a new renderbuffer. You must setup its attributes prior use or pass directly. When setting failed no rb is returend.", args="([textype,int width,height,[boolan windowsized],[int multisamples]])", returns="([renderbuffer])"}}}
 Container = {type='class',description="A container is a collection of Components.",childs={["onDisplayChange"] = {type='function', description = " called whenever the\
 	displaystate is changed, i.e. if the component was made invisible,\
 	or it's parent was removed from the rootpane etc.\
@@ -2790,103 +2682,80 @@ deletes the component. Removes the component from\
 ["add"] = {type='function', description = " adds the component to the list of components.\
 	If Index is passed, it will be inserted at a certain z-position. The lower indexes are\
 	on the foreground, higher numbers are on the background. Returns the added Component", args="(Container, Component,[int index])", returns="(Component)"}}}
+LuxiniaParam = {type='class',description="The LuxiniaParam class stores the original list of arguments with which \
+luxinia was called. The string of the commandline execution, i.e.:\
+\
+ luxinia.exe -abc test 1 -f \"hello world\" --word 13\
+\
+will be converted in a array that is stored in a global variable named \"arg\", \
+which will look like this:\
+\
+ arg[1] = \"luxinia.exe\"\
+ arg[2] = \"-abc\"\
+ arg[3] = \"test\"\
+ arg[4] = \"1\"\
+ arg[5] = \"-f\"\
+ arg[6] = \"hello world\"\
+ arg[7] = \"--word\"\
+ arg[8] = \"13\"\
+\
+The LuxiniaParam class also provides a set of utility functions \
+to simplify the processing of commandline options. The arguments with \
+which luxinia was called are put into a table that can be accessed and \
+modified. I.e. the example above will make create a table structure that \
+looks like this:\
+\
+ env[\"a\"] = {\"test\",\"1\"}\
+ env[\"b\"] = {\"test\",\"1\"}\
+ env[\"c\"] = {\"test\",\"1\"}\
+ env[\"f\"] = {\"hello world\"}\
+ env[\"word\"] = {\"13\"}\
+\
+You can change values in this table with the given getters and setters.\
+\
+Additionally, the LuxiniaParam class can help to describe the commandline \
+options. ",childs={["addTriggerDescription"] = {type='function', description = " Adds a trigger description to the\
+	known descriptions. The known descriptions will be listed here. If your \
+	trigger description is not listed here, please make sure that the \
+	autodocc creation is done right after you have registered the trigger.\
+	!!!!Known triggers:	\
+	\
+	* dbg<br>This parameter will enter in debug mode when the project is being loaded.\
+* p<br>requires a path argument (i.e. -p c:\\project\\bla). Sets the\
+projectpath to the given argument and trys to execute a \"main.lua\"\
+file in the given path. The path may be relative or absolute.\
+\"main.lua\" is not loaded if -v for the viewer is also set.\
+\
+* i<br>Like -p but for .lxi files\
+\
+* s<br>Like -p but allows filepaths inside project- or subdirectory of the project to be passed.\
+The actual projectpath is searched by recursively stepping down the directory,\
+searching for main.lua. Only absolute paths are allowed.\
+\
+* v<br>launches the viewer requires 1 filename (.mtl, .prt, .f3d, .mm) optionally a second (.ma). You can combine it with setting the projectpath and resources will be loaded from there.\
+* w<br>x y - sets window position\
+* h<br>prints out all known module trigger descriptions\
+* d<br>Writes the documentation files.\
+", args="(string trigger, string description)", returns="()"},
+["setArg"] = {type='function', description = " sets a new table value for the \
+	given triggername. Pass nil to delete the triggername value.\
+	", args="(string name, table newvalue)", returns="([table])"},
+["triggerDescriptionIterator"] = {type='function', description = " returns a iterator function that can be used \
+	to list all known triggers to this moment. Use it like this:\
+	\
+	 for index, trigger, description in LuxiniaParam.iterator() do\
+	   print(index,trigger,description)\
+	 end\
+	", args="()", returns="(function iterator)"},
+["getOrigArgs"] = {type='function', description = " returns a copy of the original arguments which is stored in \
+	a global named \"arg\". Since the LuxiniaParam module makes a copy of this \
+	table during startup, you must not worry about overwriting the original\
+	argument table suplied by the luxinia core.\
+	", args="()", returns="(table)"},
+["getArg"] = {type='function', description = " returns an argument table for the given \
+	triggername.\
+	", args="(string name)", returns="([table])"}}}
 rcmdstencil = {type='class',description="Sets stenciltest environment.",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdstencil)"}}}
-TimerTask = {type='class',description="A TimerTask is a function that is executed at a certain point of time.\
-		When you create a new task, you specify a time in the future at which\
-		the function should be executed. This class also offers a very simple\
-		system of scheduling for a little loadbalancing.\
-\
-		TimerTasks are useful when you want to execute certain actions over\
-		a timer of at a point of time. For example, when an enemy is killed, you\
-		can create a timertask function that will remove the enmey after some time -\
-		or you can check then if a certain condition is set and react on that.\
-\
-		!Samples:\
-\
-		 TimerTask.new(function () print \"time over\" end, 1000)\
-		  -- prints \"time over\" in about a second\
-\
-\
-		 TimerTask.new(function () print \"next frame\" end)\
-		  -- prints \"next frame\" in the next frame\
-\
-\
-		 TimerTask.new(\
-		 	function ()\
-		 		print \"from now on 30 secs\"\
-		 		coroutine.yield(15000)\
-		 		print \"... 15 seconds\"\
-		 		coroutine.yield(5000)\
-		 		for i=10,1,-1 do\
-		 			print (i)\
-		 			coroutine.yield(1000)\
-		 		end\
-		 		print \"bang\"\
-		 	end,1\
-		 ) -- a countdown that starts in a millisecond\
-\
-\
-		",childs={["isValid"] = {type='function', description = " returns true if the task is still scheduled in the future", args="()", returns="(boolean)"},
-["deleteAll"] = {type='function', description = " deletes all Tasks that are scheduled.", args="()", returns="()"},
-["reenable"] = {type='function', description = " reenable the task. This is senseless once the date lies in the\
-		past.", args="()", returns="()"},
-["pauseAll"] = {type='function', description = " Pauses the TimerTask scheduler. When scheduling is paused, no functions will be executed. If pause is is false, the scheduling is continued at the point when the system was paused.", args="(boolean pause)", returns="()"},
-["tick"] = {type='function', description = " called from the timer each frame.", args="()", returns="()"},
-["when"] = {type='function', description = " Returns absolute moment of time when the function is called.", args="()", returns="(int time)"},
-["new"] = {type='function', description = " Creates a new Task and returns it if the\
-		task is scheduled. The time is measured in milliseconds.\
-\
-		The function will be called when the current time is larger or same as\
-		the time that was used for scheduling, which is as close as possible.\
-		Be aware that a single frame may use 3-5 ms, so multiple tasks with\
-		different schedule times may be called within the same frame!\
-\
-		If no time is passed, the function will be called on the beginning of\
-		the next frame.\
-\
-		You can specify a variance in which the function should be called.\
-		The function is then scheduled between time\
-		and time+variance. You can specify a weight of that task and the\
-		scheduling will try to place the task at a time where the totalweight\
-		is at a minimum. The algorithm is pretty primitive and no rescheduling\
-		is done here.\
-\
-		If absolute is true, the moment of time is absolute, otherwise it is\
-		relative in the future.\
-\
-		A taskobject will become garbage once its scheduling time lies in the\
-		past - it is like an entry in a \"calendar\" which becomes unimportant once\
-		the date passed.\
-\
-		Once a task is scheduled, you cannot change the point of time when\
-		it will be executed.\
-\
-		Note: The timertasks create coroutines that are then executed. You can\
-		yield a function that is called as timertask at any time, which means that\
-		the execution is continued later. If you pass no argument to the\
-		yield call (see coroutine.yield), the execution at this point is continued\
-		at the next frame. If you pass a number, the execution is continued\
-		at this point of time in the future.\
-		", args="(function f, [int time, [int variance, [int weight,\
-		[boolean absolute] ] ] ])", returns="([TimerTask])"},
-["getTaskTime"] = {type='function', description = " The TimerTask scheduling is using a own time (which can\
-		be paused). The returned time is the number of milliseconds that have\
-		passed since luxinia started minus the time when the scheduling was\
-		started. If you pass an absolute time, you have to calculate the\
-		time with this time.", args="()", returns="(int time)"},
-["disable"] = {type='function', description = " disables a task. It won't be executed anymore.", args="()", returns="()"}}}
-texcombalpha = {type='class',description="The texcombiner for alpha values. Make sure that texcombop are only ALPHA values.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombalpha])"},
-["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombalpha])"},
-["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what. Make sure operand is always alpha or invalpha.", args="(texcombalpha,int arg,texcombsrc,texcombop)", returns="()"},
-["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombalpha])"},
-["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
-["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for color at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombalpha])"},
-["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
-["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombalpha)", returns="([string])"},
-["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombalpha])"},
-["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
-["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
-["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombalpha])"}}}
 ImageIcon = {type='class',description="ImageIcon objects are using textures to display little icons in GUIs.\
 	A texture can be used for multiple different icons.",childs={["new"] = {type='function', description = "\
 	Creates image icon from texture. The texture can be either a string\
@@ -2910,6 +2779,29 @@ ImageIcon = {type='class',description="ImageIcon objects are using textures to d
 	size of the window is the same as the refsize for the drawn objects.\
 	Otherwise the filtering value is not touched. Be aware that the\
 	icons will look best if they are drawn in the same size as they really are.", args="(class,string/texture tex, width, height, blendmode, [table iconpositions], [table color])", returns="()"}}}
+texcombalpha = {type='class',description="The texcombiner for alpha values. Make sure that texcombop are only ALPHA values.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombalpha])"},
+["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombalpha])"},
+["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what. Make sure operand is always alpha or invalpha.", args="(texcombalpha,int arg,texcombsrc,texcombop)", returns="()"},
+["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombalpha])"},
+["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
+["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for color at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombalpha])"},
+["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
+["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombalpha)", returns="([string])"},
+["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombalpha])"},
+["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
+["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
+["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombalpha])"}}}
+l3dlight = {type='class',description="Lights illuminate models that have the lit renderflag set. There is one sunlight either global default or l3dset specific, just like cameras.Additionally there can be multiple FX lights in the world. All lights are pointlights without shadowing.The FX lights should have a smaller effective range, so that the engine can pick closest light to a node, becausethe number of lights at the same time is limited to 4 (1 sun, 3 fxlights).<br> Priority of FX lights will make no influence yet.<br>Lighting is done in hardware and uses following attenation formula:<br>1/(const+linear*distance+quadratic*distance*distance).<br>All lights' intensities are summed up and then multiplied with the vertexcolor.",childs={["fxnonsunlit"] = {type='function', description = " returns or sets if the fxlight should affect nodes that are not sunlit (default is true). Can be useful to split lights into 2 categories: one affect all nodes (static scenery & moveable), and the other just fully dynamic lit nodes (moveable nodes). Be aware that l3dnodes will pick the lights per full node, not on a per mesh basis, if the first drawnode is just fxlit, we will use the nonsun lights.", args="(l3dlight,[boolean])", returns="([boolean])"},
+["activate"] = {type='function', description = " adds light to FX light list, if duration is passed it will get auto deactivated. Priority is unused for now", args="(l3dlight,int priority,float range,int duration)", returns="()"},
+["attenuateconst"] = {type='function', description = " returns or sets constant attenuation", args="(l3dlight,[float])", returns="([float])"},
+["makesun"] = {type='function', description = " makes it the default sun light", args="(l3dlight)", returns="()"},
+["deactivate"] = {type='function', description = " removes light from FX light list", args="(l3dlight)", returns="()"},
+["attenuatequadratic"] = {type='function', description = " returns or sets quadratic attenuation", args="(l3dlight,[float])", returns="([float])"},
+["ambient"] = {type='function', description = " returns or sets ambient intensity. Intensities can be negative and exceed 0-1. This way you can creater steeper falloffs. ", args="(l3dlight,[float r,g,b,[a]])", returns="([float r,g,b,a])"},
+["attenuatelinear"] = {type='function', description = " returns or sets linear attenuation", args="(l3dlight,[float])", returns="([float])"},
+["rangeattenuate"] = {type='function', description = " returns or sets state of automatic range based attenuation", args="(l3dlight,[boolean])", returns="([boolean])"},
+["diffuse"] = {type='function', description = " returns or sets diffuse intensity. Intensities can be negative and exceed 0-1. This way you can creater steeper falloffs.", args="(l3dlight,[float r,g,b,[a]])", returns="([float r,g,b,a])"},
+["new"] = {type='function', description = " creates new light", args="(string name,l3dlayerid layer)", returns="([l3dlight])"}}}
 texdatatype = {type='class',description="For creating textures this defines the internal storage precision. Some may require special capabilities",childs={["ushort"] = {type='function', description = " unsigned byte. normalized 0-1. 16-bit precision, local data storage as unsigned short.", args="()", returns="(texdatatype)"},
 ["ubyte"] = {type='function', description = " unsigned byte. normalized 0-1. 8-bit precision, local data storage as unsigned byte.", args="()", returns="(texdatatype)"},
 ["float16"] = {type='function', description = " float16. arbitrary, 16-bit precision, local data storage as float32.", args="()", returns="(texdatatype)"},
@@ -3137,15 +3029,6 @@ MouseEvent = {type='class',description="A mouseevent is produced whenever the mo
 ["toString"] = {type='value', description = "{string}:(MouseEvent e) - returns a string representing the mouseevent.\
 	This function is called if the MouseEvent is converted to a string, i.e.\
 	when calling 'print(mymouseevent)'."}}}
-ContainerMover = {type='class',description="A component that is moving its parent frame if clicked and dragged.",childs={["new"] = {type='function', description = " \
-	Creates a ContainerMover, which is initially not visible", args="(table class, int x,y,w,h)", returns="(ContainerMover)"}}}
-blendmode = {type='class',description="They define how texels or pixels are blend with the destination. Sometimes you might be able to use inverte d blends, those just invert the self.alpha value",childs={["decal"] = {type='function', description = " out = destination * (1-self.alpha) + self * (self.alpha)", args="()", returns="(blendmode)"},
-["amodadd"] = {type='function', description = " out = destination + self * self.alpha", args="()", returns="(blendmode)"},
-["modulate2"] = {type='function', description = " out = destination*self*2. Allows self to brigthen (>0.5) or darken (<0.5) at the same time.", args="()", returns="(blendmode)"},
-["replace"] = {type='function', description = " out = self", args="()", returns="(blendmode)"},
-["disable"] = {type='function', description = " removes setting the blendmode, warning if rfBlend is still true you will get undefined behavior", args="()", returns="(blendmode)"},
-["modulate"] = {type='function', description = " out = destination*self", args="()", returns="(blendmode)"},
-["add"] = {type='function', description = " out = destination + self", args="()", returns="(blendmode)"}}}
 Rectangle = {type='class',description="A 2D rectangle for hittests. 2D Rectangles are used as bounding\
 	boxes for the Component class.",childs={["getClosestSide"] = {type='function', description = " returns closest side to a given point, 1 top edge, 2... clockwise", args="(Rectangle,x,y)", returns="(side)"},
 ["new"] = {type='function', description = " creates a rectangle object with the \
@@ -3169,6 +3052,36 @@ Rectangle = {type='class',description="A 2D rectangle for hittests. 2D Rectangle
 	inside the rectangle. The borders of the rectangle are included.", args="(Rectangle r, float x,y)", returns="(boolean)"},
 ["1"] = {type='value', description = "{[int]} - x component"},
 ["area"] = {type='function', description = " area of rectangle (width*height)", args="(Rectangle self)", returns="(area)"}}}
+blendmode = {type='class',description="They define how texels or pixels are blend with the destination. Sometimes you might be able to use inverte d blends, those just invert the self.alpha value",childs={["decal"] = {type='function', description = " out = destination * (1-self.alpha) + self * (self.alpha)", args="()", returns="(blendmode)"},
+["amodadd"] = {type='function', description = " out = destination + self * self.alpha", args="()", returns="(blendmode)"},
+["modulate2"] = {type='function', description = " out = destination*self*2. Allows self to brigthen (>0.5) or darken (<0.5) at the same time.", args="()", returns="(blendmode)"},
+["replace"] = {type='function', description = " out = self", args="()", returns="(blendmode)"},
+["disable"] = {type='function', description = " removes setting the blendmode, warning if rfBlend is still true you will get undefined behavior", args="()", returns="(blendmode)"},
+["modulate"] = {type='function', description = " out = destination*self", args="()", returns="(blendmode)"},
+["add"] = {type='function', description = " out = destination + self", args="()", returns="(blendmode)"}}}
+MouseCursor = {type='class',description="	The mousecursor is a visual representation of the mouse. The graphical\
+	appearance can be customized.\
+	",childs={["showMouse"] = {type='function', description = " same as input.showMouse. If the mouse is visible,\
+	MouseCursor.enable will be true.", args="([boolean])", returns="([boolean])"},
+["mouseL2D"] = {type='function', description = " returns the l2d that is used as\
+	mousecursor. If a l2dnode is passed as argument, the current\
+	mousecursor is replaced by the argument and the old l2dnode is\
+	returned. This might be the defaultmousecursor.", args="([l2dnode],[hotspotx,hotspoty])", returns="(l2dnode)"},
+["addMouseListener"] = {type='function', description = " adds a mouselistener which will be called\
+	if the eventmask fits the mouselistener's eventmask.", args="(MouseListener ml)", returns="()"},
+["enable"] = {type='function', description = " enables or disables or\
+	returns current state of mousecursor. Only a enabled mouse produces\
+	clickevents and movementevents. If the mousecursor of the operating\
+	system is not shown (see MouseCursor.showMouse), a custom mousecursor\
+	is shown instead.", args="([boolean enable])", returns="([boolean enabled])"},
+["prevpos"] = {type='function', description = " Mouseposition in previous frame", args="()", returns="(int x,y)"},
+["removeMouseListener"] = {type='function', description = " removes a mouselistener", args="(MouseListener ml)", returns="()"},
+["wasButtonPressed"] = {type='function', description = " returns true if the button (0-2)\
+	was pressed during the last frame", args="(int button)", returns="(boolean)"},
+["pos"] = {type='function', description = " returns or sets current mouse cursor position.\
+	Generates a mouseevent that is delegated to the mousecursor's mouselistener list.\
+	If nomove is true, input.mousepos(x,y) is NOT called, leaving the OS cursor where it is.\
+	", args="([int x,y])", returns="([int x,y],[boolean nomove])"}}}
 renderflag = {type='class',description="For most renderable nodes you can define under what state conditions they are rendered. l3dmodels also allow renderflag to be meshid specific, if no meshid is given, we apply it to all.",childs={["rfNodepthtest"] = {type='function', description = " returns or sets renderflag state. When disabled only pixels that have closer or equal distance than previous pixels will be drawn.", args="(renderflag,[boolean])", returns="([boolean])"},
 ["rfNocolormask"] = {type='function', description = " returns or sets renderflag state. Pixel wont write into framebuffer ", args="(renderflag,[boolean])", returns="([boolean])"},
 ["rfProjectorpass"] = {type='function', description = " returns or sets renderflag state, forces surfaces affected by projectors into a new pass. Singlepass projector outcome sometimes might differ from multipass, especially when fog is envolved. If you need same treatment you can enforce it.", args="(renderflag,[boolean])", returns="([boolean])"},
@@ -3196,51 +3109,6 @@ meshid = {type='class',description="Mesh within a model. Typically contains vert
 ["material"] = {type='function', description = " returns material of the mesh or nothing if there's no material", args="(meshid)", returns="([material])"},
 ["texname"] = {type='function', description = " returns original texturename (material / texture).", args="(meshid)", returns="([string])"},
 ["texture"] = {type='function', description = " returns texture of the mesh or nothing if there's no texture", args="(meshid)", returns="([texture])"}}}
-MouseCursor = {type='class',description="	The mousecursor is a visual representation of the mouse. The graphical\
-	appearance can be customized.\
-	",childs={["showMouse"] = {type='function', description = " same as input.showMouse. If the mouse is visible,\
-	MouseCursor.enable will be true.", args="([boolean])", returns="([boolean])"},
-["mouseL2D"] = {type='function', description = " returns the l2d that is used as\
-	mousecursor. If a l2dnode is passed as argument, the current\
-	mousecursor is replaced by the argument and the old l2dnode is\
-	returned. This might be the defaultmousecursor.", args="([l2dnode],[hotspotx,hotspoty])", returns="(l2dnode)"},
-["addMouseListener"] = {type='function', description = " adds a mouselistener which will be called\
-	if the eventmask fits the mouselistener's eventmask.", args="(MouseListener ml)", returns="()"},
-["enable"] = {type='function', description = " enables or disables or\
-	returns current state of mousecursor. Only a enabled mouse produces\
-	clickevents and movementevents. If the mousecursor of the operating\
-	system is not shown (see MouseCursor.showMouse), a custom mousecursor\
-	is shown instead.", args="([boolean enable])", returns="([boolean enabled])"},
-["prevpos"] = {type='function', description = " Mouseposition in previous frame", args="()", returns="(int x,y)"},
-["removeMouseListener"] = {type='function', description = " removes a mouselistener", args="(MouseListener ml)", returns="()"},
-["wasButtonPressed"] = {type='function', description = " returns true if the button (0-2)\
-	was pressed during the last frame", args="(int button)", returns="(boolean)"},
-["pos"] = {type='function', description = " returns or sets current mouse cursor position.\
-	Generates a mouseevent that is delegated to the mousecursor's mouselistener list.\
-	If nomove is true, input.mousepos(x,y) is NOT called, leaving the OS cursor where it is.\
-	", args="([int x,y])", returns="([int x,y],[boolean nomove])"}}}
-vertexarray = {type='class',description="meshes, l3dmodels (morphable or compiled) or l2dimage usermeshes contain vertices you can modify. This interface allows access to it. For models this only has effect if they are not rendered via display list, nor vbo, else those need to be updated as well.",childs={["vertexNormalTris"] = {type='function', description = " returns interpolated normal for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float x,y,z])"},
-["vertexPosTris"] = {type='function', description = " returns interpolated position for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float x,y,z])"},
-["vertexUpdateVBO"] = {type='function', description = " if possible resubmits array using vertexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(vertexarray,[int fromidx, toidx])", returns="(boolean)"},
-["vertexTexcoord"] = {type='function', description = " set or return texture coordinates for given channel. All vertices have 1 channel, without normals 2 and bigvertex 4. channel 0 is used for textures, channel 1 is used for lightmaps.", args="(vertexarray, int index,[float u,v],[int texchannel 0-3])", returns="([float u,v])"},
-["vertexColorTris"] = {type='function', description = " returns interpolated color for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float r,g,b,a])"},
-["vertexPosarray"] = {type='function', description = " returns or sets vertex position from given array (3 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
-["vertexColor"] = {type='function', description = " set or return color", args="(vertexarray, int index,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["vertexInverttexcoord"] = {type='function', description = " inverts y (or x) coordinates of texcoord channel for all vertices by doing 1.0f-coord. ", args="(vertexarray, boolean y,[int texchannel 0-3])", returns="()"},
-["vertexColorarray"] = {type='function', description = " returns or sets vertex colors from given array (4 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
-["vertexTexcoordTris"] = {type='function', description = " returns texture coordinates for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca,[int texchannel 0-3])", returns="([float u,v])"},
-["vertexBBox"] = {type='function', description = " gets bounding box of vertices", args="(vertexarray)", returns="(float minx,miny,minz,maxx,maxy,maxz)"},
-["vertexTransform"] = {type='function', description = " transform all vertices with given matrix", args="(vertexarray, matrix4x4)", returns="()"},
-["vertexTexcoordtransform"] = {type='function', description = " transforms texcoords by given matrix ", args="(vertexarray, matrix4x4,[int texchannel 0-3])", returns="()"},
-["vertexNormalarray"] = {type='function', description = " returns or sets vertex position from given array (3 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
-["vertexPos"] = {type='function', description = " set or return position. Transformed with by matrix if given.", args="(vertexarray, int index,[matrix4x4],[float x,y,z])", returns="([float x,y,z])"},
-["vertexUser4"] = {type='function', description = " set or return user4 vector, only bigvertex vertexarrays will allow this. It overwrites texcoord channel 2 and 3.", args="(vertexarray, int index,[float x,y,z,w])", returns="([float x,y,z,w])"},
-["vertexAllocatedcount"] = {type='function', description = " return vertex allocated count. This is the number of vertices that can be used in this vertexarray, index must always be smaller than this.", args="(vertexarray)", returns="([int cnt])"},
-["vertexNormal"] = {type='function', description = " set or return normal, some vertexarrays do not have normals", args="(vertexarray, int index,[float x,y,z])", returns="([float x,y,z])"},
-["vertexPos2texcoord"] = {type='function', description = " copy xy coordinates from positions to texcoord channel for all vertices, or project them on given plane normal. ", args="(vertexarray,[float planex,y,z], [int texchannel 0-3])", returns="()"},
-["vertexCopy"] = {type='function', description = " copies vertices from other vertexarray, optionally with transfrom matrix.", args="(vertexarray, int start, vertexarray from,int fromstart, int size, [matrix4x4])", returns="()"},
-["vertexPtrs"] = {type='function', description = " returns C pointers for begin and end of array.", args="(vertexarray)", returns="(int start,end])"},
-["vertexCount"] = {type='function', description = " set or return vertex count. This count is used for statistics and for optimizing, it can be smaller than allocated count and should be equal to the last vertex you use. Morphable l3dmodels will not allow setting it.", args="(vertexarray, [int cnt])", returns="([int cnt])"}}}
 StretchedSkinnedImage = {type='class',description="A skinned image is an image that uses a special texture to create a\
 	2D rectangle visual surface.\
 \
@@ -3290,6 +3158,28 @@ StretchedSkinnedImage = {type='class',description="A skinned image is an image t
 	Otherwise the filtering value is not touched. Be aware that the\
 	skins will look best if they are drawn in the same size as they really are.\
 	", args="(class,string/texture tex,float top,right,bottom,left, [table uvs])", returns="()"}}}
+vertexarray = {type='class',description="meshes, l3dmodels (morphable or compiled) or l2dimage usermeshes contain vertices you can modify. This interface allows access to it. For models this only has effect if they are not rendered via display list, nor vbo, else those need to be updated as well.",childs={["vertexNormalTris"] = {type='function', description = " returns interpolated normal for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float x,y,z])"},
+["vertexPosTris"] = {type='function', description = " returns interpolated position for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float x,y,z])"},
+["vertexUpdateVBO"] = {type='function', description = " if possible resubmits array using vertexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(vertexarray,[int fromidx, toidx])", returns="(boolean)"},
+["vertexTexcoord"] = {type='function', description = " set or return texture coordinates for given channel. All vertices have 1 channel, without normals 2 and bigvertex 4. channel 0 is used for textures, channel 1 is used for lightmaps.", args="(vertexarray, int index,[float u,v],[int texchannel 0-3])", returns="([float u,v])"},
+["vertexColorTris"] = {type='function', description = " returns interpolated color for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float r,g,b,a])"},
+["vertexPosarray"] = {type='function', description = " returns or sets vertex position from given array (3 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
+["vertexColor"] = {type='function', description = " set or return color", args="(vertexarray, int index,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["vertexInverttexcoord"] = {type='function', description = " inverts y (or x) coordinates of texcoord channel for all vertices by doing 1.0f-coord. ", args="(vertexarray, boolean y,[int texchannel 0-3])", returns="()"},
+["vertexColorarray"] = {type='function', description = " returns or sets vertex colors from given array (4 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
+["vertexTexcoordTris"] = {type='function', description = " returns texture coordinates for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca,[int texchannel 0-3])", returns="([float u,v])"},
+["vertexBBox"] = {type='function', description = " gets bounding box of vertices", args="(vertexarray)", returns="(float minx,miny,minz,maxx,maxy,maxz)"},
+["vertexTransform"] = {type='function', description = " transform all vertices with given matrix", args="(vertexarray, matrix4x4)", returns="()"},
+["vertexTexcoordtransform"] = {type='function', description = " transforms texcoords by given matrix ", args="(vertexarray, matrix4x4,[int texchannel 0-3])", returns="()"},
+["vertexNormalarray"] = {type='function', description = " returns or sets vertex position from given array (3 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
+["vertexPos"] = {type='function', description = " set or return position. Transformed with by matrix if given.", args="(vertexarray, int index,[matrix4x4],[float x,y,z])", returns="([float x,y,z])"},
+["vertexUser4"] = {type='function', description = " set or return user4 vector, only bigvertex vertexarrays will allow this. It overwrites texcoord channel 2 and 3.", args="(vertexarray, int index,[float x,y,z,w])", returns="([float x,y,z,w])"},
+["vertexAllocatedcount"] = {type='function', description = " return vertex allocated count. This is the number of vertices that can be used in this vertexarray, index must always be smaller than this.", args="(vertexarray)", returns="([int cnt])"},
+["vertexNormal"] = {type='function', description = " set or return normal, some vertexarrays do not have normals", args="(vertexarray, int index,[float x,y,z])", returns="([float x,y,z])"},
+["vertexPos2texcoord"] = {type='function', description = " copy xy coordinates from positions to texcoord channel for all vertices, or project them on given plane normal. ", args="(vertexarray,[float planex,y,z], [int texchannel 0-3])", returns="()"},
+["vertexCopy"] = {type='function', description = " copies vertices from other vertexarray, optionally with transfrom matrix.", args="(vertexarray, int start, vertexarray from,int fromstart, int size, [matrix4x4])", returns="()"},
+["vertexPtrs"] = {type='function', description = " returns C pointers for begin and end of array.", args="(vertexarray)", returns="(int start,end])"},
+["vertexCount"] = {type='function', description = " set or return vertex count. This count is used for statistics and for optimizing, it can be smaller than allocated count and should be equal to the last vertex you use. Morphable l3dmodels will not allow setting it.", args="(vertexarray, [int cnt])", returns="([int cnt])"}}}
 ListBox = {type='class',description="A scrollable listbox.",childs={["itemCount"] = {type='function', description = " returns the number of items in the list.", args="(table class)", returns="(n)"},
 ["getSelected"] = {type='function', description = " returns the currently selected item", args="(ListBox)", returns="([int indx, string caption, command])"},
 ["select"] = {type='function', description = "\
@@ -3356,46 +3246,7 @@ GarbageCollector = {type='class',description="The GarbageCollector is a wrapper 
 			new value for the step multiplier of the collector.", args="(float mulstepsize)", returns="(float previous)"},
 ["setPause"] = {type='function', description = " sets arg/100 as the new value\
 			for the pause of the collector", args="(float pause)", returns="(float previous)"}}}
-indexarray = {type='class',description="meshes contain indices for rendering their primitives, with this interface you can modify them. Always make sure that the corresponding vertices exist and always run indexMinmax once you set all indices. If you use display lists or vbos, changes to a loaded model will not be visible.",childs={["indexTrianglecount"] = {type='function', description = " returns and updates the internal number of triangles based on current indexCount. This is only needed for statistics and should be called at least once after all indices were written.", args="(indexarray)", returns="([int])"},
-["indexValue"] = {type='function', description = " set or returns value at the given index. Make sure the corresponding vertex exists", args="(indexarray,index,[int value])", returns="([int value])"},
-["indexUpdateVBO"] = {type='function', description = " if possible resubmits array using indexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible indexarray).", args="(indexarray,[int fromidx, toidx])", returns="(boolean)"},
-["indexPrimitivetype"] = {type='function', description = " set or return the primitive type.", args="(indexarray, [primitivetype])", returns="([primitivetype])"},
-["indexPrimitive"] = {type='function', description = " set or returns the primitive at given position. The function will return/need 1 index for points, 2 for lines, 3 indices for triangles, 4 indices for quads and can only return indices for any strips/loops/fan. Polygons are not supported, since the whole indexarray always contains only one.", args="(indexarray,primindex,[int a,b,c...])", returns="([int a,b,c...])"},
-["indexPrimitivecount"] = {type='function', description = " returns the number of primitives based on indexCount", args="(indexarray)", returns="([int])"},
-["indexCount"] = {type='function', description = " set or return the number of indices to be used on rendering. This value must always be smaller than Allocatedcount.", args="(indexarray,[int cnt])", returns="([int])"},
-["indexMinmax"] = {type='function', description = " computes minimum and maximum index used within indexCount, or you can manually set them. This is required for an indexarray to work, call this after all indices are set.", args="(indexarray,[min,max])", returns="(int min,max)"},
-["indexAllocatedcount"] = {type='function', description = " return indices count. This is the number of indices that can be used in this indexarray, index must always be smaller than this.", args="(indexarray)", returns="([int cnt])"},
-["indexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored in (unset,va,vbo) ", args="(indexarray)", returns="([string])"},
-["indexCopy"] = {type='function', description = " copies indices from one indexarray into self, starting at given index and optionally offsetting the copied.", args="(indexarray,int start,indexarray from,int fromstart, int size,[int vertexoffset])", returns="([int])"},
-["indexPtrs"] = {type='function', description = " returns C pointers for begin and end of array. [start,end[", args="(indexarray)", returns="(int start,end])"}}}
-rendersystem = {type='class',description="Rendering system information and settings",childs={["usevbos"] = {type='function', description = " sets/gets if vertex buffer objects should be enabled. This generally turns them on/off (on will have no effect if your hardware cant do it), the other option is to disable them per model.load. By default it is on if system technique is higher than VID_ARB_V.", args="([boolean])", returns="([boolean])"},
-["glinfo"] = {type='function', description = " returns information about OpenGL Driver", args="()", returns="(string renderer,string version, string vendor)"},
-["cglowprofileglsl"] = {type='function', description = " sets if GLSL is used in the low Cg profiles. Setting will enforce GLSL useage for lowCgProfile (normally arbfp1/arbvp1) and highCgProfile, disabling will revert to original state. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test GLSL codepaths profiles.", args="([boolean])", returns="()"},
-["noglextensions"] = {type='function', description = " sets/gets if 'nice-to-have' GLextensions are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["cgdumpcompiled"] = {type='function', description = " gets or sets if all Cg programs will saved to their corresponding compiled filename, will overwrite files.", args="([boolean])", returns="([boolean])"},
-["pushgl"] = {type='function', description = " pushes all GL resources back (ie restores active data). Should be done after a major GLContext change. This function is also only for use with custom window managers. It is automatically called when switching from windowed to fullscreen mode. While GL resources are pushed rendering will be ignored, and many OpenGL calls will result into errors.", args="()", returns="()"},
-["hwbonesparams"] = {type='function', description = " gets or sets how many parameters you use additionally to matrices in your gpuskin programs", args="([int])", returns="([int])"},
-["cguseoptimal"] = {type='function', description = " gets or sets if Cg should set optimal profile compiler arguments, using driver and GPU info. Be aware that there is no way to disable it, hence once the first Cg gpuprogram is loaded from that time on all will use compile flags for the local machine. When you want to precompile your shaders using generic profile options, ie like the offline Cg compiler, you should set this value to false before loading your shaders. The only machine dependent flag will be use of ATI_draw_buffers over ARB_draw_buffers.", args="([boolean])", returns="([boolean])"},
-["batchmaxindices"] = {type='function', description = " l3dbatchbuffers will finish batch after indices are reached.", args="([int])", returns="([int])"},
-["purehwvertices"] = {type='function', description = " returns or sets if you can guarantee that all vertices (cept for debug helpers or font) are processed by your shaders which all use programmable pipeline. In that case we can ignore a few costly state changes that are only needed for fixed function pipeline.", args="([boolean])", returns="([boolean])"},
-["usebaseshaders"] = {type='function', description = " returns or sets if baseshaders should be used. Make sure they are specified before.", args="([boolean])", returns="([boolean])"},
-["texanisolevel"] = {type='function', description = " sets value for anisotropic filtering. Must be <= maximum capable", args="([float])", returns="([float])"},
-["cgprefercompiled"] = {type='function', description = " gets or sets if Cg should check for compiled programs first.", args="([boolean])", returns="([boolean])"},
-["cgcompilerargs"] = {type='function', description = " returns the cg compiler args. Args must be separated by ;", args="([string])", returns="([string])"},
-["detail"] = {type='function', description = " gets or sets users detail setting 1 - 3, 3 = highest detail. 1 = half texture size, 16 bit. 2 = 16 bit texture, 3 = 32 bit textures.", args="([int])", returns="([int])"},
-["cgdumpbroken"] = {type='function', description = " gets or sets if Cg programs, who failed to load and were compiled at runtime, should be saved. Their filename is like pre-compiled version just with a BROKEN added.", args="([boolean])", returns="([boolean])"},
-["forcefinish"] = {type='function', description = " if true then renderfunction will wait until all rendering is finished before swapbuffers. Might fix issues you have.", args="([boolean])", returns="([boolean])"},
-["poppedgl"] = {type='function', description = " returns true if GL resources are just popped, ie rendering is disabled.", args="()", returns="(boolean)"},
-["cghighprofile"] = {type='function', description = " sets the Cg high profiles, used in higher techniques, also allows downgrade of max capable technique. Strings are profilenames of Cg, there is no error checking if profilename actually correspons to maximum tehniques. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test profile codepaths.", args="(string vertexprofile, fragmentprofile, [technique])", returns="()"},
-["texanisotropic"] = {type='function', description = " gets or sets if texture anisotropic filtering should be used", args="([boolean])", returns="([boolean])"},
-["baseshaders"] = {type='function', description = " returns or sets baseshaders. Any non-material mesh, ie just having a texture or just having a color, will use those shaders and pass its texture (if exists) as Texture:0 to the shader. All other materials will use the Shader:0 they come with.", args="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])", returns="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])"},
-["nodefaultgpuprogs"] = {type='function', description = " sets/gets if defaultgpuprogs are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["cgallowglslatism3"] = {type='function', description = " gets or sets if Cg on startup should allow use of GLSL for ATI shader model3 capable cards. From Cg 2.1 on this defaults to true.", args="([boolean])", returns="([boolean])"},
-["batchmeshmaxtris"] = {type='function', description = " l3dbatchbuffers will immediately render meshes with less triangles.", args="([int])", returns="([int])"},
-["force2tex"] = {type='function', description = " sets/gets if system should be forced to have only two textureunits, useful for debugging. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["texcompression"] = {type='function', description = " gets or sets if texture compression should be used", args="([boolean])", returns="([boolean])"},
-["swapinterval"] = {type='function', description = " gets or sets swapbuffer interval behavior 0 = vsynch off, 1 on, 2 double buffered on ...", args="([int])", returns="([int])"},
-["popgl"] = {type='function', description = " pops GL resources from useage (ie retrieves data). Should be done before a major GLContext change. Only relative if cusom window managers are used.", args="()", returns="()"}}}
+texcombiner = {type='class',description="A texcombiner defines how textures are blend together / what color/alpha values they return. Luxinia comes with a bunch of predefined combiners that the shadercompiler uses and which you can access in the shaderscript. If those are not enough or you need specific operations to be done you can define your own combiners. You must make sure they run well, as there wont be error checking. GL_ARB_texture_env_combine is the main extension this system builds on.",childs={}}
 io = {type='class',description="The I/O library provides two different styles for file manipulation. The first\
 one uses implicit file descriptors; that is, there are operations to set a\
 default input file and a default output file, and all input/output operations\
@@ -3540,6 +3391,34 @@ message as a second result) and some value different from nil on success.\
 ["tmpfile"] = {type='function', description = " Returns a handle for a temporary file. This file is\
 			opened in update mode and it is automatically removed when the\
 			program ends. ", args="()", returns="(?)"}}}
+rendersystem = {type='class',description="Rendering system information and settings",childs={["usevbos"] = {type='function', description = " sets/gets if vertex buffer objects should be enabled. This generally turns them on/off (on will have no effect if your hardware cant do it), the other option is to disable them per model.load. By default it is on if system technique is higher than VID_ARB_V.", args="([boolean])", returns="([boolean])"},
+["glinfo"] = {type='function', description = " returns information about OpenGL Driver", args="()", returns="(string renderer,string version, string vendor)"},
+["cglowprofileglsl"] = {type='function', description = " sets if GLSL is used in the low Cg profiles. Setting will enforce GLSL useage for lowCgProfile (normally arbfp1/arbvp1) and highCgProfile, disabling will revert to original state. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test GLSL codepaths profiles.", args="([boolean])", returns="()"},
+["noglextensions"] = {type='function', description = " sets/gets if 'nice-to-have' GLextensions are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
+["cgdumpcompiled"] = {type='function', description = " gets or sets if all Cg programs will saved to their corresponding compiled filename, will overwrite files.", args="([boolean])", returns="([boolean])"},
+["pushgl"] = {type='function', description = " pushes all GL resources back (ie restores active data). Should be done after a major GLContext change. This function is also only for use with custom window managers. It is automatically called when switching from windowed to fullscreen mode. While GL resources are pushed rendering will be ignored, and many OpenGL calls will result into errors.", args="()", returns="()"},
+["hwbonesparams"] = {type='function', description = " gets or sets how many parameters you use additionally to matrices in your gpuskin programs", args="([int])", returns="([int])"},
+["cguseoptimal"] = {type='function', description = " gets or sets if Cg should set optimal profile compiler arguments, using driver and GPU info. Be aware that there is no way to disable it, hence once the first Cg gpuprogram is loaded from that time on all will use compile flags for the local machine. When you want to precompile your shaders using generic profile options, ie like the offline Cg compiler, you should set this value to false before loading your shaders. The only machine dependent flag will be use of ATI_draw_buffers over ARB_draw_buffers.", args="([boolean])", returns="([boolean])"},
+["batchmaxindices"] = {type='function', description = " l3dbatchbuffers will finish batch after indices are reached.", args="([int])", returns="([int])"},
+["purehwvertices"] = {type='function', description = " returns or sets if you can guarantee that all vertices (cept for debug helpers or font) are processed by your shaders which all use programmable pipeline. In that case we can ignore a few costly state changes that are only needed for fixed function pipeline.", args="([boolean])", returns="([boolean])"},
+["usebaseshaders"] = {type='function', description = " returns or sets if baseshaders should be used. Make sure they are specified before.", args="([boolean])", returns="([boolean])"},
+["texanisolevel"] = {type='function', description = " sets value for anisotropic filtering. Must be <= maximum capable", args="([float])", returns="([float])"},
+["cgprefercompiled"] = {type='function', description = " gets or sets if Cg should check for compiled programs first.", args="([boolean])", returns="([boolean])"},
+["cgcompilerargs"] = {type='function', description = " returns the cg compiler args. Args must be separated by ;", args="([string])", returns="([string])"},
+["detail"] = {type='function', description = " gets or sets users detail setting 1 - 3, 3 = highest detail. 1 = half texture size, 16 bit. 2 = 16 bit texture, 3 = 32 bit textures.", args="([int])", returns="([int])"},
+["cgdumpbroken"] = {type='function', description = " gets or sets if Cg programs, who failed to load and were compiled at runtime, should be saved. Their filename is like pre-compiled version just with a BROKEN added.", args="([boolean])", returns="([boolean])"},
+["forcefinish"] = {type='function', description = " if true then renderfunction will wait until all rendering is finished before swapbuffers. Might fix issues you have.", args="([boolean])", returns="([boolean])"},
+["poppedgl"] = {type='function', description = " returns true if GL resources are just popped, ie rendering is disabled.", args="()", returns="(boolean)"},
+["cghighprofile"] = {type='function', description = " sets the Cg high profiles, used in higher techniques, also allows downgrade of max capable technique. Strings are profilenames of Cg, there is no error checking if profilename actually correspons to maximum tehniques. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test profile codepaths.", args="(string vertexprofile, fragmentprofile, [technique])", returns="()"},
+["texanisotropic"] = {type='function', description = " gets or sets if texture anisotropic filtering should be used", args="([boolean])", returns="([boolean])"},
+["baseshaders"] = {type='function', description = " returns or sets baseshaders. Any non-material mesh, ie just having a texture or just having a color, will use those shaders and pass its texture (if exists) as Texture:0 to the shader. All other materials will use the Shader:0 they come with.", args="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])", returns="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])"},
+["nodefaultgpuprogs"] = {type='function', description = " sets/gets if defaultgpuprogs are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
+["cgallowglslatism3"] = {type='function', description = " gets or sets if Cg on startup should allow use of GLSL for ATI shader model3 capable cards. From Cg 2.1 on this defaults to true.", args="([boolean])", returns="([boolean])"},
+["batchmeshmaxtris"] = {type='function', description = " l3dbatchbuffers will immediately render meshes with less triangles.", args="([int])", returns="([int])"},
+["force2tex"] = {type='function', description = " sets/gets if system should be forced to have only two textureunits, useful for debugging. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
+["texcompression"] = {type='function', description = " gets or sets if texture compression should be used", args="([boolean])", returns="([boolean])"},
+["swapinterval"] = {type='function', description = " gets or sets swapbuffer interval behavior 0 = vsynch off, 1 on, 2 double buffered on ...", args="([int])", returns="([int])"},
+["popgl"] = {type='function', description = " pops GL resources from useage (ie retrieves data). Should be done before a major GLContext change. Only relative if cusom window managers are used.", args="()", returns="()"}}}
 table = {type='class',description="This library provides generic functions for table manipulation. It provides\
 all its functions inside the table table.\
 \
@@ -3731,10 +3610,6 @@ error passing ret2.\
 \
  -- connects or throws an exception with the appropriate error message\
  c = socket.try(socket.connect(\"localhost\", 80))", args="(ret1 [, ret2 ... retN])", returns="(?)"}}}
-texcombop = {type='class',description="The texcombiner operand are the values that are used from the source.",childs={["color"] = {type='function', description = " RGB value", args="()", returns="(texcombop)"},
-["invalpha"] = {type='function', description = " (1 - Alpha) value", args="()", returns="(texcombop)"},
-["alpha"] = {type='function', description = " Alpha value", args="()", returns="(texcombop)"},
-["invcolor"] = {type='function', description = " (1 - RGB) value. (Inverted colors)", args="()", returns="(texcombop)"}}}
 baselib = {type='class',description="All functions in this \"class\" are global values that can be used directly.\
 \
 The basic library provides some core functions to Lua. If you do not include\
@@ -3937,6 +3812,10 @@ to provide implementations for some of its facilities.",childs={["xpcall"] = {ty
 ["loadfile"] = {type='function', description = "\
 			Similar to load, but gets the chunk from file filename or from the\
 			standard input, if no file name is given.", args="([string path])", returns="(function f)"}}}
+texcombop = {type='class',description="The texcombiner operand are the values that are used from the source.",childs={["color"] = {type='function', description = " RGB value", args="()", returns="(texcombop)"},
+["invalpha"] = {type='function', description = " (1 - Alpha) value", args="()", returns="(texcombop)"},
+["alpha"] = {type='function', description = " Alpha value", args="()", returns="(texcombop)"},
+["invcolor"] = {type='function', description = " (1 - RGB) value. (Inverted colors)", args="()", returns="(texcombop)"}}}
 package = {type='class',description="The package library provides basic facilities for loading and building\
 modules in Lua. It exports two of its functions directly in the global\
 environment: require and module. Everything else is exported in a table package.",childs={["preload"] = {type='value', description = "[table] - A table to store loaders for specific modules (see require)."},
@@ -3991,8 +3870,6 @@ environment: require and module. Everything else is exported in a table package.
 			referring to the global environment, so that this module inherits\
 			values from the global environment. To be used as an option to\
 			function module. ", args="(module)", returns="(?)"}}}
-ushortarray = {type='class',description="Unsigned short array in Luxinia for array operations.",childs={["fromushort"] = {type='function', description = " copies content to ushortarray. Min will become 0 and max 65535", args="(ushortarray,ushortarray,int min,max)", returns="()"},
-["new"] = {type='function', description = " creates a new staticarray. Count must be >0.", args="(int count)", returns="(ushortarray)"}}}
 KeyListener = {type='class',description="A Keylistener receives keyevent callbacks on KeyEvents that are\
 	produced by a specific component.",childs={["1"] = {type='value', description = "{[function]} - function that is called"},
 ["3"] = {type='value', description = "{[boolean]} - if true, function is called on pressed"},
@@ -4005,16 +3882,8 @@ KeyListener = {type='class',description="A Keylistener receives keyevent callbac
 		 function listener (KeyListener, KeyEvent)\
 	", args="(function callback, boolean onType,\
 		onPress, onRelease)", returns="(KeyListener)"}}}
-sphere = {type='class',description="a simple sphere",childs={["prevhit"] = {type='function', description = " prev element in hitlist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
-["r"] = {type='function', description = " radius of sphere", args="(sphere self, [float r])", returns="([float r])"},
-["nexthit"] = {type='function', description = " next element in hitlist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
-["remove"] = {type='function', description = " removes the sphere from his space", args="(sphere self)", returns="()"},
-["pos"] = {type='function', description = " center of sphere", args="(sphere self, [float x,y,z])", returns="([float x,y,z])"},
-["prevlist"] = {type='function', description = " prev element in spacelist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
-["space"] = {type='function', description = " returns his space, if it is in a space", args="(sphere self)", returns="([Space space])"},
-["nextlist"] = {type='function', description = " next element in spacelist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
-["id"] = {type='function', description = " id of sphere", args="(sphere self, [int id])", returns="([int id])"},
-["new"] = {type='function', description = " constructs a simple sphere", args="([float x,y,z]/[float r],[float r],[int id])", returns="(Sphere sphere)"}}}
+ushortarray = {type='class',description="Unsigned short array in Luxinia for array operations.",childs={["fromushort"] = {type='function', description = " copies content to ushortarray. Min will become 0 and max 65535", args="(ushortarray,ushortarray,int min,max)", returns="()"},
+["new"] = {type='function', description = " creates a new staticarray. Count must be >0.", args="(int count)", returns="(ushortarray)"}}}
 LuxModule = {type='class',description="LuxModules are luascripts that are\
 	part of the official Luxinia distribution. LuxModules are not related to\
 	the module and package system of lua. LuxModules are creating lot's of\
@@ -4059,6 +3928,63 @@ LuxModule = {type='class',description="LuxModules are luascripts that are\
 			table class,\
 			table help, [string parent],[table interfaces], [boolean isthreadsafe],\
 			[table threadsafefunctions])", returns="()"}}}
+sphere = {type='class',description="a simple sphere",childs={["prevhit"] = {type='function', description = " prev element in hitlist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
+["r"] = {type='function', description = " radius of sphere", args="(sphere self, [float r])", returns="([float r])"},
+["nexthit"] = {type='function', description = " next element in hitlist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
+["remove"] = {type='function', description = " removes the sphere from his space", args="(sphere self)", returns="()"},
+["pos"] = {type='function', description = " center of sphere", args="(sphere self, [float x,y,z])", returns="([float x,y,z])"},
+["prevlist"] = {type='function', description = " prev element in spacelist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
+["space"] = {type='function', description = " returns his space, if it is in a space", args="(sphere self)", returns="([Space space])"},
+["nextlist"] = {type='function', description = " next element in spacelist (ring)", args="(sphere self)", returns="(shpere / aabox shape)"},
+["id"] = {type='function', description = " id of sphere", args="(sphere self, [int id])", returns="([int id])"},
+["new"] = {type='function', description = " constructs a simple sphere", args="([float x,y,z]/[float r],[float r],[int id])", returns="(Sphere sphere)"}}}
+particlecloud = {type='class',description="A ParticleCloud contains many static particles, which are organised as groups. The user specifies all particle properties, the groups are used to handle automatic particle position updates. The fastest types to render are quad,triangle and point.",childs={["drawlayer"] = {type='function', description = " at the end of which layer it will be drawn, l3dset info is ignored.", args="(particlecloud,[l3dlayerid])", returns="()"},
+["color"] = {type='function', description = " gets or sets common color for all particles, if particlecolor is false.", args="(particlecloud,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["typemodel"] = {type='function', description = " meshes taken from the given model, very expensive. Set the model with 'model' command. Faster if instancemesh is used.", args="(particlecloud)", returns="()"},
+["clearparticles"] = {type='function', description = " delets all active particles", args="(particlecloud)", returns="()"},
+["inside"] = {type='function', description = " gets or sets insideflag, if it is set and range is specified particles need to be within the range to be rendered.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["usesizemul"] = {type='function', description = " if set output size is multiplied with sizemul", args="(particlecloud,[boolean])", returns="([boolean])"},
+["attpointsize"] = {type='function', description = " gets or sets the automatic point parameter sizes. Combined with pointdist you can define how point particles should change size depending on distance.", args="(particlecloud,[float min,max,alpha])", returns="([float min,max,alpha])"},
+["useoriginoffset"] = {type='function', description = " if set the quads/triangles center will be moved by the originoffset vector. Useful to create particles that dont have their center in the middle.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["sizemul"] = {type='function', description = " size multiplier applied when usesizemul is true", args="(particlecloud,[float])", returns="([float])"},
+["checkmin"] = {type='function', description = " returns or sets minimum of the check boundingbox.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
+["rotatedirection"] = {type='function', description = " automaticall rotates into the direction their normals point.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["typepoint"] = {type='function', description = " just simple points, some systems may have capability for simple textured sprites. particle sizes will be ignored. but using pointsize (default 32) and attpointsize/dist you can influence the sizes.", args="(particlecloud)", returns="()"},
+["lightmapmatrix"] = {type='function', description = " generates texture coordinates when lightmap is used.", args="(particlecloud,[matrix4x4])", returns="([matrix4x4])"},
+["typetriangle"] = {type='function', description = " a single triangle facing camera", args="(particlecloud)", returns="()"},
+["particlenormal"] = {type='function', description = " will use particle's normal. Only applied when instancing renderpath is used.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["instancemesh"] = {type='function', description = " sets the instance mesh. Trys to lookup the mesh in the model that is used for rendering. If the mesh is small (only triangles/quads, max 32 vertices, 96 indices) we can instance it. Returns true on success", args="(particlecloud,string meshname)", returns="(boolean)"},
+["model"] = {type='function', description = " gets or sets model, only will be used if pcloud type is also set to model.", args="(particlecloud,[model])", returns="([model])"},
+["useworldaxis"] = {type='function', description = " when set the billboards will be aligned with the user given world axis and not face camera.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"},
+["pointsize"] = {type='function', description = " gets or sets particle pointsize for typepoint, size is in pixels at 640x480.", args="(particlecloud,[float])", returns="([float])"},
+["typequad"] = {type='function', description = " quad facing towards camera. origin at center", args="(particlecloud)", returns="()"},
+["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
+["range"] = {type='function', description = " gets or sets range for particles, depending on the 'inside' flag, particles are either only drawn when inside range or outside.", args="(particlecloud,[float])", returns="([float])"},
+["camrotfix"] = {type='function', description = " gets or sets if particle rotation is influenced by the camera orientation. Fixes billboard rotation issues when we look 'down' on particles, but will rotate them if we are the same plane as well.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["lightmap"] = {type='function', description = " lightmap texture to be used. for texture coordinates the world space positions are transformed with lightmapmatrix", args="(particlecloud,[texture])", returns="([texture])"},
+["sort"] = {type='function', description = " gets or sets z-sort state, setting can be good for some blendtypes.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["attpointdist"] = {type='function', description = " gets or sets automatic point size attenuation along with the min and max values from pointsize.", args="(particlecloud,[float const,lin,quad])", returns="([float const,lin,quad])"},
+["visflag"] = {type='function', description = " sets visibility bit flag, default is true for id 1 and false for rest. It is bitwise 'and'ed with camera bitid to decide if particles should be drawn.", args="(particlecloud,int id,[boolean])", returns="([boolean])"},
+["forceinstance"] = {type='function', description = " will use instancing rendering even for the small normally batched billboards", args="(particlecloud,[boolean])", returns="([boolean])"},
+["smoothpoints"] = {type='function', description = " gets or sets if points should be smoothed.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["probability"] = {type='function', description = " percentage of how many particles are rendered when useprobability is true", args="(particlecloud,[float])", returns="([float])"},
+["worldaxis"] = {type='function', description = " the user given align matrix for all billboards when useworldaxis is true. It will remove the camrotfix flag as it is unneeded.", args="(particlecloud,[matrix4x4])", returns="([matrix4x4])"},
+["originoffset"] = {type='function', description = " returns or sets vector that is added to the generic quad/triangle center. Only applied if useoriginoffset is true.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
+["checktype"] = {type='function', description = " returns or sets what kind of axis aligned bounding box check should be done. Only particles within the box (defined by checkmin/max) are drawn. Checks performed are:<br> 1 = x-axis <br> 2 = y-axis <br> 3 = x,y-axis <br> 4 = z-axis <br> 5 = x,z-axis <br> 6 = y,z-axis <br> 7 = all axis <br> any other value = no check (default)", args="(particlecloud,[int])", returns="([int])"},
+["useprobability"] = {type='function', description = " if set not all particles are drawn but user given percentage", args="(particlecloud,[boolean])", returns="([boolean])"},
+["particlerotate"] = {type='function', description = " gets or sets if particles can have rotation.", args="(particlecloud,[boolean])", returns="([boolean])"},
+["colormul"] = {type='function', description = " color multiplier applied when usecolormul is true", args="(particlecloud,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["typesphere"] = {type='function', description = " spheres, that can be lit but are yet untextured", args="(particlecloud)", returns="()"},
+["usecolormul"] = {type='function', description = " if set output colors are multipiled with colormul", args="(particlecloud,[boolean])", returns="([boolean])"},
+["matsurface"] = {type='function', description = " gets or sets what kind of material/texture should be used. If your textures contain combined sequences use sequencecount to set how many.", args="(particlecloud,[matsurface])", returns="([material/texture])"},
+["typehemisphere"] = {type='function', description = " hemisphere facing towards camera.", args="(particlecloud)", returns="()"},
+["sequencecount"] = {type='function', description = " gets or sets number of sequence items that the material holds.", args="(particlecloud,[int])", returns="([int])"},
+["checkmax"] = {type='function', description = " returns or sets maximum of the check boundingbox.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
+["nogpu"] = {type='function', description = " wont use the default gpu programs", args="(particlecloud,[boolean])", returns="([boolean])"},
+["probabilityfadeout"] = {type='function', description = " fadeout threshold. when particle's render probability is between probability-thresh its color alpha will be interpolated accordingly. The more it closes the probability value the less its alpha will be.", args="(particlecloud,[float])", returns="([float])"},
+["create"] = {type='function', description = " creates a particlecloud with the number of given particles, the name is just a identifier. However make sure to pick a unique name, else a old cloud will be returned.", args="(string name,int particlecount,[int sortkey])", returns="(particlecloud)"},
+["particlecolor"] = {type='function', description = " gets or sets if particles have their own colors.", args="(particlecloud,[boolean])", returns="([boolean])"}}}
 fpubclass = {type='class',description="The luxinia API is provided by a system that we call functionpublishing. The functionpublishing is standalone and not bound to a certain scripting language. It also provides basic descriptions (like this text) and implements an objectoriented system of inheritance, even though Luxinia is written in pure C (which isn't an objectoriented programminglanguage). Every object that is created in the Luxinia C core is wrapped in a fpubclass which provides information about the class functions, parent classes and interface classes.",childs={["ischildof"] = {type='function', description = " checks if the child is derived from parent", args="(fpubclass child,fpubclass parent)", returns="(boolean)"},
 ["description"] = {type='function', description = " returns description string for the class", args="(fpubclass)", returns="([string])"},
 ["classid"] = {type='function', description = " returns the internal ID number of the class", args="(fpubclass c)", returns="(int)"},
@@ -4070,61 +3996,6 @@ fpubclass = {type='class',description="The luxinia API is provided by a system t
 ["interface"] = {type='function', description = " returns the number of implemented interfaces. If an index is provided (>=0, <interfacecount) it returns the interface of the class", args="(fpubclass,[int index])", returns="([int/fpubclass])"},
 ["inherited"] = {type='function', description = " returns true if the given function is inherited to child classes", args="(fpubclass,string functionname)", returns="(boolean)"},
 ["isinterface"] = {type='function', description = " returns true if the given class is an interface class", args="(fpubclass)", returns="(boolean)"}}}
-tbterrain = {type='class',description="tiletexture-based terrain, uses elevation data and surface layers, which are organized as tiles.<br> Every tile has 4 layers of surfacetiles. You can use up to 256 surfacetiletypes, each with a unique texture. However on an area of 32x32 tiles no more than eight textures can be used.",childs={["savesurfname"] = {type='function', description = " returns or sets the savename for the surface layer (by default same as on set)", args="(tbterrain,int layer,[string])", returns="([string])"},
-["tileheight"] = {type='function', description = " returns or sets tile height", args="(tbterrain,int x,int y,[float height])", returns="(TBTerrain terr)"},
-["tilesurf"] = {type='function', description = " returns or sets tile surface id", args="(tbterrain,int x,int y,int layer,[int id])", returns="(TBTerrain terr)"},
-["save"] = {type='function', description = " saves a terrain by storing the data into the savenames", args="(tbterrain)", returns="()"},
-["tilecolor"] = {type='function', description = " returns or sets tile color", args="(tbterrain,int x,int y,[float r,g,b,a])", returns="(float r,g,b,a)"},
-["savecolorname"] = {type='function', description = " returns or sets the savename for the colormap (by default same as on set)", args="(tbterrain,[string])", returns="([string])"},
-["createfinish"] = {type='function', description = " initializes all needed data for rendering. Set all known tiletypes and layers before", args="(tbterrain)", returns="()"},
-["createblank"] = {type='function', description = "		creates a new tbterrain. Dimensions must be >= 32.<br> After setting all used tiletypes and layers run the newfinish function.", args="(string name, int width,int height, float heightfactor)", returns="(tbterrain)"},
-["size"] = {type='function', description = " returns width and height of terrain", args="(tbterrain)", returns="(int width,height)"},
-["surfacetile"] = {type='function', description = " creates a new surface tile using the given id (1..255) and creates a special texture from the given texturename.", args="(tbterrain,int id, string tiletexturename)", returns="()"},
-["saveobjname"] = {type='function', description = " returns or sets the savename for the object layer (by default same as on set)", args="(tbterrain,int layer,[string])", returns="([string])"},
-["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"},
-["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
-["createspecs"] = {type='function', description = " default specifications for newly generated terrains. Tilesize is the length of a single tile. Blocksize is the square grid that is visible. Camtolerance means that if camera moved more than this many tiles the block is updated. Atlascount is the number of surfacetiles that can be active within current visible block.<br><br>All values passed must be even, and atlascount should be power of 2.", args="([int tilesize, int blocksize, int camtolerance, int atlascount])", returns="([int tilesize, int blocksize, int camtolerance, int atlascount])"},
-["surfacelayer"] = {type='function', description = " sets the given layer with the data from the data texture.", args="(tbterrain,int id, data texture)", returns="()"},
-["tileupdate"] = {type='function', description = " updates tile, makes changes effective, optionally a whole region", args="(tbterrain,int x,int y,[int region])", returns="()"},
-["saveheightname"] = {type='function', description = " returns or sets the savename for the heightmap (by default same as on set)", args="(tbterrain,[string])", returns="([string])"},
-["height"] = {type='function', description = " returns interpolated height at x/y", args="(tbterrain self, float x,y)", returns="(float height)"},
-["getcoords"] = {type='function', description = " converts world position into terrain coords", args="(tbterrain,float x,y,z)", returns="(int x,y)"},
-["createfromtex"] = {type='function', description = " creates a new tbterrain using the given elevation and color data. Make sure the textures kept their data, and you can free the data afterwards. If the heightmap has 4 colorvalues it is used as float texture, else the red value is multiplied by heightfactor.<br> After setting all used tiletypes and layers run the createfinish function.", args="(string name, texture heightmap, float heightfactor, [texture colormap])", returns="(tbterrain)"},
-["getheights"] = {type='function', description = " returns a mounted floatarray, in which you can directly access heights of the terrain grid. There is steps*2+1 floats for each dimension.", args="(tbterrain)", returns="(floatarray)"}}}
-music = {type='class',description="Music playback, currently only for Ogg files. One file per time can be loaded and played. The playback is threaded and is only updated every 100ms. Thus, changes to the playback may lag behind for a small time period.",childs={["gain"] = {type='function', description = " sets playback gain, must be set after loading a file again.", args="(number gain)", returns="()"},
-["stop"] = {type='function', description = " stops a loaded musicfile", args="()", returns="()"},
-["isplaying"] = {type='function', description = " returns true if the music is playing", args="()", returns="(boolean)"},
-["time"] = {type='function', description = " seeks a position in the musicfile", args="([number time])", returns="([number time])"},
-["getcomment"] = {type='function', description = " reads the comments of a musicfile and returns a table that contains a list of it.", args="(string file)", returns="([table info])"},
-["load"] = {type='function', description = " loads a musicfile", args="(string filename)", returns="()"},
-["play"] = {type='function', description = " plays a loaded musicfile", args="()", returns="()"}}}
-dgeomcylinder = {type='class',description="Flatended cylinder. The cylinder is in the unstable branch of ODE. It doesn't collide with other cylinders or planes. It also seems to react unstable in certain positions.",childs={["radius"] = {type='function', description = " sets/gets the radius of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
-["length"] = {type='function', description = " sets/gets the length of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
-["lenrad"] = {type='function', description = " sets/gets the radius and length of the dgeomccylinder", args="(dgeomccylinder,[float rad, float len])", returns="([float rad,float len])"},
-["new"] = {type='function', description = " creates a flatended cylinder", args="(float radius,length)", returns="(dgeomcylinder)"}}}
-soundcapture = {type='class',description="Capturing audio input from different sources. If the first call on any of the		functions of this class are done, the capturing is initialized. If the initialization fails, 		false plus the eror is returned. Further calls on functions of this class 		will be terminated too.",childs={["defaultdevice"] = {type='function', description = " returns default capture device", args="()", returns="(string)"},
-["stop"] = {type='function', description = " Stops the recording and writes the buffer to the file and closes it.", args="()", returns="()"},
-["devicelist"] = {type='function', description = " returns a list of available devices", args="()", returns="([string,...])"},
-["start"] = {type='function', description = " Starts recording.", args="()", returns="()"},
-["open"] = {type='function', description = " 		opens a device for recording. Only one open device is supported here. The 		format is a number from 0 to 3 and represents MONO 8 bit, MONO 16 bit, STEREO 		8 bit and STEREO 16 bit. If no device is given, the default device is used.", args="(string filename, int samplefrequence, 		int format 0...3, int buffersize, [string device])", returns="(boolean sucecss,[string error])"}}}
-ode = {type='class',description="Physical simulation using the ODE Lib.Use its childclasses for simulating physical behaviour of objects (@see http://www.ode.org). Read the ODE API documentation for better understanding, parts of it are included in this documentation. The luxinia API is simplifies some calls or renames them, but basicly, the functions are the same.\
-A physical simulation can be divided in two object types: Static and dynamic objects. In ode, simulated objects that are staticly are called geoms, and objects that can interact and move dynamicly are called bodies. Geoms are solid (except trimeshes, which is the source of most problems when using them) objects, socalled primitives - cubes, spheres, cylinders and so on. Bodies are built using multiple geoms, allowing more complex objects for your simulation. The collision detection is done by using socalled spaces.",childs={}}
-console = {type='class',description="The console of luxinia is nothing more than  a screen containing lot's of letters. Each letter has a color and a style value that  can be set individually. The console has also a keyinput queue that represents the  keys that the user has pressed since the last frame. This queue is only filled if the  console is active.",childs={["clear"] = {type='function', description = " clears the console screen", args="()", returns="()"},
-["active"] = {type='function', description = " returns activestatus if no arguments given and sets activestatus if arg is boolean", args="([boolean active])", returns="([boolean active])"},
-["popstd"] = {type='function', description = " returns (if available) a line that was printed to standard stream. If you like to provide an mechanism that prints out information that comes from the Luxinia C core, you need to pop the messages from this queue.", args="()", returns="([string err])"},
-["width"] = {type='function', description = " returns width of console", args="()", returns="(int width)"},
-["poperr"] = {type='function', description = " returns (if available) a line that was printed to error stream. If you like to provide an mechanism that prints out information that comes from the Luxinia C core, you need to pop the messages from this queue.", args="()", returns="([string err])"},
-["popKey"] = {type='function', description = " returns a key and its keycode, that was pressed or nil. tab,backspace and enter get converted to regular keycodes, all other special keys stay as original keycode", args="()", returns="([char key],[int keycode])"},
-["height"] = {type='function', description = " returns height of console", args="()", returns="(int height)"},
-["put"] = {type='function', description = " writes the string given by text to the console. Stylecodes are: \
-* 1: Bold\
-* 2: Italic\
-* 4: Underline\
-* 8: Strikeout\
-* 16: Smaller\
-If you want to combine the values, just make the sum of the styles you want to use(i.e. 2+4+16).", args="(string text,[int style],[int r,g,b])", returns="()"},
-["get"] = {type='function', description = " Returns character information at given x,y", args="(int x,y)", returns="(char c, int r,g,b,style)"},
-["pos"] = {type='function', description = " returns position or sets position", args="([int x,y])", returns="([int x,y])"}}}
 tls = {type='class',description="TLS stands for 'threaded lua state' and is\
 	part of the luacore inside luxinia, which is the reason why\
 	it is not documented in the common way.\
@@ -4229,13 +4100,42 @@ tls = {type='class',description="TLS stands for 'threaded lua state' and is\
 ", args="(string code)", returns="([true,... / nil, error])"},
 ["new"] = {type='function', description = " creates a new threaded lua state object.\
 ", args="()", returns="(tls)"}}}
+music = {type='class',description="Music playback, currently only for Ogg files. One file per time can be loaded and played. The playback is threaded and is only updated every 100ms. Thus, changes to the playback may lag behind for a small time period.",childs={["gain"] = {type='function', description = " sets playback gain, must be set after loading a file again.", args="(number gain)", returns="()"},
+["stop"] = {type='function', description = " stops a loaded musicfile", args="()", returns="()"},
+["isplaying"] = {type='function', description = " returns true if the music is playing", args="()", returns="(boolean)"},
+["time"] = {type='function', description = " seeks a position in the musicfile", args="([number time])", returns="([number time])"},
+["getcomment"] = {type='function', description = " reads the comments of a musicfile and returns a table that contains a list of it.", args="(string file)", returns="([table info])"},
+["load"] = {type='function', description = " loads a musicfile", args="(string filename)", returns="()"},
+["play"] = {type='function', description = " plays a loaded musicfile", args="()", returns="()"}}}
+dgeomcylinder = {type='class',description="Flatended cylinder. The cylinder is in the unstable branch of ODE. It doesn't collide with other cylinders or planes. It also seems to react unstable in certain positions.",childs={["radius"] = {type='function', description = " sets/gets the radius of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
+["length"] = {type='function', description = " sets/gets the length of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
+["lenrad"] = {type='function', description = " sets/gets the radius and length of the dgeomccylinder", args="(dgeomccylinder,[float rad, float len])", returns="([float rad,float len])"},
+["new"] = {type='function', description = " creates a flatended cylinder", args="(float radius,length)", returns="(dgeomcylinder)"}}}
+djointball = {type='class',description="A ball-joint that rotates without limits. Can be used to simulate ropes for example",childs={["anchor"] = {type='function', description = " sets anchor point of joint if x,y,z is given (world coordinates) or returns the current anchors of the bodies if no argument is passed. Since the simulation is imperfect, there's a gap between the anchor that is set and the actual anchors of the bodies.", args="(djointball,[float x,y,z])", returns="([float x1,y1,z1,x2,y2,z2])"},
+["new"] = {type='function', description = " creates a new balljoint", args="([djointgroup group])", returns="(djointball)"}}}
+ode = {type='class',description="Physical simulation using the ODE Lib.Use its childclasses for simulating physical behaviour of objects (@see http://www.ode.org). Read the ODE API documentation for better understanding, parts of it are included in this documentation. The luxinia API is simplifies some calls or renames them, but basicly, the functions are the same.\
+A physical simulation can be divided in two object types: Static and dynamic objects. In ode, simulated objects that are staticly are called geoms, and objects that can interact and move dynamicly are called bodies. Geoms are solid (except trimeshes, which is the source of most problems when using them) objects, socalled primitives - cubes, spheres, cylinders and so on. Bodies are built using multiple geoms, allowing more complex objects for your simulation. The collision detection is done by using socalled spaces.",childs={}}
+console = {type='class',description="The console of luxinia is nothing more than  a screen containing lot's of letters. Each letter has a color and a style value that  can be set individually. The console has also a keyinput queue that represents the  keys that the user has pressed since the last frame. This queue is only filled if the  console is active.",childs={["clear"] = {type='function', description = " clears the console screen", args="()", returns="()"},
+["active"] = {type='function', description = " returns activestatus if no arguments given and sets activestatus if arg is boolean", args="([boolean active])", returns="([boolean active])"},
+["popstd"] = {type='function', description = " returns (if available) a line that was printed to standard stream. If you like to provide an mechanism that prints out information that comes from the Luxinia C core, you need to pop the messages from this queue.", args="()", returns="([string err])"},
+["width"] = {type='function', description = " returns width of console", args="()", returns="(int width)"},
+["poperr"] = {type='function', description = " returns (if available) a line that was printed to error stream. If you like to provide an mechanism that prints out information that comes from the Luxinia C core, you need to pop the messages from this queue.", args="()", returns="([string err])"},
+["popKey"] = {type='function', description = " returns a key and its keycode, that was pressed or nil. tab,backspace and enter get converted to regular keycodes, all other special keys stay as original keycode", args="()", returns="([char key],[int keycode])"},
+["height"] = {type='function', description = " returns height of console", args="()", returns="(int height)"},
+["put"] = {type='function', description = " writes the string given by text to the console. Stylecodes are: \
+* 1: Bold\
+* 2: Italic\
+* 4: Underline\
+* 8: Strikeout\
+* 16: Smaller\
+If you want to combine the values, just make the sum of the styles you want to use(i.e. 2+4+16).", args="(string text,[int style],[int r,g,b])", returns="()"},
+["get"] = {type='function', description = " Returns character information at given x,y", args="(int x,y)", returns="(char c, int r,g,b,style)"},
+["pos"] = {type='function', description = " returns position or sets position", args="([int x,y])", returns="([int x,y])"}}}
+shaderparamid = {type='class',description="A simple vector4 within shaders, that can control gpuprogram values",childs={}}
 dgeomccylinder = {type='class',description="A capped cylinder is like a normal cylinder except it has half-sphere caps at its ends. This feature makes the internal collision detection code particularly fast and accurate. The cylinder's length, not counting the caps, is given by length. The cylinder is aligned along the geom's local Z axis. The radius of the caps, and of the cylinder itself, is given by radius.",childs={["radius"] = {type='function', description = " sets/gets the radius of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
 ["length"] = {type='function', description = " sets/gets the length of the dgeomccylinder", args="(dgeomccylinder,[float])", returns="([float])"},
 ["lenrad"] = {type='function', description = " sets/gets the radius and length of the dgeomccylinder", args="(dgeomccylinder,[float rad, float len])", returns="([float rad,float len])"},
 ["new"] = {type='function', description = " Create a capped cylinder geom of the given parameters, and return its ID. If space is nonzero, insert it into that space.", args="([float r,l],[dspace space])", returns="(dgeomccylinder)"}}}
-rcmdmipmaps = {type='class',description="Generates mipmaps for the specified texture",childs={["texture"] = {type='function', description = " returns or sets texture to generate mipmaps for.", args="(rcmdmipmaps,[texture])", returns="([texture])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdmipmaps)"}}}
-AutoTable = {type='class',description="The AutoTable class provides a constructor for a table that offers a simple way to insert new values. Although the AutoTable object is a lua table that can be used like any normal table, you can use the table like a function. Any provided argument is inserted at the end of the table. In any case, the number of elements of the table is returned.",childs={}}
 Hashspace = {type='class',description="A hashspace stores data paired with positional information in order\
 		to accelerate requests for data within a certain area. \
 		\
@@ -4323,6 +4223,24 @@ Hashspace = {type='class',description="A hashspace stores data paired with posit
 	\
 	Reinserting an element if it is already present in the space will throw an \
 	error. Make sure it does not exist in that space before adding it!", args="(Hashspace, item, centerx,centery,width,height)", returns="()"}}}
+AutoTable = {type='class',description="The AutoTable class provides a constructor for a table that offers a simple way to insert new values. Although the AutoTable object is a lua table that can be used like any normal table, you can use the table like a function. Any provided argument is inserted at the end of the table. In any case, the number of elements of the table is returned.",childs={}}
+ClassInfo = {type='class',description="There are two systems in luxinia that describe the classes and their\
+information: The fpubclass class of the the c core and the LuxModule class\
+that is written in lua. While the fpubclass takes care about all C classes,\
+the LuxModule class handles all classes that are written in Lua or are\
+imported via DLLs. The ClassInfo class trys to provide a minimalistic\
+access on both systems for returning classnames or their functions and\
+descriptions without distinguishing between the origin of the class.\
+",childs={["getFunctionDescription"] = {type='function', description = " Returns the description\
+		for the function of the given name of the given classname.", args="(string classname, functionname)", returns="(string name)"},
+["getClassDescription"] = {type='function', description = " Returns the dedscription for\
+		a class of the given name", args="(string classname)", returns="(string description)"},
+["getClassName"] = {type='function', description = " returns the classname of the\
+		given datavalue if possible or nil.", args="(table/userdata object)", returns="(string name)"},
+["getFunctionList"] = {type='function', description = " Returns a table\
+		where each key is a functionname and the value is the description for\
+		the class. This includes also all functions of the interfaces or\
+		parent classes of the class.", args="(string classname)", returns="(table functiondescriptions)"}}}
 fontset = {type='class',description="It defines how each character of a string is rendered. You can define what grid the font texture has, and which quad of the grid each character takes.",childs={["new16x16"] = {type='function', description = " returns a new fontset with default values.", args="()", returns="(fontset)"},
 ["new6x6"] = {type='function', description = " returns a new fontset with default values.", args="()", returns="(fontset)"},
 ["new8x8"] = {type='function', description = " returns a new fontset with default values.", args="()", returns="(fontset)"},
@@ -4403,23 +4321,6 @@ skinid = {type='class',description="Skin within a model. Skins allow weighted ve
 ["skinvertexInfluence"] = {type='function', description = " returns or sets how much the influence of the bone is. You must sort weights by descending influences and make sure they sum to 1", args="(skinid,int vindex,int weight,[float influence])", returns="([float])"},
 ["hwsupport"] = {type='function', description = " returns if skinning can be done in hardware. Only valid after model.initskin was called.", args="(skinid,[boolean])", returns="([boolean])"},
 ["skinvertexWeights"] = {type='function', description = " returns or sets how many weights are used for this vertex. Hardware support will use 2 weights, lowdetail 1 weight, else a maximum of 4 is allowed.", args="(skinid,int vindex,[int numweights])", returns="([int])"}}}
-ClassInfo = {type='class',description="There are two systems in luxinia that describe the classes and their\
-information: The fpubclass class of the the c core and the LuxModule class\
-that is written in lua. While the fpubclass takes care about all C classes,\
-the LuxModule class handles all classes that are written in Lua or are\
-imported via DLLs. The ClassInfo class trys to provide a minimalistic\
-access on both systems for returning classnames or their functions and\
-descriptions without distinguishing between the origin of the class.\
-",childs={["getFunctionDescription"] = {type='function', description = " Returns the description\
-		for the function of the given name of the given classname.", args="(string classname, functionname)", returns="(string name)"},
-["getClassDescription"] = {type='function', description = " Returns the dedscription for\
-		a class of the given name", args="(string classname)", returns="(string description)"},
-["getClassName"] = {type='function', description = " returns the classname of the\
-		given datavalue if possible or nil.", args="(table/userdata object)", returns="(string name)"},
-["getFunctionList"] = {type='function', description = " Returns a table\
-		where each key is a functionname and the value is the description for\
-		the class. This includes also all functions of the interfaces or\
-		parent classes of the class.", args="(string classname)", returns="(table functiondescriptions)"}}}
 Keyboard = {type='class',description="	The Keyboard class handles events from the input class of the luxinia\
 	core classes. It provides a system for callbackmechanisms and other\
 	utility functions.\
@@ -4544,7 +4445,6 @@ Keyboard = {type='class',description="	The Keyboard class handles events from th
 	keycode names (i.e. \"W\" or \"DEL\"). If only a keycode is provided, the\
 	keybinding is removed.", args="(int/string keycode, [function, [int delay] ])", returns="()"},
 ["keyBindsEnabled"] = {type='function', description = " returns enabled state of the keybinding", args="()", returns="(on)"}}}
-rcmd = {type='class',description="The rendercommand mechanism allows you to program the renderer of each l3dview. You can precisely define what you want to render and in which order.",childs={["flag"] = {type='function', description = " sets rcmd process bit flag. If rcmdflag of view AND the own flag bitwise return true, then the rcmd will be processed. id = 0..31", args="(rcmd,int id,[boolean])", returns="([boolean])"}}}
 LuaConsole = {type='class',description="The console is a programming and debugging tool within the runtime environment of Luxinia. The LuaConsole provides interactive access on Luxinia.",childs={["lastinput"] = {type='value', description = "[AutoTable] - The last line of input the user made before started scrolling through the history."},
 ["lines"] = {type='value', description = "[CyclicQueue] - A cyclic array object obtained from the CyclicQueue class. Stores 1000 lines per default."},
 ["cursor"] = {type='value', description = "[int] - position of inputcursor, must be >0 and <= size of input + 1."},
@@ -4559,6 +4459,91 @@ LuaConsole = {type='class',description="The console is a programming and debuggi
 ["activeplugins"] = {type='value', description = "[table] - table of all plugin functions."},
 ["input"] = {type='value', description = "[AutoTable] - A 'normal' table that is obtained from the AutoTable class. Represents userinput as array"},
 ["scrollLine"] = {type='value', description = "[int] - position in output display."}}}
+rcmd = {type='class',description="The rendercommand mechanism allows you to program the renderer of each l3dview. You can precisely define what you want to render and in which order.",childs={["flag"] = {type='function', description = " sets rcmd process bit flag. If rcmdflag of view AND the own flag bitwise return true, then the rcmd will be processed. id = 0..31", args="(rcmd,int id,[boolean])", returns="([boolean])"}}}
+TimerTask = {type='class',description="A TimerTask is a function that is executed at a certain point of time.\
+		When you create a new task, you specify a time in the future at which\
+		the function should be executed. This class also offers a very simple\
+		system of scheduling for a little loadbalancing.\
+\
+		TimerTasks are useful when you want to execute certain actions over\
+		a timer of at a point of time. For example, when an enemy is killed, you\
+		can create a timertask function that will remove the enmey after some time -\
+		or you can check then if a certain condition is set and react on that.\
+\
+		!Samples:\
+\
+		 TimerTask.new(function () print \"time over\" end, 1000)\
+		  -- prints \"time over\" in about a second\
+\
+\
+		 TimerTask.new(function () print \"next frame\" end)\
+		  -- prints \"next frame\" in the next frame\
+\
+\
+		 TimerTask.new(\
+		 	function ()\
+		 		print \"from now on 30 secs\"\
+		 		coroutine.yield(15000)\
+		 		print \"... 15 seconds\"\
+		 		coroutine.yield(5000)\
+		 		for i=10,1,-1 do\
+		 			print (i)\
+		 			coroutine.yield(1000)\
+		 		end\
+		 		print \"bang\"\
+		 	end,1\
+		 ) -- a countdown that starts in a millisecond\
+\
+\
+		",childs={["isValid"] = {type='function', description = " returns true if the task is still scheduled in the future", args="()", returns="(boolean)"},
+["deleteAll"] = {type='function', description = " deletes all Tasks that are scheduled.", args="()", returns="()"},
+["reenable"] = {type='function', description = " reenable the task. This is senseless once the date lies in the\
+		past.", args="()", returns="()"},
+["pauseAll"] = {type='function', description = " Pauses the TimerTask scheduler. When scheduling is paused, no functions will be executed. If pause is is false, the scheduling is continued at the point when the system was paused.", args="(boolean pause)", returns="()"},
+["tick"] = {type='function', description = " called from the timer each frame.", args="()", returns="()"},
+["when"] = {type='function', description = " Returns absolute moment of time when the function is called.", args="()", returns="(int time)"},
+["new"] = {type='function', description = " Creates a new Task and returns it if the\
+		task is scheduled. The time is measured in milliseconds.\
+\
+		The function will be called when the current time is larger or same as\
+		the time that was used for scheduling, which is as close as possible.\
+		Be aware that a single frame may use 3-5 ms, so multiple tasks with\
+		different schedule times may be called within the same frame!\
+\
+		If no time is passed, the function will be called on the beginning of\
+		the next frame.\
+\
+		You can specify a variance in which the function should be called.\
+		The function is then scheduled between time\
+		and time+variance. You can specify a weight of that task and the\
+		scheduling will try to place the task at a time where the totalweight\
+		is at a minimum. The algorithm is pretty primitive and no rescheduling\
+		is done here.\
+\
+		If absolute is true, the moment of time is absolute, otherwise it is\
+		relative in the future.\
+\
+		A taskobject will become garbage once its scheduling time lies in the\
+		past - it is like an entry in a \"calendar\" which becomes unimportant once\
+		the date passed.\
+\
+		Once a task is scheduled, you cannot change the point of time when\
+		it will be executed.\
+\
+		Note: The timertasks create coroutines that are then executed. You can\
+		yield a function that is called as timertask at any time, which means that\
+		the execution is continued later. If you pass no argument to the\
+		yield call (see coroutine.yield), the execution at this point is continued\
+		at the next frame. If you pass a number, the execution is continued\
+		at this point of time in the future.\
+		", args="(function f, [int time, [int variance, [int weight,\
+		[boolean absolute] ] ] ])", returns="([TimerTask])"},
+["getTaskTime"] = {type='function', description = " The TimerTask scheduling is using a own time (which can\
+		be paused). The returned time is the number of milliseconds that have\
+		passed since luxinia started minus the time when the scheduling was\
+		started. If you pass an absolute time, you have to calculate the\
+		time with this time.", args="()", returns="(int time)"},
+["disable"] = {type='function', description = " disables a task. It won't be executed anymore.", args="()", returns="()"}}}
 Icon = {type='class',description="An Icon is a small gui element for graphical symbols. An Icon in Luxinia\
 	could be of any type - 2D, 3D, animated and so on, so this class should\
 	provide some basic interface definititions and functions to create, delete\
@@ -4637,79 +4622,6 @@ dgeomtransform = {type='class',description="A geometry transform `T' is a geom t
 Most placeable geoms (like the sphere and box) have their point of reference corresponding to their center of mass, allowing them to be easily connected to dynamics objects. Transform objects give you more flexibility - for example, you can offset the center of a sphere, or rotate a cylinder so that its axis is something other than the default.\
 T mimics the object E that it encapsulates: T is inserted into a space and attached to a body as though it was E. E itself must not be inserted into a space or attached to a body. E's position and rotation are set to constant values that say how it is transformed relative to T. If E's position and rotation are left at their default values, T will behave exactly like E would have if you had used it directly.",childs={["geom"] = {type='function', description = " sets/gets the geom to be transformed. The passed geom must not be inserted in a space or must not be transformed.", args="(dgeomtranform self, [dgeom])", returns="([dgeom])"},
 ["new"] = {type='function', description = " creates a new transformobject", args="([dspace space])", returns="(dgeomtranform)"}}}
-LuxiniaParam = {type='class',description="The LuxiniaParam class stores the original list of arguments with which \
-luxinia was called. The string of the commandline execution, i.e.:\
-\
- luxinia.exe -abc test 1 -f \"hello world\" --word 13\
-\
-will be converted in a array that is stored in a global variable named \"arg\", \
-which will look like this:\
-\
- arg[1] = \"luxinia.exe\"\
- arg[2] = \"-abc\"\
- arg[3] = \"test\"\
- arg[4] = \"1\"\
- arg[5] = \"-f\"\
- arg[6] = \"hello world\"\
- arg[7] = \"--word\"\
- arg[8] = \"13\"\
-\
-The LuxiniaParam class also provides a set of utility functions \
-to simplify the processing of commandline options. The arguments with \
-which luxinia was called are put into a table that can be accessed and \
-modified. I.e. the example above will make create a table structure that \
-looks like this:\
-\
- env[\"a\"] = {\"test\",\"1\"}\
- env[\"b\"] = {\"test\",\"1\"}\
- env[\"c\"] = {\"test\",\"1\"}\
- env[\"f\"] = {\"hello world\"}\
- env[\"word\"] = {\"13\"}\
-\
-You can change values in this table with the given getters and setters.\
-\
-Additionally, the LuxiniaParam class can help to describe the commandline \
-options. ",childs={["addTriggerDescription"] = {type='function', description = " Adds a trigger description to the\
-	known descriptions. The known descriptions will be listed here. If your \
-	trigger description is not listed here, please make sure that the \
-	autodocc creation is done right after you have registered the trigger.\
-	!!!!Known triggers:	\
-	\
-	* dbg<br>This parameter will enter in debug mode when the project is being loaded.\
-* p<br>requires a path argument (i.e. -p c:\\project\\bla). Sets the\
-projectpath to the given argument and trys to execute a \"main.lua\"\
-file in the given path. The path may be relative or absolute.\
-\"main.lua\" is not loaded if -v for the viewer is also set.\
-\
-* i<br>Like -p but for .lxi files\
-\
-* s<br>Like -p but allows filepaths inside project- or subdirectory of the project to be passed.\
-The actual projectpath is searched by recursively stepping down the directory,\
-searching for main.lua. Only absolute paths are allowed.\
-\
-* v<br>launches the viewer requires 1 filename (.mtl, .prt, .f3d, .mm) optionally a second (.ma). You can combine it with setting the projectpath and resources will be loaded from there.\
-* w<br>x y - sets window position\
-* h<br>prints out all known module trigger descriptions\
-* d<br>Writes the documentation files.\
-", args="(string trigger, string description)", returns="()"},
-["setArg"] = {type='function', description = " sets a new table value for the \
-	given triggername. Pass nil to delete the triggername value.\
-	", args="(string name, table newvalue)", returns="([table])"},
-["triggerDescriptionIterator"] = {type='function', description = " returns a iterator function that can be used \
-	to list all known triggers to this moment. Use it like this:\
-	\
-	 for index, trigger, description in LuxiniaParam.iterator() do\
-	   print(index,trigger,description)\
-	 end\
-	", args="()", returns="(function iterator)"},
-["getOrigArgs"] = {type='function', description = " returns a copy of the original arguments which is stored in \
-	a global named \"arg\". Since the LuxiniaParam module makes a copy of this \
-	table during startup, you must not worry about overwriting the original\
-	argument table suplied by the luxinia core.\
-	", args="()", returns="(table)"},
-["getArg"] = {type='function', description = " returns an argument table for the given \
-	triggername.\
-	", args="(string name)", returns="([table])"}}}
 GroupArray = {type='class',description="	A grouparray is an array that groups a couple of elements\
 	and behaves like one of them. This will only be done for \
 	pure indexed array of this group, not for named arrays \
@@ -4737,17 +4649,175 @@ GroupArray = {type='class',description="	A grouparray is an array that groups a 
 	is true, the given array is copied.", args="(table atable,[boolean docopy])", returns="(GroupArray)"},
 ["get"] = {type='function', description = " calls rawget if index is supplied,\
 	otherwise it returns all numbered elements of the array.", args="(GroupArray,[index])", returns="([value]/[...])"}}}
-l3dprojector = {type='class',description="a projector allows textures to be		projected on models, orthogonally and perspectively. There is a special texture type that can fix 		backprojection errors for perpective projection, but shouldnt be used on orthogonal, or if no errors with normal textures appear.",childs={["projmatrix"] = {type='function', description = " returns or sets projection matrix. Using frontplane,aspect and so on will override manually set matrices.", args="(l3dprojector,[matrix4x4])", returns="([matrix4x4])"},
-["textureid"] = {type='function', description = " returns or sets projected texture", args="(l3dprojector,[texture])", returns="(texture)"},
-["frontplane"] = {type='function', description = " returns or sets projection frontplane distance", args="(l3dprojector,[float])", returns="(float)"},
-["attenuate"] = {type='function', description = " returns or sets attenuation, this is quite heavy effect but will perform a per pixel distance attenuation that causes the projector to fade out towards its backplane.", args="(l3dprojector,[boolean])", returns="(boolean)"},
-["blend"] = {type='function', description = " returns or sets blendmode of projector", args="(l3dprojector,[blendmode])", returns="(blendmode)"},
-["backplane"] = {type='function', description = " returns or sets projection backplane distance", args="(l3dprojector,[float])", returns="(float)"},
-["deactivate"] = {type='function', description = " removes projector from active list", args="(l3dprojector)", returns="()"},
-["fov"] = {type='function', description = " returns or sets projection fov, when negative it will be orthogonal projection with abs(fov) rectangular size", args="(l3dprojector,[float])", returns="(float)"},
-["activate"] = {type='function', description = " adds projector to the active list with given id (0-31)", args="(l3dprojector,int id)", returns="()"},
-["aspect"] = {type='function', description = " returns or sets projection aspect ratio = width/height", args="(l3dprojector,[float])", returns="(float)"},
-["new"] = {type='function', description = " creates new projector", args="(string name,|l3dlayerid layer|)", returns="(l3dprojector)"}}}
+particle = {type='class',description="A single static particle part of a l3dpgroup",childs={}}
+OO = {type='class',description="The objectoriented class provides two functions which\
+		allows a more objectoriented like design using lua functions.\
+\
+		It implements a simple inheritance model. An object is a table\
+		with a metatable which includes all class information.\
+\
+		All functions from this class are available as global variables\
+		with the same name.\
+\
+		!!Examples:\
+\
+		 class \"Foo\" -- a simple class\
+		 print (Foo)\
+		   -- output: [Class: Foo]\
+		 fobj = new(Foo) -- creates a new object of type foo\
+		 print(fobj) -- print out our class object\
+		   -- output: [Object: Foo 3]\
+\
+		 -- overfloating printing function now\
+		 function Foo:toString()\
+		   return \"Foo object printout!\"\
+		 end\
+		 print(fobj) -- will print \"Foo object printout!\"\
+\
+		 -- creating a class that is derived from Foo\
+		 class \"Test\" : extends \"Foo\"\
+		 tobj = new(Test)\
+		 print(tobj) -- will also print \"Foo object printout!\",\
+		   -- because the toString function is derived from \"Foo\"\
+\
+		!!Constructors\
+\
+		The constructors have the same name as the class has.\
+		The default constructor will delegate its call to the\
+		parent's constructor, however not so if the constructor\
+		is overloaded.\
+\
+		Calling the parent constructor is being done by calling\
+		its classname like a method.\
+\
+		 class \"Foo\"\
+		 function Foo:Foo (v1,v2)\
+		   print(\"Foo constructor\",v1,v2)\
+		 end\
+\
+		 class \"Bar\" : extends \"Foo\"\
+		 new(Bar,1,2)  -- will delegate the constructor call to\
+		   -- Foo:Foo, passing the arguments 1,2 as v1 and v2,\
+		   -- resulting in a printout which looks like this:\
+		   -- Foo constructor 1 2\
+\
+		Calling the constructors is done by calling the parent's\
+		method. This can be problematic in some situations, but\
+		these are not real world examples (i.e. if the object has a\
+		variable with a name of a parent's class). Such situations\
+		can also be avoided either by not using capital letters\
+		for object variables while saving them for class names\
+		(which is similiar to Java's naming convention).\
+\
+		 class \"Foo\"\
+		 function Foo:Foo ()\
+		   Foo:Object () -- call the constructor of Object\
+		     -- as every object is derived from this class\
+		 end\
+\
+		!!Compatibility\
+\
+		The function 'new', which acts as a constructor is\
+		compatible with older code - if a table that is passed as class\
+		has a field named 'new', it will accept it as argument\
+		and will call this function with the passed table as first argument\
+		and returns its return.\
+\
+		This allows us to use the 'new' constructor also for\
+		GUI code:\
+\
+		 btn = new(Button,10,30,20,100,\"Button\")\
+\
+		!!Default parent class: Object\
+\
+		The default parent class is the Object class, a class\
+		that implements some basic operations.\
+\
+		The classes are also derived from the Object type - extending\
+		the Object class with additional functions (which is always possible)\
+		will also result in changing the class objects.\
+\
+		!!Variables\
+\
+		Any variable (functions are variables) can be defined any time.\
+		If a request on an object for a variable is made, it will return\
+		its variable value or will look in the class (or parent class and so on)\
+		if the variable is defined there. Accessing nil values is the worst case,\
+		since the whole class tree is looked up. Avoid nil value access by setting\
+		a variable value to false, if it is looked up more than once and turns out\
+		to be a performance bottleneck.\
+\
+		Example:\
+\
+		 class \"Foo\"\
+		 obj = new (Foo)\
+\
+		 print(obj.x) -- prints nothing or nil\
+		 Foo.x = 10\
+		 print(obj.x) -- prints 10\
+		 obj.x = \"bar\"\
+		 print(obj.bar) -- prints \"bar\"\
+		 obj.x = nil\
+		 print(obj.x) -- prints 10\
+		 Foo.x = nil\
+		 print(obj.x) -- prints nothing again\
+\
+		Variables in classes can be used as default values, as\
+		any object that has no such variable defined will automaticly\
+		return the value of the class' variable. Variables are\
+		inherited to all its child classes, also to objects that\
+		have been defined earlier.\
+\
+		!!Overloading\
+\
+		When a class is extended by another class, it can always redefine\
+		a function, i.e.\
+\
+		 class \"Foo\"\
+		 function Foo:dosomething () print \"do something foo\" end\
+\
+		 class \"Bar\" : extends \"Foo\"\
+		 function Bar:dosomehting() print \"do something bar\" end\
+\
+		We can also overload or redefine functions when objects have already\
+		been created. All objects will call automaticly the new function code.\
+\
+		However, objects can also overload functions or variables:\
+\
+		 class \"Foo\"\
+		 function Foo:dosomething () print \"do something foo\" end\
+\
+		 o = new (Foo)\
+		 function o:dosomething() print \"Object code\" end\
+		 print(o:dosomething) -- prints out \"Object code\"\
+\
+		!!Spaces\
+\
+		Classes can be defined inside other tables:\
+\
+		 somewhere = {}\
+		 class (\"Foo\",somewhere)\
+		 obj = new (somewhere.Foo)\
+\
+		 class (\"Bar\",somewhere) : extends (somewhere.Foo)\
+\
+		The default space is _G, which is why every class is\
+		automaticly available in the global table.\
+		",childs={["class"] = {type='function', description = "\
+				creates a clase in the given space (default _G) and\
+				returns a table, which contains a function named\
+				\"extends\", which accepts a class to be extended, i.e.\
+\
+				 class \"Foo\" : extends \"Object\"\
+\
+				per default, every class is derived from Object.\
+			", args="(name,space = _G)", returns="(table)"},
+["classparent"] = {type='function', description = " returns the parent\
+				of the class or none if it is the Object class.\
+			", args="(class)", returns="([class parent])"},
+["new"] = {type='function', description = " creates an object and calls\
+				class[classname](obj,...)\
+			", args="(class,...)", returns="(object)"}}}
 scenenode = {type='class',description="The SceneTree is a hierarchical SceneGraph organised as tree, containing scenenodes. 		The SceneTree is optimized for static data, for dynamic		nodes better use actornodes, however the scenenodes can be changed in position and rotation just fine as well.<br>		Retrieving world data can return wrong results, you need to wait one frame until they are uptodate or enforce a full 		tree updateall.<br>Compared to the other visual node types, scenenodes are automatically linked to the rootnode on creation, however this won't prevent garbagecollection.",childs={["localrotaxis"] = {type='function', description = " returns or sets local rotation axis, make sure they make a orthogonal basis.", args="(scenenode s3d,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
 ["transform"] = {type='function', description = " transforms x,y,z with final matrix of the node into world coordinates", args="(scenenode self,float x,y,z)", returns="(float x,y,z)"},
 ["parent"] = {type='function', description = " return or sets parent. If parent is not a scenenode, the node becomes unlinked. ==parent will prevent gc of self, unless parent is root.", args="(scenenode s3d,[scenenode parent])", returns="([scenenode parent])"},
@@ -4772,92 +4842,6 @@ scenenode = {type='class',description="The SceneTree is a hierarchical SceneGrap
 ["get"] = {type='function', description = " returns a node", args="(string name)", returns="([scenenode s3d])"}}}
 L2DIcon = {type='class',description="",childs={["new"] = {type='function', description = "\
 	", args="(class,width, height, oncreate, ondelete)", returns="()"}}}
-FileSystem = {type='class',description="Luxinia used an internal way to gain access to the directory \
-			structures that was located in the luxinia.dir function that \
-			was undocumented. The function returned a table of filenames. \
-			For plattformindependance and other reasons, we decided to use \
-			the Lua File System which is part of the Kepler project \
-			(http://www.keplerproject.org/luafilesystem/). You can use the \
-			lfs lib or this class. This class is a pure wrapper for the \
-			lfs lib and provides only additional documentation in the way \
-			the other classes are described. The function descriptions are \
-			extracts from the lfs documentation that can be found at the \
-			given link.",childs={["touch"] = {type='function', description = "\
-	Set access and modification times of a file. This function is a bind to \
-	utime function. The first argument is the filename, the second argument \
-	(atime) is the access time, and the third argument (mtime) is the \
-	modification time. Both times are provided in seconds (which should be \
-	generated with Lua standard function os.date). If the modification time \
-	is omitted, the access time provided is used; if both times are omitted, \
-	the current time is used.\
-\
-	Returns true if the operation was successful; in case of error, it returns \
-	nil plus an error string.", args="(string filepath [, atime [, mtime] ])", returns="([boolean success],[string error])"},
-["dir"] = {type='function', description = " \
-	Lua iterator over the entries of a given directory. Each time the \
-	iterator is called it returns a string with an entry of the directory; \
-	nil is returned when there is no more entries. Raises an error if path \
-	is not a directory.", args="(string path)", returns="([function iterator], [string error])"},
-["unlock"] = {type='function', description = "\
-	Unlocks a file or a part of it. This function works on open files; the \
-	file handle should be specified as the first argument. The optional \
-	arguments start and length can be used to specify a starting point and its \
-	length; both should be numbers.\
-\
-	Returns true if the operation was successful; in case of error, it returns \
-	nil plus an error string. ", args="(filehandle[, start[, length] ])", returns="([boolean success],[string error])"},
-["currentdir"] = {type='function', description = " Returns a string with the current \
-	working directory or nil  plus an error string.", args="()", returns="([string dir], [string error])"},
-["isDir"] = {type='function', description = " return true if the given file is an directory\
-	", args="(file)", returns="(boolean isdir)"},
-["lock"] = {type='function', description = "\
-	Locks a file or a part of it. This function works on open files; the file \
-	handle should be specified as the first argument. The string mode could be \
-	either r (for a read/shared lock) or w (for a write/exclusive lock). The \
-	optional arguments start and length can be used to specify a starting point \
-	and its length; both should be numbers.\
-\
-	Returns true if the operation was successful; in case of error, it returns \
-	nil plus an error string.", args="(filehandle, mode[, start[, length] ])", returns="([boolean success], [string error])"},
-["attributes"] = {type='function', description = " \
-	Returns a table with the file attributes corresponding to filepath (or nil \
-	followed by an error message in case of error). If the second optional \
-	argument is given, then only the value of the named attribute is returned \
-	(this use is equivalent to lfs.attributes(filepath).aname, but the table is \
-	not created and only one attribute is retrieved from the O.S.). The \
-	attributes are described as follows; attribute mode is a string, all the \
-	others are numbers, and the time related attributes use the same time \
-	reference of os.time:\
-\
-	* dev: on Unix systems, this represents the device that the inode resides on. \
-		On Windows systems, represents the drive number of the disk containing the file\
-	* ino: on Unix systems, this represents the inode number. On Windows systems \
-		this has no meaning mode string representing the associated protection \
-		mode (the values could be file, directory, link, socket, named pipe, \
-		char device, block device or other)\
-	* nlink: number of hard links to the file\
-	* uid: user-id of owner (Unix only, always 0 on Windows)\
-	* gid: group-id of owner (Unix only, always 0 on Windows)\
-	* rdev: on Unix systems, represents the device type, for special file inodes. \
-		On Windows systems represents the same as dev\
-	* access: time of last access\
-	* modification: time of last data modification\
-	* change: time of last file status change\
-	* size: file size, in bytes\
-	* blocks: block allocated for file; (Unix only)\
-	* blksize: optimal file system I/O blocksize; (Unix only) \
-	", args="(string filepath, [string attributename])", returns="([mixed attributevalues])"},
-["mkdir"] = {type='function', description = "\
-	Creates a new directory. The argument is the name of the new directory.\
-	Returns true if the operation was successful; in case of error, it returns \
-	nil plus an error string.", args="(string dirname)", returns="([boolean success],[string error])"},
-["chdir"] = {type='function', description = "\
-	Changes the current working directory to the given path.\
-	Returns true in case of success or nil plus an error string.", args="(path)", returns="([boolean success], [string error])"},
-["rmdir"] = {type='function', description = "\
-	Removes an existing directory. The argument is the name of the directory.\
-	Returns true if the operation was successful; in case of error, it returns \
-	nil plus an error string.", args="(string dirname)", returns="([boolean success],[string error])"}}}
 FXUtils = {type='class',description="The FXUtils class is a collection of lua functions that aid setting up effects.",childs={["applyMaterialTexFilter"] = {type='function', description = " adds a texture filter material to an object that supports\
 	matobject and matsurface assignments. Texoffsets and weights should match in length and may not exceed 9. Both contain tables of sizes\
 	up to 4. Texoffsets should be passed in \"pixelsize\" ie {-1,-1} would be lower left neighboring pixel. Weights reflect\
@@ -4871,8 +4855,6 @@ FXUtils = {type='class',description="The FXUtils class is a collection of lua fu
 	Each setup for dynamic cubemap rendering. Order is CubeMap sides 0-5. Local matrices are set and rotation inherition is\
 	disabled.\
 	", args="(int visflagstart, [spatialnode], [float frontplane], [float backplane])", returns="(table cameras)"}}}
-dgeombox = {type='class',description="A solid box object.",childs={["size"] = {type='function', description = " sets/gets size of the box", args="(dgeombox,[float x,y,z])", returns="([float x,y,z])"},
-["new"] = {type='function', description = " creates a box with width=w, height=h and length=l", args="([float w,h,l],[dspace space])", returns="(dgeombox box)"}}}
 particleforceid = {type='class',description="Particle forces within particlesys allow greater control of the dynamic beahvior. You can create general effects such as  wind and gravity within the prt-script itself. However for location based effects you must add particle forces with this  class. You can also get access to the orginal prt scripts. The number of total forces per particlesys is limited to 32 and name must be shorter than 16 characters.  The more you add, the slower it will be.",childs={["linkworldref"] = {type='function', description = " sets the reference for magnet,target or agedvelocity.", args="(particleforceid,[actornode/scenenode])", returns="()"},
 ["activate"] = {type='function', description = " force is activated.", args="(particleforceid)", returns="()"},
 ["range"] = {type='function', description = " returns or sets range for magnet.", args="(particleforceid,[float])", returns="([float])"},
@@ -4890,6 +4872,8 @@ particleforceid = {type='class',description="Particle forces within particlesys 
 ["createwind"] = {type='function', description = " returns a new particleforceid if particlesys had an empty slot.		Wind is acceleration if slower than wind, or deceleration if faster.", args="(particlesys,string name)", returns="([particleforceid])"},
 ["creategravity"] = {type='function', description = " returns a new particleforceid if particlesys had an empty slot. Gravity is constant acceleration.", args="(particlesys,string name)", returns="([particleforceid])"},
 ["createmagnet"] = {type='function', description = " returns a new particleforceid if particlesys had an empty slot. Magnet is similar to target but a ranged effect, only within range particles are affected and the strenght falloff is quadratic with distance", args="(particlesys,string name)", returns="([particleforceid])"}}}
+dgeombox = {type='class',description="A solid box object.",childs={["size"] = {type='function', description = " sets/gets size of the box", args="(dgeombox,[float x,y,z])", returns="([float x,y,z])"},
+["new"] = {type='function', description = " creates a box with width=w, height=h and length=l", args="([float w,h,l],[dspace space])", returns="(dgeombox box)"}}}
 CyclicQueue = {type='class',description="The CyclicQueue is a utility class for storing cyclic fields. This is usefull for creating histories. The index operator ([]) can be used to index the queue. I.e. mylist[1] will always return the elment that was inserted last.",childs={["pop"] = {type='function', description = " pops a value from the queue. If no element is in the list, nothing is returned", args="(CyclicQueue)", returns="([value])"},
 ["top"] = {type='function', description = " returns the latest inserted element", args="(CyclicQueue)", returns="([value])"},
 ["push"] = {type='function', description = " pushes a value on the list.", args="(CyclicQueue,value)", returns="()"},
@@ -4935,6 +4919,7 @@ DataRegistry = {type='class',description="The DataRegistry class provides a simp
 ["loadtable"] = {type='function', description = "\
 		returns defaulttable if no matching file could  be loaded, otherwise\
 		the file's content is loaded", args="(projectkey,file,[table defaulttable])", returns="([tab])"}}}
+simpleshape = {type='class',description="shapes for the simple collision system",childs={}}
 particlesys = {type='class',description="ParticleSystem contains of dynamic particles, which spawn at emitters and die after a given time.  The way they move and appear is controlled by the particlescript, which has its own detailed manual.  All particles of a system are rendered at the end of a l3dset and a particlesystem can be used in only one l3dst.  If you want to use the same particlesystem in multiple l3dsets, use one forceload per l3dset.<br> Compared to ParticleClouds you cannot control particles individually.",childs={["volumesize"] = {type='function', description = " size of the volume", args="(particlesys,[float x,y,z])", returns="([float x,y,z])"},
 ["timescale"] = {type='function', description = " you can slow down or speed up particle update and aging. 1.0 is default", args="(particlesys,[float])", returns="([float])"},
 ["bbox"] = {type='function', description = " returns or sets bounding box", args="(model,[float minx,miny,minz, maxx,maxy,maxz])", returns="([float minx,miny,minz, maxx,maxy,maxz])"},
@@ -4976,7 +4961,14 @@ particlesys = {type='class',description="ParticleSystem contains of dynamic part
 ["volumedistance"] = {type='function', description = " distance from volume center to camera", args="(particlesys,[float])", returns="([float])"},
 ["pause"] = {type='function', description = " will not perform any updates to the particles", args="(particlesys,[boolean])", returns="([boolean])"},
 ["forceload"] = {type='function', description = " forces load of a particlesystem. If the same file was already loaded before, this will create another copy of it.", args="(string filename,[int sortkey])", returns="(Particlesys psys)"}}}
-simpleshape = {type='class',description="shapes for the simple collision system",childs={}}
+l3dset = {type='class',description="The List3D is organised in l3dsets, every set contains multiple layers. You can render the same set from different l3dviews. One default l3dview always exists per l3dset.		Each l3dset has its own sun. particlesystems and particleclouds are rendered at the end of every l3dset.		Every l3dnode requires a l3dlayerid, directly or indirectly via defaults. l3dsets are independent from each other, and l3dnodes		can only be rendered in one l3dset. By default 0-2 are disabled.<br>		l3dsets are renderd in this order: 0,1,2,3.<br>",childs={["sun"] = {type='function', description = " returns or sets sun, disabled when 2nd arg is not a l3dlight. If disabled we will use default sun", args="(l3dset,[l3dlight])", returns="(l3dlight)"},
+["default"] = {type='function', description = " returns or sets default l3dset.", args="([l3dset])", returns="([l3dset])"},
+["getdefaultview"] = {type='function', description = " returns default l3dview of the set", args="(l3dset)", returns="(l3dview)"},
+["updateall"] = {type='function', description = " updates all nodes, so that world state is uptodate", args="(l3dset)", returns="()"},
+["layer"] = {type='function', description = " returns l3dlayerid for l3dset or default l3dset. If default l3dset is used the layer is also set as default layer. So whenever you dont pass l3dlayerid to l3dnodes, the default layer/l3dset combo will be used.", args="([l3dset],int 0..15)", returns="(l3dlayerid)"},
+["disabled"] = {type='function', description = " returns or sets disabled state", args="(l3dset,[boolean])", returns="(boolean)"},
+["get"] = {type='function', description = " returns l3dset", args="(int 0-3)", returns="(l3dset)"}}}
+l2dflag = {type='class',description="list2d node that does only set some rendering parameters",childs={["new"] = {type='function', description = " returns a new l2dflag", args="(string name)", returns="(l2dflag)"}}}
 l2dnode = {type='class',description="A node meant for 2d drawing",childs={["rotrad"] = {type='function', description = " returns or sets l2dnode's rotation in radians", args="(l2dnode,[float x,y,z])", returns="([float x,y,z])"},
 ["local2world"] = {type='function', description = " returns coordinates after transforms. l3dtargets will not be taken in account.", args="(l2dnode,float x,y,z)", returns="(float x,y,z)"},
 ["scissorparent"] = {type='function', description = " returns or sets if parent's scissor information is used as well. If own node has no scissor set we will use parents, else we cap own with parent's ", args="(l2dnode,[boolean])", returns="([boolean])"},
@@ -4999,7 +4991,6 @@ l2dnode = {type='class',description="A node meant for 2d drawing",childs={["rotr
 ["color"] = {type='function', description = " returns or sets l2dnode's color", args="(l2dnode,[float r,g,b,a])", returns="([float r,g,b,a])"},
 ["scissorsize"] = {type='function', description = " returns or sets scissor rectangle size. ", args="(l2dnode,[float x,y])", returns="([float x,y])"},
 ["get"] = {type='function', description = " returns l2dnode with given name", args="(string)", returns="([l2dnode])"}}}
-l2dflag = {type='class',description="list2d node that does only set some rendering parameters",childs={["new"] = {type='function', description = " returns a new l2dflag", args="(string name)", returns="(l2dflag)"}}}
 l2dtext = {type='class',description="Displays text on the screen. The Text can be formatted in different ways in order to change its color or textposition: \
 * \\vrgb - where r,g,b is replaced by a number between 0 and 9:  The textprint color is replaced by the specified color. For example, this given string would print out different colors: \"\\v900red\\v090green\\v009blue\\v909mangenta\\v990yellow\"\
 * \\vc - resets the color to the original color value\
@@ -5019,13 +5010,6 @@ l2dtext = {type='class',description="Displays text on the screen. The Text can b
 ["size"] = {type='function', description = " returns or sets font size, default is 16", args="(l2dtext,[float])", returns="(float)"},
 ["tabwidth"] = {type='function', description = " returns or sets tab width spacing, default is 0. 0 means spacing * 4 is used, otherwise values will be directly applied.", args="(l2dtext,[float])", returns="(float)"},
 ["new"] = {type='function', description = " returns a new l2dtext", args="(string name,string text,[fontset])", returns="(l2dtext)"}}}
-l3dset = {type='class',description="The List3D is organised in l3dsets, every set contains multiple layers. You can render the same set from different l3dviews. One default l3dview always exists per l3dset.		Each l3dset has its own sun. particlesystems and particleclouds are rendered at the end of every l3dset.		Every l3dnode requires a l3dlayerid, directly or indirectly via defaults. l3dsets are independent from each other, and l3dnodes		can only be rendered in one l3dset. By default 0-2 are disabled.<br>		l3dsets are renderd in this order: 0,1,2,3.<br>",childs={["sun"] = {type='function', description = " returns or sets sun, disabled when 2nd arg is not a l3dlight. If disabled we will use default sun", args="(l3dset,[l3dlight])", returns="(l3dlight)"},
-["default"] = {type='function', description = " returns or sets default l3dset.", args="([l3dset])", returns="([l3dset])"},
-["getdefaultview"] = {type='function', description = " returns default l3dview of the set", args="(l3dset)", returns="(l3dview)"},
-["updateall"] = {type='function', description = " updates all nodes, so that world state is uptodate", args="(l3dset)", returns="()"},
-["layer"] = {type='function', description = " returns l3dlayerid for l3dset or default l3dset. If default l3dset is used the layer is also set as default layer. So whenever you dont pass l3dlayerid to l3dnodes, the default layer/l3dset combo will be used.", args="([l3dset],int 0..15)", returns="(l3dlayerid)"},
-["disabled"] = {type='function', description = " returns or sets disabled state", args="(l3dset,[boolean])", returns="(boolean)"},
-["get"] = {type='function', description = " returns l3dset", args="(int 0-3)", returns="(l3dset)"}}}
 l3dcamera = {type='class',description="Cameras are used to render the frame.You can link them with actornodes or scenenodes. And activate them in specific l3dviews,or globally by making it the default camera. However there is always a default camera at startup.",childs={["useinfinitebackplane"] = {type='function', description = " returns or sets if this camera needs shadow projection and therefore infinite backplane should be used. (only works for perspective projection)", args="(l3dcamera,[boolean])", returns="([boolean])"},
 ["viewmatrix"] = {type='function', description = " returns viewmatrix, viewmatrixinv is worldmatrix of l3dnode.", args="(l3dcamera)", returns="([matrix4x4])"},
 ["reflectplane"] = {type='function', description = " returns or sets reflection plane (worldspace).", args="(l3dcamera,[float x,y,z,w])", returns="([float x,y,z,w])"},
@@ -5050,6 +5034,42 @@ l3dcamera = {type='class',description="Cameras are used to render the frame.You 
 ["useclipping"] = {type='function', description = " returns or sets if clipping plane should be used", args="(l3dcamera,[boolean])", returns="([boolean])"},
 ["forceupdate"] = {type='function', description = " forces the camera matrix to be updated (synchronized with its linked interface). This is neccessary 		if you use the toscreen and toworld functions and changed the position of the camera.", args="(l3dcamera)", returns="()"},
 ["nearpercentage"] = {type='function', description = " returns or sets percentage of what is considered near. range = backplane * nearpercentage. If a drawnode is closer than its drawn first. This helps making use of zbuffer better.", args="(l3dcamera,[float])", returns="([float])"}}}
+l3dtrail = {type='class',description="Contains a collection of points, that are rendered as a quad strip.",childs={["closestpoint"] = {type='function', description = " returns closest active trailpoint and distance to it. Last frame's state is used.", args="(l3dtrail,[float x,y,z])", returns="([float dist,trailpoint])"},
+["normalizedsize"] = {type='function', description = " sets or returns size of an absolute ulength when materialnormalized is used (0 disables).", args="(l3dtrail,[float])", returns="([float])"},
+["color"] = {type='function', description = " sets or returns color interpolater at step. There is 0-2 steps, step 3 or -1 sets all.", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["drawlength"] = {type='function', description = " sets or return drawlength of trail", args="(l3dtrail,[int])", returns="([int])"},
+["tpPrev"] = {type='function', description = " gets previous trailpoint (or null).", args="(l3dtrail,trailpoint)", returns="([trailpoint])"},
+["usevelocity"] = {type='function', description = " sets or returns if velocity vector should be added", args="(l3dtrail,[boolean])", returns="([boolean])"},
+["typeworld"] = {type='function', description = " local transforms are not used on the points, ie all points are in world coordinates. You should do this after a new trail, or after resetting. (default)", args="(l3dtrail)", returns="()"},
+["tpPosarray"] = {type='function', description = " sets or returns position of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
+["typelocal"] = {type='function', description = " local transforms are used on the points, ie points are in local coordinates. You should do this after a new trail, or after resetting. It does not allow spawnstep.", args="(l3dtrail)", returns="()"},
+["size"] = {type='function', description = " sets or returns size interpolater at step. There is 0-2 steps, step 3 or -1 sets all.", args="(l3dtrail,int step,[float size])", returns="([float s])"},
+["materialnormalized"] = {type='function', description = " sets or returns if the material/texture is stretched in such a fashion that its width is the length of the trail. If materialscale was applied before uscale will be applied, too.", args="(l3dtrail,[boolean])", returns="([boolean])"},
+["indexcolor"] = {type='function', description = " sets or returns color at index. There is 0...length-1 steps. The regular color function creates linear interpolated values. This function lets you precisely modify every single value. However if you start using it, the regular color function will be ignored", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["materialscale"] = {type='function', description = " sets how often a material/texture is repeated/minified. length is along x axis ", args="(l3dtrail,float length, width)", returns="()"},
+["closed"] = {type='function', description = " sets or returns if trail ends where it starts. The last added point will be skipped and the first is used instead, so add one more point than the ones you really need.", args="(l3dtrail,[boolean])", returns="([boolean])"},
+["localtime"] = {type='function', description = " sets or returns trail's own localtime (in ms). Only active when uselocaltime is used.", args="(l3dtrail,[int])", returns="([int])"},
+["reset"] = {type='function', description = " clears all points", args="(l3dtrail)", returns="()"},
+["tpVelarray"] = {type='function', description = " sets or returns velocity of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
+["planarmap"] = {type='function', description = " sets or returns planar projection axis. -1 is none/disabled, 0 = x, 1 = y, z = 2. Materials will be projected along these axis.", args="(l3dtrail,[int])", returns="([int])"},
+["planarscale"] = {type='function', description = " sets or returns planarscale multiplier. texcoord = worldpos.projected * planarscale.", args="(l3dtrail,[float])", returns="([float])"},
+["facecamera"] = {type='function', description = " sets or return facecamera flag", args="(l3dtrail,[bool])", returns="([bool])"},
+["uselocaltime"] = {type='function', description = " sets or returns if trail uses its own localtime (in ms). If false(default) the global time by luxinia is used. All events such as spawstep, usevelocity and spawntime for manually created tpoints depend on this.", args="(l3dtrail,[boolean])", returns="([boolean])"},
+["tpTime"] = {type='function', description = " gets or sets trailpoint's spawntime in ms.", args="(l3dtrail,trailpoint,[int])", returns="([int])"},
+["new"] = {type='function', description = " a new trail system", args="(string name,|l3dlayerid|,int length)", returns="(trail)"},
+["indexsize"] = {type='function', description = " sets or returns size at index. There is 0...length-1 steps. The regular size function creates linear interpolated values. This function lets you precisely modify every single value. However if you start using it, the regular size function will be ignored.", args="(l3dtrail,int step,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["spawnworldref"] = {type='function', description = " spawns a single particle that is autolinked to the given node. Axis is 0(X),1(Y),2(Z) and will mark the axis used for normals. Only works if typeworldref is used.", args="(l3dtrail,actornode/scenenode,int axis)", returns="(trailpoint)"},
+["tpVel"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
+["spawnstep"] = {type='function', description = " sets or returns spawnstep in ms, one point will be spawned every spawnstep, if spanwstep is greater 0.", args="(l3dtrail,[int])", returns="(int)"},
+["tpPos"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
+["velocity"] = {type='function', description = " sets or returns velocity vector in local space, units per second.", args="(l3dtrail,[float x,y,z])", returns="([float x,y,z])"},
+["matsurface"] = {type='function', description = " sets or returns matsurface", args="(l3dtrail,[matsurface])", returns="([material/texture])"},
+["closestdistance"] = {type='function', description = " returns closest line segment and distance to it. The closest point is fracc*(nexttpoint-tpoint). Last frame's state is used.", args="(l3dtrail,[float x,y,z])", returns="([float dist,trailpoint,float fracc ])"},
+["tpNext"] = {type='function', description = " gets next trailpoint (or null).", args="(l3dtrail,trailpoint)", returns="([trailpoint])"},
+["typeworldref"] = {type='function', description = " points take their world coordinates from linked references. You should do this after a new trail, or after resetting. It does not allow spawnstep.", args="(l3dtrail)", returns="()"},
+["tpNormalarray"] = {type='function', description = " sets or returns normal of active trailpoints from floatarray", args="(l3dtrail,[floatarray 3t])", returns="([floatarray 3t])"},
+["tpNormal"] = {type='function', description = " gets or sets trailpoint's position. Either local or world coordinates, depending on if trail:uselocalpoints is set.", args="(l3dtrail,trailpoint,[float x,y,z])", returns="([float x,y,z])"},
+["spawn"] = {type='function', description = " spawns a new point in world/local coordinates, normal is needed when you dont use facecamera, and velocity when you use velocity. You can automaically spawn points with spawnstep. Illegal if typeworldref is used.", args="(l3dtrail,float pos x,y,z,float normal x,y,z,[float vel x,y,z])", returns="(trailpoint)"}}}
 Label = {type='class',description="A Label element for displaying only.",childs={["deleteVisibles"] = {type='function', description = " description from overloaded method of Component:\
 \
 called when a Component is no longer displayed", args="(Component self)", returns="()"},
@@ -5177,23 +5197,9 @@ l3dpgroup = {type='class',description="list3d node of a particle group. The grou
 ["drawlisthead"] = {type='function', description = " gets or sets particle that serves as head of the drawlist when usedrawlist is enabled. Be aware that there is no error checking if the particle really belongs to this group, you will get undefined behavior if you assign particles from other groups.", args="(l3dgroup,[particle])", returns="([particle])"},
 ["getparticlecloud"] = {type='function', description = " returns particlecloud of group.", args="(l3dgroup)", returns="(particlecloud)"},
 ["typeworldref"] = {type='function', description = " sets the grouptype to WORLD_REFERENCE, particle coordinates are in worldspace, and auto linked to actornode or scenenode.", args="(l3dgroup)", returns="()"}}}
-l3dprimitive = {type='class',description="Primitives such as cubes, boxes and user meshes.",childs={["newbox"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float w,d,h)", returns="([l3dprimitive])"},
-["originalmesh"] = {type='function', description = " deletes the usermesh and uses the original mesh again.", args="(l3dprimitive)", returns="()"},
-["newquadcentered"] = {type='function', description = " creates new l3dnode. origin of the quad is center point", args="(string name,|l3dlayerid|,float w,d)", returns="([l3dprimitive])"},
-["newquad"] = {type='function', description = " creates new l3dnode. origin of the quad is lower left corner", args="(string name,|l3dlayerid|,float w,d)", returns="([l3dprimitive])"},
-["matsurface"] = {type='function', description = " returns or sets material", args="(l3dprimitive,[matsurface])", returns="([matsurface])"},
-["usermesh"] = {type='function', description = " gives the l3dprimitive a unique mesh. 		By default the mesh is given by the type which cannot be changed. With this function you can create your own mesh, 		as from this time on you can access it via vertexarray or indexarray interfaces. 		The new usermesh is completely empty, so make sure you fill it with content before it 		gets rendered the first time (don't forget to set indexCount and vertexCount and at the end indexMinmax!). If a previous usermesh existed it will be deleted. Polygonwinding is CCW.", args="(l3dprimitive, vertextype, int numverts, int numindices)", returns="()"},
-["newcylinder"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float size)", returns="([l3dprimitive])"},
-["newsphere"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float size)", returns="([l3dprimitive])"},
-["size"] = {type='function', description = " returns or sets size (modifies l3d's visbbox as well). Visual size will be overriden by calls to renderscale.", args="(l3dprimitive,[float radius/float x,y,z])", returns="([float radius/float x,y,z])"}}}
 l3dlevelmodel = {type='class',description="A model that is very large and contains static geometry. The model will be split into a subdivided visibility cubes. Meshes that contain 'lightmap_' in their texture string will get those auto-loaded and applied.",childs={["lightmapcount"] = {type='function', description = " returns how many lightmaps are used.", args="(l3dlevelmodel)", returns="(int)"},
 ["lightmap"] = {type='function', description = " returns ith lightmap.", args="(l3dlevelmodel,int i)", returns="(texture)"},
 ["new"] = {type='function', description = " creates new l3dlevelmodel. Visibility cubes are generated with the given separations (>=1).", args="(string name,|l3dlayerid|,model,int separatorsx,y,z, [int minpolys])", returns="([l3dlevelmodel])"}}}
-rcmdfbotex = {type='class',description="Attaches textures to the current bound fbo. By default the drawbuffer is used for assignments.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer fbo binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
-["stencil"] = {type='function', description = " returns or sets renderbuffer attachment for stencil target. You can disable assignment by passing 0.", args="(rcmdfbotex,[texture])", returns="([texture])"},
-["depth"] = {type='function', description = " returns or sets renderbuffer attachment for depth target. You can disable assignment by passing 0.", args="(rcmdfbotex,[texture])", returns="([texture])"},
-["color"] = {type='function', description = " returns or sets renderbuffer attachments for color targets 0..3. You can disable certain assignments by passing 0. Special is the side of a cubemap, or the z slice of a 3dtexture.", args="(rcmdfbotex,int clr,[texture,[int special]])", returns="([texture,int special])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfbotex)"}}}
 l3dpemitter = {type='class',description="l3dnode of a particle emitter. Every emitter starts with the default values from the particle system. You can change the emittertype afterwards.<br><br>Important note about accessing subsystems: The l3dpemitter also hosts all subsystem emitters (all but trail, trail's common shared emitter is referenced), you can access them with a special ''subsys string'', that is made of the subsystem indices (0-based).<br>For example \"0\" accesses first subemitter, \"12\" the 2nd emitter of l3dpemitter and the 3rd of that one. An error is thrown when indexing is done out of bounds or on trail. You can use particlesys.getsubsysdigits to generate the string based on normal names. Be aware that if a trail subsystem is indexed, its default emitter (as used by trail effects) is modified. Also when a trail is used it wont report subsystems, as those are ignored in rendering as well.<br> Subsystem translation offsets can be scaled via renderscale.",childs={["getparticlesys"] = {type='function', description = " returns particlesys emitter was created from", args="(l3dpemitter,[subsys string])", returns="(particlesys)"},
 ["spreadout"] = {type='function', description = " returns or sets outer spread (radians)", args="(l3dpemitter,[subsys string],[float])", returns="([float])"},
 ["typemodel"] = {type='function', description = " sets emitter type to MODEL", args="(l3dpemitter,[subsys string], model, float scale)", returns="()"},
@@ -5220,6 +5226,13 @@ l3dpemitter = {type='class',description="l3dnode of a particle emitter. Every em
 ["typerectanglelocal"] = {type='function', description = " sets emitter type to RECTANGLELOCAL. width = along X axis, height = along Z axis", args="(l3dpemitter,[subsys string], float width, float height)", returns="()"},
 ["size"] = {type='function', description = " returns or sets emitter size (radius,width)", args="(l3dpemitter,[subsys string],[float])", returns="([float])"},
 ["spreadin"] = {type='function', description = " returns or sets inner spread (radians)", args="(l3dpemitter,[subsys string],[float])", returns="([float])"}}}
+rcmdfbotex = {type='class',description="Attaches textures to the current bound fbo. By default the drawbuffer is used for assignments.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer fbo binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
+["stencil"] = {type='function', description = " returns or sets renderbuffer attachment for stencil target. You can disable assignment by passing 0.", args="(rcmdfbotex,[texture])", returns="([texture])"},
+["depth"] = {type='function', description = " returns or sets renderbuffer attachment for depth target. You can disable assignment by passing 0.", args="(rcmdfbotex,[texture])", returns="([texture])"},
+["color"] = {type='function', description = " returns or sets renderbuffer attachments for color targets 0..3. You can disable certain assignments by passing 0. Special is the side of a cubemap, or the z slice of a 3dtexture.", args="(rcmdfbotex,int clr,[texture,[int special]])", returns="([texture,int special])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfbotex)"}}}
+l3dtbterrain = {type='class',description="list3d node of a tbterrain",childs={["getterrain"] = {type='function', description = " gets terrain of this l3dnode", args="(l3dnode node)", returns="(tbterrain)"},
+["new"] = {type='function', description = " new l3dnode of tbterrain", args="(string name,|l3dlayerid|, tbterrain)", returns="(l3dterrain)"}}}
 TitleFrame = {type='class',description="TitleFrames are containers with an initial skin. Following skinnames are being used:\
 \
 	* titleframe\
@@ -5231,17 +5244,17 @@ TitleFrame = {type='class',description="TitleFrames are containers with an initi
 ["new"] = {type='function', description = "\
 	creates a container with the given bounds. If no skin is given the\
 	default skin for frames is being used.", args="(table class, int x,y,w,h,[Skin2D skin],[string title])", returns="(TitleFrame)"}}}
-l3dlight = {type='class',description="Lights illuminate models that have the lit renderflag set. There is one sunlight either global default or l3dset specific, just like cameras.Additionally there can be multiple FX lights in the world. All lights are pointlights without shadowing.The FX lights should have a smaller effective range, so that the engine can pick closest light to a node, becausethe number of lights at the same time is limited to 4 (1 sun, 3 fxlights).<br> Priority of FX lights will make no influence yet.<br>Lighting is done in hardware and uses following attenation formula:<br>1/(const+linear*distance+quadratic*distance*distance).<br>All lights' intensities are summed up and then multiplied with the vertexcolor.",childs={["fxnonsunlit"] = {type='function', description = " returns or sets if the fxlight should affect nodes that are not sunlit (default is true). Can be useful to split lights into 2 categories: one affect all nodes (static scenery & moveable), and the other just fully dynamic lit nodes (moveable nodes). Be aware that l3dnodes will pick the lights per full node, not on a per mesh basis, if the first drawnode is just fxlit, we will use the nonsun lights.", args="(l3dlight,[boolean])", returns="([boolean])"},
-["activate"] = {type='function', description = " adds light to FX light list, if duration is passed it will get auto deactivated. Priority is unused for now", args="(l3dlight,int priority,float range,int duration)", returns="()"},
-["attenuateconst"] = {type='function', description = " returns or sets constant attenuation", args="(l3dlight,[float])", returns="([float])"},
-["makesun"] = {type='function', description = " makes it the default sun light", args="(l3dlight)", returns="()"},
-["deactivate"] = {type='function', description = " removes light from FX light list", args="(l3dlight)", returns="()"},
-["attenuatequadratic"] = {type='function', description = " returns or sets quadratic attenuation", args="(l3dlight,[float])", returns="([float])"},
-["ambient"] = {type='function', description = " returns or sets ambient intensity. Intensities can be negative and exceed 0-1. This way you can creater steeper falloffs. ", args="(l3dlight,[float r,g,b,[a]])", returns="([float r,g,b,a])"},
-["attenuatelinear"] = {type='function', description = " returns or sets linear attenuation", args="(l3dlight,[float])", returns="([float])"},
-["rangeattenuate"] = {type='function', description = " returns or sets state of automatic range based attenuation", args="(l3dlight,[boolean])", returns="([boolean])"},
-["diffuse"] = {type='function', description = " returns or sets diffuse intensity. Intensities can be negative and exceed 0-1. This way you can creater steeper falloffs.", args="(l3dlight,[float r,g,b,[a]])", returns="([float r,g,b,a])"},
-["new"] = {type='function', description = " creates new light", args="(string name,l3dlayerid layer)", returns="([l3dlight])"}}}
+l3dprojector = {type='class',description="a projector allows textures to be		projected on models, orthogonally and perspectively. There is a special texture type that can fix 		backprojection errors for perpective projection, but shouldnt be used on orthogonal, or if no errors with normal textures appear.",childs={["projmatrix"] = {type='function', description = " returns or sets projection matrix. Using frontplane,aspect and so on will override manually set matrices.", args="(l3dprojector,[matrix4x4])", returns="([matrix4x4])"},
+["textureid"] = {type='function', description = " returns or sets projected texture", args="(l3dprojector,[texture])", returns="(texture)"},
+["frontplane"] = {type='function', description = " returns or sets projection frontplane distance", args="(l3dprojector,[float])", returns="(float)"},
+["attenuate"] = {type='function', description = " returns or sets attenuation, this is quite heavy effect but will perform a per pixel distance attenuation that causes the projector to fade out towards its backplane.", args="(l3dprojector,[boolean])", returns="(boolean)"},
+["blend"] = {type='function', description = " returns or sets blendmode of projector", args="(l3dprojector,[blendmode])", returns="(blendmode)"},
+["backplane"] = {type='function', description = " returns or sets projection backplane distance", args="(l3dprojector,[float])", returns="(float)"},
+["deactivate"] = {type='function', description = " removes projector from active list", args="(l3dprojector)", returns="()"},
+["fov"] = {type='function', description = " returns or sets projection fov, when negative it will be orthogonal projection with abs(fov) rectangular size", args="(l3dprojector,[float])", returns="(float)"},
+["activate"] = {type='function', description = " adds projector to the active list with given id (0-31)", args="(l3dprojector,int id)", returns="()"},
+["aspect"] = {type='function', description = " returns or sets projection aspect ratio = width/height", args="(l3dprojector,[float])", returns="(float)"},
+["new"] = {type='function', description = " creates new projector", args="(string name,|l3dlayerid layer|)", returns="(l3dprojector)"}}}
 material = {type='class',description="To allow more complex surface detail than just simple textures, materials		can be used to have more control over the surface. Every material consists of a shader		which defines how textures are blend, and textures or color definitions.<br>		See the mtlscript manual for more details.",childs={["getalphatex"] = {type='function', description = " returns texture and alphatesting info if the shader supports it (alphaTEX defined).", args="(material,[int sid])", returns="([texture,comparemode,float ref,int texchannel])"},
 ["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
 ["gettexcontrol"] = {type='function', description = " returns mattexcontrolid, if found.", args="(material,string name)", returns="([mattexcontrolid])"},
@@ -5291,7 +5304,6 @@ during runtime which allows loading files from different locations\
 	be extended in near future to determine the filetype as well by\
 	returning the filetype.", args="(function func)", returns="(function func)"}}}
 rcmdforceflag = {type='class',description="Sets enforced renderflag",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdforceflag)"}}}
-particle = {type='class',description="A single static particle part of a l3dpgroup",childs={}}
 l3dnode = {type='class',description="l3dnodes of different classes represent any visual item	you want to draw, models, particles etc. Each l3dnode can have a subtree of l3dnodes, however visibilty is only	tested for the root l3dnode, so if the root is not visible, childs won't be either. For a l3dnode to become active	it must be linked with a actornode or scenenode, from which it will get its world position information.<br>	for more info on the order nodes are rendered see l3dset.<br>	Retrieving world positions and rotations can return wrong results. Because world updates are only done when the node	was visible. So they lag one frame behind. Alternatively you can use updateall to enforce uptodate world data.",childs={["localrotaxis"] = {type='function', description = " returns or sets local rotation axis, make sure they make a orthogonal basis.", args="(l3dnode node,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
 ["color"] = {type='function', description = " returns or sets node's color. Only used when rfNovertexcolor is set. Optionally can pass meshid for l3dmodels", args="(l3dnode node,[meshid],[float r,g,b,a])", returns="([float r,g,b,a])"},
 ["rotationlock"] = {type='function', description = " returns or sets rotation lock. axis 0=X 1=Y 2=Z 3=All. Rotation lock is applied before local transforms.", args="(l3dnode node,int axis,[boolean state])", returns="(boolean)"},
@@ -5329,6 +5341,11 @@ l3dnode = {type='class',description="l3dnodes of different classes represent any
 ["delete"] = {type='function', description = " deletes l3dnode, by default children are also deleted", args="(l3dnode node)", returns="()"},
 ["lastframe"] = {type='function', description = " returns the last frame the node was rendered in.", args="(l3dnode node)", returns="([int])"},
 ["usemanualworld"] = {type='function', description = " enables manual world matrices. Bonelinking, inheritlocks and local matrices will be disabled. You must not call it before the l3dnode was linked.", args="(l3dnode node,[boolean])", returns="([boolean])"}}}
+l3dlist = {type='class',description="The List3D is the main rendering list, it contains l3dnodes that represent visual items.		It is organised in l3dsets l3dlayerids and l3dviews. l3dviews can render l2dnodes thru		special commands as well.<br><br>		The l3dlist the buffermempool for per-frame results. Various limits such as l3dset,		layer and perlayer draws influence its useage. You can alter some of these limits and the poolsize at runtime.		However these are critical operations and should only be looked into if you exceed limits, or had		quits with error messages regarding buffermempool.",childs={["l3dlayercount"] = {type='function', description = " returns how many l3dlayers exist", args="()", returns="(int)"},
+["maxtotalprojectors"] = {type='function', description = " gets or sets how many total projectors per-frame can be active. Say you have two meshes		that each are affected by the same projector, this would result into two total projectors. It is		the sum of used projectors per mesh, over all meshes. Changing this value influences runtime limits		and rendermempool consumption (4 bytes per cnt).", args="([int])", returns="([int])"},
+["maxdrawsperlayer"] = {type='function', description = " gets or sets how many meshes per l3dlayer in total can ever be rendered.		Changing this value influences runtime limits and rendermempool consumption (8 bytes per l3dset*l3dlayer).", args="([int])", returns="([int])"},
+["l3dsetcount"] = {type='function', description = " returns how many l3dsets exist", args="()", returns="(int)"},
+["fbotest"] = {type='function', description = " performs a test run on current rcmdfbo related setups. It takes enable flags of rcmds into account. Returns an error (+1) or warning(-1) string, or nothing if all is working.", args="()", returns="([int stringtype, string message])"}}}
 TextField = {type='class',description="A textfield element for usertextinput. Textfields have following skinsurfaces:\
 	* textfield\
 	* textfield_hover\
@@ -5403,28 +5420,14 @@ animation = {type='class',description="The animation contains tracks which store
 ["length"] = {type='function', description = " returns animation length in ms", args="(animation)", returns="(int)"},
 ["load"] = {type='function', description = " loads a animation with given properties. default: spline=true, rotationonly=false", args="(string filename,[boolean splineinterpolation],[boolean rotationonly])", returns="([animation])"},
 ["gettrack"] = {type='function', description = " returns trackid of track within animation", args="(animation,string trackname)", returns="([trackid])"}}}
-matobject = {type='class',description="Several classes which materials can be applied to, allow the detailed control of some material values. l3dmodels need to pass 2 arguments as matobject: l3dmodel,meshid. If you pass materials, then you will change values for the default matobject. If the node's material is changed, its old materialobject will be lost.",childs={["moPos"] = {type='function', description = " sets or returns position of texture matrix. Returns 0,0,0 if no matrix is set", args="(matobject,[float x,y,z])", returns="([float x,y,z])"},
-["moModoff"] = {type='function', description = " sets or returns modifiers active state", args="(matobject,[boolean])", returns="(boolean)"},
-["moAutotexstage"] = {type='function', description = " sets or returns matautocontrol for a texture stage. Use texgen=true if you want to modify texgenplanes. Note that only matrix controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,int stage,boolean texgen,[matautocontrol])", returns="([matautocontrol])"},
-["moTime"] = {type='function', description = " sets or returns time value, for automatic material values. 0 means systemtime is used.", args="(matobject,[int])", returns="(time)"},
-["moControl"] = {type='function', description = " sets or returns materialcontrol value. Depending on length of control, 1..4 values are required. If the control value has length > 4, as in array values, the array offset is required. Offsets are multiplied by 4.", args="(matobject,matcontrolid,[offset],[float ...])", returns="([float ...])"},
-["moAutocontrol"] = {type='function', description = " sets or returns matautocontrol for this control value. Note that only vector controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,matcontrolid,[matautocontrol])", returns="([matautocontrol])"},
-["moTexmatrix"] = {type='function', description = " sets or returns texturematrix, pass 0 as matrix4x4 to disable.", args="(matobject,[matrix4x4])", returns="(matrix4x4)"},
-["moRotaxis"] = {type='function', description = " 		sets or returns rotaxis of texture matrix. Returns 1,0,0, 0,1,0, 0,0,1 if no matrix is set. May contain scaling!", args="(matobject,[float x1,y1,z1,x2,y2,z2,x3,y3,z3])", returns="([float x1,y1,z1,x2,y2,z2,x3,y3,z3])"},
-["moTexcontrol"] = {type='function', description = " sets or returns material texcontrol value.", args="(matobject,matcontrolid,[texture])", returns="([texture])"},
-["moSeqoff"] = {type='function', description = " sets or returns sequence play state", args="(matobject,[boolean])", returns="(boolean)"}}}
+matsurface = {type='class',description="Most renderable items allow their material to be changed. A materialsurface can either be just color, a texture or a material.",childs={["contains"] = {type='function', description = " checks if one matsurface contains another or is equal", args="(matsurface self, matsurface other)", returns="(boolean)"},
+["vertexcolor"] = {type='function', description = " removes any previous materialinfo and makes the surface just vertexcolored", args="()", returns="(matsurface)"}}}
 matcontrolid = {type='class',description="matcontrolid to access material control values in matobjects",childs={}}
 GroupFrame = {type='class',description="Groupframes are containers with an initial skin",childs={["new"] = {type='function', description = " \
 	creates a container with the given bounds. If no skin is given the \
 	default skin for frames is being used.", args="(table class, int x,y,w,h,[Skin2D skin])", returns="(GroupFrame)"}}}
 rcmdshadersoff = {type='class',description="Disables use of l3dview baseshaders",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdshadersoff)"}}}
-rcmdclear = {type='class',description="Clears drawbuffers (stencil,depth,color).",childs={["colorvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["stencil"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
-["stencilvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[int])", returns="([int])"},
-["color"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
-["depthvalue"] = {type='function', description = " returns or sets", args="(rcmdclear,[float 0-1])", returns="([float])"},
-["depth"] = {type='function', description = " returns or sets", args="(rcmdclear,[boolean])", returns="([boolean])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdclear)"}}}
+dspacehash = {type='class',description="Multi-resolution hash table space. This uses an internal data structure that records how each geom overlaps cells in one of several three dimensional grids. Each grid has cubical cells of side lengths 2^i, where i  is an integer that ranges from a minimum to a maximum value. The time required to do intersection testing for n objects is O(n) (as long as those objects are not clustered together too closely), as each object can be quickly paired with the objects around it.",childs={["new"] = {type='function', description = " creates a hashspace, if space is given, the new space is inserted in the given space", args="([dspace space])", returns="(dspacehash)"}}}
 djointslider = {type='class',description="Slider joint will limit the movement between two bodies to a axis.",childs={["position"] = {type='function', description = " Get the slider linear position (i.e. the slider's 'extension') and the time derivative of this value.", args="(djointslider)", returns="([float position,positionrate])"},
 ["axis"] = {type='function', description = " sets/gets axis of slider. Must be attached first, else crash is likely", args="([float x,y,z])", returns="([float x,y,z])"},
 ["new"] = {type='function', description = " When the axis is set, the current position of the attached bodies is examined and that position will be the zero position.", args="([djointgroup])", returns="(djointslider)"}}}
@@ -5453,10 +5456,30 @@ texcombsrc = {type='class',description="The texcombiner source for the function 
 ["texture0"] = {type='function', description = " texture at unit 0 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
 ["texture2"] = {type='function', description = " texture at unit 2 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
 ["texture"] = {type='function', description = " current texture", args="()", returns="(texcombsrc)"}}}
-shaderparamid = {type='class',description="A simple vector4 within shaders, that can control gpuprogram values",childs={}}
+rcmdmipmaps = {type='class',description="Generates mipmaps for the specified texture",childs={["texture"] = {type='function', description = " returns or sets texture to generate mipmaps for.", args="(rcmdmipmaps,[texture])", returns="([texture])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdmipmaps)"}}}
 rcmddrawbg = {type='class',description="Draws the background of the current l3dview",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawbg)"}}}
-djointball = {type='class',description="A ball-joint that rotates without limits. Can be used to simulate ropes for example",childs={["anchor"] = {type='function', description = " sets anchor point of joint if x,y,z is given (world coordinates) or returns the current anchors of the bodies if no argument is passed. Since the simulation is imperfect, there's a gap between the anchor that is set and the actual anchors of the bodies.", args="(djointball,[float x,y,z])", returns="([float x1,y1,z1,x2,y2,z2])"},
-["new"] = {type='function', description = " creates a new balljoint", args="([djointgroup group])", returns="(djointball)"}}}
+tbterrain = {type='class',description="tiletexture-based terrain, uses elevation data and surface layers, which are organized as tiles.<br> Every tile has 4 layers of surfacetiles. You can use up to 256 surfacetiletypes, each with a unique texture. However on an area of 32x32 tiles no more than eight textures can be used.",childs={["savesurfname"] = {type='function', description = " returns or sets the savename for the surface layer (by default same as on set)", args="(tbterrain,int layer,[string])", returns="([string])"},
+["tileheight"] = {type='function', description = " returns or sets tile height", args="(tbterrain,int x,int y,[float height])", returns="(TBTerrain terr)"},
+["tilesurf"] = {type='function', description = " returns or sets tile surface id", args="(tbterrain,int x,int y,int layer,[int id])", returns="(TBTerrain terr)"},
+["save"] = {type='function', description = " saves a terrain by storing the data into the savenames", args="(tbterrain)", returns="()"},
+["tilecolor"] = {type='function', description = " returns or sets tile color", args="(tbterrain,int x,int y,[float r,g,b,a])", returns="(float r,g,b,a)"},
+["savecolorname"] = {type='function', description = " returns or sets the savename for the colormap (by default same as on set)", args="(tbterrain,[string])", returns="([string])"},
+["createfinish"] = {type='function', description = " initializes all needed data for rendering. Set all known tiletypes and layers before", args="(tbterrain)", returns="()"},
+["createblank"] = {type='function', description = "		creates a new tbterrain. Dimensions must be >= 32.<br> After setting all used tiletypes and layers run the newfinish function.", args="(string name, int width,int height, float heightfactor)", returns="(tbterrain)"},
+["size"] = {type='function', description = " returns width and height of terrain", args="(tbterrain)", returns="(int width,height)"},
+["surfacetile"] = {type='function', description = " creates a new surface tile using the given id (1..255) and creates a special texture from the given texturename.", args="(tbterrain,int id, string tiletexturename)", returns="()"},
+["saveobjname"] = {type='function', description = " returns or sets the savename for the object layer (by default same as on set)", args="(tbterrain,int layer,[string])", returns="([string])"},
+["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"},
+["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
+["createspecs"] = {type='function', description = " default specifications for newly generated terrains. Tilesize is the length of a single tile. Blocksize is the square grid that is visible. Camtolerance means that if camera moved more than this many tiles the block is updated. Atlascount is the number of surfacetiles that can be active within current visible block.<br><br>All values passed must be even, and atlascount should be power of 2.", args="([int tilesize, int blocksize, int camtolerance, int atlascount])", returns="([int tilesize, int blocksize, int camtolerance, int atlascount])"},
+["surfacelayer"] = {type='function', description = " sets the given layer with the data from the data texture.", args="(tbterrain,int id, data texture)", returns="()"},
+["tileupdate"] = {type='function', description = " updates tile, makes changes effective, optionally a whole region", args="(tbterrain,int x,int y,[int region])", returns="()"},
+["saveheightname"] = {type='function', description = " returns or sets the savename for the heightmap (by default same as on set)", args="(tbterrain,[string])", returns="([string])"},
+["height"] = {type='function', description = " returns interpolated height at x/y", args="(tbterrain self, float x,y)", returns="(float height)"},
+["getcoords"] = {type='function', description = " converts world position into terrain coords", args="(tbterrain,float x,y,z)", returns="(int x,y)"},
+["createfromtex"] = {type='function', description = " creates a new tbterrain using the given elevation and color data. Make sure the textures kept their data, and you can free the data afterwards. If the heightmap has 4 colorvalues it is used as float texture, else the red value is multiplied by heightfactor.<br> After setting all used tiletypes and layers run the createfinish function.", args="(string name, texture heightmap, float heightfactor, [texture colormap])", returns="(tbterrain)"},
+["getheights"] = {type='function', description = " returns a mounted floatarray, in which you can directly access heights of the terrain grid. There is steps*2+1 floats for each dimension.", args="(tbterrain)", returns="(floatarray)"}}}
 rcmdfbodrawto = {type='class',description="Sets to which color attachments it should be rendered to. Using only fragment shaders you can also write to up to four attachments simultaneously.",childs={["setup"] = {type='function', description = " returns or sets the active color drawbuffers. Only ints from 0-3 are allowed. You can specify up to 4 ints, if you want multiple rendertargets and capability exists.", args="(rcmdfbodrawto,[int buffer0,buffer1..])", returns="([int buffer0,buffer1..])"},
 ["new"] = {type='function', description = " returns the rcmd. By default draws to color attach 0", args="()", returns="(rcmdfbodrawto)"}}}
 ExtMath = {type='class',description="The Extended Math class contains some generic math operations. Vectors and \
@@ -5517,53 +5540,12 @@ When the hinge anchor or axis is set, the current position of the attached bodie
 ["axis"] = {type='function', description = " sets/gets axis orientation of the hinge ", args="(djointhinge,[float x,y,z])", returns="([float x,y,z])"},
 ["new"] = {type='function', description = " creates a new hingejoint", args="([float x,y,z],[djointgroup group])", returns="(djointhinge)"}}}
 dspacequad = {type='class',description="The quadtree is suited for collision that is mostly planar. However the use of this class is not recommend.",childs={["new"] = {type='function', description = " Creates a quadtree space. center and extents define the size of the root block. depth sets the depth of the tree - the number of blocks that are created is 4^depth", args="([dspace space],[float cx,cy,cz, float w,h,d, int depth])", returns="(dspacequad)"}}}
-particlecloud = {type='class',description="A ParticleCloud contains many static particles, which are organised as groups. The user specifies all particle properties, the groups are used to handle automatic particle position updates. The fastest types to render are quad,triangle and point.",childs={["drawlayer"] = {type='function', description = " at the end of which layer it will be drawn, l3dset info is ignored.", args="(particlecloud,[l3dlayerid])", returns="()"},
-["color"] = {type='function', description = " gets or sets common color for all particles, if particlecolor is false.", args="(particlecloud,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["typemodel"] = {type='function', description = " meshes taken from the given model, very expensive. Set the model with 'model' command. Faster if instancemesh is used.", args="(particlecloud)", returns="()"},
-["clearparticles"] = {type='function', description = " delets all active particles", args="(particlecloud)", returns="()"},
-["inside"] = {type='function', description = " gets or sets insideflag, if it is set and range is specified particles need to be within the range to be rendered.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["usesizemul"] = {type='function', description = " if set output size is multiplied with sizemul", args="(particlecloud,[boolean])", returns="([boolean])"},
-["attpointsize"] = {type='function', description = " gets or sets the automatic point parameter sizes. Combined with pointdist you can define how point particles should change size depending on distance.", args="(particlecloud,[float min,max,alpha])", returns="([float min,max,alpha])"},
-["useoriginoffset"] = {type='function', description = " if set the quads/triangles center will be moved by the originoffset vector. Useful to create particles that dont have their center in the middle.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["sizemul"] = {type='function', description = " size multiplier applied when usesizemul is true", args="(particlecloud,[float])", returns="([float])"},
-["checkmin"] = {type='function', description = " returns or sets minimum of the check boundingbox.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
-["rotatedirection"] = {type='function', description = " automaticall rotates into the direction their normals point.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["typepoint"] = {type='function', description = " just simple points, some systems may have capability for simple textured sprites. particle sizes will be ignored. but using pointsize (default 32) and attpointsize/dist you can influence the sizes.", args="(particlecloud)", returns="()"},
-["lightmapmatrix"] = {type='function', description = " generates texture coordinates when lightmap is used.", args="(particlecloud,[matrix4x4])", returns="([matrix4x4])"},
-["typetriangle"] = {type='function', description = " a single triangle facing camera", args="(particlecloud)", returns="()"},
-["particlenormal"] = {type='function', description = " will use particle's normal. Only applied when instancing renderpath is used.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["instancemesh"] = {type='function', description = " sets the instance mesh. Trys to lookup the mesh in the model that is used for rendering. If the mesh is small (only triangles/quads, max 32 vertices, 96 indices) we can instance it. Returns true on success", args="(particlecloud,string meshname)", returns="(boolean)"},
-["model"] = {type='function', description = " gets or sets model, only will be used if pcloud type is also set to model.", args="(particlecloud,[model])", returns="([model])"},
-["useworldaxis"] = {type='function', description = " when set the billboards will be aligned with the user given world axis and not face camera.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"},
-["pointsize"] = {type='function', description = " gets or sets particle pointsize for typepoint, size is in pixels at 640x480.", args="(particlecloud,[float])", returns="([float])"},
-["typequad"] = {type='function', description = " quad facing towards camera. origin at center", args="(particlecloud)", returns="()"},
-["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
-["range"] = {type='function', description = " gets or sets range for particles, depending on the 'inside' flag, particles are either only drawn when inside range or outside.", args="(particlecloud,[float])", returns="([float])"},
-["camrotfix"] = {type='function', description = " gets or sets if particle rotation is influenced by the camera orientation. Fixes billboard rotation issues when we look 'down' on particles, but will rotate them if we are the same plane as well.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["lightmap"] = {type='function', description = " lightmap texture to be used. for texture coordinates the world space positions are transformed with lightmapmatrix", args="(particlecloud,[texture])", returns="([texture])"},
-["sort"] = {type='function', description = " gets or sets z-sort state, setting can be good for some blendtypes.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["attpointdist"] = {type='function', description = " gets or sets automatic point size attenuation along with the min and max values from pointsize.", args="(particlecloud,[float const,lin,quad])", returns="([float const,lin,quad])"},
-["visflag"] = {type='function', description = " sets visibility bit flag, default is true for id 1 and false for rest. It is bitwise 'and'ed with camera bitid to decide if particles should be drawn.", args="(particlecloud,int id,[boolean])", returns="([boolean])"},
-["forceinstance"] = {type='function', description = " will use instancing rendering even for the small normally batched billboards", args="(particlecloud,[boolean])", returns="([boolean])"},
-["smoothpoints"] = {type='function', description = " gets or sets if points should be smoothed.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["probability"] = {type='function', description = " percentage of how many particles are rendered when useprobability is true", args="(particlecloud,[float])", returns="([float])"},
-["worldaxis"] = {type='function', description = " the user given align matrix for all billboards when useworldaxis is true. It will remove the camrotfix flag as it is unneeded.", args="(particlecloud,[matrix4x4])", returns="([matrix4x4])"},
-["originoffset"] = {type='function', description = " returns or sets vector that is added to the generic quad/triangle center. Only applied if useoriginoffset is true.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
-["checktype"] = {type='function', description = " returns or sets what kind of axis aligned bounding box check should be done. Only particles within the box (defined by checkmin/max) are drawn. Checks performed are:<br> 1 = x-axis <br> 2 = y-axis <br> 3 = x,y-axis <br> 4 = z-axis <br> 5 = x,z-axis <br> 6 = y,z-axis <br> 7 = all axis <br> any other value = no check (default)", args="(particlecloud,[int])", returns="([int])"},
-["useprobability"] = {type='function', description = " if set not all particles are drawn but user given percentage", args="(particlecloud,[boolean])", returns="([boolean])"},
-["particlerotate"] = {type='function', description = " gets or sets if particles can have rotation.", args="(particlecloud,[boolean])", returns="([boolean])"},
-["colormul"] = {type='function', description = " color multiplier applied when usecolormul is true", args="(particlecloud,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["typesphere"] = {type='function', description = " spheres, that can be lit but are yet untextured", args="(particlecloud)", returns="()"},
-["usecolormul"] = {type='function', description = " if set output colors are multipiled with colormul", args="(particlecloud,[boolean])", returns="([boolean])"},
-["matsurface"] = {type='function', description = " gets or sets what kind of material/texture should be used. If your textures contain combined sequences use sequencecount to set how many.", args="(particlecloud,[matsurface])", returns="([material/texture])"},
-["typehemisphere"] = {type='function', description = " hemisphere facing towards camera.", args="(particlecloud)", returns="()"},
-["sequencecount"] = {type='function', description = " gets or sets number of sequence items that the material holds.", args="(particlecloud,[int])", returns="([int])"},
-["checkmax"] = {type='function', description = " returns or sets maximum of the check boundingbox.", args="(particlecloud,[float x,y,z])", returns="([float x,y,z])"},
-["nogpu"] = {type='function', description = " wont use the default gpu programs", args="(particlecloud,[boolean])", returns="([boolean])"},
-["probabilityfadeout"] = {type='function', description = " fadeout threshold. when particle's render probability is between probability-thresh its color alpha will be interpolated accordingly. The more it closes the probability value the less its alpha will be.", args="(particlecloud,[float])", returns="([float])"},
-["create"] = {type='function', description = " creates a particlecloud with the number of given particles, the name is just a identifier. However make sure to pick a unique name, else a old cloud will be returned.", args="(string name,int particlecount,[int sortkey])", returns="(particlecloud)"},
-["particlecolor"] = {type='function', description = " gets or sets if particles have their own colors.", args="(particlecloud,[boolean])", returns="([boolean])"}}}
+shadercgparamhost = {type='class',description="A Cg Parameter that serves as host to all parameters with the same name. Use it to make it easier to control many parameters thru one with optimal efficiency. Directly creates a CGparam and connects the ones found in gpuprograms. Such parameters may not be controlled individually in a shader. Be aware that there is not much error checking done on parameter value get/set. If arrays passed are too small or length is set incorrect there will be no error warning.",childs={["destroy"] = {type='function', description = " tries to destroy the parameter, will return the number of still dependent parameters when parameter could not be destroyed, as its still in use.", args="(string name)", returns="(int users)"},
+["sizes"] = {type='function', description = " returns various dimensions of parameter", args="(shadercgparamhost)", returns="(int columns, int rows, int totalarraysize)"},
+["valueinto"] = {type='function', description = " similar to value, but performs a get into the given parameters. Will not work for single vectors.", args="(shadercgparamhost, matrix4x4 / staticarray, [int offset])", returns="(matrix4x4 / staticarray)"},
+["value"] = {type='function', description = " sets/gets the value of a parameter, depending on type it will return/need different types. Arrays will alwas need corresponding staticarray (float/int), whilse matrices use matrix4x4 and vectors or scalars are directly pushed/popped on stack. When arrays are accessed you can fill them with an offset value. Counters for those are always single scalars. Return will always return the full array", args="(shadercgparamhost, [float x,y,z,w / matrix4x4 / staticarray], [int offset, length])", returns="([float x,y,z,w / matrix4x4 / staticarray])"},
+["create"] = {type='function', description = " creates a parameter with the given name (or returns nil if name is already in use). Typename can be found in the Cg documentary. For array types the size value is taken.", args="(string name, string cgtypename, [int size])", returns="([shadercgparamhost])"},
+["get"] = {type='function', description = " gets parameter or returns nil if noone with the name is registered", args="(string name)", returns="([shadercgparamhost])"}}}
 system = {type='class',description="system information and settings",childs={["exit"] = {type='function', description = " closes application, if nocleanup is true, this will perform no proper cleanup but leave to os.", args="([boolean nocleanup])", returns="()"},
 ["osinfo"] = {type='function', description = " returns information about OS", args="()", returns="(string)"},
 ["drivesizes"] = {type='function', description = " returns information on drive sizes or nil if not succesful", args="(string drive)", returns="([float freetocaller,totalbytes,freebytes])"},
@@ -5589,13 +5571,6 @@ system = {type='class',description="system information and settings",childs={["e
 ["frame"] = {type='function', description = " returns current render frame", args="()", returns="(int frame)"},
 ["drivelabel"] = {type='function', description = " returns drivelabel or nil if not succesful", args="(string drive)", returns="([string name])"},
 ["swapbuffers"] = {type='function', description = " should only be used in manual frame processing. swaps backbuffer, which we normally render to, and front buffer, which is what you see.", args="()", returns="()"}}}
-shadercgparamhost = {type='class',description="A Cg Parameter that serves as host to all parameters with the same name. Use it to make it easier to control many parameters thru one with optimal efficiency. Directly creates a CGparam and connects the ones found in gpuprograms. Such parameters may not be controlled individually in a shader. Be aware that there is not much error checking done on parameter value get/set. If arrays passed are too small or length is set incorrect there will be no error warning.",childs={["destroy"] = {type='function', description = " tries to destroy the parameter, will return the number of still dependent parameters when parameter could not be destroyed, as its still in use.", args="(string name)", returns="(int users)"},
-["sizes"] = {type='function', description = " returns various dimensions of parameter", args="(shadercgparamhost)", returns="(int columns, int rows, int totalarraysize)"},
-["valueinto"] = {type='function', description = " similar to value, but performs a get into the given parameters. Will not work for single vectors.", args="(shadercgparamhost, matrix4x4 / staticarray, [int offset])", returns="(matrix4x4 / staticarray)"},
-["value"] = {type='function', description = " sets/gets the value of a parameter, depending on type it will return/need different types. Arrays will alwas need corresponding staticarray (float/int), whilse matrices use matrix4x4 and vectors or scalars are directly pushed/popped on stack. When arrays are accessed you can fill them with an offset value. Counters for those are always single scalars. Return will always return the full array", args="(shadercgparamhost, [float x,y,z,w / matrix4x4 / staticarray], [int offset, length])", returns="([float x,y,z,w / matrix4x4 / staticarray])"},
-["create"] = {type='function', description = " creates a parameter with the given name (or returns nil if name is already in use). Typename can be found in the Cg documentary. For array types the size value is taken.", args="(string name, string cgtypename, [int size])", returns="([shadercgparamhost])"},
-["get"] = {type='function', description = " gets parameter or returns nil if noone with the name is registered", args="(string name)", returns="([shadercgparamhost])"}}}
-mattexcontrolid = {type='class',description="mattexcontrolid to access material texcontrol values in matobjects",childs={}}
 morphcontrol = {type='class',description="To add morph effects between models or meshes.		Morphing is done between vertex normal, position and color info. Activate it on l3dmodels.",childs={["delete"] = {type='function', description = " deactivates and deletes the morphcontrol", args="(morphcontrol)", returns="()"},
 ["modelfrom"] = {type='function', description = " sets model to morph from, if a none-model is passed we will use previous morph results", args="(morphcontrol,model)", returns="()"},
 ["newforceall"] = {type='function', description = " we will always use the vertices in the modeulupdate container.", args="()", returns="(morphcontrol)"},
@@ -5608,7 +5583,13 @@ morphcontrol = {type='class',description="To add morph effects between models or
 ["meshfrom"] = {type='function', description = " sets mesh to morph from", args="(morphcontrol,meshid)", returns="()"},
 ["newfullmorph"] = {type='function', description = " all meshes are affected by the morph", args="()", returns="(morphcontrol)"},
 ["modelto"] = {type='function', description = " sets model to morph to, if a none-model is passed we will use previous morph results", args="(morphcontrol,model)", returns="()"}}}
-texcombiner = {type='class',description="A texcombiner defines how textures are blend together / what color/alpha values they return. Luxinia comes with a bunch of predefined combiners that the shadercompiler uses and which you can access in the shaderscript. If those are not enough or you need specific operations to be done you can define your own combiners. You must make sure they run well, as there wont be error checking. GL_ARB_texture_env_combine is the main extension this system builds on.",childs={}}
+mattexcontrolid = {type='class',description="mattexcontrolid to access material texcontrol values in matobjects",childs={}}
+trackid = {type='class',description="trackid - a track within animation contains prskey changes",childs={["updatekey"] = {type='function', description = " computes key for given time", args="(trackid,[matrix4x4],int time,boolean spline)", returns="()"}}}
+soundcapture = {type='class',description="Capturing audio input from different sources. If the first call on any of the		functions of this class are done, the capturing is initialized. If the initialization fails, 		false plus the eror is returned. Further calls on functions of this class 		will be terminated too.",childs={["defaultdevice"] = {type='function', description = " returns default capture device", args="()", returns="(string)"},
+["stop"] = {type='function', description = " Stops the recording and writes the buffer to the file and closes it.", args="()", returns="()"},
+["devicelist"] = {type='function', description = " returns a list of available devices", args="()", returns="([string,...])"},
+["start"] = {type='function', description = " Starts recording.", args="()", returns="()"},
+["open"] = {type='function', description = " 		opens a device for recording. Only one open device is supported here. The 		format is a number from 0 to 3 and represents MONO 8 bit, MONO 16 bit, STEREO 		8 bit and STEREO 16 bit. If no device is given, the default device is used.", args="(string filename, int samplefrequence, 		int format 0...3, int buffersize, [string device])", returns="(boolean sucecss,[string error])"}}}
 Clipboard = {type='class',description="The Clipboard class allows primitive text access on the clipboard.",childs={["getText"] = {type='function', description = " returns a string that is currently in the clipboard", args="()", returns="(string)"},
 ["setText"] = {type='function', description = " copies a string in the clipboard", args="(string)", returns="()"}}}
 reschunk = {type='class',description="resdata is separated into resource chunks, each chunk has a memory pool, and can hold a specific amount of resources. Every chunk also generates Vertex/IndexBufferObjects for the models if needed.<br><br>If you want to clear resources and keep others active during runtime, you will need multiple resource chunks. When a chunk is destroyed it will however keep the resources that are still needed by other chunks. Since the 'unique resource' lookup on loading is done over all resources and not individually to save memory, this was needed. The separation in ResourceChunks can be done only once until the built in maximums are hit. On startup a core chunk is generated, only to holdall resources that the engine itself needs. A default chunk is allocated (8 megs) afterwards. If you destroy the default, you must set up all yourself.<br> The user can specify what should happen when a chunk is full and a resource wants to be loaded in it. you can either throw an error, or just fill the next chunk.<br> <br> Resources are classified as 'direct' loaded or 'indirect' indirect are those resources that are loaded by other resources. When a ResourceChunk is reloaded only 'directlys' are loaded again, of course with their dependants This is done to prevent collecting unused resources, when e.g. materials or other scripts have changed some textures might not be needed anymore.<br> <br>",childs={["activate"] = {type='function', description = " makes this the active reschunk, all new resources will be loaded into it.", args="(reschunk)", returns="()"},
@@ -5621,8 +5602,18 @@ reschunk = {type='class',description="resdata is separated into resource chunks,
 ["destroydefault"] = {type='function', description = " destroys the default chunk. If you want to do your own handling you must call this right at start, before you create new reschunks.", args="()", returns="()"},
 ["getloaded"] = {type='function', description = " returns a table with all loaded resources of the given type.", args="(reschunk, int restype)", returns="(int count,[resource table])"},
 ["getcurrent"] = {type='function', description = " returns current active chunk.", args="()", returns="(reschunk)"}}}
-djointfixed = {type='class',description="The fixed joint maintains a fixed relative position and orientation between two bodies, or between a body and the static environment. Using this joint is almost never a good idea in practice, except when debugging. If you need two bodies to be glued together it is better to represent that as a single body.",childs={["setfixed"] = {type='function', description = " Call this on the fixed joint after it has been attached to remember the current desired relative offset and desired relative rotation between the bodies.", args="(djointfixed)", returns="()"},
-["new"] = {type='function', description = " creates a new fixedjoint", args="([djointgroup group])", returns="(djointfixed)"}}}
+indexarray = {type='class',description="meshes contain indices for rendering their primitives, with this interface you can modify them. Always make sure that the corresponding vertices exist and always run indexMinmax once you set all indices. If you use display lists or vbos, changes to a loaded model will not be visible.",childs={["indexTrianglecount"] = {type='function', description = " returns and updates the internal number of triangles based on current indexCount. This is only needed for statistics and should be called at least once after all indices were written.", args="(indexarray)", returns="([int])"},
+["indexValue"] = {type='function', description = " set or returns value at the given index. Make sure the corresponding vertex exists", args="(indexarray,index,[int value])", returns="([int value])"},
+["indexUpdateVBO"] = {type='function', description = " if possible resubmits array using indexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible indexarray).", args="(indexarray,[int fromidx, toidx])", returns="(boolean)"},
+["indexPrimitivetype"] = {type='function', description = " set or return the primitive type.", args="(indexarray, [primitivetype])", returns="([primitivetype])"},
+["indexPrimitive"] = {type='function', description = " set or returns the primitive at given position. The function will return/need 1 index for points, 2 for lines, 3 indices for triangles, 4 indices for quads and can only return indices for any strips/loops/fan. Polygons are not supported, since the whole indexarray always contains only one.", args="(indexarray,primindex,[int a,b,c...])", returns="([int a,b,c...])"},
+["indexPrimitivecount"] = {type='function', description = " returns the number of primitives based on indexCount", args="(indexarray)", returns="([int])"},
+["indexCount"] = {type='function', description = " set or return the number of indices to be used on rendering. This value must always be smaller than Allocatedcount.", args="(indexarray,[int cnt])", returns="([int])"},
+["indexMinmax"] = {type='function', description = " computes minimum and maximum index used within indexCount, or you can manually set them. This is required for an indexarray to work, call this after all indices are set.", args="(indexarray,[min,max])", returns="(int min,max)"},
+["indexAllocatedcount"] = {type='function', description = " return indices count. This is the number of indices that can be used in this indexarray, index must always be smaller than this.", args="(indexarray)", returns="([int cnt])"},
+["indexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored in (unset,va,vbo) ", args="(indexarray)", returns="([string])"},
+["indexCopy"] = {type='function', description = " copies indices from one indexarray into self, starting at given index and optionally offsetting the copied.", args="(indexarray,int start,indexarray from,int fromstart, int size,[int vertexoffset])", returns="([int])"},
+["indexPtrs"] = {type='function', description = " returns C pointers for begin and end of array. [start,end[", args="(indexarray)", returns="(int start,end])"}}}
 intarray = {type='class',description="Intarray in Luxinia for array operations.",childs={["sub"] = {type='function', description = " self-=a or self = a - b", args="(intarray self,intarray / value a, [intarray b])", returns="()"},
 ["mul"] = {type='function', description = " self*=a or self = a * b", args="(intarray self,intarray / value a, [intarray b])", returns="()"},
 ["min"] = {type='function', description = " self = min(self,a) or self = min(a,b)", args="(intarray self,intarray / value a, [intarray b])", returns="()"},
@@ -5650,24 +5641,36 @@ model = {type='class',description="A model contains triangle meshes and bonesyst
 ["createfinish"] = {type='function', description = " returns itself after successful compiling and errorchecking. To make the model useable you must call this function after all data was set. It will load all needed textures and materials as well as creating proper bone hierarchy. If it's not animateable we will precompute all vertices and remove bonelinks from meshids, as well as compute the internal bounding box. For last two parameters see load command (set both false if you know that you will often change vertex/index data). If skins are set and model is animateable, those will be initialized as well.", args="(model,boolean animatable,[boolean nodisplaylist],[boolean novbo],[boolean lmcoords])", returns="(model)"},
 ["load"] = {type='function', description = " loads a model. Bigvertex means that multiple texcoords, hardware skinning, normal mapping.. can be used. If you pass the novbo and nodisplaylist with true, then the model will not get special GL memory processing for faster rendering, it is supposedly used for compiled l3dmodels. Normally the engine will favor vbo if avaliable over displaylists. However as displaylists allow only few changes (need to use same shader, cant disable vertexcolors) depending on your needs it is useful to disable them. VBOs dont have those disadvantages, but can be costly for older cards if the model has just very few vertices.<br> When you should need lightmap texcoords use lmcoords with true.<br>(defaults: neednormals:true, rest:false)<", args="(string filename,[boolean animateable],[boolean neednormals],[boolean bigvertex],[boolean nodisplaylist],[boolean novbo],[boolean lmcoords])", returns="(model)"},
 ["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"}}}
-rcmddraw2dmesh = {type='class',description="Draws a 2D mesh, be aware that mesh winding is opposite (CCW) of l2dnodes (CW). Positions and sizes are always in OpenGL coordinates (0,0) = bottom left. The l2dnodes' reference size system is not used.",childs={["pos"] = {type='function', description = " returns or sets. Only used when autosize is 0. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddraw2dmesh,[float x,y,z])", returns="([float x,y,z])"},
+rcmddraw2dmesh = {type='class',description="Draws a 2D mesh, be aware that mesh winding is opposite (CCW) of l2dnodes (CW). Positions and sizes are always in OpenGL coordinates (0,0) = bottom left. The l2dnodes' reference size system is not used.",childs={["pos"] = {type='function', description = " returns or sets. xy Only used when autosize is 0. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddraw2dmesh,[float x,y,z])", returns="([float x,y,z])"},
 ["matsurface"] = {type='function', description = " returns or sets matsurface", args="(rcmddraw2dmesh,[matsurface])", returns="([matsurface])"},
 ["quadmesh"] = {type='function', description = " deletes usermesh and sets quadmesh again.", args="(rcmddraw2dmesh)", returns="()"},
 ["usermesh"] = {type='function', description = " creates custom usermesh that can be filled using vertexarray and indexarray interfaces. Note that polygon winding is CCW.", args="(rcmddraw2dmesh, vertextype, int numverts, int numindices)", returns="()"},
 ["color"] = {type='function', description = " returns or sets color", args="(rcmddraw2dmesh,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["size"] = {type='function', description = " returns or sets. Only used when autosize is 0. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddraw2dmesh,[float x,y,z])", returns="([float x,y,z])"},
+["size"] = {type='function', description = " returns or sets. xy Only used when autosize is 0. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddraw2dmesh,[float x,y,z])", returns="([float x,y,z])"},
 ["autosize"] = {type='function', description = " returns or sets. 0 off -1 viewsized. Default is -1", args="(rcmddraw2dmesh,[int])", returns="([int])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddraw2dmesh)"}}}
 vertextype = {type='class',description="For usercreated meshes it is necessary to specify what vertextype you want to have. Different vertextypes have different attributes and sizes.",childs={["vertex16color"] = {type='function', description = " size 16 bytes, position (3 floats), color (4 unsigned byte).", args="()", returns="(vertextype)"},
 ["vertex32texcoords"] = {type='function', description = " size 32 bytes, position (3 floats), color (4 unsigned byte), 2 texcoord channels (2*2 floats).", args="()", returns="(vertextype)"},
 ["vertex32normals"] = {type='function', description = " size 32 bytes, normals (3 shorts), position (3 floats), color (4 unsigned bytes), 1 texcoord channel (2 floats).", args="()", returns="(vertextype)"},
 ["vertex64"] = {type='function', description = " size 64 bytes, normals (3 floats), position (3 floats), color (4 unsigned bytes), 4 texcoord channels (4*2 floats). The last 2 texcoord channels serve as user4 (4 floats) which may be used for hardware skinning.", args="()", returns="(vertextype)"}}}
+textype = {type='class',description="For creating textures or renderbuffers this defines the internal storage. Be aware that the rendersystem might not always be able to provide the format you asked for. Some types are baseformats which will leave it up to driver on which internalmode to pick. Formats such as depth and depth_stencil require special capabilities",childs={["abgr"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
+["lumalpha"] = {type='function', description = " baseformat for LUMINANCE_ALPHA", args="()", returns="(textype)"},
+["lum"] = {type='function', description = " baseformat for LUMINANCE", args="()", returns="(textype)"},
+["stencil"] = {type='function', description = " baseformat for STENCIL_INDEX. only for renderbuffers", args="()", returns="(textype)"},
+["bgr"] = {type='function', description = " reverses order of data for RGB, internal remains baseformat", args="()", returns="(textype)"},
+["depth24"] = {type='function', description = " 24 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
+["depth32"] = {type='function', description = " 32 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
+["rgb"] = {type='function', description = " baseformat for RGB", args="()", returns="(textype)"},
+["depthstencil"] = {type='function', description = " baseformat for DEPTH_STENCIL", args="()", returns="(textype)"},
+["depth16"] = {type='function', description = " 16 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
+["bgra"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
+["depth"] = {type='function', description = " baseformat for DEPTH_COMPONENT", args="()", returns="(textype)"},
+["alpha"] = {type='function', description = " baseformat for ALPHA", args="()", returns="(textype)"},
+["rgba"] = {type='function', description = " baseformat for RGBA", args="()", returns="(textype)"}}}
+dterrain = {type='class',description="Square sized terrain geom, represented by a heightfield.",childs={["new"] = {type='function', description = " Creates a terrain with width and height, with iniatial levelheight. The current terrain is square anyway and needs to be power of 2, but this may change sometime, at least that it must be square.", args="(int width,height,float level, boolean yisup, boolean finite, boolean placeable)", returns="(dgeomterrain)"}}}
 rcmdignore = {type='class',description="Ignore certain properties",childs={["lights"] = {type='function', description = " returns or sets if lights should be turned off.", args="(rcmdignore,[boolean])", returns="([boolean])"},
 ["projectors"] = {type='function', description = " returns or sets if projectors should be disabled.", args="(rcmdignore,[boolean])", returns="([boolean])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdignore)"}}}
-dterrain = {type='class',description="Square sized terrain geom, represented by a heightfield.",childs={["new"] = {type='function', description = " Creates a terrain with width and height, with iniatial levelheight. The current terrain is square anyway and needs to be power of 2, but this may change sometime, at least that it must be square.", args="(int width,height,float level, boolean yisup, boolean finite, boolean placeable)", returns="(dgeomterrain)"}}}
-fileloader = {type='class',description="",childs={["setfileopen"] = {type='value', description = "():() -"},
-["setfileexists"] = {type='value', description = "():() -"}}}
 sound = {type='class',description="sound resources",childs={["setdevice"] = {type='function', description = " Trys to set the sounddevice according to a device with the given name or the default device if nil or no string is passed. If it fails, it will try to select the default device. Returns the selected device. Setting the current device will make all soundnodes invalid, which may result in a runtime error in lua when old (invalid) soundnodes are reused.", args="([string devicename])", returns="(string device)"},
 ["monocount"] = {type='function', description = " returns the maximum for mono sources for the current device", args="()", returns="(int n)"},
 ["getrestype"] = {type='function', description = " returns the resource type as int value, useful for resdata or reschunk functions", args="()", returns="(int restype)"},
@@ -5677,15 +5680,12 @@ sound = {type='class',description="sound resources",childs={["setdevice"] = {typ
 ["load"] = {type='function', description = " adds a soundfile to loaded resources", args="(string filename)", returns="(Sound snd)"},
 ["play"] = {type='function', description = " plays a soundfile. Returns true if it plays the sound.", args="(Sound snd)", returns="(boolean)"},
 ["defaultpath"] = {type='function', description = " returns or sets the default resource path. Luxinia will search in those when resources are not found.", args="([string])", returns="([string])"}}}
+fileloader = {type='class',description="",childs={["setfileopen"] = {type='value', description = "():() -"},
+["setfileexists"] = {type='value', description = "():() -"}}}
 resource = {type='class',description="Resources are files that are typically loaded from the harddisk and are not managed with dynamic memory management, but stored within a reschunk. Unloading of a loaded resources is not trivial, but possible. Unloading of resources is done by the reschunk class.<br><br>The load function will try to load the file or return the first instance of the same name. The forceload function will make sure a new copy of this resourcetype (not other resourcetypes) will be loaded",childs={["getresshortname"] = {type='function', description = " returns the resource filename without paths and optional second argname", args="(resource)", returns="(string,[string])"},
 ["condition"] = {type='function', description = " Some resources allow sort of preprocessor settings for setups. Here you can set the values that you can query in shader,particlesys,material scripts.", args="(string name,[boolean])", returns="([boolean])"},
 ["getresname"] = {type='function', description = " returns the resource filename and optional second argname", args="(resource)", returns="(string,[string])"},
 ["resuserstring"] = {type='function', description = " returns or sets a user string that is permanent for each resource. String must be shorter than 256 characters.", args="(resource,[string])", returns="([string])"}}}
-rcmdfborb = {type='class',description="Attaches renderbuffers to the current bound fbo. By default the drawbuffer is used for assignments.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer fbo binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
-["stencil"] = {type='function', description = " returns or sets renderbuffer attachment for stencil target. You can disable assignment by passing 0.", args="(rcmdfborb,[renderbuffer])", returns="([renderbuffer])"},
-["depth"] = {type='function', description = " returns or sets renderbuffer attachment for depth target. You can disable assignment by passing 0.", args="(rcmdfborb,[renderbuffer])", returns="([renderbuffer])"},
-["color"] = {type='function', description = " returns or sets renderbuffer attachments for color targets 0..3. You can disable certain assignments by passing 0.", args="(rcmdfborb,int clr,[renderbuffer])", returns="([renderbuffer])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfborb)"}}}
 boneid = {type='class',description="Bone within a model. Normally reference state is returned but its also possible to retrieve animcache values.",childs={["rotrad"] = {type='function', description = " returns bone's reference rotation in object space. radians", args="(boneid,[boolean animcache])", returns="(float x,y,z)"},
 ["matrix"] = {type='function', description = " returns bone's reference matrix in object space.", args="(boneid,[boolean animcache])", returns="(matrix4x4)"},
 ["init"] = {type='function', description = " sets bonedata, only works on empty bones in model.create generated models. matrix should not have scaling.", args="(boneid,string name,matrix4x4 refmatrix,[boneid parent])", returns="()"},
@@ -5696,7 +5696,11 @@ boneid = {type='class',description="Bone within a model. Normally reference stat
 ["rotaxis"] = {type='function', description = " returns bone's reference rotation in object space. axis", args="(boneid,[boolean animcache])", returns="(float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz)"},
 ["rotdeg"] = {type='function', description = " returns bone's reference rotation in object space. degrees", args="(boneid,[boolean animcache])", returns="(float x,y,z)"},
 ["pos"] = {type='function', description = " returns bone's reference position in object space", args="(boneid,[boolean animcache])", returns="(float x,y,z)"}}}
-dspacehash = {type='class',description="Multi-resolution hash table space. This uses an internal data structure that records how each geom overlaps cells in one of several three dimensional grids. Each grid has cubical cells of side lengths 2^i, where i  is an integer that ranges from a minimum to a maximum value. The time required to do intersection testing for n objects is O(n) (as long as those objects are not clustered together too closely), as each object can be quickly paired with the objects around it.",childs={["new"] = {type='function', description = " creates a hashspace, if space is given, the new space is inserted in the given space", args="([dspace space])", returns="(dspacehash)"}}}
+rcmdfborb = {type='class',description="Attaches renderbuffers to the current bound fbo. By default the drawbuffer is used for assignments.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer fbo binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
+["stencil"] = {type='function', description = " returns or sets renderbuffer attachment for stencil target. You can disable assignment by passing 0.", args="(rcmdfborb,[renderbuffer])", returns="([renderbuffer])"},
+["depth"] = {type='function', description = " returns or sets renderbuffer attachment for depth target. You can disable assignment by passing 0.", args="(rcmdfborb,[renderbuffer])", returns="([renderbuffer])"},
+["color"] = {type='function', description = " returns or sets renderbuffer attachments for color targets 0..3. You can disable certain assignments by passing 0.", args="(rcmdfborb,int clr,[renderbuffer])", returns="([renderbuffer])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfborb)"}}}
 dgeom = {type='class',description="Geoms are solid objects that can collide with other geoms.",childs={["rotrad"] = {type='function', description = " sets/gets rotation of geom. The angles must be calculated from a matrix, so the results can differ from what you set. These matrix calculations are quite expensive, so use it with care. This functions uses x,y,z as angles in radians (180°==PI)", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
 ["local2world"] = {type='function', description = " transforms the given coordinates with the matrix of the geom, as if x,y,z are local coordinates of the geom and world coordinates are returned.", args="(dgeom geom,float x,y,z)", returns="(float x,y,z)"},
 ["fdirnormal"] = {type='function', description = " sets/gets normal vector to the friction direction vector that defines a direction along which frictional force is applied. The friction direction vector is computed as the crossproduct of the contactnormal and the normal vector that is defined here.", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
