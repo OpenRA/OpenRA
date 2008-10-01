@@ -124,14 +124,14 @@ local function fillTips(api,apibasename)
 	tclass.finfoclass = {}
 	tclass.shortfinfo = {}
 	tclass.shortfinfoclass = {}
-	
+
 	local staticnames = tclass.staticnames
 	local keys = tclass.keys
 	local finfo = tclass.finfo
 	local finfoclass = tclass.finfoclass
 	local shortfinfo = tclass.shortfinfo
 	local shortfinfoclass = tclass.shortfinfoclass
-	
+
 	local function traverse (tab,libname)
 		if not tab.childs then return end
 		for key,info in pairs(tab.childs) do
@@ -141,10 +141,17 @@ local function fillTips(api,apibasename)
 				
 				-- fix description
 				local frontname = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)")
+				frontname = frontname:gsub("\n"," ")
+				frontname = frontname:gsub("\t","")
 				frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])([^%)])","%1\n   %2")
 				
+				info.description = info.description:gsub("\n\n","<br>")
+				info.description = info.description:gsub("[^%s]\n[^%s]","")
+				info.description = info.description:gsub("\n"," ")
 				info.description = info.description:gsub("<br>","\n")
-				info.description = info.description:gsub("\t","  ")
+				info.description = info.description:gsub("[^%s]\t[^%s]"," ")
+				info.description = info.description:gsub("\t%s","")
+				info.description = info.description:gsub("%s\t","")
 				info.description = info.description:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])","%1\n")
 				
 				-- build info
