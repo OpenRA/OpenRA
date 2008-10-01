@@ -89,9 +89,10 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 				local localpos = pos-linestart
 				
 				linetxtopos = linetx:sub(1,localpos)
-				linetxtopos = linetxtopos:match("([a-zA-Z_0-9%.%:]+%()[^%(]*$")
+				linetxtopos = linetxtopos..")"
+				linetxtopos = linetxtopos:match("([a-zA-Z_0-9%.%:]+)%b()$")
 				
-				local tip = linetxtopos and GetTipInfo(editor,linetxtopos,false)
+				local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
 				if tip then
 					if(editor:CallTipActive()) then
 						editor:CallTipCancel()
