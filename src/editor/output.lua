@@ -73,8 +73,8 @@ function RunCommandLine(cmd,wdir,tooutput)
 	end
 	
 	-- launch process
-	local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC,proc) or
-						 wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+	local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_NOHIDE,proc) or
+						 wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_NOHIDE)
 
 	if (oldcwd) then
 		wx.wxFileName.SetCwd(oldcwd)
