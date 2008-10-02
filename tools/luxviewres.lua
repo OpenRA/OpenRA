@@ -9,7 +9,7 @@ return {
 			local cmd = ide.config.path.luxinia.."luxinia.exe --nologo"..endstr
 			cmd = cmd.." -v "..wxfname:GetFullPath()
 			
-			RunCommandLine(cmd)
+			RunCommandLine(cmd,nil,nil,true)
 		end,
 	},
 }

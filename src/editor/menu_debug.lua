@@ -33,6 +33,7 @@ local interpreters = {
 		fpath = function(fname) end,
 		capture = false,
 		workdir = function (filepath) end,
+		nohide = false,
 	},
 	]=]
 	
@@ -53,7 +54,7 @@ local interpreters = {
 		fprojdir = function(fname) 
 				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
-		capture = false,
+		capture = true,
 		fworkdir = function (filepath) end,
 			--return filepath and filepath:gsub("[\\/]+$","") end,
 	},
@@ -68,6 +69,7 @@ local interpreters = {
 			end,
 		fworkdir = function() end, -- doesn't matter
 		capture = true,
+		nohide  = true,
 		fprojdir = function(fname)
 				local path = GetPathWithSep(fname)
 				fname = wx.wxFileName(path)
@@ -91,6 +93,7 @@ local interpreters = {
 			end,
 		fworkdir = function() end, -- better not
 		capture = false,
+		nohide  = true,
 	},
 }
 
@@ -259,7 +262,7 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 			--local cwd = wx.wxGetCwd()
 			--wx.wxFileName().SetCwd(projectdir)
 			
-			RunCommandLine(cmd,wdir,capture)
+			RunCommandLine(cmd,wdir,capture,interpreter.nohide)
 			--wx.wxFileName().SetCwd(cwd)
 
 		end)

@@ -200,7 +200,7 @@ end
 
 function GetTipInfo(editor, content, short)
 	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
-	local class  = caller and content:match("([a-zA-Z_0-9]+)%."..caller.."%(%s*$")
+	local class  = caller and content:match("([a-zA-Z_0-9]+)[%.:]"..caller.."%(%s*$")
 	local tip = editor.api.tip
 	
 	if (not short) then

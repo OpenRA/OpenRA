@@ -46,7 +46,7 @@ local customproc = nil
 local custompid  = -1
 
 
-function RunCommandLine(cmd,wdir,tooutput)
+function RunCommandLine(cmd,wdir,tooutput,nohide)
 	if (customproc and tooutput) and customproc.Exists(tonumber(tostring(custompid))) then
 		DisplayOutput("Conflicting Process still running: "..cmd.."\n")
 		return
@@ -73,8 +73,8 @@ function RunCommandLine(cmd,wdir,tooutput)
 	end
 	
 	-- launch process
-	local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_NOHIDE,proc) or
-						 wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_NOHIDE)
+	local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
+						 wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0))
 
 	if (oldcwd) then
 		wx.wxFileName.SetCwd(oldcwd)
