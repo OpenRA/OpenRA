@@ -31,7 +31,7 @@ function StylesGetDefault()
 		keywords7		= {fg = {240, 255, 255},},
 		
 		-- common (inherit fg/bg from text)
-		text 			= defaultstyle, -- let os pick
+		text 			= nil, -- let os pick
 		linenumber 		= {fg = {192, 192, 192},},
 		bracematch 		= {fg = {0,   0,   255},	b = true},
 		bracemiss 		= {fg = {255, 0,   0  },	b = true},
@@ -155,13 +155,14 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 			editor:StyleSetBackground(id, style.bg and wx.wxColour(unpack(style.bg)) or defaultbg)
 		end
 	end
-	
 	editor:StyleResetDefault()
+	editor:SetFont(font)
 	if (styles.text) then
 		applystyle(styles.text,defaultmapping["text"])
+	else
+		applystyle({},defaultmapping["text"])
 	end
 	editor:StyleClearAll()
-	editor:SetFont(font)
 	
 	defaultfg = styles.text and styles.text.fg and wx.wxColour(unpack(styles.text.fg)) or nil
 	defaultbg = styles.text and styles.text.bg and wx.wxColour(unpack(styles.text.bg)) or nil

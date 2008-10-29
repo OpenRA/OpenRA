@@ -41,8 +41,8 @@ code:SetTabWidth(4)
 code:SetIndent(4)
 code:SetUseTabs(true)
 code:SetIndentationGuides(true)
-StylesApplyToEditor(ide.config.stylesoutshell,code,ide.ofont,ide.ofontItalic)
---SetupKeywords(code,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
+--StylesApplyToEditor(ide.config.stylesoutshell,code,ide.ofont,ide.ofontItalic)
+SetupKeywords(code,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
 
 local accel = wx.wxAcceleratorTable{
 	{wx.wxACCEL_CTRL,13,ID "shellbox.execute"},
