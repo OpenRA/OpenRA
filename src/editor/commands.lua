@@ -38,6 +38,9 @@ function LoadFile(filePath, editor, file_must_exist)
 	local handle = io.open(filePath, "rb")
 	if handle then
 		file_text = handle:read("*a")
+		if ide.config.FileInputFilter then
+			file_text = ide.config.FileInputFilter(filePath,file_text)
+		end
 		handle:close()
 	elseif file_must_exist then
 		return nil
@@ -122,6 +125,11 @@ function SaveFile(editor, filePath)
 		local handle = io.open(filePath, "wb")
 		if handle then
 			local st = editor:GetText()
+			-- the FileOutputFilter function can transform the written 
+			-- data, this is used to convert utf-8 umlauts to ANSI umlauts (hack)
+			if ide.config.FileOutputFilter then
+				st = ide.config.FileOutputFilter(filePath,st)
+			end
 			handle:write(st)
 			handle:close()
 			--editor:EmptyUndoBuffer()

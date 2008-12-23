@@ -81,13 +81,17 @@ ide = {
 -- load config
 local function addConfig(filename,showerror,isstring)
 	local cfgfn,err = isstring and loadstring(filename) or loadfile(filename)
+		-- 							^^                     ^^ wtf?
 	if not cfgfn then
 		if (showerror) then
-			print("Error while loading configuration file: \n",debug.traceback(err))
+			print(("Error while loading configuration file: %s\n%s"):format(filename,err))
 		end
 	else
 		setfenv(cfgfn,ide.config)
-		xpcall(cfgfn,function(err)print("Error while executing configuration file: \n",debug.traceback(err))end)
+		xpcall(function()cfgfn(assert(_G))end,
+			function(err)
+				print("Error while executing configuration file: \n",
+					debug.traceback(err))end)
 	end
 end
 local function loadCFG()
@@ -101,12 +105,17 @@ loadCFG()
 local function addToTab(tab,file)
 	local cfgfn,err = loadfile(file)
 	if not cfgfn then
-		print("Error while loading file: \n",debug.traceback(err))
+		print(("Error while loading configuration file (%s): \n%s"):format(file,err))
 	else
 		local name = file:match("([a-zA-Z_0-9]+)%.lua$")
 		
-		local success
-		success, result = xpcall(cfgfn,function(err)print("Error while executing file: \n",debug.traceback(err))end)
+		local success,result
+		success, result = xpcall(
+			function()return cfgfn(_G)end,
+			function(err)
+				print(("Error while executing configuration file (%s): \n%s"):
+					format(file,debug.traceback(err)))
+			end)
 		if (name and success) then
 			tab[name] = result
 		end
