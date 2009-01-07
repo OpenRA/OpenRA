@@ -53,6 +53,8 @@ ide = {
 	},
 	tools = {
 	},
+	iofilters = {
+	},
 	
 	frame            = nil,    -- gui related
 	debugger         = nil,    -- debugger
@@ -174,9 +176,8 @@ end
 -- Load App
 
 dofile "src/editor/settings.lua"
-
 dofile "src/editor/singleinstance.lua" 
-
+dofile "src/editor/iofilters.lua"
 
 dofile "src/editor/gui.lua"
 dofile "src/editor/output.lua"
