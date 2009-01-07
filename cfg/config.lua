@@ -3,7 +3,6 @@ path.luxinia = "../../engine/"
 
 editor.fontname = "Courier New"
 editor.caretline = true
-editor.iofilter = "GermanUtf8Ascii"
 
 interpreter = "EstrelaEditor"
 
