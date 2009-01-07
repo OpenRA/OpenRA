@@ -47,7 +47,7 @@ end,
 --όδί
 
 for i,filter in pairs(ide.iofilters) do
-	assert(filter.output("",filter.input("","„”™α"),"„”™α","UTF8-ANSI conversion failed: "..(i))
+	assert(filter.output("",filter.input("","„”™α")),"„”™α","UTF8-ANSI conversion failed: "..(i))
 end
 
 -- which: "input" or "output"
