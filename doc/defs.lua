@@ -83,6 +83,10 @@ config = {
 			-- defailt size
 		caretline = true,
 			-- show active line
+			
+			-- input/output filtering of strings
+			-- current filters "GermanUtf8Ascii"
+		iofilter = nil,
 	},
 	
 	
