@@ -43,11 +43,9 @@ local interpreters = {
 		fcmdline = function(filepath) 
 				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
 				local code = ([[
-					require 'lfs'
+					--require 'lfs'
 					xpcall(function() dofile '%s' end,
 						function(err) print(debug.traceback(err)) end)
-					
-					os.execute 'PAUSE'
 				]]):format(filepath:gsub("\\","/"))
 				return '"'..mainpath..'/lualibs/lua" -e "'..code..'"'
 			end,
