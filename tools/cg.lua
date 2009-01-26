@@ -1,4 +1,4 @@
-local cgbinpath = os.getenv("CG_BIN_PATH")
+local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 
 
 return cgbinpath and {
