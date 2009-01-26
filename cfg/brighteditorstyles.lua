@@ -1,18 +1,3 @@
--- path where luxinia resides in, a "luxinia.exe" is appended automaticly
-path.luxinia = "../../engine/"
-
-editor.fontname = "Courier New"
-editor.caretline = true
-
-interpreter = "Lua"
-
-filehistorylength = 20
-
-singleinstance = true
-singleinstanceport = 0xe493
-acandtip.shorttip = true
-
-
 styles = {
 	-- lexer specific (inherit fg/bg from text)
 	lexerdef	 	= {fg = {128, 128, 128},},
