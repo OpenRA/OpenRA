@@ -89,6 +89,7 @@ local function addConfig(filename,showerror,isstring)
 			print(("Error while loading configuration file: %s\n%s"):format(filename,err))
 		end
 	else
+		ide.config.os = os
 		setfenv(cfgfn,ide.config)
 		xpcall(function()cfgfn(assert(_G))end,
 			function(err)
