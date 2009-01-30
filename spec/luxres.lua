@@ -31,7 +31,7 @@ return {
 		[[RenderFlag Color Texture Forces SubSystem Emitter Particle Technique GpuProgram Shader 
 		NewPass DrawPass ]],
 
-		[[control floatmod texcontrol texconst texcenter texscale texrotate texmove texgenplane texclamp 
+		[[control floatmod texcontrol shdcontrol texconst texcenter texscale texrotate texmove texgenplane texclamp 
 		frames delay loop param alpha rfalpha layer alphaTEX alphafunc texmatrixcolum 
 		blendmode texcoord count type size width height axis model rate 
 		alphaTEX alphamode stateflag velocity endtime maxoffsetdist velocityvar flipdirection spread restarttime 
