@@ -152,14 +152,18 @@ function SaveFileAs(editor)
 	local id       = editor:GetId()
 	local saved    = false
 	local filePath = openDocuments[id].filePath
+	if (not filePath) then
+		filePath = GetFileTreeDir()
+		filePath = (filePath or "").."untitled"
+	end
 	
-	local fn       = wx.wxFileName(filePath or GetFileTreeDir() or "")
+	local fn       = wx.wxFileName(filePath)
 	fn:Normalize() -- want absolute path for dialog
 	
 	local exts = getExtsString()
 
 	local fileDialog = wx.wxFileDialog(ide.frame, "Save file as",
-									   fn:GetPath(),
+									   fn:GetPath(wx.wxPATH_GET_VOLUME),
 									   fn:GetFullName(),
 									   exts,
 									   wx.wxSAVE)

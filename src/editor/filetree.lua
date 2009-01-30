@@ -232,6 +232,7 @@ sidenotebook:AddPage(projpanel, "Project",true)
 
 function GetFileTreeDir()
 	-- atm only projtree
+	--print(ide.frame.vsplitter:IsSplit(),filetree.newfiledir)
 	return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
 end
 
