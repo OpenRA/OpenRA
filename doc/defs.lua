@@ -114,6 +114,8 @@ config = {
 	acandtip = {
 		shorttip = false,
 		-- tooltips are compact during typing
+		nodynwords = false,
+		-- no dynamic words (user entered words)
 	}
 		
 	savebak = false,

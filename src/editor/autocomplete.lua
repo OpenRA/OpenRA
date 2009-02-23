@@ -217,6 +217,7 @@ end
 local dywordentries = {}
 local dynamicwords = {}
 local function addDynamicWord (api,word )
+	if ide.config.acandtip.nodynwords then return end
 	if api.tip.staticnames[word] then return end
 	if dywordentries[word] then return end
 	dywordentries[word] = word

@@ -37,17 +37,26 @@ function DisplayOutput(message, dont_add_marker)
 	errorlog:GotoPos(errorlog:GetLength())
 end
 
+local streamins   = {}
+local streamerrs  = {}
+local customprocs = {}
 
-local streamin   = nil
-local streamerr  = nil
-local streamout  = nil
-
-local customproc = nil
-local custompid  = -1
-
+local function customrunning(exename) 
+	for pid,custom in pairs(customprocs) do
+		if (custom.exename == exename and custom.proc.Exists(tonumber(tostring(pid))) )then
+			return true
+		end
+	end
+	
+	return false
+end
 
 function RunCommandLine(cmd,wdir,tooutput,nohide)
-	if (customproc and tooutput) and customproc.Exists(tonumber(tostring(custompid))) then
+	local exename = string.gsub(cmd, "\\", "/")
+	exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
+	exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
+
+	if (customrunning(exename)) then
 		DisplayOutput("Conflicting Process still running: "..cmd.."\n")
 		return
 	end
@@ -57,6 +66,7 @@ function RunCommandLine(cmd,wdir,tooutput,nohide)
 	
 	local pid = -1
 	local proc = nil
+	local customproc 
 	
 	if (tooutput) then
 		customproc = wx.wxProcess(errorlog)
@@ -86,25 +96,30 @@ function RunCommandLine(cmd,wdir,tooutput,nohide)
 		customproc = nil
 		return
 	else
-		DisplayOutput("Process id is: "..tostring(pid).."\n", true)
+		DisplayOutput("Process: "..exename.." pid:"..tostring(pid).."\n", true)
+		customprocs[pid] = {proc=customproc,exename=exename}
 	end
 	
-	streamin  = proc and proc:GetInputStream()
-	streamerr = proc and proc:GetErrorStream()
-	--streamout = proc and proc:GetOutputStream()
+	local streamin  = proc and proc:GetInputStream()
+	local streamerr = proc and proc:GetErrorStream()
+	if (streamin) then 
+		streamins[pid] = streamin
+	end
+	if (streamerr) then 
+		streamerrs[pid] = streamerr
+	end
 	
-	custompid = proc and pid or -1
-	DisplayOutput("Process streams are: "..tostring(streamin).."/"..tostring(streamerr).."\n", true)
+	DisplayOutput("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n", true)
 end
 
 local function getStreams()
-	if (streamin) then
+	for i,streamin in pairs(streamins) do
 		while(streamin:CanRead()) do
 			str = streamin:Read(4096)
 			DisplayOutput(str,true)
 		end
 	end
-	if (streamerr) then
+	for i,streamerr in pairs(streamerrs) do
 		while (streamerr:CanRead()) do
 			str = streamerr:Read(4096)
 			DisplayOutput(str,true)
@@ -113,18 +128,18 @@ local function getStreams()
 end
 
 errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
-			if (event:GetPid() == custompid) then
+			local pid = event:GetPid()
+			if (pid ~= -1) then
 				getStreams()
-				streamin  = nil
-				streamerr = nil
-				streamout = nil
-				customproc = nil
-				DisplayOutput("proc end "..custompid.."\n")
+				streamins[pid] = nil
+				streamerrs[pid] = nil
+				customprocs[pid] = nil
+				DisplayOutput("proc end "..pid.."\n")
 			end
 		end)
 
 errorlog:Connect(wx.wxEVT_IDLE, function(event)
-		if (streamin or streamerr) then
+		if (#streamins or #streamerrs) then
 			getStreams()
 		end
 	end)
