@@ -1,5 +1,6 @@
 -- path where luxinia resides in, a "luxinia.exe" is appended automaticly
-path.luxinia = "../../engine/"
+local luxpath = os.getenv("LUXINIA")
+path.luxinia = luxpath and luxpath.."/" or "../../engine/"
 
 editor.fontname = "Courier New"
 editor.caretline = true
