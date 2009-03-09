@@ -43,7 +43,7 @@ local customprocs = {}
 
 local function customrunning(exename) 
 	for pid,custom in pairs(customprocs) do
-		if (custom.exename == exename and custom.proc.Exists(tonumber(tostring(pid))) )then
+		if (custom.exename == exename and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
 			return true
 		end
 	end
