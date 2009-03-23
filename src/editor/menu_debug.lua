@@ -23,80 +23,13 @@ local filetree      = ide.filetree
 
 --------------
 -- Interpreters
-
-local interpreters = {
-	--[=[
-	[] = {
-		name = "",
-		description = "",
-		fcmdline = function(filepath) end,
-		fpath = function(fname) end,
-		capture = false,
-		workdir = function (filepath) end,
-		nohide = false,
-	},
-	]=]
-	
-	[ID "debug.interpreter.Lua"] = {
-		name = "Lua",
-		description = "Pure lua interpreter",
-		fcmdline = function(filepath) 
-				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
-				local code = ([[
-					--require 'lfs'
-					xpcall(function() dofile '%s' end,
-						function(err) print(debug.traceback(err)) end)
-				]]):format(filepath:gsub("\\","/"))
-				return '"'..mainpath..'/lualibs/lua" -e "'..code..'"'
-			end,
-		fprojdir = function(fname) 
-				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)
-			end,
-		capture = true,
-		fworkdir = function (filepath) 
-			return ide.config.path.projectdir and ide.config.path.projectdir:len()>0 and 
-					ide.config.path.projectdir
-			end,
-			--return filepath and filepath:gsub("[\\/]+$","") end,
-	},
-	[ID "debug.interpreter.Luxinia"] = {
-		name = "Luxinia",
-		description = "Luxinia project",
-		fcmdline = function(filepath) 
-				local endstr = ide.config.path.projectdir and ide.config.path.projectdir:len()>0
-							and " -p "..ide.config.path.projectdir or ""
-				
-				return ide.config.path.luxinia..'luxinia.exe --nologo'..endstr
-			end,
-		fworkdir = function() end, -- doesn't matter
-		capture = true,
-		nohide  = true,
-		fprojdir = function(fname)
-				local path = GetPathWithSep(fname)
-				fname = wx.wxFileName(path)
-				
-				while ((not wx.wxFileExists(path.."main.lua")) and (fname:GetDirCount() > 0)) do
-					fname:RemoveDir(fname:GetDirCount()-1)
-					path = GetPathWithSep(fname)
-				end
-				
-				return path:sub(0,-2)
-			end,
-	},
-	[ID "debug.interpreter.EstrelaEditor"] = {
-		name = "Estrela Editor",
-		description = "Estrela Editor as run target (IDE development)",
-		fcmdline = function(filepath) 
-				return ide.editorFilename and '"'..ide.editorFilename..'" '..(filepath or "")..' -cfg "singleinstance=false;"' or nil
-			end,
-		fprojdir = function(fname)
-				return fname:GetPath(wx.wxPATH_GET_VOLUME)
-			end,
-		fworkdir = function() end, -- better not
-		capture = false,
-		nohide  = true,
-	},
-}
+local interpreters = {}
+local lastinterpreter
+for i,v in pairs(ide.interpreters) do
+	interpreters[ID ("debug.interpreter."..v.name)] = v
+	lastinterpreter = v.name
+end
+assert(lastinterpreter,"no interpreters defined")
 
 local debugMenu = wx.wxMenu{
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
@@ -151,8 +84,8 @@ UpdateProjectDir(ide.config.path.projectdir)
 
 -- interpreter setup
 local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  or 
-							ID "debug.interpreter.EstrelaEditor"
-							
+							ID ("debug.interpreter."..lastinterpreter)
+	
 	menuBar:Check(curinterpreterid, true)
 	
 	local function selectInterpreter (id)

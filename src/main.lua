@@ -55,6 +55,8 @@ ide = {
 	},
 	iofilters = {
 	},
+	interpreters = {
+	},
 	
 	frame            = nil,    -- gui related
 	debugger         = nil,    -- debugger
@@ -124,6 +126,20 @@ local function addToTab(tab,file)
 		end
 	end
 end
+
+-- load interpreters
+local function loadInterpreters()
+	
+	local files = FileSysGet(".\\interpreters\\*.*",wx.wxFILE)
+	for i,file in ipairs(files) do
+		if file:match "%.lua$" then
+			addToTab(ide.interpreters,file)
+		end
+	end
+end
+loadInterpreters()
+
+
 	
 -- load specs
 local function loadSpecs()

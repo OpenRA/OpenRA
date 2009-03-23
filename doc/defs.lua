@@ -197,3 +197,20 @@ tool = {
 		fn = function(wxfilename,projectdir) end,
 	}
 }
+
+-- interpreter definition
+-- ----------------------------------------------------
+interpreter = {
+		name = "",
+		description = "",
+		fcmdline = function(filepath) 
+				return "execommand"
+			end,
+		fprojdir = function(fname)
+				return "projpath_from_filename"	-- optional
+			end,
+		fworkdir = function(filepath) end, -- can return workdir
+		capture = false,	-- capture output 
+		nohide  = true,		-- dont hide dosbox
+}
+
