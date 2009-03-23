@@ -53,7 +53,10 @@ local interpreters = {
 				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		capture = true,
-		fworkdir = function (filepath) end,
+		fworkdir = function (filepath) 
+			return ide.config.path.projectdir and ide.config.path.projectdir:len()>0 and 
+					ide.config.path.projectdir
+			end,
 			--return filepath and filepath:gsub("[\\/]+$","") end,
 	},
 	[ID "debug.interpreter.Luxinia"] = {
