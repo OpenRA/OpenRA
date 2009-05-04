@@ -23,6 +23,8 @@ function FindDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist)
+	filePath = filePath:gsub("\\","/")
+
 	-- prevent files from being reopened again
 	if (not editor) then
 	for id, doc in pairs(openDocuments) do
@@ -115,6 +117,8 @@ function SaveFile(editor, filePath)
 	if not filePath then
 		return SaveFileAs(editor)
 	else
+		filePath = filePath:gsub("\\","/")
+	
 		if (ide.config.savebak) then
 			local backPath = filePath..".bak"
 			os.remove(backPath)
