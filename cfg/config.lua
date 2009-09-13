@@ -5,7 +5,7 @@ path.luxinia = luxpath and luxpath.."/" or "../../engine/"
 editor.fontname = "Courier New"
 editor.caretline = true
 
-interpreter = "Lua"
+interpreter = "Luxinia"
 
 filehistorylength = 20
 
