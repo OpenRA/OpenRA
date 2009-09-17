@@ -107,7 +107,7 @@ tex3Dlod = fn "performs a texture lookup with a specified level of detail in a g
 tex3Dproj = fn "performs a texture lookup with projection in a given sampler. (proj in .w) - (float4)(sampler3D, float4 s, [int texeloff])"
 tex3Dsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler3D, int lod)"
 
-texBUF = fn " performs an unfiltered texture lookup in a given texture buffer sampler. (only gp4 profiles) - (float4)(samplerBUF, int s)"
+texBUF = fn "performs an unfiltered texture lookup in a given texture buffer sampler. (only gp4 profiles) - (float4)(samplerBUF, int s)"
 texBUFsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerBUF, int lod)"
 
 texCUBE = fn "performs a texture lookup in a given CUBE sampler and, in some cases, a shadow comparison (float4 coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerCUBE, float3/float4 s, |float3 dx, dy|)"
@@ -142,7 +142,14 @@ tex2DARRAYsize = fn "returns the size of a given texture image for a given level
 texCUBEARRAY = fn "performs a texture lookup in a given CUBE sampler array. May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerCUBEARRAY, float4 s, {float3 dx, dy},[int texeloffset])"
 texCUBEARRAYsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerCUBEARRAY, int lod)"
 
-
+unpack_4ubyte = fn "interprets the single float as 4 normalized unsigned bytes and returns the vector. (only nv/gp4 profiles) - (float4)(float)"
+pack_4ubyte = fn "packs the floats into a single storing as normalized unsigned bytes.(only nv/gp4 profiles) - (float)(float4)"
+unpack_4byte = fn "interprets the single float as 4 normalized signed bytes and returns the vector. (only nv/gp4 profiles) - (float4)(float)"
+pack_4ubyte = fn "packs the floats into a single storing as normalized signed bytes.(only nv/gp4 profiles) - (float)(float4)"
+unpack_4ushort = fn "interprets the single float as 2 normalized unsigned shorts and returns the vector. (only nv/gp4 profiles) - (float2)(float)"
+pack_4ushort = fn "packs the floats into a single storing as normalized unsigned shorts.(only nv/gp4 profiles) - (float)(float2)"
+unpack_2half = fn "interprets the single float as 2 16-bit floats and returns the vector. (only nv/gp4 profiles) - (float2)(float)"
+pack_2half = fn "packs the floats into a single storing as 16-bit floats.(only nv/gp4 profiles) - (float)(float2)"
 
 local keyw = 
 [[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 double vector vec matrix
@@ -152,6 +159,7 @@ bool bool2 bool3 bool4
 mat string struct typedef matrix
 usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY
 isampler isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY
+usamplerBUF isamplerBUF samplerBUF
 sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY
 texture texture1D texture2D texture3D textureRECT textureCUBE texture1DARRAY texture2DARRAY textureCUBEARRAY
 
