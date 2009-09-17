@@ -125,7 +125,7 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 						break
 					end
 					state = "word"
-				elseif c : match "[%.:]" then
+				elseif c : match(editor.spec.sep) then
 					state = "begin"
 				elseif c : match "[^%s]" then -- unknown char
 					acstart = i + 1

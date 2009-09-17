@@ -1,5 +1,5 @@
 return {
-	exts = {"cg"},
+	exts = {"cg","cgh","fx","fxh"},
 	lexer = wxstc.wxSTC_LEX_CPP,
 	apitype = "cg",
 	linecomment = "//",

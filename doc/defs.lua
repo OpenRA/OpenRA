@@ -165,6 +165,12 @@ spec = {
 	linecomment = "//",			
 		-- string for linecomments
 		
+	sep = "[%.:]",
+		--	class.function separator match string,
+		-- e.g in lua both . and : are allowed
+		-- default is "\1" which should yield no matches
+		-- and therefore disable class.func type autocompletion
+		
 	apitype = "api",			
 		-- which sub directory of "api" is relevant
 		-- api files handle autocomplete and tooltips

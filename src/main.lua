@@ -49,6 +49,7 @@ ide = {
 	specs = {
 		none = {
 			linecomment = ">",
+			sep = "\1",
 		}
 	},
 	tools = {
@@ -149,6 +150,10 @@ local function loadSpecs()
 		if file:match "%.lua$" then
 			addToTab(ide.specs,file)
 		end
+	end
+	
+	for n,spec in pairs(ide.specs) do
+		spec.sep = spec.sep or "\1"
 	end
 end
 loadSpecs()

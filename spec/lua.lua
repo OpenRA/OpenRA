@@ -5,6 +5,7 @@ return {
 	lexer = wxstc.wxSTC_LEX_LUA,
 	apitype = "lua",
 	linecomment = "--",
+	sep = "[%.:]",
 	
 	lexerstyleconvert = {
 		text		= {wxstc.wxSTC_LUA_IDENTIFIER,},

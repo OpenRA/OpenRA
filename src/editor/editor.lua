@@ -291,7 +291,7 @@ function CreateEditor(name)
 							if state == "space" then break end
 							cnt = cnt + 1
 							state = "word"
-						elseif c:match("[%.:]") then
+						elseif c:match(editor.spec.sep) then
 							if sep then break end
 							state = "break"
 							cnt = cnt + 1
