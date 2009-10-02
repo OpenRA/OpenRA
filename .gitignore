@@ -1,0 +1,7 @@
+# Visual Studio crap
+Release
+bin
+obj
+*.ncb
+*.vcproj*
+*.suo
