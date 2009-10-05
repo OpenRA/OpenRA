@@ -5,3 +5,7 @@ obj
 *.ncb
 *.vcproj*
 *.suo
+
+# Red Alert binary files
+*.[mM][iI][xX]
+
