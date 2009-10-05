@@ -1,0 +1,16 @@
+After pulling the OpenRA source, the first thing you’ll need to do is to make sure the Ijw.DirectX 
+submodule is updated and the Ijw.Framework submodule inside the Ijw.DirectX submodule is updated as well. 
+The Ijw.Framework submodule should be built in both release and debug modes and requires NUnit 
+(http://www.nunit.org/index.php) to build unless the IjwFrameworkTests project is unloaded.
+
+After the Ijw.Framework submodule is built, the Ijw.DirectX submodule should be built as well. After that 
+you should be all good to go ahead and build OpenRA.
+
+To run OpenRA, several files from the original game’s install need to be copied to the root of the project 
+directory. These are "redalert.mix", "conquer.mix", "temperat.mix", "interior.mix" and "snow.mix".
+
+Red Alert has been released by EA Games as freeware so it shouldn’t be too hard to find a legal copy of the 
+CD images. Unfortunately the installer is 16-bit and so won’t run on modern 64-bit operating systems. This 
+can be worked around by using the Red Alert Setup Manager (http://ra.afraid.org/html/downloads/utilities-3.html). 
+Make sure you apply the no-CD protection fix so all the files needed are installed to the hard drive.
+
