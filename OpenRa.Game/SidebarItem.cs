@@ -9,6 +9,8 @@ namespace OpenRa.Game
 		public readonly float2 location;
 		readonly Sprite sprite;
 
+		public bool isBuilding = false;
+
 		public SidebarItem(Sprite s, Item item, int y)
 		{
 			this.techTreeItem = item;

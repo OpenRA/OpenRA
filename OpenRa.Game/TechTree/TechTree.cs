@@ -93,8 +93,16 @@ namespace OpenRa.TechTree
 
 		void CheckAll()
 		{
+			bool changed = false;
 			foreach (Item unit in objects.Values)
+			{
+				bool old = unit.CanBuild;
 				unit.CheckPrerequisites(built, currentRace);
+				if (old != unit.CanBuild)
+					changed = true;
+			}
+
+			if (changed) BuildableItemsChanged(this, EventArgs.Empty);
 		}
 
 		public IEnumerable<Item> BuildableItems
@@ -106,5 +114,7 @@ namespace OpenRa.TechTree
 						yield return b;
 			}
 		}
+
+		public event EventHandler BuildableItemsChanged = (sender, e) => { };
 	}
 }
