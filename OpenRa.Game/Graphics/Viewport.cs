@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace OpenRa.Game.Graphics
 {
@@ -44,6 +46,18 @@ namespace OpenRa.Game.Graphics
 			renderer.EndFrame();
 		}
 
-		public IEnumerable<Region> Regions { get { return regions; } }
+        Region dragRegion = null;
+        public void DispatchMouseInput(MouseInput mi)
+        {
+            if (dragRegion != null) {
+                dragRegion.HandleMouseInput( mi );
+                if (mi.Event == MouseInputEvent.Up) dragRegion = null;
+                return;
+            }
+
+            dragRegion = regions.FirstOrDefault(r => r.Contains(mi.Location) && r.HandleMouseInput(mi));
+            if (mi.Event != MouseInputEvent.Down)
+                dragRegion = null;
+        }
 	}
 }

@@ -6,18 +6,18 @@ namespace OpenRa.Game.Graphics
 {
 	class Region
 	{
-		float2 location;
+		int2 location;
 		Viewport viewport;
 
-		public float2 Location
+        public int2 Location
 		{
-			get { return location + viewport.Location; }	// WTF HACK HACK HACK
+			get { return location + new int2( (int)viewport.Location.X, (int)viewport.Location.Y ); }	// WTF HACK HACK HACK
 		}
 
 		public readonly float2 Size;
 
 		Action drawFunction;
-		MouseEventHandler mouseHandler;
+        Action<MouseInput> mouseHandler;
 		Rectangle rect;
 
 		static int2 MakeSize(Viewport v, DockStyle d, int size)
@@ -37,12 +37,19 @@ namespace OpenRa.Game.Graphics
 			}
 		}
 
-		public void Clicked(MouseEventArgs e)
-		{
-			mouseHandler(this, new MouseEventArgs(e.Button, e.Clicks, e.X - rect.Left, e.Y - rect.Top, e.Delta));
-		}
+        public bool HandleMouseInput(MouseInput mi)
+        {
+            /* todo: route to the mousehandler once that's sorted */
+            if (mouseHandler != null) mouseHandler(new MouseInput
+            {
+                Button = mi.Button,
+                Event = mi.Event,
+                Location = mi.Location - Location
+            });
+            return mouseHandler != null;
+        }
 
-		public static Region Create(Viewport v, DockStyle d, int size, Action f, MouseEventHandler m)
+		public static Region Create(Viewport v, DockStyle d, int size, Action f, Action<MouseInput> m)
 		{
 			int2 s = MakeSize(v, d, size);
 
@@ -61,7 +68,7 @@ namespace OpenRa.Game.Graphics
 			}
 		}
 
-		Region(int2 location, int2 size, Viewport viewport, Action drawFunction, MouseEventHandler mouseHandler)
+		Region(int2 location, int2 size, Viewport viewport, Action drawFunction, Action<MouseInput> mouseHandler)
 		{
 			this.location = location;
 			this.Size = size;

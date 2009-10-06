@@ -123,10 +123,13 @@ namespace OpenRa.Game
 			return null;
 		}
 
-		void MouseHandler(object sender, MouseEventArgs e)
+		void MouseHandler(MouseInput mi)
 		{
-			float2 point = new float2(e.Location);
-			Build(GetItem(point));
+            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
+            {
+                var point = new float2(mi.Location.X, mi.Location.Y);
+                Build(GetItem(point));
+            }
 		}
 	}
 

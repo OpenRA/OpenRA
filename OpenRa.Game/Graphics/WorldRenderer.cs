@@ -15,7 +15,9 @@ namespace OpenRa.Game.Graphics
 			// TODO: this is layout policy. it belongs at a higher level than this.
 
 			region = Region.Create(world.game.viewport, DockStyle.Left,
-				world.game.viewport.Width - 128, Draw, world.game.controller.WorldClicked);		// TODO: world.WorldClicked is part of the CONTROLLER
+				world.game.viewport.Width - 128, Draw, 
+                world.game.controller.HandleMouseInput);		
+
 			world.game.viewport.AddRegion(region);
 
 			spriteRenderer = new SpriteRenderer(renderer, true);

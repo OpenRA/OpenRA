@@ -66,16 +66,18 @@ namespace OpenRa.Game
 
 		int2 lastPos;
 
-		protected override void OnMouseDown(MouseEventArgs e)
-		{
-			base.OnMouseDown(e);
-			lastPos = new int2(e.Location);
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            lastPos = new int2(e.Location);
 
-			if (e.Button == MouseButtons.Left)
-				foreach (var region in game.viewport.Regions)
-					if (region.Contains(lastPos))
-						region.Clicked(e);
-		}
+            game.viewport.DispatchMouseInput(new MouseInput
+                {
+                    Button = e.Button,
+                    Event = MouseInputEvent.Down,
+                    Location = new int2(e.Location)
+                });
+        }
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
@@ -88,9 +90,37 @@ namespace OpenRa.Game
 				lastPos = p;
 			}
 
+            game.viewport.DispatchMouseInput(new MouseInput
+            {
+                Button = e.Button,
+                Event = MouseInputEvent.Move,
+                Location = new int2(e.Location)
+            });
+
 			if (game.controller.orderGenerator != null)
 				game.controller.orderGenerator.PrepareOverlay(game, 
 					new int2(e.Location.X / 24, e.Location.Y / 24));
 		}
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            game.viewport.DispatchMouseInput(new MouseInput
+            {
+                Button = e.Button,
+                Event = MouseInputEvent.Up,
+                Location = new int2(e.Location)
+            });
+        }
 	}
+
+    struct MouseInput
+    {
+        public MouseInputEvent Event;
+        public int2 Location;
+        public MouseButtons Button;
+    }
+
+    enum MouseInputEvent { Down, Move, Up };
 }

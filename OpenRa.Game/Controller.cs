@@ -17,12 +17,16 @@ namespace OpenRa.Game
 			this.game = game;
 		}
 
-		public void WorldClicked(object sender, MouseEventArgs e)
+		public void HandleMouseInput(MouseInput mi)
 		{
-			var xy = (1 / 24.0f) * (new float2(e.Location) + game.viewport.Location);
-			if (orderGenerator != null)
-				orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
-			// todo: route all orders through netcode
+            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
+            {
+                var xy = (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + game.viewport.Location);
+
+                if (orderGenerator != null)
+                    orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
+                // todo: route all orders through netcode
+            }
 		}
 	}
 }

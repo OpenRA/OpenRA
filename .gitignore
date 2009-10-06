@@ -5,6 +5,7 @@ obj
 *.ncb
 *.vcproj*
 *.suo
+*.user
 
 # Red Alert binary files
 *.[mM][iI][xX]
