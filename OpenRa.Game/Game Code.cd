@@ -10,7 +10,7 @@
   <Class Name="OpenRa.Game.World">
     <Position X="8.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAaAACBBAAAAAiAAAIACBgAAAAAAAAAIAAAAAAgAAAA=</HashCode>
+      <HashCode>AAYAACABAAAAgAAAAIAABgAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>World.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -21,10 +21,10 @@
       <FileName>Building.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OpenRa.Game.Game" Collapsed="true">
+  <Class Name="OpenRa.Game.Game">
     <Position X="11" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAEAAAAIAAAgAABAAAIAAQAAAAAQAAJAAAAABAQAA=</HashCode>
+      <HashCode>AAAAEAAAAIAAAAEEBAAAIAAQQAAAAQAAJAAAAABAQAA=</HashCode>
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -63,8 +63,8 @@
       <FileName>PathFinder.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OpenRa.Game.Player" Collapsed="true">
-    <Position X="11" Y="1.5" Width="1.5" />
+  <Class Name="OpenRa.Game.Player">
+    <Position X="12.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Player.cs</FileName>
@@ -114,7 +114,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="OpenRa.Game.TerrainCosts" Collapsed="true">
-    <Position X="11" Y="2.5" Width="1.5" />
+    <Position X="14.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TerrainCosts.cs</FileName>
@@ -174,14 +174,14 @@
     </TypeIdentifier>
   </Class>
   <Struct Name="OpenRa.Game.CellInfo" Collapsed="true">
-    <Position X="11" Y="4.75" Width="1.5" />
+    <Position X="14.5" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAEAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>PathFinder.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="OpenRa.Game.PathDistance" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="4.75" Width="1.5" />
+    <Position X="12.75" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAIAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PathFinder.cs</FileName>

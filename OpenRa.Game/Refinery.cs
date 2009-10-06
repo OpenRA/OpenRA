@@ -1,3 +1,5 @@
+using OpenRa.Game.Graphics;
+using System.Linq;
 
 namespace OpenRa.Game
 {
@@ -20,4 +22,37 @@ namespace OpenRa.Game
 			});
 		}
 	}
+
+    class WarFactory : Building
+    {
+        Animation roof;
+
+        public WarFactory(int2 location, Player owner, Game game)
+            : base("weap", location, owner, game)
+        {
+            
+            animation.PlayThen("make", () =>
+                {
+                    roof = new Animation("weap");
+                    animation.PlayRepeating("idle");
+                    roof.PlayRepeating("idle-top");
+                });
+        }
+
+        public override Sprite[] CurrentImages
+        {
+            get
+            {
+                return (roof == null)
+                    ? base.CurrentImages
+                    : (base.CurrentImages.Concat( roof.Images ).ToArray());
+            }
+        }
+
+        public override void Tick(Game game, int t)
+        {
+            base.Tick(game, t);
+            if (roof != null) roof.Tick(t);
+        }
+    }
 }

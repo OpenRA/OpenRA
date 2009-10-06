@@ -49,8 +49,9 @@ namespace OpenRa.Game
 			network = new Network();
 
 			buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
+            buildingCreation.Add("weap", (location, owner) => new WarFactory(location, owner, this));
 
-			string[] buildings = { "fact", "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
+			string[] buildings = { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
 			foreach (string s in buildings)
 			{
 				var t = s;
