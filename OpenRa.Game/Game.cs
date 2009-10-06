@@ -67,7 +67,7 @@ namespace OpenRa.Game
 			var stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 			world.Update();
 
-			viewport.DrawRegions(this);
+			viewport.DrawRegions();
 		}
 	}
 }

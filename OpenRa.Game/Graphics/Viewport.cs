@@ -33,7 +33,7 @@ namespace OpenRa.Game.Graphics
 
 		public void AddRegion(Region r) { regions.Add(r); }
 
-		public void DrawRegions(Game game)
+		public void DrawRegions()
 		{
 			float2 r1 = new float2(2, -2) / Size;
 			float2 r2 = new float2(-1, 1);

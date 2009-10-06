@@ -27,6 +27,9 @@ namespace OpenRa.Game
                     orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
                 // todo: route all orders through netcode
             }
+
+            if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
+                orderGenerator = null;
 		}
 	}
 }
