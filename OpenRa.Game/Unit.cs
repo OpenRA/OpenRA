@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -67,14 +71,20 @@ namespace OpenRa.Game
 				currentOrder( t );
 		}
 
-		public override float2 RenderLocation
+		public override IEnumerable<Pair<Sprite, float2>> CurrentImages
+		{
+			get
+			{
+				yield return Centered( animation.Image, CenterLocation );
+			}
+		}
+
+		public float2 CenterLocation
 		{
 			get
 			{
 				float fraction = ( moveFraction > 0 ) ? (float)moveFraction / moveFractionTotal : 0f;
-
-				float2 location = 24 * float2.Lerp( fromCell, toCell, fraction );
-				return ( location - renderOffset ).Round();
+				return new float2( 12, 12 ) + 24 * float2.Lerp( fromCell, toCell, fraction );
 			}
 		}
 
@@ -97,5 +107,34 @@ namespace OpenRa.Game
 		}
 
 		public void PrepareOverlay(Game game, int2 xy) { }
+
+		protected static Pair<Sprite, float2> Centered( Sprite s, float2 location )
+		{
+			var loc = location - 0.5f * s.size;
+			return Pair.New( s, loc.Round() );
+		}
+	}
+
+	class TurretedUnit : Unit
+	{
+		Animation turretAnim;
+		int turretFacing { get { return facing; } }
+
+		public TurretedUnit( string name, int2 cell, Player owner, Game game )
+			: base( name, cell, owner, game )
+		{
+			turretAnim = new Animation( name );
+			turretAnim.PlayFetchIndex( "turret", () => turretFacing );
+		}
+
+		public override IEnumerable<Pair<Sprite, float2>> CurrentImages
+		{
+			get
+			{
+				foreach( var x in base.CurrentImages )
+					yield return x;
+				yield return Centered( turretAnim.Image, CenterLocation );
+			}
+		}
 	}
 }

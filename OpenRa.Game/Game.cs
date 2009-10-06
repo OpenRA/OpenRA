@@ -53,10 +53,7 @@ namespace OpenRa.Game
 
 			string[] buildings = { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
 			foreach (string s in buildings)
-			{
-				var t = s;
-				buildingCreation.Add(t, (location, owner) => new Building(t, location, owner, this));
-			}
+				buildingCreation.Add(s, (location, owner) => new Building(s, location, owner, this));
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, world);

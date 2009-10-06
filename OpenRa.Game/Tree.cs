@@ -4,6 +4,7 @@ using System.Text;
 using OpenRa.FileFormats;
 using System.Drawing;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -19,8 +20,13 @@ namespace OpenRa.Game
 		}
 
 		Sprite[] currentImages;
-		public override Sprite[] CurrentImages { get { return currentImages; } }
-
-		public override float2 RenderLocation { get { return 24 * location; } }
+		public override IEnumerable<Pair<Sprite, float2>> CurrentImages
+		{
+			get
+			{
+				foreach( var x in currentImages )
+					yield return Pair.New( x, 24 * (float2)location );
+			}
+		}
 	}
 }

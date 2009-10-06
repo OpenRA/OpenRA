@@ -15,7 +15,7 @@ namespace OpenRa.Game.Graphics
 			Play( "idle" );
 		}
 
-		public Sprite[] Images { get { return new Sprite[] { currentSequence.GetSprite( frame ) }; } }
+		public Sprite Image { get { return currentSequence.GetSprite( frame ); } }
 		public float2 Center { get { return 0.25f * new float2(currentSequence.GetSprite(0).bounds.Size); } }
 
 		public void Play( string sequenceName )

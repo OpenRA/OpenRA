@@ -107,7 +107,7 @@ namespace OpenRa.Game
 
 			spriteRenderer.Flush();
 
-			clockRenderer.DrawSprite( clockAnimation.Images[0], region.Location, 0 );
+			clockRenderer.DrawSprite( clockAnimation.Image, region.Location, 0 );
 			clockAnimation.Tick(1);
 
 			clockRenderer.Flush();
