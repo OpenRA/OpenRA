@@ -102,7 +102,7 @@ namespace OpenRa.TechTree
 					changed = true;
 			}
 
-			if (changed) BuildableItemsChanged(this, EventArgs.Empty);
+			if (changed) BuildableItemsChanged();
 		}
 
 		public IEnumerable<Item> BuildableItems
@@ -115,6 +115,6 @@ namespace OpenRa.TechTree
 			}
 		}
 
-		public event EventHandler BuildableItemsChanged = (sender, e) => { };
+		public event Action BuildableItemsChanged = () => { };
 	}
 }

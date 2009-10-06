@@ -32,7 +32,7 @@ namespace OpenRa.Game
 		public Sidebar( Race race, Renderer renderer, Game game )
 		{
 			this.techTree = game.LocalPlayer.TechTree;
-			this.techTree.BuildableItemsChanged += (sender, e) => { PopulateItemList(); };
+            this.techTree.BuildableItemsChanged += PopulateItemList;
 			this.game = game;
 			region = GRegion.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			game.viewport.AddRegion( region );
@@ -99,8 +99,6 @@ namespace OpenRa.Game
 
 		void Paint()
 		{
-//			PopulateItemList();	// todo: do this less often, just when things actually change!
-
 			foreach (SidebarItem i in items)
 				i.Paint(spriteRenderer, region.Location);
 
