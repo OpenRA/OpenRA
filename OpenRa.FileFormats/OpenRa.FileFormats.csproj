@@ -35,6 +35,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MixDecrypt, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\MixDecrypt.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -62,10 +66,6 @@
     <Compile Include="Walkability.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MixDecrypt\MixDecrypt.vcproj">
-      <Project>{6F5D4280-3D23-41FF-AE2A-511B5553E377}</Project>
-      <Name>MixDecrypt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
       <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
       <Name>OpenRa.DataStructures</Name>

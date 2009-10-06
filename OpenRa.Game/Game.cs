@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRa.FileFormats;
 
 using OpenRa.Game.Graphics;
@@ -48,11 +49,9 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-			buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
-
 			string[] buildings = { "fact", "powr", "apwr", "weap", "barr", "atek", "stek", "dome" };
-			foreach (string s in buildings)
-				buildingCreation.Add(s, (location, owner) => new Building(s, location, owner, this));
+			buildingCreation = buildings.ToDictionary( s => s, s => (Func<int2, Player, Building>)( ( l, o ) => new Building( s, l, o, this ) ) );
+			buildingCreation.Add( "proc", ( location, owner ) => new Refinery( location, owner, this ) );
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, world);
