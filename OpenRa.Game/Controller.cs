@@ -41,6 +41,7 @@ namespace OpenRa.Game
                     dragEnd = GetWorldPos(mi);
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
+            {
                 if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
                 {
                     /* finalize drag selection */
@@ -49,6 +50,9 @@ namespace OpenRa.Game
                 {
                     /* finalize click selection */
                 }
+
+                dragStart = dragEnd = null;
+            }
 
             if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
             {
