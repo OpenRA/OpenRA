@@ -6,6 +6,7 @@ using OpenRa.FileFormats;
 
 using System.Windows.Forms;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -13,9 +14,8 @@ namespace OpenRa.Game
 	{
 		public readonly Game game;
 
-		public abstract float2 RenderLocation { get; }
 		public Player owner;
-		public abstract Sprite[] CurrentImages { get; }
+		public abstract IEnumerable<Pair<Sprite,float2>> CurrentImages { get; }
 		public virtual void Tick(Game game, int t) { }
 
 		protected Actor(Game game)
