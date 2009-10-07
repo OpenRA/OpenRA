@@ -514,22 +514,22 @@ l3dprimitive = {type='class',description="Primitives such as cubes, boxes and us
 ["newsphere"] = {type='function', description = " creates new l3dnode", args="(string name,|l3dlayerid|,float size)", returns="([l3dprimitive])"},
 ["size"] = {type='function', description = " returns or sets size (modifies l3d's visbbox as well). Visual size will be overriden by calls to renderscale.", args="(l3dprimitive,[float radius/float x,y,z])", returns="([float radius/float x,y,z])"}}}
 l3dlayerid = {type='class',description="l3dlayerid used to assign l3dnodes directly, get it from l3dset. Only needed for manual assign. You can manually multipass render a single layer using the opcode commandstring.",childs={}}
-scalarop = {type='class',description="Defines operations between scalararrays / values. Operations are performed componentwise per 		vector. That means output array and input can be same. Scalartypes must match. Vectorsizes must match, except that last operand may have vectorsize of 1, as well. Non-saturated operations may cause 'wrap' 		values, ie truncation happening post operation. For example a uint8 operation may yield 300 as result, 		which means 44 (300 mod 256) is written. The saturated operations would clamp to 255 in that case.",childs={["mul2"] = {type='value', description = "([scalarop]):() out = arg1 * arg2."},
-["min2"] = {type='value', description = "([scalarop]):() out = min(arg1,arg2)."},
-["clear0"] = {type='value', description = "([scalarop]):() out = 0 (zero)"},
-["div2sat"] = {type='value', description = "([scalarop]):() out = saturate(arg1 / arg2)."},
-["lerpinv3"] = {type='value', description = "([scalarop]):() out = lerp(arg1 to arg2 via 1-arg3)."},
-["sub2sat"] = {type='value', description = "([scalarop]):() out = saturate(arg1 - arg2)."},
-["add2"] = {type='value', description = "([scalarop]):() out = arg1 + arg2."},
-["lerp3"] = {type='value', description = "([scalarop]):() out = lerp(arg1 to arg2 via arg3)."},
-["div2"] = {type='value', description = "([scalarop]):() out = arg1 / arg2."},
-["madd3sat"] = {type='value', description = "([scalarop]):() out = saturate(arg1 + (arg2 * arg3))."},
-["copy1"] = {type='value', description = "([scalarop]):() out = arg1."},
-["max2"] = {type='value', description = "([scalarop]):() out = max(arg1,arg2)."},
-["sub2"] = {type='value', description = "([scalarop]):() out = arg1 - arg2."},
-["madd3"] = {type='value', description = "([scalarop]):() out = arg1 + (arg2 * arg3)."},
-["add2sat"] = {type='value', description = "([scalarop]):() out = saturate(arg1 + arg2)."},
-["mul2sat"] = {type='value', description = "([scalarop]):() out = saturate(arg1 * arg2)."}}}
+scalarop = {type='class',description="Defines operations between scalararrays / values. Operations are performed componentwise per 		vector. That means output array and input can be same. Scalartypes must match. Vectorsizes must match, except that last operand may have vectorsize of 1, as well. Non-saturated operations may cause 'wrap' 		values, ie truncation happening post operation. For example a uint8 operation may yield 300 as result, 		which means 44 (300 mod 256) is written. The saturated operations would clamp to 255 in that case.",childs={["mul2"] = {type='function', description = " out = arg1 * arg2.", args="()", returns="([scalarop])"},
+["min2"] = {type='function', description = " out = min(arg1,arg2).", args="()", returns="([scalarop])"},
+["clear0"] = {type='function', description = " out = 0 (zero)", args="()", returns="([scalarop])"},
+["div2sat"] = {type='function', description = " out = saturate(arg1 / arg2).", args="()", returns="([scalarop])"},
+["lerpinv3"] = {type='function', description = " out = lerp(arg1 to arg2 via 1-arg3).", args="()", returns="([scalarop])"},
+["sub2sat"] = {type='function', description = " out = saturate(arg1 - arg2).", args="()", returns="([scalarop])"},
+["add2"] = {type='function', description = " out = arg1 + arg2.", args="()", returns="([scalarop])"},
+["lerp3"] = {type='function', description = " out = lerp(arg1 to arg2 via arg3).", args="()", returns="([scalarop])"},
+["div2"] = {type='function', description = " out = arg1 / arg2.", args="()", returns="([scalarop])"},
+["madd3sat"] = {type='function', description = " out = saturate(arg1 + (arg2 * arg3)).", args="()", returns="([scalarop])"},
+["copy1"] = {type='function', description = " out = arg1.", args="()", returns="([scalarop])"},
+["max2"] = {type='function', description = " out = max(arg1,arg2).", args="()", returns="([scalarop])"},
+["sub2"] = {type='function', description = " out = arg1 - arg2.", args="()", returns="([scalarop])"},
+["madd3"] = {type='function', description = " out = arg1 + (arg2 * arg3).", args="()", returns="([scalarop])"},
+["add2sat"] = {type='function', description = " out = saturate(arg1 + arg2).", args="()", returns="([scalarop])"},
+["mul2sat"] = {type='function', description = " out = saturate(arg1 * arg2).", args="()", returns="([scalarop])"}}}
 http = {type='class',description="HTTP (Hyper Text Transfer Protocol) is the protocol used to exchange \
 information between web-browsers and servers. The http namespace offers \
 full support for the client side of the HTTP protocol (i.e., the facilities \
@@ -5330,16 +5330,16 @@ animation = {type='class',description="The animation contains tracks which store
 ["length"] = {type='function', description = " returns animation length in ms", args="(animation)", returns="(int)"},
 ["load"] = {type='function', description = " loads a animation with given properties. default: spline=true, rotationonly=false", args="(string filename,[boolean splineinterpolation],[boolean rotationonly])", returns="([animation])"},
 ["gettrack"] = {type='function', description = " returns trackid of track within animation", args="(animation,string trackname/ int number)", returns="([trackid])"}}}
-scalartype = {type='class',description="Defines what type of scalar value is used in native C.",childs={["int32"] = {type='value', description = "([scalartype]):() 32-bit signed integer. Range: [-2147483647,2147483647] Saturate/Normalize: same as int16"},
-["int16"] = {type='value', description = "([scalartype]):() 16-bit signed integer. Range: [-32767,32767]"},
-["float64"] = {type='value', description = "([scalartype]):() 64-bit signed float. WARNING: not useable in scalararray yet! No range limit. Saturate: [0,1]"},
+scalartype = {type='class',description="Defines what type of scalar value is used in native C.",childs={["int32"] = {type='function', description = " 32-bit signed integer. Range: [-2147483647,2147483647] Saturate/Normalize: same as int16", args="()", returns="([scalartype])"},
+["int16"] = {type='function', description = " 16-bit signed integer. Range: [-32767,32767]", args="()", returns="([scalartype])"},
+["float64"] = {type='function', description = " 64-bit signed float. WARNING: not useable in scalararray yet! No range limit. Saturate: [0,1]", args="()", returns="([scalartype])"},
 ["bin2value"] = {type='value', description = "(value):(scalartype, string) converts binary string into value."},
 ["value2bin"] = {type='value', description = "(string):(scalartype, value) converts value into binary string."},
-["uint8"] = {type='value', description = "([scalartype]):() 8-bit unsigned integer. Range: [0,255]"},
-["uint32"] = {type='value', description = "([scalartype]):() 32-bit unsigned integer. Range: [0,4294967295] Saturate/Normalize: same as uint16"},
-["float32"] = {type='value', description = "([scalartype]):() 32-bit signed float. No range limit. Saturate: [0,1]"},
-["uint16"] = {type='value', description = "([scalartype]):() 16-bit unsigned integer. Range: [0,65535]"},
-["int8"] = {type='value', description = "([scalartype]):() 8-bit signed integer. Range: [-127,127]"},
+["uint8"] = {type='function', description = " 8-bit unsigned integer. Range: [0,255]", args="()", returns="([scalartype])"},
+["uint32"] = {type='function', description = " 32-bit unsigned integer. Range: [0,4294967295] Saturate/Normalize: same as uint16", args="()", returns="([scalartype])"},
+["float32"] = {type='function', description = " 32-bit signed float. No range limit. Saturate: [0,1]", args="()", returns="([scalartype])"},
+["uint16"] = {type='function', description = " 16-bit unsigned integer. Range: [0,65535]", args="()", returns="([scalartype])"},
+["int8"] = {type='function', description = " 8-bit signed integer. Range: [-127,127]", args="()", returns="([scalartype])"},
 ["size"] = {type='value', description = "(int bytes):(scalartype, [int count]) returns size in bytes."}}}
 matcontrolid = {type='class',description="matcontrolid to access material control values in matobjects",childs={}}
 GroupFrame = {type='class',description="Groupframes are containers with an initial skin",childs={["new"] = {type='function', description = " \
