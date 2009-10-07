@@ -44,7 +44,7 @@ namespace OpenRa.Game.Graphics
             {
                 Button = mi.Button,
                 Event = mi.Event,
-                Location = mi.Location - Location
+                Location = mi.Location - location
             });
             return mouseHandler != null;
         }
