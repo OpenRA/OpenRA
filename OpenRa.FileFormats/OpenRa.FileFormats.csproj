@@ -14,7 +14,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,13 +36,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blowfish.cs" />
+    <Compile Include="BlowfishKeyProvider.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Format40.cs" />
@@ -62,10 +65,6 @@
     <Compile Include="Walkability.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MixDecrypt\MixDecrypt.vcproj">
-      <Project>{6F5D4280-3D23-41FF-AE2A-511B5553E377}</Project>
-      <Name>MixDecrypt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
       <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
       <Name>OpenRa.DataStructures</Name>

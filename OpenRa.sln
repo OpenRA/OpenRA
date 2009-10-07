@@ -1,12 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MixDecrypt", "MixDecrypt\MixDecrypt.vcproj", "{6F5D4280-3D23-41FF-AE2A-511B5553E377}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.FileFormats", "OpenRa.FileFormats\OpenRa.FileFormats.csproj", "{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6F5D4280-3D23-41FF-AE2A-511B5553E377} = {6F5D4280-3D23-41FF-AE2A-511B5553E377}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Game", "OpenRa.Game\OpenRa.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -20,10 +15,6 @@ Global
 		Release (x86)|Win32 = Release (x86)|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F5D4280-3D23-41FF-AE2A-511B5553E377}.Debug (x86)|Win32.ActiveCfg = Release|Win32
-		{6F5D4280-3D23-41FF-AE2A-511B5553E377}.Debug (x86)|Win32.Build.0 = Release|Win32
-		{6F5D4280-3D23-41FF-AE2A-511B5553E377}.Release (x86)|Win32.ActiveCfg = Release|Win32
-		{6F5D4280-3D23-41FF-AE2A-511B5553E377}.Release (x86)|Win32.Build.0 = Release|Win32
 		{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}.Debug (x86)|Win32.ActiveCfg = Debug|x86
 		{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}.Debug (x86)|Win32.Build.0 = Debug|x86
 		{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}.Release (x86)|Win32.ActiveCfg = Release|x86

@@ -31,17 +31,19 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Actor a in world.Actors)
 			{
-				Sprite[] images = a.CurrentImages;
-				float2 loc = a.RenderLocation;
+				var images = a.CurrentImages;
 
-				if (loc.X > rect.Right || loc.X < rect.Left - images[0].bounds.Width)
-					continue;
+				foreach( var image in images )
+				{
+					var loc = image.Second;
 
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top - images[0].bounds.Height)
-					continue;
+					if( loc.X > rect.Right || loc.X < rect.Left - image.First.bounds.Width )
+						continue;
+					if( loc.Y > rect.Bottom || loc.Y < rect.Top - image.First.bounds.Height )
+						continue;
 
-				foreach (Sprite image in images)
-					spriteRenderer.DrawSprite(image, loc, (a.owner != null) ? a.owner.Palette : 0);
+					spriteRenderer.DrawSprite( image.First, loc, ( a.owner != null ) ? a.owner.Palette : 0 );
+				}
 			}
 
 			spriteRenderer.Flush();

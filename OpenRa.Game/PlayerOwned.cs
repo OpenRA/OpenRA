@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -17,11 +19,7 @@ namespace OpenRa.Game
 			this.location = location;
 		}
 
-		public override float2 RenderLocation
-		{
-			get { return 24.0f * (float2)location; }
-		}
-
-		public override Sprite[] CurrentImages { get { return animation.Images; } }
+		public override IEnumerable<Pair<Sprite, float2>> CurrentImages { get { yield return Pair.New( animation.Image, 24 * (float2)location ); } }
 	}
 }
+ 

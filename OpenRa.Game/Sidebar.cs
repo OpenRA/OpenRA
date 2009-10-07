@@ -126,7 +126,7 @@ namespace OpenRa.Game
 			{
 				if (kvp.Value != null)
 				{
-					clockRenderer.DrawSprite(clockAnimations[kvp.Key].Images[0], region.Location.ToFloat2() + kvp.Value.location, 0);
+					clockRenderer.DrawSprite(clockAnimations[kvp.Key].Image, region.Location.ToFloat2() + kvp.Value.location, 0);
 					clockAnimations[kvp.Key].Tick(1);
 				}
 			}
