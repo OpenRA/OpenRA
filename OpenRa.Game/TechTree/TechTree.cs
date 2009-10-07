@@ -41,7 +41,7 @@ namespace OpenRa.TechTree
 
 		IEnumerable<Tuple<string, string, bool>> Lines(string filename, bool param)
 		{
-			Regex pattern = new Regex(@"^(\w+),([\w ]+)$");
+			Regex pattern = new Regex(@"^(\w+),([\w ]+),(\w+)$");
 			foreach (string s in File.ReadAllLines("../../../../" + filename))
 			{
 				Match m = pattern.Match(s);

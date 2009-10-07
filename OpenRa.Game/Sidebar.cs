@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using OpenRa.TechTree;
+using System.Linq;
 
 namespace OpenRa.Game
 {
@@ -19,16 +20,20 @@ namespace OpenRa.Game
 		Game game;
 		readonly GRegion region;
 
-		Animation clockAnimation = new Animation("clock");
-
 		public GRegion Region { get { return region; } }
 		public float Width { get { return spriteWidth * 2; } }
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 		const int spriteWidth = 64, spriteHeight = 48;
 
-		List<SidebarItem> items = new List<SidebarItem>();
+		static string[] groups = new string[] { "building", "vehicle", "boat", "infantry", "plane" };
 
+		Dictionary<string, string> itemGroups = new Dictionary<string,string>();				//item->group
+		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
+		Dictionary<string, SidebarItem> selectedItems = new Dictionary<string,SidebarItem>();	//group->selectedItem
+		
+		List<SidebarItem> items = new List<SidebarItem>();
+		
 		public Sidebar( Race race, Renderer renderer, Game game )
 		{
 			this.techTree = game.LocalPlayer.TechTree;
@@ -42,9 +47,14 @@ namespace OpenRa.Game
 			LoadSprites("buildings.txt");
 			LoadSprites("units.txt");
 
-			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
+			foreach (string s in groups)
+			{
+				clockAnimations.Add(s, new Animation("clock"));
+				clockAnimations[s].PlayRepeating("idle");
+				selectedItems.Add(s, null);
+			}
 
-			clockAnimation.PlayRepeating("idle");
+			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
 		}
 
 		public void Build(SidebarItem item)
@@ -58,7 +68,10 @@ namespace OpenRa.Game
 			foreach (string line in Util.ReadAllLines(FileSystem.Open(filename)))
 			{
 				string key = line.Substring(0, line.IndexOf(','));
+				int secondComma = line.IndexOf(',', line.IndexOf(',') + 1);
+				string group = line.Substring(secondComma + 1, line.Length - secondComma - 1);
 				sprites.Add(key, SpriteSheetBuilder.LoadSprite(key + "icon.shp"));
+				itemGroups.Add(key, group);
 			}
 		}
 
@@ -95,6 +108,8 @@ namespace OpenRa.Game
 				else
 					unitPos += spriteHeight;
 			}
+
+			foreach (string g in groups) selectedItems[g] = null;
 		}
 
 		void Paint()
@@ -107,9 +122,15 @@ namespace OpenRa.Game
 
 			spriteRenderer.Flush();
 
-			clockRenderer.DrawSprite( clockAnimation.Images[0], region.Location, 0 );
-			clockAnimation.Tick(1);
-
+			foreach (var kvp in selectedItems)
+			{
+				if (kvp.Value != null)
+				{
+					clockRenderer.DrawSprite(clockAnimations[kvp.Key].Images[0], region.Location.ToFloat2() + kvp.Value.location, 0);
+					clockAnimations[kvp.Key].Tick(1);
+				}
+			}
+			
 			clockRenderer.Flush();
 		}
 
@@ -127,7 +148,16 @@ namespace OpenRa.Game
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
                 var point = new float2(mi.Location.X, mi.Location.Y);
-                Build(GetItem(point));
+				var item = GetItem(point);
+				if (item != null)
+				{
+					string group = itemGroups[item.techTreeItem.tag];
+					if (selectedItems[group] == null)
+					{
+						selectedItems[group] = item;
+						Build(item);
+					}
+				}
             }
 		}
 	}

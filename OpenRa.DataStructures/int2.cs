@@ -37,5 +37,6 @@ namespace OpenRa
 		public static readonly int2 Zero = new int2(0, 0);
 		public Point ToPoint() { return new Point(X, Y); }
         public PointF ToPointF() { return new PointF(X, Y); }
+		public float2 ToFloat2() { return new float2(X, Y); }
 	}
 }
