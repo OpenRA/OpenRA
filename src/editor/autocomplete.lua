@@ -278,6 +278,7 @@ local function buildcache(childs)
 	
 	for key, info in pairs(childs) do
 		local kl = key:lower()
+		--DisplayOutput("1> cache:"..kl.."\n")
 		for i=0,#key do 
 			local k = kl:sub(1,i)
 			t[k] = t[k] or {}
@@ -304,7 +305,7 @@ function CreateAutoCompList(api,key) -- much faster than iterating the wx. table
 	local function findtab (rest,tab)
 		local key,krest = rest:match("([a-zA-Z0-9_]+)(.*)")
 		
-		-- DisplayOutput("2> "..rest.." : "..(key or "nil").." : "..tostring(krest).."\n")
+		--DisplayOutput("2> "..rest.." : "..(key or "nil").." : "..tostring(krest).."\n")
 	
 		-- check if we can go down hierarchy
 		if krest and #(krest:gsub("[%s]",""))>0 and tab.childs and tab.childs[key] then 
