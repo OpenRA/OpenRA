@@ -36,9 +36,8 @@ namespace OpenRa.Game
 			Location = Point.Empty;
 			Visible = true;
 
-			//bool windowed = !settings.GetValue("fullscreen", false);
-			//renderer = new Renderer(this, GetResolution(settings), windowed);
-			renderer = new Renderer( this, new Size( 800, 600 ), true );
+			bool windowed = !settings.GetValue("fullscreen", false);
+			renderer = new Renderer(this, GetResolution(settings), windowed);
 			SheetBuilder.Initialize( renderer );
 
 			game = new Game( settings.GetValue( "map", "scg11eb.ini" ), renderer, new int2( ClientSize ) );
@@ -49,9 +48,11 @@ namespace OpenRa.Game
 
 			game.world.Add( new Unit( "mcv", new int2( 5, 5 ), game.players[ 3 ], game ) );
 			game.world.Add( new Unit( "mcv", new int2( 7, 5 ), game.players[ 2 ], game ) );
-			game.world.Add( controlled = new Unit( "mcv", new int2( 9, 5 ), game.players[ 1 ], game ) );
+		
 
 			game.world.Add( controlled = new TurretedUnit( "jeep", new int2( 9, 7 ), game.players[ 1 ], game ) );
+
+            game.world.Add(controlled = new Unit("mcv", new int2(9, 5), game.players[1], game));
 
 			game.controller.orderGenerator = controlled;
 

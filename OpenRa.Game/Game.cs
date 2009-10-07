@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRa.FileFormats;
+using System.Linq;
 
 using OpenRa.Game.Graphics;
 
@@ -23,7 +24,7 @@ namespace OpenRa.Game
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
 		// temporary, until we remove all the subclasses of Building
-		public Dictionary<string, Func<int2, Player, Building>> buildingCreation = new Dictionary<string, Func<int2, Player, Building>>();
+        public Dictionary<string, Func<int2, Player, Building>> buildingCreation;
 
 		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
 
@@ -48,12 +49,13 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-			buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
-            buildingCreation.Add("weap", (location, owner) => new WarFactory(location, owner, this));
+            var buildings = new[] { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
+            buildingCreation = buildings.ToDictionary(s => s, 
+                s => (Func<int2, Player, Building>)(
+                    (l, o) => new Building(s, l, o, this)));
 
-			string[] buildings = { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
-			foreach (string s in buildings)
-				buildingCreation.Add(s, (location, owner) => new Building(s, location, owner, this));
+            buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
+            buildingCreation.Add("weap", (location, owner) => new WarFactory(location, owner, this));
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, world);

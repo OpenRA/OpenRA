@@ -1,5 +1,7 @@
 using OpenRa.Game.Graphics;
 using System.Linq;
+using System.Collections.Generic;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -39,13 +41,14 @@ namespace OpenRa.Game
                 });
         }
 
-        public override Sprite[] CurrentImages
+        public override IEnumerable<Pair<Sprite,float2>> CurrentImages
         {
             get
             {
                 return (roof == null)
                     ? base.CurrentImages
-                    : (base.CurrentImages.Concat( roof.Images ).ToArray());
+                    : (base.CurrentImages.Concat(
+                    new[] { Pair.New(roof.Image, 24 * (float2)location) }));
             }
         }
 
