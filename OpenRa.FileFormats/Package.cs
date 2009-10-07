@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 namespace OpenRa.FileFormats
 {
@@ -17,11 +18,6 @@ namespace OpenRa.FileFormats
 		readonly bool isRmix, isEncrypted;
 		readonly long dataStart;
         readonly Stream s;
-
-        //public ICollection<PackageEntry> Content
-        //{
-        //    get { return index.AsReadOnly(); }
-        //}
 
         public static Dictionary<K, V> MakeDict<K,V>(IEnumerable<V> values, Converter<V, K> keyFunc)
         {
@@ -63,7 +59,7 @@ namespace OpenRa.FileFormats
 		{
 			BinaryReader reader = new BinaryReader(s);
 			byte[] keyblock = reader.ReadBytes(80);
-			byte[] blowfishKey = MixDecrypt.MixDecrypt.BlowfishKey(keyblock);
+            byte[] blowfishKey = new BlowfishKeyProvider().DecryptKey(keyblock);
 
 			uint[] h = ReadUints(reader, 2);
 
