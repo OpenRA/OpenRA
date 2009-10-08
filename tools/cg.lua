@@ -8,7 +8,7 @@ return cgbinpath and {
 			{ ID "cg.profile.arb",		"&ARB VP/FP",	"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
 			{ ID "cg.profile.glsl",		"ARB &GLSL",		"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
 			{ ID "cg.profile.nv40",		"NV VP/FP&40",	"NV vertex/fragment program 4 profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.gp4",		"EXT &GP4",		"EXT vertex/fragment program 4 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gp4",		"NV &GP4",		"EXT vertex/fragment program 4 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
 			{ },
