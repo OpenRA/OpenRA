@@ -40,7 +40,7 @@ namespace OpenRa.Game
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 			SheetBuilder.Initialize( renderer );
 
-			game = new Game( settings.GetValue( "map", "scg11eb.ini" ), renderer, new int2( ClientSize ) );
+			game = new Game( settings.GetValue( "map", "scm12ea.ini" ), renderer, new int2( ClientSize ) );
 
 			SequenceProvider.ForcePrecache();
 

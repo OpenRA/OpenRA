@@ -113,6 +113,8 @@ namespace OpenRa.Game
 			var loc = location - 0.5f * s.size;
 			return Pair.New( s, loc.Round() );
 		}
+
+        public float2 SelectedSize { get { return this.CurrentImages.First().First.size; } }
 	}
 
 	class TurretedUnit : Unit
@@ -129,12 +131,7 @@ namespace OpenRa.Game
 
 		public override IEnumerable<Pair<Sprite, float2>> CurrentImages
 		{
-			get
-			{
-				foreach( var x in base.CurrentImages )
-					yield return x;
-				yield return Centered( turretAnim.Image, CenterLocation );
-			}
+            get { return base.CurrentImages.Concat(new[] { Centered(turretAnim.Image, CenterLocation) }); }
 		}
 	}
 }

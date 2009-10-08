@@ -77,6 +77,7 @@ technique low_quality {
 		ZWriteEnable = false;
 		ZEnable = false;
 		CullMode = None;
+		FillMode = Solid;
 		VertexShader = compile vs_2_0 Simple_vp();
 		PixelShader = compile ps_2_0 Palette_fp();
 	}
@@ -88,6 +89,7 @@ technique high_quality {
 		ZWriteEnable = false;
 		ZEnable = false;
 		CullMode = None;
+		FillMode = Solid;
 		VertexShader = compile vs_2_0 Simple_vp();
 		PixelShader = compile ps_2_0 Palette_fp();
 		

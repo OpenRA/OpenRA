@@ -36,15 +36,16 @@ namespace OpenRa.Game.Graphics
 		{
 			if (sprites > 0)
 			{
-				renderer.DrawWithShader(quality, () =>
-				{
-					vertexBuffer.SetData(vertices);
-					indexBuffer.SetData(indices);
-					renderer.DrawBatch(vertexBuffer, indexBuffer,
-						new Range<int>(0, nv),
-						new Range<int>(0, ni),
-						currentSheet.Texture);
-				});
+                renderer.SpriteShader.Quality = quality;
+                renderer.SpriteShader.Render(() =>
+                 {
+                     vertexBuffer.SetData(vertices);
+                     indexBuffer.SetData(indices);
+                     renderer.DrawBatch(vertexBuffer, indexBuffer,
+                         new Range<int>(0, nv),
+                         new Range<int>(0, ni),
+                         currentSheet.Texture, PrimitiveType.TriangleList);
+                 });
 
                 nv = 0; ni = 0;
 				currentSheet = null;

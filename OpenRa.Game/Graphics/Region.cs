@@ -14,6 +14,7 @@ namespace OpenRa.Game.Graphics
 			get { return location + new int2( (int)viewport.Location.X, (int)viewport.Location.Y ); }	// WTF HACK HACK HACK
 		}
 
+        public int2 Position { get { return location; } }
 		public readonly float2 Size;
 
 		Action drawFunction;

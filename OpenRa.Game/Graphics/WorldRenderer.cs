@@ -6,6 +6,7 @@ namespace OpenRa.Game.Graphics
 	class WorldRenderer
 	{
 		public readonly SpriteRenderer spriteRenderer;
+        public readonly LineRenderer lineRenderer;
 		public readonly World world;
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
@@ -21,13 +22,15 @@ namespace OpenRa.Game.Graphics
 			world.game.viewport.AddRegion(region);
 
 			spriteRenderer = new SpriteRenderer(renderer, true);
+            lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer, world.game);
 			this.world = world;
 		}
 
 		public void Draw()
 		{
-			var rect = new RectangleF(region.Location.ToPointF(), region.Size.ToSizeF());
+			var rect = new RectangleF((region.Position + world.game.viewport.Location).ToPointF(), 
+                region.Size.ToSizeF());
 
 			foreach (Actor a in world.Actors)
 			{
@@ -46,7 +49,33 @@ namespace OpenRa.Game.Graphics
 				}
 			}
 
+            uiOverlay.Draw();
+
 			spriteRenderer.Flush();
+
+            var selectedUnit = world.game.controller.orderGenerator as Unit;
+            if (selectedUnit != null)
+            {
+                var center = selectedUnit.CenterLocation;
+                var size = selectedUnit.SelectedSize;
+
+                var xy = center - 0.5f * size;
+                var XY = center + 0.5f * size;
+                var Xy = new float2( XY.X, xy.Y );
+                var xY = new float2( xy.X, XY.Y );
+
+                lineRenderer.DrawLine(xy, xy + new float2(4, 0), Color.White, Color.White);
+                lineRenderer.DrawLine(xy, xy + new float2(0, 4), Color.White, Color.White);
+                lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), Color.White, Color.White);
+                lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), Color.White, Color.White);
+
+                lineRenderer.DrawLine(xY, xY + new float2(4, 0), Color.White, Color.White);
+                lineRenderer.DrawLine(xY, xY + new float2(0, -4), Color.White, Color.White);
+                lineRenderer.DrawLine(XY, XY + new float2(-4, 0), Color.White, Color.White);
+                lineRenderer.DrawLine(XY, XY + new float2(0, -4), Color.White, Color.White);
+            }
+            
+            lineRenderer.Flush();
 		}
 	}
 }

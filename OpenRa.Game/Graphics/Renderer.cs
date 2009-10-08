@@ -9,13 +9,12 @@ namespace OpenRa.Game.Graphics
 	class Renderer
 	{
 		readonly GraphicsDevice device;
-		readonly Shader shader;
-
-		const string shaderName = "diffuse.fx";
+        public Shader SpriteShader { get; private set; }    /* note: shared shader params */
+        public Shader LineShader { get; private set; }
 
 		public void SetPalette(HardwarePalette hp)
 		{
-			shader.SetValue("Palette", hp.Texture);
+			SpriteShader.SetValue("Palette", hp.Texture);
 		}
 
 		public Renderer(Control host, Size resolution, bool windowed)
@@ -24,8 +23,10 @@ namespace OpenRa.Game.Graphics
 			device = GraphicsDevice.Create(host, 
 				resolution.Width, resolution.Height, windowed, false);
 
-			shader = new Shader(device, FileSystem.Open(shaderName));
-			shader.Quality = ShaderQuality.Low;
+			SpriteShader = new Shader(device, FileSystem.Open("sprite.fx"));
+			SpriteShader.Quality = ShaderQuality.Low;
+            LineShader = new Shader(device, FileSystem.Open("line.fx"));
+            LineShader.Quality = ShaderQuality.High;
 		}
 
 		public GraphicsDevice Device { get { return device; } }
@@ -34,9 +35,10 @@ namespace OpenRa.Game.Graphics
 		{
 			device.Begin();
 
-			shader.SetValue("Scroll", scroll);
-			shader.SetValue("r1", r1);
-			shader.SetValue("r2", r2);
+			SpriteShader.SetValue("Scroll", scroll);
+			SpriteShader.SetValue("r1", r1);
+			SpriteShader.SetValue("r2", r2);
+            SpriteShader.Commit();
 		}
 
 		public void EndFrame()
@@ -45,24 +47,32 @@ namespace OpenRa.Game.Graphics
 			device.Present();
 		}
 
-		public void DrawWithShader(ShaderQuality quality, Action task)
-		{
-			shader.Quality = quality;
-			shader.Render(() => task());
-		}
-
 		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
-			Range<int> vertexRange, Range<int> indexRange, Texture texture)
+			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type)
 			where T : struct
 		{
-			shader.SetValue("DiffuseTexture", texture);
-			shader.Commit();
+			SpriteShader.SetValue("DiffuseTexture", texture);
+			SpriteShader.Commit();
 
 			vertices.Bind(0);
 			indices.Bind();
 
-			device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
+			device.DrawIndexedPrimitives(type,
 				vertexRange, indexRange);
 		}
+
+        public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
+            int vertexPool, int numPrimitives, Texture texture, PrimitiveType type)
+            where T : struct
+        {
+            SpriteShader.SetValue("DiffuseTexture", texture);
+            SpriteShader.Commit();
+
+            vertices.Bind(0);
+            indices.Bind();
+
+            device.DrawIndexedPrimitives(type,
+                vertexPool, numPrimitives);
+        }
 	}
 }

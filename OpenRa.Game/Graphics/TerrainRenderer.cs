@@ -16,10 +16,12 @@ namespace OpenRa.Game.Graphics
 
 		Renderer renderer;
 		Map map;
+        Viewport viewport;
 
 		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
 		{
 			this.renderer = renderer;
+            this.viewport = viewport;
 			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, null );
 			viewport.AddRegion(region);
 			this.map = map;
@@ -61,7 +63,7 @@ namespace OpenRa.Game.Graphics
 
 			int visibleRows = (int)(region.Size.Y / 24.0f + 2);
 
-			int firstRow = (int)(region.Location.Y / 24.0f);
+			int firstRow = (int)((region.Position.Y + viewport.Location.Y) / 24.0f);
 			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)
@@ -70,11 +72,12 @@ namespace OpenRa.Game.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-			renderer.DrawWithShader(ShaderQuality.Low, () =>
-				renderer.DrawBatch(vertexBuffer, indexBuffer,
-					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
-					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
-					terrainSheet.Texture));
+            renderer.SpriteShader.Quality = ShaderQuality.Low;
+            renderer.SpriteShader.Render(() =>
+                renderer.DrawBatch(vertexBuffer, indexBuffer,
+                    new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
+                    new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
+                    terrainSheet.Texture, PrimitiveType.TriangleList));
 		}
 	}
 }
