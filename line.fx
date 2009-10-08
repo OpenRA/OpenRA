@@ -27,20 +27,19 @@ VertexOut Simple_vp(VertexIn v) {
 	o.Position = float4(p.x,p.y,0,1);
 	o.Color.rg = v.RG.xy;
 	o.Color.ba = v.BA.xy;
-	o.Color.a = 1.0f;
+//	o.Color.a = 1.0f;
 	return o;
 }
 
 const float2 texelOffset = float2( 0, 1.0f/32.0f );
 
 float4 Simple_fp(FragmentIn f) : COLOR0 {
-	return float4(1,1,1,1);
-	//return f.Color;
+	return f.Color;
 }
 
 technique high_quality {
 	pass p0	{
-		AlphaBlendEnable = false;
+		AlphaBlendEnable = true;
 		ZWriteEnable = false;
 		ZEnable = false;
 		CullMode = None;

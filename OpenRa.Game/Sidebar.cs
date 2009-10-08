@@ -200,7 +200,7 @@ namespace OpenRa.Game
 		{
 			game.world.AddFrameEndTask(_ =>
 			{
-				Func<int2, Player, Building> newBuilding;
+				Func<int2, Player, PlayerOwned> newBuilding;
 				if (game.buildingCreation.TryGetValue(building.Name, out newBuilding))
 				{
 					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);

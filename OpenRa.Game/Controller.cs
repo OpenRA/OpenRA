@@ -58,17 +58,20 @@ namespace OpenRa.Game
                     orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
 		}
 
-        public IOrderGenerator FindUnit(float2 a, float2 b)
+        public Unit FindUnit(float2 a, float2 b)
         {
-            a = 24 * a; b = 24 * b;
+            return FindUnits(game, 24 * a, 24 * b).FirstOrDefault();
+        }
+
+        public static IEnumerable<Unit> FindUnits(Game game, float2 a, float2 b)
+        {
             var min = new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
             var max = new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
 
             var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
             return game.world.Actors.OfType<Unit>()
-                .Where(x => (x.owner == game.LocalPlayer) && (x.Bounds.IntersectsWith(rect)))
-                .FirstOrDefault();
+                .Where(x => (x.owner == game.LocalPlayer) && (x.Bounds.IntersectsWith(rect)));
         }
 
         public Pair<float2, float2>? SelectionBox()

@@ -53,28 +53,6 @@ namespace OpenRa.Game.Graphics
 
 			spriteRenderer.Flush();
 
-            var selectedUnit = world.game.controller.orderGenerator as Unit;
-            if (selectedUnit != null)
-            {
-                var center = selectedUnit.CenterLocation;
-                var size = selectedUnit.SelectedSize;
-
-                var xy = center - 0.5f * size;
-                var XY = center + 0.5f * size;
-                var Xy = new float2( XY.X, xy.Y );
-                var xY = new float2( xy.X, XY.Y );
-
-                lineRenderer.DrawLine(xy, xy + new float2(4, 0), Color.White, Color.White);
-                lineRenderer.DrawLine(xy, xy + new float2(0, 4), Color.White, Color.White);
-                lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), Color.White, Color.White);
-                lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), Color.White, Color.White);
-
-                lineRenderer.DrawLine(xY, xY + new float2(4, 0), Color.White, Color.White);
-                lineRenderer.DrawLine(xY, xY + new float2(0, -4), Color.White, Color.White);
-                lineRenderer.DrawLine(XY, XY + new float2(-4, 0), Color.White, Color.White);
-                lineRenderer.DrawLine(XY, XY + new float2(0, -4), Color.White, Color.White);
-            }
-
             var selbox = world.game.controller.SelectionBox();
             if (selbox != null)
             {
@@ -86,9 +64,38 @@ namespace OpenRa.Game.Graphics
                 lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
                 lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
                 lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+
+                foreach (var u in Controller.FindUnits(world.game, selbox.Value.First, selbox.Value.Second))
+                    DrawSelectionBox(u, Color.Yellow);
             }
+
+            var selectedUnit = world.game.controller.orderGenerator as Unit;
+            if (selectedUnit != null)
+                DrawSelectionBox(selectedUnit, Color.White);
+
             
             lineRenderer.Flush();
 		}
+
+        void DrawSelectionBox(Unit selectedUnit, Color c)
+        {
+            var center = selectedUnit.CenterLocation;
+            var size = selectedUnit.SelectedSize;
+
+            var xy = center - 0.5f * size;
+            var XY = center + 0.5f * size;
+            var Xy = new float2(XY.X, xy.Y);
+            var xY = new float2(xy.X, XY.Y);
+
+            lineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
+            lineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
+            lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
+            lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
+
+            lineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
+            lineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
+            lineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
+            lineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
+        }
 	}
 }
