@@ -30,7 +30,8 @@ namespace OpenRa.Game
             var xy = GetWorldPos(mi);
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
-                dragStart = dragEnd = xy;
+				if (!(orderGenerator is PlaceBuilding))
+					dragStart = dragEnd = xy;
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -39,10 +40,13 @@ namespace OpenRa.Game
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
             {
-                if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
-                    orderGenerator = FindUnit(dragStart.Value, xy); /* band-box select */
-                else
-                    orderGenerator = FindUnit(xy, xy);  /* click select */
+				if (!(orderGenerator is PlaceBuilding))
+				{
+					if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
+						orderGenerator = FindUnit(dragStart.Value, xy); /* band-box select */
+					else
+						orderGenerator = FindUnit(xy, xy);  /* click select */
+				}
 
                 dragStart = dragEnd = null;
             }
