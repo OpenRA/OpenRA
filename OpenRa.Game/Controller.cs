@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using IjwFramework.Types;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -25,15 +27,10 @@ namespace OpenRa.Game
         float2? dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
+            var xy = GetWorldPos(mi);
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
-                var xy = GetWorldPos(mi);
-
-                if (orderGenerator != null)
-                    orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
-
-                else { dragStart = dragEnd = xy; }
-                // todo: route all orders through netcode
+                dragStart = dragEnd = xy;
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -43,13 +40,9 @@ namespace OpenRa.Game
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
             {
                 if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
-                {
-                    /* finalize drag selection */
-                }
+                    orderGenerator = FindUnit(dragStart.Value, xy); /* band-box select */
                 else
-                {
-                    /* finalize click selection */
-                }
+                    orderGenerator = FindUnit(xy, xy);  /* click select */
 
                 dragStart = dragEnd = null;
             }
@@ -61,7 +54,29 @@ namespace OpenRa.Game
             }
 
             if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
-                orderGenerator = null;
+                if (orderGenerator != null)
+                    orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
 		}
+
+        public IOrderGenerator FindUnit(float2 a, float2 b)
+        {
+            a = 24 * a; b = 24 * b;
+            var min = new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
+            var max = new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+
+            var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+
+            return game.world.Actors.OfType<Unit>()
+                .Where(x => (x.owner == game.LocalPlayer) && (x.Bounds.IntersectsWith(rect)))
+                .FirstOrDefault();
+        }
+
+        public Pair<float2, float2>? SelectionBox()
+        {
+            if (dragStart == null || dragEnd == null)
+                return null;
+
+            return Pair.New(24 * dragStart.Value, 24 * dragEnd.Value);
+        }
 	}
 }

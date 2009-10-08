@@ -74,6 +74,19 @@ namespace OpenRa.Game.Graphics
                 lineRenderer.DrawLine(XY, XY + new float2(-4, 0), Color.White, Color.White);
                 lineRenderer.DrawLine(XY, XY + new float2(0, -4), Color.White, Color.White);
             }
+
+            var selbox = world.game.controller.SelectionBox();
+            if (selbox != null)
+            {
+                var a = selbox.Value.First;
+                var b = new float2(selbox.Value.Second.X - a.X, 0);
+                var c = new float2(0, selbox.Value.Second.Y - a.Y);
+
+                lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
+                lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
+                lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
+                lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+            }
             
             lineRenderer.Flush();
 		}

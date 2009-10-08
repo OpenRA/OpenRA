@@ -115,6 +115,15 @@ namespace OpenRa.Game
 		}
 
         public float2 SelectedSize { get { return this.CurrentImages.First().First.size; } }
+        public System.Drawing.RectangleF Bounds
+        {
+            get
+            {
+                var size = SelectedSize;
+                var loc = CenterLocation - 0.5f * size;
+                return new System.Drawing.RectangleF(loc.X, loc.Y, size.X, size.Y);
+            }
+        }
 	}
 
 	class TurretedUnit : Unit
