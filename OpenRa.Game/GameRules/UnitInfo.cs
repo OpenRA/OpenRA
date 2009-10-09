@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game.GameRules
 {
@@ -98,7 +99,7 @@ namespace OpenRa.Game.GameRules
 						field.SetValue( this, x.Value );
 
 					else if( field.FieldType == typeof( ArmorType ) )
-						field.SetValue( this, Enum.Parse( typeof( ArmorType ), x.Value ) );
+						field.SetValue( this, Enum<ArmorType>.Parse(x.Value) );
 
 					else if( field.FieldType == typeof( bool ) )
 						field.SetValue( this, ParseYesNo( x.Value ) );

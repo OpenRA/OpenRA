@@ -72,6 +72,14 @@
 		<sequence name="make" start="0" length="*" src="barrmake" />
 	</unit>
 	
+	<!-- allied barracks -->
+
+	<unit name="tent">
+		<sequence name="idle" start="0" length="10"/>
+		<sequence name="damaged-idle" start="10" length="10"/>
+		<sequence name="make" start="0" length="*" src="tentmake" />
+	</unit>
+	
 	<!-- radar dome -->
 
 	<unit name="dome">
