@@ -1,5 +1,6 @@
 using System.Drawing;
 using OpenRa.Game.Graphics;
+using System;
 
 namespace OpenRa.Game
 {
@@ -35,15 +36,25 @@ namespace OpenRa.Game
 			if (!hasOverlay)
 				return;
 
+			Func<int, int, bool> passableAt = (x, y) =>
+				{
+					x += game.map.Offset.X;
+					y += game.map.Offset.Y;
+
+					return game.map.IsInMap(x, y) &&
+					TerrainCosts.Cost(UnitMovementType.Wheel,
+						game.terrain.tileSet.GetWalkability(game.map.MapTiles[x, y])) < double.PositiveInfinity;
+				};
+
 			for (int i = 0; i < width; i++)
 				for (int j = 0; j < height; j++)
-					spriteRenderer.DrawSprite(blocked ? buildBlocked : buildOk,
+					spriteRenderer.DrawSprite(passableAt(position.X + i, position.Y + j) ? buildOk : buildBlocked,
 						24 * (position + new int2(i, j)) + game.viewport.Location, 0);
 
 			spriteRenderer.Flush();
 		}
 
-		bool blocked, hasOverlay;
+		bool hasOverlay;
 		int2 position;
 		int width, height;
 
@@ -52,13 +63,12 @@ namespace OpenRa.Game
 			hasOverlay = false;
 		}
 
-		public void SetCurrentOverlay(bool blocked, int2 cell, int width, int height)
+		public void SetCurrentOverlay(int2 cell, int width, int height)
 		{
 			hasOverlay = true;
 			position = cell;
 			this.width = width;
 			this.height = height;
-			this.blocked = blocked;
 		}
 	}
 }

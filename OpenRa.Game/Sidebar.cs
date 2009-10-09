@@ -192,7 +192,7 @@ namespace OpenRa.Game
 
 		public void PrepareOverlay(Game game, int2 xy)
 		{
-			game.worldRenderer.uiOverlay.SetCurrentOverlay(false, xy, 2, 3);
+			game.worldRenderer.uiOverlay.SetCurrentOverlay(xy, 2, 3);
 		}
 	}
 
