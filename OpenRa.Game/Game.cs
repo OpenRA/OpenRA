@@ -4,6 +4,7 @@ using OpenRa.FileFormats;
 using System.Linq;
 
 using OpenRa.Game.Graphics;
+using OpenRa.TechTree;
 
 namespace OpenRa.Game
 {
@@ -33,7 +34,7 @@ namespace OpenRa.Game
 			Rules.LoadRules();
 
 			for( int i = 0 ; i < 8 ; i++ )
-				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Soviet));
+				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Allies));
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
@@ -51,7 +52,7 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-            var buildings = new[] { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
+            var buildings = new[] { "fact", "powr", "apwr", "barr", "atek", "stek", "dome", "tent", "gun" };
             buildingCreation = buildings.ToDictionary(s => s, 
                 s => (Func<int2, Player, PlayerOwned>)(
                     (l, o) => new Building(s, l, o, this)));
