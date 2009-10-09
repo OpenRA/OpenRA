@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using OpenRa.Game.Graphics;
 using IjwFramework.Types;
+using OpenRa.Game.GameRules;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -20,7 +20,7 @@ namespace OpenRa.Game
 		public int moveFraction, moveFractionTotal;
 
 		readonly float2 renderOffset;
-		public readonly UnitInfo unitInfo;
+		public readonly UnitInfo.MobileInfo unitInfo;
 
 		public Unit( string name, int2 cell, Player owner, Game game )
 			: base( game, name, cell )
@@ -28,7 +28,7 @@ namespace OpenRa.Game
 			fromCell = toCell = cell;
 
 			this.owner = owner;
-			this.unitInfo = Rules.UnitInfo( name );
+			this.unitInfo = (UnitInfo.MobileInfo)Rules.UnitInfo.Get( name );
 
 			animation.PlayFetchIndex( "idle", () => facing );
 			renderOffset = animation.Center;
@@ -90,7 +90,11 @@ namespace OpenRa.Game
 
 		bool SupportsMission( SupportedMissions mission )
 		{
-			return mission == ( unitInfo.supportedMissions & mission );
+			if( mission == SupportedMissions.Deploy )
+				return this.unitInfo.Name == "MCV";
+			if( mission == SupportedMissions.Harvest )
+				return this.unitInfo.Name == "HARV";
+			return false;
 		}
 
 		public Order Order( Game game, int2 xy )

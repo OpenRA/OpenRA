@@ -1,3 +1,7 @@
+#
+# The vehicles that we (currently) support.
+#
+
 V2RL,V2 Rocket,vehicle
 1TNK,Light Tank,vehicle
 3TNK,Heavy Tank,vehicle
@@ -11,23 +15,19 @@ MCV,Mobile Construction Vehicle,vehicle
 JEEP,Ranger,vehicle
 APC,Armored Personnel Carrier,vehicle
 MNLY,Minelayer,vehicle
+
+# TODO: move ships and planes into their own files
+
 SS,Submarine,boat
 DD,Destroyer,boat
 CA,Cruiser,boat
 LST,Transport,boat
 PT,Gunboat,boat
-DOG,Attack Dog,infantry
-E1,Rifle Infantry,infantry
-E2,Grenadier,infantry
-E3,Rocket Soldier,infantry
-E4,Flamethrower,infantry
-E6,Engineer,infantry
-SPY,Spy,infantry
-THF,Thief,infantry
-E7,Tanya,infantry
-MEDI,Medic,infantry
+
 MIG,Mig Attack Plane,plane
 YAK,Yak Attack Plane,plane
 TRAN,Transport Helicopter,plane
 HELI,Longbow,plane
 HIND,Hind,plane
+# TODO: U2 (spyplane), BADR (paratrooper/paradrop plane)
+

@@ -23,8 +23,12 @@ namespace OpenRa.Game.Graphics
 		{
 			List<string> result = new List<string>();
 			using (StreamReader reader = new StreamReader(s))
-				while (!reader.EndOfStream)
-					result.Add(reader.ReadLine());
+				while(!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+					if( !string.IsNullOrEmpty( line ) && line[0] != '#' )
+						result.Add( line );
+				}
 
 			return result.ToArray();
 		}

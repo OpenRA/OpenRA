@@ -55,14 +55,15 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			IEnumerable<Tuple<string, string, bool>> definitions = Concat(
+			IEnumerable<Tuple<string, string, bool>> definitions = Concat( Concat(
 				Lines("buildings.txt", true),
-				Lines("units.txt", false));
+				Lines("vehicles.txt", false) ),
+				Lines("infantry.txt", false) );
 
             var rules = SharedResources.Rules;
 
 			foreach (Tuple<string, string, bool> p in definitions)
-				objects.Add(p.a, new Item(p.a, p.b, rules.GetSection(p.a), p.c));
+				objects.Add(p.a, new Item(p.a, p.b, Rules.UnitInfo.Get(p.a), p.c));
 		}
 
 		public bool Build(string key, bool force)
@@ -102,7 +103,8 @@ namespace OpenRa.TechTree
 					changed = true;
 			}
 
-			if (changed) BuildableItemsChanged();
+			//if (changed)
+				BuildableItemsChanged();
 		}
 
 		public IEnumerable<Item> BuildableItems

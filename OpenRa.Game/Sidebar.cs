@@ -45,7 +45,8 @@ namespace OpenRa.Game
 			clockRenderer = new SpriteRenderer(renderer, true);
 
 			LoadSprites("buildings.txt");
-			LoadSprites("units.txt");
+			LoadSprites("vehicles.txt");
+			LoadSprites("infantry.txt");
 
 			foreach (string s in groups)
 			{
@@ -159,6 +160,16 @@ namespace OpenRa.Game
 					}
 				}
             }
+			else if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
+			{
+                var point = new float2(mi.Location.X, mi.Location.Y);
+				var item = GetItem(point);
+				if( item != null )
+				{
+					string group = itemGroups[ item.techTreeItem.tag ];
+					selectedItems[ group ] = null;
+				}
+			}
 		}
 	}
 

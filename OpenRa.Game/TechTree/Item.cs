@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRa.FileFormats;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.TechTree
 {
@@ -10,31 +11,26 @@ namespace OpenRa.TechTree
 
 		public bool IsStructure { get { return isStructure; } }
 
-		public Item(string tag, string friendlyName, IniSection section, bool isStructure)
+		public Item(string tag, string friendlyName, UnitInfo.BaseInfo unitInfo, bool isStructure)
 		{
 			this.tag = tag;
 			this.friendlyName = friendlyName;
 			this.isStructure = isStructure;
 
-			owner = ParseOwner(section);
-			techLevel = ParseTechLevel(section);
-			Tuple<string[], string[]> pre = ParsePrerequisites(section, tag);
+			owner = ParseOwner(unitInfo.Owner, unitInfo.DoubleOwned);
+			techLevel = unitInfo.TechLevel;
+			Tuple<string[], string[]> pre = ParsePrerequisites(unitInfo.Prerequisite, tag);
 			alliedPrerequisites = pre.a;
 			sovietPrerequisites = pre.b;
 		}
 
-		static int ParseTechLevel(IniSection section)
+		static Race ParseOwner(string owners, bool doubleOwned)
 		{
-			return int.Parse(section.GetValue("TechLevel", "-1"));
-		}
-
-		static Race ParseOwner(IniSection section)
-		{
-			if (section.GetValue("DoubleOwned", "No") == "Yes")
+			if (doubleOwned)
 				return Race.Allies | Race.Soviet;
 
 			Race race = Race.None;
-			string[] frags = section.GetValue("Owner", "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] frags = owners.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 			foreach (string s in frags)
 				race |= (Race)Enum.Parse(typeof(Race), s, true);
@@ -42,9 +38,9 @@ namespace OpenRa.TechTree
 			return race;
 		}
 
-		static Tuple<string[],string[]> ParsePrerequisites(IniSection section, string tag)
+		static Tuple<string[],string[]> ParsePrerequisites(string prerequisites, string tag)
 		{
-			List<string> allied = new List<string>(section.GetValue("Prerequisite", "").ToUpper().Split(
+			List<string> allied = new List<string>(prerequisites.ToUpper().Split(
 				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
 
 			List<string> soviet = new List<string>(allied);

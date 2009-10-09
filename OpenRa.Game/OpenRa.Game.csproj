@@ -72,6 +72,8 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="GameRules\Rules.cs" />
+    <Compile Include="GameRules\UnitInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
@@ -83,7 +85,6 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerOwned.cs" />
     <Compile Include="Race.cs" />
-    <Compile Include="Rules.cs" />
     <Compile Include="Support\SharedResources.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Support\Log.cs" />
@@ -115,7 +116,6 @@
     <Compile Include="Graphics\TreeCache.cs" />
     <Compile Include="UiOverlay.cs" />
     <Compile Include="Unit.cs" />
-    <Compile Include="UnitInfo.cs" />
     <Compile Include="UnitMissions.cs" />
     <Compile Include="Graphics\UnitSheetBuilder.cs" />
     <Compile Include="Graphics\Util.cs" />

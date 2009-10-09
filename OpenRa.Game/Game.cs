@@ -30,7 +30,9 @@ namespace OpenRa.Game
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
-			for (int i = 0; i < 8; i++)
+			Rules.LoadRules();
+
+			for( int i = 0 ; i < 8 ; i++ )
 				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Soviet));
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
