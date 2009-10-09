@@ -97,17 +97,17 @@ namespace OpenRa.Game
 			return false;
 		}
 
-		public Order Order( Game game, int2 xy )
+		public IEnumerable<Order> Order( Game game, int2 xy )
 		{
 			if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
 			{
 				if( SupportsMission( SupportedMissions.Deploy ) )
-					return new DeployMcvOrder( this );
+					yield return new DeployMcvOrder( this );
 				if( SupportsMission( SupportedMissions.Harvest ) )
-					return new HarvestOrder( this );
+					yield return new HarvestOrder( this );
 			}
-			
-			return new MoveOrder( this, xy );
+			else
+				yield return new MoveOrder( this, xy );
 		}
 
 		public void PrepareOverlay(Game game, int2 xy) { }

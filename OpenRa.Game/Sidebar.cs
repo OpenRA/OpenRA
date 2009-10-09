@@ -184,10 +184,10 @@ namespace OpenRa.Game
 			Name = name;
 		}
 
-		public Order Order( Game game, int2 xy )
+		public IEnumerable<Order> Order( Game game, int2 xy )
 		{
 			// todo: check that space is free
-			return new PlaceBuildingOrder( this, xy );
+			yield return new PlaceBuildingOrder( this, xy );
 		}
 
 		public void PrepareOverlay(Game game, int2 xy)

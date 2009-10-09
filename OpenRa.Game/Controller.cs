@@ -57,12 +57,10 @@ namespace OpenRa.Game
                  * needs to also happen when the *thing* changes, so per-frame hook */
             }
 
-            if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
-				if (orderGenerator != null)
-				{
-					var order = orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y));
-					if (order != null) order.Apply(game);
-				}
+			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
+				if( orderGenerator != null )
+					foreach( var order in orderGenerator.Order( game, new int2( (int)xy.X, (int)xy.Y ) ) )
+						order.Apply( game );
 		}
 
         public Unit FindUnit(float2 a, float2 b)
