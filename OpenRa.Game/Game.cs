@@ -19,7 +19,7 @@ namespace OpenRa.Game
 		public readonly WorldRenderer worldRenderer;
 		public readonly Controller controller;
 
-		int localPlayerIndex = 1;
+		int localPlayerIndex = 2;
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 

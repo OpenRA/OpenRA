@@ -61,7 +61,7 @@ namespace OpenRa.Game
 		public void Build(SidebarItem item)
 		{
 			if (item != null)
-				game.controller.orderGenerator = new PlaceBuilding(game.players[1], item.techTreeItem.tag.ToLowerInvariant());
+				game.controller.orderGenerator = new PlaceBuilding(game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant());
 		}
 
 		void LoadSprites(string filename)
