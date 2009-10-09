@@ -69,9 +69,10 @@ namespace OpenRa.Game.Graphics
                     DrawSelectionBox(u, Color.Yellow);
             }
 
-            var selectedUnit = world.game.controller.orderGenerator as Actor;
-            if (selectedUnit != null)
-                DrawSelectionBox(selectedUnit, Color.White);
+            var selection = world.game.controller.orderGenerator as UnitOrderGenerator;
+            if (selection != null)
+				foreach( var a in selection.selection )
+	                DrawSelectionBox(a, Color.White);
 
             
             lineRenderer.Flush();
