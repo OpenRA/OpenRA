@@ -58,8 +58,11 @@ namespace OpenRa.Game
             }
 
             if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
-                if (orderGenerator != null)
-                    orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y)).Apply(game);
+				if (orderGenerator != null)
+				{
+					var order = orderGenerator.Order(game, new int2((int)xy.X, (int)xy.Y));
+					if (order != null) order.Apply(game);
+				}
 		}
 
         public Unit FindUnit(float2 a, float2 b)

@@ -32,7 +32,7 @@ namespace OpenRa.Game.Graphics
 
 		public Sprite GetSprite(int frame)
 		{
-			return UnitSheetBuilder.sprites[frame + start];
+			return UnitSheetBuilder.sprites[ ( frame % length ) + start ];
 		}
 	}
 }

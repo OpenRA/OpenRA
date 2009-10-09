@@ -38,24 +38,20 @@ namespace OpenRa.Game
 
 			bool windowed = !settings.GetValue("fullscreen", false);
 			renderer = new Renderer(this, GetResolution(settings), windowed);
-			SheetBuilder.Initialize( renderer );
+			SheetBuilder.Initialize(renderer);
 
-			game = new Game( settings.GetValue( "map", "scm12ea.ini" ), renderer, new int2( ClientSize ) );
+			game = new Game(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize));
 
 			SequenceProvider.ForcePrecache();
 
-			Unit controlled;
-
-			game.world.Add( new Unit( "mcv", new int2( 5, 5 ), game.players[ 3 ], game ) );
-			game.world.Add( new Unit( "mcv", new int2( 7, 5 ), game.players[ 2 ], game ) );
-		
-            game.world.Add(controlled = new Unit("mcv", new int2(9, 5), game.players[1], game));
-
-			game.controller.orderGenerator = controlled;
+			game.world.Add(new Unit("mcv", new int2(5, 5), game.players[3], game));
+			game.world.Add(new Unit("mcv", new int2(7, 5), game.players[2], game));
+			game.world.Add(new Unit("mcv", new int2(9, 5), game.players[1], game));
+			game.world.Add(new TurretedUnit("jeep", new int2(9, 7), game.players[1], game));
 
 			sidebar = new Sidebar(Race.Soviet, renderer, game);
 
-			renderer.SetPalette( new HardwarePalette( renderer, game.map ) );
+			renderer.SetPalette(new HardwarePalette(renderer, game.map));
 		}
 
 		internal void Run()
