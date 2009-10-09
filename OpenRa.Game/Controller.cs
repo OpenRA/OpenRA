@@ -43,9 +43,9 @@ namespace OpenRa.Game
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
-						orderGenerator = FindUnit(dragStart.Value, xy); /* band-box select */
+						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * dragStart.Value, 24 * xy ) ); /* band-box select */
 					else
-						orderGenerator = FindUnit(xy, xy);  /* click select */
+						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * xy, 24 * xy ) );  /* click select */
 				}
 
                 dragStart = dragEnd = null;
@@ -63,21 +63,28 @@ namespace OpenRa.Game
 						order.Apply( game );
 		}
 
-        public Unit FindUnit(float2 a, float2 b)
+        public Actor FindUnit(float2 a, float2 b)
         {
             return FindUnits(game, 24 * a, 24 * b).FirstOrDefault();
         }
 
-        public static IEnumerable<Unit> FindUnits(Game game, float2 a, float2 b)
+        public static IEnumerable<Actor> FindUnits(Game game, float2 a, float2 b)
         {
             var min = new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
             var max = new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
 
             var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
-            return game.world.Actors.OfType<Unit>()
-                .Where(x => (x.owner == game.LocalPlayer) && (x.Bounds.IntersectsWith(rect)));
+            return game.world.Actors
+                .Where(x => (x.Owner == game.LocalPlayer) && (UnitBounds(x).IntersectsWith(rect)));
         }
+
+		public static RectangleF UnitBounds( Actor actor )
+		{
+			var size = actor.SelectedSize;
+			var loc = actor.CenterLocation - 0.5f * size;
+			return new System.Drawing.RectangleF( loc.X, loc.Y, size.X, size.Y );
+		}
 
         public Pair<float2, float2>? SelectionBox()
         {

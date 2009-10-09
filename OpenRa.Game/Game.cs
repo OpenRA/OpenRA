@@ -23,9 +23,6 @@ namespace OpenRa.Game
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
-		// temporary, until we remove all the subclasses of Building
-        public Dictionary<string, Func<int2, Player, PlayerOwned>> buildingCreation;
-
 		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
@@ -44,21 +41,12 @@ namespace OpenRa.Game
 			world = new World(this);
 			treeCache = new TreeCache(map);
 
-			foreach (TreeReference treeReference in map.Trees)
-				world.Add(new Tree(treeReference, treeCache, map, this));
+			foreach( TreeReference treeReference in map.Trees )
+				world.Add( new Actor( treeReference, treeCache, map.Offset ) );
 
 			pathFinder = new PathFinder(map, terrain.tileSet);
 
 			network = new Network();
-
-            var buildings = new[] { "fact", "powr", "apwr", "barr", "atek", "stek", "dome" };
-            buildingCreation = buildings.ToDictionary(s => s, 
-                s => (Func<int2, Player, PlayerOwned>)(
-                    (l, o) => new Building(s, l, o, this)));
-
-            buildingCreation.Add("proc", (location, owner) => new Refinery(location, owner, this));
-            buildingCreation.Add("weap", (location, owner) => new WarFactory(location, owner, this));
-            buildingCreation.Add("3tnk", (location, owner) => new TurretedUnit("3tnk", location, owner, this));
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, world);

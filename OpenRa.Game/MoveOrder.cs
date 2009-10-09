@@ -11,10 +11,10 @@ namespace OpenRa.Game
 
 	class MoveOrder : Order
 	{
-		public readonly Unit Unit;
+		public readonly Actor Unit;
 		public readonly int2 Destination;
 
-		public MoveOrder(Unit unit, int2 destination)
+		public MoveOrder( Actor unit, int2 destination )
 		{
 			this.Unit = unit;
 			this.Destination = destination;
@@ -22,37 +22,39 @@ namespace OpenRa.Game
 
 		public override void Apply( Game game )
 		{
-			Unit.nextOrder = UnitMissions.Move( Unit, Destination );
+			Unit.traits.Get<Traits.Mobile>().destination = Destination;
 		}
 	}
 
 	class DeployMcvOrder : Order
 	{
-		Unit unit;
+		Actor Unit;
 
-		public DeployMcvOrder( Unit unit )
+		public DeployMcvOrder( Actor unit )
 		{
-			this.unit = unit;
+			Unit = unit;
 		}
 
 		public override void Apply( Game game )
 		{
-			unit.nextOrder = UnitMissions.Deploy( unit );
+			Unit.traits.Get<Traits.McvDeploy>().Deploying = true;
+			var mobile = Unit.traits.Get<Traits.Mobile>();
+			mobile.destination = mobile.toCell;
 		}
 	}
 
-	class HarvestOrder : Order
-	{
-		Unit unit;
+	//class HarvestOrder : Order
+	//{
+	//    Unit unit;
 
-		public HarvestOrder( Unit unit )
-		{
-			this.unit = unit;
-		}
+	//    public HarvestOrder( Unit unit )
+	//    {
+	//        this.unit = unit;
+	//    }
 
-		public override void Apply( Game game )
-		{
-			unit.nextOrder = UnitMissions.Harvest( unit );
-		}
-	}
+	//    public override void Apply( Game game )
+	//    {
+	//        unit.nextOrder = UnitMissions.Harvest( unit );
+	//    }
+	//}
 }

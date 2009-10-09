@@ -75,7 +75,6 @@
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\UnitInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
-    <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="TechTree\Item.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="PlayerOwned.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Support\SharedResources.cs" />
     <Compile Include="Graphics\Sheet.cs" />
@@ -101,7 +99,6 @@
     </Compile>
     <Compile Include="Support\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Refinery.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Support\Settings.cs" />
     <Compile Include="Sidebar.cs" />
@@ -112,15 +109,14 @@
     <Compile Include="TechTree\TechTree.cs" />
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
-    <Compile Include="Tree.cs" />
     <Compile Include="Graphics\TreeCache.cs" />
     <Compile Include="UiOverlay.cs" />
-    <Compile Include="Unit.cs" />
     <Compile Include="UnitMissions.cs" />
     <Compile Include="Graphics\UnitSheetBuilder.cs" />
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\Viewport.cs" />
+    <Compile Include="UnitOrderGenerator.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

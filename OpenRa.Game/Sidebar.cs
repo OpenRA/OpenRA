@@ -211,12 +211,9 @@ namespace OpenRa.Game
 		{
 			game.world.AddFrameEndTask(_ =>
 			{
-				Func<int2, Player, PlayerOwned> newBuilding;
-				if (game.buildingCreation.TryGetValue(building.Name, out newBuilding))
-				{
-					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);
-					game.world.Add(newBuilding(xy, building.Owner));
-				}
+				Log.Write( "Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name );
+				game.world.Add( new Actor( building.Name, xy, building.Owner ) );
+	
 				game.controller.orderGenerator = null;
 				game.worldRenderer.uiOverlay.KillOverlay();
 			});

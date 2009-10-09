@@ -42,6 +42,7 @@
     <Compile Include="int2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tuple.cs" />
+    <Compile Include="TypeDictionary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,7 +17,7 @@ namespace OpenRa.Game
 		public void Remove( Actor a ) { actors.Remove( a ); }
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
-		int lastTime = Environment.TickCount;
+		int lastTime = Environment.TickCount + 2000;
 
 
 
@@ -25,10 +25,13 @@ namespace OpenRa.Game
 		{
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
-			lastTime = t;
+			if( dt >= 40 )
+			{
+				lastTime += 40;
 
-			foreach (Actor a in actors)
-				a.Tick(game, dt);
+				foreach( Actor a in actors )
+					a.Tick( game, 40 );
+			}
 
 			foreach (Action<World> a in frameEndActions) a(this);
 			frameEndActions.Clear();

@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace OpenRa.Game.Graphics
@@ -34,7 +34,7 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Actor a in world.Actors)
 			{
-				var images = a.CurrentImages;
+				var images = a.Render();
 
 				foreach( var image in images )
 				{
@@ -45,7 +45,7 @@ namespace OpenRa.Game.Graphics
 					if( loc.Y > rect.Bottom || loc.Y < rect.Top - image.First.bounds.Height )
 						continue;
 
-					spriteRenderer.DrawSprite( image.First, loc, ( a.owner != null ) ? a.owner.Palette : 0 );
+					spriteRenderer.DrawSprite( image.First, loc, ( a.Owner != null ) ? a.Owner.Palette : 0 );
 				}
 			}
 
@@ -69,7 +69,7 @@ namespace OpenRa.Game.Graphics
                     DrawSelectionBox(u, Color.Yellow);
             }
 
-            var selectedUnit = world.game.controller.orderGenerator as Unit;
+            var selectedUnit = world.game.controller.orderGenerator as Actor;
             if (selectedUnit != null)
                 DrawSelectionBox(selectedUnit, Color.White);
 
@@ -77,7 +77,7 @@ namespace OpenRa.Game.Graphics
             lineRenderer.Flush();
 		}
 
-        void DrawSelectionBox(Unit selectedUnit, Color c)
+        void DrawSelectionBox(Actor selectedUnit, Color c)
         {
             var center = selectedUnit.CenterLocation;
             var size = selectedUnit.SelectedSize;
