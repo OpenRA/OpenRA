@@ -13,7 +13,7 @@
 		
 		also, <sequence length="*"> creates a sequence that includes all frames
 		after `start`.
-		
+		 
 		one day, we might support inheritance here too.
 		
 		standard sequence names:
@@ -108,6 +108,14 @@
     <sequence name="damaged-idle_top" start="4" length="1" src="weap2" />
 	</unit>
 
+	<!-- allied gun turret -->
+
+	<unit name="gun">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="damaged-idle" start="1" length="32"/>
+		<sequence name="make" start="0" length="*" src="gunmake" />
+	</unit>
+
 	<!-- mcv -->
 	
 	<unit name="mcv">
@@ -132,8 +140,23 @@
 		<sequence name="harvest5" start="72" length="8"/>
 		<sequence name="harvest6" start="80" length="8"/>
 		<sequence name="harvest7" start="88" length="8"/>
+		<sequence name="empty" start="96" length="15"/>
 	</unit>
 	
+	<!-- light tank -->
+	
+	<unit name="1tnk">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="turret" start="32" length="32"/>
+	</unit>
+
+	<!-- medium tank -->
+	
+	<unit name="2tnk">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="turret" start="32" length="32"/>
+	</unit>
+
 	<!-- heavy tank -->
 	
 	<unit name="3tnk">
@@ -141,11 +164,59 @@
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
+	<!-- mammoth tank -->
+	
+	<unit name="4tnk">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="turret" start="32" length="32"/>
+	</unit>
+
+	<!-- v2 rocket launcher -->
+	
+	<unit name="v2rl">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="reloading" start="32" length="32"/>
+		<sequence name="aiming" start="64" length="16"/>
+	</unit>
+
+	<!-- artillery -->
+	
+	<unit name="arty">
+		<sequence name="idle" start="0" length="32"/>
+	</unit>
+
 	<!-- jeep -->
 	
 	<unit name="jeep">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
+	</unit>
+
+	<!-- apc -->
+	
+	<unit name="apc">
+		<sequence name="idle" start="0" length="32"/>
+	</unit>
+
+	<!-- mine layer -->
+	
+	<unit name="mnly">
+		<sequence name="idle" start="0" length="32"/>
+		<!-- and 16 "lay mine" sprites, not used in real-ra -->
+	</unit>
+
+	<!-- radar jammer -->
+	
+	<unit name="mrj">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="turret" start="32" length="32"/>
+	</unit>
+
+	<!-- mobile gap generator -->
+	
+	<unit name="mgg">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="turret" start="32" length="8"/>
 	</unit>
 
 	<!-- build clock - hacked in -->
