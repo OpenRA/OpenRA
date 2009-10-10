@@ -10,7 +10,7 @@ namespace OpenRa.Game.Graphics
 {
 	class HardwarePalette : Sheet
 	{
-		const int maxEntries = 16;
+		const int maxEntries = 8;
 		int allocated = 0;
 
 		public HardwarePalette(Renderer renderer, Map map)

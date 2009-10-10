@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -29,6 +30,8 @@ namespace OpenRa.Game
 
 				foreach( Actor a in actors )
 					a.Tick( game, 40 );
+
+				Renderer.waterFrame += 0.05f;
 			}
 
 			foreach (Action<World> a in frameEndActions) a(this);

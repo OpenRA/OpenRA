@@ -46,7 +46,7 @@ namespace OpenRa.Game.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)
 		{
-			float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
+			float2 attrib = new float2(palette / 8.0f, channelSelect[(int)r.channel]);
 
 			vertices[nv] = new Vertex(KLerp(o, r.size, 0), r.FastMapTextureCoords(0), attrib);
 			vertices[nv + 1] = new Vertex(KLerp(o, r.size, 1), r.FastMapTextureCoords(1), attrib);
