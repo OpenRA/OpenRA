@@ -20,25 +20,31 @@ namespace OpenRa.Game.GameRules
 			throw new InvalidOperationException();
 		}
 
+		static Func<string, IniSection, BaseInfo> BindInfoCtor<T>()
+			where T : BaseInfo
+		{
+			var ctor = typeof(T).GetConstructor(new[] { typeof(string), typeof(IniSection) });
+			return (s, i) => (BaseInfo)ctor.Invoke(new object [] { s,i });
+		}
+
 		readonly Dictionary<string, BaseInfo> unitInfos = new Dictionary<string, BaseInfo>();
 
 		public UnitInfo( IniFile rules )
 		{
-			foreach( var s in Util.ReadAllLines( FileSystem.Open( "buildings.txt" ) ) )
+			var srcs = new [] 
 			{
-				var unitName = s.Split( ',' )[ 0 ];
-				unitInfos.Add( unitName.ToLowerInvariant(), new BuildingInfo( unitName, rules.GetSection( unitName ) ) );
-			}
-			foreach( var s in Util.ReadAllLines( FileSystem.Open( "infantry.txt" ) ) )
-			{
-				var unitName = s.Split( ',' )[ 0 ];
-				unitInfos.Add( unitName.ToLowerInvariant(), new InfantryInfo( unitName, rules.GetSection( unitName ) ) );
-			}
-			foreach( var s in Util.ReadAllLines( FileSystem.Open( "vehicles.txt" ) ) )
-			{
-				var unitName = s.Split( ',' )[ 0 ];
-				unitInfos.Add( unitName.ToLowerInvariant(), new VehicleInfo( unitName, rules.GetSection( unitName ) ) );
-			}
+				Pair.New( "buildings.txt", BindInfoCtor<BuildingInfo>() ),
+				Pair.New( "infantry.txt", BindInfoCtor<InfantryInfo>() ),
+				Pair.New( "vehicles.txt", BindInfoCtor<VehicleInfo>() ),
+			};
+
+			foreach( var src in srcs )
+				foreach (var s in Util.ReadAllLines(FileSystem.Open(src.First)))
+				{
+					var unitName = s.Split(',')[0];
+					unitInfos.Add(unitName.ToLowerInvariant(), 
+						src.Second(unitName, rules.GetSection(unitName)));
+				}
 		}
 
 		public BaseInfo Get( string unitName )
