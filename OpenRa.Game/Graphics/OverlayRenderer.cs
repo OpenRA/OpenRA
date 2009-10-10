@@ -14,7 +14,33 @@ namespace OpenRa.Game.Graphics
 				"gold01", "gold02", "gold03", "gold04",
 				"gem01", "gem02", "gem03", "gem04",
 				"v12", "v13", "v14", "v15", "v16", "v17", "v18",
-				"fpls", "wcrate", "scrate", "barb", "sbag"
+				"fpls", "wcrate", "scrate", "barb", "sbag",
+			};
+		static bool[] overlayIsFence = new bool[]
+			{
+				true, true, true, true, true,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false, false, false, false,
+				false, false, false, true, true,
+			};
+
+		static bool[] overlayIsOre = new bool[]
+			{
+				false, false, false, false, false,
+				true, true, true, true,
+				false, false, false, false,
+				false, false, false, false, false, false, false,
+				false, false, false, false, false,
+			};
+
+		static bool[] overlayIsGems = new bool[]
+			{
+				false, false, false, false, false,
+				false, false, false, false,
+				true, true, true, true,
+				false, false, false, false, false, false, false,
+				false, false, false, false, false,
 			};
 		Sprite[][] overlaySprites;
 
@@ -41,12 +67,41 @@ namespace OpenRa.Game.Graphics
 					{
 						var location = new int2( x, y );
 						var sprites = overlaySprites[ map.MapTiles[ x, y ].overlay ];
-						spriteRenderer.DrawSprite( sprites[ sprites.Length / 2-1 ], 24 * (float2)( location - map.Offset ), 0 );
+						var spriteIndex = 0;
+						if( overlayIsFence[ map.MapTiles[ x, y ].overlay ] )
+							spriteIndex = NearbyFences( x, y );
+						else if( overlayIsOre[ map.MapTiles[ x, y ].overlay ] )
+							spriteIndex = 11;
+						else if( overlayIsGems[ map.MapTiles[ x, y ].overlay ] )
+							spriteIndex = 2;
+						spriteRenderer.DrawSprite( sprites[ spriteIndex ], 24 * (float2)( location - map.Offset ), 0 );
 					}
 				}
 			}
 
 			spriteRenderer.Flush();
+		}
+
+		bool IsFence( int x, int y )
+		{
+			var o = map.MapTiles[ x, y ].overlay;
+			if( o < overlayIsFence.Length )
+				return overlayIsFence[ o ];
+			return false;
+		}
+
+		int NearbyFences( int x, int y )
+		{
+			int ret = 0;
+			if( IsFence( x, y - 1 ) )
+				ret |= 1;
+			if( IsFence( x + 1, y ) )
+				ret |= 2;
+			if( IsFence( x, y + 1 ) )
+				ret |= 4;
+			if( IsFence( x - 1, y ) )
+				ret |= 8;
+			return ret;
 		}
 	}
 }
