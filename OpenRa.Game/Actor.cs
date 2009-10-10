@@ -62,6 +62,7 @@ namespace OpenRa.Game
 			///// TODO: planes /////
 
 			///// buildings /////
+			//TODO: SBAG, BRIK, FENC, etc
 			case "iron":
 			case "pdox":
 			case "mslo":
@@ -81,13 +82,16 @@ namespace OpenRa.Game
 			case "fix":
 			case "spen":
 			case "syrd":
-			//GAP
-			//SBAG, BRIK, FENC
-			//FACF, WEAF, SYRF, SPEF, DOMF
+			case "gap":
 			case "pbox":
 			case "hbox":
 			case "tsla":
 			case "ftur":
+			case "facf":
+			case "weaf":
+			case "syrf":
+			case "spef":
+			case "domf":
 				traits.Add( new Traits.Building( this ) );
 				traits.Add( new Traits.RenderBuilding( this ) );
 				break;
@@ -102,6 +106,7 @@ namespace OpenRa.Game
 				traits.Add( new Traits.Turreted( this ) );
 				traits.Add( new Traits.RenderBuildingTurreted( this ) );
 				break;
+
 			default:
 				throw new NotImplementedException( "Actor traits for " + name );
 			}
@@ -159,7 +164,7 @@ namespace OpenRa.Game
 
 			public RenderSimple( Actor self )
 			{
-				anim = new Animation( self.unitInfo.Name );
+				anim = new Animation( self.unitInfo.Image ?? self.unitInfo.Name );
 			}
 
 			public abstract IEnumerable<Pair<Sprite, float2>> Render( Actor self );

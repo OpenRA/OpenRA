@@ -96,7 +96,7 @@ namespace OpenRa.Game.GameRules
 						field.SetValue( this, float.Parse( x.Value ) );
 
 					else if( field.FieldType == typeof( string ) )
-						field.SetValue( this, x.Value );
+						field.SetValue( this, x.Value.ToLowerInvariant() );
 
 					else if( field.FieldType == typeof( ArmorType ) )
 						field.SetValue( this, Enum<ArmorType>.Parse(x.Value) );
