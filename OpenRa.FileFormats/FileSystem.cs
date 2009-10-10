@@ -26,5 +26,20 @@ namespace OpenRa.FileFormats
 
 			throw new FileNotFoundException("File not found", filename);
 		}
+
+		public static Stream OpenWithExts( string filename, params string[] exts )
+		{
+			foreach( var ext in exts )
+			{
+				foreach( IFolder folder in mountedFolders )
+				{
+					Stream s = folder.GetContent( filename + ext );
+					if( s != null )
+						return s;
+				}
+			}
+
+			throw new FileNotFoundException( "File not found", filename );
+		}
 	}
 }

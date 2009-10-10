@@ -31,7 +31,6 @@
 <sequences>
 
 	<!-- construction yard -->
-
 	<unit name="fact">
 		<sequence name="idle" start="0"/>
 		<sequence name="make" start="0" length="32" src="factmake" />
@@ -41,23 +40,27 @@
 	</unit>
 	
 	<!-- refinery -->
-	
 	<unit name="proc">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="procmake" />
 	</unit>
 
-	<!-- power plant -->
+	<!-- silo -->
+	<unit name="silo">
+		<sequence name="idle" start="0" length="5"/>
+		<sequence name="damaged-idle" start="5" length="5"/>
+		<sequence name="make" start="0" length="*" src="silomake" />
+	</unit>
 
+	<!-- power plant -->
 	<unit name="powr">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="powrmake" />
 	</unit>
-	
-	<!-- advanced power plant -->
 
+	<!-- advanced power plant -->
 	<unit name="apwr">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
@@ -65,7 +68,6 @@
 	</unit>
 	
 	<!-- soviet barracks -->
-
 	<unit name="barr">
 		<sequence name="idle" start="0" length="10"/>
 		<sequence name="damaged-idle" start="10" length="10"/>
@@ -73,15 +75,20 @@
 	</unit>
 	
 	<!-- allied barracks -->
-
 	<unit name="tent">
 		<sequence name="idle" start="0" length="10"/>
 		<sequence name="damaged-idle" start="10" length="10"/>
 		<sequence name="make" start="0" length="*" src="tentmake" />
 	</unit>
 	
-	<!-- radar dome -->
+	<!-- kennel -->
+	<unit name="kenn">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="kennmake" />
+	</unit>
 
+	<!-- radar dome -->
 	<unit name="dome">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
@@ -89,7 +96,6 @@
 	</unit>
 	
 	<!-- allied tech center -->
-
 	<unit name="atek">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
@@ -97,7 +103,6 @@
 	</unit>
 	
 	<!-- soviet tech center -->
-
 	<unit name="stek">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
@@ -105,39 +110,111 @@
 	</unit>
 	
 	<!-- war factory -->
-
 	<unit name="weap">
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="weapmake" />
-    <sequence name="build-top" start="0" length="4" src="weap2" />
-    <sequence name="build2-top" start="4" length="4" src="weap2" />
-    <sequence name="idle-top" start="0" length="1" src="weap2" />
-    <sequence name="damaged-idle_top" start="4" length="1" src="weap2" />
+		<sequence name="build-top" start="0" length="4" src="weap2" />
+		<sequence name="build2-top" start="4" length="4" src="weap2" />
+		<sequence name="idle-top" start="0" length="1" src="weap2" />
+		<sequence name="damaged-idle_top" start="4" length="1" src="weap2" />
+	</unit>
+
+	<!-- helipad -->
+	<unit name="hpad">
+		<sequence name="idle" start="0" length="7"/>
+		<sequence name="damaged-idle" start="7" length="7"/>
+		<sequence name="make" start="0" length="*" src="hpadmake" />
+	</unit>
+
+	<!-- airfield -->
+	<unit name="afld">
+		<sequence name="idle" start="0" length="8"/>
+		<sequence name="damaged-idle" start="8" length="8"/>
+		<sequence name="make" start="0" length="*" src="afldmake" />
+	</unit>
+
+	<!-- sub pen -->
+	<unit name="spen">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="spenmake" />
+	</unit>
+
+	<!-- shipyard -->
+	<unit name="syrd">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="syrdmake" />
+	</unit>
+
+	<!-- repair pad -->
+	<unit name="fix">
+		<sequence name="idle" start="0" length="7"/>
+		<sequence name="damaged-idle" start="7" length="7"/>
+		<sequence name="make" start="0" length="*" src="fixmake" />
 	</unit>
 
 	<!-- allied gun turret -->
-
 	<unit name="gun">
 		<sequence name="idle" start="0" length="32"/>
-		<sequence name="damaged-idle" start="1" length="32"/>
+		<sequence name="damaged-idle" start="32" length="32"/>
 		<sequence name="make" start="0" length="*" src="gunmake" />
 	</unit>
 
+	<!-- sam site -->
+	<unit name="sam">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="damaged-idle" start="34" length="32"/>
+		<sequence name="make" start="0" length="*" src="sammake" />
+	</unit>
+
+	<!-- flame turret -->
+	<unit name="ftur">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="fturmake" />
+	</unit>
+
+	<!-- tesla coil -->
+	<unit name="tsla">
+		<sequence name="idle" start="0" length="10"/>
+		<sequence name="damaged-idle" start="10" length="10"/>
+		<sequence name="make" start="0" length="*" src="tslamake" />
+	</unit>
+
+	<!-- iron curtain -->
+	<unit name="iron">
+		<sequence name="idle" start="0" length="11"/>
+		<sequence name="damaged-idle" start="11" length="11"/>
+		<sequence name="make" start="0" length="*" src="ironmake" />
+	</unit>
+
+	<!-- chronosphere -->
+	<unit name="pdox">
+		<sequence name="idle" start="0" length="29"/>
+		<sequence name="damaged-idle" start="29" length="29"/>
+		<sequence name="make" start="0" length="*" src="pdoxmake" />
+	</unit>
+
+	<!-- nuclear missile silo -->
+	<unit name="mslo">
+		<sequence name="idle" start="0" length="8"/>
+		<sequence name="damaged-idle" start="8" length="8"/>
+		<sequence name="make" start="0" length="*" src="mslomake" />
+	</unit>
+
 	<!-- mcv -->
-	
 	<unit name="mcv">
 		<sequence name="idle" start="0" length="*"/>
 	</unit>
 	
 	<!-- truck -->
-	
 	<unit name="truk">
 		<sequence name="idle" start="0" length="*"/>
 	</unit>
 	
 	<!-- harv -->
-	
 	<unit name="harv">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="harvest0" start="32" length="8"/>
@@ -152,35 +229,30 @@
 	</unit>
 	
 	<!-- light tank -->
-	
 	<unit name="1tnk">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- medium tank -->
-	
 	<unit name="2tnk">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- heavy tank -->
-	
 	<unit name="3tnk">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- mammoth tank -->
-	
 	<unit name="4tnk">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- v2 rocket launcher -->
-	
 	<unit name="v2rl">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="reloading" start="32" length="32"/>
@@ -188,47 +260,40 @@
 	</unit>
 
 	<!-- artillery -->
-	
 	<unit name="arty">
 		<sequence name="idle" start="0" length="32"/>
 	</unit>
 
 	<!-- jeep -->
-	
 	<unit name="jeep">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- apc -->
-	
 	<unit name="apc">
 		<sequence name="idle" start="0" length="32"/>
 	</unit>
 
 	<!-- mine layer -->
-	
 	<unit name="mnly">
 		<sequence name="idle" start="0" length="32"/>
 		<!-- and 16 "lay mine" sprites, not used in real-ra -->
 	</unit>
 
 	<!-- radar jammer -->
-	
 	<unit name="mrj">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="32"/>
 	</unit>
 
 	<!-- mobile gap generator -->
-	
 	<unit name="mgg">
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="8"/>
 	</unit>
 
 	<!-- build clock - hacked in -->
-	
 	<unit name="clock">
 		<sequence name="idle" start="0" length="*"/>
 	</unit>

@@ -24,7 +24,7 @@ namespace OpenRa.Game.Graphics
 
 			int low = sprites.Count;
 
-			ShpReader reader = new ShpReader(FileSystem.Open(name + ".shp"));
+			ShpReader reader = new ShpReader( FileSystem.OpenWithExts( name, ".shp", ".tem", ".sno", ".int" ) );
 			foreach (ImageHeader h in reader)
 				sprites.Add(SheetBuilder.Add(h.Image, reader.Size));
 

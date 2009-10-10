@@ -84,7 +84,7 @@ namespace OpenRa.Game.GameRules
 
 			public BaseInfo( string name, IniSection ini )
 			{
-				Name = name;
+				Name = name.ToLowerInvariant();
 
 				foreach( var x in ini )
 				{

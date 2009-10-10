@@ -22,6 +22,7 @@ namespace OpenRa.Game
 		{
 			unitInfo = Rules.UnitInfo.Get( name );
 			Location = location;
+			CenterLocation = new float2( 12, 12 ) + 24 * (float2)Location;
 			Owner = owner;
 
 			switch( name )
@@ -29,7 +30,7 @@ namespace OpenRa.Game
 			///// vehicles /////
 			case "mcv":
 				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this, name ) );
+				traits.Add( new Traits.RenderUnit( this ) );
 				traits.Add( new Traits.McvDeploy( this ) );
 				break;
 			case "mnly":
@@ -37,7 +38,7 @@ namespace OpenRa.Game
 			case "v2rl":
 			case "arty":
 				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this, name ) );
+				traits.Add( new Traits.RenderUnit( this ) );
 				break;
 			case "jeep":
 			case "1tnk":
@@ -48,11 +49,11 @@ namespace OpenRa.Game
 			case "mgg":
 				traits.Add( new Traits.Mobile( this ) );
 				traits.Add( new Traits.Turreted( this ) );
-				traits.Add( new Traits.RenderUnitTurreted( this, name ) );
+				traits.Add( new Traits.RenderUnitTurreted( this ) );
 				break;
 			case "harv":
 				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this, name ) );
+				traits.Add( new Traits.RenderUnit( this ) );
 				break;
 			///// TODO: infantry /////
 
@@ -66,7 +67,6 @@ namespace OpenRa.Game
 			case "mslo":
 			case "atek":
 			case "stek":
-			case "weap":
 			case "fact":
 			case "proc":
 			case "silo":
@@ -79,7 +79,8 @@ namespace OpenRa.Game
 			case "tent":
 			case "kenn":
 			case "fix":
-			//SYRD, SPEN
+			case "spen":
+			case "syrd":
 			//GAP
 			//SBAG, BRIK, FENC
 			//FACF, WEAF, SYRF, SPEF, DOMF
@@ -88,14 +89,18 @@ namespace OpenRa.Game
 			case "tsla":
 			case "ftur":
 				traits.Add( new Traits.Building( this ) );
-				traits.Add( new Traits.RenderBuilding( this, name ) );
+				traits.Add( new Traits.RenderBuilding( this ) );
+				break;
+			case "weap":
+				traits.Add( new Traits.Building( this ) );
+				traits.Add( new Traits.RenderWarFactory( this ) );
 				break;
 			case "gun":
 			case "agun":
 			case "sam":
 				traits.Add( new Traits.Building( this ) );
 				traits.Add( new Traits.Turreted( this ) );
-				traits.Add( new Traits.RenderBuildingTurreted( this, name ) );
+				traits.Add( new Traits.RenderBuildingTurreted( this ) );
 				break;
 			default:
 				throw new NotImplementedException( "Actor traits for " + name );
@@ -114,7 +119,7 @@ namespace OpenRa.Game
 				tick.Tick( this, game, dt );
 		}
 
-		public float2 CenterLocation { get { return new float2( 12, 12 ) + 24 * (float2)Location; } }
+		public float2 CenterLocation;
 		public float2 SelectedSize { get { return Render().FirstOrDefault().First.size; } }
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
@@ -152,9 +157,9 @@ namespace OpenRa.Game
 		{
 			public Animation anim;
 
-			public RenderSimple( Actor self, string unitName )
+			public RenderSimple( Actor self )
 			{
-				anim = new Animation( unitName );
+				anim = new Animation( self.unitInfo.Name );
 			}
 
 			public abstract IEnumerable<Pair<Sprite, float2>> Render( Actor self );
@@ -167,10 +172,10 @@ namespace OpenRa.Game
 
 		class RenderBuilding : RenderSimple
 		{
-			public RenderBuilding( Actor self, string unitName )
-				: base( self, unitName )
+			public RenderBuilding( Actor self )
+				: base( self )
 			{
-				anim.PlayThen( "make", () => anim.Play( "idle" ) );
+				anim.PlayThen( "make", () => anim.PlayRepeating( "idle" ) );
 			}
 
 			public override IEnumerable<Pair<Sprite, float2>> Render( Actor self )
@@ -181,17 +186,48 @@ namespace OpenRa.Game
 
 		class RenderBuildingTurreted : RenderBuilding
 		{
-			public RenderBuildingTurreted( Actor self, string unitName )
-				: base( self, unitName )
+			public RenderBuildingTurreted( Actor self )
+				: base( self )
 			{
 				anim.PlayThen( "make", () => anim.PlayFetchIndex( "idle", () => self.traits.Get<Turreted>().turretFacing ) );
 			}
 		}
 
+		class RenderWarFactory : RenderBuilding
+		{
+			public Animation roof;
+			bool doneBuilding;
+
+			public RenderWarFactory( Actor self )
+				: base( self )
+			{
+				roof = new Animation( self.unitInfo.Name );
+				anim.PlayThen( "make", () =>
+					{
+						doneBuilding = true;
+						anim.Play( "idle" );
+						roof.Play( "idle-top" );
+					} );
+			}
+
+			public override IEnumerable<Pair<Sprite, float2>> Render( Actor self )
+			{
+				yield return Pair.New( anim.Image, 24f * (float2)self.Location );
+				if( doneBuilding )
+					yield return Pair.New( roof.Image, 24f * (float2)self.Location );
+			}
+
+			public override void Tick( Actor self, Game game, int dt )
+			{
+				base.Tick( self, game, dt );
+				roof.Tick( dt );
+			}
+		}
+
 		class RenderUnit : RenderSimple
 		{
-			public RenderUnit( Actor self, string unitName )
-				:base( self, unitName )
+			public RenderUnit( Actor self )
+				: base( self )
 			{
 				anim.PlayFetchIndex( "idle", () => self.traits.Get<Mobile>().facing );
 			}
@@ -215,20 +251,18 @@ namespace OpenRa.Game
 		{
 			public Animation turretAnim;
 
-			public RenderUnitTurreted( Actor self, string unitName )
-				: base( self, unitName )
+			public RenderUnitTurreted( Actor self )
+				: base( self )
 			{
-				turretAnim = new Animation( unitName );
+				turretAnim = new Animation( self.unitInfo.Name );
 				turretAnim.PlayFetchIndex( "turret", () => self.traits.Get<Turreted>().turretFacing );
 			}
 
 			public override IEnumerable<Pair<Sprite, float2>> Render( Actor self )
 			{
 				var mobile = self.traits.Get<Mobile>();
-				float fraction = ( mobile.moveFraction > 0 ) ? (float)mobile.moveFraction / mobile.moveFractionTotal : 0f;
-				var centerLocation = new float2( 12, 12 ) + 24 * float2.Lerp( mobile.fromCell, mobile.toCell, fraction );
-				yield return Centered( anim.Image, centerLocation );
-				yield return Centered( turretAnim.Image, centerLocation );
+				yield return Centered( anim.Image, self.CenterLocation );
+				yield return Centered( turretAnim.Image, self.CenterLocation );
 			}
 
 			public override void Tick( Actor self, Game game, int dt )
@@ -287,7 +321,19 @@ namespace OpenRa.Game
 				return highest;
 			}
 
+			void UpdateCenterLocation()
+			{
+				float fraction = ( moveFraction > 0 ) ? (float)moveFraction / moveFractionTotal : 0f;
+				self.CenterLocation = new float2( 12, 12 ) + 24 * float2.Lerp( fromCell, toCell, fraction );
+			}
+
 			public void Tick( Actor self, Game game, int dt )
+			{
+				Move( self, game, dt );
+				UpdateCenterLocation();
+			}
+
+			void Move( Actor self, Game game, int dt )
 			{
 				if( fromCell != toCell )
 				{
@@ -385,7 +431,10 @@ namespace OpenRa.Game
 			public void Tick( Actor self, Game game, int dt )
 			{
 				if( first && self.Owner == game.LocalPlayer )
+				{
 					self.Owner.TechTree.Build( self.unitInfo.Name, true );
+					self.CenterLocation = 24 * (float2)self.Location + 0.5f * self.SelectedSize;
+				}
 				first = false;
 			}
 		}
