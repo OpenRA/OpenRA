@@ -183,6 +183,20 @@
 		<sequence name="make" start="0" length="*" src="tslamake" />
 	</unit>
 
+	<!-- pillbox -->
+	<unit name="pbox">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="pboxmake" />
+	</unit>
+
+	<!-- camo pillbox -->
+	<unit name="hbox">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0" length="*" src="hboxmake" />
+	</unit>
+
 	<!-- iron curtain -->
 	<unit name="iron">
 		<sequence name="idle" start="0" length="11"/>

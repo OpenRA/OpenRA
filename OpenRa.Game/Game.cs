@@ -30,7 +30,7 @@ namespace OpenRa.Game
 			Rules.LoadRules();
 
 			for( int i = 0 ; i < 8 ; i++ )
-				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Soviet));
+				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Allies));
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package(map.Theater + ".mix"));

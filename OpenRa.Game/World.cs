@@ -19,8 +19,6 @@ namespace OpenRa.Game
 
 		int lastTime = Environment.TickCount + 2000;
 
-
-
 		public void Update()
 		{
 			int t = Environment.TickCount;

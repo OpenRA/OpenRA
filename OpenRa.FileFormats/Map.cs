@@ -124,7 +124,6 @@ namespace OpenRa.FileFormats
 			for( int i = 0 ; i < 128 ; i++ )
 				for( int j = 0 ; j < 128 ; j++ )
 					MapTiles[ j, i ].overlay = ReadByte( ms );
-
 		}
 
 		void ReadTrees( IniFile file )

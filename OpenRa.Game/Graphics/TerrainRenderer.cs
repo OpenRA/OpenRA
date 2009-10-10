@@ -17,6 +17,7 @@ namespace OpenRa.Game.Graphics
 		Renderer renderer;
 		Map map;
         Viewport viewport;
+		OverlayRenderer overlayRenderer;
 
 		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
 		{
@@ -25,6 +26,7 @@ namespace OpenRa.Game.Graphics
 			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, null );
 			viewport.AddRegion(region);
 			this.map = map;
+			overlayRenderer = new OverlayRenderer( renderer, map );
 
 			tileSet = new TileSet( map.TileSuffix );
 
@@ -78,6 +80,8 @@ namespace OpenRa.Game.Graphics
                     new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
                     new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
                     terrainSheet.Texture, PrimitiveType.TriangleList));
+
+			overlayRenderer.Draw();
 		}
 	}
 }
