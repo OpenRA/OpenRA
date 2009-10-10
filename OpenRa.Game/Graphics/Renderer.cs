@@ -31,10 +31,13 @@ namespace OpenRa.Game.Graphics
 
 		public GraphicsDevice Device { get { return device; } }
 
+		public static float waterFrame = 0.0f;
+
 		public void BeginFrame( float2 r1, float2 r2, float2 scroll )
 		{
 			device.Begin();
 
+			SpriteShader.SetValue("palDist", waterFrame);
 			SpriteShader.SetValue("Scroll", scroll);
 			SpriteShader.SetValue("r1", r1);
 			SpriteShader.SetValue("r2", r2);

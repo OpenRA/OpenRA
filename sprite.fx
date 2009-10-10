@@ -6,6 +6,7 @@ shared texture DiffuseTexture, Palette;
 shared float2 Scroll;
 
 shared float2 r1, r2;		// matrix elements
+shared float palDist;
 
 sampler s_DiffuseTexture = sampler_state {
 	Texture = <DiffuseTexture>;
@@ -64,11 +65,28 @@ VertexOut Simple_vp(VertexIn v) {
 }
 
 const float2 texelOffset = float2( 0, 1.0f/32.0f );
+const float animBase = (96.0f/256.0f);
+const float animLen = (7.0f/256.0f);
+
+float DoPaletteAnimation( float x )
+{
+	float a = (x - animBase) / animLen;
+	float b = (a >= 0 && a <= 1) ? 1.0f : 0.0f;
+	float _;
+	float c = modf(a + palDist, _);
+	
+	return  lerp( a, c, b ) * animLen + animBase;
+}
+
+float2 DoPaletteAnimation2( float2 x )
+{
+	return float2( DoPaletteAnimation(x.x), x.y );
+}
 
 float4 Palette_fp(FragmentIn f) : COLOR0 {
 	float4 x = tex2D(s_DiffuseTexture, f.Tex0.xy);
 	float2 p = float2( dot(x, f.ChannelMask), f.Tex0.z );
-	return tex2D(s_PaletteTexture, p + texelOffset);
+	return tex2D(s_PaletteTexture, DoPaletteAnimation2(p) + texelOffset);
 }
 
 technique low_quality {
