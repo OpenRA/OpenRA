@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			for (int i = 0; i < width; i++)
 				for (int j = 0; j < height; j++)
 					spriteRenderer.DrawSprite(passableAt(position.X + i, position.Y + j) ? buildOk : buildBlocked,
-						24 * (position + new int2(i, j)) + game.viewport.Location, 0);
+						24 * (position + new int2(i, j)), 0);
 
 			spriteRenderer.Flush();
 		}

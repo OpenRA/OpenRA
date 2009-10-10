@@ -82,5 +82,6 @@ namespace OpenRa
 		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
 
 		public override string ToString() { return string.Format("({0},{1})", X, Y); }
+		public int2 ToInt2() { return new int2((int)X, (int)Y); }
 	}
 }

@@ -98,8 +98,8 @@ namespace OpenRa.Game
             });
 
 			if (game.controller.orderGenerator != null)
-				game.controller.orderGenerator.PrepareOverlay(game, 
-					new int2(e.Location.X / 24, e.Location.Y / 24));
+				game.controller.orderGenerator.PrepareOverlay(game,
+					((1 / 24f) * (new float2(e.Location) + game.viewport.Location)).ToInt2());
 		}
 
         protected override void OnMouseUp(MouseEventArgs e)
