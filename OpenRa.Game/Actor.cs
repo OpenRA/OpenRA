@@ -88,7 +88,6 @@ namespace OpenRa.Game
 			case "tsla":
 			case "ftur":
 			case "facf":
-			case "weaf":
 			case "syrf":
 			case "spef":
 			case "domf":
@@ -96,6 +95,7 @@ namespace OpenRa.Game
 				traits.Add( new Traits.RenderBuilding( this ) );
 				break;
 			case "weap":
+			case "weaf":
 				traits.Add( new Traits.Building( this ) );
 				traits.Add( new Traits.RenderWarFactory( this ) );
 				break;
@@ -206,7 +206,7 @@ namespace OpenRa.Game
 			public RenderWarFactory( Actor self )
 				: base( self )
 			{
-				roof = new Animation( self.unitInfo.Name );
+				roof = new Animation( self.unitInfo.Image ?? self.unitInfo.Name );
 				anim.PlayThen( "make", () =>
 					{
 						doneBuilding = true;
@@ -458,39 +458,5 @@ namespace OpenRa.Game
 				yield return Pair.New( Image, 24 * (float2)self.Location );
 			}
 		}
-
-		//class WarFactory : Building
-		//{
-		//    Animation roof;
-
-		//    public WarFactory( int2 location, Player owner, Game game )
-		//        : base( "weap", location, owner, game )
-		//    {
-
-		//        animation.PlayThen( "make", () =>
-		//        {
-		//            roof = new Animation( "weap" );
-		//            animation.PlayRepeating( "idle" );
-		//            roof.PlayRepeating( "idle-top" );
-		//        } );
-		//    }
-
-		//    public override IEnumerable<Pair<Sprite, float2>> CurrentImages
-		//    {
-		//        get
-		//        {
-		//            return ( roof == null )
-		//                ? base.CurrentImages
-		//                : ( base.CurrentImages.Concat(
-		//                new[] { Pair.New( roof.Image, 24 * (float2)location ) } ) );
-		//        }
-		//    }
-
-		//    public override void Tick( Game game, int t )
-		//    {
-		//        base.Tick( game, t );
-		//        if( roof != null ) roof.Tick( t );
-		//    }
-		//}
 	}
 }

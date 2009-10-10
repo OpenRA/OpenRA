@@ -8,7 +8,7 @@ namespace OpenRa.Game.Graphics
 {
 	class OverlayRenderer
 	{
-		static string[] overlaySpriteNames = new string[]
+		static string[] overlaySpriteNames =
 			{
 				"sbag", "cycl", "brik", "fenc", "wood",
 				"gold01", "gold02", "gold03", "gold04",
@@ -16,7 +16,7 @@ namespace OpenRa.Game.Graphics
 				"v12", "v13", "v14", "v15", "v16", "v17", "v18",
 				"fpls", "wcrate", "scrate", "barb", "sbag",
 			};
-		static bool[] overlayIsFence = new bool[]
+		static bool[] overlayIsFence =
 			{
 				true, true, true, true, true,
 				false, false, false, false,
@@ -25,7 +25,7 @@ namespace OpenRa.Game.Graphics
 				false, false, false, true, true,
 			};
 
-		static bool[] overlayIsOre = new bool[]
+		static bool[] overlayIsOre =
 			{
 				false, false, false, false, false,
 				true, true, true, true,
@@ -34,7 +34,7 @@ namespace OpenRa.Game.Graphics
 				false, false, false, false, false,
 			};
 
-		static bool[] overlayIsGems = new bool[]
+		static bool[] overlayIsGems =
 			{
 				false, false, false, false, false,
 				false, false, false, false,
