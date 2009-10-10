@@ -34,7 +34,7 @@ namespace OpenRa.Game
 		
 		List<SidebarItem> items = new List<SidebarItem>();
 		
-		public Sidebar( Race race, Renderer renderer, Game game )
+		public Sidebar( Renderer renderer, Game game )
 		{
 			this.techTree = game.LocalPlayer.TechTree;
             this.techTree.BuildableItemsChanged += PopulateItemList;

@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace OpenRa.Game.Graphics
@@ -71,7 +72,7 @@ namespace OpenRa.Game.Graphics
 
             var selection = world.game.controller.orderGenerator as UnitOrderGenerator;
             if (selection != null)
-				foreach( var a in selection.selection )
+				foreach( var a in world.Actors.Intersect(selection.selection) )		/* make sure we don't grab actors that are dead */
 	                DrawSelectionBox(a, Color.White);
 
             

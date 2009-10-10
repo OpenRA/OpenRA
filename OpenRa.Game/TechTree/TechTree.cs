@@ -94,17 +94,10 @@ namespace OpenRa.TechTree
 
 		void CheckAll()
 		{
-			bool changed = false;
 			foreach (Item unit in objects.Values)
-			{
-				bool old = unit.CanBuild;
 				unit.CheckPrerequisites(built, currentRace);
-				if (old != unit.CanBuild)
-					changed = true;
-			}
 
-			//if (changed)
-				BuildableItemsChanged();
+			BuildableItemsChanged();
 		}
 
 		public IEnumerable<Item> BuildableItems

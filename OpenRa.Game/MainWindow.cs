@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			game.world.Add( new Actor( "mcv", new int2( 9, 5 ), game.players[ 0 ] ) );
 			game.world.Add( new Actor( "jeep", new int2( 9, 7 ), game.players[ 1 ] ) );
 
-			sidebar = new Sidebar(Race.Soviet, renderer, game);
+			sidebar = new Sidebar(renderer, game);
 
 			renderer.SetPalette(new HardwarePalette(renderer, game.map));
 		}
