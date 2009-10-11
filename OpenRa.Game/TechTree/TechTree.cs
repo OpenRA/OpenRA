@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using OpenRa.FileFormats;
+using System.Linq;
 using OpenRa.Game;
 
 namespace OpenRa.TechTree
@@ -31,14 +32,6 @@ namespace OpenRa.TechTree
 			CheckAll();
 		}
 
-		static IEnumerable<T> Concat<T>(IEnumerable<T> one, IEnumerable<T> two)
-		{
-			foreach (T t in one)
-				yield return t;
-			foreach (T t in two)
-				yield return t;
-		}
-
 		IEnumerable<Tuple<string, string, bool>> Lines(string filename, bool param)
 		{
 			Regex pattern = new Regex(@"^(\w+),([\w ]+),(\w+)$");
@@ -55,14 +48,12 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			IEnumerable<Tuple<string, string, bool>> definitions = Concat( Concat(
-				Lines("buildings.txt", true),
-				Lines("vehicles.txt", false) ),
-				Lines("infantry.txt", false) );
+			IEnumerable<Tuple<string, string, bool>> definitions = 
+				Lines("buildings.txt", true)
+				.Concat( Lines( "vehicles.txt", false ) )
+				.Concat( Lines( "infantry.txt", false ) );
 
-            var rules = SharedResources.Rules;
-
-			foreach (Tuple<string, string, bool> p in definitions)
+            foreach (Tuple<string, string, bool> p in definitions)
 				objects.Add(p.a, new Item(p.a, p.b, Rules.UnitInfo.Get(p.a), p.c));
 		}
 

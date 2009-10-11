@@ -70,7 +70,6 @@ namespace OpenRa.Game
 			case "stek":
 			case "fact":
 			case "proc":
-			case "silo":
 			case "hpad":
 			case "afld":
 			case "dome":
@@ -105,6 +104,10 @@ namespace OpenRa.Game
 				traits.Add( new Traits.Building( this ) );
 				traits.Add( new Traits.Turreted( this ) );
 				traits.Add( new Traits.RenderBuildingTurreted( this ) );
+				break;
+			case "silo":
+				traits.Add(new Traits.Building(this));
+				traits.Add(new Traits.RenderBuildingOre(this));
 				break;
 
 			default:
@@ -195,6 +198,15 @@ namespace OpenRa.Game
 				: base( self )
 			{
 				anim.PlayThen( "make", () => anim.PlayFetchIndex( "idle", () => self.traits.Get<Turreted>().turretFacing ) );
+			}
+		}
+
+		class RenderBuildingOre : RenderBuilding
+		{
+			public RenderBuildingOre(Actor self)
+				: base(self)
+			{
+				anim.PlayThen("make", () => anim.PlayFetchIndex("idle", () => (int)(5 * self.Owner.GetSiloFullness())));
 			}
 		}
 

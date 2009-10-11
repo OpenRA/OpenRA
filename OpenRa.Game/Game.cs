@@ -11,7 +11,7 @@ namespace OpenRa.Game
 	{
 		public readonly World world;
 		public readonly Map map;
-		public readonly TreeCache treeCache;
+		readonly TreeCache treeCache;
 		public readonly TerrainRenderer terrain;
 		public readonly Viewport viewport;
 		public readonly PathFinder pathFinder;

@@ -24,7 +24,7 @@ namespace OpenRa.Game
             return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + game.viewport.Location);
         }
 
-        float2? dragStart, dragEnd;
+        float2 dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
             var xy = GetWorldPos(mi);
@@ -35,20 +35,19 @@ namespace OpenRa.Game
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
-                if (dragEnd != null)
-                    dragEnd = GetWorldPos(mi);
+				dragEnd = GetWorldPos(mi);
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
             {
 				if (!(orderGenerator is PlaceBuilding))
 				{
-					if (dragStart.HasValue && !(dragStart.Value == GetWorldPos(mi)))
-						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * dragStart.Value, 24 * xy ) ); /* band-box select */
+					if (dragStart != GetWorldPos(mi))
+						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * dragStart, 24 * xy ) ); /* band-box select */
 					else
 						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * xy, 24 * xy ) );  /* click select */
 				}
 
-                dragStart = dragEnd = null;
+				dragStart = dragEnd;
             }
 
             if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
@@ -88,10 +87,8 @@ namespace OpenRa.Game
 
         public Pair<float2, float2>? SelectionBox()
         {
-            if (dragStart == null || dragEnd == null)
-                return null;
-
-            return Pair.New(24 * dragStart.Value, 24 * dragEnd.Value);
+            if (dragStart == dragEnd) return null;
+            return Pair.New(24 * dragStart, 24 * dragEnd);
         }
 	}
 }

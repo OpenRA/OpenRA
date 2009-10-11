@@ -13,5 +13,10 @@ namespace OpenRa.Game
 			this.PlayerName = playerName;
 			TechTree.CurrentRace = race;
 		}
+
+		public float GetSiloFullness()
+		{
+			return 0.5f;		/* todo: work this out the same way as RA */
+		}
 	}
 }
