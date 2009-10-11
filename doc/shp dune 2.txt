@@ -1,0 +1,57 @@
+======================
+Dune 2 SHP file format
+======================
+Sourced from Red Horizon Utilities by Emanuel Rabina
+http://www.ultraq.net.nz/redhorizon/
+
+The Dune 2 SHP file, is a multiple image filetype, where each image can have
+it's own set of dimensions.  The file is structured as follows:
+
+File header:
+  NumImages (2 bytes)    - the number of images in the file
+  Offsets[NumImages + 1] - offset to the image header for an image.  The last
+    (2 or 4 bytes each)    offset points to the end of the file.  The offsets
+                           don't take into account the NumImages bytes at the
+                           beginning, so add 2 bytes to the offset value to
+                           get the actual position of an image header in the
+                           file
+
+The size of the offsets can be either 2 or 4 bytes.  There is no simple way
+to determine which it will be, but checking the file's 4th byte to see if
+it's 0, seems to be a commonly accepted practice amongst existing Dune 2 SHP
+file readers:
+
+eg: A 2-byte offset file: 01 00 06 00 EC 00 45 0A ...
+    A 4-byte offset file: 01 00 08 00 00 00 EC 00 ...
+                                      ^^
+The marked byte will be 0 in 4-byte offset files, non 0 in 2-byte offset
+files.
+Lastly, like C&C SHP files, there is an extra offset, pointing to the end of
+the file (or what would have been the position of another image header/data
+pair).
+
+Following the file header, are a series of image header & image data pairs.
+The image header is structured as follows:
+
+Image header:
+  Flags (2 bytes)    - flags to identify the type of data following the
+                       Datasize field, and/or the compression schemes used
+  Slices (1 byte)    - number of Format2 slices used to encode the image
+                       data.  Often this is the same as the height of the
+                       image
+  Width (2 bytes)    - width of the image
+  Height (1 byte)    - height of the image
+  Filesize (2 bytes) - size of the image data in the file
+  Datasize (2 bytes) - size of the image data when Format2 encoded/compressed
+
+Regarding the flags, there seem to be 4 values:
+ - 00000000 (0) = Decompress with Format80, then Format2
+ - 00000001 (1) = (see 3)
+ - 00000010 (2) = Decompress with Format2
+ - 00000011 (3) = A small 16-byte lookup table follows, and the image data
+                  should be decompressed with Format80 then Format2.
+ - 00000101 (5) = The first byte gives the size of the lookup table that
+                  follows, and the image data should be decompressed with
+                  Format80 then Format2.
+
+And after this image header is the image data.

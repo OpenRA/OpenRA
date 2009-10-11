@@ -46,8 +46,10 @@
   <ItemGroup>
     <Compile Include="Blowfish.cs" />
     <Compile Include="BlowfishKeyProvider.cs" />
+    <Compile Include="Dune2ShpReader.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Folder.cs" />
+    <Compile Include="Format2.cs" />
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
     <Compile Include="IniFile.cs" />

@@ -77,6 +77,7 @@
     <Compile Include="GameRules\UnitInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
