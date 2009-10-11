@@ -36,39 +36,47 @@ namespace OpenRa.Game
 			if (!hasOverlay)
 				return;
 
-			Func<int, int, bool> passableAt = (x, y) =>
+			Func<int2, bool> passableAt = a =>
 				{
-					x += game.map.Offset.X;
-					y += game.map.Offset.Y;
+					a += game.map.Offset;
 
-					return game.map.IsInMap(x, y) &&
+					return game.map.IsInMap(a.X, a.Y) &&
 					TerrainCosts.Cost(UnitMovementType.Wheel,
-						game.terrain.tileSet.GetWalkability(game.map.MapTiles[x, y])) < double.PositiveInfinity;
+						game.terrain.tileSet.GetWalkability(game.map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 				};
 
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					spriteRenderer.DrawSprite(passableAt(position.X + i, position.Y + j) ? buildOk : buildBlocked,
-						24 * (position + new int2(i, j)), 0);
+			var footprint = Rules.Footprint.GetFootprint(name);
+			var j = 0;
+			foreach (var row in footprint)
+			{
+				var i = 0;
+				foreach (var c in row)
+				{
+					if (c != '_')
+						spriteRenderer.DrawSprite(passableAt(position + new int2(i, j)) ? buildOk : buildBlocked,
+							24 * (position + new int2(i, j)), 0);
+					++i;
+				}
+				++j;
+			}
 
 			spriteRenderer.Flush();
 		}
 
 		bool hasOverlay;
 		int2 position;
-		int width, height;
+		string name;
 
 		public void KillOverlay()
 		{
 			hasOverlay = false;
 		}
 
-		public void SetCurrentOverlay(int2 cell, int width, int height)
+		public void SetCurrentOverlay(int2 cell, string name)
 		{
 			hasOverlay = true;
 			position = cell;
-			this.width = width;
-			this.height = height;
+			this.name = name;
 		}
 	}
 }

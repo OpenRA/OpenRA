@@ -1,0 +1,13 @@
+# 
+# Building footprints
+#
+
+# default is indicated by *
+
+x			: ftur sbag brik fenc gun pbox hbox silo tsla agun gap kenn *
+xx xx xx	: powr dome barr tent domf hpad atek stek
+xxx xxx xxx	: fact facf syrf syrd weap weaf spen spef apwr
+xx			: sam mslo
+_x_ xxx xxx xxx : proc
+xxx xxx			: afld
+_x_ xxx _x_		: fix
