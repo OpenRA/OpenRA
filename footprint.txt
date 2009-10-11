@@ -4,9 +4,10 @@
 
 # default is indicated by *
 
-x			: ftur sbag brik fenc gun pbox hbox silo tsla agun gap kenn *
-xx xx xx	: powr dome barr tent domf hpad atek stek
-xxx xxx xxx	: fact facf syrf syrd weap weaf spen spef apwr
+x			: ftur sbag brik fenc gun pbox hbox silo gap kenn *
+_ x			: tsla agun
+xx xx xx	: powr dome barr tent domf hpad atek
+xxx xxx xxx	: fact facf syrf syrd weap weaf spen spef apwr stek
 xx			: sam mslo
 _x_ xxx xxx xxx : proc
 xxx xxx			: afld
