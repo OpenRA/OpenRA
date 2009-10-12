@@ -1,195 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OpenRa.Game.Actor">
-    <Position X="1" Y="8.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAAAiAAAAAAAAAAQIAAIAAAQAAAAAAABAAAAAAQAA=</HashCode>
-      <FileName>Actor.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="Owner" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.World">
-    <Position X="1" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAYAACABABAAgAAAAIAABgAAAAAAAAAIAAAAAAAAAAA=</HashCode>
-      <FileName>World.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="game" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Actors" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Class Name="OpenRa.Game.Game">
-    <Position X="5.25" Y="6.75" Width="1.5" />
+    <Position X="6" Y="2.5" Width="1.5" />
+    <Members>
+      <Field Name="localPlayerIndex" Hidden="true" />
+      <Field Name="treeCache" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAIAAAAEEBAAAIAAQQAAAAAAAJAAAAABAQAA=</HashCode>
+      <HashCode>AAAAEAAAAIAAAAEEBAEAIAAQQAAAAAAAJIAAAABAQAA=</HashCode>
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="controller" />
-      <Field Name="world" />
-      <Field Name="worldRenderer" />
       <Field Name="viewport" />
-      <Field Name="pathFinder" />
-      <Field Name="terrain" />
-      <Field Name="network" />
-      <Property Name="LocalPlayer" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Field Name="players" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.PathFinder" Collapsed="true">
-    <Position X="5.25" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAABAAAAAAAAAAAAAEEAAAMAAAAAAAAAA=</HashCode>
-      <FileName>PathFinder.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OpenRa.Game.Player">
-    <Position X="9.25" Y="10.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAAAAAAAIAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Player.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="TechTree" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.UiOverlay">
-    <Position X="5.25" Y="10.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAiAAAAAQIABAAAAkAAAYAAAAAAQAAAA=</HashCode>
-      <FileName>UiOverlay.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="game" />
-      <Field Name="spriteRenderer" />
     </ShowAsAssociation>
   </Class>
   <Class Name="OpenRa.Game.Controller">
-    <Position X="2.25" Y="1.75" Width="1.5" />
+    <Position X="8.5" Y="3" Width="1.75" />
+    <Members>
+      <Field Name="dragEnd" Hidden="true" />
+      <Field Name="dragStart" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>IAAAAAAIAAAAAAAAAAACAgAAABAAAAAIAIAAAIAABAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAACAgAAABAAAAAIAAAAAIAAAAA=</HashCode>
       <FileName>Controller.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="game" />
-      <Field Name="orderGenerator" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.TechTree.TechTree">
-    <Position X="11.25" Y="14.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAEAAIgAQAAoyACAAAAAAAAAAA=</HashCode>
-      <FileName>TechTree\TechTree.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.WorldRenderer">
-    <Position X="1.25" Y="10.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AACAEABAAAAAAmAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Graphics\WorldRenderer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="uiOverlay" />
-      <Field Name="spriteRenderer" />
-      <Field Name="lineRenderer" />
-      <Field Name="world" />
     </ShowAsAssociation>
   </Class>
   <Class Name="OpenRa.Game.Graphics.Viewport">
-    <Position X="10.75" Y="5" Width="1.5" />
+    <Position X="3.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAiAAAAIYAAEAAAABCAAAAAABgAAAAgBE=</HashCode>
+      <HashCode>AAAAAAAABAAAiABAAIYAAEAAAABCAAAAAABgAAAAgBE=</HashCode>
       <FileName>Graphics\Viewport.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="renderer" />
-    </ShowAsAssociation>
   </Class>
-  <Class Name="OpenRa.Game.Graphics.Renderer">
-    <Position X="13.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AACAEAACCAAAAgMAAAAAAEAAAAAAAAAAEAAAAAAAAAA=</HashCode>
-      <FileName>Graphics\Renderer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.SpriteRenderer">
-    <Position X="8" Y="13.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAQQAAAAECAAAAAAAAAAAAAABAQABAAAAAAAACIwAQ=</HashCode>
-      <FileName>Graphics\SpriteRenderer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="renderer" />
-      <Field Name="currentSheet" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.LineRenderer">
-    <Position X="2.5" Y="13.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAQQAAAACCAAAAAAAAAAAAAABIQAAAAAEAAAAAIwAA=</HashCode>
-      <FileName>Graphics\LineRenderer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="renderer" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.Sheet">
-    <Position X="14.75" Y="9.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAgAAACAgAAAAIAAAAAgAAAAIAAAAggAA=</HashCode>
-      <FileName>Graphics\Sheet.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="renderer" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.TerrainRenderer">
-    <Position X="8.25" Y="6" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AACQEAAAAAAAAgAABAAACgAAABgAAAAAAAAAAAAAgAA=</HashCode>
-      <FileName>Graphics\TerrainRenderer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="renderer" />
-      <Field Name="overlayRenderer" />
-      <Field Name="viewport" />
-      <Field Name="tileSet" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.Game.Graphics.OverlayRenderer">
-    <Position X="12.25" Y="10.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAABAAAiCAAEAAAAAAAAQAAABAAAAAEAAQAAA=</HashCode>
-      <FileName>Graphics\OverlayRenderer.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="spriteRenderer" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="OpenRa.FileFormats.TileSet">
-    <Position X="8.25" Y="2.75" Width="1.5" />
-    <TypeIdentifier />
-  </Class>
-  <Class Name="OpenRa.Game.Network">
-    <Position X="2.25" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAKAAAAAgAAAAAAAAEAAAAAACAAAAABAAAAAJAAAQAA=</HashCode>
-      <FileName>Network\Network.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Interface Name="OpenRa.Game.IOrderGenerator" Collapsed="true">
-    <Position X="2.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>IOrderGenerator.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

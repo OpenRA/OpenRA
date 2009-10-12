@@ -59,5 +59,10 @@ namespace OpenRa.Game.Graphics
             if (mi.Event != MouseInputEvent.Down)
                 dragRegion = null;
         }
+
+		public float2 ViewToWorld(MouseInput mi)
+		{
+			return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + Location);
+		}
 	}
 }

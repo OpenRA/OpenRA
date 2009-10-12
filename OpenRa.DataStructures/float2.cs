@@ -83,5 +83,8 @@ namespace OpenRa
 
 		public override string ToString() { return string.Format("({0},{1})", X, Y); }
 		public int2 ToInt2() { return new int2((int)X, (int)Y); }
+
+		public static float2 Max(float2 a, float2 b) { return new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
+		public static float2 Min(float2 a, float2 b) { return new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 	}
 }

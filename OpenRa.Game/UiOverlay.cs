@@ -20,7 +20,7 @@ namespace OpenRa.Game
 			buildBlocked = SynthesizeTile(0xe6);
 		}
 
-		Sprite SynthesizeTile(byte paletteIndex)
+		static Sprite SynthesizeTile(byte paletteIndex)
 		{
 			byte[] data = new byte[24 * 24];
 
@@ -36,15 +36,6 @@ namespace OpenRa.Game
 			if (!hasOverlay)
 				return;
 
-			Func<int2, bool> passableAt = a =>
-				{
-					a += game.map.Offset;
-
-					return game.map.IsInMap(a.X, a.Y) &&
-					TerrainCosts.Cost(UnitMovementType.Wheel,
-						game.terrain.tileSet.GetWalkability(game.map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
-				};
-
 			var footprint = Rules.Footprint.GetFootprint(name);
 			var j = 0;
 			foreach (var row in footprint)
@@ -53,7 +44,9 @@ namespace OpenRa.Game
 				foreach (var c in row)
 				{
 					if (c != '_')
-						spriteRenderer.DrawSprite(passableAt(position + new int2(i, j)) ? buildOk : buildBlocked,
+						spriteRenderer.DrawSprite(
+							game.IsCellBuildable(position + new int2(i, j)) 
+								? buildOk : buildBlocked,
 							24 * (position + new int2(i, j)), 0);
 					++i;
 				}

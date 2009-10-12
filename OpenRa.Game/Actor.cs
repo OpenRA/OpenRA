@@ -7,6 +7,7 @@ using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -141,6 +142,16 @@ namespace OpenRa.Game
 				.Select( x => x.Order( this, game, xy ) )
 				.Where( x => x != null )
 				.FirstOrDefault();
+		}
+
+		public RectangleF Bounds
+		{
+			get
+			{
+				var size = SelectedSize;
+				var loc = CenterLocation - 0.5f * size;
+				return new RectangleF(loc.X, loc.Y, size.X, size.Y);
+			}
 		}
 	}
 

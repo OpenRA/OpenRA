@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using OpenRa.FileFormats;
-using System.Linq;
-
 using OpenRa.Game.Graphics;
+using OpenRa.TechTree;
+using System.Drawing;
+using System.Linq;
 
 namespace OpenRa.Game
 {
@@ -30,7 +30,7 @@ namespace OpenRa.Game
 			Rules.LoadRules();
 
 			for( int i = 0 ; i < 8 ; i++ )
-				players.Add(i, new Player(i, string.Format("Multi{0}", i), OpenRa.TechTree.Race.Soviet));
+				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Soviet));
 
 			map = new Map(new IniFile(FileSystem.Open(mapName)));
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			network = new Network();
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
-			worldRenderer = new WorldRenderer(renderer, world);
+			worldRenderer = new WorldRenderer(renderer, this);
 		}
 
 		public void Tick()
@@ -58,6 +58,26 @@ namespace OpenRa.Game
 			world.Update();
 
 			viewport.DrawRegions();
+		}
+
+		public bool IsCellBuildable(int2 a)
+		{
+			a += map.Offset;
+
+			return map.IsInMap(a.X, a.Y) &&
+			TerrainCosts.Cost(UnitMovementType.Wheel,
+				terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+		}
+
+		public IEnumerable<Actor> FindUnits(float2 a, float2 b)
+		{
+			var min = float2.Min(a, b);
+			var max = float2.Max(a, b);
+
+			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+
+			return world.Actors
+				.Where(x => (x.Owner == LocalPlayer) && (x.Bounds.IntersectsWith(rect)));
 		}
 	}
 }

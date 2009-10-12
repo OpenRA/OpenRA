@@ -19,15 +19,11 @@ namespace OpenRa.Game
 			this.game = game;
 		}
 
-        float2 GetWorldPos(MouseInput mi)
-        {
-            return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + game.viewport.Location);
-        }
-
         float2 dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
-            var xy = GetWorldPos(mi);
+            var xy = game.viewport.ViewToWorld(mi);
+
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
 				if (!(orderGenerator is PlaceBuilding))
@@ -35,16 +31,16 @@ namespace OpenRa.Game
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
-				dragEnd = GetWorldPos(mi);
+				dragEnd = xy;
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
             {
 				if (!(orderGenerator is PlaceBuilding))
 				{
-					if (dragStart != GetWorldPos(mi))
-						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * dragStart, 24 * xy ) ); /* band-box select */
+					if (dragStart != xy)
+						orderGenerator = new UnitOrderGenerator( game.FindUnits( 24 * dragStart, 24 * xy ) ); /* band-box select */
 					else
-						orderGenerator = new UnitOrderGenerator( FindUnits( game, 24 * xy, 24 * xy ) );  /* click select */
+						orderGenerator = new UnitOrderGenerator( game.FindUnits( 24 * xy, 24 * xy ) );  /* click select */
 				}
 
 				dragStart = dragEnd;
@@ -58,37 +54,17 @@ namespace OpenRa.Game
 
 			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 				if( orderGenerator != null )
-					foreach( var order in orderGenerator.Order( game, new int2( (int)xy.X, (int)xy.Y ) ) )
+					foreach( var order in orderGenerator.Order( game, xy.ToInt2() ) )
 						order.Apply( game );
 		}
 
-        public Actor FindUnit(float2 a, float2 b)
+        public Pair<float2, float2>? SelectionBox
         {
-            return FindUnits(game, 24 * a, 24 * b).FirstOrDefault();
-        }
-
-        public static IEnumerable<Actor> FindUnits(Game game, float2 a, float2 b)
-        {
-            var min = new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
-            var max = new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
-
-            var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
-
-            return game.world.Actors
-                .Where(x => (x.Owner == game.LocalPlayer) && (UnitBounds(x).IntersectsWith(rect)));
-        }
-
-		public static RectangleF UnitBounds( Actor actor )
-		{
-			var size = actor.SelectedSize;
-			var loc = actor.CenterLocation - 0.5f * size;
-			return new System.Drawing.RectangleF( loc.X, loc.Y, size.X, size.Y );
-		}
-
-        public Pair<float2, float2>? SelectionBox()
-        {
-            if (dragStart == dragEnd) return null;
-            return Pair.New(24 * dragStart, 24 * dragEnd);
+			get
+			{
+				if (dragStart == dragEnd) return null;
+				return Pair.New(24 * dragStart, 24 * dragEnd);
+			}
         }
 	}
 }
