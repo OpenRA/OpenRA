@@ -15,7 +15,7 @@ namespace OpenRa.Game.Graphics
 		public WorldRenderer(Renderer renderer, Game game)
 		{
 			// TODO: this is layout policy. it belongs at a higher level than this.
-
+			this.game = game;
 			region = Region.Create(game.viewport, DockStyle.Left,
 				game.viewport.Width - 128, Draw, 
                 game.controller.HandleMouseInput);		

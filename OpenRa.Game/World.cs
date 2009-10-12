@@ -9,18 +9,15 @@ namespace OpenRa.Game
 	{
 		List<Actor> actors = new List<Actor>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
-
-		public readonly Game game;
+		readonly Game game;
+		int lastTime = Environment.TickCount;
+		const int timestep = 40;
 
 		public World(Game game) { this.game = game; }
 
 		public void Add(Actor a) { actors.Add(a); }
 		public void Remove( Actor a ) { actors.Remove( a ); }
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
-
-		int lastTime = Environment.TickCount;
-
-		const int timestep = 40;
 
 		public void Update()
 		{

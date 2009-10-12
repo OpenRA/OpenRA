@@ -13,6 +13,7 @@
     <ShowAsAssociation>
       <Field Name="controller" />
       <Field Name="viewport" />
+      <Field Name="world" />
     </ShowAsAssociation>
   </Class>
   <Class Name="OpenRa.Game.Controller">
@@ -20,6 +21,7 @@
     <Members>
       <Field Name="dragEnd" Hidden="true" />
       <Field Name="dragStart" Hidden="true" />
+      <Field Name="game" Hidden="true" />
     </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAACAgAAABAAAAAIAAAAAIAAAAA=</HashCode>
@@ -35,6 +37,23 @@
       <HashCode>AAAAAAAABAAAiABAAIYAAEAAAABCAAAAAABgAAAAgBE=</HashCode>
       <FileName>Graphics\Viewport.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.World">
+    <Position X="8.5" Y="5.5" Width="1.5" />
+    <Members>
+      <Field Name="actors" Hidden="true" />
+      <Field Name="frameEndActions" Hidden="true" />
+      <Field Name="game" Hidden="true" />
+      <Field Name="lastTime" Hidden="true" />
+      <Field Name="timestep" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAYAACABABAAgAAAAIAABgAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>World.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="game" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
