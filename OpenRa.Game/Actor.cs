@@ -129,7 +129,7 @@ namespace OpenRa.Game
 		}
 
 		public float2 CenterLocation;
-		public float2 SelectedSize { get { return Render().FirstOrDefault().First.size; } }
+		public float2 SelectedSize { get { return Render().LastOrDefault().First.size; } }
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
 		{

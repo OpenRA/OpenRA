@@ -44,6 +44,7 @@ namespace OpenRa.Game
 			game = new Game(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize));
 
 			SequenceProvider.ForcePrecache();
+			Traits.RenderBuilding.Prefetch();
 
 			game.world.Add( new Actor( "mcv", new int2( 5, 5 ), game.players[ 3 ]) );
 			game.world.Add( new Actor( "mcv", new int2( 7, 5 ), game.players[ 2 ] ) );
