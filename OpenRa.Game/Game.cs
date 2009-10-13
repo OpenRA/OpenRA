@@ -45,11 +45,11 @@ namespace OpenRa.Game
 			foreach( TreeReference treeReference in map.Trees )
 				world.Add( new Actor( treeReference, treeCache, map.Offset ) );
 
-			pathFinder = new PathFinder(map, terrain.tileSet);
+			LocalPlayerBuildings = new BuildingInfluenceMap(world, LocalPlayer);
+
+			pathFinder = new PathFinder(map, terrain.tileSet, LocalPlayerBuildings);
 
 			network = new Network();
-
-			LocalPlayerBuildings = new BuildingInfluenceMap(world, LocalPlayer);
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, this);
