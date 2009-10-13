@@ -7,7 +7,7 @@ namespace OpenRa.Game.Traits
 {
 	class McvDeploy : IOrder, ITick
 	{
-		public bool Deploying;
+		public int2? DeployLocation;
 
 		public McvDeploy(Actor self)
 		{
@@ -16,18 +16,26 @@ namespace OpenRa.Game.Traits
 		public Order Order(Actor self, Game game, int2 xy)
 		{
 			// TODO: check that there's enough space at the destination.
-			if (xy == self.Location)
-				return new DeployMcvOrder(self);
+			if( xy == self.Location )
+				return new DeployMcvOrder( self, xy );
 
 			return null;
 		}
 
 		public void Tick(Actor self, Game game, int dt)
 		{
-			if (!Deploying)
+			var mobile = self.traits.Get<Mobile>();
+
+			if( mobile.moveFraction < mobile.moveFractionTotal )
 				return;
 
-			if (self.traits.Get<Mobile>().Turn(12))
+			if( self.Location != DeployLocation )
+			{
+				DeployLocation = null;
+				return;
+			}
+
+			if (mobile.Turn(12))
 				return;
 
 			game.world.AddFrameEndTask(_ =>
