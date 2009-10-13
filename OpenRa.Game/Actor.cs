@@ -14,14 +14,14 @@ namespace OpenRa.Game
 	class Actor
 	{
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly UnitInfo.BaseInfo unitInfo;
+		public readonly UnitInfo unitInfo;
 
 		public int2 Location;
 		public Player Owner;
 
 		public Actor( string name, int2 location, Player owner )
 		{
-			unitInfo = Rules.UnitInfo.Get( name );
+			unitInfo = Rules.UnitInfo[ name ];
 			Location = location;
 			CenterLocation = new float2( 12, 12 ) + 24 * (float2)Location;
 			Owner = owner;

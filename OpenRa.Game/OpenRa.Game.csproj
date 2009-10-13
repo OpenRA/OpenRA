@@ -76,6 +76,7 @@
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\UnitInfo.cs" />
+    <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\CursorSheetBuilder.cs" />

@@ -1,47 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using IjwFramework.Types;
 
 namespace OpenRa.Game.GameRules
 {
-	public class UnitInfo
+	public class UnitInfoLoader
 	{
-		static Func<string, IniSection, BaseInfo> BindInfoCtor<T>()
-			where T : BaseInfo
+		static Func<string, IniSection, UnitInfo> BindInfoCtor<T>()
+			where T : UnitInfo
 		{
-			var ctor = typeof(T).GetConstructor(new[] { typeof(string), typeof(IniSection) });
-			return (s, i) => (BaseInfo)ctor.Invoke(new object [] { s,i });
+			var ctor = typeof( T ).GetConstructor( new[] { typeof( string ), typeof( IniSection ) } );
+			return ( s, i ) => (UnitInfo)ctor.Invoke( new object[] { s, i } );
 		}
 
-		readonly Dictionary<string, BaseInfo> unitInfos = new Dictionary<string, BaseInfo>();
+		readonly Dictionary<string, UnitInfo> unitInfos = new Dictionary<string, UnitInfo>();
 
-		public UnitInfo( IniFile rules )
+		public UnitInfoLoader( IniFile rules )
 		{
-			var srcs = new [] 
+			var srcs = new[] 
 			{
-				Pair.New( "buildings.txt", BindInfoCtor<BuildingInfo>() ),
-				Pair.New( "infantry.txt", BindInfoCtor<InfantryInfo>() ),
-				Pair.New( "vehicles.txt", BindInfoCtor<VehicleInfo>() ),
+				Pair.New( "buildings.txt", BindInfoCtor<UnitInfo.BuildingInfo>() ),
+				Pair.New( "infantry.txt", BindInfoCtor<UnitInfo.InfantryInfo>() ),
+				Pair.New( "vehicles.txt", BindInfoCtor<UnitInfo.VehicleInfo>() ),
 			};
 
 			foreach( var src in srcs )
-				foreach (var s in Util.ReadAllLines(FileSystem.Open(src.First)))
+				foreach( var s in Util.ReadAllLines( FileSystem.Open( src.First ) ) )
 				{
-					var unitName = s.Split(',')[0];
-					unitInfos.Add(unitName.ToLowerInvariant(), 
-						src.Second(unitName, rules.GetSection(unitName)));
+					var unitName = s.Split( ',' )[ 0 ];
+					unitInfos.Add( unitName.ToLowerInvariant(),
+						src.Second( unitName, rules.GetSection( unitName ) ) );
 				}
 		}
 
-		public BaseInfo Get( string unitName )
+		public UnitInfo this[ string unitName ]
 		{
-			return unitInfos[ unitName.ToLowerInvariant() ];
+			get
+			{
+				return unitInfos[ unitName.ToLowerInvariant() ];
+			}
 		}
+	}
 
+	public class UnitInfo
+	{
 		public enum ArmorType
 		{
 			none = 0,
@@ -51,42 +56,39 @@ namespace OpenRa.Game.GameRules
 			concrete = 4,
 		}
 
-		public class BaseInfo
+		public readonly string Name;
+
+		public readonly int Ammo = -1;
+		public readonly ArmorType Armor = ArmorType.none;
+		public readonly bool DoubleOwned = false;
+		public readonly bool Cloakable = false;
+		public readonly int Cost = 0;
+		public readonly bool Crewed = false;
+		public readonly bool Explodes = false;
+		public readonly int GuardRange = -1; // -1 = use weapon's range
+		public readonly string Image = null; // sprite-set to use when rendering
+		public readonly bool Invisible = false;
+		public readonly string Owner = "allies,soviet"; // TODO: make this an enum
+		public readonly int Points = 0;
+		public readonly string Prerequisite = "";
+		public readonly string Primary = null;
+		public readonly string Secondary = null;
+		public readonly int ROT = 0;
+		public readonly int Reload = 0;
+		public readonly bool SelfHealing = false;
+		public readonly bool Sensors = false; // no idea what this does
+		public readonly int Sight = 1;
+		public readonly int Strength = 1;
+		public readonly int TechLevel = -1;
+
+		public UnitInfo( string name, IniSection ini )
 		{
-			public readonly string Name;
+			Name = name.ToLowerInvariant();
 
-			public readonly int Ammo = -1;
-			public readonly ArmorType Armor = ArmorType.none;
-			public readonly bool DoubleOwned = false;
-			public readonly bool Cloakable = false;
-			public readonly int Cost = 0;
-			public readonly bool Crewed = false;
-			public readonly bool Explodes = false;
-			public readonly int GuardRange = -1; // -1 = use weapon's range
-			public readonly string Image = null; // sprite-set to use when rendering
-			public readonly bool Invisible = false;
-			public readonly string Owner = "allies,soviet"; // TODO: make this an enum
-			public readonly int Points = 0;
-			public readonly string Prerequisite = "";
-			public readonly string Primary = null;
-			public readonly string Secondary = null;
-			public readonly int ROT = 0;
-			public readonly int Reload = 0;
-			public readonly bool SelfHealing = false;
-			public readonly bool Sensors = false; // no idea what this does
-			public readonly int Sight = 1;
-			public readonly int Strength = 1;
-			public readonly int TechLevel = -1;
-
-			public BaseInfo( string name, IniSection ini )
-			{
-				Name = name.ToLowerInvariant();
-
-				FieldLoader.Load( this, ini );
-			}
+			FieldLoader.Load( this, ini );
 		}
 
-		public class MobileInfo : BaseInfo
+		public class MobileInfo : UnitInfo
 		{
 			public readonly int Passengers = 0;
 			public readonly int Speed = 0;
@@ -123,7 +125,7 @@ namespace OpenRa.Game.GameRules
 			}
 		}
 
-		public class BuildingInfo : BaseInfo
+		public class BuildingInfo : UnitInfo
 		{
 			public readonly bool BaseNormal = true;
 			public readonly int Adjacent = 1;

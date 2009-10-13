@@ -54,7 +54,7 @@ namespace OpenRa.TechTree
 				.Concat( Lines( "infantry.txt", false ) );
 
             foreach (Tuple<string, string, bool> p in definitions)
-				objects.Add(p.a, new Item(p.a, p.b, Rules.UnitInfo.Get(p.a), p.c));
+				objects.Add(p.a, new Item(p.a, p.b, Rules.UnitInfo[p.a], p.c));
 		}
 
 		public bool Build(string key, bool force)

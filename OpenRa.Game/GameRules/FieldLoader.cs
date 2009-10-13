@@ -8,7 +8,7 @@ namespace OpenRa.Game.GameRules
 {
 	static class FieldLoader
 	{
-		public  static void Load( UnitInfo.BaseInfo self, IniSection ini )
+		public  static void Load( object self, IniSection ini )
 		{
 			foreach( var x in ini )
 			{

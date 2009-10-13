@@ -8,13 +8,16 @@ namespace OpenRa.Game
 {
 	static class Rules
 	{
-		public static UnitInfo UnitInfo;
+		public static UnitInfoLoader UnitInfo;
+		public static WeaponInfoLoader WeaponInfo;
 		public static Footprint Footprint;
 
 		// TODO: load rules from the map, where appropriate.
 		public static void LoadRules()
 		{
-			UnitInfo = new UnitInfo( new IniFile( FileSystem.Open( "rules.ini" ) ) );
+			var rulesIni = new IniFile( FileSystem.Open( "rules.ini" ) );
+			UnitInfo = new UnitInfoLoader( rulesIni );
+			WeaponInfo = new WeaponInfoLoader( rulesIni );
 			Footprint = new Footprint(FileSystem.Open("footprint.txt"));
 		}
 	}

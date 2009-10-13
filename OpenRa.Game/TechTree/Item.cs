@@ -11,7 +11,7 @@ namespace OpenRa.TechTree
 
 		public bool IsStructure { get { return isStructure; } }
 
-		public Item(string tag, string friendlyName, UnitInfo.BaseInfo unitInfo, bool isStructure)
+		public Item(string tag, string friendlyName, UnitInfo unitInfo, bool isStructure)
 		{
 			this.tag = tag;
 			this.friendlyName = friendlyName;
