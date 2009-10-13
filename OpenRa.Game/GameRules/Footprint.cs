@@ -53,5 +53,23 @@ namespace OpenRa.Game.GameRules
 				++j;
 			}
 		}
+
+		public static IEnumerable<int2> UnpathableTiles( string name, int2 position )
+		{
+			var footprint = Rules.Footprint.GetFootprint( name );
+			var j = 0;
+
+			foreach( var row in footprint )
+			{
+				var i = 0;
+				foreach( var c in row )
+				{
+					if( c == 'x' )
+						yield return position + new int2( i, j );
+					++i;
+				}
+				++j;
+			}
+		}
 	}
 }

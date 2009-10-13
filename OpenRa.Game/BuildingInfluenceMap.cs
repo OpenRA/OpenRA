@@ -20,14 +20,14 @@ namespace OpenRa.Game
 
 		void AddInfluence(Actor a)
 		{
-			foreach (var t in Footprint.Tiles(a.unitInfo.Name, a.Location))
+			foreach (var t in Footprint.UnpathableTiles(a.unitInfo.Name, a.Location))
 				if (IsValid(t))
 					influence[t.X, t.Y] = a;
 		}
 
 		void RemoveInfluence(Actor a)
 		{
-			foreach (var t in Footprint.Tiles(a.unitInfo.Name, a.Location))
+			foreach (var t in Footprint.UnpathableTiles(a.unitInfo.Name, a.Location))
 				if (IsValid(t))
 					influence[t.X, t.Y] = null;
 		}

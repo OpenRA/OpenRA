@@ -6,10 +6,11 @@
 
 x			: ftur sbag brik fenc gun pbox hbox silo gap kenn *
 _ x			: tsla agun
-xx xx xx	: powr dome barr tent domf hpad atek
-xxx xxx xxx	: fact facf syrf syrd weap weaf spen spef apwr stek
+xx xx ==	: powr dome barr tent domf hpad atek
+xxx xxx ===	: fact facf weap weaf apwr stek
+xxx xxx xxx : syrf syrd spen spef
 xx			: sam mslo
-_x_ xxx xxx xxx : proc
+_x_ xxx x== === : proc
 xxx xxx			: afld
 _x_ xxx _x_		: fix
-__ xx           : iron
+xx xx           : iron
