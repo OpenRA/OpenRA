@@ -15,9 +15,12 @@ namespace OpenRa.Game
 
 		public World(Game game) { this.game = game; }
 
-		public void Add(Actor a) { actors.Add(a); }
-		public void Remove( Actor a ) { actors.Remove( a ); }
+		public void Add(Actor a) { actors.Add(a); ActorAdded(a); }
+		public void Remove(Actor a) { actors.Remove(a); ActorRemoved(a); }
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
+
+		public event Action<Actor> ActorAdded = _ => { };
+		public event Action<Actor> ActorRemoved = _ => { };
 
 		public void Update()
 		{

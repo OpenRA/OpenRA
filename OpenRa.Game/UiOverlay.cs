@@ -1,6 +1,7 @@
 using System.Drawing;
 using OpenRa.Game.Graphics;
 using System;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -36,22 +37,8 @@ namespace OpenRa.Game
 			if (!hasOverlay)
 				return;
 
-			var footprint = Rules.Footprint.GetFootprint(name);
-			var j = 0;
-			foreach (var row in footprint)
-			{
-				var i = 0;
-				foreach (var c in row)
-				{
-					if (c != '_')
-						spriteRenderer.DrawSprite(
-							game.IsCellBuildable(position + new int2(i, j)) 
-								? buildOk : buildBlocked,
-							24 * (position + new int2(i, j)), 0);
-					++i;
-				}
-				++j;
-			}
+			foreach (var t in Footprint.Tiles(name,position))
+				spriteRenderer.DrawSprite(game.IsCellBuildable(t) ? buildOk : buildBlocked, 24 * t, 0);
 
 			spriteRenderer.Flush();
 		}

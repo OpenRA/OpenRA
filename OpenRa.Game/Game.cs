@@ -24,6 +24,7 @@ namespace OpenRa.Game
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
 		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
+		public BuildingInfluenceMap LocalPlayerBuildings;
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
@@ -48,6 +49,8 @@ namespace OpenRa.Game
 
 			network = new Network();
 
+			LocalPlayerBuildings = new BuildingInfluenceMap(world, LocalPlayer);
+
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, this);
 		}
@@ -62,11 +65,13 @@ namespace OpenRa.Game
 
 		public bool IsCellBuildable(int2 a)
 		{
+			if (LocalPlayerBuildings[a] != null) return false;
+
 			a += map.Offset;
 
 			return map.IsInMap(a.X, a.Y) &&
-			TerrainCosts.Cost(UnitMovementType.Wheel,
-				terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+				TerrainCosts.Cost(UnitMovementType.Wheel,
+					terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public IEnumerable<Actor> FindUnits(float2 a, float2 b)
