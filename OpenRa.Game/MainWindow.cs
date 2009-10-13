@@ -53,7 +53,7 @@ namespace OpenRa.Game
 
 			sidebar = new Sidebar(renderer, game);
 
-			renderer.SetPalette(new HardwarePalette(renderer, game.map));
+			renderer.BuildPalette(game.map);
 		}
 
 		internal void Run()

@@ -9,8 +9,14 @@ namespace OpenRa.Game.Graphics
 	class Renderer
 	{
 		readonly GraphicsDevice device;
+		Texture[] palettes;
         public Shader SpriteShader { get; private set; }    /* note: shared shader params */
         public Shader LineShader { get; private set; }
+
+		public void BuildPalette(Map map)
+		{
+			palettes = Util.MakeArray(7, i => new HardwarePalette(this, map, i).Texture);
+		}
 
 		public void SetPalette(HardwarePalette hp)
 		{
@@ -37,7 +43,7 @@ namespace OpenRa.Game.Graphics
 		{
 			device.Begin();
 
-			SpriteShader.SetValue("palDist", waterFrame);
+			SpriteShader.SetValue("Palette", palettes[ (int)(waterFrame * palettes.Length) % palettes.Length ]);
 			SpriteShader.SetValue("Scroll", scroll);
 			SpriteShader.SetValue("r1", r1);
 			SpriteShader.SetValue("r2", r2);
