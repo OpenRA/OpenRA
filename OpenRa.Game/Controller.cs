@@ -28,6 +28,10 @@ namespace OpenRa.Game
             {
 				if (!(orderGenerator is PlaceBuilding))
 					dragStart = dragEnd = xy;
+
+				if (orderGenerator != null)
+					foreach (var order in orderGenerator.Order(game, xy.ToInt2()))
+						order.Apply(game, true);
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -55,7 +59,7 @@ namespace OpenRa.Game
 			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 				if( orderGenerator != null )
 					foreach( var order in orderGenerator.Order( game, xy.ToInt2() ) )
-						order.Apply( game );
+						order.Apply( game, false );
 		}
 
         public Pair<float2, float2>? SelectionBox

@@ -207,16 +207,27 @@ namespace OpenRa.Game
 			this.xy = xy;
 		}
 
-		public override void Apply(Game game)
+		public override void Apply(Game game, bool leftMouseButton)
 		{
-			game.world.AddFrameEndTask(_ =>
+			if (leftMouseButton)
 			{
-				Log.Write( "Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name );
-				game.world.Add( new Actor( building.Name, xy, building.Owner ) );
-	
-				game.controller.orderGenerator = null;
-				game.worldRenderer.uiOverlay.KillOverlay();
-			});
+				game.world.AddFrameEndTask(_ =>
+				{
+					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);
+					game.world.Add(new Actor(building.Name, xy, building.Owner));
+
+					game.controller.orderGenerator = null;
+					game.worldRenderer.uiOverlay.KillOverlay();
+				});
+			}
+			else
+			{
+				game.world.AddFrameEndTask(_ =>
+				{
+					game.controller.orderGenerator = null;
+					game.worldRenderer.uiOverlay.KillOverlay();
+				});
+			}
 		}
 	}
 }
