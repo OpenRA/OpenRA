@@ -10,16 +10,6 @@ namespace OpenRa.Game.GameRules
 {
 	public class UnitInfo
 	{
-		static bool ParseYesNo( string p )
-		{
-			p = p.ToLowerInvariant();
-			if( p == "yes" ) return true;
-			if( p == "true" ) return true;
-			if( p == "no" ) return false;
-			if( p == "false" ) return false;
-			throw new InvalidOperationException();
-		}
-
 		static Func<string, IniSection, BaseInfo> BindInfoCtor<T>()
 			where T : BaseInfo
 		{
@@ -92,27 +82,7 @@ namespace OpenRa.Game.GameRules
 			{
 				Name = name.ToLowerInvariant();
 
-				foreach( var x in ini )
-				{
-					var field = this.GetType().GetField( x.Key );
-					if( field.FieldType == typeof( int ) )
-						field.SetValue( this, int.Parse( x.Value ) );
-
-					else if( field.FieldType == typeof( float ) )
-						field.SetValue( this, float.Parse( x.Value ) );
-
-					else if( field.FieldType == typeof( string ) )
-						field.SetValue( this, x.Value.ToLowerInvariant() );
-
-					else if( field.FieldType == typeof( ArmorType ) )
-						field.SetValue( this, Enum<ArmorType>.Parse(x.Value) );
-
-					else if( field.FieldType == typeof( bool ) )
-						field.SetValue( this, ParseYesNo( x.Value ) );
-
-					else
-						do { } while( false );
-				}
+				FieldLoader.Load( this, ini );
 			}
 		}
 

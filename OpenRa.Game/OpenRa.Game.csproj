@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="GameRules\FieldLoader.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\UnitInfo.cs" />
