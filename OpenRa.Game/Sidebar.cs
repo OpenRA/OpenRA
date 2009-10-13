@@ -148,7 +148,7 @@ namespace OpenRa.Game
 		{
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
-                var point = new float2(mi.Location.X, mi.Location.Y);
+				var point = mi.Location.ToFloat2();
 				var item = GetItem(point);
 				if (item != null)
 				{
@@ -162,7 +162,7 @@ namespace OpenRa.Game
             }
 			else if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 			{
-                var point = new float2(mi.Location.X, mi.Location.Y);
+				var point = mi.Location.ToFloat2();
 				var item = GetItem(point);
 				if( item != null )
 				{

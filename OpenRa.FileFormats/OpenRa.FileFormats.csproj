@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudLoader.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="BlowfishKeyProvider.cs" />
     <Compile Include="Dune2ShpReader.cs" />

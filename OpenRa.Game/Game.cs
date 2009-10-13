@@ -4,6 +4,7 @@ using OpenRa.Game.Graphics;
 using OpenRa.TechTree;
 using System.Drawing;
 using System.Linq;
+using IrrKlang;
 
 namespace OpenRa.Game
 {
@@ -25,6 +26,8 @@ namespace OpenRa.Game
 
 		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
 		public BuildingInfluenceMap LocalPlayerBuildings;
+
+		ISoundEngine soundEngine;
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
@@ -53,6 +56,21 @@ namespace OpenRa.Game
 
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, this);
+
+			var sound = AudLoader.LoadSound(FileSystem.Open("intro.aud"));
+
+			soundEngine = new ISoundEngine();
+			
+			var soundSource = soundEngine.AddSoundSourceFromPCMData(sound, "intro.aud",
+				new AudioFormat()
+				{
+					ChannelCount = 1,
+					FrameCount = sound.Length / 2,
+					Format = SampleFormat.Signed16Bit,
+					SampleRate = 22050
+				});
+
+			soundEngine.Play2D(soundSource, true, false, true);
 		}
 
 		public void Tick()

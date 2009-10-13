@@ -30,6 +30,7 @@ namespace OpenRa.Game
 			FileSystem.Mount(new Package("conquer.mix"));
 			FileSystem.Mount(new Package("hires.mix"));
 			FileSystem.Mount(new Package("general.mix"));
+			FileSystem.Mount(new Package("local.mix"));
 
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
