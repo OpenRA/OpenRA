@@ -29,15 +29,17 @@ namespace OpenRa.Game
 	class DeployMcvOrder : Order
 	{
 		Actor Unit;
+		int2 Location;
 
-		public DeployMcvOrder( Actor unit )
+		public DeployMcvOrder( Actor unit, int2 location )
 		{
 			Unit = unit;
+			Location = location;
 		}
 
 		public override void Apply( Game game )
 		{
-			Unit.traits.Get<Traits.McvDeploy>().Deploying = true;
+			Unit.traits.Get<Traits.McvDeploy>().DeployLocation = Location;
 			var mobile = Unit.traits.Get<Traits.Mobile>();
 			mobile.destination = mobile.toCell;
 		}
