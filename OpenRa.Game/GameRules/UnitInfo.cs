@@ -7,44 +7,6 @@ using IjwFramework.Types;
 
 namespace OpenRa.Game.GameRules
 {
-	public class UnitInfoLoader
-	{
-		static Func<string, IniSection, UnitInfo> BindInfoCtor<T>()
-			where T : UnitInfo
-		{
-			var ctor = typeof( T ).GetConstructor( new[] { typeof( string ), typeof( IniSection ) } );
-			return ( s, i ) => (UnitInfo)ctor.Invoke( new object[] { s, i } );
-		}
-
-		readonly Dictionary<string, UnitInfo> unitInfos = new Dictionary<string, UnitInfo>();
-
-		public UnitInfoLoader( IniFile rules )
-		{
-			var srcs = new[] 
-			{
-				Pair.New( "buildings.txt", BindInfoCtor<UnitInfo.BuildingInfo>() ),
-				Pair.New( "infantry.txt", BindInfoCtor<UnitInfo.InfantryInfo>() ),
-				Pair.New( "vehicles.txt", BindInfoCtor<UnitInfo.VehicleInfo>() ),
-			};
-
-			foreach( var src in srcs )
-				foreach( var s in Util.ReadAllLines( FileSystem.Open( src.First ) ) )
-				{
-					var unitName = s.Split( ',' )[ 0 ];
-					unitInfos.Add( unitName.ToLowerInvariant(),
-						src.Second( unitName, rules.GetSection( unitName ) ) );
-				}
-		}
-
-		public UnitInfo this[ string unitName ]
-		{
-			get
-			{
-				return unitInfos[ unitName.ToLowerInvariant() ];
-			}
-		}
-	}
-
 	public class UnitInfo
 	{
 		public enum ArmorType
@@ -81,22 +43,14 @@ namespace OpenRa.Game.GameRules
 		public readonly int Strength = 1;
 		public readonly int TechLevel = -1;
 
-		public UnitInfo( string name, IniSection ini )
-		{
-			Name = name.ToLowerInvariant();
-
-			FieldLoader.Load( this, ini );
-		}
+		public UnitInfo(string name) { Name = name; }
 
 		public class MobileInfo : UnitInfo
 		{
 			public readonly int Passengers = 0;
 			public readonly int Speed = 0;
 
-			public MobileInfo( string name, IniSection ini )
-				: base( name, ini )
-			{
-			}
+			public MobileInfo(string name) : base(name) { }
 		}
 
 		public class InfantryInfo : MobileInfo
@@ -107,10 +61,7 @@ namespace OpenRa.Game.GameRules
 			public readonly bool Infiltrate = false;
 			public readonly bool IsCanine = false;
 
-			public InfantryInfo( string name, IniSection ini )
-				: base( name, ini )
-			{
-			}
+			public InfantryInfo(string name) : base(name) { }
 		}
 
 		public class VehicleInfo : MobileInfo
@@ -119,10 +70,7 @@ namespace OpenRa.Game.GameRules
 			public readonly bool Tracked = false;
 			public readonly bool NoMovingFire = false;
 
-			public VehicleInfo( string name, IniSection ini )
-				: base( name, ini )
-			{
-			}
+			public VehicleInfo(string name) : base(name) { }
 		}
 
 		public class BuildingInfo : UnitInfo
@@ -138,10 +86,7 @@ namespace OpenRa.Game.GameRules
 			public readonly bool Unsellable = false;
 			public readonly bool WaterBound = false;
 
-			public BuildingInfo( string name, IniSection ini )
-				: base( name, ini )
-			{
-			}
+			public BuildingInfo(string name) : base(name) { }
 		}
 
 		/*
