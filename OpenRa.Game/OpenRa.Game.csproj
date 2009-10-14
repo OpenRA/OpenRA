@@ -137,7 +137,6 @@
     <Compile Include="Traits\Tree.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="UiOverlay.cs" />
-    <Compile Include="UnitMissions.cs" />
     <Compile Include="Graphics\UnitSheetBuilder.cs" />
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Vertex.cs" />

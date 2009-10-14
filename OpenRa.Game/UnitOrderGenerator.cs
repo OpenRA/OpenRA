@@ -22,16 +22,6 @@ namespace OpenRa.Game
 				if( ret != null )
 					yield return ret;
 			}
-
-			//if( ( fromCell == toCell || moveFraction == 0 ) && fromCell == xy )
-			//{
-			//    if( SupportsMission( SupportedMissions.Deploy ) )
-			//        return new DeployMcvOrder( this );
-			//    if( SupportsMission( SupportedMissions.Harvest ) )
-			//        return new HarvestOrder( this );
-			//}
-
-			//return new MoveOrder( this, xy );
 		}
 
 		public void PrepareOverlay( Game game, int2 xy ) { }
