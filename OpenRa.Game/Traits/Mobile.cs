@@ -103,8 +103,6 @@ namespace OpenRa.Game.Traits
 		{
 			if (xy != toCell)
 			{
-				if (game.LocalPlayer == self.Owner)
-					game.PlaySound("ackno.r00", false);
 				return new MoveOrder(self, xy);
 			}
 			return null;

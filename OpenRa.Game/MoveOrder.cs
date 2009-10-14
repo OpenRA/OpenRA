@@ -23,6 +23,8 @@ namespace OpenRa.Game
 		public override void Apply( Game game, bool leftMouseButton )
 		{
 			if (leftMouseButton) return;
+			if (game.LocalPlayer == Unit.Owner)
+				game.PlaySound("ackno.r00", false);
 			Unit.traits.Get<Traits.Mobile>().destination = Destination;
 		}
 	}
