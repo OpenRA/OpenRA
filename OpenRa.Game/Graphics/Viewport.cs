@@ -25,7 +25,7 @@ namespace OpenRa.Game.Graphics
 		public Viewport(float2 size, float2 mapSize, Renderer renderer)
 		{
 			this.size = size;
-			this.mapSize = 24 * mapSize - size + new float2(128, 0);
+			this.mapSize = Game.CellSize * mapSize - size + new float2(128, 0);
 			this.renderer = renderer;
 		}
 

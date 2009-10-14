@@ -42,9 +42,9 @@ namespace OpenRa.Game
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					if (dragStart != xy)
-						orderGenerator = new UnitOrderGenerator( game.FindUnits( 24 * dragStart, 24 * xy ) ); /* band-box select */
+						orderGenerator = new UnitOrderGenerator( game.FindUnits( Game.CellSize * dragStart, Game.CellSize * xy ) ); /* band-box select */
 					else
-						orderGenerator = new UnitOrderGenerator( game.FindUnits( 24 * xy, 24 * xy ) );  /* click select */
+						orderGenerator = new UnitOrderGenerator( game.FindUnits( Game.CellSize * xy, Game.CellSize * xy ) );  /* click select */
 				}
 
 				dragStart = dragEnd;
@@ -67,7 +67,7 @@ namespace OpenRa.Game
 			get
 			{
 				if (dragStart == dragEnd) return null;
-				return Pair.New(24 * dragStart, 24 * dragEnd);
+				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
 			}
         }
 	}

@@ -74,7 +74,7 @@ namespace OpenRa.Game.Graphics
 							spriteIndex = 11;
 						else if( overlayIsGems[ map.MapTiles[ x, y ].overlay ] )
 							spriteIndex = 2;
-						spriteRenderer.DrawSprite( sprites[ spriteIndex ], 24 * (float2)( location - map.Offset ), 0 );
+						spriteRenderer.DrawSprite( sprites[ spriteIndex ], Game.CellSize * (float2)( location - map.Offset ), 0 );
 					}
 				}
 			}

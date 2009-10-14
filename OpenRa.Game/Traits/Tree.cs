@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<Pair<Sprite, float2>> Render(Actor self)
 		{
-			yield return Pair.New(Image, 24 * (float2)self.Location);
+			yield return Pair.New(Image, Game.CellSize * (float2)self.Location);
 		}
 	}
 }

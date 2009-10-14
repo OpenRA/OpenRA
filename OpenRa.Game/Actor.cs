@@ -23,7 +23,7 @@ namespace OpenRa.Game
 		{
 			unitInfo = Rules.UnitInfo[ name ];
 			Location = location;
-			CenterLocation = new float2( 12, 12 ) + 24 * (float2)Location;
+			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
 			Owner = owner;
 
 			switch( name )

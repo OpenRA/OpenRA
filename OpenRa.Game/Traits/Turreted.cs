@@ -7,7 +7,7 @@ namespace OpenRa.Game.Traits
 {
 	class Turreted : ITick // temporary.
 	{
-		public int turretFacing = 24;
+		public int turretFacing = Game.CellSize;
 
 		public Turreted(Actor self)
 		{
