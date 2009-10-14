@@ -5,6 +5,7 @@ using OpenRa.TechTree;
 using System.Drawing;
 using System.Linq;
 using IrrKlang;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game
 {
@@ -57,20 +58,32 @@ namespace OpenRa.Game
 			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
 			worldRenderer = new WorldRenderer(renderer, this);
 
-			var sound = AudLoader.LoadSound(FileSystem.Open("intro.aud"));
-
 			soundEngine = new ISoundEngine();
-			
-			var soundSource = soundEngine.AddSoundSourceFromPCMData(sound, "intro.aud",
+			sounds = new Cache<string, ISoundSource>(LoadSound);
+
+			PlaySound("intro.aud", false);
+		}
+
+		readonly Cache<string, ISoundSource> sounds;
+
+		ISoundSource LoadSound(string filename)
+		{
+			var data = AudLoader.LoadSound(FileSystem.Open(filename));
+			return soundEngine.AddSoundSourceFromPCMData(data, filename,
 				new AudioFormat()
 				{
 					ChannelCount = 1,
-					FrameCount = sound.Length / 2,
+					FrameCount = data.Length / 2,
 					Format = SampleFormat.Signed16Bit,
 					SampleRate = 22050
 				});
+		}
 
-			soundEngine.Play2D(soundSource, true, false, true);
+		public void PlaySound(string name, bool loop)
+		{
+			var sound = sounds[name];
+			// todo: positioning
+			soundEngine.Play2D(sound, loop, false, false);
 		}
 
 		public void Tick()
