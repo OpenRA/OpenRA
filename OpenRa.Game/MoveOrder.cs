@@ -46,19 +46,4 @@ namespace OpenRa.Game
 			mobile.destination = mobile.toCell;
 		}
 	}
-
-	//class HarvestOrder : Order
-	//{
-	//    Unit unit;
-
-	//    public HarvestOrder( Unit unit )
-	//    {
-	//        this.unit = unit;
-	//    }
-
-	//    public override void Apply( Game game )
-	//    {
-	//        unit.nextOrder = UnitMissions.Harvest( unit );
-	//    }
-	//}
 }
