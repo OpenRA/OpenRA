@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace OpenRa.FileFormats
 {
@@ -75,18 +76,17 @@ namespace OpenRa.FileFormats
 
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>
 	{
-		string name;
+		public string Name { get; private set; }
 		Dictionary<string, string> values = new Dictionary<string, string>();
 
 		public IniSection( string name )
 		{
-			this.name = name;
+			Name = name;
 		}
 
 		public void Add( string key, string value )
 		{
 			values[key] = value;
-			//values.Add( key, value );
 		}
 
 		public string GetValue( string key, string defaultValue )
@@ -100,7 +100,7 @@ namespace OpenRa.FileFormats
 			return values.GetEnumerator();
 		}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}
