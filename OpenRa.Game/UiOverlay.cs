@@ -23,13 +23,13 @@ namespace OpenRa.Game
 
 		static Sprite SynthesizeTile(byte paletteIndex)
 		{
-			byte[] data = new byte[24 * 24];
+			byte[] data = new byte[Game.CellSize * Game.CellSize];
 
-			for (int i = 0; i < 24; i++)
-				for (int j = 0; j < 24; j++)
-					data[i * 24 + j] = ((i + j) % 4 < 2) ? (byte)0 : paletteIndex;
+			for (int i = 0; i < Game.CellSize; i++)
+				for (int j = 0; j < Game.CellSize; j++)
+					data[i * Game.CellSize + j] = ((i + j) % 4 < 2) ? (byte)0 : paletteIndex;
 
-			return SheetBuilder.Add( data, new Size(24,24) );
+			return SheetBuilder.Add( data, new Size(Game.CellSize,Game.CellSize) );
 		}
 
 		public void Draw()
@@ -38,7 +38,7 @@ namespace OpenRa.Game
 				return;
 
 			foreach (var t in Footprint.Tiles(name,position))
-				spriteRenderer.DrawSprite(game.IsCellBuildable(t) ? buildOk : buildBlocked, 24 * t, 0);
+				spriteRenderer.DrawSprite(game.IsCellBuildable(t) ? buildOk : buildBlocked, Game.CellSize * t, 0);
 
 			spriteRenderer.Flush();
 		}

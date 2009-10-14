@@ -59,7 +59,7 @@ namespace OpenRa.Game.Traits
 		void UpdateCenterLocation()
 		{
 			float fraction = (moveFraction > 0) ? (float)moveFraction / moveFractionTotal : 0f;
-			self.CenterLocation = new float2(12, 12) + 24 * float2.Lerp(fromCell, toCell, fraction);
+			self.CenterLocation = new float2(12, 12) + Game.CellSize * float2.Lerp(fromCell, toCell, fraction);
 		}
 
 		public void Tick(Actor self, Game game, int dt)

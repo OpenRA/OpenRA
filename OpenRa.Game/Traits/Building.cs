@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits
 			if (first && self.Owner == game.LocalPlayer)
 			{
 				self.Owner.TechTree.Build(self.unitInfo.Name, true);
-				self.CenterLocation = 24 * (float2)self.Location + 0.5f * self.SelectedSize;
+				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
 			}
 			first = false;
 		}

@@ -214,7 +214,15 @@ namespace OpenRa.Game
 				game.world.AddFrameEndTask(_ =>
 				{
 					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);
-					game.world.Add(new Actor(building.Name, xy, building.Owner));
+
+					//Adjust placement for cursor to be in middle
+					var footprint = Rules.Footprint.GetFootprint(building.Name);
+					int maxWidth = 0;
+					foreach (var row in footprint)
+						if (row.Length > maxWidth)
+							maxWidth = row.Length;
+
+					game.world.Add(new Actor(building.Name, xy - new int2(maxWidth / 2, footprint.Length / 2), building.Owner));
 
 					game.controller.orderGenerator = null;
 					game.worldRenderer.uiOverlay.KillOverlay();

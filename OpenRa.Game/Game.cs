@@ -11,6 +11,8 @@ namespace OpenRa.Game
 {
 	class Game
 	{
+		public static readonly int CellSize = 24;
+
 		public readonly World world;
 		public readonly Map map;
 		readonly TreeCache treeCache;

@@ -30,7 +30,7 @@ namespace OpenRa.Game.Graphics
 
 			tileSet = new TileSet( map.TileSuffix );
 
-            Size tileSize = new Size( 24, 24 );
+            Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
             var tileMapping = new Cache<TileReference, Sprite>(
                 x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
@@ -44,7 +44,7 @@ namespace OpenRa.Game.Graphics
                 for (int i = 0; i < map.Width; i++)
                 {
                     Sprite tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
-                    Util.FastCreateQuad(vertices, indices, 24 * new float2(i, j), tile, 0, nv, ni);
+                    Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni);
                     nv += 4;
                     ni += 6;
                 }
