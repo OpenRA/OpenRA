@@ -102,7 +102,11 @@ namespace OpenRa.Game.Traits
 		public Order Order(Actor self, Game game, int2 xy)
 		{
 			if (xy != toCell)
+			{
+				if (game.LocalPlayer == self.Owner)
+					game.PlaySound("ackno.r00", false);
 				return new MoveOrder(self, xy);
+			}
 			return null;
 		}
 	}

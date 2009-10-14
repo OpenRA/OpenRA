@@ -33,6 +33,8 @@ namespace OpenRa.Game
 			FileSystem.Mount(new Package("local.mix"));
 			FileSystem.Mount(new Package("sounds.mix"));
 			FileSystem.Mount(new Package("speech.mix"));
+			FileSystem.Mount(new Package("allies.mix"));
+			FileSystem.Mount(new Package("russian.mix"));
 
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
