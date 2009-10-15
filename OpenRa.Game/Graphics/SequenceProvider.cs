@@ -9,6 +9,8 @@ namespace OpenRa.Game.Graphics
 		static Dictionary<string, Dictionary<string, Sequence>> units =
 			new Dictionary<string, Dictionary<string, Sequence>>();
 
+		static Dictionary<string, CursorSequence> cursors = new Dictionary<string, CursorSequence>();
+
 		static SequenceProvider()
 		{
 			XmlDocument document = new XmlDocument();
@@ -16,6 +18,17 @@ namespace OpenRa.Game.Graphics
 
 			foreach (XmlElement eUnit in document.SelectNodes("/sequences/unit"))
 				LoadSequencesForUnit(eUnit);
+
+			foreach (XmlElement eCursor in document.SelectNodes("/sequences/cursor"))
+				LoadSequencesForCursor(eCursor);
+		}
+
+		static void LoadSequencesForCursor(XmlElement eCursor)
+		{
+			string cursorSrc = eCursor.GetAttribute("src");
+
+			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
+				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, eSequence));
 		}
 
 		public static void ForcePrecache() { }	// force static ctor to run
@@ -34,6 +47,11 @@ namespace OpenRa.Game.Graphics
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
 			return units[unitName][sequenceName];
+		}
+
+		public static CursorSequence GetCursorSequence(string cursor)
+		{
+			return cursors[cursor];
 		}
 	}
 }

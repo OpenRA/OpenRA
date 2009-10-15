@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Cursor.cs" />
     <Compile Include="GameRules\FieldLoader.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\InfoLoader.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\OverlayRenderer.cs" />
