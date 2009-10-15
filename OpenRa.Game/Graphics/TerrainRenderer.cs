@@ -32,6 +32,8 @@ namespace OpenRa.Game.Graphics
 
             Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
+			SheetBuilder.ForceNewSheet();
+
             var tileMapping = new Cache<TileReference, Sprite>(
                 x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
 

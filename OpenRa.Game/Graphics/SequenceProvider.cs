@@ -29,6 +29,8 @@ namespace OpenRa.Game.Graphics
 
 			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
 				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, eSequence));
+
+			Log.Write("* LoadSequencesForCursor() done");
 		}
 
 		public static void ForcePrecache() { }	// force static ctor to run

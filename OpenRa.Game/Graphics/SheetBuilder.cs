@@ -25,6 +25,12 @@ namespace OpenRa.Game.Graphics
 			return Add(data, size);
 		}
 
+		public static void ForceNewSheet()
+		{
+			current = NewSheet();
+			channel = NextChannel(null);
+		}
+
 		static Sheet NewSheet() { return new Sheet(renderer, new Size(512, 512)); }
 
 		static Renderer renderer;

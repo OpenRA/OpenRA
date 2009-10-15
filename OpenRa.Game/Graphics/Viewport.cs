@@ -17,6 +17,11 @@ namespace OpenRa.Game.Graphics
 		public int Width { get { return (int)size.X; } }
 		public int Height { get { return (int)size.Y; } }
 
+		public Cursor cursor = Cursor.Move;
+		SpriteRenderer cursorRenderer;
+		int2 mousePos;
+		float cursorFrame = 0f;
+
 		public void Scroll(float2 delta)
 		{
 			scrollPosition = (scrollPosition + delta).Constrain(float2.Zero, mapSize);
@@ -27,6 +32,7 @@ namespace OpenRa.Game.Graphics
 			this.size = size;
 			this.mapSize = Game.CellSize * mapSize - size + new float2(128, 0);
 			this.renderer = renderer;
+			cursorRenderer = new SpriteRenderer(renderer, true);
 		}
 
 		List<Region> regions = new List<Region>();
@@ -42,6 +48,9 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Region region in regions)
 				region.Draw(renderer);
+			cursorFrame += 0.01f;
+			cursorRenderer.DrawSprite(cursor.GetSprite((int)cursorFrame), mousePos + Location - cursor.GetHotspot(), 0);
+			cursorRenderer.Flush();
 
 			renderer.EndFrame();
 		}
@@ -49,6 +58,9 @@ namespace OpenRa.Game.Graphics
         Region dragRegion = null;
         public void DispatchMouseInput(MouseInput mi)
         {
+			if (mi.Event == MouseInputEvent.Move)
+				mousePos = mi.Location;
+
             if (dragRegion != null) {
                 dragRegion.HandleMouseInput( mi );
                 if (mi.Event == MouseInputEvent.Up) dragRegion = null;

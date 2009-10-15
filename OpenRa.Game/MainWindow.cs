@@ -7,6 +7,7 @@ using OpenRa.TechTree;
 namespace OpenRa.Game
 {
 	using GRegion = OpenRa.Game.Graphics.Region;
+using System.Runtime.InteropServices;
 
 	class MainWindow : Form
 	{
@@ -22,6 +23,9 @@ namespace OpenRa.Game
 			return new Size(settings.GetValue("width", desktopResolution.Width),
 				settings.GetValue("height", desktopResolution.Height));
 		}
+
+		[DllImport("user32")]
+		static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
 
 		public MainWindow(Settings settings)
 		{
@@ -59,6 +63,8 @@ namespace OpenRa.Game
 			sidebar = new Sidebar(renderer, game);
 
 			renderer.BuildPalette(game.map);
+
+			ShowCursor(false);
 		}
 
 		internal void Run()
@@ -66,6 +72,12 @@ namespace OpenRa.Game
 			while (Created && Visible)
 			{
 				game.Tick();
+
+				// rude hack
+				game.viewport.cursor = (game.controller.orderGenerator is UnitOrderGenerator)
+					&& (game.controller.orderGenerator as UnitOrderGenerator).selection.Count > 0
+					? OpenRa.Game.Cursor.Move : OpenRa.Game.Cursor.Default;
+
 				Application.DoEvents();
 			}
 		}

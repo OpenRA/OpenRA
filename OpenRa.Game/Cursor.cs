@@ -7,14 +7,16 @@ using System.IO;
 
 namespace OpenRa.Game
 {
-	public class Cursor
+	class Cursor
 	{
 		CursorSequence sequence;
 		Cursor(string cursor)
 		{
 			sequence = SequenceProvider.GetCursorSequence(cursor);
-			
 		}
+
+		public Sprite GetSprite(int frame) { return sequence.GetSprite(frame); }
+		public int2 GetHotspot() { return sequence.Hotspot; }
 
 		public static Cursor Default
 		{
