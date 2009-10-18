@@ -27,6 +27,11 @@ namespace OpenRa.Game
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
+		public void ResetTimer()
+		{
+			lastTime = Environment.TickCount;
+		}
+
 		public void Update()
 		{
 			int t = Environment.TickCount;

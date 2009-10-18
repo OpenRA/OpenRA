@@ -46,8 +46,14 @@ namespace OpenRa.Game
 			case "2tnk":
 			case "3tnk":
 			case "4tnk":
+				traits.Add( new Traits.Mobile( this ) );
+				traits.Add( new Traits.Turreted( this ) );
+				traits.Add( new Traits.AttackTurreted( this ) );
+				traits.Add( new Traits.RenderUnitTurreted( this ) );
+				break;
 			case "mrj":
 			case "mgg":
+				// TODO: these aren't actually turreted; they just have spinning-things
 				traits.Add( new Traits.Mobile( this ) );
 				traits.Add( new Traits.Turreted( this ) );
 				traits.Add( new Traits.RenderUnitTurreted( this ) );

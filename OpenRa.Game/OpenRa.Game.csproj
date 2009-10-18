@@ -126,6 +126,7 @@
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Graphics\TreeCache.cs" />
+    <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\McvDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />

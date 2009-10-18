@@ -58,16 +58,19 @@ using System.Runtime.InteropServices;
 			game.world.Add( new Actor( "mcv", new int2( 5, 5 ), game.players[ 3 ]) );
 			game.world.Add( new Actor( "mcv", new int2( 7, 5 ), game.players[ 2 ] ) );
 			game.world.Add( new Actor( "mcv", new int2( 9, 5 ), game.players[ 0 ] ) );
-			game.world.Add( new Actor( "jeep", new int2( 9, 7 ), game.players[ 1 ] ) );
-
-			game.world.Add(new Bullet("105mm", game.players[1], null,
-				new int2(200, 200), new int2(400, 200), game));
+			var jeep = new Actor( "jeep", new int2( 9, 7 ), game.players[ 1 ] );
+			game.world.Add( jeep );
+			var tank = new Actor( "3tnk", new int2( 12, 7 ), game.players[ 1 ] );
+			game.world.Add( tank );
+			tank.traits.Get<Traits.AttackTurreted>().target = jeep;
 
 			sidebar = new Sidebar(renderer, game);
 
 			renderer.BuildPalette(game.map);
 
 			ShowCursor(false);
+
+			game.world.ResetTimer();
 		}
 
 		internal void Run()

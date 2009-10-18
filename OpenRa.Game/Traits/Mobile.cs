@@ -35,7 +35,8 @@ namespace OpenRa.Game.Traits
 		static float2[] fvecs = Util.MakeArray<float2>(32,
 			i => -float2.FromAngle(i / 16.0f * (float)Math.PI) * new float2(1f, 1.3f));
 
-		int GetFacing(float2 d)
+		// TODO: move this somewhere more appropriate, now that AttackTurreted uses it.
+		public int GetFacing(float2 d)
 		{
 			if (float2.WithinEpsilon(d, float2.Zero, 0.001f))
 				return facing;

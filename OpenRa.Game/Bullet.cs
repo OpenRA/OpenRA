@@ -47,8 +47,8 @@ namespace OpenRa.Game
 				game.PlaySound(Weapon.Report + ".aud", false);
 
 			t += dt;
-			if (t > TotalTime())
-				t = 0;	/* temporary! loop the bullet forever */
+			//if (t > TotalTime())
+			//    t = 0;	/* temporary! loop the bullet forever */
 		}
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
