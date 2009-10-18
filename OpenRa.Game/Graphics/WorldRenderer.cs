@@ -1,6 +1,8 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using IjwFramework.Types;
+using System.Collections.Generic;
 
 namespace OpenRa.Game.Graphics
 {
@@ -27,27 +29,35 @@ namespace OpenRa.Game.Graphics
 			uiOverlay = new UiOverlay(spriteRenderer, game);
 		}
 
+		void DrawSpriteList(Player owner, RectangleF rect, 
+			IEnumerable<Pair<Sprite, float2>> images)
+		{
+			foreach (var image in images)
+			{
+				var loc = image.Second;
+
+				if (loc.X > rect.Right || loc.X < rect.Left 
+					- image.First.bounds.Width)
+					continue;
+				if (loc.Y > rect.Bottom || loc.Y < rect.Top 
+					- image.First.bounds.Height)
+					continue;
+
+				spriteRenderer.DrawSprite(image.First, loc, 
+					(owner != null) ? owner.Palette : 0);
+			}
+		}
+
 		public void Draw()
 		{
 			var rect = new RectangleF((region.Position + game.viewport.Location).ToPointF(), 
                 region.Size.ToSizeF());
 
 			foreach (Actor a in game.world.Actors)
-			{
-				var images = a.Render();
+				DrawSpriteList(a.Owner, rect, a.Render());
 
-				foreach( var image in images )
-				{
-					var loc = image.Second;
-
-					if( loc.X > rect.Right || loc.X < rect.Left - image.First.bounds.Width )
-						continue;
-					if( loc.Y > rect.Bottom || loc.Y < rect.Top - image.First.bounds.Height )
-						continue;
-
-					spriteRenderer.DrawSprite( image.First, loc, ( a.Owner != null ) ? a.Owner.Palette : 0 );
-				}
-			}
+			foreach (Bullet b in game.world.Bullets)
+				DrawSpriteList(b.Owner, rect, b.Render());
 
             uiOverlay.Draw();
 

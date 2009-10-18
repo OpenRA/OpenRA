@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.GameRules;
+using IjwFramework.Types;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
 	class Bullet
 	{
-		readonly Player Owner;
+		public readonly Player Owner;
 		readonly Actor FiredBy;
 		readonly WeaponInfo Weapon;
 		readonly ProjectileInfo Projectile;
@@ -30,5 +32,6 @@ namespace OpenRa.Game
 		}
 
 		public void Tick(Game game, int dt) { /* todo */ }
+		public IEnumerable<Pair<Sprite, float2>> Render() { yield break; }
 	}
 }
