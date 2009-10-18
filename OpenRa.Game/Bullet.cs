@@ -21,7 +21,7 @@ namespace OpenRa.Game
 		int t = 0;
 		Animation anim;
 
-		const int BaseBulletSpeed = 100;		/* pixels / ms */
+		const int BaseBulletSpeed = 100;		/* pixels / 40ms frame */
 
 		/* src, dest are *pixel* coords */
 		public Bullet(string weapon, Player owner, Actor firedBy, 
