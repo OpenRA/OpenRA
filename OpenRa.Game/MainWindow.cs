@@ -60,6 +60,9 @@ using System.Runtime.InteropServices;
 			game.world.Add( new Actor( "mcv", new int2( 9, 5 ), game.players[ 0 ] ) );
 			game.world.Add( new Actor( "jeep", new int2( 9, 7 ), game.players[ 1 ] ) );
 
+			game.world.Add(new Bullet("105mm", game.players[1], null,
+				new int2(200, 200), new int2(400, 200), game));
+
 			sidebar = new Sidebar(renderer, game);
 
 			renderer.BuildPalette(game.map);

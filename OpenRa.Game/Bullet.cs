@@ -18,9 +18,14 @@ namespace OpenRa.Game
 		readonly int2 Src;
 		readonly int2 Dest;
 
+		int t = 0;
+		Animation anim;
+
+		const int BaseBulletSpeed = 100;		/* pixels / ms */
+
 		/* src, dest are *pixel* coords */
 		public Bullet(string weapon, Player owner, Actor firedBy, 
-			int2 src, int2 dest)
+			int2 src, int2 dest, Game game)
 		{
 			Owner = owner;
 			FiredBy = firedBy;
@@ -29,9 +34,30 @@ namespace OpenRa.Game
 			Weapon = Rules.WeaponInfo[weapon];
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
+
+			anim = new Animation(Projectile.Image);
+			anim.PlayRepeating("idle");
 		}
 
-		public void Tick(Game game, int dt) { /* todo */ }
-		public IEnumerable<Pair<Sprite, float2>> Render() { yield break; }
+		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
+
+		public void Tick(Game game, int dt)
+		{
+			if (t == 0)
+				game.PlaySound(Weapon.Report + ".aud", false);
+
+			t += dt;
+			if (t > TotalTime())
+				t = 0;	/* temporary! loop the bullet forever */
+		}
+
+		public IEnumerable<Pair<Sprite, float2>> Render()
+		{
+			yield return Pair.New(anim.Image,
+				float2.Lerp(
+					Src.ToFloat2(), 
+					Dest.ToFloat2(), 
+					(float)t / TotalTime()));
+		}
 	}
 }
