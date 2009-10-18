@@ -8,6 +8,7 @@ namespace OpenRa.Game
 	class World
 	{
 		List<Actor> actors = new List<Actor>();
+		List<Bullet> bullets = new List<Bullet>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 		readonly Game game;
 		int lastTime = Environment.TickCount;
@@ -17,6 +18,10 @@ namespace OpenRa.Game
 
 		public void Add(Actor a) { actors.Add(a); ActorAdded(a); }
 		public void Remove(Actor a) { actors.Remove(a); ActorRemoved(a); }
+
+		public void Add(Bullet b) { bullets.Add(b); }
+		public void Remove(Bullet b) { bullets.Remove(b); }
+
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		public event Action<Actor> ActorAdded = _ => { };
@@ -30,8 +35,10 @@ namespace OpenRa.Game
 			{
 				lastTime += timestep;
 
-				foreach( Actor a in actors )
+				foreach( var a in actors )
 					a.Tick(game, timestep);
+				foreach (var b in bullets)
+					b.Tick(game, timestep);
 
 				Renderer.waterFrame += 0.00125f * timestep;
 			}
@@ -41,5 +48,6 @@ namespace OpenRa.Game
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
+		public IEnumerable<Bullet> Bullets { get { return bullets; } }
 	}
 }

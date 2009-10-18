@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="Bullet.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameRules\FieldLoader.cs" />
