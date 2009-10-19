@@ -47,8 +47,9 @@ namespace OpenRa.Game
 				game.PlaySound(Weapon.Report + ".aud", false);
 
 			t += dt;
-			//if (t > TotalTime())
-			//    t = 0;	/* temporary! loop the bullet forever */
+
+			if (t > TotalTime())		/* remove finished bullets */
+				game.world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
@@ -57,7 +58,7 @@ namespace OpenRa.Game
 				float2.Lerp(
 					Src.ToFloat2(), 
 					Dest.ToFloat2(), 
-					(float)t / TotalTime()));
+					(float)t / TotalTime()) - 0.5f * anim.Image.size);
 		}
 	}
 }
