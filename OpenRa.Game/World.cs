@@ -41,9 +41,9 @@ namespace OpenRa.Game
 				lastTime += timestep;
 
 				foreach( var a in actors )
-					a.Tick(game, timestep);
+					a.Tick(game);
 				foreach (var b in bullets)
-					b.Tick(game, timestep);
+					b.Tick(game);
 
 				Renderer.waterFrame += 0.00125f * timestep;
 			}

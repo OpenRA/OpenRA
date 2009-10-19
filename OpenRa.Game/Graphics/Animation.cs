@@ -56,6 +56,11 @@ namespace OpenRa.Game.Graphics
 		int timeUntilNextFrame;
 		Action tickFunc;
 
+		public void Tick()
+		{
+			Tick( 40 ); // tick one frame
+		}
+
 		public void Tick( int t )
 		{
 			if( tickAlways )

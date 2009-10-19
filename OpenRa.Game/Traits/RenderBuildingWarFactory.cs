@@ -33,10 +33,10 @@ namespace OpenRa.Game.Traits
 				return base.Render(self);
 		}
 
-		public override void Tick(Actor self, Game game, int dt)
+		public override void Tick(Actor self, Game game)
 		{
-			base.Tick(self, game, dt);
-			roof.Tick(dt);
+			base.Tick(self, game);
+			roof.Tick();
 		}
 	}
 }

@@ -7,7 +7,7 @@ using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
-	interface ITick { void Tick(Actor self, Game game, int dt); }
+	interface ITick { void Tick(Actor self, Game game); }
 	interface IRender { IEnumerable<Pair<Sprite, float2>> Render(Actor self); }
 	interface IOrder { Order Order(Actor self, Game game, int2 xy); }
 }

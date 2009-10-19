@@ -41,12 +41,12 @@ namespace OpenRa.Game
 
 		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
 
-		public void Tick(Game game, int dt)
+		public void Tick(Game game)
 		{
 			if (t == 0)
 				game.PlaySound(Weapon.Report + ".aud", false);
 
-			t += dt;
+			t += 40;
 
 			if (t > TotalTime())		/* remove finished bullets */
 				game.world.AddFrameEndTask(w => w.Remove(this));

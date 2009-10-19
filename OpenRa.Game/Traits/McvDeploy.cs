@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
-		public void Tick(Actor self, Game game, int dt)
+		public void Tick(Actor self, Game game)
 		{
 			if( self.Location != DeployLocation )
 				return;

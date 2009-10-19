@@ -29,13 +29,13 @@ namespace OpenRa.Game.Traits
 			self.CenterLocation = new float2(12, 12) + Game.CellSize * float2.Lerp(fromCell, toCell, fraction);
 		}
 
-		public void Tick(Actor self, Game game, int dt)
+		public void Tick(Actor self, Game game)
 		{
-			Move(self, game, dt);
+			Move(self, game);
 			UpdateCenterLocation();
 		}
 
-		void Move(Actor self, Game game, int dt)
+		void Move(Actor self, Game game)
 		{
 			if( fromCell != toCell )
 				desiredFacing = Util.GetFacing( toCell - fromCell, facing );
@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 			desiredFacing = null;
 
 			if( fromCell != toCell )
-				moveFraction += dt * ((UnitInfo.MobileInfo)self.unitInfo).Speed;
+				moveFraction += ((UnitInfo.MobileInfo)self.unitInfo).Speed;
 
 			if (moveFraction < moveFractionTotal)
 				return;
@@ -66,7 +66,7 @@ namespace OpenRa.Game.Traits
 				self.Location = res[res.Count - 1];
 
 				int2 dir = toCell - fromCell;
-				moveFractionTotal = (dir.X != 0 && dir.Y != 0) ? 2500 : 2000;
+				moveFractionTotal = (dir.X != 0 && dir.Y != 0) ? 70 : 50;
 			}
 			else
 				destination = toCell;

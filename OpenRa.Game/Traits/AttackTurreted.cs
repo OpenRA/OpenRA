@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 			self.traits.Get<Turreted>();
 		}
 
-		public void Tick( Actor self, Game game, int dt )
+		public void Tick( Actor self, Game game )
 		{
 			if( primaryFireDelay > 0 )
 				--primaryFireDelay;
@@ -28,7 +28,6 @@ namespace OpenRa.Game.Traits
 			if( target == null )
 				return;
 
-			var mobile = self.traits.Get<Mobile>();
 			var turreted = self.traits.Get<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )

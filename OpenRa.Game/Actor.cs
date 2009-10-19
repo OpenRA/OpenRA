@@ -128,10 +128,10 @@ namespace OpenRa.Game
 			traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
 		}
 
-		public void Tick( Game game, int dt )
+		public void Tick( Game game )
 		{
 			foreach( var tick in traits.WithInterface<Traits.ITick>() )
-				tick.Tick( this, game, dt );
+				tick.Tick( this, game );
 		}
 
 		public float2 CenterLocation;

@@ -12,7 +12,7 @@ namespace OpenRa.Game.Traits
 		}
 
 		bool first = true;
-		public void Tick(Actor self, Game game, int dt)
+		public void Tick(Actor self, Game game)
 		{
 			if (first && self.Owner == game.LocalPlayer)
 			{

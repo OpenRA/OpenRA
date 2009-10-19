@@ -14,12 +14,9 @@ namespace OpenRa.Game.Traits
 		{
 		}
 
-		public void Tick( Actor self, Game game, int dt )
+		public void Tick( Actor self, Game game )
 		{
-			// TODO: desiredFacing should follow the base unit's facing only when not in combat.
-			// also, we want to be able to use this for GUN; avoid referencing Mobile.
-			var df = desiredFacing ?? self.traits.Get<Mobile>().facing;
-
+			var df = desiredFacing ?? ( self.traits.Contains<Mobile>() ? self.traits.Get<Mobile>().facing : turretFacing );
 			Util.TickFacing( ref turretFacing, df, self.unitInfo.ROT );
 		}
 	}
