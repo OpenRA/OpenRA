@@ -60,24 +60,21 @@ namespace OpenRa.Game.Graphics
 		public void Draw()
 		{
 			for( int y = 0 ; y < 128 ; y++ )
-			{
-				for( int x = 0 ; x < 128 ; x++ )
+				for (int x = 0; x < 128; x++)
 				{
-					if( map.MapTiles[ x, y ].overlay < overlaySprites.Length )
+					var o = map.MapTiles[x, y].overlay;
+					if (o < overlaySprites.Length)
 					{
-						var location = new int2( x, y );
-						var sprites = overlaySprites[ map.MapTiles[ x, y ].overlay ];
+						var location = new int2(x, y);
+						var sprites = overlaySprites[o];
 						var spriteIndex = 0;
-						if( overlayIsFence[ map.MapTiles[ x, y ].overlay ] )
-							spriteIndex = NearbyFences( x, y );
-						else if( overlayIsOre[ map.MapTiles[ x, y ].overlay ] )
-							spriteIndex = 11;
-						else if( overlayIsGems[ map.MapTiles[ x, y ].overlay ] )
-							spriteIndex = 2;
-						spriteRenderer.DrawSprite( sprites[ spriteIndex ], Game.CellSize * (float2)( location - map.Offset ), 0 );
+						if (overlayIsFence[o]) spriteIndex = NearbyFences(x, y);
+						else if (overlayIsOre[o]) spriteIndex = 11;
+						else if (overlayIsGems[o]) spriteIndex = 2;
+						spriteRenderer.DrawSprite(sprites[spriteIndex], 
+							Game.CellSize * (float2)(location - map.Offset), 0);
 					}
 				}
-			}
 
 			spriteRenderer.Flush();
 		}

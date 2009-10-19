@@ -76,18 +76,21 @@ namespace OpenRa.Game.Graphics
                 lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
                 foreach (var u in game.FindUnits(selbox.Value.First, selbox.Value.Second))
-                    DrawSelectionBox(u, Color.Yellow);
+                    DrawSelectionBox(u, Color.Yellow, false);
             }
 
             var selection = game.controller.orderGenerator as UnitOrderGenerator;
             if (selection != null)
 				foreach( var a in game.world.Actors.Intersect(selection.selection) )		/* make sure we don't grab actors that are dead */
-	                DrawSelectionBox(a, Color.White);
+	                DrawSelectionBox(a, Color.White, true);
             
             lineRenderer.Flush();
 		}
 
-        void DrawSelectionBox(Actor selectedUnit, Color c)
+		const float conditionYellow = 0.5f;		/* todo: get these from gamerules */
+		const float conditionRed = 0.25f;
+
+        void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
         {
             var center = selectedUnit.CenterLocation;
             var size = selectedUnit.SelectedSize;
@@ -106,6 +109,24 @@ namespace OpenRa.Game.Graphics
             lineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
             lineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
             lineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
+
+			if (drawHealthBar)
+			{
+				c = Color.Gray;
+				lineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0,-4), c, c);
+				lineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
+				lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
+				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
+
+				var healthAmount = 0.6f;
+				var healthColor = (healthAmount < conditionRed) ? Color.Red
+					: (healthAmount < conditionYellow) ? Color.Yellow
+					: Color.LimeGreen;
+
+				lineRenderer.DrawLine(xy + new float2(0, -3), 
+					float2.Lerp(xy, Xy, healthAmount) + new float2(0, -3), 
+					healthColor, healthColor);
+			}
         }
 	}
 }
