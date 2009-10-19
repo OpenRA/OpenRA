@@ -15,6 +15,7 @@ namespace OpenRa.Game.Traits
 
 		public Order Order(Actor self, Game game, int2 xy)
 		{
+			DeployLocation = null;
 			// TODO: check that there's enough space at the destination.
 			if( xy == self.Location )
 				return new DeployMcvOrder( self, xy );
@@ -24,24 +25,21 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self, Game game, int dt)
 		{
-			var mobile = self.traits.Get<Mobile>();
+			if( self.Location != DeployLocation )
+				return;
 
+			var mobile = self.traits.Get<Mobile>();
+			mobile.desiredFacing = 96;
 			if( mobile.moveFraction < mobile.moveFractionTotal )
 				return;
 
-			if( self.Location != DeployLocation )
-			{
-				DeployLocation = null;
-				return;
-			}
-
-			if (mobile.Turn(12))
+			if( mobile.facing != mobile.desiredFacing )
 				return;
 
 			game.world.AddFrameEndTask(_ =>
 			{
-				game.world.Remove(self);
-				game.world.Add(new Actor("fact", self.Location - new int2(1, 1), self.Owner));
+					game.world.Remove(self);
+					game.world.Add(new Actor("fact", self.Location - new int2(1, 1), self.Owner));
 			});
 		}
 	}

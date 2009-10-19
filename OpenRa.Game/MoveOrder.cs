@@ -25,7 +25,9 @@ namespace OpenRa.Game
 			if (leftMouseButton) return;
 			if (game.LocalPlayer == Unit.Owner)
 				game.PlaySound("ackno.r00", false);
-			Unit.traits.Get<Traits.Mobile>().destination = Destination;
+			var mobile = Unit.traits.Get<Traits.Mobile>();
+			mobile.destination = Destination;
+			mobile.desiredFacing = null;
 		}
 	}
 

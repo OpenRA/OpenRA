@@ -30,7 +30,7 @@ namespace OpenRa.Game.Traits
 
 			var mobile = self.traits.Get<Mobile>();
 			var turreted = self.traits.Get<Turreted>();
-			turreted.desiredFacing = mobile.GetFacing( target.Location - self.Location );
+			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )
 				return;
 

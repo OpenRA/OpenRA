@@ -15,46 +15,12 @@ namespace OpenRa.Game.Traits
 		public int2 toCell { get { return self.Location; } }
 		public int moveFraction, moveFractionTotal;
 		public int facing;
+		public int? desiredFacing;
 
 		public Mobile(Actor self)
 		{
 			this.self = self;
 			fromCell = destination = self.Location;
-		}
-
-		public bool Turn(int desiredFacing)
-		{
-			if (facing == desiredFacing)
-				return false;
-
-			int df = (desiredFacing - facing + 32) % 32;
-			facing = (facing + (df > 16 ? 31 : 1)) % 32;
-			return true;
-		}
-
-		static float2[] fvecs = Util.MakeArray<float2>(32,
-			i => -float2.FromAngle(i / 16.0f * (float)Math.PI) * new float2(1f, 1.3f));
-
-		// TODO: move this somewhere more appropriate, now that AttackTurreted uses it.
-		public int GetFacing(float2 d)
-		{
-			if (float2.WithinEpsilon(d, float2.Zero, 0.001f))
-				return facing;
-
-			int highest = -1;
-			float highestDot = -1.0f;
-
-			for (int i = 0; i < fvecs.Length; i++)
-			{
-				float dot = float2.Dot(fvecs[i], d);
-				if (dot > highestDot)
-				{
-					highestDot = dot;
-					highest = i;
-				}
-			}
-
-			return highest;
 		}
 
 		void UpdateCenterLocation()
@@ -71,13 +37,19 @@ namespace OpenRa.Game.Traits
 
 		void Move(Actor self, Game game, int dt)
 		{
-			if (fromCell != toCell)
-			{
-				if (Turn(GetFacing(toCell - fromCell)))
-					return;
+			if( fromCell != toCell )
+				desiredFacing = Util.GetFacing( toCell - fromCell, facing );
 
-				moveFraction += dt * ((UnitInfo.MobileInfo)self.unitInfo).Speed;
+			if( desiredFacing != null && desiredFacing != facing )
+			{
+				Util.TickFacing( ref facing, desiredFacing.Value, self.unitInfo.ROT );
+				return;
 			}
+			desiredFacing = null;
+
+			if( fromCell != toCell )
+				moveFraction += dt * ((UnitInfo.MobileInfo)self.unitInfo).Speed;
+
 			if (moveFraction < moveFractionTotal)
 				return;
 
