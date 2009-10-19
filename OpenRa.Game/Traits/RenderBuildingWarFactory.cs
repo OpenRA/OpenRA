@@ -26,9 +26,11 @@ namespace OpenRa.Game.Traits
 
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
 		{
-			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
 			if (doneBuilding)
-				yield return Pair.New(roof.Image, 24f * (float2)self.Location);
+				return base.Render(self).Concat(
+					new[] { Pair.New(roof.Image, 24f * (float2)self.Location) });
+			else
+				return base.Render(self);
 		}
 
 		public override void Tick(Actor self, Game game, int dt)
