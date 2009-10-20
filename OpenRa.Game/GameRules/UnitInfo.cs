@@ -35,7 +35,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool Invisible = false;
 		public readonly string Owner = "allies,soviet"; // TODO: make this an enum
 		public readonly int Points = 0;
-		public readonly string Prerequisite = "";
+		public readonly string[] Prerequisite = new string[ 0 ];
 		public readonly string Primary = null;
 		public readonly string Secondary = null;
 		public readonly int ROT = 0;
