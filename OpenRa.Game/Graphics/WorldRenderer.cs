@@ -113,8 +113,6 @@ namespace OpenRa.Game.Graphics
 			if (drawHealthBar)
 			{
 				c = Color.Gray;
-				lineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0,-4), c, c);
-				lineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
 				lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
@@ -123,9 +121,28 @@ namespace OpenRa.Game.Graphics
 					: (healthAmount < conditionYellow) ? Color.Yellow
 					: Color.LimeGreen;
 
+				var healthColor2 = Color.FromArgb(
+					255,
+					healthColor.R / 2,
+					healthColor.G / 2,
+					healthColor.B / 2);
+
+				var z = float2.Lerp(xy, Xy, healthAmount);
+
+				lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0,-4), c, c);
+				lineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
+
 				lineRenderer.DrawLine(xy + new float2(0, -3), 
-					float2.Lerp(xy, Xy, healthAmount) + new float2(0, -3), 
+					z + new float2(0, -3), 
 					healthColor, healthColor);
+
+				lineRenderer.DrawLine(xy + new float2(0, -2),
+					z + new float2(0, -2),
+					healthColor2, healthColor2);
+
+				lineRenderer.DrawLine(xy + new float2(0, -4),
+					z + new float2(0, -4),
+					healthColor2, healthColor2);
 			}
         }
 	}
