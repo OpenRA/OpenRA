@@ -169,6 +169,13 @@
 		<sequence name="make" start="0" length="*" src="gunmake" />
 	</unit>
 
+	<!-- AA gun -->
+	<unit name="agun">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="damaged-idle" start="32" length="32"/>
+		<sequence name="make" start="0" length="*" src="agunmake" />
+	</unit>
+
 	<!-- sam site -->
 	<unit name="sam">
 		<sequence name="idle" start="0" length="32"/>
@@ -202,6 +209,13 @@
 		<sequence name="idle" start="0"/>
 		<sequence name="damaged-idle" start="1"/>
 		<sequence name="make" start="0" length="*" src="hboxmake" />
+	</unit>
+
+	<!-- gap generator -->
+	<unit name="gap">
+		<sequence name="idle" start="0" length="32"/>
+		<sequence name="damaged-idle" start="32" length="32"/>
+		<sequence name="make" start="0" length="*" src="gapmake" />
 	</unit>
 
 	<!-- iron curtain -->

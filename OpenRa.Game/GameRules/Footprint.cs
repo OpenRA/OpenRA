@@ -7,74 +7,57 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.GameRules
 {
-	class Footprint
+	static class Footprint
 	{
-		Dictionary<string, string[]> buildingFootprints;
-
-		public string[] GetFootprint(string name)
+		public static IEnumerable<int2> Tiles( UnitInfo unitInfo, int2 position )
 		{
-			string[] val;
-			if (!buildingFootprints.TryGetValue(name, out val))
-				buildingFootprints.TryGetValue("*", out val);
-			return val;
-		}
+			var buildingInfo = unitInfo as UnitInfo.BuildingInfo;
+			var dim = buildingInfo.Dimensions;
 
-		public Footprint(Stream s)
-		{
-			var lines = Util.ReadAllLines(s).Where(a => !a.StartsWith("#"));
-
-			Func<string,string[]> words = 
-				b => b.Split( new[] { ' ', '\t' }, 
-					StringSplitOptions.RemoveEmptyEntries );
-
-			var buildings = lines
-				.Select(a => a.Split(':'))
-				.SelectMany(a => words(a[1])
-					.Select( b => new { Name=b, Pat=words(a[0]) } ));
-
-			buildingFootprints = buildings
-				.ToDictionary(a => a.Name, a => a.Pat);
-		}
-
-		public static IEnumerable<int2> Tiles(string name, int2 position)
-		{
-			var footprint = Rules.Footprint.GetFootprint(name);
-			var j = 0;
-
-			int maxWidth = 0;
-			foreach (var row in footprint)
-				if (row.Length > maxWidth)
-					maxWidth = row.Length;
-
-			foreach (var row in footprint)
+			var footprint = buildingInfo.Footprint.ToCharArray().Where( x => !char.IsWhiteSpace( x ) );
+			if( buildingInfo.Bib )
 			{
-				var i = 0;
-				foreach (var c in row)
+				dim.Y += 1;
+				footprint = footprint.Concat( new char[ dim.X ] );
+			}
+			foreach( var tile in TilesWhere( unitInfo.Name, dim, footprint.ToArray(), a => a != '_' ) )
+				yield return tile + position - AdjustForBuildingSize( buildingInfo );
+		}
+
+		public static IEnumerable<int2> UnpathableTiles( UnitInfo unitInfo, int2 position )
+		{
+			var buildingInfo = unitInfo as UnitInfo.BuildingInfo;
+
+			var footprint = buildingInfo.Footprint.ToCharArray().Where( x => !char.IsWhiteSpace( x ) ).ToArray();
+			foreach( var tile in TilesWhere( unitInfo.Name, buildingInfo.Dimensions, footprint, a => a == 'x' ) )
+				yield return tile + position;
+		}
+
+		static IEnumerable<int2> TilesWhere( string name, int2 dim, char[] footprint, Func<char, bool> cond )
+		{
+			if( footprint.Length != dim.X * dim.Y )
+				throw new InvalidOperationException( "Invalid footprint for " + name );
+			int index = 0;
+			for( int y = 0 ; y < dim.Y ; y++ )
+			{
+				for( int x = 0 ; x < dim.X ; x++ )
 				{
-					if (c != '_')
-						yield return position + new int2(i, j) - new int2(maxWidth / 2, footprint.Length / 2);
-					++i;
+					if( cond( footprint[ index ] ) )
+						yield return new int2( x, y );
+					++index;
 				}
-				++j;
 			}
 		}
 
-		public static IEnumerable<int2> UnpathableTiles( string name, int2 position )
+		public static int2 AdjustForBuildingSize( string name )
 		{
-			var footprint = Rules.Footprint.GetFootprint( name );
-			var j = 0;
+			return AdjustForBuildingSize( Rules.UnitInfo[ name ] as UnitInfo.BuildingInfo );
+		}
 
-			foreach( var row in footprint )
-			{
-				var i = 0;
-				foreach( var c in row )
-				{
-					if( c == 'x' )
-						yield return position + new int2( i, j );
-					++i;
-				}
-				++j;
-			}
+		public static int2 AdjustForBuildingSize( UnitInfo.BuildingInfo unitInfo )
+		{
+			var dim = unitInfo.Dimensions;
+			return new int2( dim.X / 2, ( dim.Y + 1 ) / 2 );
 		}
 	}
 }

@@ -58,7 +58,6 @@ namespace OpenRa.Game.GameRules
 
 		public class InfantryInfo : MobileInfo
 		{
-
 			public readonly bool C4 = false;
 			public readonly bool FraidyCat = false;
 			public readonly bool Infiltrate = false;
@@ -78,6 +77,9 @@ namespace OpenRa.Game.GameRules
 
 		public class BuildingInfo : UnitInfo
 		{
+			public readonly int2 Dimensions = new int2( 1, 1 );
+			public readonly string Footprint = "x";
+
 			public readonly bool BaseNormal = true;
 			public readonly int Adjacent = 1;
 			public readonly bool Bib = false;

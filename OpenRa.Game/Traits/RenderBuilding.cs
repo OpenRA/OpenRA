@@ -21,13 +21,12 @@ namespace OpenRa.Game.Traits
 			anim.PlayThen("make", () => anim.PlayRepeating("idle"));
 
 			// at this point, we already know where we are, so we can safely place the bib in the smudge
-			if (((UnitInfo.BuildingInfo)self.unitInfo).Bib)
+			var buildingInfo = (UnitInfo.BuildingInfo)self.unitInfo;
+			if (buildingInfo.Bib)
 			{
-				var fp = Rules.Footprint.GetFootprint(self.unitInfo.Name);
-				var bibOffset = fp.Length - 2;
-				var size = fp.First().Length;
+				var size = buildingInfo.Dimensions.X;
+				var bibOffset = buildingInfo.Dimensions.Y - 1;
 				var startIndex = (size == 2) ? SmallBibStart : LargeBibStart;
-
 
 				for (int i = 0; i < 2 * size; i++)
 				{

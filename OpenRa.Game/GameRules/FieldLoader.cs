@@ -39,9 +39,14 @@ namespace OpenRa.Game.GameRules
 				var parts = x.Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
 
 				var ret = Array.CreateInstance( fieldType.GetElementType(), parts.Length );
-				for (int i = 0; i < parts.Length; i++)
+				for( int i = 0 ; i < parts.Length ; i++ )
 					ret.SetValue( GetValue( fieldType.GetElementType(), parts[ i ].Trim() ), i );
 				return ret;
+			}
+			else if( fieldType == typeof( int2 ) )
+			{
+				var parts = x.Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
+				return new int2( int.Parse( parts[ 0 ] ), int.Parse( parts[ 1 ] ) );
 			}
 			else
 				throw new InvalidOperationException( "FieldLoader: don't know how to load field of type " + fieldType.ToString() );

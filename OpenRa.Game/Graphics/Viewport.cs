@@ -24,13 +24,15 @@ namespace OpenRa.Game.Graphics
 
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = (scrollPosition + delta).Constrain(float2.Zero, mapSize);
+			scrollPosition = ( scrollPosition + delta ).Constrain( float2.Zero, mapSize );
 		}
 
 		public Viewport(float2 size, float2 mapSize, Renderer renderer)
 		{
 			this.size = size;
 			this.mapSize = Game.CellSize * mapSize - size + new float2(128, 0);
+			if( this.mapSize.X < 0 ) this.mapSize.X = 0;
+			if( this.mapSize.Y < 0 ) this.mapSize.Y = 0;
 			this.renderer = renderer;
 			cursorRenderer = new SpriteRenderer(renderer, true);
 		}
