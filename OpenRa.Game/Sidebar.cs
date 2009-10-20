@@ -72,7 +72,9 @@ namespace OpenRa.Game
 				string key = line.Substring(0, line.IndexOf(','));
 				int secondComma = line.IndexOf(',', line.IndexOf(',') + 1);
 				string group = line.Substring(secondComma + 1, line.Length - secondComma - 1);
-				sprites.Add( key, SpriteSheetBuilder.LoadSprite( key + "icon", ".shp" ) );
+
+				if( Rules.UnitInfo[ key ].TechLevel != -1 )
+					sprites.Add( key, SpriteSheetBuilder.LoadSprite( key + "icon", ".shp" ) );
 				itemGroups.Add(key, group);
 			}
 		}

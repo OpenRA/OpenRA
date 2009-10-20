@@ -30,6 +30,13 @@
 
 <sequences>
 
+	<!-- forward command post (campaign specific building) -->
+	<unit name="fcom">
+		<sequence name="idle" start="0"/>
+		<sequence name="damaged-idle" start="1"/>
+		<sequence name="make" start="0"/>
+	</unit>
+	
 	<!-- construction yard -->
 	<unit name="fact">
 		<sequence name="idle" start="0"/>

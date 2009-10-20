@@ -12,21 +12,26 @@ namespace OpenRa.Game.GameRules
 	{
 		readonly Dictionary<string, T> infos = new Dictionary<string, T>();
 
-		public InfoLoader(IniFile rules, params Pair<string, Func<string,T>>[] srcs)
+		public InfoLoader(params Pair<string, Func<string,T>>[] srcs)
 		{
 			foreach (var src in srcs)
-				foreach (var s in Util.ReadAllLines(FileSystem.Open(src.First)))
+				foreach (var s in Rules.AllRules.GetSection(src.First))
 				{
-					var name = s.Split(',')[0];
-					var t = src.Second(name.ToLowerInvariant());
-					FieldLoader.Load(t, rules.GetSection(name));
-					infos[name.ToLowerInvariant()] = t;
+					var name = s.Key.ToLowerInvariant();
+					var t = src.Second(name);
+					FieldLoader.Load(t, Rules.AllRules.GetSection(name));
+					infos[name] = t;
 				}
 		}
 
 		public T this[string name]
 		{
 			get { return infos[name.ToLowerInvariant()]; }
+		}
+
+		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
+		{
+			return infos.GetEnumerator();
 		}
 	}
 }

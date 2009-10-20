@@ -48,13 +48,10 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			IEnumerable<Tuple<string, string, bool>> definitions = 
-				Lines("buildings.txt", true)
-				.Concat( Lines( "vehicles.txt", false ) )
-				.Concat( Lines( "infantry.txt", false ) );
+			var allBuildings = Rules.AllRules.GetSection( "BuildingTypes" ).Select( x => x.Key.ToLowerInvariant() ).ToList();
 
-            foreach (Tuple<string, string, bool> p in definitions)
-				objects.Add(p.a.ToLowerInvariant(), new Item(p.a.ToLowerInvariant(), Rules.UnitInfo[p.a.ToLowerInvariant()], p.c));
+			foreach( var unit in Rules.UnitInfo )
+				objects.Add( unit.Key, new Item( unit.Key, unit.Value, allBuildings.Contains( unit.Key ) ) );
 		}
 
 		public bool Build(string key, bool force)

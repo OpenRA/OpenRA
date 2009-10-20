@@ -34,3 +34,5 @@ WEAF,Fake War Factory,building
 SYRF,Fake Shipyard,building
 SPEF,Fake Sub Pen,building
 DOMF,Fake Radar Dome,building
+FCOM,Forward Command Post,building
+

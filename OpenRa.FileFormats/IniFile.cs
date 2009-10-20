@@ -10,65 +10,94 @@ namespace OpenRa.FileFormats
 	public class IniFile
 	{
 		Dictionary<string, IniSection> sections = new Dictionary<string, IniSection>();
-		IniSection currentSection;
 
 		public IniFile( Stream s )
 		{
+			Load( s );
+		}
+
+		public IniFile( params Stream[] streams )
+		{
+			foreach( var s in streams )
+				Load( s );
+		}
+
+		public void Load( Stream s )
+		{
 			StreamReader reader = new StreamReader( s );
+			IniSection currentSection = null;
+
 			while( !reader.EndOfStream )
 			{
 				string line = reader.ReadLine();
 
-				if (line.Length == 0) continue;
+				if( line.Length == 0 ) continue;
 
-				switch (line[0])
+				switch( line[ 0 ] )
 				{
-					case ';': break;
-					case '[': ProcessSection(line); break;
-					default: ProcessEntry(line); break;
+				case ';': break;
+				case '[': currentSection = ProcessSection( line ); break;
+				default: ProcessEntry( line, currentSection ); break;
 				}
 			}
 		}
 
 		Regex sectionPattern = new Regex( @"^\[([^]]*)\]" );
-		Regex entryPattern = new Regex( @"([^=;]+)=([^;]*)" );
 
-		bool ProcessSection( string line )
+		IniSection ProcessSection( string line )
 		{
 			Match m = sectionPattern.Match( line );
 			if( m == null || !m.Success )
-				return false;
+				return null;
+			string sectionName = m.Groups[ 1 ].Value.ToLowerInvariant();
 
-			string sectionName = m.Groups[ 1 ].Value;
-			currentSection = new IniSection( sectionName );
-			sections.Add( sectionName, currentSection );
-
-			return true;
+			IniSection ret;
+			if( !sections.TryGetValue( sectionName, out ret ) )
+				sections.Add( sectionName, ret = new IniSection( sectionName ) );
+			return ret;
 		}
 
-		bool ProcessEntry( string line )
+		bool ProcessEntry( string line, IniSection currentSection )
 		{
-            int comment = line.IndexOf(';');
-            if (comment >= 0)
-                line = line.Substring(0, comment);
+			int comment = line.IndexOf( ';' );
+			if( comment >= 0 )
+				line = line.Substring( 0, comment );
 
-            int eq = line.IndexOf('=');
-            if (eq < 0)
-                return false;
+			line = line.Trim();
+			if( line.Length == 0 )
+				return false;
 
-            if (currentSection == null)
-                throw new InvalidOperationException("No current INI section");
+			var key = line;
+			var value = "";
+			int eq = line.IndexOf( '=' );
+			if( eq >= 0 )
+			{
+				key = line.Substring( 0, eq );
+				value = line.Substring( eq + 1, line.Length - eq - 1 );
+			}
 
-            currentSection.Add(line.Substring(0, eq), 
-                line.Substring(eq + 1, line.Length - eq - 1));
+			if( currentSection == null )
+				throw new InvalidOperationException( "No current INI section" );
+
+			if( !currentSection.Contains( key ) )
+				currentSection.Add( key, value );
 			return true;
 		}
 
 		public IniSection GetSection( string s )
 		{
+			return GetSection( s, false );
+		}
+
+		public IniSection GetSection( string s, bool allowFail )
+		{
 			IniSection section;
-			sections.TryGetValue( s, out section );
-			return section;
+			if( sections.TryGetValue( s.ToLowerInvariant(), out section ) )
+				return section;
+
+			if( allowFail )
+				return new IniSection( s );
+			throw new InvalidOperationException( "Section does not exist in map or rules: " + s );
 		}
 
 		public IEnumerable<IniSection> Sections { get { return sections.Values; } }
@@ -87,6 +116,11 @@ namespace OpenRa.FileFormats
 		public void Add( string key, string value )
 		{
 			values[key] = value;
+		}
+
+		public bool Contains( string key )
+		{
+			return values.ContainsKey( key );
 		}
 
 		public string GetValue( string key, string defaultValue )

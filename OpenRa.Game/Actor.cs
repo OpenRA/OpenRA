@@ -117,6 +117,10 @@ namespace OpenRa.Game
 				traits.Add(new Traits.RenderBuildingOre(this));
 				break;
 
+			case "fcom":
+				traits.Add( new Traits.Building( this ) );
+				traits.Add( new Traits.RenderBuilding( this ) );
+				break;
 			default:
 				throw new NotImplementedException( "Actor traits for " + name );
 			}

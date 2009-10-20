@@ -34,12 +34,13 @@ namespace OpenRa.Game
 
 		public Game(string mapName, Renderer renderer, int2 clientSize)
 		{
-			Rules.LoadRules();
+			Rules.LoadRules( mapName );
 
 			for( int i = 0 ; i < 8 ; i++ )
 				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Soviet));
 
-			map = new Map(new IniFile(FileSystem.Open(mapName)));
+			var mapFile = new IniFile( FileSystem.Open( mapName ) );
+			map = new Map( mapFile );
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
 			viewport = new Viewport(clientSize, map.Size, renderer);
@@ -50,6 +51,9 @@ namespace OpenRa.Game
 
 			foreach( TreeReference treeReference in map.Trees )
 				world.Add( new Actor( treeReference, treeCache, map.Offset ) );
+
+			LoadMapBuildings( mapFile );
+			LoadMapUnits( mapFile );
 
 			LocalPlayerBuildings = new BuildingInfluenceMap(world, LocalPlayer);
 
@@ -64,6 +68,28 @@ namespace OpenRa.Game
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
 			PlaySound("intro.aud", false);
+		}
+
+		void LoadMapBuildings( IniFile mapfile )
+		{
+			foreach( var s in mapfile.GetSection( "STRUCTURES", true ) )
+			{
+				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
+				var parts = s.Value.ToLowerInvariant().Split( ',' );
+				var loc = int.Parse( parts[ 3 ] );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128 - map.Offset.X, loc / 128-map.Offset.Y ), players[ 0 ] ) );
+			}
+		}
+
+		void LoadMapUnits( IniFile mapfile )
+		{
+			foreach( var s in mapfile.GetSection( "UNITS", true ) )
+			{
+				//num=owner,type,health,location,facing,action,trigger
+				var parts = s.Value.ToLowerInvariant().Split( ',' );
+				var loc = int.Parse( parts[ 3 ] );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128 - map.Offset.X, loc / 128 - map.Offset.Y ), players[ 0 ] ) );
+			}
 		}
 
 		readonly Cache<string, ISoundSource> sounds;

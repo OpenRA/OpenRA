@@ -41,7 +41,6 @@ namespace OpenRa.TechTree
 
 		static Tuple<string[],string[]> ParsePrerequisites(string prerequisites, string tag)
 		{
-			Debug.WriteLine( tag );
 			List<string> allied = new List<string>(prerequisites.ToLowerInvariant().Split(
 				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
 
