@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 
@@ -38,11 +39,9 @@ namespace OpenRa.TechTree
 			return race;
 		}
 
-		static Tuple<string[],string[]> ParsePrerequisites(string prerequisites, string tag)
+		static Tuple<string[],string[]> ParsePrerequisites(string[] prerequisites, string tag)
 		{
-			List<string> allied = new List<string>(prerequisites.ToLowerInvariant().Split(
-				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-
+			List<string> allied = prerequisites.Select( x => x.ToLowerInvariant() ).ToList();
 			List<string> soviet = new List<string>(allied);
 
 			if (allied.Remove("stek"))
