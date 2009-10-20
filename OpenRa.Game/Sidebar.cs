@@ -66,8 +66,9 @@ namespace OpenRa.Game
 
 		void LoadSprites(string filename)
 		{
-			foreach (string line in Util.ReadAllLines(FileSystem.Open(filename)))
+			foreach (string l in Util.ReadAllLines(FileSystem.Open(filename)))
 			{
+				var line = l.ToLowerInvariant();
 				string key = line.Substring(0, line.IndexOf(','));
 				int secondComma = line.IndexOf(',', line.IndexOf(',') + 1);
 				string group = line.Substring(secondComma + 1, line.Length - secondComma - 1);

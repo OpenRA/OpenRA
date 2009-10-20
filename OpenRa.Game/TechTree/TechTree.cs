@@ -54,13 +54,13 @@ namespace OpenRa.TechTree
 				.Concat( Lines( "infantry.txt", false ) );
 
             foreach (Tuple<string, string, bool> p in definitions)
-				objects.Add(p.a, new Item(p.a, p.b, Rules.UnitInfo[p.a], p.c));
+				objects.Add(p.a.ToLowerInvariant(), new Item(p.a.ToLowerInvariant(), Rules.UnitInfo[p.a.ToLowerInvariant()], p.c));
 		}
 
 		public bool Build(string key, bool force)
 		{
 			if( string.IsNullOrEmpty( key ) ) return false;
-			key = key.ToUpperInvariant();
+			key = key.ToLowerInvariant();
 			Item b = objects[ key ];
 			if (!force && !b.CanBuild) return false;
 			built.Add(key);
@@ -75,7 +75,7 @@ namespace OpenRa.TechTree
 
 		public bool Unbuild(string key)
 		{
-			key = key.ToUpperInvariant();
+			key = key.ToLowerInvariant();
 			Item b = objects[key];
 			if (!built.Contains(key)) return false;
 			built.Remove(key);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using System.Diagnostics;
 
 namespace OpenRa.TechTree
 {
@@ -11,10 +12,10 @@ namespace OpenRa.TechTree
 
 		public bool IsStructure { get { return isStructure; } }
 
-		public Item(string tag, string friendlyName, UnitInfo unitInfo, bool isStructure)
+		public Item(string tag, UnitInfo unitInfo, bool isStructure)
 		{
 			this.tag = tag;
-			this.friendlyName = friendlyName;
+			this.friendlyName = unitInfo.Description;
 			this.isStructure = isStructure;
 
 			owner = ParseOwner(unitInfo.Owner, unitInfo.DoubleOwned);
@@ -40,38 +41,40 @@ namespace OpenRa.TechTree
 
 		static Tuple<string[],string[]> ParsePrerequisites(string prerequisites, string tag)
 		{
-			List<string> allied = new List<string>(prerequisites.ToUpper().Split(
+			Debug.WriteLine( tag );
+			List<string> allied = new List<string>(prerequisites.ToLowerInvariant().Split(
 				new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
 
 			List<string> soviet = new List<string>(allied);
 
-			if (allied.Remove("STEK"))
-				allied.Add("ATEK");
+			if (allied.Remove("stek"))
+				allied.Add("atek");
 
-			if (soviet.Remove("ATEK"))
-				soviet.Add("STEK");
+			if (soviet.Remove("atek"))
+				soviet.Add("stek");
 
-			if (soviet.Remove("TENT"))
-				soviet.Add("BARR");
+			if (soviet.Remove("tent"))
+				soviet.Add("barr");
 
-			if (allied.Remove("BARR"))
-				allied.Add("TENT");
+			if (allied.Remove("barr"))
+				allied.Add("tent");
 
-			if ((tag.Length == 2 && tag[0] == 'E') || tag == "MEDI" || tag == "THF" || tag == "SPY")
+			// TODO: rewrite this based on "InfantryTypes" in units.ini
+			if ((tag.Length == 2 && tag[0] == 'e') || tag == "medi" || tag == "thf" || tag == "spy")
 			{
-				if (!allied.Contains("TENT"))
-					allied.Add("TENT");
-				if (!soviet.Contains("BARR"))
-					soviet.Add("BARR");
+				if (!allied.Contains("tent"))
+					allied.Add("tent");
+				if (!soviet.Contains("barr"))
+					soviet.Add("barr");
 			}
 
-			if (tag == "LST")
+			if (tag == "lst")
 			{
-				if (!soviet.Contains("SPEN"))
-					soviet.Add("SPEN");
+				if (!soviet.Contains("spen"))
+					soviet.Add("spen");
 
-				if (!allied.Contains("SYRD"))
-					allied.Add("SYRD");
+				if (!allied.Contains("syrd"))
+					allied.Add("syrd");
 			}
 
 			return new Tuple<string[], string[]>(

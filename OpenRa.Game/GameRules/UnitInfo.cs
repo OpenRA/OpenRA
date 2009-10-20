@@ -19,6 +19,7 @@ namespace OpenRa.Game.GameRules
 		}
 
 		public readonly string Name;
+		public readonly string Description = "";
 
 		public readonly int Ammo = -1;
 		public readonly ArmorType Armor = ArmorType.none;
