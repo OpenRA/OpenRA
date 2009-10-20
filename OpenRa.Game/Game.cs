@@ -133,7 +133,7 @@ namespace OpenRa.Game
 					terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
-		public IEnumerable<Actor> FindUnits(float2 a, float2 b)
+		IEnumerable<Actor> FindUnits(float2 a, float2 b)
 		{
 			var min = float2.Min(a, b);
 			var max = float2.Max(a, b);
@@ -141,7 +141,18 @@ namespace OpenRa.Game
 			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
 			return world.Actors
-				.Where(x => (x.Owner == LocalPlayer) && (x.Bounds.IntersectsWith(rect)));
+				.Where(x => x.Bounds.IntersectsWith(rect));
+		}
+
+		public IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
+		{
+			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Mobile>());
+		}
+
+		public IEnumerable<Actor> SelectUnitOrBuilding(float2 a)
+		{
+			var q = FindUnits(a, a);
+			return q.Where(x => x.traits.Contains<Traits.Mobile>()).Concat(q).Take(1);
 		}
 	}
 }

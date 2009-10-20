@@ -80,9 +80,7 @@ using System.Runtime.InteropServices;
 				game.Tick();
 
 				// rude hack
-				game.viewport.cursor = (game.controller.orderGenerator is UnitOrderGenerator)
-					&& (game.controller.orderGenerator as UnitOrderGenerator).selection.Count > 0
-					? OpenRa.Game.Cursor.Move : OpenRa.Game.Cursor.Default;
+				game.viewport.cursor = game.controller.ChooseCursor();
 
 				Application.DoEvents();
 			}
