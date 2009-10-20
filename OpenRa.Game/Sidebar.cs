@@ -44,9 +44,11 @@ namespace OpenRa.Game
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);
 
-			LoadSprites("buildings.txt");
-			LoadSprites("vehicles.txt");
-			LoadSprites("infantry.txt");
+			LoadSprites( "BuildingTypes", "building" );
+			LoadSprites( "VehicleTypes", "vehicle" );
+			LoadSprites( "InfantryTypes", "infantry" );
+			LoadSprites( "ShipTypes", "boat" );
+			LoadSprites( "PlaneTypes", "plane" );
 
 			foreach (string s in groups)
 			{
@@ -64,18 +66,15 @@ namespace OpenRa.Game
 				game.controller.orderGenerator = new PlaceBuilding(game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant());
 		}
 
-		void LoadSprites(string filename)
+		void LoadSprites( string category, string group )
 		{
-			foreach (string l in Util.ReadAllLines(FileSystem.Open(filename)))
+			foreach( var u in Rules.AllRules.GetSection( category ) )
 			{
-				var line = l.ToLowerInvariant();
-				string key = line.Substring(0, line.IndexOf(','));
-				int secondComma = line.IndexOf(',', line.IndexOf(',') + 1);
-				string group = line.Substring(secondComma + 1, line.Length - secondComma - 1);
+				var unit = Rules.UnitInfo[ u.Key ];
 
-				if( Rules.UnitInfo[ key ].TechLevel != -1 )
-					sprites.Add( key, SpriteSheetBuilder.LoadSprite( key + "icon", ".shp" ) );
-				itemGroups.Add(key, group);
+				if( unit.TechLevel != -1 )
+					sprites.Add( unit.Name, SpriteSheetBuilder.LoadSprite( unit.Name + "icon", ".shp" ) );
+				itemGroups.Add( unit.Name, group );
 			}
 		}
 
