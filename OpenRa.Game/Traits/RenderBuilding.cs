@@ -28,11 +28,12 @@ namespace OpenRa.Game.Traits
 				var size = fp.First().Length;
 				var startIndex = (size == 2) ? SmallBibStart : LargeBibStart;
 
-				
-				for (int i = 0; i < 2*size; i++)
-					Game.map.MapTiles[
-						self.Location.X + i % size + Game.map.Offset.X,
-						self.Location.Y + i / size + Game.map.Offset.Y + bibOffset].smudge = (byte)(i + startIndex);
+
+				for (int i = 0; i < 2 * size; i++)
+				{
+					var p = self.Location + Game.map.Offset + new int2(i % size, i / size + bibOffset);
+					Game.map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
+				}
 			}
 		}
 
