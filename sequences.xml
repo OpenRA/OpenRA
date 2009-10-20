@@ -341,5 +341,9 @@
 	<unit name="120mm">
 		<sequence name="idle" start="0" length="1" />
 	</unit>
+
+	<unit name="veh-hit3">
+		<sequence name="idle" start="0" length="*" />
+	</unit>
 	
 </sequences>

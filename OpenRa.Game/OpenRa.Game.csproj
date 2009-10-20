@@ -78,6 +78,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Cursor.cs" />
+    <Compile Include="Explosion.cs" />
     <Compile Include="GameRules\FieldLoader.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\InfoLoader.cs" />

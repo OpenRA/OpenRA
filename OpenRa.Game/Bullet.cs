@@ -59,6 +59,7 @@ namespace OpenRa.Game
 			{
 				game.world.AddFrameEndTask(w => w.Remove(this));
 				game.PlaySound("kaboom25.aud", false);
+				game.world.AddFrameEndTask(w => w.Add(new Explosion(Dest, game)));
 			}
 		}
 
