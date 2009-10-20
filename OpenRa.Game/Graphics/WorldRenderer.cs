@@ -56,8 +56,8 @@ namespace OpenRa.Game.Graphics
 			foreach (Actor a in game.world.Actors)
 				DrawSpriteList(a.Owner, rect, a.Render());
 
-			foreach (Bullet b in game.world.Bullets)
-				DrawSpriteList(b.Owner, rect, b.Render());
+			foreach (IEffect e in game.world.Bullets)
+				DrawSpriteList(e.Owner, rect, e.Render());
 
             uiOverlay.Draw();
 

@@ -62,7 +62,7 @@ using System.Runtime.InteropServices;
 			game.world.Add( jeep );
 			var tank = new Actor( "3tnk", new int2( 12, 7 ), game.players[ 1 ] );
 			game.world.Add( tank );
-			//tank.traits.Get<Traits.AttackTurreted>().target = jeep;
+			tank.traits.Get<Traits.AttackTurreted>().target = jeep;
 
 			sidebar = new Sidebar(renderer, game);
 

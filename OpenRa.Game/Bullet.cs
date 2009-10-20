@@ -8,9 +8,16 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
-	class Bullet
+	interface IEffect
 	{
-		public readonly Player Owner;
+		void Tick(Game g);
+		IEnumerable<Pair<Sprite, float2>> Render();
+		Player Owner { get; }
+	}
+
+	class Bullet : IEffect
+	{
+		public Player Owner { get; private set; }
 		readonly Actor FiredBy;
 		readonly WeaponInfo Weapon;
 		readonly ProjectileInfo Projectile;
@@ -49,7 +56,10 @@ namespace OpenRa.Game
 			t += 40;
 
 			if (t > TotalTime())		/* remove finished bullets */
+			{
 				game.world.AddFrameEndTask(w => w.Remove(this));
+				game.PlaySound("kaboom25.aud", false);
+			}
 		}
 
 		public IEnumerable<Pair<Sprite, float2>> Render()

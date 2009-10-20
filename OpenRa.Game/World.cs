@@ -8,7 +8,7 @@ namespace OpenRa.Game
 	class World
 	{
 		List<Actor> actors = new List<Actor>();
-		List<Bullet> bullets = new List<Bullet>();
+		List<IEffect> bullets = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 		readonly Game game;
 		int lastTime = Environment.TickCount;
@@ -53,6 +53,6 @@ namespace OpenRa.Game
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
-		public IEnumerable<Bullet> Bullets { get { return bullets; } }
+		public IEnumerable<IEffect> Bullets { get { return bullets; } }
 	}
 }
