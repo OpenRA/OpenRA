@@ -4,11 +4,12 @@ using System.Text;
 
 namespace OpenRa.FileFormats
 {
-	public struct TileReference
+	public class TileReference
 	{
 		public ushort tile;
 		public byte image;
 		public byte overlay;
+		public byte smudge;
 
 		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
 

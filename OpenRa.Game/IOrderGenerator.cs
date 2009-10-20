@@ -6,7 +6,7 @@ namespace OpenRa.Game
 {
 	interface IOrderGenerator
 	{
-		IEnumerable<Order> Order( Game game, int2 xy );
-		void PrepareOverlay( Game game, int2 xy );
+		IEnumerable<Order> Order( int2 xy );
+		void PrepareOverlay( int2 xy );
 	}
 }

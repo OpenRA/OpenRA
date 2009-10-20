@@ -14,16 +14,16 @@ namespace OpenRa.Game
 			selection = selected.ToList();
 		}
 
-		public IEnumerable<Order> Order( Game game, int2 xy )
+		public IEnumerable<Order> Order( int2 xy )
 		{
 			foreach( var unit in selection )
 			{
-				var ret = unit.Order( game, xy );
+				var ret = unit.Order( xy );
 				if( ret != null )
 					yield return ret;
 			}
 		}
 
-		public void PrepareOverlay( Game game, int2 xy ) { }
+		public void PrepareOverlay( int2 xy ) { }
 	}
 }

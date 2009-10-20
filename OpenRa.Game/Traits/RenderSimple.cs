@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 
 		public abstract IEnumerable<Pair<Sprite, float2>> Render(Actor self);
 
-		public virtual void Tick(Actor self, Game game)
+		public virtual void Tick(Actor self)
 		{
 			anim.Tick();
 		}

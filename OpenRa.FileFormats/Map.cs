@@ -31,6 +31,10 @@ namespace OpenRa.FileFormats
 
 		public Map(IniFile file)
 		{
+			for (int j = 0; j < 128; j++)
+				for (int i = 0; i < 128; i++)
+					MapTiles[i, j] = new TileReference();
+
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
 

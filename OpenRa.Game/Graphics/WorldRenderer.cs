@@ -10,23 +10,21 @@ namespace OpenRa.Game.Graphics
 	{
 		public readonly SpriteRenderer spriteRenderer;
         public readonly LineRenderer lineRenderer;
-		public readonly Game game;
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
 
-		public WorldRenderer(Renderer renderer, Game game)
+		public WorldRenderer(Renderer renderer)
 		{
 			// TODO: this is layout policy. it belongs at a higher level than this.
-			this.game = game;
-			region = Region.Create(game.viewport, DockStyle.Left,
-				game.viewport.Width - 128, Draw, 
-                game.controller.HandleMouseInput);		
+			region = Region.Create(Game.viewport, DockStyle.Left,
+				Game.viewport.Width - 128, Draw, 
+                Game.controller.HandleMouseInput);		
 
-			game.viewport.AddRegion(region);
+			Game.viewport.AddRegion(region);
 
 			spriteRenderer = new SpriteRenderer(renderer, true);
             lineRenderer = new LineRenderer(renderer);
-			uiOverlay = new UiOverlay(spriteRenderer, game);
+			uiOverlay = new UiOverlay(spriteRenderer);
 		}
 
 		void DrawSpriteList(Player owner, RectangleF rect, 
@@ -50,20 +48,20 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw()
 		{
-			var rect = new RectangleF((region.Position + game.viewport.Location).ToPointF(), 
+			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(), 
                 region.Size.ToSizeF());
 
-			foreach (Actor a in game.world.Actors)
+			foreach (Actor a in Game.world.Actors)
 				DrawSpriteList(a.Owner, rect, a.Render());
 
-			foreach (IEffect e in game.world.Effects)
+			foreach (IEffect e in Game.world.Effects)
 				DrawSpriteList(e.Owner, rect, e.Render());
 
             uiOverlay.Draw();
 
 			spriteRenderer.Flush();
 
-            var selbox = game.controller.SelectionBox;
+            var selbox = Game.controller.SelectionBox;
             if (selbox != null)
             {
                 var a = selbox.Value.First;
@@ -75,13 +73,13 @@ namespace OpenRa.Game.Graphics
                 lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
                 lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
-                foreach (var u in game.SelectUnitsInBox(selbox.Value.First, selbox.Value.Second))
+                foreach (var u in Game.SelectUnitsInBox(selbox.Value.First, selbox.Value.Second))
                     DrawSelectionBox(u, Color.Yellow, false);
             }
 
-            var selection = game.controller.orderGenerator as UnitOrderGenerator;
+            var selection = Game.controller.orderGenerator as UnitOrderGenerator;
             if (selection != null)
-				foreach( var a in game.world.Actors.Intersect(selection.selection) )		/* make sure we don't grab actors that are dead */
+				foreach( var a in Game.world.Actors.Intersect(selection.selection) )		/* make sure we don't grab actors that are dead */
 	                DrawSelectionBox(a, Color.White, true);
             
             lineRenderer.Flush();

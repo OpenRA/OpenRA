@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 			self.traits.Get<Turreted>();
 		}
 
-		public void Tick( Actor self, Game game )
+		public void Tick( Actor self )
 		{
 			if( primaryFireDelay > 0 )
 				--primaryFireDelay;
@@ -33,16 +33,16 @@ namespace OpenRa.Game.Traits
 			if( turreted.desiredFacing != turreted.turretFacing )
 				return;
 
-			if( self.unitInfo.Primary != null && CheckFire( self, game, self.unitInfo.Primary, ref primaryFireDelay ) )
+			if( self.unitInfo.Primary != null && CheckFire( self, self.unitInfo.Primary, ref primaryFireDelay ) )
 			{
 				secondaryFireDelay = Math.Max( 4, secondaryFireDelay );
 				return;
 			}
-			if( self.unitInfo.Secondary != null && CheckFire( self, game, self.unitInfo.Secondary, ref secondaryFireDelay ) )
+			if( self.unitInfo.Secondary != null && CheckFire( self, self.unitInfo.Secondary, ref secondaryFireDelay ) )
 				return;
 		}
 
-		bool CheckFire( Actor self, Game game, string weaponName, ref int fireDelay )
+		bool CheckFire( Actor self, string weaponName, ref int fireDelay )
 		{
 			if( fireDelay > 0 )
 				return false;
@@ -54,7 +54,10 @@ namespace OpenRa.Game.Traits
 			// FIXME: rules specifies ROF in 1/15 sec units; ticks are 1/25 sec
 			fireDelay = weapon.ROF;
 
-			game.world.Add( new Bullet( weaponName, self.Owner, self, self.CenterLocation.ToInt2(), target.CenterLocation.ToInt2(), game ) );
+			Game.world.Add( new Bullet( weaponName, self.Owner, self, 
+				self.CenterLocation.ToInt2(), 
+				target.CenterLocation.ToInt2() ) );
+
 			return true;
 		}
 	}

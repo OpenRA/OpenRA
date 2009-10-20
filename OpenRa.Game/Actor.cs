@@ -45,10 +45,10 @@ namespace OpenRa.Game
 			traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
 		}
 
-		public void Tick( Game game )
+		public void Tick()
 		{
-			foreach( var tick in traits.WithInterface<Traits.ITick>() )
-				tick.Tick( this, game );
+			foreach (var tick in traits.WithInterface<Traits.ITick>())
+				tick.Tick(this);
 		}
 
 		public float2 CenterLocation;
@@ -59,10 +59,10 @@ namespace OpenRa.Game
 			return traits.WithInterface<Traits.IRender>().SelectMany( x => x.Render( this ) );
 		}
 
-		public Order Order( Game game, int2 xy )
+		public Order Order( int2 xy )
 		{
 			return traits.WithInterface<Traits.IOrder>()
-				.Select( x => x.Order( this, game, xy ) )
+				.Select( x => x.Order( this, xy ) )
 				.Where( x => x != null )
 				.FirstOrDefault();
 		}

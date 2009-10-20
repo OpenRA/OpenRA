@@ -6,7 +6,7 @@ namespace OpenRa.Game
 {
 	abstract class Order
 	{
-		public abstract void Apply( Game game, bool leftMButton );
+		public abstract void Apply( bool leftMButton );
 	}
 
 	class MoveOrder : Order
@@ -20,11 +20,11 @@ namespace OpenRa.Game
 			this.Destination = destination;
 		}
 
-		public override void Apply( Game game, bool leftMouseButton )
+		public override void Apply( bool leftMouseButton )
 		{
 			if (leftMouseButton) return;
-			if (game.LocalPlayer == Unit.Owner)
-				game.PlaySound("ackno.r00", false);
+			if (Game.LocalPlayer == Unit.Owner)
+				Game.PlaySound("ackno.r00", false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();
 			mobile.destination = Destination;
 			mobile.desiredFacing = null;
@@ -42,7 +42,7 @@ namespace OpenRa.Game
 			Location = location;
 		}
 
-		public override void Apply( Game game, bool leftMouseButton )
+		public override void Apply( bool leftMouseButton )
 		{
 			if (leftMouseButton) return;
 			Unit.traits.Get<Traits.McvDeploy>().DeployLocation = Location;

@@ -25,9 +25,9 @@ namespace OpenRa.Game.Traits
 			yield return Centered(turretAnim.Image, self.CenterLocation);
 		}
 
-		public override void Tick(Actor self, Game game)
+		public override void Tick(Actor self)
 		{
-			base.Tick(self, game);
+			base.Tick(self);
 			turretAnim.Tick();
 		}
 	}

@@ -9,30 +9,30 @@ using IjwFramework.Collections;
 
 namespace OpenRa.Game
 {
-	class Game
+	static class Game
 	{
 		public static readonly int CellSize = 24;
 
-		public readonly World world;
-		public readonly Map map;
-		readonly TreeCache treeCache;
-		public readonly TerrainRenderer terrain;
-		public readonly Viewport viewport;
-		public readonly PathFinder pathFinder;
-		public readonly Network network;
-		public readonly WorldRenderer worldRenderer;
-		public readonly Controller controller;
+		public static World world;
+		public static Map map;
+		static TreeCache treeCache;
+		public static TerrainRenderer terrain;
+		public static Viewport viewport;
+		public static PathFinder pathFinder;
+		public static Network network;
+		public static WorldRenderer worldRenderer;
+		public static Controller controller;
 
-		int localPlayerIndex = 0;
+		static int localPlayerIndex = 0;
 
-		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
+		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
-		public Player LocalPlayer { get { return players[localPlayerIndex]; } }
-		public BuildingInfluenceMap LocalPlayerBuildings;
+		public static Player LocalPlayer { get { return players[localPlayerIndex]; } }
+		public static BuildingInfluenceMap LocalPlayerBuildings;
 
-		ISoundEngine soundEngine;
+		static ISoundEngine soundEngine;
 
-		public Game(string mapName, Renderer renderer, int2 clientSize)
+		public static void Initialize(string mapName, Renderer renderer, int2 clientSize)
 		{
 			Rules.LoadRules( mapName );
 
@@ -46,7 +46,7 @@ namespace OpenRa.Game
 			viewport = new Viewport(clientSize, map.Size, renderer);
 
 			terrain = new TerrainRenderer(renderer, map, viewport);
-			world = new World(this);
+			world = new World();
 			treeCache = new TreeCache(map);
 
 			foreach( TreeReference treeReference in map.Trees )
@@ -61,8 +61,8 @@ namespace OpenRa.Game
 
 			network = new Network();
 
-			controller = new Controller(this);		// CAREFUL THERES AN UGLY HIDDEN DEPENDENCY HERE STILL
-			worldRenderer = new WorldRenderer(renderer, this);
+			controller = new Controller();
+			worldRenderer = new WorldRenderer(renderer);
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
@@ -70,7 +70,7 @@ namespace OpenRa.Game
 			PlaySound("intro.aud", false);
 		}
 
-		void LoadMapBuildings( IniFile mapfile )
+		static void LoadMapBuildings( IniFile mapfile )
 		{
 			foreach( var s in mapfile.GetSection( "STRUCTURES", true ) )
 			{
@@ -81,7 +81,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		void LoadMapUnits( IniFile mapfile )
+		static void LoadMapUnits( IniFile mapfile )
 		{
 			foreach( var s in mapfile.GetSection( "UNITS", true ) )
 			{
@@ -92,9 +92,9 @@ namespace OpenRa.Game
 			}
 		}
 
-		readonly Cache<string, ISoundSource> sounds;
+		static Cache<string, ISoundSource> sounds;
 
-		ISoundSource LoadSound(string filename)
+		static ISoundSource LoadSound(string filename)
 		{
 			var data = AudLoader.LoadSound(FileSystem.Open(filename));
 			return soundEngine.AddSoundSourceFromPCMData(data, filename,
@@ -107,14 +107,14 @@ namespace OpenRa.Game
 				});
 		}
 
-		public void PlaySound(string name, bool loop)
+		public static void PlaySound(string name, bool loop)
 		{
 			var sound = sounds[name];
 			// todo: positioning
 			soundEngine.Play2D(sound, loop, false, false);
 		}
 
-		public void Tick()
+		public static void Tick()
 		{
 			var stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 			world.Update();
@@ -122,7 +122,7 @@ namespace OpenRa.Game
 			viewport.DrawRegions();
 		}
 
-		public bool IsCellBuildable(int2 a)
+		public static bool IsCellBuildable(int2 a)
 		{
 			if (LocalPlayerBuildings[a] != null) return false;
 
@@ -133,7 +133,7 @@ namespace OpenRa.Game
 					terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
-		IEnumerable<Actor> FindUnits(float2 a, float2 b)
+		static IEnumerable<Actor> FindUnits(float2 a, float2 b)
 		{
 			var min = float2.Min(a, b);
 			var max = float2.Max(a, b);
@@ -144,12 +144,12 @@ namespace OpenRa.Game
 				.Where(x => x.Bounds.IntersectsWith(rect));
 		}
 
-		public IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
+		public static IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Mobile>());
 		}
 
-		public IEnumerable<Actor> SelectUnitOrBuilding(float2 a)
+		public static IEnumerable<Actor> SelectUnitOrBuilding(float2 a)
 		{
 			var q = FindUnits(a, a);
 			return q.Where(x => x.traits.Contains<Traits.Mobile>()).Concat(q).Take(1);

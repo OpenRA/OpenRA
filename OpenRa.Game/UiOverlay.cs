@@ -10,12 +10,10 @@ namespace OpenRa.Game
 		SpriteRenderer spriteRenderer;
 		Sprite buildOk;
 		Sprite buildBlocked;
-		Game game;
 
-		public UiOverlay(SpriteRenderer spriteRenderer, Game game)
+		public UiOverlay(SpriteRenderer spriteRenderer)
 		{
 			this.spriteRenderer = spriteRenderer;
-			this.game = game;
 
 			buildOk = SynthesizeTile(0x80);
 			buildBlocked = SynthesizeTile(0xe6);
@@ -38,7 +36,7 @@ namespace OpenRa.Game
 				return;
 
 			foreach (var t in Footprint.Tiles(name,position))
-				spriteRenderer.DrawSprite(game.IsCellBuildable(t) ? buildOk : buildBlocked, Game.CellSize * t, 0);
+				spriteRenderer.DrawSprite(Game.IsCellBuildable(t) ? buildOk : buildBlocked, Game.CellSize * t, 0);
 
 			spriteRenderer.Flush();
 		}

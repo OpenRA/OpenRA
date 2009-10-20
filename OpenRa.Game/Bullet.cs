@@ -10,7 +10,7 @@ namespace OpenRa.Game
 {
 	interface IEffect
 	{
-		void Tick(Game g);
+		void Tick();
 		IEnumerable<Pair<Sprite, float2>> Render();
 		Player Owner { get; }
 	}
@@ -32,7 +32,7 @@ namespace OpenRa.Game
 
 		/* src, dest are *pixel* coords */
 		public Bullet(string weapon, Player owner, Actor firedBy, 
-			int2 src, int2 dest, Game game)
+			int2 src, int2 dest)
 		{
 			Owner = owner;
 			FiredBy = firedBy;
@@ -48,18 +48,17 @@ namespace OpenRa.Game
 
 		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
 
-		public void Tick(Game game)
+		public void Tick()
 		{
 			if (t == 0)
-				game.PlaySound(Weapon.Report + ".aud", false);
+				Game.PlaySound(Weapon.Report + ".aud", false);
 
 			t += 40;
 
 			if (t > TotalTime())		/* remove finished bullets */
 			{
-				game.world.AddFrameEndTask(w => w.Remove(this));
-				game.PlaySound("kaboom25.aud", false);
-				game.world.AddFrameEndTask(w => w.Add(new Explosion(Dest, game)));
+				Game.world.AddFrameEndTask(w => w.Remove(this));
+				Game.world.AddFrameEndTask(w => w.Add(new Explosion(Dest)));
 			}
 		}
 

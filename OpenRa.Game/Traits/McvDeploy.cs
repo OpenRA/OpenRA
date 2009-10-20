@@ -13,7 +13,7 @@ namespace OpenRa.Game.Traits
 		{
 		}
 
-		public Order Order(Actor self, Game game, int2 xy)
+		public Order Order(Actor self, int2 xy)
 		{
 			DeployLocation = null;
 			// TODO: check that there's enough space at the destination.
@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
-		public void Tick(Actor self, Game game)
+		public void Tick(Actor self)
 		{
 			if( self.Location != DeployLocation )
 				return;
@@ -36,10 +36,10 @@ namespace OpenRa.Game.Traits
 			if( mobile.facing != mobile.desiredFacing )
 				return;
 
-			game.world.AddFrameEndTask(_ =>
+			Game.world.AddFrameEndTask(_ =>
 			{
-					game.world.Remove(self);
-					game.world.Add(new Actor("fact", self.Location - new int2(1, 1), self.Owner));
+					Game.world.Remove(self);
+					Game.world.Add(new Actor("fact", self.Location - new int2(1, 1), self.Owner));
 			});
 		}
 	}

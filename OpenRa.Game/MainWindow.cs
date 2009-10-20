@@ -3,17 +3,17 @@ using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using OpenRa.TechTree;
+using System.Runtime.InteropServices;
 
 namespace OpenRa.Game
 {
 	using GRegion = OpenRa.Game.Graphics.Region;
-using System.Runtime.InteropServices;
+
 
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
 		
-		Game game;
 		public readonly Sidebar sidebar;
 
 		static Size GetResolution(Settings settings)
@@ -50,37 +50,36 @@ using System.Runtime.InteropServices;
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 			SheetBuilder.Initialize(renderer);
 
-			game = new Game(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize));
+			Game.Initialize(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize));
 
 			SequenceProvider.ForcePrecache();
-			Traits.RenderBuilding.Prefetch();
 
-			game.world.Add( new Actor( "mcv", new int2( 5, 5 ), game.players[ 3 ]) );
-			game.world.Add( new Actor( "mcv", new int2( 7, 5 ), game.players[ 2 ] ) );
-			game.world.Add( new Actor( "mcv", new int2( 9, 5 ), game.players[ 0 ] ) );
-			var jeep = new Actor( "jeep", new int2( 9, 7 ), game.players[ 1 ] );
-			game.world.Add( jeep );
-			var tank = new Actor( "3tnk", new int2( 12, 7 ), game.players[ 1 ] );
-			game.world.Add( tank );
+			Game.world.Add( new Actor( "mcv", new int2( 5, 5 ), Game.players[ 3 ]) );
+			Game.world.Add( new Actor( "mcv", new int2( 7, 5 ), Game.players[ 2 ] ) );
+			Game.world.Add( new Actor( "mcv", new int2( 9, 5 ), Game.players[ 0 ] ) );
+			var jeep = new Actor( "jeep", new int2( 9, 7 ), Game.players[ 1 ] );
+			Game.world.Add( jeep );
+			var tank = new Actor( "3tnk", new int2( 12, 7 ), Game.players[ 1 ] );
+			Game.world.Add( tank );
 			tank.traits.Get<Traits.AttackTurreted>().target = jeep;
 
-			sidebar = new Sidebar(renderer, game);
+			sidebar = new Sidebar(renderer);
 
-			renderer.BuildPalette(game.map);
+			renderer.BuildPalette(Game.map);
 
 			ShowCursor(false);
 
-			game.world.ResetTimer();
+			Game.world.ResetTimer();
 		}
 
 		internal void Run()
 		{
 			while (Created && Visible)
 			{
-				game.Tick();
+				Game.Tick();
 
 				// rude hack
-				game.viewport.cursor = game.controller.ChooseCursor();
+				Game.viewport.cursor = Game.controller.ChooseCursor();
 
 				Application.DoEvents();
 			}
@@ -93,7 +92,7 @@ using System.Runtime.InteropServices;
             base.OnMouseDown(e);
             lastPos = new int2(e.Location);
 
-            game.viewport.DispatchMouseInput(new MouseInput
+            Game.viewport.DispatchMouseInput(new MouseInput
                 {
                     Button = e.Button,
                     Event = MouseInputEvent.Down,
@@ -108,27 +107,27 @@ using System.Runtime.InteropServices;
 			if (e.Button == MouseButtons.Middle)
 			{
 				int2 p = new int2(e.Location);
-				game.viewport.Scroll(lastPos - p);
+				Game.viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}
 
-            game.viewport.DispatchMouseInput(new MouseInput
+            Game.viewport.DispatchMouseInput(new MouseInput
             {
                 Button = e.Button,
                 Event = MouseInputEvent.Move,
                 Location = new int2(e.Location)
             });
 
-			if (game.controller.orderGenerator != null)
-				game.controller.orderGenerator.PrepareOverlay(game,
-					((1 / 24f) * (new float2(e.Location) + game.viewport.Location)).ToInt2());
+			if (Game.controller.orderGenerator != null)
+				Game.controller.orderGenerator.PrepareOverlay(
+					((1 / 24f) * (new float2(e.Location) + Game.viewport.Location)).ToInt2());
 		}
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
 
-            game.viewport.DispatchMouseInput(new MouseInput
+            Game.viewport.DispatchMouseInput(new MouseInput
             {
                 Button = e.Button,
                 Event = MouseInputEvent.Up,

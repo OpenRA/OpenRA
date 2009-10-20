@@ -44,6 +44,8 @@ namespace OpenRa.Game.Graphics
 			};
 		Sprite[][] overlaySprites;
 
+		Sprite[] smudgeSprites;
+
 		SpriteRenderer spriteRenderer;
 		Map map;
 
@@ -53,8 +55,12 @@ namespace OpenRa.Game.Graphics
 			this.map = map;
 
 			overlaySprites = new Sprite[ overlaySpriteNames.Length ][];
-			for( int i = 0 ; i < overlaySpriteNames.Length ; i++ )
-				overlaySprites[ i ] = SpriteSheetBuilder.LoadAllSprites( overlaySpriteNames[ i ], ".shp", ".tem", ".sno" );
+			for (int i = 0; i < overlaySpriteNames.Length; i++)
+				overlaySprites[i] = SpriteSheetBuilder.LoadAllSprites(overlaySpriteNames[i], ".shp", ".tem", ".sno");
+
+			/* todo: add the rest of the smudge sprites */
+			smudgeSprites = new[] { "bib3", "bib2" }.SelectMany(
+				f => SpriteSheetBuilder.LoadAllSprites(f, ".shp", ".tem", ".sno")).ToArray();
 		}
 
 		public void Draw()
@@ -62,7 +68,15 @@ namespace OpenRa.Game.Graphics
 			for( int y = 0 ; y < 128 ; y++ )
 				for (int x = 0; x < 128; x++)
 				{
-					var o = map.MapTiles[x, y].overlay;
+					var tr = map.MapTiles[x,y];
+					if (tr.smudge != 0 && tr.smudge <= smudgeSprites.Length)
+					{
+						var location = new int2(x, y);
+						spriteRenderer.DrawSprite(smudgeSprites[tr.smudge - 1],
+							Game.CellSize * (float2)(location - map.Offset), 0);
+					}
+
+					var o = tr.overlay;
 					if (o < overlaySprites.Length)
 					{
 						var location = new int2(x, y);

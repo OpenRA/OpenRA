@@ -13,15 +13,16 @@ namespace OpenRa.Game
 		Animation anim;
 		int2 pos;
 
-		public Explosion(int2 pixelPos, Game g)
+		public Explosion(int2 pixelPos)
 		{
 			this.pos = pixelPos;
 
 			anim = new Animation("veh-hit3");
-			anim.PlayThen("idle", () => g.world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen("idle", () => Game.world.AddFrameEndTask(w => w.Remove(this)));
+			Game.PlaySound("kaboom25.aud", false);
 		}
 
-		public void Tick(Game g) { anim.Tick(); }
+		public void Tick() { anim.Tick(); }
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
 		{

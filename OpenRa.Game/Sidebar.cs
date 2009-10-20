@@ -17,7 +17,6 @@ namespace OpenRa.Game
 
 		SpriteRenderer spriteRenderer, clockRenderer;
 		Sprite blank;
-		Game game;
 		readonly GRegion region;
 
 		public GRegion Region { get { return region; } }
@@ -34,13 +33,12 @@ namespace OpenRa.Game
 		
 		List<SidebarItem> items = new List<SidebarItem>();
 		
-		public Sidebar( Renderer renderer, Game game )
+		public Sidebar( Renderer renderer )
 		{
-			this.techTree = game.LocalPlayer.TechTree;
+			this.techTree = Game.LocalPlayer.TechTree;
             this.techTree.BuildableItemsChanged += PopulateItemList;
-			this.game = game;
-			region = GRegion.Create(game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
-			game.viewport.AddRegion( region );
+			region = GRegion.Create(Game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
+			Game.viewport.AddRegion( region );
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);
 
@@ -63,7 +61,8 @@ namespace OpenRa.Game
 		public void Build(SidebarItem item)
 		{
 			if (item != null)
-				game.controller.orderGenerator = new PlaceBuilding(game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant());
+				Game.controller.orderGenerator = new PlaceBuilding(Game.LocalPlayer, 
+					item.techTreeItem.tag.ToLowerInvariant());
 		}
 
 		void LoadSprites( string category, string group )
@@ -186,15 +185,15 @@ namespace OpenRa.Game
 			Name = name;
 		}
 
-		public IEnumerable<Order> Order( Game game, int2 xy )
+		public IEnumerable<Order> Order( int2 xy )
 		{
 			// todo: check that space is free
 			yield return new PlaceBuildingOrder( this, xy );
 		}
 
-		public void PrepareOverlay(Game game, int2 xy)
+		public void PrepareOverlay(int2 xy)
 		{
-			game.worldRenderer.uiOverlay.SetCurrentOverlay(xy, Name);
+			Game.worldRenderer.uiOverlay.SetCurrentOverlay(xy, Name);
 		}
 	}
 
@@ -209,11 +208,11 @@ namespace OpenRa.Game
 			this.xy = xy;
 		}
 
-		public override void Apply(Game game, bool leftMouseButton)
+		public override void Apply(bool leftMouseButton)
 		{
 			if (leftMouseButton)
 			{
-				game.world.AddFrameEndTask(_ =>
+				Game.world.AddFrameEndTask(_ =>
 				{
 					Log.Write("Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name);
 
@@ -224,18 +223,18 @@ namespace OpenRa.Game
 						if (row.Length > maxWidth)
 							maxWidth = row.Length;
 
-					game.world.Add(new Actor(building.Name, xy - new int2(maxWidth / 2, footprint.Length / 2), building.Owner));
+					Game.world.Add(new Actor(building.Name, xy - new int2(maxWidth / 2, footprint.Length / 2), building.Owner));
 
-					game.controller.orderGenerator = null;
-					game.worldRenderer.uiOverlay.KillOverlay();
+					Game.controller.orderGenerator = null;
+					Game.worldRenderer.uiOverlay.KillOverlay();
 				});
 			}
 			else
 			{
-				game.world.AddFrameEndTask(_ =>
+				Game.world.AddFrameEndTask(_ =>
 				{
-					game.controller.orderGenerator = null;
-					game.worldRenderer.uiOverlay.KillOverlay();
+					Game.controller.orderGenerator = null;
+					Game.worldRenderer.uiOverlay.KillOverlay();
 				});
 			}
 		}

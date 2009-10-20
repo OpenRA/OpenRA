@@ -10,19 +10,12 @@ namespace OpenRa.Game
 {
 	class Controller
 	{
-		Game game;
-
 		public IOrderGenerator orderGenerator;
-
-		public Controller(Game game)
-		{
-			this.game = game;
-		}
 
         float2 dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
-            var xy = game.viewport.ViewToWorld(mi);
+            var xy = Game.viewport.ViewToWorld(mi);
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
             {
@@ -30,8 +23,8 @@ namespace OpenRa.Game
 					dragStart = dragEnd = xy;
 
 				if (orderGenerator != null)
-					foreach (var order in orderGenerator.Order(game, xy.ToInt2()))
-						order.Apply(game, true);
+					foreach (var order in orderGenerator.Order(xy.ToInt2()))
+						order.Apply(true);
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -43,10 +36,10 @@ namespace OpenRa.Game
 				{
 					if (dragStart != xy)
 						orderGenerator = new UnitOrderGenerator( 
-							game.SelectUnitsInBox( Game.CellSize * dragStart, Game.CellSize * xy ) );
+							Game.SelectUnitsInBox( Game.CellSize * dragStart, Game.CellSize * xy ) );
 					else
 						orderGenerator = new UnitOrderGenerator( 
-							game.SelectUnitOrBuilding( Game.CellSize * xy ) );
+							Game.SelectUnitOrBuilding( Game.CellSize * xy ) );
 				}
 
 				dragStart = dragEnd = xy;
@@ -61,8 +54,8 @@ namespace OpenRa.Game
 
 			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 				if( orderGenerator != null )
-					foreach( var order in orderGenerator.Order( game, xy.ToInt2() ) )
-						order.Apply( game, false );
+					foreach( var order in orderGenerator.Order( xy.ToInt2() ) )
+						order.Apply( false );
 		}
 
         public Pair<float2, float2>? SelectionBox
@@ -81,7 +74,7 @@ namespace OpenRa.Game
 			if (uog != null && uog.selection.Count > 0 && uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()))
 				return Cursor.Move;
 
-			if (game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
+			if (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
 				return Cursor.Select;
 			
 			return Cursor.Default;

@@ -29,13 +29,13 @@ namespace OpenRa.Game.Traits
 			self.CenterLocation = new float2(12, 12) + Game.CellSize * float2.Lerp(fromCell, toCell, fraction);
 		}
 
-		public void Tick(Actor self, Game game)
+		public void Tick(Actor self)
 		{
-			Move(self, game);
+			Move(self);
 			UpdateCenterLocation();
 		}
 
-		void Move(Actor self, Game game)
+		void Move(Actor self)
 		{
 			if( fromCell != toCell )
 				desiredFacing = Util.GetFacing( toCell - fromCell, facing );
@@ -60,7 +60,7 @@ namespace OpenRa.Game.Traits
 			if (destination == toCell)
 				return;
 
-			List<int2> res = game.pathFinder.FindUnitPath(toCell, PathFinder.DefaultEstimator(destination));
+			List<int2> res = Game.pathFinder.FindUnitPath(toCell, PathFinder.DefaultEstimator(destination));
 			if (res.Count != 0)
 			{
 				self.Location = res[res.Count - 1];
@@ -72,12 +72,11 @@ namespace OpenRa.Game.Traits
 				destination = toCell;
 		}
 
-		public Order Order(Actor self, Game game, int2 xy)
+		public Order Order(Actor self, int2 xy)
 		{
 			if (xy != toCell)
-			{
 				return new MoveOrder(self, xy);
-			}
+
 			return null;
 		}
 	}
