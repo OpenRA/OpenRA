@@ -26,104 +26,17 @@ namespace OpenRa.Game
 			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
 			Owner = owner;
 
-			switch( name )
+			if( unitInfo.Traits != null )
 			{
-			///// vehicles /////
-			case "mcv":
-				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this ) );
-				traits.Add( new Traits.McvDeploy( this ) );
-				break;
-			case "mnly":
-			case "apc":
-			case "v2rl":
-			case "arty":
-				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this ) );
-				break;
-			case "jeep":
-			case "1tnk":
-			case "2tnk":
-			case "3tnk":
-			case "4tnk":
-				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.Turreted( this ) );
-				traits.Add( new Traits.AttackTurreted( this ) );
-				traits.Add( new Traits.RenderUnitTurreted( this ) );
-				break;
-			case "mrj":
-			case "mgg":
-				// TODO: these aren't actually turreted; they just have spinning-things
-				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.Turreted( this ) );
-				traits.Add( new Traits.RenderUnitTurreted( this ) );
-				break;
-			case "harv":
-				traits.Add( new Traits.Mobile( this ) );
-				traits.Add( new Traits.RenderUnit( this ) );
-				break;
-			///// TODO: infantry /////
-
-			///// TODO: boats /////
-
-			///// TODO: planes /////
-
-			///// buildings /////
-			//TODO: SBAG, BRIK, FENC, etc
-			case "iron":
-			case "pdox":
-			case "mslo":
-			case "atek":
-			case "stek":
-			case "fact":
-			case "proc":
-			case "hpad":
-			case "afld":
-			case "dome":
-			case "powr":
-			case "apwr":
-			case "barr":
-			case "tent":
-			case "kenn":
-			case "fix":
-			case "spen":
-			case "syrd":
-			case "gap":
-			case "pbox":
-			case "hbox":
-			case "tsla":
-			case "ftur":
-			case "facf":
-			case "syrf":
-			case "spef":
-			case "domf":
-				traits.Add( new Traits.Building( this ) );
-				traits.Add( new Traits.RenderBuilding( this ) );
-				break;
-			case "weap":
-			case "weaf":
-				traits.Add( new Traits.Building( this ) );
-				traits.Add( new Traits.RenderWarFactory( this ) );
-				break;
-			case "gun":
-			case "agun":
-			case "sam":
-				traits.Add( new Traits.Building( this ) );
-				traits.Add( new Traits.Turreted( this ) );
-				traits.Add( new Traits.RenderBuildingTurreted( this ) );
-				break;
-			case "silo":
-				traits.Add(new Traits.Building(this));
-				traits.Add(new Traits.RenderBuildingOre(this));
-				break;
-
-			case "fcom":
-				traits.Add( new Traits.Building( this ) );
-				traits.Add( new Traits.RenderBuilding( this ) );
-				break;
-			default:
-				throw new NotImplementedException( "Actor traits for " + name );
+				foreach( var traitName in unitInfo.Traits )
+				{
+					var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
+					var ctor = type.GetConstructor( new Type[] { typeof( Actor ) } );
+					traits.Add( type, ctor.Invoke( new object[] { this } ) );
+				}
 			}
+			else
+				throw new InvalidOperationException( "No Actor traits for " + unitInfo.Name + "; add Traits= to units.ini for appropriate unit" );
 		}
 
 		public Actor( TreeReference tree, TreeCache treeRenderer, int2 mapOffset )

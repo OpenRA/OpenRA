@@ -13,24 +13,38 @@ namespace OpenRa.Game.GameRules
 			foreach( var x in ini )
 			{
 				var field = self.GetType().GetField( x.Key );
-				if( field.FieldType == typeof( int ) )
-					field.SetValue( self, int.Parse( x.Value ) );
-
-				else if( field.FieldType == typeof( float ) )
-					field.SetValue( self, float.Parse( x.Value ) );
-
-				else if( field.FieldType == typeof( string ) )
-					field.SetValue( self, x.Value.ToLowerInvariant() );
-
-				else if( field.FieldType.IsEnum )
-					field.SetValue( self, Enum.Parse( field.FieldType, x.Value ) );
-
-				else if( field.FieldType == typeof( bool ) )
-					field.SetValue( self, ParseYesNo( x.Value ) );
-
-				else
-					do { } while( false );
+				field.SetValue( self, GetValue( field.FieldType, x.Value ) );
 			}
+		}
+
+		static object GetValue( Type fieldType, string x )
+		{
+			if( fieldType == typeof( int ) )
+				return int.Parse( x );
+
+			else if( fieldType == typeof( float ) )
+				return float.Parse( x );
+
+			else if( fieldType == typeof( string ) )
+				return x;//.ToLowerInvariant();
+
+			else if( fieldType.IsEnum )
+				return Enum.Parse( fieldType, x );
+
+			else if( fieldType == typeof( bool ) )
+				return ParseYesNo( x );
+
+			else if( fieldType.IsArray )
+			{
+				var parts = x.Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
+
+				var ret = Array.CreateInstance( fieldType.GetElementType(), parts.Length );
+				for (int i = 0; i < parts.Length; i++)
+					ret.SetValue( GetValue( fieldType.GetElementType(), parts[ i ].Trim() ), i );
+				return ret;
+			}
+			else
+				throw new InvalidOperationException( "FieldLoader: don't know how to load field of type " + fieldType.ToString() );
 		}
 
 		static bool ParseYesNo( string p )
