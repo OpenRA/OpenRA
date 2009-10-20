@@ -42,18 +42,21 @@ namespace OpenRa.Game
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					if (dragStart != xy)
-						orderGenerator = new UnitOrderGenerator( game.FindUnits( Game.CellSize * dragStart, Game.CellSize * xy ) ); /* band-box select */
+						orderGenerator = new UnitOrderGenerator( 
+							game.SelectUnitsInBox( Game.CellSize * dragStart, Game.CellSize * xy ) );
 					else
-						orderGenerator = new UnitOrderGenerator( game.FindUnits( Game.CellSize * xy, Game.CellSize * xy ) );  /* click select */
+						orderGenerator = new UnitOrderGenerator( 
+							game.SelectUnitOrBuilding( Game.CellSize * xy ) );
 				}
 
-				dragStart = dragEnd;
+				dragStart = dragEnd = xy;
             }
 
             if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
             {
                 /* update the cursor to reflect the thing under us - note this 
                  * needs to also happen when the *thing* changes, so per-frame hook */
+				dragStart = dragEnd = xy;
             }
 
 			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
@@ -70,5 +73,18 @@ namespace OpenRa.Game
 				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
 			}
         }
+
+		public Cursor ChooseCursor()
+		{
+			var uog = orderGenerator as UnitOrderGenerator;
+
+			if (uog != null && uog.selection.Count > 0 && uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()))
+				return Cursor.Move;
+
+			if (game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
+				return Cursor.Select;
+			
+			return Cursor.Default;
+		}
 	}
 }
