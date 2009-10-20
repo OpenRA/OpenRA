@@ -32,20 +32,6 @@ namespace OpenRa.TechTree
 			CheckAll();
 		}
 
-		IEnumerable<Tuple<string, string, bool>> Lines(string filename, bool param)
-		{
-			Regex pattern = new Regex(@"^(\w+),([\w ]+),(\w+)$");
-			foreach (string s in File.ReadAllLines("../../../../" + filename))
-			{
-				Match m = pattern.Match(s);
-				if (m == null || !m.Success)
-					continue;
-
-				yield return new Tuple<string, string, bool>(
-					m.Groups[1].Value, m.Groups[2].Value, param);
-			}
-		}
-
 		void LoadRules()
 		{
 			var allBuildings = Rules.AllRules.GetSection( "BuildingTypes" ).Select( x => x.Key.ToLowerInvariant() ).ToList();
@@ -65,10 +51,7 @@ namespace OpenRa.TechTree
 			return true;
 		}
 
-		public bool Build(string key)
-		{
-			return Build(key, false);
-		}
+		public bool Build(string key) { return Build(key, false); }
 
 		public bool Unbuild(string key)
 		{
@@ -88,16 +71,7 @@ namespace OpenRa.TechTree
 			BuildableItemsChanged();
 		}
 
-		public IEnumerable<Item> BuildableItems
-		{
-			get
-			{
-				foreach (Item b in objects.Values)
-					if (b.CanBuild)
-						yield return b;
-			}
-		}
-
+		public IEnumerable<Item> BuildableItems { get { return objects.Values.Where(b => b.CanBuild); } }
 		public event Action BuildableItemsChanged = () => { };
 	}
 }

@@ -20,7 +20,7 @@ namespace OpenRa.TechTree
 
 			owner = ParseOwner(unitInfo.Owner, unitInfo.DoubleOwned);
 			techLevel = unitInfo.TechLevel;
-			Tuple<string[], string[]> pre = ParsePrerequisites(unitInfo.Prerequisite, tag);
+			var pre = ParsePrerequisites(unitInfo.Prerequisite, tag);
 			alliedPrerequisites = pre.a;
 			sovietPrerequisites = pre.b;
 		}
@@ -41,37 +41,25 @@ namespace OpenRa.TechTree
 
 		static Tuple<string[],string[]> ParsePrerequisites(string[] prerequisites, string tag)
 		{
-			List<string> allied = prerequisites.Select( x => x.ToLowerInvariant() ).ToList();
-			List<string> soviet = new List<string>(allied);
+			var allied = prerequisites.Select( x => x.ToLowerInvariant() ).ToList();
+			var soviet = new List<string>(allied);
 
-			if (allied.Remove("stek"))
-				allied.Add("atek");
-
-			if (soviet.Remove("atek"))
-				soviet.Add("stek");
-
-			if (soviet.Remove("tent"))
-				soviet.Add("barr");
-
-			if (allied.Remove("barr"))
-				allied.Add("tent");
+			if (allied.Remove("stek")) allied.Add("atek");
+			if (soviet.Remove("atek")) soviet.Add("stek");
+			if (soviet.Remove("tent")) soviet.Add("barr");
+			if (allied.Remove("barr")) allied.Add("tent");
 
 			// TODO: rewrite this based on "InfantryTypes" in units.ini
 			if ((tag.Length == 2 && tag[0] == 'e') || tag == "medi" || tag == "thf" || tag == "spy")
 			{
-				if (!allied.Contains("tent"))
-					allied.Add("tent");
-				if (!soviet.Contains("barr"))
-					soviet.Add("barr");
+				if (!allied.Contains("tent")) allied.Add("tent");
+				if (!soviet.Contains("barr")) soviet.Add("barr");
 			}
 
 			if (tag == "lst")
 			{
-				if (!soviet.Contains("spen"))
-					soviet.Add("spen");
-
-				if (!allied.Contains("syrd"))
-					allied.Add("syrd");
+				if (!soviet.Contains("spen")) soviet.Add("spen");
+				if (!allied.Contains("syrd")) allied.Add("syrd");
 			}
 
 			return new Tuple<string[], string[]>(
@@ -91,11 +79,7 @@ namespace OpenRa.TechTree
 			if (racePrerequisites.Length == 0)
 				return true;
 
-			List<string> p = new List<string>(racePrerequisites);
-			foreach (string b in buildings)
-				p.Remove(b);
-
-			return p.Count == 0;
+			return racePrerequisites.Except(buildings).Count() == 0;
 		}
 
 		bool ShouldMakeUnbuildable(IEnumerable<string> buildings, string[] racePrerequisites)
@@ -103,20 +87,18 @@ namespace OpenRa.TechTree
 			if (racePrerequisites.Length == 0)
 				return false;
 
-			List<string> p = new List<string>(racePrerequisites);
-			foreach (string b in buildings)
-				p.Remove(b);
-
-			return p.Count == racePrerequisites.Length;
+			return racePrerequisites.Except(buildings).Count() == racePrerequisites.Length;
 		}
 
 		void CheckForBoth(IEnumerable<string> buildings)
 		{
-			if (canBuild && (ShouldMakeUnbuildable(buildings, alliedPrerequisites) && ShouldMakeUnbuildable(buildings, sovietPrerequisites)))
-				canBuild = false;
+			if (CanBuild && (ShouldMakeUnbuildable(buildings, alliedPrerequisites) 
+				&& ShouldMakeUnbuildable(buildings, sovietPrerequisites)))
+				CanBuild = false;
 
-			else if (!canBuild && (ShouldMakeBuildable(buildings, alliedPrerequisites) || ShouldMakeBuildable(buildings, sovietPrerequisites)))
-				canBuild = true;
+			else if (!CanBuild && (ShouldMakeBuildable(buildings, alliedPrerequisites) 
+				|| ShouldMakeBuildable(buildings, sovietPrerequisites)))
+				CanBuild = true;
 		}
 
 		public void CheckPrerequisites(IEnumerable<string> buildings, Race currentRace)
@@ -127,15 +109,14 @@ namespace OpenRa.TechTree
 			{
 				string[] racePrerequisites = (currentRace == Race.Allies) ? alliedPrerequisites : sovietPrerequisites;
 
-				if ((canBuild && ShouldMakeUnbuildable(buildings, racePrerequisites)) || !((owner & currentRace) == currentRace))
-					canBuild = false;
-				else if (!canBuild && ShouldMakeBuildable(buildings, racePrerequisites))
-					canBuild = true;
+				if ((CanBuild && ShouldMakeUnbuildable(buildings, racePrerequisites)) || !((owner & currentRace) == currentRace))
+					CanBuild = false;
+				else if (!CanBuild && ShouldMakeBuildable(buildings, racePrerequisites))
+					CanBuild = true;
 			}
 		}
 
-		bool canBuild;
-		public bool CanBuild { get { return canBuild; } }
+		public bool CanBuild { get; private set; }
 		public string Tooltip { get { return string.Format("{0} ({1})\n{2}", friendlyName, tag, owner); } }
 	}
 }

@@ -122,14 +122,14 @@ namespace OpenRa.Game
 			viewport.DrawRegions();
 		}
 
-		public static bool IsCellBuildable(int2 a)
+		public static bool IsCellBuildable(int2 a, UnitMovementType umt)
 		{
 			if (LocalPlayerBuildings[a] != null) return false;
 
 			a += map.Offset;
 
 			return map.IsInMap(a.X, a.Y) &&
-				TerrainCosts.Cost(UnitMovementType.Wheel,
+				TerrainCosts.Cost(umt,
 					terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 

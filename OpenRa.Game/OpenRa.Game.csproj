@@ -96,6 +96,8 @@
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />
+    <Compile Include="PlaceBuilding.cs" />
+    <Compile Include="PlaceBuildingOrder.cs" />
     <Compile Include="TechTree\Item.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Player.cs" />
