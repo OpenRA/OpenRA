@@ -8,9 +8,14 @@ namespace OpenRa
 	{
 		Dictionary<Type, object> inner = new Dictionary<Type, object>();
 
+		public void Add( Type t, object val )
+		{
+			inner.Add( t, val );
+		}
+
 		public void Add<T>( T val )
 		{
-			inner.Add( typeof( T ), val );
+			Add( typeof( T ), val );
 		}
 
 		public void Remove<T>()

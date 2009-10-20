@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
-using System.Diagnostics;
 
 namespace OpenRa.TechTree
 {
