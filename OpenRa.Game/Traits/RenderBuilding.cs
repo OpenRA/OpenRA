@@ -25,18 +25,14 @@ namespace OpenRa.Game.Traits
 			{
 				var fp = Rules.Footprint.GetFootprint(self.unitInfo.Name);
 				var bibOffset = fp.Length - 2;
-				var hasSmallBib = fp.First().Length == 2;
+				var size = fp.First().Length;
+				var startIndex = (size == 2) ? SmallBibStart : LargeBibStart;
 
-				if (hasSmallBib)
-					for (int i = 0; i < 4; i++)
-						Game.map.MapTiles[
-							self.Location.X + i % 2 + Game.map.Offset.X,
-							self.Location.Y + i / 2 + Game.map.Offset.Y + bibOffset].smudge = (byte)(i + SmallBibStart);
-				else
-					for (int i = 0; i < 6; i++)
-						Game.map.MapTiles[
-							self.Location.X + i % 3 + Game.map.Offset.X,
-							self.Location.Y + i / 3 + Game.map.Offset.Y + bibOffset].smudge = (byte)(i + LargeBibStart);
+				
+				for (int i = 0; i < 2*size; i++)
+					Game.map.MapTiles[
+						self.Location.X + i % size + Game.map.Offset.X,
+						self.Location.Y + i / size + Game.map.Offset.Y + bibOffset].smudge = (byte)(i + startIndex);
 			}
 		}
 
