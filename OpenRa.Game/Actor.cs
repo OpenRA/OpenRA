@@ -78,5 +78,26 @@ namespace OpenRa.Game
 				return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 			}
 		}
+
+		public void InflictDamage(Actor attacker, Bullet inflictor, int damage)
+		{
+			/* todo: auto-retaliate, etc */
+			/* todo: death sequence for infantry based on inflictor */
+			/* todo: start smoking if < conditionYellow and took damage, and not already smoking
+
+			if (Health <= 0) return;		/* overkill! */
+
+			Health -= damage;
+			if (Health <= 0)
+			{
+				Health = 0;
+				if (attacker.Owner != null)
+					attacker.Owner.Kills++;
+
+				Game.world.AddFrameEndTask(w => w.Remove(this));
+
+				/* todo: explosion */
+			}
+		}
 	}
 }

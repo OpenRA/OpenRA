@@ -4,6 +4,7 @@ namespace OpenRa.Game
 	class Player
 	{
 		public int Palette;
+		public int Kills;
 		public string PlayerName;
 		public TechTree.TechTree TechTree = new OpenRa.TechTree.TechTree();
 

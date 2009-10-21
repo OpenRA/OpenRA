@@ -144,6 +144,12 @@ namespace OpenRa.Game
 				.Where(x => x.Bounds.IntersectsWith(rect));
 		}
 
+		public static IEnumerable<Actor> FindUnitsInCircle(float2 a, float r)
+		{
+			return FindUnits(a - new float2(r, r), a + new float2(r, r))
+				.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+		}
+
 		public static IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Mobile>());

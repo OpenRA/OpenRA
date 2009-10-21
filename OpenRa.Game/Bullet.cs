@@ -59,6 +59,12 @@ namespace OpenRa.Game
 			{
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 				Game.world.AddFrameEndTask(w => w.Add(new Explosion(Dest)));
+
+				var maxSpread = GetMaximumSpread();
+				var hitActors = Game.FindUnitsInCircle(Dest, GetMaximumSpread());
+
+				foreach (var victim in hitActors)
+					victim.InflictDamage(FiredBy, this, (int)GetDamageToInflict(victim));
 			}
 		}
 
@@ -69,6 +75,21 @@ namespace OpenRa.Game
 					Src.ToFloat2(), 
 					Dest.ToFloat2(), 
 					(float)t / TotalTime()) - 0.5f * anim.Image.size);
+		}
+
+		float GetMaximumSpread()
+		{
+			return (int)(Warhead.Spread * Math.Log(Weapon.Damage, 2));
+		}
+
+		float GetDamageToInflict(Actor target)
+		{
+			/* todo: some things can't be damaged AT ALL by certain weapons! */
+			var distance = (target.CenterLocation - Dest).Length;
+			var rawDamage = Weapon.Damage * (float)Math.Exp(-distance / Warhead.Spread);
+			var multiplier = Warhead.EffectivenessAgainst(target.unitInfo.Armor);
+
+			return rawDamage * multiplier;
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace OpenRa.Game
 			Game.world.Add( new Actor( "mcv", new int2( 5, 5 ), Game.players[ 3 ]) );
 			Game.world.Add( new Actor( "mcv", new int2( 7, 5 ), Game.players[ 2 ] ) );
 			Game.world.Add( new Actor( "mcv", new int2( 9, 5 ), Game.players[ 0 ] ) );
-			var jeep = new Actor( "jeep", new int2( 9, 7 ), Game.players[ 1 ] );
+			var jeep = new Actor( "jeep", new int2( 9, 15 ), Game.players[ 1 ] );
 			Game.world.Add( jeep );
 			var tank = new Actor( "3tnk", new int2( 12, 7 ), Game.players[ 1 ] );
 			Game.world.Add( tank );
@@ -77,10 +77,7 @@ namespace OpenRa.Game
 			while (Created && Visible)
 			{
 				Game.Tick();
-
-				// rude hack
 				Game.viewport.cursor = Game.controller.ChooseCursor();
-
 				Application.DoEvents();
 			}
 		}
