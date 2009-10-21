@@ -18,6 +18,7 @@ namespace OpenRa.Game
 
 		public int2 Location;
 		public Player Owner;
+		public int Health;
 
 		public Actor( string name, int2 location, Player owner )
 		{
@@ -25,6 +26,7 @@ namespace OpenRa.Game
 			Location = location;
 			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
 			Owner = owner;
+			Health = unitInfo.Strength;	/* todo: handle cases where this is not true! */
 
 			if( unitInfo.Traits != null )
 			{

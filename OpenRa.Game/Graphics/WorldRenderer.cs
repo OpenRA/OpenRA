@@ -79,7 +79,7 @@ namespace OpenRa.Game.Graphics
 
             var selection = Game.controller.orderGenerator as UnitOrderGenerator;
             if (selection != null)
-				foreach( var a in Game.world.Actors.Intersect(selection.selection) )		/* make sure we don't grab actors that are dead */
+				foreach( var a in Game.world.Actors.Intersect(selection.selection) )
 	                DrawSelectionBox(a, Color.White, true);
             
             lineRenderer.Flush();
@@ -114,7 +114,7 @@ namespace OpenRa.Game.Graphics
 				lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
-				var healthAmount = 0.6f;
+				var healthAmount = (float)selectedUnit.Health / selectedUnit.unitInfo.Strength;
 				var healthColor = (healthAmount < conditionRed) ? Color.Red
 					: (healthAmount < conditionYellow) ? Color.Yellow
 					: Color.LimeGreen;
