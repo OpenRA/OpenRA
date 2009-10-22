@@ -23,7 +23,8 @@ namespace OpenRa
 
 		public int2 Sign() { return new int2(Math.Sign(X), Math.Sign(Y)); }
 		public int2 Abs() { return new int2( Math.Abs( X ), Math.Abs( Y ) ); }
-		public int Length { get { return (int)Math.Sqrt(X * X + Y * Y); } }
+		public int LengthSquared { get { return X * X + Y * Y; } }
+		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public override bool Equals(object obj)
