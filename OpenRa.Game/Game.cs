@@ -23,7 +23,7 @@ namespace OpenRa.Game
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 
-		static int localPlayerIndex = 0;
+		static int localPlayerIndex = 1;
 
 		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 

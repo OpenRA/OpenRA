@@ -98,6 +98,9 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 
+				if (Owner == Game.LocalPlayer)
+					Game.PlaySound("unitlst1.aud", false);
+
 				/* todo: explosion */
 			}
 		}
