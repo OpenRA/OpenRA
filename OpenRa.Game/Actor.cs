@@ -33,12 +33,13 @@ namespace OpenRa.Game
 				foreach( var traitName in unitInfo.Traits )
 				{
 					var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
-					var ctor = type.GetConstructor( new Type[] { typeof( Actor ) } );
+					var ctor = type.GetConstructor( new[] { typeof( Actor ) } );
 					traits.Add( type, ctor.Invoke( new object[] { this } ) );
 				}
 			}
 			else
-				throw new InvalidOperationException( "No Actor traits for " + unitInfo.Name + "; add Traits= to units.ini for appropriate unit" );
+				throw new InvalidOperationException( "No Actor traits for " + unitInfo.Name 
+					+ "; add Traits= to units.ini for appropriate unit" );
 		}
 
 		public Actor( TreeReference tree, TreeCache treeRenderer, int2 mapOffset )
@@ -65,8 +66,7 @@ namespace OpenRa.Game
 		{
 			return traits.WithInterface<Traits.IOrder>()
 				.Select( x => x.Order( this, xy ) )
-				.Where( x => x != null )
-				.FirstOrDefault();
+				.FirstOrDefault( x => x != null );
 		}
 
 		public RectangleF Bounds
@@ -83,9 +83,9 @@ namespace OpenRa.Game
 		{
 			/* todo: auto-retaliate, etc */
 			/* todo: death sequence for infantry based on inflictor */
-			/* todo: start smoking if < conditionYellow and took damage, and not already smoking
+			/* todo: start smoking if < conditionYellow and took damage, and not already smoking */
 
-			if (Health <= 0) return;		/* overkill! */
+			if (Health <= 0) return;		/* overkill! don't count extra hits as more kills! */
 
 			Health -= damage;
 			if (Health <= 0)

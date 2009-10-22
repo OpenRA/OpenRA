@@ -26,23 +26,26 @@ namespace OpenRa.Game
 
 		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator )
 		{
-			int2 startLocation = unitLocation + map.Offset;
+			var startLocation = unitLocation + map.Offset;
 
-			CellInfo[ , ] cellInfo = new CellInfo[ 128, 128 ];
+			var cellInfo = new CellInfo[ 128, 128 ];
 
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
 					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
 
-			return FindUnitPath( startLocation, estimator, map.Offset, cellInfo );
+			return FindUnitPath( new[] {startLocation}, estimator, map.Offset, cellInfo );
 		}
 
-		List<int2> FindUnitPath(int2 startLocation, Func<int2, double> estimator, int2 offset, CellInfo[,] cellInfo)
+		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, int2 offset, CellInfo[,] cellInfo)
 		{
-			PriorityQueue<PathDistance> queue = new PriorityQueue<PathDistance>();
+			var queue = new PriorityQueue<PathDistance>();
 
-			queue.Add( new PathDistance( estimator( startLocation - offset ), startLocation ) );
-			cellInfo[ startLocation.X, startLocation.Y ].MinCost = 0;
+			foreach (var sl in startLocations)
+			{
+				queue.Add(new PathDistance(estimator(sl - offset), sl));
+				cellInfo[sl.X, sl.Y].MinCost = 0;
+			}
 
 			while( !queue.Empty )
 			{
