@@ -28,6 +28,12 @@ namespace OpenRa.Game.Traits
 			if( target == null )
 				return;
 
+			if (target.IsDead)	/* stop firing on targets after we've killed them */
+			{
+				target = null;
+				return;
+			}
+
 			var turreted = self.traits.Get<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )

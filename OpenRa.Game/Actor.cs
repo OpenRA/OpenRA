@@ -79,6 +79,8 @@ namespace OpenRa.Game
 			}
 		}
 
+		public bool IsDead { get { return Health <= 0; } }
+
 		public void InflictDamage(Actor attacker, Bullet inflictor, int damage)
 		{
 			/* todo: auto-retaliate, etc */
