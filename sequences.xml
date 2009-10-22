@@ -345,9 +345,9 @@
 		<sequence name="scroll-ul" start="8" />
 		<sequence name="scroll-blocked" start="9" />
 		<sequence name="move" start="10" length="4" x="12" y="12"/>
-		<sequence name="move-blocked" start="14" />
+		<sequence name="move-blocked" start="14" x="12" y="12"/>
 		<sequence name="select" start="15" length="6" x="12" y="12"/>
-		<sequence name="attack" start="21" length="8" />
+		<sequence name="attack" start="21" length="8" x="12" y="12"/>
 		<sequence name="move-minimap" start="29" length="6" />
 		<sequence name="repair" start="35" length="24" />
 	</cursor>
