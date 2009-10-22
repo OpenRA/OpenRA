@@ -20,7 +20,10 @@ namespace OpenRa.Game
 		public IEnumerable<Order> Order(int2 xy)
 		{
 			// todo: check that space is free
-			if (Footprint.Tiles(Rules.UnitInfo[Name], xy).Any(t => !Game.IsCellBuildable(t, UnitMovementType.Wheel)))
+			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[Name];
+			if (Footprint.Tiles(bi, xy).Any(
+				t => !Game.IsCellBuildable(t, 
+					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel)))
 				yield break;
 
 			yield return new PlaceBuildingOrder(this, xy);

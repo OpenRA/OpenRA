@@ -35,8 +35,10 @@ namespace OpenRa.Game
 			if (!hasOverlay)
 				return;
 
-			foreach( var t in Footprint.Tiles( Rules.UnitInfo[ name ], position ) )
-				spriteRenderer.DrawSprite( Game.IsCellBuildable( t, UnitMovementType.Wheel )
+			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
+			foreach( var t in Footprint.Tiles( bi, position ) )
+				spriteRenderer.DrawSprite( Game.IsCellBuildable( t, bi.WaterBound 
+					? UnitMovementType.Float : UnitMovementType.Wheel )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 
 			spriteRenderer.Flush();
