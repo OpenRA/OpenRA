@@ -50,11 +50,15 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Region region in regions)
 				region.Draw(renderer);
-			cursorFrame += 0.01f;
 			cursorRenderer.DrawSprite(cursor.GetSprite((int)cursorFrame), mousePos + Location - cursor.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
 			renderer.EndFrame();
+		}
+
+		public void Tick()
+		{
+			cursorFrame += 0.5f;
 		}
 
         Region dragRegion = null;
