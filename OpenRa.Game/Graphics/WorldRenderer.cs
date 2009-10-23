@@ -51,7 +51,7 @@ namespace OpenRa.Game.Graphics
 			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(), 
                 region.Size.ToSizeF());
 
-			foreach (Actor a in Game.world.Actors)
+			foreach (Actor a in Game.world.Actors.OrderBy( u => u.CenterLocation.Y ))
 				DrawSpriteList(a.Owner, rect, a.Render());
 
 			foreach (IEffect e in Game.world.Effects)

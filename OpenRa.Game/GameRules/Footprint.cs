@@ -57,10 +57,7 @@ namespace OpenRa.Game.GameRules
 		public static int2 AdjustForBuildingSize( UnitInfo.BuildingInfo unitInfo )
 		{
 			var dim = unitInfo.Dimensions;
-			if (dim.X == 1 && dim.Y == 1)
-				return int2.Zero;	/* otherwise 1x1 buildings look stupid */
-
-			return new int2( dim.X / 2, ( dim.Y + 1 ) / 2 );
+			return new int2( dim.X / 2, dim.Y > 1 ? ( dim.Y + 1 ) / 2 : 0 );
 		}
 	}
 }
