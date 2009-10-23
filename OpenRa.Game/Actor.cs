@@ -64,6 +64,9 @@ namespace OpenRa.Game
 
 		public Order Order( int2 xy )
 		{
+			if (Owner != Game.LocalPlayer)
+				return null;
+
 			return traits.WithInterface<Traits.IOrder>()
 				.Select( x => x.Order( this, xy ) )
 				.FirstOrDefault( x => x != null );

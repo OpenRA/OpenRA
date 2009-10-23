@@ -71,7 +71,9 @@ namespace OpenRa.Game
 		{
 			var uog = orderGenerator as UnitOrderGenerator;
 
-			if (uog != null && uog.selection.Count > 0 && uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()))
+			if (uog != null && uog.selection.Count > 0 
+				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()) 
+				&& uog.selection.All( a => a.Owner == Game.LocalPlayer ))
 			{
 				if (!Game.IsCellBuildable(dragEnd.ToInt2(), UnitMovementType.Wheel))
 					return Cursor.MoveBlocked;	/* todo: handle non-wheel movement behavior */
