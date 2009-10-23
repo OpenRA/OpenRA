@@ -26,6 +26,11 @@ namespace OpenRa.Game
 					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel)))
 				yield break;
 
+			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+			if (!Footprint.Tiles(bi, xy).Any(
+				t => Game.GetDistanceToBase(t, Owner) < maxDistance))
+				yield break;
+
 			yield return new PlaceBuildingOrder(this, xy);
 		}
 

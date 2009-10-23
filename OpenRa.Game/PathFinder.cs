@@ -64,7 +64,7 @@ namespace OpenRa.Game
 						continue;
 					if( passableCost[ newHere.X, newHere.Y ] == double.PositiveInfinity )
 						continue;
-					if (bim[newHere - offset] != null)
+					if (bim.GetBuildingAt(newHere - offset) != null)
 						continue;
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ newHere.X, newHere.Y ];
@@ -98,7 +98,7 @@ namespace OpenRa.Game
 			return ret;
 		}
 
-		static readonly int2[] directions =
+		public static readonly int2[] directions =
 			new int2[] {
 				new int2( -1, -1 ),
 				new int2( -1,  0 ),

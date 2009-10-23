@@ -28,7 +28,7 @@ namespace OpenRa.Game
 		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
 		public static Player LocalPlayer { get { return players[localPlayerIndex]; } }
-		public static BuildingInfluenceMap LocalPlayerBuildings;
+		public static BuildingInfluenceMap BuildingInfluence;
 
 		static ISoundEngine soundEngine;
 
@@ -55,9 +55,9 @@ namespace OpenRa.Game
 			LoadMapBuildings( mapFile );
 			LoadMapUnits( mapFile );
 
-			LocalPlayerBuildings = new BuildingInfluenceMap(world, LocalPlayer);
+			BuildingInfluence = new BuildingInfluenceMap(world, 8);
 
-			pathFinder = new PathFinder(map, terrain.tileSet, LocalPlayerBuildings);
+			pathFinder = new PathFinder(map, terrain.tileSet, BuildingInfluence);
 
 			network = new Network();
 
@@ -124,7 +124,7 @@ namespace OpenRa.Game
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)
 		{
-			if (LocalPlayerBuildings[a] != null) return false;
+			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
 
 			a += map.Offset;
 
@@ -159,6 +159,15 @@ namespace OpenRa.Game
 		{
 			var q = FindUnits(a, a);
 			return q.Where(x => x.traits.Contains<Traits.Mobile>()).Concat(q).Take(1);
+		}
+
+		public static int GetDistanceToBase(int2 b, Player p)
+		{
+			var building = BuildingInfluence.GetNearestBuilding(b);
+			if (building == null || building.Owner != p)
+				return int.MaxValue;
+
+			return BuildingInfluence.GetDistanceToBuilding(b);
 		}
 	}
 }

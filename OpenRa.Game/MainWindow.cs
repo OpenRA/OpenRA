@@ -54,7 +54,7 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			Game.world.Add( new Actor( "mcv", new int2( 5, 5 ), Game.players[ 3 ]) );
+			Game.world.Add( new Actor( "mcv", new int2( 5, 5 ), Game.players[ 1 ]) );
 			Game.world.Add( new Actor( "mcv", new int2( 7, 5 ), Game.players[ 2 ] ) );
 			Game.world.Add( new Actor( "mcv", new int2( 9, 5 ), Game.players[ 0 ] ) );
 			var jeep = new Actor( "jeep", new int2( 9, 15 ), Game.players[ 1 ] );

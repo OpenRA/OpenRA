@@ -27,6 +27,9 @@ namespace OpenRa
 		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
+		public static int2 Max(int2 a, int2 b) { return new int2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
+		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
+
 		public override bool Equals(object obj)
 		{
 			if (obj == null)

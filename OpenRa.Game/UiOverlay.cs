@@ -2,6 +2,7 @@ using System.Drawing;
 using OpenRa.Game.Graphics;
 using System;
 using OpenRa.Game.GameRules;
+using System.Linq;
 
 namespace OpenRa.Game
 {
@@ -32,12 +33,16 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
-			if (!hasOverlay)
-				return;
+			if (!hasOverlay) return;
 
 			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
+			
+			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+			var tooFarFromBase = !Footprint.Tiles(bi, position).Any(
+				t => Game.GetDistanceToBase(t, Game.LocalPlayer) < maxDistance);
+
 			foreach( var t in Footprint.Tiles( bi, position ) )
-				spriteRenderer.DrawSprite( Game.IsCellBuildable( t, bi.WaterBound 
+				spriteRenderer.DrawSprite( !tooFarFromBase && Game.IsCellBuildable( t, bi.WaterBound 
 					? UnitMovementType.Float : UnitMovementType.Wheel )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 
