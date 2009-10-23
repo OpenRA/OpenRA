@@ -54,10 +54,10 @@ namespace OpenRa.Game
 			foreach( TreeReference treeReference in map.Trees )
 				world.Add( new Actor( treeReference, treeCache, map.Offset ) );
 
+			BuildingInfluence = new BuildingInfluenceMap(world, 8);
+
 			LoadMapBuildings( mapFile );
 			LoadMapUnits( mapFile );
-
-			BuildingInfluence = new BuildingInfluenceMap(world, 8);
 
 			pathFinder = new PathFinder(map, terrain.tileSet, BuildingInfluence);
 
