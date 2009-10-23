@@ -71,6 +71,9 @@ namespace OpenRa.Game
 		{
 			var uog = orderGenerator as UnitOrderGenerator;
 
+			if (uog != null)
+				uog.selection.RemoveAll(a => a.IsDead);
+
 			if (uog != null && uog.selection.Count > 0 
 				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()) 
 				&& uog.selection.All( a => a.Owner == Game.LocalPlayer ))

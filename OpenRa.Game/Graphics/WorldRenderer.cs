@@ -77,9 +77,9 @@ namespace OpenRa.Game.Graphics
                     DrawSelectionBox(u, Color.Yellow, false);
             }
 
-            var selection = Game.controller.orderGenerator as UnitOrderGenerator;
-            if (selection != null)
-				foreach( var a in Game.world.Actors.Intersect(selection.selection) )
+            var uog = Game.controller.orderGenerator as UnitOrderGenerator;
+            if (uog != null)
+				foreach( var a in uog.selection )
 	                DrawSelectionBox(a, Color.White, true);
             
             lineRenderer.Flush();

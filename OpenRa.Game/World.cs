@@ -22,7 +22,7 @@ namespace OpenRa.Game
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		public event Action<Actor> ActorAdded = _ => { };
-		public event Action<Actor> ActorRemoved = _ => { };
+		public event Action<Actor> ActorRemoved = a => { a.Health = 0; };		/* make sure everyone sees it as dead */
 
 		public void ResetTimer()
 		{
