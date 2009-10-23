@@ -23,7 +23,7 @@ namespace OpenRa.Game
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 
-		static int localPlayerIndex = 1;
+		static int localPlayerIndex;
 
 		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
@@ -32,12 +32,14 @@ namespace OpenRa.Game
 
 		static ISoundEngine soundEngine;
 
-		public static void Initialize(string mapName, Renderer renderer, int2 clientSize)
+		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
 		{
 			Rules.LoadRules( mapName );
 
 			for( int i = 0 ; i < 8 ; i++ )
 				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Soviet));
+
+			localPlayerIndex = localPlayer;
 
 			var mapFile = new IniFile( FileSystem.Open( mapName ) );
 			map = new Map( mapFile );
