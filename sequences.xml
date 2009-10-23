@@ -335,21 +335,42 @@
 
 	<cursor src="mouse">
 		<sequence name="default" start="0" />
-		<sequence name="scroll-u" start="1" />
-		<sequence name="scroll-ur" start="2" />
-		<sequence name="scroll-r" start="3" />
-		<sequence name="scroll-dr" start="4" />
-		<sequence name="scroll-d" start="5" />
-		<sequence name="scroll-dl" start="6" />
-		<sequence name="scroll-l" start="7" />
-		<sequence name="scroll-ul" start="8" />
-		<sequence name="scroll-blocked" start="9" />
+		<sequence name="scroll" start="1" length="8" />
+		<sequence name="generic-blocked" start="9" />
 		<sequence name="move" start="10" length="4" x="12" y="12"/>
 		<sequence name="move-blocked" start="14" x="12" y="12"/>
 		<sequence name="select" start="15" length="6" x="12" y="12"/>
 		<sequence name="attack" start="21" length="8" x="12" y="12"/>
 		<sequence name="move-minimap" start="29" length="6" />
 		<sequence name="repair" start="35" length="24" />
+		<sequence name="deploy" start="59" length="9" />
+		<sequence name="sell" start="68" length="12" />
+		<sequence name="default-minimap" start="80" length="1" />
+		<sequence name="ability" start="82" length="8" />
+		<sequence name="nuke" start="90" length="7" />
+		<sequence name="chrono" start="105" length="8" />
+		<sequence name="enter" start="113" length="3" />
+		<sequence name="c4" start="116" length="3" />
+		<sequence name="sell-blocked" start="119" length="1" />
+		<sequence name="repair-blocked" start="120" length="1" />
+		<sequence name="c4-minimap" start="121" length="3" />
+		<sequence name="scroll-blocked" start="124" length="8" />
+		<sequence name="attack-minimap" start="134" length="8" />
+		<sequence name="enter-minimap" start="142" length="3" />
+		<sequence name="guard-minimap" start="146" length="1" />
+		<sequence name="guard" start="147" length="1" />
+		<sequence name="sell-vehicle" start="148" length="12" />
+		<sequence name="heal" start="160" length="4" />
+		<sequence name="capture" start="164" length="3" />
+		<sequence name="capture-minimap" start="167" length="3" />
+		<sequence name="repair2" start="170" length="24" />
+		<sequence name="heal-minimap" start="194" length="1" />
+		<sequence name="attack2" start="195" length="8" />
+		<sequence name="attack2-minimap" start="203" length="8" />
+		<sequence name="deploy-blocked" start="211" length="1" />
+		<sequence name="enter-blocked" start="212" length="1" />
+		<sequence name="repair2-blocked" start="213" length="1" />
+		<sequence name="ability-minimap" start="214" length="8" />
 	</cursor>
 
 	<unit name="120mm">
