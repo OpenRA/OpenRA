@@ -26,7 +26,7 @@ namespace OpenRa.Game.GameRules
 				return float.Parse(x.Replace("%","")) * (x.Contains( '%' ) ? 0.01f : 1f);
 
 			else if (fieldType == typeof(string))
-				return x;//.ToLowerInvariant();
+				return x;
 
 			else if (fieldType.IsEnum)
 				return Enum.Parse(fieldType, x);

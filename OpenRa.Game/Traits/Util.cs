@@ -12,7 +12,7 @@ namespace OpenRa.Game.Traits
 			var leftTurn = ( facing - desiredFacing ) & 0xFF;
 			var rightTurn = ( desiredFacing - facing ) & 0xFF;
 			if( Math.Min( leftTurn, rightTurn ) < rot )
-				facing = desiredFacing;
+				facing = desiredFacing & 0xFF;
 			else if( rightTurn < leftTurn )
 				facing = ( facing + rot ) & 0xFF;
 			else

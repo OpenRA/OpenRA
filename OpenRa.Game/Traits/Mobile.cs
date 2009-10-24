@@ -168,7 +168,6 @@ namespace OpenRa.Game.Traits
 				{
 					moveFraction -= moveFractionTotal;
 					OnComplete( self, mobile );
-					//mobile.fromCell = mobile.toCell;
 				}
 				return;
 			}
@@ -177,7 +176,7 @@ namespace OpenRa.Game.Traits
 			{
 				self.CenterLocation = float2.Lerp( from, to, frac );
 				if( moveFraction >= moveFractionTotal )
-					mobile.facing = toFacing;
+					mobile.facing = toFacing & 0xFF;
 				else
 					mobile.facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
 			}
