@@ -199,6 +199,8 @@ namespace OpenRa.Game
 			world.AddFrameEndTask(_ => world.Add(unit));
 
 			// todo: make the producing building play `build`
+			if (producer.traits.Contains<RenderWarFactory>())
+				producer.traits.Get<RenderWarFactory>().EjectUnit();
 		}
 	}
 }
