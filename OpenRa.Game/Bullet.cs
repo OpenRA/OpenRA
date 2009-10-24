@@ -84,6 +84,9 @@ namespace OpenRa.Game
 
 		float GetDamageToInflict(Actor target)
 		{
+			if( target.unitInfo == null ) // tree or other doodad
+				return 0;
+
 			/* todo: some things can't be damaged AT ALL by certain weapons! */
 			var distance = (target.CenterLocation - Dest).Length;
 			var rawDamage = Weapon.Damage * (float)Math.Exp(-distance / Warhead.Spread);

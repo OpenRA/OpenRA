@@ -23,10 +23,7 @@ namespace OpenRa.Game.Traits
 
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
 		{
-			var mobile = self.traits.Get<Mobile>();
-			float fraction = (mobile.moveFraction > 0) ? (float)mobile.moveFraction / mobile.moveFractionTotal : 0f;
-			var centerLocation = new float2(12, 12) + Game.CellSize * float2.Lerp(mobile.fromCell, mobile.toCell, fraction);
-			yield return Centered(anim.Image, centerLocation);
+			yield return Centered( anim.Image, self.CenterLocation );
 		}
 	}
 }

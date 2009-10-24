@@ -31,31 +31,9 @@ namespace OpenRa.Game
 			if (leftMouseButton) return;
 			
 			if (Game.LocalPlayer == Unit.Owner)
-				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(), false);
-
+				Game.PlaySound("ackno.r00", false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();
-			mobile.destination = Destination;
-			mobile.desiredFacing = null;
-		}
-	}
-
-	class DeployMcvOrder : Order
-	{
-		Actor Unit;
-		int2 Location;
-
-		public DeployMcvOrder( Actor unit, int2 location )
-		{
-			Unit = unit;
-			Location = location;
-		}
-
-		public override void Apply( bool leftMouseButton )
-		{
-			if (leftMouseButton) return;
-			Unit.traits.Get<Traits.McvDeploy>().DeployLocation = Location;
-			var mobile = Unit.traits.Get<Traits.Mobile>();
-			mobile.destination = mobile.toCell;
+			mobile.SetNextAction( new Traits.Mobile.MoveTo( Destination ) );
 		}
 	}
 }

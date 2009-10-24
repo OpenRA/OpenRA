@@ -5,42 +5,51 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class McvDeploy : IOrder, ITick
+	class McvDeploy : IOrder
 	{
-		public int2? DeployLocation;
-
 		public McvDeploy(Actor self)
 		{
 		}
 
 		public Order Order(Actor self, int2 xy)
 		{
-			DeployLocation = null;
 			// TODO: check that there's enough space at the destination.
 			if( xy == self.Location )
 				return new DeployMcvOrder( self, xy );
 
 			return null;
 		}
+	}
 
-		public void Tick(Actor self)
+	class DeployMcvOrder : Order
+	{
+		Actor Unit;
+		int2 Location;
+
+		public DeployMcvOrder( Actor unit, int2 location )
 		{
-			if( self.Location != DeployLocation )
-				return;
+			Unit = unit;
+			Location = location;
+		}
 
-			var mobile = self.traits.Get<Mobile>();
-			mobile.desiredFacing = 96;
-			if( mobile.moveFraction < mobile.moveFractionTotal )
-				return;
+		public override void Apply( bool leftMouseButton )
+		{
+			if( leftMouseButton ) return;
+			Unit.traits.Get<Mobile>().SetNextAction( new Mobile.Turn( 96 ) { NextAction = new DeployAction() } );
+		}
 
-			if( mobile.facing != mobile.desiredFacing )
-				return;
+		class DeployAction : Mobile.CurrentAction
+		{
+			public Mobile.CurrentAction NextAction { get; set; }
 
-			Game.world.AddFrameEndTask(_ =>
+			public void Tick( Actor self, Mobile mobile )
 			{
-					Game.world.Remove(self);
-					Game.world.Add(new Actor("fact", self.Location - new int2(1, 1), self.Owner));
-			});
+				Game.world.AddFrameEndTask( _ =>
+				{
+					Game.world.Remove( self );
+					Game.world.Add( new Actor( "fact", self.Location - new int2( 1, 1 ), self.Owner ) );
+				} );
+			}
 		}
 	}
 }
