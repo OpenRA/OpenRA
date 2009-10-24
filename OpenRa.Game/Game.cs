@@ -8,6 +8,7 @@ using IrrKlang;
 using IjwFramework.Collections;
 using System;
 using IjwFramework.Types;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -181,5 +182,21 @@ namespace OpenRa.Game
 			Pair.New(
 				new VoicePool("ackno", "affirm1", "noprob", "overout", "ritaway", "roger", "ugotit"),
 				new VoicePool("await1", "ready", "report1", "yessir1"));
+
+		public static void BuildUnit(Player player, string name)
+		{
+			var producer = world.Actors
+				.FirstOrDefault(a => a.unitInfo != null && a.unitInfo.Name == "weap" && a.Owner == player);
+
+			if (producer == null)
+				throw new InvalidOperationException("BuildUnit without suitable production structure!");
+
+			var unit = new Actor(name, (1/24f * producer.CenterLocation).ToInt2(), player);
+			unit.Order(unit.Location + new int2(0, 3)).Apply(false);
+
+			world.AddFrameEndTask(_ => world.Add(unit));
+
+			// todo: make the producing building play `build`
+		}
 	}
 }
