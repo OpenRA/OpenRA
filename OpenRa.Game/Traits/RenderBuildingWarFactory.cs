@@ -11,6 +11,7 @@ namespace OpenRa.Game.Traits
 	{
 		public Animation roof;
 		bool doneBuilding;
+		bool isOpen;
 		public readonly Actor self;
 
 		public RenderWarFactory(Actor self)
@@ -37,14 +38,22 @@ namespace OpenRa.Game.Traits
 		{
 			base.Tick(self);
 			roof.Tick();
+
+			var b = self.Bounds;
+			if (isOpen && !Game.SelectUnitsInBox(
+				new float2(b.Left, b.Top),
+				new float2(b.Right, b.Bottom)).Any(a => a.traits.Contains<Mobile>()))
+			{
+				isOpen = false;
+				roof.PlayBackwardsThen("build-top", () => roof.Play("idle-top"));
+			}
 		}
 
 		public void EjectUnit()
 		{
 			/* todo: hold the door open */
 
-			roof.PlayThen("build-top", 
-				() => roof.PlayRepeating("idle-top"));
+			roof.PlayThen("build-top", () => isOpen = true);
 		}
 	}
 }
