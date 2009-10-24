@@ -57,6 +57,11 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
+		public void Cancel(Actor self)
+		{
+			if (currentAction != null)
+				currentAction.Cancel(self, this);
+		}
 	
 		public interface CurrentAction
 		{
