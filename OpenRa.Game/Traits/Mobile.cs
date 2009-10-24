@@ -16,6 +16,7 @@ namespace OpenRa.Game.Traits
 		public int moveFraction, moveFractionTotal;
 		public int facing;
 		public int? desiredFacing;
+		public int Voice = Game.CosmeticRandom.Next(2);
 
 		public Mobile(Actor self)
 		{

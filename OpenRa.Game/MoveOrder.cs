@@ -20,11 +20,19 @@ namespace OpenRa.Game
 			this.Destination = destination;
 		}
 
+		string GetVoiceSuffix()
+		{
+			var suffixes = new[] { ".r01", ".r03" };
+			return suffixes[Unit.traits.Get<Traits.Mobile>().Voice];
+		}
+
 		public override void Apply( bool leftMouseButton )
 		{
 			if (leftMouseButton) return;
+			
 			if (Game.LocalPlayer == Unit.Owner)
-				Game.PlaySound("ackno.r00", false);
+				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(), false);
+
 			var mobile = Unit.traits.Get<Traits.Mobile>();
 			mobile.destination = Destination;
 			mobile.desiredFacing = null;

@@ -150,6 +150,7 @@
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="UnitOrderGenerator.cs" />
+    <Compile Include="VoicePool.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

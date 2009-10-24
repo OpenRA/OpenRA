@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using IrrKlang;
 using IjwFramework.Collections;
+using System;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -171,5 +173,13 @@ namespace OpenRa.Game
 
 			return BuildingInfluence.GetDistanceToBuilding(b);
 		}
+
+		public static Random SharedRandom = new Random();		/* for things that require sync */
+		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
+
+		public static readonly Pair<VoicePool, VoicePool> SovietVoices =
+			Pair.New(
+				new VoicePool("ackno", "affirm1", "noprob", "overout", "ritaway", "roger", "ugotit"),
+				new VoicePool("await1", "ready", "report1", "yessir1"));
 	}
 }
