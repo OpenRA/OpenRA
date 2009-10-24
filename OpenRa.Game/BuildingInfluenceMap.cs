@@ -56,7 +56,7 @@ namespace OpenRa.Game
 			{
 				var c = pq.Pop();
 
-				if (influence[c.location.X, c.location.Y].Second <= c.distance)
+				if (influence[c.location.X, c.location.Y].Second < c.distance)
 					continue;
 
 				influence[c.location.X, c.location.Y].First = c.actor;
@@ -86,11 +86,31 @@ namespace OpenRa.Game
 
 		void RemoveInfluence(Actor a)
 		{
-			foreach (var t in Footprint.UnpathableTiles(a.unitInfo, a.Location))
-				if (IsValid(t))
-					influence[t.X, t.Y] = NoClaim;
+			var tiles = Footprint.UnpathableTiles(a.unitInfo, a.Location).ToArray();
+			var min = int2.Max(new int2(0, 0),
+				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
+			var max = int2.Min(new int2(128, 128),
+				tiles.Aggregate(int2.Max) + new int2(maxDistance, maxDistance));
 			
-			/* todo: fix everything that was in this region! doesnt matter yet, since we cant destroy buildings */
+			for (var j = min.Y; j <= max.Y; j++)
+				for (var i = min.X; i <= max.X; i++)
+					if (influence[i, j].First == a)
+						influence[i, j] = NoClaim;
+
+			// slightly expanded bounds for collecting candidates for recalculation.
+			var min2 = int2.Max(new int2(0, 0), min - new int2(1, 1));
+			var max2 = int2.Min(new int2(128, 128), max + new int2(1, 1));
+
+			var actors = new List<Actor>();
+			for (var j = min2.Y; j <= max2.Y; j++)
+				for (var i = min2.X; i <= max2.X; i++)
+					if (influence[i, j].First != null && !actors.Contains(influence[i, j].First))
+						actors.Add(influence[i, j].First);
+
+			Log.Write("Finished collecting candidates for evacuated region = {0}", actors.Count);
+
+			foreach (var b in actors)
+				AddInfluence(b);	/* we can actually safely constrain this a bit more... */
 		}
 
 		bool IsValid(int2 t)
