@@ -24,14 +24,6 @@ namespace OpenRa.Game.Traits
 			fromCell = toCell;
 		}
 
-		public void SetNextAction( CurrentAction nextAction )
-		{
-			if( currentAction == null )
-				currentAction = nextAction;
-			else
-				currentAction.NextAction = nextAction;
-		}
-
 		public void QueueAction( CurrentAction nextAction )
 		{
 			if( currentAction == null )
@@ -55,8 +47,10 @@ namespace OpenRa.Game.Traits
 				fromCell = toCell;
 		}
 
-		public Order Order(Actor self, int2 xy)
+		public Order Order(Actor self, int2 xy, bool lmb)
 		{
+			if( lmb ) return null;
+
 			if (xy != toCell)
 				return new MoveOrder(self, xy);
 

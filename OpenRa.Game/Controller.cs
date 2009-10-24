@@ -23,8 +23,8 @@ namespace OpenRa.Game
 					dragStart = dragEnd = xy;
 
 				if (orderGenerator != null)
-					foreach (var order in orderGenerator.Order(xy.ToInt2()))
-						order.Apply(true);
+					foreach (var order in orderGenerator.Order(xy.ToInt2(), true))
+						order.Apply();
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -54,8 +54,8 @@ namespace OpenRa.Game
 
 			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 				if( orderGenerator != null )
-					foreach( var order in orderGenerator.Order( xy.ToInt2() ) )
-						order.Apply( false );
+					foreach( var order in orderGenerator.Order( xy.ToInt2(), false ) )
+						order.Apply();
 		}
 
         public Pair<float2, float2>? SelectionBox

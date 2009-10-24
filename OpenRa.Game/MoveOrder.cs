@@ -6,7 +6,7 @@ namespace OpenRa.Game
 {
 	abstract class Order
 	{
-		public abstract void Apply( bool leftMButton );
+		public abstract void Apply();
 	}
 
 	class MoveOrder : Order
@@ -26,10 +26,8 @@ namespace OpenRa.Game
 			return suffixes[Unit.traits.Get<Traits.Mobile>().Voice];
 		}
 
-		public override void Apply( bool leftMouseButton )
+		public override void Apply()
 		{
-			if (leftMouseButton) return;
-			
 			if (Game.LocalPlayer == Unit.Owner)
 				Game.PlaySound("ackno.r00", false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();

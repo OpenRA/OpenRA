@@ -17,21 +17,32 @@ namespace OpenRa.Game
 			Name = name;
 		}
 
-		public IEnumerable<Order> Order(int2 xy)
+		public IEnumerable<Order> Order(int2 xy, bool lmb)
 		{
-			// todo: check that space is free
-			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[Name];
-			if (Footprint.Tiles(bi, xy).Any(
-				t => !Game.IsCellBuildable(t, 
-					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel)))
-				yield break;
+			if( lmb )
+			{
+				// todo: check that space is free
+				var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[ Name ];
+				if( Footprint.Tiles( bi, xy ).Any(
+					t => !Game.IsCellBuildable( t,
+						bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel ) ) )
+					yield break;
 
-			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
-			if (!Footprint.Tiles(bi, xy).Any(
-				t => Game.GetDistanceToBase(t, Owner) < maxDistance))
-				yield break;
+				var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+				if( !Footprint.Tiles( bi, xy ).Any(
+					t => Game.GetDistanceToBase( t, Owner ) < maxDistance ) )
+					yield break;
 
-			yield return new PlaceBuildingOrder(this, xy);
+				yield return new PlaceBuildingOrder( this, xy );
+			}
+			else // rmb
+			{
+				Game.world.AddFrameEndTask( _ =>
+				{
+					Game.controller.orderGenerator = null;
+					Game.worldRenderer.uiOverlay.KillOverlay();
+				} );
+			}
 		}
 
 		public void PrepareOverlay(int2 xy)

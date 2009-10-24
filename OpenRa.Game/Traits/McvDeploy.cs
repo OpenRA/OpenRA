@@ -11,8 +11,10 @@ namespace OpenRa.Game.Traits
 		{
 		}
 
-		public Order Order(Actor self, int2 xy)
+		public Order Order(Actor self, int2 xy, bool lmb)
 		{
+			if( lmb ) return null;
+
 			// TODO: check that there's enough space at the destination.
 			if( xy == self.Location )
 				return new DeployMcvOrder( self, xy );
@@ -32,9 +34,8 @@ namespace OpenRa.Game.Traits
 			Location = location;
 		}
 
-		public override void Apply( bool leftMouseButton )
+		public override void Apply()
 		{
-			if( leftMouseButton ) return;
 			var mobile = Unit.traits.Get<Mobile>();
 			mobile.QueueAction( new Mobile.Turn( 96 ) );
 			mobile.QueueAction( new DeployAction() );

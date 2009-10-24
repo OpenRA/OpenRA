@@ -16,29 +16,18 @@ namespace OpenRa.Game
 			this.xy = xy;
 		}
 
-		public override void Apply( bool leftMouseButton )
+		public override void Apply()
 		{
-			if( leftMouseButton )
+			Game.world.AddFrameEndTask( _ =>
 			{
-				Game.world.AddFrameEndTask( _ =>
-				{
-					Log.Write( "Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name );
+				Log.Write( "Player \"{0}\" builds {1}", building.Owner.PlayerName, building.Name );
 
-					//Adjust placement for cursor to be in middle
-					Game.world.Add( new Actor( building.Name, xy - GameRules.Footprint.AdjustForBuildingSize( building.Name ), building.Owner ) );
+				//Adjust placement for cursor to be in middle
+				Game.world.Add( new Actor( building.Name, xy - GameRules.Footprint.AdjustForBuildingSize( building.Name ), building.Owner ) );
 
-					Game.controller.orderGenerator = null;
-					Game.worldRenderer.uiOverlay.KillOverlay();
-				} );
-			}
-			else
-			{
-				Game.world.AddFrameEndTask( _ =>
-				{
-					Game.controller.orderGenerator = null;
-					Game.worldRenderer.uiOverlay.KillOverlay();
-				} );
-			}
+				Game.controller.orderGenerator = null;
+				Game.worldRenderer.uiOverlay.KillOverlay();
+			} );
 		}
 	}
 }

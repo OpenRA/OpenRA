@@ -62,13 +62,13 @@ namespace OpenRa.Game
 			return traits.WithInterface<Traits.IRender>().SelectMany( x => x.Render( this ) );
 		}
 
-		public Order Order( int2 xy )
+		public Order Order( int2 xy, bool lmb )
 		{
 			if (Owner != Game.LocalPlayer)
 				return null;
 
 			return traits.WithInterface<Traits.IOrder>()
-				.Select( x => x.Order( this, xy ) )
+				.Select( x => x.Order( this, xy, lmb ) )
 				.FirstOrDefault( x => x != null );
 		}
 
