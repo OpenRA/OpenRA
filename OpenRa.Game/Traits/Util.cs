@@ -43,5 +43,15 @@ namespace OpenRa.Game.Traits
 			return highest * 8;
 		}
 
+		public static int GetNearestFacing( int facing, int desiredFacing )
+		{
+			var turn = desiredFacing - facing;
+			if( turn > 128 )
+				turn -= 256;
+			if( turn < -128 )
+				turn += 256;
+
+			return facing + turn;
+		}
 	}
 }
