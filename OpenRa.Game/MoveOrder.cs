@@ -33,7 +33,7 @@ namespace OpenRa.Game
 			if (Game.LocalPlayer == Unit.Owner)
 				Game.PlaySound("ackno.r00", false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();
-			mobile.SetNextAction( new Traits.Mobile.MoveTo( Destination ) );
+			mobile.QueueAction( new Traits.Mobile.MoveTo( Destination ) );
 		}
 	}
 }

@@ -32,6 +32,21 @@ namespace OpenRa.Game.Traits
 				currentAction.NextAction = nextAction;
 		}
 
+		public void QueueAction( CurrentAction nextAction )
+		{
+			if( currentAction == null )
+			{
+				currentAction = nextAction;
+				return;
+			}
+			var act = currentAction;
+			while( act.NextAction != null )
+			{
+				act = act.NextAction;
+			}
+			act.NextAction = nextAction;
+		}
+
 		public void Tick(Actor self)
 		{
 			if( currentAction != null )
@@ -51,15 +66,16 @@ namespace OpenRa.Game.Traits
 	
 		public interface CurrentAction
 		{
-			CurrentAction NextAction { set; }
+			CurrentAction NextAction { get; set; }
 			void Tick( Actor self, Mobile mobile );
+			void Cancel( Actor self, Mobile mobile );
 		}
 
 		public class Turn : CurrentAction
 		{
 			public CurrentAction NextAction { get; set; }
 
-			public readonly int desiredFacing;
+			public int desiredFacing;
 
 			public Turn( int desiredFacing )
 			{
@@ -76,6 +92,12 @@ namespace OpenRa.Game.Traits
 					return;
 				}
 				Util.TickFacing( ref mobile.facing, desiredFacing, self.unitInfo.ROT );
+			}
+
+			public void Cancel( Actor self, Mobile mobile )
+			{
+				desiredFacing = mobile.facing;
+				NextAction = null;
 			}
 		}
 
@@ -210,6 +232,12 @@ namespace OpenRa.Game.Traits
 				self.CenterLocation = CenterOfCell( mobile.toCell );
 				OnComplete = null;
 				mobile.fromCell = mobile.toCell;
+			}
+
+			public void Cancel( Actor self, Mobile mobile )
+			{
+				path.Clear();
+				NextAction = null;
 			}
 		}
 	}

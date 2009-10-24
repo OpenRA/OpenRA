@@ -35,7 +35,9 @@ namespace OpenRa.Game.Traits
 		public override void Apply( bool leftMouseButton )
 		{
 			if( leftMouseButton ) return;
-			Unit.traits.Get<Mobile>().SetNextAction( new Mobile.Turn( 96 ) { NextAction = new DeployAction() } );
+			var mobile = Unit.traits.Get<Mobile>();
+			mobile.QueueAction( new Mobile.Turn( 96 ) );
+			mobile.QueueAction( new DeployAction() );
 		}
 
 		class DeployAction : Mobile.CurrentAction
@@ -49,6 +51,12 @@ namespace OpenRa.Game.Traits
 					Game.world.Remove( self );
 					Game.world.Add( new Actor( "fact", self.Location - new int2( 1, 1 ), self.Owner ) );
 				} );
+			}
+
+			public void Cancel( Actor self, Mobile mobile )
+			{
+				// Cancel can't happen between this being moved to the head of the list, and it being Ticked.
+				throw new InvalidOperationException( "DeployMcvAction: Cancel() should never occur." );
 			}
 		}
 	}

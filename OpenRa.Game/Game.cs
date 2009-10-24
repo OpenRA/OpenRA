@@ -192,7 +192,9 @@ namespace OpenRa.Game
 				throw new InvalidOperationException("BuildUnit without suitable production structure!");
 
 			var unit = new Actor(name, (1/24f * producer.CenterLocation).ToInt2(), player);
-			unit.Order(unit.Location + new int2(0, 3)).Apply(false);
+			var mobile = unit.traits.Get<Mobile>();
+			mobile.facing = 128;
+			mobile.SetNextAction( new Traits.Mobile.MoveTo( unit.Location + new int2( 0, 3 ) ) );
 
 			world.AddFrameEndTask(_ => world.Add(unit));
 
