@@ -9,12 +9,10 @@ namespace OpenRa.Game
 	{
 		double[ , ] passableCost = new double[ 128, 128 ];
 		Map map;
-		BuildingInfluenceMap bim;
 
-		public PathFinder(Map map, TileSet tileSet, BuildingInfluenceMap bim)
+		public PathFinder(Map map, TileSet tileSet)
 		{
 			this.map = map;
-			this.bim = bim;
 
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
@@ -64,7 +62,9 @@ namespace OpenRa.Game
 						continue;
 					if( passableCost[ newHere.X, newHere.Y ] == double.PositiveInfinity )
 						continue;
-					if (bim.GetBuildingAt(newHere - offset) != null)
+					if (Game.BuildingInfluence.GetBuildingAt(newHere - offset) != null)
+						continue;
+					if (Game.UnitInfluence.GetUnitAt(newHere - offset) != null)
 						continue;
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ newHere.X, newHere.Y ];

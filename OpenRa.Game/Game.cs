@@ -64,7 +64,7 @@ namespace OpenRa.Game
 			LoadMapBuildings(mapFile);
 			LoadMapUnits(mapFile);
 
-			pathFinder = new PathFinder(map, terrain.tileSet, BuildingInfluence);
+			pathFinder = new PathFinder(map, terrain.tileSet);
 
 			network = new Network();
 
