@@ -33,6 +33,13 @@ namespace OpenRa
 			return (T)inner[ typeof( T ) ];
 		}
 
+		public T GetOrDefault<T>()
+		{
+			object o = null;
+			inner.TryGetValue(typeof(T), out o);
+			return (T)o;
+		}
+
 		public IEnumerable<T> WithInterface<T>()
 		{
 			foreach( var i in inner )

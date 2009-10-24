@@ -32,20 +32,21 @@ namespace OpenRa.Game
 
 		public static Player LocalPlayer { get { return players[localPlayerIndex]; } }
 		public static BuildingInfluenceMap BuildingInfluence;
+		public static UnitInfluenceMap UnitInfluence;
 
 		static ISoundEngine soundEngine;
 
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
 		{
-			Rules.LoadRules( mapName );
+			Rules.LoadRules(mapName);
 
-			for( int i = 0 ; i < 8 ; i++ )
+			for (int i = 0; i < 8; i++)
 				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Soviet));
 
 			localPlayerIndex = localPlayer;
 
-			var mapFile = new IniFile( FileSystem.Open( mapName ) );
-			map = new Map( mapFile );
+			var mapFile = new IniFile(FileSystem.Open(mapName));
+			map = new Map(mapFile);
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
 			viewport = new Viewport(clientSize, map.Size, renderer);
@@ -54,13 +55,14 @@ namespace OpenRa.Game
 			world = new World();
 			treeCache = new TreeCache(map);
 
-			foreach( TreeReference treeReference in map.Trees )
-				world.Add( new Actor( treeReference, treeCache, map.Offset ) );
+			foreach (TreeReference treeReference in map.Trees)
+				world.Add(new Actor(treeReference, treeCache, map.Offset));
 
-			BuildingInfluence = new BuildingInfluenceMap(world, 8);
+			BuildingInfluence = new BuildingInfluenceMap(8);
+			UnitInfluence = new UnitInfluenceMap();
 
-			LoadMapBuildings( mapFile );
-			LoadMapUnits( mapFile );
+			LoadMapBuildings(mapFile);
+			LoadMapUnits(mapFile);
 
 			pathFinder = new PathFinder(map, terrain.tileSet, BuildingInfluence);
 
@@ -123,6 +125,7 @@ namespace OpenRa.Game
 		{
 			var stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 			world.Update();
+			UnitInfluence.Tick();
 
 			viewport.DrawRegions();
 		}
@@ -130,6 +133,7 @@ namespace OpenRa.Game
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)
 		{
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
+			if (UnitInfluence.GetUnitAt(a) != null) return false;
 
 			a += map.Offset;
 

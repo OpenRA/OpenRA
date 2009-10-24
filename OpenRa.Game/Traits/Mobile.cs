@@ -62,6 +62,11 @@ namespace OpenRa.Game.Traits
 			if (currentAction != null)
 				currentAction.Cancel(self, this);
 		}
+
+		public IEnumerable<int2> OccupiedCells()
+		{
+			return new[] { fromCell, toCell };
+		}
 	
 		public interface CurrentAction
 		{

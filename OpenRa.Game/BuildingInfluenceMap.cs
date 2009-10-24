@@ -14,7 +14,7 @@ namespace OpenRa.Game
 		readonly int maxDistance;	/* clip limit for voronoi cells */
 		static readonly Pair<Actor, float> NoClaim = Pair.New((Actor)null, float.MaxValue);
 
-		public BuildingInfluenceMap(World world, int maxDistance)
+		public BuildingInfluenceMap(int maxDistance)
 		{
 			this.maxDistance = maxDistance;
 
@@ -22,9 +22,9 @@ namespace OpenRa.Game
 				for (int i = 0; i < 128; i++)
 					influence[i, j] = NoClaim;
 
-			world.ActorAdded +=
+			Game.world.ActorAdded +=
 				a => { if (a.traits.Contains<Traits.Building>()) AddInfluence(a); };
-			world.ActorRemoved +=
+			Game.world.ActorRemoved +=
 				a => { if (a.traits.Contains<Traits.Building>()) RemoveInfluence(a); };
 		}
 
