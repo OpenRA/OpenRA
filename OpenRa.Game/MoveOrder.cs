@@ -29,7 +29,7 @@ namespace OpenRa.Game
 		public override void Apply()
 		{
 			if (Game.LocalPlayer == Unit.Owner)
-				Game.PlaySound("ackno.r00", false);
+				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(), false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();
 			mobile.Cancel(Unit);
 			mobile.QueueAction( new Traits.Mobile.MoveTo( Destination ) );
