@@ -54,6 +54,11 @@ namespace OpenRa.Game.Graphics
 			foreach (Actor a in Game.world.Actors.OrderBy( u => u.CenterLocation.Y ))
 				DrawSpriteList(a.Owner, rect, a.Render());
 
+			foreach (var a in Game.world.Actors
+				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
+				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
+				DrawSpriteList(a.self.Owner, rect, a.RenderRoof(a.self));		/* RUDE HACK */
+
 			foreach (IEffect e in Game.world.Effects)
 				DrawSpriteList(e.Owner, rect, e.Render());
 
