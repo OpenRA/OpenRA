@@ -2,27 +2,35 @@ using System;
 using System.Collections.Generic;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
 	class PathFinder
 	{
-		double[ , ] passableCost = new double[ 128, 128 ];
+		double[][,] passableCost = new double[4][,];
 		Map map;
 
 		public PathFinder(Map map, TileSet tileSet)
 		{
 			this.map = map;
 
+			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
+				passableCost[(int)umt] = new double[128, 128];
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
-
-					passableCost[ x, y ] = ( map.IsInMap( x, y ) )
-						? TerrainCosts.Cost( UnitMovementType.Wheel, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
-						: double.PositiveInfinity;
+					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
+						passableCost[(int)umt][ x, y ] = ( map.IsInMap( x, y ) )
+							? TerrainCosts.Cost( umt, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
+							: double.PositiveInfinity;
 		}
 
-		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator )
+		public List<int2> FindUnitPath(int2 src, int2 dest, UnitMovementType umt)
+		{
+			return FindUnitPath(src, DefaultEstimator(dest), umt);
+		}
+
+		List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
 		{
 			var startLocation = unitLocation + map.Offset;
 
@@ -32,10 +40,10 @@ namespace OpenRa.Game
 				for( int y = 0 ; y < 128 ; y++ )
 					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
 
-			return FindUnitPath( new[] {startLocation}, estimator, map.Offset, cellInfo );
+			return FindUnitPath( new[] {startLocation}, estimator, umt, map.Offset, cellInfo );
 		}
 
-		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, int2 offset, CellInfo[,] cellInfo)
+		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt, int2 offset, CellInfo[,] cellInfo)
 		{
 			var queue = new PriorityQueue<PathDistance>();
 
@@ -54,20 +62,20 @@ namespace OpenRa.Game
 				if( estimator( here - offset ) == 0.0 )
 					return MakePath( cellInfo, here, offset );
 
-				foreach( int2 d in directions )
+				foreach( int2 d in Util.directions )
 				{
 					int2 newHere = here + d;
 
 					if( cellInfo[ newHere.X, newHere.Y ].Seen )
 						continue;
-					if( passableCost[ newHere.X, newHere.Y ] == double.PositiveInfinity )
+					if( passableCost[(int)umt][ newHere.X, newHere.Y ] == double.PositiveInfinity )
 						continue;
 					if (Game.BuildingInfluence.GetBuildingAt(newHere - offset) != null)
 						continue;
 					if (Game.UnitInfluence.GetUnitAt(newHere - offset) != null)
 						continue;
 
-					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ newHere.X, newHere.Y ];
+					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[(int)umt][ newHere.X, newHere.Y ];
 					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;
 
 					if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
@@ -98,19 +106,7 @@ namespace OpenRa.Game
 			return ret;
 		}
 
-		public static readonly int2[] directions =
-			new int2[] {
-				new int2( -1, -1 ),
-				new int2( -1,  0 ),
-				new int2( -1,  1 ),
-				new int2(  0, -1 ),
-				new int2(  0,  1 ),
-				new int2(  1, -1 ),
-				new int2(  1,  0 ),
-				new int2(  1,  1 ),
-			};
-
-		public static Func<int2, double> DefaultEstimator(int2 destination)
+		static Func<int2, double> DefaultEstimator(int2 destination)
 		{
 			return here =>
 			{

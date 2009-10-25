@@ -5,6 +5,7 @@ using System.Text;
 using OpenRa.Game.GameRules;
 using IjwFramework.Types;
 using IjwFramework.Collections;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -66,7 +67,7 @@ namespace OpenRa.Game
 
 				if (c.distance + 1 > maxDistance) continue;
 
-				foreach (var d in PathFinder.directions)
+				foreach (var d in Util.directions)
 				{
 					var e = c.location + d;
 					if (e.X < min.X || e.Y < min.Y || e.X > max.X || e.Y > max.Y)

@@ -42,6 +42,18 @@ namespace OpenRa.Game.Graphics
 			return result;
 		}
 
+		public static readonly int2[] directions =
+			new int2[] {
+				new int2( -1, -1 ),
+				new int2( -1,  0 ),
+				new int2( -1,  1 ),
+				new int2(  0, -1 ),
+				new int2(  0,  1 ),
+				new int2(  1, -1 ),
+				new int2(  1,  0 ),
+				new int2(  1,  1 ),
+			};
+
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)

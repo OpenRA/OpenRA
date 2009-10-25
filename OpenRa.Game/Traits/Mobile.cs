@@ -67,6 +67,15 @@ namespace OpenRa.Game.Traits
 		{
 			return new[] { fromCell, toCell };
 		}
+
+		public UnitMovementType GetMovementType()
+		{
+			/* todo: boats, planes */
+
+			var vi = self.unitInfo as UnitInfo.VehicleInfo;
+			if (vi == null) return UnitMovementType.Foot;
+			return vi.Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+		}
 	
 		public interface CurrentAction
 		{
@@ -138,7 +147,7 @@ namespace OpenRa.Game.Traits
 				}
 
 				if( path == null )
-					path = Game.pathFinder.FindUnitPath( self.Location, PathFinder.DefaultEstimator( destination ) );
+					path = Game.pathFinder.FindUnitPath( self.Location, destination, mobile.GetMovementType() );
 				if( path.Count == 0 )
 				{
 					destination = mobile.toCell;
@@ -189,7 +198,7 @@ namespace OpenRa.Game.Traits
 			void CalculateMoveFraction()
 			{
 				var d = to - from;
-				moveFractionTotal = (int)Math.Sqrt( d.X * d.X + d.Y * d.Y ) * (25 / 6);
+				moveFractionTotal = (int)d.Length * (25 / 6);
 			}
 
 			static float2 CenterOfCell( int2 loc )
@@ -216,7 +225,8 @@ namespace OpenRa.Game.Traits
 						mobile.fromCell = mobile.toCell;
 						mobile.toCell = nextCell;
 						fromFacing = mobile.facing;
-						toFacing = Util.GetNearestFacing( fromFacing, Util.GetFacing( mobile.toCell-mobile.fromCell, fromFacing ) );
+						toFacing = Util.GetNearestFacing( fromFacing, 
+							Util.GetFacing( mobile.toCell-mobile.fromCell, fromFacing ) );
 						OnComplete = OnCompleteFirstHalf;
 						return;
 					}
