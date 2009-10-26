@@ -9,7 +9,12 @@ namespace OpenRa.Game
 	class UnitInfluenceMap
 	{
 		Actor[,] influence = new Actor[128, 128];
-		readonly int2 searchDistance = new int2(1, 1);
+		readonly int2 searchDistance = new int2(2,2);
+
+		public UnitInfluenceMap()
+		{
+			Game.world.ActorRemoved += a => Remove(a.traits.GetOrDefault<Mobile>());
+		}
 
 		public void Tick()
 		{
@@ -30,6 +35,8 @@ namespace OpenRa.Game
 
 		public void Remove(Mobile a)
 		{
+			if (a == null) return;
+
 			var min = int2.Max(new int2(0, 0), a.self.Location - searchDistance);
 			var max = int2.Min(new int2(128, 128), a.self.Location + searchDistance);
 

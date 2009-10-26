@@ -125,7 +125,7 @@ namespace OpenRa.Game.Traits
 			float2 from, to;
 			int fromFacing, toFacing;
 
-			Action<Actor, Mobile> OnComplete;
+			Func<Actor, Mobile, bool> OnComplete;
 
 			public MoveTo( int2 destination )
 			{
@@ -186,18 +186,27 @@ namespace OpenRa.Game.Traits
 
 			void TickMove( Actor self, Mobile mobile )
 			{
+				var oldFraction = moveFraction;
+				var oldTotal = moveFractionTotal;
+
 				moveFraction += ( self.unitInfo as UnitInfo.MobileInfo ).Speed;
-				UpdateCenterLocation( self, mobile, (float)moveFraction / moveFractionTotal );
+				UpdateCenterLocation( self, mobile );
 				if( moveFraction >= moveFractionTotal )
 				{
 					moveFraction -= moveFractionTotal;
-					OnComplete( self, mobile );
+					if (!OnComplete(self, mobile))
+					{
+						moveFraction = oldFraction;
+						moveFractionTotal = oldTotal;
+						UpdateCenterLocation(self, mobile );
+					}
 				}
-				return;
 			}
 
-			void UpdateCenterLocation( Actor self, Mobile mobile, float frac )
+			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
+				var frac = (float)moveFraction / moveFractionTotal;
+
 				self.CenterLocation = float2.Lerp( from, to, frac );
 				if( moveFraction >= moveFractionTotal )
 					mobile.facing = toFacing & 0xFF;
@@ -221,13 +230,16 @@ namespace OpenRa.Game.Traits
 				return 0.5f * ( CenterOfCell( from ) + CenterOfCell( to ) );
 			}
 
-			void OnCompleteFirstHalf( Actor self, Mobile mobile )
+			bool OnCompleteFirstHalf( Actor self, Mobile mobile )
 			{
 				if( path.Count > 0 )
 				{
 					var nextCell = path[ path.Count - 1 ];
 					if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 					{
+						if (!CanEnterCell(nextCell, self))
+							return false;
+
 						path.RemoveAt( path.Count - 1 );
 						from = BetweenCells( mobile.fromCell, mobile.toCell );
 						to = BetweenCells( mobile.toCell, nextCell );
@@ -238,7 +250,8 @@ namespace OpenRa.Game.Traits
 						toFacing = Util.GetNearestFacing( fromFacing, 
 							Util.GetFacing( mobile.toCell-mobile.fromCell, fromFacing ) );
 						OnComplete = OnCompleteFirstHalf;
-						return;
+						Game.UnitInfluence.Update(mobile);
+						return true;
 					}
 				}
 				from = BetweenCells( mobile.fromCell, mobile.toCell );
@@ -247,14 +260,16 @@ namespace OpenRa.Game.Traits
 				fromFacing = toFacing = mobile.facing;
 				OnComplete = OnCompleteSecondHalf;
 				mobile.fromCell = mobile.toCell;
+				return true;
 			}
 
-			void OnCompleteSecondHalf( Actor self, Mobile mobile )
+			bool OnCompleteSecondHalf( Actor self, Mobile mobile )
 			{
 				moveFractionTotal = 0;
 				self.CenterLocation = CenterOfCell( mobile.toCell );
 				OnComplete = null;
 				mobile.fromCell = mobile.toCell;
+				return true;
 			}
 
 			public void Cancel( Actor self, Mobile mobile )

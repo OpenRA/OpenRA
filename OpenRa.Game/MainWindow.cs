@@ -50,6 +50,8 @@ namespace OpenRa.Game
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 			SheetBuilder.Initialize(renderer);
 
+			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
+
 			Game.Initialize(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize),
 				settings.GetValue("player", 1));
 

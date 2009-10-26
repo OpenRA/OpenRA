@@ -9,8 +9,9 @@ namespace OpenRa.Game
 	class UiOverlay
 	{
 		SpriteRenderer spriteRenderer;
-		Sprite buildOk;
-		Sprite buildBlocked;
+		Sprite buildOk, buildBlocked, unitDebug;
+
+		public static bool ShowUnitDebug = false;
 
 		public UiOverlay(SpriteRenderer spriteRenderer)
 		{
@@ -18,6 +19,7 @@ namespace OpenRa.Game
 
 			buildOk = SynthesizeTile(0x80);
 			buildBlocked = SynthesizeTile(0xe6);
+			unitDebug = SynthesizeTile(0x7c);
 		}
 
 		static Sprite SynthesizeTile(byte paletteIndex)
@@ -33,6 +35,12 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
+			if (ShowUnitDebug)
+				for (var j = 0; j < 128; j++)
+					for (var i = 0; i < 128; i++)
+						if (Game.UnitInfluence.GetUnitAt(new int2(i, j)) != null)
+							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
+
 			if (!hasOverlay) return;
 
 			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
