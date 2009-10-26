@@ -32,7 +32,7 @@ namespace OpenRa.Game
 				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(), false);
 			var mobile = Unit.traits.Get<Traits.Mobile>();
 			mobile.Cancel(Unit);
-			mobile.QueueAction( new Traits.Mobile.MoveTo( Destination ) );
+			mobile.QueueActivity( new Traits.Mobile.MoveTo( Destination ) );
 		}
 	}
 }

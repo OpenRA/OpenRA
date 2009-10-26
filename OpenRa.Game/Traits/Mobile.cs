@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 		public int facing;
 
 		public int Voice = Game.CosmeticRandom.Next(2);
-		CurrentAction currentAction;
+		CurrentActivity currentActivity;
 
 		public Mobile(Actor self)
 		{
@@ -24,25 +24,25 @@ namespace OpenRa.Game.Traits
 			fromCell = toCell;
 		}
 
-		public void QueueAction( CurrentAction nextAction )
+		public void QueueActivity( CurrentActivity nextActivity )
 		{
-			if( currentAction == null )
+			if( currentActivity == null )
 			{
-				currentAction = nextAction;
+				currentActivity = nextActivity;
 				return;
 			}
-			var act = currentAction;
-			while( act.NextAction != null )
+			var act = currentActivity;
+			while( act.NextActivity != null )
 			{
-				act = act.NextAction;
+				act = act.NextActivity;
 			}
-			act.NextAction = nextAction;
+			act.NextActivity = nextActivity;
 		}
 
 		public void Tick(Actor self)
 		{
-			if( currentAction != null )
-				currentAction.Tick( self, this );
+			if( currentActivity != null )
+				currentActivity.Tick( self, this );
 			else
 				fromCell = toCell;
 		}
@@ -59,8 +59,8 @@ namespace OpenRa.Game.Traits
 
 		public void Cancel(Actor self)
 		{
-			if (currentAction != null)
-				currentAction.Cancel(self, this);
+			if (currentActivity != null)
+				currentActivity.Cancel(self, this);
 		}
 
 		public IEnumerable<int2> OccupiedCells()
@@ -70,23 +70,23 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			/* todo: boats, planes */
+			/* todo: boats */
 
 			var vi = self.unitInfo as UnitInfo.VehicleInfo;
 			if (vi == null) return UnitMovementType.Foot;
 			return vi.Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
 		}
 	
-		public interface CurrentAction
+		public interface CurrentActivity
 		{
-			CurrentAction NextAction { get; set; }
+			CurrentActivity NextActivity { get; set; }
 			void Tick( Actor self, Mobile mobile );
 			void Cancel( Actor self, Mobile mobile );
 		}
 
-		public class Turn : CurrentAction
+		public class Turn : CurrentActivity
 		{
-			public CurrentAction NextAction { get; set; }
+			public CurrentActivity NextActivity { get; set; }
 
 			public int desiredFacing;
 
@@ -99,9 +99,9 @@ namespace OpenRa.Game.Traits
 			{
 				if( desiredFacing == mobile.facing )
 				{
-					mobile.currentAction = NextAction;
-					if( NextAction != null )
-						NextAction.Tick( self, mobile );
+					mobile.currentActivity = NextActivity;
+					if( NextActivity != null )
+						NextActivity.Tick( self, mobile );
 					return;
 				}
 				Util.TickFacing( ref mobile.facing, desiredFacing, self.unitInfo.ROT );
@@ -110,13 +110,13 @@ namespace OpenRa.Game.Traits
 			public void Cancel( Actor self, Mobile mobile )
 			{
 				desiredFacing = mobile.facing;
-				NextAction = null;
+				NextActivity = null;
 			}
 		}
 
-		public class MoveTo : CurrentAction
+		public class MoveTo : CurrentActivity
 		{
-			public CurrentAction NextAction { get; set; }
+			public CurrentActivity NextActivity { get; set; }
 
 			int2 destination;
 			List<int2> path;
@@ -144,7 +144,7 @@ namespace OpenRa.Game.Traits
 
 				if( destination == self.Location )
 				{
-					mobile.currentAction = NextAction;
+					mobile.currentActivity = NextActivity;
 					return;
 				}
 
@@ -160,7 +160,7 @@ namespace OpenRa.Game.Traits
 				int2 dir = nextCell - mobile.fromCell;
 				var firstFacing = Util.GetFacing( dir, mobile.facing );
 				if( firstFacing != mobile.facing )
-					mobile.currentAction = new Turn( firstFacing ) { NextAction = this };
+					mobile.currentActivity = new Turn( firstFacing ) { NextActivity = this };
 				else
 				{
 					if (!CanEnterCell(nextCell, self)) return;	/* todo: repath, sometimes */
@@ -177,7 +177,7 @@ namespace OpenRa.Game.Traits
 
 					Game.UnitInfluence.Update(mobile);
 				}
-				mobile.currentAction.Tick( self, mobile );
+				mobile.currentActivity.Tick( self, mobile );
 			}
 
 			static float2 CenterOfCell( int2 loc )
@@ -296,7 +296,7 @@ namespace OpenRa.Game.Traits
 			public void Cancel( Actor self, Mobile mobile )
 			{
 				path.Clear();
-				NextAction = null;
+				NextActivity = null;
 			}
 		}
 	}

@@ -37,13 +37,13 @@ namespace OpenRa.Game.Traits
 		public override void Apply()
 		{
 			var mobile = Unit.traits.Get<Mobile>();
-			mobile.QueueAction( new Mobile.Turn( 96 ) );
-			mobile.QueueAction( new DeployAction() );
+			mobile.QueueActivity( new Mobile.Turn( 96 ) );
+			mobile.QueueActivity( new DeployAction() );
 		}
 
-		class DeployAction : Mobile.CurrentAction
+		class DeployAction : Mobile.CurrentActivity
 		{
-			public Mobile.CurrentAction NextAction { get; set; }
+			public Mobile.CurrentActivity NextActivity { get; set; }
 
 			public void Tick( Actor self, Mobile mobile )
 			{
