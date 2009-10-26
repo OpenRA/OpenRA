@@ -12,7 +12,9 @@ namespace OpenRa.Game.Traits
 		public RenderUnit(Actor self)
 			: base(self)
 		{
-			anim.PlayFetchIndex("idle", () => self.traits.Get<Mobile>().facing / 8);
+			anim.PlayFetchIndex("idle", 
+				() => self.traits.Get<Mobile>().facing 
+					/ (256/anim.CurrentSequence.Length));
 		}
 
 		protected static Pair<Sprite, float2> Centered(Sprite s, float2 location)

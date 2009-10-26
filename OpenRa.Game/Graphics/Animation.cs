@@ -5,7 +5,7 @@ namespace OpenRa.Game.Graphics
 	class Animation
 	{
 		readonly string name;
-		Sequence currentSequence;
+		public Sequence CurrentSequence { get; private set; }
 		int frame = 0;
 		bool backwards = false;
 		bool tickAlways;
@@ -21,12 +21,12 @@ namespace OpenRa.Game.Graphics
 			get
 			{
 				return backwards
-					? currentSequence.GetSprite(currentSequence.End - frame - 1)
-					: currentSequence.GetSprite(frame);
+					? CurrentSequence.GetSprite(CurrentSequence.End - frame - 1)
+					: CurrentSequence.GetSprite(frame);
 			}
 		}
 
-		public float2 Center { get { return 0.25f * new float2(currentSequence.GetSprite(0).bounds.Size); } }
+		public float2 Center { get { return 0.25f * new float2(CurrentSequence.GetSprite(0).bounds.Size); } }
 
 		public void Play( string sequenceName )
 		{
@@ -47,14 +47,14 @@ namespace OpenRa.Game.Graphics
 		{
 			backwards = false;
 			tickAlways = false;
-			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
+			CurrentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = 0;
 			tickFunc = () =>
 			{
 				++frame;
-				if( frame >= currentSequence.Length )
+				if( frame >= CurrentSequence.Length )
 				{
-					frame = currentSequence.Length - 1;
+					frame = CurrentSequence.Length - 1;
 					tickFunc = () => { };
 					after();
 				}
@@ -71,7 +71,7 @@ namespace OpenRa.Game.Graphics
 		{
 			backwards = false;
 			tickAlways = true;
-			currentSequence = SequenceProvider.GetSequence( name, sequenceName );
+			CurrentSequence = SequenceProvider.GetSequence( name, sequenceName );
 			frame = func();
 			tickFunc = () => frame = func();
 		}

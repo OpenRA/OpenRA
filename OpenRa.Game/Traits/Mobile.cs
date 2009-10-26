@@ -70,10 +70,9 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			/* todo: boats */
-
 			var vi = self.unitInfo as UnitInfo.VehicleInfo;
 			if (vi == null) return UnitMovementType.Foot;
+			if (vi.WaterBound) return UnitMovementType.Float;
 			return vi.Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
 		}
 	

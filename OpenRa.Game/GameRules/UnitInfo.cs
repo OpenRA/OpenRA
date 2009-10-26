@@ -35,7 +35,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool Invisible = false;
 		public readonly string Owner = "allies,soviet"; // TODO: make this an enum
 		public readonly int Points = 0;
-		public readonly string[] Prerequisite = new string[ 0 ];
+		public readonly string[] Prerequisite = { };
 		public readonly string Primary = null;
 		public readonly string Secondary = null;
 		public readonly int ROT = 0;
@@ -45,6 +45,8 @@ namespace OpenRa.Game.GameRules
 		public readonly int Sight = 1;
 		public readonly int Strength = 1;
 		public readonly int TechLevel = -1;
+		public readonly bool WaterBound = false;
+		public readonly string[] BuiltAt = { };
 
 		public UnitInfo(string name) { Name = name; }
 
@@ -89,7 +91,6 @@ namespace OpenRa.Game.GameRules
 			public readonly bool Repairable = true;
 			public readonly int Storage = 0;
 			public readonly bool Unsellable = false;
-			public readonly bool WaterBound = false;
 
 			public BuildingInfo(string name) : base(name) { }
 		}

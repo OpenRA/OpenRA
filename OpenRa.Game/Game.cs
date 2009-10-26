@@ -189,8 +189,10 @@ namespace OpenRa.Game
 
 		public static void BuildUnit(Player player, string name)
 		{
+			var producerTypes = Rules.UnitInfo[name].BuiltAt;
 			var producer = world.Actors
-				.FirstOrDefault(a => a.unitInfo != null && a.unitInfo.Name == "weap" && a.Owner == player);
+				.FirstOrDefault(a => a.unitInfo != null 
+					&& producerTypes.Contains(a.unitInfo.Name) && a.Owner == player);
 
 			if (producer == null)
 				throw new InvalidOperationException("BuildUnit without suitable production structure!");
@@ -202,7 +204,6 @@ namespace OpenRa.Game
 
 			world.AddFrameEndTask(_ => world.Add(unit));
 
-			// todo: make the producing building play `build`
 			if (producer.traits.Contains<RenderWarFactory>())
 				producer.traits.Get<RenderWarFactory>().EjectUnit();
 		}

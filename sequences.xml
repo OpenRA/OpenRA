@@ -327,6 +327,11 @@
 		<sequence name="idle" start="0" length="32"/>
 		<sequence name="turret" start="32" length="8"/>
 	</unit>
+	
+	<!-- submarine -->
+	<unit name="ss">
+		<sequence name="idle" start="0" length="16" />
+	</unit>
 
 	<!-- build clock - hacked in -->
 	<unit name="clock">
