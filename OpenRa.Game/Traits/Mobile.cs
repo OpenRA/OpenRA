@@ -249,21 +249,21 @@ namespace OpenRa.Game.Traits
 						var nextCell = parent.path[ parent.path.Count - 1 ];
 						if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 						{
-							if( !CanEnterCell( nextCell, self ) )
-								return null;
+							if( CanEnterCell( nextCell, self ) )
+							{
+								parent.path.RemoveAt( parent.path.Count - 1 );
 
-							parent.path.RemoveAt( parent.path.Count - 1 );
-
-							var ret = new MoveFirstHalf(
-								BetweenCells( mobile.fromCell, mobile.toCell ),
-								BetweenCells( mobile.toCell, nextCell ),
-								mobile.facing,
-								Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell - mobile.toCell, mobile.facing ) ),
-								moveFraction - moveFractionTotal );
-							mobile.fromCell = mobile.toCell;
-							mobile.toCell = nextCell;
-							Game.UnitInfluence.Update( mobile );
-							return ret;
+								var ret = new MoveFirstHalf(
+									BetweenCells( mobile.fromCell, mobile.toCell ),
+									BetweenCells( mobile.toCell, nextCell ),
+									mobile.facing,
+									Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell - mobile.toCell, mobile.facing ) ),
+									moveFraction - moveFractionTotal );
+								mobile.fromCell = mobile.toCell;
+								mobile.toCell = nextCell;
+								Game.UnitInfluence.Update( mobile );
+								return ret;
+							}
 						}
 					}
 					var ret2 = new MoveSecondHalf(
