@@ -54,11 +54,8 @@ namespace OpenRa.Game.GameRules
 
 			for( int y = 0 ; y < dim.Y ; y++ )
 				for( int x = 0 ; x < dim.X ; x++ )
-				{
-					if( cond( footprint[ index ] ) )
+					if( cond( footprint[ index++ ] ) )
 						yield return new int2( x, y );
-					++index;
-				}
 		}
 
 		public static int2 AdjustForBuildingSize( string name )
