@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using IjwFramework.Collections;
+using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 
@@ -30,21 +31,32 @@ namespace OpenRa.Game
 			return FindUnitPath(src, DefaultEstimator(dest), umt);
 		}
 
+		public List<int2> FindUnitPathToRange(int2 src, int2 dest, UnitMovementType umt, int range)
+		{
+			var tilesInRange = Game.FindTilesInCircle(dest, range)
+				.Where(t => Game.IsCellBuildable(t, umt))
+				.Select(t => t + map.Offset);
+
+			var path = FindUnitPath(tilesInRange, DefaultEstimator(dest), umt);
+			path.Reverse();
+			return path;
+		}
+
 		List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
 		{
 			var startLocation = unitLocation + map.Offset;
-
-			var cellInfo = new CellInfo[ 128, 128 ];
-
-			for( int x = 0 ; x < 128 ; x++ )
-				for( int y = 0 ; y < 128 ; y++ )
-					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
-
-			return FindUnitPath( new[] {startLocation}, estimator, umt, map.Offset, cellInfo );
+			return FindUnitPath( new[] {startLocation}, estimator, umt );
 		}
 
-		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt, int2 offset, CellInfo[,] cellInfo)
+		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt)
 		{
+			var cellInfo = new CellInfo[128, 128];
+			var offset = map.Offset;
+
+			for (int x = 0; x < 128; x++)
+				for (int y = 0; y < 128; y++)
+					cellInfo[x, y] = new CellInfo(double.PositiveInfinity, new int2(x, y), false);
+
 			var queue = new PriorityQueue<PathDistance>();
 
 			foreach (var sl in startLocations)

@@ -160,6 +160,17 @@ namespace OpenRa.Game
 				.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 		}
 
+		public static IEnumerable<int2> FindTilesInCircle(int2 a, int r)
+		{
+			var min = a - new int2(r, r);
+			var max = a + new int2(r, r);
+
+			for (var j = min.Y; j <= max.Y; j++)
+				for (var i = min.X; i <= max.X; i++)
+					if (r * r >= (new int2(i, j) - a).LengthSquared)
+						yield return new int2(i, j);
+		}
+
 		public static IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Mobile>());
