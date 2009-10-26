@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -30,9 +32,14 @@ namespace OpenRa.Game
 		{
 			if (Game.LocalPlayer == Unit.Owner)
 				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(), false);
-			var mobile = Unit.traits.Get<Traits.Mobile>();
+
+			var mobile = Unit.traits.Get<Mobile>();
 			mobile.Cancel(Unit);
-			mobile.QueueActivity( new Traits.Mobile.MoveTo( Destination ) );
+			mobile.QueueActivity( new Mobile.MoveTo( Destination ) );
+
+			var attackBase = Unit.traits.WithInterface<AttackBase>().FirstOrDefault();
+			if (attackBase != null)
+				attackBase.target = null;	/* move cancels attack order */
 		}
 	}
 }
