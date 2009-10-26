@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits
 		{
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb)
+		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if( lmb ) return null;
 

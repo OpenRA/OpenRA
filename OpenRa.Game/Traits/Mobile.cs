@@ -47,9 +47,12 @@ namespace OpenRa.Game.Traits
 				fromCell = toCell;
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb)
+		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if( lmb ) return null;
+
+			if( underCursor != null )
+				return null;
 
 			if (xy != toCell)
 				return new MoveOrder(self, xy);
