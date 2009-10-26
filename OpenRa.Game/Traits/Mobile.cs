@@ -121,18 +121,14 @@ namespace OpenRa.Game.Traits
 			int2 destination;
 			List<int2> path;
 
-			int moveFraction, moveFractionTotal;
-			float2 from, to;
-			int fromFacing, toFacing;
-
-			Func<Actor, Mobile, bool> OnComplete;
+			MovePart move;
 
 			public MoveTo( int2 destination )
 			{
 				this.destination = destination;
 			}
 
-			bool CanEnterCell(int2 c, Actor self)
+			static bool CanEnterCell(int2 c, Actor self)
 			{
 				var u = Game.UnitInfluence.GetUnitAt(c);
 				return u == null || u == self;
@@ -140,9 +136,9 @@ namespace OpenRa.Game.Traits
 
 			public void Tick( Actor self, Mobile mobile )
 			{
-				if( moveFractionTotal != 0 )
+				if( move != null )
 				{
-					TickMove( self, mobile );
+					move.TickMove( self, mobile, this );
 					return;
 				}
 
@@ -171,53 +167,17 @@ namespace OpenRa.Game.Traits
 
 					mobile.toCell = nextCell;
 					path.RemoveAt( path.Count - 1 );
-					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 35 : 25;
-					from = CenterOfCell( mobile.fromCell );
-					to = BetweenCells( mobile.fromCell, mobile.toCell );
-					CalculateMoveFraction();
-					fromFacing = mobile.facing;
-					toFacing = mobile.facing;
-					OnComplete = OnCompleteFirstHalf;
+
+					move = new MoveFirstHalf(
+						CenterOfCell( mobile.fromCell ),
+						BetweenCells( mobile.fromCell, mobile.toCell ),
+						mobile.facing,
+						mobile.facing,
+						0 );
 
 					Game.UnitInfluence.Update(mobile);
 				}
 				mobile.currentAction.Tick( self, mobile );
-			}
-
-			void TickMove( Actor self, Mobile mobile )
-			{
-				var oldFraction = moveFraction;
-				var oldTotal = moveFractionTotal;
-
-				moveFraction += ( self.unitInfo as UnitInfo.MobileInfo ).Speed;
-				UpdateCenterLocation( self, mobile );
-				if( moveFraction >= moveFractionTotal )
-				{
-					moveFraction -= moveFractionTotal;
-					if (!OnComplete(self, mobile))
-					{
-						moveFraction = oldFraction;
-						moveFractionTotal = oldTotal;
-						UpdateCenterLocation(self, mobile );
-					}
-				}
-			}
-
-			void UpdateCenterLocation( Actor self, Mobile mobile )
-			{
-				var frac = (float)moveFraction / moveFractionTotal;
-
-				self.CenterLocation = float2.Lerp( from, to, frac );
-				if( moveFraction >= moveFractionTotal )
-					mobile.facing = toFacing & 0xFF;
-				else
-					mobile.facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
-			}
-
-			void CalculateMoveFraction()
-			{
-				var d = to - from;
-				moveFractionTotal = (int)d.Length * (25 / 6);
 			}
 
 			static float2 CenterOfCell( int2 loc )
@@ -230,46 +190,107 @@ namespace OpenRa.Game.Traits
 				return 0.5f * ( CenterOfCell( from ) + CenterOfCell( to ) );
 			}
 
-			bool OnCompleteFirstHalf( Actor self, Mobile mobile )
+			abstract class MovePart
 			{
-				if( path.Count > 0 )
-				{
-					var nextCell = path[ path.Count - 1 ];
-					if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
-					{
-						if (!CanEnterCell(nextCell, self))
-							return false;
+				public readonly float2 from, to;
+				public readonly int fromFacing, toFacing;
+				public int moveFraction;
+				public readonly int moveFractionTotal;
 
-						path.RemoveAt( path.Count - 1 );
-						from = BetweenCells( mobile.fromCell, mobile.toCell );
-						to = BetweenCells( mobile.toCell, nextCell );
-						CalculateMoveFraction();
-						mobile.fromCell = mobile.toCell;
-						mobile.toCell = nextCell;
-						fromFacing = mobile.facing;
-						toFacing = Util.GetNearestFacing( fromFacing, 
-							Util.GetFacing( mobile.toCell-mobile.fromCell, fromFacing ) );
-						OnComplete = OnCompleteFirstHalf;
-						Game.UnitInfluence.Update(mobile);
-						return true;
+				public MovePart( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+				{
+					this.from = from;
+					this.to = to;
+					this.fromFacing = fromFacing;
+					this.toFacing = toFacing;
+					this.moveFraction = startingFraction;
+					this.moveFractionTotal = (int)( to - from ).Length * ( 25 / 6 );
+				}
+
+				public void TickMove( Actor self, Mobile mobile, MoveTo parent )
+				{
+					var oldFraction = moveFraction;
+					var oldTotal = moveFractionTotal;
+
+					moveFraction += ( self.unitInfo as UnitInfo.MobileInfo ).Speed;
+					UpdateCenterLocation( self, mobile );
+					if( moveFraction >= moveFractionTotal )
+					{
+						parent.move = OnComplete( self, mobile, parent );
+						if( parent.move == null )
+							UpdateCenterLocation( self, mobile );
 					}
 				}
-				from = BetweenCells( mobile.fromCell, mobile.toCell );
-				to = CenterOfCell( mobile.toCell );
-				CalculateMoveFraction();
-				fromFacing = toFacing = mobile.facing;
-				OnComplete = OnCompleteSecondHalf;
-				mobile.fromCell = mobile.toCell;
-				return true;
+
+				void UpdateCenterLocation( Actor self, Mobile mobile )
+				{
+					var frac = (float)moveFraction / moveFractionTotal;
+
+					self.CenterLocation = float2.Lerp( from, to, frac );
+					if( moveFraction >= moveFractionTotal )
+						mobile.facing = toFacing & 0xFF;
+					else
+						mobile.facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
+				}
+
+				protected abstract MovePart OnComplete( Actor self, Mobile mobile, MoveTo parent );
 			}
 
-			bool OnCompleteSecondHalf( Actor self, Mobile mobile )
+			class MoveFirstHalf : MovePart
 			{
-				moveFractionTotal = 0;
-				self.CenterLocation = CenterOfCell( mobile.toCell );
-				OnComplete = null;
-				mobile.fromCell = mobile.toCell;
-				return true;
+				public MoveFirstHalf( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+					: base( from, to, fromFacing, toFacing, startingFraction )
+				{
+				}
+
+				protected override MovePart OnComplete( Actor self, Mobile mobile, MoveTo parent )
+				{
+					if( parent.path.Count > 0 )
+					{
+						var nextCell = parent.path[ parent.path.Count - 1 ];
+						if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
+						{
+							if( !CanEnterCell( nextCell, self ) )
+								return null;
+
+							parent.path.RemoveAt( parent.path.Count - 1 );
+
+							var ret = new MoveFirstHalf(
+								BetweenCells( mobile.fromCell, mobile.toCell ),
+								BetweenCells( mobile.toCell, nextCell ),
+								mobile.facing,
+								Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell - mobile.toCell, mobile.facing ) ),
+								moveFraction - moveFractionTotal );
+							mobile.fromCell = mobile.toCell;
+							mobile.toCell = nextCell;
+							Game.UnitInfluence.Update( mobile );
+							return ret;
+						}
+					}
+					var ret2 = new MoveSecondHalf(
+						BetweenCells( mobile.fromCell, mobile.toCell ),
+						CenterOfCell( mobile.toCell ),
+						mobile.facing,
+						mobile.facing,
+						moveFraction - moveFractionTotal );
+					mobile.fromCell = mobile.toCell;
+					return ret2;
+				}
+			}
+
+			class MoveSecondHalf : MovePart
+			{
+				public MoveSecondHalf( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+					: base( from, to, fromFacing, toFacing, startingFraction )
+				{
+				}
+
+				protected override MovePart OnComplete( Actor self, Mobile mobile, MoveTo parent )
+				{
+					self.CenterLocation = CenterOfCell( mobile.toCell );
+					mobile.fromCell = mobile.toCell;
+					return null;
+				}
 			}
 
 			public void Cancel( Actor self, Mobile mobile )
