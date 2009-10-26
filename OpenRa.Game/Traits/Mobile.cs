@@ -132,6 +132,12 @@ namespace OpenRa.Game.Traits
 				this.destination = destination;
 			}
 
+			bool CanEnterCell(int2 c, Actor self)
+			{
+				var u = Game.UnitInfluence.GetUnitAt(c);
+				return u == null || u == self;
+			}
+
 			public void Tick( Actor self, Mobile mobile )
 			{
 				if( moveFractionTotal != 0 )
@@ -161,9 +167,8 @@ namespace OpenRa.Game.Traits
 					mobile.currentAction = new Turn( firstFacing ) { NextAction = this };
 				else
 				{
-					var unitAtDest = Game.UnitInfluence.GetUnitAt(nextCell);
-					if ( unitAtDest != null && unitAtDest != self )
-						return;	/* todo: repath, sometimes */
+					if (!CanEnterCell(nextCell, self)) return;	/* todo: repath, sometimes */
+
 					mobile.toCell = nextCell;
 					path.RemoveAt( path.Count - 1 );
 					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 35 : 25;
