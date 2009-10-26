@@ -67,8 +67,10 @@ namespace OpenRa.Game
 			if (Owner != Game.LocalPlayer)
 				return null;
 
+			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) ?? Game.BuildingInfluence.GetBuildingAt( xy );
+
 			return traits.WithInterface<Traits.IOrder>()
-				.Select( x => x.Order( this, xy, lmb ) )
+				.Select( x => x.Order( this, xy, lmb, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}
 

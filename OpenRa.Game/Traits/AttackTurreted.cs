@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class AttackTurreted : ITick
+	class AttackTurreted : ITick, IOrder
 	{
 		public Actor target;
 
@@ -51,6 +51,31 @@ namespace OpenRa.Game.Traits
 				target.CenterLocation.ToInt2() ) );
 
 			return true;
+		}
+
+		public Order Order( Actor self, int2 xy, bool lmb, Actor underCursor )
+		{
+			if( underCursor == null ) return null;
+
+			if( underCursor.Owner == self.Owner ) return null;
+
+			return new AttackOrder( self, underCursor );
+		}
+	}
+
+	class AttackOrder : Order
+	{
+		public readonly Actor Attacker;
+		public readonly Actor Target;
+
+		public AttackOrder( Actor attacker, Actor target )
+		{
+			this.Attacker = attacker;
+			this.Target = target;
+		}
+		public override void Apply()
+		{
+			Attacker.traits.Get<AttackTurreted>().target = Target;
 		}
 	}
 }
