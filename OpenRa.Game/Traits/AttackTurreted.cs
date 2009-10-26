@@ -53,7 +53,7 @@ namespace OpenRa.Game.Traits
 
 		public Order Order( Actor self, int2 xy, bool lmb, Actor underCursor )
 		{
-			if( !lmb || underCursor == null ) return null;
+			if( lmb || underCursor == null ) return null;
 
 			if( underCursor.Owner == self.Owner ) return null;
 
