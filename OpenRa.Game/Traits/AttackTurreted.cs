@@ -41,8 +41,7 @@ namespace OpenRa.Game.Traits
 			var weapon = Rules.WeaponInfo[ weaponName ];
 			if( weapon.Range * weapon.Range < ( target.Location - self.Location ).LengthSquared ) return false;
 
-			// FIXME: rules specifies ROF in 1/15 sec units; ticks are 1/25 sec
-			fireDelay = weapon.ROF;
+			fireDelay = 25 * weapon.ROF / 15;
 
 			Game.world.Add( new Bullet( weaponName, self.Owner, self,
 				self.CenterLocation.ToInt2(),
