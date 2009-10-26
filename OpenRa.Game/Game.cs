@@ -9,6 +9,7 @@ using IjwFramework.Collections;
 using System;
 using IjwFramework.Types;
 using OpenRa.Game.Traits;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -187,6 +188,20 @@ namespace OpenRa.Game
 				new VoicePool("ackno", "affirm1", "noprob", "overout", "ritaway", "roger", "ugotit"),
 				new VoicePool("await1", "ready", "report1", "yessir1"));
 
+		static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
+		{
+			var tiles = Footprint.Tiles(a);
+			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
+			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
+
+			for (var j = min.Y; j <= max.Y; j++)
+				for (var i = min.X; i <= max.X; i++)
+					if (IsCellBuildable(new int2(i, j), umt))
+						return new int2(i, j);
+
+			return null;
+		}
+
 		public static void BuildUnit(Player player, string name)
 		{
 			var producerTypes = Rules.UnitInfo[name].BuiltAt;
@@ -197,10 +212,27 @@ namespace OpenRa.Game
 			if (producer == null)
 				throw new InvalidOperationException("BuildUnit without suitable production structure!");
 
-			var unit = new Actor(name, (1/24f * producer.CenterLocation).ToInt2(), player);
-			var mobile = unit.traits.Get<Mobile>();
-			mobile.facing = 128;
-			mobile.QueueActivity( new Traits.Mobile.MoveTo( unit.Location + new int2( 0, 3 ) ) );
+			Actor unit;
+
+			if (producerTypes.Contains("spen") || producerTypes.Contains("syrd"))
+			{
+				var space = FindAdjacentTile(producer, Rules.UnitInfo[name].WaterBound ? 
+					UnitMovementType.Float : UnitMovementType.Wheel );	/* hackety hack */
+
+				if (space == null)
+					throw new NotImplementedException("Nowhere to place this unit.");
+
+				unit = new Actor(name, space.Value, player);
+				var mobile = unit.traits.Get<Mobile>();
+				mobile.facing = SharedRandom.Next(256);
+			}
+			else
+			{
+				unit = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
+				var mobile = unit.traits.Get<Mobile>();
+				mobile.facing = 128;
+				mobile.QueueActivity(new Traits.Mobile.MoveTo(unit.Location + new int2(0, 3)));
+			}
 
 			world.AddFrameEndTask(_ => world.Add(unit));
 

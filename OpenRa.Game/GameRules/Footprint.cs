@@ -11,24 +11,37 @@ namespace OpenRa.Game.GameRules
 	{
 		public static IEnumerable<int2> Tiles( UnitInfo unitInfo, int2 position )
 		{
+			return Tiles(unitInfo, position, true);
+		}
+
+		static IEnumerable<int2> Tiles(UnitInfo unitInfo, int2 position, bool adjustForPlacement)
+		{
 			var buildingInfo = unitInfo as UnitInfo.BuildingInfo;
 			var dim = buildingInfo.Dimensions;
 
-			var footprint = buildingInfo.Footprint.ToCharArray().Where( x => !char.IsWhiteSpace( x ) );
-			if( buildingInfo.Bib )
+			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
+			if (buildingInfo.Bib)
 			{
 				dim.Y += 1;
-				footprint = footprint.Concat( new char[ dim.X ] );
+				footprint = footprint.Concat(new char[dim.X]);
 			}
-			foreach( var tile in TilesWhere( unitInfo.Name, dim, footprint.ToArray(), a => a != '_' ) )
-				yield return tile + position - AdjustForBuildingSize( buildingInfo );
+
+			var adjustment = adjustForPlacement ? AdjustForBuildingSize(buildingInfo) : int2.Zero;
+
+			var tiles = TilesWhere(unitInfo.Name, dim, footprint.ToArray(), a => a != '_');
+			return tiles.Select(t => t + position - adjustment);
+		}
+
+		public static IEnumerable<int2> Tiles(Actor a)
+		{
+			return Tiles(a.unitInfo, a.Location, false);
 		}
 
 		public static IEnumerable<int2> UnpathableTiles( UnitInfo unitInfo, int2 position )
 		{
 			var buildingInfo = unitInfo as UnitInfo.BuildingInfo;
 
-			var footprint = buildingInfo.Footprint.ToCharArray().Where( x => !char.IsWhiteSpace( x ) ).ToArray();
+			var footprint = buildingInfo.Footprint.Where( x => !char.IsWhiteSpace( x ) ).ToArray();
 			foreach( var tile in TilesWhere( unitInfo.Name, buildingInfo.Dimensions, footprint, a => a == 'x' ) )
 				yield return tile + position;
 		}
@@ -38,15 +51,14 @@ namespace OpenRa.Game.GameRules
 			if( footprint.Length != dim.X * dim.Y )
 				throw new InvalidOperationException( "Invalid footprint for " + name );
 			int index = 0;
+
 			for( int y = 0 ; y < dim.Y ; y++ )
-			{
 				for( int x = 0 ; x < dim.X ; x++ )
 				{
 					if( cond( footprint[ index ] ) )
 						yield return new int2( x, y );
 					++index;
 				}
-			}
 		}
 
 		public static int2 AdjustForBuildingSize( string name )
