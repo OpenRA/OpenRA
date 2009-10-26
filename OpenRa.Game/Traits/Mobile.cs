@@ -120,14 +120,25 @@ namespace OpenRa.Game.Traits
 		{
 			public CurrentActivity NextActivity { get; set; }
 
-			int2 destination;
+			int2? destination;
 			List<int2> path;
+			Func<Actor, Mobile, List<int2>> getPath;
 
 			MovePart move;
 
 			public MoveTo( int2 destination )
 			{
+				this.getPath = (self, mobile) => Game.pathFinder.FindUnitPath(self.Location, destination, 
+					mobile.GetMovementType());
 				this.destination = destination;
+			}
+
+			public MoveTo(Actor target, int range)
+			{
+				this.getPath = (self, mobile) => Game.pathFinder.FindUnitPathToRange(
+					self.Location, target.Location,
+					mobile.GetMovementType(), range);
+				this.destination = null;
 			}
 
 			static bool CanEnterCell(int2 c, Actor self)
@@ -150,13 +161,15 @@ namespace OpenRa.Game.Traits
 					return;
 				}
 
-				if( path == null )
-					path = Game.pathFinder.FindUnitPath( self.Location, destination, mobile.GetMovementType() );
-				if( path.Count == 0 )
+				if( path == null ) path = getPath(self, mobile);
+
+				if (path.Count == 0)
 				{
 					destination = mobile.toCell;
 					return;
 				}
+				else
+					destination = path[0];
 
 				var nextCell = path[ path.Count - 1 ];
 				int2 dir = nextCell - mobile.fromCell;

@@ -37,7 +37,7 @@ namespace OpenRa.Game
 				.Where(t => Game.IsCellBuildable(t, umt))
 				.Select(t => t + map.Offset);
 
-			var path = FindUnitPath(tilesInRange, DefaultEstimator(dest), umt);
+			var path = FindUnitPath(tilesInRange, DefaultEstimator(src), umt);
 			path.Reverse();
 			return path;
 		}

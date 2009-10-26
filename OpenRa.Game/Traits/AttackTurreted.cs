@@ -89,6 +89,13 @@ namespace OpenRa.Game.Traits
 		}
 		public override void Apply()
 		{
+			var mobile = Attacker.traits.GetOrDefault<Mobile>();
+			if (mobile != null)
+			{
+				mobile.Cancel(Attacker);
+				mobile.QueueActivity(new Mobile.MoveTo(Target, 3));	/* todo: get range properly */
+			}
+
 			Attacker.traits.Get<AttackTurreted>().target = Target;
 		}
 	}
