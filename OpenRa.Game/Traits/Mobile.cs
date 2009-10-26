@@ -161,6 +161,9 @@ namespace OpenRa.Game.Traits
 					mobile.currentAction = new Turn( firstFacing ) { NextAction = this };
 				else
 				{
+					var unitAtDest = Game.UnitInfluence.GetUnitAt(nextCell);
+					if ( unitAtDest != null && unitAtDest != self )
+						return;	/* todo: repath, sometimes */
 					mobile.toCell = nextCell;
 					path.RemoveAt( path.Count - 1 );
 					moveFractionTotal = ( dir.X != 0 && dir.Y != 0 ) ? 35 : 25;
@@ -170,6 +173,8 @@ namespace OpenRa.Game.Traits
 					fromFacing = mobile.facing;
 					toFacing = mobile.facing;
 					OnComplete = OnCompleteFirstHalf;
+
+					Game.UnitInfluence.Update(mobile);
 				}
 				mobile.currentAction.Tick( self, mobile );
 			}

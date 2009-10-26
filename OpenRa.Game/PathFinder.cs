@@ -72,8 +72,8 @@ namespace OpenRa.Game
 						continue;
 					if (Game.BuildingInfluence.GetBuildingAt(newHere - offset) != null)
 						continue;
-					if (Game.UnitInfluence.GetUnitAt(newHere - offset) != null)
-						continue;
+					//if (Game.UnitInfluence.GetUnitAt(newHere - offset) != null)
+					//    continue;
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[(int)umt][ newHere.X, newHere.Y ];
 					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;
