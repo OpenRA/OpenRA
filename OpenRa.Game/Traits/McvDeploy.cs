@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits
 			Location = location;
 		}
 
-		public override void Apply()
+		public override void Apply( bool doVoice )
 		{
 			var mobile = Unit.traits.Get<Mobile>();
 			mobile.QueueActivity( new Mobile.Turn( 96 ) );

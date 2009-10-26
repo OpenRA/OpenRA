@@ -16,7 +16,7 @@ namespace OpenRa.Game
 			this.xy = xy;
 		}
 
-		public override void Apply()
+		public override void Apply(bool doVoice)
 		{
 			Game.world.AddFrameEndTask( _ =>
 			{

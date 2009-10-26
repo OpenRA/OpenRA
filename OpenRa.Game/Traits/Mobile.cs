@@ -121,7 +121,7 @@ namespace OpenRa.Game.Traits
 			public CurrentActivity NextActivity { get; set; }
 
 			int2? destination;
-			List<int2> path;
+			public List<int2> path;
 			Func<Actor, Mobile, List<int2>> getPath;
 
 			MovePart move;
@@ -313,6 +313,13 @@ namespace OpenRa.Game.Traits
 				path.Clear();
 				NextActivity = null;
 			}
+		}
+
+		public IEnumerable<int2> GetCurrentPath()
+		{
+			var move = currentActivity as MoveTo;
+			if (move == null || move.path == null) return new int2[] { };
+			return Enumerable.Reverse(move.path);
 		}
 	}
 }

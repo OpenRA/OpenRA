@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using IjwFramework.Types;
 using System.Collections.Generic;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Graphics
 {
@@ -12,6 +13,8 @@ namespace OpenRa.Game.Graphics
         public readonly LineRenderer lineRenderer;
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
+
+		public static bool ShowUnitPaths = false;
 
 		public WorldRenderer(Renderer renderer)
 		{
@@ -146,6 +149,25 @@ namespace OpenRa.Game.Graphics
 				lineRenderer.DrawLine(xy + new float2(0, -4),
 					z + new float2(0, -4),
 					healthColor2, healthColor2);
+			}
+
+			if (ShowUnitPaths)
+			{
+				var mobile = selectedUnit.traits.GetOrDefault<Mobile>();
+				if (mobile != null)
+				{
+					var path = mobile.GetCurrentPath();
+					var start = selectedUnit.Location;
+
+					foreach (var step in path)
+					{
+						lineRenderer.DrawLine(
+							Game.CellSize * start + new float2(12, 12),
+							Game.CellSize * step + new float2(12, 12),
+							Color.Red, Color.Red);
+						start = step;
+					}
+				}
 			}
         }
 	}

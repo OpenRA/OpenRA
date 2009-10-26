@@ -41,7 +41,7 @@ namespace OpenRa.Game.Traits
 			var weapon = Rules.WeaponInfo[ weaponName ];
 			if( weapon.Range * weapon.Range < ( target.Location - self.Location ).LengthSquared ) return false;
 
-			fireDelay = 25 * weapon.ROF / 15;
+			fireDelay = weapon.ROF;
 
 			Game.world.Add( new Bullet( weaponName, self.Owner, self,
 				self.CenterLocation.ToInt2(),
@@ -90,7 +90,7 @@ namespace OpenRa.Game.Traits
 			this.Target = target;
 		}
 
-		public override void Apply()
+		public override void Apply( bool doVoice )
 		{
 			var mobile = Attacker.traits.GetOrDefault<Mobile>();
 			if (mobile != null)

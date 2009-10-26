@@ -13,6 +13,17 @@ namespace OpenRa.Game
 	{
 		public IOrderGenerator orderGenerator;
 
+		void ApplyOrders(float2 xy, bool left)
+		{
+			var doVoice = true;
+			if (orderGenerator != null)
+				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
+				{
+					order.Apply(doVoice);
+					doVoice = false;
+				}
+		}
+
         float2 dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
@@ -22,10 +33,7 @@ namespace OpenRa.Game
             {
 				if (!(orderGenerator is PlaceBuilding))
 					dragStart = dragEnd = xy;
-
-				if (orderGenerator != null)
-					foreach (var order in orderGenerator.Order(xy.ToInt2(), true))
-						order.Apply();
+				ApplyOrders(xy, true);
             }
 
             if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
@@ -53,10 +61,8 @@ namespace OpenRa.Game
 				dragStart = dragEnd = xy;
             }
 
-			if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
-				if( orderGenerator != null )
-					foreach( var order in orderGenerator.Order( xy.ToInt2(), false ) )
-						order.Apply();
+			if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
+				ApplyOrders(xy, false);
 		}
 
         public Pair<float2, float2>? SelectionBox

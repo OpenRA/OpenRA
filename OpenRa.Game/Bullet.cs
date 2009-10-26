@@ -42,8 +42,11 @@ namespace OpenRa.Game
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
 
-			anim = new Animation(Projectile.Image);
-			anim.PlayRepeating("idle");
+			if (Projectile.Image != null && Projectile.Image != "none")
+			{
+				anim = new Animation(Projectile.Image);
+				anim.PlayRepeating("idle");
+			}
 		}
 
 		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
@@ -70,11 +73,12 @@ namespace OpenRa.Game
 
 		public IEnumerable<Pair<Sprite, float2>> Render()
 		{
-			yield return Pair.New(anim.Image,
-				float2.Lerp(
-					Src.ToFloat2(), 
-					Dest.ToFloat2(), 
-					(float)t / TotalTime()) - 0.5f * anim.Image.size);
+			if (anim != null)
+				yield return Pair.New(anim.Image,
+					float2.Lerp(
+						Src.ToFloat2(),
+						Dest.ToFloat2(),
+						(float)t / TotalTime()) - 0.5f * anim.Image.size);
 		}
 
 		float GetMaximumSpread()
