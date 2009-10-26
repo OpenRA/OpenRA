@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using IjwFramework.Types;
 using System.Drawing;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -78,8 +79,13 @@ namespace OpenRa.Game
 				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()) 
 				&& uog.selection.All( a => a.Owner == Game.LocalPlayer ))
 			{
-				if (!Game.IsCellBuildable(dragEnd.ToInt2(), UnitMovementType.Wheel))
-					return Cursor.MoveBlocked;	/* todo: handle non-wheel movement behavior */
+				var umts = uog.selection.Select(a => a.traits.GetOrDefault<Mobile>())
+					.Where(m => m != null)
+					.Select(m => m.GetMovementType())
+					.Distinct();
+
+				if (!umts.Any( umt => Game.IsCellBuildable( dragEnd.ToInt2(), umt ) ))
+					return Cursor.MoveBlocked;
 				return Cursor.Move;
 			}
 
