@@ -113,6 +113,8 @@ namespace OpenRa.Game
 				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
 			}
 
+			ret.Add(pathNode - offset);
+
 			return ret;
 		}
 

@@ -136,17 +136,9 @@ namespace OpenRa.Game.Traits
 
 			public MoveTo(Actor target, int range)
 			{
-				this.getPath = (self, mobile) =>
-				{
-					var p = Game.pathFinder.FindUnitPathToRange(
-						self.Location, target.Location,
-						mobile.GetMovementType(), range);
-
-					if (p.Count == 1 && self.Location == p[0])
-						return new List<int2>();		/* hackety hack... Mobile doesn't like degenerate paths much */
-
-					return p;
-				};
+				this.getPath = (self, mobile) => Game.pathFinder.FindUnitPathToRange(
+					self.Location, target.Location,
+					mobile.GetMovementType(), range);
 				this.destination = null;
 			}
 
@@ -170,7 +162,7 @@ namespace OpenRa.Game.Traits
 					return;
 				}
 
-				if (path == null) path = getPath(self, mobile);
+				if (path == null) path = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
 
 				if (path.Count == 0)
 				{
