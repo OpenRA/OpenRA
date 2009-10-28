@@ -205,11 +205,25 @@ namespace OpenRa.Game.Traits
 				var nextCell = path[ path.Count - 1 ];
 				if( !CanEnterCell( nextCell, self ) )
 				{
+					if( ( mobile.toCell - destination.Value ).LengthSquared < 4 )
+					{
+						path.Clear();
+						return null;
+					}
+
 					Game.UnitInfluence.Remove( mobile );
-					path = Game.PathFinder.FindPathToPath( self.Location, path, mobile.GetMovementType() )
+					var newPath = Game.PathFinder.FindPathToPath( self.Location, path, mobile.GetMovementType() )
 						.TakeWhile( a => a != self.Location )
 						.ToList();
 					Game.UnitInfluence.Add( mobile );
+					if( newPath.Count == 0 )
+						return null;
+
+					while( path[ path.Count - 1 ] != newPath[ 0 ] )
+						path.RemoveAt( path.Count - 1 );
+					for( int i = 1 ; i < newPath.Count ; i++ )
+						path.Add( newPath[ i ] );
+
 					if( path.Count == 0 )
 						return null;
 					nextCell = path[ path.Count - 1 ];
@@ -309,6 +323,7 @@ namespace OpenRa.Game.Traits
 						mobile.facing,
 						moveFraction - moveFractionTotal );
 					mobile.fromCell = mobile.toCell;
+					Game.UnitInfluence.Update( mobile );
 					return ret2;
 				}
 			}
@@ -330,7 +345,7 @@ namespace OpenRa.Game.Traits
 
 			public void Cancel( Actor self, Mobile mobile )
 			{
-				path.Clear();
+				path = new List<int2>();
 				NextActivity = null;
 			}
 		}

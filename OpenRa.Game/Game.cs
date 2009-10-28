@@ -160,10 +160,14 @@ namespace OpenRa.Game
 				.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 		}
 
-		public static IEnumerable<int2> FindTilesInCircle(int2 a, int r)
+		public static IEnumerable<int2> FindTilesInCircle( int2 a, int r )
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
+			if( min.X < 0 ) min.X = 0;
+			if( min.Y < 0 ) min.Y = 0;
+			if( max.X > 127 ) max.X = 127;
+			if( max.Y > 127 ) max.Y = 127;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
