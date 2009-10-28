@@ -28,6 +28,10 @@ namespace SequenceEditor
 		{
 			base.OnMouseMove(e);
 			mousePos = e.Location;
+			
+			if (e.Button == MouseButtons.Left)
+				isDragging = true;
+
 			Invalidate();
 		}
 
@@ -37,7 +41,7 @@ namespace SequenceEditor
 			{
 				foreach (var shp in items)
 				{
-					var sel = shp.Value.FirstOrDefault(a => a.Value.Contains(mousePos));
+					var sel = shp.Value.FirstOrDefault(a => a.Value.Contains(p));
 					if (!sel.Value.IsEmpty)
 						return Pair.New(shp.Key, sel.Key);
 				}
@@ -46,8 +50,46 @@ namespace SequenceEditor
 			return null;
 		}
 
+		string lastName = "";
+
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
+
+			if (isDragging && e.Button == MouseButtons.Left)
+			{
+				isDragging = false;
+
+				/* create a new sequence! */
+				var start = FindFrameAt(clickPos);
+				var end = FindFrameAt(mousePos);
+
+				if (start != null && end != null
+					&& start.Value.First == end.Value.First)
+				{
+					var s = new Sequence()
+					{
+						start = start.Value.Second,
+						length = end.Value.Second - start.Value.Second + 1,
+						shp = start.Value.First
+					};
+
+					var name = GetTextForm.GetString("Name of new sequence", lastName);
+					if (name == null) return;
+
+					Program.Sequences.Add(name, s);
+					lastName = name;
+				}
+			}
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
+			base.OnMouseDown(e);
+
+			if (e.Button == MouseButtons.Left)
+				clickPos = e.Location;
+
 			if (e.Button == MouseButtons.Right)
 			{
 				var frameAtPoint = FindFrameAt(e.Location);
@@ -62,6 +104,8 @@ namespace SequenceEditor
 				Invalidate();
 			}
 		}
+
+		Sequence tempSequence;
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
@@ -80,6 +124,21 @@ namespace SequenceEditor
 				e.Graphics.FillRectangle(Brushes.Silver, rect);
 				toolPoint = new Point(rect.Left, rect.Bottom);
 				toolText = frameAtPoint.Value.Second.ToString();
+			}
+
+			tempSequence = null;
+			if (isDragging)
+			{
+				/* create a new sequence! */
+				var start = FindFrameAt(clickPos);
+				var end = FindFrameAt(mousePos);
+
+				if (start != null && end != null 
+					&& start.Value.First == end.Value.First)
+					tempSequence = new Sequence() { 
+						start = start.Value.Second, 
+						length = end.Value.Second - start.Value.Second + 1, 
+						shp = start.Value.First };
 			}
 
 			items.Clear();
@@ -117,7 +176,11 @@ namespace SequenceEditor
 			var brushes = new[] { Brushes.Green, Brushes.Red, Brushes.Blue, Brushes.Magenta, Brushes.DarkOrange, Brushes.Navy };
 
 			var seqid = 0;
-			foreach (var seq in Program.Sequences)
+			var seqs = Program.Sequences.Select(a => a);	/* shorter than teh typename!! */
+			if (tempSequence != null)
+				seqs = seqs.Concat(new[] { new KeyValuePair<string, Sequence>("New sequence...", tempSequence) });
+
+			foreach (var seq in seqs)
 			{
 				var firstFrame = seq.Value.start;
 				var r = items[seq.Value.shp][firstFrame];

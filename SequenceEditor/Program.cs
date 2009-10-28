@@ -84,5 +84,7 @@ namespace SequenceEditor
 				? Program.Shps[shp].Length - start
 				: ((a == "") ? 1 : int.Parse(a));
 		}
+
+		public Sequence() { }
 	}
 }

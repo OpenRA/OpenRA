@@ -16,10 +16,11 @@ namespace SequenceEditor
 			InitializeComponent();
 		}
 
-		public static string GetString(string title)
+		public static string GetString(string title, string defaultValue)
 		{
 			using (var f = new GetTextForm())
 			{
+				f.textBox1.Text = defaultValue;
 				f.Text = title;
 				if (DialogResult.OK != f.ShowDialog())
 					return null;
