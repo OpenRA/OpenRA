@@ -56,7 +56,7 @@ namespace OpenRa.Game.Traits
 
 			if( underCursor.Owner == self.Owner ) return null;
 
-			return new AttackOrder( self, underCursor );
+			return OpenRa.Game.Order.Attack( self, underCursor );
 		}
 	}
 
@@ -74,38 +74,6 @@ namespace OpenRa.Game.Traits
 				return;
 
 			DoAttack( self );
-		}
-	}
-
-	class AttackOrder : Order
-	{
-		public readonly Actor Attacker;
-		public readonly Actor Target;
-
-		const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-
-		public AttackOrder( Actor attacker, Actor target )
-		{
-			this.Attacker = attacker;
-			this.Target = target;
-		}
-
-		public override void Apply( bool doVoice )
-		{
-			var mobile = Attacker.traits.GetOrDefault<Mobile>();
-			if (mobile != null)
-			{
-				var weapon = Attacker.unitInfo.Primary ?? Attacker.unitInfo.Secondary;
-				/* todo: choose the appropriate weapon, when only one works against this target */
-				var range = Rules.WeaponInfo[weapon].Range;
-
-				mobile.Cancel(Attacker);
-				mobile.QueueActivity(
-					new Mobile.MoveTo(Target,
-						Math.Max(0, (int)range - RangeTolerance)));
-			}
-
-			Attacker.traits.Get<AttackTurreted>().target = Target;
 		}
 	}
 }

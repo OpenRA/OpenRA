@@ -33,7 +33,7 @@ namespace OpenRa.Game
 					t => Game.GetDistanceToBase( t, Owner ) < maxDistance ) )
 					yield break;
 
-				yield return new PlaceBuildingOrder( this, xy );
+				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Name );
 			}
 			else // rmb
 			{

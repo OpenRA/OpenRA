@@ -15,13 +15,22 @@ namespace OpenRa.Game
 
 		void ApplyOrders(float2 xy, bool left)
 		{
-			var doVoice = true;
+			var doVoice = null as Actor;
 			if (orderGenerator != null)
-				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
+				foreach( var order in orderGenerator.Order( xy.ToInt2(), left ) )
 				{
-					order.Apply(doVoice);
-					doVoice = false;
+					UnitOrders.ProcessOrder( order );
+					if( order.Subject != null && order.Player == Game.LocalPlayer )
+						doVoice = order.Subject;
 				}
+			if( doVoice != null )
+				Game.PlaySound( Game.SovietVoices.First.GetNext() + GetVoiceSuffix( doVoice ), false );
+		}
+
+		static string GetVoiceSuffix( Actor unit )
+		{
+			var suffixes = new[] { ".r01", ".r03" };
+			return suffixes[ unit.traits.Get<Traits.Mobile>().Voice ];
 		}
 
         float2 dragStart, dragEnd;

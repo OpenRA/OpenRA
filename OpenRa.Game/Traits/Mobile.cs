@@ -55,8 +55,8 @@ namespace OpenRa.Game.Traits
 			if( underCursor != null )
 				return null;
 
-			if (xy != toCell)
-				return new MoveOrder(self, xy);
+			if( xy != toCell )
+				return OpenRa.Game.Order.Move( self, xy );
 
 			return null;
 		}
