@@ -19,7 +19,7 @@ namespace SequenceEditor
 
 		public static Bitmap[] LoadAndResolve( string shp )
 		{
-			var reader = new ShpReader(FileSystem.Open(shp + ".shp"));
+			var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".shp", ".tem", ".sno", ".int"));
 			return reader.Select(ih =>
 				{
 					var bmp = new Bitmap(reader.Width, reader.Height);
@@ -64,7 +64,7 @@ namespace SequenceEditor
 			Application.SetCompatibleTextRenderingDefault(false);
 			
 			FileSystem.Mount(new Folder("./"));
-			var packages = new[] { "redalert", "conquer", "hires", "general", "local" };
+			var packages = new[] { "redalert", "conquer", "hires", "general", "local", "temperat" };
 
 			foreach( var p in packages )
 				FileSystem.Mount( new Package( p + ".mix" ));

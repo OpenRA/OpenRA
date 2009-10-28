@@ -137,15 +137,19 @@
   </unit>
   <!-- repair pad -->
   <unit name="fix">
-    <sequence name="idle" start="0" length="7" />
-    <sequence name="damaged-idle" start="7" length="7" />
-    <sequence name="make" start="0" length="*" src="fixmake" />
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="make" start="0" length="14" src="fixmake" />
+    <sequence name="active" start="1" length="6" />
+    <sequence name="damaged-active" start="8" length="6" />
   </unit>
   <!-- allied gun turret -->
   <unit name="gun">
     <sequence name="idle" start="0" length="32" />
-    <sequence name="damaged-idle" start="32" length="32" />
-    <sequence name="make" start="0" length="*" src="gunmake" />
+    <sequence name="recoil" start="32" length="32" />
+    <sequence name="make" start="0" length="20" src="gunmake" />
+    <sequence name="damaged-idle" start="64" length="32" />
+    <sequence name="damaged-recoil" start="96" length="32" />
   </unit>
   <!-- AA gun -->
   <unit name="agun">
@@ -167,9 +171,11 @@
   </unit>
   <!-- tesla coil -->
   <unit name="tsla">
-    <sequence name="idle" start="0" length="10" />
-    <sequence name="damaged-idle" start="10" length="10" />
-    <sequence name="make" start="0" length="*" src="tslamake" />
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="10" length="1" />
+    <sequence name="make" start="0" length="13" src="tslamake" />
+    <sequence name="active" start="1" length="9" />
+    <sequence name="damaged-active" start="11" length="9" />
   </unit>
   <!-- pillbox -->
   <unit name="pbox">
@@ -203,9 +209,11 @@
   </unit>
   <!-- nuclear missile silo -->
   <unit name="mslo">
-    <sequence name="idle" start="0" length="8" />
-    <sequence name="damaged-idle" start="8" length="8" />
-    <sequence name="make" start="0" length="*" src="mslomake" />
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="8" length="1" />
+    <sequence name="make" start="0" length="15" src="mslomake" />
+    <sequence name="active" start="1" length="7" />
+    <sequence name="damaged-active" start="9" length="7" />
   </unit>
   <!-- mcv -->
   <unit name="mcv">
