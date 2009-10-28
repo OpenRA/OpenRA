@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderManager.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Bullet.cs" />

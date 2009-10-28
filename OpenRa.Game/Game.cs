@@ -27,6 +27,8 @@ namespace OpenRa.Game
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 
+		public static OrderManager orderManager;
+
 		static int localPlayerIndex;
 
 		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
@@ -74,6 +76,8 @@ namespace OpenRa.Game
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
+
+			orderManager = new OrderManager( new OrderSource[] { new LocalOrderSource() }, "replay.rep" );
 
 			PlaySound("intro.aud", false);
 		}
@@ -129,6 +133,8 @@ namespace OpenRa.Game
 			UnitInfluence.Tick();
 
 			viewport.DrawRegions();
+
+			orderManager.Tick();
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)

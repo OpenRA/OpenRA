@@ -16,12 +16,14 @@ namespace OpenRa.Game
 		public readonly TypeDictionary traits = new TypeDictionary();
 		public readonly UnitInfo unitInfo;
 
+		public readonly uint ActorID;
 		public int2 Location;
 		public Player Owner;
 		public int Health;
 
 		public Actor( string name, int2 location, Player owner )
 		{
+			ActorID = Game.world.NextAID();
 			unitInfo = Rules.UnitInfo[ name ];
 			Location = location;
 			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;

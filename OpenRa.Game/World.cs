@@ -50,5 +50,11 @@ namespace OpenRa.Game
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+
+		uint nextAID = 0;
+		internal uint NextAID()
+		{
+			return nextAID++;
+		}
 	}
 }

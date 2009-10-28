@@ -13,18 +13,28 @@ namespace OpenRa.Game
 	{
 		public IOrderGenerator orderGenerator;
 
+		List<Order> recentOrders = new List<Order>();
+
 		void ApplyOrders(float2 xy, bool left)
 		{
 			var doVoice = null as Actor;
-			if (orderGenerator != null)
+			if( orderGenerator != null )
 				foreach( var order in orderGenerator.Order( xy.ToInt2(), left ) )
 				{
-					UnitOrders.ProcessOrder( order );
+					recentOrders.Add( order );
+					//UnitOrders.ProcessOrder( order );
 					if( order.Subject != null && order.Player == Game.LocalPlayer )
 						doVoice = order.Subject;
 				}
 			if( doVoice != null )
 				Game.PlaySound( Game.SovietVoices.First.GetNext() + GetVoiceSuffix( doVoice ), false );
+		}
+
+		public List<Order> GetRecentOrders()
+		{
+			var ret = recentOrders;
+			recentOrders = new List<Order>();
+			return ret;
 		}
 
 		static string GetVoiceSuffix( Actor unit )
