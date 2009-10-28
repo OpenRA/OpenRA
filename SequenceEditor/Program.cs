@@ -60,6 +60,9 @@ namespace SequenceEditor
 		[STAThread]
 		static void Main( string[] args )
 		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			
 			FileSystem.Mount(new Folder("./"));
 			var packages = new[] { "redalert", "conquer", "hires", "general", "local" };
 
@@ -93,8 +96,6 @@ namespace SequenceEditor
 				Sequences[e.GetAttribute("name")] = new Sequence(e);
 			}
 
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Form1());
 		}
 	}
