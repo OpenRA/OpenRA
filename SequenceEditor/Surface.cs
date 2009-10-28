@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using IjwFramework.Types;
 
 namespace SequenceEditor
 {
@@ -20,12 +21,46 @@ namespace SequenceEditor
 			= new Dictionary<string, Dictionary<int, Rectangle>>();
 
 		Point mousePos;
+		Point clickPos;
+		bool isDragging;
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
 			mousePos = e.Location;
 			Invalidate();
+		}
+
+		Pair<string, int>? FindFrameAt(Point p)
+		{
+			if (items.Count > 0)
+			{
+				foreach (var shp in items)
+				{
+					var sel = shp.Value.FirstOrDefault(a => a.Value.Contains(mousePos));
+					if (!sel.Value.IsEmpty)
+						return Pair.New(shp.Key, sel.Key);
+				}
+			}
+
+			return null;
+		}
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var frameAtPoint = FindFrameAt(e.Location);
+				if (frameAtPoint == null) return;
+				var seq = Program.Sequences
+					.Where(kv => kv.Value.shp == frameAtPoint.Value.First &&
+						frameAtPoint.Value.Second.IsInRange( kv.Value.start, kv.Value.length )).ToArray();
+
+				foreach (var s in seq)
+					Program.Sequences.Remove(s.Key);
+
+				Invalidate();
+			}
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -38,18 +73,13 @@ namespace SequenceEditor
 			Point? toolPoint = null;
 			string toolText = "";
 
-			if (items.Count > 0)
+			var frameAtPoint = FindFrameAt(mousePos);
+			if (frameAtPoint != null)
 			{
-				foreach (var shp in items)
-				{
-					var sel = shp.Value.FirstOrDefault(a => a.Value.Contains(mousePos));
-					if (!sel.Value.IsEmpty)
-					{
-						e.Graphics.FillRectangle(Brushes.Silver, sel.Value);
-						toolPoint = new Point(sel.Value.Left, sel.Value.Bottom);
-						toolText = sel.Key.ToString();
-					}
-				}
+				var rect = items[frameAtPoint.Value.First][frameAtPoint.Value.Second];
+				e.Graphics.FillRectangle(Brushes.Silver, rect);
+				toolPoint = new Point(rect.Left, rect.Bottom);
+				toolText = frameAtPoint.Value.Second.ToString();
 			}
 
 			items.Clear();
@@ -111,6 +141,14 @@ namespace SequenceEditor
 				e.Graphics.FillRectangle(Brushes.Silver, toolPoint.Value.X, toolPoint.Value.Y, size.Width, size.Height);
 				e.Graphics.DrawString(toolText, Font, Brushes.Black, toolPoint.Value.X, toolPoint.Value.Y);
 			}
+		}
+	}
+
+	static class Exts
+	{
+		public static bool IsInRange(this int x, int start, int len)
+		{
+			return x >= start && x < start + len;
 		}
 	}
 }

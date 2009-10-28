@@ -17,5 +17,12 @@ namespace SequenceEditor
 			InitializeComponent();
 			Text += " - " + Program.UnitName;
 		}
+
+		void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			var shp = GetTextForm.GetString( "Add SHP..." );
+			if (shp == null) return;
+			Program.Shps.Add(shp, Program.LoadAndResolve(shp));
+		}
 	}
 }

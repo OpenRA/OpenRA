@@ -17,7 +17,7 @@ namespace SequenceEditor
 		public static Palette Pal;
 		public static Dictionary<string, Sequence> Sequences = new Dictionary<string, Sequence>();
 
-		static Bitmap[] LoadAndResolve( string shp )
+		public static Bitmap[] LoadAndResolve( string shp )
 		{
 			var reader = new ShpReader(FileSystem.Open(shp + ".shp"));
 			return reader.Select(ih =>
