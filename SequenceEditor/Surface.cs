@@ -204,6 +204,8 @@ namespace SequenceEditor
 				e.Graphics.FillRectangle(Brushes.Silver, toolPoint.Value.X, toolPoint.Value.Y, size.Width, size.Height);
 				e.Graphics.DrawString(toolText, Font, Brushes.Black, toolPoint.Value.X, toolPoint.Value.Y);
 			}
+
+			Height = Math.Max( Parent.ClientSize.Height, y );
 		}
 	}
 
