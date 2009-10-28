@@ -19,12 +19,38 @@ namespace SequenceEditor
 		Dictionary<string, Dictionary<int, Rectangle>> items 
 			= new Dictionary<string, Dictionary<int, Rectangle>>();
 
+		Point mousePos;
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+			mousePos = e.Location;
+			Invalidate();
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
 
 			var x = 0; 
 			var y = 0;
+
+			Point? toolPoint = null;
+			string toolText = "";
+
+			if (items.Count > 0)
+			{
+				foreach (var shp in items)
+				{
+					var sel = shp.Value.FirstOrDefault(a => a.Value.Contains(mousePos));
+					if (!sel.Value.IsEmpty)
+					{
+						e.Graphics.FillRectangle(Brushes.Silver, sel.Value);
+						toolPoint = new Point(sel.Value.Left, sel.Value.Bottom);
+						toolText = sel.Key.ToString();
+					}
+				}
+			}
 
 			items.Clear();
 
@@ -77,6 +103,13 @@ namespace SequenceEditor
 				e.Graphics.DrawString(seq.Key, Font, Brushes.White, r.Left, r.Top);
 
 				seqid = ++seqid % brushes.Length;
+			}
+
+			if (toolPoint.HasValue)
+			{
+				var size = e.Graphics.MeasureString(toolText, Font);
+				e.Graphics.FillRectangle(Brushes.Silver, toolPoint.Value.X, toolPoint.Value.Y, size.Width, size.Height);
+				e.Graphics.DrawString(toolText, Font, Brushes.Black, toolPoint.Value.X, toolPoint.Value.Y);
 			}
 		}
 	}
