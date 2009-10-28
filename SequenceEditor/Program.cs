@@ -75,7 +75,14 @@ namespace SequenceEditor
 
 		public Sequence(XmlElement e)
 		{
+			start = int.Parse(e.GetAttribute("start"));
+			shp = e.GetAttribute("src");
+			if (shp == "") shp = Program.UnitName;
+			var a = e.GetAttribute("length");
 
+			length = (a == "*")
+				? Program.Shps[shp].Length - start
+				: ((a == "") ? 1 : int.Parse(a));
 		}
 	}
 }

@@ -47,7 +47,7 @@
 			this.ClientSize = new System.Drawing.Size(708, 543);
 			this.Controls.Add(this.surface1);
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "OpenRA Sequence Viewer";
 			this.ResumeLayout(false);
 
 		}

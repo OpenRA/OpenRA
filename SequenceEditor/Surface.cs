@@ -57,6 +57,27 @@ namespace SequenceEditor
 				y += u;
 				x = 0;
 			}
+
+			var brushes = new[] { Brushes.Green, Brushes.Red, Brushes.Blue, Brushes.Magenta, Brushes.DarkOrange, Brushes.Navy };
+
+			var seqid = 0;
+			foreach (var seq in Program.Sequences)
+			{
+				var firstFrame = seq.Value.start;
+				var r = items[seq.Value.shp][firstFrame];
+
+				for (var i = 0; i < seq.Value.length; i++)
+				{
+					var q = items[seq.Value.shp][i + firstFrame];
+					e.Graphics.FillRectangle(brushes[seqid], q.Left, q.Top, q.Width, 2);
+				}
+
+				var z = e.Graphics.MeasureString(seq.Key, Font);
+				e.Graphics.FillRectangle(brushes[seqid], r.Left, r.Top, z.Width, z.Height);
+				e.Graphics.DrawString(seq.Key, Font, Brushes.White, r.Left, r.Top);
+
+				seqid = ++seqid % brushes.Length;
+			}
 		}
 	}
 }

@@ -15,6 +15,7 @@ namespace SequenceEditor
 		public Form1()
 		{
 			InitializeComponent();
+			Text += " - " + Program.UnitName;
 		}
 	}
 }
