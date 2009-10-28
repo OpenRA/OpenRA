@@ -22,6 +22,7 @@ namespace OpenRa.Game.Traits
 		{
 			this.self = self;
 			fromCell = toCell;
+			Game.UnitInfluence.Update( this );
 		}
 
 		public void QueueActivity( CurrentActivity nextActivity )
@@ -205,7 +206,7 @@ namespace OpenRa.Game.Traits
 				var nextCell = path[ path.Count - 1 ];
 				if( !CanEnterCell( nextCell, self ) )
 				{
-					if( ( mobile.toCell - destination.Value ).LengthSquared < 4 )
+					if( ( mobile.toCell - destination.Value ).LengthSquared <= 8 )
 					{
 						path.Clear();
 						return null;

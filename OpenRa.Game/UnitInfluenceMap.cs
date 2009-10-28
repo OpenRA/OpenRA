@@ -18,19 +18,38 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
+			SanityCheck();
+
 			var units = Game.world.Actors
 				.Select( a => a.traits.GetOrDefault<Traits.Mobile>() ).Where( m => m != null );
 
 			foreach (var u in units)
 				Update(u);
+
+			SanityCheck();
+		}
+
+		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		void SanityCheck()
+		{
+			for( int y = 0 ; y < 128 ; y++ )
+				for( int x = 0 ; x < 128 ; x++ )
+					if( influence[ x, y ] != null && !influence[ x, y ].traits.Get<Mobile>().OccupiedCells().Contains( new int2( x, y ) ) )
+						throw new InvalidOperationException( "UIM: Sanity check failed A" );
+
+			foreach( var a in Game.world.Actors )
+			{
+				if( !a.traits.Contains<Mobile>() )
+					continue;
+				foreach( var cell in a.traits.Get<Mobile>().OccupiedCells() )
+					if( influence[ cell.X, cell.Y ] != a )
+						throw new InvalidOperationException( "UIM: Sanity check failed B" );
+			}
 		}
 
 		public Actor GetUnitAt( int2 a )
 		{
-			var actor = influence[ a.X, a.Y ];
-			if( actor != null && !actor.traits.Get<Mobile>().OccupiedCells().Contains( a ) )
-				throw new InvalidOperationException( "UIM: Unit is not in influenced square" );
-			return actor;
+			return influence[ a.X, a.Y ];
 		}
 
 		public void Add(Mobile a)
