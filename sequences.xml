@@ -408,4 +408,32 @@
     <sequence name="run-6" start="52" length="6" />
     <sequence name="run-7" start="58" length="6" />
   </unit>
+  <unit name="e6">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-6" start="54" length="6" />
+    <sequence name="run-7" start="60" length="6" />
+    <sequence name="die1" start="146" length="8" />
+    <sequence name="die2" start="154" length="8" />
+    <sequence name="die3" start="162" length="8" />
+    <sequence name="die4" start="170" length="12" />
+    <sequence name="die5" start="182" length="18" />
+  </unit>
+  <unit name="ca">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="turr" />
+  </unit>
+  <unit name="dd">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="ssam" />
+  </unit>
+  <unit name="pt">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="mgun" />
+  </unit>
 </sequences>
