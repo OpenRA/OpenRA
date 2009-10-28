@@ -22,7 +22,7 @@ namespace OpenRa.Game
 		static TreeCache treeCache;
 		public static TerrainRenderer terrain;
 		public static Viewport viewport;
-		public static PathFinder pathFinder;
+		public static PathFinder PathFinder;
 		public static Network network;
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
@@ -65,7 +65,7 @@ namespace OpenRa.Game
 			LoadMapBuildings(mapFile);
 			LoadMapUnits(mapFile);
 
-			pathFinder = new PathFinder(map, terrain.tileSet);
+			PathFinder = new PathFinder(map, terrain.tileSet);
 
 			network = new Network();
 

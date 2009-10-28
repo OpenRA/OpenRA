@@ -128,15 +128,15 @@ namespace OpenRa.Game.Traits
 
 			public MoveTo( int2 destination )
 			{
-				this.getPath = (self, mobile) => Game.pathFinder.FindUnitPath(
-					self.Location, destination, 
+				this.getPath = (self, mobile) => Game.PathFinder.FindUnitPath(
+					self.Location, destination,
 					mobile.GetMovementType());
 				this.destination = destination;
 			}
 
 			public MoveTo(Actor target, int range)
 			{
-				this.getPath = (self, mobile) => Game.pathFinder.FindUnitPathToRange(
+				this.getPath = (self, mobile) => Game.PathFinder.FindUnitPathToRange(
 					self.Location, target.Location,
 					mobile.GetMovementType(), range);
 				this.destination = null;
@@ -145,7 +145,8 @@ namespace OpenRa.Game.Traits
 			static bool CanEnterCell(int2 c, Actor self)
 			{
 				var u = Game.UnitInfluence.GetUnitAt(c);
-				return u == null || u == self;
+				var b = Game.BuildingInfluence.GetBuildingAt(c);
+				return (u == null || u == self) && b == null;
 			}
 
 			public void Tick( Actor self, Mobile mobile )
@@ -169,21 +170,23 @@ namespace OpenRa.Game.Traits
 					destination = mobile.toCell;
 					return;
 				}
-				else
-					destination = path[0];
 
-				var nextCell = path[ path.Count - 1 ];
-				int2 dir = nextCell - mobile.fromCell;
+				destination = path[0];
+
+				var nextCell = PopPath( self, mobile );
+				if( nextCell == null )
+					return;
+
+				int2 dir = nextCell.Value - mobile.fromCell;
 				var firstFacing = Util.GetFacing( dir, mobile.facing );
 				if( firstFacing != mobile.facing )
+				{
 					mobile.currentActivity = new Turn( firstFacing ) { NextActivity = this };
+					path.Add( nextCell.Value );
+				}
 				else
 				{
-					if (!CanEnterCell(nextCell, self)) return;	/* todo: repath, sometimes */
-
-					mobile.toCell = nextCell;
-					path.RemoveAt( path.Count - 1 );
-
+					mobile.toCell = nextCell.Value;
 					move = new MoveFirstHalf(
 						CenterOfCell( mobile.fromCell ),
 						BetweenCells( mobile.fromCell, mobile.toCell ),
@@ -191,9 +194,28 @@ namespace OpenRa.Game.Traits
 						mobile.facing,
 						0 );
 
-					Game.UnitInfluence.Update(mobile);
+					Game.UnitInfluence.Update( mobile );
 				}
 				mobile.currentActivity.Tick( self, mobile );
+			}
+
+			int2? PopPath( Actor self, Mobile mobile )
+			{
+				if( path.Count == 0 ) return null;
+				var nextCell = path[ path.Count - 1 ];
+				if( !CanEnterCell( nextCell, self ) )
+				{
+					Game.UnitInfluence.Remove( mobile );
+					path = Game.PathFinder.FindPathToPath( self.Location, path, mobile.GetMovementType() )
+						.TakeWhile( a => a != self.Location )
+						.ToList();
+					Game.UnitInfluence.Add( mobile );
+					if( path.Count == 0 )
+						return null;
+					nextCell = path[ path.Count - 1 ];
+				}
+				path.RemoveAt( path.Count - 1 );
+				return nextCell;
 			}
 
 			static float2 CenterOfCell( int2 loc )
@@ -261,27 +283,24 @@ namespace OpenRa.Game.Traits
 
 				protected override MovePart OnComplete( Actor self, Mobile mobile, MoveTo parent )
 				{
-					if( parent.path.Count > 0 )
+					var nextCell = parent.PopPath( self, mobile );
+					if( nextCell != null )
 					{
-						var nextCell = parent.path[ parent.path.Count - 1 ];
 						if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 						{
-							if( CanEnterCell( nextCell, self ) )
-							{
-								parent.path.RemoveAt( parent.path.Count - 1 );
-
-								var ret = new MoveFirstHalf(
-									BetweenCells( mobile.fromCell, mobile.toCell ),
-									BetweenCells( mobile.toCell, nextCell ),
-									mobile.facing,
-									Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell - mobile.toCell, mobile.facing ) ),
-									moveFraction - moveFractionTotal );
-								mobile.fromCell = mobile.toCell;
-								mobile.toCell = nextCell;
-								Game.UnitInfluence.Update( mobile );
-								return ret;
-							}
+							var ret = new MoveFirstHalf(
+								BetweenCells( mobile.fromCell, mobile.toCell ),
+								BetweenCells( mobile.toCell, nextCell.Value ),
+								mobile.facing,
+								Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.facing ) ),
+								moveFraction - moveFractionTotal );
+							mobile.fromCell = mobile.toCell;
+							mobile.toCell = nextCell.Value;
+							Game.UnitInfluence.Update( mobile );
+							return ret;
 						}
+						else
+							parent.path.Add( nextCell.Value );
 					}
 					var ret2 = new MoveSecondHalf(
 						BetweenCells( mobile.fromCell, mobile.toCell ),

@@ -25,7 +25,13 @@ namespace OpenRa.Game
 				Update(u);
 		}
 
-		public Actor GetUnitAt(int2 a) { return influence[a.X, a.Y]; }
+		public Actor GetUnitAt( int2 a )
+		{
+			var actor = influence[ a.X, a.Y ];
+			if( actor != null && !actor.traits.Get<Mobile>().OccupiedCells().Contains( a ) )
+				throw new InvalidOperationException( "UIM: Unit is not in influenced square" );
+			return actor;
+		}
 
 		public void Add(Mobile a)
 		{
