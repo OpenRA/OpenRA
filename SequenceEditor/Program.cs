@@ -30,6 +30,33 @@ namespace SequenceEditor
 				}).ToArray();
 		}
 
+		public static void Save()
+		{
+			var e = Doc.SelectSingleNode(string.Format("//unit[@name=\"{0}\"]", UnitName)) as XmlElement;
+			if (e == null)
+			{
+				e = Doc.CreateElement("unit");
+				e.SetAttribute( "name", UnitName );
+				e = Doc.SelectSingleNode("sequences").AppendChild(e) as XmlElement;
+			}
+
+			while (e.HasChildNodes) e.RemoveChild(e.FirstChild);	/* what a fail */
+
+			foreach (var s in Sequences)
+			{
+				var seqnode = Doc.CreateElement("sequence");
+				seqnode.SetAttribute("name", s.Key);
+				seqnode.SetAttribute("start", s.Value.start.ToString());
+				seqnode.SetAttribute("length", s.Value.length.ToString());
+				if (s.Value.shp != UnitName)
+					seqnode.SetAttribute("src", s.Value.shp);
+
+				e.AppendChild(seqnode);
+			}
+
+			Doc.Save("sequences.xml");
+		}
+
 		[STAThread]
 		static void Main( string[] args )
 		{
@@ -44,7 +71,12 @@ namespace SequenceEditor
 
 			Pal = new Palette(FileSystem.Open("temperat.pal"));
 
-			UnitName = args.First();
+			UnitName = args.FirstOrDefault();
+			if (UnitName == null)
+				UnitName = GetTextForm.GetString("Unit to edit?", "e1");
+			if (UnitName == null)
+				return;
+
 			Shps[UnitName] = LoadAndResolve(UnitName);
 
 			/* todo: load supplemental SHPs */
