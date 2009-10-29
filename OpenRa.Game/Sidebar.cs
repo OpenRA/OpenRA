@@ -13,7 +13,7 @@ namespace OpenRa.Game
 
 	class Sidebar
 	{
-		TechTree.TechTree techTree;
+		Player player;
 
 		SpriteRenderer spriteRenderer, clockRenderer;
 		Sprite blank;
@@ -25,17 +25,17 @@ namespace OpenRa.Game
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 		const int spriteWidth = 64, spriteHeight = 48;
 
-		static string[] groups = new string[] { "building", "vehicle", "boat", "infantry", "plane" };
+		static string[] groups = new string[] { "building", "vehicle", "ship", "infantry", "plane" };
 
 		Dictionary<string, string> itemGroups = new Dictionary<string,string>();				//item->group
 		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
 		
 		List<SidebarItem> items = new List<SidebarItem>();
 		
-		public Sidebar( Renderer renderer )
+		public Sidebar( Renderer renderer, Player player )
 		{
-			this.techTree = Game.LocalPlayer.TechTree;
-            this.techTree.BuildableItemsChanged += PopulateItemList;
+			this.player = player;
+            this.player.TechTree.BuildableItemsChanged += PopulateItemList;
 			region = GRegion.Create(Game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			Game.viewport.AddRegion( region );
 			spriteRenderer = new SpriteRenderer(renderer, false);
@@ -44,12 +44,12 @@ namespace OpenRa.Game
 			LoadSprites( "BuildingTypes", "building" );
 			LoadSprites( "VehicleTypes", "vehicle" );
 			LoadSprites( "InfantryTypes", "infantry" );
-			LoadSprites( "ShipTypes", "boat" );
+			LoadSprites( "ShipTypes", "ship" );
 			LoadSprites( "PlaneTypes", "plane" );
 
 			foreach (string group in groups)
 			{
-				Game.LocalPlayer.ProductionInit( group );
+				player.ProductionInit( group );
 				clockAnimations.Add( group, new Animation( "clock" ) );
 				clockAnimations[ group ].PlayFetchIndex( "idle", ClockAnimFrame( group ) );
 			}
@@ -62,7 +62,7 @@ namespace OpenRa.Game
 		{
 			return () =>
 				{
-					var producing = Game.LocalPlayer.Producing( group );
+					var producing = player.Producing( group );
 					if( producing == null ) return 0;
 					return ( producing.TotalTime - producing.RemainingTime ) * NumClockFrames / producing.TotalTime;
 				};
@@ -73,10 +73,10 @@ namespace OpenRa.Game
 			if (item == null) return;
 
 			if (item.techTreeItem.IsStructure)
-				Game.controller.orderGenerator = new PlaceBuilding(Game.LocalPlayer,
+				Game.controller.orderGenerator = new PlaceBuilding(player,
 					item.techTreeItem.tag.ToLowerInvariant());
 			else
-				Game.controller.AddOrder(Order.BuildUnit(Game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant()));
+				Game.controller.AddOrder(Order.BuildUnit(player, item.techTreeItem.tag.ToLowerInvariant()));
 		}
 
 		void LoadSprites( string category, string group )
@@ -112,7 +112,7 @@ namespace OpenRa.Game
 
 			items.Clear();
 
-			foreach (Item i in techTree.BuildableItems)
+			foreach (Item i in player.TechTree.BuildableItems)
 			{
 				Sprite sprite;
 				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
@@ -125,7 +125,7 @@ namespace OpenRa.Game
 					unitPos += spriteHeight;
 			}
 
-			foreach( string g in groups ) Game.LocalPlayer.CancelProduction( g );
+			foreach( string g in groups ) player.CancelProduction( g );
 		}
 
 		void Paint()
@@ -133,7 +133,7 @@ namespace OpenRa.Game
 			foreach( SidebarItem i in items )
 			{
 				var group = itemGroups[ i.techTreeItem.tag ];
-				var producing = Game.LocalPlayer.Producing( group );
+				var producing = player.Producing( group );
 				if( producing != null && producing.Item == i.techTreeItem.tag )
 				{
 					clockAnimations[ group ].Tick();
@@ -167,9 +167,9 @@ namespace OpenRa.Game
 				if (item != null)
 				{
 					string group = itemGroups[item.techTreeItem.tag];
-					if (Game.LocalPlayer.Producing(group) == null)
+					if (player.Producing(group) == null)
 					{
-						Game.LocalPlayer.BeginProduction( group, new ProductionItem( item.techTreeItem.tag, 25, 0 ) );
+						player.BeginProduction( group, new ProductionItem( item.techTreeItem.tag, 25, 0 ) );
 						Build(item);
 					}
 				}
@@ -181,7 +181,7 @@ namespace OpenRa.Game
 				if( item != null )
 				{
 					string group = itemGroups[ item.techTreeItem.tag ];
-					Game.LocalPlayer.CancelProduction( group );
+					player.CancelProduction( group );
 				}
 			}
 		}

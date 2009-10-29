@@ -65,7 +65,7 @@ namespace OpenRa.Game
 			Game.world.Add( new Actor( "jeep", Game.map.Offset + new int2( 9, 15 ), Game.players[ 1 ] ) );
 			Game.world.Add( new Actor( "3tnk", Game.map.Offset + new int2( 12, 7 ), Game.players[ 1 ] ) );
 
-			sidebar = new Sidebar(renderer);
+			sidebar = new Sidebar(renderer, Game.LocalPlayer);
 
 			renderer.BuildPalette(Game.map);
 

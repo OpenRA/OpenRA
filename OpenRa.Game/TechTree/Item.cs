@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using IjwFramework.Types;
 
 namespace OpenRa.TechTree
 {
@@ -33,7 +34,7 @@ namespace OpenRa.TechTree
 			Race race = Race.None;
 
 			foreach (string s in owners)
-				race |= (Race)Enum.Parse(typeof(Race), s, true);
+				race |= Enum<Race>.Parse(s);
 
 			return race;
 		}
