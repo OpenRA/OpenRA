@@ -37,7 +37,8 @@ namespace OpenRa.Game.Traits
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			roof.Tick();
+			if (doneBuilding)
+				roof.Tick();
 
 			var b = self.Bounds;
 			if (isOpen && !Game.SelectUnitsInBox(

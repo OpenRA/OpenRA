@@ -13,7 +13,7 @@ namespace OpenRa.Game.Graphics
 		public Animation( string name )
 		{
 			this.name = name.ToLowerInvariant();
-			Play( "idle" );
+			// Play( "idle" );
 		}
 
 		public Sprite Image

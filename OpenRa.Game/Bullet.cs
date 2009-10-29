@@ -60,8 +60,14 @@ namespace OpenRa.Game
 
 			if (t > TotalTime())		/* remove finished bullets */
 			{
-				Game.world.AddFrameEndTask(w => w.Remove(this));
-				Game.world.AddFrameEndTask(w => w.Add(new Explosion(Dest)));
+				Game.world.AddFrameEndTask(w =>
+				{
+					w.Remove(this); 
+					w.Add(new Explosion(Dest, Warhead.Explosion)); 
+
+					if (Warhead.ImpactSound != null) 
+						Game.PlaySound(Warhead.ImpactSound + ".aud", false);
+				});
 
 				var maxSpread = GetMaximumSpread();
 				var hitActors = Game.FindUnitsInCircle(Dest, GetMaximumSpread());

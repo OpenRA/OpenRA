@@ -19,15 +19,22 @@ namespace SequenceEditor
 
 		public static Bitmap[] LoadAndResolve( string shp )
 		{
-			var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".shp", ".tem", ".sno", ".int"));
-			return reader.Select(ih =>
-				{
-					var bmp = new Bitmap(reader.Width, reader.Height);
-					for (var j = 0; j < bmp.Height; j++)
-						for (var i = 0; i < bmp.Width; i++)
-							bmp.SetPixel(i, j, Pal.GetColor(ih.Image[j * bmp.Width + i]));
-					return bmp;
-				}).ToArray();
+			try
+			{
+				var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".shp", ".tem", ".sno", ".int"));
+				return reader.Select(ih =>
+					{
+						var bmp = new Bitmap(reader.Width, reader.Height);
+						for (var j = 0; j < bmp.Height; j++)
+							for (var i = 0; i < bmp.Width; i++)
+								bmp.SetPixel(i, j, Pal.GetColor(ih.Image[j * bmp.Width + i]));
+						return bmp;
+					}).ToArray();
+			}
+			catch
+			{
+				return new Bitmap[] { };
+			}
 		}
 
 		public static void Save()
@@ -79,10 +86,6 @@ namespace SequenceEditor
 				UnitName = GetTextForm.GetString("Unit to edit?", "e1");
 			if (UnitName == null)
 				return;
-
-			Shps[UnitName] = LoadAndResolve(UnitName);
-
-			/* todo: load supplemental SHPs */
 
 			var xpath = string.Format("//unit[@name=\"{0}\"]/sequence", UnitName);
 			foreach (XmlElement e in Doc.SelectNodes(xpath))
