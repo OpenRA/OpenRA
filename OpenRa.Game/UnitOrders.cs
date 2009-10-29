@@ -65,6 +65,11 @@ namespace OpenRa.Game
 					} );
 					break;
 				}
+			case "BuildUnit":
+				{
+					Game.world.AddFrameEndTask(_ => Game.BuildUnit( order.Player, order.TargetString ));
+					break;
+				}
 			default:
 				throw new NotImplementedException();
 			}

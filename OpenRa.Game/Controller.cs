@@ -22,13 +22,14 @@ namespace OpenRa.Game
 				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
 				{
 					recentOrders.Add(order);
-					//UnitOrders.ProcessOrder( order );
 					if (order.Subject != null && order.Player == Game.LocalPlayer)
 						doVoice = order.Subject;
 				}
 			if (doVoice != null)
 				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(doVoice), false);
 		}
+
+		public void AddOrder(Order o) { recentOrders.Add(o); }
 
 		public List<Order> GetRecentOrders()
 		{

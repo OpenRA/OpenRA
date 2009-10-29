@@ -60,14 +60,13 @@ namespace OpenRa.Game
 
 		public void Build(SidebarItem item)
 		{
-			if (item != null)
-			{
-				if (item.techTreeItem.IsStructure)
-					Game.controller.orderGenerator = new PlaceBuilding(Game.LocalPlayer,
-						item.techTreeItem.tag.ToLowerInvariant());
-				else
-					Game.BuildUnit(Game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant());
-			}
+			if (item == null) return;
+
+			if (item.techTreeItem.IsStructure)
+				Game.controller.orderGenerator = new PlaceBuilding(Game.LocalPlayer,
+					item.techTreeItem.tag.ToLowerInvariant());
+			else
+				Game.controller.AddOrder(Order.BuildUnit(Game.LocalPlayer, item.techTreeItem.tag.ToLowerInvariant()));
 		}
 
 		void LoadSprites( string category, string group )
