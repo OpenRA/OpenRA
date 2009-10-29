@@ -13,6 +13,7 @@ namespace OpenRa.Game.Graphics
         public readonly LineRenderer lineRenderer;
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
+		readonly Renderer renderer;
 
 		public static bool ShowUnitPaths = false;
 
@@ -25,6 +26,7 @@ namespace OpenRa.Game.Graphics
 
 			Game.viewport.AddRegion(region);
 
+			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);
             lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
@@ -91,6 +93,8 @@ namespace OpenRa.Game.Graphics
 	                DrawSelectionBox(a, Color.White, true);
             
             lineRenderer.Flush();
+
+			renderer.DrawText(string.Format("Frame {0}", Game.orderManager.FrameNumber), new int2(5, 5), Color.White);
 		}
 
 		const float conditionYellow = 0.5f;		/* todo: get these from gamerules */

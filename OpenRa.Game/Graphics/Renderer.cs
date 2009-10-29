@@ -13,6 +13,9 @@ namespace OpenRa.Game.Graphics
         public Shader SpriteShader { get; private set; }    /* note: shared shader params */
         public Shader LineShader { get; private set; }
 
+		readonly SpriteHelper sh;
+		readonly FontHelper fhDebug;
+
 		public void BuildPalette(Map map)
 		{
 			palettes = Util.MakeArray(7, i => new HardwarePalette(this, map, i).Texture);
@@ -33,6 +36,9 @@ namespace OpenRa.Game.Graphics
 			SpriteShader.Quality = ShaderQuality.Low;
             LineShader = new Shader(device, FileSystem.Open("line.fx"));
             LineShader.Quality = ShaderQuality.High;
+
+			sh = new SpriteHelper(device );
+			fhDebug = new FontHelper(device, "Tahoma", 10, false );
 		}
 
 		public GraphicsDevice Device { get { return device; } }
@@ -83,5 +89,12 @@ namespace OpenRa.Game.Graphics
             device.DrawIndexedPrimitives(type,
                 vertexPool, numPrimitives);
         }
+
+		public void DrawText(string text, int2 pos, Color c)
+		{
+			sh.Begin();
+			fhDebug.Draw(sh, text, pos.X, pos.Y, c.ToArgb());
+			sh.End();
+		}
 	}
 }

@@ -14,6 +14,8 @@ namespace OpenRa.Game
 		List<OrderSource> players;
 		int frameNumber = 0;
 
+		public int FrameNumber { get { return frameNumber; } }
+
 		public OrderManager( IEnumerable<OrderSource> players )
 		{
 			this.players = players.ToList();
