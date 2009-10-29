@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -22,7 +23,12 @@ namespace OpenRa.Game
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		public event Action<Actor> ActorAdded = _ => { };
-		public event Action<Actor> ActorRemoved = a => { a.Health = 0; };		/* make sure everyone sees it as dead */
+		public event Action<Actor> ActorRemoved = a =>
+		{
+			a.Health = 0;		/* make sure everyone sees it as dead */
+			foreach (var nr in a.traits.WithInterface<INotifyRemoved>())
+				nr.Removed(a);
+		};
 
 		public void ResetTimer()
 		{

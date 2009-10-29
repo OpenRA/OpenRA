@@ -10,7 +10,7 @@ using OpenRa.Game;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderBuilding : RenderSimple
+	class RenderBuilding : RenderSimple, INotifyRemoved
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;
@@ -19,7 +19,11 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			anim.PlayThen("make", () => anim.PlayRepeating("idle"));
+			DoBib(self, false);
+		}
 
+		void DoBib(Actor self, bool isRemove)
+		{
 			// at this point, we already know where we are, so we can safely place the bib in the smudge
 			var buildingInfo = (UnitInfo.BuildingInfo)self.unitInfo;
 			if (buildingInfo.Bib)
@@ -31,7 +35,13 @@ namespace OpenRa.Game.Traits
 				for (int i = 0; i < 2 * size; i++)
 				{
 					var p = self.Location + new int2(i % size, i / size + bibOffset);
-					Game.map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
+					if (isRemove)
+					{
+						if (Game.map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
+							Game.map.MapTiles[p.X, p.Y].smudge = 0;
+					}
+					else
+						Game.map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
 		}
@@ -40,5 +50,7 @@ namespace OpenRa.Game.Traits
 		{
 			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
 		}
+
+		public void Removed(Actor self) { DoBib(self, true); }
 	}
 }
