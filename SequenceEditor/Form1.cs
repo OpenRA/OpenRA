@@ -22,7 +22,7 @@ namespace SequenceEditor
 		{
 			var shp = GetTextForm.GetString( "Add SHP...", "" );
 			if (shp == null) return;
-			Program.Shps.Add(shp, Program.LoadAndResolve(shp));
+			Program.LoadAndResolve(shp);
 		}
 
 		void toolStripButton2_Click(object sender, EventArgs e)

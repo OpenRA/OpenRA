@@ -17,12 +17,14 @@ namespace SequenceEditor
 		public static Palette Pal;
 		public static Dictionary<string, Sequence> Sequences = new Dictionary<string, Sequence>();
 
-		public static Bitmap[] LoadAndResolve( string shp )
+		public static void LoadAndResolve( string shp )
 		{
 			try
 			{
+				if (Shps.ContainsKey(shp)) return;
+
 				var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".shp", ".tem", ".sno", ".int"));
-				return reader.Select(ih =>
+				Shps[shp] = reader.Select(ih =>
 					{
 						var bmp = new Bitmap(reader.Width, reader.Height);
 						for (var j = 0; j < bmp.Height; j++)
@@ -31,10 +33,7 @@ namespace SequenceEditor
 						return bmp;
 					}).ToArray();
 			}
-			catch
-			{
-				return new Bitmap[] { };
-			}
+			catch { }
 		}
 
 		public static void Save()
@@ -87,14 +86,15 @@ namespace SequenceEditor
 			if (UnitName == null)
 				return;
 
+			LoadAndResolve(UnitName); 
+
 			var xpath = string.Format("//unit[@name=\"{0}\"]/sequence", UnitName);
 			foreach (XmlElement e in Doc.SelectNodes(xpath))
 			{
 				if (e.HasAttribute("src"))
 				{
 					var src = e.GetAttribute("src");
-					if (!Shps.ContainsKey(src))
-						Shps[src] = LoadAndResolve(src);
+					LoadAndResolve(src);
 				}
 				Sequences[e.GetAttribute("name")] = new Sequence(e);
 			}
