@@ -23,7 +23,6 @@ namespace OpenRa.Game
 		public static TerrainRenderer terrain;
 		public static Viewport viewport;
 		public static PathFinder PathFinder;
-		public static Network network;
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 
@@ -38,6 +37,8 @@ namespace OpenRa.Game
 		public static UnitInfluenceMap UnitInfluence;
 
 		static ISoundEngine soundEngine;
+
+		public static string Replay;
 
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
 		{
@@ -69,15 +70,15 @@ namespace OpenRa.Game
 
 			PathFinder = new PathFinder(map, terrain.tileSet);
 
-			network = new Network();
-
 			controller = new Controller();
 			worldRenderer = new WorldRenderer(renderer);
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
-			orderManager = new OrderManager( new OrderSource[] { new LocalOrderSource() }, "replay.rep" );
+			orderManager = (Replay == "")
+				? new OrderManager(new[] { new LocalOrderSource() }, "replay.rep")
+				: new OrderManager(new[] { new ReplayOrderSource(Replay) });
 
 			PlaySound("intro.aud", false);
 		}
@@ -128,7 +129,6 @@ namespace OpenRa.Game
 
 		public static void Tick()
 		{
-			var stuffFromOtherPlayers = network.Tick();	// todo: actually use the orders!
 			world.Update();
 			UnitInfluence.Tick();
 

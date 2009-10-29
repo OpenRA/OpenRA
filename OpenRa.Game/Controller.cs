@@ -18,16 +18,16 @@ namespace OpenRa.Game
 		void ApplyOrders(float2 xy, bool left)
 		{
 			var doVoice = null as Actor;
-			if( orderGenerator != null )
-				foreach( var order in orderGenerator.Order( xy.ToInt2(), left ) )
+			if (orderGenerator != null)
+				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
 				{
-					recentOrders.Add( order );
+					recentOrders.Add(order);
 					//UnitOrders.ProcessOrder( order );
-					if( order.Subject != null && order.Player == Game.LocalPlayer )
+					if (order.Subject != null && order.Player == Game.LocalPlayer)
 						doVoice = order.Subject;
 				}
-			if( doVoice != null )
-				Game.PlaySound( Game.SovietVoices.First.GetNext() + GetVoiceSuffix( doVoice ), false );
+			if (doVoice != null)
+				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(doVoice), false);
 		}
 
 		public List<Order> GetRecentOrders()
@@ -37,61 +37,61 @@ namespace OpenRa.Game
 			return ret;
 		}
 
-		static string GetVoiceSuffix( Actor unit )
+		static string GetVoiceSuffix(Actor unit)
 		{
 			var suffixes = new[] { ".r01", ".r03" };
-			return suffixes[ unit.traits.Get<Traits.Mobile>().Voice ];
+			return suffixes[unit.traits.Get<Traits.Mobile>().Voice];
 		}
 
-        float2 dragStart, dragEnd;
+		float2 dragStart, dragEnd;
 		public void HandleMouseInput(MouseInput mi)
 		{
-            var xy = Game.viewport.ViewToWorld(mi);
+			var xy = Game.viewport.ViewToWorld(mi);
 
-            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
-            {
+			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
+			{
 				if (!(orderGenerator is PlaceBuilding))
 					dragStart = dragEnd = xy;
 				ApplyOrders(xy, true);
-            }
+			}
 
-            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
+			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
 
-            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
-            {
+			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
+			{
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					if (dragStart != xy)
-						orderGenerator = new UnitOrderGenerator( 
-							Game.SelectUnitsInBox( Game.CellSize * dragStart, Game.CellSize * xy ) );
+						orderGenerator = new UnitOrderGenerator(
+							Game.SelectUnitsInBox(Game.CellSize * dragStart, Game.CellSize * xy));
 					else
-						orderGenerator = new UnitOrderGenerator( 
-							Game.SelectUnitOrBuilding( Game.CellSize * xy ) );
+						orderGenerator = new UnitOrderGenerator(
+							Game.SelectUnitOrBuilding(Game.CellSize * xy));
 				}
 
 				dragStart = dragEnd = xy;
-            }
+			}
 
-            if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
-            {
-                /* update the cursor to reflect the thing under us - note this 
-                 * needs to also happen when the *thing* changes, so per-frame hook */
+			if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
+			{
+				/* update the cursor to reflect the thing under us - note this 
+				 * needs to also happen when the *thing* changes, so per-frame hook */
 				dragStart = dragEnd = xy;
-            }
+			}
 
 			if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
 				ApplyOrders(xy, false);
 		}
 
-        public Pair<float2, float2>? SelectionBox
-        {
+		public Pair<float2, float2>? SelectionBox
+		{
 			get
 			{
 				if (dragStart == dragEnd) return null;
 				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
 			}
-        }
+		}
 
 		public Cursor ChooseCursor()
 		{
@@ -100,23 +100,23 @@ namespace OpenRa.Game
 			if (uog != null)
 				uog.selection.RemoveAll(a => a.IsDead);
 
-			if (uog != null && uog.selection.Count > 0 
-				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>()) 
-				&& uog.selection.All( a => a.Owner == Game.LocalPlayer ))
+			if (uog != null && uog.selection.Count > 0
+				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>())
+				&& uog.selection.All(a => a.Owner == Game.LocalPlayer))
 			{
 				var umts = uog.selection.Select(a => a.traits.GetOrDefault<Mobile>())
 					.Where(m => m != null)
 					.Select(m => m.GetMovementType())
 					.Distinct();
 
-				if (!umts.Any( umt => Game.IsCellBuildable( dragEnd.ToInt2(), umt ) ))
+				if (!umts.Any(umt => Game.IsCellBuildable(dragEnd.ToInt2(), umt)))
 					return Cursor.MoveBlocked;
 				return Cursor.Move;
 			}
 
 			if (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
 				return Cursor.Select;
-			
+
 			return Cursor.Default;
 		}
 	}
