@@ -24,6 +24,7 @@ namespace OpenRa.Game
 		readonly WarheadInfo Warhead;
 		readonly int2 Src;
 		readonly int2 Dest;
+		readonly int2 VisualDest;
 
 		int t = 0;
 		Animation anim;
@@ -38,6 +39,9 @@ namespace OpenRa.Game
 			FiredBy = firedBy;
 			Src = src;
 			Dest = dest;
+			VisualDest = Dest + new int2(
+						Game.CosmeticRandom.Next(-10, 10),
+						Game.CosmeticRandom.Next(-10, 10));
 			Weapon = Rules.WeaponInfo[weapon];
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
@@ -63,7 +67,7 @@ namespace OpenRa.Game
 				Game.world.AddFrameEndTask(w =>
 				{
 					w.Remove(this); 
-					w.Add(new Explosion(Dest, Warhead.Explosion)); 
+					w.Add(new Explosion(VisualDest, Warhead.Explosion)); 
 
 					if (Warhead.ImpactSound != null) 
 						Game.PlaySound(Warhead.ImpactSound + ".aud", false);
@@ -83,7 +87,7 @@ namespace OpenRa.Game
 				yield return Pair.New(anim.Image,
 					float2.Lerp(
 						Src.ToFloat2(),
-						Dest.ToFloat2(),
+						VisualDest.ToFloat2(),
 						(float)t / TotalTime()) - 0.5f * anim.Image.size);
 		}
 
