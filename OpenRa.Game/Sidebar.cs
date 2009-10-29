@@ -120,8 +120,6 @@ namespace OpenRa.Game
 				items.Add( new SidebarItem( sprite, i, false, unitPos ) );
 				unitPos += spriteHeight;
 			}
-
-			foreach( string g in groups ) player.CancelProduction( g );
 		}
 
 		void Paint()
