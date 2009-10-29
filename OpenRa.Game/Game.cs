@@ -252,7 +252,8 @@ namespace OpenRa.Game
 				mobile.QueueActivity(new Mobile.MoveTo(unit.Location + new int2(0, 3)));
 			}
 
-			world.Add(unit);
+			world.Add( unit );
+			player.FinishProduction( Rules.UnitCategory[ unit.unitInfo.Name ] );
 
 			if (producer.traits.Contains<RenderWarFactory>())
 				producer.traits.Get<RenderWarFactory>().EjectUnit();

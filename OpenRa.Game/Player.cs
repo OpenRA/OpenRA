@@ -61,6 +61,11 @@ namespace OpenRa.Game
 			var item = production[ category ];
 			if( item == null ) return;
 			GiveCash( item.TotalCost - item.RemainingCost ); // refund what's been paid so far.
+			FinishProduction( category );
+		}
+
+		public void FinishProduction( string category )
+		{
 			production[ category ] = null;
 		}
 
