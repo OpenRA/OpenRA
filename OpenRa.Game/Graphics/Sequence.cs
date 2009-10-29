@@ -21,7 +21,7 @@ namespace OpenRa.Game.Graphics
 			start = src.Start + int.Parse(e.GetAttribute("start"));
 
 			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")
-				length = src.End - start + 1;
+				length = src.End - src.Start + 1;
 			else if (e.HasAttribute("length"))
 				length = int.Parse(e.GetAttribute("length"));
 			else if (e.HasAttribute("end"))
