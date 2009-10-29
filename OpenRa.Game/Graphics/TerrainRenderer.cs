@@ -67,8 +67,8 @@ namespace OpenRa.Game.Graphics
 
 			int visibleRows = (int)(region.Size.Y / 24.0f + 2);
 
-			int firstRow = 0;// (int)( ( region.Position.Y + viewport.Location.Y ) / 24.0f );
-			int lastRow = 128;// firstRow + visibleRows;
+			int firstRow = (int)((region.Position.Y + viewport.Location.Y) / 24.0f - map.YOffset);
+			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)
 				return;
