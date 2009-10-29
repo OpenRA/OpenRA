@@ -53,14 +53,14 @@ namespace OpenRa.Game
 			map = new Map(mapFile);
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
-			viewport = new Viewport(clientSize, map.Size, renderer);
+			viewport = new Viewport( clientSize, map.Offset, map.Offset + map.Size, renderer );
 
 			terrain = new TerrainRenderer(renderer, map, viewport);
 			world = new World();
 			treeCache = new TreeCache(map);
 
 			foreach (TreeReference treeReference in map.Trees)
-				world.Add(new Actor(treeReference, treeCache, map.Offset));
+				world.Add(new Actor(treeReference, treeCache));
 
 			BuildingInfluence = new BuildingInfluenceMap(8);
 			UnitInfluence = new UnitInfluenceMap();
@@ -90,7 +90,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128 - map.Offset.X, loc / 128-map.Offset.Y ), players[ 0 ] ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,action,trigger
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128 - map.Offset.X, loc / 128 - map.Offset.Y ), players[ 0 ] ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
 			}
 		}
 
@@ -141,8 +141,6 @@ namespace OpenRa.Game
 		{
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
 			if (UnitInfluence.GetUnitAt(a) != null) return false;
-
-			a += map.Offset;
 
 			return map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,

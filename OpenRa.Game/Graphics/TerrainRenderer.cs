@@ -42,10 +42,10 @@ namespace OpenRa.Game.Graphics
 
             int nv = 0;
             int ni = 0;
-			for( int j = 0 ; j < map.Height ; j++ )
-                for (int i = 0; i < map.Width; i++)
+			for( int j = map.YOffset ; j < map.YOffset + map.Height ; j++ )
+                for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
                 {
-                    Sprite tile = tileMapping[map.MapTiles[i + map.XOffset, j + map.YOffset]];
+                    Sprite tile = tileMapping[map.MapTiles[i, j]];
                     Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni);
                     nv += 4;
                     ni += 6;
@@ -67,8 +67,8 @@ namespace OpenRa.Game.Graphics
 
 			int visibleRows = (int)(region.Size.Y / 24.0f + 2);
 
-			int firstRow = (int)((region.Position.Y + viewport.Location.Y) / 24.0f);
-			int lastRow = firstRow + visibleRows;
+			int firstRow = 0;// (int)( ( region.Position.Y + viewport.Location.Y ) / 24.0f );
+			int lastRow = 128;// firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)
 				return;

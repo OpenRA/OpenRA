@@ -34,8 +34,7 @@ namespace OpenRa.Game
 		public List<int2> FindUnitPathToRange(int2 src, int2 dest, UnitMovementType umt, int range)
 		{
 			var tilesInRange = Game.FindTilesInCircle(dest, range)
-				.Where(t => Game.IsCellBuildable(t, umt))
-				.Select(t => t + map.Offset);
+				.Where(t => Game.IsCellBuildable(t, umt));
 
 			var path = FindUnitPath(tilesInRange, DefaultEstimator(src), umt);
 			path.Reverse();
@@ -44,19 +43,18 @@ namespace OpenRa.Game
 
 		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
 		{
-			var offset = map.Offset;
 			var cellInfo = InitCellInfo();
 			var queue = new PriorityQueue<PathDistance>();
 			var estimator = DefaultEstimator( from );
 
 			var cost = 0.0;
-			var prev = path[ 0 ] + offset;
+			var prev = path[ 0 ];
 			for( int i = 0 ; i < path.Count ; i++ )
 			{
-				var sl = path[ i ] + offset;
+				var sl = path[ i ];
 				if( i == 0 || Game.BuildingInfluence.GetBuildingAt( path[ i ] ) == null & Game.UnitInfluence.GetUnitAt( path[ i ] ) == null )
 				{
-					queue.Add( new PathDistance( estimator( sl - offset ), sl ) );
+					queue.Add( new PathDistance( estimator( sl ), sl ) );
 					cellInfo[ sl.X, sl.Y ] = new CellInfo( cost, prev, false );
 				}
 				var d = sl - prev;
@@ -70,19 +68,17 @@ namespace OpenRa.Game
 
 		List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
 		{
-			var startLocation = unitLocation + map.Offset;
-			return FindUnitPath( new[] {startLocation}, estimator, umt );
+			return FindUnitPath( new[] { unitLocation }, estimator, umt );
 		}
 
 		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt)
 		{
-			var offset = map.Offset;
 			var cellInfo = InitCellInfo();
 			var queue = new PriorityQueue<PathDistance>();
 
 			foreach (var sl in startLocations)
 			{
-				queue.Add(new PathDistance(estimator(sl - offset), sl));
+				queue.Add(new PathDistance(estimator(sl), sl));
 				cellInfo[sl.X, sl.Y].MinCost = 0;
 			}
 
@@ -91,7 +87,6 @@ namespace OpenRa.Game
 
 		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, double> estimator, UnitMovementType umt, bool checkForBlock )
 		{
-			var offset = map.Offset;
 
 			while( !queue.Empty )
 			{
@@ -99,8 +94,8 @@ namespace OpenRa.Game
 				int2 here = p.Location;
 				cellInfo[ here.X, here.Y ].Seen = true;
 
-				if( estimator( here - offset ) == 0.0 )
-					return MakePath( cellInfo, here, offset );
+				if( estimator( here ) == 0.0 )
+					return MakePath( cellInfo, here );
 
 				foreach( int2 d in Util.directions )
 				{
@@ -110,9 +105,9 @@ namespace OpenRa.Game
 						continue;
 					if( passableCost[(int)umt][ newHere.X, newHere.Y ] == double.PositiveInfinity )
 						continue;
-					if (Game.BuildingInfluence.GetBuildingAt(newHere - offset) != null)
+					if (Game.BuildingInfluence.GetBuildingAt(newHere) != null)
 						continue;
-					if( checkForBlock && Game.UnitInfluence.GetUnitAt( newHere - offset ) != null )
+					if( checkForBlock && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 						continue;
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[(int)umt][ newHere.X, newHere.Y ];
@@ -124,7 +119,7 @@ namespace OpenRa.Game
 					cellInfo[ newHere.X, newHere.Y ].Path = here;
 					cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
-					queue.Add( new PathDistance( newCost + estimator( newHere - offset ), newHere ) );
+					queue.Add( new PathDistance( newCost + estimator( newHere ), newHere ) );
 				}
 			}
 
@@ -141,18 +136,18 @@ namespace OpenRa.Game
 			return cellInfo;
 		}
 
-		List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination, int2 offset )
+		List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination )
 		{
 			List<int2> ret = new List<int2>();
 			int2 pathNode = destination;
 
 			while( cellInfo[ pathNode.X, pathNode.Y ].Path != pathNode )
 			{
-				ret.Add( pathNode - offset );
+				ret.Add( pathNode );
 				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
 			}
 
-			ret.Add(pathNode - offset);
+			ret.Add(pathNode);
 
 			return ret;
 		}

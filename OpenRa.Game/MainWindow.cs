@@ -59,14 +59,11 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			Game.world.Add( new Actor( "mcv", new int2( 5, 5 ), Game.players[ 1 ]) );
-			Game.world.Add( new Actor( "mcv", new int2( 7, 5 ), Game.players[ 2 ] ) );
-			Game.world.Add( new Actor( "mcv", new int2( 9, 5 ), Game.players[ 0 ] ) );
-			var jeep = new Actor( "jeep", new int2( 9, 15 ), Game.players[ 1 ] );
-			Game.world.Add( jeep );
-			var tank = new Actor( "3tnk", new int2( 12, 7 ), Game.players[ 1 ] );
-			Game.world.Add( tank );
-			tank.traits.Get<Traits.AttackTurreted>().target = jeep;
+			Game.world.Add( new Actor( "mcv", Game.map.Offset + new int2( 5, 5 ), Game.players[ 1 ]) );
+			Game.world.Add( new Actor( "mcv", Game.map.Offset + new int2( 7, 5 ), Game.players[ 2 ] ) );
+			Game.world.Add( new Actor( "mcv", Game.map.Offset + new int2( 9, 5 ), Game.players[ 0 ] ) );
+			Game.world.Add( new Actor( "jeep", Game.map.Offset + new int2( 9, 15 ), Game.players[ 1 ] ) );
+			Game.world.Add( new Actor( "3tnk", Game.map.Offset + new int2( 12, 7 ), Game.players[ 1 ] ) );
 
 			sidebar = new Sidebar(renderer);
 
