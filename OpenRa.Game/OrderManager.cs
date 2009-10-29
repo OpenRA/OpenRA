@@ -44,6 +44,9 @@ namespace OpenRa.Game
 				}
 			}
 			++frameNumber;
+			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
+			if( ( frameNumber & 0x80000000 ) != 0 )
+				throw new InvalidOperationException( "(OrderManager) Frame number too large" );
 		}
 	}
 

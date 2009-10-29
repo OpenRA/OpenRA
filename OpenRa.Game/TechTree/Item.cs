@@ -25,15 +25,14 @@ namespace OpenRa.TechTree
 			sovietPrerequisites = pre.b;
 		}
 
-		static Race ParseOwner(string owners, bool doubleOwned)
+		static Race ParseOwner(string[] owners, bool doubleOwned)
 		{
 			if (doubleOwned)
 				return Race.Allies | Race.Soviet;
 
 			Race race = Race.None;
-			string[] frags = owners.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-			foreach (string s in frags)
+			foreach (string s in owners)
 				race |= (Race)Enum.Parse(typeof(Race), s, true);
 
 			return race;

@@ -33,7 +33,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int GuardRange = -1; // -1 = use weapon's range
 		public readonly string Image = null; // sprite-set to use when rendering
 		public readonly bool Invisible = false;
-		public readonly string Owner = "allies,soviet"; // TODO: make this an enum
+		public readonly string[] Owner = { "allies", "soviet" };
 		public readonly int Points = 0;
 		public readonly string[] Prerequisite = { };
 		public readonly string Primary = null;
