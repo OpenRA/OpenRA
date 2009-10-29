@@ -47,6 +47,16 @@ namespace OpenRa.FileFormats
 				for (int i = 0; i < n; i++)
 					LookupTable[i] = reader.ReadByte();
 			}
+			else
+			{
+				LookupTable = new byte[256];
+				for (int i = 0; i < 256; i++)
+					LookupTable[i] = (byte)i;
+				LookupTable[1] = 0x7f;
+				LookupTable[2] = 0x7e;
+				LookupTable[3] = 0x7d;
+				LookupTable[4] = 0x7c;
+			}
 		}
 
 		public Size Size
