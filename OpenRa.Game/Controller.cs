@@ -101,31 +101,6 @@ namespace OpenRa.Game
 				.FirstOrDefault(a => a != null) : null;
 
 			return c ?? (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
-
-			//foreach( var o in 
-			//var uog = orderGenerator as UnitOrderGenerator;
-
-			//if (uog != null)
-			//    uog.selection.RemoveAll(a => a.IsDead);
-
-			//if (uog != null && uog.selection.Count > 0
-			//    && uog.selection.Any(a => a.traits.Contains<Traits.Mobile>())
-			//    && uog.selection.All(a => a.Owner == Game.LocalPlayer))
-			//{
-			//    var umts = uog.selection.Select(a => a.traits.GetOrDefault<Mobile>())
-			//        .Where(m => m != null)
-			//        .Select(m => m.GetMovementType())
-			//        .Distinct();
-
-			//    if (!umts.Any(umt => Game.IsCellBuildable(dragEnd.ToInt2(), umt)))
-			//        return Cursor.MoveBlocked;
-			//    return Cursor.Move;
-			//}
-
-			//if (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
-			//    return Cursor.Select;
-
-			//return Cursor.Default;
 		}
 	}
 }

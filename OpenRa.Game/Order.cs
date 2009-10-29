@@ -43,7 +43,7 @@ namespace OpenRa.Game
 						var ret = new MemoryStream();
 						var w = new BinaryWriter(ret);
 						w.Write((uint)Player.Palette | 0x80000000u);
-						w.Write((byte)0xFF); // 
+						w.Write((byte)0xFF);
 						w.Write(OrderString);
 						w.Write(Subject == null ? 0xFFFFFFFF : Subject.ActorID);
 						w.Write(TargetActor == null ? 0xFFFFFFFF : TargetActor.ActorID);

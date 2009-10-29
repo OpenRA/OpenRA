@@ -29,7 +29,6 @@ namespace OpenRa.Game
 
 		Dictionary<string, string> itemGroups = new Dictionary<string,string>();				//item->group
 		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
-		Dictionary<string, SidebarItem> selectedItems = new Dictionary<string,SidebarItem>();	//group->selectedItem
 		
 		List<SidebarItem> items = new List<SidebarItem>();
 		
@@ -48,14 +47,25 @@ namespace OpenRa.Game
 			LoadSprites( "ShipTypes", "boat" );
 			LoadSprites( "PlaneTypes", "plane" );
 
-			foreach (string s in groups)
+			foreach (string group in groups)
 			{
-				clockAnimations.Add(s, new Animation("clock"));
-				clockAnimations[s].PlayRepeating("idle");
-				selectedItems.Add(s, null);
+				Game.LocalPlayer.ProductionInit( group );
+				clockAnimations.Add( group, new Animation( "clock" ) );
+				clockAnimations[ group ].PlayFetchIndex( "idle", ClockAnimFrame( group ) );
 			}
 
 			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
+		}
+
+		const int NumClockFrames = 54;
+		Func<int> ClockAnimFrame( string group )
+		{
+			return () =>
+				{
+					var producing = Game.LocalPlayer.Producing( group );
+					if( producing == null ) return 0;
+					return ( producing.TotalTime - producing.RemainingTime ) * NumClockFrames / producing.TotalTime;
+				};
 		}
 
 		public void Build(SidebarItem item)
@@ -115,28 +125,27 @@ namespace OpenRa.Game
 					unitPos += spriteHeight;
 			}
 
-			foreach (string g in groups) selectedItems[g] = null;
+			foreach( string g in groups ) Game.LocalPlayer.CancelProduction( g );
 		}
 
 		void Paint()
 		{
-			foreach (SidebarItem i in items)
-				i.Paint(spriteRenderer, region.Location);
+			foreach( SidebarItem i in items )
+			{
+				var group = itemGroups[ i.techTreeItem.tag ];
+				var producing = Game.LocalPlayer.Producing( group );
+				if( producing != null && producing.Item == i.techTreeItem.tag )
+				{
+					clockAnimations[ group ].Tick();
+					clockRenderer.DrawSprite( clockAnimations[ group ].Image, region.Location.ToFloat2() + i.location, 0 );
+				}
+				i.Paint( spriteRenderer, region.Location );
+			}
 
 			Fill(region.Size.Y + region.Location.Y, new float2(region.Location.X, buildPos + region.Location.Y));
 			Fill(region.Size.Y + region.Location.Y, new float2(region.Location.X + spriteWidth, unitPos + region.Location.Y));
 
 			spriteRenderer.Flush();
-
-			foreach (var kvp in selectedItems)
-			{
-				if (kvp.Value != null)
-				{
-					clockRenderer.DrawSprite(clockAnimations[kvp.Key].Image, region.Location.ToFloat2() + kvp.Value.location, 0);
-					clockAnimations[kvp.Key].Tick(1);
-				}
-			}
-			
 			clockRenderer.Flush();
 		}
 
@@ -158,9 +167,9 @@ namespace OpenRa.Game
 				if (item != null)
 				{
 					string group = itemGroups[item.techTreeItem.tag];
-					if (selectedItems[group] == null)
+					if (Game.LocalPlayer.Producing(group) == null)
 					{
-						selectedItems[group] = item;
+						Game.LocalPlayer.BeginProduction( group, new ProductionItem( item.techTreeItem.tag, 25, 0 ) );
 						Build(item);
 					}
 				}
@@ -172,7 +181,7 @@ namespace OpenRa.Game
 				if( item != null )
 				{
 					string group = itemGroups[ item.techTreeItem.tag ];
-					selectedItems[ group ] = null;
+					Game.LocalPlayer.CancelProduction( group );
 				}
 			}
 		}

@@ -129,6 +129,8 @@ namespace OpenRa.Game
 		{
 			world.Update();
 			UnitInfluence.Tick();
+			foreach( var player in players.Values )
+				player.Tick();
 
 			viewport.DrawRegions();
 
