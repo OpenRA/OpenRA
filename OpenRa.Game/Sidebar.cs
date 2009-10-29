@@ -25,7 +25,7 @@ namespace OpenRa.Game
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 		const int spriteWidth = 64, spriteHeight = 48;
 
-		static string[] groups = new string[] { "building", "vehicle", "ship", "infantry", "plane" };
+		static string[] groups = new string[] { "Building", "Vehicle", "Ship", "Infantry", "Plane" };
 
 		Dictionary<string, string> itemGroups = new Dictionary<string,string>();				//item->group
 		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
@@ -41,11 +41,8 @@ namespace OpenRa.Game
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);
 
-			LoadSprites( "BuildingTypes", "building" );
-			LoadSprites( "VehicleTypes", "vehicle" );
-			LoadSprites( "InfantryTypes", "infantry" );
-			LoadSprites( "ShipTypes", "ship" );
-			LoadSprites( "PlaneTypes", "plane" );
+			for( int i = 0 ; i < groups.Length ; i++ )
+				LoadSprites( groups[ i ] );
 
 			foreach (string group in groups)
 			{
@@ -79,11 +76,11 @@ namespace OpenRa.Game
 				Game.controller.AddOrder(Order.BuildUnit(player, item.techTreeItem.tag.ToLowerInvariant()));
 		}
 
-		void LoadSprites( string category, string group )
+		void LoadSprites( string group )
 		{
-			foreach( var u in Rules.AllRules.GetSection( category ) )
+			foreach( var u in Rules.Categories[ group + "Types" ] )
 			{
-				var unit = Rules.UnitInfo[ u.Key ];
+				var unit = Rules.UnitInfo[ u ];
 
 				if( unit.TechLevel != -1 )
 					sprites.Add( unit.Name, SpriteSheetBuilder.LoadSprite( unit.Name + "icon", ".shp" ) );

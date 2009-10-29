@@ -15,9 +15,8 @@ namespace OpenRa.Game.GameRules
 		public InfoLoader(params Pair<string, Func<string,T>>[] srcs)
 		{
 			foreach (var src in srcs)
-				foreach (var s in Rules.AllRules.GetSection(src.First))
+				foreach (var name in Rules.Categories[src.First])
 				{
-					var name = s.Key.ToLowerInvariant();
 					var t = src.Second(name);
 					FieldLoader.Load(t, Rules.AllRules.GetSection(name));
 					infos[name] = t;

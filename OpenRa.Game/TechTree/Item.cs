@@ -4,6 +4,7 @@ using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using IjwFramework.Types;
+using OpenRa.Game;
 
 namespace OpenRa.TechTree
 {
@@ -49,11 +50,10 @@ namespace OpenRa.TechTree
 			if (soviet.Remove("tent")) soviet.Add("barr");
 			if (allied.Remove("barr")) allied.Add("tent");
 
-			// TODO: rewrite this based on "InfantryTypes" in units.ini
-			if ((tag.Length == 2 && tag[0] == 'e') || tag == "medi" || tag == "thf" || tag == "spy")
+			if( Rules.Categories[ "InfantryTypes" ].Contains( tag ) )
 			{
-				if (!allied.Contains("tent")) allied.Add("tent");
-				if (!soviet.Contains("barr")) soviet.Add("barr");
+				if( !allied.Contains( "tent" ) ) allied.Add( "tent" );
+				if( !soviet.Contains( "barr" ) ) soviet.Add( "barr" );
 			}
 
 			if (tag == "lst")

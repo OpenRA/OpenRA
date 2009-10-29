@@ -43,7 +43,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		// Key: Production category. Categories are: building, infantry, vehicle, ship, plane (and one per super, if they're done in here)
+		// Key: Production category. Categories are: Building, Infantry, Vehicle, Ship, Plane (and one per super, if they're done in here)
 		readonly Dictionary<string, ProductionItem> production = new Dictionary<string, ProductionItem>();
 
 		public void ProductionInit( string category )
