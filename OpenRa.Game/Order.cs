@@ -15,8 +15,9 @@ namespace OpenRa.Game
 		public readonly Actor TargetActor;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
+		public readonly Cursor Cursor;
 
-		private Order(Player player, string orderString, Actor subject, Actor targetActor, int2 targetLocation, string targetString)
+		Order(Player player, string orderString, Actor subject, Actor targetActor, int2 targetLocation, string targetString, Cursor cursor)
 		{
 			this.Player = player;
 			this.OrderString = orderString;
@@ -24,6 +25,7 @@ namespace OpenRa.Game
 			this.TargetActor = targetActor;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
+			this.Cursor = cursor;
 		}
 
 		public byte[] Serialize()
@@ -72,7 +74,7 @@ namespace OpenRa.Game
 						var targetString = null as string;
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
-						return new Order(player, order, subject, targetActor, targetLocation, targetString);
+						return new Order(player, order, subject, targetActor, targetLocation, targetString, null);
 					}
 				default:
 					throw new NotImplementedException();
@@ -87,27 +89,27 @@ namespace OpenRa.Game
 
 		public static Order Attack(Actor subject, Actor target)
 		{
-			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null);
+			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null, Cursor.Attack);
 		}
 
 		public static Order Move(Actor subject, int2 target)
 		{
-			return new Order(subject.Owner, "Move", subject, null, target, null);
+			return new Order(subject.Owner, "Move", subject, null, target, null, Cursor.Move);
 		}
 
 		public static Order DeployMcv(Actor subject)
 		{
-			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, null);
+			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, null, Cursor.Deploy);
 		}
 
 		public static Order PlaceBuilding(Player subject, int2 target, string buildingName)
 		{
-			return new Order(subject, "PlaceBuilding", null, null, target, buildingName);
+			return new Order(subject, "PlaceBuilding", null, null, target, buildingName, Cursor.Default);
 		}
 
 		public static Order BuildUnit(Player subject, string unitName)
 		{
-			return new Order(subject, "BuildUnit", null, null, int2.Zero, unitName);
+			return new Order(subject, "BuildUnit", null, null, int2.Zero, unitName, Cursor.Default);
 		}
 	}
 }

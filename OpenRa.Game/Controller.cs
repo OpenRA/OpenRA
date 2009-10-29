@@ -96,29 +96,36 @@ namespace OpenRa.Game
 
 		public Cursor ChooseCursor()
 		{
-			var uog = orderGenerator as UnitOrderGenerator;
+			var c = (orderGenerator != null) ? orderGenerator.Order(dragEnd.ToInt2(), false)
+				.Select(a => a.Cursor)
+				.FirstOrDefault(a => a != null) : null;
 
-			if (uog != null)
-				uog.selection.RemoveAll(a => a.IsDead);
+			return c ?? (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
 
-			if (uog != null && uog.selection.Count > 0
-				&& uog.selection.Any(a => a.traits.Contains<Traits.Mobile>())
-				&& uog.selection.All(a => a.Owner == Game.LocalPlayer))
-			{
-				var umts = uog.selection.Select(a => a.traits.GetOrDefault<Mobile>())
-					.Where(m => m != null)
-					.Select(m => m.GetMovementType())
-					.Distinct();
+			//foreach( var o in 
+			//var uog = orderGenerator as UnitOrderGenerator;
 
-				if (!umts.Any(umt => Game.IsCellBuildable(dragEnd.ToInt2(), umt)))
-					return Cursor.MoveBlocked;
-				return Cursor.Move;
-			}
+			//if (uog != null)
+			//    uog.selection.RemoveAll(a => a.IsDead);
 
-			if (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
-				return Cursor.Select;
+			//if (uog != null && uog.selection.Count > 0
+			//    && uog.selection.Any(a => a.traits.Contains<Traits.Mobile>())
+			//    && uog.selection.All(a => a.Owner == Game.LocalPlayer))
+			//{
+			//    var umts = uog.selection.Select(a => a.traits.GetOrDefault<Mobile>())
+			//        .Where(m => m != null)
+			//        .Select(m => m.GetMovementType())
+			//        .Distinct();
 
-			return Cursor.Default;
+			//    if (!umts.Any(umt => Game.IsCellBuildable(dragEnd.ToInt2(), umt)))
+			//        return Cursor.MoveBlocked;
+			//    return Cursor.Move;
+			//}
+
+			//if (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any())
+			//    return Cursor.Select;
+
+			//return Cursor.Default;
 		}
 	}
 }
