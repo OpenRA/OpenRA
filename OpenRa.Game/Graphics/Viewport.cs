@@ -6,35 +6,36 @@ namespace OpenRa.Game.Graphics
 {
 	class Viewport
 	{
-		readonly float2 size;
-		readonly float2 mapSize;
+		readonly float2 screenSize;
 		float2 scrollPosition;
 		readonly Renderer renderer;
 
 		public float2 Location { get { return scrollPosition; } }
-		public float2 Size { get { return size; } }
 
-		public int Width { get { return (int)size.X; } }
-		public int Height { get { return (int)size.Y; } }
+		public int Width { get { return (int)screenSize.X; } }
+		public int Height { get { return (int)screenSize.Y; } }
 
 		public Cursor cursor = Cursor.Move;
 		SpriteRenderer cursorRenderer;
 		int2 mousePos;
 		float cursorFrame = 0f;
 
+		readonly float2 scrollLowBounds, scrollHighBounds;
+
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = ( scrollPosition + delta ).Constrain( float2.Zero, mapSize );
+			scrollPosition = ( scrollPosition + delta ).Constrain( scrollLowBounds, scrollHighBounds );
 		}
 
-		public Viewport(float2 size, float2 mapSize, Renderer renderer)
+		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
-			this.size = size;
-			this.mapSize = Game.CellSize * mapSize - size + new float2(128, 0);
-			if( this.mapSize.X < 0 ) this.mapSize.X = 0;
-			if( this.mapSize.Y < 0 ) this.mapSize.Y = 0;
+			this.screenSize = screenSize;
+			this.scrollLowBounds = Game.CellSize * mapStart;
+			this.scrollHighBounds = float2.Max( scrollLowBounds, Game.CellSize * mapEnd - ( screenSize - new float2( 128, 0 ) ) );
 			this.renderer = renderer;
 			cursorRenderer = new SpriteRenderer(renderer, true);
+
+			this.scrollPosition = scrollLowBounds;
 		}
 
 		List<Region> regions = new List<Region>();
@@ -43,7 +44,7 @@ namespace OpenRa.Game.Graphics
 
 		public void DrawRegions()
 		{
-			float2 r1 = new float2(2, -2) / Size;
+			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);
 			
 			renderer.BeginFrame(r1, r2, scrollPosition);

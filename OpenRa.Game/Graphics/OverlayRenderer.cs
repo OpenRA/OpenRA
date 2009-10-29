@@ -73,7 +73,7 @@ namespace OpenRa.Game.Graphics
 					{
 						var location = new int2(x, y);
 						spriteRenderer.DrawSprite(smudgeSprites[tr.smudge - 1],
-							Game.CellSize * (float2)(location - map.Offset), 0);
+							Game.CellSize * (float2)location, 0);
 					}
 
 					var o = tr.overlay;
@@ -86,7 +86,7 @@ namespace OpenRa.Game.Graphics
 						else if (overlayIsOre[o]) spriteIndex = 11;
 						else if (overlayIsGems[o]) spriteIndex = 2;
 						spriteRenderer.DrawSprite(sprites[spriteIndex], 
-							Game.CellSize * (float2)(location - map.Offset), 0);
+							Game.CellSize * (float2)location, 0);
 					}
 				}
 

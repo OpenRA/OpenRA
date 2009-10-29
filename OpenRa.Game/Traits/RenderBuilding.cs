@@ -30,7 +30,7 @@ namespace OpenRa.Game.Traits
 
 				for (int i = 0; i < 2 * size; i++)
 				{
-					var p = self.Location + Game.map.Offset + new int2(i % size, i / size + bibOffset);
+					var p = self.Location + new int2(i % size, i / size + bibOffset);
 					Game.map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
