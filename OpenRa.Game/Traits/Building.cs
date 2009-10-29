@@ -15,10 +15,8 @@ namespace OpenRa.Game.Traits
 		public void Tick(Actor self)
 		{
 			if (first && self.Owner == Game.LocalPlayer)
-			{
-				self.Owner.TechTree.Build(self.unitInfo.Name, true);
 				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
-			}
+
 			first = false;
 		}
 	}

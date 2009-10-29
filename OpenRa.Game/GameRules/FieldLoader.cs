@@ -29,7 +29,7 @@ namespace OpenRa.Game.GameRules
 				return x;
 
 			else if (fieldType.IsEnum)
-				return Enum.Parse(fieldType, x);
+				return Enum.Parse(fieldType, x, true);
 
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(x);

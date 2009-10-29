@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
-using OpenRa.TechTree;
 using System.Linq;
 
 namespace OpenRa.Game
@@ -34,7 +33,6 @@ namespace OpenRa.Game
 		public Sidebar( Renderer renderer, Player player )
 		{
 			this.player = player;
-            this.player.TechTree.BuildableItemsChanged += PopulateItemList;
 			region = GRegion.Create(Game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
 			Game.viewport.AddRegion( region );
 			spriteRenderer = new SpriteRenderer(renderer, false);
@@ -68,11 +66,11 @@ namespace OpenRa.Game
 		{
 			if (item == null) return;
 
-			if (item.techTreeItem.IsStructure)
+			if (item.IsStructure)
 				Game.controller.orderGenerator = new PlaceBuilding(player,
-					item.techTreeItem.tag.ToLowerInvariant());
+					item.Tag.ToLowerInvariant());
 			else
-				Game.controller.AddOrder(Order.BuildUnit(player, item.techTreeItem.tag.ToLowerInvariant()));
+				Game.controller.AddOrder(Order.BuildUnit(player, item.Tag.ToLowerInvariant()));
 		}
 
 		void LoadSprites( string group )
@@ -107,17 +105,20 @@ namespace OpenRa.Game
 
 			items.Clear();
 
-			foreach (Item i in player.TechTree.BuildableItems)
+			foreach (var i in Rules.TechTree.BuildableItems(player, "Building"))
 			{
 				Sprite sprite;
-				if (!sprites.TryGetValue(i.tag, out sprite)) continue;
+				if (!sprites.TryGetValue(i, out sprite)) continue;
+				items.Add(new SidebarItem(sprite, i, true, buildPos));
+				buildPos += spriteHeight;
+			}
 
-				items.Add(new SidebarItem(sprite, i, i.IsStructure ? buildPos : unitPos));
-
-				if (i.IsStructure)
-					buildPos += spriteHeight;
-				else
-					unitPos += spriteHeight;
+			foreach( var i in Rules.TechTree.BuildableItems( player, "Vehicle", "Infantry", "Ship", "Plane" ) )
+			{
+				Sprite sprite;
+				if( !sprites.TryGetValue( i, out sprite ) ) continue;
+				items.Add( new SidebarItem( sprite, i, false, unitPos ) );
+				unitPos += spriteHeight;
 			}
 
 			foreach( string g in groups ) player.CancelProduction( g );
@@ -125,11 +126,12 @@ namespace OpenRa.Game
 
 		void Paint()
 		{
+			PopulateItemList();
 			foreach( SidebarItem i in items )
 			{
-				var group = Rules.UnitCategory[ i.techTreeItem.tag ];
+				var group = Rules.UnitCategory[ i.Tag ];
 				var producing = player.Producing( group );
-				if( producing != null && producing.Item == i.techTreeItem.tag )
+				if( producing != null && producing.Item == i.Tag )
 				{
 					clockAnimations[ group ].Tick();
 					clockRenderer.DrawSprite( clockAnimations[ group ].Image, region.Location.ToFloat2() + i.location, 0 );
@@ -155,30 +157,22 @@ namespace OpenRa.Game
 
 		void MouseHandler(MouseInput mi)
 		{
-            if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
+			var point = mi.Location.ToFloat2();
+			var item = GetItem( point );
+			if( item == null )
+				return;
+
+			if( mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down )
             {
-				var point = mi.Location.ToFloat2();
-				var item = GetItem(point);
-				if (item != null)
-				{
-					string group = Rules.UnitCategory[ item.techTreeItem.tag ];
+					string group = Rules.UnitCategory[ item.Tag ];
 					if (player.Producing(group) == null)
 					{
-						player.BeginProduction( group, new ProductionItem( item.techTreeItem.tag, 25, 0 ) );
+						player.BeginProduction( group, new ProductionItem( item.Tag, 25, 0 ) );
 						Build(item);
 					}
-				}
             }
 			else if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
-			{
-				var point = mi.Location.ToFloat2();
-				var item = GetItem(point);
-				if( item != null )
-				{
-					string group = Rules.UnitCategory[ item.techTreeItem.tag ];
-					player.CancelProduction( group );
-				}
-			}
+				player.CancelProduction( Rules.UnitCategory[ item.Tag ] );
 		}
 	}
 }

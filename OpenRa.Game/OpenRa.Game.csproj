@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
     <Compile Include="Actor.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />
     <Compile Include="PlaceBuilding.cs" />
-    <Compile Include="TechTree\Item.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Support\SharedResources.cs" />
@@ -124,7 +124,6 @@
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
-    <Compile Include="TechTree\TechTree.cs" />
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Graphics\TreeCache.cs" />

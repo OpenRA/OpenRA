@@ -2,7 +2,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
-using OpenRa.TechTree;
 using System.Runtime.InteropServices;
 
 namespace OpenRa.Game

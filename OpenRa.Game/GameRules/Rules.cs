@@ -16,6 +16,7 @@ namespace OpenRa.Game
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
+		public static TechTree TechTree;
 
 		public static void LoadRules( string mapFileName )
 		{
@@ -52,6 +53,8 @@ namespace OpenRa.Game
 
 			ProjectileInfo = new InfoLoader<ProjectileInfo>(
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
+
+			TechTree = new TechTree();
 		}
 
 		static void LoadCategories( params string[] types )

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -361,7 +361,7 @@
     <sequence name="attack" start="21" length="8" x="12" y="12" />
     <sequence name="move-minimap" start="29" length="6" />
     <sequence name="repair" start="35" length="24" />
-    <sequence name="deploy" start="59" length="9" x="12" y="12"/>
+    <sequence name="deploy" start="59" length="9" x="12" y="12" />
     <sequence name="sell" start="68" length="12" />
     <sequence name="default-minimap" start="80" length="1" />
     <sequence name="ability" start="82" length="8" />
@@ -464,5 +464,8 @@
     <sequence name="4" start="0" length="14" src="veh-hit3" />
     <sequence name="5" start="0" length="22" src="veh-hit2" />
     <sequence name="6" start="0" length="27" src="atomsfx" />
+  </unit>
+  <unit name="lst">
+    <sequence name="idle" start="0" length="1" />
   </unit>
 </sequences>

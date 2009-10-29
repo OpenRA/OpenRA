@@ -33,7 +33,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int GuardRange = -1; // -1 = use weapon's range
 		public readonly string Image = null; // sprite-set to use when rendering
 		public readonly bool Invisible = false;
-		public readonly string[] Owner = { "allies", "soviet" };
+		public readonly Race[] Owner = { Race.Allies, Race.Soviet };
 		public readonly int Points = 0;
 		public readonly string[] Prerequisite = { };
 		public readonly string Primary = null;
@@ -81,6 +81,7 @@ namespace OpenRa.Game.GameRules
 		{
 			public readonly int2 Dimensions = new int2( 1, 1 );
 			public readonly string Footprint = "x";
+			public readonly string[] Produces = { };
 
 			public readonly bool BaseNormal = true;
 			public readonly int Adjacent = 1;

@@ -8,13 +8,13 @@ namespace OpenRa.Game
 		public int Palette;
 		public int Kills;
 		public string PlayerName;
-		public TechTree.TechTree TechTree = new OpenRa.TechTree.TechTree();
+		public Race Race;
 
-		public Player( int palette, string playerName, OpenRa.TechTree.Race race )
+		public Player( int palette, string playerName, Race race )
 		{
 			this.Palette = palette;
 			this.PlayerName = playerName;
-			TechTree.CurrentRace = race;
+			this.Race = race;
 		}
 
 		public float GetSiloFullness()

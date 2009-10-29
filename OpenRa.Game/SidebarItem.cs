@@ -1,19 +1,20 @@
 using OpenRa.Game.Graphics;
-using OpenRa.TechTree;
 
 namespace OpenRa.Game
 {
 	class SidebarItem
 	{
-		public readonly Item techTreeItem;
 		public readonly float2 location;
+		public readonly string Tag;
+		public readonly bool IsStructure;
 		readonly Sprite sprite;
 
-		public SidebarItem(Sprite s, Item item, int y)
+		public SidebarItem(Sprite s, string tag, bool isStructure, int y)
 		{
-			this.techTreeItem = item;
 			this.sprite = s;
-			location = new float2(item.IsStructure ? 0 : 64, y);
+			this.Tag = tag;
+			this.IsStructure = isStructure;
+			location = new float2(isStructure ? 0 : 64, y);
 		}
 
 		public bool Clicked(float2 p)

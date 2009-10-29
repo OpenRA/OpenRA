@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenRa.TechTree
+namespace OpenRa.Game
 {
 	[Flags]
 	public enum Race

@@ -1,15 +1,14 @@
+using System;
 using System.Collections.Generic;
-using OpenRa.FileFormats;
-using OpenRa.Game.Graphics;
-using OpenRa.TechTree;
 using System.Drawing;
 using System.Linq;
-using IrrKlang;
 using IjwFramework.Collections;
-using System;
 using IjwFramework.Types;
-using OpenRa.Game.Traits;
+using IrrKlang;
+using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -44,7 +43,7 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName);
 
 			for (int i = 0; i < 8; i++)
-				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Soviet));
+				players.Add(i, new Player(i, string.Format("Multi{0}", i), Race.Allies));
 
 			localPlayerIndex = localPlayer;
 
@@ -223,7 +222,7 @@ namespace OpenRa.Game
 
 		public static void BuildUnit(Player player, string name)
 		{
-			var producerTypes = Rules.UnitInfo[name].BuiltAt;
+			var producerTypes = Rules.TechTree.UnitBuiltAt( Rules.UnitInfo[ name ] );
 			var producer = world.Actors
 				.FirstOrDefault(a => a.unitInfo != null 
 					&& producerTypes.Contains(a.unitInfo.Name) && a.Owner == player);
