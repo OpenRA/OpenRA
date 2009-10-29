@@ -436,4 +436,28 @@
     <sequence name="idle" start="0" length="16" />
     <sequence name="turret" start="0" length="32" src="mgun" />
   </unit>
+  <unit name="medi">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+    <sequence name="heal" start="56" length="58" />
+    <sequence name="standup-0" start="114" length="2" />
+    <sequence name="standup-1" start="116" length="2" />
+    <sequence name="standup-2" start="118" length="2" />
+    <sequence name="standup-3" start="120" length="2" />
+    <sequence name="standup-4" start="122" length="2" />
+    <sequence name="standup-5" start="124" length="2" />
+    <sequence name="standup-6" start="126" length="2" />
+    <sequence name="standup-7" start="128" length="2" />
+    <sequence name="die2" start="201" length="8" />
+    <sequence name="die3" start="209" length="8" />
+    <sequence name="die4" start="217" length="12" />
+    <sequence name="die5" start="229" length="18" />
+  </unit>
 </sequences>
