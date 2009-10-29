@@ -96,7 +96,7 @@ namespace OpenRa.Game
 
 		public Cursor ChooseCursor()
 		{
-			var c = (orderGenerator != null) ? orderGenerator.Order(dragEnd.ToInt2(), false)
+			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(), false)
 				.Select(a => a.Cursor)
 				.FirstOrDefault(a => a != null) : null;
 
