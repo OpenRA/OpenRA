@@ -20,7 +20,6 @@ namespace OpenRa.Game
 		public static World world;
 		public static Map map;
 		static TreeCache treeCache;
-		public static TerrainRenderer terrain;
 		public static Viewport viewport;
 		public static PathFinder PathFinder;
 		public static WorldRenderer worldRenderer;
@@ -55,7 +54,6 @@ namespace OpenRa.Game
 
 			viewport = new Viewport( clientSize, map.Offset, map.Offset + map.Size, renderer );
 
-			terrain = new TerrainRenderer(renderer, map, viewport);
 			world = new World();
 			treeCache = new TreeCache(map);
 
@@ -68,10 +66,10 @@ namespace OpenRa.Game
 			LoadMapBuildings(mapFile);
 			LoadMapUnits(mapFile);
 
-			PathFinder = new PathFinder(map, terrain.tileSet);
-
 			controller = new Controller();
 			worldRenderer = new WorldRenderer(renderer);
+
+			PathFinder = new PathFinder( map, worldRenderer.terrainRenderer.tileSet );
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
@@ -144,7 +142,7 @@ namespace OpenRa.Game
 
 			return map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
-					terrain.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					worldRenderer.terrainRenderer.tileSet.GetWalkability( map.MapTiles[ a.X, a.Y ] ) ) < double.PositiveInfinity;
 		}
 
 		static IEnumerable<Actor> FindUnits(float2 a, float2 b)

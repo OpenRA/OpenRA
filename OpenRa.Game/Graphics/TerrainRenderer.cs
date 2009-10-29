@@ -12,19 +12,14 @@ namespace OpenRa.Game.Graphics
 		IndexBuffer indexBuffer;
 		Sheet terrainSheet;
 		public TileSet tileSet;
-		Region region;
 
 		Renderer renderer;
 		Map map;
-        Viewport viewport;
 		OverlayRenderer overlayRenderer;
 
-		public TerrainRenderer(Renderer renderer, Map map, Viewport viewport)
+		public TerrainRenderer(Renderer renderer, Map map)
 		{
 			this.renderer = renderer;
-            this.viewport = viewport;
-			region = Region.Create(viewport, DockStyle.Left, viewport.Width - 128, Draw, null );
-			viewport.AddRegion(region);
 			this.map = map;
 			overlayRenderer = new OverlayRenderer( renderer, map );
 
@@ -60,14 +55,14 @@ namespace OpenRa.Game.Graphics
 			indexBuffer.SetData( indices );
 		}
 
-		void Draw()
+		public void Draw( Viewport viewport )
 		{
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;
 
-			int visibleRows = (int)(region.Size.Y / 24.0f + 2);
+			int visibleRows = (int)(viewport.Width / 24.0f + 2);
 
-			int firstRow = (int)((region.Position.Y + viewport.Location.Y) / 24.0f - map.YOffset);
+			int firstRow = (int)((viewport.Location.Y) / 24.0f - map.YOffset);
 			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)

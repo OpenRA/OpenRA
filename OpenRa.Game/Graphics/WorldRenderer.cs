@@ -9,6 +9,7 @@ namespace OpenRa.Game.Graphics
 {
 	class WorldRenderer
 	{
+		public readonly TerrainRenderer terrainRenderer;
 		public readonly SpriteRenderer spriteRenderer;
         public readonly LineRenderer lineRenderer;
 		public readonly Region region;
@@ -19,6 +20,8 @@ namespace OpenRa.Game.Graphics
 
 		public WorldRenderer(Renderer renderer)
 		{
+			terrainRenderer = new TerrainRenderer( renderer, Game.map );
+
 			// TODO: this is layout policy. it belongs at a higher level than this.
 			region = Region.Create(Game.viewport, DockStyle.Left,
 				Game.viewport.Width - 128, Draw, 
@@ -53,6 +56,8 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw()
 		{
+			terrainRenderer.Draw( Game.viewport );
+
 			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(), 
                 region.Size.ToSizeF());
 
