@@ -27,7 +27,6 @@ namespace OpenRa.Game
 
 		static string[] groups = new string[] { "Building", "Vehicle", "Ship", "Infantry", "Plane" };
 
-		Dictionary<string, string> itemGroups = new Dictionary<string,string>();				//item->group
 		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
 		
 		List<SidebarItem> items = new List<SidebarItem>();
@@ -78,13 +77,12 @@ namespace OpenRa.Game
 
 		void LoadSprites( string group )
 		{
-			foreach( var u in Rules.Categories[ group + "Types" ] )
+			foreach( var u in Rules.Categories[ group ] )
 			{
 				var unit = Rules.UnitInfo[ u ];
 
 				if( unit.TechLevel != -1 )
 					sprites.Add( unit.Name, SpriteSheetBuilder.LoadSprite( unit.Name + "icon", ".shp" ) );
-				itemGroups.Add( unit.Name, group );
 			}
 		}
 
@@ -129,7 +127,7 @@ namespace OpenRa.Game
 		{
 			foreach( SidebarItem i in items )
 			{
-				var group = itemGroups[ i.techTreeItem.tag ];
+				var group = Rules.UnitCategory[ i.techTreeItem.tag ];
 				var producing = player.Producing( group );
 				if( producing != null && producing.Item == i.techTreeItem.tag )
 				{
@@ -163,7 +161,7 @@ namespace OpenRa.Game
 				var item = GetItem(point);
 				if (item != null)
 				{
-					string group = itemGroups[item.techTreeItem.tag];
+					string group = Rules.UnitCategory[ item.techTreeItem.tag ];
 					if (player.Producing(group) == null)
 					{
 						player.BeginProduction( group, new ProductionItem( item.techTreeItem.tag, 25, 0 ) );
@@ -177,7 +175,7 @@ namespace OpenRa.Game
 				var item = GetItem(point);
 				if( item != null )
 				{
-					string group = itemGroups[ item.techTreeItem.tag ];
+					string group = Rules.UnitCategory[ item.techTreeItem.tag ];
 					player.CancelProduction( group );
 				}
 			}

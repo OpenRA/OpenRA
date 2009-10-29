@@ -34,10 +34,8 @@ namespace OpenRa.TechTree
 
 		void LoadRules()
 		{
-			var allBuildings = Rules.Categories["BuildingTypes"];
-
 			foreach( var unit in Rules.UnitInfo )
-				objects.Add( unit.Key, new Item( unit.Key, unit.Value, allBuildings.Contains( unit.Key ) ) );
+				objects.Add( unit.Key, new Item( unit.Key, unit.Value, Rules.UnitCategory[ unit.Key ] == "Building" ) );
 		}
 
 		public bool Build(string key, bool force)

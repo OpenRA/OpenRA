@@ -50,7 +50,7 @@ namespace OpenRa.TechTree
 			if (soviet.Remove("tent")) soviet.Add("barr");
 			if (allied.Remove("barr")) allied.Add("tent");
 
-			if( Rules.Categories[ "InfantryTypes" ].Contains( tag ) )
+			if( Rules.UnitCategory[ tag ] == "Infantry" )
 			{
 				if( !allied.Contains( "tent" ) ) allied.Add( "tent" );
 				if( !soviet.Contains( "barr" ) ) soviet.Add( "barr" );
