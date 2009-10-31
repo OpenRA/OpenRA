@@ -53,5 +53,26 @@ namespace OpenRa.Game.Traits
 
 			return facing + turn;
 		}
+
+		public static int2 GetTurretPosition(Actor self, int[] offset)
+		{
+			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			if (ru == null) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
+
+			var bodyFacing = self.traits.Get<Mobile>().facing;
+			var quantizedFacing = bodyFacing - bodyFacing % ru.anim.CurrentSequence.Length;
+
+			var angle = (quantizedFacing / 256f) * (2 * (float)Math.PI);
+			var sinAngle = Math.Sin(angle);
+			var cosAngle = Math.Cos(angle);
+
+			var pos = new int2(
+				(int)(cosAngle * offset[0] + sinAngle * offset[1]),
+				(int)(cosAngle * offset[1] - sinAngle * offset[0]));
+
+			pos.Y = (int)(.7f * pos.Y);
+			return pos;
+		}
+
 	}
 }

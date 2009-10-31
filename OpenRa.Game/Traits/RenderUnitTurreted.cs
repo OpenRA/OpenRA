@@ -21,8 +21,13 @@ namespace OpenRa.Game.Traits
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
 		{
 			var mobile = self.traits.Get<Mobile>();
+
 			yield return Centered(anim.Image, self.CenterLocation);
-			yield return Centered(turretAnim.Image, self.CenterLocation);
+			yield return Centered(turretAnim.Image, self.CenterLocation 
+				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset).ToFloat2());
+			if (self.unitInfo.SecondaryOffset != null)
+				yield return Centered(turretAnim.Image, self.CenterLocation
+					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset).ToFloat2());
 		}
 
 		public override void Tick(Actor self)

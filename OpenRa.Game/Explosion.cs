@@ -19,7 +19,8 @@ namespace OpenRa.Game
 
 			anim = new Animation("explosion");
 			if (style != 0)
-				anim.PlayThen(style.ToString(), () => Game.world.AddFrameEndTask(w => w.Remove(this)));
+				anim.PlayThen(style.ToString(), 
+					() => Game.world.AddFrameEndTask(w => w.Remove(this)));
 			else
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 		}

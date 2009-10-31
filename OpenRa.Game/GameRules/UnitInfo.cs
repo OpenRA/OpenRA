@@ -47,6 +47,8 @@ namespace OpenRa.Game.GameRules
 		public readonly int TechLevel = -1;
 		public readonly bool WaterBound = false;
 		public readonly string[] BuiltAt = { };
+		public readonly int[] PrimaryOffset = { 0, 0 };
+		public readonly int[] SecondaryOffset = null;
 
 		public UnitInfo(string name) { Name = name; }
 
