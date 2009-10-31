@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -467,5 +467,13 @@
   </unit>
   <unit name="lst">
     <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="pips">
+    <sequence name="groups" start="8" length="10" />
+    <sequence name="ore" start="0" length="2" />
+    <sequence name="cargo" start="5" length="3" />
+    <sequence name="medic" start="20" length="1" />
+    <sequence name="ready" start="3" length="1" />
+    <sequence name="hold" start="4" length="1" />
   </unit>
 </sequences>

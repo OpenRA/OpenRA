@@ -80,6 +80,8 @@ namespace OpenRa.Game
 			{
 				Game.Tick();
 				Game.viewport.cursor = Game.controller.ChooseCursor();
+				if (Game.controller.orderGenerator != null)
+					Game.controller.orderGenerator.Tick();
 				Application.DoEvents();
 			}
 		}

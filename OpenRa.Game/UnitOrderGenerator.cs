@@ -24,6 +24,11 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void PrepareOverlay( int2 xy ) { }
+		public void Tick()
+		{
+			selection.RemoveAll(a => a.IsDead);
+		}
+
+		public void PrepareOverlay(int2 xy) {}
 	}
 }

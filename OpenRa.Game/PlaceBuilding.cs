@@ -49,5 +49,7 @@ namespace OpenRa.Game
 		{
 			Game.worldRenderer.uiOverlay.SetCurrentOverlay(xy, Name);
 		}
+
+		public void Tick() { }
 	}
 }

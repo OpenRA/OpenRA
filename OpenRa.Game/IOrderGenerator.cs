@@ -8,5 +8,6 @@ namespace OpenRa.Game
 	{
 		IEnumerable<Order> Order( int2 xy, bool lmb );
 		void PrepareOverlay( int2 xy );
+		void Tick();
 	}
 }

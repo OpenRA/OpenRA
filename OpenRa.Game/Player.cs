@@ -86,12 +86,14 @@ namespace OpenRa.Game
 		public int RemainingCost { get; private set; }
 
 		public bool Paused = false, Done = false;
+		public Action OnComplete;
 
-		public ProductionItem( string item, int time, int cost )
+		public ProductionItem( string item, int time, int cost, Action onComplete )
 		{
 			Item = item;
 			RemainingTime = TotalTime = time;
 			RemainingCost = TotalCost = cost;
+			OnComplete = onComplete;
 		}
 
 		public void Tick( Player player )
@@ -107,6 +109,8 @@ namespace OpenRa.Game
 
 			// item finished; do whatever needs done.
 			Done = true;
+			if (OnComplete != null)
+				OnComplete();
 		}
 	}
 }

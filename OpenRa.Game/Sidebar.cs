@@ -16,6 +16,8 @@ namespace OpenRa.Game
 
 		SpriteRenderer spriteRenderer, clockRenderer;
 		Sprite blank;
+		Animation ready;
+		Animation cantBuild;
 		readonly GRegion region;
 
 		public GRegion Region { get { return region; } }
@@ -49,6 +51,11 @@ namespace OpenRa.Game
 			}
 
 			blank = SheetBuilder.Add(new Size((int)spriteWidth, (int)spriteHeight), 16);
+			ready = new Animation("pips");
+			ready.PlayRepeating("ready");
+
+			cantBuild = new Animation("clock");
+			cantBuild.PlayFetchIndex("idle", () => 0);
 		}
 
 		const int NumClockFrames = 54;
@@ -125,7 +132,12 @@ namespace OpenRa.Game
 		void Paint()
 		{
 			PopulateItemList();
-			foreach( SidebarItem i in items )
+
+			foreach( var i in items )			/* draw the buttons */
+				i.Paint(spriteRenderer, region.Location);
+			spriteRenderer.Flush();
+
+			foreach( var i in items )			/* draw the status overlays */
 			{
 				var group = Rules.UnitCategory[ i.Tag ];
 				var producing = player.Producing( group );
@@ -133,8 +145,12 @@ namespace OpenRa.Game
 				{
 					clockAnimations[ group ].Tick();
 					clockRenderer.DrawSprite( clockAnimations[ group ].Image, region.Location.ToFloat2() + i.location, 0 );
+
+					if (producing.Done)
+						clockRenderer.DrawSprite(ready.Image, region.Location.ToFloat2() + i.location + new float2((64 - ready.Image.size.X) / 2, 2), 0);
 				}
-				i.Paint( spriteRenderer, region.Location );
+				else if (producing != null)
+					clockRenderer.DrawSprite(cantBuild.Image, region.Location.ToFloat2() + i.location, 0);
 			}
 
 			Fill(region.Size.Y + region.Location.Y, new float2(region.Location.X, buildPos + region.Location.Y));
@@ -151,6 +167,11 @@ namespace OpenRa.Game
 					return i;
 
 			return null;
+		}
+
+		static bool IsAutoCompleting(string group)
+		{
+			return group != "Building";
 		}
 
 		void MouseHandler(MouseInput mi)
@@ -172,17 +193,21 @@ namespace OpenRa.Game
 						* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 						/ 1000;
 
+					Action complete = null;
+					if (IsAutoCompleting(group)) complete = () => Build(item);
+
 					player.BeginProduction(group,
-						new ProductionItem(item.Tag, (int)time, ui.Cost));
-					//Build(item);
+						new ProductionItem(item.Tag, (int)time, ui.Cost, complete));
 				}
-				else if (producing.Item == item.Tag)
+				else if (producing.Item == item.Tag && producing.Done)
 				{
 					Build(item);
 				}
             }
-			else if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
-				player.CancelProduction( Rules.UnitCategory[ item.Tag ] );
+			else if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
+			{
+				player.CancelProduction(Rules.UnitCategory[item.Tag]);
+			}
 		}
 	}
 }
