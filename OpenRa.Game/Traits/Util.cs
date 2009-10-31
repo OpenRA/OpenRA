@@ -54,7 +54,30 @@ namespace OpenRa.Game.Traits
 			return facing + turn;
 		}
 
-		public static int2 GetTurretPosition(Actor self, int[] offset)
+		static float2 RotateVectorByFacing(float2 v, int facing, float ecc)
+		{
+			var angle = (facing / 256f) * (2 * (float)Math.PI);
+			var sinAngle = (float)Math.Sin(angle);
+			var cosAngle = (float)Math.Cos(angle);
+
+			return new float2(
+				(cosAngle * v.X + sinAngle * v.Y),
+				ecc * (cosAngle * v.Y - sinAngle * v.X));
+		}
+
+		static float2 GetRecoil(Actor self, float recoil)
+		{
+			if (self.unitInfo.Recoil == 0) return float2.Zero;
+			var rut = self.traits.WithInterface<RenderUnitTurreted>().FirstOrDefault();
+			if (rut == null) return float2.Zero;
+
+			var facing = self.traits.Get<Turreted>().turretFacing;
+			var quantizedFacing = facing - facing % rut.turretAnim.CurrentSequence.Length;
+
+			return RotateVectorByFacing(new float2(0, recoil * self.unitInfo.Recoil), quantizedFacing, .7f);
+		}
+
+		public static float2 GetTurretPosition(Actor self, int[] offset, float recoil)
 		{
 			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
 			if (ru == null) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
@@ -62,16 +85,7 @@ namespace OpenRa.Game.Traits
 			var bodyFacing = self.traits.Get<Mobile>().facing;
 			var quantizedFacing = bodyFacing - bodyFacing % ru.anim.CurrentSequence.Length;
 
-			var angle = (quantizedFacing / 256f) * (2 * (float)Math.PI);
-			var sinAngle = Math.Sin(angle);
-			var cosAngle = Math.Cos(angle);
-
-			var pos = new int2(
-				(int)(cosAngle * offset[0] + sinAngle * offset[1]),
-				(int)(cosAngle * offset[1] - sinAngle * offset[0]));
-
-			pos.Y = (int)(.7f * pos.Y);
-			return pos;
+			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil));
 		}
 
 	}

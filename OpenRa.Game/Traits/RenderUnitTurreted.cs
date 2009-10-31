@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits
 	class RenderUnitTurreted : RenderUnit
 	{
 		public Animation turretAnim;
+		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
 
 		public RenderUnitTurreted(Actor self)
 			: base(self)
@@ -24,16 +25,18 @@ namespace OpenRa.Game.Traits
 
 			yield return Centered(anim.Image, self.CenterLocation);
 			yield return Centered(turretAnim.Image, self.CenterLocation 
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset).ToFloat2());
+				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Centered(turretAnim.Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset).ToFloat2());
+					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, secondaryRecoil));
 		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
 			turretAnim.Tick();
+			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
+			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
 		}
 	}
 }

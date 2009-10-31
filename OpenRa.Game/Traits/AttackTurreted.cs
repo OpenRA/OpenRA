@@ -26,14 +26,28 @@ namespace OpenRa.Game.Traits
 
 		protected void DoAttack( Actor self )
 		{
-			if( self.unitInfo.Primary != null && CheckFire( self, self.unitInfo.Primary, ref primaryFireDelay, self.unitInfo.PrimaryOffset ) )
+			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
+
+			if( self.unitInfo.Primary != null && CheckFire( self, self.unitInfo.Primary, ref primaryFireDelay, 
+				self.unitInfo.PrimaryOffset ) )
 			{
 				secondaryFireDelay = Math.Max( 4, secondaryFireDelay );
+				if (rut != null) rut.primaryRecoil = 1;
 				return;
 			}
-			if( self.unitInfo.Secondary != null && CheckFire( self, self.unitInfo.Secondary, ref secondaryFireDelay, 
-				self.unitInfo.SecondaryOffset ?? self.unitInfo.PrimaryOffset) )
+
+			if (self.unitInfo.Secondary != null && CheckFire(self, self.unitInfo.Secondary, ref secondaryFireDelay,
+				self.unitInfo.SecondaryOffset ?? self.unitInfo.PrimaryOffset))
+			{
+				if (rut != null)
+				{
+					if (self.unitInfo.SecondaryOffset != null)
+						rut.secondaryRecoil = 1;
+					else
+						rut.primaryRecoil = 1;
+				}
 				return;
+			}
 		}
 
 		bool CheckFire( Actor self, string weaponName, ref int fireDelay, int[] offset )
@@ -45,7 +59,7 @@ namespace OpenRa.Game.Traits
 			fireDelay = weapon.ROF;
 
 			Game.world.Add( new Bullet( weaponName, self.Owner, self,
-				self.CenterLocation.ToInt2() + Util.GetTurretPosition( self, offset ),
+				self.CenterLocation.ToInt2() + Util.GetTurretPosition( self, offset, 0f ).ToInt2(),
 				target.CenterLocation.ToInt2() ) );
 
 			return true;
