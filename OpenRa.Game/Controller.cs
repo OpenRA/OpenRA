@@ -94,6 +94,8 @@ namespace OpenRa.Game
 			}
 		}
 
+		public float2 MousePosition { get { return dragEnd; } }
+
 		public Cursor ChooseCursor()
 		{
 			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(), false)

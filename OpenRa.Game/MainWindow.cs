@@ -118,10 +118,6 @@ namespace OpenRa.Game
                 Event = MouseInputEvent.Move,
                 Location = new int2(e.Location)
             });
-
-			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.PrepareOverlay(
-					((1 / 24f) * (new float2(e.Location) + Game.viewport.Location)).ToInt2());
 		}
 
         protected override void OnMouseUp(MouseEventArgs e)

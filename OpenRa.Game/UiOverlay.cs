@@ -41,9 +41,12 @@ namespace OpenRa.Game
 						if (Game.UnitInfluence.GetUnitAt(new int2(i, j)) != null)
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
 
-			if (!hasOverlay) return;
+			var placeBuilding = Game.controller.orderGenerator as PlaceBuilding;
+			if (placeBuilding == null) return;
 
-			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
+			var position = Game.controller.MousePosition.ToInt2();
+
+			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[placeBuilding.Name];
 			
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
 			var tooFarFromBase = !Footprint.Tiles(bi, position).Any(
@@ -55,22 +58,6 @@ namespace OpenRa.Game
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 
 			spriteRenderer.Flush();
-		}
-
-		bool hasOverlay;
-		int2 position;
-		string name;
-
-		public void KillOverlay()
-		{
-			hasOverlay = false;
-		}
-
-		public void SetCurrentOverlay(int2 cell, string name)
-		{
-			hasOverlay = true;
-			position = cell;
-			this.name = name;
 		}
 	}
 }

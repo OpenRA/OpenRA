@@ -61,7 +61,6 @@ namespace OpenRa.Game
 						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building.Name ), order.Player ) );
 
 						Game.controller.orderGenerator = null;
-						Game.worldRenderer.uiOverlay.KillOverlay();
 
 						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
 					} );

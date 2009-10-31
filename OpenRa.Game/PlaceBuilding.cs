@@ -37,17 +37,8 @@ namespace OpenRa.Game
 			}
 			else // rmb
 			{
-				Game.world.AddFrameEndTask( _ =>
-				{
-					Game.controller.orderGenerator = null;
-					Game.worldRenderer.uiOverlay.KillOverlay();
-				} );
+				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
 			}
-		}
-
-		public void PrepareOverlay(int2 xy)
-		{
-			Game.worldRenderer.uiOverlay.SetCurrentOverlay(xy, Name);
 		}
 
 		public void Tick() { }
