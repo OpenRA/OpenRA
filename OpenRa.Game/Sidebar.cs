@@ -162,19 +162,24 @@ namespace OpenRa.Game
 
 			if( mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down )
             {
-					string group = Rules.UnitCategory[ item.Tag ];
-					if (player.Producing(group) == null)
-					{
-						var ui = Rules.UnitInfo[item.Tag];
-						var time = ui.Cost 
-							* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
-							* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
-							/ 1000;
+				string group = Rules.UnitCategory[ item.Tag ];
+				var producing = player.Producing(group);
+				if (producing == null)
+				{
+					var ui = Rules.UnitInfo[item.Tag];
+					var time = ui.Cost
+						* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
+						* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+						/ 1000;
 
-						player.BeginProduction( group, 
-							new ProductionItem( item.Tag, (int)time, ui.Cost ) );
-						Build(item);
-					}
+					player.BeginProduction(group,
+						new ProductionItem(item.Tag, (int)time, ui.Cost));
+					//Build(item);
+				}
+				else if (producing.Item == item.Tag)
+				{
+					Build(item);
+				}
             }
 			else if( mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down )
 				player.CancelProduction( Rules.UnitCategory[ item.Tag ] );

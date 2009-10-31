@@ -62,6 +62,8 @@ namespace OpenRa.Game
 
 						Game.controller.orderGenerator = null;
 						Game.worldRenderer.uiOverlay.KillOverlay();
+
+						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
 					} );
 					break;
 				}
