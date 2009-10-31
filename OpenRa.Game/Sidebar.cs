@@ -165,7 +165,14 @@ namespace OpenRa.Game
 					string group = Rules.UnitCategory[ item.Tag ];
 					if (player.Producing(group) == null)
 					{
-						player.BeginProduction( group, new ProductionItem( item.Tag, 25, 0 ) );
+						var ui = Rules.UnitInfo[item.Tag];
+						var time = ui.Cost 
+							* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
+							* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+							/ 1000;
+
+						player.BeginProduction( group, 
+							new ProductionItem( item.Tag, (int)time, ui.Cost ) );
 						Build(item);
 					}
             }
