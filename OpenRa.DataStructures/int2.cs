@@ -43,5 +43,7 @@ namespace OpenRa
 		public Point ToPoint() { return new Point(X, Y); }
         public PointF ToPointF() { return new PointF(X, Y); }
 		public float2 ToFloat2() { return new float2(X, Y); }
+
+		public override string ToString() { return string.Format("({0},{1})", X, Y); }
 	}
 }

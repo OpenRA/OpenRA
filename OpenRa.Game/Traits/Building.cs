@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits
 		bool first = true;
 		public void Tick(Actor self)
 		{
-			if (first && self.Owner == Game.LocalPlayer)
+			if (first)
 				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
 
 			first = false;
