@@ -124,16 +124,35 @@ namespace OpenRa.Game
 			soundEngine.Play2D(sound, loop, false, false);
 		}
 
+		static int lastTime = Environment.TickCount;
+		public const int timestep = 40;
+
+		public static void ResetTimer()
+		{
+			lastTime = Environment.TickCount;
+		}
+
 		public static void Tick()
 		{
-			world.Update();
-			UnitInfluence.Tick();
-			foreach( var player in players.Values )
-				player.Tick();
+			int t = Environment.TickCount;
+			int dt = t - lastTime;
+			if( dt >= timestep )
+			{
+				lastTime += timestep;
 
+				if( controller.orderGenerator != null )
+					controller.orderGenerator.Tick();
+
+				world.Tick();
+				UnitInfluence.Tick();
+				foreach( var player in players.Values )
+					player.Tick();
+
+				orderManager.Tick();
+			}
+
+			viewport.cursor = controller.ChooseCursor();
 			viewport.DrawRegions();
-
-			orderManager.Tick();
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)

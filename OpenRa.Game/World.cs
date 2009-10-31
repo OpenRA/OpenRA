@@ -11,8 +11,6 @@ namespace OpenRa.Game
 		List<Actor> actors = new List<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
-		int lastTime = Environment.TickCount;
-		const int timestep = 40;
 
 		public void Add(Actor a) { actors.Add(a); ActorAdded(a); }
 		public void Remove(Actor a) { actors.Remove(a); ActorRemoved(a); }
@@ -30,25 +28,13 @@ namespace OpenRa.Game
 				nr.Removed(a);
 		};
 
-		public void ResetTimer()
+		public void Tick()
 		{
-			lastTime = Environment.TickCount;
-		}
+			foreach (var a in actors) a.Tick();
+			foreach (var e in effects) e.Tick();
 
-		public void Update()
-		{
-			int t = Environment.TickCount;
-			int dt = t - lastTime;
-			if (dt >= timestep)
-			{
-				lastTime += timestep;
-
-				foreach (var a in actors) a.Tick();
-				foreach (var e in effects) e.Tick();
-
-				Renderer.waterFrame += 0.00125f * timestep;
-				Game.viewport.Tick();
-			}
+			Renderer.waterFrame += 0.00125f * Game.timestep;
+			Game.viewport.Tick();
 
 			foreach (Action<World> a in frameEndActions) a(this);
 			frameEndActions.Clear();
