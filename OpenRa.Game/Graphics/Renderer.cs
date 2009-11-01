@@ -96,5 +96,10 @@ namespace OpenRa.Game.Graphics
 			fhDebug.Draw(sh, text, pos.X, pos.Y, c.ToArgb());
 			sh.End();
 		}
+
+		public int2 MeasureText(string text)
+		{
+			return new int2(fhDebug.MeasureText(sh, text));
+		}
 	}
 }

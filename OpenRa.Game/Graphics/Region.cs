@@ -20,6 +20,8 @@ namespace OpenRa.Game.Graphics
 		Action drawFunction;
         Action<MouseInput> mouseHandler;
 		Rectangle rect;
+		public bool UseScissor = true;
+		public bool AlwaysWantMovement = false;
 
 		static int2 MakeSize(Viewport v, DockStyle d, int size)
 		{
@@ -40,7 +42,6 @@ namespace OpenRa.Game.Graphics
 
         public bool HandleMouseInput(MouseInput mi)
         {
-            /* todo: route to the mousehandler once that's sorted */
             if (mouseHandler != null) mouseHandler(new MouseInput
             {
                 Button = mi.Button,
@@ -83,9 +84,11 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw(Renderer renderer)
 		{
-			renderer.Device.EnableScissor((int)location.X, (int)location.Y, (int)Size.X, (int)Size.Y);
+			if (UseScissor)
+				renderer.Device.EnableScissor((int)location.X, (int)location.Y, (int)Size.X, (int)Size.Y);
 			drawFunction();
-			renderer.Device.DisableScissor();
+			if (UseScissor)
+				renderer.Device.DisableScissor();
 		}
 	}
 }

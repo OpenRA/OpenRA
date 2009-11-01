@@ -74,6 +74,10 @@ namespace OpenRa.Game.Graphics
                 return;
             }
 
+			if (mi.Event == MouseInputEvent.Move)
+				foreach (var reg in regions.Where(r => r.AlwaysWantMovement))
+					reg.HandleMouseInput(mi);
+
             dragRegion = regions.FirstOrDefault(r => r.Contains(mi.Location) && r.HandleMouseInput(mi));
             if (mi.Event != MouseInputEvent.Down)
                 dragRegion = null;

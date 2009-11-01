@@ -66,9 +66,8 @@ namespace OpenRa.Game
 			Game.world.Add(new Actor("ca", Game.map.Offset + new int2(40, 7), Game.players[1]));
 			Game.world.Add(new Actor("e1", Game.map.Offset + new int2(9, 13), Game.players[1]));
 
-			sidebar = new Sidebar(renderer, Game.LocalPlayer);
-
 			renderer.BuildPalette(Game.map);
+			sidebar = new Sidebar(renderer, Game.LocalPlayer);
 
 			ShowCursor(false);
 

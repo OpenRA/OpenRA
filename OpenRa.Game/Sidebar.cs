@@ -15,6 +15,7 @@ namespace OpenRa.Game
 		Player player;
 
 		SpriteRenderer spriteRenderer, clockRenderer;
+		Renderer renderer;
 		Sprite blank;
 		Animation ready;
 		Animation cantBuild;
@@ -35,7 +36,10 @@ namespace OpenRa.Game
 		public Sidebar( Renderer renderer, Player player )
 		{
 			this.player = player;
+			this.renderer = renderer;
 			region = GRegion.Create(Game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
+			region.UseScissor = false;
+			region.AlwaysWantMovement = true;
 			Game.viewport.AddRegion( region );
 			spriteRenderer = new SpriteRenderer(renderer, false);
 			clockRenderer = new SpriteRenderer(renderer, true);
@@ -158,6 +162,24 @@ namespace OpenRa.Game
 
 			spriteRenderer.Flush();
 			clockRenderer.Flush();
+
+			if (mouseOverItem != null)
+			{
+				/* draw the sidebar help for this item */
+				/* todo: draw a solid background of the appropriate color */
+				var ui = Rules.UnitInfo[mouseOverItem.Tag];
+				var text = string.Format(ui.Cost > 0 ? "{0} ($ {1})" : "{0}",	/* abilities! */
+					ui.Description, ui.Cost);
+
+				var size = renderer.MeasureText(text);
+
+				var pos = region.Position + mouseOverItem.location.ToInt2() -new int2(size.X+ 10, 0);
+				renderer.DrawText( text, pos + new int2(0,-1), Color.Black );
+				renderer.DrawText(text, pos + new int2(0, 1), Color.Black);
+				renderer.DrawText(text, pos + new int2(1, 0), Color.Black);
+				renderer.DrawText(text, pos + new int2(-1, 0), Color.Black);
+				renderer.DrawText(text, pos , Color.White);
+			}
 		}
 
 		public SidebarItem GetItem(float2 point)
@@ -174,10 +196,13 @@ namespace OpenRa.Game
 			return group != "Building";
 		}
 
+		SidebarItem mouseOverItem;
+
 		void MouseHandler(MouseInput mi)
 		{
 			var point = mi.Location.ToFloat2();
 			var item = GetItem( point );
+			mouseOverItem = item;
 			if( item == null )
 				return;
 
