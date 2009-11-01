@@ -92,9 +92,10 @@ namespace OpenRa.Game
 			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null, Cursor.Attack);
 		}
 
-		public static Order Move(Actor subject, int2 target)
+		public static Order Move(Actor subject, int2 target, bool isBlocked)
 		{
-			return new Order(subject.Owner, "Move", subject, null, target, null, Cursor.Move);
+			return new Order(subject.Owner, "Move", subject, null, target, null, 
+				isBlocked ? Cursor.MoveBlocked : Cursor.Move);
 		}
 
 		public static Order DeployMcv(Actor subject)

@@ -55,10 +55,10 @@ namespace OpenRa.Game.Traits
 			if( underCursor != null )
 				return null;
 
-			if( xy != toCell )
-				return OpenRa.Game.Order.Move( self, xy );
+			if (xy == toCell) return null;
 
-			return null;
+			return OpenRa.Game.Order.Move( self, xy, 
+				!Game.IsCellBuildable(xy, GetMovementType()) );
 		}
 
 		public void Cancel(Actor self)
