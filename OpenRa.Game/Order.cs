@@ -98,9 +98,10 @@ namespace OpenRa.Game
 				isBlocked ? Cursor.MoveBlocked : Cursor.Move);
 		}
 
-		public static Order DeployMcv(Actor subject)
+		public static Order DeployMcv(Actor subject, bool isBlocked)
 		{
-			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, null, Cursor.Deploy);
+			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, isBlocked ? "nop" : null, 
+				isBlocked ? Cursor.DeployBlocked : Cursor.Deploy);
 		}
 
 		public static Order PlaceBuilding(Player subject, int2 target, string buildingName)

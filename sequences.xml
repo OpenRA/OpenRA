@@ -385,7 +385,7 @@
     <sequence name="heal-minimap" start="194" length="1" />
     <sequence name="attack2" start="195" length="8" x="12" y="12" />
     <sequence name="attack2-minimap" start="203" length="8" />
-    <sequence name="deploy-blocked" start="211" length="1" />
+    <sequence name="deploy-blocked" start="211" length="1" x="12" y="12" />
     <sequence name="enter-blocked" start="212" length="1" />
     <sequence name="repair2-blocked" start="213" length="1" />
     <sequence name="ability-minimap" start="214" length="8" />

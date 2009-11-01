@@ -25,5 +25,6 @@ namespace OpenRa.Game
 		public static Cursor Attack { get { return new Cursor("attack"); } }
 		public static Cursor Deploy { get { return new Cursor("deploy"); } }
 		public static Cursor Enter { get { return new Cursor("enter"); } }
+		public static Cursor DeployBlocked { get { return new Cursor("deploy-blocked"); } }
 	}
 }

@@ -21,7 +21,6 @@ namespace OpenRa.Game
 		{
 			if( lmb )
 			{
-				// todo: check that space is free
 				var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[ Name ];
 				if( Footprint.Tiles( bi, xy ).Any(
 					t => !Game.IsCellBuildable( t,

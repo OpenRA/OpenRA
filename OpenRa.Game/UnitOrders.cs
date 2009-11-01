@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Traits;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -45,6 +46,10 @@ namespace OpenRa.Game
 				}
 			case "DeployMcv":
 				{
+					var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo["fact"];
+					if (!Game.CanPlaceBuilding("fact", order.Subject.Location, order.Subject))
+						break;	/* throw the order on the floor */
+
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.QueueActivity( new Mobile.Turn( 96 ) );
 					mobile.QueueActivity( new Traits.Activities.DeployMcv() );

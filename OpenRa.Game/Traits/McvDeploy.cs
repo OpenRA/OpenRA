@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -13,11 +14,10 @@ namespace OpenRa.Game.Traits
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
-			if( lmb ) return null;
+			if (lmb) return null;
 
-			// TODO: check that there's enough space at the destination.
-			if( xy == self.Location )
-				return OpenRa.Game.Order.DeployMcv( self );
+			if (xy == self.Location)
+				return OpenRa.Game.Order.DeployMcv(self, !Game.CanPlaceBuilding("fact", xy, self));
 
 			return null;
 		}

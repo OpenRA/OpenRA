@@ -157,8 +157,13 @@ namespace OpenRa.Game
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)
 		{
+			return IsCellBuildable(a, umt, null);
+		}
+
+		public static bool IsCellBuildable(int2 a, UnitMovementType umt, Actor toIgnore)
+		{
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
-			if (UnitInfluence.GetUnitAt(a) != null) return false;
+			if (UnitInfluence.GetUnitAt(a) != null && UnitInfluence.GetUnitAt(a) != toIgnore) return false;
 
 			return map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
@@ -244,6 +249,20 @@ namespace OpenRa.Game
 						return new int2(i, j);
 
 			return null;
+		}
+
+		public static bool CanPlaceBuilding(string name, int2 xy, Actor toIgnore)
+		{
+			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo["fact"];
+			return !Footprint.Tiles(bi, xy).Any(
+				t => !Game.IsCellBuildable(t,
+					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
+					toIgnore));
+		}
+
+		public static bool CanPlaceBuilding(string name, int2 xy)
+		{
+			return CanPlaceBuilding(name, xy, null);
 		}
 
 		public static void BuildUnit(Player player, string name)
