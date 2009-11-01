@@ -46,7 +46,6 @@ namespace OpenRa.Game
 				}
 			case "DeployMcv":
 				{
-					var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo["fact"];
 					if (!Game.CanPlaceBuilding("fact", order.Subject.Location, order.Subject))
 						break;	/* throw the order on the floor */
 
@@ -81,9 +80,21 @@ namespace OpenRa.Game
 					} );
 					break;
 				}
-			case "BuildUnit":
+			case "StartProduction":
 				{
-					Game.world.AddFrameEndTask(_ => Game.BuildUnit( order.Player, order.TargetString ));
+					string group = Rules.UnitCategory[ order.TargetString ];
+					var ui = Rules.UnitInfo[ order.TargetString ];
+					var time = ui.Cost
+						* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
+						* ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
+						/ 1000;
+
+					time = .05f * time;						/* temporary hax so we can build stuff fast for test */
+
+					Action complete = null;
+					if( group != "Building" ) complete = () => Game.world.AddFrameEndTask( _ => Game.BuildUnit( order.Player, order.TargetString ) );
+
+					order.Player.BeginProduction( group, new ProductionItem( order.TargetString, (int)time, ui.Cost, complete ) );
 					break;
 				}
 			default:

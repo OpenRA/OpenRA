@@ -109,14 +109,14 @@ namespace OpenRa.Game
 			return new Order(subject, "PlaceBuilding", null, null, target, buildingName, Cursor.Default);
 		}
 
-		public static Order BuildUnit(Player subject, string unitName)
-		{
-			return new Order(subject, "BuildUnit", null, null, int2.Zero, unitName, Cursor.Default);
-		}
-
 		public static Order DeliverOre(Actor subject, Actor target)
 		{
 			return new Order(subject.Owner, "DeliverOre", subject, target, int2.Zero, null, Cursor.Enter);
+		}
+
+		public static Order StartProduction(Player subject, string item)
+		{
+			return new Order(subject, "StartProduction", null, null, int2.Zero, item, Cursor.Default );
 		}
 	}
 }

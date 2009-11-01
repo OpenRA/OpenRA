@@ -73,15 +73,13 @@ namespace OpenRa.Game
 				};
 		}
 
-		public void Build(SidebarItem item)
+		public void Build( SidebarItem item )
 		{
-			if (item == null) return;
+			if( item == null ) return;
 
-			if (item.IsStructure)
-				Game.controller.orderGenerator = new PlaceBuilding(player,
-					item.Tag.ToLowerInvariant());
-			else
-				Game.controller.AddOrder(Order.BuildUnit(player, item.Tag.ToLowerInvariant()));
+			if( item.IsStructure )
+				Game.controller.orderGenerator = new PlaceBuilding( player,
+					item.Tag.ToLowerInvariant() );
 		}
 
 		void LoadSprites( string group )
@@ -224,20 +222,7 @@ namespace OpenRa.Game
 				
 				if (producing == null)
 				{
-					var ui = Rules.UnitInfo[item.Tag];
-					var time = ui.Cost
-						* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
-						* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
-						/ 1000;
-
-					time = .05f * time;						/* temporary hax so we can build stuff fast for test */
-
-					Action complete = null;
-					if (IsAutoCompleting(group)) complete = () => Build(item);
-
-					player.BeginProduction(group,
-						new ProductionItem(item.Tag, (int)time, ui.Cost, complete));
-
+					Game.controller.AddOrder( Order.StartProduction( player, item.Tag ) );
 					Game.PlaySound("abldgin1.aud", false);
 				}
 				else if (producing.Item == item.Tag)
