@@ -18,13 +18,16 @@ namespace OpenRa.Game.Traits
 		public RenderBuilding(Actor self)
 			: base(self)
 		{
-			anim.PlayThen("make", () => anim.PlayRepeating("idle"));
+			if (self.IsMapActor)
+				anim.PlayRepeating("idle");
+			else
+				anim.PlayThen("make", () => anim.PlayRepeating("idle"));
+
 			DoBib(self, false);
 		}
 
 		void DoBib(Actor self, bool isRemove)
 		{
-			// at this point, we already know where we are, so we can safely place the bib in the smudge
 			var buildingInfo = (UnitInfo.BuildingInfo)self.unitInfo;
 			if (buildingInfo.Bib)
 			{

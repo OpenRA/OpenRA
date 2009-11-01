@@ -87,7 +87,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ], true ) );
 			}
 		}
 
@@ -98,7 +98,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,action,trigger
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ], true ) );
 			}
 		}
 

@@ -21,8 +21,12 @@ namespace OpenRa.Game
 		public int2 Location;
 		public Player Owner;
 		public int Health;
+		public readonly bool IsMapActor;
 
-		public Actor( string name, int2 location, Player owner )
+		public Actor(string name, int2 location, Player owner)
+			: this( name, location, owner, false ) {}
+
+		public Actor( string name, int2 location, Player owner, bool isMapActor )
 		{
 			ActorID = Game.world.NextAID();
 			unitInfo = Rules.UnitInfo[ name ];
@@ -30,6 +34,7 @@ namespace OpenRa.Game
 			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
 			Owner = owner;
 			Health = unitInfo.Strength;	/* todo: handle cases where this is not true! */
+			IsMapActor = isMapActor;
 
 			if( unitInfo.Traits != null )
 			{
