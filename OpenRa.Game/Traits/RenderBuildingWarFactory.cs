@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 			this.self = self;
 
 			roof = new Animation(self.unitInfo.Image ?? self.unitInfo.Name);
-			anim.PlayThen("make", () =>
+			Make( () =>
 			{
 				doneBuilding = true;
 				anim.Play("idle");

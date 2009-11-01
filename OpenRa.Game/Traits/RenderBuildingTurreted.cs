@@ -10,7 +10,7 @@ namespace OpenRa.Game.Traits
 		public RenderBuildingTurreted(Actor self)
 			: base(self)
 		{
-			anim.PlayThen( "make", () => anim.PlayFetchIndex( "idle",
+			Make( () => anim.PlayFetchIndex( "idle",
 				() => self.traits.Get<Turreted>().turretFacing / 8 ) );
 		}
 	}

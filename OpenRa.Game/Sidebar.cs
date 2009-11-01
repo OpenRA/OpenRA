@@ -236,6 +236,7 @@ namespace OpenRa.Game
             }
 			else if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
 			{
+				if( producing == null ) return;
 				if (item.Tag != producing.Item) return;
 
 				if (producing.Paused || producing.Done)

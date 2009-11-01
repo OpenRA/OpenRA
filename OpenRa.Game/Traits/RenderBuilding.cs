@@ -18,12 +18,17 @@ namespace OpenRa.Game.Traits
 		public RenderBuilding(Actor self)
 			: base(self)
 		{
-			if (self.IsMapActor)
-				anim.PlayRepeating("idle");
-			else
-				anim.PlayThen("make", () => anim.PlayRepeating("idle"));
+			Make( () => anim.PlayRepeating("idle") );
 
 			DoBib(self, false);
+		}
+
+		protected void Make( Action after )
+		{
+			if (Game.skipMakeAnims)
+				after();
+			else
+				anim.PlayThen("make", after);
 		}
 
 		void DoBib(Actor self, bool isRemove)

@@ -27,9 +27,12 @@ namespace OpenRa.Game
 			savingReplay = new BinaryWriter( new FileStream( replayFilename, FileMode.Create ) );
 		}
 
-		public void Tick()
+		public bool Tick()
 		{
 			var localOrders = Game.controller.GetRecentOrders();
+			if( localOrders == null )
+				return false;
+
 			foreach( var p in players )
 				p.Tick( localOrders );
 
@@ -48,6 +51,8 @@ namespace OpenRa.Game
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
 			if( ( frameNumber & 0x80000000 ) != 0 )
 				throw new InvalidOperationException( "(OrderManager) Frame number too large" );
+
+			return true;
 		}
 	}
 

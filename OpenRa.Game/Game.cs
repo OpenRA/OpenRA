@@ -38,6 +38,8 @@ namespace OpenRa.Game
 
 		public static string Replay;
 
+		public static bool skipMakeAnims = true;
+
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
 		{
 			Rules.LoadRules(mapName);
@@ -78,6 +80,8 @@ namespace OpenRa.Game
 				: new OrderManager(new[] { new ReplayOrderSource(Replay) });
 
 			PlaySound("intro.aud", false);
+
+			skipMakeAnims = false;
 		}
 
 		static void LoadMapBuildings( IniFile mapfile )
@@ -87,7 +91,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ], true ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
 			}
 		}
 
@@ -98,7 +102,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,action,trigger
 				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ], true ) );
+				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
 			}
 		}
 
@@ -140,15 +144,16 @@ namespace OpenRa.Game
 			{
 				lastTime += timestep;
 
-				if( controller.orderGenerator != null )
-					controller.orderGenerator.Tick();
+				if( orderManager.Tick() )
+				{
+					if( controller.orderGenerator != null )
+						controller.orderGenerator.Tick();
 
-				world.Tick();
-				UnitInfluence.Tick();
-				foreach( var player in players.Values )
-					player.Tick();
-
-				orderManager.Tick();
+					world.Tick();
+					UnitInfluence.Tick();
+					foreach( var player in players.Values )
+						player.Tick();
+				}
 			}
 
 			viewport.cursor = controller.ChooseCursor();

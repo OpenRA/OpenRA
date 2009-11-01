@@ -21,7 +21,7 @@ namespace OpenRa.Game
 			if (orderGenerator != null)
 				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
 				{
-					recentOrders.Add(order);
+					AddOrder( order );
 					if (order.Subject != null && order.Player == Game.LocalPlayer)
 						doVoice = order.Subject;
 				}

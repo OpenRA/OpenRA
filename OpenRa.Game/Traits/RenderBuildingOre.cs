@@ -10,7 +10,7 @@ namespace OpenRa.Game.Traits
 		public RenderBuildingOre(Actor self)
 			: base(self)
 		{
-			anim.PlayThen("make", () => anim.PlayFetchIndex("idle", 
+			Make( () => anim.PlayFetchIndex("idle", 
 				() => (int)(5 * self.Owner.GetSiloFullness())));
 		}
 	}
