@@ -38,7 +38,7 @@ namespace OpenRa.Game.GameRules
 		public readonly string[] Prerequisite = { };
 		public readonly string Primary = null;
 		public readonly string Secondary = null;
-		public readonly int ROT = 0;
+		public readonly int ROT = 255;
 		public readonly int Reload = 0;
 		public readonly bool SelfHealing = false;
 		public readonly bool Sensors = false; // no idea what this does
@@ -67,6 +67,7 @@ namespace OpenRa.Game.GameRules
 			public readonly bool FraidyCat = false;
 			public readonly bool Infiltrate = false;
 			public readonly bool IsCanine = false;
+			public readonly int SquadSize = 1;
 
 			public InfantryInfo(string name) : base(name) { }
 		}

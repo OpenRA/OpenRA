@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IjwFramework.Types;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
@@ -86,6 +88,12 @@ namespace OpenRa.Game.Traits
 			var quantizedFacing = bodyFacing - bodyFacing % ru.anim.CurrentSequence.Length;
 
 			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil));
+		}
+
+		public static Pair<Sprite, float2> Centered(Sprite s, float2 location)
+		{
+			var loc = location - 0.5f * s.size;
+			return Pair.New(s, loc.Round());
 		}
 
 	}

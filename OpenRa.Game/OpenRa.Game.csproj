@@ -129,6 +129,7 @@
     <Compile Include="Graphics\TreeCache.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\Building.cs" />
+    <Compile Include="Traits\InfantrySquad.cs" />
     <Compile Include="Traits\McvDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\RenderBuilding.cs" />

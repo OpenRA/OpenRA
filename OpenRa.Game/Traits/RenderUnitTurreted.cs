@@ -23,11 +23,11 @@ namespace OpenRa.Game.Traits
 		{
 			var mobile = self.traits.Get<Mobile>();
 
-			yield return Centered(anim.Image, self.CenterLocation);
-			yield return Centered(turretAnim.Image, self.CenterLocation 
+			yield return Util.Centered(anim.Image, self.CenterLocation);
+			yield return Util.Centered(turretAnim.Image, self.CenterLocation 
 				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
 			if (self.unitInfo.SecondaryOffset != null)
-				yield return Centered(turretAnim.Image, self.CenterLocation
+				yield return Util.Centered(turretAnim.Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, secondaryRecoil));
 		}
 

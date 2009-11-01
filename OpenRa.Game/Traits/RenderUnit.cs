@@ -17,15 +17,9 @@ namespace OpenRa.Game.Traits
 					/ (256/anim.CurrentSequence.Length));
 		}
 
-		protected static Pair<Sprite, float2> Centered(Sprite s, float2 location)
-		{
-			var loc = location - 0.5f * s.size;
-			return Pair.New(s, loc.Round());
-		}
-
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
 		{
-			yield return Centered( anim.Image, self.CenterLocation );
+			yield return Util.Centered(anim.Image, self.CenterLocation);
 		}
 	}
 }
