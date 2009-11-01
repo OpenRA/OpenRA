@@ -10,7 +10,7 @@ using OpenRa.Game;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderBuilding : RenderSimple, INotifyRemoved
+	class RenderBuilding : RenderSimple, INotifyDamage
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;
@@ -51,6 +51,21 @@ namespace OpenRa.Game.Traits
 			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
 		}
 
-		public void Removed(Actor self) { DoBib(self, true); }
+		public void Damaged(Actor self, DamageState state)
+		{
+			switch( state )
+			{
+				case DamageState.Normal:
+					anim.PlayRepeating("idle");	/* todo: make interaction?? this should only get called on half->ok */
+					break;
+				case DamageState.Half:
+					anim.PlayRepeating("damaged-idle");
+					Game.PlaySound("kaboom1.aud", false);		/* todo: maybe sep. sound stuff from visual ?? */
+					break;
+				case DamageState.Dead:
+					DoBib(self, true);
+					break;
+			}
+		}
 	}
 }

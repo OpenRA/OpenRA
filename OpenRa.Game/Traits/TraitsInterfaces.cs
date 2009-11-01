@@ -7,8 +7,10 @@ using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
+	enum DamageState { Normal, Half, Dead };
+
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Pair<Sprite, float2>> Render(Actor self); }
 	interface IOrder { Order Order(Actor self, int2 xy, bool lmb, Actor underCursor); }
-	interface INotifyRemoved { void Removed(Actor self); }
+	interface INotifyDamage { void Damaged(Actor self, DamageState ds); }
 }

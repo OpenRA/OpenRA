@@ -111,5 +111,10 @@ namespace OpenRa.Game
 		{
 			return new Order(subject, "BuildUnit", null, null, int2.Zero, unitName, Cursor.Default);
 		}
+
+		public static Order DeliverOre(Actor subject, Actor target)
+		{
+			return new Order(subject.Owner, "DeliverOre", subject, target, int2.Zero, null, Cursor.Enter);
+		}
 	}
 }

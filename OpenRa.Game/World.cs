@@ -24,8 +24,8 @@ namespace OpenRa.Game
 		public event Action<Actor> ActorRemoved = a =>
 		{
 			a.Health = 0;		/* make sure everyone sees it as dead */
-			foreach (var nr in a.traits.WithInterface<INotifyRemoved>())
-				nr.Removed(a);
+			foreach (var nr in a.traits.WithInterface<INotifyDamage>())
+				nr.Damaged(a, DamageState.Dead);
 		};
 
 		public void Tick()
@@ -36,8 +36,9 @@ namespace OpenRa.Game
 			Renderer.waterFrame += 0.00125f * Game.timestep;
 			Game.viewport.Tick();
 
-			foreach (Action<World> a in frameEndActions) a(this);
-			frameEndActions.Clear();
+			var acts = frameEndActions;
+			frameEndActions = new List<Action<World>>();
+			foreach (var a in acts) a(this);
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

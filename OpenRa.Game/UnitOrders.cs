@@ -50,6 +50,14 @@ namespace OpenRa.Game
 					mobile.QueueActivity( new Traits.Activities.DeployMcv() );
 					break;
 				}
+			case "DeliverOre":
+				{
+					var mobile = order.Subject.traits.Get<Mobile>();
+					mobile.QueueActivity(new Mobile.MoveTo(order.TargetActor.Location + new int2(1, 2)));
+					mobile.QueueActivity(new Mobile.Turn(64));
+					/* todo: actual deliver activity! */
+					break;
+				}
 			case "PlaceBuilding":
 				{
 					Game.world.AddFrameEndTask( _ =>

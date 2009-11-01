@@ -8,6 +8,7 @@ using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using System.Drawing;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -105,10 +106,22 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 
-				if (Owner == Game.LocalPlayer)
+				if (Owner == Game.LocalPlayer && !traits.Contains<Building>()) 
 					Game.PlaySound("unitlst1.aud", false);
 
-				/* todo: explosion */
+				if (traits.Contains<Building>())
+				{
+					Game.PlaySound("kaboom22.aud", false);
+					// todo: spawn explosion sprites
+				}
+			}
+
+			var halfStrength = unitInfo.Strength / 2;
+			if (Health < halfStrength && (Health + damage) >= halfStrength)
+			{
+				/* we just went below half health! */
+				foreach (var nd in traits.WithInterface<INotifyDamage>())
+					nd.Damaged(this, DamageState.Half);
 			}
 		}
 	}

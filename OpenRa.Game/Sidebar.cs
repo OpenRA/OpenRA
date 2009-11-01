@@ -218,6 +218,8 @@ namespace OpenRa.Game
 						* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 						/ 1000;
 
+					time = .05f * time;						/* temporary hax so we can build stuff fast for test */
+
 					Action complete = null;
 					if (IsAutoCompleting(group)) complete = () => Build(item);
 
