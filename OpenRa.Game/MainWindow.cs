@@ -71,7 +71,7 @@ namespace OpenRa.Game
 
 			ShowCursor(false);
 
-			Game.world.ResetTimer();
+			Game.ResetTimer();
 		}
 
 		internal void Run()
@@ -79,9 +79,6 @@ namespace OpenRa.Game
 			while (Created && Visible)
 			{
 				Game.Tick();
-				Game.viewport.cursor = Game.controller.ChooseCursor();
-				if (Game.controller.orderGenerator != null)
-					Game.controller.orderGenerator.Tick();
 				Application.DoEvents();
 			}
 		}
