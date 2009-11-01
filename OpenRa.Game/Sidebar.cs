@@ -217,9 +217,6 @@ namespace OpenRa.Game
 
 			if( mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down )
             {
-				/* todo: move all this shit elsewhere! we can't have it in the UI if it's going to be
-				 * correct in netplay!! */
-				
 				if (producing == null)
 				{
 					Game.controller.AddOrder( Order.StartProduction( player, item.Tag ) );
@@ -230,7 +227,7 @@ namespace OpenRa.Game
 					if (producing.Done)
 						Build(item);
 					else
-						producing.Paused = false;
+						Game.controller.AddOrder( Order.PauseProduction( player, item.Tag, false ) );
 				}
 				else
 				{
@@ -244,12 +241,12 @@ namespace OpenRa.Game
 				if (producing.Paused || producing.Done)
 				{
 					Game.PlaySound("cancld1.aud", false);
-					player.CancelProduction(Rules.UnitCategory[item.Tag]);
+					Game.controller.AddOrder( Order.CancelProduction( player, item.Tag ) );
 				}
 				else
 				{
 					Game.PlaySound("onhold1.aud", false);
-					producing.Paused = true;
+					Game.controller.AddOrder( Order.PauseProduction( player, item.Tag, true ) );
 				}
 			}
 		}

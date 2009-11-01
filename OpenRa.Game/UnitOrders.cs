@@ -97,6 +97,20 @@ namespace OpenRa.Game
 					order.Player.BeginProduction( group, new ProductionItem( order.TargetString, (int)time, ui.Cost, complete ) );
 					break;
 				}
+			case "PauseProduction":
+				{
+					var producing = order.Player.Producing( Rules.UnitCategory[ order.TargetString ] );
+					if( producing != null && producing.Item == order.TargetString )
+						producing.Paused = ( order.TargetLocation.X != 0 );
+					break;
+				}
+			case "CancelProduction":
+				{
+					var producing = order.Player.Producing( Rules.UnitCategory[ order.TargetString ] );
+					if( producing != null && producing.Item == order.TargetString )
+						order.Player.CancelProduction( Rules.UnitCategory[ order.TargetString ] );
+					break;
+				}
 			default:
 				throw new NotImplementedException();
 			}

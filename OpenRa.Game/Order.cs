@@ -118,5 +118,15 @@ namespace OpenRa.Game
 		{
 			return new Order(subject, "StartProduction", null, null, int2.Zero, item, Cursor.Default );
 		}
+
+		public static Order PauseProduction(Player subject, string item, bool pause)
+		{
+			return new Order( subject, "PauseProduction", null, null, new int2(pause ?1:0,0), item, Cursor.Default );
+		}
+
+		public static Order CancelProduction(Player subject, string item)
+		{
+			return new Order( subject, "CancelProduction", null, null, int2.Zero, item, Cursor.Default );
+		}
 	}
 }
