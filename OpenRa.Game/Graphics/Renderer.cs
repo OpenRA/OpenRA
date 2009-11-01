@@ -18,7 +18,7 @@ namespace OpenRa.Game.Graphics
 
 		public void BuildPalette(Map map)
 		{
-			palettes = Util.MakeArray(7, i => new HardwarePalette(this, map, i).Texture);
+			palettes = Util.MakeArray(7, i => new HardwarePalette(this, map, 6 - i).Texture);
 		}
 
 		public void SetPalette(HardwarePalette hp)
