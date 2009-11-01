@@ -32,7 +32,7 @@ namespace OpenRa.Game.Traits
 		{
 			for (int i = 0; i < elements.Count; i++)
 				elements[i].Tick(
-					self.CenterLocation.ToInt2() + elementOffsets[elements.Count][i]);
+					self.CenterLocation.ToInt2() + elementOffsets[elements.Count][i], self);
 		}
 
 		public IEnumerable<Pair<Sprite, float2>> Render(Actor self)
@@ -49,18 +49,27 @@ namespace OpenRa.Game.Traits
 		public float2 location;
 		string name;
 		int facing = 128;
+		float speed;
 
 		string currentSequence;
+
+		static int QuantizeFacingNicely(int facing, int n)
+		{
+			var step = 256 / n;
+			var a = facing;
+			return a / step;
+		}
 
 		void PlaySequence(string seq, bool isFacing)
 		{
 			if (currentSequence == seq) return;
-			currentSequence = seq;
 
 			if (isFacing)
-				anim.PlayFetchIndex(seq, () => facing / (256 / anim.CurrentSequence.Length));
+				anim.PlayFetchIndex(seq, () => QuantizeFacingNicely(facing, anim.CurrentSequence.Length));
 			else
-				anim.PlayRepeating(seq);
+				anim.PlayRepeatingPreservingPosition(seq);
+
+			currentSequence = seq;
 		}
 
 		public Soldier(string type, int2 initialLocation)
@@ -70,25 +79,25 @@ namespace OpenRa.Game.Traits
 			anim.PlayFetchIndex("stand", 
 				() => facing / (256 / anim.CurrentSequence.Length) );
 			location = initialLocation;
+			speed = ((UnitInfo.InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
 		}
 
-		public void Tick( int2 desiredLocation )
+		public void Tick( int2 desiredLocation, Actor self )
 		{
 			anim.Tick();
 			var d = (desiredLocation - location);
-			var speed = ((UnitInfo.InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
 
-			facing = Util.GetFacing(d, facing);
+			facing = self.traits.Get<Mobile>().facing;
 
 			if (float2.WithinEpsilon(d, float2.Zero, .1f))
 				PlaySequence("stand", true);
 			else
-				PlaySequence("run-" + (facing / 32), false);
+				PlaySequence("run-" + QuantizeFacingNicely(facing, 8), false);
 
-			if (d.Length > speed)
-				d = (d.Length / speed) * d;
-			
-			location += d;
+			if (d.Length <= speed)
+				location = desiredLocation;
+			else
+				location += (speed / d.Length) * d;
 		}
 	}
 }
