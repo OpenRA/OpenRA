@@ -16,7 +16,11 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			turretAnim = new Animation(self.unitInfo.Name);
-			turretAnim.PlayFetchIndex("turret", () => self.traits.Get<Turreted>().turretFacing / 8);
+			if (self.traits.Contains<Turreted>())
+				turretAnim.PlayFetchIndex("turret", 
+					() => self.traits.Get<Turreted>().turretFacing / 8);
+			else
+				turretAnim.PlayRepeating("turret");		/* not really a turret; it's a spinner */
 		}
 
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)

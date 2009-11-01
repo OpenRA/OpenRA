@@ -87,7 +87,9 @@ namespace OpenRa.Game.Traits
 			var bodyFacing = self.traits.Get<Mobile>().facing;
 			var quantizedFacing = bodyFacing - bodyFacing % ru.anim.CurrentSequence.Length;
 
-			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil));
+			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil))
+				+ new float2(self.unitInfo.ScreenSpaceTurretOffset[0],
+					self.unitInfo.ScreenSpaceTurretOffset[1]);
 		}
 
 		public static Pair<Sprite, float2> Centered(Sprite s, float2 location)
