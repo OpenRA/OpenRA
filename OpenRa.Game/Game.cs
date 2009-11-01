@@ -165,6 +165,13 @@ namespace OpenRa.Game
 					worldRenderer.terrainRenderer.tileSet.GetWalkability( map.MapTiles[ a.X, a.Y ] ) ) < double.PositiveInfinity;
 		}
 
+		public static bool IsWater(int2 a)
+		{
+			return map.IsInMap(a.X, a.Y) &&
+				TerrainCosts.Cost(UnitMovementType.Float,
+					worldRenderer.terrainRenderer.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+		}
+
 		static IEnumerable<Actor> FindUnits(float2 a, float2 b)
 		{
 			var min = float2.Min(a, b);

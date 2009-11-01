@@ -13,16 +13,13 @@ namespace OpenRa.Game
 		Animation anim;
 		int2 pos;
 
-		public Explosion(int2 pixelPos, int style)
+		public Explosion(int2 pixelPos, int style, bool isWater)
 		{
 			this.pos = pixelPos;
-
+			var variantSuffix = isWater ? "w" : "";
 			anim = new Animation("explosion");
-			if (style != 0)
-				anim.PlayThen(style.ToString(), 
+				anim.PlayThen(style.ToString() + variantSuffix, 
 					() => Game.world.AddFrameEndTask(w => w.Remove(this)));
-			else
-				Game.world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public void Tick() { anim.Tick(); }

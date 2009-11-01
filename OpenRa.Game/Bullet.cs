@@ -67,10 +67,19 @@ namespace OpenRa.Game
 				Game.world.AddFrameEndTask(w =>
 				{
 					w.Remove(this); 
-					w.Add(new Explosion(VisualDest, Warhead.Explosion)); 
 
-					if (Warhead.ImpactSound != null) 
-						Game.PlaySound(Warhead.ImpactSound + ".aud", false);
+					var isWater = Game.IsCellBuildable(
+						((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2(), UnitMovementType.Float);
+
+					if (Warhead.Explosion != 0)
+						w.Add(new Explosion(VisualDest, Warhead.Explosion, isWater));
+
+					var impact = Warhead.ImpactSound;
+					if (isWater && Warhead.WaterImpactSound != null)
+						impact = Warhead.WaterImpactSound;
+
+					if (impact != null) 
+						Game.PlaySound(impact+ ".aud", false);
 				});
 
 				var maxSpread = GetMaximumSpread();
