@@ -9,9 +9,11 @@ namespace OpenRa.Game
 		public int Kills;
 		public string PlayerName;
 		public Race Race;
+		public readonly int Index;
 
-		public Player( int palette, string playerName, Race race )
+		public Player( int index, int palette, string playerName, Race race )
 		{
+			this.Index = index;
 			this.Palette = palette;
 			this.PlayerName = playerName;
 			this.Race = race;

@@ -42,7 +42,7 @@ namespace OpenRa.Game
 					{
 						var ret = new MemoryStream();
 						var w = new BinaryWriter(ret);
-						w.Write((uint)Player.Palette | 0x80000000u);
+						w.Write((uint)Player.Index | 0x80000000u);
 						w.Write((byte)0xFF);
 						w.Write(OrderString);
 						w.Write(Subject == null ? 0xFFFFFFFF : Subject.ActorID);
@@ -61,7 +61,7 @@ namespace OpenRa.Game
 		{
 			if ((first >> 31) == 0) return null;
 
-			var player = Game.players.Where(x => x.Value.Palette == (first & 0x7FFFFFFF)).First().Value;
+			var player = Game.players.Where(x => x.Value.Index == (first & 0x7FFFFFFF)).First().Value;
 			switch (r.ReadByte())
 			{
 				case 0xFF:

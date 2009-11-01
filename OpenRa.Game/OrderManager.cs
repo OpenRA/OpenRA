@@ -36,7 +36,7 @@ namespace OpenRa.Game
 			if( savingReplay != null )
 				savingReplay.Write( frameNumber );
 
-			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Palette);
+			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index);
 			foreach (var order in allOrders)
 			{
 				UnitOrders.ProcessOrder(order);
