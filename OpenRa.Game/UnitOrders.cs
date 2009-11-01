@@ -69,12 +69,13 @@ namespace OpenRa.Game
 					Game.world.AddFrameEndTask( _ =>
 					{
 						var building = Rules.UnitInfo[ order.TargetString ];
+						var producing = order.Player.Producing( "Building" );
+						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
+							return;
+
 						Log.Write( "Player \"{0}\" builds {1}", order.Player.PlayerName, building.Name );
 
-						//Adjust placement for cursor to be in middle
 						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building.Name ), order.Player ) );
-
-						Game.controller.orderGenerator = null;
 
 						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
 					} );

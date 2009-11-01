@@ -40,6 +40,11 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void Tick() { }
+		public void Tick()
+		{
+			var producing = Owner.Producing( "Building" );
+			if( producing == null || producing.Item != Name || producing.RemainingTime != 0 )
+				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
+		}
 	}
 }
