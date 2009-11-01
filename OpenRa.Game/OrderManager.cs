@@ -36,15 +36,14 @@ namespace OpenRa.Game
 			if( savingReplay != null )
 				savingReplay.Write( frameNumber );
 
-			foreach( var p in players )
+			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Palette);
+			foreach (var order in allOrders)
 			{
-				foreach( var order in p.OrdersForFrame( frameNumber ) )
-				{
-					UnitOrders.ProcessOrder( order );
-					if( savingReplay != null )
-						savingReplay.Write( order.Serialize() );
-				}
+				UnitOrders.ProcessOrder(order);
+				if (savingReplay != null)
+					savingReplay.Write(order.Serialize());
 			}
+
 			++frameNumber;
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
 			if( ( frameNumber & 0x80000000 ) != 0 )
