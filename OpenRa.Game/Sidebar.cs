@@ -151,7 +151,15 @@ namespace OpenRa.Game
 					clockRenderer.DrawSprite( clockAnimations[ group ].Image, region.Location.ToFloat2() + i.location, 0 );
 
 					if (producing.Done)
+					{
+						ready.Play("ready");
 						clockRenderer.DrawSprite(ready.Image, region.Location.ToFloat2() + i.location + new float2((64 - ready.Image.size.X) / 2, 2), 0);
+					}
+					else if (producing.Paused)
+					{
+						ready.Play("hold");
+						clockRenderer.DrawSprite(ready.Image, region.Location.ToFloat2() + i.location + new float2((64 - ready.Image.size.X) / 2, 2), 0);
+					}
 				}
 				else if (producing != null)
 					clockRenderer.DrawSprite(cantBuild.Image, region.Location.ToFloat2() + i.location, 0);
@@ -206,10 +214,14 @@ namespace OpenRa.Game
 			if( item == null )
 				return;
 
+			string group = Rules.UnitCategory[item.Tag];
+			var producing = player.Producing(group);
+
 			if( mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down )
             {
-				string group = Rules.UnitCategory[ item.Tag ];
-				var producing = player.Producing(group);
+				/* todo: move all this shit elsewhere! we can't have it in the UI if it's going to be
+				 * correct in netplay!! */
+				
 				if (producing == null)
 				{
 					var ui = Rules.UnitInfo[item.Tag];
@@ -225,15 +237,35 @@ namespace OpenRa.Game
 
 					player.BeginProduction(group,
 						new ProductionItem(item.Tag, (int)time, ui.Cost, complete));
+
+					Game.PlaySound("abldgin1.aud", false);
 				}
-				else if (producing.Item == item.Tag && producing.Done)
+				else if (producing.Item == item.Tag)
 				{
-					Build(item);
+					if (producing.Done)
+						Build(item);
+					else
+						producing.Paused = false;
+				}
+				else
+				{
+					Game.PlaySound("progres1.aud", false);
 				}
             }
 			else if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
 			{
-				player.CancelProduction(Rules.UnitCategory[item.Tag]);
+				if (item.Tag != producing.Item) return;
+
+				if (producing.Paused || producing.Done)
+				{
+					Game.PlaySound("cancld1.aud", false);
+					player.CancelProduction(Rules.UnitCategory[item.Tag]);
+				}
+				else
+				{
+					Game.PlaySound("onhold1.aud", false);
+					producing.Paused = true;
+				}
 			}
 		}
 	}

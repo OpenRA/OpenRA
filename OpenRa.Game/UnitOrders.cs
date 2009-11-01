@@ -53,9 +53,11 @@ namespace OpenRa.Game
 			case "DeliverOre":
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
+					mobile.Cancel(order.Subject);
 					mobile.QueueActivity(new Mobile.MoveTo(order.TargetActor.Location + new int2(1, 2)));
 					mobile.QueueActivity(new Mobile.Turn(64));
-					/* todo: actual deliver activity! */
+
+					/* todo: actual deliver activity! [animation + add cash] */
 					break;
 				}
 			case "PlaceBuilding":
