@@ -197,11 +197,6 @@ namespace OpenRa.Game
 			return null;
 		}
 
-		static bool IsAutoCompleting(string group)
-		{
-			return group != "Building";
-		}
-
 		SidebarItem mouseOverItem;
 
 		void MouseHandler(MouseInput mi)

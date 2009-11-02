@@ -77,6 +77,7 @@
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
+    <Compile Include="Traits\Activities\Activity.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Bullet.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Graphics\TreeCache.cs" />
+    <Compile Include="Traits\Activities\Move.cs" />
+    <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Harvester.cs" />

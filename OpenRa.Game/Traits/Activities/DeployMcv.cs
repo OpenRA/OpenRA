@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class DeployMcv : Mobile.CurrentActivity
+	class DeployMcv : Activity
 	{
-		public Mobile.CurrentActivity NextActivity { get; set; }
+		public Activity NextActivity { get; set; }
 
 		public void Tick( Actor self, Mobile mobile )
 		{

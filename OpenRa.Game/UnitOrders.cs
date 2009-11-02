@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using OpenRa.Game.Traits;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -17,7 +16,7 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel( order.Subject );
-					mobile.QueueActivity( new Mobile.MoveTo( order.TargetLocation ) );
+					mobile.QueueActivity( new Traits.Activities.Move( order.TargetLocation ) );
 
 					var attackBase = order.Subject.traits.WithInterface<AttackBase>().FirstOrDefault();
 					if( attackBase != null )
@@ -37,7 +36,7 @@ namespace OpenRa.Game
 						var range = Rules.WeaponInfo[ weapon ].Range;
 
 						mobile.QueueActivity(
-							new Mobile.MoveTo( order.TargetActor,
+							new Traits.Activities.Move( order.TargetActor,
 								Math.Max( 0, (int)range - RangeTolerance ) ) );
 					}
 
@@ -50,7 +49,7 @@ namespace OpenRa.Game
 						break;	/* throw the order on the floor */
 
 					var mobile = order.Subject.traits.Get<Mobile>();
-					mobile.QueueActivity( new Mobile.Turn( 96 ) );
+					mobile.QueueActivity( new Traits.Activities.Turn( 96 ) );
 					mobile.QueueActivity( new Traits.Activities.DeployMcv() );
 					break;
 				}
@@ -58,8 +57,8 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Mobile.MoveTo(order.TargetActor.Location + new int2(1, 2)));
-					mobile.QueueActivity(new Mobile.Turn(64));
+					mobile.QueueActivity( new Traits.Activities.Move( order.TargetActor.Location + new int2( 1, 2 ) ) );
+					mobile.QueueActivity( new Traits.Activities.Turn( 64 ) );
 
 					/* todo: actual deliver activity! [animation + add cash] */
 					break;
