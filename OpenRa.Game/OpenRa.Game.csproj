@@ -143,6 +143,7 @@
     <Compile Include="Traits\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\RenderSimple.cs" />
     <Compile Include="Traits\RenderUnit.cs" />
+    <Compile Include="Traits\RenderUnitRotor.cs" />
     <Compile Include="Traits\RenderUnitTurreted.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Tree.cs" />

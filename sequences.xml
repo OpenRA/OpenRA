@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -481,5 +481,23 @@
     <sequence name="medic" start="20" length="1" />
     <sequence name="ready" start="3" length="1" />
     <sequence name="hold" start="4" length="1" />
+  </unit>
+  <unit name="mig">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="yak">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="heli">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
+  </unit>
+  <unit name="hind">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
+  </unit>
+  <unit name="tran">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
   </unit>
 </sequences>
