@@ -19,15 +19,6 @@ namespace OpenRa.FileFormats
 		readonly long dataStart;
         readonly Stream s;
 
-        public static Dictionary<K, V> MakeDict<K,V>(IEnumerable<V> values, Converter<V, K> keyFunc)
-        {
-            var dict = new Dictionary<K, V>();
-            foreach (var v in values)
-                dict.Add(keyFunc(v), v);
-
-            return dict;
-        }
-
 		public Package(string filename)
 		{
 			this.filename = filename;
@@ -43,14 +34,14 @@ namespace OpenRa.FileFormats
 				isEncrypted = 0 != (signature & (uint)MixFileFlags.Encrypted);
 				if( isEncrypted )
 				{
-					index = MakeDict(ParseRaHeader( s, out dataStart ), x => x.Hash );
+					index = ParseRaHeader( s, out dataStart ).ToDictionary(x => x.Hash);
 					return;
 				}
 			}
 
 			isEncrypted = false;
 			s.Seek(0, SeekOrigin.Begin);
-			index = MakeDict(ParseTdHeader(s, out dataStart), x => x.Hash );
+			index = ParseTdHeader(s, out dataStart).ToDictionary(x => x.Hash);
 		}
 
 		const long headerStart = 84;
