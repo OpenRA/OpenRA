@@ -126,7 +126,10 @@ namespace OpenRa.FileFormats
 			return HasOverlay(i, j) && overlayIsGems[MapTiles[i, j].overlay];
 		}
 
-		public void GrowOre( Func<int2, bool> canSpreadIntoCell )				/* todo: deal with ore pits */
+		const float oreRate = .02f;
+		const float gemRate = .01f;
+
+		public void GrowOre( Func<int2, bool> canSpreadIntoCell, Random r )				/* todo: deal with ore pits */
 		{
 			/* phase 1: grow into neighboring regions */
 			var newOverlay = new byte[128, 128];
@@ -134,11 +137,13 @@ namespace OpenRa.FileFormats
 				for (int i = 1; i < 127; i++)
 				{
 					newOverlay[i,j] = 0xff;
-					if (!HasOverlay(i, j) && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i,j)))
-						newOverlay[i, j] = 5;	/* todo: randomize [5..8] */
+					if (!HasOverlay(i, j) && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i,j)) 
+						&& r.NextDouble() < oreRate )
+						newOverlay[i, j] = (byte)r.Next(5,9);
 
-					if (!HasOverlay(i, j) && GetGemDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j)))
-						newOverlay[i, j] = 9;	/* todo: randomize [9..12] */
+					if (!HasOverlay(i, j) && GetGemDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j))
+						&& r.NextDouble() < gemRate )
+						newOverlay[i, j] = (byte)r.Next(9, 13);
 				}
 
 			for (int j = 1; j < 127; j++)
@@ -158,7 +163,7 @@ namespace OpenRa.FileFormats
 			for (int j = 1; j < 127; j++)
 				for (int i = 1; i < 127; i++)
 					if (MapTiles[i, j].density < newDensity[i, j])
-						MapTiles[i, j].density = newDensity[i, j];
+						++MapTiles[i, j].density;
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)

@@ -136,6 +136,8 @@ namespace OpenRa.Game
 			lastTime = Environment.TickCount;
 		}
 
+		static int oreTicks = 20;
+
 		public static void Tick()
 		{
 			int t = Environment.TickCount;
@@ -149,6 +151,11 @@ namespace OpenRa.Game
 					if( controller.orderGenerator != null )
 						controller.orderGenerator.Tick();
 
+					if (--oreTicks == 0)
+					{
+						map.GrowOre(p => IsCellBuildable(p, UnitMovementType.Wheel), SharedRandom);
+						oreTicks = 20;
+					}
 					world.Tick();
 					UnitInfluence.Tick();
 					foreach( var player in players.Values )
