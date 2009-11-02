@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRa.FileFormats
 {
@@ -21,6 +22,33 @@ namespace OpenRa.FileFormats
 
 		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
 		public readonly List<TreeReference> Trees = new List<TreeReference>();
+
+		public static bool[] overlayIsFence =
+			{
+				true, true, true, true, true,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false, false, false, false,
+				false, false, false, true, true,
+			};
+
+		public static bool[] overlayIsOre =
+			{
+				false, false, false, false, false,
+				true, true, true, true,
+				false, false, false, false,
+				false, false, false, false, false, false, false,
+				false, false, false, false, false,
+			};
+
+		public static bool[] overlayIsGems =
+			{
+				false, false, false, false, false,
+				false, false, false, false,
+				true, true, true, true,
+				false, false, false, false, false, false, false,
+				false, false, false, false, false,
+			};
 
 		static string Truncate( string s, int maxLength )
 		{
@@ -47,9 +75,90 @@ namespace OpenRa.FileFormats
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
 
-			UnpackTileData( ReadPackedSection( file.GetSection( "MapPack" ) ) );
-			UnpackOverlayData( ReadPackedSection( file.GetSection( "OverlayPack" ) ) );
+			UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
+			UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 			ReadTrees(file);
+
+			InitOreDensity();
+		}
+
+		IEnumerable<int2> AdjacentTiles(int2 p)
+		{
+			for (var u = -1; u < 2; u++)
+				for (var v = -1; v < 2; v++)
+					yield return new int2(u, v) + p;
+		}
+
+		byte GetOreDensity(int i, int j)
+		{
+			return (byte)Math.Min(11, (3 * AdjacentTiles(new int2(i, j)).Sum(
+							p => ContainsOre(p.X, p.Y) ? 1 : 0) / 2));
+		}
+
+		byte GetGemDensity(int i, int j)
+		{
+			return (byte)Math.Min(2, (AdjacentTiles(new int2(i, j)).Sum(
+							p => ContainsGem(p.X, p.Y) ? 1 : 0) / 3));
+		}
+
+		void InitOreDensity()
+		{
+			for( int j = 0; j < 128; j++ )
+				for (int i = 0; i < 128; i++)
+				{
+					if (ContainsOre(i,j)) MapTiles[i, j].density = GetOreDensity(i, j);
+					if (ContainsGem(i,j)) MapTiles[i,j].density = GetGemDensity(i,j);
+				}
+		}
+
+		bool HasOverlay(int i, int j)
+		{
+			return MapTiles[i, j].overlay < overlayIsOre.Length;
+		}
+
+		bool ContainsOre(int i, int j)
+		{
+			return HasOverlay(i,j) && overlayIsOre[MapTiles[i,j].overlay];
+		}
+
+		bool ContainsGem(int i, int j)
+		{
+			return HasOverlay(i, j) && overlayIsGems[MapTiles[i, j].overlay];
+		}
+
+		public void GrowOre( Func<int2, bool> canSpreadIntoCell )				/* todo: deal with ore pits */
+		{
+			/* phase 1: grow into neighboring regions */
+			var newOverlay = new byte[128, 128];
+			for( int j = 1; j < 127; j++ )
+				for (int i = 1; i < 127; i++)
+				{
+					newOverlay[i,j] = 0xff;
+					if (!HasOverlay(i, j) && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i,j)))
+						newOverlay[i, j] = 5;	/* todo: randomize [5..8] */
+
+					if (!HasOverlay(i, j) && GetGemDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j)))
+						newOverlay[i, j] = 9;	/* todo: randomize [9..12] */
+				}
+
+			for (int j = 1; j < 127; j++)
+				for (int i = 1; i < 127; i++)
+					if (newOverlay[i, j] != 0xff)
+						MapTiles[i, j].overlay = newOverlay[i, j];
+
+			/* phase 2: increase density of existing areas */
+			var newDensity = new byte[128, 128];
+			for (int j = 1; j < 127; j++)
+				for (int i = 1; i < 127; i++)
+				{
+					if (ContainsOre(i, j)) newDensity[i,j] = GetOreDensity(i, j);
+					if (ContainsGem(i, j)) newDensity[i,j] = GetGemDensity(i, j);
+				}
+
+			for (int j = 1; j < 127; j++)
+				for (int i = 1; i < 127; i++)
+					if (MapTiles[i, j].density < newDensity[i, j])
+						MapTiles[i, j].density = newDensity[i, j];
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
