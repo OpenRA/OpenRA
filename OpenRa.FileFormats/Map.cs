@@ -116,16 +116,18 @@ namespace OpenRa.FileFormats
 			return MapTiles[i, j].overlay < overlayIsOre.Length;
 		}
 
-		public bool ContainsOre(int i, int j)
+		bool ContainsOre(int i, int j)
 		{
 			return HasOverlay(i,j) && overlayIsOre[MapTiles[i,j].overlay];
 		}
 
-		public bool ContainsGem(int i, int j)
+		bool ContainsGem(int i, int j)
 		{
 			return HasOverlay(i, j) && overlayIsGems[MapTiles[i, j].overlay];
 		}
 
+		public bool ContainsResource(int2 p) { return ContainsGem(p.X,p.Y) || ContainsOre(p.X, p.Y); }
+		
 		const float oreRate = .02f;
 		const float gemRate = .01f;
 

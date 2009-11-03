@@ -106,12 +106,17 @@ namespace OpenRa.Game
 
 		public static Order PlaceBuilding(Player subject, int2 target, string buildingName)
 		{
-			return new Order(subject, "PlaceBuilding", null, null, target, buildingName, Cursor.Default);
+			return new Order(subject, "PlaceBuilding", null, null, target, buildingName, Cursor.None);
 		}
 
 		public static Order DeliverOre(Actor subject, Actor target)
 		{
 			return new Order(subject.Owner, "DeliverOre", subject, target, int2.Zero, null, Cursor.Enter);
+		}
+
+		public static Order Harvest(Actor subject, int2 target)
+		{
+			return new Order(subject.Owner, "Harvest", subject, null, target, null, Cursor.Attack);		/* todo: special `harvest` cursor? */
 		}
 
 		public static Order StartProduction(Player subject, string item)
