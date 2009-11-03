@@ -50,7 +50,6 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] PrimaryOffset = { 0, 0 };
 		public readonly int[] SecondaryOffset = null;
 		public readonly int Recoil = 0;
-		public readonly int[] ScreenSpaceTurretOffset = { 0, 0 };
 
 		public UnitInfo(string name) { Name = name; }
 
