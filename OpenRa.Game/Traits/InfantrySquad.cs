@@ -53,19 +53,12 @@ namespace OpenRa.Game.Traits
 
 		string currentSequence;
 
-		static int QuantizeFacing(int facing, int n)
-		{
-			var step = 256 / n;
-			var a = (facing + step/2) & 0xff;
-			return a / step;
-		}
-
 		void PlaySequence(string seq, bool isFacing)
 		{
 			if (currentSequence == seq) return;
 
 			if (isFacing)
-				anim.PlayFetchIndex(seq, () => QuantizeFacing(facing, anim.CurrentSequence.Length));
+				anim.PlayFetchIndex(seq, () => Util.QuantizeFacing(facing, anim.CurrentSequence.Length));
 			else
 				anim.PlayRepeatingPreservingPosition(seq);
 
@@ -77,7 +70,7 @@ namespace OpenRa.Game.Traits
 			name = type;
 			anim = new Animation(type);
 			anim.PlayFetchIndex("stand",
-				() => QuantizeFacing(facing, anim.CurrentSequence.Length));
+				() => Util.QuantizeFacing(facing, anim.CurrentSequence.Length));
 			location = initialLocation;
 			speed = ((UnitInfo.InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
 		}
@@ -92,7 +85,7 @@ namespace OpenRa.Game.Traits
 			if (float2.WithinEpsilon(d, float2.Zero, .1f))
 				PlaySequence("stand", true);
 			else
-				PlaySequence("run-" + QuantizeFacing(facing, 8), false);
+				PlaySequence("run-" + Util.QuantizeFacing(facing, 8), false);
 
 			if (d.Length <= speed)
 				location = desiredLocation;

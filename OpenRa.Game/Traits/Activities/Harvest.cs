@@ -8,6 +8,7 @@ namespace OpenRa.Game.Traits.Activities
 	class Harvest : Activity
 	{
 		public Activity NextActivity { get; set; }
+		bool isHarvesting = false;
 
 		public void Tick(Actor self, Mobile mobile)
 		{
@@ -18,9 +19,15 @@ namespace OpenRa.Game.Traits.Activities
 				Game.map.ContainsResource(self.Location) && 
 				Game.map.Harvest(self.Location, out isGem))
 			{
+				var harvestAnim = "harvest" + Util.QuantizeFacing(mobile.facing, 8);
+				var renderUnit = self.traits.WithInterface<RenderUnit>().First();	/* better have one of these! */
+				if (harvestAnim != renderUnit.anim.CurrentSequence.Name)
+					renderUnit.PlayCustomAnimation(self, harvestAnim, () => isHarvesting = false);
 				harv.AcceptResource(isGem);
 				return;
 			}
+
+			if (isHarvesting) return;
 
 			if (harv.IsFull)
 				PlanReturnToBase(self, mobile);
@@ -47,7 +54,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			mobile.QueueActivity(new Move(proc.Location + new int2(1, 2)));
 			mobile.QueueActivity(new Turn(64));
-			/* todo: DeliverOre activity */
+			mobile.QueueActivity(new DeliverOre());
 
 			mobile.InternalSetActivity(NextActivity);
 		}

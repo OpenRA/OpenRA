@@ -56,6 +56,13 @@ namespace OpenRa.Game.Traits
 			return facing + turn;
 		}
 
+		public static int QuantizeFacing(int facing, int numFrames)
+		{
+			var step = 256 / numFrames;
+			var a = (facing + step / 2) & 0xff;
+			return a / step;
+		}
+
 		static float2 RotateVectorByFacing(float2 v, int facing, float ecc)
 		{
 			var angle = (facing / 256f) * (2 * (float)Math.PI);

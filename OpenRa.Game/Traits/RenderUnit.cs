@@ -12,9 +12,19 @@ namespace OpenRa.Game.Traits
 		public RenderUnit(Actor self)
 			: base(self)
 		{
-			anim.PlayFetchIndex("idle", 
-				() => self.traits.Get<Mobile>().facing 
-					/ (256/anim.CurrentSequence.Length));
+			PlayFacingAnim(self);
+		}
+
+		void PlayFacingAnim(Actor self)
+		{
+			anim.PlayFetchIndex("idle",
+				() => self.traits.Get<Mobile>().facing
+					/ (256 / anim.CurrentSequence.Length));
+		}
+
+		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
+		{
+			anim.PlayThen(newAnim, () => { PlayFacingAnim(self); if (after != null) after(); });
 		}
 
 		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
