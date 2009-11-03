@@ -116,18 +116,29 @@ namespace OpenRa.FileFormats
 			return MapTiles[i, j].overlay < overlayIsOre.Length;
 		}
 
-		bool ContainsOre(int i, int j)
+		public bool ContainsOre(int i, int j)
 		{
 			return HasOverlay(i,j) && overlayIsOre[MapTiles[i,j].overlay];
 		}
 
-		bool ContainsGem(int i, int j)
+		public bool ContainsGem(int i, int j)
 		{
 			return HasOverlay(i, j) && overlayIsGems[MapTiles[i, j].overlay];
 		}
 
 		const float oreRate = .02f;
 		const float gemRate = .01f;
+
+		public bool Harvest(int2 p, out bool isGems)		/* harvests one unit if possible */
+		{
+			isGems = ContainsGem(p.X, p.Y);
+			if (MapTiles[p.X, p.Y].density == 0) return false;
+
+			if (--MapTiles[p.X, p.Y].density == 0)
+				MapTiles[p.X, p.Y].overlay = 0xff;
+
+			return true;
+		}
 
 		public void GrowOre( Func<int2, bool> canSpreadIntoCell, Random r )				/* todo: deal with ore pits */
 		{
