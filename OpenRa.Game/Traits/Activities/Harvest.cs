@@ -22,10 +22,6 @@ namespace OpenRa.Game.Traits.Activities
 				return;
 			}
 
-			/* nothing to do here, either:
-				 *	  - return to base, if full, or
-				 *	  - seek out new ore, schedule a move there, and then this activity */
-
 			if (harv.IsFull)
 				PlanReturnToBase(self, mobile);
 			else

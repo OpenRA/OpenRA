@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
@@ -38,11 +39,11 @@ namespace OpenRa.Game.Graphics
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
 			string unitName = eUnit.GetAttribute("name");
-			Dictionary<string, Sequence> sequences = new Dictionary<string, Sequence>();
-
-			foreach (XmlElement eSequence in eUnit.SelectNodes("./sequence"))
-				sequences.Add(eSequence.GetAttribute("name"), new Sequence(unitName, eSequence));
-
+			
+			var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
+				.Select(e => new Sequence(unitName, e))
+				.ToDictionary(s => s.Name);
+			
 			units.Add(unitName, sequences);
 		}
 

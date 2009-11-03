@@ -7,6 +7,7 @@ namespace OpenRa.Game.Graphics
 	{
 		readonly int start, length;
 
+		public readonly string Name;
 		public int Start { get { return start; } }
 		public int End { get { return start + length; } }
 		public int Length { get { return length; } }
@@ -14,6 +15,7 @@ namespace OpenRa.Game.Graphics
 		public Sequence(string unit, XmlElement e)
 		{
 			string srcOverride = e.GetAttribute("src");
+			Name = e.GetAttribute("name");
 
 			Range<int> src = UnitSheetBuilder.GetUnit(
 				string.IsNullOrEmpty(srcOverride) ? unit : srcOverride);
