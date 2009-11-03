@@ -63,6 +63,14 @@ namespace OpenRa.Game
 					/* todo: actual deliver activity! [animation + add cash] */
 					break;
 				}
+			case "Harvest":
+				{
+					var mobile = order.Subject.traits.Get<Mobile>();
+					mobile.Cancel(order.Subject);
+					mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation));
+					mobile.QueueActivity(new Traits.Activities.Harvest() );
+					break;
+				}
 			case "PlaceBuilding":
 				{
 					Game.world.AddFrameEndTask( _ =>

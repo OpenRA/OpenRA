@@ -129,6 +129,7 @@
     <Compile Include="TerrainCosts.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Graphics\TreeCache.cs" />
+    <Compile Include="Traits\Activities\Harvest.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />

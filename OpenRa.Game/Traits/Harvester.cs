@@ -11,8 +11,14 @@ namespace OpenRa.Game.Traits
 		int oreCarried = 0;					/* sum of these must not exceed capacity */
 		int gemsCarried = 0;
 
-		bool IsFull { get { return oreCarried + gemsCarried == capacity; } }
-		bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
+		public bool IsFull { get { return oreCarried + gemsCarried == capacity; } }
+		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
+
+		public void AcceptResource(bool isGem)
+		{
+			if (isGem) gemsCarried++;
+			else oreCarried++;
+		}
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
