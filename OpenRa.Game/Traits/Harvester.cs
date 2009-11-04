@@ -8,8 +8,8 @@ namespace OpenRa.Game.Traits
 	class Harvester : IOrder
 	{
 		const int capacity = 28;
-		int oreCarried = 0;					/* sum of these must not exceed capacity */
-		int gemsCarried = 0;
+		public int oreCarried = 0;					/* sum of these must not exceed capacity */
+		public int gemsCarried = 0;
 
 		public bool IsFull { get { return oreCarried + gemsCarried == capacity; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }

@@ -15,6 +15,12 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			if (isDone)
 			{
+				var harv = self.traits.Get<Harvester>();
+
+				/* todo: give cash */
+				harv.gemsCarried = 0;
+				harv.oreCarried = 0;
+
 				mobile.InternalSetActivity(NextActivity);
 				/* todo: return to the ore patch */
 				return;
