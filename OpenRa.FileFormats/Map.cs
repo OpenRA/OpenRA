@@ -91,8 +91,16 @@ namespace OpenRa.FileFormats
 
 		byte GetOreDensity(int i, int j)
 		{
-			return (byte)Math.Min(11, (3 * AdjacentTiles(new int2(i, j)).Sum(
-							p => ContainsOre(p.X, p.Y) ? 1 : 0) / 2));
+			// perf fix. it's ugly, i know :(
+			int sum = 0;
+			for( var u = -1 ; u < 2 ; u++ )
+				for( var v = -1 ; v < 2 ; v++ )
+					if( ContainsOre( i + u, j + v ) )
+						++sum;
+			sum = sum * 3 / 2;
+			if( sum > 11 )
+				return 11;
+			return (byte)sum;
 		}
 
 		byte GetGemDensity(int i, int j)
