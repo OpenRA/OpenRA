@@ -155,7 +155,7 @@ namespace OpenRa.Game
 					if (--oreTicks == 0)
 					{
 						map.GrowOre(p => IsCellBuildable(p, UnitMovementType.Wheel), SharedRandom);
-						oreTicks = 20;
+						oreTicks = 1;
 					}
 					world.Tick();
 					UnitInfluence.Tick();
