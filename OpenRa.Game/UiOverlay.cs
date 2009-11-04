@@ -12,6 +12,7 @@ namespace OpenRa.Game
 		Sprite buildOk, buildBlocked, unitDebug;
 
 		public static bool ShowUnitDebug = false;
+		public static bool ShowBuildDebug = false;
 
 		public UiOverlay(SpriteRenderer spriteRenderer)
 		{
@@ -49,6 +50,14 @@ namespace OpenRa.Game
 			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[placeBuilding.Name];
 			
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+
+			if (ShowBuildDebug)
+				for (var j = 0; j < 128; j++)
+					for (var i = 0; i < 128; i++)
+						if (Game.GetDistanceToBase(new int2(i, j), Game.LocalPlayer) < maxDistance)
+							if (Game.IsCellBuildable(new int2(i, j), bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel))
+								spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
+			
 			var tooFarFromBase = !Footprint.Tiles(bi, position).Any(
 				t => Game.GetDistanceToBase(t, Game.LocalPlayer) < maxDistance);
 

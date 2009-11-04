@@ -41,11 +41,7 @@ namespace OpenRa.Game.Traits.Activities
 		void PlanReturnToBase(Actor self, Mobile mobile)	
 		{
 			/* find a proc */
-			var proc = Game.world.Actors.Where(
-				a => a.Owner == self.Owner &&
-					 a.traits.Contains<AcceptsOre>())
-					 .FirstOrDefault();		/* todo: *closest* proc, maybe? */
-
+			var proc = ChooseReturnLocation(self);
 			if (proc == null)
 			{
 				Cancel(self, mobile);		/* is this a sane way to cancel? */
@@ -57,6 +53,18 @@ namespace OpenRa.Game.Traits.Activities
 			mobile.QueueActivity(new DeliverOre());
 
 			mobile.InternalSetActivity(NextActivity);
+		}
+
+		static Actor ChooseReturnLocation(Actor self)
+		{
+			/* todo: compute paths to possible procs, taking into account enemy presence */
+			/* currently, we're good at choosing close, inaccessible procs */
+
+			return Game.world.Actors.Where(
+				a => a.Owner == self.Owner &&
+					 a.traits.Contains<AcceptsOre>())
+					 .OrderBy(p => (p.Location - self.Location).LengthSquared)
+					 .FirstOrDefault();
 		}
 
 		void PlanMoreHarvesting(Actor self, Mobile mobile)

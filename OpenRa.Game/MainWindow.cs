@@ -50,6 +50,7 @@ namespace OpenRa.Game
 			SheetBuilder.Initialize(renderer);
 
 			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
+			UiOverlay.ShowBuildDebug = settings.GetValue("bdebug", false);
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
 			Game.Replay = settings.GetValue("replay", "");
 
