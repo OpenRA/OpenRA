@@ -136,7 +136,8 @@ namespace OpenRa.Game
 			lastTime = Environment.TickCount;
 		}
 
-		static int oreTicks = 20;
+		const int oreFrequency = 20;
+		static int oreTicks = oreFrequency;
 		public static int RenderFrame = 0;
 
 		public static void Tick()
@@ -155,7 +156,7 @@ namespace OpenRa.Game
 					if (--oreTicks == 0)
 					{
 						map.GrowOre(p => IsCellBuildable(p, UnitMovementType.Wheel), SharedRandom);
-						oreTicks = 20;
+						oreTicks = oreFrequency;
 					}
 					world.Tick();
 					UnitInfluence.Tick();
