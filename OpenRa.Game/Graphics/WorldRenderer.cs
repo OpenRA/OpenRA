@@ -99,7 +99,7 @@ namespace OpenRa.Game.Graphics
             
             lineRenderer.Flush();
 
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms) Tick {1} ({3:F1} ms) Ore ({4:F1} ms)", 
+			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)", 
 				Game.RenderFrame, Game.orderManager.FrameNumber,
 				Game.RenderTime * 1000, 
 				Game.TickTime * 1000,

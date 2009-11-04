@@ -10,8 +10,17 @@ namespace OpenRa.Game
 	{
 		/* todo: deal with ore pits */
 
-		public static void GrowOre(this Map map, 
-			Func<int2, bool> canSpreadIntoCell, Random r)
+		static bool CanSpreadInto(int i, int j)
+		{
+			if (Game.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
+				return false;
+
+			return TerrainCosts.Cost(UnitMovementType.Wheel,
+				Game.worldRenderer.terrainRenderer.tileSet.GetWalkability(Game.map.MapTiles[i, j]))
+				< double.PositiveInfinity;
+		}
+
+		public static void GrowOre(this Map map, Random r)
 		{
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
@@ -28,7 +37,7 @@ namespace OpenRa.Game
 						if (!map.HasOverlay(i, j)
 							&& r.NextDouble() < chance
 							&& map.GetOreDensity(i, j) > 0
-							&& canSpreadIntoCell(new int2(i, j)))
+							&& CanSpreadInto(i,j))
 							newOverlay[i, j] = ChooseOre();
 					}
 

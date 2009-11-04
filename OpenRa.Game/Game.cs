@@ -165,7 +165,7 @@ namespace OpenRa.Game
 					if (--oreTicks == 0)
 					{
 						var oresw = new Stopwatch();
-						map.GrowOre(p => IsCellBuildable(p, UnitMovementType.Wheel), SharedRandom);
+						map.GrowOre(SharedRandom);
 						OreTime = oresw.ElapsedTime();
 						oreTicks = oreFrequency;
 					}
