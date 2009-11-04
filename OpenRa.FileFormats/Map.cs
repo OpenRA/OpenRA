@@ -172,7 +172,7 @@ namespace OpenRa.FileFormats
 					newOverlay[i,j] = 0xff;
 					if (!HasOverlay(i, j) && r.NextDouble() < oreRate && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j)) 
 					     )
-						newOverlay[i, j] = ChooseOre(); //(byte)r.Next(5, 9);
+						newOverlay[i, j] = ChooseOre();
 				}
 
 			for (int j = minj; j < maxj; j++)

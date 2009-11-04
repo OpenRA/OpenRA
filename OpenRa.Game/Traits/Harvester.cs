@@ -22,6 +22,8 @@ namespace OpenRa.Game.Traits
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
+			if (lmb) return null;
+
 			if (underCursor != null 
 				&& underCursor.Owner == self.Owner 
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
