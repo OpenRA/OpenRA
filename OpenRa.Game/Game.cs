@@ -280,18 +280,18 @@ namespace OpenRa.Game
 			return null;
 		}
 
-		public static bool CanPlaceBuilding(string name, int2 xy, Actor toIgnore)
+		public static bool CanPlaceBuilding(string name, int2 xy, Actor toIgnore, bool adjust)
 		{
-			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo["fact"];
-			return !Footprint.Tiles(bi, xy).Any(
+			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
+			return !Footprint.Tiles(bi, xy, adjust).Any(
 				t => !Game.IsCellBuildable(t,
 					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
 
-		public static bool CanPlaceBuilding(string name, int2 xy)
+		public static bool CanPlaceBuilding(string name, int2 xy, bool adjust)
 		{
-			return CanPlaceBuilding(name, xy, null);
+			return CanPlaceBuilding(name, xy, null, adjust);
 		}
 
 		public static void BuildUnit(Player player, string name)

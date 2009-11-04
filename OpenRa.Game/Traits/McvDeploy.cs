@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits
 			if (lmb) return null;
 
 			if (xy == self.Location)
-				return OpenRa.Game.Order.DeployMcv(self, !Game.CanPlaceBuilding("fact", xy, self));
+				return OpenRa.Game.Order.DeployMcv(self, !Game.CanPlaceBuilding("fact", xy - new int2(1,1), self, false));
 
 			return null;
 		}

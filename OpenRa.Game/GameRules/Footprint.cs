@@ -14,7 +14,7 @@ namespace OpenRa.Game.GameRules
 			return Tiles(unitInfo, position, true);
 		}
 
-		static IEnumerable<int2> Tiles(UnitInfo unitInfo, int2 position, bool adjustForPlacement)
+		public static IEnumerable<int2> Tiles(UnitInfo unitInfo, int2 position, bool adjustForPlacement)
 		{
 			var buildingInfo = unitInfo as UnitInfo.BuildingInfo;
 			var dim = buildingInfo.Dimensions;

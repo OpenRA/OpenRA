@@ -45,7 +45,7 @@ namespace OpenRa.Game
 				}
 			case "DeployMcv":
 				{
-					if (!Game.CanPlaceBuilding("fact", order.Subject.Location, order.Subject))
+					if (!Game.CanPlaceBuilding("fact", order.Subject.Location - new int2(1,1), order.Subject, false))
 						break;	/* throw the order on the floor */
 
 					var mobile = order.Subject.traits.Get<Mobile>();

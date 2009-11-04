@@ -21,12 +21,10 @@ namespace OpenRa.Game
 		{
 			if( lmb )
 			{
-				var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[ Name ];
-				if( Footprint.Tiles( bi, xy ).Any(
-					t => !Game.IsCellBuildable( t,
-						bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel ) ) )
+				if (!Game.CanPlaceBuilding(Name, xy, true))
 					yield break;
 
+				var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[Name];
 				var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
 				if( !Footprint.Tiles( bi, xy ).Any(
 					t => Game.GetDistanceToBase( t, Owner ) < maxDistance ) )
