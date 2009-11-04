@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />
+    <Compile Include="Stopwatch.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
