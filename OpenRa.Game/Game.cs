@@ -51,6 +51,7 @@ namespace OpenRa.Game
 
 			var mapFile = new IniFile(FileSystem.Open(mapName));
 			map = new Map(mapFile);
+			map.InitOreDensity();
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
 			viewport = new Viewport( clientSize, map.Offset, map.Offset + map.Size, renderer );

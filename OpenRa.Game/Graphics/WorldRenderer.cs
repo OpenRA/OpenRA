@@ -106,9 +106,6 @@ namespace OpenRa.Game.Graphics
 				Game.OreTime * 1000), new int2(5, 5), Color.White);
 		}
 
-		const float conditionYellow = 0.5f;		/* todo: get these from gamerules */
-		const float conditionRed = 0.25f;
-
         void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
         {
             var center = selectedUnit.CenterLocation;
@@ -136,8 +133,8 @@ namespace OpenRa.Game.Graphics
 				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
 				var healthAmount = (float)selectedUnit.Health / selectedUnit.unitInfo.Strength;
-				var healthColor = (healthAmount < conditionRed) ? Color.Red
-					: (healthAmount < conditionYellow) ? Color.Yellow
+				var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
+					: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
 					: Color.LimeGreen;
 
 				var healthColor2 = Color.FromArgb(

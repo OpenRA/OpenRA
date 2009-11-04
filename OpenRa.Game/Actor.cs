@@ -116,7 +116,7 @@ namespace OpenRa.Game
 				}
 			}
 
-			var halfStrength = unitInfo.Strength / 2;
+			var halfStrength = unitInfo.Strength * Rules.General.ConditionYellow;
 			if (Health < halfStrength && (Health + damage) >= halfStrength)
 			{
 				/* we just went below half health! */

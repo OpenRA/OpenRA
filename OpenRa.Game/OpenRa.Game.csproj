@@ -74,8 +74,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />
+    <Compile Include="Ore.cs" />
     <Compile Include="Stopwatch.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />

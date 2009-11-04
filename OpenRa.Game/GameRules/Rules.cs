@@ -16,6 +16,7 @@ namespace OpenRa.Game
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
+		public static GeneralInfo General;
 		public static TechTree TechTree;
 
 		public static void LoadRules( string mapFileName )
@@ -25,6 +26,9 @@ namespace OpenRa.Game
 				FileSystem.Open( "rules.ini" ),
 				FileSystem.Open( "units.ini" ),
 				FileSystem.Open( "campaignUnits.ini" ) );
+
+			General = new GeneralInfo();
+			FieldLoader.Load(General, AllRules.GetSection("General"));
 
 			LoadCategories(
 				"Building",
