@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OpenRa.FileFormats
 {
-	public class TileReference
+	public struct TileReference
 	{
 		public ushort tile;
 		public byte image;

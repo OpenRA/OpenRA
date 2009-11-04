@@ -48,6 +48,17 @@ namespace OpenRa.Game
 					++initialTileCount;
 				}
 
+			if (!((UnitInfo.BuildingInfo)a.unitInfo).BaseNormal)
+			{
+				while (!pq.Empty)
+				{
+					var c = pq.Pop();
+					influence[c.location.X, c.location.Y].First = c.actor;
+					influence[c.location.X, c.location.Y].Second = 0;
+				}
+				return;
+			}
+
 			Log.Write("Recalculating voronoi region for {{ {0} ({1},{2}) }}: {3} initial tiles",
 				a.unitInfo.Name, a.Location.X, a.Location.Y, initialTileCount);
 
