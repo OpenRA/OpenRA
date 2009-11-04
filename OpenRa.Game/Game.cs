@@ -137,6 +137,7 @@ namespace OpenRa.Game
 		}
 
 		static int oreTicks = 20;
+		public static int RenderFrame = 0;
 
 		public static void Tick()
 		{
@@ -163,6 +164,7 @@ namespace OpenRa.Game
 				}
 			}
 
+			++RenderFrame;
 			viewport.cursor = controller.ChooseCursor();
 			viewport.DrawRegions();
 		}

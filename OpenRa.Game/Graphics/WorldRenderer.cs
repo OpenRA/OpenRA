@@ -99,7 +99,7 @@ namespace OpenRa.Game.Graphics
             
             lineRenderer.Flush();
 
-			renderer.DrawText(string.Format("Frame {0}", Game.orderManager.FrameNumber), new int2(5, 5), Color.White);
+			renderer.DrawText(string.Format("RenderFrame {0} Tick {1}", Game.RenderFrame, Game.orderManager.FrameNumber), new int2(5, 5), Color.White);
 		}
 
 		const float conditionYellow = 0.5f;		/* todo: get these from gamerules */
