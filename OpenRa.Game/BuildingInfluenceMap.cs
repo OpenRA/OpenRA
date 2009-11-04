@@ -32,7 +32,7 @@ namespace OpenRa.Game
 
 		void AddInfluence(Actor a)
 		{
-			var tiles = Footprint.UnpathableTiles(a.unitInfo, a.Location).ToArray();
+			var tiles = Footprint.Tiles(a).ToArray();
 			var min = int2.Max(new int2(0, 0), 
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128), 
@@ -103,7 +103,7 @@ namespace OpenRa.Game
 
 		void RemoveInfluence(Actor a)
 		{
-			var tiles = Footprint.UnpathableTiles(a.unitInfo, a.Location).ToArray();
+			var tiles = Footprint.Tiles(a).ToArray();
 			var min = int2.Max(new int2(0, 0),
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128),
