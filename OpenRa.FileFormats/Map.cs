@@ -151,12 +151,8 @@ namespace OpenRa.FileFormats
 				{
 					newOverlay[i,j] = 0xff;
 					if (!HasOverlay(i, j) && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i,j)) 
-						&& r.NextDouble() < oreRate )
-						newOverlay[i, j] = (byte)r.Next(5,9);
-
-					if (!HasOverlay(i, j) && GetGemDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j))
-						&& r.NextDouble() < gemRate )
-						newOverlay[i, j] = (byte)r.Next(9, 13);
+					    && r.NextDouble() < oreRate )
+					    newOverlay[i, j] = (byte)r.Next(5,9);
 				}
 
 			for (int j = 1; j < 127; j++)
@@ -168,10 +164,7 @@ namespace OpenRa.FileFormats
 			var newDensity = new byte[128, 128];
 			for (int j = 1; j < 127; j++)
 				for (int i = 1; i < 127; i++)
-				{
 					if (ContainsOre(i, j)) newDensity[i,j] = GetOreDensity(i, j);
-					if (ContainsGem(i, j)) newDensity[i,j] = GetGemDensity(i, j);
-				}
 
 			for (int j = 1; j < 127; j++)
 				for (int i = 1; i < 127; i++)

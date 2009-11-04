@@ -136,7 +136,7 @@ namespace OpenRa.Game
 			lastTime = Environment.TickCount;
 		}
 
-		const int oreFrequency = 20;
+		const int oreFrequency = 1;
 		static int oreTicks = oreFrequency;
 		public static int RenderFrame = 0;
 
