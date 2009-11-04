@@ -150,32 +150,44 @@ namespace OpenRa.FileFormats
 			return true;
 		}
 
+		byte ore = 5;
+		byte ChooseOre()
+		{
+			if (++ore > 8) ore = 5;
+			return ore;
+		}
+
 		public void GrowOre( Func<int2, bool> canSpreadIntoCell, Random r )				/* todo: deal with ore pits */
 		{
 			/* phase 1: grow into neighboring regions */
 			var newOverlay = new byte[128, 128];
-			for( int j = 1; j < 127; j++ )
-				for (int i = 1; i < 127; i++)
+			var mini = this.XOffset;
+			var minj = this.YOffset;
+			var maxi = this.XOffset + Width;
+			var maxj = this.YOffset + Height;
+
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
 				{
 					newOverlay[i,j] = 0xff;
-					if (!HasOverlay(i, j) && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i,j)) 
-					    && r.NextDouble() < oreRate )
-					    newOverlay[i, j] = (byte)r.Next(5,9);
+					if (!HasOverlay(i, j) && r.NextDouble() < oreRate && GetOreDensity(i, j) > 0 && canSpreadIntoCell(new int2(i, j)) 
+					     )
+						newOverlay[i, j] = ChooseOre(); //(byte)r.Next(5, 9);
 				}
 
-			for (int j = 1; j < 127; j++)
-				for (int i = 1; i < 127; i++)
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
 					if (newOverlay[i, j] != 0xff)
 						MapTiles[i, j].overlay = newOverlay[i, j];
 
 			/* phase 2: increase density of existing areas */
 			var newDensity = new byte[128, 128];
-			for (int j = 1; j < 127; j++)
-				for (int i = 1; i < 127; i++)
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
 					if (ContainsOre(i, j)) newDensity[i,j] = GetOreDensity(i, j);
 
-			for (int j = 1; j < 127; j++)
-				for (int i = 1; i < 127; i++)
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
 					if (MapTiles[i, j].density < newDensity[i, j])
 						++MapTiles[i, j].density;
 		}
