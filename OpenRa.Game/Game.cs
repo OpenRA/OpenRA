@@ -143,6 +143,7 @@ namespace OpenRa.Game
 		public static int RenderFrame = 0;
 		public static double RenderTime = 0.0;
 		public static double TickTime = 0.0;
+		public static double OreTime = 0.0;
 
 		public static Stopwatch sw;
 
@@ -162,7 +163,9 @@ namespace OpenRa.Game
 
 					if (--oreTicks == 0)
 					{
+						var oresw = new Stopwatch();
 						map.GrowOre(p => IsCellBuildable(p, UnitMovementType.Wheel), SharedRandom);
+						OreTime = oresw.ElapsedTime();
 						oreTicks = oreFrequency;
 					}
 					world.Tick();
