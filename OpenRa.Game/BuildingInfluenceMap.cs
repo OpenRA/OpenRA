@@ -11,6 +11,7 @@ namespace OpenRa.Game
 {
 	class BuildingInfluenceMap
 	{
+		bool[,] blocked = new bool[128, 128];
 		Pair<Actor, float>[,] influence = new Pair<Actor, float>[128, 128];
 		readonly int maxDistance;	/* clip limit for voronoi cells */
 		static readonly Pair<Actor, float> NoClaim = Pair.New((Actor)null, float.MaxValue);
@@ -31,7 +32,7 @@ namespace OpenRa.Game
 
 		void AddInfluence(Actor a)
 		{
-			var tiles = Footprint.UnpathableTiles(a.unitInfo, a.Location).ToArray();
+			var tiles = Footprint.Tiles(a).ToArray();
 			var min = int2.Max(new int2(0, 0), 
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128), 
@@ -40,6 +41,10 @@ namespace OpenRa.Game
 			var pq = new PriorityQueue<Cell>();
 
 			var initialTileCount = 0;
+
+			foreach (var u in Footprint.UnpathableTiles(a.unitInfo, a.Location))
+				if (IsValid(u))
+					blocked[u.X, u.Y] = true;
 
 			foreach (var t in tiles)
 				if (IsValid(t))
@@ -98,11 +103,15 @@ namespace OpenRa.Game
 
 		void RemoveInfluence(Actor a)
 		{
-			var tiles = Footprint.UnpathableTiles(a.unitInfo, a.Location).ToArray();
+			var tiles = Footprint.Tiles(a).ToArray();
 			var min = int2.Max(new int2(0, 0),
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128),
 				tiles.Aggregate(int2.Max) + new int2(maxDistance, maxDistance));
+
+			foreach (var u in Footprint.UnpathableTiles(a.unitInfo, a.Location))
+				if (IsValid(u))
+					blocked[u.X, u.Y] = false;
 			
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
@@ -147,6 +156,11 @@ namespace OpenRa.Game
 		{
 			if (!IsValid(cell)) return int.MaxValue;
 			return (int)influence[cell.X, cell.Y].Second;
+		}
+
+		public bool CanMoveHere(int2 cell)
+		{
+			return IsValid(cell) && !blocked[cell.X, cell.Y];
 		}
 
 		struct Cell : IComparable<Cell>

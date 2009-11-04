@@ -33,9 +33,9 @@ namespace OpenRa.Game.Traits.Activities
 
 		static bool CanEnterCell( int2 c, Actor self )
 		{
+			if (!Game.BuildingInfluence.CanMoveHere(c)) return false;
 			var u = Game.UnitInfluence.GetUnitAt( c );
-			var b = Game.BuildingInfluence.GetBuildingAt( c );
-			return ( u == null || u == self ) && b == null;
+			return (u == null || u == self);
 		}
 
 		public void Tick( Actor self, Mobile mobile )

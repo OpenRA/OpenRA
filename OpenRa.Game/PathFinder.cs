@@ -52,7 +52,7 @@ namespace OpenRa.Game
 			for( int i = 0 ; i < path.Count ; i++ )
 			{
 				var sl = path[ i ];
-				if( i == 0 || Game.BuildingInfluence.GetBuildingAt( path[ i ] ) == null & Game.UnitInfluence.GetUnitAt( path[ i ] ) == null )
+				if( i == 0 || (Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt( path[ i ] ) == null) )
 				{
 					queue.Add( new PathDistance( estimator( sl ), sl ) );
 					cellInfo[ sl.X, sl.Y ] = new CellInfo( cost, prev, false );
@@ -105,7 +105,7 @@ namespace OpenRa.Game
 						continue;
 					if( passableCost[(int)umt][ newHere.X, newHere.Y ] == double.PositiveInfinity )
 						continue;
-					if (Game.BuildingInfluence.GetBuildingAt(newHere) != null)
+					if (!Game.BuildingInfluence.CanMoveHere(newHere))
 						continue;
 					if( checkForBlock && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 						continue;
