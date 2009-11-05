@@ -51,6 +51,7 @@ namespace OpenRa.Game
 
 			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
 			UiOverlay.ShowBuildDebug = settings.GetValue("bdebug", false);
+			Game.timestep = settings.GetValue("rate", 40);
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
 			Game.Replay = settings.GetValue("replay", "");
 

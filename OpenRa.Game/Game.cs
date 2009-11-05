@@ -132,7 +132,7 @@ namespace OpenRa.Game
 		}
 
 		static int lastTime = Environment.TickCount;
-		public const int timestep = 40;
+		public static int timestep = 40;
 
 		public static void ResetTimer()
 		{
@@ -259,7 +259,7 @@ namespace OpenRa.Game
 			return BuildingInfluence.GetDistanceToBuilding(b);
 		}
 
-		public static Random SharedRandom = new Random();		/* for things that require sync */
+		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
 		public static readonly Pair<VoicePool, VoicePool> SovietVoices =
