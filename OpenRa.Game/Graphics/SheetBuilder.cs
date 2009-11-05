@@ -81,7 +81,7 @@ namespace OpenRa.Game.Graphics
 					channel = NextChannel(channel);
 				}
 
-				rowHeight = 0;
+				rowHeight = imageSize.Height;
 				p = new Point(0,0);
 			}
 
