@@ -57,9 +57,7 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Traits.Activities.Move(order.TargetActor.Location + new int2(1, 2), 0));
-					mobile.QueueActivity(new Traits.Activities.Turn(64));
-					mobile.QueueActivity(new Traits.Activities.DeliverOre());
+					mobile.QueueActivity(new Traits.Activities.DeliverOre(order.TargetActor));
 					break;
 				}
 			case "Harvest":

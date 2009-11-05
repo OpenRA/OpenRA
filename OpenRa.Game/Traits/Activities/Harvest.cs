@@ -53,11 +53,8 @@ namespace OpenRa.Game.Traits.Activities
 			/* find a proc */
 			var proc = ChooseReturnLocation(self);
 			if( proc != null )
-			{
-				mobile.QueueActivity( new Move( proc.Location + new int2( 1, 2 ), 0 ) );
-				mobile.QueueActivity( new Turn( 64 ) );
-				mobile.QueueActivity( new DeliverOre() );
-			}
+				mobile.QueueActivity( new DeliverOre( proc ) );
+
 			mobile.InternalSetActivity(NextActivity);
 		}
 
