@@ -145,6 +145,10 @@ namespace OpenRa.Game
 		public static double RenderTime = 0.0;
 		public static double TickTime = 0.0;
 		public static double OreTime = 0.0;
+		public static double PathToPathTime = 0.0;
+		public static double NormalPathTime = 0.0;
+		public static int PathToPathCount = 0;
+		public static int NormalPathCount = 0;
 
 		public static Stopwatch sw;
 
@@ -155,6 +159,10 @@ namespace OpenRa.Game
 			if( dt >= timestep )
 			{
 				sw.Reset();
+				PathToPathTime = 0;
+				NormalPathTime = 0;
+				PathToPathCount = 0;
+				NormalPathCount = 0;
 				lastTime += timestep;
 
 				if( orderManager.Tick() )
