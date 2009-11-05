@@ -47,6 +47,7 @@ namespace OpenRa.Game
 
 		public Actor( TreeReference tree, TreeCache treeRenderer )
 		{
+			ActorID = 0xffffffff;
 			Location = new int2( tree.Location );
 			traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
 		}
