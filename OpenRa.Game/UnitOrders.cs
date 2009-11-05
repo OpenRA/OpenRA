@@ -16,7 +16,7 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel( order.Subject );
-					mobile.QueueActivity( new Traits.Activities.Move( order.TargetLocation ) );
+					mobile.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 8 ) );
 
 					var attackBase = order.Subject.traits.WithInterface<AttackBase>().FirstOrDefault();
 					if( attackBase != null )
@@ -57,7 +57,7 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Traits.Activities.Move(order.TargetActor.Location + new int2(1, 2)));
+					mobile.QueueActivity(new Traits.Activities.Move(order.TargetActor.Location + new int2(1, 2), 0));
 					mobile.QueueActivity(new Traits.Activities.Turn(64));
 					mobile.QueueActivity(new Traits.Activities.DeliverOre());
 					break;
@@ -66,7 +66,7 @@ namespace OpenRa.Game
 				{
 					var mobile = order.Subject.traits.Get<Mobile>();
 					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation));
+					mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 0));
 					mobile.QueueActivity(new Traits.Activities.Harvest() );
 					break;
 				}

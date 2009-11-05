@@ -47,6 +47,14 @@ namespace OpenRa.Game
 			}
 		}
 
+		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		void SanityCheckAdd( Mobile a )
+		{
+			foreach( var c in a.OccupiedCells() )
+				if( influence[c.X, c.Y] != null )
+					throw new InvalidOperationException( "UIM: Sanity check failed (Add)" );
+		}
+
 		public Actor GetUnitAt( int2 a )
 		{
 			return influence[ a.X, a.Y ];
@@ -54,6 +62,7 @@ namespace OpenRa.Game
 
 		public void Add(Mobile a)
 		{
+			SanityCheckAdd(a);
 			foreach (var c in a.OccupiedCells())
 				influence[c.X, c.Y] = a.self;
 		}

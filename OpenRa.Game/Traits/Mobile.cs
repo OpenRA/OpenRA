@@ -12,8 +12,9 @@ namespace OpenRa.Game.Traits
 	{
 		public Actor self;
 
-		public int2 fromCell;
-		public int2 toCell { get { return self.Location; } set { self.Location = value; } }
+		int2 __fromCell;
+		public int2 fromCell { get { return __fromCell; } set { Game.UnitInfluence.Remove( this ); __fromCell = value; Game.UnitInfluence.Add( this ); } }
+		public int2 toCell { get { return self.Location; } set { Game.UnitInfluence.Remove( this ); self.Location = value; Game.UnitInfluence.Add( this ); } }
 		public int facing;
 
 		public int Voice = Game.CosmeticRandom.Next(2);

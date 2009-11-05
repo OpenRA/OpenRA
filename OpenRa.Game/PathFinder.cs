@@ -66,12 +66,12 @@ namespace OpenRa.Game
 			return ret;
 		}
 
-		List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
+		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
 		{
 			return FindUnitPath( new[] { unitLocation }, estimator, umt );
 		}
 
-		List<int2> FindUnitPath(IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt)
+		public List<int2> FindUnitPath( IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt )
 		{
 			var cellInfo = InitCellInfo();
 			var queue = new PriorityQueue<PathDistance>();
@@ -109,6 +109,9 @@ namespace OpenRa.Game
 						continue;
 					if( checkForBlock && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 						continue;
+					var est = estimator( newHere );
+					if( est == double.PositiveInfinity )
+						continue;
 
 					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[(int)umt][ newHere.X, newHere.Y ];
 					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;
@@ -119,7 +122,7 @@ namespace OpenRa.Game
 					cellInfo[ newHere.X, newHere.Y ].Path = here;
 					cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
-					queue.Add( new PathDistance( newCost + estimator( newHere ), newHere ) );
+					queue.Add( new PathDistance( newCost + est, newHere ) );
 				}
 			}
 

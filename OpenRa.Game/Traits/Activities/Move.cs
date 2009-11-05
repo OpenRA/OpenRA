@@ -10,17 +10,19 @@ namespace OpenRa.Game.Traits.Activities
 		public Activity NextActivity { get; set; }
 
 		int2? destination;
+		int nearEnough;
 		public List<int2> path;
 		Func<Actor, Mobile, List<int2>> getPath;
 
 		MovePart move;
 
-		public Move( int2 destination )
+		public Move( int2 destination, int nearEnough )
 		{
 			this.getPath = ( self, mobile ) => Game.PathFinder.FindUnitPath(
 				self.Location, destination,
 				mobile.GetMovementType() );
 			this.destination = destination;
+			this.nearEnough = nearEnough;
 		}
 
 		public Move( Actor target, int range )
@@ -29,6 +31,13 @@ namespace OpenRa.Game.Traits.Activities
 				self.Location, target.Location,
 				mobile.GetMovementType(), range );
 			this.destination = null;
+			this.nearEnough = range;
+		}
+
+		public Move( List<int2> path )
+		{
+			this.path = path;
+			this.destination = path[ 0 ];
 		}
 
 		static bool CanEnterCell( int2 c, Actor self )
@@ -98,7 +107,7 @@ namespace OpenRa.Game.Traits.Activities
 			var nextCell = path[ path.Count - 1 ];
 			if( !CanEnterCell( nextCell, self ) )
 			{
-				if( ( mobile.toCell - destination.Value ).LengthSquared <= 8 )
+				if( ( mobile.toCell - destination.Value ).LengthSquared <= nearEnough )
 				{
 					path.Clear();
 					return null;
@@ -120,6 +129,11 @@ namespace OpenRa.Game.Traits.Activities
 				if( path.Count == 0 )
 					return null;
 				nextCell = path[ path.Count - 1 ];
+				if( !CanEnterCell( nextCell, self ) )
+				{
+					path.Clear();
+					return null;
+				}
 			}
 			path.RemoveAt( path.Count - 1 );
 			return nextCell;

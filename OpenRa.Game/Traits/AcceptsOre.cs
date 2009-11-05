@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -14,7 +14,9 @@ namespace OpenRa.Game.Traits
 				w =>
 				{
 					var harvester = new Actor("harv", self.Location + new int2(1, 2), self.Owner);
-					harvester.traits.Get<Mobile>().facing = 64;
+					var mobile = harvester.traits.Get<Mobile>();
+					mobile.facing = 64;
+					mobile.InternalSetActivity( new Harvest() );
 					w.Add(harvester);
 				});
 		}

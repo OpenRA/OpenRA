@@ -21,8 +21,9 @@ namespace OpenRa.Game.Traits.Activities
 				harv.gemsCarried = 0;
 				harv.oreCarried = 0;
 
+				if( NextActivity == null )
+					NextActivity = new Harvest();
 				mobile.InternalSetActivity(NextActivity);
-				/* todo: return to the ore patch */
 				return;
 			}
 

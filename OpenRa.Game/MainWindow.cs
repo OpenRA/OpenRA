@@ -54,7 +54,7 @@ namespace OpenRa.Game
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
 			Game.Replay = settings.GetValue("replay", "");
 
-			Game.Initialize(settings.GetValue("map", "scg11eb.ini"), renderer, new int2(ClientSize),
+			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
 				settings.GetValue("player", 1));
 
 			SequenceProvider.ForcePrecache();
