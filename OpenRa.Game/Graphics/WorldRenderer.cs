@@ -99,11 +99,12 @@ namespace OpenRa.Game.Graphics
             
             lineRenderer.Flush();
 
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)", 
+			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)\n$ {5}", 
 				Game.RenderFrame, Game.orderManager.FrameNumber,
 				Game.RenderTime * 1000, 
 				Game.TickTime * 1000,
-				Game.OreTime * 1000), new int2(5, 5), Color.White);
+				Game.OreTime * 1000,
+				Game.LocalPlayer.Cash), new int2(5, 5), Color.White);
 		}
 
         void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)

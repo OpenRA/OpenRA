@@ -41,9 +41,7 @@ namespace OpenRa.Game.Traits.Activities
 			{
 				var harv = self.traits.Get<Harvester>();
 
-				/* todo: give cash */
-				harv.gemsCarried = 0;
-				harv.oreCarried = 0;
+				harv.Deliver(self);
 
 				if( NextActivity == null )
 					NextActivity = new Harvest();

@@ -10,6 +10,7 @@ namespace OpenRa.Game
 		public string PlayerName;
 		public Race Race;
 		public readonly int Index;
+		public int Cash;
 
 		public Player( int index, int palette, string playerName, Race race )
 		{
@@ -17,6 +18,7 @@ namespace OpenRa.Game
 			this.Palette = palette;
 			this.PlayerName = playerName;
 			this.Race = race;
+			this.Cash = 10000;
 		}
 
 		public float GetSiloFullness()
@@ -27,13 +29,21 @@ namespace OpenRa.Game
 		public void GiveCash( int num )
 		{
 			// TODO: increase cash
+			Cash += num;	// TODO: slowly
 		}
 
 		public bool TakeCash( int num )
 		{
+			if (Cash >= num)
+			{
+				Cash -= num;
+				return true;
+			}
+
+			return false;
 			// TODO: decrease cash.
 			// returns: if enough cash was available, true
-			return true;
+			//return true;
 		}
 
 		public void Tick()
@@ -103,7 +113,7 @@ namespace OpenRa.Game
 			if( Paused || Done ) return;
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if( costThisFrame == 0 && !player.TakeCash( costThisFrame ) ) return;
+			if( costThisFrame != 0 && !player.TakeCash( costThisFrame ) ) return;
 
 			RemainingCost -= costThisFrame;
 			RemainingTime -= 1;
