@@ -108,7 +108,6 @@
     <Compile Include="PlaceBuilding.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Race.cs" />
-    <Compile Include="Support\SharedResources.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="PathFinder.cs" />

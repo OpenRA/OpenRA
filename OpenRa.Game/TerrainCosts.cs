@@ -36,13 +36,10 @@ namespace OpenRa.Game
 
 		static TerrainCosts()
 		{
-            IniFile file = SharedResources.Rules;
-
 			for( int i = 0 ; i < 10 ; i++ )
 			{
-				if( i == 4 )
-					continue;
-				IniSection section = file.GetSection( ( (TerrainMovementType)i ).ToString() );
+				if( i == 4 ) continue;
+				var section = Rules.AllRules.GetSection( ( (TerrainMovementType)i ).ToString() );
 				for( int j = 0 ; j < 4 ; j++ )
 				{
 					string val = section.GetValue( ( (UnitMovementType)j ).ToString(), "0%" );

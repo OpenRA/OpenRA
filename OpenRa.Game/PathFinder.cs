@@ -63,7 +63,7 @@ namespace OpenRa.Game
 			for( int i = 0 ; i < path.Count ; i++ )
 			{
 				var sl = path[ i ];
-				if( i == 0 || (Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt( path[ i ] ) == null) )
+				if( /*i == 0 || */(Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt( path[ i ] ) == null) )
 				{
 					queue.Add( new PathDistance( estimator( sl ), sl ) );
 					cellInfo[ sl.X, sl.Y ] = new CellInfo( cost, prev, false );
