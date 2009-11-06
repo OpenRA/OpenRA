@@ -100,16 +100,13 @@ namespace OpenRa.Game.Graphics
             
             lineRenderer.Flush();
 
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)\nNormal Pathing ({5:F1} ms\t[{9} paths])\nPathToPath ({6:F1}\t[{8} paths])\n$ {7}", 
+			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)\n$ {5}\nTiles Expanded {6:F0}", 
 				Game.RenderFrame, Game.orderManager.FrameNumber,
 				Game.RenderTime * 1000, 
 				Game.TickTime * 1000,
 				Game.OreTime * 1000,
-				Game.NormalPathTime * 1000,
-				Game.PathToPathTime * 1000,
 				Game.LocalPlayer.Cash,
-				Game.PathToPathCount,
-				Game.NormalPathCount
+				PerfHistory.items[ "nodes_expanded" ].LastValue
 				), new int2(5, 5), Color.White);
 
 			PerfHistory.Render(renderer, lineRenderer);

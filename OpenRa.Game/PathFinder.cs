@@ -10,7 +10,7 @@ namespace OpenRa.Game
 {
 	class PathFinder
 	{
-		double[][,] passableCost = new double[4][,];
+		float[][,] passableCost = new float[4][,];
 		Map map;
 
 		public PathFinder(Map map, TileSet tileSet)
@@ -18,13 +18,13 @@ namespace OpenRa.Game
 			this.map = map;
 
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
-				passableCost[(int)umt] = new double[128, 128];
+				passableCost[(int)umt] = new float[128, 128];
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 						passableCost[(int)umt][ x, y ] = ( map.IsInMap( x, y ) )
-							? TerrainCosts.Cost( umt, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
-							: double.PositiveInfinity;
+							? (float)TerrainCosts.Cost( umt, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
+							: float.PositiveInfinity;
 		}
 
 		public List<int2> FindUnitPath(int2 src, int2 dest, UnitMovementType umt)
@@ -32,7 +32,7 @@ namespace OpenRa.Game
 			using (new PerfSample("find_unit_path"))
 			{
 				var sw = new Stopwatch();
-				/*if (passableCost[(int)umt][dest.X, dest.Y] == double.PositiveInfinity)
+				/*if (passableCost[(int)umt][dest.X, dest.Y] == float.PositiveInfinity)
 					return new List<int2>();
 				if (!Game.BuildingInfluence.CanMoveHere(dest))
 					return new List<int2>();*/
@@ -56,15 +56,27 @@ namespace OpenRa.Game
 
 		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
 		{
-			var sw = new Stopwatch();
 			using (new PerfSample("find_path_to_path"))
 			{
+				var anyMovePossible = false;
+				for( int v = -1; v < 2; v++ )
+					for( int u = -1; u < 2; u++ )
+						if (u != 0 || v != 0)
+						{
+							var p = from + new int2(u, v);
+							if (passableCost[(int)umt][from.X + u, from.Y + v] < float.PositiveInfinity)
+								if (Game.BuildingInfluence.CanMoveHere(p) && (Game.UnitInfluence.GetUnitAt(p) == null))
+									anyMovePossible = true;
+						}
 
-				CellInfo[,] cellInfo = null;// var cellInfo = InitCellInfo();
+				if (!anyMovePossible)
+					return new List<int2>();
+
+				CellInfo[,] cellInfo = null;
 				var queue = new PriorityQueue<PathDistance>();
 				var estimator = DefaultEstimator(from);
 
-				var cost = 0.0;
+				var cost = 0.0f;
 				var prev = path[0];
 				for (int i = 0; i < path.Count; i++)
 				{
@@ -78,24 +90,22 @@ namespace OpenRa.Game
 						cellInfo[sl.X, sl.Y] = new CellInfo(cost, prev, false);
 					}
 					var d = sl - prev;
-					cost += ((d.X * d.Y != 0) ? 1.414213563 : 1.0) * passableCost[(int)umt][sl.X, sl.Y];
+					cost += ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][sl.X, sl.Y];
 					prev = sl;
 				}
 				if (queue.Empty) return new List<int2>();
 				var ret = FindPath(cellInfo, queue, estimator, umt, true);
 				ret.Reverse();
-				Game.PathToPathTime += sw.ElapsedTime();
-				Game.PathToPathCount++;
 				return ret;
 			}
 		}
 
-		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )
+		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,float> estimator, UnitMovementType umt )
 		{
 			return FindUnitPath( new[] { unitLocation }, estimator, umt );
 		}
 
-		public List<int2> FindUnitPath( IEnumerable<int2> startLocations, Func<int2, double> estimator, UnitMovementType umt )
+		public List<int2> FindUnitPath( IEnumerable<int2> startLocations, Func<int2, float> estimator, UnitMovementType umt )
 		{
 			var cellInfo = InitCellInfo();
 			var queue = new PriorityQueue<PathDistance>();
@@ -109,8 +119,9 @@ namespace OpenRa.Game
 			return FindPath( cellInfo, queue, estimator, umt, false );
 		}
 
-		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, double> estimator, UnitMovementType umt, bool checkForBlock )
+		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, float> estimator, UnitMovementType umt, bool checkForBlock )
 		{
+			int samples = 0;
 			using (new PerfSample("find_path_inner"))
 			{
 				while (!queue.Empty)
@@ -120,7 +131,12 @@ namespace OpenRa.Game
 					cellInfo[here.X, here.Y].Seen = true;
 
 					if (estimator(here) == 0.0)
+					{
+						PerfHistory.Increment("nodes_expanded", samples * .01);
 						return MakePath(cellInfo, here);
+					}
+
+					samples++;
 
 					foreach (int2 d in Util.directions)
 					{
@@ -128,18 +144,18 @@ namespace OpenRa.Game
 
 						if (cellInfo[newHere.X, newHere.Y].Seen)
 							continue;
-						if (passableCost[(int)umt][newHere.X, newHere.Y] == double.PositiveInfinity)
+						if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
 							continue;
 						if (!Game.BuildingInfluence.CanMoveHere(newHere))
 							continue;
 						if (checkForBlock && Game.UnitInfluence.GetUnitAt(newHere) != null)
 							continue;
 						var est = estimator(newHere);
-						if (est == double.PositiveInfinity)
+						if (est == float.PositiveInfinity)
 							continue;
 
-						double cellCost = ((d.X * d.Y != 0) ? 1.414213563 : 1.0) * passableCost[(int)umt][newHere.X, newHere.Y];
-						double newCost = cellInfo[here.X, here.Y].MinCost + cellCost;
+						float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][newHere.X, newHere.Y];
+						float newCost = cellInfo[here.X, here.Y].MinCost + cellCost;
 
 						if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
 							continue;
@@ -151,6 +167,7 @@ namespace OpenRa.Game
 					}
 				}
 
+				PerfHistory.Increment("nodes_expanded", samples * .01);
 				// no path exists
 				return new List<int2>();
 			}
@@ -161,7 +178,7 @@ namespace OpenRa.Game
 			var cellInfo = new CellInfo[ 128, 128 ];
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
-					cellInfo[ x, y ] = new CellInfo( double.PositiveInfinity, new int2( x, y ), false );
+					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
 			return cellInfo;
 		}
 
@@ -181,25 +198,25 @@ namespace OpenRa.Game
 			return ret;
 		}
 
-		static Func<int2, double> DefaultEstimator(int2 destination)
+		static Func<int2, float> DefaultEstimator(int2 destination)
 		{
 			return here =>
 			{
 				int2 d = ( here - destination ).Abs();
 				int diag = Math.Min( d.X, d.Y );
 				int straight = Math.Abs( d.X - d.Y );
-				return 1.5 * diag + straight;
+				return 1.5f * diag + straight;
 			};
 		}
 	}
 
 	struct CellInfo
 	{
-		public double MinCost;
+		public float MinCost;
 		public int2 Path;
 		public bool Seen;
 
-		public CellInfo( double minCost, int2 path, bool seen )
+		public CellInfo( float minCost, int2 path, bool seen )
 		{
 			MinCost = minCost;
 			Path = path;
@@ -209,10 +226,10 @@ namespace OpenRa.Game
 
 	struct PathDistance : IComparable<PathDistance>
 	{
-		public double EstTotal;
+		public float EstTotal;
 		public int2 Location;
 
-		public PathDistance(double estTotal, int2 location)
+		public PathDistance(float estTotal, int2 location)
 		{
 			EstTotal = estTotal;
 			Location = location;

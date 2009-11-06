@@ -77,7 +77,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			var path = Game.PathFinder.FindUnitPath( self.Location, loc =>
 				{
-					if( Game.UnitInfluence.GetUnitAt( loc ) != null ) return double.PositiveInfinity;
+					if( Game.UnitInfluence.GetUnitAt( loc ) != null ) return float.PositiveInfinity;
 					return Game.map.ContainsResource( loc ) ? 0 : 1;
 				}, UnitMovementType.Wheel )
 				.TakeWhile( a => a != self.Location )

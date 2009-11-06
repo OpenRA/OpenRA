@@ -13,7 +13,7 @@ namespace OpenRa.Game.Support
 		static readonly Color[] colors = { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Orange, Color.Fuchsia, Color.Lime, Color.LightBlue };
 		static int nextColor;
 
-		static Cache<string, PerfItem> items = new Cache<string, PerfItem>(
+		public static Cache<string, PerfItem> items = new Cache<string, PerfItem>(
 			s => 
 			{
 				var x = new PerfItem(s, colors[nextColor++]);
@@ -88,6 +88,16 @@ namespace OpenRa.Game.Support
 				--n;
 				if (n < 0) n = samples.Length - 1;
 				yield return samples[n];
+			}
+		}
+
+		public double LastValue
+		{
+			get
+			{
+				int n = head;
+				if (--n < 0) n = samples.Length - 1;
+				return samples[n];
 			}
 		}
 	}
