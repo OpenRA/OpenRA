@@ -4,6 +4,7 @@ using IjwFramework.Collections;
 using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game
 {
@@ -28,16 +29,19 @@ namespace OpenRa.Game
 
 		public List<int2> FindUnitPath(int2 src, int2 dest, UnitMovementType umt)
 		{
-			var sw = new Stopwatch();
-			/*if (passableCost[(int)umt][dest.X, dest.Y] == double.PositiveInfinity)
-				return new List<int2>();
-			if (!Game.BuildingInfluence.CanMoveHere(dest))
-				return new List<int2>();*/
+			using (new PerfSample("find_unit_path"))
+			{
+				var sw = new Stopwatch();
+				/*if (passableCost[(int)umt][dest.X, dest.Y] == double.PositiveInfinity)
+					return new List<int2>();
+				if (!Game.BuildingInfluence.CanMoveHere(dest))
+					return new List<int2>();*/
 
-			var result = FindUnitPath(src, DefaultEstimator(dest), umt);
-			Game.NormalPathTime += sw.ElapsedTime();
-			Game.NormalPathCount++;
-			return result;
+				var result = FindUnitPath(src, DefaultEstimator(dest), umt);
+				Game.NormalPathTime += sw.ElapsedTime();
+				Game.NormalPathCount++;
+				return result;
+			}
 		}
 
 		public List<int2> FindUnitPathToRange(int2 src, int2 dest, UnitMovementType umt, int range)
@@ -53,30 +57,33 @@ namespace OpenRa.Game
 		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
 		{
 			var sw = new Stopwatch();
-
-			var cellInfo = InitCellInfo();
-			var queue = new PriorityQueue<PathDistance>();
-			var estimator = DefaultEstimator( from );
-
-			var cost = 0.0;
-			var prev = path[ 0 ];
-			for( int i = 0 ; i < path.Count ; i++ )
+			using (new PerfSample("find_path_to_path"))
 			{
-				var sl = path[ i ];
-				if( /*i == 0 || */(Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt( path[ i ] ) == null) )
+
+				var cellInfo = InitCellInfo();
+				var queue = new PriorityQueue<PathDistance>();
+				var estimator = DefaultEstimator(from);
+
+				var cost = 0.0;
+				var prev = path[0];
+				for (int i = 0; i < path.Count; i++)
 				{
-					queue.Add( new PathDistance( estimator( sl ), sl ) );
-					cellInfo[ sl.X, sl.Y ] = new CellInfo( cost, prev, false );
+					var sl = path[i];
+					if ( /*i == 0 || */(Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt(path[i]) == null))
+					{
+						queue.Add(new PathDistance(estimator(sl), sl));
+						cellInfo[sl.X, sl.Y] = new CellInfo(cost, prev, false);
+					}
+					var d = sl - prev;
+					cost += ((d.X * d.Y != 0) ? 1.414213563 : 1.0) * passableCost[(int)umt][sl.X, sl.Y];
+					prev = sl;
 				}
-				var d = sl - prev;
-				cost += ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[ (int)umt ][ sl.X, sl.Y ];
-				prev = sl;
+				var ret = FindPath(cellInfo, queue, estimator, umt, true);
+				ret.Reverse();
+				Game.PathToPathTime += sw.ElapsedTime();
+				Game.PathToPathCount++;
+				return ret;
 			}
-			var ret = FindPath( cellInfo, queue, estimator, umt, true );
-			ret.Reverse();
-			Game.PathToPathTime += sw.ElapsedTime();
-			Game.PathToPathCount++;
-			return ret;
 		}
 
 		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,double> estimator, UnitMovementType umt )

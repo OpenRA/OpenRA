@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using IjwFramework.Types;
 using System.Collections.Generic;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game.Graphics
 {
@@ -110,6 +111,8 @@ namespace OpenRa.Game.Graphics
 				Game.PathToPathCount,
 				Game.NormalPathCount
 				), new int2(5, 5), Color.White);
+
+			PerfHistory.Render(renderer, lineRenderer);
 		}
 
         void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)

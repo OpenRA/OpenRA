@@ -9,6 +9,7 @@ using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game
 {
@@ -158,32 +159,37 @@ namespace OpenRa.Game
 			int dt = t - lastTime;
 			if( dt >= timestep )
 			{
-				sw.Reset();
-				PathToPathTime = 0;
-				NormalPathTime = 0;
-				PathToPathCount = 0;
-				NormalPathCount = 0;
-				lastTime += timestep;
-
-				if( orderManager.Tick() )
+				using (new PerfSample("tick_time"))
 				{
-					if( controller.orderGenerator != null )
-						controller.orderGenerator.Tick();
+					sw.Reset();
+					PathToPathTime = 0;
+					NormalPathTime = 0;
+					PathToPathCount = 0;
+					NormalPathCount = 0;
+					lastTime += timestep;
 
-					if (--oreTicks == 0)
+					if (orderManager.Tick())
 					{
-						var oresw = new Stopwatch();
-						map.GrowOre(SharedRandom);
-						OreTime = oresw.ElapsedTime();
-						oreTicks = oreFrequency;
+						if (controller.orderGenerator != null)
+							controller.orderGenerator.Tick();
+
+						if (--oreTicks == 0)
+						{
+							var oresw = new Stopwatch();
+							map.GrowOre(SharedRandom);
+							OreTime = oresw.ElapsedTime();
+							oreTicks = oreFrequency;
+						}
+						world.Tick();
+						UnitInfluence.Tick();
+						foreach (var player in players.Values)
+							player.Tick();
 					}
-					world.Tick();
-					UnitInfluence.Tick();
-					foreach( var player in players.Values )
-						player.Tick();
+
+					TickTime = sw.ElapsedTime();
 				}
 
-				TickTime = sw.ElapsedTime();
+				PerfHistory.Tick();
 			}
 
 			sw.Reset();

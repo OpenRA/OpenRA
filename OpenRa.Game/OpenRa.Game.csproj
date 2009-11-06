@@ -79,6 +79,7 @@
     <Compile Include="OrderManager.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="Stopwatch.cs" />
+    <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
