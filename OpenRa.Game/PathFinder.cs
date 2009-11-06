@@ -60,7 +60,7 @@ namespace OpenRa.Game
 			using (new PerfSample("find_path_to_path"))
 			{
 
-				var cellInfo = InitCellInfo();
+				CellInfo[,] cellInfo = null;// var cellInfo = InitCellInfo();
 				var queue = new PriorityQueue<PathDistance>();
 				var estimator = DefaultEstimator(from);
 
@@ -72,12 +72,16 @@ namespace OpenRa.Game
 					if ( /*i == 0 || */(Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt(path[i]) == null))
 					{
 						queue.Add(new PathDistance(estimator(sl), sl));
+						if (cellInfo == null)
+							cellInfo = InitCellInfo();
+
 						cellInfo[sl.X, sl.Y] = new CellInfo(cost, prev, false);
 					}
 					var d = sl - prev;
 					cost += ((d.X * d.Y != 0) ? 1.414213563 : 1.0) * passableCost[(int)umt][sl.X, sl.Y];
 					prev = sl;
 				}
+				if (queue.Empty) return new List<int2>();
 				var ret = FindPath(cellInfo, queue, estimator, umt, true);
 				ret.Reverse();
 				Game.PathToPathTime += sw.ElapsedTime();
@@ -107,47 +111,49 @@ namespace OpenRa.Game
 
 		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, double> estimator, UnitMovementType umt, bool checkForBlock )
 		{
-
-			while( !queue.Empty )
+			using (new PerfSample("find_path_inner"))
 			{
-				PathDistance p = queue.Pop();
-				int2 here = p.Location;
-				cellInfo[ here.X, here.Y ].Seen = true;
-
-				if( estimator( here ) == 0.0 )
-					return MakePath( cellInfo, here );
-
-				foreach( int2 d in Util.directions )
+				while (!queue.Empty)
 				{
-					int2 newHere = here + d;
+					PathDistance p = queue.Pop();
+					int2 here = p.Location;
+					cellInfo[here.X, here.Y].Seen = true;
 
-					if( cellInfo[ newHere.X, newHere.Y ].Seen )
-						continue;
-					if( passableCost[(int)umt][ newHere.X, newHere.Y ] == double.PositiveInfinity )
-						continue;
-					if (!Game.BuildingInfluence.CanMoveHere(newHere))
-						continue;
-					if( checkForBlock && Game.UnitInfluence.GetUnitAt( newHere ) != null )
-						continue;
-					var est = estimator( newHere );
-					if( est == double.PositiveInfinity )
-						continue;
+					if (estimator(here) == 0.0)
+						return MakePath(cellInfo, here);
 
-					double cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563 : 1.0 ) * passableCost[(int)umt][ newHere.X, newHere.Y ];
-					double newCost = cellInfo[ here.X, here.Y ].MinCost + cellCost;
+					foreach (int2 d in Util.directions)
+					{
+						int2 newHere = here + d;
 
-					if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
-						continue;
+						if (cellInfo[newHere.X, newHere.Y].Seen)
+							continue;
+						if (passableCost[(int)umt][newHere.X, newHere.Y] == double.PositiveInfinity)
+							continue;
+						if (!Game.BuildingInfluence.CanMoveHere(newHere))
+							continue;
+						if (checkForBlock && Game.UnitInfluence.GetUnitAt(newHere) != null)
+							continue;
+						var est = estimator(newHere);
+						if (est == double.PositiveInfinity)
+							continue;
 
-					cellInfo[ newHere.X, newHere.Y ].Path = here;
-					cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
+						double cellCost = ((d.X * d.Y != 0) ? 1.414213563 : 1.0) * passableCost[(int)umt][newHere.X, newHere.Y];
+						double newCost = cellInfo[here.X, here.Y].MinCost + cellCost;
 
-					queue.Add( new PathDistance( newCost + est, newHere ) );
+						if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
+							continue;
+
+						cellInfo[newHere.X, newHere.Y].Path = here;
+						cellInfo[newHere.X, newHere.Y].MinCost = newCost;
+
+						queue.Add(new PathDistance(newCost + est, newHere));
+					}
 				}
-			}
 
-			// no path exists
-			return new List<int2>();
+				// no path exists
+				return new List<int2>();
+			}
 		}
 
 		static CellInfo[ , ] InitCellInfo()
