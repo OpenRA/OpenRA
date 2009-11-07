@@ -121,10 +121,10 @@ namespace OpenRa.Game.Traits.Activities
 				if( newPath.Count == 0 )
 					return null;
 
-				while( path[ path.Count - 1 ] != newPath[ 0 ] )
-					path.RemoveAt( path.Count - 1 );
+				while( path.Count != 0 && path[ path.Count - 1 ] != newPath[ 0 ] )
+				    path.RemoveAt( path.Count - 1 );
 				for( int i = 1 ; i < newPath.Count ; i++ )
-					path.Add( newPath[ i ] );
+				    path.Add( newPath[ i ] );
 
 				if( path.Count == 0 )
 					return null;

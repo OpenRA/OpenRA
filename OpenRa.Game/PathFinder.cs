@@ -102,10 +102,12 @@ namespace OpenRa.Game
 				var otherQueue = new PriorityQueue<PathDistance>();
 				otherQueue.Add(new PathDistance(h2(from), from));
 
-				var ret = FindBidiPath(cellInfo, InitCellInfo(), queue, otherQueue, estimator, h2, umt, true);
+				var otherCellInfo = InitCellInfo();
+				otherCellInfo[from.X, from.Y] = new CellInfo( 0, from, false );
+				var ret = FindBidiPath(cellInfo, otherCellInfo, queue, otherQueue, estimator, h2, umt, true);
 
 				//var ret = FindPath(cellInfo, queue, estimator, umt, true);
-				ret.Reverse();
+				//ret.Reverse();
 				return ret;
 			}
 		}
@@ -262,26 +264,40 @@ namespace OpenRa.Game
 		static List<int2> MakeBidiPath(CellInfo[,] ca, CellInfo[,] cb, int2 p)
 		{
 			var a = new List<int2>();
-			var b = new List<int2>();
 
 			var q = p;
 			while (ca[q.X, q.Y].Path != q)
 			{
-				q = ca[q.X, q.Y].Path;
-				a.Add(q);
+				a.Add( q );
+				q = ca[ q.X, q.Y ].Path;
 			}
+
+			a.Reverse();
 
 			q = p;
 			while (cb[q.X, q.Y].Path != q)
 			{
 				q = cb[q.X, q.Y].Path;
-				b.Add(q);
+				a.Add(q);
 			}
 
-			a.Add(p);
-			for (var v = b.Count - 1; v >= 0; v--) a.Add(b[v]);
-
+			CheckSanePath( a );
 			return a;
+		}
+
+		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		static void CheckSanePath( List<int2> path )
+		{
+			if( path.Count == 0 )
+				return;
+			var prev = path[ 0 ];
+			for( int i = 0 ; i < path.Count ; i++ )
+			{
+				var d = path[ i ] - prev;
+				if( Math.Abs( d.X ) > 1 || Math.Abs( d.Y ) > 1 )
+					throw new InvalidOperationException( "(PathFinder) path sanity check failed" );
+				prev = path[ i ];
+			}
 		}
 	}
 
