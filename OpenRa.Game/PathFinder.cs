@@ -97,7 +97,14 @@ namespace OpenRa.Game
 					prev = sl;
 				}
 				if (queue.Empty) return new List<int2>();
-				var ret = FindPath(cellInfo, queue, estimator, umt, true);
+
+				var h2 = DefaultEstimator(path[0]);
+				var otherQueue = new PriorityQueue<PathDistance>();
+				otherQueue.Add(new PathDistance(h2(from), from));
+
+				var ret = FindBidiPath(cellInfo, InitCellInfo(), queue, otherQueue, estimator, h2, umt, true);
+
+				//var ret = FindPath(cellInfo, queue, estimator, umt, true);
 				ret.Reverse();
 				return ret;
 			}
@@ -124,53 +131,26 @@ namespace OpenRa.Game
 
 		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, float> estimator, UnitMovementType umt, bool checkForBlock )
 		{
-			int samples = 0;
+			int nodesExpanded = 0;
 			using (new PerfSample("find_path_inner"))
 			{
 				while (!queue.Empty)
 				{
 					PathDistance p = queue.Pop();
-					int2 here = p.Location;
-					cellInfo[here.X, here.Y].Seen = true;
+					cellInfo[p.Location.X, p.Location.Y].Seen = true;
 
-					if (estimator(here) == 0.0)
+					if (estimator(p.Location) == 0)
 					{
-						PerfHistory.Increment("nodes_expanded", samples * .01);
-						return MakePath(cellInfo, here);
+						PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
+						return MakePath(cellInfo, p.Location);
 					}
 
-					samples++;
+					nodesExpanded++;
 
-					foreach (int2 d in Util.directions)
-					{
-						int2 newHere = here + d;
-
-						if (cellInfo[newHere.X, newHere.Y].Seen)
-							continue;
-						if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
-							continue;
-						if (!Game.BuildingInfluence.CanMoveHere(newHere))
-							continue;
-						if (checkForBlock && Game.UnitInfluence.GetUnitAt(newHere) != null)
-							continue;
-						var est = estimator(newHere);
-						if (est == float.PositiveInfinity)
-							continue;
-
-						float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][newHere.X, newHere.Y];
-						float newCost = cellInfo[here.X, here.Y].MinCost + cellCost;
-
-						if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
-							continue;
-
-						cellInfo[newHere.X, newHere.Y].Path = here;
-						cellInfo[newHere.X, newHere.Y].MinCost = newCost;
-
-						queue.Add(new PathDistance(newCost + est, newHere));
-					}
+					ExpandNode(cellInfo, queue, p, umt, checkForBlock, estimator);
 				}
 
-				PerfHistory.Increment("nodes_expanded", samples * .01);
+				PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
 				// no path exists
 				return new List<int2>();
 			}
@@ -210,6 +190,98 @@ namespace OpenRa.Game
 				int straight = Math.Abs( d.X - d.Y );
 				return 1.5f * diag + straight;
 			};
+		}
+
+		void ExpandNode(CellInfo[,] ci, PriorityQueue<PathDistance> q, PathDistance p, UnitMovementType umt, bool checkForBlock, Func<int2, float> h)
+		{
+			foreach (int2 d in Util.directions)
+			{
+				int2 newHere = p.Location + d;
+
+				if (ci[newHere.X, newHere.Y].Seen)
+					continue;
+				if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
+					continue;
+				if (!Game.BuildingInfluence.CanMoveHere(newHere))
+					continue;
+				if (checkForBlock && Game.UnitInfluence.GetUnitAt(newHere) != null)
+					continue;
+				var est = h(newHere);
+				if (est == float.PositiveInfinity)
+					continue;
+
+				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][newHere.X, newHere.Y];
+				float newCost = ci[p.Location.X, p.Location.Y].MinCost + cellCost;
+
+				if (newCost >= ci[newHere.X, newHere.Y].MinCost)
+					continue;
+
+				ci[newHere.X, newHere.Y].Path = p.Location;
+				ci[newHere.X, newHere.Y].MinCost = newCost;
+
+				q.Add(new PathDistance(newCost + est, newHere));
+			}
+		}
+
+		List<int2> FindBidiPath(			/* searches from both ends toward each other */
+			CellInfo[,] ca, 
+			CellInfo[,] cb,
+			PriorityQueue<PathDistance> qa,
+			PriorityQueue<PathDistance> qb,
+			Func<int2, float> ha,
+			Func<int2, float> hb,
+			UnitMovementType umt,
+			bool checkForBlocked)
+		{
+			while (!qa.Empty && !qb.Empty)
+			{
+				{		/* make some progress on the first search */
+					var p = qa.Pop();
+					ca[p.Location.X, p.Location.Y].Seen = true;
+
+					if (cb[p.Location.X, p.Location.Y].MinCost < float.PositiveInfinity)
+						return MakeBidiPath(ca, cb, p.Location);
+					else
+						ExpandNode(ca, qa, p, umt, checkForBlocked, ha);
+				}
+
+				{		/* make some progress on the second search */
+					var p = qb.Pop();
+					cb[p.Location.X, p.Location.Y].Seen = true;
+
+					//if (ca[p.Location.X, p.Location.Y].MinCost < float.PositiveInfinity)
+					//	return MakeBidiPath(ca, cb, p.Location);
+					//else
+						ExpandNode(cb, qb, p, umt, checkForBlocked, hb);
+				}
+			}
+
+			return new List<int2>();
+		}
+
+		static List<int2> MakeBidiPath(CellInfo[,] ca, CellInfo[,] cb, int2 p)
+		{
+			var a = new List<int2>();
+			var b = new List<int2>();
+
+			var q = p;
+			while (ca[q.X, q.Y].Path != q)
+			{
+				q = ca[q.X, q.Y].Path;
+				a.Add(q);
+			}
+
+			q = p;
+			while (cb[q.X, q.Y].Path != q)
+			{
+				q = cb[q.X, q.Y].Path;
+				b.Add(q);
+			}
+
+			a.Add(p);
+			for (var v = b.Count - 1; v >= 0; v--) a.Add(b[v]);
+
+			return a;
 		}
 	}
 
