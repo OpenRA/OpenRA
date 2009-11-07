@@ -54,22 +54,25 @@ namespace OpenRa.Game
 			return path;
 		}
 
+		bool IsBlocked(int2 from, UnitMovementType umt)
+		{
+			for (int v = -1; v < 2; v++)
+				for (int u = -1; u < 2; u++)
+					if (u != 0 || v != 0)
+					{
+						var p = from + new int2(u, v);
+						if (passableCost[(int)umt][from.X + u, from.Y + v] < float.PositiveInfinity)
+							if (Game.BuildingInfluence.CanMoveHere(p) && (Game.UnitInfluence.GetUnitAt(p) == null))
+								return false;
+					}
+			return true;
+		}
+
 		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
 		{
 			using (new PerfSample("find_path_to_path"))
 			{
-				var anyMovePossible = false;
-				for( int v = -1; v < 2; v++ )
-					for( int u = -1; u < 2; u++ )
-						if (u != 0 || v != 0)
-						{
-							var p = from + new int2(u, v);
-							if (passableCost[(int)umt][from.X + u, from.Y + v] < float.PositiveInfinity)
-								if (Game.BuildingInfluence.CanMoveHere(p) && (Game.UnitInfluence.GetUnitAt(p) == null))
-									anyMovePossible = true;
-						}
-
-				if (!anyMovePossible)
+				if (IsBlocked(from, umt))
 					return new List<int2>();
 
 				CellInfo[,] cellInfo = null;
