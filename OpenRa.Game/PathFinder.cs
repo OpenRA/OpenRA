@@ -89,10 +89,10 @@ namespace OpenRa.Game
 					}
 
 					nodesExpanded++;
-					PerfHistory.Increment( "nodes_expanded", nodesExpanded * .01 );
 				}
 
 				// no path exists
+				PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
 				return new List<int2>();
 			}
 		}
