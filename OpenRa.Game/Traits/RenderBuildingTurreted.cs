@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderBuildingTurreted : RenderBuilding, INotifyDamage
+	class RenderBuildingTurreted : RenderBuilding
 	{
 		public RenderBuildingTurreted(Actor self)
 			: base(self)
@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 				() => self.traits.Get<Turreted>().turretFacing / 8);
 		}
 
-		void INotifyDamage.Damaged(Actor self, DamageState ds)
+		public override void Damaged(Actor self, DamageState ds)
 		{
 			switch (ds)
 			{

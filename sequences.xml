@@ -107,9 +107,9 @@
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="weapmake" />
     <sequence name="build-top" start="0" length="4" src="weap2" />
-    <sequence name="build2-top" start="4" length="4" src="weap2" />
+    <sequence name="damaged-build-top" start="4" length="4" src="weap2" />
     <sequence name="idle-top" start="0" length="1" src="weap2" />
-    <sequence name="damaged-idle_top" start="4" length="1" src="weap2" />
+    <sequence name="damaged-idle-top" start="4" length="1" src="weap2" />
   </unit>
   <!-- helipad -->
   <unit name="hpad">

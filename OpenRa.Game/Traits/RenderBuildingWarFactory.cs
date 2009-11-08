@@ -13,6 +13,7 @@ namespace OpenRa.Game.Traits
 		bool doneBuilding;
 		bool isOpen;
 		public readonly Actor self;
+		string prefix = "";
 
 		public RenderWarFactory(Actor self)
 			: base(self)
@@ -24,7 +25,7 @@ namespace OpenRa.Game.Traits
 			{
 				doneBuilding = true;
 				anim.Play("idle");
-				roof.Play("idle-top");
+				roof.Play(prefix + "idle-top");
 			});
 		}
 
@@ -46,15 +47,30 @@ namespace OpenRa.Game.Traits
 				new float2(b.Right, b.Bottom)).Any(a => a.traits.Contains<Mobile>()))
 			{
 				isOpen = false;
-				roof.PlayBackwardsThen("build-top", () => roof.Play("idle-top"));
+				roof.PlayBackwardsThen(prefix + "build-top", () => roof.Play(prefix + "idle-top"));
 			}
 		}
 
 		public void EjectUnit()
 		{
-			/* todo: hold the door open */
+			roof.PlayThen(prefix + "build-top", () => isOpen = true);
+		}
 
-			roof.PlayThen("build-top", () => isOpen = true);
+		public override void Damaged(Actor self, DamageState ds)
+		{
+			base.Damaged(self, ds);
+
+			switch (ds)
+			{
+				case DamageState.Normal:
+					prefix = "";
+					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
+					break;
+				case DamageState.Half:
+					prefix = "damaged-";
+					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
+					break;
+			}
 		}
 	}
 }

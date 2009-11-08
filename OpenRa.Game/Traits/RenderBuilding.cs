@@ -59,7 +59,7 @@ namespace OpenRa.Game.Traits
 			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
 		}
 
-		void INotifyDamage.Damaged(Actor self, DamageState state)
+		public virtual void Damaged(Actor self, DamageState state)
 		{
 			switch( state )
 			{

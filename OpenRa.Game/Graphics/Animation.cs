@@ -49,6 +49,11 @@ namespace OpenRa.Game.Graphics
 			frame = f % CurrentSequence.Length;
 		}
 
+		public void ReplaceAnim(string sequenceName)
+		{
+			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+		}
+
 		public void PlayThen( string sequenceName, Action after )
 		{
 			backwards = false;
