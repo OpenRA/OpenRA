@@ -43,18 +43,24 @@ namespace OpenRa.Game
 
 		public List<int2> FindUnitPath( int2 from, int2 target, UnitMovementType umt )
 		{
-			using( new PerfSample( "find_unit_path" ) )
-				return FindPath( PathSearch.FromPoint( from, target, umt, false ) );
+			using (new PerfSample("find_unit_path"))
+			{
+				var pb = FindBidiPath(
+					PathSearch.FromPoint(target, from, umt, false),
+					PathSearch.FromPoint(from, target, umt, false));
+
+				return pb;
+			}
 		}
 
 		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var tilesInRange = Game.FindTilesInCircle( src, range )
+				var tilesInRange = Game.FindTilesInCircle(target, range)
 					.Where( t => Game.IsCellBuildable( t, umt ) );
 
-				var path = FindPath( PathSearch.FromPoints( tilesInRange, target, umt, false ));
+				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ));
 				path.Reverse();
 				return path;
 			}
@@ -124,7 +130,7 @@ namespace OpenRa.Game
 				/* make some progress on the first search */
 				var p = fromSrc.Expand( passableCost );
 				
-				if (fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+				if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
 					return MakeBidiPath(fromSrc, fromDest, p);
 
 				/* make some progress on the second search */

@@ -96,10 +96,17 @@ namespace OpenRa.Game
 
 					time = .05f * time;						/* temporary hax so we can build stuff fast for test */
 
-					Action complete = null;
-					if( group != "Building" ) complete = () => Game.world.AddFrameEndTask( _ => Game.BuildUnit( order.Player, order.TargetString ) );
-
-					order.Player.BeginProduction( group, new ProductionItem( order.TargetString, (int)time, ui.Cost, complete ) );
+					order.Player.BeginProduction(group,
+						new ProductionItem(order.TargetString, (int)time, ui.Cost,
+							() => Game.world.AddFrameEndTask(
+								_ =>
+								{
+									if (order.Player == Game.LocalPlayer)
+										Game.PlaySound(group == "Building" 
+											? "conscmp1.aud" : "unitrdy1.aud", false);
+									if (group != "Building")
+										Game.BuildUnit(order.Player, order.TargetString);
+								})));
 					break;
 				}
 			case "PauseProduction":

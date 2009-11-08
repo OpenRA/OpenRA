@@ -34,25 +34,16 @@ namespace OpenRa.Game
 
 		public bool TakeCash( int num )
 		{
-			if (Cash >= num)
-			{
-				Cash -= num;
-				return true;
-			}
-
-			return false;
-			// TODO: decrease cash.
-			// returns: if enough cash was available, true
-			//return true;
+			if (Cash < num) return false;
+			Cash -= num;
+			return true;
 		}
 
 		public void Tick()
 		{
 			foreach( var p in production )
-			{
 				if( p.Value != null )
 					p.Value.Tick( this );
-			}
 		}
 
 		// Key: Production category. Categories are: Building, Infantry, Vehicle, Ship, Plane (and one per super, if they're done in here)
