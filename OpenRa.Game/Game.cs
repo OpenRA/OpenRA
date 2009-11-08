@@ -299,7 +299,7 @@ namespace OpenRa.Game
 		{
 			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
 			return !Footprint.Tiles(bi, xy, adjust).Any(
-				t => !Game.IsCellBuildable(t,
+				t => Game.map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
