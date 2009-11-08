@@ -72,26 +72,19 @@ namespace OpenRa.Game.Traits.Activities
 
 		void PlanMoreHarvesting(Actor self, Mobile mobile)
 		{
-			/* find a nearby patch */
-			/* todo: add the queries we need to support this! */
-
-			var search = new PathSearch
-			{
-				heuristic = loc => ( Game.map.ContainsResource( loc ) ? 0 : 1 ),
-				umt = UnitMovementType.Wheel,
-				checkForBlocked = true
-			};
-			search.AddInitialCell( self.Location );
-
-			var path = Game.PathFinder.FindPath( search )
-				.TakeWhile( a => a != self.Location )
-				.ToList();
-
-			if( path.Count != 0 )
-			{
-				mobile.QueueActivity( new Move( path ) );
-				mobile.QueueActivity( new Harvest() );
-			}
+			mobile.QueueActivity(new Move(
+				() =>
+				{
+					var search = new PathSearch
+					{
+						heuristic = loc => (Game.map.ContainsResource(loc) ? 0 : 1),
+						umt = UnitMovementType.Wheel,
+						checkForBlocked = true
+					};
+					search.AddInitialCell(self.Location);
+					return Game.PathFinder.FindPath(search);
+				}));
+				mobile.QueueActivity(new Harvest());
 
 			mobile.InternalSetActivity( NextActivity );
 		}

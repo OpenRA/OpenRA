@@ -49,9 +49,12 @@ namespace OpenRa.Game
 					PathSearch.FromPoint(target, from, umt, false),
 					PathSearch.FromPoint(from, target, umt, false));
 
+				CheckSanePath2(pb, from, target);
 				return pb;
 			}
 		}
+
+
 
 		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
 		{
@@ -71,13 +74,11 @@ namespace OpenRa.Game
 			if( IsBlocked( from, umt ) )
 				return new List<int2>();
 
-			using( new PerfSample( "find_path_to_path" ) )
+			using (new PerfSample("find_path_to_path"))
 				return FindBidiPath(
-					PathSearch.FromPath( path, from, umt, true ),
-					PathSearch.FromPoint( from, path[ 0 ], umt, true ) );
+					PathSearch.FromPath(path, from, umt, true),
+					PathSearch.FromPoint(from, path[0], umt, true));
 		}
-
-
 
 		public List<int2> FindPath( PathSearch search )
 		{
@@ -153,6 +154,7 @@ namespace OpenRa.Game
 				ret.Add( q );
 				q = ca[ q.X, q.Y ].Path;
 			}
+			ret.Add(q);
 
 			ret.Reverse();
 
@@ -182,6 +184,18 @@ namespace OpenRa.Game
 					throw new InvalidOperationException( "(PathFinder) path sanity check failed" );
 				prev = path[ i ];
 			}
+		}
+
+		[System.Diagnostics.Conditional("SANITY_CHECKS")]
+		static void CheckSanePath2(List<int2> path, int2 src, int2 dest)
+		{
+			if (path.Count == 0)
+				return;
+
+			if (path[0] != dest)
+				throw new InvalidOperationException("(PathFinder) sanity check failed: doesn't go to dest");
+			if (path[path.Count - 1] != src)
+				throw new InvalidOperationException("(PathFinder) sanity check failed: doesn't come from src");
 		}
 	}
 
