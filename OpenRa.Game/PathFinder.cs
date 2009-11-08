@@ -30,18 +30,7 @@ namespace OpenRa.Game
 		public List<int2> FindUnitPath(int2 src, int2 dest, UnitMovementType umt)
 		{
 			using (new PerfSample("find_unit_path"))
-			{
-				var sw = new Stopwatch();
-				/*if (passableCost[(int)umt][dest.X, dest.Y] == float.PositiveInfinity)
-					return new List<int2>();
-				if (!Game.BuildingInfluence.CanMoveHere(dest))
-					return new List<int2>();*/
-
-				var result = FindUnitPath(src, DefaultEstimator(dest), umt);
-				Game.NormalPathTime += sw.ElapsedTime();
-				Game.NormalPathCount++;
-				return result;
-			}
+				return FindUnitPath(src, DefaultEstimator(dest), umt);
 		}
 
 		public List<int2> FindUnitPathToRange(int2 src, int2 dest, UnitMovementType umt, int range)
@@ -105,9 +94,6 @@ namespace OpenRa.Game
 				var otherCellInfo = InitCellInfo();
 				otherCellInfo[from.X, from.Y] = new CellInfo( 0, from, false );
 				var ret = FindBidiPath(cellInfo, otherCellInfo, queue, otherQueue, estimator, h2, umt, true);
-
-				//var ret = FindPath(cellInfo, queue, estimator, umt, true);
-				//ret.Reverse();
 				return ret;
 			}
 		}

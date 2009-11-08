@@ -59,16 +59,16 @@ namespace OpenRa.Game.Traits
 			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
 		}
 
-		public void Damaged(Actor self, DamageState state)
+		void INotifyDamage.Damaged(Actor self, DamageState state)
 		{
 			switch( state )
 			{
 				case DamageState.Normal:
-					anim.PlayRepeating("idle");	/* todo: make interaction?? this should only get called on half->ok */
+					anim.PlayRepeating("idle");
 					break;
 				case DamageState.Half:
 					anim.PlayRepeating("damaged-idle");
-					Game.PlaySound("kaboom1.aud", false);		/* todo: maybe sep. sound stuff from visual ?? */
+					Game.PlaySound("kaboom1.aud", false);
 					break;
 				case DamageState.Dead:
 					DoBib(self, true);
