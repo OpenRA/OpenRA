@@ -75,20 +75,25 @@ namespace OpenRa.Game.Traits.Activities
 			/* find a nearby patch */
 			/* todo: add the queries we need to support this! */
 
-			var path = Game.PathFinder.FindUnitPath( self.Location, loc =>
-				{
-					if( Game.UnitInfluence.GetUnitAt( loc ) != null ) return float.PositiveInfinity;
-					return Game.map.ContainsResource( loc ) ? 0 : 1;
-				}, UnitMovementType.Wheel )
+			var search = new PathSearch
+			{
+				heuristic = loc => ( Game.map.ContainsResource( loc ) ? 0 : 1 ),
+				umt = UnitMovementType.Wheel,
+				checkForBlocked = true
+			};
+			search.AddInitialCell( self.Location );
+
+			var path = Game.PathFinder.FindPath( search )
 				.TakeWhile( a => a != self.Location )
 				.ToList();
+
 			if( path.Count != 0 )
 			{
 				mobile.QueueActivity( new Move( path ) );
 				mobile.QueueActivity( new Harvest() );
 			}
 
-			mobile.InternalSetActivity(NextActivity);
+			mobile.InternalSetActivity( NextActivity );
 		}
 
 		public void Cancel(Actor self, Mobile mobile)

@@ -34,13 +34,13 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SANITY_CHECKS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -79,6 +79,7 @@
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Ore.cs" />
+    <Compile Include="PathSearch.cs" />
     <Compile Include="Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />

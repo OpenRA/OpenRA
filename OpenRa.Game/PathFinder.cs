@@ -27,22 +27,6 @@ namespace OpenRa.Game
 							: float.PositiveInfinity;
 		}
 
-		public List<int2> FindUnitPath(int2 src, int2 dest, UnitMovementType umt)
-		{
-			using (new PerfSample("find_unit_path"))
-				return FindUnitPath(src, DefaultEstimator(dest), umt);
-		}
-
-		public List<int2> FindUnitPathToRange(int2 src, int2 dest, UnitMovementType umt, int range)
-		{
-			var tilesInRange = Game.FindTilesInCircle(dest, range)
-				.Where(t => Game.IsCellBuildable(t, umt));
-
-			var path = FindUnitPath(tilesInRange, DefaultEstimator(src), umt);
-			path.Reverse();
-			return path;
-		}
-
 		bool IsBlocked(int2 from, UnitMovementType umt)
 		{
 			for (int v = -1; v < 2; v++)
@@ -57,103 +41,63 @@ namespace OpenRa.Game
 			return true;
 		}
 
+		public List<int2> FindUnitPath( int2 from, int2 target, UnitMovementType umt )
+		{
+			using( new PerfSample( "find_unit_path" ) )
+				return FindPath( PathSearch.FromPoint( from, target, umt, false ) );
+		}
+
+		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
+		{
+			using( new PerfSample( "find_unit_path_multiple_src" ) )
+			{
+				var tilesInRange = Game.FindTilesInCircle( src, range )
+					.Where( t => Game.IsCellBuildable( t, umt ) );
+
+				var path = FindPath( PathSearch.FromPoints( tilesInRange, target, umt, false ));
+				path.Reverse();
+				return path;
+			}
+		}
+
 		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
 		{
-			using (new PerfSample("find_path_to_path"))
-			{
-				if (IsBlocked(from, umt))
-					return new List<int2>();
+			if( IsBlocked( from, umt ) )
+				return new List<int2>();
 
-				CellInfo[,] cellInfo = null;
-				var queue = new PriorityQueue<PathDistance>();
-				var estimator = DefaultEstimator(from);
-
-				var cost = 0.0f;
-				var prev = path[0];
-				for (int i = 0; i < path.Count; i++)
-				{
-					var sl = path[i];
-					if ( /*i == 0 || */(Game.BuildingInfluence.CanMoveHere(path[i]) && Game.UnitInfluence.GetUnitAt(path[i]) == null))
-					{
-						queue.Add(new PathDistance(estimator(sl), sl));
-						if (cellInfo == null)
-							cellInfo = InitCellInfo();
-
-						cellInfo[sl.X, sl.Y] = new CellInfo(cost, prev, false);
-					}
-					var d = sl - prev;
-					cost += ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][sl.X, sl.Y];
-					prev = sl;
-				}
-				if (queue.Empty) return new List<int2>();
-
-				var h2 = DefaultEstimator(path[0]);
-				var otherQueue = new PriorityQueue<PathDistance>();
-				otherQueue.Add(new PathDistance(h2(from), from));
-
-				var otherCellInfo = InitCellInfo();
-				otherCellInfo[from.X, from.Y] = new CellInfo( 0, from, false );
-				var ret = FindBidiPath(cellInfo, otherCellInfo, queue, otherQueue, estimator, h2, umt, true);
-				return ret;
-			}
+			using( new PerfSample( "find_path_to_path" ) )
+				return FindBidiPath(
+					PathSearch.FromPath( path, from, umt, true ),
+					PathSearch.FromPoint( from, path[ 0 ], umt, true ) );
 		}
 
-		public List<int2> FindUnitPath( int2 unitLocation, Func<int2,float> estimator, UnitMovementType umt )
-		{
-			return FindUnitPath( new[] { unitLocation }, estimator, umt );
-		}
 
-		public List<int2> FindUnitPath( IEnumerable<int2> startLocations, Func<int2, float> estimator, UnitMovementType umt )
-		{
-			var cellInfo = InitCellInfo();
-			var queue = new PriorityQueue<PathDistance>();
 
-			foreach (var sl in startLocations)
-			{
-				queue.Add(new PathDistance(estimator(sl), sl));
-				cellInfo[sl.X, sl.Y].MinCost = 0;
-			}
-
-			return FindPath( cellInfo, queue, estimator, umt, false );
-		}
-
-		List<int2> FindPath( CellInfo[ , ] cellInfo, PriorityQueue<PathDistance> queue, Func<int2, float> estimator, UnitMovementType umt, bool checkForBlock )
+		public List<int2> FindPath( PathSearch search )
 		{
 			int nodesExpanded = 0;
 			using (new PerfSample("find_path_inner"))
 			{
-				while (!queue.Empty)
+				while (!search.queue.Empty)
 				{
-					PathDistance p = queue.Pop();
-					cellInfo[p.Location.X, p.Location.Y].Seen = true;
+					var p = search.Expand( passableCost );
 
-					if (estimator(p.Location) == 0)
+					if (search.heuristic(p) == 0)
 					{
 						PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
-						return MakePath(cellInfo, p.Location);
+						return MakePath(search.cellInfo, p);
 					}
 
 					nodesExpanded++;
-
-					ExpandNode(cellInfo, queue, p, umt, checkForBlock, estimator);
+					PerfHistory.Increment( "nodes_expanded", nodesExpanded * .01 );
 				}
 
-				PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
 				// no path exists
 				return new List<int2>();
 			}
 		}
 
-		static CellInfo[ , ] InitCellInfo()
-		{
-			var cellInfo = new CellInfo[ 128, 128 ];
-			for( int x = 0 ; x < 128 ; x++ )
-				for( int y = 0 ; y < 128 ; y++ )
-					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
-			return cellInfo;
-		}
-
-		List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination )
+		static List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination )
 		{
 			List<int2> ret = new List<int2>();
 			int2 pathNode = destination;
@@ -165,111 +109,59 @@ namespace OpenRa.Game
 			}
 
 			ret.Add(pathNode);
-
+			CheckSanePath(ret);
 			return ret;
 		}
 
-		static Func<int2, float> DefaultEstimator(int2 destination)
-		{
-			return here =>
-			{
-				int2 d = ( here - destination ).Abs();
-				int diag = Math.Min( d.X, d.Y );
-				int straight = Math.Abs( d.X - d.Y );
-				return 1.5f * diag + straight;
-			};
-		}
 
-		void ExpandNode(CellInfo[,] ci, PriorityQueue<PathDistance> q, PathDistance p, UnitMovementType umt, bool checkForBlock, Func<int2, float> h)
-		{
-			foreach (int2 d in Util.directions)
-			{
-				int2 newHere = p.Location + d;
-
-				if (ci[newHere.X, newHere.Y].Seen)
-					continue;
-				if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
-					continue;
-				if (!Game.BuildingInfluence.CanMoveHere(newHere))
-					continue;
-				if (checkForBlock && Game.UnitInfluence.GetUnitAt(newHere) != null)
-					continue;
-				var est = h(newHere);
-				if (est == float.PositiveInfinity)
-					continue;
-
-				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * passableCost[(int)umt][newHere.X, newHere.Y];
-				float newCost = ci[p.Location.X, p.Location.Y].MinCost + cellCost;
-
-				if (newCost >= ci[newHere.X, newHere.Y].MinCost)
-					continue;
-
-				ci[newHere.X, newHere.Y].Path = p.Location;
-				ci[newHere.X, newHere.Y].MinCost = newCost;
-
-				q.Add(new PathDistance(newCost + est, newHere));
-			}
-		}
 
 		List<int2> FindBidiPath(			/* searches from both ends toward each other */
-			CellInfo[,] ca, 
-			CellInfo[,] cb,
-			PriorityQueue<PathDistance> qa,
-			PriorityQueue<PathDistance> qb,
-			Func<int2, float> ha,
-			Func<int2, float> hb,
-			UnitMovementType umt,
-			bool checkForBlocked)
+			PathSearch fromSrc,
+			PathSearch fromDest)
 		{
-			while (!qa.Empty && !qb.Empty)
+			while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
 			{
-				{		/* make some progress on the first search */
-					var p = qa.Pop();
-					ca[p.Location.X, p.Location.Y].Seen = true;
+				/* make some progress on the first search */
+				var p = fromSrc.Expand( passableCost );
+				
+				if (fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+					return MakeBidiPath(fromSrc, fromDest, p);
 
-					if (cb[p.Location.X, p.Location.Y].MinCost < float.PositiveInfinity)
-						return MakeBidiPath(ca, cb, p.Location);
-					else
-						ExpandNode(ca, qa, p, umt, checkForBlocked, ha);
-				}
-
-				{		/* make some progress on the second search */
-					var p = qb.Pop();
-					cb[p.Location.X, p.Location.Y].Seen = true;
-
-					//if (ca[p.Location.X, p.Location.Y].MinCost < float.PositiveInfinity)
-					//	return MakeBidiPath(ca, cb, p.Location);
-					//else
-						ExpandNode(cb, qb, p, umt, checkForBlocked, hb);
-				}
+				/* make some progress on the second search */
+				fromDest.Expand( passableCost );
 			}
 
 			return new List<int2>();
 		}
 
-		static List<int2> MakeBidiPath(CellInfo[,] ca, CellInfo[,] cb, int2 p)
+		static List<int2> MakeBidiPath(PathSearch a, PathSearch b, int2 p)
 		{
-			var a = new List<int2>();
+			var ca = a.cellInfo;
+			var cb = b.cellInfo;
+
+			var ret = new List<int2>();
 
 			var q = p;
 			while (ca[q.X, q.Y].Path != q)
 			{
-				a.Add( q );
+				ret.Add( q );
 				q = ca[ q.X, q.Y ].Path;
 			}
 
-			a.Reverse();
+			ret.Reverse();
 
 			q = p;
 			while (cb[q.X, q.Y].Path != q)
 			{
 				q = cb[q.X, q.Y].Path;
-				a.Add(q);
+				ret.Add(q);
 			}
 
-			CheckSanePath( a );
-			return a;
+			CheckSanePath( ret );
+			return ret;
 		}
+
+
 
 		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
 		static void CheckSanePath( List<int2> path )
