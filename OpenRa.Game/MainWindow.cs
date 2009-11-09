@@ -6,9 +6,6 @@ using System.Runtime.InteropServices;
 
 namespace OpenRa.Game
 {
-	using GRegion = OpenRa.Game.Graphics.Region;
-
-
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
@@ -17,9 +14,10 @@ namespace OpenRa.Game
 
 		static Size GetResolution(Settings settings)
 		{
-			Size desktopResolution = Screen.PrimaryScreen.Bounds.Size;
+			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
 
-			return new Size(settings.GetValue("width", desktopResolution.Width),
+			return new Size(
+				settings.GetValue("width", desktopResolution.Width),
 				settings.GetValue("height", desktopResolution.Height));
 		}
 
@@ -51,8 +49,8 @@ namespace OpenRa.Game
 
 			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
 			UiOverlay.ShowBuildDebug = settings.GetValue("bdebug", false);
-			Game.timestep = settings.GetValue("rate", 40);
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
+			Game.timestep = settings.GetValue("rate", 40);
 			Game.Replay = settings.GetValue("replay", "");
 
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),

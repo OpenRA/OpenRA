@@ -51,7 +51,9 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Region region in regions)
 				region.Draw(renderer);
-			cursorRenderer.DrawSprite(cursor.GetSprite((int)cursorFrame), mousePos + Location - cursor.GetHotspot(), 0);
+
+			var c = (Game.worldRenderer.region.Contains(mousePos)) ? cursor : Cursor.Default;
+			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
 			renderer.EndFrame();
