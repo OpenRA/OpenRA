@@ -94,9 +94,8 @@ namespace OpenRa.Game
 		{
 			/* todo: auto-retaliate, etc */
 			/* todo: death sequence for infantry based on inflictor */
-			/* todo: start smoking if < conditionYellow and took damage, and not already smoking */
 
-			if (Health <= 0) return;		/* overkill! don't count extra hits as more kills! */
+			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
 			Health -= damage;
 			if (Health <= 0)
