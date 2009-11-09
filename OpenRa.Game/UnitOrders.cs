@@ -29,15 +29,14 @@ namespace OpenRa.Game
 					var mobile = order.Subject.traits.GetOrDefault<Mobile>();
 					var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
 
-					mobile.Cancel( order.Subject );
+					mobile.Cancel(order.Subject);
 					// TODO: this block should be a separate activity; "MoveNear", maybe?
 					{
 						/* todo: choose the appropriate weapon, when only one works against this target */
-						var range = Rules.WeaponInfo[ weapon ].Range;
+						var range = Rules.WeaponInfo[weapon].Range;
 
 						mobile.QueueActivity(
-							new Traits.Activities.Move( order.TargetActor,
-								Math.Max( 0, (int)range - RangeTolerance ) ) );
+							new Traits.Activities.Follow(order.TargetActor, Math.Max(0, (int)range - RangeTolerance)));
 					}
 
 					order.Subject.traits.Get<AttackTurreted>().target = order.TargetActor;
@@ -49,6 +48,7 @@ namespace OpenRa.Game
 						break;	/* throw the order on the floor */
 
 					var mobile = order.Subject.traits.Get<Mobile>();
+					mobile.Cancel(order.Subject);
 					mobile.QueueActivity( new Traits.Activities.Turn( 96 ) );
 					mobile.QueueActivity( new Traits.Activities.DeployMcv() );
 					break;

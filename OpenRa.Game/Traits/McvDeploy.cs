@@ -8,9 +8,7 @@ namespace OpenRa.Game.Traits
 {
 	class McvDeploy : IOrder
 	{
-		public McvDeploy(Actor self)
-		{
-		}
+		public McvDeploy(Actor self) { }
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{

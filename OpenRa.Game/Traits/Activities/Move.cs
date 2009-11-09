@@ -5,9 +5,9 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class Move : Activity
+	class Move : IActivity
 	{
-		public Activity NextActivity { get; set; }
+		public IActivity NextActivity { get; set; }
 
 		int2? destination;
 		int nearEnough;

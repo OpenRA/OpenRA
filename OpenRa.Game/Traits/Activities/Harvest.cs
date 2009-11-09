@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class Harvest : Activity
+	class Harvest : IActivity
 	{
-		public Activity NextActivity { get; set; }
+		public IActivity NextActivity { get; set; }
 		bool isHarvesting = false;
 
 		public void Tick(Actor self, Mobile mobile)
@@ -84,13 +84,10 @@ namespace OpenRa.Game.Traits.Activities
 					search.AddInitialCell(self.Location);
 					return Game.PathFinder.FindPath(search);
 				}));
-				mobile.QueueActivity(new Harvest());
-
+			mobile.QueueActivity(new Harvest());
 			mobile.InternalSetActivity( NextActivity );
 		}
 
-		public void Cancel(Actor self, Mobile mobile)
-		{
-		}
+		public void Cancel(Actor self, Mobile mobile) { }
 	}
 }

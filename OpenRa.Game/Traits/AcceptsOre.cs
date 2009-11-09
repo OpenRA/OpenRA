@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 	{
 		public AcceptsOre(Actor self)
 		{
-			if (!Game.skipMakeAnims)
+		//	if (!Game.skipMakeAnims)
 				Game.world.AddFrameEndTask(
 					w =>
 					{		/* create the free harvester! */

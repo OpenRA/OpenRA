@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	interface Activity
+	interface IActivity
 	{
-		Activity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 		void Tick( Actor self, Mobile mobile );
 		void Cancel( Actor self, Mobile mobile );
 	}

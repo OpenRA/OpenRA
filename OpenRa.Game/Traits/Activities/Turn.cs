@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class Turn : Activity
+	class Turn : IActivity
 	{
-		public Activity NextActivity { get; set; }
+		public IActivity NextActivity { get; set; }
 
 		public int desiredFacing;
 

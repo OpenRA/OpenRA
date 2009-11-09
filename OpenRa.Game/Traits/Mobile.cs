@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 		public int facing;
 
 		public int Voice = Game.CosmeticRandom.Next(2);
-		Activity currentActivity;
+		IActivity currentActivity;
 
 		public Mobile(Actor self)
 		{
@@ -27,7 +27,7 @@ namespace OpenRa.Game.Traits
 			Game.UnitInfluence.Update( this );
 		}
 
-		public void QueueActivity( Activity nextActivity )
+		public void QueueActivity( IActivity nextActivity )
 		{
 			if( currentActivity == null )
 			{
@@ -42,7 +42,7 @@ namespace OpenRa.Game.Traits
 			act.NextActivity = nextActivity;
 		}
 
-		public void InternalSetActivity( Activity activity )
+		public void InternalSetActivity( IActivity activity )
 		{
 			currentActivity = activity;
 		}

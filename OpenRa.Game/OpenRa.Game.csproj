@@ -83,7 +83,7 @@
     <Compile Include="Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
-    <Compile Include="Traits\Activities\Activity.cs" />
+    <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
     <Compile Include="Actor.cs" />
@@ -137,6 +137,7 @@
     <Compile Include="Graphics\TreeCache.cs" />
     <Compile Include="Traits\Activities\Harvest.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
+    <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\Building.cs" />

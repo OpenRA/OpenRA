@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class DeliverOre : Activity
+	class DeliverOre : IActivity
 	{
-		public Activity NextActivity { get; set; }
+		public IActivity NextActivity { get; set; }
 
 		bool isDone;
 		Actor refinery;
