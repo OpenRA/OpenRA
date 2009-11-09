@@ -13,12 +13,19 @@ namespace OpenRa.Game
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, float> heuristic;
 		public UnitMovementType umt;
+		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 
 		public PathSearch()
 		{
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
+		}
+
+		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
+		{
+			this.customBlock = customBlock;
+			return this;
 		}
 
 		public int2 Expand( float[][ , ] passableCost )
@@ -38,6 +45,9 @@ namespace OpenRa.Game
 					continue;
 				if( checkForBlocked && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 					continue;
+				if (customBlock != null && customBlock(newHere))
+					continue;
+
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )
 					continue;

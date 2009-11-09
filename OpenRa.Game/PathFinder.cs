@@ -46,15 +46,13 @@ namespace OpenRa.Game
 			using (new PerfSample("find_unit_path"))
 			{
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(target, from, umt, false),
-					PathSearch.FromPoint(from, target, umt, false));
+					PathSearch.FromPoint(target, from, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)),
+					PathSearch.FromPoint(from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
 
 				CheckSanePath2(pb, from, target);
 				return pb;
 			}
 		}
-
-
 
 		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
 		{
@@ -69,15 +67,11 @@ namespace OpenRa.Game
 			}
 		}
 
-		public List<int2> FindPathToPath( int2 from, List<int2> path, UnitMovementType umt )
+		Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
 		{
-			if( IsBlocked( from, umt ) )
-				return new List<int2>();
-
-			using (new PerfSample("find_path_to_path"))
-				return FindBidiPath(
-					PathSearch.FromPath(path, from, umt, true),
-					PathSearch.FromPoint(from, path[0], umt, true));
+			return q => 
+				((p - q).LengthSquared < dist * dist) && 
+				(Game.UnitInfluence.GetUnitAt(q) != null);
 		}
 
 		public List<int2> FindPath( PathSearch search )
