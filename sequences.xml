@@ -470,6 +470,7 @@
     <sequence name="6" start="0" length="27" src="atomsfx" />
     <sequence name="4w" start="0" length="10" src="h2o_exp2" />
     <sequence name="2w" start="0" length="10" src="h2o_exp3" />
+    <sequence name="7" start="0" length="18" src="fball1" />
   </unit>
   <unit name="lst">
     <sequence name="idle" start="0" length="1" />

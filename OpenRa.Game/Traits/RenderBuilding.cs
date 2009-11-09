@@ -72,6 +72,7 @@ namespace OpenRa.Game.Traits
 					break;
 				case DamageState.Dead:
 					DoBib(self, true);
+					Game.world.AddFrameEndTask(w => w.Add(new Explosion(self.CenterLocation.ToInt2(), 7, false)));
 					break;
 			}
 		}
