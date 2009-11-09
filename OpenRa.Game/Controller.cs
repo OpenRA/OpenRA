@@ -69,6 +69,14 @@ namespace OpenRa.Game
 					else
 						orderGenerator = new UnitOrderGenerator(
 							Game.SelectUnitOrBuilding(Game.CellSize * xy));
+
+					var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
+						.Select(a => a.traits.GetOrDefault<Mobile>())
+						.Where(m => m != null && m.self.Owner == Game.LocalPlayer)
+						.FirstOrDefault();
+
+					if (voicedUnit != null)
+						Game.PlaySound(Game.SovietVoices.Second.GetNext() + GetVoiceSuffix(voicedUnit.self), false);
 				}
 
 				dragStart = dragEnd = xy;
