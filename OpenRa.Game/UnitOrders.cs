@@ -31,11 +31,20 @@ namespace OpenRa.Game
 					var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
 
 					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(
-						new Traits.Activities.Follow(order.TargetActor, 
-							Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
+					if (order.Subject.traits.Contains<AttackTurreted>())
+					{
+						mobile.QueueActivity(
+							new Traits.Activities.Follow(order.TargetActor,
+								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
 
-					order.Subject.traits.Get<AttackTurreted>().target = order.TargetActor;
+						order.Subject.traits.Get<AttackTurreted>().target = order.TargetActor;
+					}
+					else
+					{
+						mobile.QueueActivity(
+							new Traits.Activities.Attack(order.TargetActor,
+								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
+					}
 					break;
 				}
 			case "DeployMcv":

@@ -5,13 +5,15 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	abstract class AttackBase : IOrder, ITick
+	class AttackBase : IOrder, ITick
 	{
 		public Actor target;
 
 		// time (in frames) until each weapon can fire again.
 		protected int primaryFireDelay = 0;
 		protected int secondaryFireDelay = 0;
+
+		public AttackBase(Actor self) { }
 
 		protected bool CanAttack( Actor self )
 		{
@@ -26,7 +28,7 @@ namespace OpenRa.Game.Traits
 			if (target != null && target.IsDead) target = null;		/* he's dead, jim. */
 		}
 
-		protected void DoAttack( Actor self )
+		public void DoAttack( Actor self )
 		{
 			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 
@@ -79,7 +81,7 @@ namespace OpenRa.Game.Traits
 
 	class AttackTurreted : AttackBase
 	{
-		public AttackTurreted( Actor self ) { self.traits.Get<Turreted>(); }
+		public AttackTurreted( Actor self ) : base(self) { self.traits.Get<Turreted>(); }
 
 		public override void Tick(Actor self)
 		{
