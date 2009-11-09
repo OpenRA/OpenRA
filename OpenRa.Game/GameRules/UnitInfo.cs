@@ -97,7 +97,7 @@ namespace OpenRa.Game.GameRules
 			public readonly bool Repairable = true;
 			public readonly int Storage = 0;
 			public readonly bool Unsellable = false;
-			public readonly int[] DefaultRallyPoint = { 1, 3 };
+			public readonly int[] RallyPoint = { 1, 3 };
 
 			public BuildingInfo(string name) : base(name) { }
 		}

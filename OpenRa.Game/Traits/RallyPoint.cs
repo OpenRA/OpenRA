@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 		public RallyPoint(Actor self)
 		{
 			var bi = (UnitInfo.BuildingInfo)self.unitInfo;
-			rallyPoint = self.Location + new int2(bi.DefaultRallyPoint[0], bi.DefaultRallyPoint[1]);
+			rallyPoint = self.Location + new int2(bi.RallyPoint[0], bi.RallyPoint[1]);
 			anim = new Animation("flagfly");
 			anim.PlayRepeating("idle");
 		}
