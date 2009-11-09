@@ -92,7 +92,7 @@ namespace OpenRa.Game
 
 		public static PathSearch FromPoints( IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked )
 		{
-			var search = new PathSearch { 
+			var search = new PathSearch {
 				heuristic = DefaultEstimator( target ),
 				umt = umt,
 				checkForBlocked = checkForBlocked };
@@ -100,28 +100,6 @@ namespace OpenRa.Game
 			foreach( var sl in froms )
 				search.AddInitialCell( sl );
 
-			return search;
-		}
-
-		public static PathSearch FromPath( List<int2> path, int2 target, UnitMovementType umt, bool checkForBlocked )
-		{
-			var search = new PathSearch { 
-				heuristic = DefaultEstimator( target ),
-				umt = umt,
-				checkForBlocked = checkForBlocked };
-
-			var cost = 0.0f;
-			var prev = path[ 0 ];
-			for( int i = 0 ; i < path.Count ; i++ )
-			{
-				var sl = path[ i ];
-				if( Game.BuildingInfluence.CanMoveHere( path[ i ] ) && Game.UnitInfluence.GetUnitAt( path[ i ] ) == null )
-					search.AddInitialCell( sl );
-
-				var d = sl - prev;
-				cost += ( ( d.X * d.Y != 0 ) ? 1.414213563f : 1.0f );// *passableCost[ (int)umt ][ sl.X, sl.Y ];
-				prev = sl;
-			}
 			return search;
 		}
 

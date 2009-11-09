@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 			if (self.unitInfo.SecondaryAnim != null)
 			{
 				secondRotorAnim = new Animation(self.unitInfo.Name);
-				rotorAnim.PlayRepeating(self.unitInfo.SecondaryAnim);
+				secondRotorAnim.PlayRepeating(self.unitInfo.SecondaryAnim);
 			}
 		}
 
