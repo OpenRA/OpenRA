@@ -10,7 +10,7 @@ namespace OpenRa.Game.Traits
 		public RenderBuildingTurreted(Actor self)
 			: base(self)
 		{
-			Make( () => PlayTurretAnim( self, "idle" ));
+			Make( () => PlayTurretAnim( self, "idle" ), self);
 		}
 
 		void PlayTurretAnim(Actor self, string a)

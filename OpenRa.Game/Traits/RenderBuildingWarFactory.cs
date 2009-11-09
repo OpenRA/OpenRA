@@ -26,7 +26,7 @@ namespace OpenRa.Game.Traits
 				doneBuilding = true;
 				anim.Play("idle");
 				roof.Play(prefix + "idle-top");
-			});
+			}, self);
 		}
 
 		public IEnumerable<Pair<Sprite, float2>> RenderRoof(Actor self)

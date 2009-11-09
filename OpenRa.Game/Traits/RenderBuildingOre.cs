@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			Make( () => anim.PlayFetchIndex("idle", 
-				() => (int)(5 * self.Owner.GetSiloFullness())));
+				() => (int)(5 * self.Owner.GetSiloFullness())), self);
 		}
 	}
 }
