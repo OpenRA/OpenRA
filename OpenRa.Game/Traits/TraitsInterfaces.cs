@@ -14,4 +14,5 @@ namespace OpenRa.Game.Traits
 	interface IOrder { Order Order(Actor self, int2 xy, bool lmb, Actor underCursor); }
 	interface INotifyDamage { void Damaged(Actor self, DamageState ds); }
 	interface INotifyDamageEx : INotifyDamage { void Damaged(Actor self, int damage); }
+	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 }

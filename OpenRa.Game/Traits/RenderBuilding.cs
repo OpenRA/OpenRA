@@ -18,7 +18,12 @@ namespace OpenRa.Game.Traits
 		public RenderBuilding(Actor self)
 			: base(self)
 		{
-			Make( () => anim.PlayRepeating("idle") );
+			Make(() => 
+			{ 
+				anim.PlayRepeating("idle");
+				foreach (var x in self.traits.WithInterface<INotifyBuildComplete>())
+					x.BuildingComplete(self);
+			});
 
 			DoBib(self, false);
 		}
