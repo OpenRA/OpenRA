@@ -69,7 +69,8 @@ namespace OpenRa.Game
 
 		Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
 		{
-			return q => 
+			return q =>
+				p != q &&
 				((p - q).LengthSquared < dist * dist) && 
 				(Game.UnitInfluence.GetUnitAt(q) != null);
 		}
