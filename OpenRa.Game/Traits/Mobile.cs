@@ -93,5 +93,7 @@ namespace OpenRa.Game.Traits
 			if (move == null || move.path == null) return new int2[] { };
 			return Enumerable.Reverse(move.path);
 		}
+
+		public bool HasActivity { get { return currentActivity != null; } }
 	}
 }

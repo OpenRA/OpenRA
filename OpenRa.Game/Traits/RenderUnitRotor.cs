@@ -41,6 +41,15 @@ namespace OpenRa.Game.Traits
 			rotorAnim.Tick();
 			if (secondRotorAnim != null)
 				secondRotorAnim.Tick();
+
+			var mobile = self.traits.Get<Mobile>();
+			var isFlying = mobile.HasActivity;
+			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
+				return;
+
+			rotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor" : "slow-rotor");
+			if (secondRotorAnim != null)
+				secondRotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor2" : "slow-rotor2");
 		}
 	}
 }
