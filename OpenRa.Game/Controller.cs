@@ -25,7 +25,7 @@ namespace OpenRa.Game
 					if (order.Subject != null && order.Player == Game.LocalPlayer)
 						doVoice = order.Subject;
 				}
-			if (doVoice != null)
+			if (doVoice != null && doVoice.traits.Contains<Mobile>())
 				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(doVoice), false);
 		}
 

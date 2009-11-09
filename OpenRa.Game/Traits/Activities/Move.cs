@@ -116,31 +116,12 @@ namespace OpenRa.Game.Traits.Activities
 
 				Game.UnitInfluence.Remove( mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
-				//var newPath = Game.PathFinder.FindPathToPath( self.Location, path, mobile.GetMovementType() )
-				//    .TakeWhile( a => a != self.Location )
-				//    .ToList();
+			
 				Game.UnitInfluence.Add( mobile );
-				if (newPath.Count == 0)
-					return null;
-				else
-				{
+				if (newPath.Count != 0)
 					path = newPath;
-					return null;
-				}
 
-				//while( path.Count != 0 && path[ path.Count - 1 ] != newPath[ 0 ] )
-				//    path.RemoveAt( path.Count - 1 );
-				//for( int i = 1 ; i < newPath.Count ; i++ )
-				//    path.Add( newPath[ i ] );
-
-				if( path.Count == 0 )
-					return null;
-				nextCell = path[ path.Count - 1 ];
-				if( !CanEnterCell( nextCell, self ) )
-				{
-					path.Clear();
-					return null;
-				}
+				return null;
 			}
 			path.RemoveAt( path.Count - 1 );
 			return nextCell;

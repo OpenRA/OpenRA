@@ -133,5 +133,10 @@ namespace OpenRa.Game
 		{
 			return new Order( subject, "CancelProduction", null, null, int2.Zero, item, Cursor.Default );
 		}
+
+		public static Order SetRallyPoint(Actor subject, int2 target)
+		{
+			return new Order(subject.Owner, "SetRallyPoint", subject, null, target, null, Cursor.Move);
+		}
 	}
 }

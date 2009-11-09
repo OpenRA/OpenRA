@@ -507,4 +507,7 @@
   <unit name="v2">
     <sequence name="idle" start="0" length="32" />
   </unit>
+  <unit name="flagfly">
+    <sequence name="idle" start="0" length="14" />
+  </unit>
 </sequences>

@@ -123,6 +123,12 @@ namespace OpenRa.Game
 						order.Player.CancelProduction( Rules.UnitCategory[ order.TargetString ] );
 					break;
 				}
+			case "SetRallyPoint":
+				{
+					var pt = order.Subject.traits.Get<RallyPoint>();
+					pt.rallyPoint = order.TargetLocation;
+					break;
+				}
 			default:
 				throw new NotImplementedException();
 			}
