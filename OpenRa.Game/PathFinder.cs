@@ -61,7 +61,7 @@ namespace OpenRa.Game
 				var tilesInRange = Game.FindTilesInCircle(target, range)
 					.Where( t => Game.IsCellBuildable( t, umt ) );
 
-				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ));
+				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
 				path.Reverse();
 				return path;
 			}
