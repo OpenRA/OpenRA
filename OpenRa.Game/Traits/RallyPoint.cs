@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IjwFramework.Types;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -14,7 +15,8 @@ namespace OpenRa.Game.Traits
 
 		public RallyPoint(Actor self)
 		{
-			rallyPoint = self.Location + new int2(1, 3);	//self.unitInfo.RallyPoint;
+			var bi = (UnitInfo.BuildingInfo)self.unitInfo;
+			rallyPoint = self.Location + new int2(bi.DefaultRallyPoint[0], bi.DefaultRallyPoint[1]);
 			anim = new Animation("flagfly");
 			anim.PlayRepeating("idle");
 		}

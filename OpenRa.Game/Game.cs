@@ -330,7 +330,11 @@ namespace OpenRa.Game
 				unit = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
 				var mobile = unit.traits.Get<Mobile>();
 				mobile.facing = 128;
-				mobile.QueueActivity(new Traits.Activities.Move(unit.Location + new int2(0, 3), 1));
+
+				var rp = producer.traits.GetOrDefault<RallyPoint>();
+				var dest = rp != null ? rp.rallyPoint : (unit.Location + new int2(0, 3));
+
+				mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
 			}
 
 			world.Add( unit );
