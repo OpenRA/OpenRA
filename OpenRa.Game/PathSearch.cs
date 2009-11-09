@@ -47,6 +47,8 @@ namespace OpenRa.Game
 					continue;
 				if (customBlock != null && customBlock(newHere))
 					continue;
+				if (Game.map.IsOverlaySolid(newHere))
+					continue;
 
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )

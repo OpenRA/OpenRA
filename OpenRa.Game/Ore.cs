@@ -137,6 +137,12 @@ namespace OpenRa.Game
 			return ore;
 		}
 
+		public static bool IsOverlaySolid(this Map map, int2 p)
+		{
+			var o = map.MapTiles[p.X, p.Y].overlay;
+			return o < overlayIsFence.Length && overlayIsFence[o];
+		}
+
 		public static bool[] overlayIsFence =
 			{
 				true, true, true, true, true,
