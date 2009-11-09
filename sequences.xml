@@ -498,7 +498,7 @@
   <unit name="hind">
     <sequence name="idle" start="0" length="32" />
     <sequence name="rotor" start="0" length="4" src="lrotor" />
-    <sequence name="slow-roto" start="4" length="8" src="lrotor" />
+    <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
   </unit>
   <unit name="tran">
     <sequence name="idle" start="0" length="32" />
