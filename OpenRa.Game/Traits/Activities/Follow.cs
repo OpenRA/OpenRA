@@ -33,6 +33,9 @@ namespace OpenRa.Game.Traits.Activities
 			}
 		}
 
-		public void Cancel(Actor self, Mobile mobile) { }
+		public void Cancel(Actor self, Mobile mobile)
+		{
+			mobile.InternalSetActivity(null);
+		}
 	}
 }

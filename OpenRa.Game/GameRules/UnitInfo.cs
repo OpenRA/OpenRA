@@ -51,6 +51,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] SecondaryOffset = null;
 		public readonly int Recoil = 0;
 		public readonly string SecondaryAnim = null;
+		public readonly bool MuzzleFlash = false;
 
 		public UnitInfo(string name) { Name = name; }
 

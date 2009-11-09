@@ -270,6 +270,7 @@
   <unit name="jeep">
     <sequence name="idle" start="0" length="32" />
     <sequence name="turret" start="32" length="32" />
+    <sequence name="muzzle" start="0" length="48" src="minigun" />
   </unit>
   <!-- apc -->
   <unit name="apc">

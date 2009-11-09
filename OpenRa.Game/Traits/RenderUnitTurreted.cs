@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits
 	class RenderUnitTurreted : RenderUnit
 	{
 		public Animation turretAnim;
+		public Animation muzzleFlash;
 		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
 
 		public RenderUnitTurreted(Actor self)
@@ -17,8 +18,17 @@ namespace OpenRa.Game.Traits
 		{
 			turretAnim = new Animation(self.unitInfo.Name);
 			if (self.traits.Contains<Turreted>())
-				turretAnim.PlayFetchIndex("turret", 
+			{
+				if (self.unitInfo.MuzzleFlash)
+				{
+					muzzleFlash = new Animation(self.unitInfo.Name);
+					muzzleFlash.PlayFetchIndex("muzzle",
+						() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(primaryRecoil * 6));
+				}
+
+				turretAnim.PlayFetchIndex("turret",
 					() => self.traits.Get<Turreted>().turretFacing / 8);
+			}
 			else
 				turretAnim.PlayRepeating("turret");		/* not really a turret; it's a spinner */
 		}
@@ -33,6 +43,10 @@ namespace OpenRa.Game.Traits
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Util.Centered(turretAnim.Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, secondaryRecoil));
+
+			if (muzzleFlash != null && primaryRecoil > 0)
+				yield return Util.Centered(muzzleFlash.Image, self.CenterLocation
+				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
 		}
 
 		public override void Tick(Actor self)
@@ -41,6 +55,8 @@ namespace OpenRa.Game.Traits
 			turretAnim.Tick();
 			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
 			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
+			if (muzzleFlash != null)
+				muzzleFlash.Tick();
 		}
 	}
 }
