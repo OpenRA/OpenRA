@@ -50,6 +50,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] PrimaryOffset = { 0, 0 };
 		public readonly int[] SecondaryOffset = null;
 		public readonly int Recoil = 0;
+		public readonly string SecondaryAnim = null;
 
 		public UnitInfo(string name) { Name = name; }
 
