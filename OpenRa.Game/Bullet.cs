@@ -49,7 +49,13 @@ namespace OpenRa.Game
 			if (Projectile.Image != null && Projectile.Image != "none")
 			{
 				anim = new Animation(Projectile.Image);
-				anim.PlayRepeating("idle");
+				if (Projectile.Rotates)
+					anim.PlayFetchIndex("idle",
+						() => Traits.Util.QuantizeFacing(
+							Traits.Util.GetFacing((dest - src).ToFloat2(), 0),
+							anim.CurrentSequence.Length));
+				else
+					anim.PlayRepeating("idle");
 			}
 		}
 
