@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	abstract class AttackBase : IOrder
+	abstract class AttackBase : IOrder, ITick
 	{
 		public Actor target;
 
@@ -15,13 +15,15 @@ namespace OpenRa.Game.Traits
 
 		protected bool CanAttack( Actor self )
 		{
-			if( primaryFireDelay > 0 ) --primaryFireDelay;
-			if( secondaryFireDelay > 0 ) --secondaryFireDelay;
+			return target != null;
+		}
 
-			if( target != null && target.IsDead ) target = null;		/* he's dead, jim. */
-			if( target == null ) return false;
+		public virtual void Tick(Actor self)
+		{
+			if (primaryFireDelay > 0) --primaryFireDelay;
+			if (secondaryFireDelay > 0) --secondaryFireDelay;
 
-			return true;
+			if (target != null && target.IsDead) target = null;		/* he's dead, jim. */
 		}
 
 		protected void DoAttack( Actor self )
@@ -75,12 +77,14 @@ namespace OpenRa.Game.Traits
 		}
 	}
 
-	class AttackTurreted : AttackBase, ITick
+	class AttackTurreted : AttackBase
 	{
 		public AttackTurreted( Actor self ) { self.traits.Get<Turreted>(); }
 
-		public void Tick(Actor self)
+		public override void Tick(Actor self)
 		{
+			base.Tick(self);
+
 			if( !CanAttack( self ) ) return;
 
 			var turreted = self.traits.Get<Turreted>();
