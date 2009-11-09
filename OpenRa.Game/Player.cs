@@ -11,6 +11,7 @@ namespace OpenRa.Game
 		public Race Race;
 		public readonly int Index;
 		public int Cash;
+		public int Power;
 
 		public Player( int index, int palette, string playerName, Race race )
 		{
@@ -19,6 +20,7 @@ namespace OpenRa.Game
 			this.PlayerName = playerName;
 			this.Race = race;
 			this.Cash = 10000;
+			this.Power = 0;
 		}
 
 		public float GetSiloFullness()
