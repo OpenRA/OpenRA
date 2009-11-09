@@ -111,10 +111,7 @@ namespace OpenRa.Game
 					Game.PlaySound("unitlst1.aud", false);
 
 				if (traits.Contains<Building>())
-				{
 					Game.PlaySound("kaboom22.aud", false);
-					// todo: spawn explosion sprites
-				}
 			}
 
 			var halfStrength = unitInfo.Strength * Rules.General.ConditionYellow;
@@ -124,6 +121,9 @@ namespace OpenRa.Game
 				foreach (var nd in traits.WithInterface<INotifyDamage>())
 					nd.Damaged(this, DamageState.Half);
 			}
+
+			foreach (var ndx in traits.WithInterface<INotifyDamageEx>())
+				ndx.Damaged(this, damage);
 		}
 	}
 }

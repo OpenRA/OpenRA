@@ -510,4 +510,9 @@
   <unit name="flagfly">
     <sequence name="idle" start="0" length="14" />
   </unit>
+  <unit name="smoke_m">
+    <sequence name="idle" start="0" length="91" />
+    <sequence name="loop" start="49" length="42" />
+    <sequence name="end" start="0" length="26" />
+  </unit>
 </sequences>

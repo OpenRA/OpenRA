@@ -13,4 +13,5 @@ namespace OpenRa.Game.Traits
 	interface IRender { IEnumerable<Pair<Sprite, float2>> Render(Actor self); }
 	interface IOrder { Order Order(Actor self, int2 xy, bool lmb, Actor underCursor); }
 	interface INotifyDamage { void Damaged(Actor self, DamageState ds); }
+	interface INotifyDamageEx : INotifyDamage { void Damaged(Actor self, int damage); }
 }
