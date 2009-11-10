@@ -29,7 +29,8 @@ namespace OpenRa.Game.Support
 		public static void Tick()
 		{
 			foreach (var item in items.Values)
-				item.Tick();
+				if (item.hasNormalTick)
+					item.Tick();
 		}
 
 		public static void Render(Renderer r, LineRenderer lr)
@@ -65,6 +66,7 @@ namespace OpenRa.Game.Support
 		public double[] samples = new double[100];
 		public double val = 0.0;
 		int head = 1, tail = 0;
+		public bool hasNormalTick = true;
 
 		public PerfItem(string name, Color c)
 		{

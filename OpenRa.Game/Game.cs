@@ -85,8 +85,7 @@ namespace OpenRa.Game
 			PlaySound("intro.aud", false);
 
 			skipMakeAnims = false;
-
-			sw = new Stopwatch();
+			PerfHistory.items["render"].hasNormalTick = false;
 		}
 
 		static void LoadMapBuildings( IniFile mapfile )
@@ -148,8 +147,6 @@ namespace OpenRa.Game
 		public static double TickTime = 0.0;
 		public static double OreTime = 0.0;
 
-		public static Stopwatch sw;
-
 		public static void Tick()
 		{
 			int t = Environment.TickCount;
@@ -158,7 +155,6 @@ namespace OpenRa.Game
 			{
 				using (new PerfSample("tick_time"))
 				{
-					sw.Reset();
 					lastTime += timestep;
 
 					if (orderManager.Tick())
@@ -178,18 +174,20 @@ namespace OpenRa.Game
 						foreach (var player in players.Values)
 							player.Tick();
 					}
-
-					TickTime = sw.ElapsedTime();
 				}
 
 				PerfHistory.Tick();
 			}
 
-			sw.Reset();
-			++RenderFrame;
-			viewport.cursor = controller.ChooseCursor();
-			viewport.DrawRegions();
-			RenderTime = sw.ElapsedTime();
+			using (new PerfSample("render"))
+			{
+				
+				++RenderFrame;
+				viewport.cursor = controller.ChooseCursor();
+				viewport.DrawRegions();
+			}
+
+			PerfHistory.items["render"].Tick();
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)
