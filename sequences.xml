@@ -275,6 +275,7 @@
   <!-- apc -->
   <unit name="apc">
     <sequence name="idle" start="0" length="32" />
+    <sequence name="muzzle" start="0" length="48" src="minigun" />
   </unit>
   <!-- mine layer -->
   <unit name="mnly">

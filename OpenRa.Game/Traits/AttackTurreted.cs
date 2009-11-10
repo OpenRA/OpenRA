@@ -13,6 +13,8 @@ namespace OpenRa.Game.Traits
 		protected int primaryFireDelay = 0;
 		protected int secondaryFireDelay = 0;
 
+		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
+
 		public AttackBase(Actor self) { }
 
 		protected bool CanAttack( Actor self )
@@ -25,6 +27,9 @@ namespace OpenRa.Game.Traits
 			if (primaryFireDelay > 0) --primaryFireDelay;
 			if (secondaryFireDelay > 0) --secondaryFireDelay;
 
+			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
+			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
+
 			if (target != null && target.IsDead) target = null;		/* he's dead, jim. */
 		}
 
@@ -36,20 +41,15 @@ namespace OpenRa.Game.Traits
 				self.unitInfo.PrimaryOffset ) )
 			{
 				secondaryFireDelay = Math.Max( 4, secondaryFireDelay );
-				if (rut != null) rut.primaryRecoil = 1;
+				primaryRecoil = 1;
 				return;
 			}
 
 			if (self.unitInfo.Secondary != null && CheckFire(self, self.unitInfo.Secondary, ref secondaryFireDelay,
 				self.unitInfo.SecondaryOffset ?? self.unitInfo.PrimaryOffset))
 			{
-				if (rut != null)
-				{
-					if (self.unitInfo.SecondaryOffset != null)
-						rut.secondaryRecoil = 1;
-					else
-						rut.primaryRecoil = 1;
-				}
+				if (self.unitInfo.SecondaryOffset != null) secondaryRecoil = 1;
+				else primaryRecoil = 1;
 				return;
 			}
 		}

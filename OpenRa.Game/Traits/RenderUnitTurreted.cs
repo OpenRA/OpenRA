@@ -11,7 +11,6 @@ namespace OpenRa.Game.Traits
 	{
 		public Animation turretAnim;
 		public Animation muzzleFlash;
-		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
 
 		public RenderUnitTurreted(Actor self)
 			: base(self)
@@ -21,9 +20,11 @@ namespace OpenRa.Game.Traits
 			{
 				if (self.unitInfo.MuzzleFlash)
 				{
+					var attack = self.traits.WithInterface<AttackBase>().First();
 					muzzleFlash = new Animation(self.unitInfo.Name);
 					muzzleFlash.PlayFetchIndex("muzzle",
-						() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(primaryRecoil * 6));
+						() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(attack.primaryRecoil * 5.9f));	
+							/* hack: recoil can be 1.0f, but don't overflow into next anim */
 				}
 
 				turretAnim.PlayFetchIndex("turret",
@@ -36,25 +37,24 @@ namespace OpenRa.Game.Traits
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
 			var mobile = self.traits.Get<Mobile>();
+			var attack = self.traits.WithInterface<AttackBase>().FirstOrDefault();
 
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 			yield return Util.Centered(self, turretAnim.Image, self.CenterLocation 
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
+				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Util.Centered(self, turretAnim.Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, secondaryRecoil));
+					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, attack.secondaryRecoil));
 
-			if (muzzleFlash != null && primaryRecoil > 0)
+			if (muzzleFlash != null && attack.primaryRecoil > 0)
 				yield return Util.Centered(self, muzzleFlash.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
+				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
 		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
 			turretAnim.Tick();
-			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
-			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
 			if (muzzleFlash != null)
 				muzzleFlash.Tick();
 		}
