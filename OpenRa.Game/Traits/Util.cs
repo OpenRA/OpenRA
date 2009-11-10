@@ -104,5 +104,10 @@ namespace OpenRa.Game.Traits
 			return Tuple.New(s, loc.Round(), self.Owner.Palette);
 		}
 
+		public static Tuple<Sprite, float2, int> CenteredShadow(Actor self, Sprite s, float2 location)
+		{
+			var loc = location - 0.5f * s.size;
+			return Tuple.New(s, loc.Round(), 8);
+		}
 	}
 }
