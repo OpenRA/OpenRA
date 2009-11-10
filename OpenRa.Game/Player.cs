@@ -11,7 +11,8 @@ namespace OpenRa.Game
 		public Race Race;
 		public readonly int Index;
 		public int Cash;
-		public int Power;
+		int powerProvided;
+		int powerDrained;
 
 		public Player( int index, int palette, string playerName, Race race )
 		{
@@ -20,7 +21,20 @@ namespace OpenRa.Game
 			this.PlayerName = playerName;
 			this.Race = race;
 			this.Cash = 10000;
-			this.Power = 0;
+			this.powerProvided = this.powerDrained = 0;
+		}
+
+		public void ChangePower(int dPower)
+		{
+			if (dPower > 0)
+				powerProvided += dPower;
+			if (dPower < 0)
+				powerDrained -= dPower;
+		}
+
+		public int GetTotalPower()
+		{
+			return powerProvided - powerDrained;
 		}
 
 		public float GetSiloFullness()

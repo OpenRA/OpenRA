@@ -107,7 +107,7 @@ namespace OpenRa.Game.Graphics
 				Game.OreTime * 1000,
 				Game.LocalPlayer.Cash,
 				PerfHistory.items[ "nodes_expanded" ].LastValue,
-				Game.LocalPlayer.Power
+				Game.LocalPlayer.GetTotalPower()
 				), new int2(5, 5), Color.White);
 
 			PerfHistory.Render(renderer, lineRenderer);

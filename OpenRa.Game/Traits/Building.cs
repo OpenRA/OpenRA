@@ -26,7 +26,7 @@ namespace OpenRa.Game.Traits
 			UnitInfo.BuildingInfo bi = self.unitInfo as UnitInfo.BuildingInfo;
 			if (bi == null) return;
 
-			self.Owner.Power += bi.Power;
+			self.Owner.ChangePower(bi.Power);
 		}
 	}
 }
