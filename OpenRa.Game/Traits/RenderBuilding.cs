@@ -64,9 +64,9 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
-			yield return Pair.New(anim.Image, 24f * (float2)self.Location);
+			yield return Tuple.New(anim.Image, 24f * (float2)self.Location, self.Owner.Palette);
 		}
 
 		public virtual void Damaged(Actor self, DamageState state)

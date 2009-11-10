@@ -23,15 +23,15 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
 			var mobile = self.traits.Get<Mobile>();
 
-			yield return Util.Centered(anim.Image, self.CenterLocation);
-			yield return Util.Centered(rotorAnim.Image, self.CenterLocation 
+			yield return Util.Centered(self, anim.Image, self.CenterLocation);
+			yield return Util.Centered(self, rotorAnim.Image, self.CenterLocation 
 				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, 0));
 			if (self.unitInfo.SecondaryOffset != null)
-				yield return Util.Centered((secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
+				yield return Util.Centered(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, 0));
 		}
 

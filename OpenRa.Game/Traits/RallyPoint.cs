@@ -21,11 +21,11 @@ namespace OpenRa.Game.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
 			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
 			if (uog != null && self.Owner == Game.LocalPlayer && uog.selection.Contains(self))
-				yield return Util.Centered(
+				yield return Util.Centered( self,
 					anim.Image, Game.CellSize * (new float2(.5f, .5f) + rallyPoint.ToFloat2()));
 		}
 

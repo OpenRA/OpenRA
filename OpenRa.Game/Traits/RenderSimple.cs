@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 			anim = new Animation(self.unitInfo.Image ?? self.unitInfo.Name);
 		}
 
-		public abstract IEnumerable<Pair<Sprite, float2>> Render(Actor self);
+		public abstract IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self);
 
 		public virtual void Tick(Actor self)
 		{

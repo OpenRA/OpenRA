@@ -35,11 +35,11 @@ namespace OpenRa.Game.Traits
 					self.CenterLocation.ToInt2() + elementOffsets[elements.Count][i], self);
 		}
 
-		public IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
 			return elements.Select(
-				e => Util.Centered(e.anim.Image, e.location))
-				.OrderBy( a => a.Second.Y );		/* important to y-order elements of a squad! */
+				e => Util.Centered(self, e.anim.Image, e.location))
+				.OrderBy( a => a.b.Y );		/* important to y-order elements of a squad! */
 		}
 	}
 

@@ -98,10 +98,10 @@ namespace OpenRa.Game.Traits
 				+ new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3));
 		}
 
-		public static Pair<Sprite, float2> Centered(Sprite s, float2 location)
+		public static Tuple<Sprite, float2, int> Centered(Actor self, Sprite s, float2 location)
 		{
 			var loc = location - 0.5f * s.size;
-			return Pair.New(s, loc.Round());
+			return Tuple.New(s, loc.Round(), self.Owner.Palette);
 		}
 
 	}

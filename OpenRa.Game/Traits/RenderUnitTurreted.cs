@@ -33,19 +33,19 @@ namespace OpenRa.Game.Traits
 				turretAnim.PlayRepeating("turret");		/* not really a turret; it's a spinner */
 		}
 
-		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
 			var mobile = self.traits.Get<Mobile>();
 
-			yield return Util.Centered(anim.Image, self.CenterLocation);
-			yield return Util.Centered(turretAnim.Image, self.CenterLocation 
+			yield return Util.Centered(self, anim.Image, self.CenterLocation);
+			yield return Util.Centered(self, turretAnim.Image, self.CenterLocation 
 				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
 			if (self.unitInfo.SecondaryOffset != null)
-				yield return Util.Centered(turretAnim.Image, self.CenterLocation
+				yield return Util.Centered(self, turretAnim.Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, secondaryRecoil));
 
 			if (muzzleFlash != null && primaryRecoil > 0)
-				yield return Util.Centered(muzzleFlash.Image, self.CenterLocation
+				yield return Util.Centered(self, muzzleFlash.Image, self.CenterLocation
 				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, primaryRecoil));
 		}
 

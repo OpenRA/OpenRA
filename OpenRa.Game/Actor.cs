@@ -59,9 +59,9 @@ namespace OpenRa.Game
 		}
 
 		public float2 CenterLocation;
-		public float2 SelectedSize { get { return Render().First().First.size; } }
+		public float2 SelectedSize { get { return Render().First().a.size; } }
 
-		public IEnumerable<Pair<Sprite, float2>> Render()
+		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
 			return traits.WithInterface<Traits.IRender>().SelectMany( x => x.Render( this ) );
 		}

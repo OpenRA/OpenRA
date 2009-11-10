@@ -36,25 +36,6 @@ namespace OpenRa.Game.Graphics
 			uiOverlay = new UiOverlay(spriteRenderer);
 		}
 
-		void DrawSpriteList(Player owner, RectangleF rect, 
-			IEnumerable<Pair<Sprite, float2>> images)
-		{
-			foreach (var image in images)
-			{
-				var loc = image.Second;
-
-				if (loc.X > rect.Right || loc.X < rect.Left 
-					- image.First.bounds.Width)
-					continue;
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top 
-					- image.First.bounds.Height)
-					continue;
-
-				spriteRenderer.DrawSprite(image.First, loc, 
-					(owner != null) ? owner.Palette : 0);
-			}
-		}
-
 		void DrawSpriteList(RectangleF rect,
 			IEnumerable<Tuple<Sprite, float2, int>> images)
 		{
@@ -81,12 +62,12 @@ namespace OpenRa.Game.Graphics
                 region.Size.ToSizeF());
 
 			foreach (Actor a in Game.world.Actors.OrderBy( u => u.CenterLocation.Y ))
-				DrawSpriteList(a.Owner, rect, a.Render());
+				DrawSpriteList(rect, a.Render());
 
 			foreach (var a in Game.world.Actors
 				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
 				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
-				DrawSpriteList(a.self.Owner, rect, a.RenderRoof(a.self));		/* RUDE HACK */
+				DrawSpriteList(rect, a.RenderRoof(a.self));		/* RUDE HACK */
 
 			foreach (IEffect e in Game.world.Effects)
 				DrawSpriteList(rect, e.Render());
