@@ -46,7 +46,8 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName);
 
 			for (int i = 0; i < 8; i++)
-				players.Add(i, new Player(i, i, string.Format("Multi{0}", i), Race.Allies));
+				players.Add(i, new Player(i, i, string.Format("Multi{0}", i), 
+					Race.Allies));
 
 			localPlayerIndex = localPlayer;
 

@@ -8,7 +8,9 @@ namespace OpenRa.FileFormats
 {
 	public class PaletteRemap
 	{
+		int offset;
 		List<Color> remapColors = new List<Color>();
+		Color shadowColor;
 
 		public PaletteRemap(Stream s)
 		{
@@ -23,14 +25,26 @@ namespace OpenRa.FileFormats
 					remapColors.Add(Color.FromArgb(r, g, b));
 				}
 			}
+
+			offset = 80;
+		}
+
+		public PaletteRemap( Color shadowColor )
+		{
+			this.shadowColor = shadowColor;
 		}
 
 		public Color GetRemappedColor(Color original, int index)
 		{
-			if (index < 80 || index >= 96)
-				return original;
+			if (remapColors.Count > 0)
+			{
+				if (index < offset || index >= offset + remapColors.Count)
+					return original;
 
-			return remapColors[index - 80];
+				return remapColors[index - offset];
+			}
+
+			return original.A > 0 ? shadowColor : original;
 		}
 	}
 }

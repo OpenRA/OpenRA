@@ -55,6 +55,24 @@ namespace OpenRa.Game.Graphics
 			}
 		}
 
+		void DrawSpriteList(RectangleF rect,
+			IEnumerable<Tuple<Sprite, float2, int>> images)
+		{
+			foreach (var image in images)
+			{
+				var loc = image.b;
+
+				if (loc.X > rect.Right || loc.X < rect.Left
+					- image.a.bounds.Width)
+					continue;
+				if (loc.Y > rect.Bottom || loc.Y < rect.Top
+					- image.a.bounds.Height)
+					continue;
+
+				spriteRenderer.DrawSprite(image.a, loc, image.c);
+			}
+		}
+
 		public void Draw()
 		{
 			terrainRenderer.Draw( Game.viewport );
@@ -71,7 +89,7 @@ namespace OpenRa.Game.Graphics
 				DrawSpriteList(a.self.Owner, rect, a.RenderRoof(a.self));		/* RUDE HACK */
 
 			foreach (IEffect e in Game.world.Effects)
-				DrawSpriteList(e.Owner, rect, e.Render());
+				DrawSpriteList(rect, e.Render());
 
             uiOverlay.Draw();
 
