@@ -143,9 +143,6 @@ namespace OpenRa.Game
 		const int oreFrequency = 30;
 		static int oreTicks = oreFrequency;
 		public static int RenderFrame = 0;
-		public static double RenderTime = 0.0;
-		public static double TickTime = 0.0;
-		public static double OreTime = 0.0;
 
 		public static void Tick()
 		{
@@ -163,12 +160,8 @@ namespace OpenRa.Game
 							controller.orderGenerator.Tick();
 
 						if (--oreTicks == 0)
-						{
-							var oresw = new Stopwatch();
-							map.GrowOre(SharedRandom);
-							OreTime = oresw.ElapsedTime();
-							oreTicks = oreFrequency;
-						}
+							using( new PerfSample("ore"))
+								map.GrowOre(SharedRandom);
 						world.Tick();
 						UnitInfluence.Tick();
 						foreach (var player in players.Values)
