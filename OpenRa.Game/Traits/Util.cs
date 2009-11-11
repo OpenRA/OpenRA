@@ -81,7 +81,7 @@ namespace OpenRa.Game.Traits
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
-			var quantizedFacing = facing - facing % rut.turretAnim.CurrentSequence.Length;
+			var quantizedFacing = QuantizeFacing(facing, rut.turretAnim.CurrentSequence.Length) * (256 / rut.turretAnim.CurrentSequence.Length);
 
 			return RotateVectorByFacing(new float2(0, recoil * self.unitInfo.Recoil), quantizedFacing, .7f);
 		}
@@ -92,17 +92,22 @@ namespace OpenRa.Game.Traits
 			if (ru == null) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
 
 			var bodyFacing = self.traits.Get<Mobile>().facing;
-			var quantizedFacing = bodyFacing - bodyFacing % ru.anim.CurrentSequence.Length;
+			var quantizedFacing = QuantizeFacing(bodyFacing, ru.anim.CurrentSequence.Length) * (256 / ru.anim.CurrentSequence.Length);
 
 			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil))
 				+ new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3));
 		}
 
-		public static Pair<Sprite, float2> Centered(Sprite s, float2 location)
+		public static Tuple<Sprite, float2, int> Centered(Actor self, Sprite s, float2 location)
 		{
 			var loc = location - 0.5f * s.size;
-			return Pair.New(s, loc.Round());
+			return Tuple.New(s, loc.Round(), self.Owner.Palette);
 		}
 
+		public static Tuple<Sprite, float2, int> CenteredShadow(Actor self, Sprite s, float2 location)
+		{
+			var loc = location - 0.5f * s.size;
+			return Tuple.New(s, loc.Round(), 8);
+		}
 	}
 }

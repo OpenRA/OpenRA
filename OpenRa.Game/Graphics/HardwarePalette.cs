@@ -10,7 +10,7 @@ namespace OpenRa.Game.Graphics
 {
 	class HardwarePalette : Sheet
 	{
-		const int maxEntries = 8;
+		const int maxEntries = 16;
 		int allocated = 0;
 
 		public HardwarePalette(Renderer renderer, Map map, int rotate)
@@ -21,6 +21,8 @@ namespace OpenRa.Game.Graphics
 
 			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
 				AddPalette(new Palette(pal, new PaletteRemap(FileSystem.Open(remap + ".rem"))));
+
+			AddPalette(new Palette(pal, new PaletteRemap(Color.FromArgb(140, 0, 0, 0))));
 
 			using (var bitmapCopy = new Bitmap(bitmap))
 				for (int j = 0; j < maxEntries; j++)

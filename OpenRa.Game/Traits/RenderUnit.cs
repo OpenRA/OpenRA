@@ -29,11 +29,11 @@ namespace OpenRa.Game.Traits
 			anim.PlayThen(newAnim, () => { PlayFacingAnim(self); if (after != null) after(); });
 		}
 
-		public override IEnumerable<Pair<Sprite, float2>> Render(Actor self)
+		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
-			yield return Util.Centered(anim.Image, self.CenterLocation);
+			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 			if (isSmoking)
-				yield return Util.Centered(smoke.Image, self.CenterLocation);
+				yield return Util.Centered(self, smoke.Image, self.CenterLocation);
 		}
 
 		bool isSmoking;

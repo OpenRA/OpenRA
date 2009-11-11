@@ -46,7 +46,8 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName);
 
 			for (int i = 0; i < 8; i++)
-				players.Add(i, new Player(i, i, string.Format("Multi{0}", i), Race.Allies));
+				players.Add(i, new Player(i, i, string.Format("Multi{0}", i), 
+					Race.Allies));
 
 			localPlayerIndex = localPlayer;
 
@@ -84,8 +85,7 @@ namespace OpenRa.Game
 			PlaySound("intro.aud", false);
 
 			skipMakeAnims = false;
-
-			sw = new Stopwatch();
+			PerfHistory.items["render"].hasNormalTick = false;
 		}
 
 		static void LoadMapBuildings( IniFile mapfile )
@@ -143,11 +143,6 @@ namespace OpenRa.Game
 		const int oreFrequency = 30;
 		static int oreTicks = oreFrequency;
 		public static int RenderFrame = 0;
-		public static double RenderTime = 0.0;
-		public static double TickTime = 0.0;
-		public static double OreTime = 0.0;
-
-		public static Stopwatch sw;
 
 		public static void Tick()
 		{
@@ -157,7 +152,6 @@ namespace OpenRa.Game
 			{
 				using (new PerfSample("tick_time"))
 				{
-					sw.Reset();
 					lastTime += timestep;
 
 					if (orderManager.Tick())
@@ -166,29 +160,27 @@ namespace OpenRa.Game
 							controller.orderGenerator.Tick();
 
 						if (--oreTicks == 0)
-						{
-							var oresw = new Stopwatch();
-							map.GrowOre(SharedRandom);
-							OreTime = oresw.ElapsedTime();
-							oreTicks = oreFrequency;
-						}
+							using( new PerfSample("ore"))
+								map.GrowOre(SharedRandom);
 						world.Tick();
 						UnitInfluence.Tick();
 						foreach (var player in players.Values)
 							player.Tick();
 					}
-
-					TickTime = sw.ElapsedTime();
 				}
 
 				PerfHistory.Tick();
 			}
 
-			sw.Reset();
-			++RenderFrame;
-			viewport.cursor = controller.ChooseCursor();
-			viewport.DrawRegions();
-			RenderTime = sw.ElapsedTime();
+			using (new PerfSample("render"))
+			{
+				
+				++RenderFrame;
+				viewport.cursor = controller.ChooseCursor();
+				viewport.DrawRegions();
+			}
+
+			PerfHistory.items["render"].Tick();
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)

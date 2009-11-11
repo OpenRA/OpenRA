@@ -11,7 +11,7 @@ namespace OpenRa.Game
 	interface IEffect
 	{
 		void Tick();
-		IEnumerable<Pair<Sprite, float2>> Render();
+		IEnumerable<Tuple<Sprite, float2, int>> Render();
 		Player Owner { get; }
 	}
 
@@ -96,14 +96,30 @@ namespace OpenRa.Game
 			}
 		}
 
-		public IEnumerable<Pair<Sprite, float2>> Render()
+		const float height = .1f;
+
+		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
 			if (anim != null)
-				yield return Pair.New(anim.Image,
-					float2.Lerp(
+			{
+				var pos = float2.Lerp(
 						Src.ToFloat2(),
 						VisualDest.ToFloat2(),
-						(float)t / TotalTime()) - 0.5f * anim.Image.size);
+						(float)t / TotalTime()) - 0.5f * anim.Image.size;
+
+				if (Projectile.High || Projectile.Arcing)
+				{
+					if (Projectile.Shadow)
+						yield return Tuple.New(anim.Image, pos, 8);	/* todo: shadow pal */
+
+					var at = (float)t / TotalTime();
+					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
+
+					yield return Tuple.New(anim.Image, highPos, Owner.Palette);
+				}
+				else
+					yield return Tuple.New(anim.Image, pos, Owner.Palette);
+			}
 		}
 
 		float GetMaximumSpread()

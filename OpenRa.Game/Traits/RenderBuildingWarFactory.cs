@@ -29,10 +29,11 @@ namespace OpenRa.Game.Traits
 			}, self);
 		}
 
-		public IEnumerable<Pair<Sprite, float2>> RenderRoof(Actor self)
+		public IEnumerable<Tuple<Sprite, float2, int>> RenderRoof(Actor self)
 		{
 			if (doneBuilding)
-				yield return Pair.New(roof.Image, 24f * (float2)self.Location);
+				yield return Tuple.New(roof.Image, 
+					24f * (float2)self.Location, self.Owner.Palette);
 		}
 
 		public override void Tick(Actor self)

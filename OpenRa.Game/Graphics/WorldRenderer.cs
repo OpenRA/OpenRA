@@ -36,78 +36,76 @@ namespace OpenRa.Game.Graphics
 			uiOverlay = new UiOverlay(spriteRenderer);
 		}
 
-		void DrawSpriteList(Player owner, RectangleF rect, 
-			IEnumerable<Pair<Sprite, float2>> images)
+		void DrawSpriteList(RectangleF rect,
+			IEnumerable<Tuple<Sprite, float2, int>> images)
 		{
 			foreach (var image in images)
 			{
-				var loc = image.Second;
+				var loc = image.b;
 
-				if (loc.X > rect.Right || loc.X < rect.Left 
-					- image.First.bounds.Width)
+				if (loc.X > rect.Right || loc.X < rect.Left
+					- image.a.bounds.Width)
 					continue;
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top 
-					- image.First.bounds.Height)
+				if (loc.Y > rect.Bottom || loc.Y < rect.Top
+					- image.a.bounds.Height)
 					continue;
 
-				spriteRenderer.DrawSprite(image.First, loc, 
-					(owner != null) ? owner.Palette : 0);
+				spriteRenderer.DrawSprite(image.a, loc, image.c);
 			}
 		}
 
 		public void Draw()
 		{
-			terrainRenderer.Draw( Game.viewport );
+			terrainRenderer.Draw(Game.viewport);
 
-			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(), 
-                region.Size.ToSizeF());
+			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(),
+				region.Size.ToSizeF());
 
-			foreach (Actor a in Game.world.Actors.OrderBy( u => u.CenterLocation.Y ))
-				DrawSpriteList(a.Owner, rect, a.Render());
+			foreach (Actor a in Game.world.Actors.OrderBy(u => u.CenterLocation.Y))
+				DrawSpriteList(rect, a.Render());
 
 			foreach (var a in Game.world.Actors
 				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
 				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
-				DrawSpriteList(a.self.Owner, rect, a.RenderRoof(a.self));		/* RUDE HACK */
+				DrawSpriteList(rect, a.RenderRoof(a.self));		/* RUDE HACK */
 
 			foreach (IEffect e in Game.world.Effects)
-				DrawSpriteList(e.Owner, rect, e.Render());
+				DrawSpriteList(rect, e.Render());
 
-            uiOverlay.Draw();
+			uiOverlay.Draw();
 
 			spriteRenderer.Flush();
 
-            var selbox = Game.controller.SelectionBox;
-            if (selbox != null)
-            {
-                var a = selbox.Value.First;
-                var b = new float2(selbox.Value.Second.X - a.X, 0);
-                var c = new float2(0, selbox.Value.Second.Y - a.Y);
+			var selbox = Game.controller.SelectionBox;
+			if (selbox != null)
+			{
+				var a = selbox.Value.First;
+				var b = new float2(selbox.Value.Second.X - a.X, 0);
+				var c = new float2(0, selbox.Value.Second.Y - a.Y);
 
-                lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
-                lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
-                lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
-                lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+				lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
+				lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
+				lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
+				lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
-                foreach (var u in Game.SelectUnitsInBox(selbox.Value.First, selbox.Value.Second))
-                    DrawSelectionBox(u, Color.Yellow, false);
-            }
+				foreach (var u in Game.SelectUnitsInBox(selbox.Value.First, selbox.Value.Second))
+					DrawSelectionBox(u, Color.Yellow, false);
+			}
 
-            var uog = Game.controller.orderGenerator as UnitOrderGenerator;
-            if (uog != null)
-				foreach( var a in uog.selection )
-	                DrawSelectionBox(a, Color.White, true);
-            
-            lineRenderer.Flush();
+			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
+			if (uog != null)
+				foreach (var a in uog.selection)
+					DrawSelectionBox(a, Color.White, true);
 
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nOre ({4:F1} ms)\n$ {5}\nPower {7}\nTiles Expanded {6:F0}", 
-				Game.RenderFrame, Game.orderManager.FrameNumber,
-				Game.RenderTime * 1000, 
-				Game.TickTime * 1000,
-				Game.OreTime * 1000,
+			lineRenderer.Flush();
+
+			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}",				
+				Game.RenderFrame,
+				Game.orderManager.FrameNumber,
+				PerfHistory.items["render"].LastValue,
+				PerfHistory.items["tick_time"].LastValue,
 				Game.LocalPlayer.Cash,
-				PerfHistory.items[ "nodes_expanded" ].LastValue,
-				Game.LocalPlayer.Power
+				Game.LocalPlayer.GetTotalPower()
 				), new int2(5, 5), Color.White);
 
 			PerfHistory.Render(renderer, lineRenderer);

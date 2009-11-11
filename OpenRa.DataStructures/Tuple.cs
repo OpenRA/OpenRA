@@ -37,4 +37,12 @@ namespace OpenRa
 
 		public Tuple(A a, B b, C c, D d) { this.a = a; this.b = b; this.c = c; this.d = d; }
 	}
+
+	public static class Tuple
+	{
+		public static Tuple<A, B, C> New<A, B, C>(A a, B b, C c)
+		{
+			return new Tuple<A, B, C>(a, b, c);
+		}
+	}
 }

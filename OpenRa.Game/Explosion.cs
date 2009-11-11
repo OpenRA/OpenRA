@@ -24,9 +24,9 @@ namespace OpenRa.Game
 
 		public void Tick() { anim.Tick(); }
 
-		public IEnumerable<Pair<Sprite, float2>> Render()
+		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
-			yield return Pair.New(anim.Image, pos.ToFloat2() - 0.5f * anim.Image.size);
+			yield return Tuple.New(anim.Image, pos.ToFloat2() - 0.5f * anim.Image.size, 0);
 		}
 
 		public Player Owner { get { return null; } }
