@@ -118,7 +118,7 @@ namespace OpenRa.Game
 			return cellInfo;
 		}
 
-		static Func<int2, float> DefaultEstimator( int2 destination )
+		public static Func<int2, float> DefaultEstimator( int2 destination )
 		{
 			return here =>
 			{

@@ -130,7 +130,10 @@ namespace OpenRa.Game
 					return MakeBidiPath(fromSrc, fromDest, p);
 
 				/* make some progress on the second search */
-				fromDest.Expand( passableCost );
+				var q = fromDest.Expand( passableCost );
+
+				if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
+					return MakeBidiPath(fromSrc, fromDest, q);
 			}
 
 			return new List<int2>();
