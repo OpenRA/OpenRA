@@ -58,8 +58,8 @@ namespace OpenRa.Game.Graphics
 						var sprites = overlaySprites[o];
 						var spriteIndex = 0;
 						if (Ore.overlayIsFence[o]) spriteIndex = NearbyFences(x, y);
-						else if (Ore.overlayIsOre[o]) spriteIndex = map.MapTiles[x,y].density;
-						else if (Ore.overlayIsGems[o]) spriteIndex = map.MapTiles[x,y].density;
+						else if (Ore.overlayIsOre[o]) spriteIndex = map.MapTiles[x,y].density - 1;
+						else if (Ore.overlayIsGems[o]) spriteIndex = map.MapTiles[x,y].density - 1;
 						spriteRenderer.DrawSprite(sprites[spriteIndex], 
 							Game.CellSize * (float2)location, 0);
 					}
