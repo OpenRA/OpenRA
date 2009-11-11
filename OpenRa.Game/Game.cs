@@ -160,8 +160,12 @@ namespace OpenRa.Game
 							controller.orderGenerator.Tick();
 
 						if (--oreTicks == 0)
-							using( new PerfSample("ore"))
+						{
+							using (new PerfSample("ore"))
 								map.GrowOre(SharedRandom);
+							oreTicks = oreFrequency;
+						}
+
 						world.Tick();
 						UnitInfluence.Tick();
 						foreach (var player in players.Values)
