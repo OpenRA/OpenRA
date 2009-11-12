@@ -21,20 +21,14 @@ namespace OpenRa.Game.Traits.Activities
 
 		static readonly int2 refineryDeliverOffset = new int2( 1, 2 );
 
-		public void Tick(Actor self, Mobile mobile)
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
 			if( isDone )
 			{
-				var harv = self.traits.Get<Harvester>();
-
-				harv.Deliver( self );
-
-				if( NextActivity == null )
-					NextActivity = new Harvest();
-				mobile.InternalSetActivity( NextActivity );
-				return;
+				self.traits.Get<Harvester>().Deliver( self );
+				return NextActivity ?? new Harvest();
 			}
-			else if( refinery == null || refinery.IsDead )
+			else if( refinery == null || refinery.IsDead || self.Location != refinery.Location + refineryDeliverOffset )
 			{
 				var search = new PathSearch
 				{
@@ -51,34 +45,26 @@ namespace OpenRa.Game.Traits.Activities
 				if( path.Count != 0 )
 				{
 					refinery = refineries.FirstOrDefault( x => x.Location + refineryDeliverOffset == path[ 0 ] );
-					var move = new Move( () => path );
-					mobile.InternalSetActivity( move );
-					mobile.QueueActivity( this );
-					move.Tick( self, mobile );
-					return;
+					return new Move( () => path ) { NextActivity = this };
 				}
 				else
 					// no refineries reachable?
-					return;
+					return null;
 			}
 			else if( mobile.facing != 64 )
-			{
-				var turn = new Turn( 64 );
-				mobile.InternalSetActivity( turn );
-				mobile.QueueActivity( this );
-				turn.Tick( self, mobile );
-				return;
-			}
+				return new Turn( 64 ) { NextActivity = this };
 
 			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
 			if( renderUnit.anim.CurrentSequence.Name != "empty" )
 				renderUnit.PlayCustomAnimation( self, "empty",
 					() => isDone = true );
+
+			return null;
 		}
 
 		public void Cancel(Actor self, Mobile mobile)
 		{
-			mobile.InternalSetActivity(null);
+			// TODO: allow canceling of deliver orders?
 		}
 	}
 }

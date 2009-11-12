@@ -42,17 +42,20 @@ namespace OpenRa.Game.Traits
 			act.NextActivity = nextActivity;
 		}
 
-		public void InternalSetActivity( IActivity activity )
-		{
-			currentActivity = activity;
-		}
-
 		public void Tick(Actor self)
 		{
-			if( currentActivity != null )
-				currentActivity.Tick( self, this );
-			else
+			if( currentActivity == null )
+			{
 				fromCell = toCell;
+				return;
+			}
+
+			var nextActivity = currentActivity;
+			while( nextActivity != null )
+			{
+				currentActivity = nextActivity;
+				nextActivity = nextActivity.Tick( self, this );
+			}
 		}
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)

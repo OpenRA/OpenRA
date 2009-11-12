@@ -9,13 +9,14 @@ namespace OpenRa.Game.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 
-		public void Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
 			Game.world.AddFrameEndTask( _ =>
 			{
 				Game.world.Remove( self );
 				Game.world.Add( new Actor( "fact", self.Location - new int2( 1, 1 ), self.Owner ) );
 			} );
+			return null;
 		}
 
 		public void Cancel( Actor self, Mobile mobile )

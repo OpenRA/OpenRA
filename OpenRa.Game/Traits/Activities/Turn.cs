@@ -16,16 +16,13 @@ namespace OpenRa.Game.Traits.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public void Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
 			if( desiredFacing == mobile.facing )
-			{
-				mobile.InternalSetActivity( NextActivity );
-				if( NextActivity != null )
-					NextActivity.Tick( self, mobile );
-				return;
-			}
+				return NextActivity;
+
 			Util.TickFacing( ref mobile.facing, desiredFacing, self.unitInfo.ROT );
+			return null;
 		}
 
 		public void Cancel( Actor self, Mobile mobile )
