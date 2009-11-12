@@ -28,6 +28,8 @@ namespace OpenRa.Game.Traits.Activities
 				self.traits.Get<Harvester>().Deliver( self );
 				return NextActivity ?? new Harvest();
 			}
+			else if( NextActivity != null )
+				return NextActivity;
 			else if( refinery == null || refinery.IsDead || self.Location != refinery.Location + refineryDeliverOffset )
 			{
 				var search = new PathSearch
