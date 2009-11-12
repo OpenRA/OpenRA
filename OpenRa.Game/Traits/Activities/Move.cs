@@ -107,6 +107,8 @@ namespace OpenRa.Game.Traits.Activities
 		[Conditional( "SANITY_CHECKS")]
 		void SanityCheckPath( Mobile mobile )
 		{
+			if( path.Count == 0 )
+				return;
 			var d = path[path.Count-1] - mobile.toCell;
 			if( d.LengthSquared > 2 )
 				throw new InvalidOperationException( "(Move) Sanity check failed" );

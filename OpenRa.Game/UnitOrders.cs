@@ -99,7 +99,7 @@ namespace OpenRa.Game
 						* ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
 						/ 1000;
 
-					time = .05f * time;						/* temporary hax so we can build stuff fast for test */
+					time = .01f * time;						/* temporary hax so we can build stuff fast for test */
 
 					order.Player.BeginProduction(group,
 						new ProductionItem(order.TargetString, (int)time, ui.Cost,
