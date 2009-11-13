@@ -49,7 +49,8 @@ namespace OpenRa.Game
 				}
 			case "DeployMcv":
 				{
-					if (!Game.CanPlaceBuilding("fact", order.Subject.Location - new int2(1,1), order.Subject, false))
+					var factBuildingInfo = (UnitInfo.BuildingInfo)Rules.UnitInfo[ "fact" ];
+					if( !Game.CanPlaceBuilding( factBuildingInfo, order.Subject.Location - new int2( 1, 1 ), order.Subject, false ) )
 						break;	/* throw the order on the floor */
 
 					var mobile = order.Subject.traits.Get<Mobile>();
@@ -77,14 +78,14 @@ namespace OpenRa.Game
 				{
 					Game.world.AddFrameEndTask( _ =>
 					{
-						var building = Rules.UnitInfo[ order.TargetString ];
+						var building = (UnitInfo.BuildingInfo)Rules.UnitInfo[ order.TargetString ];
 						var producing = order.Player.Producing( "Building" );
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;
 
 						Log.Write( "Player \"{0}\" builds {1}", order.Player.PlayerName, building.Name );
 
-						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building.Name ), order.Player ) );
+						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
 
 						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
 					} );

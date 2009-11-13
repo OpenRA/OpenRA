@@ -47,7 +47,7 @@ namespace OpenRa.Game
 
 			var position = Game.controller.MousePosition.ToInt2();
 
-			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[placeBuilding.Name];
+			var bi = placeBuilding.Building;
 			
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
 

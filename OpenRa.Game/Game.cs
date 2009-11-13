@@ -271,7 +271,7 @@ namespace OpenRa.Game
 
 		static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
 		{
-			var tiles = Footprint.Tiles(a);
+			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
 			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
 
@@ -283,18 +283,17 @@ namespace OpenRa.Game
 			return null;
 		}
 
-		public static bool CanPlaceBuilding(string name, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(UnitInfo.BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
-			var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[name];
-			return !Footprint.Tiles(bi, xy, adjust).Any(
+			return !Footprint.Tiles(building, xy, adjust).Any(
 				t => Game.map.ContainsResource(t) || !Game.IsCellBuildable(t,
-					bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
+					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
 
-		public static bool CanPlaceBuilding(string name, int2 xy, bool adjust)
+		public static bool CanPlaceBuilding( UnitInfo.BuildingInfo building, int2 xy, bool adjust )
 		{
-			return CanPlaceBuilding(name, xy, null, adjust);
+			return CanPlaceBuilding(building, xy, null, adjust);
 		}
 
 		public static void BuildUnit(Player player, string name)

@@ -43,7 +43,7 @@ namespace OpenRa.Game.Traits
 
 		void DoBib(Actor self, bool isRemove)
 		{
-			var buildingInfo = (UnitInfo.BuildingInfo)self.unitInfo;
+			var buildingInfo = self.traits.Get<Building>().unitInfo;
 			if (buildingInfo.Bib)
 			{
 				var size = buildingInfo.Dimensions.X;
