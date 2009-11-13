@@ -43,5 +43,10 @@ namespace OpenRa.Game
 			if( producing == null || producing.Item != Building.Name || producing.RemainingTime != 0 )
 				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
 		}
+
+		public void Render()
+		{
+			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building );
+		}
 	}
 }

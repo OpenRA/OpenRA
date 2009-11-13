@@ -42,7 +42,7 @@ namespace OpenRa.Game.Traits.Activities
 					umt = mobile.GetMovementType(),
 					checkForBlocked = false,
 				};
-				var refineries = Game.world.Actors.Where( x => x.unitInfo.Name == "proc" ).ToList();
+				var refineries = Game.world.Actors.Where( x => x.unitInfo != null && x.unitInfo.Name == "proc" ).ToList();
 				if( refinery != null )
 					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
 				else

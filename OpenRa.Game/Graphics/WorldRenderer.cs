@@ -92,10 +92,8 @@ namespace OpenRa.Game.Graphics
 					DrawSelectionBox(u, Color.Yellow, false);
 			}
 
-			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
-			if (uog != null)
-				foreach (var a in uog.selection)
-					DrawSelectionBox(a, Color.White, true);
+			if( Game.controller.orderGenerator != null )
+				Game.controller.orderGenerator.Render();
 
 			lineRenderer.Flush();
 
@@ -111,7 +109,7 @@ namespace OpenRa.Game.Graphics
 			PerfHistory.Render(renderer, lineRenderer);
 		}
 
-        void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
+		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
         {
             var center = selectedUnit.CenterLocation;
             var size = selectedUnit.SelectedSize;
