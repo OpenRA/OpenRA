@@ -30,7 +30,11 @@ namespace OpenRa.Game.Traits.Activities
 			}
 			else if( NextActivity != null )
 				return NextActivity;
-			else if( refinery == null || refinery.IsDead || self.Location != refinery.Location + refineryDeliverOffset )
+
+			if( refinery != null && refinery.IsDead )
+				refinery = null;
+
+			if( refinery == null || self.Location != refinery.Location + refineryDeliverOffset )
 			{
 				var search = new PathSearch
 				{
@@ -39,8 +43,11 @@ namespace OpenRa.Game.Traits.Activities
 					checkForBlocked = false,
 				};
 				var refineries = Game.world.Actors.Where( x => x.unitInfo == Rules.UnitInfo[ "proc" ] ).ToList();
-				foreach( var r in refineries )
-					search.AddInitialCell( r.Location + refineryDeliverOffset );
+				if( refinery != null )
+					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
+				else
+					foreach( var r in refineries )
+						search.AddInitialCell( r.Location + refineryDeliverOffset );
 
 				var path = Game.PathFinder.FindPath( search );
 				path.Reverse();
