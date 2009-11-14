@@ -6,6 +6,7 @@ local editorID         = 100    -- window id to create editor pages with, increm
 local openDocuments 	= ide.openDocuments
 local ignoredFilesList 	= ide.ignoredFilesList
 local notebook			= ide.frame.vsplitter.splitter.notebook
+local edcfg 			= ide.config.editor
 
 -- ----------------------------------------------------------------------------
 -- Get/Set notebook editor page, use nil for current page, returns nil if none
@@ -228,6 +229,8 @@ function CreateEditor(name)
 	editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDEROPENMID, wxstc.wxSTC_MARK_BOXMINUSCONNECTED, wx.wxWHITE, grey)
 	editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, wxstc.wxSTC_MARK_TCORNER,  wx.wxWHITE, grey)
 	grey:delete()
+	
+	editor.ev = {}
 
 	editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,
 			function (event)
@@ -246,6 +249,18 @@ function CreateEditor(name)
 					end
 				end
 			end)
+	
+	editor:Connect(wxstc.wxEVT_STC_MODIFIED,
+			function (event)
+				
+				if (bit.band(event:GetModificationType(),wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
+					table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
+				end
+				if (bit.band(event:GetModificationType(),wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
+					table.insert(editor.ev,{event:GetPosition(),0})
+				end
+			end)
+	
 
 	editor:Connect(wxstc.wxEVT_STC_CHARADDED,
 			function (event)
@@ -334,6 +349,12 @@ function CreateEditor(name)
 			function (event)
 				UpdateStatusText(editor)
 				UpdateBraceMatch(editor)
+				for e,iv in ipairs(editor.ev) do
+					local line = editor:LineFromPosition(iv[1])
+					--DisplayOutput("modified "..tostring(line).." "..tostring(iv[2]))
+					IndicateFunctions(editor,line,line+iv[2])
+				end
+				editor.ev = {}
 			end)
 
 	editor:Connect(wx.wxEVT_SET_FOCUS,
@@ -391,6 +412,55 @@ function GetSpec(ext,forcespec)
 	end
 	
 	return spec
+end
+
+function IndicateFunctions(editor, lines, linee)
+	if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
+
+	--DisplayOutput("indicate: "..tostring(lines).." "..tostring(linee).."\n")
+	
+	local es = editor:GetEndStyled()
+	local lines = lines or 0
+	local linee = linee or editor:GetLineCount()-1
+	
+	if (lines < 0) then return end
+	
+	local isfunc = editor.spec.isfncall
+	local iscomment = editor.spec.iscomment
+	local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
+	local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
+
+	for line=lines,linee do
+		local tx = editor:GetLine(line)
+		local ls = editor:PositionFromLine(line)
+		
+		local from = 1
+		local off = -1
+		
+
+		while from do
+			tx = from==1 and tx or string.sub(tx,from)
+			
+			local f,t,w = isfunc(tx)
+			
+			if (f) then
+				local p = ls+f+off
+				local s = bit.band(editor:GetStyleAt(p),31)
+				if (not iscomment[s]) then
+					
+					editor:StartStyling(p,INDICS_MASK)
+					editor:SetStyling(t-f,INDIC0_MASK + 1)
+				else
+					editor:StartStyling(p,INDICS_MASK)
+					editor:SetStyling(t-f,0)
+				end
+				
+				off = off + t
+			end
+			from = t and (t+1)
+		end
+	end
+	editor:StartStyling(es,31)
 end
 
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)

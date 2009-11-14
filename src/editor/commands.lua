@@ -70,6 +70,7 @@ function LoadFile(filePath, editor, file_must_exist)
 	editor:Colourise(0, -1)
 	
 	AddDynamicWords(editor)
+	IndicateFunctions(editor)
 	
 	SettingsAppendFileToHistory(filePath)
 	
@@ -177,6 +178,7 @@ function SaveFileAs(editor)
 
 		if SaveFile(editor, filePath) then
 			SetupKeywords(editor, GetFileExt(filePath))
+			IndicateFunctions(editor)
 			saved = true
 		end
 	end

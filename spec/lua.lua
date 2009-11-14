@@ -6,7 +6,10 @@ return {
 	apitype = "lua",
 	linecomment = "--",
 	sep = "[%.:]",
-	
+	isfncall = function(str)
+					return string.find(str,"([A-Za-z0-9_]+)%s*%(")
+				end,
+		
 	lexerstyleconvert = {
 		text		= {wxstc.wxSTC_LUA_IDENTIFIER,},
 	
@@ -34,13 +37,13 @@ return {
 	},
 	
 	keywords = {
-		[[and break do else elseif end false for function if
+		[[and break do else elseif end false for function if ipairs pairs
 			in local nil not or repeat return then true until while]],
 
 		[[_VERSION assert collectgarbage dofile error gcinfo loadfile loadstring
 			print rawget rawset require tonumber tostring type unpack]],
 
-		[[_G getfenv getmetatable ipairs loadlib next pairs pcall
+		[[_G getfenv getmetatable loadlib next pcall
 			rawequal setfenv setmetatable xpcall
 			string table math coroutine io os debug
 			load module select]],

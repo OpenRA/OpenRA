@@ -93,6 +93,7 @@ local function addConfig(filename,showerror,isstring)
 		end
 	else
 		ide.config.os = os
+		ide.config.wxstc = wxstc
 		setfenv(cfgfn,ide.config)
 		xpcall(function()cfgfn(assert(_G))end,
 			function(err)
@@ -154,6 +155,19 @@ local function loadSpecs()
 	
 	for n,spec in pairs(ide.specs) do
 		spec.sep = spec.sep or "\1"
+		spec.iscomment = {}
+		if (spec.lexerstyleconvert) then
+			if (spec.lexerstyleconvert.comment) then
+				for i,s in pairs(spec.lexerstyleconvert.comment) do
+					spec.iscomment[s] = true
+				end
+			end
+			if (spec.lexerstyleconvert.keywords0) then
+				for i,s in pairs(spec.lexerstyleconvert.keywords0) do
+					spec.iscomment[s] = true
+				end
+			end
+		end
 	end
 end
 loadSpecs()

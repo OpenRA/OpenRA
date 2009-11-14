@@ -47,6 +47,8 @@ function StylesGetDefault()
 		fold			= nil,
 		whitespace 		= nil,
 		
+		-- indicators
+		fncall			= {fg = {175,175,255}, st= wxstc.wxSTC_INDIC_BOX},
 	}
 end
 
@@ -180,6 +182,11 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 				applystyle(style,outid)
 			end
 		end
+	end
+	
+	do
+		editor:IndicatorSetStyle(0,styles.fncall and styles.fncall.st or wxstc.wxSTC_INDIC_BOX)
+		editor:IndicatorSetForeground(0,wx.wxColour(unpack(styles.fncall and styles.fncall.fg or {128,128,128})))
 	end
 
 	editor:Colourise(0, -1)

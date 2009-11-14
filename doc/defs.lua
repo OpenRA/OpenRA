@@ -59,6 +59,11 @@ style = {
 	fold			= nil,
 	whitespace 		= nil,
 	
+	-- special, functioncall indicator
+	fncall = {
+		fg = {r,g,b},
+		st = wxstc.wxSTC_INDIC_BOX,
+		},
 }
 
 -- config definition
@@ -87,6 +92,10 @@ config = {
 			-- input/output filtering of strings
 			-- current filters "GermanUtf8Ascii"
 		iofilter = nil,
+		
+			-- use indicator to show function calls
+			-- if spec allows
+		showfncall = true,
 	},
 	
 	
@@ -170,6 +179,11 @@ spec = {
 		-- e.g in lua both . and : are allowed
 		-- default is "\1" which should yield no matches
 		-- and therefore disable class.func type autocompletion
+		
+	isfncall = function(str) return from,to end
+		-- function that detects positions for a substring that
+		-- stands for a functioncall, ie " call(..)" -> 2,5
+		
 		
 	apitype = "api",			
 		-- which sub directory of "api" is relevant

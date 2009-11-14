@@ -4,6 +4,7 @@ path.luxinia = luxpath and luxpath.."/" or "../../engine/"
 
 editor.fontname = "Courier New"
 editor.caretline = true
+editor.showfncall = true
 
 interpreter = "Luxinia"
 
@@ -50,5 +51,5 @@ styles = {
 	fold			= nil,
 	whitespace 		= nil,
 	
-
+	fncall			= {fg = {175,175,255}, st= wxstc.wxSTC_INDIC_BOX},
 }

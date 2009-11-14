@@ -35,4 +35,5 @@ styles = {
 	fold			= nil,
 	whitespace 		= {fg = {224,224,224},bg = {24,24,24},},
 	
+	fncall			= {fg = {140,140,0}, st = wxstc.wxSTC_INDIC_BOX},
 }
