@@ -9,28 +9,27 @@ namespace OpenRa.Game
 	class PlaceBuilding : IOrderGenerator
 	{
 		public readonly Player Owner;
-		public readonly string Name;
+		public readonly UnitInfo.BuildingInfo Building;
 
 		public PlaceBuilding(Player owner, string name)
 		{
 			Owner = owner;
-			Name = name;
+			Building = (UnitInfo.BuildingInfo)Rules.UnitInfo[ name ];
 		}
 
 		public IEnumerable<Order> Order(int2 xy, bool lmb)
 		{
 			if( lmb )
 			{
-				if (!Game.CanPlaceBuilding(Name, xy, true))
+				if( !Game.CanPlaceBuilding( Building, xy, true ) )
 					yield break;
 
-				var bi = (UnitInfo.BuildingInfo)Rules.UnitInfo[Name];
-				var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
-				if( !Footprint.Tiles( bi, xy ).Any(
+				var maxDistance = Building.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+				if( !Footprint.Tiles( Building, xy ).Any(
 					t => Game.GetDistanceToBase( t, Owner ) < maxDistance ) )
 					yield break;
 
-				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Name );
+				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Building.Name );
 			}
 			else // rmb
 			{
@@ -41,8 +40,13 @@ namespace OpenRa.Game
 		public void Tick()
 		{
 			var producing = Owner.Producing( "Building" );
-			if( producing == null || producing.Item != Name || producing.RemainingTime != 0 )
+			if( producing == null || producing.Item != Building.Name || producing.RemainingTime != 0 )
 				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
+		}
+
+		public void Render()
+		{
+			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building );
 		}
 	}
 }

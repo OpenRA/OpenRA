@@ -5,7 +5,6 @@ using IjwFramework.Types;
 using System.Collections.Generic;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
-using Ijw.DirectX;
 
 namespace OpenRa.Game.Graphics
 {
@@ -13,31 +12,26 @@ namespace OpenRa.Game.Graphics
 	{
 		public readonly TerrainRenderer terrainRenderer;
 		public readonly SpriteRenderer spriteRenderer;
-        public readonly LineRenderer lineRenderer;
+		public readonly LineRenderer lineRenderer;
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
 		readonly Renderer renderer;
-		readonly Texture specialbin;
 
 		public static bool ShowUnitPaths = false;
 
 		public WorldRenderer(Renderer renderer)
 		{
-			terrainRenderer = new TerrainRenderer( renderer, Game.map );
+			terrainRenderer = new TerrainRenderer(renderer, Game.map);
 
 			// TODO: this is layout policy. it belongs at a higher level than this.
 			region = Region.Create(Game.viewport, DockStyle.Left,
-				Game.viewport.Width - /*128*/ 0, Draw, 
-                Game.controller.HandleMouseInput);		
-
+				Game.viewport.Width, Draw, Game.controller.HandleMouseInput);
 			Game.viewport.AddRegion(region);
 
 			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);
-            lineRenderer = new LineRenderer(renderer);
+			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
-
-			specialbin = renderer.LoadTexture("specialbin.png");
 		}
 
 		void DrawSpriteList(RectangleF rect,
@@ -47,11 +41,9 @@ namespace OpenRa.Game.Graphics
 			{
 				var loc = image.b;
 
-				if (loc.X > rect.Right || loc.X < rect.Left
-					- image.a.bounds.Width)
+				if (loc.X > rect.Right || loc.X < rect.Left - image.a.bounds.Width)
 					continue;
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top
-					- image.a.bounds.Height)
+				if (loc.Y > rect.Bottom || loc.Y < rect.Top - image.a.bounds.Height)
 					continue;
 
 				spriteRenderer.DrawSprite(image.a, loc, image.c);
@@ -71,7 +63,7 @@ namespace OpenRa.Game.Graphics
 			foreach (var a in Game.world.Actors
 				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
 				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
-				DrawSpriteList(rect, a.RenderRoof(a.self));	
+				DrawSpriteList(rect, a.RenderRoof(a.self));
 
 			foreach (IEffect e in Game.world.Effects)
 				DrawSpriteList(rect, e.Render());
@@ -96,33 +88,31 @@ namespace OpenRa.Game.Graphics
 					DrawSelectionBox(u, Color.Yellow, false);
 			}
 
-			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
-			if (uog != null)
-				foreach (var a in uog.selection)
-					DrawSelectionBox(a, Color.White, true);
+			if (Game.controller.orderGenerator != null)
+				Game.controller.orderGenerator.Render();
 
 			lineRenderer.Flush();
 		}
 
-        void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
-        {
-            var center = selectedUnit.CenterLocation;
-            var size = selectedUnit.SelectedSize;
+		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
+		{
+			var center = selectedUnit.CenterLocation;
+			var size = selectedUnit.SelectedSize;
 
-            var xy = center - 0.5f * size;
-            var XY = center + 0.5f * size;
-            var Xy = new float2(XY.X, xy.Y);
-            var xY = new float2(xy.X, XY.Y);
+			var xy = center - 0.5f * size;
+			var XY = center + 0.5f * size;
+			var Xy = new float2(XY.X, xy.Y);
+			var xY = new float2(xy.X, XY.Y);
 
-            lineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
-            lineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
-            lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
-            lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
+			lineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
+			lineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
+			lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
+			lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
 
-            lineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
-            lineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
-            lineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
-            lineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
+			lineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
+			lineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
+			lineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
+			lineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
 
 			if (drawHealthBar)
 			{
@@ -143,11 +133,11 @@ namespace OpenRa.Game.Graphics
 
 				var z = float2.Lerp(xy, Xy, healthAmount);
 
-				lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0,-4), c, c);
+				lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
 				lineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
-				lineRenderer.DrawLine(xy + new float2(0, -3), 
-					z + new float2(0, -3), 
+				lineRenderer.DrawLine(xy + new float2(0, -3),
+					z + new float2(0, -3),
 					healthColor, healthColor);
 
 				lineRenderer.DrawLine(xy + new float2(0, -2),
@@ -177,6 +167,6 @@ namespace OpenRa.Game.Graphics
 					}
 				}
 			}
-        }
+		}
 	}
 }

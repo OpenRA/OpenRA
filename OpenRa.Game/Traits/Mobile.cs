@@ -42,17 +42,20 @@ namespace OpenRa.Game.Traits
 			act.NextActivity = nextActivity;
 		}
 
-		public void InternalSetActivity( IActivity activity )
-		{
-			currentActivity = activity;
-		}
-
 		public void Tick(Actor self)
 		{
-			if( currentActivity != null )
-				currentActivity.Tick( self, this );
-			else
+			if( currentActivity == null )
+			{
 				fromCell = toCell;
+				return;
+			}
+
+			var nextActivity = currentActivity;
+			while( nextActivity != null )
+			{
+				currentActivity = nextActivity;
+				nextActivity = nextActivity.Tick( self, this );
+			}
 		}
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
@@ -81,10 +84,19 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			var vi = self.unitInfo as UnitInfo.VehicleInfo;
-			if (vi == null) return UnitMovementType.Foot;
-			if (vi.WaterBound) return UnitMovementType.Float;
-			return vi.Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+			switch( Rules.UnitCategory[ self.unitInfo.Name ] )
+			{
+			case "Infantry":
+				return UnitMovementType.Foot;
+			case "Vehicle":
+				return ( self.unitInfo as UnitInfo.VehicleInfo ).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+			case "Ship":
+				return UnitMovementType.Float;
+			case "Plane":
+				return UnitMovementType.Track; // FIXME: remove this when planes actually fly.
+			default:
+				throw new InvalidOperationException( "GetMovementType on unit that shouldn't be aable to move." );
+			}
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

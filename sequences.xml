@@ -259,8 +259,9 @@
   <!-- v2 rocket launcher -->
   <unit name="v2rl">
     <sequence name="idle" start="0" length="32" />
-    <sequence name="reloading" start="32" length="32" />
-    <sequence name="aiming" start="64" length="16" />
+    <sequence name="empty-idle" start="32" length="32" />
+    <sequence name="aim" start="64" length="8" />
+    <sequence name="empty-aim" start="72" length="8" />
   </unit>
   <!-- artillery -->
   <unit name="arty">

@@ -18,13 +18,13 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			SanityCheck();
+			//SanityCheck();
 
-			var units = Game.world.Actors
-				.Select( a => a.traits.GetOrDefault<Traits.Mobile>() ).Where( m => m != null );
+			//var units = Game.world.Actors
+			//    .Select( a => a.traits.GetOrDefault<Traits.Mobile>() ).Where( m => m != null );
 
-			foreach (var u in units)
-				Update(u);
+			//foreach (var u in units)
+			//    Update(u);
 
 			SanityCheck();
 		}

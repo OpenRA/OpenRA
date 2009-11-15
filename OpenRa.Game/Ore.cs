@@ -81,22 +81,24 @@ namespace OpenRa.Game
 
 		static byte GetOreDensity(this Map map, int i, int j)
 		{
-			// perf fix. it's ugly, i know :(
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
 					if (map.ContainsOre(i + u, j + v))
 						++sum;
-			sum = sum * 3 / 2;
-			if (sum > 11)
-				return 11;
+			sum = (sum * 4 + 2) / 3;
 			return (byte)sum;
 		}
 
 		static byte GetGemDensity(this Map map, int i, int j)
 		{
-			return (byte)Math.Min(2, (AdjacentTiles(new int2(i, j)).Sum(
-							p => map.ContainsGem(p.X, p.Y) ? 1 : 0) / 3));
+			int sum = 0;
+			for (var u = -1; u < 2; u++)
+				for (var v = -1; v < 2; v++)
+					if (map.ContainsGem(i + u, j + v))
+						++sum;
+			sum = (sum+2) / 3;		/* 3 gem units/tile is full. */
+			return (byte)sum;
 		}
 
 		public static bool HasOverlay(this Map map, int i, int j)

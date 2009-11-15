@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace OpenRa.Game
 {
@@ -27,6 +27,12 @@ namespace OpenRa.Game
 		public void Tick()
 		{
 			selection.RemoveAll(a => a.IsDead);
+		}
+
+		public void Render()
+		{
+			foreach( var a in selection )
+				Game.worldRenderer.DrawSelectionBox( a, Color.White, true );
 		}
 	}
 }

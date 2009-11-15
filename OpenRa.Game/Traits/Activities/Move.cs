@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
+using System.Diagnostics;
 
 namespace OpenRa.Game.Traits.Activities
 {
@@ -48,43 +49,42 @@ namespace OpenRa.Game.Traits.Activities
 			return (u == null || u == self);
 		}
 
-		public void Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
 			if( move != null )
 			{
 				move.TickMove( self, mobile, this );
-				return;
+				return null;
 			}
 
 			if( destination == self.Location )
-			{
-				mobile.InternalSetActivity( NextActivity );
-				return;
-			}
+				return NextActivity;
 
-			if( path == null ) path = getPath( self, mobile ).TakeWhile( a => a != self.Location ).ToList();
+			if( path == null )
+			{
+				path = getPath( self, mobile ).TakeWhile( a => a != self.Location ).ToList();
+				SanityCheckPath( mobile );
+			}
 
 			if( path.Count == 0 )
 			{
 				destination = mobile.toCell;
-				return;
+				return null;
 			}
 
 			destination = path[ 0 ];
 
 			var nextCell = PopPath( self, mobile );
 			if( nextCell == null )
-				return;
+				return null;
 
 			int2 dir = nextCell.Value - mobile.fromCell;
 			var firstFacing = Util.GetFacing( dir, mobile.facing );
 			if( firstFacing != mobile.facing )
 			{
-				var t = new Turn( firstFacing ) { NextActivity = this };
-				mobile.InternalSetActivity( t );
 				path.Add( nextCell.Value );
 
-				t.Tick( self, mobile );
+				return new Turn( firstFacing ) { NextActivity = this };
 			}
 			else
 			{
@@ -99,7 +99,19 @@ namespace OpenRa.Game.Traits.Activities
 				Game.UnitInfluence.Update( mobile );
 
 				move.TickMove( self, mobile, this );
+
+				return null;
 			}
+		}
+
+		[Conditional( "SANITY_CHECKS")]
+		void SanityCheckPath( Mobile mobile )
+		{
+			if( path.Count == 0 )
+				return;
+			var d = path[path.Count-1] - mobile.toCell;
+			if( d.LengthSquared > 2 )
+				throw new InvalidOperationException( "(Move) Sanity check failed" );
 		}
 
 		int2? PopPath( Actor self, Mobile mobile )

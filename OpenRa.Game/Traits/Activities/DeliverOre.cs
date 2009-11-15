@@ -12,6 +12,8 @@ namespace OpenRa.Game.Traits.Activities
 		bool isDone;
 		Actor refinery;
 
+		public DeliverOre() { }
+
 		public DeliverOre( Actor refinery )
 		{
 			this.refinery = refinery;
@@ -19,45 +21,59 @@ namespace OpenRa.Game.Traits.Activities
 
 		static readonly int2 refineryDeliverOffset = new int2( 1, 2 );
 
-		public void Tick(Actor self, Mobile mobile)
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
-			if( self.Location != refinery.Location + refineryDeliverOffset )
+			if( isDone )
 			{
-				var move = new Move( refinery.Location + refineryDeliverOffset, 0 );
-				mobile.InternalSetActivity( move );
-				mobile.QueueActivity( this );
-				move.Tick( self, mobile );
-				return;
+				self.traits.Get<Harvester>().Deliver( self );
+				return NextActivity ?? new Harvest();
+			}
+			else if( NextActivity != null )
+				return NextActivity;
+
+			if( refinery != null && refinery.IsDead )
+				refinery = null;
+
+			if( refinery == null || self.Location != refinery.Location + refineryDeliverOffset )
+			{
+				var search = new PathSearch
+				{
+					heuristic = PathSearch.DefaultEstimator( self.Location ),
+					umt = mobile.GetMovementType(),
+					checkForBlocked = false,
+				};
+				var refineries = Game.world.Actors.Where( x => x.unitInfo != null && x.unitInfo.Name == "proc" ).ToList();
+				if( refinery != null )
+					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
+				else
+					foreach( var r in refineries )
+						search.AddInitialCell( r.Location + refineryDeliverOffset );
+
+				var path = Game.PathFinder.FindPath( search );
+				path.Reverse();
+				if( path.Count != 0 )
+				{
+					refinery = refineries.FirstOrDefault( x => x.Location + refineryDeliverOffset == path[ 0 ] );
+					return new Move( () => path ) { NextActivity = this };
+				}
+				else
+					// no refineries reachable?
+					return null;
 			}
 			else if( mobile.facing != 64 )
-			{
-				var turn = new Turn( 64 );
-				mobile.InternalSetActivity( turn );
-				mobile.QueueActivity( this );
-				turn.Tick( self, mobile );
-				return;
-			}
-			else if (isDone)
-			{
-				var harv = self.traits.Get<Harvester>();
-
-				harv.Deliver(self);
-
-				if( NextActivity == null )
-					NextActivity = new Harvest();
-				mobile.InternalSetActivity(NextActivity);
-				return;
-			}
+				return new Turn( 64 ) { NextActivity = this };
 
 			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
-			if (renderUnit.anim.CurrentSequence.Name != "empty")
-				renderUnit.PlayCustomAnimation(self, "empty", 
-					() => isDone = true);
+			if( renderUnit.anim.CurrentSequence.Name != "empty" )
+				renderUnit.PlayCustomAnimation( self, "empty",
+					() => isDone = true );
+
+			return null;
 		}
 
 		public void Cancel(Actor self, Mobile mobile)
 		{
-			mobile.InternalSetActivity(null);
+			// TODO: allow canceling of deliver orders?
 		}
 	}
 }

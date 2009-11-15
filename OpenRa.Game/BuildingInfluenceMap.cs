@@ -25,14 +25,14 @@ namespace OpenRa.Game
 					influence[i, j] = NoClaim;
 
 			Game.world.ActorAdded +=
-				a => { if (a.traits.Contains<Traits.Building>()) AddInfluence(a); };
+				a => { if (a.traits.Contains<Traits.Building>()) AddInfluence(a, a.traits.Get<Traits.Building>()); };
 			Game.world.ActorRemoved +=
-				a => { if (a.traits.Contains<Traits.Building>()) RemoveInfluence(a); };
+				a => { if (a.traits.Contains<Traits.Building>()) RemoveInfluence(a, a.traits.Get<Traits.Building>()); };
 		}
 
-		void AddInfluence(Actor a)
+		void AddInfluence(Actor a, Traits.Building building)
 		{
-			var tiles = Footprint.Tiles(a).ToArray();
+			var tiles = Footprint.Tiles(a, building).ToArray();
 			var min = int2.Max(new int2(0, 0), 
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128), 
@@ -42,7 +42,7 @@ namespace OpenRa.Game
 
 			var initialTileCount = 0;
 
-			foreach (var u in Footprint.UnpathableTiles(a.unitInfo, a.Location))
+			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
 				if (IsValid(u))
 					blocked[u.X, u.Y] = true;
 
@@ -53,7 +53,7 @@ namespace OpenRa.Game
 					++initialTileCount;
 				}
 
-			if (!((UnitInfo.BuildingInfo)a.unitInfo).BaseNormal)
+			if (!building.unitInfo.BaseNormal)
 			{
 				while (!pq.Empty)
 				{
@@ -101,15 +101,15 @@ namespace OpenRa.Game
 			Log.Write("Finished recalculating region. {0} cells updated.", updatedCells);
 		}
 
-		void RemoveInfluence(Actor a)
+		void RemoveInfluence(Actor a, Traits.Building building)
 		{
-			var tiles = Footprint.Tiles(a).ToArray();
+			var tiles = Footprint.Tiles(a, building).ToArray();
 			var min = int2.Max(new int2(0, 0),
 				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
 			var max = int2.Min(new int2(128, 128),
 				tiles.Aggregate(int2.Max) + new int2(maxDistance, maxDistance));
 
-			foreach (var u in Footprint.UnpathableTiles(a.unitInfo, a.Location))
+			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
 				if (IsValid(u))
 					blocked[u.X, u.Y] = false;
 			
@@ -130,8 +130,12 @@ namespace OpenRa.Game
 
 			Log.Write("Finished collecting candidates for evacuated region = {0}", actors.Count);
 
-			foreach (var b in actors)
-				AddInfluence(b);	/* we can actually safely constrain this a bit more... */
+			foreach( var b in actors )
+			{
+				var bb = a.traits.GetOrDefault<Traits.Building>();
+				if( bb != null )
+					AddInfluence( b, bb );
+			}
 		}
 
 		bool IsValid(int2 t)

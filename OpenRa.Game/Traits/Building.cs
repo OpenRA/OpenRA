@@ -8,8 +8,11 @@ namespace OpenRa.Game.Traits
 {
 	class Building : ITick, INotifyBuildComplete
 	{
+		public readonly UnitInfo.BuildingInfo unitInfo;
+
 		public Building(Actor self)
 		{
+			unitInfo = (UnitInfo.BuildingInfo)self.unitInfo;
 		}
 
 		bool first = true;
@@ -23,10 +26,7 @@ namespace OpenRa.Game.Traits
 
 		public void BuildingComplete(Actor self)
 		{
-			UnitInfo.BuildingInfo bi = self.unitInfo as UnitInfo.BuildingInfo;
-			if (bi == null) return;
-
-			self.Owner.ChangePower(bi.Power);
+			self.Owner.ChangePower(unitInfo.Power);
 		}
 	}
 }

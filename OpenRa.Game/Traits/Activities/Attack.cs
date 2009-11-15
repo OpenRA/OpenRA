@@ -19,20 +19,13 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity NextActivity { get; set; }
 
-		public void Tick(Actor self, Mobile mobile)
+		public IActivity Tick( Actor self, Mobile mobile )
 		{
-			if (Target.IsDead)
-			{
-				mobile.InternalSetActivity(NextActivity);
-				return;
-			}
+			if (Target == null || Target.IsDead)
+				return NextActivity;
 
 			if ((Target.Location - self.Location).LengthSquared >= Range * Range)
-			{
-				mobile.InternalSetActivity(new Move(Target, Range));
-				mobile.QueueActivity(this);
-				return;
-			}
+				return new Move( Target, Range ) { NextActivity = this };
 
 			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
 			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
@@ -40,19 +33,18 @@ namespace OpenRa.Game.Traits.Activities
 			if (Util.QuantizeFacing(mobile.facing, renderUnit.anim.CurrentSequence.Length) 
 				!= Util.QuantizeFacing(desiredFacing, renderUnit.anim.CurrentSequence.Length))
 			{
-				mobile.InternalSetActivity(new Turn(desiredFacing));
-				mobile.QueueActivity(this);
-				return;
+				return new Turn( desiredFacing ) { NextActivity = this };
 			}
 
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			attack.target = Target;
 			attack.DoAttack(self);
+			return null;
 		}
 
 		public void Cancel(Actor self, Mobile mobile)
 		{
-			mobile.InternalSetActivity(null);
+			Target = null;
 		}
 	}
 }
