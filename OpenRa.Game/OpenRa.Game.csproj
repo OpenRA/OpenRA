@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chrome.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="OrderManager.cs" />

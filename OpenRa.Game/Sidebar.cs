@@ -37,7 +37,7 @@ namespace OpenRa.Game
 		{
 			this.player = player;
 			this.renderer = renderer;
-			region = GRegion.Create(Game.viewport, DockStyle.Right, 128, Paint, MouseHandler);
+			region = GRegion.Create(Game.viewport, DockStyle.Right, /*128*/0, Paint, MouseHandler);
 			region.UseScissor = false;
 			region.AlwaysWantMovement = true;
 			Game.viewport.AddRegion( region );

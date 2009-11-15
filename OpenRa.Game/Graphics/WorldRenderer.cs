@@ -5,6 +5,7 @@ using IjwFramework.Types;
 using System.Collections.Generic;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
+using Ijw.DirectX;
 
 namespace OpenRa.Game.Graphics
 {
@@ -16,6 +17,7 @@ namespace OpenRa.Game.Graphics
 		public readonly Region region;
 		public readonly UiOverlay uiOverlay;
 		readonly Renderer renderer;
+		readonly Texture specialbin;
 
 		public static bool ShowUnitPaths = false;
 
@@ -25,7 +27,7 @@ namespace OpenRa.Game.Graphics
 
 			// TODO: this is layout policy. it belongs at a higher level than this.
 			region = Region.Create(Game.viewport, DockStyle.Left,
-				Game.viewport.Width - 128, Draw, 
+				Game.viewport.Width - /*128*/ 0, Draw, 
                 Game.controller.HandleMouseInput);		
 
 			Game.viewport.AddRegion(region);
@@ -34,6 +36,8 @@ namespace OpenRa.Game.Graphics
 			spriteRenderer = new SpriteRenderer(renderer, true);
             lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
+
+			specialbin = renderer.LoadTexture("specialbin.png");
 		}
 
 		void DrawSpriteList(RectangleF rect,
@@ -67,7 +71,7 @@ namespace OpenRa.Game.Graphics
 			foreach (var a in Game.world.Actors
 				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
 				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
-				DrawSpriteList(rect, a.RenderRoof(a.self));		/* RUDE HACK */
+				DrawSpriteList(rect, a.RenderRoof(a.self));	
 
 			foreach (IEffect e in Game.world.Effects)
 				DrawSpriteList(rect, e.Render());
@@ -98,17 +102,6 @@ namespace OpenRa.Game.Graphics
 					DrawSelectionBox(a, Color.White, true);
 
 			lineRenderer.Flush();
-
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}",				
-				Game.RenderFrame,
-				Game.orderManager.FrameNumber,
-				PerfHistory.items["render"].LastValue,
-				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.Cash,
-				Game.LocalPlayer.GetTotalPower()
-				), new int2(5, 5), Color.White);
-
-			PerfHistory.Render(renderer, lineRenderer);
 		}
 
         void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)

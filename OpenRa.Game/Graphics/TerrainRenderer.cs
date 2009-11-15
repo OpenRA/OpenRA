@@ -76,7 +76,7 @@ namespace OpenRa.Game.Graphics
                 renderer.DrawBatch(vertexBuffer, indexBuffer,
                     new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
                     new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
-                    terrainSheet.Texture, PrimitiveType.TriangleList));
+                    terrainSheet.Texture, PrimitiveType.TriangleList, renderer.SpriteShader));
 
 			overlayRenderer.Draw();
 		}

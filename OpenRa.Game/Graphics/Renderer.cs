@@ -10,8 +10,9 @@ namespace OpenRa.Game.Graphics
 	{
 		readonly GraphicsDevice device;
 		Texture[] palettes;
-        public Shader SpriteShader { get; private set; }    /* note: shared shader params */
-        public Shader LineShader { get; private set; }
+		public Shader SpriteShader { get; private set; }    /* note: shared shader params */
+		public Shader LineShader { get; private set; }
+		public Shader RgbaSpriteShader { get; private set; }
 
 		readonly SpriteHelper sh;
 		readonly FontHelper fhDebug;
@@ -29,31 +30,34 @@ namespace OpenRa.Game.Graphics
 		public Renderer(Control host, Size resolution, bool windowed)
 		{
 			host.ClientSize = resolution;
-			device = GraphicsDevice.Create(host, 
+			device = GraphicsDevice.Create(host,
 				resolution.Width, resolution.Height, windowed, false);
 
 			SpriteShader = new Shader(device, FileSystem.Open("sprite.fx"));
 			SpriteShader.Quality = ShaderQuality.Low;
-            LineShader = new Shader(device, FileSystem.Open("line.fx"));
-            LineShader.Quality = ShaderQuality.High;
+			LineShader = new Shader(device, FileSystem.Open("line.fx"));
+			LineShader.Quality = ShaderQuality.High;
+			RgbaSpriteShader = new Shader(device, FileSystem.Open("rgbasprite.fx"));
+			RgbaSpriteShader.Quality = ShaderQuality.High;
 
-			sh = new SpriteHelper(device );
-			fhDebug = new FontHelper(device, "Tahoma", 10, false );
+			sh = new SpriteHelper(device);
+			fhDebug = new FontHelper(device, "Tahoma", 10, false);
 		}
 
 		public GraphicsDevice Device { get { return device; } }
 
 		public static float waterFrame = 0.0f;
 
-		public void BeginFrame( float2 r1, float2 r2, float2 scroll )
+		public void BeginFrame(float2 r1, float2 r2, float2 scroll)
 		{
 			device.Begin();
+			device.Clear(0, Surfaces.Color);
 
-			SpriteShader.SetValue("Palette", palettes[ (int)(waterFrame * palettes.Length) % palettes.Length ]);
+			SpriteShader.SetValue("Palette", palettes[(int)(waterFrame * palettes.Length) % palettes.Length]);
 			SpriteShader.SetValue("Scroll", scroll);
 			SpriteShader.SetValue("r1", r1);
 			SpriteShader.SetValue("r2", r2);
-            SpriteShader.Commit();
+			SpriteShader.Commit();
 		}
 
 		public void EndFrame()
@@ -63,7 +67,21 @@ namespace OpenRa.Game.Graphics
 		}
 
 		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
-			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type)
+			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type, Shader shader)
+			where T : struct
+		{
+			shader.SetValue("DiffuseTexture", texture);
+			shader.Commit();
+
+			vertices.Bind(0);
+			indices.Bind();
+
+			device.DrawIndexedPrimitives(type,
+				vertexRange, indexRange);
+		}
+
+		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
+			int vertexPool, int numPrimitives, Texture texture, PrimitiveType type)
 			where T : struct
 		{
 			SpriteShader.SetValue("DiffuseTexture", texture);
@@ -73,22 +91,8 @@ namespace OpenRa.Game.Graphics
 			indices.Bind();
 
 			device.DrawIndexedPrimitives(type,
-				vertexRange, indexRange);
+				vertexPool, numPrimitives);
 		}
-
-        public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
-            int vertexPool, int numPrimitives, Texture texture, PrimitiveType type)
-            where T : struct
-        {
-            SpriteShader.SetValue("DiffuseTexture", texture);
-            SpriteShader.Commit();
-
-            vertices.Bind(0);
-            indices.Bind();
-
-            device.DrawIndexedPrimitives(type,
-                vertexPool, numPrimitives);
-        }
 
 		public void DrawText(string text, int2 pos, Color c)
 		{
@@ -100,6 +104,20 @@ namespace OpenRa.Game.Graphics
 		public int2 MeasureText(string text)
 		{
 			return new int2(fhDebug.MeasureText(sh, text));
+		}
+
+		public void DrawTexture(Texture t, int2 pos)
+		{
+			sh.Begin();
+			sh.SetTransform(1,1, pos.X, pos.Y);
+			sh.Draw(t, 0, 0, 256,256, -1);
+			sh.End();
+		}
+
+		public Texture LoadTexture(string filename)
+		{
+			using (var stream = FileSystem.Open(filename))
+				return Texture.Create(stream, device);
 		}
 	}
 }

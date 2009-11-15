@@ -24,18 +24,19 @@ namespace OpenRa.Game.Graphics
 
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = ( scrollPosition + delta ).Constrain( scrollLowBounds, scrollHighBounds );
+			scrollPosition = scrollPosition + delta;// (scrollPosition + delta).Constrain(scrollLowBounds, scrollHighBounds);
 		}
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
 			this.screenSize = screenSize;
-			this.scrollLowBounds = Game.CellSize * mapStart;
-			this.scrollHighBounds = float2.Max( scrollLowBounds, Game.CellSize * mapEnd - ( screenSize - new float2( 128, 0 ) ) );
+//			this.scrollLowBounds = Game.CellSize * mapStart;
+//			this.scrollHighBounds = float2.Max( scrollLowBounds, Game.CellSize * mapEnd - ( screenSize /*- new float2( 128, 0 )*/ ) );
 			this.renderer = renderer;
 			cursorRenderer = new SpriteRenderer(renderer, true);
 
-			this.scrollPosition = scrollLowBounds;
+			this.scrollPosition = Game.CellSize* mapStart;
+//			this.scrollPosition = scrollLowBounds;
 		}
 
 		List<Region> regions = new List<Region>();
@@ -51,6 +52,8 @@ namespace OpenRa.Game.Graphics
 
 			foreach (Region region in regions)
 				region.Draw(renderer);
+
+			Game.chrome.Draw();
 
 			var c = (Game.worldRenderer.region.Contains(mousePos)) ? cursor : Cursor.Default;
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);

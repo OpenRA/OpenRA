@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.IO;
 using Ijw.DirectX;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
 {
@@ -16,6 +17,12 @@ namespace OpenRa.Game.Graphics
 		{
 			this.renderer = renderer;
 			this.bitmap = new Bitmap(size.Width, size.Height);
+		}
+
+		public Sheet(Renderer renderer, string filename)
+		{
+			this.renderer = renderer;
+			this.bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 		}
 
 		void Resolve()

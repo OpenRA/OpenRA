@@ -12,6 +12,7 @@ namespace OpenRa.Game.Graphics
 		FvfVertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;
 		Renderer renderer;
+		Shader shader;
 
 		const int spritesPerBatch = 1024;
 
@@ -22,9 +23,10 @@ namespace OpenRa.Game.Graphics
 		ShaderQuality quality;
         int nv = 0, ni = 0;
 
-		public SpriteRenderer(Renderer renderer, bool allowAlpha)
+		public SpriteRenderer(Renderer renderer, bool allowAlpha, Shader shader)
 		{
 			this.renderer = renderer;
+			this.shader = shader;
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Length, Vertex.Format);
 			indexBuffer = new IndexBuffer(renderer.Device, indices.Length);
@@ -32,19 +34,23 @@ namespace OpenRa.Game.Graphics
 			quality = allowAlpha ? ShaderQuality.High : ShaderQuality.Low;
 		}
 
+		public SpriteRenderer(Renderer renderer, bool allowAlpha)
+			: this(renderer, allowAlpha, renderer.SpriteShader) { }
+
 		public void Flush()
 		{
 			if (sprites > 0)
 			{
-                renderer.SpriteShader.Quality = quality;
-                renderer.SpriteShader.Render(() =>
+                shader.Quality = quality;
+                shader.Render(() =>
                  {
                      vertexBuffer.SetData(vertices);
                      indexBuffer.SetData(indices);
                      renderer.DrawBatch(vertexBuffer, indexBuffer,
                          new Range<int>(0, nv),
                          new Range<int>(0, ni),
-                         currentSheet.Texture, PrimitiveType.TriangleList);
+                         currentSheet.Texture, PrimitiveType.TriangleList,
+						 shader);
                  });
 
                 nv = 0; ni = 0;

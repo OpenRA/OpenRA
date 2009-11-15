@@ -24,6 +24,7 @@ namespace OpenRa.Game
 		public static PathFinder PathFinder;
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
+		public static Chrome chrome;
 
 		public static OrderManager orderManager;
 
@@ -86,6 +87,8 @@ namespace OpenRa.Game
 
 			skipMakeAnims = false;
 			PerfHistory.items["render"].hasNormalTick = false;
+
+			chrome = new Chrome(renderer);
 		}
 
 		static void LoadMapBuildings( IniFile mapfile )
@@ -174,7 +177,6 @@ namespace OpenRa.Game
 
 			using (new PerfSample("render"))
 			{
-				
 				++RenderFrame;
 				viewport.cursor = controller.ChooseCursor();
 				viewport.DrawRegions();
