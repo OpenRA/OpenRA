@@ -164,22 +164,21 @@ namespace OpenRa.Game
 					throw new InvalidOperationException( "Wrong frame number at start of stream" );
 
 				var currentFrame = 0;
-				var first = reader.ReadUInt32();
+				var ret = new List<Order>();
 				while( true )
 				{
-					var ret = new List<Order>();
-					while( true )
+					var first = reader.ReadUInt32();
+					if( first == currentFrame + 1 )
 					{
-						if( first == currentFrame + 1 )
-						{
-							lock( orders )
-								orders[ currentFrame ] = ret;
-							ret = new List<Order>();
-							++currentFrame;
-							break;
-						}
-						ret.Add( Order.Deserialize( reader, first ) );
+						lock( orders )
+							orders[ currentFrame ] = ret;
+						ret = new List<Order>();
+						++currentFrame;
 					}
+					else if( first < 0x80000000 )
+						throw new InvalidOperationException( "Attempted time-travel in network thread" );
+					else
+						ret.Add( Order.Deserialize( reader, first ) );
 				}
 			} ) { IsBackground = true }.Start();
 			
