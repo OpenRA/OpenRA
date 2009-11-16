@@ -54,6 +54,11 @@ namespace OpenRa.Game.GameRules
 					yield return unit.Name;
 		}
 
+		public IEnumerable<string> AllItems(Player player, params string[] categories)
+		{
+			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.UnitInfo[x].Name);
+		}
+
 		public IEnumerable<string> UnitBuiltAt( UnitInfo info )
 		{
 			if( info.BuiltAt.Length != 0 )

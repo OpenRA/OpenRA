@@ -17,6 +17,7 @@ namespace OpenRa.Game
 		readonly Sprite specialBinSprite;
 		readonly Sprite moneyBinSprite;
 		readonly SpriteRenderer buildPaletteRenderer;
+		readonly Animation cantBuild;
 
 		readonly List<Pair<Rectangle, string>> buildItems = new List<Pair<Rectangle, string>>();
 
@@ -36,6 +37,9 @@ namespace OpenRa.Game
 				.ToDictionary(
 					u => u, 
 					u => SpriteSheetBuilder.LoadSprite(u + "icon", ".shp"));
+
+			cantBuild = new Animation("clock");
+			cantBuild.PlayFetchIndex("idle", () => 0);
 		}
 
 		public void Draw()
@@ -70,10 +74,18 @@ namespace OpenRa.Game
 			var x = 0;
 			var y = 0;
 
-			foreach (var item in Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName))
+			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
+			foreach (var item in Rules.TechTree.AllItems(Game.LocalPlayer, queueName))
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64 - 20, 32 + 48 * y, 64, 48);
 				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
+
+				if (!buildableItems.Contains(item))
+				{
+					/* don't have the necessary prereqs! */
+					buildPaletteRenderer.DrawSprite(cantBuild.Image, Game.viewport.Location + new float2(rect.Location), 0);
+				}
+
 				buildItems.Add(Pair.New(rect, item));
 				if (++x == 3) { x = 0; y++; }
 			}
