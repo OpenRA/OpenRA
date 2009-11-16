@@ -157,31 +157,31 @@ namespace OpenRa.Game
 			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
 			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
 
-			new Thread( () =>
+			new Thread(() =>
 			{
 				var firstFrameNum = reader.ReadInt32();
-				if( firstFrameNum != 0 )
-					throw new InvalidOperationException( "Wrong frame number at start of stream" );
+				if (firstFrameNum != 0)
+					throw new InvalidOperationException("Wrong frame number at start of stream");
 
 				var currentFrame = 0;
 				var first = reader.ReadUInt32();
-				while( true )
+				while (true)
 				{
 					var ret = new List<Order>();
-					while( true )
+					while (true)
 					{
-						if( first == currentFrame + 1 )
+						if (first == currentFrame + 1)
 						{
-							lock( orders )
-								orders[ currentFrame ] = ret;
+							lock (orders)
+								orders[currentFrame] = ret;
 							ret = new List<Order>();
 							++currentFrame;
 							break;
 						}
-						ret.Add( Order.Deserialize( reader, first ) );
+						ret.Add(Order.Deserialize(reader, first));
 					}
 				}
-			} ).Start();
+			}) { IsBackground = true }.Start();
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
