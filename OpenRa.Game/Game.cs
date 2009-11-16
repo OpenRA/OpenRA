@@ -41,6 +41,9 @@ namespace OpenRa.Game
 
 		public static string Replay;
 
+		public static string NetworkHost;
+		public static int NetworkPort;
+
 		public static bool skipMakeAnims = true;
 
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
@@ -80,9 +83,15 @@ namespace OpenRa.Game
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
-			orderManager = (Replay == "")
-				? new OrderManager(new OrderSource[] { new LocalOrderSource(), /*new NetworkOrderSource( new TcpClient( "127.0.0.1", 1235 ) )*/ }, "replay.rep")
-				: new OrderManager(new OrderSource[] { new ReplayOrderSource( Replay ) });
+			if( Replay != "" )
+				orderManager = new OrderManager( new OrderSource[] { new ReplayOrderSource( Replay ) } );
+			else
+			{
+				var orderSources = ( string.IsNullOrEmpty( NetworkHost ) )
+					? new OrderSource[] { new LocalOrderSource() }
+					: new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource( new TcpClient( NetworkHost, NetworkPort ) ) };
+				orderManager = new OrderManager(orderSources, "replay.rep" );
+			}
 
 			PlaySound("intro.aud", false);
 
@@ -158,8 +167,9 @@ namespace OpenRa.Game
 				{
 					lastTime += timestep;
 
-					if (orderManager.Tick())
+					if( orderManager.IsReadyForNextFrame )
 					{
+						orderManager.Tick();
 						if (controller.orderGenerator != null)
 							controller.orderGenerator.Tick();
 
@@ -175,6 +185,8 @@ namespace OpenRa.Game
 						foreach (var player in players.Values)
 							player.Tick();
 					}
+					else if( orderManager.FrameNumber == 0 )
+						lastTime = Environment.TickCount;
 				}
 
 				PerfHistory.Tick();

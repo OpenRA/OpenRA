@@ -52,6 +52,8 @@ namespace OpenRa.Game
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
 			Game.timestep = settings.GetValue("rate", 40);
 			Game.Replay = settings.GetValue("replay", "");
+			Game.NetworkHost = settings.GetValue( "host", "" );
+			Game.NetworkPort = int.Parse( settings.GetValue( "port", "0" ) );
 
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
 				settings.GetValue("player", 1));
