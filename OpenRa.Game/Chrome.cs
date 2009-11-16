@@ -26,6 +26,13 @@ namespace OpenRa.Game
 
 			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 64, 256), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(128, 0, 384, 64), TextureChannel.Alpha);
+
+			sprites = groups
+				.SelectMany(g => Rules.Categories[g])
+				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
+				.ToDictionary(
+					u => u, 
+					u => SpriteSheetBuilder.LoadSprite(u + "icon", ".shp"));
 		}
 
 		public void Draw()
@@ -45,14 +52,33 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2( Game.viewport.Width - 384, 0 ), 0);
 			chromeRenderer.Flush();
+
+			DrawBuildPalette("Building");
 		}
+
+		static string[] groups = new string[] { "Building", "Vehicle", "Ship", "Infantry", "Plane" };
+		Dictionary<string, Sprite> sprites;
 
 		void DrawBuildPalette(string queueName)
 		{
 			var buildItem = Game.LocalPlayer.Producing(queueName);
+			var x = 0;
+			var y = 0;
+
 			foreach (var item in Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName))
 			{
+				buildPaletteRenderer.DrawSprite(sprites[item],
+					new float2(
+						Game.viewport.Width - (3 - x) * 64 - 20,
+						32 + 48 * y), 0);
+
+				if (++x == 3)
+				{
+					x = 0; y++;
+				}
 			}
+
+			buildPaletteRenderer.Flush();
 		}
 	}
 }

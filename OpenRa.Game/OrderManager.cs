@@ -15,7 +15,7 @@ namespace OpenRa.Game
 		List<OrderSource> players;
 		int frameNumber = 0;
 
-		const int FramesAhead = 3;
+		const int FramesAhead = 10;
 
 		public int FrameNumber { get { return frameNumber; } }
 
