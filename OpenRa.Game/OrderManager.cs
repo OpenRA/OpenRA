@@ -16,7 +16,7 @@ namespace OpenRa.Game
 		List<OrderSource> players;
 		int frameNumber = 0;
 
-		const int FramesAhead = 10;
+		const int FramesAhead = 3;
 
 		public int FrameNumber { get { return frameNumber; } }
 
@@ -149,39 +149,39 @@ namespace OpenRa.Game
 
 		Dictionary<int, List<Order>> orders = new Dictionary<int,List<Order>>();
 
-		public NetworkOrderSource(TcpClient socket)
+		public NetworkOrderSource( TcpClient socket )
 		{
 			this.socket = socket;
-			var reader = new BinaryReader(socket.GetStream());
+			var reader = new BinaryReader( socket.GetStream() );
 
-			var nextFrameId = System.BitConverter.GetBytes(nextLocalOrderFrame);
-			socket.GetStream().Write(nextFrameId, 0, nextFrameId.Length);
+			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
+			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
 
-			new Thread(() =>
+			new Thread( () =>
 			{
 				var firstFrameNum = reader.ReadInt32();
-				if (firstFrameNum != 0)
-					throw new InvalidOperationException("Wrong frame number at start of stream");
+				if( firstFrameNum != 0 )
+					throw new InvalidOperationException( "Wrong frame number at start of stream" );
 
 				var currentFrame = 0;
-				var first = reader.ReadUInt32();
-				while (true)
+				var ret = new List<Order>();
+				while( true )
 				{
-					var ret = new List<Order>();
-					while (true)
+					var first = reader.ReadUInt32();
+					if( first == currentFrame + 1 )
 					{
-						if (first == currentFrame + 1)
-						{
-							lock (orders)
-								orders[currentFrame] = ret;
-							ret = new List<Order>();
-							++currentFrame;
-							break;
-						}
-						ret.Add(Order.Deserialize(reader, first));
+						lock( orders )
+							orders[ currentFrame ] = ret;
+						ret = new List<Order>();
+						++currentFrame;
 					}
+					else if( first < 0x80000000 )
+						throw new InvalidOperationException( "Attempted time-travel in network thread" );
+					else
+						ret.Add( Order.Deserialize( reader, first ) );
 				}
-			}) { IsBackground = true }.Start();
+			} ) { IsBackground = true }.Start();
+			
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
