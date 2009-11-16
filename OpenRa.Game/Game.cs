@@ -80,11 +80,9 @@ namespace OpenRa.Game
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
-			var socket = new TcpClient( "127.0.0.1", 1234 );
-
 			orderManager = (Replay == "")
-				? new OrderManager(new[] { new NetworkOrderSource( socket ) }, "replay.rep")
-				: new OrderManager(new[] { new ReplayOrderSource(Replay) });
+				? new OrderManager(new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource( new TcpClient( "127.0.0.1", 1234 ) ) }, "replay.rep")
+				: new OrderManager(new OrderSource[] { new ReplayOrderSource( Replay ) });
 
 			PlaySound("intro.aud", false);
 

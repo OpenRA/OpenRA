@@ -15,11 +15,17 @@ namespace OpenRa.Game
 		List<OrderSource> players;
 		int frameNumber = 0;
 
+		const int FramesAhead = 3;
+
 		public int FrameNumber { get { return frameNumber; } }
 
 		public OrderManager( IEnumerable<OrderSource> players )
 		{
 			this.players = players.ToList();
+
+			foreach( var p in this.players )
+				for( int i = 0 ; i < FramesAhead ; i++ )
+					p.SendLocalOrders( i, new List<Order>() );
 		}
 
 		public OrderManager( IEnumerable<OrderSource> players, string replayFilename )
@@ -35,7 +41,7 @@ namespace OpenRa.Game
 				return false;
 
 			foreach( var p in players )
-				p.SendLocalOrders( frameNumber, localOrders );
+				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
 			if( savingReplay != null )
 				savingReplay.Write( frameNumber );
