@@ -81,7 +81,7 @@ namespace OpenRa.Game
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
 			orderManager = (Replay == "")
-				? new OrderManager(new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource( new TcpClient( "127.0.0.1", 1235 ) ) }, "replay.rep")
+				? new OrderManager(new OrderSource[] { new LocalOrderSource(), /*new NetworkOrderSource( new TcpClient( "127.0.0.1", 1235 ) )*/ }, "replay.rep")
 				: new OrderManager(new OrderSource[] { new ReplayOrderSource( Replay ) });
 
 			PlaySound("intro.aud", false);

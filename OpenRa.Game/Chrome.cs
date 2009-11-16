@@ -5,6 +5,7 @@ using System.Text;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Support;
 using System.Drawing;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -16,6 +17,8 @@ namespace OpenRa.Game
 		readonly Sprite specialBinSprite;
 		readonly Sprite moneyBinSprite;
 		readonly SpriteRenderer buildPaletteRenderer;
+
+		readonly List<Pair<Rectangle, string>> buildItems = new List<Pair<Rectangle, string>>();
 
 		public Chrome(Renderer r)
 		{
@@ -37,6 +40,8 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
+			buildItems.Clear();
+
 			renderer.Device.DisableScissor();
 			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}",
 				Game.RenderFrame,
@@ -67,15 +72,10 @@ namespace OpenRa.Game
 
 			foreach (var item in Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName))
 			{
-				buildPaletteRenderer.DrawSprite(sprites[item],
-					new float2(
-						Game.viewport.Width - (3 - x) * 64 - 20,
-						32 + 48 * y), 0);
-
-				if (++x == 3)
-				{
-					x = 0; y++;
-				}
+				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64 - 20, 32 + 48 * y, 64, 48);
+				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
+				buildItems.Add(Pair.New(rect, item));
+				if (++x == 3) { x = 0; y++; }
 			}
 
 			buildPaletteRenderer.Flush();
