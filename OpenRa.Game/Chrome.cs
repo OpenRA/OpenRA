@@ -77,6 +77,7 @@ namespace OpenRa.Game
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
 			foreach (var item in Rules.TechTree.AllItems(Game.LocalPlayer, queueName))
 			{
+				if (Rules.UnitInfo[item].TechLevel == -1) continue;
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64 - 20, 32 + 48 * y, 64, 48);
 				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
 
