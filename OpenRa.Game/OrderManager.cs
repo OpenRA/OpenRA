@@ -149,13 +149,13 @@ namespace OpenRa.Game
 
 		Dictionary<int, List<Order>> orders = new Dictionary<int,List<Order>>();
 
-		public NetworkOrderSource( TcpClient socket )
+		public NetworkOrderSource(TcpClient socket)
 		{
 			this.socket = socket;
-			var reader = new BinaryReader( socket.GetStream() );
+			var reader = new BinaryReader(socket.GetStream());
 
-			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
-			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
+			var nextFrameId = System.BitConverter.GetBytes(nextLocalOrderFrame);
+			socket.GetStream().Write(nextFrameId, 0, nextFrameId.Length);
 
 			new Thread(() =>
 			{
