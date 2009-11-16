@@ -181,7 +181,8 @@ namespace OpenRa.Game
 						ret.Add( Order.Deserialize( reader, first ) );
 					}
 				}
-			} ).Start();
+			} ) { IsBackground = true }.Start();
+			
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
