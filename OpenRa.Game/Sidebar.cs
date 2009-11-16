@@ -20,8 +20,6 @@ namespace OpenRa.Game
 		Animation ready;
 		Animation cantBuild;
 		readonly GRegion region;
-
-		public GRegion Region { get { return region; } }
 		public float Width { get { return spriteWidth * 2; } }
 
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();

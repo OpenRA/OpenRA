@@ -12,15 +12,18 @@ namespace OpenRa.Game
 	{
 		readonly Renderer renderer;
 		readonly Sheet specialBin;
-		readonly SpriteRenderer spriteRenderer;
+		readonly SpriteRenderer chromeRenderer;
 		readonly Sprite specialBinSprite;
 		readonly Sprite moneyBinSprite;
+		readonly SpriteRenderer buildPaletteRenderer;
 
 		public Chrome(Renderer r)
 		{
 			this.renderer = r;
 			specialBin = new Sheet(renderer, "specialbin.png");
-			spriteRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
+			chromeRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
+			buildPaletteRenderer = new SpriteRenderer(renderer, true);
+
 			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 64, 256), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(128, 0, 384, 64), TextureChannel.Alpha);
 		}
@@ -39,9 +42,17 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
-			spriteRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
-			spriteRenderer.DrawSprite(moneyBinSprite, new float2( Game.viewport.Width - 384, 0 ), 0);
-			spriteRenderer.Flush();
+			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
+			chromeRenderer.DrawSprite(moneyBinSprite, new float2( Game.viewport.Width - 384, 0 ), 0);
+			chromeRenderer.Flush();
+		}
+
+		void DrawBuildPalette(string queueName)
+		{
+			var buildItem = Game.LocalPlayer.Producing(queueName);
+			foreach (var item in Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName))
+			{
+			}
 		}
 	}
 }
