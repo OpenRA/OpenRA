@@ -147,7 +147,7 @@ namespace OpenRa.Game
 		int nextLocalOrderFrame = 0;
 		TcpClient socket;
 
-		Dictionary<int, List<Order>> orders = new Dictionary<int,List<Order>>();
+		Dictionary<int, byte[]> orderBuffers = new Dictionary<int, byte[]>();
 
 		public NetworkOrderSource( TcpClient socket )
 		{
@@ -168,27 +168,37 @@ namespace OpenRa.Game
 				var ret = new List<Order>();
 				while( true )
 				{
-					var first = reader.ReadUInt32();
-					if( first == currentFrame + 1 )
-					{
-						lock( orders )
-							orders[ currentFrame ] = ret;
-						ret = new List<Order>();
-						++currentFrame;
-					}
-					else if( first < 0x80000000 )
-						throw new InvalidOperationException( "Attempted time-travel in network thread" );
-					else
-						ret.Add( Order.Deserialize( reader, first ) );
+					var len = reader.ReadInt32();
+					var buf = reader.ReadBytes( len );
+
+					lock( orderBuffers )
+						orderBuffers[ currentFrame ] = buf;
+					++currentFrame;
 				}
 			} ) { IsBackground = true }.Start();
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
 		{
-			// TODO: prune `orders` based on currentFrame.
-			lock( orders )
-				return orders[ currentFrame ];
+			// TODO: prune `orderBuffers` based on currentFrame.
+			byte[] orderBuffer;
+			lock( orderBuffers )
+				orderBuffer = orderBuffers[ currentFrame ];
+
+			var ms = new MemoryStream( orderBuffer );
+			var reader = new BinaryReader( ms );
+			var ret = new List<Order>();
+
+			if( reader.ReadUInt32() != currentFrame )
+				throw new InvalidOperationException( "Attempted time-travel in OrdersForFrame (network)" );
+
+			while( ms.Position < ms.Length )
+			{
+				var first = reader.ReadUInt32();
+				ret.Add( Order.Deserialize( reader, first ) );
+			}
+
+			return ret;
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
@@ -196,21 +206,31 @@ namespace OpenRa.Game
 			if( nextLocalOrderFrame != localFrame )
 				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
 
+			var ms = new MemoryStream();
+
+			ms.Write( System.BitConverter.GetBytes( nextLocalOrderFrame ) );
+
 			foreach( var order in localOrders )
-			{
-				var bytes = order.Serialize();
-				socket.GetStream().Write( bytes, 0, bytes.Length );
-			}
+				ms.Write( order.Serialize() );
 
 			++nextLocalOrderFrame;
-			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
-			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
+
+			socket.GetStream().Write( System.BitConverter.GetBytes( (int)ms.Length ) );
+			ms.WriteTo( socket.GetStream() );
 		}
 
 		public bool IsReadyForFrame( int frameNumber )
 		{
-			lock( orders )
-				return orders.ContainsKey( frameNumber );
+			lock( orderBuffers )
+				return orderBuffers.ContainsKey( frameNumber );
+		}
+	}
+
+	static class StreamExts
+	{
+		public static void Write( this Stream s, byte[] buf )
+		{
+			s.Write( buf, 0, buf.Length );
 		}
 	}
 }
