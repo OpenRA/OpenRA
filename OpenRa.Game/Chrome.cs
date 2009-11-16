@@ -65,7 +65,7 @@ namespace OpenRa.Game
 			DrawBuildPalette("Building");
 		}
 
-		static string[] groups = new string[] { "Building", "Vehicle", "Ship", "Infantry", "Plane" };
+		static string[] groups = new string[] { "Building", "Defense", "Vehicle", "Ship", "Infantry", "Plane" };
 		Dictionary<string, Sprite> sprites;
 
 		void DrawBuildPalette(string queueName)
@@ -75,7 +75,9 @@ namespace OpenRa.Game
 			var y = 0;
 
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
-			foreach (var item in Rules.TechTree.AllItems(Game.LocalPlayer, queueName))
+			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
+				.OrderBy( a => Rules.UnitInfo[a].TechLevel );
+			foreach (var item in allItems)
 			{
 				if (Rules.UnitInfo[item].TechLevel == -1) continue;
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64 - 20, 32 + 48 * y, 64, 48);

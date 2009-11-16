@@ -16,8 +16,13 @@ namespace OpenRA.Server
 			var right = new TcpListener(1235);
 			right.Start();
 
-			var l = left.AcceptTcpClient().GetStream();
-			var r = right.AcceptTcpClient().GetStream();
+			var lc = left.AcceptTcpClient();
+			lc.NoDelay = true; 
+			var l = lc.GetStream();
+
+			var rc = right.AcceptTcpClient();
+			rc.NoDelay = true;
+			var r = rc.GetStream();
 
 			var ll = new Thread(RW(l, r));
 			var rr = new Thread(RW(r, l));

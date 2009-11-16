@@ -10,7 +10,7 @@ namespace OpenRa.Game
 	static class Rules
 	{
 		public static IniFile AllRules;
-		public static Dictionary<string, List<string>> Categories = new Dictionary<string,List<string>>();
+		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
 		public static Dictionary<string, string> UnitCategory;
 		public static InfoLoader<UnitInfo> UnitInfo;
 		public static InfoLoader<WeaponInfo> WeaponInfo;
@@ -19,41 +19,43 @@ namespace OpenRa.Game
 		public static GeneralInfo General;
 		public static TechTree TechTree;
 
-		public static void LoadRules( string mapFileName )
+		public static void LoadRules(string mapFileName)
 		{
 			AllRules = new IniFile(
-				FileSystem.Open( mapFileName ),
-				FileSystem.Open( "rules.ini" ),
-				FileSystem.Open( "units.ini" ),
-				FileSystem.Open( "campaignUnits.ini" ) );
+				FileSystem.Open(mapFileName),
+				FileSystem.Open("rules.ini"),
+				FileSystem.Open("units.ini"),
+				FileSystem.Open("campaignUnits.ini"));
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
 
 			LoadCategories(
 				"Building",
+				"Defense",
 				"Infantry",
 				"Vehicle",
 				"Ship",
-				"Plane" );
-			UnitCategory = Categories.SelectMany( x => x.Value.Select( y => new KeyValuePair<string, string>( y, x.Key ) ) ).ToDictionary( x => x.Key, x => x.Value );
+				"Plane");
+			UnitCategory = Categories.SelectMany(x => x.Value.Select(y => new KeyValuePair<string, string>(y, x.Key))).ToDictionary(x => x.Key, x => x.Value);
 
 			UnitInfo = new InfoLoader<UnitInfo>(
-				Pair.New<string,Func<string,UnitInfo>>( "Building", s => new UnitInfo.BuildingInfo(s)),
-				Pair.New<string,Func<string,UnitInfo>>( "Infantry", s => new UnitInfo.InfantryInfo(s)),
-				Pair.New<string,Func<string,UnitInfo>>( "Vehicle", s => new UnitInfo.VehicleInfo(s)),
-				Pair.New<string,Func<string,UnitInfo>>( "Ship", s => new UnitInfo.VehicleInfo(s)),
-				Pair.New<string,Func<string,UnitInfo>>( "Plane", s => new UnitInfo.VehicleInfo(s)));
+				Pair.New<string, Func<string, UnitInfo>>("Building", s => new UnitInfo.BuildingInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Defense", s => new UnitInfo.BuildingInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Infantry", s => new UnitInfo.InfantryInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Vehicle", s => new UnitInfo.VehicleInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Ship", s => new UnitInfo.VehicleInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Plane", s => new UnitInfo.VehicleInfo(s)));
 
 			LoadCategories(
 				"Weapon",
 				"Warhead",
-				"Projectile" );
+				"Projectile");
 
 			WeaponInfo = new InfoLoader<WeaponInfo>(
-				Pair.New<string,Func<string,WeaponInfo>>("Weapon", _ => new WeaponInfo()));
+				Pair.New<string, Func<string, WeaponInfo>>("Weapon", _ => new WeaponInfo()));
 			WarheadInfo = new InfoLoader<WarheadInfo>(
-				Pair.New<string,Func<string,WarheadInfo>>("Warhead", _ => new WarheadInfo()));
+				Pair.New<string, Func<string, WarheadInfo>>("Warhead", _ => new WarheadInfo()));
 
 			ProjectileInfo = new InfoLoader<ProjectileInfo>(
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
@@ -61,10 +63,10 @@ namespace OpenRa.Game
 			TechTree = new TechTree();
 		}
 
-		static void LoadCategories( params string[] types )
+		static void LoadCategories(params string[] types)
 		{
-			foreach( var t in types )
-				Categories[ t ] = AllRules.GetSection( t + "Types" ).Select( x => x.Key.ToLowerInvariant() ).ToList();
+			foreach (var t in types)
+				Categories[t] = AllRules.GetSection(t + "Types").Select(x => x.Key.ToLowerInvariant()).ToList();
 		}
 	}
 }
