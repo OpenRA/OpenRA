@@ -152,6 +152,7 @@ namespace OpenRa.Game
 		public NetworkOrderSource( TcpClient socket )
 		{
 			this.socket = socket;
+			this.socket.NoDelay = true;
 			var reader = new BinaryReader( socket.GetStream() );
 
 			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
@@ -181,7 +182,6 @@ namespace OpenRa.Game
 						ret.Add( Order.Deserialize( reader, first ) );
 				}
 			} ) { IsBackground = true }.Start();
-			
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
