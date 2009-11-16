@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using IjwFramework.Types;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace OpenRa.Game
 {
@@ -34,11 +35,20 @@ namespace OpenRa.Game
 			savingReplay = new BinaryWriter( new FileStream( replayFilename, FileMode.Create ) );
 		}
 
-		public bool Tick()
+		public bool IsReadyForNextFrame
+		{
+			get
+			{
+				foreach( var p in players )
+					if( !p.IsReadyForFrame( frameNumber ) )
+						return false;
+				return true;
+			}
+		}
+
+		public void Tick()
 		{
 			var localOrders = Game.controller.GetRecentOrders();
-			if( localOrders == null )
-				return false;
 
 			foreach( var p in players )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
@@ -59,7 +69,7 @@ namespace OpenRa.Game
 			if( ( frameNumber & 0x80000000 ) != 0 )
 				throw new InvalidOperationException( "(OrderManager) Frame number too large" );
 
-			return true;
+			return;
 		}
 	}
 
@@ -67,6 +77,7 @@ namespace OpenRa.Game
 	{
 		void SendLocalOrders( int localFrame, List<Order> localOrders );
 		List<Order> OrdersForFrame( int currentFrame );
+		bool IsReadyForFrame( int frameNumber );
 	}
 
 	class LocalOrderSource : OrderSource
@@ -82,6 +93,11 @@ namespace OpenRa.Game
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
 			orders[ localFrame ] = localOrders;
+		}
+
+		public bool IsReadyForFrame( int frameNumber )
+		{
+			return true;
 		}
 	}
 
@@ -120,40 +136,59 @@ namespace OpenRa.Game
 			}
 		}
 
+		public bool IsReadyForFrame( int frameNumber )
+		{
+			return true;
+		}
 	}
 
 	class NetworkOrderSource : OrderSource
 	{
 		int nextLocalOrderFrame = 0;
 		TcpClient socket;
-		BinaryReader reader;
+
+		Dictionary<int, List<Order>> orders = new Dictionary<int,List<Order>>();
 
 		public NetworkOrderSource( TcpClient socket )
 		{
 			this.socket = socket;
-			reader = new BinaryReader( socket.GetStream() );
+			var reader = new BinaryReader( socket.GetStream() );
 
 			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
 			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
-		}
 
-		public List<Order> OrdersForFrame( int currentFrame )
-		{
-			if( currentFrame == 0 )
+			new Thread( () =>
 			{
 				var firstFrameNum = reader.ReadInt32();
 				if( firstFrameNum != 0 )
 					throw new InvalidOperationException( "Wrong frame number at start of stream" );
-			}
 
-			var ret = new List<Order>();
-			while( true )
-			{
+				var currentFrame = 0;
 				var first = reader.ReadUInt32();
-				if( first == currentFrame + 1 )
-					return ret;
-				ret.Add( Order.Deserialize( reader, first ) );
-			}
+				while( true )
+				{
+					var ret = new List<Order>();
+					while( true )
+					{
+						if( first == currentFrame + 1 )
+						{
+							lock( orders )
+								orders[ currentFrame ] = ret;
+							ret = new List<Order>();
+							++currentFrame;
+							break;
+						}
+						ret.Add( Order.Deserialize( reader, first ) );
+					}
+				}
+			} ).Start();
+		}
+
+		public List<Order> OrdersForFrame( int currentFrame )
+		{
+			// TODO: prune `orders` based on currentFrame.
+			lock( orders )
+				return orders[ currentFrame ];
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
@@ -170,6 +205,12 @@ namespace OpenRa.Game
 			++nextLocalOrderFrame;
 			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
 			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
+		}
+
+		public bool IsReadyForFrame( int frameNumber )
+		{
+			lock( orders )
+				return orders.ContainsKey( frameNumber );
 		}
 	}
 }
