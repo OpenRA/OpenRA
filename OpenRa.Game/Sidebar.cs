@@ -25,7 +25,7 @@ namespace OpenRa.Game
 		Dictionary<string, Sprite> sprites = new Dictionary<string,Sprite>();
 		const int spriteWidth = 64, spriteHeight = 48;
 
-		static string[] groups = new string[] { "Building", "Vehicle", "Ship", "Infantry", "Plane" };
+		static string[] groups = new string[] { "Building", "Defense", "Vehicle", "Ship", "Infantry", "Plane" };
 
 		Dictionary<string, Animation> clockAnimations = new Dictionary<string,Animation>();		//group->clockAnimation
 		
