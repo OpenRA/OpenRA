@@ -47,7 +47,6 @@ namespace OpenRa.Game
 
 			foreach (string group in groups)
 			{
-				player.ProductionInit( group );
 				clockAnimations.Add( group, new Animation( "clock" ) );
 				clockAnimations[ group ].PlayFetchIndex( "idle", ClockAnimFrame( group ) );
 			}

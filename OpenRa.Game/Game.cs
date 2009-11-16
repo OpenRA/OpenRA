@@ -10,6 +10,7 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
+using System.Net.Sockets;
 
 namespace OpenRa.Game
 {
@@ -79,8 +80,10 @@ namespace OpenRa.Game
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
+			var socket = new TcpClient( "127.0.0.1", 1234 );
+
 			orderManager = (Replay == "")
-				? new OrderManager(new[] { new LocalOrderSource() }, "replay.rep")
+				? new OrderManager(new[] { new NetworkOrderSource( socket ) }, "replay.rep")
 				: new OrderManager(new[] { new ReplayOrderSource(Replay) });
 
 			PlaySound("intro.aud", false);

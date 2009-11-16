@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using IjwFramework.Types;
+using System.Net.Sockets;
 
 namespace OpenRa.Game
 {
@@ -34,7 +35,7 @@ namespace OpenRa.Game
 				return false;
 
 			foreach( var p in players )
-				p.Tick( localOrders );
+				p.SendLocalOrders( frameNumber, localOrders );
 
 			if( savingReplay != null )
 				savingReplay.Write( frameNumber );
@@ -58,22 +59,23 @@ namespace OpenRa.Game
 
 	interface OrderSource
 	{
-		void Tick( List<Order> localOrders );
-		List<Order> OrdersForFrame( int frameNumber );
+		void SendLocalOrders( int localFrame, List<Order> localOrders );
+		List<Order> OrdersForFrame( int currentFrame );
 	}
 
 	class LocalOrderSource : OrderSource
 	{
-		List<Order> orders;
+		Dictionary<int, List<Order>> orders = new Dictionary<int,List<Order>>();
 
-		public void Tick( List<Order> localOrders )
+		public List<Order> OrdersForFrame( int currentFrame )
 		{
-			orders = localOrders;
+			// TODO: prune `orders` based on currentFrame.
+			return orders[ currentFrame ];
 		}
 
-		public List<Order> OrdersForFrame( int frameNumber )
+		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
-			return orders;
+			orders[ localFrame ] = localOrders;
 		}
 	}
 
@@ -86,9 +88,7 @@ namespace OpenRa.Game
 			replayReader.ReadUInt32();
 		}
 
-		public void Tick( List<Order> localOrders )
-		{
-		}
+		public void SendLocalOrders( int localFrame, List<Order> localOrders ) { }
 
 		public List<Order> OrdersForFrame( int frameNumber )
 		{
@@ -112,6 +112,58 @@ namespace OpenRa.Game
 					return ret;
 				}
 			}
+		}
+
+	}
+
+	class NetworkOrderSource : OrderSource
+	{
+		int nextLocalOrderFrame = 0;
+		TcpClient socket;
+		BinaryReader reader;
+
+		public NetworkOrderSource( TcpClient socket )
+		{
+			this.socket = socket;
+			reader = new BinaryReader( socket.GetStream() );
+
+			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
+			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
+		}
+
+		public List<Order> OrdersForFrame( int currentFrame )
+		{
+			if( currentFrame == 0 )
+			{
+				var firstFrameNum = reader.ReadInt32();
+				if( firstFrameNum != 0 )
+					throw new InvalidOperationException( "Wrong frame number at start of stream" );
+			}
+
+			var ret = new List<Order>();
+			while( true )
+			{
+				var first = reader.ReadUInt32();
+				if( first == currentFrame + 1 )
+					return ret;
+				ret.Add( Order.Deserialize( reader, first ) );
+			}
+		}
+
+		public void SendLocalOrders( int localFrame, List<Order> localOrders )
+		{
+			if( nextLocalOrderFrame != localFrame )
+				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
+
+			foreach( var order in localOrders )
+			{
+				var bytes = order.Serialize();
+				socket.GetStream().Write( bytes, 0, bytes.Length );
+			}
+
+			++nextLocalOrderFrame;
+			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
+			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
 		}
 	}
 }

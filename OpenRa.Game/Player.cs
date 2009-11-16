@@ -22,6 +22,9 @@ namespace OpenRa.Game
 			this.Race = race;
 			this.Cash = 10000;
 			this.powerProvided = this.powerDrained = 0;
+
+			foreach( var cat in Rules.Categories.Keys )
+				ProductionInit( cat );
 		}
 
 		public void ChangePower(int dPower)
