@@ -105,14 +105,19 @@ namespace OpenRa.Game
 					if (!Rules.TechTree.BuildableItems(order.Player, group).Contains(order.TargetString))
 						return;	/* you can't build that!! */
 
+					bool hasPlayedSound = false;
+
 					order.Player.BeginProduction(group,
 						new ProductionItem(order.TargetString, (int)time, ui.Cost,
 							() => Game.world.AddFrameEndTask(
 								_ =>
 								{
 									var isBuilding = group == "Building" || group == "Defense";
-									if (order.Player == Game.LocalPlayer)
-										Game.PlaySound( isBuilding ? "conscmp1.aud" : "unitrdy1.aud", false);
+									if (!hasPlayedSound && order.Player == Game.LocalPlayer)
+									{
+										Game.PlaySound(isBuilding ? "conscmp1.aud" : "unitrdy1.aud", false);
+										hasPlayedSound = true;
+									}
 									if (!isBuilding)
 										Game.BuildUnit(order.Player, order.TargetString);
 								})));
