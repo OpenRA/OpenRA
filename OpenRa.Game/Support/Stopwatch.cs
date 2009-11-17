@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Support
 {
 	class Stopwatch
 	{
