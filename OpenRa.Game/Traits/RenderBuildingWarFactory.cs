@@ -43,9 +43,7 @@ namespace OpenRa.Game.Traits
 				roof.Tick();
 
 			var b = self.Bounds;
-			if (isOpen && !Game.SelectUnitsInBox(
-				new float2(b.Left, b.Top),
-				new float2(b.Right, b.Bottom)).Any(a => a.traits.Contains<Mobile>()))
+			if (isOpen && null == Game.UnitInfluence.GetUnitAt(((1/24f) * self.CenterLocation).ToInt2()))
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(prefix + "build-top", () => roof.Play(prefix + "idle-top"));
