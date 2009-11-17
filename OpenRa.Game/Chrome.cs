@@ -7,10 +7,11 @@ using OpenRa.Game.Support;
 using System.Drawing;
 using IjwFramework.Types;
 using IjwFramework.Collections;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
-	class Chrome
+	class Chrome : IHandleInput
 	{
 		readonly Renderer renderer;
 		readonly Sheet specialBin;
@@ -20,7 +21,7 @@ namespace OpenRa.Game
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 
-		readonly List<Pair<Rectangle, string>> buildItems = new List<Pair<Rectangle, string>>();
+		readonly List<Pair<Rectangle, Action<bool>>> buildItems = new List<Pair<Rectangle, Action<bool>>>();
 		readonly Cache<string, Animation> clockAnimations;
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, Sprite[]> tabSprites;
@@ -62,7 +63,7 @@ namespace OpenRa.Game
 				});
 
 			digitSprites = Util.MakeArray(10, a => a)
-				.Select(n => new Sprite(specialBin, new Rectangle(32 + 14 * n, 0, 14, 17), TextureChannel.Alpha)).ToList();
+				.Select(n => new Sprite(specialBin, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
 
 			shimSprites = new [] 
 			{
@@ -154,10 +155,15 @@ namespace OpenRa.Game
 					buildPaletteRenderer.DrawSprite(cantBuild.Image, Game.viewport.Location + new float2(rect.Location), 0);
 
 				if (currentItem != null && currentItem.Item == item)
-					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image, 
+				{
+					clockAnimations[queueName].Tick();
+					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
 						Game.viewport.Location + new float2(rect.Location), 0);
+				}
 
-				buildItems.Add(Pair.New(rect, item));
+				var closureItem = item;
+				buildItems.Add(Pair.New(rect,
+					(Action<bool>)(isLmb => HandleBuildPalette(closureItem, isLmb))));
 				if (++x == 3) { x = 0; y++; }
 			}
 
@@ -168,6 +174,71 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(shimSprites[0], new float2(Game.viewport.Width - 192 - 9, 40 - 9), 0);
 			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 + 48 * y), 0);
 			chromeRenderer.Flush();
+		}
+
+		void HandleBuildPalette(string item, bool isLmb)
+		{
+			var player = Game.LocalPlayer;
+			var group = Rules.UnitCategory[item];
+			var producing = player.Producing(group);
+
+			if (isLmb)
+			{
+				if (producing == null)
+				{
+					Game.controller.AddOrder(Order.StartProduction(player, item));
+					Game.PlaySound("abldgin1.aud", false);
+				}
+				else if (producing.Item == item)
+				{
+					if (producing.Done)
+					{
+						if (group == "Building" || group == "Defense")
+							Game.controller.orderGenerator = new PlaceBuilding(player, item);
+					}
+					else
+						Game.controller.AddOrder(Order.PauseProduction(player, item, false));
+				}
+				else
+				{
+					Game.PlaySound("progres1.aud", false);
+				}
+			}
+			else
+			{
+				if (producing == null) return;
+				if (item != producing.Item) return;
+
+				if (producing.Paused || producing.Done)
+				{
+					Game.PlaySound("cancld1.aud", false);
+					Game.controller.AddOrder(Order.CancelProduction(player, item));
+				}
+				else
+				{
+					Game.PlaySound("onhold1.aud", false);
+					Game.controller.AddOrder(Order.PauseProduction(player, item, true));
+				}
+			}
+		}
+
+		public bool HandleInput(MouseInput mi)
+		{
+			var action = buildItems.Where(a => a.First.Contains(mi.Location.ToPoint()))
+				.Select( a => a.Second ).FirstOrDefault();
+
+			if (action == null)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down)
+				action(mi.Button == MouseButtons.Left);
+
+			return true;
+		}
+
+		public bool HitTest(int2 mousePos)
+		{
+			return buildItems.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 	}
 }

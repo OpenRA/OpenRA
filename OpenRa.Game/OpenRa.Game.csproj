@@ -118,7 +118,6 @@
     <Compile Include="PathFinder.cs" />
     <Compile Include="Graphics\Sequence.cs" />
     <Compile Include="Order.cs" />
-    <Compile Include="Graphics\Region.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\HardwarePalette.cs" />

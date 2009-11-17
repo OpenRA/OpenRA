@@ -4,6 +4,11 @@ using System.Linq;
 
 namespace OpenRa.Game.Graphics
 {
+	interface IHandleInput
+	{
+		bool HandleInput(MouseInput mi);
+	}
+
 	class Viewport
 	{
 		readonly float2 screenSize;
@@ -20,28 +25,21 @@ namespace OpenRa.Game.Graphics
 		int2 mousePos;
 		float cursorFrame = 0f;
 
-		readonly float2 scrollLowBounds, scrollHighBounds;
-
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = scrollPosition + delta;// (scrollPosition + delta).Constrain(scrollLowBounds, scrollHighBounds);
+			scrollPosition = scrollPosition + delta;
 		}
+
+		public IEnumerable<IHandleInput> regions { get { return new IHandleInput[] { Game.chrome, Game.controller }; } }
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
 			this.screenSize = screenSize;
-//			this.scrollLowBounds = Game.CellSize * mapStart;
-//			this.scrollHighBounds = float2.Max( scrollLowBounds, Game.CellSize * mapEnd - ( screenSize /*- new float2( 128, 0 )*/ ) );
 			this.renderer = renderer;
 			cursorRenderer = new SpriteRenderer(renderer, true);
 
 			this.scrollPosition = Game.CellSize* mapStart;
-//			this.scrollPosition = scrollLowBounds;
 		}
-
-		List<Region> regions = new List<Region>();
-
-		public void AddRegion(Region r) { regions.Add(r); }
 
 		public void DrawRegions()
 		{
@@ -50,12 +48,10 @@ namespace OpenRa.Game.Graphics
 			
 			renderer.BeginFrame(r1, r2, scrollPosition);
 
-			foreach (Region region in regions)
-				region.Draw(renderer);
-
+			Game.worldRenderer.Draw();
 			Game.chrome.Draw();
 
-			var c = (Game.worldRenderer.region.Contains(mousePos)) ? cursor : Cursor.Default;
+			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : cursor;
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
@@ -67,23 +63,19 @@ namespace OpenRa.Game.Graphics
 			cursorFrame += 0.5f;
 		}
 
-        Region dragRegion = null;
+        IHandleInput dragRegion = null;
         public void DispatchMouseInput(MouseInput mi)
         {
 			if (mi.Event == MouseInputEvent.Move)
 				mousePos = mi.Location;
 
             if (dragRegion != null) {
-                dragRegion.HandleMouseInput( mi );
+                dragRegion.HandleInput( mi );
                 if (mi.Event == MouseInputEvent.Up) dragRegion = null;
                 return;
             }
 
-			if (mi.Event == MouseInputEvent.Move)
-				foreach (var reg in regions.Where(r => r.AlwaysWantMovement))
-					reg.HandleMouseInput(mi);
-
-            dragRegion = regions.FirstOrDefault(r => r.Contains(mi.Location) && r.HandleMouseInput(mi));
+            dragRegion = regions.FirstOrDefault(r => r.HandleInput(mi));
             if (mi.Event != MouseInputEvent.Down)
                 dragRegion = null;
         }

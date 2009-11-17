@@ -6,10 +6,11 @@ using System.Windows.Forms;
 using IjwFramework.Types;
 using System.Drawing;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
-	class Controller
+	class Controller : IHandleInput
 	{
 		public IOrderGenerator orderGenerator;
 
@@ -45,7 +46,7 @@ namespace OpenRa.Game
 		}
 
 		float2 dragStart, dragEnd;
-		public void HandleMouseInput(MouseInput mi)
+		public bool HandleInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorld(mi);
 
@@ -91,6 +92,8 @@ namespace OpenRa.Game
 
 			if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
 				ApplyOrders(xy, false);
+
+			return true;
 		}
 
 		public Pair<float2, float2>? SelectionBox

@@ -13,7 +13,7 @@ namespace OpenRa.Game.Graphics
 		public readonly TerrainRenderer terrainRenderer;
 		public readonly SpriteRenderer spriteRenderer;
 		public readonly LineRenderer lineRenderer;
-		public readonly Region region;
+		//public readonly Region region;
 		public readonly UiOverlay uiOverlay;
 		readonly Renderer renderer;
 
@@ -24,9 +24,9 @@ namespace OpenRa.Game.Graphics
 			terrainRenderer = new TerrainRenderer(renderer, Game.map);
 
 			// TODO: this is layout policy. it belongs at a higher level than this.
-			region = Region.Create(Game.viewport, DockStyle.Left,
-				Game.viewport.Width, Draw, Game.controller.HandleMouseInput);
-			Game.viewport.AddRegion(region);
+			//region = Region.Create(Game.viewport, DockStyle.Left,
+			//    Game.viewport.Width, Draw, Game.controller.HandleInput);
+			//Game.viewport.AddRegion(Game.controller);
 
 			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);
@@ -54,8 +54,9 @@ namespace OpenRa.Game.Graphics
 		{
 			terrainRenderer.Draw(Game.viewport);
 
-			var rect = new RectangleF((region.Position + Game.viewport.Location).ToPointF(),
-				region.Size.ToSizeF());
+			var rect = new RectangleF(
+				Game.viewport.Location.ToPointF(),
+				new SizeF( Game.viewport.Width, Game.viewport.Height ));
 
 			foreach (Actor a in Game.world.Actors.OrderBy(u => u.CenterLocation.Y))
 				DrawSpriteList(rect, a.Render());
