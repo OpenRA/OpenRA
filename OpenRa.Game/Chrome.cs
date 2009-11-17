@@ -23,6 +23,8 @@ namespace OpenRa.Game
 		readonly List<Pair<Rectangle, string>> buildItems = new List<Pair<Rectangle, string>>();
 		readonly Cache<string, Animation> clockAnimations;
 		readonly List<Sprite> digitSprites;
+		readonly Dictionary<string, Sprite[]> tabSprites;
+		readonly Sprite[] shimSprites;
 
 		public Chrome(Renderer r)
 		{
@@ -31,7 +33,7 @@ namespace OpenRa.Game
 			chromeRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			buildPaletteRenderer = new SpriteRenderer(renderer, true);
 
-			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 32, 256), TextureChannel.Alpha);
+			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 32, 192), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(512-320, 0, 320, 64), TextureChannel.Alpha);
 
 			sprites = groups
@@ -40,6 +42,14 @@ namespace OpenRa.Game
 				.ToDictionary(
 					u => u, 
 					u => SpriteSheetBuilder.LoadSprite(u + "icon", ".shp"));
+
+			tabSprites = groups.Select(
+				(g, i) => Pair.New(g, 
+					Util.MakeArray(3, 
+						n => new Sprite(specialBin, 
+							new Rectangle(512 - (n+1) * 27, 64 + i * 40, 27, 40), 
+							TextureChannel.Alpha))))
+				.ToDictionary(a => a.First, a => a.Second);
 
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
@@ -53,6 +63,13 @@ namespace OpenRa.Game
 
 			digitSprites = Util.MakeArray(10, a => a)
 				.Select(n => new Sprite(specialBin, new Rectangle(32 + 14 * n, 0, 14, 17), TextureChannel.Alpha)).ToList();
+
+			shimSprites = new [] 
+			{
+				new Sprite( specialBin, new Rectangle( 0, 192, 192 +9, 10 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 0, 202, 192 +9, 10 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 0, 216, 9, 48 ), TextureChannel.Alpha ),
+			};
 		}
 
 		public void Draw()
@@ -81,8 +98,19 @@ namespace OpenRa.Game
 				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x,6), 0);
 				x -= 14;
 			}
-			chromeRenderer.Flush();
 
+			x = Game.viewport.Width - 36 - 3 * 64;
+			var y = 40;
+			
+			foreach (var q in tabSprites)
+			{
+				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, q.Key).Any()) continue;
+				var index = q.Key == "Building" ? 2 : 0;
+				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
+				y += 40;
+			}
+
+			chromeRenderer.Flush();
 			DrawBuildPalette("Building");
 		}
 
@@ -107,6 +135,10 @@ namespace OpenRa.Game
 			var y = 0;
 
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
+
+			if (!buildableItems.Any())
+				return;
+
 			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
 				.Where( a => Rules.UnitInfo[a].TechLevel != -1 )
 				.OrderBy( a => Rules.UnitInfo[a].TechLevel );
@@ -115,7 +147,7 @@ namespace OpenRa.Game
 
 			foreach (var item in allItems)
 			{
-				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64 - 10, 40 + 48 * y, 64, 48);
+				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
 				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
 
 				if (!buildableItems.Contains(item) || (currentItem != null && currentItem.Item != item))
@@ -130,6 +162,12 @@ namespace OpenRa.Game
 			}
 
 			buildPaletteRenderer.Flush();
+
+			for (var j = 0; j <= y; j++)
+				chromeRenderer.DrawSprite(shimSprites[2], new float2(Game.viewport.Width - 192 - 9, 40 + 48 * j), 0);
+			chromeRenderer.DrawSprite(shimSprites[0], new float2(Game.viewport.Width - 192 - 9, 40 - 9), 0);
+			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 + 48 * y), 0);
+			chromeRenderer.Flush();
 		}
 	}
 }
