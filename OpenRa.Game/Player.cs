@@ -120,7 +120,13 @@ namespace OpenRa.Game
 
 		public void Tick( Player player )
 		{
-			if( Paused || Done ) return;
+			if (Done)
+			{
+				if (OnComplete != null) OnComplete();
+				return;
+			}
+
+			if( Paused ) return;
 
 			var costThisFrame = RemainingCost / RemainingTime;
 			if( costThisFrame != 0 && !player.TakeCash( costThisFrame ) ) return;
@@ -129,10 +135,7 @@ namespace OpenRa.Game
 			RemainingTime -= 1;
 			if( RemainingTime > 0 ) return;
 
-			// item finished; do whatever needs done.
 			Done = true;
-			if (OnComplete != null)
-				OnComplete();
 		}
 	}
 }

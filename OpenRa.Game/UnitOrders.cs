@@ -110,7 +110,7 @@ namespace OpenRa.Game
 									if (order.Player == Game.LocalPlayer)
 										Game.PlaySound(group == "Building" 
 											? "conscmp1.aud" : "unitrdy1.aud", false);
-									if (group != "Building")
+									if (group != "Building" && group != "Defense")
 										Game.BuildUnit(order.Player, order.TargetString);
 								})));
 					break;

@@ -20,12 +20,14 @@ namespace OpenRa.Game
 		readonly Sprite moneyBinSprite;
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
+		readonly Animation ready;
 
 		readonly List<Pair<Rectangle, Action<bool>>> buildItems = new List<Pair<Rectangle, Action<bool>>>();
 		readonly Cache<string, Animation> clockAnimations;
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, Sprite[]> tabSprites;
 		readonly Sprite[] shimSprites;
+		readonly Sprite blank;
 
 		public Chrome(Renderer r)
 		{
@@ -36,6 +38,8 @@ namespace OpenRa.Game
 
 			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 32, 192), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(512-320, 0, 320, 64), TextureChannel.Alpha);
+
+			blank = SheetBuilder.Add(new Size(64,48), 16);
 
 			sprites = groups
 				.SelectMany(g => Rules.Categories[g])
@@ -71,6 +75,9 @@ namespace OpenRa.Game
 				new Sprite( specialBin, new Rectangle( 0, 202, 192 +9, 10 ), TextureChannel.Alpha ),
 				new Sprite( specialBin, new Rectangle( 0, 216, 9, 48 ), TextureChannel.Alpha ),
 			};
+
+			ready = new Animation("pips");
+			ready.PlayRepeating("ready");
 		}
 
 		public void Draw()
@@ -107,7 +114,8 @@ namespace OpenRa.Game
 			{
 				var groupName = q.Key;
 				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, q.Key).Any()) continue;
-				var index = q.Key == currentTab ? 2 : 0;
+				var producing = Game.LocalPlayer.Producing(groupName);
+				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
 
 				buildItems.Add(Pair.New(new Rectangle(x, y, 27, 40), (Action<bool>)(isLmb => currentTab = groupName)));
@@ -163,6 +171,14 @@ namespace OpenRa.Game
 					clockAnimations[queueName].Tick();
 					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
 						Game.viewport.Location + new float2(rect.Location), 0);
+
+					if (currentItem.Done)
+					{
+						ready.Play("ready");
+						buildPaletteRenderer.DrawSprite(ready.Image, Game.viewport.Location 
+							+ new float2(rect.Location) 
+							+ new float2((64 - ready.Image.size.X) / 2, 2), 0);
+					}
 				}
 
 				var closureItem = item;
@@ -171,12 +187,21 @@ namespace OpenRa.Game
 				if (++x == 3) { x = 0; y++; }
 			}
 
+			while( x != 0)
+			{
+				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
+				buildPaletteRenderer.DrawSprite(blank, Game.viewport.Location + new float2(rect.Location), 0);
+				buildItems.Add(Pair.New(rect,
+					(Action<bool>)(_ => { })));
+				if (++x == 3) { x = 0; y++; }
+			}
+
 			buildPaletteRenderer.Flush();
 
-			for (var j = 0; j <= y; j++)
+			for (var j = 0; j < y; j++)
 				chromeRenderer.DrawSprite(shimSprites[2], new float2(Game.viewport.Width - 192 - 9, 40 + 48 * j), 0);
 			chromeRenderer.DrawSprite(shimSprites[0], new float2(Game.viewport.Width - 192 - 9, 40 - 9), 0);
-			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 + 48 * y), 0);
+			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 * y), 0);
 			chromeRenderer.Flush();
 		}
 

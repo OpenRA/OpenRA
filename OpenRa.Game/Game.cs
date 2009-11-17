@@ -337,6 +337,10 @@ namespace OpenRa.Game
 			}
 			else
 			{
+				var productionPoint = (1 / 24f * producer.CenterLocation).ToInt2();
+				if (UnitInfluence.GetUnitAt(productionPoint) != null)
+					return;
+
 				unit = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
 				var mobile = unit.traits.Get<Mobile>();
 				mobile.facing = 128;
