@@ -128,8 +128,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Support\Settings.cs" />
-    <Compile Include="Sidebar.cs" />
-    <Compile Include="SidebarItem.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />

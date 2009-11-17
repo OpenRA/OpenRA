@@ -10,8 +10,6 @@ namespace OpenRa.Game
 	{
 		readonly Renderer renderer;
 		
-		public readonly Sidebar sidebar;
-
 		static Size GetResolution(Settings settings)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
@@ -72,10 +70,7 @@ namespace OpenRa.Game
 			Game.world.Add(new Actor("heli", Game.map.Offset + new int2(11, 12), Game.players[1]));
 
 			renderer.BuildPalette(Game.map);
-			sidebar = new Sidebar(renderer, Game.LocalPlayer);
-
 			ShowCursor(false);
-
 			Game.ResetTimer();
 		}
 
