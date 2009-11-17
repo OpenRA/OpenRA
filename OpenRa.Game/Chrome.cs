@@ -105,16 +105,20 @@ namespace OpenRa.Game
 			
 			foreach (var q in tabSprites)
 			{
+				var groupName = q.Key;
 				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, q.Key).Any()) continue;
-				var index = q.Key == "Building" ? 2 : 0;
+				var index = q.Key == currentTab ? 2 : 0;
 				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
+
+				buildItems.Add(Pair.New(new Rectangle(x, y, 27, 40), (Action<bool>)(isLmb => currentTab = groupName)));
 				y += 40;
 			}
 
 			chromeRenderer.Flush();
-			DrawBuildPalette("Building");
+			DrawBuildPalette(currentTab);
 		}
 
+		string currentTab = "Building";
 		static string[] groups = new string[] { "Building", "Defense", "Vehicle", "Ship", "Infantry", "Plane" };
 		Dictionary<string, Sprite> sprites;
 
