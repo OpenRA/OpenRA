@@ -23,7 +23,7 @@ namespace OpenRa.Game.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
-			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && Rules.UnitCategory[ x.unitInfo.Name ] == "Building" ) )
+			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.unitInfo is UnitInfo.BuildingInfo ) )
 				ret[ b.unitInfo.Name ].Add( b );
 			return ret;
 		}

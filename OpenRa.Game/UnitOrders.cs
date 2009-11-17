@@ -79,7 +79,7 @@ namespace OpenRa.Game
 					Game.world.AddFrameEndTask( _ =>
 					{
 						var building = (UnitInfo.BuildingInfo)Rules.UnitInfo[ order.TargetString ];
-						var producing = order.Player.Producing( "Building" );
+						var producing = order.Player.Producing(Rules.UnitCategory[order.TargetString]);
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;
 
@@ -110,10 +110,10 @@ namespace OpenRa.Game
 							() => Game.world.AddFrameEndTask(
 								_ =>
 								{
+									var isBuilding = group == "Building" || group == "Defense";
 									if (order.Player == Game.LocalPlayer)
-										Game.PlaySound(group == "Building" 
-											? "conscmp1.aud" : "unitrdy1.aud", false);
-									if (group != "Building" && group != "Defense")
+										Game.PlaySound( isBuilding ? "conscmp1.aud" : "unitrdy1.aud", false);
+									if (!isBuilding)
 										Game.BuildUnit(order.Player, order.TargetString);
 								})));
 					break;

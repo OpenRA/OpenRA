@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			var producing = Owner.Producing( "Building" );
+			var producing = Owner.Producing( Rules.UnitCategory[ Building.Name ] );
 			if( producing == null || producing.Item != Building.Name || producing.RemainingTime != 0 )
 				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
 		}
