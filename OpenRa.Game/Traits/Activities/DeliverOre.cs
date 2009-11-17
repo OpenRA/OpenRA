@@ -25,7 +25,7 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			if( isDone )
 			{
-				self.traits.Get<Harvester>().Deliver( self );
+				self.traits.Get<Harvester>().Deliver( self, refinery );
 				return NextActivity ?? new Harvest();
 			}
 			else if( NextActivity != null )
@@ -42,7 +42,8 @@ namespace OpenRa.Game.Traits.Activities
 					umt = mobile.GetMovementType(),
 					checkForBlocked = false,
 				};
-				var refineries = Game.world.Actors.Where( x => x.unitInfo != null && x.unitInfo.Name == "proc" ).ToList();
+				var refineries = Game.world.Actors.Where( x => x.unitInfo != null 
+					&& x.unitInfo.Name == "proc" && x.Owner == self.Owner ).ToList();
 				if( refinery != null )
 					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
 				else
