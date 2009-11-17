@@ -56,7 +56,8 @@ namespace OpenRa.Game.GameRules
 
 		public IEnumerable<string> AllItems(Player player, params string[] categories)
 		{
-			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.UnitInfo[x].Name);
+			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.UnitInfo[x].Name)
+				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
 		public IEnumerable<string> UnitBuiltAt( UnitInfo info )
