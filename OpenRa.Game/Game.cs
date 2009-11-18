@@ -51,7 +51,7 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName);
 
 			for (int i = 0; i < 8; i++)
-				players.Add(i, new Player(i, i, string.Format("Multi{0}", i), 
+				players.Add(i, new Player(i, i, string.Format("Multi{0}", i),
 					Race.Allies));
 
 			localPlayerIndex = localPlayer;
@@ -61,7 +61,7 @@ namespace OpenRa.Game
 			map.InitOreDensity();
 			FileSystem.Mount(new Package(map.Theater + ".mix"));
 
-			viewport = new Viewport( clientSize, map.Offset, map.Offset + map.Size, renderer );
+			viewport = new Viewport(clientSize, map.Offset, map.Offset + map.Size, renderer);
 
 			world = new World();
 			treeCache = new TreeCache(map);
@@ -78,19 +78,19 @@ namespace OpenRa.Game
 			controller = new Controller();
 			worldRenderer = new WorldRenderer(renderer);
 
-			PathFinder = new PathFinder( map, worldRenderer.terrainRenderer.tileSet );
+			PathFinder = new PathFinder(map, worldRenderer.terrainRenderer.tileSet);
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
-			if( Replay != "" )
-				orderManager = new OrderManager( new OrderSource[] { new ReplayOrderSource( Replay ) } );
+			if (Replay != "")
+				orderManager = new OrderManager(new OrderSource[] { new ReplayOrderSource(Replay) });
 			else
 			{
-				var orderSources = ( string.IsNullOrEmpty( NetworkHost ) )
+				var orderSources = (string.IsNullOrEmpty(NetworkHost))
 					? new OrderSource[] { new LocalOrderSource() }
-					: new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource( new TcpClient( NetworkHost, NetworkPort ) ) };
-				orderManager = new OrderManager(orderSources, "replay.rep" );
+					: new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
+				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
 
 			PlaySound("intro.aud", false);
@@ -101,25 +101,25 @@ namespace OpenRa.Game
 			chrome = new Chrome(renderer);
 		}
 
-		static void LoadMapBuildings( IniFile mapfile )
+		static void LoadMapBuildings(IniFile mapfile)
 		{
-			foreach( var s in mapfile.GetSection( "STRUCTURES", true ) )
+			foreach (var s in mapfile.GetSection("STRUCTURES", true))
 			{
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
-				var parts = s.Value.ToLowerInvariant().Split( ',' );
-				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
+				var parts = s.Value.ToLowerInvariant().Split(',');
+				var loc = int.Parse(parts[3]);
+				world.Add(new Actor(parts[1], new int2(loc % 128, loc / 128), players[0]));
 			}
 		}
 
-		static void LoadMapUnits( IniFile mapfile )
+		static void LoadMapUnits(IniFile mapfile)
 		{
-			foreach( var s in mapfile.GetSection( "UNITS", true ) )
+			foreach (var s in mapfile.GetSection("UNITS", true))
 			{
 				//num=owner,type,health,location,facing,action,trigger
-				var parts = s.Value.ToLowerInvariant().Split( ',' );
-				var loc = int.Parse( parts[ 3 ] );
-				world.Add( new Actor( parts[ 1 ], new int2( loc % 128, loc / 128 ), players[ 0 ] ) );
+				var parts = s.Value.ToLowerInvariant().Split(',');
+				var loc = int.Parse(parts[3]);
+				world.Add(new Actor(parts[1], new int2(loc % 128, loc / 128), players[0]));
 			}
 		}
 
@@ -161,13 +161,13 @@ namespace OpenRa.Game
 		{
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
-			if( dt >= timestep )
+			if (dt >= timestep)
 			{
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += timestep;
 
-					if( orderManager.IsReadyForNextFrame )
+					if (orderManager.IsReadyForNextFrame)
 					{
 						orderManager.Tick();
 						if (controller.orderGenerator != null)
@@ -185,7 +185,7 @@ namespace OpenRa.Game
 						foreach (var player in players.Values)
 							player.Tick();
 					}
-					else if( orderManager.FrameNumber == 0 )
+					else if (orderManager.FrameNumber == 0)
 						lastTime = Environment.TickCount;
 				}
 
@@ -214,7 +214,7 @@ namespace OpenRa.Game
 
 			return map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
-					worldRenderer.terrainRenderer.tileSet.GetWalkability( map.MapTiles[ a.X, a.Y ] ) ) < double.PositiveInfinity;
+					worldRenderer.terrainRenderer.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public static bool IsWater(int2 a)
@@ -241,14 +241,14 @@ namespace OpenRa.Game
 				.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 		}
 
-		public static IEnumerable<int2> FindTilesInCircle( int2 a, int r )
+		public static IEnumerable<int2> FindTilesInCircle(int2 a, int r)
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
-			if( min.X < 0 ) min.X = 0;
-			if( min.Y < 0 ) min.Y = 0;
-			if( max.X > 127 ) max.X = 127;
-			if( max.Y > 127 ) max.Y = 127;
+			if (min.X < 0) min.X = 0;
+			if (min.Y < 0) min.Y = 0;
+			if (max.X > 127) max.X = 127;
+			if (max.Y > 127) max.Y = 127;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
@@ -306,7 +306,7 @@ namespace OpenRa.Game
 					toIgnore));
 		}
 
-		public static bool CanPlaceBuilding( UnitInfo.BuildingInfo building, int2 xy, bool adjust )
+		public static bool CanPlaceBuilding(UnitInfo.BuildingInfo building, int2 xy, bool adjust)
 		{
 			return CanPlaceBuilding(building, xy, null, adjust);
 		}
@@ -336,20 +336,20 @@ namespace OpenRa.Game
 
 		public static void BuildUnit(Player player, string name)
 		{
-			var producerTypes = Rules.TechTree.UnitBuiltAt( Rules.UnitInfo[ name ] );
+			var producerTypes = Rules.TechTree.UnitBuiltAt(Rules.UnitInfo[name]);
 			var producer = world.Actors
-				.FirstOrDefault(a => a.unitInfo != null 
+				.FirstOrDefault(a => a.unitInfo != null
 					&& producerTypes.Contains(a.unitInfo.Name) && a.Owner == player);
 
 			if (producer == null)
-				throw new InvalidOperationException("BuildUnit without suitable production structure!");
+				player.CancelProduction(Rules.UnitCategory[name]);
 
 			Actor unit;
 
 			if (producerTypes.Contains("spen") || producerTypes.Contains("syrd"))
 			{
-				var space = FindAdjacentTile(producer, Rules.UnitInfo[name].WaterBound ? 
-					UnitMovementType.Float : UnitMovementType.Wheel );	/* hackety hack */
+				var space = FindAdjacentTile(producer, Rules.UnitInfo[name].WaterBound ?
+					UnitMovementType.Float : UnitMovementType.Wheel);	/* hackety hack */
 
 				if (space == null)
 					return;
@@ -374,8 +374,8 @@ namespace OpenRa.Game
 				mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
 			}
 
-			world.Add( unit );
-			player.FinishProduction( Rules.UnitCategory[ unit.unitInfo.Name ] );
+			world.Add(unit);
+			player.FinishProduction(Rules.UnitCategory[name]);
 
 			if (producer.traits.Contains<RenderWarFactory>())
 				producer.traits.Get<RenderWarFactory>().EjectUnit();
