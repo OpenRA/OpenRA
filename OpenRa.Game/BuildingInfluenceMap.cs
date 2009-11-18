@@ -15,7 +15,7 @@ namespace OpenRa.Game
 		Actor[,] influence = new Actor[128, 128];
 		static readonly Pair<Actor, float> NoClaim = Pair.New((Actor)null, float.MaxValue);
 
-		public BuildingInfluenceMap(int maxDistance)
+		public BuildingInfluenceMap()
 		{
 			for (int j = 0; j < 128; j++)
 				for (int i = 0; i < 128; i++)

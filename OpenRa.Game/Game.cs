@@ -69,7 +69,7 @@ namespace OpenRa.Game
 			foreach (TreeReference treeReference in map.Trees)
 				world.Add(new Actor(treeReference, treeCache));
 
-			BuildingInfluence = new BuildingInfluenceMap(8);
+			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
 
 			LoadMapBuildings(mapFile);
