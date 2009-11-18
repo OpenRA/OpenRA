@@ -125,6 +125,24 @@ namespace OpenRa.Game
 
 			chromeRenderer.Flush();
 			DrawBuildPalette(currentTab);
+
+			var chatpos = new int2( 400, Game.viewport.Height - 20 );
+
+			if (Game.chat.isChatting)
+				RenderChatLine(Pair.New("Chat:", Game.chat.typing), chatpos);
+
+			foreach (var line in Game.chat.recentLines.AsEnumerable().Reverse())
+			{
+				chatpos.Y -= 20;
+				RenderChatLine(line, chatpos);
+			}
+		}
+
+		void RenderChatLine(Pair<string, string> line, int2 p)
+		{
+			var size = renderer.MeasureText(line.First);
+			renderer.DrawText(line.First, p, Color.Red);
+			renderer.DrawText(line.Second, p + new int2(size.X + 10, 0), Color.White);
 		}
 
 		string currentTab = "Building";

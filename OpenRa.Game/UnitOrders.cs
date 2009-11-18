@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -141,6 +142,11 @@ namespace OpenRa.Game
 				{
 					var pt = order.Subject.traits.Get<RallyPoint>();
 					pt.rallyPoint = order.TargetLocation;
+					break;
+				}
+			case "Chat":
+				{
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName + ":", order.TargetString));
 					break;
 				}
 			default:

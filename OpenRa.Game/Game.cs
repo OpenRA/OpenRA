@@ -157,6 +157,8 @@ namespace OpenRa.Game
 		static int oreTicks = oreFrequency;
 		public static int RenderFrame = 0;
 
+		public static Chat chat = new Chat();
+
 		public static void Tick()
 		{
 			int t = Environment.TickCount;

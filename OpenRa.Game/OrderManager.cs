@@ -155,7 +155,7 @@ namespace OpenRa.Game
 			this.socket.NoDelay = true;
 			var reader = new BinaryReader( socket.GetStream() );
 
-			var nextFrameId = System.BitConverter.GetBytes( nextLocalOrderFrame );
+			var nextFrameId = BitConverter.GetBytes( nextLocalOrderFrame );
 			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
 
 			new Thread( () =>
@@ -208,14 +208,14 @@ namespace OpenRa.Game
 
 			var ms = new MemoryStream();
 
-			ms.Write( System.BitConverter.GetBytes( nextLocalOrderFrame ) );
+			ms.Write( BitConverter.GetBytes( nextLocalOrderFrame ) );
 
 			foreach( var order in localOrders )
 				ms.Write( order.Serialize() );
 
 			++nextLocalOrderFrame;
 
-			socket.GetStream().Write( System.BitConverter.GetBytes( (int)ms.Length ) );
+			socket.GetStream().Write( BitConverter.GetBytes( (int)ms.Length ) );
 			ms.WriteTo( socket.GetStream() );
 		}
 

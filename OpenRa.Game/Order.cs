@@ -87,6 +87,11 @@ namespace OpenRa.Game
 			return Game.world.Actors.Where(x => x.ActorID == aID).First();
 		}
 
+		public static Order Chat(Player subject, string text)
+		{
+			return new Order(subject, "Chat", null, null, int2.Zero, text, null);
+		}
+
 		public static Order Attack(Actor subject, Actor target)
 		{
 			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null, Cursor.Attack);

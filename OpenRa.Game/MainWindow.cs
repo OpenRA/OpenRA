@@ -128,6 +128,16 @@ namespace OpenRa.Game
                 Location = new int2(e.Location)
             });
         }
+
+		protected override void OnKeyPress(KeyPressEventArgs e)
+		{
+			base.OnKeyPress(e);
+
+			if (e.KeyChar == '\r')
+				Game.chat.Toggle();
+			else if (Game.chat.isChatting)
+				Game.chat.TypeChar(e.KeyChar);
+		}
 	}
 
     struct MouseInput
