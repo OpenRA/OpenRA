@@ -342,7 +342,10 @@ namespace OpenRa.Game
 					&& producerTypes.Contains(a.unitInfo.Name) && a.Owner == player);
 
 			if (producer == null)
+			{
 				player.CancelProduction(Rules.UnitCategory[name]);
+				return;
+			}
 
 			Actor unit;
 
