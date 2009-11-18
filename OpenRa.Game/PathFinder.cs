@@ -77,24 +77,18 @@ namespace OpenRa.Game
 
 		public List<int2> FindPath( PathSearch search )
 		{
-			int nodesExpanded = 0;
 			using (new PerfSample("find_path_inner"))
 			{
 				while (!search.queue.Empty)
 				{
 					var p = search.Expand( passableCost );
+					PerfHistory.Increment("nodes_expanded", .01);
 
 					if (search.heuristic(p) == 0)
-					{
-						PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
 						return MakePath(search.cellInfo, p);
-					}
-
-					nodesExpanded++;
 				}
 
 				// no path exists
-				PerfHistory.Increment("nodes_expanded", nodesExpanded * .01);
 				return new List<int2>();
 			}
 		}
