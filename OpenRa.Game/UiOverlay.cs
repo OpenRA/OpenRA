@@ -49,13 +49,13 @@ namespace OpenRa.Game
 
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
 
-			if( ShowBuildDebug )
-				for( var j = 0 ; j < 128 ; j++ )
-					for( var i = 0 ; i < 128 ; i++ )
-						if( Game.GetDistanceToBase( new int2( i, j ), Game.LocalPlayer ) < maxDistance )
-							if( Game.IsCellBuildable( new int2( i, j ), bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel ) )
-								if( !Game.map.ContainsResource( new int2( i, j ) ) )
-									spriteRenderer.DrawSprite( unitDebug, Game.CellSize * new float2( i, j ), 0 );
+			//if( ShowBuildDebug )
+			//    for( var j = 0 ; j < 128 ; j++ )
+			//        for( var i = 0 ; i < 128 ; i++ )
+			//            if( Game.GetDistanceToBase( new int2( i, j ), Game.LocalPlayer ) < maxDistance )
+			//                if( Game.IsCellBuildable( new int2( i, j ), bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel ) )
+			//                    if( !Game.map.ContainsResource( new int2( i, j ) ) )
+			//                        spriteRenderer.DrawSprite( unitDebug, Game.CellSize * new float2( i, j ), 0 );
 
 			var tooFarFromBase = !Footprint.Tiles( bi, position ).Any(
 				t => Game.GetDistanceToBase( t, Game.LocalPlayer ) < maxDistance );

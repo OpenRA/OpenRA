@@ -12,17 +12,14 @@ namespace OpenRa.Game
 	class BuildingInfluenceMap
 	{
 		bool[,] blocked = new bool[128, 128];
-		Pair<Actor, float>[,] influence = new Pair<Actor, float>[128, 128];
-		readonly int maxDistance;	/* clip limit for voronoi cells */
+		Actor[,] influence = new Actor[128, 128];
 		static readonly Pair<Actor, float> NoClaim = Pair.New((Actor)null, float.MaxValue);
 
 		public BuildingInfluenceMap(int maxDistance)
 		{
-			this.maxDistance = maxDistance;
-
 			for (int j = 0; j < 128; j++)
 				for (int i = 0; i < 128; i++)
-					influence[i, j] = NoClaim;
+					influence[i, j] = null;
 
 			Game.world.ActorAdded +=
 				a => { if (a.traits.Contains<Traits.Building>()) AddInfluence(a, a.traits.Get<Traits.Building>()); };
@@ -32,110 +29,24 @@ namespace OpenRa.Game
 
 		void AddInfluence(Actor a, Traits.Building building)
 		{
-			var tiles = Footprint.Tiles(a, building).ToArray();
-			var min = int2.Max(new int2(0, 0), 
-				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
-			var max = int2.Min(new int2(128, 128), 
-				tiles.Aggregate(int2.Max) + new int2(maxDistance, maxDistance));
-
-			var pq = new PriorityQueue<Cell>();
-
-			var initialTileCount = 0;
-
 			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
 				if (IsValid(u))
 					blocked[u.X, u.Y] = true;
 
-			foreach (var t in tiles)
-				if (IsValid(t))
-				{
-					pq.Add(new Cell { location = t, distance = 0, actor=a });
-					++initialTileCount;
-				}
-
-			if (!building.unitInfo.BaseNormal)
-			{
-				while (!pq.Empty)
-				{
-					var c = pq.Pop();
-					influence[c.location.X, c.location.Y].First = c.actor;
-					influence[c.location.X, c.location.Y].Second = 0;
-				}
-				return;
-			}
-
-			Log.Write("Recalculating voronoi region for {{ {0} ({1},{2}) }}: {3} initial tiles",
-				a.unitInfo.Name, a.Location.X, a.Location.Y, initialTileCount);
-
-			var updatedCells = 0;
-
-			while (!pq.Empty)
-			{
-				var c = pq.Pop();
-
-				if (influence[c.location.X, c.location.Y].Second < c.distance)
-					continue;
-
-				influence[c.location.X, c.location.Y].First = c.actor;
-				influence[c.location.X, c.location.Y].Second = c.distance;
-
-				++updatedCells;
-
-				if (c.distance + 1 > maxDistance) continue;
-
-				foreach (var d in Util.directions)
-				{
-					var e = c.location + d;
-					if (e.X < min.X || e.Y < min.Y || e.X > max.X || e.Y > max.Y)
-						continue;
-
-					pq.Add(new Cell
-					{
-						location = e,
-						distance = c.distance + ((d.X * d.Y != 0) ? 1.414f : 1f),
-						actor = c.actor
-					});
-				}
-			}
-
-			Log.Write("Finished recalculating region. {0} cells updated.", updatedCells);
+			foreach (var u in Footprint.Tiles(building.unitInfo, a.Location, false))
+				if (IsValid(u))
+					influence[u.X, u.Y] = a;
 		}
 
 		void RemoveInfluence(Actor a, Traits.Building building)
 		{
-			var tiles = Footprint.Tiles(a, building).ToArray();
-			var min = int2.Max(new int2(0, 0),
-				tiles.Aggregate(int2.Min) - new int2(maxDistance, maxDistance));
-			var max = int2.Min(new int2(128, 128),
-				tiles.Aggregate(int2.Max) + new int2(maxDistance, maxDistance));
-
 			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
 				if (IsValid(u))
 					blocked[u.X, u.Y] = false;
-			
-			for (var j = min.Y; j <= max.Y; j++)
-				for (var i = min.X; i <= max.X; i++)
-					if (influence[i, j].First == a)
-						influence[i, j] = NoClaim;
 
-			// slightly expanded bounds for collecting candidates for recalculation.
-			var min2 = int2.Max(new int2(0, 0), min - new int2(1, 1));
-			var max2 = int2.Min(new int2(128, 128), max + new int2(1, 1));
-
-			var actors = new List<Actor>();
-			for (var j = min2.Y; j <= max2.Y; j++)
-				for (var i = min2.X; i <= max2.X; i++)
-					if (influence[i, j].First != null && !actors.Contains(influence[i, j].First))
-						actors.Add(influence[i, j].First);
-
-			Log.Write("Finished collecting candidates for evacuated region = {0}", actors.Count);
-
-			foreach( var b in actors )
-			{
-				var bb = a.traits.GetOrDefault<Traits.Building>();
-				if( bb != null )
-					AddInfluence( b, bb );
-			}
+			foreach (var u in Footprint.Tiles(building.unitInfo, a.Location, false))
+				if (IsValid(u))
+					influence[u.X, u.Y] = null;
 		}
 
 		bool IsValid(int2 t)
@@ -145,38 +56,25 @@ namespace OpenRa.Game
 
 		public Actor GetBuildingAt(int2 cell)
 		{
-			if (!IsValid(cell) || influence[cell.X, cell.Y].Second != 0)
-				return null;
-			return influence[cell.X, cell.Y].First;
+			if (!IsValid(cell)) return null;
+			return influence[cell.X, cell.Y];
 		}
 
 		public Actor GetNearestBuilding(int2 cell)
 		{
 			if (!IsValid(cell)) return null;
-			return influence[cell.X, cell.Y].First;
+			return influence[cell.X, cell.Y];
 		}
 
 		public int GetDistanceToBuilding(int2 cell)
 		{
 			if (!IsValid(cell)) return int.MaxValue;
-			return (int)influence[cell.X, cell.Y].Second;
+			return influence[cell.X, cell.Y] == null ? int.MaxValue : 0;
 		}
 
 		public bool CanMoveHere(int2 cell)
 		{
 			return IsValid(cell) && !blocked[cell.X, cell.Y];
-		}
-
-		struct Cell : IComparable<Cell>
-		{
-			public int2 location;
-			public float distance;
-			public Actor actor;
-
-			public int CompareTo(Cell other)
-			{
-				return distance.CompareTo(other.distance);
-			}
 		}
 	}
 }
