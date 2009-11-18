@@ -6,6 +6,7 @@ using OpenRa.Game.GameRules;
 using IjwFramework.Types;
 using IjwFramework.Collections;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -22,31 +23,22 @@ namespace OpenRa.Game
 					influence[i, j] = null;
 
 			Game.world.ActorAdded +=
-				a => { if (a.traits.Contains<Traits.Building>()) AddInfluence(a, a.traits.Get<Traits.Building>()); };
+				a => { if (a.traits.Contains<Building>()) 
+					ChangeInfluence(a, a.traits.Get<Building>(), true); };
 			Game.world.ActorRemoved +=
-				a => { if (a.traits.Contains<Traits.Building>()) RemoveInfluence(a, a.traits.Get<Traits.Building>()); };
+				a => { if (a.traits.Contains<Building>()) 
+					ChangeInfluence(a, a.traits.Get<Building>(), false); };
 		}
 
-		void AddInfluence(Actor a, Traits.Building building)
+		void ChangeInfluence(Actor a, Building building, bool isAdd)
 		{
 			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
 				if (IsValid(u))
-					blocked[u.X, u.Y] = true;
+					blocked[u.X, u.Y] = isAdd;
 
 			foreach (var u in Footprint.Tiles(building.unitInfo, a.Location, false))
 				if (IsValid(u))
-					influence[u.X, u.Y] = a;
-		}
-
-		void RemoveInfluence(Actor a, Traits.Building building)
-		{
-			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
-				if (IsValid(u))
-					blocked[u.X, u.Y] = false;
-
-			foreach (var u in Footprint.Tiles(building.unitInfo, a.Location, false))
-				if (IsValid(u))
-					influence[u.X, u.Y] = null;
+					influence[u.X, u.Y] = isAdd ? a : null;
 		}
 
 		bool IsValid(int2 t)
