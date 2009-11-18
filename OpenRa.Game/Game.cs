@@ -311,6 +311,29 @@ namespace OpenRa.Game
 			return CanPlaceBuilding(building, xy, null, adjust);
 		}
 
+		public static bool IsCloseEnoughToBase(Player p, UnitInfo.BuildingInfo bi, int2 position)
+		{
+			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+
+			var search = new PathSearch()
+			{
+				heuristic = loc =>
+				{
+					var b = Game.BuildingInfluence.GetBuildingAt(loc);
+					if (b != null && b.Owner == p) return 0;
+					if ((loc - position).Length > maxDistance)
+						return float.PositiveInfinity;	/* not quite right */
+					return 1;
+				},
+				checkForBlocked = false,
+				ignoreTerrain = true,
+			};
+
+			foreach (var t in Footprint.Tiles(bi, position)) search.AddInitialCell(t);
+
+			return Game.PathFinder.FindPath(search).Count != 0;
+		}
+
 		public static void BuildUnit(Player player, string name)
 		{
 			var producerTypes = Rules.TechTree.UnitBuiltAt( Rules.UnitInfo[ name ] );

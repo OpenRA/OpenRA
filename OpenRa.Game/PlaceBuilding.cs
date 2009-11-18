@@ -24,11 +24,9 @@ namespace OpenRa.Game
 				if( !Game.CanPlaceBuilding( Building, xy, true ) )
 					yield break;
 
-				var maxDistance = Building.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
-				if( !Footprint.Tiles( Building, xy ).Any(
-					t => Game.GetDistanceToBase( t, Owner ) < maxDistance ) )
+				if (!Game.IsCloseEnoughToBase(Owner, Building, xy))
 					yield break;
-
+				
 				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Building.Name );
 			}
 			else // rmb

@@ -15,6 +15,7 @@ namespace OpenRa.Game
 		public UnitMovementType umt;
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
+		public bool ignoreTerrain;
 
 		public PathSearch()
 		{
@@ -39,22 +40,31 @@ namespace OpenRa.Game
 
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
-				if( passableCost[ (int)umt ][ newHere.X, newHere.Y ] == float.PositiveInfinity )
-					continue;
-				if( !Game.BuildingInfluence.CanMoveHere( newHere ) )
-					continue;
+				if (ignoreTerrain)
+				{
+					if (!Game.map.IsInMap(newHere.X, newHere.Y)) continue;
+				}
+				else
+				{
+					if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
+						continue;
+					if (!Game.BuildingInfluence.CanMoveHere(newHere))
+						continue;
+					if (Game.map.IsOverlaySolid(newHere))
+						continue;
+				}
 				if( checkForBlocked && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 					continue;
 				if (customBlock != null && customBlock(newHere))
 					continue;
-				if (Game.map.IsOverlaySolid(newHere))
-					continue;
+				
 
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )
 					continue;
 
-				float cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563f : 1.0f ) * passableCost[ (int)umt ][ newHere.X, newHere.Y ];
+				float cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563f : 1.0f ) * 
+					(ignoreTerrain ? 1 : passableCost[ (int)umt ][ newHere.X, newHere.Y ]);
 				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
