@@ -18,10 +18,6 @@ namespace OpenRa.Game
 
 		public BuildingInfluenceMap()
 		{
-			for (int j = 0; j < 128; j++)
-				for (int i = 0; i < 128; i++)
-					influence[i, j] = null;
-
 			Game.world.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), true); };
