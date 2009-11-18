@@ -352,7 +352,7 @@ namespace OpenRa.Game
 					UnitMovementType.Float : UnitMovementType.Wheel );	/* hackety hack */
 
 				if (space == null)
-					throw new NotImplementedException("Nowhere to place this unit.");
+					return;
 
 				unit = new Actor(name, space.Value, player);
 				var mobile = unit.traits.Get<Mobile>();
