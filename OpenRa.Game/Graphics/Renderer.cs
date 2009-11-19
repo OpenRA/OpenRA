@@ -105,19 +105,5 @@ namespace OpenRa.Game.Graphics
 		{
 			return new int2(fhDebug.MeasureText(sh, text));
 		}
-
-		public void DrawTexture(Texture t, int2 pos)
-		{
-			sh.Begin();
-			sh.SetTransform(1,1, pos.X, pos.Y);
-			sh.Draw(t, 0, 0, 256,256, -1);
-			sh.End();
-		}
-
-		public Texture LoadTexture(string filename)
-		{
-			using (var stream = FileSystem.Open(filename))
-				return Texture.Create(stream, device);
-		}
 	}
 }
