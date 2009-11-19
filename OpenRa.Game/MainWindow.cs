@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using System.Runtime.InteropServices;
+using OpenRa.Game.Traits;
+using System.IO;
 
 namespace OpenRa.Game
 {
@@ -57,17 +59,6 @@ namespace OpenRa.Game
 				settings.GetValue("player", 1));
 
 			SequenceProvider.ForcePrecache();
-
-			Game.world.Add( new Actor( "mcv", Rules.Map.Offset + new int2( 5, 5 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "mcv", Rules.Map.Offset + new int2( 7, 5 ), Game.players[ 2 ] ) );
-			Game.world.Add( new Actor( "mcv", Rules.Map.Offset + new int2( 9, 5 ), Game.players[ 0 ] ) );
-			Game.world.Add( new Actor( "jeep", Rules.Map.Offset + new int2( 9, 14 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "3tnk", Rules.Map.Offset + new int2( 12, 7 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "apc", Rules.Map.Offset + new int2( 13, 7 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "ca", Rules.Map.Offset + new int2( 40, 7 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "e1", Rules.Map.Offset + new int2( 9, 13 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "arty", Rules.Map.Offset + new int2( 10, 13 ), Game.players[ 1 ] ) );
-			Game.world.Add( new Actor( "heli", Rules.Map.Offset + new int2( 11, 12 ), Game.players[ 1 ] ) );
 
 			renderer.BuildPalette( Rules.Map );
 			ShowCursor(false);

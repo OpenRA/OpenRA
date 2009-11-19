@@ -24,6 +24,7 @@ namespace OpenRa.Game
 		public static void LoadRules(string mapFileName)
 		{
 			AllRules = new IniFile(
+				FileSystem.Open("session.ini"),
 				FileSystem.Open(mapFileName),
 				FileSystem.Open("rules.ini"),
 				FileSystem.Open("units.ini"),

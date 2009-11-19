@@ -11,6 +11,7 @@ using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -50,8 +51,10 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName);
 
 			for (int i = 0; i < 8; i++)
-				players.Add(i, new Player(i, i, string.Format("Multi{0}", i),
-					Race.Allies));
+				players.Add(i, 
+					new Player(i, i, 
+						string.Format("Multi{0}", i),
+						Race.Allies));
 
 			localPlayerIndex = localPlayer;
 
@@ -113,9 +116,11 @@ namespace OpenRa.Game
 			foreach (var s in mapfile.GetSection("UNITS", true))
 			{
 				//num=owner,type,health,location,facing,action,trigger
-				var parts = s.Value.ToLowerInvariant().Split(',');
+				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(parts[1], new int2(loc % 128, loc / 128), players[0]));
+				world.Add(new Actor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
+					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) 
+					?? players[0]));
 			}
 		}
 
