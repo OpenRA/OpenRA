@@ -23,11 +23,6 @@ namespace OpenRa.Game.Graphics
 		{
 			terrainRenderer = new TerrainRenderer(renderer, Game.map);
 
-			// TODO: this is layout policy. it belongs at a higher level than this.
-			//region = Region.Create(Game.viewport, DockStyle.Left,
-			//    Game.viewport.Width, Draw, Game.controller.HandleInput);
-			//Game.viewport.AddRegion(Game.controller);
-
 			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);
 			lineRenderer = new LineRenderer(renderer);

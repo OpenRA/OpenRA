@@ -85,18 +85,18 @@ namespace OpenRa.Game
 
 		int2 lastPos;
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-            lastPos = new int2(e.Location);
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			lastPos = new int2(e.Location);
 
-            Game.viewport.DispatchMouseInput(new MouseInput
-                {
-                    Button = e.Button,
-                    Event = MouseInputEvent.Down,
-                    Location = new int2(e.Location)
-                });
-        }
+			Game.viewport.DispatchMouseInput(new MouseInput
+			{
+				Button = e.Button,
+				Event = MouseInputEvent.Down,
+				Location = new int2(e.Location)
+			});
+		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
@@ -109,25 +109,25 @@ namespace OpenRa.Game
 				lastPos = p;
 			}
 
-            Game.viewport.DispatchMouseInput(new MouseInput
-            {
-                Button = e.Button,
-                Event = MouseInputEvent.Move,
-                Location = new int2(e.Location)
-            });
+			Game.viewport.DispatchMouseInput(new MouseInput
+			{
+				Button = e.Button,
+				Event = MouseInputEvent.Move,
+				Location = new int2(e.Location)
+			});
 		}
 
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
 
-            Game.viewport.DispatchMouseInput(new MouseInput
-            {
-                Button = e.Button,
-                Event = MouseInputEvent.Up,
-                Location = new int2(e.Location)
-            });
-        }
+			Game.viewport.DispatchMouseInput(new MouseInput
+			{
+				Button = e.Button,
+				Event = MouseInputEvent.Up,
+				Location = new int2(e.Location)
+			});
+		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
@@ -140,12 +140,12 @@ namespace OpenRa.Game
 		}
 	}
 
-    struct MouseInput
-    {
-        public MouseInputEvent Event;
-        public int2 Location;
-        public MouseButtons Button;
-    }
+	struct MouseInput
+	{
+		public MouseInputEvent Event;
+		public int2 Location;
+		public MouseButtons Button;
+	}
 
-    enum MouseInputEvent { Down, Move, Up };
+	enum MouseInputEvent { Down, Move, Up };
 }

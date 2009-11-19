@@ -13,7 +13,7 @@ namespace OpenRa.Game.Graphics
 		public readonly RectangleF uv;
 		public readonly float2 size;
 
-        readonly float2[] uvhax;
+		readonly float2[] uvhax;
 
 		internal Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 		{
@@ -27,22 +27,22 @@ namespace OpenRa.Game.Graphics
 					(float)(bounds.Width) / sheet.Size.Width,
 					(float)(bounds.Height) / sheet.Size.Height);
 
-            uvhax = new float2[]
-            {
-                new float2( uv.Left, uv.Top ),
-                new float2( uv.Right, uv.Top ),
-                new float2( uv.Left, uv.Bottom ),
-                new float2( uv.Right, uv.Bottom ),
-            };
+			uvhax = new float2[]
+			{
+				new float2( uv.Left, uv.Top ),
+				new float2( uv.Right, uv.Top ),
+				new float2( uv.Left, uv.Bottom ),
+				new float2( uv.Right, uv.Bottom ),
+			};
 
 			this.size = new float2(bounds.Size);
 		}
 
-        public float2 FastMapTextureCoords(int k)
-        {
-            return uvhax[k];
-        }
-    }
+		public float2 FastMapTextureCoords( int k )
+		{
+			return uvhax[ k ];
+		}
+	}
 
 	public enum TextureChannel
 	{

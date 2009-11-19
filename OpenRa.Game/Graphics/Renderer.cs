@@ -70,14 +70,14 @@ namespace OpenRa.Game.Graphics
 			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type, Shader shader)
 			where T : struct
 		{
-			shader.SetValue("DiffuseTexture", texture);
+			shader.SetValue( "DiffuseTexture", texture );
 			shader.Commit();
 
-			vertices.Bind(0);
+			vertices.Bind( 0 );
 			indices.Bind();
 
-			device.DrawIndexedPrimitives(type,
-				vertexRange, indexRange);
+			device.DrawIndexedPrimitives( type,
+				vertexRange, indexRange );
 		}
 
 		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,

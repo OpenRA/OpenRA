@@ -25,28 +25,28 @@ namespace OpenRa.Game.Graphics
 
 			tileSet = new TileSet( map.TileSuffix );
 
-            Size tileSize = new Size( Game.CellSize, Game.CellSize );
+			Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
 			SheetBuilder.ForceNewSheet();
 
-            var tileMapping = new Cache<TileReference, Sprite>(
-                x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
+			var tileMapping = new Cache<TileReference, Sprite>(
+				x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
 
-            Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
-            ushort[] indices = new ushort[6 * map.Height * map.Width];
+			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
+			ushort[] indices = new ushort[6 * map.Height * map.Width];
 
-            int nv = 0;
-            int ni = 0;
+			int nv = 0;
+			int ni = 0;
 			for( int j = map.YOffset ; j < map.YOffset + map.Height ; j++ )
-                for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
-                {
-                    Sprite tile = tileMapping[map.MapTiles[i, j]];
-                    Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni);
-                    nv += 4;
-                    ni += 6;
-                }
+				for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
+				{
+					Sprite tile = tileMapping[map.MapTiles[i, j]];
+					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni);
+					nv += 4;
+					ni += 6;
+				}
 
-            terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
+			terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
 
 			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
 			vertexBuffer.SetData( vertices );
@@ -71,12 +71,12 @@ namespace OpenRa.Game.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-            renderer.SpriteShader.Quality = ShaderQuality.Low;
-            renderer.SpriteShader.Render(() =>
-                renderer.DrawBatch(vertexBuffer, indexBuffer,
-                    new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
-                    new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
-                    terrainSheet.Texture, PrimitiveType.TriangleList, renderer.SpriteShader));
+			renderer.SpriteShader.Quality = ShaderQuality.Low;
+			renderer.SpriteShader.Render(() =>
+				renderer.DrawBatch(vertexBuffer, indexBuffer,
+					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
+					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
+					terrainSheet.Texture, PrimitiveType.TriangleList, renderer.SpriteShader));
 
 			overlayRenderer.Draw();
 		}

@@ -63,22 +63,22 @@ namespace OpenRa.Game.Graphics
 			cursorFrame += 0.5f;
 		}
 
-        IHandleInput dragRegion = null;
-        public void DispatchMouseInput(MouseInput mi)
-        {
+		IHandleInput dragRegion = null;
+		public void DispatchMouseInput(MouseInput mi)
+		{
 			if (mi.Event == MouseInputEvent.Move)
 				mousePos = mi.Location;
 
-            if (dragRegion != null) {
-                dragRegion.HandleInput( mi );
-                if (mi.Event == MouseInputEvent.Up) dragRegion = null;
-                return;
-            }
+			if (dragRegion != null) {
+				dragRegion.HandleInput( mi );
+				if (mi.Event == MouseInputEvent.Up) dragRegion = null;
+				return;
+			}
 
-            dragRegion = regions.FirstOrDefault(r => r.HandleInput(mi));
-            if (mi.Event != MouseInputEvent.Down)
-                dragRegion = null;
-        }
+			dragRegion = regions.FirstOrDefault(r => r.HandleInput(mi));
+			if (mi.Event != MouseInputEvent.Down)
+				dragRegion = null;
+		}
 
 		public float2 ViewToWorld(MouseInput mi)
 		{

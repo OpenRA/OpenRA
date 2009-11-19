@@ -109,7 +109,7 @@ namespace OpenRa.FileFormats
 						}
 
 						h.Image = CopyImageData( h.RefImage.Image );
-                        Format40.DecodeInto(ReadCompressedData(stream, h), h.Image);
+						Format40.DecodeInto(ReadCompressedData(stream, h), h.Image);
 						break;
 					}
 				case Format.Format80:

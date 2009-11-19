@@ -16,12 +16,12 @@ namespace OpenRa.Game.Graphics
 
 		const int spritesPerBatch = 1024;
 
-        Vertex[] vertices = new Vertex[4 * spritesPerBatch];
-        ushort[] indices = new ushort[6 * spritesPerBatch];
+		Vertex[] vertices = new Vertex[4 * spritesPerBatch];
+		ushort[] indices = new ushort[6 * spritesPerBatch];
 		Sheet currentSheet = null;
 		int sprites = 0;
 		ShaderQuality quality;
-        int nv = 0, ni = 0;
+		int nv = 0, ni = 0;
 
 		public SpriteRenderer(Renderer renderer, bool allowAlpha, Shader shader)
 		{
@@ -41,19 +41,19 @@ namespace OpenRa.Game.Graphics
 		{
 			if (sprites > 0)
 			{
-                shader.Quality = quality;
-                shader.Render(() =>
-                 {
-                     vertexBuffer.SetData(vertices);
-                     indexBuffer.SetData(indices);
-                     renderer.DrawBatch(vertexBuffer, indexBuffer,
-                         new Range<int>(0, nv),
-                         new Range<int>(0, ni),
-                         currentSheet.Texture, PrimitiveType.TriangleList,
-						 shader);
-                 });
+				shader.Quality = quality;
+				shader.Render(() =>
+				{
+					vertexBuffer.SetData(vertices);
+					indexBuffer.SetData(indices);
+					renderer.DrawBatch(vertexBuffer, indexBuffer,
+						new Range<int>(0, nv),
+						new Range<int>(0, ni),
+						currentSheet.Texture, PrimitiveType.TriangleList,
+						shader);
+				});
 
-                nv = 0; ni = 0;
+				nv = 0; ni = 0;
 				currentSheet = null;
 				sprites = 0;
 			}
@@ -66,7 +66,7 @@ namespace OpenRa.Game.Graphics
 
 			currentSheet = s.sheet;
 			Util.FastCreateQuad(vertices, indices, location, s, palette, nv, ni);
-            nv += 4; ni += 6;
+			nv += 4; ni += 6;
 			if (++sprites >= spritesPerBatch)
 				Flush();
 		}

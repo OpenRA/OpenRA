@@ -17,14 +17,14 @@ namespace OpenRa.FileFormats
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
 		readonly long dataStart;
-        readonly Stream s;
+		readonly Stream s;
 
 		public Package(string filename)
 		{
 			this.filename = filename;
-            s = FileSystem.Open(filename);
+			s = FileSystem.Open(filename);
 
-            BinaryReader reader = new BinaryReader(s);
+			BinaryReader reader = new BinaryReader(s);
 			uint signature = reader.ReadUInt32();
 
 			isRmix = 0 == (signature & ~(uint)(MixFileFlags.Checksum | MixFileFlags.Encrypted));
@@ -50,7 +50,7 @@ namespace OpenRa.FileFormats
 		{
 			BinaryReader reader = new BinaryReader(s);
 			byte[] keyblock = reader.ReadBytes(80);
-            byte[] blowfishKey = new BlowfishKeyProvider().DecryptKey(keyblock);
+			byte[] blowfishKey = new BlowfishKeyProvider().DecryptKey(keyblock);
 
 			uint[] h = ReadUints(reader, 2);
 
@@ -117,9 +117,9 @@ namespace OpenRa.FileFormats
 
 		public Stream GetContent(uint hash)
 		{
-            PackageEntry e;
-            if (!index.TryGetValue(hash, out e))
-                return null;
+			PackageEntry e;
+			if (!index.TryGetValue(hash, out e))
+				return null;
 
 			s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
 			byte[] data = new byte[ e.Length ];
