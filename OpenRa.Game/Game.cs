@@ -96,6 +96,7 @@ namespace OpenRa.Game
 
 			skipMakeAnims = false;
 			PerfHistory.items["render"].hasNormalTick = false;
+			PerfHistory.items["batches"].hasNormalTick = false;
 
 			chrome = new Chrome(renderer);
 		}
@@ -203,6 +204,7 @@ namespace OpenRa.Game
 			}
 
 			PerfHistory.items["render"].Tick();
+			PerfHistory.items["batches"].Tick();
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)

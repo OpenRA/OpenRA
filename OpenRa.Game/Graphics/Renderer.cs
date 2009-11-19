@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game.Graphics
 {
@@ -70,14 +71,16 @@ namespace OpenRa.Game.Graphics
 			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type, Shader shader)
 			where T : struct
 		{
-			shader.SetValue( "DiffuseTexture", texture );
+			shader.SetValue("DiffuseTexture", texture);
 			shader.Commit();
 
-			vertices.Bind( 0 );
+			vertices.Bind(0);
 			indices.Bind();
 
-			device.DrawIndexedPrimitives( type,
-				vertexRange, indexRange );
+			device.DrawIndexedPrimitives(type,
+				vertexRange, indexRange);
+
+			PerfHistory.Increment("batches", 1);
 		}
 
 		public void DrawBatch<T>(FvfVertexBuffer<T> vertices, IndexBuffer indices,
@@ -92,6 +95,8 @@ namespace OpenRa.Game.Graphics
 
 			device.DrawIndexedPrimitives(type,
 				vertexPool, numPrimitives);
+
+			PerfHistory.Increment("batches", 1);
 		}
 
 		public void DrawText(string text, int2 pos, Color c)
