@@ -16,7 +16,7 @@ namespace OpenRa.Game
 				return false;
 
 			return TerrainCosts.Cost(UnitMovementType.Wheel,
-				Game.worldRenderer.terrainRenderer.tileSet.GetWalkability(Game.map.MapTiles[i, j]))
+				Rules.TileSet.GetWalkability(Rules.Map.MapTiles[i, j]))
 				< double.PositiveInfinity;
 		}
 

@@ -18,6 +18,8 @@ namespace OpenRa.Game
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static GeneralInfo General;
 		public static TechTree TechTree;
+		public static Map Map;
+		public static TileSet TileSet;
 
 		public static void LoadRules(string mapFileName)
 		{
@@ -61,6 +63,9 @@ namespace OpenRa.Game
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
 
 			TechTree = new TechTree();
+			Map = new Map( AllRules );
+			FileSystem.Mount( new Package( Rules.Map.Theater + ".mix" ) );
+			TileSet = new TileSet( Map.TileSuffix );
 		}
 
 		static void LoadCategories(params string[] types)

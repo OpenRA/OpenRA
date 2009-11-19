@@ -55,11 +55,11 @@ namespace OpenRa.Game.Traits
 					var p = self.Location + new int2(i % size, i / size + bibOffset);
 					if (isRemove)
 					{
-						if (Game.map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
-							Game.map.MapTiles[p.X, p.Y].smudge = 0;
+						if (Rules.Map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
+							Rules.Map.MapTiles[ p.X, p.Y ].smudge = 0;
 					}
 					else
-						Game.map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
+						Rules.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
 		}

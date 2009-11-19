@@ -21,7 +21,7 @@ namespace OpenRa.Game.Graphics
 
 		public WorldRenderer(Renderer renderer)
 		{
-			terrainRenderer = new TerrainRenderer(renderer, Game.map);
+			terrainRenderer = new TerrainRenderer(renderer, Rules.Map);
 
 			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);

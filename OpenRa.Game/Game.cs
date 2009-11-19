@@ -19,7 +19,6 @@ namespace OpenRa.Game
 		public static readonly int CellSize = 24;
 
 		public static World world;
-		public static Map map;
 		static TreeCache treeCache;
 		public static Viewport viewport;
 		public static PathFinder PathFinder;
@@ -56,29 +55,26 @@ namespace OpenRa.Game
 
 			localPlayerIndex = localPlayer;
 
-			var mapFile = new IniFile(FileSystem.Open(mapName));
-			map = new Map(mapFile);
-			map.InitOreDensity();
-			FileSystem.Mount(new Package(map.Theater + ".mix"));
+			Rules.Map.InitOreDensity();
 
-			viewport = new Viewport(clientSize, map.Offset, map.Offset + map.Size, renderer);
+			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
 
 			world = new World();
-			treeCache = new TreeCache(map);
+			treeCache = new TreeCache(Rules.Map);
 
-			foreach (TreeReference treeReference in map.Trees)
+			foreach (TreeReference treeReference in Rules.Map.Trees)
 				world.Add(new Actor(treeReference, treeCache));
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
 
-			LoadMapBuildings(mapFile);
-			LoadMapUnits(mapFile);
+			LoadMapBuildings(Rules.AllRules);
+			LoadMapUnits(Rules.AllRules);
 
 			controller = new Controller();
 			worldRenderer = new WorldRenderer(renderer);
 
-			PathFinder = new PathFinder(map, worldRenderer.terrainRenderer.tileSet);
+			PathFinder = new PathFinder(Rules.Map);
 
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
@@ -178,7 +174,7 @@ namespace OpenRa.Game
 						if (--oreTicks == 0)
 						{
 							using (new PerfSample("ore"))
-								map.GrowOre(SharedRandom);
+								Rules.Map.GrowOre(SharedRandom);
 							oreTicks = oreFrequency;
 						}
 
@@ -214,16 +210,16 @@ namespace OpenRa.Game
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
 			if (UnitInfluence.GetUnitAt(a) != null && UnitInfluence.GetUnitAt(a) != toIgnore) return false;
 
-			return map.IsInMap(a.X, a.Y) &&
+			return Rules.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
-					worldRenderer.terrainRenderer.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public static bool IsWater(int2 a)
 		{
-			return map.IsInMap(a.X, a.Y) &&
+			return Rules.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(UnitMovementType.Float,
-					worldRenderer.terrainRenderer.tileSet.GetWalkability(map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		static IEnumerable<Actor> FindUnits(float2 a, float2 b)
@@ -303,7 +299,7 @@ namespace OpenRa.Game
 		public static bool CanPlaceBuilding(UnitInfo.BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
-				t => Game.map.ContainsResource(t) || !Game.IsCellBuildable(t,
+				t => Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}

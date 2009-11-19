@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		float[][,] passableCost = new float[4][,];
 		Map map;
 
-		public PathFinder(Map map, TileSet tileSet)
+		public PathFinder(Map map)
 		{
 			this.map = map;
 
@@ -23,7 +23,7 @@ namespace OpenRa.Game
 				for( int y = 0 ; y < 128 ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 						passableCost[(int)umt][ x, y ] = ( map.IsInMap( x, y ) )
-							? (float)TerrainCosts.Cost( umt, tileSet.GetWalkability( map.MapTiles[ x, y ] ) )
+							? (float)TerrainCosts.Cost( umt, Rules.TileSet.GetWalkability( map.MapTiles[ x, y ] ) )
 							: float.PositiveInfinity;
 		}
 

@@ -50,7 +50,7 @@ namespace OpenRa.Game
 
 			foreach( var t in Footprint.Tiles( bi, position ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && Game.IsCellBuildable( t, bi.WaterBound
-					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Game.map.ContainsResource( t ) )
+					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Rules.Map.ContainsResource( t ) )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 
 			spriteRenderer.Flush();

@@ -23,8 +23,8 @@ namespace OpenRa.Game.Traits.Activities
 				return new DeliverOre { NextActivity = NextActivity };
 
 			var isGem = false;
-			if( Game.map.ContainsResource( self.Location ) &&
-				Game.map.Harvest( self.Location, out isGem ) )
+			if( Rules.Map.ContainsResource( self.Location ) &&
+				Rules.Map.Harvest( self.Location, out isGem ) )
 			{
 				var harvestAnim = "harvest" + Util.QuantizeFacing( mobile.facing, 8 );
 				var renderUnit = self.traits.WithInterface<RenderUnit>().First();	/* better have one of these! */
@@ -43,7 +43,7 @@ namespace OpenRa.Game.Traits.Activities
 					{
 						var search = new PathSearch
 						{
-							heuristic = loc => ( Game.map.ContainsResource( loc ) ? 0 : 1 ),
+							heuristic = loc => ( Rules.Map.ContainsResource( loc ) ? 0 : 1 ),
 							umt = UnitMovementType.Wheel,
 							checkForBlocked = true
 						};

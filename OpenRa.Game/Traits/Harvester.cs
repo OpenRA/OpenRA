@@ -36,7 +36,7 @@ namespace OpenRa.Game.Traits
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
 				return OpenRa.Game.Order.DeliverOre(self, underCursor);
 
-			if (underCursor == null && Game.map.ContainsResource(xy))
+			if (underCursor == null && Rules.Map.ContainsResource(xy))
 				return OpenRa.Game.Order.Harvest(self, xy);
 
 			return null;

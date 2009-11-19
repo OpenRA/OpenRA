@@ -42,7 +42,7 @@ namespace OpenRa.Game
 					continue;
 				if (ignoreTerrain)
 				{
-					if (!Game.map.IsInMap(newHere.X, newHere.Y)) continue;
+					if (!Rules.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				}
 				else
 				{
@@ -50,7 +50,7 @@ namespace OpenRa.Game
 						continue;
 					if (!Game.BuildingInfluence.CanMoveHere(newHere))
 						continue;
-					if (Game.map.IsOverlaySolid(newHere))
+					if (Rules.Map.IsOverlaySolid(newHere))
 						continue;
 				}
 				if( checkForBlocked && Game.UnitInfluence.GetUnitAt( newHere ) != null )

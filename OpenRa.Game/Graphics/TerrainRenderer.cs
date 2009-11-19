@@ -11,7 +11,6 @@ namespace OpenRa.Game.Graphics
 		FvfVertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;
 		Sheet terrainSheet;
-		public TileSet tileSet;
 
 		Renderer renderer;
 		Map map;
@@ -23,14 +22,12 @@ namespace OpenRa.Game.Graphics
 			this.map = map;
 			overlayRenderer = new OverlayRenderer( renderer, map );
 
-			tileSet = new TileSet( map.TileSuffix );
-
 			Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
 			SheetBuilder.ForceNewSheet();
 
 			var tileMapping = new Cache<TileReference, Sprite>(
-				x => SheetBuilder.Add(tileSet.GetBytes(x), tileSize));
+				x => SheetBuilder.Add(Rules.TileSet.GetBytes(x), tileSize));
 
 			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
 			ushort[] indices = new ushort[6 * map.Height * map.Width];
