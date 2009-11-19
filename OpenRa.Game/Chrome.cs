@@ -177,13 +177,15 @@ namespace OpenRa.Game
 
 			var currentItem = Game.LocalPlayer.Producing(queueName);
 
+			var overlayBits = new List<Pair<Sprite, float2>>();
+
 			foreach (var item in allItems)
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
 				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
 
 				if (!buildableItems.Contains(item) || (currentItem != null && currentItem.Item != item))
-					buildPaletteRenderer.DrawSprite(cantBuild.Image, Game.viewport.Location + new float2(rect.Location), 0);
+					overlayBits.Add(Pair.New(cantBuild.Image, Game.viewport.Location + new float2(rect.Location)));
 
 				if (currentItem != null && currentItem.Item == item)
 				{
@@ -194,16 +196,16 @@ namespace OpenRa.Game
 					if (currentItem.Done)
 					{
 						ready.Play("ready");
-						buildPaletteRenderer.DrawSprite(ready.Image, Game.viewport.Location
+						overlayBits.Add(Pair.New(ready.Image, Game.viewport.Location
 							+ new float2(rect.Location)
-							+ new float2((64 - ready.Image.size.X) / 2, 2), 0);
+							+ new float2((64 - ready.Image.size.X) / 2, 2)));
 					}
 					else if (currentItem.Paused)
 					{
 						ready.Play("hold");
-						buildPaletteRenderer.DrawSprite(ready.Image, Game.viewport.Location
+						overlayBits.Add(Pair.New(ready.Image, Game.viewport.Location
 							+ new float2(rect.Location)
-							+ new float2((64 - ready.Image.size.X) / 2, 2), 0);
+							+ new float2((64 - ready.Image.size.X) / 2, 2)));
 					}
 				}
 
@@ -221,6 +223,9 @@ namespace OpenRa.Game
 					(Action<bool>)(_ => { })));
 				if (++x == 3) { x = 0; y++; }
 			}
+
+			foreach (var ob in overlayBits)
+				buildPaletteRenderer.DrawSprite(ob.First, ob.Second, 0);
 
 			buildPaletteRenderer.Flush();
 
