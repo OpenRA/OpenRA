@@ -21,7 +21,7 @@ namespace OpenRa.Game.Graphics
 		public CursorSequence(string cursorSrc, XmlElement e)
 		{
 			sprites = CursorSheetBuilder.LoadAllSprites(cursorSrc, ".shp");
-			
+
 			start = int.Parse(e.GetAttribute("start"));
 
 			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")

@@ -39,11 +39,11 @@ namespace OpenRa.Game.Graphics
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
 			string unitName = eUnit.GetAttribute("name");
-			
+
 			var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
 				.Select(e => new Sequence(unitName, e))
 				.ToDictionary(s => s.Name);
-			
+
 			units.Add(unitName, sequences);
 		}
 

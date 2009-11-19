@@ -57,8 +57,8 @@ namespace OpenRa.Game
 					continue;
 				if (customBlock != null && customBlock(newHere))
 					continue;
-				
 
+	
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )
 					continue;
@@ -84,12 +84,12 @@ namespace OpenRa.Game
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
 
-	
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		public static PathSearch FromPoint( int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
 		{
 			var search = new PathSearch {

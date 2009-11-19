@@ -47,7 +47,7 @@ namespace OpenRa.Game
 		{
 			var position = Game.controller.MousePosition.ToInt2();
 			var isCloseEnough = Game.IsCloseEnoughToBase(Game.LocalPlayer, bi, position);
-			
+
 			foreach( var t in Footprint.Tiles( bi, position ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && Game.IsCellBuildable( t, bi.WaterBound
 					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Game.map.ContainsResource( t ) )

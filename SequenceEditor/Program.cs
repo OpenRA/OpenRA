@@ -68,7 +68,7 @@ namespace SequenceEditor
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			
+
 			FileSystem.Mount(new Folder("./"));
 			var packages = new[] { "redalert", "conquer", "hires", "general", "local", "temperat" };
 

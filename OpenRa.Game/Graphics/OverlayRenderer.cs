@@ -16,7 +16,7 @@ namespace OpenRa.Game.Graphics
 				"v12", "v13", "v14", "v15", "v16", "v17", "v18",
 				"fpls", "wcrate", "scrate", "barb", "sbag",
 			};
-		
+
 		Sprite[][] overlaySprites;
 
 		Sprite[] smudgeSprites;

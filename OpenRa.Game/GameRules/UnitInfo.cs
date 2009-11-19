@@ -102,37 +102,5 @@ namespace OpenRa.Game.GameRules
 
 			public BuildingInfo(string name) : base(name) { }
 		}
-
-		/*
-		 * Example: HARV
-		 *		Unit (can move, etc)
-		 *		PlayerOwned
-		 *		Selectable
-		 *		CanHarvest
-		 *		
-		 * Example: PROC (refinery)
-		 *		Building (can't move)
-		 *		AcceptsOre (harvester returns here)
-		 *		
-		 * Example: 3TNK (soviet heavy tank)
-		 *		Unit
-		 *		Turret (can aim in different direction to movement)
-		 * 
-		 * Example: GUN (allied base defense turret)
-		 *		Building
-		 *		Turret
-		 * 
-		 * some traits can be determined by fields in rules.ini
-		 * and some can't :
-		 *		Gap-generator's ability
-		 *		Nuke, chrone, curtain, (super-weapons)
-		 *		Aircraft-landable
-		 *		Selectable (bomber/spyplane can't be selected, for example)
-		 *		AppearsFriendly (spy)
-		 *		IsInfantry (can be build in TENT/BARR, 5-in-a-square)
-		 *		IsVehicle
-		 *		Squashable (sandbags, infantry)
-		 *		Special rendering for war factory
-		 */
 	}
 }

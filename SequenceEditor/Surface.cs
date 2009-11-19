@@ -28,7 +28,7 @@ namespace SequenceEditor
 		{
 			base.OnMouseMove(e);
 			mousePos = e.Location;
-			
+
 			if (e.Button == MouseButtons.Left)
 				isDragging = true;
 

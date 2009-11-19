@@ -26,7 +26,7 @@ namespace OpenRa.Game
 
 				if (!Game.IsCloseEnoughToBase(Owner, Building, xy))
 					yield break;
-				
+
 				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Building.Name );
 			}
 			else // rmb

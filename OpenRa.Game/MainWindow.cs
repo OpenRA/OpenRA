@@ -9,7 +9,7 @@ namespace OpenRa.Game
 	class MainWindow : Form
 	{
 		readonly Renderer renderer;
-		
+
 		static Size GetResolution(Settings settings)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;

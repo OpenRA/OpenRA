@@ -128,7 +128,7 @@ namespace OpenRa.Game.Traits.Activities
 
 				Game.UnitInfluence.Remove( mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
-			
+
 				Game.UnitInfluence.Add( mobile );
 				if (newPath.Count != 0)
 					path = newPath;
