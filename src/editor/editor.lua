@@ -430,6 +430,7 @@ function IndicateFunctions(editor, lines, linee)
 	local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
 	local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
 
+	
 	for line=lines,linee do
 		local tx = editor:GetLine(line)
 		local ls = editor:PositionFromLine(line)
@@ -437,7 +438,9 @@ function IndicateFunctions(editor, lines, linee)
 		local from = 1
 		local off = -1
 		
-
+		
+		editor:StartStyling(ls,INDICS_MASK)
+		editor:SetStyling(#tx,0)
 		while from do
 			tx = from==1 and tx or string.sub(tx,from)
 			

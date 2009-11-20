@@ -219,8 +219,12 @@ local dynamicwords = {}
 local function addDynamicWord (api,word )
 	if ide.config.acandtip.nodynwords then return end
 	if api.tip.staticnames[word] then return end
-	if dywordentries[word] then return end
-	dywordentries[word] = word
+	local cnt = dywordentries[word]
+	if cnt then 
+		dywordentries[word] = cnt +1
+		return 
+	end
+	dywordentries[word] = 1
 	for i=0,#word do 
 		local k = word : sub (1,i)
 		dynamicwords[k] = dynamicwords[k] or {}
@@ -228,17 +232,23 @@ local function addDynamicWord (api,word )
 	end
 end
 function removeDynamicWord (word)
-	if not dywordentries[word] then return end
-	dywordentries[word] = nil
-	for i=0,#word do 
-		local k = word : sub (1,i) : lower()
-		if not dynamicwords[k] then break end
-		for i=1,#dynamicwords[k] do
-			if dynamicwords[i] == word then
-				table.remove(dynamicwords,i)
-				break
+	local cnt = dywordentries[word]
+	if not cnt then return end
+	
+	if (cnt == 1) then
+		dywordentries[word] = nil
+		for i=0,#word do 
+			local k = word : sub (1,i) : lower()
+			if not dynamicwords[k] then break end
+			for i=1,#dynamicwords[k] do
+				if dynamicwords[i] == word then
+					table.remove(dynamicwords,i)
+					break
+				end
 			end
 		end
+	else
+		dywordentries[word] = cnt - 1
 	end
 end
 function purgeDynamicWordlist ()
@@ -251,6 +261,12 @@ function AddDynamicWordsCurrent(editor,content)
 
 	for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)[^a-zA-Z0-9_\r\n]" do
 		addDynamicWord(api,word)
+	end
+end
+
+function RemDynamicWordsCurrent(editor,content)
+	for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)[^a-zA-Z0-9_\r\n]" do
+		removeDynamicWord(word)
 	end
 end
 
