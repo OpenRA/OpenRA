@@ -306,7 +306,7 @@ local function buildcache(childs)
 end
 
 -- make syntype dependent
-function CreateAutoCompList(api,key) -- much faster than iterating the wx. table
+function CreateAutoCompList(api,key) 
 	--DisplayOutput(key_.."\n")
 	local tip = api.tip
 	local ac = api.ac
@@ -329,14 +329,29 @@ function CreateAutoCompList(api,key) -- much faster than iterating the wx. table
 			return findtab(krest,tab.childs[key]) 
 		end
 		
-		return tab,rest:gsub("[^a-zA-Z0-9_]","")
+		return tab,rest
 	end
 	local tab,rest = findtab (key,ac)
-	if not tab or not tab.childs then return end
+	if not (tab and tab.childs) then return end
+	
+	if (depth < 1) then
+		local obj,krest = rest:match("([a-zA-Z0-9_]+)[:%.]([a-zA-Z0-9_]+)")
+		if (krest) then
+			if (#krest < 3) then return end
+			tab = tip.finfo
+			rest = krest:gsub("[^a-zA-Z0-9_]","")
+		else
+			rest = rest:gsub("[^a-zA-Z0-9_]","")
+		end
+	else
+		rest = rest:gsub("[^a-zA-Z0-9_]","")
+	end
 
 	-- final list (cached)
-	local complete = buildcache(tab.childs)
+	local complete = buildcache(tab.childs or tab)
 
+	
+	
 	local last = key : match "([a-zA-Z0-9_]+)%s*$"
 		
 
