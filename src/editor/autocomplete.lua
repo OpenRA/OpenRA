@@ -335,7 +335,7 @@ function CreateAutoCompList(api,key)
 	if not (tab and tab.childs) then return end
 	
 	if (depth < 1) then
-		local obj,krest = rest:match("([a-zA-Z0-9_]+)[:%.]([a-zA-Z0-9_]+)")
+		local obj,krest = rest:match("([a-zA-Z0-9_]+)[:%.]([a-zA-Z0-9_]+)%s*$")
 		if (krest) then
 			if (#krest < 3) then return end
 			tab = tip.finfo
