@@ -60,7 +60,10 @@ namespace OpenRa.Game
 
 			Rules.Map.InitOreDensity();
 
-			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
+			controller = new Controller();
+			worldRenderer = new WorldRenderer( renderer );
+
+			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
 
 			world = new World();
 			treeCache = new TreeCache(Rules.Map);
@@ -73,9 +76,6 @@ namespace OpenRa.Game
 
 			LoadMapBuildings(Rules.AllRules);
 			LoadMapUnits(Rules.AllRules);
-
-			controller = new Controller();
-			worldRenderer = new WorldRenderer(renderer);
 
 			PathFinder = new PathFinder(Rules.Map);
 

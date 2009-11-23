@@ -57,6 +57,8 @@ namespace OpenRa.Game
 			Game.NetworkHost = settings.GetValue( "host", "" );
 			Game.NetworkPort = int.Parse( settings.GetValue( "port", "0" ) );
 
+			Renderer.SheetSize = int.Parse( settings.GetValue( "sheetsize", "512" ) );
+
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
 				settings.GetValue("player", 1));
 

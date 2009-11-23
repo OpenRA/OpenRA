@@ -20,7 +20,6 @@ namespace OpenRa.Game.Graphics
 		{
 			this.renderer = renderer;
 			this.map = map;
-			overlayRenderer = new OverlayRenderer( renderer, map );
 
 			Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
@@ -50,6 +49,8 @@ namespace OpenRa.Game.Graphics
 
 			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );
 			indexBuffer.SetData( indices );
+
+			overlayRenderer = new OverlayRenderer( renderer, map );
 		}
 
 		public void Draw( Viewport viewport )

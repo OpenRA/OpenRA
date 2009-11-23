@@ -9,6 +9,8 @@ namespace OpenRa.Game.Graphics
 {
 	class Renderer
 	{
+		internal static int SheetSize;
+
 		readonly GraphicsDevice device;
 		Texture[] palettes;
 		public Shader SpriteShader { get; private set; }    /* note: shared shader params */
