@@ -373,13 +373,22 @@ namespace OpenRa.Game
 					return;
 
 				unit = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
-				var mobile = unit.traits.Get<Mobile>();
-				mobile.facing = 128;
-
 				var rp = producer.traits.GetOrDefault<RallyPoint>();
 				var dest = rp != null ? rp.rallyPoint : (unit.Location + new int2(0, 3));
 
-				mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
+				var mobile = unit.traits.GetOrDefault<Mobile>();
+				if (mobile != null)
+				{
+					mobile.facing = 128;
+					mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
+				}
+
+				var heli = unit.traits.GetOrDefault<Helicopter>();
+				if (heli != null)
+				{
+					heli.facing = 20;
+					heli.targetLocation = dest;
+				}
 			}
 
 			world.Add(unit);

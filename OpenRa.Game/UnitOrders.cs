@@ -15,9 +15,16 @@ namespace OpenRa.Game
 			{
 			case "Move":
 				{
-					var mobile = order.Subject.traits.Get<Mobile>();
-					mobile.Cancel( order.Subject );
-					mobile.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 8 ) );
+					var mobile = order.Subject.traits.GetOrDefault<Mobile>();
+					if (mobile != null)
+					{
+						mobile.Cancel(order.Subject);
+						mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 8));
+					}
+
+					var heli = order.Subject.traits.GetOrDefault<Helicopter>();
+					if (heli != null)
+						heli.targetLocation = order.TargetLocation;
 
 					var attackBase = order.Subject.traits.WithInterface<AttackBase>().FirstOrDefault();
 					if( attackBase != null )

@@ -25,8 +25,6 @@ namespace OpenRa.Game.Traits
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
-			var mobile = self.traits.Get<Mobile>();
-
 			yield return Util.CenteredShadow(self, anim.Image, self.CenterLocation);
 			yield return Util.CenteredShadow(self, rotorAnim.Image, self.CenterLocation
 				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, 0));
@@ -34,7 +32,8 @@ namespace OpenRa.Game.Traits
 				yield return Util.CenteredShadow(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, 0));
 
-			var p = self.CenterLocation - new float2( 0, altitude );
+			var heli = self.traits.Get<Helicopter>();
+			var p = self.CenterLocation - new float2( 0, heli.altitude );
 
 			yield return Util.Centered(self, anim.Image, p);
 			yield return Util.Centered(self, rotorAnim.Image, p 
@@ -44,10 +43,6 @@ namespace OpenRa.Game.Traits
 					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, 0));
 		}
 
-		int altitude = 0;
-		const int climbRate = 1;
-		const int cruiseAltitude = 20;
-
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
@@ -55,20 +50,17 @@ namespace OpenRa.Game.Traits
 			if (secondRotorAnim != null)
 				secondRotorAnim.Tick();
 
-			var mobile = self.traits.Get<Mobile>();
-			var isFlying = mobile.HasActivity;
+			var heli = self.traits.GetOrDefault<Helicopter>();
+			if (heli == null) return;
+			
+			var isFlying = heli.altitude > 0;
 
-			if (isFlying && altitude < cruiseAltitude)
-				altitude = Math.Min(altitude + climbRate, cruiseAltitude);
-			else if (!isFlying && altitude > 0)
-				altitude = Math.Max(altitude - climbRate, 0);
-
-			if ((altitude >0) ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
+			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;
 
-			rotorAnim.PlayRepeatingPreservingPosition((altitude>0) ? "rotor" : "slow-rotor");
+			rotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor" : "slow-rotor");
 			if (secondRotorAnim != null)
-				secondRotorAnim.PlayRepeatingPreservingPosition((altitude>0) ? "rotor2" : "slow-rotor2");
+				secondRotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor2" : "slow-rotor2");
 		}
 	}
 }

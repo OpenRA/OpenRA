@@ -91,7 +91,7 @@ namespace OpenRa.Game.Traits
 			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
 			if (ru == null) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
 
-			var bodyFacing = self.traits.Get<Mobile>().facing;
+			var bodyFacing = self.traits.Contains<Mobile>() ? self.traits.Get<Mobile>().facing : self.traits.Get<Helicopter>().facing;
 			var quantizedFacing = QuantizeFacing(bodyFacing, ru.anim.CurrentSequence.Length) * (256 / ru.anim.CurrentSequence.Length);
 
 			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil))
