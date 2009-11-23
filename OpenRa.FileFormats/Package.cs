@@ -38,9 +38,10 @@ namespace OpenRa.FileFormats
 					return;
 				}
 			}
+			else
+				s.Seek( 0, SeekOrigin.Begin );
 
 			isEncrypted = false;
-			s.Seek(0, SeekOrigin.Begin);
 			index = ParseTdHeader(s, out dataStart).ToDictionary(x => x.Hash);
 		}
 

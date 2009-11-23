@@ -26,7 +26,9 @@ namespace OpenRa.Game
 
 		public MainWindow(Settings settings)
 		{
-			FileSystem.Mount(new Folder("../../../../"));
+			FileSystem.Mount( new Folder( "../../../../" ) );
+			if( File.Exists( "../../../../main.mix" ) )
+				FileSystem.Mount(new Package("main.mix"));
 			FileSystem.Mount(new Package("redalert.mix"));
 			FileSystem.Mount(new Package("conquer.mix"));
 			FileSystem.Mount(new Package("hires.mix"));
