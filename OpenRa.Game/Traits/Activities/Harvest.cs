@@ -10,9 +10,10 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity NextActivity { get; set; }
 		bool isHarvesting = false;
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
+			var mobile = self.traits.Get<Mobile>();
 
 			if( isHarvesting ) return null;
 
@@ -57,6 +58,6 @@ namespace OpenRa.Game.Traits.Activities
 			}
 		}
 
-		public void Cancel(Actor self, Mobile mobile) { }
+		public void Cancel(Actor self) { }
 	}
 }

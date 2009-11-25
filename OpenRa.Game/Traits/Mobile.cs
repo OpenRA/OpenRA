@@ -53,7 +53,7 @@ namespace OpenRa.Game.Traits
 			while( nextActivity != null )
 			{
 				currentActivity = nextActivity;
-				nextActivity = nextActivity.Tick( self, this );
+				nextActivity = nextActivity.Tick( self );
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace OpenRa.Game.Traits
 		public void Cancel(Actor self)
 		{
 			if (currentActivity != null)
-				currentActivity.Cancel(self, this);
+				currentActivity.Cancel(self);
 		}
 
 		public IEnumerable<int2> OccupiedCells()

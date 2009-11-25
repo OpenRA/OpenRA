@@ -21,9 +21,10 @@ namespace OpenRa.Game.Traits.Activities
 
 		static readonly int2 refineryDeliverOffset = new int2( 1, 2 );
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
+			var mobile = self.traits.Get<Mobile>();
 
 			if( isDone )
 			{
@@ -74,7 +75,7 @@ namespace OpenRa.Game.Traits.Activities
 			return null;
 		}
 
-		public void Cancel(Actor self, Mobile mobile)
+		public void Cancel(Actor self)
 		{
 			// TODO: allow canceling of deliver orders?
 		}

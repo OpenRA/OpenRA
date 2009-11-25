@@ -49,9 +49,10 @@ namespace OpenRa.Game.Traits.Activities
 			return (u == null || u == self);
 		}
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
+			var mobile = self.traits.Get<Mobile>();
 
 			if( move != null )
 			{
@@ -149,6 +150,12 @@ namespace OpenRa.Game.Traits.Activities
 		static float2 BetweenCells( int2 from, int2 to )
 		{
 			return 0.5f * ( CenterOfCell( from ) + CenterOfCell( to ) );
+		}
+
+		public void Cancel( Actor self )
+		{
+			path = new List<int2>();
+			NextActivity = null;
 		}
 
 		abstract class MovePart
@@ -253,12 +260,6 @@ namespace OpenRa.Game.Traits.Activities
 				mobile.fromCell = mobile.toCell;
 				return null;
 			}
-		}
-
-		public void Cancel( Actor self, Mobile mobile )
-		{
-			path = new List<int2>();
-			NextActivity = null;
 		}
 	}
 }

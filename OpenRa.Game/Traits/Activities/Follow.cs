@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			if (Target == null || Target.IsDead)
 				return NextActivity;
@@ -29,7 +29,7 @@ namespace OpenRa.Game.Traits.Activities
 			return null;
 		}
 
-		public void Cancel(Actor self, Mobile mobile)
+		public void Cancel(Actor self)
 		{
 			Target = null;
 		}

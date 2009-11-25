@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
 
@@ -27,7 +27,7 @@ namespace OpenRa.Game.Traits.Activities
 			return null;
 		}
 
-		public void Cancel( Actor self, Mobile mobile )
+		public void Cancel( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
 

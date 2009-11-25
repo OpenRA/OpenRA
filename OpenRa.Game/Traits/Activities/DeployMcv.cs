@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick( Actor self, Mobile mobile )
+		public IActivity Tick( Actor self )
 		{
 			Game.world.AddFrameEndTask( _ =>
 			{
@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits.Activities
 			return null;
 		}
 
-		public void Cancel( Actor self, Mobile mobile )
+		public void Cancel( Actor self )
 		{
 			// Cancel can't happen between this being moved to the head of the list, and it being Ticked.
 			throw new InvalidOperationException( "DeployMcvAction: Cancel() should never occur." );
