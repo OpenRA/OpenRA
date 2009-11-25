@@ -63,9 +63,9 @@ namespace OpenRa.Game.GameRules
 		public IEnumerable<string> UnitBuiltAt( UnitInfo info )
 		{
 			if( info.BuiltAt.Length != 0 )
-				return info.BuiltAt;
+				return info.BuiltAt.Select( x => x.ToLowerInvariant() );
 			else
-				return producesIndex[ Rules.UnitCategory[ info.Name ] ].Select( x => x.Name );
+				return producesIndex[ Rules.UnitCategory[ info.Name ] ].Select( x => x.Name.ToLowerInvariant() );
 		}
 	}
 }
