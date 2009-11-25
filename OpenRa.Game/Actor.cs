@@ -9,6 +9,7 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using System.Drawing;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game
 {
@@ -21,6 +22,7 @@ namespace OpenRa.Game
 		public int2 Location;
 		public Player Owner;
 		public int Health;
+		IActivity currentActivity;
 
 		public Actor( string name, int2 location, Player owner )
 		{
@@ -54,6 +56,13 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
+			var nextActivity = currentActivity;
+			while( nextActivity != null )
+			{
+				currentActivity = nextActivity;
+				nextActivity = nextActivity.Tick( this );
+			}
+
 			foreach (var tick in traits.WithInterface<Traits.ITick>())
 				tick.Tick(this);
 		}
@@ -123,6 +132,33 @@ namespace OpenRa.Game
 
 			foreach (var ndx in traits.WithInterface<INotifyDamageEx>())
 				ndx.Damaged(this, damage);
+		}
+
+		public void QueueActivity( IActivity nextActivity )
+		{
+			if( currentActivity == null )
+			{
+				currentActivity = nextActivity;
+				return;
+			}
+			var act = currentActivity;
+			while( act.NextActivity != null )
+			{
+				act = act.NextActivity;
+			}
+			act.NextActivity = nextActivity;
+		}
+
+		public void CancelActivity( Actor self )
+		{
+			if( currentActivity != null )
+				currentActivity.Cancel( self );
+		}
+
+		// For pathdebug, et al
+		public IActivity GetCurrentActivity()
+		{
+			return currentActivity;
 		}
 	}
 }

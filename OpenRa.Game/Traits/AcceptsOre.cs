@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits
 						var unit = harvester.traits.Get<Unit>();
 						var mobile = harvester.traits.Get<Mobile>();
 						unit.Facing = 64;
-						mobile.QueueActivity(new Harvest());
+						harvester.QueueActivity(new Harvest());
 						w.Add(harvester);
 					});
 		}

@@ -41,7 +41,7 @@ namespace OpenRa.Game.Traits.Activities
 			}
 			else
 			{
-				mobile.QueueActivity( new Move(
+				self.QueueActivity( new Move(
 					() =>
 					{
 						var search = new PathSearch
@@ -53,7 +53,7 @@ namespace OpenRa.Game.Traits.Activities
 						search.AddInitialCell( self.Location );
 						return Game.PathFinder.FindPath( search );
 					} ) );
-				mobile.QueueActivity( new Harvest() );
+				self.QueueActivity( new Harvest() );
 				return NextActivity;
 			}
 		}

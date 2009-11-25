@@ -8,7 +8,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Mobile : ITick, IOrder
+	class Mobile : IOrder
 	{
 		public Actor self;
 
@@ -17,44 +17,12 @@ namespace OpenRa.Game.Traits
 		public int2 toCell { get { return self.Location; } set { Game.UnitInfluence.Remove( this ); self.Location = value; Game.UnitInfluence.Add( this ); } }
 
 		public int Voice = Game.CosmeticRandom.Next(2);
-		IActivity currentActivity;
 
 		public Mobile(Actor self)
 		{
 			this.self = self;
 			fromCell = toCell;
 			Game.UnitInfluence.Update( this );
-		}
-
-		public void QueueActivity( IActivity nextActivity )
-		{
-			if( currentActivity == null )
-			{
-				currentActivity = nextActivity;
-				return;
-			}
-			var act = currentActivity;
-			while( act.NextActivity != null )
-			{
-				act = act.NextActivity;
-			}
-			act.NextActivity = nextActivity;
-		}
-
-		public void Tick(Actor self)
-		{
-			if( currentActivity == null )
-			{
-				fromCell = toCell;
-				return;
-			}
-
-			var nextActivity = currentActivity;
-			while( nextActivity != null )
-			{
-				currentActivity = nextActivity;
-				nextActivity = nextActivity.Tick( self );
-			}
 		}
 
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
@@ -68,12 +36,6 @@ namespace OpenRa.Game.Traits
 
 			return OpenRa.Game.Order.Move( self, xy, 
 				!Game.IsCellBuildable(xy, GetMovementType()) );
-		}
-
-		public void Cancel(Actor self)
-		{
-			if (currentActivity != null)
-				currentActivity.Cancel(self);
 		}
 
 		public IEnumerable<int2> OccupiedCells()
@@ -100,11 +62,9 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<int2> GetCurrentPath()
 		{
-			var move = currentActivity as Traits.Activities.Move;
+			var move = self.GetCurrentActivity() as Traits.Activities.Move;
 			if (move == null || move.path == null) return new int2[] { };
 			return Enumerable.Reverse(move.path);
 		}
-
-		public bool HasActivity { get { return currentActivity != null; } }
 	}
 }

@@ -18,8 +18,8 @@ namespace OpenRa.Game
 					var mobile = order.Subject.traits.GetOrDefault<Mobile>();
 					if (mobile != null)
 					{
-						mobile.Cancel(order.Subject);
-						mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 8));
+						order.Subject.CancelActivity( order.Subject );
+						order.Subject.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 8 ) );
 					}
 
 					var heli = order.Subject.traits.GetOrDefault<Helicopter>();
@@ -38,10 +38,10 @@ namespace OpenRa.Game
 					/* todo: choose the appropriate weapon, when only one works against this target */
 					var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
 
-					mobile.Cancel(order.Subject);
+					order.Subject.CancelActivity(order.Subject);
 					if (order.Subject.traits.Contains<AttackTurreted>())
 					{
-						mobile.QueueActivity(
+						order.Subject.QueueActivity(
 							new Traits.Activities.Follow(order.TargetActor,
 								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
 
@@ -49,7 +49,7 @@ namespace OpenRa.Game
 					}
 					else
 					{
-						mobile.QueueActivity(
+						order.Subject.QueueActivity(
 							new Traits.Activities.Attack(order.TargetActor,
 								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
 					}
@@ -61,25 +61,22 @@ namespace OpenRa.Game
 					if( !Game.CanPlaceBuilding( factBuildingInfo, order.Subject.Location - new int2( 1, 1 ), order.Subject, false ) )
 						break;	/* throw the order on the floor */
 
-					var mobile = order.Subject.traits.Get<Mobile>();
-					mobile.Cancel(order.Subject);
-					mobile.QueueActivity( new Traits.Activities.Turn( 96 ) );
-					mobile.QueueActivity( new Traits.Activities.DeployMcv() );
+					order.Subject.CancelActivity( order.Subject );
+					order.Subject.QueueActivity( new Traits.Activities.Turn( 96 ) );
+					order.Subject.QueueActivity( new Traits.Activities.DeployMcv() );
 					break;
 				}
 			case "DeliverOre":
 				{
-					var mobile = order.Subject.traits.Get<Mobile>();
-					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Traits.Activities.DeliverOre(order.TargetActor));
+					order.Subject.CancelActivity( order.Subject );
+					order.Subject.QueueActivity( new Traits.Activities.DeliverOre( order.TargetActor ) );
 					break;
 				}
 			case "Harvest":
 				{
-					var mobile = order.Subject.traits.Get<Mobile>();
-					mobile.Cancel(order.Subject);
-					mobile.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 0));
-					mobile.QueueActivity(new Traits.Activities.Harvest() );
+					order.Subject.CancelActivity( order.Subject );
+					order.Subject.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 0 ) );
+					order.Subject.QueueActivity( new Traits.Activities.Harvest() );
 					break;
 				}
 			case "PlaceBuilding":

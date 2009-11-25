@@ -381,7 +381,7 @@ namespace OpenRa.Game
 				if( mobile != null )
 				{
 					unit.Facing = 128;
-					mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
+					newActor.QueueActivity(new Traits.Activities.Move(dest, 1));
 				}
 
 				var heli = newActor.traits.GetOrDefault<Helicopter>();
