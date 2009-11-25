@@ -263,13 +263,13 @@ namespace OpenRa.Game
 
 		public static IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
 		{
-			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Mobile>());
+			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Unit>());
 		}
 
 		public static IEnumerable<Actor> SelectUnitOrBuilding(float2 a)
 		{
 			var q = FindUnits(a, a);
-			return q.Where(x => x.traits.Contains<Traits.Mobile>()).Concat(q).Take(1);
+			return q.Where(x => x.traits.Contains<Traits.Unit>()).Concat(q).Take(1);
 		}
 
 		public static int GetDistanceToBase(int2 b, Player p)
