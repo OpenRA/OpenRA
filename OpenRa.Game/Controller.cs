@@ -7,6 +7,7 @@ using IjwFramework.Types;
 using System.Drawing;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -110,10 +111,33 @@ namespace OpenRa.Game
 		public Cursor ChooseCursor()
 		{
 			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(), false)
-				.Select(a => a.Cursor)
+				.Select(a => CursorForOrderString( a.OrderString, a.Subject, a.TargetLocation ))
 				.FirstOrDefault(a => a != null) : null;
 
 			return c ?? (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
+		}
+
+		Cursor CursorForOrderString( string s, Actor a, int2 location )
+		{
+			switch( s )
+			{
+			case "Attack": return Cursor.Attack;
+			case "Move":
+				if( Game.IsCellBuildable( location, UnitMovementType.Wheel, a ) )
+					return Cursor.Move;
+				else
+					return Cursor.MoveBlocked;
+			case "DeployMcv":
+				var factBuildingInfo = (UnitInfo.BuildingInfo)Rules.UnitInfo[ "fact" ];
+				if( Game.CanPlaceBuilding( factBuildingInfo, a.Location - new int2( 1, 1 ), a, false ) )
+					return Cursor.Deploy;
+				else
+					return Cursor.DeployBlocked;
+			case "DeliverOre": return Cursor.Enter;
+			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
+			default:
+				return null;
+			}
 		}
 	}
 }

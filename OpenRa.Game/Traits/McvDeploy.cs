@@ -13,11 +13,9 @@ namespace OpenRa.Game.Traits
 		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if (lmb) return null;
-
 			if( xy != self.Location ) return null;
 
-			var factBuildingInfo = (UnitInfo.BuildingInfo)Rules.UnitInfo[ "fact" ];
-			return OpenRa.Game.Order.DeployMcv(self, !Game.CanPlaceBuilding(factBuildingInfo, xy - new int2(1,1), self, false));
+			return OpenRa.Game.Order.DeployMcv(self);
 		}
 	}
 }

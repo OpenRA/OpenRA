@@ -34,8 +34,7 @@ namespace OpenRa.Game.Traits
 
 			if (xy == toCell) return null;
 
-			return OpenRa.Game.Order.Move( self, xy, 
-				!Game.IsCellBuildable(xy, GetMovementType()) );
+			return OpenRa.Game.Order.Move( self, xy );
 		}
 
 		public IEnumerable<int2> OccupiedCells()

@@ -15,9 +15,8 @@ namespace OpenRa.Game
 		public readonly Actor TargetActor;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
-		public readonly Cursor Cursor;
 
-		Order(Player player, string orderString, Actor subject, Actor targetActor, int2 targetLocation, string targetString, Cursor cursor)
+		Order(Player player, string orderString, Actor subject, Actor targetActor, int2 targetLocation, string targetString)
 		{
 			this.Player = player;
 			this.OrderString = orderString;
@@ -25,7 +24,6 @@ namespace OpenRa.Game
 			this.TargetActor = targetActor;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
-			this.Cursor = cursor;
 		}
 
 		public byte[] Serialize()
@@ -74,7 +72,7 @@ namespace OpenRa.Game
 						var targetString = null as string;
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
-						return new Order(player, order, subject, targetActor, targetLocation, targetString, null);
+						return new Order(player, order, subject, targetActor, targetLocation, targetString);
 					}
 				default:
 					throw new NotImplementedException();
@@ -89,59 +87,57 @@ namespace OpenRa.Game
 
 		public static Order Chat(Player subject, string text)
 		{
-			return new Order(subject, "Chat", null, null, int2.Zero, text, null);
+			return new Order(subject, "Chat", null, null, int2.Zero, text);
 		}
 
 		public static Order Attack(Actor subject, Actor target)
 		{
-			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null, Cursor.Attack);
+			return new Order(subject.Owner, "Attack", subject, target, int2.Zero, null);
 		}
 
-		public static Order Move(Actor subject, int2 target, bool isBlocked)
+		public static Order Move(Actor subject, int2 target)
 		{
-			return new Order(subject.Owner, "Move", subject, null, target, null, 
-				isBlocked ? Cursor.MoveBlocked : Cursor.Move);
+			return new Order(subject.Owner, "Move", subject, null, target, null);
 		}
 
-		public static Order DeployMcv(Actor subject, bool isBlocked)
+		public static Order DeployMcv(Actor subject)
 		{
-			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, isBlocked ? "nop" : null, 
-				isBlocked ? Cursor.DeployBlocked : Cursor.Deploy);
+			return new Order(subject.Owner, "DeployMcv", subject, null, int2.Zero, null);
 		}
 
 		public static Order PlaceBuilding(Player subject, int2 target, string buildingName)
 		{
-			return new Order(subject, "PlaceBuilding", null, null, target, buildingName, Cursor.None);
+			return new Order(subject, "PlaceBuilding", null, null, target, buildingName);
 		}
 
 		public static Order DeliverOre(Actor subject, Actor target)
 		{
-			return new Order(subject.Owner, "DeliverOre", subject, target, int2.Zero, null, Cursor.Enter);
+			return new Order(subject.Owner, "DeliverOre", subject, target, int2.Zero, null);
 		}
 
 		public static Order Harvest(Actor subject, int2 target)
 		{
-			return new Order(subject.Owner, "Harvest", subject, null, target, null, Cursor.Attack);		/* todo: special `harvest` cursor? */
+			return new Order(subject.Owner, "Harvest", subject, null, target, null);
 		}
 
 		public static Order StartProduction(Player subject, string item)
 		{
-			return new Order(subject, "StartProduction", null, null, int2.Zero, item, Cursor.Default );
+			return new Order(subject, "StartProduction", null, null, int2.Zero, item );
 		}
 
 		public static Order PauseProduction(Player subject, string item, bool pause)
 		{
-			return new Order( subject, "PauseProduction", null, null, new int2(pause ?1:0,0), item, Cursor.Default );
+			return new Order( subject, "PauseProduction", null, null, new int2(pause ?1:0,0), item );
 		}
 
 		public static Order CancelProduction(Player subject, string item)
 		{
-			return new Order( subject, "CancelProduction", null, null, int2.Zero, item, Cursor.Default );
+			return new Order( subject, "CancelProduction", null, null, int2.Zero, item );
 		}
 
 		public static Order SetRallyPoint(Actor subject, int2 target)
 		{
-			return new Order(subject.Owner, "SetRallyPoint", subject, null, target, null, Cursor.Move);
+			return new Order(subject.Owner, "SetRallyPoint", subject, null, target, null );
 		}
 	}
 }

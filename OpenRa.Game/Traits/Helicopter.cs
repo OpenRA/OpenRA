@@ -23,8 +23,7 @@ namespace OpenRa.Game.Traits
 			if (lmb) return null;
 
 			if (underCursor == null)
-				return OpenRa.Game.Order.Move(self, xy,
-					!Game.IsCellBuildable(xy, UnitMovementType.Foot));
+				return OpenRa.Game.Order.Move(self, xy);
 
 			return null;
 		}
