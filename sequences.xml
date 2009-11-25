@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -286,12 +286,12 @@
   <!-- radar jammer -->
   <unit name="mrj">
     <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="32" />
+    <sequence name="spinner" start="32" length="32" />
   </unit>
   <!-- mobile gap generator -->
   <unit name="mgg">
     <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="8" />
+    <sequence name="spinner" start="32" length="8" />
   </unit>
   <!-- submarine -->
   <unit name="ss">
@@ -519,5 +519,21 @@
     <sequence name="idle" start="0" length="91" />
     <sequence name="loop" start="49" length="42" />
     <sequence name="end" start="0" length="26" />
+  </unit>
+  <unit name="qtnk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="ctnk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="dtrk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="msub">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="ttnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="spinner" start="32" length="32" />
   </unit>
 </sequences>

@@ -15,23 +15,20 @@ namespace OpenRa.Game.Traits
 		public RenderUnitTurreted(Actor self)
 			: base(self)
 		{
+			self.traits.Get<Turreted>();
 			turretAnim = new Animation(self.unitInfo.Name);
-			if (self.traits.Contains<Turreted>())
-			{
-				if (self.unitInfo.MuzzleFlash)
-				{
-					var attack = self.traits.WithInterface<AttackBase>().First();
-					muzzleFlash = new Animation(self.unitInfo.Name);
-					muzzleFlash.PlayFetchIndex("muzzle",
-						() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(attack.primaryRecoil * 5.9f));	
-							/* hack: recoil can be 1.0f, but don't overflow into next anim */
-				}
 
-				turretAnim.PlayFetchIndex("turret",
-					() => self.traits.Get<Turreted>().turretFacing / 8);
+			if (self.unitInfo.MuzzleFlash)
+			{
+				var attack = self.traits.WithInterface<AttackBase>().First();
+				muzzleFlash = new Animation(self.unitInfo.Name);
+				muzzleFlash.PlayFetchIndex("muzzle",
+					() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(attack.primaryRecoil * 5.9f));	
+						/* hack: recoil can be 1.0f, but don't overflow into next anim */
 			}
-			else
-				turretAnim.PlayRepeating("turret");		/* not really a turret; it's a spinner */
+
+			turretAnim.PlayFetchIndex("turret",
+				() => self.traits.Get<Turreted>().turretFacing / 8);
 		}
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)

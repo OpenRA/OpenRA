@@ -59,12 +59,14 @@ namespace OpenRa.Game.GameRules
 		{
 			public readonly int Passengers = 0;
 			public readonly int Speed = 0;
+			public readonly bool NoMovingFire = false;
 
 			public MobileInfo(string name) : base(name) { }
 		}
 
 		public class InfantryInfo : MobileInfo
 		{
+			public readonly bool Crushable = true; // also on VehicleInfo, but with a different default
 			public readonly bool C4 = false;
 			public readonly bool FraidyCat = false;
 			public readonly bool Infiltrate = false;
@@ -78,7 +80,6 @@ namespace OpenRa.Game.GameRules
 		{
 			public readonly bool Crushable = false;
 			public readonly bool Tracked = false;
-			public readonly bool NoMovingFire = false;
 
 			public VehicleInfo(string name) : base(name) { }
 		}

@@ -46,9 +46,9 @@ namespace OpenRa.Game
 
 		public static bool skipMakeAnims = true;
 
-		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer)
+		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, bool useAftermath)
 		{
-			Rules.LoadRules(mapName);
+			Rules.LoadRules(mapName, useAftermath);
 
 			for (int i = 0; i < 8; i++)
 				players.Add(i, 

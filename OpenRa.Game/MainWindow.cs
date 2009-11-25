@@ -5,6 +5,7 @@ using OpenRa.Game.Graphics;
 using System.Runtime.InteropServices;
 using OpenRa.Game.Traits;
 using System.IO;
+using System;
 
 namespace OpenRa.Game
 {
@@ -26,28 +27,11 @@ namespace OpenRa.Game
 
 		public MainWindow(Settings settings)
 		{
-			FileSystem.Mount( new Folder( "../../../../" ) );
-			if( File.Exists( "../../../../main.mix" ) )
-				FileSystem.Mount(new Package("main.mix"));
-			FileSystem.Mount(new Package("redalert.mix"));
-			FileSystem.Mount(new Package("conquer.mix"));
-			FileSystem.Mount(new Package("hires.mix"));
-			FileSystem.Mount(new Package("general.mix"));
-			FileSystem.Mount(new Package("local.mix"));
-			FileSystem.Mount(new Package("sounds.mix"));
-			FileSystem.Mount(new Package("speech.mix"));
-			FileSystem.Mount(new Package("allies.mix"));
-			FileSystem.Mount(new Package("russian.mix"));
-
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
 			Location = Point.Empty;
 			Visible = true;
-
-			bool windowed = !settings.GetValue("fullscreen", false);
-			renderer = new Renderer(this, GetResolution(settings), windowed);
-			SheetBuilder.Initialize(renderer);
 
 			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
 			UiOverlay.ShowBuildDebug = settings.GetValue("bdebug", false);
@@ -57,10 +41,26 @@ namespace OpenRa.Game
 			Game.NetworkHost = settings.GetValue( "host", "" );
 			Game.NetworkPort = int.Parse( settings.GetValue( "port", "0" ) );
 
+			var useAftermath = bool.Parse( settings.GetValue( "aftermath", "false" ) );
+
 			Renderer.SheetSize = int.Parse( settings.GetValue( "sheetsize", "512" ) );
 
+			while( !File.Exists( "redalert.mix" ) )
+			{
+				var current = Directory.GetCurrentDirectory();
+				if( Directory.GetDirectoryRoot( current ) == current )
+					throw new InvalidOperationException( "Unable to load MIX files." );
+				Directory.SetCurrentDirectory( ".." );
+			}
+
+			FileSystem.MountDefault( useAftermath );
+
+			bool windowed = !settings.GetValue( "fullscreen", false );
+			renderer = new Renderer( this, GetResolution( settings ), windowed );
+			SheetBuilder.Initialize( renderer );
+
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
-				settings.GetValue("player", 1));
+				settings.GetValue("player", 1), useAftermath);
 
 			SequenceProvider.ForcePrecache();
 

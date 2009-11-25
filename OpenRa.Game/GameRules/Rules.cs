@@ -21,14 +21,24 @@ namespace OpenRa.Game
 		public static Map Map;
 		public static TileSet TileSet;
 
-		public static void LoadRules(string mapFileName)
+		public static void LoadRules(string mapFileName, bool useAftermath)
 		{
-			AllRules = new IniFile(
-				FileSystem.Open("session.ini"),
-				FileSystem.Open(mapFileName),
-				FileSystem.Open("rules.ini"),
-				FileSystem.Open("units.ini"),
-				FileSystem.Open("campaignUnits.ini"));
+			if( useAftermath )
+				AllRules = new IniFile(
+					FileSystem.Open( "session.ini" ),
+					FileSystem.Open( mapFileName ),
+					FileSystem.Open( "aftrmath.ini" ),
+					FileSystem.Open( "rules.ini" ),
+					FileSystem.Open( "aftermathUnits.ini" ),
+					FileSystem.Open( "units.ini" ),
+					FileSystem.Open( "campaignUnits.ini" ) );
+			else
+				AllRules = new IniFile(
+					FileSystem.Open("session.ini"),
+					FileSystem.Open(mapFileName),
+					FileSystem.Open("rules.ini"),
+					FileSystem.Open("units.ini"),
+					FileSystem.Open("campaignUnits.ini"));
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));

@@ -6,6 +6,7 @@ using OpenRa.FileFormats;
 using System.Xml;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace SequenceEditor
 {
@@ -69,11 +70,15 @@ namespace SequenceEditor
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			FileSystem.Mount(new Folder("./"));
-			var packages = new[] { "redalert", "conquer", "hires", "general", "local", "temperat" };
-
-			foreach( var p in packages )
-				FileSystem.Mount( new Package( p + ".mix" ));
+			try
+			{
+				FileSystem.MountDefault( true );
+			}
+			catch( FileNotFoundException fnf )
+			{
+				if( fnf.FileName != "expand2.mix" )
+					throw new InvalidOperationException( "Unable to load MIX files" );
+			}
 
 			Doc = new XmlDocument(); 
 			Doc.Load("sequences.xml");

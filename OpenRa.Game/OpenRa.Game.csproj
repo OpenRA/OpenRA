@@ -155,6 +155,7 @@
     <Compile Include="Traits\RenderUnit.cs" />
     <Compile Include="Traits\RenderUnitMuzzleFlash.cs" />
     <Compile Include="Traits\RenderUnitRotor.cs" />
+    <Compile Include="Traits\RenderUnitSpinner.cs" />
     <Compile Include="Traits\RenderUnitTurreted.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Tree.cs" />
