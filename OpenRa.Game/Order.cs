@@ -85,6 +85,8 @@ namespace OpenRa.Game
 			return Game.world.Actors.Where(x => x.ActorID == aID).First();
 		}
 
+		// Named constructors for Orders.
+		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(Player subject, string text)
 		{
 			return new Order(subject, "Chat", null, null, int2.Zero, text);

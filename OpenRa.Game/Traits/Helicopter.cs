@@ -18,14 +18,26 @@ namespace OpenRa.Game.Traits
 			targetLocation = self.Location;
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if (lmb) return null;
 
 			if (underCursor == null)
-				return OpenRa.Game.Order.Move(self, xy);
+				return Order.Move(self, xy);
 
 			return null;
+		}
+
+		public void ResolveOrder( Actor self, Order order )
+		{
+			if( order.OrderString == "Move" )
+			{
+				targetLocation = order.TargetLocation;
+
+				var attackBase = self.traits.WithInterface<AttackBase>().FirstOrDefault();
+				if( attackBase != null )
+					attackBase.target = null;	/* move cancels attack order */
+			}
 		}
 
 		public void Tick(Actor self)

@@ -83,7 +83,7 @@ namespace OpenRa.Game
 			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) ?? Game.BuildingInfluence.GetBuildingAt( xy );
 
 			return traits.WithInterface<Traits.IOrder>()
-				.Select( x => x.Order( this, xy, lmb, underCursor ) )
+				.Select( x => x.IssueOrder( this, xy, lmb, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}
 
@@ -149,10 +149,10 @@ namespace OpenRa.Game
 			act.NextActivity = nextActivity;
 		}
 
-		public void CancelActivity( Actor self )
+		public void CancelActivity()
 		{
 			if( currentActivity != null )
-				currentActivity.Cancel( self );
+				currentActivity.Cancel( this );
 		}
 
 		// For pathdebug, et al

@@ -14,69 +14,14 @@ namespace OpenRa.Game
 			switch( order.OrderString )
 			{
 			case "Move":
-				{
-					var mobile = order.Subject.traits.GetOrDefault<Mobile>();
-					if (mobile != null)
-					{
-						order.Subject.CancelActivity( order.Subject );
-						order.Subject.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 8 ) );
-					}
-
-					var heli = order.Subject.traits.GetOrDefault<Helicopter>();
-					if (heli != null)
-						heli.targetLocation = order.TargetLocation;
-
-					var attackBase = order.Subject.traits.WithInterface<AttackBase>().FirstOrDefault();
-					if( attackBase != null )
-						attackBase.target = null;	/* move cancels attack order */
-					break;
-				}
 			case "Attack":
-				{
-					const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-					var mobile = order.Subject.traits.GetOrDefault<Mobile>();
-					/* todo: choose the appropriate weapon, when only one works against this target */
-					var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
-
-					order.Subject.CancelActivity(order.Subject);
-					if (order.Subject.traits.Contains<AttackTurreted>())
-					{
-						order.Subject.QueueActivity(
-							new Traits.Activities.Follow(order.TargetActor,
-								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
-
-						order.Subject.traits.Get<AttackTurreted>().target = order.TargetActor;
-					}
-					else
-					{
-						order.Subject.QueueActivity(
-							new Traits.Activities.Attack(order.TargetActor,
-								Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
-					}
-					break;
-				}
 			case "DeployMcv":
-				{
-					var factBuildingInfo = (UnitInfo.BuildingInfo)Rules.UnitInfo[ "fact" ];
-					if( !Game.CanPlaceBuilding( factBuildingInfo, order.Subject.Location - new int2( 1, 1 ), order.Subject, false ) )
-						break;	/* throw the order on the floor */
-
-					order.Subject.CancelActivity( order.Subject );
-					order.Subject.QueueActivity( new Traits.Activities.Turn( 96 ) );
-					order.Subject.QueueActivity( new Traits.Activities.DeployMcv() );
-					break;
-				}
 			case "DeliverOre":
-				{
-					order.Subject.CancelActivity( order.Subject );
-					order.Subject.QueueActivity( new Traits.Activities.DeliverOre( order.TargetActor ) );
-					break;
-				}
 			case "Harvest":
+			case "SetRallyPoint":
 				{
-					order.Subject.CancelActivity( order.Subject );
-					order.Subject.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 0 ) );
-					order.Subject.QueueActivity( new Traits.Activities.Harvest() );
+					foreach( var t in order.Subject.traits.WithInterface<IOrder>() )
+						t.ResolveOrder( order.Subject, order );
 					break;
 				}
 			case "PlaceBuilding":
@@ -140,12 +85,6 @@ namespace OpenRa.Game
 					var producing = order.Player.Producing( Rules.UnitCategory[ order.TargetString ] );
 					if( producing != null && producing.Item == order.TargetString )
 						order.Player.CancelProduction( Rules.UnitCategory[ order.TargetString ] );
-					break;
-				}
-			case "SetRallyPoint":
-				{
-					var pt = order.Subject.traits.Get<RallyPoint>();
-					pt.rallyPoint = order.TargetLocation;
 					break;
 				}
 			case "Chat":

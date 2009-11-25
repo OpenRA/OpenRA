@@ -69,11 +69,30 @@ namespace OpenRa.Game.Traits
 			return true;
 		}
 
-		public Order Order( Actor self, int2 xy, bool lmb, Actor underCursor )
+		public Order IssueOrder( Actor self, int2 xy, bool lmb, Actor underCursor )
 		{
 			if( lmb || underCursor == null ) return null;
 			if( underCursor.Owner == self.Owner ) return null;
-			return OpenRa.Game.Order.Attack( self, underCursor );
+			return Order.Attack( self, underCursor );
+		}
+
+		public void ResolveOrder( Actor self, Order order )
+		{
+			if( order.OrderString == "Attack" )
+			{
+				self.CancelActivity();
+				QueueAttack( self, order );
+			}
+		}
+
+		protected virtual void QueueAttack( Actor self, Order order )
+		{
+			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
+			/* todo: choose the appropriate weapon, when only one works against this target */
+			var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
+
+			self.QueueActivity( new Traits.Activities.Attack( order.TargetActor,
+					Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
 		}
 	}
 
@@ -93,6 +112,17 @@ namespace OpenRa.Game.Traits
 				return;
 
 			DoAttack( self );
+		}
+
+		protected override void QueueAttack( Actor self, Order order )
+		{
+			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
+			/* todo: choose the appropriate weapon, when only one works against this target */
+			var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
+
+			self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
+				Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
+			self.traits.Get<AttackTurreted>().target = order.TargetActor;
 		}
 	}
 }

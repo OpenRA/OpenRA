@@ -25,7 +25,7 @@ namespace OpenRa.Game.Traits
 			Game.UnitInfluence.Update( this );
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if( lmb ) return null;
 
@@ -34,7 +34,20 @@ namespace OpenRa.Game.Traits
 
 			if (xy == toCell) return null;
 
-			return OpenRa.Game.Order.Move( self, xy );
+			return Order.Move( self, xy );
+		}
+
+		public void ResolveOrder( Actor self, Order order )
+		{
+			if( order.OrderString == "Move" )
+			{
+				self.CancelActivity();
+				self.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 8 ) );
+
+				var attackBase = self.traits.WithInterface<AttackBase>().FirstOrDefault();
+				if( attackBase != null )
+					attackBase.target = null;	/* move cancels attack order */
+			}
 		}
 
 		public IEnumerable<int2> OccupiedCells()

@@ -13,6 +13,8 @@ namespace OpenRa.Game.Traits
 		public bool IsFull { get { return oreCarried + gemsCarried == Rules.General.BailCount; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
 
+		public Harvester( Actor self ) { }
+
 		public void AcceptResource(bool isGem)
 		{
 			if (isGem) gemsCarried++;
@@ -27,21 +29,34 @@ namespace OpenRa.Game.Traits
 			gemsCarried = 0;
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if (lmb) return null;
 
 			if (underCursor != null 
 				&& underCursor.Owner == self.Owner 
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
-				return OpenRa.Game.Order.DeliverOre(self, underCursor);
+				return Order.DeliverOre(self, underCursor);
 
 			if (underCursor == null && Rules.Map.ContainsResource(xy))
-				return OpenRa.Game.Order.Harvest(self, xy);
+				return Order.Harvest(self, xy);
 
 			return null;
 		}
 
-		public Harvester(Actor self) { }
+		public void ResolveOrder( Actor self, Order order )
+		{
+			if( order.OrderString == "Harvest" )
+			{
+				self.CancelActivity();
+				self.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 0 ) );
+				self.QueueActivity( new Traits.Activities.Harvest() );
+			}
+			else if( order.OrderString == "DeliverOre" )
+			{
+				self.CancelActivity();
+				self.QueueActivity( new Traits.Activities.DeliverOre( order.TargetActor ) );
+			}
+		}
 	}
 }

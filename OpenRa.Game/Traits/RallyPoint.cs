@@ -29,10 +29,16 @@ namespace OpenRa.Game.Traits
 					anim.Image, Game.CellSize * (new float2(.5f, .5f) + rallyPoint.ToFloat2()));
 		}
 
-		public Order Order(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
 		{
 			if (lmb || underCursor != null) return null;
-			return OpenRa.Game.Order.SetRallyPoint(self, xy);
+			return Order.SetRallyPoint(self, xy);
+		}
+
+		public void ResolveOrder( Actor self, Order order )
+		{
+			if( order.OrderString == "SetRallyPoint" )
+				rallyPoint = order.TargetLocation;
 		}
 
 		public void Tick(Actor self) { anim.Tick(); }
