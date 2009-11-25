@@ -18,16 +18,20 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick( Actor self, Mobile mobile )
 		{
-			if( desiredFacing == mobile.facing )
+			var unit = self.traits.Get<Unit>();
+
+			if( desiredFacing == unit.Facing )
 				return NextActivity;
 
-			Util.TickFacing( ref mobile.facing, desiredFacing, self.unitInfo.ROT );
+			Util.TickFacing( ref unit.Facing, desiredFacing, self.unitInfo.ROT );
 			return null;
 		}
 
 		public void Cancel( Actor self, Mobile mobile )
 		{
-			desiredFacing = mobile.facing;
+			var unit = self.traits.Get<Unit>();
+
+			desiredFacing = unit.Facing;
 			NextActivity = null;
 		}
 	}

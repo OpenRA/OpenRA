@@ -352,7 +352,7 @@ namespace OpenRa.Game
 				return;
 			}
 
-			Actor unit;
+			Actor newActor;
 
 			if (producerTypes.Contains("spen") || producerTypes.Contains("syrd"))
 			{
@@ -362,9 +362,9 @@ namespace OpenRa.Game
 				if (space == null)
 					return;
 
-				unit = new Actor(name, space.Value, player);
-				var mobile = unit.traits.Get<Mobile>();
-				mobile.facing = SharedRandom.Next(256);
+				newActor = new Actor(name, space.Value, player);
+				var unit = newActor.traits.Get<Unit>();
+				unit.Facing = SharedRandom.Next(256);
 			}
 			else
 			{
@@ -372,26 +372,27 @@ namespace OpenRa.Game
 				if (UnitInfluence.GetUnitAt(productionPoint) != null)
 					return;
 
-				unit = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
+				newActor = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
 				var rp = producer.traits.GetOrDefault<RallyPoint>();
-				var dest = rp != null ? rp.rallyPoint : (unit.Location + new int2(0, 3));
+				var dest = rp != null ? rp.rallyPoint : (newActor.Location + new int2(0, 3));
 
-				var mobile = unit.traits.GetOrDefault<Mobile>();
-				if (mobile != null)
+				var unit = newActor.traits.Get<Unit>();
+				var mobile = newActor.traits.GetOrDefault<Mobile>();
+				if( mobile != null )
 				{
-					mobile.facing = 128;
+					unit.Facing = 128;
 					mobile.QueueActivity(new Traits.Activities.Move(dest, 1));
 				}
 
-				var heli = unit.traits.GetOrDefault<Helicopter>();
+				var heli = newActor.traits.GetOrDefault<Helicopter>();
 				if (heli != null)
 				{
-					heli.facing = 20;
+					unit.Facing = 20;
 					heli.targetLocation = dest;
 				}
 			}
 
-			world.Add(unit);
+			world.Add(newActor);
 			player.FinishProduction(Rules.UnitCategory[name]);
 
 			if (producer.traits.Contains<RenderWarFactory>())

@@ -51,6 +51,8 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick( Actor self, Mobile mobile )
 		{
+			var unit = self.traits.Get<Unit>();
+
 			if( move != null )
 			{
 				move.TickMove( self, mobile, this );
@@ -79,8 +81,8 @@ namespace OpenRa.Game.Traits.Activities
 				return null;
 
 			int2 dir = nextCell.Value - mobile.fromCell;
-			var firstFacing = Util.GetFacing( dir, mobile.facing );
-			if( firstFacing != mobile.facing )
+			var firstFacing = Util.GetFacing( dir, unit.Facing );
+			if( firstFacing != unit.Facing )
 			{
 				path.Add( nextCell.Value );
 
@@ -92,8 +94,8 @@ namespace OpenRa.Game.Traits.Activities
 				move = new MoveFirstHalf(
 					CenterOfCell( mobile.fromCell ),
 					BetweenCells( mobile.fromCell, mobile.toCell ),
-					mobile.facing,
-					mobile.facing,
+					unit.Facing,
+					unit.Facing,
 					0 );
 
 				Game.UnitInfluence.Update( mobile );
@@ -183,13 +185,14 @@ namespace OpenRa.Game.Traits.Activities
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
+				var unit = self.traits.Get<Unit>();
 				var frac = (float)moveFraction / moveFractionTotal;
 
 				self.CenterLocation = float2.Lerp( from, to, frac );
 				if( moveFraction >= moveFractionTotal )
-					mobile.facing = toFacing & 0xFF;
+					unit.Facing = toFacing & 0xFF;
 				else
-					mobile.facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
+					unit.Facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
 			}
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
@@ -204,6 +207,8 @@ namespace OpenRa.Game.Traits.Activities
 
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
+				var unit = self.traits.Get<Unit>();
+
 				var nextCell = parent.PopPath( self, mobile );
 				if( nextCell != null )
 				{
@@ -212,8 +217,8 @@ namespace OpenRa.Game.Traits.Activities
 						var ret = new MoveFirstHalf(
 							BetweenCells( mobile.fromCell, mobile.toCell ),
 							BetweenCells( mobile.toCell, nextCell.Value ),
-							mobile.facing,
-							Util.GetNearestFacing( mobile.facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.facing ) ),
+							unit.Facing,
+							Util.GetNearestFacing( unit.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, unit.Facing ) ),
 							moveFraction - moveFractionTotal );
 						mobile.fromCell = mobile.toCell;
 						mobile.toCell = nextCell.Value;
@@ -226,8 +231,8 @@ namespace OpenRa.Game.Traits.Activities
 				var ret2 = new MoveSecondHalf(
 					BetweenCells( mobile.fromCell, mobile.toCell ),
 					CenterOfCell( mobile.toCell ),
-					mobile.facing,
-					mobile.facing,
+					unit.Facing,
+					unit.Facing,
 					moveFraction - moveFractionTotal );
 				mobile.fromCell = mobile.toCell;
 				Game.UnitInfluence.Update( mobile );

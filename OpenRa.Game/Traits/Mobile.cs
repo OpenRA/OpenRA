@@ -15,7 +15,6 @@ namespace OpenRa.Game.Traits
 		int2 __fromCell;
 		public int2 fromCell { get { return __fromCell; } set { Game.UnitInfluence.Remove( this ); __fromCell = value; Game.UnitInfluence.Add( this ); } }
 		public int2 toCell { get { return self.Location; } set { Game.UnitInfluence.Remove( this ); self.Location = value; Game.UnitInfluence.Add( this ); } }
-		public int facing;
 
 		public int Voice = Game.CosmeticRandom.Next(2);
 		IActivity currentActivity;

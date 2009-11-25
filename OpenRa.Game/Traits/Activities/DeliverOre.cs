@@ -23,6 +23,8 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick( Actor self, Mobile mobile )
 		{
+			var unit = self.traits.Get<Unit>();
+
 			if( isDone )
 			{
 				self.traits.Get<Harvester>().Deliver( self, refinery );
@@ -61,7 +63,7 @@ namespace OpenRa.Game.Traits.Activities
 					// no refineries reachable?
 					return null;
 			}
-			else if( mobile.facing != 64 )
+			else if( unit.Facing != 64 )
 				return new Turn( 64 ) { NextActivity = this };
 
 			var renderUnit = self.traits.WithInterface<RenderUnit>().First();

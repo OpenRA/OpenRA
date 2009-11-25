@@ -20,9 +20,9 @@ namespace OpenRa.Game.Traits
 				() =>
 				{
 					var attack = self.traits.WithInterface<AttackBase>().First();
-					var mobile = self.traits.WithInterface<Mobile>().First();
+					var unit = self.traits.Get<Unit>();
 					return (Util.QuantizeFacing(
-						mobile.facing, 8)) * 6 + (int)(attack.primaryRecoil * 5.9f);
+						unit.Facing, 8)) * 6 + (int)(attack.primaryRecoil * 5.9f);
 				});
 		}
 

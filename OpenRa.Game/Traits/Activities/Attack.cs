@@ -21,6 +21,8 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick( Actor self, Mobile mobile )
 		{
+			var unit = self.traits.Get<Unit>();
+
 			if (Target == null || Target.IsDead)
 				return NextActivity;
 
@@ -30,7 +32,7 @@ namespace OpenRa.Game.Traits.Activities
 			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
 			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
 
-			if (Util.QuantizeFacing(mobile.facing, renderUnit.anim.CurrentSequence.Length) 
+			if (Util.QuantizeFacing(unit.Facing, renderUnit.anim.CurrentSequence.Length) 
 				!= Util.QuantizeFacing(desiredFacing, renderUnit.anim.CurrentSequence.Length))
 			{
 				return new Turn( desiredFacing ) { NextActivity = this };

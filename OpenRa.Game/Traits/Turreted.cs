@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 
 		public void Tick( Actor self )
 		{
-			var df = desiredFacing ?? ( self.traits.Contains<Mobile>() ? self.traits.Get<Mobile>().facing : turretFacing );
+			var df = desiredFacing ?? ( self.traits.Contains<Unit>() ? self.traits.Get<Unit>().Facing : turretFacing );
 			Util.TickFacing( ref turretFacing, df, self.unitInfo.ROT );
 		}
 	}

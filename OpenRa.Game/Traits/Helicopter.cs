@@ -8,7 +8,6 @@ namespace OpenRa.Game.Traits
 {
 	class Helicopter : ITick, IOrder
 	{
-		public int facing;
 		public int altitude;
 		public int2 targetLocation;
 
@@ -32,16 +31,18 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
+			var unit = self.traits.Get<Unit>();
+
 			if (self.Location != targetLocation)
 			{
 				var dist = Game.CellSize * (targetLocation + new float2(.5f,.5f)) - self.CenterLocation;
-				var desiredFacing = Util.GetFacing(dist, facing);
-				Util.TickFacing(ref facing, desiredFacing,
+				var desiredFacing = Util.GetFacing(dist, unit.Facing);
+				Util.TickFacing(ref unit.Facing, desiredFacing,
 					self.unitInfo.ROT);
 
 				// .6f going the wrong way; .8f going sideways, 1f going forward.
 				var rawSpeed = .2f * (self.unitInfo as UnitInfo.VehicleInfo).Speed;
-				var angle = (facing - desiredFacing) / 128f * Math.PI;
+				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
 				var scale = .4f + .6f * (float)Math.Cos(angle);
 
 				if (altitude > CruiseAltitude / 2)		// do some movement.

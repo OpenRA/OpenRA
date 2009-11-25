@@ -36,19 +36,19 @@ namespace OpenRa.Game.Traits
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
-			var mobile = self.traits.Get<Mobile>();
+			var unit = self.traits.Get<Unit>();
 			var attack = self.traits.WithInterface<AttackBase>().FirstOrDefault();
 
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 			yield return Util.Centered(self, turretAnim.Image, self.CenterLocation 
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
+				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Util.Centered(self, turretAnim.Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, attack.secondaryRecoil));
+					+ Util.GetTurretPosition(self, unit, self.unitInfo.SecondaryOffset, attack.secondaryRecoil));
 
 			if (muzzleFlash != null && attack.primaryRecoil > 0)
 				yield return Util.Centered(self, muzzleFlash.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
+				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
 		}
 
 		public override void Tick(Actor self)

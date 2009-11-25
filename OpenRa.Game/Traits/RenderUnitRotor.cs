@@ -25,22 +25,24 @@ namespace OpenRa.Game.Traits
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
 		{
+			var unit = self.traits.Get<Unit>();
+
 			yield return Util.CenteredShadow(self, anim.Image, self.CenterLocation);
 			yield return Util.CenteredShadow(self, rotorAnim.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, 0));
+				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, 0));
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Util.CenteredShadow(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, 0));
+					+ Util.GetTurretPosition(self, unit, self.unitInfo.SecondaryOffset, 0));
 
 			var heli = self.traits.Get<Helicopter>();
 			var p = self.CenterLocation - new float2( 0, heli.altitude );
 
 			yield return Util.Centered(self, anim.Image, p);
-			yield return Util.Centered(self, rotorAnim.Image, p 
-				+ Util.GetTurretPosition(self, self.unitInfo.PrimaryOffset, 0));
+			yield return Util.Centered(self, rotorAnim.Image, p
+				+ Util.GetTurretPosition( self, unit, self.unitInfo.PrimaryOffset, 0 ) );
 			if (self.unitInfo.SecondaryOffset != null)
 				yield return Util.Centered(self, (secondRotorAnim ?? rotorAnim).Image, p
-					+ Util.GetTurretPosition(self, self.unitInfo.SecondaryOffset, 0));
+					+ Util.GetTurretPosition( self, unit, self.unitInfo.SecondaryOffset, 0 ) );
 		}
 
 		public override void Tick(Actor self)

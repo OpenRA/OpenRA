@@ -14,8 +14,9 @@ namespace OpenRa.Game.Traits
 					w =>
 					{		/* create the free harvester! */
 						var harvester = new Actor("harv", self.Location + new int2(1, 2), self.Owner);
+						var unit = harvester.traits.Get<Unit>();
 						var mobile = harvester.traits.Get<Mobile>();
-						mobile.facing = 64;
+						unit.Facing = 64;
 						mobile.QueueActivity(new Harvest());
 						w.Add(harvester);
 					});

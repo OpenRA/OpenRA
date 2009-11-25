@@ -80,7 +80,7 @@ namespace OpenRa.Game.Traits
 			anim.Tick();
 			var d = (desiredLocation - location);
 
-			facing = /*Util.GetFacing(d, facing); */ self.traits.Get<Mobile>().facing;
+			facing = /*Util.GetFacing(d, facing); */ self.traits.Get<Unit>().Facing;
 
 			if (float2.WithinEpsilon(d, float2.Zero, .1f))
 				PlaySequence("stand", true);

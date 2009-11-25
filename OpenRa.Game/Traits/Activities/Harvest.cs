@@ -12,6 +12,8 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick( Actor self, Mobile mobile )
 		{
+			var unit = self.traits.Get<Unit>();
+
 			if( isHarvesting ) return null;
 
 			if( NextActivity != null )
@@ -26,7 +28,7 @@ namespace OpenRa.Game.Traits.Activities
 			if( Rules.Map.ContainsResource( self.Location ) &&
 				Rules.Map.Harvest( self.Location, out isGem ) )
 			{
-				var harvestAnim = "harvest" + Util.QuantizeFacing( mobile.facing, 8 );
+				var harvestAnim = "harvest" + Util.QuantizeFacing( unit.Facing, 8 );
 				var renderUnit = self.traits.WithInterface<RenderUnit>().First();	/* better have one of these! */
 				if( harvestAnim != renderUnit.anim.CurrentSequence.Name )
 				{

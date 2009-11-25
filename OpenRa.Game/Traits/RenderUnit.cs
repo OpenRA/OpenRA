@@ -18,12 +18,11 @@ namespace OpenRa.Game.Traits
 
 		void PlayFacingAnim(Actor self)
 		{
-			var mobile = self.traits.GetOrDefault<Mobile>();
-			var heli = self.traits.GetOrDefault<Helicopter>();
+			var unit = self.traits.Get<Unit>();
 
 			anim.PlayFetchIndex("idle",
 				() => Util.QuantizeFacing( 
-					mobile != null ? mobile.facing : heli.facing, 
+					unit.Facing, 
 					anim.CurrentSequence.Length ));
 		}
 
