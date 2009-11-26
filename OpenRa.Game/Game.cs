@@ -63,6 +63,7 @@ namespace OpenRa.Game
 			controller = new Controller();
 			worldRenderer = new WorldRenderer( renderer );
 
+			SequenceProvider.Initialize(useAftermath);
 			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
 
 			world = new World();

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+	<!-- aftermath units -->
+  <unit name="qtnk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="ctnk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="dtrk">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="msub">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="ttnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="spinner" start="32" length="32" />
+  </unit>
+</sequences>

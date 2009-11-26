@@ -12,10 +12,17 @@ namespace OpenRa.Game.Graphics
 
 		static Dictionary<string, CursorSequence> cursors = new Dictionary<string, CursorSequence>();
 
-		static SequenceProvider()
+		public static void Initialize( bool useAftermath )
+		{
+			LoadSequenceSource("sequences.xml");
+			if (useAftermath)
+				LoadSequenceSource("sequences-aftermath.xml");
+		}
+
+		static void LoadSequenceSource(string filename)
 		{
 			XmlDocument document = new XmlDocument();
-			document.Load(FileSystem.Open("sequences.xml"));
+			document.Load(FileSystem.Open(filename));
 
 			foreach (XmlElement eUnit in document.SelectNodes("/sequences/unit"))
 				LoadSequencesForUnit(eUnit);

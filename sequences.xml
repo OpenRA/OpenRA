@@ -520,20 +520,4 @@
     <sequence name="loop" start="49" length="42" />
     <sequence name="end" start="0" length="26" />
   </unit>
-  <unit name="qtnk">
-    <sequence name="idle" start="0" length="32" />
-  </unit>
-  <unit name="ctnk">
-    <sequence name="idle" start="0" length="32" />
-  </unit>
-  <unit name="dtrk">
-    <sequence name="idle" start="0" length="32" />
-  </unit>
-  <unit name="msub">
-    <sequence name="idle" start="0" length="16" />
-  </unit>
-  <unit name="ttnk">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="spinner" start="32" length="32" />
-  </unit>
 </sequences>
