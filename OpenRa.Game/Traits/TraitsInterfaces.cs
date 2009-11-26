@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenRa.Game.Graphics;
 using IjwFramework.Types;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -19,4 +20,5 @@ namespace OpenRa.Game.Traits
 		Order IssueOrder( Actor self, int2 xy, bool lmb, Actor underCursor );
 		void ResolveOrder( Actor self, Order order );
 	}
+	interface IProducer { bool Produce( Actor self, UnitInfo produceee ); } 
 }

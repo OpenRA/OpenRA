@@ -289,7 +289,7 @@ namespace OpenRa.Game
 				new VoicePool("ackno", "affirm1", "noprob", "overout", "ritaway", "roger", "ugotit"),
 				new VoicePool("await1", "ready", "report1", "yessir1"));
 
-		static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
+		public static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
 		{
 			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
@@ -341,62 +341,21 @@ namespace OpenRa.Game
 
 		public static void BuildUnit(Player player, string name)
 		{
-			var producerTypes = Rules.TechTree.UnitBuiltAt(Rules.UnitInfo[name]);
+			var newUnitType = Rules.UnitInfo[ name ];
+			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
+			// TODO: choose producer based on "primary building"
 			var producer = world.Actors
-				.FirstOrDefault(a => a.unitInfo != null
-					&& producerTypes.Contains(a.unitInfo.Name) && a.Owner == player);
+				.Where( x => producerTypes.Contains( x.unitInfo ) && x.Owner == player )
+				.FirstOrDefault();
 
 			if (producer == null)
 			{
-				player.CancelProduction(Rules.UnitCategory[name]);
-				return;
+			    player.CancelProduction(Rules.UnitCategory[name]);
+			    return;
 			}
 
-			Actor newActor;
-
-			if (producerTypes.Contains("spen") || producerTypes.Contains("syrd"))
-			{
-				var space = FindAdjacentTile(producer, Rules.UnitInfo[name].WaterBound ?
-					UnitMovementType.Float : UnitMovementType.Wheel);	/* hackety hack */
-
-				if (space == null)
-					return;
-
-				newActor = new Actor(name, space.Value, player);
-				var unit = newActor.traits.Get<Unit>();
-				unit.Facing = SharedRandom.Next(256);
-			}
-			else
-			{
-				var productionPoint = (1 / 24f * producer.CenterLocation).ToInt2();
-				if (UnitInfluence.GetUnitAt(productionPoint) != null)
-					return;
-
-				newActor = new Actor(name, (1 / 24f * producer.CenterLocation).ToInt2(), player);
-				var rp = producer.traits.GetOrDefault<RallyPoint>();
-				var dest = rp != null ? rp.rallyPoint : (newActor.Location + new int2(0, 3));
-
-				var unit = newActor.traits.Get<Unit>();
-				var mobile = newActor.traits.GetOrDefault<Mobile>();
-				if( mobile != null )
-				{
-					unit.Facing = 128;
-					newActor.QueueActivity(new Traits.Activities.Move(dest, 1));
-				}
-
-				var heli = newActor.traits.GetOrDefault<Helicopter>();
-				if (heli != null)
-				{
-					unit.Facing = 20;
-					heli.targetLocation = dest;
-				}
-			}
-
-			world.Add(newActor);
-			player.FinishProduction(Rules.UnitCategory[name]);
-
-			if (producer.traits.Contains<RenderWarFactory>())
-				producer.traits.Get<RenderWarFactory>().EjectUnit();
+			if( producer.traits.WithInterface<IProducer>().Any( p => p.Produce( producer, newUnitType ) ) )
+				player.FinishProduction(Rules.UnitCategory[name]);
 		}
 	}
 }

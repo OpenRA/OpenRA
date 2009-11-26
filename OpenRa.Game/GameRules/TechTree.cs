@@ -8,7 +8,7 @@ namespace OpenRa.Game.GameRules
 {
 	class TechTree
 	{
-		readonly Cache<string, List<UnitInfo.BuildingInfo>> producesIndex = new Cache<string, List<UnitInfo.BuildingInfo>>( x => new List<UnitInfo.BuildingInfo>() );
+		readonly Cache<string, List<UnitInfo>> producesIndex = new Cache<string, List<UnitInfo>>( x => new List<UnitInfo>() );
 
 		public TechTree()
 		{
@@ -60,12 +60,12 @@ namespace OpenRa.Game.GameRules
 				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
-		public IEnumerable<string> UnitBuiltAt( UnitInfo info )
+		public IEnumerable<UnitInfo> UnitBuiltAt( UnitInfo info )
 		{
 			if( info.BuiltAt.Length != 0 )
-				return info.BuiltAt.Select( x => x.ToLowerInvariant() );
+				return info.BuiltAt.Select( x => Rules.UnitInfo[ x.ToLowerInvariant() ] );
 			else
-				return producesIndex[ Rules.UnitCategory[ info.Name ] ].Select( x => x.Name.ToLowerInvariant() );
+				return producesIndex[ Rules.UnitCategory[ info.Name ] ];
 		}
 	}
 }
