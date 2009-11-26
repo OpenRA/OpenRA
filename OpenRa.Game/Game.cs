@@ -262,15 +262,14 @@ namespace OpenRa.Game
 						yield return new int2(i, j);
 		}
 
-		public static IEnumerable<Actor> SelectUnitsInBox(float2 a, float2 b)
+		public static IEnumerable<Actor> SelectActorsInBox(float2 a, float2 b)
 		{
-			return FindUnits(a, b).Where(x => x.Owner == LocalPlayer && x.traits.Contains<Traits.Unit>());
-		}
-
-		public static IEnumerable<Actor> SelectUnitOrBuilding(float2 a)
-		{
-			var q = FindUnits(a, a);
-			return q.Where(x => x.traits.Contains<Traits.Unit>()).Concat(q).Take(1);
+			return FindUnits(a, b)
+				.GroupBy(x => (x.Owner == LocalPlayer) ? x.unitInfo.SelectionPriority : 0)
+				.OrderByDescending(g => g.Key)
+				.Select( g => g.AsEnumerable() )
+				.DefaultIfEmpty( new Actor[] {} )
+				.FirstOrDefault();
 		}
 
 		public static int GetDistanceToBase(int2 b, Player p)

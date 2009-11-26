@@ -65,13 +65,9 @@ namespace OpenRa.Game
 			{
 				if (!(orderGenerator is PlaceBuilding))
 				{
-					if (dragStart != xy)
-						orderGenerator = new UnitOrderGenerator(
-							Game.SelectUnitsInBox(Game.CellSize * dragStart, Game.CellSize * xy));
-					else
-						orderGenerator = new UnitOrderGenerator(
-							Game.SelectUnitOrBuilding(Game.CellSize * xy));
-
+					orderGenerator = new UnitOrderGenerator(
+							Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy));
+					
 					var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
 						.Select(a => a.traits.GetOrDefault<Mobile>())
 						.Where(m => m != null && m.self.Owner == Game.LocalPlayer)
@@ -114,7 +110,7 @@ namespace OpenRa.Game
 				.Select(a => CursorForOrderString( a.OrderString, a.Subject, a.TargetLocation ))
 				.FirstOrDefault(a => a != null) : null;
 
-			return c ?? (Game.SelectUnitOrBuilding(Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
+			return c ?? (Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
 		}
 
 		Cursor CursorForOrderString( string s, Actor a, int2 location )

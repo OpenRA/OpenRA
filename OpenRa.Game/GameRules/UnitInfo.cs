@@ -52,6 +52,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int Recoil = 0;
 		public readonly string SecondaryAnim = null;
 		public readonly bool MuzzleFlash = false;
+		public readonly int SelectionPriority = 10;
 
 		public UnitInfo(string name) { Name = name; }
 
