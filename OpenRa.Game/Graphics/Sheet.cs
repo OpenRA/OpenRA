@@ -2,6 +2,7 @@ using System.Drawing;
 using System.IO;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
+using System.Drawing.Imaging;
 
 namespace OpenRa.Game.Graphics
 {
@@ -27,11 +28,7 @@ namespace OpenRa.Game.Graphics
 
 		void Resolve()
 		{
-			string filename = string.Format("../../../sheet-{0}.png", suffix++);
-			bitmap.Save(filename);
-
-			using (Stream s = File.OpenRead(filename))
-				texture = Texture.Create(s, renderer.Device);
+			texture = Texture.CreateFromBitmap(bitmap, renderer.Device);
 		}
 
 		public Texture Texture

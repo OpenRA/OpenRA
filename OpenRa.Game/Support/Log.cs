@@ -7,7 +7,7 @@ namespace OpenRa.Game
 {
 	static class Log
 	{
-		static StreamWriter writer = File.CreateText("../../../log.txt");
+		static StreamWriter writer = File.CreateText("log.txt");
 
 		static Log()
 		{
