@@ -54,6 +54,7 @@
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
     <Compile Include="IniFile.cs" />
+    <Compile Include="IniWriter.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
