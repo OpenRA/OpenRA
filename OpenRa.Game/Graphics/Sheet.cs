@@ -12,7 +12,6 @@ namespace OpenRa.Game.Graphics
 		protected readonly Bitmap bitmap;
 
 		Texture texture;
-		static int suffix = 0;
 
 		public Sheet(Renderer renderer, Size size)
 		{
@@ -44,7 +43,7 @@ namespace OpenRa.Game.Graphics
 
 		public Size Size { get { return bitmap.Size; } }
 
-		public Color this[Point p]
+		protected Color this[Point p]
 		{
 			get { return bitmap.GetPixel(p.X, p.Y); }
 			set { bitmap.SetPixel(p.X, p.Y, value); }
