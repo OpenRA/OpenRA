@@ -14,3 +14,16 @@ CD images. Unfortunately the installer is 16-bit and so won’t run on modern 64
 can be worked around by using the Red Alert Setup Manager (http://ra.afraid.org/html/downloads/utilities-3.html). 
 Make sure you apply the no-CD protection fix so all the files needed are installed to the hard drive.
 
+
+Other Notes:
+
+* You'll need the DirectX 9 Redist installed. I know you think you have DirectX 9.0c installed, but you also
+	need d3dx9_*.dll, which are *not* included by default. This is the package you want:
+
+	http://www.microsoft.com/downloads/details.aspx?familyid=04AC064B-00D1-474E-B7B1-442D8712D553
+	
+  If you don't have the DX9 Redist, you'll get an exception somewhere in Ijw.DirectX when you try to run
+  the game.
+  
+* When someone patches Ijw.DirectX, you need to do `git submodule update` in your OpenRA tree. This has so
+    far happened *once*.
