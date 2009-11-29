@@ -91,7 +91,7 @@ namespace OpenRa.Game
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
 				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.Cash,
+				Game.LocalPlayer.DisplayCash,
 				Game.LocalPlayer.GetTotalPower()
 				), new int2(140, 5), Color.White);
 
@@ -100,7 +100,7 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), 0);
 
-			var moneyDigits = Game.LocalPlayer.Cash.ToString();
+			var moneyDigits = Game.LocalPlayer.DisplayCash.ToString();
 			var x = Game.viewport.Width - 155;
 			foreach (var d in moneyDigits.Reverse())
 			{

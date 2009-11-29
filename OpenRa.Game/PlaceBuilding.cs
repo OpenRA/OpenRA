@@ -9,12 +9,12 @@ namespace OpenRa.Game
 	class PlaceBuilding : IOrderGenerator
 	{
 		public readonly Player Owner;
-		public readonly UnitInfo.BuildingInfo Building;
+		public readonly BuildingInfo Building;
 
 		public PlaceBuilding(Player owner, string name)
 		{
 			Owner = owner;
-			Building = (UnitInfo.BuildingInfo)Rules.UnitInfo[ name ];
+			Building = (BuildingInfo)Rules.UnitInfo[ name ];
 		}
 
 		public IEnumerable<Order> Order(int2 xy, bool lmb)

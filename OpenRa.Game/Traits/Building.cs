@@ -8,11 +8,11 @@ namespace OpenRa.Game.Traits
 {
 	class Building : ITick, INotifyBuildComplete
 	{
-		public readonly UnitInfo.BuildingInfo unitInfo;
+		public readonly BuildingInfo unitInfo;
 
 		public Building(Actor self)
 		{
-			unitInfo = (UnitInfo.BuildingInfo)self.unitInfo;
+			unitInfo = (BuildingInfo)self.unitInfo;
 		}
 
 		bool first = true;

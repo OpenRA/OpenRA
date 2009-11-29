@@ -303,7 +303,7 @@ namespace OpenRa.Game
 			return null;
 		}
 
-		public static bool CanPlaceBuilding(UnitInfo.BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
 				t => Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
@@ -311,12 +311,12 @@ namespace OpenRa.Game
 					toIgnore));
 		}
 
-		public static bool CanPlaceBuilding(UnitInfo.BuildingInfo building, int2 xy, bool adjust)
+		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, bool adjust)
 		{
 			return CanPlaceBuilding(building, xy, null, adjust);
 		}
 
-		public static bool IsCloseEnoughToBase(Player p, UnitInfo.BuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
 

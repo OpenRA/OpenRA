@@ -28,7 +28,7 @@ namespace OpenRa.Game
 				{
 					Game.world.AddFrameEndTask( _ =>
 					{
-						var building = (UnitInfo.BuildingInfo)Rules.UnitInfo[ order.TargetString ];
+						var building = (BuildingInfo)Rules.UnitInfo[ order.TargetString ];
 						var producing = order.Player.Producing(Rules.UnitCategory[order.TargetString]);
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;

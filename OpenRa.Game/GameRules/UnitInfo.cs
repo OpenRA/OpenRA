@@ -56,54 +56,54 @@ namespace OpenRa.Game.GameRules
 		public readonly int InitialFacing = 128;
 
 		public UnitInfo(string name) { Name = name; }
+	}
 
-		public class MobileInfo : UnitInfo
-		{
-			public readonly int Passengers = 0;
-			public readonly int Speed = 0;
-			public readonly bool NoMovingFire = false;
+	public class MobileInfo : UnitInfo
+	{
+		public readonly int Passengers = 0;
+		public readonly int Speed = 0;
+		public readonly bool NoMovingFire = false;
 
-			public MobileInfo(string name) : base(name) { }
-		}
+		public MobileInfo(string name) : base(name) { }
+	}
 
-		public class InfantryInfo : MobileInfo
-		{
-			public readonly bool Crushable = true; // also on VehicleInfo, but with a different default
-			public readonly bool C4 = false;
-			public readonly bool FraidyCat = false;
-			public readonly bool Infiltrate = false;
-			public readonly bool IsCanine = false;
-			public readonly int SquadSize = 1;
+	public class InfantryInfo : MobileInfo
+	{
+		public readonly bool Crushable = true; // also on VehicleInfo, but with a different default
+		public readonly bool C4 = false;
+		public readonly bool FraidyCat = false;
+		public readonly bool Infiltrate = false;
+		public readonly bool IsCanine = false;
+		public readonly int SquadSize = 1;
 
-			public InfantryInfo(string name) : base(name) { }
-		}
+		public InfantryInfo(string name) : base(name) { }
+	}
 
-		public class VehicleInfo : MobileInfo
-		{
-			public readonly bool Crushable = false;
-			public readonly bool Tracked = false;
+	public class VehicleInfo : MobileInfo
+	{
+		public readonly bool Crushable = false;
+		public readonly bool Tracked = false;
 
-			public VehicleInfo(string name) : base(name) { }
-		}
+		public VehicleInfo(string name) : base(name) { }
+	}
 
-		public class BuildingInfo : UnitInfo
-		{
-			public readonly int2 Dimensions = new int2( 1, 1 );
-			public readonly string Footprint = "x";
-			public readonly string[] Produces = { };
+	public class BuildingInfo : UnitInfo
+	{
+		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly string Footprint = "x";
+		public readonly string[] Produces = { };
 
-			public readonly bool BaseNormal = true;
-			public readonly int Adjacent = 1;
-			public readonly bool Bib = false;
-			public readonly bool Capturable = false;
-			public readonly int Power = 0;
-			public readonly bool Powered = false;
-			public readonly bool Repairable = true;
-			public readonly int Storage = 0;
-			public readonly bool Unsellable = false;
-			public readonly int[] RallyPoint = { 1, 3 };
+		public readonly bool BaseNormal = true;
+		public readonly int Adjacent = 1;
+		public readonly bool Bib = false;
+		public readonly bool Capturable = false;
+		public readonly int Power = 0;
+		public readonly bool Powered = false;
+		public readonly bool Repairable = true;
+		public readonly int Storage = 0;
+		public readonly bool Unsellable = false;
+		public readonly int[] RallyPoint = { 1, 3 };
 
-			public BuildingInfo(string name) : base(name) { }
-		}
+		public BuildingInfo(string name) : base(name) { }
 	}
 }

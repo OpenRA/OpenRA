@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 
 namespace OpenRa.Game
 {
@@ -10,6 +11,7 @@ namespace OpenRa.Game
 		public Race Race;
 		public readonly int Index;
 		public int Cash;
+		public int DisplayCash;
 		int powerProvided;
 		int powerDrained;
 
@@ -20,6 +22,7 @@ namespace OpenRa.Game
 			this.PlayerName = playerName;
 			this.Race = race;
 			this.Cash = 10000;
+			this.DisplayCash = 0;
 			this.powerProvided = this.powerDrained = 0;
 
 			foreach( var cat in Rules.Categories.Keys )
@@ -56,11 +59,29 @@ namespace OpenRa.Game
 			return true;
 		}
 
+		const int displayCashDeltaPerFrame = 50;
+
 		public void Tick()
 		{
 			foreach( var p in production )
 				if( p.Value != null )
 					p.Value.Tick( this );
+
+			if (this == Game.LocalPlayer)
+			{
+				if (DisplayCash < Cash)
+				{
+					DisplayCash += Math.Min(displayCashDeltaPerFrame, 
+						Cash - DisplayCash);
+					Game.PlaySound("cashup1.aud", false);
+				}
+				else if (DisplayCash > Cash)
+				{
+					DisplayCash -= Math.Min(displayCashDeltaPerFrame,
+						DisplayCash - Cash);
+					Game.PlaySound("cashdn1.aud", false);
+				}
+			}
 		}
 
 		// Key: Production category. Categories are: Building, Infantry, Vehicle, Ship, Plane (and one per super, if they're done in here)

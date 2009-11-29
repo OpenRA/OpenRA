@@ -9,12 +9,12 @@ namespace OpenRa.Game.GameRules
 {
 	static class Footprint
 	{
-		public static IEnumerable<int2> Tiles( UnitInfo.BuildingInfo buildingInfo, int2 position )
+		public static IEnumerable<int2> Tiles( BuildingInfo buildingInfo, int2 position )
 		{
 			return Tiles(buildingInfo, position, true);
 		}
 
-		public static IEnumerable<int2> Tiles( UnitInfo.BuildingInfo buildingInfo, int2 position, bool adjustForPlacement )
+		public static IEnumerable<int2> Tiles( BuildingInfo buildingInfo, int2 position, bool adjustForPlacement )
 		{
 			var dim = buildingInfo.Dimensions;
 
@@ -36,7 +36,7 @@ namespace OpenRa.Game.GameRules
 			return Tiles( building.unitInfo, a.Location, false );
 		}
 
-		public static IEnumerable<int2> UnpathableTiles( UnitInfo.BuildingInfo buildingInfo, int2 position )
+		public static IEnumerable<int2> UnpathableTiles( BuildingInfo buildingInfo, int2 position )
 		{
 			var footprint = buildingInfo.Footprint.Where( x => !char.IsWhiteSpace( x ) ).ToArray();
 			foreach( var tile in TilesWhere( buildingInfo.Name, buildingInfo.Dimensions, footprint, a => a == 'x' ) )
@@ -55,7 +55,7 @@ namespace OpenRa.Game.GameRules
 						yield return new int2( x, y );
 		}
 
-		public static int2 AdjustForBuildingSize( UnitInfo.BuildingInfo unitInfo )
+		public static int2 AdjustForBuildingSize( BuildingInfo unitInfo )
 		{
 			var dim = unitInfo.Dimensions;
 			return new int2( dim.X / 2, dim.Y > 1 ? ( dim.Y + 1 ) / 2 : 0 );

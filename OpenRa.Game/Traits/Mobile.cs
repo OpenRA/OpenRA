@@ -16,8 +16,6 @@ namespace OpenRa.Game.Traits
 		public int2 fromCell { get { return __fromCell; } set { Game.UnitInfluence.Remove( this ); __fromCell = value; Game.UnitInfluence.Add( this ); } }
 		public int2 toCell { get { return self.Location; } set { Game.UnitInfluence.Remove( this ); self.Location = value; Game.UnitInfluence.Add( this ); } }
 
-		public int Voice = Game.CosmeticRandom.Next(2);
-
 		public Mobile(Actor self)
 		{
 			this.self = self;
@@ -62,7 +60,7 @@ namespace OpenRa.Game.Traits
 			case "Infantry":
 				return UnitMovementType.Foot;
 			case "Vehicle":
-				return ( self.unitInfo as UnitInfo.VehicleInfo ).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+				return ( self.unitInfo as VehicleInfo ).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
 			case "Ship":
 				return UnitMovementType.Float;
 			case "Plane":

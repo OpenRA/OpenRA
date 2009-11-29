@@ -53,12 +53,12 @@ namespace OpenRa.Game
 			UnitCategory = Categories.SelectMany(x => x.Value.Select(y => new KeyValuePair<string, string>(y, x.Key))).ToDictionary(x => x.Key, x => x.Value);
 
 			UnitInfo = new InfoLoader<UnitInfo>(
-				Pair.New<string, Func<string, UnitInfo>>("Building", s => new UnitInfo.BuildingInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Defense", s => new UnitInfo.BuildingInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Infantry", s => new UnitInfo.InfantryInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Vehicle", s => new UnitInfo.VehicleInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Ship", s => new UnitInfo.VehicleInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Plane", s => new UnitInfo.VehicleInfo(s)));
+				Pair.New<string, Func<string, UnitInfo>>("Building", s => new BuildingInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Defense", s => new BuildingInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Infantry", s => new InfantryInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Vehicle", s => new VehicleInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Ship", s => new VehicleInfo(s)),
+				Pair.New<string, Func<string, UnitInfo>>("Plane", s => new VehicleInfo(s)));
 
 			LoadCategories(
 				"Weapon",

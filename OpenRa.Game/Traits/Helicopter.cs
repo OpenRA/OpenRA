@@ -52,7 +52,7 @@ namespace OpenRa.Game.Traits
 					self.unitInfo.ROT);
 
 				// .6f going the wrong way; .8f going sideways, 1f going forward.
-				var rawSpeed = .2f * (self.unitInfo as UnitInfo.VehicleInfo).Speed;
+				var rawSpeed = .2f * (self.unitInfo as VehicleInfo).Speed;
 				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
 				var scale = .4f + .6f * (float)Math.Cos(angle);
 

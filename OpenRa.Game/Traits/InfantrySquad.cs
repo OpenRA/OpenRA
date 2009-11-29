@@ -22,7 +22,7 @@ namespace OpenRa.Game.Traits
 
 		public InfantrySquad(Actor self)
 		{
-			var ii = (UnitInfo.InfantryInfo)self.unitInfo;
+			var ii = (InfantryInfo)self.unitInfo;
 			for (int i = 0; i < ii.SquadSize; i++)
 				elements.Add(new Soldier(self.unitInfo.Name, 
 					self.CenterLocation.ToInt2() + elementOffsets[ii.SquadSize][i]));
@@ -72,7 +72,7 @@ namespace OpenRa.Game.Traits
 			anim.PlayFetchIndex("stand",
 				() => Util.QuantizeFacing(facing, anim.CurrentSequence.Length));
 			location = initialLocation;
-			speed = ((UnitInfo.InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
+			speed = ((InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
 		}
 
 		public void Tick( int2 desiredLocation, Actor self )

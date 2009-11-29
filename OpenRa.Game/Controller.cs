@@ -27,7 +27,7 @@ namespace OpenRa.Game
 					if (order.Subject != null && order.Player == Game.LocalPlayer)
 						doVoice = order.Subject;
 				}
-			if (doVoice != null && doVoice.traits.Contains<Mobile>())
+			if (doVoice != null && doVoice.traits.Contains<Unit>())
 				Game.PlaySound(Game.SovietVoices.First.GetNext() + GetVoiceSuffix(doVoice), false);
 		}
 
@@ -43,7 +43,7 @@ namespace OpenRa.Game
 		static string GetVoiceSuffix(Actor unit)
 		{
 			var suffixes = new[] { ".r01", ".r03" };
-			return suffixes[unit.traits.Get<Traits.Mobile>().Voice];
+			return suffixes[unit.ActorID % suffixes.Length];
 		}
 
 		float2 dragStart, dragEnd;
@@ -69,12 +69,12 @@ namespace OpenRa.Game
 							Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy));
 					
 					var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
-						.Select(a => a.traits.GetOrDefault<Mobile>())
-						.Where(m => m != null && m.self.Owner == Game.LocalPlayer)
+						.Where(a => a.traits.Contains<Unit>() 
+							&& a.Owner == Game.LocalPlayer)
 						.FirstOrDefault();
 
 					if (voicedUnit != null)
-						Game.PlaySound(Game.SovietVoices.Second.GetNext() + GetVoiceSuffix(voicedUnit.self), false);
+						Game.PlaySound(Game.SovietVoices.Second.GetNext() + GetVoiceSuffix(voicedUnit), false);
 				}
 
 				dragStart = dragEnd = xy;
@@ -124,7 +124,7 @@ namespace OpenRa.Game
 				else
 					return Cursor.MoveBlocked;
 			case "DeployMcv":
-				var factBuildingInfo = (UnitInfo.BuildingInfo)Rules.UnitInfo[ "fact" ];
+				var factBuildingInfo = (BuildingInfo)Rules.UnitInfo[ "fact" ];
 				if( Game.CanPlaceBuilding( factBuildingInfo, a.Location - new int2( 1, 1 ), a, false ) )
 					return Cursor.Deploy;
 				else
