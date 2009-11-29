@@ -12,6 +12,7 @@ namespace OpenRa.Game.Traits
 
 		public Turreted(Actor self)
 		{
+			turretFacing = self.unitInfo.InitialFacing;
 		}
 
 		public void Tick( Actor self )

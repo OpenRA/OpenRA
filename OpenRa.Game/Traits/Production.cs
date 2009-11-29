@@ -17,9 +17,7 @@ namespace OpenRa.Game.Traits
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			if( newUnit.traits.Contains<Helicopter>() )
-				return 20;
-			return 128;
+			return newUnit.unitInfo.InitialFacing;
 		}
 
 		public bool Produce( Actor self, UnitInfo producee )

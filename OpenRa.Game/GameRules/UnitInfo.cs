@@ -53,6 +53,7 @@ namespace OpenRa.Game.GameRules
 		public readonly string SecondaryAnim = null;
 		public readonly bool MuzzleFlash = false;
 		public readonly int SelectionPriority = 10;
+		public readonly int InitialFacing = 128;
 
 		public UnitInfo(string name) { Name = name; }
 
