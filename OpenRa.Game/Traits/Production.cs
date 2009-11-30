@@ -34,12 +34,17 @@ namespace OpenRa.Game.Traits
 			{
 				var mobile = newUnit.traits.GetOrDefault<Mobile>();
 				if( mobile != null )
-					newUnit.QueueActivity( new Traits.Activities.Move( rp.rallyPoint, 1 ) );
+					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
 
 				var heli = newUnit.traits.GetOrDefault<Helicopter>();
-				if( heli != null )
+				if (heli != null)
 					heli.targetLocation = rp.rallyPoint; // TODO: make Activity.Move work for helis.
 			}
+
+			var bi = self.unitInfo as BuildingInfo;
+			if (bi != null && bi.SpawnOffset != null)
+				newUnit.CenterLocation = self.CenterLocation 
+					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);
 
 			Game.world.Add( newUnit );
 

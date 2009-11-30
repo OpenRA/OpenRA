@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Net;
-using IjwFramework.Types;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 

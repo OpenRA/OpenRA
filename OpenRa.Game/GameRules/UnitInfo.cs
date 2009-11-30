@@ -103,6 +103,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int Storage = 0;
 		public readonly bool Unsellable = false;
 		public readonly int[] RallyPoint = { 1, 3 };
+		public readonly float[] SpawnOffset = null;
 
 		public BuildingInfo(string name) : base(name) { }
 	}
