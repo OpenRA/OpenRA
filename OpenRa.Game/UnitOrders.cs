@@ -37,7 +37,10 @@ namespace OpenRa.Game
 
 						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
 						if (order.Player == Game.LocalPlayer)
+						{
+							Game.PlaySound("placbldg.aud", false);
 							Game.PlaySound("build5.aud", false);
+						}
 
 						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
 					} );
