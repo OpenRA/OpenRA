@@ -31,7 +31,6 @@ namespace OpenRa.Game
 			switch (OrderString)
 			{
 				// Format:
-				//		u32   : player, with msb set. (if msb is clear, not an order)
 				//		u8    : orderID.
 				//		            0xFF: Full serialized order.
 				//		varies: rest of order.
@@ -40,8 +39,8 @@ namespace OpenRa.Game
 					{
 						var ret = new MemoryStream();
 						var w = new BinaryWriter(ret);
-						w.Write((uint)Player.Index | 0x80000000u);
-						w.Write((byte)0xFF);
+						w.Write( (byte)0xFF );
+						w.Write( (uint)Player.Index );
 						w.Write(OrderString);
 						w.Write(Subject == null ? 0xFFFFFFFF : Subject.ActorID);
 						w.Write(TargetActor == null ? 0xFFFFFFFF : TargetActor.ActorID);
@@ -55,15 +54,13 @@ namespace OpenRa.Game
 			}
 		}
 
-		public static Order Deserialize(BinaryReader r, uint first)
+		public static Order Deserialize(BinaryReader r)
 		{
-			if ((first >> 31) == 0) return null;
-
-			var player = Game.players.Where(x => x.Value.Index == (first & 0x7FFFFFFF)).First().Value;
 			switch (r.ReadByte())
 			{
 				case 0xFF:
 					{
+						var playerID = r.ReadUInt32();
 						var order = r.ReadString();
 						var subject = ActorFromUInt(r.ReadUInt32());
 						var targetActor = ActorFromUInt(r.ReadUInt32());
@@ -72,7 +69,9 @@ namespace OpenRa.Game
 						var targetString = null as string;
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
-						return new Order(player, order, subject, targetActor, targetLocation, targetString);
+
+						var player = Game.players.Where( x => x.Value.Index == playerID ).First().Value;
+						return new Order( player, order, subject, targetActor, targetLocation, targetString );
 					}
 				default:
 					throw new NotImplementedException();

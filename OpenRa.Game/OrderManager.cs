@@ -9,9 +9,9 @@ namespace OpenRa.Game
 {
 	class OrderManager
 	{
-		BinaryWriter savingReplay;
+		Stream savingReplay;
 		List<OrderSource> players;
-		int frameNumber = 0;
+		int frameNumber = 1;
 
 		const int FramesAhead = 3;
 
@@ -22,14 +22,14 @@ namespace OpenRa.Game
 			this.players = players.ToList();
 
 			foreach( var p in this.players )
-				for( int i = 0 ; i < FramesAhead ; i++ )
+				for( int i = 1 ; i <= FramesAhead ; i++ )
 					p.SendLocalOrders( i, new List<Order>() );
 		}
 
 		public OrderManager( IEnumerable<OrderSource> players, string replayFilename )
 			: this( players )
 		{
-			savingReplay = new BinaryWriter( new FileStream( replayFilename, FileMode.Create ) );
+			savingReplay = new FileStream( replayFilename, FileMode.Create );
 		}
 
 		public bool IsReadyForNextFrame
@@ -50,16 +50,12 @@ namespace OpenRa.Game
 			foreach( var p in players )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
-			if( savingReplay != null )
-				savingReplay.Write( frameNumber );
-
-			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index);
+			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index).ToList();
 			foreach (var order in allOrders)
-			{
 				UnitOrders.ProcessOrder(order);
-				if (savingReplay != null)
-					savingReplay.Write(order.Serialize());
-			}
+
+			if( savingReplay != null )
+				savingReplay.WriteFrameData( allOrders, frameNumber );
 
 			++frameNumber;
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
@@ -104,32 +100,27 @@ namespace OpenRa.Game
 		public ReplayOrderSource( string replayFilename )
 		{
 			replayReader = new BinaryReader( File.Open( replayFilename, FileMode.Open ) );
-			replayReader.ReadUInt32();
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders ) { }
 
 		public List<Order> OrdersForFrame( int frameNumber )
 		{
-			var ret = new List<Order>();
-			while( true )
+			try
 			{
-				try
-				{
-					var first = replayReader.ReadUInt32();
-					var order = Order.Deserialize( replayReader, first );
-					if( order == null )
-					{
-						if( (uint)frameNumber + 1 != first )
-							throw new NotImplementedException();
-						return ret;
-					}
-					ret.Add( order );
-				}
-				catch( EndOfStreamException )
-				{
-					return ret;
-				}
+				uint fn;
+
+				var len = replayReader.ReadInt32();
+				var ret = replayReader.ReadBytes( len ).ToOrderList( out fn );
+
+				if( frameNumber != fn )
+					throw new InvalidOperationException( "Attempted time-travel in OrdersForFrame (replay)" );
+
+				return ret;
+			}
+			catch( EndOfStreamException )
+			{
+				return new List<Order>();
 			}
 		}
 
@@ -141,7 +132,7 @@ namespace OpenRa.Game
 
 	class NetworkOrderSource : OrderSource
 	{
-		int nextLocalOrderFrame = 0;
+		int nextLocalOrderFrame = 1;
 		TcpClient socket;
 
 		Dictionary<int, byte[]> orderBuffers = new Dictionary<int, byte[]>();
@@ -182,18 +173,11 @@ namespace OpenRa.Game
 			lock( orderBuffers )
 				orderBuffer = orderBuffers[ currentFrame ];
 
-			var ms = new MemoryStream( orderBuffer );
-			var reader = new BinaryReader( ms );
-			var ret = new List<Order>();
+			uint frameNumber;
+			var ret = orderBuffer.ToOrderList( out frameNumber );
 
-			if( reader.ReadUInt32() != currentFrame )
+			if( frameNumber != currentFrame )
 				throw new InvalidOperationException( "Attempted time-travel in OrdersForFrame (network)" );
-
-			while( ms.Position < ms.Length )
-			{
-				var first = reader.ReadUInt32();
-				ret.Add( Order.Deserialize( reader, first ) );
-			}
 
 			return ret;
 		}
@@ -203,17 +187,7 @@ namespace OpenRa.Game
 			if( nextLocalOrderFrame != localFrame )
 				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
 
-			var ms = new MemoryStream();
-
-			ms.Write( BitConverter.GetBytes( nextLocalOrderFrame ) );
-
-			foreach( var order in localOrders )
-				ms.Write( order.Serialize() );
-
-			++nextLocalOrderFrame;
-
-			socket.GetStream().Write( BitConverter.GetBytes( (int)ms.Length ) );
-			ms.WriteTo( socket.GetStream() );
+			socket.GetStream().WriteFrameData( localOrders, nextLocalOrderFrame++ );
 		}
 
 		public bool IsReadyForFrame( int frameNumber )
@@ -228,6 +202,36 @@ namespace OpenRa.Game
 		public static void Write( this Stream s, byte[] buf )
 		{
 			s.Write( buf, 0, buf.Length );
+		}
+	}
+
+	static class OrderIO
+	{
+		public static MemoryStream ToMemoryStream( this List<Order> orders, int nextLocalOrderFrame )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( nextLocalOrderFrame ) );
+			foreach( var order in orders )
+				ms.Write( order.Serialize() );
+			return ms;
+		}
+
+		public static void WriteFrameData( this Stream s, List<Order> orders, int frameNumber )
+		{
+			var ms = orders.ToMemoryStream( frameNumber );
+			s.Write( BitConverter.GetBytes( (int)ms.Length ) );
+			ms.WriteTo( s );
+		}
+
+		public static List<Order> ToOrderList( this byte[] bytes, out uint frameNumber )
+		{
+			var ms = new MemoryStream( bytes );
+			var reader = new BinaryReader( ms );
+			frameNumber = reader.ReadUInt32();
+			var ret = new List<Order>();
+			while( ms.Position < ms.Length )
+				ret.Add( Order.Deserialize( reader ) );
+			return ret;
 		}
 	}
 }
