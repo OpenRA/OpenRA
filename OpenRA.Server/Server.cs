@@ -10,6 +10,55 @@ using System.Collections;
 
 namespace OpenRA.Server
 {
+	class ServerOrder
+	{
+		public readonly int PlayerId;
+		public readonly string Name;
+		public readonly string Data;
+
+		public ServerOrder(int playerId, string name, string data)
+		{
+			PlayerId = playerId;
+			Name = name;
+			Data = data;
+		}
+
+		public static ServerOrder Deserialize(BinaryReader r)
+		{
+			byte b;
+			switch (b = r.ReadByte())
+			{
+				case 0xff:
+					Console.WriteLine("This isn't a server order.");
+					return null;
+
+				case 0xfe:
+					{
+						var playerID = r.ReadInt32();
+						var name = r.ReadString();
+						var data = r.ReadString();
+
+						return new ServerOrder(playerID, name, data);
+					}
+
+				default:
+					throw new NotImplementedException(b.ToString("x2"));
+			}
+		}
+
+		public byte[] Serialize()
+		{
+			var ms = new MemoryStream();
+			var bw = new BinaryWriter(ms);
+
+			bw.Write((byte)0xfe);
+			bw.Write(PlayerId);
+			bw.Write(Name);
+			bw.Write(Data);
+			return ms.ToArray();
+		}
+	}
+
 	static class Server
 	{
 		static List<Connection> conns = new List<Connection>();
@@ -27,10 +76,11 @@ namespace OpenRA.Server
 				checkRead.Add(listener.Server);
 				foreach (var c in conns) checkRead.Add(c.socket);
 
-				Socket.Select(checkRead, null, null, 1000000 /* 1s */);
+				/* msdn lies, -1 doesnt work. this is ~1h instead. */
+				Socket.Select(checkRead, null, null, -2	);
 
-				Console.WriteLine("Select() completed with {0} sockets",
-					checkRead.Count);
+				//Console.WriteLine("Select() completed with {0} sockets",
+				//    checkRead.Count);
 
 				foreach (Socket s in checkRead)
 					if (s == listener.Server) AcceptConnection();
@@ -62,7 +112,7 @@ namespace OpenRA.Server
 				{
 					if (0 < (len = conn.socket.Receive(rx)))
 					{
-						Console.WriteLine("Read {0} bytes", len);
+					//	Console.WriteLine("Read {0} bytes", len);
 						conn.data.AddRange(rx.Take(len));
 					}
 					else
@@ -81,8 +131,8 @@ namespace OpenRA.Server
 
 		static void ReadData(Connection conn)
 		{
-			Console.WriteLine("Start ReadData() for {0}",
-				conn.socket.RemoteEndPoint);
+			//Console.WriteLine("Start ReadData() for {0}",
+			//    conn.socket.RemoteEndPoint);
 
 			if (ReadDataInner(conn))
 				while (conn.data.Count >= conn.ExpectLength)
@@ -106,8 +156,8 @@ namespace OpenRA.Server
 					}
 				}
 
-			Console.WriteLine("End ReadData() for {0}",
-				conn.socket.RemoteEndPoint);
+			//Console.WriteLine("End ReadData() for {0}",
+			//    conn.socket.RemoteEndPoint);
 		}
 
 		static void DispatchOrders(Connection conn, int frame, byte[] data)
@@ -125,13 +175,40 @@ namespace OpenRA.Server
 				catch (Exception e) { DropClient(c, e); }
 			}
 
-			if (frame == 0)
-				InterpretServerOrders(data);
+			if (frame == 0 && conn != null)
+				InterpretServerOrders(conn, data);
 		}
 
-		static void InterpretServerOrders(byte[] data)
+		static void InterpretServerOrders(Connection conn, byte[] data)
 		{
-			/* todo: handle all server orders! */
+			var ms = new MemoryStream(data);
+			var br = new BinaryReader(ms);
+
+			try
+			{
+				for (; ; )
+				{
+					var so = ServerOrder.Deserialize(br);
+					if (so == null) return;
+					InterpretServerOrder(conn, so);
+				}
+			}
+			catch (EndOfStreamException) { }
+		}
+
+		static void InterpretServerOrder(Connection conn, ServerOrder so)
+		{
+			switch (so.Name)
+			{
+				case "ToggleReady":
+					conn.IsReady ^= true;
+
+					// start the game if everyone is ready.
+					if (conns.All(c => c.IsReady))
+						DispatchOrders(null, 0, 
+							new ServerOrder(0, "StartGame", "").Serialize());
+					break;
+			}
 		}
 
 		static void DropClient(Connection c, Exception e)

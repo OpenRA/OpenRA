@@ -129,8 +129,13 @@ namespace OpenRa.Game
 			base.OnKeyDown(e);
 
 			/* hack hack hack */
-			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
-				Game.orderManager.StartGame();
+			if (e.KeyCode == Keys.F8)
+			{
+				Game.LocalPlayer.IsReady ^= true;
+				Game.controller.AddOrder(
+					new Order(Game.LocalPlayer,
+						"ToggleReady", null, null, int2.Zero, "") { IsImmediate = true });
+			}
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)

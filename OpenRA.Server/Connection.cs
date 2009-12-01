@@ -15,6 +15,9 @@ namespace OpenRA.Server
 		public int ExpectLength = 8;
 		public int Frame = 0;
 
+		/* client data */
+		public bool IsReady;
+
 		public byte[] PopBytes(int n)
 		{
 			var result = data.GetRange(0, n);

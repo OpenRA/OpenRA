@@ -15,6 +15,8 @@ namespace OpenRa.Game
 		int powerProvided;
 		int powerDrained;
 
+		public bool IsReady;
+
 		public Player( int index, int palette, string playerName, Race race )
 		{
 			this.Index = index;

@@ -17,7 +17,7 @@ namespace OpenRa.Game
 		public readonly string TargetString;
 		public bool IsImmediate;
 
-		Order(Player player, string orderString, Actor subject, 
+		public Order(Player player, string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString)
 		{
 			this.Player = player;
@@ -30,6 +30,17 @@ namespace OpenRa.Game
 
 		public byte[] Serialize()
 		{
+			if (IsImmediate)		/* chat, whatever */
+			{
+				var ret = new MemoryStream();
+				var w = new BinaryWriter(ret);
+				w.Write((byte)0xfe);
+				w.Write((uint)Player.Index);
+				w.Write(OrderString);
+				w.Write(TargetString);
+				return ret.ToArray();
+			}
+
 			switch (OrderString)
 			{
 				// Format:
@@ -56,6 +67,13 @@ namespace OpenRa.Game
 			}
 		}
 
+		static Player LookupPlayer(uint index)
+		{
+			return Game.players
+				.Where(x => x.Value.Index == index)
+				.First().Value;
+		}
+
 		public static Order Deserialize(BinaryReader r)
 		{
 			switch (r.ReadByte())
@@ -72,9 +90,21 @@ namespace OpenRa.Game
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
 
-						var player = Game.players.Where( x => x.Value.Index == playerID ).First().Value;
-						return new Order( player, order, subject, targetActor, targetLocation, targetString);
+						return new Order( LookupPlayer(playerID), 
+							order, subject, targetActor, targetLocation, 
+							targetString);
 					}
+
+				case 0xfe:
+					{
+						var playerID = r.ReadUInt32();
+						var name = r.ReadString();
+						var data = r.ReadString();
+
+						return new Order(LookupPlayer(playerID),
+							name, null, null, int2.Zero, data);
+					}
+
 				default:
 					throw new NotImplementedException();
 			}

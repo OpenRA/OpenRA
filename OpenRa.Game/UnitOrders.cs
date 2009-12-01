@@ -97,6 +97,22 @@ namespace OpenRa.Game
 					Game.chat.AddLine(Pair.New(order.Player.PlayerName + ":", order.TargetString));
 					break;
 				}
+			case "ToggleReady":
+				{
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "toggled ready status" ));
+					break;
+				}
+			case "AssignPlayer":
+				{
+					break;		/* todo: set LocalPlayer based on this */
+				}
+			case "StartGame":
+				{
+					Game.chat.AddLine(Pair.New("Server:", "The game has started."));
+					Game.orderManager.StartGame();
+					break;
+				}
+
 			default:
 				throw new NotImplementedException();
 			}
