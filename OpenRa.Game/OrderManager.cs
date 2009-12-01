@@ -10,24 +10,24 @@ namespace OpenRa.Game
 	class OrderManager
 	{
 		Stream savingReplay;
-		List<OrderSource> players;
+		List<OrderSource> sources;
 		int frameNumber = 1;
 
 		const int FramesAhead = 3;
 
 		public int FrameNumber { get { return frameNumber; } }
 
-		public OrderManager( IEnumerable<OrderSource> players )
+		public OrderManager( IEnumerable<OrderSource> sources )
 		{
-			this.players = players.ToList();
+			this.sources = sources.ToList();
 
-			foreach( var p in this.players )
+			foreach( var p in this.sources )
 				for( int i = 1 ; i <= FramesAhead ; i++ )
 					p.SendLocalOrders( i, new List<Order>() );
 		}
 
-		public OrderManager( IEnumerable<OrderSource> players, string replayFilename )
-			: this( players )
+		public OrderManager( IEnumerable<OrderSource> sources, string replayFilename )
+			: this( sources )
 		{
 			savingReplay = new FileStream( replayFilename, FileMode.Create );
 		}
@@ -36,7 +36,7 @@ namespace OpenRa.Game
 		{
 			get
 			{
-				foreach( var p in players )
+				foreach( var p in sources )
 					if( !p.IsReadyForFrame( frameNumber ) )
 						return false;
 				return true;
@@ -47,10 +47,10 @@ namespace OpenRa.Game
 		{
 			var localOrders = Game.controller.GetRecentOrders();
 
-			foreach( var p in players )
+			foreach( var p in sources )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
-			var allOrders = players.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index).ToList();
+			var allOrders = sources.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index).ToList();
 			foreach (var order in allOrders)
 				UnitOrders.ProcessOrder(order);
 
