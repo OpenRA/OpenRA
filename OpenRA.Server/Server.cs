@@ -92,8 +92,8 @@ namespace OpenRA.Server
 					{
 						case ReceiveState.Header:
 							{
-								conn.ExpectLength = BitConverter.ToInt32(bytes, 4) - 4;
-								conn.Frame = BitConverter.ToInt32(bytes, 0);
+								conn.ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
+								conn.Frame = BitConverter.ToInt32(bytes, 4);
 								conn.State = ReceiveState.Data;
 							} break;
 
