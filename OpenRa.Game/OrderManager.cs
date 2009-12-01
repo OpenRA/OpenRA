@@ -19,6 +19,8 @@ namespace OpenRa.Game
 
 		public void StartGame()
 		{
+			if (GameStarted) return;
+
 			frameNumber = 1;
 			foreach (var p in this.sources)
 				for (int i = frameNumber; i <= FramesAhead; i++)
@@ -49,7 +51,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void Tick()
+		public void Tick( bool immediateOnly )
 		{
 			var localOrders = Game.controller.GetRecentOrders();
 
@@ -63,7 +65,7 @@ namespace OpenRa.Game
 			if( savingReplay != null )
 				savingReplay.WriteFrameData( allOrders, frameNumber );
 
-			if (frameNumber != 0)
+			if (frameNumber != 0 && !immediateOnly)
 				++frameNumber;		/* game hasnt started yet.. */
 
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
@@ -141,7 +143,6 @@ namespace OpenRa.Game
 
 	class NetworkOrderSource : OrderSource
 	{
-	//	int nextLocalOrderFrame = 1;
 		TcpClient socket;
 
 		Dictionary<int, List<byte[]>> orderBuffers = new Dictionary<int, List<byte[]>>();
@@ -178,28 +179,28 @@ namespace OpenRa.Game
 			lock (orderBuffers)
 			{
 				List<byte[]> result;
-				return orderBuffers.TryGetValue(frame, out result)
-					? result : NoOrders;
+				if (!orderBuffers.TryGetValue(frame, out result))
+					result = NoOrders;
+				orderBuffers.Remove(frame);
+				return result;
 			}
 		}
 
 		public List<Order> OrdersForFrame( int currentFrame )
 		{
 			var orderData = ExtractOrders(currentFrame);
-			/* todo: immediate orders hooked in here? */
+			if (currentFrame != 0)
+				orderData.AddRange(ExtractOrders(0));
 
 			return orderData.SelectMany(a => a.ToOrderList()).ToList();
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
-//			if( nextLocalOrderFrame != localFrame )
-//				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
-
 			socket.GetStream().WriteFrameData(
 				localOrders.Where(o => o.IsImmediate), 0);
 			socket.GetStream().WriteFrameData( 
-				localOrders.Where( o => !o.IsImmediate ), localFrame );//nextLocalOrderFrame++ );
+				localOrders.Where( o => !o.IsImmediate ), localFrame );
 		}
 
 		public bool IsReadyForFrame( int frameNumber )

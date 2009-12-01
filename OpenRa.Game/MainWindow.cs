@@ -129,7 +129,7 @@ namespace OpenRa.Game
 			base.OnKeyDown(e);
 
 			/* hack hack hack */
-			if (e.KeyCode == Keys.F8)
+			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
 			{
 				Game.LocalPlayer.IsReady ^= true;
 				Game.controller.AddOrder(
