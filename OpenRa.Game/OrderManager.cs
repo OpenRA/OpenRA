@@ -11,19 +11,25 @@ namespace OpenRa.Game
 	{
 		Stream savingReplay;
 		List<OrderSource> sources;
-		int frameNumber = 1;
+		int frameNumber = 0;
 
 		const int FramesAhead = 3;
+
+		public bool GameStarted { get { return frameNumber != 0; } }
+
+		public void StartGame()
+		{
+			frameNumber = 1;
+			foreach (var p in this.sources)
+				for (int i = frameNumber; i <= FramesAhead; i++)
+					p.SendLocalOrders(i, new List<Order>());
+		}
 
 		public int FrameNumber { get { return frameNumber; } }
 
 		public OrderManager( IEnumerable<OrderSource> sources )
 		{
 			this.sources = sources.ToList();
-
-			foreach( var p in this.sources )
-				for( int i = 1 ; i <= FramesAhead ; i++ )
-					p.SendLocalOrders( i, new List<Order>() );
 		}
 
 		public OrderManager( IEnumerable<OrderSource> sources, string replayFilename )
@@ -57,7 +63,9 @@ namespace OpenRa.Game
 			if( savingReplay != null )
 				savingReplay.WriteFrameData( allOrders, frameNumber );
 
-			++frameNumber;
+			if (frameNumber != 0)
+				++frameNumber;		/* game hasnt started yet.. */
+
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
 			if( ( frameNumber & 0x80000000 ) != 0 )
 				throw new InvalidOperationException( "(OrderManager) Frame number too large" );
@@ -80,6 +88,8 @@ namespace OpenRa.Game
 		public List<Order> OrdersForFrame( int currentFrame )
 		{
 			// TODO: prune `orders` based on currentFrame.
+			if (!orders.ContainsKey(currentFrame))
+				return new List<Order>();
 			return orders[ currentFrame ];
 		}
 
@@ -131,7 +141,7 @@ namespace OpenRa.Game
 
 	class NetworkOrderSource : OrderSource
 	{
-		int nextLocalOrderFrame = 1;
+	//	int nextLocalOrderFrame = 1;
 		TcpClient socket;
 
 		Dictionary<int, List<byte[]>> orderBuffers = new Dictionary<int, List<byte[]>>();
@@ -183,10 +193,13 @@ namespace OpenRa.Game
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
-			if( nextLocalOrderFrame != localFrame )
-				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
+//			if( nextLocalOrderFrame != localFrame )
+//				throw new InvalidOperationException( "Attempted time-travel in NetworkOrderSource.SendLocalOrders()" );
 
-			socket.GetStream().WriteFrameData( localOrders, nextLocalOrderFrame++ );
+			socket.GetStream().WriteFrameData(
+				localOrders.Where(o => o.IsImmediate), 0);
+			socket.GetStream().WriteFrameData( 
+				localOrders.Where( o => !o.IsImmediate ), localFrame );//nextLocalOrderFrame++ );
 		}
 
 		public bool IsReadyForFrame( int frameNumber )
@@ -206,7 +219,7 @@ namespace OpenRa.Game
 
 	static class OrderIO
 	{
-		public static MemoryStream ToMemoryStream( this List<Order> orders, int nextLocalOrderFrame )
+		public static MemoryStream ToMemoryStream( this IEnumerable<Order> orders, int nextLocalOrderFrame )
 		{
 			var ms = new MemoryStream();
 			ms.Write( BitConverter.GetBytes( nextLocalOrderFrame ) );
@@ -215,7 +228,7 @@ namespace OpenRa.Game
 			return ms;
 		}
 
-		public static void WriteFrameData( this Stream s, List<Order> orders, int frameNumber )
+		public static void WriteFrameData( this Stream s, IEnumerable<Order> orders, int frameNumber )
 		{
 			var ms = orders.ToMemoryStream( frameNumber );
 			s.Write( BitConverter.GetBytes( (int)ms.Length ) );

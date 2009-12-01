@@ -190,8 +190,12 @@ namespace OpenRa.Game
 						foreach (var player in players.Values)
 							player.Tick();
 					}
-					else if (orderManager.FrameNumber == 0)
-						lastTime = Environment.TickCount;
+					else
+						orderManager.Tick();
+					//    if (orderManager.FrameNumber == 0)
+					//{
+					//    lastTime = Environment.TickCount;
+					//}
 				}
 
 				PerfHistory.Tick();

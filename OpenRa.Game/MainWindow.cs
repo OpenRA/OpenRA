@@ -124,6 +124,15 @@ namespace OpenRa.Game
 			});
 		}
 
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			base.OnKeyDown(e);
+
+			/* hack hack hack */
+			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
+				Game.orderManager.StartGame();
+		}
+
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
 			base.OnKeyPress(e);

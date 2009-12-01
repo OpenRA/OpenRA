@@ -15,8 +15,10 @@ namespace OpenRa.Game
 		public readonly Actor TargetActor;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
+		public bool IsImmediate;
 
-		Order(Player player, string orderString, Actor subject, Actor targetActor, int2 targetLocation, string targetString)
+		Order(Player player, string orderString, Actor subject, 
+			Actor targetActor, int2 targetLocation, string targetString)
 		{
 			this.Player = player;
 			this.OrderString = orderString;
@@ -71,7 +73,7 @@ namespace OpenRa.Game
 							targetString = r.ReadString();
 
 						var player = Game.players.Where( x => x.Value.Index == playerID ).First().Value;
-						return new Order( player, order, subject, targetActor, targetLocation, targetString );
+						return new Order( player, order, subject, targetActor, targetLocation, targetString);
 					}
 				default:
 					throw new NotImplementedException();
@@ -88,7 +90,8 @@ namespace OpenRa.Game
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(Player subject, string text)
 		{
-			return new Order(subject, "Chat", null, null, int2.Zero, text);
+			return new Order(subject, "Chat", null, null, int2.Zero, text)
+				{ IsImmediate = true };
 		}
 
 		public static Order Attack(Actor subject, Actor target)
