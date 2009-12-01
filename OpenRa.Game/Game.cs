@@ -172,9 +172,11 @@ namespace OpenRa.Game
 				{
 					lastTime += timestep;
 
+					orderManager.TickImmediate();
+
 					if (orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick(false);
+						orderManager.Tick();
 						if (controller.orderGenerator != null)
 							controller.orderGenerator.Tick();
 
@@ -191,11 +193,8 @@ namespace OpenRa.Game
 							player.Tick();
 					}
 					else
-						orderManager.Tick(true);
-					//    if (orderManager.FrameNumber == 0)
-					//{
-					//    lastTime = Environment.TickCount;
-					//}
+						if (orderManager.FrameNumber == 0)
+							lastTime = Environment.TickCount;
 				}
 
 				PerfHistory.Tick();

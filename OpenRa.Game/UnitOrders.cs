@@ -99,7 +99,7 @@ namespace OpenRa.Game
 				}
 			case "ToggleReady":
 				{
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "toggled ready status" ));
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is " + order.TargetString ));
 					break;
 				}
 			case "AssignPlayer":

@@ -149,6 +149,9 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
+								if (bytes.Length > 0)
+									Console.WriteLine("{0} bytes", bytes.Length);
+
 								DispatchOrders(conn, conn.Frame, bytes);
 								conn.ExpectLength = 8;
 								conn.State = ReceiveState.Header;
@@ -203,10 +206,16 @@ namespace OpenRA.Server
 				case "ToggleReady":
 					conn.IsReady ^= true;
 
+					Console.WriteLine("Player @{0} is {1}", 
+						conn.socket.RemoteEndPoint, conn.IsReady ? "ready" : "not ready");
+
 					// start the game if everyone is ready.
 					if (conns.All(c => c.IsReady))
-						DispatchOrders(null, 0, 
+					{
+						Console.WriteLine("All players are ready. Starting the game!");
+						DispatchOrders(null, 0,
 							new ServerOrder(0, "StartGame", "").Serialize());
+					}
 					break;
 			}
 		}

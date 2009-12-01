@@ -51,28 +51,38 @@ namespace OpenRa.Game
 			}
 		}
 
-		public void Tick( bool immediateOnly )
+		public void TickImmediate()
 		{
-			var localOrders = Game.controller.GetRecentOrders();
+			var localOrders = Game.controller.GetRecentOrders(true);
+			if (localOrders.Count > 0)
+				foreach (var p in sources)
+					p.SendLocalOrders(0, localOrders);
+
+			var immOrders = sources.SelectMany( p => p.OrdersForFrame(0) ).OrderBy(o => o.Player.Index).ToList();
+			foreach (var order in immOrders)
+				UnitOrders.ProcessOrder(order);
+		}
+
+		public void Tick()
+		{
+			var localOrders = Game.controller.GetRecentOrders(false);
 
 			foreach( var p in sources )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
 			var allOrders = sources.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index).ToList();
+
 			foreach (var order in allOrders)
 				UnitOrders.ProcessOrder(order);
 
 			if( savingReplay != null )
 				savingReplay.WriteFrameData( allOrders, frameNumber );
 
-			if (frameNumber != 0 && !immediateOnly)
-				++frameNumber;		/* game hasnt started yet.. */
+			++frameNumber;
 
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.
 			if( ( frameNumber & 0x80000000 ) != 0 )
 				throw new InvalidOperationException( "(OrderManager) Frame number too large" );
-
-			return;
 		}
 	}
 
@@ -97,6 +107,7 @@ namespace OpenRa.Game
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
+			if (localFrame == 0) return;
 			orders[ localFrame ] = localOrders;
 		}
 
@@ -189,18 +200,12 @@ namespace OpenRa.Game
 		public List<Order> OrdersForFrame( int currentFrame )
 		{
 			var orderData = ExtractOrders(currentFrame);
-			if (currentFrame != 0)
-				orderData.AddRange(ExtractOrders(0));
-
 			return orderData.SelectMany(a => a.ToOrderList()).ToList();
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
 		{
-			socket.GetStream().WriteFrameData(
-				localOrders.Where(o => o.IsImmediate), 0);
-			socket.GetStream().WriteFrameData( 
-				localOrders.Where( o => !o.IsImmediate ), localFrame );
+			socket.GetStream().WriteFrameData( localOrders, localFrame );
 		}
 
 		public bool IsReadyForFrame( int frameNumber )

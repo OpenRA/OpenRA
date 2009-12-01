@@ -33,11 +33,24 @@ namespace OpenRa.Game
 
 		public void AddOrder(Order o) { recentOrders.Add(o); }
 
-		public List<Order> GetRecentOrders()
+		public List<Order> GetRecentOrders( bool imm )
 		{
-			var ret = recentOrders;
-			recentOrders = new List<Order>();
-			return ret;
+			if (imm)
+			{
+				var result = recentOrders.Where(o => o.IsImmediate).ToList();
+				recentOrders.RemoveAll(o => o.IsImmediate);
+				return result;
+			}
+			else
+			{
+				var result = recentOrders.Where(o => !o.IsImmediate).ToList();
+				recentOrders.RemoveAll(o => !o.IsImmediate);
+				return result;
+			}
+
+			//var ret = recentOrders;
+			//recentOrders = new List<Order>();
+			//return ret;
 		}
 
 		static string GetVoiceSuffix(Actor unit)
