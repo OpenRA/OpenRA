@@ -104,7 +104,9 @@ namespace OpenRa.Game
 				}
 			case "AssignPlayer":
 				{
-					break;		/* todo: set LocalPlayer based on this */
+					Game.LocalPlayer = order.Player;
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is now YOU."));
+					break;
 				}
 			case "StartGame":
 				{

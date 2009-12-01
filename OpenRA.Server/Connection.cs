@@ -17,6 +17,7 @@ namespace OpenRA.Server
 
 		/* client data */
 		public bool IsReady;
+		public int PlayerIndex;
 
 		public byte[] PopBytes(int n)
 		{

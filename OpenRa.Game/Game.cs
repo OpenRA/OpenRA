@@ -33,7 +33,11 @@ namespace OpenRa.Game
 
 		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
-		public static Player LocalPlayer { get { return players[localPlayerIndex]; } }
+		public static Player LocalPlayer
+		{
+			get { return players[localPlayerIndex]; }
+			set { localPlayerIndex = value.Index; }
+		}
 		public static BuildingInfluenceMap BuildingInfluence;
 		public static UnitInfluenceMap UnitInfluence;
 

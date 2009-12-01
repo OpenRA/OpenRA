@@ -88,17 +88,37 @@ namespace OpenRA.Server
 			}
 		}
 
+		static int ChooseFreePlayerIndex()
+		{
+			for (var i = 0; i < 8; i++)
+				if (conns.All(c => c.PlayerIndex != i))
+					return i;
+
+			throw new InvalidOperationException("Already got 8 players");
+		}
+
 		static void AcceptConnection()
 		{
 			var newConn = new Connection { socket = listener.AcceptSocket() };
-			newConn.socket.Blocking = false;
-			newConn.socket.NoDelay = true;
-			conns.Add(newConn);
+			try
+			{
+				newConn.socket.Blocking = false;
+				newConn.socket.NoDelay = true;
 
-			/* todo: assign a player number, setup host behavior, etc */
+				// assign the player number.
+				newConn.PlayerIndex = ChooseFreePlayerIndex();
 
-			Console.WriteLine("Accepted connection from {0}.",
-				newConn.socket.RemoteEndPoint);
+				conns.Add(newConn);
+
+				DispatchOrdersToClient(newConn, 0,
+					new ServerOrder(newConn.PlayerIndex, "AssignPlayer", "").Serialize());
+
+				// todo: tell this client about all the other conns.
+
+				Console.WriteLine("Accepted connection from {0}.",
+					newConn.socket.RemoteEndPoint);
+			}
+			catch (Exception e) { DropClient(newConn, e); }
 		}
 
 		static bool ReadDataInner(Connection conn)
@@ -163,20 +183,23 @@ namespace OpenRA.Server
 			//    conn.socket.RemoteEndPoint);
 		}
 
+		static void DispatchOrdersToClient(Connection c, int frame, byte[] data)
+		{
+			try
+			{
+				c.socket.Blocking = true;
+				c.socket.Send(BitConverter.GetBytes(data.Length + 4));
+				c.socket.Send(BitConverter.GetBytes(frame));
+				c.socket.Send(data);
+				c.socket.Blocking = false;
+			}
+			catch (Exception e) { DropClient(c, e); }
+		}
+
 		static void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			foreach (var c in conns.Except(conn).ToArray())
-			{
-				try
-				{
-					c.socket.Blocking = true;
-					c.socket.Send(BitConverter.GetBytes(data.Length + 4));
-					c.socket.Send(BitConverter.GetBytes(frame));
-					c.socket.Send(data);
-					c.socket.Blocking = false;
-				}
-				catch (Exception e) { DropClient(c, e); }
-			}
+				DispatchOrdersToClient(c, frame, data);
 
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
