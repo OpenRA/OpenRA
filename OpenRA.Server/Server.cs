@@ -63,6 +63,8 @@ namespace OpenRA.Server
 	{
 		static List<Connection> conns = new List<Connection>();
 		static TcpListener listener = new TcpListener(IPAddress.Any, 1234);
+		static Dictionary<int, List<Connection>> inFlightFrames
+			= new Dictionary<int, List<Connection>>();
 
 		public static void Main(string[] args)
 		{
@@ -175,12 +177,39 @@ namespace OpenRA.Server
 								DispatchOrders(conn, conn.Frame, bytes);
 								conn.ExpectLength = 8;
 								conn.State = ReceiveState.Header;
+
+								UpdateInFlightFrames(conn);
 							} break;
 					}
 				}
 
 			//Console.WriteLine("End ReadData() for {0}",
 			//    conn.socket.RemoteEndPoint);
+		}
+
+		static void UpdateInFlightFrames(Connection conn)
+		{
+			if (conn.Frame != 0)
+			{
+				if (!inFlightFrames.ContainsKey(conn.Frame))
+				{
+					Console.WriteLine("{0} opens frame {1}",
+						conn.socket.RemoteEndPoint,
+						conn.Frame);
+					inFlightFrames[conn.Frame] = new List<Connection> { conn };
+				}
+				else
+					inFlightFrames[conn.Frame].Add(conn);
+
+				if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
+				{
+					inFlightFrames.Remove(conn.Frame);
+					Console.WriteLine("frame {0} completed.",
+						conn.Frame);
+
+					DispatchOrders(null, conn.Frame, new byte[] { 0xef });
+				}
+			}
 		}
 
 		static void DispatchOrdersToClient(Connection c, int frame, byte[] data)

@@ -16,6 +16,7 @@ namespace OpenRa.Game
 		const int FramesAhead = 3;
 
 		public bool GameStarted { get { return frameNumber != 0; } }
+		public bool IsNetplay { get { return sources.OfType<NetworkOrderSource>().Any(); } }
 
 		public void StartGame()
 		{
@@ -32,6 +33,8 @@ namespace OpenRa.Game
 		public OrderManager( IEnumerable<OrderSource> sources )
 		{
 			this.sources = sources.ToList();
+			if (!IsNetplay)
+				StartGame();
 		}
 
 		public OrderManager( IEnumerable<OrderSource> sources, string replayFilename )
@@ -157,6 +160,7 @@ namespace OpenRa.Game
 		TcpClient socket;
 
 		Dictionary<int, List<byte[]>> orderBuffers = new Dictionary<int, List<byte[]>>();
+		Dictionary<int, bool> gotEverything = new Dictionary<int, bool>();
 
 		public NetworkOrderSource( TcpClient socket )
 		{
@@ -174,11 +178,16 @@ namespace OpenRa.Game
 
 					lock (orderBuffers)
 					{
-						/* accumulate this chunk */
-						if (!orderBuffers.ContainsKey(frame))
-							orderBuffers[frame] = new List<byte[]> { buf };
+						if (len == 5 && buf[0] == 0xef)	/* got everything marker */
+							gotEverything[frame] = true;
 						else
-							orderBuffers[frame].Add(buf);
+						{
+							/* accumulate this chunk */
+							if (!orderBuffers.ContainsKey(frame))
+								orderBuffers[frame] = new List<byte[]> { buf };
+							else
+								orderBuffers[frame].Add(buf);
+						}
 					}
 				}
 			} ) { IsBackground = true }.Start();
@@ -193,6 +202,7 @@ namespace OpenRa.Game
 				if (!orderBuffers.TryGetValue(frame, out result))
 					result = NoOrders;
 				orderBuffers.Remove(frame);
+				gotEverything.Remove(frame);
 				return result;
 			}
 		}
@@ -211,7 +221,7 @@ namespace OpenRa.Game
 		public bool IsReadyForFrame( int frameNumber )
 		{
 			lock( orderBuffers )
-				return orderBuffers.ContainsKey( frameNumber );
+				return gotEverything.ContainsKey( frameNumber );
 		}
 	}
 
