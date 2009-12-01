@@ -153,9 +153,10 @@ namespace OpenRa.Game
 					lock (orderBuffers)
 					{
 						/* accumulate this chunk */
-						if (orderBuffers[frame] == null)
-							orderBuffers[frame] = new List<byte[]>();
-						orderBuffers[frame].Add(buf);
+						if (!orderBuffers.ContainsKey(frame))
+							orderBuffers[frame] = new List<byte[]> { buf };
+						else
+							orderBuffers[frame].Add(buf);
 					}
 				}
 			} ) { IsBackground = true }.Start();
