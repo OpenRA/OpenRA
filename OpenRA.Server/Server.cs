@@ -24,11 +24,8 @@ namespace OpenRA.Server
 			for (; ; )
 			{
 				var checkRead = new ArrayList();
-				var checkWrite = new ArrayList();
-				var checkError = new ArrayList();
 				checkRead.Add(listener.Server);
-				foreach (var c in conns)
-					checkRead.Add(c.socket);
+				foreach (var c in conns) checkRead.Add(c.socket);
 
 				Socket.Select(checkRead, null, null, 1000000 /* 1s */);
 
@@ -45,6 +42,7 @@ namespace OpenRA.Server
 		{
 			var newConn = new Connection { socket = listener.AcceptSocket() };
 			newConn.socket.Blocking = false;
+			newConn.socket.NoDelay = true;
 			conns.Add(newConn);
 
 			/* todo: assign a player number, setup host behavior, etc */
@@ -94,8 +92,8 @@ namespace OpenRA.Server
 					{
 						case ReceiveState.Header:
 							{
+								conn.ExpectLength = BitConverter.ToInt32(bytes, 4) - 4;
 								conn.Frame = BitConverter.ToInt32(bytes, 0);
-								conn.ExpectLength = BitConverter.ToInt32(bytes, 4);
 								conn.State = ReceiveState.Data;
 							} break;
 
@@ -119,8 +117,8 @@ namespace OpenRA.Server
 				try
 				{
 					c.socket.Blocking = true;
+					c.socket.Send(BitConverter.GetBytes(data.Length + 4));
 					c.socket.Send(BitConverter.GetBytes(frame));
-					c.socket.Send(BitConverter.GetBytes(data.Length));
 					c.socket.Send(data);
 					c.socket.Blocking = false;
 				}

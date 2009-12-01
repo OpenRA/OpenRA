@@ -108,12 +108,11 @@ namespace OpenRa.Game
 		{
 			try
 			{
-				uint fn;
+				var len = replayReader.ReadInt32() - 4;
+				var frame = replayReader.ReadInt32();
+				var ret = replayReader.ReadBytes( len ).ToOrderList();
 
-				var len = replayReader.ReadInt32();
-				var ret = replayReader.ReadBytes( len ).ToOrderList( out fn );
-
-				if( frameNumber != fn )
+				if( frameNumber != frame )
 					throw new InvalidOperationException( "Attempted time-travel in OrdersForFrame (replay)" );
 
 				return ret;
@@ -135,7 +134,7 @@ namespace OpenRa.Game
 		int nextLocalOrderFrame = 1;
 		TcpClient socket;
 
-		Dictionary<int, byte[]> orderBuffers = new Dictionary<int, byte[]>();
+		Dictionary<int, List<byte[]>> orderBuffers = new Dictionary<int, List<byte[]>>();
 
 		public NetworkOrderSource( TcpClient socket )
 		{
@@ -143,43 +142,42 @@ namespace OpenRa.Game
 			this.socket.NoDelay = true;
 			var reader = new BinaryReader( socket.GetStream() );
 
-			var nextFrameId = BitConverter.GetBytes( nextLocalOrderFrame );
-			socket.GetStream().Write( nextFrameId, 0, nextFrameId.Length );
-
 			new Thread( () =>
 			{
-				var firstFrameNum = reader.ReadInt32();
-				if( firstFrameNum != 0 )
-					throw new InvalidOperationException( "Wrong frame number at start of stream" );
-
-				var currentFrame = 0;
-				var ret = new List<Order>();
-				while( true )
+				for (; ; )
 				{
 					var len = reader.ReadInt32();
-					var buf = reader.ReadBytes( len );
+					var frame = reader.ReadInt32();
+					var buf = reader.ReadBytes(len - 4);
 
-					lock( orderBuffers )
-						orderBuffers[ currentFrame ] = buf;
-					++currentFrame;
+					lock (orderBuffers)
+					{
+						/* accumulate this chunk */
+						if (orderBuffers[frame] == null)
+							orderBuffers[frame] = new List<byte[]>();
+						orderBuffers[frame].Add(buf);
+					}
 				}
 			} ) { IsBackground = true }.Start();
 		}
 
+		static List<byte[]> NoOrders = new List<byte[]>();
+		List<byte[]> ExtractOrders(int frame)
+		{
+			lock (orderBuffers)
+			{
+				List<byte[]> result;
+				return orderBuffers.TryGetValue(frame, out result)
+					? result : NoOrders;
+			}
+		}
+
 		public List<Order> OrdersForFrame( int currentFrame )
 		{
-			// TODO: prune `orderBuffers` based on currentFrame.
-			byte[] orderBuffer;
-			lock( orderBuffers )
-				orderBuffer = orderBuffers[ currentFrame ];
+			var orderData = ExtractOrders(currentFrame);
+			/* todo: immediate orders hooked in here? */
 
-			uint frameNumber;
-			var ret = orderBuffer.ToOrderList( out frameNumber );
-
-			if( frameNumber != currentFrame )
-				throw new InvalidOperationException( "Attempted time-travel in OrdersForFrame (network)" );
-
-			return ret;
+			return orderData.SelectMany(a => a.ToOrderList()).ToList();
 		}
 
 		public void SendLocalOrders( int localFrame, List<Order> localOrders )
@@ -223,11 +221,10 @@ namespace OpenRa.Game
 			ms.WriteTo( s );
 		}
 
-		public static List<Order> ToOrderList( this byte[] bytes, out uint frameNumber )
+		public static List<Order> ToOrderList( this byte[] bytes )
 		{
 			var ms = new MemoryStream( bytes );
 			var reader = new BinaryReader( ms );
-			frameNumber = reader.ReadUInt32();
 			var ret = new List<Order>();
 			while( ms.Position < ms.Length )
 				ret.Add( Order.Deserialize( reader ) );
