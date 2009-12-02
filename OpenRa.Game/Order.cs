@@ -11,21 +11,39 @@ namespace OpenRa.Game
 	{
 		public readonly Player Player;
 		public readonly string OrderString;
-		public readonly Actor Subject;
-		public readonly Actor TargetActor;
+		readonly uint SubjectId;
+		readonly uint TargetActorId;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
 		public bool IsImmediate;
 
+		public Actor Subject { get { return ActorFromUInt(SubjectId); } }
+		public Actor TargetActor { get { return ActorFromUInt(TargetActorId); } }
+
 		public Order(Player player, string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString)
+			: this( player, orderString, UIntFromActor( subject ),
+			UIntFromActor( targetActor ), targetLocation, targetString ) {}
+
+		Order(Player player, string orderString, uint subjectId,
+			uint targetActorId, int2 targetLocation, string targetString)
 		{
 			this.Player = player;
 			this.OrderString = orderString;
-			this.Subject = subject;
-			this.TargetActor = targetActor;
+			this.SubjectId = subjectId;
+			this.TargetActorId = targetActorId;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
+		}
+
+		public bool Validate()
+		{
+			if ((SubjectId != 0xffffffff) && Subject == null)
+				return false;
+			if ((TargetActorId != 0xffffffff) && TargetActor == null)
+				return false;
+
+			return true;
 		}
 
 		public byte[] Serialize()
@@ -55,8 +73,8 @@ namespace OpenRa.Game
 						w.Write( (byte)0xFF );
 						w.Write( (uint)Player.Index );
 						w.Write(OrderString);
-						w.Write(Subject == null ? 0xFFFFFFFF : Subject.ActorID);
-						w.Write(TargetActor == null ? 0xFFFFFFFF : TargetActor.ActorID);
+						w.Write(SubjectId);
+						w.Write(TargetActorId);
 						w.Write(TargetLocation.X);
 						w.Write(TargetLocation.Y);
 						w.Write(TargetString != null);
@@ -82,8 +100,8 @@ namespace OpenRa.Game
 					{
 						var playerID = r.ReadUInt32();
 						var order = r.ReadString();
-						var subject = ActorFromUInt(r.ReadUInt32());
-						var targetActor = ActorFromUInt(r.ReadUInt32());
+						var subjectId = r.ReadUInt32();
+						var targetActorId = r.ReadUInt32();
 						var targetLocation = new int2(r.ReadInt32(), 0);
 						targetLocation.Y = r.ReadInt32();
 						var targetString = null as string;
@@ -91,7 +109,7 @@ namespace OpenRa.Game
 							targetString = r.ReadString();
 
 						return new Order( LookupPlayer(playerID), 
-							order, subject, targetActor, targetLocation, 
+							order, subjectId, targetActorId, targetLocation, 
 							targetString);
 					}
 
@@ -110,10 +128,16 @@ namespace OpenRa.Game
 			}
 		}
 
+		static uint UIntFromActor(Actor a)
+		{
+			if (a == null) return 0xffffffff;
+			return a.ActorID;
+		}
+
 		static Actor ActorFromUInt(uint aID)
 		{
 			if (aID == 0xFFFFFFFF) return null;
-			return Game.world.Actors.Where(x => x.ActorID == aID).First();
+			return Game.world.Actors.SingleOrDefault(x => x.ActorID == aID);
 		}
 
 		// Named constructors for Orders.
