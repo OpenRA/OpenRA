@@ -4,6 +4,7 @@ using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
 using IjwFramework.Types;
+using System.Diagnostics;
 
 namespace OpenRa.Game
 {

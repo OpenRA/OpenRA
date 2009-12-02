@@ -102,7 +102,7 @@ namespace OpenRa.Game
 						var data = r.ReadString();
 
 						return new Order(LookupPlayer(playerID),
-							name, null, null, int2.Zero, data);
+							name, null, null, int2.Zero, data) { IsImmediate = true };
 					}
 
 				default:

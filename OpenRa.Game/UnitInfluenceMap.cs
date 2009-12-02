@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Traits;
+using System.Diagnostics;
 
 namespace OpenRa.Game
 {
@@ -18,14 +19,6 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			//SanityCheck();
-
-			//var units = Game.world.Actors
-			//    .Select( a => a.traits.GetOrDefault<Traits.Mobile>() ).Where( m => m != null );
-
-			//foreach (var u in units)
-			//    Update(u);
-
 			SanityCheck();
 		}
 
@@ -47,7 +40,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheckAdd( Mobile a )
 		{
 			foreach( var c in a.OccupiedCells() )
