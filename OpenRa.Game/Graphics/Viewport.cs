@@ -84,5 +84,16 @@ namespace OpenRa.Game.Graphics
 		{
 			return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + Location);
 		}
+
+		public void GoToStartLocation()
+		{
+			var unit = Game.world.Actors
+				.FirstOrDefault(a => a.Owner == Game.LocalPlayer);
+
+			if (unit == null)
+				return;
+
+			scrollPosition = unit.CenterLocation - .5f * new float2(Width, Height);
+		}
 	}
 }

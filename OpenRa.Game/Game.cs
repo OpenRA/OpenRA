@@ -36,7 +36,11 @@ namespace OpenRa.Game
 		public static Player LocalPlayer
 		{
 			get { return players[localPlayerIndex]; }
-			set { localPlayerIndex = value.Index; }
+			set
+			{
+				localPlayerIndex = value.Index;
+				viewport.GoToStartLocation();
+			}
 		}
 		public static BuildingInfluenceMap BuildingInfluence;
 		public static UnitInfluenceMap UnitInfluence;
@@ -313,7 +317,7 @@ namespace OpenRa.Game
 		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
-				t => Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
+				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}

@@ -80,6 +80,9 @@ namespace OpenRa.Game
 			if (Owner != Game.LocalPlayer)
 				return null;
 
+			if (!Rules.Map.IsInMap(xy.X, xy.Y))
+				return null;
+
 			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) ?? Game.BuildingInfluence.GetBuildingAt( xy );
 
 			return traits.WithInterface<Traits.IOrder>()

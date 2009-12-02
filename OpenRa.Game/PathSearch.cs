@@ -38,13 +38,11 @@ namespace OpenRa.Game
 			{
 				int2 newHere = p.Location + d;
 
+				if (!Rules.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
-				if (ignoreTerrain)
-				{
-					if (!Rules.Map.IsInMap(newHere.X, newHere.Y)) continue;
-				}
-				else
+				
+				if (!ignoreTerrain)
 				{
 					if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
 						continue;
@@ -53,6 +51,7 @@ namespace OpenRa.Game
 					if (Rules.Map.IsOverlaySolid(newHere))
 						continue;
 				}
+
 				if( checkForBlocked && Game.UnitInfluence.GetUnitAt( newHere ) != null )
 					continue;
 				if (customBlock != null && customBlock(newHere))
@@ -80,15 +79,12 @@ namespace OpenRa.Game
 
 		public void AddInitialCell( int2 location )
 		{
+			if (!Rules.Map.IsInMap(location.X, location.Y))
+				return;
+
 			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
-
-
-
-
-
-
 
 		public static PathSearch FromPoint( int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
 		{
