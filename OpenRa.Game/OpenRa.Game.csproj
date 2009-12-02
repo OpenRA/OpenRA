@@ -142,6 +142,7 @@
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
+    <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Harvester.cs" />
