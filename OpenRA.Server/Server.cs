@@ -193,9 +193,9 @@ namespace OpenRA.Server
 			{
 				if (!inFlightFrames.ContainsKey(conn.Frame))
 				{
-					Console.WriteLine("{0} opens frame {1}",
-						conn.socket.RemoteEndPoint,
-						conn.Frame);
+					//Console.WriteLine("{0} opens frame {1}",
+					//    conn.socket.RemoteEndPoint,
+					//    conn.Frame);
 					inFlightFrames[conn.Frame] = new List<Connection> { conn };
 				}
 				else
@@ -204,8 +204,8 @@ namespace OpenRA.Server
 				if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
 				{
 					inFlightFrames.Remove(conn.Frame);
-					Console.WriteLine("frame {0} completed.",
-						conn.Frame);
+					//Console.WriteLine("frame {0} completed.",
+					//    conn.Frame);
 
 					DispatchOrders(null, conn.Frame, new byte[] { 0xef });
 				}
