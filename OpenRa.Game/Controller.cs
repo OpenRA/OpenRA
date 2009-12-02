@@ -47,10 +47,6 @@ namespace OpenRa.Game
 				recentOrders.RemoveAll(o => !o.IsImmediate);
 				return result;
 			}
-
-			//var ret = recentOrders;
-			//recentOrders = new List<Order>();
-			//return ret;
 		}
 
 		static string GetVoiceSuffix(Actor unit)
@@ -120,7 +116,8 @@ namespace OpenRa.Game
 		public Cursor ChooseCursor()
 		{
 			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(), false)
-				.Select(a => CursorForOrderString( a.OrderString, a.Subject, a.TargetLocation ))
+				.Where( o => o.Validate() )
+				.Select(o => CursorForOrderString( o.OrderString, o.Subject, o.TargetLocation ))
 				.FirstOrDefault(a => a != null) : null;
 
 			return c ?? (Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
