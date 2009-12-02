@@ -132,6 +132,9 @@ namespace OpenRa.Game
 
 		public List<Order> OrdersForFrame( int frameNumber )
 		{
+			if( frameNumber == 0 )
+				return new List<Order>();
+
 			try
 			{
 				var len = replayReader.ReadInt32() - 4;
