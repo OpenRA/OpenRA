@@ -86,7 +86,7 @@ namespace OpenRa.Game
 			buildItems.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}\nReady: {6}",
+			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}\nReady: {6} (F8 to toggle)",
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
