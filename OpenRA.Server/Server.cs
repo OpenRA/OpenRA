@@ -299,6 +299,20 @@ namespace OpenRA.Server
 						DispatchOrders(null, 0,
 							new ServerOrder(0, "SetLag", lag.ToString()).Serialize());
 					}
+
+					if (so.Data.StartsWith("/pal "))
+					{
+						int pal;
+						if (!int.TryParse(so.Data.Substring(5), out pal) || pal < 0 || pal > 7)
+						{
+							Console.WriteLine("Invalid palette: {0}",
+								so.Data.Substring(5));
+							return;
+						}
+
+						DispatchOrders(null, 0,
+							new ServerOrder(0, "SetPalette", pal.ToString()).Serialize());
+					}
 					break;
 			}
 		}

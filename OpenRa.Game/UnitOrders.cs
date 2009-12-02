@@ -137,6 +137,16 @@ namespace OpenRa.Game
 							lag)));
 					break;
 				}
+			case "SetPalette":
+				{
+					int palette = int.Parse(order.TargetString);
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName,
+						string.Format("has changed color to {0}",
+							palette)));
+
+					order.Player.Palette = palette;
+					break;
+				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Pair.New("Server:", "The game has started."));
