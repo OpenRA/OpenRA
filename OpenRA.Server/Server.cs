@@ -313,6 +313,21 @@ namespace OpenRA.Server
 						DispatchOrders(null, 0,
 							new ServerOrder(0, "SetPalette", pal.ToString()).Serialize());
 					}
+
+					if (so.Data.StartsWith("/race "))
+					{
+						int race;
+						if (!int.TryParse(so.Data.Substring(6), out race) || race < 0 || race > 1)
+						{
+							Console.WriteLine("Invalid race: {0}",
+								so.Data.Substring(6));
+							return;
+						}
+
+						DispatchOrders(null, 0,
+							new ServerOrder(0, "SetRace", race.ToString()).Serialize());
+					}
+
 					break;
 			}
 		}

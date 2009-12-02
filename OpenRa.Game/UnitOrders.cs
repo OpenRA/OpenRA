@@ -119,7 +119,15 @@ namespace OpenRa.Game
 					order.Player.PlayerName = order.TargetString;
 					break;
 				}
-
+			case "SetRace":
+				{
+					order.Player.Race = order.TargetString == "0" 
+						? Race.Soviet : Race.Allies;
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName,
+						string.Format("is now playing {0}",
+						order.Player.Race)));
+					break;
+				}
 			case "SetLag":
 				{
 					int lag = int.Parse(order.TargetString);
