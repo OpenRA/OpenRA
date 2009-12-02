@@ -311,7 +311,7 @@ namespace OpenRA.Server
 						}
 
 						DispatchOrders(null, 0,
-							new ServerOrder(0, "SetPalette", pal.ToString()).Serialize());
+							new ServerOrder(conn.PlayerIndex, "SetPalette", pal.ToString()).Serialize());
 					}
 
 					if (so.Data.StartsWith("/race "))
@@ -325,7 +325,7 @@ namespace OpenRA.Server
 						}
 
 						DispatchOrders(null, 0,
-							new ServerOrder(0, "SetRace", race.ToString()).Serialize());
+							new ServerOrder(conn.PlayerIndex, "SetRace", race.ToString()).Serialize());
 					}
 
 					break;
