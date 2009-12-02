@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		List<OrderSource> sources;
 		int frameNumber = 0;
 
-		const int FramesAhead = 3;
+		public int FramesAhead = 3;
 
 		public bool GameStarted { get { return frameNumber != 0; } }
 		public bool IsNetplay { get { return sources.OfType<NetworkOrderSource>().Any(); } }

@@ -280,6 +280,22 @@ namespace OpenRA.Server
 						DispatchOrders(null, 0,
 							new ServerOrder(conn.PlayerIndex, "SetName", newName).Serialize());
 					}
+
+					if (so.Data.StartsWith("/lag "))
+					{
+						int lag;
+						if (!int.TryParse(so.Data.Substring(5), out lag))
+						{
+							Console.WriteLine("Invalid order lag: {0}",
+								so.Data.Substring(5));
+							return;
+						}
+
+						Console.WriteLine("Order lag is now {0} frames.", lag);
+
+						DispatchOrders(null, 0,
+							new ServerOrder(0, "SetLag", lag.ToString()).Serialize());
+					}
 					break;
 			}
 		}

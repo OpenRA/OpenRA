@@ -119,6 +119,24 @@ namespace OpenRa.Game
 					order.Player.PlayerName = order.TargetString;
 					break;
 				}
+
+			case "SetLag":
+				{
+					int lag = int.Parse(order.TargetString);
+					if (Game.orderManager.GameStarted)
+					{
+						Game.chat.AddLine(Pair.New("Server",
+							string.Format("Failed to change lag to {0} frames",
+								lag)));
+						return;
+					}
+
+					Game.orderManager.FramesAhead = lag;
+					Game.chat.AddLine(Pair.New("Server",
+						string.Format("Order lag is now {0} frames.",
+							lag)));
+					break;
+				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Pair.New("Server:", "The game has started."));
