@@ -108,6 +108,12 @@ namespace OpenRa.Game
 					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is now YOU."));
 					break;
 				}
+			case "SetName":
+				{
+					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is now known as " + order.TargetString));
+					order.Player.PlayerName = order.TargetString;
+					break;
+				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Pair.New("Server:", "The game has started."));

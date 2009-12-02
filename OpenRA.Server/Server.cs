@@ -269,6 +269,18 @@ namespace OpenRA.Server
 							new ServerOrder(0, "StartGame", "").Serialize());
 					}
 					break;
+
+				case "Chat":
+					if (so.Data.StartsWith("/name "))
+					{
+						var newName = so.Data.Substring(6);
+						Console.WriteLine("Player @{0} is now known as {1}",
+							conn.socket.RemoteEndPoint, newName);
+
+						DispatchOrders(null, 0,
+							new ServerOrder(conn.PlayerIndex, "SetName", newName).Serialize());
+					}
+					break;
 			}
 		}
 
@@ -279,7 +291,8 @@ namespace OpenRA.Server
 
 			conns.Remove(c);
 
-			/* todo: tell everyone else that `c` has dropped */
+			DispatchOrders(c, 0, 
+				new ServerOrder(c.PlayerIndex, "Chat", "Connection Dropped").Serialize());
 		}
 
 		public static void Write(this Stream s, byte[] data) { s.Write(data, 0, data.Length); }
