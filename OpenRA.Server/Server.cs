@@ -119,6 +119,9 @@ namespace OpenRA.Server
 
 				Console.WriteLine("Accepted connection from {0}.",
 					newConn.socket.RemoteEndPoint);
+
+				DispatchOrders(newConn, 0, new ServerOrder(newConn.PlayerIndex,
+					"Chat", "has joined the game.").Serialize());
 			}
 			catch (Exception e) { DropClient(newConn, e); }
 		}
