@@ -8,9 +8,19 @@ namespace OpenRa.Game
 {
 	public static class Ore
 	{
-		/* todo: deal with ore pits */
+		public static void AddOre(this Map map, int i, int j)
+		{
+			if (Rules.General.OreSpreads)
+				if (map.ContainsOre(i, j) && map.MapTiles[i, j].density < 12)
+					map.MapTiles[i, j].density++;
+				else if (map.MapTiles[i, j].overlay == 0xff)
+				{
+					map.MapTiles[i, j].overlay = ChooseOre();
+					map.MapTiles[i, j].density = 1;
+				}
+		}
 
-		static bool CanSpreadInto(int i, int j)
+		public static bool CanSpreadInto(int i, int j)
 		{
 			if (Game.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
 				return false;
@@ -70,13 +80,6 @@ namespace OpenRa.Game
 					if (map.ContainsOre(i, j)) map.MapTiles[i, j].density = map.GetOreDensity(i, j);
 					if (map.ContainsGem(i, j)) map.MapTiles[i, j].density = map.GetGemDensity(i, j);
 				}
-		}
-
-		static IEnumerable<int2> AdjacentTiles(int2 p)
-		{
-			for (var u = -1; u < 2; u++)
-				for (var v = -1; v < 2; v++)
-					yield return new int2(u, v) + p;
 		}
 
 		static byte GetOreDensity(this Map map, int i, int j)
