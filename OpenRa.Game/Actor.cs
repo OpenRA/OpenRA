@@ -47,12 +47,12 @@ namespace OpenRa.Game
 					+ "; add Traits= to units.ini for appropriate unit" );
 		}
 
-		public Actor( TreeReference tree, TreeCache treeRenderer )
-		{
-			ActorID = 0xffffffff;
-			Location = new int2( tree.Location );
-			traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
-		}
+		//public Actor( TreeReference tree, TreeCache treeRenderer )
+		//{
+		//    ActorID = 0xffffffff;
+		//    Location = new int2( tree.Location );
+		//    traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
+		//}
 
 		public void Tick()
 		{

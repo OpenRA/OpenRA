@@ -20,7 +20,6 @@ namespace OpenRa.Game
 		public static readonly int CellSize = 24;
 
 		public static World world;
-		static TreeCache treeCache;
 		public static Viewport viewport;
 		public static PathFinder PathFinder;
 		public static WorldRenderer worldRenderer;
@@ -75,13 +74,14 @@ namespace OpenRa.Game
 			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
 
 			world = new World();
-			treeCache = new TreeCache(Rules.Map);
-
-			foreach (TreeReference treeReference in Rules.Map.Trees)
-				world.Add(new Actor(treeReference, treeCache));
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
+
+			foreach (TreeReference treeReference in Rules.Map.Trees)
+				world.Add(new Actor(treeReference.Image, 
+					new int2(treeReference.Location),
+					null));
 
 			LoadMapBuildings(Rules.AllRules);
 			LoadMapUnits(Rules.AllRules);

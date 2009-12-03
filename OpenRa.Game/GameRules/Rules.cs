@@ -31,14 +31,16 @@ namespace OpenRa.Game
 					FileSystem.Open( "rules.ini" ),
 					FileSystem.Open( "aftermathUnits.ini" ),
 					FileSystem.Open( "units.ini" ),
-					FileSystem.Open( "campaignUnits.ini" ) );
+					FileSystem.Open("campaignUnits.ini"),
+					FileSystem.Open("trees.ini"));
 			else
 				AllRules = new IniFile(
 					FileSystem.Open("session.ini"),
 					FileSystem.Open(mapFileName),
 					FileSystem.Open("rules.ini"),
 					FileSystem.Open("units.ini"),
-					FileSystem.Open("campaignUnits.ini"));
+					FileSystem.Open("campaignUnits.ini"),
+					FileSystem.Open("trees.ini"));
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));

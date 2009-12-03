@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -519,5 +519,88 @@
     <sequence name="idle" start="0" length="91" />
     <sequence name="loop" start="49" length="42" />
     <sequence name="end" start="0" length="26" />
+  </unit>
+  <unit name="tc04">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc03">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc02">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc01">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t17">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t16">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t15">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="10" />
+  </unit>
+  <unit name="t14">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t13">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t12">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t11">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="10" />
+  </unit>
+  <unit name="t10">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t08">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t07">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t06">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t03">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t02">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t01">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="mine">
+    <sequence name="idle" start="0" length="1" />
   </unit>
 </sequences>

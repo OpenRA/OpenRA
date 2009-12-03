@@ -26,7 +26,8 @@ namespace OpenRa.Game.Traits
 
 		public void BuildingComplete(Actor self)
 		{
-			self.Owner.ChangePower(unitInfo.Power);
+			if (self.Owner != null)
+				self.Owner.ChangePower(unitInfo.Power);
 		}
 	}
 }
