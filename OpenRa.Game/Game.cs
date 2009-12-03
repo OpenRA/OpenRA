@@ -276,6 +276,7 @@ namespace OpenRa.Game
 		public static IEnumerable<Actor> SelectActorsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b)
+				.Where( x => x.unitInfo.Selectable )
 				.GroupBy(x => (x.Owner == LocalPlayer) ? x.unitInfo.SelectionPriority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )

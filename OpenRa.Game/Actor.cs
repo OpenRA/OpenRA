@@ -83,7 +83,10 @@ namespace OpenRa.Game
 			if (!Rules.Map.IsInMap(xy.X, xy.Y))
 				return null;
 
-			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) ?? Game.BuildingInfluence.GetBuildingAt( xy );
+			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) 
+				?? Game.BuildingInfluence.GetBuildingAt( xy );
+			if (underCursor != null && !underCursor.unitInfo.Selectable)
+				underCursor = null;
 
 			return traits.WithInterface<Traits.IOrder>()
 				.Select( x => x.IssueOrder( this, xy, lmb, underCursor ) )

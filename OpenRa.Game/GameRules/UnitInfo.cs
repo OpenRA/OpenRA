@@ -54,6 +54,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool MuzzleFlash = false;
 		public readonly int SelectionPriority = 10;
 		public readonly int InitialFacing = 128;
+		public readonly bool Selectable = true;
 
 		public UnitInfo(string name) { Name = name; }
 	}
