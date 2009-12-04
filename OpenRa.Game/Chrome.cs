@@ -129,7 +129,7 @@ namespace OpenRa.Game
 			var chatpos = new int2( 400, Game.viewport.Height - 20 );
 
 			if (Game.chat.isChatting)
-				RenderChatLine(Pair.New("Chat:", Game.chat.typing), chatpos);
+				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), chatpos);
 
 			foreach (var line in Game.chat.recentLines.AsEnumerable().Reverse())
 			{
@@ -138,11 +138,11 @@ namespace OpenRa.Game
 			}
 		}
 
-		void RenderChatLine(Pair<string, string> line, int2 p)
+		void RenderChatLine(Tuple<Color, string, string> line, int2 p)
 		{
-			var size = renderer.MeasureText(line.First);
-			renderer.DrawText(line.First, p, Color.Red);
-			renderer.DrawText(line.Second, p + new int2(size.X + 10, 0), Color.White);
+			var size = renderer.MeasureText(line.b);
+			renderer.DrawText(line.b, p, line.a);
+			renderer.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 
 		string currentTab = "Building";

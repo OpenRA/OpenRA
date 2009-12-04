@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IjwFramework.Types;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -10,7 +11,7 @@ namespace OpenRa.Game
 	{
 		const int logLength = 10;
 
-		public List<Pair<string, string>> recentLines = new List<Pair<string, string>>();
+		public List<Tuple<Color, string, string>> recentLines = new List<Tuple<Color, string, string>>();
 		public string typing = "";
 		public bool isChatting = false;
 
@@ -19,7 +20,7 @@ namespace OpenRa.Game
 			if (isChatting && typing.Length > 0)
 			{
 				Game.controller.AddOrder(Order.Chat(Game.LocalPlayer, typing));
-				AddLine(Game.LocalPlayer.PlayerName, typing);
+				AddLine(Game.LocalPlayer, typing);
 			}
 
 			typing = "";
@@ -37,9 +38,26 @@ namespace OpenRa.Game
 				typing += c;
 		}
 
-		public void AddLine(string from, string text)
+		static readonly Color[] paletteColors =
 		{
-			recentLines.Add(Pair.New(from, text));
+			Color.FromArgb(228, 200, 112),
+			Color.FromArgb(56, 72, 125),
+			Color.FromArgb(238, 0, 0),
+			Color.FromArgb(198,97,0),
+			Color.FromArgb(28,109,97),
+			Color.FromArgb(153,76,53),
+			Color.FromArgb(76,101,60),
+			Color.FromArgb(133,113,101),
+		};
+
+		public void AddLine(Player p, string text)
+		{
+			AddLine(paletteColors[p.Palette], p.PlayerName, text);
+		}
+
+		public void AddLine(Color c, string from, string text)
+		{
+			recentLines.Add(Tuple.New(c, from, text));
 			Game.PlaySound("rabeep1.aud", false);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
