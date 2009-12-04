@@ -208,7 +208,6 @@ namespace OpenRa.Game
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.cursor = controller.ChooseCursor();
 				viewport.DrawRegions();
 			}
 

@@ -20,7 +20,6 @@ namespace OpenRa.Game.Graphics
 		public int Width { get { return (int)screenSize.X; } }
 		public int Height { get { return (int)screenSize.Y; } }
 
-		public Cursor cursor = Cursor.Move;
 		SpriteRenderer cursorRenderer;
 		int2 mousePos;
 		float cursorFrame = 0f;
@@ -51,7 +50,7 @@ namespace OpenRa.Game.Graphics
 			Game.worldRenderer.Draw();
 			Game.chrome.Draw();
 
-			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : cursor;
+			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
