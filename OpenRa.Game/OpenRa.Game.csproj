@@ -158,6 +158,7 @@
     <Compile Include="Traits\RenderSimple.cs" />
     <Compile Include="Traits\RenderUnit.cs" />
     <Compile Include="Traits\RenderUnitMuzzleFlash.cs" />
+    <Compile Include="Traits\RenderUnitReload.cs" />
     <Compile Include="Traits\RenderUnitRotor.cs" />
     <Compile Include="Traits\RenderUnitSpinner.cs" />
     <Compile Include="Traits\RenderUnitTurreted.cs" />

@@ -19,6 +19,11 @@ namespace OpenRa.Game.Traits
 			return target != null;
 		}
 
+		public bool IsReloading()
+		{
+			return (primaryFireDelay > 0) || (secondaryFireDelay > 0);
+		}
+
 		public virtual void Tick(Actor self)
 		{
 			if (primaryFireDelay > 0) --primaryFireDelay;
