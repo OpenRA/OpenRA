@@ -320,11 +320,6 @@ namespace OpenRa.Game
 					toIgnore));
 		}
 
-		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, bool adjust)
-		{
-			return CanPlaceBuilding(building, xy, null, adjust);
-		}
-
 		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */

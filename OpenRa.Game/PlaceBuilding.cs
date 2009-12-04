@@ -21,7 +21,7 @@ namespace OpenRa.Game
 		{
 			if( lmb )
 			{
-				if( !Game.CanPlaceBuilding( Building, xy, true ) )
+				if( !Game.CanPlaceBuilding( Building, xy, null, true ) )
 					yield break;
 
 				if (!Game.IsCloseEnoughToBase(Owner, Building, xy))
