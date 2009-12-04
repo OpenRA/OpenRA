@@ -133,10 +133,7 @@ namespace OpenRA.Server
 				try
 				{
 					if (0 < (len = conn.socket.Receive(rx)))
-					{
-					//	Console.WriteLine("Read {0} bytes", len);
 						conn.data.AddRange(rx.Take(len));
-					}
 					else
 						break;
 				}
@@ -153,9 +150,6 @@ namespace OpenRA.Server
 
 		static void ReadData(Connection conn)
 		{
-			//Console.WriteLine("Start ReadData() for {0}",
-			//    conn.socket.RemoteEndPoint);
-
 			if (ReadDataInner(conn))
 				while (conn.data.Count >= conn.ExpectLength)
 				{
@@ -182,9 +176,6 @@ namespace OpenRA.Server
 							} break;
 					}
 				}
-
-			//Console.WriteLine("End ReadData() for {0}",
-			//    conn.socket.RemoteEndPoint);
 		}
 
 		static void UpdateInFlightFrames(Connection conn)
