@@ -17,7 +17,10 @@ namespace OpenRa.Game
 		public void Toggle()
 		{
 			if (isChatting && typing.Length > 0)
+			{
 				Game.controller.AddOrder(Order.Chat(Game.LocalPlayer, typing));
+				AddLine(Game.LocalPlayer.PlayerName, typing);
+			}
 
 			typing = "";
 			isChatting ^= true;
@@ -37,6 +40,7 @@ namespace OpenRa.Game
 		public void AddLine(string from, string text)
 		{
 			recentLines.Add(Pair.New(from, text));
+			Game.PlaySound("rabeep1.aud", false);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}

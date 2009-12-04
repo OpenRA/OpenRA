@@ -241,6 +241,8 @@ namespace OpenRa.Game
 			var group = Rules.UnitCategory[item];
 			var producing = player.Producing(group);
 
+			Game.PlaySound("ramenu1.aud", false);
+
 			if (isLmb)
 			{
 				if (producing == null)
