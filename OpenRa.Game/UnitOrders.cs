@@ -99,33 +99,30 @@ namespace OpenRa.Game
 				}
 			case "Chat":
 				{
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName + ":", order.TargetString));
+					Game.chat.AddLine(order.Player.PlayerName + ":", order.TargetString);
 					break;
 				}
 			case "ToggleReady":
 				{
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is " + order.TargetString ));
+					Game.chat.AddLine(order.Player.PlayerName, "is " + order.TargetString );
 					break;
 				}
 			case "AssignPlayer":
 				{
 					Game.LocalPlayer = order.Player;
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is now YOU."));
+					Game.chat.AddLine(order.Player.PlayerName, "is now YOU.");
 					break;
 				}
 			case "SetName":
 				{
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName, "is now known as " + order.TargetString));
+					Game.chat.AddLine(order.Player.PlayerName, "is now known as " + order.TargetString);
 					order.Player.PlayerName = order.TargetString;
 					break;
 				}
 			case "SetRace":
 				{
-					order.Player.Race = order.TargetString == "0" 
-						? Race.Soviet : Race.Allies;
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName,
-						string.Format("is now playing {0}",
-						order.Player.Race)));
+					order.Player.Race = order.TargetString == "0" ? Race.Soviet : Race.Allies;
+					Game.chat.AddLine(order.Player.PlayerName, "is now playing {0}".F(order.Player.Race));
 					break;
 				}
 			case "SetLag":
@@ -133,31 +130,24 @@ namespace OpenRa.Game
 					int lag = int.Parse(order.TargetString);
 					if (Game.orderManager.GameStarted)
 					{
-						Game.chat.AddLine(Pair.New("Server",
-							string.Format("Failed to change lag to {0} frames",
-								lag)));
+						Game.chat.AddLine("Server", "Failed to change lag to {0} frames".F(lag));
 						return;
 					}
 
 					Game.orderManager.FramesAhead = lag;
-					Game.chat.AddLine(Pair.New("Server",
-						string.Format("Order lag is now {0} frames.",
-							lag)));
+					Game.chat.AddLine("Server", "Order lag is now {0} frames.".F(lag));
 					break;
 				}
 			case "SetPalette":
 				{
 					int palette = int.Parse(order.TargetString);
-					Game.chat.AddLine(Pair.New(order.Player.PlayerName,
-						string.Format("has changed color to {0}",
-							palette)));
-
+					Game.chat.AddLine(order.Player.PlayerName, "has changed color to {0}".F(palette));
 					order.Player.Palette = palette;
 					break;
 				}
 			case "StartGame":
 				{
-					Game.chat.AddLine(Pair.New("Server:", "The game has started."));
+					Game.chat.AddLine("Server:", "The game has started.");
 					Game.orderManager.StartGame();
 					break;
 				}

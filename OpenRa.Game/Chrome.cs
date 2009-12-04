@@ -86,12 +86,11 @@ namespace OpenRa.Game
 			buildItems.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText(string.Format("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n$ {4}\nPower {5}\nReady: {6} (F8 to toggle)",
+			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nPower {4}\nReady: {5} (F8 to toggle)".F(
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
 				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.DisplayCash,
 				Game.LocalPlayer.GetTotalPower(),
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
 				), new int2(140, 5), Color.White);
@@ -220,8 +219,7 @@ namespace OpenRa.Game
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
 				buildPaletteRenderer.DrawSprite(blank, Game.viewport.Location + new float2(rect.Location), 0);
-				buildItems.Add(Pair.New(rect,
-					(Action<bool>)(_ => { })));
+				buildItems.Add(Pair.New(rect, (Action<bool>)(_ => { })));
 				if (++x == 3) { x = 0; y++; }
 			}
 

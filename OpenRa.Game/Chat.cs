@@ -39,5 +39,10 @@ namespace OpenRa.Game
 			recentLines.Add(line);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
+
+		public void AddLine(string from, string text)
+		{
+			AddLine(Pair.New(from, text));
+		}
 	}
 }
