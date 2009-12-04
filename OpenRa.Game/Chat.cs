@@ -34,15 +34,10 @@ namespace OpenRa.Game
 				typing += c;
 		}
 
-		public void AddLine(Pair<string, string> line)
-		{
-			recentLines.Add(line);
-			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
-		}
-
 		public void AddLine(string from, string text)
 		{
-			AddLine(Pair.New(from, text));
+			recentLines.Add(Pair.New(from, text));
+			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}
 }
