@@ -306,6 +306,11 @@ namespace OpenRA.Server
 			return a(cmdValue);
 		}
 
+		static void SendChat(Connection asConn, string text)
+		{
+			DispatchOrders(null, 0, new ServerOrder(asConn.PlayerIndex, "Chat", text).Serialize());
+		}
+
 		static void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
 			switch (so.Name)
@@ -342,9 +347,7 @@ namespace OpenRA.Server
 			Console.WriteLine(e.ToString());
 
 			conns.Remove(toDrop);
-
-			DispatchOrders(toDrop, 0, 
-				new ServerOrder(toDrop.PlayerIndex, "Chat", "Connection Dropped").Serialize());
+			SendChat(toDrop, "Connection Dropped");
 
 			/* don't get stuck waiting for the dropped player, if they were the one holding up a frame */
 			
