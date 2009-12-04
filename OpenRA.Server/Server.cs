@@ -81,9 +81,6 @@ namespace OpenRA.Server
 				/* msdn lies, -1 doesnt work. this is ~1h instead. */
 				Socket.Select(checkRead, null, null, -2	);
 
-				//Console.WriteLine("Select() completed with {0} sockets",
-				//    checkRead.Count);
-
 				foreach (Socket s in checkRead)
 					if (s == listener.Server) AcceptConnection();
 					else ReadData(conns.Single(c => c.socket == s));
@@ -195,21 +192,13 @@ namespace OpenRA.Server
 			if (conn.Frame != 0)
 			{
 				if (!inFlightFrames.ContainsKey(conn.Frame))
-				{
-					//Console.WriteLine("{0} opens frame {1}",
-					//    conn.socket.RemoteEndPoint,
-					//    conn.Frame);
 					inFlightFrames[conn.Frame] = new List<Connection> { conn };
-				}
 				else
 					inFlightFrames[conn.Frame].Add(conn);
 
 				if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
 				{
 					inFlightFrames.Remove(conn.Frame);
-					//Console.WriteLine("frame {0} completed.",
-					//    conn.Frame);
-
 					DispatchOrders(null, conn.Frame, new byte[] { 0xef });
 				}
 			}
@@ -332,15 +321,24 @@ namespace OpenRA.Server
 			}
 		}
 
-		static void DropClient(Connection c, Exception e)
+		static void DropClient(Connection toDrop, Exception e)
 		{
-			Console.WriteLine("Client dropped: {0}.", c.socket.RemoteEndPoint);
+			Console.WriteLine("Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
 			Console.WriteLine(e.ToString());
 
-			conns.Remove(c);
+			conns.Remove(toDrop);
 
-			DispatchOrders(c, 0, 
-				new ServerOrder(c.PlayerIndex, "Chat", "Connection Dropped").Serialize());
+			DispatchOrders(toDrop, 0, 
+				new ServerOrder(toDrop.PlayerIndex, "Chat", "Connection Dropped").Serialize());
+
+			/* don't get stuck waiting for the dropped player, if they were the one holding up a frame */
+			
+			foreach( var f in inFlightFrames.ToArray() )
+			if (conns.All(c => f.Value.Contains(c)))
+			{
+				inFlightFrames.Remove(f.Key);
+				DispatchOrders(null, f.Key, new byte[] { 0xef });
+			}
 		}
 
 		public static void Write(this Stream s, byte[] data) { s.Write(data, 0, data.Length); }
