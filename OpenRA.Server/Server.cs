@@ -243,6 +243,69 @@ namespace OpenRA.Server
 			catch (EndOfStreamException) { }
 		}
 
+		static bool InterpretCommand(Connection conn, string cmd)
+		{
+			var dict = new Dictionary<string, Func<string, bool>>
+			{
+				{ "name", 
+					s => 
+					{
+						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
+						DispatchOrders( null, 0, new ServerOrder( conn.PlayerIndex, "SetName", s ).Serialize());
+						return true;
+					}},
+				{ "lag",
+					s =>
+					{
+						int lag;
+						if (!int.TryParse(s, out lag)) { Console.WriteLine("Invalid order lag: {0}", s); return false; }
+
+						Console.WriteLine("Order lag is now {0} frames.", lag);
+
+						DispatchOrders(null, 0,
+							new ServerOrder(0, "SetLag", lag.ToString()).Serialize());
+						return true;
+					}},
+				{ "race",
+					s => 
+					{
+						int race;
+						if (!int.TryParse(s, out race) || race < 0 || race > 1)
+						{
+							Console.WriteLine("Invalid race: {0}", s);
+							return false;
+						}
+
+						DispatchOrders(null, 0,
+							new ServerOrder(conn.PlayerIndex, "SetRace", race.ToString()).Serialize());
+						return true;
+					}},
+				{ "pal",
+					s =>
+					{
+						int pal;
+						if (!int.TryParse(s, out pal) || pal < 0 || pal > 7)
+						{
+							Console.WriteLine("Invalid palette: {0}", s);
+							return false;
+						}
+
+						DispatchOrders(null, 0,
+							new ServerOrder(conn.PlayerIndex, "SetPalette", pal.ToString()).Serialize());
+						return true;
+					}},
+			};
+
+			var cmdName = cmd.Split(' ').First();
+			var cmdValue = string.Join(" ", cmd.Split(' ').Skip(1).ToArray());
+
+			Func<string,bool> a;
+			if (!dict.TryGetValue(cmdName, out a))
+				return false;
+
+			return a(cmdValue);
+		}
+
 		static void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
 			switch (so.Name)
@@ -263,60 +326,12 @@ namespace OpenRA.Server
 					break;
 
 				case "Chat":
-					if (so.Data.StartsWith("/name "))
-					{
-						var newName = so.Data.Substring(6);
-						Console.WriteLine("Player @{0} is now known as {1}",
-							conn.socket.RemoteEndPoint, newName);
-
-						DispatchOrders(null, 0,
-							new ServerOrder(conn.PlayerIndex, "SetName", newName).Serialize());
-					}
-
-					if (so.Data.StartsWith("/lag "))
-					{
-						int lag;
-						if (!int.TryParse(so.Data.Substring(5), out lag))
+					if (so.Data.StartsWith("/"))
+						if (!InterpretCommand(conn, so.Data.Substring(1)))
 						{
-							Console.WriteLine("Invalid order lag: {0}",
-								so.Data.Substring(5));
-							return;
+							Console.WriteLine("Bad server command: {0}", so.Data.Substring(1));
+							DispatchOrdersToClient(conn, 0, new ServerOrder(conn.PlayerIndex, "Chat", "Bad server command.").Serialize());
 						}
-
-						Console.WriteLine("Order lag is now {0} frames.", lag);
-
-						DispatchOrders(null, 0,
-							new ServerOrder(0, "SetLag", lag.ToString()).Serialize());
-					}
-
-					if (so.Data.StartsWith("/pal "))
-					{
-						int pal;
-						if (!int.TryParse(so.Data.Substring(5), out pal) || pal < 0 || pal > 7)
-						{
-							Console.WriteLine("Invalid palette: {0}",
-								so.Data.Substring(5));
-							return;
-						}
-
-						DispatchOrders(null, 0,
-							new ServerOrder(conn.PlayerIndex, "SetPalette", pal.ToString()).Serialize());
-					}
-
-					if (so.Data.StartsWith("/race "))
-					{
-						int race;
-						if (!int.TryParse(so.Data.Substring(6), out race) || race < 0 || race > 1)
-						{
-							Console.WriteLine("Invalid race: {0}",
-								so.Data.Substring(6));
-							return;
-						}
-
-						DispatchOrders(null, 0,
-							new ServerOrder(conn.PlayerIndex, "SetRace", race.ToString()).Serialize());
-					}
-
 					break;
 			}
 		}
