@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.Traits;
 using System.Diagnostics;
+using System.Linq;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {

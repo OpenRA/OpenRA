@@ -89,12 +89,12 @@ namespace OpenRa.Game
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 
 			if (Replay != "")
-				orderManager = new OrderManager(new OrderSource[] { new ReplayOrderSource(Replay) });
+				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
 			else
 			{
 				var orderSources = (string.IsNullOrEmpty(NetworkHost))
-					? new OrderSource[] { new LocalOrderSource() }
-					: new OrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
+					? new IOrderSource[] { new LocalOrderSource() }
+					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
 

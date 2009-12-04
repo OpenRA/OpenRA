@@ -82,10 +82,15 @@
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
+    <Compile Include="IOrderSource.cs" />
+    <Compile Include="LocalOrderSource.cs" />
+    <Compile Include="NetworkOrderSource.cs" />
+    <Compile Include="OrderIO.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
+    <Compile Include="ReplayOrderSource.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />

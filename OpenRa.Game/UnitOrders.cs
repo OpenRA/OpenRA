@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
-using IjwFramework.Types;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
-using System.Drawing;
 
 namespace OpenRa.Game
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
 
