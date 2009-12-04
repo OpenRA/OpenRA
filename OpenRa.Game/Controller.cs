@@ -90,11 +90,7 @@ namespace OpenRa.Game
 			}
 
 			if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
-			{
-				/* update the cursor to reflect the thing under us - note this 
-				 * needs to also happen when the *thing* changes, so per-frame hook */
 				dragStart = dragEnd = xy;
-			}
 
 			if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
 				ApplyOrders(xy, false);
