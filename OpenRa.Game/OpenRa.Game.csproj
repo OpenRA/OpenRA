@@ -91,6 +91,7 @@
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
     <Compile Include="ReplayOrderSource.cs" />
+    <Compile Include="Smudge.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />

@@ -33,8 +33,8 @@ namespace OpenRa.Game.Graphics
 			for (int i = 0; i < overlaySpriteNames.Length; i++)
 				overlaySprites[i] = SpriteSheetBuilder.LoadAllSprites(overlaySpriteNames[i], ".shp", ".tem", ".sno");
 
-			/* todo: add the rest of the smudge sprites */
-			smudgeSprites = new[] { "bib3", "bib2" }.SelectMany(
+			smudgeSprites = new[] { "bib3", "bib2", "sc1", "sc2", "sc3", "sc4", "sc5", "sc6",
+										"cr1", "cr2", "cr3", "cr4", "cr5", "cr6", }.SelectMany(
 				f => SpriteSheetBuilder.LoadAllSprites(f, ".shp", ".tem", ".sno")).ToArray();
 		}
 

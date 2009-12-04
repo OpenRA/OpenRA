@@ -72,20 +72,36 @@ namespace OpenRa.Game
 			{
 				Game.world.AddFrameEndTask(w =>
 				{
-					w.Remove(this); 
+					w.Remove(this);
 
-					var isWater = Game.IsCellBuildable(
-						((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2(), UnitMovementType.Float);
+					var targetTile = ((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2();
+
+					var isWater = Game.IsWater(targetTile);
+					var hitWater = Game.IsCellBuildable(targetTile, UnitMovementType.Float);
 
 					if (Warhead.Explosion != 0)
-						w.Add(new Explosion(VisualDest, Warhead.Explosion, isWater));
+						w.Add(new Explosion(VisualDest, Warhead.Explosion, hitWater));
 
 					var impact = Warhead.ImpactSound;
-					if (isWater && Warhead.WaterImpactSound != null)
+					if (hitWater && Warhead.WaterImpactSound != null)
 						impact = Warhead.WaterImpactSound;
 
 					if (impact != null) 
 						Game.PlaySound(impact+ ".aud", false);
+
+					if (!isWater)
+						switch( Warhead.Explosion )		/* todo: push the scorch/crater behavior into data */
+						{
+							case 4:
+							case 5:
+								Smudge.AddSmudge(true, targetTile.X, targetTile.Y);
+								break;
+
+							case 3:
+							case 6:
+								Smudge.AddSmudge(false, targetTile.X, targetTile.Y);
+								break;
+						}
 				});
 
 				var maxSpread = GetMaximumSpread();
