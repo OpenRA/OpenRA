@@ -240,14 +240,14 @@ namespace OpenRa.Game
 			var group = Rules.UnitCategory[item];
 			var producing = player.Producing(group);
 
-			Game.PlaySound("ramenu1.aud", false);
+			Sound.Play("ramenu1.aud");
 
 			if (isLmb)
 			{
 				if (producing == null)
 				{
 					Game.controller.AddOrder(Order.StartProduction(player, item));
-					Game.PlaySound("abldgin1.aud", false);
+					Sound.Play("abldgin1.aud");
 				}
 				else if (producing.Item == item)
 				{
@@ -261,7 +261,7 @@ namespace OpenRa.Game
 				}
 				else
 				{
-					Game.PlaySound("progres1.aud", false);
+					Sound.Play("progres1.aud");
 				}
 			}
 			else
@@ -271,12 +271,12 @@ namespace OpenRa.Game
 
 				if (producing.Paused || producing.Done)
 				{
-					Game.PlaySound("cancld1.aud", false);
+					Sound.Play("cancld1.aud");
 					Game.controller.AddOrder(Order.CancelProduction(player, item));
 				}
 				else
 				{
-					Game.PlaySound("onhold1.aud", false);
+					Sound.Play("onhold1.aud");
 					Game.controller.AddOrder(Order.PauseProduction(player, item, true));
 				}
 			}

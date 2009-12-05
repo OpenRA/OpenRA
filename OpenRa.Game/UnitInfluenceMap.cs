@@ -20,7 +20,7 @@ namespace OpenRa.Game
 			SanityCheck();
 		}
 
-		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheck()
 		{
 			for( int y = 0 ; y < 128 ; y++ )

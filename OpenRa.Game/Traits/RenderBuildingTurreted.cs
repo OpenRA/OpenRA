@@ -24,7 +24,7 @@ namespace OpenRa.Game.Traits
 					break;
 				case DamageState.Half:
 					PlayTurretAnim(self, "damaged-idle");
-					Game.PlaySound("kaboom1.aud", false);
+					Sound.Play("kaboom1.aud");
 					break;
 			}
 		}

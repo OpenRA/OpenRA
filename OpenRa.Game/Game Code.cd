@@ -1,59 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="OpenRa.Game.Game">
-    <Position X="6" Y="2.5" Width="1.5" />
+    <Position X="6.75" Y="3.25" Width="1.5" />
     <Members>
+      <Method Name="FindUnits" Hidden="true" />
+      <Field Name="lastTime" Hidden="true" />
+      <Method Name="LoadMapBuildings" Hidden="true" />
+      <Method Name="LoadMapUnits" Hidden="true" />
+      <Method Name="LoadSound" Hidden="true" />
       <Field Name="localPlayerIndex" Hidden="true" />
-      <Field Name="treeCache" Hidden="true" />
+      <Field Name="oreFrequency" Hidden="true" />
+      <Field Name="oreTicks" Hidden="true" />
+      <Field Name="soundEngine" Hidden="true" />
+      <Field Name="sounds" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAIAAAAEEBAEAIAAQQAAAAAAAJIAAAABAQAA=</HashCode>
+      <HashCode>AAbAkDQAABBAAQEEBEECEggYQUBEAAAAIYALBCAA0iA=</HashCode>
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="controller" />
-      <Field Name="viewport" />
       <Field Name="world" />
+      <Field Name="viewport" />
+      <Field Name="controller" />
     </ShowAsAssociation>
   </Class>
   <Class Name="OpenRa.Game.Controller">
-    <Position X="8.5" Y="3" Width="1.75" />
+    <Position X="3.5" Y="6.5" Width="1.75" />
     <Members>
+      <Method Name="ApplyOrders" Hidden="true" />
       <Field Name="dragEnd" Hidden="true" />
       <Field Name="dragStart" Hidden="true" />
-      <Field Name="game" Hidden="true" />
+      <Field Name="recentOrders" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAACAgAAABAAAAAIAAAAAIAAAAA=</HashCode>
+      <HashCode>AAACAACoAAAAAAAAAAQCEgQAABAAAAAAAAAABAACCAA=</HashCode>
       <FileName>Controller.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="game" />
+      <Field Name="orderGenerator" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="OpenRa.Game.Graphics.Viewport">
-    <Position X="3.5" Y="2.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAiABAAIYAAEAAAABCAAAAAABgAAAAgBE=</HashCode>
+      <HashCode>AAIAAAAABAAACABCAAYAEEAAAABAAAAAAAAgAEEAwBE=</HashCode>
       <FileName>Graphics\Viewport.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OpenRa.Game.World">
-    <Position X="8.5" Y="5.5" Width="1.5" />
+    <Position X="12.75" Y="7.25" Width="1.5" />
     <Members>
       <Field Name="actors" Hidden="true" />
+      <Field Name="effects" Hidden="true" />
       <Field Name="frameEndActions" Hidden="true" />
-      <Field Name="game" Hidden="true" />
-      <Field Name="lastTime" Hidden="true" />
-      <Field Name="timestep" Hidden="true" />
+      <Field Name="nextAID" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAYAACABABAAgAAAAIAABgAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAACABAAABgAAAAYQABAAEAAAAAAAAAAAAAAAAQBA=</HashCode>
       <FileName>World.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Actors" />
+      <Property Name="Effects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OpenRa.Game.Actor">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <Members>
+      <Field Name="currentActivity" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgEACAiAAAAAAAAAAQIAEIAkAQQAAAAAABAgAAAAQgA=</HashCode>
+      <FileName>Actor.cs</FileName>
+    </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="game" />
+      <Field Name="unitInfo" />
+      <Field Name="Owner" />
     </ShowAsAssociation>
   </Class>
+  <Class Name="OpenRa.Game.GameRules.UnitInfo" Collapsed="true">
+    <Position X="18.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAKAAJAgwiAAgAAAgFQAJAhQAHAAGCACAADIRAA=</HashCode>
+      <FileName>GameRules\UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.Player" Collapsed="true">
+    <Position X="15.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEEEgAQEAEIAQQQACAIAACAAAQAAAAAACAEBAAARQAA=</HashCode>
+      <FileName>Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.GameRules.MobileInfo" Collapsed="true">
+    <Position X="17.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAABAQAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>GameRules\UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.GameRules.BuildingInfo" Collapsed="true">
+    <Position X="21" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJQAAAIAAAAgAAACAAAABIAAAICAAABAAAAQAAAAgA=</HashCode>
+      <FileName>GameRules\UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.GameRules.InfantryInfo" Collapsed="true">
+    <Position X="16.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEEAAAAABIAAAAAAAAAAAAAAAACAAAQA=</HashCode>
+      <FileName>GameRules\UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpenRa.Game.GameRules.VehicleInfo" Collapsed="true">
+    <Position X="18.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameRules\UnitInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="OpenRa.Game.IEffect">
+    <Position X="9.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAA=</HashCode>
+      <FileName>IEffect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenRa.Game.IOrderGenerator" Collapsed="true">
+    <Position X="3.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAA=</HashCode>
+      <FileName>IOrderGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

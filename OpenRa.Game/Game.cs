@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
-using IjwFramework.Collections;
-using IjwFramework.Types;
-using IrrKlang;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
@@ -43,8 +40,6 @@ namespace OpenRa.Game
 		public static BuildingInfluenceMap BuildingInfluence;
 		public static UnitInfluenceMap UnitInfluence;
 
-		static ISoundEngine soundEngine;
-
 		public static string Replay;
 
 		public static string NetworkHost;
@@ -70,6 +65,7 @@ namespace OpenRa.Game
 			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
 
 			world = new World();
+			Sound.Initialize();
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
@@ -79,13 +75,14 @@ namespace OpenRa.Game
 					new int2(treeReference.Location),
 					null));
 
+			
+
 			LoadMapBuildings(Rules.AllRules);
 			LoadMapUnits(Rules.AllRules);
 
 			PathFinder = new PathFinder(Rules.Map);
 
-			soundEngine = new ISoundEngine();
-			sounds = new Cache<string, ISoundSource>(LoadSound);
+			
 
 			if (Replay != "")
 				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
@@ -96,8 +93,6 @@ namespace OpenRa.Game
 					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
-
-			PlaySound("intro.aud", false);
 
 			skipMakeAnims = false;
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -128,28 +123,6 @@ namespace OpenRa.Game
 					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) 
 					?? players[0]));
 			}
-		}
-
-		static Cache<string, ISoundSource> sounds;
-
-		static ISoundSource LoadSound(string filename)
-		{
-			var data = AudLoader.LoadSound(FileSystem.Open(filename));
-			return soundEngine.AddSoundSourceFromPCMData(data, filename,
-				new AudioFormat()
-				{
-					ChannelCount = 1,
-					FrameCount = data.Length / 2,
-					Format = SampleFormat.Signed16Bit,
-					SampleRate = 22050
-				});
-		}
-
-		public static void PlaySound(string name, bool loop)
-		{
-			var sound = sounds[name];
-			// todo: positioning
-			soundEngine.Play2D(sound, loop, false, false);
 		}
 
 		static int lastTime = Environment.TickCount;

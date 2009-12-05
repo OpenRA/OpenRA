@@ -54,7 +54,7 @@ namespace OpenRa.Game
 		public void AddLine(Color c, string from, string text)
 		{
 			recentLines.Add(Tuple.New(c, from, text));
-			Game.PlaySound("rabeep1.aud", false);
+			Sound.Play("rabeep1.aud");
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}

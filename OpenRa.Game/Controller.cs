@@ -26,28 +26,7 @@ namespace OpenRa.Game
 				}
 
 			if (doVoice != null && doVoice.traits.Contains<Unit>())
-				PlayVoiceClip("Move", doVoice);
-		}
-
-		static void PlayVoiceClip(string phrase, Actor voicedUnit)
-		{
-			if (voicedUnit == null) return;
-
-			var mi = voicedUnit.unitInfo as MobileInfo;
-			if (mi == null) return;
-
-			var vi = Rules.VoiceInfo[ mi.Voice ];
-
-			var clip = vi.Pools.Value[phrase].GetNext();
-			if (clip == null)
-				return;
-
-			var variants = (voicedUnit.Owner.Race == Race.Soviet)
-							? vi.SovietVariants : vi.AlliedVariants;
-
-			var variant = variants[ voicedUnit.ActorID % variants.Length ];
-
-			Game.PlaySound(clip + variant, false);
+				Sound.PlayVoice("Move", doVoice);
 		}
 
 		public void AddOrder(Order o) { recentOrders.Add(o); }
@@ -66,12 +45,6 @@ namespace OpenRa.Game
 				recentOrders.RemoveAll(o => !o.IsImmediate);
 				return result;
 			}
-		}
-
-		static string GetVoiceSuffix(Actor unit)
-		{
-			var suffixes = new[] { ".r01", ".r03" };
-			return suffixes[unit.ActorID % suffixes.Length];
 		}
 
 		float2 dragStart, dragEnd;
@@ -107,7 +80,7 @@ namespace OpenRa.Game
 							&& a.Owner == Game.LocalPlayer)
 						.FirstOrDefault();
 
-					PlayVoiceClip("Select", voicedUnit);
+					Sound.PlayVoice("Select", voicedUnit);
 				}
 
 				dragStart = dragEnd = xy;

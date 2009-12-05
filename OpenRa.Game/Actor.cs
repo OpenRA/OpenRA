@@ -111,10 +111,10 @@ namespace OpenRa.Game
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 
 				if (Owner == Game.LocalPlayer && !traits.Contains<Building>()) 
-					Game.PlaySound("unitlst1.aud", false);
+					Sound.Play("unitlst1.aud");
 
 				if (traits.Contains<Building>())
-					Game.PlaySound("kaboom22.aud", false);
+					Sound.Play("kaboom22.aud");
 			}
 
 			var halfStrength = unitInfo.Strength * Rules.General.ConditionYellow;

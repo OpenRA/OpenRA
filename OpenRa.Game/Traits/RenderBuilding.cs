@@ -73,7 +73,7 @@ namespace OpenRa.Game.Traits
 					break;
 				case DamageState.Half:
 					anim.PlayRepeating("damaged-idle");
-					Game.PlaySound("kaboom1.aud", false);
+					Sound.Play("kaboom1.aud");
 					break;
 				case DamageState.Dead:
 					DoBib(self, true);

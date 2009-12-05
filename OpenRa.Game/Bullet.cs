@@ -54,7 +54,7 @@ namespace OpenRa.Game
 		public void Tick()
 		{
 			if (t == 0)
-				Game.PlaySound(Weapon.Report + ".aud", false);
+				Sound.Play(Weapon.Report + ".aud");
 
 			t += 40;
 
@@ -77,7 +77,7 @@ namespace OpenRa.Game
 						impact = Warhead.WaterImpactSound;
 
 					if (impact != null) 
-						Game.PlaySound(impact+ ".aud", false);
+						Sound.Play(impact+ ".aud");
 
 					if (!isWater)
 						switch( Warhead.Explosion )		/* todo: push the scorch/crater behavior into data */
@@ -119,7 +119,7 @@ namespace OpenRa.Game
 				if (Projectile.High || Projectile.Arcing)
 				{
 					if (Projectile.Shadow)
-						yield return Tuple.New(anim.Image, pos, 8);	/* todo: shadow pal */
+						yield return Tuple.New(anim.Image, pos, 8);
 
 					var at = (float)t / TotalTime();
 					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));

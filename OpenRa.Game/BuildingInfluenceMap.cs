@@ -1,5 +1,4 @@
-﻿using IjwFramework.Types;
-using OpenRa.Game.GameRules;
+﻿using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
@@ -8,7 +7,6 @@ namespace OpenRa.Game
 	{
 		bool[,] blocked = new bool[128, 128];
 		Actor[,] influence = new Actor[128, 128];
-		static readonly Pair<Actor, float> NoClaim = Pair.New((Actor)null, float.MaxValue);
 
 		public BuildingInfluenceMap()
 		{

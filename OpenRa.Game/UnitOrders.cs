@@ -43,8 +43,8 @@ namespace OpenRa.Game
 						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
 						if (order.Player == Game.LocalPlayer)
 						{
-							Game.PlaySound("placbldg.aud", false);
-							Game.PlaySound("build5.aud", false);
+							Sound.Play("placbldg.aud");
+							Sound.Play("build5.aud");
 						}
 
 						order.Player.FinishProduction(Rules.UnitCategory[building.Name]);
@@ -75,7 +75,7 @@ namespace OpenRa.Game
 									var isBuilding = group == "Building" || group == "Defense";
 									if (!hasPlayedSound && order.Player == Game.LocalPlayer)
 									{
-										Game.PlaySound(isBuilding ? "conscmp1.aud" : "unitrdy1.aud", false);
+										Sound.Play(isBuilding ? "conscmp1.aud" : "unitrdy1.aud");
 										hasPlayedSound = true;
 									}
 									if (!isBuilding)

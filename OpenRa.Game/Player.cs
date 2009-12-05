@@ -75,13 +75,13 @@ namespace OpenRa.Game
 				{
 					DisplayCash += Math.Min(displayCashDeltaPerFrame, 
 						Cash - DisplayCash);
-					Game.PlaySound("cashup1.aud", false);
+					Sound.Play("cashup1.aud");
 				}
 				else if (DisplayCash > Cash)
 				{
 					DisplayCash -= Math.Min(displayCashDeltaPerFrame,
 						DisplayCash - Cash);
-					Game.PlaySound("cashdn1.aud", false);
+					Sound.Play("cashdn1.aud");
 				}
 			}
 		}
