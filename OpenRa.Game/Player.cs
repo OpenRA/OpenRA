@@ -41,6 +41,9 @@ namespace OpenRa.Game
 				powerProvided += dPower;
 			if (dPower < 0)
 				powerDrained -= dPower;
+
+			if (powerDrained > powerProvided)
+				GiveAdvice("lopower1.aud");
 		}
 
 		public float GetSiloFullness()
@@ -57,6 +60,13 @@ namespace OpenRa.Game
 				.Sum(b => b.Storage);
 		}
 
+		void GiveAdvice(string advice)
+		{
+			// todo: store the condition or something.
+			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
+			Sound.Play(advice);
+		}
+
 		public void GiveCash( int num ) { Cash += num; }
 		public void GiveOre(int num)
 		{
@@ -67,7 +77,7 @@ namespace OpenRa.Game
 				Ore = capacity;		// trim off the overflow.
 
 			if (Ore > .8 * capacity)
-				Sound.Play("silond1.aud");
+				GiveAdvice("silond1.aud");		// silos needed
 		}
 
 		public bool TakeCash( int num )
