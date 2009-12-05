@@ -9,10 +9,14 @@ namespace OpenRa.Game.Traits
 
 		public override void Tick(Actor self)
 		{
-			base.Tick(self);
+			var isAttacking = self.GetCurrentActivity() is Activities.Attack;
+
 			var attack = self.traits.WithInterface<AttackBase>().FirstOrDefault();
+
 			if (attack != null)
-				anim.ReplaceAnim(attack.IsReloading() ? "empty-idle" : "idle");
+				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
+					+ (isAttacking ? "aim" : "idle"));
+			base.Tick(self);
 		}
 	}
 }
