@@ -15,8 +15,8 @@ namespace OpenRa.Game
 		public int Cash;
 		public int Ore;
 		public int DisplayCash;
-		int powerProvided;
-		int powerDrained;
+		public int powerProvided;
+		public int powerDrained;
 
 		public bool IsReady;
 
@@ -41,11 +41,6 @@ namespace OpenRa.Game
 				powerProvided += dPower;
 			if (dPower < 0)
 				powerDrained -= dPower;
-		}
-
-		public int GetTotalPower()
-		{
-			return powerProvided - powerDrained;
 		}
 
 		public float GetSiloFullness()

@@ -85,12 +85,13 @@ namespace OpenRa.Game
 			buildItems.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nPower {4}\nReady: {5} (F8 to toggle)".F(
+			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nPower {4}/{5}\nReady: {6} (F8 to toggle)".F(
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
 				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.GetTotalPower(),
+				Game.LocalPlayer.powerDrained,
+				Game.LocalPlayer.powerProvided,
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
 				), new int2(140, 5), Color.White);
 
