@@ -106,9 +106,9 @@ namespace OpenRa.Game
 			foreach (var s in mapfile.GetSection("STRUCTURES", true))
 			{
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
-				var parts = s.Value.ToLowerInvariant().Split(',');
+				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(Rules.UnitInfo[parts[1]], new int2(loc % 128, loc / 128), players[0]));
+				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128), players[0]));
 			}
 		}
 
@@ -117,9 +117,9 @@ namespace OpenRa.Game
 			foreach (var s in mapfile.GetSection("UNITS", true))
 			{
 				//num=owner,type,health,location,facing,action,trigger
-				var parts = s.Value.ToLowerInvariant().Split( ',' );
+				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(Rules.UnitInfo[parts[1]], new int2(loc % 128, loc / 128),
+				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),
 					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) 
 					?? players[0]));
 			}
