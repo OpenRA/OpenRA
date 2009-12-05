@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -48,7 +50,16 @@ namespace OpenRa.Game
 
 		public float GetSiloFullness()
 		{
-			return 0.5f;		/* todo: work this out the same way as RA */
+			return (float)Ore / GetOreCapacity();
+		}
+
+		public int GetOreCapacity()
+		{
+			return Game.world.Actors
+				.Where(a => a.Owner == this)
+				.Select(a => a.Info as BuildingInfo)
+				.Where(b => b != null)
+				.Sum(b => b.Storage);
 		}
 
 		public void GiveCash( int num ) { Cash += num; }
