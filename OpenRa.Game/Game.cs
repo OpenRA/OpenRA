@@ -75,14 +75,9 @@ namespace OpenRa.Game
 					new int2(treeReference.Location),
 					null));
 
-			
-
-			LoadMapBuildings(Rules.AllRules);
-			LoadMapUnits(Rules.AllRules);
+			LoadMapActors(Rules.AllRules);
 
 			PathFinder = new PathFinder(Rules.Map);
-
-			
 
 			if (Replay != "")
 				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
@@ -101,21 +96,13 @@ namespace OpenRa.Game
 			chrome = new Chrome(renderer);
 		}
 
-		static void LoadMapBuildings(IniFile mapfile)
+		static void LoadMapActors(IniFile mapfile)
 		{
-			foreach (var s in mapfile.GetSection("STRUCTURES", true))
-			{
-				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
-				var parts = s.Value.Split(',');
-				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),
-					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) ?? players[0]));
-			}
-		}
+			var toLoad = 
+				mapfile.GetSection("STRUCTURES", true)
+				.Concat(mapfile.GetSection("UNITS", true));
 
-		static void LoadMapUnits(IniFile mapfile)
-		{
-			foreach (var s in mapfile.GetSection("UNITS", true))
+			foreach (var s in toLoad)
 			{
 				//num=owner,type,health,location,facing,action,trigger
 				var parts = s.Value.Split( ',' );
