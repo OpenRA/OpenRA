@@ -32,6 +32,10 @@ namespace OpenRa.Game
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 
+			if (!ignoreTerrain)
+				if (passableCost[(int)umt][p.Location.X, p.Location.Y] == float.PositiveInfinity)
+					return p.Location;
+
 			foreach( int2 d in Util.directions )
 			{
 				int2 newHere = p.Location + d;
@@ -96,22 +100,20 @@ namespace OpenRa.Game
 			return search;
 		}
 
-		public static PathSearch FromPoints( IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked )
+		public static PathSearch FromPoints(IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
 		{
-			var search = new PathSearch {
-				heuristic = DefaultEstimator( target ),
+			var search = new PathSearch
+			{
+				heuristic = DefaultEstimator(target),
 				umt = umt,
-				checkForBlocked = checkForBlocked };
+				checkForBlocked = checkForBlocked
+			};
 
-			foreach( var sl in froms )
-				search.AddInitialCell( sl );
+			foreach (var sl in froms)
+				search.AddInitialCell(sl);
 
 			return search;
 		}
-
-
-
-
 
 		static CellInfo[ , ] InitCellInfo()
 		{

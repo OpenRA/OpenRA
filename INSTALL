@@ -27,3 +27,7 @@ Other Notes:
   
 * When someone patches Ijw.DirectX, you need to do `git submodule update` in your OpenRA tree. This has so
     far happened *once*.
+
+* You'll also need the Visual C++ 2008 SP1 Redist. You can get this from Microsoft:
+
+	http://www.microsoft.com/downloads/details.aspx?familyid=A5C84275-3B97-4AB7-A40D-3802B2AF5FC2
