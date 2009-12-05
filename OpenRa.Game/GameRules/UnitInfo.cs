@@ -58,6 +58,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int Passengers = 0;
 		public readonly int Speed = 0;
 		public readonly bool NoMovingFire = false;
+		public readonly string Voice = "GenericVoice";
 
 		public MobileInfo(string name) : base(name) { }
 	}

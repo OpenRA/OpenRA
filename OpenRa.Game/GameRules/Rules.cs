@@ -16,6 +16,7 @@ namespace OpenRa.Game
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
+		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static GeneralInfo General;
 		public static TechTree TechTree;
 		public static Map Map;
@@ -65,15 +66,17 @@ namespace OpenRa.Game
 			LoadCategories(
 				"Weapon",
 				"Warhead",
-				"Projectile");
+				"Projectile",
+				"Voice");
 
 			WeaponInfo = new InfoLoader<WeaponInfo>(
 				Pair.New<string, Func<string, WeaponInfo>>("Weapon", _ => new WeaponInfo()));
 			WarheadInfo = new InfoLoader<WarheadInfo>(
 				Pair.New<string, Func<string, WarheadInfo>>("Warhead", _ => new WarheadInfo()));
-
 			ProjectileInfo = new InfoLoader<ProjectileInfo>(
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
+			VoiceInfo = new InfoLoader<VoiceInfo>(
+				Pair.New<string, Func<string, VoiceInfo>>("Voice", _ => new VoiceInfo()));
 
 			TechTree = new TechTree();
 			Map = new Map( AllRules );
