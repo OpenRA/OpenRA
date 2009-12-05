@@ -88,7 +88,8 @@ namespace OpenRa.Game
 			{
 				Button = e.Button,
 				Event = MouseInputEvent.Down,
-				Location = new int2(e.Location)
+				Location = new int2(e.Location),
+				Modifiers = ModifierKeys,
 			});
 		}
 
@@ -107,7 +108,8 @@ namespace OpenRa.Game
 			{
 				Button = e.Button,
 				Event = MouseInputEvent.Move,
-				Location = new int2(e.Location)
+				Location = new int2(e.Location),
+				Modifiers = ModifierKeys,
 			});
 		}
 
@@ -119,7 +121,8 @@ namespace OpenRa.Game
 			{
 				Button = e.Button,
 				Event = MouseInputEvent.Up,
-				Location = new int2(e.Location)
+				Location = new int2(e.Location),
+				Modifiers = ModifierKeys,
 			});
 		}
 
@@ -154,6 +157,7 @@ namespace OpenRa.Game
 		public MouseInputEvent Event;
 		public int2 Location;
 		public MouseButtons Button;
+		public Keys Modifiers;
 	}
 
 	enum MouseInputEvent { Down, Move, Up };

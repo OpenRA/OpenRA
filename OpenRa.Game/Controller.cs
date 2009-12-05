@@ -93,8 +93,14 @@ namespace OpenRa.Game
 			{
 				if (!(orderGenerator is PlaceBuilding))
 				{
-					orderGenerator = new UnitOrderGenerator(
-							Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy));
+					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
+					var oldSelection = (orderGenerator is UnitOrderGenerator)
+						? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
+
+					if (dragStart == xy)
+						orderGenerator = new UnitOrderGenerator(mi.Modifiers.HasModifier(Keys.Shift) ? oldSelection.SymmetricDifference(newSelection) : newSelection);
+					else
+						orderGenerator = new UnitOrderGenerator(mi.Modifiers.HasModifier(Keys.Shift) ? oldSelection.Union(newSelection) : newSelection);
 					
 					var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
 						.Where(a => a.traits.Contains<Unit>() 
