@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Windows.Forms;
 using Ijw.DirectX;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
@@ -22,8 +21,6 @@ namespace OpenRa.Game.Graphics
 			this.map = map;
 
 			Size tileSize = new Size( Game.CellSize, Game.CellSize );
-
-	//		SheetBuilder.ForceNewSheet();
 
 			var tileMapping = new Cache<TileReference, Sprite>(
 				x => SheetBuilder.Add(Rules.TileSet.GetBytes(x), tileSize));

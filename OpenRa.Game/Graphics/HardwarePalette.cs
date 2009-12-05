@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Ijw.DirectX;
 using System.Drawing;
-using System.IO;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics

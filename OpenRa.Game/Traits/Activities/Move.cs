@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using OpenRa.Game.GameRules;
-using System.Diagnostics;
 
 namespace OpenRa.Game.Traits.Activities
 {

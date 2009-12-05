@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenRa.Game.GameRules;
-using IjwFramework.Types;
 using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
-	interface IEffect
-	{
-		void Tick();
-		IEnumerable<Tuple<Sprite, float2, int>> Render();
-		Player Owner { get; }
-	}
-
 	class Bullet : IEffect
 	{
 		public Player Owner { get; private set; }

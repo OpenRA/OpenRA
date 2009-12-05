@@ -82,6 +82,7 @@
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
+    <Compile Include="IEffect.cs" />
     <Compile Include="IOrderSource.cs" />
     <Compile Include="LocalOrderSource.cs" />
     <Compile Include="NetworkOrderSource.cs" />

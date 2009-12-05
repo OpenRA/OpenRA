@@ -25,14 +25,6 @@ namespace OpenRa.Game.Graphics
 			return Add(data, size);
 		}
 
-		public static void ForceNewSheet()
-		{
-			if( p == Point.Empty )
-				return;
-			current = NewSheet();
-			channel = NextChannel(null);
-		}
-
 		static Sheet NewSheet() { return new Sheet( renderer, new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
 
 		static Renderer renderer;

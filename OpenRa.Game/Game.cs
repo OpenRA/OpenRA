@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using IjwFramework.Collections;
 using IjwFramework.Types;
 using IrrKlang;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
-using System.Net.Sockets;
-using System.Windows.Forms;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.Graphics;
-using System.IO;
+﻿using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {

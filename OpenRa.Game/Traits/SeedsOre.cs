@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace OpenRa.Game.Traits
 {
 	class SeedsOre : ITick
 	{
 		public SeedsOre( Actor self ) {}
 
-		const double OreSeedProbability = .05;
+		const double OreSeedProbability = .05;	// todo: push this out into rules
 
 		public void Tick(Actor self)
 		{

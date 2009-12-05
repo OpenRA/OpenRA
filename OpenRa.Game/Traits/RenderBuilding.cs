@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using IjwFramework.Types;
 using OpenRa.Game.Graphics;
-using OpenRa.Game.GameRules;
-using OpenRa.FileFormats;
-using OpenRa.Game;
 
 namespace OpenRa.Game.Traits
 {

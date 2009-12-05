@@ -1,8 +1,6 @@
 using System.Drawing;
-using System.IO;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
-using System.Drawing.Imaging;
 
 namespace OpenRa.Game.Graphics
 {

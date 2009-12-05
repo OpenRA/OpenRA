@@ -1,11 +1,10 @@
+using System;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
-using System.Runtime.InteropServices;
-using OpenRa.Game.Traits;
-using System.IO;
-using System;
 
 namespace OpenRa.Game
 {

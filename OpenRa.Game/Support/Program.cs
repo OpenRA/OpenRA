@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.IO;
+using System.Diagnostics;
 
 namespace OpenRa.Game
 {
@@ -10,7 +8,7 @@ namespace OpenRa.Game
 		[STAThread]
 		static void Main( string[] args )
 		{
-			if( System.Diagnostics.Debugger.IsAttached )
+			if( Debugger.IsAttached )
 			{
 				Run( args );
 				return;

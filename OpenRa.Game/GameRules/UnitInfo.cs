@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Game.Graphics;
-using IjwFramework.Types;
-
+﻿
 namespace OpenRa.Game.GameRules
 {
 	public enum ArmorType

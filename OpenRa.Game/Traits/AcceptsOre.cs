@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRa.Game.Traits.Activities;
+﻿using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -9,17 +6,16 @@ namespace OpenRa.Game.Traits
 	{
 		public AcceptsOre(Actor self)
 		{
-		//	if (!Game.skipMakeAnims)
-				Game.world.AddFrameEndTask(
-					w =>
-					{		/* create the free harvester! */
-						var harvester = new Actor("harv", self.Location + new int2(1, 2), self.Owner);
-						var unit = harvester.traits.Get<Unit>();
-						var mobile = harvester.traits.Get<Mobile>();
-						unit.Facing = 64;
-						harvester.QueueActivity(new Harvest());
-						w.Add(harvester);
-					});
+			Game.world.AddFrameEndTask(
+				w =>
+				{		/* create the free harvester! */
+					var harvester = new Actor("harv", self.Location + new int2(1, 2), self.Owner);
+					var unit = harvester.traits.Get<Unit>();
+					var mobile = harvester.traits.Get<Mobile>();
+					unit.Facing = 64;
+					harvester.QueueActivity(new Harvest());
+					w.Add(harvester);
+				});
 		}
 	}
 }

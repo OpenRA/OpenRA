@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using IjwFramework.Types;
-using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
-using System.Drawing;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Traits.Activities;
 
@@ -46,13 +42,6 @@ namespace OpenRa.Game
 				throw new InvalidOperationException( "No Actor traits for " + unitInfo.Name 
 					+ "; add Traits= to units.ini for appropriate unit" );
 		}
-
-		//public Actor( TreeReference tree, TreeCache treeRenderer )
-		//{
-		//    ActorID = 0xffffffff;
-		//    Location = new int2( tree.Location );
-		//    traits.Add( new Traits.Tree( treeRenderer.GetImage( tree.Image ) ) );
-		//}
 
 		public void Tick()
 		{
