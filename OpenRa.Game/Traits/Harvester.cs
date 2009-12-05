@@ -19,8 +19,8 @@ namespace OpenRa.Game.Traits
 
 		public void Deliver(Actor self, Actor proc)
 		{
-			proc.Owner.GiveCash(oreCarried * Rules.General.GoldValue);
-			proc.Owner.GiveCash(gemsCarried * Rules.General.GemValue);
+			proc.Owner.GiveOre(oreCarried * Rules.General.GoldValue);
+			proc.Owner.GiveOre(gemsCarried * Rules.General.GemValue);
 			oreCarried = 0;
 			gemsCarried = 0;
 		}

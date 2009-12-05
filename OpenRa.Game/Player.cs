@@ -11,6 +11,7 @@ namespace OpenRa.Game
 		public Race Race;
 		public readonly int Index;
 		public int Cash;
+		public int Ore;
 		public int DisplayCash;
 		int powerProvided;
 		int powerDrained;
@@ -24,6 +25,7 @@ namespace OpenRa.Game
 			this.PlayerName = playerName;
 			this.Race = race;
 			this.Cash = 10000;
+			this.Ore = 0;
 			this.DisplayCash = 0;
 			this.powerProvided = this.powerDrained = 0;
 
@@ -49,15 +51,21 @@ namespace OpenRa.Game
 			return 0.5f;		/* todo: work this out the same way as RA */
 		}
 
-		public void GiveCash( int num )
-		{
-			Cash += num;
-		}
+		public void GiveCash( int num ) { Cash += num; }
+		public void GiveOre(int num) { Ore += num; }
 
 		public bool TakeCash( int num )
 		{
-			if (Cash < num) return false;
-			Cash -= num;
+			if (Cash + Ore < num) return false;
+			if (Ore <= num)
+			{
+				num -= Ore;
+				Ore = 0;
+				Cash -= num;
+			}
+			else
+				Ore -= num;
+			
 			return true;
 		}
 
@@ -71,16 +79,18 @@ namespace OpenRa.Game
 
 			if (this == Game.LocalPlayer)
 			{
-				if (DisplayCash < Cash)
+				var totalMoney = Cash + Ore;
+
+				if (DisplayCash < totalMoney)
 				{
-					DisplayCash += Math.Min(displayCashDeltaPerFrame, 
-						Cash - DisplayCash);
+					DisplayCash += Math.Min(displayCashDeltaPerFrame,
+						totalMoney - DisplayCash);
 					Sound.Play("cashup1.aud");
 				}
-				else if (DisplayCash > Cash)
+				else if (DisplayCash > totalMoney)
 				{
 					DisplayCash -= Math.Min(displayCashDeltaPerFrame,
-						DisplayCash - Cash);
+						DisplayCash - totalMoney);
 					Sound.Play("cashdn1.aud");
 				}
 			}
