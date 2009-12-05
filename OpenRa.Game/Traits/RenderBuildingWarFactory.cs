@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 		{
 			this.self = self;
 
-			roof = new Animation(self.unitInfo.Image ?? self.unitInfo.Name);
+			roof = new Animation(self.Info.Image ?? self.Info.Name);
 			Make( () =>
 			{
 				doneBuilding = true;

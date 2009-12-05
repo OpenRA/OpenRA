@@ -10,7 +10,7 @@ namespace OpenRa.Game.Traits
 		public RenderUnitSpinner( Actor self )
 			: base(self)
 		{
-			spinnerAnim = new Animation( self.unitInfo.Name );
+			spinnerAnim = new Animation( self.Info.Name );
 			spinnerAnim.PlayRepeating( "spinner" );
 		}
 
@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 			yield return Util.Centered( self, spinnerAnim.Image, self.CenterLocation 
-				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, 0));
+				+ Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, 0));
 		}
 
 		public override void Tick(Actor self)

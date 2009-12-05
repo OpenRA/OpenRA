@@ -71,7 +71,7 @@ namespace OpenRa.Game
 			UnitInfluence = new UnitInfluenceMap();
 
 			foreach (TreeReference treeReference in Rules.Map.Trees)
-				world.Add(new Actor(treeReference.Image, 
+				world.Add(new Actor(Rules.UnitInfo[treeReference.Image], 
 					new int2(treeReference.Location),
 					null));
 
@@ -108,7 +108,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,trigger,unknown,shouldRepair
 				var parts = s.Value.ToLowerInvariant().Split(',');
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(parts[1], new int2(loc % 128, loc / 128), players[0]));
+				world.Add(new Actor(Rules.UnitInfo[parts[1]], new int2(loc % 128, loc / 128), players[0]));
 			}
 		}
 
@@ -117,9 +117,9 @@ namespace OpenRa.Game
 			foreach (var s in mapfile.GetSection("UNITS", true))
 			{
 				//num=owner,type,health,location,facing,action,trigger
-				var parts = s.Value.Split(',');
+				var parts = s.Value.ToLowerInvariant().Split( ',' );
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
+				world.Add(new Actor(Rules.UnitInfo[parts[1]], new int2(loc % 128, loc / 128),
 					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) 
 					?? players[0]));
 			}
@@ -244,8 +244,8 @@ namespace OpenRa.Game
 		public static IEnumerable<Actor> SelectActorsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b)
-				.Where( x => x.unitInfo.Selectable )
-				.GroupBy(x => (x.Owner == LocalPlayer) ? x.unitInfo.SelectionPriority : 0)
+				.Where( x => x.Info.Selectable )
+				.GroupBy(x => (x.Owner == LocalPlayer) ? x.Info.SelectionPriority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )
@@ -315,7 +315,7 @@ namespace OpenRa.Game
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
 			// TODO: choose producer based on "primary building"
 			var producer = world.Actors
-				.Where( x => producerTypes.Contains( x.unitInfo ) && x.Owner == player )
+				.Where( x => producerTypes.Contains( x.Info ) && x.Owner == player )
 				.FirstOrDefault();
 
 			if (producer == null)

@@ -24,7 +24,7 @@ namespace OpenRa.Game.Traits
 		{
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
+			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
 
 			self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
 				Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );

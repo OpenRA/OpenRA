@@ -73,14 +73,14 @@ namespace OpenRa.Game.Traits
 
 		static float2 GetRecoil(Actor self, float recoil)
 		{
-			if (self.unitInfo.Recoil == 0) return float2.Zero;
+			if (self.Info.Recoil == 0) return float2.Zero;
 			var rut = self.traits.WithInterface<RenderUnitTurreted>().FirstOrDefault();
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
 			var quantizedFacing = QuantizeFacing(facing, rut.turretAnim.CurrentSequence.Length) * (256 / rut.turretAnim.CurrentSequence.Length);
 
-			return RotateVectorByFacing(new float2(0, recoil * self.unitInfo.Recoil), quantizedFacing, .7f);
+			return RotateVectorByFacing(new float2(0, recoil * self.Info.Recoil), quantizedFacing, .7f);
 		}
 
 		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)

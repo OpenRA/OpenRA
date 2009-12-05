@@ -180,7 +180,7 @@ namespace OpenRa.Game.Traits.Activities
 				var oldFraction = moveFraction;
 				var oldTotal = moveFractionTotal;
 
-				moveFraction += ( self.unitInfo as MobileInfo ).Speed;
+				moveFraction += ( self.Info as MobileInfo ).Speed;
 				UpdateCenterLocation( self, mobile );
 				if( moveFraction >= moveFractionTotal )
 				{

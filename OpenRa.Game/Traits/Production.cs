@@ -13,7 +13,7 @@ namespace OpenRa.Game.Traits
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.unitInfo.InitialFacing;
+			return newUnit.Info.InitialFacing;
 		}
 
 		public bool Produce( Actor self, UnitInfo producee )
@@ -22,7 +22,7 @@ namespace OpenRa.Game.Traits
 			if( location == null || Game.UnitInfluence.GetUnitAt( location.Value ) != null )
 				return false;
 
-			var newUnit = new Actor( producee.Name, location.Value, self.Owner );
+			var newUnit = new Actor( producee, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
 			var rp = self.traits.GetOrDefault<RallyPoint>();
@@ -37,7 +37,7 @@ namespace OpenRa.Game.Traits
 					heli.targetLocation = rp.rallyPoint; // TODO: make Activity.Move work for helis.
 			}
 
-			var bi = self.unitInfo as BuildingInfo;
+			var bi = self.Info as BuildingInfo;
 			if (bi != null && bi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
 					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);

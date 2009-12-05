@@ -47,10 +47,10 @@ namespace OpenRa.Game.Traits
 				var dist = Game.CellSize * (targetLocation + new float2(.5f,.5f)) - self.CenterLocation;
 				var desiredFacing = Util.GetFacing(dist, unit.Facing);
 				Util.TickFacing(ref unit.Facing, desiredFacing,
-					self.unitInfo.ROT);
+					self.Info.ROT);
 
 				// .6f going the wrong way; .8f going sideways, 1f going forward.
-				var rawSpeed = .2f * (self.unitInfo as VehicleInfo).Speed;
+				var rawSpeed = .2f * (self.Info as VehicleInfo).Speed;
 				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
 				var scale = .4f + .6f * (float)Math.Cos(angle);
 

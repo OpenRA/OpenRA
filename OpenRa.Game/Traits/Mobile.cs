@@ -52,12 +52,12 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			switch( Rules.UnitCategory[ self.unitInfo.Name ] )
+			switch( Rules.UnitCategory[ self.Info.Name ] )
 			{
 			case "Infantry":
 				return UnitMovementType.Foot;
 			case "Vehicle":
-				return ( self.unitInfo as VehicleInfo ).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+				return ( self.Info as VehicleInfo ).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
 			case "Ship":
 				return UnitMovementType.Float;
 			case "Plane":

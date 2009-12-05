@@ -39,18 +39,18 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 
-			if (self.unitInfo.Primary != null && CheckFire(self, unit, self.unitInfo.Primary, ref primaryFireDelay,
-				self.unitInfo.PrimaryOffset))
+			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
+				self.Info.PrimaryOffset))
 			{
 				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
 				return;
 			}
 
-			if (self.unitInfo.Secondary != null && CheckFire(self, unit, self.unitInfo.Secondary, ref secondaryFireDelay,
-				self.unitInfo.SecondaryOffset ?? self.unitInfo.PrimaryOffset))
+			if (self.Info.Secondary != null && CheckFire(self, unit, self.Info.Secondary, ref secondaryFireDelay,
+				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset))
 			{
-				if (self.unitInfo.SecondaryOffset != null) secondaryRecoil = 1;
+				if (self.Info.SecondaryOffset != null) secondaryRecoil = 1;
 				else primaryRecoil = 1;
 				return;
 			}
@@ -91,7 +91,7 @@ namespace OpenRa.Game.Traits
 		{
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.unitInfo.Primary ?? order.Subject.unitInfo.Secondary;
+			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
 
 			self.QueueActivity(new Traits.Activities.Attack(order.TargetActor,
 					Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));

@@ -116,7 +116,7 @@ namespace OpenRa.Game.Graphics
 				lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
-				var healthAmount = (float)selectedUnit.Health / selectedUnit.unitInfo.Strength;
+				var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Strength;
 				var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
 					: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
 					: Color.LimeGreen;

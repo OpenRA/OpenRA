@@ -12,9 +12,9 @@ namespace OpenRa.Game.Traits
 		public RenderUnitMuzzleFlash(Actor self)
 			: base(self)
 		{
-			if (!self.unitInfo.MuzzleFlash) throw new InvalidOperationException("wtf??");
+			if (!self.Info.MuzzleFlash) throw new InvalidOperationException("wtf??");
 
-			muzzleFlash = new Animation(self.unitInfo.Name);
+			muzzleFlash = new Animation(self.Info.Name);
 			muzzleFlash.PlayFetchIndex("muzzle",
 				() =>
 				{
@@ -37,8 +37,8 @@ namespace OpenRa.Game.Traits
 			if (attack.primaryRecoil > 0)
 				return base.Render(self).Concat(new[] {Util.Centered(self,
 					muzzleFlash.Image, self.CenterLocation + new float2(
-						self.unitInfo.PrimaryOffset.ElementAtOrDefault(2),
-						self.unitInfo.PrimaryOffset.ElementAtOrDefault(3)))});
+						self.Info.PrimaryOffset.ElementAtOrDefault(2),
+						self.Info.PrimaryOffset.ElementAtOrDefault(3)))});
 			else
 				return base.Render(self);
 		}

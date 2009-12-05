@@ -10,7 +10,7 @@ namespace OpenRa.Game.GameRules
 		concrete = 4,
 	}
 
-	public class UnitInfo
+	public class UnitInfo : ActorInfo
 	{
 		public readonly string Name;
 

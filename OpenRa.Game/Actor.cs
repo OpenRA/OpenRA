@@ -12,7 +12,7 @@ namespace OpenRa.Game
 	class Actor
 	{
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly UnitInfo unitInfo;
+		public readonly UnitInfo Info;
 
 		public readonly uint ActorID;
 		public int2 Location;
@@ -20,18 +20,18 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
-		public Actor( string name, int2 location, Player owner )
+		public Actor( ActorInfo info, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			unitInfo = Rules.UnitInfo[ name ];
+			Info = (UnitInfo)info; // temporary
 			Location = location;
 			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
 			Owner = owner;
-			Health = unitInfo.Strength;	/* todo: handle cases where this is not true! */
+			Health = Info.Strength;	/* todo: handle cases where this is not true! */
 
-			if( unitInfo.Traits != null )
+			if( Info.Traits != null )
 			{
-				foreach( var traitName in unitInfo.Traits )
+				foreach( var traitName in Info.Traits )
 				{
 					var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
 					var ctor = type.GetConstructor( new[] { typeof( Actor ) } );
@@ -39,7 +39,7 @@ namespace OpenRa.Game
 				}
 			}
 			else
-				throw new InvalidOperationException( "No Actor traits for " + unitInfo.Name 
+				throw new InvalidOperationException( "No Actor traits for " + Info.Name 
 					+ "; add Traits= to units.ini for appropriate unit" );
 		}
 
@@ -74,7 +74,7 @@ namespace OpenRa.Game
 
 			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) 
 				?? Game.BuildingInfluence.GetBuildingAt( xy );
-			if (underCursor != null && !underCursor.unitInfo.Selectable)
+			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
 
 			return traits.WithInterface<Traits.IOrder>()
@@ -117,7 +117,7 @@ namespace OpenRa.Game
 					Sound.Play("kaboom22.aud");
 			}
 
-			var halfStrength = unitInfo.Strength * Rules.General.ConditionYellow;
+			var halfStrength = Info.Strength * Rules.General.ConditionYellow;
 			if (Health < halfStrength && (Health + damage) >= halfStrength)
 			{
 				/* we just went below half health! */

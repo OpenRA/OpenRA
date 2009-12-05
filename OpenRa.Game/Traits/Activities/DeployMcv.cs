@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits.Activities
 			Game.world.AddFrameEndTask( _ =>
 			{
 				Game.world.Remove( self );
-				Game.world.Add( new Actor( "fact", self.Location - new int2( 1, 1 ), self.Owner ) );
+				Game.world.Add( new Actor( Rules.UnitInfo["fact"], self.Location - new int2( 1, 1 ), self.Owner ) );
 			} );
 			return null;
 		}

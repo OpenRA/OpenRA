@@ -10,13 +10,13 @@ namespace OpenRa.Game.Traits
 		public RenderUnitRotor( Actor self )
 			: base(self)
 		{
-			rotorAnim = new Animation(self.unitInfo.Name);
+			rotorAnim = new Animation(self.Info.Name);
 			rotorAnim.PlayRepeating("rotor");
 
-			if (self.unitInfo.SecondaryAnim != null)
+			if (self.Info.SecondaryAnim != null)
 			{
-				secondRotorAnim = new Animation(self.unitInfo.Name);
-				secondRotorAnim.PlayRepeating(self.unitInfo.SecondaryAnim);
+				secondRotorAnim = new Animation(self.Info.Name);
+				secondRotorAnim.PlayRepeating(self.Info.SecondaryAnim);
 			}
 		}
 
@@ -26,20 +26,20 @@ namespace OpenRa.Game.Traits
 
 			yield return Util.CenteredShadow(self, anim.Image, self.CenterLocation);
 			yield return Util.CenteredShadow(self, rotorAnim.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, 0));
-			if (self.unitInfo.SecondaryOffset != null)
+				+ Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, 0));
+			if (self.Info.SecondaryOffset != null)
 				yield return Util.CenteredShadow(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, unit, self.unitInfo.SecondaryOffset, 0));
+					+ Util.GetTurretPosition(self, unit, self.Info.SecondaryOffset, 0));
 
 			var heli = self.traits.Get<Helicopter>();
 			var p = self.CenterLocation - new float2( 0, heli.altitude );
 
 			yield return Util.Centered(self, anim.Image, p);
 			yield return Util.Centered(self, rotorAnim.Image, p
-				+ Util.GetTurretPosition( self, unit, self.unitInfo.PrimaryOffset, 0 ) );
-			if (self.unitInfo.SecondaryOffset != null)
+				+ Util.GetTurretPosition( self, unit, self.Info.PrimaryOffset, 0 ) );
+			if (self.Info.SecondaryOffset != null)
 				yield return Util.Centered(self, (secondRotorAnim ?? rotorAnim).Image, p
-					+ Util.GetTurretPosition( self, unit, self.unitInfo.SecondaryOffset, 0 ) );
+					+ Util.GetTurretPosition( self, unit, self.Info.SecondaryOffset, 0 ) );
 		}
 
 		public override void Tick(Actor self)

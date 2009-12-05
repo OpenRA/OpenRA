@@ -19,9 +19,9 @@ namespace OpenRa.Game.Traits
 
 		public InfantrySquad(Actor self)
 		{
-			var ii = (InfantryInfo)self.unitInfo;
+			var ii = (InfantryInfo)self.Info;
 			for (int i = 0; i < ii.SquadSize; i++)
-				elements.Add(new Soldier(self.unitInfo.Name, 
+				elements.Add(new Soldier(self.Info.Name, 
 					self.CenterLocation.ToInt2() + elementOffsets[ii.SquadSize][i]));
 		}
 

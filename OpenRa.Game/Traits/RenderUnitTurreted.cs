@@ -13,12 +13,12 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			self.traits.Get<Turreted>();
-			turretAnim = new Animation(self.unitInfo.Name);
+			turretAnim = new Animation(self.Info.Name);
 
-			if (self.unitInfo.MuzzleFlash)
+			if (self.Info.MuzzleFlash)
 			{
 				var attack = self.traits.WithInterface<AttackBase>().First();
-				muzzleFlash = new Animation(self.unitInfo.Name);
+				muzzleFlash = new Animation(self.Info.Name);
 				muzzleFlash.PlayFetchIndex("muzzle",
 					() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(attack.primaryRecoil * 5.9f));	
 						/* hack: recoil can be 1.0f, but don't overflow into next anim */
@@ -35,14 +35,14 @@ namespace OpenRa.Game.Traits
 
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 			yield return Util.Centered(self, turretAnim.Image, self.CenterLocation 
-				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
-			if (self.unitInfo.SecondaryOffset != null)
+				+ Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, attack.primaryRecoil));
+			if (self.Info.SecondaryOffset != null)
 				yield return Util.Centered(self, turretAnim.Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, unit, self.unitInfo.SecondaryOffset, attack.secondaryRecoil));
+					+ Util.GetTurretPosition(self, unit, self.Info.SecondaryOffset, attack.secondaryRecoil));
 
 			if (muzzleFlash != null && attack.primaryRecoil > 0)
 				yield return Util.Centered(self, muzzleFlash.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, unit, self.unitInfo.PrimaryOffset, attack.primaryRecoil));
+				+ Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, attack.primaryRecoil));
 		}
 
 		public override void Tick(Actor self)

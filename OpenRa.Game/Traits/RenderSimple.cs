@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 
 		public RenderSimple(Actor self)
 		{
-			anim = new Animation(self.unitInfo.Image ?? self.unitInfo.Name);
+			anim = new Animation(self.Info.Image ?? self.Info.Name);
 		}
 
 		public abstract IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self);

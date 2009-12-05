@@ -8,7 +8,7 @@ namespace OpenRa.Game.Traits
 
 		public Building(Actor self)
 		{
-			unitInfo = (BuildingInfo)self.unitInfo;
+			unitInfo = (BuildingInfo)self.Info;
 		}
 
 		bool first = true;

@@ -80,6 +80,7 @@
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
     <Compile Include="Exts.cs" />
+    <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />

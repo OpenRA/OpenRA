@@ -40,7 +40,7 @@ namespace OpenRa.Game
 
 						Log.Write( "Player \"{0}\" builds {1}", order.Player.PlayerName, building.Name );
 
-						Game.world.Add( new Actor( building.Name, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
+						Game.world.Add( new Actor( building, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
 						if (order.Player == Game.LocalPlayer)
 						{
 							Sound.Play("placbldg.aud");
