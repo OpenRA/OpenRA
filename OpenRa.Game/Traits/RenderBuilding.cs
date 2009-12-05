@@ -69,10 +69,10 @@ namespace OpenRa.Game.Traits
 			switch( state )
 			{
 				case DamageState.Normal:
-					anim.PlayRepeating("idle");
+					anim.ReplaceAnim("idle");
 					break;
 				case DamageState.Half:
-					anim.PlayRepeating("damaged-idle");
+					anim.ReplaceAnim("damaged-idle");
 					Sound.Play("kaboom1.aud");
 					break;
 				case DamageState.Dead:

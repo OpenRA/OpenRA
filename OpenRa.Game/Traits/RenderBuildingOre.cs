@@ -7,7 +7,7 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			Make( () => anim.PlayFetchIndex("idle", 
-				() => (int)(5 * self.Owner.GetSiloFullness())), self);
+				() => (int)(4.9 * self.Owner.GetSiloFullness())), self);	/* hack */
 		}
 	}
 }

@@ -63,7 +63,17 @@ namespace OpenRa.Game
 		}
 
 		public void GiveCash( int num ) { Cash += num; }
-		public void GiveOre(int num) { Ore += num; }
+		public void GiveOre(int num)
+		{
+			Ore += num;
+
+			var capacity = GetOreCapacity();
+			if (Ore > capacity)
+				Ore = capacity;		// trim off the overflow.
+
+			if (Ore > .8 * capacity)
+				Sound.Play("silond1.aud");
+		}
 
 		public bool TakeCash( int num )
 		{
