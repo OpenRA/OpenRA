@@ -17,6 +17,9 @@ namespace OpenRa.Game
 			if (liveclips.Count == 0)
 				liveclips.AddRange(clips);
 
+			if (liveclips.Count == 0)
+				return null;		/* avoid crashing if there's no clips at all */
+
 			var i = Game.CosmeticRandom.Next(liveclips.Count);
 			var s = liveclips[i];
 			liveclips.RemoveAt(i);

@@ -291,11 +291,6 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static readonly Pair<VoicePool, VoicePool> SovietVoices =
-			Pair.New(
-				new VoicePool("ackno", "affirm1", "noprob", "overout", "ritaway", "roger", "ugotit"),
-				new VoicePool("await1", "ready", "report1", "yessir1"));
-
 		public static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
 		{
 			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());

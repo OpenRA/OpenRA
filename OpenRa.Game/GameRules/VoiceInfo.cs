@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IjwFramework.Types;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game.GameRules
 {
@@ -12,5 +14,18 @@ namespace OpenRa.Game.GameRules
 		public readonly string[] Select = {};
 		public readonly string[] Move = {};
 		public readonly string[] Attack = null;
+
+		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
+
+		public VoiceInfo()
+		{
+			Pools = Lazy.New(() =>
+				new Dictionary<string, VoicePool>
+				{
+					{ "Select", new VoicePool(Select) },
+					{ "Move", new VoicePool(Move) },
+					{ "Attack", new VoicePool( Attack ?? Move ) },
+				});
+		}
 	}
 }
