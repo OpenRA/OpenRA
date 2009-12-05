@@ -17,6 +17,15 @@ namespace OpenRa.Game
 				}
 		}
 
+		public static void Destroy(int i, int j)
+		{
+			if (Rules.Map.ContainsResource(new int2(i, j)))
+			{
+				Rules.Map.MapTiles[i, j].density = 0;
+				Rules.Map.MapTiles[i, j].overlay = 0xff;
+			}
+		}
+
 		public static bool CanSpreadInto(int i, int j)
 		{
 			if (Game.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)

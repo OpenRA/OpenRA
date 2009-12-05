@@ -92,6 +92,9 @@ namespace OpenRa.Game
 								Smudge.AddSmudge(false, targetTile.X, targetTile.Y);
 								break;
 						}
+
+					if (Warhead.Ore)
+						Ore.Destroy(targetTile.X, targetTile.Y);
 				});
 
 				var maxSpread = GetMaximumSpread();
