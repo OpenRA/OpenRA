@@ -607,6 +607,6 @@
     <sequence name="idle" start="0" length="32" />
   </unit>
   <unit name="smokey">
-    <sequence name="idle" start="0" length="6" />
+    <sequence name="idle" start="0" length="7" />
   </unit>
 </sequences>
