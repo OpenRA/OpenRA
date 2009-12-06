@@ -182,30 +182,31 @@ namespace OpenRa.Game
 			foreach (var item in allItems)
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
-				buildPaletteRenderer.DrawSprite(sprites[item], Game.viewport.Location + new float2(rect.Location), 0);
+				var drawPos = Game.viewport.Location + new float2(rect.Location);
+				var isBuildingThis = currentItem != null && currentItem.Item != item;
 
-				if (!buildableItems.Contains(item) || (currentItem != null && currentItem.Item != item))
-					overlayBits.Add(Pair.New(cantBuild.Image, Game.viewport.Location + new float2(rect.Location)));
+				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, 0);
 
-				if (currentItem != null && currentItem.Item == item)
+				if (!buildableItems.Contains(item) || isBuildingThis)
+					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
+
+				if (isBuildingThis)
 				{
 					clockAnimations[queueName].Tick();
 					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
-						Game.viewport.Location + new float2(rect.Location), 0);
+						drawPos, 0);
+
+					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
 					if (currentItem.Done)
 					{
 						ready.Play("ready");
-						overlayBits.Add(Pair.New(ready.Image, Game.viewport.Location
-							+ new float2(rect.Location)
-							+ new float2((64 - ready.Image.size.X) / 2, 2)));
+						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
 					else if (currentItem.Paused)
 					{
 						ready.Play("hold");
-						overlayBits.Add(Pair.New(ready.Image, Game.viewport.Location
-							+ new float2(rect.Location)
-							+ new float2((64 - ready.Image.size.X) / 2, 2)));
+						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
 				}
 
@@ -218,7 +219,8 @@ namespace OpenRa.Game
 			while (x != 0)
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
-				buildPaletteRenderer.DrawSprite(blank, Game.viewport.Location + new float2(rect.Location), 0);
+				var drawPos = Game.viewport.Location + new float2(rect.Location);
+				buildPaletteRenderer.DrawSprite(blank, drawPos, 0);
 				buildItems.Add(Pair.New(rect, (Action<bool>)(_ => { })));
 				if (++x == 3) { x = 0; y++; }
 			}
