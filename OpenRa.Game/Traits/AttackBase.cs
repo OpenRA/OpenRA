@@ -38,7 +38,7 @@ namespace OpenRa.Game.Traits
 
 		public void DoAttack(Actor self)
 		{
-			var unit = self.traits.Get<Unit>();
+			var unit = self.traits.GetOrDefault<Unit>();
 
 			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
 				self.Info.PrimaryOffset))
