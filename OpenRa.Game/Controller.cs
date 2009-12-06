@@ -122,7 +122,7 @@ namespace OpenRa.Game
 			{
 			case "Attack": return Cursor.Attack;
 			case "Move":
-				if( Game.IsCellBuildable( location, UnitMovementType.Wheel, a ) )
+				if( Game.IsCellBuildable( location, a.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, a ) )
 					return Cursor.Move;
 				else
 					return Cursor.MoveBlocked;
