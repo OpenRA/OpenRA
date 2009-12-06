@@ -58,6 +58,9 @@ they've been checked\
 	 abc  2\
 	 cde  3\
 ", args="(table,[comperator])", returns="(function)"},
+["projectpathabs"] = {type='function', description = " returns the current projectpath as absolute path. Useful for opening\
+	files.\
+", args="()", returns="(string)"},
 ["setTableValue"] = {type='function', description = " searches a val in the given table.\
 	The first hit is replaced by newvalue, which removes the tableentry if\
 	it is nil. You can use it therefore to remove a value from a table.\
@@ -65,13 +68,14 @@ they've been checked\
 \
 	If no match was found, nothing is returned.\
 ", args="(table,value,[newvalue])", returns="([index,oldvalue])"},
+["luafilepath"] = {type='function', description = " like luafilename,\
+	but removes the filename itself", args="(int level)", returns="(string filepath)"},
 ["loadfile"] = {type='function', description = " similiar to original loadfile except that this\
 	function trys to find the file in different locations relative to all\
 	loaded luafiles. This function replaces the original loadfile function.", args="(string path,...)", returns="()"},
-["luafilepath"] = {type='function', description = " like luafilename,\
-	but removes the filename itself", args="(int level)", returns="(string filepath)"},
-["loadCollisionDataFile"] = {type='function', description = " loads dgeoms from the collision data lua file. extratable can contain the tables: \"original\" and/or \"visual\".Currently exported by 3dsmax.\
-	", args="([string path,table],[boolean needoriginaltable],[boolean createl3ds])", returns="(dgeom table,[extratable])"},
+["dofile"] = {type='function', description = " similiar to original dofile except that this\
+	function trys to find the file in different locations relative to all\
+	loaded luafiles. This function replaces the original dofile function.", args="(string path,...)", returns="()"},
 ["smallLogoPos"] = {type='function', description = " Sets the position of the small Luxinia Logo at one of the four\
 	corners (whatever you like more). Topright = 1, rightbottom = 2, bottomleft = 3,\
 	topleft = 4.\
@@ -166,16 +170,20 @@ they've been checked\
 	\"end\" to the string returned by the serializing function.\
 	\
 ", args="(table input)", returns="(string serialized)"},
-["color3hsv"] = {type='function', description = " converts the incoming hsv to color to 0-1 rgb floats", args="(float h,s,v)", returns="(float r,g,b)"},
+["fileexists"] = {type='function', description = " tries out if the given file exists.\
+	This is not very clean since it only trys to open and close the file and\
+	if it doesn't throw an error it is assumed that the file exists.\
+	", args="(string path)", returns="(boolean exists)"},
 ["color3rgb2hsv"] = {type='function', description = " converts the rgb color to a hsv color value", args="(float r,g,b)", returns="(float h,s,v)"},
 ["printf"] = {type='function', description = " prints out a formated  string as the rules of string.format describe. This\
 	function is also stored in the global variable named printf\
 ", args="(string format, ...)", returns="()"},
 ["color3byte"] = {type='function', description = " converts the incoming color values 0-255, to 0-1 floats", args="(float r,g,b)", returns="(float r,g,b)"},
-["fileexists"] = {type='function', description = " tries out if the given file exists.\
-	This is not very clean since it only trys to open and close the file and\
-	if it doesn't throw an error it is assumed that the file exists.\
-	", args="(string path)", returns="(boolean exists)"},
+["freelook"] = {type='function', description = " enables/disables freelook of current \
+	default l3dcamera. Useful for debugging, \
+	FreeLook.invert .movemulti .shiftmulti let you modify behavior. \
+	Controls are WASD,C,SPACE + Mouse. \
+	Optionally installed as drag listener into guicomp.", args="(boolean,Component guicomp)", returns="(boolean)"},
 ["simplerenderqueue"] = {type='function', description = " sets up a standard renderqueue for the view (which is also returned).\
 	The l3dview has equivalent rcmds in its table. The order is: \
 	* rClear\
@@ -192,20 +200,10 @@ they've been checked\
 	", args="([l3dview],[boolean noempty],[tab ignorelayers])", returns="(l3dview)"},
 ["luaLoadFile"] = {type='value', description = "original lua loadfile function"},
 ["removeWindowResizeListener"] = {type='function', description = " removes the given function from being called on window resize events", args="(function)", returns="()"},
-["freelook"] = {type='function', description = " enables/disables freelook of current \
-	default l3dcamera. Useful for debugging, \
-	FreeLook.invert .movemulti .shiftmulti let you modify behavior. \
-	Controls are WASD,C,SPACE + Mouse. \
-	Optionally installed as drag listener into guicomp.", args="(boolean,Component guicomp)", returns="(boolean)"},
-["dofile"] = {type='function', description = " similiar to original dofile except that this\
-	function trys to find the file in different locations relative to all\
-	loaded luafiles. This function replaces the original dofile function.", args="(string path,...)", returns="()"},
-["tabletotalcount"] = {type='function', description = " returns the number of elements in that table and all of its childs\
-	it also traverses into the metatables, but ignores tables that are weak typed. It also counts metatables as element.\
-\
-	This function should help to find memory leaks, which can occure if table references\
-	are not removed.\
-", args="(table)", returns="(n)"},
+["color3hsv"] = {type='function', description = " converts the incoming hsv to color to 0-1 rgb floats", args="(float h,s,v)", returns="(float r,g,b)"},
+["loadCollisionDataFile"] = {type='function', description = " loads dgeoms from the collision data lua file. extratable can contain the tables: \"original\" and/or \"visual\".Currently exported by 3dsmax.\
+	", args="([string path,table],[boolean needoriginaltable],[boolean createl3ds])", returns="(dgeom table,[extratable])"},
+["color4byte"] = {type='function', description = " converts the incoming color values 0-255, to 0-1 floats", args="(float r,g,b,a)", returns="(float r,g,b,a)"},
 ["picktest"] = {type='function', description = "\
 	This function will test the given space with a ray and returns, if a hit was generated, the geom, the coordinate of the\
 	nearest hit and the hitnormal. The ray is in line with the x,y pair (or the mouse coordinates if not given)\
@@ -250,8 +248,13 @@ they've been checked\
 \
 	 Timer.set(\"picker\", test,20) -- run the test every 20ms\
 	", args="(dspace space,[x=mousex],[y=mousey],[maxlength=1000000],[l3dcamera camera = l3dcamera.default])", returns="([geom,{x,y,z},{nx,ny,nz}])"},
-["addWindowResizeListener"] = {type='function', description = " will call function after window was resized (directly after window.update or with a few milliseconds delay if thru window.resizemode > 0.", args="(function)", returns="()"},
-["color4byte"] = {type='function', description = " converts the incoming color values 0-255, to 0-1 floats", args="(float r,g,b,a)", returns="(float r,g,b,a)"}}}
+["tabletotalcount"] = {type='function', description = " returns the number of elements in that table and all of its childs\
+	it also traverses into the metatables, but ignores tables that are weak typed. It also counts metatables as element.\
+\
+	This function should help to find memory leaks, which can occure if table references\
+	are not removed.\
+", args="(table)", returns="(n)"},
+["addWindowResizeListener"] = {type='function', description = " will call function after window was resized (directly after window.update or with a few milliseconds delay if thru window.resizemode > 0.", args="(function)", returns="()"}}}
 window = {type='class',description="The graphics window luxinia runs in. Setters only have effect after update is called. Do not call setters without ever calling update.",childs={["refsize"] = {type='function', description = " sets reference size of screen (default=640,480). Reference size is mostly important for list2d rendering and mouse positions. It allows the window not use pixel positions but custom dimensions which gui will be stretched to.", args="([int w,h])", returns="([int w,h])"},
 ["readstencil"] = {type='function', description = " returns stencil value at window coordinate (in refsystem)", args="(float x,y)", returns="(int)"},
 ["depthbits"] = {type='function', description = " returns or sets depthbits. After update this reflects the actual window value", args="([int])", returns="(int)"},
@@ -735,6 +738,14 @@ KeyListener = {type='class',description="A Keylistener receives keyevent callbac
 		 function listener (KeyListener, KeyEvent)\
 	", args="(function callback, boolean onType,\
 		onPress, onRelease)", returns="(KeyListener)"}}}
+texcombsrc = {type='class',description="The texcombiner source for the function specifies where values should be taken from.",childs={["texture3"] = {type='function', description = " texture at unit 3 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
+["texture1"] = {type='function', description = " texture at unit 1 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
+["vertex"] = {type='function', description = " vertex color/alpha", args="()", returns="(texcombsrc)"},
+["constant"] = {type='function', description = " constant value (texture env color)", args="()", returns="(texcombsrc)"},
+["previous"] = {type='function', description = " previous result", args="()", returns="(texcombsrc)"},
+["texture0"] = {type='function', description = " texture at unit 0 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
+["texture2"] = {type='function', description = " texture at unit 2 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
+["texture"] = {type='function', description = " current texture", args="()", returns="(texcombsrc)"}}}
 vidtype = {type='class',description="The main purpose of the vidbuffer is described here. OpenGL allows iterchanging the useage of the buffer.",childs={["pixelfrom"] = {type='function', description = " used for writing pixel data from the buffer. Needs PBO capability", args="()", returns="(vidtype)"},
 ["vertex"] = {type='function', description = " used for vertex attribute streams. Needs VBO capability", args="()", returns="(vidtype)"},
 ["pixelto"] = {type='function', description = " used for writing pixel data from the buffer. Needs TBO capability", args="()", returns="(vidtype)"},
@@ -746,25 +757,6 @@ l3dshadowmodel = {type='class',description="A volume model for stencil shadows. 
 ["light"] = {type='function', description = " returns or sets the light that is used. The light should be activated or sun, else its position is not updated.", args="(l3dshadowmodel,[l3dlight])", returns="([l3dlight])"},
 ["extrusionlength"] = {type='function', description = " returns or sets volume extrusion length. A value of 0 (default) means infinite length.", args="(l3dshadowmodel,[float])", returns="([float])"},
 ["new"] = {type='function', description = " creates a new l3dshadowmodel for the given nodes. Can return nil, if sourcemesh is too complex or not closed. When a l3dmodel is used you can specify a substring that is searched for in the l3dmodel's meshes. That way you can mark some meshes with nodraw/neverdraw in the original model, but use them as shadowmeshes and they still use the original animation/skin data. However when the original model is not visible, the animation data is not further updated. For l3dprimitives have in mind that you must not change the mesh after the shadowmodel was created.", args="(string name,|l3dlayerid|,l3dlight,l3dprimitive/l3dmodel,[string meshname])", returns="([l3dshadowmodel])"}}}
-texcombsrc = {type='class',description="The texcombiner source for the function specifies where values should be taken from.",childs={["texture3"] = {type='function', description = " texture at unit 3 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
-["texture1"] = {type='function', description = " texture at unit 1 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
-["vertex"] = {type='function', description = " vertex color/alpha", args="()", returns="(texcombsrc)"},
-["constant"] = {type='function', description = " constant value (texture env color)", args="()", returns="(texcombsrc)"},
-["previous"] = {type='function', description = " previous result", args="()", returns="(texcombsrc)"},
-["texture0"] = {type='function', description = " texture at unit 0 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
-["texture2"] = {type='function', description = " texture at unit 2 (needs crossbar capability / higher technique than default)", args="()", returns="(texcombsrc)"},
-["texture"] = {type='function', description = " current texture", args="()", returns="(texcombsrc)"}}}
-matobject = {type='class',description="Several classes which materials can be applied to, allow the detailed control of some material values. l3dmodels need to pass 2 arguments as matobject: l3dmodel,meshid. If you pass materials, then you will change values for the default matobject. If the node's material is changed, its old materialobject will be lost.",childs={["moTexmatrix"] = {type='function', description = " sets or returns texturematrix, pass 0 as matrix4x4 to disable.", args="(matobject,[matrix4x4])", returns="(matrix4x4)"},
-["moSeqoff"] = {type='function', description = " sets or returns sequence play state", args="(matobject,[boolean])", returns="(boolean)"},
-["moAutotexstage"] = {type='function', description = " sets or returns matautocontrol for a texture stage. Use texgen=true if you want to modify texgenplanes. Note that only matrix controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,int stage,boolean texgen,[matautocontrol])", returns="([matautocontrol])"},
-["moTime"] = {type='function', description = " sets or returns time value, for automatic material values. 0 means systemtime is used.", args="(matobject,[int])", returns="(time)"},
-["moAutocontrol"] = {type='function', description = " sets or returns matautocontrol for this control value. Note that only vector controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,matcontrolid,[matautocontrol])", returns="([matautocontrol])"},
-["moControl"] = {type='function', description = " sets or returns materialcontrol value. Depending on length of control, 1..4 values are required. If the control value has length > 4, as in array values, the array offset is required. Offsets are multiplied by 4.", args="(matobject,matcontrolid,[offset],[float ...])", returns="([float ...])"},
-["moShdcontrol"] = {type='function', description = " sets or returns material shdcontrol value. If material has shader parameters, the passed shader must have matching parameterids as original", args="(matobject,matshdcontrolid,[shader])", returns="([shader])"},
-["moPos"] = {type='function', description = " sets or returns position of texture matrix. Returns 0,0,0 if no matrix is set", args="(matobject,[float x,y,z])", returns="([float x,y,z])"},
-["moRotaxis"] = {type='function', description = " 		sets or returns rotaxis of texture matrix. Returns 1,0,0, 0,1,0, 0,0,1 if no matrix is set. May contain scaling!", args="(matobject,[float x1,y1,z1,x2,y2,z2,x3,y3,z3])", returns="([float x1,y1,z1,x2,y2,z2,x3,y3,z3])"},
-["moTexcontrol"] = {type='function', description = " sets or returns material texcontrol value.", args="(matobject,mattexcontrolid,[texture])", returns="([texture])"},
-["moModoff"] = {type='function', description = " sets or returns modifiers active state", args="(matobject,[boolean])", returns="(boolean)"}}}
 MultiLineLabel = {type='class',description="A MultiLineLabel element for displaying longer texts. A text can be marked\
 	with a special syntax (see function description at new) which allows\
 	creating texts with clickable zones, similiar to a hypertext\
@@ -809,18 +801,17 @@ called when a Component is now displayable\
 	\"exit\", \"moved\" or \"clicked\" and describe the type of action. The zone is the retrieved zone for that\
 	mouseposition. If no zone was matched it is nil.", args="(self,string what,mouseevent,[zone])", returns="()"},
 ["setColor"] = {type='function', description = " sets color for texts", args="(float r,g,b,[a])", returns="()"}}}
-rcmddrawmesh = {type='class',description="Draws a mesh, be aware that mesh winding is opposite (CCW) of l2dnodes (CW). Positions and sizes are always in OpenGL coordinates (0,0) = bottom left. The l2dnodes' reference size system is not used. By default starts out as fullscreen quad, 2d mesh for orhtographic overlay drawing.",childs={["matrix"] = {type='function', description = " returns or sets. Overwrites pos and is only used in non-orthographic.", args="(rcmddrawmesh,[matrix4x4])", returns="([matrix4x4])"},
-["link"] = {type='function', description = " gets or sets if matrix shall be updated from a linked node. This is a weak reference and will not prevent spatialnode from gc. Passing a non-spatialnode disables the link.", args="(rcmddrawmesh,[spatialnode])", returns="([spatialnode])"},
-["color"] = {type='function', description = " returns or sets color", args="(rcmddrawmesh,[float r,g,b,a])", returns="([float r,g,b,a])"},
-["orthographic"] = {type='function', description = " returns or sets whether 2d orhographic overlay mode should be used instead of the current active camera. the renderflags rfNovertexcolor,rfNodepthtest and rfNodepthmask are set to true in orthographic mode (also after matsurface change). (defualt is true).", args="(rcmddrawmesh,[boolean])", returns="([boolean])"},
-["autosize"] = {type='function', description = " returns or sets. 0 off -1 viewsized. Default is -1", args="(rcmddrawmesh,[int])", returns="([int])"},
-["matsurface"] = {type='function', description = " returns or sets matsurface", args="(rcmddrawmesh,[matsurface])", returns="([matsurface])"},
-["quadmesh"] = {type='function', description = " deletes usermesh and sets quadmesh again.", args="(rcmddrawmesh)", returns="()"},
-["usermesh"] = {type='function', description = " creates inplace custom rendermesh (see rendermesh for details) Note that polygon winding is CCW.", args="(rcmddrawmesh, vertextype, int numverts, numindices, [vidbuffer vbo], [int vbooffset], [vidbuffer ibo], [int ibooffset])", returns="()"},
-["rendermesh"] = {type='function', description = " gets or sets rendermesh. Get only works if a usermesh was created before or another rendermesh passed for useage.", args="(rcmddrawmesh,[rendermesh])", returns="([rendermesh])"},
-["size"] = {type='function', description = " returns or sets. xy Only used when autosize is 0 or non-orthographic. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddrawmesh,[float x,y,z])", returns="([float x,y,z])"},
-["pos"] = {type='function', description = " returns or sets. Overwritten by matrix. xy Only used when autosize is 0 or non-orthographic. Coordinates in OpenGL (0,0) = bottomleft of current l3dview.", args="(rcmddrawmesh,[float x,y,z])", returns="([float x,y,z])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawmesh)"}}}
+matobject = {type='class',description="Several classes which materials can be applied to, allow the detailed control of some material values. l3dmodels need to pass 2 arguments as matobject: l3dmodel,meshid. If you pass materials, then you will change values for the default matobject. If the node's material is changed, its old materialobject will be lost.",childs={["moTexmatrix"] = {type='function', description = " sets or returns texturematrix, pass 0 as matrix4x4 to disable.", args="(matobject,[matrix4x4])", returns="(matrix4x4)"},
+["moSeqoff"] = {type='function', description = " sets or returns sequence play state", args="(matobject,[boolean])", returns="(boolean)"},
+["moAutotexstage"] = {type='function', description = " sets or returns matautocontrol for a texture stage. Use texgen=true if you want to modify texgenplanes. Note that only matrix controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,int stage,boolean texgen,[matautocontrol])", returns="([matautocontrol])"},
+["moTime"] = {type='function', description = " sets or returns time value, for automatic material values. 0 means systemtime is used.", args="(matobject,[int])", returns="(time)"},
+["moAutocontrol"] = {type='function', description = " sets or returns matautocontrol for this control value. Note that only vector controllers are allowed. Passing a non-matautocontrol will disable it.", args="(matobject,matcontrolid,[matautocontrol])", returns="([matautocontrol])"},
+["moControl"] = {type='function', description = " sets or returns materialcontrol value. Depending on length of control, 1..4 values are required. If the control value has length > 4, as in array values, the array offset is required. Offsets are multiplied by 4.", args="(matobject,matcontrolid,[offset],[float ...])", returns="([float ...])"},
+["moShdcontrol"] = {type='function', description = " sets or returns material shdcontrol value. If material has shader parameters, the passed shader must have matching parameterids as original", args="(matobject,matshdcontrolid,[shader])", returns="([shader])"},
+["moPos"] = {type='function', description = " sets or returns position of texture matrix. Returns 0,0,0 if no matrix is set", args="(matobject,[float x,y,z])", returns="([float x,y,z])"},
+["moRotaxis"] = {type='function', description = " 		sets or returns rotaxis of texture matrix. Returns 1,0,0, 0,1,0, 0,0,1 if no matrix is set. May contain scaling!", args="(matobject,[float x1,y1,z1,x2,y2,z2,x3,y3,z3])", returns="([float x1,y1,z1,x2,y2,z2,x3,y3,z3])"},
+["moTexcontrol"] = {type='function', description = " sets or returns material texcontrol value.", args="(matobject,mattexcontrolid,[texture])", returns="([texture])"},
+["moModoff"] = {type='function', description = " sets or returns modifiers active state", args="(matobject,[boolean])", returns="(boolean)"}}}
 ImageComponent = {type='class',description="A ImageComponent element for displaying simple images (textures, material, plain colors).",childs={["deleteVisibles"] = {type='function', description = " description from overloaded method of Component:\
 \
 called when a Component is no longer displayed", args="(Component self)", returns="()"},
@@ -853,6 +844,46 @@ called when a Component is now displayable\
 	(doesn't have to be visible)", args="(Component self,l2dnode basel2d)", returns="()"},
 ["setUVPos"] = {type='function', description = " sets uv translation", args="(ImageComponent,x,y)", returns="()"},
 ["getUVScale"] = {type='function', description = " gets scaling for uv", args="(ImageComponent)", returns="(x,y)"}}}
+rcmddrawmesh = {type='class',description="Draws a mesh, be aware that mesh winding is opposite (CCW) of l2dnodes (CW). Positions and sizes are always in OpenGL coordinates (0,0) = bottom left. The l2dnodes' reference size system is not used. By default starts out as fullscreen quad, 2d mesh for orhtographic overlay drawing.",childs={["matrix"] = {type='function', description = " returns or sets. Overwrites pos and is only used in non-orthographic.", args="(rcmddrawmesh,[matrix4x4])", returns="([matrix4x4])"},
+["link"] = {type='function', description = " gets or sets if matrix shall be updated from a linked node. This is a weak reference and will not prevent spatialnode from gc. Passing a non-spatialnode disables the link.", args="(rcmddrawmesh,[spatialnode])", returns="([spatialnode])"},
+["color"] = {type='function', description = " returns or sets color", args="(rcmddrawmesh,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["orthographic"] = {type='function', description = " returns or sets whether 2d orhographic overlay mode should be used instead of the current active camera. the renderflags rfNovertexcolor,rfNodepthtest and rfNodepthmask are set to true in orthographic mode (also after matsurface change). (defualt is true).", args="(rcmddrawmesh,[boolean])", returns="([boolean])"},
+["autosize"] = {type='function', description = " returns or sets. 0 off -1 viewsized. Default is -1", args="(rcmddrawmesh,[int])", returns="([int])"},
+["matsurface"] = {type='function', description = " returns or sets matsurface", args="(rcmddrawmesh,[matsurface])", returns="([matsurface])"},
+["quadmesh"] = {type='function', description = " deletes usermesh and sets quadmesh again.", args="(rcmddrawmesh)", returns="()"},
+["usermesh"] = {type='function', description = " creates inplace custom rendermesh (see rendermesh for details) Note that polygon winding is CCW.", args="(rcmddrawmesh, vertextype, int numverts, numindices, [vidbuffer vbo], [int vbooffset], [vidbuffer ibo], [int ibooffset])", returns="()"},
+["rendermesh"] = {type='function', description = " gets or sets rendermesh. Get only works if a usermesh was created before or another rendermesh passed for useage.", args="(rcmddrawmesh,[rendermesh])", returns="([rendermesh])"},
+["size"] = {type='function', description = " returns or sets. xy Only used when autosize is 0 or non-orthographic. Coordinates in OpenGL (0,0) = bottomleft of current l3dview", args="(rcmddrawmesh,[float x,y,z])", returns="([float x,y,z])"},
+["pos"] = {type='function', description = " returns or sets. Overwritten by matrix. xy Only used when autosize is 0 or non-orthographic. Coordinates in OpenGL (0,0) = bottomleft of current l3dview.", args="(rcmddrawmesh,[float x,y,z])", returns="([float x,y,z])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawmesh)"}}}
+ComboBox = {type='class',description="A ComboBox combines multiple strings that can be selected in a\
+	small rectangle. The current state is very simple but is capable of mimic the\
+	basics of a normal ComboBox.",childs={["getSelected"] = {type='function', description = "\
+	returns information on the currently selected item.", args="(ComboBox)", returns="([int index, string caption, string command])"},
+["select"] = {type='function', description = "\
+	selects the specified item by its name, number or commandstring", args="(ComboBox, string/int something, [boolean iscommand])", returns="(int selected)"},
+["getItems"] = {type='function', description = " returns a table with all items (copy).\
+	Each tableelement is a table containing following keys:\
+	* caption\
+	* command\
+	* icon\
+	* iconname\
+	The values are all optional except for the caption.", args="(ComboBox)", returns="(table)"},
+["addItem"] = {type='function', description = " \
+	adds an item to the combobox. It returns a function that can be called again:\
+	 mycombobox:addItem(\"Hello\")(\"World\") -- adds hello and world \
+	 ", args="(ComboBox, string caption, [string cmd,[icon, iconskinselection] ])", returns="(function add)"},
+["onSelected"] = {type='function', description = " this function\
+	can be overloaded without calling this function. It is called each time the\
+	user selects an item - which does not have to be different from the previously\
+	selected item.", args="(ComboBox,int index, string caption, string command)", returns="()"},
+["new"] = {type='function', description = " creates a combobox\
+	at the given coordinates with the given skin.", args="(table class, int x,y,w,h,[Skin2D skin])", returns="(ComboBox)"},
+["removeItem"] = {type='function', description = " Removes an item from the list. The id refers to the \
+	index of the item in the list.", args="(ComboBox, int id)", returns="()"},
+["setItems"] = {type='function', description = " sets (and clears previous) all items. Table must be built like the one\
+	retrieved by getItems.", args="(ComboBox,table)", returns="()"},
+["clearItems"] = {type='function', description = " removes all items from the list", args="(ComboBox)", returns="()"}}}
 bonecontrol = {type='class',description="Allows manual control of bones in bonesystems found in l3dmodels.",childs={["rotaxis"] = {type='function', description = " returns or sets rotation axis, make sure they make a orthogonal basis.", args="(bonecontrol,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
 ["activate"] = {type='function', description = " activates bonecontrol on given l3dmodel", args="(bonecontrol,l3dmodel)", returns="()"},
 ["iklookat"] = {type='function', description = " returns or sets if a lookat effect should be applied on the ik root as well (default is false)", args="(bonecontrol,[boolean])", returns="([boolean])"},
@@ -908,81 +939,6 @@ tbterrain = {type='class',description="tiletexture-based terrain, uses elevation
 ["getcoords"] = {type='function', description = " converts world position into terrain coords", args="(tbterrain,float x,y,z)", returns="(int x,y)"},
 ["createfromtex"] = {type='function', description = " creates a new tbterrain using the given elevation and color data. Make sure the textures kept their data, and you can free the data afterwards. If the heightmap has 4 colorvalues it is used as float texture, else the red value is multiplied by heightfactor.<br> After setting all used tiletypes and layers run the createfinish function.", args="(string name, texture heightmap, float heightfactor, [texture colormap])", returns="(tbterrain)"},
 ["getheights"] = {type='function', description = " returns a mounted floatarray, in which you can directly access heights of the terrain grid. There is steps*2+1 floats for each dimension.", args="(tbterrain)", returns="(floatarray)"}}}
-ComboBox = {type='class',description="A ComboBox combines multiple strings that can be selected in a\
-	small rectangle. The current state is very simple but is capable of mimic the\
-	basics of a normal ComboBox.",childs={["getSelected"] = {type='function', description = "\
-	returns information on the currently selected item.", args="(ComboBox)", returns="([int index, string caption, string command])"},
-["select"] = {type='function', description = "\
-	selects the specified item by its name, number or commandstring", args="(ComboBox, string/int something, [boolean iscommand])", returns="(int selected)"},
-["getItems"] = {type='function', description = " returns a table with all items (copy).\
-	Each tableelement is a table containing following keys:\
-	* caption\
-	* command\
-	* icon\
-	* iconname\
-	The values are all optional except for the caption.", args="(ComboBox)", returns="(table)"},
-["addItem"] = {type='function', description = " \
-	adds an item to the combobox. It returns a function that can be called again:\
-	 mycombobox:addItem(\"Hello\")(\"World\") -- adds hello and world \
-	 ", args="(ComboBox, string caption, [string cmd,[icon, iconskinselection] ])", returns="(function add)"},
-["onSelected"] = {type='function', description = " this function\
-	can be overloaded without calling this function. It is called each time the\
-	user selects an item - which does not have to be different from the previously\
-	selected item.", args="(ComboBox,int index, string caption, string command)", returns="()"},
-["new"] = {type='function', description = " creates a combobox\
-	at the given coordinates with the given skin.", args="(table class, int x,y,w,h,[Skin2D skin])", returns="(ComboBox)"},
-["removeItem"] = {type='function', description = " Removes an item from the list. The id refers to the \
-	index of the item in the list.", args="(ComboBox, int id)", returns="()"},
-["setItems"] = {type='function', description = " sets (and clears previous) all items. Table must be built like the one\
-	retrieved by getItems.", args="(ComboBox,table)", returns="()"},
-["clearItems"] = {type='function', description = " removes all items from the list", args="(ComboBox)", returns="()"}}}
-rcmdlogicop = {type='class',description="Allows bitwise framebuffer operations (not legal for float rendertargets), overrides blendmodes when active.",childs={["logic"] = {type='function', description = " returns or sets logicmode used for logicop.", args="(rcmdlogicop,[logicmode])", returns="([logicmode])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdlogicop)"}}}
-DebugOutput = {type='class',description="A few helpers to print text on screen quickly.\
-			The output has 10 slots that you can use to print text out. \
-			\
-			Example:\
-			 DebugOutput.enable(true)\
-			 DebugOutput.set(1,string.format(\"a = %.2f\",math.pi))\
-			\
-			This will print pi as text on the screen. This is useful i.e. if\
-			you try to figure out good values for angles, rotations, velocities, \
-			etc. during runtime. ",childs={}}
-l3dlevelmodel = {type='class',description="A model that is very large and contains static geometry. The model will be split into a subdivided visibility cubes. Meshes that contain 'lightmap_' in their texture string will get those auto-loaded and applied.",childs={["lightmapcount"] = {type='function', description = " returns how many lightmaps are used.", args="(l3dlevelmodel)", returns="(int)"},
-["lightmap"] = {type='function', description = " returns ith lightmap.", args="(l3dlevelmodel,int i)", returns="(texture)"},
-["new"] = {type='function', description = " creates new l3dlevelmodel. Visibility cubes are generated with the given separations (>=1).", args="(string name,|l3dlayerid|,model,int separatorsx,y,z, [int minpolys],[float mergemargin])", returns="([l3dlevelmodel])"}}}
-ressubid = {type='class',description="Some resources contain sub resources, such as a model is made of meshes. Ressubids allow access to those.",childs={["hostinfo"] = {type='function', description = " returns the index in the host and the host resource", args="(ressubid)", returns="(int index,[resource])"}}}
-floatarray = {type='class',description="Floatarray in Luxinia for array operations.",childs={["v3"] = {type='function', description = " returns or sets ith vector3, make sure count is 3*maxindex.", args="(floatarray,int index, [float x,y,z])", returns="([float x,y,z])"},
-["v3all"] = {type='function', description = " returns or sets all values of the floatarray, optionally can set from which float to start and how many vectors. Vectorsize is 3+stride.", args="(floatarray,float x,y,z,[int startfloat, vectorcount, stride])", returns="()"},
-["v4all"] = {type='function', description = " returns or sets all values of the floatarray, optionally can set from which float to start and how many vectors. Vectorsize is 4+stride.", args="(floatarray,float x,y,z,w,[int startfloat, vectorcount, stride])", returns="()"},
-["v3lerp"] = {type='function', description = " does linear interpolation based on the n vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(3i), floatarray splinepos(3n),[int noverride])", returns="()"},
-["v4spline"] = {type='function', description = " does spline interpolation based on the n splinepos vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(4i), floatarray splinepos(4n),[int noverride])", returns="()"},
-["new"] = {type='function', description = " creates a new staticarray. Count must be >0.", args="(int count)", returns="(floatarray)"},
-["sub"] = {type='function', description = " self-=a or self = a - b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["set"] = {type='function', description = " self = a (copy an array or set value to all)", args="(floatarray self,floatarray / value a)", returns="()"},
-["max"] = {type='function', description = " self = max(self,a) or self = max(a,b)", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["v4lit"] = {type='function', description = " computes per vertex lighting intensities for n vertices into the given array. The given light position, attenuation and color values are used. Note that light position must be in same coordinate system as vertices (local).", args="(floatarray outputintensities(4n), floatarray vertexpos(3n), floatarray vertexnormal(3n), float lightpos x,y,z ,float diffuse r,g,b ,float ambient r,g,b ,float attconst, float attlin, float attsq)", returns="()"},
-["div"] = {type='function', description = " self/=a or self = a / b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["v3tonext"] = {type='function', description = " for every vector we do (next-self)", args="(floatarray out(3n))", returns="()"},
-["mul"] = {type='function', description = " self*=a or self = a * b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["v4lerp"] = {type='function', description = " does linear interpolation based on the n vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(4i), floatarray splinepos(4n),[int noverride])", returns="()"},
-["min"] = {type='function', description = " self = min(self,a) or self = min(a,b)", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["add"] = {type='function', description = " self+=a or self = a + b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
-["v4"] = {type='function', description = " returns or sets ith vector4, make sure count is 4*maxindex.", args="(floatarray,int index, [float x,y,z,w])", returns="([float x,y,z,w])"},
-["v3spline"] = {type='function', description = " does spline interpolation based on the n splinepos vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(3i), floatarray splinepos(3n),[int noverride])", returns="()"},
-["lerp"] = {type='function', description = " does linear interpolation based on the n floats (eventimed), and interpolates using i steps.", args="(floatarray interpolated(i), floatarray splinepos(n),[int noverride])", returns="()"}}}
-comparemode = {type='class',description="For some rendering operations you can set compare behavior. eg. GREATER means a value passes when greater than a given user threshold.",childs={["lequal"] = {type='function', description = " less or equal", args="()", returns="(comparemode)"},
-["always"] = {type='function', description = " any value passes", args="()", returns="(comparemode)"},
-["never"] = {type='function', description = " no value passes", args="()", returns="(comparemode)"},
-["run"] = {type='function', description = " runs the comparemode and returns result", args="(comparemode,float value, float ref)", returns="(boolean)"},
-["gequal"] = {type='function', description = " greater or equal", args="()", returns="(comparemode)"},
-["equal"] = {type='function', description = " ", args="()", returns="(comparemode)"},
-["disable"] = {type='function', description = " removes setting the compare, warning if rfAlphatest is still true you will get undefined behavior", args="()", returns="(comparemode)"},
-["notequal"] = {type='function', description = " ", args="()", returns="(comparemode)"},
-["greater"] = {type='function', description = " ", args="()", returns="(comparemode)"},
-["less"] = {type='function', description = " ", args="()", returns="(comparemode)"}}}
-matsurface = {type='class',description="Most renderable items allow their material to be changed. A materialsurface can either be just color, a texture or a material.",childs={["contains"] = {type='function', description = " checks if one matsurface contains another or is equal", args="(matsurface self, matsurface other)", returns="(boolean)"},
-["vertexcolor"] = {type='function', description = " removes any previous materialinfo and makes the surface just vertexcolored", args="()", returns="(matsurface)"}}}
 dworld = {type='class',description="Luxinia uses only one world (ode can simulate multiple worlds) for the sake of simplicity. The dworld class controls the parameters of the ode object. But it also has some special functions like a surfacemanagement system. You can specify 256 different types of surface parametersets that directly set how contacts will react at each other. Each dgeom has a surfaceid and the combination of the two surfaceids will tell the automatic contactgenerator what set of surfaceparameters should be used.",childs={["contactsurfacelayer"] = {type='function', description = " Set and get the depth of the surface layer around all geometry objects. Contacts are allowed to sink into the surface layer up to the given depth before coming to rest. The default value is zero. Increasing this to some small value (e.g. 0.001) can help prevent jittering problems due to contacts being repeatedly made and broken.", args="([float depth])", returns="([float])"},
 ["dinfinity"] = {type='function', description = " ODE Infinity value, used by some joints.", args="()", returns="(float)"},
 ["surfacebitmu2"] = {type='function', description = " If not set, use mu for both friction directions. If set, use mu for friction direction 1, use mu2 for friction direction 2.", args="(int surfaceid,[boolean])", returns="([boolean])"},
@@ -1053,6 +1009,53 @@ This method may crash if geoms has been deleted between the collidetest and the 
 ["contactmaxcorrectingvel"] = {type='function', description = " Set and get the maximum correcting velocity that contacts are allowed to generate. The default value is infinity (i.e. no limit). Reducing this value can help prevent \"popping\" of deeply embedded objects.", args="([float])", returns="([float])"},
 ["surfacebitsofterp"] = {type='function', description = " If set, the error reduction parameter of the contact normal can be set with the soft_erp parameter. This is useful to make surfaces soft.", args="(int surfaceid,[boolean])", returns="([boolean])"},
 ["cfm"] = {type='function', description = " set/get Constraint force mixing parameter (should be around 10e-9 to 1, default=10e-5)", args="([double cfm])", returns="(double erp)"}}}
+rcmdlogicop = {type='class',description="Allows bitwise framebuffer operations (not legal for float rendertargets), overrides blendmodes when active.",childs={["logic"] = {type='function', description = " returns or sets logicmode used for logicop.", args="(rcmdlogicop,[logicmode])", returns="([logicmode])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdlogicop)"}}}
+DebugOutput = {type='class',description="A few helpers to print text on screen quickly.\
+			The output has 10 slots that you can use to print text out. \
+			\
+			Example:\
+			 DebugOutput.enable(true)\
+			 DebugOutput.set(1,string.format(\"a = %.2f\",math.pi))\
+			\
+			This will print pi as text on the screen. This is useful i.e. if\
+			you try to figure out good values for angles, rotations, velocities, \
+			etc. during runtime. ",childs={}}
+l3dlevelmodel = {type='class',description="A model that is very large and contains static geometry. The model will be split into a subdivided visibility cubes. Meshes that contain 'lightmap_' in their texture string will get those auto-loaded and applied.",childs={["lightmapcount"] = {type='function', description = " returns how many lightmaps are used.", args="(l3dlevelmodel)", returns="(int)"},
+["lightmap"] = {type='function', description = " returns ith lightmap.", args="(l3dlevelmodel,int i)", returns="(texture)"},
+["new"] = {type='function', description = " creates new l3dlevelmodel. Visibility cubes are generated with the given separations (>=1).", args="(string name,|l3dlayerid|,model,int separatorsx,y,z, [int minpolys],[float mergemargin])", returns="([l3dlevelmodel])"}}}
+ressubid = {type='class',description="Some resources contain sub resources, such as a model is made of meshes. Ressubids allow access to those.",childs={["hostinfo"] = {type='function', description = " returns the index in the host and the host resource", args="(ressubid)", returns="(int index,[resource])"}}}
+floatarray = {type='class',description="Floatarray in Luxinia for array operations.",childs={["v3"] = {type='function', description = " returns or sets ith vector3, make sure count is 3*maxindex.", args="(floatarray,int index, [float x,y,z])", returns="([float x,y,z])"},
+["v3all"] = {type='function', description = " returns or sets all values of the floatarray, optionally can set from which float to start and how many vectors. Vectorsize is 3+stride.", args="(floatarray,float x,y,z,[int startfloat, vectorcount, stride])", returns="()"},
+["v4all"] = {type='function', description = " returns or sets all values of the floatarray, optionally can set from which float to start and how many vectors. Vectorsize is 4+stride.", args="(floatarray,float x,y,z,w,[int startfloat, vectorcount, stride])", returns="()"},
+["v3lerp"] = {type='function', description = " does linear interpolation based on the n vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(3i), floatarray splinepos(3n),[int noverride])", returns="()"},
+["v4spline"] = {type='function', description = " does spline interpolation based on the n splinepos vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(4i), floatarray splinepos(4n),[int noverride])", returns="()"},
+["new"] = {type='function', description = " creates a new staticarray. Count must be >0.", args="(int count)", returns="(floatarray)"},
+["sub"] = {type='function', description = " self-=a or self = a - b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["set"] = {type='function', description = " self = a (copy an array or set value to all)", args="(floatarray self,floatarray / value a)", returns="()"},
+["max"] = {type='function', description = " self = max(self,a) or self = max(a,b)", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["v4lit"] = {type='function', description = " computes per vertex lighting intensities for n vertices into the given array. The given light position, attenuation and color values are used. Note that light position must be in same coordinate system as vertices (local).", args="(floatarray outputintensities(4n), floatarray vertexpos(3n), floatarray vertexnormal(3n), float lightpos x,y,z ,float diffuse r,g,b ,float ambient r,g,b ,float attconst, float attlin, float attsq)", returns="()"},
+["div"] = {type='function', description = " self/=a or self = a / b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["v3tonext"] = {type='function', description = " for every vector we do (next-self)", args="(floatarray out(3n))", returns="()"},
+["mul"] = {type='function', description = " self*=a or self = a * b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["v4lerp"] = {type='function', description = " does linear interpolation based on the n vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(4i), floatarray splinepos(4n),[int noverride])", returns="()"},
+["min"] = {type='function', description = " self = min(self,a) or self = min(a,b)", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["add"] = {type='function', description = " self+=a or self = a + b", args="(floatarray self,floatarray / value a, [floatarray b])", returns="()"},
+["v4"] = {type='function', description = " returns or sets ith vector4, make sure count is 4*maxindex.", args="(floatarray,int index, [float x,y,z,w])", returns="([float x,y,z,w])"},
+["v3spline"] = {type='function', description = " does spline interpolation based on the n splinepos vectors (eventimed), and interpolates using i steps.", args="(floatarray interpolated(3i), floatarray splinepos(3n),[int noverride])", returns="()"},
+["lerp"] = {type='function', description = " does linear interpolation based on the n floats (eventimed), and interpolates using i steps.", args="(floatarray interpolated(i), floatarray splinepos(n),[int noverride])", returns="()"}}}
+comparemode = {type='class',description="For some rendering operations you can set compare behavior. eg. GREATER means a value passes when greater than a given user threshold.",childs={["lequal"] = {type='function', description = " less or equal", args="()", returns="(comparemode)"},
+["always"] = {type='function', description = " any value passes", args="()", returns="(comparemode)"},
+["never"] = {type='function', description = " no value passes", args="()", returns="(comparemode)"},
+["run"] = {type='function', description = " runs the comparemode and returns result", args="(comparemode,float value, float ref)", returns="(boolean)"},
+["gequal"] = {type='function', description = " greater or equal", args="()", returns="(comparemode)"},
+["equal"] = {type='function', description = " ", args="()", returns="(comparemode)"},
+["disable"] = {type='function', description = " removes setting the compare, warning if rfAlphatest is still true you will get undefined behavior", args="()", returns="(comparemode)"},
+["notequal"] = {type='function', description = " ", args="()", returns="(comparemode)"},
+["greater"] = {type='function', description = " ", args="()", returns="(comparemode)"},
+["less"] = {type='function', description = " ", args="()", returns="(comparemode)"}}}
+matsurface = {type='class',description="Most renderable items allow their material to be changed. A materialsurface can either be just color, a texture or a material.",childs={["contains"] = {type='function', description = " checks if one matsurface contains another or is equal", args="(matsurface self, matsurface other)", returns="(boolean)"},
+["vertexcolor"] = {type='function', description = " removes any previous materialinfo and makes the surface just vertexcolored", args="()", returns="(matsurface)"}}}
 Skin2D = {type='class',description="The Skin2D class is a two dimensional graphical representation for\
 	abstract information. It defines the look and feel of components.\
 \
@@ -1194,106 +1197,6 @@ Skin2D = {type='class',description="The Skin2D class is a two dimensional graphi
 	let the mouse pointing reject transparent areas on the skin.", args="(Skin2D, x,y)", returns="(boolean)"},
 ["setPaddingAll"] = {type='function', description = " Sets padding of all padding keys. If nil is passed, the given value (top,right,bottom,left) isnot modified. If incremental is true, the values are added to the current values.", args="(Skin2D,[float top],[right],[bottom],[left],boolean incremental=false)", returns="()"},
 ["ALIGN.BOTTOM"] = {type='value', description = "{[string]} - position information for label"}}}
-Timer = {type='class',description="Luxinia does automaticly call a function named 'think' in a table called 'luxinia'\
-		each frame. The Timer class registers this function and provides a mechanism\
-		to add additional function that should be called each frame.\
-\
-		The function is being disabled if it throws an error.\
-\
-		The timer has been changed during 0.93 to use coroutines. This is quite useful:\
-		you can yield a function at any point of time during execution if it is\
-		called by a timer or timertask. The execution is then continued later.\
-		For timers, this is the next period, for TimerTasks, please read the documentation\
-		on the TimerTask class. You can create endless loops just as this:\
-\
-		 Timer.set(\"endless loop\",\
-		 	function ()\
-		 		while true do\
-		 			print \"tick\"\
-		 			coroutine.yield()\
-		 		end\
-		 	end, 50)\
-\
-		The code sample above will create a timertask that is executed about every\
-		50 ms and will always print \"tick\" out.\
-\
-		Coroutines are useful utilities to create AIs, agents or gameloops.\
-		You do not have to change a state of a game function for example:\
-\
-		 Timer.set(\"game\",\
-		 	function ()\
-		 		local gamestarts,gamefinished\
-		 		repeat\
-		 			-- do something about intro menu etc. stuff\
-		 			coroutine.yield()\
-		 		until gamestarts\
-\
-		 		repeat\
-		 			-- make some gamelogic stuff, spawing actors, etc\
-		 			-- set gamefinished to true or break loop if game is finished\
-		 			coroutine.yield()\
-		 		until gamefinished\
-		 	end, 1000/30)\
-\
-		The code sample above will be executed every 30 fps. You can also nest the\
-		loops in loops, for example for each level. Instead of writing different\
-		functions that represent your state of game and that are selected for\
-		execution, you can use this method to create a linear way of writing a\
-		game.\
-		",childs={["remove"] = {type='function', description = " removes a timer function from the Timer list.", args="(string/function key)", returns="()"},
-["think"] = {type='function', description = " Function that is called each frame. If you switch to\
-				manual frame processing within lua, you should call this\
-				function each frame you do, since other modules are dependent\
-				on the timer function (i.e. the Keyboard class).\
-			", args="()", returns="()"},
-["set"] = {type='function', description = "\
-				set a function to be called each frame if interval is not passed.\
-				If interval is a number (minimum 1), the function will be called\
-				in the intervals in milliseconds. The timer automaticly repeates\
-				calls if the timer is late. If the maxcnt argument is passed,\
-				the timer won't be called more often than maxcnt per frame -\
-				if a timer is behind time, this prevents the system too freeze\
-				if the timerfunction is taking longer than its given interval.\
-\
-				fn will be called with the local time of the function as first\
-				argument and the number of the repeated calls within\
-				this frame as second argument (@@fn(int localtime, int repeatedcalls)@@).\
-				The localtime is increased by the value of interval each time\
-				a call is done.\
-\
-				The description string can be used to remove a timer. The timer\
-				is identified by the function value and multiple timers can share\
-				the same description string (and can all be removed with one remove\
-				call this way).\
-\
-				Returns the passed function.", args="(string description,function fn[, int interval], [int maxcnt])", returns="(function fn)"},
-["enable"] = {type='function', description = " enables a disabled timerfunction again\
-			", args="(string/function key)", returns="()"},
-["frame"] = {type='function', description = " returns the frame (or the number of thinkcycles)", args="()", returns="(int)"},
-["finally"] = {type='function', description = " the finally function is a list of\
-				functions that should be executed when all timers are finished.\
-				The timer and the finish functions are called in no particular\
-				order so this is just a method to do some stuff at the end\
-				of the timer calls (the timertasks are finished till then too).\
-				A key can\
-				only be registered one time, after that it will overwrite the\
-				previous function.\
-\
-				The finally function registrations are only valid for the\
-				current frame, so you must reregister it if required.\
-\
-				This functionality exists to provide help on optimized updating\
-				- you may want to collect information on for the real update\
-				function of an object that can then update all information\
-				alltogether instead of doing the same again and again updating\
-				ony tiny changes.\
-\
-				Registering finally functions in a finally function call works.\
-				The new registered function is called once all previously\
-				registered functions have been executed.\
-				If you keep on registering finally functions, this means that\
-				the finally calls will never stop!\
-			", args="(key,function)", returns="()"}}}
 Component = {type='class',description="A Component is a 2D object on the screen that allows interaction with\
 	the mouse and keyboard of the user.\
 \
@@ -1538,6 +1441,199 @@ Component = {type='class',description="A Component is a 2D object on the screen 
 ["isVisibleFlag"] = {type='value', description = "{[boolean]} - true if the component is visible"},
 ["mouseReleased"] = {type='function', description = "\
 	 called if the mouse was released on the component", args="(Component self, MouseEvent e, boolean mouseover)", returns="()"}}}
+Timer = {type='class',description="Luxinia does automaticly call a function named 'think' in a table called 'luxinia'\
+		each frame. The Timer class registers this function and provides a mechanism\
+		to add additional function that should be called each frame.\
+\
+		The function is being disabled if it throws an error.\
+\
+		The timer has been changed during 0.93 to use coroutines. This is quite useful:\
+		you can yield a function at any point of time during execution if it is\
+		called by a timer or timertask. The execution is then continued later.\
+		For timers, this is the next period, for TimerTasks, please read the documentation\
+		on the TimerTask class. You can create endless loops just as this:\
+\
+		 Timer.set(\"endless loop\",\
+		 	function ()\
+		 		while true do\
+		 			print \"tick\"\
+		 			coroutine.yield()\
+		 		end\
+		 	end, 50)\
+\
+		The code sample above will create a timertask that is executed about every\
+		50 ms and will always print \"tick\" out.\
+\
+		Coroutines are useful utilities to create AIs, agents or gameloops.\
+		You do not have to change a state of a game function for example:\
+\
+		 Timer.set(\"game\",\
+		 	function ()\
+		 		local gamestarts,gamefinished\
+		 		repeat\
+		 			-- do something about intro menu etc. stuff\
+		 			coroutine.yield()\
+		 		until gamestarts\
+\
+		 		repeat\
+		 			-- make some gamelogic stuff, spawing actors, etc\
+		 			-- set gamefinished to true or break loop if game is finished\
+		 			coroutine.yield()\
+		 		until gamefinished\
+		 	end, 1000/30)\
+\
+		The code sample above will be executed every 30 fps. You can also nest the\
+		loops in loops, for example for each level. Instead of writing different\
+		functions that represent your state of game and that are selected for\
+		execution, you can use this method to create a linear way of writing a\
+		game.\
+		",childs={["remove"] = {type='function', description = " removes a timer function from the Timer list.", args="(string/function key)", returns="()"},
+["think"] = {type='function', description = " Function that is called each frame. If you switch to\
+				manual frame processing within lua, you should call this\
+				function each frame you do, since other modules are dependent\
+				on the timer function (i.e. the Keyboard class).\
+			", args="()", returns="()"},
+["set"] = {type='function', description = "\
+				set a function to be called each frame if interval is not passed.\
+				If interval is a number (minimum 1), the function will be called\
+				in the intervals in milliseconds. The timer automaticly repeates\
+				calls if the timer is late. If the maxcnt argument is passed,\
+				the timer won't be called more often than maxcnt per frame -\
+				if a timer is behind time, this prevents the system too freeze\
+				if the timerfunction is taking longer than its given interval.\
+\
+				fn will be called with the local time of the function as first\
+				argument and the number of the repeated calls within\
+				this frame as second argument (@@fn(int localtime, int repeatedcalls)@@).\
+				The localtime is increased by the value of interval each time\
+				a call is done.\
+\
+				The description string can be used to remove a timer. The timer\
+				is identified by the function value and multiple timers can share\
+				the same description string (and can all be removed with one remove\
+				call this way).\
+\
+				Returns the passed function.", args="(string description,function fn[, int interval], [int maxcnt])", returns="(function fn)"},
+["enable"] = {type='function', description = " enables a disabled timerfunction again\
+			", args="(string/function key)", returns="()"},
+["frame"] = {type='function', description = " returns the frame (or the number of thinkcycles)", args="()", returns="(int)"},
+["finally"] = {type='function', description = " the finally function is a list of\
+				functions that should be executed when all timers are finished.\
+				The timer and the finish functions are called in no particular\
+				order so this is just a method to do some stuff at the end\
+				of the timer calls (the timertasks are finished till then too).\
+				A key can\
+				only be registered one time, after that it will overwrite the\
+				previous function.\
+\
+				The finally function registrations are only valid for the\
+				current frame, so you must reregister it if required.\
+\
+				This functionality exists to provide help on optimized updating\
+				- you may want to collect information on for the real update\
+				function of an object that can then update all information\
+				alltogether instead of doing the same again and again updating\
+				ony tiny changes.\
+\
+				Registering finally functions in a finally function call works.\
+				The new registered function is called once all previously\
+				registered functions have been executed.\
+				If you keep on registering finally functions, this means that\
+				the finally calls will never stop!\
+			", args="(key,function)", returns="()"}}}
+GuiHelpers = {type='class',description="GuiHelpers contain a few functions to aid application development. Can be accessed via GH as well.\
+	",childs={["frameminmax"] = {type='function', description = "\
+	creates a button \"Hide\"/\"Show\" which sets bounds based on the returns of\
+	fnmaxbounds and fnminbounds, which use fninput as input. All functions return x,y,w,h. If\
+	fninput is not specified current window dimensions are taken.\
+	When minimized all children are removed. Once minimized btn.oldcomponents will be set and\
+	hold all temporarily removed Components.\
+	When spaceable is set, focus and space bar will not cause the button to act.\
+	", args="(Container frame, fnminbounds, fnmaxbounds, [fninput], [boolean spaceable])", returns="(Button btn)"},
+["getIconUVs"] = {type='function', description = "\
+	returns u,v position and scalings for an icon inside a texture (top =0,0) for setting texture\
+	matrices. Takes rectangle textures into account. Grid and icon dimensions default to 24.\
+	", args="(texture,x,y,[iconwidth],[iconheight],[gridwidth],[gridheight])", returns="(float u,v,uscale,vscale)"},
+["popupYesNo"] = {type='function', description = "\
+	creates a modal popup with description label string, and two buttons for \"yes\" and \"no\".", args="(int w,h, string title, question, function fnyes, [fnno], [string yes], [no], [int buttonwidth])", returns="(GroupFrame)"},
+["sldLabelval"] = {type='value', description = "[int] - default width for value label for addlsider"},
+["popupInfo"] = {type='function', description = "\
+	creates a modal popup with a description label string, and a \"okay\" button.", args="(int w,h, string title, text, [function fnok], [string ok], [int buttonwidth])", returns="(GroupFrame)"},
+["createcolormenu"] = {type='function', description = "\
+	creates a container with a graphical color menu. Initilized with the table value.<br>\
+	Function: onchange(upvalue,r,g,b,alpha)", args="(int x,y,w,h, string title, table colorHSVA, fn onchange, [upvalue], [string alphaname])", returns="(Container)"},
+["modaldialog"] = {type='function', description = "\
+	creates a modal titleframe on top of everything, and normally darkens the background (unless nomodal is true). All arguments are optional. x,y,w,h default to 0,0 and window size.\
+	fw/fh are the dimensions of the TitleFrame created. Returns the empty titleframe, mostly used for pop-up menus.", args="([titlename], [int x,y,w,h], [int fw,fh], [boolean nomodal])", returns="(TitleFrame)"},
+["filedialog"] = {type='function', description = "\
+	creates and file dialog as popup menu.<br>\
+	Functions: onsave(fileframe,filepath,filetext), oncancel(fileframe). Both must return true if dialog should be destroyed.<br>\
+	addedframe(fileframe) allows to add custom frame to the modal dialog which must be returned by the function.<br><br>\
+	warnonoverwrite will cause yes/no popup and can contain <br>\
+	* width: int <br>\
+	* height: int <br>\
+	* title: string <br>\
+	* descr: string <br>\
+	* yes: string <br>\
+	* no: string <br>", args="(string title,oktext,canceltext,[initpath],[fn onsave], [oncancel], [table strings extensions], [string startname], [fn addedframe], [table warnonoverwrite])", returns="(GroupFrame)"},
+["addcolorbutton"] = {type='function', description = "\
+	creates a color button which on execution pops up a colormenu dialog. returns a function, which\
+	can be used to change preview button color, and new y value which is y + h.<br>\
+	Function: setcolor(table colorRGBA, [boolean noevent]. Returned button contains .lbl<br>\
+	Parameters table contains:<br>\
+	* initvalue: table, color HSVA<br>\
+	* initrgba: table, color RGBA<br>\
+	* callback: function, callback(obj,r,g,b,a)<br>\
+	* [obj]: upvalue for function callback<br>\
+	* [alphaname]: string, Alphaname if alpha slider should be available<br>\
+	* [nomodal]: boolean, no darkening modal dialog<br>\
+	* [noalpha]: boolean, no alpha in the preview button color<br>\
+	* [titleicon]: Icon, instead of button label.<br>\
+	* [ok]: string, okay text<br>\
+	* [cancel]: string, cancel text<br>\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, fn setcolor, Button)"},
+["makeLayoutFunc"] = {type='function', description = "\
+	returns a function that computes new rectangles according to \
+	rescaling / repositioning behavior. x,y,w,h returned by fnlayouter (nx,ny,nw,nh).\
+	On call of makeLayoutFunc the current Rectangles and their relative \
+	positions to refbounds are stored.<br>\
+	The params table contains:<br>\
+	* bottom: boolean for anchor.y\
+	* right: boolean for anchor.x\
+	* relscale: {boolean w,h}, required\
+	* relpos: {boolean x,y}, required\
+	<br>\
+	When relscale is true for a dimension the size is changed according to the ratio of \
+	original refsize and newsize. When relpos is true, the position of top left corner\
+	of the component changes relatively to scaling, when false it will keep its original\
+	distance to the anchor point. Anchor point is made from reference dimension of\
+	hostframes and is created from \"right\" and \"bottom\".\
+	", args="(Rectangle hostref, Rectangle ref, table params)", returns="(fnlayouter)"},
+["addslider"] = {type='function', description = "\
+	creates a slider with leading description label (slider.lbl) and following value label (slider.lblval). New y value which is y + h.<br>\
+	slidervalue = sliderpos * scale + offset<br>\
+	Parameters table contains:<br>\
+	* initvalue: float, 0-1 position along slider\
+	* callback: function, (outvalue, sliderpos) : callback (slidervalue,numericinput,sliderpos). When allowinput is true and callback is called with \"nil,numericinput,nil\" it must return sliderpos as well. Otherwise only outvalue is taken and (slidervalue, nil, sliderpos) are passed.\
+	* [scale]: float\
+	* [offset]: float\
+	* [increment]: float, Slider increment\
+	* [intmode]: boolean, Slider IntegerMode\
+	\
+	* [labelw]: int, name label widht, defaults to GH.sldLabelwidth\
+	* [valw]: int, value label width, defaults to GH.sldLabelval\
+	* [formatstr]: string, argument to string.format for value label\
+	* [allowinput]: boolean, allows manual popup dialog input, when clicking on value label\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Slider)"},
+["addcheckbox"] = {type='function', description = "\
+	adds CheckBox to frame.<br>\
+	Parameters table contains:<br>\
+	* initvalue: boolean\
+	* callback: function, callback(state).\
+	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, CheckBox)"},
+["sldLabelwidth"] = {type='value', description = "[int] - width of description label for addslider"},
+["scrollfield"] = {type='function', description = "\
+	creates and returns groupframe, which gets a vertically scroll slider if content is out of bounds. \".area\" of returned frame should be used to add components to. \".area\" also contains the function \"scrollto(itemY,itemHeight)\" with which you can set the scroll pos (if slider exists, otherwise ignored).", args="(int x,y,w,h)", returns="(GroupFrame)"}}}
 rcmdfbobind = {type='class',description="Binds a renderfbo (if capability exists). Fbos allow enhanced render-to-texture operation, and off-screen rendering to large buffers. Once you start using renderfbos it is heavily recommended to check your setup for the whole l3dlist with l3dlist.fbotest. An fbo setup consists of rcmdfbobind (for binding), rcmdfbotex or rcmdfborb for attaching renderbuffers/textures and finally the rcmdfbodrawto command which specifies which assignment the color is rendered to.",childs={["setup"] = {type='function', description = " returns or sets renderfbo, must be defined before use. Viewportchange means that active viewport dimensions are changed to fbo dimension (0,0, fbowidth, fboheight) and is by default true. l3dviews viewport dimensions become active again once fbo is unbound.", args="(rcmdfbobind,[renderfbo,[boolean viewportchange]])", returns="([renderfbo, boolean viewportchange])"},
 ["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off. Viewportchange is ignored when readbuffer is true.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
 ["new"] = {type='function', description = " returns the rcmd for fbo binding. Make sure to setup the fbo to bind.", args="()", returns="(rcmdfbobind)"}}}
@@ -1829,7 +1925,7 @@ capability = {type='class',description="Certain system (hardware related) capabi
 ["renderbuffermsaa"] = {type='function', description = " returns number of maximum samples of multisampled renderbuffers, or nil if no support is given.", args="()", returns="([int])"},
 ["texdds"] = {type='function', description = " returns support for dds texture loading", args="()", returns="(boolean)"},
 ["texautomipmap"] = {type='function', description = " returns support for automatic mipmaps", args="()", returns="(boolean)"},
-["r2vb"] = {type='function', description = " returns support for render 2 vertexbuffer functionality, useful to capture vertex stream output.", args="()", returns="(boolean)"},
+["texrg"] = {type='function', description = " returns support for R and RG textures.", args="()", returns="(boolean)"},
 ["texfloat"] = {type='function', description = " returns support for float16 and float32 textures", args="()", returns="(boolean)"},
 ["texcompress"] = {type='function', description = " returns support for texture compression", args="()", returns="(boolean)"},
 ["stencilwrap"] = {type='function', description = " returns support for wrapped increment and decrement", args="()", returns="(boolean)"},
@@ -1839,9 +1935,12 @@ capability = {type='class',description="Certain system (hardware related) capabi
 ["texcomb_combine4"] = {type='function', description = " returns support for combine4 in texcombiners", args="()", returns="(boolean)"},
 ["fbo"] = {type='function', description = " returns support for framebufferobjects (fbo), allow enhanced rendertotexture. Especially rendering to multiple drawbuffers or textures with larger size than window. renderfbo, renderbuffer, rcmdfbobind ... need this capability.", args="()", returns="(boolean)"},
 ["tex3d"] = {type='function', description = " returns support for 3d textures", args="()", returns="(boolean)"},
-["texvertex"] = {type='function', description = " returns number of textures that can be accessed in vertex shader", args="()", returns="(int)"},
-["texcomb_modadd"] = {type='function', description = " returns support for modulated add functions in texcombiners", args="()", returns="(boolean)"},
 ["pointsprites"] = {type='function', description = " returns if particle points can be rendered as sprites (quad-like textured).", args="()", returns="(boolean)"},
+["texvertex"] = {type='function', description = " returns number of textures that can be accessed in vertex shader", args="()", returns="(int)"},
+["r2vb"] = {type='function', description = " returns support for render 2 vertexbuffer functionality, useful to capture vertex stream output.", args="()", returns="(boolean)"},
+["texcomb_modadd"] = {type='function', description = " returns support for modulated add functions in texcombiners", args="()", returns="(boolean)"},
+["texsize"] = {type='function', description = " returns maximum texture side length (1d or 2d).", args="()", returns="(int)"},
+["texcube"] = {type='function', description = " returns support for cubemap textures", args="()", returns="(boolean)"},
 ["stenciltwosided"] = {type='function', description = " returns support for two-sided stencil testing", args="()", returns="(boolean)"},
 ["texinteger"] = {type='function', description = " returns support for integer textures, typically requires capability.cg_sm4 as well.", args="()", returns="(boolean)"},
 ["tex3dsize"] = {type='function', description = " returns maximum dimension of 3d texture", args="()", returns="(int)"},
@@ -1849,148 +1948,19 @@ capability = {type='class',description="Certain system (hardware related) capabi
 ["texcomb_subtract"] = {type='function', description = " returns support for subtract in texcombiners", args="()", returns="(boolean)"},
 ["texnp2"] = {type='function', description = " returns support for non power of two texture dimensions. Currently only supported for 3d textures. For 2d textures use rectangle capability.", args="()", returns="(boolean)"},
 ["texanisotropic"] = {type='function', description = " returns maximum anisotropic value for texture filtering, if supported.", args="()", returns="([float])"},
+["texbgr"] = {type='function', description = " returns support for BGR,BGRA texture data", args="()", returns="(boolean)"},
 ["texarray"] = {type='function', description = " returns support for array textures, typically requires capability.cg_sm4 as well.", args="()", returns="(boolean)"},
 ["texdepthstencil"] = {type='function', description = " returns support for a packed format of 24bit depth and 8bit stencil texture.", args="()", returns="(boolean)"},
-["texbgr"] = {type='function', description = " returns support for BGR,BGRA texture data", args="()", returns="(boolean)"},
-["texcube"] = {type='function', description = " returns support for cubemap textures", args="()", returns="(boolean)"},
+["texbuffer"] = {type='function', description = " returns support for buffer textures, typically requires capability.cg_sm4 as well.", args="()", returns="(boolean)"},
 ["texcomb_crossbar"] = {type='function', description = " returns support for access to all texture units in texcombiners", args="()", returns="(boolean)"},
 ["bufferblit"] = {type='function', description = " returns support for blitting from one to another renderfbo/backbuffer via rcmdbufferblit", args="()", returns="(boolean)"},
-["texbuffer"] = {type='function', description = " returns support for buffer textures, typically requires capability.cg_sm4 as well.", args="()", returns="(boolean)"},
+["texbarrir"] = {type='function', description = " returns support texbarrier functionality (read and write same texture once, ie. custom blending). allows 'texbarrier' keyword in shader files.", args="()", returns="(boolean)"},
 ["vbo"] = {type='function', description = " returns support for vbo", args="()", returns="(boolean)"}}}
 soundlistener = {type='class',description="The soundlistener represents the position, velocity and orientation 		of the 'microphone' in space.",childs={["orientation"] = {type='function', description = " sets/gets orientation of listener", args="([float x,y,z,upx,upy,upz])", returns="([float x,y,z,upx,upy,upz])"},
 ["vel"] = {type='function', description = " sets or gets velocity of listener", args="([float x,y,z])", returns="([float x,y,z])"},
 ["velscale"] = {type='function', description = " scaling factor for velocity vector", args="([float scale])", returns="([float scale])"},
 ["posscale"] = {type='function', description = " scaling factor for position vector", args="([float scale])", returns="([float scale])"},
 ["pos"] = {type='function', description = " sets or gets position of listener", args="([float x,y,z])", returns="([float x,y,z])"}}}
-GuiHelpers = {type='class',description="GuiHelpers contain a few functions to aid application development. Can be accessed via GH as well.\
-	",childs={["scrollfield"] = {type='function', description = "\
-	creates and returns groupframe, which gets a vertically scroll slider if content is out of bounds. \".area\" of returned frame should be used to add components to. \".area\" also contains the function \"scrollto(itemY,itemHeight)\" with which you can set the scroll pos (if slider exists, otherwise ignored).", args="(int x,y,w,h)", returns="(GroupFrame)"},
-["getIconUVs"] = {type='function', description = "\
-	returns u,v position and scalings for an icon inside a texture (top =0,0) for setting texture\
-	matrices. Takes rectangle textures into account. Grid and icon dimensions default to 24.\
-	", args="(texture,x,y,[iconwidth],[iconheight],[gridwidth],[gridheight])", returns="(float u,v,uscale,vscale)"},
-["popupYesNo"] = {type='function', description = "\
-	creates a modal popup with description label string, and two buttons for \"yes\" and \"no\".", args="(int w,h, string title, question, function fnyes, [fnno], [string yes], [no], [int buttonwidth])", returns="(GroupFrame)"},
-["sldLabelval"] = {type='value', description = "[int] - default width for value label for addlsider"},
-["addcheckbox"] = {type='function', description = "\
-	adds CheckBox to frame.<br>\
-	Parameters table contains:<br>\
-	* initvalue: boolean\
-	* callback: function, callback(state).\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, CheckBox)"},
-["createcolormenu"] = {type='function', description = "\
-	creates a container with a graphical color menu. Initilized with the table value.<br>\
-	Function: onchange(upvalue,r,g,b,alpha)", args="(int x,y,w,h, string title, table colorHSVA, fn onchange, [upvalue], [string alphaname])", returns="(Container)"},
-["filedialog"] = {type='function', description = "\
-	creates and file dialog as popup menu.<br>\
-	Functions: onsave(fileframe,filepath,filetext), oncancel(fileframe). Both must return true if dialog should be destroyed.<br>\
-	addedframe(fileframe) allows to add custom frame to the modal dialog which must be returned by the function.<br><br>\
-	warnonoverwrite will cause yes/no popup and can contain <br>\
-	* width: int <br>\
-	* height: int <br>\
-	* title: string <br>\
-	* descr: string <br>\
-	* yes: string <br>\
-	* no: string <br>", args="(string title,oktext,canceltext,[initpath],[fn onsave], [oncancel], [table strings extensions], [string startname], [fn addedframe], [table warnonoverwrite])", returns="(GroupFrame)"},
-["modaldialog"] = {type='function', description = "\
-	creates a modal titleframe on top of everything, and normally darkens the background (unless nomodal is true). All arguments are optional. x,y,w,h default to 0,0 and window size.\
-	fw/fh are the dimensions of the TitleFrame created. Returns the empty titleframe, mostly used for pop-up menus.", args="([titlename], [int x,y,w,h], [int fw,fh], [boolean nomodal])", returns="(TitleFrame)"},
-["sldLabelwidth"] = {type='value', description = "[int] - width of description label for addslider"},
-["addcolorbutton"] = {type='function', description = "\
-	creates a color button which on execution pops up a colormenu dialog. returns a function, which\
-	can be used to change preview button color, and new y value which is y + h.<br>\
-	Function: setcolor(table colorRGBA, [boolean noevent]. Returned button contains .lbl<br>\
-	Parameters table contains:<br>\
-	* initvalue: table, color HSVA<br>\
-	* initrgba: table, color RGBA<br>\
-	* callback: function, callback(obj,r,g,b,a)<br>\
-	* [obj]: upvalue for function callback<br>\
-	* [alphaname]: string, Alphaname if alpha slider should be available<br>\
-	* [nomodal]: boolean, no darkening modal dialog<br>\
-	* [noalpha]: boolean, no alpha in the preview button color<br>\
-	* [titleicon]: Icon, instead of button label.<br>\
-	* [ok]: string, okay text<br>\
-	* [cancel]: string, cancel text<br>\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, fn setcolor, Button)"},
-["addslider"] = {type='function', description = "\
-	creates a slider with leading description label (slider.lbl) and following value label (slider.lblval). New y value which is y + h.<br>\
-	slidervalue = sliderpos * scale + offset<br>\
-	Parameters table contains:<br>\
-	* initvalue: float, 0-1 position along slider\
-	* callback: function, (outvalue, sliderpos) : callback (slidervalue,numericinput,sliderpos). When allowinput is true and callback is called with \"nil,numericinput,nil\" it must return sliderpos as well. Otherwise only outvalue is taken and (slidervalue, nil, sliderpos) are passed.\
-	* [scale]: float\
-	* [offset]: float\
-	* [increment]: float, Slider increment\
-	* [intmode]: boolean, Slider IntegerMode\
-	\
-	* [labelw]: int, name label widht, defaults to GH.sldLabelwidth\
-	* [valw]: int, value label width, defaults to GH.sldLabelval\
-	* [formatstr]: string, argument to string.format for value label\
-	* [allowinput]: boolean, allows manual popup dialog input, when clicking on value label\
-	", args="(Container frame,int x,y,w,h, string title, table parameters)", returns="(int newy, Slider)"},
-["makeLayoutFunc"] = {type='function', description = "\
-	returns a function that computes new rectangles according to \
-	rescaling / repositioning behavior. x,y,w,h returned by fnlayouter (nx,ny,nw,nh).\
-	On call of makeLayoutFunc the current Rectangles and their relative \
-	positions to refbounds are stored.<br>\
-	The params table contains:<br>\
-	* bottom: boolean for anchor.y\
-	* right: boolean for anchor.x\
-	* relscale: {boolean w,h}, required\
-	* relpos: {boolean x,y}, required\
-	<br>\
-	When relscale is true for a dimension the size is changed according to the ratio of \
-	original refsize and newsize. When relpos is true, the position of top left corner\
-	of the component changes relatively to scaling, when false it will keep its original\
-	distance to the anchor point. Anchor point is made from reference dimension of\
-	hostframes and is created from \"right\" and \"bottom\".\
-	", args="(Rectangle hostref, Rectangle ref, table params)", returns="(fnlayouter)"},
-["frameminmax"] = {type='function', description = "\
-	creates a button \"Hide\"/\"Show\" which sets bounds based on the returns of\
-	fnmaxbounds and fnminbounds, which use fninput as input. All functions return x,y,w,h. If\
-	fninput is not specified current window dimensions are taken.\
-	When minimized all children are removed. Once minimized btn.oldcomponents will be set and\
-	hold all temporarily removed Components.\
-	When spaceable is set, focus and space bar will not cause the button to act.\
-	", args="(Container frame, fnminbounds, fnmaxbounds, [fninput], [boolean spaceable])", returns="(Button btn)"}}}
-texcombcolor = {type='class',description="The texcombiner for rgb values. The functions return a texcombiner or overwrite the combiner with same name. They may return an error when a conflict with default names exists.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombcolor])"},
-["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombcolor])"},
-["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what.", args="(texcombcolor,int arg,texcombsrc,texcombop)", returns="()"},
-["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombcolor)", returns="([string])"},
-["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombcolor])"},
-["dot3alpha"] = {type='function', description = "  OUT = arg0 dotproduct arg1. (args as signed vector -1,+1). Also sets alpha. You should query for capability", args="(string name)", returns="([texcombcolor])"},
-["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
-["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for alpha at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombcolor])"},
-["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
-["dot3"] = {type='function', description = "  OUT = arg0 dotproduct arg1. (args as signed vector -1,+1). You should query for capability", args="(string name)", returns="([texcombcolor])"},
-["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombcolor])"},
-["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability.", args="(string name)", returns="([texcombcolor])"},
-["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
-["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombcolor])"}}}
-resdata = {type='class',description="resdata holds all resources that are supposedly static, like models, textures, and are often reused, as those use different memory than the dynamic nodes that are normally created.<br> ResData is sepearted in ResourceChunks. The user specifies how many chunks he wants and how big those should be, ie how many resources of each type they can hold and how much memory they preallocate.<br> Resources are then loaded into the current active chunk, because of the linear memorypool they cannot be destroyed individually but only a total chunk can be destroyed. <br> A lot can go wrong when consumers of resource, that were in a chunk that was cleared, are still active. So the user should keep resources/consumer managment in unified blocks himself, to prevent this from happening, as he is totally responsible for it. You can always play safe and use only the main chunk that is automatically created.<br> <br>Overview on the restypes, and their int values:<br> 0  MODEL<br> 1  ANIMATION<br> 2  TEXTURE<br> 3  MATERIAL<br> 4  SHADER<br> 5  GPUPROG<br> 6  PARTICLECLOUD<br> 7  PARTICLESYS<br> 8  TBTERRAIN<br>10 SOUND<br>",childs={["gettypescount"] = {type='function', description = " returns number of types that exist. You need to pass this many counts to reschunk new.", args="()", returns="(int)"},
-["info"] = {type='function', description = " prints info about the given resource type, any resource implements the 'getrestype' function", args="(int restype)", returns="()"},
-["getopencount"] = {type='function', description = " returns number of open slots available for this resource type. Useful for generating reschunks.", args="(int restype)", returns="(int)"},
-["getloadcount"] = {type='function', description = " returns number of loaded resources.", args="(int restype)", returns="(int)"},
-["fillonlyself"] = {type='function', description = " when the active reschunk is full, resources will not be created. (default)", args="()", returns="()"},
-["print"] = {type='function', description = " prints loaded resources, and reschunks to os console", args="()", returns="()"},
-["filltonext"] = {type='function', description = " when the active reschunk is full, we will load the resource in the next one, and make that active.", args="()", returns="()"}}}
-djointcontact = {type='class',description="The contact joint prevents body 1 and body 2 from inter-penetrating at the contact point. It does this by only allowing the bodies to have an 'outgoing' velocity in the direction of the contact normal. Contact joints typically have a lifetime of one time step. They are created and deleted in response to collision detection.\
-Contact joints can simulate friction at the contact by applying special forces in the two friction directions that are perpendicular to the normal.",childs={["normal"] = {type='function', description = " returns normal of contact", args="(djointcontact)", returns="(float x,y,z)"},
-["approx2"] = {type='function', description = " Use the friction pyramid approximation for friction direction 2. If this is not specified then the constant-force-limit approximation is used (and mu is a force limit).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["slip2"] = {type='function', description = " The coefficients of force-dependent-slip (FDS) for friction directions 2 (read the ode-doc).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["approx1"] = {type='function', description = " Use the friction pyramid approximation for friction direction 1. If this is not specified then the constant-force-limit approximation is used (and mu is a force limit).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["softerp"] = {type='function', description = " Contact normal 'softness' parameter.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["slip1"] = {type='function', description = " The coefficients of force-dependent-slip (FDS) for friction directions 1 (read the ode-doc).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["bounce"] = {type='function', description = " Restitution parameter (0..1). 0 means the surfaces are not bouncy at all, 1 is maximum bouncyness.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["softcfm"] = {type='function', description = " Contact normal 'softness' parameter.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["bouncevel"] = {type='function', description = " The minimum incoming velocity necessary for bounce (in m/s). Incoming velocities below this will effectively have a bounce parameter of 0.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["motion2"] = {type='function', description = " Surface velocity in friction directions 2 (in m/s).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["motion1"] = {type='function', description = " Surface velocity in friction directions 1 (in m/s).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["fdir"] = {type='function', description = "\"first friction direction\" vector that defines a direction along which frictional force is applied. It must be of unit length and perpendicular to the contact normal (so it is typically tangential to the contact surface). The \"second friction direction\" is a vector computed to be perpendicular to both the contact normal and fdir1.", args="(djointcontact,[boolean on],[float x,y,z])", returns="([boolean,float x,y,z])"},
-["mu2"] = {type='function', description = " Coulomb friction coefficient for friction direction 2 (0..dInfinity).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
-["depth"] = {type='function', description = " returns depth of contact", args="(djointcontact)", returns="(float x,y,z)"},
-["mu"] = {type='function', description = " Coulomb friction coefficient. This must be in the range 0 to dInfinity. 0 results in a frictionless contact, and dInfinity results in a contact that never slips. Note that frictionless contacts are less time consuming to compute than ones with friction, and infinite friction contacts can be cheaper than contacts with finite friction.", args="(djointcontact,[float])", returns="([boolean,float])"},
-["pos"] = {type='function', description = " returns point of contact", args="(djointcontact)", returns="(float x,y,z)"}}}
 CheckBox = {type='class',description="A CheckBox component. Basicly it is a slightly modified Button and\
 	works in the same ways like the Button. The checkbox class is using the icon\
 	to display the checkbox next to the text.\
@@ -2031,9 +2001,52 @@ CheckBox = {type='class',description="A CheckBox component. Basicly it is a slig
 	It also activates the autowidth parameter of the skin and makes the\
 	button it was derived from pushable.\
 	", args="(class, float x,y,w,h, string caption, [Skin2D skin,Icon] ])", returns="(CheckBox)"}}}
+texcombcolor = {type='class',description="The texcombiner for rgb values. The functions return a texcombiner or overwrite the combiner with same name. They may return an error when a conflict with default names exists.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombcolor])"},
+["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombcolor])"},
+["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what.", args="(texcombcolor,int arg,texcombsrc,texcombop)", returns="()"},
+["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombcolor)", returns="([string])"},
+["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombcolor])"},
+["dot3alpha"] = {type='function', description = "  OUT = arg0 dotproduct arg1. (args as signed vector -1,+1). Also sets alpha. You should query for capability", args="(string name)", returns="([texcombcolor])"},
+["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
+["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for alpha at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombcolor])"},
+["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
+["dot3"] = {type='function', description = "  OUT = arg0 dotproduct arg1. (args as signed vector -1,+1). You should query for capability", args="(string name)", returns="([texcombcolor])"},
+["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombcolor])"},
+["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability.", args="(string name)", returns="([texcombcolor])"},
+["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability.", args="(string name)", returns="([texcombcolor])"},
+["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombcolor])"}}}
+resdata = {type='class',description="resdata holds all resources that are supposedly static, like models, textures, and are often reused, as those use different memory than the dynamic nodes that are normally created.<br> ResData is sepearted in ResourceChunks. The user specifies how many chunks he wants and how big those should be, ie how many resources of each type they can hold and how much memory they preallocate.<br> Resources are then loaded into the current active chunk, because of the linear memorypool they cannot be destroyed individually but only a total chunk can be destroyed. <br> A lot can go wrong when consumers of resource, that were in a chunk that was cleared, are still active. So the user should keep resources/consumer managment in unified blocks himself, to prevent this from happening, as he is totally responsible for it. You can always play safe and use only the main chunk that is automatically created.<br> <br>Overview on the restypes, and their int values:<br> 0  MODEL<br> 1  ANIMATION<br> 2  TEXTURE<br> 3  MATERIAL<br> 4  SHADER<br> 5  GPUPROG<br> 6  PARTICLECLOUD<br> 7  PARTICLESYS<br> 8  TBTERRAIN<br>10 SOUND<br>",childs={["gettypescount"] = {type='function', description = " returns number of types that exist. You need to pass this many counts to reschunk new.", args="()", returns="(int)"},
+["info"] = {type='function', description = " prints info about the given resource type, any resource implements the 'getrestype' function", args="(int restype)", returns="()"},
+["getopencount"] = {type='function', description = " returns number of open slots available for this resource type. Useful for generating reschunks.", args="(int restype)", returns="(int)"},
+["getloadcount"] = {type='function', description = " returns number of loaded resources.", args="(int restype)", returns="(int)"},
+["fillonlyself"] = {type='function', description = " when the active reschunk is full, resources will not be created. (default)", args="()", returns="()"},
+["print"] = {type='function', description = " prints loaded resources, and reschunks to os console", args="()", returns="()"},
+["filltonext"] = {type='function', description = " when the active reschunk is full, we will load the resource in the next one, and make that active.", args="()", returns="()"}}}
+djointcontact = {type='class',description="The contact joint prevents body 1 and body 2 from inter-penetrating at the contact point. It does this by only allowing the bodies to have an 'outgoing' velocity in the direction of the contact normal. Contact joints typically have a lifetime of one time step. They are created and deleted in response to collision detection.\
+Contact joints can simulate friction at the contact by applying special forces in the two friction directions that are perpendicular to the normal.",childs={["normal"] = {type='function', description = " returns normal of contact", args="(djointcontact)", returns="(float x,y,z)"},
+["approx2"] = {type='function', description = " Use the friction pyramid approximation for friction direction 2. If this is not specified then the constant-force-limit approximation is used (and mu is a force limit).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["slip2"] = {type='function', description = " The coefficients of force-dependent-slip (FDS) for friction directions 2 (read the ode-doc).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["approx1"] = {type='function', description = " Use the friction pyramid approximation for friction direction 1. If this is not specified then the constant-force-limit approximation is used (and mu is a force limit).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["softerp"] = {type='function', description = " Contact normal 'softness' parameter.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["slip1"] = {type='function', description = " The coefficients of force-dependent-slip (FDS) for friction directions 1 (read the ode-doc).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["bounce"] = {type='function', description = " Restitution parameter (0..1). 0 means the surfaces are not bouncy at all, 1 is maximum bouncyness.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["softcfm"] = {type='function', description = " Contact normal 'softness' parameter.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["bouncevel"] = {type='function', description = " The minimum incoming velocity necessary for bounce (in m/s). Incoming velocities below this will effectively have a bounce parameter of 0.", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["motion2"] = {type='function', description = " Surface velocity in friction directions 2 (in m/s).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["motion1"] = {type='function', description = " Surface velocity in friction directions 1 (in m/s).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["fdir"] = {type='function', description = "\"first friction direction\" vector that defines a direction along which frictional force is applied. It must be of unit length and perpendicular to the contact normal (so it is typically tangential to the contact surface). The \"second friction direction\" is a vector computed to be perpendicular to both the contact normal and fdir1.", args="(djointcontact,[boolean on],[float x,y,z])", returns="([boolean,float x,y,z])"},
+["mu2"] = {type='function', description = " Coulomb friction coefficient for friction direction 2 (0..dInfinity).", args="(djointcontact,[boolean on],[float])", returns="([boolean,float])"},
+["depth"] = {type='function', description = " returns depth of contact", args="(djointcontact)", returns="(float x,y,z)"},
+["mu"] = {type='function', description = " Coulomb friction coefficient. This must be in the range 0 to dInfinity. 0 results in a frictionless contact, and dInfinity results in a contact that never slips. Note that frictionless contacts are less time consuming to compute than ones with friction, and infinite friction contacts can be cheaper than contacts with finite friction.", args="(djointcontact,[float])", returns="([boolean,float])"},
+["pos"] = {type='function', description = " returns point of contact", args="(djointcontact)", returns="(float x,y,z)"}}}
+dterrain = {type='class',description="Square sized terrain geom, represented by a heightfield.",childs={["new"] = {type='function', description = " Creates a terrain with width and height, with iniatial levelheight. The current terrain is square anyway and needs to be power of 2, but this may change sometime, at least that it must be square.", args="(int width,height,float level, boolean yisup, boolean finite, boolean placeable)", returns="(dgeomterrain)"}}}
 l2dlist = {type='class',description="The List2D is drawn after the List3D and orthogonally. It is mainly used for HUD rendering text and buttons.		The origin 0,0 is top left, the width and height is independently of the current resolution, but defined in window.refsize. New nodes start unlinked and wont be drawn, unless linked to root or another root child. Drawing of l2dnodes is also possible via the rcmddrawl2d part of l3dview rendercommand system.",childs={["getroot"] = {type='function', description = " returns l2dlist master root node. Root doesn't inherit its position info.", args="()", returns="(l2dnode)"},
 ["getrcmdclear"] = {type='function', description = " returns rcmdclear of the List2D.", args="()", returns="(rcmdclear)"}}}
-dterrain = {type='class',description="Square sized terrain geom, represented by a heightfield.",childs={["new"] = {type='function', description = " Creates a terrain with width and height, with iniatial levelheight. The current terrain is square anyway and needs to be power of 2, but this may change sometime, at least that it must be square.", args="(int width,height,float level, boolean yisup, boolean finite, boolean placeable)", returns="(dgeomterrain)"}}}
+L3DIcon = {type='class',description="L3DIcon are displaing l3dmodels.",childs={["l3dScale"] = {type='function', description = " sets scaling of the l3d icon", args="(class, float x,y,z)", returns="()"},
+["l3dPos"] = {type='function', description = " sets position of the l3d icon", args="(class, float x,y,z)", returns="()"},
+["l3dRotdeg"] = {type='function', description = " sets rotation of the l3d icon", args="(class, float x,y,z)", returns="()"},
+["new"] = {type='function', description = "\
+	", args="(class,)", returns="()"}}}
 l2dimage = {type='class',description="a quad with the given material (or plain color) will be rendered on screen.",childs={["fullscreen"] = {type='function', description = " sets pos and scale for fullscreen", args="(l2dimage)", returns="()"},
 ["quadmesh"] = {type='function', description = " unrefs the rendermesh and uses the quadmesh again (default).", args="(l2dimage)", returns="()"},
 ["quadcenteredmesh"] = {type='function', description = " deletes the usermesh and uses the centered quadmesh again.", args="(l2dimage)", returns="()"},
@@ -2075,21 +2088,6 @@ l3dview = {type='class',description="l3dview is used to render a l3dset. You can
 ["viewrefbounds"] = {type='function', description = " returns or sets the viewport size and position in reference coordinates. only used when windowsized is false. Warning: viewsize must always be smaller than current window refsize.", args="(l3dview,[float  refx,refy,refwidth,refheight])", returns="([float refx,refy,refwidth,refheight])"},
 ["fogstate"] = {type='function', description = " returns or sets", args="(l3dview,[boolean])", returns="([boolean])"},
 ["fogend"] = {type='function', description = " returns or sets", args="(l3dview,[float])", returns="([float])"}}}
-L3DIcon = {type='class',description="L3DIcon are displaing l3dmodels.",childs={["l3dScale"] = {type='function', description = " sets scaling of the l3d icon", args="(class, float x,y,z)", returns="()"},
-["l3dPos"] = {type='function', description = " sets position of the l3d icon", args="(class, float x,y,z)", returns="()"},
-["l3dRotdeg"] = {type='function', description = " sets rotation of the l3d icon", args="(class, float x,y,z)", returns="()"},
-["new"] = {type='function', description = "\
-	", args="(class,)", returns="()"}}}
-primitivetype = {type='class',description="Graphics hardware supports rendering of different primitive types. The way indices are interpreted will depend on the indexprimitivetype.",childs={["lines"] = {type='function', description = " line list. Every two indices make a line. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
-["linestrip"] = {type='function', description = " line strip. Each index is a line point connected to previous index, not closed. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
-["quadstrip"] = {type='function', description = " quad strip. After the first 2 indices, each 2 new indices creat a quad with last 4 indices.", args="()", returns="(primitivetype)"},
-["trianglestrip"] = {type='function', description = " triangle strip. After the first 2 indices, each new index spans a triangle with last 3 indices.", args="()", returns="(primitivetype)"},
-["quads"] = {type='function', description = " quad list. Every four indices make a quad.", args="()", returns="(primitivetype)"},
-["lineloop"] = {type='function', description = " closed line loop. Each index is a line point connected to previous index, a last line segment is added automatically to first index. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
-["polygon"] = {type='function', description = " polygon. All indices create the outer closed line of a polygon, which becomes triangulated by the driver internally, undefined behavior for non-convex polygons.", args="()", returns="(primitivetype)"},
-["points"] = {type='function', description = " points. Each index will be a point. Using vertexshaders pointsize can be influenced.", args="()", returns="(primitivetype)"},
-["trianglefan"] = {type='function', description = " triangle fan. First index becomes center, all others are connected to it and previous index.", args="()", returns="(primitivetype)"},
-["triangles"] = {type='function', description = " triangle list. Every 3 indices make a triangle.", args="()", returns="(primitivetype)"}}}
 MouseListener = {type='class',description="A mouselistener reacts on certain type of events and call a eventfunction.",childs={["1"] = {type='value', description = "{[function]} - listener function"},
 ["onEnter"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on enterings"},
 ["onWheel"] = {type='value', description = "{[boolean]} - true if the mouselistener reacts on wheelmoves"},
@@ -2113,6 +2111,16 @@ MouseListener = {type='class',description="A mouselistener reacts on certain typ
 	The callback function's signature is\
 	 function listener (mouselistener, mouseevent)\
 	", args="(function callback, [int eventFilter])", returns="(MouseListener)"}}}
+primitivetype = {type='class',description="Graphics hardware supports rendering of different primitive types. The way indices are interpreted will depend on the indexprimitivetype.",childs={["lines"] = {type='function', description = " line list. Every two indices make a line. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
+["linestrip"] = {type='function', description = " line strip. Each index is a line point connected to previous index, not closed. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
+["quadstrip"] = {type='function', description = " quad strip. After the first 2 indices, each 2 new indices creat a quad with last 4 indices.", args="()", returns="(primitivetype)"},
+["trianglestrip"] = {type='function', description = " triangle strip. After the first 2 indices, each new index spans a triangle with last 3 indices.", args="()", returns="(primitivetype)"},
+["quads"] = {type='function', description = " quad list. Every four indices make a quad.", args="()", returns="(primitivetype)"},
+["lineloop"] = {type='function', description = " closed line loop. Each index is a line point connected to previous index, a last line segment is added automatically to first index. Rendersurface interface can be used to influence appearance.", args="()", returns="(primitivetype)"},
+["polygon"] = {type='function', description = " polygon. All indices create the outer closed line of a polygon, which becomes triangulated by the driver internally, undefined behavior for non-convex polygons.", args="()", returns="(primitivetype)"},
+["points"] = {type='function', description = " points. Each index will be a point. Using vertexshaders pointsize can be influenced.", args="()", returns="(primitivetype)"},
+["trianglefan"] = {type='function', description = " triangle fan. First index becomes center, all others are connected to it and previous index.", args="()", returns="(primitivetype)"},
+["triangles"] = {type='function', description = " triangle list. Every 3 indices make a triangle.", args="()", returns="(primitivetype)"}}}
 rcmdignore = {type='class',description="Ignore certain properties",childs={["lights"] = {type='function', description = " returns or sets if lights should be turned off.", args="(rcmdignore,[boolean])", returns="([boolean])"},
 ["projectors"] = {type='function', description = " returns or sets if projectors should be disabled.", args="(rcmdignore,[boolean])", returns="([boolean])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdignore)"}}}
@@ -2243,11 +2251,6 @@ ButtonGroup = {type='class',description="A ButtonGroup is a list of Buttons that
 	assigned functiosn from the addButton function. Does nothing if the \
 	button is currently marked as active (and is pushed). Calling the click \
 	function with nil will deselect any button (except if you added the button as toggleable).", args="(button)", returns="()"}}}
-rcmddepth = {type='class',description="Sets depthtest environment.",childs={["compare"] = {type='function', description = " returns or sets comparemode used for depthtest. Passing any non-comparemode will disable setting and current state remains unchanged (default).", args="(rcmddepth,[comparemode/anything])", returns="([comparemode/false])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddepth)"}}}
-rcmddrawlayer = {type='class',description="Draws a l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawlayer,[int])", returns="([int])"},
-["sort"] = {type='function', description = " returns or sets sorting mode for layer. 0 none 1 material -1 front-to-back -2 back-to-front. Be aware that once camera order is used, the material sortkey is overwritten. Also if you draw the same layer multiple times, you only need to sort it once.", args="(rcmddrawlayer,[int])", returns="([int])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawlayer)"}}}
 Container = {type='class',description="A container is a collection of Components.",childs={["onDisplayChange"] = {type='function', description = " called whenever the\
 	displaystate is changed, i.e. if the component was made invisible,\
 	or it's parent was removed from the rootpane etc.\
@@ -2289,7 +2292,11 @@ deletes the component. Removes the component from\
 ["add"] = {type='function', description = " adds the component to the list of components.\
 	If Index is passed, it will be inserted at a certain z-position. The lower indexes are\
 	on the foreground, higher numbers are on the background. Returns the added Component", args="(Container, Component,[int index])", returns="(Component)"}}}
-djointgroup = {type='class',description="djoints can be organized in groups",childs={}}
+rcmddepth = {type='class',description="Sets depthtest environment.",childs={["compare"] = {type='function', description = " returns or sets comparemode used for depthtest. Passing any non-comparemode will disable setting and current state remains unchanged (default).", args="(rcmddepth,[comparemode/anything])", returns="([comparemode/false])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddepth)"}}}
+rcmddrawlayer = {type='class',description="Draws a l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawlayer,[int])", returns="([int])"},
+["sort"] = {type='function', description = " returns or sets sorting mode for layer. 0 none 1 material -1 front-to-back -2 back-to-front. Be aware that once camera order is used, the material sortkey is overwritten. Also if you draw the same layer multiple times, you only need to sort it once.", args="(rcmddrawlayer,[int])", returns="([int])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawlayer)"}}}
 l3dmodel = {type='class',description="l3dnode of a model instance. Every l3dmodel has unique materials, bone and morph data, if specified. You can apply boneanimation with the sequence commands, control bones with bonecontrol or run morphing with morphcontrol. On creation the l3dmodel will copy all material and renderflags (if material provides a shader) data from the source model.",childs={["bonerotdeg"] = {type='function', description = " gets bone rotation degrees", args="(l3dmodel,boneid/string bonename)", returns="(float x,y,z)"},
 ["bonereset"] = {type='function', description = " sets bones to reference positions", args="(l3dmodel)", returns="()"},
 ["seqDuration"] = {type='function', description = " returns duration of sequence", args="(l3dmodel,int sequence)", returns="(int)"},
@@ -2320,6 +2327,7 @@ l3dmodel = {type='class',description="l3dnode of a model instance. Every l3dmode
 ["bonesinworldspace"] = {type='function', description = " returns or sets if bones should be calculated in world space. If set in worldspace you cannot instance this l3dmodel, and you will get problems when others were already instanced.", args="(l3dmodel,[boolean])", returns="([boolean])"},
 ["bonematrix"] = {type='function', description = " gets bone matrix", args="(l3dmodel,boneid/string bonename)", returns="(matrix4x4)"},
 ["morphreset"] = {type='function', description = " sets morphdata to reference positions", args="(l3dmodel)", returns="()"}}}
+djointgroup = {type='class',description="djoints can be organized in groups",childs={}}
 ImageIcon = {type='class',description="ImageIcon objects are using textures to display little icons in GUIs.\
 	A texture can be used for multiple different icons.",childs={["new"] = {type='function', description = "\
 	Creates image icon from texture. The texture can be either a string\
@@ -2369,31 +2377,6 @@ Rectangle = {type='class',description="A 2D rectangle for hittests. 2D Rectangle
 	inside the rectangle. The borders of the rectangle are included.", args="(Rectangle r, float x,y)", returns="(boolean)"},
 ["1"] = {type='value', description = "{[int]} - x component"},
 ["area"] = {type='function', description = " area of rectangle (width*height)", args="(Rectangle self)", returns="(area)"}}}
-rcmddrawprt = {type='class',description="Draws the particles of an l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawprt,[int])", returns="([int])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawprt)"}}}
-indexarray = {type='class',description="meshes contain indices for rendering their primitives, with this interface you can modify them. Always make sure that the corresponding vertices exist and always run indexMinmax once you set all indices. If you use display lists or vbos, changes to a loaded model will not be visible.",childs={["indexTrianglecount"] = {type='function', description = " returns and updates the internal number of triangles based on current indexCount. This is only needed for statistics and should be called at least once after all indices were written.", args="(indexarray)", returns="([int])"},
-["vertexAllocState"] = {type='function', description = " can create or remove the local data copy of the vertices. Only allowed if mesh is a VBO usermesh.", args="(indexarray,[boolean])", returns="([boolean])"},
-["indexValue"] = {type='function', description = " set or returns value at the given index. Make sure the corresponding vertex exists", args="(indexarray,index,[int value])", returns="([int value])"},
-["vertexFromVBO"] = {type='function', description = " if possible retrieves array using vertexAllocatedcount or [from,to] range from VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(indexarray,[int fromidx, count])", returns="(boolean)"},
-["indexUpdateVBO"] = {type='function', description = " if possible resubmits array using indexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible indexarray).", args="(indexarray,[int fromidx, count])", returns="(boolean)"},
-["indexPrimitivetype"] = {type='function', description = " set or return the primitive type.", args="(indexarray, [primitivetype])", returns="([primitivetype])"},
-["indexPrimitive"] = {type='function', description = " set or returns the primitive at given position. The function will return/need 1 index for points, 2 for lines, 3 indices for triangles, 4 indices for quads and can only return indices for any strips/loops/fan. Polygons are not supported, since the whole indexarray always contains only one.", args="(indexarray,primindex,[int a,b,c...])", returns="([int a,b,c...])"},
-["indexPrimitivecount"] = {type='function', description = " returns the number of primitives based on indexCount", args="(indexarray)", returns="([int])"},
-["indexCount"] = {type='function', description = " set or return the number of indices to be used on rendering. This value must always be smaller than Allocatedcount.", args="(indexarray,[int cnt])", returns="([int])"},
-["indexMinmax"] = {type='function', description = " computes minimum and maximum index used within indexCount, or you can manually set them. This is required for an indexarray to work, call this after all indices are set.", args="(indexarray,[min,max])", returns="(int min,max)"},
-["indexAllocatedcount"] = {type='function', description = " return indices count. This is the number of indices that can be used in this indexarray, index must always be smaller than this.", args="(indexarray)", returns="([int cnt])"},
-["indexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored for display. VBOs also return the offset into VBO as count of same-typed items.", args="(indexarray)", returns="([meshtype],[vidbuffer,int ibooffset])"},
-["indexCopy"] = {type='function', description = " copies indices from one indexarray into self, starting at given index and optionally offsetting the copied.", args="(indexarray,int start,indexarray from,int fromstart, int size,[int vertexoffset])", returns="([int])"},
-["indexPtrs"] = {type='function', description = " returns C pointers for begin and end of array. [start,end[", args="(indexarray)", returns="(pointer start,end])"}}}
-rcmdfbooff = {type='class',description="Unbinds bound fbo, and returns to window backbuffer again.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
-["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfbooff)"}}}
-rendersurface = {type='class',description="For most renderable nodes you can define how their surface are blend with the framebuffer, or how alpha-based rejection should be done. Enabling/disabling those effects is done with renderflags. l3dmodel is treated similar as in renderflag",childs={["rsLinefactor"] = {type='function', description = " returns or sets stipple factor, is used if rfWireframe and is value is greater 0. Linestyle is define in rsLinestipple.", args="(rendersurface,[int 0-255])", returns="([int])"},
-["rsAlphacompare"] = {type='function', description = " returns or sets alpha compare mode - only effective if rfAlphatest is set", args="(rendersurface,[comparemode])", returns="([comparemode])"},
-["rsLinestipple"] = {type='function', description = " returns or sets stipple pattern, is used if rfWireframe is on and rsLinefactor is greater 0. The string should contain 16 0s or 1s which define the linestyle.", args="(rendersurface,[string])", returns="([string])"},
-["rsAlphavalue"] = {type='function', description = " returns or sets alpha threshold", args="(rendersurface,[float])", returns="([float])"},
-["rsBlendinvert"] = {type='function', description = " returns or sets blend invert of alpha-based blend types", args="(rendersurface,[boolean])", returns="([boolean])"},
-["rsLinewidth"] = {type='function', description = " returns or sets linewidth for wireframes. When not set it will use whatever linewidth is currently active.", args="(rendersurface,[float])", returns="([float])"},
-["rsBlendmode"] = {type='function', description = " only effective if rfBlend is set", args="(rendersurface,[blendmode])", returns="([blendmode])"}}}
 MouseCursor = {type='class',description="	The mousecursor is a visual representation of the mouse. The graphical\
 	appearance can be customized.\
 	",childs={["showMouse"] = {type='function', description = " same as input.showMouse. If the mouse is visible,\
@@ -2417,6 +2400,74 @@ MouseCursor = {type='class',description="	The mousecursor is a visual representa
 	Generates a mouseevent that is delegated to the mousecursor's mouselistener list.\
 	If nomove is true, input.mousepos(x,y) is NOT called, leaving the OS cursor where it is.\
 	", args="([int x,y],[boolean nomove])", returns="([int x,y])"}}}
+rcmddrawprt = {type='class',description="Draws the particles of an l3dlayer",childs={["layer"] = {type='function', description = " returns or sets which layer 0..15", args="(rcmddrawprt,[int])", returns="([int])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmddrawprt)"}}}
+indexarray = {type='class',description="meshes contain indices for rendering their primitives, with this interface you can modify them. Always make sure that the corresponding vertices exist and always run indexMinmax once you set all indices. If you use display lists or vbos, changes to a loaded model will not be visible.",childs={["indexTrianglecount"] = {type='function', description = " returns and updates the internal number of triangles based on current indexCount. This is only needed for statistics and should be called at least once after all indices were written.", args="(indexarray)", returns="([int])"},
+["indexValue"] = {type='function', description = " set or returns value at the given index. Make sure the corresponding vertex exists", args="(indexarray,index,[int value])", returns="([int value])"},
+["vertexAllocState"] = {type='function', description = " can create or remove the local data copy of the vertices. Only allowed if mesh is a VBO usermesh.", args="(indexarray,[boolean])", returns="([boolean])"},
+["indexUpdateVBO"] = {type='function', description = " if possible resubmits array using indexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible indexarray).", args="(indexarray,[int fromidx, count])", returns="(boolean)"},
+["indexPrimitivetype"] = {type='function', description = " set or return the primitive type.", args="(indexarray, [primitivetype])", returns="([primitivetype])"},
+["indexPrimitive"] = {type='function', description = " set or returns the primitive at given position. The function will return/need 1 index for points, 2 for lines, 3 indices for triangles, 4 indices for quads and can only return indices for any strips/loops/fan. Polygons are not supported, since the whole indexarray always contains only one.", args="(indexarray,primindex,[int a,b,c...])", returns="([int a,b,c...])"},
+["indexPrimitivecount"] = {type='function', description = " returns the number of primitives based on indexCount", args="(indexarray)", returns="([int])"},
+["indexCount"] = {type='function', description = " set or return the number of indices to be used on rendering. This value must always be smaller than Allocatedcount.", args="(indexarray,[int cnt])", returns="([int])"},
+["vertexFromVBO"] = {type='function', description = " if possible retrieves array using vertexAllocatedcount or [from,to] range from VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(indexarray,[int fromidx, count])", returns="(boolean)"},
+["indexAllocatedcount"] = {type='function', description = " return indices count. This is the number of indices that can be used in this indexarray, index must always be smaller than this.", args="(indexarray)", returns="([int cnt])"},
+["indexMinmax"] = {type='function', description = " computes minimum and maximum index used within indexCount, or you can manually set them. This is required for an indexarray to work, call this after all indices are set.", args="(indexarray,[min,max])", returns="(int min,max)"},
+["indexCopy"] = {type='function', description = " copies indices from one indexarray into self, starting at given index and optionally offsetting the copied.", args="(indexarray,int start,indexarray from,int fromstart, int size,[int vertexoffset])", returns="([int])"},
+["indexPtrs"] = {type='function', description = " returns C pointers for begin and end of array. [start,end[", args="(indexarray)", returns="(pointer start,end])"}}}
+rcmdfbooff = {type='class',description="Unbinds bound fbo, and returns to window backbuffer again.",childs={["readbuffer"] = {type='function', description = " returns or sets whether target is readbuffer binding, or drawbuffer. Readbuffer functionality requires extra capability and by default is off.", args="(rcmdfbobind, [boolean readbuffer])", returns="([boolean readbuffer])"},
+["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfbooff)"}}}
+rendersurface = {type='class',description="For most renderable nodes you can define how their surface are blend with the framebuffer, or how alpha-based rejection should be done. Enabling/disabling those effects is done with renderflags. l3dmodel is treated similar as in renderflag",childs={["rsLinefactor"] = {type='function', description = " returns or sets stipple factor, is used if rfWireframe and is value is greater 0. Linestyle is define in rsLinestipple.", args="(rendersurface,[int 0-255])", returns="([int])"},
+["rsAlphacompare"] = {type='function', description = " returns or sets alpha compare mode - only effective if rfAlphatest is set", args="(rendersurface,[comparemode])", returns="([comparemode])"},
+["rsLinestipple"] = {type='function', description = " returns or sets stipple pattern, is used if rfWireframe is on and rsLinefactor is greater 0. The string should contain 16 0s or 1s which define the linestyle.", args="(rendersurface,[string])", returns="([string])"},
+["rsAlphavalue"] = {type='function', description = " returns or sets alpha threshold", args="(rendersurface,[float])", returns="([float])"},
+["rsBlendinvert"] = {type='function', description = " returns or sets blend invert of alpha-based blend types", args="(rendersurface,[boolean])", returns="([boolean])"},
+["rsLinewidth"] = {type='function', description = " returns or sets linewidth for wireframes. When not set it will use whatever linewidth is currently active.", args="(rendersurface,[float])", returns="([float])"},
+["rsBlendmode"] = {type='function', description = " only effective if rfBlend is set", args="(rendersurface,[blendmode])", returns="([blendmode])"}}}
+LuxModule = {type='class',description="LuxModules are luascripts that are\
+	part of the official Luxinia distribution. LuxModules are not related to\
+	the module and package system of lua. LuxModules are creating lot's of\
+	global functionnames, so watch out for problems for namespaces.\
+\
+	LuxModules are extending the luxinia API with addtitional scripts for\
+	simplified use. In difference to the native API of Luxinia, modules are implemented\
+	within the scripting of Luxinia. LuxModules extend Luxinia with functions and classes\
+	that are simpler to use than the native API functions. This means that you can modify\
+	the modules, but you should always keep in mind that Luxinia can and should be used\
+	for different projects and maybe not only for your own projects. Changing the official\
+	scripts may cause problems with other projects that are not written by you into. Even\
+	worse, changes on the official scripts can will need you to update your modified scripts, too.<br>\
+	However, you may write your own modules that fits into the modulestructure of Luxinia.\
+	By doing so, you can extend Luxinia in a way that other can easily use, too. ",childs={["getclasses"] = {type='function', description = " Returns the classes as a table. This prevents overriding previously defined global variables as described in 'load'. I.e. if a LuxModule named 'foo' is loaded and it contains the classes 'a' and 'b', the returned table contains the two classes 'a' and 'b'.", args="(string modulename)", returns="(table classes)"},
+["getLuxModuleDescription"] = {type='function', description = " return description of LuxModule", args="(string modulename)", returns="([string])"},
+["register"] = {type='function', description = " Registers a modulename as LuxModule. The description should explain what the whole LuxModule is good for.", args="(string modulename, string description)", returns="()"},
+["registerclassfunction"] = {type='function', description = " sets a functiondescription for a function of a class.", args="(string modulename,string classname,string functionname,string description)", returns="()"},
+["getclassinfo"] = {type='function', description = " returns all known information on a class of a LuxModule", args="(string modulename, string classname)", returns="()"},
+["load"] = {type='function', description = " Puts all the classes that belong to the LuxModule into the global variable space. I.e. if a LuxModule has a certain class that's name is 'foo', the class can be used from now on by simply using the name 'foo'. This can of course override your own tables or even classes of other modules. If this is a problem to you, you can use getclasses instead, which returns a table of classes.", args="(string modulename)", returns="()"},
+["setLuxModuleDescription"] = {type='function', description = "\
+			sets description of LuxModule", args="(string modulename, string/function description)", returns="()"},
+["getclasshierarchy"] = {type='function', description = " returns a hierarchy in a datastructure that is compatible to the used format in the autodoc.lua file. ", args="(string modulename)", returns="(table hierarchy, table allclasses)"},
+["getClassInfo"] = {type='function', description = " returns name and modulename of the given class or object if possible. If a string was passed, the name and the modulename is returned if it is a registered class. Additionally, the description of the class and the description of the functions is returned as a table where the keys are the functionnames and the values are the functiondescriptions.", args="(table obj/string name)", returns="([string name, modulename,description, table functionhelp, string parent, table interfaces])"},
+["modulenames"] = {type='function', description = " returns names and number of known modules.", args="()", returns="(table modulenames, int count)"},
+["registerclass"] = {type='function', description = "\
+			registers a class that is part of a certain LuxModule with a certain\
+			name. The help table should describe each function of the class with\
+			the functionname as key and a descriptionstring that describes the\
+			arguments and functiondetails.\
+			You can optionally define the name\
+			of the parentclass and the names of the interfaces. This has only a\
+			hierachical purpose for the documentation.\
+\
+			If the description is a function, the function is called with the\
+			modulename and classname as argument. It may return a string or a\
+			table.\
+\
+			If the description is a table, it is concatenated to a string.\
+			", args="(string modulename,string name,\
+			string/function/table description,\
+			table class,\
+			table help, [string parent],[table interfaces], [boolean isthreadsafe],\
+			[table threadsafefunctions])", returns="()"}}}
 rcmddrawl2d = {type='class',description="Draws a l2dnode with its children. Useful for render-to-texture GUIs",childs={["root"] = {type='function', description = " allows l2dnode drawing in this viewport. The given node will be unlinked from rest and made the master root for this view. Previous root becomes unlinked. Passing a non-l2dnode disables it.", args="(rcmddrawl2d,[l2dnode])", returns="([l2dnode])"},
 ["refsize"] = {type='function', description = " The refscreensize width/height while rendering l2droot and its children.", args="(rcmddrawl2d,[float w,h])", returns="([float w,h])"},
 ["new"] = {type='function', description = " returns the rcmdt", args="()", returns="(rcmddrawl2d)"}}}
@@ -2564,50 +2615,6 @@ describing the reason for failure.\
   source = ltn12.source.file(io.open(\"LOCAL-LOG\", \"r\"))\
  }\
 ",childs={}}
-LuxModule = {type='class',description="LuxModules are luascripts that are\
-	part of the official Luxinia distribution. LuxModules are not related to\
-	the module and package system of lua. LuxModules are creating lot's of\
-	global functionnames, so watch out for problems for namespaces.\
-\
-	LuxModules are extending the luxinia API with addtitional scripts for\
-	simplified use. In difference to the native API of Luxinia, modules are implemented\
-	within the scripting of Luxinia. LuxModules extend Luxinia with functions and classes\
-	that are simpler to use than the native API functions. This means that you can modify\
-	the modules, but you should always keep in mind that Luxinia can and should be used\
-	for different projects and maybe not only for your own projects. Changing the official\
-	scripts may cause problems with other projects that are not written by you into. Even\
-	worse, changes on the official scripts can will need you to update your modified scripts, too.<br>\
-	However, you may write your own modules that fits into the modulestructure of Luxinia.\
-	By doing so, you can extend Luxinia in a way that other can easily use, too. ",childs={["getclasses"] = {type='function', description = " Returns the classes as a table. This prevents overriding previously defined global variables as described in 'load'. I.e. if a LuxModule named 'foo' is loaded and it contains the classes 'a' and 'b', the returned table contains the two classes 'a' and 'b'.", args="(string modulename)", returns="(table classes)"},
-["getLuxModuleDescription"] = {type='function', description = " return description of LuxModule", args="(string modulename)", returns="([string])"},
-["register"] = {type='function', description = " Registers a modulename as LuxModule. The description should explain what the whole LuxModule is good for.", args="(string modulename, string description)", returns="()"},
-["registerclassfunction"] = {type='function', description = " sets a functiondescription for a function of a class.", args="(string modulename,string classname,string functionname,string description)", returns="()"},
-["getclassinfo"] = {type='function', description = " returns all known information on a class of a LuxModule", args="(string modulename, string classname)", returns="()"},
-["load"] = {type='function', description = " Puts all the classes that belong to the LuxModule into the global variable space. I.e. if a LuxModule has a certain class that's name is 'foo', the class can be used from now on by simply using the name 'foo'. This can of course override your own tables or even classes of other modules. If this is a problem to you, you can use getclasses instead, which returns a table of classes.", args="(string modulename)", returns="()"},
-["setLuxModuleDescription"] = {type='function', description = "\
-			sets description of LuxModule", args="(string modulename, string/function description)", returns="()"},
-["getclasshierarchy"] = {type='function', description = " returns a hierarchy in a datastructure that is compatible to the used format in the autodoc.lua file. ", args="(string modulename)", returns="(table hierarchy, table allclasses)"},
-["getClassInfo"] = {type='function', description = " returns name and modulename of the given class or object if possible. If a string was passed, the name and the modulename is returned if it is a registered class. Additionally, the description of the class and the description of the functions is returned as a table where the keys are the functionnames and the values are the functiondescriptions.", args="(table obj/string name)", returns="([string name, modulename,description, table functionhelp, string parent, table interfaces])"},
-["modulenames"] = {type='function', description = " returns names and number of known modules.", args="()", returns="(table modulenames, int count)"},
-["registerclass"] = {type='function', description = "\
-			registers a class that is part of a certain LuxModule with a certain\
-			name. The help table should describe each function of the class with\
-			the functionname as key and a descriptionstring that describes the\
-			arguments and functiondetails.\
-			You can optionally define the name\
-			of the parentclass and the names of the interfaces. This has only a\
-			hierachical purpose for the documentation.\
-\
-			If the description is a function, the function is called with the\
-			modulename and classname as argument. It may return a string or a\
-			table.\
-\
-			If the description is a table, it is concatenated to a string.\
-			", args="(string modulename,string name,\
-			string/function/table description,\
-			table class,\
-			table help, [string parent],[table interfaces], [boolean isthreadsafe],\
-			[table threadsafefunctions])", returns="()"}}}
 StretchedSkinnedImage = {type='class',description="A skinned image is an image that uses a special texture to create a\
 	2D rectangle visual surface.\
 \
@@ -2711,6 +2718,18 @@ of coroutines.",childs={["resume"] = {type='function', description = "\
 			Returns this new coroutine, an object with type \"thread\". ", args="(function f)", returns="(?)"},
 ["running"] = {type='function', description = " Returns the running coroutine, or nil when\
 			called by the main thread. ", args="()", returns="(?)"}}}
+GarbageCollector = {type='class',description="The GarbageCollector is a wrapper for the collectgarbage function for simplification.",childs={["count"] = {type='function', description = " returns the total memory in use by Lua (in Kbytes).", args="()", returns="(double mem)"},
+["stop"] = {type='function', description = " stops the garbage collector.", args="()", returns="()"},
+["restart"] = {type='function', description = " restarts the garbage collector.", args="()", returns="()"},
+["collect"] = {type='function', description = " performs a full garbage-collection cycle.", args="()", returns="()"},
+["step"] = {type='function', description = " performs a garbage-collection step. The step \"size\" is\
+			controlled by arg (larger values mean more steps) in a non-specified\
+			way. If you want to control the step size you must tune experimentally\
+			the value of arg. Returns true if the step finished a collection cycle.", args="(int n)", returns="(boolean)"},
+["setStepMul"] = {type='function', description = " sets arg/100 as the\
+			new value for the step multiplier of the collector.", args="(float mulstepsize)", returns="(float previous)"},
+["setPause"] = {type='function', description = " sets arg/100 as the new value\
+			for the pause of the collector", args="(float pause)", returns="(float previous)"}}}
 math = {type='class',description="This library is an interface to the standard C math library. It provides all\
 its functions inside the table math. The library provides the following functions:\
 \
@@ -2749,52 +2768,6 @@ rcmdfborb = {type='class',description="Attaches renderbuffers to the current bou
 ["depth"] = {type='function', description = " returns or sets renderbuffer attachment for depth target. You can disable assignment by passing 0.", args="(rcmdfborb,[renderbuffer])", returns="([renderbuffer])"},
 ["color"] = {type='function', description = " returns or sets renderbuffer attachments for color targets 0..3. You can disable certain assignments by passing 0.", args="(rcmdfborb,int clr,[renderbuffer])", returns="([renderbuffer])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfborb)"}}}
-GarbageCollector = {type='class',description="The GarbageCollector is a wrapper for the collectgarbage function for simplification.",childs={["count"] = {type='function', description = " returns the total memory in use by Lua (in Kbytes).", args="()", returns="(double mem)"},
-["stop"] = {type='function', description = " stops the garbage collector.", args="()", returns="()"},
-["restart"] = {type='function', description = " restarts the garbage collector.", args="()", returns="()"},
-["collect"] = {type='function', description = " performs a full garbage-collection cycle.", args="()", returns="()"},
-["step"] = {type='function', description = " performs a garbage-collection step. The step \"size\" is\
-			controlled by arg (larger values mean more steps) in a non-specified\
-			way. If you want to control the step size you must tune experimentally\
-			the value of arg. Returns true if the step finished a collection cycle.", args="(int n)", returns="(boolean)"},
-["setStepMul"] = {type='function', description = " sets arg/100 as the\
-			new value for the step multiplier of the collector.", args="(float mulstepsize)", returns="(float previous)"},
-["setPause"] = {type='function', description = " sets arg/100 as the new value\
-			for the pause of the collector", args="(float pause)", returns="(float previous)"}}}
-djoint = {type='class',description="Joints are connecting bodies. They simulate contacts, varius hinges and slider joints. For example if a chair stands on the floor, each of his foots are connected with a djointcontact to the floor or if a car steers with the wheels, ODE uses a jointhinge2 to simulate this. Ragdoll physics is also a typical example.",childs={["cfm2"] = {type='function', description = " same as cfm but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["stoperp3"] = {type='function', description = " same as stoperp", args="(djoint,[float])", returns="([float])"},
-["geom1"] = {type='function', description = " returns geom1 of the joint it has collided with", args="(djoint)", returns="([dgeom])"},
-["fmax3"] = {type='function', description = " same as fmax but for axis 3", args="(djoint,[float])", returns="([float])"},
-["stoperp2"] = {type='function', description = " same as stoperp", args="(djoint,[float])", returns="([float])"},
-["lostop2"] = {type='function', description = " same as lostop but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["fudgefactor3"] = {type='function', description = " same as fudgefactor but for axis 3", args="(djoint,[float])", returns="([float])"},
-["lostop"] = {type='function', description = " Low stop angle or position. Setting this to -dInfinity (the default value) turns off the low stop. For rotational joints, this stop must be greater than - pi to be effective.", args="(djoint,[float])", returns="([float])"},
-["velocity2"] = {type='function', description = " Desired motor velocity axis 2", args="(djoint,[float])", returns="([float])"},
-["feedback"] = {type='function', description = " returns force and torque applied to the connected bodies of the joint. Since some joints must not be connected to two bodies, either the force and torque of body1 or body2 may not be valid. ", args="(djoint)", returns="([float xf1,yf1,zf1, xt1,yt1,zt1, xf2,yf2,zf2, xt2,yt2,zt2)"},
-["fudgefactor"] = {type='function', description = " The current joint stop/motor implementation has a small problem: when the joint is at one stop and the motor is set to move it away from the stop, too much force may be applied for one time step, causing a 'jumping' motion. This fudge factor is used to scale this excess force. It should have a value between zero and one (the default value). If the jumping motion is too visible in a joint, the value can be reduced. Making this value too small can prevent the motor from being able to move the joint away from a stop.", args="(djoint,[float])", returns="([float])"},
-["stopcfm2"] = {type='function', description = " same as stopcfm", args="(djoint,[float])", returns="([float])"},
-["stopcfm"] = {type='function', description = " The constraint force mixing (CFM) value used by the stops. Together with the ERP value this can be used to get spongy or soft stops. Note that this is intended for unpowered joints, it does not really work as expected when a powered joint reaches its limit.", args="(djoint,[float])", returns="([float])"},
-["velocity3"] = {type='function', description = " Desired motor velocity axis 3", args="(djoint,[float])", returns="([float])"},
-["fudgefactor2"] = {type='function', description = " same as fudgefactor but for axis 2", args="(djoint,[float])", returns="([float])"},
-["histop2"] = {type='function', description = " same as histop but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["velocity"] = {type='function', description = " Desired motor velocity axis 1(this will be an angular or linear velocity).", args="(djoint,[float])", returns="([float])"},
-["bounce"] = {type='function', description = " The bouncyness of the stops. This is a restitution parameter in the range 0..1. 0 means the stops are not bouncy at all, 1 means maximum bouncyness.", args="(djoint,[float])", returns="([float])"},
-["fmax"] = {type='function', description = " The maximum force or torque that the motor will use to achieve the desired velocity. This must always be greater than or equal to zero. Setting this to zero (the default value) turns off the motor.", args="(djoint,[float])", returns="([float])"},
-["cfm3"] = {type='function', description = " same as cfm but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["body1"] = {type='function', description = " returns body1 of the joint or nil if not connected", args="(djoint)", returns="([dbody])"},
-["histop3"] = {type='function', description = " same as histop but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["body2"] = {type='function', description = " returns body2 of the joint or nil if not connected", args="(djoint)", returns="([dbody])"},
-["attach"] = {type='function', description = " connects the joint to one or two bodies. Some joints may need two bodies while other joints will merely accept anything. If nothing is passed, the joint is removed from the bodies it was attached to.", args="(djoint,[dbody],[dbody])", returns="()"},
-["fmax2"] = {type='function', description = " same as fmax but for axis 2", args="(djoint,[float])", returns="([float])"},
-["stopcfm3"] = {type='function', description = " same as stopcfm", args="(djoint,[float])", returns="([float])"},
-["bounce3"] = {type='function', description = " same as bounce but for the 3rd axis (if exits)", args="(djoint,[float])", returns="([float])"},
-["stoperp"] = {type='function', description = " The error reduction parameter (ERP) used by the stops.", args="(djoint,[float])", returns="([float])"},
-["delete"] = {type='function', description = " deletes the joint, making it invalid.", args="(djoint)", returns="()"},
-["bounce2"] = {type='function', description = " same as bounce but for the 2nd axis (if exits)", args="(djoint,[float])", returns="([float])"},
-["geom2"] = {type='function', description = " returns geom2 of the joint it has collided with", args="(djoint)", returns="([dgeom])"},
-["lostop3"] = {type='function', description = " same as lostop but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
-["histop"] = {type='function', description = " High stop angle or position. Setting this to dInfinity (the default value) turns off the high stop. For rotational joints, this stop must be less than pi to be effective. If the high stop is less than the low stop then both stops will be ineffective.", args="(djoint,[float])", returns="([float])"},
-["cfm"] = {type='function', description = " The constraint force mixing (CFM) value used when not at a stop.", args="(djoint,[float])", returns="([float])"}}}
 l3dnode = {type='class',description="l3dnodes of different classes represent any visual item	you want to draw, models, particles etc. Each l3dnode can have a subtree of l3dnodes, however visibilty is only	tested for the root l3dnode, so if the root is not visible, childs won't be either. For a l3dnode to become active	it must be linked with a actornode or scenenode, from which it will get its world position information.<br>	for more info on the order nodes are rendered see l3dset.<br>	Retrieving world positions and rotations can return wrong results. Because world updates are only done when the node	was visible. So they lag one frame behind. Alternatively you can use updateall to enforce uptodate world data.",childs={["localrotaxis"] = {type='function', description = " returns or sets local rotation axis, make sure they make a orthogonal basis.", args="(l3dnode node,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
 ["color"] = {type='function', description = " returns or sets node's color. Only used when rfNovertexcolor is set. Optionally can pass meshid for l3dmodels", args="(l3dnode node,[meshid],[float r,g,b,a])", returns="([float r,g,b,a])"},
 ["rotationlock"] = {type='function', description = " returns or sets rotation lock. axis 0=X 1=Y 2=Z 3=All. Rotation lock is applied before local transforms.", args="(l3dnode node,int axis,[boolean state])", returns="(boolean)"},
@@ -2831,11 +2804,43 @@ l3dnode = {type='class',description="l3dnodes of different classes represent any
 ["localpos"] = {type='function', description = " returns or sets local position. As visibility culling is based on the scene/actornode using too much localposition offsets can create problems. You should rather create new actor/scenenodes in that case.", args="(l3dnode node,[float x,y,z])", returns="([float x,y,z])"},
 ["lastframe"] = {type='function', description = " returns the last frame the node was rendered in.", args="(l3dnode node)", returns="([int])"},
 ["usemanualworld"] = {type='function', description = " enables manual world matrices. Bonelinking, inheritlocks and local matrices will be disabled. You must not call it before the l3dnode was linked.", args="(l3dnode node,[boolean])", returns="([boolean])"}}}
+djoint = {type='class',description="Joints are connecting bodies. They simulate contacts, varius hinges and slider joints. For example if a chair stands on the floor, each of his foots are connected with a djointcontact to the floor or if a car steers with the wheels, ODE uses a jointhinge2 to simulate this. Ragdoll physics is also a typical example.",childs={["cfm2"] = {type='function', description = " same as cfm but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["stoperp3"] = {type='function', description = " same as stoperp", args="(djoint,[float])", returns="([float])"},
+["geom1"] = {type='function', description = " returns geom1 of the joint it has collided with", args="(djoint)", returns="([dgeom])"},
+["fmax3"] = {type='function', description = " same as fmax but for axis 3", args="(djoint,[float])", returns="([float])"},
+["stoperp2"] = {type='function', description = " same as stoperp", args="(djoint,[float])", returns="([float])"},
+["lostop2"] = {type='function', description = " same as lostop but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["fudgefactor3"] = {type='function', description = " same as fudgefactor but for axis 3", args="(djoint,[float])", returns="([float])"},
+["lostop"] = {type='function', description = " Low stop angle or position. Setting this to -dInfinity (the default value) turns off the low stop. For rotational joints, this stop must be greater than - pi to be effective.", args="(djoint,[float])", returns="([float])"},
+["velocity2"] = {type='function', description = " Desired motor velocity axis 2", args="(djoint,[float])", returns="([float])"},
+["feedback"] = {type='function', description = " returns force and torque applied to the connected bodies of the joint. Since some joints must not be connected to two bodies, either the force and torque of body1 or body2 may not be valid. ", args="(djoint)", returns="([float xf1,yf1,zf1, xt1,yt1,zt1, xf2,yf2,zf2, xt2,yt2,zt2)"},
+["fudgefactor"] = {type='function', description = " The current joint stop/motor implementation has a small problem: when the joint is at one stop and the motor is set to move it away from the stop, too much force may be applied for one time step, causing a 'jumping' motion. This fudge factor is used to scale this excess force. It should have a value between zero and one (the default value). If the jumping motion is too visible in a joint, the value can be reduced. Making this value too small can prevent the motor from being able to move the joint away from a stop.", args="(djoint,[float])", returns="([float])"},
+["stopcfm2"] = {type='function', description = " same as stopcfm", args="(djoint,[float])", returns="([float])"},
+["stopcfm"] = {type='function', description = " The constraint force mixing (CFM) value used by the stops. Together with the ERP value this can be used to get spongy or soft stops. Note that this is intended for unpowered joints, it does not really work as expected when a powered joint reaches its limit.", args="(djoint,[float])", returns="([float])"},
+["velocity3"] = {type='function', description = " Desired motor velocity axis 3", args="(djoint,[float])", returns="([float])"},
+["fudgefactor2"] = {type='function', description = " same as fudgefactor but for axis 2", args="(djoint,[float])", returns="([float])"},
+["histop2"] = {type='function', description = " same as histop but for the 2nd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["velocity"] = {type='function', description = " Desired motor velocity axis 1(this will be an angular or linear velocity).", args="(djoint,[float])", returns="([float])"},
+["bounce"] = {type='function', description = " The bouncyness of the stops. This is a restitution parameter in the range 0..1. 0 means the stops are not bouncy at all, 1 means maximum bouncyness.", args="(djoint,[float])", returns="([float])"},
+["fmax"] = {type='function', description = " The maximum force or torque that the motor will use to achieve the desired velocity. This must always be greater than or equal to zero. Setting this to zero (the default value) turns off the motor.", args="(djoint,[float])", returns="([float])"},
+["cfm3"] = {type='function', description = " same as cfm but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["body1"] = {type='function', description = " returns body1 of the joint or nil if not connected", args="(djoint)", returns="([dbody])"},
+["histop3"] = {type='function', description = " same as histop but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["body2"] = {type='function', description = " returns body2 of the joint or nil if not connected", args="(djoint)", returns="([dbody])"},
+["attach"] = {type='function', description = " connects the joint to one or two bodies. Some joints may need two bodies while other joints will merely accept anything. If nothing is passed, the joint is removed from the bodies it was attached to.", args="(djoint,[dbody],[dbody])", returns="()"},
+["fmax2"] = {type='function', description = " same as fmax but for axis 2", args="(djoint,[float])", returns="([float])"},
+["stopcfm3"] = {type='function', description = " same as stopcfm", args="(djoint,[float])", returns="([float])"},
+["bounce3"] = {type='function', description = " same as bounce but for the 3rd axis (if exits)", args="(djoint,[float])", returns="([float])"},
+["stoperp"] = {type='function', description = " The error reduction parameter (ERP) used by the stops.", args="(djoint,[float])", returns="([float])"},
+["delete"] = {type='function', description = " deletes the joint, making it invalid.", args="(djoint)", returns="()"},
+["bounce2"] = {type='function', description = " same as bounce but for the 2nd axis (if exits)", args="(djoint,[float])", returns="([float])"},
+["geom2"] = {type='function', description = " returns geom2 of the joint it has collided with", args="(djoint)", returns="([dgeom])"},
+["lostop3"] = {type='function', description = " same as lostop but for the 3rd axis (if exists)", args="(djoint,[float])", returns="([float])"},
+["histop"] = {type='function', description = " High stop angle or position. Setting this to dInfinity (the default value) turns off the high stop. For rotational joints, this stop must be less than pi to be effective. If the high stop is less than the low stop then both stops will be ineffective.", args="(djoint,[float])", returns="([float])"},
+["cfm"] = {type='function', description = " The constraint force mixing (CFM) value used when not at a stop.", args="(djoint,[float])", returns="([float])"}}}
 CameraEgoMKCtrl = {type='class',description="Uses Mouse and Keyboard. This controller modifies camera like a first person spectator. Default \
 is WASD + SPACE/C for movement and mouse for looking. \
 ",childs={}}
-renderbuffer = {type='class',description="The renderbuffer is for storing results of rendering processes for fbo attachments using rcmdfborb. It cannot be used as texture directly, but allows faster and more complex (multi-sampled) internal storage. Using rcmdbufferblit you can blit the result of a renderbuffer to a texture or backbuffer.",childs={["setup"] = {type='function', description = " returns self if the renderbuffer could be set to the given attributes. Windowsized means width and height are ignored and automatically set to window size, also when changing window resolution. Multisamples can be set to a value >0 if hardware capability for multisample renderbuffers exists.", args="(renderbuffer,textype,int width,height,[boolan windowsized],[int multisamples])", returns="([renderbuffer])"},
-["new"] = {type='function', description = " returns a new renderbuffer. You must setup its attributes prior use or pass directly. When setting failed no rb is returend.", args="([textype,int width,height,[boolan windowsized],[int multisamples]])", returns="([renderbuffer])"}}}
 table = {type='class',description="This library provides generic functions for table manipulation. It provides\
 all its functions inside the table table.\
 \
@@ -2887,6 +2892,8 @@ mean the result of the length operator. ",childs={["keyintersection"] = {type='f
 			sort.", args="(table [, comp])", returns="(?)"},
 ["merge"] = {type='function', description = " copies all passed tables in one table one after each other,\
 			overwriting previous keys with new values.", args="(table1,table2,...)", returns="(table)"}}}
+renderbuffer = {type='class',description="The renderbuffer is for storing results of rendering processes for fbo attachments using rcmdfborb. It cannot be used as texture directly, but allows faster and more complex (multi-sampled) internal storage. Using rcmdbufferblit you can blit the result of a renderbuffer to a texture or backbuffer.",childs={["setup"] = {type='function', description = " returns self if the renderbuffer could be set to the given attributes. Windowsized means width and height are ignored and automatically set to window size, also when changing window resolution. Multisamples can be set to a value >0 if hardware capability for multisample renderbuffers exists.", args="(renderbuffer,textype,int width,height,[boolan windowsized],[int multisamples])", returns="([renderbuffer])"},
+["new"] = {type='function', description = " returns a new renderbuffer. You must setup its attributes prior use or pass directly. When setting failed no rb is returend.", args="([textype,int width,height,[boolan windowsized],[int multisamples]])", returns="([renderbuffer])"}}}
 socket = {type='class',description="The socket namespace contains the core functionality of LuaSocket.\
 ",childs={["protect"] = {type='function', description = "\
 Converts a function that throws exceptions into a safe function. This function \
@@ -3027,7 +3034,6 @@ error passing ret2.\
 \
  -- connects or throws an exception with the appropriate error message\
  c = socket.try(socket.connect(\"localhost\", 80))", args="(ret1 [, ret2 ... retN])", returns="(?)"}}}
-rcmdstencil = {type='class',description="Sets stenciltest environment.",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdstencil)"}}}
 baselib = {type='class',description="All functions in this \"class\" are global values that can be used directly.\
 \
 The basic library provides some core functions to Lua. If you do not include\
@@ -3230,18 +3236,7 @@ to provide implementations for some of its facilities.",childs={["xpcall"] = {ty
 ["loadfile"] = {type='function', description = "\
 			Similar to load, but gets the chunk from file filename or from the\
 			standard input, if no file name is given.", args="([string path])", returns="(function f)"}}}
-texcombalpha = {type='class',description="The texcombiner for alpha values. Make sure that texcombop are only ALPHA values.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombalpha])"},
-["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombalpha])"},
-["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what. Make sure operand is always alpha or invalpha.", args="(texcombalpha,int arg,texcombsrc,texcombop)", returns="()"},
-["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombalpha])"},
-["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
-["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for color at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombalpha])"},
-["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
-["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombalpha)", returns="([string])"},
-["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombalpha])"},
-["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
-["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
-["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombalpha])"}}}
+rcmdstencil = {type='class',description="Sets stenciltest environment.",childs={["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdstencil)"}}}
 package = {type='class',description="The package library provides basic facilities for loading and building\
 modules in Lua. It exports two of its functions directly in the global\
 environment: require and module. Everything else is exported in a table package.",childs={["preload"] = {type='value', description = "[table] - A table to store loaders for specific modules (see require)."},
@@ -3296,6 +3291,53 @@ environment: require and module. Everything else is exported in a table package.
 			referring to the global environment, so that this module inherits\
 			values from the global environment. To be used as an option to\
 			function module. ", args="(module)", returns="(?)"}}}
+texcombalpha = {type='class',description="The texcombiner for alpha values. Make sure that texcombop are only ALPHA values.",childs={["addsigned"] = {type='function', description = "  OUT = arg0 + arg1 - 0.5", args="(string name)", returns="([texcombalpha])"},
+["interpolate"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 * (1-arg2)", args="(string name)", returns="([texcombalpha])"},
+["setarg"] = {type='function', description = "  sets argument of the function. Check the function descriptor for which arg index does what. Make sure operand is always alpha or invalpha.", args="(texcombalpha,int arg,texcombsrc,texcombop)", returns="()"},
+["modulate"] = {type='function', description = "  OUT = arg0 * arg1", args="(string name)", returns="([texcombalpha])"},
+["modadd"] = {type='function', description = "  OUT = arg0 * arg2 + arg1. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
+["subtract"] = {type='function', description = "  OUT = arg0 - arg1. You should query for capability. When used modadd/combine4 for color at the same time is not allowed for cards with combine4 support", args="(string name)", returns="([texcombalpha])"},
+["combine4"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3. You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
+["test"] = {type='function', description = " tests the combiner (binds it). Returns GL Error string (might have other errors not bound to this problem)", args="(texcombalpha)", returns="([string])"},
+["replace"] = {type='function', description = "  OUT = arg0", args="(string name)", returns="([texcombalpha])"},
+["combine4signed"] = {type='function', description = "  OUT = arg0*arg1 + arg2*arg3 - 0.5  You should query for capability. Color mode must be combine4/modadd at the same time", args="(string name)", returns="([texcombalpha])"},
+["modaddsigned"] = {type='function', description = "  OUT = arg0 * arg2 + arg1 - 0.5. You should query for capability. When used color mode must be modadd/combine4 for cards with combine4 support as well.", args="(string name)", returns="([texcombalpha])"},
+["add"] = {type='function', description = "  OUT = arg0 + arg1", args="(string name)", returns="([texcombalpha])"}}}
+bit = {type='class',description="Allows bit-wise operations (32 bit) on numbers.\
+",childs={["band"] = {type='function', description = "\
+Returns the bitwise and of all of its arguments. Note that more than two arguments are allowed.", args="(number,number,...)", returns="(number)"},
+["rshift"] = {type='function', description = "\
+see lshift", args="(number,number n)", returns="(number)"},
+["bor"] = {type='function', description = "\
+Returns the bitwise or of all of its arguments. Note that more than two arguments are allowed.", args="(number,number,...)", returns="(number)"},
+["bnot"] = {type='function', description = "\
+Returns the bitwise not of its argument.", args="(number)", returns="(number)"},
+["bswap"] = {type='function', description = "\
+Swaps the bytes of its argument and returns it. This can be used to convert little-endian 32 bit \
+numbers to big-endian 32 bit numbers or vice versa", args="(number)", returns="(number)"},
+["bxor"] = {type='function', description = "\
+Returns the bitwise xor of all of its arguments. Note that more than two arguments are allowed.", args="(number,number,...)", returns="(number)"},
+["tobit"] = {type='function', description = " Normalizes a number to the numeric range for \
+bit operations and returns it. This function is usually not needed since all bit\
+operations already normalize all of their input arguments. Check the operational semantics for details.", args="(number)", returns="(number)"},
+["arshift"] = {type='function', description = "\
+see lshift", args="(number,number n)", returns="(number)"},
+["lshift"] = {type='function', description = "\
+Returns either the bitwise logical left-shift, bitwise logical right-shift, or bitwise arithmetic right-shift of its first argument by the number of bits given by the second argument.\
+\
+Logical shifts treat the first argument as an unsigned number and shift in 0-bits. Arithmetic right-shift treats the most-significant bit as a sign bit and replicates it.\
+Only the lower 5 bits of the shift count are used (reduces to the range [0..31]).", args="(number,number n)", returns="(number)"},
+["tohex"] = {type='function', description = "\
+Converts its first argument to a hex string. The number of hex digits is given by the absolute value \
+of the optional second argument. Positive numbers between 1 and 8 generate lowercase hex digits. \
+Negative numbers generate uppercase hex digits. Only the least-significant 4*|n| bits are used. \
+The default is to generate 8 lowercase hex digits.", args="(number,[number])", returns="(string)"},
+["brol"] = {type='function', description = "\
+Returns either the bitwise left rotation of its first argument by the number of bits given by the second argument. Bits shifted out on one side are shifted back in on the other side.\
+Only the lower 5 bits of the rotate count are used (reduces to the range [0..31]).", args="(number,number n)", returns="(number)"},
+["bror"] = {type='function', description = "\
+Returns either the bitwise right rotation of its first argument by the number of bits given by the second argument. Bits shifted out on one side are shifted back in on the other side.\
+Only the lower 5 bits of the rotate count are used (reduces to the range [0..31]).", args="(number,number n)", returns="(number)"}}}
 texdatatype = {type='class',description="For creating textures this defines the internal storage precision. Some may require special capabilities",childs={["int32"] = {type='function', description = " int32. -/+2147483647, 32-bit precision, local same. requires integer texture capability.", args="()", returns="(texdatatype)"},
 ["fixed16"] = {type='function', description = " unsigned byte. normalized 0-1. 16-bit precision, local data storage as unsigned short.", args="()", returns="(texdatatype)"},
 ["uint8"] = {type='function', description = " unsigned int8. 0-255, 8-bit precision, local same. requires integer texture capability.", args="()", returns="(texdatatype)"},
@@ -3653,17 +3695,22 @@ l3dtrail = {type='class',description="Contains a collection of points, that are 
 ["spawn"] = {type='function', description = " spawns a new point in world/local coordinates, normal is needed when you dont use facecamera, and velocity when you use velocity. You can automaically spawn points with spawnstep. Illegal if typeworldref is used.", args="(l3dtrail,float pos x,y,z,float normal x,y,z,[float vel x,y,z])", returns="(trailpoint)"}}}
 vertexarray = {type='class',description="meshes, l3dmodels (morphable or compiled) or l2dimage usermeshes contain vertices you can modify.This interface allows access to it. For models this only has effect if they are not rendered via display list, nor vbo, else those need to be updated as well.",childs={["vertexPos"] = {type='function', description = " set or return position. Transformed with by matrix if given.", args="(vertexarray, int index,[matrix4x4],[float x,y,z])", returns="([float x,y,z])"},
 ["vertexPosTris"] = {type='function', description = " returns interpolated position for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float x,y,z])"},
+["vertexType"] = {type='function', description = " returns the vertextype.", args="(vertexarray)", returns="(vertextype)"},
 ["vertexUpdateVBO"] = {type='function', description = " if possible submits array using vertexAllocatedcount or [from,to] range to VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(vertexarray,[int fromidx, count])", returns="(boolean)"},
 ["vertexAllocState"] = {type='function', description = " can create or remove the local data copy of the vertices. Only allowed if mesh is a VBO usermesh.", args="(vertexarray,[boolean])", returns="([boolean])"},
 ["vertexColorTris"] = {type='function', description = " returns interpolated color for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca)", returns="([float r,g,b,a])"},
 ["vertexPosarray"] = {type='function', description = " returns or sets vertex position from given array (3 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
 ["vertexColor"] = {type='function', description = " set or return color", args="(vertexarray, int index,[float r,g,b,a])", returns="([float r,g,b,a])"},
+["vertexFromVBO"] = {type='function', description = " if possible retrieves array using vertexAllocatedcount or [from,to] range from VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(vertexarray,[int fromidx, count])", returns="(boolean)"},
 ["vertexInverttexcoord"] = {type='function', description = " inverts y (or x) coordinates of texcoord channel for all vertices by doing 1.0f-coord. ", args="(vertexarray, boolean y,[int texchannel 0-3])", returns="()"},
 ["vertexColorarray"] = {type='function', description = " returns or sets vertex colors from given array (4 times the size of vertexAllocatedcount).", args="(vertexarray,[floatarray])", returns="([floatarray])"},
+["indexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored for display.", args="(indexarray)", returns="([meshtype])"},
+["indexVidbuffer"] = {type='function', description = " if stored as VBO returns vidbuffer and offset bytes.", args="(vertexarray)", returns="([vidbuffer,int ibooffset])"},
 ["vertexTexcoordTris"] = {type='function', description = " returns texture coordinates for given triangle indices, using the barycentric coordinates.", args="(vertexarray, int a, int b, int c, float ba, float ca,[int texchannel 0-3])", returns="([float u,v])"},
-["vertexFromVBO"] = {type='function', description = " if possible retrieves array using vertexAllocatedcount or [from,to] range from VBO, returns true on success else false (no VBO or non compatible vertexarray).", args="(vertexarray,[int fromidx, count])", returns="(boolean)"},
-["vertexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored for display. VBOs also return the offset into VBO as count of same-typed items.", args="(vertexarray)", returns="([meshtype],[vidbuffer,int vbooffset])"},
+["vertexVidbuffer"] = {type='function', description = " if stored as VBO returns vidbuffer and offset bytes.", args="(vertexarray)", returns="([vidbuffer,int vbooffset])"},
+["vertexMeshtype"] = {type='function', description = " returns what type of mesh the indices/vertices are stored for display.", args="(vertexarray)", returns="([meshtype])"},
 ["vertexBBox"] = {type='function', description = " gets bounding box of vertices", args="(vertexarray)", returns="(float minx,miny,minz,maxx,maxy,maxz)"},
+["indexType"] = {type='function', description = " returns the scalartype of the indices.", args="(vertexarray)", returns="(scalartype)"},
 ["vertexTransform"] = {type='function', description = " transform all vertices with given matrix", args="(vertexarray, matrix4x4)", returns="()"},
 ["vertexTexcoordtransform"] = {type='function', description = " transforms texcoords by given matrix ", args="(vertexarray, matrix4x4,[int texchannel 0-3])", returns="()"},
 ["vertexTexcoord"] = {type='function', description = " set or return texture coordinates for given channel. All vertices have 1 channel, without normals 2 and bigvertex 4. channel 0 is used for textures, channel 1 is used for lightmaps.", args="(vertexarray, int index,[float u,v],[int texchannel 0-3])", returns="([float u,v])"},
@@ -3814,15 +3861,17 @@ processes the batched mouse move events.", args="(CameraCtrl)", returns="()"},
 	registers a function to be called fn(l3dcamera,actornode) on changes", args="(CameraCtrl,fn)", returns="()"},
 ["new"] = {type='function', description = "\
 	creates the controller.", args="(table class, l3dcamera, actornode, table attribs)", returns="(CameraCtrl)"},
-["runListeners"] = {type='function', description = "\
-	enforces call of all listeners.", args="(CameraCtrl,fn)", returns="()"},
-["removeListener"] = {type='function', description = "\
-	unregisters the function.", args="(CameraCtrl,fn)", returns="()"},
 ["createML"] = {type='function', description = "\
 	creates a mouselistener based on input. Pass the host component,\
 to get drag for action behavior. Or pass no host and assign to the \
 MouseCursor itself, and the mouse position will be fixed at\
-center of screen and always firing (same when MouseCursor is disabled).", args="(CameraCtrl, [Component])", returns="(MouseListener)"}}}
+center of screen and always firing (same when MouseCursor is disabled).", args="(CameraCtrl, [Component])", returns="(MouseListener)"},
+["runListeners"] = {type='function', description = "\
+	enforces call of all listeners.", args="(CameraCtrl,fn)", returns="()"},
+["removeListener"] = {type='function', description = "\
+	unregisters the function.", args="(CameraCtrl,fn)", returns="()"},
+["reset"] = {type='function', description = "\
+	Resets internal caches of mouse movement and alike.", args="(CameraCtrl)", returns="()"}}}
 CyclicQueue = {type='class',description="The CyclicQueue is a utility class for storing cyclic fields. This is usefull for creating histories. The index operator ([]) can be used to index the queue. I.e. mylist[1] will always return the elment that was inserted last.",childs={["pop"] = {type='function', description = " pops a value from the queue. If no element is in the list, nothing is returned", args="(CyclicQueue)", returns="([value])"},
 ["top"] = {type='function', description = " returns the latest inserted element", args="(CyclicQueue)", returns="([value])"},
 ["push"] = {type='function', description = " pushes a value on the list.", args="(CyclicQueue,value)", returns="()"},
@@ -3832,36 +3881,39 @@ CyclicQueue = {type='class',description="The CyclicQueue is a utility class for 
 ["history"] = {type='value', description = "{[table]} - the table containing the entries"},
 ["count"] = {type='value', description = "{[int]} - number of entries in list"},
 ["new"] = {type='function', description = " Creates a CyclicQueue object of given size. If overwrite is false (default), an error is thrown if the array is full.", args="(int size, [boolean overwrite])", returns="(CyclicQueue)"}}}
-rendersystem = {type='class',description="Rendering system information and settings",childs={["usevbos"] = {type='function', description = " sets/gets if vertex buffer objects should be enabled. This generally turns them on/off (on will have no effect if your hardware cant do it), the other option is to disable them per model.load. By default it is on if system technique is higher than VID_ARB_V.", args="([boolean])", returns="([boolean])"},
-["cgprefercompiled"] = {type='function', description = " gets or sets if Cg should check for compiled programs first.", args="([boolean])", returns="([boolean])"},
-["cglowprofileglsl"] = {type='function', description = " sets if GLSL is used in the low Cg profiles. Setting will enforce GLSL useage for lowCgProfile (normally arbfp1/arbvp1) and highCgProfile, disabling will revert to original state. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test GLSL codepaths profiles.", args="([boolean])", returns="()"},
-["noglextensions"] = {type='function', description = " sets/gets if 'nice-to-have' GLextensions are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["cgdumpcompiled"] = {type='function', description = " gets or sets if all Cg programs will saved to their corresponding compiled filename, will overwrite files.", args="([boolean])", returns="([boolean])"},
+rendersystem = {type='class',description="Rendering system information and settings",childs={["cgprefercompiled"] = {type='function', description = " gets or sets if Cg should check for compiled programs first.", args="([boolean])", returns="([boolean])"},
 ["vendor"] = {type='function', description = " returns vendor of rendering system (ati,nvidia,intel,unknown)", args="()", returns="(string)"},
-["cgcompilerargs"] = {type='function', description = " returns the cg compiler args. Args must be separated by ;", args="([string])", returns="([string])"},
-["purehwvertices"] = {type='function', description = " returns or sets if you can guarantee that all vertices (cept for debug helpers or font) are processed by your shaders which all use programmable pipeline. In that case we can ignore a few costly state changes that are only needed for fixed function pipeline.", args="([boolean])", returns="([boolean])"},
+["hwbonesparams"] = {type='function', description = " gets or sets how many parameters you use additionally to matrices in your gpuskin programs", args="([int])", returns="([int])"},
 ["cguseoptimal"] = {type='function', description = " gets or sets if Cg should set optimal profile compiler arguments, using driver and GPU info. Be aware that there is no way to disable it, hence once the first Cg gpuprogram is loaded from that time on all will use compile flags for the local machine. When you want to precompile your shaders using generic profile options, ie like the offline Cg compiler, you should set this value to false before loading your shaders. The only machine dependent flag will be use of ATI_draw_buffers over ARB_draw_buffers.", args="([boolean])", returns="([boolean])"},
 ["batchmaxindices"] = {type='function', description = " l3dbatchbuffers will finish batch after indices are reached.", args="([int])", returns="([int])"},
-["detail"] = {type='function', description = " gets or sets users detail setting 1 - 3, 3 = highest detail. 1 = half texture size, 16 bit. 2 = 16 bit texture, 3 = 32 bit textures.", args="([int])", returns="([int])"},
+["purehwvertices"] = {type='function', description = " returns or sets if you can guarantee that all vertices (cept for debug helpers or font) are processed by your shaders which all use programmable pipeline. In that case we can ignore a few costly state changes that are only needed for fixed function pipeline.", args="([boolean])", returns="([boolean])"},
+["forcefinish"] = {type='function', description = " if true then renderfunction will wait until all rendering is finished before swapbuffers. Might fix issues you have.", args="([boolean])", returns="([boolean])"},
+["poppedgl"] = {type='function', description = " returns true if GL resources are just popped, ie rendering is disabled.", args="()", returns="(boolean)"},
+["force2tex"] = {type='function', description = " sets/gets if system should be forced to have only two textureunits, useful for debugging. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
+["checkstate"] = {type='function', description = " returns whether there are errors in the state tracker (prints to console).", args="()", returns="(boolean)"},
+["usevbos"] = {type='function', description = " sets/gets if vertex buffer objects should be enabled. This generally turns them on/off (on will have no effect if your hardware cant do it), the other option is to disable them per model.load. By default it is on if system technique is higher than VID_ARB_V.", args="([boolean])", returns="([boolean])"},
 ["glinfo"] = {type='function', description = " returns information about OpenGL Driver", args="()", returns="(string renderer,string version, string vendor)"},
+["cglowprofileglsl"] = {type='function', description = " sets if GLSL is used in the low Cg profiles. Setting will enforce GLSL useage for lowCgProfile (normally arbfp1/arbvp1) and highCgProfile, disabling will revert to original state. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test GLSL codepaths profiles.", args="([boolean])", returns="()"},
+["glfinish"] = {type='function', description = " waits until all pending GL processes are finished.", args="()", returns="()"},
+["cgdumpcompiled"] = {type='function', description = " gets or sets if all Cg programs will saved to their corresponding compiled filename, will overwrite files.", args="([boolean])", returns="([boolean])"},
+["pushgl"] = {type='function', description = " pushes all GL resources back (ie restores active data). Should be done after a major GLContext change. This function is also only for use with custom window managers. It is automatically called when switching from windowed to fullscreen mode. While GL resources are pushed rendering will be ignored, and many OpenGL calls will result into errors.", args="()", returns="()"},
+["texcompression"] = {type='function', description = " gets or sets if texture compression should be used", args="([boolean])", returns="([boolean])"},
+["popgl"] = {type='function', description = " pops GL resources from useage (ie retrieves data). Should be done before a major GLContext change. Only relative if cusom window managers are used.", args="()", returns="()"},
+["noglextensions"] = {type='function', description = " sets/gets if 'nice-to-have' GLextensions are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
+["glextensions"] = {type='function', description = " returns the GL extension string", args="()", returns="(string)"},
+["cgdumpbroken"] = {type='function', description = " gets or sets if Cg programs, who failed to load and were compiled at runtime, should be saved. Their filename is like pre-compiled version just with a BROKEN added.", args="([boolean])", returns="([boolean])"},
+["cgcompilerargs"] = {type='function', description = " returns the cg compiler args. Args must be separated by ;", args="([string])", returns="([string])"},
+["gldriverinfo"] = {type='function', description = " returns current driver info.", args="()", returns="(string vendor, renderer, version)"},
+["cghighprofile"] = {type='function', description = " sets the Cg high profiles, used in higher techniques, also allows downgrade of max capable technique. Strings are profilenames of Cg, there is no error checking if profilename actually correspons to maximum tehniques. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test profile codepaths.", args="(string vertexprofile, fragmentprofile, [technique])", returns="()"},
+["texanisotropic"] = {type='function', description = " gets or sets if texture anisotropic filtering should be used", args="([boolean])", returns="([boolean])"},
+["baseshaders"] = {type='function', description = " returns or sets baseshaders. Any non-material mesh, ie just having a texture or just having a color, will use those shaders and pass its texture (if exists) as Texture:0 to the shader. All other materials will use the Shader:0 they come with.", args="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])", returns="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])"},
 ["usebaseshaders"] = {type='function', description = " returns or sets if baseshaders should be used. Make sure they are specified before.", args="([boolean])", returns="([boolean])"},
 ["nodefaultgpuprogs"] = {type='function', description = " sets/gets if defaultgpuprogs are disabled. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["hwbonesparams"] = {type='function', description = " gets or sets how many parameters you use additionally to matrices in your gpuskin programs", args="([int])", returns="([int])"},
 ["texanisolevel"] = {type='function', description = " sets value for anisotropic filtering. Must be <= maximum capable", args="([float])", returns="([float])"},
-["texanisotropic"] = {type='function', description = " gets or sets if texture anisotropic filtering should be used", args="([boolean])", returns="([boolean])"},
-["cgdumpbroken"] = {type='function', description = " gets or sets if Cg programs, who failed to load and were compiled at runtime, should be saved. Their filename is like pre-compiled version just with a BROKEN added.", args="([boolean])", returns="([boolean])"},
 ["batchmeshmaxtris"] = {type='function', description = " l3dbatchbuffers will immediately render meshes with less triangles.", args="([int])", returns="([int])"},
-["poppedgl"] = {type='function', description = " returns true if GL resources are just popped, ie rendering is disabled.", args="()", returns="(boolean)"},
-["cghighprofile"] = {type='function', description = " sets the Cg high profiles, used in higher techniques, also allows downgrade of max capable technique. Strings are profilenames of Cg, there is no error checking if profilename actually correspons to maximum tehniques. Be aware that setting should be done on startup, changing between modes so that shaders will be in mixed types, will result into errors. The commands main purpose is to test profile codepaths.", args="(string vertexprofile, fragmentprofile, [technique])", returns="()"},
-["force2tex"] = {type='function', description = " sets/gets if system should be forced to have only two textureunits, useful for debugging. Affects system only during startup.", args="([boolean])", returns="([boolean])"},
-["baseshaders"] = {type='function', description = " returns or sets baseshaders. Any non-material mesh, ie just having a texture or just having a color, will use those shaders and pass its texture (if exists) as Texture:0 to the shader. All other materials will use the Shader:0 they come with.", args="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])", returns="([shader color_only, color_lightmap, 1tex, 1tex_lightmap])"},
-["texcompression"] = {type='function', description = " gets or sets if texture compression should be used", args="([boolean])", returns="([boolean])"},
-["cgallowglslatism3"] = {type='function', description = " gets or sets if Cg on startup should allow use of GLSL for ATI shader model3 capable cards. From Cg 2.1 on this defaults to true.", args="([boolean])", returns="([boolean])"},
-["forcefinish"] = {type='function', description = " if true then renderfunction will wait until all rendering is finished before swapbuffers. Might fix issues you have.", args="([boolean])", returns="([boolean])"},
-["popgl"] = {type='function', description = " pops GL resources from useage (ie retrieves data). Should be done before a major GLContext change. Only relative if cusom window managers are used.", args="()", returns="()"},
-["pushgl"] = {type='function', description = " pushes all GL resources back (ie restores active data). Should be done after a major GLContext change. This function is also only for use with custom window managers. It is automatically called when switching from windowed to fullscreen mode. While GL resources are pushed rendering will be ignored, and many OpenGL calls will result into errors.", args="()", returns="()"},
+["cgallowglslsm3up"] = {type='function', description = " gets or sets if Cg on startup should allow use of GLSL for non-nvidia cards, that can compile a test vertex- and fragment shader with SM3 features. From Cg 2.1 on this defaults to true.", args="([boolean])", returns="([boolean])"},
 ["swapinterval"] = {type='function', description = " gets or sets swapbuffer interval behavior 0 = vsynch off, 1 on, 2 double buffered on ...", args="([int])", returns="([int])"},
-["checkstate"] = {type='function', description = " returns whether there are errors in the state tracker (prints to console).", args="()", returns="(boolean)"}}}
+["detail"] = {type='function', description = " gets or sets users detail setting 1 - 3, 3 = highest detail. 1 = half texture size, 16 bit. 2 = 16 bit texture, 3 = 32 bit textures.", args="([int])", returns="([int])"}}}
 TimerTask = {type='class',description="A TimerTask is a function that is executed at a certain point of time.\
 		When you create a new task, you specify a time in the future at which\
 		the function should be executed. This class also offers a very simple\
@@ -5560,7 +5612,7 @@ texture = {type='class',description="Bitmaps that store color information.<br> T
 ["create3d"] = {type='function', description = " creates a new empty texture in memory. Sizes must be power of two (unless np2 supported). Automatically registered as USER_TEX. Same creation, compression and mipmap rules as for new2d", args="(string name, int width, int height, int depth, textype, [boolean keepdata], [boolean nofilter],[boolean mipmap],[texdatatype])", returns="(texture)"},
 ["uploaddata"] = {type='function', description = " will upload the current data to video memory. Only works on user-created textures with data, or if dataarray is passed. x,y,z are the starting points, w,h,d the dimension of the updated area. If arraycount does not match full texture dimension, then dataarray is assumed to be only the update rectangle. Scalararrays offsets are ignored. Side is for cubemaps (0-5), else cubemaps take Z as side. All numbers passed must be positive", args="(texture,[int x,y,z,w,h,d]/[int side],[staticarray/scalararray uploaddata])", returns="()"},
 ["create1darray"] = {type='function', description = " creates a new empty texture in memory. Width must be power of two, height <= capability.texarraylayers. Resizing will not change type.", args="(string name, int width, int height,textype, [boolean keepdata], [boolean nofilter],[boolean mipmap],[texdatatype])", returns="(texture)"},
-["create2d"] = {type='function', description = " creates a new empty texture in memory. Width and height must be power of two (unless capability for rectangle textures). texdatatype is uchar (Unsigned Byte) by default. Automatically registered as USER_TEX. No compression supported. Mipmapping will only work when keepdata + reloaddata is used, or when hardware mipmapping exists. If height is 1 it will be a 1D texture and stay like that (ie. resizing will not change this).", args="(string name, int width, int height,textype, [boolean keepdata], [boolean nofilter],[boolean mipmap],[texdatatype])", returns="(texture)"},
+["create2d"] = {type='function', description = " creates a new empty texture in memory. Width and height must be power of two (unless capability for np2 textures exists). texdatatype is uchar (Unsigned Byte) by default. Automatically registered as USER_TEX. No compression supported. Mipmapping will only work when keepdata + reloaddata is used, or when hardware mipmapping exists. If height is 1 it will be a 1D texture and stay like that (ie. resizing will not change this).", args="(string name, int width, int height,textype, [boolean keepdata], [boolean nofilter],[boolean mipmap],[texdatatype])", returns="(texture)"},
 ["combine2d"] = {type='function', description = " combines all 2d textures to a single row, ideally number of textures should be power of 2, max 64 textures", args="(stringstack,[boolean mipmap],[boolean keepdata])", returns="(Texture tex)"},
 ["mountscalararray"] = {type='function', description = " returns a mounted array if data is available.", args="(texture, [int cubeside])", returns="([scalararray])"},
 ["createbuffer"] = {type='function', description = " creates a texture that allows binding a vidbuffer as texture. The vidbuffer must be specified with setvidbuffer command. Only alpha,lumalpha,intensity and rgba are allowed as textypes.", args="(string name, textype, texdatatype)", returns="(texture)"},
@@ -5683,19 +5735,21 @@ rcmdclear = {type='class',description="Clears drawbuffers (stencil,depth,color).
 ["colormode"] = {type='function', description = " returns or sets mode for color (0 float, 1 int, 2 uint) must have appropriate rendertarget!", args="(rcmdclear,[int 0-2])", returns="([int])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdclear)"}}}
 rcmd = {type='class',description="The rendercommand mechanism allows you to program the renderer of each l3dview. You can precisely define what you want to render and in which order.",childs={["flag"] = {type='function', description = " sets rcmd process bit flag. If rcmdflag of view AND the own flag bitwise return true, then the rcmd will be processed. id = 0..31", args="(rcmd,int id,[boolean])", returns="([boolean])"}}}
-textype = {type='class',description="For creating textures or renderbuffers this defines the internal storage. Be aware that the rendersystem might not always be able to provide the format you asked for. Some types are baseformats which will leave it up to driver on which internalmode to pick. Formats such as depth and depth_stencil require special capabilities",childs={["abgr"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
+textype = {type='class',description="For creating textures or renderbuffers this defines the internal storage. Be aware that the rendersystem might not always be able to provide the format you asked for. Some types are baseformats which will leave it up to driver on which internalmode to pick. Formats such as depth and depth_stencil require special capabilities",childs={["alpha"] = {type='function', description = " baseformat for ALPHA", args="()", returns="(textype)"},
+["abgr"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
 ["lumalpha"] = {type='function', description = " baseformat for LUMINANCE_ALPHA", args="()", returns="(textype)"},
-["lum"] = {type='function', description = " baseformat for LUMINANCE", args="()", returns="(textype)"},
+["r"] = {type='function', description = " baseformat for R (needs capability.texrg)", args="()", returns="(textype)"},
 ["stencil"] = {type='function', description = " baseformat for STENCIL_INDEX. only for renderbuffers", args="()", returns="(textype)"},
+["depth32"] = {type='function', description = " 32 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
 ["bgr"] = {type='function', description = " reverses order of data for RGB, internal remains baseformat", args="()", returns="(textype)"},
 ["depth24"] = {type='function', description = " 24 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
-["depth32"] = {type='function', description = " 32 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
+["depth16"] = {type='function', description = " 16 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
 ["rgb"] = {type='function', description = " baseformat for RGB", args="()", returns="(textype)"},
 ["depthstencil"] = {type='function', description = " baseformat for DEPTH_STENCIL", args="()", returns="(textype)"},
-["depth16"] = {type='function', description = " 16 bit DEPTH_COMPONENT", args="()", returns="(textype)"},
+["lum"] = {type='function', description = " baseformat for LUMINANCE", args="()", returns="(textype)"},
 ["bgra"] = {type='function', description = " reverses order of data for RGBA, internal remains baseformat", args="()", returns="(textype)"},
 ["depth"] = {type='function', description = " baseformat for DEPTH_COMPONENT", args="()", returns="(textype)"},
-["alpha"] = {type='function', description = " baseformat for ALPHA", args="()", returns="(textype)"},
+["rg"] = {type='function', description = " baseformat for RG (needs capability.texrg)", args="()", returns="(textype)"},
 ["rgba"] = {type='function', description = " baseformat for RGBA", args="()", returns="(textype)"}}}
 pgraph = {type='class',description="profiling graph. If render.drawpgraph is enabled sampling is done per frame and rendered as line graph at the end.",childs={["getl3d"] = {type='function', description = " l3d pgraph is subpart of render pgraph)", args="()", returns="(pgraph)"},
 ["color"] = {type='function', description = " returns or sets color of the pgraph", args="(pgraph,[float r,g,b])", returns="([float r,g,b])"},
@@ -5796,16 +5850,17 @@ matrix4x4 = {type='class',description="4x4 matrices are used for position and ro
 ["copy"] = {type='function', description = " copys from other to itself", args="(matrix4x4 to,matrix4x4 from)", returns="(matrix4x4 to)"},
 ["compressed4x3"] = {type='function', description = " copies and compresses the storage and returns new, for shadercgparamhost:value useage.", args="(matrix4x4)", returns="(matrix4x4)"},
 ["compressed3x3"] = {type='function', description = " copies and compresses the storage and returns new, for shadercgparamhost:value useage.", args="(matrix4x4)", returns="(matrix4x4)"},
-["new"] = {type='function', description = " constructs identity matrix or uses lua table to fill values. If a table 		with 16 elements is passed, the values are interpreted as a matrix and will 		The OpenGL matrixstyle (column-major) is used so the x,y,z translation is found at element index 12,13,14 (or 13,14,15 as lua arrays start at 		index 1, while C arrays start at index 0)", args="([table float16])", returns="(matrix4x4 m)"},
-["rotdeg"] = {type='function', description = " returns or sets rotation in degrees", args="(matrix4x4 m,[float x,y,z])", returns="([float x,y,z])"},
+["new"] = {type='function', description = " constructs identity matrix or uses lua table or other matrix4x4 to fill values. If a table 		with 16 elements is passed, the values are interpreted as a matrix and will 		The OpenGL matrixstyle (column-major) is used so the x,y,z translation is found at element index 12,13,14 (or 13,14,15 as lua arrays start at 		index 1, while C arrays start at index 0)", args="([table float16]/[matrix4x4])", returns="(matrix4x4 m)"},
+["projmatrix"] = {type='function', description = " turns self into a projection matrix usable for cameras and projectors. negative fov means 'size' for orthographic projection. aspect is width/height.", args="(matrix4x4, nearplane, farplane, fov, aspect)", returns="(matrix4x4)"},
 ["transformrotate"] = {type='function', description = " rotate the three given coordinates", args="(matrix4x4 m,float x,y,z)", returns="(float x,y,z)"},
 ["setaxisangle"] = {type='function', description = " sets rotation around angle", args="(matrix4x4 a, float axisX,axisY,axisZ ,rotation)", returns="()"},
 ["affineinvert"] = {type='function', description = " inverts m, or m = invert of inv. Affine invert is faster and more robust than regular invert, but will only work on non-scaled orthogonal matrices.", args="(matrix4x4 m,[matrix4x4 inv])", returns="(matrix4x4 m)"},
 ["invert"] = {type='function', description = " inverts m, or m = invert of inv", args="(matrix4x4 m,[matrix4x4 inv])", returns="(matrix4x4 m)"},
-["rotquat"] = {type='function', description = " sets/gets rotation as quaternion", args="(matrix4x4 m,[float x,y,z,w])", returns="([float x,y,z,w])"},
 ["rotaxis"] = {type='function', description = " returns or sets rotation axis, make sure they make a orthogonal basis.", args="(matrix4x4 m,[float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])", returns="([float Xx,Xy,Xz, Yx,Yy,Yz, Zx,Zy,Zz])"},
-["mul"] = {type='function', description = " multiplys: a = b*c or a = a*b. faster but sets W coordinate of each colum to 0, cept last to 1", args="(matrix4x4 a, b ,[c])", returns="(matrix4x4 a)"},
+["rotquat"] = {type='function', description = " sets/gets rotation as quaternion", args="(matrix4x4 m,[float x,y,z,w])", returns="([float x,y,z,w])"},
 ["rotrad"] = {type='function', description = " returns or sets rotation in radians", args="(matrix4x4 m,[float x,y,z])", returns="([float x,y,z])"},
+["mul"] = {type='function', description = " multiplys: a = b*c or a = a*b. faster but sets W coordinate of each colum to 0, cept last to 1", args="(matrix4x4 a, b ,[c])", returns="(matrix4x4 a)"},
+["rotdeg"] = {type='function', description = " returns or sets rotation in degrees", args="(matrix4x4 m,[float x,y,z])", returns="([float x,y,z])"},
 ["transpose"] = {type='function', description = " transposes m, or m = transpose of inv", args="(matrix4x4 m,[matrix4x4 inv])", returns="(matrix4x4 m)"},
 ["column"] = {type='function', description = " sets/gets column (0-3) vector.", args="(matrix4x4 m,int column,[float x,y,z,w])", returns="([float x,y,z,w])"},
 ["mulfull"] = {type='function', description = " multiplys: a = b*c or a = a*b. accurately takes all 16 values into account.", args="(matrix4x4 a, b ,[c])", returns="(matrix4x4 a)"},
