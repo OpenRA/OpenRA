@@ -21,7 +21,7 @@ namespace OpenRa.Game
 		readonly Animation cantBuild;
 		readonly Animation ready;
 
-		readonly List<Pair<Rectangle, Action<bool>>> buildItems = new List<Pair<Rectangle, Action<bool>>>();
+		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
 		readonly Cache<string, Animation> clockAnimations;
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, Sprite[]> tabSprites;
@@ -82,7 +82,7 @@ namespace OpenRa.Game
 
 		public void Draw()
 		{
-			buildItems.Clear();
+			buttons.Clear();
 
 			renderer.Device.DisableScissor();
 			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nPower {4}/{5}\nReady: {6} (F8 to toggle)".F(
@@ -100,6 +100,53 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), 0);
 
+			DrawMoney();
+
+			var x = Game.viewport.Width - 36 - 3 * 64;
+			var y = 40;
+
+			if (currentTab == null || !Rules.TechTree.BuildableItems(Game.LocalPlayer, currentTab).Any())
+				ChooseAvailableTab();
+
+			foreach (var q in tabSprites)
+			{
+				var groupName = q.Key;
+				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, groupName).Any())
+				{
+					CheckDeadTab(groupName);
+					continue;
+				}
+
+				var producing = Game.LocalPlayer.Producing(groupName);
+				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
+				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
+
+				buttons.Add(Pair.New(new Rectangle(x, y, 27, 40), 
+					(Action<bool>)(isLmb => currentTab = groupName)));
+				y += 40;
+			}
+
+			chromeRenderer.Flush();
+			DrawBuildPalette(currentTab);
+
+			DrawChat();
+		}
+
+		void CheckDeadTab( string groupName )
+		{
+			var item = Game.LocalPlayer.Producing(groupName);
+			if (item != null)
+				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
+		}
+
+		void ChooseAvailableTab()
+		{
+			currentTab = tabSprites.Select(q => q.Key).FirstOrDefault(
+				t => Rules.TechTree.BuildableItems(Game.LocalPlayer, t).Any());
+		}
+
+		void DrawMoney()
+		{
 			var moneyDigits = Game.LocalPlayer.DisplayCash.ToString();
 			var x = Game.viewport.Width - 155;
 			foreach (var d in moneyDigits.Reverse())
@@ -107,26 +154,11 @@ namespace OpenRa.Game
 				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), 0);
 				x -= 14;
 			}
+		}
 
-			x = Game.viewport.Width - 36 - 3 * 64;
-			var y = 40;
-
-			foreach (var q in tabSprites)
-			{
-				var groupName = q.Key;
-				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, q.Key).Any()) continue;
-				var producing = Game.LocalPlayer.Producing(groupName);
-				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
-
-				buildItems.Add(Pair.New(new Rectangle(x, y, 27, 40), (Action<bool>)(isLmb => currentTab = groupName)));
-				y += 40;
-			}
-
-			chromeRenderer.Flush();
-			DrawBuildPalette(currentTab);
-
-			var chatpos = new int2( 400, Game.viewport.Height - 20 );
+		void DrawChat()
+		{
+			var chatpos = new int2(400, Game.viewport.Height - 20);
 
 			if (Game.chat.isChatting)
 				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), chatpos);
@@ -162,14 +194,12 @@ namespace OpenRa.Game
 
 		void DrawBuildPalette(string queueName)
 		{
+			if (queueName == null) return;
 			var buildItem = Game.LocalPlayer.Producing(queueName);
 			var x = 0;
 			var y = 0;
 
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
-
-			if (!buildableItems.Any())
-				return;
 
 			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
 				.Where(a => Rules.UnitInfo[a].TechLevel != -1)
@@ -183,11 +213,12 @@ namespace OpenRa.Game
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				var isBuildingThis = currentItem != null && currentItem.Item != item;
+				var isBuildingThis = currentItem != null && currentItem.Item == item;
+				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
 
 				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, 0);
 
-				if (!buildableItems.Contains(item) || isBuildingThis)
+				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
 					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 				if (isBuildingThis)
@@ -211,7 +242,7 @@ namespace OpenRa.Game
 				}
 
 				var closureItem = item;
-				buildItems.Add(Pair.New(rect,
+				buttons.Add(Pair.New(rect,
 					(Action<bool>)(isLmb => HandleBuildPalette(closureItem, isLmb))));
 				if (++x == 3) { x = 0; y++; }
 			}
@@ -221,7 +252,7 @@ namespace OpenRa.Game
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				buildPaletteRenderer.DrawSprite(blank, drawPos, 0);
-				buildItems.Add(Pair.New(rect, (Action<bool>)(_ => { })));
+				buttons.Add(Pair.New(rect, (Action<bool>)(_ => { })));
 				if (++x == 3) { x = 0; y++; }
 			}
 
@@ -287,7 +318,7 @@ namespace OpenRa.Game
 
 		public bool HandleInput(MouseInput mi)
 		{
-			var action = buildItems.Where(a => a.First.Contains(mi.Location.ToPoint()))
+			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
 				.Select(a => a.Second).FirstOrDefault();
 
 			if (action == null)
@@ -301,7 +332,7 @@ namespace OpenRa.Game
 
 		public bool HitTest(int2 mousePos)
 		{
-			return buildItems.Any(a => a.First.Contains(mousePos.ToPoint()));
+			return buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 	}
 }
