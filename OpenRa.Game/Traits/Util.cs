@@ -42,6 +42,13 @@ namespace OpenRa.Game.Traits
 			return highest * 8;
 		}
 
+		public static void PlayFacing(this Animation anim, string sequenceName, Func<int> facing)
+		{
+			anim.PlayFetchIndex(sequenceName,
+				() => Traits.Util.QuantizeFacing(facing(), 
+					anim.CurrentSequence.Length));
+		}
+
 		public static int GetNearestFacing( int facing, int desiredFacing )
 		{
 			var turn = desiredFacing - facing;

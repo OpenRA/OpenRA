@@ -16,11 +16,7 @@ namespace OpenRa.Game.Traits
 		void PlayFacingAnim(Actor self)
 		{
 			var unit = self.traits.Get<Unit>();
-
-			anim.PlayFetchIndex("idle",
-				() => Util.QuantizeFacing( 
-					unit.Facing, 
-					anim.CurrentSequence.Length ));
+			anim.PlayFacing("idle", () => unit.Facing);
 		}
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)

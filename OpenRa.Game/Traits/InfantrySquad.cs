@@ -55,7 +55,7 @@ namespace OpenRa.Game.Traits
 			if (currentSequence == seq) return;
 
 			if (isFacing)
-				anim.PlayFetchIndex(seq, () => Util.QuantizeFacing(facing, anim.CurrentSequence.Length));
+				anim.PlayFacing(seq, () => facing );
 			else
 				anim.PlayRepeatingPreservingPosition(seq);
 
@@ -66,8 +66,7 @@ namespace OpenRa.Game.Traits
 		{
 			name = type;
 			anim = new Animation(type);
-			anim.PlayFetchIndex("stand",
-				() => Util.QuantizeFacing(facing, anim.CurrentSequence.Length));
+			anim.PlayFacing("stand", () => facing);
 			location = initialLocation;
 			speed = ((InfantryInfo)Rules.UnitInfo[name]).Speed / 2;
 		}

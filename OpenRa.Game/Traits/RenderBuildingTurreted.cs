@@ -11,8 +11,7 @@ namespace OpenRa.Game.Traits
 
 		void PlayTurretAnim(Actor self, string a)
 		{
-			anim.PlayFetchIndex(a,
-				() => self.traits.Get<Turreted>().turretFacing / 8);
+			anim.PlayFacing(a, () => self.traits.Get<Turreted>().turretFacing);
 		}
 
 		public override void Damaged(Actor self, DamageState ds)

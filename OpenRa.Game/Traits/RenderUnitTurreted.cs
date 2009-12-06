@@ -20,12 +20,12 @@ namespace OpenRa.Game.Traits
 				var attack = self.traits.WithInterface<AttackBase>().First();
 				muzzleFlash = new Animation(self.Info.Name);
 				muzzleFlash.PlayFetchIndex("muzzle",
-					() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 + (int)(attack.primaryRecoil * 5.9f));	
+					() => (Util.QuantizeFacing(self.traits.Get<Turreted>().turretFacing,8)) * 6 
+						+ (int)(attack.primaryRecoil * 5.9f));	
 						/* hack: recoil can be 1.0f, but don't overflow into next anim */
 			}
 
-			turretAnim.PlayFetchIndex("turret",
-				() => self.traits.Get<Turreted>().turretFacing / 8);
+			turretAnim.PlayFacing("turret", () => self.traits.Get<Turreted>().turretFacing);
 		}
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
