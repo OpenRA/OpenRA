@@ -63,6 +63,8 @@ namespace OpenRa.Game.Traits
 			var weapon = Rules.WeaponInfo[weaponName];
 			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return false;
 
+			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
+
 			fireDelay = weapon.ROF;
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
 

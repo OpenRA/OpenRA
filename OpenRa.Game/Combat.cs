@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -49,6 +50,15 @@ namespace OpenRa.Game
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Armor);
 
 			return rawDamage * multiplier;
+		}
+
+		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
+		{
+			var projectile = Rules.ProjectileInfo[weapon.Projectile];
+
+			if (projectile.ASW) return false;	// we don't support ASW yet. change this when subs can be identified.
+			if (projectile.AA && target.traits.Contains<Helicopter>()) return true;
+			return projectile.AG;
 		}
 	}
 }

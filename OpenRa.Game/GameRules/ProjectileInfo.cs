@@ -4,7 +4,7 @@ namespace OpenRa.Game.GameRules
 	class ProjectileInfo
 	{
 		public readonly bool AA = false;
-		public readonly bool AG = false;
+		public readonly bool AG = true;
 		public readonly bool ASW = false;
 		public readonly bool Animates = false;
 		public readonly bool Arcing = false;
