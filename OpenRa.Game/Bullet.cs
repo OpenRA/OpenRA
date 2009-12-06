@@ -60,49 +60,35 @@ namespace OpenRa.Game
 
 			if (t > TotalTime())		/* remove finished bullets */
 			{
-				Game.world.AddFrameEndTask(w =>
-				{
-					w.Remove(this);
-
-					var targetTile = ((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2();
-
-					var isWater = Game.IsWater(targetTile);
-					var hitWater = Game.IsCellBuildable(targetTile, UnitMovementType.Float);
-
-					if (Warhead.Explosion != 0)
-						w.Add(new Explosion(VisualDest, Warhead.Explosion, hitWater));
-
-					var impact = Warhead.ImpactSound;
-					if (hitWater && Warhead.WaterImpactSound != null)
-						impact = Warhead.WaterImpactSound;
-
-					if (impact != null) 
-						Sound.Play(impact+ ".aud");
-
-					if (!isWater)
-						switch( Warhead.Explosion )		/* todo: push the scorch/crater behavior into data */
-						{
-							case 4:
-							case 5:
-								Smudge.AddSmudge(true, targetTile.X, targetTile.Y);
-								break;
-
-							case 3:
-							case 6:
-								Smudge.AddSmudge(false, targetTile.X, targetTile.Y);
-								break;
-						}
-
-					if (Warhead.Ore)
-						Ore.Destroy(targetTile.X, targetTile.Y);
-				});
-
-				var maxSpread = GetMaximumSpread();
-				var hitActors = Game.FindUnitsInCircle(Dest, GetMaximumSpread());
-
-				foreach (var victim in hitActors)
-					victim.InflictDamage(FiredBy, this, (int)GetDamageToInflict(victim));
+				Game.world.AddFrameEndTask(w => w.Remove(this));
+				DoImpact();
 			}
+		}
+
+		void DoImpact()
+		{
+			var targetTile = ((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2();
+
+			var isWater = Game.IsWater(targetTile);
+			var hitWater = Game.IsCellBuildable(targetTile, UnitMovementType.Float);
+
+			if (Warhead.Explosion != 0)
+				Game.world.AddFrameEndTask(
+					w => w.Add(new Explosion(VisualDest, Warhead.Explosion, hitWater)));
+
+			var impactSound = Warhead.ImpactSound;
+			if (hitWater && Warhead.WaterImpactSound != null)
+				impactSound = Warhead.WaterImpactSound;
+			if (impactSound != null) Sound.Play(impactSound + ".aud");
+
+			if (!isWater) Smudge.AddSmudge(targetTile, Warhead);
+			if (Warhead.Ore) Ore.Destroy(targetTile.X, targetTile.Y);
+
+			var maxSpread = GetMaximumSpread();
+			var hitActors = Game.FindUnitsInCircle(Dest, GetMaximumSpread());
+
+			foreach (var victim in hitActors)
+				victim.InflictDamage(FiredBy, this, (int)GetDamageToInflict(victim));
 		}
 
 		const float height = .1f;

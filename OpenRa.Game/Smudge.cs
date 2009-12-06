@@ -1,4 +1,5 @@
 ﻿
+using OpenRa.Game.GameRules;
 namespace OpenRa.Game
 {
 	static class Smudge
@@ -21,6 +22,22 @@ namespace OpenRa.Game
 			var amount = (smudge - firstCrater) % framesPerCrater;
 			if (amount < framesPerCrater - 1)
 				Rules.Map.MapTiles[x, y].smudge++;
+		}
+
+		public static void AddSmudge(int2 targetTile, WarheadInfo warhead)
+		{
+			switch (warhead.Explosion)		/* todo: push the scorch/crater behavior into data */
+			{
+				case 4:
+				case 5:
+					Smudge.AddSmudge(true, targetTile.X, targetTile.Y);
+					break;
+
+				case 3:
+				case 6:
+					Smudge.AddSmudge(false, targetTile.X, targetTile.Y);
+					break;
+			}
 		}
 
 		static int lastSmudge = 0;
