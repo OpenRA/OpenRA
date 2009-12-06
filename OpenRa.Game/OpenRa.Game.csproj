@@ -79,14 +79,17 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
+    <Compile Include="Combat.cs" />
+    <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
-    <Compile Include="IEffect.cs" />
+    <Compile Include="Effects\IEffect.cs" />
     <Compile Include="IOrderSource.cs" />
     <Compile Include="LocalOrderSource.cs" />
+    <Compile Include="Effects\Missile.cs" />
     <Compile Include="NetworkOrderSource.cs" />
     <Compile Include="OrderIO.cs" />
     <Compile Include="OrderManager.cs" />
@@ -104,10 +107,10 @@
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
     <Compile Include="Actor.cs" />
-    <Compile Include="Bullet.cs" />
+    <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Cursor.cs" />
-    <Compile Include="Explosion.cs" />
+    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="GameRules\FieldLoader.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\InfoLoader.cs" />

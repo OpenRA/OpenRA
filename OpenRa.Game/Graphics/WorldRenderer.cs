@@ -5,6 +5,7 @@ using IjwFramework.Types;
 using System.Collections.Generic;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Support;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Graphics
 {
@@ -61,7 +62,7 @@ namespace OpenRa.Game.Graphics
 				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
 				DrawSpriteList(rect, a.RenderRoof(a.self));
 
-			foreach (IEffect e in Game.world.Effects)
+			foreach (var e in Game.world.Effects)
 				DrawSpriteList(rect, e.Render());
 
 			uiOverlay.Draw();

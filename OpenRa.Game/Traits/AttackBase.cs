@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
@@ -63,10 +64,16 @@ namespace OpenRa.Game.Traits
 			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return false;
 
 			fireDelay = weapon.ROF;
+			var projectile = Rules.ProjectileInfo[weapon.Projectile];
 
-			Game.world.Add(new Bullet(weaponName, self.Owner, self,
-				self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2(),
-				target.CenterLocation.ToInt2()));
+			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
+
+			if (projectile.ROT != 0)
+				Game.world.Add(new Missile(weaponName, self.Owner, self,
+					firePos, target));
+			else
+				Game.world.Add(new Bullet(weaponName, self.Owner, self,
+					firePos, target.CenterLocation.ToInt2()));
 
 			return true;
 		}

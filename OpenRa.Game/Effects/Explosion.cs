@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.Graphics;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Effects
 {
 	class Explosion : IEffect
 	{

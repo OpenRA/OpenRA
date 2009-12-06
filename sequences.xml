@@ -603,4 +603,10 @@
   <unit name="mine">
     <sequence name="idle" start="0" length="1" />
   </unit>
+  <unit name="dragon">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="smokey">
+    <sequence name="idle" start="0" length="6" />
+  </unit>
 </sequences>

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Effects
 {
 	class Bullet : IEffect
 	{
-		public Player Owner { get; private set; }
+		readonly Player Owner;
 		readonly Actor FiredBy;
 		readonly WeaponInfo Weapon;
 		readonly ProjectileInfo Projectile;
@@ -40,10 +40,7 @@ namespace OpenRa.Game
 			{
 				anim = new Animation(Projectile.Image);
 				if (Projectile.Rotates)
-					anim.PlayFetchIndex("idle",
-						() => Traits.Util.QuantizeFacing(
-							Traits.Util.GetFacing((dest - src).ToFloat2(), 0),
-							anim.CurrentSequence.Length));
+					Traits.Util.PlayFacing(anim, "idle", () => Traits.Util.GetFacing((dest - src).ToFloat2(), 0));
 				else
 					anim.PlayRepeating("idle");
 			}
@@ -61,34 +58,8 @@ namespace OpenRa.Game
 			if (t > TotalTime())		/* remove finished bullets */
 			{
 				Game.world.AddFrameEndTask(w => w.Remove(this));
-				DoImpact();
+				Combat.DoImpact(Dest, VisualDest, Weapon, Projectile, Warhead, FiredBy);
 			}
-		}
-
-		void DoImpact()
-		{
-			var targetTile = ((1f / Game.CellSize) * Dest.ToFloat2()).ToInt2();
-
-			var isWater = Game.IsWater(targetTile);
-			var hitWater = Game.IsCellBuildable(targetTile, UnitMovementType.Float);
-
-			if (Warhead.Explosion != 0)
-				Game.world.AddFrameEndTask(
-					w => w.Add(new Explosion(VisualDest, Warhead.Explosion, hitWater)));
-
-			var impactSound = Warhead.ImpactSound;
-			if (hitWater && Warhead.WaterImpactSound != null)
-				impactSound = Warhead.WaterImpactSound;
-			if (impactSound != null) Sound.Play(impactSound + ".aud");
-
-			if (!isWater) Smudge.AddSmudge(targetTile, Warhead);
-			if (Warhead.Ore) Ore.Destroy(targetTile.X, targetTile.Y);
-
-			var maxSpread = GetMaximumSpread();
-			var hitActors = Game.FindUnitsInCircle(Dest, GetMaximumSpread());
-
-			foreach (var victim in hitActors)
-				victim.InflictDamage(FiredBy, this, (int)GetDamageToInflict(victim));
 		}
 
 		const float height = .1f;
@@ -115,21 +86,6 @@ namespace OpenRa.Game
 				else
 					yield return Tuple.New(anim.Image, pos, Owner.Palette);
 			}
-		}
-
-		float GetMaximumSpread()
-		{
-			return (int)(Warhead.Spread * Math.Log(Weapon.Damage, 2));
-		}
-
-		float GetDamageToInflict(Actor target)
-		{
-			/* todo: some things can't be damaged AT ALL by certain weapons! */
-			var distance = (target.CenterLocation - Dest).Length;
-			var rawDamage = Weapon.Damage * (float)Math.Exp(-distance / Warhead.Spread);
-			var multiplier = Warhead.EffectivenessAgainst(target.Info.Armor);
-
-			return rawDamage * multiplier;
 		}
 	}
 }

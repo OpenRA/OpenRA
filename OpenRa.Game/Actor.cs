@@ -94,7 +94,7 @@ namespace OpenRa.Game
 
 		public bool IsDead { get { return Health <= 0; } }
 
-		public void InflictDamage(Actor attacker, Bullet inflictor, int damage)
+		public void InflictDamage(Actor attacker, int damage)
 		{
 			/* todo: auto-retaliate, etc */
 			/* todo: death sequence for infantry based on inflictor */
