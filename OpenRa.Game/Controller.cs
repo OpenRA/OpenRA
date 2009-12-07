@@ -5,6 +5,7 @@ using IjwFramework.Types;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game
 {
@@ -67,20 +68,7 @@ namespace OpenRa.Game
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
-					var oldSelection = (orderGenerator is UnitOrderGenerator)
-						? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
-
-					if (dragStart == xy)
-						orderGenerator = new UnitOrderGenerator(mi.Modifiers.HasModifier(Keys.Shift) ? oldSelection.SymmetricDifference(newSelection) : newSelection);
-					else
-						orderGenerator = new UnitOrderGenerator(mi.Modifiers.HasModifier(Keys.Shift) ? oldSelection.Union(newSelection) : newSelection);
-					
-					var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
-						.Where(a => a.traits.Contains<Unit>() 
-							&& a.Owner == Game.LocalPlayer)
-						.FirstOrDefault();
-
-					Sound.PlayVoice("Select", voicedUnit);
+					CombineSelection(newSelection, mi.Modifiers.HasModifier(Keys.Shift), dragStart == xy);
 				}
 
 				dragStart = dragEnd = xy;
@@ -93,6 +81,26 @@ namespace OpenRa.Game
 				ApplyOrders(xy, false);
 
 			return true;
+		}
+
+		void CombineSelection(IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
+		{
+			var oldSelection = (orderGenerator is UnitOrderGenerator)
+							   ? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
+
+			if (isClick)
+				orderGenerator = new UnitOrderGenerator(isCombine 
+					? oldSelection.SymmetricDifference(newSelection) : newSelection);
+			else
+				orderGenerator = new UnitOrderGenerator(isCombine 
+					? oldSelection.Union(newSelection) : newSelection);
+
+			var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
+				.Where(a => a.traits.Contains<Unit>()
+					&& a.Owner == Game.LocalPlayer)
+				.FirstOrDefault();
+
+			Sound.PlayVoice("Select", voicedUnit);
 		}
 
 		public Pair<float2, float2>? SelectionBox
@@ -137,6 +145,31 @@ namespace OpenRa.Game
 			default:
 				return null;
 			}
+		}
+
+		Cache<int, List<Actor>> cache = new Cache<int, List<Actor>>(_ => new List<Actor>());
+
+		public void DoControlGroup(int group, Keys keys)
+		{
+			var uog = orderGenerator as UnitOrderGenerator;
+			if (keys.HasModifier(Keys.Control))
+			{
+				if (uog == null || !uog.selection.Any())
+					return;
+
+				cache[group].Clear();
+				cache[group].AddRange(uog.selection);
+				return;
+			}
+
+			if (keys.HasModifier(Keys.Alt))
+			{
+				// center on this group
+				return;
+			}
+
+			if (uog == null) return;
+			CombineSelection(cache[group], keys.HasModifier(Keys.Shift), false);
 		}
 	}
 }

@@ -139,6 +139,10 @@ namespace OpenRa.Game
 						"ToggleReady", null, null, int2.Zero,
 						Game.LocalPlayer.IsReady ? "ready" : "not ready") { IsImmediate = true });
 			}
+
+			if (!Game.chat.isChatting)
+				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, e.Modifiers );
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
