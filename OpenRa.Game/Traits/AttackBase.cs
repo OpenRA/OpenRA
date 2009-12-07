@@ -11,9 +11,19 @@ namespace OpenRa.Game.Traits
 		protected int primaryFireDelay = 0;
 		protected int secondaryFireDelay = 0;
 
+		int primaryBurst;
+		int secondaryBurst;
+
 		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
 
-		public AttackBase(Actor self) { }
+		public AttackBase(Actor self)
+		{
+			var primaryWeapon = self.Info.Primary != null ? Rules.WeaponInfo[self.Info.Primary] : null;
+			var secondaryWeapon = self.Info.Secondary != null ? Rules.WeaponInfo[self.Info.Secondary] : null;
+
+			primaryBurst = primaryWeapon != null ? primaryWeapon.Burst : 1;
+			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
+		}
 
 		protected bool CanAttack(Actor self)
 		{
@@ -41,7 +51,7 @@ namespace OpenRa.Game.Traits
 			var unit = self.traits.GetOrDefault<Unit>();
 
 			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
-				self.Info.PrimaryOffset))
+				self.Info.PrimaryOffset, ref primaryBurst))
 			{
 				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
@@ -49,7 +59,7 @@ namespace OpenRa.Game.Traits
 			}
 
 			if (self.Info.Secondary != null && CheckFire(self, unit, self.Info.Secondary, ref secondaryFireDelay,
-				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset))
+				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset, ref secondaryBurst))
 			{
 				if (self.Info.SecondaryOffset != null) secondaryRecoil = 1;
 				else primaryRecoil = 1;
@@ -57,7 +67,7 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset)
+		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset, ref int burst)
 		{
 			if (fireDelay > 0) return false;
 			var weapon = Rules.WeaponInfo[weaponName];
@@ -65,7 +75,14 @@ namespace OpenRa.Game.Traits
 
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
-			fireDelay = weapon.ROF;
+			if (--burst > 0)
+				fireDelay = 5;
+			else
+			{
+				fireDelay = weapon.ROF;
+				burst = weapon.Burst;
+			}
+
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
 
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
