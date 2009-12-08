@@ -99,8 +99,6 @@ namespace OpenRa.Game.Traits.Activities
 					unit.Facing,
 					0 );
 
-				Game.UnitInfluence.Update( mobile );
-
 				move.TickMove( self, mobile, this );
 
 				return null;
@@ -129,10 +127,10 @@ namespace OpenRa.Game.Traits.Activities
 					return null;
 				}
 
-				Game.UnitInfluence.Remove( mobile );
+				Game.UnitInfluence.Remove( self, mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
 
-				Game.UnitInfluence.Add( mobile );
+				Game.UnitInfluence.Add( self, mobile );
 				if (newPath.Count != 0)
 					path = newPath;
 
@@ -219,7 +217,6 @@ namespace OpenRa.Game.Traits.Activities
 							moveFraction - moveFractionTotal );
 						mobile.fromCell = mobile.toCell;
 						mobile.toCell = nextCell.Value;
-						Game.UnitInfluence.Update( mobile );
 						return ret;
 					}
 					else
@@ -232,7 +229,6 @@ namespace OpenRa.Game.Traits.Activities
 					unit.Facing,
 					moveFraction - moveFractionTotal );
 				mobile.fromCell = mobile.toCell;
-				Game.UnitInfluence.Update( mobile );
 				return ret2;
 			}
 		}

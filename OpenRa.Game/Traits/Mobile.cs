@@ -7,25 +7,25 @@ namespace OpenRa.Game.Traits
 {
 	class Mobile : IOrder, IOccupySpace
 	{
-		public Actor self;
+		readonly Actor self;
 
 		int2 __fromCell;
 		public int2 fromCell
 		{
 			get { return __fromCell; }
-			set { Game.UnitInfluence.Remove(this); __fromCell = value; Game.UnitInfluence.Add(this); }
+			set { Game.UnitInfluence.Remove(self, this); __fromCell = value; Game.UnitInfluence.Add(self, this); }
 		}
 		public int2 toCell
 		{
 			get { return self.Location; }
-			set { Game.UnitInfluence.Remove(this); self.Location = value; Game.UnitInfluence.Add(this); }
+			set { Game.UnitInfluence.Remove(self, this); self.Location = value; Game.UnitInfluence.Add(self, this); }
 		}
 
 		public Mobile(Actor self)
 		{
 			this.self = self;
-			fromCell = toCell;
-			Game.UnitInfluence.Update(this);
+			__fromCell = toCell;
+			Game.UnitInfluence.Add(self, this);
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)

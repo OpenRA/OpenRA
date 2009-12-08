@@ -12,7 +12,7 @@ namespace OpenRa.Game
 
 		public UnitInfluenceMap()
 		{
-			Game.world.ActorRemoved += a => Remove(a.traits.GetOrDefault<Mobile>());
+			Game.world.ActorRemoved += a => Remove(a, a.traits.WithInterface<IOccupySpace>().FirstOrDefault());
 		}
 
 		public void Tick()
@@ -25,21 +25,18 @@ namespace OpenRa.Game
 		{
 			for( int y = 0 ; y < 128 ; y++ )
 				for( int x = 0 ; x < 128 ; x++ )
-					if( influence[ x, y ] != null && !influence[ x, y ].traits.Get<Mobile>().OccupiedCells().Contains( new int2( x, y ) ) )
+					if( influence[ x, y ] != null && !influence[ x, y ].traits.WithInterface<IOccupySpace>().First().OccupiedCells().Contains( new int2( x, y ) ) )
 						throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
 			foreach( var a in Game.world.Actors )
-			{
-				if( !a.traits.Contains<Mobile>() )
-					continue;
-				foreach( var cell in a.traits.Get<Mobile>().OccupiedCells() )
-					if( influence[ cell.X, cell.Y ] != a )
-						throw new InvalidOperationException( "UIM: Sanity check failed B" );
-			}
+				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
+					foreach( var cell in ios.OccupiedCells() )
+						if( influence[ cell.X, cell.Y ] != a )
+							throw new InvalidOperationException( "UIM: Sanity check failed B" );
 		}
 
 		[Conditional( "SANITY_CHECKS" )]
-		void SanityCheckAdd( Mobile a )
+		void SanityCheckAdd( IOccupySpace a )
 		{
 			foreach( var c in a.OccupiedCells() )
 				if( influence[c.X, c.Y] != null )
@@ -51,30 +48,28 @@ namespace OpenRa.Game
 			return influence[ a.X, a.Y ];
 		}
 
-		public void Add(Mobile a)
+		public void Add( Actor self, IOccupySpace unit )
 		{
-			SanityCheckAdd(a);
-			foreach (var c in a.OccupiedCells())
-				influence[c.X, c.Y] = a.self;
+			SanityCheckAdd( unit );
+			foreach( var c in unit.OccupiedCells() )
+				influence[c.X, c.Y] = self;
 		}
 
-		public void Remove(Mobile a)
+		public void Remove( Actor self, IOccupySpace unit )
 		{
-			if (a == null) return;
-
-			var min = int2.Max(new int2(0, 0), a.self.Location - searchDistance);
-			var max = int2.Min(new int2(128, 128), a.self.Location + searchDistance);
+			var min = int2.Max(new int2(0, 0), self.Location - searchDistance);
+			var max = int2.Min(new int2(128, 128), self.Location + searchDistance);
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (influence[i, j] == a.self)
+					if (influence[i, j] == self)
 						influence[i, j] = null;
 		}
 
-		public void Update(Mobile a)
+		public void Update(Actor self, IOccupySpace unit)
 		{
-			Remove(a);
-			if (!a.self.IsDead) Add(a);
+			Remove(self, unit);
+			if (!self.IsDead) Add(self, unit);
 		}
 	}
 }
