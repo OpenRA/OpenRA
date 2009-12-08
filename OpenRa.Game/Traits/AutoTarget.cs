@@ -13,9 +13,10 @@ namespace OpenRa.Game.Traits
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			
-			if (attack.target == null)
-				attack.target = ChooseTarget(self, 
-					Rules.WeaponInfo[self.Info.Primary].Range);
+			var range = Rules.WeaponInfo[self.Info.Primary].Range;
+			if (attack.target == null || 
+				(attack.target.Location - self.Location).LengthSquared > range * range + 2)
+				attack.target = ChooseTarget(self, range);
 		}
 
 		Actor ChooseTarget(Actor self, float range)
