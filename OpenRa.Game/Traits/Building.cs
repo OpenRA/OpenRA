@@ -2,7 +2,7 @@
 
 namespace OpenRa.Game.Traits
 {
-	class Building : ITick, INotifyBuildComplete
+	class Building : ITick
 	{
 		public readonly BuildingInfo unitInfo;
 
@@ -18,12 +18,6 @@ namespace OpenRa.Game.Traits
 				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
 
 			first = false;
-		}
-
-		public void BuildingComplete(Actor self)
-		{
-			if (self.Owner != null)
-				self.Owner.ChangePower(unitInfo.Power);
 		}
 	}
 }

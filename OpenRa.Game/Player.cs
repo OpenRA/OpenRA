@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -35,15 +36,28 @@ namespace OpenRa.Game
 				ProductionInit( cat );
 		}
 
-		public void ChangePower(int dPower)
+		void UpdatePower()
 		{
-			if (dPower > 0)
-				powerProvided += dPower;
-			if (dPower < 0)
-				powerDrained -= dPower;
+			var oldBalance = powerProvided - powerDrained;
 
-			if (powerDrained > powerProvided)
-				GiveAdvice("lopower1.aud");
+			powerProvided = 0;
+			powerDrained = 0;
+
+			var myBuildings = Game.world.Actors
+				.Where(a => a.Owner == this && a.traits.Contains<Building>());
+
+			foreach (var a in myBuildings)
+			{
+				var bi = a.Info as BuildingInfo;
+				if (bi.Power > 0)		/* todo: is this how real-ra scales it? */
+					powerProvided += (a.Health * bi.Power) / bi.Strength;
+				else 
+					powerDrained -= bi.Power;
+			}
+
+			if (powerProvided - powerDrained < 0)
+				if (powerProvided - powerDrained  != oldBalance)
+					GiveAdvice("lopower1.aud");
 		}
 
 		public float GetSiloFullness()
@@ -99,6 +113,8 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
+			UpdatePower();
+
 			foreach( var p in production )
 				if( p.Value != null )
 					p.Value.Tick( this );
