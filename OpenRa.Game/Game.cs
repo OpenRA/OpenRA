@@ -239,14 +239,6 @@ namespace OpenRa.Game
 				.FirstOrDefault();
 		}
 
-		public static int GetDistanceToBase(int2 b, Player p)
-		{
-			var building = BuildingInfluence.GetNearestBuilding(b);
-			if (building == null || building.Owner != p)
-				return int.MaxValue;
-
-			return BuildingInfluence.GetDistanceToBuilding(b);
-		}
 
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
@@ -282,7 +274,7 @@ namespace OpenRa.Game
 				heuristic = loc =>
 				{
 					var b = Game.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p) return 0;
+					if (b != null && b.Owner == p && (b.Info as BuildingInfo).BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
 					return 1;

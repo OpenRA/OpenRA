@@ -16,5 +16,6 @@ namespace OpenRa.Game.Traits
 		Order IssueOrder( Actor self, int2 xy, bool lmb, Actor underCursor );
 		void ResolveOrder( Actor self, Order order );
 	}
-	interface IProducer { bool Produce( Actor self, UnitInfo produceee ); } 
+	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }
+	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 }
