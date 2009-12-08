@@ -157,6 +157,7 @@
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
+    <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />

@@ -239,7 +239,6 @@ namespace OpenRa.Game
 				.FirstOrDefault();
 		}
 
-
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
