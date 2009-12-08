@@ -243,20 +243,6 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
-		{
-			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());
-			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
-			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
-
-			for (var j = min.Y; j <= max.Y; j++)
-				for (var i = min.X; i <= max.X; i++)
-					if (IsCellBuildable(new int2(i, j), umt))
-						return new int2(i, j);
-
-			return null;
-		}
-
 		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
@@ -267,7 +253,7 @@ namespace OpenRa.Game
 
 		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
 		{
-			var maxDistance = bi.Adjacent + 2;	/* real-ra is weird. this is 1 GAP. */
+			var maxDistance = bi.Adjacent + 1;
 
 			var search = new PathSearch()
 			{
