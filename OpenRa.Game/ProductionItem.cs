@@ -14,6 +14,8 @@ namespace OpenRa.Game
 		public bool Paused = false, Done = false;
 		public Action OnComplete;
 
+		int slowdown = 0;
+
 		public ProductionItem(string item, int time, int cost, Action onComplete)
 		{
 			Item = item;
@@ -32,6 +34,14 @@ namespace OpenRa.Game
 
 			if (Paused) return;
 
+			if (player.GetPowerState() != PowerState.Normal)
+			{
+				if (--slowdown <= 0)
+					slowdown = Rules.General.LowPowerSlowdown;
+				else
+					return;
+			}
+			
 			var costThisFrame = RemainingCost / RemainingTime;
 			if (costThisFrame != 0 && !player.TakeCash(costThisFrame)) return;
 

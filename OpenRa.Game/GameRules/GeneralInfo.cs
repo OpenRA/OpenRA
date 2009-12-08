@@ -121,5 +121,6 @@ namespace OpenRa.Game.GameRules
 		/* OpenRA-specific */
 		public readonly float OreChance;	/* chance of spreading to a
 											 * particular eligible cell */
+		public readonly int LowPowerSlowdown;	/* build time multiplier */
 	}
 }

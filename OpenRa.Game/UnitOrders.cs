@@ -56,9 +56,9 @@ namespace OpenRa.Game
 					string group = Rules.UnitCategory[ order.TargetString ];
 					var ui = Rules.UnitInfo[ order.TargetString ];
 					var time = ui.Cost
-						* .8f /* Game.BuildSpeed */						/* todo: country-specific build speed bonus */
-						* ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
-						/ 1000;
+						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
+						 * (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+						 / 1000;
 
 					time = .08f * time;						/* temporary hax so we can build stuff fast for test */
 

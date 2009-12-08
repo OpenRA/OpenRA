@@ -6,6 +6,8 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
+	enum PowerState { Normal, Low, Critical };
+
 	class Player
 	{
 		public int Palette;
@@ -63,6 +65,13 @@ namespace OpenRa.Game
 		public float GetSiloFullness()
 		{
 			return (float)Ore / GetOreCapacity();
+		}
+
+		public PowerState GetPowerState()
+		{
+			if (powerProvided >= powerDrained) return PowerState.Normal;
+			if (powerProvided > powerDrained / 2) return PowerState.Low;
+			return PowerState.Critical;
 		}
 
 		public int GetOreCapacity()
