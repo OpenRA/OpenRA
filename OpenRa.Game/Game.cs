@@ -70,7 +70,7 @@ namespace OpenRa.Game
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
 
-			foreach (TreeReference treeReference in Rules.Map.Trees)
+			foreach (var treeReference in Rules.Map.Trees)
 				world.Add(new Actor(Rules.UnitInfo[treeReference.Image], 
 					new int2(treeReference.Location),
 					null));
@@ -104,7 +104,7 @@ namespace OpenRa.Game
 
 			foreach (var s in toLoad)
 			{
-				//num=owner,type,health,location,facing,action,trigger
+				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
 				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),

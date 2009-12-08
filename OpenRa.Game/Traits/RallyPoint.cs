@@ -20,8 +20,8 @@ namespace OpenRa.Game.Traits
 		{
 			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
 			if (uog != null && self.Owner == Game.LocalPlayer && uog.selection.Contains(self))
-				yield return Util.Centered( self,
-					anim.Image, Game.CellSize * (new float2(.5f, .5f) + rallyPoint.ToFloat2()));
+				yield return Util.Centered(self,
+					anim.Image, Util.CenterOfCell(rallyPoint));
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)

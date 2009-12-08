@@ -44,7 +44,7 @@ namespace OpenRa.Game.Traits
 
 			if (self.Location != targetLocation)
 			{
-				var dist = Game.CellSize * (targetLocation + new float2(.5f,.5f)) - self.CenterLocation;
+				var dist = Util.CenterOfCell(targetLocation) - self.CenterLocation;
 				var desiredFacing = Util.GetFacing(dist, unit.Facing);
 				Util.TickFacing(ref unit.Facing, desiredFacing,
 					self.Info.ROT);

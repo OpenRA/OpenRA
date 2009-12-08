@@ -90,6 +90,16 @@ namespace OpenRa.Game.Traits
 			return RotateVectorByFacing(new float2(0, recoil * self.Info.Recoil), quantizedFacing, .7f);
 		}
 
+		public static float2 CenterOfCell(int2 loc)
+		{
+			return new float2(12, 12) + Game.CellSize * (float2)loc;
+		}
+
+		public static float2 BetweenCells(int2 from, int2 to)
+		{
+			return 0.5f * (CenterOfCell(from) + CenterOfCell(to));
+		}
+
 		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)
 		{
 			if( unit == null ) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */

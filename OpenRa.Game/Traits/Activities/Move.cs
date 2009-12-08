@@ -93,8 +93,8 @@ namespace OpenRa.Game.Traits.Activities
 			{
 				mobile.toCell = nextCell.Value;
 				move = new MoveFirstHalf(
-					CenterOfCell( mobile.fromCell ),
-					BetweenCells( mobile.fromCell, mobile.toCell ),
+					Util.CenterOfCell( mobile.fromCell ),
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					unit.Facing,
 					unit.Facing,
 					0 );
@@ -140,16 +140,6 @@ namespace OpenRa.Game.Traits.Activities
 			}
 			path.RemoveAt( path.Count - 1 );
 			return nextCell;
-		}
-
-		static float2 CenterOfCell( int2 loc )
-		{
-			return new float2( 12, 12 ) + Game.CellSize * (float2)loc;
-		}
-
-		static float2 BetweenCells( int2 from, int2 to )
-		{
-			return 0.5f * ( CenterOfCell( from ) + CenterOfCell( to ) );
 		}
 
 		public void Cancel( Actor self )
@@ -222,8 +212,8 @@ namespace OpenRa.Game.Traits.Activities
 					if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 					{
 						var ret = new MoveFirstHalf(
-							BetweenCells( mobile.fromCell, mobile.toCell ),
-							BetweenCells( mobile.toCell, nextCell.Value ),
+							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
+							Util.BetweenCells( mobile.toCell, nextCell.Value ),
 							unit.Facing,
 							Util.GetNearestFacing( unit.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, unit.Facing ) ),
 							moveFraction - moveFractionTotal );
@@ -236,8 +226,8 @@ namespace OpenRa.Game.Traits.Activities
 						parent.path.Add( nextCell.Value );
 				}
 				var ret2 = new MoveSecondHalf(
-					BetweenCells( mobile.fromCell, mobile.toCell ),
-					CenterOfCell( mobile.toCell ),
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
+					Util.CenterOfCell( mobile.toCell ),
 					unit.Facing,
 					unit.Facing,
 					moveFraction - moveFractionTotal );
@@ -256,7 +246,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
-				self.CenterLocation = CenterOfCell( mobile.toCell );
+				self.CenterLocation = Util.CenterOfCell( mobile.toCell );
 				mobile.fromCell = mobile.toCell;
 				return null;
 			}
