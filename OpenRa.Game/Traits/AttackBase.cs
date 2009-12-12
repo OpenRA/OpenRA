@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using OpenRa.Game.Effects;
+using System.Collections.Generic;
+using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
@@ -35,6 +38,8 @@ namespace OpenRa.Game.Traits
 			return (primaryFireDelay > 0) || (secondaryFireDelay > 0);
 		}
 
+		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
+
 		public virtual void Tick(Actor self)
 		{
 			if (primaryFireDelay > 0) --primaryFireDelay;
@@ -44,6 +49,23 @@ namespace OpenRa.Game.Traits
 			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
 
 			if (target != null && target.IsDead) target = null;		/* he's dead, jim. */
+
+			for (var i = 0; i < delayedActions.Count; i++)
+			{
+				var x = delayedActions[i];
+				if (--x.First <= 0)
+					x.Second();
+				delayedActions[i] = x;
+			}
+			delayedActions.RemoveAll(a => a.First <= 0);
+		}
+
+		void ScheduleDelayedAction(int t, Action a)
+		{
+			if (t > 0)
+				delayedActions.Add(Pair.New(t, a));
+			else
+				a();
 		}
 
 		public void DoAttack(Actor self)
@@ -83,19 +105,20 @@ namespace OpenRa.Game.Traits
 				burst = weapon.Burst;
 			}
 
-			var projectile = Rules.ProjectileInfo[weapon.Projectile];
-
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
+			var thisTarget = target;
+			ScheduleDelayedAction(self.Info.FireDelay, () =>
+			{
+				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
+					Game.world.Add(new Missile(weaponName, self.Owner, self,
+						firePos, thisTarget));
+				else
+					Game.world.Add(new Bullet(weaponName, self.Owner, self,
+						firePos, thisTarget.CenterLocation.ToInt2()));
 
-			if (projectile.ROT != 0)
-				Game.world.Add(new Missile(weaponName, self.Owner, self,
-					firePos, target));
-			else
-				Game.world.Add(new Bullet(weaponName, self.Owner, self,
-					firePos, target.CenterLocation.ToInt2()));
-
-			if (!string.IsNullOrEmpty(weapon.Report))
-				Sound.Play(weapon.Report + ".aud");
+				if (!string.IsNullOrEmpty(weapon.Report))
+					Sound.Play(weapon.Report + ".aud");
+			});
 
 			foreach (var na in self.traits.WithInterface<INotifyAttack>())
 				na.Attacking(self);

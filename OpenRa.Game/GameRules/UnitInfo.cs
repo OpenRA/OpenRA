@@ -49,6 +49,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int SelectionPriority = 10;
 		public readonly int InitialFacing = 128;
 		public readonly bool Selectable = true;
+		public readonly int FireDelay = 0;
 
 		public UnitInfo(string name) { Name = name; }
 	}
