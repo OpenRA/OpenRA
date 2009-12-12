@@ -50,9 +50,6 @@ namespace OpenRa.Game.Effects
 
 		public void Tick()
 		{
-			if (t == 0)
-				Sound.Play(Weapon.Report + ".aud");
-
 			t += 40;
 
 			Traits.Util.TickFacing(ref Facing, 

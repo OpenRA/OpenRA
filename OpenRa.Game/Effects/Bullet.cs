@@ -50,10 +50,6 @@ namespace OpenRa.Game.Effects
 
 		public void Tick()
 		{
-			if (t == 0)
-				if (!string.IsNullOrEmpty(Weapon.Report))
-					Sound.Play(Weapon.Report + ".aud");
-
 			t += 40;
 
 			if (t > TotalTime())		/* remove finished bullets */

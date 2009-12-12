@@ -94,6 +94,9 @@ namespace OpenRa.Game.Traits
 				Game.world.Add(new Bullet(weaponName, self.Owner, self,
 					firePos, target.CenterLocation.ToInt2()));
 
+			if (!string.IsNullOrEmpty(weapon.Report))
+				Sound.Play(weapon.Report + ".aud");
+
 			foreach (var na in self.traits.WithInterface<INotifyAttack>())
 				na.Attacking(self);
 

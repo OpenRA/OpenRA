@@ -25,7 +25,7 @@ namespace OpenRa.Game
 			ActorID = Game.world.NextAID();
 			Info = (UnitInfo)info; // temporary
 			Location = location;
-			CenterLocation = new float2( 12, 12 ) + Game.CellSize * (float2)Location;
+			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 			Health = Info.Strength;	/* todo: handle cases where this is not true! */
 
