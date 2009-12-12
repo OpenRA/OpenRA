@@ -51,7 +51,8 @@ namespace OpenRa.Game.Effects
 		public void Tick()
 		{
 			if (t == 0)
-				Sound.Play(Weapon.Report + ".aud");
+				if (!string.IsNullOrEmpty(Weapon.Report))
+					Sound.Play(Weapon.Report + ".aud");
 
 			t += 40;
 
