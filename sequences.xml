@@ -407,6 +407,14 @@
     <sequence name="run-5" start="46" length="6" />
     <sequence name="run-6" start="52" length="6" />
     <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="8" />
+    <sequence name="shoot-1" start="72" length="8" />
+    <sequence name="shoot-2" start="80" length="8" />
+    <sequence name="shoot-3" start="88" length="8" />
+    <sequence name="shoot-4" start="96" length="8" />
+    <sequence name="shoot-5" start="104" length="8" />
+    <sequence name="shoot-6" start="112" length="8" />
+    <sequence name="shoot-7" start="120" length="8" />
   </unit>
   <unit name="e6">
     <sequence name="stand" start="0" length="8" />

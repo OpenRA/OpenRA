@@ -18,4 +18,5 @@ namespace OpenRa.Game.Traits
 	}
 	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }
 	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
+	interface INotifyAttack { void Attacking(Actor self); }
 }

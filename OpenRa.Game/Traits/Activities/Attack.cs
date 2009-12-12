@@ -27,10 +27,12 @@ namespace OpenRa.Game.Traits.Activities
 				return new Move( Target, Range ) { NextActivity = this };
 
 			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
-			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
+			var renderUnit = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var numDirs = (renderUnit != null)
+				? renderUnit.anim.CurrentSequence.Length : 8;
 
-			if (Util.QuantizeFacing(unit.Facing, renderUnit.anim.CurrentSequence.Length) 
-				!= Util.QuantizeFacing(desiredFacing, renderUnit.anim.CurrentSequence.Length))
+			if (Util.QuantizeFacing(unit.Facing, numDirs) 
+				!= Util.QuantizeFacing(desiredFacing, numDirs))
 			{
 				return new Turn( desiredFacing ) { NextActivity = this };
 			}

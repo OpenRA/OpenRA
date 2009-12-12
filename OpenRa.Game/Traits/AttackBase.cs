@@ -94,6 +94,9 @@ namespace OpenRa.Game.Traits
 				Game.world.Add(new Bullet(weaponName, self.Owner, self,
 					firePos, target.CenterLocation.ToInt2()));
 
+			foreach (var na in self.traits.WithInterface<INotifyAttack>())
+				na.Attacking(self);
+
 			return true;
 		}
 
