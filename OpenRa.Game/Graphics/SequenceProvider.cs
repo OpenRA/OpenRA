@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using OpenRa.FileFormats;
+using System;
 
 namespace OpenRa.Game.Graphics
 {
@@ -56,7 +57,12 @@ namespace OpenRa.Game.Graphics
 
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
-			return units[unitName][sequenceName];
+			try { return units[unitName][sequenceName]; }
+			catch (KeyNotFoundException e)
+			{
+				throw new InvalidOperationException(
+					"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
+			}
 		}
 
 		public static CursorSequence GetCursorSequence(string cursor)
