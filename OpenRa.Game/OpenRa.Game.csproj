@@ -171,6 +171,7 @@
     <Compile Include="Traits\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\RenderSimple.cs" />
+    <Compile Include="Traits\RenderSubmarine.cs" />
     <Compile Include="Traits\RenderUnit.cs" />
     <Compile Include="Traits\RenderUnitMuzzleFlash.cs" />
     <Compile Include="Traits\RenderUnitReload.cs" />

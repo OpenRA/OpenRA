@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
-using OpenRa.Game.Effects;
 using System.Collections.Generic;
 using IjwFramework.Types;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {

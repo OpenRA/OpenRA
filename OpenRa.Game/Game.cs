@@ -52,7 +52,7 @@ namespace OpenRa.Game
 			Rules.LoadRules(mapName, useAftermath);
 
 			for (int i = 0; i < 8; i++)
-				players[i] = new Player(i, i, "Multi{0}".F(i), Race.Allies);
+				players[i] = new Player(i, i, "Multi{0}".F(i), Race.Soviet);
 
 			localPlayerIndex = localPlayer;
 
