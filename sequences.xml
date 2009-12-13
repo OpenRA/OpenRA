@@ -652,4 +652,7 @@
     <sequence name="run-6" start="44" length="6" />
     <sequence name="run-7" start="50" length="6" />
   </unit>
+  <unit name="missile">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
 </sequences>

@@ -129,6 +129,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (lmb || underCursor == null) return null;
 			if (underCursor.Owner == self.Owner) return null;
+			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 			return Order.Attack(self, underCursor);
 		}
 

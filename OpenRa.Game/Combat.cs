@@ -56,9 +56,20 @@ namespace OpenRa.Game
 		{
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
 
-			if (projectile.ASW) return false;	// we don't support ASW yet. change this when subs can be identified.
+			if (projectile.ASW && target.traits.Contains<RenderSubmarine>()) return true;
 			if (projectile.AA && target.traits.Contains<Helicopter>()) return true;
+			if (projectile.UnderWater && !target.Info.WaterBound) return false;
 			return projectile.AG;
+		}
+
+		public static bool HasAnyValidWeapons(Actor self, Actor target)
+		{
+			if (self.Info.Primary != null &&
+				WeaponValidForTarget(Rules.WeaponInfo[self.Info.Primary], target)) return true;
+			if (self.Info.Secondary != null &&
+				WeaponValidForTarget(Rules.WeaponInfo[self.Info.Secondary], target)) return true;
+
+			return false;
 		}
 	}
 }

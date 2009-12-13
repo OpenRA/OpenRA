@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 			if (remainingSurfaceTime <= 0)
 				OnSurface();
 
-			remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 / 25);
+			remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
 		}
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)

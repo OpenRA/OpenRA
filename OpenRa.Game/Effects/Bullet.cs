@@ -80,7 +80,7 @@ namespace OpenRa.Game.Effects
 					yield return Tuple.New(anim.Image, highPos, Owner.Palette);
 				}
 				else
-					yield return Tuple.New(anim.Image, pos, Owner.Palette);
+					yield return Tuple.New(anim.Image, pos, Projectile.UnderWater ? 8 : Owner.Palette);
 			}
 		}
 	}
