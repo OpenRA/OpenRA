@@ -12,6 +12,7 @@ namespace SequenceEditor
 {
 	static class Program
 	{
+		static string XmlFilename;
 		public static string UnitName;
 		public static XmlDocument Doc;
 		public static Dictionary<string, Bitmap[]> Shps = new Dictionary<string, Bitmap[]>();
@@ -61,7 +62,7 @@ namespace SequenceEditor
 				e.AppendChild(seqnode);
 			}
 
-			Doc.Save("sequences.xml");
+			Doc.Save(XmlFilename);
 		}
 
 		[STAThread]
@@ -80,12 +81,13 @@ namespace SequenceEditor
 					throw new InvalidOperationException( "Unable to load MIX files" );
 			}
 
+			XmlFilename = args.FirstOrDefault( x => x.EndsWith(".xml") ) ?? "sequences.xml";
 			Doc = new XmlDocument(); 
-			Doc.Load("sequences.xml");
+			Doc.Load(XmlFilename);
 
 			Pal = new Palette(FileSystem.Open("temperat.pal"));
 
-			UnitName = args.FirstOrDefault();
+			UnitName = args.FirstOrDefault( x => !x.EndsWith(".xml") );
 			if (UnitName == null)
 				UnitName = GetTextForm.GetString("Unit to edit?", "e1");
 			if (UnitName == null)
