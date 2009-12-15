@@ -6,9 +6,9 @@ namespace OpenRa.Game.Traits
 	{
 		public McvDeploy(Actor self) { }
 
-		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (lmb) return null;
+			if (mi.Button == MouseButton.Left) return null;
 			if( xy != self.Location ) return null;
 
 			return Order.DeployMcv(self);

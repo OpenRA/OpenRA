@@ -8,6 +8,7 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Support;
 using OpenRa.Game.Traits;
+using System.Windows.Forms;
 
 namespace OpenRa.Game
 {
@@ -47,7 +48,8 @@ namespace OpenRa.Game
 
 		public static bool skipMakeAnims = true;
 
-		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, bool useAftermath)
+		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
+			int localPlayer, bool useAftermath, Controller controller)
 		{
 			Rules.LoadRules(mapName, useAftermath);
 			world = new World();
@@ -55,7 +57,7 @@ namespace OpenRa.Game
 			for( int i = 0 ; i < 8 ; i++ )
 			{
 				var a = new Actor( null, new int2( int.MaxValue, int.MaxValue ), null );
-				players[ i ] = new Player( a, i, i, "Multi{0}".F( i ), Race.Soviet );
+				players[ i ] = new Player( a, i, i, "Multi{0}".F( i ), Race.Allies );
 				a.Owner = players[ i ];
 				a.traits.Add( new Traits.ProductionQueue( a ) );
 				Game.world.Add( a );
@@ -65,7 +67,7 @@ namespace OpenRa.Game
 
 			Rules.Map.InitOreDensity();
 
-			controller = new Controller();
+			Game.controller = controller;
 			worldRenderer = new WorldRenderer( renderer );
 
 			SequenceProvider.Initialize(useAftermath);

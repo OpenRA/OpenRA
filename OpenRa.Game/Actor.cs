@@ -77,7 +77,7 @@ namespace OpenRa.Game
 			return traits.WithInterface<Traits.IRender>().SelectMany( x => x.Render( this ) );
 		}
 
-		public Order Order( int2 xy, bool lmb )
+		public Order Order( int2 xy, MouseInput mi )
 		{
 			if (Owner != Game.LocalPlayer)
 				return null;
@@ -91,7 +91,7 @@ namespace OpenRa.Game
 				underCursor = null;
 
 			return traits.WithInterface<Traits.IOrder>()
-				.Select( x => x.IssueOrder( this, xy, lmb, underCursor ) )
+				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}
 

@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 					p.Value.Tick( self.Owner );
 		}
 
-		public Order IssueOrder( Actor self, int2 xy, bool lmb, Actor underCursor )
+		public Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor )
 		{
 			// production isn't done by clicks in the world; the chrome handles it.
 			return null;

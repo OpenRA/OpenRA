@@ -6,6 +6,7 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
 using IjwFramework.Collections;
+using System;
 
 namespace OpenRa.Game
 {
@@ -13,13 +14,20 @@ namespace OpenRa.Game
 	{
 		public IOrderGenerator orderGenerator;
 
+		readonly Func<Modifiers> GetModifierKeys;
+
+		public Controller(Func<Modifiers> getModifierKeys)
+		{
+			GetModifierKeys = getModifierKeys;
+		}
+
 		List<Order> recentOrders = new List<Order>();
 
-		void ApplyOrders(float2 xy, bool left)
+		void ApplyOrders(float2 xy, MouseInput mi)
 		{
 			var doVoice = null as Actor;
 			if (orderGenerator != null)
-				foreach (var order in orderGenerator.Order(xy.ToInt2(), left))
+				foreach (var order in orderGenerator.Order(xy.ToInt2(), mi))
 				{
 					AddOrder( order );
 					if (order.Subject != null && order.Player == Game.LocalPlayer)
@@ -34,18 +42,10 @@ namespace OpenRa.Game
 
 		public List<Order> GetRecentOrders( bool imm )
 		{
-			if (imm)
-			{
-				var result = recentOrders.Where(o => o.IsImmediate).ToList();
-				recentOrders.RemoveAll(o => o.IsImmediate);
-				return result;
-			}
-			else
-			{
-				var result = recentOrders.Where(o => !o.IsImmediate).ToList();
-				recentOrders.RemoveAll(o => !o.IsImmediate);
-				return result;
-			}
+			Func<Order, bool> p = o => o.IsImmediate ^ !imm;
+			var result = recentOrders.Where(p).ToList();
+			recentOrders.RemoveAll(o => p(o));		// ffs.
+			return result;
 		}
 
 		float2 dragStart, dragEnd;
@@ -53,32 +53,32 @@ namespace OpenRa.Game
 		{
 			var xy = Game.viewport.ViewToWorld(mi);
 
-			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Down)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!(orderGenerator is PlaceBuilding))
 					dragStart = dragEnd = xy;
-				ApplyOrders(xy, true);
+				ApplyOrders(xy, mi);
 			}
 
-			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Move)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
 
-			if (mi.Button == MouseButtons.Left && mi.Event == MouseInputEvent.Up)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				if (!(orderGenerator is PlaceBuilding))
 				{
 					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
-					CombineSelection(newSelection, mi.Modifiers.HasModifier(Keys.Shift), dragStart == xy);
+					CombineSelection(newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
 				dragStart = dragEnd = xy;
 			}
 
-			if (mi.Button == MouseButtons.None && mi.Event == MouseInputEvent.Move)
+			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
 				dragStart = dragEnd = xy;
 
-			if (mi.Button == MouseButtons.Right && mi.Event == MouseInputEvent.Down)
-				ApplyOrders(xy, false);
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+				ApplyOrders(xy, mi);
 
 			return true;
 		}
@@ -116,9 +116,11 @@ namespace OpenRa.Game
 
 		public Cursor ChooseCursor()
 		{
-			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(), false)
-				.Where( o => o.Validate() )
-				.Select(o => CursorForOrderString( o.OrderString, o.Subject, o.TargetLocation ))
+			var mods = GetModifierKeys();
+			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(),
+				new MouseInput { Button = MouseButton.Right, Modifiers = mods })
+				.Where(o => o.Validate())
+				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
 				.FirstOrDefault(a => a != null) : null;
 
 			return c ?? (Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
@@ -149,10 +151,10 @@ namespace OpenRa.Game
 
 		Cache<int, List<Actor>> cache = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(int group, Keys keys)
+		public void DoControlGroup(int group, Modifiers mods)
 		{
 			var uog = orderGenerator as UnitOrderGenerator;
-			if (keys.HasModifier(Keys.Control))
+			if (mods.HasModifier(Modifiers.Ctrl))
 			{
 				if (uog == null || !uog.selection.Any())
 					return;
@@ -162,14 +164,14 @@ namespace OpenRa.Game
 				return;
 			}
 
-			if (keys.HasModifier(Keys.Alt))
+			if (mods.HasModifier(Modifiers.Alt))
 			{
 				Game.viewport.Center(cache[group]);
 				return;
 			}
 
 			if (uog == null) return;
-			CombineSelection(cache[group], keys.HasModifier(Keys.Shift), false);
+			CombineSelection(cache[group], mods.HasModifier(Modifiers.Shift), false);
 		}
 	}
 }

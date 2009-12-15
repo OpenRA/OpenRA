@@ -24,9 +24,9 @@ namespace OpenRa.Game.Traits
 					anim.Image, Util.CenterOfCell(rallyPoint));
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (lmb || underCursor != null) return null;
+			if (mi.Button == MouseButton.Left || underCursor != null) return null;
 			return Order.SetRallyPoint(self, xy);
 		}
 

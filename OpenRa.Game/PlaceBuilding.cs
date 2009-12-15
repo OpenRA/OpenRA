@@ -14,9 +14,9 @@ namespace OpenRa.Game
 			Building = (BuildingInfo)Rules.UnitInfo[ name ];
 		}
 
-		public IEnumerable<Order> Order(int2 xy, bool lmb)
+		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
-			if( lmb )
+			if( mi.Button == MouseButton.Left )
 			{
 				if( !Game.CanPlaceBuilding( Building, xy, null, true ) )
 					yield break;

@@ -1,5 +1,4 @@
-﻿
-namespace OpenRa.Game.Traits
+﻿namespace OpenRa.Game.Traits
 {
 	class Harvester : IOrder
 	{
@@ -25,9 +24,9 @@ namespace OpenRa.Game.Traits
 			gemsCarried = 0;
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (lmb) return null;
+			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor != null 
 				&& underCursor.Owner == self.Owner 

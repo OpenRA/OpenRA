@@ -13,11 +13,11 @@ namespace OpenRa.Game
 			selection = selected.ToList();
 		}
 
-		public IEnumerable<Order> Order( int2 xy, bool lmb )
+		public IEnumerable<Order> Order( int2 xy, MouseInput mi )
 		{
 			foreach( var unit in selection )
 			{
-				var ret = unit.Order( xy, lmb );
+				var ret = unit.Order( xy, mi );
 				if( ret != null )
 					yield return ret;
 			}

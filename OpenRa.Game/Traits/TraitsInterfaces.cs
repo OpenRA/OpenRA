@@ -13,7 +13,7 @@ namespace OpenRa.Game.Traits
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface IOrder
 	{
-		Order IssueOrder( Actor self, int2 xy, bool lmb, Actor underCursor );
+		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
 		void ResolveOrder( Actor self, Order order );
 	}
 	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }

@@ -12,7 +12,7 @@ namespace OpenRa.Game
 			return string.Format(fmt, args);
 		}
 
-		public static bool HasModifier(this Keys k, Keys mod)
+		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
 			return (k & mod) == mod;
 		}

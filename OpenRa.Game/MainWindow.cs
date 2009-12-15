@@ -58,8 +58,10 @@ namespace OpenRa.Game
 			renderer = new Renderer( this, GetResolution( settings ), windowed );
 			SheetBuilder.Initialize( renderer );
 
+			var controller = new Controller( () => (Modifiers)(int)ModifierKeys );	/* a bit of insane input routing */
+
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
-				settings.GetValue("player", 1), useAftermath);
+				settings.GetValue("player", 1), useAftermath, controller );
 
 			SequenceProvider.ForcePrecache();
 
@@ -79,18 +81,23 @@ namespace OpenRa.Game
 
 		int2 lastPos;
 
+		void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e)
+		{
+			Game.viewport.DispatchMouseInput(
+				new MouseInput
+				{
+					Button = (MouseButton)(int)e.Button,
+					Event = ev,
+					Location = new int2(e.Location),
+					Modifiers = (Modifiers)(int)ModifierKeys,
+				});
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
 			lastPos = new int2(e.Location);
-
-			Game.viewport.DispatchMouseInput(new MouseInput
-			{
-				Button = e.Button,
-				Event = MouseInputEvent.Down,
-				Location = new int2(e.Location),
-				Modifiers = ModifierKeys,
-			});
+			DispatchMouseInput(MouseInputEvent.Down, e);
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -104,26 +111,13 @@ namespace OpenRa.Game
 				lastPos = p;
 			}
 
-			Game.viewport.DispatchMouseInput(new MouseInput
-			{
-				Button = e.Button,
-				Event = MouseInputEvent.Move,
-				Location = new int2(e.Location),
-				Modifiers = ModifierKeys,
-			});
+			DispatchMouseInput(MouseInputEvent.Move, e);
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
-
-			Game.viewport.DispatchMouseInput(new MouseInput
-			{
-				Button = e.Button,
-				Event = MouseInputEvent.Up,
-				Location = new int2(e.Location),
-				Modifiers = ModifierKeys,
-			});
+			DispatchMouseInput(MouseInputEvent.Up, e);
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
@@ -141,7 +135,7 @@ namespace OpenRa.Game
 
 			if (!Game.chat.isChatting)
 				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
-					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, e.Modifiers );
+					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
@@ -155,12 +149,30 @@ namespace OpenRa.Game
 		}
 	}
 
+	[Flags]
+	enum MouseButton
+	{
+		None = (int)MouseButtons.None,
+		Left = (int)MouseButtons.Left,
+		Right = (int)MouseButtons.Right,
+		Middle = (int)MouseButtons.Middle,
+	}
+
+	[Flags]
+	enum Modifiers
+	{
+		None = (int)Keys.None,
+		Shift = (int)Keys.Shift,
+		Alt = (int)Keys.Alt,
+		Ctrl = (int)Keys.Control,
+	}
+
 	struct MouseInput
 	{
 		public MouseInputEvent Event;
 		public int2 Location;
-		public MouseButtons Button;
-		public Keys Modifiers;
+		public MouseButton Button;
+		public Modifiers Modifiers;
 	}
 
 	enum MouseInputEvent { Down, Move, Up };

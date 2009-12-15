@@ -331,7 +331,7 @@ namespace OpenRa.Game
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down)
-				action(mi.Button == MouseButtons.Left);
+				action(mi.Button == MouseButton.Left);
 
 			return true;
 		}

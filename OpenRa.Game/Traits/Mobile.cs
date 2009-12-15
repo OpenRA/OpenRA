@@ -28,9 +28,9 @@ namespace OpenRa.Game.Traits
 			Game.UnitInfluence.Add(self, this);
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (lmb) return null;
+			if (mi.Button == MouseButton.Left) return null;
 			if (underCursor != null) return null;
 			if (xy == toCell) return null;
 			return Order.Move(self, xy);

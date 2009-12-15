@@ -125,9 +125,9 @@ namespace OpenRa.Game.Traits
 			return true;
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, bool lmb, Actor underCursor)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (lmb || underCursor == null) return null;
+			if (mi.Button == MouseButton.Left || underCursor == null) return null;
 			if (underCursor.Owner == self.Owner) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 			return Order.Attack(self, underCursor);
