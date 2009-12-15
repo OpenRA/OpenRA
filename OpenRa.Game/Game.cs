@@ -50,9 +50,16 @@ namespace OpenRa.Game
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, bool useAftermath)
 		{
 			Rules.LoadRules(mapName, useAftermath);
+			world = new World();
 
-			for (int i = 0; i < 8; i++)
-				players[i] = new Player(i, i, "Multi{0}".F(i), Race.Soviet);
+			for( int i = 0 ; i < 8 ; i++ )
+			{
+				var a = new Actor( null, new int2( int.MaxValue, int.MaxValue ), null );
+				players[ i ] = new Player( a, i, i, "Multi{0}".F( i ), Race.Soviet );
+				a.Owner = players[ i ];
+				a.traits.Add( new Traits.ProductionQueue( a ) );
+				Game.world.Add( a );
+			}
 
 			localPlayerIndex = localPlayer;
 
@@ -64,7 +71,6 @@ namespace OpenRa.Game
 			SequenceProvider.Initialize(useAftermath);
 			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
 
-			world = new World();
 			Sound.Initialize();
 
 			BuildingInfluence = new BuildingInfluenceMap();

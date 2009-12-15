@@ -135,8 +135,7 @@ namespace OpenRa.Game
 			{
 				Game.LocalPlayer.IsReady ^= true;
 				Game.controller.AddOrder(
-					new Order(Game.LocalPlayer,
-						"ToggleReady", null, null, int2.Zero,
+					new Order( "ToggleReady", Game.LocalPlayer.PlayerActor, null, int2.Zero,
 						Game.LocalPlayer.IsReady ? "ready" : "not ready") { IsImmediate = true });
 			}
 

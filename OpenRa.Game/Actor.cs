@@ -27,20 +27,24 @@ namespace OpenRa.Game
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
-			Health = Info.Strength;	/* todo: handle cases where this is not true! */
 
-			if( Info.Traits != null )
+			if( Info != null )
 			{
-				foreach( var traitName in Info.Traits )
+				Health = Info.Strength;	/* todo: handle cases where this is not true! */
+
+				if( Info.Traits != null )
 				{
-					var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
-					var ctor = type.GetConstructor( new[] { typeof( Actor ) } );
-					traits.Add( type, ctor.Invoke( new object[] { this } ) );
+					foreach( var traitName in Info.Traits )
+					{
+						var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
+						var ctor = type.GetConstructor( new[] { typeof( Actor ) } );
+						traits.Add( type, ctor.Invoke( new object[] { this } ) );
+					}
 				}
+				else
+					throw new InvalidOperationException( "No Actor traits for " + Info.Name
+						+ "; add Traits= to units.ini for appropriate unit" );
 			}
-			else
-				throw new InvalidOperationException( "No Actor traits for " + Info.Name 
-					+ "; add Traits= to units.ini for appropriate unit" );
 		}
 
 		public void Tick()
@@ -57,7 +61,16 @@ namespace OpenRa.Game
 		}
 
 		public float2 CenterLocation;
-		public float2 SelectedSize { get { return Render().First().a.size; } }
+		public float2 SelectedSize
+		{
+			get
+			{
+				var firstSprite = Render().FirstOrDefault();
+				if( firstSprite == null )
+					return new float2( 0, 0 );
+				return firstSprite.a.size;
+			}
+		}
 
 		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{

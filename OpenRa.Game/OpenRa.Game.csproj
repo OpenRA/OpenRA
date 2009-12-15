@@ -161,6 +161,7 @@
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
+    <Compile Include="Traits\ProductionQueue.cs" />
     <Compile Include="Traits\RenderInfantry.cs" />
     <Compile Include="Traits\McvDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />
