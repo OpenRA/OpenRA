@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 		{
 			var inRange = Game.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
-			return inRange.Where(a => a.Owner != self.Owner)	/* todo: one day deal with friendly players */
+			return inRange.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
