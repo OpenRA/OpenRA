@@ -128,7 +128,7 @@ namespace OpenRa.Game.Traits
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left || underCursor == null) return null;
-			if (underCursor.Owner == self.Owner) return null;
+			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 			return Order.Attack(self, underCursor);
 		}
@@ -148,7 +148,7 @@ namespace OpenRa.Game.Traits
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
 
-			self.QueueActivity(new Traits.Activities.Attack(order.TargetActor,
+			self.QueueActivity(new Activities.Attack(order.TargetActor,
 					Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
 		}
 	}
