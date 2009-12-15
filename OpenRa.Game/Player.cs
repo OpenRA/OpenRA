@@ -85,6 +85,7 @@ namespace OpenRa.Game
 
 		void GiveAdvice(string advice)
 		{
+			if (this != Game.LocalPlayer) return;
 			// todo: store the condition or something.
 			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
 			Sound.Play(advice);
