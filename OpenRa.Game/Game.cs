@@ -278,24 +278,5 @@ namespace OpenRa.Game
 
 			return Game.PathFinder.FindPath(search).Count != 0;
 		}
-
-		public static void BuildUnit(Player player, string name)
-		{
-			var newUnitType = Rules.UnitInfo[ name ];
-			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
-			// TODO: choose producer based on "primary building"
-			var producer = world.Actors
-				.Where( x => producerTypes.Contains( x.Info ) && x.Owner == player )
-				.FirstOrDefault();
-
-			if (producer == null)
-			{
-			    player.CancelProduction(Rules.UnitCategory[name]);
-			    return;
-			}
-
-			if( producer.traits.WithInterface<IProducer>().Any( p => p.Produce( producer, newUnitType ) ) )
-				player.FinishProduction(Rules.UnitCategory[name]);
-		}
 	}
 }

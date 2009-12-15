@@ -108,6 +108,8 @@ namespace OpenRa.Game
 			if (currentTab == null || !Rules.TechTree.BuildableItems(Game.LocalPlayer, currentTab).Any())
 				ChooseAvailableTab();
 
+			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+
 			foreach (var q in tabSprites)
 			{
 				var groupName = q.Key;
@@ -117,7 +119,7 @@ namespace OpenRa.Game
 					continue;
 				}
 
-				var producing = Game.LocalPlayer.Producing(groupName);
+				var producing = queue.Producing(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
 
@@ -134,7 +136,8 @@ namespace OpenRa.Game
 
 		void CheckDeadTab( string groupName )
 		{
-			var item = Game.LocalPlayer.Producing(groupName);
+			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var item = queue.Producing( groupName );
 			if (item != null)
 				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
 		}
@@ -186,7 +189,8 @@ namespace OpenRa.Game
 		{
 			return () =>
 			{
-				var producing = Game.LocalPlayer.Producing(group);
+				var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+				var producing = queue.Producing( group );
 				if (producing == null) return 0;
 				return (producing.TotalTime - producing.RemainingTime) * NumClockFrames / producing.TotalTime;
 			};
@@ -195,7 +199,7 @@ namespace OpenRa.Game
 		void DrawBuildPalette(string queueName)
 		{
 			if (queueName == null) return;
-			var buildItem = Game.LocalPlayer.Producing(queueName);
+
 			var x = 0;
 			var y = 0;
 
@@ -205,7 +209,8 @@ namespace OpenRa.Game
 				.Where(a => Rules.UnitInfo[a].TechLevel != -1)
 				.OrderBy(a => Rules.UnitInfo[a].TechLevel);
 
-			var currentItem = Game.LocalPlayer.Producing(queueName);
+			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var currentItem = queue.Producing( queueName );
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
@@ -272,7 +277,8 @@ namespace OpenRa.Game
 		{
 			var player = Game.LocalPlayer;
 			var group = Rules.UnitCategory[item];
-			var producing = player.Producing(group);
+			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var producing = queue.Producing( group );
 
 			Sound.Play("ramenu1.aud");
 

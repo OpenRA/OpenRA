@@ -35,9 +35,6 @@ namespace OpenRa.Game
 			this.Ore = 0;
 			this.DisplayCash = 0;
 			this.powerProvided = this.powerDrained = 0;
-
-			foreach( var cat in Rules.Categories.Keys )
-				ProductionInit( cat );
 		}
 
 		void UpdatePower()
@@ -127,10 +124,6 @@ namespace OpenRa.Game
 		{
 			UpdatePower();
 
-			foreach( var p in production )
-				if( p.Value != null )
-					p.Value.Tick( this );
-
 			if (this == Game.LocalPlayer)
 			{
 				var totalMoney = Cash + Ore;
@@ -148,38 +141,6 @@ namespace OpenRa.Game
 					Sound.Play("cashdn1.aud");
 				}
 			}
-		}
-
-		// Key: Production category. Categories are: Building, Infantry, Vehicle, Ship, Plane (and one per super, if they're done in here)
-		readonly Dictionary<string, ProductionItem> production = new Dictionary<string, ProductionItem>();
-
-		public void ProductionInit( string category )
-		{
-			production.Add( category, null );
-		}
-
-		public ProductionItem Producing( string category )
-		{
-			return production[ category ];
-		}
-
-		public void CancelProduction( string category )
-		{
-			var item = production[ category ];
-			if( item == null ) return;
-			GiveCash( item.TotalCost - item.RemainingCost ); // refund what's been paid so far.
-			FinishProduction( category );
-		}
-
-		public void FinishProduction( string category )
-		{
-			production[ category ] = null;
-		}
-
-		public void BeginProduction( string group, ProductionItem item )
-		{
-			if( production[ group ] != null ) return;
-			production[ group ] = item;
 		}
 	}
 }
