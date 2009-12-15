@@ -164,7 +164,7 @@ namespace OpenRa.Game
 
 			if (keys.HasModifier(Keys.Alt))
 			{
-				// center on this group
+				Game.viewport.Center(cache[group]);
 				return;
 			}
 

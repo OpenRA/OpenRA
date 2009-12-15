@@ -83,15 +83,20 @@ namespace OpenRa.Game.Graphics
 			return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + Location);
 		}
 
+		public void Center(IEnumerable<Actor> actors)
+		{
+			if (!actors.Any()) return;
+
+			var avgPos = (1f / actors.Count()) * actors
+				.Select(a => a.CenterLocation)
+				.Aggregate((a, b) => a + b);
+
+			scrollPosition = avgPos - .5f * new float2(Width, Height);
+		}
+
 		public void GoToStartLocation()
 		{
-			var unit = Game.world.Actors
-				.FirstOrDefault(a => a.Owner == Game.LocalPlayer);
-
-			if (unit == null)
-				return;
-
-			scrollPosition = unit.CenterLocation - .5f * new float2(Width, Height);
+			Center(Game.world.Actors.Where(a => a.Owner == Game.LocalPlayer));
 		}
 	}
 }
