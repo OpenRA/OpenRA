@@ -5,12 +5,12 @@ namespace OpenRa.Game
 {
 	class PlaceBuilding : IOrderGenerator
 	{
-		public readonly Player Owner;
-		public readonly BuildingInfo Building;
+		readonly Actor Producer;
+		readonly BuildingInfo Building;
 
-		public PlaceBuilding(Player owner, string name)
+		public PlaceBuilding(Actor producer, string name)
 		{
-			Owner = owner;
+			Producer = producer;
 			Building = (BuildingInfo)Rules.UnitInfo[ name ];
 		}
 
@@ -21,10 +21,10 @@ namespace OpenRa.Game
 				if( !Game.CanPlaceBuilding( Building, xy, null, true ) )
 					yield break;
 
-				if (!Game.IsCloseEnoughToBase(Owner, Building, xy))
+				if (!Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
 					yield break;
 
-				yield return OpenRa.Game.Order.PlaceBuilding( Owner, xy, Building.Name );
+				yield return OpenRa.Game.Order.PlaceBuilding( Producer.Owner, xy, Building.Name );
 			}
 			else // rmb
 			{
@@ -34,7 +34,7 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			var producing = Owner.PlayerActor.traits.Get<Traits.ProductionQueue>().Producing( Rules.UnitCategory[ Building.Name ] );
+			var producing = Producer.traits.Get<Traits.ProductionQueue>().Producing( Rules.UnitCategory[ Building.Name ] );
 			if( producing == null || producing.Item != Building.Name || producing.RemainingTime != 0 )
 				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
 		}

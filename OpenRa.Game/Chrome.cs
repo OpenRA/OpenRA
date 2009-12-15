@@ -294,7 +294,7 @@ namespace OpenRa.Game
 					if (producing.Done)
 					{
 						if (group == "Building" || group == "Defense")
-							Game.controller.orderGenerator = new PlaceBuilding(player, item);
+							Game.controller.orderGenerator = new PlaceBuilding(player.PlayerActor, item);
 					}
 					else
 						Game.controller.AddOrder(Order.PauseProduction(player, item, false));
