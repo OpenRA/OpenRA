@@ -210,11 +210,11 @@ namespace OpenRA.Server
 
 		static void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
-			foreach (var c in conns.Except(conn).ToArray())
-				DispatchOrdersToClient(c, frame, data);
-
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
+			else
+				foreach (var c in conns.Except(conn).ToArray())
+					DispatchOrdersToClient(c, frame, data);
 		}
 
 		static void InterpretServerOrders(Connection conn, byte[] data)
@@ -323,11 +323,16 @@ namespace OpenRA.Server
 
 				case "Chat":
 					if (so.Data.StartsWith("/"))
+					{
 						if (!InterpretCommand(conn, so.Data.Substring(1)))
 						{
 							Console.WriteLine("Bad server command: {0}", so.Data.Substring(1));
 							DispatchOrdersToClient(conn, 0, new ServerOrder(conn.PlayerIndex, "Chat", "Bad server command.").Serialize());
 						}
+					}
+					else
+						foreach (var c in conns.Except(conn).ToArray())
+							DispatchOrdersToClient(c, 0, so.Serialize());
 					break;
 			}
 		}
