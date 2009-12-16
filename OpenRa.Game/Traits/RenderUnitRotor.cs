@@ -31,8 +31,7 @@ namespace OpenRa.Game.Traits
 				yield return Util.CenteredShadow(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
 					+ Util.GetTurretPosition(self, unit, self.Info.SecondaryOffset, 0));
 
-			var heli = self.traits.Get<Helicopter>();
-			var p = self.CenterLocation - new float2( 0, heli.altitude );
+			var p = self.CenterLocation - new float2( 0, unit.Altitude );
 
 			yield return Util.Centered(self, anim.Image, p);
 			yield return Util.Centered(self, rotorAnim.Image, p
@@ -49,10 +48,9 @@ namespace OpenRa.Game.Traits
 			if (secondRotorAnim != null)
 				secondRotorAnim.Tick();
 
-			var heli = self.traits.GetOrDefault<Helicopter>();
-			if (heli == null) return;
+			var unit = self.traits.Get<Unit>();
 			
-			var isFlying = heli.altitude > 0;
+			var isFlying = unit.Altitude > 0;
 
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;

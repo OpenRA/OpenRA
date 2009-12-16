@@ -6,7 +6,6 @@ namespace OpenRa.Game.Traits
 {
 	class Helicopter : ITick, IOrder
 	{
-		public int altitude;
 		public int2 targetLocation;
 
 		const int CruiseAltitude = 20;
@@ -54,7 +53,7 @@ namespace OpenRa.Game.Traits
 				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
 				var scale = .4f + .6f * (float)Math.Cos(angle);
 
-				if (altitude > CruiseAltitude / 2)		// do some movement.
+				if (unit.Altitude > CruiseAltitude / 2)		// do some movement.
 				{
 					self.CenterLocation += (rawSpeed * scale / dist.Length) * dist;
 					self.CenterLocation +=  (1f - scale) * rawSpeed 
@@ -62,16 +61,16 @@ namespace OpenRa.Game.Traits
 					self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 				}
 
-				if (altitude < CruiseAltitude)
+				if (unit.Altitude < CruiseAltitude)
 				{
-					++altitude;
+					++unit.Altitude;
 					return;
 				}
 			}
-			else if (altitude > 0 && 
+			else if (unit.Altitude > 0 && 
 				Game.IsCellBuildable( self.Location, UnitMovementType.Foot ))
 			{
-				--altitude;
+				--unit.Altitude;
 			}
 
 			/* todo: bob slightly when hovering */
