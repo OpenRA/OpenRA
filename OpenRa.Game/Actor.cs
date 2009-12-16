@@ -28,22 +28,21 @@ namespace OpenRa.Game
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
-			if( Info != null )
-			{
-				Health = Info.Strength;	/* todo: handle cases where this is not true! */
+			if (Info == null) return;
 
-				if( Info.Traits != null )
-				{
-					foreach( var traitName in Info.Traits )
-					{
-						var type = typeof( Traits.Mobile ).Assembly.GetType( typeof( Traits.Mobile ).Namespace + "." + traitName, true, false );
-						var ctor = type.GetConstructor( new[] { typeof( Actor ) } );
-						traits.Add( type, ctor.Invoke( new object[] { this } ) );
-					}
-				}
-				else
-					throw new InvalidOperationException( "No Actor traits for " + Info.Name
-						+ "; add Traits= to units.ini for appropriate unit" );
+			Health = Info.Strength;	/* todo: handle cases where this is not true! */
+
+			if( Info.Traits == null )
+				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
+
+			foreach (var traitName in Info.Traits)
+			{		/* todo: a better solution than `the assembly Mobile lives in`, for mod support & sanity. */
+				var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
+				var ctor = type.GetConstructor(new[] { typeof(Actor) });
+				if (ctor == null)
+					throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
+
+				traits.Add(type, ctor.Invoke(new object[] { this }));
 			}
 		}
 
@@ -56,7 +55,7 @@ namespace OpenRa.Game
 				nextActivity = nextActivity.Tick( this );
 			}
 
-			foreach (var tick in traits.WithInterface<Traits.ITick>())
+			foreach (var tick in traits.WithInterface<ITick>())
 				tick.Tick(this);
 		}
 
@@ -74,7 +73,7 @@ namespace OpenRa.Game
 
 		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
-			return traits.WithInterface<Traits.IRender>().SelectMany( x => x.Render( this ) );
+			return traits.WithInterface<IRender>().SelectMany( x => x.Render( this ) );
 		}
 
 		public Order Order( int2 xy, MouseInput mi )
@@ -90,7 +89,7 @@ namespace OpenRa.Game
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
 
-			return traits.WithInterface<Traits.IOrder>()
+			return traits.WithInterface<IOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}

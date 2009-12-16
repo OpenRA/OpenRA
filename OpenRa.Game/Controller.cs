@@ -149,7 +149,7 @@ namespace OpenRa.Game
 			}
 		}
 
-		Cache<int, List<Actor>> cache = new Cache<int, List<Actor>>(_ => new List<Actor>());
+		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
 		public void DoControlGroup(int group, Modifiers mods)
 		{
@@ -159,19 +159,19 @@ namespace OpenRa.Game
 				if (uog == null || !uog.selection.Any())
 					return;
 
-				cache[group].Clear();
-				cache[group].AddRange(uog.selection);
+				controlGroups[group].Clear();
+				controlGroups[group].AddRange(uog.selection);
 				return;
 			}
 
 			if (mods.HasModifier(Modifiers.Alt))
 			{
-				Game.viewport.Center(cache[group]);
+				Game.viewport.Center(controlGroups[group]);
 				return;
 			}
 
 			if (uog == null) return;
-			CombineSelection(cache[group], mods.HasModifier(Modifiers.Shift), false);
+			CombineSelection(controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
 		}
 	}
 }
