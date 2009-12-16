@@ -81,6 +81,7 @@
     <Compile Include="Chrome.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Effects\Smoke.cs" />
+    <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />

@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using OpenRa.Game.Graphics;
+
+namespace OpenRa.Game.Effects
+{
+	class TeslaZap : IEffect
+	{
+		readonly int2 from, to;
+		readonly Sequence tesla;
+		int timeUntilRemove = 2; // # of frames
+
+		public TeslaZap( int2 from, int2 to )
+		{
+			this.from = from;
+			this.to = to;
+			this.tesla = SequenceProvider.GetSequence( "litning", "bright" );
+		}
+
+		public void Tick()
+		{
+			if( timeUntilRemove <= 0 )
+				Game.world.AddFrameEndTask( w => w.Remove( this ) );
+			--timeUntilRemove;
+		}
+
+		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		{
+			if( from.X < to.X )
+				return Foo( from, to, tesla );
+			else if( from.X > to.X || from.Y > to.Y )
+				return Foo( to, from, tesla );
+			else
+				return Foo( from, to, tesla );
+		}
+
+		static IEnumerable<Tuple<Sprite, float2, int>> Foo( int2 from, int2 to, Sequence tesla )
+		{
+			int2 d = to - from;
+			if( d.X < 8 )
+			{
+				var prev = new int2( 0, 0 );
+				var y = d.Y;
+				while( y >= prev.Y + 8 )
+				{
+					yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
+					prev.Y += 8;
+				}
+			}
+			else
+			{
+				var prev = new int2( 0, 0 );
+				for( int i = 1 ; i < d.X ; i += 8 )
+				{
+					var y = i * d.Y / d.X;
+					if( y <= prev.Y - 8 )
+					{
+						yield return Tuple.New( tesla.GetSprite( 3 ), (float2)( from + prev - new int2( 8, 16 ) ), 0 );
+						prev.Y -= 8;
+						while( y <= prev.Y - 8 )
+						{
+							yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 16 ) ), 0 );
+							prev.Y -= 8;
+						}
+					}
+					else if( y >= prev.Y + 8 )
+					{
+						yield return Tuple.New( tesla.GetSprite( 0 ), (float2)( from + prev - new int2( 8, 8 ) ), 0 );
+						prev.Y += 8;
+						while( y >= prev.Y + 8 )
+						{
+							yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
+							prev.Y -= 8;
+						}
+					}
+					else
+						yield return Tuple.New( tesla.GetSprite( 1 ), (float2)( from + prev - new int2( 8, 8 ) ), 0 );
+
+					prev.X += 8;
+				}
+			}
+		}
+	}
+}

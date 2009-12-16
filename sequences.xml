@@ -675,4 +675,8 @@
     <sequence name="shoot-6" start="112" length="8" />
     <sequence name="shoot-7" start="120" length="8" />
   </unit>
+  <unit name="litning">
+    <sequence name="bright" start="0" length="4" />
+    <sequence name="dim" start="4" length="4" />
+  </unit>
 </sequences>

@@ -16,5 +16,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool Supress = false;
 		public readonly bool TurboBoost = false;
 		public readonly string Warhead = null;
+
+		public readonly bool RenderAsTesla = false;
 	}
 }

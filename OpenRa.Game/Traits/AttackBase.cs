@@ -108,7 +108,10 @@ namespace OpenRa.Game.Traits
 			var thisTarget = target;
 			ScheduleDelayedAction(self.Info.FireDelay, () =>
 			{
-				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
+				if( weapon.RenderAsTesla )
+					Game.world.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
+
+				if( Rules.ProjectileInfo[ weapon.Projectile ].ROT != 0 )
 					Game.world.Add(new Missile(weaponName, self.Owner, self,
 						firePos, thisTarget));
 				else
