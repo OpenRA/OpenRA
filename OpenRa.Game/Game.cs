@@ -85,7 +85,7 @@ namespace OpenRa.Game
 
 			LoadMapActors(Rules.AllRules);
 
-			PathFinder = new PathFinder(Rules.Map);
+			PathFinder = new PathFinder();
 
 			if (Replay != "")
 				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
