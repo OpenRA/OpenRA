@@ -29,14 +29,14 @@ namespace OpenRa.Game.Effects
 		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
 			if( from.X < to.X )
-				return Foo( from, to, tesla );
+				return DrawZap( from, to, tesla );
 			else if( from.X > to.X || from.Y > to.Y )
-				return Foo( to, from, tesla );
+				return DrawZap( to, from, tesla );
 			else
-				return Foo( from, to, tesla );
+				return DrawZap( from, to, tesla );
 		}
 
-		static IEnumerable<Tuple<Sprite, float2, int>> Foo( int2 from, int2 to, Sequence tesla )
+		static IEnumerable<Tuple<Sprite, float2, int>> DrawZap( int2 from, int2 to, Sequence tesla )
 		{
 			int2 d = to - from;
 			if( d.X < 8 )
@@ -72,7 +72,7 @@ namespace OpenRa.Game.Effects
 						while( y >= prev.Y + 8 )
 						{
 							yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
-							prev.Y -= 8;
+							prev.Y += 8;
 						}
 					}
 					else
