@@ -95,6 +95,8 @@ namespace OpenRa.Game.Graphics
 			Tick( 40 ); // tick one frame
 		}
 
+		public bool HasSequence(string seq) { return SequenceProvider.HasSequence( name, seq ); }
+
 		public void Tick( int t )
 		{
 			if( tickAlways )

@@ -106,6 +106,7 @@ namespace OpenRa.Game.Traits
 
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
 			var thisTarget = target;
+
 			ScheduleDelayedAction(self.Info.FireDelay, () =>
 			{
 				if( weapon.RenderAsTesla )

@@ -65,6 +65,11 @@ namespace OpenRa.Game.Graphics
 			}
 		}
 
+		public static bool HasSequence(string unit, string seq)
+		{
+			return units[unit].ContainsKey(seq);
+		}
+
 		public static CursorSequence GetCursorSequence(string cursor)
 		{
 			return cursors[cursor];
