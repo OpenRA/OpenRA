@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -22,6 +23,13 @@ namespace OpenRa.Game.Traits
 
 		protected override void QueueAttack( Actor self, Order order )
 		{
+			var bi = self.Info as BuildingInfo;
+			if (bi != null && bi.Powered && self.Owner.GetPowerState() != PowerState.Normal)
+			{
+				if (self.Owner == Game.LocalPlayer) Sound.Play("nopowr1.aud");
+				return;
+			}
+
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
