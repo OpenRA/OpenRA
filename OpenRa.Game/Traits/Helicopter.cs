@@ -48,12 +48,7 @@ namespace OpenRa.Game.Traits
 				Util.TickFacing(ref unit.Facing, desiredFacing,
 					self.Info.ROT);
 
-				var actualSpeed = self.traits.WithInterface<ISpeedModifier>().Aggregate(
-					(float)(self.Info as MobileInfo).Speed,
-					(a, t) => t.GetSpeedModifier() * a);
-
-				// .6f going the wrong way; .8f going sideways, 1f going forward.
-				var rawSpeed = .2f * actualSpeed;
+				var rawSpeed = .2f * Util.GetEffectiveSpeed(self);
 				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
 				var scale = .4f + .6f * (float)Math.Cos(angle);
 

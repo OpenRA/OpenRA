@@ -22,5 +22,10 @@ namespace OpenRa.Game
 			// this is probably a shockingly-slow way to do this, but it's concise.
 			return xs.Except(ys).Concat(ys.Except(xs));
 		}
+
+		public static float Product(this IEnumerable<float> xs)
+		{
+			return xs.Aggregate((a, x) => a * x);
+		}
 	}
 }

@@ -32,6 +32,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left) return null;
 			if (underCursor != null) return null;
+			if (Util.GetEffectiveSpeed(self) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
 			return Order.Move(self, xy);
 		}

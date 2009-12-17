@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -123,6 +124,18 @@ namespace OpenRa.Game.Traits
 		{
 			var loc = location - 0.5f * s.size;
 			return Tuple.New(s, loc.Round(), 8);
+		}
+
+		public static float GetEffectiveSpeed(Actor self)
+		{
+			var mi = self.Info as MobileInfo;
+			if (mi == null) return 0f;
+
+			var modifier = self.traits
+				.WithInterface<ISpeedModifier>()
+				.Select(t => t.GetSpeedModifier())
+				.Product();
+			return mi.Speed * modifier;
 		}
 	}
 }
