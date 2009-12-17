@@ -7,6 +7,7 @@ using IjwFramework.Collections;
 using IjwFramework.Types;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Support;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game
 {
@@ -17,6 +18,7 @@ namespace OpenRa.Game
 		readonly SpriteRenderer chromeRenderer;
 		readonly Sprite specialBinSprite;
 		readonly Sprite moneyBinSprite;
+		readonly Sprite tooltipSprite;
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
@@ -37,6 +39,7 @@ namespace OpenRa.Game
 
 			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 32, 192), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
+			tooltipSprite = new Sprite(specialBin, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
 
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -90,8 +93,8 @@ namespace OpenRa.Game
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
 				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.powerDrained,
-				Game.LocalPlayer.powerProvided,
+				Game.LocalPlayer.PowerDrained,
+				Game.LocalPlayer.PowerProvided,
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
 				), new int2(140, 5), Color.White);
 
@@ -214,6 +217,9 @@ namespace OpenRa.Game
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
+			string tooltipItem = null;
+			int2 tooltipPos = int2.Zero;
+
 			foreach (var item in allItems)
 			{
 				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
@@ -222,6 +228,12 @@ namespace OpenRa.Game
 				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
 
 				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, 0);
+
+				if (rect.Contains(lastMousePos.ToPoint()))
+				{
+					tooltipItem = item;
+					tooltipPos = new int2(rect.Location);
+				}
 
 				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
 					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
@@ -271,6 +283,9 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(shimSprites[0], new float2(Game.viewport.Width - 192 - 9, 40 - 9), 0);
 			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 * y), 0);
 			chromeRenderer.Flush();
+
+			if (tooltipItem != null)
+				DrawProductionTooltip(tooltipItem, tooltipPos);
 		}
 
 		void HandleBuildPalette(string item, bool isLmb)
@@ -322,8 +337,12 @@ namespace OpenRa.Game
 			}
 		}
 
+		int2 lastMousePos;
 		public bool HandleInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Move)
+				lastMousePos = mi.Location;
+
 			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
 				.Select(a => a.Second).FirstOrDefault();
 
@@ -339,6 +358,47 @@ namespace OpenRa.Game
 		public bool HitTest(int2 mousePos)
 		{
 			return buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
+		}
+
+		void DrawRightAligned(string text, int2 pos, Color c)
+		{
+			renderer.DrawText2(text, pos - new int2(renderer.MeasureText2(text).X, 0), c);
+		}
+
+		void DrawProductionTooltip(string unit, int2 pos)
+		{
+			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
+			chromeRenderer.DrawSprite(tooltipSprite, p, 0);
+			chromeRenderer.Flush();
+
+			var info = Rules.UnitInfo[unit];
+
+			renderer.DrawText2(info.Description, p.ToInt2() + new int2(5,5), Color.White);
+
+			DrawRightAligned( "${0}".F(info.Cost), pos + new int2(-5,5), 
+				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= info.Cost ? Color.White : Color.Red);
+
+			var bi = info as BuildingInfo;
+			if (bi != null)
+				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
+					Game.LocalPlayer.PowerProvided - Game.LocalPlayer.PowerDrained + bi.Power >= 0
+					? Color.White : Color.Red);
+
+			var buildings = Rules.TechTree.GatherBuildings( Game.LocalPlayer );
+			p += new int2(5, 5);
+			p += new int2(0, 15);
+			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
+			{
+				var prereqs = info.Prerequisite.Select(a => Rules.UnitInfo[a.ToLowerInvariant()].Description);
+				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
+					Color.White);
+			}
+
+			if (info.LongDesc != null)
+			{
+				p += new int2(0, 15);
+				renderer.DrawText(info.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+			}
 		}
 	}
 }

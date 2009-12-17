@@ -50,6 +50,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int InitialFacing = 128;
 		public readonly bool Selectable = true;
 		public readonly int FireDelay = 0;
+		public readonly string LongDesc = null;
 
 		public UnitInfo(string name) { Name = name; }
 	}

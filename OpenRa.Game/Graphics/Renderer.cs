@@ -17,7 +17,7 @@ namespace OpenRa.Game.Graphics
 		public Shader RgbaSpriteShader { get; private set; }
 
 		readonly SpriteHelper sh;
-		readonly FontHelper fhDebug;
+		readonly FontHelper fhDebug, fhTitle;
 
 		public void BuildPalette(Map map)
 		{
@@ -44,6 +44,7 @@ namespace OpenRa.Game.Graphics
 
 			sh = new SpriteHelper(device);
 			fhDebug = new FontHelper(device, "Tahoma", 10, false);
+			fhTitle = new FontHelper(device, "Tahoma", 10, true);
 		}
 
 		public GraphicsDevice Device { get { return device; } }
@@ -107,9 +108,21 @@ namespace OpenRa.Game.Graphics
 			sh.End();
 		}
 
+		public void DrawText2(string text, int2 pos, Color c)
+		{
+			sh.Begin();
+			fhTitle.Draw(sh, text, pos.X, pos.Y, c.ToArgb());
+			sh.End();
+		}
+
 		public int2 MeasureText(string text)
 		{
 			return new int2(fhDebug.MeasureText(sh, text));
+		}
+
+		public int2 MeasureText2(string text)
+		{
+			return new int2(fhTitle.MeasureText(sh, text));
 		}
 	}
 }

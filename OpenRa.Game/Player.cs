@@ -19,8 +19,8 @@ namespace OpenRa.Game
 		public int Cash;
 		public int Ore;
 		public int DisplayCash;
-		public int powerProvided;
-		public int powerDrained;
+		public int PowerProvided;
+		public int PowerDrained;
 
 		public bool IsReady;
 
@@ -34,15 +34,15 @@ namespace OpenRa.Game
 			this.Cash = 10000;
 			this.Ore = 0;
 			this.DisplayCash = 0;
-			this.powerProvided = this.powerDrained = 0;
+			this.PowerProvided = this.PowerDrained = 0;
 		}
 
 		void UpdatePower()
 		{
-			var oldBalance = powerProvided - powerDrained;
+			var oldBalance = PowerProvided - PowerDrained;
 
-			powerProvided = 0;
-			powerDrained = 0;
+			PowerProvided = 0;
+			PowerDrained = 0;
 
 			var myBuildings = Game.world.Actors
 				.Where(a => a.Owner == this && a.traits.Contains<Building>());
@@ -51,13 +51,13 @@ namespace OpenRa.Game
 			{
 				var bi = a.Info as BuildingInfo;
 				if (bi.Power > 0)		/* todo: is this how real-ra scales it? */
-					powerProvided += (a.Health * bi.Power) / bi.Strength;
+					PowerProvided += (a.Health * bi.Power) / bi.Strength;
 				else 
-					powerDrained -= bi.Power;
+					PowerDrained -= bi.Power;
 			}
 
-			if (powerProvided - powerDrained < 0)
-				if (powerProvided - powerDrained  != oldBalance)
+			if (PowerProvided - PowerDrained < 0)
+				if (PowerProvided - PowerDrained  != oldBalance)
 					GiveAdvice("lopower1.aud");
 		}
 
@@ -68,8 +68,8 @@ namespace OpenRa.Game
 
 		public PowerState GetPowerState()
 		{
-			if (powerProvided >= powerDrained) return PowerState.Normal;
-			if (powerProvided > powerDrained / 2) return PowerState.Low;
+			if (PowerProvided >= PowerDrained) return PowerState.Normal;
+			if (PowerProvided > PowerDrained / 2) return PowerState.Low;
 			return PowerState.Critical;
 		}
 
