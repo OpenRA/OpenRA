@@ -52,6 +52,21 @@ namespace OpenRa.Game
 			}
 		}
 
+		void ProcessOrders(int frame, bool save)
+		{
+			var orders = sources
+				.SelectMany(s => s.OrdersForFrame(frame))
+				.Where(o => o.Validate())			/* drop bogus things */
+				.OrderBy(o => o.Player.Index)
+				.ToList();
+
+			foreach (var o in orders)
+				UnitOrders.ProcessOrder(o);
+
+			if (save && savingReplay != null)
+				savingReplay.WriteFrameData(orders, frame);
+		}
+
 		public void TickImmediate()
 		{
 			var localOrders = Game.controller.GetRecentOrders(true);
@@ -59,9 +74,7 @@ namespace OpenRa.Game
 				foreach (var p in sources)
 					p.SendLocalOrders(0, localOrders);
 
-			var immOrders = sources.SelectMany( p => p.OrdersForFrame(0) ).OrderBy(o => o.Player.Index).ToList();
-			foreach (var order in immOrders)
-				UnitOrders.ProcessOrder(order);
+			ProcessOrders(0, false);
 		}
 
 		public void Tick()
@@ -71,14 +84,8 @@ namespace OpenRa.Game
 			foreach( var p in sources )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
-			var allOrders = sources.SelectMany(p => p.OrdersForFrame(frameNumber)).OrderBy(o => o.Player.Index).ToList();
-
-			foreach (var order in allOrders)
-				UnitOrders.ProcessOrder(order);
-
-			if( savingReplay != null )
-				savingReplay.WriteFrameData( allOrders, frameNumber );
-
+			ProcessOrders(frameNumber, true);
+			
 			++frameNumber;
 
 			// sanity check on the framenumber. This is 2^31 frames maximum, or multiple *years* at 40ms/frame.

@@ -10,12 +10,6 @@ namespace OpenRa.Game
 	{
 		public static void ProcessOrder( Order order )
 		{
-			if (!order.Validate())
-			{
-				/* todo: log this if we care */
-				return;
-			}
-
 			switch( order.OrderString )
 			{
 			case "Move":
