@@ -205,7 +205,9 @@ namespace SequenceEditor
 				e.Graphics.DrawString(toolText, Font, Brushes.Black, toolPoint.Value.X, toolPoint.Value.Y);
 			}
 
-			Height = Math.Max( Parent.ClientSize.Height, y );
+			var newHeight = Math.Max( Parent.ClientSize.Height, y );
+			if (Height != newHeight)
+				Height = newHeight;
 		}
 	}
 

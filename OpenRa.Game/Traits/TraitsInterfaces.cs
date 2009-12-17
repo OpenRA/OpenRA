@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, DamageState ds); }
-	interface INotifyDamageEx : INotifyDamage { void Damaged(Actor self, int damage); }
+	interface INotifyDamageEx : INotifyDamage { void Damaged(Actor self, int damage, WarheadInfo warhead); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface IOrder
 	{

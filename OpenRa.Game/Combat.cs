@@ -34,7 +34,7 @@ namespace OpenRa.Game
 			var hitActors = Game.FindUnitsInCircle(loc, maxSpread);
 
 			foreach (var victim in hitActors)
-				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead));
+				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead), warhead);
 		}
 
 		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead)

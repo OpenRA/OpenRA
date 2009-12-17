@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.GameRules;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderInfantry : RenderSimple, INotifyAttack
+	class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamageEx
 	{
 		public RenderInfantry(Actor self)
 			: base(self)
@@ -57,5 +59,13 @@ namespace OpenRa.Game.Traits
 		{
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 		}
+
+		public void Damaged(Actor self, int damage, WarheadInfo warhead)
+		{
+			if (self.Health <= 0)
+				Game.world.AddFrameEndTask(w => w.Add(new Corpse(self, warhead.InfDeath)));
+		}
+
+		public void Damaged(Actor self, DamageState ds) {}
 	}
 }

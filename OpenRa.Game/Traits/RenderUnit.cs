@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -37,7 +38,7 @@ namespace OpenRa.Game.Traits
 
 		public void Damaged(Actor self, DamageState ds) { currentDs = ds; }
 
-		public void Damaged(Actor self, int damage)
+		public void Damaged(Actor self, int damage, WarheadInfo warhead)
 		{
 			if (currentDs != DamageState.Half) return;
 			if (!isSmoking)

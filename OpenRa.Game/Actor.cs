@@ -106,7 +106,7 @@ namespace OpenRa.Game
 
 		public bool IsDead { get { return Health <= 0; } }
 
-		public void InflictDamage(Actor attacker, int damage)
+		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)
 		{
 			/* todo: auto-retaliate, etc */
 			/* todo: death sequence for infantry based on inflictor */
@@ -138,7 +138,7 @@ namespace OpenRa.Game
 			}
 
 			foreach (var ndx in traits.WithInterface<INotifyDamageEx>())
-				ndx.Damaged(this, damage);
+				ndx.Damaged(this, damage, warhead);
 		}
 
 		public void QueueActivity( IActivity nextActivity )
