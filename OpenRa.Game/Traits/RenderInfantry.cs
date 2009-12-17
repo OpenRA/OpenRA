@@ -26,8 +26,7 @@ namespace OpenRa.Game.Traits
 			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
 			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 
-			var takeCover = self.traits.GetOrDefault<TakeCover>();
-			var prefix = (takeCover != null && takeCover.IsProne) ? "crawl-" : "run-";
+			var prefix = IsProne(self) ? "crawl-" : "run-";
 
 			if (anim.CurrentSequence.Name.StartsWith(prefix))
 				anim.ReplaceAnim(prefix + dir);
@@ -38,14 +37,18 @@ namespace OpenRa.Game.Traits
 		}
 
 		bool inAttack = false;
+		bool IsProne(Actor self)
+		{
+			var takeCover = self.traits.GetOrDefault<TakeCover>();
+			return takeCover != null && takeCover.IsProne;
+		}
 
 		public void Attacking(Actor self)
 		{
 			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 			inAttack = true;
 
-			var takeCover = self.traits.GetOrDefault<TakeCover>();
-			var prefix = (takeCover != null && takeCover.IsProne) ? "prone-shoot-" : "shoot-";
+			var prefix = IsProne(self) ? "prone-shoot-" : "shoot-";
 
 			anim.PlayThen(prefix + dir, () => inAttack = false);
 		}
@@ -58,8 +61,13 @@ namespace OpenRa.Game.Traits
 
 			/* todo: idle anims, etc */
 
-			anim.PlayFacing("stand",
-				() => self.traits.Get<Unit>().Facing);
+			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
+
+			if (IsProne(self))
+				anim.PlayFetchIndex("crawl-" + dir, () => 0);			/* what a hack. */
+			else
+				anim.PlayFacing("stand",
+					() => self.traits.Get<Unit>().Facing);
 		}
 
 		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
