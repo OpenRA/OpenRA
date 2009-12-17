@@ -21,4 +21,6 @@ namespace OpenRa.Game.Traits
 	interface INotifyAttack { void Attacking(Actor self); }
 	interface IRenderModifier { IEnumerable<Tuple<Sprite, float2, int>> 
 		ModifyRender( Actor self, IEnumerable<Tuple<Sprite, float2, int>> r ); }
+	interface IDamageModifier { float GetDamageModifier(); }
+	interface ISpeedModifier { float GetSpeedModifier(); }
 }

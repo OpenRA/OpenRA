@@ -111,9 +111,12 @@ namespace OpenRa.Game
 		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)
 		{
 			/* todo: auto-retaliate, etc */
-			/* todo: death sequence for infantry based on inflictor */
 
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
+
+			/* apply the damage modifiers, if we have any. */
+			damage = (int)traits.WithInterface<IDamageModifier>().Aggregate(
+				(float)damage, (a, t) => t.GetDamageModifier() * a);
 
 			Health -= damage;
 			if (Health <= 0)

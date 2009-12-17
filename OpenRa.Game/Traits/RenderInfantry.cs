@@ -26,10 +26,13 @@ namespace OpenRa.Game.Traits
 			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
 			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 
-			if (anim.CurrentSequence.Name.StartsWith("run-"))
-				anim.ReplaceAnim("run-" + dir);
+			var takeCover = self.traits.GetOrDefault<TakeCover>();
+			var prefix = (takeCover != null && takeCover.IsProne) ? "crawl-" : "run-";
+
+			if (anim.CurrentSequence.Name.StartsWith(prefix))
+				anim.ReplaceAnim(prefix + dir);
 			else
-				anim.PlayRepeating("run-" + dir);
+				anim.PlayRepeating(prefix + dir);
 
 			return true;
 		}
@@ -40,7 +43,11 @@ namespace OpenRa.Game.Traits
 		{
 			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 			inAttack = true;
-			anim.PlayThen("shoot-" + dir, () => inAttack = false);
+
+			var takeCover = self.traits.GetOrDefault<TakeCover>();
+			var prefix = (takeCover != null && takeCover.IsProne) ? "prone-shoot-" : "shoot-";
+
+			anim.PlayThen(prefix + dir, () => inAttack = false);
 		}
 
 		public override void Tick(Actor self)

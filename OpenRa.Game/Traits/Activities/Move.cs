@@ -168,7 +168,11 @@ namespace OpenRa.Game.Traits.Activities
 				var oldFraction = moveFraction;
 				var oldTotal = moveFractionTotal;
 
-				moveFraction += ( self.Info as MobileInfo ).Speed;
+				var actualSpeed = (int)self.traits.WithInterface<ISpeedModifier>().Aggregate(
+					(float)(self.Info as MobileInfo).Speed,
+					(a, t) => t.GetSpeedModifier() * a);
+
+				moveFraction += actualSpeed;
 				UpdateCenterLocation( self, mobile );
 				if( moveFraction >= moveFractionTotal )
 				{
