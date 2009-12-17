@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, DamageState ds); }
-	interface INotifyDamageEx : INotifyDamage { void Damaged(Actor self, int damage, WarheadInfo warhead); }
+	interface INotifyDamageEx { void Damaged(Actor self, int damage, WarheadInfo warhead); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface IOrder
 	{
@@ -19,4 +19,6 @@ namespace OpenRa.Game.Traits
 	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }
 	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	interface INotifyAttack { void Attacking(Actor self); }
+	interface IRenderModifier { IEnumerable<Tuple<Sprite, float2, int>> 
+		ModifyRender( Actor self, IEnumerable<Tuple<Sprite, float2, int>> r ); }
 }

@@ -73,7 +73,9 @@ namespace OpenRa.Game
 
 		public IEnumerable<Tuple<Sprite, float2, int>> Render()
 		{
-			return traits.WithInterface<IRender>().SelectMany( x => x.Render( this ) );
+			var mods = traits.WithInterface<IRenderModifier>();
+			var sprites = traits.WithInterface<IRender>().SelectMany(x => x.Render(this));
+			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
 		}
 
 		public Order Order( int2 xy, MouseInput mi )
