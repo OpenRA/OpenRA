@@ -149,6 +149,16 @@ namespace OpenRa.Game
 			return new Order("Move", subject, null, target, null);
 		}
 
+        public static Order ActivatePortableChronoshift(Actor subject)
+        {
+            return new Order("ActivatePortableChronoshift", subject, null, int2.Zero, null);
+        }
+
+        public static Order UsePortableChronoshift(Actor subject, int2 target)
+        {
+            return new Order("UsePortableChronoshift", subject, null, target, null);
+        }
+
 		public static Order DeployMcv(Actor subject)
 		{
 			return new Order("DeployMcv", subject, null, int2.Zero, null);

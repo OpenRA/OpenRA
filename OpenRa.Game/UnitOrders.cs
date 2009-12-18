@@ -21,6 +21,8 @@ namespace OpenRa.Game
 			case "StartProduction":
 			case "PauseProduction":
 			case "CancelProduction":
+            case "ActivatePortableChronoshift":
+            case "UsePortableChronoshift":
 				{
 					foreach( var t in order.Subject.traits.WithInterface<IOrder>() )
 						t.ResolveOrder( order.Subject, order );

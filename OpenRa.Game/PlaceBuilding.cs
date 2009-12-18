@@ -18,11 +18,17 @@ namespace OpenRa.Game
 		{
 			if( mi.Button == MouseButton.Left )
 			{
-				if( !Game.CanPlaceBuilding( Building, xy, null, true ) )
-					yield break;
+                if (!Game.CanPlaceBuilding(Building, xy, null, true))
+                {
+                    Sound.Play("nodeply1.aud");
+                    yield break;
+                }
 
-				if (!Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
-					yield break;
+                if (!Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
+                {
+                    Sound.Play("nodeply1.aud");
+                    yield break;
+                }
 
 				yield return OpenRa.Game.Order.PlaceBuilding( Producer.Owner, xy, Building.Name );
 			}

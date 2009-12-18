@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using System.Drawing;
 
 namespace OpenRa.Game.Traits
 {
@@ -23,4 +24,9 @@ namespace OpenRa.Game.Traits
 		ModifyRender( Actor self, IEnumerable<Tuple<Sprite, float2, int>> r ); }
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
+    interface IPips {
+        Color GetBorderColor();
+        int GetPipCount();
+        Color GetColorForPip(int index);
+    }
 }

@@ -6,22 +6,22 @@ namespace OpenRa.Game.Traits
 {
 	class Cloak : IRenderModifier, INotifyAttack, ITick
 	{
-		int remainingSurfaceTime = 2;		/* setup for initial dive */
+		int remainingUncloakTime = 2;		/* setup for initial cloak */
 
 		public Cloak(Actor self) {}
 
 		public void Attacking(Actor self)
 		{
-			if (remainingSurfaceTime <= 0)
-				OnSurface();
+            if (remainingUncloakTime <= 0)
+				OnCloak();
 
-			remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
+            remainingUncloakTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
 		}
 
 		public IEnumerable<Tuple<Sprite, float2, int>>
 			ModifyRender(Actor self, IEnumerable<Tuple<Sprite, float2, int>> rs)
 		{
-			if (remainingSurfaceTime > 0)
+            if (remainingUncloakTime > 0)
 				return rs;
 
 			if (self.Owner == Game.LocalPlayer)
@@ -32,19 +32,19 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
-			if (remainingSurfaceTime > 0)
-				if (--remainingSurfaceTime <= 0)
-					OnDive();
+            if (remainingUncloakTime > 0)
+                if (--remainingUncloakTime <= 0)
+					OnUncloak();
 		}
 
-		void OnSurface()
+		void OnCloak()
 		{
-			Sound.Play("subshow1.aud");
+			Sound.Play("ironcur9.aud");
 		}
 
-		void OnDive()
+		void OnUncloak()
 		{
-			Sound.Play("subshow1.aud");		/* is this the right sound?? */
+			Sound.Play("ironcur9.aud");		/* is this the right sound?? */
 		}
 	}
 }

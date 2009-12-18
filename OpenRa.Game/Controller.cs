@@ -142,6 +142,12 @@ namespace OpenRa.Game
 					return Cursor.Deploy;
 				else
 					return Cursor.DeployBlocked;
+            case "ActivatePortableChronoshift": return Cursor.Deploy;
+            case "UsePortableChronoshift": 
+                if (Game.IsCellBuildable(location, a.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, a))
+                    return Cursor.Chronoshift;
+                else
+                    return Cursor.MoveBlocked;
 			case "DeliverOre": return Cursor.Enter;
 			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
 			default:

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -128,6 +128,7 @@
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
+    <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />
     <Compile Include="PlaceBuilding.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\Building.cs" />
+    <Compile Include="Traits\ChronoshiftDeploy.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="Traits\RenderUnitSpinner.cs" />
     <Compile Include="Traits\RenderUnitTurreted.cs" />
     <Compile Include="Traits\SeedsOre.cs" />
+    <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\TakeCover.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Tree.cs" />

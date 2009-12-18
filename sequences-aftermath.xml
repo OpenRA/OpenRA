@@ -3,6 +3,22 @@
 	<!-- aftermath units -->
   <unit name="qtnk">
     <sequence name="idle" start="0" length="32" />
+    <sequence name="charge-0" start="32" length="3" />
+    sequence name="deploy-0" start="35" length="5" />
+    <sequence name="charge-1" start="40" length="3" />
+    <sequence name="deploy-1" start="43" length="5" />
+    <sequence name="charge-2" start="48" length="3" />
+    <sequence name="deploy-2" start="51" length="5" />
+    <sequence name="charge-3" start="56" length="3" />
+    <sequence name="deploy-3" start="59" length="5" />
+    <sequence name="charge-4" start="64" length="3" />
+    <sequence name="deploy-4" start="67" length="5" />
+    <sequence name="charge-5" start="72" length="3" />
+    <sequence name="deploy-5" start="75" length="5" />
+    <sequence name="charge-6" start="80" length="3" />
+    <sequence name="deploy-6" start="83" length="5" />
+    <sequence name="charge-7" start="88" length="3" />
+    <sequence name="deploy-7" start="91" length="5" />
   </unit>
   <unit name="ctnk">
     <sequence name="idle" start="0" length="32" />
@@ -16,6 +32,12 @@
   <unit name="ttnk">
     <sequence name="idle" start="0" length="32" />
     <sequence name="spinner" start="32" length="32" />
+  </unit>
+  <unit name="stnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="load-0" start="32" length="3" />
+    <sequence name="load-1" start="35" length="3" />
+    <sequence name="turret" start="38" length="32" />
   </unit>
 	<unit name="shok">
 		<sequence name="stand" start="0" length="8" />
@@ -67,4 +89,15 @@
 		<sequence name="die4" start="440" length="12" />
 		<sequence name="die5" start="452" length="18" />
 	</unit>
+  <unit name="mech">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+  </unit>
 </sequences>

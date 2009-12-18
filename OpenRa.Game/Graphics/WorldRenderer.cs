@@ -144,6 +144,44 @@ namespace OpenRa.Game.Graphics
 				lineRenderer.DrawLine(xy + new float2(0, -4),
 					z + new float2(0, -4),
 					healthColor2, healthColor2);
+
+                // Render Pips
+                var pips = selectedUnit.traits.WithInterface<IPips>().FirstOrDefault();
+                if (pips != null)
+                {
+                    const int pipSize = 2; // How big are the pips?
+                    int pipCount = pips.GetPipCount();
+                    Color pipBorderColor = pips.GetBorderColor();
+                    float2 pipxy = xY + new float2(1, -1);
+
+                    // Draw the border
+                    lineRenderer.DrawLine(pipxy,
+                        pipxy + new float2(pipCount * (pipSize + 1) + 1, 0),
+                        pipBorderColor, pipBorderColor);
+
+                    lineRenderer.DrawLine(pipxy + new float2(0, -(pipSize + 1)),
+                        pipxy + new float2(pipCount * (pipSize + 1) + 1, -(pipSize + 1)),
+                        pipBorderColor, pipBorderColor);
+
+                    // Draw vertical dividers
+                    for (int i = 0; i <= pipCount; i++)
+                    {
+                        lineRenderer.DrawLine(pipxy + new float2(i * (pipSize + 1), -(pipSize + 1)),
+                            pipxy + new float2(i * (pipSize + 1), 0),
+                            pipBorderColor, pipBorderColor);
+                    }
+
+                    // Draw pips
+                    for (int i = 0; i < pipCount; i++)
+                    {
+                        Color pipColor = pips.GetColorForPip(i);
+                        if (pipColor == Color.Transparent) continue; // Empty pip
+
+                        lineRenderer.DrawLine(pipxy + new float2(1 + i * (pipSize + 1), -2),
+                            pipxy + new float2(1 + i * (pipSize + 1) + pipSize, -2),
+                            pipColor, pipColor);
+                    }
+                }
 			}
 
 			if (ShowUnitPaths)

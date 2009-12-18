@@ -56,7 +56,7 @@ namespace OpenRa.Game
 		{
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
 
-			if (projectile.ASW && target.traits.Contains<Cloak>()) return true;
+			if (projectile.ASW && target.traits.Contains<Submarine>()) return true;
 			if (projectile.AA && target.traits.Contains<Helicopter>()) return true;
 			if (projectile.UnderWater && !target.Info.WaterBound) return false;
 			return projectile.AG;
