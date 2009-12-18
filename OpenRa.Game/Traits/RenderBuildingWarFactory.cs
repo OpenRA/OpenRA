@@ -51,11 +51,12 @@ namespace OpenRa.Game.Traits
 			roof.PlayThen(prefix + "build-top", () => isOpen = true);
 		}
 
-		public override void Damaged(Actor self, DamageState ds)
+		public override void Damaged(Actor self, AttackInfo e)
 		{
-			base.Damaged(self, ds);
+			base.Damaged(self, e);
 
-			switch (ds)
+			if (!e.DamageStateChanged) return;
+			switch (e.DamageState)
 			{
 				case DamageState.Normal:
 					prefix = "";

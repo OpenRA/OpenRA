@@ -108,11 +108,18 @@ namespace OpenRa.Game
 
 		public bool IsDead { get { return Health <= 0; } }
 
+		DamageState GetDamageState()
+		{
+			if (Health <= 0) return DamageState.Dead;
+			var halfStrength = Info.Strength * Rules.General.ConditionYellow;
+			return Health < halfStrength ? DamageState.Half : DamageState.Normal;
+		}
+
 		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)
 		{
-			/* todo: auto-retaliate, etc */
-
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
+
+			var oldState = GetDamageState();
 
 			/* apply the damage modifiers, if we have any. */
 			damage = (int)traits.WithInterface<IDamageModifier>().Aggregate(
@@ -126,24 +133,19 @@ namespace OpenRa.Game
 					attacker.Owner.Kills++;
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
-
-				if (Owner == Game.LocalPlayer && !traits.Contains<Building>()) 
-					Sound.Play("unitlst1.aud");
-
-				if (traits.Contains<Building>())
-					Sound.Play("kaboom22.aud");
 			}
 
-			var halfStrength = Info.Strength * Rules.General.ConditionYellow;
-			if (Health < halfStrength && (Health + damage) >= halfStrength)
-			{
-				/* we just went below half health! */
-				foreach (var nd in traits.WithInterface<INotifyDamage>())
-					nd.Damaged(this, DamageState.Half);
-			}
+			var newState = GetDamageState();
 
-			foreach (var ndx in traits.WithInterface<INotifyDamageEx>())
-				ndx.Damaged(this, damage, warhead);
+			foreach (var nd in traits.WithInterface<INotifyDamage>())
+				nd.Damaged(this, new AttackInfo
+				{
+					Attacker = attacker,
+					Damage = damage,
+					DamageState = newState,
+					DamageStateChanged = newState != oldState,
+					Warhead = warhead
+				});
 		}
 
 		public void QueueActivity( IActivity nextActivity )

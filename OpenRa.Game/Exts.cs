@@ -25,7 +25,7 @@ namespace OpenRa.Game
 
 		public static float Product(this IEnumerable<float> xs)
 		{
-			return xs.Aggregate((a, x) => a * x);
+			return xs.Aggregate(1f, (a, x) => a * x);
 		}
 	}
 }

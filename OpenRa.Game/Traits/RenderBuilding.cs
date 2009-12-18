@@ -65,9 +65,12 @@ namespace OpenRa.Game.Traits
 			yield return Tuple.New(anim.Image, 24f * (float2)self.Location, pal);
 		}
 
-		public virtual void Damaged(Actor self, DamageState state)
+		public virtual void Damaged(Actor self, AttackInfo e)
 		{
-			switch( state )
+			if (!e.DamageStateChanged)
+				return;
+
+			switch( e.DamageState )
 			{
 				case DamageState.Normal:
 					anim.ReplaceAnim("idle");

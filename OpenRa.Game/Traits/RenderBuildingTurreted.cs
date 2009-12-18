@@ -14,9 +14,11 @@ namespace OpenRa.Game.Traits
 			anim.PlayFacing(a, () => self.traits.Get<Turreted>().turretFacing);
 		}
 
-		public override void Damaged(Actor self, DamageState ds)
+		public override void Damaged(Actor self, AttackInfo e)
 		{
-			switch (ds)
+			if (!e.DamageStateChanged) return;
+
+			switch (e.DamageState)
 			{
 				case DamageState.Normal:
 					PlayTurretAnim(self, "idle");

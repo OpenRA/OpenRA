@@ -1,6 +1,7 @@
-﻿namespace OpenRa.Game.Traits
+﻿using System.Drawing;
+namespace OpenRa.Game.Traits
 {
-	class Harvester : IOrder
+	class Harvester : IOrder, IPips
 	{
 		public int oreCarried = 0;					/* sum of these must not exceed capacity */
 		public int gemsCarried = 0;
@@ -53,5 +54,14 @@
 				self.QueueActivity( new Traits.Activities.DeliverOre( order.TargetActor ) );
 			}
 		}
+
+        public Color GetBorderColor() { return Color.Black; }
+        public int GetPipCount() { return 7; }
+        public Color GetColorForPip(int index)
+        {
+            if ((oreCarried + gemsCarried)*1.0f/Rules.General.BailCount* GetPipCount() < index + 1)
+                return Color.Transparent;
+            return Color.LimeGreen;
+        }
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace OpenRa.Game.Traits
 {
-	class Building : ITick
+	class Building : ITick, INotifyDamage
 	{
 		public readonly BuildingInfo unitInfo;
 
@@ -18,6 +18,12 @@ namespace OpenRa.Game.Traits
 				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
 
 			first = false;
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (e.DamageState == DamageState.Dead)
+				Sound.Play("kaboom22.aud");
 		}
 	}
 }
