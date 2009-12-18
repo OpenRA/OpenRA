@@ -8,7 +8,7 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamageEx
+	class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)
 			: base(self)
@@ -75,12 +75,10 @@ namespace OpenRa.Game.Traits
 			yield return Util.Centered(self, anim.Image, self.CenterLocation);
 		}
 
-		public void Damaged(Actor self, int damage, WarheadInfo warhead)
+		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.Health <= 0)
-				Game.world.AddFrameEndTask(w => w.Add(new Corpse(self, warhead.InfDeath)));
+			if (e.DamageState == DamageState.Dead)
+				Game.world.AddFrameEndTask(w => w.Add(new Corpse(self, e.Warhead.InfDeath)));
 		}
-
-		public void Damaged(Actor self, DamageState ds) {}
 	}
 }

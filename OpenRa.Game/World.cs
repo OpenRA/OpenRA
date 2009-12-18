@@ -21,13 +21,8 @@ namespace OpenRa.Game
 		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
 
 		public event Action<Actor> ActorAdded = _ => { };
-		public event Action<Actor> ActorRemoved = a =>
-		{
-			a.Health = 0;		/* make sure everyone sees it as dead */
-			foreach (var nr in a.traits.WithInterface<INotifyDamage>())
-				nr.Damaged(a, DamageState.Dead);
-		};
-
+		public event Action<Actor> ActorRemoved = _ => { };
+		
 		public void Tick()
 		{
 			foreach (var a in actors) a.Tick();

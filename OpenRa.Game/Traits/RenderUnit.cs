@@ -5,7 +5,7 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderUnit : RenderSimple, INotifyDamageEx
+	class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)
 			: base(self)
@@ -33,24 +33,20 @@ namespace OpenRa.Game.Traits
 		}
 
 		bool isSmoking;
-		DamageState currentDs;
 		Animation smoke;
 
-		public void Damaged(Actor self, DamageState ds) { currentDs = ds; }
-
-		public void Damaged(Actor self, int damage, WarheadInfo warhead)
+		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (currentDs != DamageState.Half) return;
-			if (!isSmoking)
-			{
-				isSmoking = true;
-				smoke.PlayThen("idle", 
-					() => smoke.PlayThen("loop", 
-						() => smoke.PlayBackwardsThen("end", 
-							() => isSmoking = false)));
-			}
-		}
+			if (e.DamageState != DamageState.Half) return;
+			if (isSmoking) return;
 
+			isSmoking = true;
+			smoke.PlayThen("idle",
+				() => smoke.PlayThen("loop",
+					() => smoke.PlayBackwardsThen("end",
+						() => isSmoking = false)));
+		}
+			
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);

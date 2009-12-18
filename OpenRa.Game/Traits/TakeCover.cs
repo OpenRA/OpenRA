@@ -7,7 +7,7 @@ using OpenRa.Game.GameRules;
 namespace OpenRa.Game.Traits
 {
 	// infantry prone behavior
-	class TakeCover : ITick, INotifyDamageEx, IDamageModifier, ISpeedModifier
+	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
 	{
 		const int defaultProneTime = 100;	/* ticks, =4s */
 		const float proneDamage = .5f;
@@ -19,9 +19,10 @@ namespace OpenRa.Game.Traits
 
 		public TakeCover(Actor self) {}
 
-		public void Damaged(Actor self, int damage, WarheadInfo warhead)
+		public void Damaged(Actor self, AttackInfo e)
 		{
-			remainingProneTime = defaultProneTime;
+			if (e.Damage > 0)		/* fix to allow healing via `damage` */
+				remainingProneTime = defaultProneTime;
 		}
 
 		public void Tick(Actor self)
