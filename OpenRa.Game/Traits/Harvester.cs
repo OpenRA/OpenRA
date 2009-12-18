@@ -56,12 +56,16 @@ namespace OpenRa.Game.Traits
 		}
 
         public Color GetBorderColor() { return Color.Black; }
-        public int GetPipCount() { return 7; }
+        public int GetPipCount() { return 10; }
         public Color GetColorForPip(int index)
         {
-            if ((oreCarried + gemsCarried)*1.0f/Rules.General.BailCount* GetPipCount() < index + 1)
-                return Color.Transparent;
-            return Color.LimeGreen;
+            if (gemsCarried * 1.0f / Rules.General.BailCount > index * 1.0f / GetPipCount())
+                return Color.Red;
+
+            if ((gemsCarried + oreCarried) * 1.0f / Rules.General.BailCount > index * 1.0f / GetPipCount())
+                return Color.Yellow;
+
+            return Color.Transparent;
         }
 	}
 }
