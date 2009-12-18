@@ -3,7 +3,7 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class AttackTurreted : AttackBase
+	class AttackTurreted : AttackBase, INotifyBuildComplete
 	{
 		public AttackTurreted( Actor self ) : base(self) { self.traits.Get<Turreted>(); }
 
@@ -12,6 +12,9 @@ namespace OpenRa.Game.Traits
 			base.Tick(self);
 
 			if( !CanAttack( self ) ) return;
+
+			if (self.traits.Contains<Building>() && !buildComplete)
+				return;		/* base defenses can't do anything until they finish building !*/
 
 			var turreted = self.traits.Get<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
@@ -38,5 +41,8 @@ namespace OpenRa.Game.Traits
 				Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
 			self.traits.Get<AttackTurreted>().target = order.TargetActor;
 		}
+
+		bool buildComplete = false;
+		public void BuildingComplete(Actor self) { buildComplete = true; }
 	}
 }
