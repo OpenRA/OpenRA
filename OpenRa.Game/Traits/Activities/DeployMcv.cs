@@ -11,6 +11,8 @@ namespace OpenRa.Game.Traits.Activities
 			Game.world.AddFrameEndTask( _ =>
 			{
 				Game.world.Remove( self );
+				Sound.Play("placbldg.aud");
+				Sound.Play("build5.aud");
 				Game.world.Add( new Actor( Rules.UnitInfo["fact"], self.Location - new int2( 1, 1 ), self.Owner ) );
 			} );
 			return null;
