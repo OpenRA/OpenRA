@@ -28,6 +28,12 @@ namespace OpenRa.Game.Traits
 			Game.UnitInfluence.Add(self, this);
 		}
 
+		public void TeleportTo(Actor self, int2 xy)
+		{
+			fromCell = toCell = xy;
+			self.CenterLocation = Util.CenterOfCell(fromCell);
+		}
+
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
@@ -52,7 +58,9 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<int2> OccupiedCells()
 		{
-			return new[] { fromCell, toCell };
+			return (fromCell == toCell)
+				? new[] { fromCell } 
+				: new[] { fromCell, toCell };
 		}
 
 		public UnitMovementType GetMovementType()

@@ -19,26 +19,11 @@ namespace OpenRa.Game.Traits.Activities
 
         public IActivity Tick(Actor self)
         {
-            var unit = self.traits.Get<Unit>();
             var mobile = self.traits.Get<Mobile>();
-
-            //TODO: Something needs to go here to shift the units position.
-            // Everything i have tried has caused a crash in UnitInfluenceMap.
-
-            //Game.world.AddFrameEndTask(_ =>
-            //{
-                Game.UnitInfluence.Remove(self, mobile);
-                //self.Location = this.destination;
-                mobile.toCell = this.destination;
-                Game.UnitInfluence.Add(self, mobile);
-
-                
-            //});
-
-            return null;
+			mobile.TeleportTo(self, destination);
+            return NextActivity;
         }
 
-        public void Cancel(Actor self){}
-       
+		public void Cancel(Actor self) { }
     }
 }
