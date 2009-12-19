@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
 namespace OpenRa.Game.Traits
 {
 	class Harvester : IOrder, IPips
@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 		public bool IsFull { get { return oreCarried + gemsCarried == Rules.General.BailCount; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
 
-		public Harvester( Actor self ) { }
+		public Harvester(Actor self) { }
 
 		public void AcceptResource(bool isGem)
 		{
@@ -29,8 +29,8 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left) return null;
 
-			if (underCursor != null 
-				&& underCursor.Owner == self.Owner 
+			if (underCursor != null
+				&& underCursor.Owner == self.Owner
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
 				return Order.DeliverOre(self, underCursor);
 
@@ -40,32 +40,39 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
-		public void ResolveOrder( Actor self, Order order )
+		public void ResolveOrder(Actor self, Order order)
 		{
-			if( order.OrderString == "Harvest" )
+			if (order.OrderString == "Harvest")
 			{
 				self.CancelActivity();
-				self.QueueActivity( new Traits.Activities.Move( order.TargetLocation, 0 ) );
-				self.QueueActivity( new Traits.Activities.Harvest() );
+				self.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 0));
+				self.QueueActivity(new Traits.Activities.Harvest());
 			}
-			else if( order.OrderString == "DeliverOre" )
+			else if (order.OrderString == "DeliverOre")
 			{
 				self.CancelActivity();
-				self.QueueActivity( new Traits.Activities.DeliverOre( order.TargetActor ) );
+				self.QueueActivity(new Traits.Activities.DeliverOre(order.TargetActor));
 			}
 		}
 
-        public Color GetBorderColor() { return Color.Black; }
-        public int GetPipCount() { return 10; }
-        public Color GetColorForPip(int index)
-        {
-            if (gemsCarried * 1.0f / Rules.General.BailCount > index * 1.0f / GetPipCount())
-                return Color.Red;
+		public IEnumerable<PipType> GetPips()
+		{
+			const int numPips = 7;
+			for (int i = 0; i < numPips; i++)
+			{
+				if (gemsCarried * 1.0f / Rules.General.BailCount > i * 1.0f / numPips)
+				{
+					yield return PipType.Red;
+					continue;
+				}
 
-            if ((gemsCarried + oreCarried) * 1.0f / Rules.General.BailCount > index * 1.0f / GetPipCount())
-                return Color.Yellow;
-
-            return Color.Transparent;
-        }
+				if ((gemsCarried + oreCarried) * 1.0f / Rules.General.BailCount > i * 1.0f / numPips)
+				{
+					yield return PipType.Yellow;
+					continue;
+				}
+				yield return PipType.Transparent;
+			}
+		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using OpenRa.Game.GameRules;
-using System.Drawing;
+using System.Collections.Generic;
 namespace OpenRa.Game.Traits
 {
     class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips
@@ -36,48 +36,48 @@ namespace OpenRa.Game.Traits
                 self.CancelActivity();
             }
 
-            if (order.OrderString == "UsePortableChronoshift" && CanEnterCell(order.TargetLocation, self))
+			if (order.OrderString == "UsePortableChronoshift" && Game.IsCellBuildable(order.TargetLocation, self.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, self))
             {
+				self.CancelActivity();
            		self.QueueActivity(new Activities.Teleport(order.TargetLocation));
                 Sound.Play("chrotnk1.aud");
                 chronoshiftActive = false;
                 remainingChargeTime = chargeTime;
             }
         }
-
-        static bool CanEnterCell(int2 c, Actor self)
-        {
-            if (!Game.BuildingInfluence.CanMoveHere(c)) return false;
-            var u = Game.UnitInfluence.GetUnitAt(c);
-            return (u == null || u == self);
-        }
-
+        
         public float GetSpeedModifier()
         {
             return chronoshiftActive ? 0f : 1f;
         }
-
-        public Color GetBorderColor() { return Color.Black; }
-        public int GetPipCount() { return 5; }
-        public Color GetColorForPip(int index)
-        {
-            // TODO: Check how many pips to display
-            if ((1 - remainingChargeTime*1.0f / chargeTime) * GetPipCount() < index + 1)
-                return Color.Transparent;
-
-            switch (index)
-            {
-                case 0:
-                case 1:
-                    return Color.Red;
-                case 2:
-                case 3:
-                    return Color.Yellow;
-                case 4:
-                    return Color.LimeGreen;
-            }
-
-            return Color.Transparent;
-        }
+		
+		// Display 5 pips indicating the current charge status
+		public IEnumerable<PipType> GetPips()
+		{
+			const int numPips = 5;
+			for (int i = 0; i < numPips; i++)
+			{
+				if ((1 - remainingChargeTime * 1.0f / chargeTime) * numPips < i + 1)
+				{
+					yield return PipType.Transparent;
+					continue;
+				}
+					
+				switch (i)
+				{
+					case 0:
+					case 1:
+						yield return PipType.Red;
+						break;
+					case 2:
+					case 3:
+						yield return PipType.Yellow;
+						break;
+					case 4:
+						yield return PipType.Green;
+						break;
+				}
+			}
+		}
     }
 }

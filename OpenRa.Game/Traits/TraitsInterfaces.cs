@@ -6,7 +6,8 @@ using System.Drawing;
 namespace OpenRa.Game.Traits
 {
 	enum DamageState { Normal, Half, Dead };
-
+	enum PipType { Transparent, Green, Yellow, Red, Gray };
+	
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
@@ -23,9 +24,5 @@ namespace OpenRa.Game.Traits
 		ModifyRender( Actor self, IEnumerable<Tuple<Sprite, float2, int>> r ); }
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
-    interface IPips {
-        Color GetBorderColor();
-        int GetPipCount();
-        Color GetColorForPip(int index);
-    }
+	interface IPips { IEnumerable<PipType> GetPips(); }
 }
