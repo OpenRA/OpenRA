@@ -48,7 +48,8 @@ namespace OpenRa.Game
 			FieldLoader.Load(General, AllRules.GetSection("General"));
 
             Aftermath = new AftermathInfo();
-            FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
+			if (useAftermath)
+				FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
 
 			LoadCategories(
 				"Building",
