@@ -18,6 +18,7 @@ namespace OpenRa.Game
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static GeneralInfo General;
+        public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
 		public static Map Map;
 		public static TileSet TileSet;
@@ -45,6 +46,9 @@ namespace OpenRa.Game
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
+
+            Aftermath = new AftermathInfo();
+            FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
 
 			LoadCategories(
 				"Building",

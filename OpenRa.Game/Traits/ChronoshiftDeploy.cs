@@ -6,8 +6,8 @@ namespace OpenRa.Game.Traits
     {
         public ChronoshiftDeploy(Actor self) { }
         bool chronoshiftActive = false; // Is the chronoshift engine active?
-        const int chargeTime = 100; // How many frames between uses?
-        int remainingChargeTime = 0;
+        int remainingChargeTime = 0; // How long until we can chronoshift again?
+        int chargeTime = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 
         public void Tick(Actor self)
         {
