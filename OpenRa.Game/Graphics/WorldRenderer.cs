@@ -92,6 +92,8 @@ namespace OpenRa.Game.Graphics
 			lineRenderer.Flush();
 		}
 
+		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
+
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
 		{
 			var center = selectedUnit.CenterLocation;
@@ -149,36 +151,16 @@ namespace OpenRa.Game.Graphics
 
 				// Render Pips
 				// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-				float2 pipxyBase = xY+ new float2(-12,-7); // Correct for the offset in the shp file
-				float2 pipxyOffset = new float2(0,0); // Correct for offset due to multiple columns/rows
+				float2 pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
+				float2 pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
 				foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
 				{
 					foreach (var pip in pips.GetPips())
 					{
-						Animation pipImages = new Animation("pips");
-						
-						switch(pip)
-						{
-							case PipType.Transparent:
-								pipImages.PlayRepeating("pip-empty");
-								break;
-							case PipType.Green:
-								pipImages.PlayRepeating("pip-green");
-								break;
-							case PipType.Yellow:
-								pipImages.PlayRepeating("pip-yellow");
-								break;
-							case PipType.Red:
-								pipImages.PlayRepeating("pip-red");
-								break;
-							case PipType.Gray:
-								pipImages.PlayRepeating("pip-gray");
-								break;
-							default:
-								throw new NotImplementedException();
-						}
-						spriteRenderer.DrawSprite(pipImages.Image, pipxyBase+pipxyOffset, 0);
-						pipxyOffset +=new float2(4,0);
+						var pipImages = new Animation("pips");
+						pipImages.PlayRepeating(pipStrings[(int)pip]);
+						spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
+						pipxyOffset += new float2(4, 0);
 					}
 					// Increment row
 					pipxyOffset.X = 0;
