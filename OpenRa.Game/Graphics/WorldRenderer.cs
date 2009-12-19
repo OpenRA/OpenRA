@@ -167,6 +167,17 @@ namespace OpenRa.Game.Graphics
 					pipxyOffset.Y -= 5;
 				}
 			}
+			float2 fakexyBase = new float2(-16, -4);
+			if (selectedUnit.Owner == Game.LocalPlayer){
+				foreach (var fake in selectedUnit.traits.WithInterface<Fake>())
+				{
+					float2 fakexyOffset = xY + new float2(selectedUnit.Bounds.Width/2, 0) + fakexyBase;
+					var fakeImage = new Animation("pips");
+					fakeImage.PlayRepeating("fake");
+					spriteRenderer.DrawSprite(fakeImage.Image, fakexyOffset, 0);
+				}
+			}
+			
 
 			if (ShowUnitPaths)
 			{
