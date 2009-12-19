@@ -90,8 +90,10 @@ namespace OpenRa.Game.Graphics
 				Game.controller.orderGenerator.Render();
 
 			lineRenderer.Flush();
+			spriteRenderer.Flush();
 		}
 
+		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
@@ -116,56 +118,8 @@ namespace OpenRa.Game.Graphics
 
 			if (drawHealthBar)
 			{
-				c = Color.Gray;
-				lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
-				lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
-
-				var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Strength;
-				var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
-					: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
-					: Color.LimeGreen;
-
-				var healthColor2 = Color.FromArgb(
-					255,
-					healthColor.R / 2,
-					healthColor.G / 2,
-					healthColor.B / 2);
-
-				var z = float2.Lerp(xy, Xy, healthAmount);
-
-				lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
-				lineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
-
-				lineRenderer.DrawLine(xy + new float2(0, -3),
-					z + new float2(0, -3),
-					healthColor, healthColor);
-
-				lineRenderer.DrawLine(xy + new float2(0, -2),
-					z + new float2(0, -2),
-					healthColor2, healthColor2);
-
-				lineRenderer.DrawLine(xy + new float2(0, -4),
-					z + new float2(0, -4),
-					healthColor2, healthColor2);
-
-
-				// Render Pips
-				// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-				float2 pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
-				float2 pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
-				foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
-				{
-					foreach (var pip in pips.GetPips())
-					{
-						var pipImages = new Animation("pips");
-						pipImages.PlayRepeating(pipStrings[(int)pip]);
-						spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
-						pipxyOffset += new float2(4, 0);
-					}
-					// Increment row
-					pipxyOffset.X = 0;
-					pipxyOffset.Y -= 5;
-				}
+				DrawHealthBar(selectedUnit, xy, Xy);
+				DrawPips(selectedUnit, xY);
 			}
 			float2 fakexyBase = new float2(-16, -4);
 			if (selectedUnit.Owner == Game.LocalPlayer){
@@ -197,7 +151,55 @@ namespace OpenRa.Game.Graphics
 					}
 				}
 			}
-			spriteRenderer.Flush();
+		}
+
+		void DrawHealthBar(Actor selectedUnit, float2 xy, float2 Xy)
+		{
+			var c = Color.Gray;
+			lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
+			lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
+
+			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Strength;
+			var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
+				: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
+				: Color.LimeGreen;
+
+			var healthColor2 = Color.FromArgb(
+				255,
+				healthColor.R / 2,
+				healthColor.G / 2,
+				healthColor.B / 2);
+
+			var z = float2.Lerp(xy, Xy, healthAmount);
+
+			lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			lineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
+
+			lineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
+			lineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
+			lineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
+		}
+
+		void DrawPips(Actor selectedUnit, float2 xY)
+		{
+			// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
+
+			var pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
+			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
+
+			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
+			{
+				foreach (var pip in pips.GetPips())
+				{
+					var pipImages = new Animation("pips");
+					pipImages.PlayRepeating(pipStrings[(int)pip]);
+					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
+					pipxyOffset += new float2(4, 0);
+				}
+				// Increment row
+				pipxyOffset.X = 0;
+				pipxyOffset.Y -= 5;
+			}
 		}
 	}
 }
