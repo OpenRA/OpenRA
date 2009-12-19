@@ -57,13 +57,8 @@ namespace OpenRa.Game
 
 		public void Remove( Actor self, IOccupySpace unit )
 		{
-			var min = int2.Max(new int2(0, 0), self.Location - searchDistance);
-			var max = int2.Min(new int2(128, 128), self.Location + searchDistance);
-
-			for (var j = min.Y; j <= max.Y; j++)
-				for (var i = min.X; i <= max.X; i++)
-					if (influence[i, j] == self)
-						influence[i, j] = null;
+			foreach (var c in unit.OccupiedCells())
+				influence[c.X, c.Y] = null;
 		}
 
 		public void Update(Actor self, IOccupySpace unit)

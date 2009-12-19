@@ -38,8 +38,8 @@ namespace OpenRa.Game.Traits
 
             if (order.OrderString == "UsePortableChronoshift" && CanEnterCell(order.TargetLocation, self))
             {
-           		//self.QueueActivity(new Activities.Teleport(order.TargetLocation));
-                Sound.Play("chrotnk1.aud");
+           		self.QueueActivity(new Activities.Teleport(order.TargetLocation));
+            //    Sound.Play("chrotnk1.aud");
                 chronoshiftActive = false;
                 remainingChargeTime = chargeTime;
             }
