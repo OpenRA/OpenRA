@@ -57,8 +57,9 @@ namespace OpenRa.Game
 
 		public void Remove( Actor self, IOccupySpace unit )
 		{
-			foreach (var c in unit.OccupiedCells())
-				influence[c.X, c.Y] = null;
+			if (unit != null)
+				foreach (var c in unit.OccupiedCells())
+					influence[c.X, c.Y] = null;
 		}
 
 		public void Update(Actor self, IOccupySpace unit)
