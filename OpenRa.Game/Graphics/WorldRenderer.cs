@@ -148,24 +148,8 @@ namespace OpenRa.Game.Graphics
 					z + new float2(0, -4),
 					healthColor2, healthColor2);
 
-
 				// Render Pips
-				// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-				float2 pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
-				float2 pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
-				foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
-				{
-					foreach (var pip in pips.GetPips())
-					{
-						var pipImages = new Animation("pips");
-						pipImages.PlayRepeating(pipStrings[(int)pip]);
-						spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
-						pipxyOffset += new float2(4, 0);
-					}
-					// Increment row
-					pipxyOffset.X = 0;
-					pipxyOffset.Y -= 5;
-				}
+				DrawPips(selectedUnit, xY);
 			}
 
 			if (ShowUnitPaths)
@@ -187,6 +171,28 @@ namespace OpenRa.Game.Graphics
 				}
 			}
 			spriteRenderer.Flush();
+		}
+
+		void DrawPips(Actor selectedUnit, float2 xY)
+		{
+			// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
+
+			var pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
+			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
+
+			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
+			{
+				foreach (var pip in pips.GetPips())
+				{
+					var pipImages = new Animation("pips");
+					pipImages.PlayRepeating(pipStrings[(int)pip]);
+					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
+					pipxyOffset += new float2(4, 0);
+				}
+				// Increment row
+				pipxyOffset.X = 0;
+				pipxyOffset.Y -= 5;
+			}
 		}
 	}
 }
