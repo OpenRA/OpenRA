@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace OpenRa
 {
-	class AssetInfo
+	public class AssetInfo
 	{
 		public readonly string Filename;
 		public readonly string Hash;
