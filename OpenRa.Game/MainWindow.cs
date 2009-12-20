@@ -104,7 +104,7 @@ namespace OpenRa.Game
 		{
 			base.OnMouseMove(e);
 
-			if (e.Button == MouseButtons.Middle)
+			if (e.Button == MouseButtons.Middle || e.Button == (MouseButtons.Left | MouseButtons.Right))
 			{
 				int2 p = new int2(e.Location);
 				Game.viewport.Scroll(lastPos - p);
