@@ -4,19 +4,22 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-    class Submarine : IRenderModifier, INotifyAttack, ITick
+    class Submarine : IRenderModifier, INotifyAttack, ITick, INotifyDamage
     {
         int remainingSurfaceTime = 2;		/* setup for initial dive */
 
         public Submarine(Actor self) { }
 
-        public void Attacking(Actor self)
-        {
-            if (remainingSurfaceTime <= 0)
-                OnSurface();
+		void DoSurface()
+		{
+			if (remainingSurfaceTime <= 0)
+				OnSurface();
 
-            remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
-        }
+			remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
+		}
+
+        public void Attacking(Actor self) { DoSurface(); }
+		public void Damaged(Actor self, AttackInfo e) { DoSurface(); }
 
         public IEnumerable<Tuple<Sprite, float2, int>>
             ModifyRender(Actor self, IEnumerable<Tuple<Sprite, float2, int>> rs)
@@ -46,5 +49,5 @@ namespace OpenRa.Game.Traits
         {
             Sound.Play("subshow1.aud");		/* is this the right sound?? */
         }
-    }
+	}
 }

@@ -42,7 +42,7 @@ Planes
 	
 Ships
 CA		Works
-SS		Doesn't surface on damage
+SS		Works
 DD		AA weapon doesn't work, depth charges don't work
 PT		depth charges don't work
 LST		Cargo doesn't work
