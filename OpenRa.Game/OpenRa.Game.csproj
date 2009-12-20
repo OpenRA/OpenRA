@@ -106,6 +106,7 @@
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
+    <Compile Include="Traits\Activities\Fly.cs" />
     <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
+    <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
     <Compile Include="Traits\RenderBuildingCharge.cs" />
     <Compile Include="Traits\RenderInfantry.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\RenderUnit.cs" />
     <Compile Include="Traits\RenderUnitMuzzleFlash.cs" />
+    <Compile Include="Traits\RenderUnitPlane.cs" />
     <Compile Include="Traits\RenderUnitReload.cs" />
     <Compile Include="Traits\RenderUnitRotor.cs" />
     <Compile Include="Traits\RenderUnitSpinner.cs" />
