@@ -78,7 +78,10 @@ namespace OpenRa.Game.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
+			{
+				Sound.PlayVoice("Die", self);
 				Game.world.AddFrameEndTask(w => w.Add(new Corpse(self, e.Warhead.InfDeath)));
+			}
 		}
 	}
 }

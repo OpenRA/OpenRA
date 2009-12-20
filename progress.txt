@@ -1,7 +1,7 @@
 
 Ground Units:
 
-All Infantry		No death sounds, no idle animations
+All Infantry		No idle animations
 E1		Range is wrong.
 E2		Grenade origin is wrong, grenades are too accurate.
 E3		AA weapon doesn't work.

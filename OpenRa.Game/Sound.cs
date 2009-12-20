@@ -49,6 +49,12 @@ namespace OpenRa.Game
 			if (clip == null)
 				return;
 
+			if (clip.Contains("."))		/* no variants! */
+			{
+				Play(clip);
+				return;
+			}
+
 			var variants = (voicedUnit.Owner.Race == Race.Soviet)
 							? vi.SovietVariants : vi.AlliedVariants;
 

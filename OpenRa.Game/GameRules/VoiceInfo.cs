@@ -11,9 +11,10 @@ namespace OpenRa.Game.GameRules
 	{
 		public readonly string[] SovietVariants = { ".aud" };
 		public readonly string[] AlliedVariants = { ".aud" };
-		public readonly string[] Select = {};
-		public readonly string[] Move = {};
+		public readonly string[] Select = { };
+		public readonly string[] Move = { };
 		public readonly string[] Attack = null;
+		public readonly string[] Die = { };
 
 		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
 
@@ -25,6 +26,7 @@ namespace OpenRa.Game.GameRules
 					{ "Select", new VoicePool(Select) },
 					{ "Move", new VoicePool(Move) },
 					{ "Attack", new VoicePool( Attack ?? Move ) },
+					{ "Die", new VoicePool(Die) },
 				});
 		}
 	}
