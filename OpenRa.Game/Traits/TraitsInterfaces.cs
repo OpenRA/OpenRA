@@ -6,7 +6,10 @@ using System.Drawing;
 namespace OpenRa.Game.Traits
 {
 	enum DamageState { Normal, Half, Dead };
+	
+	// depends on the order of pips in WorldRenderer.cs!
 	enum PipType { Transparent, Green, Yellow, Red, Gray };
+	enum TagType { None, Fake, Primary };
 	
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self); }
@@ -25,4 +28,5 @@ namespace OpenRa.Game.Traits
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
 	interface IPips { IEnumerable<PipType> GetPips(); }
+	interface ITags { IEnumerable<TagType> GetTags(); }
 }

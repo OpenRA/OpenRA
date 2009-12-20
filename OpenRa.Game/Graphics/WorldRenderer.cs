@@ -93,9 +93,6 @@ namespace OpenRa.Game.Graphics
 			spriteRenderer.Flush();
 		}
 
-		// depends on the order of pips in TraitsInterfaces.cs!
-		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
-
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
 		{
 			var center = selectedUnit.CenterLocation;
@@ -119,19 +116,14 @@ namespace OpenRa.Game.Graphics
 			if (drawHealthBar)
 			{
 				DrawHealthBar(selectedUnit, xy, Xy);
-				DrawPips(selectedUnit, xY);
-			}
-			float2 fakexyBase = new float2(-16, -4);
-			if (selectedUnit.Owner == Game.LocalPlayer){
-				foreach (var fake in selectedUnit.traits.WithInterface<Fake>())
+
+				// Only display pips and tags to the owner
+				if (selectedUnit.Owner == Game.LocalPlayer)
 				{
-					float2 fakexyOffset = xY + new float2(selectedUnit.Bounds.Width/2, 0) + fakexyBase;
-					var fakeImage = new Animation("pips");
-					fakeImage.PlayRepeating("fake");
-					spriteRenderer.DrawSprite(fakeImage.Image, fakexyOffset, 0);
+					DrawPips(selectedUnit, xY);
+					DrawTags(selectedUnit, new float2(center.X, xy.Y));
 				}
-			}
-			
+			}	
 
 			if (ShowUnitPaths)
 			{
@@ -180,11 +172,14 @@ namespace OpenRa.Game.Graphics
 			lineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
 		}
 
-		void DrawPips(Actor selectedUnit, float2 xY)
+		// depends on the order of pips in TraitsInterfaces.cs!
+		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
+		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
+
+		void DrawPips(Actor selectedUnit, float2 basePosition)
 		{
 			// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-
-			var pipxyBase = xY + new float2(-12, -7); // Correct for the offset in the shp file
+			var pipxyBase = basePosition + new float2(-12, -7); // Correct for the offset in the shp file
 			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
 
 			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
@@ -199,6 +194,26 @@ namespace OpenRa.Game.Graphics
 				// Increment row
 				pipxyOffset.X = 0;
 				pipxyOffset.Y -= 5;
+			}
+		}
+		
+		void DrawTags(Actor selectedUnit, float2 basePosition)
+		{
+			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
+			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
+			var tagxyOffset = new float2(0, 0); // Correct for offset due to multiple rows
+
+			foreach (var tags in selectedUnit.traits.WithInterface<ITags>())
+			{
+				foreach (var tag in tags.GetTags())
+				{
+					var tagImages = new Animation("pips");
+					tagImages.PlayRepeating(tagStrings[(int)tag]);
+					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, 0);
+					
+					// Increment row
+					tagxyOffset.Y += 8;
+				}
 			}
 		}
 	}

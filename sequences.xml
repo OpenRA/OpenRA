@@ -530,15 +530,16 @@
   </unit>
   <unit name="pips">
     <sequence name="groups" start="8" length="10" />
-    <sequence name="pip-green" start="1" length="1" />
-    <sequence name="pip-empty" start="0" length="1" />
     <sequence name="medic" start="20" length="1" />
     <sequence name="ready" start="3" length="1" />
     <sequence name="hold" start="4" length="1" />
+	<sequence name="pip-empty" start="0" length="1" />
+	<sequence name="pip-green" start="1" length="1" />
     <sequence name="pip-yellow" start="5" length="1" />
     <sequence name="pip-gray" start="6" length="1" />
     <sequence name="pip-red" start="7" length="1" />
-    <sequence name="fake" start="18" length="1" />
+    <sequence name="tag-fake" start="18" length="1" />
+	<sequence name="tag-primary" start="2" length="1" />
   </unit>
   <unit name="mig">
     <sequence name="idle" start="0" length="16" />
