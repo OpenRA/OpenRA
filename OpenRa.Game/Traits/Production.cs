@@ -1,9 +1,10 @@
 ﻿using OpenRa.Game.GameRules;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace OpenRa.Game.Traits
 {
-	class Production : IProducer
+	class Production : IProducer, ITags
 	{
 		public Production( Actor self ) { }
 
@@ -49,6 +50,11 @@ namespace OpenRa.Game.Traits
 				self.traits.Get<RenderWarFactory>().EjectUnit();
 
 			return true;
+		}
+
+		public IEnumerable<TagType> GetTags()
+		{
+			yield return (true) ? TagType.Primary : TagType.None;
 		}
 	}
 
