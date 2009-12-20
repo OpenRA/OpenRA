@@ -1,0 +1,49 @@
+
+Ground Units:
+
+All Infantry		No death sounds, no idle animations
+E1		Range is wrong.
+E2		Grenade origin is wrong, grenades are too accurate.
+E3		AA weapon doesn't work.
+E4		Flamer origin is wrong
+E6		Capture action missing, repair action missing
+E7		C4 action missing
+MEDI	Heal doesn't work
+SPY		Infiltrate action missing
+THF		Steak action missing
+C1,C2,Einstein,Kosygin		Not implemented
+
+All tracked vehicles	Crush infantry missing
+1TNK	Works
+2TNK	Works
+3TNK	Works
+4TNK	Gun, missile origins are wrong
+
+Light vehicles
+V2RL	Works
+APC		Cargo doesn't work
+MNLY	Mines don't work	- strategy to be decided on minefield placement
+MGG		No gap
+MRJ		No radar
+JEEP	Works
+MCV		Deploy while moving is funky
+HARV	Works
+ARTY	Works
+
+Helicopters
+	- Weapons don't work, 
+	- hover while attacking doesn't work, 
+	- render is broken (altitude)
+	- Repair/rearm doesn't work
+TRAN	Cargo doesn't work
+
+Planes
+	- Pretty much everything doesn't work
+	
+Ships
+CA		Works
+SS		Doesn't surface on damage
+DD		AA weapon doesn't work, depth charges don't work
+PT		depth charges don't work
+LST		Cargo doesn't work
+
