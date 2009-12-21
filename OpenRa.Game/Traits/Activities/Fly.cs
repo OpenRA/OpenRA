@@ -173,9 +173,6 @@ namespace OpenRa.Game.Traits.Activities
 			w2 = c2 + f;
 			w3 = approachStart;
 			landPoint = landPos;
-
-			var rup = self.traits.Get<RenderUnitPlane>();
-			rup.wps = new[] { self.CenterLocation, w1, w2, w3, landPoint, c1, c2 };
 		}
 
 		public IActivity Tick(Actor self)

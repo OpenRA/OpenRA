@@ -24,20 +24,11 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 
-			yield return Util.CenteredShadow(self, anim.Image, self.CenterLocation);
-			yield return Util.CenteredShadow(self, rotorAnim.Image, self.CenterLocation
-				+ Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, 0));
-			if (self.Info.SecondaryOffset != null)
-				yield return Util.CenteredShadow(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
-					+ Util.GetTurretPosition(self, unit, self.Info.SecondaryOffset, 0));
-
-			var p = self.CenterLocation - new float2( 0, unit.Altitude );
-
-			yield return Util.Centered(self, anim.Image, p);
-			yield return Util.Centered(self, rotorAnim.Image, p
+			yield return Util.Centered(self, anim.Image, self.CenterLocation);
+			yield return Util.Centered(self, rotorAnim.Image, self.CenterLocation
 				+ Util.GetTurretPosition( self, unit, self.Info.PrimaryOffset, 0 ) );
 			if (self.Info.SecondaryOffset != null)
-				yield return Util.Centered(self, (secondRotorAnim ?? rotorAnim).Image, p
+				yield return Util.Centered(self, (secondRotorAnim ?? rotorAnim).Image, self.CenterLocation
 					+ Util.GetTurretPosition( self, unit, self.Info.SecondaryOffset, 0 ) );
 		}
 
@@ -55,9 +46,9 @@ namespace OpenRa.Game.Traits
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;
 
-			rotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor" : "slow-rotor");
+			rotorAnim.ReplaceAnim(isFlying ? "rotor" : "slow-rotor");
 			if (secondRotorAnim != null)
-				secondRotorAnim.PlayRepeatingPreservingPosition(isFlying ? "rotor2" : "slow-rotor2");
+				secondRotorAnim.ReplaceAnim(isFlying ? "rotor2" : "slow-rotor2");
 		}
 	}
 }

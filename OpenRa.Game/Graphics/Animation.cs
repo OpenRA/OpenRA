@@ -42,16 +42,10 @@ namespace OpenRa.Game.Graphics
 			PlayThen( sequenceName, () => PlayRepeating( sequenceName ) );
 		}
 
-		public void PlayRepeatingPreservingPosition(string sequenceName)
-		{
-			var f = frame;
-			PlayThen(sequenceName, () => PlayRepeating(sequenceName));
-			frame = f % CurrentSequence.Length;
-		}
-
 		public void ReplaceAnim(string sequenceName)
 		{
 			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			frame %= CurrentSequence.Length;
 		}
 
 		public void PlayThen( string sequenceName, Action after )
