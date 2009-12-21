@@ -15,7 +15,6 @@ namespace OpenRa.Game.Graphics
 		public readonly TerrainRenderer terrainRenderer;
 		public readonly SpriteRenderer spriteRenderer;
 		public readonly LineRenderer lineRenderer;
-		//public readonly Region region;
 		public readonly UiOverlay uiOverlay;
 		readonly Renderer renderer;
 
@@ -115,6 +114,7 @@ namespace OpenRa.Game.Graphics
 			if (drawHealthBar)
 			{
 				DrawHealthBar(selectedUnit, xy, Xy);
+				DrawControlGroup(selectedUnit, xy);
 
 				// Only display pips and tags to the owner
 				if (selectedUnit.Owner == Game.LocalPlayer)
@@ -175,6 +175,17 @@ namespace OpenRa.Game.Graphics
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
 		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
+
+		void DrawControlGroup(Actor selectedUnit, float2 basePosition)
+		{
+			var group = Game.controller.GetControlGroupForActor(selectedUnit);
+			if (group == null) return;
+
+			var pipImages = new Animation("pips");
+			pipImages.PlayFetchIndex("groups", () => (int)group);
+			pipImages.Tick();
+			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), 0);
+		}
 
 		void DrawPips(Actor selectedUnit, float2 basePosition)
 		{

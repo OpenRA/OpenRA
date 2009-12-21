@@ -166,6 +166,10 @@ namespace OpenRa.Game
 					return;
 
 				controlGroups[group].Clear();
+
+				for (var i = 0; i < 10; i++)	/* all control groups */
+					controlGroups[i].RemoveAll(a => uog.selection.Contains(a));
+
 				controlGroups[group].AddRange(uog.selection);
 				return;
 			}
@@ -178,6 +182,13 @@ namespace OpenRa.Game
 
 			if (uog == null) return;
 			CombineSelection(controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
+		}
+
+		public int? GetControlGroupForActor(Actor a)
+		{
+			return controlGroups.Where(g => g.Value.Contains(a))
+				.Select(g => (int?)g.Key)
+				.FirstOrDefault();
 		}
 	}
 }
