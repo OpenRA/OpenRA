@@ -190,10 +190,18 @@ namespace OpenRa.Game.Graphics
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
 					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
 					pipxyOffset += new float2(4, 0);
+					
+					if (pipxyOffset.X+5 > selectedUnit.SelectedSize.X)
+					{
+						//spriteRenderer.Flush();
+						pipxyOffset.X = 0;
+						pipxyOffset.Y -= 4;
+					}
 				}
 				// Increment row
 				pipxyOffset.X = 0;
 				pipxyOffset.Y -= 5;
+				//spriteRenderer.Flush();
 			}
 		}
 		
