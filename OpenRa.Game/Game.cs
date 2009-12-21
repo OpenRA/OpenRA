@@ -102,6 +102,9 @@ namespace OpenRa.Game
 			PerfHistory.items["batches"].hasNormalTick = false;
 
 			chrome = new Chrome(renderer);
+
+			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
+			oreTicks = oreFrequency;
 		}
 
 		static void LoadMapActors(IniFile mapfile)
@@ -128,8 +131,8 @@ namespace OpenRa.Game
 			lastTime = Environment.TickCount;
 		}
 
-		const int oreFrequency = 30;
-		static int oreTicks = oreFrequency;
+		static int oreFrequency;
+		static int oreTicks;
 		public static int RenderFrame = 0;
 
 		public static Chat chat = new Chat();
