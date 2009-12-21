@@ -57,7 +57,7 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips()
 		{
-			const int numPips = 20;
+			const int numPips = 7;
 			for (int i = 0; i < numPips; i++)
 			{
 				if (gemsCarried * 1.0f / Rules.General.BailCount > i * 1.0f / numPips)
