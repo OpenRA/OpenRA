@@ -203,7 +203,7 @@
   </unit>
   <!-- chronosphere -->
   <unit name="pdox">
-    <sequence name="idle" start="0" length="29" />
+    <sequence name="active" start="0" length="29" />
     <sequence name="damaged-idle" start="29" length="29" />
     <sequence name="make" start="0" length="*" src="pdoxmake" />
   </unit>
