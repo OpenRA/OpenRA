@@ -29,4 +29,9 @@ namespace OpenRa.Game.Traits
 	interface ISpeedModifier { float GetSpeedModifier(); }
 	interface IPips { IEnumerable<PipType> GetPips(); }
 	interface ITags { IEnumerable<TagType> GetTags(); }
+	interface IMovement
+	{
+		UnitMovementType GetMovementType();
+		bool CanEnterCell(int2 location);
+	}
 }

@@ -15,7 +15,7 @@ namespace OpenRa.Game
 			case "Move":
 			case "Attack":
 			case "DeployMcv":
-			case "DeliverOre":
+			case "Enter":
 			case "Harvest":
 			case "SetRallyPoint":
 			case "StartProduction":

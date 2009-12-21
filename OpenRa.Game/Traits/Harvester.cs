@@ -32,7 +32,7 @@ namespace OpenRa.Game.Traits
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
-				return Order.DeliverOre(self, underCursor);
+				return Order.Enter(self, underCursor);
 
 			if (underCursor == null && Rules.Map.ContainsResource(xy))
 				return Order.Harvest(self, xy);
@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 				self.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 0));
 				self.QueueActivity(new Traits.Activities.Harvest());
 			}
-			else if (order.OrderString == "DeliverOre")
+			else if (order.OrderString == "Enter")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Traits.Activities.DeliverOre(order.TargetActor));

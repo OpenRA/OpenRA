@@ -169,9 +169,9 @@ namespace OpenRa.Game
 			return new Order("PlaceBuilding", subject.PlayerActor, null, target, buildingName);
 		}
 
-		public static Order DeliverOre(Actor subject, Actor target)
+		public static Order Enter(Actor subject, Actor target)
 		{
-			return new Order("DeliverOre", subject, target, int2.Zero, null);
+			return new Order("Enter", subject, target, int2.Zero, null);
 		}
 
 		public static Order Harvest(Actor subject, int2 target)

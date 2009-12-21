@@ -5,7 +5,7 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class Mobile : IOrder, IOccupySpace
+	class Mobile : IOrder, IOccupySpace, IMovement
 	{
 		readonly Actor self;
 
@@ -74,10 +74,15 @@ namespace OpenRa.Game.Traits
 				case "Ship":
 					return UnitMovementType.Float;
 				case "Plane":
-					return UnitMovementType.Track; // FIXME: remove this when planes actually fly.
+					return UnitMovementType.Fly;
 				default:
 					throw new InvalidOperationException("GetMovementType on unit that shouldn't be aable to move.");
 			}
+		}
+		
+		public bool CanEnterCell(int2 location)
+		{
+			return Game.IsCellBuildable( location, GetMovementType(), self );
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

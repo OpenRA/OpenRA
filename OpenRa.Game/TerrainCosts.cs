@@ -8,6 +8,7 @@ namespace OpenRa.Game
 		Track = 1,
 		Wheel = 2,
 		Float = 3,
+		Fly = 4,
 	}
 
 	enum TerrainMovementType : byte

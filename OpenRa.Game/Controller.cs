@@ -128,11 +128,12 @@ namespace OpenRa.Game
 
 		Cursor CursorForOrderString( string s, Actor a, int2 location )
 		{
+			var movement = a.traits.WithInterface<IMovement>().FirstOrDefault();
 			switch( s )
 			{
 			case "Attack": return Cursor.Attack;
 			case "Move":
-				if( Game.IsCellBuildable( location, a.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, a ) )
+				if (movement.CanEnterCell(location))
 					return Cursor.Move;
 				else
 					return Cursor.MoveBlocked;
@@ -143,12 +144,12 @@ namespace OpenRa.Game
 				else
 					return Cursor.DeployBlocked;
             case "ActivatePortableChronoshift": return Cursor.Deploy;
-            case "UsePortableChronoshift": 
-                if (Game.IsCellBuildable(location, a.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, a))
+            case "UsePortableChronoshift":
+				if (movement.CanEnterCell(location))
                     return Cursor.Chronoshift;
                 else
                     return Cursor.MoveBlocked;
-			case "DeliverOre": return Cursor.Enter;
+			case "Enter": return Cursor.Enter;
 			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
 			default:
 				return null;

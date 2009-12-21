@@ -4,7 +4,7 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class Helicopter : ITick, IOrder
+	class Helicopter : ITick, IOrder, IMovement
 	{
 		public int2 targetLocation;
 
@@ -73,6 +73,15 @@ namespace OpenRa.Game.Traits
 			}
 
 			/* todo: bob slightly when hovering */
+		}
+		public UnitMovementType GetMovementType()
+		{
+			return UnitMovementType.Fly;
+		}
+
+		public bool CanEnterCell(int2 location)
+		{
+			return true; // Planes can go anywhere (?)
 		}
 	}
 }

@@ -6,7 +6,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Plane : IOrder
+	class Plane : IOrder, IMovement
 	{
 		public Plane(Actor self)
 		{
@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 				return Order.Move(self, xy);
 			if (underCursor.Info == Rules.UnitInfo["AFLD"] 
 				&& underCursor.Owner == self.Owner)
-				return Order.DeliverOre(self, underCursor);		/* brutal hack */
+				return Order.Enter(self, underCursor);
 			return null;
 		}
 
@@ -31,11 +31,21 @@ namespace OpenRa.Game.Traits
 				self.QueueActivity(new Circle(order.TargetLocation));
 			}
 
-			if (order.OrderString == "DeliverOre")
+			if (order.OrderString == "Enter")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor.CenterLocation));
 			}
+		}
+
+		public UnitMovementType GetMovementType()
+		{
+			return UnitMovementType.Fly;
+		}
+
+		public bool CanEnterCell(int2 location)
+		{
+			return true; // Planes can go anywhere (?)
 		}
 	}
 }
