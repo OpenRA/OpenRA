@@ -110,9 +110,12 @@ namespace OpenRa.Game.Traits
 			var bodyFacing = unit.Facing;
 			var quantizedFacing = QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
-			return (RotateVectorByFacing(new float2(offset[0], offset[1]), quantizedFacing, .7f) + GetRecoil(self, recoil))
-				+ new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3));
+			return (RotateVectorByFacing(offset.RelOffset(), quantizedFacing, .7f) + GetRecoil(self, recoil))
+				+ offset.AbsOffset();
 		}
+
+		public static float2 RelOffset(this int[] offset) { return new float2(offset[0], offset[1]); }
+		public static float2 AbsOffset(this int[] offset) { return new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3)); }
 
 		public static Tuple<Sprite, float2, int> Centered(Actor self, Sprite s, float2 location)
 		{

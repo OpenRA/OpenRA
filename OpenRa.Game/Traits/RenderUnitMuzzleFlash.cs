@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 				() => (Util.QuantizeFacing(unit.Facing, 8)) * 6 + (int)(attack.primaryRecoil * 5.9f));
 			anims.Add( "muzzle", new AnimationWithOffset(
 				muzzleFlash,
-				() => new float2( self.Info.PrimaryOffset.ElementAtOrDefault( 2 ), self.Info.PrimaryOffset.ElementAtOrDefault( 3 ) ),
+				() => self.Info.PrimaryOffset.AbsOffset(),
 				() => attack.primaryRecoil <= 0 ) );
 		}
 	}
