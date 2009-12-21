@@ -55,10 +55,17 @@ namespace OpenRa.Game
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
+			var unit = target.traits.GetOrDefault<Unit>();
 
-			if (projectile.ASW && target.traits.Contains<Submarine>()) return true;
-			if (projectile.AA && target.traits.Contains<Helicopter>()) return true;
-			if (projectile.UnderWater && !target.Info.WaterBound) return false;
+			if (target.traits.Contains<Submarine>())
+				return projectile.ASW;
+
+			if (unit != null && unit.Altitude > 0)
+				return projectile.AA;
+
+			if (projectile.UnderWater && !target.Info.WaterBound)
+				return false;
+
 			return projectile.AG;
 		}
 
