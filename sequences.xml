@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -203,8 +203,10 @@
   </unit>
   <!-- chronosphere -->
   <unit name="pdox">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="29" length="1" />
     <sequence name="active" start="0" length="29" />
-    <sequence name="damaged-idle" start="29" length="29" />
+    <sequence name="damaged-active" start="29" length="29" />
     <sequence name="make" start="0" length="*" src="pdoxmake" />
   </unit>
   <!-- nuclear missile silo -->
