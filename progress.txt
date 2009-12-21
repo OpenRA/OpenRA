@@ -10,7 +10,7 @@ E6		Capture action missing, repair action missing
 E7		C4 action missing
 MEDI	Heal doesn't work
 SPY		Infiltrate action missing
-THF		Steak action missing
+THF		Steal action missing
 C1,C2,Einstein,Kosygin		Not implemented
 
 All tracked vehicles	Crush infantry missing
