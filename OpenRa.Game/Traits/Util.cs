@@ -116,8 +116,9 @@ namespace OpenRa.Game.Traits
 
 		public static Tuple<Sprite, float2, int> Centered(Actor self, Sprite s, float2 location)
 		{
+			var pal = self.Owner == null ? 0 : self.Owner.Palette;
 			var loc = location - 0.5f * s.size;
-			return Tuple.New(s, loc.Round(), self.Owner.Palette);
+			return Tuple.New(s, loc.Round(), pal);
 		}
 
 		public static Tuple<Sprite, float2, int> CenteredShadow(Actor self, Sprite s, float2 location)

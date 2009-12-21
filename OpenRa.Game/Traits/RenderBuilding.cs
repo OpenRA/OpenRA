@@ -51,12 +51,6 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
-		{
-			var pal = self.Owner == null ? 0 : self.Owner.Palette;
-			yield return Tuple.New(anim.Image, 24f * (float2)self.Location, pal);
-		}
-
 		public virtual void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged)
