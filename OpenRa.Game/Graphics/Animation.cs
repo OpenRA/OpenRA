@@ -40,7 +40,7 @@ namespace OpenRa.Game.Graphics
 
 		public void PlayRepeating( string sequenceName )
 		{
-			PlayThen( sequenceName, () => PlayRepeating( sequenceName ) );
+			PlayThen( sequenceName, () => PlayRepeating( CurrentSequence.Name ) );
 		}
 
 		public void ReplaceAnim(string sequenceName)
