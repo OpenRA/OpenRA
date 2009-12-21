@@ -95,13 +95,12 @@ namespace OpenRa.Game.Graphics
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
 		{
-			var center = selectedUnit.CenterLocation;
-			var size = selectedUnit.SelectedSize;
+			var bounds = selectedUnit.Bounds;
 
-			var xy = center - 0.5f * size;
-			var XY = center + 0.5f * size;
-			var Xy = new float2(XY.X, xy.Y);
-			var xY = new float2(xy.X, XY.Y);
+			var xy = new float2(bounds.Left, bounds.Top);
+			var Xy = new float2(bounds.Right, bounds.Top);
+			var xY = new float2(bounds.Left, bounds.Bottom);
+			var XY = new float2(bounds.Right, bounds.Bottom);
 
 			lineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
 			lineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
@@ -121,7 +120,8 @@ namespace OpenRa.Game.Graphics
 				if (selectedUnit.Owner == Game.LocalPlayer)
 				{
 					DrawPips(selectedUnit, xY);
-					DrawTags(selectedUnit, new float2(center.X, xy.Y));
+					DrawTags(selectedUnit, 
+						new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));
 				}
 			}	
 

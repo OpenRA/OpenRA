@@ -102,6 +102,11 @@ namespace OpenRa.Game
 			{
 				var size = SelectedSize;
 				var loc = CenterLocation - 0.5f * size;
+				var unit = traits.GetOrDefault<Unit>();
+
+				if (unit != null)
+					loc -= new float2(0, unit.Altitude);
+
 				return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 			}
 		}
