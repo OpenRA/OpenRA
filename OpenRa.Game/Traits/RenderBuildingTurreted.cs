@@ -1,17 +1,21 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
-	class RenderBuildingTurreted : RenderBuilding
+	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
 		public RenderBuildingTurreted(Actor self)
 			: base(self)
 		{
-			Make( () => PlayTurretAnim( self, "idle" ), self);
 		}
 
-		void PlayTurretAnim(Actor self, string a)
+		public void BuildingComplete( Actor self )
 		{
-			anim.PlayFacing(a, () => self.traits.Get<Turreted>().turretFacing);
+			PlayTurretAnim( self, "idle" );
+		}
+
+		void PlayTurretAnim( Actor self, string a )
+		{
+			anim.PlayFacing( a, () => self.traits.Get<Turreted>().turretFacing );
 		}
 
 		public override void Damaged(Actor self, AttackInfo e)

@@ -13,27 +13,19 @@ namespace OpenRa.Game.Traits
 		public RenderBuilding(Actor self)
 			: base(self)
 		{
-			Make(() => 
-			{ 
-				anim.PlayRepeating("idle");
-			}, self);
+			if( Game.skipMakeAnims )
+				Complete( self );
+			else
+				anim.PlayThen( "make", () => Complete( self ) );
 
 			DoBib(self, false);
 		}
 
-		protected void Make( Action after, Actor self )
+		void Complete( Actor self )
 		{
-			Action newAfter = () =>
-			{
-				after();
-				foreach (var x in self.traits.WithInterface<INotifyBuildComplete>())
-					x.BuildingComplete(self);
-			};
-
-			if (Game.skipMakeAnims)
-				newAfter();
-			else
-				anim.PlayThen("make", newAfter);
+			anim.PlayRepeating( "idle" );
+			foreach( var x in self.traits.WithInterface<INotifyBuildComplete>() )
+				x.BuildingComplete( self );
 		}
 
 		void DoBib(Actor self, bool isRemove)

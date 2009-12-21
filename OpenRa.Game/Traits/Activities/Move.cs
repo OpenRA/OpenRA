@@ -169,6 +169,8 @@ namespace OpenRa.Game.Traits.Activities
 				var oldTotal = moveFractionTotal;
 
 				moveFraction += (int)Util.GetEffectiveSpeed(self);
+				if( moveFraction >= moveFractionTotal )
+					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );
 				if( moveFraction >= moveFractionTotal )
 				{

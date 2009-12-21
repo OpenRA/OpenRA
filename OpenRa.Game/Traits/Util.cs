@@ -86,7 +86,7 @@ namespace OpenRa.Game.Traits
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
-			var quantizedFacing = QuantizeFacing(facing, rut.turretAnim.CurrentSequence.Length) * (256 / rut.turretAnim.CurrentSequence.Length);
+			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Length) * (256 / rut.anim.CurrentSequence.Length);
 
 			return RotateVectorByFacing(new float2(0, recoil * self.Info.Recoil), quantizedFacing, .7f);
 		}

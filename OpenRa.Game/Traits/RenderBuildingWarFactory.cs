@@ -3,7 +3,7 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderWarFactory : RenderBuilding
+	class RenderWarFactory : RenderBuilding, INotifyBuildComplete
 	{
 		public Animation roof;
 		bool doneBuilding;
@@ -15,14 +15,14 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			this.self = self;
-
 			roof = new Animation(self.Info.Image ?? self.Info.Name);
-			Make( () =>
-			{
-				doneBuilding = true;
-				anim.Play("idle");
-				roof.Play(prefix + "idle-top");
-			}, self);
+		}
+
+		public void BuildingComplete( Actor self )
+		{
+			doneBuilding = true;
+			anim.Play( "idle" );
+			roof.Play( prefix + "idle-top" );
 		}
 
 		public IEnumerable<Tuple<Sprite, float2, int>> RenderRoof(Actor self)

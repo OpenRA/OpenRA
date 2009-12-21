@@ -11,7 +11,8 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			PlayFacingAnim(self);
-			smoke = new Animation("smoke_m");
+
+			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
 		}
 
 		void PlayFacingAnim(Actor self)
@@ -25,15 +26,7 @@ namespace OpenRa.Game.Traits
 			anim.PlayThen(newAnim, () => { PlayFacingAnim(self); if (after != null) after(); });
 		}
 
-		public override IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
-		{
-			yield return Util.Centered(self, anim.Image, self.CenterLocation);
-			if (isSmoking)
-				yield return Util.Centered(self, smoke.Image, self.CenterLocation);
-		}
-
 		bool isSmoking;
-		Animation smoke;
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
@@ -41,17 +34,11 @@ namespace OpenRa.Game.Traits
 			if (isSmoking) return;
 
 			isSmoking = true;
-			smoke.PlayThen("idle",
-				() => smoke.PlayThen("loop",
-					() => smoke.PlayBackwardsThen("end",
-						() => isSmoking = false)));
-		}
-			
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-			if (isSmoking)
-				smoke.Tick();
+			var smoke = anims[ "smoke" ].Animation;
+			smoke.PlayThen( "idle",
+				() => smoke.PlayThen( "loop",
+					() => smoke.PlayBackwardsThen( "end",
+						() => isSmoking = false ) ) );
 		}
 	}
 }

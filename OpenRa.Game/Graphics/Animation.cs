@@ -13,6 +13,7 @@ namespace OpenRa.Game.Graphics
 		public Animation( string name )
 		{
 			this.name = name.ToLowerInvariant();
+			tickFunc = () => { };
 		}
 
 		public Sprite Image
