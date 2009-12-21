@@ -166,6 +166,10 @@ namespace OpenRa.Game
 					return;
 
 				controlGroups[group].Clear();
+
+				for (var i = 0; i < 10; i++)	/* all control groups */
+					controlGroups[i].RemoveAll(a => uog.selection.Contains(a));
+
 				controlGroups[group].AddRange(uog.selection);
 				return;
 			}
