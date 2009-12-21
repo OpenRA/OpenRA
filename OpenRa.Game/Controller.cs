@@ -183,5 +183,12 @@ namespace OpenRa.Game
 			if (uog == null) return;
 			CombineSelection(controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
 		}
+
+		public int? GetControlGroupForActor(Actor a)
+		{
+			return controlGroups.Where(g => g.Value.Contains(a))
+				.Select(g => (int?)g.Key)
+				.FirstOrDefault();
+		}
 	}
 }
