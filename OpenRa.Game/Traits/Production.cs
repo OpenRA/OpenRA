@@ -46,8 +46,8 @@ namespace OpenRa.Game.Traits
 
 			Game.world.Add( newUnit );
 
-			if( self.traits.Contains<RenderWarFactory>() )
-				self.traits.Get<RenderWarFactory>().EjectUnit();
+			foreach (var t in self.traits.WithInterface<INotifyProduction>())
+				t.UnitProduced(self, newUnit);
 
 			return true;
 		}

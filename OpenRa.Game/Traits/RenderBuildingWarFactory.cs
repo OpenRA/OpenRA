@@ -3,7 +3,7 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick
+	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
 	{
 		public Animation roof;
 		bool doneBuilding;
@@ -42,11 +42,6 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		public void EjectUnit()
-		{
-			roof.PlayThen(prefix + "build-top", () => isOpen = true);
-		}
-
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged) return;
@@ -61,6 +56,11 @@ namespace OpenRa.Game.Traits
 					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
 					break;
 			}
+		}
+
+		public void UnitProduced(Actor self, Actor other)
+		{
+			roof.PlayThen(prefix + "build-top", () => isOpen = true);
 		}
 	}
 }

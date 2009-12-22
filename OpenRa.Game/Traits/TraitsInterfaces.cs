@@ -38,6 +38,7 @@ namespace OpenRa.Game.Traits
 	interface IRender { IEnumerable<Renderable> Render(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
+	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
 	interface IOrder
 	{
 		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
