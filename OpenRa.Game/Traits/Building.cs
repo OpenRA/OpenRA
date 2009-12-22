@@ -2,22 +2,15 @@
 
 namespace OpenRa.Game.Traits
 {
-	class Building : ITick, INotifyDamage
+	class Building : INotifyDamage
 	{
 		public readonly BuildingInfo unitInfo;
 
 		public Building(Actor self)
 		{
 			unitInfo = (BuildingInfo)self.Info;
-		}
-
-		bool first = true;
-		public void Tick(Actor self)
-		{
-			if (first)
-				self.CenterLocation = Game.CellSize * (float2)self.Location + 0.5f * self.SelectedSize;
-
-			first = false;
+			self.CenterLocation = Game.CellSize 
+				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
