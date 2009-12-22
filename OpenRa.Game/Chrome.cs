@@ -82,9 +82,11 @@ namespace OpenRa.Game
 
 			shimSprites = new[] 
 			{
-				new Sprite( specialBin, new Rectangle( 0, 192, 192 +9, 10 ), TextureChannel.Alpha ),
-				new Sprite( specialBin, new Rectangle( 0, 202, 192 +9, 10 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 0, 192, 9, 10 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 0, 202, 9, 10 ), TextureChannel.Alpha ),
 				new Sprite( specialBin, new Rectangle( 0, 216, 9, 48 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 11, 192, 64, 10 ), TextureChannel.Alpha ),
+				new Sprite( specialBin, new Rectangle( 11, 202, 64, 10 ), TextureChannel.Alpha ),
 			};
 
 			ready = new Animation("pips");
@@ -315,8 +317,15 @@ namespace OpenRa.Game
 
 			for (var j = 0; j < y; j++)
 				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), 0);
+
 			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), 0);
 			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), 0);
+
+			for (var i = 0; i < columns; i++)
+			{
+				chromeRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), 0);
+				chromeRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), 0);
+			}
 			chromeRenderer.Flush();
 
 			if (tooltipItem != null)
