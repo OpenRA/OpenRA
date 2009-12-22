@@ -13,8 +13,6 @@ namespace OpenRa.Game.Traits
 		
 		public IEnumerable<PipType> GetPips()
 		{
-			if (self.Info.OrePips == 0) yield break;
-
 			for (int i = 0; i < self.Info.OrePips; i++)
 			{
 				if (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / self.Info.OrePips)
