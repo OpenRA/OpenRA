@@ -29,9 +29,17 @@ namespace OpenRa.Game
 		readonly Dictionary<string, Sprite[]> tabSprites;
 		readonly Sprite[] shimSprites;
 		readonly Sprite blank;
-
+	
+		readonly int paletteColumns;
+		readonly int2 paletteOrigin;
+		
 		public Chrome(Renderer r)
 		{
+			// Positioning of chrome elements
+			// Build palette
+			paletteColumns = 4;
+			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9, 240 - 9);
+			
 			this.renderer = r;
 			specialBin = new Sheet(renderer, "specialbin.png");
 			chromeRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
@@ -82,7 +90,7 @@ namespace OpenRa.Game
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 		}
-
+		
 		public void Draw()
 		{
 			buttons.Clear();
@@ -104,9 +112,20 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), 0);
 
 			DrawMoney();
+			
+			chromeRenderer.Flush();
+			
+			int paletteHeight = DrawBuildPalette(currentTab);
+			DrawBuildTabs(paletteHeight);
+			DrawChat();
+		}
 
-			var x = Game.viewport.Width - 36 - 3 * 64;
-			var y = 40;
+		void DrawBuildTabs(int paletteHeight)
+		{
+			const int tabWidth = 24;
+			const int tabHeight = 40;
+			var x = paletteOrigin.X - tabWidth;
+			var y = paletteOrigin.Y + 9;
 
 			if (currentTab == null || !Rules.TechTree.BuildableItems(Game.LocalPlayer, currentTab).Any())
 				ChooseAvailableTab();
@@ -124,19 +143,30 @@ namespace OpenRa.Game
 
 				var producing = queue.Producing(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
+				
+				
+				// Don't let tabs overlap the bevel
+				if (y > paletteOrigin.Y + paletteHeight - tabHeight - 9 && y < paletteOrigin.Y + paletteHeight)
+				{
+					y += tabHeight;	
+				}
+				
+				// Stick tabs to the edge of the screen
+				if (y > paletteOrigin.Y + paletteHeight)
+				{
+					x = Game.viewport.Width - tabWidth;
+				}
+				
 				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
 
-				buttons.Add(Pair.New(new Rectangle(x, y, 27, 40), 
+				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
 					(Action<bool>)(isLmb => currentTab = groupName)));
-				y += 40;
+				y += tabHeight;
 			}
 
 			chromeRenderer.Flush();
-			DrawBuildPalette(currentTab);
-
-			DrawChat();
 		}
-
+		
 		void CheckDeadTab( string groupName )
 		{
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
@@ -198,10 +228,15 @@ namespace OpenRa.Game
 				return (producing.TotalTime - producing.RemainingTime) * NumClockFrames / producing.TotalTime;
 			};
 		}
-
-		void DrawBuildPalette(string queueName)
+		
+		// Return an int telling us the y coordinate at the bottom of the palette
+		int DrawBuildPalette(string queueName)
 		{
-			if (queueName == null) return;
+			// Hack
+			int columns = paletteColumns;
+			int2 origin = new int2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
+			
+			if (queueName == null) return 0;
 
 			var x = 0;
 			var y = 0;
@@ -218,11 +253,11 @@ namespace OpenRa.Game
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
 			string tooltipItem = null;
-			int2 tooltipPos = int2.Zero;
+			//int2 tooltipPos = int2.Zero;
 
 			foreach (var item in allItems)
 			{
-				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
+				var rect = new Rectangle(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingThis = currentItem != null && currentItem.Item == item;
 				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
@@ -232,7 +267,7 @@ namespace OpenRa.Game
 				if (rect.Contains(lastMousePos.ToPoint()))
 				{
 					tooltipItem = item;
-					tooltipPos = new int2(rect.Location);
+					//tooltipPos = new int2(rect.Location);
 				}
 
 				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
@@ -261,16 +296,16 @@ namespace OpenRa.Game
 				var closureItem = item;
 				buttons.Add(Pair.New(rect,
 					(Action<bool>)(isLmb => HandleBuildPalette(closureItem, isLmb))));
-				if (++x == 3) { x = 0; y++; }
+				if (++x == columns) { x = 0; y++; }
 			}
 
 			while (x != 0)
 			{
-				var rect = new Rectangle(Game.viewport.Width - (3 - x) * 64, 40 + 48 * y, 64, 48);
+				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				buildPaletteRenderer.DrawSprite(blank, drawPos, 0);
 				buttons.Add(Pair.New(rect, (Action<bool>)(_ => { })));
-				if (++x == 3) { x = 0; y++; }
+				if (++x == columns) { x = 0; y++; }
 			}
 
 			foreach (var ob in overlayBits)
@@ -279,13 +314,15 @@ namespace OpenRa.Game
 			buildPaletteRenderer.Flush();
 
 			for (var j = 0; j < y; j++)
-				chromeRenderer.DrawSprite(shimSprites[2], new float2(Game.viewport.Width - 192 - 9, 40 + 48 * j), 0);
-			chromeRenderer.DrawSprite(shimSprites[0], new float2(Game.viewport.Width - 192 - 9, 40 - 9), 0);
-			chromeRenderer.DrawSprite(shimSprites[1], new float2(Game.viewport.Width - 192 - 9, 40 - 1 + 48 * y), 0);
+				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), 0);
+			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), 0);
+			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), 0);
 			chromeRenderer.Flush();
 
 			if (tooltipItem != null)
-				DrawProductionTooltip(tooltipItem, tooltipPos);
+				DrawProductionTooltip(tooltipItem, new int2(Game.viewport.Width, origin.Y + y * 48 + 9)/*tooltipPos*/);
+				
+			return y*48+9;
 		}
 
 		void HandleBuildPalette(string item, bool isLmb)
