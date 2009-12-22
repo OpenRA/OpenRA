@@ -18,6 +18,7 @@ namespace OpenRa.Game
 		public readonly int Index;
 		public int Cash;
 		public int Ore;
+		public int OreCapacity;
 		public int DisplayCash;
 		public int PowerProvided;
 		public int PowerDrained;
@@ -60,10 +61,10 @@ namespace OpenRa.Game
 				if (PowerProvided - PowerDrained  != oldBalance)
 					GiveAdvice("lopower1.aud");
 		}
-
+				
 		public float GetSiloFullness()
 		{
-			return (float)Ore / GetOreCapacity();
+			return (float)Ore / OreCapacity;
 		}
 
 		public PowerState GetPowerState()
@@ -73,9 +74,9 @@ namespace OpenRa.Game
 			return PowerState.Critical;
 		}
 
-		public int GetOreCapacity()
+		void UpdateOreCapacity()
 		{
-			return Game.world.Actors
+			OreCapacity = Game.world.Actors
 				.Where(a => a.Owner == this && a.traits.Contains<StoresOre>())
 				.Select(a => a.Info as BuildingInfo)
 				.Where(b => b != null)
@@ -95,11 +96,10 @@ namespace OpenRa.Game
 		{
 			Ore += num;
 
-			var capacity = GetOreCapacity();
-			if (Ore > capacity)
-				Ore = capacity;		// trim off the overflow.
+			if (Ore > OreCapacity)
+				Ore = OreCapacity;		// trim off the overflow.
 
-			if (Ore > .8 * capacity)
+			if (Ore > .8 * OreCapacity)
 				GiveAdvice("silond1.aud");		// silos needed
 		}
 
@@ -123,6 +123,7 @@ namespace OpenRa.Game
 		public void Tick()
 		{
 			UpdatePower();
+			UpdateOreCapacity();
 
 			if (this == Game.LocalPlayer)
 			{
