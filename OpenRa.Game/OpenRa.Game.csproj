@@ -87,6 +87,7 @@
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\AftermathInfo.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
+    <Compile Include="GameRules\SupportPowerInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
