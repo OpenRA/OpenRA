@@ -25,17 +25,24 @@ namespace OpenRa.Game
 
 		void ApplyOrders(float2 xy, MouseInput mi)
 		{
-			var doVoice = null as Actor;
-			if (orderGenerator != null)
-				foreach (var order in orderGenerator.Order(xy.ToInt2(), mi))
-				{
-					AddOrder( order );
-					if (order.Subject != null && order.Player == Game.LocalPlayer)
-						doVoice = order.Subject;
-				}
+			if (orderGenerator == null) return;
 
-			if (doVoice != null && doVoice.traits.Contains<Unit>())
-				Sound.PlayVoice("Move", doVoice);
+			var orders = orderGenerator.Order(xy.ToInt2(), mi).ToArray();
+			recentOrders.AddRange( orders );
+
+			var voicedActor = orders.Select(o => o.Subject)
+				.FirstOrDefault(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Unit>());
+
+			var isMove = orders.Any(o => o.OrderString == "Move");
+			var isAttack = orders.Any( o => o.OrderString == "Attack" );
+
+			if (voicedActor != null)
+			{
+				Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
+
+				if (isMove)
+					Game.world.Add(new Effects.MoveFlash(Game.CellSize * xy));
+			}
 		}
 
 		public void AddOrder(Order o) { recentOrders.Add(o); }

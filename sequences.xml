@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -535,13 +535,13 @@
     <sequence name="medic" start="20" length="1" />
     <sequence name="ready" start="3" length="1" />
     <sequence name="hold" start="4" length="1" />
-	<sequence name="pip-empty" start="0" length="1" />
-	<sequence name="pip-green" start="1" length="1" />
+    <sequence name="pip-empty" start="0" length="1" />
+    <sequence name="pip-green" start="1" length="1" />
     <sequence name="pip-yellow" start="5" length="1" />
     <sequence name="pip-gray" start="6" length="1" />
     <sequence name="pip-red" start="7" length="1" />
     <sequence name="tag-fake" start="18" length="1" />
-	<sequence name="tag-primary" start="2" length="1" />
+    <sequence name="tag-primary" start="2" length="1" />
   </unit>
   <unit name="mig">
     <sequence name="idle" start="0" length="16" />
@@ -887,5 +887,8 @@
     <sequence name="crawl-5" start="92" length="4" />
     <sequence name="crawl-6" start="96" length="4" />
     <sequence name="crawl-7" start="100" length="4" />
+  </unit>
+  <unit name="moveflsh">
+    <sequence name="idle" start="0" length="5" />
   </unit>
 </sequences>
