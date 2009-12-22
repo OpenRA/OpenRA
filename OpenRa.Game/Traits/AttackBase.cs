@@ -105,19 +105,23 @@ namespace OpenRa.Game.Traits
 			}
 
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
-			var thisTarget = target;
+			var thisTarget = target;	// closure.
+			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
 
 			ScheduleDelayedAction(self.Info.FireDelay, () =>
 			{
+				var srcAltitude = unit != null ? unit.Altitude : 0;
+				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
+
 				if( weapon.RenderAsTesla )
 					Game.world.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
 
 				if( Rules.ProjectileInfo[ weapon.Projectile ].ROT != 0 )
 					Game.world.Add(new Missile(weaponName, self.Owner, self,
-						firePos, thisTarget));
+						firePos, thisTarget, srcAltitude));
 				else
 					Game.world.Add(new Bullet(weaponName, self.Owner, self,
-						firePos, thisTarget.CenterLocation.ToInt2()));
+						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
 
 				if (!string.IsNullOrEmpty(weapon.Report))
 					Sound.Play(weapon.Report + ".aud");

@@ -88,6 +88,7 @@ namespace OpenRa.Game
 
 			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) 
 				?? Game.BuildingInfluence.GetBuildingAt( xy );
+
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
 

@@ -224,7 +224,7 @@ namespace OpenRa.Game
 					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
-		static IEnumerable<Actor> FindUnits(float2 a, float2 b)
+		public static IEnumerable<Actor> FindUnits(float2 a, float2 b)
 		{
 			var min = float2.Min(a, b);
 			var max = float2.Max(a, b);

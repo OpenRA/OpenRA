@@ -2,6 +2,7 @@
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
+using System;
 
 namespace OpenRa.Game.Effects
 {
@@ -17,9 +18,10 @@ namespace OpenRa.Game.Effects
 		readonly Animation anim;
 		int Facing;
 		int t;
+		int Altitude;
 
 		public Missile(string weapon, Player owner, Actor firedBy,
-			int2 src, Actor target)
+			int2 src, Actor target, int altitude)
 		{
 			Weapon = Rules.WeaponInfo[weapon];
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
@@ -28,6 +30,7 @@ namespace OpenRa.Game.Effects
 			Owner = owner;
 			Target = target;
 			Pos = src.ToFloat2();
+			Altitude = altitude;
 
 			/* todo: initial facing should be turret facing, or unit facing if we're not turreted */
 			Facing = Traits.Util.GetFacing( Target.CenterLocation - src.ToFloat2(), 0 );
@@ -50,6 +53,10 @@ namespace OpenRa.Game.Effects
 		{
 			t += 40;
 
+			var targetUnit = Target.traits.GetOrDefault<Unit>();
+			var targetAltitude = targetUnit != null ? targetUnit.Altitude : 0;
+			Altitude += Math.Sign(targetAltitude - Altitude);
+
 			Traits.Util.TickFacing(ref Facing, 
 				Traits.Util.GetFacing(Target.CenterLocation - Pos, Facing),
 				Projectile.ROT);
@@ -70,7 +77,7 @@ namespace OpenRa.Game.Effects
 			Pos += move;
 
 			if (Projectile.Animates)
-				Game.world.AddFrameEndTask(w => w.Add(new Smoke((Pos - 1.5f * move).ToInt2())));
+				Game.world.AddFrameEndTask(w => w.Add(new Smoke((Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2())));
 
 			// todo: running out of fuel
 			// todo: turbo boost vs aircraft
@@ -78,7 +85,7 @@ namespace OpenRa.Game.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, Pos - 0.5f * anim.Image.size, 0);
+			yield return new Renderable(anim.Image, Pos - 0.5f * anim.Image.size - new float2(0, Altitude), 0);
 		}
 	}
 }

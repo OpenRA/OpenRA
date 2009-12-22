@@ -15,6 +15,8 @@ namespace OpenRa.Game.Effects
 		readonly int2 Src;
 		readonly int2 Dest;
 		readonly int2 VisualDest;
+		readonly int SrcAltitude;
+		readonly int DestAltitude;
 
 		int t = 0;
 		Animation anim;
@@ -23,7 +25,7 @@ namespace OpenRa.Game.Effects
 
 		/* src, dest are *pixel* coords */
 		public Bullet(string weapon, Player owner, Actor firedBy, 
-			int2 src, int2 dest)
+			int2 src, int2 dest, int srcAltitude, int destAltitude)
 		{
 			Owner = owner;
 			FiredBy = firedBy;
@@ -55,7 +57,8 @@ namespace OpenRa.Game.Effects
 			if (t > TotalTime())		/* remove finished bullets */
 			{
 				Game.world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpact(Dest, VisualDest, Weapon, Projectile, Warhead, FiredBy);
+				Combat.DoImpact(Dest, VisualDest - new int2( 0, DestAltitude ), 
+					Weapon, Projectile, Warhead, FiredBy);
 			}
 		}
 
@@ -65,17 +68,17 @@ namespace OpenRa.Game.Effects
 		{
 			if (anim != null)
 			{
-				var pos = float2.Lerp(
-						Src.ToFloat2(),
-						VisualDest.ToFloat2(),
-						(float)t / TotalTime()) - 0.5f * anim.Image.size;
+				var at = (float)t / TotalTime();
+
+				var altitude = float2.Lerp(SrcAltitude, DestAltitude, at);
+				var pos = float2.Lerp( Src.ToFloat2(), VisualDest.ToFloat2(), at)
+					- 0.5f * anim.Image.size - new float2( 0, altitude );
 
 				if (Projectile.High || Projectile.Arcing)
 				{
 					if (Projectile.Shadow)
 						yield return new Renderable(anim.Image, pos, 8);
 
-					var at = (float)t / TotalTime();
 					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
 
 					yield return new Renderable(anim.Image, highPos, Owner.Palette);

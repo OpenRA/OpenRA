@@ -25,7 +25,7 @@ namespace OpenRa
 
 		public static float2 operator -(float2 a) { return new float2(-a.X, -a.Y); }
 
-		static float Lerp(float a, float b, float t) { return a + t * (b - a); }
+		public static float Lerp(float a, float b, float t) { return a + t * (b - a); }
 
 		public static float2 Lerp(float2 a, float2 b, float t)
 		{
