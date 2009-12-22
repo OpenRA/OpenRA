@@ -76,7 +76,7 @@ namespace OpenRa.Game
 		public int GetOreCapacity()
 		{
 			return Game.world.Actors
-				.Where(a => a.Owner == this)
+				.Where(a => a.Owner == this && a.traits.Contains<StoresOre>())
 				.Select(a => a.Info as BuildingInfo)
 				.Where(b => b != null)
 				.Sum(b => b.Storage);

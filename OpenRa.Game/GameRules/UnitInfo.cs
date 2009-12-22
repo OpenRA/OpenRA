@@ -50,6 +50,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool Selectable = true;
 		public readonly int FireDelay = 0;
 		public readonly string LongDesc = null;
+		public readonly int OrePips = 0;
 
 		public UnitInfo(string name) { Name = name; }
 	}
