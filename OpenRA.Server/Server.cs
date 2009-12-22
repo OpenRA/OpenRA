@@ -260,6 +260,14 @@ namespace OpenRA.Server
 				{ "race",
 					s => 
 					{
+						if (conn.IsReady) 
+						{
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat", 
+									"You can't change your race after the game has started" ).Serialize() );
+							return true;
+						}
+
 						int race;
 						if (!int.TryParse(s, out race) || race < 0 || race > 1)
 						{
@@ -274,6 +282,14 @@ namespace OpenRA.Server
 				{ "pal",
 					s =>
 					{
+						if (conn.IsReady) 
+						{
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat", 
+									"You can't change your color after the game has started" ).Serialize() );
+							return true;
+						}
+
 						int pal;
 						if (!int.TryParse(s, out pal) || pal < 0 || pal > 7)
 						{
