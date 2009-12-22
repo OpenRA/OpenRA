@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Effects
 {
@@ -60,7 +61,7 @@ namespace OpenRa.Game.Effects
 
 		const float height = .1f;
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		public IEnumerable<Renderable> Render()
 		{
 			if (anim != null)
 			{
@@ -72,15 +73,15 @@ namespace OpenRa.Game.Effects
 				if (Projectile.High || Projectile.Arcing)
 				{
 					if (Projectile.Shadow)
-						yield return Tuple.New(anim.Image, pos, 8);
+						yield return new Renderable(anim.Image, pos, 8);
 
 					var at = (float)t / TotalTime();
 					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
 
-					yield return Tuple.New(anim.Image, highPos, Owner.Palette);
+					yield return new Renderable(anim.Image, highPos, Owner.Palette);
 				}
 				else
-					yield return Tuple.New(anim.Image, pos, Projectile.UnderWater ? 8 : Owner.Palette);
+					yield return new Renderable(anim.Image, pos, Projectile.UnderWater ? 8 : Owner.Palette);
 			}
 		}
 	}

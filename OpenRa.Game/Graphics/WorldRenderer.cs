@@ -31,18 +31,30 @@ namespace OpenRa.Game.Graphics
 		}
 
 		void DrawSpriteList(RectangleF rect,
-			IEnumerable<Tuple<Sprite, float2, int>> images)
+			IEnumerable<Renderable> images)
 		{
 			foreach (var image in images)
 			{
-				var loc = image.b;
+				var loc = image.Pos;
 
-				if (loc.X > rect.Right || loc.X < rect.Left - image.a.bounds.Width)
+				if (loc.X > rect.Right || loc.X < rect.Left - image.Sprite.bounds.Width)
 					continue;
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top - image.a.bounds.Height)
+				if (loc.Y > rect.Bottom || loc.Y < rect.Top - image.Sprite.bounds.Height)
 					continue;
 
-				spriteRenderer.DrawSprite(image.a, loc, image.c);
+				spriteRenderer.DrawSprite(image.Sprite, loc, image.Palette);
+			}
+		}
+
+		class SpriteComparer : IComparer<Renderable>
+		{
+			public int Compare(Renderable x, Renderable y)
+			{
+				var result = x.ZOffset.CompareTo(y.ZOffset);
+				if (result == 0)
+					result = x.Pos.Y.CompareTo(y.Pos.Y);
+
+				return result;
 			}
 		}
 
@@ -50,17 +62,18 @@ namespace OpenRa.Game.Graphics
 		{
 			terrainRenderer.Draw(Game.viewport);
 
+			var comparer = new SpriteComparer();
+
 			var rect = new RectangleF(
 				Game.viewport.Location.ToPointF(),
 				new SizeF( Game.viewport.Width, Game.viewport.Height ));
 
-			foreach (Actor a in Game.world.Actors.OrderBy(u => u.CenterLocation.Y))
-				DrawSpriteList(rect, a.Render());
+			/* todo: cull to screen again */
+			var renderables = Game.world.Actors.SelectMany(a => a.Render())
+				.OrderBy(r => r, comparer);
 
-			foreach (var a in Game.world.Actors
-				.Where(u => u.traits.Contains<Traits.RenderWarFactory>())
-				.Select(u => u.traits.Get<Traits.RenderWarFactory>()))
-				DrawSpriteList(rect, a.RenderRoof(a.self));
+			foreach (var r in renderables)
+				spriteRenderer.DrawSprite(r.Sprite, r.Pos, r.Palette);
 
 			foreach (var e in Game.world.Effects)
 				DrawSpriteList(rect, e.Render());

@@ -18,16 +18,16 @@ namespace OpenRa.Game.Traits
             remainingUncloakTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>>
-			ModifyRender(Actor self, IEnumerable<Tuple<Sprite, float2, int>> rs)
+		public IEnumerable<Renderable>
+			ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
             if (remainingUncloakTime > 0)
 				return rs;
 
 			if (self.Owner == Game.LocalPlayer)
-				return rs.Select(a => Tuple.New(a.a, a.b, 8));
+				return rs.Select(a => a.WithPalette(8));
 			else
-				return new Tuple<Sprite, float2, int>[] { };
+				return new Renderable[] { };
 		}
 
 		public void Tick(Actor self)

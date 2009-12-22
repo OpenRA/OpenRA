@@ -15,7 +15,7 @@ namespace OpenRa.Game.Traits
 			anims.Add( "", new Animation( self.Info.Image ?? self.Info.Name ) );
 		}
 
-		public virtual IEnumerable<Tuple<Sprite, float2, int>> Render( Actor self )
+		public virtual IEnumerable<Renderable> Render( Actor self )
 		{
 			foreach( var a in anims.Values )
 				if( a.DisableFunc == null || !a.DisableFunc() )
@@ -46,7 +46,7 @@ namespace OpenRa.Game.Traits
 				this.DisableFunc = d;
 			}
 
-			public Tuple<Sprite, float2, int> Image( Actor self )
+			public Renderable Image( Actor self )
 			{
 				if( OffsetFunc != null )
 					return Util.Centered( self, Animation.Image, self.CenterLocation + OffsetFunc() );

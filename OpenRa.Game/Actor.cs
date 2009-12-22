@@ -65,13 +65,13 @@ namespace OpenRa.Game
 			get
 			{
 				var firstSprite = Render().FirstOrDefault();
-				if( firstSprite == null )
+				if( firstSprite.Sprite == null )
 					return new float2( 0, 0 );
-				return firstSprite.a.size;
+				return firstSprite.Sprite.size;
 			}
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		public IEnumerable<Renderable> Render()
 		{
 			var mods = traits.WithInterface<IRenderModifier>();
 			var sprites = traits.WithInterface<IRender>().SelectMany(x => x.Render(this));

@@ -164,6 +164,7 @@
     <Compile Include="Traits\AttackInfo.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
+    <Compile Include="Traits\BelowUnits.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />

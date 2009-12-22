@@ -3,7 +3,7 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderWarFactory : RenderBuilding, INotifyBuildComplete
+	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick
 	{
 		public Animation roof;
 		bool doneBuilding;
@@ -12,7 +12,6 @@ namespace OpenRa.Game.Traits
 		string prefix = "";
 
 		public RenderWarFactory(Actor self)
-			: base(self)
 		{
 			this.self = self;
 			roof = new Animation(self.Info.Image ?? self.Info.Name);
@@ -21,22 +20,19 @@ namespace OpenRa.Game.Traits
 		public void BuildingComplete( Actor self )
 		{
 			doneBuilding = true;
-			anim.Play( "idle" );
 			roof.Play( prefix + "idle-top" );
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> RenderRoof(Actor self)
+		public IEnumerable<Renderable> Render(Actor self)
 		{
 			if (doneBuilding)
-				yield return Tuple.New(roof.Image, 
-					24f * (float2)self.Location, self.Owner.Palette);
+				yield return new Renderable(roof.Image, 
+					24f * (float2)self.Location, self.Owner.Palette, 2);
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
-			if (doneBuilding)
-				roof.Tick();
+			if (doneBuilding) roof.Tick();
 
 			var b = self.Bounds;
 			if (isOpen && null == Game.UnitInfluence.GetUnitAt(((1/24f) * self.CenterLocation).ToInt2()))
@@ -51,10 +47,8 @@ namespace OpenRa.Game.Traits
 			roof.PlayThen(prefix + "build-top", () => isOpen = true);
 		}
 
-		public override void Damaged(Actor self, AttackInfo e)
+		public void Damaged(Actor self, AttackInfo e)
 		{
-			base.Damaged(self, e);
-
 			if (!e.DamageStateChanged) return;
 			switch (e.DamageState)
 			{

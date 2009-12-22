@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Effects
 {
 	interface IEffect
 	{
 		void Tick();
-		IEnumerable<Tuple<Sprite, float2, int>> Render();
+		IEnumerable<Renderable> Render();
 	}
 }

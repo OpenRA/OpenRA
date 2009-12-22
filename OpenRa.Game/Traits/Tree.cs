@@ -12,9 +12,9 @@ namespace OpenRa.Game.Traits
 			Image = treeImage;
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
+		public IEnumerable<Renderable> Render(Actor self)
 		{
-			yield return Tuple.New(Image, Game.CellSize * (float2)self.Location, 0);
+			yield return new Renderable(Image, Game.CellSize * (float2)self.Location, 0);
 		}
 	}
 }

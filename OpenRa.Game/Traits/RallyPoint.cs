@@ -16,7 +16,7 @@ namespace OpenRa.Game.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self)
+		public IEnumerable<Renderable> Render(Actor self)
 		{
 			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
 			if (uog != null && self.Owner == Game.LocalPlayer && uog.selection.Contains(self))

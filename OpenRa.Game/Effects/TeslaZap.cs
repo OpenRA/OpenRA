@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Effects
 {
@@ -26,7 +27,7 @@ namespace OpenRa.Game.Effects
 			--timeUntilRemove;
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		public IEnumerable<Renderable> Render()
 		{
 			if( from.X < to.X )
 				return DrawZap( from, to, tesla );
@@ -36,7 +37,7 @@ namespace OpenRa.Game.Effects
 				return DrawZap( from, to, tesla );
 		}
 
-		static IEnumerable<Tuple<Sprite, float2, int>> DrawZap( int2 from, int2 to, Sequence tesla )
+		static IEnumerable<Renderable> DrawZap( int2 from, int2 to, Sequence tesla )
 		{
 			int2 d = to - from;
 			if( d.X < 8 )
@@ -45,7 +46,7 @@ namespace OpenRa.Game.Effects
 				var y = d.Y;
 				while( y >= prev.Y + 8 )
 				{
-					yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
+					yield return new Renderable( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
 					prev.Y += 8;
 				}
 			}
@@ -57,26 +58,26 @@ namespace OpenRa.Game.Effects
 					var y = i * d.Y / d.X;
 					if( y <= prev.Y - 8 )
 					{
-						yield return Tuple.New( tesla.GetSprite( 3 ), (float2)( from + prev - new int2( 8, 16 ) ), 0 );
+						yield return new Renderable(tesla.GetSprite(3), (float2)(from + prev - new int2(8, 16)), 0);
 						prev.Y -= 8;
 						while( y <= prev.Y - 8 )
 						{
-							yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 16 ) ), 0 );
+							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 16)), 0);
 							prev.Y -= 8;
 						}
 					}
 					else if( y >= prev.Y + 8 )
 					{
-						yield return Tuple.New( tesla.GetSprite( 0 ), (float2)( from + prev - new int2( 8, 8 ) ), 0 );
+						yield return new Renderable(tesla.GetSprite(0), (float2)(from + prev - new int2(8, 8)), 0);
 						prev.Y += 8;
 						while( y >= prev.Y + 8 )
 						{
-							yield return Tuple.New( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
+							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 8)), 0);
 							prev.Y += 8;
 						}
 					}
 					else
-						yield return Tuple.New( tesla.GetSprite( 1 ), (float2)( from + prev - new int2( 8, 8 ) ), 0 );
+						yield return new Renderable(tesla.GetSprite(1), (float2)(from + prev - new int2(8, 8)), 0);
 
 					prev.X += 8;
 				}

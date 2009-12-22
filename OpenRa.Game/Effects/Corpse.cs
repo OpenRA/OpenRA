@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Effects
 {
@@ -24,9 +25,9 @@ namespace OpenRa.Game.Effects
 
 		public void Tick() { anim.Tick(); }
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		public IEnumerable<Renderable> Render()
 		{
-			yield return Tuple.New(anim.Image, pos - .5f * anim.Image.size, owner.Palette);
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, owner.Palette);
 		}
 	}
 }

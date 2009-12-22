@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Effects
 {
@@ -75,9 +76,9 @@ namespace OpenRa.Game.Effects
 			// todo: turbo boost vs aircraft
 		}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> Render()
+		public IEnumerable<Renderable> Render()
 		{
-			yield return Tuple.New(anim.Image, Pos - 0.5f * anim.Image.size, 0);
+			yield return new Renderable(anim.Image, Pos - 0.5f * anim.Image.size, 0);
 		}
 	}
 }

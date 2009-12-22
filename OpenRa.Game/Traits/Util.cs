@@ -117,17 +117,11 @@ namespace OpenRa.Game.Traits
 		public static float2 RelOffset(this int[] offset) { return new float2(offset[0], offset[1]); }
 		public static float2 AbsOffset(this int[] offset) { return new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3)); }
 
-		public static Tuple<Sprite, float2, int> Centered(Actor self, Sprite s, float2 location)
+		public static Renderable Centered(Actor self, Sprite s, float2 location)
 		{
 			var pal = self.Owner == null ? 0 : self.Owner.Palette;
 			var loc = location - 0.5f * s.size;
-			return Tuple.New(s, loc.Round(), pal);
-		}
-
-		public static Tuple<Sprite, float2, int> CenteredShadow(Actor self, Sprite s, float2 location)
-		{
-			var loc = location - 0.5f * s.size;
-			return Tuple.New(s, loc.Round(), 8);
+			return new Renderable(s, loc.Round(), pal);
 		}
 
 		public static float GetEffectiveSpeed(Actor self)

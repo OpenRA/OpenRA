@@ -10,11 +10,14 @@ namespace OpenRa.Game.Traits
 	{
 		public WithShadow(Actor self) {}
 
-		public IEnumerable<Tuple<Sprite, float2, int>> ModifyRender(Actor self, IEnumerable<Tuple<Sprite, float2, int>> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			var unit = self.traits.Get<Unit>();
-			var shadowSprites = r.Select( a => Tuple.New( a.a, a.b, 8 ));
-			var flyingSprites = r.Select( a => Tuple.New( a.a, a.b - new float2( 0, unit.Altitude ), a.c ));
+
+			var shadowSprites = r.Select(a => a.WithPalette(8));
+			var flyingSprites = (unit.Altitude <= 0) ? r 
+				: r.Select(a => a.WithPos(a.Pos - new float2(0, unit.Altitude)).WithZOffset(3));
+
 			return shadowSprites.Concat(flyingSprites);
 		}
 	}

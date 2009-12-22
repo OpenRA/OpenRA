@@ -10,9 +10,32 @@ namespace OpenRa.Game.Traits
 	// depends on the order of pips in WorldRenderer.cs!
 	enum PipType { Transparent, Green, Yellow, Red, Gray };
 	enum TagType { None, Fake, Primary };
+
+	struct Renderable
+	{
+		public readonly Sprite Sprite;
+		public readonly float2 Pos;
+		public readonly int Palette;
+		public readonly int ZOffset;
+
+		public Renderable(Sprite sprite, float2 pos, int palette, int zOffset)
+		{
+			Sprite = sprite;
+			Pos = pos;
+			Palette = palette;
+			ZOffset = zOffset;
+		}
+
+		public Renderable(Sprite sprite, float2 pos, int palette)
+			: this(sprite, pos, palette, 0) { }
+
+		public Renderable WithPalette(int newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
+		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
+		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
+	}
 	
 	interface ITick { void Tick(Actor self); }
-	interface IRender { IEnumerable<Tuple<Sprite, float2, int>> Render(Actor self); }
+	interface IRender { IEnumerable<Renderable> Render(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface IOrder
@@ -23,8 +46,7 @@ namespace OpenRa.Game.Traits
 	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }
 	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	interface INotifyAttack { void Attacking(Actor self); }
-	interface IRenderModifier { IEnumerable<Tuple<Sprite, float2, int>> 
-		ModifyRender( Actor self, IEnumerable<Tuple<Sprite, float2, int>> r ); }
+	interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
 	interface IPips { IEnumerable<PipType> GetPips(); }
