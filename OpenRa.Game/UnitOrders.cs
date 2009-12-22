@@ -105,6 +105,12 @@ namespace OpenRa.Game
 					Game.orderManager.StartGame();
 					break;
 				}
+			case "ChangeMap":
+				{
+					Game.chat.AddLine(Color.White, "Server", "Changing map to {0}".F(order.TargetString));
+					Game.ChangeMap(order.TargetString);
+					break;
+				}
 
 			default:
 				throw new NotImplementedException();

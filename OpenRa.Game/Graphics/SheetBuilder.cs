@@ -7,6 +7,9 @@ namespace OpenRa.Game.Graphics
 		public static void Initialize(Renderer r)
 		{
 			renderer = r;
+			current = null;
+			rowHeight = 0;
+			channel = null;
 		}
 
 		public static Sprite Add(byte[] src, Size size)

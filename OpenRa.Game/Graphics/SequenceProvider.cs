@@ -8,13 +8,14 @@ namespace OpenRa.Game.Graphics
 {
 	static class SequenceProvider
 	{
-		static Dictionary<string, Dictionary<string, Sequence>> units =
-			new Dictionary<string, Dictionary<string, Sequence>>();
-
-		static Dictionary<string, CursorSequence> cursors = new Dictionary<string, CursorSequence>();
+		static Dictionary<string, Dictionary<string, Sequence>> units;
+		static Dictionary<string, CursorSequence> cursors;
 
 		public static void Initialize( bool useAftermath )
 		{
+			units = new Dictionary<string, Dictionary<string, Sequence>>();
+			cursors = new Dictionary<string, CursorSequence>();
+
 			LoadSequenceSource("sequences.xml");
 			if (useAftermath)
 				LoadSequenceSource("sequences-aftermath.xml");

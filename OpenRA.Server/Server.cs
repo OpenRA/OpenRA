@@ -301,6 +301,29 @@ namespace OpenRA.Server
 							new ServerOrder(conn.PlayerIndex, "SetPalette", pal.ToString()).Serialize());
 						return true;
 					}},
+				{ "map",
+					s =>
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							DispatchOrdersToClient(conn, 0,
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"Only the host can change the map" ).Serialize() );
+							return true;
+						}
+
+						if (conn.IsReady)
+						{
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"You can't change the map after the game has started" ).Serialize() );
+							return true;
+						}
+
+						DispatchOrders( null, 0,
+							new ServerOrder(0, "ChangeMap", s).Serialize());
+						return true;
+					}},
 			};
 
 			var cmdName = cmd.Split(' ').First();

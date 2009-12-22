@@ -16,7 +16,7 @@ namespace OpenRa.Game.Graphics
 		public readonly SpriteRenderer spriteRenderer;
 		public readonly LineRenderer lineRenderer;
 		public readonly UiOverlay uiOverlay;
-		readonly Renderer renderer;
+		public readonly Renderer renderer;
 
 		public static bool ShowUnitPaths = false;
 

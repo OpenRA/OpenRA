@@ -56,7 +56,6 @@ namespace OpenRa.Game
 
 			bool windowed = !settings.GetValue( "fullscreen", false );
 			renderer = new Renderer( this, GetResolution( settings ), windowed );
-			SheetBuilder.Initialize( renderer );
 
 			var controller = new Controller( () => (Modifiers)(int)ModifierKeys );	/* a bit of insane input routing */
 

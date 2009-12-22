@@ -48,44 +48,67 @@ namespace OpenRa.Game
 
 		public static bool skipMakeAnims = true;
 
-		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
-			int localPlayer, bool useAftermath, Controller controller)
+		static Renderer renderer;
+		static bool usingAftermath;
+		static int2 clientSize;
+
+		public static void ChangeMap(string mapName)
 		{
-			Rules.LoadRules(mapName, useAftermath);
+			SheetBuilder.Initialize(renderer);
+			
+			Rules.LoadRules(mapName, usingAftermath);
 			world = new World();
 
-			for( int i = 0 ; i < 8 ; i++ )
+			for (int i = 0; i < 8; i++)
 			{
-				var a = new Actor( null, new int2( int.MaxValue, int.MaxValue ), null );
-				players[ i ] = new Player( a, i, i, "Multi{0}".F( i ), Race.Allies );
-				a.Owner = players[ i ];
-				a.traits.Add( new Traits.ProductionQueue( a ) );
-				Game.world.Add( a );
+				var a = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
+				players[i] = new Player(a, i, i, "Multi{0}".F(i), Race.Allies);
+				a.Owner = players[i];
+				a.traits.Add(new Traits.ProductionQueue(a));
+				Game.world.Add(a);
 			}
 
-			localPlayerIndex = localPlayer;
-
 			Rules.Map.InitOreDensity();
+			worldRenderer = new WorldRenderer(renderer);
 
-			Game.controller = controller;
-			worldRenderer = new WorldRenderer( renderer );
-
-			SequenceProvider.Initialize(useAftermath);
-			viewport = new Viewport( clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer );
-
-			Sound.Initialize();
+			SequenceProvider.Initialize(usingAftermath);
+			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
 
+			skipMakeAnims = true;
 			foreach (var treeReference in Rules.Map.Trees)
-				world.Add(new Actor(Rules.UnitInfo[treeReference.Image], 
+				world.Add(new Actor(Rules.UnitInfo[treeReference.Image],
 					new int2(treeReference.Location),
 					null));
-
+			
 			LoadMapActors(Rules.AllRules);
+			skipMakeAnims = false;
 
 			PathFinder = new PathFinder();
+
+			chrome = new Chrome(renderer);
+
+			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
+			oreTicks = oreFrequency;
+		}
+
+		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
+			int localPlayer, bool useAftermath, Controller controller)
+		{
+			localPlayerIndex = localPlayer;
+			usingAftermath = useAftermath;
+			Game.renderer = renderer;
+			Game.clientSize = clientSize;
+
+			// todo
+			Sound.Initialize();
+			PerfHistory.items["render"].hasNormalTick = false;
+			PerfHistory.items["batches"].hasNormalTick = false;
+			Game.controller = controller;
+
+			ChangeMap(mapName);
 
 			if (Replay != "")
 				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
@@ -96,15 +119,6 @@ namespace OpenRa.Game
 					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
-
-			skipMakeAnims = false;
-			PerfHistory.items["render"].hasNormalTick = false;
-			PerfHistory.items["batches"].hasNormalTick = false;
-
-			chrome = new Chrome(renderer);
-
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
-			oreTicks = oreFrequency;
 		}
 
 		static void LoadMapActors(IniFile mapfile)
