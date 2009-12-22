@@ -1,5 +1,7 @@
 ﻿using OpenRa.Game.GameRules;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace OpenRa.Game.Traits
 {
     class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips
@@ -30,13 +32,14 @@ namespace OpenRa.Game.Traits
 
         public void ResolveOrder(Actor self, Order order)
         {
+			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
             if (order.OrderString == "ActivatePortableChronoshift" && remainingChargeTime <= 0)
             {
                 chronoshiftActive = true;
                 self.CancelActivity();
             }
 
-			if (order.OrderString == "UsePortableChronoshift" && Game.IsCellBuildable(order.TargetLocation, self.Info.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, self))
+			if (order.OrderString == "UsePortableChronoshift" && movement.CanEnterCell(order.TargetLocation))
             {
 				self.CancelActivity();
            		self.QueueActivity(new Activities.Teleport(order.TargetLocation));
