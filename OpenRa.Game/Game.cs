@@ -61,8 +61,11 @@ namespace OpenRa.Game
 
 			for (int i = 0; i < 8; i++)
 			{
+				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
+				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
+
 				var a = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
-				players[i] = new Player(a, i, i, "Multi{0}".F(i), Race.Allies);
+				players[i] = new Player(a, i, i, name, race, "Multi{0}".F(i));
 				a.Owner = players[i];
 				a.traits.Add(new Traits.ProductionQueue(a));
 				Game.world.Add(a);
@@ -133,7 +136,7 @@ namespace OpenRa.Game
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
 				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),
-					players.Values.FirstOrDefault(p => p.PlayerName == parts[0]) ?? players[0]));
+					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]));
 			}
 		}
 

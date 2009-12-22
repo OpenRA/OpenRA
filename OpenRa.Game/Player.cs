@@ -14,6 +14,7 @@ namespace OpenRa.Game
 		public int Palette;
 		public int Kills;
 		public string PlayerName;
+		public string InternalName;
 		public Race Race;
 		public readonly int Index;
 		public int Cash;
@@ -25,11 +26,12 @@ namespace OpenRa.Game
 
 		public bool IsReady;
 
-		public Player( Actor playerActor, int index, int palette, string playerName, Race race )
+		public Player( Actor playerActor, int index, int palette, string playerName, Race race, string internalName )
 		{
 			this.PlayerActor = playerActor;
 			this.Index = index;
 			this.Palette = palette;
+			this.InternalName = internalName;
 			this.PlayerName = playerName;
 			this.Race = race;
 			this.Cash = 10000;
