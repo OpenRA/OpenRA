@@ -57,4 +57,12 @@ namespace OpenRa.Game.Traits
 		UnitMovementType GetMovementType();
 		bool CanEnterCell(int2 location);
 	}
+	
+	interface ICrushable
+	{
+		bool IsCrushableByFriend();
+		bool IsCrushableByEnemy();
+		void OnCrush(Actor crusher);
+		IEnumerable<UnitMovementType>CrushableBy();
+	}
 }

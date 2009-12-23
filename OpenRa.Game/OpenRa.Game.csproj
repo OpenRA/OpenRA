@@ -173,6 +173,7 @@
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
+    <Compile Include="Traits\Infantry.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
     <Compile Include="Traits\RenderBuildingCharge.cs" />

@@ -210,13 +210,35 @@ namespace OpenRa.Game
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt, Actor toIgnore)
 		{
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
-			if (UnitInfluence.GetUnitAt(a) != null && UnitInfluence.GetUnitAt(a) != toIgnore) return false;
+			if (UnitInfluence.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
 			return Rules.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
 					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
+		public static bool IsActorCrushableByActor(Actor a, Actor b)
+		{
+			return IsActorCrushableByMovementType(a, b.traits.WithInterface<IMovement>().FirstOrDefault().GetMovementType());
+		}
+		public static bool IsActorCrushableByMovementType(Actor a, UnitMovementType umt)
+		{
+			if (a != null)
+			{
+				foreach (var crush in a.traits.WithInterface<ICrushable>())
+				{
+					if (((crush.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) || (crush.IsCrushableByFriend() && a.Owner == Game.LocalPlayer))
+						&& crush.CrushableBy().Contains(umt))
+					{
+						Log.Write("{0} is crushable by MovementType {1}", a.Info.Name, umt);
+						return true;
+					}
+				}
+				Log.Write("{0} is NOT crushable by MovementType {1}", a.Info.Name, umt);
+			}
+			return false;
+		}
+		
 		public static bool IsWater(int2 a)
 		{
 			return Rules.Map.IsInMap(a.X, a.Y) &&

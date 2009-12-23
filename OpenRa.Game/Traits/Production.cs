@@ -21,7 +21,7 @@ namespace OpenRa.Game.Traits
 		public bool Produce( Actor self, UnitInfo producee )
 		{
 			var location = CreationLocation( self, producee );
-			if( location == null || Game.UnitInfluence.GetUnitAt( location.Value ) != null )
+			if( location == null || !Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )
 				return false;
 
 			var newUnit = new Actor( producee, location.Value, self.Owner );

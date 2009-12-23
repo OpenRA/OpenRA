@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using IjwFramework.Collections;
 using OpenRa.Game.Graphics;
 
@@ -35,7 +36,7 @@ namespace OpenRa.Game
 			if (!ignoreTerrain)
 				if (passableCost[(int)umt][p.Location.X, p.Location.Y] == float.PositiveInfinity)
 					return p.Location;
-
+					
 			foreach( int2 d in Util.directions )
 			{
 				int2 newHere = p.Location + d;
@@ -53,13 +54,15 @@ namespace OpenRa.Game
 					if (Rules.Map.IsOverlaySolid(newHere))
 						continue;
 				}
-
-				if( checkForBlocked && Game.UnitInfluence.GetUnitAt( newHere ) != null )
+				
+				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
+				if (checkForBlocked && (Game.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.IsActorCrushableByMovementType(a, umt))))
 					continue;
+				
 				if (customBlock != null && customBlock(newHere))
 					continue;
 
-	
+				
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )
 					continue;
@@ -75,6 +78,7 @@ namespace OpenRa.Game
 				cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
 				queue.Add( new PathDistance( newCost + est, newHere ) );
+				
 			}
 			return p.Location;
 		}
@@ -96,7 +100,6 @@ namespace OpenRa.Game
 				checkForBlocked = checkForBlocked };
 
 			search.AddInitialCell( from );
-
 			return search;
 		}
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Game.Support;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -20,20 +21,6 @@ namespace OpenRa.Game
 						passableCost[(int)umt][ x, y ] = ( Rules.Map.IsInMap( x, y ) )
 							? (float)TerrainCosts.Cost( umt, Rules.TileSet.GetWalkability( Rules.Map.MapTiles[ x, y ] ) )
 							: float.PositiveInfinity;
-		}
-
-		bool IsBlocked(int2 from, UnitMovementType umt)
-		{
-			for (int v = -1; v < 2; v++)
-				for (int u = -1; u < 2; u++)
-					if (u != 0 || v != 0)
-					{
-						var p = from + new int2(u, v);
-						if (passableCost[(int)umt][from.X + u, from.Y + v] < float.PositiveInfinity)
-							if (Game.BuildingInfluence.CanMoveHere(p) && (Game.UnitInfluence.GetUnitAt(p) == null))
-								return false;
-					}
-			return true;
 		}
 
 		public List<int2> FindUnitPath( int2 from, int2 target, UnitMovementType umt )
@@ -61,13 +48,13 @@ namespace OpenRa.Game
 				return path;
 			}
 		}
-
+		
 		Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
 		{
 			return q =>
 				p != q &&
-				((p - q).LengthSquared < dist * dist) && 
-				(Game.UnitInfluence.GetUnitAt(q) != null);
+				((p - q).LengthSquared < dist * dist) &&
+				(Game.UnitInfluence.GetUnitsAt(q).Any());
 		}
 
 		public List<int2> FindPath( PathSearch search )

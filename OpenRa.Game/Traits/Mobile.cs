@@ -80,9 +80,42 @@ namespace OpenRa.Game.Traits
 			}
 		}
 		
-		public bool CanEnterCell(int2 location)
+		public bool CanEnterCell(int2 a)
 		{
-			return Game.IsCellBuildable( location, GetMovementType(), self );
+			if (Game.BuildingInfluence.GetBuildingAt(a) != null) return false;
+
+			var actors = Game.UnitInfluence.GetUnitsAt(a);
+			var crushable = true;
+			foreach (Actor actor in actors)
+			{
+				if (actor == self) continue;
+				
+				var c = actor.traits.WithInterface<ICrushable>();
+				if (c == null)
+				{
+					crushable = false;
+					break;
+				}
+				
+				foreach (var crush in c)
+				{
+					// TODO: Unhack this. I can't wrap my head around this right now...
+					if (!(((crush.IsCrushableByEnemy() && actor.Owner != Game.LocalPlayer) || (crush.IsCrushableByFriend() && actor.Owner == Game.LocalPlayer))
+						&& crush.CrushableBy().Contains(GetMovementType())))
+					{
+						crushable = false;
+						Log.Write("{0} is NOT crushable by {1} (mobile)", actor.Info.Name, self.Info.Name);
+						break;
+					}
+				}
+				Log.Write("{0} is crushable by {1} (mobile)", actor.Info.Name, self.Info.Name);
+			}
+			
+			if (!crushable) return false;
+			
+			return Rules.Map.IsInMap(a.X, a.Y) &&
+				TerrainCosts.Cost(GetMovementType(),
+					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public IEnumerable<int2> GetCurrentPath()
