@@ -7,7 +7,11 @@ namespace OpenRa.Game.Traits
 {
 	class Infantry : ICrushable
 	{
-		public Infantry(Actor self){}
+		readonly Actor self;
+		public Infantry(Actor self)
+		{
+			this.self = self;
+		}
 
 		public bool IsCrushableByFriend()
 		{
@@ -22,7 +26,7 @@ namespace OpenRa.Game.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			Sound.Play("squishy2.aud");
+			self.InflictDamage(crusher, self.Health, Rules.WarheadInfo["Crush"]);
 		}
 
 		public IEnumerable<UnitMovementType> CrushableBy()

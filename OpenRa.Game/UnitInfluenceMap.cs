@@ -22,6 +22,29 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
+			// Does this belong here?
+			
+			// Get the crushable actors
+			foreach (var a in Game.world.Actors.Where(b => b.traits.WithInterface<ICrushable>().Any()))
+			{
+				// Are there any units in the same cell that can crush this?
+				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
+					foreach( var cell in ios.OccupiedCells() )
+					{
+						// There should only be one (counterexample: An infantry and a tank try to pick up a crate at the same time.)
+						// If there is more than one, do action on the first crusher
+						var crusher = GetUnitsAt(cell).Where(b => a != b && Game.IsActorCrushableByActor(a, b)).FirstOrDefault();
+						if (crusher != null)
+						{
+							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);
+							// Apply the crush action
+							foreach (var crush in a.traits.WithInterface<ICrushable>())
+							{
+								crush.OnCrush(crusher);
+							}
+						}
+					}
+			}
 			SanityCheck();
 		}
 
