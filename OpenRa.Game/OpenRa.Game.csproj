@@ -92,7 +92,6 @@
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
-    <Compile Include="Graphics\PaletteType.cs" />
     <Compile Include="IOrderSource.cs" />
     <Compile Include="LocalOrderSource.cs" />
     <Compile Include="Effects\Missile.cs" />

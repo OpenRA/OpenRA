@@ -3,12 +3,12 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
 {
+	public enum PaletteType { Gold, Blue, Red, Orange, Teal, Salmon, Green, Gray, Shadow, Invuln, Chrome };
 	class HardwarePalette : Sheet
 	{
-
 		const int maxEntries = 16;
 		int allocated = 0;
-		//Note: addPalette calls should match the ordering in PaletteType.cs
+		
 		public HardwarePalette(Renderer renderer, Map map)
 			: base(renderer,new Size(256, maxEntries))
 		{
