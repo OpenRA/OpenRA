@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OpenRa.FileFormats
 {
 	public static class FileSystem
 	{
 		static List<IFolder> mountedFolders = new List<IFolder>();
+		static List<IFolder> temporaryMounts = new List<IFolder>();
 
 		public static void MountDefault( bool useAftermath )
 		{
@@ -31,6 +33,18 @@ namespace OpenRa.FileFormats
 		public static void Mount(IFolder folder)
 		{
 			mountedFolders.Add(folder);
+		}
+
+		public static void MountTemporary(IFolder folder)
+		{
+			mountedFolders.Add(folder);
+			temporaryMounts.Add(folder);
+		}
+
+		public static void UnmountTemporaryPackages()
+		{
+			mountedFolders.RemoveAll(f => temporaryMounts.Contains(f));
+			temporaryMounts.Clear();
 		}
 
 		public static Stream Open(string filename)

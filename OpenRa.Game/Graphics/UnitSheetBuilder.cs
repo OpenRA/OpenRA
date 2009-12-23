@@ -6,8 +6,14 @@ namespace OpenRa.Game.Graphics
 {
 	static class UnitSheetBuilder
 	{
-		public static readonly List<Sprite> sprites = new List<Sprite>();
-		static Dictionary<string, Range<int>> sequences = new Dictionary<string, Range<int>>();
+		public static void Initialize()
+		{
+			sprites = new List<Sprite>();
+			sequences = new Dictionary<string, Range<int>>();
+		}
+
+		public static List<Sprite> sprites;
+		static Dictionary<string, Range<int>> sequences;
 
 		public static Range<int> GetUnit(string name)
 		{

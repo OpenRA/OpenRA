@@ -89,7 +89,7 @@ namespace OpenRa.Game
 
 			TechTree = new TechTree();
 			Map = new Map( AllRules );
-			FileSystem.Mount( new Package( Rules.Map.Theater + ".mix" ) );
+			FileSystem.MountTemporary( new Package( Rules.Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
 		}
 

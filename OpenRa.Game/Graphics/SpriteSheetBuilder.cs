@@ -5,8 +5,12 @@ namespace OpenRa.Game.Graphics
 {
 	static class SpriteSheetBuilder
 	{
-		static Dictionary<string, Sprite[]> sprites =
-			new Dictionary<string, Sprite[]>();
+		public static void Initialize()
+		{
+			sprites = new Dictionary<string, Sprite[]>();
+		}
+
+		static Dictionary<string, Sprite[]> sprites;
 
 		public static Sprite LoadSprite(string filename, params string[] exts )
 		{
