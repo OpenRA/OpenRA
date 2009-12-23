@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game.Graphics
 {
@@ -9,36 +10,21 @@ namespace OpenRa.Game.Graphics
 		public static void Initialize()
 		{
 			sprites = new List<Sprite>();
-			sequences = new Dictionary<string, Range<int>>();
+			sequences = new Cache<string, Range<int>>(AddUnit);
 		}
 
 		public static List<Sprite> sprites;
-		static Dictionary<string, Range<int>> sequences;
+		static Cache<string, Range<int>> sequences;
 
-		public static Range<int> GetUnit(string name)
-		{
-			Range<int> result;
-			if (sequences.TryGetValue(name, out result))
-				return result;
-
-			return AddUnit(name);
-		}
-
+		public static Range<int> GetUnit(string name) { return sequences[name]; }
+		
 		static Range<int> AddUnit( string name )
 		{
-			Log.Write("Loading SHP for {0}", name);
-
-			int low = sprites.Count;
-
-			ShpReader reader = new ShpReader( FileSystem.OpenWithExts( name, ".tem", ".sno", ".int", ".shp" ) );
-			foreach (ImageHeader h in reader)
+			var low = sprites.Count;
+			var reader = new ShpReader( FileSystem.OpenWithExts( name, ".tem", ".sno", ".int", ".shp" ) );
+			foreach (var h in reader)
 				sprites.Add(SheetBuilder.Add(h.Image, reader.Size));
-
-			Range<int> sequence = new Range<int>(low, sprites.Count - 1);
-			sequences.Add(name, sequence);
-
-			Log.Write("Loaded SHP for {0}", name);
-
+			var sequence = new Range<int>(low, sprites.Count - 1);
 			return sequence;
 		}
 	}
