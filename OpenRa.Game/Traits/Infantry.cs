@@ -28,7 +28,7 @@ namespace OpenRa.Game.Traits
 		public IEnumerable<UnitMovementType> CrushableBy()
 		{
 			yield return UnitMovementType.Track;
-			yield return UnitMovementType.Wheel;
+			//yield return UnitMovementType.Wheel; // Can infantry be crushed by wheel?
 		}
 	}
 }

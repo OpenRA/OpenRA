@@ -84,31 +84,16 @@ namespace OpenRa.Game.Traits
 		{
 			if (Game.BuildingInfluence.GetBuildingAt(a) != null) return false;
 
-			var actors = Game.UnitInfluence.GetUnitsAt(a);
 			var crushable = true;
-			foreach (Actor actor in actors)
+			foreach (Actor actor in Game.UnitInfluence.GetUnitsAt(a))
 			{
 				if (actor == self) continue;
 				
-				var c = actor.traits.WithInterface<ICrushable>();
-				if (c == null)
+				if (!Game.IsActorCrushableByActor(actor, self))
 				{
 					crushable = false;
 					break;
 				}
-				
-				foreach (var crush in c)
-				{
-					// TODO: Unhack this. I can't wrap my head around this right now...
-					if (!(((crush.IsCrushableByEnemy() && actor.Owner != Game.LocalPlayer) || (crush.IsCrushableByFriend() && actor.Owner == Game.LocalPlayer))
-						&& crush.CrushableBy().Contains(GetMovementType())))
-					{
-						crushable = false;
-						Log.Write("{0} is NOT crushable by {1} (mobile)", actor.Info.Name, self.Info.Name);
-						break;
-					}
-				}
-				Log.Write("{0} is crushable by {1} (mobile)", actor.Info.Name, self.Info.Name);
 			}
 			
 			if (!crushable) return false;

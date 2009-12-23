@@ -46,9 +46,11 @@ namespace OpenRa.Game
 		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheckAdd( IOccupySpace a )
 		{
+			/* This check is too strict now that we can have multiple units in a cell
 			foreach( var c in a.OccupiedCells() )
 				if( influence[c.X, c.Y].Any())
 					throw new InvalidOperationException( "UIM: Sanity check failed (Add)" );
+			*/
 		}
 
 		public IEnumerable<Actor> GetUnitsAt( int2 a )
