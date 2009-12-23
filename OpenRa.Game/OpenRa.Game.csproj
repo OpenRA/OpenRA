@@ -201,6 +201,7 @@
     <Compile Include="Traits\Tree.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
+    <Compile Include="Traits\WaterPaletteRotation.cs" />
     <Compile Include="Traits\WithShadow.cs" />
     <Compile Include="UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />

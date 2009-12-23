@@ -74,6 +74,10 @@ namespace OpenRa.Game
 				Game.world.Add(a);
 			}
 
+			var worldActor = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
+			worldActor.traits.Add(new Traits.WaterPaletteRotation(worldActor));
+			Game.world.Add(worldActor);
+
 			Rules.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
 
