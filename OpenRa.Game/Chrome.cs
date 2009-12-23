@@ -57,7 +57,7 @@ namespace OpenRa.Game
 				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
 				.ToDictionary(
 					u => u,
-					u => SpriteSheetBuilder.LoadSprite(u + "icon", ".shp"));
+					u => SpriteSheetBuilder.LoadAllSprites(u + "icon", ".shp")[0]);
 
 			tabSprites = groups.Select(
 				(g, i) => Pair.New(g,

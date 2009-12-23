@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Ijw.DirectX;
-using OpenRa.FileFormats;
 using IjwFramework.Collections;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
 {
