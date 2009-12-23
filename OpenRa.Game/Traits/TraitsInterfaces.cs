@@ -50,6 +50,7 @@ namespace OpenRa.Game.Traits
 	interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
+	interface IPaletteModifier { void AdjustPalette(Bitmap b); }
 	interface IPips { IEnumerable<PipType> GetPips(); }
 	interface ITags { IEnumerable<TagType> GetTags(); }
 	interface IMovement

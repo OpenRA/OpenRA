@@ -9,6 +9,11 @@ namespace OpenRa.Game
 	{
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;
+		static ISound music;
+		//TODO: read these from somewhere?
+		static float soundVolume;
+		static float musicVolume;
+		
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -27,6 +32,9 @@ namespace OpenRa.Game
 		{
 			soundEngine = new ISoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
+			music = null;
+			soundVolume = soundEngine.SoundVolume;
+			musicVolume = soundEngine.SoundVolume;
 		}
 
 		public static void Play(string name)
@@ -35,7 +43,42 @@ namespace OpenRa.Game
 			// todo: positioning
 			soundEngine.Play2D(sound, false /* loop */, false, false);
 		}
-
+		
+		public static void PlayMusic(string name)
+		{
+			var sound = sounds[name];
+			music = soundEngine.Play2D(sound, true /* loop */, false, false);
+			music.Volume = musicVolume;
+		}
+		
+		public static void Pause(bool doPause)
+		{
+			soundEngine.SetAllSoundsPaused(doPause);
+		}
+		
+		public static void setVolume(float vol)
+		{
+			soundVolume = vol;
+			soundEngine.SoundVolume	= vol;
+		}
+		
+		public static void setMusicVolume(float vol)
+		{
+			musicVolume = vol;
+			if (music != null)
+				music.Volume = vol;
+		}
+		
+		public static void seekMusic(uint delta)
+		{
+			if (music != null)
+			{
+				music.PlayPosition += delta;
+				if (music.PlayPosition < 0 || music.PlayPosition > music.PlayLength) 
+					music.PlayPosition = 0;
+			}
+		}
+		
 		public static void PlayVoice(string phrase, Actor voicedUnit)
 		{
 			if (voicedUnit == null) return;
