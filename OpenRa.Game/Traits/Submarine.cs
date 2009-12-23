@@ -28,7 +28,7 @@ namespace OpenRa.Game.Traits
                 return rs;
 
 			if (self.Owner == Game.LocalPlayer)
-				return rs.Select(a => a.WithPalette(8));
+				return rs.Select(a => a.WithPalette(PaletteType.Shadow));
 			else
 				return new Renderable[] { };
         }

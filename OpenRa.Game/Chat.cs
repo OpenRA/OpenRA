@@ -48,7 +48,7 @@ namespace OpenRa.Game
 
 		public void AddLine(Player p, string text)
 		{
-			AddLine(paletteColors[p.Palette], p.PlayerName, text);
+			AddLine(paletteColors[(int) p.Palette], p.PlayerName, text);
 		}
 
 		public void AddLine(Color c, string from, string text)

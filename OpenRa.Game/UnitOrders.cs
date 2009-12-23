@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -96,7 +97,7 @@ namespace OpenRa.Game
 				{
 					int palette = int.Parse(order.TargetString);
 					Game.chat.AddLine(order.Player, "has changed color to {0}".F(palette));
-					order.Player.Palette = palette;
+					order.Player.Palette = (PaletteType) palette;
 					break;
 				}
 			case "StartGame":

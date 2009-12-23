@@ -15,10 +15,10 @@ namespace OpenRa.Game.Traits
 	{
 		public readonly Sprite Sprite;
 		public readonly float2 Pos;
-		public readonly int Palette;
+		public readonly PaletteType Palette;
 		public readonly int ZOffset;
 
-		public Renderable(Sprite sprite, float2 pos, int palette, int zOffset)
+		public Renderable(Sprite sprite, float2 pos, PaletteType palette, int zOffset)
 		{
 			Sprite = sprite;
 			Pos = pos;
@@ -26,10 +26,10 @@ namespace OpenRa.Game.Traits
 			ZOffset = zOffset;
 		}
 
-		public Renderable(Sprite sprite, float2 pos, int palette)
+		public Renderable(Sprite sprite, float2 pos, PaletteType palette)
 			: this(sprite, pos, palette, 0) { }
 
-		public Renderable WithPalette(int newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
+		public Renderable WithPalette(PaletteType newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}

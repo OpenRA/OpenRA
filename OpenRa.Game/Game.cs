@@ -68,7 +68,7 @@ namespace OpenRa.Game
 				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
 
 				var a = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
-				players[i] = new Player(a, i, i, name, race, "Multi{0}".F(i));
+				players[i] = new Player(a, i, (PaletteType) i, name, race, "Multi{0}".F(i));
 				a.Owner = players[i];
 				a.traits.Add(new Traits.ProductionQueue(a));
 				Game.world.Add(a);

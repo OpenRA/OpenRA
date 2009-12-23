@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
@@ -11,7 +12,7 @@ namespace OpenRa.Game
 	class Player
 	{
 		public Actor PlayerActor;
-		public int Palette;
+		public PaletteType Palette;
 		public int Kills;
 		public string PlayerName;
 		public string InternalName;
@@ -26,7 +27,7 @@ namespace OpenRa.Game
 
 		public bool IsReady;
 
-		public Player( Actor playerActor, int index, int palette, string playerName, Race race, string internalName )
+		public Player( Actor playerActor, int index, PaletteType palette, string playerName, Race race, string internalName )
 		{
 			this.PlayerActor = playerActor;
 			this.Index = index;

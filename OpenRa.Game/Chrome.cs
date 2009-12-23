@@ -9,6 +9,7 @@ using OpenRa.Game.Graphics;
 using OpenRa.Game.Support;
 using OpenRa.Game.GameRules;
 
+
 namespace OpenRa.Game
 {
 	class Chrome : IHandleInput
@@ -110,8 +111,8 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
-			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, 0);
-			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), 0);
+			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Gold);
+			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Gold);
 
 			DrawMoney();
 			
@@ -158,8 +159,8 @@ namespace OpenRa.Game
 				{
 					x = Game.viewport.Width - tabWidth;
 				}
-				
-				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), 0);
+
+				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Gold);
 
 				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
 					(Action<bool>)(isLmb => currentTab = groupName)));
@@ -189,7 +190,7 @@ namespace OpenRa.Game
 			var x = Game.viewport.Width - 155;
 			foreach (var d in moneyDigits.Reverse())
 			{
-				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), 0);
+				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Gold);
 				x -= 14;
 			}
 		}
@@ -264,7 +265,7 @@ namespace OpenRa.Game
 				var isBuildingThis = currentItem != null && currentItem.Item == item;
 				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
 
-				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, HardwarePalette.Chrome);
+				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, PaletteType.Chrome);
 
 				if (rect.Contains(lastMousePos.ToPoint()))
 				{
@@ -279,7 +280,7 @@ namespace OpenRa.Game
 				{
 					clockAnimations[queueName].Tick();
 					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
-						drawPos, HardwarePalette.Chrome);
+						drawPos, PaletteType.Chrome);
 
 					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
@@ -305,26 +306,26 @@ namespace OpenRa.Game
 			{
 				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				buildPaletteRenderer.DrawSprite(blank, drawPos, HardwarePalette.Chrome);
+				buildPaletteRenderer.DrawSprite(blank, drawPos, PaletteType.Chrome);
 				buttons.Add(Pair.New(rect, (Action<bool>)(_ => { })));
 				if (++x == columns) { x = 0; y++; }
 			}
 
 			foreach (var ob in overlayBits)
-				buildPaletteRenderer.DrawSprite(ob.First, ob.Second, HardwarePalette.Chrome);
+				buildPaletteRenderer.DrawSprite(ob.First, ob.Second, PaletteType.Chrome);
 
 			buildPaletteRenderer.Flush();
 
 			for (var j = 0; j < y; j++)
-				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), 0);
+				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), PaletteType.Gold);
 
-			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), 0);
-			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), 0);
+			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), PaletteType.Gold);
+			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Gold);
 
 			for (var i = 0; i < columns; i++)
 			{
-				chromeRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), 0);
-				chromeRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), 0);
+				chromeRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), PaletteType.Gold);
+				chromeRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), PaletteType.Gold);
 			}
 			chromeRenderer.Flush();
 
@@ -414,7 +415,7 @@ namespace OpenRa.Game
 		void DrawProductionTooltip(string unit, int2 pos)
 		{
 			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
-			chromeRenderer.DrawSprite(tooltipSprite, p, 0);
+			chromeRenderer.DrawSprite(tooltipSprite, p, PaletteType.Gold);
 			chromeRenderer.Flush();
 
 			var info = Rules.UnitInfo[unit];
