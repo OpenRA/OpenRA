@@ -241,21 +241,11 @@ namespace OpenRa.Game
 		}
 		public static bool IsActorCrushableByMovementType(Actor a, UnitMovementType umt)
 		{
-			if (a != null)
-			{
-				foreach (var crush in a.traits.WithInterface<ICrushable>())
-				{
-					if (((crush.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) 
-						|| (crush.IsCrushableByFriend() && a.Owner == Game.LocalPlayer))
-						&& crush.CrushableBy(umt))
-					{
-						Log.Write("{0} is crushable by MovementType {1}", a.Info.Name, umt);
-						return true;
-					}
-				}
-				Log.Write("{0} is NOT crushable by MovementType {1}", a.Info.Name, umt);
-			}
-			return false;
+			return a != null &&
+				a.traits.WithInterface<ICrushable>()
+				.Any(c => c.CrushableBy(umt) &&
+					((c.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) ||
+					(c.IsCrushableByFriend() && a.Owner == Game.LocalPlayer)));
 		}
 		
 		public static bool IsWater(int2 a)
