@@ -51,12 +51,15 @@ namespace OpenRa.Game
 		static Renderer renderer;
 		static bool usingAftermath;
 		static int2 clientSize;
+		static HardwarePalette palette;
 
 		public static void ChangeMap(string mapName)
 		{
 			SheetBuilder.Initialize(renderer);
 			
 			Rules.LoadRules(mapName, usingAftermath);
+			palette = new HardwarePalette(renderer, Rules.Map);
+
 			world = new World();
 
 			for (int i = 0; i < 8; i++)
@@ -163,7 +166,8 @@ namespace OpenRa.Game
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += timestep;
-
+					UpdatePalette(world.Actors.SelectMany(
+						a => a.traits.WithInterface<IPaletteModifier>()));
 					orderManager.TickImmediate();
 
 					if (orderManager.IsReadyForNextFrame)
@@ -200,6 +204,16 @@ namespace OpenRa.Game
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
+		}
+
+		static void UpdatePalette(IEnumerable<IPaletteModifier> paletteMods)
+		{
+			var b = new Bitmap(palette.Bitmap);
+			foreach (var mod in paletteMods)
+				mod.AdjustPalette(b);
+
+			palette.Texture.SetData(b);
+			renderer.PaletteTexture = palette.Texture;
 		}
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt)

@@ -28,7 +28,6 @@ namespace OpenRa.Game
 			foreach (var a in actors) a.Tick();
 			foreach (var e in effects) e.Tick();
 
-			Renderer.waterFrame += 0.00125f * Game.timestep;
 			Game.viewport.Tick();
 
 			var acts = frameEndActions;

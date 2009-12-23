@@ -8,7 +8,7 @@ namespace OpenRa.Game.Graphics
 		const int maxEntries = 16;
 		int allocated = 0;
 
-		public HardwarePalette(Renderer renderer, Map map, int rotate)
+		public HardwarePalette(Renderer renderer, Map map)
 			: base(renderer,new Size(256, maxEntries))
 		{
 			Palette pal = new Palette(FileSystem.Open(map.Theater + ".pal"));
@@ -19,10 +19,10 @@ namespace OpenRa.Game.Graphics
 
 			AddPalette(new Palette(pal, new PaletteRemap(Color.FromArgb(140, 0, 0, 0))));
 
-			using (var bitmapCopy = new Bitmap(bitmap))
-				for (int j = 0; j < maxEntries; j++)
-					for (int i = 0; i < 7; i++)
-						this[new Point(0x60 + i, j)] = bitmapCopy.GetPixel(0x60 + (rotate + i) % 7, j);
+			//using (var bitmapCopy = new Bitmap(bitmap))
+			//    for (int j = 0; j < maxEntries; j++)
+			//        for (int i = 0; i < 7; i++)
+			//            this[new Point(0x60 + i, j)] = bitmapCopy.GetPixel(0x60 + (rotate + i) % 7, j);
 		}
 
 		int AddPalette(Palette p)

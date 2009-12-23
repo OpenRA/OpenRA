@@ -11,23 +11,15 @@ namespace OpenRa.Game.Graphics
 		internal static int SheetSize;
 
 		readonly GraphicsDevice device;
-		Texture[] palettes;
+
 		public Shader SpriteShader { get; private set; }    /* note: shared shader params */
 		public Shader LineShader { get; private set; }
 		public Shader RgbaSpriteShader { get; private set; }
 
+		public Texture PaletteTexture;
+
 		readonly SpriteHelper sh;
 		readonly FontHelper fhDebug, fhTitle;
-
-		public void BuildPalette(Map map)
-		{
-			palettes = Util.MakeArray(7, i => new HardwarePalette(this, map, 6 - i).Texture);
-		}
-
-		public void SetPalette(HardwarePalette hp)
-		{
-			SpriteShader.SetValue("Palette", hp.Texture);
-		}
 
 		public Renderer(Control host, Size resolution, bool windowed)
 		{
@@ -49,14 +41,12 @@ namespace OpenRa.Game.Graphics
 
 		public GraphicsDevice Device { get { return device; } }
 
-		public static float waterFrame = 0.0f;
-
 		public void BeginFrame(float2 r1, float2 r2, float2 scroll)
 		{
 			device.Begin();
 			device.Clear(0, Surfaces.Color);
 
-			SpriteShader.SetValue("Palette", palettes[(int)(waterFrame * palettes.Length) % palettes.Length]);
+			SpriteShader.SetValue("Palette", PaletteTexture);
 			SpriteShader.SetValue("Scroll", scroll);
 			SpriteShader.SetValue("r1", r1);
 			SpriteShader.SetValue("r2", r2);

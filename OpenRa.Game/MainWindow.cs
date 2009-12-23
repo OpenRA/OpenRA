@@ -64,7 +64,6 @@ namespace OpenRa.Game
 
 			SequenceProvider.ForcePrecache();
 
-			renderer.BuildPalette( Rules.Map );
 			ShowCursor(false);
 			Game.ResetTimer();
 		}
