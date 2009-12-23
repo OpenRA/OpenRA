@@ -197,7 +197,7 @@ namespace OpenRa.Game.Graphics
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), 0);
+			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), HardwarePalette.Chrome);
 		}
 
 		void DrawPips(Actor selectedUnit, float2 basePosition)
@@ -212,12 +212,11 @@ namespace OpenRa.Game.Graphics
 				{
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, 0);
+					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, HardwarePalette.Chrome);
 					pipxyOffset += new float2(4, 0);
 					
 					if (pipxyOffset.X+5 > selectedUnit.SelectedSize.X)
 					{
-						//spriteRenderer.Flush();
 						pipxyOffset.X = 0;
 						pipxyOffset.Y -= 4;
 					}
@@ -225,7 +224,6 @@ namespace OpenRa.Game.Graphics
 				// Increment row
 				pipxyOffset.X = 0;
 				pipxyOffset.Y -= 5;
-				//spriteRenderer.Flush();
 			}
 		}
 		
@@ -241,7 +239,7 @@ namespace OpenRa.Game.Graphics
 				{
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, 0);
+					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, HardwarePalette.Chrome);
 					
 					// Increment row
 					tagxyOffset.Y += 8;

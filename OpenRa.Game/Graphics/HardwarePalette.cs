@@ -5,6 +5,10 @@ namespace OpenRa.Game.Graphics
 {
 	class HardwarePalette : Sheet
 	{
+		public const int Shadow = 8;
+		public const int Invuln = 9;
+		public const int Chrome = 10;
+
 		const int maxEntries = 16;
 		int allocated = 0;
 
@@ -18,11 +22,8 @@ namespace OpenRa.Game.Graphics
 				AddPalette(new Palette(pal, new PaletteRemap(FileSystem.Open(remap + ".rem"))));
 
 			AddPalette(new Palette(pal, new PaletteRemap(Color.FromArgb(140, 0, 0, 0))));
-
-			//using (var bitmapCopy = new Bitmap(bitmap))
-			//    for (int j = 0; j < maxEntries; j++)
-			//        for (int i = 0; i < 7; i++)
-			//            this[new Point(0x60 + i, j)] = bitmapCopy.GetPixel(0x60 + (rotate + i) % 7, j);
+			AddPalette(pal);	// iron curtain. todo: remap!
+			AddPalette(pal);	// chrome (it's like gold, but we're not going to hax it in palettemods)
 		}
 
 		int AddPalette(Palette p)

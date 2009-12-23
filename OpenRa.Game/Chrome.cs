@@ -264,7 +264,7 @@ namespace OpenRa.Game
 				var isBuildingThis = currentItem != null && currentItem.Item == item;
 				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
 
-				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, 0);
+				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, HardwarePalette.Chrome);
 
 				if (rect.Contains(lastMousePos.ToPoint()))
 				{
@@ -279,7 +279,7 @@ namespace OpenRa.Game
 				{
 					clockAnimations[queueName].Tick();
 					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
-						drawPos, 0);
+						drawPos, HardwarePalette.Chrome);
 
 					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
@@ -305,13 +305,13 @@ namespace OpenRa.Game
 			{
 				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				buildPaletteRenderer.DrawSprite(blank, drawPos, 0);
+				buildPaletteRenderer.DrawSprite(blank, drawPos, HardwarePalette.Chrome);
 				buttons.Add(Pair.New(rect, (Action<bool>)(_ => { })));
 				if (++x == columns) { x = 0; y++; }
 			}
 
 			foreach (var ob in overlayBits)
-				buildPaletteRenderer.DrawSprite(ob.First, ob.Second, 0);
+				buildPaletteRenderer.DrawSprite(ob.First, ob.Second, HardwarePalette.Chrome);
 
 			buildPaletteRenderer.Flush();
 
