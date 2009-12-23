@@ -37,32 +37,30 @@ namespace OpenRa.Game
 			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
 			Game.timestep = settings.GetValue("rate", 40);
 			Game.Replay = settings.GetValue("replay", "");
-			Game.NetworkHost = settings.GetValue( "host", "" );
-			Game.NetworkPort = int.Parse( settings.GetValue( "port", "0" ) );
+			Game.NetworkHost = settings.GetValue("host", "");
+			Game.NetworkPort = int.Parse(settings.GetValue("port", "0"));
 
-			var useAftermath = bool.Parse( settings.GetValue( "aftermath", "false" ) );
+			var useAftermath = bool.Parse(settings.GetValue("aftermath", "false"));
 
-			Renderer.SheetSize = int.Parse( settings.GetValue( "sheetsize", "512" ) );
+			Renderer.SheetSize = int.Parse(settings.GetValue("sheetsize", "512"));
 
-			while( !File.Exists( "redalert.mix" ) )
+			while (!File.Exists("redalert.mix"))
 			{
 				var current = Directory.GetCurrentDirectory();
-				if( Directory.GetDirectoryRoot( current ) == current )
-					throw new InvalidOperationException( "Unable to load MIX files." );
-				Directory.SetCurrentDirectory( ".." );
+				if (Directory.GetDirectoryRoot(current) == current)
+					throw new InvalidOperationException("Unable to load MIX files.");
+				Directory.SetCurrentDirectory("..");
 			}
 
-			FileSystem.MountDefault( useAftermath );
+			FileSystem.MountDefault(useAftermath);
 
-			bool windowed = !settings.GetValue( "fullscreen", false );
-			renderer = new Renderer( this, GetResolution( settings ), windowed );
+			bool windowed = !settings.GetValue("fullscreen", false);
+			renderer = new Renderer(this, GetResolution(settings), windowed);
 
-			var controller = new Controller( () => (Modifiers)(int)ModifierKeys );	/* a bit of insane input routing */
+			var controller = new Controller(() => (Modifiers)(int)ModifierKeys);	/* a bit of insane input routing */
 
 			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
-				settings.GetValue("player", 1), useAftermath, controller );
-
-			SequenceProvider.ForcePrecache();
+				settings.GetValue("player", 1), useAftermath, controller);
 
 			ShowCursor(false);
 			Game.ResetTimer();

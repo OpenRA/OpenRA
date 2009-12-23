@@ -43,8 +43,6 @@ namespace OpenRa.Game.Graphics
 			Log.Write("* LoadSequencesForCursor() done");
 		}
 
-		public static void ForcePrecache() { }	// force static ctor to run
-
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
 			string unitName = eUnit.GetAttribute("name");
