@@ -45,8 +45,10 @@ namespace OpenRa.Game.Traits.Activities
 		static bool CanEnterCell( int2 c, Actor self )
 		{
 			if (!Game.BuildingInfluence.CanMoveHere(c)) return false;
-			var u = Game.UnitInfluence.GetUnitAt( c );
-			return (u == null || u == self);
+			
+			// Cannot enter a cell if any unit inside is uncrushable
+			// This will need to be updated for multiple-infantry-in-a-cell
+			return (!Game.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !Game.IsActorCrushableByActor(a, self)));
 		}
 
 		public IActivity Tick( Actor self )
@@ -68,7 +70,7 @@ namespace OpenRa.Game.Traits.Activities
 				path = getPath( self, mobile ).TakeWhile( a => a != self.Location ).ToList();
 				SanityCheckPath( mobile );
 			}
-
+			
 			if( path.Count == 0 )
 			{
 				destination = mobile.toCell;

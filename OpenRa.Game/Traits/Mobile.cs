@@ -80,9 +80,27 @@ namespace OpenRa.Game.Traits
 			}
 		}
 		
-		public bool CanEnterCell(int2 location)
+		public bool CanEnterCell(int2 a)
 		{
-			return Game.IsCellBuildable( location, GetMovementType(), self );
+			if (Game.BuildingInfluence.GetBuildingAt(a) != null) return false;
+
+			var crushable = true;
+			foreach (Actor actor in Game.UnitInfluence.GetUnitsAt(a))
+			{
+				if (actor == self) continue;
+				
+				if (!Game.IsActorCrushableByActor(actor, self))
+				{
+					crushable = false;
+					break;
+				}
+			}
+			
+			if (!crushable) return false;
+			
+			return Rules.Map.IsInMap(a.X, a.Y) &&
+				TerrainCosts.Cost(GetMovementType(),
+					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

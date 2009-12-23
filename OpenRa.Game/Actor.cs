@@ -85,8 +85,10 @@ namespace OpenRa.Game
 
 			if (!Rules.Map.IsInMap(xy.X, xy.Y))
 				return null;
-
-			var underCursor = Game.UnitInfluence.GetUnitAt( xy ) 
+			
+			// HACK: Get the first unit in the cell
+			// This will need to be updated for multiple-infantry-in-a-cell
+			var underCursor = Game.UnitInfluence.GetUnitsAt( xy ).FirstOrDefault()
 				?? Game.BuildingInfluence.GetBuildingAt( xy );
 
 			if (underCursor != null && !underCursor.Info.Selectable)

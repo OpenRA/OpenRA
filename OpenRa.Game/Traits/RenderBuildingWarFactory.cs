@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
@@ -35,7 +36,7 @@ namespace OpenRa.Game.Traits
 			if (doneBuilding) roof.Tick();
 
 			var b = self.Bounds;
-			if (isOpen && null == Game.UnitInfluence.GetUnitAt(((1/24f) * self.CenterLocation).ToInt2()))
+			if (isOpen && !Game.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(prefix + "build-top", () => roof.Play(prefix + "idle-top"));
