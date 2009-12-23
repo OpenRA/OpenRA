@@ -245,8 +245,9 @@ namespace OpenRa.Game
 			{
 				foreach (var crush in a.traits.WithInterface<ICrushable>())
 				{
-					if (((crush.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) || (crush.IsCrushableByFriend() && a.Owner == Game.LocalPlayer))
-						&& crush.CrushableBy().Contains(umt))
+					if (((crush.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) 
+						|| (crush.IsCrushableByFriend() && a.Owner == Game.LocalPlayer))
+						&& crush.CrushableBy(umt))
 					{
 						Log.Write("{0} is crushable by MovementType {1}", a.Info.Name, umt);
 						return true;

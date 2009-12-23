@@ -29,10 +29,13 @@ namespace OpenRa.Game.Traits
 			self.InflictDamage(crusher, self.Health, Rules.WarheadInfo["Crush"]);
 		}
 
-		public IEnumerable<UnitMovementType> CrushableBy()
+		public bool CrushableBy(UnitMovementType umt)
 		{
-			yield return UnitMovementType.Track;
-			//yield return UnitMovementType.Wheel; // Can infantry be crushed by wheel?
+			switch (umt)
+			{
+				case UnitMovementType.Track: return true;
+				default: return false;
+			}
 		}
 	}
 }
