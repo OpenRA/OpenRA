@@ -61,9 +61,7 @@ namespace OpenRa.Game.Traits
 	
 	interface ICrushable
 	{
-		bool IsCrushableByFriend();
-		bool IsCrushableByEnemy();
 		void OnCrush(Actor crusher);
-		bool CrushableBy(UnitMovementType umt);
+		bool IsCrushableBy(UnitMovementType umt, Player player);
 	}
 }

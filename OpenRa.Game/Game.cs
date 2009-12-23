@@ -243,9 +243,7 @@ namespace OpenRa.Game
 		{
 			return a != null &&
 				a.traits.WithInterface<ICrushable>()
-				.Any(c => c.CrushableBy(umt) &&
-					((c.IsCrushableByEnemy() && a.Owner != Game.LocalPlayer) ||
-					(c.IsCrushableByFriend() && a.Owner == Game.LocalPlayer)));
+				.Any(c => c.IsCrushableBy(umt, a.Owner));
 		}
 		
 		public static bool IsWater(int2 a)

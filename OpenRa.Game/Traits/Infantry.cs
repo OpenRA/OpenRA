@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -13,24 +13,15 @@ namespace OpenRa.Game.Traits
 			this.self = self;
 		}
 
-		public bool IsCrushableByFriend()
-		{
-			// HACK: should be false
-			return true;
-		}
-		public bool IsCrushableByEnemy()
-		{
-			// HACK: should be based off crushable tag
-			return true;
-		}
-
 		public void OnCrush(Actor crusher)
 		{
 			self.InflictDamage(crusher, self.Health, Rules.WarheadInfo["Crush"]);
 		}
 
-		public bool CrushableBy(UnitMovementType umt)
+		public bool IsCrushableBy(UnitMovementType umt, Player player)
 		{
+			if (player == Game.LocalPlayer) return false;
+			if (!(self.Info as InfantryInfo).Crushable) return false;
 			switch (umt)
 			{
 				case UnitMovementType.Track: return true;
