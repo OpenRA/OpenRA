@@ -63,5 +63,6 @@ namespace OpenRa.Game.Traits
 	{
 		void OnCrush(Actor crusher);
 		bool IsCrushableBy(UnitMovementType umt, Player player);
+		bool IsPathableCrush(UnitMovementType umt, Player player);
 	}
 }

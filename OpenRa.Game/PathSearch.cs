@@ -56,7 +56,7 @@ namespace OpenRa.Game
 				}
 				
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (Game.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.IsActorCrushableByMovementType(a, umt))))
+				if (checkForBlocked && (Game.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.IsActorPathableToCrush(a, umt))))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))

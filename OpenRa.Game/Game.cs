@@ -239,6 +239,14 @@ namespace OpenRa.Game
 		{
 			return IsActorCrushableByMovementType(a, b.traits.WithInterface<IMovement>().FirstOrDefault().GetMovementType());
 		}
+		
+		public static bool IsActorPathableToCrush(Actor a, UnitMovementType umt)
+		{
+			return a != null &&
+					a.traits.WithInterface<ICrushable>()
+					.Any(c => c.IsPathableCrush(umt, a.Owner));
+		}
+		
 		public static bool IsActorCrushableByMovementType(Actor a, UnitMovementType umt)
 		{
 			return a != null &&

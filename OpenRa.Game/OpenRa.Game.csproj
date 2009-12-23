@@ -162,6 +162,8 @@
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
+    <Compile Include="Traits\APMine.cs" />
+    <Compile Include="Traits\ATMine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackInfo.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
