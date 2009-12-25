@@ -111,8 +111,8 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
-			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Gold);
-			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Gold);
+			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Chrome);
+			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 
 			DrawMoney();
 			
@@ -160,7 +160,7 @@ namespace OpenRa.Game
 					x = Game.viewport.Width - tabWidth;
 				}
 
-				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Gold);
+				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Chrome);
 
 				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
 					(Action<bool>)(isLmb => currentTab = groupName)));
@@ -190,7 +190,7 @@ namespace OpenRa.Game
 			var x = Game.viewport.Width - 155;
 			foreach (var d in moneyDigits.Reverse())
 			{
-				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Gold);
+				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Chrome);
 				x -= 14;
 			}
 		}
@@ -317,15 +317,15 @@ namespace OpenRa.Game
 			buildPaletteRenderer.Flush();
 
 			for (var j = 0; j < y; j++)
-				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), PaletteType.Gold);
+				chromeRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), PaletteType.Chrome);
 
-			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), PaletteType.Gold);
-			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Gold);
+			chromeRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
+			chromeRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 
 			for (var i = 0; i < columns; i++)
 			{
-				chromeRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), PaletteType.Gold);
-				chromeRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), PaletteType.Gold);
+				chromeRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), PaletteType.Chrome);
+				chromeRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 			}
 			chromeRenderer.Flush();
 
@@ -415,7 +415,7 @@ namespace OpenRa.Game
 		void DrawProductionTooltip(string unit, int2 pos)
 		{
 			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
-			chromeRenderer.DrawSprite(tooltipSprite, p, PaletteType.Gold);
+			chromeRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			chromeRenderer.Flush();
 
 			var info = Rules.UnitInfo[unit];
