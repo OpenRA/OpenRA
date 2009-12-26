@@ -209,7 +209,6 @@
     <Compile Include="UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />
     <Compile Include="UiOverlay.cs" />
-    <Compile Include="Graphics\UnitSheetBuilder.cs" />
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\Viewport.cs" />

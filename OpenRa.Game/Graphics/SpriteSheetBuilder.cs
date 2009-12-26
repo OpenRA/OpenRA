@@ -11,6 +11,12 @@ namespace OpenRa.Game.Graphics
 		}
 
 		static Dictionary<string, Sprite[]> sprites;
+		static readonly string[] exts = { ".tem", ".sno", ".int", ".shp" };
+
+		public static Sprite[] LoadAllSprites2(string filename)
+		{
+			return LoadAllSprites(filename, exts);
+		}
 
 		public static Sprite[] LoadAllSprites( string filename, params string[] exts )
 		{

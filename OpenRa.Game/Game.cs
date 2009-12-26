@@ -57,7 +57,6 @@ namespace OpenRa.Game
 		{
 			SheetBuilder.Initialize(renderer);
 			SpriteSheetBuilder.Initialize();
-			UnitSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
 			Rules.LoadRules(mapName, usingAftermath);
 			palette = new HardwarePalette(renderer, Rules.Map);

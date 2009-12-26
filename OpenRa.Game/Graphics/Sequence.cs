@@ -5,6 +5,7 @@ namespace OpenRa.Game.Graphics
 {
 	class Sequence
 	{
+		readonly Sprite[] sprites;
 		readonly int start, length;
 
 		public readonly string Name;
@@ -17,13 +18,12 @@ namespace OpenRa.Game.Graphics
 			string srcOverride = e.GetAttribute("src");
 			Name = e.GetAttribute("name");
 
-			Range<int> src = UnitSheetBuilder.GetUnit(
-				string.IsNullOrEmpty(srcOverride) ? unit : srcOverride);
-
-			start = src.Start + int.Parse(e.GetAttribute("start"));
+			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride,
+				".tem", ".sno", ".int", ".shp" );
+			start = int.Parse(e.GetAttribute("start"));
 
 			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")
-				length = src.End - src.Start + 1;
+				length = sprites.Length - Start;
 			else if (e.HasAttribute("length"))
 				length = int.Parse(e.GetAttribute("length"));
 			else if (e.HasAttribute("end"))
@@ -34,7 +34,7 @@ namespace OpenRa.Game.Graphics
 
 		public Sprite GetSprite(int frame)
 		{
-			return UnitSheetBuilder.sprites[ ( frame % length ) + start ];
+			return sprites[ ( frame % length ) + start ];
 		}
 	}
 }
