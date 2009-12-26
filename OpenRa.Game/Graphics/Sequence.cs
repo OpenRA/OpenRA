@@ -18,8 +18,7 @@ namespace OpenRa.Game.Graphics
 			string srcOverride = e.GetAttribute("src");
 			Name = e.GetAttribute("name");
 
-			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride,
-				".tem", ".sno", ".int", ".shp" );
+			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
 			start = int.Parse(e.GetAttribute("start"));
 
 			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")

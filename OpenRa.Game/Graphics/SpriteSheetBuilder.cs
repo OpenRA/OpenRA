@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using OpenRa.FileFormats;
+using IjwFramework.Collections;
+using System.Linq;
 
 namespace OpenRa.Game.Graphics
 {
@@ -7,30 +9,21 @@ namespace OpenRa.Game.Graphics
 	{
 		public static void Initialize()
 		{
-			sprites = new Dictionary<string, Sprite[]>();
+			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
-		static Dictionary<string, Sprite[]> sprites;
+		static Cache<string, Sprite[]> sprites;
 		static readonly string[] exts = { ".tem", ".sno", ".int", ".shp" };
 
-		public static Sprite[] LoadAllSprites2(string filename)
+		static Sprite[] LoadSprites(string filename)
 		{
-			return LoadAllSprites(filename, exts);
+			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
+			return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
-		public static Sprite[] LoadAllSprites( string filename, params string[] exts )
+		public static Sprite[] LoadAllSprites( string filename )
 		{
-			Sprite[] value;
-			if( !sprites.TryGetValue( filename, out value ) )
-			{
-				ShpReader shp = new ShpReader( FileSystem.OpenWithExts( filename, exts ) );
-				value = new Sprite[ shp.ImageCount ];
-				for( int i = 0 ; i < shp.ImageCount ; i++ )
-					value[ i ] = SheetBuilder.Add( shp[ i ].Image, shp.Size );
-				sprites.Add( filename, value );
-			}
-
-			return value;
+			return sprites[filename];
 		}
 	}
 }
