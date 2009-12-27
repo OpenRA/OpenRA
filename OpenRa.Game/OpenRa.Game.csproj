@@ -172,6 +172,7 @@
     <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackInfo.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
+    <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BelowUnits.cs" />
     <Compile Include="Traits\Building.cs" />
