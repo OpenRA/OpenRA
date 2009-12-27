@@ -50,7 +50,6 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			
 			while (currentActivity != null)
 			{
 				var a = currentActivity;
