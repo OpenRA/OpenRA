@@ -149,6 +149,8 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
+			if (Health > Info.Strength)
+				Health = Info.Strength;
 
 			var newState = GetDamageState();
 
