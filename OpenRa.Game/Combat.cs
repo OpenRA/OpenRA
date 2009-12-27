@@ -39,7 +39,7 @@ namespace OpenRa.Game
 
 		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead)
 		{
-			return (int)(warhead.Spread * Math.Log(weapon.Damage, 2));
+			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage), 2));
 		}
 
 		static float GetDamageToInflict(Actor target, int2 loc, WeaponInfo weapon, WarheadInfo warhead)
