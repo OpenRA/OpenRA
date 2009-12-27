@@ -4,7 +4,7 @@ Ground Units:
 All Infantry		No idle animations
 E1		Range is wrong.
 E2		Grenades are too accurate.
-E3		AA weapon doesn't work.
+E3		Works
 E4		Flamer origin is wrong
 E6		Capture action missing, repair action missing
 E7		C4 action missing
@@ -33,7 +33,6 @@ ARTY	Works
 Helicopters
 	- Weapons don't work, 
 	- hover while attacking doesn't work, 
-	- render is broken (altitude) -- less broken, but there are Z-order issues.
 	- Repair/rearm doesn't work
 TRAN	Cargo doesn't work
 
