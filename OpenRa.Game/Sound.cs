@@ -56,20 +56,20 @@ namespace OpenRa.Game
 			soundEngine.SetAllSoundsPaused(doPause);
 		}
 		
-		public static void setVolume(float vol)
+		public static void SetVolume(float vol)
 		{
 			soundVolume = vol;
 			soundEngine.SoundVolume	= vol;
 		}
 		
-		public static void setMusicVolume(float vol)
+		public static void SetMusicVolume(float vol)
 		{
 			musicVolume = vol;
 			if (music != null)
 				music.Volume = vol;
 		}
 		
-		public static void seekMusic(uint delta)
+		public static void SeekMusic(uint delta)
 		{
 			if (music != null)
 			{

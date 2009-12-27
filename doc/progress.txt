@@ -13,7 +13,7 @@ SPY		Infiltrate action missing
 THF		Steal action missing
 C1,C2,Einstein,Kosygin		Not implemented
 
-All tracked vehicles	Crush infantry missing
+All tracked vehicles
 1TNK	Works
 2TNK	Works
 3TNK	Works
