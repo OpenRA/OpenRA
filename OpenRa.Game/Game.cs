@@ -8,7 +8,6 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Support;
 using OpenRa.Game.Traits;
-using System.Windows.Forms;
 
 namespace OpenRa.Game
 {

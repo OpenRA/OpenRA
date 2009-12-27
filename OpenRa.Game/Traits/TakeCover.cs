@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.GameRules;
-
+﻿
 namespace OpenRa.Game.Traits
 {
 	// infantry prone behavior

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.Game.Graphics;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {

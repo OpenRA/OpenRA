@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using OpenRa.FileFormats;
-using System.Linq;
+﻿using System.Linq;
 using IjwFramework.Collections;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
 {

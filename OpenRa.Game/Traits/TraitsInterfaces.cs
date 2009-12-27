@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
-using System.Drawing;
 
 namespace OpenRa.Game.Traits
 {
@@ -10,29 +10,6 @@ namespace OpenRa.Game.Traits
 	// depends on the order of pips in WorldRenderer.cs!
 	enum PipType { Transparent, Green, Yellow, Red, Gray };
 	enum TagType { None, Fake, Primary };
-
-	struct Renderable
-	{
-		public readonly Sprite Sprite;
-		public readonly float2 Pos;
-		public readonly PaletteType Palette;
-		public readonly int ZOffset;
-
-		public Renderable(Sprite sprite, float2 pos, PaletteType palette, int zOffset)
-		{
-			Sprite = sprite;
-			Pos = pos;
-			Palette = palette;
-			ZOffset = zOffset;
-		}
-
-		public Renderable(Sprite sprite, float2 pos, PaletteType palette)
-			: this(sprite, pos, palette, 0) { }
-
-		public Renderable WithPalette(PaletteType newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
-		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
-		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
-	}
 	
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Renderable> Render(Actor self); }
@@ -64,5 +41,28 @@ namespace OpenRa.Game.Traits
 		void OnCrush(Actor crusher);
 		bool IsCrushableBy(UnitMovementType umt, Player player);
 		bool IsPathableCrush(UnitMovementType umt, Player player);
+	}
+
+	struct Renderable
+	{
+		public readonly Sprite Sprite;
+		public readonly float2 Pos;
+		public readonly PaletteType Palette;
+		public readonly int ZOffset;
+
+		public Renderable(Sprite sprite, float2 pos, PaletteType palette, int zOffset)
+		{
+			Sprite = sprite;
+			Pos = pos;
+			Palette = palette;
+			ZOffset = zOffset;
+		}
+
+		public Renderable(Sprite sprite, float2 pos, PaletteType palette)
+			: this(sprite, pos, palette, 0) { }
+
+		public Renderable WithPalette(PaletteType newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
+		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
+		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}
 }

@@ -26,16 +26,9 @@ namespace OpenRa.Game.Graphics
 			}
 		}
 
-		public float2 Center { get { return 0.25f * new float2(CurrentSequence.GetSprite(0).bounds.Size); } }
-
 		public void Play( string sequenceName )
 		{
 			PlayThen(sequenceName, () => { });
-		}
-
-		public void PlayBackwards(string sequenceName)
-		{
-			PlayBackwardsThen(sequenceName, () => { });
 		}
 
 		public void PlayRepeating( string sequenceName )
