@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Collections.Generic;
 using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
@@ -22,7 +22,7 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			// Does this belong here?
+			// Does this belong here? NO, but it's your mess.
 			
 			// Get the crushable actors
 			foreach (var a in Game.world.Actors.Where(b => b.traits.WithInterface<ICrushable>().Any()))
@@ -39,9 +39,7 @@ namespace OpenRa.Game
 							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);
 							// Apply the crush action
 							foreach (var crush in a.traits.WithInterface<ICrushable>())
-							{
 								crush.OnCrush(crusher);
-							}
 						}
 					}
 			}

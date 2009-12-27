@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
 using OpenRa.Game.Effects;
 
 namespace OpenRa.Game

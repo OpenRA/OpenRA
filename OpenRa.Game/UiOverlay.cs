@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;

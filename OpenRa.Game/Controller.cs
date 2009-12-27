@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
+using IjwFramework.Collections;
 using IjwFramework.Types;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
-using IjwFramework.Collections;
-using System;
 
 namespace OpenRa.Game
 {
