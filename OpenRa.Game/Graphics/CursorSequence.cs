@@ -16,7 +16,7 @@ namespace OpenRa.Game.Graphics
 
 		public CursorSequence(string cursorSrc, XmlElement e)
 		{
-			sprites = CursorSheetBuilder.LoadAllSprites(cursorSrc, ".shp");
+			sprites = CursorSheetBuilder.LoadAllSprites(cursorSrc);
 
 			start = int.Parse(e.GetAttribute("start"));
 

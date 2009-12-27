@@ -21,9 +21,6 @@ namespace OpenRa.Game.Graphics
 			return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
-		public static Sprite[] LoadAllSprites( string filename )
-		{
-			return sprites[filename];
-		}
+		public static Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
 	}
 }
