@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits.Activities
 				return NextActivity;
 
 			Util.TickFacing( ref unit.Facing, desiredFacing, self.Info.ROT );
-			return null;
+			return this;
 		}
 
 		public void Cancel( Actor self )

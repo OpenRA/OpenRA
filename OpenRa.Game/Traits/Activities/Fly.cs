@@ -38,7 +38,7 @@ namespace OpenRa.Game.Traits.Activities
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
@@ -74,7 +74,7 @@ namespace OpenRa.Game.Traits.Activities
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
@@ -103,7 +103,7 @@ namespace OpenRa.Game.Traits.Activities
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
 			unit.Altitude += Math.Sign(targetAltitude - unit.Altitude);
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self) { remainingTicks = 0; NextActivity = null; }

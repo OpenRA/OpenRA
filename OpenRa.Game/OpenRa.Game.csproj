@@ -132,6 +132,7 @@
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
+    <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />

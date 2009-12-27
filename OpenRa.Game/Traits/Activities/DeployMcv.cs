@@ -15,7 +15,7 @@ namespace OpenRa.Game.Traits.Activities
 				Sound.Play("build5.aud");
 				Game.world.Add( new Actor( Rules.UnitInfo["fact"], self.Location - new int2( 1, 1 ), self.Owner ) );
 			} );
-			return null;
+			return this;
 		}
 
 		public void Cancel( Actor self )

@@ -59,7 +59,7 @@ namespace OpenRa.Game.Traits.Activities
 				}
 				else
 					// no refineries reachable?
-					return null;
+					return this;
 			}
 			else if( unit.Facing != 64 )
 				return new Turn( 64 ) { NextActivity = this };
@@ -69,7 +69,7 @@ namespace OpenRa.Game.Traits.Activities
 				renderUnit.PlayCustomAnimation( self, "empty",
 					() => isDone = true );
 
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self)

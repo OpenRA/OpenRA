@@ -24,7 +24,7 @@ namespace OpenRa.Game.Traits.Activities
 			if( !inRange )
 				return new Move( Target, Range ) { NextActivity = this };
 
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self)

@@ -40,7 +40,7 @@ namespace OpenRa.Game.Traits.Activities
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			attack.target = Target;
 			attack.DoAttack(self);
-			return null;
+			return this;
 		}
 
 		public void Cancel(Actor self)

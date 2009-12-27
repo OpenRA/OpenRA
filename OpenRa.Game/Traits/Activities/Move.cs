@@ -59,7 +59,7 @@ namespace OpenRa.Game.Traits.Activities
 			if( move != null )
 			{
 				move.TickMove( self, mobile, this );
-				return null;
+				return this;
 			}
 
 			if( destination == self.Location )
@@ -74,14 +74,14 @@ namespace OpenRa.Game.Traits.Activities
 			if( path.Count == 0 )
 			{
 				destination = mobile.toCell;
-				return null;
+				return this;
 			}
 
 			destination = path[ 0 ];
 
 			var nextCell = PopPath( self, mobile );
 			if( nextCell == null )
-				return null;
+				return NextActivity;
 
 			int2 dir = nextCell.Value - mobile.fromCell;
 			var firstFacing = Util.GetFacing( dir, unit.Facing );
@@ -103,7 +103,7 @@ namespace OpenRa.Game.Traits.Activities
 
 				move.TickMove( self, mobile, this );
 
-				return null;
+				return this;
 			}
 		}
 

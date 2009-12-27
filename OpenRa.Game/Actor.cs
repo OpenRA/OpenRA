@@ -48,15 +48,21 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			var nextActivity = currentActivity;
-			while( nextActivity != null )
+			
+			while (currentActivity != null)
 			{
-				currentActivity = nextActivity;
-				nextActivity = nextActivity.Tick( this );
+				var a = currentActivity;
+				currentActivity = a.Tick(this) ?? new Idle();
+				if (a == currentActivity) break;
 			}
 
 			foreach (var tick in traits.WithInterface<ITick>())
 				tick.Tick(this);
+		}
+
+		public bool IsIdle
+		{
+			get { return currentActivity == null || currentActivity is Idle; }
 		}
 
 		public float2 CenterLocation;
