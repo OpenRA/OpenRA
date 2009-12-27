@@ -14,6 +14,8 @@ namespace OpenRa.Game.Traits
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
+			else
+				self.CancelActivity();
 		}
 
 		float GetMaximumRange(Actor self)
@@ -40,8 +42,6 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!self.IsIdle) return;
-
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			var range = GetMaximumRange(self);
 
