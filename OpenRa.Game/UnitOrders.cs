@@ -13,22 +13,6 @@ namespace OpenRa.Game
 		{
 			switch( order.OrderString )
 			{
-			case "Move":
-			case "Attack":
-			case "DeployMcv":
-			case "Enter":
-			case "Harvest":
-			case "SetRallyPoint":
-			case "StartProduction":
-			case "PauseProduction":
-			case "CancelProduction":
-            case "ActivatePortableChronoshift":
-            case "UsePortableChronoshift":
-				{
-					foreach( var t in order.Subject.traits.WithInterface<IOrder>() )
-						t.ResolveOrder( order.Subject, order );
-					break;
-				}
 			case "PlaceBuilding":
 				{
 					Game.world.AddFrameEndTask( _ =>
@@ -114,7 +98,11 @@ namespace OpenRa.Game
 				}
 
 			default:
-				throw new NotImplementedException();
+				{
+					foreach (var t in order.Subject.traits.WithInterface<IOrder>())
+						t.ResolveOrder(order.Subject, order);
+					break;
+				}
 			}
 		}
 	}

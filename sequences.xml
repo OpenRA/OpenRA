@@ -498,12 +498,12 @@
     <sequence name="standup-5" start="124" length="2" />
     <sequence name="standup-6" start="126" length="2" />
     <sequence name="standup-7" start="128" length="2" />
-	<sequence name="die1" start="196" length="5" />
+    <sequence name="die1" start="196" length="5" />
     <sequence name="die2" start="201" length="8" />
     <sequence name="die3" start="209" length="8" />
     <sequence name="die4" start="217" length="12" />
     <sequence name="die5" start="229" length="18" />
-	<sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="die6" start="0" length="14" src="electro" />
     <sequence name="crawl-0" start="130" length="4" />
     <sequence name="crawl-1" start="134" length="4" />
     <sequence name="crawl-2" start="138" length="4" />
@@ -980,5 +980,11 @@
   <unit name="miss">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="2" length="1" />
+  </unit>
+  <unit name="minp">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="minv">
+    <sequence name="idle" start="0" length="1" />
   </unit>
 </sequences>
