@@ -181,6 +181,7 @@
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Infantry.cs" />
+    <Compile Include="Traits\InvisibleToOthers.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
