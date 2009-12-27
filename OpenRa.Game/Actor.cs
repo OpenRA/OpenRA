@@ -95,6 +95,7 @@ namespace OpenRa.Game
 			
 			// HACK: Get the first unit in the cell
 			// This will need to be updated for multiple-infantry-in-a-cell
+			// HACK: this doesn't work for targeting air units either
 			var underCursor = Game.UnitInfluence.GetUnitsAt( xy ).FirstOrDefault()
 				?? Game.BuildingInfluence.GetBuildingAt( xy );
 

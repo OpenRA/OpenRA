@@ -8,10 +8,12 @@ namespace OpenRa.Game
 
 		public List<Order> OrdersForFrame(int currentFrame)
 		{
-			// TODO: prune `orders` based on currentFrame.
 			if (!orders.ContainsKey(currentFrame))
 				return new List<Order>();
-			return orders[currentFrame];
+
+			var result = orders[currentFrame];
+			orders.Remove(currentFrame);
+			return result;
 		}
 
 		public void SendLocalOrders(int localFrame, List<Order> localOrders)
