@@ -37,8 +37,10 @@ namespace OpenRa.Game.Traits
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
 
-			self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
-				Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
+			if (self.traits.Contains<Mobile>())
+				self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
+					Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
+
 			self.traits.Get<AttackTurreted>().target = order.TargetActor;
 		}
 

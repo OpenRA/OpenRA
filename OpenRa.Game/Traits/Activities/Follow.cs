@@ -19,10 +19,9 @@ namespace OpenRa.Game.Traits.Activities
 			if (Target == null || Target.IsDead)
 				return NextActivity;
 
-			var canMove = !self.traits.Contains<Building>();
 			var inRange = ( Target.Location - self.Location ).LengthSquared < Range * Range;
 
-			if( canMove && !inRange )
+			if( !inRange )
 				return new Move( Target, Range ) { NextActivity = this };
 
 			return null;
