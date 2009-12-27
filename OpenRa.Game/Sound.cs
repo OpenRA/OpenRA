@@ -10,10 +10,11 @@ namespace OpenRa.Game
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;
 		static ISound music;
+
 		//TODO: read these from somewhere?
 		static float soundVolume;
 		static float musicVolume;
-		
+		static bool paused;
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -50,25 +51,33 @@ namespace OpenRa.Game
 			music = soundEngine.Play2D(sound, true /* loop */, false, false);
 			music.Volume = musicVolume;
 		}
-		
-		public static void Pause(bool doPause)
+
+		public static bool Paused
 		{
-			soundEngine.SetAllSoundsPaused(doPause);
+			get { return paused; }
+			set { paused = value; soundEngine.SetAllSoundsPaused(paused); }
+		}
+
+		public static float Volume
+		{
+			get { return soundVolume; }
+			set
+			{
+				soundVolume = value;
+				soundEngine.SoundVolume = value;
+			}
 		}
 		
-		public static void SetVolume(float vol)
+		public static float MusicVolume
 		{
-			soundVolume = vol;
-			soundEngine.SoundVolume	= vol;
+			get { return musicVolume; }
+			set {
+				musicVolume = value;
+				if (music != null)
+					music.Volume = value;
+			}
 		}
-		
-		public static void SetMusicVolume(float vol)
-		{
-			musicVolume = vol;
-			if (music != null)
-				music.Volume = vol;
-		}
-		
+					
 		public static void SeekMusic(uint delta)
 		{
 			if (music != null)

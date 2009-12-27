@@ -82,27 +82,31 @@ namespace OpenRa.Game.Graphics
 
 			spriteRenderer.Flush();
 
-			var selbox = Game.controller.SelectionBox;
-			if (selbox != null)
-			{
-				var a = selbox.Value.First;
-				var b = new float2(selbox.Value.Second.X - a.X, 0);
-				var c = new float2(0, selbox.Value.Second.Y - a.Y);
-
-				lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
-				lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
-				lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
-				lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
-
-				foreach (var u in Game.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
-					DrawSelectionBox(u, Color.Yellow, false);
-			}
+			DrawBandBox();
 
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();
 
 			lineRenderer.Flush();
 			spriteRenderer.Flush();
+		}
+
+		void DrawBandBox()
+		{
+			var selbox = Game.controller.SelectionBox;
+			if (selbox == null) return;
+
+			var a = selbox.Value.First;
+			var b = new float2(selbox.Value.Second.X - a.X, 0);
+			var c = new float2(0, selbox.Value.Second.Y - a.Y);
+
+			lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
+			lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
+			lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
+			lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+
+			foreach (var u in Game.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
+				DrawSelectionBox(u, Color.Yellow, false);
 		}
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
@@ -133,8 +137,7 @@ namespace OpenRa.Game.Graphics
 				if (selectedUnit.Owner == Game.LocalPlayer)
 				{
 					DrawPips(selectedUnit, xY);
-					DrawTags(selectedUnit, 
-						new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));
+					DrawTags(selectedUnit, new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));
 				}
 			}	
 
