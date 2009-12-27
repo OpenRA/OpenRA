@@ -92,11 +92,8 @@ namespace OpenRa.Game
 			if (!Rules.Map.IsInMap(xy.X, xy.Y))
 				return null;
 			
-			// HACK: Get the first unit in the cell
-			// This will need to be updated for multiple-infantry-in-a-cell
-			// HACK: this doesn't work for targeting air units either
-			var underCursor = Game.UnitInfluence.GetUnitsAt( xy ).FirstOrDefault()
-				?? Game.BuildingInfluence.GetBuildingAt( xy );
+			var loc = mi.Location + Game.viewport.Location;
+			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
 
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;

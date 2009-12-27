@@ -124,7 +124,7 @@ namespace OpenRa.Game
 		{
 			var mods = GetModifierKeys();
 			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(),
-				new MouseInput { Button = MouseButton.Right, Modifiers = mods })
+				new MouseInput { Location = (Game.CellSize * dragEnd - Game.viewport.Location).ToInt2(), Button = MouseButton.Right, Modifiers = mods })
 				.Where(o => o.Validate())
 				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
 				.FirstOrDefault(a => a != null) : null;
