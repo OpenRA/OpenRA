@@ -13,9 +13,9 @@ namespace OpenRa
 			inner.Add( t, val );
 		}
 
-		public void Add<T>( T val )
+		public void Add( object val )
 		{
-			Add( typeof( T ), val );
+			Add( val.GetType(), val );
 		}
 
 		public void Remove<T>()

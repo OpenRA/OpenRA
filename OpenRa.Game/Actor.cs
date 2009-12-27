@@ -19,6 +19,16 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
+		object ConstructTrait(string traitName)
+		{
+			/* todo: allow mods to introduce traits */
+			var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
+			var ctor = type.GetConstructor(new[] { typeof(Actor) });
+			if (ctor == null)
+				throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
+			return ctor.Invoke(new object[] { this });
+		}
+
 		public Actor( ActorInfo info, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
@@ -29,20 +39,13 @@ namespace OpenRa.Game
 
 			if (Info == null) return;
 
-			Health = Info.Strength;	/* todo: handle cases where this is not true! */
+			Health = Info.Strength;	/* todo: fix walls, etc so this is always true! */
 
 			if( Info.Traits == null )
 				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
 
 			foreach (var traitName in Info.Traits)
-			{		/* todo: a better solution than `the assembly Mobile lives in`, for mod support & sanity. */
-				var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
-				var ctor = type.GetConstructor(new[] { typeof(Actor) });
-				if (ctor == null)
-					throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
-
-				traits.Add(type, ctor.Invoke(new object[] { this }));
-			}
+				traits.Add(ConstructTrait(traitName));
 		}
 
 		public void Tick()
