@@ -50,7 +50,10 @@ namespace OpenRa.Game.Traits
 
 			var prefix = IsProne(self) ? "prone-shoot-" : "shoot-";
 
-			anim.PlayThen(prefix + dir, () => inAttack = false);
+			if (anim.HasSequence(prefix + dir))
+				anim.PlayThen(prefix + dir, () => inAttack = false);
+			else if (anim.HasSequence("heal"))
+				anim.PlayThen("heal", () => inAttack = false);
 		}
 
 		public override void Tick(Actor self)
