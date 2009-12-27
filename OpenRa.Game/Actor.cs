@@ -55,7 +55,7 @@ namespace OpenRa.Game
 			{
 				var a = currentActivity;
 				currentActivity = a.Tick(this) ?? new Idle();
-				if (a == currentActivity) break;
+				if (a == currentActivity || currentActivity is Idle) break;
 			}
 
 			foreach (var tick in traits.WithInterface<ITick>())
