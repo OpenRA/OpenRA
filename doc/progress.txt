@@ -8,7 +8,7 @@ E3		AA weapon doesn't work.
 E4		Flamer origin is wrong
 E6		Capture action missing, repair action missing
 E7		C4 action missing
-MEDI	Heal doesn't work
+MEDI	Heal targeting is wrong
 SPY		Infiltrate action missing
 THF		Steal action missing
 C1,C2,Einstein,Kosygin		Not implemented

@@ -111,7 +111,7 @@ namespace OpenRa.Game.Graphics
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
 		{
-			var bounds = selectedUnit.Bounds;
+			var bounds = selectedUnit.GetBounds(true);
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);

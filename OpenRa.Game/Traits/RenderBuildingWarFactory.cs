@@ -35,7 +35,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (doneBuilding) roof.Tick();
 
-			var b = self.Bounds;
+			var b = self.GetBounds(false);
 			if (isOpen && !Game.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
 			{
 				isOpen = false;

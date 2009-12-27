@@ -269,13 +269,19 @@ namespace OpenRa.Game
 			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
 			return world.Actors
-				.Where(x => x.Bounds.IntersectsWith(rect));
+				.Where(x => x.GetBounds(true).IntersectsWith(rect));
 		}
 
 		public static IEnumerable<Actor> FindUnitsInCircle(float2 a, float r)
 		{
-			return FindUnits(a - new float2(r, r), a + new float2(r, r))
-				.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+			var min = a - new float2(r, r);
+			var max = a + new float2(r, r);
+
+			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+
+			var inBox = world.Actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
+
+			return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 		}
 
 		public static IEnumerable<int2> FindTilesInCircle(int2 a, int r)
