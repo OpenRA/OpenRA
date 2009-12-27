@@ -5,17 +5,15 @@ using System.Text;
 
 namespace OpenRa.Game.Traits.Activities
 {
-	class Fly : IActivity
+	class Land : IActivity
 	{
 		readonly float2 Pos;
 		bool isCanceled;
 
-		public Fly(float2 pos) { Pos = pos; }
+		public Land(float2 pos) { Pos = pos; }
 
 		public IActivity NextActivity { get; set; }
 
-		const int CruiseAltitude = 20;
-		
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
@@ -26,12 +24,11 @@ namespace OpenRa.Game.Traits.Activities
 
 			var unit = self.traits.Get<Unit>();
 
-			if (unit.Altitude < CruiseAltitude)
-				++unit.Altitude;
+			if (unit.Altitude > 0)
+				--unit.Altitude;
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			if (unit.Altitude == CruiseAltitude)
-				Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);
 			var speed = .2f * Util.GetEffectiveSpeed(self);
 			var angle = unit.Facing / 128f * Math.PI;
 

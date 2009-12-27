@@ -108,7 +108,9 @@
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
+    <Compile Include="Traits\Activities\Circle.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
+    <Compile Include="Traits\Activities\FlyTimed.cs" />
     <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
@@ -133,6 +135,8 @@
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
+    <Compile Include="Traits\Activities\Land.cs" />
+    <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />
@@ -179,6 +183,7 @@
     <Compile Include="Traits\Infantry.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
+    <Compile Include="Traits\ProductionSurround.cs" />
     <Compile Include="Traits\RenderBuildingCharge.cs" />
     <Compile Include="Traits\RenderInfantry.cs" />
     <Compile Include="Traits\McvDeploy.cs" />

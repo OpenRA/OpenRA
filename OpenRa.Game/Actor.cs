@@ -71,8 +71,7 @@ namespace OpenRa.Game
 			get
 			{
 				var firstSprite = Render().FirstOrDefault();
-				if( firstSprite.Sprite == null )
-					return new float2( 0, 0 );
+				if (firstSprite.Sprite == null) return float2.Zero;
 				return firstSprite.Sprite.size;
 			}
 		}
