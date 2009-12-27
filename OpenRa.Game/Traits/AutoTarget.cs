@@ -32,7 +32,9 @@ namespace OpenRa.Game.Traits
 		{
 			var inRange = Game.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
-			return inRange.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */
+			return inRange
+				.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */
+				.Where(a => Combat.HasAnyValidWeapons(self, a))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
@@ -45,6 +47,9 @@ namespace OpenRa.Game.Traits
 
 			if (e.Attacker.Owner == self.Owner)
 				return;	// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
+
+			if (e.Damage < 0)
+				return;	// don't retaliate against healers
 
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			if (attack.target != null) return;
