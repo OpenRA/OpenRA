@@ -6,16 +6,20 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class ATMine : ICrushable
+	class ATMine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;
 		public ATMine(Actor self)
 		{
 			this.self = self;
+			Game.UnitInfluence.Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
 		{
+			if (crusher.traits.Contains<MineImmune>() && crusher.Owner == self.Owner)
+				return;
+
 			Game.world.AddFrameEndTask(_ =>
 			{
 				Game.world.Remove(self);
@@ -39,5 +43,7 @@ namespace OpenRa.Game.Traits
 				default: return false;
 			}
 		}
+
+		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 	}
 }

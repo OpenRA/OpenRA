@@ -981,4 +981,10 @@
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="2" length="1" />
   </unit>
+  <unit name="minp">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="minv">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
 </sequences>

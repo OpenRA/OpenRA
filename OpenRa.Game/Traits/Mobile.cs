@@ -83,7 +83,7 @@ namespace OpenRa.Game.Traits
 				case "Plane":
 					return UnitMovementType.Fly;
 				default:
-					throw new InvalidOperationException("GetMovementType on unit that shouldn't be aable to move.");
+					throw new InvalidOperationException("GetMovementType on unit that shouldn't be able to move.");
 			}
 		}
 		

@@ -5,16 +5,20 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Effects;
 namespace OpenRa.Game.Traits
 {
-	class APMine : ICrushable
+	class APMine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;
 		public APMine(Actor self)
 		{
 			this.self = self;
+			Game.UnitInfluence.Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
 		{
+			if (crusher.traits.Contains<MineImmune>() && crusher.Owner == self.Owner)
+				return;
+
 			Game.world.AddFrameEndTask(_ =>
 			{
 				Game.world.Remove(self);
@@ -33,9 +37,15 @@ namespace OpenRa.Game.Traits
 			// Mines should explode indiscriminantly of player
 			switch (umt)
 			{
-				case UnitMovementType.Foot: return true;
+				case UnitMovementType.Foot: 
+				case UnitMovementType.Wheel:
+				case UnitMovementType.Track:
+					return true;
+
 				default: return false;
 			}
 		}
+
+		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 	}
 }

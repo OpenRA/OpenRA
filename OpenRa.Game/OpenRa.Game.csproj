@@ -181,6 +181,9 @@
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
+    <Compile Include="Traits\InvisibleToOthers.cs" />
+    <Compile Include="Traits\MineImmune.cs" />
+    <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
