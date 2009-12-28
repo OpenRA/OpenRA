@@ -1,25 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
-	<!-- aftermath units -->
+  <!-- aftermath units -->
   <unit name="qtnk">
     <sequence name="idle" start="0" length="32" />
     <sequence name="charge-0" start="32" length="3" />
-    sequence name="deploy-0" start="35" length="5" />
-    <sequence name="charge-1" start="40" length="3" />
-    <sequence name="deploy-1" start="43" length="5" />
-    <sequence name="charge-2" start="48" length="3" />
-    <sequence name="deploy-2" start="51" length="5" />
-    <sequence name="charge-3" start="56" length="3" />
-    <sequence name="deploy-3" start="59" length="5" />
-    <sequence name="charge-4" start="64" length="3" />
-    <sequence name="deploy-4" start="67" length="5" />
-    <sequence name="charge-5" start="72" length="3" />
-    <sequence name="deploy-5" start="75" length="5" />
-    <sequence name="charge-6" start="80" length="3" />
-    <sequence name="deploy-6" start="83" length="5" />
-    <sequence name="charge-7" start="88" length="3" />
-    <sequence name="deploy-7" start="91" length="5" />
-  </unit>
+    sequence name="deploy-0" start="35" length="5" /&gt;
+    <sequence name="charge-1" start="40" length="3" /><sequence name="deploy-1" start="43" length="5" /><sequence name="charge-2" start="48" length="3" /><sequence name="deploy-2" start="51" length="5" /><sequence name="charge-3" start="56" length="3" /><sequence name="deploy-3" start="59" length="5" /><sequence name="charge-4" start="64" length="3" /><sequence name="deploy-4" start="67" length="5" /><sequence name="charge-5" start="72" length="3" /><sequence name="deploy-5" start="75" length="5" /><sequence name="charge-6" start="80" length="3" /><sequence name="deploy-6" start="83" length="5" /><sequence name="charge-7" start="88" length="3" /><sequence name="deploy-7" start="91" length="5" /></unit>
   <unit name="ctnk">
     <sequence name="idle" start="0" length="32" />
   </unit>
@@ -39,56 +25,57 @@
     <sequence name="load-1" start="35" length="3" />
     <sequence name="turret" start="38" length="32" />
   </unit>
-	<unit name="shok">
-		<sequence name="stand" start="0" length="8" />
-		<sequence name="stand2" start="8" length="8" />
-		<sequence name="run-0" start="16" length="6" />
-		<sequence name="run-1" start="22" length="6" />
-		<sequence name="run-2" start="28" length="6" />
-		<sequence name="run-3" start="34" length="6" />
-		<sequence name="run-4" start="40" length="6" />
-		<sequence name="run-5" start="46" length="6" />
-		<sequence name="run-6" start="52" length="6" />
-		<sequence name="run-7" start="58" length="6" />
-		<sequence name="shoot-0" start="64" length="16" />
-		<sequence name="shoot-1" start="80" length="16" />
-		<sequence name="shoot-2" start="96" length="16" />
-		<sequence name="shoot-3" start="112" length="16" />
-		<sequence name="shoot-4" start="128" length="16" />
-		<sequence name="shoot-5" start="144" length="16" />
-		<sequence name="shoot-6" start="160" length="16" />
-		<sequence name="shoot-7" start="176" length="16" />
-		<sequence name="stand3" start="192" length="16" />
-		<sequence name="crawl-0" start="208" length="4" />
-		<sequence name="crawl-1" start="212" length="4" />
-		<sequence name="crawl-2" start="216" length="4" />
-		<sequence name="crawl-3" start="220" length="4" />
-		<sequence name="crawl-4" start="224" length="4" />
-		<sequence name="crawl-5" start="228" length="4" />
-		<sequence name="crawl-6" start="232" length="4" />
-		<sequence name="crawl-7" start="236" length="4" />
-		<sequence name="standup-0" start="240" length="2" />
-		<sequence name="standup-1" start="242" length="2" />
-		<sequence name="standup-2" start="244" length="2" />
-		<sequence name="standup-3" start="246" length="2" />
-		<sequence name="standup-4" start="248" length="2" />
-		<sequence name="standup-5" start="250" length="2" />
-		<sequence name="standup-6" start="252" length="2" />
-		<sequence name="standup-7" start="254" length="2" />
-		<sequence name="prone-shoot-0" start="256" length="16" />
-		<sequence name="prone-shoot-1" start="272" length="16" />
-		<sequence name="prone-shoot-2" start="288" length="16" />
-		<sequence name="prone-shoot-3" start="304" length="16" />
-		<sequence name="prone-shoot-4" start="320" length="16" />
-		<sequence name="prone-shoot-5" start="336" length="16" />
-		<sequence name="prone-shoot-6" start="352" length="16" />
-		<sequence name="prone-shoot-7" start="368" length="16" />
-		<sequence name="die1" start="416" length="8" />
-		<sequence name="die2" start="424" length="8" />
-		<sequence name="die3" start="432" length="8" />
-		<sequence name="die4" start="440" length="12" />
-		<sequence name="die5" start="452" length="18" />
-	</unit>
+  <unit name="shok">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="16" />
+    <sequence name="shoot-1" start="80" length="16" />
+    <sequence name="shoot-2" start="96" length="16" />
+    <sequence name="shoot-3" start="112" length="16" />
+    <sequence name="shoot-4" start="128" length="16" />
+    <sequence name="shoot-5" start="144" length="16" />
+    <sequence name="shoot-6" start="160" length="16" />
+    <sequence name="shoot-7" start="176" length="16" />
+    <sequence name="stand3" start="192" length="16" />
+    <sequence name="crawl-0" start="208" length="4" />
+    <sequence name="crawl-1" start="212" length="4" />
+    <sequence name="crawl-2" start="216" length="4" />
+    <sequence name="crawl-3" start="220" length="4" />
+    <sequence name="crawl-4" start="224" length="4" />
+    <sequence name="crawl-5" start="228" length="4" />
+    <sequence name="crawl-6" start="232" length="4" />
+    <sequence name="crawl-7" start="236" length="4" />
+    <sequence name="standup-0" start="240" length="2" />
+    <sequence name="standup-1" start="242" length="2" />
+    <sequence name="standup-2" start="244" length="2" />
+    <sequence name="standup-3" start="246" length="2" />
+    <sequence name="standup-4" start="248" length="2" />
+    <sequence name="standup-5" start="250" length="2" />
+    <sequence name="standup-6" start="252" length="2" />
+    <sequence name="standup-7" start="254" length="2" />
+    <sequence name="prone-shoot-0" start="256" length="16" />
+    <sequence name="prone-shoot-1" start="272" length="16" />
+    <sequence name="prone-shoot-2" start="288" length="16" />
+    <sequence name="prone-shoot-3" start="304" length="16" />
+    <sequence name="prone-shoot-4" start="320" length="16" />
+    <sequence name="prone-shoot-5" start="336" length="16" />
+    <sequence name="prone-shoot-6" start="352" length="16" />
+    <sequence name="prone-shoot-7" start="368" length="16" />
+    <sequence name="die1" start="416" length="8" />
+    <sequence name="die2" start="424" length="8" />
+    <sequence name="die3" start="432" length="8" />
+    <sequence name="die4" start="440" length="12" />
+    <sequence name="die5" start="452" length="18" />
+		<sequence name="die6" start="0" length="14" src="electro" />
+  </unit>
   <unit name="mech">
     <sequence name="stand" start="0" length="8" />
     <sequence name="run-0" start="8" length="6" />
@@ -99,5 +86,19 @@
     <sequence name="run-5" start="38" length="6" />
     <sequence name="run-6" start="44" length="6" />
     <sequence name="run-7" start="50" length="6" />
+    <sequence name="crawl-0" start="130" length="4" />
+    <sequence name="crawl-1" start="134" length="4" />
+    <sequence name="crawl-2" start="138" length="4" />
+    <sequence name="crawl-3" start="142" length="4" />
+    <sequence name="crawl-4" start="146" length="4" />
+    <sequence name="crawl-5" start="150" length="4" />
+    <sequence name="crawl-6" start="154" length="4" />
+    <sequence name="crawl-7" start="158" length="4" />
+    <sequence name="die1" start="193" length="8" />
+    <sequence name="die2" start="201" length="8" />
+    <sequence name="die3" start="209" length="8" />
+    <sequence name="die4" start="217" length="12" />
+    <sequence name="die5" start="229" length="18" />
+		<sequence name="die6" start="0" length="14" src="electro" />
   </unit>
 </sequences>
