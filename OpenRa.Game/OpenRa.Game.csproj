@@ -81,6 +81,7 @@
     <Compile Include="Chrome.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Effects\Corpse.cs" />
+    <Compile Include="Effects\Demolition.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />

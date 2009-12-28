@@ -24,7 +24,9 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "C4")
 			{
 				self.CancelActivity();
+				self.QueueActivity(new Move(order.TargetActor, 2));
 				self.QueueActivity(new Demolish(order.TargetActor));
+				self.QueueActivity(new Move(self.Location, 0));
 			}
 		}
 	}

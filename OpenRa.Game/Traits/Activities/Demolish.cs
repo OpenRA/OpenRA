@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits.Activities
 {
@@ -18,11 +19,8 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-
-			// 1. run to adj tile
-			// 2. spawn timed demolition (for +3/4s)
-			// 3. run away --- where?
-			return this;
+			Game.world.AddFrameEndTask(w => w.Add(new Demolition(self, target, 25 * 2)));
+			return NextActivity;
 		}
 
 		public void Cancel(Actor self) { target = null; NextActivity = null; }
