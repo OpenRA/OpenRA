@@ -22,11 +22,11 @@ All tracked vehicles
 Light vehicles
 V2RL	Works
 APC		Cargo doesn't work
-MNLY	Mines don't work	- strategy to be decided on minefield placement
+MNLY	Can't reload at FIX
 MGG		No gap
 MRJ		No radar
 JEEP	Works
-MCV		Deploy while moving is funky
+MCV		Works
 HARV	Works
 ARTY	Works
 

@@ -9,10 +9,10 @@ namespace OpenRa.Game.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Left) return null;
-			if( xy != self.Location ) return null;
+			if (mi.Button == MouseButton.Right && self == underCursor)
+				return new Order("DeployMcv", self, null, int2.Zero, null);
 
-			return new Order("DeployMcv", self, null, int2.Zero, null);
+			return null;
 		}
 
 		public void ResolveOrder( Actor self, Order order )
