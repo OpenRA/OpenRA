@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -15,7 +16,8 @@ namespace OpenRa.Game.Traits
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
 			else
-				self.CancelActivity();
+				if (!(self.GetCurrentActivity() is Move))
+					self.CancelActivity();
 		}
 
 		float GetMaximumRange(Actor self)
