@@ -99,18 +99,33 @@ namespace OpenRa.Game.Traits
 		{
 			var item = production[ category ];
 			if( item == null ) return;
-			self.Owner.GiveCash( item.TotalCost - item.RemainingCost ); // refund what's been paid so far.
-			FinishProduction( category );
+			if (item.Repeats > 0)
+				--item.Repeats;
+			else
+			{
+				self.Owner.GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
+				FinishProduction(category);
+			}
 		}
 
 		public void FinishProduction( string category )
 		{
-			production[ category ] = null;
+			var item = production[category];
+			if (item == null) return;
+			if (item.Repeats > 0)
+				item.DoRepeat();
+			else
+				production[category] = null;
 		}
 
 		public void BeginProduction( string group, ProductionItem item )
 		{
-			if( production[ group ] != null ) return;
+			if (production[group] != null)
+			{
+				if (production[group].Item == item.Item)
+					++production[group].Repeats;
+				return;
+			}
 			production[ group ] = item;
 		}
 

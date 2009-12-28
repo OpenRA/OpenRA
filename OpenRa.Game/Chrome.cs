@@ -175,7 +175,8 @@ namespace OpenRa.Game
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			var item = queue.Producing( groupName );
 			if (item != null)
-				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
+				for( var n = 0; n <= item.Repeats; n++ )
+					Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
 		}
 
 		void ChooseAvailableTab()
@@ -294,6 +295,13 @@ namespace OpenRa.Game
 						ready.Play("hold");
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
+
+					if (currentItem.Repeats > 0)
+					{
+						ready.PlayFetchIndex("groups", () => currentItem.Repeats + 1);
+						ready.Tick();
+						overlayBits.Add(Pair.New(ready.Image, overlayPos));
+					}
 				}
 
 				var closureItem = item;
@@ -349,7 +357,7 @@ namespace OpenRa.Game
 				if (producing == null)
 				{
 					Game.controller.AddOrder(Order.StartProduction(player, item));
-					Sound.Play("abldgin1.aud");
+					Sound.Play((group == "Building" || group == "Defense") ? "abldgin1.aud" : "train1.aud");
 				}
 				else if (producing.Item == item)
 				{
@@ -358,8 +366,13 @@ namespace OpenRa.Game
 						if (group == "Building" || group == "Defense")
 							Game.controller.orderGenerator = new PlaceBuilding(player.PlayerActor, item);
 					}
-					else
+					else if (producing.Paused)
 						Game.controller.AddOrder(Order.PauseProduction(player, item, false));
+					else
+					{
+						Sound.Play((group == "Building" || group == "Defense") ? "abldgin1.aud" : "train1.aud");
+						Game.controller.AddOrder(Order.StartProduction(player, item));
+					}
 				}
 				else
 				{
