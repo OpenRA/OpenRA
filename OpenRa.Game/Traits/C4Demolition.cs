@@ -8,6 +8,8 @@ namespace OpenRa.Game.Traits
 {
 	class C4Demolition : IOrder
 	{
+		public C4Demolition(Actor self) { }
+
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (underCursor == null) return null;

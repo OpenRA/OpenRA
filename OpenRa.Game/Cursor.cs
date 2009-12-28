@@ -23,5 +23,6 @@ namespace OpenRa.Game
 		public static Cursor Enter { get { return new Cursor("enter"); } }
 		public static Cursor DeployBlocked { get { return new Cursor("deploy-blocked"); } }
         public static Cursor Chronoshift { get { return new Cursor("chrono"); } }
+		public static Cursor C4 { get { return new Cursor("c4"); } }
 	}
 }

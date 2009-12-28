@@ -138,6 +138,7 @@ namespace OpenRa.Game
 			switch( s )
 			{
 			case "Attack": return Cursor.Attack;
+			case "C4": return Cursor.C4;
 			case "Move":
 				if (movement.CanEnterCell(location))
 					return Cursor.Move;
