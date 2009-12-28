@@ -257,7 +257,6 @@ namespace OpenRa.Game
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
 			string tooltipItem = null;
-			//int2 tooltipPos = int2.Zero;
 
 			foreach (var item in allItems)
 			{
@@ -269,10 +268,7 @@ namespace OpenRa.Game
 				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, PaletteType.Chrome);
 
 				if (rect.Contains(lastMousePos.ToPoint()))
-				{
 					tooltipItem = item;
-					//tooltipPos = new int2(rect.Location);
-				}
 
 				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
 					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
@@ -298,9 +294,15 @@ namespace OpenRa.Game
 
 					if (currentItem.Repeats > 0)
 					{
-						ready.PlayFetchIndex("groups", () => currentItem.Repeats + 1);
-						ready.Tick();
-						overlayBits.Add(Pair.New(ready.Image, overlayPos));
+						var offset = -20;
+						var digits = (currentItem.Repeats + 1).ToString();
+						foreach (var d in digits)
+						{
+							ready.PlayFetchIndex("groups", () => d - '0');
+							ready.Tick();
+							overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
+							offset += 6;
+						}
 					}
 				}
 
