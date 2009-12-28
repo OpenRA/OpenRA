@@ -11,8 +11,6 @@ namespace OpenRa.Game
 		public int RemainingTime { get; private set; }
 		public int RemainingCost { get; private set; }
 
-		public int Repeats;
-
 		public bool Paused = false, Done = false;
 		public Action OnComplete;
 
@@ -24,14 +22,6 @@ namespace OpenRa.Game
 			RemainingTime = TotalTime = time;
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
-		}
-
-		public void DoRepeat()
-		{
-			RemainingTime = TotalTime;
-			RemainingCost = TotalCost;
-			Done = false;
-			--Repeats;
 		}
 
 		public void Tick(Player player)

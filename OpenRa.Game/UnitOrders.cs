@@ -19,7 +19,7 @@ namespace OpenRa.Game
 					{
 						var queue = order.Player.PlayerActor.traits.Get<Traits.ProductionQueue>();
 						var building = (BuildingInfo)Rules.UnitInfo[ order.TargetString ];
-						var producing = queue.Producing(Rules.UnitCategory[order.TargetString]);
+						var producing = queue.CurrentItem(Rules.UnitCategory[order.TargetString]);
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;
 

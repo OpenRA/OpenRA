@@ -144,7 +144,7 @@ namespace OpenRa.Game
 					continue;
 				}
 
-				var producing = queue.Producing(groupName);
+				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				
 				
@@ -173,10 +173,8 @@ namespace OpenRa.Game
 		void CheckDeadTab( string groupName )
 		{
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var item = queue.Producing( groupName );
-			if (item != null)
-				for( var n = 0; n <= item.Repeats; n++ )
-					Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
+			foreach( var item in queue.AllItems( groupName ) )
+				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));		
 		}
 
 		void ChooseAvailableTab()
@@ -227,7 +225,7 @@ namespace OpenRa.Game
 			return () =>
 			{
 				var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-				var producing = queue.Producing( group );
+				var producing = queue.CurrentItem( group );
 				if (producing == null) return 0;
 				return (producing.TotalTime - producing.RemainingTime) * NumClockFrames / producing.TotalTime;
 			};
@@ -252,7 +250,7 @@ namespace OpenRa.Game
 				.OrderBy(a => Rules.UnitInfo[a].TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var currentItem = queue.Producing( queueName );
+			var currentItem = queue.CurrentItem( queueName );
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
@@ -273,13 +271,13 @@ namespace OpenRa.Game
 				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
 					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
+				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
+
 				if (isBuildingThis)
 				{
 					clockAnimations[queueName].Tick();
 					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
 						drawPos, PaletteType.Chrome);
-
-					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
 					if (currentItem.Done)
 					{
@@ -291,18 +289,19 @@ namespace OpenRa.Game
 						ready.Play("hold");
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
+				}
 
-					if (currentItem.Repeats > 0)
+				var repeats = queue.AllItems(queueName).Count(a => a.Item == item);
+				if (repeats > 1 || isBuildingThis)
+				{
+					var offset = -20;
+					var digits = repeats.ToString();
+					foreach (var d in digits)
 					{
-						var offset = -20;
-						var digits = (currentItem.Repeats + 1).ToString();
-						foreach (var d in digits)
-						{
-							ready.PlayFetchIndex("groups", () => d - '0');
-							ready.Tick();
-							overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
-							offset += 6;
-						}
+						ready.PlayFetchIndex("groups", () => d - '0');
+						ready.Tick();
+						overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
+						offset += 6;
 					}
 				}
 
@@ -350,7 +349,7 @@ namespace OpenRa.Game
 			var player = Game.LocalPlayer;
 			var group = Rules.UnitCategory[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var producing = queue.Producing( group );
+			var producing = queue.CurrentItem( group );
 
 			Sound.Play("ramenu1.aud");
 

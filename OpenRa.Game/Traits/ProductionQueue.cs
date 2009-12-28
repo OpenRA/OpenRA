@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IjwFramework.Collections;
 
 namespace OpenRa.Game.Traits
 {
@@ -12,15 +13,13 @@ namespace OpenRa.Game.Traits
 		public ProductionQueue( Actor self )
 		{
 			this.self = self;
-			foreach( var cat in Rules.Categories.Keys )
-				ProductionInit( cat );
 		}
 
 		public void Tick( Actor self )
 		{
 			foreach( var p in production )
-				if( p.Value != null )
-					p.Value.Tick( self.Owner );
+				if( p.Value.Count > 0 )
+					(p.Value)[0].Tick( self.Owner );
 		}
 
 		public Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor )
@@ -67,14 +66,14 @@ namespace OpenRa.Game.Traits
 				}
 			case "PauseProduction":
 				{
-					var producing = Producing( Rules.UnitCategory[ order.TargetString ] );
+					var producing = CurrentItem( Rules.UnitCategory[ order.TargetString ] );
 					if( producing != null && producing.Item == order.TargetString )
 						producing.Paused = ( order.TargetLocation.X != 0 );
 					break;
 				}
 			case "CancelProduction":
 				{
-					var producing = Producing( Rules.UnitCategory[ order.TargetString ] );
+					var producing = CurrentItem( Rules.UnitCategory[ order.TargetString ] );
 					if( producing != null && producing.Item == order.TargetString )
 						CancelProduction( Rules.UnitCategory[ order.TargetString ] );
 					break;
@@ -82,27 +81,33 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		// Key: Production category. Categories are: Building, Infantry, Vehicle, Ship, Plane (and one per super, if they're done in here)
-		readonly Dictionary<string, ProductionItem> production = new Dictionary<string, ProductionItem>();
+		// Key: Production category.
+		readonly Cache<string, List<ProductionItem>> production 
+			= new Cache<string, List<ProductionItem>>( _ => new List<ProductionItem>() );
 
-		void ProductionInit( string category )
+		public ProductionItem CurrentItem(string category)
 		{
-			production.Add( category, null );
+			return production[category].ElementAtOrDefault(0);
 		}
 
-		public ProductionItem Producing( string category )
+		public IEnumerable<ProductionItem> AllItems(string category)
 		{
-			return production[ category ];
+			return production[category];
 		}
 
 		public void CancelProduction( string category )
 		{
-			var item = production[ category ];
-			if( item == null ) return;
-			if (item.Repeats > 0)
-				--item.Repeats;
+			var queue = production[ category ];
+			if (queue.Count == 0) return;
+
+			var lastIndex = queue.FindLastIndex( a => a.Item == queue[0].Item );
+			if (lastIndex > 0)
+			{
+				queue.RemoveAt(lastIndex);
+			}
 			else
 			{
+				var item = queue[0];
 				self.Owner.GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
 				FinishProduction(category);
 			}
@@ -110,23 +115,14 @@ namespace OpenRa.Game.Traits
 
 		public void FinishProduction( string category )
 		{
-			var item = production[category];
-			if (item == null) return;
-			if (item.Repeats > 0)
-				item.DoRepeat();
-			else
-				production[category] = null;
+			var queue = production[category];
+			if (queue.Count == 0) return;
+			queue.RemoveAt(0);
 		}
 
 		public void BeginProduction( string group, ProductionItem item )
 		{
-			if (production[group] != null)
-			{
-				if (production[group].Item == item.Item)
-					++production[group].Repeats;
-				return;
-			}
-			production[ group ] = item;
+			production[group].Add(item);
 		}
 
 		public void BuildUnit( string name )
