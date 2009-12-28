@@ -21,19 +21,21 @@ namespace OpenRa.Game.Traits.Activities
 			{
 				if (target.Health == target.Info.Strength)
 					return NextActivity;
-				target.Health += EngineerCapture.EngineerDamage;
+				target.InflictDamage(self, -EngineerCapture.EngineerDamage, Rules.WarheadInfo["Super"]);
 			}
 			else
 			{
-				target.Health -= EngineerCapture.EngineerDamage;
-				if (target.Health <= 0)
+				if (target.Health - EngineerCapture.EngineerDamage <= 0)
 				{
 					target.Owner = self.Owner;
-					target.Health = EngineerCapture.EngineerDamage;
+					target.InflictDamage(self, target.Health - EngineerCapture.EngineerDamage, Rules.WarheadInfo["Super"]);
 				}
+				else
+					target.InflictDamage(self, EngineerCapture.EngineerDamage, Rules.WarheadInfo["Super"]);
 			}
 
 			// the engineer is sacrificed.
+			self.Health = 0;
 			Game.world.AddFrameEndTask(w => w.Remove(self));
 
 			return NextActivity;

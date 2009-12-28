@@ -129,6 +129,10 @@ namespace OpenRa.Game
 						Game.LocalPlayer.IsReady ? "ready" : "not ready") { IsImmediate = true });
 			}
 
+			/* temporary hack: DO NOT LEAVE IN */
+			if (e.KeyCode == Keys.F2)
+				Game.LocalPlayer = Game.players[(Game.LocalPlayer.Index + 1) % 4];
+
 			if (!Game.chat.isChatting)
 				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
 					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
