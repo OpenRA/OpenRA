@@ -25,7 +25,7 @@ namespace SequenceEditor
 			{
 				if (Shps.ContainsKey(shp)) return;
 
-				var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".shp", ".tem", ".sno", ".int"));
+				var reader = new ShpReader(FileSystem.OpenWithExts(shp, ".tem", ".sno", ".int", ".shp"));
 				Shps[shp] = reader.Select(ih =>
 					{
 						var bmp = new Bitmap(reader.Width, reader.Height);
@@ -74,6 +74,7 @@ namespace SequenceEditor
 			try
 			{
 				FileSystem.MountDefault( true );
+				FileSystem.MountTemporary(new Package("temperat.mix"));
 			}
 			catch( FileNotFoundException fnf )
 			{
