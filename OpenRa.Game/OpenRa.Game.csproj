@@ -109,6 +109,7 @@
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
+    <Compile Include="Traits\Activities\CaptureBuilding.cs" />
     <Compile Include="Traits\Activities\Circle.cs" />
     <Compile Include="Traits\Activities\Demolish.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Traits\BelowUnits.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
+    <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />
     <Compile Include="Traits\Fake.cs" />
