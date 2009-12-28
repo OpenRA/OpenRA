@@ -81,7 +81,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			var nextCell = PopPath( self, mobile );
 			if( nextCell == null )
-				return NextActivity;
+				return this;
 
 			int2 dir = nextCell.Value - mobile.fromCell;
 			var firstFacing = Util.GetFacing( dir, unit.Facing );
