@@ -19,7 +19,8 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-			Game.world.AddFrameEndTask(w => w.Add(new Demolition(self, target, 25 * 2)));
+			Game.world.AddFrameEndTask(w => w.Add(new DelayedAction(25*2, 
+				() => target.InflictDamage(self, target.Health, Rules.WarheadInfo["DemolishWarhead"]))));
 			return NextActivity;
 		}
 
