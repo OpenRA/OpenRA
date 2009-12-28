@@ -113,15 +113,19 @@
   </unit>
   <!-- helipad -->
   <unit name="hpad">
-    <sequence name="idle" start="0" length="7" />
-    <sequence name="damaged-idle" start="7" length="7" />
-    <sequence name="make" start="0" length="*" src="hpadmake" />
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="make" start="0" length="20" src="hpadmake" />
+    <sequence name="active" start="1" length="6" />
+    <sequence name="damaged-active" start="8" length="6" />
   </unit>
   <!-- airfield -->
   <unit name="afld">
-    <sequence name="idle" start="0" length="8" />
-    <sequence name="damaged-idle" start="8" length="8" />
-    <sequence name="make" start="0" length="*" src="afldmake" />
+    <sequence name="idle" start="4" length="4" />
+    <sequence name="damaged-idle" start="12" length="4" />
+    <sequence name="make" start="0" length="11" src="afldmake" />
+    <sequence name="active" start="0" length="4" />
+    <sequence name="damaged-active" start="8" length="4" />
   </unit>
   <!-- sub pen -->
   <unit name="spen">
