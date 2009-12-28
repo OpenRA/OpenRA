@@ -13,14 +13,14 @@ namespace OpenRa.Game.Traits
 		{
 			// todo: check for ammo
 			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("DeployMine", self, null, int2.Zero, null);
+				return new Order("Deploy", self, null, int2.Zero, null);
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployMine")
+			if (order.OrderString == "Deploy")
 			{
 				// todo: check for and adjust ammo
 				// todo: delay a bit?
