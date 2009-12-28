@@ -8,7 +8,7 @@ E3		Works
 E4		Flamer origin is wrong
 E6		Capture action missing, repair action missing
 E7		C4 action missing
-MEDI	Heal targeting is wrong
+MEDI	Works
 SPY		Infiltrate action missing
 THF		Steal action missing
 C1,C2,Einstein,Kosygin		Not implemented
@@ -47,7 +47,7 @@ MIG		Weapons don't work
 Ships
 CA		Works
 SS		Works
-DD		AA weapon doesn't work, depth charges don't work
+DD		depth charges don't work
 PT		depth charges don't work
 LST		Cargo doesn't work
 
