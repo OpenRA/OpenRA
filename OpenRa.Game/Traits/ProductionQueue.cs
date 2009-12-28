@@ -73,9 +73,7 @@ namespace OpenRa.Game.Traits
 				}
 			case "CancelProduction":
 				{
-					var producing = CurrentItem( Rules.UnitCategory[ order.TargetString ] );
-					if( producing != null && producing.Item == order.TargetString )
-						CancelProduction( Rules.UnitCategory[ order.TargetString ] );
+					CancelProduction(order.TargetString);
 					break;
 				}
 			}
@@ -95,12 +93,13 @@ namespace OpenRa.Game.Traits
 			return production[category];
 		}
 
-		public void CancelProduction( string category )
+		public void CancelProduction( string itemName )
 		{
+			var category = Rules.UnitCategory[itemName];
 			var queue = production[ category ];
 			if (queue.Count == 0) return;
 
-			var lastIndex = queue.FindLastIndex( a => a.Item == queue[0].Item );
+			var lastIndex = queue.FindLastIndex( a => a.Item == itemName );
 			if (lastIndex > 0)
 			{
 				queue.RemoveAt(lastIndex);
