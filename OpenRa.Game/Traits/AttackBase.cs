@@ -93,7 +93,7 @@ namespace OpenRa.Game.Traits
 			if (fireDelay > 0) return false;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
-			if (!limitedAmmo.HasAmmo())
+			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return false;
 
 			var weapon = Rules.WeaponInfo[weaponName];
