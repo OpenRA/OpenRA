@@ -11,7 +11,10 @@ namespace OpenRa.Game.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			// todo: check for ammo
+			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+				return null;
+
 			if (mi.Button == MouseButton.Right && underCursor == self)
 				return new Order("Deploy", self, null, int2.Zero, null);
 
@@ -22,7 +25,10 @@ namespace OpenRa.Game.Traits
 		{
 			if (order.OrderString == "Deploy")
 			{
-				// todo: check for and adjust ammo
+				var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+				if (limitedAmmo != null)
+					limitedAmmo.Attacking(self);
+
 				// todo: delay a bit?
 
 				Game.world.AddFrameEndTask(
