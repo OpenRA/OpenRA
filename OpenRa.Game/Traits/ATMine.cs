@@ -17,6 +17,9 @@ namespace OpenRa.Game.Traits
 
 		public void OnCrush(Actor crusher)
 		{
+			if (crusher.traits.Contains<MineImmune>() && crusher.Owner == self.Owner)
+				return;
+
 			Game.world.AddFrameEndTask(_ =>
 			{
 				Game.world.Remove(self);

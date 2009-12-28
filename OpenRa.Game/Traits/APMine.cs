@@ -16,6 +16,9 @@ namespace OpenRa.Game.Traits
 
 		public void OnCrush(Actor crusher)
 		{
+			if (crusher.traits.Contains<MineImmune>() && crusher.Owner == self.Owner)
+				return;
+
 			Game.world.AddFrameEndTask(_ =>
 			{
 				Game.world.Remove(self);
@@ -34,7 +37,11 @@ namespace OpenRa.Game.Traits
 			// Mines should explode indiscriminantly of player
 			switch (umt)
 			{
-				case UnitMovementType.Foot: return true;
+				case UnitMovementType.Foot: 
+				case UnitMovementType.Wheel:
+				case UnitMovementType.Track:
+					return true;
+
 				default: return false;
 			}
 		}
