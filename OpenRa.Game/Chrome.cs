@@ -23,9 +23,9 @@ namespace OpenRa.Game
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
+		readonly Animation clock;
 
 		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
-		readonly Cache<string, Animation> clockAnimations;
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, Sprite[]> tabSprites;
 		readonly Sprite[] shimSprites;
@@ -70,14 +70,6 @@ namespace OpenRa.Game
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
-			clockAnimations = new Cache<string, Animation>(
-				s =>
-				{
-					var anim = new Animation("clock");
-					anim.PlayFetchIndex("idle", ClockAnimFrame(s));
-					return anim;
-				});
-
 			digitSprites = Util.MakeArray(10, a => a)
 				.Select(n => new Sprite(specialBin, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
 
@@ -92,6 +84,7 @@ namespace OpenRa.Game
 
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
+			clock = new Animation("clock");
 		}
 		
 		public void Draw()
@@ -144,7 +137,7 @@ namespace OpenRa.Game
 					continue;
 				}
 
-				var producing = queue.Producing(groupName);
+				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				
 				
@@ -173,9 +166,8 @@ namespace OpenRa.Game
 		void CheckDeadTab( string groupName )
 		{
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var item = queue.Producing( groupName );
-			if (item != null)
-				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));
+			foreach( var item in queue.AllItems( groupName ) )
+				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));		
 		}
 
 		void ChooseAvailableTab()
@@ -226,7 +218,7 @@ namespace OpenRa.Game
 			return () =>
 			{
 				var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-				var producing = queue.Producing( group );
+				var producing = queue.CurrentItem( group );
 				if (producing == null) return 0;
 				return (producing.TotalTime - producing.RemainingTime) * NumClockFrames / producing.TotalTime;
 			};
@@ -251,50 +243,63 @@ namespace OpenRa.Game
 				.OrderBy(a => Rules.UnitInfo[a].TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var currentItem = queue.Producing( queueName );
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
 			string tooltipItem = null;
-			//int2 tooltipPos = int2.Zero;
 
 			foreach (var item in allItems)
 			{
 				var rect = new Rectangle(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				var isBuildingThis = currentItem != null && currentItem.Item == item;
-				var isBuildingSomethingElse = currentItem != null && currentItem.Item != item;
+				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
 				buildPaletteRenderer.DrawSprite(sprites[item], drawPos, PaletteType.Chrome);
 
+				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item);
+
 				if (rect.Contains(lastMousePos.ToPoint()))
-				{
 					tooltipItem = item;
-					//tooltipPos = new int2(rect.Location);
-				}
 
-				if (!buildableItems.Contains(item) || isBuildingSomethingElse)
-					overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
+				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
-				if (isBuildingThis)
+				if (firstOfThis != null)
 				{
-					clockAnimations[queueName].Tick();
-					buildPaletteRenderer.DrawSprite(clockAnimations[queueName].Image,
-						drawPos, PaletteType.Chrome);
+					clock.PlayFetchIndex( "idle", 
+						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime) 
+							* NumClockFrames / firstOfThis.TotalTime);
+					clock.Tick();
 
-					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
+					buildPaletteRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
 
-					if (currentItem.Done)
+					if (firstOfThis.Done)
 					{
 						ready.Play("ready");
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
-					else if (currentItem.Paused)
+					else if (firstOfThis.Paused)
 					{
 						ready.Play("hold");
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
+
+					var repeats = queue.AllItems(queueName).Count(a => a.Item == item);
+					if (repeats > 1 || queue.CurrentItem(queueName) != firstOfThis)
+					{
+						var offset = -22;
+						var digits = repeats.ToString();
+						foreach (var d in digits)
+						{
+							ready.PlayFetchIndex("groups", () => d - '0');
+							ready.Tick();
+							overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
+							offset += 6;
+						}
+					}
 				}
+				else
+					if (!buildableItems.Contains(item) || isBuildingSomething)
+						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 				var closureItem = item;
 				buttons.Add(Pair.New(rect,
@@ -335,51 +340,57 @@ namespace OpenRa.Game
 			return y*48+9;
 		}
 
+		void StartProduction( string item )
+		{
+			var group = Rules.UnitCategory[item];
+			Sound.Play((group == "Building" || group == "Defense") ? "abldgin1.aud" : "train1.aud");
+			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
+		}
+
 		void HandleBuildPalette(string item, bool isLmb)
 		{
 			var player = Game.LocalPlayer;
 			var group = Rules.UnitCategory[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var producing = queue.Producing( group );
+			var producing = queue.AllItems(group).FirstOrDefault( a => a.Item == item );
 
 			Sound.Play("ramenu1.aud");
 
 			if (isLmb)
 			{
-				if (producing == null)
-				{
-					Game.controller.AddOrder(Order.StartProduction(player, item));
-					Sound.Play("abldgin1.aud");
-				}
-				else if (producing.Item == item)
+				if (producing != null && producing == queue.CurrentItem(group))
 				{
 					if (producing.Done)
 					{
 						if (group == "Building" || group == "Defense")
 							Game.controller.orderGenerator = new PlaceBuilding(player.PlayerActor, item);
+						return;
 					}
-					else
+
+					if (producing.Paused)
+					{
 						Game.controller.AddOrder(Order.PauseProduction(player, item, false));
+						return;
+					}
 				}
-				else
-				{
-					Sound.Play("progres1.aud");
-				}
+
+				StartProduction(item);
 			}
 			else
 			{
-				if (producing == null) return;
-				if (item != producing.Item) return;
-
-				if (producing.Paused || producing.Done)
+				if (producing != null)
 				{
-					Sound.Play("cancld1.aud");
-					Game.controller.AddOrder(Order.CancelProduction(player, item));
-				}
-				else
-				{
-					Sound.Play("onhold1.aud");
-					Game.controller.AddOrder(Order.PauseProduction(player, item, true));
+					// instant cancel of things we havent really started yet, and things that are finished
+					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
+					{
+						Sound.Play("cancld1.aud");
+						Game.controller.AddOrder(Order.CancelProduction(player, item));
+					}
+					else
+					{
+						Sound.Play("onhold1.aud");
+						Game.controller.AddOrder(Order.PauseProduction(player, item, true));
+					}
 				}
 			}
 		}
