@@ -12,6 +12,7 @@ namespace OpenRa.Game.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
+			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 			if (!underCursor.traits.Contains<Building>()) return null;

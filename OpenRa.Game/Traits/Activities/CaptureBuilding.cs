@@ -16,14 +16,21 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-			// todo: don't waste engineers on things that have been captured 
-			// between order issue time and the time we hit the building.
 
-			target.Health -= EngineerCapture.EngineerDamage;
-			if (target.Health <= 0)
+			if (target.Owner == self.Owner)
 			{
-				target.Owner = self.Owner;
-				target.Health = EngineerCapture.EngineerDamage;
+				if (target.Health == target.Info.Strength)
+					return NextActivity;
+				target.Health += EngineerCapture.EngineerDamage;
+			}
+			else
+			{
+				target.Health -= EngineerCapture.EngineerDamage;
+				if (target.Health <= 0)
+				{
+					target.Owner = self.Owner;
+					target.Health = EngineerCapture.EngineerDamage;
+				}
 			}
 
 			// the engineer is sacrificed.
