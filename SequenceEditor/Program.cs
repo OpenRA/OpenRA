@@ -74,13 +74,14 @@ namespace SequenceEditor
 			try
 			{
 				FileSystem.MountDefault( true );
-				FileSystem.MountTemporary(new Package("temperat.mix"));
 			}
 			catch( FileNotFoundException fnf )
 			{
 				if( fnf.FileName != "expand2.mix" )
 					throw new InvalidOperationException( "Unable to load MIX files" );
 			}
+
+			FileSystem.MountTemporary(new Package("temperat.mix"));
 
 			XmlFilename = args.FirstOrDefault( x => x.EndsWith(".xml") ) ?? "sequences.xml";
 			Doc = new XmlDocument(); 
