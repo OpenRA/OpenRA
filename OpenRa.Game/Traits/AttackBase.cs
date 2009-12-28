@@ -91,6 +91,11 @@ namespace OpenRa.Game.Traits
 		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset, ref int burst)
 		{
 			if (fireDelay > 0) return false;
+
+			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			if (!limitedAmmo.HasAmmo())
+				return false;
+
 			var weapon = Rules.WeaponInfo[weaponName];
 			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return false;
 
