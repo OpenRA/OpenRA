@@ -5,12 +5,13 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Effects;
 namespace OpenRa.Game.Traits
 {
-	class APMine : ICrushable
+	class APMine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;
 		public APMine(Actor self)
 		{
 			this.self = self;
+			Game.UnitInfluence.Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
@@ -37,5 +38,7 @@ namespace OpenRa.Game.Traits
 				default: return false;
 			}
 		}
+
+		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 	}
 }
