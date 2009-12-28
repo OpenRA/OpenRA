@@ -1,4 +1,5 @@
 ﻿using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -11,7 +12,7 @@ namespace OpenRa.Game.Traits
 			if (mi.Button == MouseButton.Left) return null;
 			if( xy != self.Location ) return null;
 
-			return Order.DeployMcv(self);
+			return new Order("DeployMcv", self, null, int2.Zero, null);
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -22,8 +23,8 @@ namespace OpenRa.Game.Traits
 				if( Game.CanPlaceBuilding( factBuildingInfo, self.Location - new int2( 1, 1 ), self, false ) )
 				{
 					self.CancelActivity();
-					self.QueueActivity( new Traits.Activities.Turn( 96 ) );
-					self.QueueActivity( new Traits.Activities.DeployMcv() );
+					self.QueueActivity( new Turn( 96 ) );
+					self.QueueActivity( new DeployMcv() );
 				}
 			}
 		}

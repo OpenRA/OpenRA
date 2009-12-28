@@ -30,7 +30,7 @@ namespace OpenRa.Game
                     yield break;
                 }
 
-				yield return OpenRa.Game.Order.PlaceBuilding( Producer.Owner, xy, Building.Name );
+				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
 			}
 			else // rmb
 			{

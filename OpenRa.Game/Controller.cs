@@ -149,8 +149,8 @@ namespace OpenRa.Game
 					return Cursor.Deploy;
 				else
 					return Cursor.DeployBlocked;
-            case "ActivatePortableChronoshift": return Cursor.Deploy;
-            case "UsePortableChronoshift":
+            case "Deploy": return Cursor.Deploy;
+            case "Chronoshift":
 				if (movement.CanEnterCell(location))
                     return Cursor.Chronoshift;
                 else

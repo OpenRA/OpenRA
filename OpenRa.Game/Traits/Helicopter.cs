@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor == null)
-				return Order.Move(self, xy);
+				return new Order("Move", self, null, xy, null);
 
 			return null;
 		}
