@@ -5,10 +5,10 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class Infantry : ICrushable
+	class SquishByTank : ICrushable
 	{
 		readonly Actor self;
-		public Infantry(Actor self)
+		public SquishByTank(Actor self)
 		{
 			this.self = self;
 		}
@@ -26,7 +26,6 @@ namespace OpenRa.Game.Traits
 		public bool IsCrushableBy(UnitMovementType umt, Player player)
 		{
 			if (player == Game.LocalPlayer) return false;
-			if (!(self.Info as InfantryInfo).Crushable) return false;
 			switch (umt)
 			{
 				case UnitMovementType.Track: return true;
