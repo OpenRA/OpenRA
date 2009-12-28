@@ -6,8 +6,8 @@ E1		Range is wrong.
 E2		Grenades are too accurate.
 E3		Works
 E4		Flamer origin is wrong
-E6		Capture action missing, repair action missing
-E7		C4 action missing
+E6		Works
+E7		Works
 MEDI	Works
 SPY		Infiltrate action missing
 THF		Steal action missing
