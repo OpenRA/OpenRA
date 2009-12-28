@@ -286,7 +286,7 @@ namespace OpenRa.Game
 					var repeats = queue.AllItems(queueName).Count(a => a.Item == item);
 					if (repeats > 1 || queue.CurrentItem(queueName) != firstOfThis)
 					{
-						var offset = -20;
+						var offset = -22;
 						var digits = repeats.ToString();
 						foreach (var d in digits)
 						{
