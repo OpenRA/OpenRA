@@ -50,7 +50,6 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			
 			while (currentActivity != null)
 			{
 				var a = currentActivity;
@@ -93,11 +92,8 @@ namespace OpenRa.Game
 			if (!Rules.Map.IsInMap(xy.X, xy.Y))
 				return null;
 			
-			// HACK: Get the first unit in the cell
-			// This will need to be updated for multiple-infantry-in-a-cell
-			// HACK: this doesn't work for targeting air units either
-			var underCursor = Game.UnitInfluence.GetUnitsAt( xy ).FirstOrDefault()
-				?? Game.BuildingInfluence.GetBuildingAt( xy );
+			var loc = mi.Location + Game.viewport.Location;
+			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
 
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
@@ -107,19 +103,18 @@ namespace OpenRa.Game
 				.FirstOrDefault( x => x != null );
 		}
 
-		public RectangleF Bounds
+		public RectangleF GetBounds(bool useAltitude)
 		{
-			get
+			var size = SelectedSize;
+			var loc = CenterLocation - 0.5f * size;
+
+			if (useAltitude)
 			{
-				var size = SelectedSize;
-				var loc = CenterLocation - 0.5f * size;
 				var unit = traits.GetOrDefault<Unit>();
-
-				if (unit != null)
-					loc -= new float2(0, unit.Altitude);
-
-				return new RectangleF(loc.X, loc.Y, size.X, size.Y);
+				if (unit != null) loc -= new float2(0, unit.Altitude);
 			}
+
+			return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 		}
 
 		public bool IsDead { get { return Health <= 0; } }
@@ -150,6 +145,8 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
+			if (Health > Info.Strength)
+				Health = Info.Strength;
 
 			var newState = GetDamageState();
 

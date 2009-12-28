@@ -5,15 +5,17 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class AutoTarget : ITick, INotifyDamage
+	class AutoHeal : ITick
 	{
-		public AutoTarget(Actor self) {}
+		public AutoHeal(Actor self) { }
 
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
+			else
+				self.CancelActivity();
 		}
 
 		float GetMaximumRange(Actor self)
@@ -23,15 +25,27 @@ namespace OpenRa.Game.Traits
 				.Max(w => Rules.WeaponInfo[w].Range);
 		}
 
-		public void Tick(Actor self)
+		bool NeedsNewTarget(Actor self)
 		{
-			if (!self.IsIdle) return;
-
 			var attack = self.traits.WithInterface<AttackBase>().First();
 			var range = GetMaximumRange(self);
-			
-			if (attack.target == null || 
-				(attack.target.Location - self.Location).LengthSquared > range * range + 2)
+
+			if (attack.target == null)
+				return true;	// he's dead.
+			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
+				return true;	// wandered off faster than we could follow
+			if (attack.target.Health == attack.target.Info.Strength)
+				return true;	// fully healed
+
+			return false;
+		}
+
+		public void Tick(Actor self)
+		{
+			var attack = self.traits.WithInterface<AttackBase>().First();
+			var range = GetMaximumRange(self);
+
+			if (NeedsNewTarget(self))
 				AttackTarget(self, ChooseTarget(self, range));
 		}
 
@@ -40,28 +54,11 @@ namespace OpenRa.Game.Traits
 			var inRange = Game.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
-				.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */
+				.Where(a => a.Owner == self.Owner)	/* todo: one day deal with friendly players */
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
+				.Where(a => a.Health < a.Info.Strength)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (!Combat.HasAnyValidWeapons(self, e.Attacker))
-				return;
-
-			if (e.Attacker.Owner == self.Owner)
-				return;	// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
-
-			if (e.Damage < 0)
-				return;	// don't retaliate against healers
-
-			var attack = self.traits.WithInterface<AttackBase>().First();
-			if (attack.target != null) return;
-
-			AttackTarget(self, e.Attacker);
 		}
 	}
 }
