@@ -5,7 +5,7 @@ All Infantry		No idle animations
 E1		Works
 E2		Grenades are too accurate.
 E3		Works
-E4		Flamer origin is wrong
+E4		Works
 E6		Works
 E7		Works
 MEDI	Works
