@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenRa.Game.Traits.Activities;
 namespace OpenRa.Game.Traits
 {
 	class Harvester : IOrder, IPips
@@ -32,10 +33,10 @@ namespace OpenRa.Game.Traits
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
-				return Order.Enter(self, underCursor);
+				return new Order("Enter", self, underCursor, int2.Zero, null);
 
 			if (underCursor == null && Rules.Map.ContainsResource(xy))
-				return Order.Harvest(self, xy);
+				return new Order("Harvest", self, null, xy, null);
 
 			return null;
 		}
@@ -45,13 +46,13 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Harvest")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Traits.Activities.Move(order.TargetLocation, 0));
-				self.QueueActivity(new Traits.Activities.Harvest());
+				self.QueueActivity(new Move(order.TargetLocation, 0));
+				self.QueueActivity(new Harvest());
 			}
 			else if (order.OrderString == "Enter")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Traits.Activities.DeliverOre(order.TargetActor));
+				self.QueueActivity(new DeliverOre(order.TargetActor));
 			}
 		}
 

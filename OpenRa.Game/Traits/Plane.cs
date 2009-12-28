@@ -16,10 +16,12 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left) return null;
 			if (underCursor == null)
-				return Order.Move(self, xy);
+				return new Order("Move", self, null, xy, null);
+			
 			if (underCursor.Info == Rules.UnitInfo["AFLD"] 
 				&& underCursor.Owner == self.Owner)
-				return Order.Enter(self, underCursor);
+				return new Order("Enter", self, underCursor, int2.Zero, null);
+
 			return null;
 		}
 

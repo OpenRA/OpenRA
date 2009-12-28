@@ -22,10 +22,10 @@ namespace OpenRa.Game.Traits
             if (mi.Button == MouseButton.Left) return null;
 
             if (chronoshiftActive)
-                return Order.UsePortableChronoshift(self, xy);
+				return new Order("Chronoshift", self, null, xy, null);
 
             else if (xy == self.Location && remainingChargeTime <= 0)
-                return Order.ActivatePortableChronoshift(self);
+				return new Order("Deploy", self, null, int2.Zero, null);
  
             return null;
         }
@@ -33,13 +33,13 @@ namespace OpenRa.Game.Traits
         public void ResolveOrder(Actor self, Order order)
         {
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
-            if (order.OrderString == "ActivatePortableChronoshift" && remainingChargeTime <= 0)
+            if (order.OrderString == "Deploy" && remainingChargeTime <= 0)
             {
                 chronoshiftActive = true;
                 self.CancelActivity();
             }
 
-			if (order.OrderString == "UsePortableChronoshift" && movement.CanEnterCell(order.TargetLocation))
+			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
             {
 				self.CancelActivity();
            		self.QueueActivity(new Activities.Teleport(order.TargetLocation));

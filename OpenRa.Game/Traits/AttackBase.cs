@@ -139,7 +139,7 @@ namespace OpenRa.Game.Traits
 			if (self == underCursor) return null;
 			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
-			return Order.Attack(self, underCursor);
+			return new Order("Attack", self, underCursor, int2.Zero, null);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

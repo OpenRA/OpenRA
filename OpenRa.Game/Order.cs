@@ -139,46 +139,6 @@ namespace OpenRa.Game
 				{ IsImmediate = true };
 		}
 
-		public static Order Attack(Actor subject, Actor target)
-		{
-			return new Order("Attack", subject, target, int2.Zero, null);
-		}
-
-		public static Order Move(Actor subject, int2 target)
-		{
-			return new Order("Move", subject, null, target, null);
-		}
-
-        public static Order ActivatePortableChronoshift(Actor subject)
-        {
-            return new Order("ActivatePortableChronoshift", subject, null, int2.Zero, null);
-        }
-
-        public static Order UsePortableChronoshift(Actor subject, int2 target)
-        {
-            return new Order("UsePortableChronoshift", subject, null, target, null);
-        }
-
-		public static Order DeployMcv(Actor subject)
-		{
-			return new Order("DeployMcv", subject, null, int2.Zero, null);
-		}
-
-		public static Order PlaceBuilding(Player subject, int2 target, string buildingName)
-		{
-			return new Order("PlaceBuilding", subject.PlayerActor, null, target, buildingName);
-		}
-
-		public static Order Enter(Actor subject, Actor target)
-		{
-			return new Order("Enter", subject, target, int2.Zero, null);
-		}
-
-		public static Order Harvest(Actor subject, int2 target)
-		{
-			return new Order("Harvest", subject, null, target, null);
-		}
-
 		public static Order StartProduction(Player subject, string item)
 		{
 			return new Order("StartProduction", subject.PlayerActor, null, int2.Zero, item );
@@ -192,11 +152,6 @@ namespace OpenRa.Game
 		public static Order CancelProduction(Player subject, string item)
 		{
 			return new Order("CancelProduction", subject.PlayerActor, null, int2.Zero, item);
-		}
-
-		public static Order SetRallyPoint(Actor subject, int2 target)
-		{
-			return new Order("SetRallyPoint", subject, null, target, null );
 		}
 	}
 }
