@@ -31,10 +31,10 @@ HARV	Works
 ARTY	Works
 
 Helicopters
-	- Weapons don't work, 
-	- hover while attacking doesn't work, 
 	- Repair/rearm doesn't work
 TRAN	Cargo doesn't work
+HELI	Weapon offsets wrong
+HIND	Weapon offsets wrong
 
 Planes
 	- Edge cases in landing code
