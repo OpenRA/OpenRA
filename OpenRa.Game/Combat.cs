@@ -44,7 +44,9 @@ namespace OpenRa.Game
 
 		static float GetDamageToInflict(Actor target, int2 loc, WeaponInfo weapon, WarheadInfo warhead)
 		{
-			/* todo: some things can't be damaged AT ALL by certain weapons! */
+			if (!WeaponValidForTarget(weapon, target))
+				return 0f;
+
 			var distance = (target.CenterLocation - loc).Length;
 			var rawDamage = weapon.Damage * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Armor);
