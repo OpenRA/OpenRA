@@ -8,9 +8,7 @@ namespace OpenRa.Game.Traits
 {
 	class Plane : IOrder, IMovement
 	{
-		public Plane(Actor self)
-		{
-		}
+		public Plane(Actor self) {}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -30,13 +28,14 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Move")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Circle(order.TargetLocation));
+				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
+				self.QueueActivity(new ReturnToBase(self, null));
 			}
 
 			if (order.OrderString == "Enter")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new ReturnToBase(self, order.TargetActor.CenterLocation));
+				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 			}
 		}
 

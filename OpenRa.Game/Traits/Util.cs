@@ -2,6 +2,7 @@
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -134,6 +135,12 @@ namespace OpenRa.Game.Traits
 				.Select(t => t.GetSpeedModifier())
 				.Product();
 			return mi.Speed * modifier;
+		}
+
+		public static IActivity SequenceActivities(params IActivity[] acts)
+		{
+			return acts.Reverse().Aggregate(
+				(next, a) => { a.NextActivity = next; return a; });
 		}
 	}
 }

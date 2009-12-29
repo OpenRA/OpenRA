@@ -110,10 +110,13 @@
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CaptureBuilding.cs" />
-    <Compile Include="Traits\Activities\Circle.cs" />
     <Compile Include="Traits\Activities\Demolish.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
+    <Compile Include="Traits\Activities\FlyAttack.cs" />
     <Compile Include="Traits\Activities\FlyTimed.cs" />
+    <Compile Include="Traits\Activities\HeliAttack.cs" />
+    <Compile Include="Traits\Activities\HeliFly.cs" />
+    <Compile Include="Traits\Activities\HeliLand.cs" />
     <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />
@@ -173,7 +176,9 @@
     <Compile Include="Traits\APMine.cs" />
     <Compile Include="Traits\ATMine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
+    <Compile Include="Traits\AttackHeli.cs" />
     <Compile Include="Traits\AttackInfo.cs" />
+    <Compile Include="Traits\AttackPlane.cs" />
     <Compile Include="Traits\AttackTurreted.cs" />
     <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />

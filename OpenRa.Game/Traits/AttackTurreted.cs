@@ -41,7 +41,7 @@ namespace OpenRa.Game.Traits
 				self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
 					Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
 
-			self.traits.Get<AttackTurreted>().target = order.TargetActor;
+			target = order.TargetActor;
 		}
 
 		bool buildComplete = false;

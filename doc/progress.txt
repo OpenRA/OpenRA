@@ -31,17 +31,18 @@ HARV	Works
 ARTY	Works
 
 Helicopters
-	- Weapons don't work, 
-	- hover while attacking doesn't work, 
 	- Repair/rearm doesn't work
 TRAN	Cargo doesn't work
+HELI	Weapon offsets wrong
+HIND	Weapon offsets wrong
 
-Planes
-	- Edge cases in landing code
-	- Circle behavior needs to be able to work with a unit
-	- 
-YAK		Weapons don't work
-MIG		Weapons don't work
+Planes	
+	- AFLD reservations don't work
+	- Rearm doesn't work (should happen when on AFLD)
+	- Repair at FIX doesn't work [fix doesn't work?]
+	- Planes damage themselves (should never happen; these are AG weapons)
+YAK		Ammo/ROF are funky
+MIG		Ammo/ROF are funky
 
 	
 Ships
