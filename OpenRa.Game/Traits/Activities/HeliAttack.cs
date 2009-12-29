@@ -30,7 +30,7 @@ namespace OpenRa.Game.Traits.Activities
 				return this;
 			}
 
-			var range = Rules.WeaponInfo[ self.Info.Primary ].Range;
+			var range = Rules.WeaponInfo[ self.Info.Primary ].Range - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
