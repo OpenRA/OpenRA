@@ -60,7 +60,7 @@ namespace OpenRa.Game.Graphics
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, indices, location, s, (int) palette, nv, ni);
+			Util.FastCreateQuad(vertices, indices, location.ToInt2(), s, (int) palette, nv, ni);
 			nv += 4; ni += 6;
 			if (++sprites >= spritesPerBatch)
 				Flush();
