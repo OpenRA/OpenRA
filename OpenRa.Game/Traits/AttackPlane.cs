@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits
 			self.CancelActivity();
 			target = order.TargetActor;
 			self.QueueActivity(new FlyAttack(order.TargetActor));
-			self.QueueActivity(new ReturnToBase(self));
+			self.QueueActivity(new ReturnToBase(self, null));
 		}
 	}
 }

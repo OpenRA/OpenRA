@@ -7,15 +7,14 @@ namespace OpenRa.Game.Traits.Activities
 {
 	class ReturnToBase : IActivity
 	{
-		// todo: defer decision-making until we are first scheduled!
 		public IActivity NextActivity { get; set; }
+
 		bool isCanceled;
+		bool isCalculated;
+		Actor dest;
 
-		readonly float2 w1, w2, w3;	/* tangent points to turn circles */
-		readonly float2 landPoint;
-
-		public ReturnToBase(Actor self)
-			: this( self, null ) {}
+		float2 w1, w2, w3;	/* tangent points to turn circles */
+		float2 landPoint;
 
 		Actor ChooseAirfield(Actor self)
 		{
@@ -32,10 +31,9 @@ namespace OpenRa.Game.Traits.Activities
 			return airfield;
 		}
 
-		public ReturnToBase(Actor self, Actor dest)
+		void Calculate(Actor self)
 		{
-			if (dest == null)
-				dest = ChooseAirfield(self);
+			if (dest == null) dest = ChooseAirfield(self);
 
 			var landPos = dest.CenterLocation;
 			var unit = self.traits.Get<Unit>();
@@ -67,22 +65,26 @@ namespace OpenRa.Game.Traits.Activities
 			w2 = c2 + f;
 			w3 = approachStart;
 			landPoint = landPos;
+
+			isCalculated = true;
+		}
+
+		public ReturnToBase(Actor self, Actor dest)
+		{
+			this.dest = dest;
 		}
 
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			var unit = self.traits.Get<Unit>();
-			return new Fly(w1)
-			{
-				NextActivity = new Fly(w2)
-				{
-					NextActivity = new Fly(w3)
-					{
-						NextActivity = new Land(landPoint)
-					}
-				}
-			};
+			if (!isCalculated)
+				Calculate(self);
+
+			return Util.SequenceActivities(
+				new Fly(w1),
+				new Fly(w2),
+				new Fly(w3),
+				new Land(landPoint));
 		}
 
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
