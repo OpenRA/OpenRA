@@ -16,15 +16,10 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			var unit = self.traits.Get<Unit>();
-			return new Fly(Util.CenterOfCell(Cell))
-			{
-				NextActivity =
-					new FlyTimed(50, 20)
-					{
-						NextActivity = this
-					}
-			};
+			return Util.SequenceActivities(
+				new Fly(Util.CenterOfCell(Cell)),
+				new FlyTimed(50, 20),
+				this);
 		}
 
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
