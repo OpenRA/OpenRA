@@ -92,7 +92,7 @@ namespace OpenRa.Game.Graphics
 				.Select(a => a.CenterLocation)
 				.Aggregate((a, b) => a + b);
 
-			scrollPosition = avgPos - .5f * new float2(Width, Height);
+			scrollPosition = (avgPos - .5f * new float2(Width, Height)).ToInt2();
 		}
 
 		public void GoToStartLocation()
