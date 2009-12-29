@@ -114,6 +114,8 @@
     <Compile Include="Traits\Activities\Demolish.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
     <Compile Include="Traits\Activities\FlyTimed.cs" />
+    <Compile Include="Traits\Activities\HeliFly.cs" />
+    <Compile Include="Traits\Activities\HeliLand.cs" />
     <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\DeployMcv.cs" />

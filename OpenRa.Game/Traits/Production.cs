@@ -33,10 +33,6 @@ namespace OpenRa.Game.Traits
 				var mobile = newUnit.traits.GetOrDefault<Mobile>();
 				if( mobile != null )
 					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
-
-				var heli = newUnit.traits.GetOrDefault<Helicopter>();
-				if (heli != null)
-					heli.targetLocation = rp.rallyPoint; // TODO: make Activity.Move work for helis.
 			}
 
 			var bi = self.Info as BuildingInfo;

@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Linq;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Helicopter : ITick, IOrder, IMovement
+	class Helicopter : IOrder, IMovement
 	{
-		public int2 targetLocation;
-
-		const int CruiseAltitude = 20;
-
-		public Helicopter(Actor self)
-		{
-			targetLocation = self.Location;
-		}
+		public Helicopter(Actor self) {}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -27,61 +21,15 @@ namespace OpenRa.Game.Traits
 
 		public void ResolveOrder( Actor self, Order order )
 		{
-			if( order.OrderString == "Move" )
+			if (order.OrderString == "Move")
 			{
-				targetLocation = order.TargetLocation;
-
-				var attackBase = self.traits.WithInterface<AttackBase>().FirstOrDefault();
-				if( attackBase != null )
-					attackBase.target = null;	/* move cancels attack order */
+				self.CancelActivity();
+				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
+				self.QueueActivity(new HeliLand(true));
 			}
 		}
 
-		public void Tick(Actor self)
-		{
-			var unit = self.traits.Get<Unit>();
-
-			if (self.Location != targetLocation)
-			{
-				var dist = Util.CenterOfCell(targetLocation) - self.CenterLocation;
-				var desiredFacing = Util.GetFacing(dist, unit.Facing);
-				Util.TickFacing(ref unit.Facing, desiredFacing,
-					self.Info.ROT);
-
-				var rawSpeed = .2f * Util.GetEffectiveSpeed(self);
-				var angle = (unit.Facing - desiredFacing) / 128f * Math.PI;
-				var scale = .4f + .6f * (float)Math.Cos(angle);
-
-				if (unit.Altitude > CruiseAltitude / 2)		// do some movement.
-				{
-					self.CenterLocation += (rawSpeed * scale / dist.Length) * dist;
-					self.CenterLocation +=  (1f - scale) * rawSpeed 
-						* float2.FromAngle((float)angle);
-					self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
-				}
-
-				if (unit.Altitude < CruiseAltitude)
-				{
-					++unit.Altitude;
-					return;
-				}
-			}
-			else if (unit.Altitude > 0 && 
-				Game.IsCellBuildable( self.Location, UnitMovementType.Foot ))
-			{
-				--unit.Altitude;
-			}
-
-			/* todo: bob slightly when hovering */
-		}
-		public UnitMovementType GetMovementType()
-		{
-			return UnitMovementType.Fly;
-		}
-
-		public bool CanEnterCell(int2 location)
-		{
-			return true; // Planes can go anywhere (?)
-		}
+		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
+		public bool CanEnterCell(int2 location) { return true; }
 	}
 }
