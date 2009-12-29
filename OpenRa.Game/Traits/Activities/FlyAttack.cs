@@ -14,7 +14,8 @@ namespace OpenRa.Game.Traits.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (Target == null || Target.IsDead) return NextActivity;
+			if (Target == null || Target.IsDead) 
+				return NextActivity;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())

@@ -36,7 +36,7 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Enter")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new ReturnToBase(self, order.TargetActor.CenterLocation));
+				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 			}
 		}
 

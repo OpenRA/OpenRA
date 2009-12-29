@@ -139,7 +139,7 @@ namespace OpenRa.Game.Traits
 
 		public static IActivity SequenceActivities(params IActivity[] acts)
 		{
-			return acts.Reverse().Aggregate((IActivity)null,
+			return acts.Reverse().Aggregate(
 				(next, a) => { a.NextActivity = next; return a; });
 		}
 	}
