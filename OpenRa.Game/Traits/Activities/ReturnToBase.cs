@@ -16,18 +16,12 @@ namespace OpenRa.Game.Traits.Activities
 		float2 w1, w2, w3;	/* tangent points to turn circles */
 		float2 landPoint;
 
-		static bool IsReserved(Actor a)
-		{
-			var res = a.traits.GetOrDefault<Reservable>();
-			return res != null && res.IsReserved;
-		}
-
 		Actor ChooseAirfield(Actor self)
 		{
 			var airfield = Game.world.Actors
 				.Where(a => a.Info == Rules.UnitInfo["AFLD"]			/* todo: generalize this */
 					&& a.Owner == self.Owner
-					&& !IsReserved(a))
+					&& !Reservable.IsReserved(a))
 				.FirstOrDefault();
 
 			if (airfield == null)

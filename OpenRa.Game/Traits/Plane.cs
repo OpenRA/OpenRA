@@ -19,14 +19,9 @@ namespace OpenRa.Game.Traits
 				return new Order("Move", self, null, xy, null);
 
 			if (underCursor.Info == Rules.UnitInfo["AFLD"]
-				&& underCursor.Owner == self.Owner)
-			{
-				var res = underCursor.traits.GetOrDefault<Reservable>();
-				if (res != null && res.IsReserved)
-					return null;
-
+				&& underCursor.Owner == self.Owner
+				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor, int2.Zero, null);
-			}
 
 			return null;
 		}
@@ -49,12 +44,10 @@ namespace OpenRa.Game.Traits
 
 			if (order.OrderString == "Enter")
 			{
+				if (Reservable.IsReserved(order.TargetActor)) return;
 				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
 				if (res != null)
-				{
-					if (res.IsReserved) return;
 					reservation = res.Reserve(self);
-				}
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));

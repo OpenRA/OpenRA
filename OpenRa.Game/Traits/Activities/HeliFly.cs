@@ -31,8 +31,12 @@ namespace OpenRa.Game.Traits.Activities
 			}
 
 			var dist = Dest - self.CenterLocation;
-			if (float2.WithinEpsilon(float2.Zero, dist, 10))
+			if (float2.WithinEpsilon(float2.Zero, dist, 2))
+			{
+				self.CenterLocation = Dest;
+				self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 				return NextActivity;
+			}
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
 			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);

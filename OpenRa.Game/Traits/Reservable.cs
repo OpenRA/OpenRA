@@ -7,8 +7,6 @@ namespace OpenRa.Game.Traits
 		public Reservable(Actor self) { }
 		Actor reservedFor;
 
-		public bool IsReserved { get { return reservedFor != null; } }
-
 		public void Tick(Actor self)
 		{
 			if (reservedFor == null) 
@@ -21,6 +19,12 @@ namespace OpenRa.Game.Traits
 		{
 			reservedFor = forActor;
 			return new DisposableAction(() => reservedFor = null);
+		}
+
+		public static bool IsReserved(Actor a)
+		{
+			var res = a.traits.GetOrDefault<Reservable>();
+			return res != null && res.reservedFor != null;
 		}
 	}
 }
