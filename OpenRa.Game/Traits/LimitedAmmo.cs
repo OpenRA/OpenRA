@@ -14,6 +14,12 @@ namespace OpenRa.Game.Traits
 		}
 
 		public bool HasAmmo() { return ammo > 0; }
+		public bool GiveAmmo()
+		{
+			if (ammo >= self.Info.Ammo) return false;
+			++ammo;
+			return true;
+		}
 
 		public void Attacking(Actor self) { --ammo; }
 

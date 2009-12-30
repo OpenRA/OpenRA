@@ -11,6 +11,7 @@ namespace OpenRa.Game.Traits
 			target = order.TargetActor;
 			self.QueueActivity(new FlyAttack(order.TargetActor));
 			self.QueueActivity(new ReturnToBase(self, null));
+			self.QueueActivity(new Rearm());
 		}
 	}
 }

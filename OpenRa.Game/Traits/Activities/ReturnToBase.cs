@@ -25,7 +25,7 @@ namespace OpenRa.Game.Traits.Activities
 		Actor ChooseAirfield(Actor self)
 		{
 			var airfield = Game.world.Actors
-				.Where(a => a.Info == Rules.UnitInfo["AFLD"]
+				.Where(a => a.Info == Rules.UnitInfo["AFLD"]			/* todo: generalize this */
 					&& a.Owner == self.Owner
 					&& !IsReserved(a))
 				.FirstOrDefault();
@@ -92,7 +92,8 @@ namespace OpenRa.Game.Traits.Activities
 				new Fly(w1),
 				new Fly(w2),
 				new Fly(w3),
-				new Land(landPoint));
+				new Land(landPoint),
+				NextActivity);
 		}
 
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }

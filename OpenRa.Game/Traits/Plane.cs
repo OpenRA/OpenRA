@@ -44,6 +44,7 @@ namespace OpenRa.Game.Traits
 				self.CancelActivity();
 				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 				self.QueueActivity(new ReturnToBase(self, null));
+				self.QueueActivity(new Rearm());
 			}
 
 			if (order.OrderString == "Enter")
@@ -57,6 +58,7 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
+				self.QueueActivity(new Rearm());		/* todo: something else when it's FIX rather than AFLD */
 			}
 		}
 
