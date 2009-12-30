@@ -8,7 +8,6 @@ namespace OpenRa.Game.Traits
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
-			self.CancelActivity();
 			target = order.TargetActor;
 			self.QueueActivity(new FlyAttack(order.TargetActor));
 			self.QueueActivity(new ReturnToBase(self, null));

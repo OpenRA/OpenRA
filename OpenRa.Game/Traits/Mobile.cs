@@ -56,10 +56,6 @@ namespace OpenRa.Game.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
-
-				var attackBase = self.traits.WithInterface<AttackBase>().FirstOrDefault();
-				if (attackBase != null)
-					attackBase.target = null;	/* move cancels attack order */
 			}
 		}
 

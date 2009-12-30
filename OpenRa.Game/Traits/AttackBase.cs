@@ -154,6 +154,8 @@ namespace OpenRa.Game.Traits
 				self.CancelActivity();
 				QueueAttack(self, order);
 			}
+			else
+				target = null;
 		}
 
 		protected virtual void QueueAttack(Actor self, Order order)
