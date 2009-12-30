@@ -1,5 +1,6 @@
 ﻿using OpenRa.Game.Traits.Activities;
 using System;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
@@ -46,8 +47,11 @@ namespace OpenRa.Game.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
+				var offset = (order.TargetActor.Info as BuildingInfo).SpawnOffset;
+				var offsetVec = new float2(offset[0], offset[1]);
+
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation));
+				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
 				self.QueueActivity(new Turn(self.Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(new Rearm());
