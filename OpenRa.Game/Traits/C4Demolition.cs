@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.Traits.Activities;
+﻿using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {

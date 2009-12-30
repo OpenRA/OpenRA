@@ -1,5 +1,4 @@
-﻿using OpenRa.Game.GameRules;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRa.Game.Traits

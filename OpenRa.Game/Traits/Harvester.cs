@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.Traits.Activities;
+
 namespace OpenRa.Game.Traits
 {
 	class Harvester : IOrder, IPips
