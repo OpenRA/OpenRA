@@ -6,23 +6,9 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class AttackHeli : AttackBase
+	class AttackHeli : AttackFrontal
 	{
-		public AttackHeli(Actor self) : base(self) { }
-
-		const int facingTolerance = 20;
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-
-			if (target == null) return;
-
-			var unit = self.traits.Get<Unit>();
-			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, unit.Facing);
-
-			if (Math.Abs(facingToTarget - unit.Facing) % 256 < facingTolerance)
-				DoAttack(self);
-		}
+		public AttackHeli(Actor self) : base(self, 20) { }
 
 		protected override void QueueAttack(Actor self, Order order)
 		{

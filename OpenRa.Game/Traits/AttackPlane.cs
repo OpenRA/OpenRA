@@ -6,28 +6,9 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	// yet another ugly trait that does two things:
-	//	- plane-specific attack order dispatch
-	//	- forward-facing attack with a tolerance
-
-	class AttackPlane : AttackBase
+	class AttackPlane : AttackFrontal
 	{
-		const int facingTolerance = 20;
-
-		public AttackPlane(Actor self) : base(self) { }
-
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-
-			if (target == null) return;
-
-			var unit = self.traits.Get<Unit>();
-			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, unit.Facing);
-
-			if (Math.Abs(facingToTarget - unit.Facing) % 256 < facingTolerance)
-				DoAttack(self);
-		}
+		public AttackPlane(Actor self) : base(self, 20) { }
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
