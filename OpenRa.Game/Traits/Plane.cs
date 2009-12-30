@@ -8,6 +8,8 @@ namespace OpenRa.Game.Traits
 {
 	class Plane : IOrder, IMovement
 	{
+		public IDisposable reservation;
+
 		public Plane(Actor self) {}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -15,16 +17,28 @@ namespace OpenRa.Game.Traits
 			if (mi.Button == MouseButton.Left) return null;
 			if (underCursor == null)
 				return new Order("Move", self, null, xy, null);
-			
-			if (underCursor.Info == Rules.UnitInfo["AFLD"] 
+
+			if (underCursor.Info == Rules.UnitInfo["AFLD"]
 				&& underCursor.Owner == self.Owner)
+			{
+				var res = underCursor.traits.GetOrDefault<Reservable>();
+				if (res != null && res.IsReserved)
+					return null;
+
 				return new Order("Enter", self, underCursor, int2.Zero, null);
+			}
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (reservation != null)
+			{
+				reservation.Dispose();
+				reservation = null;
+			}
+
 			if (order.OrderString == "Move")
 			{
 				self.CancelActivity();
@@ -34,6 +48,13 @@ namespace OpenRa.Game.Traits
 
 			if (order.OrderString == "Enter")
 			{
+				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
+				if (res != null)
+				{
+					if (res.IsReserved) return;
+					reservation = res.Reserve(self);
+				}
+
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 			}

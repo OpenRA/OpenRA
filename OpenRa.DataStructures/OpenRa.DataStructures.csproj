@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetInfo.cs" />
+    <Compile Include="DisposableAction.cs" />
     <Compile Include="float2.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

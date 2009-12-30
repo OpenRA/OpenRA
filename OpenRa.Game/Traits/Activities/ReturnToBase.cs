@@ -16,13 +16,18 @@ namespace OpenRa.Game.Traits.Activities
 		float2 w1, w2, w3;	/* tangent points to turn circles */
 		float2 landPoint;
 
+		static bool IsReserved(Actor a)
+		{
+			var res = a.traits.GetOrDefault<Reservable>();
+			return res != null && res.IsReserved;
+		}
+
 		Actor ChooseAirfield(Actor self)
 		{
-			// todo: handle reservations
-
 			var airfield = Game.world.Actors
 				.Where(a => a.Info == Rules.UnitInfo["AFLD"]
-					&& a.Owner == self.Owner)
+					&& a.Owner == self.Owner
+					&& !IsReserved(a))
 				.FirstOrDefault();
 
 			if (airfield == null)
@@ -34,6 +39,9 @@ namespace OpenRa.Game.Traits.Activities
 		void Calculate(Actor self)
 		{
 			if (dest == null) dest = ChooseAirfield(self);
+			var res = dest.traits.GetOrDefault<Reservable>();
+			if (res != null)
+				self.traits.Get<Plane>().reservation = res.Reserve(self);
 
 			var landPos = dest.CenterLocation;
 			var unit = self.traits.Get<Unit>();
