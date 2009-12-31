@@ -57,7 +57,11 @@ namespace OpenRa.Game
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
 			var projectile = Rules.ProjectileInfo[weapon.Projectile];
+			var warhead = Rules.WarheadInfo[weapon.Warhead];
 			var unit = target.traits.GetOrDefault<Unit>();
+
+			if (warhead.EffectivenessAgainst(target.Info.Armor) <= 0)
+				return false;
 
 			if (target.traits.Contains<Submarine>())
 				return projectile.ASW;
