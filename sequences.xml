@@ -388,7 +388,7 @@
     <sequence name="guard-minimap" start="146" length="1" />
     <sequence name="guard" start="147" length="1" x="12" y="12" />
     <sequence name="sell-vehicle" start="148" length="12" />
-    <sequence name="heal" start="160" length="4" />
+    <sequence name="heal" start="160" length="4" x="12" y="12"/>
     <sequence name="capture" start="164" length="3" />
     <sequence name="capture-minimap" start="167" length="3" />
     <sequence name="repair2" start="170" length="24" />

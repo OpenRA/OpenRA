@@ -25,5 +25,6 @@ namespace OpenRa.Game
         public static Cursor Chronoshift { get { return new Cursor("chrono"); } }
 		public static Cursor C4 { get { return new Cursor("c4"); } }
 		public static Cursor Capture { get { return new Cursor("capture"); } }
+		public static Cursor Heal { get { return new Cursor("heal"); } }
 	}
 }

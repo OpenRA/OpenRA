@@ -146,12 +146,12 @@ namespace OpenRa.Game.Traits
 			if (((underCursor.Owner == self.Owner) ^ isHeal) 
 				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
-			return new Order("Attack", self, underCursor, int2.Zero, null);
+			return new Order(isHeal ? "Heal" : "Attack", self, underCursor, int2.Zero, null);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack")
+			if (order.OrderString == "Attack" || order.OrderString == "Heal")
 			{
 				self.CancelActivity();
 				QueueAttack(self, order);
