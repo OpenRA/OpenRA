@@ -31,16 +31,13 @@ HARV	Works
 ARTY	Works
 
 Helicopters
-	- Repair/rearm doesn't work
+	- Repair as FIX doesn't work
 TRAN	Cargo doesn't work
 HELI	Weapon offsets wrong
 HIND	Weapon offsets wrong
 
 Planes	
-	- AFLD reservations don't work
-	- Rearm doesn't work (should happen when on AFLD)
 	- Repair at FIX doesn't work [fix doesn't work?]
-	- Planes damage themselves (should never happen; these are AG weapons)
 YAK		Ammo/ROF are funky
 MIG		Ammo/ROF are funky
 

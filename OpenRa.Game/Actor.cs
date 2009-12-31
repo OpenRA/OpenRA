@@ -119,7 +119,7 @@ namespace OpenRa.Game
 
 		public bool IsDead { get { return Health <= 0; } }
 
-		DamageState GetDamageState()
+		public DamageState GetDamageState()
 		{
 			if (Health <= 0) return DamageState.Dead;
 			var halfStrength = Info.Strength * Rules.General.ConditionYellow;

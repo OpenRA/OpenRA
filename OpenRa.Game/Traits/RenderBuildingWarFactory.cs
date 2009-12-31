@@ -28,7 +28,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (doneBuilding)
 				yield return new Renderable(roof.Image, 
-					24f * (float2)self.Location, self.Owner.Palette, 2);
+					Game.CellSize * (float2)self.Location, self.Owner.Palette, 2);
 		}
 
 		public void Tick(Actor self)
