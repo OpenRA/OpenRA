@@ -13,7 +13,7 @@ namespace OpenRa.Game.Traits
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
 			else
-				if (!(self.GetCurrentActivity() is Move))
+				if (self.GetCurrentActivity() is Attack)
 					self.CancelActivity();
 		}
 
