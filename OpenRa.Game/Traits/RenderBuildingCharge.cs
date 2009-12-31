@@ -15,9 +15,9 @@ namespace OpenRa.Game.Traits
 
 		public void Attacking(Actor self)
 		{
-			var prefix = self.GetDamageState() == DamageState.Half ? "damaged-" : "";
 			Sound.Play("tslachg2.aud");
-			anim.PlayThen(prefix + "active", () => anim.PlayRepeating(prefix + "idle"));
+			anim.PlayThen(GetPrefix(self) + "active", 
+				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}
 	}
 }

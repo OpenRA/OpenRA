@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 
 		void Complete( Actor self )
 		{
-			anim.PlayRepeating( "idle" );
+			anim.PlayRepeating( GetPrefix(self) + "idle" );
 			foreach( var x in self.traits.WithInterface<INotifyBuildComplete>() )
 				x.BuildingComplete( self );
 		}
@@ -49,6 +49,11 @@ namespace OpenRa.Game.Traits
 						Rules.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
+		}
+
+		protected string GetPrefix(Actor self)
+		{
+			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
 		}
 
 		public virtual void Damaged(Actor self, AttackInfo e)

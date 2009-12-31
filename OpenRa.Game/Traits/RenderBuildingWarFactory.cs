@@ -10,7 +10,11 @@ namespace OpenRa.Game.Traits
 		bool doneBuilding;
 		bool isOpen;
 		public readonly Actor self;
-		string prefix = "";
+
+		string GetPrefix(Actor self)
+		{
+			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
+		}
 
 		public RenderWarFactory(Actor self)
 		{
@@ -21,7 +25,7 @@ namespace OpenRa.Game.Traits
 		public void BuildingComplete( Actor self )
 		{
 			doneBuilding = true;
-			roof.Play( prefix + "idle-top" );
+			roof.Play( GetPrefix(self) + "idle-top" );
 		}
 
 		public IEnumerable<Renderable> Render(Actor self)
@@ -39,7 +43,7 @@ namespace OpenRa.Game.Traits
 			if (isOpen && !Game.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
 			{
 				isOpen = false;
-				roof.PlayBackwardsThen(prefix + "build-top", () => roof.Play(prefix + "idle-top"));
+				roof.PlayBackwardsThen(GetPrefix(self) + "build-top", () => roof.Play(GetPrefix(self) + "idle-top"));
 			}
 		}
 
@@ -49,11 +53,9 @@ namespace OpenRa.Game.Traits
 			switch (e.DamageState)
 			{
 				case DamageState.Normal:
-					prefix = "";
 					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
 					break;
 				case DamageState.Half:
-					prefix = "damaged-";
 					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
 					break;
 			}
@@ -61,7 +63,7 @@ namespace OpenRa.Game.Traits
 
 		public void UnitProduced(Actor self, Actor other)
 		{
-			roof.PlayThen(prefix + "build-top", () => isOpen = true);
+			roof.PlayThen(GetPrefix(self) + "build-top", () => isOpen = true);
 		}
 	}
 }
