@@ -43,6 +43,8 @@ namespace OpenRa.Game.GameRules
 		public readonly string[] BuiltAt = { };
 		public readonly int[] PrimaryOffset = { 0, 0 };
 		public readonly int[] SecondaryOffset = null;
+		public readonly int[] RotorOffset = { 0, 0 };
+		public readonly int[] RotorOffset2 = null;
 		public readonly int Recoil = 0;
 		public readonly bool MuzzleFlash = false;
 		public readonly int SelectionPriority = 10;
