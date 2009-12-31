@@ -142,7 +142,9 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left || underCursor == null) return null;
 			if (self == underCursor) return null;
-			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
+			var isHeal = Rules.WeaponInfo[self.Info.Primary].Damage < 0;
+			if (((underCursor.Owner == self.Owner) ^ isHeal) 
+				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 			return new Order("Attack", self, underCursor, int2.Zero, null);
 		}
