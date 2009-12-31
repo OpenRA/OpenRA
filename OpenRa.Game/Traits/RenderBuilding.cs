@@ -56,6 +56,12 @@ namespace OpenRa.Game.Traits
 			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
 		}
 
+		public void PlayCustomAnim(Actor self, string name)
+		{
+			anim.PlayThen(GetPrefix(self) + name, 
+				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+		}
+
 		public virtual void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged)

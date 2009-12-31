@@ -1,4 +1,6 @@
-﻿namespace OpenRa.Game.Traits.Activities
+﻿using System.Linq;
+
+namespace OpenRa.Game.Traits.Activities
 {
 	class Rearm : IActivity
 	{
@@ -17,6 +19,13 @@
 			if (--remainingTicks == 0)
 			{
 				if (!limitedAmmo.GiveAmmo()) return NextActivity;
+
+				var hostBuilding = Game.FindUnits(self.CenterLocation, self.CenterLocation)
+					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
+
+				if (hostBuilding != null)
+					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+
 				remainingTicks = ticksPerPip;
 			}
 
