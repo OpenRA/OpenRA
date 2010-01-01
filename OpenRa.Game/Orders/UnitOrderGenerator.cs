@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
-	class PlaceBuilding : IOrderGenerator
+	class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		readonly Actor Producer;
 		readonly BuildingInfo Building;
 
-		public PlaceBuilding(Actor producer, string name)
+		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
 			Building = (BuildingInfo)Rules.UnitInfo[ name ];

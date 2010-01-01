@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using IjwFramework.Collections;
 using IjwFramework.Types;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Support;
 using OpenRa.Game.GameRules;
-
+using OpenRa.Game.Graphics;
+using OpenRa.Game.Orders;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game
 {
@@ -363,7 +361,7 @@ namespace OpenRa.Game
 					if (producing.Done)
 					{
 						if (group == "Building" || group == "Defense")
-							Game.controller.orderGenerator = new PlaceBuilding(player.PlayerActor, item);
+							Game.controller.orderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
 						return;
 					}
 

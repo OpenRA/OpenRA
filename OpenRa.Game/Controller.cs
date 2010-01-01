@@ -5,6 +5,7 @@ using IjwFramework.Collections;
 using IjwFramework.Types;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Orders;
 using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
@@ -62,7 +63,7 @@ namespace OpenRa.Game
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (!(orderGenerator is PlaceBuilding))
+				if (!(orderGenerator is PlaceBuildingOrderGenerator))
 					dragStart = dragEnd = xy;
 				ApplyOrders(xy, mi);
 			}
@@ -72,7 +73,7 @@ namespace OpenRa.Game
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (!(orderGenerator is PlaceBuilding))
+				if (!(orderGenerator is PlaceBuildingOrderGenerator))
 				{
 					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
 					CombineSelection(newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);

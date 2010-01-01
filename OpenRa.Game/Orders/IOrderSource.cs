@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
 	interface IOrderSource
 	{
