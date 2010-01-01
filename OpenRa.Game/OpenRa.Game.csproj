@@ -146,6 +146,7 @@
     <Compile Include="Traits\Activities\Rearm.cs" />
     <Compile Include="Traits\Activities\Repair.cs" />
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
+    <Compile Include="Traits\Activities\Sell.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="IOrderGenerator.cs" />
