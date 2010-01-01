@@ -13,19 +13,15 @@ namespace OpenRa.Game.Orders
 		{
 			var loc = mi.Location + Game.viewport.Location;
 			var underCursor = Game.FindUnits(loc, loc)
-				.Where( a => a.traits.Contains<Building>() ).FirstOrDefault();
-
-			if (underCursor != null && !underCursor.Info.Selectable)
-				underCursor = null;
+				.Where(a => a.Owner == Game.LocalPlayer
+					&& a.traits.Contains<Building>()
+					&& a.Info.Selectable).FirstOrDefault();
 
 			if (underCursor == null)
 				yield break;
 
 			var building = underCursor.traits.Get<Building>();
 			if (building.unitInfo.Unsellable)
-				yield break;
-
-			if (underCursor.Owner != Game.LocalPlayer)
 				yield break;
 
 			yield return new Order("Sell", underCursor, null, int2.Zero, null);

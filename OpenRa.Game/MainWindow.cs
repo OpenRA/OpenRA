@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Orders;
 
 namespace OpenRa.Game
 {
@@ -132,6 +133,8 @@ namespace OpenRa.Game
 			/* temporary hack: DO NOT LEAVE IN */
 			if (e.KeyCode == Keys.F2)
 				Game.LocalPlayer = Game.players[(Game.LocalPlayer.Index + 1) % 4];
+			if (e.KeyCode == Keys.F3)
+				Game.controller.orderGenerator = new SellOrderGenerator();
 
 			if (!Game.chat.isChatting)
 				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)

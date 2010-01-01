@@ -18,7 +18,11 @@ namespace OpenRa.Game.Traits.Activities
 
 			self.Owner.GiveCash((int)refund);
 			self.Health = 0;
+			foreach (var ns in self.traits.WithInterface<INotifySold>())
+				ns.Sold(self);
 			Game.world.Remove(self);
+
+			// todo: give dudes
 		}
 
 		public IActivity Tick(Actor self)

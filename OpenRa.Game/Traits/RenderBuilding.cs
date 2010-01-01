@@ -5,7 +5,7 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderBuilding : RenderSimple, INotifyDamage
+	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;
@@ -88,5 +88,7 @@ namespace OpenRa.Game.Traits
 					break;
 			}
 		}
+
+		public void Sold(Actor self) { DoBib(self, true); }
 	}
 }
