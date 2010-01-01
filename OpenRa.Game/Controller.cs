@@ -95,10 +95,13 @@ namespace OpenRa.Game
 							   ? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
 
 			if (isClick)
-				orderGenerator = new UnitOrderGenerator(isCombine 
-					? oldSelection.SymmetricDifference(newSelection) : newSelection);
+			{
+				var adjNewSelection = newSelection.Take(1);	/* todo: select BEST, not FIRST */
+				orderGenerator = new UnitOrderGenerator(isCombine
+					? oldSelection.SymmetricDifference(adjNewSelection) : adjNewSelection);
+			}
 			else
-				orderGenerator = new UnitOrderGenerator(isCombine 
+				orderGenerator = new UnitOrderGenerator(isCombine
 					? oldSelection.Union(newSelection) : newSelection);
 
 			var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
