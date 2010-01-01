@@ -162,6 +162,7 @@ namespace OpenRa.Game
                 else
                     return Cursor.MoveBlocked;
 			case "Enter": return Cursor.Enter;
+			case "Infiltrate": return Cursor.Enter;
 			case "Capture": return Cursor.Capture;
 			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
 			default:

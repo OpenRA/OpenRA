@@ -198,6 +198,7 @@
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
+    <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />

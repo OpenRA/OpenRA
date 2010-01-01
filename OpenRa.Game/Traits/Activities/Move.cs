@@ -14,6 +14,7 @@ namespace OpenRa.Game.Traits.Activities
 		int nearEnough;
 		public List<int2> path;
 		Func<Actor, Mobile, List<int2>> getPath;
+		public Actor ignoreBuilding;
 
 		MovePart move;
 
@@ -24,6 +25,18 @@ namespace OpenRa.Game.Traits.Activities
 				mobile.GetMovementType() );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
+		}
+
+		public Move(int2 destination, Actor ignoreBuilding)
+		{
+			this.getPath = (self, mobile) => 
+				Game.PathFinder.FindPath(
+					PathSearch.FromPoint( self.Location, destination, mobile.GetMovementType(), false )
+					.WithCustomBlocker( Game.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
+
+			this.destination = destination;
+			this.nearEnough = 0;
+			this.ignoreBuilding = ignoreBuilding;
 		}
 
 		public Move( Actor target, int range )
@@ -42,9 +55,11 @@ namespace OpenRa.Game.Traits.Activities
 			this.nearEnough = 0;
 		}
 
-		static bool CanEnterCell( int2 c, Actor self )
+		bool CanEnterCell( int2 c, Actor self )
 		{
-			if (!Game.BuildingInfluence.CanMoveHere(c)) return false;
+			if (!Game.BuildingInfluence.CanMoveHere(c)
+				&& Game.BuildingInfluence.GetBuildingAt(c) != ignoreBuilding) 
+				return false;
 			
 			// Cannot enter a cell if any unit inside is uncrushable
 			// This will need to be updated for multiple-infantry-in-a-cell

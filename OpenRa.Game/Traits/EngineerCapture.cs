@@ -16,13 +16,13 @@ namespace OpenRa.Game.Traits
 			
 			// todo: other bits
 
-			return new Order(underCursor.Health <= EngineerDamage ? "Capture" : "Enter",
+			return new Order(underCursor.Health <= EngineerDamage ? "Capture" : "Infiltrate",
 				self, underCursor, int2.Zero, null);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Enter" || order.OrderString == "Capture")
+			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));

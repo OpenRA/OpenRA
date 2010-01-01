@@ -22,7 +22,7 @@ All tracked vehicles
 Light vehicles
 V2RL	Works
 APC		Cargo doesn't work
-MNLY	Can't reload at FIX
+MNLY	Works
 MGG		No gap
 MRJ		No radar
 JEEP	Works
@@ -31,15 +31,15 @@ HARV	Works
 ARTY	Works
 
 Helicopters
-	- Repair as FIX doesn't work
+	- Return to base after attack doesnt work
 TRAN	Cargo doesn't work
-HELI	Weapon offsets wrong
-HIND	Weapon offsets wrong
+HELI	Works
+HIND	Works
 
-Planes	
-	- Repair at FIX doesn't work [fix doesn't work?]
-YAK		Ammo/ROF are funky
-MIG		Ammo/ROF are funky
+Planes
+	- Ammo/ROF are funky
+YAK		Works
+MIG		Works
 
 	
 Ships
