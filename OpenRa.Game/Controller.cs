@@ -183,6 +183,7 @@ namespace OpenRa.Game
 			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
 			case "PlaceBuilding": return Cursor.Default;
 			case "Sell": return Cursor.Sell;
+			case "NoSell": return Cursor.SellBlocked;
 			default:
 				return null;
 			}

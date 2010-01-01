@@ -27,5 +27,6 @@ namespace OpenRa.Game
 		public static Cursor Capture { get { return new Cursor("capture"); } }
 		public static Cursor Heal { get { return new Cursor("heal"); } }
 		public static Cursor Sell { get { return new Cursor("sell"); } }
+		public static Cursor SellBlocked { get { return new Cursor("sell-blocked"); } }
 	}
 }

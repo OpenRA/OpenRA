@@ -372,14 +372,14 @@
     <sequence name="move-minimap" start="29" length="6" />
     <sequence name="repair" start="35" length="24" />
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
-    <sequence name="sell" start="68" length="12" />
+    <sequence name="sell" start="68" length="12" x="12" y="12"/>
     <sequence name="default-minimap" start="80" length="1" />
     <sequence name="ability" start="82" length="8" />
     <sequence name="nuke" start="90" length="7" x="12" y="12" />
     <sequence name="chrono" start="105" length="8" x="12" y="12" />
     <sequence name="enter" start="113" length="3" x="12" y="12" />
     <sequence name="c4" start="116" length="3" x="12" y="12" />
-    <sequence name="sell-blocked" start="119" length="1" />
+    <sequence name="sell-blocked" start="119" length="1" x="12" y="12" />
     <sequence name="repair-blocked" start="120" length="1" />
     <sequence name="c4-minimap" start="121" length="3" />
     <sequence name="scroll-blocked" start="124" length="8" />
