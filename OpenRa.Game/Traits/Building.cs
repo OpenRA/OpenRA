@@ -1,8 +1,9 @@
 ﻿using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Building : INotifyDamage
+	class Building : INotifyDamage, IOrder
 	{
 		public readonly BuildingInfo unitInfo;
 
@@ -17,6 +18,20 @@ namespace OpenRa.Game.Traits
 		{
 			if (e.DamageState == DamageState.Dead)
 				Sound.Play("kaboom22.aud");
+		}
+
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return null; // sell/repair orders are issued through Chrome, not here.
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Sell")
+			{
+				self.CancelActivity();
+				self.QueueActivity(new Sell());
+			}
 		}
 	}
 }
