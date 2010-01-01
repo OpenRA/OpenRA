@@ -99,6 +99,7 @@
     <Compile Include="Orders\NetworkOrderSource.cs" />
     <Compile Include="Orders\OrderIO.cs" />
     <Compile Include="Orders\OrderManager.cs" />
+    <Compile Include="Orders\SellOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
