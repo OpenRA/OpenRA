@@ -16,33 +16,38 @@ namespace OpenRa.Game.Orders
 
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
-			if( mi.Button == MouseButton.Left )
+			if (mi.IsFake)
 			{
-                if (!Game.CanPlaceBuilding(Building, xy, null, true))
-                {
-                    Sound.Play("nodeply1.aud");
-                    yield break;
-                }
+				// this order is never actually issued, but it's used for choosing a cursor
+				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
+				yield break;
+			}
 
-                if (!Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
-                {
-                    Sound.Play("nodeply1.aud");
-                    yield break;
-                }
+			if (mi.Button == MouseButton.Left)
+			{
+				if (!Game.CanPlaceBuilding(Building, xy, null, true))
+				{
+					Sound.Play("nodeply1.aud");
+					yield break;
+				}
+
+				if (!Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
+				{
+					Sound.Play("nodeply1.aud");
+					yield break;
+				}
 
 				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
 			}
-			else // rmb
-			{
-				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
-			}
+			else
+				Game.controller.CancelInputMode();
 		}
 
 		public void Tick()
 		{
 			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.UnitCategory[ Building.Name ] );
-			if( producing == null || producing.Item != Building.Name || producing.RemainingTime != 0 )
-				Game.world.AddFrameEndTask( _ => { Game.controller.orderGenerator = null; } );
+			if (producing == null || producing.Item != Building.Name || producing.RemainingTime != 0)
+				Game.controller.CancelInputMode();
 		}
 
 		public void Render()

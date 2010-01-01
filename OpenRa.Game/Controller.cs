@@ -19,6 +19,12 @@ namespace OpenRa.Game
 		public Controller(Func<Modifiers> getModifierKeys)
 		{
 			GetModifierKeys = getModifierKeys;
+			CancelInputMode();
+		}
+
+		public void CancelInputMode()
+		{
+			orderGenerator = new UnitOrderGenerator(new Actor[] { });
 		}
 
 		List<Order> recentOrders = new List<Order>();
@@ -128,13 +134,22 @@ namespace OpenRa.Game
 		public Cursor ChooseCursor()
 		{
 			var mods = GetModifierKeys();
-			var c = (orderGenerator is UnitOrderGenerator) ? orderGenerator.Order(dragEnd.ToInt2(),
-				new MouseInput { Location = (Game.CellSize * dragEnd - Game.viewport.Location).ToInt2(), Button = MouseButton.Right, Modifiers = mods })
+			
+			var mi = new MouseInput { 
+				Location = (Game.CellSize * dragEnd - Game.viewport.Location).ToInt2(), 
+				Button = MouseButton.Right, 
+				Modifiers = mods,
+				IsFake = true,
+			};
+
+			var c = orderGenerator.Order(dragEnd.ToInt2(), mi)
 				.Where(o => o.Validate())
 				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
-				.FirstOrDefault(a => a != null) : null;
+				.FirstOrDefault(a => a != null);
 
-			return c ?? (Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() ? Cursor.Select : Cursor.Default);
+			return c ?? 
+				(Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() 
+					? Cursor.Select : Cursor.Default);
 		}
 
 		Cursor CursorForOrderString( string s, Actor a, int2 location )
@@ -166,6 +181,7 @@ namespace OpenRa.Game
 			case "Infiltrate": return Cursor.Enter;
 			case "Capture": return Cursor.Capture;
 			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
+			case "PlaceBuilding": return Cursor.Default;
 			default:
 				return null;
 			}
