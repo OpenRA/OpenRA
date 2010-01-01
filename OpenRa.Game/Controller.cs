@@ -26,8 +26,8 @@ namespace OpenRa.Game
 		{
 			if (orderGenerator == null) return;
 
-			var orders = orderGenerator.Order(xy.ToInt2(), mi).ToArray();
-			orders.Where(order => order.Validate());
+			var orders = orderGenerator.Order(xy.ToInt2(), mi)
+				.Where(order => order.Validate()).ToArray();
 			recentOrders.AddRange( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
