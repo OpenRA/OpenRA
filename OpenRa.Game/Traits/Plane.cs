@@ -12,13 +12,21 @@ namespace OpenRa.Game.Traits
 
 		public Plane(Actor self) {}
 
+		// todo: push into data!
+		static bool PlaneCanEnter(Actor a)
+		{
+			if (a.Info == Rules.UnitInfo["AFLD"]) return true;
+			if (a.Info == Rules.UnitInfo["FIX"]) return true;
+			return false;
+		}
+
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
 			if (underCursor == null)
 				return new Order("Move", self, null, xy, null);
 
-			if (underCursor.Info == Rules.UnitInfo["AFLD"]
+			if (PlaneCanEnter(underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor, int2.Zero, null);
@@ -51,18 +59,12 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(new Rearm());		/* todo: something else when it's FIX rather than AFLD */
+				self.QueueActivity(order.TargetActor.Info == Rules.UnitInfo["AFLD"]
+					? (IActivity)new Rearm() : new Repair());
 			}
 		}
 
-		public UnitMovementType GetMovementType()
-		{
-			return UnitMovementType.Fly;
-		}
-
-		public bool CanEnterCell(int2 location)
-		{
-			return true; // Planes can go anywhere (?)
-		}
+		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
+		public bool CanEnterCell(int2 location) { return true; }
 	}
 }
