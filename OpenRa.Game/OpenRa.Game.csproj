@@ -202,7 +202,7 @@
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
-    <Compile Include="Traits\McvUndeploy.cs" />
+    <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />

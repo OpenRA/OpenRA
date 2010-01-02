@@ -1001,4 +1001,14 @@
     <sequence name="powerbar-top" start="0" length="1" />
     <sequence name="powerbar-bottom" start="1" length="1" />
   </unit>
+  <unit name="repair">
+    <sequence name="normal" start="0" length="1" />
+    <sequence name="pressed" start="1" length="1" />
+    <sequence name="disabled" start="2" length="1" />
+  </unit>
+  <unit name="sell">
+	<sequence name="normal" start="0" length="1" />
+	<sequence name="pressed" start="1" length="1" />
+	<sequence name="disabled" start="2" length="1" />
+  </unit>
 </sequences>

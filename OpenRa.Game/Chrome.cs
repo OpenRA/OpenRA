@@ -7,6 +7,7 @@ using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Orders;
 using OpenRa.Game.Support;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -22,6 +23,10 @@ namespace OpenRa.Game
 		readonly Sprite powerIndicatorSprite;
 		readonly Sprite powerLevelTopSprite;
 		readonly Sprite powerLevelBottomSprite;
+		
+		readonly Animation repairButton;
+		readonly Animation sellButton;
+		
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
@@ -65,6 +70,12 @@ namespace OpenRa.Game
 			powerBottom.PlayRepeating("powerbar-bottom");
 			powerLevelBottomSprite = powerBottom.Image;
 			
+			repairButton = new Animation("repair");
+			repairButton.PlayRepeating("normal");
+
+			sellButton = new Animation("sell");
+			sellButton.PlayRepeating("normal");
+			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
 			sprites = groups
@@ -76,7 +87,7 @@ namespace OpenRa.Game
 
 			tabSprites = groups.Select(
 				(g, i) => Pair.New(g,
-					Util.MakeArray(3,
+					OpenRa.Game.Graphics.Util.MakeArray(3,
 						n => new Sprite(specialBin,
 							new Rectangle(512 - (n + 1) * 27, 64 + i * 40, 27, 40),
 							TextureChannel.Alpha))))
@@ -85,7 +96,7 @@ namespace OpenRa.Game
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
-			digitSprites = Util.MakeArray(10, a => a)
+			digitSprites = OpenRa.Game.Graphics.Util.MakeArray(10, a => a)
 				.Select(n => new Sprite(specialBin, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
 
 			shimSprites = new[] 
@@ -124,8 +135,8 @@ namespace OpenRa.Game
 
 			DrawMoney();
 			DrawPower();
-			
 			chromeRenderer.Flush();
+			DrawButtons();
 			
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
@@ -228,10 +239,71 @@ namespace OpenRa.Game
 
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
-			
-			
 		}
+		
+		void HandleButtons(string but)
+		{
+			if (but == "repair" && !(Game.controller.orderGenerator is RepairOrderGenerator))
+			{
+				Game.controller.orderGenerator = new RepairOrderGenerator();
+				return;
+			}
+			else if (but == "sell" && !(Game.controller.orderGenerator is SellOrderGenerator))
+			{
+				Game.controller.orderGenerator = new SellOrderGenerator();
+				return;
+			}
+			Game.controller.orderGenerator = new UnitOrderGenerator(new Actor[] { });
+		}
+		
+		void DrawButtons()
+		{
+			// Repair
+			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5,repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
+			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>()))
+			{
+				// Player requires a conyard to repair
+				repairButton.ReplaceAnim("disabled");
+				
+				// Cancel repair action. Should be handled elsewhere?
+				if (Game.controller.orderGenerator is RepairOrderGenerator)
+				{
+					Game.controller.orderGenerator = new UnitOrderGenerator(new Actor[] { });
+				}
+			}
+			else
+			{
+				if (Game.controller.orderGenerator is RepairOrderGenerator)
+				{
+					repairButton.ReplaceAnim("pressed");
+				}
+				else
+				{
+					repairButton.ReplaceAnim("normal");
+				}
+				buttons.Add(Pair.New(repairRect,(Action<bool>)(isLmb => HandleButtons("repair"))));
+			}
+			buildPaletteRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
+			
+			
+			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
+			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
 
+			if (Game.controller.orderGenerator is SellOrderGenerator)
+			{
+				sellButton.ReplaceAnim("pressed");
+			}
+			else
+			{
+				sellButton.ReplaceAnim("normal");
+			}
+
+			buttons.Add(Pair.New(sellRect, (Action<bool>)(isLmb => HandleButtons("sell"))));
+			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+		}
+		
 		void DrawChat()
 		{
 			var chatpos = new int2(400, Game.viewport.Height - 20);

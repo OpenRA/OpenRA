@@ -3,11 +3,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class McvUndeploy : IOrder, IMovement
+	class ConstructionYard : IOrder, IMovement
 	{
 		readonly Actor self;
 
-		public McvUndeploy(Actor self)
+		public ConstructionYard(Actor self)
 		{
 			this.self = self;
 		}
