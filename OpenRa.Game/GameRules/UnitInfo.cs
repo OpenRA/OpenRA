@@ -54,6 +54,7 @@ namespace OpenRa.Game.GameRules
 		public readonly string LongDesc = null;
 		public readonly int OrePips = 0;
 		public readonly string Icon = null;
+		public readonly int[] SelectionSize = null;
 
 		public UnitInfo(string name) { Name = name; }
 	}
