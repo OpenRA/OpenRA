@@ -34,7 +34,15 @@ namespace OpenRa.Game.Orders
 			yield return new Order("Repair", underCursor, null, int2.Zero, null);
 		}
 
-		public void Tick() {}
+		public void Tick()
+		{
+			var hasFact = Game.world.Actors
+				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+			
+			if (!hasFact)
+				Game.controller.CancelInputMode();
+		}
+		
 
 		public void Render() {}
 	}

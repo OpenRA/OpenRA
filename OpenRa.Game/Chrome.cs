@@ -143,6 +143,8 @@ namespace OpenRa.Game
 			DrawChat();
 		}
 
+		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+
 		void DrawBuildTabs(int paletteHeight)
 		{
 			const int tabWidth = 24;
@@ -240,66 +242,33 @@ namespace OpenRa.Game
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
 		}
-		
-		void HandleButtons(string but)
-		{
-			if (but == "repair" && !(Game.controller.orderGenerator is RepairOrderGenerator))
-			{
-				Game.controller.orderGenerator = new RepairOrderGenerator();
-				return;
-			}
-			else if (but == "sell" && !(Game.controller.orderGenerator is SellOrderGenerator))
-			{
-				Game.controller.orderGenerator = new SellOrderGenerator();
-				return;
-			}
-			Game.controller.orderGenerator = new UnitOrderGenerator(new Actor[] { });
-		}
-		
+
 		void DrawButtons()
 		{
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5,repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
-			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>()))
-			{
-				// Player requires a conyard to repair
+
+			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+
+			if (!hasFact)
 				repairButton.ReplaceAnim("disabled");
-				
-				// Cancel repair action. Should be handled elsewhere?
-				if (Game.controller.orderGenerator is RepairOrderGenerator)
-				{
-					Game.controller.orderGenerator = new UnitOrderGenerator(new Actor[] { });
-				}
-			}
 			else
 			{
-				if (Game.controller.orderGenerator is RepairOrderGenerator)
-				{
-					repairButton.ReplaceAnim("pressed");
-				}
-				else
-				{
-					repairButton.ReplaceAnim("normal");
-				}
-				buttons.Add(Pair.New(repairRect,(Action<bool>)(isLmb => HandleButtons("repair"))));
+				repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
+				AddButton(repairRect, isLmb => Game.controller.ToggleInputMode<RepairOrderGenerator>());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
 			
-			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
+			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, 
+				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
+
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
 
-			if (Game.controller.orderGenerator is SellOrderGenerator)
-			{
-				sellButton.ReplaceAnim("pressed");
-			}
-			else
-			{
-				sellButton.ReplaceAnim("normal");
-			}
-
-			buttons.Add(Pair.New(sellRect, (Action<bool>)(isLmb => HandleButtons("sell"))));
+			repairButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
+			
+			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
 		}
@@ -419,8 +388,7 @@ namespace OpenRa.Game
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 				var closureItem = item;
-				buttons.Add(Pair.New(rect,
-					(Action<bool>)(isLmb => HandleBuildPalette(closureItem, isLmb))));
+				AddButton(rect, isLmb => HandleBuildPalette(closureItem, isLmb));
 				if (++x == columns) { x = 0; y++; }
 			}
 
@@ -429,7 +397,7 @@ namespace OpenRa.Game
 				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				buildPaletteRenderer.DrawSprite(blank, drawPos, PaletteType.Chrome);
-				buttons.Add(Pair.New(rect, (Action<bool>)(_ => { })));
+				AddButton(rect, _ => { });
 				if (++x == columns) { x = 0; y++; }
 			}
 
