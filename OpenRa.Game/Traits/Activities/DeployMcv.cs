@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			Game.world.AddFrameEndTask( _ =>
 			{
+				self.Health = 0;
 				Game.world.Remove( self );
 				if (self.Owner == Game.LocalPlayer)
 				{
