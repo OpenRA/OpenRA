@@ -13,11 +13,15 @@ namespace OpenRa.Game
 	class Chrome : IHandleInput
 	{
 		readonly Renderer renderer;
+		readonly LineRenderer lineRenderer;
 		readonly Sheet specialBin;
 		readonly SpriteRenderer chromeRenderer;
 		readonly Sprite specialBinSprite;
 		readonly Sprite moneyBinSprite;
 		readonly Sprite tooltipSprite;
+		readonly Sprite powerIndicatorSprite;
+		readonly Sprite powerLevelTopSprite;
+		readonly Sprite powerLevelBottomSprite;
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
@@ -37,17 +41,30 @@ namespace OpenRa.Game
 			// Positioning of chrome elements
 			// Build palette
 			paletteColumns = 4;
-			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9, 240 - 9);
+			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9 - 20, 240 - 9);
 			
 			this.renderer = r;
 			specialBin = new Sheet(renderer, "specialbin.png");
 			chromeRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
+			lineRenderer = new LineRenderer(renderer);
 			buildPaletteRenderer = new SpriteRenderer(renderer, true);
 
 			specialBinSprite = new Sprite(specialBin, new Rectangle(0, 0, 32, 192), TextureChannel.Alpha);
 			moneyBinSprite = new Sprite(specialBin, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
 			tooltipSprite = new Sprite(specialBin, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
+			
+			var powerIndicator = new Animation("power");
+			powerIndicator.PlayRepeating("power-level-indicator");
+			powerIndicatorSprite = powerIndicator.Image;
+			
+			var powerTop = new Animation("powerbar");
+			powerTop.PlayRepeating("powerbar-top");
+			powerLevelTopSprite = powerTop.Image;
 
+			var powerBottom = new Animation("powerbar");
+			powerBottom.PlayRepeating("powerbar-bottom");
+			powerLevelBottomSprite = powerBottom.Image;
+			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
 			sprites = groups
@@ -106,6 +123,7 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 
 			DrawMoney();
+			DrawPower();
 			
 			chromeRenderer.Flush();
 			
@@ -183,6 +201,35 @@ namespace OpenRa.Game
 				chromeRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Chrome);
 				x -= 14;
 			}
+		}
+		
+		void DrawPower()
+		{
+			//draw background
+			float2 powerOrigin = Game.viewport.Location+new float2(Game.viewport.Width - 20, 240 - 9);
+
+			buildPaletteRenderer.DrawSprite(powerLevelTopSprite, powerOrigin, PaletteType.Chrome);
+			buildPaletteRenderer.DrawSprite(powerLevelBottomSprite, powerOrigin + new float2(0, powerLevelTopSprite.size.Y), PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+			float2 top = powerOrigin + new float2(0, 15);
+			float2 bottom = powerOrigin + new float2(0, powerLevelTopSprite.size.Y + powerLevelBottomSprite.size.Y) - new float2(0, 50);
+			
+			var scale = 100;
+			while(Game.LocalPlayer.PowerProvided >= scale) scale += 100;
+			//draw bar
+			float2 powerTop = new float2(bottom.X, bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale));
+			
+			for(int i = 7; i < 11; i++)
+				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), Color.LimeGreen, Color.LimeGreen);
+			lineRenderer.Flush();
+			
+			//draw indicator
+			float2 drainedPosition = new float2(bottom.X , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale));
+
+			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+			
+			
 		}
 
 		void DrawChat()
