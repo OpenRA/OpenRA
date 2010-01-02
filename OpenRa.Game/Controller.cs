@@ -184,6 +184,8 @@ namespace OpenRa.Game
 			case "PlaceBuilding": return Cursor.Default;
 			case "Sell": return Cursor.Sell;
 			case "NoSell": return Cursor.SellBlocked;
+			case "Repair": return Cursor.Repair;
+			case "NoRepair": return Cursor.RepairBlocked; 
 			default:
 				return null;
 			}

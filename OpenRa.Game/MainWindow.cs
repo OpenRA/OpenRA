@@ -135,6 +135,8 @@ namespace OpenRa.Game
 				Game.LocalPlayer = Game.players[(Game.LocalPlayer.Index + 1) % 4];
 			if (e.KeyCode == Keys.F3)
 				Game.controller.orderGenerator = new SellOrderGenerator();
+			if (e.KeyCode == Keys.F4)
+				Game.controller.orderGenerator = new RepairOrderGenerator();				
 
 			if (!Game.chat.isChatting)
 				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
