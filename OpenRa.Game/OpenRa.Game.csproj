@@ -181,6 +181,7 @@
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
+    <Compile Include="Traits\Activities\UndeployMcv.cs" />
     <Compile Include="Traits\APMine.cs" />
     <Compile Include="Traits\ATMine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
+    <Compile Include="Traits\McvUndeploy.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
