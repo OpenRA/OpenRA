@@ -22,7 +22,8 @@ namespace OpenRa.Game
 		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 		public static Chrome chrome;
-
+		public static UserSettings Settings;
+		
 		public static OrderManager orderManager;
 
 		static int localPlayerIndex;
@@ -40,11 +41,6 @@ namespace OpenRa.Game
 		}
 		public static BuildingInfluenceMap BuildingInfluence;
 		public static UnitInfluenceMap UnitInfluence;
-
-		public static string Replay;
-
-		public static string NetworkHost;
-		public static int NetworkPort;
 
 		public static bool skipMakeAnims = true;
 
@@ -121,13 +117,13 @@ namespace OpenRa.Game
 
 			ChangeMap(mapName);
 
-			if (Replay != "")
-				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Replay) });
+			if (Settings.Replay != "")
+				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Settings.Replay) });
 			else
 			{
-				var orderSources = (string.IsNullOrEmpty(NetworkHost))
+				var orderSources = (string.IsNullOrEmpty(Settings.NetworkHost))
 					? new IOrderSource[] { new LocalOrderSource() }
-					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(NetworkHost, NetworkPort)) };
+					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(Settings.NetworkHost, Settings.NetworkPort)) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
 		}
@@ -149,7 +145,6 @@ namespace OpenRa.Game
 		}
 
 		static int lastTime = Environment.TickCount;
-		public static int timestep = 40;
 
 		public static void ResetTimer()
 		{
@@ -166,11 +161,11 @@ namespace OpenRa.Game
 		{
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
-			if (dt >= timestep)
+			if (dt >= Settings.Timestep)
 			{
 				using (new PerfSample("tick_time"))
 				{
-					lastTime += timestep;
+					lastTime += Settings.Timestep;
 					UpdatePalette(world.Actors.SelectMany(
 						a => a.traits.WithInterface<IPaletteModifier>()));
 					orderManager.TickImmediate();

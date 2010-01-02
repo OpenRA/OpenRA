@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Orders;
+using OpenRa.Game.GameRules;
+
 
 namespace OpenRa.Game
 {
@@ -16,34 +18,44 @@ namespace OpenRa.Game
 		static Size GetResolution(Settings settings)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-
+			if (Game.Settings.Width > 0 && Game.Settings.Height > 0)
+			{
+				desktopResolution.Width = Game.Settings.Width;
+				desktopResolution.Height = Game.Settings.Height;
+			}
 			return new Size(
-				settings.GetValue("width", desktopResolution.Width),
-				settings.GetValue("height", desktopResolution.Height));
+				desktopResolution.Width,
+				desktopResolution.Height);
 		}
 
 		[DllImport("user32")]
 		static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
 
+		
+		
 		public MainWindow(Settings settings)
 		{
+			FileSystem.Mount(new Folder("./"));
+			
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
 			Location = Point.Empty;
 			Visible = true;
-
-			UiOverlay.ShowUnitDebug = settings.GetValue("udebug", false);
-			UiOverlay.ShowBuildDebug = settings.GetValue("bdebug", false);
-			WorldRenderer.ShowUnitPaths = settings.GetValue("pathdebug", false);
-			Game.timestep = settings.GetValue("rate", 40);
-			Game.Replay = settings.GetValue("replay", "");
-			Game.NetworkHost = settings.GetValue("host", "");
-			Game.NetworkPort = int.Parse(settings.GetValue("port", "0"));
-
-			var useAftermath = bool.Parse(settings.GetValue("aftermath", "false"));
-
-			Renderer.SheetSize = int.Parse(settings.GetValue("sheetsize", "512"));
+			
+			// Load user settings
+			Game.Settings = new UserSettings();
+			try
+			{
+				IniFile SettingsRules = new IniFile(FileSystem.Open("settings.ini"));
+				FieldLoader.Load(Game.Settings, SettingsRules.GetSection("Settings"));
+			}
+			catch (FileNotFoundException) {}
+			
+			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
+			UiOverlay.ShowBuildDebug = Game.Settings.BuildingDebug;
+			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
+			Renderer.SheetSize = Game.Settings.SheetSize;
 
 			while (!File.Exists("redalert.mix"))
 			{
@@ -53,15 +65,20 @@ namespace OpenRa.Game
 				Directory.SetCurrentDirectory("..");
 			}
 
-			FileSystem.MountDefault(useAftermath);
+			FileSystem.MountDefaultPackages();
+			
+			if (Game.Settings.UseAftermath)
+			{
+				FileSystem.MountAftermathPackages();
+			}
 
-			bool windowed = !settings.GetValue("fullscreen", false);
+			bool windowed = !Game.Settings.Fullscreen;
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 
 			var controller = new Controller(() => (Modifiers)(int)ModifierKeys);	/* a bit of insane input routing */
 
-			Game.Initialize(settings.GetValue("map", "scm12ea.ini"), renderer, new int2(ClientSize),
-				settings.GetValue("player", 1), useAftermath, controller);
+			Game.Initialize(Game.Settings.Map, renderer, new int2(ClientSize),
+				Game.Settings.Player, Game.Settings.UseAftermath, controller);
 
 			ShowCursor(false);
 			Game.ResetTimer();

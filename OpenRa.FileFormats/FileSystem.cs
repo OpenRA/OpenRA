@@ -9,9 +9,8 @@ namespace OpenRa.FileFormats
 		static List<IFolder> mountedFolders = new List<IFolder>();
 		static List<IFolder> temporaryMounts = new List<IFolder>();
 
-		public static void MountDefault( bool useAftermath )
+		public static void MountDefaultPackages()
 		{
-			FileSystem.Mount( new Folder( "./" ) );
 			if( File.Exists( "main.mix" ) )
 				FileSystem.Mount( new Package( "main.mix" ) );
 			FileSystem.Mount( new Package( "redalert.mix" ) );
@@ -23,11 +22,12 @@ namespace OpenRa.FileFormats
 			FileSystem.Mount( new Package( "speech.mix" ) );
 			FileSystem.Mount( new Package( "allies.mix" ) );
 			FileSystem.Mount( new Package( "russian.mix" ) );
-			if( useAftermath )
-			{
-				FileSystem.Mount( new Package( "expand2.mix" ) );
-				FileSystem.Mount( new Package( "hires1.mix" ) );
-			}
+		}
+		
+		public static void MountAftermathPackages()
+		{
+			FileSystem.Mount( new Package( "expand2.mix" ) );
+			FileSystem.Mount( new Package( "hires1.mix" ) );
 		}
 
 		public static void Mount(IFolder folder)
