@@ -82,18 +82,7 @@ namespace OpenRa.Game.Graphics
 
 			spriteRenderer.Flush();
 
-			DrawBandBox();
-
-			
-			foreach(var a in Game.world.Actors.Where(b => b.Owner == Game.LocalPlayer && b.traits.Contains<Building>() && b.traits.Get<Building>().IsRepairing()))
-			{
-				var bounds = a.GetBounds(true);
-				
-				var repairImages = new Animation("select");
-				repairImages.PlayRepeating("repair");
-				spriteRenderer.DrawSprite(repairImages.Image, new float2(.5f * (bounds.Left + bounds.Right)-12, .5f * (bounds.Top + bounds.Bottom)-11), PaletteType.Chrome);
-			}
-			
+			DrawBandBox();			
 
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();

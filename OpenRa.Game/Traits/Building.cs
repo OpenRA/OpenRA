@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
@@ -43,10 +44,6 @@ namespace OpenRa.Game.Traits
 				isRepairing = !isRepairing;
 			}
 		}
-		
-		public bool IsRepairing(){
-			return isRepairing;
-		}
 
 		int remainingTicks;
 
@@ -62,8 +59,10 @@ namespace OpenRa.Game.Traits
 				if (!self.Owner.TakeCash(cost))
 				{
 					remainingTicks = 1;
+					return;
 				}
 
+				Game.world.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
 				if (self.Health == self.Info.Strength)
 				{

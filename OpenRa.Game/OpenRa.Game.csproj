@@ -83,6 +83,7 @@
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
+    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Exts.cs" />
