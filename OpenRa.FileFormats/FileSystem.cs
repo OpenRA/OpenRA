@@ -73,5 +73,20 @@ namespace OpenRa.FileFormats
 
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
 		}
+
+		public static bool Exists(string filename)
+		{
+			foreach (var folder in mountedFolders)
+			{
+				var s = folder.GetContent(filename);
+				if (s != null)
+				{
+					s.Dispose();
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
