@@ -246,12 +246,12 @@ namespace OpenRa.Game
 		void DrawButtons()
 		{
 			// Repair
-			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5,repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
 
-			if (!hasFact)
+			if (Game.Settings.RepairRequiresConyard && !hasFact)
 				repairButton.ReplaceAnim("disabled");
 			else
 			{
@@ -260,13 +260,13 @@ namespace OpenRa.Game
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
-			
+			// Sell
 			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
 
-			repairButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
+			sellButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
 			
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);

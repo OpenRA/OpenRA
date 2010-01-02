@@ -45,27 +45,30 @@ namespace OpenRa.Game
 			
 			// Load user settings
 			Game.Settings = new UserSettings();
-			try
-			{
-				FileSystem.MountTemporary(new Folder("./"));
-				IniFile SettingsRules = new IniFile(FileSystem.Open("settings.ini"));
-				FieldLoader.Load(Game.Settings, SettingsRules.GetSection("Settings"));
-				FileSystem.UnmountTemporaryPackages();
-			}
-			catch (FileNotFoundException) {}
 			
-			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
-			UiOverlay.ShowBuildDebug = Game.Settings.BuildingDebug;
-			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
-			Renderer.SheetSize = Game.Settings.SheetSize;
-
 			while (!File.Exists("redalert.mix"))
 			{
 				var current = Directory.GetCurrentDirectory();
 				if (Directory.GetDirectoryRoot(current) == current)
 					throw new InvalidOperationException("Unable to load MIX files.");
 				Directory.SetCurrentDirectory("..");
+
+				try
+				{
+					// settings.ini should be located with the mix files
+					FileSystem.MountTemporary(new Folder("./"));
+					IniFile SettingsRules = new IniFile(FileSystem.Open("settings.ini"));
+					FieldLoader.Load(Game.Settings, SettingsRules.GetSection("Settings"));
+					FileSystem.UnmountTemporaryPackages();
+				}
+				catch (FileNotFoundException) { }
 			}
+
+			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
+			UiOverlay.ShowBuildDebug = Game.Settings.BuildingDebug;
+			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
+			Renderer.SheetSize = Game.Settings.SheetSize;
+
 
 			FileSystem.MountDefaultPackages();
 			

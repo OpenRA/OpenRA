@@ -36,11 +36,14 @@ namespace OpenRa.Game.Orders
 
 		public void Tick()
 		{
-			var hasFact = Game.world.Actors
-				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
-			
-			if (!hasFact)
-				Game.controller.CancelInputMode();
+			if (Game.Settings.RepairRequiresConyard)
+			{
+				var hasFact = Game.world.Actors
+					.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+				
+				if (!hasFact)
+					Game.controller.CancelInputMode();
+			}
 		}
 		
 
