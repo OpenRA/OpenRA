@@ -372,7 +372,7 @@
     <sequence name="move-minimap" start="29" length="6" />
     <sequence name="repair" start="35" length="24" />
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
-    <sequence name="sell" start="68" length="12" x="12" y="12"/>
+    <sequence name="sell" start="68" length="12" x="12" y="12" />
     <sequence name="default-minimap" start="80" length="1" />
     <sequence name="ability" start="82" length="8" />
     <sequence name="nuke" start="90" length="7" x="12" y="12" />
@@ -388,7 +388,7 @@
     <sequence name="guard-minimap" start="146" length="1" />
     <sequence name="guard" start="147" length="1" x="12" y="12" />
     <sequence name="sell-vehicle" start="148" length="12" />
-    <sequence name="heal" start="160" length="4" x="12" y="12"/>
+    <sequence name="heal" start="160" length="4" x="12" y="12" />
     <sequence name="capture" start="164" length="3" />
     <sequence name="capture-minimap" start="167" length="3" />
     <sequence name="repair2" start="170" length="24" />
@@ -990,5 +990,8 @@
   </unit>
   <unit name="minv">
     <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="select">
+    <sequence name="repair" start="2" length="1" />
   </unit>
 </sequences>

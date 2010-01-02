@@ -25,7 +25,7 @@ namespace OpenRa.Game.Orders
 
 			var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
 
-			if (building == null || !building.Repairable)
+			if (building == null || !building.Repairable || underCursor.Health == building.Strength)
 			{
 				yield return new Order("NoRepair", Game.LocalPlayer.PlayerActor, null, int2.Zero, null);
 				yield break;
