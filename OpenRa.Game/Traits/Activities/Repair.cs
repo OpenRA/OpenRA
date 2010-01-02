@@ -11,23 +11,21 @@ namespace OpenRa.Game.Traits.Activities
 		bool isCanceled;
 		int remainingTicks;
 
-		public Repair() { remainingTicks = ticksPerPoint; }
-
-		readonly int ticksPerPoint = (int)(Rules.General.RepairRate * 60 * 25);
-		readonly int hpPerPoint = Rules.General.URepairStep;
-
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			if (--remainingTicks <= 0)
+			if (remainingTicks == 0)
 			{
 				var costPerHp = (Rules.General.URepairPercent * self.Info.Cost) / self.Info.Strength;
-				var hpToRepair = Math.Min( hpPerPoint, self.Info.Strength - self.Health );
+				var hpToRepair = Math.Min(Rules.General.URepairStep, self.Info.Strength - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
+				{
+					remainingTicks = 1;
 					return this;
+				}
 
-				self.InflictDamage(self, -hpPerPoint, Rules.WarheadInfo["Super"]);
+				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
 				if (self.Health == self.Info.Strength)
 					return NextActivity;
 
@@ -35,10 +33,12 @@ namespace OpenRa.Game.Traits.Activities
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
 
 				if (hostBuilding != null)
-					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active" );
+					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
 
-				remainingTicks = ticksPerPoint;
+				remainingTicks = (int)(Rules.General.RepairRate * 60 * 25);
 			}
+			else
+				--remainingTicks;
 
 			return this;
 		}
