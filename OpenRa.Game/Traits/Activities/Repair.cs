@@ -9,16 +9,24 @@ namespace OpenRa.Game.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
-		int remainingTicks = ticksPerPoint;
+		int remainingTicks;
 
-		const int ticksPerPoint = 15;
-		const int hpPerPoint = 8;
+		public Repair() { remainingTicks = ticksPerPoint; }
+
+		readonly int ticksPerPoint = (int)(Rules.General.RepairRate * 60 * 25);
+		readonly int hpPerPoint = Rules.General.URepairStep;
 
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			if (--remainingTicks == 0)
+			if (--remainingTicks <= 0)
 			{
+				var costPerHp = (Rules.General.URepairPercent * self.Info.Cost) / self.Info.Strength;
+				var hpToRepair = Math.Min( hpPerPoint, self.Info.Strength - self.Health );
+				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
+				if (!self.Owner.TakeCash(cost))
+					return this;
+
 				self.InflictDamage(self, -hpPerPoint, Rules.WarheadInfo["Super"]);
 				if (self.Health == self.Info.Strength)
 					return NextActivity;
