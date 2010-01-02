@@ -11,6 +11,7 @@ namespace OpenRa.FileFormats
 
 		public static void MountDefaultPackages()
 		{
+			FileSystem.Mount(new Folder("./"));
 			if( File.Exists( "main.mix" ) )
 				FileSystem.Mount( new Package( "main.mix" ) );
 			FileSystem.Mount( new Package( "redalert.mix" ) );

@@ -35,7 +35,7 @@ namespace OpenRa.Game
 		
 		public MainWindow(Settings settings)
 		{
-			FileSystem.Mount(new Folder("./"));
+			
 			
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
@@ -47,8 +47,10 @@ namespace OpenRa.Game
 			Game.Settings = new UserSettings();
 			try
 			{
+				FileSystem.MountTemporary(new Folder("./"));
 				IniFile SettingsRules = new IniFile(FileSystem.Open("settings.ini"));
 				FieldLoader.Load(Game.Settings, SettingsRules.GetSection("Settings"));
+				FileSystem.UnmountTemporaryPackages();
 			}
 			catch (FileNotFoundException) {}
 			
