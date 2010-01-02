@@ -14,6 +14,10 @@ namespace OpenRa.Game.Traits
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return null;
+				
+			// Ensure that the cell is empty except for the minelayer
+			if (Game.UnitInfluence.GetUnitsAt( xy ).Any(a => a != self))
+				return null;
 
 			if (mi.Button == MouseButton.Right && underCursor == self)
 				return new Order("Deploy", self, null, int2.Zero, null);
