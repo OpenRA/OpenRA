@@ -79,7 +79,7 @@ namespace OpenRa.Game
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (!(orderGenerator is PlaceBuildingOrderGenerator))
+				if (orderGenerator is UnitOrderGenerator)
 				{
 					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
 					CombineSelection(newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
