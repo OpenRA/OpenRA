@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			}
 		}
 		
-		Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
+		public Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
 		{
 			return q =>
 				p != q &&

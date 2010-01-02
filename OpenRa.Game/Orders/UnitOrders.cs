@@ -1,11 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
 	static class UnitOrders
 	{

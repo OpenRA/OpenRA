@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
 	class OrderManager
 	{

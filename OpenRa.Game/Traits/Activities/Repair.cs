@@ -19,12 +19,9 @@ namespace OpenRa.Game.Traits.Activities
 			if (isCanceled) return NextActivity;
 			if (--remainingTicks == 0)
 			{
-				self.Health += hpPerPoint;
-				if (self.Health >= self.Info.Strength)
-				{
-					self.Health = self.Info.Strength;
+				self.InflictDamage(self, -hpPerPoint, Rules.WarheadInfo["Super"]);
+				if (self.Health == self.Info.Strength)
 					return NextActivity;
-				}
 
 				var hostBuilding = Game.FindUnits(self.CenterLocation, self.CenterLocation)
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());

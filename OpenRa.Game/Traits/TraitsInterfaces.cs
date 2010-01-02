@@ -13,6 +13,7 @@ namespace OpenRa.Game.Traits
 	
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Renderable> Render(Actor self); }
+	interface INotifySold { void Sold(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }

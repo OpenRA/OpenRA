@@ -9,6 +9,14 @@ namespace OpenRa.Game.Traits
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}
 
+		// todo: push into data!
+		static bool HeliCanEnter(Actor a)
+		{
+			if (a.Info == Rules.UnitInfo["HPAD"]) return true;
+			if (a.Info == Rules.UnitInfo["FIX"]) return true;
+			return false;
+		}
+
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
@@ -16,7 +24,7 @@ namespace OpenRa.Game.Traits
 			if (underCursor == null)
 				return new Order("Move", self, null, xy, null);
 
-			if (underCursor.Info == Rules.UnitInfo["HPAD"]
+			if (HeliCanEnter(underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor, int2.Zero, null);
@@ -54,7 +62,8 @@ namespace OpenRa.Game.Traits
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
 				self.QueueActivity(new Turn(self.Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
-				self.QueueActivity(new Rearm());
+				self.QueueActivity(order.TargetActor.Info == Rules.UnitInfo["HPAD"]
+					? (IActivity)new Rearm() : new Repair());
 			}
 		}
 

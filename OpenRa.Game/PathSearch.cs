@@ -15,6 +15,7 @@ namespace OpenRa.Game
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public bool ignoreTerrain;
+		public Actor ignoreBuilding;
 
 		public PathSearch()
 		{
@@ -25,6 +26,12 @@ namespace OpenRa.Game
 		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
 		{
 			this.customBlock = customBlock;
+			return this;
+		}
+
+		public PathSearch WithIgnoredBuilding(Actor b)
+		{
+			ignoreBuilding = b;
 			return this;
 		}
 
@@ -49,7 +56,8 @@ namespace OpenRa.Game
 				{
 					if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
 						continue;
-					if (!Game.BuildingInfluence.CanMoveHere(newHere))
+					if (!Game.BuildingInfluence.CanMoveHere(newHere) && 
+						Game.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
 						continue;
 					if (Rules.Map.IsOverlaySolid(newHere))
 						continue;

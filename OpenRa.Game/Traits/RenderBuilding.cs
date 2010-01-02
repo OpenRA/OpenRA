@@ -5,7 +5,7 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderBuilding : RenderSimple, INotifyDamage
+	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;
@@ -62,6 +62,12 @@ namespace OpenRa.Game.Traits
 				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}
 
+		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
+		{
+			anim.PlayBackwardsThen(GetPrefix(self) + name,
+				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
+		}
+
 		public virtual void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged)
@@ -82,5 +88,7 @@ namespace OpenRa.Game.Traits
 					break;
 			}
 		}
+
+		public void Sold(Actor self) { DoBib(self, true); }
 	}
 }

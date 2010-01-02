@@ -10,7 +10,7 @@ namespace OpenRa.Game.Traits
 		{
 			target = order.TargetActor;
 			self.QueueActivity(new HeliAttack(order.TargetActor));
-			// todo: fly home
+			self.QueueActivity(new HeliReturn());
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRa.Game
+namespace OpenRa.Game.Orders
 {
 	static class OrderIO
 	{

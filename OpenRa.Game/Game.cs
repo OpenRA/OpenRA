@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Orders;
 using OpenRa.Game.Support;
 using OpenRa.Game.Traits;
 
