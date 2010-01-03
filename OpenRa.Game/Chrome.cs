@@ -40,6 +40,8 @@ namespace OpenRa.Game
 	
 		readonly int paletteColumns;
 		readonly int2 paletteOrigin;
+
+		const int MinRows = 4;
 		
 		public Chrome(Renderer r)
 		{
@@ -96,7 +98,7 @@ namespace OpenRa.Game
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
-			digitSprites = OpenRa.Game.Graphics.Util.MakeArray(10, a => a)
+			digitSprites = Graphics.Util.MakeArray(10, a => a)
 				.Select(n => new Sprite(specialBin, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
 
 			shimSprites = new[] 
@@ -392,7 +394,7 @@ namespace OpenRa.Game
 				if (++x == columns) { x = 0; y++; }
 			}
 
-			while (x != 0)
+			while (x != 0 || y < MinRows)
 			{
 				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
