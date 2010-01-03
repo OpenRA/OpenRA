@@ -5,7 +5,7 @@ namespace OpenRa.Game.Traits
 {
 	class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
-		const int chronoEffectLength = 10;
+		const int chronoEffectLength = 20;
 		int remainingFrames;
 
 		public ChronoshiftPaletteEffect(Actor self) { }
