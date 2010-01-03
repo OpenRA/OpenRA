@@ -24,12 +24,9 @@ namespace OpenRa.Game.Graphics
 			for( var y = 0; y < 128; y++ )
 				for (var x = 0; x < 128; x++)
 				{
-					// todo: use player color
 					var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
 					if (b != null && b.Owner != null)
 						bitmap.SetPixel(x, y, Chat.paletteColors[ (int)b.Owner.Palette ]);
-					//else
-					//    bitmap.SetPixel(x, y, Color.Red);
 				}
 
 			sheet.Texture.SetData(bitmap);
