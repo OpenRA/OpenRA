@@ -232,7 +232,7 @@ namespace OpenRa.Game
 			float2 bottom = powerOrigin + new float2(0, powerLevelTopSprite.size.Y + powerLevelBottomSprite.size.Y) - new float2(0, 50);
 			
 			var scale = 100;
-			while(Game.LocalPlayer.PowerProvided >= scale) scale += 100;
+			while(Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained) >= scale) scale *= 2;
 			//draw bar
 			float2 powerTop = new float2(bottom.X, bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale));
 			
