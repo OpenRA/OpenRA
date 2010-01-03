@@ -48,6 +48,7 @@ namespace OpenRa.Game
 		static bool usingAftermath;
 		static int2 clientSize;
 		static HardwarePalette palette;
+		public static Minimap minimap;
 
 		public static void ChangeMap(string mapName)
 		{
@@ -78,6 +79,7 @@ namespace OpenRa.Game
 
 			Rules.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
+			minimap = new Minimap(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);
 			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
@@ -169,6 +171,8 @@ namespace OpenRa.Game
 					lastTime += Settings.Timestep;
 					UpdatePalette(world.Actors.SelectMany(
 						a => a.traits.WithInterface<IPaletteModifier>()));
+					minimap.Update();
+
 					orderManager.TickImmediate();
 
 					if (orderManager.IsReadyForNextFrame)

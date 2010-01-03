@@ -143,6 +143,8 @@ namespace OpenRa.Game
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
+
+			Game.minimap.Draw(new float2(30,30));
 		}
 
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }

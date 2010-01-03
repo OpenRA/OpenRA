@@ -95,6 +95,7 @@
     <Compile Include="GameRules\UserSettings.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
     <Compile Include="Orders\LocalOrderSource.cs" />
