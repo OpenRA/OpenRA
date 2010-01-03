@@ -144,7 +144,7 @@ namespace OpenRa.Game
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
 
-			Game.minimap.Draw(new float2(30,30));
+			Game.minimap.Draw(new float2(Game.viewport.Width - 128,30));
 		}
 
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
