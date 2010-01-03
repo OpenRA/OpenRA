@@ -19,7 +19,7 @@ namespace OpenRa.Game
 		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static InfoLoader<SupportPowerInfo> SupportPowerInfo;
 		public static GeneralInfo General;
-        public static AftermathInfo Aftermath;
+		public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
 		public static Map Map;
 		public static TileSet TileSet;
@@ -48,7 +48,7 @@ namespace OpenRa.Game
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
 
-            Aftermath = new AftermathInfo();
+			Aftermath = new AftermathInfo();
 			if (useAftermath)
 				FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
 

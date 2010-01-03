@@ -31,5 +31,10 @@ namespace OpenRa.Game.Orders
 		{
 			Game.worldRenderer.DrawSelectionBox(self, Color.White, true);
 		}
+
+		public Cursor GetCursor(int2 xy, MouseInput mi)
+		{
+			return Cursor.Chronoshift;
+		}
 	}
 }

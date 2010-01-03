@@ -6,20 +6,22 @@ using System.Drawing;
 namespace OpenRa.Game.Traits
 {
 	class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips, IPaletteModifier
-    {
-        public ChronoshiftDeploy(Actor self) { }
-        // Recharge logic
-        int remainingChargeTime = 0; // How long until we can chronoshift again?
-        int chargeTime = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
+	{
+		// Recharge logic
+		int chargeTick = 0; // How long until we can chronoshift again?
+		int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 		
 		// Screen fade logic
 		int animationTick = 0;
 		int animationLength = 10;
 		bool animationStarted = false;
-        public void Tick(Actor self)
-        {
-            if (remainingChargeTime > 0)
-                remainingChargeTime--;
+
+		public ChronoshiftDeploy(Actor self) { }
+		
+		public void Tick(Actor self)
+		{
+			if (chargeTick > 0)
+				chargeTick--;
 
 			if (animationStarted)
 			{
@@ -32,45 +34,42 @@ namespace OpenRa.Game.Traits
 			{
 				if (animationTick > 0)
 					animationTick--;
-				//else
-				//	animationForwards = true;
 			}
-        }
+		}
 
-        public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-        {
-            if (mi.Button == MouseButton.Left) return null;
-
-            else if (xy == self.Location && remainingChargeTime <= 0)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			if (mi.Button == MouseButton.Right && xy == self.Location && chargeTick <= 0)
 				return new Order("Deploy", self, null, int2.Zero, null);
- 
-            return null;
-        }
 
-        public void ResolveOrder(Actor self, Order order)
-        {
-            if (order.OrderString == "Deploy" && remainingChargeTime <= 0)
-            {
+			return null;
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Deploy")
+			{
 				Game.controller.orderGenerator = new TeleportOrderGenerator(self);
-                self.CancelActivity();
-            }
-            
+				return;
+			}
+
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
-            {
+			{
 				Game.controller.CancelInputMode();
 				self.CancelActivity();
-           		self.QueueActivity(new Activities.Teleport(order.TargetLocation));
-                Sound.Play("chrotnk1.aud");
-                remainingChargeTime = chargeTime;
-                animationStarted = true;
-            }
-        }
-        
-        public float GetSpeedModifier()
-        {
-            return (Game.controller.orderGenerator is TeleportOrderGenerator) ? 0f : 1f;
-        }
+				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
+				Sound.Play("chrotnk1.aud");
+				chargeTick = chargeLength;
+				animationStarted = true;
+			}
+		}
+		
+		public float GetSpeedModifier()
+		{
+			// ARGH! You must not do this, it will desync!
+			return (Game.controller.orderGenerator is TeleportOrderGenerator) ? 0f : 1f;
+		}
 		
 		// Display 5 pips indicating the current charge status
 		public IEnumerable<PipType> GetPips()
@@ -78,7 +77,7 @@ namespace OpenRa.Game.Traits
 			const int numPips = 5;
 			for (int i = 0; i < numPips; i++)
 			{
-				if ((1 - remainingChargeTime * 1.0f / chargeTime) * numPips < i + 1)
+				if ((1 - chargeTick * 1.0f / chargeLength) * numPips < i + 1)
 				{
 					yield return PipType.Transparent;
 					continue;
@@ -146,5 +145,5 @@ namespace OpenRa.Game.Traits
 						bmp.SetPixel(i, j, Color.FromArgb(alpha, (int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255)));
 					}
 		}
-    }
+	}
 }

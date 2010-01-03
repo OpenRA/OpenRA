@@ -16,13 +16,14 @@ namespace OpenRa.Game.Orders
 
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
-			if (mi.IsFake)
-			{
-				// this order is never actually issued, but it's used for choosing a cursor
-				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
-				yield break;
-			}
+			if (mi.Button == MouseButton.Right)
+				Game.controller.CancelInputMode();
 
+			return InnerOrder(xy, mi);
+		}
+
+		IEnumerable<Order> InnerOrder(int2 xy, MouseInput mi)
+		{
 			if (mi.Button == MouseButton.Left)
 			{
 				if (!Game.CanPlaceBuilding(Building, xy, null, true)
@@ -34,8 +35,6 @@ namespace OpenRa.Game.Orders
 
 				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
 			}
-			else
-				Game.controller.CancelInputMode();
 		}
 
 		public void Tick()
@@ -48,6 +47,11 @@ namespace OpenRa.Game.Orders
 		public void Render()
 		{
 			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building );
+		}
+
+		public Cursor GetCursor(int2 xy, MouseInput mi)
+		{
+			return Cursor.Default;
 		}
 	}
 }

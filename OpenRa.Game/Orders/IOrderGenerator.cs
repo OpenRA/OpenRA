@@ -7,5 +7,6 @@ namespace OpenRa.Game
 		IEnumerable<Order> Order( int2 xy, MouseInput mi );
 		void Tick();
 		void Render();
+		Cursor GetCursor(int2 xy, MouseInput mi);
 	}
 }
