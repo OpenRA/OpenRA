@@ -1,28 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using OpenRa.Game.Traits;
 using OpenRa.Game.Orders;
+using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 
 namespace OpenRa.Game.Traits
 {
-	class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips, IPaletteModifier
+	class Chronoshiftable : IOrder, ISpeedModifier, ITick, IPaletteModifier
 	{
-		// Recharge logic
-		int chargeTick = 0; // How long until we can chronoshift again?
-		int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
-		
+		// Return-to-sender logic
+		int2 chronoshiftOrigin;
+		int chronoshiftReturnTicks = 0;
+
 		// Screen fade logic
 		int animationTick = 0;
 		int animationLength = 10;
 		bool animationStarted = false;
-
-		public ChronoshiftDeploy(Actor self) { }
 		
+		public Chronoshiftable(Actor self) { }
+
 		public void Tick(Actor self)
 		{
-			if (chargeTick > 0)
-				chargeTick--;
-
 			if (animationStarted)
 			{
 				if (animationTick < animationLength)
@@ -30,74 +28,54 @@ namespace OpenRa.Game.Traits
 				else
 					animationStarted = false;
 			}
-			if (!animationStarted)
-			{
-				if (animationTick > 0)
+			else if (animationTick > 0)
 					animationTick--;
+			
+			if (chronoshiftReturnTicks <= 0)
+				return;
+
+			if (chronoshiftReturnTicks > 0)
+				chronoshiftReturnTicks--;
+
+			// Return to original location
+			if (chronoshiftReturnTicks == 0)
+			{
+				self.CancelActivity();
+				// Todo: need a new Teleport method that will move to the closest available cell
+				self.QueueActivity(new Activities.Teleport(chronoshiftOrigin));
 			}
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Right && xy == self.Location && chargeTick <= 0)
-				return new Order("Deploy", self, null, int2.Zero, null);
-
-			return null;
+			return null; // Chronoshift order is issued through Chrome.
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy")
+			if (order.OrderString == "ChronosphereSelect")
 			{
 				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(self);
-				return;
 			}
 
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
+				chronoshiftOrigin = self.Location;
+				chronoshiftReturnTicks = (int)(Rules.General.ChronoDuration * 60 * 25);
+				// TODO: Kill cargo if Rules.General.ChronoKillCargo says so
 				Game.controller.CancelInputMode();
 				self.CancelActivity();
 				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
-				Sound.Play("chrotnk1.aud");
-				chargeTick = chargeLength;
+				Sound.Play("chrono2.aud");
 				animationStarted = true;
 			}
 		}
-		
+
 		public float GetSpeedModifier()
 		{
 			// ARGH! You must not do this, it will desync!
 			return (Game.controller.orderGenerator is ChronoshiftDestinationOrderGenerator) ? 0f : 1f;
-		}
-		
-		// Display 5 pips indicating the current charge status
-		public IEnumerable<PipType> GetPips()
-		{
-			const int numPips = 5;
-			for (int i = 0; i < numPips; i++)
-			{
-				if ((1 - chargeTick * 1.0f / chargeLength) * numPips < i + 1)
-				{
-					yield return PipType.Transparent;
-					continue;
-				}
-					
-				switch (i)
-				{
-					case 0:
-					case 1:
-						yield return PipType.Red;
-						break;
-					case 2:
-					case 3:
-						yield return PipType.Yellow;
-						break;
-					case 4:
-						yield return PipType.Green;
-						break;
-				}
-			}
 		}
 
 		public void AdjustPalette(Bitmap bmp)

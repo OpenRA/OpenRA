@@ -26,7 +26,7 @@ namespace OpenRa.Game
 		
 		readonly Animation repairButton;
 		readonly Animation sellButton;
-		
+				
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
@@ -245,6 +245,22 @@ namespace OpenRa.Game
 
 		void DrawButtons()
 		{
+			// Chronoshift
+			Rectangle chronoshiftRect = new Rectangle(6, 14, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			var chronoshiftDrawPos = Game.viewport.Location + new float2(chronoshiftRect.Location);
+
+			var hasChronosphere = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Chronosphere>());
+
+			if (!hasChronosphere)
+				repairButton.ReplaceAnim("disabled");
+			else
+			{
+				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
+				AddButton(chronoshiftRect, isLmb => Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>());
+			}
+			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
+			
+			
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);

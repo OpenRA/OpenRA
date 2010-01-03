@@ -7,11 +7,11 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
-	class TeleportOrderGenerator : IOrderGenerator
+	class ChronoshiftDestinationOrderGenerator : IOrderGenerator
 	{
 		public readonly Actor self;
 
-		public TeleportOrderGenerator(Actor self)
+		public ChronoshiftDestinationOrderGenerator(Actor self)
 		{
 			this.self = self;
 		}

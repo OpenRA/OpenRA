@@ -95,6 +95,7 @@
     <Compile Include="GameRules\UserSettings.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
     <Compile Include="Orders\LocalOrderSource.cs" />
     <Compile Include="Effects\Missile.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="Orders\OrderManager.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
-    <Compile Include="Orders\TeleportOrderGenerator.cs" />
+    <Compile Include="Orders\ChronoshiftDestinationOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="Traits\BelowUnits.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
+    <Compile Include="Traits\Chronoshiftable.cs" />
+    <Compile Include="Traits\Chronosphere.cs" />
     <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />
