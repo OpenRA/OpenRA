@@ -24,6 +24,8 @@ namespace OpenRa.Game.Graphics
 			for( var y = 0; y < 128; y++ )
 				for (var x = 0; x < 128; x++)
 				{
+					// todo: terrain, units, perf.
+
 					var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
 					if (b != null && b.Owner != null)
 						bitmap.SetPixel(x, y, Chat.paletteColors[ (int)b.Owner.Palette ]);
