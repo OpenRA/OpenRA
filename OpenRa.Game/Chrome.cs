@@ -293,8 +293,8 @@ namespace OpenRa.Game
 		
 		void HandleChronosphereButton()
 		{
-			Sound.Play("slcttgt1.aud");
-			Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>();
+			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
 		}
 		
 		void DrawChat()
