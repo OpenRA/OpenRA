@@ -2,6 +2,7 @@
 using System.Linq;
 using OpenRa.Game.Orders;
 using System.Drawing;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
@@ -109,7 +110,7 @@ namespace OpenRa.Game.Traits
 			var f = 1 - (animationTick * 1.0f / animationLength);
 
 			using (var bitmapCopy = new Bitmap(bmp))
-				for (int j = 0; j < 8; j++)
+				for (int j = 0; j < (int)PaletteType.Chrome; j++)
 					for (int i = 0; i < bmp.Width; i++)
 					{
 						var h = bitmapCopy.GetPixel(i, j).GetHue(); // 0-360
