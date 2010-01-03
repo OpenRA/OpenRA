@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Linq;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Graphics
 {
@@ -48,12 +50,13 @@ namespace OpenRa.Game.Graphics
 			for( var y = 0; y < 128; y++ )
 				for (var x = 0; x < 128; x++)
 				{
-					// todo: units, perf.
-
 					var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
 					if (b != null)
 						bitmap.SetPixel(x, y, b.Owner != null ? Chat.paletteColors[(int)b.Owner.Palette] : Color.Gray);
 				}
+
+			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
+				bitmap.SetPixel(a.Location.X, a.Location.Y, Chat.paletteColors[(int)a.Owner.Palette]);
 
 			sheet.Texture.SetData(bitmap);
 		}
