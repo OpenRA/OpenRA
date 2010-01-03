@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
@@ -34,7 +35,8 @@ namespace OpenRa.Game.Orders
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)
 		{
-			return Cursor.Chronoshift;
+			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
 		}
 	}
 }
