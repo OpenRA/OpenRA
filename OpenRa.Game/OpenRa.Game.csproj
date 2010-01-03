@@ -198,6 +198,7 @@
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
+    <Compile Include="Traits\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronosphere.cs" />
     <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
