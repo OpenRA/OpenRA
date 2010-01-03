@@ -258,7 +258,7 @@ namespace OpenRa.Game
 			else
 			{
 				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
-				AddButton(chronoshiftRect, isLmb => Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>());
+				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
 			
@@ -289,6 +289,12 @@ namespace OpenRa.Game
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
+		}
+		
+		void HandleChronosphereButton()
+		{
+			Sound.Play("slcttgt1.aud");
+			Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>();
 		}
 		
 		void DrawChat()
