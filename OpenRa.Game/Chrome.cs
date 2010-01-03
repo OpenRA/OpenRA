@@ -219,6 +219,9 @@ namespace OpenRa.Game
 				x -= 14;
 			}
 		}
+
+		float? lastPowerProvidedPos;
+		float? lastPowerDrainedPos;
 		
 		void DrawPower()
 		{
@@ -234,7 +237,10 @@ namespace OpenRa.Game
 			var scale = 100;
 			while(Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained) >= scale) scale *= 2;
 			//draw bar
-			float2 powerTop = new float2(bottom.X, bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale));
+
+			var powerTopY = bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale);
+			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerTopY), powerTopY, .3f);
+			float2 powerTop = new float2(bottom.X, lastPowerProvidedPos.Value);
 			
 			var color = Color.LimeGreen;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
@@ -250,9 +256,11 @@ namespace OpenRa.Game
 				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color2, color2);
 			
 			lineRenderer.Flush();
-			
+
+			var drainedPositionY = bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) - powerIndicatorSprite.size.Y /2;
+			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(drainedPositionY), drainedPositionY, .3f);
 			//draw indicator
-			float2 drainedPosition = new float2(bottom.X + 2 , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) + 2 - powerIndicatorSprite.size.Y /2);
+			float2 drainedPosition = new float2(bottom.X + 2, lastPowerDrainedPos.Value);
 
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
