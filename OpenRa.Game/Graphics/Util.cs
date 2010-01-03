@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Drawing;
 
 namespace OpenRa.Game.Graphics
 {
@@ -110,6 +111,20 @@ namespace OpenRa.Game.Graphics
 			{
 				bitmap.UnlockBits(bits);
 			}
+		}
+
+		public static Color Lerp(float t, Color a, Color b)
+		{
+			return Color.FromArgb(
+				LerpChannel(t, a.A, b.A),
+				LerpChannel(t, a.R, b.R),
+				LerpChannel(t, a.G, b.G),
+				LerpChannel(t, a.B, b.B));
+		}
+
+		public static int LerpChannel(float t, int a, int b)
+		{
+			return (int)((1 - t) * a + t * b);
 		}
 	}
 }
