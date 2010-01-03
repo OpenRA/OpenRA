@@ -35,7 +35,7 @@ namespace OpenRa.Game.Traits.Activities
 				self.traits.Get<Helicopter>().reservation = res.Reserve(self);
 
 			var offset = (dest.Info as BuildingInfo).SpawnOffset;
-			var offsetVec = new float2(offset[0], offset[1]);
+			var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterLocation + offsetVec),

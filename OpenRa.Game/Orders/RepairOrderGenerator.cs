@@ -7,7 +7,7 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
-	class SellOrderGenerator : IOrderGenerator
+	class RepairOrderGenerator : IOrderGenerator
 	{
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
@@ -29,19 +29,30 @@ namespace OpenRa.Game.Orders
 
 				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
 
-				if (building != null && !building.Unsellable)
-					yield return new Order("Sell", underCursor, null, int2.Zero, null);
+				if (building != null && building.Repairable && underCursor.Health < building.Strength)
+					yield return new Order("Repair", underCursor, null, int2.Zero, null);
 			}
 		}
 
-		public void Tick() {}
+		public void Tick()
+		{
+			if (!Game.Settings.RepairRequiresConyard)
+				return;
+
+			var hasFact = Game.world.Actors
+				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+				
+			if (!hasFact)
+				Game.controller.CancelInputMode();
+		}
+
 		public void Render() {}
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(xy, mi).Any()
-				? Cursor.Sell : Cursor.SellBlocked;
+			return OrderInner(xy, mi).Any() 
+				? Cursor.Repair : Cursor.RepairBlocked;
 		}
 	}
 }

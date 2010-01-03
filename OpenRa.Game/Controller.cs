@@ -27,6 +27,14 @@ namespace OpenRa.Game
 			orderGenerator = new UnitOrderGenerator(new Actor[] { });
 		}
 
+		public void ToggleInputMode<T>() where T : IOrderGenerator, new()
+		{
+			if (orderGenerator is T)
+				CancelInputMode();
+			else
+				orderGenerator = new T();
+		}
+
 		List<Order> recentOrders = new List<Order>();
 
 		void ApplyOrders(float2 xy, MouseInput mi)
@@ -133,60 +141,14 @@ namespace OpenRa.Game
 
 		public Cursor ChooseCursor()
 		{
-			var mods = GetModifierKeys();
-			
-			var mi = new MouseInput { 
-				Location = (Game.CellSize * dragEnd - Game.viewport.Location).ToInt2(), 
-				Button = MouseButton.Right, 
-				Modifiers = mods,
-				IsFake = true,
+			var mi = new MouseInput
+			{
+				Location = (Game.CellSize * MousePosition - Game.viewport.Location).ToInt2(),
+				Button = MouseButton.Right,
+				Modifiers = GetModifierKeys(),
 			};
 
-			var c = orderGenerator.Order(dragEnd.ToInt2(), mi)
-				.Where(o => o.Validate())
-				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
-				.FirstOrDefault(a => a != null);
-
-			return c ?? 
-				(Game.SelectActorsInBox(Game.CellSize * dragEnd, Game.CellSize * dragEnd).Any() 
-					? Cursor.Select : Cursor.Default);
-		}
-
-		Cursor CursorForOrderString( string s, Actor a, int2 location )
-		{
-			var movement = a.traits.WithInterface<IMovement>().FirstOrDefault();
-			switch( s )
-			{
-			case "Attack": return Cursor.Attack;
-			case "Heal": return Cursor.Heal;
-			case "C4": return Cursor.C4;
-			case "Move":
-				if (movement.CanEnterCell(location))
-					return Cursor.Move;
-				else
-					return Cursor.MoveBlocked;
-			case "DeployMcv":
-				var factBuildingInfo = (BuildingInfo)Rules.UnitInfo[ "fact" ];
-				if( Game.CanPlaceBuilding( factBuildingInfo, a.Location - new int2( 1, 1 ), a, false ) )
-					return Cursor.Deploy;
-				else
-					return Cursor.DeployBlocked;
-            case "Deploy": return Cursor.Deploy;
-            case "Chronoshift":
-				if (movement.CanEnterCell(location))
-                    return Cursor.Chronoshift;
-                else
-                    return Cursor.MoveBlocked;
-			case "Enter": return Cursor.Enter;
-			case "Infiltrate": return Cursor.Enter;
-			case "Capture": return Cursor.Capture;
-			case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
-			case "PlaceBuilding": return Cursor.Default;
-			case "Sell": return Cursor.Sell;
-			case "NoSell": return Cursor.SellBlocked;
-			default:
-				return null;
-			}
+			return orderGenerator.GetCursor(MousePosition.ToInt2(), mi);
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
@@ -194,9 +156,11 @@ namespace OpenRa.Game
 		public void DoControlGroup(int group, Modifiers mods)
 		{
 			var uog = orderGenerator as UnitOrderGenerator;
+			if (uog == null) return;
+
 			if (mods.HasModifier(Modifiers.Ctrl))
 			{
-				if (uog == null || !uog.selection.Any())
+				if (!uog.selection.Any())
 					return;
 
 				controlGroups[group].Clear();
@@ -214,7 +178,6 @@ namespace OpenRa.Game
 				return;
 			}
 
-			if (uog == null) return;
 			CombineSelection(controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
 		}
 

@@ -82,7 +82,7 @@ namespace OpenRa.Game.Graphics
 
 			spriteRenderer.Flush();
 
-			DrawBandBox();
+			DrawBandBox();			
 
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();

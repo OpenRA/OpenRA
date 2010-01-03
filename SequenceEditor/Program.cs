@@ -70,16 +70,12 @@ namespace SequenceEditor
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
+			FileSystem.MountDefaultPackages();
 			try
 			{
-				FileSystem.MountDefault( true );
+				FileSystem.MountAftermathPackages();
 			}
-			catch( FileNotFoundException fnf )
-			{
-				if( fnf.FileName != "expand2.mix" )
-					throw new InvalidOperationException( "Unable to load MIX files" );
-			}
+			catch( FileNotFoundException ){}
 
 			FileSystem.MountTemporary(new Package("temperat.mix"));
 

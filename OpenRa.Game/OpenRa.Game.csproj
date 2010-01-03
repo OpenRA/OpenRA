@@ -83,6 +83,7 @@
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
+    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Exts.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\SupportPowerInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
+    <Compile Include="GameRules\UserSettings.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
@@ -99,7 +101,9 @@
     <Compile Include="Orders\NetworkOrderSource.cs" />
     <Compile Include="Orders\OrderIO.cs" />
     <Compile Include="Orders\OrderManager.cs" />
+    <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
+    <Compile Include="Orders\TeleportOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
@@ -178,6 +182,7 @@
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
+    <Compile Include="Traits\Activities\UndeployMcv.cs" />
     <Compile Include="Traits\APMine.cs" />
     <Compile Include="Traits\ATMine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
@@ -198,6 +203,7 @@
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
+    <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />

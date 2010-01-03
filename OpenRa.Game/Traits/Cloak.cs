@@ -12,16 +12,16 @@ namespace OpenRa.Game.Traits
 
 		public void Attacking(Actor self)
 		{
-            if (remainingUncloakTime <= 0)
+			if (remainingUncloakTime <= 0)
 				OnCloak();
 
-            remainingUncloakTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
+			remainingUncloakTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
 		}
 
 		public IEnumerable<Renderable>
 			ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
-            if (remainingUncloakTime > 0)
+			if (remainingUncloakTime > 0)
 				return rs;
 
 			if (self.Owner == Game.LocalPlayer)
@@ -32,8 +32,8 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
-            if (remainingUncloakTime > 0)
-                if (--remainingUncloakTime <= 0)
+			if (remainingUncloakTime > 0)
+				if (--remainingUncloakTime <= 0)
 					OnUncloak();
 		}
 

@@ -10,8 +10,8 @@ namespace OpenRa.Game.GameRules
 		{
 			foreach( var x in ini )
 			{
-				var field = self.GetType().GetField( x.Key );
-				field.SetValue( self, GetValue( field.FieldType, x.Value ) );
+				var field = self.GetType().GetField( x.Key.Trim() );
+				field.SetValue( self, GetValue( field.FieldType, x.Value.Trim() ) );
 			}
 		}
 

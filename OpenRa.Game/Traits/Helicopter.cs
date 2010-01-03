@@ -56,7 +56,7 @@ namespace OpenRa.Game.Traits
 					reservation = res.Reserve(self);
 
 				var offset = (order.TargetActor.Info as BuildingInfo).SpawnOffset;
-				var offsetVec = new float2(offset[0], offset[1]);
+				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));

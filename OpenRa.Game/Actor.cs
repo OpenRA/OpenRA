@@ -71,6 +71,9 @@ namespace OpenRa.Game
 		{
 			get
 			{
+				if (Info != null && Info.SelectionSize != null)
+					return new float2(Info.SelectionSize[0], Info.SelectionSize[1]);
+
 				var firstSprite = Render().FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
 				return firstSprite.Sprite.size;
@@ -107,6 +110,8 @@ namespace OpenRa.Game
 		{
 			var size = SelectedSize;
 			var loc = CenterLocation - 0.5f * size;
+			if (Info != null && Info.SelectionSize != null && Info.SelectionSize.Length > 2)
+				loc += new float2(Info.SelectionSize[2], Info.SelectionSize[3]);
 
 			if (useAltitude)
 			{
