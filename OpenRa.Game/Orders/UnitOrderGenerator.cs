@@ -84,7 +84,7 @@ namespace OpenRa.Game.Orders
 				case "Deliver": return Cursor.Enter;
 				case "Infiltrate": return Cursor.Enter;
 				case "Capture": return Cursor.Capture;
-				case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
+				case "Harvest": return Cursor.AttackMove;
 				default:
 					return null;
 			}
