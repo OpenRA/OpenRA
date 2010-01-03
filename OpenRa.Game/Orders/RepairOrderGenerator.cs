@@ -11,42 +11,48 @@ namespace OpenRa.Game.Orders
 	{
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
-			if (!mi.IsFake && mi.Button == MouseButton.Right)
-			{
+			if (mi.Button == MouseButton.Right)
 				Game.controller.CancelInputMode();
-				yield break;
-			}
 
-			var loc = mi.Location + Game.viewport.Location;
-			var underCursor = Game.FindUnits(loc, loc)
-				.Where(a => a.Owner == Game.LocalPlayer
-					&& a.traits.Contains<Building>()
-					&& a.Info.Selectable).FirstOrDefault();
+			return OrderInner(xy, mi);
+		}
 
-			var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
-
-			if (building == null || !building.Repairable || underCursor.Health == building.Strength)
+		IEnumerable<Order> OrderInner(int2 xy, MouseInput mi)
+		{
+			if (mi.Button == MouseButton.Left)
 			{
-				yield return new Order("NoRepair", Game.LocalPlayer.PlayerActor, null, int2.Zero, null);
-				yield break;
-			}
+				var loc = mi.Location + Game.viewport.Location;
+				var underCursor = Game.FindUnits(loc, loc)
+					.Where(a => a.Owner == Game.LocalPlayer
+						&& a.traits.Contains<Building>()
+						&& a.Info.Selectable).FirstOrDefault();
 
-			yield return new Order("Repair", underCursor, null, int2.Zero, null);
+				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
+
+				if (building != null && building.Repairable && underCursor.Health < building.Strength)
+					yield return new Order("Repair", underCursor, null, int2.Zero, null);
+			}
 		}
 
 		public void Tick()
 		{
-			if (Game.Settings.RepairRequiresConyard)
-			{
-				var hasFact = Game.world.Actors
-					.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+			if (!Game.Settings.RepairRequiresConyard)
+				return;
+
+			var hasFact = Game.world.Actors
+				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
 				
-				if (!hasFact)
-					Game.controller.CancelInputMode();
-			}
+			if (!hasFact)
+				Game.controller.CancelInputMode();
 		}
-		
 
 		public void Render() {}
+
+		public Cursor GetCursor(int2 xy, MouseInput mi)
+		{
+			mi.Button = MouseButton.Left;
+			return OrderInner(xy, mi).Any() 
+				? Cursor.Repair : Cursor.RepairBlocked;
+		}
 	}
 }

@@ -18,21 +18,20 @@ namespace OpenRa.Game.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Left) return null;
-
 			if( mi.Button == MouseButton.Right && xy == self.Location && remainingChargeTime <= 0 )
-			{
-				if( mi.IsFake )
-					return new Order( "Deploy", self, null, int2.Zero, null );
-				else
-					Game.controller.orderGenerator = new TeleportOrderGenerator( self );
-			}
+				return new Order( "Deploy", self, null, int2.Zero, null );
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (order.OrderString == "Deploy")
+			{
+				Game.controller.orderGenerator = new TeleportOrderGenerator(self);
+				return;
+			}
+
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
@@ -46,6 +45,7 @@ namespace OpenRa.Game.Traits
 
 		public float GetSpeedModifier()
 		{
+			// ARGH! You must not do this, it will desync!
 			return (Game.controller.orderGenerator is TeleportOrderGenerator) ? 0f : 1f;
 		}
 

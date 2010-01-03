@@ -200,7 +200,6 @@ namespace OpenRa.Game
 		public int2 Location;
 		public MouseButton Button;
 		public Modifiers Modifiers;
-		public bool IsFake;
 	}
 
 	enum MouseInputEvent { Down, Move, Up };
