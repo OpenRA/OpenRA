@@ -20,20 +20,19 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left) return null;
 
-			else if (xy == self.Location && remainingChargeTime <= 0)
-				return new Order("Deploy", self, null, int2.Zero, null);
- 
+			if( mi.Button == MouseButton.Right && xy == self.Location && remainingChargeTime <= 0 )
+			{
+				if( mi.IsFake )
+					return new Order( "Deploy", self, null, int2.Zero, null );
+				else
+					Game.controller.orderGenerator = new TeleportOrderGenerator( self );
+			}
+
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy" && remainingChargeTime <= 0)
-			{
-				Game.controller.orderGenerator = new TeleportOrderGenerator(self);
-				self.CancelActivity();
-			}
-
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
