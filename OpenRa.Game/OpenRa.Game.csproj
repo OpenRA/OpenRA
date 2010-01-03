@@ -103,6 +103,7 @@
     <Compile Include="Orders\OrderManager.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
+    <Compile Include="Orders\TeleportOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />

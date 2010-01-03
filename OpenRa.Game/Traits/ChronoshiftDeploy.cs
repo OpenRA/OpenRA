@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
     class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips
     {
         public ChronoshiftDeploy(Actor self) { }
-        bool chronoshiftActive = false; // Is the chronoshift engine active?
         int remainingChargeTime = 0; // How long until we can chronoshift again?
         int chargeTime = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
-
+		
         public void Tick(Actor self)
         {
             if (remainingChargeTime > 0)
@@ -20,9 +20,6 @@ namespace OpenRa.Game.Traits
         {
             if (mi.Button == MouseButton.Left) return null;
 
-            if (chronoshiftActive)
-				return new Order("Chronoshift", self, null, xy, null);
-
             else if (xy == self.Location && remainingChargeTime <= 0)
 				return new Order("Deploy", self, null, int2.Zero, null);
  
@@ -31,26 +28,26 @@ namespace OpenRa.Game.Traits
 
         public void ResolveOrder(Actor self, Order order)
         {
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
             if (order.OrderString == "Deploy" && remainingChargeTime <= 0)
             {
-                chronoshiftActive = true;
+				Game.controller.orderGenerator = new TeleportOrderGenerator(self);
                 self.CancelActivity();
             }
-
+            
+			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
             {
+				Game.controller.CancelInputMode();
 				self.CancelActivity();
            		self.QueueActivity(new Activities.Teleport(order.TargetLocation));
                 Sound.Play("chrotnk1.aud");
-                chronoshiftActive = false;
                 remainingChargeTime = chargeTime;
             }
         }
         
         public float GetSpeedModifier()
         {
-            return chronoshiftActive ? 0f : 1f;
+            return (Game.controller.orderGenerator is TeleportOrderGenerator) ? 0f : 1f;
         }
 		
 		// Display 5 pips indicating the current charge status
