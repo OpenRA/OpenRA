@@ -43,7 +43,7 @@ namespace OpenRa.Game.Traits
 		bool IsCrushableBy(UnitMovementType umt, Player player);
 		bool IsPathableCrush(UnitMovementType umt, Player player);
 	}
-
+	interface IChronoshiftable{}
 	struct Renderable
 	{
 		public readonly Sprite Sprite;

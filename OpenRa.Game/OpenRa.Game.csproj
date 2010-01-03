@@ -200,6 +200,7 @@
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronosphere.cs" />
+    <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />
