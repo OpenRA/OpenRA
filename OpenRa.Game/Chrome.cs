@@ -252,7 +252,7 @@ namespace OpenRa.Game
 			lineRenderer.Flush();
 			
 			//draw indicator
-			float2 drainedPosition = new float2(bottom.X + 2 , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) + 2);
+			float2 drainedPosition = new float2(bottom.X + 2 , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) + 2 - powerIndicatorSprite.size.Y /2);
 
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
