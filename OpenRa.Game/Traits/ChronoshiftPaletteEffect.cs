@@ -33,22 +33,8 @@ namespace OpenRa.Game.Traits
 					var orig = b.GetPixel(x, y);
 					var lum = (int)(255 * orig.GetBrightness());
 					var desat = Color.FromArgb(orig.A, lum, lum, lum);
-					b.SetPixel(x, y, Lerp(frac, orig, desat));
+					b.SetPixel(x, y, Graphics.Util.Lerp(frac, orig, desat));
 				}
-		}
-
-		static Color Lerp(float t, Color a, Color b)
-		{
-			return Color.FromArgb(
-				LerpChannel(t, a.A, b.A),
-				LerpChannel(t, a.R, b.R),
-				LerpChannel(t, a.G, b.G),
-				LerpChannel(t, a.B, b.B));
-		}
-
-		static int LerpChannel(float t, int a, int b)
-		{
-			return (int)((1 - t) * a + t * b);
 		}
 	}
 }

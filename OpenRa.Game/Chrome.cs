@@ -236,12 +236,23 @@ namespace OpenRa.Game
 			//draw bar
 			float2 powerTop = new float2(bottom.X, bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale));
 			
-			for(int i = 7; i < 11; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), Color.LimeGreen, Color.LimeGreen);
+			var color = Color.LimeGreen;
+			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
+				color = Color.Orange;
+			if (Game.LocalPlayer.GetPowerState() == PowerState.Critical)
+				color = Color.Red;
+
+			var color2 = Graphics.Util.Lerp(0.25f, color, Color.Black);
+			
+			for(int i = 11; i < 13; i++)
+				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color, color);
+			for (int i = 13; i < 15; i++)
+				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color2, color2);
+			
 			lineRenderer.Flush();
 			
 			//draw indicator
-			float2 drainedPosition = new float2(bottom.X , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale));
+			float2 drainedPosition = new float2(bottom.X + 2 , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) + 2);
 
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
