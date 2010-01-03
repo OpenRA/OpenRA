@@ -75,7 +75,7 @@ namespace OpenRa.Game
 		{
 			Game.Settings = new UserSettings();
 			var settingsFile = settings.GetValue("settings", "settings.ini");
-	//		if (FileSystem.Exists(settingsFile))
+			if (FileSystem.Exists(settingsFile))
 			{				
 				FileSystem.MountTemporary(new Folder("./"));
 				FieldLoader.Load(Game.Settings,
