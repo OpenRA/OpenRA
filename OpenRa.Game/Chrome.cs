@@ -143,16 +143,21 @@ namespace OpenRa.Game
 			DrawPower();
 			chromeRenderer.Flush();
 			DrawButtons();
-			
+			DrawMinimap();
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
-
-			Game.minimap.Draw(new float2(Game.viewport.Width - 128,30));
 		}
 
+		void DrawMinimap()
+		{
+			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>() && a.traits.Get<ProvidesRadar>().IsActive());
+			if (hasRadar)
+				Game.minimap.Draw(new float2(Game.viewport.Width - 128, 30));
+		}
+		
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
-
+		
 		void DrawBuildTabs(int paletteHeight)
 		{
 			const int tabWidth = 24;
