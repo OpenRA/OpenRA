@@ -404,6 +404,9 @@
   <cursor src="speed">
 	<sequence name="powerdown" start="3" length="12" />
   </cursor>
+  <unit name="powerdown">
+	<sequence name="disabled" start="3" length="1" src="speed" />
+  </unit>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
   </unit>

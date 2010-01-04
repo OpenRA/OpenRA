@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class Building : INotifyDamage, IOrder, ITick
+	class Building : INotifyDamage, IOrder, ITick, IRenderModifier
 	{
 		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
@@ -37,6 +38,32 @@ namespace OpenRa.Game.Traits
 				return (self.Health * unitInfo.Power) / unitInfo.Strength;
 			else
 				return unitInfo.Power;
+		}
+
+		public Animation iconAnim;
+		public IEnumerable<Renderable>
+			ModifyRender(Actor self, IEnumerable<Renderable> rs)
+		{
+			if (!InsuffientPower())
+				return rs;
+			
+			List<Renderable> nrs = new List<Renderable>(rs);
+			foreach(var r in rs)
+			{
+				// Need 2 shadows to make it dark enough
+				nrs.Add(r.WithPalette(PaletteType.Shadow));
+				nrs.Add(r.WithPalette(PaletteType.Shadow));
+			}
+			
+			if (isPoweredDown)
+			{
+				iconAnim = new Animation("powerdown");
+				iconAnim.PlayRepeating("disabled");
+				nrs.Add(new Renderable(iconAnim.Image, self.CenterLocation - 0.5f*iconAnim.Image.size, PaletteType.Chrome));
+			}
+			
+			
+			return nrs;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
