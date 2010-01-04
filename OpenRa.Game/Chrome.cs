@@ -26,6 +26,7 @@ namespace OpenRa.Game
 		
 		readonly Animation repairButton;
 		readonly Animation sellButton;
+		readonly Animation pwrdownButton;
 				
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
@@ -77,6 +78,9 @@ namespace OpenRa.Game
 
 			sellButton = new Animation("sell");
 			sellButton.PlayRepeating("normal");
+
+			pwrdownButton = new Animation("repair");
+			pwrdownButton.PlayRepeating("normal");
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -285,7 +289,7 @@ namespace OpenRa.Game
 			
 			
 			// Repair
-			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
@@ -300,7 +304,7 @@ namespace OpenRa.Game
 			buildPaletteRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
 			// Sell
-			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, 
+			Rectangle sellRect = new Rectangle(Game.viewport.Width - 80, 5, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
@@ -309,6 +313,21 @@ namespace OpenRa.Game
 			
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+
+			if (Game.Settings.PowerDownBuildings)
+			{
+				// Power Down
+				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 40, 5,
+					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
+
+				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);
+
+				pwrdownButton.ReplaceAnim(Game.controller.orderGenerator is PowerDownOrderGenerator ? "pressed" : "normal");
+
+				AddButton(pwrdownRect, isLmb => Game.controller.ToggleInputMode<PowerDownOrderGenerator>());
+				buildPaletteRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, PaletteType.Chrome);
+			}
 			buildPaletteRenderer.Flush();
 		}
 		

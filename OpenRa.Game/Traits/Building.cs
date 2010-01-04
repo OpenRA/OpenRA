@@ -10,14 +10,33 @@ namespace OpenRa.Game.Traits
 {
 	class Building : INotifyDamage, IOrder, ITick
 	{
+		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
 		bool isRepairing = false;
+		bool isPoweredDown = false;
 
 		public Building(Actor self)
 		{
+			this.self = self;
 			unitInfo = (BuildingInfo)self.Info;
 			self.CenterLocation = Game.CellSize 
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
+		}
+		
+		public bool IsActive()
+		{
+			return !(isPoweredDown || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal));
+		}
+		
+		public int GetPowerUsage()
+		{
+			if (isPoweredDown)
+				return 0;
+			
+			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
+				return (self.Health * unitInfo.Power) / unitInfo.Strength;
+			else
+				return unitInfo.Power;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -42,6 +61,11 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Repair")
 			{
 				isRepairing = !isRepairing;
+			}
+			
+			if (order.OrderString == "PowerDown")
+			{
+				isPoweredDown = !isPoweredDown;
 			}
 		}
 
