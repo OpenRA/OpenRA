@@ -36,6 +36,7 @@ namespace OpenRa.Game
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
+			IsInWorld = true;
 
 			if (Info == null) return;
 
@@ -123,6 +124,7 @@ namespace OpenRa.Game
 		}
 
 		public bool IsDead { get { return Health <= 0; } }
+		public bool IsInWorld { get; set; }
 
 		public DamageState GetDamageState()
 		{
