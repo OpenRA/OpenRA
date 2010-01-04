@@ -55,13 +55,14 @@ namespace OpenRa.Game.GameRules
 		public readonly int OrePips = 0;
 		public readonly string Icon = null;
 		public readonly int[] SelectionSize = null;
+		public readonly int Passengers = 0;
+		public readonly int UnloadFacing = 0;
 
 		public UnitInfo(string name) { Name = name; }
 	}
 
 	public class MobileInfo : UnitInfo
 	{
-		public readonly int Passengers = 0;
 		public readonly int Speed = 0;
 		public readonly bool NoMovingFire = false;
 		public readonly string Voice = "GenericVoice";
