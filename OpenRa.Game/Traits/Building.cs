@@ -93,6 +93,7 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "PowerDown")
 			{
 				isPoweredDown = !isPoweredDown;
+				Sound.Play((isPoweredDown) ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
 
