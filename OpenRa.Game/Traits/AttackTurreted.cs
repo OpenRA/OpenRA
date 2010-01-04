@@ -26,8 +26,8 @@ namespace OpenRa.Game.Traits
 
 		protected override void QueueAttack( Actor self, Order order )
 		{
-			var bi = self.traits.Get<Building>();
-			if (bi != null && !bi.IsActive())
+			var b = self.traits.Get<Building>();
+			if (b != null && b.InsuffientPower())
 				return;
 
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */

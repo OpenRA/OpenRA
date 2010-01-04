@@ -23,9 +23,9 @@ namespace OpenRa.Game.Traits
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
 		}
 		
-		public bool IsActive()
+		public bool InsuffientPower()
 		{
-			return !(isPoweredDown || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal));
+			return (isPoweredDown || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal));
 		}
 		
 		public int GetPowerUsage()
