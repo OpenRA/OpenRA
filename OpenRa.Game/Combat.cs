@@ -32,7 +32,7 @@ namespace OpenRa.Game
 
 			var maxSpread = GetMaximumSpread(weapon, warhead);
 			var hitActors = Game.FindUnitsInCircle(loc, maxSpread);
-
+			
 			foreach (var victim in hitActors)
 				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead), warhead);
 		}
@@ -46,11 +46,10 @@ namespace OpenRa.Game
 		{
 			if (!WeaponValidForTarget(weapon, target))
 				return 0f;
-
-			var distance = (target.CenterLocation - loc).Length;
+			
+			var distance = (target.CenterLocation - loc).Length*1/24f;
 			var rawDamage = weapon.Damage * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Armor);
-
 			return rawDamage * multiplier;
 		}
 
