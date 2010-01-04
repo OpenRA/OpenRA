@@ -29,7 +29,7 @@ namespace OpenRa.Game.Traits
 	interface IDamageModifier { float GetDamageModifier(); }
 	interface ISpeedModifier { float GetSpeedModifier(); }
 	interface IPaletteModifier { void AdjustPalette(Bitmap b); }
-	interface IPips { IEnumerable<PipType> GetPips(); }
+	interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	interface ITags { IEnumerable<TagType> GetTags(); }
 	interface IMovement
 	{

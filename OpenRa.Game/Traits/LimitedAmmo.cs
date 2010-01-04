@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 
 		public void Attacking(Actor self) { --ammo; }
 
-		public IEnumerable<PipType> GetPips()
+		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			return Graphics.Util.MakeArray(self.Info.Ammo, 
 				i => ammo > i ? PipType.Green : PipType.Transparent);

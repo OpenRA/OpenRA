@@ -211,7 +211,7 @@ namespace OpenRa.Game.Graphics
 
 			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
 			{
-				foreach (var pip in pips.GetPips())
+				foreach (var pip in pips.GetPips(selectedUnit))
 				{
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
