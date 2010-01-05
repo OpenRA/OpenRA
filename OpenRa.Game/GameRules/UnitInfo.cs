@@ -57,6 +57,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] SelectionSize = null;
 		public readonly int Passengers = 0;
 		public readonly int UnloadFacing = 0;
+		public readonly UnitMovementType[] PassengerTypes = null;
 
 		public UnitInfo(string name) { Name = name; }
 	}
