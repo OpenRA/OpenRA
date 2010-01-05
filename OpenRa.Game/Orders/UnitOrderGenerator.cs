@@ -81,6 +81,7 @@ namespace OpenRa.Game.Orders
 					else
 						return Cursor.MoveBlocked;
 				case "Enter": return Cursor.Enter;
+				case "EnterTransport": return Cursor.Enter;
 				case "Deliver": return Cursor.Enter;
 				case "Infiltrate": return Cursor.Enter;
 				case "Capture": return Cursor.Capture;
