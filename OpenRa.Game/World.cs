@@ -10,10 +10,18 @@ namespace OpenRa.Game
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 
-		public void Add(Actor a) { actors.Add(a); ActorAdded(a); }
+		public void Add(Actor a)
+		{
+			a.IsInWorld = true; 
+			actors.Add(a); 
+			ActorAdded(a);
+		}
+
 		public void Remove(Actor a)
 		{
-			a.IsInWorld = false; actors.Remove(a); ActorRemoved(a);
+			a.IsInWorld = false; 
+			actors.Remove(a); 
+			ActorRemoved(a);
 		}
 
 		public void Add(IEffect b) { effects.Add(b); }

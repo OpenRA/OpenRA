@@ -11,15 +11,7 @@ namespace OpenRa.Game.Traits
 	{
 		List<Actor> cargo = new List<Actor>();
 
-		public Cargo(Actor self)
-		{
-			// hack:
-			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
-			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
-			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
-			cargo.Add(new Actor(Rules.UnitInfo["E6"], int2.Zero, self.Owner));
-			cargo.Add(new Actor(Rules.UnitInfo["E7"], int2.Zero, self.Owner));
-		}
+		public Cargo(Actor self) {}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -50,7 +42,7 @@ namespace OpenRa.Game.Traits
 			return cargo.Count == 0;
 		}
 
-		public Actor UnloadOne(Actor self)
+		public Actor Unload(Actor self)
 		{
 			var a = cargo[0];
 			cargo.RemoveAt(0);
@@ -78,6 +70,11 @@ namespace OpenRa.Game.Traits
 				return PipType.Red;		// E7
 
 			return PipType.Green;
+		}
+
+		public void Load(Actor self, Actor a)
+		{
+			cargo.Add(a);
 		}
 	}
 }

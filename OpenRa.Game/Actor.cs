@@ -36,7 +36,6 @@ namespace OpenRa.Game
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
-			IsInWorld = true;
 
 			if (Info == null) return;
 

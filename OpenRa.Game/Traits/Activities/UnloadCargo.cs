@@ -51,7 +51,8 @@ namespace OpenRa.Game.Traits.Activities
 			if (exitTile == null) 
 				return this;
 
-			var actor = cargo.UnloadOne(self);
+			var actor = cargo.Unload(self);
+
 			Game.world.AddFrameEndTask(w =>
 			{
 				w.Add(actor);

@@ -118,6 +118,7 @@
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CaptureBuilding.cs" />
     <Compile Include="Traits\Activities\Demolish.cs" />
+    <Compile Include="Traits\Activities\EnterTransport.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
     <Compile Include="Traits\Activities\FlyAttack.cs" />
     <Compile Include="Traits\Activities\FlyTimed.cs" />

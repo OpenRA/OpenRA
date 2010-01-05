@@ -34,8 +34,8 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "EnterTransport")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 0));
-				// todo: actually enter the transport
+				self.QueueActivity(new Move(order.TargetActor.Location, 1));
+				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}
 	}
