@@ -63,7 +63,7 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw(float2 pos)
 		{
-			spriteRenderer.DrawSprite(sprite, pos, PaletteType.Chrome);
+			spriteRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(256,256));
 			spriteRenderer.Flush();
 		}
 	}
