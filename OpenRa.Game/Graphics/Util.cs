@@ -8,18 +8,6 @@ namespace OpenRa.Game.Graphics
 {
 	static class Util
 	{
-		static float2 KLerp(float2 o, float2 d, int k)
-		{
-			switch (k)
-			{
-				case 0: return o;
-				case 1: return new float2(o.X + d.X, o.Y);
-				case 2: return new float2(o.X, o.Y + d.Y);
-				case 3: return new float2(o.X + d.X, o.Y + d.Y);
-				default: throw new InvalidOperationException();
-			}
-		}
-
 		public static string[] ReadAllLines(Stream s)
 		{
 			List<string> result = new List<string>();
@@ -61,10 +49,14 @@ namespace OpenRa.Game.Graphics
 		{
 			float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
 
-			vertices[nv] = new Vertex(KLerp(o, size, 0), r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(KLerp(o, size, 1), r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(KLerp(o, size, 2), r.FastMapTextureCoords(2), attrib);
-			vertices[nv + 3] = new Vertex(KLerp(o, size, 3), r.FastMapTextureCoords(3), attrib);
+			vertices[nv] = new Vertex(o, 
+				r.FastMapTextureCoords(0), attrib);
+			vertices[nv + 1] = new Vertex(new float2(o.X + size.X, o.Y), 
+				r.FastMapTextureCoords(1), attrib);
+			vertices[nv + 2] = new Vertex(new float2(o.X, o.Y + size.Y), 
+				r.FastMapTextureCoords(2), attrib);
+			vertices[nv + 3] = new Vertex(new float2(o.X + size.X, o.Y + size.Y), 
+				r.FastMapTextureCoords(3), attrib);
 
 			indices[ni] = (ushort)(nv);
 			indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);
