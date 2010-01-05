@@ -102,6 +102,12 @@ namespace OpenRa.Game
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
 			oreTicks = oreFrequency;
+
+			foreach (var a in Game.world.Actors)
+				if (a.Info != null && a.Owner == players[0])
+					players[0].Shroud.Explore(a);
+
+			Game.world.ActorAdded += a => players[0].Shroud.Explore(a);
 		}
 
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 

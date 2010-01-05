@@ -87,6 +87,8 @@ namespace OpenRa.Game.Graphics
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();
 
+			Game.LocalPlayer.Shroud.Draw(spriteRenderer);
+
 			lineRenderer.Flush();
 			spriteRenderer.Flush();
 		}
