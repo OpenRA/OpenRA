@@ -16,7 +16,7 @@ namespace OpenRa.Game
 
 		public void Explore(Actor a)
 		{
-			foreach (var t in Game.FindTilesInCircle((1f/Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Sight))
+			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Sight))
 				explored[t.X, t.Y] = true;
 
 			dirty = true;
@@ -35,12 +35,12 @@ namespace OpenRa.Game
 				11,3,9,1,	
 				0,2,8,0,
 			};
-			
+
 			var v = 0;
-			if (explored[i-1,j]) v |= 1;
-			if (explored[i+1,j]) v |= 2;
-			if (explored[i,j-1]) v |= 4;
-			if (explored[i,j+1]) v |= 8;
+			if (explored[i - 1, j]) v |= 1;
+			if (explored[i + 1, j]) v |= 2;
+			if (explored[i, j - 1]) v |= 4;
+			if (explored[i, j + 1]) v |= 8;
 			if (explored[i, j]) v |= 16;
 
 			var x = n[v];
@@ -76,12 +76,38 @@ namespace OpenRa.Game
 						sprites[i, j] = ChooseShroud(i, j);
 			}
 
-			for (var j = 0; j < 128; j++)
-				for (var i = 0; i < 128; i++)
-					if (sprites[i,j] != null)
-						r.DrawSprite(sprites[i, j], 
-							Game.CellSize * new float2(i, j), 
+			for (var j = 1; j < 127; j++)
+			{
+				var starti = 1;
+				for (var i = 1; i < 127; i++)
+				{
+					if (sprites[i, j] == shadowBits[0x0f])
+						continue;
+
+					if (starti != i)
+					{
+						r.DrawSprite(sprites[starti,j],
+						    Game.CellSize * new float2(starti, j),
+						    PaletteType.Shroud,
+						    new float2(Game.CellSize * (i - starti), Game.CellSize));
+						r.DrawSprite(sprites[i-1, j],
+							Game.CellSize * new float2(i-1, j),
 							PaletteType.Shroud);
+						starti = i+1;
+					}
+
+					r.DrawSprite(sprites[i, j],
+						Game.CellSize * new float2(i, j),
+						PaletteType.Shroud);
+					starti = i+1;
+				}
+
+				if (starti < 127)
+					r.DrawSprite(sprites[starti, j],
+						Game.CellSize * new float2(starti, j),
+						PaletteType.Shroud,
+						new float2(Game.CellSize * (127 - starti), Game.CellSize));
+			}
 		}
 	}
 }
