@@ -17,14 +17,16 @@ namespace OpenRa.Game
 		public string InternalName;
 		public Race Race;
 		public readonly int Index;
-		public int Cash;
-		public int Ore;
+		public int Cash = 10000;
+		public int Ore = 0;
 		public int OreCapacity;
-		public int DisplayCash;
-		public int PowerProvided;
-		public int PowerDrained;
+		public int DisplayCash = 0;
+		public int PowerProvided = 0;
+		public int PowerDrained = 0;
 
 		public bool IsReady;
+
+		public Shroud Shroud = new Shroud();
 
 		public Player( Actor playerActor, int index, PaletteType palette, string playerName, Race race, string internalName )
 		{
@@ -34,10 +36,6 @@ namespace OpenRa.Game
 			this.InternalName = internalName;
 			this.PlayerName = playerName;
 			this.Race = race;
-			this.Cash = 10000;
-			this.Ore = 0;
-			this.DisplayCash = 0;
-			this.PowerProvided = this.PowerDrained = 0;
 		}
 
 		void UpdatePower()

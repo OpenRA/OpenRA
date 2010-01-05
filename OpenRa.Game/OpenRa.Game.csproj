@@ -110,6 +110,7 @@
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
     <Compile Include="Orders\ReplayOrderSource.cs" />
+    <Compile Include="Shroud.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\Stopwatch.cs" />
