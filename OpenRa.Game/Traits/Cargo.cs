@@ -15,6 +15,9 @@ namespace OpenRa.Game.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
+			var unit = underCursor.traits.GetOrDefault<Unit>();
+			if (unit.Altitude > 0) return null;
+
 			// todo: check if there is an unoccupied `land` tile adjacent
 			if (mi.Button == MouseButton.Right && underCursor == self && cargo.Count > 0)
 				return new Order("Deploy", self, null, int2.Zero, null);
