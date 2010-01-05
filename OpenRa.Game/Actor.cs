@@ -123,6 +123,7 @@ namespace OpenRa.Game
 		}
 
 		public bool IsDead { get { return Health <= 0; } }
+		public bool IsInWorld { get; set; }
 
 		public DamageState GetDamageState()
 		{

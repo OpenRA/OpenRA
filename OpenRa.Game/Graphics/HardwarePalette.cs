@@ -3,7 +3,12 @@ using OpenRa.FileFormats;
 
 namespace OpenRa.Game.Graphics
 {
-	public enum PaletteType { Gold, Blue, Red, Orange, Teal, Salmon, Green, Gray, Shadow, Invuln, Chrome };
+	public enum PaletteType
+	{
+		Gold, Blue, Red, Orange, Teal, Salmon, Green, Gray, 
+		Shadow, Invuln, Chrome, Shroud,
+	};
+
 	class HardwarePalette : Sheet
 	{
 		const int maxEntries = 16;
@@ -21,6 +26,7 @@ namespace OpenRa.Game.Graphics
 			AddPalette(new Palette(pal, new PaletteRemap(Color.FromArgb(140, 0, 0, 0))));
 			AddPalette(pal);	// iron curtain. todo: remap!
 			AddPalette(pal);	// chrome (it's like gold, but we're not going to hax it in palettemods)
+			AddPalette(new Palette(pal, new ShroudPaletteRemap()));
 		}
 
 		int AddPalette(Palette p)

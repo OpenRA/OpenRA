@@ -5,7 +5,7 @@ namespace OpenRa.Game.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 
-		public int desiredFacing;
+		int desiredFacing;
 
 		public Turn( int desiredFacing )
 		{

@@ -132,6 +132,8 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
+			Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
+
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Chrome);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 
@@ -143,8 +145,6 @@ namespace OpenRa.Game
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
-
-			Game.minimap.Draw(new float2(Game.viewport.Width - 128,30));
 		}
 
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }

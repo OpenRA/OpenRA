@@ -4,7 +4,7 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
-	public class PaletteRemap
+	public class PaletteRemap : IPaletteRemap
 	{
 		int offset;
 		List<Color> remapColors = new List<Color>();

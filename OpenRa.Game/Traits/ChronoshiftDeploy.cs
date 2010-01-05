@@ -55,7 +55,7 @@ namespace OpenRa.Game.Traits
 		}
 		
 		// Display 5 pips indicating the current charge status
-		public IEnumerable<PipType> GetPips()
+		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			const int numPips = 5;
 			for (int i = 0; i < numPips; i++)

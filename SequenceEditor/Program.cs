@@ -83,7 +83,8 @@ namespace SequenceEditor
 			Doc = new XmlDocument(); 
 			Doc.Load(XmlFilename);
 
-			Pal = new Palette(FileSystem.Open("temperat.pal"));
+			var tempPal = new Palette(FileSystem.Open("temperat.pal"));
+			Pal = new Palette(tempPal, new ShroudPaletteRemap());
 
 			UnitName = args.FirstOrDefault( x => !x.EndsWith(".xml") );
 			if (UnitName == null)
