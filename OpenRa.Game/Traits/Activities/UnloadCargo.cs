@@ -10,6 +10,21 @@ namespace OpenRa.Game.Traits.Activities
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
 
+		int2? ChooseExitTile(Actor self)
+		{
+			if (!Game.IsCellBuildable(self.Location, UnitMovementType.Foot, self))
+				return null;
+
+			for (var i = -1; i < 2; i++)
+				for (var j = -1; j < 2; j++)
+					if ((i != 0 || j != 0) && 
+						Game.IsCellBuildable(self.Location + new int2(i, j), 
+							UnitMovementType.Foot))
+						return self.Location + new int2(i, j);
+
+			return null;
+		}
+
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
@@ -18,13 +33,31 @@ namespace OpenRa.Game.Traits.Activities
 			// right facing for the unload animation
 			var unit = self.traits.GetOrDefault<Unit>();
 			if (unit != null && unit.Facing != self.Info.UnloadFacing)
-				return Util.SequenceActivities(new Turn(self.Info.UnloadFacing), this);
+				return new Turn(self.Info.UnloadFacing) { NextActivity = this };
 
-			// todo: play the `open` anim (or the `close` anim backwards)
-			// todo: unload all the cargo
-			// todo: play the `close` anim (or the `open` anim backwards)
+			// todo: handle the BS of open/close sequences, which are inconsistent,
+			//		for reasons that probably make good sense to the westwood guys.
 
-			// as for open/close... the westwood guys suck at being consistent.
+			var cargo = self.traits.Get<Cargo>();
+			if (cargo.IsEmpty(self))
+				return NextActivity;
+
+			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			if (ru != null)
+				ru.PlayCustomAnimation(self, "unload", null);
+
+			var exitTile = ChooseExitTile(self);
+			if (exitTile == null) 
+				return this;
+
+			var actor = cargo.UnloadOne(self);
+			Game.world.AddFrameEndTask(w =>
+			{
+				w.Add(actor);
+				actor.traits.Get<Mobile>().TeleportTo(actor, self.Location);
+				actor.CancelActivity();
+				actor.QueueActivity(new Move(exitTile.Value, 0));
+			});
 
 			return this;
 		}

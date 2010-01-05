@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -10,7 +11,15 @@ namespace OpenRa.Game.Traits
 	{
 		List<Actor> cargo = new List<Actor>();
 
-		public Cargo(Actor self) { }
+		public Cargo(Actor self)
+		{
+			// hack:
+			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
+			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
+			cargo.Add(new Actor(Rules.UnitInfo["E1"], int2.Zero, self.Owner));
+			cargo.Add(new Actor(Rules.UnitInfo["E6"], int2.Zero, self.Owner));
+			cargo.Add(new Actor(Rules.UnitInfo["E7"], int2.Zero, self.Owner));
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -27,12 +36,25 @@ namespace OpenRa.Game.Traits
 			{
 				// todo: eject the units
 				self.CancelActivity();
+				self.QueueActivity(new UnloadCargo());
 			}
 		}
 
 		public bool IsFull(Actor self)
 		{
 			return cargo.Count == self.Info.Passengers;
+		}
+
+		public bool IsEmpty(Actor self)
+		{
+			return cargo.Count == 0;
+		}
+
+		public Actor UnloadOne(Actor self)
+		{
+			var a = cargo[0];
+			cargo.RemoveAt(0);
+			return a;
 		}
 
 		public IEnumerable<PipType> GetPips( Actor self )
