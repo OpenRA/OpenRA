@@ -90,9 +90,6 @@ namespace OpenRa.Game
 						    Game.CellSize * new float2(starti, j),
 						    PaletteType.Shroud,
 						    new float2(Game.CellSize * (i - starti), Game.CellSize));
-						r.DrawSprite(sprites[i-1, j],
-							Game.CellSize * new float2(i-1, j),
-							PaletteType.Shroud);
 						starti = i+1;
 					}
 
