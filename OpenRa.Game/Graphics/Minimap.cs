@@ -10,7 +10,7 @@ namespace OpenRa.Game.Graphics
 		Sheet sheet;
 		SpriteRenderer spriteRenderer;
 		Sprite sprite;
-		Bitmap terrain;
+		Bitmap terrain, oreLayer;
 
 		public void Tick() { }
 
@@ -23,6 +23,8 @@ namespace OpenRa.Game.Graphics
 
 		// todo: extract these from the palette
 		Color[] terrainTypeColors;
+
+		public void InvalidateOre() { oreLayer = null; }
 
 		public void Update()
 		{
@@ -39,8 +41,10 @@ namespace OpenRa.Game.Graphics
 					pal.GetColor(0x1f),
 					pal.GetColor(0x68),
 					pal.GetColor(0x6b),
+					pal.GetColor(0x6d),
 				};
 			}
+			
 			if (terrain == null)
 			{
 				terrain = new Bitmap(128, 128);
@@ -51,7 +55,16 @@ namespace OpenRa.Game.Graphics
 							: Color.Black);
 			}
 
-			var bitmap = new Bitmap(terrain);
+			if (oreLayer == null)
+			{
+				oreLayer = new Bitmap(terrain);
+				for (var y = 0; y < 128; y++)
+					for (var x = 0; x < 128; x++)
+						if (Rules.Map.ContainsResource(new int2(x, y)))
+						oreLayer.SetPixel(x, y, terrainTypeColors[(int)TerrainMovementType.Ore]);
+			}
+
+			var bitmap = new Bitmap(oreLayer);
 			
 			for( var y = 0; y < 128; y++ )
 				for (var x = 0; x < 128; x++)
