@@ -57,14 +57,14 @@ namespace OpenRa.Game.Graphics
 
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni)
+		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni, float2 size)
 		{
 			float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
 
-			vertices[nv] = new Vertex(KLerp(o, r.size, 0), r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(KLerp(o, r.size, 1), r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(KLerp(o, r.size, 2), r.FastMapTextureCoords(2), attrib);
-			vertices[nv + 3] = new Vertex(KLerp(o, r.size, 3), r.FastMapTextureCoords(3), attrib);
+			vertices[nv] = new Vertex(KLerp(o, size, 0), r.FastMapTextureCoords(0), attrib);
+			vertices[nv + 1] = new Vertex(KLerp(o, size, 1), r.FastMapTextureCoords(1), attrib);
+			vertices[nv + 2] = new Vertex(KLerp(o, size, 2), r.FastMapTextureCoords(2), attrib);
+			vertices[nv + 3] = new Vertex(KLerp(o, size, 3), r.FastMapTextureCoords(3), attrib);
 
 			indices[ni] = (ushort)(nv);
 			indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);

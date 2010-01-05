@@ -34,7 +34,7 @@ namespace OpenRa.Game.Graphics
 				for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
 				{
 					Sprite tile = tileMapping[map.MapTiles[i, j]];
-					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni);
+					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
 				}
