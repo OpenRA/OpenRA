@@ -26,12 +26,8 @@ namespace OpenRa.Game.Traits
 
 		protected override void QueueAttack( Actor self, Order order )
 		{
-			if (self.traits.Contains<Building>()) 
-			{
-				var b = self.traits.Get<Building>();
-				if (b.InsuffientPower())
-					return;
-			}
+			if (self.traits.Contains<Building>() && self.traits.Get<Building>().InsuffientPower()) 
+				return;
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
