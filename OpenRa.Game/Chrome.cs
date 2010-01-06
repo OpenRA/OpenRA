@@ -136,7 +136,7 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
-			Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
+			DrawMinimap();
 
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Chrome);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
@@ -145,7 +145,7 @@ namespace OpenRa.Game
 			DrawPower();
 			chromeRenderer.Flush();
 			DrawButtons();
-			DrawMinimap();
+			
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
@@ -153,9 +153,12 @@ namespace OpenRa.Game
 
 		void DrawMinimap()
 		{
-			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>() && a.traits.Get<ProvidesRadar>().IsActive());
+			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
+				&& a.traits.Contains<ProvidesRadar>() 
+				&& a.traits.Get<ProvidesRadar>().IsActive());
+
 			if (hasRadar)
-				Game.minimap.Draw(new float2(Game.viewport.Width - 128, 30));
+				Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
 		}
 		
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
