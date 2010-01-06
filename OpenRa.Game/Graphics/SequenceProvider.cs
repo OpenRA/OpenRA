@@ -57,7 +57,7 @@ namespace OpenRa.Game.Graphics
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
 			try { return units[unitName][sequenceName]; }
-			catch (KeyNotFoundException e)
+			catch (KeyNotFoundException)
 			{
 				throw new InvalidOperationException(
 					"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));

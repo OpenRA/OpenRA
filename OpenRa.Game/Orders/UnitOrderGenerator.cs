@@ -27,7 +27,7 @@ namespace OpenRa.Game.Orders
 
 		public void Tick()
 		{
-			selection.RemoveAll(a => a.IsDead);
+			selection.RemoveAll(a => !a.IsInWorld);
 		}
 
 		public void Render()
@@ -81,10 +81,11 @@ namespace OpenRa.Game.Orders
 					else
 						return Cursor.MoveBlocked;
 				case "Enter": return Cursor.Enter;
+				case "EnterTransport": return Cursor.Enter;
 				case "Deliver": return Cursor.Enter;
 				case "Infiltrate": return Cursor.Enter;
 				case "Capture": return Cursor.Capture;
-				case "Harvest": return Cursor.Attack; // TODO: special harvest cursor?
+				case "Harvest": return Cursor.AttackMove;
 				default:
 					return null;
 			}

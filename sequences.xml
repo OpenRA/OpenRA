@@ -283,6 +283,8 @@
   <unit name="apc">
     <sequence name="idle" start="0" length="32" />
     <sequence name="muzzle" start="0" length="48" src="minigun" />
+    <sequence name="close" start="32" length="3" />
+    <sequence name="unload" start="32" length="1" />
   </unit>
   <!-- mine layer -->
   <unit name="mnly">
@@ -368,7 +370,7 @@
     <sequence name="move" start="10" length="4" x="12" y="12" />
     <sequence name="move-blocked" start="14" x="12" y="12" />
     <sequence name="select" start="15" length="6" x="12" y="12" />
-    <sequence name="attack" start="21" length="8" x="12" y="12" />
+    <sequence name="attackmove" start="21" length="8" x="12" y="12" />
     <sequence name="move-minimap" start="29" length="6" />
     <sequence name="repair" start="35" length="24" />
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
@@ -376,14 +378,15 @@
     <sequence name="default-minimap" start="80" length="1" />
     <sequence name="ability" start="82" length="8" />
     <sequence name="nuke" start="90" length="7" x="12" y="12" />
-    <sequence name="chrono" start="105" length="8" x="12" y="12" />
+    <sequence name="chrono-select" start="97" length="8" x="12" y="12" />
+    <sequence name="chrono-target" start="105" length="8" x="12" y="12" />
     <sequence name="enter" start="113" length="3" x="12" y="12" />
     <sequence name="c4" start="116" length="3" x="12" y="12" />
     <sequence name="sell-blocked" start="119" length="1" x="12" y="12" />
     <sequence name="repair-blocked" start="120" length="1" />
     <sequence name="c4-minimap" start="121" length="3" />
     <sequence name="scroll-blocked" start="124" length="8" />
-    <sequence name="attack-minimap" start="134" length="8" />
+    <sequence name="attackmove-minimap" start="134" length="8" />
     <sequence name="enter-minimap" start="142" length="3" />
     <sequence name="guard-minimap" start="146" length="1" />
     <sequence name="guard" start="147" length="1" x="12" y="12" />
@@ -393,13 +396,19 @@
     <sequence name="capture-minimap" start="167" length="3" />
     <sequence name="repair2" start="170" length="24" />
     <sequence name="heal-minimap" start="194" length="1" />
-    <sequence name="attack2" start="195" length="8" x="12" y="12" />
-    <sequence name="attack2-minimap" start="203" length="8" />
+    <sequence name="attack" start="195" length="8" x="12" y="12" />
+    <sequence name="attack-minimap" start="203" length="8" />
     <sequence name="deploy-blocked" start="211" length="1" x="12" y="12" />
     <sequence name="enter-blocked" start="212" length="1" />
     <sequence name="repair2-blocked" start="213" length="1" />
     <sequence name="ability-minimap" start="214" length="8" />
   </cursor>
+  <cursor src="speed">
+	<sequence name="powerdown" start="3" length="12" />
+  </cursor>
+  <unit name="powerdown">
+	<sequence name="disabled" start="3" length="1" src="speed" />
+  </unit>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
   </unit>
@@ -535,6 +544,8 @@
   </unit>
   <unit name="lst">
     <sequence name="idle" start="0" length="1" />
+    <sequence name="open" start="1" length="4" />
+    <sequence name="unload" start="4" length="1" />
   </unit>
   <unit name="pips">
     <sequence name="groups" start="8" length="10" />
@@ -571,6 +582,8 @@
     <sequence name="rotor2" start="0" length="4" src="rrotor" />
     <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
     <sequence name="slow-rotor2" start="4" length="8" src="rrotor" />
+    <sequence name="open" start="32" length="4" />
+    <sequence name="unload" start="35" length="1" />
   </unit>
   <unit name="v2">
     <sequence name="idle" start="0" length="32" />
@@ -1007,8 +1020,8 @@
     <sequence name="disabled" start="2" length="1" />
   </unit>
   <unit name="sell">
-	<sequence name="normal" start="0" length="1" />
-	<sequence name="pressed" start="1" length="1" />
-	<sequence name="disabled" start="2" length="1" />
+    <sequence name="normal" start="0" length="1" />
+    <sequence name="pressed" start="1" length="1" />
+    <sequence name="disabled" start="2" length="1" />
   </unit>
 </sequences>

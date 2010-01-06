@@ -4,9 +4,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
+using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Orders;
-using OpenRa.Game.GameRules;
 
 
 namespace OpenRa.Game
@@ -31,20 +31,13 @@ namespace OpenRa.Game
 		[DllImport("user32")]
 		static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
 
-		
-		
 		public MainWindow(Settings settings)
 		{
-			
-			
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
 			Location = Point.Empty;
 			Visible = true;
-			
-			// Load user settings
-			Game.Settings = new UserSettings();
 			
 			while (!File.Exists("redalert.mix"))
 			{
@@ -52,30 +45,19 @@ namespace OpenRa.Game
 				if (Directory.GetDirectoryRoot(current) == current)
 					throw new InvalidOperationException("Unable to load MIX files.");
 				Directory.SetCurrentDirectory("..");
-
-				try
-				{
-					// settings.ini should be located with the mix files
-					FileSystem.MountTemporary(new Folder("./"));
-					IniFile SettingsRules = new IniFile(FileSystem.Open("settings.ini"));
-					FieldLoader.Load(Game.Settings, SettingsRules.GetSection("Settings"));
-					FileSystem.UnmountTemporaryPackages();
-				}
-				catch (FileNotFoundException) { }
 			}
+
+			LoadUserSettings(settings);
 
 			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
 			UiOverlay.ShowBuildDebug = Game.Settings.BuildingDebug;
 			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
 			Renderer.SheetSize = Game.Settings.SheetSize;
 
-
 			FileSystem.MountDefaultPackages();
 			
 			if (Game.Settings.UseAftermath)
-			{
 				FileSystem.MountAftermathPackages();
-			}
 
 			bool windowed = !Game.Settings.Fullscreen;
 			renderer = new Renderer(this, GetResolution(settings), windowed);
@@ -87,6 +69,17 @@ namespace OpenRa.Game
 
 			ShowCursor(false);
 			Game.ResetTimer();
+		}
+
+		static void LoadUserSettings(Settings settings)
+		{
+			Game.Settings = new UserSettings();
+			var settingsFile = settings.GetValue("settings", "settings.ini");
+			FileSystem.MountTemporary(new Folder("./"));
+			if (FileSystem.Exists(settingsFile))
+				FieldLoader.Load(Game.Settings,
+					new IniFile(FileSystem.Open(settingsFile)).GetSection("Settings"));
+			FileSystem.UnmountTemporaryPackages();
 		}
 
 		internal void Run()

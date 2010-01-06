@@ -5,19 +5,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class Building : INotifyDamage, IOrder, ITick
+	class Building : INotifyDamage, IOrder, ITick, IRenderModifier
 	{
+		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
 		bool isRepairing = false;
+		bool isPoweredDown = false;
 
 		public Building(Actor self)
 		{
+			this.self = self;
 			unitInfo = (BuildingInfo)self.Info;
 			self.CenterLocation = Game.CellSize 
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
+		}
+		
+		public bool InsuffientPower()
+		{
+			return (isPoweredDown || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal));
+		}
+		
+		public int GetPowerUsage()
+		{
+			if (isPoweredDown)
+				return 0;
+			
+			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
+				return (self.Health * unitInfo.Power) / unitInfo.Strength;
+			else
+				return unitInfo.Power;
+		}
+
+		public Animation iconAnim;
+		public IEnumerable<Renderable>
+			ModifyRender(Actor self, IEnumerable<Renderable> rs)
+		{
+			if (!InsuffientPower())
+				return rs;
+			
+			List<Renderable> nrs = new List<Renderable>(rs);
+			foreach(var r in rs)
+			{
+				// Need 2 shadows to make it dark enough
+				nrs.Add(r.WithPalette(PaletteType.Shadow));
+				nrs.Add(r.WithPalette(PaletteType.Shadow));
+			}
+			
+			if (isPoweredDown)
+			{
+				iconAnim = new Animation("powerdown");
+				iconAnim.PlayRepeating("disabled");
+				nrs.Add(new Renderable(iconAnim.Image, self.CenterLocation - 0.5f*iconAnim.Image.size, PaletteType.Chrome));
+			}
+			
+			
+			return nrs;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -42,6 +88,12 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Repair")
 			{
 				isRepairing = !isRepairing;
+			}
+			
+			if (order.OrderString == "PowerDown")
+			{
+				isPoweredDown = !isPoweredDown;
+				Sound.Play((isPoweredDown) ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
 

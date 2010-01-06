@@ -26,7 +26,8 @@ namespace OpenRa.Game
 		
 		readonly Animation repairButton;
 		readonly Animation sellButton;
-		
+		readonly Animation pwrdownButton;
+				
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
 		readonly Animation ready;
@@ -40,6 +41,8 @@ namespace OpenRa.Game
 	
 		readonly int paletteColumns;
 		readonly int2 paletteOrigin;
+
+		const int MinRows = 4;
 		
 		public Chrome(Renderer r)
 		{
@@ -75,6 +78,9 @@ namespace OpenRa.Game
 
 			sellButton = new Animation("sell");
 			sellButton.PlayRepeating("normal");
+
+			pwrdownButton = new Animation("repair");
+			pwrdownButton.PlayRepeating("normal");
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -96,7 +102,7 @@ namespace OpenRa.Game
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
-			digitSprites = OpenRa.Game.Graphics.Util.MakeArray(10, a => a)
+			digitSprites = Graphics.Util.MakeArray(10, a => a)
 				.Select(n => new Sprite(specialBin, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
 
 			shimSprites = new[] 
@@ -130,6 +136,8 @@ namespace OpenRa.Game
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
+			DrawMinimap();
+
 			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Chrome);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 
@@ -143,8 +151,18 @@ namespace OpenRa.Game
 			DrawChat();
 		}
 
-		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+		void DrawMinimap()
+		{
+			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
+				&& a.traits.Contains<ProvidesRadar>() 
+				&& a.traits.Get<ProvidesRadar>().IsActive());
 
+			if (hasRadar)
+				Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
+		}
+		
+		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+		
 		void DrawBuildTabs(int paletteHeight)
 		{
 			const int tabWidth = 24;
@@ -215,6 +233,9 @@ namespace OpenRa.Game
 				x -= 14;
 			}
 		}
+
+		float? lastPowerProvidedPos;
+		float? lastPowerDrainedPos;
 		
 		void DrawPower()
 		{
@@ -228,16 +249,32 @@ namespace OpenRa.Game
 			float2 bottom = powerOrigin + new float2(0, powerLevelTopSprite.size.Y + powerLevelBottomSprite.size.Y) - new float2(0, 50);
 			
 			var scale = 100;
-			while(Game.LocalPlayer.PowerProvided >= scale) scale += 100;
+			while(Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained) >= scale) scale *= 2;
 			//draw bar
-			float2 powerTop = new float2(bottom.X, bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale));
+
+			var powerTopY = bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale) - Game.viewport.Location.Y;
+			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerTopY), powerTopY, .3f);
+			float2 powerTop = new float2(bottom.X, lastPowerProvidedPos.Value + Game.viewport.Location.Y);
 			
-			for(int i = 7; i < 11; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), Color.LimeGreen, Color.LimeGreen);
+			var color = Color.LimeGreen;
+			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
+				color = Color.Orange;
+			if (Game.LocalPlayer.GetPowerState() == PowerState.Critical)
+				color = Color.Red;
+
+			var color2 = Graphics.Util.Lerp(0.25f, color, Color.Black);
+			
+			for(int i = 11; i < 13; i++)
+				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color, color);
+			for (int i = 13; i < 15; i++)
+				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color2, color2);
+			
 			lineRenderer.Flush();
-			
+
+			var drainedPositionY = bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) - powerIndicatorSprite.size.Y /2 - Game.viewport.Location.Y;
+			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(drainedPositionY), drainedPositionY, .3f);
 			//draw indicator
-			float2 drainedPosition = new float2(bottom.X , bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale));
+			float2 drainedPosition = new float2(bottom.X + 2, lastPowerDrainedPos.Value + Game.viewport.Location.Y);
 
 			buildPaletteRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
@@ -245,8 +282,24 @@ namespace OpenRa.Game
 
 		void DrawButtons()
 		{
+			// Chronoshift
+			Rectangle chronoshiftRect = new Rectangle(6, 14, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			var chronoshiftDrawPos = Game.viewport.Location + new float2(chronoshiftRect.Location);
+
+			var hasChronosphere = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Chronosphere>());
+
+			if (!hasChronosphere)
+				repairButton.ReplaceAnim("disabled");
+			else
+			{
+				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
+				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
+			}
+			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
+			
+			
 			// Repair
-			Rectangle repairRect = new Rectangle(Game.viewport.Width - 100, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
@@ -261,7 +314,7 @@ namespace OpenRa.Game
 			buildPaletteRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
 			// Sell
-			Rectangle sellRect = new Rectangle(Game.viewport.Width - 60, 5, 
+			Rectangle sellRect = new Rectangle(Game.viewport.Width - 80, 5, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
@@ -271,6 +324,27 @@ namespace OpenRa.Game
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			buildPaletteRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
 			buildPaletteRenderer.Flush();
+
+			if (Game.Settings.PowerDownBuildings)
+			{
+				// Power Down
+				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 40, 5,
+					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
+
+				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);
+
+				pwrdownButton.ReplaceAnim(Game.controller.orderGenerator is PowerDownOrderGenerator ? "pressed" : "normal");
+
+				AddButton(pwrdownRect, isLmb => Game.controller.ToggleInputMode<PowerDownOrderGenerator>());
+				buildPaletteRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, PaletteType.Chrome);
+			}
+			buildPaletteRenderer.Flush();
+		}
+		
+		void HandleChronosphereButton()
+		{
+			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
 		}
 		
 		void DrawChat()
@@ -392,7 +466,7 @@ namespace OpenRa.Game
 				if (++x == columns) { x = 0; y++; }
 			}
 
-			while (x != 0)
+			while (x != 0 || y < MinRows)
 			{
 				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);

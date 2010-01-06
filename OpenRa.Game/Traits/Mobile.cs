@@ -18,7 +18,16 @@ namespace OpenRa.Game.Traits
 		public int2 toCell
 		{
 			get { return self.Location; }
-			set { Game.UnitInfluence.Remove(self, this); self.Location = value; Game.UnitInfluence.Add(self, this); }
+			set
+			{
+				if (self.Location != value)
+				{
+					Game.UnitInfluence.Remove(self, this);
+					self.Location = value;
+					self.Owner.Shroud.Explore(self);
+				}
+				Game.UnitInfluence.Add(self, this);
+			}
 		}
 
 		public Mobile(Actor self)

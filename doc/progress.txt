@@ -21,7 +21,7 @@ All tracked vehicles
 
 Light vehicles
 V2RL	Works
-APC		Cargo doesn't work
+APC		Works
 MNLY	Works
 MGG		No gap
 MRJ		No radar
@@ -31,8 +31,7 @@ HARV	Works
 ARTY	Works
 
 Helicopters
-	- Return to base after attack doesnt work
-TRAN	Cargo doesn't work
+TRAN	Works
 HELI	Works
 HIND	Works
 
@@ -47,5 +46,5 @@ CA		Works
 SS		Works
 DD		depth charges don't work
 PT		depth charges don't work
-LST		Cargo doesn't work
+LST		Works
 

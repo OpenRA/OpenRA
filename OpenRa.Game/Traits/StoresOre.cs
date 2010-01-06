@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits
 			this.self = self;
 		}
 		
-		public IEnumerable<PipType> GetPips()
+		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			for (int i = 0; i < self.Info.OrePips; i++)
 			{

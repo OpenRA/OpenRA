@@ -19,10 +19,12 @@ namespace OpenRa.Game
 		public static Cursor Select { get { return new Cursor("select"); } }
 		public static Cursor MoveBlocked { get { return new Cursor("move-blocked"); } }
 		public static Cursor Attack { get { return new Cursor("attack"); } }
+		public static Cursor AttackMove { get { return new Cursor("attackmove"); } }
 		public static Cursor Deploy { get { return new Cursor("deploy"); } }
 		public static Cursor Enter { get { return new Cursor("enter"); } }
 		public static Cursor DeployBlocked { get { return new Cursor("deploy-blocked"); } }
-		public static Cursor Chronoshift { get { return new Cursor("chrono"); } }
+		public static Cursor Chronoshift { get { return new Cursor("chrono-target"); } }
+		public static Cursor ChronoshiftSelect { get { return new Cursor("chrono-select"); } }
 		public static Cursor C4 { get { return new Cursor("c4"); } }
 		public static Cursor Capture { get { return new Cursor("capture"); } }
 		public static Cursor Heal { get { return new Cursor("heal"); } }
@@ -30,5 +32,6 @@ namespace OpenRa.Game
 		public static Cursor SellBlocked { get { return new Cursor("sell-blocked"); } }
 		public static Cursor Repair { get { return new Cursor("repair"); } }
 		public static Cursor RepairBlocked { get { return new Cursor("repair-blocked"); } }
+		public static Cursor PowerDown { get { return new Cursor("powerdown"); } }
 	}
 }

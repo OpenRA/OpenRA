@@ -27,12 +27,18 @@ namespace OpenRa.Game
 			orderGenerator = new UnitOrderGenerator(new Actor[] { });
 		}
 
-		public void ToggleInputMode<T>() where T : IOrderGenerator, new()
+		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
 		{
 			if (orderGenerator is T)
+			{
 				CancelInputMode();
+				return false;
+			}
 			else
+			{
 				orderGenerator = new T();
+				return true;
+			}
 		}
 
 		List<Order> recentOrders = new List<Order>();

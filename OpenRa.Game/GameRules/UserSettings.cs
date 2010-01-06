@@ -26,7 +26,8 @@ namespace OpenRa.Game.GameRules
 		public readonly string Replay = "";
 		
 		// Gameplay options
-		public readonly bool RepairRequiresConyard = false;
+		public readonly bool RepairRequiresConyard = true;
+		public readonly bool PowerDownBuildings = true;
 
 	}
 }

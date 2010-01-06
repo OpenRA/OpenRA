@@ -34,7 +34,7 @@ namespace OpenRa.Game
 				typing += c;
 		}
 
-		static readonly Color[] paletteColors =
+		public static readonly Color[] paletteColors =
 		{
 			Color.FromArgb(228, 200, 112),
 			Color.FromArgb(56, 72, 125),

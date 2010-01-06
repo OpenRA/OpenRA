@@ -31,7 +31,7 @@ namespace OpenRa.FileFormats
 			colors[4] = Color.FromArgb(140, 0, 0, 0);
 		}
 
-		public Palette(Palette p, PaletteRemap r)
+		public Palette(Palette p, IPaletteRemap r)
 		{
 			for (int i = 0; i < 256; i++)
 				colors.Add(r.GetRemappedColor(p.GetColor(i), i));

@@ -48,6 +48,7 @@ namespace OpenRa.Game
 		static bool usingAftermath;
 		static int2 clientSize;
 		static HardwarePalette palette;
+		public static Minimap minimap;
 
 		public static void ChangeMap(string mapName)
 		{
@@ -58,6 +59,11 @@ namespace OpenRa.Game
 			palette = new HardwarePalette(renderer, Rules.Map);
 
 			world = new World();
+			Game.world.ActorAdded += a => 
+			{ 
+				if (a.Owner != null && a.Info != null) 
+					a.Owner.Shroud.Explore(a); 
+			};
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -73,10 +79,12 @@ namespace OpenRa.Game
 
 			var worldActor = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
 			worldActor.traits.Add(new Traits.WaterPaletteRotation(worldActor));
+			worldActor.traits.Add(new Traits.ChronoshiftPaletteEffect(worldActor));
 			Game.world.Add(worldActor);
 
 			Rules.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
+			minimap = new Minimap(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);
 			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
@@ -97,7 +105,7 @@ namespace OpenRa.Game
 
 			chrome = new Chrome(renderer);
 
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
+			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
 		}
 
@@ -168,6 +176,8 @@ namespace OpenRa.Game
 					lastTime += Settings.Timestep;
 					UpdatePalette(world.Actors.SelectMany(
 						a => a.traits.WithInterface<IPaletteModifier>()));
+					minimap.Update();
+
 					orderManager.TickImmediate();
 
 					if (orderManager.IsReadyForNextFrame)
@@ -177,11 +187,12 @@ namespace OpenRa.Game
 							controller.orderGenerator.Tick();
 
 						if (--oreTicks == 0)
-						{
 							using (new PerfSample("ore"))
+							{
 								Rules.Map.GrowOre(SharedRandom);
-							oreTicks = oreFrequency;
-						}
+								minimap.InvalidateOre();
+								oreTicks = oreFrequency;
+							}
 
 						world.Tick();
 						UnitInfluence.Tick();

@@ -87,6 +87,8 @@ namespace OpenRa.Game.Graphics
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();
 
+			Game.LocalPlayer.Shroud.Draw(spriteRenderer);
+
 			lineRenderer.Flush();
 			spriteRenderer.Flush();
 		}
@@ -211,7 +213,7 @@ namespace OpenRa.Game.Graphics
 
 			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
 			{
-				foreach (var pip in pips.GetPips())
+				foreach (var pip in pips.GetPips(selectedUnit))
 				{
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);

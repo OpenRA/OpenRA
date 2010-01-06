@@ -2,7 +2,7 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game
 {
-	enum UnitMovementType : byte
+	public enum UnitMovementType : byte
 	{
 		Foot = 0,
 		Track = 1,
