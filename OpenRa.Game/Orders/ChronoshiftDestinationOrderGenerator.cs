@@ -35,6 +35,9 @@ namespace OpenRa.Game.Orders
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)
 		{
+			if (!Game.LocalPlayer.Shroud.IsExplored(xy))
+				return Cursor.MoveBlocked;
+			
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
 		}

@@ -46,7 +46,10 @@ namespace OpenRa.Game.Traits
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
-				
+				// Cannot chronoshift into unexplored location
+				if (!Game.LocalPlayer.Shroud.IsExplored(order.TargetLocation))
+					return;
+					
 				// Set up return-to-sender info
 				chronoshiftOrigin = self.Location;
 				chronoshiftReturnTicks = (int)(Rules.General.ChronoDuration * 60 * 25);
