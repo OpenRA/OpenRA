@@ -29,7 +29,7 @@ namespace OpenRa.Game.Traits
 			if (self.traits.Contains<Building>()) 
 			{
 				var b = self.traits.Get<Building>();
-				if (b != null && b.InsuffientPower())
+				if (b.InsuffientPower())
 					return;
 			}
 			
