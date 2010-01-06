@@ -6,29 +6,27 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
-	class DemoTruck : IOrder, ISpeedModifier, INotifyDamage, IChronoshiftable
+	class DemoTruck : Chronoshiftable, IOrder, INotifyDamage
 	{
 		readonly Actor self;
 		public DemoTruck(Actor self)
+			: base(self)
 		{
 			this.self = self;
 		}
-		
-		// Fire primary on Chronoshift
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public new void ResolveOrder(Actor self, Order order)
 		{
-			return null; // Chronoshift order is issued through Chrome.
-		}
-		
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "ChronosphereSelect")
-				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(self);
-			
+			// Override chronoshifting action to detonate vehicle
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
+			{
 				self.InflictDamage(chronosphere, self.Health, Rules.WarheadInfo["Super"]);
+				return;
+			}
+			
+			base.ResolveOrder(self, order);
 		}
 		
 		// Fire primary on death
@@ -48,12 +46,6 @@ namespace OpenRa.Game.Traits
 			Game.world.AddFrameEndTask(
 				w => w.Add(new Bullet(self.Info.Primary, detonatedBy.Owner, detonatedBy,
 					detonateLocation, detonateLocation,	altitude, altitude)));
-		}
-
-		public float GetSpeedModifier()
-		{
-			// ARGH! You must not do this, it will desync!
-			return (Game.controller.orderGenerator is ChronoshiftDestinationOrderGenerator) ? 0f : 1f;
 		}
 	}
 }

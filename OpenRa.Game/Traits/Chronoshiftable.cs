@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OpenRa.Game.Traits
 {
-	class Chronoshiftable : IOrder, ISpeedModifier, ITick, IChronoshiftable
+	class Chronoshiftable : IOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic
 		int2 chronoshiftOrigin;

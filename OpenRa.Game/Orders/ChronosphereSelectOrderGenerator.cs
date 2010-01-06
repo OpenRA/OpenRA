@@ -24,7 +24,7 @@ namespace OpenRa.Game.Orders
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
-						&& a.traits.WithInterface<IChronoshiftable>().Any()
+						&& a.traits.WithInterface<Chronoshiftable>().Any()
 						&& a.Info.Selectable).FirstOrDefault();
 				
 				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
