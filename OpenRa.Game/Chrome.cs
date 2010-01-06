@@ -41,7 +41,7 @@ namespace OpenRa.Game
 	
 		readonly int paletteColumns;
 		readonly int2 paletteOrigin;
-
+		bool hadRadar = false;
 		const int MinRows = 4;
 		
 		public Chrome(Renderer r)
@@ -156,7 +156,11 @@ namespace OpenRa.Game
 			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
 				&& a.traits.Get<ProvidesRadar>().IsActive());
-
+			
+			if (hasRadar != hadRadar)
+				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
+			hadRadar = hasRadar;
+			
 			if (hasRadar)
 				Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
 		}
