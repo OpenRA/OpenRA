@@ -27,6 +27,7 @@ namespace OpenRa.Game.GameRules
 		
 		// Gameplay options
 		public readonly bool RepairRequiresConyard = true;
+		public readonly bool PowerDownBuildings = true;
 
 	}
 }

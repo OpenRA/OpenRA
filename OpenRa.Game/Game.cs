@@ -59,6 +59,11 @@ namespace OpenRa.Game
 			palette = new HardwarePalette(renderer, Rules.Map);
 
 			world = new World();
+			Game.world.ActorAdded += a => 
+			{ 
+				if (a.Owner != null && a.Info != null) 
+					a.Owner.Shroud.Explore(a); 
+			};
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -100,7 +105,7 @@ namespace OpenRa.Game
 
 			chrome = new Chrome(renderer);
 
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 1000);
+			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
 		}
 
@@ -182,11 +187,12 @@ namespace OpenRa.Game
 							controller.orderGenerator.Tick();
 
 						if (--oreTicks == 0)
-						{
 							using (new PerfSample("ore"))
+							{
 								Rules.Map.GrowOre(SharedRandom);
-							oreTicks = oreFrequency;
-						}
+								minimap.InvalidateOre();
+								oreTicks = oreFrequency;
+							}
 
 						world.Tick();
 						UnitInfluence.Tick();

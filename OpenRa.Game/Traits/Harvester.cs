@@ -57,7 +57,7 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		public IEnumerable<PipType> GetPips()
+		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			const int numPips = 7;
 			for (int i = 0; i < numPips; i++)
