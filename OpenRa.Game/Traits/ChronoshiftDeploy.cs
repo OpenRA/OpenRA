@@ -30,13 +30,17 @@ namespace OpenRa.Game.Traits
 		{
 			if (order.OrderString == "Deploy")
 			{
-				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(self);
+				Game.controller.orderGenerator = new ChronoshiftSelfDestinationOrderGenerator(self);
 				return;
 			}
 
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
-			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
+			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
+				// Cannot chronoshift into unexplored location
+				if (!Game.LocalPlayer.Shroud.IsExplored(order.TargetLocation))
+					return;
+				
 				Game.controller.CancelInputMode();
 				self.CancelActivity();
 				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
