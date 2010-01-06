@@ -8,7 +8,7 @@ E3		Works
 E4		Works
 E6		Works
 E7		Works
-MEDI	Works
+MEDI		Works
 SPY		Infiltrate action missing
 THF		Steal action missing
 C1,C2,Einstein,Kosygin		Not implemented
@@ -21,12 +21,12 @@ All tracked vehicles
 
 Light vehicles
 V2RL	Works
-APC		Works
+APC	Works
 MNLY	Works
-MGG		No gap
-MRJ		No radar
+MGG	No gap
+MRJ	No radar
 JEEP	Works
-MCV		Works
+MCV	Works
 HARV	Works
 ARTY	Works
 
@@ -48,3 +48,12 @@ DD		depth charges don't work
 PT		depth charges don't work
 LST		Works
 
+Aftermath Units:
+STNK		Stealth effect looks wrong (turret alpha stacking)
+CTNK		Missile origins are wrong
+TTNK		Works
+DTRK		Attack doesn't work; Scorches wrong
+QTNK		No weapon
+MSUB		Works
+SHOK		Works
+MECH		Cannot enter transports
