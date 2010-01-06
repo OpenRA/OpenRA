@@ -53,8 +53,20 @@ namespace OpenRa.Game.Traits
 				// Set up return-to-sender info
 				chronoshiftOrigin = self.Location;
 				chronoshiftReturnTicks = (int)(Rules.General.ChronoDuration * 60 * 25);
-				
-				// TODO: Kill cargo if Rules.General.ChronoKillCargo says so
+
+				var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
+
+				// Kill cargo
+				if (Rules.General.ChronoKillCargo && self.traits.Contains<Cargo>())
+				{
+					var cargo = self.traits.Get<Cargo>();
+					while (!cargo.IsEmpty(self))
+					{
+						if (chronosphere != null)
+							chronosphere.Owner.Kills++;
+						cargo.Unload(self);
+					}
+				}
 				
 				// Set up the teleport
 				Game.controller.CancelInputMode();
@@ -66,7 +78,6 @@ namespace OpenRa.Game.Traits
 					a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
 
 				// Play chronosphere active anim
-				var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 				if (chronosphere != null)
 					chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
 			}
