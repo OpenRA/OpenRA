@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
@@ -50,11 +51,11 @@ namespace OpenRa.Game
 
 			foreach (var a in myBuildings)
 			{
-				var bi = a.Info as BuildingInfo;
-				if (bi.Power > 0)		/* todo: is this how real-ra scales it? */
-					PowerProvided += (a.Health * bi.Power) / bi.Strength;
+				var p = a.traits.Get<Building>().GetPowerUsage();
+				if (p > 0)
+					PowerProvided += p;
 				else 
-					PowerDrained -= bi.Power;
+					PowerDrained -= p;
 			}
 
 			if (PowerProvided - PowerDrained < 0)

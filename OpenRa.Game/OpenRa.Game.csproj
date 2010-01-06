@@ -103,6 +103,7 @@
     <Compile Include="Orders\NetworkOrderSource.cs" />
     <Compile Include="Orders\OrderIO.cs" />
     <Compile Include="Orders\OrderManager.cs" />
+    <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
     <Compile Include="Orders\ChronoshiftDestinationOrderGenerator.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Passenger.cs" />
+    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
