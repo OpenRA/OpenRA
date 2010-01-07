@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 namespace OpenRa.Game.Traits
 {
-	class Production : IProducer, ITags
+	class Production : IOrder, IProducer, ITags
 	{
+		bool isPrimary = false;
+		public bool IsPrimary { get { return isPrimary; } }
+		
 		public Production( Actor self ) { }
 
 		public virtual int2? CreationLocation( Actor self, UnitInfo producee )
@@ -50,7 +53,45 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<TagType> GetTags()
 		{
-			yield return (true) ? TagType.Primary : TagType.None;
+			yield return (isPrimary) ? TagType.Primary : TagType.None;
+		}
+
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			if (mi.Button == MouseButton.Right && underCursor == self)
+				return new Order("Deploy", self, null, int2.Zero, null);
+			return null;
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Deploy")
+			{
+				SetPrimaryProducer(self, !isPrimary);
+			}
+		}
+		
+		public void SetPrimaryProducer(Actor self, bool state)
+		{
+			if (state == false)
+			{
+				isPrimary = false;
+				return;
+			}
+			
+			// Cancel existing primaries
+			foreach (var p in (self.Info as BuildingInfo).Produces)
+			{
+				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
+					&& x.Owner == self.Owner
+					&& x.traits.Get<Production>().IsPrimary == true
+					&& (x.Info as BuildingInfo).Produces.Contains(p)))
+				{
+					b.traits.Get<Production>().SetPrimaryProducer(b, false);
+				}
+			}
+			isPrimary = true;
+			Sound.Play("pribldg1.aud");
 		}
 	}
 }

@@ -9,13 +9,16 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class Building : INotifyDamage, IOrder, ITick, IRenderModifier
+	class Building : INotifyDamage, IOrder, ITick
 	{
 		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
 		bool isRepairing = false;
-		bool isPoweredDown = false;
-
+		bool manuallyDisabled = false;
+		public bool ManuallyDisabled { get { return manuallyDisabled; } }
+		public bool Disabled { get { return (manuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		bool wasDisabled = false;
+		
 		public Building(Actor self)
 		{
 			this.self = self;
@@ -24,46 +27,15 @@ namespace OpenRa.Game.Traits
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
 		}
 		
-		public bool InsuffientPower()
-		{
-			return (isPoweredDown || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal));
-		}
-		
 		public int GetPowerUsage()
 		{
-			if (isPoweredDown)
+			if (manuallyDisabled)
 				return 0;
 			
 			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
 				return (self.Health * unitInfo.Power) / unitInfo.Strength;
 			else
 				return unitInfo.Power;
-		}
-
-		public Animation iconAnim;
-		public IEnumerable<Renderable>
-			ModifyRender(Actor self, IEnumerable<Renderable> rs)
-		{
-			if (!InsuffientPower())
-				return rs;
-			
-			List<Renderable> nrs = new List<Renderable>(rs);
-			foreach(var r in rs)
-			{
-				// Need 2 shadows to make it dark enough
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
-			}
-			
-			if (isPoweredDown)
-			{
-				iconAnim = new Animation("powerdown");
-				iconAnim.PlayRepeating("disabled");
-				nrs.Add(new Renderable(iconAnim.Image, self.CenterLocation - 0.5f*iconAnim.Image.size, PaletteType.Chrome));
-			}
-			
-			
-			return nrs;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -92,8 +64,8 @@ namespace OpenRa.Game.Traits
 			
 			if (order.OrderString == "PowerDown")
 			{
-				isPoweredDown = !isPoweredDown;
-				Sound.Play((isPoweredDown) ? "bleep12.aud" : "bleep11.aud");
+				manuallyDisabled = !manuallyDisabled;
+				Sound.Play((manuallyDisabled) ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
 
@@ -101,6 +73,11 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
+			// If the disabled state has changed since the last frame
+			if (Disabled ^ wasDisabled 
+				&& (wasDisabled = Disabled)) // Yes, I mean assignment
+					Game.world.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
+			
 			if (!isRepairing) return;
 
 			if (remainingTicks == 0)

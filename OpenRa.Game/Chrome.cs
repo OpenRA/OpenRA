@@ -326,6 +326,21 @@ namespace OpenRa.Game
 				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
+
+			// Iron Curtain
+			Rectangle curtainRect = new Rectangle(6, 14+50, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			var curtainDrawPos = Game.viewport.Location + new float2(curtainRect.Location);
+
+			var hasCurtain = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
+
+			if (!hasCurtain)
+				repairButton.ReplaceAnim("disabled");
+			else
+			{
+				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
+				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
+			}
+			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
 			
 			
 			// Repair
@@ -420,6 +435,12 @@ namespace OpenRa.Game
 		void HandleChronosphereButton()
 		{
 			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
+		}
+		
+		void HandleIronCurtainButton()
+		{
+			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
 				Sound.Play("slcttgt1.aud");
 		}
 		

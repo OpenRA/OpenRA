@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 			
 			// Check if powered
 			var b = self.traits.Get<Building>();
-			if (b != null && b.InsuffientPower())
+			if (b != null && b.Disabled)
 				return false;
 			
 			return true;
