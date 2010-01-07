@@ -14,10 +14,10 @@ namespace OpenRa.Game.Traits
 		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
 		bool isRepairing = false;
-		bool isManuallyDisabled = false;
-		bool wasManuallyDisabled = false;
-		public bool ManuallyDisabled { get { return isManuallyDisabled; } }
-		public bool Disabled { get { return (isManuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		bool manuallyDisabled = false;
+		public bool ManuallyDisabled { get { return manuallyDisabled; } }
+		public bool Disabled { get { return (manuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		bool wasDisabled = false;
 		
 		public Building(Actor self)
 		{
@@ -29,7 +29,7 @@ namespace OpenRa.Game.Traits
 		
 		public int GetPowerUsage()
 		{
-			if (isManuallyDisabled)
+			if (manuallyDisabled)
 				return 0;
 			
 			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
@@ -64,8 +64,8 @@ namespace OpenRa.Game.Traits
 			
 			if (order.OrderString == "PowerDown")
 			{
-				isManuallyDisabled = !isManuallyDisabled;
-				Sound.Play((isManuallyDisabled) ? "bleep12.aud" : "bleep11.aud");
+				manuallyDisabled = !manuallyDisabled;
+				Sound.Play((manuallyDisabled) ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
 
@@ -74,8 +74,8 @@ namespace OpenRa.Game.Traits
 		public void Tick(Actor self)
 		{
 			// If the disabled state has changed since the last frame
-			if (Disabled ^ wasManuallyDisabled 
-				&& (wasManuallyDisabled = Disabled)) // Yes, I mean assignment
+			if (Disabled ^ wasDisabled 
+				&& (wasDisabled = Disabled)) // Yes, I mean assignment
 					Game.world.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
 			
 			if (!isRepairing) return;
