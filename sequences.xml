@@ -201,8 +201,10 @@
   </unit>
   <!-- iron curtain -->
   <unit name="iron">
-    <sequence name="idle" start="0" length="11" />
-    <sequence name="damaged-idle" start="11" length="11" />
+	<sequence name="idle" start="0" length="1" />
+	<sequence name="active" start="0" length="11" />
+	<sequence name="damaged-idle" start="11" length="1" />
+    <sequence name="damaged-active" start="11" length="11" />
     <sequence name="make" start="0" length="*" src="ironmake" />
   </unit>
   <!-- chronosphere -->
