@@ -49,7 +49,7 @@ namespace OpenRa.Game.Traits
 			List<Renderable> nrs = new List<Renderable>(rs);
 			foreach(var r in rs)
 			{
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
+				nrs.Add(r.WithPalette(PaletteType.Invuln));
 			}			
 			return nrs;
 		}

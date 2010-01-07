@@ -15,6 +15,7 @@ namespace OpenRa.Game.Traits
 		public readonly BuildingInfo unitInfo;
 		bool isRepairing = false;
 		bool isPoweredDown = false;
+		public bool IsPoweredDown { get { return isPoweredDown; } }
 
 		public Building(Actor self)
 		{
@@ -50,19 +51,8 @@ namespace OpenRa.Game.Traits
 			List<Renderable> nrs = new List<Renderable>(rs);
 			foreach(var r in rs)
 			{
-				// Need 2 shadows to make it dark enough
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
+				nrs.Add(r.WithPalette(PaletteType.Disabled));
 			}
-			
-			if (isPoweredDown)
-			{
-				iconAnim = new Animation("powerdown");
-				iconAnim.PlayRepeating("disabled");
-				nrs.Add(new Renderable(iconAnim.Image, self.CenterLocation - 0.5f*iconAnim.Image.size, PaletteType.Chrome));
-			}
-			
-			
 			return nrs;
 		}
 
@@ -93,6 +83,7 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "PowerDown")
 			{
 				isPoweredDown = !isPoweredDown;
+				if (isPoweredDown) Game.world.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
 				Sound.Play((isPoweredDown) ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
