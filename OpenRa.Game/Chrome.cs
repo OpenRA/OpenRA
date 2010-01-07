@@ -317,7 +317,7 @@ namespace OpenRa.Game
 			else
 			{
 				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
-				AddButton(curtainRect, isLmb => Game.controller.ToggleInputMode<IronCurtainOrderGenerator>());
+				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
 			
@@ -388,6 +388,12 @@ namespace OpenRa.Game
 		void HandleChronosphereButton()
 		{
 			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
+		}
+		
+		void HandleIronCurtainButton()
+		{
+			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
 				Sound.Play("slcttgt1.aud");
 		}
 		

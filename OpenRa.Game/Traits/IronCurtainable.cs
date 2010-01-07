@@ -32,10 +32,11 @@ namespace OpenRa.Game.Traits
 		{
 			if (order.OrderString == "IronCurtain")
 			{
+				Game.controller.CancelInputMode();
 				RemainingTicks = (int)(Rules.General.IronCurtain * 60 * 25);
+				Sound.Play("ironcur9.aud");
 				// Play active anim
 				var ironCurtain = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<IronCurtain>()).FirstOrDefault();
-				Sound.Play("ironcur9.aud");
 				if (ironCurtain != null)
 					ironCurtain.traits.Get<RenderBuilding>().PlayCustomAnim(ironCurtain, "active");
 			}
