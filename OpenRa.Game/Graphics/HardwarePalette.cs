@@ -6,7 +6,7 @@ namespace OpenRa.Game.Graphics
 	public enum PaletteType
 	{
 		Gold, Blue, Red, Orange, Teal, Salmon, Green, Gray, 
-		Shadow, Invuln, Chrome, Shroud,
+		Shadow, Invuln, Chrome, Shroud, Highlight,
 	};
 
 	class HardwarePalette : Sheet
@@ -27,6 +27,7 @@ namespace OpenRa.Game.Graphics
 			AddPalette(pal);	// iron curtain. todo: remap!
 			AddPalette(pal);	// chrome (it's like gold, but we're not going to hax it in palettemods)
 			AddPalette(new Palette(pal, new ShroudPaletteRemap()));
+			AddPalette(new Palette(pal, new SingleColorRemap(Color.FromArgb(128, 255, 255, 255))));
 		}
 
 		int AddPalette(Palette p)
