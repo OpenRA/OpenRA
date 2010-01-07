@@ -404,10 +404,10 @@
     <sequence name="ability-minimap" start="214" length="8" />
   </cursor>
   <cursor src="speed">
-	<sequence name="powerdown" start="3" length="12" />
+    <sequence name="powerdown" start="3" length="12" />
   </cursor>
   <unit name="powerdown">
-	<sequence name="disabled" start="3" length="1" src="speed" />
+    <sequence name="disabled" start="3" length="1" src="speed" />
   </unit>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
@@ -1023,5 +1023,9 @@
     <sequence name="normal" start="0" length="1" />
     <sequence name="pressed" start="1" length="1" />
     <sequence name="disabled" start="2" length="1" />
+  </unit>
+  <unit name="tabs">
+    <sequence name="left-normal" start="0" length="1" />
+    <sequence name="left-pressed" start="1" length="1" />
   </unit>
 </sequences>
