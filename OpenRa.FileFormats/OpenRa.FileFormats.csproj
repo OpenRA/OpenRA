@@ -60,10 +60,11 @@
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="Palette.cs" />
-    <Compile Include="PaletteRemap.cs" />
+    <Compile Include="PlayerColorRemap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShpReader.cs" />
     <Compile Include="ShroudPaletteRemap.cs" />
+    <Compile Include="SingleColorRemap.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TileReference.cs" />
     <Compile Include="TileSet.cs" />
