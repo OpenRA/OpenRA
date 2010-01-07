@@ -242,6 +242,9 @@ namespace OpenRa.Game.Graphics
 			{
 				foreach (var tag in tags.GetTags())
 				{
+					if (tag == TagType.None)
+						continue;
+						
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
 					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, PaletteType.Chrome);
