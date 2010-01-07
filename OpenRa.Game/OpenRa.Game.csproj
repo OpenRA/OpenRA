@@ -100,6 +100,7 @@
     <Compile Include="Orders\ChronoshiftSelfDestinationOrderGenerator.cs" />
     <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
+    <Compile Include="Orders\IronCurtainOrderGenerator.cs" />
     <Compile Include="Orders\LocalOrderSource.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Orders\NetworkOrderSource.cs" />
@@ -217,6 +218,8 @@
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
+    <Compile Include="Traits\IronCurtain.cs" />
+    <Compile Include="Traits\IronCurtainable.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
