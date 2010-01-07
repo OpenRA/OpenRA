@@ -27,6 +27,7 @@ namespace OpenRa.Game
 		readonly Animation repairButton;
 		readonly Animation sellButton;
 		readonly Animation pwrdownButton;
+		readonly Animation optionsButton;
 				
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
@@ -42,6 +43,7 @@ namespace OpenRa.Game
 		readonly int paletteColumns;
 		readonly int2 paletteOrigin;
 		bool hadRadar = false;
+		bool optionsPressed = false;
 		const int MinRows = 4;
 		
 		public Chrome(Renderer r)
@@ -81,6 +83,9 @@ namespace OpenRa.Game
 
 			pwrdownButton = new Animation("repair");
 			pwrdownButton.PlayRepeating("normal");
+			
+			optionsButton = new Animation("tabs");
+			optionsButton.PlayRepeating("left-normal");
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -132,7 +137,7 @@ namespace OpenRa.Game
 				Game.LocalPlayer.PowerDrained,
 				Game.LocalPlayer.PowerProvided,
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
-				), new int2(140, 5), Color.White);
+				), new int2(140, 15), Color.White);
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
@@ -343,6 +348,26 @@ namespace OpenRa.Game
 				buildPaletteRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, PaletteType.Chrome);
 			}
 			buildPaletteRenderer.Flush();
+			
+			//Options
+			Rectangle optionsRect = new Rectangle(0 + 40,0, optionsButton.Image.bounds.Width, 
+				optionsButton.Image.bounds.Height);
+			
+			var optionsDrawPos = Game.viewport.Location + new float2(optionsRect.Location);
+			
+			optionsButton.ReplaceAnim(optionsPressed ? "left-pressed" : "left-normal");
+			
+			AddButton(optionsRect, isLmb => DrawOptionsMenu());
+			buildPaletteRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+			
+			renderer.DrawText("Exit", new int2(80, -2) , Color.White);
+			
+		}
+		
+		void DrawOptionsMenu()
+		{
+			Environment.Exit(0);
 		}
 		
 		void HandleChronosphereButton()
