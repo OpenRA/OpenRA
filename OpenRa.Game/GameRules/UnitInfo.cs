@@ -59,6 +59,10 @@ namespace OpenRa.Game.GameRules
 		public readonly int UnloadFacing = 0;
 		public readonly UnitMovementType[] PassengerTypes = null;
 
+		// weapon origins and firing angles within the turrets. 3 values per position.
+		public readonly int[] PrimaryLocalOffset = { };
+		public readonly int[] SecondaryLocalOffset = { };
+
 		public UnitInfo(string name) { Name = name; }
 	}
 

@@ -45,7 +45,7 @@ namespace OpenRa.Game.Effects
 		}
 
 		const int MissileCloseEnough = 7;
-		const float Scale = .3f;
+		const float Scale = .2f;
 
 		public void Tick()
 		{
@@ -71,8 +71,10 @@ namespace OpenRa.Game.Effects
 				return;
 			}
 
-			var speed = Weapon.Speed * ((targetAltitude > 0 && Weapon.TurboBoost) ? 1.5f : 1f);
-			var move = (Scale * speed / dist.Length) * dist;
+			var speed = Scale * Weapon.Speed * ((targetAltitude > 0 && Weapon.TurboBoost) ? 1.5f : 1f);
+
+			var angle = Facing / 128f * Math.PI;
+			var move = speed * -float2.FromAngle((float)angle);
 			Pos += move;
 
 			if (Projectile.Animates)

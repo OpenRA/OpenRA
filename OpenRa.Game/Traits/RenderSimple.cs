@@ -33,6 +33,7 @@ namespace OpenRa.Game.Traits
 			public Animation Animation;
 			public Func<float2> OffsetFunc;
 			public Func<bool> DisableFunc;
+			public int ZOffset;
 
 			public AnimationWithOffset( Animation a )
 				: this( a, null, null )
@@ -48,10 +49,9 @@ namespace OpenRa.Game.Traits
 
 			public Renderable Image( Actor self )
 			{
-				if( OffsetFunc != null )
-					return Util.Centered( self, Animation.Image, self.CenterLocation + OffsetFunc() );
-				else
-					return Util.Centered( self, Animation.Image, self.CenterLocation );
+				var r = Util.Centered( self, Animation.Image, self.CenterLocation 
+					+ (OffsetFunc != null ? OffsetFunc() : float2.Zero) );
+				return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
 			}
 
 			public static implicit operator AnimationWithOffset( Animation a )
