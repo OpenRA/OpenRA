@@ -71,14 +71,14 @@ namespace OpenRa.Game.Effects
 				return;
 			}
 
-			var move = (Scale * Weapon.Speed / dist.Length) * dist;
+			var speed = Weapon.Speed * ((targetAltitude > 0 && Weapon.TurboBoost) ? 1.5f : 1f);
+			var move = (Scale * speed / dist.Length) * dist;
 			Pos += move;
 
 			if (Projectile.Animates)
 				Game.world.AddFrameEndTask(w => w.Add(new Smoke((Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2())));
 
 			// todo: running out of fuel
-			// todo: turbo boost vs aircraft
 		}
 
 		public IEnumerable<Renderable> Render()
