@@ -140,7 +140,7 @@ namespace OpenRa.Game.Traits
 			foreach (var p in primaryProducers)
 			{
 				// Ignore buildings that are disabled
-				if (p.traits.Contains<Building>() && p.traits.Get<Building>().InsuffientPower())
+				if (p.traits.Contains<Building>() && p.traits.Get<Building>().Disabled)
 					continue;
 				producer = p;
 				break;
