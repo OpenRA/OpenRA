@@ -703,7 +703,10 @@ namespace OpenRa.Game
 			p += new int2(0, 15);
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
-				var prereqs = info.Prerequisite.Select(a => Rules.UnitInfo[a.ToLowerInvariant()].Description);
+				var prereqs = info.Prerequisite
+					.Select(a => Rules.UnitInfo[a.ToLowerInvariant()])
+					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
+					.Select( a => a.Description );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}

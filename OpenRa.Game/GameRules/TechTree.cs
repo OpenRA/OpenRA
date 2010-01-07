@@ -35,8 +35,9 @@ namespace OpenRa.Game.GameRules
 				return false;
 
 			foreach( var p in unit.Prerequisite )
-				if( playerBuildings[ p ].Count == 0 )
-					return false;
+				if (Rules.UnitInfo[p.ToLowerInvariant()].Owner.Any(x => x == player.Race))
+					if( playerBuildings[ p ].Count == 0 )
+						return false;
 
 			if( producesIndex[ Rules.UnitCategory[ unit.Name ] ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
 				return false;

@@ -1,4 +1,5 @@
 ﻿
+using System;
 namespace OpenRa.Game.GameRules
 {
 	public enum ArmorType
@@ -19,8 +20,8 @@ namespace OpenRa.Game.GameRules
 
 		public readonly int Ammo = -1;
 		public readonly ArmorType Armor = ArmorType.none;
-		public readonly bool DoubleOwned = false;
-		public readonly bool Cloakable = false;
+		[Obsolete] public readonly bool DoubleOwned = false;
+		[Obsolete] public readonly bool Cloakable = false;
 		public readonly int Cost = 0;
 		public readonly bool Crewed = false;
 		public readonly bool Explodes = false;
@@ -35,7 +36,7 @@ namespace OpenRa.Game.GameRules
 		public readonly int ROT = 255;
 		public readonly int Reload = 0;
 		public readonly bool SelfHealing = false;
-		public readonly bool Sensors = false; // no idea what this does
+		[Obsolete] public readonly bool Sensors = false; // no idea what this does
 		public readonly int Sight = 1;
 		public readonly int Strength = 1;
 		public readonly int TechLevel = -1;
