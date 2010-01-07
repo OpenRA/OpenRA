@@ -118,12 +118,15 @@ namespace OpenRa.Game.Traits
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
 
+				var fireFacing = self.traits.Contains<Turreted>() 
+					? self.traits.Get<Turreted>().turretFacing : unit.Facing;
+
 				if( weapon.RenderAsTesla )
 					Game.world.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
 
 				if( Rules.ProjectileInfo[ weapon.Projectile ].ROT != 0 )
 					Game.world.Add(new Missile(weaponName, self.Owner, self,
-						firePos, thisTarget, srcAltitude));
+						firePos, thisTarget, srcAltitude, fireFacing));
 				else
 					Game.world.Add(new Bullet(weaponName, self.Owner, self,
 						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));

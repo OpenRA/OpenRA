@@ -21,7 +21,7 @@ namespace OpenRa.Game.Effects
 		int Altitude;
 
 		public Missile(string weapon, Player owner, Actor firedBy,
-			int2 src, Actor target, int altitude)
+			int2 src, Actor target, int altitude, int facing)
 		{
 			Weapon = Rules.WeaponInfo[weapon];
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
@@ -31,9 +31,7 @@ namespace OpenRa.Game.Effects
 			Target = target;
 			Pos = src.ToFloat2();
 			Altitude = altitude;
-
-			/* todo: initial facing should be turret facing, or unit facing if we're not turreted */
-			Facing = Traits.Util.GetFacing( Target.CenterLocation - src.ToFloat2(), 0 );
+			Facing = facing;
 
 			if (Projectile.Image != null && Projectile.Image != "none")
 			{
