@@ -9,7 +9,7 @@ namespace OpenRa.Game.GameRules
 	{
 		public readonly bool Powered = true;
 		public readonly bool OneShot = false;
-		public readonly int ChargeTime = 0;
+		public readonly float ChargeTime = 0;
 		public readonly string Image;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
