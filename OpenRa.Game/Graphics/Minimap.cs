@@ -76,7 +76,14 @@ namespace OpenRa.Game.Graphics
 
 			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
 				bitmap.SetPixel(a.Location.X, a.Location.Y, Chat.paletteColors[(int)a.Owner.Palette]);
-
+			
+			for (var y = 0; y < 128; y++ )
+				for (var x = 0; x < 128; x++ )
+				{
+					if( ! Game.LocalPlayer.Shroud.IsExplored(new int2(x,y)))
+						bitmap.SetPixel(x, y, Color.Black);			
+				}
+			
 			sheet.Texture.SetData(bitmap);
 		}
 
