@@ -47,14 +47,15 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location
-				if (!Game.LocalPlayer.Shroud.IsExplored(order.TargetLocation))
+				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 					
 				// Set up return-to-sender info
 				chronoshiftOrigin = self.Location;
 				chronoshiftReturnTicks = (int)(Rules.General.ChronoDuration * 60 * 25);
 
-				var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
+				var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner 
+					&& a.traits.Contains<Chronosphere>()).FirstOrDefault();
 
 				// Kill cargo
 				if (Rules.General.ChronoKillCargo && self.traits.Contains<Cargo>())
