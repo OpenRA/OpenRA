@@ -122,6 +122,7 @@
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SupportPower.cs" />
+    <Compile Include="SupportPowers\ChronospherePower.cs" />
     <Compile Include="SupportPowers\GpsSatellite.cs" />
     <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="SupportPowers\ISupportPowerImpl.cs" />

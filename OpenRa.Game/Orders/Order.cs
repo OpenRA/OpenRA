@@ -14,6 +14,9 @@ namespace OpenRa.Game
 		public readonly string TargetString;
 		public bool IsImmediate;
 
+		// This is a hack - fix me
+		public readonly ISupportPowerImpl SupportPowerImpl;
+		
 		public Actor Subject { get { return ActorFromUInt(SubjectId); } }
 		public Actor TargetActor { get { return ActorFromUInt(TargetActorId); } }
 		public Player Player { get { return Subject.Owner; } }
@@ -21,29 +24,27 @@ namespace OpenRa.Game
 		public Order(string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString)
 			: this( orderString, UIntFromActor( subject ),
-			UIntFromActor( targetActor ), targetLocation, targetString ) {}
+			UIntFromActor( targetActor ), targetLocation, targetString, null ) {}
+
+		public Order(string orderString, Actor subject,
+					Actor targetActor, int2 targetLocation, string targetString, ISupportPowerImpl power)
+			: this(orderString, UIntFromActor(subject),
+			UIntFromActor(targetActor), targetLocation, targetString, power) { }
 
 		Order(string orderString, uint subjectId,
 			uint targetActorId, int2 targetLocation, string targetString)
+			: this(orderString, subjectId,
+			targetActorId, targetLocation, targetString, null) { }
+			
+		Order(string orderString, uint subjectId,
+			uint targetActorId, int2 targetLocation, string targetString, ISupportPowerImpl power)
 		{
 			this.OrderString = orderString;
 			this.SubjectId = subjectId;
 			this.TargetActorId = targetActorId;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
-		}
-		// This is a hack - fix me
-		public readonly ISupportPowerImpl Power;
-		public Order(string orderString, Actor subject, ISupportPowerImpl power)
-		{
-			this.OrderString = orderString;
-			this.SubjectId = UIntFromActor( subject );
-			
-			this.Power = power;
-			
-			this.TargetActorId = UIntFromActor(null);
-			this.TargetLocation = int2.Zero;
-			this.TargetString = null;
+			this.SupportPowerImpl = power;
 		}
 
 		public bool Validate()

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
 using OpenRa.Game.SupportPowers;
+
 namespace OpenRa.Game.Orders
 {
 	class IronCurtainOrderGenerator : IOrderGenerator
 	{
-		ISupportPowerImpl power;
-		public IronCurtainOrderGenerator(ISupportPowerImpl power)
+		ISupportPowerImpl ironCurtainPower;
+		public IronCurtainOrderGenerator(ISupportPowerImpl ironCurtainPower)
 		{
-			this.power = power;
+			this.ironCurtainPower = ironCurtainPower;
 		}
 		
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
@@ -37,8 +37,7 @@ namespace OpenRa.Game.Orders
 
 				if (unit != null)
 				{
-					yield return new Order("IronCurtain", underCursor, this.power);
-					//yield return new Order("IronCurtain", underCursor, null, int2.Zero, null);
+					yield return new Order("IronCurtain", underCursor, null, int2.Zero, null, ironCurtainPower);
 				}
 			}
 		}
