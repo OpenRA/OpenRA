@@ -78,7 +78,9 @@ namespace OpenRa.Game
 
 			specialBinSprites = new [] 
 			{
-				new Sprite(chromeTexture, new Rectangle(0, 0, 32, 192), TextureChannel.Alpha),
+				new Sprite(chromeTexture, new Rectangle(0, 0, 32, 51), TextureChannel.Alpha),
+				new Sprite(chromeTexture, new Rectangle(0, 51, 32, 51 /*144*/), TextureChannel.Alpha),
+				new Sprite(chromeTexture, new Rectangle(0, 192-39, 32, 39 ), TextureChannel.Alpha),
 			};
 			moneyBinSprite = new Sprite(chromeTexture, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
 			tooltipSprite = new Sprite(chromeTexture, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
@@ -324,32 +326,6 @@ namespace OpenRa.Game
 
 		void DrawButtons()
 		{
-			// Chronoshift
-			Rectangle chronoshiftRect = new Rectangle(6, 14, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var chronoshiftDrawPos = Game.viewport.Location + new float2(chronoshiftRect.Location);
-
-			var hasChronosphere = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Chronosphere>());
-
-			if (!hasChronosphere)
-				repairButton.ReplaceAnim("disabled");
-			else
-				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
-
-			shpRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
-
-			// Iron Curtain
-			Rectangle curtainRect = new Rectangle(6, 14+50, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var curtainDrawPos = Game.viewport.Location + new float2(curtainRect.Location);
-
-			var hasCurtain = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
-
-			if (!hasCurtain)
-				repairButton.ReplaceAnim("disabled");
-			else
-				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
-	
-			shpRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
-			
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
@@ -438,19 +414,7 @@ namespace OpenRa.Game
 				shpRenderer.Flush();
 			}
 		}
-		
-		void HandleChronosphereButton()
-		{
-			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
-				Sound.Play("slcttgt1.aud");
-		}
-		
-		void HandleIronCurtainButton()
-		{
-			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
-				Sound.Play("slcttgt1.aud");
-		}
-		
+
 		void DrawChat()
 		{
 			var chatpos = new int2(400, Game.viewport.Height - 20);
@@ -711,8 +675,18 @@ namespace OpenRa.Game
 
 		void DrawSupportPowers()
 		{
+			var numPowers = Game.LocalPlayer.SupportPowers.Values
+				.Where(a => a.IsAvailable).Count();
+
+			if (numPowers == 0) return;
+
 			rgbaRenderer.DrawSprite(specialBinSprites[0], new float2(0,14), PaletteType.Chrome);
+			for (var i = 1; i < numPowers; i++)
+				rgbaRenderer.DrawSprite(specialBinSprites[1], new float2(0, 14 + i * 51), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(specialBinSprites[2], new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
+
 			rgbaRenderer.Flush();
+
 			var y = 24;
 
 			string tooltipItem = null;
@@ -744,7 +718,6 @@ namespace OpenRa.Game
 						AddButton(rect, HandleSupportPower( sp.Value ));
 					}
 
-					
 					if (rect.Contains(lastMousePos.ToPoint()))
 					{
 						tooltipItem = sp.Key;

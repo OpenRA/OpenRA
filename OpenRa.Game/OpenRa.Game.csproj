@@ -122,7 +122,9 @@
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SupportPower.cs" />
+    <Compile Include="SupportPowers\Chronoshift.cs" />
     <Compile Include="SupportPowers\GpsSatellite.cs" />
+    <Compile Include="SupportPowers\IronCurtain.cs" />
     <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
     <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\Stopwatch.cs" />
@@ -307,10 +309,6 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Game Code.cd" />
-    <None Include="Graphics\Graphics.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
