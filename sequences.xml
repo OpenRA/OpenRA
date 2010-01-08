@@ -94,6 +94,7 @@
     <sequence name="idle" start="0" />
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="atekmake" />
+	<sequence name="active" start="0" length="*" src="sputdoor" />
   </unit>
   <!-- soviet tech center -->
   <unit name="stek">
@@ -1029,5 +1030,8 @@
   <unit name="tabs">
     <sequence name="left-normal" start="0" length="1" />
     <sequence name="left-pressed" start="1" length="1" />
+  </unit>
+  <unit name="sputnik">
+	  <sequence name="idle" start="0" length="4" />
   </unit>
 </sequences>

@@ -32,6 +32,7 @@ namespace OpenRa.Game
 			for (int x = 0; x < 128; x++)
 				for (int y = 0; y < 128; y++)
 					explored[x, y] = true;
+			dirty = true;
 		}
 		
 		public void HideAll()
@@ -39,6 +40,7 @@ namespace OpenRa.Game
 			for (int x = 0; x < 128; x++)
 				for (int y = 0; y < 128; y++)
 					explored[x, y] = false;
+			dirty = true;
 		}
 
 		Sprite ChooseShroud(int i, int j)
