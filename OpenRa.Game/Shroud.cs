@@ -13,10 +13,21 @@ namespace OpenRa.Game
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty;
-
-		public bool IsExplored(int2 xy)
+		bool hasGPS = false;
+		
+		public bool HasGPS
 		{
-			return explored[ xy.X, xy.Y ];
+			get { return hasGPS; }
+			set { hasGPS = value; dirty = true;}
+		}
+
+		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
+		public bool IsExplored(int x, int y)
+		{
+			if (hasGPS)
+				return true;
+			
+			return explored[ x, y ];
 		}
 		
 		public void Explore(Actor a)
@@ -51,11 +62,11 @@ namespace OpenRa.Game
 		{
 			// bits are for exploredness: left, right, up, down, self
 			var v = 0;
-			if (explored[i - 1, j]) v |= 1;
-			if (explored[i + 1, j]) v |= 2;
-			if (explored[i, j - 1]) v |= 4;
-			if (explored[i, j + 1]) v |= 8;
-			if (explored[i, j]) v |= 16;
+			if (IsExplored(i - 1, j)) v |= 1;
+			if (IsExplored(i + 1, j)) v |= 2;
+			if (IsExplored(i, j - 1)) v |= 4;
+			if (IsExplored(i, j + 1)) v |= 8;
+			if (IsExplored(i, j)) v |= 16;
 
 			var x = ShroudTiles[v];
 			if (x != 0)
@@ -63,10 +74,10 @@ namespace OpenRa.Game
 
 			// bits are for exploredness: TL, TR, BR, BL
 			var u = 0;
-			if (explored[i - 1, j - 1]) u |= 1;
-			if (explored[i + 1, j - 1]) u |= 2;
-			if (explored[i + 1, j + 1]) u |= 4;
-			if (explored[i - 1, j + 1]) u |= 8;
+			if (IsExplored(i - 1, j - 1)) u |= 1;
+			if (IsExplored(i + 1, j - 1)) u |= 2;
+			if (IsExplored(i + 1, j + 1)) u |= 4;
+			if (IsExplored(i - 1, j + 1)) u |= 8;
 			return shadowBits[ExtraShroudTiles[u]];
 		}
 
