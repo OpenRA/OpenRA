@@ -47,6 +47,7 @@ namespace OpenRa.Game
 		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, Sprite[]> tabSprites;
+		readonly Dictionary<string, Sprite> spsprites;
 		readonly Sprite[] shimSprites;
 		readonly Sprite blank;
 	
@@ -55,6 +56,12 @@ namespace OpenRa.Game
 		bool hadRadar = false;
 		bool optionsPressed = false;
 		const int MinRows = 4;
+
+		string currentTab = "Building";
+		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
+		readonly Dictionary<string, Sprite> sprites;
+
+		const int NumClockFrames = 54;
 		
 		public Chrome(Renderer r)
 		{
@@ -116,6 +123,11 @@ namespace OpenRa.Game
 					u => u,
 					u => SpriteSheetBuilder.LoadAllSprites(Rules.UnitInfo[u].Icon ?? (u + "icon"))[0]);
 
+			spsprites = Rules.SupportPowerInfo
+				.ToDictionary(
+					u => u.Key,
+					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
+
 			tabSprites = groups.Select(
 				(g, i) => Pair.New(g,
 					OpenRa.Game.Graphics.Util.MakeArray(3,
@@ -163,7 +175,6 @@ namespace OpenRa.Game
 
 			DrawMinimap();
 
-			chromeRenderer.DrawSprite(specialBinSprite, float2.Zero, PaletteType.Chrome);
 			chromeRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 
 			DrawMoney();
@@ -172,6 +183,7 @@ namespace OpenRa.Game
 			DrawButtons();
 			
 			int paletteHeight = DrawBuildPalette(currentTab);
+			DrawSupportPowers();
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
 			DrawOptionsMenu();
@@ -220,15 +232,11 @@ namespace OpenRa.Game
 				
 				// Don't let tabs overlap the bevel
 				if (y > paletteOrigin.Y + paletteHeight - tabHeight - 9 && y < paletteOrigin.Y + paletteHeight)
-				{
 					y += tabHeight;	
-				}
 				
 				// Stick tabs to the edge of the screen
 				if (y > paletteOrigin.Y + paletteHeight)
-				{
 					x = Game.viewport.Width - tabWidth;
-				}
 
 				chromeRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Chrome);
 
@@ -321,10 +329,8 @@ namespace OpenRa.Game
 			if (!hasChronosphere)
 				repairButton.ReplaceAnim("disabled");
 			else
-			{
-				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
 				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
-			}
+
 			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
 
 			// Iron Curtain
@@ -336,12 +342,9 @@ namespace OpenRa.Game
 			if (!hasCurtain)
 				repairButton.ReplaceAnim("disabled");
 			else
-			{
-				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
 				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
-			}
+	
 			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
-			
 			
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
@@ -386,7 +389,7 @@ namespace OpenRa.Game
 			buildPaletteRenderer.Flush();
 			
 			//Options
-			Rectangle optionsRect = new Rectangle(0 + 40,0, optionsButton.Image.bounds.Width, 
+			Rectangle optionsRect = new Rectangle(0,0, optionsButton.Image.bounds.Width, 
 				optionsButton.Image.bounds.Height);
 			
 			var optionsDrawPos = Game.viewport.Location + new float2(optionsRect.Location);
@@ -463,22 +466,6 @@ namespace OpenRa.Game
 			var size = renderer.MeasureText(line.b);
 			renderer.DrawText(line.b, p, line.a);
 			renderer.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
-		}
-
-		string currentTab = "Building";
-		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
-		Dictionary<string, Sprite> sprites;
-
-		const int NumClockFrames = 54;
-		Func<int> ClockAnimFrame(string group)
-		{
-			return () =>
-			{
-				var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-				var producing = queue.CurrentItem( group );
-				if (producing == null) return 0;
-				return (producing.TotalTime - producing.RemainingTime) * NumClockFrames / producing.TotalTime;
-			};
 		}
 		
 		// Return an int telling us the y coordinate at the bottom of the palette
@@ -715,6 +702,84 @@ namespace OpenRa.Game
 			{
 				p += new int2(0, 15);
 				renderer.DrawText(info.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+			}
+		}
+
+		void DrawSupportPowers()
+		{
+			chromeRenderer.DrawSprite(specialBinSprite, new float2(0,14), PaletteType.Chrome);
+			chromeRenderer.Flush();
+			var y = 24;
+
+			string tooltipItem = null;
+			int2 tooltipPos = int2.Zero;
+
+			foreach (var sp in Game.LocalPlayer.SupportPowers)
+			{
+				var image = spsprites[sp.Key];
+				if (sp.Value.IsAvailable)
+				{
+					var drawPos = Game.viewport.Location + new float2(5, y);
+					buildPaletteRenderer.DrawSprite(image, drawPos, PaletteType.Chrome);
+
+					clock.PlayFetchIndex("idle",
+						() => (sp.Value.TotalTime - sp.Value.RemainingTime)
+							* NumClockFrames / sp.Value.TotalTime);
+					clock.Tick();
+
+					buildPaletteRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
+
+					if (sp.Value.IsDone)
+					{
+						ready.Play("ready");
+						buildPaletteRenderer.DrawSprite(ready.Image, 
+							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
+							PaletteType.Chrome);
+					}
+
+					var rect = new Rectangle(5, y, 64, 48);
+					if (rect.Contains(lastMousePos.ToPoint()))
+					{
+						tooltipItem = sp.Key;
+						tooltipPos = drawPos.ToInt2() + new int2(72, 0) - Game.viewport.Location.ToInt2();
+					}
+
+					y += 51;
+				}
+			}
+
+			buildPaletteRenderer.Flush();
+
+			if (tooltipItem != null)
+				DrawSupportPowerTooltip(tooltipItem, tooltipPos);
+		}
+
+		string FormatTime(int ticks)
+		{
+			var seconds = ticks / 25;
+			var minutes = seconds / 60;
+
+			return "{0}:{1}".F(minutes, seconds % 60);
+		}
+
+		void DrawSupportPowerTooltip(string sp, int2 pos)
+		{
+			chromeRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
+			chromeRenderer.Flush();
+
+			var info = Rules.SupportPowerInfo[sp];
+
+			pos += new int2(5, 5);
+
+			renderer.DrawText2(info.Description, pos, Color.White);
+
+			var timer = "Charge Time: {0}".F(FormatTime(Game.LocalPlayer.SupportPowers[sp].RemainingTime));
+			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
+
+			if (info.LongDesc != null)
+			{
+				pos += new int2(0, 25);
+				renderer.DrawText(info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 			}
 		}
 	}
