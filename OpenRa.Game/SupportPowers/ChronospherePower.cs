@@ -32,7 +32,7 @@ namespace OpenRa.Game.SupportPowers
 		public void Activate(SupportPower p)
 		{
 			this.p = p;
-			Game.controller.orderGenerator = new ChronosphereSelectOrderGenerator(this);
+			Game.controller.orderGenerator = new ChronosphereSelectOrderGenerator(p);
 			Sound.Play("slcttgt1.aud");
 		}
 	}

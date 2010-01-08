@@ -9,10 +9,10 @@ namespace OpenRa.Game.Orders
 {
 	class ChronosphereSelectOrderGenerator : IOrderGenerator
 	{
-		ISupportPowerImpl chronospherePower;
-		public ChronosphereSelectOrderGenerator(ISupportPowerImpl chronospherePower)
+		SupportPower power;
+		public ChronosphereSelectOrderGenerator(SupportPower power)
 		{
-			this.chronospherePower = chronospherePower;
+			this.power = power;
 		}
 		
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
@@ -36,7 +36,7 @@ namespace OpenRa.Game.Orders
 				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
 
 				if (unit != null)
-					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, "ChronoshiftPower");
+					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, power.Name);
 			}
 		}
 
