@@ -28,6 +28,7 @@ namespace OpenRa.Game
 		public bool IsReady;
 
 		public Shroud Shroud = new Shroud();
+		public Dictionary<string, SupportPower> SupportPowers;
 
 		public Player( Actor playerActor, int index, PaletteType palette, string playerName, Race race, string internalName )
 		{
@@ -37,6 +38,10 @@ namespace OpenRa.Game
 			this.InternalName = internalName;
 			this.PlayerName = playerName;
 			this.Race = race;
+
+			SupportPowers = Rules.SupportPowerInfo.ToDictionary( 
+				spi => spi.Key, 
+				spi => new SupportPower(spi.Value, this));
 		}
 
 		void UpdatePower()
@@ -125,6 +130,9 @@ namespace OpenRa.Game
 		{
 			UpdatePower();
 			UpdateOreCapacity();
+
+			foreach (var sp in SupportPowers.Values)
+				sp.Tick();
 
 			if (this == Game.LocalPlayer)
 			{
