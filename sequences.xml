@@ -201,8 +201,10 @@
   </unit>
   <!-- iron curtain -->
   <unit name="iron">
-    <sequence name="idle" start="0" length="11" />
-    <sequence name="damaged-idle" start="11" length="11" />
+	<sequence name="idle" start="0" length="1" />
+	<sequence name="active" start="0" length="11" />
+	<sequence name="damaged-idle" start="11" length="1" />
+    <sequence name="damaged-active" start="11" length="11" />
     <sequence name="make" start="0" length="*" src="ironmake" />
   </unit>
   <!-- chronosphere -->
@@ -404,10 +406,10 @@
     <sequence name="ability-minimap" start="214" length="8" />
   </cursor>
   <cursor src="speed">
-	<sequence name="powerdown" start="3" length="12" />
+    <sequence name="powerdown" start="3" length="12" />
   </cursor>
   <unit name="powerdown">
-	<sequence name="disabled" start="3" length="1" src="speed" />
+    <sequence name="disabled" start="3" length="1" src="speed" />
   </unit>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
@@ -1023,5 +1025,15 @@
     <sequence name="normal" start="0" length="1" />
     <sequence name="pressed" start="1" length="1" />
     <sequence name="disabled" start="2" length="1" />
+  </unit>
+  <unit name="tabs">
+    <sequence name="left-normal" start="0" length="1" />
+    <sequence name="left-pressed" start="1" length="1" />
+  </unit>
+  <unit name="dd-crnr">
+    <sequence name="top-left" start="0" length="1" />
+    <sequence name="top-right" start="1" length="1" />
+    <sequence name="bottom-left" start="2" length="1" />
+    <sequence name="bottom-right" start="3" length="1" />
   </unit>
 </sequences>

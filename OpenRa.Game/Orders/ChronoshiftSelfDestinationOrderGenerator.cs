@@ -7,11 +7,11 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
-	class ChronoshiftDestinationOrderGenerator : IOrderGenerator
+	class ChronoshiftSelfDestinationOrderGenerator : IOrderGenerator
 	{
 		public readonly Actor self;
 
-		public ChronoshiftDestinationOrderGenerator(Actor self)
+		public ChronoshiftSelfDestinationOrderGenerator(Actor self)
 		{
 			this.self = self;
 		}
@@ -23,11 +23,11 @@ namespace OpenRa.Game.Orders
 				Game.controller.CancelInputMode();
 				yield break;
 			}
-						
-			yield return new Order("Chronoshift", self, null, xy, null);
+
+			yield return new Order("ChronoshiftSelf", self, null, xy, null);
 		}
 
-		public void Tick() {}
+		public void Tick() { }
 		public void Render()
 		{
 			Game.worldRenderer.DrawSelectionBox(self, Color.White, true);
@@ -37,7 +37,7 @@ namespace OpenRa.Game.Orders
 		{
 			if (!Game.LocalPlayer.Shroud.IsExplored(xy))
 				return Cursor.MoveBlocked;
-			
+
 			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
 			return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
 		}

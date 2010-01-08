@@ -27,6 +27,17 @@ namespace OpenRa.Game
 		readonly Animation repairButton;
 		readonly Animation sellButton;
 		readonly Animation pwrdownButton;
+		readonly Animation optionsButton;
+		
+		readonly Sprite optionsTop;
+		readonly Sprite optionsBottom;
+		readonly Sprite optionsLeft;
+		readonly Sprite optionsRight;
+		readonly Sprite optionsTopLeft;
+		readonly Sprite optionsTopRight;
+		readonly Sprite optionsBottomLeft;
+		readonly Sprite optionsBottomRight;
+		readonly Sprite optionsBackground;
 				
 		readonly SpriteRenderer buildPaletteRenderer;
 		readonly Animation cantBuild;
@@ -41,7 +52,8 @@ namespace OpenRa.Game
 	
 		readonly int paletteColumns;
 		readonly int2 paletteOrigin;
-
+		bool hadRadar = false;
+		bool optionsPressed = false;
 		const int MinRows = 4;
 		
 		public Chrome(Renderer r)
@@ -81,6 +93,19 @@ namespace OpenRa.Game
 
 			pwrdownButton = new Animation("repair");
 			pwrdownButton.PlayRepeating("normal");
+			
+			optionsButton = new Animation("tabs");
+			optionsButton.PlayRepeating("left-normal");
+			
+			optionsLeft = SpriteSheetBuilder.LoadAllSprites("dd-left")[0];
+			optionsRight = SpriteSheetBuilder.LoadAllSprites("dd-right")[0];
+			optionsTop = SpriteSheetBuilder.LoadAllSprites("dd-top")[0];
+			optionsBottom = SpriteSheetBuilder.LoadAllSprites("dd-botm")[0];
+			optionsTopLeft = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[0];
+			optionsTopRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[1];
+			optionsBottomLeft = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[2];
+			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
+			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -132,7 +157,7 @@ namespace OpenRa.Game
 				Game.LocalPlayer.PowerDrained,
 				Game.LocalPlayer.PowerProvided,
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
-				), new int2(140, 5), Color.White);
+				), new int2(140, 15), Color.White);
 
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
@@ -149,6 +174,7 @@ namespace OpenRa.Game
 			int paletteHeight = DrawBuildPalette(currentTab);
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
+			DrawOptionsMenu();
 		}
 
 		void DrawMinimap()
@@ -156,7 +182,11 @@ namespace OpenRa.Game
 			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
 				&& a.traits.Get<ProvidesRadar>().IsActive());
-
+			
+			if (hasRadar != hadRadar)
+				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
+			hadRadar = hasRadar;
+			
 			if (hasRadar)
 				Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
 		}
@@ -296,6 +326,21 @@ namespace OpenRa.Game
 				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
+
+			// Iron Curtain
+			Rectangle curtainRect = new Rectangle(6, 14+50, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			var curtainDrawPos = Game.viewport.Location + new float2(curtainRect.Location);
+
+			var hasCurtain = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
+
+			if (!hasCurtain)
+				repairButton.ReplaceAnim("disabled");
+			else
+			{
+				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
+				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
+			}
+			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
 			
 			
 			// Repair
@@ -339,11 +384,63 @@ namespace OpenRa.Game
 				buildPaletteRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, PaletteType.Chrome);
 			}
 			buildPaletteRenderer.Flush();
+			
+			//Options
+			Rectangle optionsRect = new Rectangle(0 + 40,0, optionsButton.Image.bounds.Width, 
+				optionsButton.Image.bounds.Height);
+			
+			var optionsDrawPos = Game.viewport.Location + new float2(optionsRect.Location);
+			
+			optionsButton.ReplaceAnim(optionsPressed ? "left-pressed" : "left-normal");
+			
+			AddButton(optionsRect, isLmb => optionsPressed = !optionsPressed);
+			buildPaletteRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, PaletteType.Chrome);
+			buildPaletteRenderer.Flush();
+			
+			renderer.DrawText("Options", new int2(80, -2) , Color.White);
+		}
+		
+		void DrawOptionsMenu()
+		{
+			if (optionsPressed){
+				var menuDrawPos = Game.viewport.Location + new float2(Game.viewport.Width/2, Game.viewport.Height/2);
+				var width = optionsTop.bounds.Width + optionsTopLeft.bounds.Width + optionsTopRight.bounds.Width;
+				var height = optionsLeft.bounds.Height + optionsTopLeft.bounds.Height + optionsBottomLeft.bounds.Height;
+				var adjust = 8;
+				
+				menuDrawPos = menuDrawPos + new float2(-width/2, -height/2);
+				
+				var backgroundDrawPos = menuDrawPos + new float2( (width - optionsBackground.bounds.Width)/2, (height - optionsBackground.bounds.Height)/2);
+				
+				//draw background
+				buildPaletteRenderer.DrawSprite(optionsBackground, backgroundDrawPos, PaletteType.Chrome);
+				
+				//draw borders
+				buildPaletteRenderer.DrawSprite(optionsTopLeft, menuDrawPos, PaletteType.Chrome);
+				buildPaletteRenderer.DrawSprite(optionsLeft, menuDrawPos + new float2(0, optionsTopLeft.bounds.Height), PaletteType.Chrome);
+				buildPaletteRenderer.DrawSprite(optionsBottomLeft, menuDrawPos + new float2(0, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height), PaletteType.Chrome);
+
+				buildPaletteRenderer.DrawSprite(optionsTop, menuDrawPos + new float2(optionsTopLeft.bounds.Width, 0), PaletteType.Chrome);
+				buildPaletteRenderer.DrawSprite(optionsTopRight, menuDrawPos + new float2(optionsTopLeft.bounds.Width + optionsTop.bounds.Width, 0), PaletteType.Chrome);
+
+				buildPaletteRenderer.DrawSprite(optionsBottom, menuDrawPos + new float2(optionsTopLeft.bounds.Width, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height +adjust), PaletteType.Chrome);
+				buildPaletteRenderer.DrawSprite(optionsBottomRight, menuDrawPos + new float2(optionsBottomLeft.bounds.Width + optionsBottom.bounds.Width, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height), PaletteType.Chrome);
+
+				buildPaletteRenderer.DrawSprite(optionsRight, menuDrawPos + new float2(optionsTopLeft.bounds.Width + optionsTop.bounds.Width + adjust + 1, optionsTopRight.bounds.Height), PaletteType.Chrome);
+				
+				buildPaletteRenderer.Flush();
+			}
 		}
 		
 		void HandleChronosphereButton()
 		{
 			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
+		}
+		
+		void HandleIronCurtainButton()
+		{
+			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
 				Sound.Play("slcttgt1.aud");
 		}
 		
@@ -606,7 +703,10 @@ namespace OpenRa.Game
 			p += new int2(0, 15);
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
-				var prereqs = info.Prerequisite.Select(a => Rules.UnitInfo[a.ToLowerInvariant()].Description);
+				var prereqs = info.Prerequisite
+					.Select(a => Rules.UnitInfo[a.ToLowerInvariant()])
+					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
+					.Select( a => a.Description );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}

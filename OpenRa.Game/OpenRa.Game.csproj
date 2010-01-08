@@ -82,7 +82,10 @@
     <Compile Include="Combat.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
+    <Compile Include="Effects\FlashTarget.cs" />
+    <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
+    <Compile Include="Effects\PowerDownIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
@@ -96,8 +99,10 @@
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Graphics\Minimap.cs" />
+    <Compile Include="Orders\ChronoshiftSelfDestinationOrderGenerator.cs" />
     <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
+    <Compile Include="Orders\IronCurtainOrderGenerator.cs" />
     <Compile Include="Orders\LocalOrderSource.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Orders\NetworkOrderSource.cs" />
@@ -215,6 +220,8 @@
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
+    <Compile Include="Traits\IronCurtain.cs" />
+    <Compile Include="Traits\IronCurtainable.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />

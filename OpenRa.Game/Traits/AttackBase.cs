@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using IjwFramework.Types;
 using OpenRa.Game.Effects;
 
@@ -72,7 +73,7 @@ namespace OpenRa.Game.Traits
 			var unit = self.traits.GetOrDefault<Unit>();
 
 			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
-				self.Info.PrimaryOffset, ref primaryBurst))
+				self.Info.PrimaryOffset, ref primaryBurst, self.Info.PrimaryLocalOffset))
 			{
 				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
@@ -80,7 +81,7 @@ namespace OpenRa.Game.Traits
 			}
 
 			if (self.Info.Secondary != null && CheckFire(self, unit, self.Info.Secondary, ref secondaryFireDelay,
-				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset, ref secondaryBurst))
+				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset, ref secondaryBurst, self.Info.SecondaryLocalOffset))
 			{
 				if (self.Info.SecondaryOffset != null) secondaryRecoil = 1;
 				else primaryRecoil = 1;
@@ -88,7 +89,7 @@ namespace OpenRa.Game.Traits
 			}
 		}
 
-		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset, ref int burst)
+		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset, ref int burst, int[] localOffset)
 		{
 			if (fireDelay > 0) return false;
 
@@ -101,6 +102,17 @@ namespace OpenRa.Game.Traits
 
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
+			var numOffsets = (localOffset.Length + 2) / 3;
+			if (numOffsets == 0) numOffsets = 1;
+			var localOffsetForShot = burst % numOffsets;
+			var thisLocalOffset = localOffset.Skip(3 * localOffsetForShot).Take(3).ToArray();
+
+			var fireOffset = new[] { 
+				offset.ElementAtOrDefault(0) + thisLocalOffset.ElementAtOrDefault(0), 
+				offset.ElementAtOrDefault(1) + thisLocalOffset.ElementAtOrDefault(1), 
+				offset.ElementAtOrDefault(2),
+				offset.ElementAtOrDefault(3) };
+
 			if (--burst > 0)
 				fireDelay = 5;
 			else
@@ -109,7 +121,7 @@ namespace OpenRa.Game.Traits
 				burst = weapon.Burst;
 			}
 
-			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, offset, 0f).ToInt2();
+			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2();
 			var thisTarget = target;	// closure.
 			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
 
@@ -121,9 +133,14 @@ namespace OpenRa.Game.Traits
 				if( weapon.RenderAsTesla )
 					Game.world.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
 
-				if( Rules.ProjectileInfo[ weapon.Projectile ].ROT != 0 )
+				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
+				{
+					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
+						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : unit.Facing);
+	
 					Game.world.Add(new Missile(weaponName, self.Owner, self,
-						firePos, thisTarget, srcAltitude));
+						firePos, thisTarget, srcAltitude, fireFacing));
+				}
 				else
 					Game.world.Add(new Bullet(weaponName, self.Owner, self,
 						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
@@ -155,6 +172,9 @@ namespace OpenRa.Game.Traits
 			{
 				self.CancelActivity();
 				QueueAttack(self, order);
+
+				if (self.Owner == Game.LocalPlayer)
+					Game.world.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
 			}
 			else
 				target = null;

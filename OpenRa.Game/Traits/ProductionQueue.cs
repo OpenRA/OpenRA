@@ -128,12 +128,36 @@ namespace OpenRa.Game.Traits
 		{
 			var newUnitType = Rules.UnitInfo[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
-
-			// TODO: choose producer based on "primary building"
-			var producer = Game.world.Actors
-				.Where( x => producerTypes.Contains( x.Info ) && x.Owner == self.Owner )
-				.FirstOrDefault();
-
+			Actor producer = null;
+			
+			// Prioritise primary structure in build order
+			var primaryProducers = Game.world.Actors
+				.Where(x => x.traits.Contains<Production>()
+					&& producerTypes.Contains(x.Info)
+					&& x.Owner == self.Owner
+					&& x.traits.Get<Production>().IsPrimary == true);
+			
+			foreach (var p in primaryProducers)
+			{
+				// Ignore buildings that are disabled
+				if (p.traits.Contains<Building>() && p.traits.Get<Building>().Disabled)
+					continue;
+				producer = p;
+				break;
+			}
+			
+			// TODO: Be smart about disabled buildings. Units in progress should be paused(?)
+			// Ignore this for now
+			
+			// Pick the first available producer
+			if (producer == null)
+			{
+				producer = Game.world.Actors
+					.Where( x => producerTypes.Contains( x.Info ) && x.Owner == self.Owner )
+					.FirstOrDefault();
+			}
+			
+			// Something went wrong somewhere...
 			if( producer == null )
 			{
 				CancelProduction( Rules.UnitCategory[ name ] );

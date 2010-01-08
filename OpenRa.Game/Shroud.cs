@@ -14,6 +14,11 @@ namespace OpenRa.Game
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty;
 
+		public bool IsExplored(int2 xy)
+		{
+			return explored[ xy.X, xy.Y ];
+		}
+		
 		public void Explore(Actor a)
 		{
 			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Sight))

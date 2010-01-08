@@ -22,7 +22,11 @@ namespace OpenRa.Game.Traits
 		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
 		void ResolveOrder( Actor self, Order order );
 	}
-	interface IProducer { bool Produce( Actor self, UnitInfo producee ); }
+	interface IProducer
+	{
+		bool Produce( Actor self, UnitInfo producee );
+		void SetPrimaryProducer(Actor self, bool isPrimary);
+	}
 	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	interface INotifyAttack { void Attacking(Actor self); }
 	interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
@@ -43,7 +47,6 @@ namespace OpenRa.Game.Traits
 		bool IsCrushableBy(UnitMovementType umt, Player player);
 		bool IsPathableCrush(UnitMovementType umt, Player player);
 	}
-	interface IChronoshiftable{}
 	struct Renderable
 	{
 		public readonly Sprite Sprite;

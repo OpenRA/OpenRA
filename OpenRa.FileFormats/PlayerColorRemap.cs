@@ -4,13 +4,12 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
-	public class PaletteRemap : IPaletteRemap
+	public class PlayerColorRemap : IPaletteRemap
 	{
 		int offset;
 		List<Color> remapColors = new List<Color>();
-		Color shadowColor;
 
-		public PaletteRemap(Stream s)
+		public PlayerColorRemap(Stream s)
 		{
 			using (BinaryReader reader = new BinaryReader(s))
 			{
@@ -27,22 +26,12 @@ namespace OpenRa.FileFormats
 			offset = 80;
 		}
 
-		public PaletteRemap( Color shadowColor )
-		{
-			this.shadowColor = shadowColor;
-		}
-
 		public Color GetRemappedColor(Color original, int index)
 		{
-			if (remapColors.Count > 0)
-			{
-				if (index < offset || index >= offset + remapColors.Count)
-					return original;
+			if (index < offset || index >= offset + remapColors.Count)
+				return original;
 
-				return remapColors[index - offset];
-			}
-
-			return original.A > 0 ? shadowColor : original;
+			return remapColors[index - offset];
 		}
 	}
 }

@@ -7,7 +7,7 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
-	class ChronosphereSelectOrderGenerator : IOrderGenerator
+	class IronCurtainOrderGenerator : IOrderGenerator
 	{
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
@@ -24,24 +24,24 @@ namespace OpenRa.Game.Orders
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
-						&& a.traits.WithInterface<Chronoshiftable>().Any()
+						&& a.traits.Contains<IronCurtainable>()
 						&& a.Info.Selectable).FirstOrDefault();
-				
+
 				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
 
 				if (unit != null)
 				{
-					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, null);
+					yield return new Order("IronCurtain", underCursor, null, int2.Zero, null);
 				}
 			}
 		}
 
 		public void Tick()
 		{
-			var hasChronosphere = Game.world.Actors
-				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Chronosphere>());
+			var hasStructure = Game.world.Actors
+				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
 
-			if (!hasChronosphere)
+			if (!hasStructure)
 				Game.controller.CancelInputMode();
 		}
 
@@ -51,7 +51,7 @@ namespace OpenRa.Game.Orders
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(xy, mi).Any()
-				? Cursor.ChronoshiftSelect : Cursor.MoveBlocked;
+				? Cursor.Ability : Cursor.MoveBlocked;
 		}
 	}
 }
