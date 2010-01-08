@@ -58,6 +58,9 @@ namespace OpenRa.Game
 			{
 				if (RemainingTime > 0) --RemainingTime;
 			}
+
+			if (RemainingTime == 0 && Info.AutoActivate)
+				Activate();
 		}
 
 		public void Activate()

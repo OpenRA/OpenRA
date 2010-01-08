@@ -17,5 +17,6 @@ namespace OpenRa.Game.GameRules
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
 		public readonly string Impl = null;
+		public readonly bool AutoActivate = false;
 	}
 }
