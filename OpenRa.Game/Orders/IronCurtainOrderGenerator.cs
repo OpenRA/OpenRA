@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
 using OpenRa.Game.SupportPowers;
+
 namespace OpenRa.Game.Orders
 {
 	class IronCurtainOrderGenerator : IOrderGenerator

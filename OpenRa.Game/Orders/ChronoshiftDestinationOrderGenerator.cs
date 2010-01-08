@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using OpenRa.Game.Traits;
+using OpenRa.Game.SupportPowers;
 
 namespace OpenRa.Game.Orders
 {
 	class ChronoshiftDestinationOrderGenerator : IOrderGenerator
 	{
 		public readonly Actor self;
+		SupportPower power;
 
-		public ChronoshiftDestinationOrderGenerator(Actor self)
+		public ChronoshiftDestinationOrderGenerator(Actor self, SupportPower power)
 		{
 			this.self = self;
+			this.power = power;
 		}
 
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
@@ -23,8 +25,8 @@ namespace OpenRa.Game.Orders
 				Game.controller.CancelInputMode();
 				yield break;
 			}
-						
-			yield return new Order("Chronoshift", self, null, xy, null);
+			yield return new Order("Chronoshift", self, null, xy, 
+				power != null ? power.Name : null);
 		}
 
 		public void Tick() {}
