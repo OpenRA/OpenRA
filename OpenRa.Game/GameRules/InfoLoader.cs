@@ -5,10 +5,11 @@ using System.Text;
 using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using IjwFramework.Types;
+using System.Collections;
 
 namespace OpenRa.Game.GameRules
 {
-	class InfoLoader<T>
+	class InfoLoader<T> : IEnumerable<KeyValuePair<string, T>>
 	{
 		readonly Dictionary<string, T> infos = new Dictionary<string, T>();
 
@@ -28,9 +29,7 @@ namespace OpenRa.Game.GameRules
 			get { return infos[name.ToLowerInvariant()]; }
 		}
 
-		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
-		{
-			return infos.GetEnumerator();
-		}
+		public IEnumerator<KeyValuePair<string, T>> GetEnumerator() { return infos.GetEnumerator(); }
+		IEnumerator IEnumerable.GetEnumerator() { return infos.GetEnumerator(); }
 	}
 }
