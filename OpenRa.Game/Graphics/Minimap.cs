@@ -8,7 +8,7 @@ namespace OpenRa.Game.Graphics
 	class Minimap
 	{
 		Sheet sheet;
-		SpriteRenderer spriteRenderer;
+		SpriteRenderer rgbaRenderer;
 		SpriteRenderer shpRenderer;
 		Sprite sprite;
 		Bitmap terrain, oreLayer;
@@ -20,7 +20,7 @@ namespace OpenRa.Game.Graphics
 		{
 			sheet = new Sheet(r, new Size(128, 128));
 			shpRenderer = new SpriteRenderer(r, true);
-			spriteRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
+			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			sprite = new Sprite(sheet, new Rectangle(0, 0, 128, 128), TextureChannel.Alpha);
 
 			sovietAnim = new Animation("ussrradr");
@@ -116,8 +116,8 @@ namespace OpenRa.Game.Graphics
 
 			if (radarAnim.CurrentSequence.Name == "active")
 			{
-				spriteRenderer.DrawSprite(sprite, pos - new float2((290-256)/2, -5), PaletteType.Chrome, new float2(256, 256));
-				spriteRenderer.Flush();
+				rgbaRenderer.DrawSprite(sprite, pos - new float2((290-256)/2, -5), PaletteType.Chrome, new float2(256, 256));
+				rgbaRenderer.Flush();
 			}
 		}
 	}
