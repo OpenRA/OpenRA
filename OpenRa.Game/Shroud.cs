@@ -26,6 +26,20 @@ namespace OpenRa.Game
 
 			dirty = true;
 		}
+		
+		public void RevealAll()
+		{
+			for (int x = 0; x < 128; x++)
+				for (int y = 0; y < 128; y++)
+					explored[x, y] = true;
+		}
+		
+		public void HideAll()
+		{
+			for (int x = 0; x < 128; x++)
+				for (int y = 0; y < 128; y++)
+					explored[x, y] = false;
+		}
 
 		Sprite ChooseShroud(int i, int j)
 		{
