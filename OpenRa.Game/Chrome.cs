@@ -710,6 +710,10 @@ namespace OpenRa.Game
 			chromeRenderer.DrawSprite(specialBinSprite, new float2(0,14), PaletteType.Chrome);
 			chromeRenderer.Flush();
 			var y = 24;
+
+			string tooltipItem = null;
+			int2 tooltipPos = int2.Zero;
+
 			foreach (var sp in Game.LocalPlayer.SupportPowers)
 			{
 				var image = spsprites[sp.Key];
@@ -733,11 +737,50 @@ namespace OpenRa.Game
 							PaletteType.Chrome);
 					}
 
+					var rect = new Rectangle(5, y, 64, 48);
+					if (rect.Contains(lastMousePos.ToPoint()))
+					{
+						tooltipItem = sp.Key;
+						tooltipPos = drawPos.ToInt2() + new int2(72, 0) - Game.viewport.Location.ToInt2();
+					}
+
 					y += 51;
 				}
 			}
 
 			buildPaletteRenderer.Flush();
+
+			if (tooltipItem != null)
+				DrawSupportPowerTooltip(tooltipItem, tooltipPos);
+		}
+
+		string FormatTime(int ticks)
+		{
+			var seconds = ticks / 25;
+			var minutes = seconds / 60;
+
+			return "{0}:{1}".F(minutes, seconds % 60);
+		}
+
+		void DrawSupportPowerTooltip(string sp, int2 pos)
+		{
+			chromeRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
+			chromeRenderer.Flush();
+
+			var info = Rules.SupportPowerInfo[sp];
+
+			pos += new int2(5, 5);
+
+			renderer.DrawText2(info.Description, pos, Color.White);
+
+			var timer = "Charge Time: {0}".F(FormatTime(Game.LocalPlayer.SupportPowers[sp].RemainingTime));
+			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
+
+			if (info.LongDesc != null)
+			{
+				pos += new int2(0, 25);
+				renderer.DrawText(info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+			}
 		}
 	}
 }

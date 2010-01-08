@@ -44,5 +44,9 @@ namespace OpenRa.Game
 				if (RemainingTime > 0) --RemainingTime;
 			}
 		}
+
+		public void Activate()
+		{
+		}
 	}
 }
