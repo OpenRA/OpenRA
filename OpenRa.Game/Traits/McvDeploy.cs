@@ -3,7 +3,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class McvDeploy : IOrder
+	class McvDeploy : IIssueOrder, IResolveOrder
 	{
 		public McvDeploy(Actor self) { }
 

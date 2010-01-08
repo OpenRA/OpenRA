@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace OpenRa.Game.Traits
 {
-	class Thief : IOrder
+	class Thief : IIssueOrder, IResolveOrder
 	{
 		public Thief(Actor self) { }
 

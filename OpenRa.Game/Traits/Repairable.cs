@@ -6,7 +6,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Repairable : IOrder
+	class Repairable : IIssueOrder, IResolveOrder
 	{
 		IDisposable reservation;
 		public Repairable(Actor self) { }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace OpenRa.Game.Traits
 {
-	class Chronoshiftable : IOrder, ISpeedModifier, ITick
+	class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic
 		int2 chronoshiftOrigin;
@@ -28,11 +28,6 @@ namespace OpenRa.Game.Traits
 				// Todo: need a new Teleport method that will move to the closest available cell
 				self.QueueActivity(new Activities.Teleport(chronoshiftOrigin));
 			}
-		}
-
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			return null; // Chronoshift order is issued through Chrome.
 		}
 
 		public void ResolveOrder(Actor self, Order order)

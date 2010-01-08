@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace OpenRa.Game.Traits
 {
-	class Production : IOrder, IProducer, ITags
+	class Production : IIssueOrder, IResolveOrder, IProducer, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
@@ -66,9 +66,7 @@ namespace OpenRa.Game.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Deploy")
-			{
 				SetPrimaryProducer(self, !isPrimary);
-			}
 		}
 		
 		public void SetPrimaryProducer(Actor self, bool state)

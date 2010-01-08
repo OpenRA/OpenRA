@@ -6,7 +6,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Plane : IOrder, IMovement
+	class Plane : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
 

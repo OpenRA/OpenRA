@@ -97,7 +97,7 @@ namespace OpenRa.Game.Orders
 
 			default:
 				{
-					foreach (var t in order.Subject.traits.WithInterface<IOrder>())
+					foreach (var t in order.Subject.traits.WithInterface<IResolveOrder>())
 						t.ResolveOrder(order.Subject, order);
 					break;
 				}

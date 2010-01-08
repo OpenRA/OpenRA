@@ -3,7 +3,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Harvester : IOrder, IPips
+	class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
 		public int oreCarried = 0;					/* sum of these must not exceed capacity */
 		public int gemsCarried = 0;

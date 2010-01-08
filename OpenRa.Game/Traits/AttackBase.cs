@@ -6,7 +6,7 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class AttackBase : IOrder, ITick
+	class AttackBase : IIssueOrder, IResolveOrder, ITick
 	{
 		public Actor target;
 
