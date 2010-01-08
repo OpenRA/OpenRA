@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using OpenRa.Game.GameRules;
 namespace OpenRa.Game.Traits
 {
 	class StoresOre : IPips, IAcceptThief
@@ -15,9 +16,10 @@ namespace OpenRa.Game.Traits
 		
 		public void OnSteal(Actor self, Actor thief)
 		{
-			var cashStolen = Math.Min(MaxStealAmount, self.Owner.Cash);
-			self.Owner.TakeCash(cashStolen);
-			thief.Owner.GiveCash(cashStolen);
+			// Steal half the ore the building holds
+			var toSteal = (self.Info as BuildingInfo).Storage/2;
+			self.Owner.TakeCash(toSteal);
+			thief.Owner.GiveCash(toSteal);
 			
 			if (Game.LocalPlayer == thief.Owner)
 				Sound.Play("credit1.aud");
