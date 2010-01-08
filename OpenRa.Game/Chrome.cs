@@ -767,7 +767,7 @@ namespace OpenRa.Game
 			var seconds = ticks / 25;
 			var minutes = seconds / 60;
 
-			return "{0}:{1}".F(minutes, seconds % 60);
+			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
 
 		void DrawSupportPowerTooltip(string sp, int2 pos)

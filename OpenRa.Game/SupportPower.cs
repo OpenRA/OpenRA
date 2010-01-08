@@ -8,6 +8,8 @@ using OpenRa.Game.SupportPowers;
 
 namespace OpenRa.Game
 {
+	// todo: fix this to route Activate through the orders system (otherwise desync in netplay)
+
 	class SupportPower
 	{
 		public readonly SupportPowerInfo Info;
@@ -26,7 +28,7 @@ namespace OpenRa.Game
 		{
 			Info = info;
 			Owner = owner;
-			RemainingTime = TotalTime = (int)info.ChargeTime * 60 * 25;
+			RemainingTime = TotalTime = (int)(info.ChargeTime * 60 * 25);
 			Impl = ConstructPowerImpl(info.Impl);
 		}
 
