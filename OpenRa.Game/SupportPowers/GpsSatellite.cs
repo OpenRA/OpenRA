@@ -12,25 +12,21 @@ namespace OpenRa.Game.SupportPowers
 		public void IsChargingNotification(SupportPower p) { }
 		public void IsReadyNotification(SupportPower p)
 		{
-			// Power is auto-activated
-			Activate(p);
-		}
-		
-		public void Activate(SupportPower p)
-		{
 			var launchSite = Game.world.Actors
-				.FirstOrDefault( a => a.Owner == p.Owner && a.traits.Contains<GpsLaunchSite>() );
+				.FirstOrDefault(a => a.Owner == p.Owner && a.traits.Contains<GpsLaunchSite>());
 
 			if (launchSite == null)
 				return;
 
 			Game.world.AddFrameEndTask(w =>
-				{
-					w.Add(new SatelliteLaunch(launchSite));
-					w.Add(new DelayedAction(revealDelay, () => p.Owner.Shroud.HasGPS = true));
-				});
+			{
+				w.Add(new SatelliteLaunch(launchSite));
+				w.Add(new DelayedAction(revealDelay, () => p.Owner.Shroud.HasGPS = true));
+			});
 
 			p.FinishActivate();
 		}
+		
+		public void Activate(SupportPower p) {}
 	}
 }
