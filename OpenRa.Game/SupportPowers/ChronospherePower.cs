@@ -19,14 +19,14 @@ namespace OpenRa.Game.SupportPowers
 
 			Sound.Play("chrono2.aud");
 
-			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
-				a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
-			
 			// Play chronosphere active anim
 			var chronosphere = Game.world.Actors.Where(a => a.Owner == p.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
-			
 			if (chronosphere != null)
-				chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
+				Game.controller.AddOrder(Order.PlayAnimation(chronosphere, "active"));
+			
+			// Trigger screen desaturate effect
+			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
+				a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
 		}
 		SupportPower p;
 		public void Activate(SupportPower p)
