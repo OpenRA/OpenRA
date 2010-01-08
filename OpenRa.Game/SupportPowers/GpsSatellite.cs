@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.SupportPowers
 {
@@ -13,7 +11,7 @@ namespace OpenRa.Game.SupportPowers
 		public void Activate(SupportPower p)
 		{
 			var launchSite = Game.world.Actors
-				.FirstOrDefault( a => a.Owner == p.Owner && a.traits.Contains<Traits.GpsSatellite>() );
+				.FirstOrDefault( a => a.Owner == p.Owner && a.traits.Contains<GpsLaunchSite>() );
 
 			if (launchSite == null)
 				return;

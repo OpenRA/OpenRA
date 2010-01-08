@@ -223,7 +223,7 @@
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />
     <Compile Include="Traits\Fake.cs" />
-    <Compile Include="Traits\GpsSatellite.cs" />
+    <Compile Include="Traits\GpsLaunchSite.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
