@@ -9,25 +9,36 @@ namespace OpenRa.Game.Graphics
 	{
 		Sheet sheet;
 		SpriteRenderer spriteRenderer;
+		SpriteRenderer shpRenderer;
 		Sprite sprite;
 		Bitmap terrain, oreLayer;
+		Animation radarAnim, alliesAnim, sovietAnim;
 
 		public void Tick() { }
 
 		public Minimap(Renderer r)
 		{
 			sheet = new Sheet(r, new Size(128, 128));
+			shpRenderer = new SpriteRenderer(r, true);
 			spriteRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			sprite = new Sprite(sheet, new Rectangle(0, 0, 128, 128), TextureChannel.Alpha);
+
+			sovietAnim = new Animation("ussrradr");
+			sovietAnim.PlayRepeating("idle");
+			alliesAnim = new Animation("natoradr");
+			alliesAnim.PlayRepeating("idle");
+			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
 		}
 
-		// todo: extract these from the palette
 		Color[] terrainTypeColors;
 
 		public void InvalidateOre() { oreLayer = null; }
 
 		public void Update()
 		{
+			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
+			radarAnim.Tick();
+
 			if (terrainTypeColors == null)
 			{
 				var pal = new Palette(FileSystem.Open(Rules.Map.Theater + ".pal"));
@@ -87,10 +98,27 @@ namespace OpenRa.Game.Graphics
 			sheet.Texture.SetData(bitmap);
 		}
 
-		public void Draw(float2 pos)
+		public void Draw(float2 pos, bool hasRadar, bool isJammed)
 		{
-			spriteRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(256,256));
-			spriteRenderer.Flush();
+			if (hasRadar && radarAnim.CurrentSequence.Name == "idle")
+				radarAnim.PlayThen("open", () => radarAnim.PlayRepeating("active"));
+			if (hasRadar && radarAnim.CurrentSequence.Name == "no-power")
+				radarAnim.PlayBackwardsThen("close", () => radarAnim.PlayRepeating("active"));
+			if (!hasRadar && radarAnim.CurrentSequence.Name == "active")
+				radarAnim.PlayThen("close", () => radarAnim.PlayRepeating("no-power"));
+			if (isJammed && radarAnim.CurrentSequence.Name == "active")
+				radarAnim.PlayRepeating("jammed");
+			if (!isJammed && radarAnim.CurrentSequence.Name == "jammed")
+				radarAnim.PlayRepeating("active");
+				
+			shpRenderer.DrawSprite(radarAnim.Image, pos + Game.viewport.Location - new float2( 290-256,0), PaletteType.Chrome, new float2(290, 272));
+			shpRenderer.Flush();
+
+			if (radarAnim.CurrentSequence.Name == "active")
+			{
+				spriteRenderer.DrawSprite(sprite, pos - new float2((290-256)/2, -5), PaletteType.Chrome, new float2(256, 256));
+				spriteRenderer.Flush();
+			}
 		}
 	}
 }

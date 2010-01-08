@@ -68,7 +68,7 @@ namespace OpenRa.Game
 			// Positioning of chrome elements
 			// Build palette
 			paletteColumns = 4;
-			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9 - 20, 240 - 9);
+			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9 - 20, 282);
 			
 			this.renderer = r;
 			specialBin = new Sheet(renderer, "specialbin.png");
@@ -198,9 +198,10 @@ namespace OpenRa.Game
 			if (hasRadar != hadRadar)
 				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
 			hadRadar = hasRadar;
+
+			var isJammed = false;		// todo: MRJ can do this
 			
-			if (hasRadar)
-				Game.minimap.Draw(new float2(Game.viewport.Width - 256, 8));
+			Game.minimap.Draw(new float2(Game.viewport.Width - 247, 10), hasRadar, isJammed);
 		}
 		
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
@@ -278,7 +279,7 @@ namespace OpenRa.Game
 		void DrawPower()
 		{
 			//draw background
-			float2 powerOrigin = Game.viewport.Location+new float2(Game.viewport.Width - 20, 240 - 9);
+			float2 powerOrigin = Game.viewport.Location + new float2(Game.viewport.Width - 20, paletteOrigin.Y);
 
 			buildPaletteRenderer.DrawSprite(powerLevelTopSprite, powerOrigin, PaletteType.Chrome);
 			buildPaletteRenderer.DrawSprite(powerLevelBottomSprite, powerOrigin + new float2(0, powerLevelTopSprite.size.Y), PaletteType.Chrome);
