@@ -38,7 +38,7 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location
-				if (!Game.LocalPlayer.Shroud.IsExplored(order.TargetLocation))
+				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 				
 				Game.controller.CancelInputMode();
