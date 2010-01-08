@@ -16,5 +16,6 @@ namespace OpenRa.Game.GameRules
 		public readonly string[] Prerequisite = { };
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
+		public readonly string Impl = null;
 	}
 }

@@ -729,15 +729,18 @@ namespace OpenRa.Game
 
 					buildPaletteRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
 
+					var rect = new Rectangle(5, y, 64, 48);
 					if (sp.Value.IsDone)
 					{
 						ready.Play("ready");
 						buildPaletteRenderer.DrawSprite(ready.Image, 
 							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
 							PaletteType.Chrome);
+
+						AddButton(rect, HandleSupportPower( sp.Value ));
 					}
 
-					var rect = new Rectangle(5, y, 64, 48);
+					
 					if (rect.Contains(lastMousePos.ToPoint()))
 					{
 						tooltipItem = sp.Key;
@@ -752,6 +755,11 @@ namespace OpenRa.Game
 
 			if (tooltipItem != null)
 				DrawSupportPowerTooltip(tooltipItem, tooltipPos);
+		}
+
+		Action<bool> HandleSupportPower(SupportPower sp)
+		{
+			return b => { if (b) sp.Activate(); };
 		}
 
 		string FormatTime(int ticks)
