@@ -19,16 +19,16 @@ namespace OpenRa.Game.Traits
 			turretAnim.PlayFacing( "turret", () => turreted.turretFacing );
 
 			if( self.Info.PrimaryOffset != null )
-				anims.Add( "turret_1", new AnimationWithOffset(
+				anims.Add("turret_1", new AnimationWithOffset(
 					turretAnim,
-					() => Util.GetTurretPosition( self, unit, self.Info.PrimaryOffset, attack.primaryRecoil ),
-					null ) );
+					() => Util.GetTurretPosition(self, unit, self.Info.PrimaryOffset, attack.primaryRecoil),
+					null) { ZOffset = 1 });
 
 			if( self.Info.SecondaryOffset != null )
-				anims.Add( "turret_2", new AnimationWithOffset(
+				anims.Add("turret_2", new AnimationWithOffset(
 					turretAnim,
-					() => Util.GetTurretPosition( self, unit, self.Info.SecondaryOffset, attack.secondaryRecoil ),
-					null ) );
+					() => Util.GetTurretPosition(self, unit, self.Info.SecondaryOffset, attack.secondaryRecoil),
+					null) { ZOffset = 1 });
 
 			if( self.Info.MuzzleFlash )
 			{

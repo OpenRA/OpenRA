@@ -17,7 +17,7 @@ All tracked vehicles
 1TNK	Works
 2TNK	Works
 3TNK	Works
-4TNK	Gun, missile origins are wrong
+4TNK	Works
 
 Light vehicles
 V2RL	Works
