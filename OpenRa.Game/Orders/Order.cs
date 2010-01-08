@@ -32,19 +32,6 @@ namespace OpenRa.Game
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
 		}
-		// This is a hack - fix me
-		public readonly ISupportPowerImpl Power;
-		public Order(string orderString, Actor subject, ISupportPowerImpl power)
-		{
-			this.OrderString = orderString;
-			this.SubjectId = UIntFromActor( subject );
-			
-			this.Power = power;
-			
-			this.TargetActorId = UIntFromActor(null);
-			this.TargetLocation = int2.Zero;
-			this.TargetString = null;
-		}
 
 		public bool Validate()
 		{

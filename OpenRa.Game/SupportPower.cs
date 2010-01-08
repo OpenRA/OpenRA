@@ -11,7 +11,8 @@ namespace OpenRa.Game
 	{
 		public readonly SupportPowerInfo Info;
 		public readonly Player Owner;
-		readonly ISupportPowerImpl Impl;
+		public readonly ISupportPowerImpl Impl;
+		public readonly string Name;
 
 		static ISupportPowerImpl ConstructPowerImpl(string implName)
 		{
@@ -21,8 +22,9 @@ namespace OpenRa.Game
 			return (ISupportPowerImpl)ctor.Invoke(new object[] { });
 		}
 
-		public SupportPower(SupportPowerInfo info, Player owner)
+		public SupportPower(string name, SupportPowerInfo info, Player owner)
 		{
+			Name = name;
 			Info = info;
 			Owner = owner;
 			RemainingTime = TotalTime = (int)(info.ChargeTime * 60 * 25);

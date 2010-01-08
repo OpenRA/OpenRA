@@ -36,7 +36,7 @@ namespace OpenRa.Game.SupportPowers
 		{
 			this.p = p;
 			// Pick a building to use
-			Game.controller.orderGenerator = new IronCurtainOrderGenerator(this);
+			Game.controller.orderGenerator = new IronCurtainOrderGenerator(p);
 			Sound.Play("slcttgt1.aud");
 		}
 	}

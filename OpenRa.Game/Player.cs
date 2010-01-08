@@ -41,7 +41,7 @@ namespace OpenRa.Game
 
 			SupportPowers = Rules.SupportPowerInfo.ToDictionary( 
 				spi => spi.Key, 
-				spi => new SupportPower(spi.Value, this));
+				spi => new SupportPower(spi.Key, spi.Value, this));
 		}
 
 		void UpdatePower()

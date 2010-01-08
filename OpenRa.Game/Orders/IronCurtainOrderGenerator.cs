@@ -9,8 +9,8 @@ namespace OpenRa.Game.Orders
 {
 	class IronCurtainOrderGenerator : IOrderGenerator
 	{
-		ISupportPowerImpl power;
-		public IronCurtainOrderGenerator(ISupportPowerImpl power)
+		SupportPower power;
+		public IronCurtainOrderGenerator(SupportPower power)
 		{
 			this.power = power;
 		}
@@ -36,10 +36,7 @@ namespace OpenRa.Game.Orders
 				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
 
 				if (unit != null)
-				{
-					yield return new Order("IronCurtain", underCursor, this.power);
-					//yield return new Order("IronCurtain", underCursor, null, int2.Zero, null);
-				}
+					yield return new Order("IronCurtain", underCursor, null, int2.Zero, power.Name);
 			}
 		}
 
