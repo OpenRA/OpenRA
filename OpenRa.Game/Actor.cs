@@ -101,7 +101,7 @@ namespace OpenRa.Game
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
 
-			return traits.WithInterface<IOrder>()
+			return traits.WithInterface<IIssueOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}

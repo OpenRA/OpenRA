@@ -4,7 +4,7 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
-	class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
 	{
 		// Recharge logic
 		int chargeTick = 0; // How long until we can chronoshift again?

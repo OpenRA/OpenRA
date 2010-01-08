@@ -18,11 +18,10 @@ namespace OpenRa.Game.Traits
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
 	interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
-	interface IOrder
-	{
-		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
-		void ResolveOrder( Actor self, Order order );
-	}
+	
+	interface IIssueOrder { Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor); }
+	interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
+	
 	interface IProducer
 	{
 		bool Produce( Actor self, UnitInfo producee );

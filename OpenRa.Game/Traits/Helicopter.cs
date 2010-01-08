@@ -4,7 +4,7 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class Helicopter : IOrder, IMovement
+	class Helicopter : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}

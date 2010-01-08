@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class Minelayer : IOrder
+	class Minelayer : IIssueOrder, IResolveOrder
 	{
 		public Minelayer(Actor self) { }
 

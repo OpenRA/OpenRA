@@ -6,7 +6,7 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
-	class DemoTruck : Chronoshiftable, IOrder, INotifyDamage
+	class DemoTruck : Chronoshiftable, IResolveOrder, INotifyDamage
 	{
 		readonly Actor self;
 		public DemoTruck(Actor self)

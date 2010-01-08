@@ -3,7 +3,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class ConstructionYard : IOrder, IMovement
+	class ConstructionYard : IIssueOrder, IResolveOrder, IMovement
 	{
 		readonly Actor self;
 

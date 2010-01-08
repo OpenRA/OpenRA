@@ -2,7 +2,7 @@
 
 namespace OpenRa.Game.Traits
 {
-	class C4Demolition : IOrder
+	class C4Demolition : IIssueOrder, IResolveOrder
 	{
 		public C4Demolition(Actor self) { }
 

@@ -3,7 +3,7 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class IronCurtainable : IOrder, IDamageModifier, ITick
+	class IronCurtainable : IResolveOrder, IDamageModifier, ITick
 	{
 		int RemainingTicks = 0;
 
@@ -17,11 +17,6 @@ namespace OpenRa.Game.Traits
 		public float GetDamageModifier()
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
-		}
-
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			return null; // IronCurtain order is issued through Chrome.
 		}
 
 		public void ResolveOrder(Actor self, Order order)
