@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits
 
 			if (fired && --revealTicks == 0)
 			{
-				self.Owner.Shroud.RevealAll();
+				self.Owner.Shroud.HasGPS = true;
 			}
 		}
 		public void Activate(Actor self)
