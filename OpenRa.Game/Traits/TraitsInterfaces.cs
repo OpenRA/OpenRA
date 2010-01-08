@@ -17,6 +17,7 @@ namespace OpenRa.Game.Traits
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
+	interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
 	interface IOrder
 	{
 		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
