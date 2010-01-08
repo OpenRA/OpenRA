@@ -31,6 +31,8 @@ namespace OpenRa.Game.Effects
 			FiredBy = firedBy;
 			Src = src;
 			Dest = dest;
+			SrcAltitude = srcAltitude;
+			DestAltitude = destAltitude;
 			VisualDest = Dest + new int2(
 						Game.CosmeticRandom.Next(-10, 10),
 						Game.CosmeticRandom.Next(-10, 10));

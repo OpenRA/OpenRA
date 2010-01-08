@@ -8,7 +8,7 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class IronCurtainable: IOrder, IDamageModifier, ITick, IRenderModifier
+	class IronCurtainable: IOrder, IDamageModifier, ITick
 	{
 		int RemainingTicks = 0;
 
@@ -23,6 +23,7 @@ namespace OpenRa.Game.Traits
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
 		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			return null; // Chronoshift order is issued through Chrome.
@@ -32,26 +33,15 @@ namespace OpenRa.Game.Traits
 		{
 			if (order.OrderString == "IronCurtain")
 			{
+				Game.controller.CancelInputMode();
+				Game.world.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
 				RemainingTicks = (int)(Rules.General.IronCurtain * 60 * 25);
+				Sound.Play("ironcur9.aud");
 				// Play active anim
 				var ironCurtain = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<IronCurtain>()).FirstOrDefault();
-				Sound.Play("ironcur9.aud");
 				if (ironCurtain != null)
 					ironCurtain.traits.Get<RenderBuilding>().PlayCustomAnim(ironCurtain, "active");
 			}
-		}
-
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
-		{		
-			if (RemainingTicks <= 0)
-				return rs;
-			
-			List<Renderable> nrs = new List<Renderable>(rs);
-			foreach(var r in rs)
-			{
-				nrs.Add(r.WithPalette(PaletteType.Shadow));
-			}			
-			return nrs;
 		}
 	}
 }

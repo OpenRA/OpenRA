@@ -1,126 +1,127 @@
 ﻿
+using System;
 namespace OpenRa.Game.GameRules
 {
 	class GeneralInfo
 	{
 		/* Crates */
-		public readonly int CrateMinimum;
-		public readonly int CrateMaximum;
-		public readonly float CrateRadius;
-		public readonly float CrateRegen;
-		public readonly string UnitCrateType;	/* =none, if any */
-		public readonly float WaterCrateChance;
+		public readonly int CrateMinimum = 0;
+		public readonly int CrateMaximum = 0;
+		public readonly float CrateRadius = 0;
+		public readonly float CrateRegen = 0;
+		public readonly string UnitCrateType = null;	/* =none, if any */
+		public readonly float WaterCrateChance = 0;
 
-		public readonly int SoloCrateMoney;
-		public readonly string SilverCrate;		/* solo play crate contents */
-		public readonly string WaterCrate;
-		public readonly string WoodCrate;
+		public readonly int SoloCrateMoney = 2000;
+		public readonly string SilverCrate = null;		/* solo play crate contents */
+		public readonly string WaterCrate = null;
+		public readonly string WoodCrate = null;
 
 		/* Special Weapons */
-		public readonly int ChronoDuration;
-		public readonly bool ChronoKillCargo;
-		public readonly int ChronoTechLevel;
-		public readonly int GPSTechLevel;
-		public readonly int GapRadius;
-		public readonly float GapRegenInterval;
-		public readonly float IronCurtain;		/* minutes */
-		public readonly int ParaTech;
-		public readonly int ParabombTech;
-		public readonly int RadarJamRadius;
-		public readonly int SpyPlaneTech;
-		public readonly int BadgerBombCount;
+		public readonly int ChronoDuration = 0;
+		public readonly bool ChronoKillCargo = true;
+		[Obsolete] public readonly int ChronoTechLevel = -1;
+		[Obsolete] public readonly int GPSTechLevel = -1;
+		public readonly int GapRadius = 0;
+		public readonly float GapRegenInterval =0;
+		public readonly float IronCurtain = 0;		/* minutes */
+		[Obsolete] public readonly int ParaTech = -1;
+		[Obsolete] public readonly int ParabombTech = -1;
+		public readonly int RadarJamRadius = 1;
+		[Obsolete] public readonly int SpyPlaneTech = -1;
+		public readonly int BadgerBombCount = 1;
 
 		/* Chrono Side Effects */
-		public readonly float QuakeChance;
-		public readonly float QuakeDamage;		/* percent */
-		public readonly float VortexChance;
-		public readonly int VortexDamage;
-		public readonly int VortexRange;
-		public readonly int VortexSpeed;
+		public readonly float QuakeChance = 0;
+		public readonly float QuakeDamage = 0;		/* percent */
+		public readonly float VortexChance = 0;
+		public readonly int VortexDamage = 0;
+		public readonly int VortexRange = 0;
+		public readonly int VortexSpeed = 0;
 
 		/* Repair & Refit */
-		public readonly float RefundPercent;
-		public readonly float ReloadRate;
-		public readonly float RepairPercent;
-		public readonly float RepairRate;
-		public readonly int RepairStep;
-		public readonly float URepairPercent;
-		public readonly int URepairStep;
+		public readonly float RefundPercent = 0;
+		public readonly float ReloadRate = 0;
+		public readonly float RepairPercent = 0;
+		public readonly float RepairRate = 0;
+		public readonly int RepairStep = 0;
+		public readonly float URepairPercent = 0;
+		public readonly int URepairStep = 0;
 
 		/* Combat & Damage */
-		public readonly float TurboBoost;
-		public readonly int APMineDamage;
-		public readonly int AVMineDamage;
-		public readonly int AtomDamage;
-		public readonly float BallisticScatter;
-		public readonly int BridgeStrength;
-		public readonly float C4Delay;
-		public readonly float Crush;
-		public readonly float ExpSpread;
-		public readonly int FireSupress;
-		public readonly float HomingScatter;
-		public readonly int MaxDamage;
-		public readonly int MinDamage;
-		public readonly bool OreExplosive;
-		public readonly bool PlayerAutoCrush;
-		public readonly bool PlayerReturnFire;
-		public readonly bool PlayerScatter;
-		public readonly float ProneDamage;
-		public readonly bool TreeTargeting;
-		public readonly int Incoming;
+		public readonly float TurboBoost = 1.5f;
+		public readonly int APMineDamage = 0;
+		public readonly int AVMineDamage = 0;
+		public readonly int AtomDamage = 0;
+		public readonly float BallisticScatter = 0;
+		public readonly int BridgeStrength = 0;
+		public readonly float C4Delay = 0;
+		public readonly float Crush = 0;
+		public readonly float ExpSpread = 0;
+		public readonly int FireSupress = 0;
+		public readonly float HomingScatter = 0;
+		public readonly int MaxDamage = 0;
+		public readonly int MinDamage = 0;
+		public readonly bool OreExplosive = false;
+		public readonly bool PlayerAutoCrush = false;
+		public readonly bool PlayerReturnFire = false;
+		public readonly bool PlayerScatter = false;
+		public readonly float ProneDamage = 0;
+		public readonly bool TreeTargeting = false;
+		public readonly int Incoming = 0;
 
 		/* Income & Production */
-		public readonly int BailCount;
-		public readonly float BuildSpeed;
-		public readonly float BuildupTime;
-		public readonly int GemValue;
-		public readonly int GoldValue;
-		public readonly float GrowthRate;
-		public readonly bool OreGrows;
-		public readonly bool OreSpreads;
-		public readonly float OreTruckRate;
-		public readonly bool SeparateAircraft;
-		public readonly float SurvivorRate;
+		public readonly int BailCount = 0;
+		public readonly float BuildSpeed = 0;
+		public readonly float BuildupTime = 0;
+		public readonly int GemValue = 0;
+		public readonly int GoldValue = 0;
+		public readonly float GrowthRate = 0;
+		public readonly bool OreGrows = true;
+		public readonly bool OreSpreads = true;
+		public readonly float OreTruckRate = 0;
+		public readonly bool SeparateAircraft = true;
+		public readonly float SurvivorRate = 0;
 
 		/* Audo/Visual Map Controls */
-		public readonly bool AllyReveal;
-		public readonly float ConditionRed;
-		public readonly float ConditionYellow;
-		public readonly int DropZoneRadius;
-		public readonly bool EnemyHealth;
-		public readonly int Gravity;
-		public readonly float IdleActionFrequency;
-		public readonly float MessageDelay;
-		public readonly float MovieTime;
-		public readonly bool NamedCivilians;
-		public readonly float SavourDelay;
-		public readonly int ShroudRate;
-		public readonly int SpeakDelay;
-		public readonly int TimerWarning;
-		public readonly bool FlashLowPower;
+		public readonly bool AllyReveal = true;
+		public readonly float ConditionRed = 0;
+		public readonly float ConditionYellow = 0;
+		public readonly int DropZoneRadius = 0;
+		public readonly bool EnemyHealth = true;
+		public readonly int Gravity = 0;
+		public readonly float IdleActionFrequency = 0;
+		public readonly float MessageDelay = 0;
+		public readonly float MovieTime = 0;
+		public readonly bool NamedCivilians = false;
+		public readonly float SavourDelay = 0;
+		public readonly int ShroudRate = 0;
+		public readonly int SpeakDelay = 0;
+		public readonly int TimerWarning = 0;
+		public readonly bool FlashLowPower = false;
 
 		/* Computer & Movement Controls */
-		public readonly bool CurleyShuffle;
-		public readonly float BaseBias;
-		public readonly float BaseDefenseDelay;
-		public readonly float CloseEnough;
-		public readonly int DamageDelay;
-		public readonly int GameSpeeBias;
-		public readonly int LZScanRadius;
-		public readonly bool MineAware;
-		public readonly float Stray;
-		public readonly float SubmergeDelay;
-		public readonly float SuspendDelay;
-		public readonly int SuspendPriority;
-		public readonly float TeamDelay;
+		public readonly bool CurleyShuffle = false;
+		public readonly float BaseBias = 0;
+		public readonly float BaseDefenseDelay = 0;
+		public readonly float CloseEnough = 0;
+		public readonly int DamageDelay = 0;
+		public readonly int GameSpeeBias = 0;
+		public readonly int LZScanRadius = 0;
+		public readonly bool MineAware = false;
+		public readonly float Stray = 0;
+		public readonly float SubmergeDelay = 0;
+		public readonly float SuspendDelay = 0;
+		public readonly int SuspendPriority = 0;
+		public readonly float TeamDelay = 0;
 
 		/* Misc */
-		public readonly bool FineDiffControl;
-		public readonly bool MCVUndeploy;
+		[Obsolete]
+		public readonly bool FineDiffControl = false;
+		public readonly bool MCVUndeploy = false;
 
 		/* OpenRA-specific */
-		public readonly float OreChance;	/* chance of spreading to a
-											 * particular eligible cell */
-		public readonly int LowPowerSlowdown;	/* build time multiplier */
+		public readonly float OreChance = 0;	/* chance of spreading to a particular eligible cell */
+		public readonly int LowPowerSlowdown = 3;	/* build time multiplier */
 	}
 }

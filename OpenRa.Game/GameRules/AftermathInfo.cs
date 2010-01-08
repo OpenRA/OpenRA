@@ -3,12 +3,12 @@ namespace OpenRa.Game.GameRules
 {
 	class AftermathInfo
 	{
-		public readonly int MTankDistance;
-		public readonly float QuakeUnitDamage;
-		public readonly float QuakeBuildingDamage;
-		public readonly float QuakeInfantryDamage;
-		public readonly int QuakeDelay;
-		public readonly int CarrierLaunchDelay;
-		public readonly int ChronoTankDuration;
+		public readonly int MTankDistance = 0;
+		public readonly float QuakeUnitDamage = 0f;
+		public readonly float QuakeBuildingDamage = 0f;
+		public readonly float QuakeInfantryDamage = 0f;
+		public readonly int QuakeDelay = 0;
+		public readonly int CarrierLaunchDelay = 0;
+		public readonly int ChronoTankDuration = 0;
 	}
 }

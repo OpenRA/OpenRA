@@ -338,7 +338,7 @@ namespace OpenRa.Game
 			else
 			{
 				//repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
-				AddButton(curtainRect, isLmb => Game.controller.ToggleInputMode<IronCurtainOrderGenerator>());
+				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
 			}
 			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
 			
@@ -435,6 +435,12 @@ namespace OpenRa.Game
 		void HandleChronosphereButton()
 		{
 			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
+				Sound.Play("slcttgt1.aud");
+		}
+		
+		void HandleIronCurtainButton()
+		{
+			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
 				Sound.Play("slcttgt1.aud");
 		}
 		
@@ -697,7 +703,10 @@ namespace OpenRa.Game
 			p += new int2(0, 15);
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
-				var prereqs = info.Prerequisite.Select(a => Rules.UnitInfo[a.ToLowerInvariant()].Description);
+				var prereqs = info.Prerequisite
+					.Select(a => Rules.UnitInfo[a.ToLowerInvariant()])
+					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
+					.Select( a => a.Description );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}
