@@ -34,7 +34,9 @@ namespace OpenRa.Game
 		public bool IsDone { get { return RemainingTime == 0; } }
 		public int RemainingTime { get; private set; }
 		public int TotalTime { get; private set; }
-
+		bool notifiedReady = false;
+		bool notifiedCharging = false;
+		
 		public void Tick()
 		{
 			if (Info.OneShot && IsUsed)
@@ -56,10 +58,20 @@ namespace OpenRa.Game
 			if (IsAvailable && (!Info.Powered || Owner.GetPowerState() == PowerState.Normal))
 			{
 				if (RemainingTime > 0) --RemainingTime;
+				if (!notifiedCharging)
+				{
+					Impl.IsChargingNotification(this);
+					notifiedCharging = true;
+				}
 			}
 
-			if (RemainingTime == 0 && Info.AutoActivate)
-				Activate();
+			if (RemainingTime == 0
+				&& Impl != null 
+				&& !notifiedReady)
+			{
+				Impl.IsReadyNotification(this);
+				notifiedReady = true;	
+			}
 		}
 
 		public void Activate()
@@ -76,6 +88,8 @@ namespace OpenRa.Game
 				IsAvailable = false;
 			}
 			RemainingTime = TotalTime;
+			notifiedReady = false;
+			notifiedCharging = false;
 		}
 
 		public void Give(bool requireCharge)		// called by crate/spy/etc code

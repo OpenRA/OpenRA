@@ -11,5 +11,9 @@ namespace OpenRa.Game.SupportPowers
 			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
 				Sound.Play("slcttgt1.aud");
 		}
+
+		public void OnFireNotification(Actor target, int2 xy) {}
+		public void IsChargingNotification(SupportPower p) {}
+		public void IsReadyNotification(SupportPower p) {}
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRa.Game.SupportPowers;
 
 namespace OpenRa.Game
 {
@@ -30,6 +31,19 @@ namespace OpenRa.Game
 			this.TargetActorId = targetActorId;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
+		}
+		// This is a hack - fix me
+		public readonly ISupportPowerImpl Power;
+		public Order(string orderString, Actor subject, ISupportPowerImpl power)
+		{
+			this.OrderString = orderString;
+			this.SubjectId = UIntFromActor( subject );
+			
+			this.Power = power;
+			
+			this.TargetActorId = UIntFromActor(null);
+			this.TargetLocation = int2.Zero;
+			this.TargetString = null;
 		}
 
 		public bool Validate()
