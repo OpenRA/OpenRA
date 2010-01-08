@@ -122,6 +122,8 @@
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SupportPower.cs" />
+    <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
+    <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
