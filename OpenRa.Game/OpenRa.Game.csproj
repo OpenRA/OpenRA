@@ -162,6 +162,7 @@
     <Compile Include="Traits\Activities\Repair.cs" />
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
+    <Compile Include="Traits\Activities\StealOre.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\TakeCover.cs" />
+    <Compile Include="Traits\ThiefSteal.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Tree.cs" />
     <Compile Include="Traits\Turreted.cs" />
