@@ -2,6 +2,7 @@
 using System.Linq;
 using OpenRa.Game.Traits;
 using OpenRa.FileFormats;
+using System.Drawing.Imaging;
 
 namespace OpenRa.Game.Graphics
 {
@@ -38,6 +39,9 @@ namespace OpenRa.Game.Graphics
 		{
 			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
 			radarAnim.Tick();
+
+			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
+				return;
 
 			if (terrainTypeColors == null)
 			{
@@ -76,25 +80,35 @@ namespace OpenRa.Game.Graphics
 			}
 
 			var bitmap = new Bitmap(oreLayer);
-			
-			for( var y = 0; y < 128; y++ )
-				for (var x = 0; x < 128; x++)
-				{
-					var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
-					if (b != null)
-						bitmap.SetPixel(x, y, b.Owner != null ? Chat.paletteColors[(int)b.Owner.Palette] : terrainTypeColors[4]);
-				}
+			var bitmapData = bitmap.LockBits(new Rectangle( 0,0,bitmap.Width, bitmap.Height ), 
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
-				bitmap.SetPixel(a.Location.X, a.Location.Y, Chat.paletteColors[(int)a.Owner.Palette]);
-			
-			for (var y = 0; y < 128; y++ )
-				for (var x = 0; x < 128; x++ )
+			unsafe
+			{
+				int* c = (int *)bitmapData.Scan0;
+
+				for (var y = 0; y < 128; y++)
+					for (var x = 0; x < 128; x++)
+					{
+						var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
+						if (b != null)
+							*(c + (y * bitmapData.Stride >> 2) + x) = 
+								(b.Owner != null ? Chat.paletteColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();
+					}
+
+				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
+					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) = Chat.paletteColors[(int)a.Owner.Palette].ToArgb();
+
+				unchecked
 				{
-					if( ! Game.LocalPlayer.Shroud.IsExplored(new int2(x,y)))
-						bitmap.SetPixel(x, y, Color.Black);			
+					for (var y = 0; y < 128; y++)
+						for (var x = 0; x < 128; x++)
+							if (!Game.LocalPlayer.Shroud.IsExplored(new int2(x, y)))
+								*(c + (y * bitmapData.Stride >> 2) + x) = (int)0xff000000;
 				}
-			
+			}
+
+			bitmap.UnlockBits(bitmapData);
 			sheet.Texture.SetData(bitmap);
 		}
 
