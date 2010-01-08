@@ -123,6 +123,7 @@
     <Compile Include="Sound.cs" />
     <Compile Include="SupportPower.cs" />
     <Compile Include="SupportPowers\GpsSatellite.cs" />
+    <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
     <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\Stopwatch.cs" />

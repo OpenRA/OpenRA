@@ -320,32 +320,6 @@ namespace OpenRa.Game
 
 		void DrawButtons()
 		{
-			// Chronoshift
-			Rectangle chronoshiftRect = new Rectangle(6, 14, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var chronoshiftDrawPos = Game.viewport.Location + new float2(chronoshiftRect.Location);
-
-			var hasChronosphere = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Chronosphere>());
-
-			if (!hasChronosphere)
-				repairButton.ReplaceAnim("disabled");
-			else
-				AddButton(chronoshiftRect, isLmb => HandleChronosphereButton());
-
-			buildPaletteRenderer.DrawSprite(repairButton.Image, chronoshiftDrawPos, PaletteType.Chrome);
-
-			// Iron Curtain
-			Rectangle curtainRect = new Rectangle(6, 14+50, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var curtainDrawPos = Game.viewport.Location + new float2(curtainRect.Location);
-
-			var hasCurtain = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
-
-			if (!hasCurtain)
-				repairButton.ReplaceAnim("disabled");
-			else
-				AddButton(curtainRect, isLmb => HandleIronCurtainButton());
-	
-			buildPaletteRenderer.DrawSprite(repairButton.Image, curtainDrawPos, PaletteType.Chrome);
-			
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
@@ -433,18 +407,6 @@ namespace OpenRa.Game
 				
 				buildPaletteRenderer.Flush();
 			}
-		}
-		
-		void HandleChronosphereButton()
-		{
-			if (Game.controller.ToggleInputMode<ChronosphereSelectOrderGenerator>())
-				Sound.Play("slcttgt1.aud");
-		}
-		
-		void HandleIronCurtainButton()
-		{
-			if (Game.controller.ToggleInputMode<IronCurtainOrderGenerator>())
-				Sound.Play("slcttgt1.aud");
 		}
 		
 		void DrawChat()

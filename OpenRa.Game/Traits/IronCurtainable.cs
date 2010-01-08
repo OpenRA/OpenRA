@@ -28,16 +28,9 @@ namespace OpenRa.Game.Traits
 		{
 			if (order.OrderString == "IronCurtain")
 			{
-				Game.controller.CancelInputMode();
+				order.Power.OnFireNotification(self, self.Location);
 				Game.world.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
 				RemainingTicks = (int)(Rules.General.IronCurtain * 60 * 25);
-				Sound.Play("ironcur9.aud");
-				// Play active anim
-				var ironCurtain = Game.world.Actors
-					.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<IronCurtain>())
-					.FirstOrDefault();
-				if (ironCurtain != null)
-					ironCurtain.traits.Get<RenderBuilding>().PlayCustomAnim(ironCurtain, "active");
 			}
 		}
 	}
