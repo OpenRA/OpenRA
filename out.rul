@@ -2,12 +2,14 @@ V2RL:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 4
-		Description: "V2 Rocket"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,dome]
 		Owner: soviet
-		LongDesc: "Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
 		Cost: 700
+		Description: "V2 Rocket"
+		LongDesc: "Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 150
 		Armor: light
@@ -23,19 +25,19 @@ V2RL:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 1TNK:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 4
-		Description: "Light Tank"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap]
 		Owner: allies
-		LongDesc: "Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft"
 		Cost: 700
+		Description: "Light Tank"
+		LongDesc: "Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 300
 		Armor: heavy
@@ -52,19 +54,19 @@ V2RL:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 2TNK:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 6
-		Description: "Medium Tank"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap]
 		Owner: allies
-		LongDesc: "Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
 		Cost: 800
+		Description: "Medium Tank"
+		LongDesc: "Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -81,19 +83,19 @@ V2RL:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 3TNK:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 4
-		Description: "Heavy Tank"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap]
 		Owner: soviet
-		LongDesc: "Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
 		Cost: 950
+		Description: "Heavy Tank"
+		LongDesc: "Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -110,19 +112,19 @@ V2RL:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 4TNK:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 10
-		Description: "Mammoth Tank"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,stek]
 		Owner: soviet
-		LongDesc: "Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
 		Cost: 1700
+		Description: "Mammoth Tank"
+		LongDesc: "Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 600
 		Armor: heavy
@@ -139,19 +141,20 @@ V2RL:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 MRJ:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 12
-		Description: "Radar Jammer"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,dome]
 		Owner: allies
-		LongDesc: "Hides nearby units on the enemy's minimap.\n  Unarmed"
 		Cost: 600
+		Description: "Radar Jammer"
+		LongDesc: "Hides nearby units on the enemy's minimap.\n  Unarmed"
+	Selectable:
+		Priority: 3
+		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
@@ -165,20 +168,20 @@ MRJ:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
-		Voice: VehicleVoice
 
 MGG:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 11
-		Description: "Mobile Gap Generator"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,atek]
 		Owner: allies
-		LongDesc: "Regenerates Fog of War in a small area \naround the unit.\n  Unarmed"
 		Cost: 600
+		Description: "Mobile Gap Generator"
+		LongDesc: "Regenerates Fog of War in a small area \naround the unit.\n  Unarmed"
+	Selectable:
+		Priority: 3
+		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
@@ -192,20 +195,19 @@ MGG:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
-		Voice: VehicleVoice
 
 ARTY:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 8
-		Description: "Artillery"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap]
 		Owner: allies
-		LongDesc: "Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
 		Cost: 600
+		Description: "Artillery"
+		LongDesc: "Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 75
 		Armor: light
@@ -222,19 +224,20 @@ ARTY:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 HARV:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 1
-		Description: "Ore Truck"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,proc]
 		Owner: allies,soviet
-		LongDesc: "Collects Ore and Gems for processing.\n  Unarmed"
 		Cost: 1400
+		Description: "Ore Truck"
+		LongDesc: "Collects Ore and Gems for processing.\n  Unarmed"
+	Selectable:
+		Priority: 7
+		Voice: VehicleVoice
 	Harvester:
 	Unit:
 		HP: 600
@@ -249,20 +252,20 @@ HARV:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Priority: 7
-		Voice: VehicleVoice
 
 MCV:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 11
-		Description: "Mobile Construction Vehicle"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,fix]
 		Owner: allies,soviet
-		LongDesc: "Deploys into another Construction Yard.\n  Unarmed"
 		Cost: 2500
+		Description: "Mobile Construction Vehicle"
+		LongDesc: "Deploys into another Construction Yard.\n  Unarmed"
+	Selectable:
+		Priority: 3
+		Voice: VehicleVoice
 	Unit:
 		HP: 600
 		Armor: light
@@ -277,20 +280,19 @@ MCV:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
-		Voice: VehicleVoice
 
 JEEP:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 3
-		Description: "Ranger"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap]
 		Owner: allies
-		LongDesc: "Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft"
 		Cost: 600
+		Description: "Ranger"
+		LongDesc: "Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 150
 		Armor: light
@@ -307,19 +309,19 @@ JEEP:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 APC:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 5
-		Description: "Armored Personnel Carrier"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,tent]
 		Owner: allies
-		LongDesc: "Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
 		Cost: 800
+		Description: "Armored Personnel Carrier"
+		LongDesc: "Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -335,20 +337,20 @@ APC:
 	Cargo:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 MNLY.AP:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 3
-		Description: "Minelayer (Anti-Personnel)"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,fix]
 		Owner: soviet
-		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
 		Cost: 800
 		Icon: MNLYICON
+		Description: "Minelayer (Anti-Personnel)"
+		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 100
 		Armor: heavy
@@ -366,20 +368,20 @@ MNLY.AP:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 MNLY.AT:
 	Inherits: DefaultVehicle
 	Buildable:
 		TechLevel: 3
-		Description: "Minelayer (Anti-Tank)"
-		Tab: "Vehicle"
+		Tab: Vehicle
 		Prerequisites: [weap,fix]
 		Owner: allies
-		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
 		Cost: 800
 		Icon: MNLYICON
+		Description: "Minelayer (Anti-Tank)"
+		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
+	Selectable:
+		Voice: VehicleVoice
 	Unit:
 		HP: 100
 		Armor: heavy
@@ -397,19 +399,18 @@ MNLY.AT:
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
-	Selectable:
-		Voice: VehicleVoice
 
 SS:
 	Inherits: DefaultShip
 	Buildable:
 		TechLevel: 5
-		Description: "Submarine"
-		Tab: "Ship"
+		Tab: Ship
 		Prerequisites: [spen]
 		Owner: soviet
-		LongDesc: "Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge"
 		Cost: 950
+		Description: "Submarine"
+		LongDesc: "Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge"
+	Selectable:
 	Unit:
 		HP: 120
 		Armor: light
@@ -422,18 +423,18 @@ SS:
 	AttackBase:
 	Chronoshiftable:
 	IronCurtainable:
-	Selectable:
 
 DD:
 	Inherits: DefaultShip
 	Buildable:
 		TechLevel: 7
-		Description: "Destroyer"
-		Tab: "Ship"
+		Tab: Ship
 		Prerequisites: [syrd]
 		Owner: allies
-		LongDesc: "Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks"
 		Cost: 1000
+		Description: "Destroyer"
+		LongDesc: "Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks"
+	Selectable:
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -447,18 +448,18 @@ DD:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
-	Selectable:
 
 CA:
 	Inherits: DefaultShip
 	Buildable:
 		TechLevel: 10
-		Description: "Cruiser"
-		Tab: "Ship"
+		Tab: Ship
 		Prerequisites: [syrd,atek]
 		Owner: allies
-		LongDesc: "Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines"
 		Cost: 2000
+		Description: "Cruiser"
+		LongDesc: "Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines"
+	Selectable:
 	Unit:
 		HP: 700
 		Armor: heavy
@@ -472,18 +473,17 @@ CA:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
-	Selectable:
 
 LST:
 	Inherits: DefaultShip
 	Buildable:
 		TechLevel: 3
-		Description: "Transport"
-		Tab: "Ship"
-		Prerequisites: []
+		Tab: Ship
 		Owner: allies,soviet
-		LongDesc: "General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed"
 		Cost: 700
+		Description: "Transport"
+		LongDesc: "General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed"
+	Selectable:
 	Unit:
 		HP: 350
 		Armor: heavy
@@ -494,18 +494,18 @@ LST:
 	RenderUnit:
 	Cargo:
 	IronCurtainable:
-	Selectable:
 
 PT:
 	Inherits: DefaultShip
 	Buildable:
 		TechLevel: 5
-		Description: "Gunboat"
-		Tab: "Ship"
+		Tab: Ship
 		Prerequisites: [syrd]
 		Owner: allies
-		LongDesc: "Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft"
 		Cost: 500
+		Description: "Gunboat"
+		LongDesc: "Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft"
+	Selectable:
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -519,18 +519,18 @@ PT:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
-	Selectable:
 
 MIG:
 	Inherits: DefaultPlane
 	Buildable:
 		TechLevel: 10
-		Description: "Mig Attack Plane"
-		Tab: "Plane"
+		Tab: Plane
 		Prerequisites: [afld]
 		Owner: soviet
-		LongDesc: "Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles"
 		Cost: 1200
+		Description: "Mig Attack Plane"
+		LongDesc: "Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles"
+	Selectable:
 	Unit:
 		HP: 50
 		Armor: light
@@ -542,18 +542,18 @@ MIG:
 	WithShadow:
 	LimitedAmmo:
 	IronCurtainable:
-	Selectable:
 
 YAK:
 	Inherits: DefaultPlane
 	Buildable:
 		TechLevel: 5
-		Description: "Yak Attack Plane"
-		Tab: "Plane"
+		Tab: Plane
 		Prerequisites: [afld]
 		Owner: soviet
-		LongDesc: "Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings"
 		Cost: 800
+		Description: "Yak Attack Plane"
+		LongDesc: "Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings"
+	Selectable:
 	Unit:
 		HP: 60
 		Armor: light
@@ -566,18 +566,18 @@ YAK:
 	WithShadow:
 	LimitedAmmo:
 	IronCurtainable:
-	Selectable:
 
 TRAN:
 	Inherits: DefaultPlane
 	Buildable:
 		TechLevel: 11
-		Description: "Transport Helicopter"
-		Tab: "Plane"
+		Tab: Plane
 		Prerequisites: [hpad]
 		Owner: allies
-		LongDesc: "Fast Infantry Transport Helicopter.\n  Unarmed"
 		Cost: 1200
+		Description: "Transport Helicopter"
+		LongDesc: "Fast Infantry Transport Helicopter.\n  Unarmed"
+	Selectable:
 	Unit:
 		HP: 90
 		Armor: light
@@ -588,18 +588,18 @@ TRAN:
 	WithShadow:
 	Cargo:
 	IronCurtainable:
-	Selectable:
 
 HELI:
 	Inherits: DefaultPlane
 	Buildable:
 		TechLevel: 9
-		Description: "Longbow"
-		Tab: "Plane"
+		Tab: Plane
 		Prerequisites: [hpad]
 		Owner: allies
-		LongDesc: "Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry"
 		Cost: 1200
+		Description: "Longbow"
+		LongDesc: "Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry"
+	Selectable:
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -612,18 +612,18 @@ HELI:
 	WithShadow:
 	LimitedAmmo:
 	IronCurtainable:
-	Selectable:
 
 HIND:
 	Inherits: DefaultPlane
 	Buildable:
 		TechLevel: 9
-		Description: "Hind"
-		Tab: "Plane"
+		Tab: Plane
 		Prerequisites: [hpad]
 		Owner: allies
-		LongDesc: "Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks"
 		Cost: 1200
+		Description: "Hind"
+		LongDesc: "Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks"
+	Selectable:
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -636,575 +636,573 @@ HIND:
 	WithShadow:
 	LimitedAmmo:
 	IronCurtainable:
-	Selectable:
 
 IRON:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 12
-		Description: "Iron Curtain"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [stek]
 		Owner: soviet
-		LongDesc: "Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability"
 		Cost: 2800
+		Description: "Iron Curtain"
+		LongDesc: "Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
 	IronCurtain:
-	Selectable:
-		Priority: 3
 
 PDOX:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 12
-		Description: "Chronosphere"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [atek]
 		Owner: allies
-		LongDesc: "Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift"
 		Cost: 2800
+		Description: "Chronosphere"
+		LongDesc: "Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	Chronosphere:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 PBOX:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 2
-		Description: "Pillbox"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [tent]
 		Owner: allies
-		LongDesc: "Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
 		Cost: 400
+		Description: "Pillbox"
+		LongDesc: "Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 HBOX:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 3
-		Description: "Camo Pillbox"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [tent]
 		Owner: allies
-		LongDesc: "Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
 		Cost: 600
+		Description: "Camo Pillbox"
+		LongDesc: "Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 TSLA:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 7
-		Description: "Tesla Coil"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [weap]
 		Owner: soviet
-		LongDesc: "Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft"
 		Cost: 1500
+		Description: "Tesla Coil"
+		LongDesc: "Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuildingCharge:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 GUN:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 4
-		Description: "Turret"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [tent]
 		Owner: allies
-		LongDesc: "Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft"
 		Cost: 600
+		Description: "Turret"
+		LongDesc: "Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 AGUN:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 5
-		Description: "AA Gun"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [dome]
 		Owner: allies
-		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
 		Cost: 600
+		Description: "AA Gun"
+		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 FTUR:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 2
-		Description: "Flame Turret"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [barr]
 		Owner: soviet
-		LongDesc: "Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft"
 		Cost: 600
+		Description: "Flame Turret"
+		LongDesc: "Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft"
+	Selectable:
+		Priority: 3
 	Turreted:
 	Building:
 	RenderBuilding:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 GAP:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 10
-		Description: "Gap Generator"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [atek]
 		Owner: allies
-		LongDesc: "Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed"
 		Cost: 500
+		Description: "Gap Generator"
+		LongDesc: "Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 SAM:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 9
-		Description: "SAM Site"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [dome]
 		Owner: soviet
-		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
 		Cost: 750
+		Description: "SAM Site"
+		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
+	Selectable:
+		Priority: 3
 	Building:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 MSLO:
 	Inherits: DefaultDefense
 	Buildable:
 		TechLevel: 13
-		Description: "Missile Silo"
-		Tab: "Defense"
+		Tab: Defense
 		Prerequisites: [stek,atek]
 		Owner: soviet,allies
-		LongDesc: "Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile"
 		Cost: 2500
+		Description: "Missile Silo"
+		LongDesc: "Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 ATEK:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 10
-		Description: "Allied Tech Center"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [weap,dome]
 		Owner: allies
-		LongDesc: "Provides Allied advanced technologies.\n  Special Ability: GPS Satellite"
 		Cost: 1500
+		Description: "Allied Tech Center"
+		LongDesc: "Provides Allied advanced technologies.\n  Special Ability: GPS Satellite"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
 	GpsLaunchSite:
-	Selectable:
-		Priority: 3
 
 WEAP:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "War Factory"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [proc]
 		Owner: soviet,allies
-		LongDesc: "Produces tanks & light vehicles."
 		Cost: 2000
+		Description: "War Factory"
+		LongDesc: "Produces tanks & light vehicles."
+	Selectable:
+		Priority: 3
 	Building:
 	RenderWarFactory:
 	RenderBuilding:
 	RallyPoint:
 	Production:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 SYRD:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Shipyard"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: allies
-		LongDesc: "Produces and repairs ships"
 		Cost: 650
+		Description: "Shipyard"
+		LongDesc: "Produces and repairs ships"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 SPEN:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Sub Pen"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: soviet
-		LongDesc: "Produces and repairs submarines and \ntransports"
 		Cost: 650
+		Description: "Sub Pen"
+		LongDesc: "Produces and repairs submarines and \ntransports"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 FACT:
 	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	ConstructionYard:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 PROC:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Ore Refinery"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: allies,soviet
-		LongDesc: "Converts Ore and Gems into money"
 		Cost: 2000
+		Description: "Ore Refinery"
+		LongDesc: "Converts Ore and Gems into money"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	AcceptsOre:
 	StoresOre:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 SILO:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Silo"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [proc]
 		Owner: allies,soviet
-		LongDesc: "Stores excess harvested Ore"
 		Cost: 150
+		Description: "Silo"
+		LongDesc: "Stores excess harvested Ore"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuildingOre:
 	StoresOre:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 HPAD:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 9
-		Description: "Helipad"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [dome]
 		Owner: allies
-		LongDesc: "Produces and reloads helicopters"
 		Cost: 1500
+		Description: "Helipad"
+		LongDesc: "Produces and reloads helicopters"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	Production:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 DOME:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Radar Dome"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [proc]
 		Owner: allies,soviet
-		LongDesc: "Provides an overview of the battlefield.\n  Requires power to operate."
 		Cost: 1000
+		Description: "Radar Dome"
+		LongDesc: "Provides an overview of the battlefield.\n  Requires power to operate."
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 AFLD:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 5
-		Description: "Airstrip"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [dome]
 		Owner: soviet
-		LongDesc: "Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane"
 		Cost: 600
+		Description: "Airstrip"
+		LongDesc: "Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	Production:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 POWR:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Power Plant"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [fact]
 		Owner: allies,soviet
-		LongDesc: "Provides power for other structures"
 		Cost: 300
+		Description: "Power Plant"
+		LongDesc: "Provides power for other structures"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 APWR:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 8
-		Description: "Advanced Power Plant"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: allies,soviet
-		LongDesc: "Provides more power, cheaper than the \nstandard Power Plant"
 		Cost: 500
+		Description: "Advanced Power Plant"
+		LongDesc: "Provides more power, cheaper than the \nstandard Power Plant"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 STEK:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 6
-		Description: "Soviet Tech Center"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [weap,dome]
 		Owner: soviet
-		LongDesc: "Provides Soviet advanced technologies"
 		Cost: 1500
+		Description: "Soviet Tech Center"
+		LongDesc: "Provides Soviet advanced technologies"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 BARR:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Soviet Barracks"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: soviet
-		LongDesc: "Produces infantry"
 		Cost: 300
+		Description: "Soviet Barracks"
+		LongDesc: "Produces infantry"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	RallyPoint:
 	Production:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 TENT:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Allied Barracks"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: allies
-		LongDesc: "Produces infantry"
 		Cost: 300
+		Description: "Allied Barracks"
+		LongDesc: "Produces infantry"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	RallyPoint:
 	Production:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 KENN:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Kennel"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [barr]
 		Owner: soviet
-		LongDesc: "Produces attack dogs"
 		Cost: 200
+		Description: "Kennel"
+		LongDesc: "Produces attack dogs"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	RallyPoint:
 	Production:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 FIX:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Service Depot"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [weap]
 		Owner: allies,soviet
-		LongDesc: "Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases."
 		Cost: 1200
+		Description: "Service Depot"
+		LongDesc: "Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases."
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 FACF:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 1
-		Description: "Fake Construction Yard"
-		Tab: "Building"
-		Prerequisites: []
+		Tab: Building
 		Owner: allies
-		LongDesc: "Looks like a Construction Yard."
 		Cost: 50
+		Description: "Fake Construction Yard"
+		LongDesc: "Looks like a Construction Yard."
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 		Image: FACT
 	Fake:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 WEAF:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Fake War Factory"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [proc]
 		Owner: allies
-		LongDesc: "Looks like a War Factory."
 		Cost: 50
+		Description: "Fake War Factory"
+		LongDesc: "Looks like a War Factory."
+	Selectable:
+		Priority: 3
 	Building:
 	RenderWarFactory:
 	RenderBuilding:
 		Image: WEAP
 	Fake:
 	IronCurtainable:
-	Selectable:
-		Priority: 3
 
 SYRF:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Fake Shipyard"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [powr]
 		Owner: allies
-		LongDesc: "Looks like a Shipyard"
 		Cost: 50
+		Description: "Fake Shipyard"
+		LongDesc: "Looks like a Shipyard"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 		Image: SYRD
 	Fake:
-	Selectable:
-		Priority: 3
 
 SPEF:
 	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 		Image: SPEN
 	Fake:
-	Selectable:
-		Priority: 3
 
 DOMF:
 	Inherits: DefaultBuilding
 	Buildable:
 		TechLevel: 3
-		Description: "Fake Radar Dome"
-		Tab: "Building"
+		Tab: Building
 		Prerequisites: [proc]
 		Owner: allies
-		LongDesc: "Looks like a Radar Dome"
 		Cost: 50
+		Description: "Fake Radar Dome"
+		LongDesc: "Looks like a Radar Dome"
+	Selectable:
+		Priority: 3
 	Building:
 	RenderBuilding:
 		Image: DOME
 	Fake:
-	Selectable:
-		Priority: 3
 
 MINP:
 	Inherits: DefaultBuilding
@@ -1228,12 +1226,15 @@ DOG:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 3
-		Description: "Attack Dog"
-		Tab: "Infantry"
+		Tab: Infantry
 		Prerequisites: [kenn]
 		Owner: soviet
-		LongDesc: "Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles"
 		Cost: 200
+		Description: "Attack Dog"
+		LongDesc: "Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles"
+	Selectable:
+		Voice: DogVoice
+		Bounds: [12,17,-1,-4]
 	Unit:
 		HP: 12
 		Armor: none
@@ -1242,20 +1243,18 @@ DOG:
 		Speed: 4
 	RenderInfantry:
 	Passenger:
-	Selectable:
-		Voice: DogVoice
-		Bounds: [12,17,-1,-4]
 
 E1:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 1
-		Description: "Rifle Infantry"
-		Tab: "Infantry"
-		Prerequisites: []
+		Tab: Infantry
 		Owner: allies,soviet
-		LongDesc: "General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles"
 		Cost: 100
+		Description: "Rifle Infantry"
+		LongDesc: "General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles"
+	Selectable:
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 50
 		Armor: none
@@ -1268,19 +1267,18 @@ E1:
 	SquishByTank:
 	AutoTarget:
 	Passenger:
-	Selectable:
-		Bounds: [12,17,0,-9]
 
 E2:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 1
-		Description: "Grenadier"
-		Tab: "Infantry"
-		Prerequisites: []
+		Tab: Infantry
 		Owner: soviet
-		LongDesc: "Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles"
 		Cost: 160
+		Description: "Grenadier"
+		LongDesc: "Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles"
+	Selectable:
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 50
 		Armor: none
@@ -1293,19 +1291,18 @@ E2:
 	SquishByTank:
 	AutoTarget:
 	Passenger:
-	Selectable:
-		Bounds: [12,17,0,-9]
 
 E3:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 2
-		Description: "Rocket Soldier"
-		Tab: "Infantry"
-		Prerequisites: []
+		Tab: Infantry
 		Owner: allies,soviet
-		LongDesc: "Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
 		Cost: 300
+		Description: "Rocket Soldier"
+		LongDesc: "Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
+	Selectable:
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 45
 		Armor: none
@@ -1318,19 +1315,19 @@ E3:
 	SquishByTank:
 	AutoTarget:
 	Passenger:
-	Selectable:
-		Bounds: [12,17,0,-9]
 
 E4:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 6
-		Description: "Flamethrower"
-		Tab: "Infantry"
+		Tab: Infantry
 		Prerequisites: [stek]
 		Owner: soviet
-		LongDesc: "Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles"
 		Cost: 300
+		Description: "Flamethrower"
+		LongDesc: "Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles"
+	Selectable:
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 40
 		Armor: none
@@ -1343,19 +1340,19 @@ E4:
 	SquishByTank:
 	AutoTarget:
 	Passenger:
-	Selectable:
-		Bounds: [12,17,0,-9]
 
 E6:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 5
-		Description: "Engineer"
-		Tab: "Infantry"
-		Prerequisites: []
+		Tab: Infantry
 		Owner: soviet,allies
-		LongDesc: "Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything"
 		Cost: 500
+		Description: "Engineer"
+		LongDesc: "Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything"
+	Selectable:
+		Voice: EngineerVoice
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 25
 		Armor: none
@@ -1367,20 +1364,20 @@ E6:
 	TakeCover:
 	SquishByTank:
 	Passenger:
-	Selectable:
-		Voice: EngineerVoice
-		Bounds: [12,17,0,-9]
 
 SPY:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 6
-		Description: "Spy"
-		Tab: "Infantry"
+		Tab: Infantry
 		Prerequisites: [dome]
 		Owner: allies
-		LongDesc: "Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised"
 		Cost: 500
+		Description: "Spy"
+		LongDesc: "Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised"
+	Selectable:
+		Voice: SpyVoice
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 25
 		Armor: none
@@ -1391,20 +1388,20 @@ SPY:
 	TakeCover:
 	SquishByTank:
 	Passenger:
-	Selectable:
-		Voice: SpyVoice
-		Bounds: [12,17,0,-9]
 
 THF:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 11
-		Description: "Thief"
-		Tab: "Infantry"
+		Tab: Infantry
 		Prerequisites: [atek]
 		Owner: allies
-		LongDesc: "Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed"
 		Cost: 500
+		Description: "Thief"
+		LongDesc: "Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed"
+	Selectable:
+		Voice: ThiefVoice
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 25
 		Armor: none
@@ -1416,20 +1413,20 @@ THF:
 	SquishByTank:
 	Passenger:
 	Thief:
-	Selectable:
-		Voice: ThiefVoice
-		Bounds: [12,17,0,-9]
 
 E7:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 11
-		Description: "Tanya"
-		Tab: "Infantry"
+		Tab: Infantry
 		Prerequisites: [atek,stek]
 		Owner: allies,soviet
-		LongDesc: "Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4"
 		Cost: 1200
+		Description: "Tanya"
+		LongDesc: "Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4"
+	Selectable:
+		Voice: TanyaVoice
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 100
 		Armor: none
@@ -1443,20 +1440,19 @@ E7:
 	SquishByTank:
 	AutoTarget:
 	Passenger:
-	Selectable:
-		Voice: TanyaVoice
-		Bounds: [12,17,0,-9]
 
 MEDI:
 	Inherits: DefaultInfantry
 	Buildable:
 		TechLevel: 2
-		Description: "Medic"
-		Tab: "Infantry"
-		Prerequisites: []
+		Tab: Infantry
 		Owner: allies
-		LongDesc: "Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything"
 		Cost: 800
+		Description: "Medic"
+		LongDesc: "Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything"
+	Selectable:
+		Voice: MedicVoice
+		Bounds: [12,17,0,-9]
 	Unit:
 		HP: 80
 		Armor: none
@@ -1469,7 +1465,4 @@ MEDI:
 	TakeCover:
 	SquishByTank:
 	Passenger:
-	Selectable:
-		Voice: MedicVoice
-		Bounds: [12,17,0,-9]
 

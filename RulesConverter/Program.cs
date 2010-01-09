@@ -108,6 +108,17 @@ namespace RulesConverter
 				{ "RenderUnitTurreted", new PL {
 					{ "Image", "Image" } }
 				},
+
+				{ "Buildable", new PL {
+					{ "TechLevel", "TechLevel" },
+					{ "Tab", "$Tab" },
+					{ "@Prerequisites", "Prerequisite" },
+					{ "Owner", "Owner" },
+					{ "Cost", "Cost" },
+					{ "Icon", "Icon" },
+					{ "$Description", "Description" },
+					{ "$LongDesc", "LongDesc" } }
+				}
 			};
 
 			using (var writer = File.CreateText(outputFile))
@@ -119,34 +130,25 @@ namespace RulesConverter
 						writer.WriteLine("{0}:", item);
 						writer.WriteLine("\tInherits: {0}", cat.Value.First);
 
-						var techLevel = iniSection.GetValue("TechLevel", "-1");
-						if (techLevel != "-1")
-						{
-							writer.WriteLine("\tBuildable:");
-							writer.WriteLine("\t\tTechLevel: {0}", techLevel);
-							writer.WriteLine("\t\tDescription: \"{0}\"", iniSection.GetValue("Description", ""));
-							writer.WriteLine("\t\tTab: \"{0}\"", cat.Value.Second);
-							writer.WriteLine("\t\tPrerequisites: [{0}]", iniSection.GetValue("Prerequisite", ""));
-							writer.WriteLine("\t\tOwner: {0}", iniSection.GetValue("Owner", ""));
-							writer.WriteLine("\t\tLongDesc: \"{0}\"", iniSection.GetValue("LongDesc", ""));
-							writer.WriteLine("\t\tCost: {0}", iniSection.GetValue("Cost", ""));
-							if (iniSection.Contains( "Icon" ))
-								writer.WriteLine("\t\tIcon: {0}", iniSection.GetValue("Icon", ""));
-						}
-
 						var traits = iniSection.GetValue("Traits", "")
 							.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
 						if (iniSection.GetValue("Selectable", "yes") == "yes")
-							traits.Add("Selectable");
+							traits.Insert(0, "Selectable");
+
+						if (iniSection.GetValue("TechLevel", "-1") != "-1")
+							traits.Insert(0, "Buildable");
+
+						
 
 						foreach (var t in traits)
 						{
 							writer.WriteLine("\t{0}:", t);
+
 							if (traitMap.ContainsKey(t))
 								foreach (var kv in traitMap[t])
 								{
-									var v = iniSection.GetValue(kv.Value, "");
+									var v = kv.Value == "$Tab" ? cat.Value.Second : iniSection.GetValue(kv.Value, "");
 									var fmt = "\t\t{0}: {1}";
 									var k = kv.Key;
 									if (k.StartsWith("@")) { k = k.Substring(1); fmt = "\t\t{0}: [{1}]"; }
