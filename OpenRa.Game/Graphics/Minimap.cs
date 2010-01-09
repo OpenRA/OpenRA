@@ -30,6 +30,8 @@ namespace OpenRa.Game.Graphics
 		}
 
 		Color[] terrainTypeColors;
+		Color[] playerColors;
+		Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
 
@@ -42,17 +44,20 @@ namespace OpenRa.Game.Graphics
 			{
 				var pal = new Palette(FileSystem.Open(Rules.Map.Theater + ".pal"));
 				terrainTypeColors = new[] {
-					pal.GetColor(0x1a),
-					pal.GetColor(0x63),
-					pal.GetColor(0x2f),
-					pal.GetColor(0x1f),
-					pal.GetColor(0x14),
-					pal.GetColor(0x64),
-					pal.GetColor(0x1f),
-					pal.GetColor(0x68),
-					pal.GetColor(0x6b),
-					pal.GetColor(0x6d),
+					Color.FromArgb(alpha, pal.GetColor(0x1a)),
+					Color.FromArgb(alpha, pal.GetColor(0x63)),
+					Color.FromArgb(alpha, pal.GetColor(0x2f)),
+					Color.FromArgb(alpha, pal.GetColor(0x1f)),
+					Color.FromArgb(alpha, pal.GetColor(0x14)),
+					Color.FromArgb(alpha, pal.GetColor(0x64)),
+					Color.FromArgb(alpha, pal.GetColor(0x1f)),
+					Color.FromArgb(alpha, pal.GetColor(0x68)),
+					Color.FromArgb(alpha, pal.GetColor(0x6b)),
+					Color.FromArgb(alpha, pal.GetColor(0x6d)),
 				};
+				
+				playerColors = Util.MakeArray<Color>( 8, b => Color.FromArgb(alpha, Chat.paletteColors[b]) );
+				shroudColor = Color.FromArgb(alpha, Color.Black);
 			}
 			
 			if (terrain == null)
@@ -61,8 +66,8 @@ namespace OpenRa.Game.Graphics
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
 						terrain.SetPixel(x, y, Rules.Map.IsInMap(x, y)
-							? Color.FromArgb(alpha, terrainTypeColors[Rules.TileSet.GetWalkability(Rules.Map.MapTiles[x, y])])
-							: Color.FromArgb(alpha, Color.Black));
+							? terrainTypeColors[Rules.TileSet.GetWalkability(Rules.Map.MapTiles[x, y])]
+							: shroudColor);
 			}
 
 			if (oreLayer == null)
@@ -87,19 +92,19 @@ namespace OpenRa.Game.Graphics
 					{
 						var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
 						if (b != null)
-							*(c + (y * bitmapData.Stride >> 2) + x) = 
-								(b.Owner != null ? Chat.paletteColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();
+							*(c + (y * bitmapData.Stride >> 2) + x) =
+								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();
 					}
 
 				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
 					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) = Chat.paletteColors[(int)a.Owner.Palette].ToArgb();
-
+				
 				unchecked
 				{
 					for (var y = 0; y < 128; y++)
 						for (var x = 0; x < 128; x++)
 							if (!Game.LocalPlayer.Shroud.IsExplored(new int2(x, y)))
-								*(c + (y * bitmapData.Stride >> 2) + x) = (int)0xff000000;
+								*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
 				}
 			}
 
