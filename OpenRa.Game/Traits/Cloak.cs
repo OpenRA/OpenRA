@@ -6,6 +6,7 @@ namespace OpenRa.Game.Traits
 {
 	class Cloak : IRenderModifier, INotifyAttack, ITick
 	{
+		[Sync]
 		int remainingUncloakTime = 2;		/* setup for initial cloak */
 
 		public Cloak(Actor self) {}

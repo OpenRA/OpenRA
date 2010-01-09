@@ -4,6 +4,7 @@ namespace OpenRa.Game.Traits
 {
 	class LimitedAmmo : INotifyAttack, IPips
 	{
+		[Sync]
 		int ammo;
 		Actor self;
 

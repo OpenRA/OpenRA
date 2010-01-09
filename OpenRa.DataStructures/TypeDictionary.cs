@@ -46,5 +46,10 @@ namespace OpenRa
 				if( i.Value is T )
 					yield return (T)i.Value;
 		}
+
+		public IEnumerator<object> GetEnumerator()
+		{
+			return WithInterface<object>().GetEnumerator();
+		}
 	}
 }

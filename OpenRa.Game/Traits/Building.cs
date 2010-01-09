@@ -13,7 +13,9 @@ namespace OpenRa.Game.Traits
 	{
 		readonly Actor self;
 		public readonly BuildingInfo unitInfo;
+		[Sync]
 		bool isRepairing = false;
+		[Sync]
 		bool manuallyDisabled = false;
 		public bool ManuallyDisabled { get { return manuallyDisabled; } }
 		public bool Disabled { get { return (manuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }

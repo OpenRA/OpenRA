@@ -5,7 +5,9 @@ namespace OpenRa.Game.Traits
 {
 	class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
+		[Sync]
 		public int oreCarried = 0;					/* sum of these must not exceed capacity */
+		[Sync]
 		public int gemsCarried = 0;
 
 		public bool IsFull { get { return oreCarried + gemsCarried == Rules.General.BailCount; } }
