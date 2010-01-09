@@ -5,10 +5,11 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
-	class Mobile : IOrder, IOccupySpace, IMovement
+	class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
 	{
 		readonly Actor self;
 
+		[Sync]
 		int2 __fromCell;
 		public int2 fromCell
 		{

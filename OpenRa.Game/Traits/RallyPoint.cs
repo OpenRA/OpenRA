@@ -4,8 +4,9 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
-	class RallyPoint : IRender, IOrder, ITick
+	class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
 	{
+		[Sync]
 		public int2 rallyPoint;
 		public Animation anim;
 

@@ -1,0 +1,17 @@
+#
+# Red Alert rules
+#
+
+Vehicles:
+	V2RL:
+		Buildable: { Description="V2 Rocket", Prerequisites=[weap,dome], TechLevel=4, Cost=700,
+			LongDesc="Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft" }
+		Unit: { HP=150, Armor=light, Crewed=yes, Voice=VehicleVoice }
+		Mobile: { Sight=5, ROT=5, Speed=7, UMT=Track }
+		AttackBase: { Primary=SCUD, Ammo=1 }
+		RenderUnitReload: {}
+		AutoTarget: {}
+		Repairable: {}
+		Chronoshiftable: {}
+		Passenger: {}
+		IronCurtainable: {}

@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
+using OpenRa.Game.SupportPowers;
 
 namespace OpenRa.Game.Orders
 {
 	class ChronosphereSelectOrderGenerator : IOrderGenerator
 	{
+		SupportPower power;
+		public ChronosphereSelectOrderGenerator(SupportPower power)
+		{
+			this.power = power;
+		}
+		
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
@@ -30,9 +36,7 @@ namespace OpenRa.Game.Orders
 				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
 
 				if (unit != null)
-				{
-					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, null);
-				}
+					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, power.Name);
 			}
 		}
 

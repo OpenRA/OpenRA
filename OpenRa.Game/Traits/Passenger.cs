@@ -6,7 +6,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Passenger : IOrder
+	class Passenger : IIssueOrder, IResolveOrder
 	{
 		public Passenger(Actor self) { }
 

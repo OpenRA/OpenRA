@@ -3,7 +3,9 @@ namespace OpenRa.Game.Traits
 {
 	class Unit : INotifyDamage
 	{
+		[Sync]
 		public int Facing;
+		[Sync]
 		public int Altitude;
 
 		public Unit( Actor self ) { }

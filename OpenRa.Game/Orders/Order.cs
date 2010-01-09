@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRa.Game.SupportPowers;
 
 namespace OpenRa.Game
 {
@@ -12,7 +13,7 @@ namespace OpenRa.Game
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
 		public bool IsImmediate;
-
+		
 		public Actor Subject { get { return ActorFromUInt(SubjectId); } }
 		public Actor TargetActor { get { return ActorFromUInt(TargetActorId); } }
 		public Player Player { get { return Subject.Owner; } }
@@ -20,8 +21,8 @@ namespace OpenRa.Game
 		public Order(string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString)
 			: this( orderString, UIntFromActor( subject ),
-			UIntFromActor( targetActor ), targetLocation, targetString ) {}
-
+			UIntFromActor( targetActor ), targetLocation, targetString) {}
+			
 		Order(string orderString, uint subjectId,
 			uint targetActorId, int2 targetLocation, string targetString)
 		{

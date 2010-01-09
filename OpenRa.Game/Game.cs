@@ -84,10 +84,11 @@ namespace OpenRa.Game
 
 			Rules.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
-			minimap = new Minimap(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);
 			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
+
+			minimap = new Minimap(renderer);
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();

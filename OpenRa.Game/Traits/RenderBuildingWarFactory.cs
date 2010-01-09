@@ -7,7 +7,9 @@ namespace OpenRa.Game.Traits
 	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
 	{
 		public Animation roof;
+		[Sync]
 		bool doneBuilding;
+		[Sync]
 		bool isOpen;
 		public readonly Actor self;
 

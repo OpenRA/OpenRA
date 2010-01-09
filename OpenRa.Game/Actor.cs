@@ -10,12 +10,16 @@ namespace OpenRa.Game
 {
 	class Actor
 	{
+		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
 		public readonly UnitInfo Info;
 
 		public readonly uint ActorID;
+		[Sync]
 		public int2 Location;
+		[Sync]
 		public Player Owner;
+		[Sync]
 		public int Health;
 		IActivity currentActivity;
 
@@ -101,7 +105,7 @@ namespace OpenRa.Game
 			if (underCursor != null && !underCursor.Info.Selectable)
 				underCursor = null;
 
-			return traits.WithInterface<IOrder>()
+			return traits.WithInterface<IIssueOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}

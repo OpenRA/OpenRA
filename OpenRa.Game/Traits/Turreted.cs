@@ -3,6 +3,7 @@ namespace OpenRa.Game.Traits
 {
 	class Turreted : ITick
 	{
+		[Sync]
 		public int turretFacing = 0;
 		public int? desiredFacing;
 

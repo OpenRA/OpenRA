@@ -4,11 +4,12 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
-	class ChronoshiftDeploy : IOrder, ISpeedModifier, ITick, IPips
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
 	{
 		// Recharge logic
+		[Sync]
 		int chargeTick = 0; // How long until we can chronoshift again?
-		int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
+		readonly int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 
 		public ChronoshiftDeploy(Actor self) { }
 		
@@ -38,7 +39,7 @@ namespace OpenRa.Game.Traits
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location
-				if (!Game.LocalPlayer.Shroud.IsExplored(order.TargetLocation))
+				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 				
 				Game.controller.CancelInputMode();

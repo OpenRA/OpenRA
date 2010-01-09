@@ -6,7 +6,7 @@ using IjwFramework.Collections;
 
 namespace OpenRa.Game.Traits
 {
-	class ProductionQueue : IOrder, ITick
+	class ProductionQueue : IResolveOrder, ITick
 	{
 		Actor self;
 
@@ -20,12 +20,6 @@ namespace OpenRa.Game.Traits
 			foreach( var p in production )
 				if( p.Value.Count > 0 )
 					(p.Value)[0].Tick( self.Owner );
-		}
-
-		public Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor )
-		{
-			// production isn't done by clicks in the world; the chrome handles it.
-			return null;
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -80,6 +74,7 @@ namespace OpenRa.Game.Traits
 		}
 
 		// Key: Production category.
+		// TODO: sync this
 		readonly Cache<string, List<ProductionItem>> production 
 			= new Cache<string, List<ProductionItem>>( _ => new List<ProductionItem>() );
 

@@ -43,7 +43,7 @@ namespace OpenRa.Game.GameRules
 				return false;
 
 			return true;
-		}
+		} 
 
 		public IEnumerable<string> BuildableItems( Player player, params string[] categories )
 		{

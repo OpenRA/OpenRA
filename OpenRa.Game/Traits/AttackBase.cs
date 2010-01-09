@@ -6,12 +6,14 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
-	class AttackBase : IOrder, ITick
+	class AttackBase : IIssueOrder, IResolveOrder, ITick
 	{
-		public Actor target;
+		[Sync] public Actor target;
 
 		// time (in frames) until each weapon can fire again.
+		[Sync]
 		protected int primaryFireDelay = 0;
+		[Sync]
 		protected int secondaryFireDelay = 0;
 
 		int primaryBurst;

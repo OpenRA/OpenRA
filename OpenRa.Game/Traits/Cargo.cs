@@ -7,7 +7,7 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class Cargo : IPips, IOrder
+	class Cargo : IPips, IIssueOrder, IResolveOrder
 	{
 		List<Actor> cargo = new List<Actor>();
 

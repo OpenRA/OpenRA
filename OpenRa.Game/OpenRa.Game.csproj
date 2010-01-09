@@ -83,10 +83,12 @@
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
+    <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Effects\PowerDownIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
+    <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Exts.cs" />
@@ -119,8 +121,15 @@
     <Compile Include="Shroud.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
+    <Compile Include="SupportPower.cs" />
+    <Compile Include="SupportPowers\ChronospherePower.cs" />
+    <Compile Include="SupportPowers\GpsSatellite.cs" />
+    <Compile Include="SupportPowers\IronCurtainPower.cs" />
+    <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
+    <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
+    <Compile Include="Sync.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CaptureBuilding.cs" />
@@ -162,6 +171,7 @@
     <Compile Include="Traits\Activities\Repair.cs" />
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
+    <Compile Include="Traits\Activities\Steal.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
@@ -216,6 +226,7 @@
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ChronoshiftDeploy.cs" />
     <Compile Include="Traits\Fake.cs" />
+    <Compile Include="Traits\GpsLaunchSite.cs" />
     <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
@@ -255,6 +266,7 @@
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\TakeCover.cs" />
+    <Compile Include="Traits\Thief.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Tree.cs" />
     <Compile Include="Traits\Turreted.cs" />
@@ -298,10 +310,6 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Game Code.cd" />
-    <None Include="Graphics\Graphics.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

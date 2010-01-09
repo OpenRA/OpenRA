@@ -94,6 +94,7 @@
     <sequence name="idle" start="0" />
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="atekmake" />
+    <sequence name="active" start="0" length="*" src="sputdoor" />
   </unit>
   <!-- soviet tech center -->
   <unit name="stek">
@@ -201,9 +202,9 @@
   </unit>
   <!-- iron curtain -->
   <unit name="iron">
-	<sequence name="idle" start="0" length="1" />
-	<sequence name="active" start="0" length="11" />
-	<sequence name="damaged-idle" start="11" length="1" />
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="active" start="0" length="11" />
+    <sequence name="damaged-idle" start="11" length="1" />
     <sequence name="damaged-active" start="11" length="11" />
     <sequence name="make" start="0" length="*" src="ironmake" />
   </unit>
@@ -1030,10 +1031,30 @@
     <sequence name="left-normal" start="0" length="1" />
     <sequence name="left-pressed" start="1" length="1" />
   </unit>
+  <unit name="sputnik">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
   <unit name="dd-crnr">
+    <sequence name="idle" start="0" length="4" />
     <sequence name="top-left" start="0" length="1" />
     <sequence name="top-right" start="1" length="1" />
     <sequence name="bottom-left" start="2" length="1" />
     <sequence name="bottom-right" start="3" length="1" />
+  </unit>
+  <unit name="ussrradr">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="open" start="1" length="20" />
+    <sequence name="jammed" start="21" length="4" />
+    <sequence name="close" start="25" length="16" />
+    <sequence name="no-power" start="41" length="1" />
+    <sequence name="active" start="42" length="1" />
+  </unit>
+  <unit name="natoradr">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="open" start="1" length="20" />
+    <sequence name="active" start="42" length="1" />
+    <sequence name="jammed" start="21" length="4" />
+    <sequence name="close" start="25" length="16" />
+    <sequence name="no-power" start="41" length="1" />
   </unit>
 </sequences>

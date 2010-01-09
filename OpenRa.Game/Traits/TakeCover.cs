@@ -8,6 +8,7 @@ namespace OpenRa.Game.Traits
 		const float proneDamage = .5f;
 		const float proneSpeed = .5f;
 
+		[Sync]
 		int remainingProneTime = 0;
 
 		public bool IsProne { get { return remainingProneTime > 0; } }
