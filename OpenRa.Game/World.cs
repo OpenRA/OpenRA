@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game
 {
@@ -55,11 +56,14 @@ namespace OpenRa.Game
 
 		public int SyncHash()
 		{
-			int ret = 0;
-			foreach( var a in Actors )
-				ret += (int)a.ActorID * Sync.CalculateSyncHash( a );
+			using (new PerfSample("synchash"))
+			{
+				int ret = 0;
+				foreach (var a in Actors)
+					ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
 
-			return ret;
+				return ret;
+			}
 		}
 	}
 }
