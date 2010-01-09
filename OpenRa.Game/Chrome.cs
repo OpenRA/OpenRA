@@ -23,14 +23,12 @@ namespace OpenRa.Game
 		readonly Sprite powerIndicatorSprite;
 		readonly Sprite powerLevelTopSprite;
 		readonly Sprite powerLevelBottomSprite;
-		
+			
 		readonly Animation repairButton;
 		readonly Animation sellButton;
 		readonly Animation pwrdownButton;
 		readonly Animation optionsButton;
 
-		Animation radarAnim, alliesAnim, sovietAnim;
-		
 		readonly Sprite optionsTop;
 		readonly Sprite optionsBottom;
 		readonly Sprite optionsLeft;
@@ -40,7 +38,6 @@ namespace OpenRa.Game
 		readonly Sprite optionsBottomLeft;
 		readonly Sprite optionsBottomRight;
 		readonly Sprite optionsBackground;
-		readonly Sprite radarShim;
 				
 		readonly SpriteRenderer shpRenderer;
 		readonly Animation cantBuild;
@@ -57,15 +54,21 @@ namespace OpenRa.Game
 		// Build palette positioning
 		const int paletteColumns = 3;
 		const int paletteRows = 5;
-		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 220);
-		
-		// Radar positioning
-		static float2 radarSize = new float2(181, 160);
-		static float2 shimSize = new float2(181, 181);
-		static float2 radarOrigin = new float2(Game.viewport.Width - radarSize.X, 30);
+		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 240);
+
+		// Radar
+		readonly Sheet radarBinTextureAllied;
+		readonly Sheet radarBinTextureSoviet;
+		readonly Sprite radarBinAllied;
+		readonly Sprite radarBinSoviet;
+		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 30);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -180);
+		float2 radarOrigin;
+		bool radarAnimating = false;
+		int radarVelocity = 15;
 		
 		// Power bar positioning
-		static float2 powerOrigin = new float2(radarOrigin.X-20, 30);
+		static float2 powerOrigin = new float2(Game.viewport.Width - 20, 30);
 		
 		
 		bool hadRadar = false;
@@ -94,6 +97,15 @@ namespace OpenRa.Game
 			};
 			moneyBinSprite = new Sprite(chromeTexture, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
 			tooltipSprite = new Sprite(chromeTexture, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
+			
+			
+			// Radar
+			radarBinTextureAllied = new Sheet(renderer, "radarbin-allies.png");
+			radarBinTextureSoviet = new Sheet(renderer, "radarbin-soviet.png");
+			radarBinAllied = new Sprite(radarBinTextureAllied, new Rectangle(0, 0, 210, 201), TextureChannel.Alpha);
+			radarBinSoviet = new Sprite(radarBinTextureSoviet, new Rectangle(0,0,210,201), TextureChannel.Alpha);
+				  
+			radarOrigin = radarClosedOrigin;
 			
 			var powerIndicator = new Animation("power");
 			powerIndicator.PlayRepeating("power-level-indicator");
@@ -128,14 +140,6 @@ namespace OpenRa.Game
 			optionsBottomLeft = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[2];
 			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
 			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
-			
-			// Radar
-			sovietAnim = new Animation("ussrradr");
-			sovietAnim.PlayRepeating("idle");
-			alliesAnim = new Animation("natoradr");
-			alliesAnim.PlayRepeating("idle");
-			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
-			radarShim = SpriteSheetBuilder.LoadAllSprites("side1na")[0];
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
@@ -181,8 +185,21 @@ namespace OpenRa.Game
 		
 		public void Tick()
 		{
-			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
-				radarAnim.Tick();
+			if (radarAnimating)
+			{
+				radarOrigin.Y += (hadRadar) ? radarVelocity : -radarVelocity;
+
+				if (hadRadar && radarOrigin.Y >= radarOpenOrigin.Y)
+				{
+					radarAnimating = false;
+					radarOrigin.Y = radarOpenOrigin.Y;
+				}
+				else if (radarOrigin.Y <= radarClosedOrigin.Y)
+				{
+					radarAnimating = false;
+					radarOrigin.Y = radarClosedOrigin.Y;
+				}
+			}
 		}
 		
 		public void Draw()
@@ -225,32 +242,21 @@ namespace OpenRa.Game
 				&& a.traits.Get<ProvidesRadar>().IsActive());
 			
 			if (hasRadar != hadRadar)
+			{
+				radarAnimating = true;
 				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
+			}
 			hadRadar = hasRadar;
 
 			var isJammed = false;		// todo: MRJ can do this
-
-			if (hasRadar && radarAnim.CurrentSequence.Name == "idle")
-				radarAnim.PlayThen("open", () => radarAnim.PlayRepeating("active"));
-			if (hasRadar && radarAnim.CurrentSequence.Name == "no-power")
-				radarAnim.PlayBackwardsThen("close", () => radarAnim.PlayRepeating("active"));
-			if (!hasRadar && radarAnim.CurrentSequence.Name == "active")
-				radarAnim.PlayThen("close", () => radarAnim.PlayRepeating("no-power"));
-			if (isJammed && radarAnim.CurrentSequence.Name == "active")
-				radarAnim.PlayRepeating("jammed");
-			if (!isJammed && radarAnim.CurrentSequence.Name == "jammed")
-				radarAnim.PlayRepeating("active");
-			shpRenderer.DrawSprite(radarShim, radarOrigin + Game.viewport.Location, PaletteType.Chrome, shimSize);
-			shpRenderer.DrawSprite(radarAnim.Image, radarOrigin + Game.viewport.Location, PaletteType.Chrome, radarSize);
-			shpRenderer.Flush();
 			
-			if (radarAnim.CurrentSequence.Name == "active")
-			{
-				// Todo: fix minimap size/position
-				Game.minimap.Draw(radarOrigin, hasRadar, isJammed);
-			}
+			rgbaRenderer.DrawSprite((Game.LocalPlayer.Race == Race.Allies) ? radarBinAllied : radarBinSoviet,
+				radarOrigin,
+				PaletteType.Chrome);
 				
-			
+			rgbaRenderer.Flush();
+			if (!radarAnimating && hasRadar)
+				Game.minimap.Draw(radarOrigin + new float2(9,0), hasRadar, isJammed);
 		}
 		
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }

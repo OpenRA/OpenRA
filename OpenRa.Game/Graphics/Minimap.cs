@@ -103,7 +103,7 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw(float2 pos, bool hasRadar, bool isJammed)
 		{
-			rgbaRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(256, 256));
+			rgbaRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(192, 192));
 			rgbaRenderer.Flush();
 		}
 	}
