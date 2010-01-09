@@ -1,0 +1,31 @@
+﻿<chrome>
+  <collection name="radar">
+	<image name="nobg" x="0" y="0" width="210" height="201" src="radarbin-border.png" />
+	<image name="soviet" x="0" y="0" width="210" height="201" src="radarbin-soviet.png" />
+	<image name="allied" x="0" y="0" width="210" height="201" src="radarbin-allies.png" />
+  </collection>
+	<collection name="chrome" src="specialbin.png">
+		<image name="powershim-top" x="0" y="0" width="30" height="51" />
+		<image name="powershim-middle" x="0" y="51" width="30" height="51" />
+		<image name="powershim-bottom" x="0" y="153" width="30" height="39" />
+		<image name="moneybin" x="192" y="0" width="320" height="32" />
+		<image name="tooltip-bg" x="0" y="288" width="272" height="136" />
+		<image name="palette-border-tl" x="0" y="192" width="9" height="10" />
+		<image name="palette-border-bl" x="0" y="202" width="9" height="10" />
+		<image name="palette-border-left" x="0" y="216" width="9" height="48" />
+		<image name="palette-border-top" x="11" y="192" width="64" height="10" />
+		<image name="palette-border-bottom" x="11" y="202" width="64" height="10" />
+	</collection>
+	<collection name="digit" src="specialbin.png">
+		<image name="0" x="32" y="0" width="13" height="17" />
+		<image name="1" x="45" y="0" width="13" height="17" />
+		<image name="2" x="58" y="0" width="13" height="17" />
+		<image name="3" x="71" y="0" width="13" height="17" />
+		<image name="4" x="84" y="0" width="13" height="17" />
+		<image name="5" x="97" y="0" width="13" height="17" />
+		<image name="6" x="110" y="0" width="13" height="17" />
+		<image name="7" x="123" y="0" width="13" height="17" />
+		<image name="8" x="136" y="0" width="13" height="17" />
+		<image name="9" x="149" y="0" width="13" height="17" />
+	</collection>
+</chrome>
