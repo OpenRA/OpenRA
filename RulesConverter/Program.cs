@@ -127,6 +127,23 @@ namespace RulesConverter
 				{ "LimitedAmmo", new PL {
 					{ "Ammo", "Ammo" } }
 				},
+
+				{ "Building", new PL {
+					{ "Power", "Power" },
+					{ "RequiresPower", "Powered" },
+					{ "Footprint", "Footprint" },
+					{ "@Dimensions", "Dimensions" } }
+				},
+
+				{ "StoresOre", new PL {
+					{ "Pips", "OrePips" },
+					{ "Capacity", "Storage" } }
+				},
+
+				{ "Harvester", new PL {
+					{ "Pips", "OrePips" } }
+					//{ "Capacity"
+				},
 			};
 
 			using (var writer = File.CreateText(outputFile))

@@ -659,6 +659,10 @@ IRON:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -200
+		RequiresPower: true
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	IronCurtainable:
 	IronCurtain:
@@ -676,6 +680,10 @@ PDOX:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -200
+		RequiresPower: true
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	Chronosphere:
 	IronCurtainable:
@@ -693,6 +701,9 @@ PBOX:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -15
+		Footprint: x
+		Dimensions: [1,1]
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -712,6 +723,9 @@ HBOX:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -15
+		Footprint: x
+		Dimensions: [1,1]
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -731,6 +745,10 @@ TSLA:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -150
+		RequiresPower: true
+		Footprint: _ x
+		Dimensions: [1,2]
 	Turreted:
 	RenderBuildingCharge:
 	AttackTurreted:
@@ -750,6 +768,9 @@ GUN:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -40
+		Footprint: x
+		Dimensions: [1,1]
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -769,6 +790,10 @@ AGUN:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -50
+		RequiresPower: true
+		Footprint: _ x
+		Dimensions: [1,2]
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -789,6 +814,9 @@ FTUR:
 		Priority: 3
 	Turreted:
 	Building:
+		Power: -20
+		Footprint: x
+		Dimensions: [1,1]
 	RenderBuilding:
 	AttackTurreted:
 	AutoTarget:
@@ -807,6 +835,10 @@ GAP:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -60
+		RequiresPower: true
+		Footprint: _ x
+		Dimensions: [1,2]
 	RenderBuilding:
 	IronCurtainable:
 
@@ -823,6 +855,9 @@ SAM:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -20
+		Footprint: xx
+		Dimensions: [2,1]
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -842,6 +877,9 @@ MSLO:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -100
+		Footprint: xx
+		Dimensions: [2,1]
 	RenderBuilding:
 	IronCurtainable:
 
@@ -858,6 +896,9 @@ ATEK:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	IronCurtainable:
 	GpsLaunchSite:
@@ -875,6 +916,9 @@ WEAP:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: [3,2]
 	RenderWarFactory:
 	RenderBuilding:
 	RallyPoint:
@@ -894,6 +938,9 @@ SYRD:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -911,6 +958,9 @@ SPEN:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -920,6 +970,9 @@ FACT:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: 0
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 	ConstructionYard:
 	IronCurtainable:
@@ -937,9 +990,14 @@ PROC:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: _x_ xxx x==
+		Dimensions: [3,3]
 	RenderBuilding:
 	AcceptsOre:
 	StoresOre:
+		Pips: 17
+		Capacity: 2000
 	IronCurtainable:
 
 SILO:
@@ -955,8 +1013,13 @@ SILO:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -10
+		Footprint: x
+		Dimensions: [1,1]
 	RenderBuildingOre:
 	StoresOre:
+		Pips: 5
+		Capacity: 1500
 	IronCurtainable:
 
 HPAD:
@@ -972,6 +1035,9 @@ HPAD:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -991,6 +1057,10 @@ DOME:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -40
+		RequiresPower: true
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
@@ -1008,6 +1078,9 @@ AFLD:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: [3,2]
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -1027,6 +1100,9 @@ POWR:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: 100
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1043,6 +1119,9 @@ APWR:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: 200
+		Footprint: ___ xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1059,6 +1138,9 @@ STEK:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -100
+		Footprint: xxx xxx
+		Dimensions: [3,2]
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1075,6 +1157,9 @@ BARR:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -20
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1093,6 +1178,9 @@ TENT:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -20
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1111,6 +1199,9 @@ KENN:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -10
+		Footprint: x
+		Dimensions: [1,1]
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1129,6 +1220,9 @@ FIX:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -30
+		Footprint: _x_ xxx _x_
+		Dimensions: [3,3]
 	RenderBuilding:
 	BelowUnits:
 	Reservable:
@@ -1146,6 +1240,9 @@ FACF:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -1164,6 +1261,9 @@ WEAF:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -2
+		Footprint: xxx xxx
+		Dimensions: [3,2]
 	RenderWarFactory:
 	RenderBuilding:
 		Image: WEAP
@@ -1183,6 +1283,9 @@ SYRF:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 		Image: SYRD
 	Fake:
@@ -1192,6 +1295,9 @@ SPEF:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: [3,3]
 	RenderBuilding:
 		Image: SPEN
 	Fake:
@@ -1209,6 +1315,9 @@ DOMF:
 	Selectable:
 		Priority: 3
 	Building:
+		Power: -2
+		Footprint: xx xx
+		Dimensions: [2,2]
 	RenderBuilding:
 		Image: DOME
 	Fake:
