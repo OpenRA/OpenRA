@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceEditor", "SequenceE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Server", "OpenRA.Server\OpenRA.Server.csproj", "{76F621A1-3D8E-4A99-9F7E-B071EB657817}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RulesConverter", "RulesConverter\RulesConverter.csproj", "{BBE7C0D7-7529-4C34-9910-206866F204EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (x86)|Any CPU = Debug (x86)|Any CPU
@@ -158,6 +160,26 @@ Global
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Release|Win32.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug (x86)|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug (x86)|Any CPU.Build.0 = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug (x86)|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug (x86)|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug (x86)|Win32.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release (x86)|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release (x86)|Any CPU.Build.0 = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release (x86)|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release (x86)|Mixed Platforms.Build.0 = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release (x86)|Win32.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BBE7C0D7-7529-4C34-9910-206866F204EF}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
