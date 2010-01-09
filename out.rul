@@ -3,7 +3,7 @@ V2RL:
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
-		Prerequisites: [weap,dome]
+		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 700
 		Description: "V2 Rocket"
@@ -32,7 +32,7 @@ V2RL:
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: allies
 		Cost: 700
 		Description: "Light Tank"
@@ -63,7 +63,7 @@ V2RL:
 	Buildable:
 		TechLevel: 6
 		Tab: Vehicle
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: allies
 		Cost: 800
 		Description: "Medium Tank"
@@ -94,7 +94,7 @@ V2RL:
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: soviet
 		Cost: 950
 		Description: "Heavy Tank"
@@ -125,7 +125,7 @@ V2RL:
 	Buildable:
 		TechLevel: 10
 		Tab: Vehicle
-		Prerequisites: [weap,stek]
+		Prerequisites: weap,stek
 		Owner: soviet
 		Cost: 1700
 		Description: "Mammoth Tank"
@@ -158,7 +158,7 @@ MRJ:
 	Buildable:
 		TechLevel: 12
 		Tab: Vehicle
-		Prerequisites: [weap,dome]
+		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 600
 		Description: "Radar Jammer"
@@ -185,7 +185,7 @@ MGG:
 	Buildable:
 		TechLevel: 11
 		Tab: Vehicle
-		Prerequisites: [weap,atek]
+		Prerequisites: weap,atek
 		Owner: allies
 		Cost: 600
 		Description: "Mobile Gap Generator"
@@ -212,7 +212,7 @@ ARTY:
 	Buildable:
 		TechLevel: 8
 		Tab: Vehicle
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: allies
 		Cost: 600
 		Description: "Artillery"
@@ -242,7 +242,7 @@ HARV:
 	Buildable:
 		TechLevel: 1
 		Tab: Vehicle
-		Prerequisites: [weap,proc]
+		Prerequisites: weap,proc
 		Owner: allies,soviet
 		Cost: 1400
 		Description: "Ore Truck"
@@ -270,7 +270,7 @@ MCV:
 	Buildable:
 		TechLevel: 11
 		Tab: Vehicle
-		Prerequisites: [weap,fix]
+		Prerequisites: weap,fix
 		Owner: allies,soviet
 		Cost: 2500
 		Description: "Mobile Construction Vehicle"
@@ -298,7 +298,7 @@ JEEP:
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: allies
 		Cost: 600
 		Description: "Ranger"
@@ -330,7 +330,7 @@ APC:
 	Buildable:
 		TechLevel: 5
 		Tab: Vehicle
-		Prerequisites: [weap,tent]
+		Prerequisites: weap,tent
 		Owner: allies
 		Cost: 800
 		Description: "Armored Personnel Carrier"
@@ -353,7 +353,7 @@ APC:
 	Repairable:
 	Chronoshiftable:
 	Cargo:
-		PassengerTypes: [Foot]
+		PassengerTypes: Foot
 		UnloadFacing: 220
 	Passenger:
 	IronCurtainable:
@@ -363,7 +363,7 @@ MNLY.AP:
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
-		Prerequisites: [weap,fix]
+		Prerequisites: weap,fix
 		Owner: soviet
 		Cost: 800
 		Icon: MNLYICON
@@ -395,7 +395,7 @@ MNLY.AT:
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
-		Prerequisites: [weap,fix]
+		Prerequisites: weap,fix
 		Owner: allies
 		Cost: 800
 		Icon: MNLYICON
@@ -427,7 +427,7 @@ SS:
 	Buildable:
 		TechLevel: 5
 		Tab: Ship
-		Prerequisites: [spen]
+		Prerequisites: spen
 		Owner: soviet
 		Cost: 950
 		Description: "Submarine"
@@ -452,7 +452,7 @@ DD:
 	Buildable:
 		TechLevel: 7
 		Tab: Ship
-		Prerequisites: [syrd]
+		Prerequisites: syrd
 		Owner: allies
 		Cost: 1000
 		Description: "Destroyer"
@@ -479,7 +479,7 @@ CA:
 	Buildable:
 		TechLevel: 10
 		Tab: Ship
-		Prerequisites: [syrd,atek]
+		Prerequisites: syrd,atek
 		Owner: allies
 		Cost: 2000
 		Description: "Cruiser"
@@ -522,7 +522,7 @@ LST:
 		Speed: 14
 	RenderUnit:
 	Cargo:
-		PassengerTypes: [Foot,Wheel,Track]
+		PassengerTypes: Foot,Wheel,Track
 	IronCurtainable:
 
 PT:
@@ -530,7 +530,7 @@ PT:
 	Buildable:
 		TechLevel: 5
 		Tab: Ship
-		Prerequisites: [syrd]
+		Prerequisites: syrd
 		Owner: allies
 		Cost: 500
 		Description: "Gunboat"
@@ -557,7 +557,7 @@ MIG:
 	Buildable:
 		TechLevel: 10
 		Tab: Plane
-		Prerequisites: [afld]
+		Prerequisites: afld
 		Owner: soviet
 		Cost: 1200
 		Description: "Mig Attack Plane"
@@ -582,7 +582,7 @@ YAK:
 	Buildable:
 		TechLevel: 5
 		Tab: Plane
-		Prerequisites: [afld]
+		Prerequisites: afld
 		Owner: soviet
 		Cost: 800
 		Description: "Yak Attack Plane"
@@ -608,7 +608,7 @@ TRAN:
 	Buildable:
 		TechLevel: 11
 		Tab: Plane
-		Prerequisites: [hpad]
+		Prerequisites: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Transport Helicopter"
@@ -623,7 +623,7 @@ TRAN:
 	RenderUnitRotor:
 	WithShadow:
 	Cargo:
-		PassengerTypes: [Foot]
+		PassengerTypes: Foot
 	IronCurtainable:
 
 HELI:
@@ -631,7 +631,7 @@ HELI:
 	Buildable:
 		TechLevel: 9
 		Tab: Plane
-		Prerequisites: [hpad]
+		Prerequisites: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Longbow"
@@ -659,7 +659,7 @@ HIND:
 	Buildable:
 		TechLevel: 9
 		Tab: Plane
-		Prerequisites: [hpad]
+		Prerequisites: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Hind"
@@ -687,7 +687,7 @@ IRON:
 	Buildable:
 		TechLevel: 12
 		Tab: Defense
-		Prerequisites: [stek]
+		Prerequisites: stek
 		Owner: soviet
 		Cost: 2800
 		Description: "Iron Curtain"
@@ -698,7 +698,7 @@ IRON:
 		Power: -200
 		RequiresPower: true
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 	RenderBuilding:
 	IronCurtainable:
@@ -709,7 +709,7 @@ PDOX:
 	Buildable:
 		TechLevel: 12
 		Tab: Defense
-		Prerequisites: [atek]
+		Prerequisites: atek
 		Owner: allies
 		Cost: 2800
 		Description: "Chronosphere"
@@ -720,7 +720,7 @@ PDOX:
 		Power: -200
 		RequiresPower: true
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 	RenderBuilding:
 	Chronosphere:
@@ -731,7 +731,7 @@ PBOX:
 	Buildable:
 		TechLevel: 2
 		Tab: Defense
-		Prerequisites: [tent]
+		Prerequisites: tent
 		Owner: allies
 		Cost: 400
 		Description: "Pillbox"
@@ -741,7 +741,7 @@ PBOX:
 	Building:
 		Power: -15
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -754,7 +754,7 @@ HBOX:
 	Buildable:
 		TechLevel: 3
 		Tab: Defense
-		Prerequisites: [tent]
+		Prerequisites: tent
 		Owner: allies
 		Cost: 600
 		Description: "Camo Pillbox"
@@ -764,7 +764,7 @@ HBOX:
 	Building:
 		Power: -15
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -777,7 +777,7 @@ TSLA:
 	Buildable:
 		TechLevel: 7
 		Tab: Defense
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: soviet
 		Cost: 1500
 		Description: "Tesla Coil"
@@ -788,7 +788,7 @@ TSLA:
 		Power: -150
 		RequiresPower: true
 		Footprint: _ x
-		Dimensions: [1,2]
+		Dimensions: 1,2
 	Turreted:
 	RenderBuildingCharge:
 	AttackTurreted:
@@ -801,7 +801,7 @@ GUN:
 	Buildable:
 		TechLevel: 4
 		Tab: Defense
-		Prerequisites: [tent]
+		Prerequisites: tent
 		Owner: allies
 		Cost: 600
 		Description: "Turret"
@@ -811,7 +811,7 @@ GUN:
 	Building:
 		Power: -40
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -824,7 +824,7 @@ AGUN:
 	Buildable:
 		TechLevel: 5
 		Tab: Defense
-		Prerequisites: [dome]
+		Prerequisites: dome
 		Owner: allies
 		Cost: 600
 		Description: "AA Gun"
@@ -835,7 +835,7 @@ AGUN:
 		Power: -50
 		RequiresPower: true
 		Footprint: _ x
-		Dimensions: [1,2]
+		Dimensions: 1,2
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -848,7 +848,7 @@ FTUR:
 	Buildable:
 		TechLevel: 2
 		Tab: Defense
-		Prerequisites: [barr]
+		Prerequisites: barr
 		Owner: soviet
 		Cost: 600
 		Description: "Flame Turret"
@@ -859,7 +859,7 @@ FTUR:
 	Building:
 		Power: -20
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
@@ -871,7 +871,7 @@ GAP:
 	Buildable:
 		TechLevel: 10
 		Tab: Defense
-		Prerequisites: [atek]
+		Prerequisites: atek
 		Owner: allies
 		Cost: 500
 		Description: "Gap Generator"
@@ -882,7 +882,7 @@ GAP:
 		Power: -60
 		RequiresPower: true
 		Footprint: _ x
-		Dimensions: [1,2]
+		Dimensions: 1,2
 		Capturable: true
 	RenderBuilding:
 	IronCurtainable:
@@ -892,7 +892,7 @@ SAM:
 	Buildable:
 		TechLevel: 9
 		Tab: Defense
-		Prerequisites: [dome]
+		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
 		Description: "SAM Site"
@@ -902,7 +902,7 @@ SAM:
 	Building:
 		Power: -20
 		Footprint: xx
-		Dimensions: [2,1]
+		Dimensions: 2,1
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -915,7 +915,7 @@ MSLO:
 	Buildable:
 		TechLevel: 13
 		Tab: Defense
-		Prerequisites: [stek,atek]
+		Prerequisites: stek,atek
 		Owner: soviet,allies
 		Cost: 2500
 		Description: "Missile Silo"
@@ -925,7 +925,7 @@ MSLO:
 	Building:
 		Power: -100
 		Footprint: xx
-		Dimensions: [2,1]
+		Dimensions: 2,1
 	RenderBuilding:
 	IronCurtainable:
 
@@ -934,7 +934,7 @@ ATEK:
 	Buildable:
 		TechLevel: 10
 		Tab: Building
-		Prerequisites: [weap,dome]
+		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 1500
 		Description: "Allied Tech Center"
@@ -944,7 +944,7 @@ ATEK:
 	Building:
 		Power: -200
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -956,7 +956,7 @@ WEAP:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [proc]
+		Prerequisites: proc
 		Owner: soviet,allies
 		Cost: 2000
 		Description: "War Factory"
@@ -966,7 +966,7 @@ WEAP:
 	Building:
 		Power: -30
 		Footprint: xxx xxx
-		Dimensions: [3,2]
+		Dimensions: 3,2
 		Capturable: true
 		Bib: yes
 	RenderWarFactory:
@@ -980,7 +980,7 @@ SYRD:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: allies
 		Cost: 650
 		Description: "Shipyard"
@@ -990,7 +990,7 @@ SYRD:
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
@@ -1003,7 +1003,7 @@ SPEN:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: soviet
 		Cost: 650
 		Description: "Sub Pen"
@@ -1013,7 +1013,7 @@ SPEN:
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
@@ -1028,7 +1028,7 @@ FACT:
 	Building:
 		Power: 0
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1040,7 +1040,7 @@ PROC:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 2000
 		Description: "Ore Refinery"
@@ -1050,7 +1050,7 @@ PROC:
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1065,7 +1065,7 @@ SILO:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: [proc]
+		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 150
 		Description: "Silo"
@@ -1075,7 +1075,7 @@ SILO:
 	Building:
 		Power: -10
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 		Capturable: true
 	RenderBuildingOre:
 	StoresOre:
@@ -1088,7 +1088,7 @@ HPAD:
 	Buildable:
 		TechLevel: 9
 		Tab: Building
-		Prerequisites: [dome]
+		Prerequisites: dome
 		Owner: allies
 		Cost: 1500
 		Description: "Helipad"
@@ -1098,7 +1098,7 @@ HPAD:
 	Building:
 		Power: -10
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1112,7 +1112,7 @@ DOME:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [proc]
+		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 1000
 		Description: "Radar Dome"
@@ -1123,7 +1123,7 @@ DOME:
 		Power: -40
 		RequiresPower: true
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1135,7 +1135,7 @@ AFLD:
 	Buildable:
 		TechLevel: 5
 		Tab: Building
-		Prerequisites: [dome]
+		Prerequisites: dome
 		Owner: soviet
 		Cost: 600
 		Description: "Airstrip"
@@ -1145,7 +1145,7 @@ AFLD:
 	Building:
 		Power: -30
 		Footprint: xxx xxx
-		Dimensions: [3,2]
+		Dimensions: 3,2
 		Capturable: true
 	RenderBuilding:
 	Production:
@@ -1158,7 +1158,7 @@ POWR:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: [fact]
+		Prerequisites: fact
 		Owner: allies,soviet
 		Cost: 300
 		Description: "Power Plant"
@@ -1168,7 +1168,7 @@ POWR:
 	Building:
 		Power: 100
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1179,7 +1179,7 @@ APWR:
 	Buildable:
 		TechLevel: 8
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 500
 		Description: "Advanced Power Plant"
@@ -1189,7 +1189,7 @@ APWR:
 	Building:
 		Power: 200
 		Footprint: ___ xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1200,7 +1200,7 @@ STEK:
 	Buildable:
 		TechLevel: 6
 		Tab: Building
-		Prerequisites: [weap,dome]
+		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 1500
 		Description: "Soviet Tech Center"
@@ -1210,7 +1210,7 @@ STEK:
 	Building:
 		Power: -100
 		Footprint: xxx xxx
-		Dimensions: [3,2]
+		Dimensions: 3,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1221,7 +1221,7 @@ BARR:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: soviet
 		Cost: 300
 		Description: "Soviet Barracks"
@@ -1231,7 +1231,7 @@ BARR:
 	Building:
 		Power: -20
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1244,7 +1244,7 @@ TENT:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: allies
 		Cost: 300
 		Description: "Allied Barracks"
@@ -1254,7 +1254,7 @@ TENT:
 	Building:
 		Power: -20
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
 	RenderBuilding:
@@ -1267,7 +1267,7 @@ KENN:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [barr]
+		Prerequisites: barr
 		Owner: soviet
 		Cost: 200
 		Description: "Kennel"
@@ -1277,7 +1277,7 @@ KENN:
 	Building:
 		Power: -10
 		Footprint: x
-		Dimensions: [1,1]
+		Dimensions: 1,1
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1288,7 +1288,7 @@ FIX:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [weap]
+		Prerequisites: weap
 		Owner: allies,soviet
 		Cost: 1200
 		Description: "Service Depot"
@@ -1298,7 +1298,7 @@ FIX:
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 	RenderBuilding:
 	BelowUnits:
@@ -1319,7 +1319,7 @@ FACF:
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
 		Bib: yes
@@ -1333,7 +1333,7 @@ WEAF:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [proc]
+		Prerequisites: proc
 		Owner: allies
 		Cost: 50
 		Description: "Fake War Factory"
@@ -1343,7 +1343,7 @@ WEAF:
 	Building:
 		Power: -2
 		Footprint: xxx xxx
-		Dimensions: [3,2]
+		Dimensions: 3,2
 		Capturable: true
 		BaseNormal: no
 		Bib: yes
@@ -1358,7 +1358,7 @@ SYRF:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [powr]
+		Prerequisites: powr
 		Owner: allies
 		Cost: 50
 		Description: "Fake Shipyard"
@@ -1368,7 +1368,7 @@ SYRF:
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
@@ -1383,7 +1383,7 @@ SPEF:
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
-		Dimensions: [3,3]
+		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
@@ -1396,7 +1396,7 @@ DOMF:
 	Buildable:
 		TechLevel: 3
 		Tab: Building
-		Prerequisites: [proc]
+		Prerequisites: proc
 		Owner: allies
 		Cost: 50
 		Description: "Fake Radar Dome"
@@ -1406,7 +1406,7 @@ DOMF:
 	Building:
 		Power: -2
 		Footprint: xx xx
-		Dimensions: [2,2]
+		Dimensions: 2,2
 		Capturable: true
 		BaseNormal: no
 		Bib: yes
@@ -1437,14 +1437,14 @@ DOG:
 	Buildable:
 		TechLevel: 3
 		Tab: Infantry
-		Prerequisites: [kenn]
+		Prerequisites: kenn
 		Owner: soviet
 		Cost: 200
 		Description: "Attack Dog"
 		LongDesc: "Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles"
 	Selectable:
 		Voice: DogVoice
-		Bounds: [12,17,-1,-4]
+		Bounds: 12,17,-1,-4
 	Unit:
 		HP: 12
 		Armor: none
@@ -1464,7 +1464,7 @@ E1:
 		Description: "Rifle Infantry"
 		LongDesc: "General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles"
 	Selectable:
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 50
 		Armor: none
@@ -1489,7 +1489,7 @@ E2:
 		Description: "Grenadier"
 		LongDesc: "Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles"
 	Selectable:
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 50
 		Armor: none
@@ -1515,7 +1515,7 @@ E3:
 		Description: "Rocket Soldier"
 		LongDesc: "Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
 	Selectable:
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 45
 		Armor: none
@@ -1536,13 +1536,13 @@ E4:
 	Buildable:
 		TechLevel: 6
 		Tab: Infantry
-		Prerequisites: [stek]
+		Prerequisites: stek
 		Owner: soviet
 		Cost: 300
 		Description: "Flamethrower"
 		LongDesc: "Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles"
 	Selectable:
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 40
 		Armor: none
@@ -1569,7 +1569,7 @@ E6:
 		LongDesc: "Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything"
 	Selectable:
 		Voice: EngineerVoice
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
 		Armor: none
@@ -1587,14 +1587,14 @@ SPY:
 	Buildable:
 		TechLevel: 6
 		Tab: Infantry
-		Prerequisites: [dome]
+		Prerequisites: dome
 		Owner: allies
 		Cost: 500
 		Description: "Spy"
 		LongDesc: "Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised"
 	Selectable:
 		Voice: SpyVoice
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
 		Armor: none
@@ -1611,14 +1611,14 @@ THF:
 	Buildable:
 		TechLevel: 11
 		Tab: Infantry
-		Prerequisites: [atek]
+		Prerequisites: atek
 		Owner: allies
 		Cost: 500
 		Description: "Thief"
 		LongDesc: "Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed"
 	Selectable:
 		Voice: ThiefVoice
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
 		Armor: none
@@ -1636,14 +1636,14 @@ E7:
 	Buildable:
 		TechLevel: 11
 		Tab: Infantry
-		Prerequisites: [atek,stek]
+		Prerequisites: atek,stek
 		Owner: allies,soviet
 		Cost: 1200
 		Description: "Tanya"
 		LongDesc: "Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4"
 	Selectable:
 		Voice: TanyaVoice
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 100
 		Armor: none
@@ -1670,7 +1670,7 @@ MEDI:
 		LongDesc: "Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything"
 	Selectable:
 		Voice: MedicVoice
-		Bounds: [12,17,0,-9]
+		Bounds: 12,17,0,-9
 	Unit:
 		HP: 80
 		Armor: none

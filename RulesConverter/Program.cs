@@ -166,7 +166,7 @@ namespace RulesConverter
 									var v = kv.Value == "$Tab" ? cat.Value.Second : iniSection.GetValue(kv.Value, "");
 									var fmt = "\t\t{0}: {1}";
 									var k = kv.Key;
-									if (k.StartsWith("@")) { k = k.Substring(1); fmt = "\t\t{0}: [{1}]"; }
+									if (k.StartsWith("@")) { k = k.Substring(1); /*fmt = "\t\t{0}: [{1}]";*/ }
 									if (k.StartsWith("$")) { k = k.Substring(1); fmt = "\t\t{0}: \"{1}\""; }
 
 									if (!string.IsNullOrEmpty(v)) writer.WriteLine(fmt, k, v);
