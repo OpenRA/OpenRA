@@ -15,7 +15,6 @@ namespace OpenRa.Game
 	{
 		readonly Renderer renderer;
 		readonly LineRenderer lineRenderer;
-		readonly Sheet chromeTexture;
 		readonly SpriteRenderer rgbaRenderer;
 		readonly Sprite[] specialBinSprites;
 		readonly Sprite moneyBinSprite;
@@ -57,12 +56,6 @@ namespace OpenRa.Game
 		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 240);
 
 		// Radar
-		readonly Sheet radarBinTextureAllied;
-		readonly Sheet radarBinTextureSoviet;
-		readonly Sheet radarBinTextureBorder;
-		readonly Sprite radarBinAllied;
-		readonly Sprite radarBinSoviet;
-		readonly Sprite radarBinBorder;
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -162);
 		float2 radarOrigin;
@@ -86,29 +79,21 @@ namespace OpenRa.Game
 		public Chrome(Renderer r)
 		{		
 			this.renderer = r;
-			chromeTexture = new Sheet(renderer, "specialbin.png");
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
 			shpRenderer = new SpriteRenderer(renderer, true);
 
 			specialBinSprites = new [] 
 			{
-				new Sprite(chromeTexture, new Rectangle(0, 0, 32, 51), TextureChannel.Alpha),
-				new Sprite(chromeTexture, new Rectangle(0, 51, 32, 51 /*144*/), TextureChannel.Alpha),
-				new Sprite(chromeTexture, new Rectangle(0, 192-39, 32, 39 ), TextureChannel.Alpha),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-top"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-middle"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-bottom"),
 			};
-			moneyBinSprite = new Sprite(chromeTexture, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
-			tooltipSprite = new Sprite(chromeTexture, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
+			moneyBinSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "moneybin");
+			tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "tooltip-bg");
 			
 			
 			// Radar
-			radarBinTextureAllied = new Sheet(renderer, "radarbin-allies.png");
-			radarBinTextureSoviet = new Sheet(renderer, "radarbin-soviet.png");
-			radarBinTextureBorder = new Sheet(renderer, "radarbin-border.png");
-			radarBinAllied = new Sprite(radarBinTextureAllied, new Rectangle(0, 0, 210, 201), TextureChannel.Alpha);
-			radarBinSoviet = new Sprite(radarBinTextureSoviet, new Rectangle(0,0,210,201), TextureChannel.Alpha);
-			radarBinBorder = new Sprite(radarBinTextureBorder, new Rectangle(0, 0, 210, 201), TextureChannel.Alpha);
-	  
 			radarOrigin = radarClosedOrigin;
 			
 			var powerIndicator = new Animation("power");
@@ -162,24 +147,22 @@ namespace OpenRa.Game
 			tabSprites = groups.Select(
 				(g, i) => Pair.New(g,
 					OpenRa.Game.Graphics.Util.MakeArray(3,
-						n => new Sprite(chromeTexture,
-							new Rectangle(512 - (n + 1) * 27, 64 + i * 40, 27, 40),
-							TextureChannel.Alpha))))
+						n => SequenceProvider.GetImageFromCollection(renderer, "tabs-"+n,i.ToString()))))
 				.ToDictionary(a => a.First, a => a.Second);
 
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
 			digitSprites = Graphics.Util.MakeArray(10, a => a)
-				.Select(n => new Sprite(chromeTexture, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
+				.Select(n => SequenceProvider.GetImageFromCollection(renderer, "digit", n.ToString())).ToList();
 
 			shimSprites = new[] 
 			{
-				new Sprite( chromeTexture, new Rectangle( 0, 192, 9, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 0, 202, 9, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 0, 216, 9, 48 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 11, 192, 64, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 11, 202, 64, 10 ), TextureChannel.Alpha ),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-tl"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-bl"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-left"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-top"),
+				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-bottom"),
 			};
 
 			ready = new Animation("pips");
@@ -256,7 +239,7 @@ namespace OpenRa.Game
 				radarOrigin,
 				PaletteType.Chrome);
 			*/
-			rgbaRenderer.DrawSprite(radarBinBorder,radarOrigin,PaletteType.Chrome);	
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, "radar", "nobg"), radarOrigin, PaletteType.Chrome);	
 			rgbaRenderer.Flush();
 			if (hasRadar || radarAnimating)
 				Game.minimap.Draw(radarOrigin + new float2(9,0), hasRadar, isJammed);

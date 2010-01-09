@@ -28,4 +28,28 @@
 		<image name="8" x="136" y="0" width="13" height="17" />
 		<image name="9" x="149" y="0" width="13" height="17" />
 	</collection>
+	<collection name="tabs-0" src="specialbin.png">
+		<image name="0" x="485" y="64" width="27" height="40" />
+		<image name="1" x="485" y="104" width="27" height="40" />
+		<image name="2" x="485" y="144" width="27" height="40" />
+		<image name="3" x="485" y="184" width="27" height="40" />
+		<image name="4" x="485" y="224" width="27" height="40" />
+		<image name="5" x="485" y="264" width="27" height="40" />
+	</collection>
+	<collection name="tabs-1" src="specialbin.png">
+		<image name="0" x="458" y="64" width="27" height="40" />
+		<image name="1" x="458" y="104" width="27" height="40" />
+		<image name="2" x="458" y="144" width="27" height="40" />
+		<image name="3" x="458" y="184" width="27" height="40" />
+		<image name="4" x="458" y="224" width="27" height="40" />
+		<image name="5" x="458" y="264" width="27" height="40" />
+	</collection>
+	<collection name="tabs-2" src="specialbin.png">
+		<image name="0" x="431" y="64" width="27" height="40" />
+		<image name="1" x="431" y="104" width="27" height="40" />
+		<image name="2" x="431" y="144" width="27" height="40" />
+		<image name="3" x="431" y="184" width="27" height="40" />
+		<image name="4" x="431" y="224" width="27" height="40" />
+		<image name="5" x="431" y="264" width="27" height="40" />
+	</collection>
 </chrome>
