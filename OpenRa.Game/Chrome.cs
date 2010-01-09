@@ -57,7 +57,7 @@ namespace OpenRa.Game
 
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
-		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -162);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -163);
 		float2 radarOrigin;
 		bool radarAnimating = false;
 		int radarVelocity = 15;
@@ -239,9 +239,15 @@ namespace OpenRa.Game
 				radarOrigin,
 				PaletteType.Chrome);
 			*/
-			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, "radar", "nobg"), radarOrigin, PaletteType.Chrome);	
+
+			var bgSprite = SequenceProvider.GetImageFromCollection(renderer, "radar", "nobg");
+			if (!hasRadar || radarAnimating)
+				bgSprite = (Game.LocalPlayer.Race == Race.Allies) ? SequenceProvider.GetImageFromCollection(renderer, "radar", "allied") : SequenceProvider.GetImageFromCollection(renderer, "radar", "soviet");
+			
+			rgbaRenderer.DrawSprite(bgSprite, radarOrigin, PaletteType.Chrome);	
 			rgbaRenderer.Flush();
-			if (hasRadar || radarAnimating)
+
+			if (hasRadar && !radarAnimating)
 				Game.minimap.Draw(radarOrigin + new float2(9,0), hasRadar, isJammed);
 		}
 		
