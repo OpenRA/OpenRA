@@ -324,7 +324,7 @@ namespace OpenRa.Game
 		void DrawMoney()
 		{
 			var moneyDigits = Game.LocalPlayer.DisplayCash.ToString();
-			var x = Game.viewport.Width - 155;
+			var x = Game.viewport.Width - 65;
 			foreach (var d in moneyDigits.Reverse())
 			{
 				rgbaRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Chrome);
@@ -388,9 +388,9 @@ namespace OpenRa.Game
 
 		void DrawButtons()
 		{
-			/*
+			int2 buttonOrigin = new int2(Game.viewport.Width - 320, 2);
 			// Repair
-			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
@@ -405,7 +405,7 @@ namespace OpenRa.Game
 			shpRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
 			// Sell
-			Rectangle sellRect = new Rectangle(Game.viewport.Width - 80, 5, 
+			Rectangle sellRect = new Rectangle(buttonOrigin.X+40, buttonOrigin.Y, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
@@ -415,12 +415,11 @@ namespace OpenRa.Game
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			shpRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
 			shpRenderer.Flush();
-*/
 
 			if (Game.Settings.PowerDownBuildings)
 			{
 				// Power Down
-				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 400, 5,
+				Rectangle pwrdownRect = new Rectangle(buttonOrigin.X+80, buttonOrigin.Y,
 					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
 
 				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);
