@@ -118,7 +118,15 @@ namespace RulesConverter
 					{ "Icon", "Icon" },
 					{ "$Description", "Description" },
 					{ "$LongDesc", "LongDesc" } }
-				}
+				},
+
+				{ "Cargo", new PL { 
+					{ "@PassengerTypes", "PassengerTypes" } }
+				},
+
+				{ "LimitedAmmo", new PL {
+					{ "Ammo", "Ammo" } }
+				},
 			};
 
 			using (var writer = File.CreateText(outputFile))

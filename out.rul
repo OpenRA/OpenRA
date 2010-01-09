@@ -335,6 +335,7 @@ APC:
 	Repairable:
 	Chronoshiftable:
 	Cargo:
+		PassengerTypes: [Foot]
 	Passenger:
 	IronCurtainable:
 
@@ -365,6 +366,7 @@ MNLY.AP:
 	MineImmune:
 	Repairable:
 	LimitedAmmo:
+		Ammo: 5
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
@@ -396,6 +398,7 @@ MNLY.AT:
 	MineImmune:
 	Repairable:
 	LimitedAmmo:
+		Ammo: 5
 	Chronoshiftable:
 	Passenger:
 	IronCurtainable:
@@ -493,6 +496,7 @@ LST:
 		Speed: 14
 	RenderUnit:
 	Cargo:
+		PassengerTypes: [Foot,Wheel,Track]
 	IronCurtainable:
 
 PT:
@@ -541,6 +545,7 @@ MIG:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
+		Ammo: 3
 	IronCurtainable:
 
 YAK:
@@ -565,6 +570,7 @@ YAK:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
+		Ammo: 15
 	IronCurtainable:
 
 TRAN:
@@ -587,6 +593,7 @@ TRAN:
 	RenderUnitRotor:
 	WithShadow:
 	Cargo:
+		PassengerTypes: [Foot]
 	IronCurtainable:
 
 HELI:
@@ -611,6 +618,7 @@ HELI:
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:
+		Ammo: 6
 	IronCurtainable:
 
 HIND:
@@ -635,6 +643,7 @@ HIND:
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:
+		Ammo: 12
 	IronCurtainable:
 
 IRON:
