@@ -45,7 +45,7 @@ namespace RulesConverter
 				{ "Selectable", new PL {
 					{ "Priority", "SelectionPriority" },
 					{ "Voice", "Voice" },
-					{ "@Bounds", "SelectionSize" } } 
+					{ "Bounds", "SelectionSize" } } 
 				},
 
 				{ "Mobile", new PL {
@@ -112,7 +112,7 @@ namespace RulesConverter
 				{ "Buildable", new PL {
 					{ "TechLevel", "TechLevel" },
 					{ "Tab", "$Tab" },
-					{ "@Prerequisites", "Prerequisite" },
+					{ "Prerequisites", "Prerequisite" },
 					{ "Owner", "Owner" },
 					{ "Cost", "Cost" },
 					{ "Icon", "Icon" },
@@ -121,7 +121,7 @@ namespace RulesConverter
 				},
 
 				{ "Cargo", new PL { 
-					{ "@PassengerTypes", "PassengerTypes" } }
+					{ "PassengerTypes", "PassengerTypes" } }
 				},
 
 				{ "LimitedAmmo", new PL {

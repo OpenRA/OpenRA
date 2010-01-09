@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using OpenRa.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRa.Game.GameRules
 {
@@ -12,6 +13,39 @@ namespace OpenRa.Game.GameRules
 			{
 				var field = self.GetType().GetField( x.Key.Trim() );
 				field.SetValue( self, GetValue( field.FieldType, x.Value.Trim() ) );
+			}
+		}
+
+		public static void CheckYaml( object self, Dictionary<string, MiniYaml> d )
+		{
+			//foreach( var x in d )
+			//{
+			//    if( x.Key == "Tab" ) continue;
+			//    if( x.Key == "Description" ) continue;
+			//    if( x.Key == "LongDesc" ) continue;
+
+			//    var key = x.Key;
+			//    if( key == "Prerequisites" ) key = "Prerequisite";
+			//    if( key == "HP" ) key = "Strength";
+			//    if( key == "Priority" ) key = "SelectionPriority";
+			//    if( key == "Bounds" ) key = "SelectionSize";
+			//    var field = self.GetType().GetField( key );
+			//    var old = field.GetValue( self );
+			//    var neww = GetValue( field.FieldType, x.Value.Value.Trim() );
+			//    if( old.ToString() != neww.ToString() )
+			//        throw new NotImplementedException();
+			//}
+			foreach( var x in d )
+			{
+				var key = x.Key;
+				if( key == "Tab" )
+					continue;
+				if( key == "Prerequisites" ) key = "Prerequisite";
+				if( key == "HP" ) key = "Strength";
+				if( key == "Priority" ) key = "SelectionPriority";
+				if( key == "Bounds" ) key = "SelectionSize";
+				var field = self.GetType().GetField( key.Trim() );
+				field.SetValue( self, GetValue( field.FieldType, x.Value.Value.Trim() ) );
 			}
 		}
 

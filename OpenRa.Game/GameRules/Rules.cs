@@ -24,6 +24,8 @@ namespace OpenRa.Game
 		public static Map Map;
 		public static TileSet TileSet;
 
+		public static Dictionary<string, NewUnitInfo> NewUnitInfo;
+
 		public static void LoadRules(string mapFileName, bool useAftermath)
 		{
 			if( useAftermath )
@@ -91,6 +93,14 @@ namespace OpenRa.Game
 			Map = new Map( AllRules );
 			FileSystem.MountTemporary( new Package( Rules.Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
+
+			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
+			foreach( var kv in MiniYaml.FromFile( "ra.yaml" ) )
+				NewUnitInfo.Add( kv.Key.ToLowerInvariant(), new NewUnitInfo( kv.Value ) );
+
+			foreach( var unit in NewUnitInfo )
+				foreach( var trait in unit.Value.Traits.Values )
+					FieldLoader.CheckYaml( UnitInfo[ unit.Key.ToLowerInvariant() ], trait.Nodes );
 		}
 
 		static void LoadCategories(params string[] types)

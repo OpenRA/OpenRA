@@ -95,6 +95,7 @@
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\AftermathInfo.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
+    <Compile Include="GameRules\NewUnitInfo.cs" />
     <Compile Include="GameRules\SupportPowerInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\UserSettings.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BelowUnits.cs" />
+    <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Cargo.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
+    <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
