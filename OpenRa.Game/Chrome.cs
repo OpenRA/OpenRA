@@ -59,8 +59,14 @@ namespace OpenRa.Game
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -163);
 		float2 radarOrigin;
-		bool radarAnimating = false;
-		int radarVelocity = 15;
+		float radarActivateHeight;
+		const int radarSlideAnimationLength = 15;
+		int radarSlideAnimationFrame = 0;
+		bool radarSlideAnimating = false;
+
+		const int radarActivateAnimationLength = 5;
+		int radarActivateAnimationFrame = 0;
+		bool radarActivateAnimating = false;
 		
 		// Power bar positioning
 		static float2 powerOrigin = new float2(Game.viewport.Width - 20, 30);
@@ -172,20 +178,43 @@ namespace OpenRa.Game
 		
 		public void Tick()
 		{
-			if (radarAnimating)
+			if (radarSlideAnimating)
 			{
-				radarOrigin.Y += (hadRadar) ? radarVelocity : -radarVelocity;
+				var oldOrigin = (hadRadar) ? radarClosedOrigin : radarOpenOrigin;
+				var newOrigin = (hadRadar) ? radarOpenOrigin : radarClosedOrigin;
+				
+				radarOrigin = float2.Lerp(oldOrigin, newOrigin, radarSlideAnimationFrame*1.0f/radarSlideAnimationLength);
+				
+				if (radarSlideAnimationFrame == radarSlideAnimationLength)
+				{
+					radarSlideAnimationFrame = 0;
+					radarSlideAnimating = false;
+					if (hadRadar)
+					{
+						radarActivateAnimating = true;
+						Sound.Play("radaron2.aud");
+					}
+					return;
+				}
+				radarSlideAnimationFrame++;
+			}
 
-				if (hadRadar && radarOrigin.Y >= radarOpenOrigin.Y)
+			if (radarActivateAnimating)
+			{
+				float oldHeight = (hadRadar) ? 0 : 192;
+				float newHeight = (hadRadar) ? 192 : 0;
+
+				radarActivateHeight = float2.Lerp(oldHeight, newHeight, radarActivateAnimationFrame * 1.0f / radarActivateAnimationLength);
+
+				if (radarActivateAnimationFrame == radarActivateAnimationLength)
 				{
-					radarAnimating = false;
-					radarOrigin.Y = radarOpenOrigin.Y;
+					radarActivateAnimationFrame = 0;
+					radarActivateAnimating = false;
+					if (!hadRadar)
+						radarSlideAnimating = true;
+					return;
 				}
-				else if (radarOrigin.Y <= radarClosedOrigin.Y)
-				{
-					radarAnimating = false;
-					radarOrigin.Y = radarClosedOrigin.Y;
-				}
+				radarActivateAnimationFrame++;
 			}
 		}
 		
@@ -228,27 +257,30 @@ namespace OpenRa.Game
 			
 			if (hasRadar != hadRadar)
 			{
-				radarAnimating = true;
-				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
+				if (hadRadar)
+				{
+					radarActivateAnimating = true;
+					Sound.Play("radardn1.aud");
+				}
+				else
+					radarSlideAnimating = true;
 			}
 			hadRadar = hasRadar;
 
 			var isJammed = false;		// todo: MRJ can do this
-			/*
-			rgbaRenderer.DrawSprite((Game.LocalPlayer.Race == Race.Allies) ? radarBinAllied : radarBinSoviet,
-				radarOrigin,
-				PaletteType.Chrome);
-			*/
 
 			var bgSprite = SequenceProvider.GetImageFromCollection(renderer, "radar", "nobg");
-			if (!hasRadar || radarAnimating)
+			if (radarSlideAnimating || radarActivateAnimating)
 				bgSprite = (Game.LocalPlayer.Race == Race.Allies) ? SequenceProvider.GetImageFromCollection(renderer, "radar", "allied") : SequenceProvider.GetImageFromCollection(renderer, "radar", "soviet");
 			
 			rgbaRenderer.DrawSprite(bgSprite, radarOrigin, PaletteType.Chrome);	
 			rgbaRenderer.Flush();
 
-			if (hasRadar && !radarAnimating)
-				Game.minimap.Draw(radarOrigin + new float2(9,0), hasRadar, isJammed);
+			if ((hasRadar && !radarSlideAnimating) || radarActivateAnimating)
+			{
+				RectangleF mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y+(192-radarActivateHeight)/2, 192, radarActivateHeight);
+				Game.minimap.Draw(mapRect, hasRadar, isJammed);
+			}
 		}
 		
 		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
