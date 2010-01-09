@@ -45,7 +45,7 @@ namespace OpenRa.Game
 
 		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
 		readonly List<Sprite> digitSprites;
-		readonly Dictionary<string, Sprite[]> tabSprites;
+		readonly Dictionary<string, string[]> tabSprites;
 		readonly Dictionary<string, Sprite> spsprites;
 		readonly Sprite[] shimSprites;
 		readonly Sprite blank;
@@ -149,11 +149,11 @@ namespace OpenRa.Game
 				.ToDictionary(
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
-
+			
 			tabSprites = groups.Select(
 				(g, i) => Pair.New(g,
 					OpenRa.Game.Graphics.Util.MakeArray(3,
-						n => SequenceProvider.GetImageFromCollection(renderer, "tabs-"+n,i.ToString()))))
+						n => i.ToString())))
 				.ToDictionary(a => a.First, a => a.Second);
 
 			cantBuild = new Animation("clock");
@@ -305,10 +305,11 @@ namespace OpenRa.Game
 					CheckDeadTab(groupName);
 					continue;
 				}
-
+				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				rgbaRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Chrome);
+				var race = (Game.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), PaletteType.Chrome);
 
 				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
 					(Action<bool>)(isLmb => currentTab = groupName)));

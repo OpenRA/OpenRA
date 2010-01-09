@@ -28,28 +28,47 @@
 		<image name="8" x="136" y="0" width="13" height="17" />
 		<image name="9" x="149" y="0" width="13" height="17" />
 	</collection>
-	<collection name="tabs-0" src="specialbin.png">
-		<image name="0" x="485" y="64" width="27" height="40" />
-		<image name="1" x="485" y="104" width="27" height="40" />
-		<image name="2" x="485" y="144" width="27" height="40" />
-		<image name="3" x="485" y="184" width="27" height="40" />
-		<image name="4" x="485" y="224" width="27" height="40" />
-		<image name="5" x="485" y="264" width="27" height="40" />
+	<collection name="tabs-selected" src="tabs.png">
+		<image name="allies-Building" x="0" y="0" width="27" height="41" />
+		<image name="allies-Defense" x="0" y="40" width="27" height="41" />
+		<image name="allies-Infantry" x="0" y="80" width="27" height="41" />
+		<image name="allies-Vehicle" x="0" y="120" width="27" height="41" />
+		<image name="allies-Plane" x="0" y="160" width="27" height="41" />
+		<image name="allies-Ship" x="0" y="200" width="27" height="41" />
+		<image name="soviet-Building" x="80" y="0" width="27" height="41" />
+		<image name="soviet-Defense" x="80" y="40" width="27" height="41" />
+		<image name="soviet-Infantry" x="80" y="80" width="27" height="41" />
+		<image name="soviet-Vehicle" x="80" y="120" width="27" height="41" />
+		<image name="soviet-Plane" x="80" y="160" width="27" height="41" />
+		<image name="soviet-Ship" x="80" y="200" width="27" height="41" />
 	</collection>
-	<collection name="tabs-1" src="specialbin.png">
-		<image name="0" x="458" y="64" width="27" height="40" />
-		<image name="1" x="458" y="104" width="27" height="40" />
-		<image name="2" x="458" y="144" width="27" height="40" />
-		<image name="3" x="458" y="184" width="27" height="40" />
-		<image name="4" x="458" y="224" width="27" height="40" />
-		<image name="5" x="458" y="264" width="27" height="40" />
+	<collection name="tabs-ready" src="tabs.png">
+		<image name="allies-Building" x="27" y="0" width="27" height="41" />
+		<image name="allies-Defense" x="27" y="40" width="27" height="41" />
+		<image name="allies-Infantry" x="27" y="80" width="27" height="41" />
+		<image name="allies-Vehicle" x="27" y="120" width="27" height="41" />
+		<image name="allies-Plane" x="27" y="160" width="27" height="41" />
+		<image name="allies-Ship" x="27" y="200" width="27" height="41" />
+		<image name="soviet-Building" x="107" y="0" width="27" height="41" />
+		<image name="soviet-Defense" x="107" y="40" width="27" height="41" />
+		<image name="soviet-Infantry" x="107" y="80" width="27" height="41" />
+		<image name="soviet-Vehicle" x="107" y="120" width="27" height="41" />
+		<image name="soviet-Plane" x="107" y="160" width="27" height="41" />
+		<image name="soviet-Ship" x="107" y="200" width="27" height="41" />
 	</collection>
-	<collection name="tabs-2" src="specialbin.png">
-		<image name="0" x="431" y="64" width="27" height="40" />
-		<image name="1" x="431" y="104" width="27" height="40" />
-		<image name="2" x="431" y="144" width="27" height="40" />
-		<image name="3" x="431" y="184" width="27" height="40" />
-		<image name="4" x="431" y="224" width="27" height="40" />
-		<image name="5" x="431" y="264" width="27" height="40" />
+	<collection name="tabs-normal" src="tabs.png">
+		<image name="allies-Building" x="54" y="0" width="27" height="41" />
+		<image name="allies-Defense" x="54" y="40" width="27" height="41" />
+		<image name="allies-Infantry" x="54" y="80" width="27" height="41" />
+		<image name="allies-Vehicle" x="54" y="120" width="27" height="41" />
+		<image name="allies-Plane" x="54" y="160" width="27" height="41" />
+		<image name="allies-Ship" x="54" y="200" width="27" height="41" />
+		<image name="soviet-Building" x="134" y="0" width="27" height="41" />
+		<image name="soviet-Defense" x="134" y="40" width="27" height="41" />
+		<image name="soviet-Infantry" x="134" y="80" width="27" height="41" />
+		<image name="soviet-Vehicle" x="134" y="120" width="27" height="41" />
+		<image name="soviet-Plane" x="134" y="160" width="27" height="41" />
+		<image name="soviet-Ship" x="134" y="200" width="27" height="41" />
 	</collection>
+	
 </chrome>

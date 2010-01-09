@@ -107,9 +107,9 @@ namespace OpenRa.Game.Graphics
 			sheet.Texture.SetData(bitmap);
 		}
 
-		public void Draw(float2 pos, bool hasRadar, bool isJammed)
+		public void Draw(RectangleF rect, bool hasRadar, bool isJammed)
 		{
-			rgbaRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(192, 192));
+			rgbaRenderer.DrawSprite(sprite, new float2(rect.X, rect.Y), PaletteType.Chrome, new float2(rect.Width, rect.Height));
 			rgbaRenderer.Flush();
 		}
 	}
