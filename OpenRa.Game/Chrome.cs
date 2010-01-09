@@ -53,11 +53,11 @@ namespace OpenRa.Game
 		// Build palette positioning
 		const int paletteColumns = 3;
 		const int paletteRows = 5;
-		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 240);
+		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 260);
 
 		// Radar
-		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
-		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -163);
+		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
 		float2 radarOrigin;
 		float radarActivateHeight;
 		const int radarSlideAnimationLength = 15;
@@ -68,8 +68,9 @@ namespace OpenRa.Game
 		int radarActivateAnimationFrame = 0;
 		bool radarActivateAnimating = false;
 		
-		// Power bar positioning
-		static float2 powerOrigin = new float2(Game.viewport.Width - 20, 30);
+		// Power bar positioning (relative to Radar)
+		static float2 powerOrigin = new float2(42, 205);
+		static Size powerSize = new Size(138,5);
 		
 		
 		bool hadRadar = false;
@@ -234,11 +235,9 @@ namespace OpenRa.Game
 			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
 			DrawRadar();
-
-			rgbaRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
-
-			DrawMoney();
 			DrawPower();
+			rgbaRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
+			DrawMoney();
 			rgbaRenderer.Flush();
 			DrawButtons();
 			
@@ -348,49 +347,58 @@ namespace OpenRa.Game
 		
 		void DrawPower()
 		{
-			// Add the renderer offset
-			var origin = powerOrigin +  Game.viewport.Location;
-			//draw background
-			shpRenderer.DrawSprite(powerLevelTopSprite, origin, PaletteType.Chrome);
-			shpRenderer.DrawSprite(powerLevelBottomSprite, origin + new float2(0, powerLevelTopSprite.size.Y), PaletteType.Chrome);
-			shpRenderer.Flush();
-			float2 top = origin + new float2(0, 15);
-			float2 bottom = origin + new float2(0, powerLevelTopSprite.size.Y + powerLevelBottomSprite.size.Y) - new float2(0, 50);
+			// Nothing to draw
+			if (Game.LocalPlayer.PowerProvided == 0 && Game.LocalPlayer.PowerDrained == 0)
+				return;
 			
-			var scale = 100;
-			while(Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained) >= scale) scale *= 2;
-			//draw bar
+			// Draw bar horizontally
+			var barStart = powerOrigin + Game.viewport.Location + radarOrigin;
+			var barEnd = barStart + new float2(powerSize.Width, 0);
 
-			var powerTopY = bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale) - Game.viewport.Location.Y;
-			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerTopY), powerTopY, .3f);
-			float2 powerTop = new float2(bottom.X, lastPowerProvidedPos.Value + Game.viewport.Location.Y);
+			float powerScaleBy = 100;
+			var maxPower = Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained);
+			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 			
+			// Current power supply
+			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerProvided / powerScaleBy) - Game.viewport.Location.X;
+			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
+			float2 powerLevel = new float2(lastPowerProvidedPos.Value + Game.viewport.Location.X, barStart.Y);
+
 			var color = Color.LimeGreen;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
 				color = Color.Orange;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Critical)
 				color = Color.Red;
-
-			var color2 = Graphics.Util.Lerp(0.25f, color, Color.Black);
-			
-			for(int i = 11; i < 13; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color, color);
-			for (int i = 13; i < 15; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color2, color2);
-			
+		
+			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
+			for (int i = 0; i < powerSize.Height; i++)
+			{
+				color = (i-1 < powerSize.Height/2) ? color : colorDark;
+				float2 leftOffset = new float2(0,i);
+				float2 rightOffset = new float2(0,i);
+				// Indent corners
+				if ((i == 0 || i == powerSize.Height - 1) && powerLevel.X - barStart.X > 1)
+				{
+					leftOffset.X += 1;
+					rightOffset.X -= 1;
+				}
+				lineRenderer.DrawLine(barStart + leftOffset, powerLevel + rightOffset, color, color);
+			}
 			lineRenderer.Flush();
 
-			var drainedPositionY = bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) - powerIndicatorSprite.size.Y /2 - Game.viewport.Location.Y;
-			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(drainedPositionY), drainedPositionY, .3f);
-			//draw indicator
-			float2 drainedPosition = new float2(bottom.X + 2, lastPowerDrainedPos.Value + Game.viewport.Location.Y);
-
-			shpRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
-			shpRenderer.Flush();
+			// Power usage indicator
+			var indicator = SequenceProvider.GetImageFromCollection(renderer, "radar", "powerindicator");
+			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy) - Game.viewport.Location.X;
+			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
+			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y - Game.viewport.Location.Y-1);
+		
+			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, PaletteType.Chrome);
+			rgbaRenderer.Flush();
 		}
 
 		void DrawButtons()
 		{
+			/*
 			// Repair
 			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
@@ -417,11 +425,12 @@ namespace OpenRa.Game
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
 			shpRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
 			shpRenderer.Flush();
+*/
 
 			if (Game.Settings.PowerDownBuildings)
 			{
 				// Power Down
-				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 40, 5,
+				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 400, 5,
 					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
 
 				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);

@@ -1,10 +1,11 @@
 ﻿<chrome>
   <collection name="radar">
-	<image name="nobg" x="0" y="0" width="210" height="201" src="radarbin-border.png" />
-	<image name="soviet" x="0" y="0" width="210" height="201" src="radarbin-soviet.png" />
-	<image name="allied" x="0" y="0" width="210" height="201" src="radarbin-allies.png" />
+	<image name="powerindicator" x="213" y="2" width="4" height="7" src="radarbin-border.png" />
+	<image name="nobg" x="0" y="0" width="210" height="222" src="radarbin-border.png" />
+	<image name="soviet" x="0" y="0" width="210" height="222" src="radarbin-soviet.png" />
+	<image name="allied" x="0" y="0" width="210" height="222" src="radarbin-allies.png" />
   </collection>
-	<collection name="chrome" src="specialbin.png">
+	<collection name="chrome" src="chrome.png">
 		<image name="powershim-top" x="0" y="0" width="30" height="51" />
 		<image name="powershim-middle" x="0" y="51" width="30" height="51" />
 		<image name="powershim-bottom" x="0" y="153" width="30" height="39" />
@@ -16,7 +17,7 @@
 		<image name="palette-border-top" x="11" y="192" width="64" height="10" />
 		<image name="palette-border-bottom" x="11" y="202" width="64" height="10" />
 	</collection>
-	<collection name="digit" src="specialbin.png">
+	<collection name="digit" src="chrome.png">
 		<image name="0" x="32" y="0" width="13" height="17" />
 		<image name="1" x="45" y="0" width="13" height="17" />
 		<image name="2" x="58" y="0" width="13" height="17" />
