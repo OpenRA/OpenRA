@@ -69,4 +69,6 @@ namespace OpenRa.Game.Traits
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}
+
+	interface ITraitInfo { object Create(Actor self); }
 }

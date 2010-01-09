@@ -4,6 +4,7 @@ using System.Linq;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -97,10 +98,6 @@ namespace OpenRa.Game
 			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
 			foreach( var kv in MiniYaml.FromFile( "ra.yaml" ) )
 				NewUnitInfo.Add( kv.Key.ToLowerInvariant(), new NewUnitInfo( kv.Value ) );
-
-			foreach( var unit in NewUnitInfo )
-				foreach( var trait in unit.Value.Traits.Values )
-					FieldLoader.CheckYaml( UnitInfo[ unit.Key.ToLowerInvariant() ], trait.Nodes );
 		}
 
 		static void LoadCategories(params string[] types)

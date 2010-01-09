@@ -16,6 +16,15 @@ namespace OpenRa.Game.GameRules
 			}
 		}
 
+		public static void Load(object self, MiniYaml my)
+		{
+			foreach (var x in my.Nodes)
+			{
+				var field = self.GetType().GetField(x.Key.Trim());
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Value.Trim()));
+			}
+		}
+
 		public static void CheckYaml( object self, Dictionary<string, MiniYaml> d )
 		{
 			//foreach( var x in d )

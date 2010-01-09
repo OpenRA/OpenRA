@@ -127,7 +127,7 @@ namespace OpenRa.Game.Traits
 
 		public static float GetEffectiveSpeed(Actor self)
 		{
-			var mi = self.Info as MobileInfo;
+			var mi = self.Info as LegacyMobileInfo;
 			if (mi == null) return 0f;
 
 			var modifier = self.traits

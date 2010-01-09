@@ -67,16 +67,16 @@ namespace OpenRa.Game.GameRules
 		public UnitInfo(string name) { Name = name; }
 	}
 
-	public class MobileInfo : UnitInfo
+	public class LegacyMobileInfo : UnitInfo
 	{
 		public readonly int Speed = 0;
 		public readonly bool NoMovingFire = false;
 		public readonly string Voice = "GenericVoice";
 
-		public MobileInfo(string name) : base(name) { }
+		public LegacyMobileInfo(string name) : base(name) { }
 	}
 
-	public class InfantryInfo : MobileInfo
+	public class InfantryInfo : LegacyMobileInfo
 	{
 		public readonly bool C4 = false;
 		public readonly bool FraidyCat = false;
@@ -87,7 +87,7 @@ namespace OpenRa.Game.GameRules
 		public InfantryInfo(string name) : base(name) { }
 	}
 
-	public class VehicleInfo : MobileInfo
+	public class VehicleInfo : LegacyMobileInfo
 	{
 		public readonly bool Tracked = false;
 

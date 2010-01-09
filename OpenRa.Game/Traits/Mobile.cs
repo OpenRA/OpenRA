@@ -5,6 +5,14 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class MobileInfo : ITraitInfo
+	{
+		public readonly int Sight;
+		public readonly int ROT;
+		public readonly int Speed;
+		public object Create(Actor self) { return new Mobile(self); }
+	}
+
 	class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
 	{
 		readonly Actor self;
