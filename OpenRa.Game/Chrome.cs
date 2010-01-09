@@ -61,8 +61,8 @@ namespace OpenRa.Game
 		readonly Sheet radarBinTextureSoviet;
 		readonly Sprite radarBinAllied;
 		readonly Sprite radarBinSoviet;
-		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 30);
-		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -180);
+		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -155);
 		float2 radarOrigin;
 		bool radarAnimating = false;
 		int radarVelocity = 15;
