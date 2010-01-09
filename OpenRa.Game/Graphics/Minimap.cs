@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using OpenRa.Game.Traits;
 using OpenRa.FileFormats;
@@ -12,6 +13,7 @@ namespace OpenRa.Game.Graphics
 		SpriteRenderer rgbaRenderer;
 		Sprite sprite;
 		Bitmap terrain, oreLayer;
+		const int alpha = 230;
 
 		public void Tick() { }
 
@@ -20,7 +22,11 @@ namespace OpenRa.Game.Graphics
 			sheet = new Sheet(r, new Size(128, 128));
 
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
-			sprite = new Sprite(sheet, new Rectangle(0, 0, 128, 128), TextureChannel.Alpha);
+			var size = Math.Max(Rules.Map.Width, Rules.Map.Height);
+			var dw = (size - Rules.Map.Width) / 2;
+			var dh = (size - Rules.Map.Height) / 2;
+			
+			sprite = new Sprite(sheet, new Rectangle(Rules.Map.Offset.X+dw, Rules.Map.Offset.Y+dh, size, size), TextureChannel.Alpha);
 		}
 
 		Color[] terrainTypeColors;
@@ -55,8 +61,8 @@ namespace OpenRa.Game.Graphics
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
 						terrain.SetPixel(x, y, Rules.Map.IsInMap(x, y)
-							? terrainTypeColors[Rules.TileSet.GetWalkability(Rules.Map.MapTiles[x, y])]
-							: Color.Black);
+							? Color.FromArgb(alpha, terrainTypeColors[Rules.TileSet.GetWalkability(Rules.Map.MapTiles[x, y])])
+							: Color.FromArgb(alpha, Color.Black));
 			}
 
 			if (oreLayer == null)

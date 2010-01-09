@@ -59,10 +59,12 @@ namespace OpenRa.Game
 		// Radar
 		readonly Sheet radarBinTextureAllied;
 		readonly Sheet radarBinTextureSoviet;
+		readonly Sheet radarBinTextureBorder;
 		readonly Sprite radarBinAllied;
 		readonly Sprite radarBinSoviet;
+		readonly Sprite radarBinBorder;
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 250, 29);
-		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -155);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 250, -162);
 		float2 radarOrigin;
 		bool radarAnimating = false;
 		int radarVelocity = 15;
@@ -102,9 +104,11 @@ namespace OpenRa.Game
 			// Radar
 			radarBinTextureAllied = new Sheet(renderer, "radarbin-allies.png");
 			radarBinTextureSoviet = new Sheet(renderer, "radarbin-soviet.png");
+			radarBinTextureBorder = new Sheet(renderer, "radarbin-border.png");
 			radarBinAllied = new Sprite(radarBinTextureAllied, new Rectangle(0, 0, 210, 201), TextureChannel.Alpha);
 			radarBinSoviet = new Sprite(radarBinTextureSoviet, new Rectangle(0,0,210,201), TextureChannel.Alpha);
-				  
+			radarBinBorder = new Sprite(radarBinTextureBorder, new Rectangle(0, 0, 210, 201), TextureChannel.Alpha);
+	  
 			radarOrigin = radarClosedOrigin;
 			
 			var powerIndicator = new Animation("power");
@@ -249,13 +253,14 @@ namespace OpenRa.Game
 			hadRadar = hasRadar;
 
 			var isJammed = false;		// todo: MRJ can do this
-			
+			/*
 			rgbaRenderer.DrawSprite((Game.LocalPlayer.Race == Race.Allies) ? radarBinAllied : radarBinSoviet,
 				radarOrigin,
 				PaletteType.Chrome);
-				
+			*/
+			rgbaRenderer.DrawSprite(radarBinBorder,radarOrigin,PaletteType.Chrome);	
 			rgbaRenderer.Flush();
-			if (!radarAnimating && hasRadar)
+			if (hasRadar || radarAnimating)
 				Game.minimap.Draw(radarOrigin + new float2(9,0), hasRadar, isJammed);
 		}
 		
