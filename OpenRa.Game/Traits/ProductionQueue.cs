@@ -74,6 +74,7 @@ namespace OpenRa.Game.Traits
 		}
 
 		// Key: Production category.
+		// TODO: sync this
 		readonly Cache<string, List<ProductionItem>> production 
 			= new Cache<string, List<ProductionItem>>( _ => new List<ProductionItem>() );
 

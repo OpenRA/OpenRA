@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRa.Game.Effects;
+using OpenRa.Game.Support;
 
 namespace OpenRa.Game
 {
@@ -12,15 +13,15 @@ namespace OpenRa.Game
 
 		public void Add(Actor a)
 		{
-			a.IsInWorld = true; 
-			actors.Add(a); 
+			a.IsInWorld = true;
+			actors.Add(a);
 			ActorAdded(a);
 		}
 
 		public void Remove(Actor a)
 		{
-			a.IsInWorld = false; 
-			actors.Remove(a); 
+			a.IsInWorld = false;
+			actors.Remove(a);
 			ActorRemoved(a);
 		}
 
@@ -51,6 +52,18 @@ namespace OpenRa.Game
 		internal uint NextAID()
 		{
 			return nextAID++;
+		}
+
+		public int SyncHash()
+		{
+			using (new PerfSample("synchash"))
+			{
+				int ret = 0;
+				foreach (var a in Actors)
+					ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
+
+				return ret;
+			}
 		}
 	}
 }

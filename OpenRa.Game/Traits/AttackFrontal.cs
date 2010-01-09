@@ -7,7 +7,7 @@ namespace OpenRa.Game.Traits
 		public AttackFrontal(Actor self, int facingTolerance)
 			: base(self) { FacingTolerance = facingTolerance; }
 
-		int FacingTolerance;
+		readonly int FacingTolerance;
 
 		public override void Tick(Actor self)
 		{

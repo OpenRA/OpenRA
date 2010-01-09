@@ -8,7 +8,9 @@ namespace OpenRa.Game.Traits
 	class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic
+		[Sync]
 		int2 chronoshiftOrigin;
+		[Sync]
 		int chronoshiftReturnTicks = 0;
 
 		public Chronoshiftable(Actor self) { }

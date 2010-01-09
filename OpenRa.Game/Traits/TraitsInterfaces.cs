@@ -10,18 +10,18 @@ namespace OpenRa.Game.Traits
 	// depends on the order of pips in WorldRenderer.cs!
 	enum PipType { Transparent, Green, Yellow, Red, Gray };
 	enum TagType { None, Fake, Primary };
-	
+
 	interface ITick { void Tick(Actor self); }
 	interface IRender { IEnumerable<Renderable> Render(Actor self); }
+	interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
+	interface IResolveOrder { void ResolveOrder( Actor self, Order order ); }
+
 	interface INotifySold { void Sold(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
 	interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
-	
-	interface IIssueOrder { Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor); }
-	interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
-	
+
 	interface IProducer
 	{
 		bool Produce( Actor self, UnitInfo producee );

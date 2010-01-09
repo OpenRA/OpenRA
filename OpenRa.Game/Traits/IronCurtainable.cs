@@ -5,6 +5,7 @@ namespace OpenRa.Game.Traits
 {
 	class IronCurtainable : IResolveOrder, IDamageModifier, ITick
 	{
+		[Sync]
 		int RemainingTicks = 0;
 
 		public IronCurtainable(Actor self) { }

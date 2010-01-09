@@ -7,8 +7,9 @@ namespace OpenRa.Game.Traits
 	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
 	{
 		// Recharge logic
+		[Sync]
 		int chargeTick = 0; // How long until we can chronoshift again?
-		int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
+		readonly int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 
 		public ChronoshiftDeploy(Actor self) { }
 		

@@ -95,6 +95,8 @@ namespace OpenRa.Game
 
 		void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e)
 		{
+			int sync = Game.world.SyncHash();
+
 			Game.viewport.DispatchMouseInput(
 				new MouseInput
 				{
@@ -103,6 +105,9 @@ namespace OpenRa.Game
 					Location = new int2(e.Location),
 					Modifiers = (Modifiers)(int)ModifierKeys,
 				});
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -136,6 +141,8 @@ namespace OpenRa.Game
 		{
 			base.OnKeyDown(e);
 
+			int sync = Game.world.SyncHash();
+
 			/* hack hack hack */
 			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
 			{
@@ -156,16 +163,24 @@ namespace OpenRa.Game
 			if (!Game.chat.isChatting)
 				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
 					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyDown" );
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
 			base.OnKeyPress(e);
 
+			int sync = Game.world.SyncHash();
+
 			if (e.KeyChar == '\r')
 				Game.chat.Toggle();
 			else if (Game.chat.isChatting)
 				Game.chat.TypeChar(e.KeyChar);
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}
 	}
 

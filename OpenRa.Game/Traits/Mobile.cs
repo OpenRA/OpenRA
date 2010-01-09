@@ -9,6 +9,7 @@ namespace OpenRa.Game.Traits
 	{
 		readonly Actor self;
 
+		[Sync]
 		int2 __fromCell;
 		public int2 fromCell
 		{

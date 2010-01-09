@@ -129,6 +129,7 @@
     <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
+    <Compile Include="Sync.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CaptureBuilding.cs" />

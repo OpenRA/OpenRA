@@ -6,6 +6,7 @@ namespace OpenRa.Game.Traits
 {
 	class Submarine : IRenderModifier, INotifyAttack, ITick, INotifyDamage
 	{
+		[Sync]
 		int remainingSurfaceTime = 2;		/* setup for initial dive */
 
 		public Submarine(Actor self) { }

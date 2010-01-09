@@ -147,14 +147,24 @@ namespace OpenRa.Game
 
 		public Cursor ChooseCursor()
 		{
-			var mi = new MouseInput
-			{
-				Location = (Game.CellSize * MousePosition - Game.viewport.Location).ToInt2(),
-				Button = MouseButton.Right,
-				Modifiers = GetModifierKeys(),
-			};
+			int sync = Game.world.SyncHash();
 
-			return orderGenerator.GetCursor(MousePosition.ToInt2(), mi);
+			try
+			{
+				var mi = new MouseInput
+				{
+					Location = ( Game.CellSize * MousePosition - Game.viewport.Location ).ToInt2(),
+					Button = MouseButton.Right,
+					Modifiers = GetModifierKeys(),
+				};
+
+				return orderGenerator.GetCursor( MousePosition.ToInt2(), mi );
+			}
+			finally
+			{
+				if( sync != Game.world.SyncHash() )
+					throw new InvalidOperationException( "Desync in Controller.ChooseCursor" );
+			}
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());

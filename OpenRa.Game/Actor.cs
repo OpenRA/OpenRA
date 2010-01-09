@@ -10,12 +10,16 @@ namespace OpenRa.Game
 {
 	class Actor
 	{
+		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
 		public readonly UnitInfo Info;
 
 		public readonly uint ActorID;
+		[Sync]
 		public int2 Location;
+		[Sync]
 		public Player Owner;
+		[Sync]
 		public int Health;
 		IActivity currentActivity;
 
