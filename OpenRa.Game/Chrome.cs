@@ -47,7 +47,6 @@ namespace OpenRa.Game
 		readonly List<Sprite> digitSprites;
 		readonly Dictionary<string, string[]> tabSprites;
 		readonly Dictionary<string, Sprite> spsprites;
-		readonly Sprite[] shimSprites;
 		readonly Sprite blank;
 	
 		// Build palette positioning
@@ -162,15 +161,6 @@ namespace OpenRa.Game
 
 			digitSprites = Graphics.Util.MakeArray(10, a => a)
 				.Select(n => SequenceProvider.GetImageFromCollection(renderer, "digit", n.ToString())).ToList();
-
-			shimSprites = new[] 
-			{
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-tl"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-bl"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-left"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-top"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "palette-border-bottom"),
-			};
 
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
@@ -534,8 +524,22 @@ namespace OpenRa.Game
 
 			string tooltipItem = null;
 
+			// Draw the top border
+			var collection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "border-top"), new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
+			
+			// Draw the icons
+			int lasty = -1;
 			foreach (var item in allItems)
 			{
+				// Draw the background for this row
+				if (y != lasty)
+				{
+					rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "row-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+					rgbaRenderer.Flush();
+					lasty = y;
+				}
+				
 				var rect = new Rectangle(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
@@ -591,14 +595,12 @@ namespace OpenRa.Game
 				AddButton(rect, isLmb => HandleBuildPalette(closureItem, isLmb));
 				if (++x == columns) { x = 0; y++; }
 			}
-
-			while (x != 0 || y < paletteRows)
+			if (x != 0) y++;
+			
+			while (y < paletteRows)
 			{
-				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
-				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				shpRenderer.DrawSprite(blank, drawPos, PaletteType.Chrome);
-				AddButton(rect, _ => { });
-				if (++x == columns) { x = 0; y++; }
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "row-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+				y++;
 			}
 
 			foreach (var ob in overlayBits)
@@ -606,17 +608,7 @@ namespace OpenRa.Game
 
 			shpRenderer.Flush();
 
-			for (var j = 0; j < y; j++)
-				rgbaRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), PaletteType.Chrome);
-
-			rgbaRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
-
-			for (var i = 0; i < columns; i++)
-			{
-				rgbaRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), PaletteType.Chrome);
-				rgbaRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), PaletteType.Chrome);
-			}
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "border-bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null)

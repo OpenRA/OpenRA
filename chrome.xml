@@ -5,6 +5,22 @@
 	<image name="soviet" x="0" y="0" width="210" height="222" src="radarbin-soviet.png" />
 	<image name="allied" x="0" y="0" width="210" height="222" src="radarbin-allies.png" />
   </collection>
+	<collection name="palette-allies" src="palette-allies.png">
+		<image name="border-top" x="0" y="0" width="201" height="9" />
+		<image name="border-bottom" x="0" y="201" width="201" height="9" />
+		<image name="row-0" x="0" y="9" width="201" height="48" />
+		<image name="row-1" x="0" y="57" width="201" height="48" />
+		<image name="row-2" x="0" y="105" width="201" height="48" />
+		<image name="row-3" x="0" y="153" width="201" height="48" />
+	</collection>
+	<collection name="palette-soviet" src="palette-soviet.png">
+		<image name="border-top" x="0" y="0" width="201" height="9" />
+		<image name="border-bottom" x="0" y="201" width="201" height="9" />
+		<image name="row-0" x="0" y="9" width="201" height="48" />
+		<image name="row-1" x="0" y="57" width="201" height="48" />
+		<image name="row-2" x="0" y="105" width="201" height="48" />
+		<image name="row-3" x="0" y="153" width="201" height="48" />
+	</collection>
 	<collection name="chrome" src="chrome.png">
 		<image name="powershim-top" x="0" y="0" width="30" height="51" />
 		<image name="powershim-middle" x="0" y="51" width="30" height="51" />
