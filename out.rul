@@ -19,6 +19,7 @@ V2RL:
 		ROT: 5
 		Speed: 7
 	AttackBase:
+		PrimaryWeapon: SCUD
 	RenderUnitReload:
 	AutoTarget:
 	Repairable:
@@ -48,6 +49,8 @@ V2RL:
 		Speed: 9
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 75mm
+		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
 	Repairable:
@@ -77,6 +80,8 @@ V2RL:
 		Speed: 8
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 90mm
+		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
 	Repairable:
@@ -106,6 +111,8 @@ V2RL:
 		Speed: 7
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 105mm
+		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
 	Repairable:
@@ -135,6 +142,10 @@ V2RL:
 		Speed: 4
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 120mm
+		PrimaryLocalOffset: -4,-5,0,4,-5,0
+		SecondaryLocalOffset: -7,2,25,7,2,-25
+		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
 	Repairable:
@@ -217,6 +228,7 @@ ARTY:
 		ROT: 2
 		Speed: 6
 	AttackBase:
+		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
 	AutoTarget:
@@ -303,6 +315,9 @@ JEEP:
 		Speed: 10
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: M60mg
+		PrimaryOffset: 0,0,0,-2
+		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
 	Repairable:
@@ -330,12 +345,16 @@ APC:
 		ROT: 5
 		Speed: 10
 	AttackBase:
+		PrimaryWeapon: M60mg
+		PrimaryOffset: 0,0,0,-4
+		MuzzleFlash: yes
 	RenderUnitMuzzleFlash:
 	AutoTarget:
 	Repairable:
 	Chronoshiftable:
 	Cargo:
 		PassengerTypes: [Foot]
+		UnloadFacing: 220
 	Passenger:
 	IronCurtainable:
 
@@ -424,6 +443,7 @@ SS:
 	RenderUnit:
 	Submarine:
 	AttackBase:
+		PrimaryWeapon: TorpTube
 	Chronoshiftable:
 	IronCurtainable:
 
@@ -447,6 +467,8 @@ DD:
 		Speed: 6
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: Stinger
+		PrimaryOffset: 0,-8,0,-3
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
@@ -472,6 +494,10 @@ CA:
 		Speed: 4
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 8Inch
+		PrimaryOffset: 0,17,0,-2
+		SecondaryOffset: 0,-17,0,-2
+		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
@@ -519,6 +545,8 @@ PT:
 		Speed: 9
 	Turreted:
 	AttackTurreted:
+		PrimaryWeapon: 2Inch
+		PrimaryOffset: 0,-6,0,-1
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
@@ -539,6 +567,7 @@ MIG:
 		HP: 50
 		Armor: light
 	AttackPlane:
+		PrimaryWeapon: Maverick
 	Plane:
 		ROT: 5
 		Speed: 20
@@ -564,6 +593,7 @@ YAK:
 		Armor: light
 		Crewed: yes
 	AttackPlane:
+		PrimaryWeapon: ChainGun
 	Plane:
 		ROT: 5
 		Speed: 16
@@ -612,6 +642,9 @@ HELI:
 		Armor: heavy
 		Crewed: yes
 	AttackHeli:
+		PrimaryWeapon: Hellfire
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		ROT: 4
 		Speed: 16
@@ -637,6 +670,9 @@ HIND:
 		Armor: heavy
 		Crewed: yes
 	AttackHeli:
+		PrimaryWeapon: ChainGun
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		ROT: 4
 		Speed: 12
@@ -663,6 +699,7 @@ IRON:
 		RequiresPower: true
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
 	RenderBuilding:
 	IronCurtainable:
 	IronCurtain:
@@ -684,6 +721,7 @@ PDOX:
 		RequiresPower: true
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
 	RenderBuilding:
 	Chronosphere:
 	IronCurtainable:
@@ -707,6 +745,7 @@ PBOX:
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
+		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
 
@@ -729,6 +768,7 @@ HBOX:
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
+		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
 
@@ -752,6 +792,7 @@ TSLA:
 	Turreted:
 	RenderBuildingCharge:
 	AttackTurreted:
+		PrimaryWeapon: TeslaZap
 	AutoTarget:
 	IronCurtainable:
 
@@ -774,6 +815,7 @@ GUN:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
+		PrimaryWeapon: TurretGun
 	AutoTarget:
 	IronCurtainable:
 
@@ -797,6 +839,7 @@ AGUN:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
+		PrimaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
 
@@ -819,6 +862,7 @@ FTUR:
 		Dimensions: [1,1]
 	RenderBuilding:
 	AttackTurreted:
+		PrimaryWeapon: FireballLauncher
 	AutoTarget:
 	IronCurtainable:
 
@@ -839,6 +883,7 @@ GAP:
 		RequiresPower: true
 		Footprint: _ x
 		Dimensions: [1,2]
+		Capturable: true
 	RenderBuilding:
 	IronCurtainable:
 
@@ -861,6 +906,7 @@ SAM:
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
+		PrimaryWeapon: Nike
 	AutoTarget:
 	IronCurtainable:
 
@@ -899,6 +945,8 @@ ATEK:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	IronCurtainable:
 	GpsLaunchSite:
@@ -919,6 +967,8 @@ WEAP:
 		Power: -30
 		Footprint: xxx xxx
 		Dimensions: [3,2]
+		Capturable: true
+		Bib: yes
 	RenderWarFactory:
 	RenderBuilding:
 	RallyPoint:
@@ -941,6 +991,9 @@ SYRD:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -961,6 +1014,9 @@ SPEN:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -973,6 +1029,8 @@ FACT:
 		Power: 0
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	ConstructionYard:
 	IronCurtainable:
@@ -993,6 +1051,8 @@ PROC:
 		Power: -30
 		Footprint: _x_ xxx x==
 		Dimensions: [3,3]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	AcceptsOre:
 	StoresOre:
@@ -1016,6 +1076,7 @@ SILO:
 		Power: -10
 		Footprint: x
 		Dimensions: [1,1]
+		Capturable: true
 	RenderBuildingOre:
 	StoresOre:
 		Pips: 5
@@ -1038,6 +1099,8 @@ HPAD:
 		Power: -10
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -1061,6 +1124,8 @@ DOME:
 		RequiresPower: true
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
@@ -1081,6 +1146,7 @@ AFLD:
 		Power: -30
 		Footprint: xxx xxx
 		Dimensions: [3,2]
+		Capturable: true
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -1103,6 +1169,8 @@ POWR:
 		Power: 100
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1122,6 +1190,8 @@ APWR:
 		Power: 200
 		Footprint: ___ xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1141,6 +1211,8 @@ STEK:
 		Power: -100
 		Footprint: xxx xxx
 		Dimensions: [3,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1160,6 +1232,8 @@ BARR:
 		Power: -20
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1181,6 +1255,8 @@ TENT:
 		Power: -20
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		Bib: yes
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1223,6 +1299,7 @@ FIX:
 		Power: -30
 		Footprint: _x_ xxx _x_
 		Dimensions: [3,3]
+		Capturable: true
 	RenderBuilding:
 	BelowUnits:
 	Reservable:
@@ -1243,6 +1320,9 @@ FACF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -1264,6 +1344,9 @@ WEAF:
 		Power: -2
 		Footprint: xxx xxx
 		Dimensions: [3,2]
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
 	RenderWarFactory:
 	RenderBuilding:
 		Image: WEAP
@@ -1286,6 +1369,9 @@ SYRF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
 	RenderBuilding:
 		Image: SYRD
 	Fake:
@@ -1298,6 +1384,9 @@ SPEF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: [3,3]
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
 	RenderBuilding:
 		Image: SPEN
 	Fake:
@@ -1318,6 +1407,9 @@ DOMF:
 		Power: -2
 		Footprint: xx xx
 		Dimensions: [2,2]
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
 	RenderBuilding:
 		Image: DOME
 	Fake:
@@ -1381,6 +1473,7 @@ E1:
 		Speed: 4
 	RenderInfantry:
 	AttackBase:
+		PrimaryWeapon: M1Carbine
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -1405,6 +1498,8 @@ E2:
 		Speed: 5
 	RenderInfantry:
 	AttackBase:
+		PrimaryWeapon: Grenade
+		PrimaryOffset: 0,0,0,-13
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -1429,6 +1524,8 @@ E3:
 		Speed: 3
 	RenderInfantry:
 	AttackBase:
+		PrimaryWeapon: RedEye
+		PrimaryOffset: 0,0,0,-13
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -1454,6 +1551,8 @@ E4:
 		Speed: 3
 	RenderInfantry:
 	AttackBase:
+		PrimaryWeapon: Flamer
+		PrimaryOffset: 0,0,0,-7
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -1554,6 +1653,7 @@ E7:
 	RenderInfantry:
 	C4Demolition:
 	AttackBase:
+		PrimaryWeapon: Colt45
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -1580,6 +1680,7 @@ MEDI:
 	RenderInfantry:
 	AutoHeal:
 	AttackBase:
+		PrimaryWeapon: Heal
 	TakeCover:
 	SquishByTank:
 	Passenger:

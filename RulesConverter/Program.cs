@@ -69,46 +69,6 @@ namespace RulesConverter
 					{ "Image", "Image" } }
 				},
 
-				{ "RenderUnit", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderBuildingCharge", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderBuildingOre", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderBuildingTurreted", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderInfantry", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderUnitMuzzleFlash", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderUnitReload", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderUnitRotor", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderUnitSpinner", new PL {
-					{ "Image", "Image" } }
-				},
-
-				{ "RenderUnitTurreted", new PL {
-					{ "Image", "Image" } }
-				},
-
 				{ "Buildable", new PL {
 					{ "TechLevel", "TechLevel" },
 					{ "Tab", "$Tab" },
@@ -121,7 +81,8 @@ namespace RulesConverter
 				},
 
 				{ "Cargo", new PL { 
-					{ "@PassengerTypes", "PassengerTypes" } }
+					{ "@PassengerTypes", "PassengerTypes" },
+					{ "UnloadFacing", "UnloadFacing" } }
 				},
 
 				{ "LimitedAmmo", new PL {
@@ -132,7 +93,12 @@ namespace RulesConverter
 					{ "Power", "Power" },
 					{ "RequiresPower", "Powered" },
 					{ "Footprint", "Footprint" },
-					{ "@Dimensions", "Dimensions" } }
+					{ "@Dimensions", "Dimensions" },
+					{ "Capturable", "Capturable" },
+					{ "Repairable",  "Repairable" }, 
+					{ "BaseNormal", "BaseNormal" },
+					{ "Adjacent", "Adjacent" },
+					{ "Bib", "Bib" } }
 				},
 
 				{ "StoresOre", new PL {
@@ -144,7 +110,33 @@ namespace RulesConverter
 					{ "Pips", "OrePips" } }
 					//{ "Capacity"
 				},
+
+				{ "AttackBase", new PL {
+					{ "PrimaryWeapon", "Primary" },
+					{ "SecondaryWeapon", "SecondaryWeapon" },
+					{ "PrimaryOffset", "PrimaryOffset" },
+					{ "SecondaryOffset", "SecondaryOffset" },
+					{ "PrimaryLocalOffset", "PrimaryLocalOffset" },
+					{ "SecondaryLocalOffset", "SecondaryLocalOffset" },
+					{ "MuzzleFlash", "MuzzleFlash" },		// maybe
+					{ "Recoil", "Recoil"} }
+				},
 			};
+
+			traitMap["RenderUnit"] = traitMap["RenderBuilding"];
+			traitMap["RenderBuildingCharge"] = traitMap["RenderBuilding"];
+			traitMap["RenderBuildingOre"] = traitMap["RenderBuilding"];
+			traitMap["RenderBuildingTurreted"] = traitMap["RenderBuilding"];
+			traitMap["RenderInfantry"] = traitMap["RenderBuilding"];
+			traitMap["RenderUnitMuzzleFlash"] = traitMap["RenderBuilding"];
+			traitMap["RenderUnitReload"] = traitMap["RenderBuilding"];
+			traitMap["RenderUnitRotor"] = traitMap["RenderBuilding"];
+			traitMap["RenderUnitSpinner"] = traitMap["RenderBuilding"];
+			traitMap["RenderUnitTurreted"] = traitMap["RenderBuilding"];
+
+			traitMap["AttackTurreted"] = traitMap["AttackBase"];
+			traitMap["AttackPlane"] = traitMap["AttackBase"];
+			traitMap["AttackHeli"] = traitMap["AttackBase"];
 
 			using (var writer = File.CreateText(outputFile))
 			{
@@ -163,8 +155,6 @@ namespace RulesConverter
 
 						if (iniSection.GetValue("TechLevel", "-1") != "-1")
 							traits.Insert(0, "Buildable");
-
-						
 
 						foreach (var t in traits)
 						{
