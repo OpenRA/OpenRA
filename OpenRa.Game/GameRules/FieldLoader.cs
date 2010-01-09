@@ -21,6 +21,8 @@ namespace OpenRa.Game.GameRules
 			foreach (var x in my.Nodes)
 			{
 				var field = self.GetType().GetField(x.Key.Trim());
+				if (field == null)
+					throw new NotImplementedException("Missing field `{0}` on `{1}`".F(x.Key.Trim(), self.GetType().Name));
 				field.SetValue(self, GetValue(field.FieldType, x.Value.Value.Trim()));
 			}
 		}
