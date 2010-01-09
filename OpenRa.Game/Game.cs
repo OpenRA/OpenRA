@@ -178,6 +178,7 @@ namespace OpenRa.Game
 					UpdatePalette(world.Actors.SelectMany(
 						a => a.traits.WithInterface<IPaletteModifier>()));
 					minimap.Update();
+					chrome.Tick();
 
 					orderManager.TickImmediate();
 

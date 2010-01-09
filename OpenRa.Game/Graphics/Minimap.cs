@@ -10,25 +10,17 @@ namespace OpenRa.Game.Graphics
 	{
 		Sheet sheet;
 		SpriteRenderer rgbaRenderer;
-		SpriteRenderer shpRenderer;
 		Sprite sprite;
 		Bitmap terrain, oreLayer;
-		Animation radarAnim, alliesAnim, sovietAnim;
 
 		public void Tick() { }
 
 		public Minimap(Renderer r)
 		{
 			sheet = new Sheet(r, new Size(128, 128));
-			shpRenderer = new SpriteRenderer(r, true);
+
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			sprite = new Sprite(sheet, new Rectangle(0, 0, 128, 128), TextureChannel.Alpha);
-
-			sovietAnim = new Animation("ussrradr");
-			sovietAnim.PlayRepeating("idle");
-			alliesAnim = new Animation("natoradr");
-			alliesAnim.PlayRepeating("idle");
-			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
 		}
 
 		Color[] terrainTypeColors;
@@ -37,9 +29,6 @@ namespace OpenRa.Game.Graphics
 
 		public void Update()
 		{
-			radarAnim = Game.LocalPlayer.Race == Race.Allies ? alliesAnim : sovietAnim;
-			radarAnim.Tick();
-
 			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
 				return;
 
@@ -114,25 +103,8 @@ namespace OpenRa.Game.Graphics
 
 		public void Draw(float2 pos, bool hasRadar, bool isJammed)
 		{
-			if (hasRadar && radarAnim.CurrentSequence.Name == "idle")
-				radarAnim.PlayThen("open", () => radarAnim.PlayRepeating("active"));
-			if (hasRadar && radarAnim.CurrentSequence.Name == "no-power")
-				radarAnim.PlayBackwardsThen("close", () => radarAnim.PlayRepeating("active"));
-			if (!hasRadar && radarAnim.CurrentSequence.Name == "active")
-				radarAnim.PlayThen("close", () => radarAnim.PlayRepeating("no-power"));
-			if (isJammed && radarAnim.CurrentSequence.Name == "active")
-				radarAnim.PlayRepeating("jammed");
-			if (!isJammed && radarAnim.CurrentSequence.Name == "jammed")
-				radarAnim.PlayRepeating("active");
-				
-			shpRenderer.DrawSprite(radarAnim.Image, pos + Game.viewport.Location - new float2( 290-256,0), PaletteType.Chrome, new float2(290, 272));
-			shpRenderer.Flush();
-
-			if (radarAnim.CurrentSequence.Name == "active")
-			{
-				rgbaRenderer.DrawSprite(sprite, pos - new float2((290-256)/2, -5), PaletteType.Chrome, new float2(256, 256));
-				rgbaRenderer.Flush();
-			}
+			rgbaRenderer.DrawSprite(sprite, pos, PaletteType.Chrome, new float2(256, 256));
+			rgbaRenderer.Flush();
 		}
 	}
 }
