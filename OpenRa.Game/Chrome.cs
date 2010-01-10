@@ -16,18 +16,18 @@ namespace OpenRa.Game
 		readonly Renderer renderer;
 		readonly LineRenderer lineRenderer;
 		readonly SpriteRenderer rgbaRenderer;
-		readonly Sprite[] specialBinSprites;
+		readonly SpriteRenderer shpRenderer;
+		
+		// Money indicator
 		readonly Sprite moneyBinSprite;
-		readonly Sprite tooltipSprite;
-		readonly Sprite powerIndicatorSprite;
-		readonly Sprite powerLevelTopSprite;
-		readonly Sprite powerLevelBottomSprite;
-			
-		readonly Animation repairButton;
-		readonly Animation sellButton;
-		readonly Animation pwrdownButton;
-		readonly Animation optionsButton;
-
+		readonly List<Sprite> digitSprites;
+				
+		// Special power bin
+		readonly Sprite[] specialBinSprites;
+		readonly Dictionary<string, Sprite> spsprites;
+		
+		// Options menu (to be refactored)
+		bool optionsPressed = false;
 		readonly Sprite optionsTop;
 		readonly Sprite optionsBottom;
 		readonly Sprite optionsLeft;
@@ -37,47 +37,45 @@ namespace OpenRa.Game
 		readonly Sprite optionsBottomLeft;
 		readonly Sprite optionsBottomRight;
 		readonly Sprite optionsBackground;
-				
-		readonly SpriteRenderer shpRenderer;
+		
+		// Buttons
+		readonly Animation repairButton;
+		readonly Animation sellButton;
+		readonly Animation pwrdownButton;
+		readonly Animation optionsButton;
+		
+		// Build Palette
+		const int paletteColumns = 3;
+		const int paletteRows = 5;
+		static int2 paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9, 260);
+		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
 		readonly Animation cantBuild;
 		readonly Animation ready;
 		readonly Animation clock;
-
-		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
-		readonly List<Sprite> digitSprites;
-		readonly Dictionary<string, string[]> tabSprites;
-		readonly Dictionary<string, Sprite> spsprites;
+		const int NumClockFrames = 54;
 		readonly Sprite blank;
-	
-		// Build palette positioning
-		const int paletteColumns = 3;
-		const int paletteRows = 5;
-		static int2 paletteOrigin= new int2(Game.viewport.Width - paletteColumns * 64 - 9, 260);
+		readonly Sprite tooltipSprite;
 
+		// Build Palette tabs
+		string currentTab = "Building";
+		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
+		readonly Dictionary<string, string[]> tabImageNames;
+		readonly Dictionary<string, Sprite> tabSprites;
+		
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
-		float2 radarOrigin;
+		static float2 radarOrigin = radarClosedOrigin;
 		float radarMinimapHeight;
 		const int radarSlideAnimationLength = 15;
 		const int radarActivateAnimationLength = 5;
 		int radarAnimationFrame = 0;
 		bool radarAnimating = false;
-		
-		// Power bar positioning (relative to Radar)
-		static float2 powerOrigin = new float2(42, 205);
-		static Size powerSize = new Size(138,5);
-		
-		
 		bool hasRadar = false;
-		bool optionsPressed = false;
-		
-
-		string currentTab = "Building";
-		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
-		readonly Dictionary<string, Sprite> sprites;
-
-		const int NumClockFrames = 54;
+				
+		// Power bar 
+		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
+		static Size powerSize = new Size(138,5);
 		
 		public Chrome(Renderer r)
 		{		
@@ -98,19 +96,7 @@ namespace OpenRa.Game
 			
 			// Radar
 			radarOrigin = radarClosedOrigin;
-			
-			var powerIndicator = new Animation("power");
-			powerIndicator.PlayRepeating("power-level-indicator");
-			powerIndicatorSprite = powerIndicator.Image;
-			
-			var powerTop = new Animation("powerbar");
-			powerTop.PlayRepeating("powerbar-top");
-			powerLevelTopSprite = powerTop.Image;
-
-			var powerBottom = new Animation("powerbar");
-			powerBottom.PlayRepeating("powerbar-bottom");
-			powerLevelBottomSprite = powerBottom.Image;
-			
+						
 			repairButton = new Animation("repair");
 			repairButton.PlayRepeating("normal");
 
@@ -135,7 +121,7 @@ namespace OpenRa.Game
 			
 			blank = SheetBuilder.Add(new Size(64, 48), 16);
 
-			sprites = groups
+			tabSprites = groups
 				.SelectMany(g => Rules.Categories[g])
 				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
 				.ToDictionary(
@@ -147,7 +133,7 @@ namespace OpenRa.Game
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
 			
-			tabSprites = groups.Select(
+			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
 					OpenRa.Game.Graphics.Util.MakeArray(3,
 						n => i.ToString())))
@@ -185,7 +171,7 @@ namespace OpenRa.Game
 				Sound.Play("radaron2.aud");
 
 			// Play radar-on sound at the start of the activate anim (close)
-			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && !hasRadar)
+			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength -1 && !hasRadar)
 				Sound.Play("radardn1.aud");
 			
 			// Minimap height
@@ -272,7 +258,7 @@ namespace OpenRa.Game
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
-			foreach (var q in tabSprites)
+			foreach (var q in tabImageNames)
 			{
 				var groupName = q.Key;
 				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, groupName).Any())
@@ -303,7 +289,7 @@ namespace OpenRa.Game
 
 		void ChooseAvailableTab()
 		{
-			currentTab = tabSprites.Select(q => q.Key).FirstOrDefault(
+			currentTab = tabImageNames.Select(q => q.Key).FirstOrDefault(
 				t => Rules.TechTree.BuildableItems(Game.LocalPlayer, t).Any());
 		}
 
@@ -529,7 +515,7 @@ namespace OpenRa.Game
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
-				shpRenderer.DrawSprite(sprites[item], drawPos, PaletteType.Chrome);
+				shpRenderer.DrawSprite(tabSprites[item], drawPos, PaletteType.Chrome);
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item);
 

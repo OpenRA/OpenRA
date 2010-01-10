@@ -1010,13 +1010,6 @@
   <unit name="select">
     <sequence name="repair" start="2" length="1" />
   </unit>
-  <unit name="power">
-    <sequence name="power-level-indicator" start="0" length="1" />
-  </unit>
-  <unit name="powerbar">
-    <sequence name="powerbar-top" start="0" length="1" />
-    <sequence name="powerbar-bottom" start="1" length="1" />
-  </unit>
   <unit name="repair">
     <sequence name="normal" start="0" length="1" />
     <sequence name="pressed" start="1" length="1" />
@@ -1040,21 +1033,5 @@
     <sequence name="top-right" start="1" length="1" />
     <sequence name="bottom-left" start="2" length="1" />
     <sequence name="bottom-right" start="3" length="1" />
-  </unit>
-  <unit name="ussrradr">
-    <sequence name="idle" start="0" length="1" />
-    <sequence name="open" start="1" length="20" />
-    <sequence name="jammed" start="21" length="4" />
-    <sequence name="close" start="25" length="16" />
-    <sequence name="no-power" start="41" length="1" />
-    <sequence name="active" start="42" length="1" />
-  </unit>
-  <unit name="natoradr">
-    <sequence name="idle" start="0" length="1" />
-    <sequence name="open" start="1" length="20" />
-    <sequence name="active" start="42" length="1" />
-    <sequence name="jammed" start="21" length="4" />
-    <sequence name="close" start="25" length="16" />
-    <sequence name="no-power" start="41" length="1" />
   </unit>
 </sequences>
