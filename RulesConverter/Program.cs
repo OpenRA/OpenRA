@@ -98,7 +98,11 @@ namespace RulesConverter
 					{ "Repairable",  "Repairable" }, 
 					{ "BaseNormal", "BaseNormal" },
 					{ "Adjacent", "Adjacent" },
-					{ "Bib", "Bib" } }
+					{ "Bib", "Bib" },
+					{ "HP", "Strength" }, 
+					{ "Armor", "Armor" }, 
+					{ "Crewed", "Crewed" },
+					{ "WaterBound", "WaterBound" } } 
 				},
 
 				{ "StoresOre", new PL {
