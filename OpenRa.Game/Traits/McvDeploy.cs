@@ -3,6 +3,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class McvDeployInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new McvDeploy(self); }
+	}
+
 	class McvDeploy : IIssueOrder, IResolveOrder
 	{
 		public McvDeploy(Actor self) { }

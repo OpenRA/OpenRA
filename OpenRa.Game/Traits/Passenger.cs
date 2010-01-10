@@ -6,6 +6,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class PassengerInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Passenger(self); }
+	}
+
 	class Passenger : IIssueOrder, IResolveOrder
 	{
 		public Passenger(Actor self) { }

@@ -2,6 +2,13 @@
 
 namespace OpenRa.Game.Traits
 {
+	class LimitedAmmoInfo : ITraitInfo
+	{
+		public readonly int Ammo = 0;
+
+		public object Create(Actor self) { return new LimitedAmmo(self); }
+	}
+
 	class LimitedAmmo : INotifyAttack, IPips
 	{
 		[Sync]

@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class RenderBuildingOreInfo : RenderBuildingInfo
+	{
+		public override object Create(Actor self) { return new RenderBuildingOre(self); }
+	}
+
 	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete
 	{
 		public RenderBuildingOre(Actor self)

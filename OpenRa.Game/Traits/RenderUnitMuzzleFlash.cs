@@ -5,6 +5,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitMuzzleFlashInfo : RenderUnitInfo
+	{
+		public override object Create(Actor self) { return new RenderUnitMuzzleFlash(self); }
+	}
+
 	class RenderUnitMuzzleFlash : RenderUnit
 	{
 		public RenderUnitMuzzleFlash(Actor self)

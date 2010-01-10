@@ -7,6 +7,13 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class CargoInfo : ITraitInfo
+	{
+		public readonly UnitMovementType[] PassengerTypes = { };
+
+		public object Create(Actor self) { return new Cargo(self); }
+	}
+
 	class Cargo : IPips, IIssueOrder, IResolveOrder
 	{
 		List<Actor> cargo = new List<Actor>();

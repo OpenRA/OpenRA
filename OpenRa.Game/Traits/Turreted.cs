@@ -1,6 +1,11 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
+	class TurretedInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Turreted(self); }
+	}
+
 	class Turreted : ITick
 	{
 		[Sync]

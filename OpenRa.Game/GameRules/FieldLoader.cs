@@ -7,12 +7,12 @@ namespace OpenRa.Game.GameRules
 {
 	static class FieldLoader
 	{
-		public  static void Load( object self, IniSection ini )
+		public static void Load(object self, IniSection ini)
 		{
-			foreach( var x in ini )
+			foreach (var x in ini)
 			{
-				var field = self.GetType().GetField( x.Key.Trim() );
-				field.SetValue( self, GetValue( field.FieldType, x.Value.Trim() ) );
+				var field = self.GetType().GetField(x.Key.Trim());
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Trim()));
 			}
 		}
 

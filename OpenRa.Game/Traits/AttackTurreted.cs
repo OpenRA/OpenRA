@@ -3,6 +3,8 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class AttackTurretedInfo : AttackBaseInfo { }
+
 	class AttackTurreted : AttackBase, INotifyBuildComplete
 	{
 		public AttackTurreted( Actor self ) : base(self) { self.traits.Get<Turreted>(); }

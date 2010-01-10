@@ -5,6 +5,13 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	abstract class RenderSimpleInfo : ITraitInfo
+	{
+		public readonly string Image = null;
+
+		public abstract object Create(Actor self);
+	}
+
 	abstract class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();

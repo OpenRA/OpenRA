@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class ExplodesInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Explodes(self); }
+	}
+
 	class Explodes : INotifyDamage
 	{
 		public Explodes(Actor self) {}

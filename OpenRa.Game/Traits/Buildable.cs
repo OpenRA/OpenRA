@@ -14,6 +14,8 @@ namespace OpenRa.Game.Traits
 		public readonly int Cost = 0;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
+		public readonly string Icon = null;
+
 		public object Create(Actor self) { return new Buildable(self); }
 	}
 

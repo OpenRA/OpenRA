@@ -3,6 +3,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class HarvesterInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Harvester(self); }
+	}
+
 	class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
 		[Sync]

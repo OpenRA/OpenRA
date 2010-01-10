@@ -4,6 +4,8 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitTurretedInfo : RenderUnitInfo { }
+
 	class RenderUnitTurreted : RenderUnit
 	{
 		public Animation muzzleFlash;

@@ -3,6 +3,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitSpinnerInfo : RenderUnitInfo
+	{
+		public override object Create(Actor self) { return new RenderUnitSpinner(self); }
+	}
+
 	class RenderUnitSpinner : RenderUnit
 	{
 		public Animation spinnerAnim;
