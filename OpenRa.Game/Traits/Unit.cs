@@ -1,6 +1,16 @@
-﻿
+﻿using OpenRa.Game.GameRules;
+
 namespace OpenRa.Game.Traits
 {
+	class UnitInfo : ITraitInfo
+	{
+		public readonly int HP = 0;
+		public readonly ArmorType Armor = ArmorType.none;
+		public readonly bool Crewed = false;		// replace with trait?
+
+		public object Create(Actor self) { return new Unit(self); }
+	}
+
 	class Unit : INotifyDamage
 	{
 		[Sync]

@@ -12,7 +12,7 @@ namespace OpenRa.Game
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly UnitInfo Info;
+		public readonly LegacyUnitInfo Info;
 
 		public readonly uint ActorID;
 		[Sync]
@@ -36,7 +36,7 @@ namespace OpenRa.Game
 		public Actor( ActorInfo info, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			Info = (UnitInfo)info; // temporary
+			Info = (LegacyUnitInfo)info; // temporary
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;

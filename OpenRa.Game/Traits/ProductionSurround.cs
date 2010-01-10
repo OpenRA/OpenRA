@@ -24,7 +24,7 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
-		public override int2? CreationLocation(Actor self, UnitInfo producee)
+		public override int2? CreationLocation(Actor self, LegacyUnitInfo producee)
 		{
 			return FindAdjacentTile(self, producee.WaterBound ?
 					UnitMovementType.Float : UnitMovementType.Wheel);	/* hackety hack */

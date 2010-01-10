@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits
 		
 		public Production( Actor self ) { }
 
-		public virtual int2? CreationLocation( Actor self, UnitInfo producee )
+		public virtual int2? CreationLocation( Actor self, LegacyUnitInfo producee )
 		{
 			return ( 1 / 24f * self.CenterLocation ).ToInt2();
 		}
@@ -21,7 +21,7 @@ namespace OpenRa.Game.Traits
 			return newUnit.Info.InitialFacing;
 		}
 
-		public bool Produce( Actor self, UnitInfo producee )
+		public bool Produce( Actor self, LegacyUnitInfo producee )
 		{
 			var location = CreationLocation( self, producee );
 			if( location == null || Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )

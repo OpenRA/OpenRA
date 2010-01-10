@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitReloadInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new RenderUnitReload(self); }
+	}
+
 	class RenderUnitReload : RenderUnit
 	{
 		public RenderUnitReload(Actor self)

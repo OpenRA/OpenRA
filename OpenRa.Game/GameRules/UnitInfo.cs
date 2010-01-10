@@ -11,7 +11,7 @@ namespace OpenRa.Game.GameRules
 		concrete = 4,
 	}
 
-	public class UnitInfo : ActorInfo
+	public class LegacyUnitInfo : ActorInfo
 	{
 		public readonly string Name;
 
@@ -64,10 +64,10 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] PrimaryLocalOffset = { };
 		public readonly int[] SecondaryLocalOffset = { };
 
-		public UnitInfo(string name) { Name = name; }
+		public LegacyUnitInfo(string name) { Name = name; }
 	}
 
-	public class LegacyMobileInfo : UnitInfo
+	public class LegacyMobileInfo : LegacyUnitInfo
 	{
 		public readonly int Speed = 0;
 		public readonly bool NoMovingFire = false;
@@ -94,7 +94,7 @@ namespace OpenRa.Game.GameRules
 		public VehicleInfo(string name) : base(name) { }
 	}
 
-	public class BuildingInfo : UnitInfo
+	public class BuildingInfo : LegacyUnitInfo
 	{
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly string Footprint = "x";

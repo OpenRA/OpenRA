@@ -33,7 +33,7 @@ namespace OpenRa.Game.Orders
 						&& a.traits.WithInterface<Chronoshiftable>().Any()
 						&& a.Info.Selectable).FirstOrDefault();
 				
-				var unit = underCursor != null ? underCursor.Info as UnitInfo : null;
+				var unit = underCursor != null ? underCursor.Info as LegacyUnitInfo : null;
 
 				if (unit != null)
 					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, power.Name);

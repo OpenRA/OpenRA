@@ -6,6 +6,13 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class AttackBaseInfo : ITraitInfo
+	{
+
+
+		public object Create(Actor self) { return new AttackBase(self); }
+	}
+
 	class AttackBase : IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync] public Actor target;
