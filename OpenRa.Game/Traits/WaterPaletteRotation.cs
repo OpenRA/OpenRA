@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class WaterPaletteRotationInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new WaterPaletteRotation(self); }
+	}
+
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
 		public WaterPaletteRotation(Actor self) { }

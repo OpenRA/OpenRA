@@ -6,6 +6,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class WithShadowInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new WithShadow(self); }
+	}
+
 	class WithShadow : IRenderModifier
 	{
 		public WithShadow(Actor self) {}

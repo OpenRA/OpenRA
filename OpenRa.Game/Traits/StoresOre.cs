@@ -3,16 +3,17 @@ using System;
 using OpenRa.Game.GameRules;
 namespace OpenRa.Game.Traits
 {
+	class StoresOreInfo : ITraitInfo
+	{
+		public readonly int Pips = 0;
+		public readonly int Capacity = 0;
+
+		public object Create(Actor self) { return new StoresOre(self); }
+	}
+
 	class StoresOre : IPips, IAcceptThief
 	{
-		public const int MaxStealAmount = 100; //todo: How is cash stolen determined?
-		
-		readonly Actor self;
-		
-		public StoresOre(Actor self)
-		{
-			this.self = self;
-		}
+		public StoresOre(Actor self) {}
 		
 		public void OnSteal(Actor self, Actor thief)
 		{
