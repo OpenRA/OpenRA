@@ -1,39 +1,73 @@
 ﻿<chrome>
-  <collection name="radar">
-	<image name="powerindicator" x="213" y="2" width="4" height="7" src="radarbin-border.png" />
-	<image name="nobg" x="0" y="0" width="210" height="222" src="radarbin-border.png" />
-	<image name="soviet" x="0" y="0" width="210" height="222" src="radarbin-soviet.png" />
-	<image name="allied" x="0" y="0" width="210" height="222" src="radarbin-allies.png" />
-  </collection>
-	<collection name="palette-allies" src="palette-allies.png">
-		<image name="border-top" x="0" y="0" width="201" height="9" />
-		<image name="border-bottom" x="0" y="201" width="201" height="9" />
-		<image name="row-0" x="0" y="9" width="201" height="48" />
-		<image name="row-1" x="0" y="57" width="201" height="48" />
-		<image name="row-2" x="0" y="105" width="201" height="48" />
-		<image name="row-3" x="0" y="153" width="201" height="48" />
-	</collection>
-	<collection name="palette-soviet" src="palette-soviet.png">
-		<image name="border-top" x="0" y="0" width="201" height="9" />
-		<image name="border-bottom" x="0" y="201" width="201" height="9" />
-		<image name="row-0" x="0" y="9" width="201" height="48" />
-		<image name="row-1" x="0" y="57" width="201" height="48" />
-		<image name="row-2" x="0" y="105" width="201" height="48" />
-		<image name="row-3" x="0" y="153" width="201" height="48" />
-	</collection>
-	<collection name="chrome" src="chrome.png">
-		<image name="powershim-top" x="0" y="0" width="30" height="51" />
-		<image name="powershim-middle" x="0" y="51" width="30" height="51" />
-		<image name="powershim-bottom" x="0" y="153" width="30" height="39" />
+	<collection name="chrome-allies" src="chrome-allies.png">
+		<image name="specialbin-top" x="0" y="0" width="30" height="51" />
+		<image name="specialbin-middle" x="0" y="51" width="30" height="51" />
+		<image name="specialbin-bottom" x="0" y="153" width="30" height="39" />
 		<image name="moneybin" x="192" y="0" width="320" height="32" />
 		<image name="tooltip-bg" x="0" y="288" width="272" height="136" />
-		<image name="palette-border-tl" x="0" y="192" width="9" height="10" />
-		<image name="palette-border-bl" x="0" y="202" width="9" height="10" />
-		<image name="palette-border-left" x="0" y="216" width="9" height="48" />
-		<image name="palette-border-top" x="11" y="192" width="64" height="10" />
-		<image name="palette-border-bottom" x="11" y="202" width="64" height="10" />
 	</collection>
-	<collection name="digit" src="chrome.png">
+	<collection name="radar-allies" src="chrome-allies.png">
+		<image name="left" x="297" y="31" width="9" height="192" />
+		<image name="right" x="498" y="31" width="9" height="192" />
+		<image name="bottom" x="297" y="223" width="210" height="30" />
+		<image name="bg" x="306" y="31" width="192" height="192" />
+		<image name="power-indicator" x="187" y="4" width="4" height="7" />
+	</collection>
+	<collection name="palette-allies" src="chrome-allies.png">
+		<image name="top" x="297" y="288" width="201" height="9" />
+		<image name="dock-top" x="498" y="274" width="14" height="23" />
+		<image name="bottom" x="297" y="489" width="201" height="9" />
+		<image name="dock-bottom" x="498" y="489" width="14" height="23" />
+		<image name="bg-0" x="297" y="297" width="201" height="48" />
+		<image name="dock-0" x="498" y="297" width="14" height="48" />
+		<image name="bg-1" x="297" y="345" width="201" height="48" />
+		<image name="dock-1" x="498" y="345" width="14" height="48" />
+		<image name="bg-2" x="297" y="393" width="201" height="48" />
+		<image name="dock-2" x="498" y="393" width="14" height="48" />
+		<image name="bg-3" x="297" y="441" width="201" height="48" />
+		<image name="dock-3" x="498" y="441" width="14" height="48" />
+	</collection>
+	<collection name="digits-allies" src="chrome-allies.png">
+		<image name="0" x="32" y="0" width="13" height="17" />
+		<image name="1" x="45" y="0" width="13" height="17" />
+		<image name="2" x="58" y="0" width="13" height="17" />
+		<image name="3" x="71" y="0" width="13" height="17" />
+		<image name="4" x="84" y="0" width="13" height="17" />
+		<image name="5" x="97" y="0" width="13" height="17" />
+		<image name="6" x="110" y="0" width="13" height="17" />
+		<image name="7" x="123" y="0" width="13" height="17" />
+		<image name="8" x="136" y="0" width="13" height="17" />
+		<image name="9" x="149" y="0" width="13" height="17" />
+	</collection>
+	<collection name="chrome-soviet" src="chrome-soviet.png">
+		<image name="specialbin-top" x="0" y="0" width="30" height="51" />
+		<image name="specialbin-middle" x="0" y="51" width="30" height="51" />
+		<image name="specialbin-bottom" x="0" y="153" width="30" height="39" />
+		<image name="moneybin" x="192" y="0" width="320" height="32" />
+		<image name="tooltip-bg" x="0" y="288" width="272" height="136" />
+	</collection>
+	<collection name="radar-soviet" src="chrome-soviet.png">
+		<image name="left" x="297" y="31" width="9" height="192" />
+		<image name="right" x="498" y="31" width="9" height="192" />
+		<image name="bottom" x="297" y="223" width="210" height="30" />
+		<image name="bg" x="306" y="31" width="192" height="192" />
+		<image name="power-indicator" x="187" y="4" width="4" height="7" />
+	</collection>
+	<collection name="palette-soviet" src="chrome-soviet.png">
+		<image name="top" x="297" y="288" width="201" height="9" />
+		<image name="dock-top" x="498" y="274" width="14" height="23" />
+		<image name="bottom" x="297" y="489" width="201" height="9" />
+		<image name="dock-bottom" x="498" y="489" width="14" height="23" />
+		<image name="bg-0" x="297" y="297" width="201" height="48" />
+		<image name="dock-0" x="498" y="297" width="14" height="48" />
+		<image name="bg-1" x="297" y="345" width="201" height="48" />
+		<image name="dock-1" x="498" y="345" width="14" height="48" />
+		<image name="bg-2" x="297" y="393" width="201" height="48" />
+		<image name="dock-2" x="498" y="393" width="14" height="48" />
+		<image name="bg-3" x="297" y="441" width="201" height="48" />
+		<image name="dock-3" x="498" y="441" width="14" height="48" />
+	</collection>
+	<collection name="digits-soviet" src="chrome-soviet.png">
 		<image name="0" x="32" y="0" width="13" height="17" />
 		<image name="1" x="45" y="0" width="13" height="17" />
 		<image name="2" x="58" y="0" width="13" height="17" />

@@ -18,12 +18,12 @@ namespace OpenRa.Game
 		readonly SpriteRenderer rgbaRenderer;
 		readonly SpriteRenderer shpRenderer;
 		
-		// Money indicator
-		readonly Sprite moneyBinSprite;
-		readonly List<Sprite> digitSprites;
-				
+		string chromeCollection;
+		string radarCollection;
+		string paletteCollection;
+		string digitCollection;
+		
 		// Special power bin
-		readonly Sprite[] specialBinSprites;
 		readonly Dictionary<string, Sprite> spsprites;
 		
 		// Options menu (to be refactored)
@@ -54,8 +54,8 @@ namespace OpenRa.Game
 		// Build Palette
 		const int paletteColumns = 3;
 		const int paletteRows = 5;
-		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 260);
-		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 9, 260);
+		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
+		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
 		static float2 paletteOrigin = paletteClosedOrigin;
 		const int paletteAnimationLength = 7;
 		int paletteAnimationFrame = 0;
@@ -65,8 +65,6 @@ namespace OpenRa.Game
 		readonly Animation ready;
 		readonly Animation clock;
 		const int NumClockFrames = 54;
-		readonly Sprite blank;
-		readonly Sprite tooltipSprite;
 
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
@@ -90,15 +88,6 @@ namespace OpenRa.Game
 			lineRenderer = new LineRenderer(renderer);
 			shpRenderer = new SpriteRenderer(renderer, true);
 
-			specialBinSprites = new [] 
-			{
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-top"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-middle"),
-				SequenceProvider.GetImageFromCollection(renderer, "chrome", "powershim-bottom"),
-			};
-			moneyBinSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "moneybin");
-			tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "tooltip-bg");
-						
 			repairButton = new Animation("repair");
 			repairButton.PlayRepeating("normal");
 
@@ -121,8 +110,6 @@ namespace OpenRa.Game
 			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
 			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
 			
-			blank = SheetBuilder.Add(new Size(64, 48), 16);
-
 			tabSprites = groups
 				.SelectMany(g => Rules.Categories[g])
 				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
@@ -144,9 +131,6 @@ namespace OpenRa.Game
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 
-			digitSprites = Graphics.Util.MakeArray(10, a => a)
-				.Select(n => SequenceProvider.GetImageFromCollection(renderer, "digit", n.ToString())).ToList();
-
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
@@ -160,6 +144,11 @@ namespace OpenRa.Game
 				
 		public void Draw()
 		{
+			chromeCollection = (Game.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
+			radarCollection = (Game.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
+			paletteCollection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
+			digitCollection = (Game.LocalPlayer.Race == Race.Allies) ? "digits-allies" : "digits-soviet";
+
 			buttons.Clear();
 
 			renderer.Device.DisableScissor();
@@ -175,7 +164,7 @@ namespace OpenRa.Game
 
 			DrawRadar();
 			DrawPower();
-			rgbaRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
 			DrawMoney();
 			rgbaRenderer.Flush();
 			DrawButtons();
@@ -237,11 +226,13 @@ namespace OpenRa.Game
 
 			var isJammed = false;		// todo: MRJ can do this
 
-			var bgSprite = SequenceProvider.GetImageFromCollection(renderer, "radar", "nobg");
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "left"), radarOrigin, PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), PaletteType.Chrome);	
+
 			if (radarAnimating)
-				bgSprite = (Game.LocalPlayer.Race == Race.Allies) ? SequenceProvider.GetImageFromCollection(renderer, "radar", "allied") : SequenceProvider.GetImageFromCollection(renderer, "radar", "soviet");
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "bg"), radarOrigin + new float2(9, 0), PaletteType.Chrome);	
 			
-			rgbaRenderer.DrawSprite(bgSprite, radarOrigin, PaletteType.Chrome);	
 			rgbaRenderer.Flush();
 
 			if (radarAnimationFrame >= radarSlideAnimationLength)
@@ -316,7 +307,7 @@ namespace OpenRa.Game
 			var x = Game.viewport.Width - 65;
 			foreach (var d in moneyDigits.Reverse())
 			{
-				rgbaRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, digitCollection, (d - '0').ToString()), new float2(x, 6), PaletteType.Chrome);
 				x -= 14;
 			}
 		}
@@ -366,7 +357,7 @@ namespace OpenRa.Game
 			lineRenderer.Flush();
 
 			// Power usage indicator
-			var indicator = SequenceProvider.GetImageFromCollection(renderer, "radar", "powerindicator");
+			var indicator = SequenceProvider.GetImageFromCollection(renderer, radarCollection, "power-indicator");
 			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy) - Game.viewport.Location.X;
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y - Game.viewport.Location.Y-1);
@@ -549,9 +540,8 @@ namespace OpenRa.Game
 			string tooltipItem = null;
 
 			// Draw the top border
-			var collection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
-			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "border-top"), new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
-			
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
+
 			// Draw the icons
 			int lasty = -1;
 			foreach (var item in allItems)
@@ -559,7 +549,7 @@ namespace OpenRa.Game
 				// Draw the background for this row
 				if (y != lasty)
 				{
-					rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "row-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+					rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
 					rgbaRenderer.Flush();
 					lasty = y;
 				}
@@ -617,13 +607,15 @@ namespace OpenRa.Game
 
 				var closureItem = item;
 				AddButton(rect, isLmb => HandleBuildPalette(closureItem, isLmb));
+
+	
 				if (++x == columns) { x = 0; y++; }
 			}
 			if (x != 0) y++;
 			
 			while (y < paletteRows)
 			{
-				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "row-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
 				y++;
 			}
 
@@ -631,8 +623,15 @@ namespace OpenRa.Game
 				shpRenderer.DrawSprite(ob.First, ob.Second, PaletteType.Chrome);
 
 			shpRenderer.Flush();
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 
-			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, collection, "border-bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
+			// Draw dock
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-top"), new float2(Game.viewport.Width - 14, origin.Y - 23), PaletteType.Chrome);
+			for (int i = 0; i < y; i++)
+			{
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-" + (y % 4).ToString()), new float2(Game.viewport.Width - 14, origin.Y + 48 * i), PaletteType.Chrome);
+			}
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null)
@@ -726,6 +725,7 @@ namespace OpenRa.Game
 
 		void DrawProductionTooltip(string unit, int2 pos)
 		{
+			var tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "tooltip-bg");
 			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
 			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			rgbaRenderer.Flush();
@@ -770,10 +770,10 @@ namespace OpenRa.Game
 
 			if (numPowers == 0) return;
 
-			rgbaRenderer.DrawSprite(specialBinSprites[0], new float2(0,14), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-top"), new float2(0, 14), PaletteType.Chrome);
 			for (var i = 1; i < numPowers; i++)
-				rgbaRenderer.DrawSprite(specialBinSprites[1], new float2(0, 14 + i * 51), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(specialBinSprites[2], new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-middle"), new float2(0, 14 + i * 51), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-bottom"), new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
 
 			rgbaRenderer.Flush();
 
@@ -839,6 +839,7 @@ namespace OpenRa.Game
 
 		void DrawSupportPowerTooltip(string sp, int2 pos)
 		{
+			var tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "tooltip-bg");
 			rgbaRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 

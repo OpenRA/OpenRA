@@ -106,13 +106,21 @@ namespace OpenRa.Game.Graphics
 
 
 		public static Sprite GetImageFromCollection(Renderer renderer,string collection, string image)
-		{			
+		{
+			
+			
 			// Cached sprite
 			if (cachedSprites.ContainsKey(collection) && cachedSprites[collection].ContainsKey(image))
 				return cachedSprites[collection][image];
 			
-			var mi = collections[collection][image];
-	
+			MappedImage mi;
+			try { mi = collections[collection][image];}
+			catch (KeyNotFoundException)
+			{
+				throw new InvalidOperationException(
+					"Collection `{0}` does not have an image `{1}`".F(collection, image));
+			}
+			
 			// Cached sheet
 			Sheet sheet;
 			if (cachedSheets.ContainsKey(mi.Src))
