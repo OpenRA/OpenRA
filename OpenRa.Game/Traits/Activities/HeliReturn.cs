@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits.Activities
 		static Actor ChooseHelipad(Actor self)
 		{
 			return Game.world.Actors.FirstOrDefault(
-				a => a.LegacyInfo == Rules.UnitInfo["HPAD"] &&
+				a => a.Info == Rules.NewUnitInfo["HPAD"] &&
 					a.Owner == self.Owner &&
 					!Reservable.IsReserved(a));
 		}

@@ -9,8 +9,28 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class BuildingInfo : ITraitInfo
+	class OwnedActorInfo
 	{
+		public readonly int HP = 0;
+		public readonly ArmorType Armor = ArmorType.none;
+		public readonly bool Crewed = false;		// replace with trait?
+		public readonly int InitialFacing = 128;
+	}
+
+	class BuildingInfo : OwnedActorInfo, ITraitInfo
+	{
+		public readonly int Power = 0;
+		public readonly bool RequiresPower = false;
+		public readonly bool BaseNormal = true;
+		public readonly int Adjacent = 1;
+		public readonly bool Bib = false;
+		public readonly bool Capturable = false;
+		public readonly bool Repairable = true;
+		public readonly string Footprint = "x";
+		public readonly string[] Produces = { };		// does this go somewhere else?
+		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly bool WaterBound = false;
+
 		public object Create(Actor self) { return new Building(self); }
 	}
 

@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits
 		public void OnSteal(Actor self, Actor thief)
 		{
 			// Steal half the ore the building holds
-			var toSteal = (self.LegacyInfo as LegacyBuildingInfo).Storage/2;
+			var toSteal = self.Info.Traits.Get<StoresOreInfo>().Capacity / 2;
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
@@ -28,15 +28,12 @@ namespace OpenRa.Game.Traits
 		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			for (int i = 0; i < self.LegacyInfo.OrePips; i++)
-			{
-				if (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / self.LegacyInfo.OrePips)
-				{
-					yield return PipType.Yellow;
-					continue;
-				}
-				yield return PipType.Transparent;
-			}
+			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
+
+			return Graphics.Util.MakeArray( numPips, 
+				i => (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
+					? PipType.Yellow : PipType.Transparent );
+
 		}
 	}
 }

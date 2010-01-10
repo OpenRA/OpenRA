@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits
 	class CargoInfo : ITraitInfo
 	{
 		public readonly UnitMovementType[] PassengerTypes = { };
+		public readonly int UnloadFacing = 0;
 
 		public object Create(Actor self) { return new Cargo(self); }
 	}

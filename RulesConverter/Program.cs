@@ -39,7 +39,8 @@ namespace RulesConverter
 				{ "Unit", new PL {	
 					{ "HP", "Strength" }, 
 					{ "Armor", "Armor" }, 
-					{ "Crewed", "Crewed" } } 
+					{ "Crewed", "Crewed" },
+					{ "InitialFacing", "InitialFacing" } }
 				},
 
 				{ "Selectable", new PL {
@@ -102,7 +103,8 @@ namespace RulesConverter
 					{ "HP", "Strength" }, 
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
-					{ "WaterBound", "WaterBound" } } 
+					{ "WaterBound", "WaterBound" },
+					{ "InitialFacing", "InitialFacing" } }
 				},
 
 				{ "StoresOre", new PL {

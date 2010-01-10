@@ -8,6 +8,15 @@ namespace OpenRa.Game.Traits
 {
 	class AttackBaseInfo : ITraitInfo
 	{
+		public readonly string PrimaryWeapon = null;
+		public readonly string SecondaryWeapon = null;
+		public readonly int Recoil = 0;
+		public readonly int[] PrimaryLocalOffset = { };
+		public readonly int[] SecondaryLocalOffset = { };
+		public readonly int[] PrimaryOffset = { 0, 0 };
+		public readonly int[] SecondaryOffset = null;
+		public readonly bool MuzzleFlash = false;
+
 		public virtual object Create(Actor self) { return new AttackBase(self); }
 	}
 
