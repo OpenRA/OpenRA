@@ -38,7 +38,7 @@ namespace OpenRa.Game
 			if( Info.Traits == null )
 				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
 
-			foreach (var trait in Rules.NewUnitInfo[Info.Name.ToLower()].Traits.Values)
+			foreach (var trait in Rules.NewUnitInfo[Info.Name.ToLower()].Traits.WithInterface<ITraitInfo>())
 				traits.Add(trait.Create(this));
 		}
 

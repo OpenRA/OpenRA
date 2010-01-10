@@ -9,7 +9,7 @@ namespace OpenRa.Game.GameRules
 	class NewUnitInfo
 	{
 		public readonly string Parent;
-		public readonly Dictionary<string, ITraitInfo> Traits;
+		public readonly TypeDictionary Traits = new TypeDictionary();
 
 		public NewUnitInfo( MiniYaml node )
 		{
@@ -20,9 +20,8 @@ namespace OpenRa.Game.GameRules
 				node.Nodes.Remove( "Inherits" );
 			}
 
-			Traits = node.Nodes.ToDictionary( 
-				a => a.Key, 
-				a => LoadTraitInfo( a.Key, a.Value ));
+			foreach (var t in node.Nodes)
+				Traits.Add(LoadTraitInfo(t.Key, t.Value));
 		}
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
