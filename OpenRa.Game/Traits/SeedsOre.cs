@@ -1,6 +1,11 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
+	class SeedsOreInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new SeedsOre(self); }
+	}
+
 	class SeedsOre : ITick
 	{
 		public SeedsOre( Actor self ) {}
