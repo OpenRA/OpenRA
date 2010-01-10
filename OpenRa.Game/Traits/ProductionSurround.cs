@@ -6,6 +6,11 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionSurroundInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ProductionSurround(self); }
+	}
+
 	class ProductionSurround : Production
 	{
 		public ProductionSurround(Actor self) : base(self) { }

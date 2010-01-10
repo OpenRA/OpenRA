@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Production(self); }
+	}
+
 	class Production : IIssueOrder, IResolveOrder, IProducer, ITags
 	{
 		bool isPrimary = false;

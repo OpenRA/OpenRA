@@ -6,6 +6,11 @@ using IjwFramework.Collections;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionQueueInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ProductionQueue(self); }
+	}
+
 	class ProductionQueue : IResolveOrder, ITick
 	{
 		Actor self;
