@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits
 		public readonly int Sight = 0;
 		public readonly int ROT = 0;
 		public readonly int Speed = 0;
+
 		public object Create(Actor self) { return new Mobile(self); }
 	}
 

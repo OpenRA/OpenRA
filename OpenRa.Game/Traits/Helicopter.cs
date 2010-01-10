@@ -4,6 +4,11 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class HelicopterInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Helicopter(self); }
+	}
+
 	class Helicopter : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;

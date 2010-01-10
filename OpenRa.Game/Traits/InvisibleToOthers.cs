@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class InvisibleToOthersInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new InvisibleToOthers(self); }
+	}
+
 	class InvisibleToOthers : IRenderModifier
 	{
 		public InvisibleToOthers(Actor self) { }

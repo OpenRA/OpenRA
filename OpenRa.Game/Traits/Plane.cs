@@ -6,6 +6,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class PlaneInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Plane(self); }
+	}
+
 	class Plane : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
