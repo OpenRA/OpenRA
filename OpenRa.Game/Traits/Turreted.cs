@@ -1,8 +1,12 @@
-﻿
+﻿using System.Linq;
+
 namespace OpenRa.Game.Traits
 {
 	class TurretedInfo : ITraitInfo
 	{
+		public readonly int ROT = 0;
+		public readonly int InitialFacing = 128;
+
 		public object Create(Actor self) { return new Turreted(self); }
 	}
 
@@ -14,13 +18,13 @@ namespace OpenRa.Game.Traits
 
 		public Turreted(Actor self)
 		{
-			turretFacing = self.LegacyInfo.InitialFacing;
+			turretFacing = self.Info.Traits.Get<TurretedInfo>().InitialFacing;
 		}
 
 		public void Tick( Actor self )
 		{
 			var df = desiredFacing ?? ( self.traits.Contains<Unit>() ? self.traits.Get<Unit>().Facing : turretFacing );
-			Util.TickFacing( ref turretFacing, df, self.LegacyInfo.ROT );
+			Util.TickFacing(ref turretFacing, df, self.Info.Traits.Get<TurretedInfo>().ROT);
 		}
 	}
 }

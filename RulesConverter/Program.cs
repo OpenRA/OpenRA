@@ -70,6 +70,17 @@ namespace RulesConverter
 					{ "Image", "Image" } }
 				},
 
+				{ "RenderUnitSpinner", new PL {
+					{ "Image", "Image" },
+					{ "Offset", "PrimaryOffset" } }
+				},
+
+				{ "RenderUnitRotor", new PL {
+					{ "Image", "Image" },
+					{ "PrimaryOffset", "RotorOffset" },
+					{ "SecondaryOffset", "RotorOffset2" } }
+				},
+
 				{ "Buildable", new PL {
 					{ "TechLevel", "TechLevel" },
 					{ "Tab", "$Tab" },
@@ -136,8 +147,6 @@ namespace RulesConverter
 			traitMap["RenderInfantry"] = traitMap["RenderBuilding"];
 			traitMap["RenderUnitMuzzleFlash"] = traitMap["RenderBuilding"];
 			traitMap["RenderUnitReload"] = traitMap["RenderBuilding"];
-			traitMap["RenderUnitRotor"] = traitMap["RenderBuilding"];
-			traitMap["RenderUnitSpinner"] = traitMap["RenderBuilding"];
 			traitMap["RenderUnitTurreted"] = traitMap["RenderBuilding"];
 
 			traitMap["AttackTurreted"] = traitMap["AttackBase"];

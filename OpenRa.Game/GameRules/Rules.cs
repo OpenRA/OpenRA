@@ -97,7 +97,7 @@ namespace OpenRa.Game
 
 			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
 			foreach( var kv in MiniYaml.FromFile( "ra.yaml" ) )
-				NewUnitInfo.Add( kv.Key.ToLowerInvariant(), new NewUnitInfo( kv.Value ) );
+				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value));
 		}
 
 		static void LoadCategories(params string[] types)

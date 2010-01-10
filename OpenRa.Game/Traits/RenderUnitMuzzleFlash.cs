@@ -15,8 +15,6 @@ namespace OpenRa.Game.Traits
 		public RenderUnitMuzzleFlash(Actor self)
 			: base(self)
 		{
-			if (!self.LegacyInfo.MuzzleFlash) throw new InvalidOperationException("wtf??");
-
 			var unit = self.traits.Get<Unit>();
 			var attack = self.traits.WithInterface<AttackBase>().First();
 

@@ -10,9 +10,13 @@ namespace OpenRa.Game.GameRules
 	{
 		public readonly string Parent;
 		public readonly TypeDictionary Traits = new TypeDictionary();
+		public readonly string Name;
 
-		public NewUnitInfo( MiniYaml node )
+		public NewUnitInfo( string name, MiniYaml node )
 		{
+			Name = name;
+
+			// todo: make inheritance actually work
 			MiniYaml inherit;
 			if( node.Nodes.TryGetValue( "Inherits", out inherit ) )
 			{

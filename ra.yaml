@@ -175,6 +175,7 @@ MRJ:
 		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
+		Offset: 0,4,0,-6
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -202,6 +203,7 @@ MGG:
 		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
+		Offset: 0,6,0,-3
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -624,6 +626,8 @@ TRAN:
 		ROT: 5
 		Speed: 12
 	RenderUnitRotor:
+		PrimaryOffset: 0,14,0,-4
+		SecondaryOffset: 0,-14,0,-2
 	WithShadow:
 	Cargo:
 		PassengerTypes: Foot
@@ -653,6 +657,7 @@ HELI:
 		ROT: 4
 		Speed: 16
 	RenderUnitRotor:
+		PrimaryOffset: 0,0,0,-2
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 6
