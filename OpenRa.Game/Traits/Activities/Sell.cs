@@ -29,7 +29,8 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			if (!started)
 			{
-				var rb = self.traits.Get<RenderBuilding>();
+				var rb = self.traits.WithInterface<RenderBuilding>().First();
+				//var rb = self.traits.Get<RenderBuilding>();
 				rb.PlayCustomAnimBackwards(self, "make",
 					() => Game.world.AddFrameEndTask(w => DoSell(self)));
 
