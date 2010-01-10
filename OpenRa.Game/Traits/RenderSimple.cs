@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using IjwFramework.Collections;
 using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits

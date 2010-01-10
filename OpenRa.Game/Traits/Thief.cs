@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 namespace OpenRa.Game.Traits
 {
-	class ThiefInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new Thief(self); }
-	}
+	class ThiefInfo : StatelessTraitInfo<Thief> { }
 
 	class Thief : IIssueOrder, IResolveOrder
 	{
-		public Thief(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;

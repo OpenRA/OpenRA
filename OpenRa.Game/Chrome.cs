@@ -198,7 +198,7 @@ namespace OpenRa.Game
 		{
 			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
-				&& a.traits.Get<ProvidesRadar>().IsActive());
+				&& a.traits.Get<ProvidesRadar>().IsActive(a));
 			
 			if (hasRadar != hadRadar)
 				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");

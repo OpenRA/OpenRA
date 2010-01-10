@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace OpenRa.Game.Traits
 {
 	class RenderBuildingOreInfo : RenderBuildingInfo

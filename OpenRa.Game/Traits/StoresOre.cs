@@ -3,18 +3,14 @@ using System;
 using OpenRa.Game.GameRules;
 namespace OpenRa.Game.Traits
 {
-	class StoresOreInfo : ITraitInfo
+	class StoresOreInfo : StatelessTraitInfo<StoresOre>
 	{
 		public readonly int Pips = 0;
 		public readonly int Capacity = 0;
-
-		public object Create(Actor self) { return new StoresOre(self); }
 	}
 
 	class StoresOre : IPips, IAcceptThief
 	{
-		public StoresOre(Actor self) {}
-		
 		public void OnSteal(Actor self, Actor thief)
 		{
 			// Steal half the ore the building holds

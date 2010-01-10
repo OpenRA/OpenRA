@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
-	class PassengerInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new Passenger(self); }
-	}
+	class PassengerInfo : StatelessTraitInfo<Passenger> {}
 
 	class Passenger : IIssueOrder, IResolveOrder
 	{
-		public Passenger(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) 

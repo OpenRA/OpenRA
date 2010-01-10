@@ -11,8 +11,6 @@ namespace OpenRa.Game.Traits
 
 	class RenderUnitTurreted : RenderUnit
 	{
-		public Animation muzzleFlash;
-
 		public RenderUnitTurreted(Actor self)
 			: base(self)
 		{
@@ -37,7 +35,7 @@ namespace OpenRa.Game.Traits
 
 			if( self.Info.MuzzleFlash )
 			{
-				muzzleFlash = new Animation( self.Info.Name );
+				var muzzleFlash = new Animation( self.Info.Name );
 				muzzleFlash.PlayFetchIndex( "muzzle",
 					() => ( Util.QuantizeFacing( self.traits.Get<Turreted>().turretFacing, 8 ) ) * 6
 						+ (int)( attack.primaryRecoil * 5.9f ) ); /* hack: recoil can be 1.0f, but don't overflow into next anim */

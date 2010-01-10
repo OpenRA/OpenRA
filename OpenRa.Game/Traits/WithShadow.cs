@@ -6,15 +6,10 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class WithShadowInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new WithShadow(self); }
-	}
+	class WithShadowInfo : StatelessTraitInfo<WithShadow> {}
 
 	class WithShadow : IRenderModifier
 	{
-		public WithShadow(Actor self) {}
-
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			var unit = self.traits.Get<Unit>();
