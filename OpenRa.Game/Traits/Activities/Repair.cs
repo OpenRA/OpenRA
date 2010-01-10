@@ -16,8 +16,11 @@ namespace OpenRa.Game.Traits.Activities
 			if (isCanceled) return NextActivity;
 			if (remainingTicks == 0)
 			{
-				var costPerHp = (Rules.General.URepairPercent * self.LegacyInfo.Cost) / self.LegacyInfo.Strength;
-				var hpToRepair = Math.Min(Rules.General.URepairStep, self.LegacyInfo.Strength - self.Health);
+				var unitCost = self.Info.Traits.Get<BuildableInfo>().Cost;
+				var hp = self.Info.Traits.WithInterface<OwnedActorInfo>().First().HP;
+
+				var costPerHp = (Rules.General.URepairPercent * unitCost) / hp;
+				var hpToRepair = Math.Min(Rules.General.URepairStep, hp - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -26,7 +29,7 @@ namespace OpenRa.Game.Traits.Activities
 				}
 
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
-				if (self.Health == self.LegacyInfo.Strength)
+				if (self.Health == hp)
 					return NextActivity;
 
 				var hostBuilding = Game.FindUnits(self.CenterLocation, self.CenterLocation)
