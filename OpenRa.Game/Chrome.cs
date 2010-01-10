@@ -43,12 +43,24 @@ namespace OpenRa.Game
 		readonly Animation sellButton;
 		readonly Animation pwrdownButton;
 		readonly Animation optionsButton;
+
+		// Build Palette tabs
+		string currentTab = "Building";
+		bool paletteOpen = false;
+		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
+		readonly Dictionary<string, string[]> tabImageNames;
+		readonly Dictionary<string, Sprite> tabSprites;
 		
 		// Build Palette
 		const int paletteColumns = 3;
 		const int paletteRows = 5;
-		static int2 paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9, 260);
-		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
+		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 260);
+		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 9, 260);
+		static float2 paletteOrigin = paletteClosedOrigin;
+		const int paletteAnimationLength = 7;
+		int paletteAnimationFrame = 0;
+		bool paletteAnimating = false;
+		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
 		readonly Animation cantBuild;
 		readonly Animation ready;
 		readonly Animation clock;
@@ -56,12 +68,6 @@ namespace OpenRa.Game
 		readonly Sprite blank;
 		readonly Sprite tooltipSprite;
 
-		// Build Palette tabs
-		string currentTab = "Building";
-		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
-		readonly Dictionary<string, string[]> tabImageNames;
-		readonly Dictionary<string, Sprite> tabSprites;
-		
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
@@ -92,10 +98,6 @@ namespace OpenRa.Game
 			};
 			moneyBinSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "moneybin");
 			tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, "chrome", "tooltip-bg");
-			
-			
-			// Radar
-			radarOrigin = radarClosedOrigin;
 						
 			repairButton = new Animation("repair");
 			repairButton.PlayRepeating("normal");
@@ -152,40 +154,10 @@ namespace OpenRa.Game
 		
 		public void Tick()
 		{
-			Log.Write("({0},{1})",radarOrigin, radarMinimapHeight);
-			if (!radarAnimating)
-				return;
-						
-			// Increment frame
-			if (hasRadar)
-				radarAnimationFrame++;
-			else
-				radarAnimationFrame--;
-			
-			// Calculate radar bin position
-			if (radarAnimationFrame <= radarSlideAnimationLength)
-				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
-			
-			// Play radar-on sound at the start of the activate anim (open)
-			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-				Sound.Play("radaron2.aud");
-
-			// Play radar-on sound at the start of the activate anim (close)
-			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength -1 && !hasRadar)
-				Sound.Play("radardn1.aud");
-			
-			// Minimap height
-			if (radarAnimationFrame >= radarSlideAnimationLength)
-				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
-
-			// Animation is complete
-			if ((radarAnimationFrame == 0 && !hasRadar)
-					|| (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && hasRadar))
-			{
-				radarAnimating = false;
-			}
+			TickPaletteAnimation();
+			TickRadarAnimation();
 		}
-		
+				
 		public void Draw()
 		{
 			buttons.Clear();
@@ -215,6 +187,41 @@ namespace OpenRa.Game
 			DrawOptionsMenu();
 		}
 
+		public void TickRadarAnimation()
+		{
+			if (!radarAnimating)
+				return;
+
+			// Increment frame
+			if (hasRadar)
+				radarAnimationFrame++;
+			else
+				radarAnimationFrame--;
+
+			// Calculate radar bin position
+			if (radarAnimationFrame <= radarSlideAnimationLength)
+				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
+
+			// Play radar-on sound at the start of the activate anim (open)
+			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
+				Sound.Play("radaron2.aud");
+
+			// Play radar-on sound at the start of the activate anim (close)
+			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
+				Sound.Play("radardn1.aud");
+
+			// Minimap height
+			if (radarAnimationFrame >= radarSlideAnimationLength)
+				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
+
+			// Animation is complete
+			if ((radarAnimationFrame == 0 && !hasRadar)
+					|| (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && hasRadar))
+			{
+				radarAnimating = false;
+			}
+		}
+		
 		void DrawRadar()
 		{
 			var hasNewRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
@@ -244,7 +251,7 @@ namespace OpenRa.Game
 			}
 		}
 		
-		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
 		
 		void DrawBuildTabs(int paletteHeight)
 		{
@@ -272,12 +279,22 @@ namespace OpenRa.Game
 				var race = (Game.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
 				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), PaletteType.Chrome);
 
-				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
-					(Action<bool>)(isLmb => currentTab = groupName)));
+				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),
+					(Action<bool>)(isLmb => HandleTabClick(groupName))));
 				y += tabHeight;
 			}
 
 			rgbaRenderer.Flush();
+		}
+		
+		void HandleTabClick(string button)
+		{
+			Sound.Play("ramenu1.aud");
+			var wasOpen = paletteOpen;
+			paletteOpen = (currentTab == button && wasOpen) ? false : true;
+			currentTab = button;
+			if (wasOpen != paletteOpen)
+				paletteAnimating = true;
 		}
 		
 		void CheckDeadTab( string groupName )
@@ -471,12 +488,48 @@ namespace OpenRa.Game
 			renderer.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 		
+		void TickPaletteAnimation()
+		{
+			Log.Write("{0} {1} {2} {3}", paletteAnimationFrame, paletteOrigin.X, paletteAnimating, paletteOpen);
+			
+			if (!paletteAnimating)
+				return;
+
+			// Increment frame
+			if (paletteOpen)
+				paletteAnimationFrame++;
+			else
+				paletteAnimationFrame--;
+
+			Log.Write("{0}",paletteAnimationFrame);
+			
+			// Calculate palette position
+			if (paletteAnimationFrame <= paletteAnimationLength)
+				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
+
+			// Play radar-on sound at the start of the activate anim (open)
+			if (paletteAnimationFrame == 1 && paletteOpen)
+				Sound.Play("bleep13.aud");
+
+			// Play radar-on sound at the start of the activate anim (close)
+			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
+				Sound.Play("bleep13.aud");
+
+			// Animation is complete
+			if ((paletteAnimationFrame == 0 && !paletteOpen)
+					|| (paletteAnimationFrame == paletteAnimationLength && paletteOpen))
+			{
+				paletteAnimating = false;
+			}
+		}
+		
+		
 		// Return an int telling us the y coordinate at the bottom of the palette
 		int DrawBuildPalette(string queueName)
 		{
 			// Hack
 			int columns = paletteColumns;
-			int2 origin = new int2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
+			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
 			
 			if (queueName == null) return 0;
 
@@ -511,7 +564,7 @@ namespace OpenRa.Game
 					lasty = y;
 				}
 				
-				var rect = new Rectangle(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
+				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
@@ -583,7 +636,7 @@ namespace OpenRa.Game
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null)
-				DrawProductionTooltip(tooltipItem, new int2(Game.viewport.Width, origin.Y + y * 48 + 9)/*tooltipPos*/);
+				DrawProductionTooltip(tooltipItem, new float2(Game.viewport.Width, origin.Y + y * 48 + 9).ToInt2()/*tooltipPos*/);
 				
 			return y*48+9;
 		}
