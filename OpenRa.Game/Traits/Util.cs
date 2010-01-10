@@ -142,5 +142,13 @@ namespace OpenRa.Game.Traits
 			return acts.Reverse().Aggregate(
 				(next, a) => { a.NextActivity = next; return a; });
 		}
+
+		public static float GetMaximumRange(Actor self)
+		{
+			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			return new[] { info.PrimaryWeapon, info.SecondaryWeapon }
+				.Where(w => w != null)
+				.Max(w => Rules.WeaponInfo[w].Range);
+		}
 	}
 }

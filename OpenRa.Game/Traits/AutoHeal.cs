@@ -17,23 +17,16 @@ namespace OpenRa.Game.Traits
 					self.CancelActivity();
 		}
 
-		float GetMaximumRange(Actor self)
-		{
-			return new[] { self.LegacyInfo.Primary, self.LegacyInfo.Secondary }
-				.Where(w => w != null)
-				.Max(w => Rules.WeaponInfo[w].Range);
-		}
-
 		bool NeedsNewTarget(Actor self)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
-			var range = GetMaximumRange(self);
+			var range = Util.GetMaximumRange(self);
 
 			if (attack.target == null)
 				return true;	// he's dead.
 			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.Health == attack.target.LegacyInfo.Strength)
+			if (attack.target.Health == attack.target.Info.Traits.WithInterface<OwnedActorInfo>().First().HP)
 				return true;	// fully healed
 
 			return false;
@@ -42,7 +35,7 @@ namespace OpenRa.Game.Traits
 		public void Tick(Actor self)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
-			var range = GetMaximumRange(self);
+			var range = Util.GetMaximumRange(self);
 
 			if (NeedsNewTarget(self))
 				AttackTarget(self, ChooseTarget(self, range));
