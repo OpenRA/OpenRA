@@ -2,6 +2,7 @@
 using System.Drawing;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
@@ -71,4 +72,12 @@ namespace OpenRa.Game.Traits
 	}
 
 	interface ITraitInfo { object Create(Actor self); }
+
+	class StatelessTraitInfo<T> : ITraitInfo
+		where T : new()
+	{
+		static Lazy<T> Instance = Lazy.New(() => new T());
+		public object Create(Actor self) { return Instance.Value; }
+	}
+
 }
