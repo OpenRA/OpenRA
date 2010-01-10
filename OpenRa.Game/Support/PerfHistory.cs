@@ -16,7 +16,7 @@ namespace OpenRa.Game.Support
 			s => 
 			{
 				var x = new PerfItem(s, colors[nextColor++]);
-				if (nextColor > colors.Length) nextColor = 0;
+				if (nextColor >= colors.Length) nextColor = 0;
 				return x;
 			});
 
