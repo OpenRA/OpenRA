@@ -2,16 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
-	class EngineerCaptureInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new EngineerCapture(self); }
-	}
+	class EngineerCaptureInfo : StatelessTraitInfo<EngineerCapture> { }
 
 	class EngineerCapture : IIssueOrder, IResolveOrder
 	{
 		public const int EngineerDamage = 300;	// todo: push into rules, as a weapon
-
-		public EngineerCapture(Actor self) { }
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

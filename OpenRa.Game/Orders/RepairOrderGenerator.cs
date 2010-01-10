@@ -27,7 +27,7 @@ namespace OpenRa.Game.Orders
 						&& a.traits.Contains<Building>()
 						&& a.Info.Selectable).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
+				var building = underCursor != null ? underCursor.Info as LegacyBuildingInfo : null;
 
 				if (building != null && building.Repairable && underCursor.Health < building.Strength)
 					yield return new Order("Repair", underCursor, null, int2.Zero, null);

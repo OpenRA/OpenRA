@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits
 		public void OnSteal(Actor self, Actor thief)
 		{
 			// Steal half the ore the building holds
-			var toSteal = (self.Info as BuildingInfo).Storage/2;
+			var toSteal = (self.Info as LegacyBuildingInfo).Storage/2;
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			

@@ -2,15 +2,10 @@
 
 namespace OpenRa.Game.Traits
 {
-	class ExplodesInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new Explodes(self); }
-	}
+	class ExplodesInfo : StatelessTraitInfo<Explodes> { }
 
 	class Explodes : INotifyDamage
 	{
-		public Explodes(Actor self) {}
-
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (self.IsDead)

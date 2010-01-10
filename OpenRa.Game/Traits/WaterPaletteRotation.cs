@@ -2,10 +2,8 @@
 
 namespace OpenRa.Game.Traits
 {
-	class WaterPaletteRotationInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new WaterPaletteRotation(self); }
-	}
+	// this is NOT bound through rules (it belongs on the world actor!)
+	// so no *Info required
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{

@@ -3,10 +3,10 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class AutoHealInfo : StatelessTraitInfo<AutoHeal> { }
+
 	class AutoHeal : ITick
 	{
-		public AutoHeal(Actor self) { }
-
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();

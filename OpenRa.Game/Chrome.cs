@@ -647,7 +647,7 @@ namespace OpenRa.Game
 			DrawRightAligned( "${0}".F(info.Cost), pos + new int2(-5,5), 
 				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= info.Cost ? Color.White : Color.Red);
 
-			var bi = info as BuildingInfo;
+			var bi = info as LegacyBuildingInfo;
 			if (bi != null)
 				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
 					Game.LocalPlayer.PowerProvided - Game.LocalPlayer.PowerDrained + bi.Power >= 0

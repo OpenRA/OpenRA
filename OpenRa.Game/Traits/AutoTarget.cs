@@ -2,15 +2,10 @@
 
 namespace OpenRa.Game.Traits
 {
-	class AutoTargetInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new AutoTarget(self); }
-	}
+	class AutoTargetInfo : StatelessTraitInfo<AutoTarget> { }
 
 	class AutoTarget : ITick, INotifyDamage
 	{
-		public AutoTarget(Actor self) {}
-
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();

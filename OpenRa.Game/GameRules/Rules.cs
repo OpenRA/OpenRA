@@ -65,8 +65,8 @@ namespace OpenRa.Game
 			UnitCategory = Categories.SelectMany(x => x.Value.Select(y => new KeyValuePair<string, string>(y, x.Key))).ToDictionary(x => x.Key, x => x.Value);
 
 			UnitInfo = new InfoLoader<LegacyUnitInfo>(
-				Pair.New<string, Func<string, LegacyUnitInfo>>("Building", s => new BuildingInfo(s)),
-				Pair.New<string, Func<string, LegacyUnitInfo>>("Defense", s => new BuildingInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Building", s => new LegacyBuildingInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Defense", s => new LegacyBuildingInfo(s)),
 				Pair.New<string, Func<string, LegacyUnitInfo>>("Infantry", s => new InfantryInfo(s)),
 				Pair.New<string, Func<string, LegacyUnitInfo>>("Vehicle", s => new VehicleInfo(s)),
 				Pair.New<string, Func<string, LegacyUnitInfo>>("Ship", s => new VehicleInfo(s)),

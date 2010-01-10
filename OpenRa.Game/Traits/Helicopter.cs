@@ -6,6 +6,9 @@ namespace OpenRa.Game.Traits
 {
 	class HelicopterInfo : ITraitInfo
 	{
+		public readonly int ROT = 0;
+		public readonly int Speed = 0;
+
 		public object Create(Actor self) { return new Helicopter(self); }
 	}
 
@@ -60,7 +63,7 @@ namespace OpenRa.Game.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var offset = (order.TargetActor.Info as BuildingInfo).SpawnOffset;
+				var offset = (order.TargetActor.Info as LegacyBuildingInfo).SpawnOffset;
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 				self.CancelActivity();

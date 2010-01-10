@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class BuildableInfo : ITraitInfo
+	class BuildableInfo : StatelessTraitInfo<Buildable>
 	{
 		public readonly int TechLevel = -1;
 		public readonly string Tab = null;
@@ -15,12 +15,7 @@ namespace OpenRa.Game.Traits
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly string Icon = null;
-
-		public object Create(Actor self) { return new Buildable(self); }
 	}
 
-	class Buildable
-	{
-		public Buildable( Actor self ) { }
-	}
+	class Buildable { }
 }

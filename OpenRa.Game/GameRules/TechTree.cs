@@ -12,7 +12,7 @@ namespace OpenRa.Game.GameRules
 		{
 			foreach( var b in Rules.Categories[ "Building" ] )
 			{
-				var info = (BuildingInfo)Rules.UnitInfo[ b ];
+				var info = (LegacyBuildingInfo)Rules.UnitInfo[ b ];
 				foreach( var p in info.Produces )
 					producesIndex[ p ].Add( info );
 			}
@@ -21,7 +21,7 @@ namespace OpenRa.Game.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
-			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.Info is BuildingInfo ) )
+			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.Info is LegacyBuildingInfo ) )
 				ret[ b.Info.Name ].Add( b );
 			return ret;
 		}

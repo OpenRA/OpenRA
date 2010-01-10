@@ -6,12 +6,12 @@ namespace OpenRa.Game.Orders
 	class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		readonly Actor Producer;
-		readonly BuildingInfo Building;
+		readonly LegacyBuildingInfo Building;
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
-			Building = (BuildingInfo)Rules.UnitInfo[ name ];
+			Building = (LegacyBuildingInfo)Rules.UnitInfo[ name ];
 		}
 
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)

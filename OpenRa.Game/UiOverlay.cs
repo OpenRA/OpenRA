@@ -42,7 +42,7 @@ namespace OpenRa.Game
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
 		}
 
-		public void DrawBuildingGrid( BuildingInfo bi )
+		public void DrawBuildingGrid( LegacyBuildingInfo bi )
 		{
 			var position = Game.controller.MousePosition.ToInt2();
 			var isCloseEnough = Game.IsCloseEnoughToBase(Game.LocalPlayer, bi, position);

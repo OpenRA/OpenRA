@@ -321,7 +321,7 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(LegacyBuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
 				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
@@ -329,7 +329,7 @@ namespace OpenRa.Game
 					toIgnore));
 		}
 
-		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(Player p, LegacyBuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 1;
 
@@ -338,7 +338,7 @@ namespace OpenRa.Game
 				heuristic = loc =>
 				{
 					var b = Game.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p && (b.Info as BuildingInfo).BaseNormal) return 0;
+					if (b != null && b.Owner == p && (b.Info as LegacyBuildingInfo).BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
 					return 1;

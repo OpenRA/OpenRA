@@ -9,10 +9,15 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class BuildingInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Building(self); }
+	}
+
 	class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
-		public readonly BuildingInfo unitInfo;
+		public readonly LegacyBuildingInfo unitInfo;
 		[Sync]
 		bool isRepairing = false;
 		[Sync]
@@ -24,7 +29,7 @@ namespace OpenRa.Game.Traits
 		public Building(Actor self)
 		{
 			this.self = self;
-			unitInfo = (BuildingInfo)self.Info;
+			unitInfo = (LegacyBuildingInfo)self.Info;
 			self.CenterLocation = Game.CellSize 
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
 		}

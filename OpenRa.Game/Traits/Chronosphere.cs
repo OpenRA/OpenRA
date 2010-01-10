@@ -5,8 +5,6 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
-	class Chronosphere
-	{
-		public Chronosphere(Actor self) { }
-	}
+	class ChronosphereInfo : StatelessTraitInfo<Chronosphere> { }
+	class Chronosphere { }
 }

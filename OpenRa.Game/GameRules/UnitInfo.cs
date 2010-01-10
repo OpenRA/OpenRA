@@ -94,7 +94,7 @@ namespace OpenRa.Game.GameRules
 		public VehicleInfo(string name) : base(name) { }
 	}
 
-	public class BuildingInfo : LegacyUnitInfo
+	public class LegacyBuildingInfo : LegacyUnitInfo
 	{
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly string Footprint = "x";
@@ -112,6 +112,6 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] RallyPoint = { 1, 3 };
 		public readonly float[] SpawnOffset = null;
 
-		public BuildingInfo(string name) : base(name) { }
+		public LegacyBuildingInfo(string name) : base(name) { }
 	}
 }
