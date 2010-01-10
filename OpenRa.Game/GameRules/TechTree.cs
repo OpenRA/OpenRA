@@ -6,13 +6,13 @@ namespace OpenRa.Game.GameRules
 {
 	class TechTree
 	{
-		readonly Cache<string, List<UnitInfo>> producesIndex = new Cache<string, List<UnitInfo>>( x => new List<UnitInfo>() );
+		readonly Cache<string, List<LegacyUnitInfo>> producesIndex = new Cache<string, List<LegacyUnitInfo>>( x => new List<LegacyUnitInfo>() );
 
 		public TechTree()
 		{
 			foreach( var b in Rules.Categories[ "Building" ] )
 			{
-				var info = (BuildingInfo)Rules.UnitInfo[ b ];
+				var info = (LegacyBuildingInfo)Rules.UnitInfo[ b ];
 				foreach( var p in info.Produces )
 					producesIndex[ p ].Add( info );
 			}
@@ -21,12 +21,12 @@ namespace OpenRa.Game.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
-			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.Info is BuildingInfo ) )
-				ret[ b.Info.Name ].Add( b );
+			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.LegacyInfo is LegacyBuildingInfo ) )
+				ret[ b.LegacyInfo.Name ].Add( b );
 			return ret;
 		}
 
-		public bool CanBuild( UnitInfo unit, Player player, Cache<string, List<Actor>> playerBuildings )
+		public bool CanBuild( LegacyUnitInfo unit, Player player, Cache<string, List<Actor>> playerBuildings )
 		{
 			if( unit.TechLevel == -1 )
 				return false;
@@ -59,7 +59,7 @@ namespace OpenRa.Game.GameRules
 				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
-		public IEnumerable<UnitInfo> UnitBuiltAt( UnitInfo info )
+		public IEnumerable<LegacyUnitInfo> UnitBuiltAt( LegacyUnitInfo info )
 		{
 			if( info.BuiltAt.Length != 0 )
 				return info.BuiltAt.Select( x => Rules.UnitInfo[ x.ToLowerInvariant() ] );

@@ -4,6 +4,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class SubmarineInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Submarine(self); }
+	}
+
 	class Submarine : IRenderModifier, INotifyAttack, ITick, INotifyDamage
 	{
 		[Sync]

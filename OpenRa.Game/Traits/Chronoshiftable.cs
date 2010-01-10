@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace OpenRa.Game.Traits
 {
+	class ChronoshiftableInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Chronoshiftable(self); }
+	}
+
 	class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic

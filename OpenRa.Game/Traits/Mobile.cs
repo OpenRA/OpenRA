@@ -5,6 +5,15 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class MobileInfo : ITraitInfo
+	{
+		public readonly int Sight = 0;
+		public readonly int ROT = 0;
+		public readonly int Speed = 0;
+
+		public object Create(Actor self) { return new Mobile(self); }
+	}
+
 	class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
 	{
 		readonly Actor self;
@@ -78,12 +87,12 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			switch (Rules.UnitCategory[self.Info.Name])
+			switch (Rules.UnitCategory[self.LegacyInfo.Name])
 			{
 				case "Infantry":
 					return UnitMovementType.Foot;
 				case "Vehicle":
-					return (self.Info as VehicleInfo).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
+					return (self.LegacyInfo as VehicleInfo).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
 				case "Ship":
 					return UnitMovementType.Float;
 				case "Plane":

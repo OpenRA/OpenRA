@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits.Activities
 			if( desiredFacing == unit.Facing )
 				return NextActivity;
 
-			Util.TickFacing( ref unit.Facing, desiredFacing, self.Info.ROT );
+			Util.TickFacing( ref unit.Facing, desiredFacing, self.LegacyInfo.ROT );
 			return this;
 		}
 

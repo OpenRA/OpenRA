@@ -3,9 +3,14 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class AttackTurretedInfo : AttackBaseInfo
+	{
+		public override object Create(Actor self) { return new AttackTurreted( self ); }
+	}
+
 	class AttackTurreted : AttackBase, INotifyBuildComplete
 	{
-		public AttackTurreted( Actor self ) : base(self) { self.traits.Get<Turreted>(); }
+		public AttackTurreted(Actor self) : base(self) { }
 
 		public override void Tick(Actor self)
 		{
@@ -31,7 +36,7 @@ namespace OpenRa.Game.Traits
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
+			var weapon = order.Subject.LegacyInfo.Primary ?? order.Subject.LegacyInfo.Secondary;
 
 			if (self.traits.Contains<Mobile>())
 				self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,

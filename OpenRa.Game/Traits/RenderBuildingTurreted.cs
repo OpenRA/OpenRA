@@ -1,6 +1,11 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
+	class RenderBuildingTurretedInfo : RenderBuildingInfo
+	{
+		public override object Create(Actor self) { return new RenderBuildingTurreted(self); }
+	}
+
 	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
 		public RenderBuildingTurreted(Actor self)

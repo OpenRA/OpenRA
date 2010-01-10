@@ -2,5 +2,6 @@
 
 namespace OpenRa.Game.Traits
 {
-	class GpsLaunchSite { public GpsLaunchSite(Actor self) { } }
+	class GpsLaunchSiteInfo : StatelessTraitInfo<GpsLaunchSite> { }
+	class GpsLaunchSite { }
 }

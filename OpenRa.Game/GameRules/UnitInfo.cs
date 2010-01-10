@@ -11,7 +11,7 @@ namespace OpenRa.Game.GameRules
 		concrete = 4,
 	}
 
-	public class UnitInfo : ActorInfo
+	public class LegacyUnitInfo : ActorInfo
 	{
 		public readonly string Name;
 
@@ -64,19 +64,19 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] PrimaryLocalOffset = { };
 		public readonly int[] SecondaryLocalOffset = { };
 
-		public UnitInfo(string name) { Name = name; }
+		public LegacyUnitInfo(string name) { Name = name; }
 	}
 
-	public class MobileInfo : UnitInfo
+	public class LegacyMobileInfo : LegacyUnitInfo
 	{
 		public readonly int Speed = 0;
 		public readonly bool NoMovingFire = false;
 		public readonly string Voice = "GenericVoice";
 
-		public MobileInfo(string name) : base(name) { }
+		public LegacyMobileInfo(string name) : base(name) { }
 	}
 
-	public class InfantryInfo : MobileInfo
+	public class InfantryInfo : LegacyMobileInfo
 	{
 		public readonly bool C4 = false;
 		public readonly bool FraidyCat = false;
@@ -87,14 +87,14 @@ namespace OpenRa.Game.GameRules
 		public InfantryInfo(string name) : base(name) { }
 	}
 
-	public class VehicleInfo : MobileInfo
+	public class VehicleInfo : LegacyMobileInfo
 	{
 		public readonly bool Tracked = false;
 
 		public VehicleInfo(string name) : base(name) { }
 	}
 
-	public class BuildingInfo : UnitInfo
+	public class LegacyBuildingInfo : LegacyUnitInfo
 	{
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly string Footprint = "x";
@@ -112,6 +112,6 @@ namespace OpenRa.Game.GameRules
 		public readonly int[] RallyPoint = { 1, 3 };
 		public readonly float[] SpawnOffset = null;
 
-		public BuildingInfo(string name) : base(name) { }
+		public LegacyBuildingInfo(string name) : base(name) { }
 	}
 }

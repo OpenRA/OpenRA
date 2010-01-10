@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class PassengerInfo : StatelessTraitInfo<Passenger> {}
+
 	class Passenger : IIssueOrder, IResolveOrder
 	{
-		public Passenger(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) 
@@ -23,7 +20,7 @@ namespace OpenRa.Game.Traits
 				return null;
 
 			var umt = self.traits.WithInterface<IMovement>().First().GetMovementType();
-			if (!underCursor.Info.PassengerTypes.Contains(umt))
+			if (!underCursor.LegacyInfo.PassengerTypes.Contains(umt))
 				return null;
 
 			return new Order("EnterTransport", self, underCursor, int2.Zero, null);

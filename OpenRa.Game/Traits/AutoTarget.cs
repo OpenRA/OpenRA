@@ -2,10 +2,10 @@
 
 namespace OpenRa.Game.Traits
 {
+	class AutoTargetInfo : StatelessTraitInfo<AutoTarget> { }
+
 	class AutoTarget : ITick, INotifyDamage
 	{
-		public AutoTarget(Actor self) {}
-
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
@@ -13,19 +13,12 @@ namespace OpenRa.Game.Traits
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
 		}
 
-		float GetMaximumRange(Actor self)
-		{
-			return new[] { self.Info.Primary, self.Info.Secondary }
-				.Where(w => w != null)
-				.Max(w => Rules.WeaponInfo[w].Range);
-		}
-
 		public void Tick(Actor self)
 		{
 			if (!self.IsIdle) return;
 
 			var attack = self.traits.WithInterface<AttackBase>().First();
-			var range = GetMaximumRange(self);
+			var range = Util.GetMaximumRange(self);
 			
 			if (attack.target == null || 
 				(attack.target.Location - self.Location).LengthSquared > range * range + 2)

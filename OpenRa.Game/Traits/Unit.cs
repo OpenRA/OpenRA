@@ -1,6 +1,12 @@
-﻿
+﻿using OpenRa.Game.GameRules;
+
 namespace OpenRa.Game.Traits
 {
+	class UnitInfo : OwnedActorInfo, ITraitInfo
+	{
+		public object Create(Actor self) { return new Unit(self); }
+	}
+
 	class Unit : INotifyDamage
 	{
 		[Sync]

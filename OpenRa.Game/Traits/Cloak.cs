@@ -4,6 +4,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class CloakInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Cloak(self); }
+	}
+
 	class Cloak : IRenderModifier, INotifyAttack, ITick
 	{
 		[Sync]

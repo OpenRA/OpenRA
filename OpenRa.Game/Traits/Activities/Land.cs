@@ -28,7 +28,7 @@ namespace OpenRa.Game.Traits.Activities
 				--unit.Altitude;
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.LegacyInfo.ROT);
 			var speed = .2f * Util.GetEffectiveSpeed(self);
 			var angle = unit.Facing / 128f * Math.PI;
 

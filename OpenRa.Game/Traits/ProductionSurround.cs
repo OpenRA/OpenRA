@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionSurroundInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ProductionSurround(self); }
+	}
+
 	class ProductionSurround : Production
 	{
 		public ProductionSurround(Actor self) : base(self) { }
@@ -24,7 +26,7 @@ namespace OpenRa.Game.Traits
 			return null;
 		}
 
-		public override int2? CreationLocation(Actor self, UnitInfo producee)
+		public override int2? CreationLocation(Actor self, LegacyUnitInfo producee)
 		{
 			return FindAdjacentTile(self, producee.WaterBound ?
 					UnitMovementType.Float : UnitMovementType.Wheel);	/* hackety hack */

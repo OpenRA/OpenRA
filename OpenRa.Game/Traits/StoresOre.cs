@@ -3,21 +3,18 @@ using System;
 using OpenRa.Game.GameRules;
 namespace OpenRa.Game.Traits
 {
+	class StoresOreInfo : StatelessTraitInfo<StoresOre>
+	{
+		public readonly int Pips = 0;
+		public readonly int Capacity = 0;
+	}
+
 	class StoresOre : IPips, IAcceptThief
 	{
-		public const int MaxStealAmount = 100; //todo: How is cash stolen determined?
-		
-		readonly Actor self;
-		
-		public StoresOre(Actor self)
-		{
-			this.self = self;
-		}
-		
 		public void OnSteal(Actor self, Actor thief)
 		{
 			// Steal half the ore the building holds
-			var toSteal = (self.Info as BuildingInfo).Storage/2;
+			var toSteal = self.Info.Traits.Get<StoresOreInfo>().Capacity / 2;
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
@@ -31,15 +28,12 @@ namespace OpenRa.Game.Traits
 		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			for (int i = 0; i < self.Info.OrePips; i++)
-			{
-				if (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / self.Info.OrePips)
-				{
-					yield return PipType.Yellow;
-					continue;
-				}
-				yield return PipType.Transparent;
-			}
+			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
+
+			return Graphics.Util.MakeArray( numPips, 
+				i => (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
+					? PipType.Yellow : PipType.Transparent );
+
 		}
 	}
 }

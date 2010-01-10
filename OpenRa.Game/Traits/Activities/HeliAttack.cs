@@ -30,11 +30,11 @@ namespace OpenRa.Game.Traits.Activities
 				return this;
 			}
 
-			var range = Rules.WeaponInfo[ self.Info.Primary ].Range - 1;
+			var range = Rules.WeaponInfo[ self.LegacyInfo.Primary ].Range - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.LegacyInfo.ROT);
 
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 			{

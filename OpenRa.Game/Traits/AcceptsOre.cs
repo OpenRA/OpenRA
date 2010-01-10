@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class AcceptsOreInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new AcceptsOre(self); }
+	}
+
 	class AcceptsOre
 	{
 		public AcceptsOre(Actor self)

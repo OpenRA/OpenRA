@@ -1,11 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class PlaneInfo : ITraitInfo
+	{
+		public readonly int ROT = 0;
+		public readonly int Speed = 0;
+
+		public object Create(Actor self) { return new Plane(self); }
+	}
+
 	class Plane : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
@@ -15,8 +20,8 @@ namespace OpenRa.Game.Traits
 		// todo: push into data!
 		static bool PlaneCanEnter(Actor a)
 		{
-			if (a.Info == Rules.UnitInfo["AFLD"]) return true;
-			if (a.Info == Rules.UnitInfo["FIX"]) return true;
+			if (a.LegacyInfo == Rules.UnitInfo["AFLD"]) return true;
+			if (a.LegacyInfo == Rules.UnitInfo["FIX"]) return true;
 			return false;
 		}
 
@@ -59,7 +64,7 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(order.TargetActor.Info == Rules.UnitInfo["AFLD"]
+				self.QueueActivity(order.TargetActor.LegacyInfo == Rules.UnitInfo["AFLD"]
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}

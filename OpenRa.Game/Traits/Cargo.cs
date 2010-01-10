@@ -7,6 +7,14 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class CargoInfo : ITraitInfo
+	{
+		public readonly UnitMovementType[] PassengerTypes = { };
+		public readonly int UnloadFacing = 0;
+
+		public object Create(Actor self) { return new Cargo(self); }
+	}
+
 	class Cargo : IPips, IIssueOrder, IResolveOrder
 	{
 		List<Actor> cargo = new List<Actor>();
@@ -39,7 +47,7 @@ namespace OpenRa.Game.Traits
 
 		public bool IsFull(Actor self)
 		{
-			return cargo.Count == self.Info.Passengers;
+			return cargo.Count == self.LegacyInfo.Passengers;
 		}
 
 		public bool IsEmpty(Actor self)
@@ -56,7 +64,7 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips( Actor self )
 		{
-			for (var i = 0; i < self.Info.Passengers; i++)
+			for (var i = 0; i < self.LegacyInfo.Passengers; i++)
 				if (i >= cargo.Count)
 					yield return PipType.Transparent;
 				else

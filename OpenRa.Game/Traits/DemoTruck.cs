@@ -6,14 +6,14 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class DemoTruckInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new DemoTruck(self); }
+	}
+
 	class DemoTruck : Chronoshiftable, IResolveOrder, INotifyDamage
 	{
-		readonly Actor self;
-		public DemoTruck(Actor self)
-			: base(self)
-		{
-			this.self = self;
-		}
+		public DemoTruck(Actor self) : base(self) {}
 
 		public new void ResolveOrder(Actor self, Order order)
 		{
@@ -44,7 +44,7 @@ namespace OpenRa.Game.Traits
 			int2 detonateLocation = self.CenterLocation.ToInt2();
 			
 			Game.world.AddFrameEndTask(
-				w => w.Add(new Bullet(self.Info.Primary, detonatedBy.Owner, detonatedBy,
+				w => w.Add(new Bullet(self.LegacyInfo.Primary, detonatedBy.Owner, detonatedBy,
 					detonateLocation, detonateLocation,	altitude, altitude)));
 		}
 	}

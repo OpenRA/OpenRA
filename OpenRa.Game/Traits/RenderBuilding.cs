@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using OpenRa.Game.Graphics;
 using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderBuildingInfo : RenderSimpleInfo
+	{
+		public override object Create(Actor self) { return new RenderBuilding(self); }
+	}
+
 	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		const int SmallBibStart = 1;

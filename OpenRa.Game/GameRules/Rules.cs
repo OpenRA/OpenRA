@@ -4,6 +4,7 @@ using System.Linq;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -12,7 +13,7 @@ namespace OpenRa.Game
 		public static IniFile AllRules;
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
 		public static Dictionary<string, string> UnitCategory;
-		public static InfoLoader<UnitInfo> UnitInfo;
+		public static InfoLoader<LegacyUnitInfo> UnitInfo;
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
@@ -23,6 +24,8 @@ namespace OpenRa.Game
 		public static TechTree TechTree;
 		public static Map Map;
 		public static TileSet TileSet;
+
+		public static Dictionary<string, NewUnitInfo> NewUnitInfo;
 
 		public static void LoadRules(string mapFileName, bool useAftermath)
 		{
@@ -61,13 +64,13 @@ namespace OpenRa.Game
 				"Plane");
 			UnitCategory = Categories.SelectMany(x => x.Value.Select(y => new KeyValuePair<string, string>(y, x.Key))).ToDictionary(x => x.Key, x => x.Value);
 
-			UnitInfo = new InfoLoader<UnitInfo>(
-				Pair.New<string, Func<string, UnitInfo>>("Building", s => new BuildingInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Defense", s => new BuildingInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Infantry", s => new InfantryInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Vehicle", s => new VehicleInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Ship", s => new VehicleInfo(s)),
-				Pair.New<string, Func<string, UnitInfo>>("Plane", s => new VehicleInfo(s)));
+			UnitInfo = new InfoLoader<LegacyUnitInfo>(
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Building", s => new LegacyBuildingInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Defense", s => new LegacyBuildingInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Infantry", s => new InfantryInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Vehicle", s => new VehicleInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Ship", s => new VehicleInfo(s)),
+				Pair.New<string, Func<string, LegacyUnitInfo>>("Plane", s => new VehicleInfo(s)));
 
 			LoadCategories(
 				"Weapon",
@@ -91,6 +94,10 @@ namespace OpenRa.Game
 			Map = new Map( AllRules );
 			FileSystem.MountTemporary( new Package( Rules.Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
+
+			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
+			foreach( var kv in MiniYaml.FromFile( "ra.yaml" ) )
+				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value));
 		}
 
 		static void LoadCategories(params string[] types)

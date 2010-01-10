@@ -5,6 +5,11 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class SquishByTankInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new SquishByTank(self); }
+	}
+
 	class SquishByTank : ICrushable
 	{
 		readonly Actor self;

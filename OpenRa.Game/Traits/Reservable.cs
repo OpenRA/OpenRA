@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class ReservableInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Reservable(self); }
+	}
+
 	class Reservable : ITick
 	{
 		public Reservable(Actor self) { }

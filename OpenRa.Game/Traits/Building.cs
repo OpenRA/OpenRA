@@ -9,10 +9,35 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class OwnedActorInfo
+	{
+		public readonly int HP = 0;
+		public readonly ArmorType Armor = ArmorType.none;
+		public readonly bool Crewed = false;		// replace with trait?
+		public readonly int InitialFacing = 128;
+	}
+
+	class BuildingInfo : OwnedActorInfo, ITraitInfo
+	{
+		public readonly int Power = 0;
+		public readonly bool RequiresPower = false;
+		public readonly bool BaseNormal = true;
+		public readonly int Adjacent = 1;
+		public readonly bool Bib = false;
+		public readonly bool Capturable = false;
+		public readonly bool Repairable = true;
+		public readonly string Footprint = "x";
+		public readonly string[] Produces = { };		// does this go somewhere else?
+		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly bool WaterBound = false;
+
+		public object Create(Actor self) { return new Building(self); }
+	}
+
 	class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
-		public readonly BuildingInfo unitInfo;
+		public readonly LegacyBuildingInfo unitInfo;
 		[Sync]
 		bool isRepairing = false;
 		[Sync]
@@ -24,7 +49,7 @@ namespace OpenRa.Game.Traits
 		public Building(Actor self)
 		{
 			this.self = self;
-			unitInfo = (BuildingInfo)self.Info;
+			unitInfo = (LegacyBuildingInfo)self.LegacyInfo;
 			self.CenterLocation = Game.CellSize 
 				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
 		}
@@ -79,8 +104,8 @@ namespace OpenRa.Game.Traits
 
 			if (remainingTicks == 0)
 			{
-				var costPerHp = (Rules.General.URepairPercent * self.Info.Cost) / self.Info.Strength;
-				var hpToRepair = Math.Min(Rules.General.URepairStep, self.Info.Strength - self.Health);
+				var costPerHp = (Rules.General.URepairPercent * self.LegacyInfo.Cost) / self.LegacyInfo.Strength;
+				var hpToRepair = Math.Min(Rules.General.URepairStep, self.LegacyInfo.Strength - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -90,7 +115,7 @@ namespace OpenRa.Game.Traits
 
 				Game.world.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
-				if (self.Health == self.Info.Strength)
+				if (self.Health == self.LegacyInfo.Strength)
 				{
 					isRepairing = false;
 					return;

@@ -3,10 +3,10 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class AutoHealInfo : StatelessTraitInfo<AutoHeal> { }
+
 	class AutoHeal : ITick
 	{
-		public AutoHeal(Actor self) { }
-
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
@@ -17,23 +17,16 @@ namespace OpenRa.Game.Traits
 					self.CancelActivity();
 		}
 
-		float GetMaximumRange(Actor self)
-		{
-			return new[] { self.Info.Primary, self.Info.Secondary }
-				.Where(w => w != null)
-				.Max(w => Rules.WeaponInfo[w].Range);
-		}
-
 		bool NeedsNewTarget(Actor self)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
-			var range = GetMaximumRange(self);
+			var range = Util.GetMaximumRange(self);
 
 			if (attack.target == null)
 				return true;	// he's dead.
 			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.Health == attack.target.Info.Strength)
+			if (attack.target.Health == attack.target.Info.Traits.WithInterface<OwnedActorInfo>().First().HP)
 				return true;	// fully healed
 
 			return false;
@@ -42,7 +35,7 @@ namespace OpenRa.Game.Traits
 		public void Tick(Actor self)
 		{
 			var attack = self.traits.WithInterface<AttackBase>().First();
-			var range = GetMaximumRange(self);
+			var range = Util.GetMaximumRange(self);
 
 			if (NeedsNewTarget(self))
 				AttackTarget(self, ChooseTarget(self, range));
@@ -55,7 +48,7 @@ namespace OpenRa.Game.Traits
 			return inRange
 				.Where(a => a.Owner == self.Owner && a != self)	/* todo: one day deal with friendly players */
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
-				.Where(a => a.Health < a.Info.Strength)
+				.Where(a => a.Health < a.LegacyInfo.Strength)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}

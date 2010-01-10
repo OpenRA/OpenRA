@@ -2,6 +2,13 @@
 
 namespace OpenRa.Game.Traits
 {
+	class LimitedAmmoInfo : ITraitInfo
+	{
+		public readonly int Ammo = 0;
+
+		public object Create(Actor self) { return new LimitedAmmo(self); }
+	}
+
 	class LimitedAmmo : INotifyAttack, IPips
 	{
 		[Sync]
@@ -10,14 +17,14 @@ namespace OpenRa.Game.Traits
 
 		public LimitedAmmo(Actor self)
 		{
-			ammo = self.Info.Ammo;
+			ammo = self.Info.Traits.Get<LimitedAmmoInfo>().Ammo;
 			this.self = self;
 		}
 
 		public bool HasAmmo() { return ammo > 0; }
 		public bool GiveAmmo()
 		{
-			if (ammo >= self.Info.Ammo) return false;
+			if (ammo >= self.Info.Traits.Get<LimitedAmmoInfo>().Ammo) return false;
 			++ammo;
 			return true;
 		}
@@ -26,7 +33,8 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Graphics.Util.MakeArray(self.Info.Ammo, 
+			var maxAmmo = self.Info.Traits.Get<LimitedAmmoInfo>().Ammo;
+			return Graphics.Util.MakeArray(maxAmmo, 
 				i => ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}

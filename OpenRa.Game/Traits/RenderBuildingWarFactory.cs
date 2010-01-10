@@ -4,6 +4,11 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderWarFactoryInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new RenderWarFactory(self); }
+	}
+
 	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
 	{
 		public Animation roof;
@@ -21,7 +26,7 @@ namespace OpenRa.Game.Traits
 		public RenderWarFactory(Actor self)
 		{
 			this.self = self;
-			roof = new Animation(self.Info.Image ?? self.Info.Name);
+			roof = new Animation(self.LegacyInfo.Image ?? self.LegacyInfo.Name);
 		}
 
 		public void BuildingComplete( Actor self )

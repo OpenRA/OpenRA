@@ -5,10 +5,10 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
+	class ChronosphereInfo : StatelessTraitInfo<Chronosphere> { }
+
 	class Chronosphere : IResolveOrder
 	{
-		public Chronosphere(Actor self) { }
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "PlayAnimation")

@@ -12,7 +12,10 @@ namespace OpenRa.Game
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly UnitInfo Info;
+		
+		[Obsolete]
+		public readonly LegacyUnitInfo LegacyInfo;
+		public readonly NewUnitInfo Info;
 
 		public readonly uint ActorID;
 		[Sync]
@@ -23,33 +26,25 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
-		object ConstructTrait(string traitName)
-		{
-			/* todo: allow mods to introduce traits */
-			var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
-			var ctor = type.GetConstructor(new[] { typeof(Actor) });
-			if (ctor == null)
-				throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
-			return ctor.Invoke(new object[] { this });
-		}
-
 		public Actor( ActorInfo info, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			Info = (UnitInfo)info; // temporary
+			LegacyInfo = (LegacyUnitInfo)info; // temporary
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
-			if (Info == null) return;
+			if (LegacyInfo == null) return;
 
-			Health = Info.Strength;	/* todo: fix walls, etc so this is always true! */
+			Health = LegacyInfo.Strength;	/* todo: fix walls, etc so this is always true! */
 
-			if( Info.Traits == null )
-				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
+			if( LegacyInfo.Traits == null )
+				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(LegacyInfo.Name) );
 
-			foreach (var traitName in Info.Traits)
-				traits.Add(ConstructTrait(traitName));
+			Info = Rules.NewUnitInfo[LegacyInfo.Name.ToLowerInvariant()];
+
+			foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
+				traits.Add(trait.Create(this));
 		}
 
 		public void Tick()
@@ -75,8 +70,8 @@ namespace OpenRa.Game
 		{
 			get
 			{
-				if (Info != null && Info.SelectionSize != null)
-					return new float2(Info.SelectionSize[0], Info.SelectionSize[1]);
+				if (LegacyInfo != null && LegacyInfo.SelectionSize != null)
+					return new float2(LegacyInfo.SelectionSize[0], LegacyInfo.SelectionSize[1]);
 
 				var firstSprite = Render().FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
@@ -102,7 +97,7 @@ namespace OpenRa.Game
 			var loc = mi.Location + Game.viewport.Location;
 			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
 
-			if (underCursor != null && !underCursor.Info.Selectable)
+			if (underCursor != null && !underCursor.LegacyInfo.Selectable)
 				underCursor = null;
 
 			return traits.WithInterface<IIssueOrder>()
@@ -114,8 +109,8 @@ namespace OpenRa.Game
 		{
 			var size = SelectedSize;
 			var loc = CenterLocation - 0.5f * size;
-			if (Info != null && Info.SelectionSize != null && Info.SelectionSize.Length > 2)
-				loc += new float2(Info.SelectionSize[2], Info.SelectionSize[3]);
+			if (LegacyInfo != null && LegacyInfo.SelectionSize != null && LegacyInfo.SelectionSize.Length > 2)
+				loc += new float2(LegacyInfo.SelectionSize[2], LegacyInfo.SelectionSize[3]);
 
 			if (useAltitude)
 			{
@@ -132,7 +127,7 @@ namespace OpenRa.Game
 		public DamageState GetDamageState()
 		{
 			if (Health <= 0) return DamageState.Dead;
-			var halfStrength = Info.Strength * Rules.General.ConditionYellow;
+			var halfStrength = LegacyInfo.Strength * Rules.General.ConditionYellow;
 			return Health < halfStrength ? DamageState.Half : DamageState.Normal;
 		}
 
@@ -155,8 +150,8 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
-			if (Health > Info.Strength)
-				Health = Info.Strength;
+			if (Health > LegacyInfo.Strength)
+				Health = LegacyInfo.Strength;
 
 			var newState = GetDamageState();
 

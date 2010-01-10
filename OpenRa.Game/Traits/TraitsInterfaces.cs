@@ -2,6 +2,7 @@
 using System.Drawing;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
@@ -24,7 +25,7 @@ namespace OpenRa.Game.Traits
 
 	interface IProducer
 	{
-		bool Produce( Actor self, UnitInfo producee );
+		bool Produce( Actor self, LegacyUnitInfo producee );
 		void SetPrimaryProducer(Actor self, bool isPrimary);
 	}
 	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
@@ -69,4 +70,14 @@ namespace OpenRa.Game.Traits
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}
+
+	interface ITraitInfo { object Create(Actor self); }
+
+	class StatelessTraitInfo<T> : ITraitInfo
+		where T : new()
+	{
+		static Lazy<T> Instance = Lazy.New(() => new T());
+		public object Create(Actor self) { return Instance.Value; }
+	}
+
 }

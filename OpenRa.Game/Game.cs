@@ -61,7 +61,7 @@ namespace OpenRa.Game
 			world = new World();
 			Game.world.ActorAdded += a => 
 			{ 
-				if (a.Owner != null && a.Info != null) 
+				if (a.Owner != null && a.LegacyInfo != null) 
 					a.Owner.Shroud.Explore(a); 
 			};
 
@@ -311,8 +311,8 @@ namespace OpenRa.Game
 		public static IEnumerable<Actor> SelectActorsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b)
-				.Where( x => x.Info.Selectable )
-				.GroupBy(x => (x.Owner == LocalPlayer) ? x.Info.SelectionPriority : 0)
+				.Where( x => x.LegacyInfo.Selectable )
+				.GroupBy(x => (x.Owner == LocalPlayer) ? x.LegacyInfo.SelectionPriority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )
@@ -322,7 +322,7 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(LegacyBuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(building, xy, adjust).Any(
 				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
@@ -330,7 +330,7 @@ namespace OpenRa.Game
 					toIgnore));
 		}
 
-		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(Player p, LegacyBuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 1;
 
@@ -339,7 +339,7 @@ namespace OpenRa.Game
 				heuristic = loc =>
 				{
 					var b = Game.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p && (b.Info as BuildingInfo).BaseNormal) return 0;
+					if (b != null && b.Owner == p && (b.LegacyInfo as LegacyBuildingInfo).BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
 					return 1;

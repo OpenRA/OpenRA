@@ -25,9 +25,9 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<Building>()
-						&& a.Info.Selectable).FirstOrDefault();
+						&& a.LegacyInfo.Selectable).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
+				var building = underCursor != null ? underCursor.LegacyInfo as LegacyBuildingInfo : null;
 
 				if (building != null && building.Repairable && underCursor.Health < building.Strength)
 					yield return new Order("Repair", underCursor, null, int2.Zero, null);

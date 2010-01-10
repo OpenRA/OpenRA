@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class AttackHeliInfo : AttackBaseInfo
+	{
+		public override object Create(Actor self) { return new AttackHeli(self); }
+	}
+
 	class AttackHeli : AttackFrontal
 	{
 		public AttackHeli(Actor self) : base(self, 20) { }

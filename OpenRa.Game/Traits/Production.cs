@@ -1,9 +1,14 @@
-﻿using OpenRa.Game.GameRules;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Production(self); }
+	}
+
 	class Production : IIssueOrder, IResolveOrder, IProducer, ITags
 	{
 		bool isPrimary = false;
@@ -11,17 +16,17 @@ namespace OpenRa.Game.Traits
 		
 		public Production( Actor self ) { }
 
-		public virtual int2? CreationLocation( Actor self, UnitInfo producee )
+		public virtual int2? CreationLocation( Actor self, LegacyUnitInfo producee )
 		{
 			return ( 1 / 24f * self.CenterLocation ).ToInt2();
 		}
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.Info.InitialFacing;
+			return newUnit.LegacyInfo.InitialFacing;
 		}
 
-		public bool Produce( Actor self, UnitInfo producee )
+		public bool Produce( Actor self, LegacyUnitInfo producee )
 		{
 			var location = CreationLocation( self, producee );
 			if( location == null || Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )
@@ -38,7 +43,7 @@ namespace OpenRa.Game.Traits
 					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
 			}
 
-			var bi = self.Info as BuildingInfo;
+			var bi = self.LegacyInfo as LegacyBuildingInfo;
 			if (bi != null && bi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
 					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);
@@ -78,12 +83,12 @@ namespace OpenRa.Game.Traits
 			}
 			
 			// Cancel existing primaries
-			foreach (var p in (self.Info as BuildingInfo).Produces)
+			foreach (var p in (self.LegacyInfo as LegacyBuildingInfo).Produces)
 			{
 				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true
-					&& (x.Info as BuildingInfo).Produces.Contains(p)))
+					&& (x.LegacyInfo as LegacyBuildingInfo).Produces.Contains(p)))
 				{
 					b.traits.Get<Production>().SetPrimaryProducer(b, false);
 				}

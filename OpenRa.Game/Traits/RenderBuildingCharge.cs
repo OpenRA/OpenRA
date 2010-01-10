@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace OpenRa.Game.Traits
 {
+	class RenderBuildingChargeInfo : RenderBuildingInfo
+	{
+		public override object Create(Actor self) { return new RenderBuildingCharge(self); }
+	}
+
 	/* used for tesla */
 	class RenderBuildingCharge : RenderBuilding, INotifyAttack
 	{

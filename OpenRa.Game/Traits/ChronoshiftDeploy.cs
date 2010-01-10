@@ -4,6 +4,11 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class ChronoshiftDeployInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ChronoshiftDeploy(self); }
+	}
+
 	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
 	{
 		// Recharge logic
