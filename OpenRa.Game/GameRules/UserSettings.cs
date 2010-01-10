@@ -7,6 +7,7 @@ namespace OpenRa.Game.GameRules
 		public readonly bool UnitDebug = false;
 		public readonly bool BuildingDebug = false;
 		public readonly bool PathDebug = false;
+		public readonly bool PerfGraph = true;
 		
 		// Window settings
 		public readonly int Width = 0;

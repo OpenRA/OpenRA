@@ -176,7 +176,8 @@ namespace OpenRa.Game
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
 				), new int2(140, 15), Color.White);
 
-			PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
+			if (Game.Settings.PerfGraph)
+				PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
 			DrawMinimap();
 
