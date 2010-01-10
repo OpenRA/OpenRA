@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class FakeInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Fake(self); }
+	}
+
 	class Fake : ITags
 	{
 		public Fake(Actor self){}

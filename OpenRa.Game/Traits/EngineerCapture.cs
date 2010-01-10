@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class EngineerCaptureInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new EngineerCapture(self); }
+	}
+
 	class EngineerCapture : IIssueOrder, IResolveOrder
 	{
 		public const int EngineerDamage = 300;	// todo: push into rules, as a weapon
