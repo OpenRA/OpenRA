@@ -154,5 +154,10 @@ namespace OpenRa.Game
 		{
 			return new Order("CancelProduction", subject.PlayerActor, null, int2.Zero, item);
 		}
+
+		public static Order PlayAnimation(Actor actor, string animationString)
+		{
+			return new Order("PlayAnimation", actor, null, int2.Zero, animationString);
+		}
 	}
 }

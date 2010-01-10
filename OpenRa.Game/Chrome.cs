@@ -15,20 +15,19 @@ namespace OpenRa.Game
 	{
 		readonly Renderer renderer;
 		readonly LineRenderer lineRenderer;
-		readonly Sheet chromeTexture;
 		readonly SpriteRenderer rgbaRenderer;
-		readonly Sprite[] specialBinSprites;
-		readonly Sprite moneyBinSprite;
-		readonly Sprite tooltipSprite;
-		readonly Sprite powerIndicatorSprite;
-		readonly Sprite powerLevelTopSprite;
-		readonly Sprite powerLevelBottomSprite;
+		readonly SpriteRenderer shpRenderer;
 		
-		readonly Animation repairButton;
-		readonly Animation sellButton;
-		readonly Animation pwrdownButton;
-		readonly Animation optionsButton;
+		string chromeCollection;
+		string radarCollection;
+		string paletteCollection;
+		string digitCollection;
 		
+		// Special power bin
+		readonly Dictionary<string, Sprite> spsprites;
+		
+		// Options menu (to be refactored)
+		bool optionsPressed = false;
 		readonly Sprite optionsTop;
 		readonly Sprite optionsBottom;
 		readonly Sprite optionsLeft;
@@ -38,65 +37,57 @@ namespace OpenRa.Game
 		readonly Sprite optionsBottomLeft;
 		readonly Sprite optionsBottomRight;
 		readonly Sprite optionsBackground;
-				
-		readonly SpriteRenderer shpRenderer;
+		
+		// Buttons
+		readonly Animation repairButton;
+		readonly Animation sellButton;
+		readonly Animation pwrdownButton;
+		readonly Animation optionsButton;
+
+		// Build Palette tabs
+		string currentTab = "Building";
+		bool paletteOpen = false;
+		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
+		readonly Dictionary<string, string[]> tabImageNames;
+		readonly Dictionary<string, Sprite> tabSprites;
+		
+		// Build Palette
+		const int paletteColumns = 3;
+		const int paletteRows = 5;
+		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
+		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
+		static float2 paletteOrigin = paletteClosedOrigin;
+		const int paletteAnimationLength = 7;
+		int paletteAnimationFrame = 0;
+		bool paletteAnimating = false;
+		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
 		readonly Animation cantBuild;
 		readonly Animation ready;
 		readonly Animation clock;
-
-		readonly List<Pair<Rectangle, Action<bool>>> buttons = new List<Pair<Rectangle, Action<bool>>>();
-		readonly List<Sprite> digitSprites;
-		readonly Dictionary<string, Sprite[]> tabSprites;
-		readonly Dictionary<string, Sprite> spsprites;
-		readonly Sprite[] shimSprites;
-		readonly Sprite blank;
-	
-		readonly int paletteColumns;
-		readonly int2 paletteOrigin;
-		bool hadRadar = false;
-		bool optionsPressed = false;
-		const int MinRows = 4;
-
-		string currentTab = "Building";
-		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
-		readonly Dictionary<string, Sprite> sprites;
-
 		const int NumClockFrames = 54;
+
+		// Radar
+		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
+		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
+		static float2 radarOrigin = radarClosedOrigin;
+		float radarMinimapHeight;
+		const int radarSlideAnimationLength = 15;
+		const int radarActivateAnimationLength = 5;
+		int radarAnimationFrame = 0;
+		bool radarAnimating = false;
+		bool hasRadar = false;
+				
+		// Power bar 
+		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
+		static Size powerSize = new Size(138,5);
 		
 		public Chrome(Renderer r)
-		{
-			// Positioning of chrome elements
-			// Build palette
-			paletteColumns = 4;
-			paletteOrigin = new int2(Game.viewport.Width - paletteColumns * 64 - 9 - 20, 282);
-			
+		{		
 			this.renderer = r;
-			chromeTexture = new Sheet(renderer, "specialbin.png");
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
 			shpRenderer = new SpriteRenderer(renderer, true);
 
-			specialBinSprites = new [] 
-			{
-				new Sprite(chromeTexture, new Rectangle(0, 0, 32, 51), TextureChannel.Alpha),
-				new Sprite(chromeTexture, new Rectangle(0, 51, 32, 51 /*144*/), TextureChannel.Alpha),
-				new Sprite(chromeTexture, new Rectangle(0, 192-39, 32, 39 ), TextureChannel.Alpha),
-			};
-			moneyBinSprite = new Sprite(chromeTexture, new Rectangle(512 - 320, 0, 320, 32), TextureChannel.Alpha);
-			tooltipSprite = new Sprite(chromeTexture, new Rectangle(0, 288, 272, 136), TextureChannel.Alpha);
-			
-			var powerIndicator = new Animation("power");
-			powerIndicator.PlayRepeating("power-level-indicator");
-			powerIndicatorSprite = powerIndicator.Image;
-			
-			var powerTop = new Animation("powerbar");
-			powerTop.PlayRepeating("powerbar-top");
-			powerLevelTopSprite = powerTop.Image;
-
-			var powerBottom = new Animation("powerbar");
-			powerBottom.PlayRepeating("powerbar-bottom");
-			powerLevelBottomSprite = powerBottom.Image;
-			
 			repairButton = new Animation("repair");
 			repairButton.PlayRepeating("normal");
 
@@ -119,9 +110,7 @@ namespace OpenRa.Game
 			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
 			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
 			
-			blank = SheetBuilder.Add(new Size(64, 48), 16);
-
-			sprites = groups
+			tabSprites = groups
 				.SelectMany(g => Rules.Categories[g])
 				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
 				.ToDictionary(
@@ -132,59 +121,52 @@ namespace OpenRa.Game
 				.ToDictionary(
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
-
-			tabSprites = groups.Select(
+			
+			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
 					OpenRa.Game.Graphics.Util.MakeArray(3,
-						n => new Sprite(chromeTexture,
-							new Rectangle(512 - (n + 1) * 27, 64 + i * 40, 27, 40),
-							TextureChannel.Alpha))))
+						n => i.ToString())))
 				.ToDictionary(a => a.First, a => a.Second);
 
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
-
-			digitSprites = Graphics.Util.MakeArray(10, a => a)
-				.Select(n => new Sprite(chromeTexture, new Rectangle(32 + 13 * n, 0, 13, 17), TextureChannel.Alpha)).ToList();
-
-			shimSprites = new[] 
-			{
-				new Sprite( chromeTexture, new Rectangle( 0, 192, 9, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 0, 202, 9, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 0, 216, 9, 48 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 11, 192, 64, 10 ), TextureChannel.Alpha ),
-				new Sprite( chromeTexture, new Rectangle( 11, 202, 64, 10 ), TextureChannel.Alpha ),
-			};
 
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
 		}
 		
+		public void Tick()
+		{
+			TickPaletteAnimation();
+			TickRadarAnimation();
+		}
+				
 		public void Draw()
 		{
+			chromeCollection = (Game.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
+			radarCollection = (Game.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
+			paletteCollection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
+			digitCollection = (Game.LocalPlayer.Race == Race.Allies) ? "digits-allies" : "digits-soviet";
+
 			buttons.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nPower {4}/{5}\nReady: {6} (F8 to toggle)".F(
+			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nReady: {4} (F8 to toggle)".F(
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
 				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.PowerDrained,
-				Game.LocalPlayer.PowerProvided,
 				Game.LocalPlayer.IsReady ? "Yes" : "No"
 				), new int2(140, 15), Color.White);
 
 			if (Game.Settings.PerfGraph)
 				PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
 
-			DrawMinimap();
-
-			rgbaRenderer.DrawSprite(moneyBinSprite, new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
-
-			DrawMoney();
+			DrawRadar();
 			DrawPower();
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
+			DrawMoney();
 			rgbaRenderer.Flush();
 			DrawButtons();
 			
@@ -195,22 +177,73 @@ namespace OpenRa.Game
 			DrawOptionsMenu();
 		}
 
-		void DrawMinimap()
+		public void TickRadarAnimation()
 		{
-			var hasRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
+			if (!radarAnimating)
+				return;
+
+			// Increment frame
+			if (hasRadar)
+				radarAnimationFrame++;
+			else
+				radarAnimationFrame--;
+
+			// Calculate radar bin position
+			if (radarAnimationFrame <= radarSlideAnimationLength)
+				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
+
+			// Play radar-on sound at the start of the activate anim (open)
+			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
+				Sound.Play("radaron2.aud");
+
+			// Play radar-on sound at the start of the activate anim (close)
+			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
+				Sound.Play("radardn1.aud");
+
+			// Minimap height
+			if (radarAnimationFrame >= radarSlideAnimationLength)
+				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
+
+			// Animation is complete
+			if ((radarAnimationFrame == 0 && !hasRadar)
+					|| (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && hasRadar))
+			{
+				radarAnimating = false;
+			}
+		}
+		
+		void DrawRadar()
+		{
+			var hasNewRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
 				&& a.traits.Get<ProvidesRadar>().IsActive());
 			
-			if (hasRadar != hadRadar)
-				Sound.Play((hasRadar) ? "radaron2.aud" : "radardn1.aud");
-			hadRadar = hasRadar;
+			if (hasNewRadar != hasRadar)
+			{
+				radarAnimating = true;
+			}
+			
+			hasRadar = hasNewRadar;
 
 			var isJammed = false;		// todo: MRJ can do this
+
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "left"), radarOrigin, PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), PaletteType.Chrome);	
+
+			if (radarAnimating)
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "bg"), radarOrigin + new float2(9, 0), PaletteType.Chrome);	
 			
-			Game.minimap.Draw(new float2(Game.viewport.Width - 247, 10), hasRadar, isJammed);
+			rgbaRenderer.Flush();
+
+			if (radarAnimationFrame >= radarSlideAnimationLength)
+			{
+				RectangleF mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y+(192-radarMinimapHeight)/2, 192, radarMinimapHeight);
+				Game.minimap.Draw(mapRect, hasRadar, isJammed);
+			}
 		}
 		
-		void AddButton(Rectangle r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
 		
 		void DrawBuildTabs(int paletteHeight)
 		{
@@ -224,7 +257,7 @@ namespace OpenRa.Game
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
-			foreach (var q in tabSprites)
+			foreach (var q in tabImageNames)
 			{
 				var groupName = q.Key;
 				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, groupName).Any())
@@ -232,27 +265,28 @@ namespace OpenRa.Game
 					CheckDeadTab(groupName);
 					continue;
 				}
-
+				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				
-				
-				// Don't let tabs overlap the bevel
-				if (y > paletteOrigin.Y + paletteHeight - tabHeight - 9 && y < paletteOrigin.Y + paletteHeight)
-					y += tabHeight;	
-				
-				// Stick tabs to the edge of the screen
-				if (y > paletteOrigin.Y + paletteHeight)
-					x = Game.viewport.Width - tabWidth;
+				var race = (Game.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), PaletteType.Chrome);
 
-				rgbaRenderer.DrawSprite(q.Value[index], new float2(x, y), PaletteType.Chrome);
-
-				buttons.Add(Pair.New(new Rectangle(x, y, tabWidth, tabHeight), 
-					(Action<bool>)(isLmb => currentTab = groupName)));
+				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),
+					(Action<bool>)(isLmb => HandleTabClick(groupName))));
 				y += tabHeight;
 			}
 
 			rgbaRenderer.Flush();
+		}
+		
+		void HandleTabClick(string button)
+		{
+			Sound.Play("ramenu1.aud");
+			var wasOpen = paletteOpen;
+			paletteOpen = (currentTab == button && wasOpen) ? false : true;
+			currentTab = button;
+			if (wasOpen != paletteOpen)
+				paletteAnimating = true;
 		}
 		
 		void CheckDeadTab( string groupName )
@@ -264,17 +298,17 @@ namespace OpenRa.Game
 
 		void ChooseAvailableTab()
 		{
-			currentTab = tabSprites.Select(q => q.Key).FirstOrDefault(
+			currentTab = tabImageNames.Select(q => q.Key).FirstOrDefault(
 				t => Rules.TechTree.BuildableItems(Game.LocalPlayer, t).Any());
 		}
 
 		void DrawMoney()
 		{
 			var moneyDigits = Game.LocalPlayer.DisplayCash.ToString();
-			var x = Game.viewport.Width - 155;
+			var x = Game.viewport.Width - 65;
 			foreach (var d in moneyDigits.Reverse())
 			{
-				rgbaRenderer.DrawSprite(digitSprites[d - '0'], new float2(x, 6), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, digitCollection, (d - '0').ToString()), new float2(x, 6), PaletteType.Chrome);
 				x -= 14;
 			}
 		}
@@ -284,51 +318,60 @@ namespace OpenRa.Game
 		
 		void DrawPower()
 		{
-			//draw background
-			float2 powerOrigin = Game.viewport.Location + new float2(Game.viewport.Width - 20, paletteOrigin.Y);
-
-			shpRenderer.DrawSprite(powerLevelTopSprite, powerOrigin, PaletteType.Chrome);
-			shpRenderer.DrawSprite(powerLevelBottomSprite, powerOrigin + new float2(0, powerLevelTopSprite.size.Y), PaletteType.Chrome);
-			shpRenderer.Flush();
-			float2 top = powerOrigin + new float2(0, 15);
-			float2 bottom = powerOrigin + new float2(0, powerLevelTopSprite.size.Y + powerLevelBottomSprite.size.Y) - new float2(0, 50);
+			// Nothing to draw
+			if (Game.LocalPlayer.PowerProvided == 0 && Game.LocalPlayer.PowerDrained == 0)
+				return;
 			
-			var scale = 100;
-			while(Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained) >= scale) scale *= 2;
-			//draw bar
+			// Draw bar horizontally
+			var barStart = powerOrigin + Game.viewport.Location + radarOrigin;
+			var barEnd = barStart + new float2(powerSize.Width, 0);
 
-			var powerTopY = bottom.Y + (top.Y - bottom.Y) * (Game.LocalPlayer.PowerProvided / (float)scale) - Game.viewport.Location.Y;
-			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerTopY), powerTopY, .3f);
-			float2 powerTop = new float2(bottom.X, lastPowerProvidedPos.Value + Game.viewport.Location.Y);
+			float powerScaleBy = 100;
+			var maxPower = Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained);
+			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 			
+			// Current power supply
+			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerProvided / powerScaleBy) - Game.viewport.Location.X;
+			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
+			float2 powerLevel = new float2(lastPowerProvidedPos.Value + Game.viewport.Location.X, barStart.Y);
+
 			var color = Color.LimeGreen;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
 				color = Color.Orange;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Critical)
 				color = Color.Red;
-
-			var color2 = Graphics.Util.Lerp(0.25f, color, Color.Black);
-			
-			for(int i = 11; i < 13; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color, color);
-			for (int i = 13; i < 15; i++)
-				lineRenderer.DrawLine(bottom + new float2(i, 0), powerTop + new float2(i, 0), color2, color2);
-			
+		
+			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
+			for (int i = 0; i < powerSize.Height; i++)
+			{
+				color = (i-1 < powerSize.Height/2) ? color : colorDark;
+				float2 leftOffset = new float2(0,i);
+				float2 rightOffset = new float2(0,i);
+				// Indent corners
+				if ((i == 0 || i == powerSize.Height - 1) && powerLevel.X - barStart.X > 1)
+				{
+					leftOffset.X += 1;
+					rightOffset.X -= 1;
+				}
+				lineRenderer.DrawLine(barStart + leftOffset, powerLevel + rightOffset, color, color);
+			}
 			lineRenderer.Flush();
 
-			var drainedPositionY = bottom.Y + (top.Y - bottom.Y)*(Game.LocalPlayer.PowerDrained/(float) scale) - powerIndicatorSprite.size.Y /2 - Game.viewport.Location.Y;
-			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(drainedPositionY), drainedPositionY, .3f);
-			//draw indicator
-			float2 drainedPosition = new float2(bottom.X + 2, lastPowerDrainedPos.Value + Game.viewport.Location.Y);
-
-			shpRenderer.DrawSprite(powerIndicatorSprite, drainedPosition, PaletteType.Chrome);
-			shpRenderer.Flush();
+			// Power usage indicator
+			var indicator = SequenceProvider.GetImageFromCollection(renderer, radarCollection, "power-indicator");
+			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy) - Game.viewport.Location.X;
+			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
+			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y - Game.viewport.Location.Y-1);
+		
+			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, PaletteType.Chrome);
+			rgbaRenderer.Flush();
 		}
 
 		void DrawButtons()
 		{
+			int2 buttonOrigin = new int2(Game.viewport.Width - 320, 2);
 			// Repair
-			Rectangle repairRect = new Rectangle(Game.viewport.Width - 120, 5, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
+			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
@@ -343,7 +386,7 @@ namespace OpenRa.Game
 			shpRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
 			
 			// Sell
-			Rectangle sellRect = new Rectangle(Game.viewport.Width - 80, 5, 
+			Rectangle sellRect = new Rectangle(buttonOrigin.X+40, buttonOrigin.Y, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
 			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
@@ -357,7 +400,7 @@ namespace OpenRa.Game
 			if (Game.Settings.PowerDownBuildings)
 			{
 				// Power Down
-				Rectangle pwrdownRect = new Rectangle(Game.viewport.Width - 40, 5,
+				Rectangle pwrdownRect = new Rectangle(buttonOrigin.X+80, buttonOrigin.Y,
 					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
 
 				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);
@@ -437,12 +480,48 @@ namespace OpenRa.Game
 			renderer.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 		
+		void TickPaletteAnimation()
+		{
+			Log.Write("{0} {1} {2} {3}", paletteAnimationFrame, paletteOrigin.X, paletteAnimating, paletteOpen);
+			
+			if (!paletteAnimating)
+				return;
+
+			// Increment frame
+			if (paletteOpen)
+				paletteAnimationFrame++;
+			else
+				paletteAnimationFrame--;
+
+			Log.Write("{0}",paletteAnimationFrame);
+			
+			// Calculate palette position
+			if (paletteAnimationFrame <= paletteAnimationLength)
+				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
+
+			// Play radar-on sound at the start of the activate anim (open)
+			if (paletteAnimationFrame == 1 && paletteOpen)
+				Sound.Play("bleep13.aud");
+
+			// Play radar-on sound at the start of the activate anim (close)
+			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
+				Sound.Play("bleep13.aud");
+
+			// Animation is complete
+			if ((paletteAnimationFrame == 0 && !paletteOpen)
+					|| (paletteAnimationFrame == paletteAnimationLength && paletteOpen))
+			{
+				paletteAnimating = false;
+			}
+		}
+		
+		
 		// Return an int telling us the y coordinate at the bottom of the palette
 		int DrawBuildPalette(string queueName)
 		{
 			// Hack
 			int columns = paletteColumns;
-			int2 origin = new int2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
+			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
 			
 			if (queueName == null) return 0;
 
@@ -461,13 +540,26 @@ namespace OpenRa.Game
 
 			string tooltipItem = null;
 
+			// Draw the top border
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
+
+			// Draw the icons
+			int lasty = -1;
 			foreach (var item in allItems)
 			{
-				var rect = new Rectangle(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
+				// Draw the background for this row
+				if (y != lasty)
+				{
+					rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+					rgbaRenderer.Flush();
+					lasty = y;
+				}
+				
+				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
-				shpRenderer.DrawSprite(sprites[item], drawPos, PaletteType.Chrome);
+				shpRenderer.DrawSprite(tabSprites[item], drawPos, PaletteType.Chrome);
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item);
 
@@ -516,38 +608,35 @@ namespace OpenRa.Game
 
 				var closureItem = item;
 				AddButton(rect, isLmb => HandleBuildPalette(closureItem, isLmb));
+
+	
 				if (++x == columns) { x = 0; y++; }
 			}
-
-			while (x != 0 || y < MinRows)
+			if (x != 0) y++;
+			
+			while (y < paletteRows)
 			{
-				var rect = new Rectangle(origin.X +  x * 64, origin.Y + 48 * y, 64, 48);
-				var drawPos = Game.viewport.Location + new float2(rect.Location);
-				shpRenderer.DrawSprite(blank, drawPos, PaletteType.Chrome);
-				AddButton(rect, _ => { });
-				if (++x == columns) { x = 0; y++; }
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+				y++;
 			}
 
 			foreach (var ob in overlayBits)
 				shpRenderer.DrawSprite(ob.First, ob.Second, PaletteType.Chrome);
 
 			shpRenderer.Flush();
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 
-			for (var j = 0; j < y; j++)
-				rgbaRenderer.DrawSprite(shimSprites[2], new float2(origin.X - 9, origin.Y + 48 * j), PaletteType.Chrome);
-
-			rgbaRenderer.DrawSprite(shimSprites[0], new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(shimSprites[1], new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
-
-			for (var i = 0; i < columns; i++)
+			// Draw dock
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-top"), new float2(Game.viewport.Width - 14, origin.Y - 23), PaletteType.Chrome);
+			for (int i = 0; i < y; i++)
 			{
-				rgbaRenderer.DrawSprite(shimSprites[3], new float2(origin.X + 64 * i, origin.Y - 9), PaletteType.Chrome);
-				rgbaRenderer.DrawSprite(shimSprites[4], new float2(origin.X + 64 * i, origin.Y - 1 + 48 * y), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-" + (y % 4).ToString()), new float2(Game.viewport.Width - 14, origin.Y + 48 * i), PaletteType.Chrome);
 			}
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null)
-				DrawProductionTooltip(tooltipItem, new int2(Game.viewport.Width, origin.Y + y * 48 + 9)/*tooltipPos*/);
+				DrawProductionTooltip(tooltipItem, new float2(Game.viewport.Width, origin.Y + y * 48 + 9).ToInt2()/*tooltipPos*/);
 				
 			return y*48+9;
 		}
@@ -637,6 +726,7 @@ namespace OpenRa.Game
 
 		void DrawProductionTooltip(string unit, int2 pos)
 		{
+			var tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "tooltip-bg");
 			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
 			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			rgbaRenderer.Flush();
@@ -681,10 +771,10 @@ namespace OpenRa.Game
 
 			if (numPowers == 0) return;
 
-			rgbaRenderer.DrawSprite(specialBinSprites[0], new float2(0,14), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-top"), new float2(0, 14), PaletteType.Chrome);
 			for (var i = 1; i < numPowers; i++)
-				rgbaRenderer.DrawSprite(specialBinSprites[1], new float2(0, 14 + i * 51), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(specialBinSprites[2], new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-middle"), new float2(0, 14 + i * 51), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "specialbin-bottom"), new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
 
 			rgbaRenderer.Flush();
 
@@ -750,6 +840,7 @@ namespace OpenRa.Game
 
 		void DrawSupportPowerTooltip(string sp, int2 pos)
 		{
+			var tooltipSprite = SequenceProvider.GetImageFromCollection(renderer, chromeCollection, "tooltip-bg");
 			rgbaRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
