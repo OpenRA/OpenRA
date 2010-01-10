@@ -23,16 +23,6 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
-		object ConstructTrait(string traitName)
-		{
-			/* todo: allow mods to introduce traits */
-			var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
-			var ctor = type.GetConstructor(new[] { typeof(Actor) });
-			if (ctor == null)
-				throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
-			return ctor.Invoke(new object[] { this });
-		}
-
 		public Actor( ActorInfo info, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
@@ -48,11 +38,8 @@ namespace OpenRa.Game
 			if( Info.Traits == null )
 				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
 
-			//foreach (var traitName in Info.Traits)
-			//	traits.Add(ConstructTrait(traitName));
-
-			foreach( var traitName in Rules.NewUnitInfo[Info.Name.ToLower()].Traits.Keys )
-				traits.Add( ConstructTrait( traitName ) );
+			foreach (var trait in Rules.NewUnitInfo[Info.Name.ToLower()].Traits.Values)
+				traits.Add(trait.Create(this));
 		}
 
 		public void Tick()
