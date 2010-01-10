@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitRotorInfo : RenderUnitInfo
+	{
+		public override object Create(Actor self) { return new RenderUnitRotor(self); }
+	}
+
 	class RenderUnitRotor : RenderUnit
 	{
 		public Animation rotorAnim, secondRotorAnim;

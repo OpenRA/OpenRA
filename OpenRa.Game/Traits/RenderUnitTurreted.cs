@@ -4,7 +4,10 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderUnitTurretedInfo : RenderUnitInfo { }
+	class RenderUnitTurretedInfo : RenderUnitInfo
+	{
+		public override object Create(Actor self) { return new RenderUnitTurreted(self); }
+	}
 
 	class RenderUnitTurreted : RenderUnit
 	{

@@ -5,6 +5,11 @@ using System.Text;
 
 namespace OpenRa.Game.Traits
 {
+	class ProvidesRadarInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ProvidesRadar(self); }
+	}
+
 	class ProvidesRadar
 	{
 		Actor self;

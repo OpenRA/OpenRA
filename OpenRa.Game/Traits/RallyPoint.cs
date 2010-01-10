@@ -4,6 +4,11 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class RallyPointInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new RallyPoint(self); }
+	}
+
 	class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync]
