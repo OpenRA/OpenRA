@@ -33,7 +33,7 @@ namespace OpenRa.Game.Traits
 				// todo: delay a bit? (req making deploy-mine an activity)
 
 				Game.world.AddFrameEndTask(
-					w => w.Add(new Actor(Rules.UnitInfo[self.Info.Primary], self.Location, self.Owner)));
+					w => w.Add(new Actor(Rules.UnitInfo[self.LegacyInfo.Primary], self.Location, self.Owner)));
 			}
 		}
 	}

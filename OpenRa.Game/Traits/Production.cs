@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.Info.InitialFacing;
+			return newUnit.LegacyInfo.InitialFacing;
 		}
 
 		public bool Produce( Actor self, LegacyUnitInfo producee )
@@ -43,7 +43,7 @@ namespace OpenRa.Game.Traits
 					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
 			}
 
-			var bi = self.Info as LegacyBuildingInfo;
+			var bi = self.LegacyInfo as LegacyBuildingInfo;
 			if (bi != null && bi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
 					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);
@@ -83,12 +83,12 @@ namespace OpenRa.Game.Traits
 			}
 			
 			// Cancel existing primaries
-			foreach (var p in (self.Info as LegacyBuildingInfo).Produces)
+			foreach (var p in (self.LegacyInfo as LegacyBuildingInfo).Produces)
 			{
 				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true
-					&& (x.Info as LegacyBuildingInfo).Produces.Contains(p)))
+					&& (x.LegacyInfo as LegacyBuildingInfo).Produces.Contains(p)))
 				{
 					b.traits.Get<Production>().SetPrimaryProducer(b, false);
 				}

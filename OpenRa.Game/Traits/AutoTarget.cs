@@ -15,7 +15,7 @@ namespace OpenRa.Game.Traits
 
 		float GetMaximumRange(Actor self)
 		{
-			return new[] { self.Info.Primary, self.Info.Secondary }
+			return new[] { self.LegacyInfo.Primary, self.LegacyInfo.Secondary }
 				.Where(w => w != null)
 				.Max(w => Rules.WeaponInfo[w].Range);
 		}

@@ -20,8 +20,8 @@ namespace OpenRa.Game.Traits
 		// todo: push into data!
 		static bool PlaneCanEnter(Actor a)
 		{
-			if (a.Info == Rules.UnitInfo["AFLD"]) return true;
-			if (a.Info == Rules.UnitInfo["FIX"]) return true;
+			if (a.LegacyInfo == Rules.UnitInfo["AFLD"]) return true;
+			if (a.LegacyInfo == Rules.UnitInfo["FIX"]) return true;
 			return false;
 		}
 
@@ -64,7 +64,7 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(order.TargetActor.Info == Rules.UnitInfo["AFLD"]
+				self.QueueActivity(order.TargetActor.LegacyInfo == Rules.UnitInfo["AFLD"]
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}

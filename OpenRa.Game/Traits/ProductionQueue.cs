@@ -133,7 +133,7 @@ namespace OpenRa.Game.Traits
 			// Prioritise primary structure in build order
 			var primaryProducers = Game.world.Actors
 				.Where(x => x.traits.Contains<Production>()
-					&& producerTypes.Contains(x.Info)
+					&& producerTypes.Contains(x.LegacyInfo)
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true);
 			
@@ -153,7 +153,7 @@ namespace OpenRa.Game.Traits
 			if (producer == null)
 			{
 				producer = Game.world.Actors
-					.Where( x => producerTypes.Contains( x.Info ) && x.Owner == self.Owner )
+					.Where( x => producerTypes.Contains( x.LegacyInfo ) && x.Owner == self.Owner )
 					.FirstOrDefault();
 			}
 			

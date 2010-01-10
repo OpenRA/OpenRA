@@ -14,13 +14,13 @@ namespace OpenRa.Game.Traits
 
 		public Turreted(Actor self)
 		{
-			turretFacing = self.Info.InitialFacing;
+			turretFacing = self.LegacyInfo.InitialFacing;
 		}
 
 		public void Tick( Actor self )
 		{
 			var df = desiredFacing ?? ( self.traits.Contains<Unit>() ? self.traits.Get<Unit>().Facing : turretFacing );
-			Util.TickFacing( ref turretFacing, df, self.Info.ROT );
+			Util.TickFacing( ref turretFacing, df, self.LegacyInfo.ROT );
 		}
 	}
 }

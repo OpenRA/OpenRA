@@ -92,7 +92,7 @@ namespace OpenRa.Game
 		{
 			if (voicedUnit == null) return;
 
-			var mi = voicedUnit.Info as LegacyMobileInfo;
+			var mi = voicedUnit.LegacyInfo as LegacyMobileInfo;
 			if (mi == null) return;
 
 			var vi = Rules.VoiceInfo[mi.Voice];

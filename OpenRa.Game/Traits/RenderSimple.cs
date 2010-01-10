@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 
 		public RenderSimple(Actor self)
 		{
-			anims.Add( "", new Animation( self.Info.Image ?? self.Info.Name ) );
+			anims.Add( "", new Animation( self.LegacyInfo.Image ?? self.LegacyInfo.Name ) );
 		}
 
 		public virtual IEnumerable<Renderable> Render( Actor self )

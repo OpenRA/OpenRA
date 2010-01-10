@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits.Activities
 		void DoSell(Actor self)
 		{
 			var refund = Rules.General.RefundPercent 
-				* self.Health * self.Info.Cost / self.Info.Strength;
+				* self.Health * self.LegacyInfo.Cost / self.LegacyInfo.Strength;
 
 			self.Owner.GiveCash((int)refund);
 			self.Health = 0;

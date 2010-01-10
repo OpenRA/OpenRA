@@ -28,8 +28,8 @@ namespace OpenRa.Game.Traits
 
 		public AttackBase(Actor self)
 		{
-			var primaryWeapon = self.Info.Primary != null ? Rules.WeaponInfo[self.Info.Primary] : null;
-			var secondaryWeapon = self.Info.Secondary != null ? Rules.WeaponInfo[self.Info.Secondary] : null;
+			var primaryWeapon = self.LegacyInfo.Primary != null ? Rules.WeaponInfo[self.LegacyInfo.Primary] : null;
+			var secondaryWeapon = self.LegacyInfo.Secondary != null ? Rules.WeaponInfo[self.LegacyInfo.Secondary] : null;
 
 			primaryBurst = primaryWeapon != null ? primaryWeapon.Burst : 1;
 			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
@@ -79,18 +79,18 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.GetOrDefault<Unit>();
 
-			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
-				self.Info.PrimaryOffset, ref primaryBurst, self.Info.PrimaryLocalOffset))
+			if (self.LegacyInfo.Primary != null && CheckFire(self, unit, self.LegacyInfo.Primary, ref primaryFireDelay,
+				self.LegacyInfo.PrimaryOffset, ref primaryBurst, self.LegacyInfo.PrimaryLocalOffset))
 			{
 				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
 				return;
 			}
 
-			if (self.Info.Secondary != null && CheckFire(self, unit, self.Info.Secondary, ref secondaryFireDelay,
-				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset, ref secondaryBurst, self.Info.SecondaryLocalOffset))
+			if (self.LegacyInfo.Secondary != null && CheckFire(self, unit, self.LegacyInfo.Secondary, ref secondaryFireDelay,
+				self.LegacyInfo.SecondaryOffset ?? self.LegacyInfo.PrimaryOffset, ref secondaryBurst, self.LegacyInfo.SecondaryLocalOffset))
 			{
-				if (self.Info.SecondaryOffset != null) secondaryRecoil = 1;
+				if (self.LegacyInfo.SecondaryOffset != null) secondaryRecoil = 1;
 				else primaryRecoil = 1;
 				return;
 			}
@@ -132,7 +132,7 @@ namespace OpenRa.Game.Traits
 			var thisTarget = target;	// closure.
 			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
 
-			ScheduleDelayedAction(self.Info.FireDelay, () =>
+			ScheduleDelayedAction(self.LegacyInfo.FireDelay, () =>
 			{
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
@@ -166,7 +166,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left || underCursor == null) return null;
 			if (self == underCursor) return null;
-			var isHeal = Rules.WeaponInfo[self.Info.Primary].Damage < 0;
+			var isHeal = Rules.WeaponInfo[self.LegacyInfo.Primary].Damage < 0;
 			if (((underCursor.Owner == self.Owner) ^ isHeal) 
 				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
@@ -191,7 +191,7 @@ namespace OpenRa.Game.Traits
 		{
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
+			var weapon = order.Subject.LegacyInfo.Primary ?? order.Subject.LegacyInfo.Secondary;
 
 			self.QueueActivity(new Activities.Attack(order.TargetActor,
 					Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));

@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 				return null;
 
 			var umt = self.traits.WithInterface<IMovement>().First().GetMovementType();
-			if (!underCursor.Info.PassengerTypes.Contains(umt))
+			if (!underCursor.LegacyInfo.PassengerTypes.Contains(umt))
 				return null;
 
 			return new Order("EnterTransport", self, underCursor, int2.Zero, null);

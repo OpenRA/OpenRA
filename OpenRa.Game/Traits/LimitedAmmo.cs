@@ -17,14 +17,14 @@ namespace OpenRa.Game.Traits
 
 		public LimitedAmmo(Actor self)
 		{
-			ammo = self.Info.Ammo;
+			ammo = self.LegacyInfo.Ammo;
 			this.self = self;
 		}
 
 		public bool HasAmmo() { return ammo > 0; }
 		public bool GiveAmmo()
 		{
-			if (ammo >= self.Info.Ammo) return false;
+			if (ammo >= self.LegacyInfo.Ammo) return false;
 			++ammo;
 			return true;
 		}
@@ -33,7 +33,7 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Graphics.Util.MakeArray(self.Info.Ammo, 
+			return Graphics.Util.MakeArray(self.LegacyInfo.Ammo, 
 				i => ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}

@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 
 		float GetMaximumRange(Actor self)
 		{
-			return new[] { self.Info.Primary, self.Info.Secondary }
+			return new[] { self.LegacyInfo.Primary, self.LegacyInfo.Secondary }
 				.Where(w => w != null)
 				.Max(w => Rules.WeaponInfo[w].Range);
 		}
@@ -33,7 +33,7 @@ namespace OpenRa.Game.Traits
 				return true;	// he's dead.
 			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.Health == attack.target.Info.Strength)
+			if (attack.target.Health == attack.target.LegacyInfo.Strength)
 				return true;	// fully healed
 
 			return false;
@@ -55,7 +55,7 @@ namespace OpenRa.Game.Traits
 			return inRange
 				.Where(a => a.Owner == self.Owner && a != self)	/* todo: one day deal with friendly players */
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
-				.Where(a => a.Health < a.Info.Strength)
+				.Where(a => a.Health < a.LegacyInfo.Strength)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}

@@ -16,20 +16,20 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 
-			rotorAnim = new Animation(self.Info.Name);
+			rotorAnim = new Animation(self.LegacyInfo.Name);
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
-				() => Util.GetTurretPosition( self, unit, self.Info.RotorOffset, 0 ),
+				() => Util.GetTurretPosition( self, unit, self.LegacyInfo.RotorOffset, 0 ),
 				null ) );
 
-			if (self.Info.RotorOffset2 == null) return;
+			if (self.LegacyInfo.RotorOffset2 == null) return;
 
-			secondRotorAnim = new Animation( self.Info.Name );
+			secondRotorAnim = new Animation( self.LegacyInfo.Name );
 			secondRotorAnim.PlayRepeating( "rotor2" );
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
-				() => Util.GetTurretPosition(self, unit, self.Info.RotorOffset2, 0),
+				() => Util.GetTurretPosition(self, unit, self.LegacyInfo.RotorOffset2, 0),
 				null ) );
 		}
 

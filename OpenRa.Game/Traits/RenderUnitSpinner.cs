@@ -15,11 +15,11 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 
-			var spinnerAnim = new Animation( self.Info.Name );
+			var spinnerAnim = new Animation( self.LegacyInfo.Name );
 			spinnerAnim.PlayRepeating( "spinner" );
 			anims.Add( "spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Util.GetTurretPosition( self, unit, self.Info.PrimaryOffset, 0 ),
+				() => Util.GetTurretPosition( self, unit, self.LegacyInfo.PrimaryOffset, 0 ),
 				null ) );
 		}
 	}

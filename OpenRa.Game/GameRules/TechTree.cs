@@ -21,8 +21,8 @@ namespace OpenRa.Game.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
-			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.Info is LegacyBuildingInfo ) )
-				ret[ b.Info.Name ].Add( b );
+			foreach( var b in Game.world.Actors.Where( x => x.Owner == player && x.LegacyInfo is LegacyBuildingInfo ) )
+				ret[ b.LegacyInfo.Name ].Add( b );
 			return ret;
 		}
 

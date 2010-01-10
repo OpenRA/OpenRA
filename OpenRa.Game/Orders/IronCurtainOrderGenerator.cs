@@ -31,9 +31,9 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<IronCurtainable>()
-						&& a.Info.Selectable).FirstOrDefault();
+						&& a.LegacyInfo.Selectable).FirstOrDefault();
 
-				var unit = underCursor != null ? underCursor.Info as LegacyUnitInfo : null;
+				var unit = underCursor != null ? underCursor.LegacyInfo as LegacyUnitInfo : null;
 
 				if (unit != null)
 					yield return new Order("IronCurtain", underCursor, null, int2.Zero, power.Name);
