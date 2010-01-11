@@ -31,6 +31,7 @@ namespace OpenRa.Game.Traits
 		public readonly string[] Produces = { };		// does this go somewhere else?
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool WaterBound = false;
+		public readonly bool Unsellable = false;
 
 		public object Create(Actor self) { return new Building(self); }
 	}

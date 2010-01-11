@@ -24,9 +24,11 @@ namespace OpenRa.Game.Traits.Activities
 			if (isCanceled) return NextActivity;
 			var dest = ChooseHelipad(self);
 
+			var initialFacing = self.Info.Traits.WithInterface<OwnedActorInfo>().First().InitialFacing;
+
 			if (dest == null)
 				return Util.SequenceActivities(
-					new Turn(self.LegacyInfo.InitialFacing), 
+					new Turn(initialFacing), 
 					new HeliLand(true),
 					NextActivity);
 
@@ -34,12 +36,13 @@ namespace OpenRa.Game.Traits.Activities
 			if (res != null)
 				self.traits.Get<Helicopter>().reservation = res.Reserve(self);
 
-			var offset = (dest.LegacyInfo as LegacyBuildingInfo).SpawnOffset;
+			var pi = dest.Info.Traits.GetOrDefault<ProductionInfo>();
+			var offset = pi != null ? pi.SpawnOffset : null;
 			var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterLocation + offsetVec),
-				new Turn(self.LegacyInfo.InitialFacing),
+				new Turn(initialFacing),
 				new HeliLand(false),
 				new Rearm(),
 				NextActivity);

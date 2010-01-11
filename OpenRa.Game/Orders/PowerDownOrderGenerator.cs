@@ -25,7 +25,7 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<Building>()
-						&& a.LegacyInfo.Selectable).FirstOrDefault();
+						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
 				var building = underCursor != null ? underCursor.LegacyInfo as LegacyBuildingInfo : null;
 

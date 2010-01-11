@@ -339,7 +339,7 @@ namespace OpenRa.Game
 				heuristic = loc =>
 				{
 					var b = Game.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p && (b.LegacyInfo as LegacyBuildingInfo).BaseNormal) return 0;
+					if (b != null && b.Owner == p && b.Info.Traits.Get<BuildingInfo>().BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
 					return 1;

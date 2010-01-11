@@ -116,7 +116,8 @@ namespace RulesConverter
 					{ "Crewed", "Crewed" },
 					{ "WaterBound", "WaterBound" },
 					{ "InitialFacing", "InitialFacing" },
-					{ "Sight", "Sight" } }
+					{ "Sight", "Sight" },
+					{ "Unsellable", "Unsellable" } }
 				},
 
 				{ "StoresOre", new PL {

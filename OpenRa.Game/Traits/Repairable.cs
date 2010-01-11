@@ -21,7 +21,7 @@ namespace OpenRa.Game.Traits
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 
-			if (underCursor.LegacyInfo == Rules.UnitInfo["FIX"]
+			if (underCursor.Info.Name == "fix"
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor, int2.Zero, null);
