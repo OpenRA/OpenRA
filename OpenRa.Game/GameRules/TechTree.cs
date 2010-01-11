@@ -7,15 +7,17 @@ namespace OpenRa.Game.GameRules
 {
 	class TechTree
 	{
-		readonly Cache<string, List<LegacyUnitInfo>> producesIndex = new Cache<string, List<LegacyUnitInfo>>( x => new List<LegacyUnitInfo>() );
+		readonly Cache<string, List<NewUnitInfo>> producesIndex = new Cache<string, List<NewUnitInfo>>(x => new List<NewUnitInfo>());
 
 		public TechTree()
 		{
 			foreach( var b in Rules.Categories[ "Building" ] )
 			{
-				var info = (LegacyBuildingInfo)Rules.UnitInfo[ b ];
-				foreach( var p in info.Produces )
-					producesIndex[ p ].Add( info );
+				var info = Rules.NewUnitInfo[ b ];
+				var pi = info.Traits.WithInterface<ProductionInfo>().FirstOrDefault();
+				if (pi != null)
+					foreach( var p in pi.Produces )
+						producesIndex[ p ].Add( info );
 			}
 		}
 
@@ -60,10 +62,10 @@ namespace OpenRa.Game.GameRules
 				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
-		public IEnumerable<LegacyUnitInfo> UnitBuiltAt( LegacyUnitInfo info )
+		public IEnumerable<NewUnitInfo> UnitBuiltAt( LegacyUnitInfo info )
 		{
 			if( info.BuiltAt.Length != 0 )
-				return info.BuiltAt.Select( x => Rules.UnitInfo[ x.ToLowerInvariant() ] );
+				return info.BuiltAt.Select( x => Rules.NewUnitInfo[ x.ToLowerInvariant() ] );
 			else
 				return producesIndex[ Rules.UnitCategory[ info.Name ] ];
 		}

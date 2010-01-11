@@ -90,14 +90,14 @@ namespace OpenRa.Game
 			SupportPowerInfo = new InfoLoader<SupportPowerInfo>(
 				Pair.New<string, Func<string, SupportPowerInfo>>("SupportPower", _ => new SupportPowerInfo()));
 
+			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
+			foreach (var kv in MiniYaml.FromFile("ra.yaml"))
+				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value));
+
 			TechTree = new TechTree();
 			Map = new Map( AllRules );
 			FileSystem.MountTemporary( new Package( Rules.Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
-
-			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
-			foreach( var kv in MiniYaml.FromFile( "ra.yaml" ) )
-				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value));
 		}
 
 		static void LoadCategories(params string[] types)

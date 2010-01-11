@@ -7,6 +7,7 @@ namespace OpenRa.Game.Traits
 	class ProductionInfo : ITraitInfo
 	{
 		public readonly int[] SpawnOffset = null;
+		public readonly string[] Produces = { };
 
 		public object Create(Actor self) { return new Production(self); }
 	}

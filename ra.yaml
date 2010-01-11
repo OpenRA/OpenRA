@@ -424,6 +424,18 @@ MNLY.AT:
 	Passenger:
 	IronCurtainable:
 
+TRUK:
+	Inherits: DefaultVehicle
+	Selectable:
+	Unit:
+		HP: 110
+		Armor: light
+		Sight: 3
+	Mobile:
+		ROT: 5
+		Speed: 10
+	RenderUnit:
+
 SS:
 	Inherits: DefaultShip
 	Buildable:
@@ -1719,6 +1731,490 @@ MINE:
 		Dimensions: 1,1
 	RenderBuilding:
 	SeedsOre:
+
+FCOM:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+
+V01:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V02:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V03:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V04:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V05:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V06:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V07:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V08:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V09:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V10:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V11:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V12:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V13:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V14:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V15:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V16:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V17:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V18:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V19:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+
+V20:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V21:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V22:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V23:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V24:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V25:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V26:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V27:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V28:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V29:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V30:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V31:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V32:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V33:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V34:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V35:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V36:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+V37:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 3
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	RenderBuilding:
+		Image: FCOM
+
+BARL:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		BaseNormal: no
+		Adjacent: 0
+		HP: 10
+	RenderBuilding:
+	Explodes:
+
+BRL3:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		Repairable: false
+		BaseNormal: no
+		Adjacent: 0
+		HP: 10
+	RenderBuilding:
+	Explodes:
+
+MISS:
+	Inherits: DefaultBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+	RenderBuilding:
 
 DOG:
 	Inherits: DefaultInfantry
