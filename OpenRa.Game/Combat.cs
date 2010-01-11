@@ -49,7 +49,7 @@ namespace OpenRa.Game
 			
 			var distance = (target.CenterLocation - loc).Length*1/24f;
 			var rawDamage = weapon.Damage * (float)Math.Exp(-distance / warhead.Spread);
-			var multiplier = warhead.EffectivenessAgainst(target.LegacyInfo.Armor);
+			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.WithInterface<OwnedActorInfo>().First().Armor);
 			return rawDamage * multiplier;
 		}
 
@@ -59,7 +59,7 @@ namespace OpenRa.Game
 			var warhead = Rules.WarheadInfo[weapon.Warhead];
 			var unit = target.traits.GetOrDefault<Unit>();
 
-			if (warhead.EffectivenessAgainst(target.LegacyInfo.Armor) <= 0)
+			if (warhead.EffectivenessAgainst(target.Info.Traits.WithInterface<OwnedActorInfo>().First().Armor) <= 0)
 				return false;
 
 			if (target.traits.Contains<Submarine>())
@@ -76,10 +76,11 @@ namespace OpenRa.Game
 
 		public static bool HasAnyValidWeapons(Actor self, Actor target)
 		{
-			if (self.LegacyInfo.Primary != null &&
-				WeaponValidForTarget(Rules.WeaponInfo[self.LegacyInfo.Primary], target)) return true;
-			if (self.LegacyInfo.Secondary != null &&
-				WeaponValidForTarget(Rules.WeaponInfo[self.LegacyInfo.Secondary], target)) return true;
+			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			if (info.PrimaryWeapon != null &&
+				WeaponValidForTarget(Rules.WeaponInfo[info.PrimaryWeapon], target)) return true;
+			if (info.SecondaryWeapon != null &&
+				WeaponValidForTarget(Rules.WeaponInfo[info.SecondaryWeapon], target)) return true;
 
 			return false;
 		}
