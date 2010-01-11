@@ -130,6 +130,7 @@ namespace OpenRa.Game
 		{
 			UpdatePower();
 			UpdateOreCapacity();
+			Shroud.Tick();
 
 			foreach (var sp in SupportPowers.Values)
 				sp.Tick();

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using IjwFramework.Types;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
 	class Shroud
 	{
 		bool[,] explored = new bool[128, 128];
+		int[,] gapField = new int[128, 128];
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty;
@@ -21,9 +23,35 @@ namespace OpenRa.Game
 			set { hasGPS = value; dirty = true;}
 		}
 
+		public void Tick()
+		{
+			// This is probably slow
+			bool[,] gapActive = new bool[128, 128];
+			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<GeneratesGap>()))
+			{
+				foreach (var t in a.traits.Get<GeneratesGap>().GetShroudedTiles())
+					gapActive[t.X, t.Y] = true;
+			}
+
+			for (int j = 1; j < 127; j++)
+				for (int i = 1; i < 127; i++)
+				{
+					if (gapField[i, j] > 0 && !gapActive[i, j]) /*0 >= --gapField[i, j]*/
+					{
+						gapField[i, j] = 0;
+						dirty = true;
+					}
+					if (gapActive[i, j] && 0 == gapField[i, j]++)
+						dirty = true;
+				}
+		}
+		
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
 		public bool IsExplored(int x, int y)
 		{
+			if (gapField[ x, y ] >= Rules.General.GapRegenInterval * 25 * 60)
+				return false;
+			
 			if (hasGPS)
 				return true;
 			
@@ -33,8 +61,10 @@ namespace OpenRa.Game
 		public void Explore(Actor a)
 		{
 			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Sight))
+			{
 				explored[t.X, t.Y] = true;
-
+				gapField[t.X, t.Y] = 0;
+			}
 			dirty = true;
 		}
 
