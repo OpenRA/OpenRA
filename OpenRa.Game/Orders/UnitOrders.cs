@@ -15,22 +15,19 @@ namespace OpenRa.Game.Orders
 				{
 					Game.world.AddFrameEndTask( _ =>
 					{
-						var queue = order.Player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-						var building = (LegacyBuildingInfo)Rules.UnitInfo[ order.TargetString ];
+						var queue = order.Player.PlayerActor.traits.Get<ProductionQueue>();
 						var producing = queue.CurrentItem(Rules.UnitCategory[order.TargetString]);
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;
 
-						Log.Write( "Player \"{0}\" builds {1}", order.Player.PlayerName, building.Name );
-
-						Game.world.Add( new Actor( building, order.TargetLocation - GameRules.Footprint.AdjustForBuildingSize( building ), order.Player ) );
+						Game.world.Add( new Actor( order.TargetString, order.TargetLocation - Footprint.AdjustForBuildingSize( (LegacyBuildingInfo)Rules.UnitInfo[ order.TargetString ] ), order.Player ) );
 						if (order.Player == Game.LocalPlayer)
 						{
 							Sound.Play("placbldg.aud");
 							Sound.Play("build5.aud");
 						}
 
-						queue.FinishProduction(Rules.UnitCategory[building.Name]);
+						queue.FinishProduction(Rules.UnitCategory[order.TargetString]);
 					} );
 					break;
 				}

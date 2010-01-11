@@ -35,7 +35,7 @@ namespace OpenRa.Game.Traits
 			if( location == null || Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )
 				return false;
 
-			var newUnit = new Actor( producee, location.Value, self.Owner );
+			var newUnit = new Actor( producee.Name, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
 			var rp = self.traits.GetOrDefault<RallyPoint>();

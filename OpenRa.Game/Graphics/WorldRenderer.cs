@@ -220,7 +220,7 @@ namespace OpenRa.Game.Graphics
 					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, PaletteType.Chrome);
 					pipxyOffset += new float2(4, 0);
 					
-					if (pipxyOffset.X+5 > selectedUnit.SelectedSize.X)
+					if (pipxyOffset.X+5 > selectedUnit.GetBounds(false).Width)
 					{
 						pipxyOffset.X = 0;
 						pipxyOffset.Y -= 4;

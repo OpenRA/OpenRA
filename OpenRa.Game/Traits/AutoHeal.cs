@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 			return inRange
 				.Where(a => a.Owner == self.Owner && a != self)	/* todo: one day deal with friendly players */
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
-				.Where(a => a.Health < a.LegacyInfo.Strength)
+				.Where(a => a.Health < a.Info.Traits.WithInterface<OwnedActorInfo>().First().HP)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}

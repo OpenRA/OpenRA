@@ -26,10 +26,10 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
-		public Actor( ActorInfo info, int2 location, Player owner )
+		public Actor( string name, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			LegacyInfo = (LegacyUnitInfo)info; // temporary
+			LegacyInfo = name != null ? Rules.UnitInfo[name.ToLowerInvariant()] : null; // temporary
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
@@ -38,10 +38,7 @@ namespace OpenRa.Game
 
 			Health = LegacyInfo.Strength;	/* todo: fix walls, etc so this is always true! */
 
-			if( LegacyInfo.Traits == null )
-				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(LegacyInfo.Name) );
-
-			Info = Rules.NewUnitInfo[LegacyInfo.Name.ToLowerInvariant()];
+			Info = Rules.NewUnitInfo[name.ToLowerInvariant()];
 
 			foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
 				traits.Add(trait.Create(this));
@@ -66,12 +63,13 @@ namespace OpenRa.Game
 		}
 
 		public float2 CenterLocation;
-		public float2 SelectedSize
+		float2 SelectedSize
 		{
-			get
+			get			// todo: inline into GetBounds
 			{
-				if (LegacyInfo != null && LegacyInfo.SelectionSize != null)
-					return new float2(LegacyInfo.SelectionSize[0], LegacyInfo.SelectionSize[1]);
+				var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+				if (si != null && si.Bounds != null)
+					return new float2(si.Bounds[0], si.Bounds[1]);
 
 				var firstSprite = Render().FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
@@ -97,7 +95,7 @@ namespace OpenRa.Game
 			var loc = mi.Location + Game.viewport.Location;
 			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
 
-			if (underCursor != null && !underCursor.LegacyInfo.Selectable)
+			if (underCursor != null && !underCursor.traits.Contains<Selectable>())
 				underCursor = null;
 
 			return traits.WithInterface<IIssueOrder>()
@@ -107,10 +105,13 @@ namespace OpenRa.Game
 
 		public RectangleF GetBounds(bool useAltitude)
 		{
+			var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+
 			var size = SelectedSize;
 			var loc = CenterLocation - 0.5f * size;
-			if (LegacyInfo != null && LegacyInfo.SelectionSize != null && LegacyInfo.SelectionSize.Length > 2)
-				loc += new float2(LegacyInfo.SelectionSize[2], LegacyInfo.SelectionSize[3]);
+			
+			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
+				loc += new float2(si.Bounds[2], si.Bounds[3]);
 
 			if (useAltitude)
 			{

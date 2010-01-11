@@ -78,8 +78,8 @@ namespace OpenRa.Game
 			}
 
 			var worldActor = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
-			worldActor.traits.Add(new Traits.WaterPaletteRotation(worldActor));
-			worldActor.traits.Add(new Traits.ChronoshiftPaletteEffect(worldActor));
+			worldActor.traits.Add(new WaterPaletteRotation(worldActor));
+			worldActor.traits.Add(new ChronoshiftPaletteEffect(worldActor));
 			Game.world.Add(worldActor);
 
 			Rules.Map.InitOreDensity();
@@ -95,9 +95,7 @@ namespace OpenRa.Game
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Rules.Map.Trees)
-				world.Add(new Actor(Rules.UnitInfo[treeReference.Image],
-					new int2(treeReference.Location),
-					null));
+				world.Add(new Actor(treeReference.Image, new int2(treeReference.Location), null));
 			
 			LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
@@ -148,7 +146,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),
+				world.Add(new Actor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
 					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]));
 			}
 		}
