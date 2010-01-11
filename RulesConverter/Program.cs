@@ -138,7 +138,8 @@ namespace RulesConverter
 					{ "PrimaryLocalOffset", "PrimaryLocalOffset" },
 					{ "SecondaryLocalOffset", "SecondaryLocalOffset" },
 					{ "MuzzleFlash", "MuzzleFlash" },		// maybe
-					{ "Recoil", "Recoil"} }
+					{ "Recoil", "Recoil"},
+					{ "FireDelay", "FireDelay" } }
 				},
 
 				{ "Production", new PL {

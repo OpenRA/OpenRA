@@ -458,6 +458,7 @@ SS:
 	Submarine:
 	AttackBase:
 		PrimaryWeapon: TorpTube
+		FireDelay: 2
 	Chronoshiftable:
 	IronCurtainable:
 
@@ -840,6 +841,7 @@ TSLA:
 	RenderBuildingCharge:
 	AttackTurreted:
 		PrimaryWeapon: TeslaZap
+		FireDelay: 8
 	AutoTarget:
 	IronCurtainable:
 
@@ -2284,6 +2286,7 @@ E2:
 	AttackBase:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-13
+		FireDelay: 15
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
@@ -2337,6 +2340,7 @@ E4:
 	AttackBase:
 		PrimaryWeapon: Flamer
 		PrimaryOffset: 0,0,0,-7
+		FireDelay: 8
 	TakeCover:
 	SquishByTank:
 	AutoTarget:

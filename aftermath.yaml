@@ -129,6 +129,7 @@ MSUB:
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: SubSCUD
+		FireDelay: 2
 	RenderUnit:
 	Submarine:
 	Chronoshiftable:
