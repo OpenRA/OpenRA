@@ -157,11 +157,11 @@ namespace OpenRa.Game.Traits
 					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
 						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : unit.Facing);
 	
-					Game.world.Add(new Missile(weaponName, self.Owner, self,
+					Game.world.Add(new Missile(weapon, self.Owner, self,
 						firePos, thisTarget, srcAltitude, fireFacing));
 				}
 				else
-					Game.world.Add(new Bullet(weaponName, self.Owner, self,
+					Game.world.Add(new Bullet(weapon, self.Owner, self,
 						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
 
 				if (!string.IsNullOrEmpty(weapon.Report))

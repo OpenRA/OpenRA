@@ -23,8 +23,12 @@ namespace OpenRa.Game.Effects
 
 		const int BaseBulletSpeed = 100;		/* pixels / 40ms frame */
 
+		public Bullet(string weapon, Player owner, Actor firedBy,
+			int2 src, int2 dest, int srcAltitude, int destAltitude)
+			: this(Rules.WeaponInfo[weapon], owner, firedBy, src, dest, srcAltitude, destAltitude) { }
+
 		/* src, dest are *pixel* coords */
-		public Bullet(string weapon, Player owner, Actor firedBy, 
+		public Bullet(WeaponInfo weapon, Player owner, Actor firedBy, 
 			int2 src, int2 dest, int srcAltitude, int destAltitude)
 		{
 			Owner = owner;
@@ -36,7 +40,7 @@ namespace OpenRa.Game.Effects
 			VisualDest = Dest + new int2(
 						Game.CosmeticRandom.Next(-10, 10),
 						Game.CosmeticRandom.Next(-10, 10));
-			Weapon = Rules.WeaponInfo[weapon];
+			Weapon = weapon;
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
 
