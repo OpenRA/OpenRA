@@ -79,6 +79,7 @@ namespace OpenRa.Game
 
 			var worldActor = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
 			worldActor.traits.Add(new Traits.WaterPaletteRotation(worldActor));
+			worldActor.traits.Add(new Traits.LightPaletteRotator(worldActor));
 			worldActor.traits.Add(new Traits.ChronoshiftPaletteEffect(worldActor));
 			Game.world.Add(worldActor);
 

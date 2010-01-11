@@ -234,6 +234,7 @@
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\IronCurtain.cs" />
     <Compile Include="Traits\IronCurtainable.cs" />
+    <Compile Include="Traits\LightPaletteRotator.cs" />
     <Compile Include="Traits\MineImmune.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
