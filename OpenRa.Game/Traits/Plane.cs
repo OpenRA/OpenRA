@@ -20,8 +20,8 @@ namespace OpenRa.Game.Traits
 		// todo: push into data!
 		static bool PlaneCanEnter(Actor a)
 		{
-			if (a.LegacyInfo == Rules.UnitInfo["AFLD"]) return true;
-			if (a.LegacyInfo == Rules.UnitInfo["FIX"]) return true;
+			if (a.Info.Name == "afld") return true;
+			if (a.Info.Name == "fix") return true;
 			return false;
 		}
 

@@ -1,6 +1,7 @@
-﻿using OpenRa.Game.Traits.Activities;
-using System;
+﻿using System;
+using System.Linq;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
@@ -17,11 +18,10 @@ namespace OpenRa.Game.Traits
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}
 
-		// todo: push into data!
 		static bool HeliCanEnter(Actor a)
 		{
-			if (a.LegacyInfo == Rules.UnitInfo["HPAD"]) return true;
-			if (a.LegacyInfo == Rules.UnitInfo["FIX"]) return true;
+			if (a.Info.Name == "hpad") return true;
+			if (a.Info.Name == "fix") return true;
 			return false;
 		}
 
@@ -52,7 +52,7 @@ namespace OpenRa.Game.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity(new Turn(self.LegacyInfo.InitialFacing));
+				self.QueueActivity(new Turn(self.Info.Traits.WithInterface<OwnedActorInfo>().FirstOrDefault().InitialFacing));
 				self.QueueActivity(new HeliLand(true));
 			}
 

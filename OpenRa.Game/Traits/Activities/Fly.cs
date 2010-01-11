@@ -31,7 +31,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
 			if (unit.Altitude == CruiseAltitude)
-				Util.TickFacing(ref unit.Facing, desiredFacing, self.LegacyInfo.ROT);
+				Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<PlaneInfo>().ROT);
 			var speed = .2f * Util.GetEffectiveSpeed(self);
 			var angle = unit.Facing / 128f * Math.PI;
 
