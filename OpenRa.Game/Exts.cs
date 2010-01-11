@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -26,6 +28,28 @@ namespace OpenRa.Game
 		public static float Product(this IEnumerable<float> xs)
 		{
 			return xs.Aggregate(1f, (a, x) => a * x);
+		}
+
+		public static WeaponInfo GetPrimaryWeapon(this Actor self)
+		{
+			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().FirstOrDefault();
+			if (info == null) return null;
+			
+			var weapon = info.PrimaryWeapon;
+			if (weapon == null) return null;
+
+			return Rules.WeaponInfo[weapon];
+		}
+
+		public static WeaponInfo GetSecondaryWeapon(this Actor self)
+		{
+			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().FirstOrDefault();
+			if (info == null) return null;
+
+			var weapon = info.SecondaryWeapon;
+			if (weapon == null) return null;
+
+			return Rules.WeaponInfo[weapon];
 		}
 	}
 }

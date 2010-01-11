@@ -146,9 +146,8 @@ namespace OpenRa.Game.Traits
 		public static float GetMaximumRange(Actor self)
 		{
 			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
-			return new[] { info.PrimaryWeapon, info.SecondaryWeapon }
-				.Where(w => w != null)
-				.Max(w => Rules.WeaponInfo[w].Range);
+			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
+				.Where(w => w != null).Max(w => w.Range);
 		}
 	}
 }

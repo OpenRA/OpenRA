@@ -78,9 +78,9 @@ namespace OpenRa.Game
 		{
 			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
 			if (info.PrimaryWeapon != null &&
-				WeaponValidForTarget(Rules.WeaponInfo[info.PrimaryWeapon], target)) return true;
+				WeaponValidForTarget(self.GetPrimaryWeapon(), target)) return true;
 			if (info.SecondaryWeapon != null &&
-				WeaponValidForTarget(Rules.WeaponInfo[info.SecondaryWeapon], target)) return true;
+				WeaponValidForTarget(self.GetSecondaryWeapon(), target)) return true;
 
 			return false;
 		}

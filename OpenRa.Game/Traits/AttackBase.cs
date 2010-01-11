@@ -38,10 +38,8 @@ namespace OpenRa.Game.Traits
 
 		public AttackBase(Actor self)
 		{
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
-
-			var primaryWeapon = info.PrimaryWeapon != null ? Rules.WeaponInfo[info.PrimaryWeapon] : null;
-			var secondaryWeapon = info.SecondaryWeapon != null ? Rules.WeaponInfo[info.SecondaryWeapon] : null;
+			var primaryWeapon = self.GetPrimaryWeapon();
+			var secondaryWeapon = self.GetSecondaryWeapon();
 
 			primaryBurst = primaryWeapon != null ? primaryWeapon.Burst : 1;
 			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
@@ -181,8 +179,7 @@ namespace OpenRa.Game.Traits
 			if (mi.Button == MouseButton.Left || underCursor == null) return null;
 			if (self == underCursor) return null;
 
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
-			var isHeal = Rules.WeaponInfo[info.PrimaryWeapon].Damage < 0;
+			var isHeal = self.GetPrimaryWeapon().Damage < 0;
 			if (((underCursor.Owner == self.Owner) ^ isHeal) 
 				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
 
@@ -207,13 +204,12 @@ namespace OpenRa.Game.Traits
 
 		protected virtual void QueueAttack(Actor self, Order order)
 		{
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = info.PrimaryWeapon ?? info.SecondaryWeapon;
+			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
 
 			self.QueueActivity(new Activities.Attack(order.TargetActor,
-					Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
+					Math.Max(0, (int)weapon.Range - RangeTolerance)));
 		}
 	}
 }
