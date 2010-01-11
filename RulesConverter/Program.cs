@@ -22,7 +22,7 @@ namespace RulesConverter
 
 			var rules = new IniFile(ruleStreams);
 
-			var outputFile = args.Single(a => a.EndsWith(".rul"));
+			var outputFile = args.Single(a => !a.EndsWith(".ini"));
 
 			var categoryMap = new Dictionary<string,Pair<string,string>>
 			{
@@ -156,40 +156,44 @@ namespace RulesConverter
 			using (var writer = File.CreateText(outputFile))
 			{
 				foreach (var cat in categoryMap)
-					foreach (var item in rules.GetSection(cat.Key).Select(a => a.Key))
+					try
 					{
-						var iniSection = rules.GetSection(item);
-						writer.WriteLine("{0}:", item);
-						writer.WriteLine("\tInherits: {0}", cat.Value.First);
-
-						var traits = iniSection.GetValue("Traits", "")
-							.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-						if (iniSection.GetValue("Selectable", "yes") == "yes")
-							traits.Insert(0, "Selectable");
-
-						if (iniSection.GetValue("TechLevel", "-1") != "-1")
-							traits.Insert(0, "Buildable");
-
-						foreach (var t in traits)
+						foreach (var item in rules.GetSection(cat.Key).Select(a => a.Key))
 						{
-							writer.WriteLine("\t{0}:", t);
+							var iniSection = rules.GetSection(item);
+							writer.WriteLine("{0}:", item);
+							writer.WriteLine("\tInherits: {0}", cat.Value.First);
 
-							if (traitMap.ContainsKey(t))
-								foreach (var kv in traitMap[t])
-								{
-									var v = kv.Value == "$Tab" ? cat.Value.Second : iniSection.GetValue(kv.Value, "");
-									var fmt = "\t\t{0}: {1}";
-									var k = kv.Key;
-									if (k.StartsWith("@")) { k = k.Substring(1); /*fmt = "\t\t{0}: [{1}]";*/ }
-									if (k.StartsWith("$")) { k = k.Substring(1); fmt = "\t\t{0}: \"{1}\""; }
+							var traits = iniSection.GetValue("Traits", "")
+								.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-									if (!string.IsNullOrEmpty(v)) writer.WriteLine(fmt, k, v);
-								}
+							if (iniSection.GetValue("Selectable", "yes") == "yes")
+								traits.Insert(0, "Selectable");
+
+							if (iniSection.GetValue("TechLevel", "-1") != "-1")
+								traits.Insert(0, "Buildable");
+
+							foreach (var t in traits)
+							{
+								writer.WriteLine("\t{0}:", t);
+
+								if (traitMap.ContainsKey(t))
+									foreach (var kv in traitMap[t])
+									{
+										var v = kv.Value == "$Tab" ? cat.Value.Second : iniSection.GetValue(kv.Value, "");
+										var fmt = "\t\t{0}: {1}";
+										var k = kv.Key;
+										if (k.StartsWith("@")) { k = k.Substring(1); /*fmt = "\t\t{0}: [{1}]";*/ }
+										if (k.StartsWith("$")) { k = k.Substring(1); fmt = "\t\t{0}: \"{1}\""; }
+
+										if (!string.IsNullOrEmpty(v)) writer.WriteLine(fmt, k, v);
+									}
+							}
+
+							writer.WriteLine();
 						}
-
-						writer.WriteLine();
 					}
+					catch { }
 			}
 		}
 	}
