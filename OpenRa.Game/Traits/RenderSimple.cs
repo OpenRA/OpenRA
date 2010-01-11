@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
@@ -16,9 +17,14 @@ namespace OpenRa.Game.Traits
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 		public Animation anim { get { return anims[ "" ].Animation; } }
 
+		public string GetImage(Actor self)
+		{
+			return self.Info.Traits.WithInterface<RenderSimpleInfo>().First().Image ?? self.Info.Name;
+		}
+
 		public RenderSimple(Actor self)
 		{
-			anims.Add( "", new Animation( self.LegacyInfo.Image ?? self.LegacyInfo.Name ) );
+			anims.Add( "", new Animation( GetImage(self) ) );
 		}
 
 		public virtual IEnumerable<Renderable> Render( Actor self )

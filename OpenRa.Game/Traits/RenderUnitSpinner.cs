@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 			var unit = self.traits.Get<Unit>();
 			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
-			var spinnerAnim = new Animation( info.Image ?? self.Info.Name );
+			var spinnerAnim = new Animation( GetImage(self) );
 			spinnerAnim.PlayRepeating( "spinner" );
 			anims.Add( "spinner", new AnimationWithOffset(
 				spinnerAnim,

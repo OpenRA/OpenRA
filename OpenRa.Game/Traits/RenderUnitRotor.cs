@@ -20,7 +20,7 @@ namespace OpenRa.Game.Traits
 			var unit = self.traits.Get<Unit>();
 			var info = self.Info.Traits.Get<RenderUnitRotorInfo>();
 
-			rotorAnim = new Animation(info.Image ?? self.Info.Name);
+			rotorAnim = new Animation(GetImage(self));
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
@@ -29,7 +29,7 @@ namespace OpenRa.Game.Traits
 
 			if (info.SecondaryOffset == null) return;
 
-			secondRotorAnim = new Animation(info.Image ?? self.Info.Name);
+			secondRotorAnim = new Animation(GetImage(self));
 			secondRotorAnim.PlayRepeating( "rotor2" );
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
