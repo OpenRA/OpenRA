@@ -26,7 +26,7 @@ namespace OpenRa.Game.Traits
 		public RenderWarFactory(Actor self)
 		{
 			this.self = self;
-			roof = new Animation(self.LegacyInfo.Image ?? self.LegacyInfo.Name);
+			roof = new Animation(self.traits.WithInterface<RenderSimple>().First().GetImage(self));
 		}
 
 		public void BuildingComplete( Actor self )

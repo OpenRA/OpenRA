@@ -27,9 +27,7 @@ namespace OpenRa.Game.Orders
 						&& a.traits.Contains<Building>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.LegacyInfo as LegacyBuildingInfo : null;
-
-				if (building != null)
+				if (underCursor != null)
 					yield return new Order("PowerDown", underCursor, null, int2.Zero, null);
 			}
 		}

@@ -63,14 +63,15 @@ namespace OpenRa.Game.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var offset = (order.TargetActor.LegacyInfo as LegacyBuildingInfo).SpawnOffset;
+				var productionInfo = order.TargetActor.Info.Traits.Get<ProductionInfo>();
+				var offset = productionInfo.SpawnOffset;
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
-				self.QueueActivity(new Turn(self.LegacyInfo.InitialFacing));
+				self.QueueActivity(new Turn(self.Info.Traits.WithInterface<OwnedActorInfo>().FirstOrDefault().InitialFacing));
 				self.QueueActivity(new HeliLand(false));
-				self.QueueActivity(order.TargetActor.LegacyInfo == Rules.UnitInfo["HPAD"]
+				self.QueueActivity(order.TargetActor.Info.Name == "hpad"
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}
