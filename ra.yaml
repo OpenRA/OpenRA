@@ -1195,6 +1195,7 @@ HPAD:
 		Sight: 5
 	RenderBuilding:
 	Production:
+		SpawnOffset: 0,-4
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -1570,6 +1571,154 @@ MINV:
 	ATMine:
 	BelowUnits:
 	InvisibleToOthers:
+
+T01:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T02:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T03:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T05:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T06:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T07:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T08:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	RenderBuilding:
+
+T10:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T11:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T12:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T13:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T14:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T15:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RenderBuilding:
+
+T16:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+T17:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x_ x_
+		Dimensions: 2,2
+	RenderBuilding:
+
+TC01:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	RenderBuilding:
+
+TC02:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	RenderBuilding:
+
+TC03:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	RenderBuilding:
+
+TC04:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xxx_ xxx_ xxx_
+		Dimensions: 4,3
+	RenderBuilding:
+
+TC05:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: xxx_ xxx_ xxx_
+		Dimensions: 4,3
+	RenderBuilding:
+
+MINE:
+	Inherits: DefaultBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	SeedsOre:
 
 DOG:
 	Inherits: DefaultInfantry

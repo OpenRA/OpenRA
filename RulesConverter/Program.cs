@@ -139,6 +139,10 @@ namespace RulesConverter
 					{ "MuzzleFlash", "MuzzleFlash" },		// maybe
 					{ "Recoil", "Recoil"} }
 				},
+
+				{ "Production", new PL {
+					{ "SpawnOffset", "SpawnOffset" } }
+				},
 			};
 
 			traitMap["RenderUnit"] = traitMap["RenderBuilding"];

@@ -6,6 +6,8 @@ namespace OpenRa.Game.Traits
 {
 	class ProductionInfo : ITraitInfo
 	{
+		public readonly int[] SpawnOffset = null;
+
 		public object Create(Actor self) { return new Production(self); }
 	}
 
@@ -23,7 +25,7 @@ namespace OpenRa.Game.Traits
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.LegacyInfo.InitialFacing;
+			return newUnit.Info.Traits.WithInterface<OwnedActorInfo>().FirstOrDefault().InitialFacing;
 		}
 
 		public bool Produce( Actor self, LegacyUnitInfo producee )
@@ -43,10 +45,10 @@ namespace OpenRa.Game.Traits
 					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
 			}
 
-			var bi = self.LegacyInfo as LegacyBuildingInfo;
-			if (bi != null && bi.SpawnOffset != null)
+			var pi = self.Info.Traits.Get<ProductionInfo>();
+			if (pi != null && pi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
-					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);
+					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
 
 			Game.world.Add( newUnit );
 

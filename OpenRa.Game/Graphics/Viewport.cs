@@ -97,7 +97,7 @@ namespace OpenRa.Game.Graphics
 
 		public void GoToStartLocation()
 		{
-			Center(Game.world.Actors.Where(a => a.LegacyInfo != null && a.Owner == Game.LocalPlayer));
+			Center(Game.world.Actors.Where(a => a.Info != null && a.Owner == Game.LocalPlayer));
 		}
 	}
 }
