@@ -31,11 +31,9 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.WithInterface<Chronoshiftable>().Any()
-						&& a.LegacyInfo.Selectable).FirstOrDefault();
+						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 				
-				var unit = underCursor != null ? underCursor.LegacyInfo as LegacyUnitInfo : null;
-
-				if (unit != null)
+				if (underCursor != null)
 					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, power.Name);
 			}
 		}
