@@ -15,6 +15,7 @@ namespace OpenRa.Game.Traits
 		public readonly ArmorType Armor = ArmorType.none;
 		public readonly bool Crewed = false;		// replace with trait?
 		public readonly int InitialFacing = 128;
+		public readonly int Sight = 0;
 	}
 
 	class BuildingInfo : OwnedActorInfo, ITraitInfo

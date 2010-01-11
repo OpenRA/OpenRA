@@ -33,7 +33,7 @@ namespace OpenRa.Game
 		
 		public void Explore(Actor a)
 		{
-			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.LegacyInfo.Sight))
+			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Traits.Get<OwnedActorInfo>().Sight))
 				explored[t.X, t.Y] = true;
 
 			dirty = true;

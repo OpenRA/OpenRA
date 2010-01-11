@@ -7,7 +7,6 @@ namespace OpenRa.Game.Traits
 {
 	class MobileInfo : ITraitInfo
 	{
-		public readonly int Sight = 0;
 		public readonly int ROT = 0;
 		public readonly int Speed = 0;
 

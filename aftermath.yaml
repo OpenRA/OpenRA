@@ -5,8 +5,8 @@ STNK:
 	Unit:
 		HP: 200
 		Armor: heavy
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 10
 	Turreted:
@@ -32,8 +32,8 @@ TTNK:
 		HP: 110
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 7
+	Mobile:
 		ROT: 5
 		Speed: 8
 	AttackBase:
@@ -55,8 +55,8 @@ CTNK:
 	Unit:
 		HP: 350
 		Armor: light
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 5
 	AttackBase:
@@ -79,8 +79,8 @@ DTRK:
 	Unit:
 		HP: 110
 		Armor: light
-	Mobile:
 		Sight: 3
+	Mobile:
 		ROT: 5
 		Speed: 8
 	AttackBase:
@@ -103,8 +103,8 @@ QTNK:
 		HP: 300
 		Armor: heavy
 		Crewed: no
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 5
 		Speed: 3
 	RenderUnit:
@@ -123,8 +123,8 @@ MSUB:
 	Unit:
 		HP: 150
 		Armor: light
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 7
 		Speed: 5
 	AttackBase:
@@ -147,8 +147,8 @@ SHOK:
 	Unit:
 		HP: 80
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: PortaTesla
@@ -172,8 +172,8 @@ MECH:
 	Unit:
 		HP: 60
 		Armor: none
-	Mobile:
 		Sight: 3
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	AutoHeal:

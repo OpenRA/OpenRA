@@ -14,8 +14,8 @@ V2RL:
 		HP: 150
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 7
 	AttackBase:
@@ -43,8 +43,8 @@ V2RL:
 		HP: 300
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 4
+	Mobile:
 		ROT: 5
 		Speed: 9
 	Turreted:
@@ -74,8 +74,8 @@ V2RL:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 8
 	Turreted:
@@ -105,8 +105,8 @@ V2RL:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 7
 	Turreted:
@@ -136,8 +136,8 @@ V2RL:
 		HP: 600
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 5
 		Speed: 4
 	Turreted:
@@ -170,8 +170,8 @@ MRJ:
 		HP: 110
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 7
+	Mobile:
 		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
@@ -198,8 +198,8 @@ MGG:
 		HP: 110
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 4
+	Mobile:
 		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
@@ -225,8 +225,8 @@ ARTY:
 		HP: 75
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 2
 		Speed: 6
 	AttackBase:
@@ -257,8 +257,8 @@ HARV:
 		HP: 600
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 4
+	Mobile:
 		ROT: 5
 		Speed: 6
 	RenderUnit:
@@ -284,8 +284,8 @@ MCV:
 		HP: 600
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 4
+	Mobile:
 		ROT: 5
 		Speed: 6
 	McvDeploy:
@@ -311,8 +311,8 @@ JEEP:
 		HP: 150
 		Armor: light
 		Crewed: yes
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 10
 		Speed: 10
 	Turreted:
@@ -342,8 +342,8 @@ APC:
 	Unit:
 		HP: 200
 		Armor: heavy
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 10
 	AttackBase:
@@ -377,8 +377,8 @@ MNLY.AP:
 		HP: 100
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 9
 	RenderUnit:
@@ -409,8 +409,8 @@ MNLY.AT:
 		HP: 100
 		Armor: heavy
 		Crewed: yes
-	Mobile:
 		Sight: 5
+	Mobile:
 		ROT: 5
 		Speed: 9
 	RenderUnit:
@@ -438,8 +438,8 @@ SS:
 	Unit:
 		HP: 120
 		Armor: light
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 7
 		Speed: 6
 	RenderUnit:
@@ -463,8 +463,8 @@ DD:
 	Unit:
 		HP: 400
 		Armor: heavy
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 7
 		Speed: 6
 	Turreted:
@@ -490,8 +490,8 @@ CA:
 	Unit:
 		HP: 700
 		Armor: heavy
-	Mobile:
 		Sight: 7
+	Mobile:
 		ROT: 5
 		Speed: 4
 	Turreted:
@@ -518,8 +518,8 @@ LST:
 	Unit:
 		HP: 350
 		Armor: heavy
-	Mobile:
 		Sight: 6
+	Mobile:
 		ROT: 10
 		Speed: 14
 	RenderUnit:
@@ -541,8 +541,8 @@ PT:
 	Unit:
 		HP: 200
 		Armor: heavy
-	Mobile:
 		Sight: 7
+	Mobile:
 		ROT: 7
 		Speed: 9
 	Turreted:
@@ -569,6 +569,7 @@ MIG:
 		HP: 50
 		Armor: light
 		InitialFacing: 192
+		Sight: 0
 	AttackPlane:
 		PrimaryWeapon: Maverick
 	Plane:
@@ -596,6 +597,7 @@ YAK:
 		Armor: light
 		Crewed: yes
 		InitialFacing: 192
+		Sight: 0
 	AttackPlane:
 		PrimaryWeapon: ChainGun
 	Plane:
@@ -622,6 +624,7 @@ TRAN:
 		HP: 90
 		Armor: light
 		InitialFacing: 20
+		Sight: 0
 	Helicopter:
 		ROT: 5
 		Speed: 12
@@ -649,6 +652,7 @@ HELI:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 20
+		Sight: 0
 	AttackHeli:
 		PrimaryWeapon: Hellfire
 		PrimaryOffset: -5,0,0,2
@@ -679,6 +683,7 @@ HIND:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 20
+		Sight: 0
 	AttackHeli:
 		PrimaryWeapon: ChainGun
 		PrimaryOffset: -5,0,0,2
@@ -713,6 +718,7 @@ IRON:
 		HP: 400
 		Armor: wood
 		Crewed: yes
+		Sight: 10
 	RenderBuilding:
 	IronCurtainable:
 	IronCurtain:
@@ -738,6 +744,7 @@ PDOX:
 		HP: 400
 		Armor: wood
 		Crewed: yes
+		Sight: 10
 	RenderBuilding:
 	Chronosphere:
 	IronCurtainable:
@@ -761,6 +768,7 @@ PBOX:
 		HP: 400
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -787,6 +795,7 @@ HBOX:
 		HP: 600
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	Turreted:
 	RenderBuilding:
 	AttackTurreted:
@@ -814,6 +823,7 @@ TSLA:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
+		Sight: 8
 	Turreted:
 	RenderBuildingCharge:
 	AttackTurreted:
@@ -841,6 +851,7 @@ GUN:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 50
+		Sight: 6
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -869,6 +880,7 @@ AGUN:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 224
+		Sight: 6
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -896,6 +908,7 @@ FTUR:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
+		Sight: 6
 	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
@@ -923,6 +936,7 @@ GAP:
 		HP: 1000
 		Armor: wood
 		Crewed: yes
+		Sight: 10
 	RenderBuilding:
 	IronCurtainable:
 
@@ -945,6 +959,7 @@ SAM:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
+		Sight: 5
 	Turreted:
 	RenderBuildingTurreted:
 	AttackTurreted:
@@ -971,6 +986,7 @@ MSLO:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	IronCurtainable:
 
@@ -995,6 +1011,7 @@ ATEK:
 		HP: 400
 		Armor: wood
 		Crewed: yes
+		Sight: 10
 	RenderBuilding:
 	IronCurtainable:
 	GpsLaunchSite:
@@ -1020,6 +1037,7 @@ WEAP:
 		HP: 1000
 		Armor: light
 		Crewed: yes
+		Sight: 4
 	RenderWarFactory:
 	RenderBuilding:
 	RallyPoint:
@@ -1048,6 +1066,7 @@ SYRD:
 		HP: 1000
 		Armor: light
 		WaterBound: yes
+		Sight: 4
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -1074,6 +1093,7 @@ SPEN:
 		HP: 1000
 		Armor: light
 		WaterBound: yes
+		Sight: 4
 	RenderBuilding:
 	ProductionSurround:
 	IronCurtainable:
@@ -1091,6 +1111,7 @@ FACT:
 		HP: 1000
 		Armor: heavy
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	ConstructionYard:
 	IronCurtainable:
@@ -1116,6 +1137,7 @@ PROC:
 		HP: 900
 		Armor: wood
 		Crewed: yes
+		Sight: 6
 	RenderBuilding:
 	AcceptsOre:
 	StoresOre:
@@ -1142,6 +1164,7 @@ SILO:
 		Capturable: true
 		HP: 300
 		Armor: wood
+		Sight: 4
 	RenderBuildingOre:
 	StoresOre:
 		Pips: 5
@@ -1169,6 +1192,7 @@ HPAD:
 		HP: 800
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -1197,6 +1221,7 @@ DOME:
 		HP: 1000
 		Armor: wood
 		Crewed: yes
+		Sight: 10
 	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
@@ -1221,6 +1246,7 @@ AFLD:
 		HP: 1000
 		Armor: heavy
 		Crewed: yes
+		Sight: 7
 	RenderBuilding:
 	Production:
 	BelowUnits:
@@ -1248,6 +1274,7 @@ POWR:
 		HP: 400
 		Armor: wood
 		Crewed: yes
+		Sight: 4
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1272,6 +1299,7 @@ APWR:
 		HP: 700
 		Armor: wood
 		Crewed: yes
+		Sight: 4
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1296,6 +1324,7 @@ STEK:
 		HP: 600
 		Armor: wood
 		Crewed: yes
+		Sight: 4
 	RenderBuilding:
 	IronCurtainable:
 
@@ -1320,6 +1349,7 @@ BARR:
 		HP: 800
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1346,6 +1376,7 @@ TENT:
 		HP: 800
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1369,6 +1400,7 @@ KENN:
 		Dimensions: 1,1
 		HP: 400
 		Armor: wood
+		Sight: 4
 	RenderBuilding:
 	RallyPoint:
 	Production:
@@ -1394,6 +1426,7 @@ FIX:
 		HP: 800
 		Armor: wood
 		Crewed: yes
+		Sight: 5
 	RenderBuilding:
 	BelowUnits:
 	Reservable:
@@ -1418,6 +1451,7 @@ FACF:
 		BaseNormal: no
 		Bib: yes
 		HP: 30
+		Sight: 4
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -1443,6 +1477,7 @@ WEAF:
 		BaseNormal: no
 		Bib: yes
 		HP: 30
+		Sight: 4
 	RenderWarFactory:
 	RenderBuilding:
 		Image: WEAP
@@ -1470,6 +1505,7 @@ SYRF:
 		Adjacent: 8
 		HP: 30
 		WaterBound: yes
+		Sight: 4
 	RenderBuilding:
 		Image: SYRD
 	Fake:
@@ -1487,6 +1523,7 @@ SPEF:
 		Adjacent: 8
 		HP: 30
 		WaterBound: yes
+		Sight: 4
 	RenderBuilding:
 		Image: SPEN
 	Fake:
@@ -1511,6 +1548,7 @@ DOMF:
 		BaseNormal: no
 		Bib: yes
 		HP: 30
+		Sight: 4
 	RenderBuilding:
 		Image: DOME
 	Fake:
@@ -1533,154 +1571,6 @@ MINV:
 	BelowUnits:
 	InvisibleToOthers:
 
-T01:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T02:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T03:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T05:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T06:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T07:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T08:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_
-		Dimensions: 2,1
-	RenderBuilding:
-
-T10:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T11:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T12:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T13:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T14:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T15:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	RenderBuilding:
-
-T16:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-T17:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x_ x_
-		Dimensions: 2,2
-	RenderBuilding:
-
-TC01:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx_ xx_
-		Dimensions: 3,2
-	RenderBuilding:
-
-TC02:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx_ xx_
-		Dimensions: 3,2
-	RenderBuilding:
-
-TC03:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xx_ xx_
-		Dimensions: 3,2
-	RenderBuilding:
-
-TC04:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xxx_ xxx_ xxx_
-		Dimensions: 4,3
-	RenderBuilding:
-
-TC05:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: xxx_ xxx_ xxx_
-		Dimensions: 4,3
-	RenderBuilding:
-
-MINE:
-	Inherits: DefaultBuilding
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
-	SeedsOre:
-
 DOG:
 	Inherits: DefaultInfantry
 	Buildable:
@@ -1697,8 +1587,8 @@ DOG:
 	Unit:
 		HP: 12
 		Armor: none
-	Mobile:
 		Sight: 5
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	Passenger:
@@ -1717,8 +1607,8 @@ E1:
 	Unit:
 		HP: 50
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	AttackBase:
@@ -1742,8 +1632,8 @@ E2:
 	Unit:
 		HP: 50
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 5
 	RenderInfantry:
 	AttackBase:
@@ -1768,8 +1658,8 @@ E3:
 	Unit:
 		HP: 45
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 3
 	RenderInfantry:
 	AttackBase:
@@ -1795,8 +1685,8 @@ E4:
 	Unit:
 		HP: 40
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 3
 	RenderInfantry:
 	AttackBase:
@@ -1822,8 +1712,8 @@ E6:
 	Unit:
 		HP: 25
 		Armor: none
-	Mobile:
 		Sight: 4
+	Mobile:
 		Speed: 4
 	EngineerCapture:
 	RenderInfantry:
@@ -1847,8 +1737,8 @@ SPY:
 	Unit:
 		HP: 25
 		Armor: none
-	Mobile:
 		Sight: 5
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	TakeCover:
@@ -1871,8 +1761,8 @@ THF:
 	Unit:
 		HP: 25
 		Armor: none
-	Mobile:
 		Sight: 5
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	TakeCover:
@@ -1896,8 +1786,8 @@ E7:
 	Unit:
 		HP: 100
 		Armor: none
-	Mobile:
 		Sight: 6
+	Mobile:
 		Speed: 5
 	RenderInfantry:
 	C4Demolition:
@@ -1923,8 +1813,8 @@ MEDI:
 	Unit:
 		HP: 80
 		Armor: none
-	Mobile:
 		Sight: 3
+	Mobile:
 		Speed: 4
 	RenderInfantry:
 	AutoHeal:

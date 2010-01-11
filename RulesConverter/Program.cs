@@ -40,7 +40,8 @@ namespace RulesConverter
 					{ "HP", "Strength" }, 
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
-					{ "InitialFacing", "InitialFacing" } }
+					{ "InitialFacing", "InitialFacing" },
+					{ "Sight", "Sight" } }
 				},
 
 				{ "Selectable", new PL {
@@ -50,7 +51,6 @@ namespace RulesConverter
 				},
 
 				{ "Mobile", new PL {
-					{ "Sight", "Sight" },
 					{ "ROT", "ROT" },
 					{ "Speed", "Speed" } }
 					//{ "MovementType", ... },
@@ -115,7 +115,8 @@ namespace RulesConverter
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
 					{ "WaterBound", "WaterBound" },
-					{ "InitialFacing", "InitialFacing" } }
+					{ "InitialFacing", "InitialFacing" },
+					{ "Sight", "Sight" } }
 				},
 
 				{ "StoresOre", new PL {
