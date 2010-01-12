@@ -90,7 +90,7 @@ namespace OpenRa.Game
 			SupportPowerInfo = new InfoLoader<SupportPowerInfo>(
 				Pair.New<string, Func<string, SupportPowerInfo>>("SupportPower", _ => new SupportPowerInfo()));
 
-			var yamlRules = MiniYaml.FromFile("ra.yaml");
+			var yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "ra.yaml" ), MiniYaml.FromFile( "defaults.yaml" ) );
 			if( useAftermath )
 				yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "aftermath.yaml" ), yamlRules );
 

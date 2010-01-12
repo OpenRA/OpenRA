@@ -41,7 +41,8 @@ namespace RulesConverter
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
 					{ "InitialFacing", "InitialFacing" },
-					{ "Sight", "Sight" } }
+					{ "Sight", "Sight" },
+					{ "WaterBound", "WaterBound" } }
 				},
 
 				{ "Selectable", new PL {
@@ -205,6 +206,10 @@ namespace RulesConverter
 					}
 					catch { }
 			}
+
+			var yaml = MiniYaml.FromFile( outputFile );
+			yaml.OptimizeInherits( MiniYaml.FromFile( "defaults.yaml" ) );
+			yaml.WriteToFile( outputFile );
 		}
 	}
 }

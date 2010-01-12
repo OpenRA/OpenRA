@@ -13,7 +13,7 @@ namespace RulesConverter
 	{
 		public static void WriteToFile( this MiniYamlNodes y, string filename )
 		{
-			File.WriteAllLines( filename, y.ToLines( true ).ToArray() );
+			File.WriteAllLines( filename, y.ToLines( true ).Select( x => x.TrimEnd() ).ToArray() );
 		}
 
 		public static IEnumerable<string> ToLines( this MiniYamlNodes y, bool lowest )

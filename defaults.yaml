@@ -1,0 +1,10 @@
+DefaultVehicle:
+	Mobile:
+		ROT: 5
+	Selectable: 
+		Voice: VehicleVoice
+	Repairable: 
+	Chronoshiftable: 
+	Passenger: 
+	IronCurtainable: 
+

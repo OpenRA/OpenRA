@@ -8,24 +8,17 @@ V2RL:
 		Cost: 700
 		Description: "V2 Rocket"
 		LongDesc: "Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 150
 		Armor: light
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 7
 	AttackBase:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 1TNK:
 	Inherits: DefaultVehicle
@@ -37,15 +30,12 @@ V2RL:
 		Cost: 700
 		Description: "Light Tank"
 		LongDesc: "Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 300
 		Armor: heavy
 		Crewed: yes
 		Sight: 4
 	Mobile:
-		ROT: 5
 		Speed: 9
 	Turreted:
 	AttackTurreted:
@@ -53,10 +43,6 @@ V2RL:
 		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 2TNK:
 	Inherits: DefaultVehicle
@@ -68,15 +54,12 @@ V2RL:
 		Cost: 800
 		Description: "Medium Tank"
 		LongDesc: "Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 8
 	Turreted:
 	AttackTurreted:
@@ -84,10 +67,6 @@ V2RL:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 3TNK:
 	Inherits: DefaultVehicle
@@ -99,15 +78,12 @@ V2RL:
 		Cost: 950
 		Description: "Heavy Tank"
 		LongDesc: "Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 7
 	Turreted:
 	AttackTurreted:
@@ -115,10 +91,6 @@ V2RL:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 4TNK:
 	Inherits: DefaultVehicle
@@ -130,15 +102,12 @@ V2RL:
 		Cost: 1700
 		Description: "Mammoth Tank"
 		LongDesc: "Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 600
 		Armor: heavy
 		Crewed: yes
 		Sight: 6
 	Mobile:
-		ROT: 5
 		Speed: 4
 	Turreted:
 	AttackTurreted:
@@ -148,10 +117,6 @@ V2RL:
 		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 MRJ:
 	Inherits: DefaultVehicle
@@ -165,21 +130,15 @@ MRJ:
 		LongDesc: "Hides nearby units on the enemy's minimap.\n  Unarmed"
 	Selectable:
 		Priority: 3
-		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
 		Crewed: yes
 		Sight: 7
 	Mobile:
-		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
 		Offset: 0,4,0,-6
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 MGG:
 	Inherits: DefaultVehicle
@@ -193,21 +152,15 @@ MGG:
 		LongDesc: "Regenerates Fog of War in a small area \naround the unit.\n  Unarmed"
 	Selectable:
 		Priority: 3
-		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
 		Crewed: yes
 		Sight: 4
 	Mobile:
-		ROT: 5
 		Speed: 9
 	RenderUnitSpinner:
 		Offset: 0,6,0,-3
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 ARTY:
 	Inherits: DefaultVehicle
@@ -219,25 +172,18 @@ ARTY:
 		Cost: 600
 		Description: "Artillery"
 		LongDesc: "Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 75
 		Armor: light
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 2
 		Speed: 6
 	AttackBase:
 		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 HARV:
 	Inherits: DefaultVehicle
@@ -251,7 +197,6 @@ HARV:
 		LongDesc: "Collects Ore and Gems for processing.\n  Unarmed"
 	Selectable:
 		Priority: 7
-		Voice: VehicleVoice
 	Harvester:
 	Unit:
 		HP: 600
@@ -259,13 +204,8 @@ HARV:
 		Crewed: yes
 		Sight: 4
 	Mobile:
-		ROT: 5
 		Speed: 6
 	RenderUnit:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 MCV:
 	Inherits: DefaultVehicle
@@ -279,21 +219,15 @@ MCV:
 		LongDesc: "Deploys into another Construction Yard.\n  Unarmed"
 	Selectable:
 		Priority: 3
-		Voice: VehicleVoice
 	Unit:
 		HP: 600
 		Armor: light
 		Crewed: yes
 		Sight: 4
 	Mobile:
-		ROT: 5
 		Speed: 6
 	McvDeploy:
 	RenderUnit:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 JEEP:
 	Inherits: DefaultVehicle
@@ -305,15 +239,12 @@ JEEP:
 		Cost: 600
 		Description: "Ranger"
 		LongDesc: "Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 150
 		Armor: light
 		Crewed: yes
 		Sight: 6
 	Mobile:
-		ROT: 10
 		Speed: 10
 	Turreted:
 	AttackTurreted:
@@ -322,10 +253,6 @@ JEEP:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 APC:
 	Inherits: DefaultVehicle
@@ -337,14 +264,11 @@ APC:
 		Cost: 800
 		Description: "Armored Personnel Carrier"
 		LongDesc: "Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 200
 		Armor: heavy
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 10
 	AttackBase:
 		PrimaryWeapon: M60mg
@@ -352,14 +276,10 @@ APC:
 		MuzzleFlash: yes
 	RenderUnitMuzzleFlash:
 	AutoTarget:
-	Repairable:
-	Chronoshiftable:
 	Cargo:
 		PassengerTypes: Foot
 		Passengers: 5
 		UnloadFacing: 220
-	Passenger:
-	IronCurtainable:
 
 MNLY.AP:
 	Inherits: DefaultVehicle
@@ -372,26 +292,19 @@ MNLY.AP:
 		Icon: MNLYICON
 		Description: "Minelayer (Anti-Personnel)"
 		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 100
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 9
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
 	MineImmune:
-	Repairable:
 	LimitedAmmo:
 		Ammo: 5
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 MNLY.AT:
 	Inherits: DefaultVehicle
@@ -404,36 +317,27 @@ MNLY.AT:
 		Icon: MNLYICON
 		Description: "Minelayer (Anti-Tank)"
 		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 100
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 9
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
 	MineImmune:
-	Repairable:
 	LimitedAmmo:
 		Ammo: 5
-	Chronoshiftable:
-	Passenger:
-	IronCurtainable:
 
 TRUK:
 	Inherits: DefaultVehicle
-	Selectable:
 	Unit:
 		HP: 110
 		Armor: light
 		Sight: 3
 	Mobile:
-		ROT: 5
 		Speed: 10
 	RenderUnit:
 
@@ -453,6 +357,7 @@ SS:
 		HP: 120
 		Armor: light
 		Sight: 6
+		WaterBound: yes
 	Mobile:
 		ROT: 7
 		Speed: 6
@@ -480,6 +385,7 @@ DD:
 		HP: 400
 		Armor: heavy
 		Sight: 6
+		WaterBound: yes
 	Mobile:
 		ROT: 7
 		Speed: 6
@@ -508,6 +414,7 @@ CA:
 		HP: 700
 		Armor: heavy
 		Sight: 7
+		WaterBound: yes
 	Mobile:
 		ROT: 5
 		Speed: 4
@@ -536,6 +443,7 @@ LST:
 		HP: 350
 		Armor: heavy
 		Sight: 6
+		WaterBound: yes
 	Mobile:
 		ROT: 10
 		Speed: 14
@@ -561,6 +469,7 @@ PT:
 		HP: 200
 		Armor: heavy
 		Sight: 7
+		WaterBound: yes
 	Mobile:
 		ROT: 7
 		Speed: 9

@@ -20,19 +20,27 @@ namespace OpenRa.Game.GameRules
 					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );
 		}
 
-		static MiniYaml MergeWithParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			MiniYaml inherits;
 			node.Nodes.TryGetValue( "Inherits", out inherits );
 			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
-				return node;
+				return null;
 
 			MiniYaml parent;
 			allUnits.TryGetValue( inherits.Value, out parent );
 			if( parent == null )
-				return node;
+				return null;
 
-			return MiniYaml.Merge( node, MergeWithParent( parent, allUnits ) );
+			return parent;
+		}
+
+		static MiniYaml MergeWithParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		{
+			var parent = GetParent( node, allUnits );
+			if( parent != null )
+				return MiniYaml.Merge( node, MergeWithParent( parent, allUnits ) );
+			return node;
 		}
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)

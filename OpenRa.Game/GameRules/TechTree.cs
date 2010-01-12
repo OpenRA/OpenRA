@@ -62,10 +62,11 @@ namespace OpenRa.Game.GameRules
 				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
-		public IEnumerable<NewUnitInfo> UnitBuiltAt( LegacyUnitInfo info )
+		public IEnumerable<NewUnitInfo> UnitBuiltAt( NewUnitInfo info )
 		{
-			if( info.BuiltAt.Length != 0 )
-				return info.BuiltAt.Select( x => Rules.NewUnitInfo[ x.ToLowerInvariant() ] );
+			var builtAt = info.Traits.Get<BuildableInfo>().BuiltAt;
+			if( builtAt.Length != 0 )
+				return builtAt.Select( x => Rules.NewUnitInfo[ x.ToLowerInvariant() ] );
 			else
 				return producesIndex[ Rules.UnitCategory[ info.Name ] ];
 		}

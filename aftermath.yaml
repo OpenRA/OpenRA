@@ -1,13 +1,10 @@
 STNK:
 	Inherits: DefaultVehicle
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 200
 		Armor: heavy
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 10
 	Turreted:
 	AttackTurreted:
@@ -15,7 +12,6 @@ STNK:
 		Recoil: 2
 	RenderUnitTurreted:
 	Cloak:
-	Chronoshiftable:
 
 TTNK:
 	Inherits: DefaultVehicle
@@ -26,20 +22,16 @@ TTNK:
 		Owner: soviet
 		Cost: 1500
 		Description: "Tesla Tank"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
 		Crewed: yes
 		Sight: 7
 	Mobile:
-		ROT: 5
 		Speed: 8
 	AttackBase:
 		PrimaryWeapon: TTankZap
 	RenderUnitSpinner:
-	Chronoshiftable:
 
 CTNK:
 	Inherits: DefaultVehicle
@@ -50,20 +42,16 @@ CTNK:
 		Owner: allies
 		Cost: 2400
 		Description: "Chrono Tank"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 350
 		Armor: light
 		Sight: 5
 	Mobile:
-		ROT: 5
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: APTusk
 	RenderUnit:
 	ChronoshiftDeploy:
-	Chronoshiftable:
 
 DTRK:
 	Inherits: DefaultVehicle
@@ -74,14 +62,11 @@ DTRK:
 		Owner: allies,soviet
 		Cost: 2400
 		Description: "Demo Truck"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 110
 		Armor: light
 		Sight: 3
 	Mobile:
-		ROT: 5
 		Speed: 8
 	AttackBase:
 		PrimaryWeapon: Democharge
@@ -97,18 +82,14 @@ QTNK:
 		Owner: soviet
 		Cost: 2300
 		Description: "M.A.D. Tank"
-	Selectable:
-		Voice: VehicleVoice
 	Unit:
 		HP: 300
 		Armor: heavy
 		Crewed: no
 		Sight: 6
 	Mobile:
-		ROT: 5
 		Speed: 3
 	RenderUnit:
-	Chronoshiftable:
 
 MSUB:
 	Inherits: DefaultShip
@@ -125,6 +106,7 @@ MSUB:
 		HP: 150
 		Armor: light
 		Sight: 6
+		WaterBound: yes
 	Mobile:
 		ROT: 7
 		Speed: 5
