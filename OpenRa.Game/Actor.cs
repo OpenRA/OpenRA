@@ -12,11 +12,7 @@ namespace OpenRa.Game
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
-		
-		[Obsolete]
-		public readonly LegacyUnitInfo LegacyInfo;
 		public readonly NewUnitInfo Info;
-
 		public readonly uint ActorID;
 		[Sync]
 		public int2 Location;
@@ -29,19 +25,18 @@ namespace OpenRa.Game
 		public Actor( string name, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			LegacyInfo = name != null ? Rules.UnitInfo[name.ToLowerInvariant()] : null; // temporary
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
-			if (LegacyInfo == null) return;
+			if (name != null)
+			{
+				Info = Rules.NewUnitInfo[name.ToLowerInvariant()];
+				Health = this.GetMaxHP();
 
-			Health = LegacyInfo.Strength;	/* todo: fix walls, etc so this is always true! */
-
-			Info = Rules.NewUnitInfo[name.ToLowerInvariant()];
-
-			foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
-				traits.Add(trait.Create(this));
+				foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
+					traits.Add(trait.Create(this));
+			}
 		}
 
 		public void Tick()
@@ -128,7 +123,7 @@ namespace OpenRa.Game
 		public DamageState GetDamageState()
 		{
 			if (Health <= 0) return DamageState.Dead;
-			var halfStrength = LegacyInfo.Strength * Rules.General.ConditionYellow;
+			var halfStrength = this.GetMaxHP() * Rules.General.ConditionYellow;
 			return Health < halfStrength ? DamageState.Half : DamageState.Normal;
 		}
 
@@ -151,8 +146,10 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
-			if (Health > LegacyInfo.Strength)
-				Health = LegacyInfo.Strength;
+
+			var maxHP = this.GetMaxHP();
+
+			if (Health > maxHP)	Health = maxHP;
 
 			var newState = GetDamageState();
 
