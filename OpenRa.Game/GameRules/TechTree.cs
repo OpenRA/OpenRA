@@ -14,7 +14,7 @@ namespace OpenRa.Game.GameRules
 			foreach( var b in Rules.Categories[ "Building" ] )
 			{
 				var info = Rules.NewUnitInfo[ b ];
-				var pi = info.Traits.WithInterface<ProductionInfo>().FirstOrDefault();
+				var pi = info.Traits.GetOrDefault<ProductionInfo>();
 				if (pi != null)
 					foreach( var p in pi.Produces )
 						producesIndex[ p ].Add( info );

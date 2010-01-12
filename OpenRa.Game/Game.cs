@@ -244,7 +244,7 @@ namespace OpenRa.Game
 
 		public static bool IsActorCrushableByActor(Actor a, Actor b)
 		{
-			return IsActorCrushableByMovementType(a, b.traits.WithInterface<IMovement>().FirstOrDefault().GetMovementType());
+			return IsActorCrushableByMovementType(a, b.traits.GetOrDefault<IMovement>().GetMovementType());
 		}
 		
 		public static bool IsActorPathableToCrush(Actor a, UnitMovementType umt)

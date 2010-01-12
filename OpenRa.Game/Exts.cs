@@ -32,7 +32,7 @@ namespace OpenRa.Game
 
 		public static WeaponInfo GetPrimaryWeapon(this Actor self)
 		{
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().FirstOrDefault();
+			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
 			
 			var weapon = info.PrimaryWeapon;
@@ -43,7 +43,7 @@ namespace OpenRa.Game
 
 		public static WeaponInfo GetSecondaryWeapon(this Actor self)
 		{
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().FirstOrDefault();
+			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
 
 			var weapon = info.SecondaryWeapon;

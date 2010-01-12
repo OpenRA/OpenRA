@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 			if (cargo == null || cargo.IsFull(underCursor))
 				return null;
 
-			var umt = self.traits.WithInterface<IMovement>().First().GetMovementType();
+			var umt = self.traits.Get<IMovement>().GetMovementType();
 			if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
 				return null;
 

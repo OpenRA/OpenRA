@@ -26,7 +26,7 @@ namespace OpenRa.Game.Traits
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.Info.Traits.WithInterface<OwnedActorInfo>().FirstOrDefault().InitialFacing;
+			return newUnit.Info.Traits.GetOrDefault<OwnedActorInfo>().InitialFacing;
 		}
 
 		public bool Produce( Actor self, LegacyUnitInfo producee )

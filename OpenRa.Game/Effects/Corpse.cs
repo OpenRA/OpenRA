@@ -15,7 +15,7 @@ namespace OpenRa.Game.Effects
 
 		public Corpse(Actor fromActor, int death)
 		{
-			anim = new Animation(fromActor.traits.WithInterface<RenderSimple>().FirstOrDefault().GetImage(fromActor));
+			anim = new Animation(fromActor.traits.GetOrDefault<RenderSimple>().GetImage(fromActor));
 			anim.PlayThen("die{0}".F(death + 1),
 				() => Game.world.AddFrameEndTask(w => w.Remove(this)));
 

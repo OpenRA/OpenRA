@@ -88,7 +88,7 @@ namespace OpenRa.Game.Traits
 		public void DoAttack(Actor self)
 		{
 			var unit = self.traits.GetOrDefault<Unit>();
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			if (info.PrimaryWeapon != null && CheckFire(self, unit, info.PrimaryWeapon, ref primaryFireDelay,
 				info.PrimaryOffset, ref primaryBurst, info.PrimaryLocalOffset))
@@ -142,7 +142,7 @@ namespace OpenRa.Game.Traits
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2();
 			var thisTarget = target;	// closure.
 			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			ScheduleDelayedAction(info.FireDelay, () =>
 			{

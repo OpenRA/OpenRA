@@ -33,7 +33,7 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			var unit = self.traits.Get<Unit>();
 			var harv = self.traits.Get<Harvester>();
-			var renderUnit = self.traits.WithInterface<RenderUnit>().First();	/* better have one of these! */
+			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
 
 			var isGem = false;
 			if (!Rules.Map.ContainsResource(self.Location) ||

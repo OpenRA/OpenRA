@@ -18,7 +18,7 @@ namespace OpenRa.Game.Traits
 		public new void ResolveOrder(Actor self, Order order)
 		{
 			// Override chronoshifting action to detonate vehicle
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
@@ -44,7 +44,7 @@ namespace OpenRa.Game.Traits
 			int2 detonateLocation = self.CenterLocation.ToInt2();
 			
 			Game.world.AddFrameEndTask(
-				w => w.Add(new Bullet(self.Info.Traits.WithInterface<AttackBaseInfo>().First().PrimaryWeapon, detonatedBy.Owner, detonatedBy,
+				w => w.Add( new Bullet( self.Info.Traits.Get<AttackBaseInfo>().PrimaryWeapon, detonatedBy.Owner, detonatedBy,
 					detonateLocation, detonateLocation,	altitude, altitude)));
 		}
 	}

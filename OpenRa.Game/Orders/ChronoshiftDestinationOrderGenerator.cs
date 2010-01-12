@@ -40,7 +40,7 @@ namespace OpenRa.Game.Orders
 			if (!Game.LocalPlayer.Shroud.IsExplored(xy))
 				return Cursor.MoveBlocked;
 			
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
 		}
 	}

@@ -27,7 +27,7 @@ namespace OpenRa.Game.Traits.Activities
 				return new Move( Target, Range ) { NextActivity = this };
 
 			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
-			var renderUnit = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var renderUnit = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (renderUnit != null)
 				? renderUnit.anim.CurrentSequence.Length : 8;
 
@@ -37,7 +37,7 @@ namespace OpenRa.Game.Traits.Activities
 				return new Turn( desiredFacing ) { NextActivity = this };
 			}
 
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			attack.target = Target;
 			attack.DoAttack(self);
 			return this;

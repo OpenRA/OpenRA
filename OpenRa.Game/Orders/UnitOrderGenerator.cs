@@ -57,7 +57,7 @@ namespace OpenRa.Game.Orders
 
 		Cursor CursorForOrderString(string s, Actor a, int2 location)
 		{
-			var movement = a.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = a.traits.GetOrDefault<IMovement>();
 			switch (s)
 			{
 				case "Attack": return Cursor.Attack;

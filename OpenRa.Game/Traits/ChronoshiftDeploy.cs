@@ -40,7 +40,7 @@ namespace OpenRa.Game.Traits
 				return;
 			}
 
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location

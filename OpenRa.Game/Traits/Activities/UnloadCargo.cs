@@ -44,7 +44,7 @@ namespace OpenRa.Game.Traits.Activities
 			if (cargo.IsEmpty(self))
 				return NextActivity;
 
-			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var ru = self.traits.GetOrDefault<RenderUnit>();
 			if (ru != null)
 				ru.PlayCustomAnimation(self, "unload", null);
 

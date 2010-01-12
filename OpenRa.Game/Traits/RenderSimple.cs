@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits
 
 		public string GetImage(Actor self)
 		{
-			return self.Info.Traits.WithInterface<RenderSimpleInfo>().First().Image ?? self.Info.Name;
+			return self.Info.Traits.Get<RenderSimpleInfo>().Image ?? self.Info.Name;
 		}
 
 		public RenderSimple(Actor self)

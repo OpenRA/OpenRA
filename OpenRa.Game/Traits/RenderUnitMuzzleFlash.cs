@@ -16,8 +16,8 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			var unit = self.traits.Get<Unit>();
-			var attack = self.traits.WithInterface<AttackBase>().First();
-			var attackInfo = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			var attack = self.traits.Get<AttackBase>();
+			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
 			var muzzleFlash = new Animation(GetImage(self));
 			muzzleFlash.PlayFetchIndex("muzzle",

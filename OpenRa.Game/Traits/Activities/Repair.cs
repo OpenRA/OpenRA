@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits.Activities
 			if (remainingTicks == 0)
 			{
 				var unitCost = self.Info.Traits.Get<BuildableInfo>().Cost;
-				var hp = self.Info.Traits.WithInterface<OwnedActorInfo>().First().HP;
+				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
 				var costPerHp = (Rules.General.URepairPercent * unitCost) / hp;
 				var hpToRepair = Math.Min(Rules.General.URepairStep, hp - self.Health);

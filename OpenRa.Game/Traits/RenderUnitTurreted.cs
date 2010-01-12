@@ -16,8 +16,8 @@ namespace OpenRa.Game.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 			var turreted = self.traits.Get<Turreted>();
-			var attack = self.traits.WithInterface<AttackBase>().FirstOrDefault();
-			var attackInfo = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			var attack = self.traits.GetOrDefault<AttackBase>();
+			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
 			var turretAnim = new Animation(GetImage(self));
 			turretAnim.PlayFacing( "turret", () => turreted.turretFacing );

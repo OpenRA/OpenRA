@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 	{
 		void AttackTarget(Actor self, Actor target)
 		{
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
 			else
@@ -19,14 +19,14 @@ namespace OpenRa.Game.Traits
 
 		bool NeedsNewTarget(Actor self)
 		{
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			var range = Util.GetMaximumRange(self);
 
 			if (attack.target == null)
 				return true;	// he's dead.
 			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.Health == attack.target.Info.Traits.WithInterface<OwnedActorInfo>().First().HP)
+			if (attack.target.Health == attack.target.Info.Traits.Get<OwnedActorInfo>().HP)
 				return true;	// fully healed
 
 			return false;
@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits
 
 		public void Tick(Actor self)
 		{
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			var range = Util.GetMaximumRange(self);
 
 			if (NeedsNewTarget(self))
@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 			return inRange
 				.Where(a => a.Owner == self.Owner && a != self)	/* todo: one day deal with friendly players */
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
-				.Where(a => a.Health < a.Info.Traits.WithInterface<OwnedActorInfo>().First().HP)
+				.Where(a => a.Health < a.Info.Traits.Get<OwnedActorInfo>().HP)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}

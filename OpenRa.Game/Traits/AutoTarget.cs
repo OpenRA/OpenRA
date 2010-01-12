@@ -8,7 +8,7 @@ namespace OpenRa.Game.Traits
 	{
 		void AttackTarget(Actor self, Actor target)
 		{
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
 		}
@@ -17,7 +17,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (!self.IsIdle) return;
 
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			var range = Util.GetMaximumRange(self);
 			
 			if (attack.target == null || 
@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 			if (e.Damage < 0)
 				return;	// don't retaliate against healers
 
-			var attack = self.traits.WithInterface<AttackBase>().First();
+			var attack = self.traits.Get<AttackBase>();
 			if (attack.target != null) return;
 
 			AttackTarget(self, e.Attacker);

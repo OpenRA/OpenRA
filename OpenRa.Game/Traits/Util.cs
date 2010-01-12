@@ -83,7 +83,7 @@ namespace OpenRa.Game.Traits
 		static float2 GetRecoil(Actor self, float recoil)
 		{
 			if (self.LegacyInfo.Recoil == 0) return float2.Zero;
-			var rut = self.traits.WithInterface<RenderUnitTurreted>().FirstOrDefault();
+			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
@@ -106,7 +106,7 @@ namespace OpenRa.Game.Traits
 		{
 			if( unit == null ) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
 
-			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var ru = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Length : 8;
 			var bodyFacing = unit.Facing;
 			var quantizedFacing = QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
@@ -145,7 +145,7 @@ namespace OpenRa.Game.Traits
 
 		public static float GetMaximumRange(Actor self)
 		{
-			var info = self.Info.Traits.WithInterface<AttackBaseInfo>().First();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
 				.Where(w => w != null).Max(w => w.Range);
 		}
