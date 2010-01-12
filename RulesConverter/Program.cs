@@ -41,6 +41,7 @@ namespace RulesConverter
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
 					{ "InitialFacing", "InitialFacing" },
+					{ "ROT", "ROT" },
 					{ "Sight", "Sight" },
 					{ "WaterBound", "WaterBound" } }
 				},
@@ -52,18 +53,15 @@ namespace RulesConverter
 				},
 
 				{ "Mobile", new PL {
-					{ "ROT", "ROT" },
 					{ "Speed", "Speed" } }
 					//{ "MovementType", ... },
 				},
 
 				{ "Plane", new PL {
-					{ "ROT", "ROT" },
 					{ "Speed", "Speed" } }
 				},
 
 				{ "Helicopter", new PL {
-					{ "ROT", "ROT" },
 					{ "Speed", "Speed" } }
 				},
 

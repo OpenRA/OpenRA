@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits.Activities
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<HelicopterInfo>().ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
 
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 			{

@@ -105,10 +105,10 @@ MSUB:
 	Unit:
 		HP: 150
 		Armor: light
+		ROT: 7
 		Sight: 6
 		WaterBound: yes
 	Mobile:
-		ROT: 7
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: SubSCUD

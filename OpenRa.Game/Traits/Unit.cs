@@ -4,7 +4,9 @@ namespace OpenRa.Game.Traits
 {
 	class UnitInfo : OwnedActorInfo, ITraitInfo
 	{
-		public object Create(Actor self) { return new Unit(self); }
+		public readonly int ROT = 0;
+
+		public object Create( Actor self ) { return new Unit( self ); }
 	}
 
 	class Unit : INotifyDamage

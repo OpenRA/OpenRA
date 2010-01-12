@@ -1,6 +1,7 @@
 DefaultVehicle:
-	Mobile:
+	Unit:
 		ROT: 5
+	Mobile:
 	Selectable: 
 		Voice: VehicleVoice
 	Repairable: 

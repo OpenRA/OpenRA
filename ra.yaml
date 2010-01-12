@@ -358,10 +358,10 @@ SS:
 	Unit:
 		HP: 120
 		Armor: light
+		ROT: 7
 		Sight: 6
 		WaterBound: yes
 	Mobile:
-		ROT: 7
 		Speed: 6
 	RenderUnit:
 	Submarine:
@@ -386,10 +386,10 @@ DD:
 	Unit:
 		HP: 400
 		Armor: heavy
+		ROT: 7
 		Sight: 6
 		WaterBound: yes
 	Mobile:
-		ROT: 7
 		Speed: 6
 	Turreted:
 	AttackTurreted:
@@ -415,10 +415,10 @@ CA:
 	Unit:
 		HP: 700
 		Armor: heavy
+		ROT: 5
 		Sight: 7
 		WaterBound: yes
 	Mobile:
-		ROT: 5
 		Speed: 4
 	Turreted:
 	AttackTurreted:
@@ -444,10 +444,10 @@ LST:
 	Unit:
 		HP: 350
 		Armor: heavy
+		ROT: 10
 		Sight: 6
 		WaterBound: yes
 	Mobile:
-		ROT: 10
 		Speed: 14
 	RenderUnit:
 	Cargo:
@@ -470,10 +470,10 @@ PT:
 	Unit:
 		HP: 200
 		Armor: heavy
+		ROT: 7
 		Sight: 7
 		WaterBound: yes
 	Mobile:
-		ROT: 7
 		Speed: 9
 	Turreted:
 	AttackTurreted:
@@ -500,11 +500,11 @@ MIG:
 		HP: 50
 		Armor: light
 		InitialFacing: 192
+		ROT: 5
 		Sight: 0
 	AttackPlane:
 		PrimaryWeapon: Maverick
 	Plane:
-		ROT: 5
 		Speed: 20
 	RenderUnit:
 	WithShadow:
@@ -529,11 +529,11 @@ YAK:
 		Armor: light
 		Crewed: yes
 		InitialFacing: 192
+		ROT: 5
 		Sight: 0
 	AttackPlane:
 		PrimaryWeapon: ChainGun
 	Plane:
-		ROT: 5
 		Speed: 16
 	RenderUnit:
 	WithShadow:
@@ -557,9 +557,9 @@ TRAN:
 		HP: 90
 		Armor: light
 		InitialFacing: 20
+		ROT: 5
 		Sight: 0
 	Helicopter:
-		ROT: 5
 		Speed: 12
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
@@ -587,13 +587,13 @@ HELI:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 20
+		ROT: 4
 		Sight: 0
 	AttackHeli:
 		PrimaryWeapon: Hellfire
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
-		ROT: 4
 		Speed: 16
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
@@ -619,13 +619,13 @@ HIND:
 		Armor: heavy
 		Crewed: yes
 		InitialFacing: 20
+		ROT: 4
 		Sight: 0
 	AttackHeli:
 		PrimaryWeapon: ChainGun
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
-		ROT: 4
 		Speed: 12
 	RenderUnitRotor:
 	WithShadow:
