@@ -24,7 +24,7 @@ namespace OpenRa.Game.GameRules
 		{
 			MiniYaml inherits;
 			node.Nodes.TryGetValue( "Inherits", out inherits );
-			if( inherits.Value == null || string.IsNullOrEmpty( inherits.Value ) )
+			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
 				return node;
 
 			MiniYaml parent;

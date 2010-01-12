@@ -443,6 +443,7 @@ SS:
 		TechLevel: 5
 		Tab: Ship
 		Prerequisites: spen
+		BuiltAt: spen
 		Owner: soviet
 		Cost: 950
 		Description: "Submarine"
@@ -469,6 +470,7 @@ DD:
 		TechLevel: 7
 		Tab: Ship
 		Prerequisites: syrd
+		BuiltAt: syrd
 		Owner: allies
 		Cost: 1000
 		Description: "Destroyer"
@@ -496,6 +498,7 @@ CA:
 		TechLevel: 10
 		Tab: Ship
 		Prerequisites: syrd,atek
+		BuiltAt: syrd
 		Owner: allies
 		Cost: 2000
 		Description: "Cruiser"
@@ -548,6 +551,7 @@ PT:
 		TechLevel: 5
 		Tab: Ship
 		Prerequisites: syrd
+		BuiltAt: syrd
 		Owner: allies
 		Cost: 500
 		Description: "Gunboat"
@@ -575,6 +579,7 @@ MIG:
 		TechLevel: 10
 		Tab: Plane
 		Prerequisites: afld
+		BuiltAt: afld
 		Owner: soviet
 		Cost: 1200
 		Description: "Mig Attack Plane"
@@ -602,6 +607,7 @@ YAK:
 		TechLevel: 5
 		Tab: Plane
 		Prerequisites: afld
+		BuiltAt: afld
 		Owner: soviet
 		Cost: 800
 		Description: "Yak Attack Plane"
@@ -630,6 +636,7 @@ TRAN:
 		TechLevel: 11
 		Tab: Plane
 		Prerequisites: hpad
+		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Transport Helicopter"
@@ -658,6 +665,7 @@ HELI:
 		TechLevel: 9
 		Tab: Plane
 		Prerequisites: hpad
+		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Longbow"
@@ -689,6 +697,7 @@ HIND:
 		TechLevel: 9
 		Tab: Plane
 		Prerequisites: hpad
+		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
 		Description: "Hind"
@@ -2234,6 +2243,7 @@ DOG:
 		TechLevel: 3
 		Tab: Infantry
 		Prerequisites: kenn
+		BuiltAt: KENN
 		Owner: soviet
 		Cost: 200
 		Description: "Attack Dog"

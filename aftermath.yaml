@@ -116,6 +116,7 @@ MSUB:
 		TechLevel: 9
 		Tab: Ship
 		Prerequisites: stek
+		BuiltAt: spen
 		Owner: soviet
 		Cost: 1650
 		Description: "Missile Submarine"

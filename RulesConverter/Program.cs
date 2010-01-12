@@ -85,6 +85,7 @@ namespace RulesConverter
 					{ "TechLevel", "TechLevel" },
 					{ "Tab", "$Tab" },
 					{ "@Prerequisites", "Prerequisite" },
+					{ "BuiltAt", "BuiltAt" },
 					{ "Owner", "Owner" },
 					{ "Cost", "Cost" },
 					{ "Icon", "Icon" },
