@@ -751,9 +751,7 @@ namespace OpenRa.Game
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
 				var prereqs = buildable.Prerequisites
-					.Select(a => Rules.NewUnitInfo[a.ToLowerInvariant()].Traits.Get<BuildableInfo>())
-					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
-					.Select( a => a.Description );
+					.Select( a => Description( a ) );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}
@@ -763,6 +761,14 @@ namespace OpenRa.Game
 				p += new int2(0, 15);
 				renderer.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
 			}
+		}
+
+		private static string Description( string a )
+		{
+			if( a[ 0 ] == '@' )
+				return "any " + a.Substring( 1 );
+			else
+				return Rules.NewUnitInfo[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
 		}
 
 		void DrawSupportPowers()

@@ -81,7 +81,8 @@ namespace RulesConverter
 					{ "Cost", "Cost" },
 					{ "Icon", "Icon" },
 					{ "Description", "Description" },
-					{ "LongDesc", "LongDesc" } }
+					{ "LongDesc", "LongDesc" },
+					{ "AlternateName", "AlternateName" } }
 				},
 
 				{ "Cargo", new PL { 

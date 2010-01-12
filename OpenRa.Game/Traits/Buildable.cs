@@ -16,6 +16,7 @@ namespace OpenRa.Game.Traits
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly string Icon = null;
+		public readonly string[] AlternateName = { };
 	}
 
 	class Buildable { }

@@ -879,7 +879,7 @@ MSLO:
 	Buildable:
 		TechLevel: 13
 		Tab: Defense
-		Prerequisites: stek,atek
+		Prerequisites: @Tech Center
 		Owner: soviet,allies
 		Cost: 2500
 		Description: Missile Silo
@@ -907,6 +907,7 @@ ATEK:
 		Cost: 1500
 		Description: Allied Tech Center
 		LongDesc: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
+		AlternateName: @Tech Center
 	Selectable:
 		Priority: 3
 	Building:
@@ -1226,6 +1227,7 @@ STEK:
 		Cost: 1500
 		Description: Soviet Tech Center
 		LongDesc: Provides Soviet advanced technologies
+		AlternateName: @Tech Center
 	Selectable:
 		Priority: 3
 	Building:
@@ -2317,7 +2319,7 @@ E7:
 	Buildable:
 		TechLevel: 11
 		Tab: Infantry
-		Prerequisites: atek,stek
+		Prerequisites: @Tech Center
 		Owner: allies,soviet
 		Cost: 1200
 		Description: Tanya
