@@ -94,6 +94,7 @@ namespace RulesConverter
 
 				{ "Cargo", new PL { 
 					{ "@PassengerTypes", "PassengerTypes" },
+					{ "Passengers", "Passengers" },
 					{ "UnloadFacing", "UnloadFacing" } }
 				},
 
