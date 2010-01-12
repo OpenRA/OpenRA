@@ -22,7 +22,7 @@ namespace OpenRa
 
 		public bool Contains<T>()
 		{
-			return innerInherit.Keys.Contains( typeof( T ) );
+			return innerInherit[ typeof( T ) ].Count != 0;
 		}
 
 		public T Get<T>()

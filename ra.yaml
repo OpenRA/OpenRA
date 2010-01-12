@@ -1052,10 +1052,11 @@ WEAP:
 		Armor: light
 		Crewed: yes
 		Sight: 4
-	RenderWarFactory:
 	RenderBuilding:
+	RenderWarFactory:
 	RallyPoint:
 	Production:
+		Produces: Vehicle
 	IronCurtainable:
 
 SYRD:
@@ -1127,6 +1128,8 @@ FACT:
 		Crewed: yes
 		Sight: 5
 	RenderBuilding:
+	Production:
+		Produces: Building,Defense
 	ConstructionYard:
 	IronCurtainable:
 
@@ -1210,6 +1213,7 @@ HPAD:
 	RenderBuilding:
 	Production:
 		SpawnOffset: 0,-4
+		Produces: Plane
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -1264,6 +1268,7 @@ AFLD:
 		Sight: 7
 	RenderBuilding:
 	Production:
+		Produces: Plane
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -1368,6 +1373,7 @@ BARR:
 	RenderBuilding:
 	RallyPoint:
 	Production:
+		Produces: Infantry
 	IronCurtainable:
 
 TENT:
@@ -1395,6 +1401,7 @@ TENT:
 	RenderBuilding:
 	RallyPoint:
 	Production:
+		Produces: Infantry
 	IronCurtainable:
 
 KENN:

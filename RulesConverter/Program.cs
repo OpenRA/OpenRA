@@ -143,7 +143,8 @@ namespace RulesConverter
 				},
 
 				{ "Production", new PL {
-					{ "SpawnOffset", "SpawnOffset" } }
+					{ "SpawnOffset", "SpawnOffset" },
+					{ "Produces", "Produces" } }
 				},
 			};
 
