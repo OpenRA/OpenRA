@@ -82,14 +82,14 @@ namespace OpenRa.Game.Traits
 
 		static float2 GetRecoil(Actor self, float recoil)
 		{
-			if (self.LegacyInfo.Recoil == 0) return float2.Zero;
+			if (self.Info.Traits.Get<AttackBaseInfo>().Recoil == 0) return float2.Zero;
 			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
 			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Length) * (256 / rut.anim.CurrentSequence.Length);
 
-			return RotateVectorByFacing(new float2(0, recoil * self.LegacyInfo.Recoil), quantizedFacing, .7f);
+			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), quantizedFacing, .7f);
 		}
 
 		public static float2 CenterOfCell(int2 loc)
