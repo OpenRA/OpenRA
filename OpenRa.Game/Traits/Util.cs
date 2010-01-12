@@ -127,14 +127,13 @@ namespace OpenRa.Game.Traits
 
 		public static float GetEffectiveSpeed(Actor self)
 		{
-			var mi = self.LegacyInfo as LegacyMobileInfo;
-			if (mi == null) return 0f;
+			if (!self.Info.Traits.Contains<MobileInfo>()) return 0f;
 
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return mi.Speed * modifier;
+			return self.Info.Traits.Get<MobileInfo>().Speed * modifier;
 		}
 
 		public static IActivity SequenceActivities(params IActivity[] acts)
