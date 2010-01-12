@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		public static IniFile AllRules;
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
 		public static Dictionary<string, string> UnitCategory;
-		public static InfoLoader<LegacyUnitInfo> UnitInfo;
+		[Obsolete] public static InfoLoader<LegacyUnitInfo> UnitInfo;
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
