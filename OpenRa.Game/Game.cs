@@ -320,15 +320,15 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static bool CanPlaceBuilding(LegacyBuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(string name, BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
-			return !Footprint.Tiles(building, xy, adjust).Any(
+			return !Footprint.Tiles(name, building, xy, adjust).Any(
 				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
 
-		public static bool IsCloseEnoughToBase(Player p, LegacyBuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(Player p, string buildingName, BuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 1;
 
@@ -346,7 +346,7 @@ namespace OpenRa.Game
 				ignoreTerrain = true,
 			};
 
-			foreach (var t in Footprint.Tiles(bi, position)) search.AddInitialCell(t);
+			foreach (var t in Footprint.Tiles(buildingName, bi, position)) search.AddInitialCell(t);
 
 			return Game.PathFinder.FindPath(search).Count != 0;
 		}

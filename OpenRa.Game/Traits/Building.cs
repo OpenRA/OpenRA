@@ -39,7 +39,6 @@ namespace OpenRa.Game.Traits
 	class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
-		[Obsolete] public readonly LegacyBuildingInfo unitInfo;
 		public readonly BuildingInfo Info;
 		[Sync]
 		bool isRepairing = false;
@@ -53,7 +52,6 @@ namespace OpenRa.Game.Traits
 		{
 			this.self = self;
 			Info = self.Info.Traits.Get<BuildingInfo>();
-			unitInfo = (LegacyBuildingInfo)self.LegacyInfo;
 			self.CenterLocation = Game.CellSize 
 				* ((float2)self.Location + .5f * (float2)Info.Dimensions);
 		}

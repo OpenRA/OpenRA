@@ -20,7 +20,7 @@ namespace OpenRa.Game.Orders
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;
 
-						Game.world.Add( new Actor( order.TargetString, order.TargetLocation - Footprint.AdjustForBuildingSize( (LegacyBuildingInfo)Rules.UnitInfo[ order.TargetString ] ), order.Player ) );
+						Game.world.Add( new Actor( order.TargetString, order.TargetLocation - Footprint.AdjustForBuildingSize( Rules.NewUnitInfo[ order.TargetString ].Traits.Get<BuildingInfo>() ), order.Player ) );
 						if (order.Player == Game.LocalPlayer)
 						{
 							Sound.Play("placbldg.aud");

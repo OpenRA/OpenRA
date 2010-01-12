@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Orders
 {
 	class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		readonly Actor Producer;
-		readonly LegacyBuildingInfo Building;
+		readonly string Building;
+		BuildingInfo BuildingInfo { get { return Rules.NewUnitInfo[ Building ].Traits.Get<BuildingInfo>(); } }
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
-			Building = (LegacyBuildingInfo)Rules.UnitInfo[ name ];
+			Building = name;
 		}
 
 		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
@@ -26,27 +28,27 @@ namespace OpenRa.Game.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				if (!Game.CanPlaceBuilding(Building, xy, null, true)
-					|| !Game.IsCloseEnoughToBase(Producer.Owner, Building, xy))
+				if (!Game.CanPlaceBuilding( Building, BuildingInfo, xy, null, true)
+					|| !Game.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, xy))
 				{
 					Sound.Play("nodeply1.aud");
 					yield break;
 				}
 
-				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building.Name);
+				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, xy, Building);
 			}
 		}
 
 		public void Tick()
 		{
-			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.UnitCategory[ Building.Name ] );
-			if (producing == null || producing.Item != Building.Name || producing.RemainingTime != 0)
+			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.UnitCategory[ Building ] );
+			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
 				Game.controller.CancelInputMode();
 		}
 
 		public void Render()
 		{
-			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building );
+			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
 		}
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)
