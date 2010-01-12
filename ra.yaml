@@ -6,8 +6,8 @@ V2RL:
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 700
-		Description: "V2 Rocket"
-		LongDesc: "Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
+		Description: V2 Rocket
+		LongDesc: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 150
 		Armor: light
@@ -27,8 +27,8 @@ V2RL:
 		Prerequisites: weap
 		Owner: allies
 		Cost: 700
-		Description: "Light Tank"
-		LongDesc: "Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft"
+		Description: Light Tank
+		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 300
 		Armor: heavy
@@ -50,8 +50,8 @@ V2RL:
 		Prerequisites: weap
 		Owner: allies
 		Cost: 800
-		Description: "Medium Tank"
-		LongDesc: "Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
+		Description: Medium Tank
+		LongDesc: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -73,8 +73,8 @@ V2RL:
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 950
-		Description: "Heavy Tank"
-		LongDesc: "Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft"
+		Description: Heavy Tank
+		LongDesc: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -96,8 +96,8 @@ V2RL:
 		Prerequisites: weap,stek
 		Owner: soviet
 		Cost: 1700
-		Description: "Mammoth Tank"
-		LongDesc: "Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
+		Description: Mammoth Tank
+		LongDesc: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Unit:
 		HP: 600
 		Armor: heavy
@@ -121,8 +121,8 @@ MRJ:
 		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 600
-		Description: "Radar Jammer"
-		LongDesc: "Hides nearby units on the enemy's minimap.\n  Unarmed"
+		Description: Radar Jammer
+		LongDesc: Hides nearby units on the enemy's minimap.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Unit:
@@ -142,8 +142,8 @@ MGG:
 		Prerequisites: weap,atek
 		Owner: allies
 		Cost: 600
-		Description: "Mobile Gap Generator"
-		LongDesc: "Regenerates Fog of War in a small area \naround the unit.\n  Unarmed"
+		Description: Mobile Gap Generator
+		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Unit:
@@ -163,8 +163,8 @@ ARTY:
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
-		Description: "Artillery"
-		LongDesc: "Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft"
+		Description: Artillery
+		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 75
 		Armor: light
@@ -185,8 +185,8 @@ HARV:
 		Prerequisites: weap,proc
 		Owner: allies,soviet
 		Cost: 1400
-		Description: "Ore Truck"
-		LongDesc: "Collects Ore and Gems for processing.\n  Unarmed"
+		Description: Ore Truck
+		LongDesc: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	Harvester:
@@ -206,8 +206,8 @@ MCV:
 		Prerequisites: weap,fix
 		Owner: allies,soviet
 		Cost: 2500
-		Description: "Mobile Construction Vehicle"
-		LongDesc: "Deploys into another Construction Yard.\n  Unarmed"
+		Description: Mobile Construction Vehicle
+		LongDesc: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Unit:
@@ -227,8 +227,8 @@ JEEP:
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
-		Description: "Ranger"
-		LongDesc: "Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft"
+		Description: Ranger
+		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 150
 		Armor: light
@@ -251,8 +251,8 @@ APC:
 		Prerequisites: weap,tent
 		Owner: allies
 		Cost: 800
-		Description: "Armored Personnel Carrier"
-		LongDesc: "Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+		Description: Armored Personnel Carrier
+		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -278,8 +278,8 @@ MNLY.AP:
 		Owner: soviet
 		Cost: 800
 		Icon: MNLYICON
-		Description: "Minelayer (Anti-Personnel)"
-		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
+		Description: Minelayer (Anti-Personnel)
+		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Unit:
 		HP: 100
 		Armor: heavy
@@ -303,8 +303,8 @@ MNLY.AT:
 		Owner: allies
 		Cost: 800
 		Icon: MNLYICON
-		Description: "Minelayer (Anti-Tank)"
-		LongDesc: "Lays mines to destroy unwary enemy units.\n  Unarmed"
+		Description: Minelayer (Anti-Tank)
+		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Unit:
 		HP: 100
 		Armor: heavy
@@ -337,8 +337,8 @@ SS:
 		BuiltAt: spen
 		Owner: soviet
 		Cost: 950
-		Description: "Submarine"
-		LongDesc: "Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge"
+		Description: Submarine
+		LongDesc: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Unit:
 		HP: 120
 		Armor: light
@@ -363,8 +363,8 @@ DD:
 		BuiltAt: syrd
 		Owner: allies
 		Cost: 1000
-		Description: "Destroyer"
-		LongDesc: "Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks"
+		Description: Destroyer
+		LongDesc: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -390,8 +390,8 @@ CA:
 		BuiltAt: syrd
 		Owner: allies
 		Cost: 2000
-		Description: "Cruiser"
-		LongDesc: "Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines"
+		Description: Cruiser
+		LongDesc: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Unit:
 		HP: 700
 		Armor: heavy
@@ -417,8 +417,8 @@ LST:
 		Tab: Ship
 		Owner: allies,soviet
 		Cost: 700
-		Description: "Transport"
-		LongDesc: "General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed"
+		Description: Transport
+		LongDesc: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
 	Unit:
 		HP: 350
 		Armor: heavy
@@ -441,8 +441,8 @@ PT:
 		BuiltAt: syrd
 		Owner: allies
 		Cost: 500
-		Description: "Gunboat"
-		LongDesc: "Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft"
+		Description: Gunboat
+		LongDesc: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -468,8 +468,8 @@ MIG:
 		BuiltAt: afld
 		Owner: soviet
 		Cost: 1200
-		Description: "Mig Attack Plane"
-		LongDesc: "Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles"
+		Description: Mig Attack Plane
+		LongDesc: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Unit:
 		HP: 50
 		Armor: light
@@ -495,8 +495,8 @@ YAK:
 		BuiltAt: afld
 		Owner: soviet
 		Cost: 800
-		Description: "Yak Attack Plane"
-		LongDesc: "Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings"
+		Description: Yak Attack Plane
+		LongDesc: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
 	Unit:
 		HP: 60
 		Armor: light
@@ -523,8 +523,8 @@ TRAN:
 		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
-		Description: "Transport Helicopter"
-		LongDesc: "Fast Infantry Transport Helicopter.\n  Unarmed"
+		Description: Transport Helicopter
+		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
 	Unit:
 		HP: 90
 		Armor: light
@@ -551,8 +551,8 @@ HELI:
 		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
-		Description: "Longbow"
-		LongDesc: "Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry"
+		Description: Longbow
+		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -582,8 +582,8 @@ HIND:
 		BuiltAt: hpad
 		Owner: allies
 		Cost: 1200
-		Description: "Hind"
-		LongDesc: "Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks"
+		Description: Hind
+		LongDesc: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -611,8 +611,8 @@ IRON:
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2800
-		Description: "Iron Curtain"
-		LongDesc: "Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability"
+		Description: Iron Curtain
+		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
 	Selectable:
 		Priority: 3
 	Building:
@@ -637,8 +637,8 @@ PDOX:
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2800
-		Description: "Chronosphere"
-		LongDesc: "Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift"
+		Description: Chronosphere
+		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
 	Selectable:
 		Priority: 3
 	Building:
@@ -663,8 +663,8 @@ PBOX:
 		Prerequisites: tent
 		Owner: allies
 		Cost: 400
-		Description: "Pillbox"
-		LongDesc: "Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+		Description: Pillbox
+		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Selectable:
 		Priority: 3
 	Building:
@@ -690,8 +690,8 @@ HBOX:
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
-		Description: "Camo Pillbox"
-		LongDesc: "Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft"
+		Description: Camo Pillbox
+		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Selectable:
 		Priority: 3
 	Building:
@@ -717,8 +717,8 @@ TSLA:
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 1500
-		Description: "Tesla Coil"
-		LongDesc: "Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft"
+		Description: Tesla Coil
+		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Selectable:
 		Priority: 3
 	Building:
@@ -746,8 +746,8 @@ GUN:
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
-		Description: "Turret"
-		LongDesc: "Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft"
+		Description: Turret
+		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Priority: 3
 	Building:
@@ -774,8 +774,8 @@ AGUN:
 		Prerequisites: dome
 		Owner: allies
 		Cost: 600
-		Description: "AA Gun"
-		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
+		Description: AA Gun
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Selectable:
 		Priority: 3
 	Building:
@@ -803,8 +803,8 @@ FTUR:
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 600
-		Description: "Flame Turret"
-		LongDesc: "Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft"
+		Description: Flame Turret
+		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Selectable:
 		Priority: 3
 	Turreted:
@@ -830,8 +830,8 @@ GAP:
 		Prerequisites: atek
 		Owner: allies
 		Cost: 500
-		Description: "Gap Generator"
-		LongDesc: "Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed"
+		Description: Gap Generator
+		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Building:
@@ -855,8 +855,8 @@ SAM:
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
-		Description: "SAM Site"
-		LongDesc: "Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks"
+		Description: SAM Site
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Selectable:
 		Priority: 3
 	Building:
@@ -882,8 +882,8 @@ MSLO:
 		Prerequisites: stek,atek
 		Owner: soviet,allies
 		Cost: 2500
-		Description: "Missile Silo"
-		LongDesc: "Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile"
+		Description: Missile Silo
+		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
 	Selectable:
 		Priority: 3
 	Building:
@@ -905,8 +905,8 @@ ATEK:
 		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 1500
-		Description: "Allied Tech Center"
-		LongDesc: "Provides Allied advanced technologies.\n  Special Ability: GPS Satellite"
+		Description: Allied Tech Center
+		LongDesc: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
 	Selectable:
 		Priority: 3
 	Building:
@@ -931,8 +931,8 @@ WEAP:
 		Prerequisites: proc
 		Owner: soviet,allies
 		Cost: 2000
-		Description: "War Factory"
-		LongDesc: "Produces tanks & light vehicles."
+		Description: War Factory
+		LongDesc: Produces tanks & light vehicles.
 	Selectable:
 		Priority: 3
 	Building:
@@ -960,8 +960,8 @@ SYRD:
 		Prerequisites: powr
 		Owner: allies
 		Cost: 650
-		Description: "Shipyard"
-		LongDesc: "Produces and repairs ships"
+		Description: Shipyard
+		LongDesc: Produces and repairs ships
 	Selectable:
 		Priority: 3
 	Building:
@@ -987,8 +987,8 @@ SPEN:
 		Prerequisites: powr
 		Owner: soviet
 		Cost: 650
-		Description: "Sub Pen"
-		LongDesc: "Produces and repairs submarines and \ntransports"
+		Description: Sub Pen
+		LongDesc: Produces and repairs submarines and \ntransports
 	Selectable:
 		Priority: 3
 	Building:
@@ -1034,8 +1034,8 @@ PROC:
 		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 2000
-		Description: "Ore Refinery"
-		LongDesc: "Converts Ore and Gems into money"
+		Description: Ore Refinery
+		LongDesc: Converts Ore and Gems into money
 	Selectable:
 		Priority: 3
 	Building:
@@ -1063,8 +1063,8 @@ SILO:
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 150
-		Description: "Silo"
-		LongDesc: "Stores excess harvested Ore"
+		Description: Silo
+		LongDesc: Stores excess harvested Ore
 	Selectable:
 		Priority: 3
 	Building:
@@ -1089,8 +1089,8 @@ HPAD:
 		Prerequisites: dome
 		Owner: allies
 		Cost: 1500
-		Description: "Helipad"
-		LongDesc: "Produces and reloads helicopters"
+		Description: Helipad
+		LongDesc: Produces and reloads helicopters
 	Selectable:
 		Priority: 3
 	Building:
@@ -1119,8 +1119,8 @@ DOME:
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 1000
-		Description: "Radar Dome"
-		LongDesc: "Provides an overview of the battlefield.\n  Requires power to operate."
+		Description: Radar Dome
+		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
 	Selectable:
 		Priority: 3
 	Building:
@@ -1146,8 +1146,8 @@ AFLD:
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 600
-		Description: "Airstrip"
-		LongDesc: "Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane"
+		Description: Airstrip
+		LongDesc: Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Selectable:
 		Priority: 3
 	Building:
@@ -1174,8 +1174,8 @@ POWR:
 		Prerequisites: fact
 		Owner: allies,soviet
 		Cost: 300
-		Description: "Power Plant"
-		LongDesc: "Provides power for other structures"
+		Description: Power Plant
+		LongDesc: Provides power for other structures
 	Selectable:
 		Priority: 3
 	Building:
@@ -1199,8 +1199,8 @@ APWR:
 		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 500
-		Description: "Advanced Power Plant"
-		LongDesc: "Provides more power, cheaper than the \nstandard Power Plant"
+		Description: Advanced Power Plant
+		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 	Selectable:
 		Priority: 3
 	Building:
@@ -1224,8 +1224,8 @@ STEK:
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 1500
-		Description: "Soviet Tech Center"
-		LongDesc: "Provides Soviet advanced technologies"
+		Description: Soviet Tech Center
+		LongDesc: Provides Soviet advanced technologies
 	Selectable:
 		Priority: 3
 	Building:
@@ -1249,8 +1249,8 @@ BARR:
 		Prerequisites: powr
 		Owner: soviet
 		Cost: 300
-		Description: "Soviet Barracks"
-		LongDesc: "Produces infantry"
+		Description: Soviet Barracks
+		LongDesc: Produces infantry
 	Selectable:
 		Priority: 3
 	Building:
@@ -1277,8 +1277,8 @@ TENT:
 		Prerequisites: powr
 		Owner: allies
 		Cost: 300
-		Description: "Allied Barracks"
-		LongDesc: "Produces infantry"
+		Description: Allied Barracks
+		LongDesc: Produces infantry
 	Selectable:
 		Priority: 3
 	Building:
@@ -1305,8 +1305,8 @@ KENN:
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 200
-		Description: "Kennel"
-		LongDesc: "Produces attack dogs"
+		Description: Kennel
+		LongDesc: Produces attack dogs
 	Selectable:
 		Priority: 3
 	Building:
@@ -1329,8 +1329,8 @@ FIX:
 		Prerequisites: weap
 		Owner: allies,soviet
 		Cost: 1200
-		Description: "Service Depot"
-		LongDesc: "Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases."
+		Description: Service Depot
+		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 	Selectable:
 		Priority: 3
 	Building:
@@ -1354,8 +1354,8 @@ FACF:
 		Tab: Building
 		Owner: allies
 		Cost: 50
-		Description: "Fake Construction Yard"
-		LongDesc: "Looks like a Construction Yard."
+		Description: Fake Construction Yard
+		LongDesc: Looks like a Construction Yard.
 	Selectable:
 		Priority: 3
 	Building:
@@ -1380,8 +1380,8 @@ WEAF:
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
-		Description: "Fake War Factory"
-		LongDesc: "Looks like a War Factory."
+		Description: Fake War Factory
+		LongDesc: Looks like a War Factory.
 	Selectable:
 		Priority: 3
 	Building:
@@ -1407,8 +1407,8 @@ SYRF:
 		Prerequisites: powr
 		Owner: allies
 		Cost: 50
-		Description: "Fake Shipyard"
-		LongDesc: "Looks like a Shipyard"
+		Description: Fake Shipyard
+		LongDesc: Looks like a Shipyard
 	Selectable:
 		Priority: 3
 	Building:
@@ -1451,8 +1451,8 @@ DOMF:
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
-		Description: "Fake Radar Dome"
-		LongDesc: "Looks like a Radar Dome"
+		Description: Fake Radar Dome
+		LongDesc: Looks like a Radar Dome
 	Selectable:
 		Priority: 3
 	Building:
@@ -2127,8 +2127,8 @@ DOG:
 		BuiltAt: KENN
 		Owner: soviet
 		Cost: 200
-		Description: "Attack Dog"
-		LongDesc: "Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles"
+		Description: Attack Dog
+		LongDesc: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
@@ -2147,8 +2147,8 @@ E1:
 		Tab: Infantry
 		Owner: allies,soviet
 		Cost: 100
-		Description: "Rifle Infantry"
-		LongDesc: "General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles"
+		Description: Rifle Infantry
+		LongDesc: General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Unit:
@@ -2171,8 +2171,8 @@ E2:
 		Tab: Infantry
 		Owner: soviet
 		Cost: 160
-		Description: "Grenadier"
-		LongDesc: "Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles"
+		Description: Grenadier
+		LongDesc: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Unit:
@@ -2197,8 +2197,8 @@ E3:
 		Tab: Infantry
 		Owner: allies,soviet
 		Cost: 300
-		Description: "Rocket Soldier"
-		LongDesc: "Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry"
+		Description: Rocket Soldier
+		LongDesc: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Selectable:
 		Bounds: 12,17,0,-9
 	Unit:
@@ -2223,8 +2223,8 @@ E4:
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 300
-		Description: "Flamethrower"
-		LongDesc: "Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles"
+		Description: Flamethrower
+		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Unit:
@@ -2249,8 +2249,8 @@ E6:
 		Tab: Infantry
 		Owner: soviet,allies
 		Cost: 500
-		Description: "Engineer"
-		LongDesc: "Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything"
+		Description: Engineer
+		LongDesc: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
@@ -2273,8 +2273,8 @@ SPY:
 		Prerequisites: dome
 		Owner: allies
 		Cost: 500
-		Description: "Spy"
-		LongDesc: "Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised"
+		Description: Spy
+		LongDesc: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
 		Voice: SpyVoice
 		Bounds: 12,17,0,-9
@@ -2296,8 +2296,8 @@ THF:
 		Prerequisites: atek
 		Owner: allies
 		Cost: 500
-		Description: "Thief"
-		LongDesc: "Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed"
+		Description: Thief
+		LongDesc: Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed
 	Selectable:
 		Voice: ThiefVoice
 		Bounds: 12,17,0,-9
@@ -2320,8 +2320,8 @@ E7:
 		Prerequisites: atek,stek
 		Owner: allies,soviet
 		Cost: 1200
-		Description: "Tanya"
-		LongDesc: "Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4"
+		Description: Tanya
+		LongDesc: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -2346,8 +2346,8 @@ MEDI:
 		Tab: Infantry
 		Owner: allies
 		Cost: 800
-		Description: "Medic"
-		LongDesc: "Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything"
+		Description: Medic
+		LongDesc: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: MedicVoice
 		Bounds: 12,17,0,-9
