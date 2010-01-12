@@ -54,8 +54,7 @@ namespace RulesConverter
 				},
 
 				{ "Mobile", new PL {
-					//{ "MovementType", ... },
-					}
+					{ "MovementType", "$MovementType" } }
 				},
 
 				{ "RenderBuilding", new PL {
@@ -186,7 +185,9 @@ namespace RulesConverter
 								if (traitMap.ContainsKey(t))
 									foreach (var kv in traitMap[t])
 									{
-										var v = kv.Value == "$Tab" ? cat.Value.Second : iniSection.GetValue(kv.Value, "");
+										var v = iniSection.GetValue(kv.Value, "");
+										if (kv.Value == "$Tab") v = cat.Value.Second;
+										if (kv.Value == "$MovementType") v = GetMovementType(iniSection, traits);
 										var fmt = "\t\t{0}: {1}";
 										var k = kv.Key;
 										if (k.StartsWith("@")) { k = k.Substring(1); /*fmt = "\t\t{0}: [{1}]";*/ }
@@ -205,6 +206,20 @@ namespace RulesConverter
 			var yaml = MiniYaml.FromFile( outputFile );
 			yaml.OptimizeInherits( MiniYaml.FromFile( "defaults.yaml" ) );
 			yaml.WriteToFile( outputFile );
+		}
+
+		static string GetMovementType(IniSection unit, List<string> traits)
+		{
+			if (unit.GetValue("WaterBound", "no") == "yes")
+				return "Float";
+			if (unit.GetValue("Tracked", "no") == "yes")
+				return "Track";
+			if (traits.Contains("Plane") || traits.Contains("Helicopter"))
+				return "Fly";
+			if (traits.Contains("RenderInfantry"))
+				return "Foot";
+
+			return "Wheel";
 		}
 	}
 }

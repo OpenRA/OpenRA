@@ -339,7 +339,6 @@ SS:
 		Cost: 950
 		Description: "Submarine"
 		LongDesc: "Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge"
-	Selectable:
 	Unit:
 		HP: 120
 		Armor: light
@@ -347,7 +346,6 @@ SS:
 		Sight: 6
 		Speed: 6
 		WaterBound: yes
-	Mobile:
 	RenderUnit:
 	Submarine:
 	AttackBase:
@@ -367,7 +365,6 @@ DD:
 		Cost: 1000
 		Description: "Destroyer"
 		LongDesc: "Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks"
-	Selectable:
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -375,7 +372,6 @@ DD:
 		Sight: 6
 		Speed: 6
 		WaterBound: yes
-	Mobile:
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: Stinger
@@ -396,7 +392,6 @@ CA:
 		Cost: 2000
 		Description: "Cruiser"
 		LongDesc: "Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines"
-	Selectable:
 	Unit:
 		HP: 700
 		Armor: heavy
@@ -404,7 +399,6 @@ CA:
 		Sight: 7
 		Speed: 4
 		WaterBound: yes
-	Mobile:
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: 8Inch
@@ -425,7 +419,6 @@ LST:
 		Cost: 700
 		Description: "Transport"
 		LongDesc: "General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed"
-	Selectable:
 	Unit:
 		HP: 350
 		Armor: heavy
@@ -433,7 +426,6 @@ LST:
 		Sight: 6
 		Speed: 14
 		WaterBound: yes
-	Mobile:
 	RenderUnit:
 	Cargo:
 		PassengerTypes: Foot,Wheel,Track
@@ -451,7 +443,6 @@ PT:
 		Cost: 500
 		Description: "Gunboat"
 		LongDesc: "Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft"
-	Selectable:
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -459,7 +450,6 @@ PT:
 		Sight: 7
 		Speed: 9
 		WaterBound: yes
-	Mobile:
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: 2Inch
@@ -480,7 +470,6 @@ MIG:
 		Cost: 1200
 		Description: "Mig Attack Plane"
 		LongDesc: "Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles"
-	Selectable:
 	Unit:
 		HP: 50
 		Armor: light
@@ -508,7 +497,6 @@ YAK:
 		Cost: 800
 		Description: "Yak Attack Plane"
 		LongDesc: "Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings"
-	Selectable:
 	Unit:
 		HP: 60
 		Armor: light
@@ -537,7 +525,6 @@ TRAN:
 		Cost: 1200
 		Description: "Transport Helicopter"
 		LongDesc: "Fast Infantry Transport Helicopter.\n  Unarmed"
-	Selectable:
 	Unit:
 		HP: 90
 		Armor: light
@@ -566,7 +553,6 @@ HELI:
 		Cost: 1200
 		Description: "Longbow"
 		LongDesc: "Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry"
-	Selectable:
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -598,7 +584,6 @@ HIND:
 		Cost: 1200
 		Description: "Hind"
 		LongDesc: "Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks"
-	Selectable:
 	Unit:
 		HP: 225
 		Armor: heavy
@@ -2152,7 +2137,6 @@ DOG:
 		Armor: none
 		Sight: 5
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	Passenger:
 
@@ -2172,7 +2156,6 @@ E1:
 		Armor: none
 		Sight: 4
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: M1Carbine
@@ -2197,7 +2180,6 @@ E2:
 		Armor: none
 		Sight: 4
 		Speed: 5
-	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Grenade
@@ -2224,7 +2206,6 @@ E3:
 		Armor: none
 		Sight: 4
 		Speed: 3
-	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: RedEye
@@ -2251,7 +2232,6 @@ E4:
 		Armor: none
 		Sight: 4
 		Speed: 3
-	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Flamer
@@ -2279,7 +2259,6 @@ E6:
 		Armor: none
 		Sight: 4
 		Speed: 4
-	Mobile:
 	EngineerCapture:
 	RenderInfantry:
 	TakeCover:
@@ -2304,7 +2283,6 @@ SPY:
 		Armor: none
 		Sight: 5
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	TakeCover:
 	SquishByTank:
@@ -2328,7 +2306,6 @@ THF:
 		Armor: none
 		Sight: 5
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	TakeCover:
 	SquishByTank:
@@ -2353,7 +2330,6 @@ E7:
 		Armor: none
 		Sight: 6
 		Speed: 5
-	Mobile:
 	RenderInfantry:
 	C4Demolition:
 	AttackBase:
@@ -2380,7 +2356,6 @@ MEDI:
 		Armor: none
 		Sight: 3
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	AutoHeal:
 	AttackBase:

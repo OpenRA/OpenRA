@@ -96,7 +96,6 @@ MSUB:
 		Owner: soviet
 		Cost: 1650
 		Description: "Missile Submarine"
-	Selectable:
 	Unit:
 		HP: 150
 		Armor: light
@@ -104,7 +103,6 @@ MSUB:
 		Sight: 6
 		Speed: 5
 		WaterBound: yes
-	Mobile:
 	AttackBase:
 		PrimaryWeapon: SubSCUD
 		FireDelay: 2
@@ -128,7 +126,6 @@ SHOK:
 		Armor: none
 		Sight: 4
 		Speed: 3
-	Mobile:
 	AttackBase:
 		PrimaryWeapon: PortaTesla
 	RenderInfantry:
@@ -153,7 +150,6 @@ MECH:
 		Armor: none
 		Sight: 3
 		Speed: 4
-	Mobile:
 	RenderInfantry:
 	AutoHeal:
 	AttackBase:

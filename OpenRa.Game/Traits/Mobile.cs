@@ -7,6 +7,8 @@ namespace OpenRa.Game.Traits
 {
 	class MobileInfo : ITraitInfo
 	{
+		public readonly UnitMovementType MovementType = UnitMovementType.Wheel;
+
 		public object Create(Actor self) { return new Mobile(self); }
 	}
 
@@ -83,19 +85,7 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			switch (Rules.UnitCategory[self.Info.Name])
-			{
-				case "Infantry":
-					return UnitMovementType.Foot;
-				case "Vehicle":
-					return (self.LegacyInfo as VehicleInfo).Tracked ? UnitMovementType.Track : UnitMovementType.Wheel;
-				case "Ship":
-					return UnitMovementType.Float;
-				case "Plane":
-					return UnitMovementType.Fly;
-				default:
-					throw new InvalidOperationException("GetMovementType on unit that shouldn't be able to move.");
-			}
+			return self.Info.Traits.Get<MobileInfo>().MovementType;			
 		}
 		
 		public bool CanEnterCell(int2 a)

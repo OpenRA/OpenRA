@@ -2,6 +2,7 @@ DefaultVehicle:
 	Unit:
 		ROT: 5
 	Mobile:
+		MovementType: Wheel
 	Selectable: 
 		Voice: VehicleVoice
 	Repairable: 
@@ -9,3 +10,18 @@ DefaultVehicle:
 	Passenger: 
 	IronCurtainable: 
 
+DefaultInfantry:
+	Unit: 
+	Mobile:
+		MovementType: Foot
+	Selectable:
+		
+DefaultShip:
+	Unit:
+	Mobile:
+		MovementType: Float
+	Selectable:
+	
+DefaultPlane:
+	Unit:
+	Selectable:
