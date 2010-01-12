@@ -112,10 +112,10 @@ namespace OpenRa.Game
 			
 			tabSprites = groups
 				.SelectMany(g => Rules.Categories[g])
-				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
+				.Where(u => Rules.NewUnitInfo[u].Traits.Contains<BuildableInfo>())
 				.ToDictionary(
 					u => u,
-					u => SpriteSheetBuilder.LoadAllSprites(Rules.UnitInfo[u].Icon ?? (u + "icon"))[0]);
+					u => SpriteSheetBuilder.LoadAllSprites(Rules.NewUnitInfo[u].Traits.Get<BuildableInfo>().Icon ?? (u + "icon"))[0]);
 
 			spsprites = Rules.SupportPowerInfo
 				.ToDictionary(
@@ -531,8 +531,8 @@ namespace OpenRa.Game
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
 
 			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
-				.Where(a => Rules.UnitInfo[a].TechLevel != -1)
-				.OrderBy(a => Rules.UnitInfo[a].TechLevel);
+				.Where(a => Rules.NewUnitInfo[a].Traits.Contains<BuildableInfo>())
+				.OrderBy(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 

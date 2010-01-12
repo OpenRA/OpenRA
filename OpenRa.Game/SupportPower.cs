@@ -2,6 +2,7 @@
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.SupportPowers;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -49,7 +50,7 @@ namespace OpenRa.Game
 				var buildings = Rules.TechTree.GatherBuildings(Owner);
 				var effectivePrereq = Info.Prerequisite
 					.Select( a => a.ToLowerInvariant() )
-					.Where( a => Rules.UnitInfo[a].Owner
+					.Where( a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner
 						.Any( r => r == Owner.Race ));
 
 				IsAvailable = Info.TechLevel > -1 

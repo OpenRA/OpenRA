@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits
 			case "StartProduction":
 				{
 					string group = Rules.UnitCategory[ order.TargetString ];
-					var ui = Rules.UnitInfo[ order.TargetString ];
+					var ui = Rules.NewUnitInfo[ order.TargetString ].Traits.Get<BuildableInfo>();
 					var time = ui.Cost
 						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
 						 * ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */

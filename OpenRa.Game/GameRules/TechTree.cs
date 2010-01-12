@@ -38,7 +38,7 @@ namespace OpenRa.Game.GameRules
 				return false;
 
 			foreach( var p in bi.Prerequisites )
-				if (Rules.UnitInfo[p.ToLowerInvariant()].Owner.Any(x => x == player.Race))
+				if (Rules.NewUnitInfo[p.ToLowerInvariant()].Traits.Get<BuildableInfo>().Owner.Any(x => x == player.Race))
 					if( playerBuildings[ p ].Count == 0 )
 						return false;
 
@@ -58,8 +58,8 @@ namespace OpenRa.Game.GameRules
 
 		public IEnumerable<string> AllItems(Player player, params string[] categories)
 		{
-			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.UnitInfo[x].Name)
-				.Where(x => Rules.UnitInfo[x].Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
+			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.NewUnitInfo[x].Name)
+				.Where(x => Rules.NewUnitInfo[x].Traits.Get<BuildableInfo>().Owner.Contains(player.Race));	/* todo: fix for dual-race scenarios (captured buildings) */
 		}
 
 		public IEnumerable<NewUnitInfo> UnitBuiltAt( NewUnitInfo info )
