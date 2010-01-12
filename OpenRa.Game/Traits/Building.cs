@@ -39,32 +39,36 @@ namespace OpenRa.Game.Traits
 	class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
-		public readonly LegacyBuildingInfo unitInfo;
+		[Obsolete] public readonly LegacyBuildingInfo unitInfo;
+		public readonly BuildingInfo Info;
 		[Sync]
 		bool isRepairing = false;
 		[Sync]
 		bool manuallyDisabled = false;
 		public bool ManuallyDisabled { get { return manuallyDisabled; } }
-		public bool Disabled { get { return (manuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		public bool Disabled { get { return (manuallyDisabled || (Info.RequiresPower && self.Owner.GetPowerState() != PowerState.Normal)); } }
 		bool wasDisabled = false;
 		
 		public Building(Actor self)
 		{
 			this.self = self;
+			Info = self.Info.Traits.Get<BuildingInfo>();
 			unitInfo = (LegacyBuildingInfo)self.LegacyInfo;
 			self.CenterLocation = Game.CellSize 
-				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
+				* ((float2)self.Location + .5f * (float2)Info.Dimensions);
 		}
 		
 		public int GetPowerUsage()
 		{
 			if (manuallyDisabled)
 				return 0;
-			
-			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
-				return (self.Health * unitInfo.Power) / unitInfo.Strength;
+
+			var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
+
+			if (Info.Power > 0)		/* todo: is this how real-ra scales it? */
+				return (self.Health * Info.Power) / maxHP;
 			else
-				return unitInfo.Power;
+				return Info.Power;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -106,8 +110,9 @@ namespace OpenRa.Game.Traits
 
 			if (remainingTicks == 0)
 			{
-				var costPerHp = (Rules.General.URepairPercent * self.LegacyInfo.Cost) / self.LegacyInfo.Strength;
-				var hpToRepair = Math.Min(Rules.General.URepairStep, self.LegacyInfo.Strength - self.Health);
+				var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
+				var costPerHp = (Rules.General.URepairPercent * self.Info.Traits.Get<BuildableInfo>().Cost) / maxHP;
+				var hpToRepair = Math.Min(Rules.General.URepairStep, maxHP - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -117,7 +122,7 @@ namespace OpenRa.Game.Traits
 
 				Game.world.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
-				if (self.Health == self.LegacyInfo.Strength)
+				if (self.Health == maxHP)
 				{
 					isRepairing = false;
 					return;

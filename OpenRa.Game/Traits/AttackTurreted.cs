@@ -36,11 +36,11 @@ namespace OpenRa.Game.Traits
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.LegacyInfo.Primary ?? order.Subject.LegacyInfo.Secondary;
+			var weapon = order.Subject.GetPrimaryWeapon() ?? order.Subject.GetSecondaryWeapon();
 
 			if (self.traits.Contains<Mobile>())
 				self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
-					Math.Max( 0, (int)Rules.WeaponInfo[ weapon ].Range - RangeTolerance ) ) );
+					Math.Max( 0, (int)weapon.Range - RangeTolerance ) ) );
 
 			target = order.TargetActor;
 			

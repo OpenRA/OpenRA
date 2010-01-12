@@ -64,7 +64,7 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(order.TargetActor.LegacyInfo == Rules.UnitInfo["AFLD"]
+				self.QueueActivity(order.TargetActor.Info.Name == "afld"
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}

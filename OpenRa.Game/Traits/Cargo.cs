@@ -9,6 +9,7 @@ namespace OpenRa.Game.Traits
 {
 	class CargoInfo : ITraitInfo
 	{
+		public readonly int Passengers = 0;
 		public readonly UnitMovementType[] PassengerTypes = { };
 		public readonly int UnloadFacing = 0;
 
@@ -64,7 +65,7 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips( Actor self )
 		{
-			for (var i = 0; i < self.LegacyInfo.Passengers; i++)
+			for (var i = 0; i < self.Info.Traits.Get<CargoInfo>().Passengers; i++)
 				if (i >= cargo.Count)
 					yield return PipType.Transparent;
 				else
