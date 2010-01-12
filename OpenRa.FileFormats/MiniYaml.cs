@@ -54,5 +54,37 @@ namespace OpenRa.FileFormats
 			}
 			return levels[ 0 ];
 		}
+
+		public static Dictionary<string, MiniYaml> Merge( Dictionary<string, MiniYaml> a, Dictionary<string, MiniYaml> b )
+		{
+			if( a.Count == 0 )
+				return b;
+			if( b.Count == 0 )
+				return a;
+
+			var ret = new Dictionary<string, MiniYaml>();
+
+			var keys = a.Keys.Union( b.Keys ).ToList();
+
+			foreach( var key in keys )
+			{
+				MiniYaml aa, bb;
+				a.TryGetValue( key, out aa );
+				b.TryGetValue( key, out bb );
+				ret.Add( key, Merge( aa, bb ) );
+			}
+
+			return ret;
+		}
+
+		public static MiniYaml Merge( MiniYaml a, MiniYaml b )
+		{
+			if( a == null )
+				return b;
+			if( b == null )
+				return a;
+
+			return new MiniYaml( a.Value ?? b.Value, Merge( a.Nodes, b.Nodes ) );
+		}
 	}
 }

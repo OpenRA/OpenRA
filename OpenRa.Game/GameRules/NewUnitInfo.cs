@@ -8,24 +8,31 @@ namespace OpenRa.Game.GameRules
 {
 	class NewUnitInfo
 	{
-		public readonly string Parent;
 		public readonly TypeDictionary Traits = new TypeDictionary();
 		public readonly string Name;
 
-		public NewUnitInfo( string name, MiniYaml node )
+		public NewUnitInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			Name = name;
 
-			// todo: make inheritance actually work
-			MiniYaml inherit;
-			if( node.Nodes.TryGetValue( "Inherits", out inherit ) )
-			{
-				Parent = inherit.Value;
-				node.Nodes.Remove( "Inherits" );
-			}
+			foreach( var t in MergeWithParent( node, allUnits ).Nodes )
+				if( t.Key != "Inherits" )
+					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );
+		}
 
-			foreach (var t in node.Nodes)
-				Traits.Add(LoadTraitInfo(t.Key, t.Value));
+		static MiniYaml MergeWithParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		{
+			MiniYaml inherits;
+			node.Nodes.TryGetValue( "Inherits", out inherits );
+			if( inherits.Value == null || string.IsNullOrEmpty( inherits.Value ) )
+				return node;
+
+			MiniYaml parent;
+			allUnits.TryGetValue( inherits.Value, out parent );
+			if( parent == null )
+				return node;
+
+			return MiniYaml.Merge( node, MergeWithParent( parent, allUnits ) );
 		}
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)

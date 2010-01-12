@@ -90,9 +90,13 @@ namespace OpenRa.Game
 			SupportPowerInfo = new InfoLoader<SupportPowerInfo>(
 				Pair.New<string, Func<string, SupportPowerInfo>>("SupportPower", _ => new SupportPowerInfo()));
 
+			var yamlRules = MiniYaml.FromFile("ra.yaml");
+			if( useAftermath )
+				yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "aftermath.yaml" ), yamlRules );
+
 			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
-			foreach (var kv in MiniYaml.FromFile("ra.yaml"))
-				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value));
+			foreach( var kv in yamlRules )
+				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
 
 			TechTree = new TechTree();
 			Map = new Map( AllRules );
