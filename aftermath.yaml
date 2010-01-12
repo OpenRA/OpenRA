@@ -20,7 +20,7 @@ TTNK:
 		Prerequisites: tsla
 		Owner: soviet
 		Cost: 1500
-		Description: "Tesla Tank"
+		Description: Tesla Tank
 	Unit:
 		HP: 110
 		Armor: light
@@ -39,7 +39,7 @@ CTNK:
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2400
-		Description: "Chrono Tank"
+		Description: Chrono Tank
 	Unit:
 		HP: 350
 		Armor: light
@@ -58,7 +58,7 @@ DTRK:
 		Prerequisites: mslo
 		Owner: allies,soviet
 		Cost: 2400
-		Description: "Demo Truck"
+		Description: Demo Truck
 	Unit:
 		HP: 110
 		Armor: light
@@ -77,7 +77,7 @@ QTNK:
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2300
-		Description: "M.A.D. Tank"
+		Description: M.A.D. Tank
 	Unit:
 		HP: 300
 		Armor: heavy
@@ -95,7 +95,7 @@ MSUB:
 		BuiltAt: spen
 		Owner: soviet
 		Cost: 1650
-		Description: "Missile Submarine"
+		Description: Missile Submarine
 	Unit:
 		HP: 150
 		Armor: light
@@ -118,7 +118,7 @@ SHOK:
 		Prerequisites: tsla
 		Owner: soviet
 		Cost: 900
-		Description: "Tesla Trooper"
+		Description: Tesla Trooper
 	Selectable:
 		Voice: ShokVoice
 	Unit:
@@ -140,8 +140,8 @@ MECH:
 		Prerequisites: fix
 		Owner: allies
 		Cost: 950
-		Description: "Mechanic"
-		LongDesc: "Heals nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything"
+		Description: Mechanic
+		LongDesc: Heals nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: MechVoice
 		Bounds: 12,17,0,-9

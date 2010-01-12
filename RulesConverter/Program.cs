@@ -50,7 +50,7 @@ namespace RulesConverter
 				{ "Selectable", new PL {
 					{ "Priority", "SelectionPriority" },
 					{ "Voice", "Voice" },
-					{ "@Bounds", "SelectionSize" } } 
+					{ "Bounds", "SelectionSize" } } 
 				},
 
 				{ "Mobile", new PL {
@@ -75,17 +75,17 @@ namespace RulesConverter
 				{ "Buildable", new PL {
 					{ "TechLevel", "TechLevel" },
 					{ "Tab", "$Tab" },
-					{ "@Prerequisites", "Prerequisite" },
+					{ "Prerequisites", "Prerequisite" },
 					{ "BuiltAt", "BuiltAt" },
 					{ "Owner", "Owner" },
 					{ "Cost", "Cost" },
 					{ "Icon", "Icon" },
-					{ "$Description", "Description" },
-					{ "$LongDesc", "LongDesc" } }
+					{ "Description", "Description" },
+					{ "LongDesc", "LongDesc" } }
 				},
 
 				{ "Cargo", new PL { 
-					{ "@PassengerTypes", "PassengerTypes" },
+					{ "PassengerTypes", "PassengerTypes" },
 					{ "Passengers", "Passengers" },
 					{ "UnloadFacing", "UnloadFacing" } }
 				},
@@ -98,7 +98,7 @@ namespace RulesConverter
 					{ "Power", "Power" },
 					{ "RequiresPower", "Powered" },
 					{ "Footprint", "Footprint" },
-					{ "@Dimensions", "Dimensions" },
+					{ "Dimensions", "Dimensions" },
 					{ "Capturable", "Capturable" },
 					{ "Repairable",  "Repairable" }, 
 					{ "BaseNormal", "BaseNormal" },
@@ -188,12 +188,7 @@ namespace RulesConverter
 										var v = iniSection.GetValue(kv.Value, "");
 										if (kv.Value == "$Tab") v = cat.Value.Second;
 										if (kv.Value == "$MovementType") v = GetMovementType(iniSection, traits);
-										var fmt = "\t\t{0}: {1}";
-										var k = kv.Key;
-										if (k.StartsWith("@")) { k = k.Substring(1); /*fmt = "\t\t{0}: [{1}]";*/ }
-										if (k.StartsWith("$")) { k = k.Substring(1); fmt = "\t\t{0}: \"{1}\""; }
-
-										if (!string.IsNullOrEmpty(v)) writer.WriteLine(fmt, k, v);
+										if (!string.IsNullOrEmpty(v)) writer.WriteLine("\t\t{0}: {1}", kv.Key, v);
 									}
 							}
 
