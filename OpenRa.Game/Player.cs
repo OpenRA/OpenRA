@@ -84,9 +84,8 @@ namespace OpenRa.Game
 		{
 			OreCapacity = Game.world.Actors
 				.Where(a => a.Owner == this && a.traits.Contains<StoresOre>())
-				.Select(a => a.LegacyInfo as LegacyBuildingInfo)
-				.Where(b => b != null)
-				.Sum(b => b.Storage);
+				.Select(a => a.Info.Traits.Get<StoresOreInfo>())
+				.Sum(b => b.Capacity);
 		}
 
 		void GiveAdvice(string advice)

@@ -86,12 +86,12 @@ namespace OpenRa.Game.Traits
 			}
 			
 			// Cancel existing primaries
-			foreach (var p in (self.LegacyInfo as LegacyBuildingInfo).Produces)
+			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 			{
 				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true
-					&& (x.LegacyInfo as LegacyBuildingInfo).Produces.Contains(p)))
+					&& (x.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
 				{
 					b.traits.Get<Production>().SetPrimaryProducer(b, false);
 				}

@@ -48,7 +48,7 @@ namespace OpenRa.Game.Traits
 
 		public bool IsFull(Actor self)
 		{
-			return cargo.Count == self.LegacyInfo.Passengers;
+			return cargo.Count == self.Info.Traits.Get<CargoInfo>().Passengers;
 		}
 
 		public bool IsEmpty(Actor self)
@@ -65,7 +65,8 @@ namespace OpenRa.Game.Traits
 
 		public IEnumerable<PipType> GetPips( Actor self )
 		{
-			for (var i = 0; i < self.Info.Traits.Get<CargoInfo>().Passengers; i++)
+			var numPips = self.Info.Traits.Get<CargoInfo>().Passengers;
+			for (var i = 0; i < numPips; i++)
 				if (i >= cargo.Count)
 					yield return PipType.Transparent;
 				else
