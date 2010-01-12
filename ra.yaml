@@ -40,6 +40,7 @@ V2RL:
 	Mobile:
 		MovementType: Track
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 75mm
 		Recoil: 2
@@ -65,6 +66,7 @@ V2RL:
 	Mobile:
 		MovementType: Track
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 90mm
 		Recoil: 3
@@ -90,6 +92,7 @@ V2RL:
 	Mobile:
 		MovementType: Track
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 105mm
 		Recoil: 3
@@ -115,6 +118,7 @@ V2RL:
 	Mobile:
 		MovementType: Track
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		PrimaryLocalOffset: -4,-5,0,4,-5,0
@@ -254,6 +258,7 @@ JEEP:
 		Sight: 6
 		Speed: 10
 	Turreted:
+		ROT: 10
 	AttackTurreted:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-2
@@ -397,6 +402,7 @@ DD:
 		Speed: 6
 		WaterBound: yes
 	Turreted:
+		ROT: 7
 	AttackTurreted:
 		PrimaryWeapon: Stinger
 		PrimaryOffset: 0,-8,0,-3
@@ -424,6 +430,7 @@ CA:
 		Speed: 4
 		WaterBound: yes
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 8Inch
 		PrimaryOffset: 0,17,0,-2
@@ -475,6 +482,7 @@ PT:
 		Speed: 9
 		WaterBound: yes
 	Turreted:
+		ROT: 7
 	AttackTurreted:
 		PrimaryWeapon: 2Inch
 		PrimaryOffset: 0,-6,0,-1
@@ -784,6 +792,8 @@ GUN:
 		InitialFacing: 50
 		Sight: 6
 	Turreted:
+		ROT: 12
+		InitialFacing: 50
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: TurretGun
@@ -813,6 +823,8 @@ AGUN:
 		InitialFacing: 224
 		Sight: 6
 	Turreted:
+		ROT: 15
+		InitialFacing: 224
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: ZSU-23
@@ -892,6 +904,7 @@ SAM:
 		Crewed: yes
 		Sight: 5
 	Turreted:
+		ROT: 30
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: Nike

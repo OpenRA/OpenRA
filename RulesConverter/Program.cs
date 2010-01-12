@@ -144,6 +144,11 @@ namespace RulesConverter
 				{ "Minelayer", new PL {
 					{ "Mine", "Primary" } }
 				},
+
+				{ "Turreted", new PL {
+					{ "ROT", "ROT" },
+					{ "InitialFacing", "InitialFacing" } }
+				},
 			};
 
 			traitMap["RenderUnit"] = traitMap["RenderBuilding"];
