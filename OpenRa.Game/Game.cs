@@ -61,7 +61,7 @@ namespace OpenRa.Game
 			world = new World();
 			Game.world.ActorAdded += a => 
 			{ 
-				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
+				if (a.Owner != null && a.Info != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
 
