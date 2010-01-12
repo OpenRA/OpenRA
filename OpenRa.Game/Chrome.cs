@@ -532,6 +532,7 @@ namespace OpenRa.Game
 
 			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
 				.Where(a => Rules.NewUnitInfo[a].Traits.Contains<BuildableInfo>())
+				.Where(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner.Contains(Game.LocalPlayer.Race))
 				.OrderBy(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();

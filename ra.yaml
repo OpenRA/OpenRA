@@ -1172,7 +1172,6 @@ POWR:
 	Buildable:
 		TechLevel: 1
 		Tab: Building
-		Prerequisites: fact
 		Owner: allies,soviet
 		Cost: 300
 		Description: Power Plant

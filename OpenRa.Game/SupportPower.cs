@@ -50,8 +50,7 @@ namespace OpenRa.Game
 				var buildings = Rules.TechTree.GatherBuildings(Owner);
 				var effectivePrereq = Info.Prerequisite
 					.Select( a => a.ToLowerInvariant() )
-					.Where( a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner
-						.Any( r => r == Owner.Race ));
+					.Where( a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner.Contains( Owner.Race ));
 
 				IsAvailable = Info.TechLevel > -1 
 					&& effectivePrereq.Any()

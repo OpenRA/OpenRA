@@ -40,7 +40,7 @@ namespace OpenRa.Game.GameRules
 			var bi = info.Traits.GetOrDefault<BuildableInfo>();
 			if( bi == null ) return false;
 
-			if( !bi.Owner.Any( x => x == player.Race ) )
+			if( !bi.Owner.Contains( player.Race ) )
 				return false;
 
 			foreach( var p in bi.Prerequisites )
