@@ -43,6 +43,7 @@ namespace RulesConverter
 					{ "InitialFacing", "InitialFacing" },
 					{ "ROT", "ROT" },
 					{ "Sight", "Sight" },
+					{ "Speed", "Speed" },
 					{ "WaterBound", "WaterBound" } }
 				},
 
@@ -53,16 +54,8 @@ namespace RulesConverter
 				},
 
 				{ "Mobile", new PL {
-					{ "Speed", "Speed" } }
 					//{ "MovementType", ... },
-				},
-
-				{ "Plane", new PL {
-					{ "Speed", "Speed" } }
-				},
-
-				{ "Helicopter", new PL {
-					{ "Speed", "Speed" } }
+					}
 				},
 
 				{ "RenderBuilding", new PL {

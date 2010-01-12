@@ -13,7 +13,6 @@ V2RL:
 		Armor: light
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 7
 	AttackBase:
 		PrimaryWeapon: SCUD
@@ -35,7 +34,6 @@ V2RL:
 		Armor: heavy
 		Crewed: yes
 		Sight: 4
-	Mobile:
 		Speed: 9
 	Turreted:
 	AttackTurreted:
@@ -59,7 +57,6 @@ V2RL:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 8
 	Turreted:
 	AttackTurreted:
@@ -83,7 +80,6 @@ V2RL:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 7
 	Turreted:
 	AttackTurreted:
@@ -107,7 +103,6 @@ V2RL:
 		Armor: heavy
 		Crewed: yes
 		Sight: 6
-	Mobile:
 		Speed: 4
 	Turreted:
 	AttackTurreted:
@@ -135,7 +130,6 @@ MRJ:
 		Armor: light
 		Crewed: yes
 		Sight: 7
-	Mobile:
 		Speed: 9
 	RenderUnitSpinner:
 		Offset: 0,4,0,-6
@@ -157,7 +151,6 @@ MGG:
 		Armor: light
 		Crewed: yes
 		Sight: 4
-	Mobile:
 		Speed: 9
 	RenderUnitSpinner:
 		Offset: 0,6,0,-3
@@ -177,7 +170,6 @@ ARTY:
 		Armor: light
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 6
 	AttackBase:
 		PrimaryWeapon: 155mm
@@ -203,7 +195,6 @@ HARV:
 		Armor: heavy
 		Crewed: yes
 		Sight: 4
-	Mobile:
 		Speed: 6
 	RenderUnit:
 
@@ -224,7 +215,6 @@ MCV:
 		Armor: light
 		Crewed: yes
 		Sight: 4
-	Mobile:
 		Speed: 6
 	McvDeploy:
 	RenderUnit:
@@ -244,7 +234,6 @@ JEEP:
 		Armor: light
 		Crewed: yes
 		Sight: 6
-	Mobile:
 		Speed: 10
 	Turreted:
 	AttackTurreted:
@@ -268,7 +257,6 @@ APC:
 		HP: 200
 		Armor: heavy
 		Sight: 5
-	Mobile:
 		Speed: 10
 	AttackBase:
 		PrimaryWeapon: M60mg
@@ -297,7 +285,6 @@ MNLY.AP:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 9
 	RenderUnit:
 		Image: MNLY
@@ -323,7 +310,6 @@ MNLY.AT:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	Mobile:
 		Speed: 9
 	RenderUnit:
 		Image: MNLY
@@ -339,7 +325,6 @@ TRUK:
 		HP: 110
 		Armor: light
 		Sight: 3
-	Mobile:
 		Speed: 10
 	RenderUnit:
 
@@ -360,9 +345,9 @@ SS:
 		Armor: light
 		ROT: 7
 		Sight: 6
+		Speed: 6
 		WaterBound: yes
 	Mobile:
-		Speed: 6
 	RenderUnit:
 	Submarine:
 	AttackBase:
@@ -388,9 +373,9 @@ DD:
 		Armor: heavy
 		ROT: 7
 		Sight: 6
+		Speed: 6
 		WaterBound: yes
 	Mobile:
-		Speed: 6
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: Stinger
@@ -417,9 +402,9 @@ CA:
 		Armor: heavy
 		ROT: 5
 		Sight: 7
+		Speed: 4
 		WaterBound: yes
 	Mobile:
-		Speed: 4
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: 8Inch
@@ -446,9 +431,9 @@ LST:
 		Armor: heavy
 		ROT: 10
 		Sight: 6
+		Speed: 14
 		WaterBound: yes
 	Mobile:
-		Speed: 14
 	RenderUnit:
 	Cargo:
 		PassengerTypes: Foot,Wheel,Track
@@ -472,9 +457,9 @@ PT:
 		Armor: heavy
 		ROT: 7
 		Sight: 7
+		Speed: 9
 		WaterBound: yes
 	Mobile:
-		Speed: 9
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: 2Inch
@@ -502,10 +487,10 @@ MIG:
 		InitialFacing: 192
 		ROT: 5
 		Sight: 0
+		Speed: 20
 	AttackPlane:
 		PrimaryWeapon: Maverick
 	Plane:
-		Speed: 20
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -531,10 +516,10 @@ YAK:
 		InitialFacing: 192
 		ROT: 5
 		Sight: 0
+		Speed: 16
 	AttackPlane:
 		PrimaryWeapon: ChainGun
 	Plane:
-		Speed: 16
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -559,8 +544,8 @@ TRAN:
 		InitialFacing: 20
 		ROT: 5
 		Sight: 0
-	Helicopter:
 		Speed: 12
+	Helicopter:
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -589,12 +574,12 @@ HELI:
 		InitialFacing: 20
 		ROT: 4
 		Sight: 0
+		Speed: 16
 	AttackHeli:
 		PrimaryWeapon: Hellfire
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
-		Speed: 16
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -621,12 +606,12 @@ HIND:
 		InitialFacing: 20
 		ROT: 4
 		Sight: 0
+		Speed: 12
 	AttackHeli:
 		PrimaryWeapon: ChainGun
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
-		Speed: 12
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:
@@ -2166,8 +2151,8 @@ DOG:
 		HP: 12
 		Armor: none
 		Sight: 5
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	Passenger:
 
@@ -2186,8 +2171,8 @@ E1:
 		HP: 50
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: M1Carbine
@@ -2211,8 +2196,8 @@ E2:
 		HP: 50
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 5
+	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Grenade
@@ -2238,8 +2223,8 @@ E3:
 		HP: 45
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 3
+	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: RedEye
@@ -2265,8 +2250,8 @@ E4:
 		HP: 40
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 3
+	Mobile:
 	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Flamer
@@ -2293,8 +2278,8 @@ E6:
 		HP: 25
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 4
+	Mobile:
 	EngineerCapture:
 	RenderInfantry:
 	TakeCover:
@@ -2318,8 +2303,8 @@ SPY:
 		HP: 25
 		Armor: none
 		Sight: 5
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	TakeCover:
 	SquishByTank:
@@ -2342,8 +2327,8 @@ THF:
 		HP: 25
 		Armor: none
 		Sight: 5
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	TakeCover:
 	SquishByTank:
@@ -2367,8 +2352,8 @@ E7:
 		HP: 100
 		Armor: none
 		Sight: 6
-	Mobile:
 		Speed: 5
+	Mobile:
 	RenderInfantry:
 	C4Demolition:
 	AttackBase:
@@ -2394,8 +2379,8 @@ MEDI:
 		HP: 80
 		Armor: none
 		Sight: 3
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	AutoHeal:
 	AttackBase:

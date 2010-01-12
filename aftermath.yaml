@@ -4,7 +4,6 @@ STNK:
 		HP: 200
 		Armor: heavy
 		Sight: 5
-	Mobile:
 		Speed: 10
 	Turreted:
 	AttackTurreted:
@@ -27,7 +26,6 @@ TTNK:
 		Armor: light
 		Crewed: yes
 		Sight: 7
-	Mobile:
 		Speed: 8
 	AttackBase:
 		PrimaryWeapon: TTankZap
@@ -46,7 +44,6 @@ CTNK:
 		HP: 350
 		Armor: light
 		Sight: 5
-	Mobile:
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: APTusk
@@ -66,7 +63,6 @@ DTRK:
 		HP: 110
 		Armor: light
 		Sight: 3
-	Mobile:
 		Speed: 8
 	AttackBase:
 		PrimaryWeapon: Democharge
@@ -87,7 +83,6 @@ QTNK:
 		Armor: heavy
 		Crewed: no
 		Sight: 6
-	Mobile:
 		Speed: 3
 	RenderUnit:
 
@@ -107,9 +102,9 @@ MSUB:
 		Armor: light
 		ROT: 7
 		Sight: 6
+		Speed: 5
 		WaterBound: yes
 	Mobile:
-		Speed: 5
 	AttackBase:
 		PrimaryWeapon: SubSCUD
 		FireDelay: 2
@@ -132,8 +127,8 @@ SHOK:
 		HP: 80
 		Armor: none
 		Sight: 4
-	Mobile:
 		Speed: 3
+	Mobile:
 	AttackBase:
 		PrimaryWeapon: PortaTesla
 	RenderInfantry:
@@ -157,8 +152,8 @@ MECH:
 		HP: 60
 		Armor: none
 		Sight: 3
-	Mobile:
 		Speed: 4
+	Mobile:
 	RenderInfantry:
 	AutoHeal:
 	AttackBase:
