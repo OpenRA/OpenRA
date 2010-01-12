@@ -65,7 +65,7 @@ namespace OpenRa.Game.Traits
 
 			var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
 
-			if (Info.Power > 0)		/* todo: is this how real-ra scales it? */
+			if (Info.Power > 0)
 				return (self.Health * Info.Power) / maxHP;
 			else
 				return Info.Power;
