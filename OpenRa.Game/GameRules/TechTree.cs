@@ -29,20 +29,20 @@ namespace OpenRa.Game.GameRules
 			return ret;
 		}
 
-		public bool CanBuild( LegacyUnitInfo unit, Player player, Cache<string, List<Actor>> playerBuildings )
+		public bool CanBuild( NewUnitInfo info, Player player, Cache<string, List<Actor>> playerBuildings )
 		{
-			if( unit.TechLevel == -1 )
+			var bi = info.Traits.GetOrDefault<BuildableInfo>();
+			if( bi == null ) return false;
+
+			if( !bi.Owner.Any( x => x == player.Race ) )
 				return false;
 
-			if( !unit.Owner.Any( x => x == player.Race ) )
-				return false;
-
-			foreach( var p in unit.Prerequisite )
+			foreach( var p in bi.Prerequisites )
 				if (Rules.UnitInfo[p.ToLowerInvariant()].Owner.Any(x => x == player.Race))
 					if( playerBuildings[ p ].Count == 0 )
 						return false;
 
-			if( producesIndex[ Rules.UnitCategory[ unit.Name ] ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
+			if( producesIndex[ Rules.UnitCategory[ info.Name ] ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
 				return false;
 
 			return true;
@@ -51,7 +51,7 @@ namespace OpenRa.Game.GameRules
 		public IEnumerable<string> BuildableItems( Player player, params string[] categories )
 		{
 			var playerBuildings = GatherBuildings( player );
-			foreach( var unit in categories.SelectMany( x => Rules.Categories[ x ] ).Select( x => Rules.UnitInfo[ x ] ) )
+			foreach( var unit in categories.SelectMany( x => Rules.Categories[ x ] ).Select( x => Rules.NewUnitInfo[ x ] ) )
 				if( CanBuild( unit, player, playerBuildings ) )
 					yield return unit.Name;
 		}

@@ -731,14 +731,15 @@ namespace OpenRa.Game
 			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
-			var info = Rules.UnitInfo[unit];
+			var info = Rules.NewUnitInfo[unit];
+			var buildable = info.Traits.Get<BuildableInfo>();
 
-			renderer.DrawText2(info.Description, p.ToInt2() + new int2(5,5), Color.White);
+			renderer.DrawText2(buildable.Description, p.ToInt2() + new int2(5,5), Color.White);
 
-			DrawRightAligned( "${0}".F(info.Cost), pos + new int2(-5,5), 
-				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= info.Cost ? Color.White : Color.Red);
+			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
+				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
 
-			var bi = info as LegacyBuildingInfo;
+			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
 					Game.LocalPlayer.PowerProvided - Game.LocalPlayer.PowerDrained + bi.Power >= 0
@@ -749,18 +750,18 @@ namespace OpenRa.Game
 			p += new int2(0, 15);
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
-				var prereqs = info.Prerequisite
-					.Select(a => Rules.UnitInfo[a.ToLowerInvariant()])
+				var prereqs = buildable.Prerequisites
+					.Select(a => Rules.NewUnitInfo[a.ToLowerInvariant()].Traits.Get<BuildableInfo>())
 					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
 					.Select( a => a.Description );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}
 
-			if (info.LongDesc != null)
+			if (buildable.LongDesc != null)
 			{
 				p += new int2(0, 15);
-				renderer.DrawText(info.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+				renderer.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
 			}
 		}
 
