@@ -5,6 +5,8 @@ STNK:
 		Armor: heavy
 		Sight: 5
 		Speed: 10
+	Mobile:
+		MovementType: Track
 	Turreted:
 	AttackTurreted:
 		PrimaryWeapon: APTusk
@@ -27,6 +29,8 @@ TTNK:
 		Crewed: yes
 		Sight: 7
 		Speed: 8
+	Mobile:
+		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: TTankZap
 	RenderUnitSpinner:
@@ -45,6 +49,8 @@ CTNK:
 		Armor: light
 		Sight: 5
 		Speed: 5
+	Mobile:
+		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: APTusk
 	RenderUnit:
@@ -84,6 +90,8 @@ QTNK:
 		Crewed: no
 		Sight: 6
 		Speed: 3
+	Mobile:
+		MovementType: Track
 	RenderUnit:
 
 MSUB:

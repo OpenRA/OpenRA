@@ -15,13 +15,19 @@ DefaultInfantry:
 	Mobile:
 		MovementType: Foot
 	Selectable:
-		
+
 DefaultShip:
 	Unit:
 	Mobile:
 		MovementType: Float
 	Selectable:
-	
+
 DefaultPlane:
 	Unit:
 	Selectable:
+
+DefaultBuilding:
+	Selectable:
+		Priority: 3
+	Building:
+

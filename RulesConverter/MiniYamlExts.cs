@@ -30,8 +30,9 @@ namespace RulesConverter
 		public static IEnumerable<string> ToLines( this MiniYaml y, string name )
 		{
 			yield return name + ": " + y.Value;
-			foreach( var line in y.Nodes.ToLines( false ) )
-				yield return "\t" + line;
+			if( y.Nodes != null )
+				foreach( var line in y.Nodes.ToLines( false ) )
+					yield return "\t" + line;
 		}
 
 		public static void OptimizeInherits( this MiniYamlNodes y, MiniYamlNodes baseYaml )
@@ -39,19 +40,26 @@ namespace RulesConverter
 			foreach( var key in y.Keys.ToList() )
 			{
 				var node = y[ key ];
-				MiniYaml inherits;
-				node.Nodes.TryGetValue( "Inherits", out inherits );
-				if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
-					continue;
+				try
+				{
+					MiniYaml inherits;
+					node.Nodes.TryGetValue( "Inherits", out inherits );
+					if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
+						continue;
 
-				MiniYaml parent;
-				baseYaml.TryGetValue( inherits.Value, out parent );
-				if( parent == null )
-					continue;
+					MiniYaml parent;
+					baseYaml.TryGetValue( inherits.Value, out parent );
+					if( parent == null )
+						continue;
 
-				y[ key ] = Diff( node, parent );
-				if( y[ key ] == null )
-					y.Remove( key );
+					y[ key ] = Diff( node, parent );
+					if( y[ key ] == null )
+						y.Remove( key );
+				}
+				catch
+				{
+					node.Nodes.Remove( "Inherits" );
+				}
 			}
 		}
 
@@ -92,7 +100,7 @@ namespace RulesConverter
 				return a;
 
 			var diff = Diff( a.Nodes, b.Nodes );
-			if( diff == null )
+			if( diff == null && a.Value == b.Value )
 				return null;
 			return new MiniYaml( a.Value, diff );
 		}
