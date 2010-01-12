@@ -86,7 +86,7 @@ namespace OpenRa.Game.Traits
 
 		public UnitMovementType GetMovementType()
 		{
-			switch (Rules.UnitCategory[self.LegacyInfo.Name])
+			switch (Rules.UnitCategory[self.Info.Name])
 			{
 				case "Infantry":
 					return UnitMovementType.Foot;

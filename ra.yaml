@@ -302,6 +302,7 @@ MNLY.AP:
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
+		Mine: MINP
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 5
@@ -327,6 +328,7 @@ MNLY.AT:
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
+		Mine: MINV
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 5

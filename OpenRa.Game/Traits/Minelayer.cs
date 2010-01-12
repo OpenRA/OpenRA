@@ -2,7 +2,15 @@
 
 namespace OpenRa.Game.Traits
 {
-	class MinelayerInfo : StatelessTraitInfo<Minelayer> { }
+	class MinelayerInfo : ITraitInfo
+	{
+		public readonly string Mine = "minv";
+
+		public object Create( Actor self )
+		{
+			return new Minelayer();
+		}
+	}
 
 	class Minelayer : IIssueOrder, IResolveOrder
 	{
@@ -33,7 +41,7 @@ namespace OpenRa.Game.Traits
 				// todo: delay a bit? (req making deploy-mine an activity)
 
 				Game.world.AddFrameEndTask(
-					w => w.Add(new Actor(self.LegacyInfo.Primary, self.Location, self.Owner)));
+					w => w.Add(new Actor(self.Info.Traits.Get<MinelayerInfo>().Mine, self.Location, self.Owner)));
 			}
 		}
 	}

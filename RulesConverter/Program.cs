@@ -149,6 +149,10 @@ namespace RulesConverter
 					{ "SpawnOffset", "SpawnOffset" },
 					{ "Produces", "Produces" } }
 				},
+
+				{ "Minelayer", new PL {
+					{ "Mine", "Primary" } }
+				},
 			};
 
 			traitMap["RenderUnit"] = traitMap["RenderBuilding"];
