@@ -24,7 +24,7 @@ namespace OpenRa.Game.Traits.Activities
 			if (isCanceled) return NextActivity;
 			var dest = ChooseHelipad(self);
 
-			var initialFacing = self.Info.Traits.Get<OwnedActorInfo>().InitialFacing;
+			var initialFacing = self.Info.Traits.Get<UnitInfo>().InitialFacing;
 
 			if (dest == null)
 				return Util.SequenceActivities(

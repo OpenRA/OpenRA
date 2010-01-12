@@ -49,7 +49,7 @@ namespace OpenRa.Game.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<OwnedActorInfo>().InitialFacing ) );
+				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
 				self.QueueActivity(new HeliLand(true));
 			}
 
@@ -66,7 +66,7 @@ namespace OpenRa.Game.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
-				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<OwnedActorInfo>().InitialFacing ) );
+				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(order.TargetActor.Info.Name == "hpad"
 					? (IActivity)new Rearm() : new Repair());

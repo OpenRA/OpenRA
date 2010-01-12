@@ -789,7 +789,6 @@ GUN:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-		InitialFacing: 50
 		Sight: 6
 	Turreted:
 		ROT: 12
@@ -820,7 +819,6 @@ AGUN:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-		InitialFacing: 224
 		Sight: 6
 	Turreted:
 		ROT: 15

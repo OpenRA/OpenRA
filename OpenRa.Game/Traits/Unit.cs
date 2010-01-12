@@ -4,6 +4,7 @@ namespace OpenRa.Game.Traits
 {
 	class UnitInfo : OwnedActorInfo, ITraitInfo
 	{
+		public readonly int InitialFacing = 128;
 		public readonly int ROT = 0;
 		public readonly int Speed = 0;
 

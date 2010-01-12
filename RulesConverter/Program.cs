@@ -109,7 +109,6 @@ namespace RulesConverter
 					{ "Armor", "Armor" }, 
 					{ "Crewed", "Crewed" },
 					{ "WaterBound", "WaterBound" },
-					{ "InitialFacing", "InitialFacing" },
 					{ "Sight", "Sight" },
 					{ "Unsellable", "Unsellable" } }
 				},

@@ -14,7 +14,6 @@ namespace OpenRa.Game.Traits
 		public readonly int HP = 0;
 		public readonly ArmorType Armor = ArmorType.none;
 		public readonly bool Crewed = false;		// replace with trait?
-		public readonly int InitialFacing = 128;
 		public readonly int Sight = 0;
 		public readonly bool WaterBound = false;
 	}
