@@ -10,6 +10,7 @@ namespace OpenRa.Game.Traits
 		public readonly int TechLevel = -1;
 		public readonly string Tab = null;
 		public readonly string[] Prerequisites = { };
+		public readonly string[] BuiltAt = { };
 		public readonly Race[] Owner = { };
 		public readonly int Cost = 0;
 		public readonly string Description = "";

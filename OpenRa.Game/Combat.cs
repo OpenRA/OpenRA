@@ -68,7 +68,7 @@ namespace OpenRa.Game
 			if (unit != null && unit.Altitude > 0)
 				return projectile.AA;
 
-			if (projectile.UnderWater && !target.LegacyInfo.WaterBound)
+			if (projectile.UnderWater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
 				return false;
 
 			return projectile.AG;

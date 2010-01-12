@@ -16,6 +16,7 @@ namespace OpenRa.Game.Traits
 		public readonly bool Crewed = false;		// replace with trait?
 		public readonly int InitialFacing = 128;
 		public readonly int Sight = 0;
+		public readonly bool WaterBound = false;
 	}
 
 	class BuildingInfo : OwnedActorInfo, ITraitInfo
@@ -30,7 +31,6 @@ namespace OpenRa.Game.Traits
 		public readonly string Footprint = "x";
 		public readonly string[] Produces = { };		// does this go somewhere else?
 		public readonly int2 Dimensions = new int2(1, 1);
-		public readonly bool WaterBound = false;
 		public readonly bool Unsellable = false;
 
 		public object Create(Actor self) { return new Building(self); }

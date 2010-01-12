@@ -126,7 +126,7 @@ namespace OpenRa.Game.Traits
 
 		public void BuildUnit( string name )
 		{
-			var newUnitType = Rules.UnitInfo[ name ];
+			var newUnitType = Rules.NewUnitInfo[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
 			Actor producer = null;
 			
