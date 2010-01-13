@@ -82,7 +82,8 @@ namespace OpenRa.Game.Traits
 
 		static float2 GetRecoil(Actor self, float recoil)
 		{
-			if (self.Info.Traits.Get<AttackBaseInfo>().Recoil == 0) return float2.Zero;
+			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
+			if (abInfo == null || abInfo.Recoil == 0) return float2.Zero;
 			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
