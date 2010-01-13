@@ -11,11 +11,14 @@ namespace OpenRa.Game
 	class Shroud
 	{
 		bool[,] explored = new bool[128, 128];
-		int[,] gapField = new int[128, 128];
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty;
 		bool hasGPS = false;
+		
+		float gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
+		int[,] gapField = new int[128, 128];
+		bool[,] gapActive = new bool[128, 128];
 		
 		public bool HasGPS
 		{
@@ -25,8 +28,8 @@ namespace OpenRa.Game
 
 		public void Tick()
 		{
-			// This is probably slow
-			bool[,] gapActive = new bool[128, 128];
+			// Clear active flags
+			gapActive = new bool[128, 128];
 			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<GeneratesGap>()))
 			{
 				foreach (var t in a.traits.Get<GeneratesGap>().GetShroudedTiles())
@@ -36,11 +39,17 @@ namespace OpenRa.Game
 			for (int j = 1; j < 127; j++)
 				for (int i = 1; i < 127; i++)
 				{
-					if (gapField[i, j] > 0 && !gapActive[i, j]) /*0 >= --gapField[i, j]*/
+					if (gapField[i, j] > 0 && !gapActive[i, j])
 					{
+						// Convert gap to shroud
+						if (gapField[i, j] >= gapOpaqueTicks && explored[i, j])
+							explored[i, j] = false;
+						
+						// Clear gap
 						gapField[i, j] = 0;
 						dirty = true;
 					}
+					// Increase gap tick; rerender if necessary
 					if (gapActive[i, j] && 0 == gapField[i, j]++)
 						dirty = true;
 				}
@@ -58,6 +67,15 @@ namespace OpenRa.Game
 			return explored[ x, y ];
 		}
 		
+		public bool DisplayOnRadar(int x, int y)
+		{
+			// Active gap is never shown on radar, even if a unit is in range
+			if (gapActive[x , y])
+				return false;
+			
+			return IsExplored(x,y);
+		}
+		
 		public void Explore(Actor a)
 		{
 			foreach (var t in Game.FindTilesInCircle((1f / Game.CellSize * a.CenterLocation).ToInt2(), a.Info.Sight))
@@ -67,6 +85,7 @@ namespace OpenRa.Game
 			}
 			dirty = true;
 		}
+
 
 		static readonly byte[] ShroudTiles = 
 		{
@@ -87,7 +106,7 @@ namespace OpenRa.Game
 			40, 37, 44, 34,
 			36, 33, 32, 47,
 		};
-
+		
 		Sprite ChooseShroud(int i, int j)
 		{
 			// bits are for exploredness: left, right, up, down, self
@@ -101,7 +120,7 @@ namespace OpenRa.Game
 			var x = ShroudTiles[v];
 			if (x != 0)
 				return shadowBits[x];
-
+			
 			// bits are for exploredness: TL, TR, BR, BL
 			var u = 0;
 			if (IsExplored(i - 1, j - 1)) u |= 1;

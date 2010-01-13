@@ -103,7 +103,7 @@ namespace OpenRa.Game.Graphics
 				{
 					for (var y = 0; y < 128; y++)
 						for (var x = 0; x < 128; x++)
-							if (!Game.LocalPlayer.Shroud.IsExplored(new int2(x, y)))
+							if (!Game.LocalPlayer.Shroud.DisplayOnRadar(x,y))
 								*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
 				}
 			}
