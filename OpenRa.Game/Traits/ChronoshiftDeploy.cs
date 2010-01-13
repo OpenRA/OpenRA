@@ -4,6 +4,11 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class ChronoshiftDeployInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ChronoshiftDeploy(self); }
+	}
+
 	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
 	{
 		// Recharge logic
@@ -35,7 +40,7 @@ namespace OpenRa.Game.Traits
 				return;
 			}
 
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location

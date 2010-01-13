@@ -3,12 +3,15 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class IronCurtainableInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new IronCurtainable(); }
+	}
+
 	class IronCurtainable : IResolveOrder, IDamageModifier, ITick
 	{
 		[Sync]
 		int RemainingTicks = 0;
-
-		public IronCurtainable(Actor self) { }
 
 		public void Tick(Actor self)
 		{

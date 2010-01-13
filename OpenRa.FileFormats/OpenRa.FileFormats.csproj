@@ -57,6 +57,7 @@
     <Compile Include="IniWriter.cs" />
     <Compile Include="IPaletteRemap.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MiniYaml.cs" />
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="Palette.cs" />

@@ -1,55 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Reflection;
+using IjwFramework.Collections;
 
 namespace OpenRa
 {
 	public class TypeDictionary
 	{
-		Dictionary<Type, object> inner = new Dictionary<Type, object>();
-
-		public void Add( Type t, object val )
-		{
-			inner.Add( t, val );
-		}
+		Cache<Type, List<object>> innerInherit = new Cache<Type, List<object>>( _ => new List<object>() );
 
 		public void Add( object val )
 		{
-			Add( val.GetType(), val );
-		}
+			var t = val.GetType();
 
-		public void Remove<T>()
-		{
-			inner.Remove( typeof( T ) );
+			foreach( var i in t.GetInterfaces() )
+				innerInherit[ i ].Add( val );
+			foreach( var tt in t.BaseTypes() )
+				innerInherit[ tt ].Add( val );
 		}
 
 		public bool Contains<T>()
 		{
-			return inner.ContainsKey( typeof( T ) );
+			return innerInherit[ typeof( T ) ].Count != 0;
 		}
 
 		public T Get<T>()
 		{
-			return (T)inner[ typeof( T ) ];
+			var l = innerInherit[ typeof( T ) ];
+			if( l.Count == 1 )
+				return (T)l[ 0 ];
+			else if( l.Count == 0 )
+				throw new InvalidOperationException( string.Format( "TypeDictionary does not contain instance of type `{0}`", typeof( T ) ) );
+			else
+				throw new InvalidOperationException( string.Format( "TypeDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
 		}
 
 		public T GetOrDefault<T>()
 		{
-			object o = null;
-			inner.TryGetValue(typeof(T), out o);
-			return (T)o;
+			var l = innerInherit[ typeof( T ) ];
+			if( l.Count == 1 )
+				return (T)l[ 0 ];
+			else if( l.Count == 0 )
+				return default( T );
+			else
+				throw new InvalidOperationException( string.Format( "TypeDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
 		}
 
 		public IEnumerable<T> WithInterface<T>()
 		{
-			foreach( var i in inner )
-				if( i.Value is T )
-					yield return (T)i.Value;
+			foreach( var i in innerInherit[ typeof( T ) ] )
+				yield return (T)i;
 		}
 
 		public IEnumerator<object> GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();
+		}
+	}
+
+	static class TypeExts
+	{
+		public static IEnumerable<Type> BaseTypes( this Type t )
+		{
+			while( t != null )
+			{
+				yield return t;
+				t = t.BaseType;
+			}
 		}
 	}
 }

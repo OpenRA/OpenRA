@@ -61,7 +61,7 @@ namespace OpenRa.Game
 			world = new World();
 			Game.world.ActorAdded += a => 
 			{ 
-				if (a.Owner != null && a.Info != null) 
+				if (a.Owner != null && a.Info != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
 
@@ -96,9 +96,7 @@ namespace OpenRa.Game
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Rules.Map.Trees)
-				world.Add(new Actor(Rules.UnitInfo[treeReference.Image],
-					new int2(treeReference.Location),
-					null));
+				world.Add(new Actor(treeReference.Image, new int2(treeReference.Location), null));
 			
 			LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
@@ -149,7 +147,7 @@ namespace OpenRa.Game
 				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(Rules.UnitInfo[parts[1].ToLowerInvariant()], new int2(loc % 128, loc / 128),
+				world.Add(new Actor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
 					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]));
 			}
 		}
@@ -247,7 +245,7 @@ namespace OpenRa.Game
 
 		public static bool IsActorCrushableByActor(Actor a, Actor b)
 		{
-			return IsActorCrushableByMovementType(a, b.traits.WithInterface<IMovement>().FirstOrDefault().GetMovementType());
+			return IsActorCrushableByMovementType(a, b.traits.GetOrDefault<IMovement>().GetMovementType());
 		}
 		
 		public static bool IsActorPathableToCrush(Actor a, UnitMovementType umt)
@@ -312,8 +310,8 @@ namespace OpenRa.Game
 		public static IEnumerable<Actor> SelectActorsInBox(float2 a, float2 b)
 		{
 			return FindUnits(a, b)
-				.Where( x => x.Info.Selectable )
-				.GroupBy(x => (x.Owner == LocalPlayer) ? x.Info.SelectionPriority : 0)
+				.Where( x => x.traits.Contains<Selectable>() )
+				.GroupBy(x => (x.Owner == LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )
@@ -323,15 +321,15 @@ namespace OpenRa.Game
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
 		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
 
-		public static bool CanPlaceBuilding(BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(string name, BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
-			return !Footprint.Tiles(building, xy, adjust).Any(
+			return !Footprint.Tiles(name, building, xy, adjust).Any(
 				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
 
-		public static bool IsCloseEnoughToBase(Player p, BuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(Player p, string buildingName, BuildingInfo bi, int2 position)
 		{
 			var maxDistance = bi.Adjacent + 1;
 
@@ -340,7 +338,7 @@ namespace OpenRa.Game
 				heuristic = loc =>
 				{
 					var b = Game.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p && (b.Info as BuildingInfo).BaseNormal) return 0;
+					if (b != null && b.Owner == p && b.Info.Traits.Get<BuildingInfo>().BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
 					return 1;
@@ -349,7 +347,7 @@ namespace OpenRa.Game
 				ignoreTerrain = true,
 			};
 
-			foreach (var t in Footprint.Tiles(bi, position)) search.AddInitialCell(t);
+			foreach (var t in Footprint.Tiles(buildingName, bi, position)) search.AddInitialCell(t);
 
 			return Game.PathFinder.FindPath(search).Count != 0;
 		}

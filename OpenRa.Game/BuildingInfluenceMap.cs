@@ -18,15 +18,15 @@ namespace OpenRa.Game
 					ChangeInfluence(a, a.traits.Get<Building>(), false); };
 		}
 
-		void ChangeInfluence(Actor a, Building building, bool isAdd)
+		void ChangeInfluence( Actor a, Building building, bool isAdd )
 		{
-			foreach (var u in Footprint.UnpathableTiles(building.unitInfo, a.Location))
-				if (IsValid(u))
-					blocked[u.X, u.Y] = isAdd;
+			foreach( var u in Footprint.UnpathableTiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
+				if( IsValid( u ) )
+					blocked[ u.X, u.Y ] = isAdd;
 
-			foreach (var u in Footprint.Tiles(building.unitInfo, a.Location, false))
-				if (IsValid(u))
-					influence[u.X, u.Y] = isAdd ? a : null;
+			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location, false ) )
+				if( IsValid( u ) )
+					influence[ u.X, u.Y ] = isAdd ? a : null;
 		}
 
 		bool IsValid(int2 t)

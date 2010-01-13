@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits.Activities
 		static Actor ChooseHelipad(Actor self)
 		{
 			return Game.world.Actors.FirstOrDefault(
-				a => a.Info == Rules.UnitInfo["HPAD"] &&
+				a => a.Info == Rules.NewUnitInfo["HPAD"] &&
 					a.Owner == self.Owner &&
 					!Reservable.IsReserved(a));
 		}
@@ -24,9 +24,11 @@ namespace OpenRa.Game.Traits.Activities
 			if (isCanceled) return NextActivity;
 			var dest = ChooseHelipad(self);
 
+			var initialFacing = self.Info.Traits.Get<UnitInfo>().InitialFacing;
+
 			if (dest == null)
 				return Util.SequenceActivities(
-					new Turn(self.Info.InitialFacing), 
+					new Turn(initialFacing), 
 					new HeliLand(true),
 					NextActivity);
 
@@ -34,12 +36,13 @@ namespace OpenRa.Game.Traits.Activities
 			if (res != null)
 				self.traits.Get<Helicopter>().reservation = res.Reserve(self);
 
-			var offset = (dest.Info as BuildingInfo).SpawnOffset;
+			var pi = dest.Info.Traits.GetOrDefault<ProductionInfo>();
+			var offset = pi != null ? pi.SpawnOffset : null;
 			var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterLocation + offsetVec),
-				new Turn(self.Info.InitialFacing),
+				new Turn(initialFacing),
 				new HeliLand(false),
 				new Rearm(),
 				NextActivity);

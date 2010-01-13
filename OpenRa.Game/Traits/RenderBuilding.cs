@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using OpenRa.Game.Graphics;
 using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderBuildingInfo : RenderSimpleInfo
+	{
+		public override object Create(Actor self) { return new RenderBuilding(self); }
+	}
+
 	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		const int SmallBibStart = 1;
@@ -30,7 +33,7 @@ namespace OpenRa.Game.Traits
 
 		void DoBib(Actor self, bool isRemove)
 		{
-			var buildingInfo = self.traits.Get<Building>().unitInfo;
+			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 			if (buildingInfo.Bib)
 			{
 				var size = buildingInfo.Dimensions.X;

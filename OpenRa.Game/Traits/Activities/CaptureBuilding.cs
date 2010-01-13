@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits.Activities
 
 			if (target.Owner == self.Owner)
 			{
-				if (target.Health == target.Info.Strength)
+				if (target.Health == target.Info.Traits.Get<OwnedActorInfo>().HP)
 					return NextActivity;
 				target.InflictDamage(self, -EngineerCapture.EngineerDamage, Rules.WarheadInfo["Super"]);
 			}

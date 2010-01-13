@@ -1,0 +1,162 @@
+STNK:
+	Inherits: DefaultVehicle
+	Unit:
+		HP: 200
+		Armor: heavy
+		Sight: 5
+		Speed: 10
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: APTusk
+		Recoil: 2
+	RenderUnitTurreted:
+	Cloak:
+
+TTNK:
+	Inherits: DefaultVehicle
+	Buildable:
+		TechLevel: 8
+		Tab: Vehicle
+		Prerequisites: tsla
+		Owner: soviet
+		Cost: 1500
+		Description: Tesla Tank
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 7
+		Speed: 8
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: TTankZap
+	RenderUnitSpinner:
+
+CTNK:
+	Inherits: DefaultVehicle
+	Buildable:
+		TechLevel: 12
+		Tab: Vehicle
+		Prerequisites: atek
+		Owner: allies
+		Cost: 2400
+		Description: Chrono Tank
+	Unit:
+		HP: 350
+		Armor: light
+		Sight: 5
+		Speed: 5
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: APTusk
+	RenderUnit:
+	ChronoshiftDeploy:
+
+DTRK:
+	Inherits: DefaultVehicle
+	Buildable:
+		TechLevel: 13
+		Tab: Vehicle
+		Prerequisites: mslo
+		Owner: allies,soviet
+		Cost: 2400
+		Description: Demo Truck
+	Unit:
+		HP: 110
+		Armor: light
+		Sight: 3
+		Speed: 8
+	AttackBase:
+		PrimaryWeapon: Democharge
+	RenderUnit:
+	DemoTruck:
+
+QTNK:
+	Inherits: DefaultVehicle
+	Buildable:
+		TechLevel: 10
+		Tab: Vehicle
+		Prerequisites: stek
+		Owner: soviet
+		Cost: 2300
+		Description: M.A.D. Tank
+	Unit:
+		HP: 300
+		Armor: heavy
+		Crewed: no
+		Sight: 6
+		Speed: 3
+	Mobile:
+		MovementType: Track
+	RenderUnit:
+
+MSUB:
+	Inherits: DefaultShip
+	Buildable:
+		TechLevel: 9
+		Tab: Ship
+		Prerequisites: stek
+		BuiltAt: spen
+		Owner: soviet
+		Cost: 1650
+		Description: Missile Submarine
+	Unit:
+		HP: 150
+		Armor: light
+		ROT: 7
+		Sight: 6
+		Speed: 5
+		WaterBound: yes
+	AttackBase:
+		PrimaryWeapon: SubSCUD
+		FireDelay: 2
+	RenderUnit:
+	Submarine:
+	Chronoshiftable:
+
+SHOK:
+	Inherits: DefaultInfantry
+	Buildable:
+		TechLevel: 7
+		Tab: Infantry
+		Prerequisites: tsla
+		Owner: soviet
+		Cost: 900
+		Description: Tesla Trooper
+	Selectable:
+		Voice: ShokVoice
+	Unit:
+		HP: 80
+		Speed: 3
+	AttackBase:
+		PrimaryWeapon: PortaTesla
+	TakeCover:
+
+MECH:
+	Inherits: DefaultInfantry
+	Buildable:
+		TechLevel: 7
+		Tab: Infantry
+		Prerequisites: fix
+		Owner: allies
+		Cost: 950
+		Description: Mechanic
+		LongDesc: Heals nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Voice: MechVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 60
+		Sight: 3
+		Speed: 4
+	AutoHeal:
+	AttackBase:
+		PrimaryWeapon: GoodWrench
+	TakeCover:
+	SquishByTank:
+

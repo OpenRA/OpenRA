@@ -1,6 +1,11 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
+	class TakeCoverInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new TakeCover(self); }
+	}
+
 	// infantry prone behavior
 	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
 	{

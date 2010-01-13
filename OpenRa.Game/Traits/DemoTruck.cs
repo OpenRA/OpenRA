@@ -6,19 +6,19 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class DemoTruckInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new DemoTruck(self); }
+	}
+
 	class DemoTruck : Chronoshiftable, IResolveOrder, INotifyDamage
 	{
-		readonly Actor self;
-		public DemoTruck(Actor self)
-			: base(self)
-		{
-			this.self = self;
-		}
+		public DemoTruck(Actor self) : base(self) {}
 
 		public new void ResolveOrder(Actor self, Order order)
 		{
 			// Override chronoshifting action to detonate vehicle
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
@@ -44,7 +44,7 @@ namespace OpenRa.Game.Traits
 			int2 detonateLocation = self.CenterLocation.ToInt2();
 			
 			Game.world.AddFrameEndTask(
-				w => w.Add(new Bullet(self.Info.Primary, detonatedBy.Owner, detonatedBy,
+				w => w.Add( new Bullet( self.Info.Traits.Get<AttackBaseInfo>().PrimaryWeapon, detonatedBy.Owner, detonatedBy,
 					detonateLocation, detonateLocation,	altitude, altitude)));
 		}
 	}

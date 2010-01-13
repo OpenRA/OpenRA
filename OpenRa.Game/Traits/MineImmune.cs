@@ -1,8 +1,6 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
-	class MineImmune
-	{
-		public MineImmune(Actor self) { }
-	}
+	class MineImmuneInfo : StatelessTraitInfo<MineImmune> { }
+	class MineImmune { }
 }

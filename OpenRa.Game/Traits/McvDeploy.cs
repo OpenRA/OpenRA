@@ -3,6 +3,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class McvDeployInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new McvDeploy(self); }
+	}
+
 	class McvDeploy : IIssueOrder, IResolveOrder
 	{
 		public McvDeploy(Actor self) { }
@@ -19,8 +24,8 @@ namespace OpenRa.Game.Traits
 		{
 			if( order.OrderString == "DeployMcv" )
 			{
-				var factBuildingInfo = (BuildingInfo)Rules.UnitInfo[ "fact" ];
-				if( Game.CanPlaceBuilding( factBuildingInfo, self.Location - new int2( 1, 1 ), self, false ) )
+				var factBuildingInfo = Rules.NewUnitInfo[ "fact" ].Traits.Get<BuildingInfo>();
+				if( Game.CanPlaceBuilding( "fact", factBuildingInfo, self.Location - new int2( 1, 1 ), self, false ) )
 				{
 					self.CancelActivity();
 					self.QueueActivity( new Turn( 96 ) );

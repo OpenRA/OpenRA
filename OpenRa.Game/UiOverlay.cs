@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -42,12 +43,12 @@ namespace OpenRa.Game
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
 		}
 
-		public void DrawBuildingGrid( BuildingInfo bi )
+		public void DrawBuildingGrid( string name, BuildingInfo bi )
 		{
 			var position = Game.controller.MousePosition.ToInt2();
-			var isCloseEnough = Game.IsCloseEnoughToBase(Game.LocalPlayer, bi, position);
+			var isCloseEnough = Game.IsCloseEnoughToBase(Game.LocalPlayer, name, bi, position);
 
-			foreach( var t in Footprint.Tiles( bi, position ) )
+			foreach( var t in Footprint.Tiles( name, bi, position ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && Game.IsCellBuildable( t, bi.WaterBound
 					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Rules.Map.ContainsResource( t ) )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );

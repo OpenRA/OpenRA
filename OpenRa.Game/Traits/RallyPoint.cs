@@ -4,6 +4,13 @@ using OpenRa.Game.Orders;
 
 namespace OpenRa.Game.Traits
 {
+	class RallyPointInfo : ITraitInfo
+	{
+		public readonly int[] RallyPoint = { 1, 3 };
+
+		public object Create(Actor self) { return new RallyPoint(self); }
+	}
+
 	class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync]
@@ -12,8 +19,8 @@ namespace OpenRa.Game.Traits
 
 		public RallyPoint(Actor self)
 		{
-			var bi = self.traits.Get<Building>().unitInfo;
-			rallyPoint = self.Location + new int2(bi.RallyPoint[0], bi.RallyPoint[1]);
+			var info = self.Info.Traits.Get<RallyPointInfo>();
+			rallyPoint = self.Location + new int2(info.RallyPoint[0], info.RallyPoint[1]);
 			anim = new Animation("flagfly");
 			anim.PlayRepeating("idle");
 		}

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Effects;
+﻿using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderInfantryInfo : RenderSimpleInfo
+	{
+		public override object Create(Actor self) { return new RenderInfantry(self); }
+	}
+
 	class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)

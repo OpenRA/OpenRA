@@ -5,6 +5,11 @@ using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitInfo : RenderSimpleInfo
+	{
+		public override object Create(Actor self) { return new RenderUnit(self); }
+	}
+
 	class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)

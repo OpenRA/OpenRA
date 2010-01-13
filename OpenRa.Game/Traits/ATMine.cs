@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRa.Game.GameRules;
+﻿using System.Collections.Generic;
 using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class ATMineInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ATMine(self); }
+	}
+
 	class ATMine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;

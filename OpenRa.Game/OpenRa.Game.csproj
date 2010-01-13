@@ -94,7 +94,9 @@
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\AftermathInfo.cs" />
+    <Compile Include="GameRules\ArmorType.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
+    <Compile Include="GameRules\NewUnitInfo.cs" />
     <Compile Include="GameRules\SupportPowerInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\UserSettings.cs" />
@@ -156,7 +158,6 @@
     <Compile Include="GameRules\InfoLoader.cs" />
     <Compile Include="GameRules\ProjectileInfo.cs" />
     <Compile Include="GameRules\Rules.cs" />
-    <Compile Include="GameRules\UnitInfo.cs" />
     <Compile Include="GameRules\WarheadInfo.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BelowUnits.cs" />
+    <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Cargo.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
+    <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
@@ -271,7 +274,6 @@
     <Compile Include="Traits\TakeCover.cs" />
     <Compile Include="Traits\Thief.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
-    <Compile Include="Traits\Tree.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
     <Compile Include="Traits\WaterPaletteRotation.cs" />

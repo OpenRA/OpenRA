@@ -39,7 +39,8 @@ namespace OpenRa.Game.Traits.Activities
 			}
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, 
+				self.Info.Traits.Get<UnitInfo>().ROT);
 
 			var rawSpeed = .2f * Util.GetEffectiveSpeed(self);
 			self.CenterLocation += (rawSpeed / dist.Length) * dist;

@@ -6,6 +6,21 @@ using OpenRa.Game.Effects;
 
 namespace OpenRa.Game.Traits
 {
+	class AttackBaseInfo : ITraitInfo
+	{
+		public readonly string PrimaryWeapon = null;
+		public readonly string SecondaryWeapon = null;
+		public readonly int Recoil = 0;
+		public readonly int[] PrimaryLocalOffset = { };
+		public readonly int[] SecondaryLocalOffset = { };
+		public readonly int[] PrimaryOffset = { 0, 0 };
+		public readonly int[] SecondaryOffset = null;
+		public readonly bool MuzzleFlash = false;
+		public readonly int FireDelay = 0;
+
+		public virtual object Create(Actor self) { return new AttackBase(self); }
+	}
+
 	class AttackBase : IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync] public Actor target;
@@ -23,8 +38,8 @@ namespace OpenRa.Game.Traits
 
 		public AttackBase(Actor self)
 		{
-			var primaryWeapon = self.Info.Primary != null ? Rules.WeaponInfo[self.Info.Primary] : null;
-			var secondaryWeapon = self.Info.Secondary != null ? Rules.WeaponInfo[self.Info.Secondary] : null;
+			var primaryWeapon = self.GetPrimaryWeapon();
+			var secondaryWeapon = self.GetSecondaryWeapon();
 
 			primaryBurst = primaryWeapon != null ? primaryWeapon.Burst : 1;
 			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
@@ -73,19 +88,20 @@ namespace OpenRa.Game.Traits
 		public void DoAttack(Actor self)
 		{
 			var unit = self.traits.GetOrDefault<Unit>();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			if (self.Info.Primary != null && CheckFire(self, unit, self.Info.Primary, ref primaryFireDelay,
-				self.Info.PrimaryOffset, ref primaryBurst, self.Info.PrimaryLocalOffset))
+			if (info.PrimaryWeapon != null && CheckFire(self, unit, info.PrimaryWeapon, ref primaryFireDelay,
+				info.PrimaryOffset, ref primaryBurst, info.PrimaryLocalOffset))
 			{
 				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
 				return;
 			}
 
-			if (self.Info.Secondary != null && CheckFire(self, unit, self.Info.Secondary, ref secondaryFireDelay,
-				self.Info.SecondaryOffset ?? self.Info.PrimaryOffset, ref secondaryBurst, self.Info.SecondaryLocalOffset))
+			if (info.SecondaryWeapon != null && CheckFire(self, unit, info.SecondaryWeapon, ref secondaryFireDelay,
+				info.SecondaryOffset ?? info.PrimaryOffset, ref secondaryBurst, info.SecondaryLocalOffset))
 			{
-				if (self.Info.SecondaryOffset != null) secondaryRecoil = 1;
+				if (info.SecondaryOffset != null) secondaryRecoil = 1;
 				else primaryRecoil = 1;
 				return;
 			}
@@ -126,8 +142,9 @@ namespace OpenRa.Game.Traits
 			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2();
 			var thisTarget = target;	// closure.
 			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			ScheduleDelayedAction(self.Info.FireDelay, () =>
+			ScheduleDelayedAction(info.FireDelay, () =>
 			{
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
@@ -140,11 +157,11 @@ namespace OpenRa.Game.Traits
 					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
 						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : unit.Facing);
 	
-					Game.world.Add(new Missile(weaponName, self.Owner, self,
+					Game.world.Add(new Missile(weapon, self.Owner, self,
 						firePos, thisTarget, srcAltitude, fireFacing));
 				}
 				else
-					Game.world.Add(new Bullet(weaponName, self.Owner, self,
+					Game.world.Add(new Bullet(weapon, self.Owner, self,
 						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
 
 				if (!string.IsNullOrEmpty(weapon.Report))
@@ -161,10 +178,13 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button == MouseButton.Left || underCursor == null) return null;
 			if (self == underCursor) return null;
-			var isHeal = Rules.WeaponInfo[self.Info.Primary].Damage < 0;
+
+			var isHeal = self.GetPrimaryWeapon().Damage < 0;
 			if (((underCursor.Owner == self.Owner) ^ isHeal) 
 				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
+
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
+
 			return new Order(isHeal ? "Heal" : "Attack", self, underCursor, int2.Zero, null);
 		}
 
@@ -186,10 +206,10 @@ namespace OpenRa.Game.Traits
 		{
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.Info.Primary ?? order.Subject.Info.Secondary;
+			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
 
 			self.QueueActivity(new Activities.Attack(order.TargetActor,
-					Math.Max(0, (int)Rules.WeaponInfo[weapon].Range - RangeTolerance)));
+					Math.Max(0, (int)weapon.Range - RangeTolerance)));
 		}
 	}
 }

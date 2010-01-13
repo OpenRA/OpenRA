@@ -1,19 +1,24 @@
-﻿using OpenRa.Game.Traits.Activities;
-using System;
+﻿using System;
+using System.Linq;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class HelicopterInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Helicopter(self); }
+	}
+
 	class Helicopter : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}
 
-		// todo: push into data!
 		static bool HeliCanEnter(Actor a)
 		{
-			if (a.Info == Rules.UnitInfo["HPAD"]) return true;
-			if (a.Info == Rules.UnitInfo["FIX"]) return true;
+			if (a.Info.Name == "hpad") return true;
+			if (a.Info.Name == "fix") return true;
 			return false;
 		}
 
@@ -44,7 +49,7 @@ namespace OpenRa.Game.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity(new Turn(self.Info.InitialFacing));
+				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
 				self.QueueActivity(new HeliLand(true));
 			}
 
@@ -55,14 +60,15 @@ namespace OpenRa.Game.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var offset = (order.TargetActor.Info as BuildingInfo).SpawnOffset;
+				var productionInfo = order.TargetActor.Info.Traits.Get<ProductionInfo>();
+				var offset = productionInfo.SpawnOffset;
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
-				self.QueueActivity(new Turn(self.Info.InitialFacing));
+				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
 				self.QueueActivity(new HeliLand(false));
-				self.QueueActivity(order.TargetActor.Info == Rules.UnitInfo["HPAD"]
+				self.QueueActivity(order.TargetActor.Info.Name == "hpad"
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}

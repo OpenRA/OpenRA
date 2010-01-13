@@ -13,8 +13,9 @@ namespace OpenRa.Game.Traits.Activities
 
 		void DoSell(Actor self)
 		{
-			var refund = Rules.General.RefundPercent 
-				* self.Health * self.Info.Cost / self.Info.Strength;
+			var cost = self.Info.Traits.Get<BuildableInfo>().Cost;
+			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
+			var refund = Rules.General.RefundPercent * self.Health * cost / hp;
 
 			self.Owner.GiveCash((int)refund);
 			self.Health = 0;
@@ -29,7 +30,7 @@ namespace OpenRa.Game.Traits.Activities
 		{
 			if (!started)
 			{
-				var rb = self.traits.WithInterface<RenderBuilding>().First();
+				var rb = self.traits.Get<RenderBuilding>();
 				//var rb = self.traits.Get<RenderBuilding>();
 				rb.PlayCustomAnimBackwards(self, "make",
 					() => Game.world.AddFrameEndTask(w => DoSell(self)));

@@ -1,10 +1,10 @@
 ﻿
 namespace OpenRa.Game.Traits
 {
+	class SeedsOreInfo : StatelessTraitInfo<SeedsOre> {}
+
 	class SeedsOre : ITick
 	{
-		public SeedsOre( Actor self ) {}
-
 		const double OreSeedProbability = .05;	// todo: push this out into rules
 
 		public void Tick(Actor self)

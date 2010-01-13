@@ -1,9 +1,17 @@
-﻿using OpenRa.Game.GameRules;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using OpenRa.Game.GameRules;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionInfo : ITraitInfo
+	{
+		public readonly int[] SpawnOffset = null;
+		public readonly string[] Produces = { };
+
+		public object Create(Actor self) { return new Production(self); }
+	}
+
 	class Production : IIssueOrder, IResolveOrder, IProducer, ITags
 	{
 		bool isPrimary = false;
@@ -11,23 +19,23 @@ namespace OpenRa.Game.Traits
 		
 		public Production( Actor self ) { }
 
-		public virtual int2? CreationLocation( Actor self, UnitInfo producee )
+		public virtual int2? CreationLocation( Actor self, NewUnitInfo producee )
 		{
 			return ( 1 / 24f * self.CenterLocation ).ToInt2();
 		}
 
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.Info.InitialFacing;
+			return newUnit.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing;
 		}
 
-		public bool Produce( Actor self, UnitInfo producee )
+		public bool Produce( Actor self, NewUnitInfo producee )
 		{
 			var location = CreationLocation( self, producee );
 			if( location == null || Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )
 				return false;
 
-			var newUnit = new Actor( producee, location.Value, self.Owner );
+			var newUnit = new Actor( producee.Name, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
 			var rp = self.traits.GetOrDefault<RallyPoint>();
@@ -38,10 +46,10 @@ namespace OpenRa.Game.Traits
 					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
 			}
 
-			var bi = self.Info as BuildingInfo;
-			if (bi != null && bi.SpawnOffset != null)
+			var pi = self.Info.Traits.Get<ProductionInfo>();
+			if (pi != null && pi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
-					+ new float2(bi.SpawnOffset[0], bi.SpawnOffset[1]);
+					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
 
 			Game.world.Add( newUnit );
 
@@ -78,12 +86,12 @@ namespace OpenRa.Game.Traits
 			}
 			
 			// Cancel existing primaries
-			foreach (var p in (self.Info as BuildingInfo).Produces)
+			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 			{
 				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true
-					&& (x.Info as BuildingInfo).Produces.Contains(p)))
+					&& (x.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
 				{
 					b.traits.Get<Production>().SetPrimaryProducer(b, false);
 				}

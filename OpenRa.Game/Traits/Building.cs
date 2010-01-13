@@ -9,35 +9,63 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	class OwnedActorInfo
+	{
+		public readonly int HP = 0;
+		public readonly ArmorType Armor = ArmorType.none;
+		public readonly bool Crewed = false;		// replace with trait?
+		public readonly int Sight = 0;
+		public readonly bool WaterBound = false;
+	}
+
+	class BuildingInfo : OwnedActorInfo, ITraitInfo
+	{
+		public readonly int Power = 0;
+		public readonly bool RequiresPower = false;
+		public readonly bool BaseNormal = true;
+		public readonly int Adjacent = 1;
+		public readonly bool Bib = false;
+		public readonly bool Capturable = false;
+		public readonly bool Repairable = true;
+		public readonly string Footprint = "x";
+		public readonly string[] Produces = { };		// does this go somewhere else?
+		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly bool Unsellable = false;
+
+		public object Create(Actor self) { return new Building(self); }
+	}
+
 	class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
-		public readonly BuildingInfo unitInfo;
+		public readonly BuildingInfo Info;
 		[Sync]
 		bool isRepairing = false;
 		[Sync]
 		bool manuallyDisabled = false;
 		public bool ManuallyDisabled { get { return manuallyDisabled; } }
-		public bool Disabled { get { return (manuallyDisabled || (unitInfo.Powered && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		public bool Disabled { get { return (manuallyDisabled || (Info.RequiresPower && self.Owner.GetPowerState() != PowerState.Normal)); } }
 		bool wasDisabled = false;
 		
 		public Building(Actor self)
 		{
 			this.self = self;
-			unitInfo = (BuildingInfo)self.Info;
+			Info = self.Info.Traits.Get<BuildingInfo>();
 			self.CenterLocation = Game.CellSize 
-				* ((float2)self.Location + .5f * (float2)unitInfo.Dimensions);
+				* ((float2)self.Location + .5f * (float2)Info.Dimensions);
 		}
 		
 		public int GetPowerUsage()
 		{
 			if (manuallyDisabled)
 				return 0;
-			
-			if (unitInfo.Power > 0)		/* todo: is this how real-ra scales it? */
-				return (self.Health * unitInfo.Power) / unitInfo.Strength;
+
+			var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
+
+			if (Info.Power > 0)
+				return (self.Health * Info.Power) / maxHP;
 			else
-				return unitInfo.Power;
+				return Info.Power;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -79,8 +107,9 @@ namespace OpenRa.Game.Traits
 
 			if (remainingTicks == 0)
 			{
-				var costPerHp = (Rules.General.URepairPercent * self.Info.Cost) / self.Info.Strength;
-				var hpToRepair = Math.Min(Rules.General.URepairStep, self.Info.Strength - self.Health);
+				var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
+				var costPerHp = (Rules.General.URepairPercent * self.Info.Traits.Get<BuildableInfo>().Cost) / maxHP;
+				var hpToRepair = Math.Min(Rules.General.URepairStep, maxHP - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -90,7 +119,7 @@ namespace OpenRa.Game.Traits
 
 				Game.world.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
-				if (self.Health == self.Info.Strength)
+				if (self.Health == maxHP)
 				{
 					isRepairing = false;
 					return;

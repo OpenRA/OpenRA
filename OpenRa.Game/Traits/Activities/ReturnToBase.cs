@@ -19,7 +19,7 @@ namespace OpenRa.Game.Traits.Activities
 		Actor ChooseAirfield(Actor self)
 		{
 			var airfield = Game.world.Actors
-				.Where(a => a.Info == Rules.UnitInfo["AFLD"]			/* todo: generalize this */
+				.Where(a => a.Info.Name == "afld"
 					&& a.Owner == self.Owner
 					&& !Reservable.IsReserved(a))
 				.FirstOrDefault();
@@ -41,7 +41,7 @@ namespace OpenRa.Game.Traits.Activities
 			var unit = self.traits.Get<Unit>();
 			var speed = .2f * Util.GetEffectiveSpeed(self);
 			var approachStart = landPos - new float2(unit.Altitude * speed, 0);
-			var turnRadius = (128f / self.Info.ROT) * speed / (float)Math.PI;
+			var turnRadius = (128f / self.Info.Traits.Get<UnitInfo>().ROT) * speed / (float)Math.PI;
 
 			/* work out the center points */
 			var fwd = -float2.FromAngle(unit.Facing / 128f * (float)Math.PI);

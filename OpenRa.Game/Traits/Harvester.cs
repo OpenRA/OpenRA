@@ -3,6 +3,11 @@ using OpenRa.Game.Traits.Activities;
 
 namespace OpenRa.Game.Traits
 {
+	class HarvesterInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Harvester(); }
+	}
+
 	class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
 		[Sync]
@@ -12,8 +17,6 @@ namespace OpenRa.Game.Traits
 
 		public bool IsFull { get { return oreCarried + gemsCarried == Rules.General.BailCount; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
-
-		public Harvester(Actor self) { }
 
 		public void AcceptResource(bool isGem)
 		{

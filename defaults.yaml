@@ -1,0 +1,37 @@
+DefaultVehicle:
+	Unit:
+		ROT: 5
+	Mobile:
+		MovementType: Wheel
+	Selectable: 
+		Voice: VehicleVoice
+	Repairable: 
+	Chronoshiftable: 
+	Passenger: 
+	IronCurtainable: 
+
+DefaultInfantry:
+	Unit:
+		Armor: none
+		Sight: 4
+	Mobile:
+		MovementType: Foot
+	Selectable:
+	RenderInfantry:
+	Passenger:
+
+DefaultShip:
+	Unit:
+	Mobile:
+		MovementType: Float
+	Selectable:
+
+DefaultPlane:
+	Unit:
+	Selectable:
+
+DefaultBuilding:
+	Selectable:
+		Priority: 3
+	Building:
+

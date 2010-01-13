@@ -2,6 +2,14 @@
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitRotorInfo : RenderUnitInfo
+	{
+		public readonly int[] PrimaryOffset = { 0, 0 };
+		public readonly int[] SecondaryOffset = null;
+
+		public override object Create(Actor self) { return new RenderUnitRotor(self); }
+	}
+
 	class RenderUnitRotor : RenderUnit
 	{
 		public Animation rotorAnim, secondRotorAnim;
@@ -10,21 +18,22 @@ namespace OpenRa.Game.Traits
 			: base(self)
 		{
 			var unit = self.traits.Get<Unit>();
+			var info = self.Info.Traits.Get<RenderUnitRotorInfo>();
 
-			rotorAnim = new Animation(self.Info.Name);
+			rotorAnim = new Animation(GetImage(self));
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
-				() => Util.GetTurretPosition( self, unit, self.Info.RotorOffset, 0 ),
+				() => Util.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
 				null ) );
 
-			if (self.Info.RotorOffset2 == null) return;
+			if (info.SecondaryOffset == null) return;
 
-			secondRotorAnim = new Animation( self.Info.Name );
+			secondRotorAnim = new Animation(GetImage(self));
 			secondRotorAnim.PlayRepeating( "rotor2" );
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
-				() => Util.GetTurretPosition(self, unit, self.Info.RotorOffset2, 0),
+				() => Util.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
 				null ) );
 		}
 

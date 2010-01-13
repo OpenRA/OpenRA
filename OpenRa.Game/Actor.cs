@@ -12,8 +12,7 @@ namespace OpenRa.Game
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly UnitInfo Info;
-
+		public readonly NewUnitInfo Info;
 		public readonly uint ActorID;
 		[Sync]
 		public int2 Location;
@@ -23,33 +22,21 @@ namespace OpenRa.Game
 		public int Health;
 		IActivity currentActivity;
 
-		object ConstructTrait(string traitName)
-		{
-			/* todo: allow mods to introduce traits */
-			var type = typeof(Mobile).Assembly.GetType(typeof(Mobile).Namespace + "." + traitName, true, false);
-			var ctor = type.GetConstructor(new[] { typeof(Actor) });
-			if (ctor == null)
-				throw new InvalidOperationException("Trait {0} does not have the correct constructor: {0}(Actor self)".F(type.Name));
-			return ctor.Invoke(new object[] { this });
-		}
-
-		public Actor( ActorInfo info, int2 location, Player owner )
+		public Actor( string name, int2 location, Player owner )
 		{
 			ActorID = Game.world.NextAID();
-			Info = (UnitInfo)info; // temporary
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
-			if (Info == null) return;
+			if (name != null)
+			{
+				Info = Rules.NewUnitInfo[name.ToLowerInvariant()];
+				Health = this.GetMaxHP();
 
-			Health = Info.Strength;	/* todo: fix walls, etc so this is always true! */
-
-			if( Info.Traits == null )
-				throw new InvalidOperationException( "No Actor traits for {0}; add Traits= to units.ini for appropriate unit".F(Info.Name) );
-
-			foreach (var traitName in Info.Traits)
-				traits.Add(ConstructTrait(traitName));
+				foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
+					traits.Add(trait.Create(this));
+			}
 		}
 
 		public void Tick()
@@ -71,12 +58,13 @@ namespace OpenRa.Game
 		}
 
 		public float2 CenterLocation;
-		public float2 SelectedSize
+		float2 SelectedSize
 		{
-			get
+			get			// todo: inline into GetBounds
 			{
-				if (Info != null && Info.SelectionSize != null)
-					return new float2(Info.SelectionSize[0], Info.SelectionSize[1]);
+				var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+				if (si != null && si.Bounds != null)
+					return new float2(si.Bounds[0], si.Bounds[1]);
 
 				var firstSprite = Render().FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
@@ -102,7 +90,7 @@ namespace OpenRa.Game
 			var loc = mi.Location + Game.viewport.Location;
 			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
 
-			if (underCursor != null && !underCursor.Info.Selectable)
+			if (underCursor != null && !underCursor.traits.Contains<Selectable>())
 				underCursor = null;
 
 			return traits.WithInterface<IIssueOrder>()
@@ -112,10 +100,13 @@ namespace OpenRa.Game
 
 		public RectangleF GetBounds(bool useAltitude)
 		{
+			var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+
 			var size = SelectedSize;
 			var loc = CenterLocation - 0.5f * size;
-			if (Info != null && Info.SelectionSize != null && Info.SelectionSize.Length > 2)
-				loc += new float2(Info.SelectionSize[2], Info.SelectionSize[3]);
+			
+			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
+				loc += new float2(si.Bounds[2], si.Bounds[3]);
 
 			if (useAltitude)
 			{
@@ -132,7 +123,7 @@ namespace OpenRa.Game
 		public DamageState GetDamageState()
 		{
 			if (Health <= 0) return DamageState.Dead;
-			var halfStrength = Info.Strength * Rules.General.ConditionYellow;
+			var halfStrength = this.GetMaxHP() * Rules.General.ConditionYellow;
 			return Health < halfStrength ? DamageState.Half : DamageState.Normal;
 		}
 
@@ -155,8 +146,10 @@ namespace OpenRa.Game
 
 				Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
-			if (Health > Info.Strength)
-				Health = Info.Strength;
+
+			var maxHP = this.GetMaxHP();
+
+			if (Health > maxHP)	Health = maxHP;
 
 			var newState = GetDamageState();
 

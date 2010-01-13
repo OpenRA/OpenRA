@@ -6,6 +6,11 @@ using IjwFramework.Collections;
 
 namespace OpenRa.Game.Traits
 {
+	class ProductionQueueInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new ProductionQueue(self); }
+	}
+
 	class ProductionQueue : IResolveOrder, ITick
 	{
 		Actor self;
@@ -29,7 +34,7 @@ namespace OpenRa.Game.Traits
 			case "StartProduction":
 				{
 					string group = Rules.UnitCategory[ order.TargetString ];
-					var ui = Rules.UnitInfo[ order.TargetString ];
+					var ui = Rules.NewUnitInfo[ order.TargetString ].Traits.Get<BuildableInfo>();
 					var time = ui.Cost
 						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
 						 * ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
@@ -121,7 +126,7 @@ namespace OpenRa.Game.Traits
 
 		public void BuildUnit( string name )
 		{
-			var newUnitType = Rules.UnitInfo[ name ];
+			var newUnitType = Rules.NewUnitInfo[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
 			Actor producer = null;
 			

@@ -20,10 +20,10 @@ namespace OpenRa.Game.Effects
 		int t;
 		int Altitude;
 
-		public Missile(string weapon, Player owner, Actor firedBy,
+		public Missile(WeaponInfo weapon, Player owner, Actor firedBy,
 			int2 src, Actor target, int altitude, int facing)
 		{
-			Weapon = Rules.WeaponInfo[weapon];
+			Weapon = weapon;
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
 			FiredBy = firedBy;

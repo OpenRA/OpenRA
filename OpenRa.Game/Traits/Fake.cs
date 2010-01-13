@@ -2,13 +2,10 @@
 
 namespace OpenRa.Game.Traits
 {
+	class FakeInfo : StatelessTraitInfo<Fake> { }
+
 	class Fake : ITags
 	{
-		public Fake(Actor self){}
-		
-		public IEnumerable<TagType> GetTags()
-		{
-			yield return TagType.Fake;
-		}
+		public IEnumerable<TagType> GetTags() {	yield return TagType.Fake; }
 	}
 }

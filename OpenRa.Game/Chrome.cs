@@ -112,10 +112,10 @@ namespace OpenRa.Game
 			
 			tabSprites = groups
 				.SelectMany(g => Rules.Categories[g])
-				.Where(u => Rules.UnitInfo[u].TechLevel != -1)
+				.Where(u => Rules.NewUnitInfo[u].Traits.Contains<BuildableInfo>())
 				.ToDictionary(
 					u => u,
-					u => SpriteSheetBuilder.LoadAllSprites(Rules.UnitInfo[u].Icon ?? (u + "icon"))[0]);
+					u => SpriteSheetBuilder.LoadAllSprites(Rules.NewUnitInfo[u].Traits.Get<BuildableInfo>().Icon ?? (u + "icon"))[0]);
 
 			spsprites = Rules.SupportPowerInfo
 				.ToDictionary(
@@ -216,7 +216,7 @@ namespace OpenRa.Game
 		{
 			var hasNewRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
-				&& a.traits.Get<ProvidesRadar>().IsActive());
+				&& a.traits.Get<ProvidesRadar>().IsActive(a));
 			
 			if (hasNewRadar != hasRadar)
 			{
@@ -529,8 +529,9 @@ namespace OpenRa.Game
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
 
 			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
-				.Where(a => Rules.UnitInfo[a].TechLevel != -1)
-				.OrderBy(a => Rules.UnitInfo[a].TechLevel);
+				.Where(a => Rules.NewUnitInfo[a].Traits.Contains<BuildableInfo>())
+				.Where(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner.Contains(Game.LocalPlayer.Race))
+				.OrderBy(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
@@ -729,14 +730,15 @@ namespace OpenRa.Game
 			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
-			var info = Rules.UnitInfo[unit];
+			var info = Rules.NewUnitInfo[unit];
+			var buildable = info.Traits.Get<BuildableInfo>();
 
-			renderer.DrawText2(info.Description, p.ToInt2() + new int2(5,5), Color.White);
+			renderer.DrawText2(buildable.Description, p.ToInt2() + new int2(5,5), Color.White);
 
-			DrawRightAligned( "${0}".F(info.Cost), pos + new int2(-5,5), 
-				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= info.Cost ? Color.White : Color.Red);
+			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
+				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
 
-			var bi = info as BuildingInfo;
+			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
 					Game.LocalPlayer.PowerProvided - Game.LocalPlayer.PowerDrained + bi.Power >= 0
@@ -747,19 +749,25 @@ namespace OpenRa.Game
 			p += new int2(0, 15);
 			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
 			{
-				var prereqs = info.Prerequisite
-					.Select(a => Rules.UnitInfo[a.ToLowerInvariant()])
-					.Where( u => u.Owner.Any( o => o == Game.LocalPlayer.Race ) )
-					.Select( a => a.Description );
+				var prereqs = buildable.Prerequisites
+					.Select( a => Description( a ) );
 				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}
 
-			if (info.LongDesc != null)
+			if (buildable.LongDesc != null)
 			{
 				p += new int2(0, 15);
-				renderer.DrawText(info.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+				renderer.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
 			}
+		}
+
+		private static string Description( string a )
+		{
+			if( a[ 0 ] == '@' )
+				return "any " + a.Substring( 1 );
+			else
+				return Rules.NewUnitInfo[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
 		}
 
 		void DrawSupportPowers()

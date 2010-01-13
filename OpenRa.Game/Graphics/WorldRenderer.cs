@@ -169,7 +169,7 @@ namespace OpenRa.Game.Graphics
 			lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 			lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
-			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Strength;
+			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Traits.Get<OwnedActorInfo>().HP;
 			var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
 				: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
 				: Color.LimeGreen;
@@ -220,7 +220,7 @@ namespace OpenRa.Game.Graphics
 					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, PaletteType.Chrome);
 					pipxyOffset += new float2(4, 0);
 					
-					if (pipxyOffset.X+5 > selectedUnit.SelectedSize.X)
+					if (pipxyOffset.X+5 > selectedUnit.GetBounds(false).Width)
 					{
 						pipxyOffset.X = 0;
 						pipxyOffset.Y -= 4;

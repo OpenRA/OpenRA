@@ -25,9 +25,9 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<Building>()
-						&& a.Info.Selectable).FirstOrDefault();
+						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
+				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
 
 				if (building != null && !building.Unsellable)
 					yield return new Order("Sell", underCursor, null, int2.Zero, null);

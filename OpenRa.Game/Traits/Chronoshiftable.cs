@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace OpenRa.Game.Traits
 {
+	class ChronoshiftableInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new Chronoshiftable(self); }
+	}
+
 	class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic
@@ -40,7 +45,7 @@ namespace OpenRa.Game.Traits
 				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(self, power);
 			}
 
-			var movement = self.traits.WithInterface<IMovement>().FirstOrDefault();
+			var movement = self.traits.GetOrDefault<IMovement>();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
 				// Cannot chronoshift into unexplored location

@@ -25,11 +25,9 @@ namespace OpenRa.Game.Orders
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<Building>()
-						&& a.Info.Selectable).FirstOrDefault();
+						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.Info as BuildingInfo : null;
-
-				if (building != null)
+				if (underCursor != null)
 					yield return new Order("PowerDown", underCursor, null, int2.Zero, null);
 			}
 		}

@@ -82,14 +82,14 @@ namespace OpenRa.Game.Traits
 
 		static float2 GetRecoil(Actor self, float recoil)
 		{
-			if (self.Info.Recoil == 0) return float2.Zero;
-			var rut = self.traits.WithInterface<RenderUnitTurreted>().FirstOrDefault();
+			if (self.Info.Traits.Get<AttackBaseInfo>().Recoil == 0) return float2.Zero;
+			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
 			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Length) * (256 / rut.anim.CurrentSequence.Length);
 
-			return RotateVectorByFacing(new float2(0, recoil * self.Info.Recoil), quantizedFacing, .7f);
+			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), quantizedFacing, .7f);
 		}
 
 		public static float2 CenterOfCell(int2 loc)
@@ -106,7 +106,7 @@ namespace OpenRa.Game.Traits
 		{
 			if( unit == null ) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
 
-			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var ru = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Length : 8;
 			var bodyFacing = unit.Facing;
 			var quantizedFacing = QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
@@ -127,20 +127,27 @@ namespace OpenRa.Game.Traits
 
 		public static float GetEffectiveSpeed(Actor self)
 		{
-			var mi = self.Info as MobileInfo;
-			if (mi == null) return 0f;
+			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
+			if( unitInfo == null ) return 0f;
 
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return mi.Speed * modifier;
+			return unitInfo.Speed * modifier;
 		}
 
 		public static IActivity SequenceActivities(params IActivity[] acts)
 		{
 			return acts.Reverse().Aggregate(
 				(next, a) => { a.NextActivity = next; return a; });
+		}
+
+		public static float GetMaximumRange(Actor self)
+		{
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
+			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
+				.Where(w => w != null).Max(w => w.Range);
 		}
 	}
 }

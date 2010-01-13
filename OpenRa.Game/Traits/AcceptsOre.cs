@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class AcceptsOreInfo : ITraitInfo
+	{
+		public object Create(Actor self) { return new AcceptsOre(self); }
+	}
+
 	class AcceptsOre
 	{
 		public AcceptsOre(Actor self)
@@ -9,7 +14,7 @@ namespace OpenRa.Game.Traits
 			Game.world.AddFrameEndTask(
 				w =>
 				{		/* create the free harvester! */
-					var harvester = new Actor(Rules.UnitInfo["harv"], self.Location + new int2(1, 2), self.Owner);
+					var harvester = new Actor("harv", self.Location + new int2(1, 2), self.Owner);
 					var unit = harvester.traits.Get<Unit>();
 					var mobile = harvester.traits.Get<Mobile>();
 					unit.Facing = 64;

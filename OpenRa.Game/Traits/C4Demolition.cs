@@ -2,10 +2,10 @@
 
 namespace OpenRa.Game.Traits
 {
+	class C4DemolitionInfo : StatelessTraitInfo<C4Demolition> { }
+
 	class C4Demolition : IIssueOrder, IResolveOrder
 	{
-		public C4Demolition(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;

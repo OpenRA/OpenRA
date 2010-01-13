@@ -16,8 +16,8 @@ namespace OpenRa.Game
 			for (int i = 0; i < 128; i++)
 				for (int j = 0; j < 128; j++)
 					influence[ i, j ] = new List<Actor>();
-			
-			Game.world.ActorRemoved += a => Remove(a, a.traits.WithInterface<IOccupySpace>().FirstOrDefault());
+
+			Game.world.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
 		}
 
 		public void Tick()
@@ -53,7 +53,7 @@ namespace OpenRa.Game
 				for( int x = 0 ; x < 128 ; x++ )
 					if( influence[ x, y ] != null )
 						foreach (var a in influence[ x, y ])
-							if (!a.traits.WithInterface<IOccupySpace>().First().OccupiedCells().Contains( new int2( x, y ) ) )
+							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
 								throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
 			foreach( Actor a in Game.world.Actors )

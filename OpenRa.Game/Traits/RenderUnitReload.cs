@@ -2,6 +2,11 @@
 
 namespace OpenRa.Game.Traits
 {
+	class RenderUnitReloadInfo : RenderUnitInfo
+	{
+		public override object Create(Actor self) { return new RenderUnitReload(self); }
+	}
+
 	class RenderUnitReload : RenderUnit
 	{
 		public RenderUnitReload(Actor self)
@@ -11,7 +16,7 @@ namespace OpenRa.Game.Traits
 		{
 			var isAttacking = self.GetCurrentActivity() is Activities.Attack;
 
-			var attack = self.traits.WithInterface<AttackBase>().FirstOrDefault();
+			var attack = self.traits.GetOrDefault<AttackBase>();
 
 			if (attack != null)
 				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")

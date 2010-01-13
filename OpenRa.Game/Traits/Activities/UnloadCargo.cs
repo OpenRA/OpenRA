@@ -33,8 +33,9 @@ namespace OpenRa.Game.Traits.Activities
 			// if we're a thing that can turn, turn to the
 			// right facing for the unload animation
 			var unit = self.traits.GetOrDefault<Unit>();
-			if (unit != null && unit.Facing != self.Info.UnloadFacing)
-				return new Turn(self.Info.UnloadFacing) { NextActivity = this };
+			var unloadFacing = self.Info.Traits.Get<CargoInfo>().UnloadFacing;
+			if (unit != null && unit.Facing != unloadFacing)
+				return new Turn(unloadFacing) { NextActivity = this };
 
 			// todo: handle the BS of open/close sequences, which are inconsistent,
 			//		for reasons that probably make good sense to the westwood guys.
@@ -43,7 +44,7 @@ namespace OpenRa.Game.Traits.Activities
 			if (cargo.IsEmpty(self))
 				return NextActivity;
 
-			var ru = self.traits.WithInterface<RenderUnit>().FirstOrDefault();
+			var ru = self.traits.GetOrDefault<RenderUnit>();
 			if (ru != null)
 				ru.PlayCustomAnimation(self, "unload", null);
 

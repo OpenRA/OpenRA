@@ -2,6 +2,7 @@
 using IrrKlang;
 using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game
 {
@@ -92,7 +93,7 @@ namespace OpenRa.Game
 		{
 			if (voicedUnit == null) return;
 
-			var mi = voicedUnit.Info as MobileInfo;
+			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (mi == null) return;
 
 			var vi = Rules.VoiceInfo[mi.Voice];

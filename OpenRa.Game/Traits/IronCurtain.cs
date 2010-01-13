@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace OpenRa.Game.Traits
 {
+	class IronCurtainInfo : StatelessTraitInfo<IronCurtain> { }
+
 	class IronCurtain : IResolveOrder
 	{
-		public IronCurtain(Actor self) {}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "PlayAnimation")

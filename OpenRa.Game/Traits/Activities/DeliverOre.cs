@@ -64,7 +64,7 @@ namespace OpenRa.Game.Traits.Activities
 			else if( unit.Facing != 64 )
 				return new Turn( 64 ) { NextActivity = this };
 
-			var renderUnit = self.traits.WithInterface<RenderUnit>().First();
+			var renderUnit = self.traits.Get<RenderUnit>();
 			if( renderUnit.anim.CurrentSequence.Name != "empty" )
 				renderUnit.PlayCustomAnimation( self, "empty",
 					() => isDone = true );

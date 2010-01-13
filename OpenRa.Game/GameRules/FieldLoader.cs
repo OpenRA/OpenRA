@@ -1,17 +1,62 @@
 ﻿using System;
 using System.Linq;
 using OpenRa.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRa.Game.GameRules
 {
 	static class FieldLoader
 	{
-		public  static void Load( object self, IniSection ini )
+		public static void Load(object self, IniSection ini)
 		{
-			foreach( var x in ini )
+			foreach (var x in ini)
 			{
-				var field = self.GetType().GetField( x.Key.Trim() );
-				field.SetValue( self, GetValue( field.FieldType, x.Value.Trim() ) );
+				var field = self.GetType().GetField(x.Key.Trim());
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Trim()));
+			}
+		}
+
+		public static void Load(object self, MiniYaml my)
+		{
+			foreach (var x in my.Nodes)
+			{
+				var field = self.GetType().GetField(x.Key.Trim());
+				if (field == null)
+					throw new NotImplementedException("Missing field `{0}` on `{1}`".F(x.Key.Trim(), self.GetType().Name));
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Value.Trim()));
+			}
+		}
+
+		public static void CheckYaml( object self, Dictionary<string, MiniYaml> d )
+		{
+			//foreach( var x in d )
+			//{
+			//    if( x.Key == "Tab" ) continue;
+			//    if( x.Key == "Description" ) continue;
+			//    if( x.Key == "LongDesc" ) continue;
+
+			//    var key = x.Key;
+			//    if( key == "Prerequisites" ) key = "Prerequisite";
+			//    if( key == "HP" ) key = "Strength";
+			//    if( key == "Priority" ) key = "SelectionPriority";
+			//    if( key == "Bounds" ) key = "SelectionSize";
+			//    var field = self.GetType().GetField( key );
+			//    var old = field.GetValue( self );
+			//    var neww = GetValue( field.FieldType, x.Value.Value.Trim() );
+			//    if( old.ToString() != neww.ToString() )
+			//        throw new NotImplementedException();
+			//}
+			foreach( var x in d )
+			{
+				var key = x.Key;
+				if( key == "Tab" )
+					continue;
+				if( key == "Prerequisites" ) key = "Prerequisite";
+				if( key == "HP" ) key = "Strength";
+				if( key == "Priority" ) key = "SelectionPriority";
+				if( key == "Bounds" ) key = "SelectionSize";
+				var field = self.GetType().GetField( key.Trim() );
+				field.SetValue( self, GetValue( field.FieldType, x.Value.Value.Trim() ) );
 			}
 		}
 

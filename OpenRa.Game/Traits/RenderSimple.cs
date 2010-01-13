@@ -1,18 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using IjwFramework.Collections;
+using System.Linq;
 using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
+	abstract class RenderSimpleInfo : ITraitInfo
+	{
+		public readonly string Image = null;
+
+		public abstract object Create(Actor self);
+	}
+
 	abstract class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 		public Animation anim { get { return anims[ "" ].Animation; } }
 
+		public string GetImage(Actor self)
+		{
+			return self.Info.Traits.Get<RenderSimpleInfo>().Image ?? self.Info.Name;
+		}
+
 		public RenderSimple(Actor self)
 		{
-			anims.Add( "", new Animation( self.Info.Image ?? self.Info.Name ) );
+			anims.Add( "", new Animation( GetImage(self) ) );
 		}
 
 		public virtual IEnumerable<Renderable> Render( Actor self )
