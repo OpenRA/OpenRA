@@ -2027,11 +2027,8 @@ DOG:
 		Bounds: 12,17,-1,-4
 	Unit:
 		HP: 12
-		Armor: none
 		Sight: 5
 		Speed: 4
-	RenderInfantry:
-	Passenger:
 
 E1:
 	Inherits: DefaultInfantry
@@ -2046,16 +2043,12 @@ E1:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 50
-		Armor: none
-		Sight: 4
 		Speed: 4
-	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: M1Carbine
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
-	Passenger:
 
 E2:
 	Inherits: DefaultInfantry
@@ -2070,10 +2063,7 @@ E2:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 50
-		Armor: none
-		Sight: 4
 		Speed: 5
-	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-13
@@ -2081,7 +2071,6 @@ E2:
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
-	Passenger:
 
 E3:
 	Inherits: DefaultInfantry
@@ -2096,17 +2085,13 @@ E3:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 45
-		Armor: none
-		Sight: 4
 		Speed: 3
-	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: RedEye
 		PrimaryOffset: 0,0,0,-13
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
-	Passenger:
 
 E4:
 	Inherits: DefaultInfantry
@@ -2122,10 +2107,7 @@ E4:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 40
-		Armor: none
-		Sight: 4
 		Speed: 3
-	RenderInfantry:
 	AttackBase:
 		PrimaryWeapon: Flamer
 		PrimaryOffset: 0,0,0,-7
@@ -2133,7 +2115,6 @@ E4:
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
-	Passenger:
 
 E6:
 	Inherits: DefaultInfantry
@@ -2149,14 +2130,10 @@ E6:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
-		Armor: none
-		Sight: 4
 		Speed: 4
 	EngineerCapture:
-	RenderInfantry:
 	TakeCover:
 	SquishByTank:
-	Passenger:
 
 SPY:
 	Inherits: DefaultInfantry
@@ -2173,13 +2150,10 @@ SPY:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
-		Armor: none
 		Sight: 5
 		Speed: 4
-	RenderInfantry:
 	TakeCover:
 	SquishByTank:
-	Passenger:
 
 THF:
 	Inherits: DefaultInfantry
@@ -2196,13 +2170,10 @@ THF:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
-		Armor: none
 		Sight: 5
 		Speed: 4
-	RenderInfantry:
 	TakeCover:
 	SquishByTank:
-	Passenger:
 	Thief:
 
 E7:
@@ -2220,17 +2191,14 @@ E7:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 100
-		Armor: none
 		Sight: 6
 		Speed: 5
-	RenderInfantry:
 	C4Demolition:
 	AttackBase:
 		PrimaryWeapon: Colt45
 	TakeCover:
 	SquishByTank:
 	AutoTarget:
-	Passenger:
 
 MEDI:
 	Inherits: DefaultInfantry
@@ -2246,14 +2214,11 @@ MEDI:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 80
-		Armor: none
 		Sight: 3
 		Speed: 4
-	RenderInfantry:
 	AutoHeal:
 	AttackBase:
 		PrimaryWeapon: Heal
 	TakeCover:
 	SquishByTank:
-	Passenger:
 

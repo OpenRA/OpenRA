@@ -11,10 +11,14 @@ DefaultVehicle:
 	IronCurtainable: 
 
 DefaultInfantry:
-	Unit: 
+	Unit:
+		Armor: none
+		Sight: 4
 	Mobile:
 		MovementType: Foot
 	Selectable:
+	RenderInfantry:
+	Passenger:
 
 DefaultShip:
 	Unit:

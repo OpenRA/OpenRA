@@ -132,14 +132,10 @@ SHOK:
 		Voice: ShokVoice
 	Unit:
 		HP: 80
-		Armor: none
-		Sight: 4
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: PortaTesla
-	RenderInfantry:
 	TakeCover:
-	Passenger:
 
 MECH:
 	Inherits: DefaultInfantry
@@ -156,14 +152,11 @@ MECH:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 60
-		Armor: none
 		Sight: 3
 		Speed: 4
-	RenderInfantry:
 	AutoHeal:
 	AttackBase:
 		PrimaryWeapon: GoodWrench
 	TakeCover:
 	SquishByTank:
-	Passenger:
 
