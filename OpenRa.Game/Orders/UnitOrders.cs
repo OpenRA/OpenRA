@@ -49,18 +49,6 @@ namespace OpenRa.Game.Orders
 					Game.chat.AddLine(order.Player, "is now YOU.");
 					break;
 				}
-			case "SetName":
-				{
-					Game.chat.AddLine(order.Player, "is now known as " + order.TargetString);
-					order.Player.PlayerName = order.TargetString;
-					break;
-				}
-			case "SetRace":
-				{
-					order.Player.Race = order.TargetString == "0" ? Race.Soviet : Race.Allies;
-					Game.chat.AddLine(order.Player, "is now playing {0}".F(order.Player.Race));
-					break;
-				}
 			case "SetLag":
 				{
 					int lag = int.Parse(order.TargetString);
@@ -74,13 +62,6 @@ namespace OpenRa.Game.Orders
 					Game.chat.AddLine(Color.White, "Server", "Order lag is now {0} frames.".F(lag));
 					break;
 				}
-			case "SetPalette":
-				{
-					int palette = int.Parse(order.TargetString);
-					Game.chat.AddLine(order.Player, "has changed color to {0}".F(palette));
-					order.Player.Palette = (PaletteType) palette;
-					break;
-				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Color.White, "Server", "The game has started.");
@@ -91,6 +72,12 @@ namespace OpenRa.Game.Orders
 				{
 					Game.chat.AddLine(Color.White, "Server", "Changing map to {0}".F(order.TargetString));
 					Game.ChangeMap(order.TargetString);
+					break;
+				}
+			case "SyncInfo":
+				{
+					Game.chat.AddLine(Color.White, "Server", "Synchronizing lobby info...");	// temp
+					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
 

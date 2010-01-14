@@ -8,25 +8,24 @@ namespace OpenRa.FileFormats
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
-		public string Map = "scm12ea.ini";
-		// public string[] Mods = { };
-	}
+		// todo: add mods, mapname, global settings here
 
-	public enum ClientState
-	{
-		NotReady,
-		// Downloading,
-		// Uploading,
-		Ready
-	}
+		public enum ClientState
+		{
+			NotReady,
+			// Downloading,
+			// Uploading,
+			Ready
+		}
 
-	public class Client
-	{
-		public int Index;
-		public int Palette;
-		public int Race;
-		// public int SpawnPoint;
-		public string Name;
-		public ClientState State;
+		public class Client
+		{
+			public int Index;
+			public int Palette;
+			public int Race;
+			// public int SpawnPoint;
+			public string Name;
+			public ClientState State;
+		}
 	}
 }

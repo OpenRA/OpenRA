@@ -343,5 +343,21 @@ namespace OpenRa.Game
 
 			return Game.PathFinder.FindPath(search).Count != 0;
 		}
+
+		public static void SyncLobbyInfo(string data)
+		{
+			var ys = MiniYaml.FromString(data);
+			foreach (var y in ys)
+			{
+				int index;
+				if (!int.TryParse(y.Key, out index))
+					continue;	// not a player.
+
+				var client = new Session.Client();
+				FieldLoader.Load(client, y.Value);
+
+				players[index].SyncFromLobby(client);
+			}
+		}
 	}
 }

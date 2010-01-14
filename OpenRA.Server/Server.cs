@@ -1,70 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Threading;
-using System.IO;
-using System.Net;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using OpenRa.FileFormats;
 
 namespace OpenRA.Server
 {
-	class ServerOrder
-	{
-		public readonly int PlayerId;
-		public readonly string Name;
-		public readonly string Data;
-
-		public ServerOrder(int playerId, string name, string data)
-		{
-			PlayerId = playerId;
-			Name = name;
-			Data = data;
-		}
-
-		public static ServerOrder Deserialize(BinaryReader r)
-		{
-			byte b;
-			switch (b = r.ReadByte())
-			{
-				case 0xff:
-					Console.WriteLine("This isn't a server order.");
-					return null;
-
-				case 0xfe:
-					{
-						var playerID = r.ReadInt32();
-						var name = r.ReadString();
-						var data = r.ReadString();
-
-						return new ServerOrder(playerID, name, data);
-					}
-
-				default:
-					throw new NotImplementedException(b.ToString("x2"));
-			}
-		}
-
-		public byte[] Serialize()
-		{
-			var ms = new MemoryStream();
-			var bw = new BinaryWriter(ms);
-
-			bw.Write((byte)0xfe);
-			bw.Write(PlayerId);
-			bw.Write(Name);
-			bw.Write(Data);
-			return ms.ToArray();
-		}
-	}
-
 	static class Server
 	{
 		static List<Connection> conns = new List<Connection>();
 		static TcpListener listener = new TcpListener(IPAddress.Any, 1234);
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
+		static Session lobbyInfo = new Session();
 
 		public static void Main(string[] args)
 		{
@@ -109,16 +60,26 @@ namespace OpenRA.Server
 
 				conns.Add(newConn);
 
+				lobbyInfo.Clients.Add(
+					new Session.Client()
+					{
+						Index = newConn.PlayerIndex,
+						Palette = newConn.PlayerIndex,
+						Name = "Player {0}".F(newConn.PlayerIndex),
+						Race = 1,
+						State = Session.ClientState.NotReady
+					});
+
 				DispatchOrdersToClient(newConn, 0,
 					new ServerOrder(newConn.PlayerIndex, "AssignPlayer", "").Serialize());
-
-				// todo: tell this client about all the other conns.
 
 				Console.WriteLine("Accepted connection from {0}.",
 					newConn.socket.RemoteEndPoint);
 
 				DispatchOrders(newConn, 0, new ServerOrder(newConn.PlayerIndex,
 					"Chat", "has joined the game.").Serialize());
+
+				SyncLobbyInfo();
 			}
 			catch (Exception e) { DropClient(newConn, e); }
 		}
@@ -165,8 +126,8 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
-								if (bytes.Length > 0)
-									Console.WriteLine("{0} bytes", bytes.Length);
+						//		if (bytes.Length > 0)
+						//			Console.WriteLine("{0} bytes", bytes.Length);
 
 								DispatchOrders(conn, conn.Frame, bytes);
 								conn.ExpectLength = 8;
@@ -242,7 +203,8 @@ namespace OpenRA.Server
 					s => 
 					{
 						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
-						DispatchOrders( null, 0, new ServerOrder( conn.PlayerIndex, "SetName", s ).Serialize());
+						lobbyInfo.Clients[ conn.PlayerIndex ].Name = s;
+						SyncLobbyInfo();
 						return true;
 					}},
 				{ "lag",
@@ -275,8 +237,8 @@ namespace OpenRA.Server
 							return false;
 						}
 
-						DispatchOrders(null, 0,
-							new ServerOrder(conn.PlayerIndex, "SetRace", race.ToString()).Serialize());
+						lobbyInfo.Clients[ conn.PlayerIndex ].Race = 1 + race;
+						SyncLobbyInfo();
 						return true;
 					}},
 				{ "pal",
@@ -297,8 +259,8 @@ namespace OpenRA.Server
 							return false;
 						}
 
-						DispatchOrders(null, 0,
-							new ServerOrder(conn.PlayerIndex, "SetPalette", pal.ToString()).Serialize());
+						lobbyInfo.Clients[ conn.PlayerIndex ].Palette = pal;
+						SyncLobbyInfo();
 						return true;
 					}},
 				{ "map",
@@ -379,10 +341,12 @@ namespace OpenRA.Server
 		static void DropClient(Connection toDrop, Exception e)
 		{
 			Console.WriteLine("Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
-			Console.WriteLine(e.ToString());
+			//Console.WriteLine(e.ToString());
 
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
+
+			lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 			/* don't get stuck waiting for the dropped player, if they were the one holding up a frame */
 			
@@ -392,6 +356,9 @@ namespace OpenRA.Server
 				inFlightFrames.Remove(f.Key);
 				DispatchOrders(null, f.Key, new byte[] { 0xef });
 			}
+
+			if (conns.Count == 0) OnServerEmpty();
+			else SyncLobbyInfo();
 		}
 
 		public static void Write(this Stream s, byte[] data) { s.Write(data, 0, data.Length); }
@@ -399,6 +366,23 @@ namespace OpenRA.Server
 		public static IEnumerable<T> Except<T>(this IEnumerable<T> ts, T t)
 		{
 			return ts.Except(new[] { t });
+		}
+
+		static void OnServerEmpty()
+		{
+			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
+			inFlightFrames.Clear();
+			lobbyInfo = new Session();
+		}
+
+		static void SyncLobbyInfo()
+		{
+			var clientData = lobbyInfo.Clients.ToDictionary(
+				a => a.Index.ToString(),
+				a => FieldSaver.Save(a)).WriteToString();
+
+			DispatchOrders(null, 0, 
+				new ServerOrder(0, "SyncInfo", clientData).Serialize());
 		}
 	}
 }

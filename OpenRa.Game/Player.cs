@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
@@ -150,6 +151,29 @@ namespace OpenRa.Game
 					Sound.Play("cashdn1.aud");
 				}
 			}
+		}
+
+		public void SyncFromLobby(Session.Client client)
+		{
+			if (PlayerName != client.Name)
+			{
+				Game.chat.AddLine(this, "is now known as " + client.Name);
+				PlayerName = client.Name;
+			}
+
+			if (Race != (Race)client.Race)
+			{
+				Game.chat.AddLine(this, "is now playing {0}".F((Race)client.Race));
+				Race = (Race)client.Race;
+			}
+
+			if (Palette != (PaletteType)client.Palette)
+			{
+				Game.chat.AddLine(this, "has changed color to {0}".F((PaletteType)client.Palette));
+				Palette = (PaletteType)client.Palette;
+			}
+
+			// todo: IsReady tracking?
 		}
 	}
 }
