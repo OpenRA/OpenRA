@@ -6,6 +6,8 @@ using System.IO;
 
 namespace OpenRa.FileFormats
 {
+	using MiniYamlNodes = Dictionary<string, MiniYaml>;
+
 	public class MiniYaml
 	{
 		public string Value;
@@ -96,6 +98,33 @@ namespace OpenRa.FileFormats
 				return a;
 
 			return new MiniYaml( a.Value ?? b.Value, Merge( a.Nodes, b.Nodes ) );
+		}
+
+		public IEnumerable<string> ToLines(string name)
+		{
+			yield return name + ": " + Value;
+			if (Nodes != null)
+				foreach (var line in Nodes.ToLines(false))
+					yield return "\t" + line;
+		}
+	}
+
+	public static class MiniYamlExts
+	{
+		public static void WriteToFile(this MiniYamlNodes y, string filename)
+		{
+			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+		}
+
+		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
+		{
+			foreach (var kv in y)
+			{
+				foreach (var line in kv.Value.ToLines(kv.Key))
+					yield return line;
+				if (lowest)
+					yield return "";
+			}
 		}
 	}
 }

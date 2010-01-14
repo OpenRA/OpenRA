@@ -1,40 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRa.FileFormats;
 
 namespace RulesConverter
 {
 	using MiniYamlNodes = Dictionary<string, MiniYaml>;
-	using System.IO;
 
 	static class MiniYamlExts
 	{
-		public static void WriteToFile( this MiniYamlNodes y, string filename )
-		{
-			File.WriteAllLines( filename, y.ToLines( true ).Select( x => x.TrimEnd() ).ToArray() );
-		}
-
-		public static IEnumerable<string> ToLines( this MiniYamlNodes y, bool lowest )
-		{
-			foreach( var kv in y )
-			{
-				foreach( var line in kv.Value.ToLines( kv.Key ) )
-					yield return line;
-				if( lowest )
-					yield return "";
-			}
-		}
-
-		public static IEnumerable<string> ToLines( this MiniYaml y, string name )
-		{
-			yield return name + ": " + y.Value;
-			if( y.Nodes != null )
-				foreach( var line in y.Nodes.ToLines( false ) )
-					yield return "\t" + line;
-		}
-
 		public static void OptimizeInherits( this MiniYamlNodes y, MiniYamlNodes baseYaml )
 		{
 			foreach( var key in y.Keys.ToList() )
@@ -66,7 +40,7 @@ namespace RulesConverter
 			}
 		}
 
-		public static MiniYamlNodes Diff( MiniYamlNodes a, MiniYamlNodes b )
+		static MiniYamlNodes Diff( MiniYamlNodes a, MiniYamlNodes b )
 		{
 			if( a.Count == 0 && b.Count == 0 )
 				return null;
@@ -97,7 +71,7 @@ namespace RulesConverter
 			return ret;
 		}
 
-		public static MiniYaml Diff( MiniYaml a, MiniYaml b, out bool remove )
+		static MiniYaml Diff( MiniYaml a, MiniYaml b, out bool remove )
 		{
 			remove = false;
 			if( a == null && b == null )
