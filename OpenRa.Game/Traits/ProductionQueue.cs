@@ -33,8 +33,8 @@ namespace OpenRa.Game.Traits
 			{
 			case "StartProduction":
 				{
-					string group = Rules.NewUnitInfo[ order.TargetString ].Category;
-					var ui = Rules.NewUnitInfo[ order.TargetString ].Traits.Get<BuildableInfo>();
+					var unit = Rules.NewUnitInfo[ order.TargetString ];
+					var ui = unit.Traits.Get<BuildableInfo>();
 					var time = ui.Cost
 						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
 						 * ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
@@ -42,17 +42,17 @@ namespace OpenRa.Game.Traits
 
 					time = .08f * time;						/* temporary hax so we can build stuff fast for test */
 
-					if( !Rules.TechTree.BuildableItems( order.Player, group ).Contains( order.TargetString ) )
+					if( !Rules.TechTree.BuildableItems( order.Player, unit.Category ).Contains( order.TargetString ) )
 						return;	/* you can't build that!! */
 
 					bool hasPlayedSound = false;
 
-					BeginProduction( group,
+					BeginProduction( unit.Category,
 						new ProductionItem( order.TargetString, (int)time, ui.Cost,
 							() => Game.world.AddFrameEndTask(
 								_ =>
 								{
-									var isBuilding = group == "Building";
+									var isBuilding = unit.Traits.Contains<BuildingInfo>();
 									if( !hasPlayedSound && order.Player == Game.LocalPlayer )
 									{
 										Sound.Play( isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );

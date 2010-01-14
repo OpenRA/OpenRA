@@ -47,7 +47,6 @@ namespace OpenRa.Game
 		// Build Palette tabs
 		string currentTab = "Building";
 		bool paletteOpen = false;
-		static string[] groups = new string[] { "Building", "Infantry", "Vehicle", "Plane", "Ship" };
 		readonly Dictionary<string, string[]> tabImageNames;
 		readonly Dictionary<string, Sprite> tabSprites;
 		
@@ -111,7 +110,6 @@ namespace OpenRa.Game
 			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
 			
 			tabSprites = Rules.NewUnitInfo.Values
-				.Where(x => groups.Contains(x.Category))
 				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
 					u => u.Name,
@@ -121,6 +119,8 @@ namespace OpenRa.Game
 				.ToDictionary(
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
+
+			var groups = Rules.NewUnitInfo.Values.Select( x => x.Category ).Distinct().ToList();
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
@@ -644,27 +644,27 @@ namespace OpenRa.Game
 
 		void StartProduction( string item )
 		{
-			var group = Rules.NewUnitInfo[item].Category;
-			Sound.Play((group == "Building") ? "abldgin1.aud" : "train1.aud");
+			var unit = Rules.NewUnitInfo[item];
+			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
 			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
 		}
 
 		void HandleBuildPalette(string item, bool isLmb)
 		{
 			var player = Game.LocalPlayer;
-			var group = Rules.NewUnitInfo[item].Category;
+			var unit = Rules.NewUnitInfo[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var producing = queue.AllItems(group).FirstOrDefault( a => a.Item == item );
+			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
 			Sound.Play("ramenu1.aud");
 
 			if (isLmb)
 			{
-				if (producing != null && producing == queue.CurrentItem(group))
+				if (producing != null && producing == queue.CurrentItem(unit.Category))
 				{
 					if (producing.Done)
 					{
-						if (group == "Building")
+						if (unit.Traits.Contains<BuildingInfo>())
 							Game.controller.orderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
 						return;
 					}

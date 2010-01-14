@@ -75,6 +75,8 @@ namespace OpenRa.Game
 			if( useAftermath )
 				yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "aftermath.yaml" ), yamlRules );
 
+			yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "[mod]Separate buildqueue for defense.yaml" ), yamlRules );
+
 			NewUnitInfo = new Dictionary<string, NewUnitInfo>();
 			foreach( var kv in yamlRules )
 				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new NewUnitInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
