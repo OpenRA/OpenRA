@@ -1,3 +1,10 @@
+Player:
+	ProductionQueue:
+
+World:
+	WaterPaletteRotation:
+	ChronoshiftPaletteEffect:
+
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:

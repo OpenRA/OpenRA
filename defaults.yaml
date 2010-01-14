@@ -41,10 +41,3 @@
 	Selectable:
 		Priority: 3
 	Building:
-
-Player:
-	ProductionQueue:
-	
-World:
-	WaterPaletteRotation:
-	ChronoshiftPaletteEffect:
