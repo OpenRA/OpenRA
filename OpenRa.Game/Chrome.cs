@@ -424,39 +424,51 @@ namespace OpenRa.Game
 			shpRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, PaletteType.Chrome);
 			shpRenderer.Flush();
 			
-			renderer.DrawText("Options", new int2(80, -2) , Color.White);
+			renderer.DrawText("Options", new int2((int)(optionsButton.Image.size.X - renderer.MeasureText("Options").X)/2, -2) , Color.White);
 		}
 		
 		void DrawOptionsMenu()
 		{
 			if (optionsPressed){
-				var menuDrawPos = Game.viewport.Location + new float2(Game.viewport.Width/2, Game.viewport.Height/2);
-				var width = optionsTop.bounds.Width + optionsTopLeft.bounds.Width + optionsTopRight.bounds.Width;
-				var height = optionsLeft.bounds.Height + optionsTopLeft.bounds.Height + optionsBottomLeft.bounds.Height;
-				var adjust = 8;
+				var width = 500;
+				var height = 300;
 				
-				menuDrawPos = menuDrawPos + new float2(-width/2, -height/2);
-				
-				var backgroundDrawPos = menuDrawPos + new float2( (width - optionsBackground.bounds.Width)/2, (height - optionsBackground.bounds.Height)/2);
-				
-				//draw background
-				shpRenderer.DrawSprite(optionsBackground, backgroundDrawPos, PaletteType.Chrome);
-				
-				//draw borders
-				shpRenderer.DrawSprite(optionsTopLeft, menuDrawPos, PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsLeft, menuDrawPos + new float2(0, optionsTopLeft.bounds.Height), PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsBottomLeft, menuDrawPos + new float2(0, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height), PaletteType.Chrome);
-
-				shpRenderer.DrawSprite(optionsTop, menuDrawPos + new float2(optionsTopLeft.bounds.Width, 0), PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsTopRight, menuDrawPos + new float2(optionsTopLeft.bounds.Width + optionsTop.bounds.Width, 0), PaletteType.Chrome);
-
-				shpRenderer.DrawSprite(optionsBottom, menuDrawPos + new float2(optionsTopLeft.bounds.Width, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height +adjust), PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsBottomRight, menuDrawPos + new float2(optionsBottomLeft.bounds.Width + optionsBottom.bounds.Width, optionsTopLeft.bounds.Height + optionsLeft.bounds.Height), PaletteType.Chrome);
-
-				shpRenderer.DrawSprite(optionsRight, menuDrawPos + new float2(optionsTopLeft.bounds.Width + optionsTop.bounds.Width + adjust + 1, optionsTopRight.bounds.Height), PaletteType.Chrome);
-				
-				shpRenderer.Flush();
+				DrawDialogBackground(new Rectangle((Game.viewport.Width - width)/ 2, (Game.viewport.Height-height) / 2,
+					width, height));
 			}
+		}
+
+		void DrawDialogBackground(Rectangle r)
+		{
+			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
+
+			for( var x = r.Left + (int)optionsLeft.size.X; x < r.Right - (int)optionsRight.size.X; x += (int)optionsBackground.size.X )
+				for( var y = r.Top + (int)optionsTop.size.Y; y < r.Bottom - (int)optionsBottom.size.Y; y += (int)optionsBackground.size.Y )
+					shpRenderer.DrawSprite( optionsBackground, Game.viewport.Location + new float2(x,y), PaletteType.Chrome );
+
+			var p = Game.viewport.Location;
+			
+			//draw borders
+
+			for (var y = r.Top + (int)optionsTop.size.Y; y < r.Bottom - (int)optionsBottom.size.Y; y += (int)optionsLeft.size.Y)
+			{
+				shpRenderer.DrawSprite(optionsLeft, p + new float2(r.Left, y), PaletteType.Chrome);
+				shpRenderer.DrawSprite(optionsRight, p + new float2(r.Right - optionsRight.size.X, y), PaletteType.Chrome);
+			}
+
+			for (var x = r.Left + (int)optionsLeft.size.X; x < r.Right - (int)optionsRight.size.X; x += (int)optionsLeft.size.Y)
+			{
+				shpRenderer.DrawSprite(optionsTop, p + new float2(x, r.Top), PaletteType.Chrome);
+				shpRenderer.DrawSprite(optionsBottom, p + new float2(x, r.Bottom - optionsBottom.size.Y), PaletteType.Chrome);
+			}
+
+			shpRenderer.DrawSprite(optionsTopLeft, p + new float2(r.Left, r.Top), PaletteType.Chrome);
+			shpRenderer.DrawSprite(optionsTopRight, p + new float2(r.Right - optionsTopRight.size.X, r.Top), PaletteType.Chrome);
+			shpRenderer.DrawSprite(optionsBottomLeft, p + new float2(r.Left, r.Bottom - optionsBottomLeft.size.Y), PaletteType.Chrome);
+			shpRenderer.DrawSprite(optionsBottomRight, p + new float2(r.Right - optionsBottomRight.size.X, r.Bottom - optionsBottomRight.size.Y), PaletteType.Chrome);
+			shpRenderer.Flush();
+
+			renderer.Device.DisableScissor();
 		}
 
 		void DrawChat()
