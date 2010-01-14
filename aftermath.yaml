@@ -19,7 +19,6 @@ TTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 8
-		Tab: Vehicle
 		Prerequisites: tsla
 		Owner: soviet
 		Cost: 1500
@@ -40,7 +39,6 @@ CTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 12
-		Tab: Vehicle
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2400
@@ -61,7 +59,6 @@ DTRK:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 13
-		Tab: Vehicle
 		Prerequisites: mslo
 		Owner: allies,soviet
 		Cost: 2400
@@ -80,7 +77,6 @@ QTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 10
-		Tab: Vehicle
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2300
@@ -99,7 +95,6 @@ MSUB:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 9
-		Tab: Ship
 		Prerequisites: stek
 		BuiltAt: spen
 		Owner: soviet
@@ -123,7 +118,6 @@ SHOK:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 7
-		Tab: Infantry
 		Prerequisites: tsla
 		Owner: soviet
 		Cost: 900
@@ -141,7 +135,6 @@ MECH:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 7
-		Tab: Infantry
 		Prerequisites: fix
 		Owner: allies
 		Cost: 950

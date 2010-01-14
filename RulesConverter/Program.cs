@@ -73,7 +73,6 @@ namespace RulesConverter
 
 				{ "Buildable", new PL {
 					{ "TechLevel", "TechLevel" },
-					{ "Tab", "$Tab" },
 					{ "Prerequisites", "Prerequisite" },
 					{ "BuiltAt", "BuiltAt" },
 					{ "Owner", "Owner" },

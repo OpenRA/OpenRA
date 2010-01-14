@@ -2,7 +2,6 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
-		Tab: Vehicle
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 700
@@ -25,7 +24,6 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
-		Tab: Vehicle
 		Prerequisites: weap
 		Owner: allies
 		Cost: 700
@@ -51,7 +49,6 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 6
-		Tab: Vehicle
 		Prerequisites: weap
 		Owner: allies
 		Cost: 800
@@ -77,7 +74,6 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
-		Tab: Vehicle
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 950
@@ -103,7 +99,6 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 10
-		Tab: Vehicle
 		Prerequisites: weap,stek
 		Owner: soviet
 		Cost: 1700
@@ -131,7 +126,6 @@ MRJ:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 12
-		Tab: Vehicle
 		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 600
@@ -154,7 +148,6 @@ MGG:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 11
-		Tab: Vehicle
 		Prerequisites: weap,atek
 		Owner: allies
 		Cost: 600
@@ -175,7 +168,6 @@ ARTY:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 8
-		Tab: Vehicle
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
@@ -200,7 +192,6 @@ HARV:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 1
-		Tab: Vehicle
 		Prerequisites: weap,proc
 		Owner: allies,soviet
 		Cost: 1400
@@ -223,7 +214,6 @@ MCV:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 11
-		Tab: Vehicle
 		Prerequisites: weap,fix
 		Owner: allies,soviet
 		Cost: 2500
@@ -244,7 +234,6 @@ JEEP:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
-		Tab: Vehicle
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
@@ -270,7 +259,6 @@ APC:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 5
-		Tab: Vehicle
 		Prerequisites: weap,tent
 		Owner: allies
 		Cost: 800
@@ -298,7 +286,6 @@ MNLY.AP:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
-		Tab: Vehicle
 		Prerequisites: weap,fix
 		Owner: soviet
 		Cost: 800
@@ -325,7 +312,6 @@ MNLY.AT:
 	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
-		Tab: Vehicle
 		Prerequisites: weap,fix
 		Owner: allies
 		Cost: 800
@@ -361,7 +347,6 @@ SS:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 5
-		Tab: Ship
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
@@ -387,7 +372,6 @@ DD:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 7
-		Tab: Ship
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
@@ -415,7 +399,6 @@ CA:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 10
-		Tab: Ship
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
@@ -445,7 +428,6 @@ LST:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 3
-		Tab: Ship
 		Owner: allies,soviet
 		Cost: 700
 		Description: Transport
@@ -467,7 +449,6 @@ PT:
 	Inherits: ^Ship
 	Buildable:
 		TechLevel: 5
-		Tab: Ship
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
@@ -495,7 +476,6 @@ MIG:
 	Inherits: ^Plane
 	Buildable:
 		TechLevel: 10
-		Tab: Plane
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
@@ -522,7 +502,6 @@ YAK:
 	Inherits: ^Plane
 	Buildable:
 		TechLevel: 5
-		Tab: Plane
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
@@ -550,7 +529,6 @@ TRAN:
 	Inherits: ^Plane
 	Buildable:
 		TechLevel: 11
-		Tab: Plane
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
@@ -578,7 +556,6 @@ HELI:
 	Inherits: ^Plane
 	Buildable:
 		TechLevel: 9
-		Tab: Plane
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
@@ -609,7 +586,6 @@ HIND:
 	Inherits: ^Plane
 	Buildable:
 		TechLevel: 9
-		Tab: Plane
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
@@ -639,7 +615,6 @@ IRON:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 12
-		Tab: Building
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2800
@@ -663,7 +638,6 @@ PDOX:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 12
-		Tab: Building
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2800
@@ -687,7 +661,6 @@ PBOX:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
-		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 400
@@ -712,7 +685,6 @@ HBOX:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
@@ -737,7 +709,6 @@ TSLA:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 7
-		Tab: Building
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 1500
@@ -764,7 +735,6 @@ GUN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 4
-		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
@@ -791,7 +761,6 @@ AGUN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 5
-		Tab: Building
 		Prerequisites: dome
 		Owner: allies
 		Cost: 600
@@ -819,7 +788,6 @@ FTUR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
-		Tab: Building
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 600
@@ -844,7 +812,6 @@ GAP:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 10
-		Tab: Building
 		Prerequisites: atek
 		Owner: allies
 		Cost: 500
@@ -867,7 +834,6 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 9
-		Tab: Building
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
@@ -893,7 +859,6 @@ MSLO:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 13
-		Tab: Building
 		Prerequisites: @Tech Center
 		Owner: soviet,allies
 		Cost: 2500
@@ -914,7 +879,6 @@ ATEK:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 10
-		Tab: Building
 		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 1500
@@ -939,7 +903,6 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: proc
 		Owner: soviet,allies
 		Cost: 2000
@@ -966,7 +929,6 @@ SYRD:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: powr
 		Owner: allies
 		Cost: 650
@@ -991,7 +953,6 @@ SPEN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: powr
 		Owner: soviet
 		Cost: 650
@@ -1034,7 +995,6 @@ PROC:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 2000
@@ -1061,7 +1021,6 @@ SILO:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 150
@@ -1085,7 +1044,6 @@ HPAD:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 9
-		Tab: Building
 		Prerequisites: dome
 		Owner: allies
 		Cost: 1500
@@ -1113,7 +1071,6 @@ DOME:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 1000
@@ -1138,7 +1095,6 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 5
-		Tab: Building
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 600
@@ -1164,7 +1120,6 @@ POWR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Owner: allies,soviet
 		Cost: 300
 		Description: Power Plant
@@ -1186,7 +1141,6 @@ APWR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 8
-		Tab: Building
 		Prerequisites: powr
 		Owner: allies,soviet
 		Cost: 500
@@ -1209,7 +1163,6 @@ STEK:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 6
-		Tab: Building
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 1500
@@ -1233,7 +1186,6 @@ BARR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Prerequisites: powr
 		Owner: soviet
 		Cost: 300
@@ -1259,7 +1211,6 @@ TENT:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Prerequisites: powr
 		Owner: allies
 		Cost: 300
@@ -1285,7 +1236,6 @@ KENN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 200
@@ -1307,7 +1257,6 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: weap
 		Owner: allies,soviet
 		Cost: 1200
@@ -1331,7 +1280,6 @@ FACF:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Tab: Building
 		Owner: allies
 		Cost: 50
 		Description: Fake Construction Yard
@@ -1354,7 +1302,6 @@ WEAF:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
@@ -1379,7 +1326,6 @@ SYRF:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: powr
 		Owner: allies
 		Cost: 50
@@ -1419,7 +1365,6 @@ DOMF:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Building
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
@@ -2016,7 +1961,6 @@ DOG:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 3
-		Tab: Infantry
 		Prerequisites: kenn
 		BuiltAt: KENN
 		Owner: soviet
@@ -2035,7 +1979,6 @@ E1:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 1
-		Tab: Infantry
 		Owner: allies,soviet
 		Cost: 100
 		Description: Rifle Infantry
@@ -2055,7 +1998,6 @@ E2:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 1
-		Tab: Infantry
 		Owner: soviet
 		Cost: 160
 		Description: Grenadier
@@ -2077,7 +2019,6 @@ E3:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 2
-		Tab: Infantry
 		Owner: allies,soviet
 		Cost: 300
 		Description: Rocket Soldier
@@ -2098,7 +2039,6 @@ E4:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 6
-		Tab: Infantry
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 300
@@ -2121,7 +2061,6 @@ E6:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 5
-		Tab: Infantry
 		Owner: soviet,allies
 		Cost: 500
 		Description: Engineer
@@ -2140,7 +2079,6 @@ SPY:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 6
-		Tab: Infantry
 		Prerequisites: dome
 		Owner: allies
 		Cost: 500
@@ -2160,7 +2098,6 @@ THF:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 11
-		Tab: Infantry
 		Prerequisites: atek
 		Owner: allies
 		Cost: 500
@@ -2181,7 +2118,6 @@ E7:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 11
-		Tab: Infantry
 		Prerequisites: @Tech Center
 		Owner: allies,soviet
 		Cost: 1200
@@ -2205,7 +2141,6 @@ MEDI:
 	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 2
-		Tab: Infantry
 		Owner: allies
 		Cost: 800
 		Description: Medic
