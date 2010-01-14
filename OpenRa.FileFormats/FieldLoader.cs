@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace OpenRa.FileFormats
 {
@@ -68,6 +69,25 @@ namespace OpenRa.FileFormats
 			if( p == "no" ) return false;
 			if( p == "false" ) return false;
 			throw new InvalidOperationException();
+		}
+	}
+
+	public static class FieldSaver
+	{
+		public static MiniYaml Save(object o)
+		{
+			return new MiniYaml(null, o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
+				.ToDictionary(
+					f => f.Name,
+					f => new MiniYaml(FormatValue(o, f))));
+		}
+
+		static string FormatValue(object o, FieldInfo f)
+		{
+			var v = f.GetValue(o);
+			return f.FieldType.IsArray
+				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
+				: v.ToString();
 		}
 	}
 }
