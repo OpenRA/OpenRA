@@ -33,7 +33,7 @@ namespace OpenRa.Game.Traits
 			{
 			case "StartProduction":
 				{
-					string group = Rules.UnitCategory[ order.TargetString ];
+					string group = Rules.NewUnitInfo[ order.TargetString ].Category;
 					var ui = Rules.NewUnitInfo[ order.TargetString ].Traits.Get<BuildableInfo>();
 					var time = ui.Cost
 						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
@@ -65,7 +65,7 @@ namespace OpenRa.Game.Traits
 				}
 			case "PauseProduction":
 				{
-					var producing = CurrentItem( Rules.UnitCategory[ order.TargetString ] );
+					var producing = CurrentItem( Rules.NewUnitInfo[ order.TargetString ].Category );
 					if( producing != null && producing.Item == order.TargetString )
 						producing.Paused = ( order.TargetLocation.X != 0 );
 					break;
@@ -95,7 +95,7 @@ namespace OpenRa.Game.Traits
 
 		public void CancelProduction( string itemName )
 		{
-			var category = Rules.UnitCategory[itemName];
+			var category = Rules.NewUnitInfo[itemName].Category;
 			var queue = production[ category ];
 			if (queue.Count == 0) return;
 
@@ -160,12 +160,12 @@ namespace OpenRa.Game.Traits
 			// Something went wrong somewhere...
 			if( producer == null )
 			{
-				CancelProduction( Rules.UnitCategory[ name ] );
+				CancelProduction( newUnitType.Category );
 				return;
 			}
 
 			if( producer.traits.WithInterface<IProducer>().Any( p => p.Produce( producer, newUnitType ) ) )
-				FinishProduction( Rules.UnitCategory[ name ] );
+				FinishProduction( newUnitType.Category );
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace OpenRa.Game.Orders
 
 		public void Tick()
 		{
-			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.UnitCategory[ Building ] );
+			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.NewUnitInfo[ Building ].Category );
 			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
 				Game.controller.CancelInputMode();
 		}

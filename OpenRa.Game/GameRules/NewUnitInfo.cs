@@ -21,9 +21,6 @@ namespace OpenRa.Game.GameRules
 			if( mergedNode.TryGetValue( "Category", out categoryNode ) )
 				Category = categoryNode.Value;
 
-			if( Rules.UnitCategory.ContainsKey( name ) && Category != Rules.UnitCategory[ name ] )
-				throw new NotImplementedException( "wrong category");
-
 			foreach( var t in mergedNode )
 				if( t.Key != "Inherits" && t.Key != "Category" )
 					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );

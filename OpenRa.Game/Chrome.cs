@@ -82,7 +82,7 @@ namespace OpenRa.Game
 		static Size powerSize = new Size(138,5);
 		
 		public Chrome(Renderer r)
-		{		
+		{
 			this.renderer = r;
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
@@ -110,12 +110,12 @@ namespace OpenRa.Game
 			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
 			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
 			
-			tabSprites = groups
-				.SelectMany(g => Rules.Categories[g])
-				.Where(u => Rules.NewUnitInfo[u].Traits.Contains<BuildableInfo>())
+			tabSprites = Rules.NewUnitInfo.Values
+				.Where(x => groups.Contains(x.Category))
+				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
-					u => u,
-					u => SpriteSheetBuilder.LoadAllSprites(Rules.NewUnitInfo[u].Traits.Get<BuildableInfo>().Icon ?? (u + "icon"))[0]);
+					u => u.Name,
+					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<BuildableInfo>().Icon ?? (u.Name + "icon"))[0]);
 
 			spsprites = Rules.SupportPowerInfo
 				.ToDictionary(
@@ -644,7 +644,7 @@ namespace OpenRa.Game
 
 		void StartProduction( string item )
 		{
-			var group = Rules.UnitCategory[item];
+			var group = Rules.NewUnitInfo[item].Category;
 			Sound.Play((group == "Building") ? "abldgin1.aud" : "train1.aud");
 			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
 		}
@@ -652,7 +652,7 @@ namespace OpenRa.Game
 		void HandleBuildPalette(string item, bool isLmb)
 		{
 			var player = Game.LocalPlayer;
-			var group = Rules.UnitCategory[item];
+			var group = Rules.NewUnitInfo[item].Category;
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			var producing = queue.AllItems(group).FirstOrDefault( a => a.Item == item );
 

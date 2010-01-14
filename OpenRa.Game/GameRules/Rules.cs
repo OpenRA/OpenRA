@@ -12,7 +12,6 @@ namespace OpenRa.Game
 	{
 		public static IniFile AllRules;
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
-		public static Dictionary<string, string> UnitCategory;
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
@@ -53,14 +52,6 @@ namespace OpenRa.Game
 			Aftermath = new AftermathInfo();
 			if (useAftermath)
 				FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
-
-			LoadCategories(
-				"Building",
-				"Infantry",
-				"Vehicle",
-				"Ship",
-				"Plane");
-			UnitCategory = Categories.SelectMany(x => x.Value.Select(y => new KeyValuePair<string, string>(y, x.Key))).ToDictionary(x => x.Key, x => x.Value);
 
 			LoadCategories(
 				"Weapon",

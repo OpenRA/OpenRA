@@ -46,7 +46,7 @@ namespace OpenRa.Game.GameRules
 				if( playerBuildings[ p ].Count == 0 )
 					return false;
 
-			if( producesIndex[ Rules.UnitCategory[ info.Name ] ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
+			if( producesIndex[ info.Category ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
 				return false;
 
 			return true;
@@ -64,7 +64,7 @@ namespace OpenRa.Game.GameRules
 		{
 			return Rules.NewUnitInfo.Values
 				.Where( x => x.Name[ 0 ] != '^' )
-				.Where( x => categories.Contains( Rules.UnitCategory[ x.Name ] ) )
+				.Where( x => categories.Contains( x.Category ) )
 				.Where( x => x.Traits.Contains<BuildableInfo>() );
 		}
 
@@ -74,7 +74,7 @@ namespace OpenRa.Game.GameRules
 			if( builtAt.Length != 0 )
 				return builtAt.Select( x => Rules.NewUnitInfo[ x.ToLowerInvariant() ] );
 			else
-				return producesIndex[ Rules.UnitCategory[ info.Name ] ];
+				return producesIndex[ info.Category ];
 		}
 	}
 }
