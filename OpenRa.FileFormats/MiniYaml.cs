@@ -21,40 +21,48 @@ namespace OpenRa.FileFormats
 			Nodes = nodes;
 		}
 
-		public static Dictionary<string, MiniYaml> FromFile( string path )
+		static Dictionary<string, MiniYaml> FromLines(string[] lines)
 		{
-			var lines = File.ReadAllLines( path );
-
 			var levels = new List<Dictionary<string, MiniYaml>>();
-			levels.Add( new Dictionary<string, MiniYaml>() );
+			levels.Add(new Dictionary<string, MiniYaml>());
 
-			foreach( var line in lines )
+			foreach (var line in lines)
 			{
-				var t = line.TrimStart( ' ', '\t' );
-				if( t.Length == 0 || t[ 0 ] == '#' )
+				var t = line.TrimStart(' ', '\t');
+				if (t.Length == 0 || t[0] == '#')
 					continue;
 				var level = line.Length - t.Length;
 
-				if( levels.Count <= level )
-					throw new InvalidOperationException( "Bad indent in miniyaml" );
-				while( levels.Count > level + 1 )
-					levels.RemoveAt( levels.Count - 1 );
+				if (levels.Count <= level)
+					throw new InvalidOperationException("Bad indent in miniyaml");
+				while (levels.Count > level + 1)
+					levels.RemoveAt(levels.Count - 1);
 
-				var colon = t.IndexOf( ':' );
+				var colon = t.IndexOf(':');
 				var d = new Dictionary<string, MiniYaml>();
 
-				if( colon == -1 )
-					levels[ level ].Add( t.Trim(), new MiniYaml( null, d ) );
+				if (colon == -1)
+					levels[level].Add(t.Trim(), new MiniYaml(null, d));
 				else
 				{
-					var value = t.Substring( colon + 1 ).Trim();
-					if( value.Length == 0 )
+					var value = t.Substring(colon + 1).Trim();
+					if (value.Length == 0)
 						value = null;
-					levels[ level ].Add( t.Substring( 0, colon ).Trim(), new MiniYaml( value, d ) );
+					levels[level].Add(t.Substring(0, colon).Trim(), new MiniYaml(value, d));
 				}
-				levels.Add( d );
+				levels.Add(d);
 			}
-			return levels[ 0 ];
+			return levels[0];
+		}
+
+		public static Dictionary<string, MiniYaml> FromFile( string path )
+		{
+			return FromLines(File.ReadAllLines( path ));
+		}
+
+		public static Dictionary<string, MiniYaml> FromString(string text)
+		{
+			return FromLines(text.Split('\n'));
 		}
 
 		public static Dictionary<string, MiniYaml> Merge( Dictionary<string, MiniYaml> a, Dictionary<string, MiniYaml> b )
@@ -114,6 +122,11 @@ namespace OpenRa.FileFormats
 		public static void WriteToFile(this MiniYamlNodes y, string filename)
 		{
 			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+		}
+
+		public static string WriteToString(this MiniYamlNodes y)
+		{
+			return string.Join("\n", y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
 		}
 
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
