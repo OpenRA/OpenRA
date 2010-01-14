@@ -54,7 +54,6 @@ namespace OpenRa.Game
 
 		public static int GetMaxHP(this Actor self)
 		{
-			if (self.Info == null) return 0;
 			var oai = self.Info.Traits.GetOrDefault<OwnedActorInfo>();
 			if (oai == null) return 0;
 			return oai.HP;

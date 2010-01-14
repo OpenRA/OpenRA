@@ -62,7 +62,7 @@ namespace OpenRa.Game
 		{
 			get			// todo: inline into GetBounds
 			{
-				var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				if (si != null && si.Bounds != null)
 					return new float2(si.Bounds[0], si.Bounds[1]);
 
@@ -100,7 +100,7 @@ namespace OpenRa.Game
 
 		public RectangleF GetBounds(bool useAltitude)
 		{
-			var si = Info != null ? Info.Traits.GetOrDefault<SelectableInfo>() : null;
+			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 
 			var size = SelectedSize;
 			var loc = CenterLocation - 0.5f * size;
