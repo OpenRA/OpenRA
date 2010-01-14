@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Graphics
 {
@@ -97,7 +98,8 @@ namespace OpenRa.Game.Graphics
 
 		public void GoToStartLocation()
 		{
-			Center(Game.world.Actors.Where(a => a.Info != null && a.Owner == Game.LocalPlayer));
+			Center(Game.world.Actors.Where(a => a.Info != null 
+				&& a.traits.Contains<Selectable>() && a.Owner == Game.LocalPlayer));
 		}
 	}
 }

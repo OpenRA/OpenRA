@@ -3,15 +3,12 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	// this is NOT bound through rules (it belongs on the world actor!)
-	// so no *Info required
+	class ChronoshiftPaletteEffectInfo : StatelessTraitInfo<ChronoshiftPaletteEffect> { }
 
 	class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
 		const int chronoEffectLength = 20;
 		int remainingFrames;
-
-		public ChronoshiftPaletteEffect(Actor self) { }
 
 		public void DoChronoshift()
 		{

@@ -120,7 +120,7 @@ namespace OpenRa.Game
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
 
-			var groups = Rules.NewUnitInfo.Values.Select( x => x.Category ).Distinct().ToList();
+			var groups = Rules.NewUnitInfo.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,

@@ -70,16 +70,13 @@ namespace OpenRa.Game
 				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
 				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
 
-				var a = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
+				var a = new Actor("Player", new int2(int.MaxValue, int.MaxValue), null);
 				players[i] = new Player(a, i, (PaletteType) i, name, race, "Multi{0}".F(i));
 				a.Owner = players[i];
-				a.traits.Add(new Traits.ProductionQueue(a));
 				Game.world.Add(a);
 			}
 
-			var worldActor = new Actor(null, new int2(int.MaxValue, int.MaxValue), null);
-			worldActor.traits.Add(new WaterPaletteRotation(worldActor));
-			worldActor.traits.Add(new ChronoshiftPaletteEffect(worldActor));
+			var worldActor = new Actor("World", new int2(int.MaxValue, int.MaxValue), null);
 			Game.world.Add(worldActor);
 
 			Rules.Map.InitOreDensity();
