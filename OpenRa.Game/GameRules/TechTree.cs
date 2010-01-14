@@ -11,9 +11,8 @@ namespace OpenRa.Game.GameRules
 
 		public TechTree()
 		{
-			foreach( var b in Rules.Categories[ "Building" ] )
+			foreach( var info in Rules.NewUnitInfo.Values )
 			{
-				var info = Rules.NewUnitInfo[ b ];
 				var pi = info.Traits.GetOrDefault<ProductionInfo>();
 				if (pi != null)
 					foreach( var p in pi.Produces )
@@ -51,19 +50,22 @@ namespace OpenRa.Game.GameRules
 				return false;
 
 			return true;
-		} 
+		}
 
 		public IEnumerable<string> BuildableItems( Player player, params string[] categories )
 		{
 			var playerBuildings = GatherBuildings( player );
-			foreach( var unit in categories.SelectMany( x => Rules.Categories[ x ] ).Select( x => Rules.NewUnitInfo[ x ] ) )
+			foreach( var unit in AllBuildables( player, categories ) )
 				if( CanBuild( unit, player, playerBuildings ) )
 					yield return unit.Name;
 		}
 
-		public IEnumerable<string> AllItems(Player player, params string[] categories)
+		public IEnumerable<NewUnitInfo> AllBuildables(Player player, params string[] categories)
 		{
-			return categories.SelectMany(x => Rules.Categories[x]).Select(x => Rules.NewUnitInfo[x].Name);
+			return Rules.NewUnitInfo.Values
+				.Where( x => x.Name[ 0 ] != '^' )
+				.Where( x => categories.Contains( Rules.UnitCategory[ x.Name ] ) )
+				.Where( x => x.Traits.Contains<BuildableInfo>() );
 		}
 
 		public IEnumerable<NewUnitInfo> UnitBuiltAt( NewUnitInfo info )

@@ -26,12 +26,11 @@ namespace RulesConverter
 
 			var categoryMap = new Dictionary<string,Pair<string,string>>
 			{
-				{ "VehicleTypes", Pair.New( "DefaultVehicle", "Vehicle" ) },
-				{ "ShipTypes", Pair.New( "DefaultShip", "Ship" ) },
-				{ "PlaneTypes", Pair.New( "DefaultPlane", "Plane" ) },
-				{ "DefenseTypes", Pair.New( "DefaultDefense", "Defense" ) },
-				{ "BuildingTypes", Pair.New( "DefaultBuilding", "Building" ) },
-				{ "InfantryTypes", Pair.New( "DefaultInfantry", "Infantry" ) },
+				{ "VehicleTypes", Pair.New( "^Vehicle", "Vehicle" ) },
+				{ "ShipTypes", Pair.New( "^Ship", "Ship" ) },
+				{ "PlaneTypes", Pair.New( "^Plane", "Plane" ) },
+				{ "BuildingTypes", Pair.New( "^Building", "Building" ) },
+				{ "InfantryTypes", Pair.New( "^Infantry", "Infantry" ) },
 			};
 
 			var traitMap = new Dictionary<string, PL>
@@ -173,6 +172,7 @@ namespace RulesConverter
 							var iniSection = rules.GetSection(item);
 							writer.WriteLine("{0}:", item);
 							writer.WriteLine("\tInherits: {0}", cat.Value.First);
+							writer.WriteLine("\tCategory: {0}", cat.Value.Second);
 
 							var traits = iniSection.GetValue("Traits", "")
 								.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();

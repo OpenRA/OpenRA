@@ -1,4 +1,5 @@
-DefaultVehicle:
+^Vehicle:
+	Category: Vehicle
 	Unit:
 		ROT: 5
 	Mobile:
@@ -10,7 +11,8 @@ DefaultVehicle:
 	Passenger: 
 	IronCurtainable: 
 
-DefaultInfantry:
+^Infantry:
+	Category: Infantry
 	Unit:
 		Armor: none
 		Sight: 4
@@ -20,17 +22,20 @@ DefaultInfantry:
 	RenderInfantry:
 	Passenger:
 
-DefaultShip:
+^Ship:
+	Category: Ship
 	Unit:
 	Mobile:
 		MovementType: Float
 	Selectable:
 
-DefaultPlane:
+^Plane:
+	Category: Plane
 	Unit:
 	Selectable:
 
-DefaultBuilding:
+^Building:
+	Category: Building
 	Selectable:
 		Priority: 3
 	Building:

@@ -8,15 +8,24 @@ namespace OpenRa.Game.GameRules
 {
 	class NewUnitInfo
 	{
-		public readonly TypeDictionary Traits = new TypeDictionary();
 		public readonly string Name;
+		public readonly string Category;
+		public readonly TypeDictionary Traits = new TypeDictionary();
 
 		public NewUnitInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
-			Name = name;
+			var mergedNode = MergeWithParent( node, allUnits ).Nodes;
 
-			foreach( var t in MergeWithParent( node, allUnits ).Nodes )
-				if( t.Key != "Inherits" )
+			Name = name;
+			MiniYaml categoryNode;
+			if( mergedNode.TryGetValue( "Category", out categoryNode ) )
+				Category = categoryNode.Value;
+
+			if( Rules.UnitCategory.ContainsKey( name ) && Category != Rules.UnitCategory[ name ] )
+				throw new NotImplementedException( "wrong category");
+
+			foreach( var t in mergedNode )
+				if( t.Key != "Inherits" && t.Key != "Category" )
 					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );
 		}
 

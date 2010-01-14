@@ -1,5 +1,5 @@
 V2RL:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
@@ -22,7 +22,7 @@ V2RL:
 	AutoTarget:
 
 1TNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
@@ -48,7 +48,7 @@ V2RL:
 	AutoTarget:
 
 2TNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 6
 		Tab: Vehicle
@@ -74,7 +74,7 @@ V2RL:
 	AutoTarget:
 
 3TNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 4
 		Tab: Vehicle
@@ -100,7 +100,7 @@ V2RL:
 	AutoTarget:
 
 4TNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 10
 		Tab: Vehicle
@@ -128,7 +128,7 @@ V2RL:
 	AutoTarget:
 
 MRJ:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 12
 		Tab: Vehicle
@@ -151,7 +151,7 @@ MRJ:
 		Offset: 0,4,0,-6
 
 MGG:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 11
 		Tab: Vehicle
@@ -172,7 +172,7 @@ MGG:
 		Offset: 0,6,0,-3
 
 ARTY:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 8
 		Tab: Vehicle
@@ -197,7 +197,7 @@ ARTY:
 	AutoTarget:
 
 HARV:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 1
 		Tab: Vehicle
@@ -220,7 +220,7 @@ HARV:
 	RenderUnit:
 
 MCV:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 11
 		Tab: Vehicle
@@ -241,7 +241,7 @@ MCV:
 	RenderUnit:
 
 JEEP:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
@@ -267,7 +267,7 @@ JEEP:
 	AutoTarget:
 
 APC:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 5
 		Tab: Vehicle
@@ -295,7 +295,7 @@ APC:
 		UnloadFacing: 220
 
 MNLY.AP:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
@@ -322,7 +322,7 @@ MNLY.AP:
 		Ammo: 5
 
 MNLY.AT:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 3
 		Tab: Vehicle
@@ -349,7 +349,7 @@ MNLY.AT:
 		Ammo: 5
 
 TRUK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Unit:
 		HP: 110
 		Armor: light
@@ -358,7 +358,7 @@ TRUK:
 	RenderUnit:
 
 SS:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 5
 		Tab: Ship
@@ -384,7 +384,7 @@ SS:
 	IronCurtainable:
 
 DD:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 7
 		Tab: Ship
@@ -412,7 +412,7 @@ DD:
 	IronCurtainable:
 
 CA:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 10
 		Tab: Ship
@@ -442,7 +442,7 @@ CA:
 	IronCurtainable:
 
 LST:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 3
 		Tab: Ship
@@ -464,7 +464,7 @@ LST:
 	IronCurtainable:
 
 PT:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 5
 		Tab: Ship
@@ -492,7 +492,7 @@ PT:
 	IronCurtainable:
 
 MIG:
-	Inherits: DefaultPlane
+	Inherits: ^Plane
 	Buildable:
 		TechLevel: 10
 		Tab: Plane
@@ -519,7 +519,7 @@ MIG:
 	IronCurtainable:
 
 YAK:
-	Inherits: DefaultPlane
+	Inherits: ^Plane
 	Buildable:
 		TechLevel: 5
 		Tab: Plane
@@ -547,7 +547,7 @@ YAK:
 	IronCurtainable:
 
 TRAN:
-	Inherits: DefaultPlane
+	Inherits: ^Plane
 	Buildable:
 		TechLevel: 11
 		Tab: Plane
@@ -575,7 +575,7 @@ TRAN:
 	IronCurtainable:
 
 HELI:
-	Inherits: DefaultPlane
+	Inherits: ^Plane
 	Buildable:
 		TechLevel: 9
 		Tab: Plane
@@ -606,7 +606,7 @@ HELI:
 	IronCurtainable:
 
 HIND:
-	Inherits: DefaultPlane
+	Inherits: ^Plane
 	Buildable:
 		TechLevel: 9
 		Tab: Plane
@@ -636,17 +636,15 @@ HIND:
 	IronCurtainable:
 
 IRON:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 12
-		Tab: Defense
+		Tab: Building
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2800
 		Description: Iron Curtain
 		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -200
 		RequiresPower: true
@@ -662,17 +660,15 @@ IRON:
 	IronCurtain:
 
 PDOX:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 12
-		Tab: Defense
+		Tab: Building
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2800
 		Description: Chronosphere
 		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -200
 		RequiresPower: true
@@ -688,17 +684,15 @@ PDOX:
 	IronCurtainable:
 
 PBOX:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
-		Tab: Defense
+		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 400
 		Description: Pillbox
 		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -15
 		Footprint: x
@@ -715,17 +709,15 @@ PBOX:
 	IronCurtainable:
 
 HBOX:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Tab: Defense
+		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
 		Description: Camo Pillbox
 		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -15
 		Footprint: x
@@ -742,17 +734,15 @@ HBOX:
 	IronCurtainable:
 
 TSLA:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 7
-		Tab: Defense
+		Tab: Building
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 1500
 		Description: Tesla Coil
 		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -150
 		RequiresPower: true
@@ -771,17 +761,15 @@ TSLA:
 	IronCurtainable:
 
 GUN:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 4
-		Tab: Defense
+		Tab: Building
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
 		Description: Turret
 		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -40
 		Footprint: x
@@ -800,17 +788,15 @@ GUN:
 	IronCurtainable:
 
 AGUN:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 5
-		Tab: Defense
+		Tab: Building
 		Prerequisites: dome
 		Owner: allies
 		Cost: 600
 		Description: AA Gun
 		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -50
 		RequiresPower: true
@@ -830,17 +816,15 @@ AGUN:
 	IronCurtainable:
 
 FTUR:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
-		Tab: Defense
+		Tab: Building
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 600
 		Description: Flame Turret
 		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
-	Selectable:
-		Priority: 3
 	Turreted:
 	Building:
 		Power: -20
@@ -857,17 +841,15 @@ FTUR:
 	IronCurtainable:
 
 GAP:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 10
-		Tab: Defense
+		Tab: Building
 		Prerequisites: atek
 		Owner: allies
 		Cost: 500
 		Description: Gap Generator
 		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -60
 		RequiresPower: true
@@ -882,17 +864,15 @@ GAP:
 	IronCurtainable:
 
 SAM:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 9
-		Tab: Defense
+		Tab: Building
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
 		Description: SAM Site
 		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -20
 		Footprint: xx
@@ -910,17 +890,15 @@ SAM:
 	IronCurtainable:
 
 MSLO:
-	Inherits: DefaultDefense
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 13
-		Tab: Defense
+		Tab: Building
 		Prerequisites: @Tech Center
 		Owner: soviet,allies
 		Cost: 2500
 		Description: Missile Silo
 		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
-	Selectable:
-		Priority: 3
 	Building:
 		Power: -100
 		Footprint: xx
@@ -933,7 +911,7 @@ MSLO:
 	IronCurtainable:
 
 ATEK:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 10
 		Tab: Building
@@ -958,7 +936,7 @@ ATEK:
 	GpsLaunchSite:
 
 WEAP:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -985,7 +963,7 @@ WEAP:
 	IronCurtainable:
 
 SYRD:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1010,7 +988,7 @@ SYRD:
 	IronCurtainable:
 
 SPEN:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1035,7 +1013,7 @@ SPEN:
 	IronCurtainable:
 
 FACT:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Power: 0
 		Footprint: xxx xxx xxx
@@ -1053,7 +1031,7 @@ FACT:
 	IronCurtainable:
 
 PROC:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1080,7 +1058,7 @@ PROC:
 	IronCurtainable:
 
 SILO:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1104,7 +1082,7 @@ SILO:
 	IronCurtainable:
 
 HPAD:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 9
 		Tab: Building
@@ -1132,7 +1110,7 @@ HPAD:
 	IronCurtainable:
 
 DOME:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1157,7 +1135,7 @@ DOME:
 	IronCurtainable:
 
 AFLD:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 5
 		Tab: Building
@@ -1183,7 +1161,7 @@ AFLD:
 	IronCurtainable:
 
 POWR:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1205,7 +1183,7 @@ POWR:
 	IronCurtainable:
 
 APWR:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 8
 		Tab: Building
@@ -1228,7 +1206,7 @@ APWR:
 	IronCurtainable:
 
 STEK:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 6
 		Tab: Building
@@ -1252,7 +1230,7 @@ STEK:
 	IronCurtainable:
 
 BARR:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1278,7 +1256,7 @@ BARR:
 	IronCurtainable:
 
 TENT:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1304,7 +1282,7 @@ TENT:
 	IronCurtainable:
 
 KENN:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1326,7 +1304,7 @@ KENN:
 	IronCurtainable:
 
 FIX:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1350,7 +1328,7 @@ FIX:
 	IronCurtainable:
 
 FACF:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
 		Tab: Building
@@ -1373,7 +1351,7 @@ FACF:
 	IronCurtainable:
 
 WEAF:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1398,7 +1376,7 @@ WEAF:
 	IronCurtainable:
 
 SYRF:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1422,7 +1400,7 @@ SYRF:
 	Fake:
 
 SPEF:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1438,7 +1416,7 @@ SPEF:
 	Fake:
 
 DOMF:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
 		Tab: Building
@@ -1461,6 +1439,7 @@ DOMF:
 	Fake:
 
 MINP:
+	Category: Building
 	Unit:
 		HP: 1
 	RenderUnit:
@@ -1469,6 +1448,7 @@ MINP:
 	InvisibleToOthers:
 
 MINV:
+	Category: Building
 	Unit:
 		HP: 1
 	RenderUnit:
@@ -1477,126 +1457,147 @@ MINV:
 	InvisibleToOthers:
 
 T01:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T02:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T03:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T05:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T06:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T07:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T08:
+	Category: Building
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
 	RenderBuilding:
 
 T10:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T11:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T12:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T13:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T14:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T15:
+	Category: Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
 
 T16:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 T17:
+	Category: Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
 
 TC01:
+	Category: Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
 
 TC02:
+	Category: Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
 
 TC03:
+	Category: Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
 
 TC04:
+	Category: Building
 	Building:
 		Footprint: xxx_ xxx_ xxx_
 		Dimensions: 4,3
 	RenderBuilding:
 
 TC05:
+	Category: Building
 	Building:
 		Footprint: xxx_ xxx_ xxx_
 		Dimensions: 4,3
 	RenderBuilding:
 
 MINE:
+	Category: Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1604,7 +1605,7 @@ MINE:
 	SeedsOre:
 
 FCOM:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -1618,7 +1619,7 @@ FCOM:
 	RenderBuilding:
 
 V01:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1629,7 +1630,7 @@ V01:
 	RenderBuilding:
 
 V02:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1639,7 +1640,7 @@ V02:
 	RenderBuilding:
 
 V03:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1649,7 +1650,7 @@ V03:
 	RenderBuilding:
 
 V04:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1659,7 +1660,7 @@ V04:
 	RenderBuilding:
 
 V05:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -1669,7 +1670,7 @@ V05:
 	RenderBuilding:
 
 V06:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -1679,7 +1680,7 @@ V06:
 	RenderBuilding:
 
 V07:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -1689,7 +1690,7 @@ V07:
 	RenderBuilding:
 
 V08:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1699,7 +1700,7 @@ V08:
 	RenderBuilding:
 
 V09:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1709,7 +1710,7 @@ V09:
 	RenderBuilding:
 
 V10:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1719,7 +1720,7 @@ V10:
 	RenderBuilding:
 
 V11:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1729,7 +1730,7 @@ V11:
 	RenderBuilding:
 
 V12:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1739,7 +1740,7 @@ V12:
 	RenderBuilding:
 
 V13:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1749,7 +1750,7 @@ V13:
 	RenderBuilding:
 
 V14:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1759,7 +1760,7 @@ V14:
 	RenderBuilding:
 
 V15:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1769,7 +1770,7 @@ V15:
 	RenderBuilding:
 
 V16:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1779,7 +1780,7 @@ V16:
 	RenderBuilding:
 
 V17:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1789,7 +1790,7 @@ V17:
 	RenderBuilding:
 
 V18:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1799,7 +1800,7 @@ V18:
 	RenderBuilding:
 
 V19:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -1809,7 +1810,7 @@ V19:
 	RenderBuilding:
 
 V20:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1818,7 +1819,7 @@ V20:
 		Image: FCOM
 
 V21:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1827,7 +1828,7 @@ V21:
 		Image: FCOM
 
 V22:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1836,7 +1837,7 @@ V22:
 		Image: FCOM
 
 V23:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1845,7 +1846,7 @@ V23:
 		Image: FCOM
 
 V24:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1854,7 +1855,7 @@ V24:
 		Image: FCOM
 
 V25:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1863,7 +1864,7 @@ V25:
 		Image: FCOM
 
 V26:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1872,7 +1873,7 @@ V26:
 		Image: FCOM
 
 V27:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1881,7 +1882,7 @@ V27:
 		Image: FCOM
 
 V28:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1890,7 +1891,7 @@ V28:
 		Image: FCOM
 
 V29:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1899,7 +1900,7 @@ V29:
 		Image: FCOM
 
 V30:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1908,7 +1909,7 @@ V30:
 		Image: FCOM
 
 V31:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1917,7 +1918,7 @@ V31:
 		Image: FCOM
 
 V32:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1926,7 +1927,7 @@ V32:
 		Image: FCOM
 
 V33:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1935,7 +1936,7 @@ V33:
 		Image: FCOM
 
 V34:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1944,7 +1945,7 @@ V34:
 		Image: FCOM
 
 V35:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1953,7 +1954,7 @@ V35:
 		Image: FCOM
 
 V36:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1962,7 +1963,7 @@ V36:
 		Image: FCOM
 
 V37:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Building:
 		Repairable: false
 		HP: 400
@@ -1971,7 +1972,7 @@ V37:
 		Image: FCOM
 
 BARL:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Selectable:
 		Priority: 0
 	Building:
@@ -1985,7 +1986,7 @@ BARL:
 	Explodes:
 
 BRL3:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Selectable:
 		Priority: 0
 	Building:
@@ -1999,7 +2000,7 @@ BRL3:
 	Explodes:
 
 MISS:
-	Inherits: DefaultBuilding
+	Inherits: ^Building
 	Selectable:
 		Priority: 0
 	Building:
@@ -2012,7 +2013,7 @@ MISS:
 	RenderBuilding:
 
 DOG:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 3
 		Tab: Infantry
@@ -2031,7 +2032,7 @@ DOG:
 		Speed: 4
 
 E1:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 1
 		Tab: Infantry
@@ -2051,7 +2052,7 @@ E1:
 	AutoTarget:
 
 E2:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 1
 		Tab: Infantry
@@ -2073,7 +2074,7 @@ E2:
 	AutoTarget:
 
 E3:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 2
 		Tab: Infantry
@@ -2094,7 +2095,7 @@ E3:
 	AutoTarget:
 
 E4:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 6
 		Tab: Infantry
@@ -2117,7 +2118,7 @@ E4:
 	AutoTarget:
 
 E6:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 5
 		Tab: Infantry
@@ -2136,7 +2137,7 @@ E6:
 	SquishByTank:
 
 SPY:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 6
 		Tab: Infantry
@@ -2156,7 +2157,7 @@ SPY:
 	SquishByTank:
 
 THF:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 11
 		Tab: Infantry
@@ -2177,7 +2178,7 @@ THF:
 	Thief:
 
 E7:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 11
 		Tab: Infantry
@@ -2201,7 +2202,7 @@ E7:
 	AutoTarget:
 
 MEDI:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 2
 		Tab: Infantry

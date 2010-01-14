@@ -52,7 +52,7 @@ namespace OpenRa.Game.Traits
 							() => Game.world.AddFrameEndTask(
 								_ =>
 								{
-									var isBuilding = group == "Building" || group == "Defense";
+									var isBuilding = group == "Building";
 									if( !hasPlayedSound && order.Player == Game.LocalPlayer )
 									{
 										Sound.Play( isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );

@@ -56,7 +56,6 @@ namespace OpenRa.Game
 
 			LoadCategories(
 				"Building",
-				"Defense",
 				"Infantry",
 				"Vehicle",
 				"Ship",

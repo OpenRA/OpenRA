@@ -1,5 +1,5 @@
 STNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Unit:
 		HP: 200
 		Armor: heavy
@@ -16,7 +16,7 @@ STNK:
 	Cloak:
 
 TTNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 8
 		Tab: Vehicle
@@ -37,7 +37,7 @@ TTNK:
 	RenderUnitSpinner:
 
 CTNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 12
 		Tab: Vehicle
@@ -58,7 +58,7 @@ CTNK:
 	ChronoshiftDeploy:
 
 DTRK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 13
 		Tab: Vehicle
@@ -77,7 +77,7 @@ DTRK:
 	DemoTruck:
 
 QTNK:
-	Inherits: DefaultVehicle
+	Inherits: ^Vehicle
 	Buildable:
 		TechLevel: 10
 		Tab: Vehicle
@@ -96,7 +96,7 @@ QTNK:
 	RenderUnit:
 
 MSUB:
-	Inherits: DefaultShip
+	Inherits: ^Ship
 	Buildable:
 		TechLevel: 9
 		Tab: Ship
@@ -120,7 +120,7 @@ MSUB:
 	Chronoshiftable:
 
 SHOK:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 7
 		Tab: Infantry
@@ -138,7 +138,7 @@ SHOK:
 	TakeCover:
 
 MECH:
-	Inherits: DefaultInfantry
+	Inherits: ^Infantry
 	Buildable:
 		TechLevel: 7
 		Tab: Infantry

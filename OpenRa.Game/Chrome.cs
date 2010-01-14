@@ -47,7 +47,7 @@ namespace OpenRa.Game
 		// Build Palette tabs
 		string currentTab = "Building";
 		bool paletteOpen = false;
-		static string[] groups = new string[] { "Building", "Defense", "Infantry", "Vehicle", "Plane", "Ship" };
+		static string[] groups = new string[] { "Building", "Infantry", "Vehicle", "Plane", "Ship" };
 		readonly Dictionary<string, string[]> tabImageNames;
 		readonly Dictionary<string, Sprite> tabSprites;
 		
@@ -530,10 +530,10 @@ namespace OpenRa.Game
 
 			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
 
-			var allItems = Rules.TechTree.AllItems(Game.LocalPlayer, queueName)
-				.Where(a => Rules.NewUnitInfo[a].Traits.Contains<BuildableInfo>())
-				.Where(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().Owner.Contains(Game.LocalPlayer.Race))
-				.OrderBy(a => Rules.NewUnitInfo[a].Traits.Get<BuildableInfo>().TechLevel);
+			var allBuildables = Rules.TechTree.AllBuildables(Game.LocalPlayer, queueName)
+				.Where(a => a.Traits.Contains<BuildableInfo>())
+				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(Game.LocalPlayer.Race))
+				.OrderBy(a => a.Traits.Get<BuildableInfo>().TechLevel);
 
 			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
@@ -546,7 +546,7 @@ namespace OpenRa.Game
 
 			// Draw the icons
 			int lasty = -1;
-			foreach (var item in allItems)
+			foreach (var item in allBuildables)
 			{
 				// Draw the background for this row
 				if (y != lasty)
@@ -560,12 +560,12 @@ namespace OpenRa.Game
 				var drawPos = Game.viewport.Location + new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
-				shpRenderer.DrawSprite(tabSprites[item], drawPos, PaletteType.Chrome);
+				shpRenderer.DrawSprite(tabSprites[item.Name], drawPos, PaletteType.Chrome);
 
-				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item);
+				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
 				if (rect.Contains(lastMousePos.ToPoint()))
-					tooltipItem = item;
+					tooltipItem = item.Name;
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
@@ -589,7 +589,7 @@ namespace OpenRa.Game
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
 
-					var repeats = queue.AllItems(queueName).Count(a => a.Item == item);
+					var repeats = queue.AllItems(queueName).Count(a => a.Item == item.Name);
 					if (repeats > 1 || queue.CurrentItem(queueName) != firstOfThis)
 					{
 						var offset = -22;
@@ -604,11 +604,11 @@ namespace OpenRa.Game
 					}
 				}
 				else
-					if (!buildableItems.Contains(item) || isBuildingSomething)
+					if (!buildableItems.Contains(item.Name) || isBuildingSomething)
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
-				var closureItem = item;
-				AddButton(rect, isLmb => HandleBuildPalette(closureItem, isLmb));
+				var closureItemName = item.Name;
+				AddButton(rect, isLmb => HandleBuildPalette(closureItemName, isLmb));
 
 	
 				if (++x == columns) { x = 0; y++; }
@@ -645,7 +645,7 @@ namespace OpenRa.Game
 		void StartProduction( string item )
 		{
 			var group = Rules.UnitCategory[item];
-			Sound.Play((group == "Building" || group == "Defense") ? "abldgin1.aud" : "train1.aud");
+			Sound.Play((group == "Building") ? "abldgin1.aud" : "train1.aud");
 			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
 		}
 
@@ -664,7 +664,7 @@ namespace OpenRa.Game
 				{
 					if (producing.Done)
 					{
-						if (group == "Building" || group == "Defense")
+						if (group == "Building")
 							Game.controller.orderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
 						return;
 					}
