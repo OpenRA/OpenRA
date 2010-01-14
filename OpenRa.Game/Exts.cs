@@ -1,6 +1,4 @@
-﻿
-using System.Windows.Forms;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
@@ -9,11 +7,6 @@ namespace OpenRa.Game
 {
 	static class Exts
 	{
-		public static string F(this string fmt, params object[] args)
-		{
-			return string.Format(fmt, args);
-		}
-
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
 			return (k & mod) == mod;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using IjwFramework.Types;
-using OpenRa.Game.GameRules;
+using OpenRa.FileFormats;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Orders;
 using OpenRa.Game.Support;

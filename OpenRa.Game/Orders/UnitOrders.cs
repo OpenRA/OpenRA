@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using OpenRa.FileFormats;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
 using OpenRa.Game.Traits;

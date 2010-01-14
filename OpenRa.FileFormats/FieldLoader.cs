@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.FileFormats;
-using System.Collections.Generic;
 
-namespace OpenRa.Game.GameRules
+namespace OpenRa.FileFormats
 {
-	static class FieldLoader
+	public static class FieldLoader
 	{
 		public static void Load(object self, IniSection ini)
 		{
