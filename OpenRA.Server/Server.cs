@@ -65,7 +65,7 @@ namespace OpenRA.Server
 					{
 						Index = newConn.PlayerIndex,
 						Palette = newConn.PlayerIndex,
-						Name = "Player {0}".F(newConn.PlayerIndex),
+						Name = "Player {0}".F(1 + newConn.PlayerIndex),
 						Race = 1,
 						State = Session.ClientState.NotReady
 					});

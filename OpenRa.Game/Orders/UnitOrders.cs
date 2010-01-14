@@ -76,7 +76,7 @@ namespace OpenRa.Game.Orders
 				}
 			case "SyncInfo":
 				{
-					Game.chat.AddLine(Color.White, "Server", "Synchronizing lobby info...");	// temp
+	//				Game.chat.AddLine(Color.White, "Server", "Synchronizing lobby info...");
 					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
