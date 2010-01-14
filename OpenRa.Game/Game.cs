@@ -50,6 +50,8 @@ namespace OpenRa.Game
 		static HardwarePalette palette;
 		public static Minimap minimap;
 
+		public static Session LobbyInfo = new Session();
+
 		public static void ChangeMap(string mapName)
 		{
 			SheetBuilder.Initialize(renderer);
@@ -72,7 +74,7 @@ namespace OpenRa.Game
 			{
 				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
 				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
-				players[i] = new Player(i, (PaletteType) i, name, race, "Multi{0}".F(i));
+				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
 
 			Rules.Map.InitOreDensity();
@@ -346,6 +348,7 @@ namespace OpenRa.Game
 
 		public static void SyncLobbyInfo(string data)
 		{
+			var session = new Session();
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)
 			{
@@ -355,9 +358,12 @@ namespace OpenRa.Game
 
 				var client = new Session.Client();
 				FieldLoader.Load(client, y.Value);
+				session.Clients.Add(client);
 
 				players[index].SyncFromLobby(client);
 			}
+
+			LobbyInfo = session;
 		}
 	}
 }

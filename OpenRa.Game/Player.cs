@@ -31,14 +31,15 @@ namespace OpenRa.Game
 		public Shroud Shroud = new Shroud();
 		public Dictionary<string, SupportPower> SupportPowers;
 
-		public Player( int index, PaletteType palette, string playerName, Race race, string internalName )
+		public Player( int index, Session.Client client )
 		{
 			Game.world.Add(this.PlayerActor = new Actor("Player", new int2(int.MaxValue, int.MaxValue), this));
 			this.Index = index;
-			this.Palette = palette;
-			this.InternalName = internalName;
-			this.PlayerName = playerName;
-			this.Race = race;
+			this.InternalName = "Multi{0}".F(index);
+
+			this.Palette = client != null ? (PaletteType)client.Palette : (PaletteType)index;
+			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
+			this.Race = client != null ? (Race)client.Race : Race.Allies;
 
 			SupportPowers = Rules.SupportPowerInfo.ToDictionary( 
 				spi => spi.Key, 
