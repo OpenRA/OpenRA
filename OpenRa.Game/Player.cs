@@ -30,9 +30,9 @@ namespace OpenRa.Game
 		public Shroud Shroud = new Shroud();
 		public Dictionary<string, SupportPower> SupportPowers;
 
-		public Player( Actor playerActor, int index, PaletteType palette, string playerName, Race race, string internalName )
+		public Player( int index, PaletteType palette, string playerName, Race race, string internalName )
 		{
-			this.PlayerActor = playerActor;
+			Game.world.Add(this.PlayerActor = new Actor("Player", new int2(int.MaxValue, int.MaxValue), this));
 			this.Index = index;
 			this.Palette = palette;
 			this.InternalName = internalName;
