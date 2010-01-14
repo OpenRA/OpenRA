@@ -91,6 +91,7 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 105mm
+		SecondaryWeapon: 105mm
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
@@ -116,6 +117,7 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 120mm
+		SecondaryWeapon: MammothTusk
 		PrimaryLocalOffset: -4,-5,0,4,-5,0
 		SecondaryLocalOffset: -7,2,25,7,2,-25
 		Recoil: 4
@@ -389,6 +391,7 @@ DD:
 		ROT: 7
 	AttackTurreted:
 		PrimaryWeapon: Stinger
+		SecondaryWeapon: DepthCharge
 		PrimaryOffset: 0,-8,0,-3
 	RenderUnitTurreted:
 	AutoTarget:
@@ -416,6 +419,7 @@ CA:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 8Inch
+		SecondaryWeapon: 8Inch
 		PrimaryOffset: 0,17,0,-2
 		SecondaryOffset: 0,-17,0,-2
 		Recoil: 3
@@ -466,6 +470,7 @@ PT:
 		ROT: 7
 	AttackTurreted:
 		PrimaryWeapon: 2Inch
+		SecondaryWeapon: DepthCharge
 		PrimaryOffset: 0,-6,0,-1
 	RenderUnitTurreted:
 	AutoTarget:
@@ -491,6 +496,7 @@ MIG:
 		Speed: 20
 	AttackPlane:
 		PrimaryWeapon: Maverick
+		SecondaryWeapon: Maverick
 	Plane:
 	RenderUnit:
 	WithShadow:
@@ -518,6 +524,7 @@ YAK:
 		Speed: 16
 	AttackPlane:
 		PrimaryWeapon: ChainGun
+		SecondaryWeapon: ChainGun
 	Plane:
 	RenderUnit:
 	WithShadow:
@@ -572,6 +579,7 @@ HELI:
 		Speed: 16
 	AttackHeli:
 		PrimaryWeapon: Hellfire
+		SecondaryWeapon: Hellfire
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
@@ -781,6 +789,7 @@ AGUN:
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: ZSU-23
+		SecondaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
 
@@ -2051,6 +2060,7 @@ E3:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: RedEye
+		SecondaryWeapon: Dragon
 		PrimaryOffset: 0,0,0,-13
 	TakeCover:
 
@@ -2150,6 +2160,7 @@ E7:
 	C4Demolition:
 	AttackBase:
 		PrimaryWeapon: Colt45
+		SecondaryWeapon: Colt45
 	TakeCover:
 
 MEDI:

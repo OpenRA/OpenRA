@@ -123,7 +123,7 @@ namespace RulesConverter
 
 				{ "AttackBase", new PL {
 					{ "PrimaryWeapon", "Primary" },
-					{ "SecondaryWeapon", "SecondaryWeapon" },
+					{ "SecondaryWeapon", "Secondary" },
 					{ "PrimaryOffset", "PrimaryOffset" },
 					{ "SecondaryOffset", "SecondaryOffset" },
 					{ "PrimaryLocalOffset", "PrimaryLocalOffset" },
