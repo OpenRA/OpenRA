@@ -65,15 +65,15 @@ namespace OpenRa.Game
 					a.Owner.Shroud.Explore(a); 
 			};
 
+			var worldActor = new Actor("World", new int2(int.MaxValue, int.MaxValue), null);
+			Game.world.Add(worldActor);
+
 			for (int i = 0; i < 8; i++)
 			{
 				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
 				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
 				players[i] = new Player(i, (PaletteType) i, name, race, "Multi{0}".F(i));
 			}
-
-			var worldActor = new Actor("World", new int2(int.MaxValue, int.MaxValue), null);
-			Game.world.Add(worldActor);
 
 			Rules.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
