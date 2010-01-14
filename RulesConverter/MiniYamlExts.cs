@@ -52,7 +52,10 @@ namespace RulesConverter
 					if( parent == null )
 						continue;
 
-					y[ key ] = Diff( node, parent );
+					bool remove;
+					y[ key ] = Diff( node, parent, out remove );
+					if( remove )
+						y.Add( "-" + key, new MiniYaml( null ) );
 					if( y[ key ] == null )
 						y.Remove( key );
 				}
@@ -81,7 +84,11 @@ namespace RulesConverter
 				MiniYaml aa, bb;
 				a.TryGetValue( key, out aa );
 				b.TryGetValue( key, out bb );
-				var diff = Diff( aa, bb );
+				bool remove;
+				var diff = Diff( aa, bb, out remove );
+				if( remove )
+					ret.Add( "-" + key, new MiniYaml( null ) );
+
 				if( diff != null )
 					ret.Add( key, diff );
 			}
@@ -90,12 +97,16 @@ namespace RulesConverter
 			return ret;
 		}
 
-		public static MiniYaml Diff( MiniYaml a, MiniYaml b )
+		public static MiniYaml Diff( MiniYaml a, MiniYaml b, out bool remove )
 		{
+			remove = false;
 			if( a == null && b == null )
 				throw new InvalidOperationException( "can't happen" );
 			else if( a == null )
-				throw new NotImplementedException( "parent has key not in child" );
+			{
+				remove = true;
+				return a;
+			}
 			else if( b == null )
 				return a;
 

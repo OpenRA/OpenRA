@@ -130,6 +130,7 @@ SHOK:
 	AttackBase:
 		PrimaryWeapon: PortaTesla
 	TakeCover:
+	-SquishByTank:
 
 MECH:
 	Inherits: ^Infantry
@@ -151,5 +152,5 @@ MECH:
 	AttackBase:
 		PrimaryWeapon: GoodWrench
 	TakeCover:
-	SquishByTank:
+	-AutoTarget:
 

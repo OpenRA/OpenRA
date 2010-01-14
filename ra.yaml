@@ -1384,170 +1384,195 @@ DOMF:
 	Fake:
 
 MINP:
-	Category: Building
+	Inherits: ^Building
 	Unit:
 		HP: 1
 	RenderUnit:
 	APMine:
 	BelowUnits:
 	InvisibleToOthers:
+	-Selectable:
+	-Building:
 
 MINV:
-	Category: Building
+	Inherits: ^Building
 	Unit:
 		HP: 1
 	RenderUnit:
 	ATMine:
 	BelowUnits:
 	InvisibleToOthers:
+	-Selectable:
+	-Building:
 
 T01:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T02:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T03:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T05:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T06:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T07:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T08:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
 	RenderBuilding:
+	-Selectable:
 
 T10:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T11:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T12:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T13:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T14:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T15:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T16:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 T17:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x_ x_
 		Dimensions: 2,2
 	RenderBuilding:
+	-Selectable:
 
 TC01:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
+	-Selectable:
 
 TC02:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
+	-Selectable:
 
 TC03:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
+	-Selectable:
 
 TC04:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xxx_ xxx_ xxx_
 		Dimensions: 4,3
 	RenderBuilding:
+	-Selectable:
 
 TC05:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: xxx_ xxx_ xxx_
 		Dimensions: 4,3
 	RenderBuilding:
+	-Selectable:
 
 MINE:
-	Category: Building
+	Inherits: ^Building
 	Building:
 		Footprint: x
 		Dimensions: 1,1
 	RenderBuilding:
 	SeedsOre:
+	-Selectable:
 
 FCOM:
 	Inherits: ^Building
@@ -1991,8 +2016,6 @@ E1:
 	AttackBase:
 		PrimaryWeapon: M1Carbine
 	TakeCover:
-	SquishByTank:
-	AutoTarget:
 
 E2:
 	Inherits: ^Infantry
@@ -2012,8 +2035,6 @@ E2:
 		PrimaryOffset: 0,0,0,-13
 		FireDelay: 15
 	TakeCover:
-	SquishByTank:
-	AutoTarget:
 
 E3:
 	Inherits: ^Infantry
@@ -2032,8 +2053,6 @@ E3:
 		PrimaryWeapon: RedEye
 		PrimaryOffset: 0,0,0,-13
 	TakeCover:
-	SquishByTank:
-	AutoTarget:
 
 E4:
 	Inherits: ^Infantry
@@ -2054,8 +2073,6 @@ E4:
 		PrimaryOffset: 0,0,0,-7
 		FireDelay: 8
 	TakeCover:
-	SquishByTank:
-	AutoTarget:
 
 E6:
 	Inherits: ^Infantry
@@ -2073,7 +2090,7 @@ E6:
 		Speed: 4
 	EngineerCapture:
 	TakeCover:
-	SquishByTank:
+	-AutoTarget:
 
 SPY:
 	Inherits: ^Infantry
@@ -2092,7 +2109,7 @@ SPY:
 		Sight: 5
 		Speed: 4
 	TakeCover:
-	SquishByTank:
+	-AutoTarget:
 
 THF:
 	Inherits: ^Infantry
@@ -2111,8 +2128,8 @@ THF:
 		Sight: 5
 		Speed: 4
 	TakeCover:
-	SquishByTank:
 	Thief:
+	-AutoTarget:
 
 E7:
 	Inherits: ^Infantry
@@ -2134,8 +2151,6 @@ E7:
 	AttackBase:
 		PrimaryWeapon: Colt45
 	TakeCover:
-	SquishByTank:
-	AutoTarget:
 
 MEDI:
 	Inherits: ^Infantry
@@ -2156,5 +2171,5 @@ MEDI:
 	AttackBase:
 		PrimaryWeapon: Heal
 	TakeCover:
-	SquishByTank:
+	-AutoTarget:
 

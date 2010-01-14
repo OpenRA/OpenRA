@@ -66,12 +66,23 @@ namespace OpenRa.FileFormats
 
 			var keys = a.Keys.Union( b.Keys ).ToList();
 
+			var noInherit = keys.Where( x => x.Length > 0 && x[ 0 ] == '-' ).Select( x => x.Substring( 1 ) ).ToList();
+
 			foreach( var key in keys )
 			{
 				MiniYaml aa, bb;
 				a.TryGetValue( key, out aa );
 				b.TryGetValue( key, out bb );
-				ret.Add( key, Merge( aa, bb ) );
+
+				if( key.Length > 0 && key[ 0 ] == '-' )
+					continue;
+				else if( noInherit.Contains( key ) )
+				{
+					if( aa != null )
+						ret.Add( key, aa );
+				}
+				else
+					ret.Add( key, Merge( aa, bb ) );
 			}
 
 			return ret;

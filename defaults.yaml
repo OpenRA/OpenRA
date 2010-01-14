@@ -20,6 +20,8 @@
 		MovementType: Foot
 	Selectable:
 	RenderInfantry:
+	SquishByTank:
+	AutoTarget:
 	Passenger:
 
 ^Ship:
