@@ -98,9 +98,6 @@ namespace OpenRa.Game
 			if( !IsExplored( i + 1, j + 1 ) ) u |= 4;
 			if( !IsExplored( i - 1, j + 1 ) ) u |= 8;
 
-			if( ( u | uSides ) == uSides )
-				return shadowBits[ v ];
-
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
 
