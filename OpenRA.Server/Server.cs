@@ -22,6 +22,7 @@ namespace OpenRA.Server
 			listener.Start();
 
 			Console.WriteLine("Server started.");
+			Console.WriteLine("Testing.");
 
 			for (; ; )
 			{
@@ -282,8 +283,8 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						DispatchOrders( null, 0,
-							new ServerOrder(0, "ChangeMap", s).Serialize());
+						lobbyInfo.GlobalSettings.Map = s;
+						SyncLobbyInfo();
 						return true;
 					}},
 			};
@@ -379,10 +380,12 @@ namespace OpenRA.Server
 		{
 			var clientData = lobbyInfo.Clients.ToDictionary(
 				a => a.Index.ToString(),
-				a => FieldSaver.Save(a)).WriteToString();
+				a => FieldSaver.Save(a));
 
-			DispatchOrders(null, 0, 
-				new ServerOrder(0, "SyncInfo", clientData).Serialize());
+			clientData["GlobalSettings"] = FieldSaver.Save(lobbyInfo.GlobalSettings);
+
+			DispatchOrders(null, 0,
+				new ServerOrder(0, "SyncInfo", clientData.WriteToString()).Serialize());
 		}
 	}
 }

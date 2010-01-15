@@ -8,13 +8,12 @@ namespace OpenRa.FileFormats
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
-		// todo: add mods, mapname, global settings here
+		public Global GlobalSettings = new Global();
 
 		public enum ClientState
 		{
 			NotReady,
-			// Downloading,
-			// Uploading,
+			Downloading,
 			Ready
 		}
 
@@ -26,6 +25,13 @@ namespace OpenRa.FileFormats
 			// public int SpawnPoint;
 			public string Name;
 			public ClientState State;
+		}
+
+		public class Global
+		{
+			public string Map = "scm12ea.ini";
+			public string[] Mods = {};	// filename:sha1 pairs.
+			public int OrderLatency;
 		}
 	}
 }

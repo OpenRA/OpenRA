@@ -48,12 +48,14 @@ namespace OpenRa.Game
 		static bool usingAftermath;
 		static int2 clientSize;
 		static HardwarePalette palette;
+		static string mapName;
 		public static Minimap minimap;
 
 		public static Session LobbyInfo = new Session();
 
 		public static void ChangeMap(string mapName)
 		{
+			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
 			SpriteSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
@@ -352,6 +354,12 @@ namespace OpenRa.Game
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)
 			{
+				if (y.Key == "GlobalSettings")
+				{
+					FieldLoader.Load(session.GlobalSettings, y.Value);
+					continue;
+				}
+
 				int index;
 				if (!int.TryParse(y.Key, out index))
 					continue;	// not a player.
@@ -364,6 +372,14 @@ namespace OpenRa.Game
 			}
 
 			LobbyInfo = session;
+
+			// todo: if we don't have all the resources, we don't want to do this yet.
+
+			if (mapName != LobbyInfo.GlobalSettings.Map)
+			{
+				chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(mapName, session.GlobalSettings.Map));
+				ChangeMap(LobbyInfo.GlobalSettings.Map);
+			}
 		}
 	}
 }

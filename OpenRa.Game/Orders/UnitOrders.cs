@@ -68,12 +68,6 @@ namespace OpenRa.Game.Orders
 					Game.orderManager.StartGame();
 					break;
 				}
-			case "ChangeMap":
-				{
-					Game.chat.AddLine(Color.White, "Server", "Changing map to {0}".F(order.TargetString));
-					Game.ChangeMap(order.TargetString);
-					break;
-				}
 			case "SyncInfo":
 				{
 	//				Game.chat.AddLine(Color.White, "Server", "Synchronizing lobby info...");

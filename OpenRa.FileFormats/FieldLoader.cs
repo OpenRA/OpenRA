@@ -22,12 +22,13 @@ namespace OpenRa.FileFormats
 				var field = self.GetType().GetField(x.Key.Trim());
 				if (field == null)
 					throw new NotImplementedException("Missing field `{0}` on `{1}`".F(x.Key.Trim(), self.GetType().Name));
-				field.SetValue(self, GetValue(field.FieldType, x.Value.Value.Trim()));
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Value));
 			}
 		}
 
 		static object GetValue( Type fieldType, string x )
 		{
+			if (x != null) x = x.Trim();
 			if( fieldType == typeof( int ) )
 				return int.Parse( x );
 
@@ -45,6 +46,9 @@ namespace OpenRa.FileFormats
 
 			else if (fieldType.IsArray)
 			{
+				if (x == null)
+					return Array.CreateInstance(fieldType.GetElementType(), 0);
+
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
