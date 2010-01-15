@@ -205,8 +205,7 @@
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Activities\UndeployMcv.cs" />
     <Compile Include="Traits\Activities\UnloadCargo.cs" />
-    <Compile Include="Traits\APMine.cs" />
-    <Compile Include="Traits\ATMine.cs" />
+    <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackFrontal.cs" />
     <Compile Include="Traits\AttackHeli.cs" />

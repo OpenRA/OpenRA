@@ -12,3 +12,17 @@ MGG:
 GAP:
 	GeneratesGap:
 		Range: 10
+
+MINP:
+	Mine:
+		Damage: 1000
+		Warhead: APMine
+		TriggeredBy: Foot, Wheel, Track
+		AvoidFriendly: yes
+		
+MINV:
+	Mine:
+		Damage: 1200
+		Warhead: ATMine
+		TriggeredBy: Wheel, Track
+		AvoidFriendly: yes
