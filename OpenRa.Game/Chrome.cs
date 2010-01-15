@@ -29,6 +29,7 @@ namespace OpenRa.Game
 		// Options menu (to be refactored)
 		bool optionsPressed = false;
 		readonly Sprite[] optionsSprites;
+		readonly Sprite[] panelSprites;
 		
 		// Buttons
 		readonly Animation repairButton;
@@ -106,6 +107,9 @@ namespace OpenRa.Game
 
 				SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[0],
 			};
+
+			panelSprites = Graphics.Util.MakeArray(8,
+				n => SequenceProvider.GetImageFromCollection(renderer, "panel", n.ToString()));
 			
 			tabSprites = Rules.NewUnitInfo.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
@@ -203,6 +207,14 @@ namespace OpenRa.Game
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 390, y), Color.White);
 				y += 30;
 			}
+
+			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
+			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
+
+			DrawDialogBackground(typingBox, panelSprites, false);
+			DrawDialogBackground(chatBox, panelSprites, false);
+
+			DrawChat(typingBox, chatBox);
 		}
 
 		public void TickRadarAnimation()
@@ -472,6 +484,7 @@ namespace OpenRa.Game
 
 			var sr = isShp ? shpRenderer : rgbaRenderer;
 
+			if (ss.Length > 8)
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
 					sr.DrawSprite(ss[8], Game.viewport.Location + new float2(x, y), PaletteType.Chrome);
@@ -511,12 +524,12 @@ namespace OpenRa.Game
 
 		void DrawChat(Rectangle typingArea, Rectangle chatLogArea)
 		{
-			var chatpos = new int2(chatLogArea.X + 2, chatLogArea.Bottom - 10);
+			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
 
 			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
 			if (Game.chat.isChatting)
 				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), 
-					new int2(typingArea.X + 2, typingArea.Y + 2));
+					new int2(typingArea.X + 10, typingArea.Y + 6));
 			renderer.Device.DisableScissor();
 
 			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
