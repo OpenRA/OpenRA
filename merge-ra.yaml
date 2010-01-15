@@ -4,6 +4,7 @@ Player:
 World:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
+	LightPaletteRotator:
 
 MGG:
 	GeneratesGap:
