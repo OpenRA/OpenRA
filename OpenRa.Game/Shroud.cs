@@ -41,22 +41,6 @@ namespace OpenRa.Game
 			dirty = true;
 		}
 
-		static readonly byte[] ShroudTiles = 
-		{
-			0,7,13,0,	
-			14,6,12,4,
-			11,3,9,1,	
-			0,2,8,0,
-		};
-
-		static readonly byte[] ExtraShroudTiles = 
-		{
-			46, 41, 42, 38,
-			43, 45, 39, 35,
-			40, 37, 44, 34,
-			36, 33, 32, 47,
-		};
-
 		static readonly byte[][] SpecialShroudTiles =
 		{
 			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
