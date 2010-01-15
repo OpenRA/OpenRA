@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using IjwFramework.Types;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Graphics;
-using IjwFramework.Types;
 
 namespace OpenRa.Game.Traits
 {
@@ -21,7 +21,9 @@ namespace OpenRa.Game.Traits
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
 	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
+
 	interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
+	interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 
 	interface IProducer
 	{

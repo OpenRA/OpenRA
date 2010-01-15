@@ -20,10 +20,6 @@ namespace OpenRa.Game.Traits
 			
 			if (Game.LocalPlayer == thief.Owner)
 				Sound.Play("credit1.aud");
-			
-			// the thief is sacrificed.
-			thief.Health = 0;
-			Game.world.AddFrameEndTask(w => w.Remove(thief));
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -33,7 +29,6 @@ namespace OpenRa.Game.Traits
 			return Graphics.Util.MakeArray( numPips, 
 				i => (Game.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
 					? PipType.Yellow : PipType.Transparent );
-
 		}
 	}
 }

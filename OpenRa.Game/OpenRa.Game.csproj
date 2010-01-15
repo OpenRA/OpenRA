@@ -166,6 +166,7 @@
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
+    <Compile Include="Traits\Activities\Infiltrate.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
     <Compile Include="Traits\Activities\Rearm.cs" />
     <Compile Include="Traits\Activities\Repair.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\Selectable.cs" />
+    <Compile Include="Traits\Spy.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />

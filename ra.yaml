@@ -2130,6 +2130,7 @@ SPY:
 		Sight: 5
 		Speed: 4
 	TakeCover:
+	Spy:
 	-AutoTarget:
 
 THF:

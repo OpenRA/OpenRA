@@ -35,7 +35,6 @@ namespace OpenRa.Game.Traits.Activities
 			}
 
 			// the engineer is sacrificed.
-			self.Health = 0;
 			Game.world.AddFrameEndTask(w => w.Remove(self));
 
 			return NextActivity;
