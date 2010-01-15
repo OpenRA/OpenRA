@@ -28,15 +28,7 @@ namespace OpenRa.Game
 		
 		// Options menu (to be refactored)
 		bool optionsPressed = false;
-		readonly Sprite optionsTop;
-		readonly Sprite optionsBottom;
-		readonly Sprite optionsLeft;
-		readonly Sprite optionsRight;
-		readonly Sprite optionsTopLeft;
-		readonly Sprite optionsTopRight;
-		readonly Sprite optionsBottomLeft;
-		readonly Sprite optionsBottomRight;
-		readonly Sprite optionsBackground;
+		readonly Sprite[] optionsSprites;
 		
 		// Buttons
 		readonly Animation repairButton;
@@ -98,16 +90,22 @@ namespace OpenRa.Game
 			
 			optionsButton = new Animation("tabs");
 			optionsButton.PlayRepeating("left-normal");
-			
-			optionsLeft = SpriteSheetBuilder.LoadAllSprites("dd-left")[0];
-			optionsRight = SpriteSheetBuilder.LoadAllSprites("dd-right")[0];
-			optionsTop = SpriteSheetBuilder.LoadAllSprites("dd-top")[0];
-			optionsBottom = SpriteSheetBuilder.LoadAllSprites("dd-botm")[0];
-			optionsTopLeft = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[0];
-			optionsTopRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[1];
-			optionsBottomLeft = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[2];
-			optionsBottomRight = SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3];	
-			optionsBackground = SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[Game.CosmeticRandom.Next(4)];
+
+			optionsSprites = new[] 
+			{
+				SpriteSheetBuilder.LoadAllSprites("dd-top")[0],
+				SpriteSheetBuilder.LoadAllSprites("dd-botm")[0],
+
+				SpriteSheetBuilder.LoadAllSprites("dd-left")[0],
+				SpriteSheetBuilder.LoadAllSprites("dd-right")[0],
+
+				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[0],
+				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[1],
+				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[2],
+				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3],
+
+				SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[0],
+			};
 			
 			tabSprites = Rules.NewUnitInfo.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
@@ -434,38 +432,38 @@ namespace OpenRa.Game
 				var height = 300;
 				
 				DrawDialogBackground(new Rectangle((Game.viewport.Width - width)/ 2, (Game.viewport.Height-height) / 2,
-					width, height));
+					width, height), optionsSprites);
 			}
 		}
 
-		void DrawDialogBackground(Rectangle r)
+		void DrawDialogBackground(Rectangle r, Sprite[] ss)
 		{
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 
-			for( var x = r.Left + (int)optionsLeft.size.X; x < r.Right - (int)optionsRight.size.X; x += (int)optionsBackground.size.X )
-				for( var y = r.Top + (int)optionsTop.size.Y; y < r.Bottom - (int)optionsBottom.size.Y; y += (int)optionsBackground.size.Y )
-					shpRenderer.DrawSprite( optionsBackground, Game.viewport.Location + new float2(x,y), PaletteType.Chrome );
+			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
+				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
+					shpRenderer.DrawSprite( ss[8], Game.viewport.Location + new float2(x,y), PaletteType.Chrome );
 
 			var p = Game.viewport.Location;
 			
 			//draw borders
 
-			for (var y = r.Top + (int)optionsTop.size.Y; y < r.Bottom - (int)optionsBottom.size.Y; y += (int)optionsLeft.size.Y)
+			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[1].size.Y)
 			{
-				shpRenderer.DrawSprite(optionsLeft, p + new float2(r.Left, y), PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsRight, p + new float2(r.Right - optionsRight.size.X, y), PaletteType.Chrome);
+				shpRenderer.DrawSprite(ss[2], p + new float2(r.Left, y), PaletteType.Chrome);
+				shpRenderer.DrawSprite(ss[3], p + new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
 			}
 
-			for (var x = r.Left + (int)optionsLeft.size.X; x < r.Right - (int)optionsRight.size.X; x += (int)optionsLeft.size.Y)
+			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[3].size.X)
 			{
-				shpRenderer.DrawSprite(optionsTop, p + new float2(x, r.Top), PaletteType.Chrome);
-				shpRenderer.DrawSprite(optionsBottom, p + new float2(x, r.Bottom - optionsBottom.size.Y), PaletteType.Chrome);
+				shpRenderer.DrawSprite(ss[0], p + new float2(x, r.Top), PaletteType.Chrome);
+				shpRenderer.DrawSprite(ss[1], p + new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
 			}
 
-			shpRenderer.DrawSprite(optionsTopLeft, p + new float2(r.Left, r.Top), PaletteType.Chrome);
-			shpRenderer.DrawSprite(optionsTopRight, p + new float2(r.Right - optionsTopRight.size.X, r.Top), PaletteType.Chrome);
-			shpRenderer.DrawSprite(optionsBottomLeft, p + new float2(r.Left, r.Bottom - optionsBottomLeft.size.Y), PaletteType.Chrome);
-			shpRenderer.DrawSprite(optionsBottomRight, p + new float2(r.Right - optionsBottomRight.size.X, r.Bottom - optionsBottomRight.size.Y), PaletteType.Chrome);
+			shpRenderer.DrawSprite(ss[4], p + new float2(r.Left, r.Top), PaletteType.Chrome);
+			shpRenderer.DrawSprite(ss[5], p + new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
+			shpRenderer.DrawSprite(ss[6], p + new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
+			shpRenderer.DrawSprite(ss[7], p + new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
 			shpRenderer.Flush();
 
 			renderer.Device.DisableScissor();
