@@ -142,6 +142,12 @@ namespace OpenRa.Game
 				
 		public void Draw()
 		{
+			if (!Game.orderManager.GameStarted)
+			{
+				DrawLobby();
+				return;
+			}
+
 			chromeCollection = (Game.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
 			radarCollection = (Game.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
 			paletteCollection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
@@ -173,6 +179,30 @@ namespace OpenRa.Game
 			DrawBuildTabs(paletteHeight);
 			DrawChat();
 			DrawOptionsMenu();
+		}
+
+		public void DrawLobby()
+		{
+			var w = 800;
+			var h = 600;
+			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
+			DrawDialogBackground(r, optionsSprites, true);
+			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
+
+			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
+			renderer.DrawText2("Color", new int2(r.Left + 250, r.Top + 50), Color.White);
+			renderer.DrawText2("Faction", new int2(r.Left + 320, r.Top + 50), Color.White);
+			renderer.DrawText2("Status", new int2(r.Left + 390, r.Top + 50), Color.White);
+				
+			var y = r.Top + 80;
+			foreach (var client in Game.LobbyInfo.Clients)
+			{
+				renderer.DrawText(client.Name, new int2(r.Left + 30, y), Color.White);
+				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 250, y), Color.White);
+				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 320, y), Color.White);
+				renderer.DrawText(client.State.ToString(), new int2(r.Left + 390, y), Color.White);
+				y += 30;
+			}
 		}
 
 		public void TickRadarAnimation()
@@ -432,55 +462,70 @@ namespace OpenRa.Game
 				var height = 300;
 				
 				DrawDialogBackground(new Rectangle((Game.viewport.Width - width)/ 2, (Game.viewport.Height-height) / 2,
-					width, height), optionsSprites);
+					width, height), optionsSprites, true);
 			}
 		}
 
-		void DrawDialogBackground(Rectangle r, Sprite[] ss)
+		void DrawDialogBackground(Rectangle r, Sprite[] ss, bool isShp)
 		{
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 
+			var sr = isShp ? shpRenderer : rgbaRenderer;
+
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
-					shpRenderer.DrawSprite( ss[8], Game.viewport.Location + new float2(x,y), PaletteType.Chrome );
+					sr.DrawSprite(ss[8], Game.viewport.Location + new float2(x, y), PaletteType.Chrome);
 
-			var p = Game.viewport.Location;
+			var p = isShp ? Game.viewport.Location : float2.Zero;
 			
 			//draw borders
 
 			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[1].size.Y)
 			{
-				shpRenderer.DrawSprite(ss[2], p + new float2(r.Left, y), PaletteType.Chrome);
-				shpRenderer.DrawSprite(ss[3], p + new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
+				sr.DrawSprite(ss[2], p + new float2(r.Left, y), PaletteType.Chrome);
+				sr.DrawSprite(ss[3], p + new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
 			}
 
 			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[3].size.X)
 			{
-				shpRenderer.DrawSprite(ss[0], p + new float2(x, r.Top), PaletteType.Chrome);
-				shpRenderer.DrawSprite(ss[1], p + new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
+				sr.DrawSprite(ss[0], p + new float2(x, r.Top), PaletteType.Chrome);
+				sr.DrawSprite(ss[1], p + new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
 			}
 
-			shpRenderer.DrawSprite(ss[4], p + new float2(r.Left, r.Top), PaletteType.Chrome);
-			shpRenderer.DrawSprite(ss[5], p + new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
-			shpRenderer.DrawSprite(ss[6], p + new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
-			shpRenderer.DrawSprite(ss[7], p + new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
-			shpRenderer.Flush();
+			sr.DrawSprite(ss[4], p + new float2(r.Left, r.Top), PaletteType.Chrome);
+			sr.DrawSprite(ss[5], p + new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
+			sr.DrawSprite(ss[6], p + new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
+			sr.DrawSprite(ss[7], p + new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
+			sr.Flush();
 
 			renderer.Device.DisableScissor();
 		}
 
 		void DrawChat()
 		{
-			var chatpos = new int2(400, Game.viewport.Height - 20);
+			var typingArea = new Rectangle(400, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
+			var chatLogArea = new Rectangle(400, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
 
+			DrawChat(typingArea, chatLogArea);
+		}
+
+		void DrawChat(Rectangle typingArea, Rectangle chatLogArea)
+		{
+			var chatpos = new int2(chatLogArea.X + 2, chatLogArea.Bottom - 10);
+
+			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
 			if (Game.chat.isChatting)
-				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), chatpos);
+				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), 
+					new int2(typingArea.X + 2, typingArea.Y + 2));
+			renderer.Device.DisableScissor();
 
+			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 			foreach (var line in Game.chat.recentLines.AsEnumerable().Reverse())
 			{
 				chatpos.Y -= 20;
 				RenderChatLine(line, chatpos);
 			}
+			renderer.Device.DisableScissor();
 		}
 
 		void RenderChatLine(Tuple<Color, string, string> line, int2 p)
@@ -731,6 +776,11 @@ namespace OpenRa.Game
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
 			renderer.DrawText2(text, pos - new int2(renderer.MeasureText2(text).X, 0), c);
+		}
+
+		void DrawCentered(string text, int2 pos, Color c)
+		{
+			renderer.DrawText2(text, pos - new int2(renderer.MeasureText2(text).X/2, 0), c);
 		}
 
 		void DrawProductionTooltip(string unit, int2 pos)
