@@ -1,0 +1,7 @@
+MGG:
+	GeneratesGap:
+		Range: 10
+
+GAP:
+	GeneratesGap:
+		Range: 10

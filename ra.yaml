@@ -1,3 +1,49 @@
+MGG:
+	Inherits: DefaultVehicle
+	Buildable:
+		TechLevel: 11
+		Tab: Vehicle
+		Prerequisites: weap,atek
+		Owner: allies
+		Cost: 600
+		Description: Mobile Gap Generator
+		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 9
+	RenderUnitSpinner:
+		Offset: 0,6,0,-3
+
+GAP:
+	Inherits: DefaultDefense
+	Buildable:
+		TechLevel: 10
+		Tab: Defense
+		Prerequisites: atek
+		Owner: allies
+		Cost: 500
+		Description: Gap Generator
+		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Building:
+		Power: -60
+		RequiresPower: true
+		Footprint: _ x
+		Dimensions: 1,2
+		Capturable: true
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+	IronCurtainable:
+
 V2RL:
 	Inherits: DefaultVehicle
 	Buildable:
@@ -149,27 +195,6 @@ MRJ:
 		MovementType: Track
 	RenderUnitSpinner:
 		Offset: 0,4,0,-6
-
-MGG:
-	Inherits: DefaultVehicle
-	Buildable:
-		TechLevel: 11
-		Tab: Vehicle
-		Prerequisites: weap,atek
-		Owner: allies
-		Cost: 600
-		Description: Mobile Gap Generator
-		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
-	Selectable:
-		Priority: 3
-	Unit:
-		HP: 110
-		Armor: light
-		Crewed: yes
-		Sight: 4
-		Speed: 9
-	RenderUnitSpinner:
-		Offset: 0,6,0,-3
 
 ARTY:
 	Inherits: DefaultVehicle
@@ -854,31 +879,6 @@ FTUR:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
 	AutoTarget:
-	IronCurtainable:
-
-GAP:
-	Inherits: DefaultDefense
-	Buildable:
-		TechLevel: 10
-		Tab: Defense
-		Prerequisites: atek
-		Owner: allies
-		Cost: 500
-		Description: Gap Generator
-		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
-	Selectable:
-		Priority: 3
-	Building:
-		Power: -60
-		RequiresPower: true
-		Footprint: _ x
-		Dimensions: 1,2
-		Capturable: true
-		HP: 1000
-		Armor: wood
-		Crewed: yes
-		Sight: 10
-	RenderBuilding:
 	IronCurtainable:
 
 SAM:

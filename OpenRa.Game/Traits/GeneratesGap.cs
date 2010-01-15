@@ -7,6 +7,12 @@ using OpenRa.Game.Traits;
 
 namespace OpenRa.Game.Traits
 {
+	class GeneratesGapInfo : ITraitInfo
+	{
+		public readonly int Range = 10;
+		public object Create(Actor self) { return new GeneratesGap(self); }
+	}
+
 	class GeneratesGap
 	{
 		Actor self;
@@ -17,12 +23,13 @@ namespace OpenRa.Game.Traits
 		
 		public IEnumerable<int2>GetShroudedTiles()
 		{
+			int range = self.Info.Traits.Get<GeneratesGapInfo>().Range;	
+			
 			// Gap Generator building; powered down
 			if (self.traits.Contains<Building>() && self.traits.Get<Building>().Disabled)
 				yield break;
 			
-			// It won't let me return Game.FindTilesInCircle directly...?
-			foreach (var t in Game.FindTilesInCircle(self.Location, Rules.General.GapRadius))
+			foreach (var t in Game.FindTilesInCircle(self.Location, range))
 				yield return t;
 		}
 	}
