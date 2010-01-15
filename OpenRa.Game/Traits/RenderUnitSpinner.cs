@@ -23,7 +23,7 @@ namespace OpenRa.Game.Traits
 			anims.Add( "spinner", new AnimationWithOffset(
 				spinnerAnim,
 				() => Util.GetTurretPosition( self, unit, info.Offset, 0 ),
-				null ) );
+				null ) { ZOffset = 1 } );
 		}
 	}
 }

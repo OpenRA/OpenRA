@@ -25,7 +25,7 @@ namespace OpenRa.Game.Traits
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
 				() => Util.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
-				null ) );
+				null ) { ZOffset = 1 } );
 
 			if (info.SecondaryOffset == null) return;
 
@@ -34,7 +34,7 @@ namespace OpenRa.Game.Traits
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
 				() => Util.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
-				null ) );
+				null) { ZOffset = 1 });
 		}
 
 		public override void Tick(Actor self)
