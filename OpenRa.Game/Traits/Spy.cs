@@ -14,7 +14,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor != null) return null;
-			if (underCursor.traits.WithInterface<IAcceptSpy>().Any()) return null;
+			if (underCursor.traits.Contains<IAcceptSpy>()) return null;
 
 			return new Order("Infiltrate", self, underCursor, int2.Zero, null);
 		}

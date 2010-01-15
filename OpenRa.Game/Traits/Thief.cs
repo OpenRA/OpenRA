@@ -11,7 +11,7 @@ namespace OpenRa.Game.Traits
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
-			if (!underCursor.traits.WithInterface<IAcceptThief>().Any()) return null;
+			if (!underCursor.traits.Contains<IAcceptThief>()) return null;
 			
 			return new Order("Steal", self, underCursor, int2.Zero, null);
 		}

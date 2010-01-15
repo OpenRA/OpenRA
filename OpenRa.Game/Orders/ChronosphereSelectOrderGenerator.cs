@@ -30,7 +30,7 @@ namespace OpenRa.Game.Orders
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = Game.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
-						&& a.traits.WithInterface<Chronoshiftable>().Any()
+						&& a.traits.Contains<Chronoshiftable>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 				
 				if (underCursor != null)

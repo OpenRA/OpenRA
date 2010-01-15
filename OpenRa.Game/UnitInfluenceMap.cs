@@ -25,7 +25,7 @@ namespace OpenRa.Game
 			// Does this belong here? NO, but it's your mess.
 			
 			// Get the crushable actors
-			foreach (var a in Game.world.Actors.Where(b => b.traits.WithInterface<ICrushable>().Any()))
+			foreach (var a in Game.world.Actors.Where(b => b.traits.Contains<ICrushable>()))
 			{
 				// Are there any units in the same cell that can crush this?
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )

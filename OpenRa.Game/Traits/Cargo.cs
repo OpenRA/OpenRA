@@ -79,7 +79,7 @@ namespace OpenRa.Game.Traits
 
 			if (a.traits.Contains<AutoHeal>())
 				return PipType.Yellow;
-			if (!a.traits.WithInterface<AttackBase>().Any())
+			if (!a.traits.Contains<AttackBase>())
 				return PipType.Yellow;	// noncombat [E6,SPY,THF]
 			if (a.traits.Contains<C4Demolition>())
 				return PipType.Red;		// E7
