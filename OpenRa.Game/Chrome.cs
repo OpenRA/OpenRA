@@ -493,9 +493,7 @@ namespace OpenRa.Game
 		}
 		
 		void TickPaletteAnimation()
-		{
-			Log.Write("{0} {1} {2} {3}", paletteAnimationFrame, paletteOrigin.X, paletteAnimating, paletteOpen);
-			
+		{		
 			if (!paletteAnimating)
 				return;
 

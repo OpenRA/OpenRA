@@ -4,3 +4,11 @@ Player:
 World:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
+
+MGG:
+	GeneratesGap:
+		Range: 10
+
+GAP:
+	GeneratesGap:
+		Range: 10

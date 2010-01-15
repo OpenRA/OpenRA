@@ -5,6 +5,52 @@ World:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
 
+MGG:
+	GeneratesGap:
+		Range: 10
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 11
+		Prerequisites: weap,atek
+		Owner: allies
+		Cost: 600
+		Description: Mobile Gap Generator
+		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 9
+	RenderUnitSpinner:
+		Offset: 0,6,0,-3
+
+GAP:
+	GeneratesGap:
+		Range: 10
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 10
+		Prerequisites: atek
+		Owner: allies
+		Cost: 500
+		Description: Gap Generator
+		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
+	Building:
+		Power: -60
+		RequiresPower: true
+		Footprint: _ x
+		Dimensions: 1,2
+		Capturable: true
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+	IronCurtainable:
+
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:
@@ -152,26 +198,6 @@ MRJ:
 		MovementType: Track
 	RenderUnitSpinner:
 		Offset: 0,4,0,-6
-
-MGG:
-	Inherits: ^Vehicle
-	Buildable:
-		TechLevel: 11
-		Prerequisites: weap,atek
-		Owner: allies
-		Cost: 600
-		Description: Mobile Gap Generator
-		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
-	Selectable:
-		Priority: 3
-	Unit:
-		HP: 110
-		Armor: light
-		Crewed: yes
-		Sight: 4
-		Speed: 9
-	RenderUnitSpinner:
-		Offset: 0,6,0,-3
 
 ARTY:
 	Inherits: ^Vehicle
@@ -822,28 +848,6 @@ FTUR:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
 	AutoTarget:
-	IronCurtainable:
-
-GAP:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 10
-		Prerequisites: atek
-		Owner: allies
-		Cost: 500
-		Description: Gap Generator
-		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
-	Building:
-		Power: -60
-		RequiresPower: true
-		Footprint: _ x
-		Dimensions: 1,2
-		Capturable: true
-		HP: 1000
-		Armor: wood
-		Crewed: yes
-		Sight: 10
-	RenderBuilding:
 	IronCurtainable:
 
 SAM:
