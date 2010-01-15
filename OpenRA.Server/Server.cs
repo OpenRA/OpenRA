@@ -216,8 +216,8 @@ namespace OpenRA.Server
 
 						Console.WriteLine("Order lag is now {0} frames.", lag);
 
-						DispatchOrders(null, 0,
-							new ServerOrder(0, "SetLag", lag.ToString()).Serialize());
+						lobbyInfo.GlobalSettings.OrderLatency = lag;
+						SyncLobbyInfo();
 						return true;
 					}},
 				{ "race",

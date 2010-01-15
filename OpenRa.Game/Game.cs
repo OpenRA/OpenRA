@@ -377,8 +377,17 @@ namespace OpenRa.Game
 
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 			{
-				chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(mapName, session.GlobalSettings.Map));
+				chat.AddLine(Color.White, "Debug", 
+					"Map change {0} -> {1}".F(mapName, session.GlobalSettings.Map));
 				ChangeMap(LobbyInfo.GlobalSettings.Map);
+			}
+
+			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
+				&& !Game.orderManager.GameStarted)
+			{
+				Game.orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
+				Game.chat.AddLine(Color.White, "Server", 
+					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 		}
 	}

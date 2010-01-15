@@ -49,19 +49,6 @@ namespace OpenRa.Game.Orders
 					Game.chat.AddLine(order.Player, "is now YOU.");
 					break;
 				}
-			case "SetLag":
-				{
-					int lag = int.Parse(order.TargetString);
-					if (Game.orderManager.GameStarted)
-					{
-						Game.chat.AddLine(Color.White, "Server", "Failed to change lag to {0} frames".F(lag));
-						return;
-					}
-
-					Game.orderManager.FramesAhead = lag;
-					Game.chat.AddLine(Color.White, "Server", "Order lag is now {0} frames.".F(lag));
-					break;
-				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Color.White, "Server", "The game has started.");
@@ -70,7 +57,6 @@ namespace OpenRa.Game.Orders
 				}
 			case "SyncInfo":
 				{
-	//				Game.chat.AddLine(Color.White, "Server", "Synchronizing lobby info...");
 					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
