@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using IjwFramework.Collections;
 
-namespace OpenRa
+namespace OpenRa.FileFormats
 {
 	public class TypeDictionary
 	{

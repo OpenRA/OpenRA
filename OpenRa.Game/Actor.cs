@@ -5,6 +5,7 @@ using System.Linq;
 using OpenRa.Game.GameRules;
 using OpenRa.Game.Traits;
 using OpenRa.Game.Traits.Activities;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {

@@ -35,6 +35,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IjwFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ijw.DirectX\Ijw.Framework\IjwFramework\bin\Release\IjwFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -44,19 +48,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetInfo.cs" />
     <Compile Include="AudLoader.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="BlowfishKeyProvider.cs" />
+    <Compile Include="DisposableAction.cs" />
     <Compile Include="Dune2ShpReader.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
     <Compile Include="FileSystem.cs" />
+    <Compile Include="float2.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Format2.cs" />
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="IniWriter.cs" />
+    <Compile Include="int2.cs" />
     <Compile Include="IPaletteRemap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MiniYaml.cs" />
@@ -73,13 +81,9 @@
     <Compile Include="TileReference.cs" />
     <Compile Include="TileSet.cs" />
     <Compile Include="TreeReference.cs" />
+    <Compile Include="Tuple.cs" />
+    <Compile Include="TypeDictionary.cs" />
     <Compile Include="Walkability.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRa.DataStructures\OpenRa.DataStructures.csproj">
-      <Project>{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}</Project>
-      <Name>OpenRa.DataStructures</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

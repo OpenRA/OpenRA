@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace OpenRa
+namespace OpenRa.FileFormats
 {
 	public class AssetInfo
 	{

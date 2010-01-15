@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.FileFormats", "OpenR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Game", "OpenRa.Game\OpenRa.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.DataStructures", "OpenRa.DataStructures\OpenRa.DataStructures.csproj", "{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaletteUsage", "PaletteUsage\PaletteUsage.csproj", "{54577061-E2D2-4336-90A2-A9A7106A30CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaletteMatch", "PaletteMatch\PaletteMatch.csproj", "{31411761-224C-4C54-A5FE-280890A70259}"
@@ -69,24 +67,6 @@ Global
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Win32.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug (x86)|Any CPU.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug (x86)|Mixed Platforms.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug (x86)|Mixed Platforms.Build.0 = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug (x86)|Win32.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug (x86)|Win32.Build.0 = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Debug|Win32.ActiveCfg = Debug|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release (x86)|Any CPU.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release (x86)|Mixed Platforms.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release (x86)|Mixed Platforms.Build.0 = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release (x86)|Win32.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release (x86)|Win32.Build.0 = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Any CPU.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Mixed Platforms.Build.0 = Release|x86
-		{2F9E7A23-56C0-4286-9C8E-1060A9B2F073}.Release|Win32.ActiveCfg = Release|x86
 		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug (x86)|Any CPU.ActiveCfg = Debug|x86
 		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug (x86)|Mixed Platforms.ActiveCfg = Debug|x86
 		{54577061-E2D2-4336-90A2-A9A7106A30CD}.Debug (x86)|Mixed Platforms.Build.0 = Debug|x86

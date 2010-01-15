@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
