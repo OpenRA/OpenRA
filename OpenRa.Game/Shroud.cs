@@ -43,10 +43,6 @@ namespace OpenRa.Game
 
 		static readonly byte[] ShroudTiles = 
 		{
-			0xf,0xf,0xf,0xf,	
-			0xf,0xf,0xf,0xf,
-			0xf,0xf,0xf,0xf,	
-			0xf,0xf,0xf,0xf,
 			0,7,13,0,	
 			14,6,12,4,
 			11,3,9,1,	
@@ -61,27 +57,51 @@ namespace OpenRa.Game
 			36, 33, 32, 47,
 		};
 
+		static readonly byte[][] SpecialShroudTiles =
+		{
+			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+			new byte[] { 32, 32, 25, 25, 19, 19, 20, 20 },
+			new byte[] { 33, 33, 33, 33, 26, 26, 26, 26, 21, 21, 21, 21, 23, 23, 23, 23 },
+			new byte[] { 36, 36, 36, 36, 30, 30, 30, 30 },
+			new byte[] { 34, 16, 34, 16, 34, 16, 34, 16, 27, 22, 27, 22, 27, 22, 27, 22 },
+			new byte[] { 44 },
+			new byte[] { 37, 37, 37, 37, 37, 37, 37, 37, 31, 31, 31, 31, 31, 31, 31, 31 },
+			new byte[] { 40 },
+			new byte[] { 35, 24, 17, 18 },
+			new byte[] { 39, 39, 29, 29 },
+			new byte[] { 45 },
+			new byte[] { 43 },
+			new byte[] { 38, 28 },
+			new byte[] { 42 },
+			new byte[] { 41 },
+			new byte[] { 46 },
+		};
+
 		Sprite ChooseShroud(int i, int j)
 		{
-			// bits are for exploredness: left, right, up, down, self
+			if( !IsExplored( i, j ) ) return shadowBits[ 0xf ];
+
+			// bits are for unexploredness: up, right, down, left
 			var v = 0;
-			if (IsExplored(i - 1, j)) v |= 1;
-			if (IsExplored(i + 1, j)) v |= 2;
-			if (IsExplored(i, j - 1)) v |= 4;
-			if (IsExplored(i, j + 1)) v |= 8;
-			if (IsExplored(i, j)) v |= 16;
-
-			var x = ShroudTiles[v];
-			if (x != 0)
-				return shadowBits[x];
-
-			// bits are for exploredness: TL, TR, BR, BL
+			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
-			if (IsExplored(i - 1, j - 1)) u |= 1;
-			if (IsExplored(i + 1, j - 1)) u |= 2;
-			if (IsExplored(i + 1, j + 1)) u |= 4;
-			if (IsExplored(i - 1, j + 1)) u |= 8;
-			return shadowBits[ExtraShroudTiles[u]];
+
+			if( !IsExplored( i, j - 1 ) ) { v |= 1; u |= 3; }
+			if( !IsExplored( i + 1, j ) ) { v |= 2; u |= 6; }
+			if( !IsExplored( i, j + 1 ) ) { v |= 4; u |= 12; }
+			if( !IsExplored( i - 1, j ) ) { v |= 8; u |= 9; }
+
+			var uSides = u;
+
+			if( !IsExplored( i - 1, j - 1 ) ) u |= 1;
+			if( !IsExplored( i + 1, j - 1 ) ) u |= 2;
+			if( !IsExplored( i + 1, j + 1 ) ) u |= 4;
+			if( !IsExplored( i - 1, j + 1 ) ) u |= 8;
+
+			if( ( u | uSides ) == uSides )
+				return shadowBits[ v ];
+
+			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
 
 		public void Draw(SpriteRenderer r)
