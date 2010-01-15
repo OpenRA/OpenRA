@@ -31,7 +31,7 @@ namespace OpenRa.FileFormats
 		{
 			public string Map = "scm12ea.ini";
 			public string[] Mods = {};	// filename:sha1 pairs.
-			public int OrderLatency;
+			public int OrderLatency = 3;
 		}
 	}
 }
