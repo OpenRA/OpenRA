@@ -193,6 +193,12 @@ namespace OpenRa.Game
 			DrawDialogBackground(r, optionsSprites, true);
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
+			DrawDialogBackground(new Rectangle(r.Left + 20, r.Top + 40, r.Width - 357, r.Bottom - 273 - r.Top - 40),
+				panelSprites, false);
+
+			DrawDialogBackground(new Rectangle(r.Right - 330, r.Top + 40, 310, r.Bottom - 273 - r.Top - 40),
+				panelSprites, false);
+
 			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
 			renderer.DrawText2("Color", new int2(r.Left + 250, r.Top + 50), Color.White);
 			renderer.DrawText2("Faction", new int2(r.Left + 320, r.Top + 50), Color.White);
