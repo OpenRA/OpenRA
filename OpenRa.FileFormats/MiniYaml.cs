@@ -60,6 +60,12 @@ namespace OpenRa.FileFormats
 			return FromLines(File.ReadAllLines( path ));
 		}
 
+		public static Dictionary<string, MiniYaml> FromStream(Stream s)
+		{
+			using (var reader = new StreamReader(s))
+				return FromString(reader.ReadToEnd());
+		}
+
 		public static Dictionary<string, MiniYaml> FromString(string text)
 		{
 			return FromLines(text.Split('\n'));
