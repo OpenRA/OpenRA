@@ -1,6 +1,8 @@
-﻿using OpenRa.Traits.Activities;
+﻿using OpenRa.Mods.RA.Activities;
+using OpenRa.Traits;
+using OpenRa.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class C4DemolitionInfo : StatelessTraitInfo<C4Demolition> { }
 

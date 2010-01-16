@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Traits.Activities;
+using OpenRa.Traits;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRa.Mods.RA.Activities
 {
 	class CaptureBuilding : IActivity
 	{

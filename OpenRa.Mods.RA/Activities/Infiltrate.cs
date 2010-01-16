@@ -1,5 +1,7 @@
-﻿
-namespace OpenRa.Traits.Activities
+﻿using OpenRa.Traits.Activities;
+using OpenRa.Traits;
+
+namespace OpenRa.Mods.RA.Activities
 {
 	class Infiltrate : IActivity
 	{

@@ -1,9 +1,8 @@
 using System.Xml;
-using Ijw.DirectX;
 
 namespace OpenRa.Graphics
 {
-	class Sequence
+	public class Sequence
 	{
 		readonly Sprite[] sprites;
 		readonly int start, length;

@@ -31,7 +31,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Building(self); }
 	}
 
-	class Building : INotifyDamage, IResolveOrder, ITick
+	public class Building : INotifyDamage, IResolveOrder, ITick
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;

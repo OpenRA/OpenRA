@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Traits.Activities;
+using OpenRa.Traits;
+using OpenRa.Mods.RA.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class SpyInfo : StatelessTraitInfo<Spy> { }
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class RenderSpyInfo : RenderInfantryInfo
 	{

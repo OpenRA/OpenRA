@@ -5,7 +5,7 @@ using OpenRa.Traits;
 
 namespace OpenRa
 {
-	static class Exts
+	public static class Exts
 	{
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{

@@ -1,7 +1,8 @@
-﻿using OpenRa.Traits.Activities;
-using System.Collections.Generic;
-using System.Linq;
-namespace OpenRa.Traits
+﻿using OpenRa.Mods.RA.Activities;
+using OpenRa.Traits;
+using OpenRa.Traits.Activities;
+
+namespace OpenRa.Mods.RA
 {
 	class ThiefInfo : StatelessTraitInfo<Thief> { }
 

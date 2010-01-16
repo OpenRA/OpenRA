@@ -46,10 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\CaptureBuilding.cs" />
+    <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\Infiltrate.cs" />
+    <Compile Include="Activities\Steal.cs" />
+    <Compile Include="C4Demolition.cs" />
+    <Compile Include="EngineerCapture.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="MineImmune.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderSpy.cs" />
+    <Compile Include="Spy.cs" />
+    <Compile Include="Thief.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">

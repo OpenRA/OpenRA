@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.GameRules;
+﻿using System.Collections.Generic;
 using OpenRa.Traits.Activities;
 
 namespace OpenRa.Traits
@@ -81,8 +77,8 @@ namespace OpenRa.Traits
 				return PipType.Yellow;
 			if (!a.traits.Contains<AttackBase>())
 				return PipType.Yellow;	// noncombat [E6,SPY,THF]
-			if (a.traits.Contains<C4Demolition>())
-				return PipType.Red;		// E7
+
+			// todo: fix E7 color again.
 
 			return PipType.Green;
 		}

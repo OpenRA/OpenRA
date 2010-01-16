@@ -2,12 +2,12 @@
 
 namespace OpenRa.Traits
 {
-	class RenderInfantryInfo : RenderSimpleInfo
+	public class RenderInfantryInfo : RenderSimpleInfo
 	{
 		public override object Create(Actor self) { return new RenderInfantry(self); }
 	}
 
-	class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
+	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)
 			: base(self)

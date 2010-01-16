@@ -2,7 +2,7 @@ using System;
 
 namespace OpenRa.Graphics
 {
-	class Animation
+	public class Animation
 	{
 		string name;
 		public Sequence CurrentSequence { get; private set; }

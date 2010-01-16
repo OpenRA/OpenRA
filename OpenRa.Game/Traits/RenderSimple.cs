@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRa.Graphics;
 
 namespace OpenRa.Traits
 {
-	abstract class RenderSimpleInfo : ITraitInfo
+	public abstract class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
 
 		public abstract object Create(Actor self);
 	}
 
-	abstract class RenderSimple : IRender, ITick
+	public abstract class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = value; } }

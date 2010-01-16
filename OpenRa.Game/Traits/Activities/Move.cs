@@ -6,7 +6,7 @@ using OpenRa.GameRules;
 
 namespace OpenRa.Traits.Activities
 {
-	class Move : IActivity
+	public class Move : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 

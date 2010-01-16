@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenRa.Traits;
 
 namespace OpenRa.Effects
 {
-	class DelayedAction : IEffect
+	public class DelayedAction : IEffect
 	{
 		Action a;
 		int delay;

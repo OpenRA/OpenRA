@@ -134,8 +134,6 @@
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
-    <Compile Include="Traits\Activities\CaptureBuilding.cs" />
-    <Compile Include="Traits\Activities\Demolish.cs" />
     <Compile Include="Traits\Activities\EnterTransport.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
     <Compile Include="Traits\Activities\FlyAttack.cs" />
@@ -166,7 +164,6 @@
     <Compile Include="Graphics\OverlayRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
-    <Compile Include="Traits\Activities\Infiltrate.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
     <Compile Include="Traits\Activities\Rearm.cs" />
     <Compile Include="Traits\Activities\Repair.cs" />
@@ -216,12 +213,10 @@
     <Compile Include="Traits\BelowUnits.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
-    <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Chronosphere.cs" />
-    <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\GeneratesGap.cs" />
@@ -236,12 +231,10 @@
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
-    <Compile Include="Traits\RenderSpy.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
-    <Compile Include="Traits\Spy.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\ProductionQueue.cs" />
@@ -268,7 +261,6 @@
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\TakeCover.cs" />
-    <Compile Include="Traits\Thief.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />

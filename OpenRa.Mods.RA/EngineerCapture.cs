@@ -1,6 +1,8 @@
 ﻿using OpenRa.Traits.Activities;
+using OpenRa.Traits;
+using OpenRa.Mods.RA.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class EngineerCaptureInfo : StatelessTraitInfo<EngineerCapture> { }
 
