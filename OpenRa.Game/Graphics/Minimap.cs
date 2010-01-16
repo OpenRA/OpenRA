@@ -34,16 +34,23 @@ namespace OpenRa.Graphics
 		Color[] terrainTypeColors;
 		Color[] playerColors;
 		Color shroudColor;
+		string theater;
 
 		public void InvalidateOre() { oreLayer = null; }
 
 		public void Update()
 		{
+			if (Rules.Map.Theater != theater)
+			{
+				terrainTypeColors = null;
+				theater = Rules.Map.Theater;
+			}
+
 			if (terrainTypeColors == null)
 			{
 				var pal = new Palette(FileSystem.Open(Rules.Map.Theater + ".pal"));
 				terrainTypeColors = new[] {
-					Color.FromArgb(alpha, pal.GetColor(0x1a)),
+					Color.FromArgb(alpha, pal.GetColor(theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a)),
 					Color.FromArgb(alpha, pal.GetColor(0x63)),
 					Color.FromArgb(alpha, pal.GetColor(0x2f)),
 					Color.FromArgb(alpha, pal.GetColor(0x1f)),
