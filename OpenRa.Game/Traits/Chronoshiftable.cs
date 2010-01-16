@@ -1,9 +1,9 @@
-﻿using OpenRa.Game.Traits;
-using OpenRa.Game.Orders;
+﻿using OpenRa.Traits;
+using OpenRa.Orders;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class ChronoshiftableInfo : ITraitInfo
 	{

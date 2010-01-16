@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Effects
+namespace OpenRa.Effects
 {
-	interface IEffect
+	public interface IEffect
 	{
 		void Tick();
 		IEnumerable<Renderable> Render();

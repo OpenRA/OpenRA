@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Effects
+namespace OpenRa.Effects
 {
 	class DelayedAction : IEffect
 	{

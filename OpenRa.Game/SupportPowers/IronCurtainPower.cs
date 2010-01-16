@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Game.Orders;
-using OpenRa.Game.Traits;
+using OpenRa.Orders;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.SupportPowers
+namespace OpenRa.SupportPowers
 {
 	class IronCurtainPower : ISupportPowerImpl
 	{

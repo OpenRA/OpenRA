@@ -4,12 +4,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Orders;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Orders;
 
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	class MainWindow : Form
 	{
@@ -183,7 +183,7 @@ namespace OpenRa.Game
 	}
 
 	[Flags]
-	enum MouseButton
+	public enum MouseButton
 	{
 		None = (int)MouseButtons.None,
 		Left = (int)MouseButtons.Left,
@@ -192,7 +192,7 @@ namespace OpenRa.Game
 	}
 
 	[Flags]
-	enum Modifiers
+	public enum Modifiers
 	{
 		None = (int)Keys.None,
 		Shift = (int)Keys.Shift,
@@ -200,7 +200,7 @@ namespace OpenRa.Game
 		Ctrl = (int)Keys.Control,
 	}
 
-	struct MouseInput
+	public struct MouseInput
 	{
 		public MouseInputEvent Event;
 		public int2 Location;
@@ -208,5 +208,5 @@ namespace OpenRa.Game
 		public Modifiers Modifiers;
 	}
 
-	enum MouseInputEvent { Down, Move, Up };
+	public enum MouseInputEvent { Down, Move, Up };
 }

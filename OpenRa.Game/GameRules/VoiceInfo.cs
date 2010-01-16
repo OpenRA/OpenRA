@@ -5,7 +5,7 @@ using System.Text;
 using IjwFramework.Types;
 using IjwFramework.Collections;
 
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
 	class VoiceInfo
 	{

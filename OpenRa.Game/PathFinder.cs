@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
-using OpenRa.Game.Support;
-using OpenRa.Game.Traits;
+using OpenRa.Support;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class PathFinder
+	public class PathFinder
 	{
 		float[][,] passableCost = new float[4][,];
 		
@@ -173,7 +173,7 @@ namespace OpenRa.Game
 		}
 	}
 
-	struct CellInfo
+	public struct CellInfo
 	{
 		public float MinCost;
 		public int2 Path;
@@ -187,7 +187,7 @@ namespace OpenRa.Game
 		}
 	}
 
-	struct PathDistance : IComparable<PathDistance>
+	public struct PathDistance : IComparable<PathDistance>
 	{
 		public float EstTotal;
 		public int2 Location;

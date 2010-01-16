@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.Game.Traits;
-using OpenRa.Game.GameRules;
+using OpenRa.Traits;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{

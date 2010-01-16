@@ -1,7 +1,7 @@
 ﻿
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
-	class UserSettings
+	public class UserSettings
 	{
 		// Debug settings
 		public readonly bool UnitDebug = false;

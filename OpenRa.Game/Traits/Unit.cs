@@ -1,6 +1,6 @@
-﻿using OpenRa.Game.GameRules;
+﻿using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class UnitInfo : OwnedActorInfo, ITraitInfo
 	{

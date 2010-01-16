@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Collections;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
 	class TechTree
 	{

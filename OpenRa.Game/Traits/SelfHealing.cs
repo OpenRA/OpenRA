@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.GameRules;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class SelfHealingInfo : ITraitInfo
 	{

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Types;
-using OpenRa.Game.Effects;
+using OpenRa.Effects;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class AttackBaseInfo : ITraitInfo
 	{

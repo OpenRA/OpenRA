@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
-using OpenRa.Game.Support;
-using OpenRa.Game.Traits;
+using OpenRa.Support;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class GeneratesGapInfo : ITraitInfo
 	{

@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	enum PowerState { Normal, Low, Critical };
+	public enum PowerState { Normal, Low, Critical };
 
-	class Player
+	public class Player
 	{
 		public Actor PlayerActor;
 		public PaletteType Palette;

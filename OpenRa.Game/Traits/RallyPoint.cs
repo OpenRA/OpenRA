@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Orders;
+using OpenRa.Graphics;
+using OpenRa.Orders;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class RallyPointInfo : ITraitInfo
 	{

@@ -1,7 +1,7 @@
 ﻿
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
-	interface IActivity
+	public interface IActivity
 	{
 		IActivity NextActivity { get; set; }
 		IActivity Tick( Actor self );

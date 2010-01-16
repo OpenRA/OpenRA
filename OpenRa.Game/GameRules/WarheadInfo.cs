@@ -1,7 +1,7 @@
 ﻿
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
-	class WarheadInfo
+	public class WarheadInfo
 	{
 		public readonly int Spread = 1;
 		public readonly float[] Verses = { 1, 1, 1, 1, 1 };

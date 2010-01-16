@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using OpenRa.Game.Orders;
-using OpenRa.Game.Traits;
+using OpenRa.Orders;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.SupportPowers
+namespace OpenRa.SupportPowers
 {
 	class ChronospherePower : ISupportPowerImpl
 	{

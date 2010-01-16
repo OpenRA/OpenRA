@@ -1,10 +1,10 @@
 using System.Drawing;
 using System.Linq;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	class UiOverlay
 	{

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Windows.Forms;
 using IjwFramework.Types;
 using System.Collections.Generic;
-using OpenRa.Game.Traits;
-using OpenRa.Game.Support;
-using OpenRa.Game.Effects;
+using OpenRa.Traits;
+using OpenRa.Support;
+using OpenRa.Effects;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class WorldRenderer
 	{

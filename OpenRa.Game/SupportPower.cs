@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.SupportPowers;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.SupportPowers;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	// todo: fix this to route Activate through the orders system (otherwise desync in netplay)
 
-	class SupportPower
+	public class SupportPower
 	{
 		public readonly SupportPowerInfo Info;
 		public readonly Player Owner;

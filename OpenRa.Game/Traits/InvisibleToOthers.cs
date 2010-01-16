@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class InvisibleToOthersInfo : StatelessTraitInfo<InvisibleToOthers> { }
 

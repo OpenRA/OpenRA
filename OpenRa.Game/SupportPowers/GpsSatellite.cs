@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using OpenRa.Game.Effects;
-using OpenRa.Game.Traits;
+using OpenRa.Effects;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.SupportPowers
+namespace OpenRa.SupportPowers
 {
 	class GpsSatellite : ISupportPowerImpl
 	{

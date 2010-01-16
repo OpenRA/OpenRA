@@ -1,8 +1,8 @@
 using System.Drawing;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
-	class Sprite
+	public class Sprite
 	{
 		public readonly Rectangle bounds;
 		public readonly Sheet sheet;

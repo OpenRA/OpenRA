@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class UnitInfluenceMap
+	public class UnitInfluenceMap
 	{
 		List<Actor>[,] influence = new List<Actor>[128, 128];
 		readonly int2 searchDistance = new int2(2,2);
@@ -60,18 +60,7 @@ namespace OpenRa.Game
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
 					foreach( var cell in ios.OccupiedCells() )
 						if (!influence[cell.X, cell.Y].Contains(a))
-							//if( influence[ cell.X, cell.Y ] != a )
-								throw new InvalidOperationException( "UIM: Sanity check failed B" );
-		}
-
-		[Conditional( "SANITY_CHECKS" )]
-		void SanityCheckAdd( IOccupySpace a )
-		{
-			/* This check is too strict now that we can have multiple units in a cell
-			foreach( var c in a.OccupiedCells() )
-				if( influence[c.X, c.Y].Any())
-					throw new InvalidOperationException( "UIM: Sanity check failed (Add)" );
-			*/
+							throw new InvalidOperationException( "UIM: Sanity check failed B" );
 		}
 
 		public IEnumerable<Actor> GetUnitsAt( int2 a )
@@ -81,7 +70,6 @@ namespace OpenRa.Game
 
 		public void Add( Actor self, IOccupySpace unit )
 		{
-			SanityCheckAdd( unit );
 			foreach( var c in unit.OccupiedCells() )
 				influence[c.X, c.Y].Add(self);
 		}

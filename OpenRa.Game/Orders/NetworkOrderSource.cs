@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class NetworkOrderSource : IOrderSource
 	{

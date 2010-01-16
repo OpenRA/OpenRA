@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
-using OpenRa.Game.GameRules;
-namespace OpenRa.Game.Traits
+using OpenRa.GameRules;
+namespace OpenRa.Traits
 {
 	class StoresOreInfo : StatelessTraitInfo<StoresOre>
 	{

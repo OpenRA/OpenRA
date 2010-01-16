@@ -4,28 +4,28 @@ using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 using OpenRa.FileFormats;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Orders;
-using OpenRa.Game.Support;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Orders;
+using OpenRa.Support;
+using OpenRa.Traits;
 using IjwFramework.Types;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	static class Game
+	public static class Game
 	{
 		public static readonly int CellSize = 24;
 
 		public static World world;
-		public static Viewport viewport;
+		internal static Viewport viewport;
 		public static PathFinder PathFinder;
-		public static WorldRenderer worldRenderer;
+		internal static WorldRenderer worldRenderer;
 		public static Controller controller;
-		public static Chrome chrome;
+		internal static Chrome chrome;
 		public static UserSettings Settings;
 		
-		public static OrderManager orderManager;
+		internal static OrderManager orderManager;
 
 		static int localPlayerIndex;
 
@@ -50,9 +50,9 @@ namespace OpenRa.Game
 		static int2 clientSize;
 		static HardwarePalette palette;
 		static string mapName;
-		public static Minimap minimap;
-		public static Session LobbyInfo = new Session();
-		public static int2[] SpawnPoints;
+		internal static Minimap minimap;
+		internal static Session LobbyInfo = new Session();
+		internal static int2[] SpawnPoints;
 		static bool changePending;
 
 		public static void ChangeMap(string mapName)
@@ -115,7 +115,7 @@ namespace OpenRa.Game
 				.ToArray();
 		}
 
-		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
+		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
 			int localPlayer, bool useAftermath, Controller controller)
 		{
 			localPlayerIndex = localPlayer;
@@ -169,7 +169,7 @@ namespace OpenRa.Game
 		static int oreTicks;
 		public static int RenderFrame = 0;
 
-		public static Chat chat = new Chat();
+		internal static Chat chat = new Chat();
 
 		public static void Tick()
 		{

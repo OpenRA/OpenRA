@@ -1,6 +1,6 @@
-using OpenRa.Game.Graphics;
+using OpenRa.Graphics;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	public enum UnitMovementType : byte
 	{

@@ -1,9 +1,9 @@
-﻿using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
+﻿using OpenRa.GameRules;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class BuildingInfluenceMap
+	public class BuildingInfluenceMap
 	{
 		bool[,] blocked = new bool[128, 128];
 		Actor[,] influence = new Actor[128, 128];

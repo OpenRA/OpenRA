@@ -2,11 +2,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
-using OpenRa.Game.Support;
+using OpenRa.Support;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
-	class Renderer
+	internal class Renderer
 	{
 		internal static int SheetSize;
 

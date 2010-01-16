@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Log
 	{

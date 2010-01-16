@@ -1,5 +1,5 @@
 ﻿
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
 	class HeliLand : IActivity
 	{

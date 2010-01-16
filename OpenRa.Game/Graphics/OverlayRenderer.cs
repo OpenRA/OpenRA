@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class OverlayRenderer
 	{

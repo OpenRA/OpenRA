@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class LimitedAmmoInfo : ITraitInfo
 	{
@@ -9,7 +9,7 @@ namespace OpenRa.Game.Traits
 		public object Create(Actor self) { return new LimitedAmmo(self); }
 	}
 
-	class LimitedAmmo : INotifyAttack, IPips
+	public class LimitedAmmo : INotifyAttack, IPips
 	{
 		[Sync]
 		int ammo;

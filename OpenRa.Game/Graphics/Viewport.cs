@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	interface IHandleInput
 	{

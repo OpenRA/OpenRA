@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Collections;
-using OpenRa.Game.Graphics;
+using OpenRa.Graphics;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class PathSearch
+	public class PathSearch
 	{
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;

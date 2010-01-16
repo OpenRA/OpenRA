@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
-using OpenRa.Game.SupportPowers;
+using OpenRa.GameRules;
+using OpenRa.Traits;
+using OpenRa.SupportPowers;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class ChronosphereSelectOrderGenerator : IOrderGenerator
 	{

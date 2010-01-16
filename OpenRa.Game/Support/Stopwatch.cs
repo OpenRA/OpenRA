@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace OpenRa.Game.Support
+namespace OpenRa.Support
 {
 	class Stopwatch
 	{

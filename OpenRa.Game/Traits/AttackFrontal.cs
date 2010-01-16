@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	abstract class AttackFrontal : AttackBase
 	{

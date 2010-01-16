@@ -2,7 +2,7 @@ using System.Linq;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	static class SpriteSheetBuilder
 	{

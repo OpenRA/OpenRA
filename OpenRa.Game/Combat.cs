@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Effects;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Effects;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Combat			/* some utility bits that are shared between various things */
 	{

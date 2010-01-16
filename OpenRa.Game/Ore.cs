@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	public static class Ore
 	{

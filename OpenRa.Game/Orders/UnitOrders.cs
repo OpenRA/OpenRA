@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 using OpenRa.FileFormats;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	static class UnitOrders
 	{

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	interface IOrderGenerator
+	public interface IOrderGenerator
 	{
 		IEnumerable<Order> Order( int2 xy, MouseInput mi );
 		void Tick();

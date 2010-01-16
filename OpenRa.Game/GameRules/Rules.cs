@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
-using OpenRa.Game.GameRules;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Rules
 	{

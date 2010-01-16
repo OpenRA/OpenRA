@@ -4,12 +4,12 @@ using System.Drawing;
 using System.Linq;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Orders;
-using OpenRa.Game.Support;
-using OpenRa.Game.Traits;
+using OpenRa.Graphics;
+using OpenRa.Orders;
+using OpenRa.Support;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	class Chrome : IHandleInput
 	{
@@ -126,7 +126,7 @@ namespace OpenRa.Game
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
-					OpenRa.Game.Graphics.Util.MakeArray(3,
+					OpenRa.Graphics.Util.MakeArray(3,
 						n => i.ToString())))
 				.ToDictionary(a => a.First, a => a.Second);
 

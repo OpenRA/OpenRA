@@ -1,8 +1,8 @@
-﻿using OpenRa.Game.Graphics;
+﻿using OpenRa.Graphics;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class Cursor
+	public class Cursor
 	{
 		CursorSequence sequence;
 		Cursor(string cursor)

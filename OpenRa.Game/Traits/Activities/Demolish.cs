@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.Effects;
+using OpenRa.Effects;
 
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
 	class Demolish : IActivity
 	{

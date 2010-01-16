@@ -1,10 +1,10 @@
 ﻿using IjwFramework.Collections;
 using IrrKlang;
 using OpenRa.FileFormats;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Sound
 	{

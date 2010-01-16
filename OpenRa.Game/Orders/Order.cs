@@ -1,11 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using OpenRa.Game.SupportPowers;
+using OpenRa.SupportPowers;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	sealed class Order
+	public sealed class Order
 	{
 		public readonly string OrderString;
 		readonly uint SubjectId;

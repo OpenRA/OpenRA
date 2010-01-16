@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Game.GameRules;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class MobileInfo : ITraitInfo
 	{

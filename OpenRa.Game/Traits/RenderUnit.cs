@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.GameRules;
+using OpenRa.Graphics;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class RenderUnitInfo : RenderSimpleInfo
 	{

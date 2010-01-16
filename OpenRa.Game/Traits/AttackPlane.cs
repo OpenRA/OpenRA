@@ -1,6 +1,6 @@
-﻿using OpenRa.Game.Traits.Activities;
+﻿using OpenRa.Traits.Activities;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class AttackPlaneInfo : AttackBaseInfo
 	{

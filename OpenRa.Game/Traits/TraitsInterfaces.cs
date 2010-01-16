@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using IjwFramework.Types;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
-	enum DamageState { Normal, Half, Dead };
+	public enum DamageState { Normal, Half, Dead };
 	
 	// depends on the order of pips in WorldRenderer.cs!
-	enum PipType { Transparent, Green, Yellow, Red, Gray };
-	enum TagType { None, Fake, Primary };
+	public enum PipType { Transparent, Green, Yellow, Red, Gray };
+	public enum TagType { None, Fake, Primary };
 
-	interface ITick { void Tick(Actor self); }
-	interface IRender { IEnumerable<Renderable> Render(Actor self); }
-	interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
-	interface IResolveOrder { void ResolveOrder( Actor self, Order order ); }
+	public interface ITick { void Tick(Actor self); }
+	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
+	public interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
+	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 
 	interface INotifySold { void Sold(Actor self); }
 	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
@@ -30,7 +30,7 @@ namespace OpenRa.Game.Traits
 		bool Produce( Actor self, NewUnitInfo producee );
 		void SetPrimaryProducer(Actor self, bool isPrimary);
 	}
-	interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
+	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	interface INotifyAttack { void Attacking(Actor self); }
 	interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	interface IDamageModifier { float GetDamageModifier(); }
@@ -50,7 +50,7 @@ namespace OpenRa.Game.Traits
 		bool IsCrushableBy(UnitMovementType umt, Player player);
 		bool IsPathableCrush(UnitMovementType umt, Player player);
 	}
-	struct Renderable
+	public struct Renderable
 	{
 		public readonly Sprite Sprite;
 		public readonly float2 Pos;
@@ -73,7 +73,7 @@ namespace OpenRa.Game.Traits
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}
 
-	interface ITraitInfo { object Create(Actor self); }
+	public interface ITraitInfo { object Create(Actor self); }
 
 	class StatelessTraitInfo<T> : ITraitInfo
 		where T : new()

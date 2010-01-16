@@ -1,5 +1,5 @@
 ﻿
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
 	public class SupportPowerInfo
 	{

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.Traits;
-using OpenRa.Game.Graphics;
+using OpenRa.Traits;
+using OpenRa.Graphics;
 
-namespace OpenRa.Game.Effects
+namespace OpenRa.Effects
 {
 	class FlashTarget : IEffect
 	{

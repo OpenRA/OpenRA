@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits.Activities;
+using OpenRa.GameRules;
+using OpenRa.Traits.Activities;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class HelicopterInfo : ITraitInfo
 	{

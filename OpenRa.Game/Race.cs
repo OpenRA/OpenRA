@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	[Flags]
 	public enum Race

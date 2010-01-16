@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class CursorSequence
 	{

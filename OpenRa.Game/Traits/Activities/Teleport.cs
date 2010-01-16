@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRa.Game.GameRules;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
 	class Teleport : IActivity
 	{

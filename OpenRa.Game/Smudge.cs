@@ -1,6 +1,6 @@
-﻿using OpenRa.Game.GameRules;
+﻿using OpenRa.GameRules;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Smudge
 	{

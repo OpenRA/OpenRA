@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 using OpenRa.FileFormats;
 using System.Drawing.Imaging;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class Minimap
 	{

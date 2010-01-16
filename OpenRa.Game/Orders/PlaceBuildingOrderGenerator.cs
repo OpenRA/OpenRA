@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class PlaceBuildingOrderGenerator : IOrderGenerator
 	{

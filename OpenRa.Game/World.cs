@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using OpenRa.Game.Effects;
-using OpenRa.Game.Support;
+using OpenRa.Effects;
+using OpenRa.Support;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class World
+	public class World
 	{
 		List<Actor> actors = new List<Actor>();
 		List<IEffect> effects = new List<IEffect>();

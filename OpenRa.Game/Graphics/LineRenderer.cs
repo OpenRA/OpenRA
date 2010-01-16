@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Ijw.DirectX;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class LineRenderer
 	{

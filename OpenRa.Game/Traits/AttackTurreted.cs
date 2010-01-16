@@ -1,7 +1,7 @@
 ﻿using System;
-using OpenRa.Game.GameRules;
+using OpenRa.GameRules;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class AttackTurretedInfo : AttackBaseInfo
 	{

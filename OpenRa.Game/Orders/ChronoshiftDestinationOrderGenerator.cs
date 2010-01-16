@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using OpenRa.Game.Traits;
-using OpenRa.Game.SupportPowers;
+using OpenRa.Traits;
+using OpenRa.SupportPowers;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class ChronoshiftDestinationOrderGenerator : IOrderGenerator
 	{

@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	class SyncAttribute : Attribute { }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Effects
+namespace OpenRa.Effects
 {
 	class SatelliteLaunch : IEffect
 	{

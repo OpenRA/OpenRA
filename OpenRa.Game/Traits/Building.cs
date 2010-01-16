@@ -1,15 +1,11 @@
-﻿using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits.Activities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Game.Effects;
-using OpenRa.Game.Graphics;
+﻿using System;
+using OpenRa.Effects;
+using OpenRa.GameRules;
+using OpenRa.Traits.Activities;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
-	class OwnedActorInfo
+	public class OwnedActorInfo
 	{
 		public readonly int HP = 0;
 		public readonly ArmorType Armor = ArmorType.none;
@@ -18,7 +14,7 @@ namespace OpenRa.Game.Traits
 		public readonly bool WaterBound = false;
 	}
 
-	class BuildingInfo : OwnedActorInfo, ITraitInfo
+	public class BuildingInfo : OwnedActorInfo, ITraitInfo
 	{
 		public readonly int Power = 0;
 		public readonly bool RequiresPower = false;

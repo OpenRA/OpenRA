@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class ChronoshiftSelfDestinationOrderGenerator : IOrderGenerator
 	{

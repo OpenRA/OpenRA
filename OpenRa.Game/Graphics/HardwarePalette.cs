@@ -1,7 +1,7 @@
 using System.Drawing;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	public enum PaletteType
 	{

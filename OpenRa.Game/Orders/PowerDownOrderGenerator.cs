@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class PowerDownOrderGenerator : IOrderGenerator
 	{

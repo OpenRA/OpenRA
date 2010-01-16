@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	static class SheetBuilder
 	{

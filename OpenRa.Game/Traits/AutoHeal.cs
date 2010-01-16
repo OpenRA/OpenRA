@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using OpenRa.Game.Traits.Activities;
+using OpenRa.Traits.Activities;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class AutoHealInfo : StatelessTraitInfo<AutoHeal> { }
 

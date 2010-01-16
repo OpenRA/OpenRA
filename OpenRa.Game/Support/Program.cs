@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class Program
 	{

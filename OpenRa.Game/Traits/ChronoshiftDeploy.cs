@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Game.Orders;
+using OpenRa.Orders;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class ChronoshiftDeployInfo : ITraitInfo
 	{

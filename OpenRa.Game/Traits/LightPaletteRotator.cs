@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class LightPaletteRotatorInfo : StatelessTraitInfo<LightPaletteRotator> { }
 	class LightPaletteRotator : ITick, IPaletteModifier

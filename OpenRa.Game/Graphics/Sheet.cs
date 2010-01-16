@@ -2,22 +2,22 @@ using System.Drawing;
 using Ijw.DirectX;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
-	class Sheet
+	public class Sheet
 	{
 		readonly Renderer renderer;
 		protected readonly Bitmap bitmap;
 
 		Texture texture;
 
-		public Sheet(Renderer renderer, Size size)
+		internal Sheet(Renderer renderer, Size size)
 		{
 			this.renderer = renderer;
 			this.bitmap = new Bitmap(size.Width, size.Height);
 		}
 
-		public Sheet(Renderer renderer, string filename)
+		internal Sheet(Renderer renderer, string filename)
 		{
 			this.renderer = renderer;
 			this.bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));

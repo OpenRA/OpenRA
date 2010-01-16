@@ -1,7 +1,7 @@
-﻿using OpenRa.Game.Traits.Activities;
+﻿using OpenRa.Traits.Activities;
 using System.Collections.Generic;
 using System.Linq;
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class ThiefInfo : StatelessTraitInfo<Thief> { }
 

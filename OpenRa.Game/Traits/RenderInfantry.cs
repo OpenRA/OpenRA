@@ -1,6 +1,6 @@
-﻿using OpenRa.Game.Effects;
+﻿using OpenRa.Effects;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class RenderInfantryInfo : RenderSimpleInfo
 	{

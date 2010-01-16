@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.FileFormats;
-using OpenRa.Game.Graphics;
+using OpenRa.Graphics;
 using IjwFramework.Types;
 using System.Collections;
 
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
 	class InfoLoader<T> : IEnumerable<KeyValuePair<string, T>>
 	{

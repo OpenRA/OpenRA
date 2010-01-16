@@ -1,5 +1,5 @@
 ﻿
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class RenderBuildingChargeInfo : RenderBuildingInfo
 	{

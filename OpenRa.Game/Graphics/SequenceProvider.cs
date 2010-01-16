@@ -4,7 +4,7 @@ using System.Xml;
 using OpenRa.FileFormats;
 using System;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	static class SequenceProvider
 	{

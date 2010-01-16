@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using IjwFramework.Collections;
-using OpenRa.Game.Graphics;
+using OpenRa.Graphics;
 
-namespace OpenRa.Game.Support
+namespace OpenRa.Support
 {
 	static class PerfHistory
 	{

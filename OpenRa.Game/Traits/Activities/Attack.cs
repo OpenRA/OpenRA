@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
 	/* non-turreted attack */
 	class Attack : IActivity

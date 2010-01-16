@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Traits;
-using OpenRa.Game.Traits.Activities;
+using OpenRa.GameRules;
+using OpenRa.Traits;
+using OpenRa.Traits.Activities;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class Actor
+	public class Actor
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();

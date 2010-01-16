@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Drawing;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	static class Util
 	{

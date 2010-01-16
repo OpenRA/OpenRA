@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class Animation
 	{

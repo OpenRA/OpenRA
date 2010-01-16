@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OpenRa.Game.SupportPowers
+namespace OpenRa.SupportPowers
 {
-	interface ISupportPowerImpl
+	public interface ISupportPowerImpl
 	{
 		void Activate(SupportPower p);
 		void OnFireNotification(Actor target, int2 xy);

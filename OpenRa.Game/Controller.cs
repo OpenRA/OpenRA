@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Collections;
 using IjwFramework.Types;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Orders;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Orders;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class Controller : IHandleInput
+	public class Controller : IHandleInput
 	{
 		public IOrderGenerator orderGenerator;
 

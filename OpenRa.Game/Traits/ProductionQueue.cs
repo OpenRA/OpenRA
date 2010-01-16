@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using IjwFramework.Collections;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{

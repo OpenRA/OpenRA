@@ -1,6 +1,6 @@
 ﻿
 using System;
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
 	class GeneralInfo
 	{

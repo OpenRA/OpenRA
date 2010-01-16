@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
-using OpenRa.Game.Traits;
+using OpenRa.Traits;
 
-namespace OpenRa.Game.GameRules
+namespace OpenRa.GameRules
 {
-	class NewUnitInfo
+	public class NewUnitInfo
 	{
 		public readonly string Name;
 		public readonly string Category;

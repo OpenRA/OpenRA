@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRa.Game.Orders
+namespace OpenRa.Orders
 {
 	class ReplayOrderSource : IOrderSource
 	{

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using OpenRa.Game.GameRules;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.GameRules;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 using System;
 
-namespace OpenRa.Game.Effects
+namespace OpenRa.Effects
 {
 	class Missile : IEffect
 	{

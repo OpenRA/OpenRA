@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	class Settings
 	{

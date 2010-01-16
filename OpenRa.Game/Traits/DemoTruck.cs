@@ -1,10 +1,10 @@
-﻿using OpenRa.Game.Effects;
-using OpenRa.Game.Traits;
+﻿using OpenRa.Effects;
+using OpenRa.Traits;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Game.Orders;
+using OpenRa.Orders;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class DemoTruckInfo : ITraitInfo
 	{

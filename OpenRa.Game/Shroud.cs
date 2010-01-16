@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IjwFramework.Types;
-using OpenRa.Game.Graphics;
-using OpenRa.Game.Traits;
+using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
-	class Shroud
+	public class Shroud
 	{
 		bool[,] explored = new bool[128, 128];
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
@@ -132,7 +132,7 @@ namespace OpenRa.Game
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
 
-		public void Draw(SpriteRenderer r)
+		internal void Draw(SpriteRenderer r)
 		{
 			if (dirty)
 			{

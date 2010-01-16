@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using OpenRa.FileFormats;
 using System.Drawing;
 
-namespace OpenRa.Game
+namespace OpenRa
 {
 	static class PackageDownloader
 	{

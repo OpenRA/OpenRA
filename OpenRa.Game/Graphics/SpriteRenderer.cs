@@ -1,6 +1,6 @@
 using Ijw.DirectX;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class SpriteRenderer
 	{

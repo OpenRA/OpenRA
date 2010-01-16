@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace OpenRa.Game.Traits
+namespace OpenRa.Traits
 {
 	class TurretedInfo : ITraitInfo
 	{

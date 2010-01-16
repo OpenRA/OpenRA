@@ -2,7 +2,7 @@
 using System.Drawing;
 using Ijw.DirectX;
 using System.IO;
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class MappedImage
 	{

@@ -3,7 +3,7 @@ using Ijw.DirectX;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
-namespace OpenRa.Game.Graphics
+namespace OpenRa.Graphics
 {
 	class TerrainRenderer
 	{

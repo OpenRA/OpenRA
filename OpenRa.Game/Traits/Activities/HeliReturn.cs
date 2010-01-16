@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace OpenRa.Game.Traits.Activities
+namespace OpenRa.Traits.Activities
 {
 	class HeliReturn : IActivity
 	{
