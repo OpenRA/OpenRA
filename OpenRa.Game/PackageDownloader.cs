@@ -20,8 +20,12 @@ namespace OpenRa.Game
 		public static float Fraction { get; private set; }
 		public static int DownloadedBytes { get { return (int)content.Length; } }
 
-		public static void SetPackageList(string[] packages)
+		public static bool SetPackageList(string[] packages)
 		{
+			if (!(allPackages.Except(packages).Any()
+				|| packages.Except(allPackages).Any()))
+				return false;
+
 			allPackages = packages;
 			missingPackages = allPackages.Where(p => !HavePackage(p)).ToList();
 
@@ -29,6 +33,8 @@ namespace OpenRa.Game
 				BeginDownload();
 			else
 				missingPackages.Remove(currentPackage);
+
+			return true;
 		}
 
 		class Chunk { public int Index = 0; public int Count = 0; public string Data = ""; }

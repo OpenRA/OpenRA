@@ -57,6 +57,7 @@ namespace OpenRa.Game
 
 		public static void ChangeMap(string mapName)
 		{
+			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
 			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
@@ -388,8 +389,6 @@ namespace OpenRa.Game
 
 			LobbyInfo = session;
 
-			// todo: if we don't have all the resources, we don't want to do this yet.
-
 			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
 				&& !Game.orderManager.GameStarted)
 			{
@@ -398,19 +397,9 @@ namespace OpenRa.Game
 					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 
-			PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages);
-			if (!PackageDownloader.IsIdle())
-			{
+			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages)
+				|| mapName != LobbyInfo.GlobalSettings.Map)
 				changePending = true;
-				return;
-			}
-
-			if (mapName != LobbyInfo.GlobalSettings.Map)
-			{
-				chat.AddLine(Color.White, "Debug", 
-					"Map change {0} -> {1}".F(mapName, session.GlobalSettings.Map));
-				ChangeMap(LobbyInfo.GlobalSettings.Map);
-			}
 		}
 
 		public static void StartGame()

@@ -430,7 +430,7 @@ namespace OpenRa.Game
 					leftOffset.X += 1;
 					rightOffset.X -= 1;
 				}
-				lineRenderer.DrawLine(barStart + leftOffset, powerLevel + rightOffset, color, color);
+				lineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
 			}
 			lineRenderer.Flush();
 
