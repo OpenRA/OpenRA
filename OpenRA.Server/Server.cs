@@ -23,7 +23,6 @@ namespace OpenRA.Server
 			listener.Start();
 
 			Console.WriteLine("Server started.");
-			Console.WriteLine("Testing.");
 
 			for (; ; )
 			{
