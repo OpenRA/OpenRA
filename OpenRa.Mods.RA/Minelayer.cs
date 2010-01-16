@@ -17,7 +17,7 @@ namespace OpenRa.Mods.RA
 				return null;
 
 			// Ensure that the cell is empty except for the minelayer
-			if (Game.UnitInfluence.GetUnitsAt(xy).Any(a => a != self))
+			if (Game.world.UnitInfluence.GetUnitsAt(xy).Any(a => a != self))
 				return null;
 
 			if (mi.Button == MouseButton.Right && underCursor == self)
@@ -37,7 +37,7 @@ namespace OpenRa.Mods.RA
 				// todo: delay a bit? (req making deploy-mine an activity)
 
 				Game.world.AddFrameEndTask(
-					w => w.Add(new Actor(self.Info.Traits.Get<MinelayerInfo>().Mine, self.Location, self.Owner)));
+					w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, self.Location, self.Owner));
 			}
 		}
 	}

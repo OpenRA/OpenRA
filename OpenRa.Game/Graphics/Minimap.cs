@@ -91,7 +91,7 @@ namespace OpenRa.Graphics
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
 					{
-						var b = Game.BuildingInfluence.GetBuildingAt(new int2(x, y));
+						var b = Game.world.BuildingInfluence.GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
 								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();

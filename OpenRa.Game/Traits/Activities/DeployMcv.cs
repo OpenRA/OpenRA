@@ -17,7 +17,7 @@ namespace OpenRa.Traits.Activities
 					Sound.Play("placbldg.aud");
 					Sound.Play("build5.aud");
 				}
-				Game.world.Add( new Actor( "fact", self.Location - new int2( 1, 1 ), self.Owner ) );
+				Game.world.CreateActor( "fact", self.Location - new int2( 1, 1 ), self.Owner );
 			} );
 			return this;
 		}

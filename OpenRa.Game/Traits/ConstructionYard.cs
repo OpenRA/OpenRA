@@ -50,10 +50,10 @@ namespace OpenRa.Traits
 		
 		public bool CanEnterCell(int2 a)
 		{
-			if (!Game.BuildingInfluence.CanMoveHere(a)) return false;
+			if (!Game.world.BuildingInfluence.CanMoveHere(a)) return false;
 
 			var crushable = true;
-			foreach (Actor actor in Game.UnitInfluence.GetUnitsAt(a))
+			foreach (Actor actor in Game.world.UnitInfluence.GetUnitsAt(a))
 			{
 				if (actor == self) continue;
 				

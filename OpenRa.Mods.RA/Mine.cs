@@ -21,7 +21,7 @@ namespace OpenRa.Mods.RA
 		public Mine(Actor self)
 		{
 			this.self = self;
-			Game.UnitInfluence.Add(self, this);
+			Game.world.UnitInfluence.Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)

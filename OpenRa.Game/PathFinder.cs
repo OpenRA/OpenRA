@@ -54,7 +54,7 @@ namespace OpenRa
 			return q =>
 				p != q &&
 				((p - q).LengthSquared < dist * dist) &&
-				(Game.UnitInfluence.GetUnitsAt(q).Any());
+				(Game.world.UnitInfluence.GetUnitsAt(q).Any());
 		}
 
 		public List<int2> FindPath( PathSearch search )

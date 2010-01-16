@@ -12,6 +12,9 @@ namespace OpenRa
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 
+		public readonly BuildingInfluenceMap BuildingInfluence;
+		public readonly UnitInfluenceMap UnitInfluence;
+
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
@@ -20,6 +23,18 @@ namespace OpenRa
 			Map = new Map( Rules.AllRules );
 			FileSystem.MountTemporary( new Package( Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
+
+			BuildingInfluence = new BuildingInfluenceMap();
+			UnitInfluence = new UnitInfluenceMap();
+
+			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+		}
+
+		public Actor CreateActor( string name, int2 location, Player owner )
+		{
+			var a = new Actor( name, location, owner );
+			Add( a );
+			return a;
 		}
 
 		public void Add(Actor a)

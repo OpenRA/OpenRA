@@ -32,10 +32,10 @@ namespace OpenRa.Traits
 		public bool Produce( Actor self, ActorInfo producee )
 		{
 			var location = CreationLocation( self, producee );
-			if( location == null || Game.UnitInfluence.GetUnitsAt( location.Value ).Any() )
+			if( location == null || Game.world.UnitInfluence.GetUnitsAt( location.Value ).Any() )
 				return false;
 
-			var newUnit = new Actor( producee.Name, location.Value, self.Owner );
+			var newUnit = Game.world.CreateActor( producee.Name, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
 			var rp = self.traits.GetOrDefault<RallyPoint>();
@@ -50,8 +50,6 @@ namespace OpenRa.Traits
 			if (pi != null && pi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
 					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
-
-			Game.world.Add( newUnit );
 
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
 				t.UnitProduced(self, newUnit);

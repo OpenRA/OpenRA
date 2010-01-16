@@ -13,7 +13,7 @@ namespace OpenRa.Traits.Activities
 		int2? ChooseExitTile(Actor self)
 		{
 			// is anyone still hogging this tile?
-			if (Game.UnitInfluence.GetUnitsAt(self.Location).Count() > 1)
+			if (Game.world.UnitInfluence.GetUnitsAt(self.Location).Count() > 1)
 				return null;
 
 			for (var i = -1; i < 2; i++)

@@ -14,9 +14,8 @@ namespace OpenRa.Traits.Activities
 				ns.Sold(self);
 			w.Remove(self);
 			
-			var mcv = new Actor("mcv", self.Location + new int2(1, 1), self.Owner);
+			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
 			mcv.traits.Get<Unit>().Facing = 96;
-			w.Add(mcv);
 		}
 
 		public IActivity Tick(Actor self)

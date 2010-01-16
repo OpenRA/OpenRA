@@ -40,8 +40,6 @@ namespace OpenRa
 				viewport.GoToStartLocation();
 			}
 		}
-		public static BuildingInfluenceMap BuildingInfluence;
-		public static UnitInfluenceMap UnitInfluence;
 
 		public static bool skipMakeAnims = true;
 
@@ -74,9 +72,6 @@ namespace OpenRa
 
 			palette = new HardwarePalette(renderer, world.Map);
 
-			var worldActor = new Actor("World", new int2(int.MaxValue, int.MaxValue), null);
-			Game.world.Add(worldActor);
-
 			for (int i = 0; i < 8; i++)
 			{
 				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
@@ -92,12 +87,9 @@ namespace OpenRa
 
 			minimap = new Minimap(renderer);
 
-			BuildingInfluence = new BuildingInfluenceMap();
-			UnitInfluence = new UnitInfluenceMap();
-
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)
-				world.Add(new Actor(treeReference.Image, new int2(treeReference.Location), null));
+				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
 			
 			LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
@@ -154,8 +146,8 @@ namespace OpenRa
 				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);
-				world.Add(new Actor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
-					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]));
+				world.CreateActor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
+					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]);
 			}
 		}
 
@@ -209,7 +201,7 @@ namespace OpenRa
 							}
 
 						world.Tick();
-						UnitInfluence.Tick();
+						Game.world.UnitInfluence.Tick();
 						foreach (var player in players.Values)
 							player.Tick();
 					}
@@ -248,8 +240,8 @@ namespace OpenRa
 
 		public static bool IsCellBuildable(int2 a, UnitMovementType umt, Actor toIgnore)
 		{
-			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
-			if (UnitInfluence.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
+			if (Game.world.BuildingInfluence.GetBuildingAt(a) != null) return false;
+			if (Game.world.UnitInfluence.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
 			return Game.world.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
@@ -350,7 +342,7 @@ namespace OpenRa
 			{
 				heuristic = loc =>
 				{
-					var b = Game.BuildingInfluence.GetBuildingAt(loc);
+					var b = Game.world.BuildingInfluence.GetBuildingAt(loc);
 					if (b != null && b.Owner == p && b.Info.Traits.Get<BuildingInfo>().BaseNormal) return 0;
 					if ((loc - position).Length > maxDistance)
 						return float.PositiveInfinity;	/* not quite right */
@@ -416,7 +408,7 @@ namespace OpenRa
 				// todo: spawn more than one unit, in most cases!
 
 				var sp = ChooseSpawnPoint(available, taken);
-				world.Add(new Actor("mcv", sp, players[client.Index]));
+				world.CreateActor("mcv", sp, players[client.Index]);
 			}
 
 			Game.viewport.GoToStartLocation();

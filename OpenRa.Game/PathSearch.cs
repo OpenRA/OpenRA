@@ -56,15 +56,15 @@ namespace OpenRa
 				{
 					if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
 						continue;
-					if (!Game.BuildingInfluence.CanMoveHere(newHere) && 
-						Game.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
+					if (!Game.world.BuildingInfluence.CanMoveHere(newHere) && 
+						Game.world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
 						continue;
 					if (Game.world.Map.IsOverlaySolid(newHere))
 						continue;
 				}
 				
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (Game.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.IsActorPathableToCrush(a, umt))))
+				if (checkForBlocked && (Game.world.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.IsActorPathableToCrush(a, umt))))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))

@@ -28,7 +28,7 @@ namespace OpenRa
 
 		public static bool CanSpreadInto(int i, int j)
 		{
-			if (Game.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
+			if (Game.world.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
 				return false;
 
 			return TerrainCosts.Cost(UnitMovementType.Wheel,
