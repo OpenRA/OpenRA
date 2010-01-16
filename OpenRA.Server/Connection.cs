@@ -28,6 +28,7 @@ namespace OpenRA.Server
 		/* file server state */
 		public int NextChunk = 0;
 		public int NumChunks = 0;
+		public int RemainingBytes = 0;
 		public Stream Stream = null;
 	}
 

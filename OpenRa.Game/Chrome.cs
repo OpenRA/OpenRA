@@ -146,6 +146,8 @@ namespace OpenRa.Game
 				
 		public void Draw()
 		{
+			DrawDownloadBar();
+
 			if (!Game.orderManager.GameStarted)
 			{
 				DrawLobby();
@@ -184,6 +186,36 @@ namespace OpenRa.Game
 			DrawOptionsMenu();
 		}
 
+		public void DrawDownloadBar()
+		{
+			if (PackageDownloader.IsIdle())
+				return;
+
+			var r = new Rectangle((Game.viewport.Width - 400) / 2, Game.viewport.Height - 110, 400, 100);
+			DrawDialogBackground(r, optionsSprites, true);
+
+			DrawCentered("Downloading: {0} (+{1} more)".F(
+				PackageDownloader.CurrentPackage.Split(':')[0],
+				PackageDownloader.RemainingPackages),
+				new int2( Game.viewport.Width  /2, Game.viewport.Height - 90),
+				Color.White);
+
+			DrawDialogBackground(new Rectangle(r.Left + 30, r.Top + 50, r.Width - 60, 20),
+				panelSprites, false);
+
+			var x1 = r.Left + 35;
+			var x2 = r.Right - 35;
+			var x = float2.Lerp(x1, x2, PackageDownloader.Fraction);
+
+			for (var y = r.Top + 55; y < r.Top + 65; y++)
+				lineRenderer.DrawLine(
+					new float2(x1, y) + Game.viewport.Location, 
+					new float2(x, y) + Game.viewport.Location,
+					Color.White, Color.White);
+
+			lineRenderer.Flush();
+		}
+
 		public void DrawLobby()
 		{
 			var w = 800;
@@ -199,17 +231,17 @@ namespace OpenRa.Game
 				panelSprites, false);
 
 			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
-			renderer.DrawText2("Color", new int2(r.Left + 250, r.Top + 50), Color.White);
-			renderer.DrawText2("Faction", new int2(r.Left + 320, r.Top + 50), Color.White);
-			renderer.DrawText2("Status", new int2(r.Left + 390, r.Top + 50), Color.White);
+			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
+			renderer.DrawText2("Faction", new int2(r.Left + 300, r.Top + 50), Color.White);
+			renderer.DrawText2("Status", new int2(r.Left + 370, r.Top + 50), Color.White);
 				
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
 			{
 				renderer.DrawText(client.Name, new int2(r.Left + 30, y), Color.White);
-				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 250, y), Color.White);
-				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 320, y), Color.White);
-				renderer.DrawText(client.State.ToString(), new int2(r.Left + 390, y), Color.White);
+				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 230, y), Color.White);
+				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
+				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
 				y += 30;
 			}
 

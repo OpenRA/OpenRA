@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using OpenRa.FileFormats;
+using System.Security.Cryptography;
 
 namespace OpenRA.Server
 {
@@ -18,8 +19,11 @@ namespace OpenRA.Server
 		static Session lobbyInfo = new Session();
 		static bool GameStarted = false;
 
-		const int DownloadChunkInterval = 200000;
-		const int DownloadChunkSize = 4096;
+		const int DownloadChunkInterval = 20000;
+		const int DownloadChunkSize = 16384;
+
+		static readonly string[] packages = { };
+		//static readonly string[] packages = { "testpkg.mix" };
 
 		public static void Main(string[] args)
 		{
@@ -171,7 +175,7 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				var data = c.Stream.Read(DownloadChunkSize);
+				var data = c.Stream.Read(Math.Min(DownloadChunkSize, c.RemainingBytes));
 				if (data.Length != 0)
 				{
 					var chunk = new Chunk
@@ -186,11 +190,14 @@ namespace OpenRA.Server
 							FieldSaver.Save(chunk).Nodes.WriteToString()).Serialize());
 				}
 
-				if (data.Length < DownloadChunkSize)
+				c.RemainingBytes -= data.Length;
+				if (c.RemainingBytes == 0)
 				{
 					GetClient(c).State = Session.ClientState.NotReady;
 					c.Stream.Dispose();
 					c.Stream = null;
+
+					SyncLobbyInfo();
 				}
 			}
 			catch (Exception e) { DropClient(c, e); }
@@ -392,16 +399,19 @@ namespace OpenRA.Server
 						client.State = Session.ClientState.Downloading;
 
 						var filename = so.Data.Split(':')[0];
-						// todo: validate that the SHA1 they asked for matches what we've got.
-
-						var length = (int) new FileInfo(filename).Length;
-						conn.NextChunk = 0;
-						conn.NumChunks = (length + DownloadChunkSize - 1) / DownloadChunkSize;
 
 						if (conn.Stream != null)
 							conn.Stream.Dispose();
 
 						conn.Stream = File.OpenRead(filename);
+						// todo: validate that the SHA1 they asked for matches what we've got.
+
+						var length = (int) new FileInfo(filename).Length;
+						conn.NextChunk = 0;
+						conn.NumChunks = (length + DownloadChunkSize - 1) / DownloadChunkSize;
+						conn.RemainingBytes = length;
+
+						SyncLobbyInfo();
 					}
 					break;
 			}
@@ -447,7 +457,21 @@ namespace OpenRA.Server
 			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
+
+			lobbyInfo.GlobalSettings.Packages = 
+				packages.Select(a => "{0}:{1}".F(a, CalculateSHA1(a))).ToArray();
+
+			foreach( var p in lobbyInfo.GlobalSettings.Packages )
+				Console.WriteLine("Package: `{0}`", p);
+
 			GameStarted = false;
+		}
+
+		static string CalculateSHA1(string filename)
+		{
+			using (var csp = SHA1.Create())
+				return new string(csp.ComputeHash(File.ReadAllBytes(filename))
+					.SelectMany(a => a.ToString("x2")).ToArray());
 		}
 
 		static void SyncLobbyInfo()

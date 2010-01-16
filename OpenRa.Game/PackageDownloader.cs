@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using OpenRa.FileFormats;
+using System.Drawing;
 
 namespace OpenRa.Game
 {
@@ -14,6 +15,11 @@ namespace OpenRa.Game
 		static string currentPackage = null;
 		static MemoryStream content = null;
 
+		public static string CurrentPackage { get { return currentPackage; } }
+		public static int RemainingPackages { get { return missingPackages.Count; } }
+		public static float Fraction { get; private set; }
+		public static int DownloadedBytes { get { return (int)content.Length; } }
+
 		public static void SetPackageList(string[] packages)
 		{
 			allPackages = packages;
@@ -21,6 +27,8 @@ namespace OpenRa.Game
 
 			if (currentPackage == null || !missingPackages.Contains(currentPackage))
 				BeginDownload();
+			else
+				missingPackages.Remove(currentPackage);
 		}
 
 		class Chunk { public int Index = 0; public int Count = 0; public string Data = ""; }
@@ -31,6 +39,8 @@ namespace OpenRa.Game
 			FieldLoader.Load(c, new MiniYaml(null, MiniYaml.FromString(data)));
 			var bytes = Convert.FromBase64String(c.Data);
 			content.Write(bytes, 0, bytes.Length);
+
+			Fraction = (float)c.Index / c.Count;
 
 			if (c.Index == c.Count - 1)
 				EndDownload();
@@ -49,9 +59,12 @@ namespace OpenRa.Game
 
 			content = new MemoryStream();
 
+			Game.chat.AddLine(Color.White, "Debug", "Requesting package: {0}".F(currentPackage));
+
 			Game.controller.AddOrder(
-				new Order("RequestFile", null, null, int2.Zero, currentPackage) 
-				{ IsImmediate = true });
+				new Order("RequestFile", Game.LocalPlayer.PlayerActor, null, int2.Zero, currentPackage) { IsImmediate = true });
+
+			Fraction = 0f;
 		}
 
 		static void EndDownload()
@@ -62,6 +75,8 @@ namespace OpenRa.Game
 
 			if (CalculateSHA1(parts[0]) != parts[1])
 				throw new InvalidOperationException("Broken download");
+
+			Game.chat.AddLine(Color.White, "Debug", "Finished receiving package: {0}".F(currentPackage));
 
 			currentPackage = null;
 

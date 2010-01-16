@@ -53,9 +53,11 @@ namespace OpenRa.Game
 		public static Minimap minimap;
 		public static Session LobbyInfo = new Session();
 		public static int2[] SpawnPoints;
+		static bool changePending;
 
 		public static void ChangeMap(string mapName)
 		{
+			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
 			SpriteSheetBuilder.Initialize();
@@ -170,6 +172,12 @@ namespace OpenRa.Game
 
 		public static void Tick()
 		{
+			if (changePending && PackageDownloader.IsIdle())
+			{
+				ChangeMap(LobbyInfo.GlobalSettings.Map);
+				return;
+			}
+
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			if (dt >= Settings.Timestep)
@@ -392,7 +400,10 @@ namespace OpenRa.Game
 
 			PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages);
 			if (!PackageDownloader.IsIdle())
+			{
+				changePending = true;
 				return;
+			}
 
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 			{
