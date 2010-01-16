@@ -18,6 +18,9 @@ namespace OpenRA.Server
 		static Session lobbyInfo = new Session();
 		static bool GameStarted = false;
 
+		const int DownloadChunkInterval = 200000;
+		const int DownloadChunkSize = 4096;
+
 		public static void Main(string[] args)
 		{
 			listener.Start();
@@ -30,12 +33,17 @@ namespace OpenRA.Server
 				checkRead.Add(listener.Server);
 				foreach (var c in conns) checkRead.Add(c.socket);
 
+				var isSendingPackages = conns.Any(c => c.Stream != null);
+
 				/* msdn lies, -1 doesnt work. this is ~1h instead. */
-				Socket.Select(checkRead, null, null, -2	);
+				Socket.Select(checkRead, null, null, isSendingPackages ? DownloadChunkInterval : -2 );
 
 				foreach (Socket s in checkRead)
 					if (s == listener.Server) AcceptConnection();
 					else ReadData(conns.Single(c => c.socket == s));
+
+				foreach (var c in conns.Where(a => a.Stream != null).ToArray())
+					SendNextChunk(c);
 			}
 		}
 
@@ -157,6 +165,37 @@ namespace OpenRA.Server
 			}
 		}
 
+		class Chunk { public int Index = 0; public int Count = 0; public string Data = ""; }
+
+		static void SendNextChunk(Connection c)
+		{
+			try
+			{
+				var data = c.Stream.Read(DownloadChunkSize);
+				if (data.Length != 0)
+				{
+					var chunk = new Chunk
+					{
+						Index = c.NextChunk++,
+						Count = c.NumChunks,
+						Data = Convert.ToBase64String(data)
+					};
+
+					DispatchOrdersToClient(c, 0,
+						new ServerOrder(0, "FileChunk",
+							FieldSaver.Save(chunk).Nodes.WriteToString()).Serialize());
+				}
+
+				if (data.Length < DownloadChunkSize)
+				{
+					GetClient(c).State = Session.ClientState.NotReady;
+					c.Stream.Dispose();
+					c.Stream = null;
+				}
+			}
+			catch (Exception e) { DropClient(c, e); }
+		}
+
 		static void DispatchOrdersToClient(Connection c, int frame, byte[] data)
 		{
 			try
@@ -204,7 +243,7 @@ namespace OpenRA.Server
 					s => 
 					{
 						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
-						lobbyInfo.Clients[ conn.PlayerIndex ].Name = s;
+						GetClient(conn).Name = s;
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -238,7 +277,7 @@ namespace OpenRA.Server
 							return false;
 						}
 
-						lobbyInfo.Clients[ conn.PlayerIndex ].Race = 1 + race;
+						GetClient(conn).Race = 1 + race;
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -260,7 +299,7 @@ namespace OpenRA.Server
 							return false;
 						}
 
-						lobbyInfo.Clients[ conn.PlayerIndex ].Palette = pal;
+						GetClient(conn).Palette = pal;
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -309,24 +348,26 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "ToggleReady":
-					// if we're downloading, we can't ready up.
-
-					var client = lobbyInfo.Clients[conn.PlayerIndex];
-					if (client.State == Session.ClientState.NotReady)
-						client.State = Session.ClientState.Ready;
-					else if (client.State == Session.ClientState.Ready)
-						client.State = Session.ClientState.NotReady;
-
-					Console.WriteLine("Player @{0} is {1}",
-						conn.socket.RemoteEndPoint, client.State);
-
-					// start the game if everyone is ready.
-					if (conns.All(c => lobbyInfo.Clients[c.PlayerIndex].State == Session.ClientState.Ready))
 					{
-						Console.WriteLine("All players are ready. Starting the game!");
-						GameStarted = true;
-						DispatchOrders(null, 0,
-							new ServerOrder(0, "StartGame", "").Serialize());
+						// if we're downloading, we can't ready up.
+
+						var client = GetClient(conn);
+						if (client.State == Session.ClientState.NotReady)
+							client.State = Session.ClientState.Ready;
+						else if (client.State == Session.ClientState.Ready)
+							client.State = Session.ClientState.NotReady;
+
+						Console.WriteLine("Player @{0} is {1}",
+							conn.socket.RemoteEndPoint, client.State);
+
+						// start the game if everyone is ready.
+						if (conns.All(c => GetClient(c).State == Session.ClientState.Ready))
+						{
+							Console.WriteLine("All players are ready. Starting the game!");
+							GameStarted = true;
+							DispatchOrders(null, 0,
+								new ServerOrder(0, "StartGame", "").Serialize());
+						}
 					}
 					break;
 
@@ -345,10 +386,30 @@ namespace OpenRA.Server
 					break;
 
 				case "RequestFile":
-					Console.WriteLine("** Requesting file: `{0}`", so.Data);
-					// todo: start serving!
+					{
+						Console.WriteLine("** Requesting file: `{0}`", so.Data);
+						var client = GetClient(conn);
+						client.State = Session.ClientState.Downloading;
+
+						var filename = so.Data.Split(':')[0];
+						// todo: validate that the SHA1 they asked for matches what we've got.
+
+						var length = (int) new FileInfo(filename).Length;
+						conn.NextChunk = 0;
+						conn.NumChunks = (length + DownloadChunkSize - 1) / DownloadChunkSize;
+
+						if (conn.Stream != null)
+							conn.Stream.Dispose();
+
+						conn.Stream = File.OpenRead(filename);
+					}
 					break;
 			}
+		}
+
+		static Session.Client GetClient(Connection conn)
+		{
+			return lobbyInfo.Clients.First(c => c.Index == conn.PlayerIndex);
 		}
 
 		static void DropClient(Connection toDrop, Exception e)
