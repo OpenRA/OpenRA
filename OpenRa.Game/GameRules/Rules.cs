@@ -26,22 +26,18 @@ namespace OpenRa.Game
 
 		public static void LoadRules(string mapFileName, bool useAftermath)
 		{
-			if( useAftermath )
+			if (useAftermath)
 				AllRules = new IniFile(
-					FileSystem.Open( mapFileName ),
+					FileSystem.Open(mapFileName),
 					FileSystem.Open("aftermathUnits.ini"),
 					FileSystem.Open("units.ini"),
-					FileSystem.Open( "aftrmath.ini" ),
-					FileSystem.Open( "rules.ini" ),
-					FileSystem.Open("campaignUnits.ini"),
-					FileSystem.Open("trees.ini"));
+					FileSystem.Open("aftrmath.ini"),
+					FileSystem.Open("rules.ini"));
 			else
 				AllRules = new IniFile(
 					FileSystem.Open(mapFileName),
 					FileSystem.Open("units.ini"),
-					FileSystem.Open("rules.ini"),
-					FileSystem.Open("campaignUnits.ini"),
-					FileSystem.Open("trees.ini"));
+					FileSystem.Open("rules.ini"));
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
