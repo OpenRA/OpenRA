@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using OpenRa.Traits;
 using OpenRa.Effects;
+using OpenRa.Traits;
 
 namespace OpenRa.Mods.RA
 {
@@ -54,7 +52,4 @@ namespace OpenRa.Mods.RA
 
 		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 	}
-
-	class MineImmuneInfo : StatelessTraitInfo<MineImmune> { }
-	class MineImmune { }
 }

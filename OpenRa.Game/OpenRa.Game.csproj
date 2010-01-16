@@ -206,7 +206,6 @@
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Activities\UndeployMcv.cs" />
     <Compile Include="Traits\Activities\UnloadCargo.cs" />
-    <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\AttackFrontal.cs" />
     <Compile Include="Traits\AttackHeli.cs" />
@@ -237,8 +236,6 @@
     <Compile Include="Traits\IronCurtain.cs" />
     <Compile Include="Traits\IronCurtainable.cs" />
     <Compile Include="Traits\LightPaletteRotator.cs" />
-    <Compile Include="Traits\MineImmune.cs" />
-    <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Traits;
+using System.Reflection;
+using IjwFramework.Types;
+using System.IO;
 
 namespace OpenRa.GameRules
 {
@@ -49,16 +52,25 @@ namespace OpenRa.GameRules
 			return node;
 		}
 
+		// todo: use mod metadata to do this
+		static Pair<Assembly, string>[] ModAssemblies = 
+		{ 
+			Pair.New( typeof(ITraitInfo).Assembly, typeof(ITraitInfo).Namespace ),
+			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\ra\OpenRa.Mods.RA.dll")), "OpenRa.Mods.RA" ) 
+		};
+
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
-			var fullTypeName = typeof(ITraitInfo).Namespace + "." + traitName + "Info";
-			var info = (ITraitInfo)typeof(ITraitInfo).Assembly.CreateInstance(fullTypeName);
+			foreach (var mod in ModAssemblies)
+			{
+				var fullTypeName = mod.Second + "." + traitName + "Info";
+				var info = (ITraitInfo)mod.First.CreateInstance(fullTypeName);
+				if (info == null) continue;
+				FieldLoader.Load(info, my);
+				return info;
+			}
 
-			if (info == null)
-				throw new NotImplementedException("Missing traitinfo type `{0}`".F(fullTypeName));
-
-			FieldLoader.Load(info, my);
-			return info;
+			throw new InvalidOperationException("Cannot locate trait: {0}".F(traitName));
 		}
 	}
 }

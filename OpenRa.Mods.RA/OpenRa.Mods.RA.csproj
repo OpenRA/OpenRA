@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mine.cs" />
+    <Compile Include="MineImmune.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,4 +68,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
+copy "$(TargetPath)" "$(SolutionDir)mods/ra/"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

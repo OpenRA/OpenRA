@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Traits;
-using OpenRa;
 
 namespace OpenRa.Mods.RA
 {
-	class MinelayerInfo : ITraitInfo
+	class MinelayerInfo : StatelessTraitInfo<Minelayer>
 	{
 		public readonly string Mine = "minv";
-
-		public object Create(Actor self)
-		{
-			return new Minelayer();
-		}
 	}
 
 	class Minelayer : IIssueOrder, IResolveOrder
