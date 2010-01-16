@@ -78,7 +78,7 @@ namespace OpenRa.Game
 			this.renderer = r;
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
-			shpRenderer = new SpriteRenderer(renderer, true);
+			shpRenderer = new SpriteRenderer(renderer, true, renderer.WorldSpriteShader);
 
 			repairButton = new Animation("repair");
 			repairButton.PlayRepeating("normal");
@@ -369,7 +369,7 @@ namespace OpenRa.Game
 				return;
 			
 			// Draw bar horizontally
-			var barStart = powerOrigin + Game.viewport.Location + radarOrigin;
+			var barStart = powerOrigin + radarOrigin;
 			var barEnd = barStart + new float2(powerSize.Width, 0);
 
 			float powerScaleBy = 100;
@@ -377,9 +377,9 @@ namespace OpenRa.Game
 			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 			
 			// Current power supply
-			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerProvided / powerScaleBy) - Game.viewport.Location.X;
+			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerProvided / powerScaleBy);
 			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
-			float2 powerLevel = new float2(lastPowerProvidedPos.Value + Game.viewport.Location.X, barStart.Y);
+			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = Color.LimeGreen;
 			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
@@ -405,9 +405,9 @@ namespace OpenRa.Game
 
 			// Power usage indicator
 			var indicator = SequenceProvider.GetImageFromCollection(renderer, radarCollection, "power-indicator");
-			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy) - Game.viewport.Location.X;
+			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy);
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
-			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y - Game.viewport.Location.Y-1);
+			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y-1);
 		
 			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, PaletteType.Chrome);
 			rgbaRenderer.Flush();
@@ -418,7 +418,7 @@ namespace OpenRa.Game
 			int2 buttonOrigin = new int2(Game.viewport.Width - 320, 2);
 			// Repair
 			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var repairDrawPos = Game.viewport.Location + new float2(repairRect.Location);
+			var repairDrawPos = new float2(repairRect.Location);
 
 			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
 
@@ -435,7 +435,7 @@ namespace OpenRa.Game
 			Rectangle sellRect = new Rectangle(buttonOrigin.X+40, buttonOrigin.Y, 
 				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
 
-			var sellDrawPos = Game.viewport.Location + new float2(sellRect.Location);
+			var sellDrawPos = new float2(sellRect.Location);
 
 			sellButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
 			
@@ -449,7 +449,7 @@ namespace OpenRa.Game
 				Rectangle pwrdownRect = new Rectangle(buttonOrigin.X+80, buttonOrigin.Y,
 					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
 
-				var pwrdownDrawPos = Game.viewport.Location + new float2(pwrdownRect.Location);
+				var pwrdownDrawPos = new float2(pwrdownRect.Location);
 
 				pwrdownButton.ReplaceAnim(Game.controller.orderGenerator is PowerDownOrderGenerator ? "pressed" : "normal");
 
@@ -462,7 +462,7 @@ namespace OpenRa.Game
 			Rectangle optionsRect = new Rectangle(0,0, optionsButton.Image.bounds.Width, 
 				optionsButton.Image.bounds.Height);
 			
-			var optionsDrawPos = Game.viewport.Location + new float2(optionsRect.Location);
+			var optionsDrawPos = new float2(optionsRect.Location);
 			
 			optionsButton.ReplaceAnim(optionsPressed ? "left-pressed" : "left-normal");
 			
@@ -493,28 +493,26 @@ namespace OpenRa.Game
 			if (ss.Length > 8)
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
-					sr.DrawSprite(ss[8], Game.viewport.Location + new float2(x, y), PaletteType.Chrome);
+					sr.DrawSprite(ss[8], new float2(x, y), PaletteType.Chrome);
 
-			var p = isShp ? Game.viewport.Location : float2.Zero;
-			
 			//draw borders
 
 			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[1].size.Y)
 			{
-				sr.DrawSprite(ss[2], p + new float2(r.Left, y), PaletteType.Chrome);
-				sr.DrawSprite(ss[3], p + new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
+				sr.DrawSprite(ss[2], new float2(r.Left, y), PaletteType.Chrome);
+				sr.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
 			}
 
 			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[3].size.X)
 			{
-				sr.DrawSprite(ss[0], p + new float2(x, r.Top), PaletteType.Chrome);
-				sr.DrawSprite(ss[1], p + new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
+				sr.DrawSprite(ss[0], new float2(x, r.Top), PaletteType.Chrome);
+				sr.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
 			}
 
-			sr.DrawSprite(ss[4], p + new float2(r.Left, r.Top), PaletteType.Chrome);
-			sr.DrawSprite(ss[5], p + new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
-			sr.DrawSprite(ss[6], p + new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
-			sr.DrawSprite(ss[7], p + new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
+			sr.DrawSprite(ss[4], new float2(r.Left, r.Top), PaletteType.Chrome);
+			sr.DrawSprite(ss[5], new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
+			sr.DrawSprite(ss[6], new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
+			sr.DrawSprite(ss[7], new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
 			sr.Flush();
 
 			renderer.Device.DisableScissor();
@@ -629,7 +627,7 @@ namespace OpenRa.Game
 				}
 				
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
-				var drawPos = Game.viewport.Location + new float2(rect.Location);
+				var drawPos = new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
 				shpRenderer.DrawSprite(tabSprites[item.Name], drawPos, PaletteType.Chrome);
@@ -873,7 +871,7 @@ namespace OpenRa.Game
 				var image = spsprites[sp.Key];
 				if (sp.Value.IsAvailable)
 				{
-					var drawPos = Game.viewport.Location + new float2(5, y);
+					var drawPos = new float2(5, y);
 					shpRenderer.DrawSprite(image, drawPos, PaletteType.Chrome);
 
 					clock.PlayFetchIndex("idle",
@@ -897,7 +895,7 @@ namespace OpenRa.Game
 					if (rect.Contains(lastMousePos.ToPoint()))
 					{
 						tooltipItem = sp.Key;
-						tooltipPos = drawPos.ToInt2() + new int2(72, 0) - Game.viewport.Location.ToInt2();
+						tooltipPos = drawPos.ToInt2() + new int2(72, 0);
 					}
 
 					y += 51;

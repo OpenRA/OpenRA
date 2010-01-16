@@ -15,6 +15,7 @@ namespace OpenRa.Game.Graphics
 		public Shader SpriteShader { get; private set; }    /* note: shared shader params */
 		public Shader LineShader { get; private set; }
 		public Shader RgbaSpriteShader { get; private set; }
+		public Shader WorldSpriteShader { get; private set; }
 
 		public Texture PaletteTexture;
 
@@ -27,12 +28,14 @@ namespace OpenRa.Game.Graphics
 			device = GraphicsDevice.Create(host,
 				resolution.Width, resolution.Height, windowed, false);
 
-			SpriteShader = new Shader(device, FileSystem.Open("sprite.fx"));
+			SpriteShader = new Shader(device, FileSystem.Open("world-shp.fx"));
 			SpriteShader.Quality = ShaderQuality.Low;
 			LineShader = new Shader(device, FileSystem.Open("line.fx"));
 			LineShader.Quality = ShaderQuality.High;
-			RgbaSpriteShader = new Shader(device, FileSystem.Open("rgbasprite.fx"));
+			RgbaSpriteShader = new Shader(device, FileSystem.Open("chrome-rgba.fx"));
 			RgbaSpriteShader.Quality = ShaderQuality.High;
+			WorldSpriteShader = new Shader(device, FileSystem.Open("chrome-shp.fx"));
+			WorldSpriteShader.Quality = ShaderQuality.High;
 
 			sh = new SpriteHelper(device);
 			fhDebug = new FontHelper(device, "Tahoma", 10, false);
