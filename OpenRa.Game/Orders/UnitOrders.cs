@@ -60,6 +60,11 @@ namespace OpenRa.Game.Orders
 					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
+			case "FileChunk":
+				{
+					PackageDownloader.ReceiveChunk(order.TargetString);
+					break;
+				}
 
 			default:
 				{

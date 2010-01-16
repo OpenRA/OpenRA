@@ -382,19 +382,23 @@ namespace OpenRa.Game
 
 			// todo: if we don't have all the resources, we don't want to do this yet.
 
+			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
+				&& !Game.orderManager.GameStarted)
+			{
+				Game.orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
+				Game.chat.AddLine(Color.White, "Server",
+					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
+			}
+
+			PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages);
+			if (!PackageDownloader.IsIdle())
+				return;
+
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 			{
 				chat.AddLine(Color.White, "Debug", 
 					"Map change {0} -> {1}".F(mapName, session.GlobalSettings.Map));
 				ChangeMap(LobbyInfo.GlobalSettings.Map);
-			}
-
-			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
-				&& !Game.orderManager.GameStarted)
-			{
-				Game.orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
-				Game.chat.AddLine(Color.White, "Server", 
-					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 		}
 

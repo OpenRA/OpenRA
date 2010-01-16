@@ -117,6 +117,7 @@
     <Compile Include="Orders\SellOrderGenerator.cs" />
     <Compile Include="Orders\ChronoshiftDestinationOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
+    <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="ProductionItem.cs" />
     <Compile Include="Orders\ReplayOrderSource.cs" />
