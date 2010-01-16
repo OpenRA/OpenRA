@@ -305,8 +305,6 @@ namespace OpenRa.Game
 			
 			hasRadar = hasNewRadar;
 
-			var isJammed = false;		// todo: MRJ can do this
-
 			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "left"), radarOrigin, PaletteType.Chrome);
 			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), PaletteType.Chrome);
 			rgbaRenderer.DrawSprite(SequenceProvider.GetImageFromCollection(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), PaletteType.Chrome);	
