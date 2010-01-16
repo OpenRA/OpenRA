@@ -24,7 +24,8 @@ namespace OpenRa.Traits
 		{
 			if (e.DamageState == DamageState.Dead)
 				if (self.Owner == Game.LocalPlayer)
-					Sound.Play("unitlst1.aud");
+					Sound.Play(self.Info.Traits.Get<OwnedActorInfo>().WaterBound 
+						? "navylst1.aud" : "unitlst1.aud");
 		}
 	}
 }
