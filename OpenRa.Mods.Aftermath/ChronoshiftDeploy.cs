@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Orders;
+using OpenRa.Mods.Aftermath.Orders;
+using OpenRa.Traits;
+using OpenRa.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.Aftermath
 {
 	class ChronoshiftDeployInfo : ITraitInfo
 	{
 		public object Create(Actor self) { return new ChronoshiftDeploy(self); }
 	}
 
-	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ISpeedModifier, ITick, IPips
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips
 	{
 		// Recharge logic
 		[Sync]
@@ -17,7 +19,7 @@ namespace OpenRa.Traits
 		readonly int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 
 		public ChronoshiftDeploy(Actor self) { }
-		
+
 		public void Tick(Actor self)
 		{
 			if (chargeTick > 0)
@@ -36,7 +38,7 @@ namespace OpenRa.Traits
 		{
 			if (order.OrderString == "Deploy")
 			{
-				Game.controller.orderGenerator = new ChronoshiftSelfDestinationOrderGenerator(self);
+				Game.controller.orderGenerator = new SetChronoTankDestination(self);
 				return;
 			}
 
@@ -46,10 +48,10 @@ namespace OpenRa.Traits
 				// Cannot chronoshift into unexplored location
 				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
-				
+
 				Game.controller.CancelInputMode();
 				self.CancelActivity();
-				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
+				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud");
 				chargeTick = chargeLength;
 
@@ -57,13 +59,7 @@ namespace OpenRa.Traits
 					a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
 			}
 		}
-		
-		public float GetSpeedModifier()
-		{
-			// ARGH! You must not do this, it will desync!
-			return (Game.controller.orderGenerator is ChronoshiftDestinationOrderGenerator) ? 0f : 1f;
-		}
-		
+
 		// Display 5 pips indicating the current charge status
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
@@ -75,7 +71,7 @@ namespace OpenRa.Traits
 					yield return PipType.Transparent;
 					continue;
 				}
-					
+
 				switch (i)
 				{
 					case 0:

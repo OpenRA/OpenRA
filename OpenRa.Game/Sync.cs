@@ -7,7 +7,7 @@ using OpenRa.FileFormats;
 
 namespace OpenRa
 {
-	class SyncAttribute : Attribute { }
+	public class SyncAttribute : Attribute { }
 
 	static class Sync
 	{

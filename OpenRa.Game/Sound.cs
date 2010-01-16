@@ -1,12 +1,11 @@
 ﻿using IjwFramework.Collections;
 using IrrKlang;
 using OpenRa.FileFormats;
-using OpenRa.GameRules;
 using OpenRa.Traits;
 
 namespace OpenRa
 {
-	static class Sound
+	public static class Sound
 	{
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;

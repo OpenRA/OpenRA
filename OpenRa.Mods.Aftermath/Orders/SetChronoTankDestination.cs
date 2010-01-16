@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using OpenRa.Traits;
 
-namespace OpenRa.Orders
+namespace OpenRa.Mods.Aftermath.Orders
 {
-	class ChronoshiftSelfDestinationOrderGenerator : IOrderGenerator
+	class SetChronoTankDestination : IOrderGenerator
 	{
 		public readonly Actor self;
 
-		public ChronoshiftSelfDestinationOrderGenerator(Actor self)
+		public SetChronoTankDestination(Actor self)
 		{
 			this.self = self;
 		}

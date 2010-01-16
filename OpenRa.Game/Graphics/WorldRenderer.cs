@@ -1,26 +1,21 @@
-using System.Drawing;
-using System;
-using System.Linq;
-using System.Windows.Forms;
-using IjwFramework.Types;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using OpenRa.Traits;
-using OpenRa.Support;
-using OpenRa.Effects;
 
 namespace OpenRa.Graphics
 {
-	class WorldRenderer
+	public class WorldRenderer
 	{
-		public readonly TerrainRenderer terrainRenderer;
-		public readonly SpriteRenderer spriteRenderer;
-		public readonly LineRenderer lineRenderer;
-		public readonly UiOverlay uiOverlay;
-		public readonly Renderer renderer;
+		internal readonly TerrainRenderer terrainRenderer;
+		internal readonly SpriteRenderer spriteRenderer;
+		internal readonly LineRenderer lineRenderer;
+		internal readonly UiOverlay uiOverlay;
+		internal readonly Renderer renderer;
 
 		public static bool ShowUnitPaths = false;
 
-		public WorldRenderer(Renderer renderer)
+		internal WorldRenderer(Renderer renderer)
 		{
 			terrainRenderer = new TerrainRenderer(renderer, Rules.Map);
 

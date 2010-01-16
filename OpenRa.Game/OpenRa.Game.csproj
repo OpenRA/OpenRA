@@ -103,7 +103,6 @@
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
-    <Compile Include="Orders\ChronoshiftSelfDestinationOrderGenerator.cs" />
     <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
     <Compile Include="Orders\IronCurtainOrderGenerator.cs" />
@@ -224,7 +223,6 @@
     <Compile Include="Traits\Chronosphere.cs" />
     <Compile Include="Traits\EngineerCapture.cs" />
     <Compile Include="Traits\Explodes.cs" />
-    <Compile Include="Traits\ChronoshiftDeploy.cs" />
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\GeneratesGap.cs" />
     <Compile Include="Traits\GpsLaunchSite.cs" />

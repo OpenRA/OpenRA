@@ -5,7 +5,7 @@ namespace OpenRa.Traits
 {
 	class ChronoshiftPaletteEffectInfo : StatelessTraitInfo<ChronoshiftPaletteEffect> { }
 
-	class ChronoshiftPaletteEffect : IPaletteModifier, ITick
+	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
 		const int chronoEffectLength = 20;
 		int remainingFrames;

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using OpenRa.GameRules;
-
+﻿
 namespace OpenRa.Traits.Activities
 {
-	class Teleport : IActivity
+	public class Teleport : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 

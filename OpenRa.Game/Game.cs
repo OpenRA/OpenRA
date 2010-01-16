@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
+using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.GameRules;
 using OpenRa.Graphics;
 using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
-using IjwFramework.Types;
 
 namespace OpenRa
 {
@@ -20,7 +20,7 @@ namespace OpenRa
 		public static World world;
 		internal static Viewport viewport;
 		public static PathFinder PathFinder;
-		internal static WorldRenderer worldRenderer;
+		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 		internal static Chrome chrome;
 		public static UserSettings Settings;
