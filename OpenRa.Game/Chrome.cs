@@ -230,6 +230,9 @@ namespace OpenRa.Game
 			DrawDialogBackground(new Rectangle(r.Right - 330, r.Top + 40, 310, r.Bottom - 273 - r.Top - 40),
 				panelSprites, false);
 
+			Game.minimap.Update();
+			Game.minimap.Draw(new Rectangle(r.Right - 325, r.Top + 45, 300, 277), true);
+
 			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
 			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
 			renderer.DrawText2("Faction", new int2(r.Left + 300, r.Top + 50), Color.White);
@@ -316,7 +319,7 @@ namespace OpenRa.Game
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
 				RectangleF mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y+(192-radarMinimapHeight)/2, 192, radarMinimapHeight);
-				Game.minimap.Draw(mapRect, hasRadar, isJammed);
+				Game.minimap.Draw(mapRect, false);
 			}
 		}
 		

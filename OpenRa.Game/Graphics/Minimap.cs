@@ -9,9 +9,9 @@ namespace OpenRa.Game.Graphics
 {
 	class Minimap
 	{
-		Sheet sheet;
+		Sheet sheet, mapOnlySheet;
 		SpriteRenderer rgbaRenderer;
-		Sprite sprite;
+		Sprite sprite, mapOnlySprite;
 		Bitmap terrain, oreLayer;
 		const int alpha = 230;
 
@@ -20,6 +20,7 @@ namespace OpenRa.Game.Graphics
 		public Minimap(Renderer r)
 		{
 			sheet = new Sheet(r, new Size(128, 128));
+			mapOnlySheet = new Sheet(r, new Size(128, 128));
 
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			var size = Math.Max(Rules.Map.Width, Rules.Map.Height);
@@ -27,6 +28,7 @@ namespace OpenRa.Game.Graphics
 			var dh = (size - Rules.Map.Height) / 2;
 			
 			sprite = new Sprite(sheet, new Rectangle(Rules.Map.Offset.X+dw, Rules.Map.Offset.Y+dh, size, size), TextureChannel.Alpha);
+			mapOnlySprite = new Sprite(mapOnlySheet, new Rectangle(Rules.Map.Offset.X + dw, Rules.Map.Offset.Y + dh, size, size), TextureChannel.Alpha);
 		}
 
 		Color[] terrainTypeColors;
@@ -37,9 +39,6 @@ namespace OpenRa.Game.Graphics
 
 		public void Update()
 		{
-			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
-				return;
-
 			if (terrainTypeColors == null)
 			{
 				var pal = new Palette(FileSystem.Open(Rules.Map.Theater + ".pal"));
@@ -79,13 +78,18 @@ namespace OpenRa.Game.Graphics
 						oreLayer.SetPixel(x, y, terrainTypeColors[(int)TerrainMovementType.Ore]);
 			}
 
+			mapOnlySheet.Texture.SetData(oreLayer);
+
+			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
+				return;
+
 			var bitmap = new Bitmap(oreLayer);
 			var bitmapData = bitmap.LockBits(new Rectangle( 0,0,bitmap.Width, bitmap.Height ), 
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
 			unsafe
 			{
-				int* c = (int *)bitmapData.Scan0;
+				int* c = (int*)bitmapData.Scan0;
 
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
@@ -97,13 +101,14 @@ namespace OpenRa.Game.Graphics
 					}
 
 				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
-					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) = Chat.paletteColors[(int)a.Owner.Palette].ToArgb();
-				
+					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) =
+						Chat.paletteColors[(int)a.Owner.Palette].ToArgb();
+
 				unchecked
 				{
 					for (var y = 0; y < 128; y++)
 						for (var x = 0; x < 128; x++)
-							if (!Game.LocalPlayer.Shroud.DisplayOnRadar(x,y))
+							if (!Game.LocalPlayer.Shroud.DisplayOnRadar(x, y))
 								*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
 				}
 			}
@@ -112,9 +117,10 @@ namespace OpenRa.Game.Graphics
 			sheet.Texture.SetData(bitmap);
 		}
 
-		public void Draw(RectangleF rect, bool hasRadar, bool isJammed)
+		public void Draw(RectangleF rect, bool mapOnly)
 		{
-			rgbaRenderer.DrawSprite(sprite, new float2(rect.X, rect.Y), PaletteType.Chrome, new float2(rect.Width, rect.Height));
+			rgbaRenderer.DrawSprite(mapOnly ? mapOnlySprite : sprite, 
+				new float2(rect.X, rect.Y), PaletteType.Chrome, new float2(rect.Width, rect.Height));
 			rgbaRenderer.Flush();
 		}
 	}
