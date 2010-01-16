@@ -102,7 +102,7 @@ namespace OpenRa.Game.Graphics
 
 				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
 					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) =
-						Chat.paletteColors[(int)a.Owner.Palette].ToArgb();
+						playerColors[(int)a.Owner.Palette].ToArgb();
 
 				unchecked
 				{
