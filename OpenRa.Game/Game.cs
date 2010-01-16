@@ -9,6 +9,7 @@ using OpenRa.Game.Graphics;
 using OpenRa.Game.Orders;
 using OpenRa.Game.Support;
 using OpenRa.Game.Traits;
+using IjwFramework.Types;
 
 namespace OpenRa.Game
 {
@@ -50,8 +51,8 @@ namespace OpenRa.Game
 		static HardwarePalette palette;
 		static string mapName;
 		public static Minimap minimap;
-
 		public static Session LobbyInfo = new Session();
+		public static int2[] SpawnPoints;
 
 		public static void ChangeMap(string mapName)
 		{
@@ -103,6 +104,12 @@ namespace OpenRa.Game
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
+
+			SpawnPoints = Rules.AllRules.GetSection("Waypoints")
+				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
+				.Where(a => a.First < 8)
+				.Select(a => a.Second)
+				.ToArray();
 		}
 
 		public static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
@@ -389,6 +396,13 @@ namespace OpenRa.Game
 				Game.chat.AddLine(Color.White, "Server", 
 					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
+		}
+
+		public static void StartGame()
+		{
+			// todo: spawn starting units for everyone
+
+			orderManager.StartGame();
 		}
 	}
 }

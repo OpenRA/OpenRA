@@ -52,7 +52,7 @@ namespace OpenRa.Game.Orders
 			case "StartGame":
 				{
 					Game.chat.AddLine(Color.White, "Server", "The game has started.");
-					Game.orderManager.StartGame();
+					Game.StartGame();
 					break;
 				}
 			case "SyncInfo":
