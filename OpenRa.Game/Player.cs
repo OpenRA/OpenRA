@@ -173,8 +173,6 @@ namespace OpenRa
 				Game.chat.AddLine(this, "has changed color to {0}".F((PaletteType)client.Palette));
 				Palette = (PaletteType)client.Palette;
 			}
-
-			// todo: IsReady tracking?
 		}
 	}
 }
