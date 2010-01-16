@@ -2138,8 +2138,6 @@ SPY:
 		HP: 25
 		Sight: 5
 		Speed: 4
-	Mobile:
-		MovementType: Wheel
 	RenderSpy:
 	TakeCover:
 	Spy:

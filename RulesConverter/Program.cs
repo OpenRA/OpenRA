@@ -217,7 +217,7 @@ namespace RulesConverter
 				return "Track";
 			if (traits.Contains("Plane") || traits.Contains("Helicopter"))
 				return "Fly";
-			if (traits.Contains("RenderInfantry"))
+			if (traits.Contains("RenderInfantry") || traits.Contains("RenderSpy"))
 				return "Foot";
 
 			return "Wheel";
