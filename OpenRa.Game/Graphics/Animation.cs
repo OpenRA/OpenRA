@@ -4,11 +4,13 @@ namespace OpenRa.Game.Graphics
 {
 	class Animation
 	{
-		readonly string name;
+		string name;
 		public Sequence CurrentSequence { get; private set; }
 		int frame = 0;
 		bool backwards = false;
 		bool tickAlways;
+
+		public string Name { get { return name; } }
 
 		public Animation( string name )
 		{
@@ -97,6 +99,17 @@ namespace OpenRa.Game.Graphics
 					tickFunc();
 					timeUntilNextFrame += 40; // 25 fps == 40 ms
 				}
+			}
+		}
+
+		public void ChangeImage(string newImage)
+		{
+			newImage = newImage.ToLowerInvariant();
+			
+			if (name != newImage)
+			{
+				name = newImage.ToLowerInvariant();
+				ReplaceAnim(CurrentSequence.Name);
 			}
 		}
 	}

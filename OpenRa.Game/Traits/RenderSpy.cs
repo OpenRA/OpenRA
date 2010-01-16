@@ -16,8 +16,6 @@ namespace OpenRa.Game.Traits
 		public RenderSpy(Actor self)
 			: base(self)
 		{
-			if (self.Owner != Game.LocalPlayer)
-				anim = new Animation("e1");
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
@@ -26,6 +24,12 @@ namespace OpenRa.Game.Traits
 				return r;
 
 			return r.Select(a => a.WithPalette(Game.LocalPlayer.Palette));
+		}
+
+		public override void Tick(Actor self)
+		{
+			anim.ChangeImage(self.Owner == Game.LocalPlayer ? GetImage(self) : "e1");
+			base.Tick(self);
 		}
 	}
 }

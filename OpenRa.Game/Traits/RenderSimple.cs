@@ -15,7 +15,7 @@ namespace OpenRa.Game.Traits
 	abstract class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
-		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = anim; } }
+		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = value; } }
 
 		public string GetImage(Actor self)
 		{
