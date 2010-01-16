@@ -17,7 +17,7 @@ namespace OpenRa.Orders
 					Game.world.AddFrameEndTask( _ =>
 					{
 						var queue = order.Player.PlayerActor.traits.Get<ProductionQueue>();
-						var unit = Rules.NewUnitInfo[ order.TargetString ];
+						var unit = Rules.ActorInfo[ order.TargetString ];
 						var producing = queue.CurrentItem(unit.Category);
 						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 							return;

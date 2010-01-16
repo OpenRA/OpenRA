@@ -33,7 +33,7 @@ namespace OpenRa.Traits
 			{
 			case "StartProduction":
 				{
-					var unit = Rules.NewUnitInfo[ order.TargetString ];
+					var unit = Rules.ActorInfo[ order.TargetString ];
 					var ui = unit.Traits.Get<BuildableInfo>();
 					var time = ui.Cost
 						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
@@ -65,7 +65,7 @@ namespace OpenRa.Traits
 				}
 			case "PauseProduction":
 				{
-					var producing = CurrentItem( Rules.NewUnitInfo[ order.TargetString ].Category );
+					var producing = CurrentItem( Rules.ActorInfo[ order.TargetString ].Category );
 					if( producing != null && producing.Item == order.TargetString )
 						producing.Paused = ( order.TargetLocation.X != 0 );
 					break;
@@ -95,7 +95,7 @@ namespace OpenRa.Traits
 
 		public void CancelProduction( string itemName )
 		{
-			var category = Rules.NewUnitInfo[itemName].Category;
+			var category = Rules.ActorInfo[itemName].Category;
 			var queue = production[ category ];
 			if (queue.Count == 0) return;
 
@@ -126,7 +126,7 @@ namespace OpenRa.Traits
 
 		public void BuildUnit( string name )
 		{
-			var newUnitType = Rules.NewUnitInfo[ name ];
+			var newUnitType = Rules.ActorInfo[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
 			Actor producer = null;
 			

@@ -69,7 +69,7 @@ namespace OpenRa.Orders
 					else
 						return Cursor.MoveBlocked;
 				case "DeployMcv":
-					var factBuildingInfo = Rules.NewUnitInfo["fact"].Traits.Get<BuildingInfo>();
+					var factBuildingInfo = Rules.ActorInfo["fact"].Traits.Get<BuildingInfo>();
 					if (Game.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a, false))
 						return Cursor.Deploy;
 					else

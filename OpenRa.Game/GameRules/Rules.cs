@@ -22,7 +22,7 @@ namespace OpenRa
 		public static Map Map;
 		public static TileSet TileSet;
 
-		public static Dictionary<string, ActorInfo> NewUnitInfo;
+		public static Dictionary<string, ActorInfo> ActorInfo;
 
 		public static void LoadRules(string mapFileName, bool useAftermath)
 		{
@@ -70,9 +70,9 @@ namespace OpenRa
 
 			yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "[mod]Separate buildqueue for defense.yaml" ), yamlRules );
 
-			NewUnitInfo = new Dictionary<string, ActorInfo>();
+			ActorInfo = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
-				NewUnitInfo.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
+				ActorInfo.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
 
 			TechTree = new TechTree();
 			Map = new Map( AllRules );

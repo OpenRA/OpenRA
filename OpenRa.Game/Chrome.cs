@@ -111,7 +111,7 @@ namespace OpenRa
 			panelSprites = Graphics.Util.MakeArray(8,
 				n => SequenceProvider.GetImageFromCollection(renderer, "panel", n.ToString()));
 			
-			tabSprites = Rules.NewUnitInfo.Values
+			tabSprites = Rules.ActorInfo.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
 					u => u.Name,
@@ -122,7 +122,7 @@ namespace OpenRa
 					u => u.Key,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
 
-			var groups = Rules.NewUnitInfo.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
+			var groups = Rules.ActorInfo.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
@@ -746,7 +746,7 @@ namespace OpenRa
 
 		void StartProduction( string item )
 		{
-			var unit = Rules.NewUnitInfo[item];
+			var unit = Rules.ActorInfo[item];
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
 			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
 		}
@@ -754,7 +754,7 @@ namespace OpenRa
 		void HandleBuildPalette(string item, bool isLmb)
 		{
 			var player = Game.LocalPlayer;
-			var unit = Rules.NewUnitInfo[item];
+			var unit = Rules.ActorInfo[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
@@ -839,7 +839,7 @@ namespace OpenRa
 			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
-			var info = Rules.NewUnitInfo[unit];
+			var info = Rules.ActorInfo[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
 
 			renderer.DrawText2(buildable.Description, p.ToInt2() + new int2(5,5), Color.White);
@@ -876,7 +876,7 @@ namespace OpenRa
 			if( a[ 0 ] == '@' )
 				return "any " + a.Substring( 1 );
 			else
-				return Rules.NewUnitInfo[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
+				return Rules.ActorInfo[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
 		}
 
 		void DrawSupportPowers()
