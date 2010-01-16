@@ -22,9 +22,6 @@ namespace OpenRA.Server
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		static readonly string[] packages = { };
-		//static readonly string[] packages = { "testpkg.mix" };
-
 		public static void Main(string[] args)
 		{
 			listener.Start();
@@ -333,6 +330,34 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
+				{ "addmod",
+					s => 
+					{
+						if (GameStarted)
+						{
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"You can't change mods after the game has started" ).Serialize() );
+						}
+
+						Console.WriteLine("** Added mod: `{0}`", s);
+						try
+						{
+							lobbyInfo.GlobalSettings.Packages = 
+								lobbyInfo.GlobalSettings.Packages.Concat( new string[] {
+									MakePackageString(s)}).ToArray();
+							SyncLobbyInfo();
+							return true;
+						}
+						catch
+						{
+							Console.WriteLine("That went horribly wrong.");
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"Adding the mod failed." ).Serialize() );
+							return true;
+						}
+					}},
 			};
 
 			var cmdName = cmd.Split(' ').First();
@@ -457,14 +482,12 @@ namespace OpenRA.Server
 			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
-
-			lobbyInfo.GlobalSettings.Packages = 
-				packages.Select(a => "{0}:{1}".F(a, CalculateSHA1(a))).ToArray();
-
-			foreach( var p in lobbyInfo.GlobalSettings.Packages )
-				Console.WriteLine("Package: `{0}`", p);
-
 			GameStarted = false;
+		}
+
+		static string MakePackageString(string a)
+		{
+			return "{0}:{1}".F(a, CalculateSHA1(a));
 		}
 
 		static string CalculateSHA1(string filename)
