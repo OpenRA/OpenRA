@@ -92,7 +92,20 @@ namespace OpenRa.Game
 		static bool HavePackage(string p)
 		{
 			var parts = p.Split(':');
-			return File.Exists(parts[0]) && CalculateSHA1(parts[0]) == parts[1];
+			if (!File.Exists(parts[0]))
+			{
+				Game.chat.AddLine(Color.White, "Debug", "Missing package: {0}".F(p));
+				return false;
+			}
+
+			if (CalculateSHA1(parts[0]) != parts[1])
+			{
+				Game.chat.AddLine(Color.White, "Debug", "Bad SHA1 for package; redownloading: {0}".F(p));
+				return false;
+			}
+
+			Game.chat.AddLine(Color.White, "Debug", "Verified package: {0}".F(p));
+			return true;
 		}
 
 		public static string CalculateSHA1(string filename)
