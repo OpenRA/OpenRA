@@ -19,10 +19,10 @@ namespace OpenRa
 
 		public static void Destroy(int i, int j)
 		{
-			if (Rules.Map.ContainsResource(new int2(i, j)))
+			if (Game.world.Map.ContainsResource(new int2(i, j)))
 			{
-				Rules.Map.MapTiles[i, j].density = 0;
-				Rules.Map.MapTiles[i, j].overlay = 0xff;
+				Game.world.Map.MapTiles[i, j].density = 0;
+				Game.world.Map.MapTiles[i, j].overlay = 0xff;
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace OpenRa
 				return false;
 
 			return TerrainCosts.Cost(UnitMovementType.Wheel,
-				Rules.TileSet.GetWalkability(Rules.Map.MapTiles[i, j]))
+				Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[i, j]))
 				< double.PositiveInfinity;
 		}
 

@@ -19,8 +19,6 @@ namespace OpenRa
 		public static GeneralInfo General;
 		public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
-		public static Map Map;
-		public static TileSet TileSet;
 
 		public static Dictionary<string, ActorInfo> ActorInfo;
 
@@ -75,9 +73,6 @@ namespace OpenRa
 				ActorInfo.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
 
 			TechTree = new TechTree();
-			Map = new Map( AllRules );
-			FileSystem.MountTemporary( new Package( Rules.Map.Theater + ".mix" ) );
-			TileSet = new TileSet( Map.TileSuffix );
 		}
 
 		static void LoadCategories(params string[] types)

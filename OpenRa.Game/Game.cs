@@ -64,7 +64,6 @@ namespace OpenRa
 			SpriteSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
 			Rules.LoadRules(mapName, usingAftermath);
-			palette = new HardwarePalette(renderer, Rules.Map);
 
 			world = new World();
 			Game.world.ActorAdded += a => 
@@ -72,6 +71,8 @@ namespace OpenRa
 				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
+
+			palette = new HardwarePalette(renderer, world.Map);
 
 			var worldActor = new Actor("World", new int2(int.MaxValue, int.MaxValue), null);
 			Game.world.Add(worldActor);
@@ -83,11 +84,11 @@ namespace OpenRa
 				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
 
-			Rules.Map.InitOreDensity();
+			Game.world.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);
-			viewport = new Viewport(clientSize, Rules.Map.Offset, Rules.Map.Offset + Rules.Map.Size, renderer);
+			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 
 			minimap = new Minimap(renderer);
 
@@ -95,7 +96,7 @@ namespace OpenRa
 			UnitInfluence = new UnitInfluenceMap();
 
 			skipMakeAnims = true;
-			foreach (var treeReference in Rules.Map.Trees)
+			foreach (var treeReference in Game.world.Map.Trees)
 				world.Add(new Actor(treeReference.Image, new int2(treeReference.Location), null));
 			
 			LoadMapActors(Rules.AllRules);
@@ -202,7 +203,7 @@ namespace OpenRa
 						if (--oreTicks == 0)
 							using (new PerfSample("ore"))
 							{
-								Rules.Map.GrowOre(SharedRandom);
+								Game.world.Map.GrowOre(SharedRandom);
 								minimap.InvalidateOre();
 								oreTicks = oreFrequency;
 							}
@@ -250,9 +251,9 @@ namespace OpenRa
 			if (BuildingInfluence.GetBuildingAt(a) != null) return false;
 			if (UnitInfluence.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
-			return Rules.Map.IsInMap(a.X, a.Y) &&
+			return Game.world.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
-					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public static bool IsActorCrushableByActor(Actor a, Actor b)
@@ -276,9 +277,9 @@ namespace OpenRa
 		
 		public static bool IsWater(int2 a)
 		{
-			return Rules.Map.IsInMap(a.X, a.Y) &&
+			return Game.world.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(UnitMovementType.Float,
-					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public static IEnumerable<Actor> FindUnits(float2 a, float2 b)
@@ -336,7 +337,7 @@ namespace OpenRa
 		public static bool CanPlaceBuilding(string name, BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
 		{
 			return !Footprint.Tiles(name, building, xy, adjust).Any(
-				t => !Rules.Map.IsInMap(t.X, t.Y) || Rules.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
+				t => !Game.world.Map.IsInMap(t.X, t.Y) || Game.world.Map.ContainsResource(t) || !Game.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}

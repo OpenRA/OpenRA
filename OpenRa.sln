@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.FileFormats", "OpenRa.FileFormats\OpenRa.FileFormats.csproj", "{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Game", "OpenRa.Game\OpenRa.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
@@ -16,8 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RulesConverter", "RulesConverter\RulesConverter.csproj", "{BBE7C0D7-7529-4C34-9910-206866F204EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.RA", "OpenRa.Mods.RA\OpenRa.Mods.RA.csproj", "{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{F80861C1-DD5C-40A4-94B4-02D96318AE95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.Aftermath", "OpenRa.Mods.Aftermath\OpenRa.Mods.Aftermath.csproj", "{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}"
 EndProject

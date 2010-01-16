@@ -10,9 +10,9 @@ namespace OpenRa
 
 		public static void AddSmudge(bool isCrater, int x, int y)
 		{
-			var smudge = Rules.Map.MapTiles[x, y].smudge;
+			var smudge = Game.world.Map.MapTiles[x, y].smudge;
 			if (smudge == 0)
-				Rules.Map.MapTiles[x, y].smudge = (byte) (isCrater
+				Game.world.Map.MapTiles[x, y].smudge = (byte) (isCrater
 					? (firstCrater + framesPerCrater * ChooseSmudge())
 					: (firstScorch + ChooseSmudge()));
 
@@ -21,7 +21,7 @@ namespace OpenRa
 			/* deepen the crater */
 			var amount = (smudge - firstCrater) % framesPerCrater;
 			if (amount < framesPerCrater - 1)
-				Rules.Map.MapTiles[x, y].smudge++;
+				Game.world.Map.MapTiles[x, y].smudge++;
 		}
 
 		public static void AddSmudge(int2 targetTile, WarheadInfo warhead)

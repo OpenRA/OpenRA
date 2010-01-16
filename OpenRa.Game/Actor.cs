@@ -85,7 +85,7 @@ namespace OpenRa
 			if (Owner != Game.LocalPlayer)
 				return null;
 
-			if (!Rules.Map.IsInMap(xy.X, xy.Y))
+			if (!Game.world.Map.IsInMap(xy.X, xy.Y))
 				return null;
 			
 			var loc = mi.Location + Game.viewport.Location;

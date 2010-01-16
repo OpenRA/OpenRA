@@ -18,8 +18,8 @@ namespace OpenRa
 			for( int x = 0 ; x < 128 ; x++ )
 				for( int y = 0 ; y < 128 ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
-						passableCost[(int)umt][ x, y ] = ( Rules.Map.IsInMap( x, y ) )
-							? (float)TerrainCosts.Cost( umt, Rules.TileSet.GetWalkability( Rules.Map.MapTiles[ x, y ] ) )
+						passableCost[(int)umt][ x, y ] = ( Game.world.Map.IsInMap( x, y ) )
+							? (float)TerrainCosts.Cost( umt, Game.world.TileSet.GetWalkability( Game.world.Map.MapTiles[ x, y ] ) )
 							: float.PositiveInfinity;
 		}
 

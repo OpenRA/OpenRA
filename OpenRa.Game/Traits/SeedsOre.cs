@@ -23,7 +23,7 @@ namespace OpenRa.Traits
 					for (var i = -1; i < 2; i++)
 						if (Game.SharedRandom.NextDouble() < info.Chance)
 							if (Ore.CanSpreadInto(self.Location.X + i, self.Location.Y + j))
-								Rules.Map.AddOre(self.Location.X + i, self.Location.Y + j);
+								Game.world.Map.AddOre(self.Location.X + i, self.Location.Y + j);
 
 				ticks = info.Interval;
 			}

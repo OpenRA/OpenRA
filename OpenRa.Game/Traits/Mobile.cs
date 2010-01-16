@@ -106,9 +106,9 @@ namespace OpenRa.Traits
 			
 			if (!crushable) return false;
 			
-			return Rules.Map.IsInMap(a.X, a.Y) &&
+			return Game.world.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(GetMovementType(),
-					Rules.TileSet.GetWalkability(Rules.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

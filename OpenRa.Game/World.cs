@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenRa.Effects;
 using OpenRa.Support;
+using OpenRa.FileFormats;
 
 namespace OpenRa
 {
@@ -10,6 +11,16 @@ namespace OpenRa
 		List<Actor> actors = new List<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
+
+		public readonly Map Map;
+		public readonly TileSet TileSet;
+
+		public World()
+		{
+			Map = new Map( Rules.AllRules );
+			FileSystem.MountTemporary( new Package( Map.Theater + ".mix" ) );
+			TileSet = new TileSet( Map.TileSuffix );
+		}
 
 		public void Add(Actor a)
 		{

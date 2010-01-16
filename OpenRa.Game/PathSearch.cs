@@ -48,7 +48,7 @@ namespace OpenRa
 			{
 				int2 newHere = p.Location + d;
 
-				if (!Rules.Map.IsInMap(newHere.X, newHere.Y)) continue;
+				if (!Game.world.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 				
@@ -59,7 +59,7 @@ namespace OpenRa
 					if (!Game.BuildingInfluence.CanMoveHere(newHere) && 
 						Game.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
 						continue;
-					if (Rules.Map.IsOverlaySolid(newHere))
+					if (Game.world.Map.IsOverlaySolid(newHere))
 						continue;
 				}
 				
@@ -93,7 +93,7 @@ namespace OpenRa
 
 		public void AddInitialCell( int2 location )
 		{
-			if (!Rules.Map.IsInMap(location.X, location.Y))
+			if (!Game.world.Map.IsInMap(location.X, location.Y))
 				return;
 
 			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
