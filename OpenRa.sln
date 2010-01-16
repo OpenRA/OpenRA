@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.RA", "OpenRa.Mo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{F80861C1-DD5C-40A4-94B4-02D96318AE95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.Aftermath", "OpenRa.Mods.Aftermath\OpenRa.Mods.Aftermath.csproj", "{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (x86)|Any CPU = Debug (x86)|Any CPU
@@ -185,11 +187,32 @@ Global
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug (x86)|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug (x86)|Any CPU.Build.0 = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug (x86)|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug (x86)|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug (x86)|Win32.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release (x86)|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release (x86)|Any CPU.Build.0 = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release (x86)|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release (x86)|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release (x86)|Win32.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E} = {F80861C1-DD5C-40A4-94B4-02D96318AE95}
+		{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331} = {F80861C1-DD5C-40A4-94B4-02D96318AE95}
 	EndGlobalSection
 EndGlobal

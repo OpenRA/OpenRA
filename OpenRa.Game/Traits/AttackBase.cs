@@ -6,7 +6,7 @@ using OpenRa.Effects;
 
 namespace OpenRa.Traits
 {
-	class AttackBaseInfo : ITraitInfo
+	public class AttackBaseInfo : ITraitInfo
 	{
 		public readonly string PrimaryWeapon = null;
 		public readonly string SecondaryWeapon = null;

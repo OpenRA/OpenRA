@@ -2,7 +2,7 @@
 
 namespace OpenRa.Traits
 {
-	class AttackInfo
+	public class AttackInfo
 	{
 		public Actor Attacker;
 		public WarheadInfo Warhead;

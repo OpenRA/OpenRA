@@ -10,7 +10,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Chronoshiftable(self); }
 	}
 
-	class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
+	public class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
 	{
 		// Return-to-sender logic
 		[Sync]

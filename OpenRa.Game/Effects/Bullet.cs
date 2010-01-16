@@ -5,7 +5,7 @@ using OpenRa.Traits;
 
 namespace OpenRa.Effects
 {
-	class Bullet : IEffect
+	public class Bullet : IEffect
 	{
 		readonly Player Owner;
 		readonly Actor FiredBy;

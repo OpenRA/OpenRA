@@ -17,13 +17,13 @@ namespace OpenRa.Traits
 	public interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 
-	interface INotifySold { void Sold(Actor self); }
-	interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
-	interface INotifyBuildComplete { void BuildingComplete (Actor self); }
-	interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
+	public interface INotifySold { void Sold(Actor self); }
+	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
+	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+	public interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
 
-	interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
-	interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
+	public interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
+	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 
 	interface IProducer
 	{
@@ -31,7 +31,7 @@ namespace OpenRa.Traits
 		void SetPrimaryProducer(Actor self, bool isPrimary);
 	}
 	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
-	interface INotifyAttack { void Attacking(Actor self); }
+	public interface INotifyAttack { void Attacking(Actor self); }
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }

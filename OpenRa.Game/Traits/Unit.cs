@@ -11,7 +11,7 @@ namespace OpenRa.Traits
 		public object Create( Actor self ) { return new Unit( self ); }
 	}
 
-	class Unit : INotifyDamage
+	public class Unit : INotifyDamage
 	{
 		[Sync]
 		public int Facing;

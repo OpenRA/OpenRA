@@ -56,7 +56,8 @@ namespace OpenRa.GameRules
 		static Pair<Assembly, string>[] ModAssemblies = 
 		{ 
 			Pair.New( typeof(ITraitInfo).Assembly, typeof(ITraitInfo).Namespace ),
-			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\ra\OpenRa.Mods.RA.dll")), "OpenRa.Mods.RA" ) 
+			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\ra\OpenRa.Mods.RA.dll")), "OpenRa.Mods.RA" ), 
+			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\aftermath\OpenRa.Mods.Aftermath.dll")), "OpenRa.Mods.Aftermath" ) 
 		};
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
