@@ -5,7 +5,7 @@ using OpenRa.Traits;
 
 namespace OpenRa.GameRules
 {
-	class TechTree
+	public class TechTree
 	{
 		readonly Cache<string, List<NewUnitInfo>> producesIndex = new Cache<string, List<NewUnitInfo>>(x => new List<NewUnitInfo>());
 

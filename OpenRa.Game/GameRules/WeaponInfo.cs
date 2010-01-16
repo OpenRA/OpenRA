@@ -1,7 +1,7 @@
 ﻿
 namespace OpenRa.GameRules
 {
-	class WeaponInfo
+	public class WeaponInfo
 	{
 		public readonly string Anim = null;
 		public readonly int Burst = 1;

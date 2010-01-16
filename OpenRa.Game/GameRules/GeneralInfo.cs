@@ -2,7 +2,7 @@
 using System;
 namespace OpenRa.GameRules
 {
-	class GeneralInfo
+	public class GeneralInfo
 	{
 		/* Crates */
 		public readonly int CrateMinimum = 0;

@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace OpenRa.GameRules
 {
-	class InfoLoader<T> : IEnumerable<KeyValuePair<string, T>>
+	public class InfoLoader<T> : IEnumerable<KeyValuePair<string, T>>
 	{
 		readonly Dictionary<string, T> infos = new Dictionary<string, T>();
 

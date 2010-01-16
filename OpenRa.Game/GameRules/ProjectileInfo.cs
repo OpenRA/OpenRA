@@ -1,7 +1,7 @@
 ﻿
 namespace OpenRa.GameRules
 {
-	class ProjectileInfo
+	public class ProjectileInfo
 	{
 		public readonly bool AA = false;
 		public readonly bool AG = true;

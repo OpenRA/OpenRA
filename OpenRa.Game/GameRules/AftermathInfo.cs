@@ -1,7 +1,7 @@
 ﻿
 namespace OpenRa.GameRules
 {
-	class AftermathInfo
+	public class AftermathInfo
 	{
 		public readonly int MTankDistance = 0;
 		public readonly float QuakeUnitDamage = 0f;

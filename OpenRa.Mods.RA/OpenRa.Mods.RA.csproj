@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,7 +7,7 @@ using OpenRa.GameRules;
 
 namespace OpenRa
 {
-	static class Rules
+	public static class Rules
 	{
 		public static IniFile AllRules;
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();

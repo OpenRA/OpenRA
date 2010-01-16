@@ -4,7 +4,7 @@ using OpenRa.Traits;
 
 namespace OpenRa.Effects
 {
-	class Explosion : IEffect
+	public class Explosion : IEffect
 	{
 		Animation anim;
 		int2 pos;

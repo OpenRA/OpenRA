@@ -32,19 +32,19 @@ namespace OpenRa.Traits
 	}
 	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	interface INotifyAttack { void Attacking(Actor self); }
-	interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
-	interface IDamageModifier { float GetDamageModifier(); }
-	interface ISpeedModifier { float GetSpeedModifier(); }
-	interface IPaletteModifier { void AdjustPalette(Bitmap b); }
-	interface IPips { IEnumerable<PipType> GetPips(Actor self); }
-	interface ITags { IEnumerable<TagType> GetTags(); }
-	interface IMovement
+	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
+	public interface IDamageModifier { float GetDamageModifier(); }
+	public interface ISpeedModifier { float GetSpeedModifier(); }
+	public interface IPaletteModifier { void AdjustPalette(Bitmap b); }
+	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
+	public interface ITags { IEnumerable<TagType> GetTags(); }
+	public interface IMovement
 	{
 		UnitMovementType GetMovementType();
 		bool CanEnterCell(int2 location);
 	}
 	
-	interface ICrushable
+	public interface ICrushable
 	{
 		void OnCrush(Actor crusher);
 		bool IsCrushableBy(UnitMovementType umt, Player player);
@@ -75,7 +75,7 @@ namespace OpenRa.Traits
 
 	public interface ITraitInfo { object Create(Actor self); }
 
-	class StatelessTraitInfo<T> : ITraitInfo
+	public class StatelessTraitInfo<T> : ITraitInfo
 		where T : new()
 	{
 		static Lazy<T> Instance = Lazy.New(() => new T());
