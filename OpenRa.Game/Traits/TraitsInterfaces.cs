@@ -27,7 +27,7 @@ namespace OpenRa.Traits
 
 	interface IProducer
 	{
-		bool Produce( Actor self, NewUnitInfo producee );
+		bool Produce( Actor self, ActorInfo producee );
 		void SetPrimaryProducer(Actor self, bool isPrimary);
 	}
 	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }

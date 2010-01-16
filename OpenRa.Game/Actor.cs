@@ -13,7 +13,7 @@ namespace OpenRa
 	{
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
-		public readonly NewUnitInfo Info;
+		public readonly ActorInfo Info;
 		public readonly uint ActorID;
 		[Sync]
 		public int2 Location;

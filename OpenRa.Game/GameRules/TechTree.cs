@@ -7,7 +7,7 @@ namespace OpenRa.GameRules
 {
 	public class TechTree
 	{
-		readonly Cache<string, List<NewUnitInfo>> producesIndex = new Cache<string, List<NewUnitInfo>>(x => new List<NewUnitInfo>());
+		readonly Cache<string, List<ActorInfo>> producesIndex = new Cache<string, List<ActorInfo>>(x => new List<ActorInfo>());
 
 		public TechTree()
 		{
@@ -34,7 +34,7 @@ namespace OpenRa.GameRules
 			return ret;
 		}
 
-		public bool CanBuild( NewUnitInfo info, Player player, Cache<string, List<Actor>> playerBuildings )
+		public bool CanBuild( ActorInfo info, Player player, Cache<string, List<Actor>> playerBuildings )
 		{
 			var bi = info.Traits.GetOrDefault<BuildableInfo>();
 			if( bi == null ) return false;
@@ -60,7 +60,7 @@ namespace OpenRa.GameRules
 					yield return unit.Name;
 		}
 
-		public IEnumerable<NewUnitInfo> AllBuildables(Player player, params string[] categories)
+		public IEnumerable<ActorInfo> AllBuildables(Player player, params string[] categories)
 		{
 			return Rules.NewUnitInfo.Values
 				.Where( x => x.Name[ 0 ] != '^' )
@@ -68,7 +68,7 @@ namespace OpenRa.GameRules
 				.Where( x => x.Traits.Contains<BuildableInfo>() );
 		}
 
-		public IEnumerable<NewUnitInfo> UnitBuiltAt( NewUnitInfo info )
+		public IEnumerable<ActorInfo> UnitBuiltAt( ActorInfo info )
 		{
 			var builtAt = info.Traits.Get<BuildableInfo>().BuiltAt;
 			if( builtAt.Length != 0 )

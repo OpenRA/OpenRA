@@ -95,7 +95,7 @@
     <Compile Include="GameRules\AftermathInfo.cs" />
     <Compile Include="GameRules\ArmorType.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
-    <Compile Include="GameRules\NewUnitInfo.cs" />
+    <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\SupportPowerInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\UserSettings.cs" />

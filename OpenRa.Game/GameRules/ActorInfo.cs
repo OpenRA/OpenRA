@@ -9,13 +9,13 @@ using System.IO;
 
 namespace OpenRa.GameRules
 {
-	public class NewUnitInfo
+	public class ActorInfo
 	{
 		public readonly string Name;
 		public readonly string Category;
 		public readonly TypeDictionary Traits = new TypeDictionary();
 
-		public NewUnitInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
+		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			var mergedNode = MergeWithParent( node, allUnits ).Nodes;
 
