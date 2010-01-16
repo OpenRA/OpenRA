@@ -60,8 +60,8 @@ namespace OpenRa.Game.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var productionInfo = order.TargetActor.Info.Traits.Get<ProductionInfo>();
-				var offset = productionInfo.SpawnOffset;
+				var productionInfo = order.TargetActor.Info.Traits.GetOrDefault<ProductionInfo>();
+				var offset = productionInfo != null ? productionInfo.SpawnOffset : null;
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 
 				self.CancelActivity();
