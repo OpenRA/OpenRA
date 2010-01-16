@@ -49,18 +49,8 @@ namespace OpenRa.Graphics
 			if (terrainTypeColors == null)
 			{
 				var pal = new Palette(FileSystem.Open(Game.world.Map.Theater + ".pal"));
-				terrainTypeColors = new[] {
-					Color.FromArgb(alpha, pal.GetColor(theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a)),
-					Color.FromArgb(alpha, pal.GetColor(0x63)),
-					Color.FromArgb(alpha, pal.GetColor(0x2f)),
-					Color.FromArgb(alpha, pal.GetColor(0x1f)),
-					Color.FromArgb(alpha, pal.GetColor(0x14)),
-					Color.FromArgb(alpha, pal.GetColor(0x64)),
-					Color.FromArgb(alpha, pal.GetColor(0x1f)),
-					Color.FromArgb(alpha, pal.GetColor(0x68)),
-					Color.FromArgb(alpha, pal.GetColor(0x6b)),
-					Color.FromArgb(alpha, pal.GetColor(0x6d)),
-				};
+				terrainTypeColors = new[] {theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a, 0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d }
+					.Select( a => Color.FromArgb(alpha, pal.GetColor(a) )).ToArray();
 				
 				playerColors = Util.MakeArray<Color>( 8, b => Color.FromArgb(alpha, Chat.paletteColors[b]) );
 				shroudColor = Color.FromArgb(alpha, Color.Black);
