@@ -13,7 +13,7 @@ namespace OpenRa.Game.Traits
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor != null) return null;
+			if (underCursor == null) return null;
 			if (underCursor.traits.Contains<IAcceptSpy>()) return null;
 
 			return new Order("Infiltrate", self, underCursor, int2.Zero, null);

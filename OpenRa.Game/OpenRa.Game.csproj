@@ -241,6 +241,7 @@
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
+    <Compile Include="Traits\RenderSpy.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\Selectable.cs" />
