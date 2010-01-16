@@ -146,10 +146,8 @@ namespace OpenRa.Game
 			/* hack hack hack */
 			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
 			{
-				Game.LocalPlayer.IsReady ^= true;
 				Game.controller.AddOrder(
-					new Order( "ToggleReady", Game.LocalPlayer.PlayerActor, null, int2.Zero,
-						Game.LocalPlayer.IsReady ? "ready" : "not ready") { IsImmediate = true });
+					new Order( "ToggleReady", Game.LocalPlayer.PlayerActor, null, int2.Zero, "") { IsImmediate = true });
 			}
 
 			/* temporary hack: DO NOT LEAVE IN */

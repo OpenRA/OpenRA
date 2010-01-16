@@ -16,6 +16,7 @@ namespace OpenRA.Server
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo = new Session();
+		static bool GameStarted = false;
 
 		public static void Main(string[] args)
 		{
@@ -223,7 +224,7 @@ namespace OpenRA.Server
 				{ "race",
 					s => 
 					{
-						if (conn.IsReady) 
+						if (GameStarted) 
 						{
 							DispatchOrdersToClient(conn, 0, 
 								new ServerOrder( conn.PlayerIndex, "Chat", 
@@ -245,7 +246,7 @@ namespace OpenRA.Server
 				{ "pal",
 					s =>
 					{
-						if (conn.IsReady) 
+						if (GameStarted) 
 						{
 							DispatchOrdersToClient(conn, 0, 
 								new ServerOrder( conn.PlayerIndex, "Chat", 
@@ -275,7 +276,7 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						if (conn.IsReady)
+						if (GameStarted)
 						{
 							DispatchOrdersToClient(conn, 0, 
 								new ServerOrder( conn.PlayerIndex, "Chat",
@@ -309,15 +310,22 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "ToggleReady":
-					conn.IsReady ^= true;
+					// if we're downloading, we can't ready up.
 
-					Console.WriteLine("Player @{0} is {1}", 
-						conn.socket.RemoteEndPoint, conn.IsReady ? "ready" : "not ready");
+					var client = lobbyInfo.Clients[conn.PlayerIndex];
+					if (client.State == Session.ClientState.NotReady)
+						client.State = Session.ClientState.Ready;
+					else if (client.State == Session.ClientState.Ready)
+						client.State = Session.ClientState.NotReady;
+
+					Console.WriteLine("Player @{0} is {1}",
+						conn.socket.RemoteEndPoint, client.State);
 
 					// start the game if everyone is ready.
-					if (conns.All(c => c.IsReady))
+					if (conns.All(c => lobbyInfo.Clients[c.PlayerIndex].State == Session.ClientState.Ready))
 					{
 						Console.WriteLine("All players are ready. Starting the game!");
+						GameStarted = true;
 						DispatchOrders(null, 0,
 							new ServerOrder(0, "StartGame", "").Serialize());
 					}
@@ -335,6 +343,11 @@ namespace OpenRA.Server
 					else
 						foreach (var c in conns.Except(conn).ToArray())
 							DispatchOrdersToClient(c, 0, so.Serialize());
+					break;
+
+				case "RequestFile":
+					Console.WriteLine("** Requesting file: `{0}`", so.Data);
+					// todo: start serving!
 					break;
 			}
 		}
@@ -374,6 +387,7 @@ namespace OpenRA.Server
 			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
+			GameStarted = false;
 		}
 
 		static void SyncLobbyInfo()

@@ -16,7 +16,6 @@ namespace OpenRA.Server
 		public int Frame = 0;
 
 		/* client data */
-		public bool IsReady;
 		public int PlayerIndex;
 
 		public byte[] PopBytes(int n)
@@ -25,6 +24,11 @@ namespace OpenRA.Server
 			data.RemoveRange(0, n);
 			return result.ToArray();
 		}
+
+		/* file server state */
+		public int NextChunk = 0;
+		public int NumChunks = 0;
+		public Stream Stream = null;
 	}
 
 	enum ReceiveState { Header, Data };

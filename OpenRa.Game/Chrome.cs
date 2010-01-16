@@ -160,13 +160,12 @@ namespace OpenRa.Game
 			buttons.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\nReady: {4} (F8 to toggle)".F(
+			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n".F(
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
-				PerfHistory.items["tick_time"].LastValue,
-				Game.LocalPlayer.IsReady ? "Yes" : "No"
-				), new int2(140, 15), Color.White);
+				PerfHistory.items["tick_time"].LastValue), 
+				new int2(140, 15), Color.White);
 
 			if (Game.Settings.PerfGraph)
 				PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);

@@ -26,8 +26,6 @@ namespace OpenRa.Game
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
 
-		public bool IsReady;
-
 		public Shroud Shroud = new Shroud();
 		public Dictionary<string, SupportPower> SupportPowers;
 
