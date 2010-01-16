@@ -26,11 +26,12 @@ namespace OpenRa
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
 
-		public Shroud Shroud = new Shroud();
+		public Shroud Shroud;
 		public Dictionary<string, SupportPower> SupportPowers;
 
 		public Player( int index, Session.Client client )
 		{
+			Shroud = new Shroud(this);
 			Game.world.Add(this.PlayerActor = new Actor("Player", new int2(int.MaxValue, int.MaxValue), this));
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);

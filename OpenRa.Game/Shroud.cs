@@ -15,6 +15,9 @@ namespace OpenRa
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty = true;
 		bool hasGPS = false;
+		Player owner;
+
+		public Shroud(Player owner) { this.owner = owner; }
 		
 		float gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
 		int[,] gapField = new int[128, 128];
@@ -30,7 +33,7 @@ namespace OpenRa
 		{
 			// Clear active flags
 			gapActive = new bool[128, 128];
-			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<GeneratesGap>()))
+			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<GeneratesGap>() && owner != a.Owner))
 			{
 				foreach (var t in a.traits.Get<GeneratesGap>().GetShroudedTiles())
 					gapActive[t.X, t.Y] = true;
