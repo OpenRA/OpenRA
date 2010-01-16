@@ -392,6 +392,8 @@ namespace OpenRA.Server
 						Console.WriteLine("Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
 
+						SyncLobbyInfo();
+
 						// start the game if everyone is ready.
 						if (conns.All(c => GetClient(c).State == Session.ClientState.Ready))
 						{
