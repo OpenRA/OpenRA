@@ -6,9 +6,9 @@ using OpenRa.Game.Graphics;
 
 namespace OpenRa.Game.Traits
 {
-	class RenderSpyInfo : ITraitInfo
+	class RenderSpyInfo : RenderInfantryInfo
 	{
-		public object Create(Actor self) { return new RenderSpy(self); }
+		public override object Create(Actor self) { return new RenderSpy(self); }
 	}
 
 	class RenderSpy : RenderInfantry, IRenderModifier
