@@ -1,5 +1,0 @@
-﻿
-namespace OpenRa.Traits.Activities
-{
-
-}

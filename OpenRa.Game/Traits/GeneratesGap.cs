@@ -26,11 +26,9 @@ namespace OpenRa.Traits
 			int range = self.Info.Traits.Get<GeneratesGapInfo>().Range;
 
 			// Gap Generator building; powered down
-			if (self.traits.Contains<Building>() && self.traits.Get<Building>().Disabled)
-				yield break;
-
-			foreach (var t in Game.FindTilesInCircle(self.Location, range))
-				yield return t;
+			return (self.traits.Contains<Building>() && self.traits.Get<Building>().Disabled) 
+				? new int2[] {} 
+				: Game.FindTilesInCircle(self.Location, range);
 		}
 	}
 }
