@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.FileFormats;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Game
 {
@@ -24,15 +23,23 @@ namespace OpenRa.Game
 				BeginDownload();
 		}
 
+		class Chunk { public int Index = 0; public int Count = 0; public string Data = ""; }
+
 		public static void ReceiveChunk(string data)
 		{
-			
+			var c = new Chunk();
+			FieldLoader.Load(c, new MiniYaml(null, MiniYaml.FromString(data)));
+			var bytes = Convert.FromBase64String(c.Data);
+			content.Write(bytes, 0, bytes.Length);
+
+			if (c.Index == c.Count - 1)
+				EndDownload();
 		}
 
 		static void BeginDownload()
 		{
-			if (missingPackages.Count == 0)
-			{	// we're finished downloading resources!
+			if (missingPackages.Count == 0)		// we're finished downloading resources!
+			{
 				currentPackage = null;
 				return;
 			}
@@ -41,11 +48,21 @@ namespace OpenRa.Game
 			missingPackages.RemoveAt(0);
 
 			content = new MemoryStream();
+
+			Game.controller.AddOrder(
+				new Order("RequestFile", null, null, int2.Zero, currentPackage) 
+				{ IsImmediate = true });
 		}
 
 		static void EndDownload()
 		{
-			File.WriteAllBytes(currentPackage.Split(':')[0], content.ToArray());
+			// commit this data to disk
+			var parts = currentPackage.Split(':');
+			File.WriteAllBytes(parts[0], content.ToArray());
+
+			if (CalculateSHA1(parts[0]) != parts[1])
+				throw new InvalidOperationException("Broken download");
+
 			currentPackage = null;
 
 			BeginDownload();
