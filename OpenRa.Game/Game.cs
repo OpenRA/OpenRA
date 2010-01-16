@@ -400,9 +400,41 @@ namespace OpenRa.Game
 
 		public static void StartGame()
 		{
-			// todo: spawn starting units for everyone
+			var available = SpawnPoints.ToList();
+			var taken = new List<int2>();
 
+			foreach (var client in LobbyInfo.Clients)
+			{
+				// todo: allow players to choose their own spawn points.
+				// only select a point for them if they didn't.
+
+				// todo: spawn more than one unit, in most cases!
+
+				var sp = ChooseSpawnPoint(available, taken);
+				world.Add(new Actor("mcv", sp, players[client.Index]));
+			}
+
+			Game.viewport.GoToStartLocation();
 			orderManager.StartGame();
+		}
+
+		static int2 ChooseSpawnPoint(List<int2> available, List<int2> taken)
+		{
+			if (available.Count == 0)
+				throw new InvalidOperationException("No free spawnpoint.");
+
+			var n = taken.Count == 0 
+				? Game.SharedRandom.Next(available.Count)
+				: available			// pick the most distant spawnpoint from everyone else
+					.Select((k,i) => Pair.New(k,i))
+					.OrderByDescending(a => taken.Sum(t => (t - a.First).LengthSquared))
+					.Select(a => a.Second)
+					.First();
+			
+			var sp = available[n];
+			available.RemoveAt(n);
+			taken.Add(sp);
+			return sp;
 		}
 	}
 }

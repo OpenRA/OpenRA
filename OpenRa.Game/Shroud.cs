@@ -13,7 +13,7 @@ namespace OpenRa.Game
 		bool[,] explored = new bool[128, 128];
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
-		bool dirty;
+		bool dirty = true;
 		bool hasGPS = false;
 		
 		float gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);

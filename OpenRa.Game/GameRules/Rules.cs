@@ -28,7 +28,6 @@ namespace OpenRa.Game
 		{
 			if( useAftermath )
 				AllRules = new IniFile(
-					FileSystem.Open( "session.ini" ),
 					FileSystem.Open( mapFileName ),
 					FileSystem.Open("aftermathUnits.ini"),
 					FileSystem.Open("units.ini"),
@@ -38,7 +37,6 @@ namespace OpenRa.Game
 					FileSystem.Open("trees.ini"));
 			else
 				AllRules = new IniFile(
-					FileSystem.Open("session.ini"),
 					FileSystem.Open(mapFileName),
 					FileSystem.Open("units.ini"),
 					FileSystem.Open("rules.ini"),
