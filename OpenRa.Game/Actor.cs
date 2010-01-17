@@ -23,9 +23,9 @@ namespace OpenRa
 		public int Health;
 		IActivity currentActivity;
 
-		public Actor( string name, int2 location, Player owner )
+		public Actor( World world, string name, int2 location, Player owner )
 		{
-			ActorID = Game.world.NextAID();
+			ActorID = world.NextAID();
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;

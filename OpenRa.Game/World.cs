@@ -38,7 +38,7 @@ namespace OpenRa
 
 		public Actor CreateActor( string name, int2 location, Player owner )
 		{
-			var a = new Actor( name, location, owner );
+			var a = new Actor( this, name, location, owner );
 			Add( a );
 			return a;
 		}
