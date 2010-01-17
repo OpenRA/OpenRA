@@ -148,12 +148,6 @@ namespace OpenRa
 		{
 			DrawDownloadBar();
 
-			if (!Game.orderManager.GameStarted)
-			{
-				DrawLobby();
-				return;
-			}
-
 			chromeCollection = (Game.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
 			radarCollection = (Game.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
 			paletteCollection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
@@ -218,6 +212,8 @@ namespace OpenRa
 
 		public void DrawLobby()
 		{
+			DrawDownloadBar();
+
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
