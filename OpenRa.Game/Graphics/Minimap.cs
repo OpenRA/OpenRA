@@ -17,18 +17,18 @@ namespace OpenRa.Graphics
 
 		public void Tick() { }
 
-		public Minimap(Renderer r)
+		public Minimap(World world, Renderer r)
 		{
 			sheet = new Sheet(r, new Size(128, 128));
 			mapOnlySheet = new Sheet(r, new Size(128, 128));
 
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
-			var size = Math.Max(Game.world.Map.Width, Game.world.Map.Height);
-			var dw = (size - Game.world.Map.Width) / 2;
-			var dh = (size - Game.world.Map.Height) / 2;
+			var size = Math.Max(world.Map.Width, world.Map.Height);
+			var dw = (size - world.Map.Width) / 2;
+			var dh = (size - world.Map.Height) / 2;
 			
-			sprite = new Sprite(sheet, new Rectangle(Game.world.Map.Offset.X+dw, Game.world.Map.Offset.Y+dh, size, size), TextureChannel.Alpha);
-			mapOnlySprite = new Sprite(mapOnlySheet, new Rectangle(Game.world.Map.Offset.X + dw, Game.world.Map.Offset.Y + dh, size, size), TextureChannel.Alpha);
+			sprite = new Sprite(sheet, new Rectangle(world.Map.Offset.X+dw, world.Map.Offset.Y+dh, size, size), TextureChannel.Alpha);
+			mapOnlySprite = new Sprite(mapOnlySheet, new Rectangle(world.Map.Offset.X + dw, world.Map.Offset.Y + dh, size, size), TextureChannel.Alpha);
 		}
 
 		Color[] terrainTypeColors;

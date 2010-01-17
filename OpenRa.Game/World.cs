@@ -22,6 +22,7 @@ namespace OpenRa
 		public readonly TileSet TileSet;
 
 		public readonly WorldRenderer WorldRenderer;
+		internal readonly Minimap Minimap;
 
 		readonly int oreFrequency;
 		int oreTicks;
@@ -44,6 +45,7 @@ namespace OpenRa
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
+			Minimap = new Minimap(this, Game.renderer);
 		}
 
 		public Actor CreateActor( string name, int2 location, Player owner )
@@ -81,7 +83,7 @@ namespace OpenRa
 				using( new PerfSample( "ore" ) )
 				{
 					Map.GrowOre( Game.SharedRandom );
-					Game.minimap.InvalidateOre();
+					Game.world.Minimap.InvalidateOre();
 					oreTicks = oreFrequency;
 				}
 
@@ -95,6 +97,8 @@ namespace OpenRa
 			foreach (var a in acts) a(this);
 
 			UnitInfluence.Tick();
+
+			Minimap.Update();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

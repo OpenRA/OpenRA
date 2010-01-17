@@ -46,7 +46,6 @@ namespace OpenRa
 		static int2 clientSize;
 		static HardwarePalette palette;
 		static string mapName;
-		internal static Minimap minimap;
 		internal static Session LobbyInfo = new Session();
 		internal static int2[] SpawnPoints;
 		static bool changePending;
@@ -79,8 +78,6 @@ namespace OpenRa
 
 			SequenceProvider.Initialize(usingAftermath);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
-
-			minimap = new Minimap(renderer);
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)
@@ -167,9 +164,6 @@ namespace OpenRa
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Timestep;
-					UpdatePalette(world.Actors.SelectMany(
-						a => a.traits.WithInterface<IPaletteModifier>()));
-					minimap.Update();
 					chrome.Tick();
 
 					orderManager.TickImmediate();
@@ -194,6 +188,8 @@ namespace OpenRa
 
 			using (new PerfSample("render"))
 			{
+				UpdatePalette(world.Actors.SelectMany(
+					a => a.traits.WithInterface<IPaletteModifier>()));
 				++RenderFrame;
 				viewport.DrawRegions();
 			}
