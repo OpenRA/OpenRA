@@ -19,7 +19,6 @@ namespace OpenRa
 
 		public static World world;
 		internal static Viewport viewport;
-		public static PathFinder PathFinder;
 		public static Controller controller;
 		internal static Chrome chrome;
 		public static UserSettings Settings;
@@ -89,8 +88,6 @@ namespace OpenRa
 			
 			LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
-
-			PathFinder = new PathFinder();
 
 			chrome = new Chrome(renderer);
 
@@ -336,7 +333,7 @@ namespace OpenRa
 
 			foreach (var t in Footprint.Tiles(buildingName, bi, position)) search.AddInitialCell(t);
 
-			return Game.PathFinder.FindPath(search).Count != 0;
+			return Game.world.PathFinder.FindPath(search).Count != 0;
 		}
 
 		public static void SyncLobbyInfo(string data)

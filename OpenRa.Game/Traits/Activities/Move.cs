@@ -20,7 +20,7 @@ namespace OpenRa.Traits.Activities
 
 		public Move( int2 destination, int nearEnough )
 		{
-			this.getPath = ( self, mobile ) => Game.PathFinder.FindUnitPath(
+			this.getPath = ( self, mobile ) => Game.world.PathFinder.FindUnitPath(
 				self.Location, destination,
 				mobile.GetMovementType() );
 			this.destination = destination;
@@ -30,9 +30,9 @@ namespace OpenRa.Traits.Activities
 		public Move(int2 destination, Actor ignoreBuilding)
 		{
 			this.getPath = (self, mobile) => 
-				Game.PathFinder.FindPath(
+				Game.world.PathFinder.FindPath(
 					PathSearch.FromPoint( self.Location, destination, mobile.GetMovementType(), false )
-					.WithCustomBlocker( Game.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
+					.WithCustomBlocker( Game.world.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;
 			this.nearEnough = 0;
@@ -41,7 +41,7 @@ namespace OpenRa.Traits.Activities
 
 		public Move( Actor target, int range )
 		{
-			this.getPath = ( self, mobile ) => Game.PathFinder.FindUnitPathToRange(
+			this.getPath = ( self, mobile ) => Game.world.PathFinder.FindUnitPathToRange(
 				self.Location, target.Location,
 				mobile.GetMovementType(), range );
 			this.destination = null;

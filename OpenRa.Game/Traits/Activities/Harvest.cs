@@ -63,7 +63,7 @@ namespace OpenRa.Traits.Activities
 						checkForBlocked = true
 					};
 					search.AddInitialCell(self.Location);
-					return Game.PathFinder.FindPath(search);
+					return Game.world.PathFinder.FindPath(search);
 				}));
 			self.QueueActivity(new Harvest());
 		}

@@ -16,6 +16,8 @@ namespace OpenRa
 		public readonly BuildingInfluenceMap BuildingInfluence;
 		public readonly UnitInfluenceMap UnitInfluence;
 
+		public readonly PathFinder PathFinder;
+
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
@@ -36,6 +38,8 @@ namespace OpenRa
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
 			Map.InitOreDensity();
+
+			PathFinder = new PathFinder(this);
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 

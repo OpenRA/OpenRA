@@ -50,7 +50,7 @@ namespace OpenRa.Traits.Activities
 					foreach( var r in refineries )
 						search.AddInitialCell( r.Location + refineryDeliverOffset );
 
-				var path = Game.PathFinder.FindPath( search );
+				var path = Game.world.PathFinder.FindPath( search );
 				path.Reverse();
 				if( path.Count != 0 )
 				{
