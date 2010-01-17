@@ -8,12 +8,12 @@ namespace OpenRa
 		bool[,] blocked = new bool[128, 128];
 		Actor[,] influence = new Actor[128, 128];
 
-		public BuildingInfluenceMap()
+		public BuildingInfluenceMap( World world )
 		{
-			Game.world.ActorAdded +=
+			world.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), true); };
-			Game.world.ActorRemoved +=
+			world.ActorRemoved +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), false); };
 		}

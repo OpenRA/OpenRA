@@ -27,8 +27,8 @@ namespace OpenRa
 			FileSystem.MountTemporary( new Package( Map.Theater + ".mix" ) );
 			TileSet = new TileSet( Map.TileSuffix );
 
-			BuildingInfluence = new BuildingInfluenceMap();
-			UnitInfluence = new UnitInfluenceMap();
+			BuildingInfluence = new BuildingInfluenceMap( this );
+			UnitInfluence = new UnitInfluenceMap( this );
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
