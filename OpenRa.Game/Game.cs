@@ -98,9 +98,6 @@ namespace OpenRa
 
 			chrome = new Chrome(renderer);
 
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
-			oreTicks = oreFrequency;
-
 			SpawnPoints = Rules.AllRules.GetSection("Waypoints")
 				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
 				.Where(a => a.First < 8)
@@ -158,8 +155,6 @@ namespace OpenRa
 			lastTime = Environment.TickCount;
 		}
 
-		static int oreFrequency;
-		static int oreTicks;
 		public static int RenderFrame = 0;
 
 		internal static Chat chat = new Chat();
@@ -192,16 +187,7 @@ namespace OpenRa
 						if (controller.orderGenerator != null)
 							controller.orderGenerator.Tick();
 
-						if (--oreTicks == 0)
-							using (new PerfSample("ore"))
-							{
-								Game.world.Map.GrowOre(SharedRandom);
-								minimap.InvalidateOre();
-								oreTicks = oreFrequency;
-							}
-
 						world.Tick();
-						Game.world.UnitInfluence.Tick();
 						foreach (var player in players.Values)
 							player.Tick();
 					}

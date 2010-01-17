@@ -18,6 +18,9 @@ namespace OpenRa
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
+		readonly int oreFrequency;
+		int oreTicks;
+
 		public World()
 		{
 			Map = new Map( Rules.AllRules );
@@ -26,6 +29,9 @@ namespace OpenRa
 
 			BuildingInfluence = new BuildingInfluenceMap();
 			UnitInfluence = new UnitInfluenceMap();
+
+			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
+			oreTicks = oreFrequency;
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 		}
@@ -61,6 +67,14 @@ namespace OpenRa
 		
 		public void Tick()
 		{
+			if (--oreTicks == 0)
+				using( new PerfSample( "ore" ) )
+				{
+					Map.GrowOre( Game.SharedRandom );
+					Game.minimap.InvalidateOre();
+					oreTicks = oreFrequency;
+				}
+
 			foreach (var a in actors) a.Tick();
 			foreach (var e in effects) e.Tick();
 
@@ -69,6 +83,8 @@ namespace OpenRa
 			var acts = frameEndActions;
 			frameEndActions = new List<Action<World>>();
 			foreach (var a in acts) a(this);
+
+			UnitInfluence.Tick();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
