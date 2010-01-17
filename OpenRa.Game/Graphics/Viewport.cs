@@ -48,7 +48,7 @@ namespace OpenRa.Graphics
 
 			renderer.BeginFrame(r1, r2, scrollPosition);
 
-			Game.worldRenderer.Draw();
+			Game.world.WorldRenderer.Draw();
 			Game.chrome.Draw();
 
 			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();

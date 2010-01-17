@@ -32,7 +32,7 @@ namespace OpenRa.Orders
 		public void Tick() {}
 		public void Render()
 		{
-			Game.worldRenderer.DrawSelectionBox(self, Color.White, true);
+			Game.world.WorldRenderer.DrawSelectionBox(self, Color.White, true);
 		}
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)

@@ -33,7 +33,7 @@ namespace OpenRa.Orders
 		public void Render()
 		{
 			foreach( var a in selection )
-				Game.worldRenderer.DrawSelectionBox( a, Color.White, true );
+				Game.world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
 		}
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)

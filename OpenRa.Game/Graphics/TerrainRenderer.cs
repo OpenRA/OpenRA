@@ -15,15 +15,15 @@ namespace OpenRa.Graphics
 		Map map;
 		OverlayRenderer overlayRenderer;
 
-		public TerrainRenderer(Renderer renderer, Map map)
+		public TerrainRenderer(World world, Renderer renderer)
 		{
 			this.renderer = renderer;
-			this.map = map;
+			this.map = world.Map;
 
 			Size tileSize = new Size( Game.CellSize, Game.CellSize );
 
 			var tileMapping = new Cache<TileReference, Sprite>(
-				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x), tileSize));
+				x => SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
 			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
 			ushort[] indices = new ushort[6 * map.Height * map.Width];

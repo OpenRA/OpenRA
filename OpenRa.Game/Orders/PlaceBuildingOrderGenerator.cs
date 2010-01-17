@@ -48,7 +48,7 @@ namespace OpenRa.Orders
 
 		public void Render()
 		{
-			Game.worldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
+			Game.world.WorldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
 		}
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)

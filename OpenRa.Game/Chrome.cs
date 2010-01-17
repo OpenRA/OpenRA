@@ -170,7 +170,7 @@ namespace OpenRa
 				new int2(140, 15), Color.White);
 
 			if (Game.Settings.PerfGraph)
-				PerfHistory.Render(renderer, Game.worldRenderer.lineRenderer);
+				PerfHistory.Render(renderer, Game.world.WorldRenderer.lineRenderer);
 
 			DrawRadar();
 			DrawPower();

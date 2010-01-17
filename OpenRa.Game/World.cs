@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OpenRa.Effects;
 using OpenRa.Support;
 using OpenRa.FileFormats;
+using OpenRa.Graphics;
 
 namespace OpenRa
 {
@@ -17,6 +18,8 @@ namespace OpenRa
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
+
+		public readonly WorldRenderer WorldRenderer;
 
 		readonly int oreFrequency;
 		int oreTicks;
@@ -35,6 +38,8 @@ namespace OpenRa
 			Map.InitOreDensity();
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+
+			WorldRenderer = new WorldRenderer(this, Game.renderer);
 		}
 
 		public Actor CreateActor( string name, int2 location, Player owner )

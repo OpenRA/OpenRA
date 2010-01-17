@@ -15,9 +15,9 @@ namespace OpenRa.Graphics
 
 		public static bool ShowUnitPaths = false;
 
-		internal WorldRenderer(Renderer renderer)
+		internal WorldRenderer(World world, Renderer renderer)
 		{
-			terrainRenderer = new TerrainRenderer(renderer, Game.world.Map);
+			terrainRenderer = new TerrainRenderer(world, renderer);
 
 			this.renderer = renderer;
 			spriteRenderer = new SpriteRenderer(renderer, true);

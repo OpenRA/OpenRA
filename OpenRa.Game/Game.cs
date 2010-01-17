@@ -20,7 +20,6 @@ namespace OpenRa
 		public static World world;
 		internal static Viewport viewport;
 		public static PathFinder PathFinder;
-		public static WorldRenderer worldRenderer;
 		public static Controller controller;
 		internal static Chrome chrome;
 		public static UserSettings Settings;
@@ -43,7 +42,7 @@ namespace OpenRa
 
 		public static bool skipMakeAnims = true;
 
-		static Renderer renderer;
+		internal static Renderer renderer;
 		static bool usingAftermath;
 		static int2 clientSize;
 		static HardwarePalette palette;
@@ -78,8 +77,6 @@ namespace OpenRa
 				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
 				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
-
-			worldRenderer = new WorldRenderer(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
