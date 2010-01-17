@@ -27,7 +27,7 @@ namespace OpenRa.Traits
 
 		Actor ChooseTarget(Actor self, float range)
 		{
-			var inRange = Game.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+			var inRange = Game.world.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
 				.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */

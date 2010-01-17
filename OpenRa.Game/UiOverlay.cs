@@ -46,10 +46,10 @@ namespace OpenRa
 		public void DrawBuildingGrid( string name, BuildingInfo bi )
 		{
 			var position = Game.controller.MousePosition.ToInt2();
-			var isCloseEnough = Game.IsCloseEnoughToBase(Game.LocalPlayer, name, bi, position);
+			var isCloseEnough = Game.world.IsCloseEnoughToBase(Game.LocalPlayer, name, bi, position);
 
 			foreach( var t in Footprint.Tiles( name, bi, position ) )
-				spriteRenderer.DrawSprite( ( isCloseEnough && Game.IsCellBuildable( t, bi.WaterBound
+				spriteRenderer.DrawSprite( ( isCloseEnough && Game.world.IsCellBuildable( t, bi.WaterBound
 					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Game.world.Map.ContainsResource( t ) )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 

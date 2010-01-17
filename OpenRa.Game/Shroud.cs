@@ -81,7 +81,7 @@ namespace OpenRa
 		
 		public void Explore(Actor a)
 		{
-			foreach (var t in Game.FindTilesInCircle(
+			foreach (var t in Game.world.FindTilesInCircle(
 				(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
 				a.Info.Traits.Get<OwnedActorInfo>().Sight))
 			{

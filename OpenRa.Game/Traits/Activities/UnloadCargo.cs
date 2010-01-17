@@ -19,7 +19,7 @@ namespace OpenRa.Traits.Activities
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 					if ((i != 0 || j != 0) && 
-						Game.IsCellBuildable(self.Location + new int2(i, j), 
+						Game.world.IsCellBuildable(self.Location + new int2(i, j), 
 							UnitMovementType.Foot))
 						return self.Location + new int2(i, j);
 

@@ -28,7 +28,7 @@ namespace OpenRa.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var loc = mi.Location + Game.viewport.Location;
-				var underCursor = Game.FindUnits(loc, loc)
+				var underCursor = Game.world.FindUnits(loc, loc)
 					.Where(a => a.Owner == Game.LocalPlayer
 						&& a.traits.Contains<Chronoshiftable>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();

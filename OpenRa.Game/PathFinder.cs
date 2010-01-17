@@ -40,8 +40,8 @@ namespace OpenRa
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var tilesInRange = Game.FindTilesInCircle(target, range)
-					.Where( t => Game.IsCellBuildable( t, umt ) );
+				var tilesInRange = Game.world.FindTilesInCircle(target, range)
+					.Where( t => Game.world.IsCellBuildable( t, umt ) );
 
 				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
 				path.Reverse();

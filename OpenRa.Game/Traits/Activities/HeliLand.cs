@@ -16,7 +16,7 @@ namespace OpenRa.Traits.Activities
 			if (unit.Altitude == 0)
 				return NextActivity;
 
-			if (requireSpace && !Game.IsCellBuildable(self.Location, UnitMovementType.Foot))
+			if (requireSpace && !Game.world.IsCellBuildable(self.Location, UnitMovementType.Foot))
 				return this;	// fail to land if no space
 
 			--unit.Altitude;

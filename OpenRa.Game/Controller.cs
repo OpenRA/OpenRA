@@ -95,7 +95,7 @@ namespace OpenRa
 			{
 				if (orderGenerator is UnitOrderGenerator)
 				{
-					var newSelection = Game.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
+					var newSelection = Game.world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
 					CombineSelection(newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 

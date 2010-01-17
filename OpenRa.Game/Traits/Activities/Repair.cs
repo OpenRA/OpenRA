@@ -32,7 +32,7 @@ namespace OpenRa.Traits.Activities
 				if (self.Health == hp)
 					return NextActivity;
 
-				var hostBuilding = Game.FindUnits(self.CenterLocation, self.CenterLocation)
+				var hostBuilding = Game.world.FindUnits(self.CenterLocation, self.CenterLocation)
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
 
 				if (hostBuilding != null)

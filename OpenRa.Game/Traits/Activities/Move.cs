@@ -63,7 +63,7 @@ namespace OpenRa.Traits.Activities
 			
 			// Cannot enter a cell if any unit inside is uncrushable
 			// This will need to be updated for multiple-infantry-in-a-cell
-			return (!Game.world.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !Game.IsActorCrushableByActor(a, self)));
+			return (!Game.world.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !Game.world.IsActorCrushableByActor(a, self)));
 		}
 
 		public IActivity Tick( Actor self )

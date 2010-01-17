@@ -102,7 +102,7 @@ namespace OpenRa.Graphics
 			lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
 			lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
-			foreach (var u in Game.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
+			foreach (var u in Game.world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
 				DrawSelectionBox(u, Color.Yellow, false);
 		}
 

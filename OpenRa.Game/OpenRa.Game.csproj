@@ -7,7 +7,7 @@
     <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.Game</RootNamespace>
+    <RootNamespace>OpenRa</RootNamespace>
     <AssemblyName>OpenRa.Game</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -274,6 +274,7 @@
     <Compile Include="UnitInfluenceMap.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="WorldUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">

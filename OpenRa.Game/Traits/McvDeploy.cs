@@ -25,7 +25,7 @@ namespace OpenRa.Traits
 			if( order.OrderString == "DeployMcv" )
 			{
 				var factBuildingInfo = Rules.ActorInfo[ "fact" ].Traits.Get<BuildingInfo>();
-				if( Game.CanPlaceBuilding( "fact", factBuildingInfo, self.Location - new int2( 1, 1 ), self, false ) )
+				if( Game.world.CanPlaceBuilding( "fact", factBuildingInfo, self.Location - new int2( 1, 1 ), self, false ) )
 				{
 					self.CancelActivity();
 					self.QueueActivity( new Turn( 96 ) );

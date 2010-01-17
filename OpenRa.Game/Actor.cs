@@ -89,7 +89,7 @@ namespace OpenRa
 				return null;
 			
 			var loc = mi.Location + Game.viewport.Location;
-			var underCursor = Game.FindUnits(loc, loc).FirstOrDefault();
+			var underCursor = Game.world.FindUnits(loc, loc).FirstOrDefault();
 
 			if (underCursor != null && !underCursor.traits.Contains<Selectable>())
 				underCursor = null;

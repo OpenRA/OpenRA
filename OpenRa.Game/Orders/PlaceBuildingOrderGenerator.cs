@@ -28,8 +28,8 @@ namespace OpenRa.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				if (!Game.CanPlaceBuilding( Building, BuildingInfo, xy, null, true)
-					|| !Game.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, xy))
+				if (!Game.world.CanPlaceBuilding( Building, BuildingInfo, xy, null, true)
+					|| !Game.world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, xy))
 				{
 					Sound.Play("nodeply1.aud");
 					yield break;

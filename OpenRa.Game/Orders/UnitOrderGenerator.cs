@@ -50,7 +50,7 @@ namespace OpenRa.Orders
 				.FirstOrDefault(a => a != null);
 
 			return c ??
-				(Game.SelectActorsInBox(Game.CellSize * p, 
+				(Game.world.SelectActorsInBox(Game.CellSize * p, 
 				Game.CellSize * p).Any()
 					? Cursor.Select : Cursor.Default);
 		}
@@ -70,7 +70,7 @@ namespace OpenRa.Orders
 						return Cursor.MoveBlocked;
 				case "DeployMcv":
 					var factBuildingInfo = Rules.ActorInfo["fact"].Traits.Get<BuildingInfo>();
-					if (Game.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a, false))
+					if (Game.world.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a, false))
 						return Cursor.Deploy;
 					else
 						return Cursor.DeployBlocked;

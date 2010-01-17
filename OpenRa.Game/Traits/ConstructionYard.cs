@@ -27,7 +27,7 @@ namespace OpenRa.Traits
 			{
 				// force-move
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
-				if (!Game.IsActorCrushableByActor(underCursor, self)) return null;
+				if (!Game.world.IsActorCrushableByActor(underCursor, self)) return null;
 			}
 
 			return new Order("Move", self, null, xy, null);
@@ -57,7 +57,7 @@ namespace OpenRa.Traits
 			{
 				if (actor == self) continue;
 				
-				if (!Game.IsActorCrushableByActor(actor, self))
+				if (!Game.world.IsActorCrushableByActor(actor, self))
 				{
 					crushable = false;
 					break;

@@ -20,7 +20,7 @@ namespace OpenRa.Traits
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (Game.IsCellBuildable(new int2(i, j), umt))
+					if (Game.world.IsCellBuildable(new int2(i, j), umt))
 						return new int2(i, j);
 
 			return null;

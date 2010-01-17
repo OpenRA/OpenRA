@@ -33,7 +33,7 @@ namespace OpenRa
 					{
 						// There should only be one (counterexample: An infantry and a tank try to pick up a crate at the same time.)
 						// If there is more than one, do action on the first crusher
-						var crusher = GetUnitsAt(cell).Where(b => a != b && Game.IsActorCrushableByActor(a, b)).FirstOrDefault();
+						var crusher = GetUnitsAt(cell).Where(b => a != b && Game.world.IsActorCrushableByActor(a, b)).FirstOrDefault();
 						if (crusher != null)
 						{
 							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);

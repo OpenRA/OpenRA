@@ -15,8 +15,8 @@ namespace OpenRa
 		{
 			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
 
-			var isWater = Game.IsWater(targetTile);
-			var hitWater = Game.IsCellBuildable(targetTile, UnitMovementType.Float);
+			var isWater = Game.world.IsWater(targetTile);
+			var hitWater = Game.world.IsCellBuildable(targetTile, UnitMovementType.Float);
 
 			if (warhead.Explosion != 0)
 				Game.world.AddFrameEndTask(
@@ -31,7 +31,7 @@ namespace OpenRa
 			if (warhead.Ore) Ore.Destroy(targetTile.X, targetTile.Y);
 
 			var maxSpread = GetMaximumSpread(weapon, warhead);
-			var hitActors = Game.FindUnitsInCircle(loc, maxSpread);
+			var hitActors = Game.world.FindUnitsInCircle(loc, maxSpread);
 			
 			foreach (var victim in hitActors)
 				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead), warhead);
