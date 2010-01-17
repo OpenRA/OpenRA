@@ -32,6 +32,7 @@ namespace OpenRa
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
+			Map.InitOreDensity();
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 		}

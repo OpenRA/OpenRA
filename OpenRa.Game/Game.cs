@@ -79,7 +79,6 @@ namespace OpenRa
 				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
 
-			Game.world.Map.InitOreDensity();
 			worldRenderer = new WorldRenderer(renderer);
 
 			SequenceProvider.Initialize(usingAftermath);

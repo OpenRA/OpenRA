@@ -110,17 +110,17 @@ namespace OpenRa
 			return (byte)sum;
 		}
 
-		public static bool HasOverlay(this Map map, int i, int j)
+		static bool HasOverlay(this Map map, int i, int j)
 		{
 			return map.MapTiles[i, j].overlay < overlayIsOre.Length;
 		}
 
-		public static bool ContainsOre(this Map map, int i, int j)
+		static bool ContainsOre(this Map map, int i, int j)
 		{
 			return map.HasOverlay(i, j) && overlayIsOre[map.MapTiles[i, j].overlay];
 		}
 
-		public static bool ContainsGem(this Map map, int i, int j)
+		static bool ContainsGem(this Map map, int i, int j)
 		{
 			return map.HasOverlay(i, j) && overlayIsGems[map.MapTiles[i, j].overlay];
 		}
