@@ -17,27 +17,29 @@ namespace OpenRa
 				}
 		}
 
-		public static void Destroy(int i, int j)
+		public static void DestroyOre(this Map map, int i, int j)
 		{
-			if (Game.world.Map.ContainsResource(new int2(i, j)))
+			if (map.ContainsResource(new int2(i, j)))
 			{
-				Game.world.Map.MapTiles[i, j].density = 0;
-				Game.world.Map.MapTiles[i, j].overlay = 0xff;
+				map.MapTiles[i, j].density = 0;
+				map.MapTiles[i, j].overlay = 0xff;
 			}
 		}
 
-		public static bool CanSpreadInto(int i, int j)
+		public static bool OreCanSpreadInto(this World world, int i, int j)
 		{
-			if (Game.world.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
+			if (world.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
 				return false;
 
 			return TerrainCosts.Cost(UnitMovementType.Wheel,
-				Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[i, j]))
+				world.TileSet.GetWalkability(world.Map.MapTiles[i, j]))
 				< double.PositiveInfinity;
 		}
 
-		public static void GrowOre(this Map map, Random r)
+		public static void GrowOre(this World world, Random r)
 		{
+			var map = world.Map;
+
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
 			var chance = Rules.General.OreChance;
@@ -53,7 +55,7 @@ namespace OpenRa
 						if (!map.HasOverlay(i, j)
 							&& r.NextDouble() < chance
 							&& map.GetOreDensity(i, j) > 0
-							&& CanSpreadInto(i,j))
+							&& world.OreCanSpreadInto(i,j))
 							newOverlay[i, j] = ChooseOre();
 					}
 

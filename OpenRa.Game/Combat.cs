@@ -28,7 +28,7 @@ namespace OpenRa
 			if (impactSound != null) Sound.Play(impactSound + ".aud");
 
 			if (!isWater) Smudge.AddSmudge(targetTile, warhead);
-			if (warhead.Ore) Ore.Destroy(targetTile.X, targetTile.Y);
+			if (warhead.Ore) Game.world.Map.DestroyOre(targetTile.X, targetTile.Y);
 
 			var maxSpread = GetMaximumSpread(weapon, warhead);
 			var hitActors = Game.world.FindUnitsInCircle(loc, maxSpread);
