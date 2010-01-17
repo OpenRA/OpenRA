@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using IjwFramework.Types;
 
 namespace OpenRa.FileFormats
 {
@@ -20,6 +22,8 @@ namespace OpenRa.FileFormats
 
 		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
 		public readonly List<TreeReference> Trees = new List<TreeReference>();
+
+		public readonly IEnumerable<int2> SpawnPoints;
 
 		static string Truncate( string s, int maxLength )
 		{
@@ -49,6 +53,12 @@ namespace OpenRa.FileFormats
 			UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
 			UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 			ReadTrees(file);
+
+			SpawnPoints = file.GetSection("Waypoints")
+				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
+				.Where(a => a.First < 8)
+				.Select(a => a.Second)
+				.ToArray();
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)

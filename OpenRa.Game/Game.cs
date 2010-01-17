@@ -47,7 +47,6 @@ namespace OpenRa
 		static HardwarePalette palette;
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
-		internal static int2[] SpawnPoints;
 		static bool changePending;
 
 		public static void ChangeMap(string mapName)
@@ -87,12 +86,6 @@ namespace OpenRa
 			skipMakeAnims = false;
 
 			chrome = new Chrome(renderer);
-
-			SpawnPoints = Rules.AllRules.GetSection("Waypoints")
-				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
-				.Where(a => a.First < 8)
-				.Select(a => a.Second)
-				.ToArray();
 		}
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
@@ -251,7 +244,7 @@ namespace OpenRa
 
 		public static void StartGame()
 		{
-			var available = SpawnPoints.ToList();
+			var available = world.Map.SpawnPoints.ToList();
 			var taken = new List<int2>();
 
 			foreach (var client in LobbyInfo.Clients)
