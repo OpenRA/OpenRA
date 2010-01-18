@@ -22,10 +22,8 @@ namespace OpenRa.Traits
 
 		public Bridge(Actor self) { self.RemoveOnDeath = false; }
 
-		static Cache<TileReference, Sprite> Sprites =
-			new Cache<TileReference, Sprite>(
-				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x), 
-					new Size(Game.CellSize, Game.CellSize)));
+		static string cachedTheater;
+		static Cache<TileReference, Sprite> sprites;
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
@@ -42,13 +40,22 @@ namespace OpenRa.Traits
 			foreach (var t in replacedTiles.Keys)
 				Game.world.customTerrain[t.X, t.Y] = this;
 
+			if (cachedTheater != Game.world.Map.Theater)
+			{
+				cachedTheater = Game.world.Map.Theater;
+				sprites = new Cache<TileReference, Sprite>(
+				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x),
+					new Size(Game.CellSize, Game.CellSize)));
+			}
+
 			TileSprites = replacedTiles.ToDictionary(
 				a => a.Key,
-				a => Sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
+				a => sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
 		}
 
 		public float GetCost(int2 p, UnitMovementType umt)
 		{
+			throw new NotImplementedException();
 			var origTile = Tiles[p];	// if this explodes, then SetTiles did something horribly wrong.
 			return float.PositiveInfinity;
 		}

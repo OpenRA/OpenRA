@@ -51,11 +51,11 @@ namespace OpenRa
 					continue;
 
 				var custom = Game.world.customTerrain[newHere.X, newHere.Y];
-				if (custom != null
-					&& custom.GetCost(newHere, umt) == float.PositiveInfinity)
+				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
+
+				if (costHere == float.PositiveInfinity)
 					continue;
-				if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
-					continue;
+
 				if (!Game.world.BuildingInfluence.CanMoveHere(newHere) && 
 					Game.world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
 					continue;
@@ -73,10 +73,7 @@ namespace OpenRa
 				if( est == float.PositiveInfinity )
 					continue;
 
-				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) *
-					(custom != null
-						? custom.GetCost(newHere, umt) :
-						passableCost[(int)umt][newHere.X, newHere.Y]);
+				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere;
 				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
