@@ -28,8 +28,9 @@ namespace OpenRa.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
+				var topLeft = xy - Footprint.AdjustForBuildingSize( BuildingInfo );
 				if (!Game.world.CanPlaceBuilding( Building, BuildingInfo, xy, null, true)
-					|| !Game.world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, xy))
+					|| !Game.world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
 				{
 					Sound.Play("nodeply1.aud");
 					yield break;

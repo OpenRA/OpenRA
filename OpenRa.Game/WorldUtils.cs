@@ -108,9 +108,10 @@ namespace OpenRa
 					toIgnore));
 		}
 
-		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 position)
+		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
 		{
 			var maxDistance = bi.Adjacent + 1;
+			var position = topLeft + Footprint.AdjustForBuildingSize( bi );
 
 			var search = new PathSearch()
 			{
@@ -126,7 +127,6 @@ namespace OpenRa
 				ignoreTerrain = true,
 			};
 
-			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
 			foreach (var t in Footprint.Tiles(buildingName, bi, topLeft)) search.AddInitialCell(t);
 
 			return world.PathFinder.FindPath(search).Count != 0;
