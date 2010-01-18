@@ -180,9 +180,19 @@ namespace OpenRa.Traits
 			if (self == underCursor) return null;
 
 			var isHeal = self.GetPrimaryWeapon().Damage < 0;
-			if (((underCursor.Owner == self.Owner) ^ isHeal) 
-				&& !mi.Modifiers.HasModifier( Modifiers.Ctrl )) return null;
+			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 
+			if (isHeal)
+			{
+				if (underCursor.Owner == null)
+					return null;
+				if (underCursor.Owner != self.Owner && !forceFire)
+					return null;
+			}
+			else
+				if ((underCursor.Owner == self.Owner || underCursor.Owner == null) && !forceFire)
+					return null;
+			
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 
 			return new Order(isHeal ? "Heal" : "Attack", self, underCursor, int2.Zero, null);
