@@ -40,11 +40,10 @@ namespace OpenRa
 			oreTicks = oreFrequency;
 			Map.InitOreDensity();
 
-			PathFinder = new PathFinder(this);
-
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			Bridges.MakeBridges(this);
+			PathFinder = new PathFinder(this);
 
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);
