@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using OpenRa.Traits;
+using OpenRa.FileFormats;
 using OpenRa.Orders;
+using OpenRa.Traits;
 
 namespace OpenRa.Graphics
 {
@@ -56,13 +56,15 @@ namespace OpenRa.Graphics
 			}
 			else
 			{
+				// what a hack. as soon as we have some real chrome stuff...
+
 				if (Game.orderManager.IsNetplay)
 				{
 					var nos = Game.orderManager.Sources.OfType<NetworkOrderSource>().First();
 					switch (nos.State)
 					{
 						case ConnectionState.Connecting:
-							Game.chrome.DrawDialog("Connecting to server...");
+							Game.chrome.DrawDialog("Connecting to {0}:{1}".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 							break;
 						case ConnectionState.NotConnected:
 							Game.chrome.DrawDialog("Connection failed.");
