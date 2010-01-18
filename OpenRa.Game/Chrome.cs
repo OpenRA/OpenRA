@@ -210,6 +210,15 @@ namespace OpenRa
 			lineRenderer.Flush();
 		}
 
+		public void DrawDialog(string text)
+		{
+			var w = renderer.MeasureText(text).X + 120;
+			var h = 100;
+			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
+			DrawDialogBackground(r, optionsSprites, true);
+			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - 8), Color.White);
+		}
+
 		public void DrawLobby()
 		{
 			DrawDownloadBar();

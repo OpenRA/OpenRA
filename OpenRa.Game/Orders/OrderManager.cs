@@ -26,6 +26,8 @@ namespace OpenRa.Orders
 					p.SendLocalOrders(i, new List<Order>());
 		}
 
+		public IEnumerable<IOrderSource> Sources { get { return sources; } }
+
 		public int FrameNumber { get { return frameNumber; } }
 
 		public OrderManager( IEnumerable<IOrderSource> sources )

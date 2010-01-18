@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRa.Traits;
+using OpenRa.Orders;
 
 namespace OpenRa.Graphics
 {
@@ -55,7 +56,24 @@ namespace OpenRa.Graphics
 			}
 			else
 			{
-				Game.chrome.DrawLobby();
+				if (Game.orderManager.IsNetplay)
+				{
+					var nos = Game.orderManager.Sources.OfType<NetworkOrderSource>().First();
+					switch (nos.State)
+					{
+						case ConnectionState.Connecting:
+							Game.chrome.DrawDialog("Connecting to server...");
+							break;
+						case ConnectionState.NotConnected:
+							Game.chrome.DrawDialog("Connection failed.");
+							break;
+						case ConnectionState.Connected:
+							Game.chrome.DrawLobby();
+							break;
+					}
+				}
+				else
+					Game.chrome.DrawLobby();
 			}
 
 			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();
