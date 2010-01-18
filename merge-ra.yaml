@@ -1,5 +1,6 @@
 Player:
 	ProductionQueue:
+	PlaceBuilding:
 	
 World:
 	WaterPaletteRotation:

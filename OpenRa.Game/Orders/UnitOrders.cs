@@ -12,27 +12,6 @@ namespace OpenRa.Orders
 		{
 			switch( order.OrderString )
 			{
-			case "PlaceBuilding":
-				{
-					Game.world.AddFrameEndTask( _ =>
-					{
-						var queue = order.Player.PlayerActor.traits.Get<ProductionQueue>();
-						var unit = Rules.ActorInfo[ order.TargetString ];
-						var producing = queue.CurrentItem(unit.Category);
-						if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
-							return;
-
-						Game.world.CreateActor( order.TargetString, order.TargetLocation - Footprint.AdjustForBuildingSize( unit.Traits.Get<BuildingInfo>() ), order.Player );
-						if (order.Player == Game.LocalPlayer)
-						{
-							Sound.Play("placbldg.aud");
-							Sound.Play("build5.aud");
-						}
-
-						queue.FinishProduction(unit.Category);
-					} );
-					break;
-				}
 			case "Chat":
 				{
 					Game.chat.AddLine(order.Player, order.TargetString);
