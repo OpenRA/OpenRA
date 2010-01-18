@@ -99,9 +99,8 @@ namespace OpenRa
 				.FirstOrDefault();
 		}
 
-		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 xy, Actor toIgnore, bool adjust)
+		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
-			var topLeft = adjust ? xy - Footprint.AdjustForBuildingSize( building ) : xy;
 			return !Footprint.Tiles(name, building, topLeft).Any(
 				t => !world.Map.IsInMap(t.X, t.Y) || world.Map.ContainsResource(t) || !world.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
