@@ -23,16 +23,17 @@ namespace OpenRa
 		Wall = 7,
 		Beach = 8,
 		Ore = 9,
+		Special = 10,
 	}
 
 	static class TerrainCosts
 	{
 		static double[][] costs = Util.MakeArray<double[]>( 4,
-			a => Util.MakeArray<double>( 10, b => double.PositiveInfinity ));
+			a => Util.MakeArray<double>( 11, b => double.PositiveInfinity ));
 
 		static TerrainCosts()
 		{
-			for( int i = 0 ; i < 10 ; i++ )
+			for( int i = 0 ; i < 11 ; i++ )
 			{
 				if( i == 4 ) continue;
 				var section = Rules.AllRules.GetSection( ( (TerrainMovementType)i ).ToString() );
@@ -46,6 +47,7 @@ namespace OpenRa
 
 		public static double Cost( UnitMovementType unitMovementType, int r )
 		{
+			if (r >= 10) return 1.0;
 			return costs[ (byte)unitMovementType ][ r ];
 		}
 	}

@@ -49,7 +49,7 @@ namespace OpenRa.Graphics
 			if (terrainTypeColors == null)
 			{
 				var pal = new Palette(FileSystem.Open(Game.world.Map.Theater + ".pal"));
-				terrainTypeColors = new[] {theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a, 0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d }
+				terrainTypeColors = new[] {theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a, 0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d, 0x67 }
 					.Select( a => Color.FromArgb(alpha, pal.GetColor(a) )).ToArray();
 				
 				playerColors = Util.MakeArray<Color>( 8, b => Color.FromArgb(alpha, Chat.paletteColors[b]) );

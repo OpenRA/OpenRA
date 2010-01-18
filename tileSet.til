@@ -304,3 +304,8 @@ gflr{0:0000}
 0118
 gstr{0:0000}
 
+; bogus
+TS-
+1
+fffe
+bogus

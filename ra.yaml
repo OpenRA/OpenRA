@@ -999,6 +999,7 @@ SYRD:
 		Sight: 4
 	RenderBuilding:
 	ProductionSurround:
+		Produces: Ship
 	IronCurtainable:
 
 SPEN:
@@ -1023,6 +1024,7 @@ SPEN:
 		Sight: 4
 	RenderBuilding:
 	ProductionSurround:
+		Produces: Ship
 	IronCurtainable:
 
 FACT:

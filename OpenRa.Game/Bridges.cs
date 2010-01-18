@@ -42,7 +42,7 @@ namespace OpenRa
 							// stash it
 							replacedTiles[new int2(x, y)] = w.Map.MapTiles[x, y].image;
 							// remove the tile from the actual map
-							w.Map.MapTiles[x, y].tile = 0xff;
+							w.Map.MapTiles[x, y].tile = 0xfffe;
 							w.Map.MapTiles[x, y].image = 0;
 						}
 				}
