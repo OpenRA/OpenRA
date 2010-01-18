@@ -17,11 +17,6 @@ namespace OpenRa.Orders
 					Game.chat.AddLine(order.Player, order.TargetString);
 					break;
 				}
-			case "ToggleReady":
-				{
-					Game.chat.AddLine(order.Player, "is " + order.TargetString );
-					break;
-				}
 			case "AssignPlayer":
 				{
 					Game.LocalPlayer = order.Player;
