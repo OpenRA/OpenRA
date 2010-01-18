@@ -50,7 +50,7 @@ namespace OpenRa
 
 			if (replacedTiles.Any())
 			{
-				var a = w.CreateActor("Bridge", new int2(ni, nj), null);
+				var a = w.CreateActor(template.Bridge, new int2(ni, nj), null);
 				var br = a.traits.Get<Bridge>();
 				br.SetTiles(w, template, replacedTiles);
 			}
@@ -58,7 +58,7 @@ namespace OpenRa
 
 		static bool IsBridge(World w, ushort t)
 		{
-			return w.TileSet.walk[t].IsBridge;
+			return w.TileSet.walk[t].Bridge != null;
 		}
 	}
 }

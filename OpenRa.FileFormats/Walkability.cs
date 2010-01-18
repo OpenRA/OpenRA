@@ -9,7 +9,7 @@ namespace OpenRa.FileFormats
 		public int Index;
 		public string Name;
 		public int2 Size;
-		public bool IsBridge;
+		public string Bridge;
 		public float HP;
 		public Dictionary<int, int> TerrainType = new Dictionary<int, int>();
 	}
@@ -37,7 +37,7 @@ namespace OpenRa.FileFormats
 							p => int.Parse(p.Value)),
 					Name = section.GetValue("Name", null).ToLowerInvariant(),
 					Index = int.Parse(section.Name.Substring(3)),
-					IsBridge = section.GetValue("bridge", "no") != "no",
+					Bridge = section.GetValue("bridge", null),
 					HP = float.Parse(section.GetValue("hp", "0"))
 				};
 
