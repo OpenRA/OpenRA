@@ -44,7 +44,7 @@ namespace OpenRa.Traits
 			{
 				cachedTheater = world.Map.Theater;
 				sprites = new Cache<TileReference, Sprite>(
-				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x),
+				x => SheetBuilder.Add(world.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));
 			}
 
