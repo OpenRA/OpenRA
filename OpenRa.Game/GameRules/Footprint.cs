@@ -7,7 +7,7 @@ namespace OpenRa.GameRules
 {
 	static class Footprint
 	{
-		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 position, bool adjustForPlacement )
+		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 position )
 		{
 			var dim = buildingInfo.Dimensions;
 
@@ -18,15 +18,12 @@ namespace OpenRa.GameRules
 				footprint = footprint.Concat(new char[dim.X]);
 			}
 
-			var adjustment = adjustForPlacement ? AdjustForBuildingSize(buildingInfo) : int2.Zero;
-
-			var tiles = TilesWhere(name, dim, footprint.ToArray(), a => a != '_');
-			return tiles.Select(t => t + position - adjustment);
+			return TilesWhere( name, dim, footprint.ToArray(), a => a != '_' ).Select( t => t + position );
 		}
 
 		public static IEnumerable<int2> Tiles(Actor a, Traits.Building building)
 		{
-			return Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location, false );
+			return Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location );
 		}
 
 		public static IEnumerable<int2> UnpathableTiles( string name, BuildingInfo buildingInfo, int2 position )

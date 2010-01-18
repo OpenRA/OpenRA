@@ -24,7 +24,7 @@ namespace OpenRa
 				if( IsValid( u ) )
 					blocked[ u.X, u.Y ] = isAdd;
 
-			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location, false ) )
+			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
 				if( IsValid( u ) )
 					influence[ u.X, u.Y ] = isAdd ? a : null;
 		}
