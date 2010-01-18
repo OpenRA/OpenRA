@@ -13,9 +13,9 @@ namespace OpenRa.Orders
 		Dictionary<int, List<byte[]>> orderBuffers = new Dictionary<int, List<byte[]>>();
 		Dictionary<int, bool> gotEverything = new Dictionary<int, bool>();
 
-		public NetworkOrderSource(TcpClient socket)
+		public NetworkOrderSource(string host, int port)
 		{
-			this.socket = socket;
+			socket = new TcpClient(host, port);
 			this.socket.NoDelay = true;
 			var reader = new BinaryReader(socket.GetStream());
 

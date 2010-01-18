@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Net.Sockets;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.GameRules;
@@ -110,7 +109,7 @@ namespace OpenRa
 			{
 				var orderSources = (string.IsNullOrEmpty(Settings.NetworkHost))
 					? new IOrderSource[] { new LocalOrderSource() }
-					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(new TcpClient(Settings.NetworkHost, Settings.NetworkPort)) };
+					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(Settings.NetworkHost, Settings.NetworkPort) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
 			}
 		}
