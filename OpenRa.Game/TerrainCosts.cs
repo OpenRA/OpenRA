@@ -47,7 +47,6 @@ namespace OpenRa
 
 		public static double Cost( UnitMovementType unitMovementType, int r )
 		{
-			if (r >= 10) return 1.0;
 			return costs[ (byte)unitMovementType ][ r ];
 		}
 	}
