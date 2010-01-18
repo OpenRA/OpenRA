@@ -9,14 +9,11 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new RenderWarFactory(self); }
 	}
 
-	class RenderWarFactory : IRender, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
+	class RenderWarFactory : INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
 	{
 		public Animation roof;
 		[Sync]
-		bool doneBuilding;
-		[Sync]
 		bool isOpen;
-		public readonly Actor self;
 
 		string GetPrefix(Actor self)
 		{
@@ -25,27 +22,17 @@ namespace OpenRa.Traits
 
 		public RenderWarFactory(Actor self)
 		{
-			this.self = self;
 			roof = new Animation(self.traits.Get<RenderSimple>().GetImage(self));
 		}
 
 		public void BuildingComplete( Actor self )
 		{
-			doneBuilding = true;
 			roof.Play( GetPrefix(self) + "idle-top" );
-		}
-
-		public IEnumerable<Renderable> Render(Actor self)
-		{
-			if (doneBuilding)
-				yield return new Renderable(roof.Image, 
-					Game.CellSize * (float2)self.Location, self.Owner.Palette, 2);
+			self.traits.Get<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 2 } );
 		}
 
 		public void Tick(Actor self)
 		{
-			if (doneBuilding) roof.Tick();
-
 			var b = self.GetBounds(false);
 			if (isOpen && !Game.world.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
 			{

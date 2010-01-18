@@ -19,7 +19,7 @@ namespace OpenRa.Traits
 			if( Game.skipMakeAnims )
 				Complete( self );
 			else
-				anim.PlayThen( "make", () => Complete( self ) );
+				anim.PlayThen( "make", () => Game.world.AddFrameEndTask( _ => Complete( self ) ) );
 
 			DoBib(self, false);
 		}
