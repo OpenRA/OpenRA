@@ -1438,11 +1438,14 @@ DOMF:
 	Fake:
 
 BRIDGE:
-	Inherits: ^Building
+	Category: Building
+	Selectable:
 	Bridge:
 	BelowUnits:
-	-Selectable:
-	-Building:
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+		HP: 1000
 
 T01:
 	Inherits: ^Building

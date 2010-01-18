@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace OpenRa.Traits
 {
-	class BridgeInfo : OwnedActorInfo, ITraitInfo
+	class BridgeInfo : ITraitInfo
 	{
 		public object Create(Actor self) { return new Bridge(self); }
 	}
@@ -19,8 +19,9 @@ namespace OpenRa.Traits
 		Dictionary<int2, int> Tiles;
 		TileTemplate Template;
 		Dictionary<int2, Sprite> TileSprites;
+		Actor self;
 
-		public Bridge(Actor self) { self.RemoveOnDeath = false; }
+		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
 
 		static string cachedTheater;
 		static Cache<TileReference, Sprite> sprites;
@@ -55,9 +56,9 @@ namespace OpenRa.Traits
 
 		public float GetCost(int2 p, UnitMovementType umt)
 		{
-			throw new NotImplementedException();
-			var origTile = Tiles[p];	// if this explodes, then SetTiles did something horribly wrong.
-			return float.PositiveInfinity;
+			return self.Health > 0
+				? TerrainCosts.Cost(umt, Template.TerrainType[Tiles[p]])
+				: TerrainCosts.Cost(umt, 1);
 		}
 	}
 }

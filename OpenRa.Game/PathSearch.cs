@@ -56,7 +56,6 @@ namespace OpenRa
 					continue;
 
 				var custom = Game.world.customTerrain[newHere.X, newHere.Y];
-				if (custom != null) throw new NotImplementedException();
 				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
 
 				if (costHere == float.PositiveInfinity)

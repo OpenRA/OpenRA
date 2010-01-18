@@ -28,8 +28,8 @@ namespace OpenRa
 
 	static class TerrainCosts
 	{
-		static double[][] costs = Util.MakeArray<double[]>( 4,
-			a => Util.MakeArray<double>( 11, b => double.PositiveInfinity ));
+		static float[][] costs = Util.MakeArray<float[]>(4,
+			a => Util.MakeArray<float>(11, b => float.PositiveInfinity));
 
 		static TerrainCosts()
 		{
@@ -40,12 +40,12 @@ namespace OpenRa
 				for( int j = 0 ; j < 4 ; j++ )
 				{
 					string val = section.GetValue( ( (UnitMovementType)j ).ToString(), "0%" );
-					costs[ j ][ i ] = 100.0 / double.Parse( val.Substring( 0, val.Length - 1 ) );
+					costs[j][i] = 100f / float.Parse(val.Substring(0, val.Length - 1));
 				}
 			}
 		}
 
-		public static double Cost( UnitMovementType unitMovementType, int r )
+		public static float Cost( UnitMovementType unitMovementType, int r )
 		{
 			return costs[ (byte)unitMovementType ][ r ];
 		}
