@@ -14,7 +14,6 @@ namespace OpenRa
 		public UnitMovementType umt;
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
-		public bool ignoreTerrain;
 		public Actor ignoreBuilding;
 
 		public PathSearch()
@@ -40,9 +39,8 @@ namespace OpenRa
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 
-			if (!ignoreTerrain)
-				if (passableCost[(int)umt][p.Location.X, p.Location.Y] == float.PositiveInfinity)
-					return p.Location;
+			if (passableCost[(int)umt][p.Location.X, p.Location.Y] == float.PositiveInfinity)
+				return p.Location;
 					
 			foreach( int2 d in Util.directions )
 			{
@@ -51,17 +49,18 @@ namespace OpenRa
 				if (!Game.world.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
-				
-				if (!ignoreTerrain)
-				{
-					if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
-						continue;
-					if (!Game.world.BuildingInfluence.CanMoveHere(newHere) && 
-						Game.world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
-						continue;
-					if (Game.world.Map.IsOverlaySolid(newHere))
-						continue;
-				}
+
+				var custom = Game.world.customTerrain[newHere.X, newHere.Y];
+				if (custom != null
+					&& custom.GetCost(newHere, umt) == float.PositiveInfinity)
+					continue;
+				if (passableCost[(int)umt][newHere.X, newHere.Y] == float.PositiveInfinity)
+					continue;
+				if (!Game.world.BuildingInfluence.CanMoveHere(newHere) && 
+					Game.world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
+					continue;
+				if (Game.world.Map.IsOverlaySolid(newHere))
+					continue;
 				
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
 				if (checkForBlocked && (Game.world.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.world.IsActorPathableToCrush(a, umt))))
@@ -69,14 +68,15 @@ namespace OpenRa
 				
 				if (customBlock != null && customBlock(newHere))
 					continue;
-
 				
 				var est = heuristic( newHere );
 				if( est == float.PositiveInfinity )
 					continue;
 
-				float cellCost = ( ( d.X * d.Y != 0 ) ? 1.414213563f : 1.0f ) * 
-					(ignoreTerrain ? 1 : passableCost[ (int)umt ][ newHere.X, newHere.Y ]);
+				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) *
+					(custom != null
+						? custom.GetCost(newHere, umt) :
+						passableCost[(int)umt][newHere.X, newHere.Y]);
 				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )

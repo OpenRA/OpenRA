@@ -9,12 +9,12 @@ using System.Drawing;
 
 namespace OpenRa.Traits
 {
-	class BridgeInfo : ITraitInfo
+	class BridgeInfo : OwnedActorInfo, ITraitInfo
 	{
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
-	class Bridge : IRender, ITick, ICustomTerrain
+	class Bridge : IRender, ICustomTerrain
 	{
 		Dictionary<int2, int> Tiles;
 		TileTemplate Template;
@@ -34,8 +34,6 @@ namespace OpenRa.Traits
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
 		}
 
-		public void Tick(Actor self) {}
-
 		public void SetTiles(TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
 			Template = template;
@@ -49,10 +47,10 @@ namespace OpenRa.Traits
 				a => Sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
 		}
 
-		public double GetCost(int2 p, UnitMovementType umt)
+		public float GetCost(int2 p, UnitMovementType umt)
 		{
 			var origTile = Tiles[p];	// if this explodes, then SetTiles did something horribly wrong.
-			return 1.0;
+			return float.PositiveInfinity;
 		}
 	}
 }
