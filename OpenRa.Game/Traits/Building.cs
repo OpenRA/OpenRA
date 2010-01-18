@@ -19,7 +19,7 @@ namespace OpenRa.Traits
 		public readonly int Power = 0;
 		public readonly bool RequiresPower = false;
 		public readonly bool BaseNormal = true;
-		public readonly int Adjacent = 1;
+		public readonly int Adjacent = 2;
 		public readonly bool Bib = false;
 		public readonly bool Capturable = false;
 		public readonly bool Repairable = true;

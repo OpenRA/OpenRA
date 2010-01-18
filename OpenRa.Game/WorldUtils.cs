@@ -109,26 +109,46 @@ namespace OpenRa
 
 		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
 		{
-			var maxDistance = bi.Adjacent + 1;
-			var position = topLeft + Footprint.AdjustForBuildingSize( bi );
+			var buildingMaxBounds = bi.Dimensions;
+			if( bi.Bib )
+				buildingMaxBounds.Y += 1;
 
-			var search = new PathSearch()
+			var scanStart = world.ClampToWorld( topLeft - new int2( bi.Adjacent, bi.Adjacent ) );
+			var scanEnd = world.ClampToWorld( topLeft + buildingMaxBounds + new int2( bi.Adjacent, bi.Adjacent ) );
+
+			var nearnessCandidates = new List<int2>();
+
+			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
 			{
-				heuristic = loc =>
+				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
-					var b = world.BuildingInfluence.GetBuildingAt(loc);
-					if (b != null && b.Owner == p && b.Info.Traits.Get<BuildingInfo>().BaseNormal) return 0;
-					if ((loc - position).Length > maxDistance)
-						return float.PositiveInfinity;	/* not quite right */
-					return 1;
-				},
-				checkForBlocked = false,
-				ignoreTerrain = true,
-			};
+					var at = world.BuildingInfluence.GetBuildingAt( new int2( x, y ) );
+					if( at != null && at.Owner == p )
+						nearnessCandidates.Add( new int2( x, y ) );
+				}
+			}
+			var buildingTiles = Footprint.Tiles( buildingName, bi, topLeft ).ToList();
+			return nearnessCandidates
+				.Any( a => buildingTiles
+					.Any( b => Math.Abs( a.X - b.X ) <= bi.Adjacent
+							&& Math.Abs( a.Y - b.Y ) <= bi.Adjacent ) );
+		}
 
-			foreach (var t in Footprint.Tiles(buildingName, bi, topLeft)) search.AddInitialCell(t);
+		static int2 ClampToWorld( this World world, int2 xy )
+		{
+			var mapStart = world.Map.Offset;
+			var mapEnd = world.Map.Offset + world.Map.Size;
+			if( xy.X < mapStart.X )
+				xy.X = mapStart.X;
+			if( xy.X > mapEnd.X )
+				xy.X = mapEnd.X;
 
-			return world.PathFinder.FindPath(search).Count != 0;
+			if( xy.Y < mapStart.Y )
+				xy.Y = mapStart.Y;
+			if( xy.Y > mapEnd.Y )
+				xy.Y = mapEnd.Y;
+
+			return xy;
 		}
 	}
 }

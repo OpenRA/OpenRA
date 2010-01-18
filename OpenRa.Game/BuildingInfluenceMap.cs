@@ -40,18 +40,6 @@ namespace OpenRa
 			return influence[cell.X, cell.Y];
 		}
 
-		public Actor GetNearestBuilding(int2 cell)
-		{
-			if (!IsValid(cell)) return null;
-			return influence[cell.X, cell.Y];
-		}
-
-		public int GetDistanceToBuilding(int2 cell)
-		{
-			if (!IsValid(cell)) return int.MaxValue;
-			return influence[cell.X, cell.Y] == null ? int.MaxValue : 0;
-		}
-
 		public bool CanMoveHere(int2 cell)
 		{
 			return IsValid(cell) && !blocked[cell.X, cell.Y];
