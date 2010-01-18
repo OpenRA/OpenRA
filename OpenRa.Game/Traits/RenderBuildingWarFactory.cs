@@ -9,7 +9,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new RenderWarFactory(self); }
 	}
 
-	class RenderWarFactory : INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction
+	class RenderWarFactory : INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold
 	{
 		public Animation roof;
 		[Sync]
@@ -59,5 +59,12 @@ namespace OpenRa.Traits
 		{
 			roof.PlayThen(GetPrefix(self) + "build-top", () => isOpen = true);
 		}
+
+		public void Selling( Actor self )
+		{
+			self.traits.Get<RenderSimple>().anims.Remove( "roof" );
+		}
+
+		public void Sold( Actor self ) { }
 	}
 }

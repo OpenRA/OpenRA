@@ -46,6 +46,7 @@ namespace OpenRa.Graphics
 
 		public void PlayThen( string sequenceName, Action after )
 		{
+			after = after ?? ( () => { } );
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = SequenceProvider.GetSequence( name, sequenceName );
@@ -111,6 +112,11 @@ namespace OpenRa.Graphics
 				name = newImage.ToLowerInvariant();
 				ReplaceAnim(CurrentSequence.Name);
 			}
+		}
+
+		public Sequence GetSequence( string sequenceName )
+		{
+			return SequenceProvider.GetSequence( name, sequenceName );
 		}
 	}
 }

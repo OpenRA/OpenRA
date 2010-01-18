@@ -11,6 +11,8 @@ namespace OpenRa.Traits.Activities
 
 		bool started;
 
+		int framesRemaining;
+
 		void DoSell(Actor self)
 		{
 			var cost = self.Info.Traits.Get<BuildableInfo>().Cost;
@@ -21,23 +23,26 @@ namespace OpenRa.Traits.Activities
 			self.Health = 0;
 			foreach (var ns in self.traits.WithInterface<INotifySold>())
 				ns.Sold(self);
-			Game.world.Remove(self);
+			Game.world.AddFrameEndTask( _ => Game.world.Remove( self ) );
 
 			// todo: give dudes
 		}
 
 		public IActivity Tick(Actor self)
 		{
-			if (!started)
+			if( !started )
 			{
-				var rb = self.traits.Get<RenderBuilding>();
-				//var rb = self.traits.Get<RenderBuilding>();
-				rb.PlayCustomAnimBackwards(self, "make",
-					() => Game.world.AddFrameEndTask(w => DoSell(self)));
+				framesRemaining = self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length;
+				foreach( var ns in self.traits.WithInterface<INotifySold>() )
+					ns.Selling( self );
 
-				Sound.Play("cashturn.aud");
 				started = true;
 			}
+			else if( framesRemaining <= 0 )
+				DoSell( self );
+
+			else
+				--framesRemaining;
 
 			return this;
 		}
