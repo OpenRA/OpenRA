@@ -721,8 +721,9 @@ namespace OpenRa
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 				var closureItemName = item.Name;
-				AddButton(rect, isLmb => HandleBuildPalette(closureItemName, isLmb));
-
+				AddButton(rect, buildableItems.Contains(item.Name)
+					? isLmb => HandleBuildPalette(closureItemName, isLmb)
+					: (Action<bool>)(_ => Sound.Play("briefing.aud")));
 	
 				if (++x == columns) { x = 0; y++; }
 			}
