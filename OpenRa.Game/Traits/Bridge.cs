@@ -66,7 +66,7 @@ namespace OpenRa.Traits
 
 		public void FinalizeBridges(World world)
 		{
-			// go looking for our neighbors
+			// go looking for our neighbors, if this is a long bridge.
 		}
 
 		public float GetCost(int2 p, UnitMovementType umt)
