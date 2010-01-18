@@ -14,9 +14,9 @@ namespace OpenRa.FileFormats
 		public Dictionary<int, int> TerrainType = new Dictionary<int, int>();
 	}
 
-	class Walkability
+	public class Walkability
 	{
-		public Dictionary<string, TileTemplate> walkability 
+		Dictionary<string, TileTemplate> walkability 
 			= new Dictionary<string,TileTemplate>();
 
 		public Walkability()

@@ -11,15 +11,17 @@ namespace OpenRa.Traits
 {
 	class BridgeInfo : ITraitInfo
 	{
+		public readonly bool Long = false;
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
 	class Bridge : IRender, ICustomTerrain
 	{
 		Dictionary<int2, int> Tiles;
-		TileTemplate Template;
-		Dictionary<int2, Sprite> TileSprites;
+		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
+		List<TileTemplate> Templates = new List<TileTemplate>();
 		Actor self;
+		int state;
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
 
@@ -28,15 +30,14 @@ namespace OpenRa.Traits
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
-			if (Template == null) yield break;
-			foreach (var t in TileSprites)
+			foreach (var t in TileSprites[state])
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
 		}
 
 		public void SetTiles(World world, TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
-			Template = template;
 			Tiles = replacedTiles;
+			state = template.Name[template.Name.Length - 1] - 'a';
 
 			foreach (var t in replacedTiles.Keys)
 				world.customTerrain[t.X, t.Y] = this;
@@ -49,18 +50,31 @@ namespace OpenRa.Traits
 					new Size(Game.CellSize, Game.CellSize)));
 			}
 
-			TileSprites = replacedTiles.ToDictionary(
-				a => a.Key,
-				a => sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
+			var numStates = self.Info.Traits.Get<BridgeInfo>().Long ? 6 : 3;
+			for (var n = 0; n < numStates; n++)
+			{
+				var stateTemplate = world.TileSet.Walkability.GetWalkability(template.Bridge + (char)(n + 'a'));
+				Templates.Add( stateTemplate );
+
+				TileSprites.Add(replacedTiles.ToDictionary(
+					a => a.Key,
+					a => sprites[new TileReference { tile = (ushort)stateTemplate.Index, image = (byte)a.Value }]));
+			}
 
 			self.Health = (int)(self.GetMaxHP() * template.HP);
 		}
 
+		public void FinalizeBridges(World world)
+		{
+			// go looking for our neighbors
+		}
+
 		public float GetCost(int2 p, UnitMovementType umt)
 		{
-			return self.Health > 0
-				? TerrainCosts.Cost(umt, Template.TerrainType[Tiles[p]])
-				: TerrainCosts.Cost(umt, 1);
+			// just use the standard walkability from templates.ini. no hackery.
+
+			return TerrainCosts.Cost(umt, 
+				Templates[state].TerrainType[Tiles[p]]);
 		}
 	}
 }

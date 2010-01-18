@@ -8,8 +8,9 @@ namespace OpenRa.FileFormats
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
 
-		public readonly Dictionary<ushort, TileTemplate> walk =
-			new Dictionary<ushort, TileTemplate>();	// cjf will fix
+		public readonly Walkability Walkability = new Walkability();
+		public readonly Dictionary<ushort, TileTemplate> walk 
+			= new Dictionary<ushort, TileTemplate>();
 
 		string NextLine( StreamReader reader )
 		{
@@ -27,7 +28,7 @@ namespace OpenRa.FileFormats
 
 		public TileSet( string suffix )
 		{
-			Walkability walkability = new Walkability();
+			Walkability = new Walkability();
 
 			char tileSetChar = char.ToUpperInvariant( suffix[ 1 ] );
 			StreamReader tileIdFile = new StreamReader( FileSystem.Open( "tileSet.til" ) );
@@ -51,7 +52,7 @@ namespace OpenRa.FileFormats
 					string tilename = string.Format(pattern, i + 1);
 
 					if (!walk.ContainsKey((ushort)(start + i)))
-						walk.Add((ushort)(start + i), walkability.GetWalkability(tilename));
+						walk.Add((ushort)(start + i), Walkability.GetWalkability(tilename));
 
 					using( Stream s = FileSystem.Open( tilename + suffix ) )
 					{

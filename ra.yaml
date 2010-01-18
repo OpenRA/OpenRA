@@ -83,6 +83,17 @@ MINV:
 	-Selectable:
 	-Building:
 
+BR3:
+	Bridge:
+		Long: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+		HP: 1000
+
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:
@@ -1448,16 +1459,6 @@ BR1:
 		HP: 1000
 
 BR2:
-	Category: Building
-	Selectable:
-	Bridge:
-	BelowUnits:
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
-		HP: 1000
-
-BR3:
 	Category: Building
 	Selectable:
 	Bridge:

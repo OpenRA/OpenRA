@@ -28,3 +28,7 @@ MINV:
 		Warhead: ATMine
 		TriggeredBy: Wheel, Track
 		AvoidFriendly: yes
+
+BR3:
+	Bridge:
+		Long: yes
