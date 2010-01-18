@@ -52,6 +52,8 @@ namespace OpenRa.Traits
 			TileSprites = replacedTiles.ToDictionary(
 				a => a.Key,
 				a => sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
+
+			self.Health = (int)(self.GetMaxHP() * template.HP);
 		}
 
 		public float GetCost(int2 p, UnitMovementType umt)
