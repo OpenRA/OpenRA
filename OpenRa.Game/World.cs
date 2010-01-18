@@ -4,6 +4,7 @@ using OpenRa.Effects;
 using OpenRa.Support;
 using OpenRa.FileFormats;
 using OpenRa.Graphics;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -20,6 +21,9 @@ namespace OpenRa
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
+
+		// for tricky things like bridges.
+		public readonly ICustomTerrain[,] customTerrain = new ICustomTerrain[128, 128];
 
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;

@@ -12,11 +12,11 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Bridge(); }
 	}
 
-	class Bridge : IRender, ITick
+	class Bridge : IRender, ITick, ICustomTerrain
 	{
 		Animation anim;
-
-		public Bridge() {}
+		Dictionary<int2, int> Tiles;
+		TileTemplate Template;
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
@@ -37,7 +37,18 @@ namespace OpenRa.Traits
 
 		public void SetTiles(TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
-			/* todo: stash these, etc */
+			Template = template;
+			Tiles = replacedTiles;
+
+			foreach (var t in replacedTiles.Keys)
+				Game.world.customTerrain[t.X, t.Y] = this;
+		}
+
+		public double GetCost(int2 p, UnitMovementType umt)
+		{
+			var origTile = Tiles[p];	// if this explodes, then SetTiles did something horribly wrong.
+
+			return 1.0;
 		}
 	}
 }
