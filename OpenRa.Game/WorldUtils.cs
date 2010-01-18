@@ -125,7 +125,8 @@ namespace OpenRa
 				ignoreTerrain = true,
 			};
 
-			foreach (var t in Footprint.Tiles(buildingName, bi, position)) search.AddInitialCell(t);
+			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
+			foreach (var t in Footprint.Tiles(buildingName, bi, topLeft, false)) search.AddInitialCell(t);
 
 			return world.PathFinder.FindPath(search).Count != 0;
 		}

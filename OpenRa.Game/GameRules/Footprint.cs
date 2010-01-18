@@ -7,11 +7,6 @@ namespace OpenRa.GameRules
 {
 	static class Footprint
 	{
-		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 position )
-		{
-			return Tiles(name, buildingInfo, position, true);
-		}
-
 		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 position, bool adjustForPlacement )
 		{
 			var dim = buildingInfo.Dimensions;
