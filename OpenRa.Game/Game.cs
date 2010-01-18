@@ -58,6 +58,7 @@ namespace OpenRa
 			FileSystem.UnmountTemporaryPackages();
 			Rules.LoadRules(mapName, usingAftermath);
 
+			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			world = new World();
 			Game.world.ActorAdded += a => 
 			{ 

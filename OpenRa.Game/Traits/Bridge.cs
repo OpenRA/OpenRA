@@ -32,17 +32,17 @@ namespace OpenRa.Traits
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
 		}
 
-		public void SetTiles(TileTemplate template, Dictionary<int2, int> replacedTiles)
+		public void SetTiles(World world, TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
 			Template = template;
 			Tiles = replacedTiles;
 
 			foreach (var t in replacedTiles.Keys)
-				Game.world.customTerrain[t.X, t.Y] = this;
+				world.customTerrain[t.X, t.Y] = this;
 
-			if (cachedTheater != Game.world.Map.Theater)
+			if (cachedTheater != world.Map.Theater)
 			{
-				cachedTheater = Game.world.Map.Theater;
+				cachedTheater = world.Map.Theater;
 				sprites = new Cache<TileReference, Sprite>(
 				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));

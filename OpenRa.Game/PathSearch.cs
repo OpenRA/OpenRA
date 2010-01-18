@@ -39,7 +39,12 @@ namespace OpenRa
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 
-			if (passableCost[(int)umt][p.Location.X, p.Location.Y] == float.PositiveInfinity)
+			var custom2 = Game.world.customTerrain[p.Location.X, p.Location.Y];
+			var thisCost = (custom2 != null) 
+				? custom2.GetCost(p.Location, umt) 
+				: passableCost[(int)umt][p.Location.X, p.Location.Y];
+
+			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 					
 			foreach( int2 d in Util.directions )
@@ -51,6 +56,7 @@ namespace OpenRa
 					continue;
 
 				var custom = Game.world.customTerrain[newHere.X, newHere.Y];
+				if (custom != null) throw new NotImplementedException();
 				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
 
 				if (costHere == float.PositiveInfinity)

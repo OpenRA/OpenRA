@@ -52,7 +52,7 @@ namespace OpenRa
 			{
 				var a = w.CreateActor("Bridge", new int2(ni, nj), null);
 				var br = a.traits.Get<Bridge>();
-				br.SetTiles(template, replacedTiles);
+				br.SetTiles(w, template, replacedTiles);
 			}
 		}
 
