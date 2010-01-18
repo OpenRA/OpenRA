@@ -22,7 +22,7 @@ namespace OpenRa.Traits
 					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 						return;
 
-					Game.world.CreateActor( order.TargetString, order.TargetLocation - Footprint.AdjustForBuildingSize( unit.Traits.Get<BuildingInfo>() ), order.Player );
+					Game.world.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 					if (order.Player == Game.LocalPlayer)
 					{
 						Sound.Play("placbldg.aud");
