@@ -53,6 +53,10 @@ namespace OpenRa.Graphics
 			{
 				Game.world.WorldRenderer.Draw();
 				Game.chrome.Draw();
+
+				if (Game.orderManager.IsNetplay && 
+					Game.orderManager.Sources.OfType<NetworkOrderSource>().First().State == ConnectionState.NotConnected)
+					Game.chrome.DrawDialog("Connection lost.");
 			}
 			else
 			{
@@ -64,7 +68,7 @@ namespace OpenRa.Graphics
 					switch (nos.State)
 					{
 						case ConnectionState.Connecting:
-							Game.chrome.DrawDialog("Connecting to {0}:{1}".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
+							Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 							break;
 						case ConnectionState.NotConnected:
 							Game.chrome.DrawDialog("Connection failed.");

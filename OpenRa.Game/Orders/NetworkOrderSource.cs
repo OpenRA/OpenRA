@@ -42,26 +42,34 @@ namespace OpenRa.Orders
 				{
 					var reader = new BinaryReader(socket.GetStream());
 
-					for (; ; )
+					try
 					{
-						var len = reader.ReadInt32();
-						var frame = reader.ReadInt32();
-						var buf = reader.ReadBytes(len - 4);
-
-						lock (orderBuffers)
+						for (; ; )
 						{
-							if (len == 5 && buf[0] == 0xef)	/* got everything marker */
-								gotEverything[frame] = true;
-							else
+							var len = reader.ReadInt32();
+							var frame = reader.ReadInt32();
+							var buf = reader.ReadBytes(len - 4);
+
+							lock (orderBuffers)
 							{
-								/* accumulate this chunk */
-								if (!orderBuffers.ContainsKey(frame))
-									orderBuffers[frame] = new List<byte[]> { buf };
+								if (len == 5 && buf[0] == 0xef)	/* got everything marker */
+									gotEverything[frame] = true;
 								else
-									orderBuffers[frame].Add(buf);
+								{
+									/* accumulate this chunk */
+									if (!orderBuffers.ContainsKey(frame))
+										orderBuffers[frame] = new List<byte[]> { buf };
+									else
+										orderBuffers[frame].Add(buf);
+								}
 							}
 						}
 					}
+					catch (IOException e)
+					{
+						State = ConnectionState.NotConnected;
+					}
+
 				}) { IsBackground = true }.Start();
 			}
 			catch

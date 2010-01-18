@@ -217,6 +217,9 @@ namespace OpenRa
 			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
 			DrawDialogBackground(r, optionsSprites, true);
 			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - 8), Color.White);
+
+			// don't allow clicks through the dialog
+			AddButton(r, _ => { });
 		}
 
 		public void DrawLobby()
@@ -260,6 +263,9 @@ namespace OpenRa
 			DrawDialogBackground(chatBox, panelSprites, false);
 
 			DrawChat(typingBox, chatBox);
+
+			// block clicks `through` the dialog
+			AddButton(r, _ => { });
 		}
 
 		public void TickRadarAnimation()
