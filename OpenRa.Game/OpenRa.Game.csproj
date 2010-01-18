@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bridges.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
     <Compile Include="Combat.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BelowUnits.cs" />
+    <Compile Include="Traits\Bridge.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\Cargo.cs" />

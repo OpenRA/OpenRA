@@ -8,8 +8,8 @@ namespace OpenRa.FileFormats
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
 
-		readonly Dictionary<ushort, Dictionary<int, int>> walk = 
-			new Dictionary<ushort, Dictionary<int, int>>();	// cjf will fix
+		public readonly Dictionary<ushort, TileTemplate> walk =
+			new Dictionary<ushort, TileTemplate>();	// cjf will fix
 
 		string NextLine( StreamReader reader )
 		{
@@ -82,7 +82,7 @@ namespace OpenRa.FileFormats
 			if (r.tile == 0xff || r.tile == 0xffff)
 				r.image = 0;
 
-			return walk[r.tile][r.image];
+			return walk[r.tile].TerrainType[r.image];
 		}
 	}
 }

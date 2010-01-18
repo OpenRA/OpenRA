@@ -44,6 +44,8 @@ namespace OpenRa
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
+			Bridges.MakeBridges(this);
+
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);
 		}

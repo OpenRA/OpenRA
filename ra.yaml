@@ -1435,6 +1435,13 @@ DOMF:
 		Image: DOME
 	Fake:
 
+BRIDGE:
+	Inherits: ^Building
+	Bridge:
+	BelowUnits:
+	-Selectable:
+	-Building:
+
 T01:
 	Inherits: ^Building
 	Building:
