@@ -40,10 +40,10 @@ namespace OpenRa.Orders
 				State = ConnectionState.Connected;
 				new Thread(() =>
 				{
+					var reader = new BinaryReader(socket.GetStream());
+
 					for (; ; )
 					{
-						var reader = new BinaryReader(socket.GetStream());
-
 						var len = reader.ReadInt32();
 						var frame = reader.ReadInt32();
 						var buf = reader.ReadBytes(len - 4);
