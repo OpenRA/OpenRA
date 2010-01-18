@@ -120,6 +120,7 @@ namespace OpenRa
 
 		public bool IsDead { get { return Health <= 0; } }
 		public bool IsInWorld { get; set; }
+		public bool RemoveOnDeath = true;
 
 		public DamageState GetDamageState()
 		{
@@ -145,7 +146,8 @@ namespace OpenRa
 				if (attacker.Owner != null)
 					attacker.Owner.Kills++;
 
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				if (RemoveOnDeath)
+					Game.world.AddFrameEndTask(w => w.Remove(this));
 			}
 
 			var maxHP = this.GetMaxHP();

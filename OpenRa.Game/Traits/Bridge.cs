@@ -4,36 +4,37 @@ using System.Linq;
 using System.Text;
 using OpenRa.Graphics;
 using OpenRa.FileFormats;
+using IjwFramework.Collections;
+using System.Drawing;
 
 namespace OpenRa.Traits
 {
 	class BridgeInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new Bridge(); }
+		public object Create(Actor self) { return new Bridge(self); }
 	}
 
 	class Bridge : IRender, ITick, ICustomTerrain
 	{
-		Animation anim;
 		Dictionary<int2, int> Tiles;
 		TileTemplate Template;
+		Dictionary<int2, Sprite> TileSprites;
+
+		public Bridge(Actor self) { self.RemoveOnDeath = false; }
+
+		static Cache<TileReference, Sprite> Sprites =
+			new Cache<TileReference, Sprite>(
+				x => SheetBuilder.Add(Game.world.TileSet.GetBytes(x), 
+					new Size(Game.CellSize, Game.CellSize)));
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
-			if (anim != null)
-				return new[] { Util.Centered(self, anim.Image, self.CenterLocation) };
-			else
-				return new Renderable[] { };
+			if (Template == null) yield break;
+			foreach (var t in TileSprites)
+				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
 		}
 
-		public void Tick(Actor self)
-		{
-			if (anim == null)
-			{
-				anim = new Animation("3tnk");
-				anim.PlayRepeating("idle");
-			}
-		}
+		public void Tick(Actor self) {}
 
 		public void SetTiles(TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
@@ -42,12 +43,15 @@ namespace OpenRa.Traits
 
 			foreach (var t in replacedTiles.Keys)
 				Game.world.customTerrain[t.X, t.Y] = this;
+
+			TileSprites = replacedTiles.ToDictionary(
+				a => a.Key,
+				a => Sprites[new TileReference { tile = (ushort)template.Index, image = (byte)a.Value }]);
 		}
 
 		public double GetCost(int2 p, UnitMovementType umt)
 		{
 			var origTile = Tiles[p];	// if this explodes, then SetTiles did something horribly wrong.
-
 			return 1.0;
 		}
 	}
