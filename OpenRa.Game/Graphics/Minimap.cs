@@ -9,6 +9,7 @@ namespace OpenRa.Graphics
 {
 	class Minimap
 	{
+		readonly World world;
 		Sheet sheet, mapOnlySheet;
 		SpriteRenderer rgbaRenderer;
 		Sprite sprite, mapOnlySprite;
@@ -19,6 +20,7 @@ namespace OpenRa.Graphics
 
 		public Minimap(World world, Renderer r)
 		{
+			this.world = world;
 			sheet = new Sheet(r, new Size(128, 128));
 			mapOnlySheet = new Sheet(r, new Size(128, 128));
 
@@ -40,15 +42,15 @@ namespace OpenRa.Graphics
 
 		public void Update()
 		{
-			if (Game.world.Map.Theater != theater)
+			if (world.Map.Theater != theater)
 			{
 				terrainTypeColors = null;
-				theater = Game.world.Map.Theater;
+				theater = world.Map.Theater;
 			}
 
 			if (terrainTypeColors == null)
 			{
-				var pal = new Palette(FileSystem.Open(Game.world.Map.Theater + ".pal"));
+				var pal = new Palette(FileSystem.Open(world.Map.Theater + ".pal"));
 				terrainTypeColors = new[] {theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a, 0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d }
 					.Select( a => Color.FromArgb(alpha, pal.GetColor(a) )).ToArray();
 				
@@ -61,8 +63,8 @@ namespace OpenRa.Graphics
 				terrain = new Bitmap(128, 128);
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
-						terrain.SetPixel(x, y, Game.world.Map.IsInMap(x, y)
-							? terrainTypeColors[Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[x, y])]
+						terrain.SetPixel(x, y, world.Map.IsInMap(x, y)
+							? terrainTypeColors[world.TileSet.GetWalkability(world.Map.MapTiles[x, y])]
 							: shroudColor);
 			}
 
@@ -71,13 +73,13 @@ namespace OpenRa.Graphics
 				oreLayer = new Bitmap(terrain);
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
-						if (Game.world.Map.ContainsResource(new int2(x, y)))
+						if (world.Map.ContainsResource(new int2(x, y)))
 						oreLayer.SetPixel(x, y, terrainTypeColors[(int)TerrainMovementType.Ore]);
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
 
-			if (!Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
+			if (!world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
 				return;
 
 			var bitmap = new Bitmap(oreLayer);
@@ -91,13 +93,13 @@ namespace OpenRa.Graphics
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
 					{
-						var b = Game.world.BuildingInfluence.GetBuildingAt(new int2(x, y));
+						var b = world.BuildingInfluence.GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
 								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();
 					}
 
-				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<Unit>()))
+				foreach (var a in world.Actors.Where(a => a.traits.Contains<Unit>()))
 					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) =
 						playerColors[(int)a.Owner.Palette].ToArgb();
 
