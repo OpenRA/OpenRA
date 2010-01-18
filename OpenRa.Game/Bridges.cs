@@ -37,7 +37,8 @@ namespace OpenRa
 					if (!template.TerrainType.ContainsKey(n)) continue;
 
 					if (w.Map.IsInMap(x, y))
-						if (w.Map.MapTiles[x, y].tile == tile)
+						if (w.Map.MapTiles[x, y].tile == tile 
+							&& w.Map.MapTiles[x,y].image == n)
 						{
 							// stash it
 							replacedTiles[new int2(x, y)] = w.Map.MapTiles[x, y].image;
