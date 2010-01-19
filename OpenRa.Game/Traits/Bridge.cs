@@ -12,6 +12,7 @@ namespace OpenRa.Traits
 	class BridgeInfo : ITraitInfo
 	{
 		public readonly bool Long = false;
+		public readonly bool UseAlternateNames = false;
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
@@ -34,10 +35,32 @@ namespace OpenRa.Traits
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
 		}
 
+		public int StateFromTemplate(TileTemplate t)
+		{
+			var info = self.Info.Traits.Get<BridgeInfo>();
+			if (info.UseAlternateNames)
+			{
+				if (t.Name.EndsWith("d")) return 2;
+				if (t.Name.EndsWith("h")) return 1;
+				return 0;
+			}
+			else
+				return t.Name[t.Name.Length - 1] - 'a';
+		}
+
+		public string NameFromState(TileTemplate t, int state)
+		{
+			var info = self.Info.Traits.Get<BridgeInfo>();
+			if (info.UseAlternateNames)
+				return t.Bridge + new[] { "", "h", "d" }[state];
+			else
+				return t.Bridge + (char)(state + 'a');
+		}
+
 		public void SetTiles(World world, TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
 			Tiles = replacedTiles;
-			state = template.Name[template.Name.Length - 1] - 'a';
+			state = StateFromTemplate(template);
 
 			foreach (var t in replacedTiles.Keys)
 				world.customTerrain[t.X, t.Y] = this;
@@ -53,7 +76,7 @@ namespace OpenRa.Traits
 			var numStates = self.Info.Traits.Get<BridgeInfo>().Long ? 6 : 3;
 			for (var n = 0; n < numStates; n++)
 			{
-				var stateTemplate = world.TileSet.Walkability.GetWalkability(template.Bridge + (char)(n + 'a'));
+				var stateTemplate = world.TileSet.Walkability.GetWalkability(NameFromState(template, n));
 				Templates.Add( stateTemplate );
 
 				TileSprites.Add(replacedTiles.ToDictionary(
