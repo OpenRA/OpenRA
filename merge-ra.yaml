@@ -28,3 +28,23 @@ MINV:
 		Warhead: ATMine
 		TriggeredBy: Wheel, Track
 		AvoidFriendly: yes
+
+BR1:
+	Bridge:
+		SouthOffset:0,2
+BR2:
+	Bridge:
+		NorthOffset:3,0
+BR3:
+	Bridge:
+		Long: yes
+		NorthOffset: 2,0
+		SouthOffset: 0,1
+		
+BRIDGE1:
+	Bridge:
+		UseAlternateNames: yes
+		
+BRIDGE2:
+	Bridge:
+		UseAlternateNames: yes

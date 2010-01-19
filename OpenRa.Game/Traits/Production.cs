@@ -9,7 +9,7 @@ namespace OpenRa.Traits
 		public readonly int[] SpawnOffset = null;
 		public readonly string[] Produces = { };
 
-		public object Create(Actor self) { return new Production(self); }
+		public virtual object Create(Actor self) { return new Production(self); }
 	}
 
 	class Production : IIssueOrder, IResolveOrder, IProducer, ITags

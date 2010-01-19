@@ -4,6 +4,7 @@ using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Support;
 using OpenRa.Traits;
+using System.Diagnostics;
 
 namespace OpenRa
 {
@@ -143,9 +144,7 @@ namespace OpenRa
 			return ret;
 		}
 
-
-
-		[System.Diagnostics.Conditional( "SANITY_CHECKS" )]
+		[Conditional( "SANITY_CHECKS" )]
 		static void CheckSanePath( List<int2> path )
 		{
 			if( path.Count == 0 )
@@ -160,7 +159,7 @@ namespace OpenRa
 			}
 		}
 
-		[System.Diagnostics.Conditional("SANITY_CHECKS")]
+		[Conditional("SANITY_CHECKS")]
 		static void CheckSanePath2(List<int2> path, int2 src, int2 dest)
 		{
 			if (path.Count == 0)

@@ -3,9 +3,9 @@ using OpenRa.GameRules;
 
 namespace OpenRa.Traits
 {
-	class ProductionSurroundInfo : ITraitInfo
+	class ProductionSurroundInfo : ProductionInfo
 	{
-		public object Create(Actor self) { return new ProductionSurround(self); }
+		public override object Create(Actor self) { return new ProductionSurround(self); }
 	}
 
 	class ProductionSurround : Production

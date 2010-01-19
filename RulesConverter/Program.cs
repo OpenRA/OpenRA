@@ -138,6 +138,10 @@ namespace RulesConverter
 					{ "Produces", "Produces" } }
 				},
 
+				{ "ProductionSurround", new PL {
+					{ "Produces", "Produces" } }
+				},
+
 				{ "Minelayer", new PL {
 					{ "Mine", "Primary" } }
 				},

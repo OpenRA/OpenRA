@@ -91,17 +91,71 @@ TS-
 00eb
 br1a
 
+; long bridge (north end, damaged)
+TS-
+1
+00ec
+br1b
+
+; long bridge (north end, broken)
+TS-
+1
+00ed
+br1c
+
 ; long bridge (south end)
 TS-
 1
 00ee
 br2a
 
+; long bridge (south end, damaged)
+TS-
+1
+00ef
+br2b
+
+; long bridge (south end, broken)
+TS-
+1
+00f0
+br2c
+
 ; long bridge (middle)
 TS-
 1
 00f1
 br3a
+
+; long bridge (middle, damaged)
+TS-
+1
+00f2
+br3b
+
+; long bridge (middle, broken)
+TS-
+1
+00f3
+br3c
+
+; long bridge (middle, broken, south end missing)
+TS-
+1
+00f4
+br3d
+
+; long bridge (middle, broken, north end missing)
+TS-
+1
+00f5
+br3e
+
+; long bridge (water / totally broken)
+TS-
+1
+00f6
+br3f
 
 ; long bridge (north surround)
 TS-
@@ -114,24 +168,6 @@ TS-
 1
 017d
 br2x
-
-; long bridge (north end, broken)
-TS-
-1
-00ed
-br1c
-
-; long bridge (south end, broken)
-TS-
-1
-00f0
-br2c
-
-; long bridge (water / totally broken)
-TS-
-1
-00f6
-br3f
 
 ; short bridge "/"
 TS-
@@ -170,6 +206,12 @@ TS-
 bridge2d
 
 ; short bridge "\" (damaged)
+TS-
+1
+017b
+bridge2h
+
+; short bridge "\" (surround)
 TS-
 1
 017f
@@ -304,3 +346,8 @@ gflr{0:0000}
 0118
 gstr{0:0000}
 
+; bogus
+TS-
+1
+fffe
+bogus

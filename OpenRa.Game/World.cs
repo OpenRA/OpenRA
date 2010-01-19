@@ -4,6 +4,7 @@ using OpenRa.Effects;
 using OpenRa.Support;
 using OpenRa.FileFormats;
 using OpenRa.Graphics;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -20,6 +21,9 @@ namespace OpenRa
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
+
+		// for tricky things like bridges.
+		public readonly ICustomTerrain[,] customTerrain = new ICustomTerrain[128, 128];
 
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
@@ -40,9 +44,10 @@ namespace OpenRa
 			oreTicks = oreFrequency;
 			Map.InitOreDensity();
 
-			PathFinder = new PathFinder(this);
-
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+
+			Bridges.MakeBridges(this);
+			PathFinder = new PathFinder(this);
 
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);

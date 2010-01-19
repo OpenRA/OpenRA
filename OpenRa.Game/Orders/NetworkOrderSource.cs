@@ -65,7 +65,7 @@ namespace OpenRa.Orders
 							}
 						}
 					}
-					catch (IOException e)
+					catch (IOException)
 					{
 						State = ConnectionState.NotConnected;
 					}

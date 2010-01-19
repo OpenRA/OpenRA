@@ -25,6 +25,8 @@ namespace OpenRa.Traits
 	public interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 
+	public interface ICustomTerrain { float GetCost(int2 p, UnitMovementType umt); }
+
 	interface IProducer
 	{
 		bool Produce( Actor self, ActorInfo producee );

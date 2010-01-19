@@ -107,8 +107,6 @@ namespace OpenRa.Graphics
 
 		public static Sprite GetImageFromCollection(Renderer renderer,string collection, string image)
 		{
-			
-			
 			// Cached sprite
 			if (cachedSprites.ContainsKey(collection) && cachedSprites[collection].ContainsKey(image))
 				return cachedSprites[collection][image];
