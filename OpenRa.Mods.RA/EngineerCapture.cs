@@ -17,6 +17,7 @@ namespace OpenRa.Mods.RA
 			if (!underCursor.traits.Contains<Building>()) return null;
 			
 			// todo: other bits
+			if (underCursor.Owner == null) return null;	// don't allow capturing of bridges, etc.
 
 			return new Order(underCursor.Health <= EngineerDamage ? "Capture" : "Infiltrate",
 				self, underCursor, int2.Zero, null);
