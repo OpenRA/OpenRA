@@ -94,6 +94,28 @@ BR3:
 		Dimensions: 4,2
 		HP: 1000
 
+BRIDGE1:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+		HP: 1000
+
+BRIDGE2:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+		HP: 1000
+
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:

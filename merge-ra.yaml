@@ -32,3 +32,11 @@ MINV:
 BR3:
 	Bridge:
 		Long: yes
+		
+BRIDGE1:
+	Bridge:
+		UseAlternateNames: yes
+		
+BRIDGE2:
+	Bridge:
+		UseAlternateNames: yes

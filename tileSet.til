@@ -208,6 +208,12 @@ bridge2d
 ; short bridge "\" (damaged)
 TS-
 1
+017b
+bridge2h
+
+; short bridge "\" (surround)
+TS-
+1
 017f
 bridge2x
 
