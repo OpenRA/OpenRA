@@ -54,8 +54,11 @@ namespace OpenRa.Traits
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
+
+			// force-fire should *always* take precedence over move.
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 		
-			if (underCursor != null)
+			if (underCursor != null && underCursor.Owner != null)
 			{
 				// force-move
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
