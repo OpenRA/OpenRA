@@ -32,6 +32,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <StartupObject>
     </StartupObject>
+    <ApplicationIcon>OpenRA.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -104,6 +105,11 @@
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
+    <Compile Include="Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IOrderSource.cs" />
     <Compile Include="Orders\IronCurtainOrderGenerator.cs" />
@@ -301,6 +307,15 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OpenRA.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,6 +33,7 @@ namespace OpenRa
 
 		public MainWindow(Settings settings)
 		{
+			Icon = Resources1.OpenRA;
 			FormBorderStyle = FormBorderStyle.None;
 			BackColor = Color.Black;
 			StartPosition = FormStartPosition.Manual;
