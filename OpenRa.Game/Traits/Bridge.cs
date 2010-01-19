@@ -13,6 +13,8 @@ namespace OpenRa.Traits
 	{
 		public readonly bool Long = false;
 		public readonly bool UseAlternateNames = false;
+		public readonly int[] NorthOffset = null;
+		public readonly int[] SouthOffset = null;
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
@@ -23,6 +25,8 @@ namespace OpenRa.Traits
 		List<TileTemplate> Templates = new List<TileTemplate>();
 		Actor self;
 		int state;
+
+		Bridge northNeighbour, southNeighbour;
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
 
@@ -87,9 +91,22 @@ namespace OpenRa.Traits
 			self.Health = (int)(self.GetMaxHP() * template.HP);
 		}
 
+		Bridge GetNeighbor(World world, int[] offset)
+		{
+			if (offset == null) return null;
+			var pos = self.Location + new int2(offset[0], offset[1]);
+			if (!world.Map.IsInMap(pos.X, pos.Y)) return null;
+			return world.customTerrain[pos.X, pos.Y] as Bridge;
+		}
+
 		public void FinalizeBridges(World world)
 		{
 			// go looking for our neighbors, if this is a long bridge.
+			var info = self.Info.Traits.Get<BridgeInfo>();
+			if (info.NorthOffset != null)
+				northNeighbour = GetNeighbor(world, info.NorthOffset);
+			if (info.SouthOffset != null)
+				southNeighbour = GetNeighbor(world, info.SouthOffset);
 		}
 
 		public float GetCost(int2 p, UnitMovementType umt)
@@ -100,11 +117,42 @@ namespace OpenRa.Traits
 				Templates[state].TerrainType[Tiles[p]]);
 		}
 
+		bool IsIntact(Bridge b)
+		{
+			return b != null && b.self.IsInWorld && b.self.Health > 0;
+		}
+
+		bool IsLong(Bridge b)
+		{
+			return b != null && b.self.IsInWorld && b.self.Info.Traits.Get<BridgeInfo>().Long;
+		}
+
+		void UpdateState()
+		{
+			var ds = self.GetDamageState();
+			if (!self.Info.Traits.Get<BridgeInfo>().Long)
+			{
+				state = (int)ds; 
+				return;
+			}
+
+			bool waterToSouth = !IsIntact(southNeighbour) && (!IsLong(southNeighbour) || !IsIntact(this));
+			bool waterToNorth = !IsIntact(northNeighbour) && (!IsLong(northNeighbour) || !IsIntact(this));
+
+			if (waterToSouth && waterToNorth) { state = 5; return; }
+			if (waterToNorth) { state = 4; return; }
+			if (waterToSouth) { state = 3; return; }
+			state = (int)ds;
+		}
+
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// todo: long bridges have d/e/f states too.
 			if (e.DamageStateChanged)
-				state = (int)e.DamageState;
+			{
+				UpdateState();
+				if (northNeighbour != null) northNeighbour.UpdateState();
+				if (southNeighbour != null) southNeighbour.UpdateState();
+			}
 		}
 	}
 }
