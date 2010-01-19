@@ -83,7 +83,7 @@ namespace OpenRa
 				using( new PerfSample( "ore" ) )
 				{
 					this.GrowOre( Game.SharedRandom );
-					Game.world.Minimap.InvalidateOre();
+					Minimap.InvalidateOre();
 					oreTicks = oreFrequency;
 				}
 
