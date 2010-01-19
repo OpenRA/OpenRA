@@ -15,7 +15,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
-	class Bridge : IRender, ICustomTerrain
+	class Bridge : IRender, ICustomTerrain, INotifyDamage
 	{
 		Dictionary<int2, int> Tiles;
 		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
@@ -75,6 +75,13 @@ namespace OpenRa.Traits
 
 			return TerrainCosts.Cost(umt, 
 				Templates[state].TerrainType[Tiles[p]]);
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			// todo: long bridges have d/e/f states too.
+			if (e.DamageStateChanged)
+				state = (int)e.DamageState;
 		}
 	}
 }
