@@ -137,8 +137,6 @@ namespace OpenRa
 
 		internal void Draw(SpriteRenderer r)
 		{
-			return;	// temp; just so i can see until i'm done with the bridges.
-
 			if (dirty)
 			{
 				dirty = false;
