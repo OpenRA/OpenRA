@@ -391,6 +391,9 @@ namespace OpenRA.Server
 							lobbyInfo.GlobalSettings.Mods = 
 								lobbyInfo.GlobalSettings.Mods.Concat( new[] { s } ).ToArray();
 							SyncLobbyInfo();
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"Added mod: " + s ).Serialize() );
 							return true;
 						}
 						catch
