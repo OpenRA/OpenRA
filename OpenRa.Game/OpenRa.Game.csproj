@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ijw.DirectX\Ijw.Framework\IjwFramework\bin\Debug\IjwFramework.dll</HintPath>
     </Reference>
-    <Reference Include="irrKlang.NET2.0, Version=1.1.3.0, Culture=neutral, PublicKeyToken=a854741bd80517c7, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\irrKlang.NET2.0.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -135,6 +131,7 @@
     <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
     <Compile Include="SupportPowers\NullPower.cs" />
+    <Compile Include="Support\OpenAlInterop.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
