@@ -55,9 +55,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ijw.DirectX, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Ijw.DirectX, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Ijw.DirectX\Release\Ijw.DirectX.dll</HintPath>
+      <HintPath>..\Ijw.DirectX\bin\Ijw.DirectX.dll</HintPath>
     </Reference>
     <Reference Include="IjwFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
