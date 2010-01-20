@@ -4,6 +4,7 @@ using System.Linq;
 using OpenRa.Traits;
 using System.Drawing;
 using OpenRa.GameRules;
+using OpenRa.FileFormats;
 
 namespace OpenRa
 {
@@ -92,7 +93,7 @@ namespace OpenRa
 		{
 			return world.FindUnits(a, b)
 				.Where( x => x.traits.Contains<Selectable>() )
-				.GroupBy(x => (x.Owner == Game.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
+				.GroupBy(x => (x.Owner == Game.world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )
@@ -149,6 +150,22 @@ namespace OpenRa
 				xy.Y = mapEnd.Y;
 
 			return xy;
+		}
+
+		public static void LoadMapActors(this World world, IniFile mapfile)
+		{
+			var toLoad = 
+				mapfile.GetSection("STRUCTURES", true)
+				.Concat(mapfile.GetSection("UNITS", true));
+
+			foreach (var s in toLoad)
+			{
+				//num=owner,type,health,location,facing,...
+				var parts = s.Value.Split( ',' );
+				var loc = int.Parse(parts[3]);
+				world.CreateActor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
+					world.players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? world.players[0]);
+			}
 		}
 	}
 }

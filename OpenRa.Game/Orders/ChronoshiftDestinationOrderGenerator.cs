@@ -37,7 +37,7 @@ namespace OpenRa.Orders
 
 		public Cursor GetCursor(int2 xy, MouseInput mi)
 		{
-			if (!Game.LocalPlayer.Shroud.IsExplored(xy))
+			if (!Game.world.LocalPlayer.Shroud.IsExplored(xy))
 				return Cursor.MoveBlocked;
 			
 			var movement = self.traits.GetOrDefault<IMovement>();

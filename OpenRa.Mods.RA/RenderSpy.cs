@@ -21,15 +21,15 @@ namespace OpenRa.Mods.RA
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (self.Owner == Game.LocalPlayer)
+			if (self.Owner == Game.world.LocalPlayer)
 				return r;
 
-			return r.Select(a => a.WithPalette(Game.LocalPlayer.Palette));
+			return r.Select(a => a.WithPalette(Game.world.LocalPlayer.Palette));
 		}
 
 		public override void Tick(Actor self)
 		{
-			anim.ChangeImage(self.Owner == Game.LocalPlayer ? GetImage(self) : "e1");
+			anim.ChangeImage(self.Owner == Game.world.LocalPlayer ? GetImage(self) : "e1");
 			base.Tick(self);
 		}
 	}

@@ -82,7 +82,7 @@ namespace OpenRa.Graphics
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();
 
-			Game.LocalPlayer.Shroud.Draw(spriteRenderer);
+			Game.world.LocalPlayer.Shroud.Draw(spriteRenderer);
 
 			lineRenderer.Flush();
 			spriteRenderer.Flush();
@@ -131,7 +131,7 @@ namespace OpenRa.Graphics
 				DrawControlGroup(selectedUnit, xy);
 
 				// Only display pips and tags to the owner
-				if (selectedUnit.Owner == Game.LocalPlayer)
+				if (selectedUnit.Owner == Game.world.LocalPlayer)
 				{
 					DrawPips(selectedUnit, xY);
 					DrawTags(selectedUnit, new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));

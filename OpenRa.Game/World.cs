@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRa.Effects;
 using OpenRa.Support;
 using OpenRa.FileFormats;
@@ -13,6 +14,19 @@ namespace OpenRa
 		List<Actor> actors = new List<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
+
+		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
+
+		int localPlayerIndex;
+		public Player LocalPlayer
+		{
+			get { return players[localPlayerIndex]; }
+			set
+			{
+				localPlayerIndex = value.Index;
+				Game.viewport.GoToStartLocation();
+			}
+		}
 
 		public readonly BuildingInfluenceMap BuildingInfluence;
 		public readonly UnitInfluenceMap UnitInfluence;
@@ -45,6 +59,9 @@ namespace OpenRa
 			Map.InitOreDensity();
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+
+			for (int i = 0; i < 8; i++)
+				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 
 			Bridges.MakeBridges(this);
 			PathFinder = new PathFinder(this);
@@ -104,6 +121,8 @@ namespace OpenRa
 			UnitInfluence.Tick();
 
 			Minimap.Update();
+			foreach (var player in players.Values)
+				player.Tick();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

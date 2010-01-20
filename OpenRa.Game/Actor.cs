@@ -82,7 +82,7 @@ namespace OpenRa
 
 		public Order Order( int2 xy, MouseInput mi )
 		{
-			if (Owner != Game.LocalPlayer)
+			if (Owner != Game.world.LocalPlayer)
 				return null;
 
 			if (!Game.world.Map.IsInMap(xy.X, xy.Y))

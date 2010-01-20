@@ -47,7 +47,7 @@ namespace OpenRa
 		{
 			var position = Game.controller.MousePosition.ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
-			var isCloseEnough = Game.world.IsCloseEnoughToBase(Game.LocalPlayer, name, bi, topLeft);
+			var isCloseEnough = Game.world.IsCloseEnoughToBase(Game.world.LocalPlayer, name, bi, topLeft);
 
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && Game.world.IsCellBuildable( t, bi.WaterBound

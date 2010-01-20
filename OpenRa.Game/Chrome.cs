@@ -148,10 +148,10 @@ namespace OpenRa
 		{
 			DrawDownloadBar();
 
-			chromeCollection = (Game.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
-			radarCollection = (Game.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
-			paletteCollection = (Game.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
-			digitCollection = (Game.LocalPlayer.Race == Race.Allies) ? "digits-allies" : "digits-soviet";
+			chromeCollection = (Game.world.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
+			radarCollection = (Game.world.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
+			paletteCollection = (Game.world.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
+			digitCollection = (Game.world.LocalPlayer.Race == Race.Allies) ? "digits-allies" : "digits-soviet";
 
 			buttons.Clear();
 
@@ -305,7 +305,7 @@ namespace OpenRa
 		
 		void DrawRadar()
 		{
-			var hasNewRadar = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer 
+			var hasNewRadar = Game.world.Actors.Any(a => a.Owner == Game.world.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
 				&& a.traits.Get<ProvidesRadar>().IsActive(a));
 			
@@ -341,15 +341,15 @@ namespace OpenRa
 			var x = paletteOrigin.X - tabWidth;
 			var y = paletteOrigin.Y + 9;
 
-			if (currentTab == null || !Rules.TechTree.BuildableItems(Game.LocalPlayer, currentTab).Any())
+			if (currentTab == null || !Rules.TechTree.BuildableItems(Game.world.LocalPlayer, currentTab).Any())
 				ChooseAvailableTab();
 
-			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = Game.world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
 			foreach (var q in tabImageNames)
 			{
 				var groupName = q.Key;
-				if (!Rules.TechTree.BuildableItems(Game.LocalPlayer, groupName).Any())
+				if (!Rules.TechTree.BuildableItems(Game.world.LocalPlayer, groupName).Any())
 				{
 					CheckDeadTab(groupName);
 					continue;
@@ -357,7 +357,7 @@ namespace OpenRa
 				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				var race = (Game.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
+				var race = (Game.world.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
 				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), PaletteType.Chrome);
 
 				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),
@@ -380,20 +380,20 @@ namespace OpenRa
 		
 		void CheckDeadTab( string groupName )
 		{
-			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = Game.world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			foreach( var item in queue.AllItems( groupName ) )
-				Game.controller.AddOrder(Order.CancelProduction(Game.LocalPlayer, item.Item));		
+				Game.controller.AddOrder(Order.CancelProduction(Game.world.LocalPlayer, item.Item));		
 		}
 
 		void ChooseAvailableTab()
 		{
 			currentTab = tabImageNames.Select(q => q.Key).FirstOrDefault(
-				t => Rules.TechTree.BuildableItems(Game.LocalPlayer, t).Any());
+				t => Rules.TechTree.BuildableItems(Game.world.LocalPlayer, t).Any());
 		}
 
 		void DrawMoney()
 		{
-			var moneyDigits = Game.LocalPlayer.DisplayCash.ToString();
+			var moneyDigits = Game.world.LocalPlayer.DisplayCash.ToString();
 			var x = Game.viewport.Width - 65;
 			foreach (var d in moneyDigits.Reverse())
 			{
@@ -408,7 +408,7 @@ namespace OpenRa
 		void DrawPower()
 		{
 			// Nothing to draw
-			if (Game.LocalPlayer.PowerProvided == 0 && Game.LocalPlayer.PowerDrained == 0)
+			if (Game.world.LocalPlayer.PowerProvided == 0 && Game.world.LocalPlayer.PowerDrained == 0)
 				return;
 			
 			// Draw bar horizontally
@@ -416,18 +416,18 @@ namespace OpenRa
 			var barEnd = barStart + new float2(powerSize.Width, 0);
 
 			float powerScaleBy = 100;
-			var maxPower = Math.Max(Game.LocalPlayer.PowerProvided, Game.LocalPlayer.PowerDrained);
+			var maxPower = Math.Max(Game.world.LocalPlayer.PowerProvided, Game.world.LocalPlayer.PowerDrained);
 			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 			
 			// Current power supply
-			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerProvided / powerScaleBy);
+			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (Game.world.LocalPlayer.PowerProvided / powerScaleBy);
 			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
 			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = Color.LimeGreen;
-			if (Game.LocalPlayer.GetPowerState() == PowerState.Low)
+			if (Game.world.LocalPlayer.GetPowerState() == PowerState.Low)
 				color = Color.Orange;
-			if (Game.LocalPlayer.GetPowerState() == PowerState.Critical)
+			if (Game.world.LocalPlayer.GetPowerState() == PowerState.Critical)
 				color = Color.Red;
 		
 			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
@@ -448,7 +448,7 @@ namespace OpenRa
 
 			// Power usage indicator
 			var indicator = ChromeProvider.GetImage(renderer, radarCollection, "power-indicator");
-			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.LocalPlayer.PowerDrained / powerScaleBy);
+			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (Game.world.LocalPlayer.PowerDrained / powerScaleBy);
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y-1);
 		
@@ -463,7 +463,7 @@ namespace OpenRa
 			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = new float2(repairRect.Location);
 
-			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<ConstructionYard>());
+			var hasFact = Game.world.Actors.Any(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<ConstructionYard>());
 
 			if (Game.Settings.RepairRequiresConyard && !hasFact)
 				repairButton.ReplaceAnim("disabled");
@@ -641,14 +641,14 @@ namespace OpenRa
 			var x = 0;
 			var y = 0;
 
-			var buildableItems = Rules.TechTree.BuildableItems(Game.LocalPlayer, queueName).ToArray();
+			var buildableItems = Rules.TechTree.BuildableItems(Game.world.LocalPlayer, queueName).ToArray();
 
-			var allBuildables = Rules.TechTree.AllBuildables(Game.LocalPlayer, queueName)
+			var allBuildables = Rules.TechTree.AllBuildables(Game.world.LocalPlayer, queueName)
 				.Where(a => a.Traits.Contains<BuildableInfo>())
-				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(Game.LocalPlayer.Race))
+				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(Game.world.LocalPlayer.Race))
 				.OrderBy(a => a.Traits.Get<BuildableInfo>().TechLevel);
 
-			var queue = Game.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = Game.world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
@@ -760,12 +760,12 @@ namespace OpenRa
 		{
 			var unit = Rules.Info[item];
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
-			Game.controller.AddOrder(Order.StartProduction(Game.LocalPlayer, item));
+			Game.controller.AddOrder(Order.StartProduction(Game.world.LocalPlayer, item));
 		}
 
 		void HandleBuildPalette(string item, bool isLmb)
 		{
-			var player = Game.LocalPlayer;
+			var player = Game.world.LocalPlayer;
 			var unit = Rules.Info[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
@@ -857,18 +857,18 @@ namespace OpenRa
 			renderer.DrawText2(buildable.Description, p.ToInt2() + new int2(5,5), Color.White);
 
 			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
-				Game.LocalPlayer.Cash + Game.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
+				Game.world.LocalPlayer.Cash + Game.world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
-					Game.LocalPlayer.PowerProvided - Game.LocalPlayer.PowerDrained + bi.Power >= 0
+					Game.world.LocalPlayer.PowerProvided - Game.world.LocalPlayer.PowerDrained + bi.Power >= 0
 					? Color.White : Color.Red);
 
-			var buildings = Rules.TechTree.GatherBuildings( Game.LocalPlayer );
+			var buildings = Rules.TechTree.GatherBuildings( Game.world.LocalPlayer );
 			p += new int2(5, 5);
 			p += new int2(0, 15);
-			if (!Rules.TechTree.CanBuild(info, Game.LocalPlayer, buildings))
+			if (!Rules.TechTree.CanBuild(info, Game.world.LocalPlayer, buildings))
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
@@ -893,7 +893,7 @@ namespace OpenRa
 
 		void DrawSupportPowers()
 		{
-			var numPowers = Game.LocalPlayer.SupportPowers.Values
+			var numPowers = Game.world.LocalPlayer.SupportPowers.Values
 				.Where(a => a.IsAvailable).Count();
 
 			if (numPowers == 0) return;
@@ -910,7 +910,7 @@ namespace OpenRa
 			string tooltipItem = null;
 			int2 tooltipPos = int2.Zero;
 
-			foreach (var sp in Game.LocalPlayer.SupportPowers)
+			foreach (var sp in Game.world.LocalPlayer.SupportPowers)
 			{
 				var image = spsprites[sp.Key];
 				if (sp.Value.IsAvailable)
@@ -977,7 +977,7 @@ namespace OpenRa
 
 			renderer.DrawText2(info.Description, pos, Color.White);
 
-			var timer = "Charge Time: {0}".F(FormatTime(Game.LocalPlayer.SupportPowers[sp].RemainingTime));
+			var timer = "Charge Time: {0}".F(FormatTime(Game.world.LocalPlayer.SupportPowers[sp].RemainingTime));
 			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
 
 			if (info.LongDesc != null)

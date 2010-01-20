@@ -29,10 +29,10 @@ namespace OpenRa
 		public Shroud Shroud;
 		public Dictionary<string, SupportPower> SupportPowers;
 
-		public Player( int index, Session.Client client )
+		public Player( World world, int index, Session.Client client )
 		{
 			Shroud = new Shroud(this);
-			this.PlayerActor = Game.world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
+			this.PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);
 
@@ -91,7 +91,7 @@ namespace OpenRa
 
 		void GiveAdvice(string advice)
 		{
-			if (this != Game.LocalPlayer) return;
+			if (this != Game.world.LocalPlayer) return;
 			// todo: store the condition or something.
 			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
 			Sound.Play(advice);
@@ -135,7 +135,7 @@ namespace OpenRa
 			foreach (var sp in SupportPowers.Values)
 				sp.Tick();
 
-			if (this == Game.LocalPlayer)
+			if (this == Game.world.LocalPlayer)
 			{
 				var totalMoney = Cash + Ore;
 

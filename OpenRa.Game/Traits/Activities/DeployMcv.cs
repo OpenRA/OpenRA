@@ -12,7 +12,7 @@ namespace OpenRa.Traits.Activities
 			{
 				self.Health = 0;
 				Game.world.Remove( self );
-				if (self.Owner == Game.LocalPlayer)
+				if (self.Owner == Game.world.LocalPlayer)
 				{
 					Sound.Play("placbldg.aud");
 					Sound.Play("build5.aud");

@@ -51,7 +51,7 @@ namespace OpenRa
 			recentOrders.AddRange( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
-				.FirstOrDefault(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Unit>());
+				.FirstOrDefault(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Unit>());
 
 			var isMove = orders.Any(o => o.OrderString == "Move");
 			var isAttack = orders.Any( o => o.OrderString == "Attack" );
@@ -127,7 +127,7 @@ namespace OpenRa
 
 			var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
 				.Where(a => a.traits.Contains<Unit>()
-					&& a.Owner == Game.LocalPlayer)
+					&& a.Owner == Game.world.LocalPlayer)
 				.FirstOrDefault();
 
 			Sound.PlayVoice("Select", voicedUnit);

@@ -23,7 +23,7 @@ namespace OpenRa.Traits
 						return;
 
 					Game.world.CreateActor( order.TargetString, order.TargetLocation, order.Player );
-					if (order.Player == Game.LocalPlayer)
+					if (order.Player == Game.world.LocalPlayer)
 					{
 						Sound.Play("placbldg.aud");
 						Sound.Play("build5.aud");

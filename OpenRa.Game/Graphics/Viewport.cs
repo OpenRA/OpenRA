@@ -129,7 +129,7 @@ namespace OpenRa.Graphics
 
 		public void GoToStartLocation()
 		{
-			Center(Game.world.Actors.Where(a => a.Owner == Game.LocalPlayer && a.traits.Contains<Selectable>()));
+			Center(Game.world.Actors.Where(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Selectable>()));
 		}
 	}
 }

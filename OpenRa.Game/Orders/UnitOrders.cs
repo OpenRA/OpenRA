@@ -19,7 +19,7 @@ namespace OpenRa.Orders
 				}
 			case "AssignPlayer":
 				{
-					Game.LocalPlayer = order.Player;
+					Game.world.LocalPlayer = order.Player;
 					Game.chat.AddLine(order.Player, "is now YOU.");
 					break;
 				}

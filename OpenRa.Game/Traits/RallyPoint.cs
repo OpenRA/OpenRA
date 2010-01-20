@@ -28,7 +28,7 @@ namespace OpenRa.Traits
 		public IEnumerable<Renderable> Render(Actor self)
 		{
 			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
-			if (uog != null && self.Owner == Game.LocalPlayer && uog.selection.Contains(self))
+			if (uog != null && self.Owner == Game.world.LocalPlayer && uog.selection.Contains(self))
 				yield return Util.Centered(self,
 					anim.Image, Util.CenterOfCell(rallyPoint));
 		}

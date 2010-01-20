@@ -23,7 +23,7 @@ namespace OpenRa.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				if (self.Owner == Game.LocalPlayer)
+				if (self.Owner == Game.world.LocalPlayer)
 					Sound.Play(self.Info.Traits.Get<OwnedActorInfo>().WaterBound 
 						? "navylst1.aud" : "unitlst1.aud");
 		}

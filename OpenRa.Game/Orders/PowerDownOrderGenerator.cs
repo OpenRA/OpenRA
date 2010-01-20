@@ -23,7 +23,7 @@ namespace OpenRa.Orders
 			{
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = Game.world.FindUnits(loc, loc)
-					.Where(a => a.Owner == Game.LocalPlayer
+					.Where(a => a.Owner == Game.world.LocalPlayer
 						&& a.traits.Contains<Building>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 

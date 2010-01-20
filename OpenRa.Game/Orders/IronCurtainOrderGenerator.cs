@@ -29,7 +29,7 @@ namespace OpenRa.Orders
 			{
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = Game.world.FindUnits(loc, loc)
-					.Where(a => a.Owner == Game.LocalPlayer
+					.Where(a => a.Owner == Game.world.LocalPlayer
 						&& a.traits.Contains<IronCurtainable>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
@@ -41,7 +41,7 @@ namespace OpenRa.Orders
 		public void Tick()
 		{
 			var hasStructure = Game.world.Actors
-				.Any(a => a.Owner == Game.LocalPlayer && a.traits.Contains<IronCurtain>());
+				.Any(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<IronCurtain>());
 
 			if (!hasStructure)
 				Game.controller.CancelInputMode();

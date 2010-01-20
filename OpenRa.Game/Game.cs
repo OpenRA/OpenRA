@@ -24,20 +24,6 @@ namespace OpenRa
 		
 		internal static OrderManager orderManager;
 
-		static int localPlayerIndex;
-
-		public static Dictionary<int, Player> players = new Dictionary<int, Player>();
-
-		public static Player LocalPlayer
-		{
-			get { return players[localPlayerIndex]; }
-			set
-			{
-				localPlayerIndex = value.Index;
-				viewport.GoToStartLocation();
-			}
-		}
-
 		public static bool skipMakeAnims = true;
 
 		internal static Renderer renderer;
@@ -73,13 +59,6 @@ namespace OpenRa
 
 			palette = new HardwarePalette(renderer, world.Map);
 
-			for (int i = 0; i < 8; i++)
-			{
-				var race = players.ContainsKey(i) ? players[i].Race : Race.Allies;
-				var name = players.ContainsKey(i) ? players[i].PlayerName : "Player {0}".F(i+1);
-				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
-			}
-
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 
@@ -87,7 +66,7 @@ namespace OpenRa
 			foreach (var treeReference in Game.world.Map.Trees)
 				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
 			
-			LoadMapActors(Rules.AllRules);
+			world.LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
 
 			chrome = new Chrome(renderer);
@@ -95,7 +74,7 @@ namespace OpenRa
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
-			localPlayerIndex = localPlayer;
+			//localPlayerIndex = localPlayer;
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
 
@@ -117,22 +96,6 @@ namespace OpenRa
 					? new IOrderSource[] { new LocalOrderSource() }
 					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(Settings.NetworkHost, Settings.NetworkPort) };
 				orderManager = new OrderManager(orderSources, "replay.rep");
-			}
-		}
-
-		static void LoadMapActors(IniFile mapfile)
-		{
-			var toLoad = 
-				mapfile.GetSection("STRUCTURES", true)
-				.Concat(mapfile.GetSection("UNITS", true));
-
-			foreach (var s in toLoad)
-			{
-				//num=owner,type,health,location,facing,...
-				var parts = s.Value.Split( ',' );
-				var loc = int.Parse(parts[3]);
-				world.CreateActor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
-					players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? players[0]);
 			}
 		}
 
@@ -173,8 +136,6 @@ namespace OpenRa
 							controller.orderGenerator.Tick();
 
 						world.Tick();
-						foreach (var player in players.Values)
-							player.Tick();
 					}
 					else
 						if (orderManager.FrameNumber == 0)
@@ -229,7 +190,7 @@ namespace OpenRa
 				FieldLoader.Load(client, y.Value);
 				session.Clients.Add(client);
 
-				players[index].SyncFromLobby(client);
+				world.players[index].SyncFromLobby(client);
 			}
 
 			LobbyInfo = session;
@@ -260,7 +221,7 @@ namespace OpenRa
 				// todo: spawn more than one unit, in most cases!
 
 				var sp = ChooseSpawnPoint(available, taken);
-				world.CreateActor("mcv", sp, players[client.Index]);
+				world.CreateActor("mcv", sp, world.players[client.Index]);
 			}
 
 			Game.viewport.GoToStartLocation();

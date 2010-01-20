@@ -66,7 +66,7 @@ namespace OpenRa
 
 		static Player LookupPlayer(uint index)
 		{
-			return Game.players
+			return Game.world.players
 				.Where(x => x.Value.Index == index)
 				.First().Value;
 		}

@@ -205,7 +205,7 @@ namespace OpenRa.Traits
 				self.CancelActivity();
 				QueueAttack(self, order);
 
-				if (self.Owner == Game.LocalPlayer)
+				if (self.Owner == Game.world.LocalPlayer)
 					Game.world.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
 			}
 			else

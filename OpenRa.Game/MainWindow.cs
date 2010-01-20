@@ -144,12 +144,12 @@ namespace OpenRa
 			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
 			{
 				Game.controller.AddOrder(
-					new Order( "ToggleReady", Game.LocalPlayer.PlayerActor, null, int2.Zero, "") { IsImmediate = true });
+					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "") { IsImmediate = true });
 			}
 
 			/* temporary hack: DO NOT LEAVE IN */
 			if (e.KeyCode == Keys.F2)
-				Game.LocalPlayer = Game.players[(Game.LocalPlayer.Index + 1) % 4];
+				Game.world.LocalPlayer = Game.world.players[(Game.world.LocalPlayer.Index + 1) % 4];
 			if (e.KeyCode == Keys.F3)
 				Game.controller.orderGenerator = new SellOrderGenerator();
 			if (e.KeyCode == Keys.F4)
