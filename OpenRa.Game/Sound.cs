@@ -4,6 +4,7 @@ using OpenRa.FileFormats;
 using OpenRa.Traits;
 using OpenRa.Support;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace OpenRa
 {
@@ -128,6 +129,8 @@ namespace OpenRa
 	class OpenAlSoundEngine : ISoundEngine
 	{
 		float volume = 1f;
+		Dictionary<int, bool> sourcePool = new Dictionary<int, bool>();
+		const int POOL_SIZE = 100;
 
 		public OpenAlSoundEngine()
 		{
@@ -137,6 +140,46 @@ namespace OpenRa
 				throw new InvalidOperationException("Can't create OpenAL device");
 			var ctx = OpenAlInterop.alcCreateContext(dev, IntPtr.Zero);
 			OpenAlInterop.alcMakeContextCurrent(ctx);
+
+			int[] sources = new int[POOL_SIZE];
+			IntPtr pTemp = Marshal.AllocHGlobal(sizeof(int) * POOL_SIZE);
+			OpenAlInterop.alGenSources(POOL_SIZE, pTemp);
+			Marshal.Copy(pTemp, sources, 0, POOL_SIZE);
+			Marshal.FreeHGlobal(pTemp);
+
+			foreach (int source in sources)
+				sourcePool.Add(source, false);
+		}
+
+		int GetSourceFromPool()
+		{
+			foreach (var kvp in sourcePool)
+			{
+				if (!kvp.Value)
+				{
+					sourcePool[kvp.Key] = true;
+					return kvp.Key;
+				}
+			}
+
+			List<int> freeSources = new List<int>();
+			foreach (int key in sourcePool.Keys)
+			{
+				int state;
+				OpenAlInterop.alGetSourcei(key, OpenAlInterop.AL_SOURCE_STATE, out state);
+				if (state != OpenAlInterop.AL_PLAYING)
+					freeSources.Add(key);
+			}
+
+			if (freeSources.Count == 0)
+				return -1;
+
+			foreach (int i in freeSources)
+				sourcePool[i] = false;
+
+			sourcePool[freeSources[0]] = true;
+
+			return freeSources[0];
 		}
 
 		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
@@ -146,7 +189,8 @@ namespace OpenRa
 
 		public ISound Play2D(ISoundSource sound, bool loop)
 		{
-			return new OpenAlSound((sound as OpenAlSoundSource).buffer, loop);
+			int source = GetSourceFromPool();
+			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop);
 		}
 
 		public float Volume
@@ -177,12 +221,13 @@ namespace OpenRa
 
 	class OpenAlSound : ISound
 	{
-		public readonly int source;
+		public readonly int source = -1;
 		float volume = 1f;
 
-		public OpenAlSound(int buffer, bool looping)
+		public OpenAlSound(int source, int buffer, bool looping)
 		{
-			OpenAlInterop.alGenSources(1, out source);
+			if (source == -1) return;
+			this.source = source;
 			OpenAlInterop.alSourcef(source, OpenAlInterop.AL_PITCH, 1f);
 			OpenAlInterop.alSourcef(source, OpenAlInterop.AL_GAIN, 1f);
 			OpenAlInterop.alSource3f(source, OpenAlInterop.AL_POSITION, 0f, 0f, 0f);
@@ -195,7 +240,11 @@ namespace OpenRa
 		public float Volume
 		{
 			get { return volume; }
-			set { OpenAlInterop.alSourcef(source, OpenAlInterop.AL_GAIN, volume = value); }
+			set 
+			{
+				if (source != -1)
+					OpenAlInterop.alSourcef(source, OpenAlInterop.AL_GAIN, volume = value); 
+			}
 		}
 	}
 }
