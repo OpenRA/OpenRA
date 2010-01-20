@@ -11,14 +11,13 @@ namespace OpenRa.Graphics
 		static Dictionary<string, Dictionary<string, Sequence>> units;
 		static Dictionary<string, CursorSequence> cursors;
 
-		public static void Initialize(bool useAftermath)
+		public static void Initialize(params string[] sequenceFiles)
 		{
 			units = new Dictionary<string, Dictionary<string, Sequence>>();
 			cursors = new Dictionary<string, CursorSequence>();
 
-			LoadSequenceSource("sequences.xml");
-			if (useAftermath)
-				LoadSequenceSource("sequences-aftermath.xml");
+			foreach (var f in sequenceFiles)
+				LoadSequenceSource(f);
 		}
 
 		static void LoadSequenceSource(string filename)

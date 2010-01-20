@@ -75,7 +75,11 @@ namespace OpenRa
 				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
 
-			SequenceProvider.Initialize(usingAftermath);
+			var sequenceFiles = usingAftermath 
+				? new[] { "sequences.xml", "sequences-aftermath.xml" }
+				: new[] { "sequences.xml" };
+
+			SequenceProvider.Initialize(sequenceFiles);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 
 			skipMakeAnims = true;
