@@ -8,39 +8,22 @@ namespace OpenRa
 	public sealed class Order
 	{
 		public readonly string OrderString;
-		readonly uint SubjectId;
-		readonly uint TargetActorId;
+		public readonly Actor Subject;
+		public readonly Actor TargetActor;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
 		public bool IsImmediate;
 		
-		public Actor Subject { get { return ActorFromUInt(SubjectId); } }
-		public Actor TargetActor { get { return ActorFromUInt(TargetActorId); } }
 		public Player Player { get { return Subject.Owner; } }
 
 		public Order(string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString)
-			: this( orderString, UIntFromActor( subject ),
-			UIntFromActor( targetActor ), targetLocation, targetString) {}
-			
-		Order(string orderString, uint subjectId,
-			uint targetActorId, int2 targetLocation, string targetString)
 		{
 			this.OrderString = orderString;
-			this.SubjectId = subjectId;
-			this.TargetActorId = targetActorId;
+			this.Subject = subject;
+			this.TargetActor = targetActor;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
-		}
-
-		public bool Validate()
-		{
-			if ((SubjectId != 0xffffffff) && Subject == null)
-				return false;
-			if ((TargetActorId != 0xffffffff) && TargetActor == null)
-				return false;
-
-			return true;
 		}
 
 		public byte[] Serialize()
@@ -69,8 +52,8 @@ namespace OpenRa
 						var w = new BinaryWriter(ret);
 						w.Write( (byte)0xFF );
 						w.Write(OrderString);
-						w.Write(SubjectId);
-						w.Write(TargetActorId);
+						w.Write(UIntFromActor(Subject));
+						w.Write(UIntFromActor(TargetActor));
 						w.Write(TargetLocation.X);
 						w.Write(TargetLocation.Y);
 						w.Write(TargetString != null);
@@ -103,7 +86,11 @@ namespace OpenRa
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
 
-						return new Order( order, subjectId, targetActorId, targetLocation, targetString);
+						Actor subject, targetActor;
+						if( !TryGetActorFromUInt( subjectId, out subject ) || !TryGetActorFromUInt( targetActorId, out targetActor ) )
+							return null;
+
+						return new Order( order, subject, targetActor, targetLocation, targetString);
 					}
 
 				case 0xfe:
@@ -126,10 +113,23 @@ namespace OpenRa
 			return a.ActorID;
 		}
 
-		static Actor ActorFromUInt(uint aID)
+		static bool TryGetActorFromUInt(uint aID, out Actor ret )
 		{
-			if (aID == 0xFFFFFFFF) return null;
-			return Game.world.Actors.SingleOrDefault(x => x.ActorID == aID);
+			if( aID == 0xFFFFFFFF )
+			{
+				ret = null;
+				return true;
+			}
+			else
+			{
+				foreach( var a in Game.world.Actors.Where( x => x.ActorID == aID ) )
+				{
+					ret = a;
+					return true;
+				}
+				ret = null;
+				return false;
+			}
 		}
 
 		// Named constructors for Orders.

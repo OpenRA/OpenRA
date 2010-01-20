@@ -92,10 +92,9 @@ namespace OpenRa.Orders
 			}
 		}
 
-		public List<Order> OrdersForFrame(int currentFrame)
+		public List<byte[]> OrdersForFrame(int currentFrame)
 		{
-			var orderData = ExtractOrders(currentFrame);
-			return orderData.SelectMany(a => a.ToOrderList()).ToList();
+			return ExtractOrders(currentFrame).ToList();
 		}
 
 		public void SendLocalOrders(int localFrame, List<Order> localOrders)

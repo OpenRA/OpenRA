@@ -45,7 +45,6 @@ namespace OpenRa.Orders
 		{
 			var p = Game.controller.MousePosition;
 			var c = Order(p.ToInt2(), mi)
-				.Where(o => o.Validate())
 				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
 				.FirstOrDefault(a => a != null);
 
