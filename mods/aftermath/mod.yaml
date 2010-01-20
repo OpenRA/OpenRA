@@ -5,7 +5,7 @@ Packages:
 
 LegacyRules:
 	mods/aftermath/aftrmath.ini:	More or less original Aftermath rules file.
-	mods/aftermath/aftrmathUnits.ini:	OpenRA patches
+	mods/aftermath/aftermathUnits.ini:	OpenRA patches
 
 Rules:
 	mods/aftermath/rules.yaml:	OpenRA actorinfos
