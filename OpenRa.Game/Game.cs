@@ -9,6 +9,7 @@ using OpenRa.Graphics;
 using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
+using System.Windows.Forms;
 
 namespace OpenRa
 {
@@ -230,6 +231,63 @@ namespace OpenRa
 			available.RemoveAt(n);
 			taken.Add(sp);
 			return sp;
+		}
+
+		internal static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
+		{
+			int sync = Game.world.SyncHash();
+
+			Game.viewport.DispatchMouseInput(
+				new MouseInput
+				{
+					Button = (MouseButton)(int)e.Button,
+					Event = ev,
+					Location = new int2(e.Location),
+					Modifiers = (Modifiers)(int)ModifierKeys,
+				});
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+		}
+
+		internal static void HandleKeyDown( KeyEventArgs e )
+		{
+			int sync = Game.world.SyncHash();
+
+			/* hack hack hack */
+			if( e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted )
+			{
+				Game.controller.AddOrder(
+					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "" ) { IsImmediate = true } );
+			}
+
+			/* temporary hack: DO NOT LEAVE IN */
+			if( e.KeyCode == Keys.F2 )
+				Game.world.LocalPlayer = Game.world.players[ ( Game.world.LocalPlayer.Index + 1 ) % 4 ];
+			if( e.KeyCode == Keys.F3 )
+				Game.controller.orderGenerator = new SellOrderGenerator();
+			if( e.KeyCode == Keys.F4 )
+				Game.controller.orderGenerator = new RepairOrderGenerator();
+
+			if( !Game.chat.isChatting )
+				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
+					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyDown" );
+		}
+
+		internal static void HandleKeyPress( KeyPressEventArgs e )
+		{
+			int sync = Game.world.SyncHash();
+
+			if( e.KeyChar == '\r' )
+				Game.chat.Toggle();
+			else if( Game.chat.isChatting )
+				Game.chat.TypeChar( e.KeyChar );
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}
 	}
 }
