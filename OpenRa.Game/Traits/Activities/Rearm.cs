@@ -2,7 +2,7 @@
 
 namespace OpenRa.Traits.Activities
 {
-	class Rearm : IActivity
+	public class Rearm : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;

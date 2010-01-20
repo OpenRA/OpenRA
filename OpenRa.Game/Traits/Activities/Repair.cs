@@ -5,11 +5,14 @@ using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	class Repair : IActivity
+	public class Repair : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
+		bool playHostAnim;
 		int remainingTicks;
+
+		public Repair(bool playHostAnim) { this.playHostAnim = playHostAnim; }
 
 		public IActivity Tick(Actor self)
 		{
