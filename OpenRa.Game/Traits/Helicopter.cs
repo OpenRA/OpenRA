@@ -37,7 +37,7 @@ namespace OpenRa.Traits
 			return null;
 		}
 
-		public void ResolveOrder( Actor self, Order order )
+		public void ResolveOrder(Actor self, Order order)
 		{
 			if (reservation != null)
 			{
@@ -49,7 +49,7 @@ namespace OpenRa.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
+				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
 				self.QueueActivity(new HeliLand(true));
 			}
 
@@ -66,10 +66,10 @@ namespace OpenRa.Traits
 
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
-				self.QueueActivity( new Turn( self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing ) );
+				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(order.TargetActor.Info.Name == "hpad"
-					? (IActivity)new Rearm() : new Repair());
+					? (IActivity)new Rearm() : new Repair(true));
 			}
 		}
 

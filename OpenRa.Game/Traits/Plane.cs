@@ -62,7 +62,7 @@ namespace OpenRa.Traits
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(order.TargetActor.Info.Name == "afld"
-					? (IActivity)new Rearm() : new Repair());
+					? (IActivity)new Rearm() : new Repair(true));
 			}
 		}
 

@@ -491,6 +491,7 @@ SS:
 		FireDelay: 2
 	Chronoshiftable:
 	IronCurtainable:
+	RepairableNear:
 
 DD:
 	Inherits: ^Ship
@@ -519,6 +520,7 @@ DD:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
+	RepairableNear:
 
 CA:
 	Inherits: ^Ship
@@ -549,6 +551,7 @@ CA:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
+	RepairableNear:
 
 LST:
 	Inherits: ^Ship
@@ -570,6 +573,7 @@ LST:
 		PassengerTypes: Foot,Wheel,Track
 		Passengers: 5
 	IronCurtainable:
+	RepairableNear:
 
 PT:
 	Inherits: ^Ship
@@ -598,6 +602,7 @@ PT:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
+	RepairableNear:
 
 MIG:
 	Inherits: ^Plane

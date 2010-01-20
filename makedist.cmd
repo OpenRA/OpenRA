@@ -15,3 +15,6 @@
 @copy SequenceEditor\bin\x86\debug\SequenceEditor.exe ..\openra-bin\
 @copy OpenRA.Game\bin\x86\debug\*.dll ..\openra-bin\
 @copy OpenRA.Game\bin\x86\debug\OpenRa.Game.exe ..\openra-bin\
+@xcopy /E mods ..\openra-bin\mods\
+@copy *.yaml ..\openra-bin\
+@copy bogus.* ..\openra-bin\
