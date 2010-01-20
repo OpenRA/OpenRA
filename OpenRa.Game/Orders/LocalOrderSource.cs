@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRa.Orders
 {
 	class LocalOrderSource : IOrderSource
 	{
-		Dictionary<int, List<Order>> orders = new Dictionary<int, List<Order>>();
+		Dictionary<int, List<byte[]>> orders = new Dictionary<int, List<byte[]>>();
 
-		public List<Order> OrdersForFrame(int currentFrame)
+		public List<byte[]> OrdersForFrame(int currentFrame)
 		{
 			if (!orders.ContainsKey(currentFrame))
-				return new List<Order>();
+				return new List<byte[]>();
 
 			var result = orders[currentFrame];
 			orders.Remove(currentFrame);
@@ -19,7 +20,7 @@ namespace OpenRa.Orders
 		public void SendLocalOrders(int localFrame, List<Order> localOrders)
 		{
 			if (localFrame == 0) return;
-			orders[localFrame] = localOrders;
+			orders[localFrame] = localOrders.Select(o=>o.Serialize()).ToList();
 		}
 
 		public bool IsReadyForFrame(int frameNumber)
