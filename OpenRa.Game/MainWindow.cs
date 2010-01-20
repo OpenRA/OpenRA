@@ -62,8 +62,7 @@ namespace OpenRa
 
 			var controller = new Controller(() => (Modifiers)(int)ModifierKeys);	/* a bit of insane input routing */
 
-			Game.Initialize(Game.Settings.Map, renderer, new int2(ClientSize),
-				Game.Settings.Player, Game.Settings.UseAftermath, controller);
+			Game.Initialize(Game.Settings.Map, renderer, new int2(ClientSize), Game.Settings.Player, controller);
 
 			ShowCursor(false);
 			Game.ResetTimer();

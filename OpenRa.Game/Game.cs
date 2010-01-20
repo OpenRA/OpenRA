@@ -41,7 +41,6 @@ namespace OpenRa
 		public static bool skipMakeAnims = true;
 
 		internal static Renderer renderer;
-		static bool usingAftermath;
 		static int2 clientSize;
 		static HardwarePalette palette;
 		static string mapName;
@@ -94,11 +93,9 @@ namespace OpenRa
 			chrome = new Chrome(renderer);
 		}
 
-		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, 
-			int localPlayer, bool useAftermath, Controller controller)
+		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
 			localPlayerIndex = localPlayer;
-			usingAftermath = useAftermath;
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
 
