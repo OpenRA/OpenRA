@@ -102,6 +102,8 @@ namespace OpenRa
 			PerfHistory.items["batches"].hasNormalTick = false;
 			Game.controller = controller;
 
+			ChromeProvider.Initialize("chrome.xml");
+
 			ChangeMap(mapName);
 
 			if (Settings.Replay != "")

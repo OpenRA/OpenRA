@@ -98,6 +98,7 @@
     <Compile Include="GameRules\UserSettings.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Graphics\ChromeProvider.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Resources1.Designer.cs">
