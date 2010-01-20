@@ -59,7 +59,6 @@ namespace OpenRa.Orders
 			var orders = sources
 				.SelectMany(s => s.OrdersForFrame(frame))
 				.SelectMany(x => x.ToOrderList())
-				.Where(o => o.Validate())			/* drop bogus things */
 				.OrderBy(o => o.Player.Index)
 				.ToList();
 
