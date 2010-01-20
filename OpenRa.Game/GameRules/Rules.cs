@@ -20,28 +20,20 @@ namespace OpenRa
 		public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
 
-		public static Dictionary<string, ActorInfo> ActorInfo;
+		public static Dictionary<string, ActorInfo> Info;
 
-		public static void LoadRules(string mapFileName, bool useAftermath)
+		public static void LoadRules(string map, Manifest m)
 		{
-			if (useAftermath)
-				AllRules = new IniFile(
-					FileSystem.Open(mapFileName),
-					FileSystem.Open("aftermathUnits.ini"),
-					FileSystem.Open("units.ini"),
-					FileSystem.Open("aftrmath.ini"),
-					FileSystem.Open("rules.ini"));
-			else
-				AllRules = new IniFile(
-					FileSystem.Open(mapFileName),
-					FileSystem.Open("units.ini"),
-					FileSystem.Open("rules.ini"));
+			var legacyRules = m.LegacyRules.Reverse().ToList();
+			legacyRules.Insert(0, map);
+			AllRules = new IniFile(legacyRules.Select(a => FileSystem.Open(a)).ToArray());
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
 
+			// dirty hack. all of this needs to either die or go to traitinfos
 			Aftermath = new AftermathInfo();
-			if (useAftermath)
+			if (AllRules.GetSection("Aftermath", true).Count() > 0)
 				FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
 
 			LoadCategories(
@@ -62,15 +54,12 @@ namespace OpenRa
 			SupportPowerInfo = new InfoLoader<SupportPowerInfo>(
 				Pair.New<string, Func<string, SupportPowerInfo>>("SupportPower", _ => new SupportPowerInfo()));
 
-			var yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "ra.yaml" ), MiniYaml.FromFile( "defaults.yaml" ) );
-			if( useAftermath )
-				yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "aftermath.yaml" ), yamlRules );
+			var yamlRules = m.Rules.Reverse().Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
-			yamlRules = MiniYaml.Merge( MiniYaml.FromFile( "[mod]Separate buildqueue for defense.yaml" ), yamlRules );
-
-			ActorInfo = new Dictionary<string, ActorInfo>();
+			ActorInfo.LoadModAssemblies(m);
+			Info = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
-				ActorInfo.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
+				Info.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
 
 			TechTree = new TechTree();
 		}

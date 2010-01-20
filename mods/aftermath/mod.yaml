@@ -1,0 +1,17 @@
+# Red Alert: The Aftermath -- Package Manifest
+# Requires classic RA mod
+
+Packages:
+
+LegacyRules:
+	mods/aftermath/aftrmath.ini:	More or less original Aftermath rules file.
+	mods/aftermath/aftrmathUnits.ini:	OpenRA patches
+
+Rules:
+	mods/aftermath/rules.yaml:	OpenRA actorinfos
+
+Sequences:
+	mods/aftermath/sequences.xml:	Additional aftermath
+
+Assemblies:
+	mods/aftermath/OpenRa.Mods.Aftermath.dll:	Traits used

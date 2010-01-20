@@ -52,13 +52,19 @@ namespace OpenRa.GameRules
 			return node;
 		}
 
-		// todo: use mod metadata to do this
-		static Pair<Assembly, string>[] ModAssemblies = 
-		{ 
-			Pair.New( typeof(ITraitInfo).Assembly, typeof(ITraitInfo).Namespace ),
-			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\ra\OpenRa.Mods.RA.dll")), "OpenRa.Mods.RA" ), 
-			Pair.New( Assembly.LoadFile(Path.GetFullPath(@"mods\aftermath\OpenRa.Mods.Aftermath.dll")), "OpenRa.Mods.Aftermath" ) 
-		};
+		static Pair<Assembly, string>[] ModAssemblies;
+		public static void LoadModAssemblies(Manifest m)
+		{
+			var asms = new List<Pair<Assembly, string>>();
+
+			// all the core stuff is in this assembly
+			asms.Add(Pair.New(typeof(ITraitInfo).Assembly, typeof(ITraitInfo).Namespace));
+
+			// add the mods
+			foreach (var a in m.Assemblies)
+				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
+			ModAssemblies = asms.ToArray();
+		}
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{

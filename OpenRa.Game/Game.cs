@@ -50,13 +50,19 @@ namespace OpenRa
 
 		public static void ChangeMap(string mapName)
 		{
+			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+
 			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
 			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
 			SpriteSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
-			Rules.LoadRules(mapName, usingAftermath);
+
+			foreach (var pkg in manifest.Packages)
+				FileSystem.MountTemporary(new Package(pkg));
+
+			Rules.LoadRules(mapName, manifest);
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			world = new World();
@@ -75,11 +81,7 @@ namespace OpenRa
 				players[i] = new Player(i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			}
 
-			var sequenceFiles = usingAftermath 
-				? new[] { "sequences.xml", "sequences-aftermath.xml" }
-				: new[] { "sequences.xml" };
-
-			SequenceProvider.Initialize(sequenceFiles);
+			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 
 			skipMakeAnims = true;

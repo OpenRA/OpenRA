@@ -8,7 +8,7 @@ namespace OpenRa.Orders
 	{
 		readonly Actor Producer;
 		readonly string Building;
-		BuildingInfo BuildingInfo { get { return Rules.ActorInfo[ Building ].Traits.Get<BuildingInfo>(); } }
+		BuildingInfo BuildingInfo { get { return Rules.Info[ Building ].Traits.Get<BuildingInfo>(); } }
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
@@ -42,7 +42,7 @@ namespace OpenRa.Orders
 
 		public void Tick()
 		{
-			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.ActorInfo[ Building ].Category );
+			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
 			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
 				Game.controller.CancelInputMode();
 		}

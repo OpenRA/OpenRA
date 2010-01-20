@@ -347,8 +347,36 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
-				{ "addmod",
+				{ "addpkg",
 					s => 
+					{
+						if (GameStarted)
+						{
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"You can't change packages after the game has started" ).Serialize() );
+						}
+
+						Console.WriteLine("** Added package: `{0}`", s);
+						try
+						{
+							lobbyInfo.GlobalSettings.Packages = 
+								lobbyInfo.GlobalSettings.Packages.Concat( new string[] {
+									MakePackageString(s)}).ToArray();
+							SyncLobbyInfo();
+							return true;
+						}
+						catch
+						{
+							Console.WriteLine("That went horribly wrong.");
+							DispatchOrdersToClient(conn, 0, 
+								new ServerOrder( conn.PlayerIndex, "Chat",
+									"Adding the package failed." ).Serialize() );
+							return true;
+						}
+					}},
+				{ "addmod",
+					s =>
 					{
 						if (GameStarted)
 						{
@@ -360,9 +388,8 @@ namespace OpenRA.Server
 						Console.WriteLine("** Added mod: `{0}`", s);
 						try
 						{
-							lobbyInfo.GlobalSettings.Packages = 
-								lobbyInfo.GlobalSettings.Packages.Concat( new string[] {
-									MakePackageString(s)}).ToArray();
+							lobbyInfo.GlobalSettings.Mods = 
+								lobbyInfo.GlobalSettings.Mods.Concat( new[] { s } ).ToArray();
 							SyncLobbyInfo();
 							return true;
 						}

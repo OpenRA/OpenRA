@@ -11,7 +11,7 @@ namespace OpenRa.GameRules
 
 		public TechTree()
 		{
-			foreach( var info in Rules.ActorInfo.Values )
+			foreach( var info in Rules.Info.Values )
 			{
 				var pi = info.Traits.GetOrDefault<ProductionInfo>();
 				if (pi != null)
@@ -62,7 +62,7 @@ namespace OpenRa.GameRules
 
 		public IEnumerable<ActorInfo> AllBuildables(Player player, params string[] categories)
 		{
-			return Rules.ActorInfo.Values
+			return Rules.Info.Values
 				.Where( x => x.Name[ 0 ] != '^' )
 				.Where( x => categories.Contains( x.Category ) )
 				.Where( x => x.Traits.Contains<BuildableInfo>() );
@@ -72,7 +72,7 @@ namespace OpenRa.GameRules
 		{
 			var builtAt = info.Traits.Get<BuildableInfo>().BuiltAt;
 			if( builtAt.Length != 0 )
-				return builtAt.Select( x => Rules.ActorInfo[ x.ToLowerInvariant() ] );
+				return builtAt.Select( x => Rules.Info[ x.ToLowerInvariant() ] );
 			else
 				return producesIndex[ info.Category ];
 		}

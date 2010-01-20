@@ -32,7 +32,7 @@ namespace OpenRa
 
 			if (name != null)
 			{
-				Info = Rules.ActorInfo[name.ToLowerInvariant()];
+				Info = Rules.Info[name.ToLowerInvariant()];
 				Health = this.GetMaxHP();
 
 				foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())

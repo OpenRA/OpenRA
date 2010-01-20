@@ -1,0 +1,17 @@
+# Classic Red Alert Mod -- Package Manifest
+
+Packages:
+
+LegacyRules:
+	mods/ra/rules.ini:	More or less original Red Alert rules file.
+	mods/ra/units.ini:	OpenRA patches
+
+Rules:
+	mods/ra/defaults.yaml:	Basic stuff
+	mods/ra/rules.yaml:	OpenRA actorinfos
+
+Sequences:
+	mods/ra/sequences.xml:	Original animation sequences
+
+Assemblies:
+	mods/ra/OpenRa.Mods.RA.dll:	Traits used

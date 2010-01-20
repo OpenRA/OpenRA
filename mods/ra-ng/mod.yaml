@@ -1,0 +1,12 @@
+# Red Alert: Next Generation - Rules Manifest
+
+Packages:
+
+LegacyRules:
+
+Rules:
+	mods/ra-ng/defense-queue.yaml
+
+Sequences:
+
+Assemblies:

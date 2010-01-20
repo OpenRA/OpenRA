@@ -17,7 +17,7 @@ namespace OpenRa.Traits
 				Game.world.AddFrameEndTask( _ =>
 				{
 					var queue = self.traits.Get<ProductionQueue>();
-					var unit = Rules.ActorInfo[ order.TargetString ];
+					var unit = Rules.Info[ order.TargetString ];
 					var producing = queue.CurrentItem(unit.Category);
 					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 						return;
