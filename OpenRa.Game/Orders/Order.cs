@@ -86,7 +86,11 @@ namespace OpenRa
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
 
-						return new Order( order, ActorFromUInt( subjectId ), ActorFromUInt( targetActorId ), targetLocation, targetString);
+						Actor subject, targetActor;
+						if( !TryGetActorFromUInt( subjectId, out subject ) || !TryGetActorFromUInt( targetActorId, out targetActor ) )
+							return null;
+
+						return new Order( order, subject, targetActor, targetLocation, targetString);
 					}
 
 				case 0xfe:
@@ -109,10 +113,23 @@ namespace OpenRa
 			return a.ActorID;
 		}
 
-		static Actor ActorFromUInt(uint aID)
+		static bool TryGetActorFromUInt(uint aID, out Actor ret )
 		{
-			if (aID == 0xFFFFFFFF) return null;
-			return Game.world.Actors.SingleOrDefault(x => x.ActorID == aID);
+			if( aID == 0xFFFFFFFF )
+			{
+				ret = null;
+				return true;
+			}
+			else
+			{
+				foreach( var a in Game.world.Actors.Where( x => x.ActorID == aID ) )
+				{
+					ret = a;
+					return true;
+				}
+				ret = null;
+				return false;
+			}
 		}
 
 		// Named constructors for Orders.

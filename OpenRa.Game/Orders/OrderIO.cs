@@ -27,8 +27,12 @@ namespace OpenRa.Orders
 			var ms = new MemoryStream(bytes);
 			var reader = new BinaryReader(ms);
 			var ret = new List<Order>();
-			while (ms.Position < ms.Length)
-				ret.Add(Order.Deserialize(reader));
+			while( ms.Position < ms.Length )
+			{
+				var o = Order.Deserialize( reader );
+				if( o != null )
+					ret.Add( o );
+			}
 			return ret;
 		}
 	}
