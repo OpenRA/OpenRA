@@ -57,9 +57,6 @@ namespace OpenRa
 
 			FileSystem.MountDefaultPackages();
 			
-			if (Game.Settings.UseAftermath)
-				FileSystem.MountAftermathPackages();
-
 			bool windowed = !Game.Settings.Fullscreen;
 			renderer = new Renderer(this, GetResolution(settings), windowed);
 
