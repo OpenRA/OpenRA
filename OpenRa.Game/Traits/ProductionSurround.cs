@@ -12,9 +12,9 @@ namespace OpenRa.Traits
 	{
 		public ProductionSurround(Actor self) : base(self) { }
 
-		static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
+		static int2? FindAdjacentTile(Actor self, UnitMovementType umt)
 		{
-			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());
+			var tiles = Footprint.Tiles(self, self.traits.Get<Traits.Building>());
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
 			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
 
