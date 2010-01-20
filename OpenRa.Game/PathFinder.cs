@@ -10,10 +10,12 @@ namespace OpenRa
 {
 	public class PathFinder
 	{
+		readonly World world;
 		float[][,] passableCost = new float[4][,];
 		
 		public PathFinder( World world )
 		{
+			this.world = world;
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
 				passableCost[(int)umt] = new float[128, 128];
 			for( int x = 0 ; x < 128 ; x++ )
@@ -41,8 +43,8 @@ namespace OpenRa
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var tilesInRange = Game.world.FindTilesInCircle(target, range)
-					.Where( t => Game.world.IsCellBuildable( t, umt ) );
+				var tilesInRange = world.FindTilesInCircle(target, range)
+					.Where( t => world.IsCellBuildable( t, umt ) );
 
 				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
 				path.Reverse();
@@ -55,7 +57,7 @@ namespace OpenRa
 			return q =>
 				p != q &&
 				((p - q).LengthSquared < dist * dist) &&
-				(Game.world.UnitInfluence.GetUnitsAt(q).Any());
+				(world.UnitInfluence.GetUnitsAt(q).Any());
 		}
 
 		public List<int2> FindPath( PathSearch search )

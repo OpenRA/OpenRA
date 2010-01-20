@@ -8,11 +8,13 @@ namespace OpenRa
 {
 	public class UnitInfluenceMap
 	{
+		readonly World world;
 		List<Actor>[,] influence = new List<Actor>[128, 128];
 		readonly int2 searchDistance = new int2(2,2);
 
 		public UnitInfluenceMap( World world )
 		{
+			this.world = world;
 			for (int i = 0; i < 128; i++)
 				for (int j = 0; j < 128; j++)
 					influence[ i, j ] = new List<Actor>();
@@ -25,7 +27,7 @@ namespace OpenRa
 			// Does this belong here? NO, but it's your mess.
 			
 			// Get the crushable actors
-			foreach (var a in Game.world.Actors.Where(b => b.traits.Contains<ICrushable>()))
+			foreach (var a in world.Actors.Where(b => b.traits.Contains<ICrushable>()))
 			{
 				// Are there any units in the same cell that can crush this?
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
@@ -33,7 +35,7 @@ namespace OpenRa
 					{
 						// There should only be one (counterexample: An infantry and a tank try to pick up a crate at the same time.)
 						// If there is more than one, do action on the first crusher
-						var crusher = GetUnitsAt(cell).Where(b => a != b && Game.world.IsActorCrushableByActor(a, b)).FirstOrDefault();
+						var crusher = GetUnitsAt(cell).Where(b => a != b && world.IsActorCrushableByActor(a, b)).FirstOrDefault();
 						if (crusher != null)
 						{
 							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);
@@ -56,7 +58,7 @@ namespace OpenRa
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
 								throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
-			foreach( Actor a in Game.world.Actors )
+			foreach( Actor a in world.Actors )
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
 					foreach( var cell in ios.OccupiedCells() )
 						if (!influence[cell.X, cell.Y].Contains(a))

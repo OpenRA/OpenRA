@@ -7,6 +7,7 @@ namespace OpenRa.Graphics
 {
 	public class WorldRenderer
 	{
+		readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly SpriteRenderer spriteRenderer;
 		internal readonly LineRenderer lineRenderer;
@@ -18,6 +19,7 @@ namespace OpenRa.Graphics
 
 		internal WorldRenderer(World world, Renderer renderer)
 		{
+			this.world = world;
 			this.renderer = renderer;
 
 			terrainRenderer = new TerrainRenderer(world, renderer);
@@ -66,13 +68,13 @@ namespace OpenRa.Graphics
 				new SizeF( Game.viewport.Width, Game.viewport.Height ));
 
 			/* todo: cull to screen again */
-			var renderables = Game.world.Actors.SelectMany(a => a.Render())
+			var renderables = world.Actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
 			foreach (var r in renderables)
 				spriteRenderer.DrawSprite(r.Sprite, r.Pos, r.Palette);
 
-			foreach (var e in Game.world.Effects)
+			foreach (var e in world.Effects)
 				DrawSpriteList(rect, e.Render());
 
 			uiOverlay.Draw();
@@ -84,7 +86,7 @@ namespace OpenRa.Graphics
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render();
 
-			Game.world.LocalPlayer.Shroud.Draw(spriteRenderer);
+			world.LocalPlayer.Shroud.Draw(spriteRenderer);
 
 			lineRenderer.Flush();
 			spriteRenderer.Flush();
@@ -104,7 +106,7 @@ namespace OpenRa.Graphics
 			lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
 			lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
-			foreach (var u in Game.world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
+			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
 				DrawSelectionBox(u, Color.Yellow, false);
 		}
 
@@ -133,7 +135,7 @@ namespace OpenRa.Graphics
 				DrawControlGroup(selectedUnit, xy);
 
 				// Only display pips and tags to the owner
-				if (selectedUnit.Owner == Game.world.LocalPlayer)
+				if (selectedUnit.Owner == world.LocalPlayer)
 				{
 					DrawPips(selectedUnit, xY);
 					DrawTags(selectedUnit, new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));
