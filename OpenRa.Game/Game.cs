@@ -28,7 +28,6 @@ namespace OpenRa
 
 		internal static Renderer renderer;
 		static int2 clientSize;
-		static HardwarePalette palette;
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
@@ -56,8 +55,6 @@ namespace OpenRa
 				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
-
-			palette = new HardwarePalette(renderer, world.Map);
 
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
@@ -147,24 +144,12 @@ namespace OpenRa
 
 			using (new PerfSample("render"))
 			{
-				UpdatePalette(world.Actors.SelectMany(
-					a => a.traits.WithInterface<IPaletteModifier>()));
 				++RenderFrame;
 				viewport.DrawRegions();
 			}
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
-		}
-
-		static void UpdatePalette(IEnumerable<IPaletteModifier> paletteMods)
-		{
-			var b = new Bitmap(palette.Bitmap);
-			foreach (var mod in paletteMods)
-				mod.AdjustPalette(b);
-
-			palette.Texture.SetData(b);
-			renderer.PaletteTexture = palette.Texture;
 		}
 
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */

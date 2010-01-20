@@ -12,17 +12,19 @@ namespace OpenRa.Graphics
 		internal readonly LineRenderer lineRenderer;
 		internal readonly UiOverlay uiOverlay;
 		internal readonly Renderer renderer;
+		internal readonly HardwarePalette palette;
 
 		public static bool ShowUnitPaths = false;
 
 		internal WorldRenderer(World world, Renderer renderer)
 		{
-			terrainRenderer = new TerrainRenderer(world, renderer);
-
 			this.renderer = renderer;
+
+			terrainRenderer = new TerrainRenderer(world, renderer);
 			spriteRenderer = new SpriteRenderer(renderer, true);
 			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
+			palette = new HardwarePalette(renderer, world.Map);
 		}
 
 		void DrawSpriteList(RectangleF rect,
