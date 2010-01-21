@@ -8,7 +8,7 @@ namespace OpenRa.Graphics
 {
 	interface IHandleInput
 	{
-		bool HandleInput(MouseInput mi);
+		bool HandleInput(World world, MouseInput mi);
 	}
 
 	class Viewport
@@ -85,7 +85,7 @@ namespace OpenRa.Graphics
 					Game.chrome.DrawLobby( world );
 			}
 
-			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();
+			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor( world );
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
@@ -98,18 +98,18 @@ namespace OpenRa.Graphics
 		}
 
 		IHandleInput dragRegion = null;
-		public void DispatchMouseInput(MouseInput mi)
+		public void DispatchMouseInput(World world, MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				mousePos = mi.Location;
 
 			if (dragRegion != null) {
-				dragRegion.HandleInput( mi );
+				dragRegion.HandleInput( world, mi );
 				if (mi.Event == MouseInputEvent.Up) dragRegion = null;
 				return;
 			}
 
-			dragRegion = regions.FirstOrDefault(r => r.HandleInput(mi));
+			dragRegion = regions.FirstOrDefault(r => r.HandleInput(world, mi));
 			if (mi.Event != MouseInputEvent.Down)
 				dragRegion = null;
 		}

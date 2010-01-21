@@ -43,15 +43,15 @@ namespace OpenRa
 
 		List<Order> recentOrders = new List<Order>();
 
-		void ApplyOrders(float2 xy, MouseInput mi)
+		void ApplyOrders(World world, float2 xy, MouseInput mi)
 		{
 			if (orderGenerator == null) return;
 
-			var orders = orderGenerator.Order(Game.world, xy.ToInt2(), mi).ToArray();
+			var orders = orderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
 			recentOrders.AddRange( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
-				.FirstOrDefault(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Unit>());
+				.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.traits.Contains<Unit>());
 
 			var isMove = orders.Any(o => o.OrderString == "Move");
 			var isAttack = orders.Any( o => o.OrderString == "Attack" );
@@ -61,7 +61,7 @@ namespace OpenRa
 				Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
 
 				if (isMove)
-					Game.world.Add(new Effects.MoveFlash(Game.world, Game.CellSize * xy));
+					world.Add(new Effects.MoveFlash(world, Game.CellSize * xy));
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace OpenRa
 		}
 
 		float2 dragStart, dragEnd;
-		public bool HandleInput(MouseInput mi)
+		public bool HandleInput(World world, MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorld(mi);
 
@@ -84,7 +84,7 @@ namespace OpenRa
 			{
 				if (!(orderGenerator is PlaceBuildingOrderGenerator))
 					dragStart = dragEnd = xy;
-				ApplyOrders(xy, mi);
+				ApplyOrders(world, xy, mi);
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
@@ -94,8 +94,8 @@ namespace OpenRa
 			{
 				if (orderGenerator is UnitOrderGenerator)
 				{
-					var newSelection = Game.world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
-					CombineSelection(newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					var newSelection = world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
+					CombineSelection(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
 				dragStart = dragEnd = xy;
@@ -105,12 +105,12 @@ namespace OpenRa
 				dragStart = dragEnd = xy;
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				ApplyOrders(xy, mi);
+				ApplyOrders(world, xy, mi);
 
 			return true;
 		}
 
-		void CombineSelection(IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
+		void CombineSelection(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
 			var oldSelection = (orderGenerator is UnitOrderGenerator)
 							   ? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
@@ -127,7 +127,7 @@ namespace OpenRa
 
 			var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
 				.Where(a => a.traits.Contains<Unit>()
-					&& a.Owner == Game.world.LocalPlayer)
+					&& a.Owner == world.LocalPlayer)
 				.FirstOrDefault();
 
 			Sound.PlayVoice("Select", voicedUnit);
@@ -144,9 +144,9 @@ namespace OpenRa
 
 		public float2 MousePosition { get { return dragEnd; } }
 
-		public Cursor ChooseCursor()
+		public Cursor ChooseCursor( World world )
 		{
-			int sync = Game.world.SyncHash();
+			int sync = world.SyncHash();
 
 			try
 			{
@@ -157,18 +157,18 @@ namespace OpenRa
 					Modifiers = GetModifierKeys(),
 				};
 
-				return orderGenerator.GetCursor( Game.world, MousePosition.ToInt2(), mi );
+				return orderGenerator.GetCursor( world, MousePosition.ToInt2(), mi );
 			}
 			finally
 			{
-				if( sync != Game.world.SyncHash() )
+				if( sync != world.SyncHash() )
 					throw new InvalidOperationException( "Desync in Controller.ChooseCursor" );
 			}
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(int group, Modifiers mods)
+		public void DoControlGroup(World world, int group, Modifiers mods)
 		{
 			var uog = orderGenerator as UnitOrderGenerator;
 			if (uog == null) return;
@@ -193,7 +193,7 @@ namespace OpenRa
 				return;
 			}
 
-			CombineSelection(controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
+			CombineSelection(world, controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
 		}
 
 		public int? GetControlGroupForActor(Actor a)

@@ -812,7 +812,7 @@ namespace OpenRa
 		}
 
 		int2 lastMousePos;
-		public bool HandleInput(MouseInput mi)
+		public bool HandleInput(World world, MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				lastMousePos = mi.Location;
