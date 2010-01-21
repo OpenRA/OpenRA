@@ -15,14 +15,14 @@ namespace OpenRa.Effects
 		public FlashTarget(Actor target)
 		{
 			this.target = target;
-			foreach (var e in Game.world.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
-				Game.world.Remove(e);
+			foreach (var e in target.World.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
+				target.World.Remove(e);
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if (--remainingTicks == 0)
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Renderable> Render()

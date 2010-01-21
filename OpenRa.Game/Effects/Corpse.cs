@@ -15,13 +15,13 @@ namespace OpenRa.Effects
 		{
 			anim = new Animation(fromActor.traits.GetOrDefault<RenderSimple>().GetImage(fromActor));
 			anim.PlayThen("die{0}".F(death + 1),
-				() => Game.world.AddFrameEndTask(w => w.Remove(this)));
+				() => fromActor.World.AddFrameEndTask(w => w.Remove(this)));
 
 			pos = fromActor.CenterLocation;
 			owner = fromActor.Owner;
 		}
 
-		public void Tick() { anim.Tick(); }
+		public void Tick( World world ) { anim.Tick(); }
 
 		public IEnumerable<Renderable> Render()
 		{

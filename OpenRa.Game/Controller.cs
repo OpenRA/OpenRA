@@ -61,7 +61,7 @@ namespace OpenRa
 				Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
 
 				if (isMove)
-					Game.world.Add(new Effects.MoveFlash(Game.CellSize * xy));
+					Game.world.Add(new Effects.MoveFlash(Game.world, Game.CellSize * xy));
 			}
 		}
 

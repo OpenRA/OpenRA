@@ -20,10 +20,10 @@ namespace OpenRa.Effects
 			anim.PlayRepeating("disabled");
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if (removeNextFrame == true)
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 			
 			// Fix off-by one frame bug with undisabling causing low-power
 			if (!b.Disabled || a.IsDead)

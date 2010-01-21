@@ -12,10 +12,10 @@ namespace OpenRa.Effects
 
 		public RepairIndicator(Actor a) { this.a = a; anim.PlayRepeating("repair"); }
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if (--framesLeft == 0 || a.IsDead)
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Renderable> Render()

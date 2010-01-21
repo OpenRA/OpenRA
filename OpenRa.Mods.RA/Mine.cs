@@ -32,10 +32,10 @@ namespace OpenRa.Mods.RA
 			var info = self.Info.Traits.Get<MineInfo>();
 			var warhead = Rules.WarheadInfo[info.Warhead];
 
-			self.World.AddFrameEndTask(_ =>
+			self.World.AddFrameEndTask(w =>
 			{
-				self.World.Remove(self);
-				self.World.Add(new Explosion(self.CenterLocation.ToInt2(), warhead.Explosion, false));
+				w.Remove(self);
+				w.Add(new Explosion(w, self.CenterLocation.ToInt2(), warhead.Explosion, false));
 				crusher.InflictDamage(crusher, info.Damage, warhead);
 			});
 		}

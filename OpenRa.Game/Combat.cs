@@ -22,7 +22,7 @@ namespace OpenRa
 
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(visualLoc, warhead.Explosion, hitWater)));
+					w => w.Add(new Explosion(w, visualLoc, warhead.Explosion, hitWater)));
 
 			var impactSound = warhead.ImpactSound;
 			if (hitWater && warhead.WaterImpactSound != null)

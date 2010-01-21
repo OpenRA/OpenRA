@@ -16,13 +16,13 @@ namespace OpenRa.Effects
 			anim.PlayRepeating("idle");
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			anim.Tick();
 			offset.Y -= heightPerTick;
 			
 			if (offset.Y < 0)
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 		}
 		
 		public IEnumerable<Renderable> Render()

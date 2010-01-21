@@ -110,7 +110,7 @@ namespace OpenRa
 				}
 
 			foreach (var a in actors) a.Tick();
-			foreach (var e in effects) e.Tick();
+			foreach (var e in effects) e.Tick( this );
 
 			Game.viewport.Tick();
 

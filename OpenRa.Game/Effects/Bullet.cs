@@ -56,13 +56,13 @@ namespace OpenRa.Effects
 
 		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			t += 40;
 
 			if (t > TotalTime())		/* remove finished bullets */
 			{
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 				Combat.DoImpact(Dest, VisualDest - new int2( 0, DestAltitude ), 
 					Weapon, Projectile, Warhead, FiredBy);
 			}

@@ -9,16 +9,16 @@ namespace OpenRa.Effects
 		Animation anim;
 		int2 pos;
 
-		public Explosion(int2 pixelPos, int style, bool isWater)
+		public Explosion( World world, int2 pixelPos, int style, bool isWater)
 		{
 			this.pos = pixelPos;
 			var variantSuffix = isWater ? "w" : "";
 			anim = new Animation("explosion");
 				anim.PlayThen(style.ToString() + variantSuffix, 
-					() => Game.world.AddFrameEndTask(w => w.Remove(this)));
+					() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick() { anim.Tick(); }
+		public void Tick( World world ) { anim.Tick(); }
 
 		public IEnumerable<Renderable> Render()
 		{
