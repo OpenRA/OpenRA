@@ -29,7 +29,7 @@ namespace OpenRa.Traits
 			{
 				var power = self.Owner.SupportPowers[order.TargetString].Impl;
 				power.OnFireNotification(self, self.Location);
-				Game.world.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
+				self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
 				RemainingTicks = (int)(Rules.General.IronCurtain * 60 * 25);
 			}
 		}

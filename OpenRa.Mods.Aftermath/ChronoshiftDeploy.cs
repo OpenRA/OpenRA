@@ -55,7 +55,7 @@ namespace OpenRa.Mods.Aftermath
 				Sound.Play("chrotnk1.aud");
 				chargeTick = chargeLength;
 
-				foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
+				foreach (var a in self.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
 					a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
 			}
 		}

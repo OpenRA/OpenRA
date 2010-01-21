@@ -32,10 +32,10 @@ namespace OpenRa.Traits
 		public bool Produce( Actor self, ActorInfo producee )
 		{
 			var location = CreationLocation( self, producee );
-			if( location == null || Game.world.UnitInfluence.GetUnitsAt( location.Value ).Any() )
+			if( location == null || self.World.UnitInfluence.GetUnitsAt( location.Value ).Any() )
 				return false;
 
-			var newUnit = Game.world.CreateActor( producee.Name, location.Value, self.Owner );
+			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
 			var rp = self.traits.GetOrDefault<RallyPoint>();
@@ -86,7 +86,7 @@ namespace OpenRa.Traits
 			// Cancel existing primaries
 			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 			{
-				foreach (var b in Game.world.Actors.Where(x => x.traits.Contains<Production>()
+				foreach (var b in self.World.Actors.Where(x => x.traits.Contains<Production>()
 					&& x.Owner == self.Owner
 					&& x.traits.Get<Production>().IsPrimary == true
 					&& (x.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))

@@ -8,7 +8,7 @@ namespace OpenRa.Traits
 	{
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return Game.world.LocalPlayer == self.Owner
+			return self.World.LocalPlayer == self.Owner
 				? r : new Renderable[] { };
 		}
 	}

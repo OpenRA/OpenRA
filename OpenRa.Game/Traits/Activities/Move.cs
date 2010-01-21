@@ -20,7 +20,7 @@ namespace OpenRa.Traits.Activities
 
 		public Move( int2 destination, int nearEnough )
 		{
-			this.getPath = ( self, mobile ) => Game.world.PathFinder.FindUnitPath(
+			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPath(
 				self.Location, destination,
 				mobile.GetMovementType() );
 			this.destination = destination;
@@ -30,9 +30,9 @@ namespace OpenRa.Traits.Activities
 		public Move(int2 destination, Actor ignoreBuilding)
 		{
 			this.getPath = (self, mobile) => 
-				Game.world.PathFinder.FindPath(
+				self.World.PathFinder.FindPath(
 					PathSearch.FromPoint( self.Location, destination, mobile.GetMovementType(), false )
-					.WithCustomBlocker( Game.world.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
+					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;
 			this.nearEnough = 0;
@@ -41,7 +41,7 @@ namespace OpenRa.Traits.Activities
 
 		public Move( Actor target, int range )
 		{
-			this.getPath = ( self, mobile ) => Game.world.PathFinder.FindUnitPathToRange(
+			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPathToRange(
 				self.Location, target.Location,
 				mobile.GetMovementType(), range );
 			this.destination = null;
@@ -57,13 +57,13 @@ namespace OpenRa.Traits.Activities
 
 		bool CanEnterCell( int2 c, Actor self )
 		{
-			if (!Game.world.BuildingInfluence.CanMoveHere(c)
-				&& Game.world.BuildingInfluence.GetBuildingAt(c) != ignoreBuilding) 
+			if (!self.World.BuildingInfluence.CanMoveHere(c)
+				&& self.World.BuildingInfluence.GetBuildingAt(c) != ignoreBuilding) 
 				return false;
 			
 			// Cannot enter a cell if any unit inside is uncrushable
 			// This will need to be updated for multiple-infantry-in-a-cell
-			return (!Game.world.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !Game.world.IsActorCrushableByActor(a, self)));
+			return (!self.World.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !self.World.IsActorCrushableByActor(a, self)));
 		}
 
 		public IActivity Tick( Actor self )
@@ -144,10 +144,10 @@ namespace OpenRa.Traits.Activities
 					return null;
 				}
 
-				Game.world.UnitInfluence.Remove( self, mobile );
+				self.World.UnitInfluence.Remove( self, mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
 
-				Game.world.UnitInfluence.Add( self, mobile );
+				self.World.UnitInfluence.Add( self, mobile );
 				if (newPath.Count != 0)
 					path = newPath;
 

@@ -42,7 +42,7 @@ namespace OpenRa.Traits.Activities
 					umt = mobile.GetMovementType(),
 					checkForBlocked = false,
 				};
-				var refineries = Game.world.Actors.Where( x => x.traits.Contains<AcceptsOre>() 
+				var refineries = self.World.Actors.Where( x => x.traits.Contains<AcceptsOre>() 
 					&& x.Owner == self.Owner ).ToList();
 				if( refinery != null )
 					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
@@ -50,7 +50,7 @@ namespace OpenRa.Traits.Activities
 					foreach( var r in refineries )
 						search.AddInitialCell( r.Location + refineryDeliverOffset );
 
-				var path = Game.world.PathFinder.FindPath( search );
+				var path = self.World.PathFinder.FindPath( search );
 				path.Reverse();
 				if( path.Count != 0 )
 				{

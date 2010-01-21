@@ -21,7 +21,7 @@ namespace OpenRa.Traits
 		public int2 fromCell
 		{
 			get { return __fromCell; }
-			set { Game.world.UnitInfluence.Remove(self, this); __fromCell = value; Game.world.UnitInfluence.Add(self, this); }
+			set { self.World.UnitInfluence.Remove(self, this); __fromCell = value; self.World.UnitInfluence.Add(self, this); }
 		}
 		public int2 toCell
 		{
@@ -30,11 +30,11 @@ namespace OpenRa.Traits
 			{
 				if (self.Location != value)
 				{
-					Game.world.UnitInfluence.Remove(self, this);
+					self.World.UnitInfluence.Remove(self, this);
 					self.Location = value;
 					self.Owner.Shroud.Explore(self);
 				}
-				Game.world.UnitInfluence.Add(self, this);
+				self.World.UnitInfluence.Add(self, this);
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace OpenRa.Traits
 		{
 			this.self = self;
 			__fromCell = toCell;
-			Game.world.UnitInfluence.Add(self, this);
+			self.World.UnitInfluence.Add(self, this);
 		}
 
 		public void TeleportTo(Actor self, int2 xy)
@@ -62,7 +62,7 @@ namespace OpenRa.Traits
 			{
 				// force-move
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
-				if (!Game.world.IsActorCrushableByActor(underCursor, self)) return null;
+				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
 			}
 
 			if (Util.GetEffectiveSpeed(self) == 0) return null;		/* allow disabling move orders from modifiers */
@@ -93,14 +93,14 @@ namespace OpenRa.Traits
 		
 		public bool CanEnterCell(int2 a)
 		{
-			if (!Game.world.BuildingInfluence.CanMoveHere(a)) return false;
+			if (!self.World.BuildingInfluence.CanMoveHere(a)) return false;
 
 			var crushable = true;
-			foreach (Actor actor in Game.world.UnitInfluence.GetUnitsAt(a))
+			foreach (Actor actor in self.World.UnitInfluence.GetUnitsAt(a))
 			{
 				if (actor == self) continue;
 				
-				if (!Game.world.IsActorCrushableByActor(actor, self))
+				if (!self.World.IsActorCrushableByActor(actor, self))
 				{
 					crushable = false;
 					break;
@@ -109,9 +109,9 @@ namespace OpenRa.Traits
 			
 			if (!crushable) return false;
 			
-			return Game.world.Map.IsInMap(a.X, a.Y) &&
+			return self.World.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(GetMovementType(),
-					Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					self.World.TileSet.GetWalkability(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

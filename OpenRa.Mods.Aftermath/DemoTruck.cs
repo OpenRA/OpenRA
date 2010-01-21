@@ -20,7 +20,7 @@ namespace OpenRa.Mods.Aftermath
 		{
 			// Override chronoshifting action to detonate vehicle
 			var movement = self.traits.GetOrDefault<IMovement>();
-			var chronosphere = Game.world.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
+			var chronosphere = self.World.Actors.Where(a => a.Owner == order.Subject.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
 				self.InflictDamage(chronosphere, self.Health, Rules.WarheadInfo["Super"]);
@@ -44,7 +44,7 @@ namespace OpenRa.Mods.Aftermath
 			var altitude = unit != null ? unit.Altitude : 0;
 			int2 detonateLocation = self.CenterLocation.ToInt2();
 
-			Game.world.AddFrameEndTask(
+			self.World.AddFrameEndTask(
 				w => w.Add(new Bullet(self.Info.Traits.Get<AttackBaseInfo>().PrimaryWeapon, detonatedBy.Owner, detonatedBy,
 					detonateLocation, detonateLocation, altitude, altitude)));
 		}

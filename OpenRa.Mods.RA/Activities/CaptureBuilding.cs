@@ -37,7 +37,7 @@ namespace OpenRa.Mods.RA.Activities
 			}
 
 			// the engineer is sacrificed.
-			Game.world.AddFrameEndTask(w => w.Remove(self));
+			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return NextActivity;
 		}

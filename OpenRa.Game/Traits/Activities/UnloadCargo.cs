@@ -13,13 +13,13 @@ namespace OpenRa.Traits.Activities
 		int2? ChooseExitTile(Actor self)
 		{
 			// is anyone still hogging this tile?
-			if (Game.world.UnitInfluence.GetUnitsAt(self.Location).Count() > 1)
+			if (self.World.UnitInfluence.GetUnitsAt(self.Location).Count() > 1)
 				return null;
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 					if ((i != 0 || j != 0) && 
-						Game.world.IsCellBuildable(self.Location + new int2(i, j), 
+						self.World.IsCellBuildable(self.Location + new int2(i, j), 
 							UnitMovementType.Foot))
 						return self.Location + new int2(i, j);
 
@@ -54,7 +54,7 @@ namespace OpenRa.Traits.Activities
 
 			var actor = cargo.Unload(self);
 
-			Game.world.AddFrameEndTask(w =>
+			self.World.AddFrameEndTask(w =>
 			{
 				w.Add(actor);
 				actor.traits.Get<Mobile>().TeleportTo(actor, self.Location);

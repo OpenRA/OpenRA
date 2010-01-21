@@ -97,7 +97,7 @@ namespace OpenRa.Traits
 			// If the disabled state has changed since the last frame
 			if (Disabled ^ wasDisabled 
 				&& (wasDisabled = Disabled)) // Yes, I mean assignment
-					Game.world.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
+					self.World.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
 			
 			if (!isRepairing) return;
 
@@ -113,7 +113,7 @@ namespace OpenRa.Traits
 					return;
 				}
 
-				Game.world.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
+				self.World.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
 				if (self.Health == maxHP)
 				{

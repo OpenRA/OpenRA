@@ -23,7 +23,7 @@ namespace OpenRa.Traits.Activities
 			self.Health = 0;
 			foreach (var ns in self.traits.WithInterface<INotifySold>())
 				ns.Sold(self);
-			Game.world.AddFrameEndTask( _ => Game.world.Remove( self ) );
+			self.World.AddFrameEndTask( _ => self.World.Remove( self ) );
 
 			// todo: give dudes
 		}

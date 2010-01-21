@@ -19,7 +19,7 @@ namespace OpenRa.Traits
 			if( Game.skipMakeAnims )
 				Complete( self );
 			else
-				anim.PlayThen( "make", () => Game.world.AddFrameEndTask( _ => Complete( self ) ) );
+				anim.PlayThen( "make", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
 
 			DoBib(self, false);
 		}
@@ -45,11 +45,11 @@ namespace OpenRa.Traits
 					var p = self.Location + new int2(i % size, i / size + bibOffset);
 					if (isRemove)
 					{
-						if (Game.world.Map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
-							Game.world.Map.MapTiles[ p.X, p.Y ].smudge = 0;
+						if (self.World.Map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
+							self.World.Map.MapTiles[ p.X, p.Y ].smudge = 0;
 					}
 					else
-						Game.world.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
+						self.World.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ namespace OpenRa.Traits
 					break;
 				case DamageState.Dead:
 					DoBib(self, true);
-					Game.world.AddFrameEndTask(w => w.Add(new Explosion(self.CenterLocation.ToInt2(), 7, false)));
+					self.World.AddFrameEndTask(w => w.Add(new Explosion(self.CenterLocation.ToInt2(), 7, false)));
 					break;
 			}
 		}

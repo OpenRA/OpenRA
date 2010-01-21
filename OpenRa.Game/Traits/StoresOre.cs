@@ -18,7 +18,7 @@ namespace OpenRa.Traits
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
-			if (Game.world.LocalPlayer == thief.Owner)
+			if (self.World.LocalPlayer == thief.Owner)
 				Sound.Play("credit1.aud");
 		}
 		
@@ -27,7 +27,7 @@ namespace OpenRa.Traits
 			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
 
 			return Graphics.Util.MakeArray( numPips, 
-				i => (Game.world.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
+				i => (self.World.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
 					? PipType.Yellow : PipType.Transparent );
 		}
 	}

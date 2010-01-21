@@ -34,7 +34,7 @@ namespace OpenRa.Traits
 		public void Tick(Actor self)
 		{
 			var b = self.GetBounds(false);
-			if (isOpen && !Game.world.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
+			if (isOpen && !self.World.UnitInfluence.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(GetPrefix(self) + "build-top", () => roof.Play(GetPrefix(self) + "idle-top"));

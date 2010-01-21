@@ -33,7 +33,7 @@ namespace OpenRa.Traits
 			if (remainingSurfaceTime > 0)
 				return rs;
 
-			if (self.Owner == Game.world.LocalPlayer)
+			if (self.Owner == self.World.LocalPlayer)
 				return rs.Select(a => a.WithPalette(PaletteType.Shadow));
 			else
 				return new Renderable[] { };

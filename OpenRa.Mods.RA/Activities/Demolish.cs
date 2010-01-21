@@ -16,7 +16,7 @@ namespace OpenRa.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-			Game.world.AddFrameEndTask(w => w.Add(new DelayedAction(25*2, 
+			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25*2, 
 				() => target.InflictDamage(self, target.Health, Rules.WarheadInfo["DemolishWarhead"]))));
 			return NextActivity;
 		}

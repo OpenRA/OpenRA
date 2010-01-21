@@ -30,7 +30,7 @@ namespace OpenRa.Traits
 		
 		public bool IsCrushableBy(UnitMovementType umt, Player player)
 		{
-			if (player == Game.world.LocalPlayer) return false;
+			if (player == self.World.LocalPlayer) return false;
 			switch (umt)
 			{
 				case UnitMovementType.Track: return true;

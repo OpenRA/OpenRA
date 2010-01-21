@@ -49,11 +49,11 @@ namespace OpenRa.Traits
 
 					BeginProduction( unit.Category,
 						new ProductionItem( order.TargetString, (int)time, ui.Cost,
-							() => Game.world.AddFrameEndTask(
+							() => self.World.AddFrameEndTask(
 								_ =>
 								{
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
-									if( !hasPlayedSound && order.Player == Game.world.LocalPlayer )
+									if( !hasPlayedSound && order.Player == self.World.LocalPlayer )
 									{
 										Sound.Play( isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );
 										hasPlayedSound = true;
@@ -131,7 +131,7 @@ namespace OpenRa.Traits
 			Actor producer = null;
 			
 			// Prioritise primary structure in build order
-			var primaryProducers = Game.world.Actors
+			var primaryProducers = self.World.Actors
 				.Where(x => x.traits.Contains<Production>()
 					&& producerTypes.Contains(x.Info)
 					&& x.Owner == self.Owner
@@ -152,7 +152,7 @@ namespace OpenRa.Traits
 			// Pick the first available producer
 			if (producer == null)
 			{
-				producer = Game.world.Actors
+				producer = self.World.Actors
 					.Where( x => producerTypes.Contains( x.Info ) && x.Owner == self.Owner )
 					.FirstOrDefault();
 			}

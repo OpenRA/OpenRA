@@ -14,7 +14,7 @@ namespace OpenRa.Traits
 		{
 			if( order.OrderString == "PlaceBuilding" )
 			{
-				Game.world.AddFrameEndTask( _ =>
+				self.World.AddFrameEndTask( _ =>
 				{
 					var queue = self.traits.Get<ProductionQueue>();
 					var unit = Rules.Info[ order.TargetString ];
@@ -22,8 +22,8 @@ namespace OpenRa.Traits
 					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 						return;
 
-					Game.world.CreateActor( order.TargetString, order.TargetLocation, order.Player );
-					if (order.Player == Game.world.LocalPlayer)
+					self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+					if (order.Player == self.World.LocalPlayer)
 					{
 						Sound.Play("placbldg.aud");
 						Sound.Play("build5.aud");
