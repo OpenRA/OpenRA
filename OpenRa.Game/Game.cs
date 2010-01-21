@@ -131,7 +131,7 @@ namespace OpenRa
 					{
 						orderManager.Tick();
 						if (controller.orderGenerator != null)
-							controller.orderGenerator.Tick();
+							controller.orderGenerator.Tick( world );
 
 						world.Tick();
 					}

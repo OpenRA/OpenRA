@@ -16,21 +16,21 @@ namespace OpenRa.Orders
 			Building = name;
 		}
 
-		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				Game.controller.CancelInputMode();
 
-			return InnerOrder(xy, mi);
+			return InnerOrder(world, xy, mi);
 		}
 
-		IEnumerable<Order> InnerOrder(int2 xy, MouseInput mi)
+		IEnumerable<Order> InnerOrder(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
 				var topLeft = xy - Footprint.AdjustForBuildingSize( BuildingInfo );
-				if (!Game.world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
-					|| !Game.world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
+				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
+					|| !world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
 				{
 					Sound.Play("nodeply1.aud");
 					yield break;
@@ -40,19 +40,19 @@ namespace OpenRa.Orders
 			}
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
 			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
 				Game.controller.CancelInputMode();
 		}
 
-		public void Render()
+		public void Render( World world )
 		{
-			Game.world.WorldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
+			world.WorldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
 		}
 
-		public Cursor GetCursor(int2 xy, MouseInput mi)
+		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
 		{
 			return Cursor.Default;
 		}

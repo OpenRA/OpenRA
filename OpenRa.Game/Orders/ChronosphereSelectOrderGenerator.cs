@@ -15,21 +15,21 @@ namespace OpenRa.Orders
 			this.power = power;
 		}
 		
-		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				Game.controller.CancelInputMode();
 
-			return OrderInner(xy, mi);
+			return OrderInner(world, xy, mi);
 		}
 
-		IEnumerable<Order> OrderInner(int2 xy, MouseInput mi)
+		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
 				var loc = mi.Location + Game.viewport.Location;
-				var underCursor = Game.world.FindUnits(loc, loc)
-					.Where(a => a.Owner == Game.world.LocalPlayer
+				var underCursor = world.FindUnits(loc, loc)
+					.Where(a => a.Owner == world.LocalPlayer
 						&& a.traits.Contains<Chronoshiftable>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 				
@@ -38,21 +38,21 @@ namespace OpenRa.Orders
 			}
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
-			var hasChronosphere = Game.world.Actors
-				.Any(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Chronosphere>());
+			var hasChronosphere = world.Actors
+				.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<Chronosphere>());
 
 			if (!hasChronosphere)
 				Game.controller.CancelInputMode();
 		}
 
-		public void Render() { }
+		public void Render( World world ) { }
 
-		public Cursor GetCursor(int2 xy, MouseInput mi)
+		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(xy, mi).Any()
+			return OrderInner(world, xy, mi).Any()
 				? Cursor.ChronoshiftSelect : Cursor.MoveBlocked;
 		}
 	}

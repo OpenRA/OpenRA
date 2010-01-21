@@ -84,7 +84,7 @@ namespace OpenRa.Graphics
 			DrawBandBox();			
 
 			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.Render();
+				Game.controller.orderGenerator.Render( world );
 
 			world.LocalPlayer.Shroud.Draw(spriteRenderer);
 

@@ -15,7 +15,7 @@ namespace OpenRa.Orders
 			selection = selected.ToList();
 		}
 
-		public IEnumerable<Order> Order( int2 xy, MouseInput mi )
+		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
 			foreach( var unit in selection )
 			{
@@ -25,31 +25,31 @@ namespace OpenRa.Orders
 			}
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			selection.RemoveAll(a => !a.IsInWorld);
 		}
 
-		public void Render()
+		public void Render( World world )
 		{
 			foreach( var a in selection )
-				Game.world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
+				world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
 		}
 
-		public Cursor GetCursor(int2 xy, MouseInput mi)
+		public Cursor GetCursor( World world, int2 xy, MouseInput mi )
 		{
-			return ChooseCursor(mi);
+			return ChooseCursor(world, mi);
 		}
 
-		Cursor ChooseCursor( MouseInput mi )
+		Cursor ChooseCursor( World world, MouseInput mi )
 		{
 			var p = Game.controller.MousePosition;
-			var c = Order(p.ToInt2(), mi)
+			var c = Order(world, p.ToInt2(), mi)
 				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
 				.FirstOrDefault(a => a != null);
 
 			return c ??
-				(Game.world.SelectActorsInBox(Game.CellSize * p, 
+				(world.SelectActorsInBox(Game.CellSize * p, 
 				Game.CellSize * p).Any()
 					? Cursor.Select : Cursor.Default);
 		}
@@ -69,7 +69,7 @@ namespace OpenRa.Orders
 						return Cursor.MoveBlocked;
 				case "DeployMcv":
 					var factBuildingInfo = Rules.Info["fact"].Traits.Get<BuildingInfo>();
-					if (Game.world.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a))
+					if (a.World.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a))
 						return Cursor.Deploy;
 					else
 						return Cursor.DeployBlocked;

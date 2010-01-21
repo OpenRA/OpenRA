@@ -13,7 +13,7 @@ namespace OpenRa.Mods.Aftermath.Orders
 			this.self = self;
 		}
 
-		public IEnumerable<Order> Order(int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -24,15 +24,15 @@ namespace OpenRa.Mods.Aftermath.Orders
 			yield return new Order("ChronoshiftSelf", self, null, xy, null);
 		}
 
-		public void Tick() { }
-		public void Render()
+		public void Tick( World world ) { }
+		public void Render( World world )
 		{
-			Game.world.WorldRenderer.DrawSelectionBox(self, Color.White, true);
+			world.WorldRenderer.DrawSelectionBox(self, Color.White, true);
 		}
 
-		public Cursor GetCursor(int2 xy, MouseInput mi)
+		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
 		{
-			if (!Game.world.LocalPlayer.Shroud.IsExplored(xy))
+			if (!world.LocalPlayer.Shroud.IsExplored(xy))
 				return Cursor.MoveBlocked;
 
 			var movement = self.traits.GetOrDefault<IMovement>();

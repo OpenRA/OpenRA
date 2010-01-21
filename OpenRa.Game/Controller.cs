@@ -47,7 +47,7 @@ namespace OpenRa
 		{
 			if (orderGenerator == null) return;
 
-			var orders = orderGenerator.Order(xy.ToInt2(), mi).ToArray();
+			var orders = orderGenerator.Order(Game.world, xy.ToInt2(), mi).ToArray();
 			recentOrders.AddRange( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
@@ -157,7 +157,7 @@ namespace OpenRa
 					Modifiers = GetModifierKeys(),
 				};
 
-				return orderGenerator.GetCursor( MousePosition.ToInt2(), mi );
+				return orderGenerator.GetCursor( Game.world, MousePosition.ToInt2(), mi );
 			}
 			finally
 			{
