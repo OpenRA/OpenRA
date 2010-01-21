@@ -210,7 +210,7 @@ namespace OpenRa
 				world.CreateActor("mcv", sp, world.players[client.Index]);
 			}
 
-			Game.viewport.GoToStartLocation();
+			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );
 			orderManager.StartGame();
 		}
 

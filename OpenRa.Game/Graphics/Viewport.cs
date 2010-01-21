@@ -44,7 +44,7 @@ namespace OpenRa.Graphics
 
 		public void DrawRegions( World world )
 		{
-			Game.world.WorldRenderer.palette.Update(Game.world.Actors.SelectMany(
+			world.WorldRenderer.palette.Update(world.Actors.SelectMany(
 				a => a.traits.WithInterface<IPaletteModifier>()));
 
 			float2 r1 = new float2(2, -2) / screenSize;
@@ -54,7 +54,7 @@ namespace OpenRa.Graphics
 
 			if( Game.orderManager.GameStarted )
 			{
-				Game.world.WorldRenderer.Draw();
+				world.WorldRenderer.Draw();
 				Game.chrome.Draw( world );
 
 				if (Game.orderManager.IsNetplay && 
@@ -130,9 +130,9 @@ namespace OpenRa.Graphics
 			scrollPosition = (avgPos - .5f * new float2(Width, Height)).ToInt2();
 		}
 
-		public void GoToStartLocation()
+		public void GoToStartLocation( Player player )
 		{
-			Center(Game.world.Actors.Where(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Selectable>()));
+			Center(player.World.Actors.Where(a => a.Owner == player && a.traits.Contains<Selectable>()));
 		}
 	}
 }

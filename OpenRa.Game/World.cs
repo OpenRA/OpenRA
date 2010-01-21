@@ -24,7 +24,7 @@ namespace OpenRa
 			set
 			{
 				localPlayerIndex = value.Index;
-				Game.viewport.GoToStartLocation();
+				Game.viewport.GoToStartLocation( value );
 			}
 		}
 
