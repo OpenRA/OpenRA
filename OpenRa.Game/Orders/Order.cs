@@ -64,14 +64,14 @@ namespace OpenRa
 			}
 		}
 
-		static Player LookupPlayer(uint index)
+		static Player LookupPlayer(World world, uint index)
 		{
 			return Game.world.players
 				.Where(x => x.Value.Index == index)
 				.First().Value;
 		}
 
-		public static Order Deserialize(BinaryReader r)
+		public static Order Deserialize(World world, BinaryReader r)
 		{
 			switch (r.ReadByte())
 			{
@@ -87,7 +87,7 @@ namespace OpenRa
 							targetString = r.ReadString();
 
 						Actor subject, targetActor;
-						if( !TryGetActorFromUInt( subjectId, out subject ) || !TryGetActorFromUInt( targetActorId, out targetActor ) )
+						if( !TryGetActorFromUInt( world, subjectId, out subject ) || !TryGetActorFromUInt( world, targetActorId, out targetActor ) )
 							return null;
 
 						return new Order( order, subject, targetActor, targetLocation, targetString);
@@ -99,7 +99,7 @@ namespace OpenRa
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, LookupPlayer( playerID ).PlayerActor, null, int2.Zero, data ) { IsImmediate = true };
+						return new Order( name, LookupPlayer( world, playerID ).PlayerActor, null, int2.Zero, data ) { IsImmediate = true };
 					}
 
 				default:
@@ -113,7 +113,7 @@ namespace OpenRa
 			return a.ActorID;
 		}
 
-		static bool TryGetActorFromUInt(uint aID, out Actor ret )
+		static bool TryGetActorFromUInt(World world, uint aID, out Actor ret )
 		{
 			if( aID == 0xFFFFFFFF )
 			{
@@ -122,7 +122,7 @@ namespace OpenRa
 			}
 			else
 			{
-				foreach( var a in Game.world.Actors.Where( x => x.ActorID == aID ) )
+				foreach( var a in world.Actors.Where( x => x.ActorID == aID ) )
 				{
 					ret = a;
 					return true;

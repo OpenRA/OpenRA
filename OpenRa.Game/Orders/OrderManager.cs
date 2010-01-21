@@ -54,11 +54,11 @@ namespace OpenRa.Orders
 			}
 		}
 
-		void ProcessOrders(int frame, bool save)
+		void ProcessOrders(World world, int frame, bool save)
 		{
 			var orders = sources
 				.SelectMany(s => s.OrdersForFrame(frame))
-				.SelectMany(x => x.ToOrderList())
+				.SelectMany(x => x.ToOrderList(world))
 				.OrderBy(o => o.Player.Index)
 				.ToList();
 
@@ -69,24 +69,24 @@ namespace OpenRa.Orders
 				savingReplay.WriteFrameData(orders, frame);
 		}
 
-		public void TickImmediate()
+		public void TickImmediate( World world )
 		{
 			var localOrders = Game.controller.GetRecentOrders(true);
 			if (localOrders.Count > 0)
 				foreach (var p in sources)
 					p.SendLocalOrders(0, localOrders);
 
-			ProcessOrders(0, false);
+			ProcessOrders(world, 0, false);
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			var localOrders = Game.controller.GetRecentOrders(false);
 
 			foreach( var p in sources )
 				p.SendLocalOrders( frameNumber + FramesAhead, localOrders );
 
-			ProcessOrders(frameNumber, true);
+			ProcessOrders(world, frameNumber, true);
 			
 			++frameNumber;
 

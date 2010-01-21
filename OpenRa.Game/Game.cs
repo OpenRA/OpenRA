@@ -125,11 +125,11 @@ namespace OpenRa
 					lastTime += Settings.Timestep;
 					chrome.Tick();
 
-					orderManager.TickImmediate();
+					orderManager.TickImmediate( world );
 
 					if (orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick();
+						orderManager.Tick( world );
 						if (controller.orderGenerator != null)
 							controller.orderGenerator.Tick( world );
 
