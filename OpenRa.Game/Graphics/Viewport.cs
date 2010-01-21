@@ -42,7 +42,7 @@ namespace OpenRa.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 
-		public void DrawRegions()
+		public void DrawRegions( World world )
 		{
 			Game.world.WorldRenderer.palette.Update(Game.world.Actors.SelectMany(
 				a => a.traits.WithInterface<IPaletteModifier>()));
@@ -55,7 +55,7 @@ namespace OpenRa.Graphics
 			if( Game.orderManager.GameStarted )
 			{
 				Game.world.WorldRenderer.Draw();
-				Game.chrome.Draw();
+				Game.chrome.Draw( world );
 
 				if (Game.orderManager.IsNetplay && 
 					Game.orderManager.Sources.OfType<NetworkOrderSource>().First().State == ConnectionState.NotConnected)
@@ -77,12 +77,12 @@ namespace OpenRa.Graphics
 							Game.chrome.DrawDialog("Connection failed.");
 							break;
 						case ConnectionState.Connected:
-							Game.chrome.DrawLobby();
+							Game.chrome.DrawLobby( world );
 							break;
 					}
 				}
 				else
-					Game.chrome.DrawLobby();
+					Game.chrome.DrawLobby( world );
 			}
 
 			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();

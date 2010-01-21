@@ -146,7 +146,7 @@ namespace OpenRa
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions();
+				viewport.DrawRegions( world );
 			}
 
 			PerfHistory.items["render"].Tick();
