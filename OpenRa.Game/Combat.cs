@@ -29,7 +29,7 @@ namespace OpenRa
 				impactSound = warhead.WaterImpactSound;
 			if (impactSound != null) Sound.Play(impactSound + ".aud");
 
-			if (!isWater) Smudge.AddSmudge(targetTile, warhead);
+			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
 			if (warhead.Ore) world.Map.DestroyOre(targetTile.X, targetTile.Y);
 
 			var maxSpread = GetMaximumSpread(weapon, warhead);

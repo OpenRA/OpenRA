@@ -26,6 +26,8 @@ namespace OpenRa
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
 
+		public World World { get { return PlayerActor.World; } }
+
 		public Shroud Shroud;
 		public Dictionary<string, SupportPower> SupportPowers;
 
@@ -52,7 +54,7 @@ namespace OpenRa
 			PowerProvided = 0;
 			PowerDrained = 0;
 
-			var myBuildings = Game.world.Actors
+			var myBuildings = World.Actors
 				.Where(a => a.Owner == this && a.traits.Contains<Building>());
 
 			foreach (var a in myBuildings)
@@ -83,7 +85,7 @@ namespace OpenRa
 
 		void UpdateOreCapacity()
 		{
-			OreCapacity = Game.world.Actors
+			OreCapacity = World.Actors
 				.Where(a => a.Owner == this && a.traits.Contains<StoresOre>())
 				.Select(a => a.Info.Traits.Get<StoresOreInfo>())
 				.Sum(b => b.Capacity);
@@ -91,7 +93,7 @@ namespace OpenRa
 
 		void GiveAdvice(string advice)
 		{
-			if (this != Game.world.LocalPlayer) return;
+			if (this != World.LocalPlayer) return;
 			// todo: store the condition or something.
 			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
 			Sound.Play(advice);
@@ -130,12 +132,12 @@ namespace OpenRa
 		{
 			UpdatePower();
 			UpdateOreCapacity();
-			Shroud.Tick();
+			Shroud.Tick( World );
 
 			foreach (var sp in SupportPowers.Values)
 				sp.Tick();
 
-			if (this == Game.world.LocalPlayer)
+			if (this == World.LocalPlayer)
 			{
 				var totalMoney = Cash + Ore;
 
