@@ -31,7 +31,7 @@ namespace OpenRa.Traits.Activities
 		{
 			this.getPath = (self, mobile) => 
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self.Location, destination, mobile.GetMovementType(), false )
+					PathSearch.FromPoint( self.World, self.Location, destination, mobile.GetMovementType(), false )
 					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( self.Location, 4 )).WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;

@@ -45,10 +45,10 @@ namespace OpenRa.Traits.Activities
 				var refineries = self.World.Actors.Where( x => x.traits.Contains<AcceptsOre>() 
 					&& x.Owner == self.Owner ).ToList();
 				if( refinery != null )
-					search.AddInitialCell( refinery.Location + refineryDeliverOffset );
+					search.AddInitialCell( self.World, refinery.Location + refineryDeliverOffset );
 				else
 					foreach( var r in refineries )
-						search.AddInitialCell( r.Location + refineryDeliverOffset );
+						search.AddInitialCell( self.World, r.Location + refineryDeliverOffset );
 
 				var path = self.World.PathFinder.FindPath( search );
 				path.Reverse();

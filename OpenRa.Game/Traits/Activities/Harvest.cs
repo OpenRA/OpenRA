@@ -62,7 +62,7 @@ namespace OpenRa.Traits.Activities
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};
-					search.AddInitialCell(self.Location);
+					search.AddInitialCell(self.World, self.Location);
 					return self.World.PathFinder.FindPath(search);
 				}));
 			self.QueueActivity(new Harvest());

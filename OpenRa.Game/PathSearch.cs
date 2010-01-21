@@ -34,12 +34,12 @@ namespace OpenRa
 			return this;
 		}
 
-		public int2 Expand( float[][ , ] passableCost )
+		public int2 Expand( World world, float[][ , ] passableCost )
 		{
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 
-			var custom2 = Game.world.customTerrain[p.Location.X, p.Location.Y];
+			var custom2 = world.customTerrain[p.Location.X, p.Location.Y];
 			var thisCost = (custom2 != null) 
 				? custom2.GetCost(p.Location, umt) 
 				: passableCost[(int)umt][p.Location.X, p.Location.Y];
@@ -51,24 +51,24 @@ namespace OpenRa
 			{
 				int2 newHere = p.Location + d;
 
-				if (!Game.world.Map.IsInMap(newHere.X, newHere.Y)) continue;
+				if (!world.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var custom = Game.world.customTerrain[newHere.X, newHere.Y];
+				var custom = world.customTerrain[newHere.X, newHere.Y];
 				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
 
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!Game.world.BuildingInfluence.CanMoveHere(newHere) && 
-					Game.world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
+				if (!world.BuildingInfluence.CanMoveHere(newHere) && 
+					world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
 					continue;
-				if (Game.world.Map.IsOverlaySolid(newHere))
+				if (world.Map.IsOverlaySolid(newHere))
 					continue;
 				
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (Game.world.UnitInfluence.GetUnitsAt(newHere).Any(a => !Game.world.IsActorPathableToCrush(a, umt))))
+				if (checkForBlocked && (world.UnitInfluence.GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
@@ -93,27 +93,27 @@ namespace OpenRa
 			return p.Location;
 		}
 
-		public void AddInitialCell( int2 location )
+		public void AddInitialCell( World world, int2 location )
 		{
-			if (!Game.world.Map.IsInMap(location.X, location.Y))
+			if (!world.Map.IsInMap(location.X, location.Y))
 				return;
 
 			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
 
-		public static PathSearch FromPoint( int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
+		public static PathSearch FromPoint( World world, int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
 		{
 			var search = new PathSearch {
 				heuristic = DefaultEstimator( target ),
 				umt = umt,
 				checkForBlocked = checkForBlocked };
 
-			search.AddInitialCell( from );
+			search.AddInitialCell( world, from );
 			return search;
 		}
 
-		public static PathSearch FromPoints(IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
+		public static PathSearch FromPoints(World world, IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
 		{
 			var search = new PathSearch
 			{
@@ -123,7 +123,7 @@ namespace OpenRa
 			};
 
 			foreach (var sl in froms)
-				search.AddInitialCell(sl);
+				search.AddInitialCell(world, sl);
 
 			return search;
 		}
