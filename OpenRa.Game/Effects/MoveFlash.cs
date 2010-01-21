@@ -12,15 +12,15 @@ namespace OpenRa.Effects
 		Animation anim = new Animation("moveflsh");
 		float2 pos;
 
-		public MoveFlash( float2 pos )
+		public MoveFlash( World world, float2 pos )
 		{
 			this.pos = pos;
 			anim.PlayThen( "idle", 
-				() => Game.world.AddFrameEndTask( 
+				() => world.AddFrameEndTask( 
 					w => w.Remove( this ) ) );
 		}
 
-		public void Tick() { anim.Tick(); }
+		public void Tick( World world ) { anim.Tick(); }
 
 		public IEnumerable<Renderable> Render()
 		{

@@ -8,16 +8,16 @@ namespace OpenRa.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			Game.world.AddFrameEndTask( _ =>
+			self.World.AddFrameEndTask( _ =>
 			{
 				self.Health = 0;
-				Game.world.Remove( self );
-				if (self.Owner == Game.world.LocalPlayer)
+				self.World.Remove( self );
+				if (self.Owner == self.World.LocalPlayer)
 				{
 					Sound.Play("placbldg.aud");
 					Sound.Play("build5.aud");
 				}
-				Game.world.CreateActor( "fact", self.Location - new int2( 1, 1 ), self.Owner );
+				self.World.CreateActor( "fact", self.Location - new int2( 1, 1 ), self.Owner );
 			} );
 			return this;
 		}

@@ -18,7 +18,7 @@ namespace OpenRa.Traits.Activities
 
 		Actor ChooseAirfield(Actor self)
 		{
-			var airfield = Game.world.Actors
+			var airfield = self.World.Actors
 				.Where(a => a.Info.Name == "afld"
 					&& a.Owner == self.Owner
 					&& !Reservable.IsReserved(a))

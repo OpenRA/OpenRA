@@ -20,7 +20,7 @@ namespace OpenRa.Traits.Activities
 			{
 				if (!limitedAmmo.GiveAmmo()) return NextActivity;
 
-				var hostBuilding = Game.world.FindUnits(self.CenterLocation, self.CenterLocation)
+				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
 
 				if (hostBuilding != null)

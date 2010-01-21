@@ -23,7 +23,7 @@ namespace OpenRa.Mods.RA.Activities
 			foreach (var t in target.traits.WithInterface<IAcceptThief>())
 				t.OnSteal(target, self);
 
-			Game.world.AddFrameEndTask(w => w.Remove(self));
+			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return NextActivity;
 		}

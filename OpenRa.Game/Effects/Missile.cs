@@ -47,7 +47,7 @@ namespace OpenRa.Effects
 		const int MissileCloseEnough = 7;
 		const float Scale = .2f;
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			t += 40;
 
@@ -64,7 +64,7 @@ namespace OpenRa.Effects
 			var dist = Target.CenterLocation - Pos;
 			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Target.IsDead)
 			{
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 
 				if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
 					Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
@@ -78,7 +78,7 @@ namespace OpenRa.Effects
 			Pos += move;
 
 			if (Projectile.Animates)
-				Game.world.AddFrameEndTask(w => w.Add(new Smoke((Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2())));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, (Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2())));
 
 			// todo: running out of fuel
 		}

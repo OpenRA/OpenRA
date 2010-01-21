@@ -81,7 +81,7 @@ namespace OpenRa.Graphics
 
 			mapOnlySheet.Texture.SetData(oreLayer);
 
-			if (!world.Actors.Any(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
+			if (!world.Actors.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
 				return;
 
 			var bitmap = new Bitmap(oreLayer);
@@ -109,7 +109,7 @@ namespace OpenRa.Graphics
 				{
 					for (var y = 0; y < 128; y++)
 						for (var x = 0; x < 128; x++)
-							if (!Game.world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
+							if (!world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
 								*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
 				}
 			}

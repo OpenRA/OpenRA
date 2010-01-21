@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRa.FileFormats;
+using OpenRa.Traits;
 
 namespace OpenRa.Graphics
 {
@@ -37,6 +39,16 @@ namespace OpenRa.Graphics
 				this[new Point(i, allocated)] = p.GetColor(i);
 
 			return allocated++;
+		}
+
+		public void Update(IEnumerable<IPaletteModifier> paletteMods)
+		{
+			var b = new Bitmap(Bitmap);
+			foreach (var mod in paletteMods)
+				mod.AdjustPalette(b);
+
+			Texture.SetData(b);
+			Game.renderer.PaletteTexture = Texture;
 		}
 	}
 }

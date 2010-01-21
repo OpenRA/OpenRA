@@ -150,18 +150,18 @@ namespace OpenRa.Traits
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
 
 				if( weapon.RenderAsTesla )
-					Game.world.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
+					self.World.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
 
 				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
 				{
 					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
 						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : unit.Facing);
 	
-					Game.world.Add(new Missile(weapon, self.Owner, self,
+					self.World.Add(new Missile(weapon, self.Owner, self,
 						firePos, thisTarget, srcAltitude, fireFacing));
 				}
 				else
-					Game.world.Add(new Bullet(weapon, self.Owner, self,
+					self.World.Add(new Bullet(weapon, self.Owner, self,
 						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
 
 				if (!string.IsNullOrEmpty(weapon.Report))
@@ -205,8 +205,8 @@ namespace OpenRa.Traits
 				self.CancelActivity();
 				QueueAttack(self, order);
 
-				if (self.Owner == Game.world.LocalPlayer)
-					Game.world.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
 			}
 			else
 				target = null;

@@ -25,7 +25,7 @@ namespace OpenRa.SupportPowers
 			Sound.Play("ironcur9.aud");
 			
 			// Play active anim
-			var ironCurtain = Game.world.Actors
+			var ironCurtain = target.World.Actors
 				.Where(a => a.Owner == p.Owner && a.traits.Contains<IronCurtain>())
 				.FirstOrDefault();
 			if (ironCurtain != null)

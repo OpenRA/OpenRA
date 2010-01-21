@@ -93,7 +93,7 @@ namespace OpenRa
 		{
 			return world.FindUnits(a, b)
 				.Where( x => x.traits.Contains<Selectable>() )
-				.GroupBy(x => (x.Owner == Game.world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
+				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )

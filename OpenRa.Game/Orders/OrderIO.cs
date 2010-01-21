@@ -22,14 +22,14 @@ namespace OpenRa.Orders
 			ms.WriteTo(s);
 		}
 
-		public static List<Order> ToOrderList(this byte[] bytes)
+		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
 			var ms = new MemoryStream(bytes);
 			var reader = new BinaryReader(ms);
 			var ret = new List<Order>();
 			while( ms.Position < ms.Length )
 			{
-				var o = Order.Deserialize( reader );
+				var o = Order.Deserialize( world, reader );
 				if( o != null )
 					ret.Add( o );
 			}

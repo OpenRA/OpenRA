@@ -26,7 +26,7 @@ namespace OpenRa.Traits.Activities
 				return NextActivity;
 
 			cargo.Load(transport, self);
-			Game.world.AddFrameEndTask(w => w.Remove(self));
+			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return this;
 		}

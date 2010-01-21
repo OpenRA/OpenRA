@@ -27,7 +27,7 @@ namespace OpenRa.Traits
 			{
 				// force-move
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
-				if (!Game.world.IsActorCrushableByActor(underCursor, self)) return null;
+				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
 			}
 
 			return new Order("Move", self, null, xy, null);
@@ -50,14 +50,14 @@ namespace OpenRa.Traits
 		
 		public bool CanEnterCell(int2 a)
 		{
-			if (!Game.world.BuildingInfluence.CanMoveHere(a)) return false;
+			if (!self.World.BuildingInfluence.CanMoveHere(a)) return false;
 
 			var crushable = true;
-			foreach (Actor actor in Game.world.UnitInfluence.GetUnitsAt(a))
+			foreach (Actor actor in self.World.UnitInfluence.GetUnitsAt(a))
 			{
 				if (actor == self) continue;
 				
-				if (!Game.world.IsActorCrushableByActor(actor, self))
+				if (!self.World.IsActorCrushableByActor(actor, self))
 				{
 					crushable = false;
 					break;
@@ -66,9 +66,9 @@ namespace OpenRa.Traits
 			
 			if (!crushable) return false;
 			
-			return Game.world.Map.IsInMap(a.X, a.Y) &&
+			return self.World.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(GetMovementType(),
-					Game.world.TileSet.GetWalkability(Game.world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					self.World.TileSet.GetWalkability(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 	}
 }

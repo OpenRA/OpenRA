@@ -21,7 +21,7 @@ namespace OpenRa.Mods.RA
 		public Mine(Actor self)
 		{
 			this.self = self;
-			Game.world.UnitInfluence.Add(self, this);
+			self.World.UnitInfluence.Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
@@ -32,17 +32,17 @@ namespace OpenRa.Mods.RA
 			var info = self.Info.Traits.Get<MineInfo>();
 			var warhead = Rules.WarheadInfo[info.Warhead];
 
-			Game.world.AddFrameEndTask(_ =>
+			self.World.AddFrameEndTask(w =>
 			{
-				Game.world.Remove(self);
-				Game.world.Add(new Explosion(self.CenterLocation.ToInt2(), warhead.Explosion, false));
+				w.Remove(self);
+				w.Add(new Explosion(w, self.CenterLocation.ToInt2(), warhead.Explosion, false));
 				crusher.InflictDamage(crusher, info.Damage, warhead);
 			});
 		}
 
 		public bool IsPathableCrush(UnitMovementType umt, Player player)
 		{
-			return !self.Info.Traits.Get<MineInfo>().AvoidFriendly || (player != Game.world.LocalPlayer);
+			return !self.Info.Traits.Get<MineInfo>().AvoidFriendly || (player != self.World.LocalPlayer);
 		}
 
 		public bool IsCrushableBy(UnitMovementType umt, Player player)

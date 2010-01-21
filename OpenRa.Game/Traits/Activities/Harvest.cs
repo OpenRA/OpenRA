@@ -36,8 +36,8 @@ namespace OpenRa.Traits.Activities
 			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
 
 			var isGem = false;
-			if (!Game.world.Map.ContainsResource(self.Location) ||
-				!Game.world.Map.Harvest(self.Location, out isGem))
+			if (!self.World.Map.ContainsResource(self.Location) ||
+				!self.World.Map.Harvest(self.Location, out isGem))
 				return false;
 
 			var harvestAnim = "harvest" + Util.QuantizeFacing(unit.Facing, 8);
@@ -58,12 +58,12 @@ namespace OpenRa.Traits.Activities
 				{
 					var search = new PathSearch
 					{
-						heuristic = loc => (Game.world.Map.ContainsResource(loc) ? 0 : 1),
+						heuristic = loc => (self.World.Map.ContainsResource(loc) ? 0 : 1),
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};
-					search.AddInitialCell(self.Location);
-					return Game.world.PathFinder.FindPath(search);
+					search.AddInitialCell(self.World, self.Location);
+					return self.World.PathFinder.FindPath(search);
 				}));
 			self.QueueActivity(new Harvest());
 		}

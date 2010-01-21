@@ -20,10 +20,10 @@ namespace OpenRa.Effects
 			this.tesla = SequenceProvider.GetSequence( "litning", "bright" );
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if( timeUntilRemove <= 0 )
-				Game.world.AddFrameEndTask( w => w.Remove( this ) );
+				world.AddFrameEndTask( w => w.Remove( this ) );
 			--timeUntilRemove;
 		}
 

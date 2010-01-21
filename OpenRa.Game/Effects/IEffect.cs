@@ -6,7 +6,7 @@ namespace OpenRa.Effects
 {
 	public interface IEffect
 	{
-		void Tick();
+		void Tick( World world );
 		IEnumerable<Renderable> Render();
 	}
 }

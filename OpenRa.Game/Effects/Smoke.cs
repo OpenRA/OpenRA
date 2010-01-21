@@ -9,14 +9,14 @@ namespace OpenRa.Effects
 		readonly int2 pos;
 		readonly Animation anim = new Animation("smokey");
 
-		public Smoke(int2 pos)
+		public Smoke(World world, int2 pos)
 		{
 			this.pos = pos;
 			anim.PlayThen("idle",
-				() => Game.world.AddFrameEndTask(w => w.Remove(this)));
+				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			anim.Tick();
 		}

@@ -8,7 +8,7 @@ namespace OpenRa.Graphics
 {
 	interface IHandleInput
 	{
-		bool HandleInput(MouseInput mi);
+		bool HandleInput(World world, MouseInput mi);
 	}
 
 	class Viewport
@@ -42,8 +42,11 @@ namespace OpenRa.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 
-		public void DrawRegions()
+		public void DrawRegions( World world )
 		{
+			world.WorldRenderer.palette.Update(world.Actors.SelectMany(
+				a => a.traits.WithInterface<IPaletteModifier>()));
+
 			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);
 
@@ -51,8 +54,8 @@ namespace OpenRa.Graphics
 
 			if( Game.orderManager.GameStarted )
 			{
-				Game.world.WorldRenderer.Draw();
-				Game.chrome.Draw();
+				world.WorldRenderer.Draw();
+				Game.chrome.Draw( world );
 
 				if (Game.orderManager.IsNetplay && 
 					Game.orderManager.Sources.OfType<NetworkOrderSource>().First().State == ConnectionState.NotConnected)
@@ -74,15 +77,15 @@ namespace OpenRa.Graphics
 							Game.chrome.DrawDialog("Connection failed.");
 							break;
 						case ConnectionState.Connected:
-							Game.chrome.DrawLobby();
+							Game.chrome.DrawLobby( world );
 							break;
 					}
 				}
 				else
-					Game.chrome.DrawLobby();
+					Game.chrome.DrawLobby( world );
 			}
 
-			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor();
+			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor( world );
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), 0);
 			cursorRenderer.Flush();
 
@@ -95,18 +98,18 @@ namespace OpenRa.Graphics
 		}
 
 		IHandleInput dragRegion = null;
-		public void DispatchMouseInput(MouseInput mi)
+		public void DispatchMouseInput(World world, MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				mousePos = mi.Location;
 
 			if (dragRegion != null) {
-				dragRegion.HandleInput( mi );
+				dragRegion.HandleInput( world, mi );
 				if (mi.Event == MouseInputEvent.Up) dragRegion = null;
 				return;
 			}
 
-			dragRegion = regions.FirstOrDefault(r => r.HandleInput(mi));
+			dragRegion = regions.FirstOrDefault(r => r.HandleInput(world, mi));
 			if (mi.Event != MouseInputEvent.Down)
 				dragRegion = null;
 		}
@@ -127,9 +130,9 @@ namespace OpenRa.Graphics
 			scrollPosition = (avgPos - .5f * new float2(Width, Height)).ToInt2();
 		}
 
-		public void GoToStartLocation()
+		public void GoToStartLocation( Player player )
 		{
-			Center(Game.world.Actors.Where(a => a.Owner == Game.world.LocalPlayer && a.traits.Contains<Selectable>()));
+			Center(player.World.Actors.Where(a => a.Owner == player && a.traits.Contains<Selectable>()));
 		}
 	}
 }

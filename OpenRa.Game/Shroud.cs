@@ -29,11 +29,11 @@ namespace OpenRa
 			set { hasGPS = value; dirty = true;}
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			// Clear active flags
 			gapActive = new bool[128, 128];
-			foreach (var a in Game.world.Actors.Where(a => a.traits.Contains<GeneratesGap>() && owner != a.Owner))
+			foreach (var a in world.Actors.Where(a => a.traits.Contains<GeneratesGap>() && owner != a.Owner))
 			{
 				foreach (var t in a.traits.Get<GeneratesGap>().GetShroudedTiles())
 					gapActive[t.X, t.Y] = true;
@@ -81,7 +81,7 @@ namespace OpenRa
 		
 		public void Explore(Actor a)
 		{
-			foreach (var t in Game.world.FindTilesInCircle(
+			foreach (var t in a.World.FindTilesInCircle(
 				(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
 				a.Info.Traits.Get<OwnedActorInfo>().Sight))
 			{

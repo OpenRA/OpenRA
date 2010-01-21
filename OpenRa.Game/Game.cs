@@ -9,6 +9,7 @@ using OpenRa.Graphics;
 using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
+using System.Windows.Forms;
 
 namespace OpenRa
 {
@@ -28,7 +29,6 @@ namespace OpenRa
 
 		internal static Renderer renderer;
 		static int2 clientSize;
-		static HardwarePalette palette;
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
@@ -56,8 +56,6 @@ namespace OpenRa
 				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
-
-			palette = new HardwarePalette(renderer, world.Map);
 
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
@@ -127,13 +125,13 @@ namespace OpenRa
 					lastTime += Settings.Timestep;
 					chrome.Tick();
 
-					orderManager.TickImmediate();
+					orderManager.TickImmediate( world );
 
 					if (orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick();
+						orderManager.Tick( world );
 						if (controller.orderGenerator != null)
-							controller.orderGenerator.Tick();
+							controller.orderGenerator.Tick( world );
 
 						world.Tick();
 					}
@@ -147,24 +145,12 @@ namespace OpenRa
 
 			using (new PerfSample("render"))
 			{
-				UpdatePalette(world.Actors.SelectMany(
-					a => a.traits.WithInterface<IPaletteModifier>()));
 				++RenderFrame;
-				viewport.DrawRegions();
+				viewport.DrawRegions( world );
 			}
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
-		}
-
-		static void UpdatePalette(IEnumerable<IPaletteModifier> paletteMods)
-		{
-			var b = new Bitmap(palette.Bitmap);
-			foreach (var mod in paletteMods)
-				mod.AdjustPalette(b);
-
-			palette.Texture.SetData(b);
-			renderer.PaletteTexture = palette.Texture;
 		}
 
 		public static Random SharedRandom = new Random(0);		/* for things that require sync */
@@ -224,7 +210,7 @@ namespace OpenRa
 				world.CreateActor("mcv", sp, world.players[client.Index]);
 			}
 
-			Game.viewport.GoToStartLocation();
+			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );
 			orderManager.StartGame();
 		}
 
@@ -245,6 +231,63 @@ namespace OpenRa
 			available.RemoveAt(n);
 			taken.Add(sp);
 			return sp;
+		}
+
+		internal static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
+		{
+			int sync = Game.world.SyncHash();
+
+			Game.viewport.DispatchMouseInput( world, 
+				new MouseInput
+				{
+					Button = (MouseButton)(int)e.Button,
+					Event = ev,
+					Location = new int2(e.Location),
+					Modifiers = (Modifiers)(int)ModifierKeys,
+				});
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+		}
+
+		internal static void HandleKeyDown( KeyEventArgs e )
+		{
+			int sync = Game.world.SyncHash();
+
+			/* hack hack hack */
+			if( e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted )
+			{
+				Game.controller.AddOrder(
+					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "" ) { IsImmediate = true } );
+			}
+
+			/* temporary hack: DO NOT LEAVE IN */
+			if( e.KeyCode == Keys.F2 )
+				Game.world.LocalPlayer = Game.world.players[ ( Game.world.LocalPlayer.Index + 1 ) % 4 ];
+			if( e.KeyCode == Keys.F3 )
+				Game.controller.orderGenerator = new SellOrderGenerator();
+			if( e.KeyCode == Keys.F4 )
+				Game.controller.orderGenerator = new RepairOrderGenerator();
+
+			if( !Game.chat.isChatting )
+				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
+					Game.controller.DoControlGroup( world, (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyDown" );
+		}
+
+		internal static void HandleKeyPress( KeyPressEventArgs e )
+		{
+			int sync = Game.world.SyncHash();
+
+			if( e.KeyChar == '\r' )
+				Game.chat.Toggle();
+			else if( Game.chat.isChatting )
+				Game.chat.TypeChar( e.KeyChar );
+
+			if( sync != Game.world.SyncHash() )
+				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}
 	}
 }

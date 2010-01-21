@@ -15,10 +15,10 @@ namespace OpenRa.Effects
 			this.delay = delay;
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if (--delay <= 0)
-				Game.world.AddFrameEndTask(w => { w.Remove(this); a(); });
+				world.AddFrameEndTask(w => { w.Remove(this); a(); });
 		}
 
 		public IEnumerable<Renderable> Render() { yield break; }

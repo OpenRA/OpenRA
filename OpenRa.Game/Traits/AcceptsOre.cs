@@ -11,7 +11,7 @@ namespace OpenRa.Traits
 	{
 		public AcceptsOre(Actor self)
 		{
-			Game.world.AddFrameEndTask(
+			self.World.AddFrameEndTask(
 				w =>
 				{		/* create the free harvester! */
 					var harvester = w.CreateActor("harv", self.Location + new int2(1, 2), self.Owner);

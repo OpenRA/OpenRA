@@ -90,28 +90,11 @@ namespace OpenRa
 
 		int2 lastPos;
 
-		void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e)
-		{
-			int sync = Game.world.SyncHash();
-
-			Game.viewport.DispatchMouseInput(
-				new MouseInput
-				{
-					Button = (MouseButton)(int)e.Button,
-					Event = ev,
-					Location = new int2(e.Location),
-					Modifiers = (Modifiers)(int)ModifierKeys,
-				});
-
-			if( sync != Game.world.SyncHash() )
-				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
-		}
-
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
 			lastPos = new int2(e.Location);
-			DispatchMouseInput(MouseInputEvent.Down, e);
+			Game.DispatchMouseInput(MouseInputEvent.Down, e, ModifierKeys);
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -125,57 +108,27 @@ namespace OpenRa
 				lastPos = p;
 			}
 
-			DispatchMouseInput(MouseInputEvent.Move, e);
+			Game.DispatchMouseInput(MouseInputEvent.Move, e, ModifierKeys);
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
-			DispatchMouseInput(MouseInputEvent.Up, e);
+			Game.DispatchMouseInput(MouseInputEvent.Up, e, ModifierKeys);
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
 
-			int sync = Game.world.SyncHash();
-
-			/* hack hack hack */
-			if (e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted)
-			{
-				Game.controller.AddOrder(
-					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "") { IsImmediate = true });
-			}
-
-			/* temporary hack: DO NOT LEAVE IN */
-			if (e.KeyCode == Keys.F2)
-				Game.world.LocalPlayer = Game.world.players[(Game.world.LocalPlayer.Index + 1) % 4];
-			if (e.KeyCode == Keys.F3)
-				Game.controller.orderGenerator = new SellOrderGenerator();
-			if (e.KeyCode == Keys.F4)
-				Game.controller.orderGenerator = new RepairOrderGenerator();				
-
-			if (!Game.chat.isChatting)
-				if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
-					Game.controller.DoControlGroup( (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
-
-			if( sync != Game.world.SyncHash() )
-				throw new InvalidOperationException( "Desync in OnKeyDown" );
+			Game.HandleKeyDown( e );
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
 			base.OnKeyPress(e);
 
-			int sync = Game.world.SyncHash();
-
-			if (e.KeyChar == '\r')
-				Game.chat.Toggle();
-			else if (Game.chat.isChatting)
-				Game.chat.TypeChar(e.KeyChar);
-
-			if( sync != Game.world.SyncHash() )
-				throw new InvalidOperationException( "Desync in OnKeyPress" );
+			Game.HandleKeyPress( e );
 		}
 	}
 

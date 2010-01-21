@@ -12,15 +12,15 @@ namespace OpenRa.Traits
 	{
 		public ProductionSurround(Actor self) : base(self) { }
 
-		static int2? FindAdjacentTile(Actor a, UnitMovementType umt)
+		static int2? FindAdjacentTile(Actor self, UnitMovementType umt)
 		{
-			var tiles = Footprint.Tiles(a, a.traits.Get<Traits.Building>());
+			var tiles = Footprint.Tiles(self, self.traits.Get<Traits.Building>());
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
 			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (Game.world.IsCellBuildable(new int2(i, j), umt))
+					if (self.World.IsCellBuildable(new int2(i, j), umt))
 						return new int2(i, j);
 
 			return null;

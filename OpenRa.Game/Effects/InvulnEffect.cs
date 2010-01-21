@@ -15,10 +15,10 @@ namespace OpenRa.Effects
 			this.b = a.traits.Get<IronCurtainable>();
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			if (a.IsDead || b.GetDamageModifier() > 0)
-				Game.world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Renderable> Render()

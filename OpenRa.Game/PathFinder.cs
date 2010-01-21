@@ -10,10 +10,12 @@ namespace OpenRa
 {
 	public class PathFinder
 	{
+		readonly World world;
 		float[][,] passableCost = new float[4][,];
 		
 		public PathFinder( World world )
 		{
+			this.world = world;
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
 				passableCost[(int)umt] = new float[128, 128];
 			for( int x = 0 ; x < 128 ; x++ )
@@ -29,8 +31,8 @@ namespace OpenRa
 			using (new PerfSample("find_unit_path"))
 			{
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(target, from, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)),
-					PathSearch.FromPoint(from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
+					PathSearch.FromPoint(world, target, from, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)),
+					PathSearch.FromPoint(world, from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
 
 				CheckSanePath2(pb, from, target);
 				return pb;
@@ -41,10 +43,10 @@ namespace OpenRa
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var tilesInRange = Game.world.FindTilesInCircle(target, range)
-					.Where( t => Game.world.IsCellBuildable( t, umt ) );
+				var tilesInRange = world.FindTilesInCircle(target, range)
+					.Where( t => world.IsCellBuildable( t, umt ) );
 
-				var path = FindPath( PathSearch.FromPoints( tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
+				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
 				path.Reverse();
 				return path;
 			}
@@ -55,7 +57,7 @@ namespace OpenRa
 			return q =>
 				p != q &&
 				((p - q).LengthSquared < dist * dist) &&
-				(Game.world.UnitInfluence.GetUnitsAt(q).Any());
+				(world.UnitInfluence.GetUnitsAt(q).Any());
 		}
 
 		public List<int2> FindPath( PathSearch search )
@@ -64,7 +66,7 @@ namespace OpenRa
 			{
 				while (!search.queue.Empty)
 				{
-					var p = search.Expand( passableCost );
+					var p = search.Expand( world, passableCost );
 					PerfHistory.Increment("nodes_expanded", .01);
 
 					if (search.heuristic(p) == 0)
@@ -101,13 +103,13 @@ namespace OpenRa
 			while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
 			{
 				/* make some progress on the first search */
-				var p = fromSrc.Expand( passableCost );
+				var p = fromSrc.Expand( world, passableCost );
 
 				if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
 					return MakeBidiPath(fromSrc, fromDest, p);
 
 				/* make some progress on the second search */
-				var q = fromDest.Expand( passableCost );
+				var q = fromDest.Expand( world, passableCost );
 
 				if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
 					return MakeBidiPath(fromSrc, fromDest, q);

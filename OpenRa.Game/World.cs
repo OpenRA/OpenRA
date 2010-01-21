@@ -24,7 +24,7 @@ namespace OpenRa
 			set
 			{
 				localPlayerIndex = value.Index;
-				Game.viewport.GoToStartLocation();
+				Game.viewport.GoToStartLocation( value );
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace OpenRa
 				}
 
 			foreach (var a in actors) a.Tick();
-			foreach (var e in effects) e.Tick();
+			foreach (var e in effects) e.Tick( this );
 
 			Game.viewport.Tick();
 

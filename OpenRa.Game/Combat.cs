@@ -13,25 +13,27 @@ namespace OpenRa
 		public static void DoImpact(int2 loc, int2 visualLoc,
 			WeaponInfo weapon, ProjectileInfo projectile, WarheadInfo warhead, Actor firedBy)
 		{
+			var world = firedBy.World;
+
 			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
 
-			var isWater = Game.world.IsWater(targetTile);
-			var hitWater = Game.world.IsCellBuildable(targetTile, UnitMovementType.Float);
+			var isWater = world.IsWater(targetTile);
+			var hitWater = world.IsCellBuildable(targetTile, UnitMovementType.Float);
 
 			if (warhead.Explosion != 0)
-				Game.world.AddFrameEndTask(
-					w => w.Add(new Explosion(visualLoc, warhead.Explosion, hitWater)));
+				world.AddFrameEndTask(
+					w => w.Add(new Explosion(w, visualLoc, warhead.Explosion, hitWater)));
 
 			var impactSound = warhead.ImpactSound;
 			if (hitWater && warhead.WaterImpactSound != null)
 				impactSound = warhead.WaterImpactSound;
 			if (impactSound != null) Sound.Play(impactSound + ".aud");
 
-			if (!isWater) Smudge.AddSmudge(targetTile, warhead);
-			if (warhead.Ore) Game.world.Map.DestroyOre(targetTile.X, targetTile.Y);
+			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
+			if (warhead.Ore) world.Map.DestroyOre(targetTile.X, targetTile.Y);
 
 			var maxSpread = GetMaximumSpread(weapon, warhead);
-			var hitActors = Game.world.FindUnitsInCircle(loc, maxSpread);
+			var hitActors = world.FindUnitsInCircle(loc, maxSpread);
 			
 			foreach (var victim in hitActors)
 				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead), warhead);

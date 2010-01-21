@@ -15,16 +15,16 @@ namespace OpenRa.Effects
 		{
 			this.a = a;
 			doors.PlayThen("active",
-				() => Game.world.AddFrameEndTask(w => w.Remove(this)));
+				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick()
+		public void Tick( World world )
 		{
 			doors.Tick();
 			
 			if (++frame == 19)
 			{
-				Game.world.AddFrameEndTask(w => w.Add(new GpsSatellite(a.CenterLocation - .5f * doors.Image.size + doorOffset)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(a.CenterLocation - .5f * doors.Image.size + doorOffset)));
 			}
 		}
 		
