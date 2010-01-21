@@ -77,7 +77,7 @@ namespace OpenRa.Graphics
 			foreach (var e in world.Effects)
 				DrawSpriteList(rect, e.Render());
 
-			uiOverlay.Draw();
+			uiOverlay.Draw( world );
 
 			spriteRenderer.Flush();
 

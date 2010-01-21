@@ -34,24 +34,24 @@ namespace OpenRa
 			return SheetBuilder.Add( data, new Size(Game.CellSize,Game.CellSize) );
 		}
 
-		public void Draw()
+		public void Draw( World world )
 		{
 			if (ShowUnitDebug)
 				for (var j = 0; j < 128; j++)
 					for (var i = 0; i < 128; i++)
-						if (Game.world.UnitInfluence.GetUnitsAt(new int2(i, j)).Any())
+						if (world.UnitInfluence.GetUnitsAt(new int2(i, j)).Any())
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
 		}
 
-		public void DrawBuildingGrid( string name, BuildingInfo bi )
+		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
 		{
 			var position = Game.controller.MousePosition.ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
-			var isCloseEnough = Game.world.IsCloseEnoughToBase(Game.world.LocalPlayer, name, bi, topLeft);
+			var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
-				spriteRenderer.DrawSprite( ( isCloseEnough && Game.world.IsCellBuildable( t, bi.WaterBound
-					? UnitMovementType.Float : UnitMovementType.Wheel ) && !Game.world.Map.ContainsResource( t ) )
+				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound
+					? UnitMovementType.Float : UnitMovementType.Wheel ) && !world.Map.ContainsResource( t ) )
 					? buildOk : buildBlocked, Game.CellSize * t, 0 );
 
 			spriteRenderer.Flush();

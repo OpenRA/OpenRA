@@ -49,7 +49,7 @@ namespace OpenRa.Orders
 
 		public void Render( World world )
 		{
-			world.WorldRenderer.uiOverlay.DrawBuildingGrid( Building, BuildingInfo );
+			world.WorldRenderer.uiOverlay.DrawBuildingGrid( world, Building, BuildingInfo );
 		}
 
 		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
