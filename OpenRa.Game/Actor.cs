@@ -14,7 +14,10 @@ namespace OpenRa
 		[Sync]
 		public readonly TypeDictionary traits = new TypeDictionary();
 		public readonly ActorInfo Info;
+
+		public readonly World World;
 		public readonly uint ActorID;
+
 		[Sync]
 		public int2 Location;
 		[Sync]
@@ -25,6 +28,7 @@ namespace OpenRa
 
 		public Actor( World world, string name, int2 location, Player owner )
 		{
+			World = world;
 			ActorID = world.NextAID();
 			Location = location;
 			CenterLocation = Traits.Util.CenterOfCell(Location);
@@ -82,14 +86,14 @@ namespace OpenRa
 
 		public Order Order( int2 xy, MouseInput mi )
 		{
-			if (Owner != Game.world.LocalPlayer)
+			if (Owner != World.LocalPlayer)
 				return null;
 
-			if (!Game.world.Map.IsInMap(xy.X, xy.Y))
+			if (!World.Map.IsInMap(xy.X, xy.Y))
 				return null;
 			
 			var loc = mi.Location + Game.viewport.Location;
-			var underCursor = Game.world.FindUnits(loc, loc).FirstOrDefault();
+			var underCursor = World.FindUnits(loc, loc).FirstOrDefault();
 
 			if (underCursor != null && !underCursor.traits.Contains<Selectable>())
 				underCursor = null;
@@ -147,7 +151,7 @@ namespace OpenRa
 					attacker.Owner.Kills++;
 
 				if (RemoveOnDeath)
-					Game.world.AddFrameEndTask(w => w.Remove(this));
+					World.AddFrameEndTask(w => w.Remove(this));
 			}
 
 			var maxHP = this.GetMaxHP();
