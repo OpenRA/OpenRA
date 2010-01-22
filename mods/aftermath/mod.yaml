@@ -2,6 +2,7 @@
 # Requires classic RA mod
 
 Packages:
+	mods/aftermath/am-sounds.mix:		repack of the bits the aftermath installer hacks into an RA mix
 	expand2.mix
 	hires1.mix
 
