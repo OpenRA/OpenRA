@@ -54,7 +54,7 @@ namespace OpenRa.FileFormats
 
 			foreach( var hash in folder.AllFileHashes() )
 			{
-				var l = allFiles[hash];
+				var l = allTemporaryFiles[hash];
 				if( !l.Contains( folder ) )
 					l.Add( folder );
 			}
