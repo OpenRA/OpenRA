@@ -375,7 +375,7 @@
     <sequence name="select" start="15" length="6" x="12" y="12" />
     <sequence name="attackmove" start="21" length="8" x="12" y="12" />
     <sequence name="move-minimap" start="29" length="6" />
-    <sequence name="repair" start="35" length="24" />
+    <sequence name="repair" start="35" length="24" x="12" y="12" />
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
     <sequence name="sell" start="68" length="12" x="12" y="12" />
     <sequence name="default-minimap" start="80" length="1" />
@@ -1033,5 +1033,8 @@
     <sequence name="top-right" start="1" length="1" />
     <sequence name="bottom-left" start="2" length="1" />
     <sequence name="bottom-right" start="3" length="1" />
+  </unit>
+  <unit name="fb2">
+    <sequence name="idle" start="0" length="4" />
   </unit>
 </sequences>

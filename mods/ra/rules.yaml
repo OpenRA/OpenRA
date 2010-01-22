@@ -930,6 +930,7 @@ FTUR:
 		Description: Flame Turret
 		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Turreted:
+		ROT: 10
 	Building:
 		Power: -20
 		Footprint: x
@@ -941,6 +942,7 @@ FTUR:
 	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
+		PrimaryOffset: 0,0,12,8
 	AutoTarget:
 	IronCurtainable:
 

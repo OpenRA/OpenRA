@@ -7,11 +7,12 @@ namespace OpenRa.Effects
 	class Smoke : IEffect
 	{
 		readonly int2 pos;
-		readonly Animation anim = new Animation("smokey");
+		readonly Animation anim;
 
-		public Smoke(World world, int2 pos)
+		public Smoke(World world, int2 pos, string trail)
 		{
 			this.pos = pos;
+			anim = new Animation(trail);
 			anim.PlayThen("idle",
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}

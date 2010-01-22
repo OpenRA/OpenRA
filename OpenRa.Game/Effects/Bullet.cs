@@ -66,6 +66,21 @@ namespace OpenRa.Effects
 				Combat.DoImpact(Dest, VisualDest - new int2( 0, DestAltitude ), 
 					Weapon, Projectile, Warhead, FiredBy);
 			}
+
+			if (Projectile.Trail != null)
+			{
+				var at = (float)t / TotalTime();
+				var altitude = float2.Lerp(SrcAltitude, DestAltitude, at);
+				var pos = float2.Lerp(Src.ToFloat2(), VisualDest.ToFloat2(), at)
+					- 0.5f * anim.Image.size - new float2(0, altitude);
+
+				var highPos = (Projectile.High || Projectile.Arcing)
+					? (pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at)))
+					: pos;
+
+				world.AddFrameEndTask(w => w.Add(
+					new Smoke(w, highPos.ToInt2(), Projectile.Trail)));
+			}
 		}
 
 		const float height = .1f;
@@ -83,14 +98,14 @@ namespace OpenRa.Effects
 				if (Projectile.High || Projectile.Arcing)
 				{
 					if (Projectile.Shadow)
-						yield return new Renderable(anim.Image, pos, PaletteType.Shadow);
+						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, PaletteType.Shadow);
 
 					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
 
-					yield return new Renderable(anim.Image, highPos, Owner.Palette);
+					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Owner.Palette);
 				}
 				else
-					yield return new Renderable(anim.Image, pos, Projectile.UnderWater ? PaletteType.Shadow : Owner.Palette);
+					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, Projectile.UnderWater ? PaletteType.Shadow : Owner.Palette);
 			}
 		}
 	}

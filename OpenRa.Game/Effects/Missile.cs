@@ -77,8 +77,9 @@ namespace OpenRa.Effects
 			var move = speed * -float2.FromAngle((float)angle);
 			Pos += move;
 
-			if (Projectile.Animates)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, (Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2())));
+			if (Projectile.Trail != null)
+				world.AddFrameEndTask(w => w.Add(
+					new Smoke(w, (Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2(), Projectile.Trail)));
 
 			// todo: running out of fuel
 		}

@@ -6,7 +6,7 @@ namespace OpenRa.GameRules
 		public readonly bool AA = false;
 		public readonly bool AG = true;
 		public readonly bool ASW = false;
-		public readonly bool Animates = false;
+		public readonly string Trail = null;
 		public readonly bool Arcing = false;
 		public readonly int Arm = 0;
 		public readonly bool Degenerates = false;
