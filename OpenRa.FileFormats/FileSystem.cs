@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IjwFramework.Collections;
 
 namespace OpenRa.FileFormats
 {
@@ -9,10 +10,13 @@ namespace OpenRa.FileFormats
 		static List<IFolder> mountedFolders = new List<IFolder>();
 		static List<IFolder> temporaryMounts = new List<IFolder>();
 
+		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+		static Cache<uint, List<IFolder>> allTemporaryFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+
 		public static void MountDefaultPackages()
 		{
 			FileSystem.Mount(new Folder("./"));
-			if( File.Exists( "main.mix" ) )
+			if( FileSystem.Exists( "main.mix" ) )
 				FileSystem.Mount( new Package( "main.mix" ) );
 			FileSystem.Mount( new Package( "redalert.mix" ) );
 			FileSystem.Mount( new Package( "conquer.mix" ) );
@@ -34,22 +38,54 @@ namespace OpenRa.FileFormats
 		public static void Mount(IFolder folder)
 		{
 			mountedFolders.Add(folder);
+
+			foreach( var hash in folder.AllFileHashes() )
+			{
+				var l = allFiles[hash];
+				if( !l.Contains( folder ) )
+					l.Add( folder );
+			}
 		}
 
 		public static void MountTemporary(IFolder folder)
 		{
 			mountedFolders.Add(folder);
 			temporaryMounts.Add(folder);
+
+			foreach( var hash in folder.AllFileHashes() )
+			{
+				var l = allFiles[hash];
+				if( !l.Contains( folder ) )
+					l.Add( folder );
+			}
 		}
 
 		public static void UnmountTemporaryPackages()
 		{
 			mountedFolders.RemoveAll(f => temporaryMounts.Contains(f));
 			temporaryMounts.Clear();
+
+			allTemporaryFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+		}
+
+		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
+		{
+			foreach( var folder in index[ PackageEntry.HashFilename( filename ) ] )
+			{
+				Stream s = folder.GetContent(filename);
+				if( s != null )
+					return s;
+			}
+			return null;
 		}
 
 		public static Stream Open(string filename)
 		{
+			var ret = GetFromCache( allFiles, filename )
+				?? GetFromCache( allTemporaryFiles, filename );
+			if( ret != null )
+				return ret;
+
 			foreach( IFolder folder in mountedFolders )
 			{
 				Stream s = folder.GetContent(filename);
@@ -62,6 +98,14 @@ namespace OpenRa.FileFormats
 
 		public static Stream OpenWithExts( string filename, params string[] exts )
 		{
+			foreach( var ext in exts )
+			{
+				var s = GetFromCache( allFiles, filename + ext )
+					?? GetFromCache( allTemporaryFiles, filename + ext );
+				if( s != null )
+					return s;
+			}
+
 			foreach( var ext in exts )
 			{
 				foreach( IFolder folder in mountedFolders )

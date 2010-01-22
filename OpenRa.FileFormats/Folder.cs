@@ -1,4 +1,5 @@
 using System.IO;
+using System.Collections.Generic;
 
 namespace OpenRa.FileFormats
 {
@@ -10,8 +11,15 @@ namespace OpenRa.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			try { return File.OpenRead(path + filename); }
+			Log.Write( "GetContent from folder: {0}", filename );
+			try { return File.OpenRead( Path.Combine( path, filename ) ); }
 			catch { return null; }
+		}
+
+		public IEnumerable<uint> AllFileHashes()
+		{
+			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
+				yield return PackageEntry.HashFilename( filename );
 		}
 	}
 }

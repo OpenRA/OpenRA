@@ -8,6 +8,7 @@ namespace OpenRa.FileFormats
 	public interface IFolder
 	{
 		Stream GetContent(string filename);
+		IEnumerable<uint> AllFileHashes();
 	}
 
 	public class Package : IFolder
@@ -130,6 +131,11 @@ namespace OpenRa.FileFormats
 		public Stream GetContent(string filename)
 		{
 			return GetContent(PackageEntry.HashFilename(filename));
+		}
+
+		public IEnumerable<uint> AllFileHashes()
+		{
+			return index.Keys;
 		}
 	}
 
