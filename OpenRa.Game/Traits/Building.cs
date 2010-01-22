@@ -40,7 +40,14 @@ namespace OpenRa.Traits
 		[Sync]
 		bool manuallyDisabled = false;
 		public bool ManuallyDisabled { get { return manuallyDisabled; } }
-		public bool Disabled { get { return (manuallyDisabled || (Info.RequiresPower && self.Owner.GetPowerState() != PowerState.Normal)); } }
+		public bool Disabled
+		{
+			get
+			{
+				return (manuallyDisabled || 
+					(Info.RequiresPower && self.Owner.GetPowerState() != PowerState.Normal));
+			}
+		}
 		bool wasDisabled = false;
 		
 		public Building(Actor self)

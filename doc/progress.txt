@@ -10,7 +10,7 @@ E6		Works
 E7		Works
 MEDI		Works
 SPY		Infiltrate action missing
-THF		Steal action missing
+THF		Works
 C1,C2,Einstein,Kosygin		Not implemented
 
 All tracked vehicles
@@ -21,12 +21,12 @@ All tracked vehicles
 
 Light vehicles
 V2RL	Works
-APC	Works
+APC		Works
 MNLY	Works
-MGG	No gap
-MRJ	No radar
+MGG		Works
+MRJ		Works
 JEEP	Works
-MCV	Works
+MCV		Works
 HARV	Works
 ARTY	Works
 

@@ -14,6 +14,10 @@ MGG:
 GAP:
 	GeneratesGap:
 		Range: 10
+		
+MRJ:
+	JamsRadar:
+		Range: 10
 
 MINP:
 	Mine:

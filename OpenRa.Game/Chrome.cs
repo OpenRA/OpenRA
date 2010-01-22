@@ -307,7 +307,7 @@ namespace OpenRa
 		{
 			var hasNewRadar = world.Actors.Any(a => a.Owner == world.LocalPlayer 
 				&& a.traits.Contains<ProvidesRadar>() 
-				&& a.traits.Get<ProvidesRadar>().IsActive(a));
+				&& a.traits.Get<ProvidesRadar>().IsActive);
 			
 			if (hasNewRadar != hasRadar)
 			{

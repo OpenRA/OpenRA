@@ -229,6 +229,7 @@
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\IronCurtain.cs" />
     <Compile Include="Traits\IronCurtainable.cs" />
+    <Compile Include="Traits\JamsRadar.cs" />
     <Compile Include="Traits\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Passenger.cs" />

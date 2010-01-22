@@ -53,6 +53,30 @@ GAP:
 	RenderBuilding:
 	IronCurtainable:
 
+MRJ:
+	JamsRadar:
+		Range: 10
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 12
+		Prerequisites: weap,dome
+		Owner: allies
+		Cost: 600
+		Description: Radar Jammer
+		LongDesc: Hides nearby units on the enemy's minimap.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 7
+		Speed: 9
+	Mobile:
+		MovementType: Track
+	RenderUnitSpinner:
+		Offset: 0,4,0,-6
+
 MINP:
 	Mine:
 		Damage: 1000
@@ -265,28 +289,6 @@ V2RL:
 		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
-
-MRJ:
-	Inherits: ^Vehicle
-	Buildable:
-		TechLevel: 12
-		Prerequisites: weap,dome
-		Owner: allies
-		Cost: 600
-		Description: Radar Jammer
-		LongDesc: Hides nearby units on the enemy's minimap.\n  Unarmed
-	Selectable:
-		Priority: 3
-	Unit:
-		HP: 110
-		Armor: light
-		Crewed: yes
-		Sight: 7
-		Speed: 9
-	Mobile:
-		MovementType: Track
-	RenderUnitSpinner:
-		Offset: 0,4,0,-6
 
 ARTY:
 	Inherits: ^Vehicle
