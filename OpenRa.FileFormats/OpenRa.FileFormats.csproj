@@ -76,6 +76,9 @@
     <Compile Include="ShpReader.cs" />
     <Compile Include="ShroudPaletteRemap.cs" />
     <Compile Include="SingleColorRemap.cs" />
+    <Compile Include="Support\Log.cs" />
+    <Compile Include="Support\Stopwatch.cs" />
+    <Compile Include="Support\Timer.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TileReference.cs" />
     <Compile Include="TileSet.cs" />

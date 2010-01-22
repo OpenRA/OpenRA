@@ -133,7 +133,6 @@
     <Compile Include="SupportPowers\ISupportPowerImpl.cs" />
     <Compile Include="SupportPowers\NullPower.cs" />
     <Compile Include="Support\OpenAlInterop.cs" />
-    <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="Player.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Graphics\Sheet.cs" />
-    <Compile Include="Support\Log.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="Graphics\Sequence.cs" />
     <Compile Include="Orders\Order.cs" />
