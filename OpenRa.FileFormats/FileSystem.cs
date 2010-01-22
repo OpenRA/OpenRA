@@ -81,10 +81,13 @@ namespace OpenRa.FileFormats
 
 		public static Stream Open(string filename)
 		{
-			var ret = GetFromCache( allFiles, filename )
-				?? GetFromCache( allTemporaryFiles, filename );
-			if( ret != null )
-				return ret;
+			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
+			{
+				var ret = GetFromCache( allFiles, filename )
+					?? GetFromCache( allTemporaryFiles, filename );
+				if( ret != null )
+					return ret;
+			}
 
 			foreach( IFolder folder in mountedFolders )
 			{
@@ -98,12 +101,15 @@ namespace OpenRa.FileFormats
 
 		public static Stream OpenWithExts( string filename, params string[] exts )
 		{
-			foreach( var ext in exts )
+			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
 			{
-				var s = GetFromCache( allFiles, filename + ext )
-					?? GetFromCache( allTemporaryFiles, filename + ext );
-				if( s != null )
-					return s;
+				foreach( var ext in exts )
+				{
+					var s = GetFromCache( allFiles, filename + ext )
+						?? GetFromCache( allTemporaryFiles, filename + ext );
+					if( s != null )
+						return s;
+				}
 			}
 
 			foreach( var ext in exts )
