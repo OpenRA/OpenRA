@@ -47,27 +47,38 @@ namespace OpenRa
 
 		public World()
 		{
+			Timer.Time( "----World.ctor" );
+
 			Map = new Map( Rules.AllRules );
+			Timer.Time( "new Map: {0}" );
 			FileSystem.MountTemporary( new Package( Map.Theater + ".mix" ) );
+			Timer.Time( "mount temporary packages: {0}" );
 			TileSet = new TileSet( Map.TileSuffix );
+			Timer.Time( "Tileset: {0}" );
 
 			BuildingInfluence = new BuildingInfluenceMap( this );
 			UnitInfluence = new UnitInfluenceMap( this );
+			Timer.Time( "BIM/UIM: {0}" );
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
 			Map.InitOreDensity();
+			Timer.Time( "Ore: {0}" );
 
 			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			for (int i = 0; i < 8; i++)
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
+			Timer.Time( "worldActor, players: {0}" );
 
 			Bridges.MakeBridges(this);
 			PathFinder = new PathFinder(this);
+			Timer.Time( "bridge, pathing: {0}" );
 
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);
+			Timer.Time( "renderer, minimap: {0}" );
+			Timer.Time( "----end World.ctor" );
 		}
 
 		public Actor CreateActor( string name, int2 location, Player owner )

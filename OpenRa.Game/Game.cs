@@ -10,6 +10,7 @@ using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
 using System.Windows.Forms;
+using Timer = OpenRa.Support.Timer;
 
 namespace OpenRa
 {
@@ -35,7 +36,10 @@ namespace OpenRa
 
 		public static void ChangeMap(string mapName)
 		{
+			Timer.Time( "----ChangeMap" );
+
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			Timer.Time( "manifest: {0}" );
 
 			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
 			Game.changePending = false;
@@ -43,11 +47,14 @@ namespace OpenRa
 			SheetBuilder.Initialize(renderer);
 			SpriteSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
+			Timer.Time( "reset: {0}" );
 
 			foreach (var pkg in manifest.Packages)
 				FileSystem.MountTemporary(new Package(pkg));
+			Timer.Time( "mount tempory packages: {0}" );
 
 			Rules.LoadRules(mapName, manifest);
+			Timer.Time( "load rules: {0}" );
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			world = new World();
@@ -56,18 +63,25 @@ namespace OpenRa
 				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
 					a.Owner.Shroud.Explore(a); 
 			};
+			Timer.Time( "world: {0}" );
 
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
+			Timer.Time( "SeqProv, viewport: {0}" );
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)
 				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
+			Timer.Time( "trees: {0}" );
 			
 			world.LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
+			Timer.Time( "map actors: {0}" );
 
 			chrome = new Chrome(renderer);
+			Timer.Time( "chrome: {0}" );
+
+			Timer.Time( "----end ChangeMap" );
 		}
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
