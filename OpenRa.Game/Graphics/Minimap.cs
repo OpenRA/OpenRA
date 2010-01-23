@@ -28,9 +28,11 @@ namespace OpenRa.Graphics
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			var dw = (size - world.Map.Width) / 2;
 			var dh = (size - world.Map.Height) / 2;
-			
-			sprite = new Sprite(sheet, new Rectangle(world.Map.Offset.X+dw, world.Map.Offset.Y+dh, size, size), TextureChannel.Alpha);
-			mapOnlySprite = new Sprite(mapOnlySheet, new Rectangle(world.Map.Offset.X + dw, world.Map.Offset.Y + dh, size, size), TextureChannel.Alpha);
+
+			var rect = new Rectangle(world.Map.Offset.X - dw, world.Map.Offset.Y - dh, size, size);
+
+			sprite = new Sprite(sheet, rect, TextureChannel.Alpha);
+			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
 		}
 
 		Color[] terrainTypeColors;
