@@ -67,6 +67,8 @@ namespace OpenRa.Network
 					var frame = BitConverter.ToInt32( packet, 0 );
 					if( packet.Length == 5 && packet[ 4 ] == 0xEF )
 						readyForFrames.Add( frame );
+					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
+						CheckSync( packet );
 					else if( frame == 0 )
 						immediatePackets.Add( packet );
 					else
@@ -76,6 +78,30 @@ namespace OpenRa.Network
 			foreach( var p in immediatePackets )
 				foreach( var o in p.ToOrderList( world ) )
 					UnitOrders.ProcessOrder( o );
+		}
+
+		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+
+		void CheckSync( byte[] packet )
+		{
+			var frame = BitConverter.ToInt32( packet, 0 );
+			byte[] existingSync;
+			if( syncForFrame.TryGetValue( frame, out existingSync ) )
+			{
+				if( packet.Length != existingSync.Length )
+					OutOfSync( frame );
+				else
+					for( int i = 0 ; i < packet.Length ; i++ )
+						if( packet[ i ] != existingSync[ i ] )
+							OutOfSync( frame );
+			}
+			else
+				syncForFrame.Add( frame, packet );
+		}
+
+		void OutOfSync( int frame )
+		{
+			throw new InvalidOperationException( "out of sync in frame {0}".F( frame ) );
 		}
 
 		public bool IsReadyForNextFrame
@@ -93,8 +119,18 @@ namespace OpenRa.Network
 			localOrders.Clear();
 
 			var frameData = frameClientData[ FrameNumber ];
+			var sync = new List<int>();
+			sync.Add( world.SyncHash() );
+
 			foreach( var order in frameData.OrderBy( p => p.Key ).SelectMany( o => o.Value.ToOrderList( world ) ) )
+			{
 				UnitOrders.ProcessOrder( order );
+				sync.Add( world.SyncHash() );
+			}
+
+			var ss = sync.SerializeSync( FrameNumber );
+			CheckSync( ss );
+			Connection.Send( ss );
 
 			++frameNumber;
 		}

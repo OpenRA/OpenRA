@@ -41,5 +41,18 @@ namespace OpenRa.Network
 			}
 			return ret;
 		}
+
+		public static byte[] SerializeSync( this List<int> sync, int frameNumber )
+		{
+			var ms = new MemoryStream();
+			using( var writer = new BinaryWriter( ms ) )
+			{
+				writer.Write( frameNumber );
+				writer.Write( (byte)0x65 );
+				foreach( var s in sync )
+					writer.Write( s );
+			}
+			return ms.ToArray();
+		}
 	}
 }

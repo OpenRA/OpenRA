@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using OpenRa.FileFormats;
 using System.Security.Cryptography;
+using OpenRa;
+using OpenRa.FileFormats;
 
 namespace OpenRA.Server
 {

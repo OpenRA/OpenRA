@@ -1,5 +1,5 @@
 ﻿
-namespace OpenRa.FileFormats
+namespace OpenRa
 {
 	public static class Exts
 	{
