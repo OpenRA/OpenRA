@@ -78,17 +78,22 @@ namespace OpenRa
 			
 			return IsExplored(x,y);
 		}
-		
-		public void Explore(Actor a)
+
+		public void Explore(World w, int2 center, int range)
 		{
-			foreach (var t in a.World.FindTilesInCircle(
-				(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
-				a.Info.Traits.Get<OwnedActorInfo>().Sight))
+			foreach (var t in w.FindTilesInCircle(center, range))
 			{
 				explored[t.X, t.Y] = true;
 				gapField[t.X, t.Y] = 0;
 			}
 			dirty = true;
+		}
+		
+		public void Explore(Actor a)
+		{
+			Explore(a.World,
+				(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
+				a.Info.Traits.Get<OwnedActorInfo>().Sight);
 		}
 
 		static readonly byte[][] SpecialShroudTiles =
