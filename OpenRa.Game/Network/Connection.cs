@@ -92,7 +92,7 @@ namespace OpenRa.Network
 							receivedPackets.Add( new ReceivedPacket { FromClient = client, Data = buf } );
 					}
 				}
-				catch
+				catch( SocketException )
 				{
 					connectionState = ConnectionState.NotConnected;
 				}

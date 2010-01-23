@@ -215,7 +215,7 @@ namespace OpenRA.Server
 			try
 			{
 				c.socket.Blocking = true;
-				c.socket.Send(BitConverter.GetBytes(data.Length + 8));
+				c.socket.Send(BitConverter.GetBytes(data.Length + 4));
 				c.socket.Send(BitConverter.GetBytes(client));
 				c.socket.Send(BitConverter.GetBytes(frame));
 				c.socket.Send(data);
