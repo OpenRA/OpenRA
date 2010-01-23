@@ -20,7 +20,7 @@ namespace OpenRa.Orders
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left)
+			if (mi.Button == MouseButton.Right)
 			{
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = world.FindUnits(loc, loc)
@@ -40,9 +40,8 @@ namespace OpenRa.Orders
 			var hasChronosphere = world.Actors
 				.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<Chronosphere>());
 
-			// HACK: re-enable this
-			//if (!hasChronosphere)
-			//	Game.controller.CancelInputMode();
+			if (!hasChronosphere)
+				Game.controller.CancelInputMode();
 		}
 
 		public void Render( World world ) { }

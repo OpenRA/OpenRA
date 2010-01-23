@@ -28,10 +28,7 @@ namespace OpenRa.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
-			{
 				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(order.TargetActor);
-				Sound.Play("slcttgt1.aud");
-			}
 			
 			if (order.OrderString == "ChronosphereFinish")
 			{

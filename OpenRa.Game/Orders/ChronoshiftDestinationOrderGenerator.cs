@@ -17,7 +17,7 @@ namespace OpenRa.Orders
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left)
+			if (mi.Button == MouseButton.Right)
 			{
 				Game.controller.CancelInputMode();
 				yield break;
