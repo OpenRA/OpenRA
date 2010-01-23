@@ -137,6 +137,7 @@
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\AcceptsOre.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
+    <Compile Include="Traits\Activities\CallFunc.cs" />
     <Compile Include="Traits\Activities\EnterTransport.cs" />
     <Compile Include="Traits\Activities\Fly.cs" />
     <Compile Include="Traits\Activities\FlyAttack.cs" />
