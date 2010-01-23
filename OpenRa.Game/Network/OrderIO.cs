@@ -1,30 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
-namespace OpenRa.Orders
+namespace OpenRa.Network
 {
 	static class OrderIO
 	{
-		static void Write(this Stream s, byte[] buf)
+		public static void Write(this Stream s, byte[] buf)
 		{
 			s.Write(buf, 0, buf.Length);
 		}
 
 		public static void WriteFrameData(this Stream s, IEnumerable<Order> orders, int frameNumber)
 		{
-			var ms = new MemoryStream();
-			ms.Write(BitConverter.GetBytes(frameNumber));
-			foreach (var order in orders)
-				ms.Write(order.Serialize());
+			var bytes = Serialize( orders, frameNumber );
+			s.Write( BitConverter.GetBytes( (int)bytes.Length ) );
+			s.Write( bytes );
+		}
 
-			s.Write(BitConverter.GetBytes((int)ms.Length));
-			ms.WriteTo(s);
+		public static byte[] Serialize( this IEnumerable<Order> orders, int frameNumber )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( frameNumber ) );
+			foreach( var o in orders.Select( o => o.Serialize() ) )
+				ms.Write( o );
+			return ms.ToArray();
 		}
 
 		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
-			var ms = new MemoryStream(bytes);
+			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);
 			var reader = new BinaryReader(ms);
 			var ret = new List<Order>();
 			while( ms.Position < ms.Length )

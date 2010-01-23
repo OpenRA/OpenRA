@@ -41,14 +41,12 @@ namespace OpenRa
 			}
 		}
 
-		List<Order> recentOrders = new List<Order>();
-
 		void ApplyOrders(World world, float2 xy, MouseInput mi)
 		{
 			if (orderGenerator == null) return;
 
 			var orders = orderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
-			recentOrders.AddRange( orders );
+			Game.orderManager.IssueOrders( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
 				.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.traits.Contains<Unit>());
@@ -63,16 +61,6 @@ namespace OpenRa
 				if (isMove)
 					world.Add(new Effects.MoveFlash(world, Game.CellSize * xy));
 			}
-		}
-
-		public void AddOrder(Order o) { recentOrders.Add(o); }
-
-		public List<Order> GetRecentOrders( bool imm )
-		{
-			Func<Order, bool> p = o => o.IsImmediate ^ !imm;
-			var result = recentOrders.Where(p).ToList();
-			recentOrders.RemoveAll(o => p(o));		// ffs.
-			return result;
 		}
 
 		float2 dragStart, dragEnd;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRa.GameRules;
 using OpenRa.Traits;
@@ -50,6 +51,20 @@ namespace OpenRa
 			var oai = self.Info.Traits.GetOrDefault<OwnedActorInfo>();
 			if (oai == null) return 0;
 			return oai.HP;
+		}
+
+		public static V GetOrAdd<K, V>( this Dictionary<K, V> d, K k )
+			where V : new()
+		{
+			return d.GetOrAdd( k, _ => new V() );
+		}
+
+		public static V GetOrAdd<K, V>( this Dictionary<K, V> d, K k, Func<K, V> createFn )
+		{
+			V ret;
+			if( !d.TryGetValue( k, out ret ) )
+				d.Add( k, ret = createFn( k ) );
+			return ret;
 		}
 	}
 }

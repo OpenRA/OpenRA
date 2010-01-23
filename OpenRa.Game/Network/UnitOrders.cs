@@ -4,7 +4,7 @@ using OpenRa.GameRules;
 using OpenRa.Graphics;
 using OpenRa.Traits;
 
-namespace OpenRa.Orders
+namespace OpenRa.Network
 {
 	static class UnitOrders
 	{

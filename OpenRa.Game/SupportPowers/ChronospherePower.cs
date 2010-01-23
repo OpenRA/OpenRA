@@ -22,7 +22,7 @@ namespace OpenRa.SupportPowers
 			// Play chronosphere active anim
 			var chronosphere = target.World.Actors.Where(a => a.Owner == p.Owner && a.traits.Contains<Chronosphere>()).FirstOrDefault();
 			if (chronosphere != null)
-				Game.controller.AddOrder(Order.PlayAnimation(chronosphere, "active"));
+				Game.orderManager.IssueOrder(Order.PlayAnimation(chronosphere, "active"));
 			
 			// Trigger screen desaturate effect
 			foreach (var a in target.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))

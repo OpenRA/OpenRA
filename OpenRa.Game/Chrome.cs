@@ -382,7 +382,7 @@ namespace OpenRa
 		{
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			foreach( var item in queue.AllItems( groupName ) )
-				Game.controller.AddOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
+				Game.orderManager.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
 		}
 
 		void ChooseAvailableTab( World world )
@@ -760,7 +760,7 @@ namespace OpenRa
 		{
 			var unit = Rules.Info[item];
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
-			Game.controller.AddOrder(Order.StartProduction(world.LocalPlayer, item));
+			Game.orderManager.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
 		}
 
 		void HandleBuildPalette( World world, string item, bool isLmb )
@@ -785,7 +785,7 @@ namespace OpenRa
 
 					if (producing.Paused)
 					{
-						Game.controller.AddOrder(Order.PauseProduction(player, item, false));
+						Game.orderManager.IssueOrder(Order.PauseProduction(player, item, false));
 						return;
 					}
 				}
@@ -800,12 +800,12 @@ namespace OpenRa
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
 						Sound.Play("cancld1.aud");
-						Game.controller.AddOrder(Order.CancelProduction(player, item));
+						Game.orderManager.IssueOrder(Order.CancelProduction(player, item));
 					}
 					else
 					{
 						Sound.Play("onhold1.aud");
-						Game.controller.AddOrder(Order.PauseProduction(player, item, true));
+						Game.orderManager.IssueOrder(Order.PauseProduction(player, item, true));
 					}
 				}
 			}

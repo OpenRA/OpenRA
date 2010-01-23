@@ -3,6 +3,7 @@ using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.Orders;
 using OpenRa.Traits;
+using OpenRa.Network;
 
 namespace OpenRa.Graphics
 {
@@ -57,32 +58,25 @@ namespace OpenRa.Graphics
 				world.WorldRenderer.Draw();
 				Game.chrome.Draw( world );
 
-				if (Game.orderManager.IsNetplay && 
-					Game.orderManager.Sources.OfType<NetworkOrderSource>().First().State == ConnectionState.NotConnected)
+				if( Game.orderManager.Connection.ConnectionState == ConnectionState.NotConnected )
 					Game.chrome.DrawDialog("Connection lost.");
 			}
 			else
 			{
 				// what a hack. as soon as we have some real chrome stuff...
 
-				if (Game.orderManager.IsNetplay)
+				switch( Game.orderManager.Connection.ConnectionState )
 				{
-					var nos = Game.orderManager.Sources.OfType<NetworkOrderSource>().First();
-					switch (nos.State)
-					{
-						case ConnectionState.Connecting:
-							Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
-							break;
-						case ConnectionState.NotConnected:
-							Game.chrome.DrawDialog("Connection failed.");
-							break;
-						case ConnectionState.Connected:
-							Game.chrome.DrawLobby( world );
-							break;
-					}
+					case ConnectionState.Connecting:
+						Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
+						break;
+					case ConnectionState.NotConnected:
+						Game.chrome.DrawDialog("Connection failed.");
+						break;
+					case ConnectionState.Connected:
+						Game.chrome.DrawLobby( world );
+						break;
 				}
-				else
-					Game.chrome.DrawLobby( world );
 			}
 
 			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor( world );

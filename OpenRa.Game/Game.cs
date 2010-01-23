@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.GameRules;
 using OpenRa.Graphics;
+using OpenRa.Network;
 using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
-using System.Windows.Forms;
 using Timer = OpenRa.Support.Timer;
 
 namespace OpenRa
@@ -101,13 +102,14 @@ namespace OpenRa
 			ChangeMap(mapName);
 
 			if (Settings.Replay != "")
-				orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Settings.Replay) });
+				//orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Settings.Replay) });
+				throw new NotImplementedException();
 			else
 			{
-				var orderSources = (string.IsNullOrEmpty(Settings.NetworkHost))
-					? new IOrderSource[] { new LocalOrderSource() }
-					: new IOrderSource[] { new LocalOrderSource(), new NetworkOrderSource(Settings.NetworkHost, Settings.NetworkPort) };
-				orderManager = new OrderManager(orderSources, "replay.rep");
+				var connection = (string.IsNullOrEmpty(Settings.NetworkHost))
+					? new EchoConnection()
+					: new NetworkConnection( Settings.NetworkHost, Settings.NetworkPort );
+				orderManager = new OrderManager(connection, "replay.rep");
 			}
 		}
 
@@ -271,7 +273,7 @@ namespace OpenRa
 			/* hack hack hack */
 			if( e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted )
 			{
-				Game.controller.AddOrder(
+				Game.orderManager.IssueOrder(
 					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "" ) { IsImmediate = true } );
 			}
 

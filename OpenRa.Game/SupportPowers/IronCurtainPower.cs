@@ -29,7 +29,7 @@ namespace OpenRa.SupportPowers
 				.Where(a => a.Owner == p.Owner && a.traits.Contains<IronCurtain>())
 				.FirstOrDefault();
 			if (ironCurtain != null)
-				Game.controller.AddOrder(Order.PlayAnimation(ironCurtain, "active"));
+				Game.orderManager.IssueOrder(Order.PlayAnimation(ironCurtain, "active"));
 
 		}
 		SupportPower p;

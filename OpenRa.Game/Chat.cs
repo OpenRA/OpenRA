@@ -16,7 +16,7 @@ namespace OpenRa
 		{
 			if (isChatting && typing.Length > 0)
 			{
-				Game.controller.AddOrder(Order.Chat(Game.world.LocalPlayer, typing));
+				Game.orderManager.IssueOrder(Order.Chat(Game.world.LocalPlayer, typing));
 				AddLine(Game.world.LocalPlayer, typing);
 			}
 

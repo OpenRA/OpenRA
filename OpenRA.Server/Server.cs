@@ -76,7 +76,7 @@ namespace OpenRA.Server
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
-
+				newConn.socket.Send( BitConverter.GetBytes( newConn.PlayerIndex ) );
 				conns.Add(newConn);
 
 				lobbyInfo.Clients.Add(
