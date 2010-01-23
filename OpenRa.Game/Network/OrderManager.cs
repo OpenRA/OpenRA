@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace OpenRa.Network
 {
@@ -129,8 +130,8 @@ namespace OpenRa.Network
 			}
 
 			var ss = sync.SerializeSync( FrameNumber );
-			CheckSync( ss );
 			Connection.Send( ss );
+			CheckSync( ss );
 
 			++frameNumber;
 		}

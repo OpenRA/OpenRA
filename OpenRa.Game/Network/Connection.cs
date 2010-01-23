@@ -44,6 +44,8 @@ namespace OpenRa.Network
 
 		public virtual void Send( byte[] packet )
 		{
+			if( packet.Length == 0 )
+				throw new NotImplementedException();
 			lock( this )
 				receivedPackets.Add( new ReceivedPacket { FromClient = LocalClientId, Data = packet } );
 		}
@@ -82,9 +84,12 @@ namespace OpenRa.Network
 					for( ; ; )
 					{
 						var len = reader.ReadInt32();
+						var client = reader.ReadInt32();
 						var buf = reader.ReadBytes( len );
+						if( len == 0 )
+							throw new NotImplementedException();
 						lock( this )
-							receivedPackets.Add( new ReceivedPacket { FromClient = -1, Data = buf } );
+							receivedPackets.Add( new ReceivedPacket { FromClient = client, Data = buf } );
 					}
 				}
 				catch
