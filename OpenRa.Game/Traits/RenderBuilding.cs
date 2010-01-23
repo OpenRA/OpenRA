@@ -8,7 +8,7 @@ namespace OpenRa.Traits
 		public override object Create(Actor self) { return new RenderBuilding(self); }
 	}
 
-	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
+	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold, IResolveOrder
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;
@@ -99,5 +99,11 @@ namespace OpenRa.Traits
 		}
 
 		public void Sold(Actor self) { DoBib(self, true); }
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "PlayAnimation")
+				PlayCustomAnim(self, order.TargetString);
+		}
 	}
 }

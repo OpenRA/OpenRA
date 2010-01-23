@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.GameRules;
 using OpenRa.Traits;
-using OpenRa.SupportPowers;
 
 namespace OpenRa.Orders
 {
 	class ChronosphereSelectOrderGenerator : IOrderGenerator
 	{
-		SupportPower power;
-		public ChronosphereSelectOrderGenerator(SupportPower power)
-		{
-			this.power = power;
-		}
+		public ChronosphereSelectOrderGenerator() {}
 		
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
@@ -32,10 +27,12 @@ namespace OpenRa.Orders
 					.Where(a => a.Owner == world.LocalPlayer
 						&& a.traits.Contains<Chronoshiftable>()
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
-				
+
 				if (underCursor != null)
-					yield return new Order("ChronosphereSelect", underCursor, null, int2.Zero, power.Name);
+					yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, underCursor);
 			}
+
+			yield break;
 		}
 
 		public void Tick( World world )
@@ -43,8 +40,9 @@ namespace OpenRa.Orders
 			var hasChronosphere = world.Actors
 				.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<Chronosphere>());
 
-			if (!hasChronosphere)
-				Game.controller.CancelInputMode();
+			// HACK: re-enable this
+			//if (!hasChronosphere)
+			//	Game.controller.CancelInputMode();
 		}
 
 		public void Render( World world ) { }

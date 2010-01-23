@@ -36,7 +36,7 @@ namespace OpenRa.Traits
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left || underCursor != null) return null;
-			return new Order("SetRallyPoint", self, null, xy, null);
+			return new Order("SetRallyPoint", self, xy);
 		}
 
 		public void ResolveOrder( Actor self, Order order )

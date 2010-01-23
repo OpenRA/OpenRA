@@ -24,7 +24,7 @@ namespace OpenRa.Traits
 			if (underCursor.Info.Name == "fix"
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
-				return new Order("Enter", self, underCursor, int2.Zero, null);
+				return new Order("Enter", self, underCursor);
 
 			return null;
 		}

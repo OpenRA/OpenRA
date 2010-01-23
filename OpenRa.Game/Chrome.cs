@@ -117,10 +117,10 @@ namespace OpenRa
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<BuildableInfo>().Icon ?? (u.Name + "icon"))[0]);
 
-			spsprites = Rules.SupportPowerInfo
+			spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
 				.ToDictionary(
-					u => u.Key,
-					u => SpriteSheetBuilder.LoadAllSprites(u.Value.Image)[0]);
+					u => u.Image,
+					u => SpriteSheetBuilder.LoadAllSprites(u.Image)[0]);
 
 			var groups = Rules.Info.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
 			
@@ -893,8 +893,8 @@ namespace OpenRa
 
 		void DrawSupportPowers( World world )
 		{
-			var numPowers = world.LocalPlayer.SupportPowers.Values
-				.Where(a => a.IsAvailable).Count();
+			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
+			var numPowers = powers.Count(p => p.IsAvailable);
 
 			if (numPowers == 0) return;
 
@@ -907,38 +907,38 @@ namespace OpenRa
 
 			var y = 24;
 
-			string tooltipItem = null;
+			SupportPower tooltipItem = null;
 			int2 tooltipPos = int2.Zero;
 
-			foreach (var sp in world.LocalPlayer.SupportPowers)
+			foreach (var sp in powers)
 			{
-				var image = spsprites[sp.Key];
-				if (sp.Value.IsAvailable)
+				var image = spsprites[sp.Info.Image];
+				if (sp.IsAvailable)
 				{
 					var drawPos = new float2(5, y);
 					shpRenderer.DrawSprite(image, drawPos, PaletteType.Chrome);
 
 					clock.PlayFetchIndex("idle",
-						() => (sp.Value.TotalTime - sp.Value.RemainingTime)
-							* NumClockFrames / sp.Value.TotalTime);
+						() => (sp.TotalTime - sp.RemainingTime)
+							* NumClockFrames / sp.TotalTime);
 					clock.Tick();
 
 					shpRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
 
 					var rect = new Rectangle(5, y, 64, 48);
-					if (sp.Value.IsDone)
+					if (sp.IsReady)
 					{
 						ready.Play("ready");
 						shpRenderer.DrawSprite(ready.Image, 
 							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
 							PaletteType.Chrome);
 
-						AddButton(rect, HandleSupportPower( sp.Value ));
+						AddButton(rect, HandleSupportPower( sp ));
 					}
 
 					if (rect.Contains(lastMousePos.ToPoint()))
 					{
-						tooltipItem = sp.Key;
+						tooltipItem = sp;
 						tooltipPos = drawPos.ToInt2() + new int2(72, 0);
 					}
 
@@ -965,25 +965,23 @@ namespace OpenRa
 			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
 
-		void DrawSupportPowerTooltip(World world, string sp, int2 pos)
+		void DrawSupportPowerTooltip(World world, SupportPower sp, int2 pos)
 		{
 			var tooltipSprite = ChromeProvider.GetImage(renderer, chromeCollection, "tooltip-bg");
 			rgbaRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
 			rgbaRenderer.Flush();
 
-			var info = Rules.SupportPowerInfo[sp];
-
 			pos += new int2(5, 5);
 
-			renderer.DrawText2(info.Description, pos, Color.White);
+			renderer.DrawText2(sp.Info.Description, pos, Color.White);
 
-			var timer = "Charge Time: {0}".F(FormatTime(world.LocalPlayer.SupportPowers[sp].RemainingTime));
+			var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
 			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
 
-			if (info.LongDesc != null)
+			if (sp.Info.LongDesc != null)
 			{
 				pos += new int2(0, 25);
-				renderer.DrawText(info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+				renderer.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 			}
 		}
 	}

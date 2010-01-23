@@ -29,7 +29,7 @@ namespace OpenRa.Mods.Aftermath
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && xy == self.Location && chargeTick <= 0)
-				return new Order("Deploy", self, null, int2.Zero, null);
+				return new Order("Deploy", self);
 
 			return null;
 		}

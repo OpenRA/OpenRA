@@ -67,7 +67,7 @@ namespace OpenRa.Traits
 
 			if (Util.GetEffectiveSpeed(self) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
-			return new Order("Move", self, null, xy, null);
+			return new Order("Move", self, xy);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

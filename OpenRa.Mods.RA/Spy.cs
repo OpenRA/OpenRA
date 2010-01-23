@@ -19,7 +19,7 @@ namespace OpenRa.Mods.RA
 			if (underCursor.Owner == self.Owner) return null;
 			if (!underCursor.traits.Contains<IAcceptSpy>()) return null;
 
-			return new Order("Infiltrate", self, underCursor, int2.Zero, null);
+			return new Order("Infiltrate", self, underCursor);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

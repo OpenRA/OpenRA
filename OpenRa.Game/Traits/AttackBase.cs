@@ -195,7 +195,7 @@ namespace OpenRa.Traits
 			
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
 
-			return new Order(isHeal ? "Heal" : "Attack", self, underCursor, int2.Zero, null);
+			return new Order(isHeal ? "Heal" : "Attack", self, underCursor);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

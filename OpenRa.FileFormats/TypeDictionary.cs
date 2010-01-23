@@ -27,15 +27,15 @@ namespace OpenRa.FileFormats
 
 		public T Get<T>()
 		{
-			var l = innerInherit[ typeof( T ) ];
-			if( l.Count == 1 )
-				return (T)l[ 0 ];
-			else if( l.Count == 0 )
-				throw new InvalidOperationException( string.Format( "TypeDictionary does not contain instance of type `{0}`", typeof( T ) ) );
+			var l = innerInherit[typeof(T)];
+			if (l.Count == 1)
+				return (T)l[0];
+			else if (l.Count == 0)
+				throw new InvalidOperationException(string.Format("TypeDictionary does not contain instance of type `{0}`", typeof(T)));
 			else
-				throw new InvalidOperationException( string.Format( "TypeDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
+				throw new InvalidOperationException(string.Format("TypeDictionary contains multiple instance of type `{0}`", typeof(T)));
 		}
-
+		
 		public T GetOrDefault<T>()
 		{
 			var l = innerInherit[ typeof( T ) ];

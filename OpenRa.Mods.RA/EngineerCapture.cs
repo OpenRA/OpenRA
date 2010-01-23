@@ -20,7 +20,7 @@ namespace OpenRa.Mods.RA
 			if (underCursor.Owner == null) return null;	// don't allow capturing of bridges, etc.
 
 			return new Order(underCursor.Health <= EngineerDamage ? "Capture" : "Infiltrate",
-				self, underCursor, int2.Zero, null);
+				self, underCursor);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

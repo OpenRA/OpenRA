@@ -23,7 +23,7 @@ namespace OpenRa.Traits
 			if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
 				return null;
 
-			return new Order("EnterTransport", self, underCursor, int2.Zero, null);
+			return new Order("EnterTransport", self, underCursor);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

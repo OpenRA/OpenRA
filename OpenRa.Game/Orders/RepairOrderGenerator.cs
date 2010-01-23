@@ -30,7 +30,7 @@ namespace OpenRa.Orders
 				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
 
 				if (building != null && building.Repairable && underCursor.Health < building.HP)
-					yield return new Order("Repair", underCursor, null, int2.Zero, null);
+					yield return new Order("Repair", underCursor);
 			}
 		}
 

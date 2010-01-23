@@ -30,7 +30,7 @@ namespace OpenRa.Traits
 				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
 			}
 
-			return new Order("Move", self, null, xy, null);
+			return new Order("Move", self, xy);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

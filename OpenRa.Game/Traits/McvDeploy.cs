@@ -15,7 +15,7 @@ namespace OpenRa.Traits
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && self == underCursor)
-				return new Order("DeployMcv", self, null, int2.Zero, null);
+				return new Order("DeployMcv", self);
 
 			return null;
 		}

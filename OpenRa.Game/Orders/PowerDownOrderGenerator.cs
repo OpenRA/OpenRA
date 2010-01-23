@@ -28,7 +28,7 @@ namespace OpenRa.Orders
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
 				if (underCursor != null)
-					yield return new Order("PowerDown", underCursor, null, int2.Zero, null);
+					yield return new Order("PowerDown", underCursor);
 			}
 		}
 

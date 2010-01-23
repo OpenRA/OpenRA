@@ -15,11 +15,11 @@ namespace OpenRa.Mods.RA
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
-			
-			if (underCursor.Owner == self.Owner && 
-				(underCursor.Info.Name == "spen" || underCursor.Info.Name == "syrd") && 
+
+			if (underCursor.Owner == self.Owner &&
+				(underCursor.Info.Name == "spen" || underCursor.Info.Name == "syrd") &&
 				self.Health < self.GetMaxHP())
-				return new Order("Enter", self, underCursor, int2.Zero, null);
+				return new Order("Enter", self, underCursor);
 
 			return null;
 		}

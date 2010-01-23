@@ -21,7 +21,7 @@ namespace OpenRa.Mods.Aftermath.Orders
 				yield break;
 			}
 
-			yield return new Order("ChronoshiftSelf", self, null, xy, null);
+			yield return new Order("ChronoshiftSelf", self, xy);
 		}
 
 		public void Tick( World world ) { }

@@ -15,7 +15,7 @@ namespace OpenRa.Mods.RA
 			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 			if (!underCursor.traits.Contains<Building>()) return null;
 
-			return new Order("C4", self, underCursor, int2.Zero, null);
+			return new Order("C4", self, underCursor);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

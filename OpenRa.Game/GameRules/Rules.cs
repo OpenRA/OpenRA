@@ -15,7 +15,6 @@ namespace OpenRa
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
-		public static InfoLoader<SupportPowerInfo> SupportPowerInfo;
 		public static GeneralInfo General;
 		public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
@@ -40,8 +39,7 @@ namespace OpenRa
 				"Weapon",
 				"Warhead",
 				"Projectile",
-				"Voice",
-				"SupportPower");
+				"Voice");
 
 			WeaponInfo = new InfoLoader<WeaponInfo>(
 				Pair.New<string, Func<string, WeaponInfo>>("Weapon", _ => new WeaponInfo()));
@@ -51,9 +49,7 @@ namespace OpenRa
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
 			VoiceInfo = new InfoLoader<VoiceInfo>(
 				Pair.New<string, Func<string, VoiceInfo>>("Voice", _ => new VoiceInfo()));
-			SupportPowerInfo = new InfoLoader<SupportPowerInfo>(
-				Pair.New<string, Func<string, SupportPowerInfo>>("SupportPower", _ => new SupportPowerInfo()));
-
+	
 			var yamlRules = m.Rules.Reverse().Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
 			ActorInfo.LoadModAssemblies(m);

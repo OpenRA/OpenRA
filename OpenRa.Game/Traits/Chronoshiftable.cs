@@ -10,7 +10,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Chronoshiftable(self); }
 	}
 
-	public class Chronoshiftable : IResolveOrder, ISpeedModifier, ITick
+	public class Chronoshiftable : IResolveOrder, ITick
 	{
 		// Return-to-sender logic
 		[Sync]
@@ -39,12 +39,6 @@ namespace OpenRa.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "ChronosphereSelect")
-			{
-				var power = self.Owner.SupportPowers[order.TargetString];
-				Game.controller.orderGenerator = new ChronoshiftDestinationOrderGenerator(self, power);
-			}
-
 			var movement = self.traits.GetOrDefault<IMovement>();
 			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
 			{
@@ -70,16 +64,8 @@ namespace OpenRa.Traits
 				// Set up the teleport
 				self.CancelActivity();
 				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
-
-				var power = self.Owner.SupportPowers[order.TargetString].Impl;
-				power.OnFireNotification(self, self.Location);
 			}
 		}
-
-		public float GetSpeedModifier()
-		{
-			// ARGH! You must not do this, it will desync!
-			return (Game.controller.orderGenerator is ChronoshiftDestinationOrderGenerator) ? 0f : 1f;
-		}
 	}
+
 }

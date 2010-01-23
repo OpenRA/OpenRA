@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRa.GameRules;
 using OpenRa.Traits;
-using OpenRa.SupportPowers;
 
 namespace OpenRa.Orders
 {
@@ -34,8 +33,10 @@ namespace OpenRa.Orders
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
 				if (underCursor != null)
-					yield return new Order("IronCurtain", underCursor, null, int2.Zero, power.Name);
+					yield return new Order("IronCurtain", underCursor.Owner.PlayerActor, underCursor);
 			}
+
+			yield break;
 		}
 
 		public void Tick( World world )

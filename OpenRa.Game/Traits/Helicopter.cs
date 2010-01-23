@@ -27,12 +27,12 @@ namespace OpenRa.Traits
 			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor == null)
-				return new Order("Move", self, null, xy, null);
+				return new Order("Move", self, xy);
 
 			if (HeliCanEnter(underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
-				return new Order("Enter", self, underCursor, int2.Zero, null);
+				return new Order("Enter", self, underCursor);
 
 			return null;
 		}

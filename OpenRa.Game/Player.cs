@@ -29,7 +29,6 @@ namespace OpenRa
 		public World World { get { return PlayerActor.World; } }
 
 		public Shroud Shroud;
-		public Dictionary<string, SupportPower> SupportPowers;
 
 		public Player( World world, int index, Session.Client client )
 		{
@@ -41,10 +40,6 @@ namespace OpenRa
 			this.Palette = client != null ? (PaletteType)client.Palette : (PaletteType)index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
 			this.Race = client != null ? (Race)client.Race : Race.Allies;
-
-			SupportPowers = Rules.SupportPowerInfo.ToDictionary( 
-				spi => spi.Key, 
-				spi => new SupportPower(spi.Key, spi.Value, this));
 		}
 
 		void UpdatePower()
@@ -133,9 +128,6 @@ namespace OpenRa
 			UpdatePower();
 			UpdateOreCapacity();
 			Shroud.Tick( World );
-
-			foreach (var sp in SupportPowers.Values)
-				sp.Tick();
 
 			if (this == World.LocalPlayer)
 			{

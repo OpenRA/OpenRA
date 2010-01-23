@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using OpenRa.SupportPowers;
 
 namespace OpenRa
 {
@@ -25,6 +24,21 @@ namespace OpenRa
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
 		}
+
+		public Order(string orderString, Actor subject) 
+			: this(orderString, subject, null, int2.Zero, null) { }
+		public Order(string orderString, Actor subject, Actor targetActor)
+			: this(orderString, subject, targetActor, int2.Zero, null) { }
+		public Order(string orderString, Actor subject, int2 targetLocation)
+			: this(orderString, subject, null, targetLocation, null) { }
+		public Order(string orderString, Actor subject, string targetString)
+			: this(orderString, subject, null, int2.Zero, targetString) { }
+		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation)
+			: this(orderString, subject, targetActor, targetLocation, null) { }
+		public Order(string orderString, Actor subject, Actor targetActor, string targetString)
+			: this(orderString, subject, targetActor, int2.Zero, targetString) { }
+		public Order(string orderString, Actor subject, int2 targetLocation, string targetString)
+			: this(orderString, subject, null, targetLocation, targetString) { }
 
 		public byte[] Serialize()
 		{
@@ -99,7 +113,7 @@ namespace OpenRa
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, LookupPlayer( world, playerID ).PlayerActor, null, int2.Zero, data ) { IsImmediate = true };
+						return new Order( name, LookupPlayer( world, playerID ).PlayerActor, data ) { IsImmediate = true };
 					}
 
 				default:
@@ -136,28 +150,22 @@ namespace OpenRa
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(Player subject, string text)
 		{
-			return new Order("Chat", subject.PlayerActor, null, int2.Zero, text)
-				{ IsImmediate = true };
+			return new Order("Chat", subject.PlayerActor, text) { IsImmediate = true };
 		}
 
 		public static Order StartProduction(Player subject, string item)
 		{
-			return new Order("StartProduction", subject.PlayerActor, null, int2.Zero, item );
+			return new Order("StartProduction", subject.PlayerActor, item );
 		}
 
 		public static Order PauseProduction(Player subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject.PlayerActor, null, new int2( pause ? 1 : 0, 0 ), item);
+			return new Order("PauseProduction", subject.PlayerActor, new int2( pause ? 1 : 0, 0 ), item);
 		}
 
 		public static Order CancelProduction(Player subject, string item)
 		{
-			return new Order("CancelProduction", subject.PlayerActor, null, int2.Zero, item);
-		}
-
-		public static Order PlayAnimation(Actor actor, string animationString)
-		{
-			return new Order("PlayAnimation", actor, null, int2.Zero, animationString);
+			return new Order("CancelProduction", subject.PlayerActor, item);
 		}
 	}
 }

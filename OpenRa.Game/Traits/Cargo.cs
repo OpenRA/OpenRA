@@ -26,7 +26,7 @@ namespace OpenRa.Traits
 				var unit = underCursor.traits.GetOrDefault<Unit>();
 				if (unit != null && unit.Altitude > 0) return null;
 
-				return new Order("Deploy", self, null, int2.Zero, null);
+				return new Order("Deploy", self);
 			}
 
 			return null;

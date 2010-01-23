@@ -36,7 +36,7 @@ namespace OpenRa.Orders
 					yield break;
 				}
 
-				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, null, topLeft, Building);
+				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, topLeft, Building);
 			}
 		}
 

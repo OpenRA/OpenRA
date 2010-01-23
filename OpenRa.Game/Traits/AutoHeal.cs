@@ -11,7 +11,7 @@ namespace OpenRa.Traits
 		{
 			var attack = self.traits.Get<AttackBase>();
 			if (target != null)
-				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
+				attack.ResolveOrder(self, new Order("Attack", self, target));
 			else
 				if (self.GetCurrentActivity() is Attack)
 					self.CancelActivity();

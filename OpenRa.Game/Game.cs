@@ -274,7 +274,7 @@ namespace OpenRa
 			if( e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted )
 			{
 				Game.orderManager.IssueOrder(
-					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, null, int2.Zero, "" ) { IsImmediate = true } );
+					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, "" ) { IsImmediate = true } );
 			}
 
 			/* temporary hack: DO NOT LEAVE IN */

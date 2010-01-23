@@ -21,7 +21,7 @@ namespace OpenRa.Mods.RA
 				return null;
 
 			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("Deploy", self, null, int2.Zero, null);
+				return new Order("Deploy", self);
 
 			return null;
 		}

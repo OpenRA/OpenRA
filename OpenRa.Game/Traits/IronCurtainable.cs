@@ -8,7 +8,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new IronCurtainable(); }
 	}
 
-	class IronCurtainable : IResolveOrder, IDamageModifier, ITick
+	class IronCurtainable : IDamageModifier, ITick
 	{
 		[Sync]
 		int RemainingTicks = 0;
@@ -18,20 +18,16 @@ namespace OpenRa.Traits
 			if (RemainingTicks > 0)
 				RemainingTicks--;
 		}
+
 		public float GetDamageModifier()
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public void Activate(Actor self, int duration)
 		{
-			if (order.OrderString == "IronCurtain")
-			{
-				var power = self.Owner.SupportPowers[order.TargetString].Impl;
-				power.OnFireNotification(self, self.Location);
-				self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
-				RemainingTicks = (int)(Rules.General.IronCurtain * 60 * 25);
-			}
+			self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
+			RemainingTicks = duration;
 		}
 	}
 }

@@ -39,10 +39,10 @@ namespace OpenRa.Traits
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
 				&& underCursor.traits.Contains<AcceptsOre>() && !IsEmpty)
-				return new Order("Deliver", self, underCursor, int2.Zero, null);
+				return new Order("Deliver", self, underCursor);
 
 			if (underCursor == null && self.World.Map.ContainsResource(xy))
-				return new Order("Harvest", self, null, xy, null);
+				return new Order("Harvest", self, xy);
 
 			return null;
 		}

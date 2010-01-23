@@ -10,7 +10,7 @@ namespace OpenRa.Traits
 		{
 			var attack = self.traits.Get<AttackBase>();
 			if (target != null)
-				attack.ResolveOrder(self, new Order("Attack", self, target, int2.Zero, null));
+				attack.ResolveOrder(self, new Order("Attack", self, target));
 		}
 
 		public void Tick(Actor self)
