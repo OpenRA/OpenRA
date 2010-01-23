@@ -8,13 +8,14 @@ namespace OpenRa.Network
 {
 	static class UnitOrders
 	{
-		public static void ProcessOrder( Order order )
+		public static void ProcessOrder( int clientId, Order order )
 		{
 			switch( order.OrderString )
 			{
 			case "Chat":
 				{
-					Game.chat.AddLine(order.Player, order.TargetString);
+					if( clientId != Game.orderManager.Connection.LocalClientId )
+						Game.chat.AddLine(order.Player, order.TargetString);
 					break;
 				}
 			case "AssignPlayer":

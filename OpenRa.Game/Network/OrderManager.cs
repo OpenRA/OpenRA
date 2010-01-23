@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using IjwFramework.Types;
 
 namespace OpenRa.Network
 {
@@ -60,7 +61,7 @@ namespace OpenRa.Network
 				Connection.Send( immediateOrders.Serialize( 0 ) );
 			localOrders.RemoveAll( o => o.IsImmediate );
 
-			var immediatePackets = new List<byte[]>();
+			var immediatePackets = new List<Pair<int, byte[]>>();
 
 			Connection.Receive(
 				( clientId, packet ) =>
@@ -71,14 +72,14 @@ namespace OpenRa.Network
 					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
 						CheckSync( packet );
 					else if( frame == 0 )
-						immediatePackets.Add( packet );
+						immediatePackets.Add( Pair.New( clientId, packet ) );
 					else
 						frameClientData.GetOrAdd( frame ).Add( clientId, packet );
 				} );
 
 			foreach( var p in immediatePackets )
-				foreach( var o in p.ToOrderList( world ) )
-					UnitOrders.ProcessOrder( o );
+				foreach( var o in p.Second.ToOrderList( world ) )
+					UnitOrders.ProcessOrder( p.First, o );
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -123,9 +124,9 @@ namespace OpenRa.Network
 			var sync = new List<int>();
 			sync.Add( world.SyncHash() );
 
-			foreach( var order in frameData.OrderBy( p => p.Key ).SelectMany( o => o.Value.ToOrderList( world ) ) )
+			foreach( var order in frameData.OrderBy( p => p.Key ).SelectMany( o => o.Value.ToOrderList( world ).Select( a => new { Client = o.Key, Order = a } ) ) )
 			{
-				UnitOrders.ProcessOrder( order );
+				UnitOrders.ProcessOrder( order.Client, order.Order );
 				sync.Add( world.SyncHash() );
 			}
 
