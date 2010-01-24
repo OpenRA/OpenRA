@@ -15,6 +15,11 @@ namespace OpenRa.Traits
 		public SpyPlanePower(Actor self, SpyPlanePowerInfo info) : base(self, info) { }
 
 		protected override void OnFinishCharging() { Sound.Play("spypln1.aud"); }
+		protected override void OnActivate()
+		{
+			Game.controller.orderGenerator = new SelectTarget();
+			Sound.Play("slcttgt1.aud");
+		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
