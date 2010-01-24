@@ -20,7 +20,7 @@ namespace OpenRa.Traits
 		protected override void OnFinishCharging() { Sound.Play("ironrdy1.aud"); }
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new IronCurtainOrderGenerator(this);
+			Game.controller.orderGenerator = new SelectTarget();
 			Sound.Play("slcttgt1.aud");
 		}
 
@@ -39,6 +39,54 @@ namespace OpenRa.Traits
 					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
 				Game.controller.CancelInputMode();
 				FinishActivate();
+			}
+		}
+
+		class SelectTarget : IOrderGenerator
+		{
+			public SelectTarget() {	}
+
+			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			{
+				if (mi.Button == MouseButton.Right)
+					Game.controller.CancelInputMode();
+
+				return OrderInner(world, xy, mi);
+			}
+
+			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
+			{
+				if (mi.Button == MouseButton.Left)
+				{
+					var loc = mi.Location + Game.viewport.Location;
+					var underCursor = world.FindUnits(loc, loc)
+						.Where(a => a.Owner == world.LocalPlayer
+							&& a.traits.Contains<IronCurtainable>()
+							&& a.traits.Contains<Selectable>()).FirstOrDefault();
+
+					if (underCursor != null)
+						yield return new Order("IronCurtain", underCursor.Owner.PlayerActor, underCursor);
+				}
+
+				yield break;
+			}
+
+			public void Tick(World world)
+			{
+				var hasStructure = world.Actors
+					.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<IronCurtain>());
+
+				if (!hasStructure)
+					Game.controller.CancelInputMode();
+			}
+
+			public void Render(World world) { }
+
+			public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+			{
+				mi.Button = MouseButton.Left;
+				return OrderInner(world, xy, mi).Any()
+					? Cursor.Ability : Cursor.MoveBlocked;
 			}
 		}
 	}
