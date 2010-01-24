@@ -222,9 +222,30 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
+		bool showMapChooser = false;
+		public void DrawMapChooser()
+		{
+			var w = 600;
+			var h = 600;
+			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
+			DrawDialogBackground(r, optionsSprites, true);
+			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
+
+			DrawCentered("OK", new int2(r.Right - 200, r.Bottom - 40), Color.White);
+			DrawCentered("Cancel", new int2(r.Left + 200, r.Bottom - 40), Color.White);
+
+			AddButton(r, _ => { });
+		}
+
 		public void DrawLobby( World world )
 		{
 			DrawDownloadBar();
+
+			if (showMapChooser)
+			{
+				DrawMapChooser();
+				return;
+			}
 
 			var w = 800;
 			var h = 600;
@@ -238,8 +259,20 @@ namespace OpenRa
 			DrawDialogBackground(new Rectangle(r.Right - 330, r.Top + 40, 310, r.Bottom - 273 - r.Top - 40),
 				panelSprites, false);
 
+			var minimapRect = new Rectangle(r.Right - 325, r.Top + 45, 300, 240);
+
 			world.Minimap.Update();
-			world.Minimap.Draw(new Rectangle(r.Right - 325, r.Top + 45, 300, 277), true);
+			world.Minimap.Draw(minimapRect, true);
+
+			if (Game.world.LocalPlayer.Index == 0)
+			{
+				// we are host
+				DrawCentered("Change Map...", new int2(minimapRect.Left + minimapRect.Width / 2,
+					minimapRect.Bottom + 10), Color.White);
+
+				AddButton(new RectangleF(minimapRect.Left, minimapRect.Bottom, minimapRect.Width, 32),
+					isLmb => { if (isLmb) showMapChooser = true; });
+			}
 
 			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
 			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
