@@ -28,6 +28,13 @@ namespace OpenRa.Traits
 		{
 			if (order.OrderString == "IronCurtain")
 			{
+				var curtain = self.World.Actors.Where(a => a.Owner == self.Owner
+					&& a.traits.Contains<IronCurtain>()).FirstOrDefault();
+				if (curtain != null)
+					curtain.traits.Get<RenderBuilding>().PlayCustomAnim(curtain, "active");
+
+				Sound.Play("ironcur9.aud");
+				
 				order.TargetActor.traits.Get<IronCurtainable>().Activate(order.TargetActor,
 					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
 				Game.controller.CancelInputMode();
