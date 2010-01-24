@@ -45,19 +45,22 @@ namespace OpenRa.Traits
 			if (Info.OneShot && IsUsed)
 				return;
 
+			var buildings = Rules.TechTree.GatherBuildings(self.Owner);
+			var effectivePrereq = Info.Prerequisites
+				.Select(a => a.ToLowerInvariant())
+				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Race));
+			
 			if (Info.GivenAuto)
 			{
-				var buildings = Rules.TechTree.GatherBuildings(self.Owner);
-				var effectivePrereq = Info.Prerequisites
-					.Select(a => a.ToLowerInvariant())
-					.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Race));
-
 				IsAvailable = Info.TechLevel > -1
 					&& effectivePrereq.Any()
 					&& effectivePrereq.All(a => buildings[a].Count > 0);
 			}
-
-			if (IsAvailable && (!Info.RequiresPower || self.Owner.GetPowerState() == PowerState.Normal))
+			
+			// Do we have enough powered prerequisites?
+			var isPowered = effectivePrereq.Any() && effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
+			
+			if (IsAvailable && (!Info.RequiresPower || isPowered))
 			{
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
