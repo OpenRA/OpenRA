@@ -34,7 +34,14 @@ Player:
 		LongDesc: Reveals an area of the map.
 		Prerequisites: AFLD
 		TechLevel: 5
-	
+	NukePower:
+		Image: atomicon
+		ChargeTime: 13
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at your target.
+		Prerequisites: MSLO
+		TechLevel: 12
+
 World:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
@@ -85,3 +92,7 @@ BRIDGE1:
 BRIDGE2:
 	Bridge:
 		UseAlternateNames: yes
+
+
+MSLO:
+	NukeSilo:
