@@ -1,3 +1,22 @@
+DTRK:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 13
+		Prerequisites: mslo
+		Owner: allies,soviet
+		Cost: 2400
+		Description: Demo Truck
+	Unit:
+		HP: 110
+		Armor: light
+		Sight: 3
+		Speed: 8
+	AttackBase:
+		PrimaryWeapon: Democharge
+	RenderUnit:
+	DemoTruck:
+	-Chronoshiftable:
+
 STNK:
 	Inherits: ^Vehicle
 	Unit:
@@ -54,25 +73,6 @@ CTNK:
 		PrimaryWeapon: APTusk
 	RenderUnit:
 	ChronoshiftDeploy:
-
-DTRK:
-	Inherits: ^Vehicle
-	Buildable:
-		TechLevel: 13
-		Prerequisites: mslo
-		Owner: allies,soviet
-		Cost: 2400
-		Description: Demo Truck
-	Unit:
-		HP: 110
-		Armor: light
-		Sight: 3
-		Speed: 8
-	AttackBase:
-		PrimaryWeapon: Democharge
-	RenderUnit:
-	-Chronoshiftable:
-	DemoTruck:
 
 QTNK:
 	Inherits: ^Vehicle

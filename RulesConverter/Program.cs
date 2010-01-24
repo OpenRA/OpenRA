@@ -209,7 +209,8 @@ namespace RulesConverter
 			var yaml = MiniYaml.FromFile( outputFile );
 			if( File.Exists( "merge-" + outputFile ) )
 				yaml = MiniYaml.Merge( MiniYaml.FromFile( "merge-" + outputFile ), yaml );
-			yaml.OptimizeInherits( MiniYaml.FromFile( "defaults.yaml" ) );
+			// A hack, but it works
+			yaml.OptimizeInherits( MiniYaml.FromFile( "../ra/defaults.yaml" ) );
 			yaml.WriteToFile( outputFile );
 		}
 
