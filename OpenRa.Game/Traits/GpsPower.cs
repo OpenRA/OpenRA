@@ -38,4 +38,8 @@ namespace OpenRa.Traits
 			FinishActivate();
 		}
 	}
+
+	// tag trait to identify the building
+	class GpsLaunchSiteInfo : StatelessTraitInfo<GpsLaunchSite> { }
+	class GpsLaunchSite { }
 }
