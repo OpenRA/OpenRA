@@ -106,7 +106,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Orders\ChronosphereSelectOrderGenerator.cs" />
     <Compile Include="Orders\IronCurtainOrderGenerator.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Network\OrderIO.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
-    <Compile Include="Orders\ChronoshiftDestinationOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
     <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />

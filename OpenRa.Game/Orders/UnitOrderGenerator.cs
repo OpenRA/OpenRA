@@ -74,11 +74,6 @@ namespace OpenRa.Orders
 					else
 						return Cursor.DeployBlocked;
 				case "Deploy": return Cursor.Deploy;
-				case "Chronoshift":
-					if (movement.CanEnterCell(location))
-						return Cursor.Chronoshift;
-					else
-						return Cursor.MoveBlocked;
 				case "Enter": return Cursor.Enter;
 				case "EnterTransport": return Cursor.Enter;
 				case "Deliver": return Cursor.Enter;

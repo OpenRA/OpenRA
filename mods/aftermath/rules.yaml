@@ -71,6 +71,7 @@ DTRK:
 	AttackBase:
 		PrimaryWeapon: Democharge
 	RenderUnit:
+	-Chronoshiftable:
 	DemoTruck:
 
 QTNK:

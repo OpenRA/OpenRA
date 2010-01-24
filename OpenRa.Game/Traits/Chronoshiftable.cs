@@ -10,7 +10,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Chronoshiftable(self); }
 	}
 
-	public class Chronoshiftable : IResolveOrder, ITick
+	public class Chronoshiftable : ITick
 	{
 		// Return-to-sender logic
 		[Sync]
@@ -37,37 +37,26 @@ namespace OpenRa.Traits
 			}
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public virtual void Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
-			var movement = self.traits.GetOrDefault<IMovement>();
-			if (order.OrderString == "Chronoshift" && movement.CanEnterCell(order.TargetLocation))
+			/// Set up return-to-sender info
+			chronoshiftOrigin = self.Location;
+			chronoshiftReturnTicks = duration;
+			
+			// Kill cargo
+			if (killCargo && self.traits.Contains<Cargo>())
 			{
-				// Cannot chronoshift into unexplored location
-				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
-					return;
-
-				var info = self.Owner.PlayerActor.Info.Traits.Get<ChronoshiftPowerInfo>();
-				
-				// Set up return-to-sender info
-				chronoshiftOrigin = self.Location;
-				chronoshiftReturnTicks = (int)(info.Duration * 60 * 25);
-
-				// Kill cargo
-				if (info.KillCargo && self.traits.Contains<Cargo>())
+				var cargo = self.traits.Get<Cargo>();
+				while (!cargo.IsEmpty(self))
 				{
-					var cargo = self.traits.Get<Cargo>();
-					while (!cargo.IsEmpty(self))
-					{
-						order.Player.Kills++;
-						cargo.Unload(self);
-					}
+					chronosphere.Owner.Kills++;
+					cargo.Unload(self);
 				}
-				
-				// Set up the teleport
-				self.CancelActivity();
-				self.QueueActivity(new Activities.Teleport(order.TargetLocation));
 			}
+
+			// Set up the teleport
+			self.CancelActivity();
+			self.QueueActivity(new Activities.Teleport(targetLocation));
 		}
 	}
-
 }
