@@ -37,7 +37,7 @@ namespace OpenRa.Traits
 			}
 		}
 
-		public virtual void Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
+		public virtual bool Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;
@@ -57,6 +57,8 @@ namespace OpenRa.Traits
 			// Set up the teleport
 			self.CancelActivity();
 			self.QueueActivity(new Activities.Teleport(targetLocation));
+			
+			return true;
 		}
 	}
 }

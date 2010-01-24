@@ -48,20 +48,24 @@ namespace OpenRa.Traits
 
 				var chronosphere = self.World.Actors.Where(a => a.Owner == self.Owner
 									&& a.traits.Contains<Chronosphere>()).FirstOrDefault();
-				if (chronosphere != null)
-					chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim( chronosphere, "active" );
-
-				// Trigger screen desaturate effect
-				foreach (var a in self.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
-					a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
-
-				Sound.Play("chrono2.aud");
-
-				order.TargetActor.traits.Get<Chronoshiftable>().Activate(order.TargetActor,
+				
+				bool success = order.TargetActor.traits.Get<Chronoshiftable>().Activate(order.TargetActor,
 					order.TargetLocation,
 					(int)((Info as ChronoshiftPowerInfo).Duration * 25 * 60),
 					(Info as ChronoshiftPowerInfo).KillCargo,
 					chronosphere);
+					
+				if (success)
+				{
+					Sound.Play("chrono2.aud");
+					
+					// Trigger screen desaturate effect
+					foreach (var a in self.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
+						a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
+
+					if (chronosphere != null)
+						chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
+				}
 				
 				Game.controller.CancelInputMode();
 				FinishActivate();

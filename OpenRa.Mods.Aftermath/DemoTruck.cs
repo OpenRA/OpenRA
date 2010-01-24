@@ -17,9 +17,10 @@ namespace OpenRa.Mods.Aftermath
 		public DemoTruck(Actor self) : base(self) { }
 
 		// Explode on chronoshift
-		public override void Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
+		public override bool Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			Detonate(self, chronosphere);
+			return false;
 		}
 
 		// Fire primary on death
@@ -31,14 +32,26 @@ namespace OpenRa.Mods.Aftermath
 
 		public void Detonate(Actor self, Actor detonatedBy)
 		{
-			self.InflictDamage(detonatedBy, self.Health, Rules.WarheadInfo["Super"]);
 			var unit = self.traits.GetOrDefault<Unit>();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			var altitude = unit != null ? unit.Altitude : 0;
 			int2 detonateLocation = self.CenterLocation.ToInt2();
 
-			self.World.AddFrameEndTask(
-				w => w.Add(new Bullet(self.Info.Traits.Get<AttackBaseInfo>().PrimaryWeapon, detonatedBy.Owner, detonatedBy,
-					detonateLocation, detonateLocation, altitude, altitude)));
+			self.World.AddFrameEndTask( w =>
+			{
+				// Fire weapon		
+				w.Add(new Bullet(info.PrimaryWeapon, detonatedBy.Owner, detonatedBy,
+					detonateLocation, detonateLocation, altitude, altitude));
+				
+				var weapon = Rules.WeaponInfo[info.PrimaryWeapon];
+				if (!string.IsNullOrEmpty(weapon.Report))
+					Sound.Play(weapon.Report + ".aud");
+
+				// Remove from world
+				self.Health = 0;
+				detonatedBy.Owner.Kills++;
+				w.Remove(self);
+			} );
 		}
 	}
 }
