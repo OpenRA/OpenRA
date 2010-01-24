@@ -96,8 +96,7 @@ namespace OpenRA.Server
 				Console.WriteLine("Accepted connection from {0}.",
 					newConn.socket.RemoteEndPoint);
 
-				DispatchOrders(newConn, 0, new ServerOrder(newConn.PlayerIndex,
-					"Chat", "has joined the game.").Serialize());
+				SendChat(newConn, "has joined the game.");
 
 				SyncLobbyInfo();
 			}
@@ -282,9 +281,7 @@ namespace OpenRA.Server
 					{
 						if (GameStarted) 
 						{
-							DispatchOrdersToClient(conn, 0, 0, 
-								new ServerOrder( conn.PlayerIndex, "Chat", 
-									"You can't change your race after the game has started" ).Serialize() );
+							SendChatTo( conn, "You can't change your race after the game has started" );
 							return true;
 						}
 
@@ -304,9 +301,7 @@ namespace OpenRA.Server
 					{
 						if (GameStarted) 
 						{
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat", 
-									"You can't change your color after the game has started" ).Serialize() );
+							SendChatTo( conn, "You can't change your color after the game has started" );
 							return true;
 						}
 
@@ -319,9 +314,7 @@ namespace OpenRA.Server
 
 						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.Palette == pal ))
 						{
-							DispatchOrdersToClient(conn, 0, 0, 
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"You can't be the same color as another player" ).Serialize() );
+							SendChatTo( conn, "You can't be the same color as another player" );
 							return true;
 						}
 
@@ -334,17 +327,13 @@ namespace OpenRA.Server
 					{
 						if (conn.PlayerIndex != 0)
 						{
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"Only the host can change the map" ).Serialize() );
+							SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
 
 						if (GameStarted)
 						{
-							DispatchOrdersToClient(conn, 0, 0, 
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"You can't change the map after the game has started" ).Serialize() );
+							SendChatTo( conn, "You can't change the map after the game has started" );
 							return true;
 						}
 
@@ -357,9 +346,8 @@ namespace OpenRA.Server
 					{
 						if (GameStarted)
 						{
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"You can't change packages after the game has started" ).Serialize() );
+							SendChatTo( conn, "You can't change packages after the game has started" );
+							return true;
 						}
 
 						Console.WriteLine("** Added package: `{0}`", s);
@@ -373,10 +361,8 @@ namespace OpenRA.Server
 						}
 						catch
 						{
-							Console.WriteLine("That went horribly wrong.");
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"Adding the package failed." ).Serialize() );
+							Console.WriteLine("Adding the package failed.");
+							SendChatTo( conn, "Adding the package failed." );
 							return true;
 						}
 					}},
@@ -385,9 +371,8 @@ namespace OpenRA.Server
 					{
 						if (GameStarted)
 						{
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"You can't change mods after the game has started" ).Serialize() );
+							SendChatTo( conn, "You can't change mods after the game has started" );
+							return true;
 						}
 
 						Console.WriteLine("** Added mod: `{0}`", s);
@@ -396,17 +381,13 @@ namespace OpenRA.Server
 							lobbyInfo.GlobalSettings.Mods = 
 								lobbyInfo.GlobalSettings.Mods.Concat( new[] { s } ).ToArray();
 							SyncLobbyInfo();
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"Added mod: " + s ).Serialize() );
+							SendChatTo(conn, "Added mod: " + s );
 							return true;
 						}
 						catch
 						{
-							Console.WriteLine("That went horribly wrong.");
-							DispatchOrdersToClient(conn, 0, 0,
-								new ServerOrder( conn.PlayerIndex, "Chat",
-									"Adding the mod failed." ).Serialize() );
+							Console.WriteLine("Adding the mod failed.");
+							SendChatTo( conn, "Adding the mod failed.");
 							return true;
 						}
 					}},
@@ -420,6 +401,12 @@ namespace OpenRA.Server
 				return false;
 
 			return a(cmdValue);
+		}
+
+		static void SendChatTo(Connection conn, string text)
+		{
+			DispatchOrdersToClient(conn, 0, 0,
+				new ServerOrder(conn.PlayerIndex, "Chat", text).Serialize());
 		}
 
 		static void SendChat(Connection asConn, string text)
@@ -463,7 +450,7 @@ namespace OpenRA.Server
 						if (!InterpretCommand(conn, so.Data.Substring(1)))
 						{
 							Console.WriteLine("Bad server command: {0}", so.Data.Substring(1));
-							DispatchOrdersToClient(conn, 0, 0, new ServerOrder(conn.PlayerIndex, "Chat", "Bad server command.").Serialize());
+							SendChatTo(conn, "Bad server command.");
 						}
 					}
 					else
