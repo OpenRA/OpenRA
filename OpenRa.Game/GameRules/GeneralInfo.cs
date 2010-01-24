@@ -105,7 +105,6 @@ namespace OpenRa.GameRules
 		/* Misc */
 		[Obsolete]
 		public readonly bool FineDiffControl = false;
-		public readonly bool MCVUndeploy = false;
 
 		/* OpenRA-specific */
 		public readonly float OreChance = 0;	/* chance of spreading to a particular eligible cell */

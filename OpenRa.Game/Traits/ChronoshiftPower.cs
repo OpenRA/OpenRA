@@ -41,8 +41,8 @@ namespace OpenRa.Traits
 
 				var chronosphere = self.World.Actors.Where(a => a.Owner == self.Owner 
 					&& a.traits.Contains<Chronosphere>()).FirstOrDefault();
-				if (chronosphere != null)
-					Game.orderManager.IssueOrder(new Order("PlayAnimation", chronosphere, "active"));
+				if( chronosphere != null )
+					chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim( chronosphere, "active" );
 
 				// Trigger screen desaturate effect
 				foreach (var a in self.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))

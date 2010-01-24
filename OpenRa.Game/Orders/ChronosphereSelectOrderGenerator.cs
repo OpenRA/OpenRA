@@ -20,7 +20,7 @@ namespace OpenRa.Orders
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Right)
+			if (mi.Button == MouseButton.Left)
 			{
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = world.FindUnits(loc, loc)

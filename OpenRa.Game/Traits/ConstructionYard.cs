@@ -5,6 +5,8 @@ namespace OpenRa.Traits
 {
 	class ConstructionYardInfo : ITraitInfo
 	{
+		public readonly bool AllowUndeploy;
+
 		public object Create(Actor self) { return new ConstructionYard(self); }
 	}
 
@@ -19,7 +21,7 @@ namespace OpenRa.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (!Rules.General.MCVUndeploy) return null;
+			if (!self.Info.Traits.Get<ConstructionYardInfo>().AllowUndeploy) return null;
 			
 			if (mi.Button == MouseButton.Left) return null;
 		
