@@ -781,6 +781,19 @@ HIND:
 		Ammo: 12
 	IronCurtainable:
 
+U2:
+	Inherits: ^Plane
+	Unit:
+		HP: 2000
+		Armor: heavy
+		ROT: 7
+		Sight: 0
+		Speed: 40
+	Plane:
+	RenderUnit:
+	WithShadow:
+	IronCurtainable:
+
 IRON:
 	Inherits: ^Building
 	Buildable:

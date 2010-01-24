@@ -5,19 +5,18 @@ using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	public class CallFunc : IActivity
+	class RemoveSelf : IActivity
 	{
-		public CallFunc(Action a) { this.a = a; }
-
-		Action a;
+		bool isCanceled;
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (a != null) a();
-			return NextActivity;
+			if (isCanceled) return NextActivity;
+			self.World.AddFrameEndTask(w => w.Remove(self));
+			return null;
 		}
 
-		public void Cancel(Actor self) { a = null; NextActivity = null; }
+		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

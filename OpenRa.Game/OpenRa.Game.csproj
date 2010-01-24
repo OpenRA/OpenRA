@@ -160,6 +160,7 @@
     <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
     <Compile Include="Traits\Activities\Rearm.cs" />
+    <Compile Include="Traits\Activities\RemoveSelf.cs" />
     <Compile Include="Traits\Activities\Repair.cs" />
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />

@@ -379,14 +379,14 @@
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
     <sequence name="sell" start="68" length="12" x="12" y="12" />
     <sequence name="default-minimap" start="80" length="1" />
-    <sequence name="ability" start="82" length="8" x="12" y="12"/>
+    <sequence name="ability" start="82" length="8" x="12" y="12" />
     <sequence name="nuke" start="90" length="7" x="12" y="12" />
     <sequence name="chrono-select" start="97" length="8" x="12" y="12" />
     <sequence name="chrono-target" start="105" length="8" x="12" y="12" />
     <sequence name="enter" start="113" length="3" x="12" y="12" />
     <sequence name="c4" start="116" length="3" x="12" y="12" />
     <sequence name="sell-blocked" start="119" length="1" x="12" y="12" />
-		<sequence name="repair-blocked" start="120" length="1" x="12" y="12"/>
+    <sequence name="repair-blocked" start="120" length="1" x="12" y="12" />
     <sequence name="c4-minimap" start="121" length="3" />
     <sequence name="scroll-blocked" start="124" length="8" />
     <sequence name="attackmove-minimap" start="134" length="8" />
@@ -1036,5 +1036,8 @@
   </unit>
   <unit name="fb2">
     <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="u2">
+    <sequence name="idle" start="0" length="16" />
   </unit>
 </sequences>
