@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Traits
 {
-	abstract class SupportPowerInfo : ITraitInfo
+	public abstract class SupportPowerInfo : ITraitInfo
 	{
 		public readonly bool RequiresPower = true;
 		public readonly bool OneShot = false;
@@ -20,7 +20,7 @@ namespace OpenRa.Traits
 		public abstract object Create(Actor self);
 	}
 
-	class SupportPower : ITick
+	public class SupportPower : ITick
 	{
 		public readonly SupportPowerInfo Info;
 		public int RemainingTime { get; private set; }
@@ -58,7 +58,8 @@ namespace OpenRa.Traits
 			}
 			
 			// Do we have enough powered prerequisites?
-			var isPowered = effectivePrereq.Any() && effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
+			// Hack in support for special powers without prereqs
+			var isPowered = (Info.Prerequisites.Count() == 0) ? self.Owner.GetPowerState() == PowerState.Normal : effectivePrereq.Any() && effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
 			
 			if (IsAvailable && (!Info.RequiresPower || isPowered))
 			{

@@ -52,6 +52,7 @@
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="EngineerCapture.cs" />
+    <Compile Include="InfiltrateForSonarPulse.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="MineImmune.cs" />
     <Compile Include="Minelayer.cs" />

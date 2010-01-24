@@ -34,6 +34,21 @@ Player:
 		LongDesc: Reveals an area of the map.
 		Prerequisites: AFLD
 		TechLevel: 5
+	NukePower:
+		Image: atomicon
+		ChargeTime: 13
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at a target location.
+		Prerequisites: MSLO
+		TechLevel: 12
+	SonarPulsePower:
+		Image: sonricon
+		ChargeTime: 10
+		Description: Sonar Pulse
+		LongDesc: Reveals all submarines on the map for a \nshort time.
+		TechLevel: 5
+		GivenAuto: no
+		OneShot: yes
 
 World:
 	WaterPaletteRotation:
@@ -196,6 +211,79 @@ BRIDGE2:
 		Footprint: _____ _____
 		Dimensions: 5,2
 		HP: 1000
+
+MSLO:
+	NukeSilo:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 13
+		Prerequisites: @Tech Center
+		Owner: soviet,allies
+		Cost: 2500
+		Description: Missile Silo
+		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+	Building:
+		Power: -100
+		Footprint: xx
+		Dimensions: 2,1
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	RenderBuilding:
+	IronCurtainable:
+
+SPEN:
+	InfiltrateForSonarPulse:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: powr
+		Owner: soviet
+		Cost: 650
+		Description: Sub Pen
+		LongDesc: Produces and repairs submarines and \ntransports
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 1000
+		Armor: light
+		WaterBound: yes
+		Sight: 4
+	RenderBuilding:
+	ProductionSurround:
+		Produces: Ship
+	IronCurtainable:
+
+SYRD:
+	InfiltrateForSonarPulse:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: powr
+		Owner: allies
+		Cost: 650
+		Description: Shipyard
+		LongDesc: Produces and repairs ships
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 1000
+		Armor: light
+		WaterBound: yes
+		Sight: 4
+	RenderBuilding:
+	ProductionSurround:
+		Produces: Ship
+	IronCurtainable:
 
 V2RL:
 	Inherits: ^Vehicle
@@ -1019,26 +1107,6 @@ SAM:
 	AutoTarget:
 	IronCurtainable:
 
-MSLO:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 13
-		Prerequisites: @Tech Center
-		Owner: soviet,allies
-		Cost: 2500
-		Description: Missile Silo
-		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
-	Building:
-		Power: -100
-		Footprint: xx
-		Dimensions: 2,1
-		HP: 400
-		Armor: heavy
-		Crewed: yes
-		Sight: 5
-	RenderBuilding:
-	IronCurtainable:
-
 ATEK:
 	Inherits: ^Building
 	Buildable:
@@ -1087,56 +1155,6 @@ WEAP:
 	RallyPoint:
 	Production:
 		Produces: Vehicle
-	IronCurtainable:
-
-SYRD:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 3
-		Prerequisites: powr
-		Owner: allies
-		Cost: 650
-		Description: Shipyard
-		LongDesc: Produces and repairs ships
-	Building:
-		Power: -30
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
-		Capturable: true
-		BaseNormal: no
-		Adjacent: 8
-		HP: 1000
-		Armor: light
-		WaterBound: yes
-		Sight: 4
-	RenderBuilding:
-	ProductionSurround:
-		Produces: Ship
-	IronCurtainable:
-
-SPEN:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 3
-		Prerequisites: powr
-		Owner: soviet
-		Cost: 650
-		Description: Sub Pen
-		LongDesc: Produces and repairs submarines and \ntransports
-	Building:
-		Power: -30
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
-		Capturable: true
-		BaseNormal: no
-		Adjacent: 8
-		HP: 1000
-		Armor: light
-		WaterBound: yes
-		Sight: 4
-	RenderBuilding:
-	ProductionSurround:
-		Produces: Ship
 	IronCurtainable:
 
 FACT:

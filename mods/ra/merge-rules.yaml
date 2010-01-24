@@ -38,9 +38,17 @@ Player:
 		Image: atomicon
 		ChargeTime: 13
 		Description: Atom Bomb
-		LongDesc: Launches a nuclear missile at your target.
+		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: MSLO
 		TechLevel: 12
+	SonarPulsePower:
+		Image: sonricon
+		ChargeTime: 10
+		Description: Sonar Pulse
+		LongDesc: Reveals all submarines on the map for a \nshort time.
+		TechLevel: 5
+		GivenAuto: no
+		OneShot: yes
 
 World:
 	WaterPaletteRotation:
@@ -93,6 +101,11 @@ BRIDGE2:
 	Bridge:
 		UseAlternateNames: yes
 
-
 MSLO:
 	NukeSilo:
+	
+SPEN:
+	InfiltrateForSonarPulse:
+	
+SYRD:
+	InfiltrateForSonarPulse:
