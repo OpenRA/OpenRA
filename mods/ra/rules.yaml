@@ -27,6 +27,13 @@ Player:
 		Prerequisites: IRON
 		TechLevel: 12
 		Duration: .75
+	SpyPlanePower:
+		Image: smigicon
+		ChargeTime: 3
+		Description: Spy Plane
+		LongDesc: Reveals an area of the map.
+		Prerequisites: AFLD
+		TechLevel: 5
 
 World:
 	WaterPaletteRotation:

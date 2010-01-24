@@ -32,7 +32,9 @@ namespace OpenRa.Traits
 			
 			if (order.OrderString == "ChronosphereFinish")
 			{
-				Game.controller.CancelInputMode();
+				if (self.Owner == self.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+
 				FinishActivate();
 
 				Sound.Play("chrono2.aud");

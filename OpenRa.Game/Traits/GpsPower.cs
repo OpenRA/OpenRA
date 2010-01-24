@@ -27,6 +27,9 @@ namespace OpenRa.Traits
 
 			Owner.World.AddFrameEndTask(w =>
 			{
+				if (Owner == Owner.World.LocalPlayer)
+					Sound.Play("satlnch1.aud");
+
 				w.Add(new SatelliteLaunch(launchSite));
 				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25, 
 					() => Owner.Shroud.HasGPS = true));
