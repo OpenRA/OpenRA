@@ -45,13 +45,15 @@ namespace OpenRa.Traits
 				// Cannot chronoshift into unexplored location
 				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
+
+				var info = self.Owner.PlayerActor.Info.Traits.Get<ChronoshiftPowerInfo>();
 				
 				// Set up return-to-sender info
 				chronoshiftOrigin = self.Location;
-				chronoshiftReturnTicks = (int)(Rules.General.ChronoDuration * 60 * 25);
+				chronoshiftReturnTicks = (int)(info.Duration * 60 * 25);
 
 				// Kill cargo
-				if (Rules.General.ChronoKillCargo && self.traits.Contains<Cargo>())
+				if (info.KillCargo && self.traits.Contains<Cargo>())
 				{
 					var cargo = self.traits.Get<Cargo>();
 					while (!cargo.IsEmpty(self))

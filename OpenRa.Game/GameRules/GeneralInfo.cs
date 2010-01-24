@@ -18,17 +18,7 @@ namespace OpenRa.GameRules
 		public readonly string WoodCrate = null;
 
 		/* Special Weapons */
-		public readonly int ChronoDuration = 0;
-		public readonly bool ChronoKillCargo = true;
-		[Obsolete] public readonly int ChronoTechLevel = -1;
-		[Obsolete] public readonly int GPSTechLevel = -1;
-		public readonly int GapRadius = 0;
 		public readonly float GapRegenInterval =0;
-		public readonly float IronCurtain = 0;		/* minutes */
-		[Obsolete] public readonly int ParaTech = -1;
-		[Obsolete] public readonly int ParabombTech = -1;
-		public readonly int RadarJamRadius = 1;
-		[Obsolete] public readonly int SpyPlaneTech = -1;
 		public readonly int BadgerBombCount = 1;
 
 		/* Chrono Side Effects */
@@ -54,9 +44,7 @@ namespace OpenRa.GameRules
 		public readonly int AVMineDamage = 0;
 		public readonly int AtomDamage = 0;
 		public readonly float BallisticScatter = 0;
-		public readonly int BridgeStrength = 0;
 		public readonly float C4Delay = 0;
-		public readonly float Crush = 0;
 		public readonly float ExpSpread = 0;
 		public readonly int FireSupress = 0;
 		public readonly float HomingScatter = 0;
@@ -66,7 +54,6 @@ namespace OpenRa.GameRules
 		public readonly bool PlayerAutoCrush = false;
 		public readonly bool PlayerReturnFire = false;
 		public readonly bool PlayerScatter = false;
-		public readonly float ProneDamage = 0;
 		public readonly bool TreeTargeting = false;
 		public readonly int Incoming = 0;
 
