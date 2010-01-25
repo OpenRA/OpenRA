@@ -95,7 +95,9 @@ namespace OpenRa.Traits
 		public void Selling( Actor self )
 		{
 			anim.PlayBackwardsThen( "make", null );
-			Sound.Play("cashturn.aud");
+
+			if (self.Owner == self.World.LocalPlayer)
+				Sound.Play("cashturn.aud");
 		}
 
 		public void Sold(Actor self) { DoBib(self, true); }

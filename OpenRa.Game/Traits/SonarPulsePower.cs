@@ -10,21 +10,28 @@ namespace OpenRa.Traits
 		public override object Create(Actor self) { return new SonarPulsePower(self, this); }
 	}
 
-	public class SonarPulsePower : SupportPower
+	public class SonarPulsePower : SupportPower, IResolveOrder
 	{
 		public SonarPulsePower(Actor self, SonarPulsePowerInfo info) : base(self, info) { }
 
 		protected override void OnBeginCharging() { }
 		protected override void OnFinishCharging() { Sound.Play("pulse1.aud"); }
+
 		protected override void OnActivate()
 		{
-			// Question: Is this method synced? or does it have to go via an order?
-			
-			// TODO: Reveal submarines
-			
-			// Should this play for all players?
-			Sound.Play("sonpulse.aud");
-			FinishActivate();
+			Game.orderManager.IssueOrder(new Order("SonarPulse", Owner.PlayerActor));
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "SonarPulse")
+			{
+				// TODO: Reveal submarines
+
+				// Should this play for all players?
+				Sound.Play("sonpulse.aud");
+				FinishActivate();
+			}
 		}
 	}
 }
