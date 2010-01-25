@@ -24,8 +24,8 @@ namespace OpenRa.Orders
 				var loc = mi.Location + Game.viewport.Location;
 				var underCursor = world.FindUnits(loc, loc)
 					.Where(a => a.Owner == world.LocalPlayer
-						&& a.traits.Contains<Building>()
-						&& a.traits.Contains<Selectable>()).FirstOrDefault();
+						&& a.traits.Contains<CanPowerDown>())
+						.FirstOrDefault();
 
 				if (underCursor != null)
 					yield return new Order("PowerDown", underCursor);
@@ -39,7 +39,7 @@ namespace OpenRa.Orders
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, xy, mi).Any()
-				? Cursor.PowerDown : Cursor.PowerDown;
+				? Cursor.PowerDown : Cursor.RepairBlocked;
 		}
 	}
 }

@@ -78,6 +78,8 @@ MGG:
 		Offset: 0,6,0,-3
 
 GAP:
+	RequiresPower:
+	CanPowerDown:
 	GeneratesGap:
 		Range: 10
 	Inherits: ^Building
@@ -90,7 +92,6 @@ GAP:
 		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
 	Building:
 		Power: -60
-		RequiresPower: true
 		Footprint: _ x
 		Dimensions: 1,2
 		Capturable: true
@@ -283,6 +284,135 @@ SYRD:
 	RenderBuilding:
 	ProductionSurround:
 		Produces: Ship
+	IronCurtainable:
+
+IRON:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 12
+		Prerequisites: stek
+		Owner: soviet
+		Cost: 2800
+		Description: Iron Curtain
+		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+	IronCurtainable:
+	IronCurtain:
+
+PDOX:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 12
+		Prerequisites: atek
+		Owner: allies
+		Cost: 2800
+		Description: Chronosphere
+		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+	Chronosphere:
+	IronCurtainable:
+
+TSLA:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 7
+		Prerequisites: weap
+		Owner: soviet
+		Cost: 1500
+		Description: Tesla Coil
+		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+	Building:
+		Power: -150
+		Footprint: _ x
+		Dimensions: 1,2
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 8
+	Turreted:
+	RenderBuildingCharge:
+	AttackTurreted:
+		PrimaryWeapon: TeslaZap
+		FireDelay: 8
+	AutoTarget:
+	IronCurtainable:
+
+AGUN:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 5
+		Prerequisites: dome
+		Owner: allies
+		Cost: 600
+		Description: AA Gun
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Building:
+		Power: -50
+		Footprint: _ x
+		Dimensions: 1,2
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+	Turreted:
+		ROT: 15
+		InitialFacing: 224
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: ZSU-23
+		SecondaryWeapon: ZSU-23
+	AutoTarget:
+	IronCurtainable:
+
+DOME:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 1000
+		Description: Radar Dome
+		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
+	Building:
+		Power: -40
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	RenderBuilding:
+	ProvidesRadar:
 	IronCurtainable:
 
 V2RL:
@@ -882,52 +1012,6 @@ U2:
 	WithShadow:
 	IronCurtainable:
 
-IRON:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 12
-		Prerequisites: stek
-		Owner: soviet
-		Cost: 2800
-		Description: Iron Curtain
-		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
-	Building:
-		Power: -200
-		RequiresPower: true
-		Footprint: xx xx
-		Dimensions: 2,2
-		Capturable: true
-		HP: 400
-		Armor: wood
-		Crewed: yes
-		Sight: 10
-	RenderBuilding:
-	IronCurtainable:
-	IronCurtain:
-
-PDOX:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 12
-		Prerequisites: atek
-		Owner: allies
-		Cost: 2800
-		Description: Chronosphere
-		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
-	Building:
-		Power: -200
-		RequiresPower: true
-		Footprint: xx xx
-		Dimensions: 2,2
-		Capturable: true
-		HP: 400
-		Armor: wood
-		Crewed: yes
-		Sight: 10
-	RenderBuilding:
-	Chronosphere:
-	IronCurtainable:
-
 PBOX:
 	Inherits: ^Building
 	Buildable:
@@ -976,32 +1060,6 @@ HBOX:
 	AutoTarget:
 	IronCurtainable:
 
-TSLA:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 7
-		Prerequisites: weap
-		Owner: soviet
-		Cost: 1500
-		Description: Tesla Coil
-		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
-	Building:
-		Power: -150
-		RequiresPower: true
-		Footprint: _ x
-		Dimensions: 1,2
-		HP: 400
-		Armor: heavy
-		Crewed: yes
-		Sight: 8
-	Turreted:
-	RenderBuildingCharge:
-	AttackTurreted:
-		PrimaryWeapon: TeslaZap
-		FireDelay: 8
-	AutoTarget:
-	IronCurtainable:
-
 GUN:
 	Inherits: ^Building
 	Buildable:
@@ -1025,34 +1083,6 @@ GUN:
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: TurretGun
-	AutoTarget:
-	IronCurtainable:
-
-AGUN:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 5
-		Prerequisites: dome
-		Owner: allies
-		Cost: 600
-		Description: AA Gun
-		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
-	Building:
-		Power: -50
-		RequiresPower: true
-		Footprint: _ x
-		Dimensions: 1,2
-		HP: 400
-		Armor: heavy
-		Crewed: yes
-		Sight: 6
-	Turreted:
-		ROT: 15
-		InitialFacing: 224
-	RenderBuildingTurreted:
-	AttackTurreted:
-		PrimaryWeapon: ZSU-23
-		SecondaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
 
@@ -1249,30 +1279,6 @@ HPAD:
 		Produces: Plane
 	BelowUnits:
 	Reservable:
-	IronCurtainable:
-
-DOME:
-	Inherits: ^Building
-	Buildable:
-		TechLevel: 3
-		Prerequisites: proc
-		Owner: allies,soviet
-		Cost: 1000
-		Description: Radar Dome
-		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
-	Building:
-		Power: -40
-		RequiresPower: true
-		Footprint: xx xx
-		Dimensions: 2,2
-		Capturable: true
-		Bib: yes
-		HP: 1000
-		Armor: wood
-		Crewed: yes
-		Sight: 10
-	RenderBuilding:
-	ProvidesRadar:
 	IronCurtainable:
 
 AFLD:

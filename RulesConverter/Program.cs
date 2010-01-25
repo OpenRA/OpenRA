@@ -95,7 +95,6 @@ namespace RulesConverter
 
 				{ "Building", new PL {
 					{ "Power", "Power" },
-					{ "RequiresPower", "Powered" },
 					{ "Footprint", "Footprint" },
 					{ "Dimensions", "Dimensions" },
 					{ "Capturable", "Capturable" },

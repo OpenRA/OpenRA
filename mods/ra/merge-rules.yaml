@@ -60,6 +60,8 @@ MGG:
 		Range: 10
 
 GAP:
+	RequiresPower:
+	CanPowerDown:
 	GeneratesGap:
 		Range: 10
 		
@@ -109,3 +111,18 @@ SPEN:
 	
 SYRD:
 	InfiltrateForSonarPulse:
+IRON:
+	RequiresPower:
+	CanPowerDown:
+PDOX:
+	RequiresPower:
+	CanPowerDown:
+TSLA:
+	RequiresPower:
+	CanPowerDown:
+AGUN:
+	RequiresPower:
+	CanPowerDown:
+DOME:
+	RequiresPower:
+	CanPowerDown:

@@ -26,7 +26,9 @@ namespace OpenRa.Traits
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 
 	public interface ICustomTerrain { float GetCost(int2 p, UnitMovementType umt); }
-
+	
+	public interface IDisable {	bool Disabled { get; set; } }
+	
 	interface IProducer
 	{
 		bool Produce( Actor self, ActorInfo producee );
@@ -37,6 +39,7 @@ namespace OpenRa.Traits
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }
+	public interface IPowerModifier { float GetPowerModifier(); }
 	public interface IPaletteModifier { void AdjustPalette(Bitmap b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }

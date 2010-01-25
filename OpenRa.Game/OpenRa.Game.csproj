@@ -83,7 +83,6 @@
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
-    <Compile Include="Effects\PowerDownIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\Smoke.cs" />
@@ -101,6 +100,7 @@
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Network\Connection.cs" />
+    <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,7 +109,6 @@
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
-    <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
     <Compile Include="Ore.cs" />
@@ -204,6 +203,7 @@
     <Compile Include="Traits\Bridge.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
+    <Compile Include="Traits\CanPowerDown.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\ChronoshiftPaletteEffect.cs" />

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using OpenRa.Effects;
 using OpenRa.GameRules;
 using OpenRa.Traits.Activities;
+using OpenRa.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRa.Traits
 {
@@ -17,7 +20,6 @@ namespace OpenRa.Traits
 	public class BuildingInfo : OwnedActorInfo, ITraitInfo
 	{
 		public readonly int Power = 0;
-		public readonly bool RequiresPower = false;
 		public readonly bool BaseNormal = true;
 		public readonly int Adjacent = 2;
 		public readonly bool Bib = false;
@@ -31,25 +33,18 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Building(self); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick
+	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
 		[Sync]
 		bool isRepairing = false;
-		[Sync]
-		bool manuallyDisabled = false;
-		public bool ManuallyDisabled { get { return manuallyDisabled; } }
+
 		public bool Disabled
 		{
-			get
-			{
-				return (manuallyDisabled || 
-					(Info.RequiresPower && self.Owner.GetPowerState() != PowerState.Normal));
-			}
+			get	{ return self.traits.WithInterface<IDisable>().Any(t => t.Disabled); }
 		}
-		bool wasDisabled = false;
-		
+
 		public Building(Actor self)
 		{
 			this.self = self;
@@ -60,15 +55,17 @@ namespace OpenRa.Traits
 		
 		public int GetPowerUsage()
 		{
-			if (manuallyDisabled)
-				return 0;
-
+			var modifier = self.traits
+				.WithInterface<IPowerModifier>()
+				.Select(t => t.GetPowerModifier())
+				.Product();
+				
 			var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
 
 			if (Info.Power > 0)
-				return (self.Health * Info.Power) / maxHP;
+				return (int)(modifier*(self.Health * Info.Power) / maxHP);
 			else
-				return Info.Power;
+				return (int)(modifier * Info.Power);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -89,23 +86,12 @@ namespace OpenRa.Traits
 			{
 				isRepairing = !isRepairing;
 			}
-			
-			if (order.OrderString == "PowerDown")
-			{
-				manuallyDisabled = !manuallyDisabled;
-				Sound.Play((manuallyDisabled) ? "bleep12.aud" : "bleep11.aud");
-			}
 		}
 
 		int remainingTicks;
 
 		public void Tick(Actor self)
 		{
-			// If the disabled state has changed since the last frame
-			if (Disabled ^ wasDisabled 
-				&& (wasDisabled = Disabled)) // Yes, I mean assignment
-					self.World.AddFrameEndTask(w => w.Add(new PowerDownIndicator(self)));
-			
 			if (!isRepairing) return;
 
 			if (remainingTicks == 0)
@@ -131,6 +117,16 @@ namespace OpenRa.Traits
 			}
 			else
 				--remainingTicks;
+		}
+		
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			foreach (var a in r)
+			{
+				yield return a;
+				if (Disabled)
+					yield return a.WithPalette(PaletteType.Disabled);
+			}
 		}
 	}
 }
