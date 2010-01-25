@@ -1576,7 +1576,7 @@ DOMF:
 T01:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1584,7 +1584,7 @@ T01:
 T02:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1592,7 +1592,7 @@ T02:
 T03:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1600,7 +1600,7 @@ T03:
 T05:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1608,7 +1608,7 @@ T05:
 T06:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1616,7 +1616,7 @@ T06:
 T07:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1632,7 +1632,7 @@ T08:
 T10:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
+		Footprint: __ xx
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1640,7 +1640,7 @@ T10:
 T11:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
+		Footprint: __ xx
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1648,7 +1648,7 @@ T11:
 T12:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1656,7 +1656,7 @@ T12:
 T13:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1664,23 +1664,23 @@ T13:
 T14:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: ___ xx_
+		Dimensions: 3,2
 	RenderBuilding:
 	-Selectable:
 
 T15:
 	Inherits: ^Building
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: ___ xx_
+		Dimensions: 3,2
 	RenderBuilding:
 	-Selectable:
 
 T16:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1688,7 +1688,7 @@ T16:
 T17:
 	Inherits: ^Building
 	Building:
-		Footprint: x_ x_
+		Footprint: __ x_
 		Dimensions: 2,2
 	RenderBuilding:
 	-Selectable:
@@ -1696,7 +1696,7 @@ T17:
 TC01:
 	Inherits: ^Building
 	Building:
-		Footprint: xx_ xx_
+		Footprint: ___ xx_
 		Dimensions: 3,2
 	RenderBuilding:
 	-Selectable:
@@ -1704,7 +1704,7 @@ TC01:
 TC02:
 	Inherits: ^Building
 	Building:
-		Footprint: xx_ xx_
+		Footprint: _x_ xx_
 		Dimensions: 3,2
 	RenderBuilding:
 	-Selectable:
@@ -1720,7 +1720,7 @@ TC03:
 TC04:
 	Inherits: ^Building
 	Building:
-		Footprint: xxx_ xxx_ xxx_
+		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
 	RenderBuilding:
 	-Selectable:
@@ -1728,7 +1728,7 @@ TC04:
 TC05:
 	Inherits: ^Building
 	Building:
-		Footprint: xxx_ xxx_ xxx_
+		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
 	RenderBuilding:
 	-Selectable:
