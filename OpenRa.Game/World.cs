@@ -21,10 +21,15 @@ namespace OpenRa
 		public Player LocalPlayer
 		{
 			get { return players[localPlayerIndex]; }
-			set
+		}
+
+		public void SetLocalPlayer(int index)
+		{
+			if (index != localPlayerIndex)
 			{
-				localPlayerIndex = value.Index;
-				Game.viewport.GoToStartLocation( value );
+				localPlayerIndex = index;
+				Game.viewport.GoToStartLocation(LocalPlayer);
+				Game.chat.AddLine(LocalPlayer, "is now YOU");
 			}
 		}
 

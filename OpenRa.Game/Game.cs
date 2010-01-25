@@ -87,7 +87,6 @@ namespace OpenRa
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
-			//localPlayerIndex = localPlayer;
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
 
@@ -102,7 +101,6 @@ namespace OpenRa
 			ChangeMap(mapName);
 
 			if (Settings.Replay != "")
-				//orderManager = new OrderManager(new IOrderSource[] { new ReplayOrderSource(Settings.Replay) });
 				throw new NotImplementedException();
 			else
 			{
@@ -197,6 +195,9 @@ namespace OpenRa
 
 			LobbyInfo = session;
 
+			if (Game.orderManager.Connection.ConnectionState == ConnectionState.Connected)
+				world.SetLocalPlayer(Game.orderManager.Connection.LocalClientId);
+
 			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
 				&& !Game.orderManager.GameStarted)
 			{
@@ -276,14 +277,6 @@ namespace OpenRa
 				Game.orderManager.IssueOrder(
 					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, "" ) { IsImmediate = true } );
 			}
-
-			/* temporary hack: DO NOT LEAVE IN */
-			if( e.KeyCode == Keys.F2 )
-				Game.world.LocalPlayer = Game.world.players[ ( Game.world.LocalPlayer.Index + 1 ) % 4 ];
-			if( e.KeyCode == Keys.F3 )
-				Game.controller.orderGenerator = new SellOrderGenerator();
-			if( e.KeyCode == Keys.F4 )
-				Game.controller.orderGenerator = new RepairOrderGenerator();
 
 			if( !Game.chat.isChatting )
 				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )

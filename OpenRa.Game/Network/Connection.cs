@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Network
 {
@@ -78,6 +79,13 @@ namespace OpenRa.Network
 				{
 					socket = new TcpClient( host, port );
 					var reader = new BinaryReader( socket.GetStream() );
+					var serverProtocol = reader.ReadInt32();
+
+					if (ProtocolVersion.Version != serverProtocol)
+						throw new InvalidOperationException(
+							"Protocol version mismatch. Server={0} Client={1}"
+								.F(serverProtocol, ProtocolVersion.Version));
+
 					clientId = reader.ReadInt32();
 					connectionState = ConnectionState.Connected;
 

@@ -18,12 +18,6 @@ namespace OpenRa.Network
 						Game.chat.AddLine(order.Player, order.TargetString);
 					break;
 				}
-			case "AssignPlayer":
-				{
-					order.Player.World.LocalPlayer = order.Player;
-					Game.chat.AddLine(order.Player, "is now YOU.");
-					break;
-				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Color.White, "Server", "The game has started.");

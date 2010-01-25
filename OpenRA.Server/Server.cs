@@ -77,7 +77,8 @@ namespace OpenRA.Server
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				newConn.socket.Send( BitConverter.GetBytes( newConn.PlayerIndex ) );
+				newConn.socket.Send(BitConverter.GetBytes(ProtocolVersion.Version));
+				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
 				conns.Add(newConn);
 
 				lobbyInfo.Clients.Add(
@@ -89,9 +90,6 @@ namespace OpenRA.Server
 						Race = 1,
 						State = Session.ClientState.NotReady
 					});
-
-				DispatchOrdersToClient(newConn, 0, 0,
-					new ServerOrder(newConn.PlayerIndex, "AssignPlayer", "").Serialize());
 
 				Console.WriteLine("Accepted connection from {0}.",
 					newConn.socket.RemoteEndPoint);
