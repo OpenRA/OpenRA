@@ -932,9 +932,9 @@ namespace OpenRa
 						shpRenderer.DrawSprite(ready.Image, 
 							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
 							PaletteType.Chrome);
-
-						AddButton(rect, HandleSupportPower( sp ));
 					}
+
+					AddButton(rect, HandleSupportPower(sp));
 
 					if (rect.Contains(lastMousePos.ToPoint()))
 					{

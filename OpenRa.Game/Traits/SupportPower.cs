@@ -102,6 +102,21 @@ namespace OpenRa.Traits
 		protected virtual void OnFinishCharging() { }
 		protected virtual void OnActivate() { }
 
-		public void Activate() { OnActivate(); }	// todo: some more hax
+		public void Activate()
+		{
+			if (!IsAvailable || !IsReady)
+			{
+				Sound.Play("briefing.aud");
+				return;
+			}
+
+			if (Info.RequiresPower && Owner.GetPowerState() != PowerState.Normal)
+			{
+				Sound.Play("nopowr1.aud");
+				return;
+			}
+
+			OnActivate();
+		}
 	}
 }
