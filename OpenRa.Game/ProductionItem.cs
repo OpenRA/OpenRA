@@ -18,6 +18,8 @@ namespace OpenRa
 
 		public ProductionItem(string item, int time, int cost, Action onComplete)
 		{
+			if( time <= 0 )
+				time = 1;
 			Item = item;
 			RemainingTime = TotalTime = time;
 			RemainingCost = TotalCost = cost;
