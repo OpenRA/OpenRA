@@ -42,7 +42,7 @@ namespace OpenRA.Server
 
 				foreach (Socket s in checkRead)
 					if (s == listener.Server) AcceptConnection();
-					else ReadData(conns.Single(c => c.socket == s));
+					else conns.Single(c => c.socket == s).ReadData();
 
 				foreach (var c in conns.Where(a => a.Stream != null).ToArray())
 					SendNextChunk(c);
@@ -101,62 +101,7 @@ namespace OpenRA.Server
 			catch (Exception e) { DropClient(newConn, e); }
 		}
 
-		static bool ReadDataInner(Connection conn)
-		{
-			var rx = new byte[1024];
-			var len = 0;
-
-			for (; ; )
-			{
-				try
-				{
-					if (0 < (len = conn.socket.Receive(rx)))
-						conn.data.AddRange(rx.Take(len));
-					else
-						break;
-				}
-				catch (SocketException e)
-				{
-					if (e.SocketErrorCode == SocketError.WouldBlock) break;
-					DropClient(conn, e); 
-					return false; 
-				}
-			}
-
-			return true;
-		}
-
-		static void ReadData(Connection conn)
-		{
-			if (ReadDataInner(conn))
-				while (conn.data.Count >= conn.ExpectLength)
-				{
-					var bytes = conn.PopBytes(conn.ExpectLength);
-					switch (conn.State)
-					{
-						case ReceiveState.Header:
-							{
-								conn.ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
-								conn.Frame = BitConverter.ToInt32(bytes, 4);
-								conn.State = ReceiveState.Data;
-							} break;
-
-						case ReceiveState.Data:
-							{
-						//		if (bytes.Length > 0)
-						//			Console.WriteLine("{0} bytes", bytes.Length);
-
-								DispatchOrders(conn, conn.Frame, bytes);
-								conn.ExpectLength = 8;
-								conn.State = ReceiveState.Header;
-
-								UpdateInFlightFrames(conn);
-							} break;
-					}
-				}
-		}
-
-		static void UpdateInFlightFrames(Connection conn)
+		public static void UpdateInFlightFrames(Connection conn)
 		{
 			if (conn.Frame != 0)
 			{
@@ -221,7 +166,7 @@ namespace OpenRA.Server
 			catch (Exception e) { DropClient(c, e); }
 		}
 
-		static void DispatchOrders(Connection conn, int frame, byte[] data)
+		public static void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
@@ -486,7 +431,7 @@ namespace OpenRA.Server
 			return lobbyInfo.Clients.First(c => c.Index == conn.PlayerIndex);
 		}
 
-		static void DropClient(Connection toDrop, Exception e)
+		public static void DropClient(Connection toDrop, Exception e)
 		{
 			Console.WriteLine("Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
 			//Console.WriteLine(e.ToString());
