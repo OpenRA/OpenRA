@@ -8,6 +8,7 @@ using OpenRa.Graphics;
 using OpenRa.Orders;
 using OpenRa.Support;
 using OpenRa.Traits;
+using System.IO;
 
 namespace OpenRa
 {
@@ -222,7 +223,25 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
+		Lazy<List<string>> mapList = Lazy.New(
+			() =>
+			{
+				var builtinMaps = new IniFile(FileSystem.Open("missions.pkt")).GetSection("Missions").Select(a => a.Key);
+				var mapsFolderMaps = Directory.GetFiles("maps/");
+				return builtinMaps.Concat(mapsFolderMaps).ToList();
+			});
+
 		bool showMapChooser = false;
+		string currentMap;
+
+		void AddUiButton(int2 pos, string text, Action<bool> a)
+		{
+			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
+			DrawDialogBackground( rect, panelSprites, false );
+			DrawCentered(text, new int2(pos.X, pos.Y), Color.White);
+			AddButton(rect, a);
+		}
+
 		public void DrawMapChooser()
 		{
 			var w = 600;
@@ -231,14 +250,43 @@ namespace OpenRa
 			DrawDialogBackground(r, optionsSprites, true);
 			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
-			DrawCentered("OK", new int2(r.Right - 200, r.Bottom - 40), Color.White);
-			DrawCentered("Cancel", new int2(r.Left + 200, r.Bottom - 40), Color.White);
+			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
+					r.Bottom - 50 + 6, 160, 24), panelSprites, false);
+
+			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
+				_ =>
+				{
+					Game.orderManager.IssueOrder(
+						Order.Chat(Game.world.LocalPlayer, "/map " + currentMap));
+					showMapChooser = false;
+				});
+
+			AddUiButton(new int2(r.Right - 200, r.Bottom - 40), "Cancel",
+				_ =>
+				{
+					showMapChooser = false;
+				});
+
+			var y = r.Top + 50;
+
+			foreach (var map in mapList.Value)
+			{
+				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 100, 20);
+				if (map.ToLowerInvariant() == currentMap)
+					DrawDialogBackground(itemRect, panelSprites, false);
+
+				renderer.DrawText(map, new int2(r.Left + 60, y), Color.White);
+				var closureMap = map.ToLowerInvariant();
+				AddButton(itemRect, _ => currentMap = closureMap);
+				y += 20;
+			}
 
 			AddButton(r, _ => { });
 		}
 
 		public void DrawLobby( World world )
 		{
+			buttons.Clear();
 			DrawDownloadBar();
 
 			if (showMapChooser)
@@ -267,11 +315,21 @@ namespace OpenRa
 			if (Game.world.LocalPlayer.Index == 0)
 			{
 				// we are host
+				DrawDialogBackground(new Rectangle(minimapRect.Left + (minimapRect.Width - 160) / 2,
+					minimapRect.Bottom + 6, 160, 24), panelSprites, false);
+
 				DrawCentered("Change Map...", new int2(minimapRect.Left + minimapRect.Width / 2,
 					minimapRect.Bottom + 10), Color.White);
 
 				AddButton(new RectangleF(minimapRect.Left, minimapRect.Bottom, minimapRect.Width, 32),
-					isLmb => { if (isLmb) showMapChooser = true; });
+					isLmb =>
+					{
+						if (isLmb)
+						{
+							showMapChooser = true;
+							currentMap = Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant();
+						}
+					});
 			}
 
 			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
@@ -916,7 +974,7 @@ namespace OpenRa
 			}
 		}
 
-		private static string Description( string a )
+		static string Description( string a )
 		{
 			if( a[ 0 ] == '@' )
 				return "any " + a.Substring( 1 );
