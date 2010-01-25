@@ -14,8 +14,7 @@ namespace OpenRa.Network
 			{
 			case "Chat":
 				{
-					if( clientId != Game.orderManager.Connection.LocalClientId )
-						Game.chat.AddLine(order.Player, order.TargetString);
+					Game.chat.AddLine(order.Player, order.TargetString);
 					break;
 				}
 			case "StartGame":
