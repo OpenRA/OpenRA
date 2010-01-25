@@ -91,8 +91,8 @@ namespace OpenRA.Server
 						State = Session.ClientState.NotReady
 					});
 
-				Console.WriteLine("Accepted connection from {0}.",
-					newConn.socket.RemoteEndPoint);
+				Console.WriteLine("Client {0}: Accepted connection from {1}",
+					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
 				SendChat(newConn, "has joined the game.");
 
@@ -343,6 +343,7 @@ namespace OpenRA.Server
 			if (!dict.TryGetValue(cmdName, out a))
 				return false;
 
+			Console.WriteLine( "Client {0} sent server command: {1}", conn.PlayerIndex, cmd );
 			return a(cmdValue);
 		}
 
@@ -434,7 +435,6 @@ namespace OpenRA.Server
 		public static void DropClient(Connection toDrop, Exception e)
 		{
 			Console.WriteLine("Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
-			//Console.WriteLine(e.ToString());
 
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
@@ -452,13 +452,6 @@ namespace OpenRA.Server
 
 			if (conns.Count == 0) OnServerEmpty();
 			else SyncLobbyInfo();
-		}
-
-		public static void Write(this Stream s, byte[] data) { s.Write(data, 0, data.Length); }
-		public static byte[] Read(this Stream s, int len) { var data = new byte[len]; s.Read(data, 0, len); return data; }
-		public static IEnumerable<T> Except<T>(this IEnumerable<T> ts, T t)
-		{
-			return ts.Except(new[] { t });
 		}
 
 		static void OnServerEmpty()

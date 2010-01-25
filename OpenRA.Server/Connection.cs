@@ -73,9 +73,6 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
-						//		if (bytes.Length > 0)
-						//			Console.WriteLine("{0} bytes", bytes.Length);
-
 								Server.DispatchOrders(this, Frame, bytes);
 								ExpectLength = 8;
 								State = ReceiveState.Header;
