@@ -42,7 +42,7 @@ namespace OpenRa.Mods.RA
 
 		public bool IsPathableCrush(UnitMovementType umt, Player player)
 		{
-			return !self.Info.Traits.Get<MineInfo>().AvoidFriendly || (player != self.World.LocalPlayer);
+			return !self.Info.Traits.Get<MineInfo>().AvoidFriendly || (player != self.Owner);
 		}
 
 		public bool IsCrushableBy(UnitMovementType umt, Player player)
