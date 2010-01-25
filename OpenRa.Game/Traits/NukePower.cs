@@ -14,8 +14,8 @@ namespace OpenRa.Traits
 	{
 		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
 
-		protected override void OnBeginCharging() { Sound.Play("aprep1.aud"); }
-		protected override void OnFinishCharging() { Sound.Play("aready1.aud"); }
+		protected override void OnBeginCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("aprep1.aud"); }
+		protected override void OnFinishCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("aready1.aud"); }
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();
