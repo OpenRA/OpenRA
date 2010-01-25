@@ -34,8 +34,7 @@ namespace OpenRa.Traits
 			if (order.OrderString == "PowerDown")
 			{
 				IsDisabled = !IsDisabled;
-				if (self.Owner == self.World.LocalPlayer)
-					Sound.Play(IsDisabled ? "bleep12.aud" : "bleep11.aud");
+				Sound.PlayToPlayer(self.Owner, IsDisabled ? "bleep12.aud" : "bleep11.aud");
 			}
 		}
 	}

@@ -12,11 +12,8 @@ namespace OpenRa.Traits.Activities
 			{
 				self.Health = 0;
 				self.World.Remove( self );
-				if (self.Owner == self.World.LocalPlayer)
-				{
-					Sound.Play("placbldg.aud");
-					Sound.Play("build5.aud");
-				}
+				Sound.PlayToPlayer(self.Owner, "placbldg.aud");
+				Sound.PlayToPlayer(self.Owner, "build5.aud");
 				self.World.CreateActor( "fact", self.Location - new int2( 1, 1 ), self.Owner );
 			} );
 			return this;

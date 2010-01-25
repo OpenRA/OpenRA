@@ -16,8 +16,8 @@ namespace OpenRa.Traits
 	{
 		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info) { }
 
-		protected override void OnBeginCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("ironchg1.aud"); }
-		protected override void OnFinishCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("ironrdy1.aud"); }
+		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, "ironchg1.aud"); }
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "ironrdy1.aud"); }
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();

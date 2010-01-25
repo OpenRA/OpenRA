@@ -96,8 +96,7 @@ namespace OpenRa.Traits
 			}
 			isPrimary = true;
 
-			if (self.Owner == self.World.LocalPlayer)
-				Sound.Play("pribldg1.aud");
+			Sound.PlayToPlayer(self.Owner, "pribldg1.aud");
 		}
 	}
 }

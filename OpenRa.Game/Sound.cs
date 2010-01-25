@@ -41,6 +41,12 @@ namespace OpenRa
 			soundEngine.Play2D(sound, false);
 		}
 
+		public static void PlayToPlayer(Player player, string name)
+		{
+			if( player == player.World.LocalPlayer )
+				Play( name );
+		}
+
 		public static void PlayMusic(string name)
 		{
 			var sound = sounds[name];

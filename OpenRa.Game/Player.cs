@@ -88,10 +88,9 @@ namespace OpenRa
 
 		void GiveAdvice(string advice)
 		{
-			if (this != World.LocalPlayer) return;
 			// todo: store the condition or something.
 			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
-			Sound.Play(advice);
+			Sound.PlayToPlayer(this, advice);
 		}
 
 		public void GiveCash( int num ) { Cash += num; }
@@ -129,22 +128,19 @@ namespace OpenRa
 			UpdateOreCapacity();
 			Shroud.Tick( World );
 
-			if (this == World.LocalPlayer)
-			{
-				var totalMoney = Cash + Ore;
+			var totalMoney = Cash + Ore;
 
-				if (DisplayCash < totalMoney)
-				{
-					DisplayCash += Math.Min(displayCashDeltaPerFrame,
-						totalMoney - DisplayCash);
-					Sound.Play("cashup1.aud");
-				}
-				else if (DisplayCash > totalMoney)
-				{
-					DisplayCash -= Math.Min(displayCashDeltaPerFrame,
-						DisplayCash - totalMoney);
-					Sound.Play("cashdn1.aud");
-				}
+			if (DisplayCash < totalMoney)
+			{
+				DisplayCash += Math.Min(displayCashDeltaPerFrame,
+					totalMoney - DisplayCash);
+				Sound.PlayToPlayer(this, "cashup1.aud");
+			}
+			else if (DisplayCash > totalMoney)
+			{
+				DisplayCash -= Math.Min(displayCashDeltaPerFrame,
+					DisplayCash - totalMoney);
+				Sound.PlayToPlayer(this, "cashdn1.aud");
 			}
 		}
 

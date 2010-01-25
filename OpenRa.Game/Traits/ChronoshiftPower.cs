@@ -17,8 +17,8 @@ namespace OpenRa.Traits
 	class ChronoshiftPower : SupportPower, IResolveOrder
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnBeginCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("chrochr1.aud"); }
-		protected override void OnFinishCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("chrordy1.aud"); }
+		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, "chrochr1.aud"); }
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "chrordy1.aud"); }
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();

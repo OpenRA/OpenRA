@@ -53,9 +53,9 @@ namespace OpenRa.Traits
 								_ =>
 								{
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
-									if( !hasPlayedSound && order.Player == self.World.LocalPlayer )
+									if( !hasPlayedSound )
 									{
-										Sound.Play( isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );
+										Sound.PlayToPlayer( order.Player, isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );
 										hasPlayedSound = true;
 									}
 									if( !isBuilding )

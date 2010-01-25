@@ -15,7 +15,7 @@ namespace OpenRa.Traits
 		public SonarPulsePower(Actor self, SonarPulsePowerInfo info) : base(self, info) { }
 
 		protected override void OnBeginCharging() { }
-		protected override void OnFinishCharging() { if (Owner == Owner.World.LocalPlayer) Sound.Play("pulse1.aud"); }
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "pulse1.aud"); }
 
 		protected override void OnActivate()
 		{

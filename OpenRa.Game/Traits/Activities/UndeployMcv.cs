@@ -26,7 +26,7 @@ namespace OpenRa.Traits.Activities
 				rb.PlayCustomAnimBackwards(self, "make",
 					() => self.World.AddFrameEndTask(w => DoUndeploy(w,self)));
 
-				Sound.Play("cashturn.aud");
+				Sound.PlayToPlayer(self.Owner, "cashturn.aud");
 				started = true;
 			}
 

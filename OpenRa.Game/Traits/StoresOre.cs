@@ -18,8 +18,7 @@ namespace OpenRa.Traits
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
-			if (self.World.LocalPlayer == thief.Owner)
-				Sound.Play("credit1.aud");
+			Sound.PlayToPlayer(thief.Owner, "credit1.aud");
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
