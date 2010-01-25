@@ -1131,6 +1131,7 @@ SAM:
 		Sight: 5
 	Turreted:
 		ROT: 30
+		InitialFacing: 0
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: Nike
