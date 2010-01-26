@@ -135,7 +135,7 @@ namespace OpenRA.Server
 					};
 
 					DispatchOrdersToClient(c, 0, 0,
-						new ServerOrder(0, "FileChunk",
+						new ServerOrder("FileChunk",
 							FieldSaver.Save(chunk).Nodes.WriteToString()).Serialize());
 				}
 
@@ -350,12 +350,12 @@ namespace OpenRA.Server
 		static void SendChatTo(Connection conn, string text)
 		{
 			DispatchOrdersToClient(conn, 0, 0,
-				new ServerOrder(-1, "Chat", text).Serialize());
+				new ServerOrder("Chat", text).Serialize());
 		}
 
 		static void SendChat(Connection asConn, string text)
 		{
-			DispatchOrders(null, 0, new ServerOrder(-1, "Chat", text).Serialize());
+			DispatchOrders(null, 0, new ServerOrder("Chat", text).Serialize());
 		}
 
 		static void InterpretServerOrder(Connection conn, ServerOrder so)
@@ -383,7 +383,7 @@ namespace OpenRA.Server
 							Console.WriteLine("All players are ready. Starting the game!");
 							GameStarted = true;
 							DispatchOrders(null, 0,
-								new ServerOrder(0, "StartGame", "").Serialize());
+								new ServerOrder("StartGame", "").Serialize());
 						}
 					}
 					break;
@@ -483,7 +483,7 @@ namespace OpenRA.Server
 			clientData["GlobalSettings"] = FieldSaver.Save(lobbyInfo.GlobalSettings);
 
 			DispatchOrders(null, 0,
-				new ServerOrder(0, "SyncInfo", clientData.WriteToString()).Serialize());
+				new ServerOrder("SyncInfo", clientData.WriteToString()).Serialize());
 		}
 	}
 }

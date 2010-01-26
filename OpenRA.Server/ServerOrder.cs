@@ -5,13 +5,11 @@ namespace OpenRA.Server
 {
 	class ServerOrder
 	{
-		public readonly int PlayerId;
 		public readonly string Name;
 		public readonly string Data;
 
-		public ServerOrder(int playerId, string name, string data)
+		public ServerOrder(string name, string data)
 		{
-			PlayerId = playerId;
 			Name = name;
 			Data = data;
 		}
@@ -27,11 +25,10 @@ namespace OpenRA.Server
 
 				case 0xfe:
 					{
-						var playerID = r.ReadInt32();
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new ServerOrder(playerID, name, data);
+						return new ServerOrder(name, data);
 					}
 
 				default:
@@ -45,7 +42,6 @@ namespace OpenRA.Server
 			var bw = new BinaryWriter(ms);
 
 			bw.Write((byte)0xfe);
-			bw.Write(PlayerId);
 			bw.Write(Name);
 			bw.Write(Data);
 			return ms.ToArray();

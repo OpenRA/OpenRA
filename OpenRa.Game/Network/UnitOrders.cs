@@ -38,8 +38,9 @@ namespace OpenRa.Network
 
 			default:
 				{
-					foreach (var t in order.Subject.traits.WithInterface<IResolveOrder>())
-						t.ResolveOrder(order.Subject, order);
+					if( !order.IsImmediate )
+						foreach (var t in order.Subject.traits.WithInterface<IResolveOrder>())
+							t.ResolveOrder(order.Subject, order);
 					break;
 				}
 			}
