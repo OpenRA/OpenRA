@@ -27,7 +27,8 @@ namespace OpenRa
 
 		public static bool IsActorCrushableByActor(this World world, Actor a, Actor b)
 		{
-			return world.IsActorCrushableByMovementType(a, b.traits.GetOrDefault<IMovement>().GetMovementType());
+			var movement = b.traits.GetOrDefault<IMovement>();
+			return movement != null && world.IsActorCrushableByMovementType(a, movement.GetMovementType());
 		}
 		
 		public static bool IsActorPathableToCrush(this World world, Actor a, UnitMovementType umt)
