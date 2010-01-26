@@ -223,16 +223,30 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
-		Lazy<List<string>> mapList = Lazy.New(
+		class MapInfo
+		{
+			public readonly string Filename;
+			readonly Map Map;
+
+			public MapInfo(string filename)
+			{
+				Filename = filename.ToLowerInvariant();
+				Map = new Map(new IniFile(FileSystem.Open(Filename)));
+			}
+
+			public string Name { get { return Map.Title; } }
+		};
+
+		Lazy<List<MapInfo>> mapList = Lazy.New(
 			() =>
 			{
 				var builtinMaps = new IniFile(FileSystem.Open("missions.pkt")).GetSection("Missions").Select(a => a.Key);
 				var mapsFolderMaps = Directory.GetFiles("maps/");
-				return builtinMaps.Concat(mapsFolderMaps).ToList();
+				return builtinMaps.Concat(mapsFolderMaps).Select(a => new MapInfo(a)).ToList();
 			});
 
 		bool showMapChooser = false;
-		string currentMap;
+		MapInfo currentMap;
 
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
@@ -256,8 +270,7 @@ namespace OpenRa
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
 				{
-					Game.orderManager.IssueOrder(
-						Order.Chat("/map " + currentMap));
+					Game.orderManager.IssueOrder(Order.Chat("/map " + currentMap.Filename));
 					showMapChooser = false;
 				});
 
@@ -272,11 +285,11 @@ namespace OpenRa
 			foreach (var map in mapList.Value)
 			{
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 100, 20);
-				if (map.ToLowerInvariant() == currentMap)
+				if (map == currentMap)
 					DrawDialogBackground(itemRect, panelSprites, false);
 
-				renderer.DrawText(map, new int2(r.Left + 60, y), Color.White);
-				var closureMap = map.ToLowerInvariant();
+				renderer.DrawText(map.Name, new int2(r.Left + 60, y), Color.White);
+				var closureMap = map;
 				AddButton(itemRect, _ => currentMap = closureMap);
 				y += 20;
 			}
@@ -327,7 +340,8 @@ namespace OpenRa
 						if (isLmb)
 						{
 							showMapChooser = true;
-							currentMap = Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant();
+							currentMap = mapList.Value.Single(
+								m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
 						}
 					});
 			}
