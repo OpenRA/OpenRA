@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using OpenRa.Traits;
+using OpenRa.Mods.RA.Activities;
 
 namespace OpenRa.Mods.RA
 {
@@ -34,10 +35,7 @@ namespace OpenRa.Mods.RA
 				if (limitedAmmo != null)
 					limitedAmmo.Attacking(self);
 
-				// todo: delay a bit? (req making deploy-mine an activity)
-
-				self.World.AddFrameEndTask(
-					w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, self.Location, self.Owner));
+				self.QueueActivity( new LayMine() );
 			}
 		}
 	}
