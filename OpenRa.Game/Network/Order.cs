@@ -47,7 +47,7 @@ namespace OpenRa
 				var ret = new MemoryStream();
 				var w = new BinaryWriter(ret);
 				w.Write((byte)0xfe);
-				w.Write((uint)Player.Index);
+				w.Write(Subject == null ? uint.MaxValue : (uint)Player.Index);
 				w.Write(OrderString);
 				w.Write(TargetString);
 				return ret.ToArray();
@@ -113,7 +113,9 @@ namespace OpenRa
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, LookupPlayer( world, playerID ).PlayerActor, data ) { IsImmediate = true };
+						var player = (playerID == uint.MaxValue) ? null : LookupPlayer( world, playerID ).PlayerActor;
+
+						return new Order( name, player, data ) { IsImmediate = true };
 					}
 
 				default:
@@ -148,9 +150,9 @@ namespace OpenRa
 
 		// Named constructors for Orders.
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
-		public static Order Chat(Player subject, string text)
+		public static Order Chat(string text)
 		{
-			return new Order("Chat", subject.PlayerActor, text) { IsImmediate = true };
+			return new Order("Chat", null, text) { IsImmediate = true };
 		}
 
 		public static Order StartProduction(Player subject, string item)

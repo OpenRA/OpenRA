@@ -15,7 +15,7 @@ namespace OpenRa
 		public void Toggle()
 		{
 			if (isChatting && typing.Length > 0)
-				Game.orderManager.IssueOrder(Order.Chat(Game.world.LocalPlayer, typing));
+				Game.orderManager.IssueOrder(Order.Chat(typing));
 
 			typing = "";
 			isChatting ^= true;

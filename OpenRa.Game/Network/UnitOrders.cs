@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using OpenRa.FileFormats;
 using OpenRa.GameRules;
 using OpenRa.Graphics;
@@ -8,13 +9,14 @@ namespace OpenRa.Network
 {
 	static class UnitOrders
 	{
-		public static void ProcessOrder( int clientId, Order order )
+		public static void ProcessOrder( World world, int clientId, Order order )
 		{
 			switch( order.OrderString )
 			{
 			case "Chat":
 				{
-					Game.chat.AddLine(order.Player, order.TargetString);
+					var player = world.players.Values.Where( p => p.Index == clientId ).Single();
+					Game.chat.AddLine(player, order.TargetString);
 					break;
 				}
 			case "StartGame":

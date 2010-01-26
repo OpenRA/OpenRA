@@ -79,7 +79,7 @@ namespace OpenRa.Network
 
 			foreach( var p in immediatePackets )
 				foreach( var o in p.Second.ToOrderList( world ) )
-					UnitOrders.ProcessOrder( p.First, o );
+					UnitOrders.ProcessOrder( world, p.First, o );
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -126,7 +126,7 @@ namespace OpenRa.Network
 
 			foreach( var order in frameData.OrderBy( p => p.Key ).SelectMany( o => o.Value.ToOrderList( world ).Select( a => new { Client = o.Key, Order = a } ) ) )
 			{
-				UnitOrders.ProcessOrder( order.Client, order.Order );
+				UnitOrders.ProcessOrder( world, order.Client, order.Order );
 				sync.Add( world.SyncHash() );
 			}
 

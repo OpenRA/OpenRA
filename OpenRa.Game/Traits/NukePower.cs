@@ -62,7 +62,7 @@ namespace OpenRa.Traits
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					yield return new Order("NuclearMissile", Game.world.LocalPlayer.PlayerActor, xy);
+					yield return new Order("NuclearMissile", world.LocalPlayer.PlayerActor, xy);
 				}
 
 				yield break;

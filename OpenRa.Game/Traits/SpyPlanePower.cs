@@ -68,7 +68,7 @@ namespace OpenRa.Traits
 					yield break;
 				}
 
-				yield return new Order("SpyPlane", Game.world.LocalPlayer.PlayerActor, xy);
+				yield return new Order("SpyPlane", world.LocalPlayer.PlayerActor, xy);
 			}
 
 			public void Tick(World world) {}

@@ -350,12 +350,12 @@ namespace OpenRA.Server
 		static void SendChatTo(Connection conn, string text)
 		{
 			DispatchOrdersToClient(conn, 0, 0,
-				new ServerOrder(conn.PlayerIndex, "Chat", text).Serialize());
+				new ServerOrder(-1, "Chat", text).Serialize());
 		}
 
 		static void SendChat(Connection asConn, string text)
 		{
-			DispatchOrders(null, 0, new ServerOrder(asConn.PlayerIndex, "Chat", text).Serialize());
+			DispatchOrders(null, 0, new ServerOrder(-1, "Chat", text).Serialize());
 		}
 
 		static void InterpretServerOrder(Connection conn, ServerOrder so)

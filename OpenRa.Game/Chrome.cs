@@ -257,7 +257,7 @@ namespace OpenRa
 				_ =>
 				{
 					Game.orderManager.IssueOrder(
-						Order.Chat(Game.world.LocalPlayer, "/map " + currentMap));
+						Order.Chat("/map " + currentMap));
 					showMapChooser = false;
 				});
 
