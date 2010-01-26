@@ -318,6 +318,19 @@ namespace OpenRa
 				y += 20;
 			}
 
+			y = mapRect.Bottom + 20;
+			DrawCentered("Title: {0}".F(currentMap.Map.Title, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Size: {0}x{1}".F(currentMap.Map.Width, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Theater: {0}".F(currentMap.Map.Theater, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+
 			AddButton(r, _ => { });
 		}
 
