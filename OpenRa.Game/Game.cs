@@ -271,13 +271,6 @@ namespace OpenRa
 		{
 			int sync = Game.world.SyncHash();
 
-			/* hack hack hack */
-			if( e.KeyCode == Keys.F8 && !Game.orderManager.GameStarted )
-			{
-				Game.orderManager.IssueOrder(
-					new Order( "ToggleReady", Game.world.LocalPlayer.PlayerActor, "" ) { IsImmediate = true } );
-			}
-
 			if( !Game.chat.isChatting )
 				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
 					Game.controller.DoControlGroup( world, (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );

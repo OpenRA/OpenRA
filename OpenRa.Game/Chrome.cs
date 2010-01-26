@@ -319,6 +319,31 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
+		bool PaletteAvailable(int palette) { return Game.LobbyInfo.Clients.All(c => c.Palette != palette); }
+
+		void CyclePalette(bool left)
+		{
+			var d = left ? 1 : 7;
+			var newpalette = ((int)Game.world.LocalPlayer.Palette + d) % 8;
+			while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
+				newpalette = (newpalette + d) % 8;
+
+			Game.orderManager.IssueOrder(
+				Order.Chat("/pal " + newpalette));
+		}
+
+		void CycleRace(bool left)
+		{
+			Game.orderManager.IssueOrder(
+				Order.Chat("/race " + (((int)Game.world.LocalPlayer.Race - 1) ^ 1)));
+		}
+
+		void CycleReady(bool left)
+		{
+			Game.orderManager.IssueOrder(
+				new Order("ToggleReady", Game.world.LocalPlayer.PlayerActor, "") { IsImmediate = true });
+		}
+
 		public void DrawLobby( World world )
 		{
 			buttons.Clear();
@@ -369,7 +394,7 @@ namespace OpenRa
 					});
 			}
 
-			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
+			renderer.DrawText2("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
 			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
 			renderer.DrawText2("Faction", new int2(r.Left + 300, r.Top + 50), Color.White);
 			renderer.DrawText2("Status", new int2(r.Left + 370, r.Top + 50), Color.White);
@@ -377,7 +402,28 @@ namespace OpenRa
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
 			{
-				renderer.DrawText(client.Name, new int2(r.Left + 30, y), Color.White);
+				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
+
+				if (isLocalPlayer)
+				{
+					// todo: name editing
+					var nameRect = new Rectangle(r.Left + 30, y - 2, 185, 22);
+					DrawDialogBackground(nameRect, panelSprites, false);
+
+					var paletteRect = new Rectangle(r.Left + 220, y - 2, 65, 22);
+					DrawDialogBackground(paletteRect, panelSprites, false);
+					AddButton(paletteRect, CyclePalette);
+
+					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
+					DrawDialogBackground(raceRect, panelSprites, false);
+					AddButton(raceRect, CycleRace);
+
+					var readyRect = new Rectangle(r.Left + 360, y - 2, 95, 22);
+					DrawDialogBackground(readyRect, panelSprites, false);
+					AddButton(readyRect, CycleReady);
+				}
+
+				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
 				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 230, y), Color.White);
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
