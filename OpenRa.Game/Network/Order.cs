@@ -47,7 +47,6 @@ namespace OpenRa
 				var ret = new MemoryStream();
 				var w = new BinaryWriter(ret);
 				w.Write((byte)0xfe);
-				w.Write(Subject == null ? uint.MaxValue : (uint)Player.Index);
 				w.Write(OrderString);
 				w.Write(TargetString);
 				return ret.ToArray();
@@ -109,13 +108,10 @@ namespace OpenRa
 
 				case 0xfe:
 					{
-						var playerID = r.ReadUInt32();
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						var player = (playerID == uint.MaxValue) ? null : LookupPlayer( world, playerID ).PlayerActor;
-
-						return new Order( name, player, data ) { IsImmediate = true };
+						return new Order( name, null, data ) { IsImmediate = true };
 					}
 
 				default:
