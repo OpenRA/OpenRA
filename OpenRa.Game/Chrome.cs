@@ -74,6 +74,11 @@ namespace OpenRa
 		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
 		static Size powerSize = new Size(138,5);
 		
+		// mapchooser
+		Sheet mapChooserSheet;
+		Sprite mapChooserSprite;
+		Sprite colorBlock;
+		
 		public Chrome(Renderer r)
 		{
 			this.renderer = r;
@@ -137,6 +142,9 @@ namespace OpenRa
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
+
+			mapChooserSheet = new Sheet(r, new Size(128, 128));
+			colorBlock = SheetBuilder.Add(new Size(65 - 8, 22 - 8), 0x54);
 		}
 		
 		public void Tick()
@@ -223,16 +231,29 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
-		Lazy<List<string>> mapList = Lazy.New(
+		class MapInfo
+		{
+			public readonly string Filename;
+			public readonly Map Map;
+
+			public MapInfo(string filename)
+			{
+				Filename = filename.ToLowerInvariant();
+				Map = new Map(new IniFile(FileSystem.Open(Filename)));
+			}
+		};
+
+		Lazy<List<MapInfo>> mapList = Lazy.New(
 			() =>
 			{
 				var builtinMaps = new IniFile(FileSystem.Open("missions.pkt")).GetSection("Missions").Select(a => a.Key);
 				var mapsFolderMaps = Directory.GetFiles("maps/");
-				return builtinMaps.Concat(mapsFolderMaps).ToList();
+				return builtinMaps.Concat(mapsFolderMaps).Select(a => new MapInfo(a)).ToList();
 			});
 
 		bool showMapChooser = false;
-		string currentMap;
+		MapInfo currentMap;
+		bool mapPreviewDirty = true;
 
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
@@ -244,7 +265,7 @@ namespace OpenRa
 
 		public void DrawMapChooser()
 		{
-			var w = 600;
+			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, optionsSprites, true);
@@ -256,8 +277,7 @@ namespace OpenRa
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
 				{
-					Game.orderManager.IssueOrder(
-						Order.Chat("/map " + currentMap));
+					Game.orderManager.IssueOrder(Order.Chat("/map " + currentMap.Filename));
 					showMapChooser = false;
 				});
 
@@ -267,21 +287,76 @@ namespace OpenRa
 					showMapChooser = false;
 				});
 
+			if (mapPreviewDirty)
+			{
+				var b = Minimap.RenderTerrainBitmap(currentMap.Map, Game.world.TileSet);	// tileset -> hack
+				mapChooserSheet.Texture.SetData(b);
+				mapChooserSprite = new Sprite(mapChooserSheet, 
+					Minimap.MakeMinimapBounds(currentMap.Map), TextureChannel.Alpha);
+				mapPreviewDirty = false;
+			}
+
+			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
+			DrawDialogBackground(mapRect, panelSprites, false);
+			rgbaRenderer.DrawSprite(mapChooserSprite, 
+				new float2(mapRect.Location) + new float2(4, 4), 
+				PaletteType.Chrome, 
+				new float2(mapRect.Size) - new float2(8, 8));
+			rgbaRenderer.Flush();
+
 			var y = r.Top + 50;
 
 			foreach (var map in mapList.Value)
 			{
-				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 100, 20);
-				if (map.ToLowerInvariant() == currentMap)
+				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
+				if (map == currentMap)
 					DrawDialogBackground(itemRect, panelSprites, false);
 
-				renderer.DrawText(map, new int2(r.Left + 60, y), Color.White);
-				var closureMap = map.ToLowerInvariant();
-				AddButton(itemRect, _ => currentMap = closureMap);
+				renderer.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
+				var closureMap = map;
+				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
 				y += 20;
 			}
 
+			y = mapRect.Bottom + 20;
+			DrawCentered("Title: {0}".F(currentMap.Map.Title, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Size: {0}x{1}".F(currentMap.Map.Width, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Theater: {0}".F(currentMap.Map.Theater, currentMap.Map.Height),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+			y += 20;
+			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),
+				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+
 			AddButton(r, _ => { });
+		}
+
+		bool PaletteAvailable(int palette) { return Game.LobbyInfo.Clients.All(c => c.Palette != palette); }
+
+		void CyclePalette(bool left)
+		{
+			var d = left ? 1 : 7;
+			var newpalette = ((int)Game.world.LocalPlayer.Palette + d) % 8;
+			while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
+				newpalette = (newpalette + d) % 8;
+
+			Game.orderManager.IssueOrder(
+				Order.Chat("/pal " + newpalette));
+		}
+
+		void CycleRace(bool left)
+		{
+			Game.orderManager.IssueOrder(
+				Order.Chat("/race " + (((int)Game.world.LocalPlayer.Race - 1) ^ 1)));
+		}
+
+		void CycleReady(bool left)
+		{
+			Game.orderManager.IssueOrder(
+				new Order("ToggleReady", Game.world.LocalPlayer.PlayerActor, "") { IsImmediate = true });
 		}
 
 		public void DrawLobby( World world )
@@ -327,12 +402,14 @@ namespace OpenRa
 						if (isLmb)
 						{
 							showMapChooser = true;
-							currentMap = Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant();
+							currentMap = mapList.Value.Single(
+								m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
+							mapPreviewDirty = true;
 						}
 					});
 			}
 
-			renderer.DrawText2("Name", new int2(r.Left + 30, r.Top + 50), Color.White);
+			renderer.DrawText2("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
 			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
 			renderer.DrawText2("Faction", new int2(r.Left + 300, r.Top + 50), Color.White);
 			renderer.DrawText2("Status", new int2(r.Left + 370, r.Top + 50), Color.White);
@@ -340,8 +417,38 @@ namespace OpenRa
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
 			{
-				renderer.DrawText(client.Name, new int2(r.Left + 30, y), Color.White);
-				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 230, y), Color.White);
+				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
+				var paletteRect = new Rectangle(r.Left + 220, y - 2, 65, 22);
+
+				if (isLocalPlayer)
+				{
+					// todo: name editing
+					var nameRect = new Rectangle(r.Left + 30, y - 2, 185, 22);
+					DrawDialogBackground(nameRect, panelSprites, false);
+
+					DrawDialogBackground(paletteRect, panelSprites, false);
+					AddButton(paletteRect, CyclePalette);
+
+					shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
+						(PaletteType)client.Palette);
+
+					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
+					DrawDialogBackground(raceRect, panelSprites, false);
+					AddButton(raceRect, CycleRace);
+
+					var readyRect = new Rectangle(r.Left + 360, y - 2, 95, 22);
+					DrawDialogBackground(readyRect, panelSprites, false);
+					AddButton(readyRect, CycleReady);
+				}
+
+				shpRenderer.Flush();
+
+				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
+
+				
+				shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
+					(PaletteType)client.Palette);
+
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
 				y += 30;
