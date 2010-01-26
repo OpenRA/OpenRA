@@ -74,6 +74,10 @@ namespace OpenRa
 		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
 		static Size powerSize = new Size(138,5);
 		
+		// mapchooser
+		Sheet mapChooserSheet;
+		Sprite mapChooserSprite;
+		
 		public Chrome(Renderer r)
 		{
 			this.renderer = r;
@@ -137,6 +141,8 @@ namespace OpenRa
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
+
+			mapChooserSheet = new Sheet(r, new Size(128, 128));
 		}
 		
 		public void Tick()
@@ -226,15 +232,13 @@ namespace OpenRa
 		class MapInfo
 		{
 			public readonly string Filename;
-			readonly Map Map;
+			public readonly Map Map;
 
 			public MapInfo(string filename)
 			{
 				Filename = filename.ToLowerInvariant();
 				Map = new Map(new IniFile(FileSystem.Open(Filename)));
 			}
-
-			public string Name { get { return Map.Title; } }
 		};
 
 		Lazy<List<MapInfo>> mapList = Lazy.New(
@@ -247,6 +251,7 @@ namespace OpenRa
 
 		bool showMapChooser = false;
 		MapInfo currentMap;
+		bool mapPreviewDirty = true;
 
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
@@ -258,7 +263,7 @@ namespace OpenRa
 
 		public void DrawMapChooser()
 		{
-			var w = 600;
+			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, optionsSprites, true);
@@ -280,17 +285,34 @@ namespace OpenRa
 					showMapChooser = false;
 				});
 
+			if (mapPreviewDirty)
+			{
+				var b = Minimap.RenderTerrainBitmap(currentMap.Map, Game.world.TileSet);	// tileset -> hack
+				mapChooserSheet.Texture.SetData(b);
+				mapChooserSprite = new Sprite(mapChooserSheet, 
+					Minimap.MakeMinimapBounds(currentMap.Map), TextureChannel.Alpha);
+				mapPreviewDirty = false;
+			}
+
+			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
+			DrawDialogBackground(mapRect, panelSprites, false);
+			rgbaRenderer.DrawSprite(mapChooserSprite, 
+				new float2(mapRect.Location) + new float2(4, 4), 
+				PaletteType.Chrome, 
+				new float2(mapRect.Size) - new float2(8, 8));
+			rgbaRenderer.Flush();
+
 			var y = r.Top + 50;
 
 			foreach (var map in mapList.Value)
 			{
-				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 100, 20);
+				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
 					DrawDialogBackground(itemRect, panelSprites, false);
 
-				renderer.DrawText(map.Name, new int2(r.Left + 60, y), Color.White);
+				renderer.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
-				AddButton(itemRect, _ => currentMap = closureMap);
+				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
 				y += 20;
 			}
 
@@ -342,6 +364,7 @@ namespace OpenRa
 							showMapChooser = true;
 							currentMap = mapList.Value.Single(
 								m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
+							mapPreviewDirty = true;
 						}
 					});
 			}

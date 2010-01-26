@@ -4,6 +4,7 @@ using System.Linq;
 using OpenRa.Traits;
 using OpenRa.FileFormats;
 using System.Drawing.Imaging;
+using IjwFramework.Collections;
 
 namespace OpenRa.Graphics
 {
@@ -35,50 +36,63 @@ namespace OpenRa.Graphics
 			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
 		}
 
-		Color[] terrainTypeColors;
+		public static Rectangle MakeMinimapBounds(Map m)
+		{
+			var size = Math.Max(m.Width, m.Height);
+			var dw = (size - m.Width) / 2;
+			var dh = (size - m.Height) / 2;
+
+			return new Rectangle(m.Offset.X - dw, m.Offset.Y - dh, size, size);
+		}
+
+		static Cache<string, Color[]> terrainTypeColors = new Cache<string, Color[]>(
+			theater =>
+			{
+				var pal = new Palette(FileSystem.Open(theater + ".pal"));
+				return new[] {
+						theater == "snow" ? 0xe3 :0x1a, 
+						0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d, 0x88 }
+					.Select(a => Color.FromArgb(alpha, pal.GetColor(a))).ToArray();
+			});
+
 		Color[] playerColors;
-		Color shroudColor;
+		static Color shroudColor;
 		string theater;
 
 		public void InvalidateOre() { oreLayer = null; }
 
+		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
+		{
+			var colors = terrainTypeColors[map.Theater.ToLowerInvariant()];
+			var terrain = new Bitmap(128, 128);
+			for (var y = 0; y < 128; y++)
+				for (var x = 0; x < 128; x++)
+					terrain.SetPixel(x, y, map.IsInMap(x, y)
+						? colors[tileset.GetWalkability(map.MapTiles[x, y])]
+						: shroudColor);
+
+			return terrain;
+		}
+
 		public void Update()
 		{
-			if (world.Map.Theater != theater)
-			{
-				terrainTypeColors = null;
-				theater = world.Map.Theater;
-			}
-
 			if (terrainTypeColors == null)
 			{
-				var pal = new Palette(FileSystem.Open(world.Map.Theater + ".pal"));
-				terrainTypeColors = new[] {
-					theater.ToLowerInvariant() == "snow" ? 0xe3 :0x1a, 
-					0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d, 0x88 }
-					.Select( a => Color.FromArgb(alpha, pal.GetColor(a) )).ToArray();
-				
 				playerColors = Util.MakeArray<Color>( 8, b => Color.FromArgb(alpha, Chat.paletteColors[b]) );
 				shroudColor = Color.FromArgb(alpha, Color.Black);
 			}
-			
+
 			if (terrain == null)
-			{
-				terrain = new Bitmap(128, 128);
-				for (var y = 0; y < 128; y++)
-					for (var x = 0; x < 128; x++)
-						terrain.SetPixel(x, y, world.Map.IsInMap(x, y)
-							? terrainTypeColors[world.TileSet.GetWalkability(world.Map.MapTiles[x, y])]
-							: shroudColor);
-			}
+				terrain = RenderTerrainBitmap(world.Map, world.TileSet);
 
 			if (oreLayer == null)
 			{
+				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				oreLayer = new Bitmap(terrain);
 				for (var y = 0; y < 128; y++)
 					for (var x = 0; x < 128; x++)
 						if (world.Map.ContainsResource(new int2(x, y)))
-						oreLayer.SetPixel(x, y, terrainTypeColors[(int)TerrainMovementType.Ore]);
+							oreLayer.SetPixel(x, y, colors[(int)TerrainMovementType.Ore]);
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
@@ -92,6 +106,7 @@ namespace OpenRa.Graphics
 
 			unsafe
 			{
+				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				int* c = (int*)bitmapData.Scan0;
 
 				for (var y = 0; y < 128; y++)
@@ -100,7 +115,7 @@ namespace OpenRa.Graphics
 						var b = world.BuildingInfluence.GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
-								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : terrainTypeColors[4]).ToArgb();
+								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : colors[4]).ToArgb();
 					}
 
 				foreach (var a in world.Actors.Where(a => a.traits.Contains<Unit>()))
