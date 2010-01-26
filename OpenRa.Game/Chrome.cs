@@ -77,6 +77,7 @@ namespace OpenRa
 		// mapchooser
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
+		Sprite colorBlock;
 		
 		public Chrome(Renderer r)
 		{
@@ -143,6 +144,7 @@ namespace OpenRa
 			clock = new Animation("clock");
 
 			mapChooserSheet = new Sheet(r, new Size(128, 128));
+			colorBlock = SheetBuilder.Add(new Size(65 - 8, 22 - 8), 0x54);
 		}
 		
 		public void Tick()
@@ -403,6 +405,7 @@ namespace OpenRa
 			foreach (var client in Game.LobbyInfo.Clients)
 			{
 				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
+				var paletteRect = new Rectangle(r.Left + 220, y - 2, 65, 22);
 
 				if (isLocalPlayer)
 				{
@@ -410,9 +413,11 @@ namespace OpenRa
 					var nameRect = new Rectangle(r.Left + 30, y - 2, 185, 22);
 					DrawDialogBackground(nameRect, panelSprites, false);
 
-					var paletteRect = new Rectangle(r.Left + 220, y - 2, 65, 22);
 					DrawDialogBackground(paletteRect, panelSprites, false);
 					AddButton(paletteRect, CyclePalette);
+
+					shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
+						(PaletteType)client.Palette);
 
 					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
 					DrawDialogBackground(raceRect, panelSprites, false);
@@ -423,8 +428,14 @@ namespace OpenRa
 					AddButton(readyRect, CycleReady);
 				}
 
+				shpRenderer.Flush();
+
 				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
-				renderer.DrawText(((PaletteType)client.Palette).ToString(), new int2(r.Left + 230, y), Color.White);
+
+				
+				shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
+					(PaletteType)client.Palette);
+
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
 				y += 30;
