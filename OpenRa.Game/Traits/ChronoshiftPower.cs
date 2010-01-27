@@ -90,8 +90,7 @@ namespace OpenRa.Traits
 				{
 					var loc = mi.Location + Game.viewport.Location;
 					var underCursor = world.FindUnits(loc, loc)
-						.Where(a => a.Owner == world.LocalPlayer
-							&& a.traits.Contains<Chronoshiftable>()
+						.Where(a => a.Owner != null && a.traits.Contains<Chronoshiftable>()
 							&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
 					if (underCursor != null)
