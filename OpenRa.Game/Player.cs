@@ -120,7 +120,8 @@ namespace OpenRa
 			return true;
 		}
 
-		const int displayCashDeltaPerFrame = 50;
+		const float displayCashFracPerFrame = .07f;
+		const int displayCashDeltaPerFrame = 37;
 
 		public void Tick()
 		{
@@ -129,17 +130,18 @@ namespace OpenRa
 			Shroud.Tick( World );
 
 			var totalMoney = Cash + Ore;
+			var diff = Math.Abs(totalMoney - DisplayCash);
+			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
+					displayCashDeltaPerFrame), diff);
 
 			if (DisplayCash < totalMoney)
 			{
-				DisplayCash += Math.Min(displayCashDeltaPerFrame,
-					totalMoney - DisplayCash);
+				DisplayCash += move;
 				Sound.PlayToPlayer(this, "cashup1.aud");
 			}
 			else if (DisplayCash > totalMoney)
 			{
-				DisplayCash -= Math.Min(displayCashDeltaPerFrame,
-					DisplayCash - totalMoney);
+				DisplayCash -= move;
 				Sound.PlayToPlayer(this, "cashdn1.aud");
 			}
 		}
