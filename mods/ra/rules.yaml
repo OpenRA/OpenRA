@@ -424,6 +424,7 @@ DOME:
 
 CRATE:
 	Crate:
+	SpeedUpgradeCrateAction:
 	Unit:
 		HP: 1
 	RenderUnit:

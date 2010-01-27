@@ -1044,4 +1044,7 @@
 	<unit name="crate">
 		<sequence name="idle" start="0" length="16" src="wcrate" />
 	</unit>
+	<unit name="crate-effects">
+		<sequence name="speed" start="0" length="*" src="speed" />
+	</unit>
 </sequences>

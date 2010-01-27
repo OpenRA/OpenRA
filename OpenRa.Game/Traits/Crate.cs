@@ -3,6 +3,26 @@ using System.Linq;
 using OpenRa.Effects;
 using OpenRa.Traits;
 
+/*
+ * Crates left to implement:
+Armor=10,ARMOR,2.0              ; armor of nearby objects increased (armor multiplier)
+Cloak=0,STEALTH2                ; enable cloaking on nearby objects
+Darkness=1,EMPULSE              ; cloak entire radar map
+Explosion=5,NONE,500            ; high explosive baddie (damage per explosion)
+Firepower=10,FPOWER,2.0         ; firepower of nearby objects increased (firepower multiplier)
+HealBase=1,INVUN                ; all buildings to full strength
+ICBM=1,MISSILE2                 ; nuke missile one time shot
+Money=50,DOLLAR,2000            ; a chunk o' cash (maximum cash)
+Napalm=5,NONE,600               ; fire explosion baddie (damage)
+ParaBomb=3,PARABOX              ; para-bomb raid one time shot
+Reveal=1,EARTH                  ; reveal entire radar map
+Sonar=3,SONARBOX                ; one time sonar pulse
+Squad=20,NONE                   ; squad of random infantry
+Unit=20,NONE                    ; vehicle
+Invulnerability=3,INVULBOX,1.0  ; invulnerability (duration in minutes)
+TimeQuake=3,TQUAKE              ; time quake
+*/
+
 namespace OpenRa.Traits
 {
 	class CrateInfo : ITraitInfo
@@ -23,9 +43,8 @@ namespace OpenRa.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			// TODO: Do Stuff
-			
-			
+			// TODO: Pick one randomly
+			self.traits.WithInterface<ICrateAction>().First().Activate(crusher);
 			self.World.AddFrameEndTask(w =>	w.Remove(self));
 		}
 
