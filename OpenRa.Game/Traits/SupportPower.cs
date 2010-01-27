@@ -57,11 +57,7 @@ namespace OpenRa.Traits
 					&& effectivePrereq.All(a => buildings[a].Count > 0);
 			}
 			
-			// Do we have enough powered prerequisites?
-			// Hack in support for special powers without prereqs
-			var isPowered = (Info.Prerequisites.Count() == 0) ? self.Owner.GetPowerState() == PowerState.Normal : effectivePrereq.Any() && effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
-			
-			if (IsAvailable && (!Info.RequiresPower || isPowered))
+			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
 			{
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
@@ -77,6 +73,20 @@ namespace OpenRa.Traits
 				OnFinishCharging();
 				notifiedReady = true;
 			}
+		}
+
+		bool IsPowered()
+		{
+			var buildings = Rules.TechTree.GatherBuildings(Owner);
+			var effectivePrereq = Info.Prerequisites
+				.Select(a => a.ToLowerInvariant())
+				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Race));
+
+			if (Info.Prerequisites.Count() == 0) 
+				return Owner.GetPowerState() == PowerState.Normal;
+			
+			return effectivePrereq.Any() && 
+				effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
 		}
 
 		public void FinishActivate()
@@ -110,7 +120,7 @@ namespace OpenRa.Traits
 				return;
 			}
 
-			if (Info.RequiresPower && Owner.GetPowerState() != PowerState.Normal)
+			if (Info.RequiresPower && !IsPowered())
 			{
 				Sound.Play("nopowr1.aud");
 				return;
