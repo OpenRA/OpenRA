@@ -31,8 +31,8 @@ namespace OpenRa.FileFormats
 	{
 		static void ReplicatePrevious( byte[] dest, int destIndex, int srcIndex, int count )
 		{
-			if( srcIndex >= destIndex )
-				throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
+			if( srcIndex > destIndex )
+				throw new NotImplementedException( string.Format( "srcIndex > destIndex  {0}  {1}", srcIndex, destIndex ) );
 
 			if( destIndex - srcIndex == 1 )
 			{

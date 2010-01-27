@@ -39,7 +39,7 @@ namespace OpenRa.Orders
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, xy, mi).Any()
-				? Cursor.PowerDown : Cursor.RepairBlocked;
+				? Cursor.PowerDown : Cursor.PowerDownBlocked;
 		}
 	}
 }

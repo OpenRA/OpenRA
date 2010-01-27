@@ -35,5 +35,6 @@ namespace OpenRa
 		public static Cursor Repair { get { return new Cursor("repair"); } }
 		public static Cursor RepairBlocked { get { return new Cursor("repair-blocked"); } }
 		public static Cursor PowerDown { get { return new Cursor("powerdown"); } }
+		public static Cursor PowerDownBlocked { get { return new Cursor("powerdown-blocked"); } }
 	}
 }
