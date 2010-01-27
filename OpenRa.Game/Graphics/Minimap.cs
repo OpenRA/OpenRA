@@ -57,7 +57,6 @@ namespace OpenRa.Graphics
 
 		Color[] playerColors;
 		static Color shroudColor;
-		string theater;
 
 		public void InvalidateOre() { oreLayer = null; }
 
