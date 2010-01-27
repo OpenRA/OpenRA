@@ -5,7 +5,7 @@ namespace OpenRa.Traits
 {
 	class ConstructionYardInfo : ITraitInfo
 	{
-		public readonly bool AllowUndeploy = false;
+		public readonly bool AllowUndeploy = true;
 
 		public object Create(Actor self) { return new ConstructionYard(self); }
 	}
