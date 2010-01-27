@@ -188,6 +188,8 @@ namespace OpenRa.Traits
 					return null;
 				if (underCursor.Owner != self.Owner && !forceFire)
 					return null;
+				if (underCursor.Health >= underCursor.GetMaxHP())
+					return null;	// don't allow healing of fully-healed stuff!
 			}
 			else
 				if ((underCursor.Owner == self.Owner || underCursor.Owner == null) && !forceFire)
