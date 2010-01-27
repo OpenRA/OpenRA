@@ -32,7 +32,7 @@ namespace OpenRa
 
 		public Player( World world, int index, Session.Client client )
 		{
-			Shroud = new Shroud(this);
+			Shroud = new Shroud(this, world.Map);
 			this.PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);

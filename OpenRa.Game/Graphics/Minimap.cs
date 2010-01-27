@@ -34,6 +34,9 @@ namespace OpenRa.Graphics
 
 			sprite = new Sprite(sheet, rect, TextureChannel.Alpha);
 			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
+
+			playerColors = Util.MakeArray<Color>(8, b => Color.FromArgb(alpha, Chat.paletteColors[b]));
+			shroudColor = Color.FromArgb(alpha, Color.Black);
 		}
 
 		public static Rectangle MakeMinimapBounds(Map m)
@@ -75,12 +78,6 @@ namespace OpenRa.Graphics
 
 		public void Update()
 		{
-			if (terrainTypeColors == null)
-			{
-				playerColors = Util.MakeArray<Color>( 8, b => Color.FromArgb(alpha, Chat.paletteColors[b]) );
-				shroudColor = Color.FromArgb(alpha, Color.Black);
-			}
-
 			if (terrain == null)
 				terrain = RenderTerrainBitmap(world.Map, world.TileSet);
 

@@ -79,10 +79,10 @@ namespace OpenRa
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
-			if (min.X < 0) min.X = 0;
-			if (min.Y < 0) min.Y = 0;
-			if (max.X > 127) max.X = 127;
-			if (max.Y > 127) max.Y = 127;
+			if (min.X < world.Map.XOffset) min.X = world.Map.XOffset;
+			if (min.Y < world.Map.YOffset) min.Y = world.Map.YOffset;
+			if (max.X > world.Map.XOffset + world.Map.Width - 1) max.X = world.Map.XOffset + world.Map.Width - 1;
+			if (max.Y > world.Map.YOffset + world.Map.Height - 1) max.Y = world.Map.YOffset + world.Map.Height - 1;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)

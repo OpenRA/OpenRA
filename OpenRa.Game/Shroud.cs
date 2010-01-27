@@ -5,6 +5,7 @@ using System.Text;
 using IjwFramework.Types;
 using OpenRa.Graphics;
 using OpenRa.Traits;
+using OpenRa.FileFormats;
 
 namespace OpenRa
 {
@@ -16,8 +17,9 @@ namespace OpenRa
 		bool dirty = true;
 		bool hasGPS = false;
 		Player owner;
+		Map map;
 
-		public Shroud(Player owner) { this.owner = owner; }
+		public Shroud(Player owner, Map map) { this.owner = owner; this.map = map; }
 		
 		float gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
 		int[,] gapField = new int[128, 128];
@@ -145,15 +147,15 @@ namespace OpenRa
 			if (dirty)
 			{
 				dirty = false;
-				for (int j = 1; j < 127; j++)
-					for (int i = 1; i < 127; i++)
+				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
+					for (int i = map.XOffset; i < map.XOffset + map.Width; i++)
 						sprites[i, j] = ChooseShroud(i, j);
 			}
 
-			for (var j = 1; j < 127; j++)
+			for (var j = map.YOffset; j < map.YOffset + map.Height; j++)
 			{
-				var starti = 1;
-				for (var i = 1; i < 127; i++)
+				var starti = map.XOffset;
+				for (var i = map.XOffset; i < map.XOffset + map.Width; i++)
 				{
 					if (sprites[i, j] == shadowBits[0x0f])
 						continue;
@@ -173,11 +175,11 @@ namespace OpenRa
 					starti = i+1;
 				}
 
-				if (starti < 127)
+				if (starti < map.XOffset + map.Width)
 					r.DrawSprite(sprites[starti, j],
 						Game.CellSize * new float2(starti, j),
 						PaletteType.Shroud,
-						new float2(Game.CellSize * (127 - starti), Game.CellSize));
+						new float2(Game.CellSize * (map.XOffset + map.Width - starti), Game.CellSize));
 			}
 		}
 	}
