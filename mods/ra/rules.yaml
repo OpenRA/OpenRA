@@ -49,6 +49,13 @@ Player:
 		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
+	CrateSpawnPower:
+		Image: 4tnkicon
+		ChargeTime: 0.001
+		Description: Spawn Crate
+		LongDesc: Spawns a crate at a target location
+		Prerequisites: POWR
+		TechLevel: 12
 
 World:
 	WaterPaletteRotation:
@@ -414,6 +421,13 @@ DOME:
 	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
+
+CRATE:
+	Crate:
+	Unit:
+		HP: 1
+	RenderUnit:
+	BelowUnits:
 
 V2RL:
 	Inherits: ^Vehicle

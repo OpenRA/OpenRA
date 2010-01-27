@@ -208,6 +208,8 @@
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\ChronoshiftPower.cs" />
+    <Compile Include="Traits\Crate.cs" />
+    <Compile Include="Traits\CrateSpawnPower.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\GeneratesGap.cs" />

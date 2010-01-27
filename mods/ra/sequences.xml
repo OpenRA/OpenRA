@@ -1041,4 +1041,7 @@
   <unit name="u2">
     <sequence name="idle" start="0" length="16" />
   </unit>
+	<unit name="crate">
+		<sequence name="idle" start="0" length="16" src="wcrate" />
+	</unit>
 </sequences>
