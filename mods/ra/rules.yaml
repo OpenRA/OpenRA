@@ -432,7 +432,10 @@ DOME:
 
 CRATE:
 	Crate:
+		Lifetime: 5
 	SpeedUpgradeCrateAction:
+		Multiplier: 1.7
+		SelectionShares: 10
 	Unit:
 		HP: 1
 	RenderUnit:

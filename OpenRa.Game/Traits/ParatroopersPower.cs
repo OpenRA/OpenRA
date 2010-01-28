@@ -57,7 +57,7 @@ namespace OpenRa.Traits
 
 					var cargo = a.traits.Get<Cargo>();
 					foreach (var p in self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems)
-						cargo.Load(a, new Actor(self.World, p.ToLowerInvariant(), a.Location, a.Owner));
+						cargo.Load(a, new Actor(self.World, p.ToLowerInvariant(), new int2(int.MaxValue, int.MaxValue), a.Owner));
 				});
 
 				FinishActivate();
