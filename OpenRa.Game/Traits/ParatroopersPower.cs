@@ -46,22 +46,29 @@ namespace OpenRa.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
-				var startPos = self.World.ChooseRandomEdgeCell();
-				self.World.AddFrameEndTask(w =>
-				{
-					var a = w.CreateActor("BADR", startPos, Owner);
-
-					a.CancelActivity();
-					a.QueueActivity(new FlyCircle(order.TargetLocation));
-					a.traits.Get<ParaDrop>().SetLZ(order.TargetLocation);
-
-					var cargo = a.traits.Get<Cargo>();
-					foreach (var p in self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems)
-						cargo.Load(a, new Actor(self.World, p.ToLowerInvariant(), new int2(int.MaxValue, int.MaxValue), a.Owner));
-				});
+				DoParadrop(Owner, order.TargetLocation, 
+					self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems);
 
 				FinishActivate();
 			}
+		}
+
+		static void DoParadrop(Player owner, int2 p, string[] items)
+		{
+			var startPos = owner.World.ChooseRandomEdgeCell();
+			owner.World.AddFrameEndTask(w =>
+			{
+				var a = w.CreateActor("BADR", startPos, owner);
+
+				a.CancelActivity();
+				a.QueueActivity(new FlyCircle(p));
+				a.traits.Get<ParaDrop>().SetLZ(p);
+
+				var cargo = a.traits.Get<Cargo>();
+				foreach (var i in items)
+					cargo.Load(a, new Actor(owner.World, i.ToLowerInvariant(), 
+						new int2(int.MaxValue, int.MaxValue), a.Owner));
+			});
 		}
 	}
 }
