@@ -34,6 +34,14 @@ Player:
 		LongDesc: Reveals an area of the map.
 		Prerequisites: AFLD
 		TechLevel: 5
+	ParatroopersPower:
+		Image: pinficon
+		ChargeTime: 6
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of Riflemen \n anywhere on the map
+		Prerequisites: AFLD
+		TechLevel: 5
+		DropItems: E1,E1,E1,E3,E3
 	NukePower:
 		Image: atomicon
 		ChargeTime: 13
@@ -140,3 +148,8 @@ CRATE:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
+
+BADR:
+	ParaDrop:
+		LZRange: 4
+	-Selectable:

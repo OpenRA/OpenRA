@@ -27,7 +27,10 @@ namespace OpenRa.Effects
 			this.owner = owner;
 
 			anim = new Animation(image);
-			anim.PlayFetchIndex("idle", () => 0);
+			if (anim.HasSequence("idle"))
+				anim.PlayFetchIndex("idle", () => 0);
+			else
+				anim.PlayFetchIndex("stand", () => 0);
 			anim.Tick();
 
 			paraAnim = new Animation("parach");
@@ -44,10 +47,9 @@ namespace OpenRa.Effects
 				world.AddFrameEndTask(w =>
 					{
 						w.Remove(this);
-						cargo.CancelActivity();
-						cargo.CenterLocation = location;
-						cargo.Location = ((1 / 24f) * location).ToInt2();
 						w.Add(cargo);
+						cargo.CancelActivity();
+						cargo.traits.Get<Mobile>().TeleportTo(cargo, ((1 / 24f) * location).ToInt2());
 					});
 		}
 

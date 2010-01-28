@@ -168,5 +168,17 @@ namespace OpenRa
 					world.players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? world.players[0]);
 			}
 		}
+
+		public static int2 ChooseRandomEdgeCell(this World w)
+		{
+			var isX = Game.SharedRandom.Next(2) == 0;
+			var edge = Game.SharedRandom.Next(2) == 0;
+
+			return new int2(
+				isX ? Game.SharedRandom.Next(w.Map.XOffset, w.Map.XOffset + w.Map.Width)
+					: (edge ? w.Map.XOffset : w.Map.XOffset + w.Map.Width),
+				!isX ? Game.SharedRandom.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height)
+					: (edge ? w.Map.YOffset : w.Map.YOffset + w.Map.Height));
+		}
 	}
 }

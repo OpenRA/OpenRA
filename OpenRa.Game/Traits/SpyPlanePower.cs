@@ -23,18 +23,6 @@ namespace OpenRa.Traits
 			Sound.Play("slcttgt1.aud");
 		}
 
-		static int2 ChooseRandomEdgeCell(World w)
-		{
-			var isX = Game.SharedRandom.Next(2) == 0;
-			var edge = Game.SharedRandom.Next(2) == 0;
-
-			return new int2(
-				isX ? Game.SharedRandom.Next(w.Map.XOffset, w.Map.XOffset + w.Map.Width) 
-					: (edge ? w.Map.XOffset : w.Map.XOffset + w.Map.Width),
-				!isX ? Game.SharedRandom.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height) 
-					: (edge ? w.Map.YOffset : w.Map.YOffset + w.Map.Height));
-		}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SpyPlane")
@@ -44,8 +32,8 @@ namespace OpenRa.Traits
 				if (order.Player == Owner.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
-				var enterCell = ChooseRandomEdgeCell(self.World);
-				var exitCell = ChooseRandomEdgeCell(self.World);
+				var enterCell = self.World.ChooseRandomEdgeCell();
+				var exitCell = self.World.ChooseRandomEdgeCell();
 
 				var plane = self.World.CreateActor("U2", enterCell, self.Owner);
 				plane.CancelActivity();

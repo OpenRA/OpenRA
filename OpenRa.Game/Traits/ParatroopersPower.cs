@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRa.Traits.Activities;
 
 namespace OpenRa.Traits
 {
 	class ParatroopersPowerInfo : SupportPowerInfo
 	{
-		/* todo... */
+		public string[] DropItems = { };
 		public override object Create(Actor self) { return new ParatroopersPower(self,this); }
 	}
 
@@ -45,7 +46,19 @@ namespace OpenRa.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
-				/* todo:... */
+				var startPos = self.World.ChooseRandomEdgeCell();
+				self.World.AddFrameEndTask(w =>
+				{
+					var a = w.CreateActor("BADR", startPos, Owner);
+
+					a.CancelActivity();
+					a.QueueActivity(new FlyCircle(order.TargetLocation));
+					a.traits.Get<ParaDrop>().SetLZ(order.TargetLocation);
+
+					var cargo = a.traits.Get<Cargo>();
+					foreach (var p in self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems)
+						cargo.Load(a, new Actor(self.World, p.ToLowerInvariant(), a.Location, a.Owner));
+				});
 
 				FinishActivate();
 			}
