@@ -408,7 +408,7 @@
   </cursor>
   <cursor src="nopower">
     <sequence name="powerdown-blocked" start="0" length="1" x="12" y="12" />
-		<sequence name="powerdown" start="1" length="3" x="12" y="12" />
+    <sequence name="powerdown" start="1" length="3" x="12" y="12" />
   </cursor>
   <unit name="powerdown">
     <sequence name="disabled" start="3" length="1" src="speed" />
@@ -1041,10 +1041,14 @@
   <unit name="u2">
     <sequence name="idle" start="0" length="16" />
   </unit>
-	<unit name="crate">
-		<sequence name="idle" start="0" length="16" src="wcrate" />
-	</unit>
-	<unit name="crate-effects">
-		<sequence name="speed" start="0" length="*" src="speed" />
-	</unit>
+  <unit name="crate">
+    <sequence name="idle" start="0" length="16" src="wcrate" />
+  </unit>
+  <unit name="crate-effects">
+    <sequence name="speed" start="0" length="*" src="speed" />
+  </unit>
+  <unit name="parach">
+    <sequence name="open" start="0" length="5" />
+    <sequence name="idle" start="5" length="11" />
+  </unit>
 </sequences>

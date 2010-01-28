@@ -83,6 +83,7 @@
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
+    <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\Smoke.cs" />
