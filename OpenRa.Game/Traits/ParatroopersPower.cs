@@ -67,7 +67,7 @@ namespace OpenRa.Traits
 				var cargo = a.traits.Get<Cargo>();
 				foreach (var i in items)
 					cargo.Load(a, new Actor(owner.World, i.ToLowerInvariant(), 
-						new int2(int.MaxValue, int.MaxValue), a.Owner));
+						new int2(0,0), a.Owner));
 			});
 		}
 	}
