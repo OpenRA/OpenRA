@@ -66,8 +66,7 @@ namespace OpenRa.Traits
 					if (chronosphere != null)
 						chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
 				}
-				
-				Game.controller.CancelInputMode();
+
 				FinishActivate();
 			}
 		}

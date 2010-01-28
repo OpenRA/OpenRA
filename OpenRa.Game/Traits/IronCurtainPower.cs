@@ -28,6 +28,9 @@ namespace OpenRa.Traits
 		{
 			if (order.OrderString == "IronCurtain")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+
 				var curtain = self.World.Actors.Where(a => a.Owner != null
 					&& a.traits.Contains<IronCurtain>()).FirstOrDefault();
 				if (curtain != null)
@@ -37,7 +40,7 @@ namespace OpenRa.Traits
 				
 				order.TargetActor.traits.Get<IronCurtainable>().Activate(order.TargetActor,
 					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
-				Game.controller.CancelInputMode();
+				
 				FinishActivate();
 			}
 		}

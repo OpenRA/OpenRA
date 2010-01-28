@@ -224,6 +224,7 @@
     <Compile Include="Traits\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\NukePower.cs" />
+    <Compile Include="Traits\ParatroopersPower.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\PlaceBuilding.cs" />
     <Compile Include="Traits\SonarPulsePower.cs" />
