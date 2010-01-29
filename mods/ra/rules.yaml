@@ -69,6 +69,8 @@ World:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
 	LightPaletteRotator:
+	BuildingInfluence:
+	UnitInfluence:
 
 MGG:
 	GeneratesGap:

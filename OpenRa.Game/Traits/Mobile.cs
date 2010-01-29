@@ -19,7 +19,7 @@ namespace OpenRa.Traits
 		public int2 fromCell
 		{
 			get { return __fromCell; }
-			set { self.World.UnitInfluence.Remove(self, this); __fromCell = value; self.World.UnitInfluence.Add(self, this); }
+			set { self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this); __fromCell = value; self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this); }
 		}
 		public int2 toCell
 		{
@@ -28,11 +28,11 @@ namespace OpenRa.Traits
 			{
 				if (self.Location != value)
 				{
-					self.World.UnitInfluence.Remove(self, this);
+					self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
 					self.Location = value;
 					self.Owner.Shroud.Explore(self);
 				}
-				self.World.UnitInfluence.Add(self, this);
+				self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace OpenRa.Traits
 		{
 			this.self = self;
 			__fromCell = toCell;
-			self.World.UnitInfluence.Add(self, this);
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
 		public void TeleportTo(Actor self, int2 xy)
@@ -91,10 +91,10 @@ namespace OpenRa.Traits
 		
 		public bool CanEnterCell(int2 a)
 		{
-			if (!self.World.BuildingInfluence.CanMoveHere(a)) return false;
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(a)) return false;
 
 			var crushable = true;
-			foreach (Actor actor in self.World.UnitInfluence.GetUnitsAt(a))
+			foreach (Actor actor in self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a))
 			{
 				if (actor == self) continue;
 				

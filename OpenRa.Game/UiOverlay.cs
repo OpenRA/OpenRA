@@ -39,7 +39,7 @@ namespace OpenRa
 			if (ShowUnitDebug)
 				for (var j = 0; j < 128; j++)
 					for (var i = 0; i < 128; i++)
-						if (world.UnitInfluence.GetUnitsAt(new int2(i, j)).Any())
+						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
 		}
 

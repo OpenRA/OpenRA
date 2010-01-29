@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Collections;
 using OpenRa.Graphics;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -47,7 +48,7 @@ namespace OpenRa
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 					
-			foreach( int2 d in Util.directions )
+			foreach( int2 d in Graphics.Util.directions )
 			{
 				int2 newHere = p.Location + d;
 
@@ -61,14 +62,14 @@ namespace OpenRa
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!world.BuildingInfluence.CanMoveHere(newHere) && 
-					world.BuildingInfluence.GetBuildingAt(newHere) != ignoreBuilding)
+				if (!world.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(newHere) && 
+					world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(newHere) != ignoreBuilding)
 					continue;
 				if (world.Map.IsOverlaySolid(newHere))
 					continue;
 				
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (world.UnitInfluence.GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
+				if (checkForBlocked && (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))

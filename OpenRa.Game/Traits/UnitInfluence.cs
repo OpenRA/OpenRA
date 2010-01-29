@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using OpenRa.Traits;
+using System.Text;
+using System.Diagnostics;
 
-namespace OpenRa
+namespace OpenRa.Traits
 {
-	public class UnitInfluenceMap
+	public class UnitInfluenceInfo : ITraitInfo
 	{
-		readonly World world;
+		public object Create( Actor self ) { return new UnitInfluence( self ); }
+	}
+
+	public class UnitInfluence : ITick
+	{
 		List<Actor>[,] influence = new List<Actor>[128, 128];
 		readonly int2 searchDistance = new int2(2,2);
 
-		public UnitInfluenceMap( World world )
+		public UnitInfluence( Actor self )
 		{
-			this.world = world;
 			for (int i = 0; i < 128; i++)
 				for (int j = 0; j < 128; j++)
 					influence[ i, j ] = new List<Actor>();
 
-			world.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
+			self.World.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
 		}
 
-		public void Tick()
+		public void Tick( Actor self )
 		{
 			// Does this belong here? NO, but it's your mess.
 			
 			// Get the crushable actors
-			foreach (var a in world.Actors.Where(b => b.traits.Contains<ICrushable>()))
+			foreach (var a in self.World.Actors.Where(b => b.traits.Contains<ICrushable>()))
 			{
 				// Are there any units in the same cell that can crush this?
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
@@ -35,7 +38,7 @@ namespace OpenRa
 					{
 						// There should only be one (counterexample: An infantry and a tank try to pick up a crate at the same time.)
 						// If there is more than one, do action on the first crusher
-						var crusher = GetUnitsAt(cell).Where(b => a != b && world.IsActorCrushableByActor(a, b)).FirstOrDefault();
+						var crusher = GetUnitsAt(cell).Where(b => a != b && self.World.IsActorCrushableByActor(a, b)).FirstOrDefault();
 						if (crusher != null)
 						{
 							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);
@@ -45,11 +48,11 @@ namespace OpenRa
 						}
 					}
 			}
-			SanityCheck();
+			SanityCheck( self );
 		}
 
 		[Conditional( "SANITY_CHECKS" )]
-		void SanityCheck()
+		void SanityCheck( Actor self )
 		{
 			for( int y = 0 ; y < 128 ; y++ )
 				for( int x = 0 ; x < 128 ; x++ )
@@ -58,7 +61,7 @@ namespace OpenRa
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
 								throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
-			foreach( Actor a in world.Actors )
+			foreach( Actor a in self.World.Actors )
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
 					foreach( var cell in ios.OccupiedCells() )
 						if (!influence[cell.X, cell.Y].Contains(a))

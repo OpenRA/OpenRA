@@ -38,7 +38,7 @@ namespace OpenRa.Traits
 		public Crate(Actor self)
 		{
 			this.self = self;
-			self.World.UnitInfluence.Add(self, this);
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)

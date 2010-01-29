@@ -160,7 +160,6 @@
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
     <Compile Include="Traits\Activities\Teleport.cs" />
-    <Compile Include="BuildingInfluenceMap.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Player.cs" />
@@ -202,6 +201,7 @@
     <Compile Include="Traits\Bridge.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
+    <Compile Include="Traits\BuildingInfluence.cs" />
     <Compile Include="Traits\CanPowerDown.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
@@ -258,6 +258,7 @@
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
+    <Compile Include="Traits\UnitInfluence.cs" />
     <Compile Include="Traits\WaterPaletteRotation.cs" />
     <Compile Include="Traits\WithShadow.cs" />
     <Compile Include="Network\UnitOrders.cs" />
@@ -266,7 +267,6 @@
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\Viewport.cs" />
-    <Compile Include="UnitInfluenceMap.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />

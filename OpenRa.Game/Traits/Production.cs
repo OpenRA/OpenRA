@@ -32,7 +32,7 @@ namespace OpenRa.Traits
 		public bool Produce( Actor self, ActorInfo producee )
 		{
 			var location = CreationLocation( self, producee );
-			if( location == null || self.World.UnitInfluence.GetUnitsAt( location.Value ).Any() )
+			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
 				return false;
 
 			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );

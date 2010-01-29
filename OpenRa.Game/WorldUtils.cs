@@ -17,8 +17,8 @@ namespace OpenRa
 
 		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt, Actor toIgnore)
 		{
-			if (world.BuildingInfluence.GetBuildingAt(a) != null) return false;
-			if (world.UnitInfluence.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
+			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
+			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
 			return world.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(umt,
@@ -130,7 +130,7 @@ namespace OpenRa
 			{
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
-					var at = world.BuildingInfluence.GetBuildingAt( new int2( x, y ) );
+					var at = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
 					if( at != null && at.Owner == p )
 						nearnessCandidates.Add( new int2( x, y ) );
 				}

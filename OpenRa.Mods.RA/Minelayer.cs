@@ -18,7 +18,7 @@ namespace OpenRa.Mods.RA
 				return null;
 
 			// Ensure that the cell is empty except for the minelayer
-			if (self.World.UnitInfluence.GetUnitsAt(xy).Any(a => a != self))
+			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(xy).Any(a => a != self))
 				return null;
 
 			if (mi.Button == MouseButton.Right && underCursor == self)

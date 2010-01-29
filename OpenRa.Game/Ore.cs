@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenRa.FileFormats;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -28,7 +29,7 @@ namespace OpenRa
 
 		public static bool OreCanSpreadInto(this World world, int i, int j)
 		{
-			if (world.BuildingInfluence.GetBuildingAt(new int2(i, j)) != null)
+			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(i, j)) != null)
 				return false;
 
 			return TerrainCosts.Cost(UnitMovementType.Wheel,

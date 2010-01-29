@@ -57,13 +57,13 @@ namespace OpenRa.Traits.Activities
 
 		bool CanEnterCell( int2 c, Actor self )
 		{
-			if (!self.World.BuildingInfluence.CanMoveHere(c)
-				&& self.World.BuildingInfluence.GetBuildingAt(c) != ignoreBuilding) 
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(c)
+				&& self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(c) != ignoreBuilding) 
 				return false;
 			
 			// Cannot enter a cell if any unit inside is uncrushable
 			// This will need to be updated for multiple-infantry-in-a-cell
-			return (!self.World.UnitInfluence.GetUnitsAt(c).Any(a => a != self && !self.World.IsActorCrushableByActor(a, self)));
+			return (!self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(c).Any(a => a != self && !self.World.IsActorCrushableByActor(a, self)));
 		}
 
 		public IActivity Tick( Actor self )
@@ -144,10 +144,10 @@ namespace OpenRa.Traits.Activities
 					return null;
 				}
 
-				self.World.UnitInfluence.Remove( self, mobile );
+				self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
 
-				self.World.UnitInfluence.Add( self, mobile );
+				self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, mobile );
 				if (newPath.Count != 0)
 					path = newPath;
 

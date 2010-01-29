@@ -33,8 +33,7 @@ namespace OpenRa
 			}
 		}
 
-		public readonly BuildingInfluenceMap BuildingInfluence;
-		public readonly UnitInfluenceMap UnitInfluence;
+		public readonly Actor WorldActor;
 
 		public readonly PathFinder PathFinder;
 
@@ -60,16 +59,12 @@ namespace OpenRa
 			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
 
-			BuildingInfluence = new BuildingInfluenceMap( this );
-			UnitInfluence = new UnitInfluenceMap( this );
-			Timer.Time( "BIM/UIM: {0}" );
-
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
 			Map.InitOreDensity();
 			Timer.Time( "Ore: {0}" );
 
-			CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			for (int i = 0; i < 8; i++)
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
@@ -132,8 +127,6 @@ namespace OpenRa
 			var acts = frameEndActions;
 			frameEndActions = new List<Action<World>>();
 			foreach (var a in acts) a(this);
-
-			UnitInfluence.Tick();
 
 			Minimap.Update();
 			foreach (var player in players.Values)

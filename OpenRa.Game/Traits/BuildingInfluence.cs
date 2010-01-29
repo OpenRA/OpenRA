@@ -1,19 +1,27 @@
-﻿using OpenRa.GameRules;
-using OpenRa.Traits;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using OpenRa.GameRules;
 
-namespace OpenRa
+namespace OpenRa.Traits
 {
-	public class BuildingInfluenceMap
+	public class BuildingInfluenceInfo : ITraitInfo
+	{
+		public object Create( Actor self ) { return new BuildingInfluence( self ); }
+	}
+
+	public class BuildingInfluence
 	{
 		bool[,] blocked = new bool[128, 128];
 		Actor[,] influence = new Actor[128, 128];
 
-		public BuildingInfluenceMap( World world )
+		public BuildingInfluence( Actor self )
 		{
-			world.ActorAdded +=
+			self.World.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), true); };
-			world.ActorRemoved +=
+			self.World.ActorRemoved +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), false); };
 		}
@@ -44,5 +52,4 @@ namespace OpenRa
 		{
 			return IsValid(cell) && !blocked[cell.X, cell.Y];
 		}
-	}
-}
+	}}
