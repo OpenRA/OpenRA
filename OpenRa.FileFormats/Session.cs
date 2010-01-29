@@ -38,6 +38,7 @@ namespace OpenRa.FileFormats
 
 	public class Manifest
 	{
+		public readonly string[] Folders = { };
 		public readonly string[] Packages = { };
 		public readonly string[] LegacyRules = { };
 		public readonly string[] Rules = { };
@@ -49,7 +50,8 @@ namespace OpenRa.FileFormats
 			var yaml = mods
 				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
 				.Aggregate(MiniYaml.Merge);
-
+				
+			Folders = YamlList(yaml, "Folders");
 			Packages = YamlList(yaml, "Packages");
 			LegacyRules = YamlList(yaml, "LegacyRules");
 			Rules = YamlList(yaml, "Rules");

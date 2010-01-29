@@ -49,12 +49,13 @@ namespace OpenRa
 			}
 
 			LoadUserSettings(settings);
-
+			
+			// Load the default mod to access required files
+			Game.LoadModPackages(new Manifest(Game.LobbyInfo.GlobalSettings.Mods));
+			
 			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
 			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
 			Renderer.SheetSize = Game.Settings.SheetSize;
-
-			FileSystem.MountDefaultPackages();
 			
 			bool windowed = !Game.Settings.Fullscreen;
 			renderer = new Renderer(this, GetResolution(settings), windowed);

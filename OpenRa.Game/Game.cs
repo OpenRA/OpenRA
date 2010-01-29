@@ -35,6 +35,19 @@ namespace OpenRa
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
 
+		public static void LoadModPackages(Manifest manifest)
+		{
+			FileSystem.UnmountTemporaryPackages();
+			Timer.Time("reset: {0}");
+
+			foreach (var dir in manifest.Folders)
+				FileSystem.MountTemporary(new Folder(dir));
+
+			foreach (var pkg in manifest.Packages)
+				FileSystem.MountTemporary(new Package(pkg));
+			Timer.Time("mount tempory packages: {0}");
+		}
+		
 		public static void ChangeMap(string mapName)
 		{
 			Timer.Time( "----ChangeMap" );
@@ -42,17 +55,12 @@ namespace OpenRa
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
 
-			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
 			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
-			FileSystem.UnmountTemporaryPackages();
-			Timer.Time( "reset: {0}" );
-
-			foreach (var pkg in manifest.Packages)
-				FileSystem.MountTemporary(new Package(pkg));
-			Timer.Time( "mount tempory packages: {0}" );
-
+			
+			LoadModPackages(manifest);
+			
 			Rules.LoadRules(mapName, manifest);
 			Timer.Time( "load rules: {0}" );
 
@@ -82,6 +90,7 @@ namespace OpenRa
 			Timer.Time( "chrome: {0}" );
 
 			Timer.Time( "----end ChangeMap" );
+			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)

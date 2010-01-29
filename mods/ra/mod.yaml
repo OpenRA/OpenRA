@@ -1,6 +1,22 @@
 # Classic Red Alert Mod -- Package Manifest
 
+Folders:
+	./
+
 Packages:
+	main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	general.mix
+	local.mix
+	sounds.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	temperat.mix
+	snow.mix
+	interior.mix
 
 LegacyRules:
 	mods/ra/rules.ini:	More or less original Red Alert rules file.
