@@ -1,0 +1,40 @@
+# Classic Command and Conquer -- Package Manifest
+
+Folders:
+	./
+	
+Packages:
+	main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	local.mix
+	sounds.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	mods/cnc/packages/conquer.mix
+	mods/cnc/packages/general.mix
+	mods/cnc/packages/sounds.mix
+	mods/cnc/packages/temperat.mix
+	mods/cnc/packages/desert.mix
+	mods/cnc/packages/winter.mix
+
+LegacyRules:
+	mods/ra/rules.ini:	More or less original Red Alert rules file.
+	mods/ra/units.ini:	OpenRA patches
+
+Rules:
+	mods/ra/defaults.yaml:	Basic stuff
+	mods/ra/rules.yaml:	OpenRA actorinfos
+
+Sequences:
+	mods/ra/sequences.xml:	Original animation sequences
+
+Assemblies:
+	mods/ra/OpenRa.Mods.RA.dll:	Traits used
+	
+	
+Maps:
+	scg01ea.ini: GDI Mission 1
+	scm01ea.ini: Green Acres
