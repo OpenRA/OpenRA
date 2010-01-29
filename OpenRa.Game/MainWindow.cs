@@ -51,7 +51,6 @@ namespace OpenRa
 			LoadUserSettings(settings);
 
 			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
-			UiOverlay.ShowBuildDebug = Game.Settings.BuildingDebug;
 			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
 			Renderer.SheetSize = Game.Settings.SheetSize;
 

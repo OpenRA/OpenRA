@@ -12,7 +12,6 @@ namespace OpenRa
 		Sprite buildOk, buildBlocked, unitDebug;
 
 		public static bool ShowUnitDebug = false;
-		public static bool ShowBuildDebug = false;
 
 		public UiOverlay(SpriteRenderer spriteRenderer)
 		{
