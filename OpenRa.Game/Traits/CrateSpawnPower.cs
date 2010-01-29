@@ -16,8 +16,6 @@ namespace OpenRa.Traits
 	{
 		public CrateSpawnPower(Actor self, CrateSpawnPowerInfo info) : base(self, info) { }
 
-		protected override void OnBeginCharging() {}
-		protected override void OnFinishCharging() {}
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();
@@ -37,8 +35,6 @@ namespace OpenRa.Traits
 
 		class SelectTarget : IOrderGenerator
 		{
-			public SelectTarget() { }
-
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)

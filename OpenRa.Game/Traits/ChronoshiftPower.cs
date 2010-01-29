@@ -73,8 +73,6 @@ namespace OpenRa.Traits
 
 		class SelectTarget : IOrderGenerator
 		{
-			public SelectTarget() { }
-			
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
@@ -122,10 +120,7 @@ namespace OpenRa.Traits
 		class SelectDestination : IOrderGenerator
 		{
 			Actor self;
-			public SelectDestination(Actor self)
-			{
-				this.self = self;
-			}
+			public SelectDestination(Actor self) { this.self = self; }
 			
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
