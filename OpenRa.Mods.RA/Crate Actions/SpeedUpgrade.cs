@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using OpenRa.Mods.RA.Effects;
 using OpenRa.Traits;
-using OpenRa.Mods.RA.Effects;
 
 namespace OpenRa.Mods.RA
 {
@@ -32,7 +29,7 @@ namespace OpenRa.Mods.RA
 			{
 				float multiplier = self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Multiplier;
 				collector.traits.Add(new SpeedUpgrade(multiplier));
-				w.Add(new CrateEffectSpeedUpgrade(collector));
+				w.Add(new CrateEffect(collector, "speed"));
 			});
 		}
 	}

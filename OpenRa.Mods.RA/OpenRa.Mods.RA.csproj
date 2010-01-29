@@ -52,7 +52,7 @@
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="Effects\CrateEffectSpeedUpgrade.cs" />
+    <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="EngineerCapture.cs" />
     <Compile Include="InfiltrateForSonarPulse.cs" />
