@@ -6,13 +6,19 @@ namespace OpenRa.Graphics
 {
 	static class SpriteSheetBuilder
 	{
-		public static void Initialize()
+		public static void Initialize( Map map )
 		{
+			exts = new[] {
+				"." + map.Theater.Substring( 0, 3 ).ToLowerInvariant(),
+				".shp",
+				".tem",
+				".sno",
+				".int" };
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
 		static Cache<string, Sprite[]> sprites;
-		static readonly string[] exts = { ".tem", ".sno", ".int", ".shp" };
+		static string[] exts;
 
 		static Sprite[] LoadSprites(string filename)
 		{

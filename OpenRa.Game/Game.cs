@@ -46,7 +46,6 @@ namespace OpenRa
 			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
-			SpriteSheetBuilder.Initialize();
 			FileSystem.UnmountTemporaryPackages();
 			Timer.Time( "reset: {0}" );
 

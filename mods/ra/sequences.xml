@@ -680,6 +680,33 @@
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
   </unit>
+  <unit name="boxes01">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes02">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes03">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes04">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes05">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes06">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes07">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes08">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes09">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
   <unit name="mine">
     <sequence name="idle" start="0" length="1" />
   </unit>

@@ -27,6 +27,10 @@ namespace OpenRa.FileFormats
 			FileSystem.Mount( new Package( "speech.mix" ) );
 			FileSystem.Mount( new Package( "allies.mix" ) );
 			FileSystem.Mount( new Package( "russian.mix" ) );
+
+			FileSystem.Mount( new Package( "temperat.mix" ) );
+			FileSystem.Mount( new Package( "snow.mix" ) );
+			FileSystem.Mount( new Package( "interior.mix" ) );
 		}
 		
 		public static void MountAftermathPackages()
