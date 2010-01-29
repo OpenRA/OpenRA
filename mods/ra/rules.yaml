@@ -106,7 +106,6 @@ GAP:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 	IronCurtainable:
 
 MRJ:
@@ -147,6 +146,7 @@ MINP:
 	InvisibleToOthers:
 	-Selectable:
 	-Building:
+	-RenderBuilding:
 
 MINV:
 	Mine:
@@ -162,6 +162,7 @@ MINV:
 	InvisibleToOthers:
 	-Selectable:
 	-Building:
+	-RenderBuilding:
 
 BR1:
 	Bridge:
@@ -238,7 +239,6 @@ MSLO:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	IronCurtainable:
 
 SPEN:
@@ -262,7 +262,6 @@ SPEN:
 		Armor: light
 		WaterBound: yes
 		Sight: 4
-	RenderBuilding:
 	ProductionSurround:
 		Produces: Ship
 	IronCurtainable:
@@ -288,7 +287,6 @@ SYRD:
 		Armor: light
 		WaterBound: yes
 		Sight: 4
-	RenderBuilding:
 	ProductionSurround:
 		Produces: Ship
 	IronCurtainable:
@@ -313,7 +311,6 @@ IRON:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 	IronCurtainable:
 	IronCurtain:
 
@@ -337,7 +334,6 @@ PDOX:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 	Chronosphere:
 	IronCurtainable:
 
@@ -367,6 +363,7 @@ TSLA:
 		FireDelay: 8
 	AutoTarget:
 	IronCurtainable:
+	-RenderBuilding:
 
 AGUN:
 	RequiresPower:
@@ -396,6 +393,7 @@ AGUN:
 		SecondaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
+	-RenderBuilding:
 
 DOME:
 	RequiresPower:
@@ -418,7 +416,6 @@ DOME:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 	ProvidesRadar:
 	IronCurtainable:
 
@@ -1038,14 +1035,11 @@ PBOX:
 		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
-		Footprint: x
-		Dimensions: 1,1
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 5
 	Turreted:
-	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -1062,14 +1056,11 @@ HBOX:
 		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
-		Footprint: x
-		Dimensions: 1,1
 		HP: 600
 		Armor: wood
 		Crewed: yes
 		Sight: 5
 	Turreted:
-	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -1086,8 +1077,6 @@ GUN:
 		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -40
-		Footprint: x
-		Dimensions: 1,1
 		HP: 400
 		Armor: heavy
 		Crewed: yes
@@ -1100,6 +1089,7 @@ GUN:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
 	IronCurtainable:
+	-RenderBuilding:
 
 FTUR:
 	Inherits: ^Building
@@ -1114,13 +1104,10 @@ FTUR:
 		ROT: 10
 	Building:
 		Power: -20
-		Footprint: x
-		Dimensions: 1,1
 		HP: 400
 		Armor: heavy
 		Crewed: yes
 		Sight: 6
-	RenderBuilding:
 	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
 		PrimaryOffset: 0,0,12,8
@@ -1152,6 +1139,7 @@ SAM:
 		PrimaryWeapon: Nike
 	AutoTarget:
 	IronCurtainable:
+	-RenderBuilding:
 
 ATEK:
 	Inherits: ^Building
@@ -1173,7 +1161,6 @@ ATEK:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 	IronCurtainable:
 	GpsLaunchSite:
 
@@ -1196,7 +1183,6 @@ WEAP:
 		Armor: light
 		Crewed: yes
 		Sight: 4
-	RenderBuilding:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
@@ -1215,7 +1201,6 @@ FACT:
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
@@ -1240,7 +1225,6 @@ PROC:
 		Armor: wood
 		Crewed: yes
 		Sight: 6
-	RenderBuilding:
 	AcceptsOre:
 	StoresOre:
 		Pips: 17
@@ -1258,8 +1242,6 @@ SILO:
 		LongDesc: Stores excess harvested Ore
 	Building:
 		Power: -10
-		Footprint: x
-		Dimensions: 1,1
 		Capturable: true
 		HP: 300
 		Armor: wood
@@ -1269,6 +1251,7 @@ SILO:
 		Pips: 5
 		Capacity: 1500
 	IronCurtainable:
+	-RenderBuilding:
 
 HPAD:
 	Inherits: ^Building
@@ -1289,7 +1272,6 @@ HPAD:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	Production:
 		SpawnOffset: 0,-4
 		Produces: Plane
@@ -1315,7 +1297,6 @@ AFLD:
 		Armor: heavy
 		Crewed: yes
 		Sight: 7
-	RenderBuilding:
 	Production:
 		Produces: Plane
 	BelowUnits:
@@ -1340,7 +1321,6 @@ POWR:
 		Armor: wood
 		Crewed: yes
 		Sight: 4
-	RenderBuilding:
 	IronCurtainable:
 
 APWR:
@@ -1362,7 +1342,6 @@ APWR:
 		Armor: wood
 		Crewed: yes
 		Sight: 4
-	RenderBuilding:
 	IronCurtainable:
 
 STEK:
@@ -1385,7 +1364,6 @@ STEK:
 		Armor: wood
 		Crewed: yes
 		Sight: 4
-	RenderBuilding:
 	IronCurtainable:
 
 BARR:
@@ -1407,7 +1385,6 @@ BARR:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -1432,7 +1409,6 @@ TENT:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -1449,12 +1425,9 @@ KENN:
 		LongDesc: Produces attack dogs
 	Building:
 		Power: -10
-		Footprint: x
-		Dimensions: 1,1
 		HP: 400
 		Armor: wood
 		Sight: 4
-	RenderBuilding:
 	RallyPoint:
 	Production:
 	IronCurtainable:
@@ -1477,7 +1450,6 @@ FIX:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	RenderBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -1594,7 +1566,6 @@ T01:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T02:
@@ -1602,7 +1573,6 @@ T02:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T03:
@@ -1610,7 +1580,6 @@ T03:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T05:
@@ -1618,7 +1587,6 @@ T05:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T06:
@@ -1626,7 +1594,6 @@ T06:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T07:
@@ -1634,7 +1601,6 @@ T07:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T08:
@@ -1642,7 +1608,6 @@ T08:
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-	RenderBuilding:
 	-Selectable:
 
 T10:
@@ -1650,7 +1615,6 @@ T10:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T11:
@@ -1658,7 +1622,6 @@ T11:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T12:
@@ -1666,7 +1629,6 @@ T12:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T13:
@@ -1674,7 +1636,6 @@ T13:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T14:
@@ -1682,7 +1643,6 @@ T14:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	RenderBuilding:
 	-Selectable:
 
 T15:
@@ -1690,7 +1650,6 @@ T15:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	RenderBuilding:
 	-Selectable:
 
 T16:
@@ -1698,7 +1657,6 @@ T16:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 T17:
@@ -1706,7 +1664,6 @@ T17:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	RenderBuilding:
 	-Selectable:
 
 TC01:
@@ -1714,7 +1671,6 @@ TC01:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	RenderBuilding:
 	-Selectable:
 
 TC02:
@@ -1722,7 +1678,6 @@ TC02:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	RenderBuilding:
 	-Selectable:
 
 TC03:
@@ -1730,7 +1685,6 @@ TC03:
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
-	RenderBuilding:
 	-Selectable:
 
 TC04:
@@ -1738,7 +1692,6 @@ TC04:
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	RenderBuilding:
 	-Selectable:
 
 TC05:
@@ -1746,88 +1699,47 @@ TC05:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	RenderBuilding:
 	-Selectable:
 
 MINE:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	SeedsOre:
 	-Selectable:
 
 BOXES01:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES02:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES03:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES04:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES05:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES06:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES07:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES08:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 BOXES09:
 	Inherits: ^Building
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
 	-Selectable:
 
 FCOM:
@@ -1842,7 +1754,6 @@ FCOM:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-	RenderBuilding:
 
 V01:
 	Inherits: ^Building
@@ -1853,7 +1764,6 @@ V01:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V02:
 	Inherits: ^Building
@@ -1863,7 +1773,6 @@ V02:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V03:
 	Inherits: ^Building
@@ -1873,7 +1782,6 @@ V03:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V04:
 	Inherits: ^Building
@@ -1883,7 +1791,6 @@ V04:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V05:
 	Inherits: ^Building
@@ -1893,7 +1800,6 @@ V05:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V06:
 	Inherits: ^Building
@@ -1903,7 +1809,6 @@ V06:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V07:
 	Inherits: ^Building
@@ -1913,127 +1818,90 @@ V07:
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V08:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V09:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V10:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V11:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V12:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V13:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V14:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V15:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V16:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V17:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V18:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V19:
 	Inherits: ^Building
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 V20:
 	Inherits: ^Building
@@ -2041,6 +1909,8 @@ V20:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2050,6 +1920,8 @@ V21:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2059,6 +1931,8 @@ V22:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2068,6 +1942,8 @@ V23:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2077,6 +1953,8 @@ V24:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2086,6 +1964,8 @@ V25:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2095,6 +1975,8 @@ V26:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2104,6 +1986,8 @@ V27:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2113,6 +1997,8 @@ V28:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2122,6 +2008,8 @@ V29:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2131,6 +2019,8 @@ V30:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2140,6 +2030,8 @@ V31:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2149,6 +2041,8 @@ V32:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2158,6 +2052,8 @@ V33:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2167,6 +2063,8 @@ V34:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2176,6 +2074,8 @@ V35:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2185,6 +2085,8 @@ V36:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2194,6 +2096,8 @@ V37:
 		Repairable: false
 		HP: 400
 		Armor: wood
+		-Dimensions:
+		-Footprint:
 	RenderBuilding:
 		Image: FCOM
 
@@ -2202,13 +2106,10 @@ BARL:
 	Selectable:
 		Priority: 0
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		BaseNormal: no
 		Adjacent: 0
 		HP: 10
-	RenderBuilding:
 	Explodes:
 
 BRL3:
@@ -2216,13 +2117,10 @@ BRL3:
 	Selectable:
 		Priority: 0
 	Building:
-		Footprint: x
-		Dimensions: 1,1
 		Repairable: false
 		BaseNormal: no
 		Adjacent: 0
 		HP: 10
-	RenderBuilding:
 	Explodes:
 
 MISS:
@@ -2236,7 +2134,6 @@ MISS:
 		Bib: yes
 		HP: 400
 		Armor: wood
-	RenderBuilding:
 
 DOG:
 	Inherits: ^Infantry
