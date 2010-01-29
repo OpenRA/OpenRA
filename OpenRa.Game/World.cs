@@ -56,9 +56,8 @@ namespace OpenRa
 
 			Map = new Map( Rules.AllRules );
 			Timer.Time( "new Map: {0}" );
-			FileSystem.MountTemporary( new Package( Map.Theater + ".mix" ) );
-			Timer.Time( "mount temporary packages: {0}" );
 			TileSet = new TileSet( Map.TileSuffix );
+			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
 
 			BuildingInfluence = new BuildingInfluenceMap( this );

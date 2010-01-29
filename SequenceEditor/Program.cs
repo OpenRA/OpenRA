@@ -76,8 +76,6 @@ namespace SequenceEditor
 			}
 			catch( FileNotFoundException ){}
 
-			FileSystem.MountTemporary(new Package("temperat.mix"));
-
 			XmlFilename = args.FirstOrDefault( x => x.EndsWith(".xml") ) ?? "sequences.xml";
 			Doc = new XmlDocument(); 
 			Doc.Load(XmlFilename);
