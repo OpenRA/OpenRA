@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRa.Effects;
+using OpenRa.Mods.RA.Effects;
+using OpenRa.Traits;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class GpsPowerInfo : SupportPowerInfo
 	{

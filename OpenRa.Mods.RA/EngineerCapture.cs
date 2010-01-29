@@ -1,6 +1,6 @@
-﻿using OpenRa.Traits.Activities;
+﻿using OpenRa.Mods.RA.Activities;
 using OpenRa.Traits;
-using OpenRa.Mods.RA.Activities;
+using OpenRa.Traits.Activities;
 
 namespace OpenRa.Mods.RA
 {

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using OpenRa.Effects;
 using OpenRa.Graphics;
 using OpenRa.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRa.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
