@@ -226,8 +226,6 @@
     <Compile Include="Traits\NukePower.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\PlaceBuilding.cs" />
-    <Compile Include="Traits\SonarPulsePower.cs" />
-    <Compile Include="Traits\SpyPlanePower.cs" />
     <Compile Include="Traits\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRa.Orders;
+﻿using OpenRa.Traits;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	public class SonarPulsePowerInfo : SupportPowerInfo
 	{
@@ -19,7 +16,7 @@ namespace OpenRa.Traits
 
 		protected override void OnActivate()
 		{
-			Game.orderManager.IssueOrder(new Order("SonarPulse", Owner.PlayerActor));
+			Game.IssueOrder(new Order("SonarPulse", Owner.PlayerActor));
 		}
 
 		public void ResolveOrder(Actor self, Order order)

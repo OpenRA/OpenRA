@@ -210,6 +210,8 @@ namespace OpenRa
 				changePending = true;
 		}
 
+		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
+
 		public static void StartGame()
 		{
 			var available = world.Map.SpawnPoints.ToList();

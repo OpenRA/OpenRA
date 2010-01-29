@@ -67,7 +67,7 @@ namespace OpenRa
 
 			Game.chat.AddLine(Color.White, "Debug", "Requesting package: {0}".F(currentPackage));
 
-			Game.orderManager.IssueOrder(
+			Game.IssueOrder(
 				new Order("RequestFile", null, currentPackage) { IsImmediate = true });
 
 			Fraction = 0f;

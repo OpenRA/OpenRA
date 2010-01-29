@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using OpenRa.Traits;
 using OpenRa.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class SpyPlanePowerInfo : SupportPowerInfo
 	{

@@ -277,7 +277,7 @@ namespace OpenRa
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
 				{
-					Game.orderManager.IssueOrder(Order.Chat("/map " + currentMap.Filename));
+					Game.IssueOrder(Order.Chat("/map " + currentMap.Filename));
 					showMapChooser = false;
 				});
 
@@ -343,19 +343,19 @@ namespace OpenRa
 			while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
 				newpalette = (newpalette + d) % 8;
 
-			Game.orderManager.IssueOrder(
+			Game.IssueOrder(
 				Order.Chat("/pal " + newpalette));
 		}
 
 		void CycleRace(bool left)
 		{
-			Game.orderManager.IssueOrder(
+			Game.IssueOrder(
 				Order.Chat("/race " + (((int)Game.world.LocalPlayer.Race - 1) ^ 1)));
 		}
 
 		void CycleReady(bool left)
 		{
-			Game.orderManager.IssueOrder(
+			Game.IssueOrder(
 				new Order("ToggleReady", Game.world.LocalPlayer.PlayerActor, "") { IsImmediate = true });
 		}
 
@@ -580,7 +580,7 @@ namespace OpenRa
 		{
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			foreach( var item in queue.AllItems( groupName ) )
-				Game.orderManager.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
+				Game.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
 		}
 
 		void ChooseAvailableTab( World world )
@@ -958,7 +958,7 @@ namespace OpenRa
 		{
 			var unit = Rules.Info[item];
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
-			Game.orderManager.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
+			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
 		}
 
 		void HandleBuildPalette( World world, string item, bool isLmb )
@@ -983,7 +983,7 @@ namespace OpenRa
 
 					if (producing.Paused)
 					{
-						Game.orderManager.IssueOrder(Order.PauseProduction(player, item, false));
+						Game.IssueOrder(Order.PauseProduction(player, item, false));
 						return;
 					}
 				}
@@ -998,12 +998,12 @@ namespace OpenRa
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
 						Sound.Play("cancld1.aud");
-						Game.orderManager.IssueOrder(Order.CancelProduction(player, item));
+						Game.IssueOrder(Order.CancelProduction(player, item));
 					}
 					else
 					{
 						Sound.Play("onhold1.aud");
-						Game.orderManager.IssueOrder(Order.PauseProduction(player, item, true));
+						Game.IssueOrder(Order.PauseProduction(player, item, true));
 					}
 				}
 			}
