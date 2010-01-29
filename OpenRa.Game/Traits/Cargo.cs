@@ -3,7 +3,7 @@ using OpenRa.Traits.Activities;
 
 namespace OpenRa.Traits
 {
-	class CargoInfo : ITraitInfo
+	public class CargoInfo : ITraitInfo
 	{
 		public readonly int Passengers = 0;
 		public readonly UnitMovementType[] PassengerTypes = { };
@@ -12,7 +12,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Cargo(self); }
 	}
 
-	class Cargo : IPips, IIssueOrder, IResolveOrder
+	public class Cargo : IPips, IIssueOrder, IResolveOrder
 	{
 		List<Actor> cargo = new List<Actor>();
 

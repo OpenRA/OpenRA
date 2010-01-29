@@ -8,7 +8,7 @@ using OpenRa.FileFormats;
 
 namespace OpenRa
 {
-	static class WorldUtils
+	public static class WorldUtils
 	{
 		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt)
 		{

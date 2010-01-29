@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	class Fly : IActivity
+	public class Fly : IActivity
 	{
 		readonly float2 Pos;
 		bool isCanceled;

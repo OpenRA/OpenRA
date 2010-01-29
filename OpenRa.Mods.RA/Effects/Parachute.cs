@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.Traits;
+﻿using System.Collections.Generic;
+using OpenRa.Effects;
 using OpenRa.Graphics;
+using OpenRa.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRa.Mods.RA.Effects
 {
 	class Parachute : IEffect
 	{

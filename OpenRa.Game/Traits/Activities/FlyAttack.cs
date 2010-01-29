@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	class FlyAttack : IActivity
+	public class FlyAttack : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		Actor Target;
@@ -30,7 +30,7 @@ namespace OpenRa.Traits.Activities
 		public void Cancel(Actor self) { Target = null; NextActivity = null; }
 	}
 
-	class FlyCircle : IActivity
+	public class FlyCircle : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		int2 Target;

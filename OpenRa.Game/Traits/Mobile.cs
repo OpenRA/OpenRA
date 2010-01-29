@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using OpenRa.GameRules;
 
 namespace OpenRa.Traits
 {
-	class MobileInfo : ITraitInfo
+	public class MobileInfo : ITraitInfo
 	{
 		public readonly UnitMovementType MovementType = UnitMovementType.Wheel;
 
 		public object Create(Actor self) { return new Mobile(self); }
 	}
 
-	class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
+	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
 	{
 		readonly Actor self;
 

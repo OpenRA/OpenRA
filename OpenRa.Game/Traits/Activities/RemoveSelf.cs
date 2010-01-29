@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace OpenRa.Traits.Activities
 {
-	class RemoveSelf : IActivity
+	public class RemoveSelf : IActivity
 	{
 		bool isCanceled;
 		public IActivity NextActivity { get; set; }

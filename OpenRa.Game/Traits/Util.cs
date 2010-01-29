@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.GameRules;
 using OpenRa.Graphics;
 using OpenRa.Traits.Activities;
 
 namespace OpenRa.Traits
 {
-	static class Util
+	public static class Util
 	{
 		public static void TickFacing( ref int facing, int desiredFacing, int rot )
 		{
