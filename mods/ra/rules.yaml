@@ -1758,6 +1758,78 @@ MINE:
 	SeedsOre:
 	-Selectable:
 
+BOXES01:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES02:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES03:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES04:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES05:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES06:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES07:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES08:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
+BOXES09:
+	Inherits: ^Building
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+	-Selectable:
+
 FCOM:
 	Inherits: ^Building
 	Building:

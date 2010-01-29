@@ -70,8 +70,8 @@ namespace OpenRa
 			Timer.Time( "SeqProv, viewport: {0}" );
 
 			skipMakeAnims = true;
-			//foreach (var treeReference in Game.world.Map.Trees)
-			//	world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
+			foreach (var treeReference in Game.world.Map.Trees)
+				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
 			Timer.Time( "trees: {0}" );
 			
 			world.LoadMapActors(Rules.AllRules);
