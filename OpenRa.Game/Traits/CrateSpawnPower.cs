@@ -51,9 +51,7 @@ namespace OpenRa.Traits
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					var loc = mi.Location + Game.viewport.Location;
-					var underCursor = world.FindUnits(loc, loc).FirstOrDefault();
-
+					var underCursor = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 					if (underCursor == null)
 						yield return new Order("SpawnCrate", world.LocalPlayer.PlayerActor, xy);
 				}

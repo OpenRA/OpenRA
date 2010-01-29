@@ -87,8 +87,7 @@ namespace OpenRa.Traits
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					var loc = mi.Location + Game.viewport.Location;
-					var underCursor = world.FindUnits(loc, loc)
+					var underCursor = world.FindUnitsAtMouse(mi.Location)
 						.Where(a => a.Owner != null && a.traits.Contains<Chronoshiftable>()
 							&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
