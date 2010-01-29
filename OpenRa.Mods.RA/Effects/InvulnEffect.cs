@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using OpenRa.Graphics;
 using OpenRa.Traits;
+using OpenRa.Effects;
 
-namespace OpenRa.Effects
+namespace OpenRa.Mods.RA.Effects
 {
 	class InvulnEffect : IEffect
 	{

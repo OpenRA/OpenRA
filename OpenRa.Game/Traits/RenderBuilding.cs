@@ -3,12 +3,12 @@ using OpenRa.Effects;
 
 namespace OpenRa.Traits
 {
-	class RenderBuildingInfo : RenderSimpleInfo
+	public class RenderBuildingInfo : RenderSimpleInfo
 	{
 		public override object Create(Actor self) { return new RenderBuilding(self); }
 	}
 
-	class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
+	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		const int SmallBibStart = 1;
 		const int LargeBibStart = 5;

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using OpenRa.Orders;
+using OpenRa.Traits;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
 	{
@@ -61,9 +59,8 @@ namespace OpenRa.Traits
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					var loc = mi.Location + Game.viewport.Location;
-					var underCursor = world.FindUnits(loc, loc)
-						.Where(a => a.Owner == world.LocalPlayer
+					var underCursor = world.FindUnitsAtMouse(mi.Location)
+						.Where(a => a.Owner != null
 							&& a.traits.Contains<IronCurtainable>()
 							&& a.traits.Contains<Selectable>()).FirstOrDefault();
 

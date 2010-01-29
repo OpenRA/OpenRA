@@ -81,7 +81,6 @@
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
-    <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
@@ -218,8 +217,6 @@
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
-    <Compile Include="Traits\IronCurtainable.cs" />
-    <Compile Include="Traits\IronCurtainPower.cs" />
     <Compile Include="Traits\JamsRadar.cs" />
     <Compile Include="Traits\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />

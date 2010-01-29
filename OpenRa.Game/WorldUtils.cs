@@ -52,6 +52,12 @@ namespace OpenRa
 					world.TileSet.GetWalkability(world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
+		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
+		{
+			var loc = mouseLocation + Game.viewport.Location;
+			return FindUnits(world, loc, loc);
+		}
+
 		public static IEnumerable<Actor> FindUnits(this World world, float2 a, float2 b)
 		{
 			var min = float2.Min(a, b);

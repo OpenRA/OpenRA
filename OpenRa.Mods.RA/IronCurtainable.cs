@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using OpenRa.Effects;
+using OpenRa.Traits;
+using OpenRa.Mods.RA.Effects;
 
-namespace OpenRa.Traits
+namespace OpenRa.Mods.RA
 {
 	class IronCurtainableInfo : ITraitInfo
 	{

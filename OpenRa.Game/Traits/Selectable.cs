@@ -5,12 +5,12 @@ using System.Text;
 
 namespace OpenRa.Traits
 {
-	class SelectableInfo : StatelessTraitInfo<Selectable>
+	public class SelectableInfo : StatelessTraitInfo<Selectable>
 	{
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
 		public readonly string Voice = "GenericVoice";
 	}
 
-	class Selectable {}
+	public class Selectable {}
 }
