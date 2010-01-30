@@ -79,5 +79,39 @@ namespace OpenRa.GameRules
 
 			throw new InvalidOperationException("Cannot locate trait: {0}".F(traitName));
 		}
+
+		public IEnumerable<ITraitInfo> TraitsInConstructOrder()
+		{
+			var ret = new List<ITraitInfo>();
+			var t = Traits.WithInterface<ITraitInfo>().ToList();
+			int index = 0;
+			while( t.Count != 0 )
+			{
+				if( index >= t.Count )
+					throw new InvalidOperationException( "Trait prerequisites not satisfied (or prerequisite loop)" );
+
+				var prereqs = PrerequisitesOf( t[ index ] );
+				if( prereqs.Count == 0 || prereqs.All( n => ret.Any( x => x.GetType().IsSubclassOf( n ) ) ) )
+				{
+					ret.Add( t[ index ] );
+					t.RemoveAt( index );
+					index = 0;
+				}
+				else
+					++index;
+			}
+
+			return ret;
+		}
+
+		static List<Type> PrerequisitesOf( ITraitInfo info )
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( ITraitPrerequisite<> ) )
+				.Select( t => t.GetGenericArguments()[ 0 ] )
+				.ToList();
+		}
 	}
 }

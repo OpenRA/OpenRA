@@ -4,7 +4,7 @@ using OpenRa.Graphics;
 
 namespace OpenRa.Traits
 {
-	class RenderWarFactoryInfo : ITraitInfo
+	class RenderWarFactoryInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public object Create(Actor self) { return new RenderWarFactory(self); }
 	}

@@ -39,7 +39,7 @@ namespace OpenRa
 				Info = Rules.Info[name.ToLowerInvariant()];
 				Health = this.GetMaxHP();
 
-				foreach (var trait in Info.Traits.WithInterface<ITraitInfo>())
+				foreach (var trait in Info.TraitsInConstructOrder())
 					traits.Add(trait.Create(this));
 			}
 		}
