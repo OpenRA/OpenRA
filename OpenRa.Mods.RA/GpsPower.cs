@@ -18,8 +18,8 @@ namespace OpenRa.Mods.RA
 
 		protected override void OnFinishCharging()
 		{
-			var launchSite = Owner.World.Actors
-				.FirstOrDefault(a => a.Owner == Owner && a.traits.Contains<GpsLaunchSite>());
+			var launchSite = Owner.World.Queries.OwnedBy[Owner]
+				.FirstOrDefault(a => a.traits.Contains<GpsLaunchSite>());
 
 			if (launchSite == null)
 				return;

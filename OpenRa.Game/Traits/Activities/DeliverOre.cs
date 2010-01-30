@@ -42,8 +42,9 @@ namespace OpenRa.Traits.Activities
 					umt = mobile.GetMovementType(),
 					checkForBlocked = false,
 				};
-				var refineries = self.World.Actors.Where( x => x.traits.Contains<AcceptsOre>() 
-					&& x.Owner == self.Owner ).ToList();
+				var refineries = self.World.Queries.OwnedBy[self.Owner]
+					.Where( x => x.traits.Contains<AcceptsOre>())
+					.ToList();
 				if( refinery != null )
 					search.AddInitialCell( self.World, refinery.Location + refineryDeliverOffset );
 				else

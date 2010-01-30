@@ -18,9 +18,8 @@ namespace OpenRa.Traits.Activities
 
 		Actor ChooseAirfield(Actor self)
 		{
-			var airfield = self.World.Actors
+			var airfield = self.World.Queries.OwnedBy[self.Owner]
 				.Where(a => a.Info.Name == "afld"
-					&& a.Owner == self.Owner
 					&& !Reservable.IsReserved(a))
 				.FirstOrDefault();
 

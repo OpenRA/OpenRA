@@ -49,12 +49,12 @@ namespace OpenRa
 			PowerProvided = 0;
 			PowerDrained = 0;
 
-			var myBuildings = World.Actors
-				.Where(a => a.Owner == this && a.traits.Contains<Building>());
+			var myBuildings = World.Queries.OwnedBy[this]
+				.WithTrait<Building>();
 
 			foreach (var a in myBuildings)
 			{
-				var p = a.traits.Get<Building>().GetPowerUsage();
+				var p = a.Trait.GetPowerUsage();
 				if (p > 0)
 					PowerProvided += p;
 				else 
@@ -80,8 +80,8 @@ namespace OpenRa
 
 		void UpdateOreCapacity()
 		{
-			OreCapacity = World.Actors
-				.Where(a => a.Owner == this && a.traits.Contains<StoresOre>())
+			OreCapacity = World.Queries.OwnedBy[this]
+				.Where(a => a.traits.Contains<StoresOre>())
 				.Select(a => a.Info.Traits.Get<StoresOreInfo>())
 				.Sum(b => b.Capacity);
 		}

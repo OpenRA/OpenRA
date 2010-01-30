@@ -86,12 +86,12 @@ namespace OpenRa.Traits
 			// Cancel existing primaries
 			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 			{
-				foreach (var b in self.World.Actors.Where(x => x.traits.Contains<Production>()
-					&& x.Owner == self.Owner
-					&& x.traits.Get<Production>().IsPrimary == true
-					&& (x.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
+				foreach (var b in self.World.Queries.OwnedBy[self.Owner]
+					.WithTrait<Production>()
+					.Where(x => x.Trait.IsPrimary
+						&& (x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
 				{
-					b.traits.Get<Production>().SetPrimaryProducer(b, false);
+					b.Trait.SetPrimaryProducer(b.Actor, false);
 				}
 			}
 			isPrimary = true;

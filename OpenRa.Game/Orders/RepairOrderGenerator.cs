@@ -38,8 +38,9 @@ namespace OpenRa.Orders
 			if (!Game.Settings.RepairRequiresConyard)
 				return;
 
-			var hasFact = world.Actors
-				.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<ConstructionYard>());
+			var hasFact = world.Queries.OwnedBy[world.LocalPlayer]
+				.WithTrait<ConstructionYard>()
+				.Any();
 				
 			if (!hasFact)
 				Game.controller.CancelInputMode();

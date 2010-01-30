@@ -126,7 +126,7 @@ namespace OpenRa.Graphics
 
 		public void GoToStartLocation( Player player )
 		{
-			Center(player.World.Actors.Where(a => a.Owner == player && a.traits.Contains<Selectable>()));
+			Center( player.World.Queries.OwnedBy[ player ].WithTrait<Selectable>().Select( a => a.Actor ) );
 		}
 	}
 }

@@ -51,6 +51,7 @@
     <Compile Include="AudLoader.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="BlowfishKeyProvider.cs" />
+    <Compile Include="Collections\Set.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="Dune2ShpReader.cs" />
     <Compile Include="Exts.cs" />

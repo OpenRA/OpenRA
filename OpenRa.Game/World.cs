@@ -6,12 +6,13 @@ using OpenRa.Support;
 using OpenRa.FileFormats;
 using OpenRa.Graphics;
 using OpenRa.Traits;
+using OpenRa.Collections;
 
 namespace OpenRa
 {
 	public class World
 	{
-		List<Actor> actors = new List<Actor>();
+		Set<Actor> actors = new Set<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 
@@ -77,6 +78,9 @@ namespace OpenRa
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);
 			Timer.Time( "renderer, minimap: {0}" );
+
+			Queries = new AllQueries( this );
+			Timer.Time( "queries: {0}" );
 			Timer.Time( "----end World.ctor" );
 		}
 
@@ -153,5 +157,65 @@ namespace OpenRa
 				return ret;
 			}
 		}
+
+		public class AllQueries
+		{
+			readonly World world;
+
+			public readonly Dictionary<Player, OwnedByCachedView> OwnedBy = new Dictionary<Player, OwnedByCachedView>();
+			readonly TypeDictionary hasTrait = new TypeDictionary();
+
+			public AllQueries( World world )
+			{
+				this.world = world;
+				foreach( var p in world.players.Values )
+				{
+					var player = p;
+					OwnedBy.Add( player, new OwnedByCachedView( world, world.actors, x => x.Owner == player ) );
+				}
+			}
+
+			public CachedView<Actor, TraitPair<T>> WithTrait<T>()
+			{
+				return WithTraitInner<T>( world, hasTrait );
+			}
+
+			static CachedView<Actor, TraitPair<T>> WithTraitInner<T>( World world, TypeDictionary hasTrait )
+			{
+				var ret = hasTrait.GetOrDefault<CachedView<Actor, TraitPair<T>>>();
+				if( ret != null )
+					return ret;
+				ret = new CachedView<Actor, TraitPair<T>>(
+					world.actors,
+					x => x.traits.Contains<T>(),
+					x => new TraitPair<T> { Actor = x, Trait = x.traits.Get<T>() } );
+				hasTrait.Add( ret );
+				return ret;			}
+
+			public struct TraitPair<T>
+			{
+				public Actor Actor;
+				public T Trait;
+			}
+
+			public class OwnedByCachedView : CachedView<Actor, Actor>
+			{
+				readonly World world;
+				readonly TypeDictionary hasTrait = new TypeDictionary();
+
+				public OwnedByCachedView( World world, Set<Actor> set, Func<Actor, bool> include )
+					: base( set, include, a => a )
+				{
+					this.world = world;
+				}
+
+				public CachedView<Actor, TraitPair<T>> WithTrait<T>()
+				{
+					return WithTraitInner<T>( world, hasTrait );
+				}
+			}
+		}
+
+		public readonly AllQueries Queries;
 	}
 }

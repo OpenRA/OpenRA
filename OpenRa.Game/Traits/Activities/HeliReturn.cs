@@ -9,9 +9,8 @@ namespace OpenRa.Traits.Activities
 
 		static Actor ChooseHelipad(Actor self)
 		{
-			return self.World.Actors.FirstOrDefault(
+			return self.World.Queries.OwnedBy[self.Owner].FirstOrDefault(
 				a => a.Info.Name == "hpad" &&
-					a.Owner == self.Owner &&
 					!Reservable.IsReserved(a));
 		}
 

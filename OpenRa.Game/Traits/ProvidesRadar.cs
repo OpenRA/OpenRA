@@ -16,9 +16,8 @@ namespace OpenRa.Traits
 			var b = self.traits.Get<Building>();
 			if (b != null && b.Disabled) return false;
 
-			var isJammed = self.World.Actors.Any(a => a.traits.Contains<JamsRadar>()
-				&& self.Owner != a.Owner
-				&& (self.Location - a.Location).Length < a.Info.Traits.Get<JamsRadarInfo>().Range);
+			var isJammed = self.World.Queries.WithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
+				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
 
 			return !isJammed;
 		}

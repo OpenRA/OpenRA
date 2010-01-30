@@ -131,18 +131,17 @@ namespace OpenRa.Traits
 			Actor producer = null;
 			
 			// Prioritise primary structure in build order
-			var primaryProducers = self.World.Actors
-				.Where(x => x.traits.Contains<Production>()
-					&& producerTypes.Contains(x.Info)
-					&& x.Owner == self.Owner
-					&& x.traits.Get<Production>().IsPrimary == true);
+			var primaryProducers = self.World.Queries.OwnedBy[self.Owner]
+				.WithTrait<Production>()
+				.Where(x => producerTypes.Contains(x.Actor.Info)
+					&& x.Trait.IsPrimary);
 			
 			foreach (var p in primaryProducers)
 			{
 				// Ignore buildings that are disabled
-				if (p.traits.Contains<Building>() && p.traits.Get<Building>().Disabled)
+				if (p.Actor.traits.Contains<Building>() && p.Actor.traits.Get<Building>().Disabled)
 					continue;
-				producer = p;
+				producer = p.Actor;
 				break;
 			}
 			
@@ -152,8 +151,8 @@ namespace OpenRa.Traits
 			// Pick the first available producer
 			if (producer == null)
 			{
-				producer = self.World.Actors
-					.Where( x => producerTypes.Contains( x.Info ) && x.Owner == self.Owner )
+				producer = self.World.Queries.OwnedBy[self.Owner]
+					.Where( x => producerTypes.Contains( x.Info ) )
 					.FirstOrDefault();
 			}
 			

@@ -35,9 +35,9 @@ namespace OpenRa
 		{
 			// Clear active flags
 			gapActive = new bool[128, 128];
-			foreach (var a in world.Actors.Where(a => a.traits.Contains<GeneratesGap>() && owner != a.Owner))
+			foreach (var a in world.Queries.WithTrait<GeneratesGap>().Where(a => owner != a.Actor.Owner))
 			{
-				foreach (var t in a.traits.Get<GeneratesGap>().GetShroudedTiles())
+				foreach (var t in a.Trait.GetShroudedTiles())
 					gapActive[t.X, t.Y] = true;
 			}
 

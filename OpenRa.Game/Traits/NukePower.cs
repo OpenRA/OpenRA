@@ -26,8 +26,9 @@ namespace OpenRa.Traits
 		{
 			if (order.OrderString == "NuclearMissile")
 			{
-				var silo = self.World.Actors.Where(a => a.Owner == self.Owner
-					&& a.traits.Contains<NukeSilo>()).FirstOrDefault();
+				var silo = self.World.Queries.OwnedBy[self.Owner]
+					.Where(a => a.traits.Contains<NukeSilo>())
+					.FirstOrDefault();
 				if (silo != null)
 					silo.traits.Get<RenderBuilding>().PlayCustomAnim(silo, "active");
 				
@@ -70,8 +71,9 @@ namespace OpenRa.Traits
 
 			public void Tick(World world)
 			{
-				var hasStructure = world.Actors
-					.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<NukeSilo>());
+				var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
+					.WithTrait<NukeSilo>()
+					.Any();
 
 				if (!hasStructure)
 					Game.controller.CancelInputMode();

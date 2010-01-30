@@ -196,5 +196,16 @@ namespace OpenRa
 		{
 			return currentActivity;
 		}
+
+		public override int GetHashCode()
+		{
+			return (int)ActorID;
+		}
+
+		public override bool Equals( object obj )
+		{
+			var o = obj as Actor;
+			return ( o != null && o.ActorID == ActorID );
+		}
 	}
 }

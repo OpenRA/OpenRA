@@ -503,9 +503,9 @@ namespace OpenRa
 		
 		void DrawRadar( World world )
 		{
-			var hasNewRadar = world.Actors.Any(a => a.Owner == world.LocalPlayer 
-				&& a.traits.Contains<ProvidesRadar>() 
-				&& a.traits.Get<ProvidesRadar>().IsActive);
+			var hasNewRadar = world.Queries.OwnedBy[world.LocalPlayer]
+				.WithTrait<ProvidesRadar>()
+				.Any(a => a.Trait.IsActive);
 			
 			if (hasNewRadar != hasRadar)
 			{
@@ -661,7 +661,7 @@ namespace OpenRa
 			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
 			var repairDrawPos = new float2(repairRect.Location);
 
-			var hasFact = world.Actors.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<ConstructionYard>());
+			var hasFact = world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ConstructionYard>().Any();
 
 			if (Game.Settings.RepairRequiresConyard && !hasFact)
 				repairButton.ReplaceAnim("disabled");

@@ -23,7 +23,7 @@ namespace OpenRa.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
-			foreach( var b in player.World.Actors.Where( x => x.Owner == player && x.Info.Traits.Contains<BuildingInfo>() ) )
+			foreach( var b in player.World.Queries.OwnedBy[player].Where( x=>x.Info.Traits.Contains<BuildingInfo>() ) )
 			{
 				ret[ b.Info.Name ].Add( b );
 				var buildable = b.Info.Traits.GetOrDefault<BuildableInfo>();

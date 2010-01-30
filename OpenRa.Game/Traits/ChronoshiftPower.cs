@@ -46,8 +46,10 @@ namespace OpenRa.Traits
 				if (!movement.CanEnterCell(order.TargetLocation))
 					return;
 
-				var chronosphere = self.World.Actors.Where(a => a.Owner == self.Owner
-									&& a.traits.Contains<Chronosphere>()).FirstOrDefault();
+				var chronosphere = self.World.Queries
+					.OwnedBy[self.Owner]
+					.WithTrait<Chronosphere>()
+					.Select(x=>x.Actor).FirstOrDefault();
 				
 				bool success = order.TargetActor.traits.Get<Chronoshiftable>().Activate(order.TargetActor,
 					order.TargetLocation,
@@ -60,8 +62,8 @@ namespace OpenRa.Traits
 					Sound.Play("chrono2.aud");
 					
 					// Trigger screen desaturate effect
-					foreach (var a in self.World.Actors.Where(a => a.traits.Contains<ChronoshiftPaletteEffect>()))
-						a.traits.Get<ChronoshiftPaletteEffect>().DoChronoshift();
+					foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
+						a.Trait.DoChronoshift();
 
 					if (chronosphere != null)
 						chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
@@ -98,8 +100,9 @@ namespace OpenRa.Traits
 
 			public void Tick( World world )
 			{
-				var hasChronosphere = world.Actors
-					.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<Chronosphere>());
+				var hasChronosphere = world.Queries.OwnedBy[world.LocalPlayer]
+					.WithTrait<Chronosphere>()
+					.Any();
 
 				if (!hasChronosphere)
 					Game.controller.CancelInputMode();
@@ -135,8 +138,9 @@ namespace OpenRa.Traits
 
 			public void Tick(World world)
 			{
-				var hasChronosphere = world.Actors
-					.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<Chronosphere>());
+				var hasChronosphere = world.Queries.OwnedBy[world.LocalPlayer]
+					.WithTrait<Chronosphere>()
+					.Any();
 
 				if (!hasChronosphere)
 					Game.controller.CancelInputMode();

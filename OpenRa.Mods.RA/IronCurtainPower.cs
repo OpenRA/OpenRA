@@ -29,8 +29,9 @@ namespace OpenRa.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
-				var curtain = self.World.Actors.Where(a => a.Owner != null
-					&& a.traits.Contains<IronCurtain>()).FirstOrDefault();
+				var curtain = self.World.Queries.WithTrait<IronCurtain>()
+					.Where(a => a.Actor.Owner != null)
+					.FirstOrDefault().Actor;
 				if (curtain != null)
 					curtain.traits.Get<RenderBuilding>().PlayCustomAnim(curtain, "active");
 
@@ -73,8 +74,9 @@ namespace OpenRa.Mods.RA
 
 			public void Tick(World world)
 			{
-				var hasStructure = world.Actors
-					.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<IronCurtain>());
+				var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
+					.WithTrait<IronCurtain>()
+					.Any();
 
 				if (!hasStructure)
 					Game.controller.CancelInputMode();

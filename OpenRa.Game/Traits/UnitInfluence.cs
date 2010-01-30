@@ -30,8 +30,9 @@ namespace OpenRa.Traits
 			// Does this belong here? NO, but it's your mess.
 			
 			// Get the crushable actors
-			foreach (var a in self.World.Actors.Where(b => b.traits.Contains<ICrushable>()))
+			foreach (var aa in self.World.Queries.WithTrait<ICrushable>())
 			{
+				var a = aa.Actor;
 				// Are there any units in the same cell that can crush this?
 				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
 					foreach( var cell in ios.OccupiedCells() )

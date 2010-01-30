@@ -93,7 +93,7 @@ namespace OpenRa.Graphics
 
 			mapOnlySheet.Texture.SetData(oreLayer);
 
-			if (!world.Actors.Any(a => a.Owner == world.LocalPlayer && a.traits.Contains<ProvidesRadar>()))
+			if (!world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
 
 			var bitmap = new Bitmap(oreLayer);
@@ -114,9 +114,9 @@ namespace OpenRa.Graphics
 								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : colors[4]).ToArgb();
 					}
 
-				foreach (var a in world.Actors.Where(a => a.traits.Contains<Unit>()))
-					*(c + (a.Location.Y * bitmapData.Stride >> 2) + a.Location.X) =
-						playerColors[(int)a.Owner.Palette].ToArgb();
+				foreach (var a in world.Queries.WithTrait<Unit>())
+					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
+						playerColors[(int)a.Actor.Owner.Palette].ToArgb();
 
 				unchecked
 				{
