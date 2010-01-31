@@ -65,6 +65,12 @@ namespace OpenRa.Traits
 				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}
 
+		public void PlayCustomAnim(Actor self, string name, Action a)
+		{
+			anim.PlayThen(GetPrefix(self) + name,
+				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
+		}
+
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
 			anim.PlayBackwardsThen(GetPrefix(self) + name,

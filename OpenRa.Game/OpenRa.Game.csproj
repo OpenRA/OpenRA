@@ -117,7 +117,7 @@
     <Compile Include="Support\OpenAlInterop.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
-    <Compile Include="Traits\AcceptsOre.cs" />
+    <Compile Include="Traits\OreRefinery.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CallFunc.cs" />
     <Compile Include="Traits\Activities\EnterTransport.cs" />
@@ -251,6 +251,7 @@
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\TakeCover.cs" />
+    <Compile Include="Traits\TiberiumRefinery.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />

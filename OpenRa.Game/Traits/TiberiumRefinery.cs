@@ -2,15 +2,17 @@
 
 namespace OpenRa.Traits
 {
-	class AcceptsOreInfo : ITraitInfo
+	class TiberiumRefineryInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new AcceptsOre(self); }
+		public object Create(Actor self) { return new TiberiumRefinery(self); }
 	}
 
-	class AcceptsOre
+	class TiberiumRefinery : IAcceptOre
 	{
-		public AcceptsOre(Actor self)
+		Actor self;
+		public TiberiumRefinery(Actor self)
 		{
+			this.self = self;
 			self.World.AddFrameEndTask(
 				w =>
 				{		/* create the free harvester! */
@@ -20,6 +22,11 @@ namespace OpenRa.Traits
 					unit.Facing = 64;
 					harvester.QueueActivity(new Harvest());
 				});
+		}
+
+		public void OnDock(Actor harv)
+		{
+			self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
 		}
 	}
 }

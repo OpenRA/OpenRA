@@ -54,7 +54,7 @@ PROC:
 		Armor: wood
 		Crewed: yes
 		Sight: 4
-	AcceptsOre:
+	TiberiumRefinery:
 	StoresOre:
 		Pips: 17
 		Capacity: 1000

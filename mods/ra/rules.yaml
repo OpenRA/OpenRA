@@ -1256,7 +1256,7 @@ PROC:
 		Armor: wood
 		Crewed: yes
 		Sight: 6
-	AcceptsOre:
+	OreRefinery:
 	StoresOre:
 		Pips: 17
 		Capacity: 2000

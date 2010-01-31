@@ -15,7 +15,8 @@ namespace OpenRa.Traits.Activities
 		{
 			this.refinery = refinery;
 		}
-
+		
+		// TODO: This belongs on the refinery itself
 		static readonly int2 refineryDeliverOffset = new int2( 1, 2 );
 
 		public IActivity Tick( Actor self )
@@ -26,6 +27,8 @@ namespace OpenRa.Traits.Activities
 			if( isDone )
 			{
 				self.traits.Get<Harvester>().Deliver( self, refinery );
+
+				refinery.traits.Get<IAcceptOre>().OnDock(self);
 				return NextActivity ?? new Harvest();
 			}
 			else if( NextActivity != null )
@@ -43,7 +46,7 @@ namespace OpenRa.Traits.Activities
 					checkForBlocked = false,
 				};
 				var refineries = self.World.Queries.OwnedBy[self.Owner]
-					.Where( x => x.traits.Contains<AcceptsOre>())
+					.Where(x => x.traits.Contains<IAcceptOre>())
 					.ToList();
 				if( refinery != null )
 					search.AddInitialCell( self.World, refinery.Location + refineryDeliverOffset );
@@ -62,6 +65,7 @@ namespace OpenRa.Traits.Activities
 					// no refineries reachable?
 					return this;
 			}
+			// TODO: This belongs in the refinery trait
 			else if( unit.Facing != 64 )
 				return new Turn( 64 ) { NextActivity = this };
 
