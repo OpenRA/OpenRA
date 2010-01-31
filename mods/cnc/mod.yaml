@@ -10,10 +10,7 @@ Packages:
 	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/transit.mix
-# Icons for each theatre
-	mods/cnc/packages/deseicnh.mix
 	mods/cnc/packages/tempicnh.mix
-	mods/cnc/packages/winticnh.mix
 	main.mix
 	redalert.mix
 	hires.mix
@@ -30,9 +27,9 @@ Packages:
 
 
 LegacyRules:
-	mods/cnc/minimal.ini: Dummy definitions to stop the game crashing
-	mods/cnc/weapons.ini: Weapons are still in the old format
-
+	mods/cnc/minimal.ini:	Minimal rules definitions
+	mods/cnc/weapons.ini:	Weapons are still in the old format
+	mods/cnc/voices.ini:	Voices are still in the old format
 Rules:
 	mods/ra/defaults.yaml:		Basic stuff
 	mods/cnc/system.yaml:		Player and world actors
