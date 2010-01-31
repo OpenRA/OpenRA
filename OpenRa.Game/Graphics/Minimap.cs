@@ -97,7 +97,7 @@ namespace OpenRa.Graphics
 				return;
 
 			var bitmap = new Bitmap(oreLayer);
-			var bitmapData = bitmap.LockBits(new Rectangle( 0,0,bitmap.Width, bitmap.Height ), 
+			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
 			unsafe
@@ -105,26 +105,23 @@ namespace OpenRa.Graphics
 				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				int* c = (int*)bitmapData.Scan0;
 
-				for (var y = 0; y < 128; y++)
-					for (var x = 0; x < 128; x++)
+				foreach (var a in world.Queries.WithTrait<Unit>())
+					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
+						playerColors[(int)a.Actor.Owner.Palette].ToArgb();
+
+				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
+					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
 					{
+						if (!world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
+						{
+							*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
+							continue;
+						}
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
 								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : colors[4]).ToArgb();
 					}
-
-				foreach (var a in world.Queries.WithTrait<Unit>())
-					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
-						playerColors[(int)a.Actor.Owner.Palette].ToArgb();
-
-				unchecked
-				{
-					for (var y = 0; y < 128; y++)
-						for (var x = 0; x < 128; x++)
-							if (!world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
-								*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
-				}
 			}
 
 			bitmap.UnlockBits(bitmapData);
