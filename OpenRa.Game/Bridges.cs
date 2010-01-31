@@ -51,12 +51,12 @@ namespace OpenRa
 						}
 				}
 
-			if (replacedTiles.Any())
+			/*if (replacedTiles.Any())
 			{
 				var a = w.CreateActor(template.Bridge, new int2(ni, nj), null);
 				var br = a.traits.Get<Bridge>();
 				br.SetTiles(w, template, replacedTiles);
-			}
+			}*/
 		}
 
 		static bool IsBridge(World w, ushort t)

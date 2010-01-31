@@ -2,23 +2,32 @@
 
 Folders:
 	./
-	
+	mods/cnc/
 Packages:
-	main.mix
-	redalert.mix
-	conquer.mix
-	hires.mix
-	local.mix
-	sounds.mix
-	speech.mix
-	allies.mix
-	russian.mix
+	mods/cnc/packages/cclocal.mix
+	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
 	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
-	mods/cnc/packages/temperat.mix
-	mods/cnc/packages/desert.mix
-	mods/cnc/packages/winter.mix
+	mods/cnc/packages/transit.mix
+# Icons for each theatre
+	mods/cnc/packages/deseicnh.mix
+	mods/cnc/packages/tempicnh.mix
+	mods/cnc/packages/winticnh.mix
+	main.mix
+	redalert.mix
+	hires.mix
+	local.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	temperat.mix
+	snow.mix
+	interior.mix
+	general.mix
+	conquer.mix
+	sounds.mix
+
 
 LegacyRules:
 	mods/ra/rules.ini:	More or less original Red Alert rules file.
@@ -26,10 +35,10 @@ LegacyRules:
 
 Rules:
 	mods/ra/defaults.yaml:	Basic stuff
-	mods/ra/rules.yaml:	OpenRA actorinfos
+	mods/cnc/rules.yaml:	OpenRA actorinfos
 
 Sequences:
-	mods/ra/sequences.xml:	Original animation sequences
+	mods/cnc/sequences.xml:	Original animation sequences
 
 Assemblies:
 	mods/ra/OpenRa.Mods.RA.dll:	Traits used

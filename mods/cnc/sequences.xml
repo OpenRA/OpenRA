@@ -1,0 +1,1051 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+  <unit name="fact">
+    <sequence name="idle" start="0" />
+    <sequence name="make" start="0" length="32" src="factmake" />
+    <sequence name="build" start="1" length="25" />
+    <sequence name="damaged-idle" start="26" />
+    <sequence name="damaged-build" start="27" length="25" />
+  </unit>
+	<unit name="nuke">
+		<sequence name="idle" start="0" />
+		<sequence name="damaged-idle" start="1" />
+		<sequence name="make" start="0" length="*" src="nukemake" />
+	</unit>
+  <unit name="proc">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="procmake" />
+  </unit>
+	<unit name="harv">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="harvest0" start="32" length="4" />
+		<sequence name="harvest1" start="36" length="4" />
+		<sequence name="harvest2" start="40" length="4" />
+		<sequence name="harvest3" start="44" length="4" />
+		<sequence name="harvest4" start="48" length="4" />
+		<sequence name="harvest5" start="52" length="4" />
+		<sequence name="harvest6" start="56" length="4" />
+		<sequence name="harvest7" start="60" length="4" />
+		<sequence name="empty" start="16" length="0" />
+	</unit>
+	
+  <!-- silo -->
+  <unit name="silo">
+    <sequence name="idle" start="0" length="5" />
+    <sequence name="damaged-idle" start="5" length="5" />
+    <sequence name="make" start="0" length="*" src="silomake" />
+  </unit>
+
+  <!-- advanced power plant -->
+  <unit name="apwr">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="apwrmake" />
+  </unit>
+  <!-- soviet barracks -->
+  <unit name="barr">
+    <sequence name="idle" start="0" length="10" />
+    <sequence name="damaged-idle" start="10" length="10" />
+    <sequence name="make" start="0" length="*" src="barrmake" />
+  </unit>
+  <!-- allied barracks -->
+  <unit name="tent">
+    <sequence name="idle" start="0" length="10" />
+    <sequence name="damaged-idle" start="10" length="10" />
+    <sequence name="make" start="0" length="*" src="tentmake" />
+  </unit>
+  <!-- kennel -->
+  <unit name="kenn">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="kennmake" />
+  </unit>
+  <!-- radar dome -->
+  <unit name="dome">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="domemake" />
+  </unit>
+  <!-- allied tech center -->
+  <unit name="atek">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="atekmake" />
+    <sequence name="active" start="0" length="*" src="sputdoor" />
+  </unit>
+  <!-- soviet tech center -->
+  <unit name="stek">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="stekmake" />
+  </unit>
+  <!-- war factory -->
+  <unit name="weap">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="weapmake" />
+    <sequence name="build-top" start="0" length="4" src="weap2" />
+    <sequence name="damaged-build-top" start="4" length="4" src="weap2" />
+    <sequence name="idle-top" start="0" length="1" src="weap2" />
+    <sequence name="damaged-idle-top" start="4" length="1" src="weap2" />
+  </unit>
+  <!-- helipad -->
+  <unit name="hpad">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="make" start="0" length="20" src="hpadmake" />
+    <sequence name="active" start="1" length="6" />
+    <sequence name="damaged-active" start="8" length="6" />
+  </unit>
+  <!-- airfield -->
+  <unit name="afld">
+    <sequence name="idle" start="4" length="4" />
+    <sequence name="damaged-idle" start="12" length="4" />
+    <sequence name="make" start="0" length="11" src="afldmake" />
+    <sequence name="active" start="0" length="4" />
+    <sequence name="damaged-active" start="8" length="4" />
+  </unit>
+  <!-- sub pen -->
+  <unit name="spen">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="spenmake" />
+  </unit>
+  <!-- shipyard -->
+  <unit name="syrd">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="syrdmake" />
+  </unit>
+  <!-- repair pad -->
+  <unit name="fix">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="make" start="0" length="14" src="fixmake" />
+    <sequence name="active" start="1" length="6" />
+    <sequence name="damaged-active" start="8" length="6" />
+  </unit>
+  <!-- allied gun turret -->
+  <unit name="gun">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="recoil" start="32" length="32" />
+    <sequence name="make" start="0" length="20" src="gunmake" />
+    <sequence name="damaged-idle" start="64" length="32" />
+    <sequence name="damaged-recoil" start="96" length="32" />
+  </unit>
+  <!-- AA gun -->
+  <unit name="agun">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="damaged-idle" start="32" length="32" />
+    <sequence name="make" start="0" length="*" src="agunmake" />
+  </unit>
+  <!-- sam site -->
+  <unit name="sam">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="damaged-idle" start="34" length="32" />
+    <sequence name="make" start="0" length="*" src="sammake" />
+  </unit>
+  <!-- flame turret -->
+  <unit name="ftur">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="fturmake" />
+  </unit>
+  <!-- tesla coil -->
+  <unit name="tsla">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="10" length="1" />
+    <sequence name="make" start="0" length="13" src="tslamake" />
+    <sequence name="active" start="1" length="9" />
+    <sequence name="damaged-active" start="11" length="9" />
+  </unit>
+  <!-- pillbox -->
+  <unit name="pbox">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="pboxmake" />
+  </unit>
+  <!-- camo pillbox -->
+  <unit name="hbox">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="make" start="0" length="*" src="hboxmake" />
+  </unit>
+  <!-- gap generator -->
+  <unit name="gap">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="damaged-idle" start="32" length="32" />
+    <sequence name="make" start="0" length="*" src="gapmake" />
+  </unit>
+  <!-- iron curtain -->
+  <unit name="iron">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="active" start="0" length="11" />
+    <sequence name="damaged-idle" start="11" length="1" />
+    <sequence name="damaged-active" start="11" length="11" />
+    <sequence name="make" start="0" length="*" src="ironmake" />
+  </unit>
+  <!-- chronosphere -->
+  <unit name="pdox">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="29" length="1" />
+    <sequence name="active" start="0" length="29" />
+    <sequence name="damaged-active" start="29" length="29" />
+    <sequence name="make" start="0" length="*" src="pdoxmake" />
+  </unit>
+  <!-- nuclear missile silo -->
+  <unit name="mslo">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="8" length="1" />
+    <sequence name="make" start="0" length="15" src="mslomake" />
+    <sequence name="active" start="1" length="7" />
+    <sequence name="damaged-active" start="9" length="7" />
+  </unit>
+  <!-- mcv -->
+  <unit name="mcv">
+    <sequence name="idle" start="0" length="*" />
+  </unit>
+  <!-- truck -->
+  <unit name="truk">
+    <sequence name="idle" start="0" length="*" />
+  </unit>
+  <!-- light tank -->
+  <unit name="1tnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="32" length="32" />
+  </unit>
+  <!-- medium tank -->
+  <unit name="2tnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="32" length="32" />
+  </unit>
+  <!-- heavy tank -->
+  <unit name="3tnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="32" length="32" />
+  </unit>
+  <!-- mammoth tank -->
+  <unit name="4tnk">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="32" length="32" />
+  </unit>
+  <!-- v2 rocket launcher -->
+  <unit name="v2rl">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="empty-idle" start="32" length="32" />
+    <sequence name="aim" start="64" length="8" />
+    <sequence name="empty-aim" start="72" length="8" />
+  </unit>
+  <!-- artillery -->
+  <unit name="arty">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <!-- jeep -->
+  <unit name="jeep">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="32" length="32" />
+    <sequence name="muzzle" start="0" length="48" src="minigun" />
+  </unit>
+  <!-- apc -->
+  <unit name="apc">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="muzzle" start="0" length="48" src="minigun" />
+    <sequence name="close" start="32" length="3" />
+    <sequence name="unload" start="32" length="1" />
+  </unit>
+  <!-- mine layer -->
+  <unit name="mnly">
+    <sequence name="idle" start="0" length="32" />
+    <!-- and 16 "lay mine" sprites, not used in real-ra -->
+  </unit>
+  <!-- radar jammer -->
+  <unit name="mrj">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="spinner" start="32" length="32" />
+  </unit>
+  <!-- mobile gap generator -->
+  <unit name="mgg">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="spinner" start="32" length="8" />
+  </unit>
+  <!-- submarine -->
+  <unit name="ss">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <!-- rifle infantry -->
+  <unit name="e1">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="8" />
+    <sequence name="shoot-1" start="72" length="8" />
+    <sequence name="shoot-2" start="80" length="8" />
+    <sequence name="shoot-3" start="88" length="8" />
+    <sequence name="shoot-4" start="96" length="8" />
+    <sequence name="shoot-5" start="104" length="8" />
+    <sequence name="shoot-6" start="112" length="8" />
+    <sequence name="shoot-7" start="120" length="8" />
+    <sequence name="stand3" start="128" length="16" />
+    <sequence name="crawl-0" start="144" length="4" />
+    <sequence name="crawl-1" start="148" length="4" />
+    <sequence name="crawl-2" start="152" length="4" />
+    <sequence name="crawl-3" start="156" length="4" />
+    <sequence name="crawl-4" start="160" length="4" />
+    <sequence name="crawl-5" start="164" length="4" />
+    <sequence name="crawl-6" start="168" length="4" />
+    <sequence name="crawl-7" start="172" length="4" />
+    <sequence name="standup-0" start="176" length="2" />
+    <sequence name="standup-1" start="178" length="2" />
+    <sequence name="standup-2" start="180" length="2" />
+    <sequence name="standup-3" start="182" length="2" />
+    <sequence name="standup-4" start="184" length="2" />
+    <sequence name="standup-5" start="186" length="2" />
+    <sequence name="standup-6" start="188" length="2" />
+    <sequence name="standup-7" start="190" length="2" />
+    <sequence name="prone-shoot-0" start="192" length="8" />
+    <sequence name="prone-shoot-1" start="200" length="8" />
+    <sequence name="prone-shoot-2" start="208" length="8" />
+    <sequence name="prone-shoot-3" start="216" length="8" />
+    <sequence name="prone-shoot-4" start="224" length="8" />
+    <sequence name="prone-shoot-5" start="232" length="8" />
+    <sequence name="prone-shoot-6" start="240" length="8" />
+    <sequence name="prone-shoot-7" start="248" length="8" />
+    <sequence name="idle1" start="256" length="16" />
+    <sequence name="idle2" start="272" length="16" />
+    <sequence name="die1" start="288" length="8" />
+    <sequence name="die2" start="296" length="8" />
+    <sequence name="die3" start="304" length="8" />
+    <sequence name="die4" start="312" length="12" />
+    <sequence name="die5" start="324" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+  </unit>
+  <!-- build clock - hacked in -->
+  <unit name="clock">
+    <sequence name="idle" start="0" length="*" />
+  </unit>
+  <cursor src="mouse">
+    <sequence name="default" start="0" />
+    <sequence name="scroll" start="1" length="8" />
+    <sequence name="generic-blocked" start="9" />
+    <sequence name="move" start="10" length="1" x="12" y="12" />
+    <sequence name="move-blocked" start="11" x="12" y="12" />
+    <sequence name="select" start="12" length="6" x="12" y="12" />
+    <sequence name="attackmove" start="18" length="8" x="12" y="12" />
+    <sequence name="move-minimap" start="26" length="1" />
+	<sequence name="blocked-minimap" start="27" length="1" />
+    <sequence name="repair" start="29" length="24" x="12" y="12" />
+    <sequence name="deploy" start="53" length="9" x="12" y="12" />
+    <sequence name="sell" start="62" length="24" x="12" y="12" />
+    <sequence name="default-minimap" start="86" length="1" />
+    <sequence name="ability" start="88" length="8" x="12" y="12" />
+    <sequence name="nuke" start="96" length="7" x="12" y="12" />
+    <sequence name="ioncannon" start="103" length="16" x="12" y="12" />
+    <sequence name="enter" start="119" length="3" x="12" y="12" />
+    <sequence name="c4" start="122" length="3" x="12" y="12" />
+    <sequence name="sell-blocked" start="125" length="1" x="12" y="12" />
+    <sequence name="repair-blocked" start="126" length="1" x="12" y="12" />
+    <sequence name="c4-minimap" start="127" length="3" />
+    <sequence name="scroll-blocked" start="130" length="8" />
+    <sequence name="attackmove-minimap" start="140" length="8" />
+    <sequence name="enter-minimap" start="148" length="3" />
+    <sequence name="guard-minimap" start="152" length="1" />
+    <sequence name="guard" start="153" length="1" x="12" y="12" />
+    <sequence name="sell-vehicle" start="154" length="24" />
+    
+    <!-- These are not defined uniquely in the cnc mouse shp-->
+    <sequence name="capture" start="119" length="3" />
+    <sequence name="capture-minimap" start="148" length="3" />
+    <sequence name="repair2" start="29" length="24" />
+	  <sequence name="attack" start="18" length="8" x="12" y="12" />
+	  <sequence name="attack-minimap" start="140" length="8" />
+	  <sequence name="deploy-blocked" start="11" length="1" x="12" y="12" />
+	  <sequence name="enter-blocked" start="11" length="1" />
+	  <sequence name="repair2-blocked" start="11" length="1" />
+	  <sequence name="ability-minimap" start="138" length="2" />
+	  <sequence name="heal" start="1" length="4" x="12" y="12" />
+	  <sequence name="heal-minimap" start="1" length="1" />
+  </cursor>
+  <cursor src="nopower">
+    <sequence name="powerdown-blocked" start="0" length="1" x="12" y="12" />
+    <sequence name="powerdown" start="1" length="3" x="12" y="12" />
+  </cursor>
+  <unit name="powerdown">
+    <sequence name="disabled" start="3" length="1" src="speed" />
+  </unit>
+  <unit name="120mm">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="e3">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="8" />
+    <sequence name="shoot-1" start="72" length="8" />
+    <sequence name="shoot-2" start="80" length="8" />
+    <sequence name="shoot-3" start="88" length="8" />
+    <sequence name="shoot-4" start="96" length="8" />
+    <sequence name="shoot-5" start="104" length="8" />
+    <sequence name="shoot-6" start="112" length="8" />
+    <sequence name="shoot-7" start="120" length="8" />
+    <sequence name="die1" start="304" length="8" />
+    <sequence name="die2" start="312" length="8" />
+    <sequence name="die3" start="320" length="8" />
+    <sequence name="die4" start="328" length="12" />
+    <sequence name="die5" start="340" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="144" length="4" />
+    <sequence name="crawl-1" start="148" length="4" />
+    <sequence name="crawl-2" start="152" length="4" />
+    <sequence name="crawl-3" start="156" length="4" />
+    <sequence name="crawl-4" start="160" length="4" />
+    <sequence name="crawl-5" start="164" length="4" />
+    <sequence name="crawl-6" start="168" length="4" />
+    <sequence name="crawl-7" start="172" length="4" />
+    <sequence name="prone-shoot-0" start="192" length="10" />
+    <sequence name="prone-shoot-1" start="202" length="10" />
+    <sequence name="prone-shoot-2" start="212" length="10" />
+    <sequence name="prone-shoot-3" start="222" length="10" />
+    <sequence name="prone-shoot-4" start="232" length="10" />
+    <sequence name="prone-shoot-5" start="242" length="10" />
+    <sequence name="prone-shoot-6" start="252" length="10" />
+    <sequence name="prone-shoot-7" start="262" length="10" />
+  </unit>
+  <unit name="e6">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-6" start="54" length="6" />
+    <sequence name="run-7" start="60" length="6" />
+    <sequence name="die1" start="146" length="8" />
+    <sequence name="die2" start="154" length="8" />
+    <sequence name="die3" start="162" length="8" />
+    <sequence name="die4" start="170" length="12" />
+    <sequence name="die5" start="182" length="18" />
+    <sequence name="run-5" start="46" length="8" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="82" length="4" />
+    <sequence name="crawl-1" start="86" length="4" />
+    <sequence name="crawl-2" start="90" length="4" />
+    <sequence name="crawl-3" start="94" length="4" />
+    <sequence name="crawl-4" start="98" length="4" />
+    <sequence name="crawl-5" start="102" length="4" />
+    <sequence name="crawl-6" start="106" length="4" />
+    <sequence name="crawl-7" start="110" length="4" />
+  </unit>
+  <unit name="ca">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="turr" />
+  </unit>
+  <unit name="dd">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="ssam" />
+  </unit>
+  <unit name="pt">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="turret" start="0" length="32" src="mgun" />
+  </unit>
+  <unit name="medi">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+    <sequence name="heal" start="56" length="58" />
+    <sequence name="standup-0" start="114" length="2" />
+    <sequence name="standup-1" start="116" length="2" />
+    <sequence name="standup-2" start="118" length="2" />
+    <sequence name="standup-3" start="120" length="2" />
+    <sequence name="standup-4" start="122" length="2" />
+    <sequence name="standup-5" start="124" length="2" />
+    <sequence name="standup-6" start="126" length="2" />
+    <sequence name="standup-7" start="128" length="2" />
+    <sequence name="die1" start="196" length="5" />
+    <sequence name="die2" start="201" length="8" />
+    <sequence name="die3" start="209" length="8" />
+    <sequence name="die4" start="217" length="12" />
+    <sequence name="die5" start="229" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="130" length="4" />
+    <sequence name="crawl-1" start="134" length="4" />
+    <sequence name="crawl-2" start="138" length="4" />
+    <sequence name="crawl-3" start="142" length="4" />
+    <sequence name="crawl-4" start="146" length="4" />
+    <sequence name="crawl-5" start="150" length="4" />
+    <sequence name="crawl-6" start="154" length="4" />
+    <sequence name="crawl-7" start="158" length="4" />
+  </unit>
+  <unit name="explosion">
+    <sequence name="1" start="0" length="4" src="piff" />
+    <sequence name="2" start="0" length="8" src="piffpiff" />
+    <sequence name="3" start="0" length="14" src="napalm2" />
+    <sequence name="4" start="0" length="14" src="veh-hit3" />
+    <sequence name="5" start="0" length="22" src="veh-hit2" />
+    <sequence name="6w" start="0" length="27" src="atomsfx" />
+    <sequence name="1w" start="0" length="10" src="h2o_exp3" />
+    <sequence name="5w" start="0" length="10" src="h2o_exp1" />
+    <sequence name="3w" start="0" length="14" src="napalm2" />
+    <sequence name="6" start="0" length="27" src="atomsfx" />
+    <sequence name="4w" start="0" length="10" src="h2o_exp2" />
+    <sequence name="2w" start="0" length="10" src="h2o_exp3" />
+    <sequence name="7" start="0" length="18" src="fball1" />
+    <sequence name="8" start="0" length="22" src="art-exp1" />
+  </unit>
+  <unit name="lst">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="open" start="1" length="4" />
+    <sequence name="unload" start="4" length="1" />
+  </unit>
+  <unit name="pips">
+    <sequence name="groups" start="8" length="10" />
+    <sequence name="medic" start="20" length="1" />
+    <sequence name="ready" start="3" length="1" />
+    <sequence name="hold" start="4" length="1" />
+    <sequence name="pip-empty" start="0" length="1" />
+    <sequence name="pip-green" start="1" length="1" />
+    <sequence name="pip-yellow" start="5" length="1" />
+    <sequence name="pip-gray" start="6" length="1" />
+    <sequence name="pip-red" start="7" length="1" />
+    <sequence name="tag-fake" start="18" length="1" />
+    <sequence name="tag-primary" start="2" length="1" />
+  </unit>
+  <unit name="mig">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="yak">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="heli">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
+    <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
+  </unit>
+  <unit name="hind">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
+    <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
+  </unit>
+  <unit name="tran">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="rotor" start="0" length="4" src="lrotor" />
+    <sequence name="rotor2" start="0" length="4" src="rrotor" />
+    <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
+    <sequence name="slow-rotor2" start="4" length="8" src="rrotor" />
+    <sequence name="open" start="32" length="4" />
+    <sequence name="unload" start="35" length="1" />
+  </unit>
+  <unit name="v2">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="flagfly">
+    <sequence name="idle" start="0" length="14" />
+  </unit>
+  <unit name="smoke_m">
+    <sequence name="idle" start="0" length="91" />
+    <sequence name="loop" start="49" length="42" />
+    <sequence name="end" start="0" length="26" />
+  </unit>
+  <unit name="tc04">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc03">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc02">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="tc01">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t17">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t16">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t15">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="10" />
+  </unit>
+  <unit name="t14">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t13">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t12">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t11">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="10" />
+  </unit>
+  <unit name="t10">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t08">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t07">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t06">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t03">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t02">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t01">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="boxes01">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes02">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes03">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes04">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes05">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes06">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes07">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes08">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="boxes09">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="mine">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="dragon">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="smokey">
+    <sequence name="idle" start="0" length="7" />
+  </unit>
+  <unit name="e2">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="20" />
+    <sequence name="shoot-1" start="84" length="20" />
+    <sequence name="shoot-2" start="104" length="20" />
+    <sequence name="shoot-3" start="124" length="20" />
+    <sequence name="shoot-4" start="144" length="20" />
+    <sequence name="shoot-5" start="164" length="20" />
+    <sequence name="shoot-6" start="184" length="20" />
+    <sequence name="shoot-7" start="204" length="20" />
+    <sequence name="die1" start="416" length="8" />
+    <sequence name="die2" start="424" length="8" />
+    <sequence name="die3" start="432" length="8" />
+    <sequence name="die4" start="440" length="12" />
+    <sequence name="die5" start="452" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="240" length="4" />
+    <sequence name="crawl-1" start="244" length="4" />
+    <sequence name="crawl-2" start="248" length="4" />
+    <sequence name="crawl-3" start="252" length="4" />
+    <sequence name="crawl-4" start="256" length="4" />
+    <sequence name="crawl-5" start="260" length="4" />
+    <sequence name="crawl-6" start="264" length="4" />
+    <sequence name="crawl-7" start="268" length="4" />
+    <sequence name="prone-shoot-0" start="288" length="12" />
+    <sequence name="prone-shoot-1" start="300" length="12" />
+    <sequence name="prone-shoot-2" start="312" length="12" />
+    <sequence name="prone-shoot-3" start="324" length="12" />
+    <sequence name="prone-shoot-4" start="336" length="12" />
+    <sequence name="prone-shoot-5" start="348" length="12" />
+    <sequence name="prone-shoot-6" start="360" length="12" />
+    <sequence name="prone-shoot-7" start="372" length="12" />
+  </unit>
+  <unit name="bomb">
+    <sequence name="idle" start="0" length="8" />
+  </unit>
+  <unit name="dog">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+    <sequence name="die1" start="236" length="6" />
+    <sequence name="die2" start="242" length="9" />
+    <sequence name="die3" start="236" length="6" />
+    <sequence name="die4" start="242" length="9" />
+    <sequence name="die5" start="251" length="14" />
+    <sequence name="die6" start="0" length="17" src="electdog" />
+  </unit>
+  <unit name="missile">
+    <sequence name="idle" start="0" length="32" />
+  </unit>
+  <unit name="spy">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="8" />
+    <sequence name="shoot-1" start="72" length="8" />
+    <sequence name="shoot-2" start="80" length="8" />
+    <sequence name="shoot-3" start="88" length="8" />
+    <sequence name="shoot-4" start="96" length="8" />
+    <sequence name="shoot-5" start="104" length="8" />
+    <sequence name="shoot-6" start="112" length="8" />
+    <sequence name="shoot-7" start="120" length="8" />
+    <sequence name="die1" start="288" length="8" />
+    <sequence name="die2" start="296" length="8" />
+    <sequence name="die3" start="304" length="8" />
+    <sequence name="die4" start="312" length="12" />
+    <sequence name="die5" start="324" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="144" length="4" />
+    <sequence name="crawl-1" start="148" length="4" />
+    <sequence name="crawl-2" start="152" length="4" />
+    <sequence name="crawl-3" start="156" length="4" />
+    <sequence name="crawl-4" start="160" length="4" />
+    <sequence name="crawl-5" start="164" length="4" />
+    <sequence name="crawl-6" start="168" length="4" />
+    <sequence name="crawl-7" start="172" length="4" />
+    <sequence name="prone-shoot-0" start="192" length="8" />
+    <sequence name="prone-shoot-1" start="200" length="8" />
+    <sequence name="prone-shoot-2" start="208" length="8" />
+    <sequence name="prone-shoot-3" start="216" length="8" />
+    <sequence name="prone-shoot-4" start="224" length="8" />
+    <sequence name="prone-shoot-5" start="232" length="8" />
+    <sequence name="prone-shoot-6" start="240" length="8" />
+    <sequence name="prone-shoot-7" start="248" length="8" />
+  </unit>
+  <unit name="litning">
+    <sequence name="bright" start="0" length="4" />
+    <sequence name="dim" start="4" length="4" />
+  </unit>
+  <unit name="e7">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+    <sequence name="shoot-0" start="56" length="7" />
+    <sequence name="shoot-1" start="63" length="7" />
+    <sequence name="shoot-2" start="70" length="7" />
+    <sequence name="shoot-3" start="77" length="7" />
+    <sequence name="shoot-4" start="84" length="7" />
+    <sequence name="shoot-5" start="91" length="7" />
+    <sequence name="shoot-6" start="98" length="7" />
+    <sequence name="shoot-7" start="105" length="7" />
+    <sequence name="die1" start="262" length="8" />
+    <sequence name="die2" start="270" length="8" />
+    <sequence name="die3" start="278" length="8" />
+    <sequence name="die4" start="286" length="12" />
+    <sequence name="die5" start="298" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="128" length="4" />
+    <sequence name="crawl-1" start="132" length="4" />
+    <sequence name="crawl-2" start="136" length="4" />
+    <sequence name="crawl-3" start="140" length="4" />
+    <sequence name="crawl-4" start="144" length="4" />
+    <sequence name="crawl-5" start="148" length="4" />
+    <sequence name="crawl-6" start="152" length="4" />
+    <sequence name="crawl-7" start="156" length="4" />
+    <sequence name="prone-shoot-0" start="176" length="7" />
+    <sequence name="prone-shoot-1" start="183" length="7" />
+    <sequence name="prone-shoot-2" start="190" length="7" />
+    <sequence name="prone-shoot-3" start="197" length="7" />
+    <sequence name="prone-shoot-4" start="204" length="7" />
+    <sequence name="prone-shoot-5" start="211" length="7" />
+    <sequence name="prone-shoot-6" start="218" length="7" />
+    <sequence name="prone-shoot-7" start="225" length="7" />
+  </unit>
+  <unit name="e4">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="stand2" start="8" length="8" />
+    <sequence name="run-0" start="16" length="6" />
+    <sequence name="run-1" start="22" length="6" />
+    <sequence name="run-2" start="28" length="6" />
+    <sequence name="run-3" start="34" length="6" />
+    <sequence name="run-4" start="40" length="6" />
+    <sequence name="run-5" start="46" length="6" />
+    <sequence name="run-6" start="52" length="6" />
+    <sequence name="run-7" start="58" length="6" />
+    <sequence name="shoot-0" start="64" length="16" />
+    <sequence name="shoot-1" start="80" length="16" />
+    <sequence name="shoot-2" start="96" length="16" />
+    <sequence name="shoot-3" start="112" length="16" />
+    <sequence name="shoot-4" start="128" length="16" />
+    <sequence name="shoot-5" start="144" length="16" />
+    <sequence name="shoot-6" start="160" length="16" />
+    <sequence name="shoot-7" start="176" length="16" />
+    <sequence name="die1" start="416" length="8" />
+    <sequence name="die2" start="424" length="8" />
+    <sequence name="die3" start="432" length="8" />
+    <sequence name="die4" start="440" length="12" />
+    <sequence name="die5" start="452" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="208" length="4" />
+    <sequence name="crawl-1" start="212" length="4" />
+    <sequence name="crawl-2" start="216" length="4" />
+    <sequence name="crawl-3" start="220" length="4" />
+    <sequence name="crawl-4" start="224" length="4" />
+    <sequence name="crawl-5" start="228" length="4" />
+    <sequence name="crawl-6" start="232" length="4" />
+    <sequence name="crawl-7" start="236" length="4" />
+    <sequence name="prone-shoot-0" start="256" length="16" />
+    <sequence name="prone-shoot-1" start="272" length="16" />
+    <sequence name="prone-shoot-2" start="288" length="16" />
+    <sequence name="prone-shoot-3" start="304" length="16" />
+    <sequence name="prone-shoot-4" start="320" length="16" />
+    <sequence name="prone-shoot-5" start="336" length="16" />
+    <sequence name="prone-shoot-6" start="352" length="16" />
+    <sequence name="prone-shoot-7" start="368" length="16" />
+  </unit>
+  <unit name="fb1">
+    <sequence name="idle" start="0" length="8" />
+  </unit>
+  <unit name="thf">
+    <sequence name="stand" start="0" length="8" />
+    <sequence name="run-0" start="8" length="6" />
+    <sequence name="run-1" start="14" length="6" />
+    <sequence name="run-2" start="20" length="6" />
+    <sequence name="run-3" start="26" length="6" />
+    <sequence name="run-4" start="32" length="6" />
+    <sequence name="run-5" start="38" length="6" />
+    <sequence name="run-6" start="44" length="6" />
+    <sequence name="run-7" start="50" length="6" />
+    <sequence name="die1" start="139" length="8" />
+    <sequence name="die2" start="147" length="8" />
+    <sequence name="die3" start="155" length="8" />
+    <sequence name="die4" start="163" length="12" />
+    <sequence name="die5" start="175" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+    <sequence name="crawl-0" start="72" length="4" />
+    <sequence name="crawl-1" start="76" length="4" />
+    <sequence name="crawl-2" start="80" length="4" />
+    <sequence name="crawl-3" start="84" length="4" />
+    <sequence name="crawl-4" start="88" length="4" />
+    <sequence name="crawl-5" start="92" length="4" />
+    <sequence name="crawl-6" start="96" length="4" />
+    <sequence name="crawl-7" start="100" length="4" />
+  </unit>
+  <unit name="moveflsh">
+    <sequence name="idle" start="0" length="5" />
+  </unit>
+  <unit name="v01">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v02">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v03">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v04">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="2" length="1" />
+    <sequence name="active" start="1" length="1" />
+    <sequence name="damaged-active" start="3" length="1" />
+  </unit>
+  <unit name="v05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="2" length="1" />
+  </unit>
+  <unit name="v06">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v07">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="2" length="1" />
+  </unit>
+  <unit name="v08">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v09">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v10">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v11">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v12">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v13">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v14">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v15">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v16">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v17">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v18">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+  </unit>
+  <unit name="v19">
+    <sequence name="idle" start="0" length="14" />
+    <sequence name="damaged-idle" start="14" length="15" />
+  </unit>
+  <unit name="barl">
+    <sequence name="idle" start="0" length="3" />
+  </unit>
+  <unit name="brl3">
+    <sequence name="idle" start="0" length="3" />
+  </unit>
+  <unit name="miss">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="2" length="1" />
+  </unit>
+  <unit name="minp">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="minv">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+  <unit name="select">
+    <sequence name="repair" start="2" length="1" />
+  </unit>
+  <unit name="repair">
+    <sequence name="normal" start="0" length="1" />
+    <sequence name="pressed" start="1" length="1" />
+    <sequence name="disabled" start="2" length="1" />
+  </unit>
+  <unit name="sell">
+    <sequence name="normal" start="0" length="1" />
+    <sequence name="pressed" start="1" length="1" />
+    <sequence name="disabled" start="2" length="1" />
+  </unit>
+  <unit name="tabs">
+    <sequence name="left-normal" start="0" length="1" />
+    <sequence name="left-pressed" start="1" length="1" />
+  </unit>
+  <unit name="sputnik">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="dd-crnr">
+    <sequence name="idle" start="0" length="4" />
+    <sequence name="top-left" start="0" length="1" />
+    <sequence name="top-right" start="1" length="1" />
+    <sequence name="bottom-left" start="2" length="1" />
+    <sequence name="bottom-right" start="3" length="1" />
+  </unit>
+  <unit name="fb2">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="u2">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+  <unit name="crate">
+    <sequence name="idle" start="0" length="16" src="wcrate" />
+  </unit>
+  <unit name="crate-effects">
+    <sequence name="speed" start="0" length="*" src="speed" />
+  </unit>
+  <unit name="parach">
+    <sequence name="open" start="0" length="5" />
+    <sequence name="idle" start="5" length="11" />
+  </unit>
+  <unit name="badr">
+    <sequence name="idle" start="0" length="16" />
+  </unit>
+</sequences>
