@@ -30,27 +30,27 @@ Packages:
 
 
 LegacyRules:
-	mods/ra/rules.ini:	More or less original Red Alert rules file.
-	mods/ra/units.ini:	OpenRA patches
+	mods/cnc/minimal.ini: Dummy definitions to stop the game crashing
+	mods/cnc/weapons.ini: Weapons are still in the old format
 
 Rules:
 	mods/ra/defaults.yaml:		Basic stuff
 	mods/cnc/system.yaml:		Player and world actors
-	mods/cnc/structures.yaml:	Structures
-	mods/cnc/infantry.yaml:		Infantry
-	mods/cnc/vehicles.yaml:		Vehicles
-	mods/cnc/trees.yaml:		Trees
+	mods/cnc/structures.yaml:
+	mods/cnc/infantry.yaml:
+	mods/cnc/vehicles.yaml:
+	mods/cnc/trees.yaml:
 	mods/cnc/civilian.yaml:		Civilian structures and bridges
 	mods/cnc/compat.yaml:		Compatability tweaks for real-ra maps
 
 Sequences:
-	mods/cnc/sequences-structures.xml: Structures
-	mods/cnc/sequences-vehicles.xml: Vehicles
-	mods/cnc/sequences-infantry.xml: Infantry
-	mods/cnc/sequences.xml:	Everything else
+	mods/cnc/sequences-structures.xml:
+	mods/cnc/sequences-vehicles.xml:
+	mods/cnc/sequences-infantry.xml:
+	mods/cnc/sequences.xml:	Obsolete; will disappear once done converting
 
 Assemblies:
-	mods/ra/OpenRa.Mods.RA.dll:	Traits used
+	mods/ra/OpenRa.Mods.RA.dll:	Use the red alert traits
 	
 	
 Maps:

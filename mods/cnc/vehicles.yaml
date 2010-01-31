@@ -41,3 +41,29 @@ HARV:
 	Mobile:
 		MovementType: Track
 	RenderUnit:
+	
+BGGY:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: bggyicnh
+		TechLevel: 4
+		Prerequisites: afld
+		Owner: soviet
+		Cost: 600
+		Description: Nod Buggy
+		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 140
+		Armor: light
+		Crewed: yes
+		ROT: 10
+		Sight: 2
+		Speed: 30
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,0,0,-2
+		MuzzleFlash: yes
+	RenderUnitTurreted:
+	AutoTarget:

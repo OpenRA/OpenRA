@@ -71,7 +71,7 @@
 	<!-- Nod Airfield -->
 	<unit name="afld">
 		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="17" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
 		<sequence name="critical-idle" start="32" length="1" />
 		<sequence name="make" start="0" length="*" src="afldmake" />
 	</unit>
