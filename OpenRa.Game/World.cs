@@ -71,6 +71,9 @@ namespace OpenRa
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 			Timer.Time( "worldActor, players: {0}" );
 
+			Queries = new AllQueries( this );
+			Timer.Time( "queries: {0}" );
+
 			Bridges.MakeBridges(this);
 			PathFinder = new PathFinder(this);
 			Timer.Time( "bridge, pathing: {0}" );
@@ -79,8 +82,6 @@ namespace OpenRa
 			Minimap = new Minimap(this, Game.renderer);
 			Timer.Time( "renderer, minimap: {0}" );
 
-			Queries = new AllQueries( this );
-			Timer.Time( "queries: {0}" );
 			Timer.Time( "----end World.ctor" );
 		}
 
@@ -124,6 +125,8 @@ namespace OpenRa
 				}
 
 			foreach (var a in actors) a.Tick();
+			Queries.WithTraitMultiple<ITick>().Do( x => x.Trait.Tick( x.Actor ) );
+
 			foreach (var e in effects) e.Tick( this );
 
 			Game.viewport.Tick();
@@ -190,7 +193,21 @@ namespace OpenRa
 					x => x.traits.Contains<T>(),
 					x => new TraitPair<T> { Actor = x, Trait = x.traits.Get<T>() } );
 				hasTrait.Add( ret );
-				return ret;			}
+				return ret;
+			}
+
+			public CachedView<Actor, TraitPair<T>> WithTraitMultiple<T>()
+			{
+				var ret = hasTrait.GetOrDefault<CachedView<Actor, TraitPair<T>>>();
+				if( ret != null )
+					return ret;
+				ret = new CachedView<Actor, TraitPair<T>>(
+					world.actors,
+					x => x.traits.Contains<T>(),
+					x => x.traits.WithInterface<T>().Select( t => new TraitPair<T> { Actor = x, Trait = t } ) );
+				hasTrait.Add( ret );
+				return ret;
+			}
 
 			public struct TraitPair<T>
 			{

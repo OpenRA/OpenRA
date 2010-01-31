@@ -62,11 +62,10 @@ namespace OpenRa.Traits
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
 								throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
-			foreach( Actor a in self.World.Actors )
-				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
-					foreach( var cell in ios.OccupiedCells() )
-						if (!influence[cell.X, cell.Y].Contains(a))
-							throw new InvalidOperationException( "UIM: Sanity check failed B" );
+			foreach( var t in self.World.Queries.WithTraitMultiple<IOccupySpace>() )
+				foreach( var cell in t.Trait.OccupiedCells() )
+					if (!influence[cell.X, cell.Y].Contains(t.Actor))
+						throw new InvalidOperationException( "UIM: Sanity check failed B" );
 		}
 
 		public IEnumerable<Actor> GetUnitsAt( int2 a )

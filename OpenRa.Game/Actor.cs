@@ -52,9 +52,6 @@ namespace OpenRa
 				currentActivity = a.Tick(this) ?? new Idle();
 				if (a == currentActivity || currentActivity is Idle) break;
 			}
-
-			foreach (var tick in traits.WithInterface<ITick>())
-				tick.Tick(this);
 		}
 
 		public bool IsIdle

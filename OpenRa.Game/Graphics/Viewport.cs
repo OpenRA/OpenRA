@@ -45,8 +45,7 @@ namespace OpenRa.Graphics
 
 		public void DrawRegions( World world )
 		{
-			world.WorldRenderer.palette.Update(world.Actors.SelectMany(
-				a => a.traits.WithInterface<IPaletteModifier>()));
+			world.WorldRenderer.palette.Update(world.Queries.WithTraitMultiple<IPaletteModifier>().Select(t=>t.Trait));
 
 			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);
