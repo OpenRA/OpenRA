@@ -1,0 +1,140 @@
+
+T01:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T02:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T03:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T05:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T06:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T07:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T08:
+	Inherits: ^Building
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	-Selectable:
+
+T10:
+	Inherits: ^Building
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	-Selectable:
+
+T11:
+	Inherits: ^Building
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	-Selectable:
+
+T12:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T13:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T14:
+	Inherits: ^Building
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	-Selectable:
+
+T15:
+	Inherits: ^Building
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	-Selectable:
+
+T16:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+T17:
+	Inherits: ^Building
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	-Selectable:
+
+TC01:
+	Inherits: ^Building
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	-Selectable:
+
+TC02:
+	Inherits: ^Building
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	-Selectable:
+
+TC03:
+	Inherits: ^Building
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	-Selectable:
+
+TC04:
+	Inherits: ^Building
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+	-Selectable:
+
+TC05:
+	Inherits: ^Building
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+	-Selectable:

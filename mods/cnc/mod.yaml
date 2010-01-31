@@ -36,6 +36,9 @@ LegacyRules:
 Rules:
 	mods/ra/defaults.yaml:	Basic stuff
 	mods/cnc/rules.yaml:	OpenRA actorinfos
+	mods/cnc/trees.yaml:    Trees
+	mods/cnc/civilian.yaml: Civilian structures and bridges
+	mods/cnc/compat.yaml:  Compatability tweaks for real-ra maps
 
 Sequences:
 	mods/cnc/sequences.xml:	Original animation sequences

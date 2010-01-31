@@ -77,12 +77,12 @@ namespace OpenRa
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "SeqProv, viewport: {0}" );
 
-/*
+
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)
 				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
 			Timer.Time( "trees: {0}" );
-*/	
+	
 			world.LoadMapActors(Rules.AllRules);
 			skipMakeAnims = false;
 			Timer.Time( "map actors: {0}" );

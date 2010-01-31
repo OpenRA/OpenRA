@@ -1,0 +1,162 @@
+V01:
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V02:
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V03:
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V04:
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V05:
+	Inherits: ^Building
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V06:
+	Inherits: ^Building
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V07:
+	Inherits: ^Building
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V08:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V09:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V10:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V11:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V12:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V13:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V14:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V15:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V16:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V17:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+V18:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+
+BRIDGE1:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+		HP: 1000
+
+BRIDGE2:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+		HP: 1000

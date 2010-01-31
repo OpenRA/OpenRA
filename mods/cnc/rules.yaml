@@ -109,4 +109,3 @@ PROC:
 	StoresOre:
 		Pips: 17
 		Capacity: 1000
-	IronCurtainable:

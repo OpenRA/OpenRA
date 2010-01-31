@@ -36,6 +36,7 @@ namespace OpenRa
 
 			if (name != null)
 			{
+				Log.Write("Loading {0}",name.ToLowerInvariant());
 				Info = Rules.Info[name.ToLowerInvariant()];
 				Health = this.GetMaxHP();
 
