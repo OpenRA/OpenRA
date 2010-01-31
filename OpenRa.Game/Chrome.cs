@@ -961,8 +961,10 @@ namespace OpenRa
 
 		void StartProduction( World world, string item )
 		{
+			var queueInfo = world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>();
 			var unit = Rules.Info[item];
-			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? "abldgin1.aud" : "train1.aud");
+
+			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? queueInfo.BuildingSelectAudio : queueInfo.UnitSelectAudio);
 			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
 		}
 
@@ -971,9 +973,10 @@ namespace OpenRa
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queueInfo = player.PlayerActor.Info.Traits.Get<Traits.ProductionQueueInfo>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
-			Sound.Play("ramenu1.aud");
+			Sound.Play(queueInfo.ClickAudio);
 
 			if (isLmb)
 			{
@@ -1002,12 +1005,12 @@ namespace OpenRa
 					// instant cancel of things we havent really started yet, and things that are finished
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
-						Sound.Play("cancld1.aud");
+						Sound.Play(queueInfo.CancelledAudio);
 						Game.IssueOrder(Order.CancelProduction(player, item));
 					}
 					else
 					{
-						Sound.Play("onhold1.aud");
+						Sound.Play(queueInfo.OnHoldAudio);
 						Game.IssueOrder(Order.PauseProduction(player, item, true));
 					}
 				}

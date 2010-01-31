@@ -1,5 +1,13 @@
 Player:
 	ProductionQueue:
+		BuildingSelectAudio: bldging1.aud
+		BuildingReadyAudio: constru1.aud
+		BuildingCannotPlaceAudio: deploy1.aud
+		UnitSelectAudio: bldging1.aud
+		UnitReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
+		ClickAudio: button.aud
 	PlaceBuilding:
 	
 World:
@@ -93,8 +101,8 @@ PROC:
 		Prerequisites: nuke
 		Owner: allies,soviet
 		Cost: 2000
-		Description: Ore Refinery
-		LongDesc: Converts Ore and Gems into money
+		Description: Tiberium Refinery
+		LongDesc: Processes Tiberium into useable resources
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==

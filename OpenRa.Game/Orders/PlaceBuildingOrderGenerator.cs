@@ -32,7 +32,8 @@ namespace OpenRa.Orders
 				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
 					|| !world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
 				{
-					Sound.Play("nodeply1.aud");
+					var queueInfo = world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>();
+					Sound.Play(queueInfo.BuildingCannotPlaceAudio);
 					yield break;
 				}
 

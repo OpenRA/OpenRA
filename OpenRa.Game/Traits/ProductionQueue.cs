@@ -8,6 +8,15 @@ namespace OpenRa.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{
+		public readonly string BuildingSelectAudio = "abldgin1.aud";
+		public readonly string BuildingReadyAudio = "conscmp1.aud";
+		public readonly string BuildingCannotPlaceAudio = "nodeply1.aud";
+		public readonly string UnitSelectAudio = "train1.aud";
+		public readonly string UnitReadyAudio = "unitrdy1.aud";
+		public readonly string OnHoldAudio = "onhold1.aud";
+		public readonly string CancelledAudio = "cancld1.aud";
+		public readonly string ClickAudio = "ramenu1.aud";
+		
 		public object Create(Actor self) { return new ProductionQueue(self); }
 	}
 
@@ -55,7 +64,7 @@ namespace OpenRa.Traits
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
 									if( !hasPlayedSound )
 									{
-										Sound.PlayToPlayer( order.Player, isBuilding ? "conscmp1.aud" : "unitrdy1.aud" );
+										Sound.PlayToPlayer( order.Player, isBuilding ? self.Info.Traits.Get<ProductionQueueInfo>().BuildingReadyAudio : self.Info.Traits.Get<ProductionQueueInfo>().UnitReadyAudio );
 										hasPlayedSound = true;
 									}
 									if( !isBuilding )
