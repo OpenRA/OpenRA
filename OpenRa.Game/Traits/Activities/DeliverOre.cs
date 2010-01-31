@@ -6,7 +6,6 @@ namespace OpenRa.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 
-		bool isDone;
 		bool isDocking;
 		Actor refinery;
 
@@ -61,12 +60,7 @@ namespace OpenRa.Traits.Activities
 				isDocking = true;
 				refinery.traits.Get<IAcceptOre>().OnDock(self, this);
 			}
-
-			var renderUnit = self.traits.Get<RenderUnit>();
-			if( renderUnit.anim.CurrentSequence.Name != "empty" )
-				renderUnit.PlayCustomAnimation( self, "empty",
-					() => isDone = true );
-
+			
 			return this;
 		}
 

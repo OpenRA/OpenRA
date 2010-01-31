@@ -27,16 +27,16 @@ namespace OpenRa.Traits
 		public int2 DeliverOffset {	get { return new int2(0, 2); } }
 		public void OnDock(Actor harv, DeliverOre dockOrder)
 		{
+			// Todo: need to be careful about cancellation and multiple harvs
 			var unit = harv.traits.Get<Unit>();
-			harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
+			harv.QueueActivity(new Move(self.Location + new int2(1,1), self));
 			harv.QueueActivity(new Turn(96));
-
-			// TODO: This should be delayed until the turn order is complete
-			self.traits.Get<RenderBuilding>().PlayCustomAnimThen(self, "active", () => {
-				harv.traits.Get<Harvester>().Deliver(harv, self);
-				harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
-				harv.QueueActivity(new Harvest());
-			});
+			harv.QueueActivity( new CallFunc( () => 
+				self.traits.Get<RenderBuilding>().PlayCustomAnimThen(self, "active", () => {
+					harv.traits.Get<Harvester>().Deliver(harv, self);
+					harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
+					harv.QueueActivity(new Harvest());
+			})));
 		}
 	}
 }

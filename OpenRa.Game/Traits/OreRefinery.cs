@@ -29,10 +29,17 @@ namespace OpenRa.Traits
 			var unit = harv.traits.Get<Unit>();
 			if (unit.Facing != 64)
 				harv.QueueActivity(new Turn(64));
-			
-			// TODO: This should be delayed until the turn order is complete
-			harv.traits.Get<Harvester>().Deliver(harv, self);
-			harv.QueueActivity(new Harvest());
+				
+			harv.QueueActivity( new CallFunc( () => {
+				var renderUnit = harv.traits.Get<RenderUnit>();
+				if (renderUnit.anim.CurrentSequence.Name != "empty")
+					renderUnit.PlayCustomAnimation(harv, "empty", () =>
+					{
+						harv.traits.Get<Harvester>().Deliver(harv, self);
+						harv.QueueActivity(new Harvest());
+					});
+				}
+			));
 		}
 	}
 }
