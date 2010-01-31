@@ -2,11 +2,12 @@
 
 namespace OpenRa.Traits.Activities
 {
-	class DeliverOre : IActivity
+	public class DeliverOre : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 
 		bool isDone;
+		bool isDocking;
 		Actor refinery;
 
 		public DeliverOre() { }
@@ -15,29 +16,19 @@ namespace OpenRa.Traits.Activities
 		{
 			this.refinery = refinery;
 		}
-		
-		// TODO: This belongs on the refinery itself
-		static readonly int2 refineryDeliverOffset = new int2( 1, 2 );
 
 		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
 			var mobile = self.traits.Get<Mobile>();
 
-			if( isDone )
-			{
-				self.traits.Get<Harvester>().Deliver( self, refinery );
-
-				refinery.traits.Get<IAcceptOre>().OnDock(self);
-				return NextActivity ?? new Harvest();
-			}
-			else if( NextActivity != null )
+			if( NextActivity != null )
 				return NextActivity;
 
 			if( refinery != null && refinery.IsDead )
 				refinery = null;
 
-			if( refinery == null || self.Location != refinery.Location + refineryDeliverOffset )
+			if( refinery == null || self.Location != refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset )
 			{
 				var search = new PathSearch
 				{
@@ -49,25 +40,27 @@ namespace OpenRa.Traits.Activities
 					.Where(x => x.traits.Contains<IAcceptOre>())
 					.ToList();
 				if( refinery != null )
-					search.AddInitialCell( self.World, refinery.Location + refineryDeliverOffset );
+					search.AddInitialCell(self.World, refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset);
 				else
 					foreach( var r in refineries )
-						search.AddInitialCell( self.World, r.Location + refineryDeliverOffset );
+						search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
 
 				var path = self.World.PathFinder.FindPath( search );
 				path.Reverse();
 				if( path.Count != 0 )
 				{
-					refinery = refineries.FirstOrDefault( x => x.Location + refineryDeliverOffset == path[ 0 ] );
+					refinery = refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
 					return new Move( () => path ) { NextActivity = this };
 				}
 				else
 					// no refineries reachable?
 					return this;
 			}
-			// TODO: This belongs in the refinery trait
-			else if( unit.Facing != 64 )
-				return new Turn( 64 ) { NextActivity = this };
+			else if (!isDocking)
+			{
+				isDocking = true;
+				refinery.traits.Get<IAcceptOre>().OnDock(self, this);
+			}
 
 			var renderUnit = self.traits.Get<RenderUnit>();
 			if( renderUnit.anim.CurrentSequence.Name != "empty" )

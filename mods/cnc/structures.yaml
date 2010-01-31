@@ -46,7 +46,7 @@ PROC:
 		LongDesc: Processes Tiberium into useable resources
 	Building:
 		Power: -30
-		Footprint: ___ xxx x=x
+		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
 		Bib: yes

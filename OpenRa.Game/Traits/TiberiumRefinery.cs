@@ -16,7 +16,7 @@ namespace OpenRa.Traits
 			self.World.AddFrameEndTask(
 				w =>
 				{		/* create the free harvester! */
-					var harvester = w.CreateActor("harv", self.Location + new int2(1, 2), self.Owner);
+					var harvester = w.CreateActor("harv", self.Location + new int2(0, 2), self.Owner);
 					var unit = harvester.traits.Get<Unit>();
 					var mobile = harvester.traits.Get<Mobile>();
 					unit.Facing = 64;
@@ -24,9 +24,19 @@ namespace OpenRa.Traits
 				});
 		}
 
-		public void OnDock(Actor harv)
+		public int2 DeliverOffset {	get { return new int2(0, 2); } }
+		public void OnDock(Actor harv, DeliverOre dockOrder)
 		{
-			self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+			var unit = harv.traits.Get<Unit>();
+			harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
+			harv.QueueActivity(new Turn(96));
+
+			// TODO: This should be delayed until the turn order is complete
+			self.traits.Get<RenderBuilding>().PlayCustomAnimThen(self, "active", () => {
+				harv.traits.Get<Harvester>().Deliver(harv, self);
+				harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
+				harv.QueueActivity(new Harvest());
+			});
 		}
 	}
 }
