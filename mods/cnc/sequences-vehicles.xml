@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+	<unit name="mcv">
+		<sequence name="idle" start="0" length="*" />
+	</unit>
+	<unit name="harv">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="harvest0" start="32" length="4" />
+		<sequence name="harvest1" start="36" length="4" />
+		<sequence name="harvest2" start="40" length="4" />
+		<sequence name="harvest3" start="44" length="4" />
+		<sequence name="harvest4" start="48" length="4" />
+		<sequence name="harvest5" start="52" length="4" />
+		<sequence name="harvest6" start="56" length="4" />
+		<sequence name="harvest7" start="60" length="4" />
+		<sequence name="empty" start="16" length="0" />
+	</unit>
+</sequences>

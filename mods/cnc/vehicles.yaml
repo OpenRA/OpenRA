@@ -1,0 +1,41 @@
+MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 7
+		Prerequisites: eye
+		Owner: allies,soviet
+		Cost: 5000
+		Description: Mobile Construction Vehicle
+		LongDesc: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 600
+		Armor: light
+		Crewed: yes
+		Sight: 2
+		Speed: 12
+	McvDeploy:
+	RenderUnit:
+
+HARV:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 2
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 1400
+		Description: Harvester
+		LongDesc: Collects Tiberium for processing.\n  Unarmed
+	Selectable:
+		Priority: 7
+	Harvester:
+	Unit:
+		HP: 600
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 6
+	Mobile:
+		MovementType: Track
+	RenderUnit:

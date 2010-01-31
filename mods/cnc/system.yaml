@@ -1,0 +1,16 @@
+Player:
+	ProductionQueue:
+		BuildingSelectAudio: bldging1.aud
+		BuildingReadyAudio: constru1.aud
+		BuildingCannotPlaceAudio: deploy1.aud
+		UnitSelectAudio: bldging1.aud
+		UnitReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
+		ClickAudio: button.aud
+	PlaceBuilding:
+	
+World:
+	WaterPaletteRotation:
+	BuildingInfluence:
+	UnitInfluence:

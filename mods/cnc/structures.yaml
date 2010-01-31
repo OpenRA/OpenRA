@@ -1,0 +1,180 @@
+FACT:
+	Inherits: ^Building
+	Building:
+		Power: 15
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 3
+	Production:
+		Produces: Building,Defense
+	ConstructionYard:
+
+NUKE:
+	Inherits: ^Building
+	Buildable:
+		Icon: nukeicnh
+		TechLevel: 1
+		Owner: allies,soviet
+		Cost: 300
+		Description: Power Plant
+		LongDesc: Provides power for other structures
+	Building:
+		Power: 100
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 200
+		Armor: wood
+		Crewed: yes
+		Sight: 2
+
+PROC:
+	Inherits: ^Building
+	Buildable:
+		Icon: procicnh
+		TechLevel: 2
+		Prerequisites: nuke
+		Owner: allies,soviet
+		Cost: 2000
+		Description: Tiberium Refinery
+		LongDesc: Processes Tiberium into useable resources
+	Building:
+		Power: -30
+		Footprint: _x_ xxx x==
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 450
+		Armor: wood
+		Crewed: yes
+		Sight: 4
+	AcceptsOre:
+	StoresOre:
+		Pips: 17
+		Capacity: 1000
+SILO:
+	Inherits: ^Building
+	Buildable:
+		Icon: siloicnh
+		TechLevel: 2
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 150
+		Description: Tiberium Silo
+		LongDesc: Stores excess Tiberium until it can be processed
+	Building:
+		Power: -10
+		Footprint: xx
+		Dimensions: 2,1
+		Capturable: true
+		HP: 150
+		Armor: wood
+		Sight: 2
+	RenderBuildingOre:
+	StoresOre:
+		Pips: 5
+		Capacity: 1500
+	-RenderBuilding:
+
+PYLE:
+	Inherits: ^Building
+	Buildable:
+		Icon: pyleicnh
+		TechLevel: 2
+		Prerequisites: nuke
+		Owner: allies
+		Cost: 300
+		Description: Barracks
+		LongDesc: Trains infantry
+	Building:
+		Power: -20
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 3
+	RallyPoint:
+	Production:
+		Produces: Infantry
+
+HAND:
+	Inherits: ^Building
+	Buildable:
+		Icon: handicnh
+		TechLevel: 2
+		Prerequisites: nuke
+		Owner: soviet
+		Cost: 300
+		Description: Hand of Nod
+		LongDesc: Trains infantry
+	Building:
+		Power: -20
+		Footprint: __ xx xx
+		Dimensions: 2,3
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 3
+	RallyPoint:
+	Production:
+		Produces: Infantry
+
+AFLD:
+	Inherits: ^Building
+	Buildable:
+		Icon: afldicnh
+		TechLevel: 5
+		Prerequisites: proc
+		Owner: soviet
+		Cost: 2000
+		Description: Airfield
+		LongDesc: Provides a dropzone for vehicle reinforcements
+	Building:
+		Power: -30
+		Footprint: xxxx xxxx
+		Dimensions: 4,2
+		Capturable: true
+		Bib: yes
+		HP: 500
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	RallyPoint:
+	Production:
+		Produces: Vehicle
+
+WEAP:
+	Inherits: ^Building
+	Buildable:
+		Icon: weapicnh
+		TechLevel: 5
+		Prerequisites: proc
+		Owner: allies
+		Cost: 2000
+		Description: Weapons Factory
+		LongDesc: Assembly point for vehicle reinforcements
+	Building:
+		Power: -30
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 200
+		Armor: light
+		Crewed: yes
+		Sight: 3
+	RenderWarFactory:
+	RallyPoint:
+	Production:
+		Produces: Vehicle

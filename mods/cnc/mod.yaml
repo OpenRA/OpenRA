@@ -34,14 +34,20 @@ LegacyRules:
 	mods/ra/units.ini:	OpenRA patches
 
 Rules:
-	mods/ra/defaults.yaml:	Basic stuff
-	mods/cnc/rules.yaml:	OpenRA actorinfos
-	mods/cnc/trees.yaml:    Trees
-	mods/cnc/civilian.yaml: Civilian structures and bridges
-	mods/cnc/compat.yaml:  Compatability tweaks for real-ra maps
+	mods/ra/defaults.yaml:		Basic stuff
+	mods/cnc/system.yaml:		Player and world actors
+	mods/cnc/structures.yaml:	Structures
+	mods/cnc/infantry.yaml:		Infantry
+	mods/cnc/vehicles.yaml:		Vehicles
+	mods/cnc/trees.yaml:		Trees
+	mods/cnc/civilian.yaml:		Civilian structures and bridges
+	mods/cnc/compat.yaml:		Compatability tweaks for real-ra maps
 
 Sequences:
-	mods/cnc/sequences.xml:	Original animation sequences
+	mods/cnc/sequences-structures.xml: Structures
+	mods/cnc/sequences-vehicles.xml: Vehicles
+	mods/cnc/sequences-infantry.xml: Infantry
+	mods/cnc/sequences.xml:	Everything else
 
 Assemblies:
 	mods/ra/OpenRa.Mods.RA.dll:	Traits used

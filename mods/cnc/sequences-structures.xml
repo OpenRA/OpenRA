@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+	<unit name="fact">
+		<sequence name="idle" start="0" />
+		<sequence name="make" start="0" length="32" src="factmake" />
+		<sequence name="build" start="1" length="25" />
+		<sequence name="damaged-idle" start="26" />
+		<sequence name="damaged-build" start="27" length="25" />
+	</unit>
+	<unit name="nuke">
+		<sequence name="idle" start="0" />
+		<sequence name="damaged-idle" start="1" />
+		<sequence name="make" start="0" length="*" src="nukemake" />
+	</unit>
+	<unit name="proc">
+		<sequence name="idle" start="0" />
+		<sequence name="damaged-idle" start="1" />
+		<sequence name="make" start="0" length="*" src="procmake" />
+	</unit>
+	<unit name="silo">
+		<sequence name="idle" start="0" length="5" />
+		<sequence name="damaged-idle" start="5" length="5" />
+		<sequence name="make" start="0" length="*" src="silomake" />
+	</unit>
+	<unit name="hand">
+		<sequence name="idle" start="0" length="1" />
+		<sequence name="damaged-idle" start="2" length="1" />
+		<sequence name="make" start="0" length="*" src="handmake" />
+	</unit>
+	<unit name="pyle">
+		<sequence name="idle" start="0" length="10" />
+		<sequence name="damaged-idle" start="10" length="10" />
+		<sequence name="make" start="0" length="*" src="pylemake" />
+	</unit>
+	<unit name="weap">
+		<sequence name="idle" start="0" />
+		<sequence name="damaged-idle" start="1" />
+		<sequence name="make" start="0" length="*" src="weapmake" />
+		<sequence name="build-top" start="0" length="4" src="weap2" />
+		<sequence name="damaged-build-top" start="4" length="4" src="weap2" />
+		<sequence name="idle-top" start="0" length="1" src="weap2" />
+		<sequence name="damaged-idle-top" start="4" length="1" src="weap2" />
+	</unit>
+	<unit name="afld">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="17" length="16" />
+		<sequence name="make" start="0" length="*" src="afldmake" />
+	</unit>
+</sequences>
