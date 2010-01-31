@@ -46,7 +46,7 @@ PROC:
 		LongDesc: Processes Tiberium into useable resources
 	Building:
 		Power: -30
-		Footprint: _x_ xxx x==
+		Footprint: ___ xxx ==x
 		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
@@ -178,3 +178,27 @@ WEAP:
 	RallyPoint:
 	Production:
 		Produces: Vehicle
+		
+HQ:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		Icon: hqicnh
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 1000
+		Description: Communications Center
+		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
+	Building:
+		Power: -40
+		Footprint: __ xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 500
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	ProvidesRadar:
