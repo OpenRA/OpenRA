@@ -46,7 +46,7 @@ PROC:
 		LongDesc: Processes Tiberium into useable resources
 	Building:
 		Power: -30
-		Footprint: ___ xxx ==x
+		Footprint: ___ xxx x=x
 		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
@@ -202,3 +202,119 @@ HQ:
 		Crewed: yes
 		Sight: 10
 	ProvidesRadar:
+
+NUK2:
+	Inherits: ^Building
+	Buildable:
+		Icon:nuk2icnh
+		TechLevel: 5
+		Prerequisites: nuke
+		Owner: allies,soviet
+		Cost: 700
+		Description: Advanced Power Plant
+		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
+	Building:
+		Power: 200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 700
+		Armor: wood
+		Crewed: yes
+		Sight: 2
+		
+FIX:
+	Inherits: ^Building
+	Buildable:
+		Icon: fixicnh
+		TechLevel: 3
+		Prerequisites: nuke
+		Owner: allies,soviet
+		Cost: 1200
+		Description: Repair Facility
+		LongDesc: Repairs vehicles and allows the\nconstruction of additional bases.
+	Building:
+		Power: -30
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
+		Capturable: true
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 3
+	BelowUnits:
+	Reservable:
+
+HPAD:
+	Inherits: ^Building
+	Buildable:
+		Icon:hpadicnh
+		TechLevel: 6
+		Prerequisites: pyle
+		Owner: allies,soviet
+		Cost: 1500
+		Description: Helipad
+		LongDesc: Produces and reloads helicopters
+	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 3
+	Production:
+		SpawnOffset: 0,-4
+		Produces: Plane
+	BelowUnits:
+	Reservable:
+
+EYE:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		Icon: eyeicnh
+		TechLevel: 7
+		Prerequisites: hq
+		Owner: allies
+		Cost: 2800
+		Description: Advanced Communications Center
+		LongDesc: Provides access to the Ion Cannon.\n  Requires power to operate.
+	Building:
+		Power: -200
+		Footprint: __ xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 500
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	ProvidesRadar:
+	
+TMPL:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		Icon: tmplicnh
+		TechLevel: 7
+		Prerequisites: hq
+		Owner: soviet
+		Cost: 3000
+		Description: Temple of Nod
+		LongDesc: Place of worship and secret missile silo.\n  Requires power to operate.
+	Building:
+		Power: -150
+		Footprint: __ xx
+		Dimensions: 2,2
+		Capturable: false
+		Bib: yes
+		HP: 1000
+		Armor: light
+		Crewed: yes
+		Sight: 4

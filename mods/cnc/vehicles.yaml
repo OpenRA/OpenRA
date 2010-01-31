@@ -1,6 +1,7 @@
 MCV:
 	Inherits: ^Vehicle
 	Buildable:
+		Icon: mcvicnh
 		TechLevel: 7
 		Prerequisites: eye
 		Owner: allies,soviet
@@ -21,6 +22,7 @@ MCV:
 HARV:
 	Inherits: ^Vehicle
 	Buildable:
+		Icon: harvicnh
 		TechLevel: 2
 		Prerequisites: proc
 		Owner: allies,soviet
@@ -35,7 +37,7 @@ HARV:
 		Armor: light
 		Crewed: yes
 		Sight: 4
-		Speed: 6
+		Speed: 12
 	Mobile:
 		MovementType: Track
 	RenderUnit:

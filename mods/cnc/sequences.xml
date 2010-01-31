@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
    <!-- advanced power plant -->
-  <unit name="apwr">
-    <sequence name="idle" start="0" />
-    <sequence name="damaged-idle" start="1" />
-    <sequence name="make" start="0" length="*" src="apwrmake" />
-  </unit>
+
 
   <!-- kennel -->
   <unit name="kenn">
@@ -33,14 +29,7 @@
     <sequence name="make" start="0" length="*" src="stekmake" />
   </unit>
 
-  <!-- helipad -->
-  <unit name="hpad">
-    <sequence name="idle" start="0" length="1" />
-    <sequence name="damaged-idle" start="7" length="1" />
-    <sequence name="make" start="0" length="20" src="hpadmake" />
-    <sequence name="active" start="1" length="6" />
-    <sequence name="damaged-active" start="8" length="6" />
-  </unit>
+
 
   <!-- sub pen -->
   <unit name="spen">
@@ -54,14 +43,7 @@
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="syrdmake" />
   </unit>
-  <!-- repair pad -->
-  <unit name="fix">
-    <sequence name="idle" start="0" length="1" />
-    <sequence name="damaged-idle" start="7" length="1" />
-    <sequence name="make" start="0" length="14" src="fixmake" />
-    <sequence name="active" start="1" length="6" />
-    <sequence name="damaged-active" start="8" length="6" />
-  </unit>
+
   <!-- allied gun turret -->
   <unit name="gun">
     <sequence name="idle" start="0" length="32" />

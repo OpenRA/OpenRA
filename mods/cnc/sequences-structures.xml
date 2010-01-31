@@ -83,4 +83,53 @@
 		<sequence name="critical-idle" start="32" />
 		<sequence name="make" start="0" length="*" src="hqmake" />
 	</unit>
+
+	<!-- Advanced Power Plant -->
+	<unit name="nuk2">
+		<sequence name="idle" start="0" length="4" />
+		<sequence name="damaged-idle" start="4" length="4" />
+		<sequence name="critical-idle" start="8" length="1" />
+		<sequence name="make" start="0" length="*" src="nuk2make" />
+	</unit>
+
+	<!-- helipad -->
+	<unit name="hpad">
+		<sequence name="idle" start="0" length="1" />
+		<sequence name="damaged-idle" start="7" length="1" />
+		<sequence name="critical-idle" start="14" length="1" />
+		<sequence name="active" start="1" length="6" />
+		<sequence name="damaged-active" start="8" length="6" />
+		<sequence name="critical-active" start="14" length="1" />
+		<sequence name="make" start="0" length="20" src="hpadmake" />
+	</unit>
+
+	<!-- Repair Facility -->
+	<unit name="fix">
+		<sequence name="idle" start="0" length="1" />
+		<sequence name="damaged-idle" start="7" length="1" />
+		<sequence name="critical-idle" start="14" length="1" />
+		<sequence name="active" start="0" length="7" />
+		<sequence name="damaged-active" start="7" length="7" />
+		<sequence name="critical-active" start="14" length="1" />
+		<sequence name="make" start="0" length="14" src="fixmake" />
+	</unit>
+	
+	<!-- Advanced Communications Center -->
+	<unit name="eye">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
+		<sequence name="critical-idle" start="32" />
+		<sequence name="make" start="0" length="*" src="eyemake" />
+	</unit>
+
+	<!-- Temple of Nod -->
+	<unit name="tmpl">
+		<sequence name="idle" start="0" />
+		<sequence name="damaged-idle" start="5" />
+		<sequence name="critical-idle" start="10" />
+		<sequence name="active" start="0" length="5" />
+		<sequence name="damaged-active" start="5" length="5" />
+		<sequence name="critical-active" start="5" length="5" />
+		<sequence name="make" start="0" length="*" src="tmplmake" />
+	</unit>
 </sequences>
