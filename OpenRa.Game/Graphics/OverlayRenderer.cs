@@ -37,9 +37,13 @@ namespace OpenRa.Graphics
 
 		public void Draw()
 		{
-			for( int y = 0 ; y < 128 ; y++ )
-				for (int x = 0; x < 128; x++)
+			var shroud = Game.world.LocalPlayer.Shroud;
+
+			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
+				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				{
+					if (!shroud.IsExplored(new int2(x,y))) continue;
+
 					var tr = map.MapTiles[x,y];
 					if (tr.smudge != 0 && tr.smudge <= smudgeSprites.Length)
 					{
