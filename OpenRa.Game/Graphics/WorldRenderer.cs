@@ -67,12 +67,10 @@ namespace OpenRa.Graphics
 				Game.viewport.Location.ToPointF(),
 				new SizeF( Game.viewport.Width, Game.viewport.Height ));
 
-			/* todo: cull to screen again */
 			var renderables = world.Actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
-			foreach (var r in renderables)
-				spriteRenderer.DrawSprite(r.Sprite, r.Pos, r.Palette);
+			DrawSpriteList(rect, renderables);
 
 			foreach (var e in world.Effects)
 				DrawSpriteList(rect, e.Render());
