@@ -4,7 +4,7 @@ using OpenRa.Orders;
 
 namespace OpenRa.Traits
 {
-	class RallyPointInfo : ITraitInfo
+	class RallyPointInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int[] RallyPoint = { 1, 3 };
 
