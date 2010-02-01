@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 		mods\ra\merge-rules.yaml = mods\ra\merge-rules.yaml
 		mods\ra\mod.yaml = mods\ra\mod.yaml
 		mods\ra\rules.ini = mods\ra\rules.ini
-		mods\ra\rules.yaml = mods\ra\rules.yaml
 		mods\ra\sequences.xml = mods\ra\sequences.xml
 		mods\ra\trees.ini = mods\ra\trees.ini
 		mods\ra\units.ini = mods\ra\units.ini
@@ -31,6 +30,50 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra-ng", "ra-ng", "{8C56DCEF
 		mods\ra-ng\mod.yaml = mods\ra-ng\mod.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shaders", "shaders", "{119A289F-9059-4B0C-8A5C-5A5D77E6E16C}"
+	ProjectSection(SolutionItems) = preProject
+		chrome-rgba.fx = chrome-rgba.fx
+		chrome-shp.fx = chrome-shp.fx
+		line.fx = line.fx
+		world-shp.fx = world-shp.fx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "settings", "settings", "{CCCBD235-11AB-4FA2-9641-93038EACAFC8}"
+	ProjectSection(SolutionItems) = preProject
+		settings-netplay-local-aftermath.ini = settings-netplay-local-aftermath.ini
+		settings-netplay-local.ini = settings-netplay-local.ini
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "globals", "globals", "{27CA9A65-2FEE-4995-B7F0-E5BE1BB5494B}"
+	ProjectSection(SolutionItems) = preProject
+		bogus.sno = bogus.sno
+		bogus.tem = bogus.tem
+		chrome.xml = chrome.xml
+		makedist.cmd = makedist.cmd
+		tileSet.til = tileSet.til
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remaps", "remaps", "{F1386D81-84EA-4600-AE3C-C3C4D042B8D7}"
+	ProjectSection(SolutionItems) = preProject
+		blue.rem = blue.rem
+		gold.rem = gold.rem
+		gray.rem = gray.rem
+		green.rem = green.rem
+		orange.rem = orange.rem
+		red.rem = red.rem
+		salmon.rem = salmon.rem
+		teal.rem = teal.rem
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3FB8CE49-01F3-4EB1-8DB9-FC6168464091}"
+	ProjectSection(SolutionItems) = preProject
+		doc\aud format.txt = doc\aud format.txt
+		doc\progress.txt = doc\progress.txt
+		doc\RACG110.TXT = doc\RACG110.TXT
+		doc\raff.txt = doc\raff.txt
+		doc\shp dune 2.txt = doc\shp dune 2.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,5 +82,6 @@ Global
 		{59F0734D-2F86-4C26-8171-CF45EE01E97A} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
+		{F1386D81-84EA-4600-AE3C-C3C4D042B8D7} = {27CA9A65-2FEE-4995-B7F0-E5BE1BB5494B}
 	EndGlobalSection
 EndGlobal
