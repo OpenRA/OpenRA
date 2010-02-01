@@ -58,12 +58,12 @@ namespace OpenRa.Graphics
 			}
 		}
 
-		public void Draw()
+		Rectangle GetBoundsRect()
 		{
 			if (!world.LocalPlayer.Shroud.HasGPS && world.LocalPlayer.Shroud.bounds.HasValue)
 			{
 				var r = world.LocalPlayer.Shroud.bounds.Value;
-				
+
 				var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
 				var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
 				var right = left + (int)(Game.CellSize * r.Width);
@@ -74,24 +74,30 @@ namespace OpenRa.Graphics
 				if (right > Game.viewport.Width) right = Game.viewport.Width;
 				if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
 
-				renderer.Device.EnableScissor(left, top, right - left, bottom - top);
+				return new Rectangle(left, top, right - left, bottom - top);
 			}
+			else
+				return new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+		}
+
+		public void Draw()
+		{
+			var bounds = GetBoundsRect();
+			renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(Game.viewport);
 
 			var comparer = new SpriteComparer();
 
-			var rect = new RectangleF(
-				Game.viewport.Location.ToPointF(),
-				new SizeF( Game.viewport.Width, Game.viewport.Height ));
+			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
 
 			var renderables = world.Actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
-			DrawSpriteList(rect, renderables);
+			DrawSpriteList(bounds, renderables);
 
 			foreach (var e in world.Effects)
-				DrawSpriteList(rect, e.Render());
+				DrawSpriteList(bounds, e.Render());
 
 			uiOverlay.Draw( world );
 
