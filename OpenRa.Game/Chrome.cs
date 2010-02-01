@@ -146,11 +146,23 @@ namespace OpenRa
 			mapChooserSheet = new Sheet(r, new Size(128, 128));
 			colorBlock = SheetBuilder.Add(new Size(65 - 8, 22 - 8), 0x54);
 		}
+
+		List<string> visibleTabs = new List<string>();
 		
-		public void Tick()
+		public void Tick(World world)
 		{
 			TickPaletteAnimation();
 			TickRadarAnimation();
+
+			if (currentTab == null || !Rules.TechTree.BuildableItems(world.LocalPlayer, currentTab).Any())
+				ChooseAvailableTab(world);
+
+			visibleTabs.Clear();
+			foreach (var q in tabImageNames)
+				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
+					CheckDeadTab(world, q.Key);
+				else
+					visibleTabs.Add(q.Key);
 		}
 				
 		public void Draw( World world )
@@ -539,19 +551,14 @@ namespace OpenRa
 			var x = paletteOrigin.X - tabWidth;
 			var y = paletteOrigin.Y + 9;
 
-			if (currentTab == null || !Rules.TechTree.BuildableItems(world.LocalPlayer, currentTab).Any())
-				ChooseAvailableTab( world );
-
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 
 			foreach (var q in tabImageNames)
 			{
 				var groupName = q.Key;
-				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, groupName).Any())
-				{
-					CheckDeadTab( world, groupName );
+				if (!visibleTabs.Contains(groupName))
 					continue;
-				}
+
 				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;

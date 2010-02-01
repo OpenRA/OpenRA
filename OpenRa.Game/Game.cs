@@ -136,7 +136,7 @@ namespace OpenRa
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Timestep;
-					chrome.Tick();
+					chrome.Tick( world );
 
 					orderManager.TickImmediate( world );
 
