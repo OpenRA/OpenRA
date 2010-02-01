@@ -154,15 +154,19 @@ namespace OpenRa
 			TickPaletteAnimation();
 			TickRadarAnimation();
 
-			if (currentTab == null || !Rules.TechTree.BuildableItems(world.LocalPlayer, currentTab).Any())
-				ChooseAvailableTab(world);
-
 			visibleTabs.Clear();
 			foreach (var q in tabImageNames)
 				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
+				{
 					CheckDeadTab(world, q.Key);
+					if (currentTab == q.Key)
+						currentTab = null;
+				}
 				else
 					visibleTabs.Add(q.Key);
+
+			if (currentTab == null)
+				currentTab = visibleTabs.FirstOrDefault();
 		}
 				
 		public void Draw( World world )
@@ -588,12 +592,6 @@ namespace OpenRa
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			foreach( var item in queue.AllItems( groupName ) )
 				Game.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
-		}
-
-		void ChooseAvailableTab( World world )
-		{
-			currentTab = tabImageNames.Select(q => q.Key).FirstOrDefault(
-				t => Rules.TechTree.BuildableItems(world.LocalPlayer, t).Any());
 		}
 
 		void DrawMoney( World world )
