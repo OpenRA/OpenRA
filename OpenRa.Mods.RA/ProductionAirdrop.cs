@@ -23,7 +23,8 @@ namespace OpenRa.Mods.RA
 			// Start at the edge of the map, to the right of the airfield
 			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width, self.Location.Y);
 			var endPos = new int2(owner.World.Map.XOffset, self.Location.Y);
-			var deployOffset = new float2(24f,0);
+			var unloadOffset = new int2(1,1);
+			var exitOffset = new int2(3,1);
 			
 			var rp = self.traits.GetOrDefault<RallyPoint>();
 			owner.World.AddFrameEndTask(w =>
@@ -35,15 +36,17 @@ namespace OpenRa.Mods.RA
 				cargo.Load(a, newUnit);
 				
 				a.CancelActivity();
-				a.QueueActivity(new Land(self.CenterLocation+deployOffset));
+				a.QueueActivity(new Land(self.CenterLocation));
 				a.QueueActivity(new CallFunc(() => 
 				{
 					var actor = cargo.Unload(self);
 					self.World.AddFrameEndTask(ww =>
 					{
 						ww.Add(actor);
-						actor.traits.Get<Mobile>().TeleportTo(actor, self.Location);
+						actor.traits.Get<Mobile>().TeleportTo(actor, self.Location + unloadOffset);
+						newUnit.traits.Get<Unit>().Facing = 192;
 						actor.CancelActivity();
+						actor.QueueActivity(new Move(self.Location + exitOffset, self));
 						actor.QueueActivity(new Move(rp.rallyPoint, 0));
 
 						foreach (var t in self.traits.WithInterface<INotifyProduction>())
