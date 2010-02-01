@@ -66,6 +66,16 @@ namespace OpenRa.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
+			if (!Game.world.LocalPlayer.Shroud.HasGPS && Game.world.LocalPlayer.Shroud.bounds.HasValue)
+			{
+				var r = Game.world.LocalPlayer.Shroud.bounds.Value;
+				if (firstRow < r.Top - map.YOffset)
+					firstRow = r.Top - map.YOffset;
+
+				if (firstRow > r.Bottom - map.YOffset)
+					firstRow = r.Bottom - map.YOffset;
+			}
+
 			renderer.SpriteShader.Quality = ShaderQuality.Low;
 			renderer.SpriteShader.Render(() =>
 				renderer.DrawBatch(vertexBuffer, indexBuffer,

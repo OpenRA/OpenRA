@@ -6,6 +6,7 @@ using IjwFramework.Types;
 using OpenRa.Graphics;
 using OpenRa.Traits;
 using OpenRa.FileFormats;
+using System.Drawing;
 
 namespace OpenRa
 {
@@ -18,6 +19,7 @@ namespace OpenRa
 		bool hasGPS = false;
 		Player owner;
 		Map map;
+		public Rectangle? bounds;
 
 		public Shroud(Player owner, Map map) { this.owner = owner; this.map = map; }
 		
@@ -70,8 +72,20 @@ namespace OpenRa
 			return IsExplored(x,y);
 		}
 
+		Rectangle MakeRect(int2 center, int range)
+		{
+			return new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
+		}
+
 		public void Explore(World w, int2 center, int range)
 		{
+			if (range == 0)
+				return;
+
+			var box = MakeRect(center, range);
+			bounds = bounds.HasValue ? 
+				Rectangle.Union(bounds.Value, box) : box;
+			
 			foreach (var t in w.FindTilesInCircle(center, range))
 			{
 				explored[t.X, t.Y] = true;
@@ -141,10 +155,16 @@ namespace OpenRa
 						sprites[i, j] = ChooseShroud(i, j);
 			}
 
-			for (var j = map.YOffset; j < map.YOffset + map.Height; j++)
+			var miny = bounds.HasValue ? Math.Max(map.YOffset, bounds.Value.Top) : map.YOffset;
+			var maxy = bounds.HasValue ? Math.Min(map.YOffset + map.Height, bounds.Value.Bottom) : map.YOffset + map.Height;
+
+			var minx = bounds.HasValue ? Math.Max(map.XOffset, bounds.Value.Left) : map.XOffset;
+			var maxx = bounds.HasValue ? Math.Min(map.XOffset + map.Width, bounds.Value.Right) : map.XOffset + map.Width;
+
+			for (var j = miny; j < maxy; j++)
 			{
-				var starti = map.XOffset;
-				for (var i = map.XOffset; i < map.XOffset + map.Width; i++)
+				var starti = minx;
+				for (var i = minx; i < maxx; i++)
 				{
 					if (sprites[i, j] == shadowBits[0x0f])
 						continue;
@@ -164,11 +184,11 @@ namespace OpenRa
 					starti = i+1;
 				}
 
-				if (starti < map.XOffset + map.Width)
+				if (starti < maxx)
 					r.DrawSprite(sprites[starti, j],
 						Game.CellSize * new float2(starti, j),
 						PaletteType.Shroud,
-						new float2(Game.CellSize * (map.XOffset + map.Width - starti), Game.CellSize));
+						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
 			}
 		}
 	}

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRa.Traits;
+using System;
 
 namespace OpenRa.Graphics
 {
@@ -59,6 +60,23 @@ namespace OpenRa.Graphics
 
 		public void Draw()
 		{
+			if (!world.LocalPlayer.Shroud.HasGPS && world.LocalPlayer.Shroud.bounds.HasValue)
+			{
+				var r = world.LocalPlayer.Shroud.bounds.Value;
+				
+				var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
+				var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
+				var right = left + (int)(Game.CellSize * r.Width);
+				var bottom = top + (int)(Game.CellSize * r.Height);
+
+				if (left < 0) left = 0;
+				if (top < 0) top = 0;
+				if (right > Game.viewport.Width) right = Game.viewport.Width;
+				if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
+
+				renderer.Device.EnableScissor(left, top, right - left, bottom - top);
+			}
+
 			terrainRenderer.Draw(Game.viewport);
 
 			var comparer = new SpriteComparer();

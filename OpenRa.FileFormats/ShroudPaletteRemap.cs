@@ -13,9 +13,9 @@ namespace OpenRa.FileFormats
 			// false-color version for debug
 
 			//return new[] { 
-			//    Color.Orange, Color.Green, 
+			//    Color.FromArgb(64,0,0,0), Color.Green, 
 			//    Color.Blue, Color.Yellow, 
-			//    Color.Black, 
+			//    Color.Green, 
 			//    Color.Red, 
 			//    Color.Purple, 
 			//    Color.Cyan}[index % 8];
