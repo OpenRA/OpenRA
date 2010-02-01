@@ -4,6 +4,7 @@ Folders:
 	./
 	mods/cnc/
 Packages:
+	mods/cnc/overrides.mix
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix

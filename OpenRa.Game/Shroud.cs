@@ -147,7 +147,6 @@ namespace OpenRa
 
 		internal void Draw(SpriteRenderer r)
 		{
-			return;
 			if (dirty)
 			{
 				dirty = false;
