@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	class Land : IActivity
+	public class Land : IActivity
 	{
 		readonly float2 Pos;
 		bool isCanceled;

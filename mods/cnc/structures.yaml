@@ -151,7 +151,8 @@ AFLD:
 		Crewed: yes
 		Sight: 5
 	RallyPoint:
-	Production:
+	BelowUnits:
+	ProductionAirdrop:
 		Produces: Vehicle
 
 WEAP:

@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
+
+	<!-- Mobile Construction Vehicle -->
 	<unit name="mcv">
 		<sequence name="idle" start="0" length="*" />
 	</unit>
+	
+	<!-- Tiberium Harvester -->
 	<unit name="harv">
 		<sequence name="idle" start="0" length="32" />
 		<sequence name="harvest0" start="32" length="4" />
@@ -14,9 +18,16 @@
 		<sequence name="harvest6" start="56" length="4" />
 		<sequence name="harvest7" start="60" length="4" />
 	</unit>
+	
+	<!-- Nod Buggy -->
 	<unit name="bggy">
 		<sequence name="idle" start="0" length="32" />
 		<sequence name="turret" start="32" length="32" />
 		<sequence name="muzzle" start="0" length="48" src="minigun" />
+	</unit>
+
+	<!-- Nod Supply Aircraft -->
+	<unit name="c17">
+		<sequence name="idle" start="0" length="32" />
 	</unit>
 </sequences>

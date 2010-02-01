@@ -11,7 +11,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new RallyPoint(self); }
 	}
 
-	class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
+	public class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync]
 		public int2 rallyPoint;

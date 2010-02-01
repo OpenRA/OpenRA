@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Traits.Activities
 {
-	class UnloadCargo : IActivity
+	public class UnloadCargo : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;

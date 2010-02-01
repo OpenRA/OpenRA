@@ -8,7 +8,8 @@ namespace OpenRa.Traits.Activities
 		bool isCanceled;
 
 		public Fly(float2 pos) { Pos = pos; }
-
+		public Fly(int2 pos) { Pos = Util.CenterOfCell(pos); }
+		
 		public IActivity NextActivity { get; set; }
 
 		const int CruiseAltitude = 20;

@@ -955,7 +955,4 @@
     <sequence name="open" start="0" length="5" />
     <sequence name="idle" start="5" length="11" />
   </unit>
-  <unit name="badr">
-    <sequence name="idle" start="0" length="16" />
-  </unit>
 </sequences>

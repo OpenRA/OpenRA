@@ -67,3 +67,20 @@ BGGY:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
+
+C17:
+	ParaDrop:
+		LZRange: 1
+	Inherits: ^Plane
+	Unit:
+		HP: 25
+		Armor: light
+		ROT: 5
+		Sight: 0
+		Speed: 40
+	Plane:
+	RenderUnit:
+	WithShadow:
+	Cargo:
+		Passengers: 10
+	-Selectable:

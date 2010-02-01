@@ -4,7 +4,7 @@ using OpenRa.GameRules;
 
 namespace OpenRa.Traits
 {
-	class ProductionInfo : ITraitInfo
+	public class ProductionInfo : ITraitInfo
 	{
 		public readonly int[] SpawnOffset = null;
 		public readonly string[] Produces = { };
@@ -12,7 +12,7 @@ namespace OpenRa.Traits
 		public virtual object Create(Actor self) { return new Production(self); }
 	}
 
-	class Production : IIssueOrder, IResolveOrder, IProducer, ITags
+	public class Production : IIssueOrder, IResolveOrder, IProducer, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
@@ -29,7 +29,7 @@ namespace OpenRa.Traits
 			return newUnit.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing;
 		}
 
-		public bool Produce( Actor self, ActorInfo producee )
+		public virtual bool Produce( Actor self, ActorInfo producee )
 		{
 			var location = CreationLocation( self, producee );
 			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
