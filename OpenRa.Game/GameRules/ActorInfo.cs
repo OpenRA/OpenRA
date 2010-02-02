@@ -68,6 +68,9 @@ namespace OpenRa.GameRules
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
+			if (traitName.Contains('@'))
+				traitName = traitName.Substring(0, traitName.IndexOf('@'));
+
 			foreach (var mod in ModAssemblies)
 			{
 				var fullTypeName = mod.Second + "." + traitName + "Info";
