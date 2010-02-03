@@ -9,6 +9,7 @@ namespace OpenRa.Graphics
 	{
 		Gold, Blue, Red, Orange, Teal, Salmon, Green, Gray,
 		Shadow, Invuln, Disabled, Highlight, Shroud, Chrome, 
+		Terrain
 	};
 
 	class HardwarePalette : Sheet
@@ -19,8 +20,9 @@ namespace OpenRa.Graphics
 		public HardwarePalette(Renderer renderer, Map map)
 			: base(renderer,new Size(256, maxEntries))
 		{
+		
 			Palette pal = new Palette(FileSystem.Open(map.Theater + ".pal"));
-			AddPalette(pal);
+			AddPalette(pal); // Gold
 
 			foreach (string remap in new string[] { "blue", "red", "orange", "teal", "salmon", "green", "gray" })
 				AddPalette(new Palette(pal, new PlayerColorRemap(FileSystem.Open(remap + ".rem"))));
@@ -31,6 +33,9 @@ namespace OpenRa.Graphics
 			AddPalette(new Palette(pal, new SingleColorRemap(Color.FromArgb(128, 255, 255, 255))));	// Highlight
 			AddPalette(new Palette(pal, new ShroudPaletteRemap()));									// Shroud
 			AddPalette(pal);	// Chrome (it's like gold, but we're not going to hax it in palettemods)
+
+			Palette palTerrain = new Palette(FileSystem.Open("temperat_ra.pal"));
+			AddPalette(palTerrain); // Terrain
 		}
 
 		int AddPalette(Palette p)
