@@ -33,12 +33,10 @@ namespace OpenRa.Graphics
 			AddPalette(new Palette(pal, new SingleColorRemap(Color.FromArgb(128, 255, 255, 255))));	// Highlight
 			AddPalette(new Palette(pal, new ShroudPaletteRemap()));									// Shroud
 			AddPalette(pal);	// Chrome (it's like gold, but we're not going to hax it in palettemods)
-
-			Palette palTerrain = new Palette(FileSystem.Open("temperat_ra.pal"));
-			AddPalette(palTerrain); // Terrain
 		}
+		
 
-		int AddPalette(Palette p)
+		public int AddPalette(Palette p)
 		{
 			for (int i = 0; i < 256; i++)
 				this[new Point(i, allocated)] = p.GetColor(i);

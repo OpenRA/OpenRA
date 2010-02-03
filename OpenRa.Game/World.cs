@@ -56,12 +56,16 @@ namespace OpenRa
 		public World()
 		{
 			Timer.Time( "----World.ctor" );
-
+			
 			Map = new Map( Rules.AllRules );
 			Timer.Time( "new Map: {0}" );
 			TileSet = new TileSet( Map.TileSuffix );
 			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
+
+			WorldRenderer = new WorldRenderer(this, Game.renderer);
+			Timer.Time("renderer: {0}");
+			
 
 			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
 			oreTicks = oreFrequency;
@@ -83,9 +87,8 @@ namespace OpenRa
 			PathFinder = new PathFinder(this);
 			Timer.Time( "bridge, pathing: {0}" );
 
-			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Minimap = new Minimap(this, Game.renderer);
-			Timer.Time( "renderer, minimap: {0}" );
+			Timer.Time( "minimap: {0}" );
 
 			Timer.Time( "----end World.ctor" );
 		}

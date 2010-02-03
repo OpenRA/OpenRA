@@ -14,3 +14,7 @@ World:
 	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
+	PaletteFromFile@1:
+		Name: terrain
+		Theatre: temperat
+		Filename: temperat_ra.pal

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRa.Traits;
 using System;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Graphics
 {
@@ -28,8 +29,13 @@ namespace OpenRa.Graphics
 			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
 			palette = new HardwarePalette(renderer, world.Map);
+			Log.Write("Created worldrenderer");
 		}
-
+		public void AddPalette(string name, Palette pal)
+		{
+			palette.AddPalette(pal);
+		}
+		
 		void DrawSpriteList(RectangleF rect,
 			IEnumerable<Renderable> images)
 		{
