@@ -26,7 +26,7 @@ namespace OpenRa.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image,
-				a.CenterLocation - .5f * anim.Image.size + doorOffset, PaletteType.Gold);
+				a.CenterLocation - .5f * anim.Image.size + doorOffset, "effect");
 		}
 	}
 }

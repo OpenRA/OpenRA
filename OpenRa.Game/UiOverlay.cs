@@ -39,7 +39,7 @@ namespace OpenRa
 				for (var j = 0; j < 128; j++)
 					for (var i = 0; i < 128; i++)
 						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())
-							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), 0);
+							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
 		}
 
 		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
@@ -51,7 +51,7 @@ namespace OpenRa
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound
 					? UnitMovementType.Float : UnitMovementType.Wheel ) && !world.Map.ContainsResource( t ) )
-					? buildOk : buildBlocked, Game.CellSize * t, 0 );
+					? buildOk : buildBlocked, Game.CellSize * t, "terrain" );
 
 			spriteRenderer.Flush();
 		}

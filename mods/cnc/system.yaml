@@ -14,7 +14,75 @@ World:
 	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
-	PaletteFromFile@1:
+	PaletteFromFile@terrain_temperat:
 		Name: terrain
-		Theatre: temperat
 		Filename: temperat_ra.pal
+	PaletteFromFile@player_temperat:
+		Name: player
+		Theatre: temperat
+		Filename: temperat.pal
+	PaletteFromRemap@player0:
+		Name: player0
+		BasePalette: player
+	PaletteFromRemap@player1:
+		Name: player1
+		BasePalette: player
+		Remap: blue.rem
+	PaletteFromRemap@player2:
+		Name: player2
+		BasePalette: player
+		Remap: red.rem
+	PaletteFromRemap@player3:
+		Name: player3
+		BasePalette: player
+		Remap: orange.rem
+	PaletteFromRemap@player4:
+		Name: player4
+		BasePalette: player
+		Remap: teal.rem
+	PaletteFromRemap@player5:
+		Name: player5
+		BasePalette: player
+		Remap: salmon.rem
+	PaletteFromRemap@player6:
+		Name: player6
+		BasePalette: player
+		Remap: green.rem
+	PaletteFromRemap@player7:
+		Name: player7
+		BasePalette: player
+		Remap: gray.rem
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette:

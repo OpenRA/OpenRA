@@ -14,7 +14,7 @@ namespace OpenRa.Traits
 		{
 			var unit = self.traits.Get<Unit>();
 
-			var shadowSprites = r.Select(a => a.WithPalette(PaletteType.Shadow));
+			var shadowSprites = r.Select(a => a.WithPalette("shadow"));
 			var flyingSprites = (unit.Altitude <= 0) ? r 
 				: r.Select(a => a.WithPos(a.Pos - new float2(0, unit.Altitude)).WithZOffset(3));
 

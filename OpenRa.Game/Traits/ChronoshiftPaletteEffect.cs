@@ -25,7 +25,7 @@ namespace OpenRa.Traits
 		{
 			if (remainingFrames == 0)
 				return;
-
+			/* TODO: FIX ME
 			var frac = (float)remainingFrames / chronoEffectLength;
 			for( var y = 0; y < (int)PaletteType.Chrome; y++ )
 				for (var x = 0; x < 256; x++)
@@ -35,6 +35,7 @@ namespace OpenRa.Traits
 					var desat = Color.FromArgb(orig.A, lum, lum, lum);
 					b.SetPixel(x, y, Graphics.Util.Lerp(frac, orig, desat));
 				}
+			*/
 		}
 	}
 }

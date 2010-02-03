@@ -173,21 +173,21 @@ namespace OpenRa
 					{
 						r.DrawSprite(sprites[starti,j],
 						    Game.CellSize * new float2(starti, j),
-						    PaletteType.Shroud,
+						    "shroud",
 						    new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i+1;
 					}
 
 					r.DrawSprite(sprites[i, j],
 						Game.CellSize * new float2(i, j),
-						PaletteType.Shroud);
+						"shroud");
 					starti = i+1;
 				}
 
 				if (starti < maxx)
 					r.DrawSprite(sprites[starti, j],
 						Game.CellSize * new float2(starti, j),
-						PaletteType.Shroud,
+						"shroud",
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
 			}
 		}

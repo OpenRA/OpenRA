@@ -46,7 +46,7 @@ namespace OpenRa.Effects
 				var y = d.Y;
 				while( y >= prev.Y + 8 )
 				{
-					yield return new Renderable( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), 0 );
+					yield return new Renderable( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), "effect");
 					prev.Y += 8;
 				}
 			}
@@ -58,26 +58,26 @@ namespace OpenRa.Effects
 					var y = i * d.Y / d.X;
 					if( y <= prev.Y - 8 )
 					{
-						yield return new Renderable(tesla.GetSprite(3), (float2)(from + prev - new int2(8, 16)), 0);
+						yield return new Renderable(tesla.GetSprite(3), (float2)(from + prev - new int2(8, 16)), "effect");
 						prev.Y -= 8;
 						while( y <= prev.Y - 8 )
 						{
-							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 16)), 0);
+							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 16)), "effect");
 							prev.Y -= 8;
 						}
 					}
 					else if( y >= prev.Y + 8 )
 					{
-						yield return new Renderable(tesla.GetSprite(0), (float2)(from + prev - new int2(8, 8)), 0);
+						yield return new Renderable(tesla.GetSprite(0), (float2)(from + prev - new int2(8, 8)), "effect");
 						prev.Y += 8;
 						while( y >= prev.Y + 8 )
 						{
-							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 8)), 0);
+							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 8)), "effect");
 							prev.Y += 8;
 						}
 					}
 					else
-						yield return new Renderable(tesla.GetSprite(1), (float2)(from + prev - new int2(8, 8)), 0);
+						yield return new Renderable(tesla.GetSprite(1), (float2)(from + prev - new int2(8, 8)), "effect");
 
 					prev.X += 8;
 				}

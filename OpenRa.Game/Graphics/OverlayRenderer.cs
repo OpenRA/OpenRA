@@ -49,7 +49,7 @@ namespace OpenRa.Graphics
 					{
 						var location = new int2(x, y);
 						spriteRenderer.DrawSprite(smudgeSprites[tr.smudge - 1],
-							Game.CellSize * (float2)location, 0);
+							Game.CellSize * (float2)location, "terrain");
 					}
 
 					var o = tr.overlay;
@@ -62,7 +62,7 @@ namespace OpenRa.Graphics
 						else if (Ore.overlayIsOre[o]) spriteIndex = map.MapTiles[x,y].density - 1;
 						else if (Ore.overlayIsGems[o]) spriteIndex = map.MapTiles[x,y].density - 1;
 						spriteRenderer.DrawSprite(sprites[spriteIndex],
-							Game.CellSize * (float2)location, PaletteType.Terrain);
+							Game.CellSize * (float2)location, "terrain");
 					}
 				}
 

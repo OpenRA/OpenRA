@@ -7,10 +7,9 @@ namespace OpenRa.Traits
 {
 	class PaletteFromFileInfo : ITraitInfo
 	{
-		public readonly string Name = "Undefined";
-		public readonly string Theatre = "Undefined";
-		public readonly string Filename = "";
-		public readonly string Remap = "";
+		public readonly string Name = null;
+		public readonly string Theatre = null;
+		public readonly string Filename = null;
 		public object Create(Actor self) { return new PaletteFromFile(self, this); }
 	}
 
@@ -18,11 +17,11 @@ namespace OpenRa.Traits
 	{
 		public PaletteFromFile(Actor self, PaletteFromFileInfo info)
 		{
-			Log.Write("Created palette");
-			if (info.Theatre == "Undefined" || 
+			if (info.Theatre == null || 
 				info.Theatre.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
 			{
-				self.World.WorldRenderer.AddPalette(info.Name, new Palette(FileSystem.Open("temperat_ra.pal")));
+				Log.Write("Loading palette {0} from file {1}", info.Name, info.Filename);
+				self.World.WorldRenderer.AddPalette(info.Name, new Palette(FileSystem.Open(info.Filename)));
 			}
 		}
 	}

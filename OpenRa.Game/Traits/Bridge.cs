@@ -36,7 +36,7 @@ namespace OpenRa.Traits
 		public IEnumerable<Renderable> Render(Actor self)
 		{
 			foreach (var t in TileSprites[state])
-				yield return new Renderable(t.Value, Game.CellSize * t.Key, PaletteType.Gold);
+				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
 		}
 
 		public int StateFromTemplate(TileTemplate t)

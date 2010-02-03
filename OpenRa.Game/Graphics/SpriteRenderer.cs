@@ -54,18 +54,18 @@ namespace OpenRa.Graphics
 			}
 		}
 
-		public void DrawSprite(Sprite s, float2 location, PaletteType palette)
+		public void DrawSprite(Sprite s, float2 location, string palette)
 		{
 			DrawSprite(s, location, palette, s.size);
 		}
 
-		public void DrawSprite(Sprite s, float2 location, PaletteType palette, float2 size)
+		public void DrawSprite(Sprite s, float2 location, string palette, float2 size)
 		{
 			if (s.sheet != currentSheet)
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, indices, location.ToInt2(), s, (int)palette, nv, ni, size);
+			Util.FastCreateQuad(vertices, indices, location.ToInt2(), s, Game.world.WorldRenderer.GetPaletteIndex(palette), nv, ni, size);
 			nv += 4; ni += 6;
 			if (++sprites >= spritesPerBatch)
 				Flush();

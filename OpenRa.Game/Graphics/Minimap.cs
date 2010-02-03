@@ -35,7 +35,6 @@ namespace OpenRa.Graphics
 			sprite = new Sprite(sheet, rect, TextureChannel.Alpha);
 			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
 
-			playerColors = Util.MakeArray<Color>(8, b => Color.FromArgb(alpha, Chat.paletteColors[b]));
 			shroudColor = Color.FromArgb(alpha, Color.Black);
 		}
 
@@ -58,7 +57,6 @@ namespace OpenRa.Graphics
 					.Select(a => Color.FromArgb(alpha, pal.GetColor(a))).ToArray();
 			});
 
-		Color[] playerColors;
 		static Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
@@ -107,7 +105,7 @@ namespace OpenRa.Graphics
 
 				foreach (var a in world.Queries.WithTrait<Unit>())
 					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
-						playerColors[(int)a.Actor.Owner.Palette].ToArgb();
+						Color.FromArgb(alpha, a.Actor.Owner.Color).ToArgb();
 
 				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
 					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
@@ -120,7 +118,7 @@ namespace OpenRa.Graphics
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
-								(b.Owner != null ? playerColors[(int)b.Owner.Palette] : colors[4]).ToArgb();
+								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : colors[4]).ToArgb();
 					}
 			}
 
@@ -131,7 +129,7 @@ namespace OpenRa.Graphics
 		public void Draw(RectangleF rect, bool mapOnly)
 		{
 			rgbaRenderer.DrawSprite(mapOnly ? mapOnlySprite : sprite, 
-				new float2(rect.X, rect.Y), PaletteType.Chrome, new float2(rect.Width, rect.Height));
+				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
 			rgbaRenderer.Flush();
 		}
 	}

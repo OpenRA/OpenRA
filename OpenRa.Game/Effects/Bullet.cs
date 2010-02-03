@@ -98,14 +98,14 @@ namespace OpenRa.Effects
 				if (Projectile.High || Projectile.Arcing)
 				{
 					if (Projectile.Shadow)
-						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, PaletteType.Shadow);
+						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 
 					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
 
 					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Owner.Palette);
 				}
 				else
-					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, Projectile.UnderWater ? PaletteType.Shadow : Owner.Palette);
+					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, Projectile.UnderWater ? "shadow" : Owner.Palette);
 			}
 		}
 	}

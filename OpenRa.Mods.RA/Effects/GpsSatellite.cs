@@ -28,7 +28,7 @@ namespace OpenRa.Mods.RA.Effects
 		
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image,offset, PaletteType.Gold);
+			yield return new Renderable(anim.Image,offset, "effect");
 		}
 	}
 }

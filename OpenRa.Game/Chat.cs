@@ -39,21 +39,9 @@ namespace OpenRa
 				typing += c;
 		}
 
-		public static readonly Color[] paletteColors =
-		{
-			Color.FromArgb(228, 200, 112),
-			Color.FromArgb(56, 72, 125),
-			Color.FromArgb(238, 0, 0),
-			Color.FromArgb(198,97,0),
-			Color.FromArgb(28,109,97),
-			Color.FromArgb(153,76,53),
-			Color.FromArgb(76,101,60),
-			Color.FromArgb(133,113,101),
-		};
-
 		public void AddLine(Player p, string text)
 		{
-			AddLine(paletteColors[(int) p.Palette], p.PlayerName, text);
+			AddLine(p.Color, p.PlayerName, text);
 		}
 
 		public void AddLine(Color c, string from, string text)

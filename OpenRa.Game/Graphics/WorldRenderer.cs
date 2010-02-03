@@ -24,16 +24,29 @@ namespace OpenRa.Graphics
 			this.world = world;
 			this.renderer = renderer;
 
-			terrainRenderer = new TerrainRenderer(world, renderer);
+			terrainRenderer = new TerrainRenderer(world, renderer, this);
 			spriteRenderer = new SpriteRenderer(renderer, true);
 			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
 			palette = new HardwarePalette(renderer, world.Map);
 			Log.Write("Created worldrenderer");
 		}
+		
+		// TODO: Implement
+		public int GetPaletteIndex(string name)
+		{
+			return 0;
+		}
+		
+		public Palette GetPalette(string name)
+		{
+			return palette.GetPalette(name);
+		}
+		
+		
 		public void AddPalette(string name, Palette pal)
 		{
-			palette.AddPalette(pal);
+			palette.AddPalette(name, pal);
 		}
 		
 		void DrawSpriteList(RectangleF rect,
@@ -229,7 +242,7 @@ namespace OpenRa.Graphics
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), PaletteType.Chrome);
+			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), "chrome");
 		}
 
 		void DrawPips(Actor selectedUnit, float2 basePosition)
@@ -244,7 +257,7 @@ namespace OpenRa.Graphics
 				{
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, PaletteType.Chrome);
+					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
 					pipxyOffset += new float2(4, 0);
 					
 					if (pipxyOffset.X+5 > selectedUnit.GetBounds(false).Width)
@@ -274,7 +287,7 @@ namespace OpenRa.Graphics
 						
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, PaletteType.Chrome);
+					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, "chrome");
 					
 					// Increment row
 					tagxyOffset.Y += 8;

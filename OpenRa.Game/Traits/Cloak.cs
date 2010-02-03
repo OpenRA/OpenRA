@@ -31,7 +31,7 @@ namespace OpenRa.Traits
 				return rs;
 
 			if (self.Owner == self.World.LocalPlayer)
-				return rs.Select(a => a.WithPalette(PaletteType.Shadow));
+				return rs.Select(a => a.WithPalette("shadow"));
 			else
 				return new Renderable[] { };
 		}

@@ -71,10 +71,10 @@ namespace OpenRa.Traits
 	{
 		public readonly Sprite Sprite;
 		public readonly float2 Pos;
-		public readonly PaletteType Palette;
+		public readonly string Palette;
 		public readonly int ZOffset;
 
-		public Renderable(Sprite sprite, float2 pos, PaletteType palette, int zOffset)
+		public Renderable(Sprite sprite, float2 pos, string palette, int zOffset)
 		{
 			Sprite = sprite;
 			Pos = pos;
@@ -82,10 +82,10 @@ namespace OpenRa.Traits
 			ZOffset = zOffset;
 		}
 
-		public Renderable(Sprite sprite, float2 pos, PaletteType palette)
+		public Renderable(Sprite sprite, float2 pos, string palette)
 			: this(sprite, pos, palette, 0) { }
 
-		public Renderable WithPalette(PaletteType newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
+		public Renderable WithPalette(string newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}

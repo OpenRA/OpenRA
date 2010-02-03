@@ -125,7 +125,7 @@ namespace OpenRa.Traits
 			{
 				yield return a;
 				if (Disabled)
-					yield return a.WithPalette(PaletteType.Disabled);
+					yield return a.WithPalette("disabled");
 			}
 		}
 	}

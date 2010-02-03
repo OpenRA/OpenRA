@@ -54,7 +54,7 @@ namespace OpenRa.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			var pos = location - new float2(0, altitude);
-			yield return new Renderable(anim.Image, location - .5f * anim.Image.size, PaletteType.Shadow, 0);
+			yield return new Renderable(anim.Image, location - .5f * anim.Image.size, "shadow", 0);
 			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, owner.Palette, 2);
 			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size, owner.Palette, 3);
 		}

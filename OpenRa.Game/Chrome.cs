@@ -193,7 +193,7 @@ namespace OpenRa
 
 			DrawRadar( world );
 			DrawPower( world );
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), "chrome");
 			DrawMoney( world );
 			rgbaRenderer.Flush();
 			DrawButtons( world );
@@ -316,7 +316,7 @@ namespace OpenRa
 			DrawDialogBackground(mapRect, panelSprites, false);
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location) + new float2(4, 4), 
-				PaletteType.Chrome, 
+				"chrome", 
 				new float2(mapRect.Size) - new float2(8, 8));
 			rgbaRenderer.Flush();
 
@@ -350,14 +350,15 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
-		bool PaletteAvailable(int palette) { return Game.LobbyInfo.Clients.All(c => c.Palette != palette); }
+		bool PaletteAvailable(string palette) { return Game.LobbyInfo.Clients.All(c => c.Palette != palette); }
 
 		void CyclePalette(bool left)
 		{
 			var d = left ? 1 : 7;
-			var newpalette = ((int)Game.world.LocalPlayer.Palette + d) % 8;
-			while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
-				newpalette = (newpalette + d) % 8;
+			// TODO: FIX
+			var newpalette = 1;//((int)Game.world.LocalPlayer.Palette + d) % 8;
+			//while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
+			//	newpalette = (newpalette + d) % 8;
 
 			Game.IssueOrder(
 				Order.Chat("/pal " + newpalette));
@@ -446,7 +447,7 @@ namespace OpenRa
 					AddButton(paletteRect, CyclePalette);
 
 					shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-						(PaletteType)client.Palette);
+						client.Palette);
 
 					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
 					DrawDialogBackground(raceRect, panelSprites, false);
@@ -463,7 +464,7 @@ namespace OpenRa
 
 				
 				shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-					(PaletteType)client.Palette);
+					client.Palette);
 
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
@@ -530,12 +531,12 @@ namespace OpenRa
 			
 			hasRadar = hasNewRadar;
 
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "left"), radarOrigin, PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), PaletteType.Chrome);	
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "left"), radarOrigin, "chrome");
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");	
 
 			if (radarAnimating)
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bg"), radarOrigin + new float2(9, 0), PaletteType.Chrome);	
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");	
 			
 			rgbaRenderer.Flush();
 
@@ -567,7 +568,7 @@ namespace OpenRa
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				var race = (world.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), "chrome");
 
 				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),
 					(Action<bool>)(isLmb => HandleTabClick(groupName))));
@@ -600,7 +601,7 @@ namespace OpenRa
 			var x = Game.viewport.Width - 65;
 			foreach (var d in moneyDigits.Reverse())
 			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, digitCollection, (d - '0').ToString()), new float2(x, 6), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, digitCollection, (d - '0').ToString()), new float2(x, 6), "chrome");
 				x -= 14;
 			}
 		}
@@ -655,7 +656,7 @@ namespace OpenRa
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y-1);
 		
-			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
 			rgbaRenderer.Flush();
 		}
 
@@ -675,7 +676,7 @@ namespace OpenRa
 				repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
 				AddButton(repairRect, isLmb => Game.controller.ToggleInputMode<RepairOrderGenerator>());
 			}
-			shpRenderer.DrawSprite(repairButton.Image, repairDrawPos, PaletteType.Chrome);
+			shpRenderer.DrawSprite(repairButton.Image, repairDrawPos, "chrome");
 			
 			// Sell
 			Rectangle sellRect = new Rectangle(buttonOrigin.X+40, buttonOrigin.Y, 
@@ -686,7 +687,7 @@ namespace OpenRa
 			sellButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
 			
 			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
-			shpRenderer.DrawSprite(sellButton.Image, sellDrawPos, PaletteType.Chrome);
+			shpRenderer.DrawSprite(sellButton.Image, sellDrawPos, "chrome");
 			shpRenderer.Flush();
 
 			if (Game.Settings.PowerDownBuildings)
@@ -700,7 +701,7 @@ namespace OpenRa
 				pwrdownButton.ReplaceAnim(Game.controller.orderGenerator is PowerDownOrderGenerator ? "pressed" : "normal");
 
 				AddButton(pwrdownRect, isLmb => Game.controller.ToggleInputMode<PowerDownOrderGenerator>());
-				shpRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, PaletteType.Chrome);
+				shpRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, "chrome");
 			}
 			shpRenderer.Flush();
 			
@@ -713,7 +714,7 @@ namespace OpenRa
 			optionsButton.ReplaceAnim(optionsPressed ? "left-pressed" : "left-normal");
 			
 			AddButton(optionsRect, isLmb => optionsPressed = !optionsPressed);
-			shpRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, PaletteType.Chrome);
+			shpRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, "chrome");
 			shpRenderer.Flush();
 			
 			renderer.DrawText("Options", new int2((int)(optionsButton.Image.size.X - renderer.MeasureText("Options").X)/2, -2) , Color.White);
@@ -739,26 +740,26 @@ namespace OpenRa
 			if (ss.Length > 8)
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
-					sr.DrawSprite(ss[8], new float2(x, y), PaletteType.Chrome);
+					sr.DrawSprite(ss[8], new float2(x, y), "chrome");
 
 			//draw borders
 
 			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[1].size.Y)
 			{
-				sr.DrawSprite(ss[2], new float2(r.Left, y), PaletteType.Chrome);
-				sr.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), PaletteType.Chrome);
+				sr.DrawSprite(ss[2], new float2(r.Left, y), "chrome");
+				sr.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), "chrome");
 			}
 
 			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[3].size.X)
 			{
-				sr.DrawSprite(ss[0], new float2(x, r.Top), PaletteType.Chrome);
-				sr.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), PaletteType.Chrome);
+				sr.DrawSprite(ss[0], new float2(x, r.Top), "chrome");
+				sr.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), "chrome");
 			}
 
-			sr.DrawSprite(ss[4], new float2(r.Left, r.Top), PaletteType.Chrome);
-			sr.DrawSprite(ss[5], new float2(r.Right - ss[5].size.X, r.Top), PaletteType.Chrome);
-			sr.DrawSprite(ss[6], new float2(r.Left, r.Bottom - ss[6].size.Y), PaletteType.Chrome);
-			sr.DrawSprite(ss[7], new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), PaletteType.Chrome);
+			sr.DrawSprite(ss[4], new float2(r.Left, r.Top), "chrome");
+			sr.DrawSprite(ss[5], new float2(r.Right - ss[5].size.X, r.Top), "chrome");
+			sr.DrawSprite(ss[6], new float2(r.Left, r.Bottom - ss[6].size.Y), "chrome");
+			sr.DrawSprite(ss[7], new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), "chrome");
 			sr.Flush();
 
 			renderer.Device.DisableScissor();
@@ -858,7 +859,7 @@ namespace OpenRa
 			string tooltipItem = null;
 
 			// Draw the top border
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9), "chrome");
 
 			// Draw the icons
 			int lasty = -1;
@@ -867,7 +868,7 @@ namespace OpenRa
 				// Draw the background for this row
 				if (y != lasty)
 				{
-					rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+					rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), "chrome");
 					rgbaRenderer.Flush();
 					lasty = y;
 				}
@@ -876,7 +877,7 @@ namespace OpenRa
 				var drawPos = new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 
-				shpRenderer.DrawSprite(tabSprites[item.Name], drawPos, PaletteType.Chrome);
+				shpRenderer.DrawSprite(tabSprites[item.Name], drawPos, "chrome");
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
@@ -892,7 +893,7 @@ namespace OpenRa
 							* NumClockFrames / firstOfThis.TotalTime);
 					clock.Tick();
 
-					shpRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
+					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");
 
 					if (firstOfThis.Done)
 					{
@@ -934,23 +935,23 @@ namespace OpenRa
 			
 			while (y < paletteRows)
 			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), "chrome");
 				y++;
 			}
 
 			foreach (var ob in overlayBits)
-				shpRenderer.DrawSprite(ob.First, ob.Second, PaletteType.Chrome);
+				shpRenderer.DrawSprite(ob.First, ob.Second, "chrome");
 
 			shpRenderer.Flush();
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), "chrome");
 
 			// Draw dock
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-top"), new float2(Game.viewport.Width - 14, origin.Y - 23), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-top"), new float2(Game.viewport.Width - 14, origin.Y - 23), "chrome");
 			for (int i = 0; i < y; i++)
 			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-" + (y % 4).ToString()), new float2(Game.viewport.Width - 14, origin.Y + 48 * i), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-" + (y % 4).ToString()), new float2(Game.viewport.Width - 14, origin.Y + 48 * i), "chrome");
 			}
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), "chrome");
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null)
@@ -1054,7 +1055,7 @@ namespace OpenRa
 		{
 			var tooltipSprite = ChromeProvider.GetImage(renderer, chromeCollection, "tooltip-bg");
 			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
-			rgbaRenderer.DrawSprite(tooltipSprite, p, PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(tooltipSprite, p, "chrome");
 			rgbaRenderer.Flush();
 
 			var info = Rules.Info[unit];
@@ -1104,10 +1105,10 @@ namespace OpenRa
 
 			if (numPowers == 0) return;
 
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-top"), new float2(0, 14), PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-top"), new float2(0, 14), "chrome");
 			for (var i = 1; i < numPowers; i++)
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-middle"), new float2(0, 14 + i * 51), PaletteType.Chrome);
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-bottom"), new float2(0, 14 + numPowers * 51), PaletteType.Chrome);
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-middle"), new float2(0, 14 + i * 51), "chrome");
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-bottom"), new float2(0, 14 + numPowers * 51), "chrome");
 
 			rgbaRenderer.Flush();
 
@@ -1122,14 +1123,14 @@ namespace OpenRa
 				if (sp.IsAvailable)
 				{
 					var drawPos = new float2(5, y);
-					shpRenderer.DrawSprite(image, drawPos, PaletteType.Chrome);
+					shpRenderer.DrawSprite(image, drawPos, "chrome");
 
 					clock.PlayFetchIndex("idle",
 						() => (sp.TotalTime - sp.RemainingTime)
 							* NumClockFrames / sp.TotalTime);
 					clock.Tick();
 
-					shpRenderer.DrawSprite(clock.Image, drawPos, PaletteType.Chrome);
+					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");
 
 					var rect = new Rectangle(5, y, 64, 48);
 					if (sp.IsReady)
@@ -1137,7 +1138,7 @@ namespace OpenRa
 						ready.Play("ready");
 						shpRenderer.DrawSprite(ready.Image, 
 							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
-							PaletteType.Chrome);
+							"chrome");
 					}
 
 					AddButton(rect, HandleSupportPower(sp));
@@ -1174,7 +1175,7 @@ namespace OpenRa
 		void DrawSupportPowerTooltip(World world, SupportPower sp, int2 pos)
 		{
 			var tooltipSprite = ChromeProvider.GetImage(renderer, chromeCollection, "tooltip-bg");
-			rgbaRenderer.DrawSprite(tooltipSprite, pos, PaletteType.Chrome);
+			rgbaRenderer.DrawSprite(tooltipSprite, pos, "chrome");
 			rgbaRenderer.Flush();
 
 			pos += new int2(5, 5);

@@ -58,11 +58,12 @@ namespace OpenRA.Server
 			throw new InvalidOperationException("Already got 8 players");
 		}
 
-		static int ChooseFreePalette()
+		static string ChooseFreePalette()
 		{
+			// TODO: FIX
 			for (var i = 0; i < 8; i++)
-				if (lobbyInfo.Clients.All(c => c.Palette != i))
-					return i;
+				//if (lobbyInfo.Clients.All(c => c.Palette != i))
+					return "player"+i;
 
 			throw new InvalidOperationException("No free palettes");
 		}
@@ -247,14 +248,15 @@ namespace OpenRA.Server
 							SendChatTo( conn, "You can't change your color after the game has started" );
 							return true;
 						}
-
-						int pal;
-						if (!int.TryParse(s, out pal) || pal < 0 || pal > 7)
+						int pali;
+						
+						if (!int.TryParse(s, out pali) || pali < 0 || pali > 7)
 						{
 							Console.WriteLine("Invalid palette: {0}", s);
 							return false;
 						}
-
+						string pal = "player"+pali;
+						
 						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.Palette == pal ))
 						{
 							SendChatTo( conn, "You can't be the same color as another player" );

@@ -5,6 +5,7 @@ using OpenRa.GameRules;
 using OpenRa.Graphics;
 using OpenRa.Traits;
 using OpenRa.FileFormats;
+using System.Drawing;
 
 namespace OpenRa
 {
@@ -13,7 +14,7 @@ namespace OpenRa
 	public class Player
 	{
 		public Actor PlayerActor;
-		public PaletteType Palette;
+		public string Palette;
 		public int Kills;
 		public string PlayerName;
 		public string InternalName;
@@ -27,7 +28,18 @@ namespace OpenRa
 		public int PowerDrained = 0;
 
 		public World World { get { return PlayerActor.World; } }
-
+		
+		public Color Color;
+		/*
+		    Color.FromArgb(228, 200, 112),
+			Color.FromArgb(56, 72, 125),
+			Color.FromArgb(238, 0, 0),
+			Color.FromArgb(198,97,0),
+			Color.FromArgb(28,109,97),
+			Color.FromArgb(153,76,53),
+			Color.FromArgb(76,101,60),
+			Color.FromArgb(133,113,101),
+		 */
 		public Shroud Shroud;
 
 		public Player( World world, int index, Session.Client client )
@@ -37,7 +49,7 @@ namespace OpenRa
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);
 
-			this.Palette = client != null ? (PaletteType)client.Palette : (PaletteType)index;
+			this.Palette = client != null ? "player"+client.Palette : "player"+index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
 			this.Race = client != null ? (Race)client.Race : Race.Allies;
 		}
@@ -160,10 +172,10 @@ namespace OpenRa
 				Race = (Race)client.Race;
 			}
 
-			if (Palette != (PaletteType)client.Palette)
+			if (Palette != client.Palette)
 			{
-				Game.chat.AddLine(this, "has changed color to {0}".F((PaletteType)client.Palette));
-				Palette = (PaletteType)client.Palette;
+				Game.chat.AddLine(this, "has changed color to {0}".F(client.Palette));
+				Palette = client.Palette;
 			}
 		}
 	}

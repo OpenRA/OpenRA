@@ -21,7 +21,7 @@ namespace OpenRa.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image, 
-				a.CenterLocation - .5f * anim.Image.size, PaletteType.Chrome);
+				a.CenterLocation - .5f * anim.Image.size, "chrome");
 		}
 	}
 }

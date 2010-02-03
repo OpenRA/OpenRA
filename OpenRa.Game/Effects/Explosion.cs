@@ -22,7 +22,7 @@ namespace OpenRa.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, 0);
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect");
 		}
 
 		public Player Owner { get { return null; } }

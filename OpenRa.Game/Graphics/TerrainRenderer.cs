@@ -15,7 +15,7 @@ namespace OpenRa.Graphics
 		Map map;
 		OverlayRenderer overlayRenderer;
 
-		public TerrainRenderer(World world, Renderer renderer)
+		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
 		{
 			this.renderer = renderer;
 			this.map = world.Map;
@@ -34,7 +34,9 @@ namespace OpenRa.Graphics
 				for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
 				{
 					Sprite tile = tileMapping[map.MapTiles[i, j]];
-					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, (int)PaletteType.Terrain, nv, ni, tile.size);
+					//var bar = Game.world.WorldRenderer;
+					var foo = wr.GetPaletteIndex("terrain");
+					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, foo, nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
 				}

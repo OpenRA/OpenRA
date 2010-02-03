@@ -24,7 +24,7 @@ namespace OpenRa.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, PaletteType.Shadow);
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 		}
 	}
 }
