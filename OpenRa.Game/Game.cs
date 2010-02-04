@@ -65,7 +65,9 @@ namespace OpenRa
 			Timer.Time( "load rules: {0}" );
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
+			Player.ResetPlayerColorList();
 			world = new World();
+						
 			Game.world.ActorAdded += a => 
 			{ 
 				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 

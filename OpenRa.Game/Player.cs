@@ -30,8 +30,16 @@ namespace OpenRa
 		public World World { get { return PlayerActor.World; } }
 
 		public static List<Tuple<string, string, Color>> PlayerColors = new List<Tuple<string, string, Color>>();
+		public static void ResetPlayerColorList()
+		{
+			// This is unsafe if the mapchange introduces/removes mods that defines new colors
+			// TODO: ensure that each player's palette index is reassigned appropriately
+			PlayerColors = new List<Tuple<string, string, Color>>();
+		}
+		
 		public static void RegisterPlayerColor(string palette, string name, Color c)
 		{
+			Log.Write("Adding player color {0}",name);
 			PlayerColors.Add(new Tuple<string, string, Color>(palette, name, c));
 		}
 
@@ -58,7 +66,7 @@ namespace OpenRa
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
 			this.Race = client != null ? (Race)client.Race : Race.Allies;
 		}
-
+	
 		void UpdatePower()
 		{
 			var oldBalance = PowerProvided - PowerDrained;
