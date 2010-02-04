@@ -214,6 +214,7 @@ namespace OpenRa
 
 		public static void StartGame()
 		{
+			Game.chat.Reset();
 			var available = world.Map.SpawnPoints.ToList();
 			var taken = new List<int2>();
 
@@ -283,12 +284,12 @@ namespace OpenRa
 		internal static void HandleKeyPress( KeyPressEventArgs e )
 		{
 			int sync = Game.world.SyncHash();
-
+			
 			if( e.KeyChar == '\r' )
 				Game.chat.Toggle();
 			else if( Game.chat.isChatting )
 				Game.chat.TypeChar( e.KeyChar );
-
+			
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}

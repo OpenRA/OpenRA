@@ -10,15 +10,22 @@ namespace OpenRa
 
 		public List<Tuple<Color, string, string>> recentLines = new List<Tuple<Color, string, string>>();
 		public string typing = "";
-		public bool isChatting = false;
+		public bool isChatting = true;
 
 		public void Toggle()
 		{
 			if (isChatting && typing.Length > 0)
-				Game.IssueOrder(Order.Chat(typing));
+					Game.IssueOrder(Order.Chat(typing));
 
+				typing = "";
+			if (Game.orderManager.GameStarted)
+				isChatting ^= true;	
+		}
+		
+		public void Reset()
+		{
 			typing = "";
-			isChatting ^= true;
+			isChatting = false;
 		}
 
 		public void TypeChar(char c)

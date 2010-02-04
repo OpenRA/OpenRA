@@ -56,6 +56,7 @@ namespace OpenRa.Graphics
 			{
 				world.WorldRenderer.Draw();
 				Game.chrome.Draw( world );
+				
 
 				if( Game.orderManager.Connection.ConnectionState == ConnectionState.NotConnected )
 					Game.chrome.DrawDialog("Connection lost.");
