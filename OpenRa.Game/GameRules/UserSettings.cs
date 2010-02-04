@@ -25,6 +25,7 @@ namespace OpenRa.GameRules
 		public readonly string Map = "scm12ea.ini";
 		public readonly int Player = 1;
 		public readonly string Replay = "";
+		public readonly string PlayerName = "";
 		
 		// Gameplay options
 		public readonly bool RepairRequiresConyard = true;

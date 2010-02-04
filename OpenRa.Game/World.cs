@@ -32,6 +32,9 @@ namespace OpenRa
 				Game.viewport.GoToStartLocation(LocalPlayer);
 				Game.chat.AddLine(LocalPlayer, "is now YOU");
 			}
+			if (!string.IsNullOrEmpty(Game.Settings.PlayerName) && LocalPlayer.PlayerName != Game.Settings.PlayerName)
+				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
+
 		}
 
 		public readonly Actor WorldActor;
@@ -68,7 +71,9 @@ namespace OpenRa
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			for (int i = 0; i < 8; i++)
+			{
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
+			}
 			Timer.Time( "worldActor, players: {0}" );
 
 			Queries = new AllQueries( this );
