@@ -39,7 +39,6 @@ namespace OpenRa
 		
 		public static void RegisterPlayerColor(string palette, string name, Color c)
 		{
-			Log.Write("Adding player color {0}",name);
 			PlayerColors.Add(new Tuple<string, string, Color>(palette, name, c));
 		}
 

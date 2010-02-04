@@ -356,9 +356,6 @@ namespace OpenRa
 			var d = left ? +1 : Player.PlayerColors.Count() - 1;
 
 			var newIndex = ((int)Game.world.LocalPlayer.PaletteIndex + d) % Player.PlayerColors.Count();
-
-			Game.IssueOrder(
-				Order.Chat("color count " + Player.PlayerColors.Count()));
 				
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
 				newIndex = (newIndex + d) % Player.PlayerColors.Count();
