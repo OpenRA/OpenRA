@@ -56,12 +56,12 @@ World:
 		BasePalette: player
 		Remap: salmon.rem
 		DisplayColor: 153,76,53
-#	PlayerColorPalette@player6:
-#		Name: player6
-#		DisplayName: Green
-#		BasePalette: player
-#		Remap: green.rem
-#		DisplayColor: 76,101,60
+	PlayerColorPalette@player6:
+		Name: player6
+		DisplayName: Green
+		BasePalette: player
+		Remap: green.rem
+		DisplayColor: 76,101,60
 #	PlayerColorPalette@player7:
 #		Name: player7
 #		DisplayName: Gray
@@ -88,12 +88,6 @@ World:
 		R: 255
 		G: 255
 		B: 255
-		A: 128
-	PaletteFromRGBA@invuln:
-		Name: invuln
-		R: 128
-		G: 0
-		B: 0
 		A: 128
 	PaletteFromRGBA@disabled:
 		Name: disabled

@@ -71,7 +71,94 @@ World:
 	LightPaletteRotator:
 	BuildingInfluence:
 	UnitInfluence:
-
+	PaletteFromFile@terrain_temperat:
+		Name: terrain
+		Filename: temperat.pal
+	PaletteFromFile@terrain_snow:
+		Name: snow
+		Filename: snow.pal
+	PlayerColorPalette@player0:
+		Name: player0
+		DisplayName: Gold
+		BasePalette: terrain
+		DisplayColor: 228, 200, 112
+	PlayerColorPalette@player1:
+		Name: player1
+		DisplayName: Blue
+		BasePalette: terrain
+		Remap: blue.rem
+		DisplayColor: 56, 72, 125
+	PlayerColorPalette@player2:
+		Name: player2
+		DisplayName: Red
+		BasePalette: terrain
+		Remap: red.rem
+		DisplayColor: 238, 0, 0
+	PlayerColorPalette@player3:
+		Name: player3
+		DisplayName: Orange
+		BasePalette: terrain
+		Remap: orange.rem
+		DisplayColor: 198,97,0
+	PlayerColorPalette@player4:
+		Name: player4
+		DisplayName: Teal
+		BasePalette: terrain
+		Remap: teal.rem
+		DisplayColor: 28,109,97
+	PlayerColorPalette@player5:
+		Name: player5
+		DisplayName: Salmon
+		BasePalette: terrain
+		Remap: salmon.rem
+		DisplayColor: 153,76,53
+#	PlayerColorPalette@player6:
+#		Name: player6
+#		DisplayName: Green
+#		BasePalette: terrain
+#		Remap: green.rem
+#		DisplayColor: 76,101,60
+#	PlayerColorPalette@player7:
+#		Name: player7
+#		DisplayName: Gray
+#		BasePalette: terrain
+#		Remap: gray.rem
+#		DisplayColor: 133,113,101
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette:
+	
 MGG:
 	GeneratesGap:
 		Range: 10
