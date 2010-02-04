@@ -141,7 +141,7 @@ namespace OpenRa.FileFormats
 
 		void ReadTrees( IniFile file )
 		{
-			IniSection terrain = file.GetSection( "TERRAIN" );
+			IniSection terrain = file.GetSection( "TERRAIN", true );
 			if( terrain == null )
 				return;
 
