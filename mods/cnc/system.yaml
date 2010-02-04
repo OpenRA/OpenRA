@@ -44,14 +44,14 @@ World:
 		Name: player5
 		BasePalette: player
 		Remap: salmon.rem
-	PaletteFromRemap@player6:
-		Name: player6
-		BasePalette: player
-		Remap: green.rem
-	PaletteFromRemap@player7:
-		Name: player7
-		BasePalette: player
-		Remap: gray.rem
+#	PaletteFromRemap@player6:
+#		Name: player6
+#		BasePalette: player
+#		Remap: green.rem
+#	PaletteFromRemap@player7:
+#		Name: player7
+#		BasePalette: player
+#		Remap: gray.rem
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

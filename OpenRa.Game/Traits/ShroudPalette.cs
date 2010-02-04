@@ -18,6 +18,7 @@ namespace OpenRa.Traits
 				// TODO: This shouldn't rely on a base palette
 				var wr = self.World.WorldRenderer;
 				var pal = wr.GetPalette("terrain");
+
 				wr.AddPalette("shroud", new Palette(pal, new ShroudPaletteRemap()));
 		}
 	}

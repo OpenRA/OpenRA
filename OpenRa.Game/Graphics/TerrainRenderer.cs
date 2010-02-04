@@ -34,9 +34,9 @@ namespace OpenRa.Graphics
 				for( int i = map.XOffset ; i < map.XOffset + map.Width; i++ )
 				{
 					Sprite tile = tileMapping[map.MapTiles[i, j]];
-					//var bar = Game.world.WorldRenderer;
-					var foo = wr.GetPaletteIndex("terrain");
-					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, foo, nv, ni, tile.size);
+					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
+					// before the palettes are created
+					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
 				}

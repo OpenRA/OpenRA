@@ -8,17 +8,18 @@ namespace OpenRa.Graphics
 {
 	class HardwarePalette : Sheet
 	{
-		const int maxEntries = 32;
+		const int maxEntries = 16;
 		int allocated = 0;
 		
 		// We need to store the Palettes themselves for the remap palettes to work
 		// We should probably try to fix this somehow
 		static Dictionary<string, Palette> palettes;
-		
+		static Dictionary<string, int> indices;
 		public HardwarePalette(Renderer renderer, Map map)
 			: base(renderer,new Size(256, maxEntries))
 		{
 			palettes = new Dictionary<string, Palette>();
+			indices = new Dictionary<string, int>();
 		}
 		
 		public Palette GetPalette(string name)
@@ -31,9 +32,20 @@ namespace OpenRa.Graphics
 			}
 		}
 
+		public int GetPaletteIndex(string name)
+		{
+			try { return indices[name]; }
+			catch (KeyNotFoundException)
+			{
+				throw new InvalidOperationException(
+					"Palette `{0}` does not exist".F(name));
+			}
+		}
+		
 		public int AddPalette(string name, Palette p)
 		{
 			palettes.Add(name, p);
+			indices.Add(name, allocated);
 			for (int i = 0; i < 256; i++)
 			{
 				this[new Point(i, allocated)] = p.GetColor(i);

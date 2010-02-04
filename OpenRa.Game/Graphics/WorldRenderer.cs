@@ -35,9 +35,9 @@ namespace OpenRa.Graphics
 		// TODO: Implement
 		public int GetPaletteIndex(string name)
 		{
-			return 0;
+			return palette.GetPaletteIndex(name);
 		}
-		
+
 		public Palette GetPalette(string name)
 		{
 			return palette.GetPalette(name);

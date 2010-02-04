@@ -20,7 +20,7 @@ namespace OpenRa.Traits
 			if (info.Theatre == null || 
 				info.Theatre.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
 			{
-				Log.Write("Loading palette {0} from file {1}", info.Name, info.Filename);
+				//Log.Write("Loading palette {0} from file {1}", info.Name, info.Filename);
 				self.World.WorldRenderer.AddPalette(info.Name, new Palette(FileSystem.Open(info.Filename)));
 			}
 		}
