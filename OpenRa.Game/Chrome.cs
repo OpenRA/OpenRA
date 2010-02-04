@@ -350,18 +350,17 @@ namespace OpenRa
 			AddButton(r, _ => { });
 		}
 
-		bool PaletteAvailable(string palette) { return Game.LobbyInfo.Clients.All(c => c.Palette != palette); }
-
+		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
 		void CyclePalette(bool left)
 		{
-			var d = left ? 1 : 7;
-			// TODO: FIX
-			var newpalette = 1;//((int)Game.world.LocalPlayer.Palette + d) % 8;
-			//while (!PaletteAvailable(newpalette) && newpalette != (int)Game.world.LocalPlayer.Palette)
-			//	newpalette = (newpalette + d) % 8;
+			var d = left ? +1 : Player.PlayerColors.Count() - 1;
+
+			var newIndex = ((int)Game.world.LocalPlayer.PaletteIndex + d) % Player.PlayerColors.Count();
+			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
+				newIndex = (newIndex + d) % Player.PlayerColors.Count();
 
 			Game.IssueOrder(
-				Order.Chat("/pal " + newpalette));
+				Order.Chat("/pal " + newIndex));
 		}
 
 		void CycleRace(bool left)
@@ -446,8 +445,9 @@ namespace OpenRa
 					DrawDialogBackground(paletteRect, panelSprites, false);
 					AddButton(paletteRect, CyclePalette);
 
+					// TODO: Render using the System.Drawing.Color (Player.PlayerColors[client.PaletteIndex].c)
 					shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-						client.Palette);
+						Player.PlayerColors[client.PaletteIndex].a);
 
 					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
 					DrawDialogBackground(raceRect, panelSprites, false);
@@ -462,9 +462,9 @@ namespace OpenRa
 
 				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
 
-				
+				// TODO: Render using Player.PlayerColors[client.PaletteIndex].c
 				shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-					client.Palette);
+					Player.PlayerColors[client.PaletteIndex].a);
 
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);

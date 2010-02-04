@@ -21,37 +21,53 @@ World:
 		Name: player
 		Theatre: temperat
 		Filename: temperat.pal
-	PaletteFromRemap@player0:
+	PlayerColorPalette@player0:
 		Name: player0
+		DisplayName: Gold
 		BasePalette: player
-	PaletteFromRemap@player1:
+		DisplayColor: 228, 200, 112
+	PlayerColorPalette@player1:
 		Name: player1
+		DisplayName: Blue
 		BasePalette: player
 		Remap: blue.rem
-	PaletteFromRemap@player2:
+		DisplayColor: 56, 72, 125
+	PlayerColorPalette@player2:
 		Name: player2
+		DisplayName: Red
 		BasePalette: player
 		Remap: red.rem
-	PaletteFromRemap@player3:
+		DisplayColor: 238, 0, 0
+	PlayerColorPalette@player3:
 		Name: player3
+		DisplayName: Orange
 		BasePalette: player
 		Remap: orange.rem
-	PaletteFromRemap@player4:
+		DisplayColor: 198,97,0
+	PlayerColorPalette@player4:
 		Name: player4
+		DisplayName: Teal
 		BasePalette: player
 		Remap: teal.rem
-	PaletteFromRemap@player5:
+		DisplayColor: 28,109,97
+	PlayerColorPalette@player5:
 		Name: player5
+		DisplayName: Salmon
 		BasePalette: player
 		Remap: salmon.rem
-#	PaletteFromRemap@player6:
+		DisplayColor: 153,76,53
+#	PlayerColorPalette@player6:
 #		Name: player6
+#		DisplayName: Green
 #		BasePalette: player
 #		Remap: green.rem
-#	PaletteFromRemap@player7:
+#		DisplayColor: 76,101,60
+#	PlayerColorPalette@player7:
 #		Name: player7
+#		DisplayName: Gray
 #		BasePalette: player
 #		Remap: gray.rem
+#		DisplayColor: 133,113,101
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

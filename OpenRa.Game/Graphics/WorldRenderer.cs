@@ -32,7 +32,6 @@ namespace OpenRa.Graphics
 			Log.Write("Created worldrenderer");
 		}
 		
-		// TODO: Implement
 		public int GetPaletteIndex(string name)
 		{
 			return palette.GetPaletteIndex(name);
@@ -42,7 +41,6 @@ namespace OpenRa.Graphics
 		{
 			return palette.GetPalette(name);
 		}
-		
 		
 		public void AddPalette(string name, Palette pal)
 		{

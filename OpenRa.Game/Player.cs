@@ -14,7 +14,7 @@ namespace OpenRa
 	public class Player
 	{
 		public Actor PlayerActor;
-		public string Palette;
+		public int PaletteIndex;
 		public int Kills;
 		public string PlayerName;
 		public string InternalName;
@@ -28,18 +28,23 @@ namespace OpenRa
 		public int PowerDrained = 0;
 
 		public World World { get { return PlayerActor.World; } }
+
+		public static List<Tuple<string, string, Color>> PlayerColors = new List<Tuple<string, string, Color>>();
+		public static void RegisterPlayerColor(string palette, string name, Color c)
+		{
+			PlayerColors.Add(new Tuple<string, string, Color>(palette, name, c));
+		}
+
+		public Color Color
+		{
+			get { return PlayerColors[PaletteIndex].c; }
+		}
 		
-		public Color Color;
-		/*
-		    Color.FromArgb(228, 200, 112),
-			Color.FromArgb(56, 72, 125),
-			Color.FromArgb(238, 0, 0),
-			Color.FromArgb(198,97,0),
-			Color.FromArgb(28,109,97),
-			Color.FromArgb(153,76,53),
-			Color.FromArgb(76,101,60),
-			Color.FromArgb(133,113,101),
-		 */
+		public string Palette
+		{
+			get { return PlayerColors[PaletteIndex].a; }
+		}
+
 		public Shroud Shroud;
 
 		public Player( World world, int index, Session.Client client )
@@ -49,7 +54,7 @@ namespace OpenRa
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);
 
-			this.Palette = client != null ? "player"+client.Palette : "player"+index;
+			this.PaletteIndex = client != null ? client.PaletteIndex : index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
 			this.Race = client != null ? (Race)client.Race : Race.Allies;
 		}
@@ -172,10 +177,10 @@ namespace OpenRa
 				Race = (Race)client.Race;
 			}
 
-			if (Palette != client.Palette)
+			if (PaletteIndex != client.PaletteIndex)
 			{
-				Game.chat.AddLine(this, "has changed color to {0}".F(client.Palette));
-				Palette = client.Palette;
+				PaletteIndex = client.PaletteIndex;
+				Game.chat.AddLine(this, "has changed color to {0}".F(PlayerColors[client.PaletteIndex].b));
 			}
 		}
 	}

@@ -58,13 +58,16 @@ namespace OpenRA.Server
 			throw new InvalidOperationException("Already got 8 players");
 		}
 
-		static string ChooseFreePalette()
+		static int ChooseFreePalette()
 		{
-			// TODO: FIX
+			// TODO: Query the list of palettes from somewhere, and pick one
+			return 0;
+			
+			/*
 			for (var i = 0; i < 8; i++)
-				//if (lobbyInfo.Clients.All(c => c.Palette != i))
+				if (lobbyInfo.Clients.All(c => c.Palette != i))
 					return "player"+i;
-
+			*/
 			throw new InvalidOperationException("No free palettes");
 		}
 
@@ -86,7 +89,7 @@ namespace OpenRA.Server
 					new Session.Client()
 					{
 						Index = newConn.PlayerIndex,
-						Palette = ChooseFreePalette(),
+						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
 						Race = 1,
 						State = Session.ClientState.NotReady
@@ -255,15 +258,14 @@ namespace OpenRA.Server
 							Console.WriteLine("Invalid palette: {0}", s);
 							return false;
 						}
-						string pal = "player"+pali;
-						
-						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.Palette == pal ))
+
+						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.PaletteIndex == pali ))
 						{
 							SendChatTo( conn, "You can't be the same color as another player" );
 							return true;
 						}
 
-						GetClient(conn).Palette = pal;
+						GetClient(conn).PaletteIndex = pali;
 						SyncLobbyInfo();
 						return true;
 					}},

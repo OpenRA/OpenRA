@@ -20,7 +20,7 @@ namespace OpenRa.FileFormats
 		public class Client
 		{
 			public int Index;
-			public string Palette;
+			public int PaletteIndex;
 			public int Race;
 			// public int SpawnPoint;
 			public string Name;
