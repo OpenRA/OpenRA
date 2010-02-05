@@ -44,8 +44,13 @@ namespace OpenRa
 				FileSystem.MountTemporary(new Folder(dir));
 
 			foreach (var pkg in manifest.Packages)
-				FileSystem.MountTemporary(new Package(pkg));
-			Timer.Time("mount tempory packages: {0}");
+				if (pkg.StartsWith( "~"))		// this package is optional.
+					try { FileSystem.MountTemporary(new Package(pkg.Substring(1))); }
+					catch { }
+				else
+					FileSystem.MountTemporary(new Package(pkg));
+
+			Timer.Time("mount temporary packages: {0}");
 		}
 		
 		public static void ChangeMap(string mapName)

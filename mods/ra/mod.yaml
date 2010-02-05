@@ -4,7 +4,7 @@ Folders:
 	./
 
 Packages:
-	main.mix
+	~main.mix
 	redalert.mix
 	conquer.mix
 	hires.mix

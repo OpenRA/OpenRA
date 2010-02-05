@@ -51,8 +51,14 @@ namespace OpenRa.Support
 		[DllImport("OpenAL32.dll")]
 		public static extern void alBufferData(int buffer, int format, byte[] data, int size, int freq);
 
+		//[DllImport("OpenAL32.dll")]
+		//public static extern void alGenSources(int n, IntPtr sources);
+
 		[DllImport("OpenAL32.dll")]
-		public static extern void alGenSources(int n, IntPtr sources);
+		public static extern void alGenSources(int one, out int source);
+
+		[DllImport("OpenAL32.dll")]
+		public static extern int alGetError();
 
 		[DllImport("OpenAL32.dll")]
 		public static extern void alSourcef(int source, int param, float value);

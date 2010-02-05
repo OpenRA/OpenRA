@@ -136,7 +136,7 @@ namespace OpenRa
 	{
 		float volume = 1f;
 		Dictionary<int, bool> sourcePool = new Dictionary<int, bool>();
-		const int POOL_SIZE = 100;
+		const int POOL_SIZE = 32;
 
 		public OpenAlSoundEngine()
 		{
@@ -145,16 +145,18 @@ namespace OpenRa
 			if (dev == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL device");
 			var ctx = OpenAlInterop.alcCreateContext(dev, IntPtr.Zero);
+			if (ctx == IntPtr.Zero)
+				throw new InvalidOperationException("Can't create OpenAL context");
 			OpenAlInterop.alcMakeContextCurrent(ctx);
 
-			int[] sources = new int[POOL_SIZE];
-			IntPtr pTemp = Marshal.AllocHGlobal(sizeof(int) * POOL_SIZE);
-			OpenAlInterop.alGenSources(POOL_SIZE, pTemp);
-			Marshal.Copy(pTemp, sources, 0, POOL_SIZE);
-			Marshal.FreeHGlobal(pTemp);
-
-			foreach (int source in sources)
+			for (var i = 0; i < POOL_SIZE; i++)
+			{
+				var source = 0;
+				OpenAlInterop.alGenSources(1, out source);
+				if (0 != OpenAlInterop.alGetError())
+					throw new InvalidOperationException("failed generating source {0}".F(i));
 				sourcePool.Add(source, false);
+			}
 		}
 
 		int GetSourceFromPool()
