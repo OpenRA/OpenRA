@@ -29,9 +29,7 @@ namespace OpenRa
 		
 		// Options menu (to be refactored)
 		bool optionsPressed = false;
-		readonly Sprite[] optionsSprites;
-		readonly Sprite[] panelSprites;
-		
+
 		// Buttons
 		readonly Animation repairButton;
 		readonly Animation sellButton;
@@ -98,25 +96,6 @@ namespace OpenRa
 			optionsButton = new Animation("tabs");
 			optionsButton.PlayRepeating("left-normal");
 
-			optionsSprites = new[] 
-			{
-				SpriteSheetBuilder.LoadAllSprites("dd-top")[0],
-				SpriteSheetBuilder.LoadAllSprites("dd-botm")[0],
-
-				SpriteSheetBuilder.LoadAllSprites("dd-left")[0],
-				SpriteSheetBuilder.LoadAllSprites("dd-right")[0],
-
-				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[0],
-				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[1],
-				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[2],
-				SpriteSheetBuilder.LoadAllSprites("dd-crnr")[3],
-
-				SpriteSheetBuilder.LoadAllSprites("dd-bkgnd")[0],
-			};
-
-			panelSprites = Graphics.Util.MakeArray(8,
-				n => ChromeProvider.GetImage(renderer, "panel", n.ToString()));
-			
 			tabSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
@@ -211,7 +190,7 @@ namespace OpenRa
 				return;
 
 			var r = new Rectangle((Game.viewport.Width - 400) / 2, Game.viewport.Height - 110, 400, 100);
-			DrawDialogBackground(r, optionsSprites, true);
+			DrawDialogBackground(r, "dialog");
 
 			DrawCentered("Downloading: {0} (+{1} more)".F(
 				PackageDownloader.CurrentPackage.Split(':')[0],
@@ -220,7 +199,7 @@ namespace OpenRa
 				Color.White);
 
 			DrawDialogBackground(new Rectangle(r.Left + 30, r.Top + 50, r.Width - 60, 20),
-				panelSprites, false);
+				"panel");
 
 			var x1 = r.Left + 35;
 			var x2 = r.Right - 35;
@@ -240,7 +219,7 @@ namespace OpenRa
 			var w = renderer.MeasureText(text).X + 120;
 			var h = 100;
 			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
-			DrawDialogBackground(r, optionsSprites, true);
+			DrawDialogBackground(r, "dialog");
 			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - 8), Color.White);
 
 			// don't allow clicks through the dialog
@@ -274,7 +253,7 @@ namespace OpenRa
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
 			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
-			DrawDialogBackground( rect, panelSprites, false );
+			DrawDialogBackground( rect, "panel");
 			DrawCentered(text, new int2(pos.X, pos.Y), Color.White);
 			AddButton(rect, a);
 		}
@@ -284,11 +263,11 @@ namespace OpenRa
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-			DrawDialogBackground(r, optionsSprites, true);
+			DrawDialogBackground(r, "dialog");
 			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
 			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
-					r.Bottom - 50 + 6, 160, 24), panelSprites, false);
+					r.Bottom - 50 + 6, 160, 24), "panel");
 
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
@@ -313,7 +292,7 @@ namespace OpenRa
 			}
 
 			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-			DrawDialogBackground(mapRect, panelSprites, false);
+			DrawDialogBackground(mapRect, "panel");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location) + new float2(4, 4), 
 				"chrome", 
@@ -326,7 +305,7 @@ namespace OpenRa
 			{
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
-					DrawDialogBackground(itemRect, panelSprites, false);
+					DrawDialogBackground(itemRect, "panel");
 
 				renderer.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
@@ -390,16 +369,11 @@ namespace OpenRa
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-			DrawDialogBackground(r, optionsSprites, true);
+			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
-			DrawDialogBackground(new Rectangle(r.Left + 20, r.Top + 40, r.Width - 357, r.Bottom - 273 - r.Top - 40),
-				panelSprites, false);
-
-			DrawDialogBackground(new Rectangle(r.Right - 330, r.Top + 40, 310, r.Bottom - 273 - r.Top - 40),
-				panelSprites, false);
-
-			var minimapRect = new Rectangle(r.Right - 325, r.Top + 45, 300, 240);
+			DrawDialogBackground(new Rectangle(r.Right - 324, r.Top + 43, 304, 244),"panel");
+			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
 
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);
@@ -407,23 +381,14 @@ namespace OpenRa
 			if (Game.world.LocalPlayer.Index == 0)
 			{
 				// we are host
-				DrawDialogBackground(new Rectangle(minimapRect.Left + (minimapRect.Width - 160) / 2,
-					minimapRect.Bottom + 6, 160, 24), panelSprites, false);
-
-				DrawCentered("Change Map...", new int2(minimapRect.Left + minimapRect.Width / 2,
-					minimapRect.Bottom + 10), Color.White);
-
-				AddButton(new RectangleF(minimapRect.Left, minimapRect.Bottom, minimapRect.Width, 32),
-					isLmb =>
-					{
-						if (isLmb)
-						{
-							showMapChooser = true;
-							currentMap = mapList.Value.Single(
-								m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
-							mapPreviewDirty = true;
-						}
-					});
+				AddUiButton(new int2(r.Right - 100, r.Top + 300), "Change Map",
+				_ =>
+				{
+					showMapChooser = true;
+					currentMap = mapList.Value.Single(
+						m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
+					mapPreviewDirty = true;
+				});
 			}
 
 			renderer.DrawText2("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
@@ -441,9 +406,9 @@ namespace OpenRa
 				{
 					// todo: name editing
 					var nameRect = new Rectangle(r.Left + 30, y - 2, 185, 22);
-					DrawDialogBackground(nameRect, panelSprites, false);
+					DrawDialogBackground(nameRect, "panel");
 
-					DrawDialogBackground(paletteRect, panelSprites, false);
+					DrawDialogBackground(paletteRect, "panel");
 					AddButton(paletteRect, CyclePalette);
 
 					// TODO: Render using the System.Drawing.Color (Player.PlayerColors[client.PaletteIndex].c)
@@ -451,11 +416,11 @@ namespace OpenRa
 						Player.PlayerColors[client.PaletteIndex].a);
 
 					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
-					DrawDialogBackground(raceRect, panelSprites, false);
+					DrawDialogBackground(raceRect, "panel");
 					AddButton(raceRect, CycleRace);
 
 					var readyRect = new Rectangle(r.Left + 360, y - 2, 95, 22);
-					DrawDialogBackground(readyRect, panelSprites, false);
+					DrawDialogBackground(readyRect, "panel");
 					AddButton(readyRect, CycleReady);
 				}
 
@@ -475,8 +440,8 @@ namespace OpenRa
 			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
 			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
 
-			DrawDialogBackground(typingBox, panelSprites, false);
-			DrawDialogBackground(chatBox, panelSprites, false);
+			DrawDialogBackground(typingBox, "panel");
+			DrawDialogBackground(chatBox, "panel");
 
 			DrawChat(typingBox, chatBox);
 
@@ -728,39 +693,39 @@ namespace OpenRa
 				var height = 300;
 				
 				DrawDialogBackground(new Rectangle((Game.viewport.Width - width)/ 2, (Game.viewport.Height-height) / 2,
-					width, height), optionsSprites, true);
+					width, height), "dialog");
 			}
 		}
 
-		void DrawDialogBackground(Rectangle r, Sprite[] ss, bool isShp)
+		void DrawDialogBackground(Rectangle r, string collection)
 		{
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 
-			var sr = isShp ? shpRenderer : rgbaRenderer;
-
-			if (ss.Length > 8)
+			string[] images = { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
+			var ss = Graphics.Util.MakeArray(9, n => ChromeProvider.GetImage(renderer, collection,images[n]));
+			
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
-					sr.DrawSprite(ss[8], new float2(x, y), "chrome");
+					rgbaRenderer.DrawSprite(ss[8], new float2(x, y), "chrome");
 
 			//draw borders
 			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
 			{
-				sr.DrawSprite(ss[2], new float2(r.Left, y), "chrome");
-				sr.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), "chrome");
+				rgbaRenderer.DrawSprite(ss[2], new float2(r.Left, y), "chrome");
+				rgbaRenderer.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), "chrome");
 			}
 
 			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[0].size.X)
 			{
-				sr.DrawSprite(ss[0], new float2(x, r.Top), "chrome");
-				sr.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), "chrome");
+				rgbaRenderer.DrawSprite(ss[0], new float2(x, r.Top), "chrome");
+				rgbaRenderer.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), "chrome");
 			}
 
-			sr.DrawSprite(ss[4], new float2(r.Left, r.Top), "chrome");
-			sr.DrawSprite(ss[5], new float2(r.Right - ss[5].size.X, r.Top), "chrome");
-			sr.DrawSprite(ss[6], new float2(r.Left, r.Bottom - ss[6].size.Y), "chrome");
-			sr.DrawSprite(ss[7], new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), "chrome");
-			sr.Flush();
+			rgbaRenderer.DrawSprite(ss[4], new float2(r.Left, r.Top), "chrome");
+			rgbaRenderer.DrawSprite(ss[5], new float2(r.Right - ss[5].size.X, r.Top), "chrome");
+			rgbaRenderer.DrawSprite(ss[6], new float2(r.Left, r.Bottom - ss[6].size.Y), "chrome");
+			rgbaRenderer.DrawSprite(ss[7], new float2(r.Right - ss[7].size.X, r.Bottom - ss[7].size.Y), "chrome");
+			rgbaRenderer.Flush();
 
 			renderer.Device.DisableScissor();
 		}

@@ -122,14 +122,25 @@
 		<image name="soviet-Ship" x="134" y="200" width="27" height="41" />
 	</collection>
 	<collection name="panel" src="widget-panel.png">
-		<image name="0" x="4" y="0" width="248" height="4" />
-		<image name="1" x="4" y="252" width="248" height="4" />
-		<image name="2" x="0" y="4" width="4" height="248" />
-		<image name="3" x="252" y="4" width="4" height="248" />
-		<image name="4" x="0" y="0" width="4" height="4" />
-		<image name="5" x="252" y="0" width="4" height="4" />
-		<image name="6" x="0" y="252" width="4" height="4" />
-		<image name="7" x="252" y="252" width="4" height="4" />
+		<image name="border-t" x="4" y="0" width="248" height="4" />
+		<image name="border-b" x="4" y="252" width="248" height="4" />
+		<image name="border-l" x="0" y="4" width="4" height="248" />
+		<image name="border-r" x="252" y="4" width="4" height="248" />
+		<image name="corner-tl" x="0" y="0" width="4" height="4" />
+		<image name="corner-tr" x="252" y="0" width="4" height="4" />
+		<image name="corner-bl" x="0" y="252" width="4" height="4" />
+		<image name="corner-br" x="252" y="252" width="4" height="4" />
+		<image name="background" x="4" y="4" width="248" height="248" />
 	</collection>
-	
+	<collection name="dialog" src="dialog.png">
+		<image name="background" x="0" y="0" width="624" height="384" />
+		<image name="border-r" x="624" y="0" width="14" height="200" />
+		<image name="border-l" x="638" y="0" width="14" height="200" />
+		<image name="border-b" x="46" y="399" width="320" height="16" />
+		<image name="border-t" x="46" y="384" width="320" height="16" />
+		<image name="corner-tl" x="0" y="384" width="23" height="24" />
+		<image name="corner-tr" x="23" y="384" width="23" height="24" />
+		<image name="corner-bl" x="0" y="407" width="23" height="24" />
+		<image name="corner-br" x="23" y="407" width="23" height="24" />
+	</collection>
 </chrome>
