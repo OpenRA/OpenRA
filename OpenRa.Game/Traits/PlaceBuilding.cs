@@ -25,7 +25,15 @@ namespace OpenRa.Traits
 					self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 					Sound.PlayToPlayer(order.Player, "placbldg.aud");
 					Sound.PlayToPlayer(order.Player, "build5.aud");
+					
+					var fact = self.World.Queries
+						.OwnedBy[self.Owner]
+						.WithTrait<ConstructionYard>()
+						.Select(x=>x.Actor).FirstOrDefault();
 
+					if (fact != null)
+						fact.traits.Get<RenderBuilding>().PlayCustomAnim(fact, "build");
+						
 					queue.FinishProduction(unit.Category);
 				} );
 			}
