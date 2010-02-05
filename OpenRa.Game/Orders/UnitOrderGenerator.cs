@@ -67,12 +67,17 @@ namespace OpenRa.Orders
 						return Cursor.Move;
 					else
 						return Cursor.MoveBlocked;
-				case "DeployMcv":
-					var factBuildingInfo = Rules.Info["fact"].Traits.Get<BuildingInfo>();
-					if (a.World.CanPlaceBuilding("fact", factBuildingInfo, a.Location - new int2(1, 1), a))
-						return Cursor.Deploy;
-					else
-						return Cursor.DeployBlocked;
+				case "DeployTransform":
+					var depInfo = a.Info.Traits.Get<TransformsOnDeployInfo>();
+					var transInfo = Rules.Info[depInfo.TransformsInto];
+					if (transInfo.Traits.Contains<BuildingInfo>())
+					{
+						var bi = transInfo.Traits.Get<BuildingInfo>();
+						if (!a.World.CanPlaceBuilding(depInfo.TransformsInto, bi, a.Location + new int2(depInfo.Offset[0], depInfo.Offset[1]), a))
+							return Cursor.DeployBlocked;
+					}
+					return Cursor.Deploy;
+
 				case "Deploy": return Cursor.Deploy;
 				case "Enter": return Cursor.Enter;
 				case "EnterTransport": return Cursor.Enter;

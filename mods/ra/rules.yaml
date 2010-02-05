@@ -734,7 +734,12 @@ MCV:
 		Crewed: yes
 		Sight: 4
 		Speed: 6
-	McvDeploy:
+	TransformsOnDeploy:
+		TransformsInto: fact
+		Offset:-1,-1
+		DeployDirections: 96
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 
 JEEP:

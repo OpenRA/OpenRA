@@ -26,6 +26,8 @@ namespace OpenRa.Traits
 					Sound.PlayToPlayer(order.Player, "placbldg.aud");
 					Sound.PlayToPlayer(order.Player, "build5.aud");
 					
+					
+					// TODO: Prioritise the primary conyard if it exists
 					var fact = self.World.Queries
 						.OwnedBy[self.Owner]
 						.WithTrait<ConstructionYard>()

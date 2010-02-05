@@ -16,7 +16,12 @@ MCV:
 		Crewed: yes
 		Sight: 2
 		Speed: 12
-	McvDeploy:
+	TransformsOnDeploy:
+		TransformsInto: fact
+		Offset:-1,-1
+		DeployDirections: 96
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 
 HARV:

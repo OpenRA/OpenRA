@@ -130,7 +130,7 @@
     <Compile Include="Traits\Activities\HeliReturn.cs" />
     <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
-    <Compile Include="Traits\Activities\DeployMcv.cs" />
+    <Compile Include="Traits\Activities\TransformIntoActor.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Controller.cs" />
@@ -236,7 +236,7 @@
     <Compile Include="Traits\ProductionSurround.cs" />
     <Compile Include="Traits\RenderBuildingCharge.cs" />
     <Compile Include="Traits\RenderInfantry.cs" />
-    <Compile Include="Traits\McvDeploy.cs" />
+    <Compile Include="Traits\TransformsOnDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Production.cs" />
     <Compile Include="Traits\RallyPoint.cs" />
