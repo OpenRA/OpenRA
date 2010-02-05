@@ -10,8 +10,7 @@ namespace OpenRa.Traits
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
-		const int SmallBibStart = 1;
-		const int LargeBibStart = 5;
+		static readonly int[] bibStarts = { 0, 0, 1, 5, 11 };
 
 		public RenderBuilding(Actor self)
 			: base(self)
@@ -38,7 +37,7 @@ namespace OpenRa.Traits
 			{
 				var size = buildingInfo.Dimensions.X;
 				var bibOffset = buildingInfo.Dimensions.Y - 1;
-				var startIndex = (size == 2) ? SmallBibStart : LargeBibStart;
+				var startIndex = bibStarts[size];
 
 				for (int i = 0; i < 2 * size; i++)
 				{

@@ -5,8 +5,8 @@ namespace OpenRa
 {
 	static class Smudge
 	{
-		const int firstScorch = 11;
-		const int firstCrater = 17;
+		const int firstScorch = 19;
+		const int firstCrater = 25;
 		const int framesPerCrater = 5;
 
 		public static void AddSmudge(this Map map, bool isCrater, int x, int y)

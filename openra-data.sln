@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 		mods\ra\defaults.yaml = mods\ra\defaults.yaml
 		mods\ra\merge-rules.yaml = mods\ra\merge-rules.yaml
 		mods\ra\mod.yaml = mods\ra\mod.yaml
+		mods\ra\nopower.shp = mods\ra\nopower.shp
 		mods\ra\rules.ini = mods\ra\rules.ini
+		mods\ra\rules.yaml = mods\ra\rules.yaml
 		mods\ra\sequences.xml = mods\ra\sequences.xml
 		mods\ra\trees.ini = mods\ra\trees.ini
 		mods\ra\units.ini = mods\ra\units.ini
@@ -53,18 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "globals", "globals", "{27CA
 		tileSet.til = tileSet.til
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remaps", "remaps", "{F1386D81-84EA-4600-AE3C-C3C4D042B8D7}"
-	ProjectSection(SolutionItems) = preProject
-		blue.rem = blue.rem
-		gold.rem = gold.rem
-		gray.rem = gray.rem
-		green.rem = green.rem
-		orange.rem = orange.rem
-		red.rem = red.rem
-		salmon.rem = salmon.rem
-		teal.rem = teal.rem
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3FB8CE49-01F3-4EB1-8DB9-FC6168464091}"
 	ProjectSection(SolutionItems) = preProject
 		doc\aud format.txt = doc\aud format.txt
@@ -72,6 +62,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3FB8CE49-01F
 		doc\RACG110.TXT = doc\RACG110.TXT
 		doc\raff.txt = doc\raff.txt
 		doc\shp dune 2.txt = doc\shp dune 2.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remaps", "remaps", "{CA06F234-23DF-4DF3-95D5-42F6C67A387D}"
+	ProjectSection(SolutionItems) = preProject
+		mods\ra\blue.rem = mods\ra\blue.rem
+		mods\ra\gold.rem = mods\ra\gold.rem
+		mods\ra\gray.rem = mods\ra\gray.rem
+		mods\ra\green.rem = mods\ra\green.rem
+		mods\ra\orange.rem = mods\ra\orange.rem
+		mods\ra\red.rem = mods\ra\red.rem
+		mods\ra\salmon.rem = mods\ra\salmon.rem
+		mods\ra\teal.rem = mods\ra\teal.rem
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2DF-4000-A4F7-AFDB4C282698}"
+	ProjectSection(SolutionItems) = preProject
+		mods\cnc\chrome-allies.png = mods\cnc\chrome-allies.png
+		mods\cnc\chrome-soviet.png = mods\cnc\chrome-soviet.png
+		mods\cnc\chrome.xml = mods\cnc\chrome.xml
+		mods\cnc\civilian.yaml = mods\cnc\civilian.yaml
+		mods\cnc\compat.yaml = mods\cnc\compat.yaml
+		mods\cnc\defaults.yaml = mods\cnc\defaults.yaml
+		mods\cnc\dialog.png = mods\cnc\dialog.png
+		mods\cnc\infantry.yaml = mods\cnc\infantry.yaml
+		mods\cnc\minimal.ini = mods\cnc\minimal.ini
+		mods\cnc\mod.yaml = mods\cnc\mod.yaml
+		mods\cnc\sequences-infantry.xml = mods\cnc\sequences-infantry.xml
+		mods\cnc\sequences-structures.xml = mods\cnc\sequences-structures.xml
+		mods\cnc\sequences-vehicles.xml = mods\cnc\sequences-vehicles.xml
+		mods\cnc\sequences.xml = mods\cnc\sequences.xml
+		mods\cnc\structures.yaml = mods\cnc\structures.yaml
+		mods\cnc\system.yaml = mods\cnc\system.yaml
+		mods\cnc\tabs.png = mods\cnc\tabs.png
+		mods\cnc\temperat_ra.pal = mods\cnc\temperat_ra.pal
+		mods\cnc\trees.yaml = mods\cnc\trees.yaml
+		mods\cnc\vehicles.yaml = mods\cnc\vehicles.yaml
+		mods\cnc\voices.ini = mods\cnc\voices.ini
+		mods\cnc\weapons.ini = mods\cnc\weapons.ini
+		mods\cnc\widget-panel.png = mods\cnc\widget-panel.png
 	EndProjectSection
 EndProject
 Global
@@ -82,6 +111,7 @@ Global
 		{59F0734D-2F86-4C26-8171-CF45EE01E97A} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
-		{F1386D81-84EA-4600-AE3C-C3C4D042B8D7} = {27CA9A65-2FEE-4995-B7F0-E5BE1BB5494B}
+		{65D8A06F-F2DF-4000-A4F7-AFDB4C282698} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
+		{CA06F234-23DF-4DF3-95D5-42F6C67A387D} = {59F0734D-2F86-4C26-8171-CF45EE01E97A}
 	EndGlobalSection
 EndGlobal
