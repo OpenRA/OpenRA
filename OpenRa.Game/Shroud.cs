@@ -7,6 +7,7 @@ using OpenRa.Graphics;
 using OpenRa.Traits;
 using OpenRa.FileFormats;
 using System.Drawing;
+using OpenRa.GameRules;
 
 namespace OpenRa
 {
@@ -96,9 +97,17 @@ namespace OpenRa
 		
 		public void Explore(Actor a)
 		{
-			Explore(a.World,
-				(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
-				a.Info.Traits.Get<OwnedActorInfo>().Sight);
+			// Buildings: explore from each cell in the footprint
+			if (a.Info.Traits.Contains<BuildingInfo>())
+			{
+				var bi = a.Info.Traits.Get<BuildingInfo>();
+				foreach (var t in Footprint.Tiles(a.Info.Name, bi, a.Location))
+					Explore(a.World,t,a.Info.Traits.Get<OwnedActorInfo>().Sight);				
+			}
+			else
+				Explore(a.World,
+					(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
+					a.Info.Traits.Get<OwnedActorInfo>().Sight);
 		}
 
 		static readonly byte[][] SpecialShroudTiles =
