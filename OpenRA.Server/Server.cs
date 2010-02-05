@@ -17,14 +17,19 @@ namespace OpenRA.Server
 		static TcpListener listener = new TcpListener(IPAddress.Any, 1234);
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
-		static Session lobbyInfo = new Session();
+		static Session lobbyInfo;
 		static bool GameStarted = false;
+		static string[] defaultMods = new string[] { "ra" };
 
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
 		public static void Main(string[] args)
 		{
+			if (args.Length > 0) defaultMods = args;
+			lobbyInfo = new Session();
+			lobbyInfo.GlobalSettings.Mods = defaultMods;
+
 			listener.Start();
 
 			Console.WriteLine("Server started.");
@@ -463,6 +468,7 @@ namespace OpenRA.Server
 			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
+			lobbyInfo.GlobalSettings.Mods = defaultMods;
 			GameStarted = false;
 		}
 
