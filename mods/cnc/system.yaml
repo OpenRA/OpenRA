@@ -16,11 +16,20 @@ World:
 	UnitInfluence:
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
+		Theater: temperat
 		Filename: temperat_ra.pal
 	PaletteFromFile@player_temperat:
 		Name: player
-		Theatre: temperat
+		Theater: temperat
 		Filename: temperat.pal
+	PaletteFromFile@terrain_snow:
+		Name: terrain
+		Theater: snow
+		Filename: snow_ra.pal
+	PaletteFromFile@player_snow:
+		Name: player
+		Theater: snow
+		Filename: tdbits/winter.pal
 	PlayerColorPalette@player0:
 		Name: player0
 		DisplayName: Gold
