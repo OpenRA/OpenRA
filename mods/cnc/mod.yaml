@@ -11,6 +11,7 @@ Packages:
 #	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
+	mods/cnc/packages/updatec.mix
 	~main.mix
 	redalert.mix
 	hires.mix

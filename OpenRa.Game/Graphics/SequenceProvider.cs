@@ -70,7 +70,12 @@ namespace OpenRa.Graphics
 
 		public static CursorSequence GetCursorSequence(string cursor)
 		{
-			return cursors[cursor];
+			try { return cursors[cursor]; }
+			catch (KeyNotFoundException)
+			{
+				throw new InvalidOperationException(
+					"Cursor does not have a sequence `{0}`".F(cursor));
+			}
 		}
 	}
 }
