@@ -79,10 +79,11 @@ namespace OpenRa
 					a.Owner.Shroud.Explore(a); 
 			};
 			Timer.Time( "world: {0}" );
-
+			
+			ChromeProvider.Initialize(manifest.Chrome);
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
-			Timer.Time( "SeqProv, viewport: {0}" );
+			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
 
 
 			skipMakeAnims = true;
@@ -112,8 +113,6 @@ namespace OpenRa
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			Game.controller = controller;
-
-			ChromeProvider.Initialize("chrome.xml");
 
 			ChangeMap(mapName);
 

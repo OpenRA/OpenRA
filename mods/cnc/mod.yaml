@@ -47,6 +47,9 @@ Sequences:
 	mods/cnc/sequences-infantry.xml:
 	mods/cnc/sequences.xml:	Obsolete; will disappear once done converting
 
+Chrome:
+	mods/cnc/chrome.xml:
+	
 Assemblies:
 	mods/cnc/OpenRa.Mods.Cnc.dll: Cnc mod traits
 	mods/ra/OpenRa.Mods.RA.dll:	Red alert mod traits

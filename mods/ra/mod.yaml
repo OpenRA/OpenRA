@@ -29,6 +29,9 @@ Rules:
 Sequences:
 	mods/ra/sequences.xml:	Original animation sequences
 
+Chrome:
+	mods/ra/chrome.xml:
+	
 Assemblies:
 	mods/ra/OpenRa.Mods.RA.dll:	Traits used
 	

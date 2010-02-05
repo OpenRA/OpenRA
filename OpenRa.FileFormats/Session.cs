@@ -43,6 +43,7 @@ namespace OpenRa.FileFormats
 		public readonly string[] LegacyRules = { };
 		public readonly string[] Rules = { };
 		public readonly string[] Sequences = { };
+		public readonly string[] Chrome = { };
 		public readonly string[] Assemblies = { };
 
 		public Manifest(string[] mods)
@@ -56,6 +57,7 @@ namespace OpenRa.FileFormats
 			LegacyRules = YamlList(yaml, "LegacyRules");
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
+			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");
 		}
 
