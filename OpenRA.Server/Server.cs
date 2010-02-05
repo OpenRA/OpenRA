@@ -30,6 +30,10 @@ namespace OpenRA.Server
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = defaultMods;
 
+			Console.WriteLine("Initial mods: ");
+			foreach( var m in lobbyInfo.GlobalSettings.Mods )
+				Console.WriteLine("- {0}", m);
+
 			listener.Start();
 
 			Console.WriteLine("Server started.");

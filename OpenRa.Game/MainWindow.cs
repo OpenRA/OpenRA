@@ -48,7 +48,9 @@ namespace OpenRa
 				Directory.SetCurrentDirectory("..");
 			}
 
+			
 			LoadUserSettings(settings);
+			Game.LobbyInfo.GlobalSettings.Mods = Game.Settings.InitialMods;
 			
 			// Load the default mod to access required files
 			Game.LoadModPackages(new Manifest(Game.LobbyInfo.GlobalSettings.Mods));

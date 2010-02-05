@@ -10,9 +10,8 @@ Packages:
 	mods/cnc/packages/conquer.mix
 	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
-	mods/cnc/packages/transit.mix
 	mods/cnc/packages/tempicnh.mix
-	main.mix
+	~main.mix
 	redalert.mix
 	hires.mix
 	local.mix

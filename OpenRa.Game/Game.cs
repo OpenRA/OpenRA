@@ -103,6 +103,7 @@ namespace OpenRa
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
+			
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
 
@@ -189,6 +190,8 @@ namespace OpenRa
 		public static void SyncLobbyInfo(string data)
 		{
 			var session = new Session();
+			session.GlobalSettings.Mods = Settings.InitialMods;
+
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)
 			{

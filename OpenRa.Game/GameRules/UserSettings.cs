@@ -26,10 +26,10 @@ namespace OpenRa.GameRules
 		public readonly int Player = 1;
 		public readonly string Replay = "";
 		public readonly string PlayerName = "";
+		public readonly string[] InitialMods = { "ra" };
 		
 		// Gameplay options
 		public readonly bool RepairRequiresConyard = true;
 		public readonly bool PowerDownBuildings = true;
-
 	}
 }
