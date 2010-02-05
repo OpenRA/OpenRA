@@ -1,8 +1,8 @@
 # Classic Command and Conquer -- Package Manifest
 
 Folders:
+	./mods/cnc/
 	./
-	mods/cnc/
 Packages:
 	mods/cnc/overrides.mix
 	mods/cnc/packages/cclocal.mix
