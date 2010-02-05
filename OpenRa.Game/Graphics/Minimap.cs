@@ -50,7 +50,7 @@ namespace OpenRa.Graphics
 		static Cache<string, Color[]> terrainTypeColors = new Cache<string, Color[]>(
 			theater =>
 			{
-				var pal = new Palette(FileSystem.Open(theater + ".pal"));
+				var pal = Game.world.WorldRenderer.GetPalette("terrain");
 				return new[] {
 						theater == "snow" ? 0xe3 :0x1a, 
 						0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d, 0x88 }
