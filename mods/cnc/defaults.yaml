@@ -1,0 +1,54 @@
+^Vehicle:
+	Category: Vehicle
+	Unit:
+		ROT: 5
+	Mobile:
+		MovementType: Wheel
+	Selectable: 
+		Voice: VehicleVoice
+	Repairable: 
+	Chronoshiftable: 
+	Passenger: 
+	IronCurtainable: 
+
+^Infantry:
+	Category: Infantry
+	Unit:
+		Armor: none
+		Sight: 4
+	Mobile:
+		MovementType: Foot
+	Selectable:
+	RenderInfantry:
+	SquishByTank:
+	AutoTarget:
+	Passenger:
+
+^Ship:
+	Category: Ship
+	Unit:
+	Mobile:
+		MovementType: Float
+	Selectable:
+
+^Plane:
+	Category: Plane
+	Unit:
+	Selectable:
+
+^Building:
+	Category: Building
+	Selectable:
+		Priority: 3
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	RenderBuilding:
+
+^Tree:
+	Category: Building
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2

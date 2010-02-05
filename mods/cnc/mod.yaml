@@ -31,7 +31,7 @@ LegacyRules:
 	mods/cnc/weapons.ini:	Weapons are still in the old format
 	mods/cnc/voices.ini:	Voices are still in the old format
 Rules:
-	mods/ra/defaults.yaml:		Basic stuff
+	mods/cnc/defaults.yaml:		Basic stuff
 	mods/cnc/system.yaml:		Player and world actors
 	mods/cnc/structures.yaml:
 	mods/cnc/infantry.yaml:

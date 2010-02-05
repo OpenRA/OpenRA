@@ -7,7 +7,7 @@ namespace OpenRa.Traits
 	public abstract class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
-
+		public readonly string Palette = null;
 		public abstract object Create(Actor self);
 	}
 
@@ -28,9 +28,10 @@ namespace OpenRa.Traits
 
 		public virtual IEnumerable<Renderable> Render( Actor self )
 		{
+			var palette = self.Info.Traits.Get<RenderSimpleInfo>().Palette;
 			foreach( var a in anims.Values )
 				if( a.DisableFunc == null || !a.DisableFunc() )
-					yield return a.Image( self );
+					yield return ( palette == null ) ? a.Image( self ) : a.Image( self ).WithPalette(palette);
 		}
 
 		public virtual void Tick(Actor self)
