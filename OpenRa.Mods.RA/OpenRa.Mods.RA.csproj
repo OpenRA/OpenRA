@@ -51,7 +51,6 @@
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
-    <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />

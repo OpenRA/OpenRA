@@ -8,7 +8,7 @@ Packages:
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
-	mods/cnc/packages/general.mix
+#	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
 	~main.mix
@@ -47,7 +47,8 @@ Sequences:
 	mods/cnc/sequences.xml:	Obsolete; will disappear once done converting
 
 Assemblies:
-	mods/ra/OpenRa.Mods.RA.dll:	Use the red alert traits
+	mods/cnc/OpenRa.Mods.Cnc.dll: Cnc mod traits
+	mods/ra/OpenRa.Mods.RA.dll:	Red alert mod traits
 	
 	
 Maps:

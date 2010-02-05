@@ -1,7 +1,7 @@
 ﻿
 namespace OpenRa.Traits.Activities
 {
-	class Turn : IActivity
+	public class Turn : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 

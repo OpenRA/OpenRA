@@ -2,7 +2,7 @@
 
 namespace OpenRa.Traits.Activities
 {
-	class Harvest : IActivity
+	public class Harvest : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isHarvesting = false;

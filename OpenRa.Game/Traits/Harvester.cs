@@ -8,7 +8,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new Harvester(); }
 	}
 
-	class Harvester : IIssueOrder, IResolveOrder, IPips
+	public class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
 		[Sync]
 		public int oreCarried = 0;					/* sum of these must not exceed capacity */
