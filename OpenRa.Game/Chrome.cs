@@ -744,14 +744,13 @@ namespace OpenRa
 					sr.DrawSprite(ss[8], new float2(x, y), "chrome");
 
 			//draw borders
-
-			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[1].size.Y)
+			for (var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
 			{
 				sr.DrawSprite(ss[2], new float2(r.Left, y), "chrome");
 				sr.DrawSprite(ss[3], new float2(r.Right - ss[3].size.X, y), "chrome");
 			}
 
-			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[3].size.X)
+			for (var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[0].size.X)
 			{
 				sr.DrawSprite(ss[0], new float2(x, r.Top), "chrome");
 				sr.DrawSprite(ss[1], new float2(x, r.Bottom - ss[1].size.Y), "chrome");
