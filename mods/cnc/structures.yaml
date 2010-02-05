@@ -167,7 +167,7 @@ WEAP:
 		LongDesc: Assembly point for vehicle reinforcements
 	Building:
 		Power: -30
-		Footprint: ___ xxx xxx
+		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
 		Bib: yes
@@ -178,8 +178,8 @@ WEAP:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
+		ExitOffset:-1,1
 		Produces: Vehicle
-		
 HQ:
 	RequiresPower:
 	CanPowerDown:

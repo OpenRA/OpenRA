@@ -7,6 +7,8 @@ namespace OpenRa.Traits
 	public class ProductionInfo : ITraitInfo
 	{
 		public readonly int[] SpawnOffset = null;
+		public readonly int[] ProductionOffset = null;
+		public readonly int[] ExitOffset = null;
 		public readonly string[] Produces = { };
 
 		public virtual object Create(Actor self) { return new Production(self); }
@@ -21,9 +23,22 @@ namespace OpenRa.Traits
 
 		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
 		{
-			return ( 1 / 24f * self.CenterLocation ).ToInt2();
+			var pos = (1 / 24f * self.CenterLocation).ToInt2();
+			var pi = self.Info.Traits.Get<ProductionInfo>();
+			if (pi.ProductionOffset != null)
+				pos += new int2(pi.ProductionOffset[0], pi.ProductionOffset[1]);
+			return pos;
 		}
 
+		public virtual int2? ExitLocation(Actor self, ActorInfo producee)
+		{
+			var pos = (1 / 24f * self.CenterLocation).ToInt2();
+			var pi = self.Info.Traits.Get<ProductionInfo>();
+			if (pi.ExitOffset != null)
+				pos += new int2(pi.ExitOffset[0], pi.ExitOffset[1]);
+			return pos;
+		}
+		
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
 			return newUnit.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing;
@@ -38,15 +53,22 @@ namespace OpenRa.Traits
 			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );
 			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
 
+			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();
-			if( rp != null )
+			if( rp != null || pi.ExitOffset != null)
 			{
 				var mobile = newUnit.traits.GetOrDefault<Mobile>();
 				if( mobile != null )
-					newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
+				{
+					if (pi.ExitOffset != null)
+						newUnit.QueueActivity(new Activities.Move(ExitLocation( self, producee).Value, 1));
+						
+					if (rp != null)
+						newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
+				}
 			}
 
-			var pi = self.Info.Traits.Get<ProductionInfo>();
+			
 			if (pi != null && pi.SpawnOffset != null)
 				newUnit.CenterLocation = self.CenterLocation 
 					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
