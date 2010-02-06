@@ -4,7 +4,7 @@ namespace OpenRa.Traits
 {
 	class TurretedInfo : ITraitInfo
 	{
-		public readonly int ROT = 0;
+		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 
 		public object Create(Actor self) { return new Turreted(self); }
