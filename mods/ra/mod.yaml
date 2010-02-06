@@ -20,8 +20,7 @@ Packages:
 	interior.mix
 
 LegacyRules:
-	mods/ra/rules.ini:	More or less original Red Alert rules file.
-	mods/ra/units.ini:	OpenRA patches
+	mods/ra/rules.ini
 
 Rules:
 	mods/ra/defaults.yaml:	Basic stuff
@@ -35,28 +34,3 @@ Chrome:
 	
 Assemblies:
 	mods/ra/OpenRa.Mods.RA.dll:	Traits used
-	
-Maps:
-	scm22ea.ini: A Path Beyond (Lg)
-	scm13ea.ini: Central Conflict (Lg)
-	scm01ea.ini: Coastal Influence (Med)
-	scm14ea.ini: Combat Alley (Med)
-	scm16ea.ini: Desolation (Lg)
-	scm23ea.ini: Dugout Isle (Med)
-	scm03ea.ini: Equal Opportunity (Sm)
-	scm10ea.ini: First Come, First Serve (Sm)
-	scm11ea.ini: Island Hoppers (Sm)
-	scm15ea.ini: Island Wars (Lg)
-	scm06ea.ini: Isle of Fury (Lg)
-	scm07ea.ini: Ivory Wastelands (Sm)
-	scm05ea.ini: Keep off the Grass (Sm)
-	scm04ea.ini: Marooned II (Med)
-	scm02ea.ini: Middle Mayhem (Sm)
-	scm17ea.ini: No Escape (Med)
-	scm18ea.ini: No Man's Land (Med)
-	scm19ea.ini: Normandy (Med)
-	scm20ea.ini: Pond Skirmish (Med)
-	scm12ea.ini: Raraku (Lg)
-	scm21ea.ini: Ridge War (Med)
-	scm08ea.ini: Shallow Grave (Med)
-	scm24ea.ini: Treasure Isle (Med)
