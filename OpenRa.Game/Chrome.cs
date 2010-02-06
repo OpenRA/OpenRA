@@ -931,7 +931,7 @@ namespace OpenRa
 			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), "chrome");
 			rgbaRenderer.Flush();
 
-			if (tooltipItem != null)
+			if (tooltipItem != null && paletteOpen)
 				DrawProductionTooltip(world, tooltipItem, new float2(Game.viewport.Width, origin.Y + y * 48 + 9).ToInt2()/*tooltipPos*/);
 				
 			return y*48+9;
