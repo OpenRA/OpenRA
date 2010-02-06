@@ -30,13 +30,13 @@ namespace OpenRa.Mods.Aftermath.Orders
 			world.WorldRenderer.DrawSelectionBox(self, Color.White, true);
 		}
 
-		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{
 			if (!world.LocalPlayer.Shroud.IsExplored(xy))
-				return Cursor.MoveBlocked;
+				return "move-blocked";
 
 			var movement = self.traits.GetOrDefault<IMovement>();
-			return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
+			return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
 		}
 	}
 }

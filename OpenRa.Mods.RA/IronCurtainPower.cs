@@ -84,11 +84,11 @@ namespace OpenRa.Mods.RA
 
 			public void Render(World world) { }
 
-			public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
 				mi.Button = MouseButton.Left;
 				return OrderInner(world, xy, mi).Any()
-					? Cursor.Ability : Cursor.MoveBlocked;
+					? "ability" : "move-blocked";
 			}
 		}
 	}

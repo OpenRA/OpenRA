@@ -132,7 +132,7 @@ namespace OpenRa
 
 		public float2 MousePosition { get { return dragEnd; } }
 
-		public Cursor ChooseCursor( World world )
+		public string ChooseCursor( World world )
 		{
 			int sync = world.SyncHash();
 

@@ -31,9 +31,9 @@ namespace OpenRa.Mods.RA
 			public void Tick(World world) {}
 			public void Render(World world) {}
 
-			public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
-				return Cursor.Ability;
+				return "ability";
 			}
 		}
 

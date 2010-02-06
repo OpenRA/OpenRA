@@ -7,6 +7,6 @@ namespace OpenRa
 		IEnumerable<Order> Order( World world, int2 xy, MouseInput mi );
 		void Tick( World world );
 		void Render( World world );
-		Cursor GetCursor( World world, int2 xy, MouseInput mi );
+		string GetCursor( World world, int2 xy, MouseInput mi );
 	}
 }

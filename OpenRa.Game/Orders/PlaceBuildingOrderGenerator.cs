@@ -53,9 +53,6 @@ namespace OpenRa.Orders
 			world.WorldRenderer.uiOverlay.DrawBuildingGrid( world, Building, BuildingInfo );
 		}
 
-		public Cursor GetCursor(World world, int2 xy, MouseInput mi)
-		{
-			return Cursor.Default;
-		}
+		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }
 	}
 }

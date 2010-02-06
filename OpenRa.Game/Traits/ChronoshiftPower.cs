@@ -112,11 +112,11 @@ namespace OpenRa.Traits
 
 			public void Render( World world ) { }
 
-			public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
 				mi.Button = MouseButton.Left;
 				return OrderInner(world, xy, mi).Any()
-					? Cursor.ChronoshiftSelect : Cursor.MoveBlocked;
+					? "chrono-select" : "move-blocked";
 			}
 		}
 
@@ -153,13 +153,13 @@ namespace OpenRa.Traits
 				world.WorldRenderer.DrawSelectionBox(self, Color.Red, true);
 			}
 
-			public Cursor GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
 				if (!world.LocalPlayer.Shroud.IsExplored(xy))
-					return Cursor.MoveBlocked;
+					return "move-blocked";
 				
 				var movement = self.traits.GetOrDefault<IMovement>();
-				return (movement.CanEnterCell(xy)) ? Cursor.Chronoshift : Cursor.MoveBlocked;
+				return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
 			}
 		}
 	}

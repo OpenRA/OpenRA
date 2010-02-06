@@ -62,9 +62,7 @@ namespace OpenRa.Traits
 			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Left)
-				{
 					yield return new Order("NuclearMissile", world.LocalPlayer.PlayerActor, xy);
-				}
 
 				yield break;
 			}
@@ -80,7 +78,7 @@ namespace OpenRa.Traits
 			}
 
 			public void Render(World world) { }
-			public Cursor GetCursor(World world, int2 xy, MouseInput mi) { return Cursor.Nuke; }
+			public string GetCursor(World world, int2 xy, MouseInput mi) { return "nuke"; }
 		}
 	}
 

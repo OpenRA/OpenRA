@@ -79,7 +79,8 @@ namespace OpenRa.Graphics
 				}
 			}
 
-			var c = Game.chrome.HitTest(mousePos) ? Cursor.Default : Game.controller.ChooseCursor( world );
+			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
+			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
 			cursorRenderer.Flush();
 

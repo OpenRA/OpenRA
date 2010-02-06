@@ -36,12 +36,12 @@ namespace OpenRa.Orders
 				world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
 		}
 
-		public Cursor GetCursor( World world, int2 xy, MouseInput mi )
+		public string GetCursor( World world, int2 xy, MouseInput mi )
 		{
 			return ChooseCursor(world, mi);
 		}
 
-		Cursor ChooseCursor( World world, MouseInput mi )
+		string ChooseCursor( World world, MouseInput mi )
 		{
 			var p = Game.controller.MousePosition;
 			var c = Order(world, p.ToInt2(), mi)
@@ -51,22 +51,22 @@ namespace OpenRa.Orders
 			return c ??
 				(world.SelectActorsInBox(Game.CellSize * p, 
 				Game.CellSize * p).Any()
-					? Cursor.Select : Cursor.Default);
+					? "select" : "default");
 		}
 
-		Cursor CursorForOrderString(string s, Actor a, int2 location)
+		string CursorForOrderString(string s, Actor a, int2 location)
 		{
 			var movement = a.traits.GetOrDefault<IMovement>();
 			switch (s)
 			{
-				case "Attack": return Cursor.Attack;
-				case "Heal": return Cursor.Heal;
-				case "C4": return Cursor.C4;
+				case "Attack": return "attack";
+				case "Heal": return "heal";
+				case "C4": return "c4";
 				case "Move":
 					if (movement.CanEnterCell(location))
-						return Cursor.Move;
+						return "move";
 					else
-						return Cursor.MoveBlocked;
+						return "move-blocked";
 				case "DeployTransform":
 					var depInfo = a.Info.Traits.Get<TransformsOnDeployInfo>();
 					var transInfo = Rules.Info[depInfo.TransformsInto];
@@ -74,18 +74,18 @@ namespace OpenRa.Orders
 					{
 						var bi = transInfo.Traits.Get<BuildingInfo>();
 						if (!a.World.CanPlaceBuilding(depInfo.TransformsInto, bi, a.Location + new int2(depInfo.Offset[0], depInfo.Offset[1]), a))
-							return Cursor.DeployBlocked;
+							return "deploy-blocked";
 					}
-					return Cursor.Deploy;
+					return "deploy";
 
-				case "Deploy": return Cursor.Deploy;
-				case "Enter": return Cursor.Enter;
-				case "EnterTransport": return Cursor.Enter;
-				case "Deliver": return Cursor.Enter;
-				case "Infiltrate": return Cursor.Enter;
-				case "Capture": return Cursor.Capture;
-				case "Harvest": return Cursor.AttackMove;
-				case "Steal" : return Cursor.Enter;
+				case "Deploy": return "deploy";
+				case "Enter": return "enter";
+				case "EnterTransport": return "enter";
+				case "Deliver": return "enter";
+				case "Infiltrate": return "enter";
+				case "Capture": return "capture";
+				case "Harvest": return "attackmove";
+				case "Steal" : return "enter";
 				default:
 					return null;
 			}
