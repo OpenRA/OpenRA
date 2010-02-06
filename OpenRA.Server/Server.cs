@@ -251,6 +251,32 @@ namespace OpenRA.Server
 						GetClient(conn).Race = 1 + race;
 						SyncLobbyInfo();
 						return true;
+					}},	
+				{ "spawn",
+					s => 
+					{
+						if (GameStarted) 
+						{
+							SendChatTo( conn, "You can't change your spawn point after the game has started" );
+							return true;
+						}
+
+						int spawnPoint;
+						if (!int.TryParse(s, out spawnPoint) || spawnPoint < 0 || spawnPoint > 8) //TODO: SET properly!
+						{
+							Console.WriteLine("Invalid spawn point: {0}", s);
+							return false;
+						}
+						
+						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.SpawnPoint == spawnPoint )) //TODO: except 0
+						{
+							SendChatTo( conn, "You can't be at the same spawn point as another player" );
+							return true;
+						}
+
+						GetClient(conn).SpawnPoint = spawnPoint;
+						SyncLobbyInfo();
+						return true;
 					}},
 				{ "pal",
 					s =>

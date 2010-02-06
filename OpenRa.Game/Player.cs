@@ -26,6 +26,7 @@ namespace OpenRa
 		public int DisplayCash = 0;
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
+		public int SpawnPointIndex = 0;
 
 		public World World { get { return PlayerActor.World; } }
 
@@ -188,6 +189,12 @@ namespace OpenRa
 			{
 				PaletteIndex = client.PaletteIndex;
 				Game.chat.AddLine(this, "has changed color to {0}".F(PlayerColors[client.PaletteIndex].b));
+			}
+
+			if (SpawnPointIndex != client.SpawnPoint)
+			{
+				SpawnPointIndex = client.SpawnPoint;
+				Game.chat.AddLine(this, "has changed spawn point to {0}".F(client.SpawnPoint));
 			}
 		}
 	}

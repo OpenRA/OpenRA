@@ -239,12 +239,16 @@ namespace OpenRa
 
 			foreach (var client in LobbyInfo.Clients)
 			{
-				// todo: allow players to choose their own spawn points.
-				// only select a point for them if they didn't.
-
+				int2 sp;
+				if (client.SpawnPoint == 0)
+					sp = ChooseSpawnPoint(available, taken);
+				else
+				{
+					sp = world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
+					taken.Add(sp);
+					available.Remove(sp);
+				}
 				// todo: spawn more than one unit, in most cases!
-
-				var sp = ChooseSpawnPoint(available, taken);
 				world.CreateActor("mcv", sp, world.players[client.Index]);
 			}
 

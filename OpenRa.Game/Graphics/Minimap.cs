@@ -5,6 +5,7 @@ using OpenRa.Traits;
 using OpenRa.FileFormats;
 using System.Drawing.Imaging;
 using IjwFramework.Collections;
+using System.Collections.Generic;
 
 namespace OpenRa.Graphics
 {
@@ -62,6 +63,7 @@ namespace OpenRa.Graphics
 		static Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
+		public void InvalidateSpawnPoints() { spawnPointsLayer = null; }
 
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
@@ -78,8 +80,8 @@ namespace OpenRa.Graphics
 		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
 		{
 			var terrain = RenderTerrainBitmap(map, tileset);
-			foreach (var point in map.SpawnPoints)
-				terrain.SetPixel(point.X, point.Y, Color.White);
+			foreach (var sp in map.SpawnPoints)
+				terrain.SetPixel(sp.X, sp.Y, Color.White);
 
 			return terrain;
 		}
@@ -105,9 +107,19 @@ namespace OpenRa.Graphics
 			if (spawnPointsLayer == null)
 			{
 				spawnPointsLayer = new Bitmap(terrain);
-				foreach (var point in world.Map.SpawnPoints){
-					spawnPointsLayer.SetPixel(point.X, point.Y, Color.White);
+				var available = Game.world.Map.SpawnPoints.ToList();
+
+				foreach (var player in Game.world.players.Values)
+				{
+					if (player.SpawnPointIndex != 0)
+					{
+						int2 sp = Game.world.Map.SpawnPoints.ElementAt(player.SpawnPointIndex - 1);
+						spawnPointsLayer.SetPixel(sp.X, sp.Y, player.Color);
+						available.Remove(sp);
+					}
 				}
+				foreach (var sp in available)
+					spawnPointsLayer.SetPixel(sp.X, sp.Y, Color.White);
 			}
 			
 			mapSpawnPointSheet.Texture.SetData(spawnPointsLayer);

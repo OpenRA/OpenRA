@@ -346,6 +346,10 @@ namespace OpenRa
 		}
 
 		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
+
+		bool SpawnPointAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
+		
+		
 		void CyclePalette(bool left)
 		{
 			var d = left ? +1 : Player.PlayerColors.Count() - 1;
@@ -354,9 +358,11 @@ namespace OpenRa
 				
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
 				newIndex = (newIndex + d) % Player.PlayerColors.Count();
-
+			
+			Game.world.Minimap.InvalidateSpawnPoints();
 			Game.IssueOrder(
 				Order.Chat("/pal " + newIndex));
+
 		}
 
 		void CycleRace(bool left)
@@ -369,6 +375,21 @@ namespace OpenRa
 		{
 			Game.IssueOrder(
 				new Order("ToggleReady", Game.world.LocalPlayer.PlayerActor, "") { IsImmediate = true });
+		}
+
+		void CycleSpawnPoint(bool left)
+		{
+			var d = left ? +1 : Game.world.Map.SpawnPoints.Count() - 1;
+
+			var newIndex = (Game.world.LocalPlayer.SpawnPointIndex + d) % Game.world.Map.SpawnPoints.Count();
+
+			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.SpawnPointIndex)
+				newIndex = (newIndex + d) % Game.world.Map.SpawnPoints.Count();
+
+			Game.world.Minimap.InvalidateSpawnPoints();
+			Game.IssueOrder(
+				Order.Chat("/spawn " + newIndex));
+			
 		}
 
 		public void DrawLobby( World world )
@@ -408,32 +429,37 @@ namespace OpenRa
 			}
 
 			renderer.DrawText2("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
-			renderer.DrawText2("Color", new int2(r.Left + 230, r.Top + 50), Color.White);
-			renderer.DrawText2("Faction", new int2(r.Left + 300, r.Top + 50), Color.White);
-			renderer.DrawText2("Status", new int2(r.Left + 370, r.Top + 50), Color.White);
+			renderer.DrawText2("Color", new int2(r.Left + 140, r.Top + 50), Color.White);
+			renderer.DrawText2("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
+			renderer.DrawText2("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
+			renderer.DrawText2("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
 				
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
 			{
 				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
-				var paletteRect = new Rectangle(r.Left + 220, y - 2, 65, 22);
+				var paletteRect = new Rectangle(r.Left + 130, y - 2, 65, 22);
 
 				if (isLocalPlayer)
 				{
 					// todo: name editing
-					var nameRect = new Rectangle(r.Left + 30, y - 2, 185, 22);
+					var nameRect = new Rectangle(r.Left + 30, y - 2, 95, 22);
 					DrawDialogBackground(nameRect, "panel");
 
 					DrawDialogBackground(paletteRect, "panel");
 					AddButton(paletteRect, CyclePalette);
 
-					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
+					var raceRect = new Rectangle(r.Left + 210, y - 2, 65, 22);
 					DrawDialogBackground(raceRect, "panel");
 					AddButton(raceRect, CycleRace);
 
-					var readyRect = new Rectangle(r.Left + 360, y - 2, 95, 22);
+					var readyRect = new Rectangle(r.Left + 280, y - 2, 95, 22);
 					DrawDialogBackground(readyRect, "panel");
 					AddButton(readyRect, CycleReady);
+					
+					var spawnPointRect = new Rectangle(r.Left + 380, y - 2, 70, 22);
+					DrawDialogBackground(spawnPointRect, "panel");
+					AddButton(spawnPointRect, CycleSpawnPoint);
 				}
 
 				shpRenderer.Flush();
@@ -445,8 +471,9 @@ namespace OpenRa
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex].c);
 				lineRenderer.Flush();
-				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
-				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
+				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 220, y), Color.White);
+				renderer.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
+				renderer.DrawText((client.SpawnPoint == 0)? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;
 			}
 
