@@ -33,11 +33,18 @@ namespace OpenRA.Server
 			Console.WriteLine("Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Console.WriteLine("- {0}", m);
-
-			listener.Start();
-
-			Console.WriteLine("Server started.");
-
+			
+			try
+			{
+				listener.Start();
+				Console.WriteLine("Server started.");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Server failed to start.");
+				Environment.Exit(1);	
+			}
+			
 			for (; ; )
 			{
 				var checkRead = new ArrayList();
@@ -56,6 +63,7 @@ namespace OpenRA.Server
 				foreach (var c in conns.Where(a => a.Stream != null).ToArray())
 					SendNextChunk(c);
 			}
+
 		}
 
 		static int ChooseFreePlayerIndex()
@@ -319,7 +327,10 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						lobbyInfo.GlobalSettings.Map = s;
+						lobbyInfo.GlobalSettings.Map = s;			
+						foreach(var client in lobbyInfo.Clients)
+							client.SpawnPoint = 0;
+						
 						SyncLobbyInfo();
 						return true;
 					}},
