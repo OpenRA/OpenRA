@@ -285,7 +285,7 @@ namespace OpenRa
 
 			if (mapPreviewDirty)
 			{
-				var b = Minimap.RenderTerrainBitmap(currentMap.Map, Game.world.TileSet);	// tileset -> hack
+				var b = Minimap.RenderTerrainBitmapWithSpawnPoints(currentMap.Map, Game.world.TileSet);	// tileset -> hack
 				mapChooserSheet.Texture.SetData(b);
 				mapChooserSprite = new Sprite(mapChooserSheet, 
 					Minimap.MakeMinimapBounds(currentMap.Map), TextureChannel.Alpha);
@@ -392,7 +392,7 @@ namespace OpenRa
 			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
 
 			world.Minimap.Update();
-			world.Minimap.Draw(minimapRect, true);
+			world.Minimap.DrawSpawnPoints(minimapRect);
 
 			if (Game.world.LocalPlayer.Index == 0)
 			{

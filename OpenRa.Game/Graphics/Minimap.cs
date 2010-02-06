@@ -11,10 +11,10 @@ namespace OpenRa.Graphics
 	class Minimap
 	{
 		readonly World world;
-		Sheet sheet, mapOnlySheet;
+		Sheet sheet, mapOnlySheet, mapSpawnPointSheet;
 		SpriteRenderer rgbaRenderer;
-		Sprite sprite, mapOnlySprite;
-		Bitmap terrain, oreLayer;
+		Sprite sprite, mapOnlySprite, mapSpawnPointSprite;
+		Bitmap terrain, oreLayer, spawnPointsLayer;
 		const int alpha = 230;
 
 		public void Tick() { }
@@ -24,6 +24,7 @@ namespace OpenRa.Graphics
 			this.world = world;
 			sheet = new Sheet(r, new Size(128, 128));
 			mapOnlySheet = new Sheet(r, new Size(128, 128));
+			mapSpawnPointSheet = new Sheet(r, new Size(128, 128));
 
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			var size = Math.Max(world.Map.Width, world.Map.Height);
@@ -34,6 +35,7 @@ namespace OpenRa.Graphics
 
 			sprite = new Sprite(sheet, rect, TextureChannel.Alpha);
 			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
+			mapSpawnPointSprite = new Sprite(mapSpawnPointSheet, rect, TextureChannel.Alpha);
 
 			shroudColor = Color.FromArgb(alpha, Color.Black);
 		}
@@ -70,6 +72,14 @@ namespace OpenRa.Graphics
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
 						? colors[tileset.GetWalkability(map.MapTiles[x, y])]
 						: shroudColor);
+			return terrain;
+		}
+
+		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
+		{
+			var terrain = RenderTerrainBitmap(map, tileset);
+			foreach (var point in map.SpawnPoints)
+				terrain.SetPixel(point.X, point.Y, Color.White);
 
 			return terrain;
 		}
@@ -90,6 +100,17 @@ namespace OpenRa.Graphics
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
+			mapSpawnPointSheet.Texture.SetData(oreLayer);
+			
+			if (spawnPointsLayer == null)
+			{
+				spawnPointsLayer = new Bitmap(terrain);
+				foreach (var point in world.Map.SpawnPoints){
+					spawnPointsLayer.SetPixel(point.X, point.Y, Color.White);
+				}
+			}
+			
+			mapSpawnPointSheet.Texture.SetData(spawnPointsLayer);
 
 			if (!world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
@@ -129,6 +150,13 @@ namespace OpenRa.Graphics
 		public void Draw(RectangleF rect, bool mapOnly)
 		{
 			rgbaRenderer.DrawSprite(mapOnly ? mapOnlySprite : sprite, 
+				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
+			rgbaRenderer.Flush();
+		}
+
+		public void DrawSpawnPoints(RectangleF rect)
+		{
+			rgbaRenderer.DrawSprite( mapSpawnPointSprite,
 				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
 			rgbaRenderer.Flush();
 		}
