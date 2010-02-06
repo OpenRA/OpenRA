@@ -411,10 +411,6 @@ namespace OpenRa
 					DrawDialogBackground(paletteRect, "panel");
 					AddButton(paletteRect, CyclePalette);
 
-					// TODO: Render using the System.Drawing.Color (Player.PlayerColors[client.PaletteIndex].c)
-					shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-						Player.PlayerColors[client.PaletteIndex].a);
-
 					var raceRect = new Rectangle(r.Left + 290, y - 2, 65, 22);
 					DrawDialogBackground(raceRect, "panel");
 					AddButton(raceRect, CycleRace);
@@ -427,11 +423,12 @@ namespace OpenRa
 				shpRenderer.Flush();
 
 				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
-
-				// TODO: Render using Player.PlayerColors[client.PaletteIndex].c
-				shpRenderer.DrawSprite(colorBlock, new float2(paletteRect.Left + 4, paletteRect.Top + 4),
-					Player.PlayerColors[client.PaletteIndex].a);
-
+				lineRenderer.FillRect(RectangleF.FromLTRB(paletteRect.Left + Game.viewport.Location.X + 5,
+															paletteRect.Top + Game.viewport.Location.Y + 5,
+															paletteRect.Right + Game.viewport.Location.X - 5,
+															paletteRect.Bottom+Game.viewport.Location.Y - 5),
+													Player.PlayerColors[client.PaletteIndex].c);
+				lineRenderer.Flush();
 				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 300, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 370, y), Color.White);
 				y += 30;

@@ -57,5 +57,13 @@ namespace OpenRa.Graphics
 			if( ++lines >= linesPerBatch )
 				Flush();
 		}
+		
+		public void FillRect( RectangleF r, Color color )
+		{
+			for (float y = r.Top; y < r.Bottom; y++)
+			{
+				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
+			}
+		}
 	}
 }
