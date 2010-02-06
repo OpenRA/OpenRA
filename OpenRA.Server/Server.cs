@@ -268,7 +268,7 @@ namespace OpenRA.Server
 							return false;
 						}
 						
-						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.SpawnPoint == spawnPoint )) //TODO: except 0
+						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
 						{
 							SendChatTo( conn, "You can't be at the same spawn point as another player" );
 							return true;
