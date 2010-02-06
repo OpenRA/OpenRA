@@ -346,9 +346,7 @@ namespace OpenRa
 		}
 
 		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
-
 		bool SpawnPointAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-		
 		
 		void CyclePalette(bool left)
 		{
@@ -379,14 +377,13 @@ namespace OpenRa
 
 		void CycleSpawnPoint(bool left)
 		{
-			var d = left ? +1 : Game.world.Map.SpawnPoints.Count() - 1;
+			var d = left ? +1 : Game.world.Map.SpawnPoints.Count();
 
-			var newIndex = (Game.world.LocalPlayer.SpawnPointIndex + d) % Game.world.Map.SpawnPoints.Count();
+			var newIndex = (Game.world.LocalPlayer.SpawnPointIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
 
 			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.SpawnPointIndex)
-				newIndex = (newIndex + d) % Game.world.Map.SpawnPoints.Count();
+				newIndex = (newIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
 
-			Game.world.Minimap.InvalidateSpawnPoints();
 			Game.IssueOrder(
 				Order.Chat("/spawn " + newIndex));
 			
@@ -413,6 +410,7 @@ namespace OpenRa
 			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
 
 			world.Minimap.Update();
+			world.Minimap.Draw(minimapRect, true);
 			world.Minimap.DrawSpawnPoints(minimapRect);
 
 			if (Game.world.LocalPlayer.Index == 0)

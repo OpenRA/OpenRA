@@ -143,4 +143,8 @@
 		<image name="corner-bl" x="0" y="407" width="23" height="24" />
 		<image name="corner-br" x="23" y="407" width="23" height="24" />
 	</collection>
+	<collection name="spawnpoints" src="spawnpoints.png">
+		<image name="unowned" x="16" y="0" width="16" height="16" />
+		<image name="owned" x="0" y="0" width="16" height="16" />
+	</collection>
 </chrome>

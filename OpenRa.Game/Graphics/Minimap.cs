@@ -6,6 +6,7 @@ using OpenRa.FileFormats;
 using System.Drawing.Imaging;
 using IjwFramework.Collections;
 using System.Collections.Generic;
+using IjwFramework.Types;
 
 namespace OpenRa.Graphics
 {
@@ -14,8 +15,14 @@ namespace OpenRa.Graphics
 		readonly World world;
 		Sheet sheet, mapOnlySheet, mapSpawnPointSheet;
 		SpriteRenderer rgbaRenderer;
+		LineRenderer lineRenderer;
 		Sprite sprite, mapOnlySprite, mapSpawnPointSprite;
 		Bitmap terrain, oreLayer, spawnPointsLayer;
+		Rectangle bounds;
+
+		Sprite ownedSpawnPoint;
+		Sprite unownedSpawnPoint;
+
 		const int alpha = 230;
 
 		public void Tick() { }
@@ -27,18 +34,22 @@ namespace OpenRa.Graphics
 			mapOnlySheet = new Sheet(r, new Size(128, 128));
 			mapSpawnPointSheet = new Sheet(r, new Size(128, 128));
 
+			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			var dw = (size - world.Map.Width) / 2;
 			var dh = (size - world.Map.Height) / 2;
 
-			var rect = new Rectangle(world.Map.Offset.X - dw, world.Map.Offset.Y - dh, size, size);
+			bounds = new Rectangle(world.Map.Offset.X - dw, world.Map.Offset.Y - dh, size, size);
 
-			sprite = new Sprite(sheet, rect, TextureChannel.Alpha);
-			mapOnlySprite = new Sprite(mapOnlySheet, rect, TextureChannel.Alpha);
-			mapSpawnPointSprite = new Sprite(mapSpawnPointSheet, rect, TextureChannel.Alpha);
+			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
+			mapOnlySprite = new Sprite(mapOnlySheet, bounds, TextureChannel.Alpha);
+			mapSpawnPointSprite = new Sprite(mapSpawnPointSheet, bounds, TextureChannel.Alpha);
 
 			shroudColor = Color.FromArgb(alpha, Color.Black);
+
+			ownedSpawnPoint = ChromeProvider.GetImage(r, "spawnpoints", "owned");
+			unownedSpawnPoint = ChromeProvider.GetImage(r, "spawnpoints", "unowned");
 		}
 
 		public static Rectangle MakeMinimapBounds(Map m)
@@ -79,6 +90,8 @@ namespace OpenRa.Graphics
 
 		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
 		{
+			/* todo: do this a bit nicer */
+
 			var terrain = RenderTerrainBitmap(map, tileset);
 			foreach (var sp in map.SpawnPoints)
 				terrain.SetPixel(sp.X, sp.Y, Color.White);
@@ -102,27 +115,6 @@ namespace OpenRa.Graphics
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
-			mapSpawnPointSheet.Texture.SetData(oreLayer);
-			
-			if (spawnPointsLayer == null)
-			{
-				spawnPointsLayer = new Bitmap(terrain);
-				var available = Game.world.Map.SpawnPoints.ToList();
-
-				foreach (var player in Game.world.players.Values)
-				{
-					if (player.SpawnPointIndex != 0)
-					{
-						int2 sp = Game.world.Map.SpawnPoints.ElementAt(player.SpawnPointIndex - 1);
-						spawnPointsLayer.SetPixel(sp.X, sp.Y, player.Color);
-						available.Remove(sp);
-					}
-				}
-				foreach (var sp in available)
-					spawnPointsLayer.SetPixel(sp.X, sp.Y, Color.White);
-			}
-			
-			mapSpawnPointSheet.Texture.SetData(spawnPointsLayer);
 
 			if (!world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
@@ -166,10 +158,41 @@ namespace OpenRa.Graphics
 			rgbaRenderer.Flush();
 		}
 
+		int2 TransformCellToMinimapPixel(RectangleF viewRect, int2 p)
+		{
+			var fx = (float)(p.X - bounds.X) / bounds.Width;
+			var fy = (float)(p.Y - bounds.Y) / bounds.Height;
+
+			return new int2(
+				(int)(viewRect.Width * fx + viewRect.Left) - 8,
+				(int)(viewRect.Height * fy + viewRect.Top) - 8);
+		}
+
 		public void DrawSpawnPoints(RectangleF rect)
 		{
-			rgbaRenderer.DrawSprite( mapSpawnPointSprite,
-				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
+			var points = world.Map.SpawnPoints
+				.Select( (sp,i) => Pair.New(sp,world.players.Values.FirstOrDefault( 
+					p => p.SpawnPointIndex == i + 1 ) ))
+				.ToList();
+
+			foreach (var p in points)
+			{
+				var pos = TransformCellToMinimapPixel(rect, p.First);
+
+				if (p.Second == null)
+					rgbaRenderer.DrawSprite(unownedSpawnPoint, pos, "chrome");
+				else
+				{
+					lineRenderer.FillRect(new RectangleF(
+						Game.viewport.Location.X + pos.X + 2,
+						Game.viewport.Location.Y + pos.Y + 2,
+						12, 12), p.Second.Color);
+			
+					rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
+				}
+			}
+
+			lineRenderer.Flush();
 			rgbaRenderer.Flush();
 		}
 	}

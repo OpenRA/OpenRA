@@ -70,7 +70,10 @@ namespace OpenRa
 			Timer.Time( "load rules: {0}" );
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
+
 			Player.ResetPlayerColorList();
+			ChromeProvider.Initialize(manifest.Chrome);
+
 			world = new World();
 						
 			Game.world.ActorAdded += a => 
@@ -80,7 +83,6 @@ namespace OpenRa
 			};
 			Timer.Time( "world: {0}" );
 			
-			ChromeProvider.Initialize(manifest.Chrome);
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
