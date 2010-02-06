@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IjwFramework.Types;
 using OpenRa.Effects;
+using System.Drawing;
 
 namespace OpenRa.Traits
 {
@@ -148,7 +149,13 @@ namespace OpenRa.Traits
 			{
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
-
+				
+				if ( weapon.RenderAsLaser )
+				{
+					// TODO: This is a hack; should probably use a particular palette index
+					Color bc = (weapon.UsePlayerColor) ? Player.PlayerColors[self.Owner.PaletteIndex].c : Color.Red;
+					self.World.Add(new LaserZap(firePos, thisTarget.CenterLocation.ToInt2(), weapon.BeamRadius, bc));
+				}	
 				if( weapon.RenderAsTesla )
 					self.World.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
 

@@ -3,6 +3,7 @@ namespace OpenRa.Traits
 {
 	class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
+		public readonly string ChargeAudio = "tslachg2.aud";
 		public override object Create(Actor self) { return new RenderBuildingCharge(self); }
 	}
 
@@ -16,7 +17,7 @@ namespace OpenRa.Traits
 
 		public void Attacking(Actor self)
 		{
-			Sound.Play("tslachg2.aud");
+			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio);
 			anim.PlayThen(GetPrefix(self) + "active", 
 				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}

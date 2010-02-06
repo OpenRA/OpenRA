@@ -132,4 +132,14 @@
 		<sequence name="critical-active" start="5" length="5" />
 		<sequence name="make" start="0" length="*" src="tmplmake" />
 	</unit>
+	<!-- Obelisk of Light -->
+	<unit name="obli">
+		<sequence name="idle" start="0" length="1" />
+		<sequence name="damaged-idle" start="4" length="1" />
+		<sequence name="critical-idle" start="8" length="1" />
+		<sequence name="active" start="0" length="4" />
+		<sequence name="damaged-active" start="4" length="4" />
+		<sequence name="critical-active" start="4" length="4" />
+		<sequence name="make" start="0" length="13" src="oblimake" />
+	</unit>
 </sequences>

@@ -18,5 +18,8 @@ namespace OpenRa.GameRules
 		public readonly string Warhead = null;
 
 		public readonly bool RenderAsTesla = false;
+		public readonly bool RenderAsLaser = false;
+		public readonly bool UsePlayerColor = true;
+		public readonly int BeamRadius = 1;
 	}
 }

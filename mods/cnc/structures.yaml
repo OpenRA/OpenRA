@@ -323,3 +323,31 @@ TMPL:
 		Armor: light
 		Crewed: yes
 		Sight: 4
+
+OBLI:
+	RequiresPower:
+	Inherits: ^Building
+	Buildable:
+		Icon:obliicnh
+		TechLevel: 4
+		Prerequisites: hq
+		Owner: soviet
+		Cost: 1500
+		Description: Obelisk of Light
+		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+	Building:
+		Power: -150
+		Footprint: _ x
+		Dimensions: 1,2
+		HP: 200
+		Armor: light
+		Crewed: no
+		Sight: 5
+	Turreted:
+	RenderBuildingCharge:
+		ChargeAudio: obelpowr.aud
+	AttackTurreted:
+		PrimaryWeapon: Laser
+		FireDelay: 8
+	AutoTarget:
+	-RenderBuilding:
