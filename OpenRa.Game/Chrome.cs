@@ -76,6 +76,7 @@ namespace OpenRa
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
 		Sprite colorBlock;
+		int mapOffset = 0;
 		
 		public Chrome(Renderer r)
 		{
@@ -300,9 +301,10 @@ namespace OpenRa
 			rgbaRenderer.Flush();
 
 			var y = r.Top + 50;
-
-			foreach (var map in mapList.Value)
-			{
+			
+			int numListItems = (int) Math.Floor( (decimal) ((r.Bottom - 60 - y ) / 20));	
+			for(int i = mapOffset; i < numListItems + mapOffset; i++, y += 20){
+				var map = mapList.Value.ElementAt(i);
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
 					DrawDialogBackground(itemRect, "panel");
@@ -310,7 +312,6 @@ namespace OpenRa
 				renderer.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
-				y += 20;
 			}
 
 			y = mapRect.Bottom + 20;
@@ -325,6 +326,20 @@ namespace OpenRa
 			y += 20;
 			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+
+			y += 30;
+			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "^",
+			_ =>
+			{
+				mapOffset = (mapOffset - 1 < 0) ? 0 : mapOffset - 1;
+			});
+			
+			y += 30;
+			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "\\/",
+			_ =>
+			{
+				mapOffset = (mapOffset + 1 > mapList.Value.Count() - numListItems) ? mapOffset : mapOffset + 1;
+			});
 
 			AddButton(r, _ => { });
 		}
