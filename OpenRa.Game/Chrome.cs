@@ -302,7 +302,8 @@ namespace OpenRa
 
 			var y = r.Top + 50;
 			
-			int numListItems = (int) Math.Floor( (decimal) ((r.Bottom - 60 - y ) / 20));	
+			int numListItems = ((r.Bottom - 60 - y ) / 20);	
+			
 			for(int i = mapOffset; i < numListItems + mapOffset; i++, y += 20){
 				var map = mapList.Value.ElementAt(i);
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
