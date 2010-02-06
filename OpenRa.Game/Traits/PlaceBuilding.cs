@@ -26,12 +26,11 @@ namespace OpenRa.Traits
 					Sound.PlayToPlayer(order.Player, "placbldg.aud");
 					Sound.PlayToPlayer(order.Player, "build5.aud");
 					
+					var facts = self.World.Queries.OwnedBy[self.Owner]
+						.WithTrait<ConstructionYard>().Select(x => x.Actor);
 					
-					// TODO: Prioritise the primary conyard if it exists
-					var fact = self.World.Queries
-						.OwnedBy[self.Owner]
-						.WithTrait<ConstructionYard>()
-						.Select(x=>x.Actor).FirstOrDefault();
+					var primaryFact = facts.Where(y => y.traits.Get<Production>().IsPrimary);
+					var fact = (primaryFact.Count() > 0) ? primaryFact.FirstOrDefault() : facts.FirstOrDefault();
 
 					if (fact != null)
 						fact.traits.Get<RenderBuilding>().PlayCustomAnim(fact, "build");
