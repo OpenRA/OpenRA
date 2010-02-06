@@ -36,8 +36,11 @@ namespace OpenRa.Effects
 			int alpha = (int)((1-(float)(totalTime-timeUntilRemove)/totalTime)*255);
 			Color rc = Color.FromArgb(alpha,color);
 			
+			float2 unit = 1.0f/(from - to).Length*(from - to).ToFloat2();
+			float2 norm = new float2(-unit.Y, unit.X);
+			
 			for (int i = -radius; i < radius; i++)
-				Game.world.WorldRenderer.lineRenderer.DrawLine(from + new int2(i, 0), to + new int2(i, 0), rc, rc);
+				Game.world.WorldRenderer.lineRenderer.DrawLine(from + i * norm, to + i * norm, rc, rc);
 			
 			yield break;
 		}
