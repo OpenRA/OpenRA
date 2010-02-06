@@ -35,5 +35,7 @@ BR3:
 
 MINE:
 	Inherits: ^Building
+	RenderBuilding:
+		Palette: terrain
 	SeedsOre:
 	-Selectable:

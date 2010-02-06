@@ -21,8 +21,8 @@ namespace OpenRa.Mods.Cnc
 			var location = CreationLocation(self, producee);
 			var owner = self.Owner;
 			
-			// Start at the edge of the map, to the right of the airfield
-			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width, self.Location.Y);
+			// Start beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
+			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width+15, self.Location.Y);
 			var endPos = new int2(owner.World.Map.XOffset, self.Location.Y);
 			var unloadOffset = new int2(1,1);
 			var exitOffset = new int2(3,1);
@@ -37,9 +37,13 @@ namespace OpenRa.Mods.Cnc
 				cargo.Load(a, newUnit);
 				
 				a.CancelActivity();
-				a.QueueActivity(new Land(self.CenterLocation));
+				
+				a.QueueActivity(new Land(self));
 				a.QueueActivity(new CallFunc(() => 
 				{
+					if (self.IsDead)
+						return;
+					
 					var actor = cargo.Unload(self);
 					self.World.AddFrameEndTask(ww =>
 					{

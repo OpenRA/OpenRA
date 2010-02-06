@@ -9,13 +9,21 @@ namespace OpenRa.Traits.Activities
 	{
 		readonly float2 Pos;
 		bool isCanceled;
-
+		Actor Structure;
+		
 		public Land(float2 pos) { Pos = pos; }
-
+		public Land(Actor structure) { Structure = structure; Pos = Structure.CenterLocation; }
+		
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
+			if (Structure != null && Structure.IsDead)
+			{
+				Structure = null;
+				isCanceled = true;
+			}
+			
 			if (isCanceled) return NextActivity;
 
 			var d = Pos - self.CenterLocation;

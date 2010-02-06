@@ -3,7 +3,7 @@ MCV:
 	Buildable:
 		Icon: mcvicnh
 		TechLevel: 7
-		Prerequisites: eye
+		Prerequisites: weap, @Superweapon
 		Owner: allies,soviet
 		Cost: 5000
 		Description: Mobile Construction Vehicle

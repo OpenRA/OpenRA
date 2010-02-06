@@ -92,6 +92,7 @@ PYLE:
 		Cost: 300
 		Description: Barracks
 		LongDesc: Trains infantry
+		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -116,6 +117,7 @@ HAND:
 		Cost: 300
 		Description: Hand of Nod
 		LongDesc: Trains infantry
+		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: __ xx xx
@@ -252,7 +254,7 @@ HPAD:
 	Buildable:
 		Icon:hpadicnh
 		TechLevel: 6
-		Prerequisites: pyle
+		Prerequisites: @Barracks
 		Owner: allies,soviet
 		Cost: 1500
 		Description: Helipad
@@ -285,6 +287,7 @@ EYE:
 		Cost: 2800
 		Description: Advanced Communications Center
 		LongDesc: Provides access to the Ion Cannon.\n  Requires power to operate.
+		AlternateName: @Superweapon
 	Building:
 		Power: -200
 		Footprint: __ xx
@@ -309,6 +312,7 @@ TMPL:
 		Cost: 3000
 		Description: Temple of Nod
 		LongDesc: Place of worship and secret missile silo.\n  Requires power to operate.
+		AlternateName: @Superweapon
 	Building:
 		Power: -150
 		Footprint: __ xx
