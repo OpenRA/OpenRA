@@ -73,6 +73,65 @@ BGGY:
 	RenderUnitTurreted:
 	AutoTarget:
 
+TRAN:
+	Inherits: ^Plane
+	Buildable:
+		Icon:tranicnh
+		TechLevel: 6
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: allies,soviet
+		Cost: 1500
+		Description: Chinook Transport
+		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
+	Unit:
+		HP: 90
+		Armor: light
+		InitialFacing: 20
+		ROT: 5
+		Sight: 0
+		Speed: 30
+	Helicopter:
+	RenderUnitRotor:
+		PrimaryOffset: 0,14,0,-4
+		SecondaryOffset: 0,-14,0,-2
+	WithShadow:
+	Cargo:
+		PassengerTypes: Foot
+		Passengers: 5
+
+HELI:
+	Inherits: ^Plane
+	Buildable:
+		Icon heliicnh
+		TechLevel: 6
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: soviet
+		Cost: 1200
+		Description: Apache Longbow
+		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Unit:
+		HP: 125
+		Armor: heavy
+		Crewed: yes
+		InitialFacing: 20
+		ROT: 4
+		Sight: 0
+		Speed: 40
+	AttackHeli:
+		PrimaryWeapon: HighV
+		SecondaryWeapon: HighV
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
+	Helicopter:
+	RenderUnitRotor:
+		PrimaryOffset: 0,0,0,-2
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 15
+
+
 C17:
 	ParaDrop:
 		LZRange: 1
