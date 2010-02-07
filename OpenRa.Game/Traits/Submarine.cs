@@ -6,6 +6,9 @@ namespace OpenRa.Traits
 {
 	class SubmarineInfo : ITraitInfo
 	{
+		public readonly float SubmergeDelay = 1.2f; // Seconds
+		public readonly string SubmergeSound = "subshow1.aud";
+		public readonly string SurfaceSound = "subshow1.aud";
 		public object Create(Actor self) { return new Submarine(self); }
 	}
 
@@ -13,15 +16,19 @@ namespace OpenRa.Traits
 	{
 		[Sync]
 		int remainingSurfaceTime = 2;		/* setup for initial dive */
-
-		public Submarine(Actor self) { }
+		
+		Actor self;
+		public Submarine(Actor self)
+		{
+			this.self = self;
+		}
 
 		void DoSurface()
 		{
 			if (remainingSurfaceTime <= 0)
 				OnSurface();
 
-			remainingSurfaceTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
+			remainingSurfaceTime = (int)(self.Info.Traits.Get<SubmarineInfo>().SubmergeDelay * 25);
 		}
 
 		public void Attacking(Actor self) { DoSurface(); }
@@ -48,12 +55,12 @@ namespace OpenRa.Traits
 
 		void OnSurface()
 		{
-			Sound.Play("subshow1.aud");
+			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SurfaceSound);
 		}
 
 		void OnDive()
 		{
-			Sound.Play("subshow1.aud");		/* is this the right sound?? */
+			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SubmergeSound);
 		}
 	}
 }

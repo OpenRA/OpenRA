@@ -6,6 +6,9 @@ namespace OpenRa.Traits
 {
 	class CloakInfo : ITraitInfo
 	{
+		public readonly float CloakDelay = 1.2f; // Seconds
+		public readonly string CloakSound = "ironcur9.aud";
+		public readonly string UncloakSound = "ironcur9.aud";
 		public object Create(Actor self) { return new Cloak(self); }
 	}
 
@@ -14,14 +17,18 @@ namespace OpenRa.Traits
 		[Sync]
 		int remainingUncloakTime = 2;		/* setup for initial cloak */
 
-		public Cloak(Actor self) {}
+		Actor self;
+		public Cloak(Actor self)
+		{
+			this.self = self;
+		}
 
 		public void Attacking(Actor self)
 		{
 			if (remainingUncloakTime <= 0)
 				OnCloak();
 
-			remainingUncloakTime = (int)(Rules.General.SubmergeDelay * 60 * 25);
+			remainingUncloakTime = (int)(self.Info.Traits.Get<CloakInfo>().CloakDelay * 25);
 		}
 
 		public IEnumerable<Renderable>
@@ -45,12 +52,12 @@ namespace OpenRa.Traits
 
 		void OnCloak()
 		{
-			Sound.Play("ironcur9.aud");
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound);
 		}
 
 		void OnUncloak()
 		{
-			Sound.Play("ironcur9.aud");		/* is this the right sound?? */
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().UncloakSound);
 		}
 	}
 }

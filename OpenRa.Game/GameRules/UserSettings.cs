@@ -5,7 +5,6 @@ namespace OpenRa.GameRules
 	{
 		// Debug settings
 		public readonly bool UnitDebug = false;
-		public readonly bool BuildingDebug = false;
 		public readonly bool PathDebug = false;
 		public readonly bool PerfGraph = true;
 		
@@ -19,7 +18,6 @@ namespace OpenRa.GameRules
 		public readonly int SheetSize = 512;
 		
 		// External game settings
-		public readonly bool UseAftermath = false;
 		public readonly string NetworkHost = "";
 		public readonly int NetworkPort = 0;
 		public readonly string Map = "scm12ea.ini";
@@ -29,6 +27,7 @@ namespace OpenRa.GameRules
 		public readonly string[] InitialMods = { "ra" };
 		
 		// Gameplay options
+		// TODO: These need to die
 		public readonly bool RepairRequiresConyard = true;
 		public readonly bool PowerDownBuildings = true;
 	}

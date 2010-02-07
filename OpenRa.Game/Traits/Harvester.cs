@@ -5,7 +5,8 @@ namespace OpenRa.Traits
 {
 	class HarvesterInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new Harvester(); }
+		public readonly int BailCount = 28;
+		public object Create(Actor self) { return new Harvester(self); }
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips
@@ -14,8 +15,14 @@ namespace OpenRa.Traits
 		public int oreCarried = 0;					/* sum of these must not exceed capacity */
 		[Sync]
 		public int gemsCarried = 0;
+		
+		Actor self;
+		public Harvester(Actor self)
+		{
+			this.self = self;
+		}
 
-		public bool IsFull { get { return oreCarried + gemsCarried == Rules.General.BailCount; } }
+		public bool IsFull { get { return oreCarried + gemsCarried == self.Info.Traits.Get<HarvesterInfo>().BailCount; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
 
 		public void AcceptResource(bool isGem)
@@ -67,13 +74,13 @@ namespace OpenRa.Traits
 			const int numPips = 7;
 			for (int i = 0; i < numPips; i++)
 			{
-				if (gemsCarried * 1.0f / Rules.General.BailCount > i * 1.0f / numPips)
+				if (gemsCarried * 1.0f / self.Info.Traits.Get<HarvesterInfo>().BailCount > i * 1.0f / numPips)
 				{
 					yield return PipType.Red;
 					continue;
 				}
 
-				if ((gemsCarried + oreCarried) * 1.0f / Rules.General.BailCount > i * 1.0f / numPips)
+				if ((gemsCarried + oreCarried) * 1.0f / self.Info.Traits.Get<HarvesterInfo>().BailCount > i * 1.0f / numPips)
 				{
 					yield return PipType.Yellow;
 					continue;

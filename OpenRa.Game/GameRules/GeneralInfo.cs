@@ -4,19 +4,6 @@ namespace OpenRa.GameRules
 {
 	public class GeneralInfo
 	{
-		/* Crates */
-		public readonly int CrateMinimum = 0;
-		public readonly int CrateMaximum = 0;
-		public readonly float CrateRadius = 0;
-		public readonly float CrateRegen = 0;
-		public readonly string UnitCrateType = null;	/* =none, if any */
-		public readonly float WaterCrateChance = 0;
-
-		public readonly int SoloCrateMoney = 2000;
-		public readonly string SilverCrate = null;		/* solo play crate contents */
-		public readonly string WaterCrate = null;
-		public readonly string WoodCrate = null;
-
 		/* Special Weapons */
 		public readonly float GapRegenInterval =0;
 		public readonly int BadgerBombCount = 1;
@@ -40,9 +27,6 @@ namespace OpenRa.GameRules
 
 		/* Combat & Damage */
 		public readonly float TurboBoost = 1.5f;
-		public readonly int APMineDamage = 0;
-		public readonly int AVMineDamage = 0;
-		public readonly int AtomDamage = 0;
 		public readonly float BallisticScatter = 0;
 		public readonly float C4Delay = 0;
 		public readonly float ExpSpread = 0;
@@ -58,7 +42,6 @@ namespace OpenRa.GameRules
 		public readonly int Incoming = 0;
 
 		/* Income & Production */
-		public readonly int BailCount = 0;
 		public readonly float BuildSpeed = 0;
 		public readonly float BuildupTime = 0;
 		public readonly int GemValue = 0;

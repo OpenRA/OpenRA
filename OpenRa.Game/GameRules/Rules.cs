@@ -16,7 +16,6 @@ namespace OpenRa
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static GeneralInfo General;
-		public static AftermathInfo Aftermath;
 		public static TechTree TechTree;
 
 		public static Dictionary<string, ActorInfo> Info;
@@ -29,11 +28,6 @@ namespace OpenRa
 
 			General = new GeneralInfo();
 			FieldLoader.Load(General, AllRules.GetSection("General"));
-
-			// dirty hack. all of this needs to either die or go to traitinfos
-			Aftermath = new AftermathInfo();
-			if (AllRules.GetSection("Aftermath", true).Count() > 0)
-				FieldLoader.Load(Aftermath, AllRules.GetSection("Aftermath"));
 
 			LoadCategories(
 				"Weapon",

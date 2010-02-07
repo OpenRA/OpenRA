@@ -8,6 +8,7 @@ namespace OpenRa.Mods.Aftermath
 {
 	class ChronoshiftDeployInfo : ITraitInfo
 	{
+		public readonly int ChargeTime = 120; // Seconds
 		public object Create(Actor self) { return new ChronoshiftDeploy(self); }
 	}
 
@@ -16,7 +17,6 @@ namespace OpenRa.Mods.Aftermath
 		// Recharge logic
 		[Sync]
 		int chargeTick = 0; // How long until we can chronoshift again?
-		readonly int chargeLength = (int)(Rules.Aftermath.ChronoTankDuration * 60 * 25); // How long between shifts?
 
 		public ChronoshiftDeploy(Actor self) { }
 
@@ -53,7 +53,7 @@ namespace OpenRa.Mods.Aftermath
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud");
-				chargeTick = chargeLength;
+				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
 
 				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.DoChronoshift();
@@ -66,7 +66,7 @@ namespace OpenRa.Mods.Aftermath
 			const int numPips = 5;
 			for (int i = 0; i < numPips; i++)
 			{
-				if ((1 - chargeTick * 1.0f / chargeLength) * numPips < i + 1)
+				if ((1 - chargeTick * 1.0f / (25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime)) * numPips < i + 1)
 				{
 					yield return PipType.Transparent;
 					continue;
