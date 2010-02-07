@@ -37,11 +37,11 @@ namespace OpenRa
 
 		public static void LoadModPackages(Manifest manifest)
 		{
-			FileSystem.UnmountTemporaryPackages();
+			FileSystem.UnmountAll();
 			Timer.Time("reset: {0}");
 
-			foreach (var dir in manifest.Folders) FileSystem.MountTemporaryEx(dir);
-			foreach (var pkg in manifest.Packages) FileSystem.MountTemporaryEx(pkg);
+			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 				
 			Timer.Time("mount temporary packages: {0}");
 		}

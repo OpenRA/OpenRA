@@ -79,8 +79,8 @@ namespace SequenceEditor
 			var mods = args[0].Split(',');
 			var manifest = new Manifest(mods);
 
-			foreach (var folder in manifest.Folders) FileSystem.MountTemporaryEx(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.MountTemporaryEx(pkg);
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			XmlFilename = args[1];
 			Doc = new XmlDocument(); 

@@ -9,38 +9,10 @@ namespace OpenRa.FileFormats
 	public static class FileSystem
 	{
 		static List<IFolder> mountedFolders = new List<IFolder>();
-		static List<IFolder> temporaryMounts = new List<IFolder>();
 
 		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
-		static Cache<uint, List<IFolder>> allTemporaryFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 
-		public static void MountDefaultPackages()
-		{
-			FileSystem.Mount(new Folder("./"));
-			if( FileSystem.Exists( "main.mix" ) )
-				FileSystem.Mount( new Package( "main.mix" ) );
-			FileSystem.Mount( new Package( "redalert.mix" ) );
-			FileSystem.Mount( new Package( "conquer.mix" ) );
-			FileSystem.Mount( new Package( "hires.mix" ) );
-			FileSystem.Mount( new Package( "general.mix" ) );
-			FileSystem.Mount( new Package( "local.mix" ) );
-			FileSystem.Mount( new Package( "sounds.mix" ) );
-			FileSystem.Mount( new Package( "speech.mix" ) );
-			FileSystem.Mount( new Package( "allies.mix" ) );
-			FileSystem.Mount( new Package( "russian.mix" ) );
-
-			FileSystem.Mount( new Package( "temperat.mix" ) );
-			FileSystem.Mount( new Package( "snow.mix" ) );
-			FileSystem.Mount( new Package( "interior.mix" ) );
-		}
-		
-		public static void MountAftermathPackages()
-		{
-			FileSystem.Mount( new Package( "expand2.mix" ) );
-			FileSystem.Mount( new Package( "hires1.mix" ) );
-		}
-
-		public static void Mount(IFolder folder)
+		static void MountInner(IFolder folder)
 		{
 			mountedFolders.Add(folder);
 
@@ -52,28 +24,15 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		public static void MountTemporary(IFolder folder)
-		{
-			mountedFolders.Add(folder);
-			temporaryMounts.Add(folder);
-
-			foreach( var hash in folder.AllFileHashes() )
-			{
-				var l = allTemporaryFiles[hash];
-				if( !l.Contains( folder ) )
-					l.Add( folder );
-			}
-		}
-
-		public static void MountTemporaryEx(string name)
+		public static void Mount(string name)
 		{
 			name = name.ToLowerInvariant();
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 
 			var a = name.EndsWith(".mix")
-				? (Action)(() => FileSystem.MountTemporary(new Package(name)))
-				: () => FileSystem.MountTemporary(new Folder(name));
+				? (Action)(() => FileSystem.MountInner(new Package(name)))
+				: () => FileSystem.MountInner(new Folder(name));
 
 			if (optional)
 				try { a(); }
@@ -82,12 +41,10 @@ namespace OpenRa.FileFormats
 				a();
 		}
 
-		public static void UnmountTemporaryPackages()
+		public static void UnmountAll()
 		{
-			mountedFolders.RemoveAll(f => temporaryMounts.Contains(f));
-			temporaryMounts.Clear();
-
-			allTemporaryFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+			mountedFolders.Clear();
+			allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 		}
 
 		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
@@ -105,8 +62,7 @@ namespace OpenRa.FileFormats
 		{
 			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
 			{
-				var ret = GetFromCache( allFiles, filename )
-					?? GetFromCache( allTemporaryFiles, filename );
+				var ret = GetFromCache( allFiles, filename );
 				if( ret != null )
 					return ret;
 			}
@@ -127,8 +83,7 @@ namespace OpenRa.FileFormats
 			{
 				foreach( var ext in exts )
 				{
-					var s = GetFromCache( allFiles, filename + ext )
-						?? GetFromCache( allTemporaryFiles, filename + ext );
+					var s = GetFromCache( allFiles, filename + ext );
 					if( s != null )
 						return s;
 				}
