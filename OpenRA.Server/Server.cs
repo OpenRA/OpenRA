@@ -24,7 +24,7 @@ namespace OpenRA.Server
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		public static void Main(string[] args)
+		public static int Main(string[] args)
 		{
 			if (args.Length > 0) defaultMods = args;
 			lobbyInfo = new Session();
@@ -39,10 +39,10 @@ namespace OpenRA.Server
 				listener.Start();
 				Console.WriteLine("Server started.");
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				Console.WriteLine("Server failed to start.");
-				Environment.Exit(1);	
+				return 1;
 			}
 			
 			for (; ; )

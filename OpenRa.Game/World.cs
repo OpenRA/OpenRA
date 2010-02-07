@@ -50,9 +50,6 @@ namespace OpenRa
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
 
-		readonly int oreFrequency;
-		int oreTicks;
-
 		public World()
 		{
 			Timer.Time( "----World.ctor" );
@@ -66,9 +63,6 @@ namespace OpenRa
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Timer.Time("renderer: {0}");
 			
-
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
-			oreTicks = oreFrequency;
 			Map.InitOreDensity();
 			Timer.Time( "Ore: {0}" );
 
@@ -124,14 +118,6 @@ namespace OpenRa
 		
 		public void Tick()
 		{
-			if (--oreTicks == 0)
-				using( new PerfSample( "ore" ) )
-				{
-					this.GrowOre( Game.SharedRandom );
-					Minimap.InvalidateOre();
-					oreTicks = oreFrequency;
-				}
-
 			foreach (var a in actors) a.Tick();
 			Queries.WithTraitMultiple<ITick>().Do( x => x.Trait.Tick( x.Actor ) );
 

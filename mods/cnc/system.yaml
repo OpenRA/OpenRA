@@ -105,3 +105,8 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
+	OreGrowth:
+		Interval: .3
+		Chance: .02
+		Spreads: yes
+		Grows: yes

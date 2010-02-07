@@ -356,10 +356,8 @@ namespace OpenRa
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
 				newIndex = (newIndex + d) % Player.PlayerColors.Count();
 			
-			Game.world.Minimap.InvalidateSpawnPoints();
 			Game.IssueOrder(
 				Order.Chat("/pal " + newIndex));
-
 		}
 
 		void CycleRace(bool left)
