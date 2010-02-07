@@ -69,24 +69,28 @@ namespace SequenceEditor
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			FileSystem.MountDefaultPackages();
-			try
-			{
-				FileSystem.MountAftermathPackages();
-			}
-			catch( FileNotFoundException ){}
 
-			XmlFilename = args.FirstOrDefault( x => x.EndsWith(".xml") ) ?? "sequences.xml";
+			if (args.Length != 3)
+			{
+				MessageBox.Show( "usage: SequenceEditor mod[,mod]* sequences-file.xml palette.pal");
+				return;
+			}
+
+			var mods = args[0].Split(',');
+			var manifest = new Manifest(mods);
+
+			foreach (var folder in manifest.Folders) FileSystem.MountTemporaryEx(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.MountTemporaryEx(pkg);
+
+			XmlFilename = args[1];
 			Doc = new XmlDocument(); 
 			Doc.Load(XmlFilename);
 
-			var tempPal = new Palette(FileSystem.Open("temperat.pal"));
-			Pal = tempPal; //new Palette(tempPal, new ShroudPaletteRemap());
+			var tempPal = new Palette(FileSystem.Open(args[2]));
+			Pal = tempPal;
 
-			UnitName = args.FirstOrDefault( x => !x.EndsWith(".xml") );
-			if (UnitName == null)
-				UnitName = GetTextForm.GetString("Unit to edit?", "e1");
-			if (UnitName == null)
+			UnitName = GetTextForm.GetString("Unit to edit?", "e1");
+			if (string.IsNullOrEmpty(UnitName))
 				return;
 
 			LoadAndResolve(UnitName); 
@@ -95,10 +99,7 @@ namespace SequenceEditor
 			foreach (XmlElement e in Doc.SelectNodes(xpath))
 			{
 				if (e.HasAttribute("src"))
-				{
-					var src = e.GetAttribute("src");
-					LoadAndResolve(src);
-				}
+					LoadAndResolve(e.GetAttribute("src"));
 				Sequences[e.GetAttribute("name")] = new Sequence(e);
 			}
 

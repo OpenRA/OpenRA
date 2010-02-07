@@ -40,16 +40,9 @@ namespace OpenRa
 			FileSystem.UnmountTemporaryPackages();
 			Timer.Time("reset: {0}");
 
-			foreach (var dir in manifest.Folders)
-				FileSystem.MountTemporary(new Folder(dir));
-
-			foreach (var pkg in manifest.Packages)
-				if (pkg.StartsWith( "~"))		// this package is optional.
-					try { FileSystem.MountTemporary(new Package(pkg.Substring(1))); }
-					catch { }
-				else
-					FileSystem.MountTemporary(new Package(pkg));
-
+			foreach (var dir in manifest.Folders) FileSystem.MountTemporaryEx(dir);
+			foreach (var pkg in manifest.Packages) FileSystem.MountTemporaryEx(pkg);
+				
 			Timer.Time("mount temporary packages: {0}");
 		}
 		
@@ -86,7 +79,6 @@ namespace OpenRa
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
-
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)

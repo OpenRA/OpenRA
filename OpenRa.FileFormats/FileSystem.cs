@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using IjwFramework.Collections;
+using System;
 
 namespace OpenRa.FileFormats
 {
@@ -62,6 +63,23 @@ namespace OpenRa.FileFormats
 				if( !l.Contains( folder ) )
 					l.Add( folder );
 			}
+		}
+
+		public static void MountTemporaryEx(string name)
+		{
+			name = name.ToLowerInvariant();
+			var optional = name.StartsWith("~");
+			if (optional) name = name.Substring(1);
+
+			var a = name.EndsWith(".mix")
+				? (Action)(() => FileSystem.MountTemporary(new Package(name)))
+				: () => FileSystem.MountTemporary(new Folder(name));
+
+			if (optional)
+				try { a(); }
+				catch { }
+			else
+				a();
 		}
 
 		public static void UnmountTemporaryPackages()
