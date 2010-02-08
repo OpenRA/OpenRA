@@ -1191,5 +1191,13 @@ namespace OpenRa
 				renderer.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 			}
 		}
+
+		public void SetCurrentTab(string produces)
+		{
+			if (!paletteOpen)
+				paletteAnimating = true;
+			paletteOpen = true;
+			currentTab = produces;
+		}
 	}
 }

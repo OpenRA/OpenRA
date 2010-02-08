@@ -118,6 +118,7 @@
     <Compile Include="Support\OpenAlInterop.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
+    <Compile Include="Traits\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\CrateSpawner.cs" />
     <Compile Include="Traits\OreGrowth.cs" />
     <Compile Include="Traits\OreRefinery.cs" />

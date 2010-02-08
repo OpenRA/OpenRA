@@ -71,6 +71,7 @@ World:
 	LightPaletteRotator:
 	BuildingInfluence:
 	UnitInfluence:
+	ChoosePaletteOnSelect:
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
 		Filename: temperat.pal
