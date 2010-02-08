@@ -153,9 +153,9 @@ namespace OpenRa
 
 					if (orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick( world );
-						if (controller.orderGenerator != null)
-							controller.orderGenerator.Tick( world );
+						orderManager.Tick(world);
+						controller.orderGenerator.Tick(world);
+						controller.selection.Tick(world);
 
 						world.Tick();
 					}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OpenRa.Graphics;
 using OpenRa.Orders;
 
@@ -27,8 +28,7 @@ namespace OpenRa.Traits
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
-			var uog = Game.controller.orderGenerator as UnitOrderGenerator;
-			if (uog != null && self.Owner == self.World.LocalPlayer && uog.selection.Contains(self))
+			if (self.Owner == self.World.LocalPlayer && Game.controller.selection.Actors.Contains(self))
 				yield return Util.Centered(self,
 					anim.Image, Util.CenterOfCell(rallyPoint));
 		}

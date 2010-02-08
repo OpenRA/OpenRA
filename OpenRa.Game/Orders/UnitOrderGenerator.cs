@@ -8,16 +8,9 @@ namespace OpenRa.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{
-		public readonly List<Actor> selection;
-
-		public UnitOrderGenerator( IEnumerable<Actor> selected )
-		{
-			selection = selected.ToList();
-		}
-
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
-			foreach( var unit in selection )
+			foreach( var unit in Game.controller.selection.Actors )
 			{
 				var ret = unit.Order( xy, mi );
 				if( ret != null )
@@ -25,14 +18,11 @@ namespace OpenRa.Orders
 			}
 		}
 
-		public void Tick( World world )
-		{
-			selection.RemoveAll(a => !a.IsInWorld);
-		}
+		public void Tick( World world ) {}
 
 		public void Render( World world )
 		{
-			foreach( var a in selection )
+			foreach( var a in Game.controller.selection.Actors )
 				world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
 		}
 
