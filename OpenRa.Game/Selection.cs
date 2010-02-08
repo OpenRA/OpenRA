@@ -25,6 +25,9 @@ namespace OpenRa
 
 			var voicedUnit = actors.FirstOrDefault(a => a.traits.Contains<Unit>() && a.Owner == world.LocalPlayer);
 			Sound.PlayVoice("Select", voicedUnit);
+
+			foreach (var ns in world.WorldActor.traits.WithInterface<INotifySelection>())
+				ns.SelectionChanged();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
