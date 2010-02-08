@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenRa.Traits;
 
-namespace OpenRa
+namespace OpenRa.Traits
 {
-	static class Bridges
+	class BridgeLoadHookInfo : StatelessTraitInfo<BridgeLoadHook> { }
+
+	class BridgeLoadHook : ILoadWorldHook
 	{
-		public static void MakeBridges(World w)
+		static void MakeBridges(World w)
 		{
 			var mini = w.Map.XOffset; var maxi = w.Map.XOffset + w.Map.Width;
 			var minj = w.Map.YOffset; var maxj = w.Map.YOffset + w.Map.Height;
@@ -40,8 +41,8 @@ namespace OpenRa
 					if (!template.TerrainType.ContainsKey(n)) continue;
 
 					if (w.Map.IsInMap(x, y))
-						if (w.Map.MapTiles[x, y].tile == tile 
-							&& w.Map.MapTiles[x,y].image == n)
+						if (w.Map.MapTiles[x, y].tile == tile
+							&& w.Map.MapTiles[x, y].image == n)
 						{
 							// stash it
 							replacedTiles[new int2(x, y)] = w.Map.MapTiles[x, y].image;
@@ -63,5 +64,7 @@ namespace OpenRa
 		{
 			return w.TileSet.walk[t].Bridge != null;
 		}
+
+		public void WorldLoaded(World w) { MakeBridges(w); }
 	}
 }

@@ -77,9 +77,11 @@ namespace OpenRa
 			Queries = new AllQueries( this );
 			Timer.Time( "queries: {0}" );
 
-			Bridges.MakeBridges(this);
+			foreach (var wlh in WorldActor.traits.WithInterface<ILoadWorldHook>())
+				wlh.WorldLoaded(this);
+
 			PathFinder = new PathFinder(this);
-			Timer.Time( "bridge, pathing: {0}" );
+			Timer.Time( "hooks, pathing: {0}" );
 
 			Minimap = new Minimap(this, Game.renderer);
 			Timer.Time( "minimap: {0}" );

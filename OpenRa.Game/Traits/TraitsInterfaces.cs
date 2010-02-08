@@ -102,4 +102,5 @@ namespace OpenRa.Traits
 	public interface ITraitPrerequisite<T> { }
 
 	public interface INotifySelection { void SelectionChanged(); }
+	public interface ILoadWorldHook { void WorldLoaded(World w); }
 }
