@@ -111,6 +111,7 @@
     <Compile Include="Ore.cs" />
     <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
+    <Compile Include="Selection.cs" />
     <Compile Include="Shroud.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />

@@ -292,7 +292,8 @@ namespace OpenRa
 
 			if( !Game.chat.isChatting )
 				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
-					Game.controller.DoControlGroup( world, (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
+					Game.controller.selection.DoControlGroup( world, 
+						(int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
 
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyDown" );
