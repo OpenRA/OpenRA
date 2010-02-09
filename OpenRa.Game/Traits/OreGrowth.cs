@@ -16,7 +16,7 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return new OreGrowth(); }
 	}
 
-	class OreGrowth : ITick
+	class OreGrowth : ITick, ILoadWorldHook
 	{
 		int remainingTicks;
 
@@ -37,6 +37,11 @@ namespace OpenRa.Traits
 				self.World.Minimap.InvalidateOre();
 				remainingTicks = (int)(info.Interval * 60 * 25);
 			}
+		}
+
+		public void WorldLoaded(World w)
+		{
+			Ore.InitOreDensity(w.Map);
 		}
 	}
 }

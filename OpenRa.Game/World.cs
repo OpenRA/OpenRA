@@ -34,7 +34,6 @@ namespace OpenRa
 			}
 			if (!string.IsNullOrEmpty(Game.Settings.PlayerName) && LocalPlayer.PlayerName != Game.Settings.PlayerName)
 				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
-
 		}
 
 		public readonly Actor WorldActor;
@@ -63,15 +62,11 @@ namespace OpenRa
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Timer.Time("renderer: {0}");
 			
-			Map.InitOreDensity();
-			Timer.Time( "Ore: {0}" );
-
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			for (int i = 0; i < 8; i++)
-			{
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
-			}
+
 			Timer.Time( "worldActor, players: {0}" );
 
 			Queries = new AllQueries( this );
