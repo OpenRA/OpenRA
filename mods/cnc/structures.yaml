@@ -343,10 +343,9 @@ OBLI:
 		Armor: light
 		Crewed: no
 		Sight: 5
-	Turreted:
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
-	AttackTurreted:
+	AttackOmni:
 		PrimaryWeapon: Laser
 		FireDelay: 8
 	AutoTarget:

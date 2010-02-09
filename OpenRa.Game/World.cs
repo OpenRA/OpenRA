@@ -34,7 +34,6 @@ namespace OpenRa
 			}
 			if (!string.IsNullOrEmpty(Game.Settings.PlayerName) && LocalPlayer.PlayerName != Game.Settings.PlayerName)
 				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
-
 		}
 
 		public readonly Actor WorldActor;
@@ -50,9 +49,6 @@ namespace OpenRa
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
 
-		readonly int oreFrequency;
-		int oreTicks;
-
 		public World()
 		{
 			Timer.Time( "----World.ctor" );
@@ -66,26 +62,21 @@ namespace OpenRa
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
 			Timer.Time("renderer: {0}");
 			
-
-			oreFrequency = (int)(Rules.General.GrowthRate * 60 * 25);
-			oreTicks = oreFrequency;
-			Map.InitOreDensity();
-			Timer.Time( "Ore: {0}" );
-
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
 			for (int i = 0; i < 8; i++)
-			{
 				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
-			}
+
 			Timer.Time( "worldActor, players: {0}" );
 
 			Queries = new AllQueries( this );
 			Timer.Time( "queries: {0}" );
 
-			Bridges.MakeBridges(this);
+			foreach (var wlh in WorldActor.traits.WithInterface<ILoadWorldHook>())
+				wlh.WorldLoaded(this);
+
 			PathFinder = new PathFinder(this);
-			Timer.Time( "bridge, pathing: {0}" );
+			Timer.Time( "hooks, pathing: {0}" );
 
 			Minimap = new Minimap(this, Game.renderer);
 			Timer.Time( "minimap: {0}" );
@@ -124,14 +115,6 @@ namespace OpenRa
 		
 		public void Tick()
 		{
-			if (--oreTicks == 0)
-				using( new PerfSample( "ore" ) )
-				{
-					this.GrowOre( Game.SharedRandom );
-					Minimap.InvalidateOre();
-					oreTicks = oreFrequency;
-				}
-
 			foreach (var a in actors) a.Tick();
 			Queries.WithTraitMultiple<ITick>().Do( x => x.Trait.Tick( x.Actor ) );
 

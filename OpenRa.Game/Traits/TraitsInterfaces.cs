@@ -99,5 +99,8 @@ namespace OpenRa.Traits
 		public object Create(Actor self) { return Instance.Value; }
 	}
 
-	interface ITraitPrerequisite<T> { }
+	public interface ITraitPrerequisite<T> { }
+
+	public interface INotifySelection { void SelectionChanged(); }
+	public interface ILoadWorldHook { void WorldLoaded(World w); }
 }

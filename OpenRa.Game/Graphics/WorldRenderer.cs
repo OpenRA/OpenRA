@@ -234,7 +234,7 @@ namespace OpenRa.Graphics
 
 		void DrawControlGroup(Actor selectedUnit, float2 basePosition)
 		{
-			var group = Game.controller.GetControlGroupForActor(selectedUnit);
+			var group = Game.controller.selection.GetControlGroupForActor(selectedUnit);
 			if (group == null) return;
 
 			var pipImages = new Animation("pips");

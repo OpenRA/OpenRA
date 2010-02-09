@@ -6,6 +6,7 @@ obj
 *.vcproj*
 *.suo
 *.user
+*.sln.cache
 mods/*/*.dll
 
 # Red Alert binary files

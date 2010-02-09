@@ -17,7 +17,7 @@ namespace OpenRa.Graphics
 		SpriteRenderer rgbaRenderer;
 		LineRenderer lineRenderer;
 		Sprite sprite, mapOnlySprite, mapSpawnPointSprite;
-		Bitmap terrain, oreLayer, spawnPointsLayer;
+		Bitmap terrain, oreLayer;
 		Rectangle bounds;
 
 		Sprite ownedSpawnPoint;
@@ -74,7 +74,6 @@ namespace OpenRa.Graphics
 		static Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
-		public void InvalidateSpawnPoints() { spawnPointsLayer = null; }
 
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{

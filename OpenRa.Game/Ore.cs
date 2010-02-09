@@ -8,14 +8,13 @@ namespace OpenRa
 	{
 		public static void AddOre(this Map map, int i, int j)
 		{
-			if (Rules.General.OreSpreads)
-				if (map.ContainsOre(i, j) && map.MapTiles[i, j].density < 12)
-					map.MapTiles[i, j].density++;
-				else if (map.MapTiles[i, j].overlay == 0xff)
-				{
-					map.MapTiles[i, j].overlay = ChooseOre();
-					map.MapTiles[i, j].density = 1;
-				}
+			if (map.ContainsOre(i, j) && map.MapTiles[i, j].density < 12)
+				map.MapTiles[i, j].density++;
+			else if (map.MapTiles[i, j].overlay == 0xff)
+			{
+				map.MapTiles[i, j].overlay = ChooseOre();
+				map.MapTiles[i, j].density = 1;
+			}
 		}
 
 		public static void DestroyOre(this Map map, int i, int j)
@@ -37,48 +36,49 @@ namespace OpenRa
 				< double.PositiveInfinity;
 		}
 
+		public static void SpreadOre(this World world, Random r, float chance)
+		{
+			var map = world.Map;
+
+			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
+			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
+
+			/* phase 1: grow into neighboring regions */
+			var newOverlay = new byte[128, 128];
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+				{
+					newOverlay[i, j] = 0xff;
+					if (!map.HasOverlay(i, j)
+						&& r.NextDouble() < chance
+						&& map.GetOreDensity(i, j) > 0
+						&& world.OreCanSpreadInto(i, j))
+						newOverlay[i, j] = ChooseOre();
+				}
+
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (newOverlay[i, j] != 0xff)
+						map.MapTiles[i, j].overlay = newOverlay[i, j];
+		}
+
 		public static void GrowOre(this World world, Random r)
 		{
 			var map = world.Map;
 
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
-			var chance = Rules.General.OreChance;
-
-			/* phase 1: grow into neighboring regions */
-			if (Rules.General.OreSpreads)
-			{
-				var newOverlay = new byte[128, 128];
-				for (int j = minj; j < maxj; j++)
-					for (int i = mini; i < maxi; i++)
-					{
-						newOverlay[i, j] = 0xff;
-						if (!map.HasOverlay(i, j)
-							&& r.NextDouble() < chance
-							&& map.GetOreDensity(i, j) > 0
-							&& world.OreCanSpreadInto(i,j))
-							newOverlay[i, j] = ChooseOre();
-					}
-
-				for (int j = minj; j < maxj; j++)
-					for (int i = mini; i < maxi; i++)
-						if (newOverlay[i, j] != 0xff)
-							map.MapTiles[i, j].overlay = newOverlay[i, j];
-			}
 
 			/* phase 2: increase density of existing areas */
-			if (Rules.General.OreGrows)
-			{
-				var newDensity = new byte[128, 128];
-				for (int j = minj; j < maxj; j++)
-					for (int i = mini; i < maxi; i++)
-						if (map.ContainsOre(i, j)) newDensity[i, j] = map.GetOreDensity(i, j);
+			var newDensity = new byte[128, 128];
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (map.ContainsOre(i, j)) newDensity[i, j] = map.GetOreDensity(i, j);
 
-				for (int j = minj; j < maxj; j++)
-					for (int i = mini; i < maxi; i++)
-						if (map.MapTiles[i, j].density < newDensity[i, j])
-							++map.MapTiles[i, j].density;
-			}
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (map.MapTiles[i, j].density < newDensity[i, j])
+						++map.MapTiles[i, j].density;
 		}
 
 		public static void InitOreDensity( this Map map )

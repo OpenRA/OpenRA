@@ -14,6 +14,7 @@ World:
 	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
+	BridgeLoadHook:
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
 		Theater: temperat
@@ -105,3 +106,8 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
+	OreGrowth:
+		Interval: .3
+		Chance: .02
+		Spreads: yes
+		Grows: yes

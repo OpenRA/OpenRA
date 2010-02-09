@@ -46,9 +46,6 @@ namespace OpenRa.GameRules
 		public readonly float BuildupTime = 0;
 		public readonly int GemValue = 0;
 		public readonly int GoldValue = 0;
-		public readonly float GrowthRate = 0;
-		public readonly bool OreGrows = true;
-		public readonly bool OreSpreads = true;
 		public readonly float OreTruckRate = 0;
 		public readonly bool SeparateAircraft = true;
 		public readonly float SurvivorRate = 0;
@@ -90,7 +87,6 @@ namespace OpenRa.GameRules
 		public readonly bool FineDiffControl = false;
 
 		/* OpenRA-specific */
-		public readonly float OreChance = 0;	/* chance of spreading to a particular eligible cell */
 		public readonly int LowPowerSlowdown = 3;	/* build time multiplier */
 	}
 }

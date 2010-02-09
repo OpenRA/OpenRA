@@ -71,6 +71,8 @@ World:
 	LightPaletteRotator:
 	BuildingInfluence:
 	UnitInfluence:
+	ChoosePaletteOnSelect:
+	BridgeLoadHook:
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
 		Filename: temperat.pal
@@ -158,6 +160,11 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
+	OreGrowth:
+		Interval: .3
+		Chance: .02
+		Spreads: yes
+		Grows: yes
 	
 MGG:
 	GeneratesGap:
@@ -453,9 +460,8 @@ TSLA:
 		Armor: heavy
 		Crewed: yes
 		Sight: 8
-	Turreted:
 	RenderBuildingCharge:
-	AttackTurreted:
+	AttackOmni:
 		PrimaryWeapon: TeslaZap
 		FireDelay: 8
 	AutoTarget:
@@ -1162,8 +1168,7 @@ PBOX:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	Turreted:
-	AttackTurreted:
+	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
@@ -1183,8 +1188,7 @@ HBOX:
 		Armor: wood
 		Crewed: yes
 		Sight: 5
-	Turreted:
-	AttackTurreted:
+	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
@@ -1223,15 +1227,13 @@ FTUR:
 		Cost: 600
 		Description: Flame Turret
 		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
-	Turreted:
-		ROT: 10
 	Building:
 		Power: -20
 		HP: 400
 		Armor: heavy
 		Crewed: yes
 		Sight: 6
-	AttackTurreted:
+	AttackOmni:
 		PrimaryWeapon: FireballLauncher
 		PrimaryOffset: 0,0,12,8
 	AutoTarget:

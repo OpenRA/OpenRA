@@ -356,10 +356,8 @@ namespace OpenRa
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
 				newIndex = (newIndex + d) % Player.PlayerColors.Count();
 			
-			Game.world.Minimap.InvalidateSpawnPoints();
 			Game.IssueOrder(
 				Order.Chat("/pal " + newIndex));
-
 		}
 
 		void CycleRace(bool left)
@@ -1192,6 +1190,14 @@ namespace OpenRa
 				pos += new int2(0, 25);
 				renderer.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 			}
+		}
+
+		public void SetCurrentTab(string produces)
+		{
+			if (!paletteOpen)
+				paletteAnimating = true;
+			paletteOpen = true;
+			currentTab = produces;
 		}
 	}
 }

@@ -37,19 +37,12 @@ namespace OpenRa
 
 		public static void LoadModPackages(Manifest manifest)
 		{
-			FileSystem.UnmountTemporaryPackages();
+			FileSystem.UnmountAll();
 			Timer.Time("reset: {0}");
 
-			foreach (var dir in manifest.Folders)
-				FileSystem.MountTemporary(new Folder(dir));
-
-			foreach (var pkg in manifest.Packages)
-				if (pkg.StartsWith( "~"))		// this package is optional.
-					try { FileSystem.MountTemporary(new Package(pkg.Substring(1))); }
-					catch { }
-				else
-					FileSystem.MountTemporary(new Package(pkg));
-
+			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+				
 			Timer.Time("mount temporary packages: {0}");
 		}
 		
@@ -86,7 +79,6 @@ namespace OpenRa
 			SequenceProvider.Initialize(manifest.Sequences);
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
-
 
 			skipMakeAnims = true;
 			foreach (var treeReference in Game.world.Map.Trees)
@@ -161,9 +153,9 @@ namespace OpenRa
 
 					if (orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick( world );
-						if (controller.orderGenerator != null)
-							controller.orderGenerator.Tick( world );
+						orderManager.Tick(world);
+						controller.orderGenerator.Tick(world);
+						controller.selection.Tick(world);
 
 						world.Tick();
 					}
@@ -300,7 +292,8 @@ namespace OpenRa
 
 			if( !Game.chat.isChatting )
 				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
-					Game.controller.DoControlGroup( world, (int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
+					Game.controller.selection.DoControlGroup( world, 
+						(int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
 
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyDown" );

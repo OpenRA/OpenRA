@@ -13,6 +13,7 @@ namespace OpenRa
 	public class Controller : IHandleInput
 	{
 		public IOrderGenerator orderGenerator;
+		public Selection selection = new Selection();
 
 		readonly Func<Modifiers> GetModifierKeys;
 
@@ -22,10 +23,7 @@ namespace OpenRa
 			CancelInputMode();
 		}
 
-		public void CancelInputMode()
-		{
-			orderGenerator = new UnitOrderGenerator(new Actor[] { });
-		}
+		public void CancelInputMode() { orderGenerator = new UnitOrderGenerator(); }
 
 		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
 		{
@@ -83,7 +81,7 @@ namespace OpenRa
 				if (orderGenerator is UnitOrderGenerator)
 				{
 					var newSelection = world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
-					CombineSelection(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
 				dragStart = dragEnd = xy;
@@ -96,29 +94,6 @@ namespace OpenRa
 				ApplyOrders(world, xy, mi);
 
 			return true;
-		}
-
-		void CombineSelection(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
-		{
-			var oldSelection = (orderGenerator is UnitOrderGenerator)
-							   ? (orderGenerator as UnitOrderGenerator).selection : new Actor[] { }.AsEnumerable();
-
-			if (isClick)
-			{
-				var adjNewSelection = newSelection.Take(1);	/* todo: select BEST, not FIRST */
-				orderGenerator = new UnitOrderGenerator(isCombine
-					? oldSelection.SymmetricDifference(adjNewSelection) : adjNewSelection);
-			}
-			else
-				orderGenerator = new UnitOrderGenerator(isCombine
-					? oldSelection.Union(newSelection) : newSelection);
-
-			var voicedUnit = ((UnitOrderGenerator)orderGenerator).selection
-				.Where(a => a.traits.Contains<Unit>()
-					&& a.Owner == world.LocalPlayer)
-				.FirstOrDefault();
-
-			Sound.PlayVoice("Select", voicedUnit);
 		}
 
 		public Pair<float2, float2>? SelectionBox
@@ -152,43 +127,6 @@ namespace OpenRa
 				if( sync != world.SyncHash() )
 					throw new InvalidOperationException( "Desync in Controller.ChooseCursor" );
 			}
-		}
-
-		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
-
-		public void DoControlGroup(World world, int group, Modifiers mods)
-		{
-			var uog = orderGenerator as UnitOrderGenerator;
-			if (uog == null) return;
-
-			if (mods.HasModifier(Modifiers.Ctrl))
-			{
-				if (!uog.selection.Any())
-					return;
-
-				controlGroups[group].Clear();
-
-				for (var i = 0; i < 10; i++)	/* all control groups */
-					controlGroups[i].RemoveAll(a => uog.selection.Contains(a));
-
-				controlGroups[group].AddRange(uog.selection);
-				return;
-			}
-
-			if (mods.HasModifier(Modifiers.Alt))
-			{
-				Game.viewport.Center(controlGroups[group]);
-				return;
-			}
-
-			CombineSelection(world, controlGroups[group], mods.HasModifier(Modifiers.Shift), false);
-		}
-
-		public int? GetControlGroupForActor(Actor a)
-		{
-			return controlGroups.Where(g => g.Value.Contains(a))
-				.Select(g => (int?)g.Key)
-				.FirstOrDefault();
 		}
 	}
 }
