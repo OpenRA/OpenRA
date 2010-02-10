@@ -25,7 +25,7 @@ NUKE:
 		LongDesc: Provides power for other structures
 	Building:
 		Power: 100
-		Footprint: xx xx
+		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
 		Bib: yes
