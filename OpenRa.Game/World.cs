@@ -171,16 +171,16 @@ namespace OpenRa
 
 			public CachedView<Actor, TraitPair<T>> WithTrait<T>()
 			{
-				return WithTraitInner<T>( world, hasTrait );
+				return WithTraitInner<T>( world.actors, hasTrait );
 			}
 
-			static CachedView<Actor, TraitPair<T>> WithTraitInner<T>( World world, TypeDictionary hasTrait )
+			static CachedView<Actor, TraitPair<T>> WithTraitInner<T>( Set<Actor> set, TypeDictionary hasTrait )
 			{
 				var ret = hasTrait.GetOrDefault<CachedView<Actor, TraitPair<T>>>();
 				if( ret != null )
 					return ret;
 				ret = new CachedView<Actor, TraitPair<T>>(
-					world.actors,
+					set,
 					x => x.traits.Contains<T>(),
 					x => new TraitPair<T> { Actor = x, Trait = x.traits.Get<T>() } );
 				hasTrait.Add( ret );
@@ -208,18 +208,16 @@ namespace OpenRa
 
 			public class OwnedByCachedView : CachedView<Actor, Actor>
 			{
-				readonly World world;
 				readonly TypeDictionary hasTrait = new TypeDictionary();
 
 				public OwnedByCachedView( World world, Set<Actor> set, Func<Actor, bool> include )
 					: base( set, include, a => a )
 				{
-					this.world = world;
 				}
 
 				public CachedView<Actor, TraitPair<T>> WithTrait<T>()
 				{
-					return WithTraitInner<T>( world, hasTrait );
+					return WithTraitInner<T>( this, hasTrait );
 				}
 			}
 		}
