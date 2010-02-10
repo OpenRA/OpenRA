@@ -108,7 +108,7 @@ namespace OpenRA.Server
 						Index = newConn.PlayerIndex,
 						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
-						Race = 1,
+						Race = "allies",		/* hack */
 						State = Session.ClientState.NotReady
 					});
 
@@ -249,14 +249,7 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						int race;
-						if (!int.TryParse(s, out race) || race < 0 || race > 1)
-						{
-							Console.WriteLine("Invalid race: {0}", s);
-							return false;
-						}
-
-						GetClient(conn).Race = 1 + race;
+						GetClient(conn).Race = s;
 						SyncLobbyInfo();
 						return true;
 					}},	

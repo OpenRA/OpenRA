@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using IjwFramework.Types;
-using IjwFramework.Collections;
 
 namespace OpenRa.GameRules
 {

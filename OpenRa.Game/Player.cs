@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Traits;
-using OpenRa.FileFormats;
 using System.Drawing;
+using System.Linq;
+using OpenRa.FileFormats;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -18,7 +16,7 @@ namespace OpenRa
 		public int Kills;
 		public string PlayerName;
 		public string InternalName;
-		public Race Race;
+		public string Race;
 		public readonly int Index;
 		public int Cash = 10000;
 		public int Ore = 0;
@@ -64,7 +62,7 @@ namespace OpenRa
 
 			this.PaletteIndex = client != null ? client.PaletteIndex : index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
-			this.Race = client != null ? (Race)client.Race : Race.Allies;
+			this.Race = client != null ? client.Race : RaceUtil.Allies;
 		}
 	
 		void UpdatePower()
@@ -179,10 +177,10 @@ namespace OpenRa
 				PlayerName = client.Name;
 			}
 
-			if (Race != (Race)client.Race)
+			if (Race != client.Race)
 			{
-				Game.chat.AddLine(this, "is now playing {0}".F((Race)client.Race));
-				Race = (Race)client.Race;
+				Game.chat.AddLine(this, "is now playing {0}".F(client.Race));
+				Race = client.Race;
 			}
 
 			if (PaletteIndex != client.PaletteIndex)

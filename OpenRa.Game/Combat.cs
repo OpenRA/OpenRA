@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRa.GameRules;
 using OpenRa.Effects;
+using OpenRa.GameRules;
 using OpenRa.Traits;
 
 namespace OpenRa

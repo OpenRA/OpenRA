@@ -153,10 +153,10 @@ namespace OpenRa
 		{
 			DrawDownloadBar();
 
-			chromeCollection = (world.LocalPlayer.Race == Race.Allies) ? "chrome-allies" : "chrome-soviet";
-			radarCollection = (world.LocalPlayer.Race == Race.Allies) ? "radar-allies" : "radar-soviet";
-			paletteCollection = (world.LocalPlayer.Race == Race.Allies) ? "palette-allies" : "palette-soviet";
-			digitCollection = (world.LocalPlayer.Race == Race.Allies) ? "digits-allies" : "digits-soviet";
+			chromeCollection = "chrome-" + world.LocalPlayer.Race;
+			radarCollection = "radar-" + world.LocalPlayer.Race;
+			paletteCollection = "palette-" + world.LocalPlayer.Race;
+			digitCollection = "digits-" + world.LocalPlayer.Race;
 
 			buttons.Clear();
 
@@ -362,8 +362,9 @@ namespace OpenRa
 
 		void CycleRace(bool left)
 		{
-			Game.IssueOrder(
-				Order.Chat("/race " + (((int)Game.world.LocalPlayer.Race - 1) ^ 1)));
+			// hack
+			var newRace = Game.world.LocalPlayer.Race == RaceUtil.Allies ? RaceUtil.Soviet : RaceUtil.Allies;
+			Game.IssueOrder(Order.Chat("/race " + newRace));
 		}
 
 		void CycleReady(bool left)
@@ -466,7 +467,7 @@ namespace OpenRa
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex].c);
 				lineRenderer.Flush();
-				renderer.DrawText(((Race)client.Race).ToString(), new int2(r.Left + 220, y), Color.White);
+				renderer.DrawText(client.Race, new int2(r.Left + 220, y), Color.White);
 				renderer.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
 				renderer.DrawText((client.SpawnPoint == 0)? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;
@@ -568,7 +569,7 @@ namespace OpenRa
 				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				var race = (world.LocalPlayer.Race == Race.Allies) ? "allies" : "soviet";
+				var race = world.LocalPlayer.Race;
 				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), "chrome");
 
 				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),

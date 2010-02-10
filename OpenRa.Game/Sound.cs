@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
-using OpenRa.Traits;
 using OpenRa.Support;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -110,7 +109,7 @@ namespace OpenRa
 				return;
 			}
 
-			var variants = (voicedUnit.Owner.Race == Race.Soviet)
+			var variants = (voicedUnit.Owner.Race == RaceUtil.Soviet)
 							? vi.SovietVariants : vi.AlliedVariants;
 
 			var variant = variants[voicedUnit.ActorID % variants.Length];

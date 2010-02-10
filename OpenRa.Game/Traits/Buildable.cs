@@ -10,7 +10,7 @@ namespace OpenRa.Traits
 		public readonly int TechLevel = -1;
 		public readonly string[] Prerequisites = { };
 		public readonly string[] BuiltAt = { };
-		public readonly Race[] Owner = { };
+		public readonly string[] Owner = { };
 		public readonly int Cost = 0;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";

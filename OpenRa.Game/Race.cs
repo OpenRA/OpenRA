@@ -2,11 +2,20 @@ using System;
 
 namespace OpenRa
 {
-	[Flags]
-	public enum Race
+	public static class RaceUtil
 	{
-		None = 0,
-		Allies = 1,
-		Soviet = 2
+		/* just while we do the transition */
+		public static readonly string Allies = "allies";
+		public static readonly string Soviet = "soviet";
+
+		public static readonly string DefaultRace = Allies;
 	}
+
+	//[Flags]
+	//public enum Race
+	//{
+	//    None = 0,
+	//    Allies = 1,
+	//    Soviet = 2
+	//}
 }
