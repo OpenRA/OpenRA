@@ -73,6 +73,32 @@ BGGY:
 	RenderUnitTurreted:
 	AutoTarget:
 	
+LTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: ltnkicnh
+		TechLevel: 3
+		Prerequisites: afld
+		Owner: nod
+		Cost: 600
+		Description: Light Tank
+		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 300
+		Armor: Heavy
+		Crewed: yes
+		Sight: 3
+		Speed: 18
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 70mm
+		Recoil: 2
+	RenderUnitTurreted:
+	AutoTarget:
+	
 MTNK:
 	Inherits: ^Vehicle
 	Buildable:

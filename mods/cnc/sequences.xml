@@ -32,7 +32,6 @@
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="hboxmake" />
   </unit>
-
   <!-- rifle infantry -->
   <unit name="e1">
     <sequence name="stand" start="0" length="8" />

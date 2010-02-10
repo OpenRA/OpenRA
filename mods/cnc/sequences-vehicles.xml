@@ -48,6 +48,11 @@
 		<sequence name="rotor" start="0" length="4" src="lrotor" />
 		<sequence name="slow-rotor" start="4" length="8" src="lrotor" />
 	</unit>
+	
+	<!-- Orca Helicopter -->
+	<unit name="orca">
+		<sequence name="idle" start="0" length="64" />
+	</unit>
 
 	<!-- Medium Tank -->
 	<unit name="mtnk">
