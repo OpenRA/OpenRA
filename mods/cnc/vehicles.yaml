@@ -233,6 +233,36 @@ HELI:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 15
+		
+ORCA:
+	Inherits: ^Plane
+	Buildable:
+		Icon: orcaicnh
+		TechLevel: 6
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: gdi
+		Cost: 1200
+		Description: Orca
+		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Unit:
+		HP: 125
+		Armor: heavy
+		Crewed: yes
+		InitialFacing: 20
+		ROT: 4
+		Sight: 0
+		Speed: 40
+	AttackHeli:
+		PrimaryWeapon: Rockets
+		SecondaryWeapon: Rockets
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
+	Helicopter:
+	RenderUnit:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 6
 
 
 C17:
