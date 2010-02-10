@@ -1,4 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
-
+	<!-- Visceroid -->
+	<unit name="vice">
+		<sequence name="idle" start="0" length="20" />
+	</unit>
 </sequences>

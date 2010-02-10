@@ -55,4 +55,86 @@
 		<sequence name="turret" start="32" length="32" />
 	</unit>
 
+	<!-- Light Tank -->
+	<unit name="ltnk">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="turret" start="32" length="32" />
+	</unit>
+	
+	<!-- Mammoth Tank -->
+	<unit name="htnk">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="turret" start="32" length="32" />
+	</unit>
+	
+	<!-- Humvee -->
+	<unit name="jeep">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="turret" start="32" length="32" />
+	</unit>
+	
+	<!-- Attack Bike -->
+	<unit name="bike">
+		<sequence name="idle" start="0" length="32" />
+	</unit>
+	
+	<!-- Flame Tank -->
+	<unit name="ftnk">
+		<sequence name="idle" start="0" length="32" />
+	</unit>
+	
+	<!-- Mobile HQ -->
+	<unit name="mhq">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="spinner" start="32" length="32" />
+	</unit>
+	
+	<!-- Rocket Launcher -->
+	<unit name="msam">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="turret-1" start="32" length="16" />
+		<sequence name="turret-2" start="48" length="16" />
+		<sequence name="turret-3" start="64" length="32" />
+	</unit>
+	
+	<!-- SSM Launcher -->
+	<unit name="mlrs">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="turret-1" start="32" length="32" />
+		<sequence name="turret-2" start="64" length="32" />
+		<sequence name="turret-3" start="96" length="32" />
+	</unit>
+	
+	<!-- Stealth Tank -->
+	<unit name="stnk">
+		<sequence name="idle" start="0" length="32" />
+	</unit>
+
+	<!-- artillery -->
+	<unit name="arty">
+		<sequence name="idle" start="0" length="32" />
+	</unit>
+
+	<!-- apc -->
+	<unit name="apc">
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="muzzle" start="0" length="48" src="minigun" />
+		<sequence name="close" start="32" length="3" />
+		<sequence name="unload" start="32" length="1" />
+	</unit>
+	
+	<!-- Hovercraft -->
+	<unit name="lst">
+		<sequence name="idle" start="0" length="4" />
+	</unit>
+
+	<!-- Gunboat -->
+	<unit name="boat">
+		<sequence name="left" start="0" length="32" />
+		<sequence name="left-damaged" start="32" length="32" />
+		<sequence name="left-critical" start="64" length="32" />
+		<sequence name="right" start="96" length="32" />
+		<sequence name="right-damaged" start="128" length="32" />
+		<sequence name="right-critical" start="160" length="32" />
+	</unit>-->
 </sequences>

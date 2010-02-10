@@ -32,48 +32,7 @@
     <sequence name="damaged-idle" start="1" />
     <sequence name="make" start="0" length="*" src="hboxmake" />
   </unit>
-  <!-- truck -->
-  <unit name="truk">
-    <sequence name="idle" start="0" length="*" />
-  </unit>
-  <!-- light tank -->
-  <unit name="1tnk">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="32" />
-  </unit>
-  <!-- medium tank -->
-  <unit name="2tnk">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="32" />
-  </unit>
-  <!-- heavy tank -->
-  <unit name="3tnk">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="32" />
-  </unit>
-  <!-- mammoth tank -->
-  <unit name="4tnk">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="turret" start="32" length="32" />
-  </unit>
-  <!-- v2 rocket launcher -->
-  <unit name="v2rl">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="empty-idle" start="32" length="32" />
-    <sequence name="aim" start="64" length="8" />
-    <sequence name="empty-aim" start="72" length="8" />
-  </unit>
-  <!-- artillery -->
-  <unit name="arty">
-    <sequence name="idle" start="0" length="32" />
-  </unit>
-  <!-- apc -->
-  <unit name="apc">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="muzzle" start="0" length="48" src="minigun" />
-    <sequence name="close" start="32" length="3" />
-    <sequence name="unload" start="32" length="1" />
-  </unit>
+
   <!-- rifle infantry -->
   <unit name="e1">
     <sequence name="stand" start="0" length="8" />
@@ -244,18 +203,6 @@
     <sequence name="crawl-6" start="106" length="4" />
     <sequence name="crawl-7" start="110" length="4" />
   </unit>
-  <unit name="ca">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="turret" start="0" length="32" src="turr" />
-  </unit>
-  <unit name="dd">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="turret" start="0" length="32" src="ssam" />
-  </unit>
-  <unit name="pt">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="turret" start="0" length="32" src="mgun" />
-  </unit>
   <unit name="explosion">
     <sequence name="1" start="0" length="4" src="piff" />
     <sequence name="2" start="0" length="8" src="piffpiff" />
@@ -284,14 +231,6 @@
     <sequence name="pip-red" start="7" length="1" />
     <sequence name="tag-fake" start="18" length="1" />
     <sequence name="tag-primary" start="2" length="1" />
-  </unit>
-  <unit name="hind">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="rotor" start="0" length="4" src="lrotor" />
-    <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
-  </unit>
-  <unit name="v2">
-    <sequence name="idle" start="0" length="32" />
   </unit>
   <unit name="flagfly">
     <sequence name="idle" start="0" length="14" />

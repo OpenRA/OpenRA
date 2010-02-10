@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+	<!-- Stegosaurus -->
+	<unit name="steg">
+		<sequence name="stand" start="0" length="8" />
+		<sequence name="stand2" start="8" length="8" />
+		<sequence name="run-0" start="16" length="8" />
+		<sequence name="run-1" start="24" length="8" />
+		<sequence name="run-2" start="32" length="8" />
+		<sequence name="run-3" start="40" length="8" />
+		<sequence name="run-4" start="48" length="8" />
+		<sequence name="run-5" start="56" length="8" />
+		<sequence name="run-6" start="64" length="8" />
+		<sequence name="run-7" start="72" length="8" />
+		<sequence name="shoot-0" start="80" length="12" />
+		<sequence name="shoot-1" start="92" length="12" />
+		<sequence name="shoot-2" start="104" length="12" />
+		<sequence name="shoot-3" start="116" length="12" />
+		<sequence name="shoot-4" start="128" length="12" />
+		<sequence name="shoot-5" start="140" length="12" />
+		<sequence name="shoot-6" start="152" length="12" />
+		<sequence name="shoot-7" start="164" length="12" />
+		<sequence name="die1" start="176" length="22" />
+	</unit>
+
+	<!-- T-Rex -->
+	<unit name="trex">
+		<sequence name="stand" start="0" length="8" />
+		<sequence name="stand2" start="8" length="8" />
+		<sequence name="run-0" start="16" length="8" />
+		<sequence name="run-1" start="24" length="8" />
+		<sequence name="run-2" start="32" length="8" />
+		<sequence name="run-3" start="40" length="8" />
+		<sequence name="run-4" start="48" length="8" />
+		<sequence name="run-5" start="56" length="8" />
+		<sequence name="run-6" start="64" length="8" />
+		<sequence name="run-7" start="72" length="8" />
+		<sequence name="shoot-0" start="80" length="8" />
+		<sequence name="shoot-1" start="88" length="8" />
+		<sequence name="shoot-2" start="96" length="8" />
+		<sequence name="shoot-3" start="104" length="8" />
+		<sequence name="shoot-4" start="112" length="8" />
+		<sequence name="shoot-5" start="120" length="8" />
+		<sequence name="shoot-6" start="128" length="8" />
+		<sequence name="shoot-7" start="136" length="8" />
+		<sequence name="die1" start="144" length="40" />
+	</unit>
+
+	<!-- Triceratops -->
+	<unit name="tric">
+		<sequence name="stand" start="0" length="8" />
+		<sequence name="stand2" start="8" length="8" />
+		<sequence name="run-0" start="16" length="8" />
+		<sequence name="run-1" start="24" length="8" />
+		<sequence name="run-2" start="32" length="8" />
+		<sequence name="run-3" start="40" length="8" />
+		<sequence name="run-4" start="48" length="8" />
+		<sequence name="run-5" start="56" length="8" />
+		<sequence name="run-6" start="64" length="8" />
+		<sequence name="run-7" start="72" length="8" />
+		<sequence name="shoot-0" start="80" length="12" />
+		<sequence name="shoot-1" start="92" length="12" />
+		<sequence name="shoot-2" start="104" length="12" />
+		<sequence name="shoot-3" start="116" length="12" />
+		<sequence name="shoot-4" start="128" length="12" />
+		<sequence name="shoot-5" start="140" length="12" />
+		<sequence name="shoot-6" start="152" length="12" />
+		<sequence name="shoot-7" start="164" length="12" />
+		<sequence name="die1" start="176" length="20" />
+	</unit>
+
+	<!-- Velociraptor -->
+	<unit name="rapt">
+		<sequence name="stand" start="0" length="8" />
+		<sequence name="stand2" start="8" length="8" />
+		<sequence name="run-0" start="16" length="8" />
+		<sequence name="run-1" start="24" length="8" />
+		<sequence name="run-2" start="32" length="8" />
+		<sequence name="run-3" start="40" length="8" />
+		<sequence name="run-4" start="48" length="8" />
+		<sequence name="run-5" start="56" length="8" />
+		<sequence name="run-6" start="64" length="8" />
+		<sequence name="run-7" start="72" length="8" />
+		<sequence name="shoot-0" start="80" length="8" />
+		<sequence name="shoot-1" start="88" length="8" />
+		<sequence name="shoot-2" start="96" length="8" />
+		<sequence name="shoot-3" start="104" length="8" />
+		<sequence name="shoot-4" start="112" length="8" />
+		<sequence name="shoot-5" start="120" length="8" />
+		<sequence name="shoot-6" start="128" length="8" />
+		<sequence name="shoot-7" start="136" length="8" />
+		<sequence name="die1" start="144" length="40" />
+	</unit>
+</sequences>
