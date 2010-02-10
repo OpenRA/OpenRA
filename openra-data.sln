@@ -5,7 +5,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mods", "mods", "{F0BAF862-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-4C26-8171-CF45EE01E97A}"
 	ProjectSection(SolutionItems) = preProject
-		mods\ra\campaignUnits.ini = mods\ra\campaignUnits.ini
 		mods\ra\defaults.yaml = mods\ra\defaults.yaml
 		mods\ra\merge-rules.yaml = mods\ra\merge-rules.yaml
 		mods\ra\mod.yaml = mods\ra\mod.yaml
@@ -13,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 		mods\ra\rules.ini = mods\ra\rules.ini
 		mods\ra\rules.yaml = mods\ra\rules.yaml
 		mods\ra\sequences.xml = mods\ra\sequences.xml
-		mods\ra\trees.ini = mods\ra\trees.ini
-		mods\ra\units.ini = mods\ra\units.ini
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aftermath", "aftermath", "{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78}"
@@ -51,7 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "globals", "globals", "{27CA
 		bogus.sno = bogus.sno
 		bogus.tem = bogus.tem
 		chrome.xml = chrome.xml
-		makedist.cmd = makedist.cmd
 		tileSet.til = tileSet.til
 	EndProjectSection
 EndProject
@@ -78,8 +74,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remaps", "remaps", "{CA06F2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2DF-4000-A4F7-AFDB4C282698}"
 	ProjectSection(SolutionItems) = preProject
-		mods\cnc\chrome-allies.png = mods\cnc\chrome-allies.png
-		mods\cnc\chrome-soviet.png = mods\cnc\chrome-soviet.png
+		mods\cnc\chrome-gdi.png = mods\cnc\chrome-gdi.png
+		mods\cnc\chrome-nod.png = mods\cnc\chrome-nod.png
 		mods\cnc\chrome.xml = mods\cnc\chrome.xml
 		mods\cnc\civilian.yaml = mods\cnc\civilian.yaml
 		mods\cnc\compat.yaml = mods\cnc\compat.yaml

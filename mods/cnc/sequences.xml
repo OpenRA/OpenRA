@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
- <!-- allied gun turret -->
+  <!-- allied gun turret -->
   <unit name="gun">
     <sequence name="idle" start="0" length="32" />
     <sequence name="recoil" start="32" length="32" />
@@ -128,7 +128,6 @@
     <sequence name="die5" start="324" length="18" />
     <sequence name="die6" start="0" length="14" src="electro" />
   </unit>
-  
   <!-- build clock - hacked in -->
   <unit name="clock">
     <sequence name="idle" start="0" length="*" />
@@ -142,7 +141,7 @@
     <sequence name="select" start="12" length="6" x="12" y="12" />
     <sequence name="attackmove" start="18" length="8" x="12" y="12" />
     <sequence name="move-minimap" start="26" length="1" />
-	<sequence name="blocked-minimap" start="27" length="1" />
+    <sequence name="blocked-minimap" start="27" length="1" />
     <sequence name="repair" start="29" length="24" x="12" y="12" />
     <sequence name="deploy" start="53" length="9" x="12" y="12" />
     <sequence name="sell" start="62" length="24" x="12" y="12" />
@@ -161,19 +160,18 @@
     <sequence name="guard-minimap" start="152" length="1" />
     <sequence name="guard" start="153" length="1" x="12" y="12" />
     <sequence name="sell-vehicle" start="154" length="24" />
-    
     <!-- These are not defined uniquely in the cnc mouse shp-->
     <sequence name="capture" start="119" length="3" />
     <sequence name="capture-minimap" start="148" length="3" />
     <sequence name="repair2" start="29" length="24" />
-	  <sequence name="attack" start="18" length="8" x="12" y="12" />
-	  <sequence name="attack-minimap" start="140" length="8" />
-	  <sequence name="deploy-blocked" start="11" length="1" x="12" y="12" />
-	  <sequence name="enter-blocked" start="11" length="1" />
-	  <sequence name="repair2-blocked" start="11" length="1" />
-	  <sequence name="ability-minimap" start="138" length="2" />
-	  <sequence name="heal" start="1" length="4" x="12" y="12" />
-	  <sequence name="heal-minimap" start="1" length="1" />
+    <sequence name="attack" start="18" length="8" x="12" y="12" />
+    <sequence name="attack-minimap" start="140" length="8" />
+    <sequence name="deploy-blocked" start="11" length="1" x="12" y="12" />
+    <sequence name="enter-blocked" start="11" length="1" />
+    <sequence name="repair2-blocked" start="11" length="1" />
+    <sequence name="ability-minimap" start="138" length="2" />
+    <sequence name="heal" start="1" length="4" x="12" y="12" />
+    <sequence name="heal-minimap" start="1" length="1" />
   </cursor>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
@@ -274,7 +272,7 @@
     <sequence name="7" start="0" length="18" src="fball1" />
     <sequence name="8" start="0" length="22" src="art-exp1" />
   </unit>
-   <unit name="pips">
+  <unit name="pips">
     <sequence name="groups" start="8" length="10" />
     <sequence name="medic" start="20" length="1" />
     <sequence name="ready" start="3" length="1" />
@@ -287,13 +285,11 @@
     <sequence name="tag-fake" start="18" length="1" />
     <sequence name="tag-primary" start="2" length="1" />
   </unit>
-
   <unit name="hind">
     <sequence name="idle" start="0" length="32" />
     <sequence name="rotor" start="0" length="4" src="lrotor" />
     <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
   </unit>
-
   <unit name="v2">
     <sequence name="idle" start="0" length="32" />
   </unit>

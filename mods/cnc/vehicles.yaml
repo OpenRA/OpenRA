@@ -72,6 +72,32 @@ BGGY:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
+	
+MTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: mtnkicnh
+		TechLevel: 3
+		Prerequisites: weap
+		Owner: gdi
+		Cost: 800
+		Description: Medium Tank
+		LongDesc: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Unit:
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 3
+		Speed: 18
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 120mm
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
 
 TRAN:
 	Inherits: ^Plane
