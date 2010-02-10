@@ -108,7 +108,7 @@ namespace OpenRA.Server
 						Index = newConn.PlayerIndex,
 						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
-						Country = "allies",		/* hack */
+						Country = "",		/* hack */
 						State = Session.ClientState.NotReady
 					});
 

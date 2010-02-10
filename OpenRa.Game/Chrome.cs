@@ -368,7 +368,7 @@ namespace OpenRa
 				.Skip(1)
 				.First();
 
-			Game.IssueOrder(Order.Chat("/race " + nextCountry));
+			Game.IssueOrder(Order.Chat("/race " + nextCountry.Name));
 		}
 
 		void CycleReady(bool left)

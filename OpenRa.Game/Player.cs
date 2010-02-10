@@ -178,6 +178,9 @@ namespace OpenRa
 				PlayerName = client.Name;
 			}
 
+			if (string.IsNullOrEmpty(client.Country))
+				client.Country = PlayerActor.World.GetCountries().First().Name;
+
 			if (Country.Name != client.Country)
 			{
 				Game.chat.AddLine(this, "is now playing {0}".F(client.Country));
