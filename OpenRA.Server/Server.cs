@@ -442,7 +442,7 @@ namespace OpenRA.Server
 					}
 					else
 						foreach (var c in conns.Except(conn).ToArray())
-							DispatchOrdersToClient(c, 0, 0, so.Serialize());
+							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
 					break;
 
 				case "RequestFile":
