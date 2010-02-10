@@ -186,5 +186,10 @@ namespace OpenRa
 				!isX ? Game.SharedRandom.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height)
 					: (edge ? w.Map.YOffset : w.Map.YOffset + w.Map.Height));
 		}
+
+		public static IEnumerable<CountryInfo> GetCountries(this World w)
+		{
+			return w.WorldActor.Info.Traits.WithInterface<CountryInfo>();
+		}
 	}
 }

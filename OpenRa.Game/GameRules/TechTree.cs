@@ -39,7 +39,7 @@ namespace OpenRa.GameRules
 			var bi = info.Traits.GetOrDefault<BuildableInfo>();
 			if( bi == null ) return false;
 
-			if( !bi.Owner.Contains( player.Race ) )
+			if( !bi.Owner.Contains( player.Country.Race ) )
 				return false;
 
 			foreach( var p in bi.Prerequisites )

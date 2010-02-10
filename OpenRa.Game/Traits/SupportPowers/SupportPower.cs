@@ -48,7 +48,7 @@ namespace OpenRa.Traits
 			var buildings = Rules.TechTree.GatherBuildings(self.Owner);
 			var effectivePrereq = Info.Prerequisites
 				.Select(a => a.ToLowerInvariant())
-				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Race));
+				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Country.Race));
 			
 			if (Info.GivenAuto)
 			{
@@ -80,7 +80,7 @@ namespace OpenRa.Traits
 			var buildings = Rules.TechTree.GatherBuildings(Owner);
 			var effectivePrereq = Info.Prerequisites
 				.Select(a => a.ToLowerInvariant())
-				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Race));
+				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Country.Race));
 
 			if (Info.Prerequisites.Count() == 0) 
 				return Owner.GetPowerState() == PowerState.Normal;

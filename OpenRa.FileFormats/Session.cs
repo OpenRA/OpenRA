@@ -21,7 +21,7 @@ namespace OpenRa.FileFormats
 		{
 			public int Index;
 			public int PaletteIndex;
-			public string Race;
+			public string Country;
 			public int SpawnPoint;
 			public string Name;
 			public ClientState State;

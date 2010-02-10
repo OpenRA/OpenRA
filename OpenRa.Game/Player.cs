@@ -16,7 +16,7 @@ namespace OpenRa
 		public int Kills;
 		public string PlayerName;
 		public string InternalName;
-		public string Race;
+		public CountryInfo Country;
 		public readonly int Index;
 		public int Cash = 10000;
 		public int Ore = 0;
@@ -62,7 +62,8 @@ namespace OpenRa
 
 			this.PaletteIndex = client != null ? client.PaletteIndex : index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
-			this.Race = client != null ? client.Race : "allies";
+			this.Country = world.GetCountries().FirstOrDefault( c => client != null && client.Country == c.Name )
+			?? world.GetCountries().First();
 		}
 	
 		void UpdatePower()
@@ -177,10 +178,10 @@ namespace OpenRa
 				PlayerName = client.Name;
 			}
 
-			if (Race != client.Race)
+			if (Country.Name != client.Country)
 			{
-				Game.chat.AddLine(this, "is now playing {0}".F(client.Race));
-				Race = client.Race;
+				Game.chat.AddLine(this, "is now playing {0}".F(client.Country));
+				Country = PlayerActor.World.GetCountries().First(c => c.Name == client.Country);
 			}
 
 			if (PaletteIndex != client.PaletteIndex)

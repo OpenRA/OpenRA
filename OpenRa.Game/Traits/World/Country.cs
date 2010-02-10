@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRa.Traits
 {
-	class CountryInfo : ITraitInfo
+	public class CountryInfo : ITraitInfo
 	{
 		public readonly string Name = null;
 		public readonly string Race = null;

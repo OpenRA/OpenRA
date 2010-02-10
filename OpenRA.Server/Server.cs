@@ -108,7 +108,7 @@ namespace OpenRA.Server
 						Index = newConn.PlayerIndex,
 						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
-						Race = "allies",		/* hack */
+						Country = "allies",		/* hack */
 						State = Session.ClientState.NotReady
 					});
 
@@ -249,7 +249,7 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						GetClient(conn).Race = s;
+						GetClient(conn).Country = s;
 						SyncLobbyInfo();
 						return true;
 					}},	
