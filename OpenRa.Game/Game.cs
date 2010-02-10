@@ -158,13 +158,13 @@ namespace OpenRa
 						controller.selection.Tick(world);
 
 						world.Tick();
+
+						PerfHistory.Tick();
 					}
 					else
 						if (orderManager.FrameNumber == 0)
 							lastTime = Environment.TickCount;
 				}
-
-				PerfHistory.Tick();
 			}
 
 			using (new PerfSample("render"))

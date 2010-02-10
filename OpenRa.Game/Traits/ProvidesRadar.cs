@@ -2,7 +2,10 @@
 
 namespace OpenRa.Traits
 {
-	class ProvidesRadarInfo : StatelessTraitInfo<ProvidesRadar> {}
+	class ProvidesRadarInfo : ITraitInfo
+	{
+		public object Create( Actor self ) { return new ProvidesRadar(); }
+	}
 
 	class ProvidesRadar : ITick
 	{
@@ -14,7 +17,7 @@ namespace OpenRa.Traits
 		{
 			// Check if powered
 			var b = self.traits.Get<Building>();
-			if (b != null && b.Disabled) return false;
+			if (b.Disabled) return false;
 
 			var isJammed = self.World.Queries.WithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
 				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
