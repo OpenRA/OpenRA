@@ -62,7 +62,7 @@ namespace OpenRa
 
 			this.PaletteIndex = client != null ? client.PaletteIndex : index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
-			this.Race = client != null ? client.Race : RaceUtil.Allies;
+			this.Race = client != null ? client.Race : "allies";
 		}
 	
 		void UpdatePower()

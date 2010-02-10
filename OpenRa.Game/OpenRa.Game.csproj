@@ -165,7 +165,6 @@
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Race.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="Graphics\Sequence.cs" />

@@ -109,8 +109,8 @@ namespace OpenRa
 				return;
 			}
 
-			var variants = (voicedUnit.Owner.Race == RaceUtil.Soviet)
-							? vi.SovietVariants : vi.AlliedVariants;
+			var variants = (voicedUnit.Owner.Race == "allies")
+				? vi.AlliedVariants : vi.SovietVariants;
 
 			var variant = variants[voicedUnit.ActorID % variants.Length];
 

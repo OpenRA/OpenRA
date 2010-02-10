@@ -363,7 +363,7 @@ namespace OpenRa
 		void CycleRace(bool left)
 		{
 			// hack
-			var newRace = Game.world.LocalPlayer.Race == RaceUtil.Allies ? RaceUtil.Soviet : RaceUtil.Allies;
+			var newRace = Game.world.LocalPlayer.Race == "allies" ? "soviet" : "allies";
 			Game.IssueOrder(Order.Chat("/race " + newRace));
 		}
 
