@@ -118,6 +118,7 @@
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\Attack\AttackOmni.cs" />
+    <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\World\BridgeLoadHook.cs" />
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />

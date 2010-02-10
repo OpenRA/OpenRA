@@ -15,7 +15,8 @@ namespace OpenRa.Traits.Activities
 
 		void DoSell(Actor self)
 		{
-			var cost = self.Info.Traits.Get<BuildableInfo>().Cost;
+			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
+			var cost = csv != null ? csv.Value : self.Info.Traits.Get<BuildableInfo>().Cost;
 			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 			var refund = Rules.General.RefundPercent * self.Health * cost / hp;
 

@@ -1354,7 +1354,9 @@ FACT:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
-	IronCurtainable:
+	IronCurtainable: 
+	CustomSellValue:
+		Value: 1000
 
 PROC:
 	Inherits: ^Building
@@ -1380,6 +1382,8 @@ PROC:
 		Pips: 17
 		Capacity: 2000
 	IronCurtainable:
+	CustomSellValue:
+		Value: 600
 
 SILO:
 	Inherits: ^Building

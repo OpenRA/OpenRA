@@ -58,6 +58,9 @@ PROC:
 	StoresOre:
 		Pips: 17
 		Capacity: 1000
+	CustomSellValue:
+		Value: 600
+		
 SILO:
 	Inherits: ^Building
 	Buildable:
