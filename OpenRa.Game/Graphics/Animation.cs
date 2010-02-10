@@ -10,12 +10,20 @@ namespace OpenRa.Graphics
 		bool backwards = false;
 		bool tickAlways;
 
+		Func<int> facingFunc;
+
 		public string Name { get { return name; } }
 
 		public Animation( string name )
+			: this( name, () => 0 )
+		{
+		}
+
+		public Animation( string name, Func<int> facingFunc )
 		{
 			this.name = name.ToLowerInvariant();
-			tickFunc = () => { };
+			this.tickFunc = () => { };
+			this.facingFunc = facingFunc;
 		}
 
 		public Sprite Image
@@ -23,8 +31,8 @@ namespace OpenRa.Graphics
 			get
 			{
 				return backwards
-					? CurrentSequence.GetSprite(CurrentSequence.End - frame - 1)
-					: CurrentSequence.GetSprite(frame);
+					? CurrentSequence.GetSprite(CurrentSequence.End - frame - 1, facingFunc())
+					: CurrentSequence.GetSprite(frame, facingFunc());
 			}
 		}
 

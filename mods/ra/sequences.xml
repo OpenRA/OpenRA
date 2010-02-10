@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -234,15 +234,8 @@
   </unit>
   <!-- harv -->
   <unit name="harv">
-    <sequence name="idle" start="0" length="32" />
-    <sequence name="harvest0" start="32" length="8" />
-    <sequence name="harvest1" start="40" length="8" />
-    <sequence name="harvest2" start="48" length="8" />
-    <sequence name="harvest3" start="56" length="8" />
-    <sequence name="harvest4" start="64" length="8" />
-    <sequence name="harvest5" start="72" length="8" />
-    <sequence name="harvest6" start="80" length="8" />
-    <sequence name="harvest7" start="88" length="8" />
+    <sequence name="idle" start="0" length="1" facings="32" />
+    <sequence name="harvest" start="32" length="8" facings="8" />
     <sequence name="empty" start="96" length="15" />
   </unit>
   <!-- light tank -->

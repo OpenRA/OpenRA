@@ -40,12 +40,10 @@ namespace OpenRa.Traits.Activities
 				!self.World.Map.Harvest(self.Location, out isGem))
 				return false;
 
-			var harvestAnim = "harvest" + Util.QuantizeFacing(unit.Facing, 8);
-
-			if (harvestAnim != renderUnit.anim.CurrentSequence.Name)
+			if (renderUnit.anim.CurrentSequence.Name != "harvest")
 			{
 				isHarvesting = true;
-				renderUnit.PlayCustomAnimation(self, harvestAnim, () => isHarvesting = false);
+				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
 			}
 			harv.AcceptResource(isGem);
 			return true;
