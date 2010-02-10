@@ -165,6 +165,31 @@ World:
 		Chance: .02
 		Spreads: yes
 		Grows: yes
+	Country@0:
+		Name: England
+		Race: allies
+	Country@1:
+		Name: Germany
+		Race: allies
+	Country@2:
+		Name: France
+		Race: allies
+	Country@3:
+		Name: Ukraine
+		Race: soviet
+	Country@4:
+		Name: Russia
+		Race: soviet
+	Country@5:
+		Name: Greece
+		Race: allies
+	Country@6:
+		Name: Turkey
+		Race: allies
+	Country@7:
+		Name: Spain
+		Race: allies
+	
 	
 MGG:
 	GeneratesGap:

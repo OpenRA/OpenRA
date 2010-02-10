@@ -111,3 +111,9 @@ World:
 		Chance: .02
 		Spreads: yes
 		Grows: yes
+	Country@gdi:
+		Name: GDI
+		Race: gdi
+	Country@nod:
+		Name: NOD
+		Race: nod
