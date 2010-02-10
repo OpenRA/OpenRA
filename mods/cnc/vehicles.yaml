@@ -4,7 +4,7 @@ MCV:
 		Icon: mcvicnh
 		TechLevel: 7
 		Prerequisites: weap, @Superweapon
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 5000
 		Description: Mobile Construction Vehicle
 		LongDesc: Deploys into another Construction Yard.\n  Unarmed
@@ -30,7 +30,7 @@ HARV:
 		Icon: harvicnh
 		TechLevel: 2
 		Prerequisites: proc
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 1400
 		Description: Harvester
 		LongDesc: Collects Tiberium for processing.\n  Unarmed
@@ -53,7 +53,7 @@ BGGY:
 		Icon: bggyicnh
 		TechLevel: 4
 		Prerequisites: afld
-		Owner: soviet
+		Owner: nod
 		Cost: 600
 		Description: Nod Buggy
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
@@ -80,7 +80,7 @@ TRAN:
 		TechLevel: 6
 		Prerequisites: hpad
 		BuiltAt: hpad
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 1500
 		Description: Chinook Transport
 		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
@@ -103,11 +103,11 @@ TRAN:
 HELI:
 	Inherits: ^Plane
 	Buildable:
-		Icon heliicnh
+		Icon: heliicnh
 		TechLevel: 6
 		Prerequisites: hpad
 		BuiltAt: hpad
-		Owner: soviet
+		Owner: nod
 		Cost: 1200
 		Description: Apache Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry

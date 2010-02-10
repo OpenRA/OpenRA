@@ -19,7 +19,7 @@ NUKE:
 	Buildable:
 		Icon: nukeicnh
 		TechLevel: 1
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 300
 		Description: Power Plant
 		LongDesc: Provides power for other structures
@@ -40,7 +40,7 @@ PROC:
 		Icon: procicnh
 		TechLevel: 2
 		Prerequisites: nuke
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 2000
 		Description: Tiberium Refinery
 		LongDesc: Processes Tiberium into useable resources
@@ -64,7 +64,7 @@ SILO:
 		Icon: siloicnh
 		TechLevel: 2
 		Prerequisites: proc
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 150
 		Description: Tiberium Silo
 		LongDesc: Stores excess Tiberium until it can be processed
@@ -88,7 +88,7 @@ PYLE:
 		Icon: pyleicnh
 		TechLevel: 2
 		Prerequisites: nuke
-		Owner: allies
+		Owner: gdi
 		Cost: 300
 		Description: Barracks
 		LongDesc: Trains infantry
@@ -113,7 +113,7 @@ HAND:
 		Icon: handicnh
 		TechLevel: 2
 		Prerequisites: nuke
-		Owner: soviet
+		Owner: nod
 		Cost: 300
 		Description: Hand of Nod
 		LongDesc: Trains infantry
@@ -138,7 +138,7 @@ AFLD:
 		Icon: afldicnh
 		TechLevel: 5
 		Prerequisites: proc
-		Owner: soviet
+		Owner: nod
 		Cost: 2000
 		Description: Airfield
 		LongDesc: Provides a dropzone for vehicle reinforcements
@@ -163,7 +163,7 @@ WEAP:
 		Icon: weapicnh
 		TechLevel: 5
 		Prerequisites: proc
-		Owner: allies
+		Owner: gdi
 		Cost: 2000
 		Description: Weapons Factory
 		LongDesc: Assembly point for vehicle reinforcements
@@ -190,7 +190,7 @@ HQ:
 		Icon: hqicnh
 		TechLevel: 3
 		Prerequisites: proc
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 1000
 		Description: Communications Center
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -212,7 +212,7 @@ NUK2:
 		Icon:nuk2icnh
 		TechLevel: 5
 		Prerequisites: nuke
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 700
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
@@ -233,7 +233,7 @@ FIX:
 		Icon: fixicnh
 		TechLevel: 3
 		Prerequisites: nuke
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 1200
 		Description: Repair Facility
 		LongDesc: Repairs vehicles and allows the\nconstruction of additional bases.
@@ -255,7 +255,7 @@ HPAD:
 		Icon:hpadicnh
 		TechLevel: 6
 		Prerequisites: @Barracks
-		Owner: allies,soviet
+		Owner: gdi,nod
 		Cost: 1500
 		Description: Helipad
 		LongDesc: Produces and reloads helicopters
@@ -283,7 +283,7 @@ EYE:
 		Icon: eyeicnh
 		TechLevel: 7
 		Prerequisites: hq
-		Owner: allies
+		Owner: gdi
 		Cost: 2800
 		Description: Advanced Communications Center
 		LongDesc: Provides access to the Ion Cannon.\n  Requires power to operate.
@@ -308,7 +308,7 @@ TMPL:
 		Icon: tmplicnh
 		TechLevel: 7
 		Prerequisites: hq
-		Owner: soviet
+		Owner: nod
 		Cost: 3000
 		Description: Temple of Nod
 		LongDesc: Place of worship and secret missile silo.\n  Requires power to operate.
@@ -331,7 +331,7 @@ OBLI:
 		Icon:obliicnh
 		TechLevel: 4
 		Prerequisites: hq
-		Owner: soviet
+		Owner: nod
 		Cost: 1500
 		Description: Obelisk of Light
 		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
