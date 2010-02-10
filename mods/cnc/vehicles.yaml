@@ -73,6 +73,32 @@ BGGY:
 	RenderUnitTurreted:
 	AutoTarget:
 	
+JEEP:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: jeepicnh
+		TechLevel: 2
+		Prerequisites: weap
+		Owner: gdi
+		Cost: 400
+		Description: Hum-Vee
+		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 150
+		Armor: light
+		Crewed: yes
+		ROT: 10
+		Sight: 2
+		Speed: 30
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,0,0,-2
+		MuzzleFlash: yes
+	RenderUnitTurreted:
+	AutoTarget:
+	
 LTNK:
 	Inherits: ^Vehicle
 	Buildable:
