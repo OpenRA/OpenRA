@@ -51,7 +51,8 @@
 	
 	<!-- Orca Helicopter -->
 	<unit name="orca">
-		<sequence name="idle" start="0" length="64" />
+		<sequence name="idle" start="0" length="32" />
+		<sequence name="damaged-idle" start="32" length="32" />
 	</unit>
 
 	<!-- Medium Tank -->
