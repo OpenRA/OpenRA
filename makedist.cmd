@@ -12,9 +12,9 @@
 @copy *.xml ..\openra-bin\
 @copy specialbin.png ..\openra-bin\
 @copy OpenRA.Server\bin\debug\OpenRA.Server.exe ..\openra-bin\
-@copy SequenceEditor\bin\x86\debug\SequenceEditor.exe ..\openra-bin\
-@copy OpenRA.Game\bin\x86\debug\*.dll ..\openra-bin\
-@copy OpenRA.Game\bin\x86\debug\OpenRa.Game.exe ..\openra-bin\
+@copy SequenceEditor\bin\debug\SequenceEditor.exe ..\openra-bin\
+@copy OpenRA.Game\bin\debug\*.dll ..\openra-bin\
+@copy OpenRA.Game\bin\debug\OpenRa.Game.exe ..\openra-bin\
 @xcopy /E mods ..\openra-bin\mods\
 @copy *.yaml ..\openra-bin\
 @copy bogus.* ..\openra-bin\
