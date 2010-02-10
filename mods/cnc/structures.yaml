@@ -140,7 +140,7 @@ AFLD:
 		Prerequisites: proc
 		Owner: nod
 		Cost: 2000
-		Description: Airfield
+		Description: Airstrip
 		LongDesc: Provides a dropzone for vehicle reinforcements
 	Building:
 		Power: -30

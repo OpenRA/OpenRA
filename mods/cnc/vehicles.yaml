@@ -73,6 +73,31 @@ BGGY:
 	RenderUnitTurreted:
 	AutoTarget:
 	
+BIKE:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: bikeicnh
+		TechLevel: 2
+		Prerequisites: afld
+		Owner: nod
+		Cost: 500
+		Description: Recon Bike
+		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Unit:
+		HP: 160
+		Armor: none
+		ROT: 10
+		Crewed: yes
+		Sight: 2
+		Speed: 40
+	AttackBase:
+		PrimaryWeapon: Rockets
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: -4,0,25,4,0,-25
+	RenderUnit:
+	AutoTarget:
+	
+	
 JEEP:
 	Inherits: ^Vehicle
 	Buildable:

@@ -13,9 +13,9 @@
 	
 	<!-- Power Plant -->
 	<unit name="nuke">
-		<sequence name="idle" start="0" />
-		<sequence name="damaged-idle" start="1" length="4" />
-		<sequence name="critical-idle" start="2" length="1" />
+		<sequence name="idle" start="0" length="4" />
+		<sequence name="damaged-idle" start="4" length="4" />
+		<sequence name="critical-idle" start="8" length="1" />
 		<sequence name="make" start="0" length="*" src="nukemake" />
 	</unit>
 	
