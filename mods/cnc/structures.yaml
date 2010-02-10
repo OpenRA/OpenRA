@@ -13,6 +13,8 @@ FACT:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
+	CustomSellValue:
+		Value: 5000
 
 NUKE:
 	Inherits: ^Building

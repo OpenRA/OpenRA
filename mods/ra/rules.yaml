@@ -1356,7 +1356,7 @@ FACT:
 	ConstructionYard:
 	IronCurtainable: 
 	CustomSellValue:
-		Value: 1000
+		Value: 2500
 
 PROC:
 	Inherits: ^Building
