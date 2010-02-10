@@ -1,4 +1,5 @@
 ﻿using OpenRa.Effects;
+using OpenRa.Graphics;
 
 namespace OpenRa.Traits
 {
@@ -12,6 +13,7 @@ namespace OpenRa.Traits
 		public RenderInfantry(Actor self)
 			: base(self)
 		{
+			anim = new Animation( GetImage( self ), () => self.traits.Get<Unit>().Facing );
 			anim.PlayFacing("stand", 
 				() => self.traits.Get<Unit>().Facing);
 		}
@@ -23,14 +25,11 @@ namespace OpenRa.Traits
 
 			var mobile = self.traits.Get<Mobile>();
 			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
-			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 
-			var prefix = IsProne(self) ? "crawl-" : "run-";
+			var seq = IsProne(self) ? "crawl" : "run";
 
-			if (anim.CurrentSequence.Name.StartsWith(prefix))
-				anim.ReplaceAnim(prefix + dir);
-			else
-				anim.PlayRepeating(prefix + dir);
+			if (anim.CurrentSequence.Name != seq)
+				anim.PlayRepeating(seq);
 
 			return true;
 		}
@@ -44,13 +43,12 @@ namespace OpenRa.Traits
 
 		public void Attacking(Actor self)
 		{
-			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
 			inAttack = true;
 
-			var prefix = IsProne(self) ? "prone-shoot-" : "shoot-";
+			var seq = IsProne(self) ? "prone-shoot" : "shoot";
 
-			if (anim.HasSequence(prefix + dir))
-				anim.PlayThen(prefix + dir, () => inAttack = false);
+			if (anim.HasSequence(seq))
+				anim.PlayThen(seq, () => inAttack = false);
 			else if (anim.HasSequence("heal"))
 				anim.PlayThen("heal", () => inAttack = false);
 		}
@@ -63,10 +61,8 @@ namespace OpenRa.Traits
 
 			/* todo: idle anims, etc */
 
-			var dir = Util.QuantizeFacing(self.traits.Get<Unit>().Facing, 8);
-
 			if (IsProne(self))
-				anim.PlayFetchIndex("crawl-" + dir, () => 0);			/* what a hack. */
+				anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */
 			else
 				anim.PlayFacing("stand",
 					() => self.traits.Get<Unit>().Facing);
