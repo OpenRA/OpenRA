@@ -14,12 +14,12 @@ namespace OpenRa
 
 		public void Toggle()
 		{
-			if (isChatting && typing.Length > 0)
-					Game.IssueOrder(Order.Chat(typing));
+			if( isChatting && typing.Length > 0 )
+				Game.IssueOrder( Order.Chat( typing ) );
 
-				typing = "";
-			if (Game.orderManager.GameStarted)
-				isChatting ^= true;	
+			typing = "";
+			if( Game.orderManager.GameStarted )
+				isChatting ^= true;
 		}
 		
 		public void Reset()
