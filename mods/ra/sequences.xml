@@ -831,7 +831,7 @@
     <sequence name="idle" start="0" length="16" />
   </unit>
   <unit name="crate">
-    <sequence name="idle" start="0" length="16" src="wcrate" />
+    <sequence name="idle" start="0" length="1" src="wcrate" />
   </unit>
   <unit name="crate-effects">
     <sequence name="speed" start="0" length="*" src="speed" />

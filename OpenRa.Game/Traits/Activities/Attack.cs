@@ -29,7 +29,7 @@ namespace OpenRa.Traits.Activities
 			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
 			var renderUnit = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (renderUnit != null)
-				? renderUnit.anim.CurrentSequence.Length : 8;
+				? renderUnit.anim.CurrentSequence.Facings : 8;
 
 			if (Util.QuantizeFacing(unit.Facing, numDirs) 
 				!= Util.QuantizeFacing(desiredFacing, numDirs))
