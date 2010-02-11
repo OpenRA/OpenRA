@@ -43,6 +43,6 @@ namespace OpenRa.Mods.RA
 	{
 		float multiplier;
 		public ArmorUpgrade(float multiplier) { this.multiplier = 1/multiplier; }
-		public float GetArmorModifier() { return multiplier; }
+		public float GetDamageModifier() { return multiplier; }
 	}
 }
