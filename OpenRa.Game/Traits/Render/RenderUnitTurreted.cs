@@ -20,7 +20,7 @@ namespace OpenRa.Traits
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
 			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );
-			turretAnim.PlayFacing( "turret", () => turreted.turretFacing );
+			turretAnim.Play( "turret" );
 
 			if( attackInfo.PrimaryOffset != null )
 				anims.Add("turret_1", new AnimationWithOffset(

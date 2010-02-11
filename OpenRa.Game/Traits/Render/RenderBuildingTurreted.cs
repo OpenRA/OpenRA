@@ -15,12 +15,7 @@ namespace OpenRa.Traits
 
 		public void BuildingComplete( Actor self )
 		{
-			PlayTurretAnim( self, "idle" );
-		}
-
-		void PlayTurretAnim( Actor self, string a )
-		{
-			anim.PlayFacing( a, () => self.traits.Get<Turreted>().turretFacing );
+			anim.Play( "idle" );
 		}
 
 		public override void Damaged(Actor self, AttackInfo e)
@@ -30,10 +25,10 @@ namespace OpenRa.Traits
 			switch (e.DamageState)
 			{
 				case DamageState.Normal:
-					PlayTurretAnim(self, "idle");
+					anim.Play( "idle" );
 					break;
 				case DamageState.Half:
-					PlayTurretAnim(self, "damaged-idle");
+					anim.Play( "damaged-idle" );
 					Sound.Play("kaboom1.aud");
 					break;
 			}

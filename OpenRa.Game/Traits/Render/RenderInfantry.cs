@@ -13,8 +13,7 @@ namespace OpenRa.Traits
 		public RenderInfantry(Actor self)
 			: base(self, () => self.traits.Get<Unit>().Facing)
 		{
-			anim.PlayFacing("stand", 
-				() => self.traits.Get<Unit>().Facing);
+			anim.Play("stand");
 		}
 
 		bool ChooseMoveAnim(Actor self)
@@ -63,8 +62,7 @@ namespace OpenRa.Traits
 			if (IsProne(self))
 				anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */
 			else
-				anim.PlayFacing("stand",
-					() => self.traits.Get<Unit>().Facing);
+				anim.Play("stand");
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

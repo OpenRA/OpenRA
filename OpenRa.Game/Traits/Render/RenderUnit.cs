@@ -15,20 +15,14 @@ namespace OpenRa.Traits
 		public RenderUnit(Actor self)
 			: base(self, () => self.traits.Get<Unit>().Facing)
 		{
-			PlayFacingAnim(self);
+			anim.Play("idle");
 
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
 		}
 
-		void PlayFacingAnim(Actor self)
-		{
-			var unit = self.traits.Get<Unit>();
-			anim.PlayFacing("idle", () => unit.Facing);
-		}
-
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
 		{
-			anim.PlayThen(newAnim, () => { PlayFacingAnim(self); if (after != null) after(); });
+			anim.PlayThen(newAnim, () => { anim.Play("idle"); if (after != null) after(); });
 		}
 
 		bool isSmoking;
