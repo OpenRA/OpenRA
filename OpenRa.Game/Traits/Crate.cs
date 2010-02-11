@@ -2,6 +2,7 @@
 using System.Linq;
 using OpenRa.Effects;
 using OpenRa.Traits;
+using IjwFramework.Types;
 
 /*
  * Crates left to implement:
@@ -12,7 +13,6 @@ Explosion=5,NONE,500            ; high explosive baddie (damage per explosion)
 Firepower=10,FPOWER,2.0         ; firepower of nearby objects increased (firepower multiplier)
 HealBase=1,INVUN                ; all buildings to full strength
 ICBM=1,MISSILE2                 ; nuke missile one time shot
-Money=50,DOLLAR,2000            ; a chunk o' cash (maximum cash)
 Napalm=5,NONE,600               ; fire explosion baddie (damage)
 ParaBomb=3,PARABOX              ; para-bomb raid one time shot
 Reveal=1,EARTH                  ; reveal entire radar map
@@ -43,9 +43,19 @@ namespace OpenRa.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			// TODO: Pick one randomly
-			self.traits.WithInterface<ICrateAction>().First().Activate(crusher);
-			self.World.AddFrameEndTask(w =>	w.Remove(self));
+			var shares = self.traits.WithInterface<ICrateAction>().Select(a => Pair.New(a, a.SelectionShares));
+			var totalShares = shares.Sum(a => a.Second);
+			var n = Game.SharedRandom.Next(totalShares);
+
+			self.World.AddFrameEndTask(w => w.Remove(self));
+			foreach (var s in shares)
+				if (n < s.Second)
+				{
+					s.First.Activate(crusher);
+					return;
+				}
+				else
+					n -= s.Second;
 		}
 
 		public bool IsPathableCrush(UnitMovementType umt, Player player)
