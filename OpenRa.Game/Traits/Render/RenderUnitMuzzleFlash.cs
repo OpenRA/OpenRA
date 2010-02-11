@@ -19,9 +19,9 @@ namespace OpenRa.Traits
 			var attack = self.traits.Get<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
-			var muzzleFlash = new Animation(GetImage(self));
+			var muzzleFlash = new Animation(GetImage(self), ()=>unit.Facing);
 			muzzleFlash.PlayFetchIndex("muzzle",
-				() => (Util.QuantizeFacing(unit.Facing, 8)) * 6 + (int)(attack.primaryRecoil * 5.9f));
+				() => (int)(attack.primaryRecoil * 5.9f));
 			anims.Add( "muzzle", new AnimationWithOffset(
 				muzzleFlash,
 				() => attackInfo.PrimaryOffset.AbsOffset(),

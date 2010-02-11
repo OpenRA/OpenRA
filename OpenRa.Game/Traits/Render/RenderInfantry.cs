@@ -11,9 +11,8 @@ namespace OpenRa.Traits
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)
-			: base(self)
+			: base(self, () => self.traits.Get<Unit>().Facing)
 		{
-			anim = new Animation( GetImage( self ), () => self.traits.Get<Unit>().Facing );
 			anim.PlayFacing("stand", 
 				() => self.traits.Get<Unit>().Facing);
 		}

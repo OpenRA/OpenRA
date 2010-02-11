@@ -21,9 +21,9 @@ namespace OpenRa.Traits
 			return self.Info.Traits.Get<RenderSimpleInfo>().Image ?? self.Info.Name;
 		}
 
-		public RenderSimple(Actor self)
+		public RenderSimple(Actor self, Func<int> baseFacing)
 		{
-			anims.Add( "", new Animation( GetImage(self) ) );
+			anims.Add( "", new Animation( GetImage(self), baseFacing ) );
 		}
 
 		public virtual IEnumerable<Renderable> Render( Actor self )

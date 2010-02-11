@@ -19,7 +19,7 @@ namespace OpenRa.Traits
 			var attack = self.traits.GetOrDefault<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
-			var turretAnim = new Animation(GetImage(self));
+			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );
 			turretAnim.PlayFacing( "turret", () => turreted.turretFacing );
 
 			if( attackInfo.PrimaryOffset != null )
@@ -36,10 +36,9 @@ namespace OpenRa.Traits
 
 			if( attackInfo.MuzzleFlash )
 			{
-				var muzzleFlash = new Animation( GetImage(self) );
+				var muzzleFlash = new Animation( GetImage(self), () => self.traits.Get<Turreted>().turretFacing );
 				muzzleFlash.PlayFetchIndex( "muzzle",
-					() => ( Util.QuantizeFacing( self.traits.Get<Turreted>().turretFacing, 8 ) ) * 6
-						+ (int)( attack.primaryRecoil * 5.9f ) ); /* hack: recoil can be 1.0f, but don't overflow into next anim */
+					() => (int)( attack.primaryRecoil * 5.9f ) ); /* hack: recoil can be 1.0f, but don't overflow into next anim */
 				anims.Add( "muzzle_flash", new AnimationWithOffset(
 					muzzleFlash,
 					() => Util.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),

@@ -9,7 +9,7 @@ namespace OpenRa.Traits
 	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
 		public RenderBuildingTurreted(Actor self)
-			: base(self)
+			: base(self, () => self.traits.Get<Turreted>().turretFacing)
 		{
 		}
 

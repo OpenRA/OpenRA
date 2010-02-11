@@ -5,15 +5,20 @@ namespace OpenRa.Traits
 {
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{
-		public override object Create(Actor self) { return new RenderBuilding(self); }
+		public override object Create(Actor self) { return new RenderBuilding(self);}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
 		static readonly int[] bibStarts = { 0, 0, 1, 5, 11 };
 
-		public RenderBuilding(Actor self)
-			: base(self)
+		public RenderBuilding( Actor self )
+			: this( self, () => 0 )
+		{
+		}
+
+		public RenderBuilding(Actor self, Func<int> baseFacing)
+			: base(self, baseFacing)
 		{
 			if( Game.skipMakeAnims )
 				Complete( self );

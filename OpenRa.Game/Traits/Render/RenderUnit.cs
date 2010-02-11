@@ -13,9 +13,8 @@ namespace OpenRa.Traits
 	class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)
-			: base(self)
+			: base(self, () => self.traits.Get<Unit>().Facing)
 		{
-			anim = new Animation( GetImage( self ), () => self.traits.Get<Unit>().Facing );
 			PlayFacingAnim(self);
 
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
