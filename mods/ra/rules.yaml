@@ -555,7 +555,7 @@ CRATE:
 		SelectionShares: 10
 	GiveCashCrateAction:
 		Amount: 2000
-		SelectionShares: 10
+		SelectionShares: 50
 	Unit:
 		HP: 1
 	RenderUnit:
