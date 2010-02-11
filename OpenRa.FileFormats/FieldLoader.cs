@@ -11,8 +11,9 @@ namespace OpenRa.FileFormats
 			foreach (var x in ini)
 			{
 				var field = self.GetType().GetField(x.Key.Trim());
-				if( field != null )
-					field.SetValue(self, GetValue(field.FieldType, x.Value.Trim()));
+				if (field == null)
+					throw new NotImplementedException("Missing field `{0}` on `{1}`".F(x.Key.Trim(), self.GetType().Name));
+				field.SetValue(self, GetValue(field.FieldType, x.Value.Trim()));
 			}
 		}
 
