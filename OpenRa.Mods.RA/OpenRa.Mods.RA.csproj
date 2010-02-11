@@ -52,6 +52,7 @@
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="C4Demolition.cs" />
+    <Compile Include="Crate Actions\GiveCashCrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderSpy.cs" />
     <Compile Include="RepairableNear.cs" />
-    <Compile Include="Crate Actions\SpeedUpgrade.cs" />
+    <Compile Include="Crate Actions\SpeedUpgradeCrateAction.cs" />
     <Compile Include="SonarPulsePower.cs" />
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />

@@ -9,6 +9,7 @@ namespace OpenRa.Mods.RA
 		public int SelectionShares = 10;
 		public object Create(Actor self) { return new SpeedUpgradeCrateAction(self); }
 	}
+
 	class SpeedUpgradeCrateAction : ICrateAction
 	{
 		Actor self;
