@@ -556,6 +556,12 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 2000
 		SelectionShares: 50
+	FirepowerUpgradeCrateAction:
+		Multiplier: 2.0
+		SelectionShares: 10
+	ArmorUpgradeCrateAction:
+		Multiplier: 2.0
+		SelectionShares: 10
 	Unit:
 		HP: 1
 	RenderUnit:

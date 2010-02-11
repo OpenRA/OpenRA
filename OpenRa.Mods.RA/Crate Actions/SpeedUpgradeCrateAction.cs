@@ -28,7 +28,7 @@ namespace OpenRa.Mods.RA
 			Sound.PlayToPlayer(collector.Owner, "unitspd1.aud");
 			collector.World.AddFrameEndTask(w => 
 			{
-				float multiplier = self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Multiplier;
+				var multiplier = self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Multiplier;
 				collector.traits.Add(new SpeedUpgrade(multiplier));
 				w.Add(new CrateEffect(collector, "speed"));
 			});

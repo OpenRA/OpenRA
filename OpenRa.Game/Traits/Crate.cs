@@ -10,7 +10,6 @@ Armor=10,ARMOR,2.0              ; armor of nearby objects increased (armor multi
 Cloak=0,STEALTH2                ; enable cloaking on nearby objects
 Darkness=1,EMPULSE              ; cloak entire radar map
 Explosion=5,NONE,500            ; high explosive baddie (damage per explosion)
-Firepower=10,FPOWER,2.0         ; firepower of nearby objects increased (firepower multiplier)
 HealBase=1,INVUN                ; all buildings to full strength
 ICBM=1,MISSILE2                 ; nuke missile one time shot
 Napalm=5,NONE,600               ; fire explosion baddie (damage)

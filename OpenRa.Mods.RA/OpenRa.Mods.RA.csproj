@@ -52,6 +52,8 @@
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="C4Demolition.cs" />
+    <Compile Include="Crate Actions\ArmorUpgradeCrateAction.cs" />
+    <Compile Include="Crate Actions\FirepowerUpgradeCrateAction.cs" />
     <Compile Include="Crate Actions\GiveCashCrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
