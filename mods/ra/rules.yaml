@@ -553,6 +553,9 @@ CRATE:
 	SpeedUpgradeCrateAction:
 		Multiplier: 1.7
 		SelectionShares: 10
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 10
 	Unit:
 		HP: 1
 	RenderUnit:
