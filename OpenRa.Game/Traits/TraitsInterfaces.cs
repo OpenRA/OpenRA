@@ -45,6 +45,7 @@ namespace OpenRa.Traits
 	public interface IDamageModifier { float GetDamageModifier(); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }
 	public interface IPowerModifier { float GetPowerModifier(); }
+	public interface IFirepowerModifier { float GetFirepowerModifier(); }
 	public interface IPaletteModifier { void AdjustPalette(Bitmap b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }

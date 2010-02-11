@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OpenRa.Effects;
 using OpenRa.GameRules;
 using OpenRa.Traits;
@@ -29,25 +30,31 @@ namespace OpenRa
 			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
 			if (warhead.Ore) world.Map.DestroyOre(targetTile.X, targetTile.Y);
 
-			var maxSpread = GetMaximumSpread(weapon, warhead);
+			var firepowerModifier = firedBy.traits
+				.WithInterface<IFirepowerModifier>()
+				.Select(a => a.GetFirepowerModifier())
+				.Product();
+
+			var maxSpread = GetMaximumSpread(weapon, warhead, firepowerModifier);
 			var hitActors = world.FindUnitsInCircle(loc, maxSpread);
 			
 			foreach (var victim in hitActors)
-				victim.InflictDamage(firedBy, (int)GetDamageToInflict(victim, loc, weapon, warhead), warhead);
+				victim.InflictDamage(firedBy, 
+					(int)GetDamageToInflict(victim, loc, weapon, warhead, firepowerModifier), warhead);
 		}
 
-		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead)
+		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead, float modifier)
 		{
-			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage), 2));
+			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage * modifier), 2));
 		}
 
-		static float GetDamageToInflict(Actor target, int2 loc, WeaponInfo weapon, WarheadInfo warhead)
+		static float GetDamageToInflict(Actor target, int2 loc, WeaponInfo weapon, WarheadInfo warhead, float modifier)
 		{
 			if (!WeaponValidForTarget(weapon, target))
 				return 0f;
 			
 			var distance = (target.CenterLocation - loc).Length*1/24f;
-			var rawDamage = weapon.Damage * (float)Math.Exp(-distance / warhead.Spread);
+			var rawDamage = weapon.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
 			return rawDamage * multiplier;
 		}
