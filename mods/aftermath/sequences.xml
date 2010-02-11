@@ -1,11 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sequences>
   <!-- aftermath units -->
   <unit name="qtnk">
     <sequence name="idle" start="0" length="32" />
     <sequence name="charge-0" start="32" length="3" />
-    sequence name="deploy-0" start="35" length="5" /&gt;
-    <sequence name="charge-1" start="40" length="3" /><sequence name="deploy-1" start="43" length="5" /><sequence name="charge-2" start="48" length="3" /><sequence name="deploy-2" start="51" length="5" /><sequence name="charge-3" start="56" length="3" /><sequence name="deploy-3" start="59" length="5" /><sequence name="charge-4" start="64" length="3" /><sequence name="deploy-4" start="67" length="5" /><sequence name="charge-5" start="72" length="3" /><sequence name="deploy-5" start="75" length="5" /><sequence name="charge-6" start="80" length="3" /><sequence name="deploy-6" start="83" length="5" /><sequence name="charge-7" start="88" length="3" /><sequence name="deploy-7" start="91" length="5" /></unit>
+    <sequence name="deploy-0" start="35" length="5" />
+    <sequence name="charge-1" start="40" length="3" />
+    <sequence name="deploy-1" start="43" length="5" />
+    <sequence name="charge-2" start="48" length="3" />
+    <sequence name="deploy-2" start="51" length="5" />
+    <sequence name="charge-3" start="56" length="3" />
+    <sequence name="deploy-3" start="59" length="5" />
+    <sequence name="charge-4" start="64" length="3" />
+    <sequence name="deploy-4" start="67" length="5" />
+    <sequence name="charge-5" start="72" length="3" />
+    <sequence name="deploy-5" start="75" length="5" />
+    <sequence name="charge-6" start="80" length="3" />
+    <sequence name="deploy-6" start="83" length="5" />
+    <sequence name="charge-7" start="88" length="3" />
+    <sequence name="deploy-7" start="91" length="5" />
+  </unit>
   <unit name="ctnk">
     <sequence name="idle" start="0" length="32" />
   </unit>
