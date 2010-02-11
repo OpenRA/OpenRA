@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -834,7 +834,22 @@
     <sequence name="idle" start="0" length="1" src="wcrate" />
   </unit>
   <unit name="crate-effects">
-    <sequence name="speed" start="0" length="*" src="speed" />
+    <sequence name="speed" start="0" length="20" src="speed" />
+    <sequence name="dollar" start="0" length="21" src="dollar" />
+    <sequence name="reveal-map" start="0" length="10" src="earth" />
+    <sequence name="hide-map" start="0" length="19" src="empulse" />
+    <sequence name="fpower" start="0" length="29" src="fpower" />
+    <sequence name="gps" start="0" length="21" src="gpsbox" />
+    <sequence name="invuln" start="0" length="15" src="invulbox" />
+    <sequence name="heal" start="0" length="35" src="invun" />
+    <sequence name="nuke" start="0" length="9" src="missile2" />
+    <sequence name="parabombs" start="0" length="13" src="parabox" />
+    <sequence name="sonar" start="0" length="15" src="sonarbox" />
+    <sequence name="stealth" start="0" length="15" src="stealth2" />
+    <sequence name="timequake" start="0" length="43" src="tquake" />
+    <sequence name="armor" start="0" length="23" src="armor" />
+    <sequence name="chrono" start="0" length="25" src="chronbox" />
+    <sequence name="airstrike" start="0" length="9" src="deviator" />
   </unit>
   <unit name="parach">
     <sequence name="open" start="0" length="5" />
