@@ -46,11 +46,12 @@ namespace OpenRa.Effects
 
 			if (Projectile.Image != null && Projectile.Image != "none")
 			{
-				anim = new Animation(Projectile.Image);
 				if (Projectile.Rotates)
-					Traits.Util.PlayFacing(anim, "idle", () => Traits.Util.GetFacing((dest - src).ToFloat2(), 0));
+					anim = new Animation(Projectile.Image, () => Traits.Util.GetFacing((dest - src).ToFloat2(), 0));
 				else
-					anim.PlayRepeating("idle");
+					anim = new Animation(Projectile.Image);
+
+				anim.PlayRepeating("idle");
 			}
 		}
 

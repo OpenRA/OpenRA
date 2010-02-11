@@ -485,7 +485,7 @@
     <sequence name="unload" start="35" length="1" />
   </unit>
   <unit name="v2">
-    <sequence name="idle" start="0" length="32" />
+    <sequence name="idle" start="0" facings="32" />
   </unit>
   <unit name="flagfly">
     <sequence name="idle" start="0" length="14" />
@@ -606,7 +606,7 @@
     <sequence name="idle" start="0" length="1" />
   </unit>
   <unit name="dragon">
-    <sequence name="idle" start="0" length="32" />
+    <sequence name="idle" start="0" facings="32" />
   </unit>
   <unit name="smokey">
     <sequence name="idle" start="0" length="7" />
@@ -639,7 +639,7 @@
     <sequence name="die6" start="0" length="17" src="electdog" />
   </unit>
   <unit name="missile">
-    <sequence name="idle" start="0" length="32" />
+    <sequence name="idle" start="0" facings="32" />
   </unit>
   <unit name="spy">
     <sequence name="stand" start="0" facings="8" />

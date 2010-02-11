@@ -43,13 +43,6 @@ namespace OpenRa.Traits
 			return highest * 8;
 		}
 
-		public static void PlayFacing(this Animation anim, string sequenceName, Func<int> facing)
-		{
-			anim.PlayFetchIndex(sequenceName,
-				() => Traits.Util.QuantizeFacing(facing(), 
-					anim.CurrentSequence.Length));
-		}
-
 		public static int GetNearestFacing( int facing, int desiredFacing )
 		{
 			var turn = desiredFacing - facing;
@@ -87,7 +80,7 @@ namespace OpenRa.Traits
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
-			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Length) * (256 / rut.anim.CurrentSequence.Length);
+			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Facings) * (256 / rut.anim.CurrentSequence.Length);
 
 			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), quantizedFacing, .7f);
 		}
@@ -107,7 +100,7 @@ namespace OpenRa.Traits
 			if( unit == null ) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
 
 			var ru = self.traits.GetOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Length : 8;
+			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
 			var bodyFacing = unit.Facing;
 			var quantizedFacing = QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
