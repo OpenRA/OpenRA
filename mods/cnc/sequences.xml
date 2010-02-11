@@ -196,7 +196,7 @@
     <sequence name="idle" start="0" length="1" />
   </unit>
   <unit name="dragon">
-    <sequence name="idle" start="0" length="32" />
+    <sequence name="idle" start="0" facings="32" />
   </unit>
   <unit name="smokey">
     <sequence name="idle" start="0" length="7" />
@@ -205,7 +205,7 @@
     <sequence name="idle" start="0" length="8" />
   </unit>
   <unit name="missile">
-    <sequence name="idle" start="0" length="32" />
+    <sequence name="idle" start="0" facings="32" />
   </unit>
   <unit name="moveflsh">
     <sequence name="idle" start="0" length="5" />
@@ -315,20 +315,10 @@
     <sequence name="left-normal" start="0" length="1" src="htabs" />
     <sequence name="left-pressed" start="1" length="1" src="htabs" />
   </unit>
-  <unit name="fb2">
-    <sequence name="idle" start="0" length="4" />
-  </unit>
-  <unit name="u2">
-    <sequence name="idle" start="0" length="16" />
-  </unit>
   <unit name="crate">
     <sequence name="idle" start="0" src="wcrate" />
   </unit>
   <unit name="crate-effects">
     <sequence name="speed" start="0" length="*" src="speed" />
-  </unit>
-  <unit name="parach">
-    <sequence name="open" start="0" length="5" />
-    <sequence name="idle" start="5" length="11" />
   </unit>
 </sequences>
