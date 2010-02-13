@@ -225,11 +225,11 @@ namespace OpenRa
 		public static void StartGame()
 		{
 			Game.chat.Reset();
-			var available = world.Map.SpawnPoints.ToList();
-			var taken = new List<int2>();
-				
-			available.RemoveAll( p => LobbyInfo.Clients.Any( c => c.SpawnPoint != 0 
-				&& world.Map.SpawnPoints.ElementAt( c.SpawnPoint - 1 ) == p ));
+			
+			var taken = LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
+				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
+
+			var available = world.Map.SpawnPoints.Except(taken).ToList();
 				
 			foreach (var client in LobbyInfo.Clients)
 			{
@@ -237,7 +237,8 @@ namespace OpenRa
 					? ChooseSpawnPoint(available, taken) 
 					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
 
-				foreach (var ssu in world.players[client.Index].PlayerActor.traits.WithInterface<ISpawnStartingUnits>())
+				foreach (var ssu in world.players[client.Index].PlayerActor
+					.traits.WithInterface<ISpawnStartingUnits>())
 					ssu.SpawnStartingUnits(world.players[client.Index], sp);
 			}
 
