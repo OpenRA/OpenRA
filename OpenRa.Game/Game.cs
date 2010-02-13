@@ -230,7 +230,10 @@ namespace OpenRa
 			Game.chat.Reset();
 			var available = world.Map.SpawnPoints.ToList();
 			var taken = new List<int2>();
-
+				
+			available.RemoveAll( p => LobbyInfo.Clients.Any( c => c.SpawnPoint != 0 
+				&& world.Map.SpawnPoints.ElementAt( c.SpawnPoint - 1 ) == p ));
+				
 			foreach (var client in LobbyInfo.Clients)
 			{
 				int2 sp;
