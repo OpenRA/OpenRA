@@ -6,7 +6,6 @@ using IjwFramework.Types;
 
 /*
  * Crates left to implement:
-Armor=10,ARMOR,2.0              ; armor of nearby objects increased (armor multiplier)
 Cloak=0,STEALTH2                ; enable cloaking on nearby objects
 Darkness=1,EMPULSE              ; cloak entire radar map
 Explosion=5,NONE,500            ; high explosive baddie (damage per explosion)
