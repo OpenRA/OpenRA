@@ -127,7 +127,7 @@ namespace OpenRa.Graphics
 				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				int* c = (int*)bitmapData.Scan0;
 
-				foreach (var a in world.Queries.WithTrait<Unit>())
+				foreach (var a in world.Queries.WithTrait<Unit>().Where( a => a.Actor.Owner != null ))
 					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
 						Color.FromArgb(alpha, a.Actor.Owner.Color).ToArgb();
 

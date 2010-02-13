@@ -547,7 +547,7 @@ DOME:
 
 CRATE:
 	Crate:
-		Lifetime: 5
+		Lifetime: 120
 	SpeedUpgradeCrateAction:
 		Multiplier: 1.7
 		SelectionShares: 10
