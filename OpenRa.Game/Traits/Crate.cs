@@ -23,7 +23,7 @@ TimeQuake=3,TQUAKE              ; time quake
 
 namespace OpenRa.Traits
 {
-	class CrateInfo : ITraitInfo
+	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
 		public object Create(Actor self) { return new Crate(self); }
@@ -37,6 +37,9 @@ namespace OpenRa.Traits
 		{
 			this.self = self;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+
+			if (self.World.IsWater(self.Location))
+				self.traits.Get<RenderSimple>().anim.PlayRepeating("water");
 		}
 
 		public void OnCrush(Actor crusher)
