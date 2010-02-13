@@ -67,7 +67,7 @@ World:
 	ChoosePaletteOnSelect:
 	BridgeLoadHook:
 	CrateSpawner:
-		Minimum: 0
+		Minimum: 1
 		Maximum: 3
 		SpawnInterval: 30
 		WaterChance: .2

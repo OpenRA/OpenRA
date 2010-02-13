@@ -31,9 +31,10 @@ namespace OpenRa.Traits
 			
 				crates.RemoveAll(c => !c.IsInWorld);
 
-				while (crates.Count < info.Minimum)
-					SpawnCrate(self, info);
-				if (crates.Count < info.Maximum)
+				var toSpawn = Math.Min(0, info.Minimum - crates.Count)
+					+ (crates.Count < info.Maximum ? 1 : 0);
+
+				for (var n = 0; n < toSpawn; n++)
 					SpawnCrate(self, info);
 			}
 		}
@@ -45,7 +46,7 @@ namespace OpenRa.Traits
 
 			for (; ; )
 			{
-				var p = new int2(Game.SharedRandom.Next(128), Game.SharedRandom.Next(128));
+				var p = new int2(Game.SharedRandom.Next(0,127), Game.SharedRandom.Next(0,127));
 				if (self.World.IsCellBuildable(p, umt))
 				{
 					self.World.AddFrameEndTask(
