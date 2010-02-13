@@ -177,9 +177,6 @@ namespace OpenRa
 			PerfHistory.items["batches"].Tick();
 		}
 
-		public static Random SharedRandom = new Random(0);		/* for things that require sync */
-		public static Random CosmeticRandom = new Random();		/* for things that are just fluff */
-
 		public static void SyncLobbyInfo(string data)
 		{
 			var session = new Session();
@@ -256,7 +253,7 @@ namespace OpenRa
 				throw new InvalidOperationException("No free spawnpoint.");
 
 			var n = taken.Count == 0 
-				? Game.SharedRandom.Next(available.Count)
+				? world.SharedRandom.Next(available.Count)
 				: available			// pick the most distant spawnpoint from everyone else
 					.Select((k,i) => Pair.New(k,i))
 					.OrderByDescending(a => taken.Sum(t => (t - a.First).LengthSquared))

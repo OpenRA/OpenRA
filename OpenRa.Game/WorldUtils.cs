@@ -177,13 +177,13 @@ namespace OpenRa
 
 		public static int2 ChooseRandomEdgeCell(this World w)
 		{
-			var isX = Game.SharedRandom.Next(2) == 0;
-			var edge = Game.SharedRandom.Next(2) == 0;
+			var isX = w.SharedRandom.Next(2) == 0;
+			var edge = w.SharedRandom.Next(2) == 0;
 
 			return new int2(
-				isX ? Game.SharedRandom.Next(w.Map.XOffset, w.Map.XOffset + w.Map.Width)
+				isX ? w.SharedRandom.Next(w.Map.XOffset, w.Map.XOffset + w.Map.Width)
 					: (edge ? w.Map.XOffset : w.Map.XOffset + w.Map.Width),
-				!isX ? Game.SharedRandom.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height)
+				!isX ? w.SharedRandom.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height)
 					: (edge ? w.Map.YOffset : w.Map.YOffset + w.Map.Height));
 		}
 

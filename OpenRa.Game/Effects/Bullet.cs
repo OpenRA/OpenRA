@@ -38,8 +38,8 @@ namespace OpenRa.Effects
 			SrcAltitude = srcAltitude;
 			DestAltitude = destAltitude;
 			VisualDest = Dest + new int2(
-						Game.CosmeticRandom.Next(-10, 10),
-						Game.CosmeticRandom.Next(-10, 10));
+						firedBy.World.CosmeticRandom.Next(-10, 10),
+						firedBy.World.CosmeticRandom.Next(-10, 10));
 			Weapon = weapon;
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];

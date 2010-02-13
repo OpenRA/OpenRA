@@ -28,11 +28,11 @@ namespace OpenRa.Traits
 				
 				if (info.Spreads) 
 					Ore.SpreadOre(self.World, 
-						Game.SharedRandom,
+						self.World.SharedRandom,
 						info.Chance);
 
 				if (info.Grows)
-					Ore.GrowOre(self.World, Game.SharedRandom);
+					Ore.GrowOre(self.World, self.World.SharedRandom);
 
 				self.World.Minimap.InvalidateOre();
 				remainingTicks = (int)(info.Interval * 60 * 25);

@@ -21,7 +21,7 @@ namespace OpenRa.Traits
 
 				for (var j = -1; j < 2; j++)
 					for (var i = -1; i < 2; i++)
-						if (Game.SharedRandom.NextDouble() < info.Chance)
+						if (self.World.SharedRandom.NextDouble() < info.Chance)
 							if (self.World.OreCanSpreadInto(self.Location.X + i, self.Location.Y + j))
 								self.World.Map.AddOre(self.Location.X + i, self.Location.Y + j);
 

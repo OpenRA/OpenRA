@@ -41,12 +41,12 @@ namespace OpenRa.Traits
 
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
-			var inWater = Game.SharedRandom.NextDouble() < info.WaterChance;
+			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
 
 			for (; ; )
 			{
-				var p = new int2(Game.SharedRandom.Next(0,127), Game.SharedRandom.Next(0,127));
+				var p = new int2(self.World.SharedRandom.Next(0, 127), self.World.SharedRandom.Next(0, 127));
 				if (self.World.IsCellBuildable(p, umt))
 				{
 					self.World.AddFrameEndTask(

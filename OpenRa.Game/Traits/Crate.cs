@@ -46,7 +46,7 @@ namespace OpenRa.Traits
 		{
 			var shares = self.traits.WithInterface<ICrateAction>().Select(a => Pair.New(a, a.SelectionShares));
 			var totalShares = shares.Sum(a => a.Second);
-			var n = Game.SharedRandom.Next(totalShares);
+			var n = self.World.SharedRandom.Next(totalShares);
 
 			self.World.AddFrameEndTask(w => w.Remove(self));
 			foreach (var s in shares)
