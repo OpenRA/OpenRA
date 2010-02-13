@@ -66,6 +66,11 @@ World:
 	UnitInfluence:
 	ChoosePaletteOnSelect:
 	BridgeLoadHook:
+	CrateSpawner:
+		Minimum: 0
+		Maximum: 3
+		SpawnInterval: 30
+		WaterChance: .2
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
 		Filename: temperat.pal

@@ -7,11 +7,10 @@ namespace OpenRa.Traits
 {
 	class CrateSpawnerInfo : ITraitInfo
 	{
-		public readonly int CrateMinimum = 1; // Minumum number of crates
-		public readonly int CrateMaximum = 255; // Maximum number of crates
-		public readonly int CrateRadius = 3; // Radius of crate effect TODO: This belongs on the crate effect itself
-		public readonly int CrateRegen = 180; // Average time (seconds) between crate spawn
-		public readonly float WaterCrateChance = .2f; // Chance of generating a water crate instead of a land crate
+		public readonly int Minimum = 1; // Minumum number of crates
+		public readonly int Maximum = 255; // Maximum number of crates
+		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
+		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
 
 		public object Create(Actor self) { return new CrateSpawner(); }
 	}
@@ -28,20 +27,20 @@ namespace OpenRa.Traits
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
-				ticks = info.CrateRegen * 25;		// todo: randomize
+				ticks = info.SpawnInterval * 25;		// todo: randomize
 			
 				crates.RemoveAll(c => !c.IsInWorld);
 
-				while (crates.Count < info.CrateMinimum)
+				while (crates.Count < info.Minimum)
 					SpawnCrate(self, info);
-				if (crates.Count < info.CrateMaximum)
+				if (crates.Count < info.Maximum)
 					SpawnCrate(self, info);
 			}
 		}
 
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
-			var inWater = Game.SharedRandom.NextDouble() < info.WaterCrateChance;
+			var inWater = Game.SharedRandom.NextDouble() < info.WaterChance;
 			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
 
 			for (; ; )
