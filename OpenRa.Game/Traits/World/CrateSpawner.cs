@@ -31,7 +31,7 @@ namespace OpenRa.Traits
 			
 				crates.RemoveAll(c => !c.IsInWorld);
 
-				var toSpawn = Math.Min(0, info.Minimum - crates.Count)
+				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
 					+ (crates.Count < info.Maximum ? 1 : 0);
 
 				for (var n = 0; n < toSpawn; n++)
