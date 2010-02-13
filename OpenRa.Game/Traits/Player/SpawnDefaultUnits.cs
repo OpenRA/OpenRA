@@ -3,7 +3,7 @@ namespace OpenRa.Traits
 {
 	class SpawnDefaultUnitsInfo : StatelessTraitInfo<SpawnDefaultUnits> { }
 
-	class SpawnDefaultUnits : ISpawnStartingUnits
+	class SpawnDefaultUnits : IOnGameStart
 	{
 		public void SpawnStartingUnits(Player p, int2 sp)
 		{

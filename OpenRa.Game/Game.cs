@@ -238,7 +238,7 @@ namespace OpenRa
 					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
 
 				foreach (var ssu in world.players[client.Index].PlayerActor
-					.traits.WithInterface<ISpawnStartingUnits>())
+					.traits.WithInterface<IOnGameStart>())
 					ssu.SpawnStartingUnits(world.players[client.Index], sp);
 			}
 
