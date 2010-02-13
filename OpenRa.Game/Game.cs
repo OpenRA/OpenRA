@@ -237,11 +237,11 @@ namespace OpenRa
 				if (client.SpawnPoint == 0)
 					sp = ChooseSpawnPoint(available, taken);
 				else
-				{
 					sp = world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
-					taken.Add(sp);
-					available.Remove(sp);
-				}
+					
+				taken.Add(sp);
+				available.Remove(sp);
+				
 				// todo: spawn more than one unit, in most cases!
 				world.CreateActor("mcv", sp, world.players[client.Index]);
 			}
