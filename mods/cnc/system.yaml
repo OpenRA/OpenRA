@@ -9,6 +9,7 @@ Player:
 		CancelledAudio: cancel1.aud
 		ClickAudio: button.aud
 	PlaceBuilding:
+	SpawnDefaultUnits:
 	
 World:
 	WaterPaletteRotation:

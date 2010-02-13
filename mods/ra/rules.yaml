@@ -57,6 +57,7 @@ Player:
 		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
+	SpawnDefaultUnits:
 
 World:
 	WaterPaletteRotation:

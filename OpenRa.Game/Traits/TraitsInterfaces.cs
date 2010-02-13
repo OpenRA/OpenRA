@@ -104,4 +104,5 @@ namespace OpenRa.Traits
 
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface ILoadWorldHook { void WorldLoaded(World w); }
+	public interface ISpawnStartingUnits { void SpawnStartingUnits(Player p, int2 sp); }
 }

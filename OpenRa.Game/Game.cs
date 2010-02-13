@@ -233,14 +233,12 @@ namespace OpenRa
 				
 			foreach (var client in LobbyInfo.Clients)
 			{
-				int2 sp;
-				if (client.SpawnPoint == 0)
-					sp = ChooseSpawnPoint(available, taken);
-				else
-					sp = world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
-				
-				// todo: spawn more than one unit, in most cases!
-				world.CreateActor("mcv", sp, world.players[client.Index]);
+				var sp = (client.SpawnPoint == 0) 
+					? ChooseSpawnPoint(available, taken) 
+					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
+
+				foreach (var ssu in world.players[client.Index].PlayerActor.traits.WithInterface<ISpawnStartingUnits>())
+					ssu.SpawnStartingUnits(world.players[client.Index], sp);
 			}
 
 			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );
