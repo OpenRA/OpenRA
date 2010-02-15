@@ -238,8 +238,18 @@ namespace OpenRa.GlRenderer
             CgGl.cgGLDisableProfile(dev.vertexProfile);
         }
 
-        public void SetValue(string param, Texture texture) { }
-        public void SetValue<T>(string param, T t) where T : struct { }
+        public void SetValue(string name, Texture texture)
+        {
+            var param = Cg.cgGetNamedEffectParameter(effect, name);
+            CgGl.cgGLSetTextureParameter(param, texture.texture);
+        }
+
+        public void SetValue(string name, float x, float y)
+        {
+            var param = Cg.cgGetNamedEffectParameter(effect, name);
+            CgGl.cgGLSetParameter2f(param, x, y);
+        }
+
         public void Commit() { }
     }
 

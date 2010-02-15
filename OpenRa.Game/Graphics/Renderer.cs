@@ -49,9 +49,9 @@ namespace OpenRa.Graphics
 			device.Clear(Color.Black);
 
 			SpriteShader.SetValue("Palette", PaletteTexture);
-			SpriteShader.SetValue("Scroll", scroll);
-			SpriteShader.SetValue("r1", r1);
-			SpriteShader.SetValue("r2", r2);
+			SpriteShader.SetValue("Scroll", scroll.X, scroll.Y);
+			SpriteShader.SetValue("r1", r1.X, r1.Y);
+			SpriteShader.SetValue("r2", r2.X, r2.Y);
 			SpriteShader.Commit();
 		}
 
