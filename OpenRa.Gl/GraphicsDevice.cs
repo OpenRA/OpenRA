@@ -13,8 +13,15 @@ namespace OpenRa.GlRenderer
     public class GraphicsDevice
     {
         Graphics g;
-        IntPtr dc;
-        IntPtr rc;
+        public IntPtr dc;
+        public IntPtr rc;
+
+        public static void CheckGlError()
+        {
+            var n = Gl.glGetError();
+            if (n != Gl.GL_NO_ERROR)
+                throw new InvalidOperationException("GL Error");
+        }
 
         public GraphicsDevice(Control control, int width, int height, bool fullscreen, bool vsync)
         {
@@ -43,12 +50,15 @@ namespace OpenRa.GlRenderer
         public void EnableScissor(int left, int top, int width, int height)
         {
             Gl.glScissor(left, top, width, height);
+            CheckGlError();
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
+            CheckGlError();
         }
 
         public void DisableScissor()
         {
             Gl.glDisable(Gl.GL_SCISSOR_TEST);
+            CheckGlError();
         }
 
         public void Begin() { }
@@ -56,13 +66,16 @@ namespace OpenRa.GlRenderer
 
         public void Clear(Color c)
         {
-            Gl.glClearColor(1, 1, 1, 1); 
+            Gl.glClearColor(1, 1, 1, 1);
+            CheckGlError();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+            CheckGlError();
         }
 
         public void Present()
         {
             Wgl.wglSwapBuffers(dc);
+            CheckGlError();
         }
 
         public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices) { }
@@ -76,16 +89,80 @@ namespace OpenRa.GlRenderer
 
     public class VertexBuffer<T> where T : struct
     {
-        public VertexBuffer(GraphicsDevice dev, int size, VertexFormat fmt) { }
-        public void SetData(T[] data) { }
-        public void Bind() { }
+        int buffer;
+
+        public VertexBuffer(GraphicsDevice dev, int size, VertexFormat fmt)
+        {
+            Gl.glGenBuffers(1, out buffer);
+            GraphicsDevice.CheckGlError();
+        }
+
+        public void SetData(T[] data)
+        {
+            Bind();
+            Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
+                new IntPtr(Marshal.SizeOf(typeof(T))), data, Gl.GL_DYNAMIC_DRAW);
+            GraphicsDevice.CheckGlError();
+        }
+
+        public void Bind()
+        {
+            Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, buffer);
+            GraphicsDevice.CheckGlError();
+            Gl.glVertexPointer(3, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
+            GraphicsDevice.CheckGlError();
+            Gl.glTexCoordPointer(4, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), new IntPtr(12));
+            GraphicsDevice.CheckGlError();
+        }
+        
+        bool disposed;
+        public void Dispose()
+        {
+            if (disposed) return;
+            GC.SuppressFinalize(this);
+            Gl.glDeleteBuffers(1, ref buffer);
+            GraphicsDevice.CheckGlError();
+            disposed = true;
+        }
+
+        //~VertexBuffer() { Dispose(); }
     }
 
-    public class IndexBuffer
+    public class IndexBuffer : IDisposable
     {
-        public IndexBuffer(GraphicsDevice dev, int size) { }
-        public void SetData(ushort[] data) { }
-        public void Bind() { }
+        int buffer;
+
+        public IndexBuffer(GraphicsDevice dev, int size)
+        {
+            Gl.glGenBuffers(1, out buffer); 
+            GraphicsDevice.CheckGlError();
+        }
+
+        public void SetData(ushort[] data)
+        {
+            Bind();
+            Gl.glBufferData(Gl.GL_ELEMENT_ARRAY_BUFFER,
+                new IntPtr(2 * data.Length), data, Gl.GL_DYNAMIC_DRAW);
+            GraphicsDevice.CheckGlError();
+        }
+
+        public void Bind()
+        {
+            Gl.glBindBuffer(Gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+            GraphicsDevice.CheckGlError();
+        }
+
+        bool disposed;
+        public void Dispose()
+        {
+            if (disposed) return;
+            GC.SuppressFinalize(this);
+            Gl.glDeleteBuffers(1, ref buffer);
+            GraphicsDevice.CheckGlError();
+            disposed = true;
+        }
+
+        //~IndexBuffer() { Dispose(); }
     }
 
     public class Shader
