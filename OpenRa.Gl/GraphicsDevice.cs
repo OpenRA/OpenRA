@@ -14,9 +14,10 @@ namespace OpenRa.GlRenderer
     public class GraphicsDevice
     {
         Graphics g;
-        public IntPtr dc;
-        public IntPtr rc;
-        public IntPtr cgContext;
+        internal IntPtr dc;
+        internal IntPtr rc;
+        internal IntPtr cgContext;
+        internal int vertexProfile, fragmentProfile;
 
         public static void CheckGlError()
         {
@@ -50,7 +51,11 @@ namespace OpenRa.GlRenderer
 
             cgContext = Cg.cgCreateContext();
             //Cg.cgSetErrorCallback(CgErrorCallback);
+
             CgGl.cgGLRegisterStates(cgContext);
+            CgGl.cgGLSetManageTextureParameters(cgContext, true);
+            vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
+            fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
         }
 
         void CgErrorCallback()
@@ -184,9 +189,11 @@ namespace OpenRa.GlRenderer
         IntPtr effect;
         IntPtr highTechnique;
         IntPtr lowTechnique;
+        GraphicsDevice dev;
 
         public Shader(GraphicsDevice dev, Stream s)
         {
+            this.dev = dev;
             var code = new StreamReader(s).ReadToEnd();
             effect = Cg.cgCreateEffect(dev.cgContext, code, null);
 
@@ -211,7 +218,26 @@ namespace OpenRa.GlRenderer
         }
 
         public ShaderQuality Quality { get; set; }
-        public void Render(Action a) { }
+
+        public void Render(Action a)
+        {
+            CgGl.cgGLEnableProfile(dev.vertexProfile);
+            CgGl.cgGLEnableProfile(dev.fragmentProfile);
+
+            var technique = Quality == ShaderQuality.High ? highTechnique : lowTechnique;
+            var pass = Cg.cgGetFirstPass(technique);
+            while (pass != IntPtr.Zero)
+            {
+                Cg.cgSetPassState(pass);
+                a();
+                Cg.cgResetPassState(pass);
+                pass = Cg.cgGetNextPass(pass);
+            }
+
+            CgGl.cgGLDisableProfile(dev.fragmentProfile);
+            CgGl.cgGLDisableProfile(dev.vertexProfile);
+        }
+
         public void SetValue(string param, Texture texture) { }
         public void SetValue<T>(string param, T t) where T : struct { }
         public void Commit() { }
