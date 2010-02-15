@@ -32,14 +32,16 @@ VertexOut Simple_vp(VertexIn v) {
 }
 
 float4 Simple_fp(FragmentIn f) : COLOR0 {
-	float4 r = tex2D(DiffuseTexture, f.Tex0);
-	return r;
+	return float4( 1,0,0,1 );
+//	float4 r = tex2D(DiffuseTexture, f.Tex0);
+//	return r;
 }
 
 technique high_quality {
 	pass p0	{
 		BlendEnable = true;
 		DepthTestEnable = false;
+//		CullFace = NONE;
 //		CullMode = None;
 //		FillMode = Solid;
 		VertexProgram = compile arbvp1 Simple_vp();

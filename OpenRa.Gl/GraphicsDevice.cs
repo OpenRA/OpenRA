@@ -56,6 +56,11 @@ namespace OpenRa.GlRenderer
             CgGl.cgGLSetManageTextureParameters(cgContext, true);
             vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
             fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
+
+            Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
+            CheckGlError();
+            Gl.glEnableClientState(Gl.GL_INDEX_ARRAY);
+            CheckGlError();
         }
 
         void CgErrorCallback()
@@ -97,13 +102,23 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
-        public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices) { }
-        public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives) { }
+        public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices)
+        {
+            Gl.glDrawElements((int)pt, indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start ));
+            CheckGlError();
+        }
+        
+        public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives)
+        {
+            Gl.glDrawElements((int)pt, numPrimitives, Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
+            CheckGlError();
+        }
     }
 
     public struct Range<T>
     {
-        public Range(T start, T end) { }
+        public readonly T Start, End;
+        public Range(T start, T end) { Start = start; End = end; }
     }
 
     public class VertexBuffer<T> where T : struct
@@ -241,7 +256,7 @@ namespace OpenRa.GlRenderer
         public void SetValue(string name, Texture texture)
         {
             var param = Cg.cgGetNamedEffectParameter(effect, name);
-            CgGl.cgGLSetTextureParameter(param, texture.texture);
+            CgGl.cgGLSetupSampler(param, texture.texture);
         }
 
         public void SetValue(string name, float x, float y)
