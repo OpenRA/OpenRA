@@ -16,6 +16,7 @@ namespace OpenRa.GlRenderer
         Graphics g;
         public IntPtr dc;
         public IntPtr rc;
+        public IntPtr cgContext;
 
         public static void CheckGlError()
         {
@@ -46,6 +47,18 @@ namespace OpenRa.GlRenderer
             if (rc == IntPtr.Zero)
                 throw new InvalidOperationException("can't create wglcontext");
             Wgl.wglMakeCurrent(dc, rc);
+
+            cgContext = Cg.cgCreateContext();
+            //Cg.cgSetErrorCallback(CgErrorCallback);
+            CgGl.cgGLRegisterStates(cgContext);
+        }
+
+        void CgErrorCallback()
+        {
+            var err = Cg.cgGetError();
+            var str = Cg.cgGetErrorString(err);
+            throw new InvalidOperationException(
+                string.Format("CG Error: {0}: {1}", err, str));
         }
 
         public void EnableScissor(int left, int top, int width, int height)
@@ -168,13 +181,40 @@ namespace OpenRa.GlRenderer
 
     public class Shader
     {
-        public Shader(GraphicsDevice dev, Stream s) { }
+        IntPtr effect;
+        IntPtr highTechnique;
+        IntPtr lowTechnique;
+
+        public Shader(GraphicsDevice dev, Stream s)
+        {
+            var code = new StreamReader(s).ReadToEnd();
+            effect = Cg.cgCreateEffect(dev.cgContext, code, null);
+
+            if (effect == IntPtr.Zero)
+            {
+                var err = Cg.cgGetErrorString(Cg.cgGetError());
+                var results = Cg.cgGetLastListing(dev.cgContext);
+                throw new InvalidOperationException(
+                    string.Format("Cg compile failed ({0}):\n{1}", err, results));
+            }
+
+            lowTechnique = Cg.cgGetNamedTechnique(effect, "low_quality");
+            highTechnique = Cg.cgGetNamedTechnique(effect, "high_quality");
+
+            if (lowTechnique != IntPtr.Zero && 0 == Cg.cgValidateTechnique(lowTechnique))
+                lowTechnique = IntPtr.Zero;
+            if (highTechnique != IntPtr.Zero && 0 == Cg.cgValidateTechnique(highTechnique))
+                highTechnique = IntPtr.Zero;
+
+            if (highTechnique == IntPtr.Zero && lowTechnique == IntPtr.Zero)
+                throw new InvalidOperationException("No valid techniques");
+        }
+
         public ShaderQuality Quality { get; set; }
         public void Render(Action a) { }
         public void SetValue(string param, Texture texture) { }
         public void SetValue<T>(string param, T t) where T : struct { }
         public void Commit() { }
-
     }
 
     public class Texture
@@ -210,6 +250,11 @@ namespace OpenRa.GlRenderer
     [Flags]
     public enum VertexFormat { Position, Texture2 }
 
-    public enum ShaderQuality { Low, Medium, High }
-    public enum PrimitiveType { PointList, LineList, TriangleList }
+    public enum ShaderQuality { Low, High }
+    public enum PrimitiveType
+    {
+        PointList = Gl.GL_POINTS, 
+        LineList = Gl.GL_LINES, 
+        TriangleList = Gl.GL_TRIANGLES
+    }
 }

@@ -2,14 +2,13 @@
 // Author: C. Forbes
 //--------------------------------------------------------
 
-shared float2 Scroll;
+float2 Scroll;
 
-shared float2 r1, r2;		// matrix elements
+float2 r1, r2;		// matrix elements
 
 struct VertexIn {
 	float4 Position: POSITION;
-	float2 RG: TEXCOORD0;
-	float2 BA: TEXCOORD1;
+	float4 Color: TEXCOORD0;
 };
 
 struct VertexOut {
@@ -17,37 +16,28 @@ struct VertexOut {
 	float4 Color: COLOR0;
 };
 
-struct FragmentIn {
-	float4 Color: COLOR0;
-};
-
 VertexOut Simple_vp(VertexIn v) {
 	VertexOut o;
 	float2 p = (v.Position.xy - Scroll.xy) * r1 + r2;
 	o.Position = float4(p.x,p.y,0,1);
-	o.Color.rg = v.RG.xy;
-	o.Color.ba = v.BA.xy;
-//	o.Color.a = 1.0f;
+	o.Color = v.Color;
 	return o;
 }
 
-const float2 texelOffset = float2( 0, 1.0f/32.0f );
-
-float4 Simple_fp(FragmentIn f) : COLOR0 {
+float4 Simple_fp(VertexOut f) : COLOR0 {
 	return f.Color;
 }
 
 technique high_quality {
 	pass p0	{
-		AlphaBlendEnable = true;
-		ZWriteEnable = false;
-		ZEnable = false;
-		CullMode = None;
-		FillMode = Wireframe;
-		VertexShader = compile vs_2_0 Simple_vp();
-		PixelShader = compile ps_2_0 Simple_fp();
+		BlendEnable = true;
+		DepthTestEnable = false;
+		//CullMode = None;
+		//FillMode = Wireframe;
+		VertexProgram = compile arbvp1 Simple_vp();
+		FragmentProgram = compile arbfp1 Simple_fp();
 		
-		SrcBlend = SrcAlpha;
-		DestBlend = InvSrcAlpha;
+		//SrcBlend = SrcAlpha;
+		//DestBlend = InvSrcAlpha;
 	}
 }
