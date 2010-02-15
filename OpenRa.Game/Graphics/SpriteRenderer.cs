@@ -1,4 +1,4 @@
-using OpenRa.Gl;
+using OpenRa.GlRenderer;
 
 namespace OpenRa.Graphics
 {

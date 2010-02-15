@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 using System.Drawing;
-using OpenRa.Gl;
+using OpenRa.GlRenderer;
 using System.IO;
 namespace OpenRa.Graphics
 {

@@ -1,6 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
-using OpenRa.Gl;
+using OpenRa.GlRenderer;
 using OpenRa.FileFormats;
 using OpenRa.Support;
 
@@ -22,10 +22,10 @@ namespace OpenRa.Graphics
 		//readonly SpriteHelper sh;
 		//readonly FontHelper fhDebug, fhTitle;
 
-		public Renderer(Control host, Size resolution, bool windowed)
+		public Renderer(Control control, Size resolution, bool windowed)
 		{
-			host.ClientSize = resolution;
-			device = new GraphicsDevice(host, resolution.Width, resolution.Height, windowed, false);
+            control.ClientSize = resolution;
+			device = new GraphicsDevice(control, resolution.Width, resolution.Height, windowed, false);
 
 			SpriteShader = new Shader(device, FileSystem.Open("world-shp.fx"));
 			SpriteShader.Quality = ShaderQuality.Low;

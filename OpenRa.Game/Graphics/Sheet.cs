@@ -1,5 +1,5 @@
 using System.Drawing;
-using OpenRa.Gl;
+using OpenRa.GlRenderer;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Graphics
