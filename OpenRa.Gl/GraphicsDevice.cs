@@ -7,6 +7,7 @@ using Tao.OpenGl;
 using Tao.Cg;
 using Tao.Platform.Windows;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 
 namespace OpenRa.GlRenderer
 {
@@ -178,8 +179,32 @@ namespace OpenRa.GlRenderer
 
     public class Texture
     {
-        public Texture(GraphicsDevice dev, Bitmap bitmap) { }
-        public void SetData(Bitmap bitmap) { }
+        internal int texture;
+
+        public Texture(GraphicsDevice dev, Bitmap bitmap)
+        {
+            Gl.glGenTextures(1, out texture);
+            GraphicsDevice.CheckGlError();
+            SetData(bitmap);
+        }
+
+        public void SetData(Bitmap bitmap)
+        {
+            var bits = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadOnly,
+                PixelFormat.Format32bppArgb);
+
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
+            GraphicsDevice.CheckGlError();
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
+            GraphicsDevice.CheckGlError();
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height, 
+                0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
+            GraphicsDevice.CheckGlError();
+
+            bitmap.UnlockBits(bits);
+        }
     }
 
     [Flags]
