@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.Aftermath", "Op
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.Cnc", "OpenRa.Mods.Cnc\OpenRa.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Gl", "OpenRa.Gl\OpenRa.Gl.csproj", "{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

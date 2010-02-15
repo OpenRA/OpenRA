@@ -55,10 +55,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ijw.DirectX, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Ijw.DirectX\bin\Ijw.DirectX.dll</HintPath>
-    </Reference>
     <Reference Include="IjwFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ijw.DirectX\Ijw.Framework\IjwFramework\bin\Debug\IjwFramework.dll</HintPath>
@@ -282,6 +278,10 @@
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRa.FileFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRa.Gl\OpenRa.Gl.csproj">
+      <Project>{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}</Project>
+      <Name>OpenRa.Gl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

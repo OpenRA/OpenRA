@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
-using Ijw.DirectX;
+using OpenRa.Gl;
 
 namespace OpenRa.Graphics
 {
 	class LineRenderer
 	{
 		Renderer renderer;
-		FvfVertexBuffer<Vertex> vertexBuffer;
+		VertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;            /* kindof a waste of space, but the GPU likes indexing, oh well */
 
 		const int linesPerBatch = 1024;
@@ -19,7 +19,7 @@ namespace OpenRa.Graphics
 		public LineRenderer( Renderer renderer )
 		{
 			this.renderer = renderer;
-			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
+			vertexBuffer = new VertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
 			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );
 		}
 

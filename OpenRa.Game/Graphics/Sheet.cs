@@ -1,5 +1,5 @@
 using System.Drawing;
-using Ijw.DirectX;
+using OpenRa.Gl;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Graphics
@@ -25,7 +25,7 @@ namespace OpenRa.Graphics
 
 		void Resolve()
 		{
-			texture = Texture.CreateFromBitmap(bitmap, renderer.Device);
+            texture = new Texture(renderer.Device, bitmap);
 		}
 
 		public Texture Texture

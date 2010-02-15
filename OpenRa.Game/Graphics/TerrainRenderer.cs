@@ -1,5 +1,5 @@
 using System.Drawing;
-using Ijw.DirectX;
+using OpenRa.Gl;
 using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
@@ -7,7 +7,7 @@ namespace OpenRa.Graphics
 {
 	class TerrainRenderer
 	{
-		FvfVertexBuffer<Vertex> vertexBuffer;
+		VertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;
 		Sheet terrainSheet;
 
@@ -43,7 +43,7 @@ namespace OpenRa.Graphics
 
 			terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
 
-			vertexBuffer = new FvfVertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
+			vertexBuffer = new VertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
 			vertexBuffer.SetData( vertices );
 
 			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );

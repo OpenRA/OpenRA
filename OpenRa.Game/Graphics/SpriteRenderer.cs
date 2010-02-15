@@ -1,10 +1,10 @@
-using Ijw.DirectX;
+using OpenRa.Gl;
 
 namespace OpenRa.Graphics
 {
 	class SpriteRenderer
 	{
-		FvfVertexBuffer<Vertex> vertexBuffer;
+		VertexBuffer<Vertex> vertexBuffer;
 		IndexBuffer indexBuffer;
 		Renderer renderer;
 		Shader shader;
@@ -23,7 +23,7 @@ namespace OpenRa.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 
-			vertexBuffer = new FvfVertexBuffer<Vertex>(renderer.Device, vertices.Length, Vertex.Format);
+			vertexBuffer = new VertexBuffer<Vertex>(renderer.Device, vertices.Length, Vertex.Format);
 			indexBuffer = new IndexBuffer(renderer.Device, indices.Length);
 
 			quality = allowAlpha ? ShaderQuality.High : ShaderQuality.Low;

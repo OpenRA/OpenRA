@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Ijw.DirectX;
+using OpenRa.Gl;
 
 namespace OpenRa.Graphics
 {
