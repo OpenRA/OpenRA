@@ -57,10 +57,14 @@ float4 Palette_fp(VertexOut f) : COLOR0 {
 
 technique low_quality {
 	pass p0 {
-		BlendEnable = false;
+		BlendEnable = true;
 		DepthTestEnable = false;
 		CullFaceEnable = false;
 		VertexProgram = compile latest Simple_vp();
 		FragmentProgram = compile latest Palette_fp();
+
+		BlendEquation = FuncAdd;
+		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
+

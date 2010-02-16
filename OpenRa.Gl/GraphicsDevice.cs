@@ -13,6 +13,7 @@ namespace OpenRa.GlRenderer
 {
     public class GraphicsDevice
     {
+		Size windowSize;
         Graphics g;
         internal IntPtr dc;
         internal IntPtr rc;
@@ -28,6 +29,7 @@ namespace OpenRa.GlRenderer
 
         public GraphicsDevice(Control control, int width, int height, bool fullscreen, bool vsync)
         {
+			windowSize = new Size( width, height );
             g = control.CreateGraphics();
             dc = g.GetHdc();
             
@@ -75,7 +77,7 @@ namespace OpenRa.GlRenderer
         {
 			if( width < 0 ) width = 0;
 			if( height < 0 ) height = 0;
-            Gl.glScissor(left, top, width, height);
+			Gl.glScissor( left, windowSize.Height - ( top + height ), width, height );
             CheckGlError();
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
             CheckGlError();
