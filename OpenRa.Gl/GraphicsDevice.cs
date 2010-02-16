@@ -108,7 +108,7 @@ namespace OpenRa.GlRenderer
 
         public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices)
         {
-            Gl.glDrawElements((int)pt, indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start ));
+			Gl.glDrawElements( (int)pt, indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start * 2 ) );
             CheckGlError();
         }
         
