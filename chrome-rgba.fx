@@ -40,13 +40,11 @@ technique high_quality {
 	pass p0	{
 		BlendEnable = true;
 		DepthTestEnable = false;
-//		CullFace = NONE;
-//		CullMode = None;
-//		FillMode = Solid;
+		CullFaceEnable = false;
 		VertexProgram = compile latest Simple_vp();
 		FragmentProgram = compile latest Simple_fp();
 		
-		//SrcBlend = SrcAlpha;
-		//DestBlend = InvSrcAlpha;
+		BlendEquation = FuncAdd;
+		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
