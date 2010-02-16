@@ -124,6 +124,7 @@ namespace OpenRa
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
+			PerfHistory.items["text"].hasNormalTick = false;
 			Game.controller = controller;
 
 			ChangeMap(mapName);
@@ -193,6 +194,7 @@ namespace OpenRa
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
+			PerfHistory.items["text"].Tick();
 		}
 
 		public static void SyncLobbyInfo(string data)

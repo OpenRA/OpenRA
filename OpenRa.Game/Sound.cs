@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using OpenRa.FileFormats;
 using OpenRa.Support;
 using OpenRa.Traits;
+using Tao.OpenAl;
 
 namespace OpenRa
 {
@@ -160,19 +161,19 @@ namespace OpenRa
 		public OpenAlSoundEngine()
 		{
 			//var str = Alc.alcGetString(IntPtr.Zero, Alc.ALC_DEFAULT_DEVICE_SPECIFIER);
-			var dev = OpenAlInterop.alcOpenDevice(IntPtr.Zero);
+			var dev = Alc.alcOpenDevice(null);
 			if (dev == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL device");
-			var ctx = OpenAlInterop.alcCreateContext(dev, IntPtr.Zero);
+			var ctx = Alc.alcCreateContext(dev, IntPtr.Zero);
 			if (ctx == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
-			OpenAlInterop.alcMakeContextCurrent(ctx);
+			Alc.alcMakeContextCurrent(ctx);
 
 			for (var i = 0; i < POOL_SIZE; i++)
 			{
 				var source = 0;
-				OpenAlInterop.alGenSources(1, out source);
-				if (0 != OpenAlInterop.alGetError())
+				Al.alGenSources(1, out source);
+				if (0 != Al.alGetError())
 					throw new InvalidOperationException("failed generating source {0}".F(i));
 				sourcePool.Add(source, false);
 			}
@@ -193,8 +194,8 @@ namespace OpenRa
 			foreach (int key in sourcePool.Keys)
 			{
 				int state;
-				OpenAlInterop.alGetSourcei(key, OpenAlInterop.AL_SOURCE_STATE, out state);
-				if (state != OpenAlInterop.AL_PLAYING)
+				Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
+				if (state != Al.AL_PLAYING)
 					freeSources.Add(key);
 			}
 
@@ -223,7 +224,7 @@ namespace OpenRa
 		public float Volume
 		{
 			get { return volume; }
-			set { OpenAlInterop.alListenerf(OpenAlInterop.AL_GAIN, volume = value); }
+			set { Al.alListenerf(Al.AL_GAIN, volume = value); }
 		}
 	}
 
@@ -234,15 +235,15 @@ namespace OpenRa
 		static int MakeALFormat(int channels, int bits)
 		{
 			if (channels == 1)
-				return bits == 16 ? OpenAlInterop.AL_FORMAT_MONO16 : OpenAlInterop.AL_FORMAT_MONO8;
+				return bits == 16 ? Al.AL_FORMAT_MONO16 : Al.AL_FORMAT_MONO8;
 			else
-				return bits == 16 ? OpenAlInterop.AL_FORMAT_STEREO16 : OpenAlInterop.AL_FORMAT_STEREO8;
+				return bits == 16 ? Al.AL_FORMAT_STEREO16 : Al.AL_FORMAT_STEREO8;
 		}
 
 		public OpenAlSoundSource(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
-			OpenAlInterop.alGenBuffers(1, out buffer);
-			OpenAlInterop.alBufferData(buffer, MakeALFormat(channels, sampleBits), data, data.Length, sampleRate);
+			Al.alGenBuffers(1, out buffer);
+			Al.alBufferData(buffer, MakeALFormat(channels, sampleBits), data, data.Length, sampleRate);
 		}
 	}
 
@@ -255,13 +256,13 @@ namespace OpenRa
 		{
 			if (source == -1) return;
 			this.source = source;
-			OpenAlInterop.alSourcef(source, OpenAlInterop.AL_PITCH, 1f);
-			OpenAlInterop.alSourcef(source, OpenAlInterop.AL_GAIN, 1f);
-			OpenAlInterop.alSource3f(source, OpenAlInterop.AL_POSITION, 0f, 0f, 0f);
-			OpenAlInterop.alSource3f(source, OpenAlInterop.AL_VELOCITY, 0f, 0f, 0f);
-			OpenAlInterop.alSourcei(source, OpenAlInterop.AL_BUFFER, buffer);
-			OpenAlInterop.alSourcei(source, OpenAlInterop.AL_LOOPING, looping ? OpenAlInterop.AL_TRUE : OpenAlInterop.AL_FALSE);
-			OpenAlInterop.alSourcePlay(source);
+			Al.alSourcef(source, Al.AL_PITCH, 1f);
+			Al.alSourcef(source, Al.AL_GAIN, 1f);
+			Al.alSource3f(source, Al.AL_POSITION, 0f, 0f, 0f);
+			Al.alSource3f(source, Al.AL_VELOCITY, 0f, 0f, 0f);
+			Al.alSourcei(source, Al.AL_BUFFER, buffer);
+			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
+			Al.alSourcePlay(source);
 		}
 
 		public float Volume
@@ -270,7 +271,7 @@ namespace OpenRa
 			set 
 			{
 				if (source != -1)
-					OpenAlInterop.alSourcef(source, OpenAlInterop.AL_GAIN, volume = value); 
+					Al.alSourcef(source, Al.AL_GAIN, volume = value); 
 			}
 		}
 	}

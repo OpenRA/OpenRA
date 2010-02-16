@@ -146,18 +146,26 @@ namespace OpenRa.Graphics
 
 		public void DrawText(string text, int2 pos, Color c)
 		{
-			Bitmap b = RenderTextToBitmap(text, fDebug, c);
-			textSheet.Texture.SetData(b);
-			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-            rgbaRenderer.Flush();
+			using (new PerfSample("text"))
+			{
+				var size = MeasureText(text);
+				Bitmap b = RenderTextToBitmap(text, fDebug, c);
+				textSheet.Texture.SetData(b);
+				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+				rgbaRenderer.Flush();
+			}
 		}
 
 		public void DrawText2(string text, int2 pos, Color c)
 		{
-			Bitmap b = RenderTextToBitmap(text, fTitle, c);
-			textSheet.Texture.SetData(b);
-			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-            rgbaRenderer.Flush();
+			using (new PerfSample("text"))
+			{
+				var size = MeasureText2(text);
+				Bitmap b = RenderTextToBitmap(text, fTitle, c);
+				textSheet.Texture.SetData(b);
+				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+				rgbaRenderer.Flush();
+			}
 		}
 
 		public int2 MeasureText(string text)
