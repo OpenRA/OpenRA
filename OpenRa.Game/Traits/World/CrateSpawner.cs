@@ -43,7 +43,7 @@ namespace OpenRa.Traits
 		{
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
-
+			int count = 0, threshold = 100;
 			for (; ; )
 			{
 				var p = new int2(self.World.SharedRandom.Next(0, 127), self.World.SharedRandom.Next(0, 127));
@@ -53,6 +53,8 @@ namespace OpenRa.Traits
 						w => crates.Add(w.CreateActor("crate", p, self.Owner)));
 					break;
 				}
+				if (count++ > threshold)
+					break;
 			}
 		}
 	}
