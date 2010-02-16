@@ -79,6 +79,7 @@ namespace OpenRa.Graphics
 			}
 
 			renderer.SpriteShader.Quality = ShaderQuality.Low;
+			renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
 			renderer.SpriteShader.Render(() =>
 				renderer.DrawBatch(vertexBuffer, indexBuffer,
 					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),

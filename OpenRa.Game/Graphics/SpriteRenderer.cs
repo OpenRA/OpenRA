@@ -37,6 +37,7 @@ namespace OpenRa.Graphics
 			if (sprites > 0)
 			{
 				shader.Quality = quality;
+				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
 				shader.Render(() =>
 				{
 					vertexBuffer.SetData(vertices);

@@ -50,7 +50,7 @@ namespace OpenRa.GlRenderer
             Wgl.wglMakeCurrent(dc, rc);
 
             cgContext = Cg.cgCreateContext();
-            //Cg.cgSetErrorCallback(CgErrorCallback);
+            Cg.cgSetErrorCallback(CgErrorCallback);
 
             CgGl.cgGLRegisterStates(cgContext);
             CgGl.cgGLSetManageTextureParameters(cgContext, true);
@@ -59,20 +59,22 @@ namespace OpenRa.GlRenderer
 
             Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
             CheckGlError();
-            Gl.glEnableClientState(Gl.GL_INDEX_ARRAY);
+            Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
             CheckGlError();
         }
 
-        void CgErrorCallback()
-        {
-            var err = Cg.cgGetError();
-            var str = Cg.cgGetErrorString(err);
-            throw new InvalidOperationException(
-                string.Format("CG Error: {0}: {1}", err, str));
-        }
+		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
+		{
+			var err = Cg.cgGetError();
+			var str = Cg.cgGetErrorString( err );
+			throw new InvalidOperationException(
+				string.Format( "CG Error: {0}: {1}", err, str ) );
+		};
 
         public void EnableScissor(int left, int top, int width, int height)
         {
+			if( width < 0 ) width = 0;
+			if( height < 0 ) height = 0;
             Gl.glScissor(left, top, width, height);
             CheckGlError();
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
@@ -90,7 +92,7 @@ namespace OpenRa.GlRenderer
 
         public void Clear(Color c)
         {
-            Gl.glClearColor(1, 1, 1, 1);
+            Gl.glClearColor(0, 0, 0, 0);
             CheckGlError();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
             CheckGlError();
@@ -110,9 +112,20 @@ namespace OpenRa.GlRenderer
         
         public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives)
         {
-            Gl.glDrawElements((int)pt, numPrimitives, Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
+            Gl.glDrawElements((int)pt, numPrimitives * IndicesPerPrimitive( pt ), Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
             CheckGlError();
         }
+
+		static int IndicesPerPrimitive( PrimitiveType pt )
+		{
+			switch( pt )
+			{
+			case PrimitiveType.PointList: return 1;
+			case PrimitiveType.LineList: return 2;
+			case PrimitiveType.TriangleList: return 3;
+			}
+			throw new NotImplementedException();
+		}
     }
 
     public struct Range<T>
@@ -135,7 +148,7 @@ namespace OpenRa.GlRenderer
         {
             Bind();
             Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
-                new IntPtr(Marshal.SizeOf(typeof(T))), data, Gl.GL_DYNAMIC_DRAW);
+                new IntPtr(Marshal.SizeOf(typeof(T))*data.Length), data, Gl.GL_DYNAMIC_DRAW);
             GraphicsDevice.CheckGlError();
         }
 
@@ -209,7 +222,9 @@ namespace OpenRa.GlRenderer
         public Shader(GraphicsDevice dev, Stream s)
         {
             this.dev = dev;
-            var code = new StreamReader(s).ReadToEnd();
+			string code;
+			using (var file = new StreamReader(s))
+				code = file.ReadToEnd();
             effect = Cg.cgCreateEffect(dev.cgContext, code, null);
 
             if (effect == IntPtr.Zero)
@@ -228,9 +243,14 @@ namespace OpenRa.GlRenderer
             if (highTechnique != IntPtr.Zero && 0 == Cg.cgValidateTechnique(highTechnique))
                 highTechnique = IntPtr.Zero;
 
-            if (highTechnique == IntPtr.Zero && lowTechnique == IntPtr.Zero)
+			if (highTechnique == IntPtr.Zero && lowTechnique == IntPtr.Zero)
                 throw new InvalidOperationException("No valid techniques");
-        }
+
+			if( highTechnique == IntPtr.Zero )
+				highTechnique = lowTechnique;
+			if( lowTechnique == IntPtr.Zero )
+				lowTechnique = highTechnique;
+		}
 
         public ShaderQuality Quality { get; set; }
 
@@ -255,14 +275,16 @@ namespace OpenRa.GlRenderer
 
         public void SetValue(string name, Texture texture)
         {
-            var param = Cg.cgGetNamedEffectParameter(effect, name);
-            CgGl.cgGLSetupSampler(param, texture.texture);
+			var param = Cg.cgGetNamedEffectParameter( effect, name );
+			if( param != IntPtr.Zero && texture != null )
+				CgGl.cgGLSetupSampler( param, texture.texture );
         }
 
         public void SetValue(string name, float x, float y)
         {
             var param = Cg.cgGetNamedEffectParameter(effect, name);
-            CgGl.cgGLSetParameter2f(param, x, y);
+			if( param != IntPtr.Zero )
+				CgGl.cgGLSetParameter2f(param, x, y);
         }
 
         public void Commit() { }
@@ -281,6 +303,9 @@ namespace OpenRa.GlRenderer
 
         public void SetData(Bitmap bitmap)
         {
+			Gl.glBindTexture( Gl.GL_TEXTURE_2D, texture );
+			GraphicsDevice.CheckGlError();
+
             var bits = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
                 ImageLockMode.ReadOnly,
@@ -291,7 +316,7 @@ namespace OpenRa.GlRenderer
             Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
             GraphicsDevice.CheckGlError();
             Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height, 
-                0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
+                0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
             GraphicsDevice.CheckGlError();
 
             bitmap.UnlockBits(bits);

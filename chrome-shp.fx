@@ -60,7 +60,7 @@ technique low_quality {
 		BlendEnable = false;
 		DepthTestEnable = false;
 		CullFaceEnable = false;
-		VertexProgram = compile arbvp1 Simple_vp();
-		FragmentProgram = compile arbfp1 Palette_fp();
+		VertexProgram = compile latest Simple_vp();
+		FragmentProgram = compile latest Palette_fp();
 	}
 }

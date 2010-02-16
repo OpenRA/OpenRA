@@ -34,8 +34,8 @@ technique high_quality {
 		DepthTestEnable = false;
 		//CullMode = None;
 		//FillMode = Wireframe;
-		VertexProgram = compile arbvp1 Simple_vp();
-		FragmentProgram = compile arbfp1 Simple_fp();
+		VertexProgram = compile latest Simple_vp();
+		FragmentProgram = compile latest Simple_fp();
 		
 		//SrcBlend = SrcAlpha;
 		//DestBlend = InvSrcAlpha;
