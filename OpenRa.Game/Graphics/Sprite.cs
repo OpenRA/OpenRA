@@ -19,10 +19,10 @@ namespace OpenRa.Graphics
 			this.channel = channel;
 
 			uv = new RectangleF(
-					(float)(bounds.Left + .5f) / sheet.Size.Width,
-					(float)(bounds.Top + .5f) / sheet.Size.Height,
-					(float)(bounds.Width - .5f) / sheet.Size.Width,
-					(float)(bounds.Height - .5f) / sheet.Size.Height);
+					(float)(bounds.Left) / sheet.Size.Width,
+					(float)(bounds.Top) / sheet.Size.Height,
+					(float)(bounds.Width) / sheet.Size.Width,
+					(float)(bounds.Height) / sheet.Size.Height);
 
 			uvhax = new float2[]
 			{
