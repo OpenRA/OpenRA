@@ -124,6 +124,7 @@ namespace OpenRa.Graphics
 			Bitmap b = RenderTextToBitmap(text, fDebug, c);
 			textSheet.Texture.SetData(b);
 			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+            rgbaRenderer.Flush();
 		}
 
 		public void DrawText2(string text, int2 pos, Color c)
@@ -131,6 +132,7 @@ namespace OpenRa.Graphics
 			Bitmap b = RenderTextToBitmap(text, fTitle, c);
 			textSheet.Texture.SetData(b);
 			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+            rgbaRenderer.Flush();
 		}
 
 		public int2 MeasureText(string text)
