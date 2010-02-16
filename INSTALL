@@ -1,33 +1,57 @@
-After pulling the OpenRA source, the first thing you’ll need to do is to make sure the Ijw.DirectX 
-submodule is updated and the Ijw.Framework submodule inside the Ijw.DirectX submodule is updated as well. 
-The Ijw.Framework submodule should be built in both release and debug modes and requires NUnit 
-(http://www.nunit.org/index.php) to build unless the IjwFrameworkTests project is unloaded.
-
-After the Ijw.Framework submodule is built, the Ijw.DirectX submodule should be built as well. After that 
-you should be all good to go ahead and build OpenRA.
-
-To run OpenRA, several files from the original game’s install need to be copied to the root of the project 
-directory. These are "redalert.mix", "conquer.mix", "temperat.mix", "interior.mix" and "snow.mix".
-
-Red Alert has been released by EA Games as freeware so it shouldn’t be too hard to find a legal copy of the 
-CD images. Unfortunately the installer is 16-bit and so won’t run on modern 64-bit operating systems. This 
-can be worked around by using the Red Alert Setup Manager (http://ra.afraid.org/html/downloads/utilities-3.html). 
-Make sure you apply the no-CD protection fix so all the files needed are installed to the hard drive.
-
-
-Other Notes:
-
-* You'll need the DirectX 9 Redist installed. I know you think you have DirectX 9.0c installed, but you also
-	need d3dx9_*.dll, which are *not* included by default. This is the package you want:
-
-	http://www.microsoft.com/downloads/details.aspx?familyid=04AC064B-00D1-474E-B7B1-442D8712D553
+Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, 
+	Paul Chote, Alli Witheford.
 	
-  If you don't have the DX9 Redist, you'll get an exception somewhere in Ijw.DirectX when you try to run
-  the game.
-  
-* When someone patches Ijw.DirectX, you need to do `git submodule update` in your OpenRA tree. This has so
-    far happened *once*.
+This file is part of OpenRA.
 
-* You'll also need the Visual C++ 2008 SP1 Redist. You can get this from Microsoft:
+OpenRA is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-	http://www.microsoft.com/downloads/details.aspx?familyid=A5C84275-3B97-4AB7-A40D-3802B2AF5FC2
+OpenRA is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+
+To compile OpenRA, open the OpenRA.sln solution in the main folder, 
+or build it from the command-line with MSBuild.
+
+To run OpenRA, several files from the original game’s install need 
+to be copied to the root of the project directory. The required files are:
+
+	redalert.mix
+	conquer.mix
+	temperat.mix
+	interior.mix
+	snow.mix
+	sounds.mix
+	allies.mix
+	russian.mix
+	general.mix
+	
+	hires1.mix
+	expand2.mix
+
+Red Alert has been released by EA Games as freeware so it shouldn’t 
+be too hard to find a legal copy of the CD images. Unfortunately the 
+installer is 16-bit and so won’t run on 64-bit operating systems. This 
+can be worked around by using the Red Alert Setup Manager 
+	(http://ra.afraid.org/html/downloads/utilities-3.html). 
+Make sure you apply the no-CD protection fix so all the files needed 
+are installed to the hard drive.
+
+Dependencies - Make sure you have these installed, or you'll 
+have very strange errors.
+
+* .NET Framework >= 3.5-SP1
+	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
+* Tao Framework >= 2.1.0
+	(http://sourceforge.net/projects/taoframework/)
+	(required libs: Tao.OpenGL, Tao.Cg, Tao.Platform.Windows)
+* OpenAL >= 1.1
+	(http://connect.creativelabs.com/openal/Downloads/oalinst.zip)
+* Cg Toolkit >= 2.2
+	(http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_October2009_Setup.exe)

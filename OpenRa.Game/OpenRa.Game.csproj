@@ -77,7 +77,6 @@
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Exts.cs" />
-    <Compile Include="GameRules\ArmorType.cs" />
     <Compile Include="GameRules\GeneralInfo.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="Traits\Activities\HeliFly.cs" />
     <Compile Include="Traits\Activities\HeliLand.cs" />
     <Compile Include="Traits\Activities\HeliReturn.cs" />
-    <Compile Include="Traits\Activities\IActivity.cs" />
     <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\TransformIntoActor.cs" />
     <Compile Include="Actor.cs" />
@@ -211,7 +209,6 @@
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
-    <Compile Include="Traits\JamsRadar.cs" />
     <Compile Include="Traits\World\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />

@@ -18,30 +18,39 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRa.Graphics;
+using OpenRa.Mods.RA.Effects;
 using OpenRa.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRa.Mods.RA
 {
-	class RepairIndicator : IEffect
+	class GiveCashCrateActionInfo : ITraitInfo
 	{
-		int framesLeft = (int)(Rules.General.RepairRate * 25 * 60 / 2);
-		Actor a;
-		Animation anim = new Animation("select");
+		public int Amount = 2000;
+		public int SelectionShares = 10;
+		public object Create(Actor self) { return new GiveCashCrateAction(self); }
+	}
 
-		public RepairIndicator(Actor a) { this.a = a; anim.PlayRepeating("repair"); }
-
-		public void Tick( World world )
+	class GiveCashCrateAction : ICrateAction
+	{
+		Actor self;
+		public GiveCashCrateAction(Actor self)
 		{
-			if (--framesLeft == 0 || a.IsDead)
-				world.AddFrameEndTask(w => w.Remove(this));
+			this.self = self;
 		}
 
-		public IEnumerable<Renderable> Render()
+		public int SelectionShares
 		{
-			yield return new Renderable(anim.Image, 
-				a.CenterLocation - .5f * anim.Image.size, "chrome");
+			get { return self.Info.Traits.Get<GiveCashCrateActionInfo>().SelectionShares; }
+		}
+
+		public void Activate(Actor collector)
+		{
+			collector.World.AddFrameEndTask(w =>
+			{
+				var amount = self.Info.Traits.Get<GiveCashCrateActionInfo>().Amount;
+				collector.Owner.GiveCash(amount);
+				w.Add(new CrateEffect(collector, "dollar"));
+			});
 		}
 	}
 }

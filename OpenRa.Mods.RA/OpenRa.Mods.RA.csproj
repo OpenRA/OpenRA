@@ -52,9 +52,9 @@
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="Crate Actions\ArmorUpgradeCrateAction.cs" />
-    <Compile Include="Crate Actions\FirepowerUpgradeCrateAction.cs" />
-    <Compile Include="Crate Actions\GiveCashCrateAction.cs" />
+    <Compile Include="Crates\ArmorUpgradeCrateAction.cs" />
+    <Compile Include="Crates\FirepowerUpgradeCrateAction.cs" />
+    <Compile Include="Crates\GiveCashCrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
@@ -69,12 +69,11 @@
     <Compile Include="ParatroopersPower.cs" />
     <Compile Include="RequiresPower.cs" />
     <Compile Include="Mine.cs" />
-    <Compile Include="MineImmune.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderSpy.cs" />
     <Compile Include="RepairableNear.cs" />
-    <Compile Include="Crate Actions\SpeedUpgradeCrateAction.cs" />
+    <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
     <Compile Include="SonarPulsePower.cs" />
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
