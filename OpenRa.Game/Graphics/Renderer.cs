@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using OpenRa.GlRenderer;
 using OpenRa.FileFormats;
 using OpenRa.Support;
+using System.Drawing.Drawing2D;
 
 namespace OpenRa.Graphics
 {
@@ -19,8 +20,11 @@ namespace OpenRa.Graphics
 
 		public Texture PaletteTexture;
 
-		//readonly SpriteHelper sh;
-		//readonly FontHelper fhDebug, fhTitle;
+		readonly Font fDebug, fTitle;
+
+		Sheet textSheet;
+		SpriteRenderer rgbaRenderer;
+		Sprite textSprite;
 
 		public Renderer(Control control, Size resolution, bool windowed)
 		{
@@ -36,9 +40,28 @@ namespace OpenRa.Graphics
 			WorldSpriteShader = new Shader(device, FileSystem.Open("chrome-shp.fx"));
 			WorldSpriteShader.Quality = ShaderQuality.High;
 
-            //sh = new SpriteHelper(device);
-            //fhDebug = new FontHelper(device, "Tahoma", 10, false);
-            //fhTitle = new FontHelper(device, "Tahoma", 10, true);
+			fDebug = new Font("Tahoma", 10, FontStyle.Regular);
+			fTitle = new Font("Tahoma", 10, FontStyle.Bold);
+			textSheet = new Sheet(this, new Size(256, 256));
+			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
+			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
+		}
+
+		Bitmap RenderTextToBitmap(string s, Font f, Color c)
+		{
+			Bitmap b = new Bitmap(256, 256);
+			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
+			g.DrawString(s, f, new SolidBrush(c), 0, 0);
+			g.Flush();
+			g.Dispose();
+			return b;
+		}
+
+		int2 GetTextSize(string s, Font f)
+		{
+			Bitmap b = new Bitmap(1,1);
+			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
+			return new int2(g.MeasureString(s, f).ToSize());
 		}
 
 		public GraphicsDevice Device { get { return device; } }
@@ -101,26 +124,28 @@ namespace OpenRa.Graphics
 
 		public void DrawText(string text, int2 pos, Color c)
 		{
-            //sh.Begin();
-            //fhDebug.Draw(sh, text, pos.X, pos.Y, c.ToArgb());
-            //sh.End();
+			Bitmap b = RenderTextToBitmap(text, fDebug, c);
+			textSheet.Texture.SetData(b);
+			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+            rgbaRenderer.Flush();
 		}
 
 		public void DrawText2(string text, int2 pos, Color c)
 		{
-            //sh.Begin();
-            //fhTitle.Draw(sh, text, pos.X, pos.Y, c.ToArgb());
-            //sh.End();
+			Bitmap b = RenderTextToBitmap(text, fTitle, c);
+			textSheet.Texture.SetData(b);
+			rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
+            rgbaRenderer.Flush();
 		}
 
 		public int2 MeasureText(string text)
 		{
-			return new int2(20,20);//fhDebug.MeasureText(sh, text));
+			return GetTextSize(text, fDebug);
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return new int2(20,20);//fhTitle.MeasureText(sh, text));
+			return GetTextSize(text, fTitle);
 		}
 	}
 }
