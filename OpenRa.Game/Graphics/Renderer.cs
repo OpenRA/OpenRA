@@ -4,6 +4,7 @@ using OpenRa.GlRenderer;
 using OpenRa.FileFormats;
 using OpenRa.Support;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 
 namespace OpenRa.Graphics
 {
@@ -50,10 +51,12 @@ namespace OpenRa.Graphics
 		Bitmap RenderTextToBitmap(string s, Font f, Color c)
 		{
 			Bitmap b = new Bitmap(256, 256);
-			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
-			g.DrawString(s, f, new SolidBrush(c), 0, 0);
-			g.Flush();
-			g.Dispose();
+            using (var g = System.Drawing.Graphics.FromImage(b))
+            {
+                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                g.DrawString(s, f, new SolidBrush(c), 0, 0);
+                g.Flush();
+            }
 			return b;
 		}
 
