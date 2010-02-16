@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRa.Traits;
-using IjwFramework.Collections;
+using OpenRa.FileFormats;
 
 namespace OpenRa
 {

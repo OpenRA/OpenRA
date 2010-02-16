@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IjwFramework.Types;
 using OpenRa.Effects;
 using System.Drawing;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Traits
 {

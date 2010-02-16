@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
 namespace OpenRa

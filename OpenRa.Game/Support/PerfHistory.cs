@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using IjwFramework.Collections;
 using OpenRa.Graphics;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Support
 {

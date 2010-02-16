@@ -2,7 +2,7 @@
 using System.Linq;
 using OpenRa.Effects;
 using OpenRa.Traits;
-using IjwFramework.Types;
+using OpenRa.FileFormats;
 
 /*
  * Crates left to implement:

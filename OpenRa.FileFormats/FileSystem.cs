@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using IjwFramework.Collections;
 using System;
 
 namespace OpenRa.FileFormats

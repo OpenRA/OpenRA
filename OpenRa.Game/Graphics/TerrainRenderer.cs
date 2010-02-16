@@ -1,6 +1,5 @@
 using System.Drawing;
 using OpenRa.GlRenderer;
-using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Graphics

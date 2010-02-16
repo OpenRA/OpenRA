@@ -35,10 +35,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IjwFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Ijw.DirectX\Ijw.Framework\IjwFramework\bin\Release\IjwFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -51,6 +47,7 @@
     <Compile Include="AudLoader.cs" />
     <Compile Include="Blowfish.cs" />
     <Compile Include="BlowfishKeyProvider.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="Collections\Set.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="Dune2ShpReader.cs" />
@@ -66,12 +63,15 @@
     <Compile Include="IniWriter.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="IPaletteRemap.cs" />
+    <Compile Include="Lazy.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MiniYaml.cs" />
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
+    <Compile Include="Pair.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PlayerColorRemap.cs" />
+    <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolVersion.cs" />
     <Compile Include="Session.cs" />

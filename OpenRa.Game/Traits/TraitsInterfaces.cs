@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using IjwFramework.Types;
 using OpenRa.GameRules;
 using OpenRa.Graphics;
 using OpenRa.Traits.Activities;
+using OpenRa.FileFormats;
 
 namespace OpenRa.Traits
 {

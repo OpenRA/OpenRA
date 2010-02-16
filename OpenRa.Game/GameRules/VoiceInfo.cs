@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using IjwFramework.Types;
+using OpenRa.FileFormats;
 
 namespace OpenRa.GameRules
 {

@@ -4,9 +4,7 @@ using System.Linq;
 using OpenRa.Traits;
 using OpenRa.FileFormats;
 using System.Drawing.Imaging;
-using IjwFramework.Collections;
 using System.Collections.Generic;
-using IjwFramework.Types;
 
 namespace OpenRa.Graphics
 {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using OpenRa.FileFormats;
 using OpenRa.Graphics;
-using IjwFramework.Types;
 using System.Collections;
 
 namespace OpenRa.GameRules

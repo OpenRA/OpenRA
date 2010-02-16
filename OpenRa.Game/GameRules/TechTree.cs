@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using IjwFramework.Collections;
 using OpenRa.Traits;
+using OpenRa.FileFormats;
 
 namespace OpenRa.GameRules
 {

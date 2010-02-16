@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using IjwFramework.Collections;
 using OpenRa.FileFormats;
 using OpenRa.Support;
 using OpenRa.Traits;

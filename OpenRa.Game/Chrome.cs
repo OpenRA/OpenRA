@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using IjwFramework.Types;
 using OpenRa.FileFormats;
 using OpenRa.Graphics;
 using OpenRa.Orders;

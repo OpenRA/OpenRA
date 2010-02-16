@@ -1,5 +1,4 @@
 using System.Linq;
-using IjwFramework.Collections;
 using OpenRa.FileFormats;
 
 namespace OpenRa.Graphics
