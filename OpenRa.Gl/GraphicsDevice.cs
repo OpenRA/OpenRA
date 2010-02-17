@@ -55,8 +55,7 @@ namespace OpenRa.GlRenderer
 		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
 		{
 			Glfw.glfwInit();
-			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN :*/ Glfw.GLFW_WINDOW);
-			Glfw.glfwSetWindowTitle("OpenRA (OpenGL version)");
+			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, fullscreen ? Glfw.GLFW_FULLSCREEN : Glfw.GLFW_WINDOW);
 			bool initDone = false;
 			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback = ( button, action ) =>
 				{
@@ -138,6 +137,7 @@ namespace OpenRa.GlRenderer
         public void Present()
         {
 			Glfw.glfwSwapBuffers();
+			Glfw.glfwPollEvents();
             CheckGlError();
         }
 
