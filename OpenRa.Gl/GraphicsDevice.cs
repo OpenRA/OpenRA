@@ -55,7 +55,9 @@ namespace OpenRa.GlRenderer
 		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
 		{
 			Glfw.glfwInit();
-			Glfw.glfwOpenWindow( width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN :*/ Glfw.GLFW_WINDOW );
+			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN :*/ Glfw.GLFW_WINDOW);
+			Glfw.glfwSetWindowTitle("OpenRA (OpenGL version)");
+			bool initDone = false;
 			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback = ( button, action ) =>
 				{
 					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
@@ -65,17 +67,18 @@ namespace OpenRa.GlRenderer
 					Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
 						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
 				} );
-			//Glfw.glfwSetMousePosCallback( mousePositionCallback = ( x, y ) =>
-			//    {
-			//        mouseX = x;
-			//        mouseY = y;
-			//        Game.DispatchMouseInput( MouseInputEvent.Move, new MouseEventArgs( 0, 0, x, y, 0 ), 0 );
-			//    } );
+			Glfw.glfwSetMousePosCallback(mousePositionCallback = (x, y) =>
+				{
+					mouseX = x;
+					mouseY = y;
+					if (initDone)
+						Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(0, 0, x, y, 0), 0);
+				});
 			Glfw.glfwSetWindowCloseCallback( windowCloseCallback = () =>
 				{
 					Game.Exit();
 					Glfw.glfwIconifyWindow();
-					return Gl.GL_FALSE;
+					return Gl.GL_TRUE;
 				} );
 			CheckGlError();
 
@@ -93,6 +96,8 @@ namespace OpenRa.GlRenderer
 			CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
 			CheckGlError();
+
+			initDone = true;
 		}
 
 		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>

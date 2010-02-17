@@ -166,7 +166,6 @@
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\HardwarePalette.cs" />
     <Compile Include="MainWindow.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Support\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
