@@ -57,6 +57,9 @@ namespace OpenRa.GlRenderer
 			Glfw.glfwInit();
 			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, fullscreen ? Glfw.GLFW_FULLSCREEN : Glfw.GLFW_WINDOW);
 			bool initDone = false;
+
+			var lastButtonBits = (MouseButtons)0;
+
 			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback = ( button, action ) =>
 				{
 					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
@@ -65,13 +68,15 @@ namespace OpenRa.GlRenderer
 						: 0;
 					Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
 						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
+
+					lastButtonBits = action == Glfw.GLFW_PRESS ? b : 0;
 				} );
 			Glfw.glfwSetMousePosCallback(mousePositionCallback = (x, y) =>
 				{
 					mouseX = x;
 					mouseY = y;
 					if (initDone)
-						Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(0, 0, x, y, 0), 0);
+						Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
 				});
 			Glfw.glfwSetWindowCloseCallback( windowCloseCallback = () =>
 				{
