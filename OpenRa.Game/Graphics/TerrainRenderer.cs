@@ -20,14 +20,14 @@
 
 using System.Drawing;
 using OpenRa.FileFormats;
-using OpenRa.GlRenderer;
+using OpenRa.FileFormats.Graphics;
 
 namespace OpenRa.Graphics
 {
 	class TerrainRenderer
 	{
-		VertexBuffer<Vertex> vertexBuffer;
-		IndexBuffer indexBuffer;
+		IVertexBuffer<Vertex> vertexBuffer;
+		IIndexBuffer indexBuffer;
 		Sheet terrainSheet;
 
 		Renderer renderer;
@@ -62,10 +62,10 @@ namespace OpenRa.Graphics
 
 			terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
 
-			vertexBuffer = new VertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
+			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>( vertices.Length );
 			vertexBuffer.SetData( vertices );
 
-			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );
+			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 			indexBuffer.SetData( indices );
 
 			overlayRenderer = new OverlayRenderer( renderer, map );
@@ -97,7 +97,6 @@ namespace OpenRa.Graphics
 					firstRow = r.Bottom - map.YOffset;
 			}
 
-			renderer.SpriteShader.Quality = ShaderQuality.Low;
 			renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
 			renderer.SpriteShader.Render(() =>
 				renderer.DrawBatch(vertexBuffer, indexBuffer,

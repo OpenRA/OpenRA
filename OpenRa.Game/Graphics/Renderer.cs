@@ -18,12 +18,15 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Reflection;
 using System.Windows.Forms;
 using OpenRa.FileFormats;
-using OpenRa.GlRenderer;
+using OpenRa.FileFormats.Graphics;
 using OpenRa.Support;
+using System.IO;
 
 namespace OpenRa.Graphics
 {
@@ -31,14 +34,14 @@ namespace OpenRa.Graphics
 	{
 		internal static int SheetSize;
 
-		readonly GraphicsDevice device;
+		readonly IGraphicsDevice device;
 
-		public Shader SpriteShader { get; private set; }    /* note: shared shader params */
-		public Shader LineShader { get; private set; }
-		public Shader RgbaSpriteShader { get; private set; }
-		public Shader WorldSpriteShader { get; private set; }
+		public IShader SpriteShader { get; private set; }    /* note: shared shader params */
+		public IShader LineShader { get; private set; }
+		public IShader RgbaSpriteShader { get; private set; }
+		public IShader WorldSpriteShader { get; private set; }
 
-		public Texture PaletteTexture;
+		public ITexture PaletteTexture;
 
 		readonly Font fDebug, fTitle;
 
@@ -49,22 +52,28 @@ namespace OpenRa.Graphics
 		public Renderer(Control control, Size resolution, bool windowed)
 		{
             control.ClientSize = resolution;
-			device = new GraphicsDevice(control, resolution.Width, resolution.Height, windowed, false);
+			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRa.Gl.dll" ) ), control, resolution.Width, resolution.Height, windowed, false );
 
-			SpriteShader = new Shader(device, FileSystem.Open("world-shp.fx"));
-			SpriteShader.Quality = ShaderQuality.Low;
-			LineShader = new Shader(device, FileSystem.Open("line.fx"));
-			LineShader.Quality = ShaderQuality.High;
-			RgbaSpriteShader = new Shader(device, FileSystem.Open("chrome-rgba.fx"));
-			RgbaSpriteShader.Quality = ShaderQuality.High;
-			WorldSpriteShader = new Shader(device, FileSystem.Open("chrome-shp.fx"));
-			WorldSpriteShader.Quality = ShaderQuality.High;
+			SpriteShader = device.CreateShader(FileSystem.Open("world-shp.fx"));
+			LineShader = device.CreateShader(FileSystem.Open("line.fx"));
+			RgbaSpriteShader = device.CreateShader(FileSystem.Open("chrome-rgba.fx"));
+			WorldSpriteShader = device.CreateShader(FileSystem.Open("chrome-shp.fx"));
 
 			fDebug = new Font("Tahoma", 10, FontStyle.Regular);
 			fTitle = new Font("Tahoma", 10, FontStyle.Bold);
 			textSheet = new Sheet(this, new Size(256, 256));
 			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
 			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
+		}
+
+		IGraphicsDevice CreateDevice( Assembly rendererDll, Control control, int width, int height, bool fullscreen, bool vsync )
+		{
+			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
+			{
+				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( Control ), typeof( int ), typeof( int ), typeof( bool ), typeof( bool ) } )
+					.Invoke( new object[] { control, width, height, fullscreen, vsync } );
+			}
+			throw new NotImplementedException();
 		}
 
 		Bitmap RenderTextToBitmap(string s, Font f, Color c)
@@ -86,7 +95,7 @@ namespace OpenRa.Graphics
 			return new int2(g.MeasureString(s, f).ToSize());
 		}
 
-		public GraphicsDevice Device { get { return device; } }
+		public IGraphicsDevice Device { get { return device; } }
 
 		public void BeginFrame(float2 r1, float2 r2, float2 scroll)
 		{
@@ -99,7 +108,7 @@ namespace OpenRa.Graphics
 			SetShaderParams( WorldSpriteShader, r1, r2, scroll );
 		}
 
-		private void SetShaderParams( Shader s, float2 r1, float2 r2, float2 scroll )
+		private void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
 		{
 			s.SetValue( "Palette", PaletteTexture );
 			s.SetValue( "Scroll", scroll.X, scroll.Y );
@@ -114,8 +123,8 @@ namespace OpenRa.Graphics
 			device.Present();
 		}
 
-		public void DrawBatch<T>(VertexBuffer<T> vertices, IndexBuffer indices,
-			Range<int> vertexRange, Range<int> indexRange, Texture texture, PrimitiveType type, Shader shader)
+		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
+			Range<int> vertexRange, Range<int> indexRange, ITexture texture, PrimitiveType type, IShader shader)
 			where T : struct
 		{
 			shader.SetValue("DiffuseTexture", texture);
@@ -129,8 +138,8 @@ namespace OpenRa.Graphics
 			PerfHistory.Increment("batches", 1);
 		}
 
-		public void DrawBatch<T>(VertexBuffer<T> vertices, IndexBuffer indices,
-			int vertexPool, int numPrimitives, Texture texture, PrimitiveType type)
+		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
+			int vertexPool, int numPrimitives, ITexture texture, PrimitiveType type)
 			where T : struct
 		{
 			SpriteShader.SetValue("DiffuseTexture", texture);

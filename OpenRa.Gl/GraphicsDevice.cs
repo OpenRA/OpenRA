@@ -27,10 +27,13 @@ using System.Windows.Forms;
 using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Platform.Windows;
+using OpenRa.FileFormats.Graphics;
+
+[assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
 namespace OpenRa.GlRenderer
 {
-    public class GraphicsDevice
+    public class GraphicsDevice : IGraphicsDevice
     {
 		Size windowSize;
         Graphics g;
@@ -39,7 +42,7 @@ namespace OpenRa.GlRenderer
         internal IntPtr cgContext;
         internal int vertexProfile, fragmentProfile;
 
-        public static void CheckGlError()
+        internal static void CheckGlError()
         {
             var n = Gl.glGetError();
             if (n != Gl.GL_NO_ERROR)
@@ -125,17 +128,28 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
-        public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices)
-        {
-			Gl.glDrawElements( (int)pt, indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start * 2 ) );
-            CheckGlError();
-        }
-        
-        public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives)
-        {
-            Gl.glDrawElements((int)pt, numPrimitives * IndicesPerPrimitive( pt ), Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
-            CheckGlError();
-        }
+		public void DrawIndexedPrimitives( PrimitiveType pt, Range<int> vertices, Range<int> indices )
+		{
+			Gl.glDrawElements( ModeFromPrimitiveType( pt ), indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start * 2 ) );
+			CheckGlError();
+		}
+
+		public void DrawIndexedPrimitives( PrimitiveType pt, int numVerts, int numPrimitives )
+		{
+			Gl.glDrawElements( ModeFromPrimitiveType( pt ), numPrimitives * IndicesPerPrimitive( pt ), Gl.GL_UNSIGNED_SHORT, IntPtr.Zero );
+			CheckGlError();
+		}
+
+		static int ModeFromPrimitiveType( PrimitiveType pt )
+		{
+			switch( pt )
+			{
+			case PrimitiveType.PointList: return Gl.GL_POINTS;
+			case PrimitiveType.LineList: return Gl.GL_LINES;
+			case PrimitiveType.TriangleList: return Gl.GL_TRIANGLES;
+			}
+			throw new NotImplementedException();
+		}
 
 		static int IndicesPerPrimitive( PrimitiveType pt )
 		{
@@ -147,19 +161,39 @@ namespace OpenRa.GlRenderer
 			}
 			throw new NotImplementedException();
 		}
-    }
 
-    public struct Range<T>
-    {
-        public readonly T Start, End;
-        public Range(T start, T end) { Start = start; End = end; }
-    }
+		#region IGraphicsDevice Members
 
-    public class VertexBuffer<T> where T : struct
+		public IVertexBuffer<T> CreateVertexBuffer<T>( int size )
+			where T : struct
+		{
+			return new VertexBuffer<T>( this, size );
+		}
+
+		public IIndexBuffer CreateIndexBuffer( int size )
+		{
+			return new IndexBuffer( this, size );
+		}
+
+		public ITexture CreateTexture( Bitmap bitmap )
+		{
+			return new Texture( this, bitmap );
+		}
+
+		public IShader CreateShader( Stream stream )
+		{
+			return new Shader( this, stream );
+		}
+
+		#endregion
+	}
+
+    public class VertexBuffer<T> : IVertexBuffer<T>, IDisposable
+		where T : struct
     {
         int buffer;
 
-        public VertexBuffer(GraphicsDevice dev, int size, VertexFormat fmt)
+        public VertexBuffer(GraphicsDevice dev, int size)
         {
             Gl.glGenBuffers(1, out buffer);
             GraphicsDevice.CheckGlError();
@@ -196,7 +230,7 @@ namespace OpenRa.GlRenderer
         //~VertexBuffer() { Dispose(); }
     }
 
-    public class IndexBuffer : IDisposable
+    public class IndexBuffer : IIndexBuffer, IDisposable
     {
         int buffer;
 
@@ -233,11 +267,10 @@ namespace OpenRa.GlRenderer
         //~IndexBuffer() { Dispose(); }
     }
 
-    public class Shader
+    public class Shader : IShader
     {
         IntPtr effect;
-        IntPtr highTechnique;
-        IntPtr lowTechnique;
+        IntPtr technique;
         GraphicsDevice dev;
 
         public Shader(GraphicsDevice dev, Stream s)
@@ -256,31 +289,22 @@ namespace OpenRa.GlRenderer
                     string.Format("Cg compile failed ({0}):\n{1}", err, results));
             }
 
-            lowTechnique = Cg.cgGetNamedTechnique(effect, "low_quality");
-            highTechnique = Cg.cgGetNamedTechnique(effect, "high_quality");
-
-            if (lowTechnique != IntPtr.Zero && 0 == Cg.cgValidateTechnique(lowTechnique))
-                lowTechnique = IntPtr.Zero;
-            if (highTechnique != IntPtr.Zero && 0 == Cg.cgValidateTechnique(highTechnique))
-                highTechnique = IntPtr.Zero;
-
-			if (highTechnique == IntPtr.Zero && lowTechnique == IntPtr.Zero)
-                throw new InvalidOperationException("No valid techniques");
-
-			if( highTechnique == IntPtr.Zero )
-				highTechnique = lowTechnique;
-			if( lowTechnique == IntPtr.Zero )
-				lowTechnique = highTechnique;
+			technique = Cg.cgGetFirstTechnique( effect );
+			if( technique == IntPtr.Zero )
+                throw new InvalidOperationException("No techniques");
+			while( Cg.cgValidateTechnique( technique ) == 0 )
+			{
+				technique = Cg.cgGetNextTechnique( technique );
+				if( technique == IntPtr.Zero )
+	                throw new InvalidOperationException("No valid techniques");
+			}
 		}
-
-        public ShaderQuality Quality { get; set; }
 
         public void Render(Action a)
         {
             CgGl.cgGLEnableProfile(dev.vertexProfile);
             CgGl.cgGLEnableProfile(dev.fragmentProfile);
 
-            var technique = Quality == ShaderQuality.High ? highTechnique : lowTechnique;
             var pass = Cg.cgGetFirstPass(technique);
             while (pass != IntPtr.Zero)
             {
@@ -294,8 +318,9 @@ namespace OpenRa.GlRenderer
             CgGl.cgGLDisableProfile(dev.vertexProfile);
         }
 
-        public void SetValue(string name, Texture texture)
+        public void SetValue(string name, ITexture t)
         {
+			var texture = (Texture)t;
 			var param = Cg.cgGetNamedEffectParameter( effect, name );
 			if( param != IntPtr.Zero && texture != null )
 				CgGl.cgGLSetupSampler( param, texture.texture );
@@ -311,7 +336,7 @@ namespace OpenRa.GlRenderer
         public void Commit() { }
     }
 
-    public class Texture
+    public class Texture : ITexture
     {
         internal int texture;
 
@@ -342,16 +367,5 @@ namespace OpenRa.GlRenderer
 
             bitmap.UnlockBits(bits);
         }
-    }
-
-    [Flags]
-    public enum VertexFormat { Position, Texture2 }
-
-    public enum ShaderQuality { Low, High }
-    public enum PrimitiveType
-    {
-        PointList = Gl.GL_POINTS, 
-        LineList = Gl.GL_LINES, 
-        TriangleList = Gl.GL_TRIANGLES
     }
 }

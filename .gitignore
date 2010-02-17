@@ -23,3 +23,5 @@ log.txt
 cg.dll
 cgGL.dll
 glfw.dll
+
+/OpenRa.Gl.dll
