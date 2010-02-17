@@ -19,7 +19,9 @@ log.txt
 
 /replay.rep
 
-# dependency DLLs (different for every platform!)
-cg.dll
-cgGL.dll
-glfw.dll
+/*.dll
+*.mdb
+/*.exe
+
+# backup files by various editors
+*~
