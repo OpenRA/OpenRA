@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -59,7 +59,7 @@ namespace OpenRa.FileFormats
 				Flags == Dune2ImageFlags.L16_F80_F2_2 ||
 				Flags == Dune2ImageFlags.Ln_F80_F2)
 			{
-				int n = Flags == Dune2ImageFlags.Ln_F80_F2 ? reader.ReadByte() : 16;
+				int n = Flags == Dune2ImageFlags.Ln_F80_F2 ? reader.ReadByte() : (byte)16;
 				LookupTable = new byte[n];
 				for (int i = 0; i < n; i++)
 					LookupTable[i] = reader.ReadByte();
