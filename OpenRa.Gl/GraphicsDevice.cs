@@ -45,6 +45,8 @@ namespace OpenRa.GlRenderer
 		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
 		int mouseX, mouseY;
 
+		public Size WindowSize { get { return windowSize; } }
+
         internal static void CheckGlError()
         {
 			var n = Gl.glGetError();
@@ -55,7 +57,7 @@ namespace OpenRa.GlRenderer
 		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
 		{
 			Glfw.glfwInit();
-			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, fullscreen ? Glfw.GLFW_FULLSCREEN : Glfw.GLFW_WINDOW);
+			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN : */Glfw.GLFW_WINDOW);
 			bool initDone = false;
 
 			var lastButtonBits = (MouseButtons)0;
@@ -69,7 +71,11 @@ namespace OpenRa.GlRenderer
 					Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
 						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
 
-					lastButtonBits = action == Glfw.GLFW_PRESS ? b : 0;
+					if (action == Glfw.GLFW_PRESS) lastButtonBits |= b;
+					else lastButtonBits &= ~b;
+
+					if (action != Glfw.GLFW_PRESS && action != Glfw.GLFW_RELEASE)
+						throw new InvalidOperationException();
 				} );
 			Glfw.glfwSetMousePosCallback(mousePositionCallback = (x, y) =>
 				{
@@ -86,6 +92,7 @@ namespace OpenRa.GlRenderer
 				} );
 			CheckGlError();
 
+			Glfw.glfwGetWindowSize(out width, out height);
 			windowSize = new Size( width, height );
 
 			cgContext = Cg.cgCreateContext();

@@ -370,6 +370,7 @@ namespace OpenRa
 			bool windowed = !Game.Settings.Fullscreen;
 			var resolution = GetResolution(settings);
 			renderer = new Renderer(resolution, windowed);
+			resolution = renderer.Resolution;
 
 			var controller = new Controller(() => (Modifiers)(int)0/*ModifierKeys*/);	/* a bit of insane input routing */
 

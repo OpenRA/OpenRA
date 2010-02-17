@@ -49,6 +49,8 @@ namespace OpenRa.Graphics
 		SpriteRenderer rgbaRenderer;
 		Sprite textSprite;
 
+		public Size Resolution { get { return device.WindowSize; } }
+
 		public Renderer(Size resolution, bool windowed)
 		{
 			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRa.Gl.dll" ) ), resolution.Width, resolution.Height, windowed, false );

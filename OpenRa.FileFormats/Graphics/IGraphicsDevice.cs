@@ -28,6 +28,8 @@ namespace OpenRa.FileFormats.Graphics
 
 		IShader CreateShader( Stream stream );
 
+		Size WindowSize { get; }
+
 		void Begin();
 		void End();
 		void Clear( Color color );
