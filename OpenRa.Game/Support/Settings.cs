@@ -23,7 +23,7 @@ using System.Text.RegularExpressions;
 
 namespace OpenRa
 {
-	class Settings
+	public class Settings
 	{
 		Dictionary<string, string> settings = new Dictionary<string, string>();
 

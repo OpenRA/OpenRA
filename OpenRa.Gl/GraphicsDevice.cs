@@ -28,6 +28,7 @@ using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Platform.Windows;
 using OpenRa.FileFormats.Graphics;
+using Tao.Glfw;
 
 [assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
@@ -36,56 +37,63 @@ namespace OpenRa.GlRenderer
     public class GraphicsDevice : IGraphicsDevice
     {
 		Size windowSize;
-        Graphics g;
-        internal IntPtr dc;
-        internal IntPtr rc;
         internal IntPtr cgContext;
         internal int vertexProfile, fragmentProfile;
 
+		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
+		readonly Glfw.GLFWmouseposfun mousePositionCallback;
+		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
+		int mouseX, mouseY;
+
         internal static void CheckGlError()
         {
-            var n = Gl.glGetError();
-            if (n != Gl.GL_NO_ERROR)
-                throw new InvalidOperationException("GL Error");
+			var n = Gl.glGetError();
+			if (n != Gl.GL_NO_ERROR)
+			    throw new InvalidOperationException("GL Error");
         }
 
-        public GraphicsDevice(Control control, int width, int height, bool fullscreen, bool vsync)
-        {
+		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
+		{
+			Glfw.glfwInit();
+			Glfw.glfwOpenWindow( width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN :*/ Glfw.GLFW_WINDOW );
+			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback = ( button, action ) =>
+				{
+					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
+						: button == Glfw.GLFW_MOUSE_BUTTON_2 ? MouseButtons.Right
+						: button == Glfw.GLFW_MOUSE_BUTTON_3 ? MouseButtons.Middle
+						: 0;
+					Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
+						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
+				} );
+			//Glfw.glfwSetMousePosCallback( mousePositionCallback = ( x, y ) =>
+			//    {
+			//        mouseX = x;
+			//        mouseY = y;
+			//        Game.DispatchMouseInput( MouseInputEvent.Move, new MouseEventArgs( 0, 0, x, y, 0 ), 0 );
+			//    } );
+			Glfw.glfwSetWindowCloseCallback( windowCloseCallback = () =>
+				{
+					Game.Exit();
+					Glfw.glfwIconifyWindow();
+					return Gl.GL_FALSE;
+				} );
+			CheckGlError();
+
 			windowSize = new Size( width, height );
-            g = control.CreateGraphics();
-            dc = g.GetHdc();
-            
-            var pfd = new Gdi.PIXELFORMATDESCRIPTOR
-            {
-                nSize = (short)Marshal.SizeOf(typeof(Gdi.PIXELFORMATDESCRIPTOR)),
-                nVersion = 1,
-                dwFlags = Gdi.PFD_SUPPORT_OPENGL | Gdi.PFD_DRAW_TO_BITMAP | Gdi.PFD_DOUBLEBUFFER,
-                iPixelType = Gdi.PFD_TYPE_RGBA,
-                cColorBits = 24,
-                iLayerType = Gdi.PFD_MAIN_PLANE
-            };
 
-            var iFormat = Gdi.ChoosePixelFormat(dc, ref pfd);
-            Gdi.SetPixelFormat(dc, iFormat, ref pfd);
+			cgContext = Cg.cgCreateContext();
+			Cg.cgSetErrorCallback( CgErrorCallback );
 
-            rc = Wgl.wglCreateContext(dc);
-            if (rc == IntPtr.Zero)
-                throw new InvalidOperationException("can't create wglcontext");
-            Wgl.wglMakeCurrent(dc, rc);
+			CgGl.cgGLRegisterStates( cgContext );
+			CgGl.cgGLSetManageTextureParameters( cgContext, true );
+			vertexProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_VERTEX );
+			fragmentProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_FRAGMENT );
 
-            cgContext = Cg.cgCreateContext();
-            Cg.cgSetErrorCallback(CgErrorCallback);
-
-            CgGl.cgGLRegisterStates(cgContext);
-            CgGl.cgGLSetManageTextureParameters(cgContext, true);
-            vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
-            fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
-
-            Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
-            CheckGlError();
-            Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
-            CheckGlError();
-        }
+			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
+			CheckGlError();
+			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
+			CheckGlError();
+		}
 
 		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
 		{
@@ -124,7 +132,7 @@ namespace OpenRa.GlRenderer
 
         public void Present()
         {
-            Wgl.wglSwapBuffers(dc);
+			Glfw.glfwSwapBuffers();
             CheckGlError();
         }
 

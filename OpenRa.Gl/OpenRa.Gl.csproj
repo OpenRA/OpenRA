@@ -48,6 +48,7 @@
     <Reference Include="Tao.Cg, Version=2.0.0.0, Culture=neutral, PublicKeyToken=52fa5aba625fe731, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Tao.Glfw, Version=2.6.0.0, Culture=neutral, PublicKeyToken=2bb092b6587e4402, processorArchitecture=MSIL" />
     <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRa.FileFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRa.Game\OpenRa.Game.csproj">
+      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
+      <Name>OpenRa.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

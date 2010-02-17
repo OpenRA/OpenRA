@@ -49,10 +49,9 @@ namespace OpenRa.Graphics
 		SpriteRenderer rgbaRenderer;
 		Sprite textSprite;
 
-		public Renderer(Control control, Size resolution, bool windowed)
+		public Renderer(Size resolution, bool windowed)
 		{
-            control.ClientSize = resolution;
-			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRa.Gl.dll" ) ), control, resolution.Width, resolution.Height, windowed, false );
+			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRa.Gl.dll" ) ), resolution.Width, resolution.Height, windowed, false );
 
 			SpriteShader = device.CreateShader(FileSystem.Open("world-shp.fx"));
 			LineShader = device.CreateShader(FileSystem.Open("line.fx"));
@@ -66,12 +65,12 @@ namespace OpenRa.Graphics
 			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
 		}
 
-		IGraphicsDevice CreateDevice( Assembly rendererDll, Control control, int width, int height, bool fullscreen, bool vsync )
+		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool fullscreen, bool vsync )
 		{
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
 			{
-				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( Control ), typeof( int ), typeof( int ), typeof( bool ), typeof( bool ) } )
-					.Invoke( new object[] { control, width, height, fullscreen, vsync } );
+				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( bool ), typeof( bool ) } )
+					.Invoke( new object[] { width, height, fullscreen, vsync } );
 			}
 			throw new NotImplementedException();
 		}
