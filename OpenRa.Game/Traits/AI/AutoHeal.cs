@@ -54,7 +54,6 @@ namespace OpenRa.Traits
 
 		public void Tick(Actor self)
 		{
-			var attack = self.traits.Get<AttackBase>();
 			var range = Util.GetMaximumRange(self);
 
 			if (NeedsNewTarget(self))

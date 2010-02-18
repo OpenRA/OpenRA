@@ -28,7 +28,6 @@ namespace OpenRa.Network
 {
 	class OrderManager
 	{
-		Stream savingReplay;
 		int frameNumber = 0;
 
 		public int FramesAhead = 0;
@@ -36,7 +35,8 @@ namespace OpenRa.Network
 		public bool GameStarted { get { return frameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 
-		Dictionary<int, Dictionary<int, byte[]>> frameClientData = new Dictionary<int, Dictionary<int, byte[]>>();
+		Dictionary<int, Dictionary<int, byte[]>> frameClientData = 
+			new Dictionary<int, Dictionary<int, byte[]>>();
 		List<int> readyForFrames = new List<int>();
 		List<Order> localOrders = new List<Order>();
 
@@ -59,7 +59,6 @@ namespace OpenRa.Network
 		public OrderManager( IConnection conn, string replayFilename )
 			: this( conn )
 		{
-			savingReplay = new FileStream( replayFilename, FileMode.Create );
 		}
 
 		public void IssueOrders( Order[] orders )

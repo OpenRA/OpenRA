@@ -109,12 +109,5 @@ namespace OpenRa.FileFormats
 			items[intoLevel][intoIndex] = At(downLevel, downIndex);
 			BubbleInto(downLevel, downIndex, val);
 		}
-
-		int RowLength(int i)
-		{
-			if (i == level)
-				return index;
-			return (1 << i);
-		}
 	}
 }

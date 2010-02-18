@@ -35,7 +35,6 @@ namespace OpenRa.Mods.Cnc
 		
 		public override bool Produce( Actor self, ActorInfo producee )
 		{
-			var location = CreationLocation(self, producee);
 			var owner = self.Owner;
 			
 			// Start beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge

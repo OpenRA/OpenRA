@@ -89,11 +89,11 @@ namespace OpenRa.FileFormats
 		public static byte[] LoadSound(Stream s)
 		{
 			var br = new BinaryReader(s);
-			var sampleRate = br.ReadUInt16();
+			/*var sampleRate =*/ br.ReadUInt16();
 			var dataSize = br.ReadInt32();
 			var outputSize = br.ReadInt32();
-			var flags = (SoundFlags)br.ReadByte();
-			var format = (SoundFormat)br.ReadByte();
+			/*var flags = (SoundFlags)*/ br.ReadByte();
+			/*var format = (SoundFormat)*/ br.ReadByte();
 
 			var output = new byte[outputSize];
 			var offset = 0;

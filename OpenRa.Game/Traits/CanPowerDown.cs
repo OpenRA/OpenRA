@@ -22,20 +22,14 @@ namespace OpenRa.Traits
 {
 	public class CanPowerDownInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new CanPowerDown(self); }
+		public object Create(Actor self) { return new CanPowerDown(); }
 	}
 
 	public class CanPowerDown : IDisable, IPowerModifier, IResolveOrder
 	{
-		readonly Actor self;
 		[Sync]
 		bool IsDisabled = false;
 		
-		public CanPowerDown(Actor self)
-		{
-			this.self = self;
-		}
-
 		public bool Disabled
 		{
 			get { return IsDisabled; }

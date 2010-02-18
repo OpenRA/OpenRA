@@ -27,9 +27,6 @@ namespace OpenRa.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var unit = self.traits.Get<Unit>();
-			var mobile = self.traits.Get<Mobile>();
-
 			if( isHarvesting ) return this;
 			if( NextActivity != null ) return NextActivity;
 
@@ -49,7 +46,6 @@ namespace OpenRa.Traits.Activities
 
 		bool HarvestThisTile(Actor self)
 		{
-			var unit = self.traits.Get<Unit>();
 			var harv = self.traits.Get<Harvester>();
 			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
 

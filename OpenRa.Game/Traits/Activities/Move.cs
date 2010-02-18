@@ -201,9 +201,6 @@ namespace OpenRa.Traits.Activities
 
 			public void TickMove( Actor self, Mobile mobile, Move parent )
 			{
-				var oldFraction = moveFraction;
-				var oldTotal = moveFractionTotal;
-
 				moveFraction += (int)Util.GetEffectiveSpeed(self);
 				if( moveFraction >= moveFractionTotal )
 					moveFraction = moveFractionTotal;

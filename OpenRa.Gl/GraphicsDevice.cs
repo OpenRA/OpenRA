@@ -40,9 +40,9 @@ namespace OpenRa.GlRenderer
         internal IntPtr cgContext;
         internal int vertexProfile, fragmentProfile;
 
-		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
-		readonly Glfw.GLFWmouseposfun mousePositionCallback;
-		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
+//		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
+//		readonly Glfw.GLFWmouseposfun mousePositionCallback;
+//		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
 		int mouseX, mouseY;
 
 		public Size WindowSize { get { return windowSize; } }
@@ -57,12 +57,14 @@ namespace OpenRa.GlRenderer
 		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
 		{
 			Glfw.glfwInit();
-			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, /*fullscreen ? Glfw.GLFW_FULLSCREEN : */Glfw.GLFW_WINDOW);
+			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, 
+				/*fullscreen ? Glfw.GLFW_FULLSCREEN : */Glfw.GLFW_WINDOW);
+
 			bool initDone = false;
 
 			var lastButtonBits = (MouseButtons)0;
 
-			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback = ( button, action ) =>
+			Glfw.glfwSetMouseButtonCallback( /*mouseButtonCallback =*/ ( button, action ) =>
 				{
 					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
 						: button == Glfw.GLFW_MOUSE_BUTTON_2 ? MouseButtons.Right
@@ -77,14 +79,14 @@ namespace OpenRa.GlRenderer
 					if (action != Glfw.GLFW_PRESS && action != Glfw.GLFW_RELEASE)
 						throw new InvalidOperationException();
 				} );
-			Glfw.glfwSetMousePosCallback(mousePositionCallback = (x, y) =>
+			Glfw.glfwSetMousePosCallback(/*mousePositionCallback = */(x, y) =>
 				{
 					mouseX = x;
 					mouseY = y;
 					if (initDone)
 						OpenRa.Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
 				});
-			Glfw.glfwSetWindowCloseCallback( windowCloseCallback = () =>
+			Glfw.glfwSetWindowCloseCallback(/* windowCloseCallback = */() =>
 				{
 					OpenRa.Game.Exit();
 					Glfw.glfwIconifyWindow();

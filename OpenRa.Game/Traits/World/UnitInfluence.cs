@@ -33,7 +33,6 @@ namespace OpenRa.Traits
 	public class UnitInfluence : ITick
 	{
 		List<Actor>[,] influence = new List<Actor>[128, 128];
-		readonly int2 searchDistance = new int2(2,2);
 
 		public UnitInfluence( Actor self )
 		{

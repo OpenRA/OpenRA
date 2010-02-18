@@ -158,7 +158,6 @@ namespace OpenRa.Graphics
 		{
 			using (new PerfSample("text"))
 			{
-				var size = MeasureText(text);
 				Bitmap b = RenderTextToBitmap(text, fDebug, c);
 				textSheet.Texture.SetData(b);
 				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
@@ -170,7 +169,6 @@ namespace OpenRa.Graphics
 		{
 			using (new PerfSample("text"))
 			{
-				var size = MeasureText2(text);
 				Bitmap b = RenderTextToBitmap(text, fTitle, c);
 				textSheet.Texture.SetData(b);
 				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");

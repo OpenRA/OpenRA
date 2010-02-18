@@ -38,7 +38,6 @@ namespace OpenRa.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var unit = self.traits.Get<Unit>();
 			var mobile = self.traits.Get<Mobile>();
 
 			if( NextActivity != null )

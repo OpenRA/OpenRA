@@ -27,10 +27,9 @@ namespace OpenRa.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
-		bool playHostAnim;
 		int remainingTicks;
 
-		public Repair(bool playHostAnim) { this.playHostAnim = playHostAnim; }
+		public Repair(bool playHostAnim) {}
 
 		public IActivity Tick(Actor self)
 		{
@@ -57,7 +56,8 @@ namespace OpenRa.Traits.Activities
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
 
 				if (hostBuilding != null)
-					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+					hostBuilding.traits.Get<RenderBuilding>()
+						.PlayCustomAnim(hostBuilding, "active");
 
 				remainingTicks = (int)(Rules.General.RepairRate * 60 * 25);
 			}

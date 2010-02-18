@@ -97,13 +97,6 @@ namespace OpenRa
 			}
 		}
 
-		static Player LookupPlayer(World world, uint index)
-		{
-			return world.players
-				.Where(x => x.Value.Index == index)
-				.First().Value;
-		}
-
 		public static Order Deserialize(World world, BinaryReader r)
 		{
 			switch (r.ReadByte())

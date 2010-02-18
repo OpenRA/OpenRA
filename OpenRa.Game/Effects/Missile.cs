@@ -28,7 +28,6 @@ namespace OpenRa.Effects
 {
 	class Missile : IEffect
 	{
-		readonly Player Owner;
 		readonly Actor FiredBy;
 		readonly WeaponInfo Weapon;
 		readonly ProjectileInfo Projectile;
@@ -47,7 +46,6 @@ namespace OpenRa.Effects
 			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
 			Warhead = Rules.WarheadInfo[Weapon.Warhead];
 			FiredBy = firedBy;
-			Owner = owner;
 			Target = target;
 			Pos = src.ToFloat2();
 			Altitude = altitude;

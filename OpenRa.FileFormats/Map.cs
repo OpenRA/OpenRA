@@ -104,7 +104,7 @@ namespace OpenRa.FileFormats
 					byte[] dest = new byte[8192];
 					byte[] src = reader.ReadBytes((int)length);
 
-					int actualLength = Format80.DecodeInto(src, dest);
+					/*int actualLength =*/ Format80.DecodeInto(src, dest);
 
 					chunks.Add(dest);
 				}

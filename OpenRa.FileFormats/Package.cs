@@ -33,7 +33,6 @@ namespace OpenRa.FileFormats
 
 	public class Package : IFolder
 	{
-		readonly string filename;
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
 		readonly long dataStart;
@@ -41,7 +40,6 @@ namespace OpenRa.FileFormats
 
 		public Package(string filename)
 		{
-			this.filename = filename;
 			s = FileSystem.Open(filename);
 
 			BinaryReader reader = new BinaryReader(s);
@@ -127,7 +125,7 @@ namespace OpenRa.FileFormats
 
 			BinaryReader reader = new BinaryReader(s);
 			ushort numFiles = reader.ReadUInt16();
-			uint dataSize = reader.ReadUInt32();
+			/*uint dataSize = */reader.ReadUInt32();
 
 			for (int i = 0; i < numFiles; i++)
 				items.Add(new PackageEntry(reader));

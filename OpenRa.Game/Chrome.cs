@@ -94,7 +94,6 @@ namespace OpenRa
 		// mapchooser
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
-		Sprite colorBlock;
 		int mapOffset = 0;
 		
 		public Chrome(Renderer r)
@@ -143,7 +142,6 @@ namespace OpenRa
 			clock = new Animation("clock");
 
 			mapChooserSheet = new Sheet(r, new Size(128, 128));
-			colorBlock = SheetBuilder.Add(new Size(65 - 8, 22 - 8), 0x54);
 		}
 
 		List<string> visibleTabs = new List<string>();

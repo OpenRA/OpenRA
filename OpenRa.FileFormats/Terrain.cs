@@ -29,7 +29,7 @@ namespace OpenRa.FileFormats
 
 		public Terrain( Stream stream )
 		{
-			int Width, Height, XDim, YDim, NumTiles;
+			int Width, Height;
 
 			BinaryReader reader = new BinaryReader( stream );
 			Width = reader.ReadUInt16();
@@ -38,11 +38,11 @@ namespace OpenRa.FileFormats
 			if( Width != 24 || Height != 24 )
 				throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
 
-			NumTiles = reader.ReadUInt16();
+			/*NumTiles = */reader.ReadUInt16();
 			reader.ReadUInt16();
-			XDim = reader.ReadUInt16();
-			YDim = reader.ReadUInt16();
-			uint FileSize = reader.ReadUInt32();
+			/*XDim = */reader.ReadUInt16();
+			/*YDim = */reader.ReadUInt16();
+			/*uint FileSize = */reader.ReadUInt32();
 			uint ImgStart = reader.ReadUInt32();
 			reader.ReadUInt32();
 			reader.ReadUInt32();

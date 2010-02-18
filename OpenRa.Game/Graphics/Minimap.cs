@@ -30,10 +30,10 @@ namespace OpenRa.Graphics
 	class Minimap
 	{
 		readonly World world;
-		Sheet sheet, mapOnlySheet, mapSpawnPointSheet;
+		Sheet sheet, mapOnlySheet;
 		SpriteRenderer rgbaRenderer;
 		LineRenderer lineRenderer;
-		Sprite sprite, mapOnlySprite, mapSpawnPointSprite;
+		Sprite sprite, mapOnlySprite;
 		Bitmap terrain, oreLayer;
 		Rectangle bounds;
 
@@ -49,7 +49,6 @@ namespace OpenRa.Graphics
 			this.world = world;
 			sheet = new Sheet(r, new Size(128, 128));
 			mapOnlySheet = new Sheet(r, new Size(128, 128));
-			mapSpawnPointSheet = new Sheet(r, new Size(128, 128));
 
 			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
@@ -61,7 +60,6 @@ namespace OpenRa.Graphics
 
 			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
 			mapOnlySprite = new Sprite(mapOnlySheet, bounds, TextureChannel.Alpha);
-			mapSpawnPointSprite = new Sprite(mapSpawnPointSheet, bounds, TextureChannel.Alpha);
 
 			shroudColor = Color.FromArgb(alpha, Color.Black);
 

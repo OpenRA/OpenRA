@@ -39,7 +39,6 @@ namespace OpenRa.Mods.Cnc
 				{		/* create the free harvester! */
 					var harvester = w.CreateActor("harv", self.Location + new int2(0, 2), self.Owner);
 					var unit = harvester.traits.Get<Unit>();
-					var mobile = harvester.traits.Get<Mobile>();
 					unit.Facing = 64;
 					harvester.QueueActivity(new Harvest());
 				});
@@ -49,7 +48,6 @@ namespace OpenRa.Mods.Cnc
 		public void OnDock(Actor harv, DeliverOre dockOrder)
 		{
 			// Todo: need to be careful about cancellation and multiple harvs
-			var unit = harv.traits.Get<Unit>();
 			harv.QueueActivity(new Move(self.Location + new int2(1,1), self));
 			harv.QueueActivity(new Turn(96));
 			harv.QueueActivity( new CallFunc( () => 

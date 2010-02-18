@@ -99,13 +99,6 @@ namespace OpenRA.Server
 		{
 			// TODO: Query the list of palettes from somewhere, and pick one
 			return 0;
-			
-			/*
-			for (var i = 0; i < 8; i++)
-				if (lobbyInfo.Clients.All(c => c.Palette != i))
-					return "player"+i;
-			*/
-			throw new InvalidOperationException("No free palettes");
 		}
 
 		static void AcceptConnection()
