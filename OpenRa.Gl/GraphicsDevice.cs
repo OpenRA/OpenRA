@@ -94,6 +94,7 @@ namespace OpenRa.GlRenderer
 					return Gl.GL_TRUE;
 				};
 
+			Glfw.glfwSetWindowTitle("OpenRA");
 			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback );
 			Glfw.glfwSetMousePosCallback( mousePositionCallback );
 			Glfw.glfwSetWindowCloseCallback( windowCloseCallback );
