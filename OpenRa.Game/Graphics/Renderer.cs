@@ -43,7 +43,7 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		readonly Font fDebug, fTitle;
+		//readonly Font fDebug, fTitle;
 
 		Sheet textSheet;
 		SpriteRenderer rgbaRenderer;
@@ -60,8 +60,8 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("chrome-shp.fx"));
 
-			fDebug = new Font("Tahoma", 10, FontStyle.Regular);
-			fTitle = new Font("Tahoma", 10, FontStyle.Bold);
+			//fDebug = new Font("Tahoma", 10, FontStyle.Regular);
+			//fTitle = new Font("Tahoma", 10, FontStyle.Bold);
 			textSheet = new Sheet(this, new Size(256, 256));
 			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
 			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
@@ -180,12 +180,12 @@ namespace OpenRa.Graphics
 
 		public int2 MeasureText(string text)
 		{
-			return GetTextSize(text, fDebug);
+			return new int2(0,0); //GetTextSize(text, fDebug);
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return GetTextSize(text, fTitle);
+			return new int2(0,0);// GetTextSize(text, fTitle);
 		}
 	}
 }

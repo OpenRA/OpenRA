@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -59,7 +59,8 @@ namespace OpenRa.GlRenderer
 			Glfw.glfwInit();
 			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, 
 				/*fullscreen ? Glfw.GLFW_FULLSCREEN : */Glfw.GLFW_WINDOW);
-
+			
+			Glfw.glfwSetWindowTitle("OpenRA");
 			bool initDone = false;
 
 			var lastButtonBits = (MouseButtons)0;
@@ -90,7 +91,8 @@ namespace OpenRa.GlRenderer
 			windowCloseCallback = () =>
 				{
 					OpenRa.Game.Exit();
-					Glfw.glfwIconifyWindow();
+					// This looks lame on os x
+					//Glfw.glfwIconifyWindow();
 					return Gl.GL_FALSE;
 				};
 
