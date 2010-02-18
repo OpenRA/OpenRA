@@ -26,9 +26,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Tao.Cg;
 using Tao.OpenGl;
-using Tao.Platform.Windows;
 using OpenRa.FileFormats.Graphics;
 using Tao.Glfw;
+using OpenRa;
 
 [assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
@@ -189,10 +189,9 @@ namespace OpenRa.GlRenderer
 
 		#region IGraphicsDevice Members
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>( int size )
-			where T : struct
+		public IVertexBuffer<Vertex> CreateVertexBuffer<Vertex>( int size )
 		{
-			return new VertexBuffer<T>( this, size );
+			return new VertexBuffer<Vertex>( this, size );
 		}
 
 		public IIndexBuffer CreateIndexBuffer( int size )

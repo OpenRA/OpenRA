@@ -24,10 +24,10 @@ namespace OpenRa.Support
 {
 	public class Stopwatch
 	{
-		[DllImport("kernel32.dll")]
-		static extern bool QueryPerformanceCounter(out long value);
-		[DllImport("kernel32.dll")]
-		static extern bool QueryPerformanceFrequency(out long frequency);
+		//[DllImport("kernel32.dll")]
+		static bool QueryPerformanceCounter(out long value) { value = 1; return true; }
+		//[DllImport("kernel32.dll")]
+		static bool QueryPerformanceFrequency(out long frequency) { frequency = 1; return true; }
 
 		long freq, start;
 

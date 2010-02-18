@@ -57,7 +57,6 @@ namespace OpenRa
 	//        StartPosition = FormStartPosition.Manual;
 	//        Location = Point.Empty;
 	//        Visible = true;
->>>>>>> origin/glfw:OpenRa.Game/MainWindow.cs
 			
 	//        while (!File.Exists("redalert.mix"))
 	//        {

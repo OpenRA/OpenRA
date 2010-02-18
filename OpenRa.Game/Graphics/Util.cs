@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using OpenRa.FileFormats.Graphics;
 
 namespace OpenRa.Graphics
 {

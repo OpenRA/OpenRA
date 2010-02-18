@@ -20,10 +20,10 @@
 
 using System.Runtime.InteropServices;
 
-namespace OpenRa.Graphics
+namespace OpenRa.FileFormats.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
-	struct Vertex
+	public struct Vertex
 	{
 		public float x, y, z, u, v;
 		public float p, c;
