@@ -40,9 +40,9 @@ namespace OpenRa.GlRenderer
         internal IntPtr cgContext;
         internal int vertexProfile, fragmentProfile;
 
-//		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
-//		readonly Glfw.GLFWmouseposfun mousePositionCallback;
-//		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
+		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
+		readonly Glfw.GLFWmouseposfun mousePositionCallback;
+		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
 		int mouseX, mouseY;
 
 		public Size WindowSize { get { return windowSize; } }
@@ -64,7 +64,7 @@ namespace OpenRa.GlRenderer
 
 			var lastButtonBits = (MouseButtons)0;
 
-			Glfw.glfwSetMouseButtonCallback( /*mouseButtonCallback =*/ ( button, action ) =>
+			mouseButtonCallback = ( button, action ) =>
 				{
 					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
 						: button == Glfw.GLFW_MOUSE_BUTTON_2 ? MouseButtons.Right
@@ -78,20 +78,26 @@ namespace OpenRa.GlRenderer
 
 					if (action != Glfw.GLFW_PRESS && action != Glfw.GLFW_RELEASE)
 						throw new InvalidOperationException();
-				} );
-			Glfw.glfwSetMousePosCallback(/*mousePositionCallback = */(x, y) =>
+				};
+
+			mousePositionCallback = (x, y) =>
 				{
 					mouseX = x;
 					mouseY = y;
 					if (initDone)
 						OpenRa.Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
-				});
-			Glfw.glfwSetWindowCloseCallback(/* windowCloseCallback = */() =>
+				};
+			windowCloseCallback = () =>
 				{
 					OpenRa.Game.Exit();
 					Glfw.glfwIconifyWindow();
 					return Gl.GL_TRUE;
-				} );
+				};
+
+			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback );
+			Glfw.glfwSetMousePosCallback( mousePositionCallback );
+			Glfw.glfwSetWindowCloseCallback( windowCloseCallback );
+
 			CheckGlError();
 
 			Glfw.glfwGetWindowSize(out width, out height);

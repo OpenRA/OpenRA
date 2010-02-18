@@ -60,6 +60,7 @@
     <Compile Include="Format40.cs" />
     <Compile Include="Format80.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
+    <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="int2.cs" />
     <Compile Include="IPaletteRemap.cs" />

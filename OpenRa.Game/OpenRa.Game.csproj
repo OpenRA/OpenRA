@@ -89,11 +89,6 @@
     <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
-    <Compile Include="Resources1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
@@ -260,7 +255,6 @@
     <Compile Include="Traits\Util.cs" />
     <Compile Include="UiOverlay.cs" />
     <Compile Include="Graphics\Util.cs" />
-    <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="World.cs" />
@@ -291,12 +285,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
