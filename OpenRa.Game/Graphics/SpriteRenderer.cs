@@ -42,7 +42,7 @@ namespace OpenRa.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 
-			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>( vertices.Length );
+			vertexBuffer = renderer.Device.CreateVertexBuffer( vertices.Length );
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 

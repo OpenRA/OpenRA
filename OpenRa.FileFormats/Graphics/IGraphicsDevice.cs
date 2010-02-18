@@ -22,7 +22,7 @@ namespace OpenRa.FileFormats.Graphics
 
 	public interface IGraphicsDevice
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer<Vertex>( int length );
+		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
 		IIndexBuffer CreateIndexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
 

@@ -62,7 +62,7 @@ namespace OpenRa.Graphics
 
 			terrainSheet = tileMapping[map.MapTiles[map.XOffset, map.YOffset]].sheet;
 
-			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>( vertices.Length );
+			vertexBuffer = renderer.Device.CreateVertexBuffer( vertices.Length );
 			vertexBuffer.SetData( vertices );
 
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );

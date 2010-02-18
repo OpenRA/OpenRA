@@ -39,7 +39,7 @@ namespace OpenRa.Graphics
 		public LineRenderer( Renderer renderer )
 		{
 			this.renderer = renderer;
-			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>(vertices.Length );
+			vertexBuffer = renderer.Device.CreateVertexBuffer(vertices.Length );
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 

@@ -28,7 +28,7 @@ using Tao.Cg;
 using Tao.OpenGl;
 using OpenRa.FileFormats.Graphics;
 using Tao.Glfw;
-using OpenRa;
+
 
 [assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
@@ -68,7 +68,7 @@ namespace OpenRa.GlRenderer
 						: button == Glfw.GLFW_MOUSE_BUTTON_2 ? MouseButtons.Right
 						: button == Glfw.GLFW_MOUSE_BUTTON_3 ? MouseButtons.Middle
 						: 0;
-					Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
+					OpenRa.Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
 						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
 
 					if (action == Glfw.GLFW_PRESS) lastButtonBits |= b;
@@ -82,11 +82,11 @@ namespace OpenRa.GlRenderer
 					mouseX = x;
 					mouseY = y;
 					if (initDone)
-						Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
+						OpenRa.Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
 				});
 			Glfw.glfwSetWindowCloseCallback( windowCloseCallback = () =>
 				{
-					Game.Exit();
+					OpenRa.Game.Exit();
 					Glfw.glfwIconifyWindow();
 					return Gl.GL_TRUE;
 				} );
@@ -189,7 +189,7 @@ namespace OpenRa.GlRenderer
 
 		#region IGraphicsDevice Members
 
-		public IVertexBuffer<Vertex> CreateVertexBuffer<Vertex>( int size )
+		public IVertexBuffer<Vertex> CreateVertexBuffer( int size )
 		{
 			return new VertexBuffer<Vertex>( this, size );
 		}
