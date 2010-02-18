@@ -156,6 +156,7 @@ namespace OpenRa.Graphics
 
 		public void DrawText(string text, int2 pos, Color c)
 		{
+			return;
 			using (new PerfSample("text"))
 			{
 				Bitmap b = RenderTextToBitmap(text, fDebug, c);
@@ -167,6 +168,7 @@ namespace OpenRa.Graphics
 
 		public void DrawText2(string text, int2 pos, Color c)
 		{
+			return;
 			using (new PerfSample("text"))
 			{
 				Bitmap b = RenderTextToBitmap(text, fTitle, c);

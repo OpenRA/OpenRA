@@ -343,8 +343,8 @@ namespace OpenRa
 				desktopResolution.Height);
 		}
 
-		[DllImport("user32")]
-		static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
+	//	[DllImport("user32")]
+	//	static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
 
 		public static void PreInit(Settings settings)
 		{
@@ -376,7 +376,7 @@ namespace OpenRa
 
 			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
 
-			ShowCursor(false);
+		//	ShowCursor(false);
 			Game.ResetTimer();
 		}
 

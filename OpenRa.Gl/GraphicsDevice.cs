@@ -104,12 +104,16 @@ namespace OpenRa.GlRenderer
 			windowSize = new Size( width, height );
 
 			cgContext = Cg.cgCreateContext();
+
 			Cg.cgSetErrorCallback( CgErrorCallback );
 
 			CgGl.cgGLRegisterStates( cgContext );
 			CgGl.cgGLSetManageTextureParameters( cgContext, true );
 			vertexProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_VERTEX );
 			fragmentProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_FRAGMENT );
+
+			Console.WriteLine("VP Profile: " + vertexProfile);
+			Console.WriteLine("FP Profile: " + fragmentProfile);
 
 			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
 			CheckGlError();
