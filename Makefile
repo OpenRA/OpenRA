@@ -40,7 +40,7 @@ cnc_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 cnc_LIBS			= $(COMMON_LIBS) $(cnc_DEPS)
 
 aftermath_SRCS		=	$(shell find OpenRa.Mods.Aftermath/ -iname '*.cs')
-aftermath_TARGET	=	mods/cnc/OpenRa.Mods.Aftermath.dll
+aftermath_TARGET	=	mods/aftermath/OpenRa.Mods.Aftermath.dll
 aftermath_KIND		=	library
 aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
