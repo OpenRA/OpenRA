@@ -287,9 +287,20 @@ namespace OpenRa
 			return sp;
 		}
 
+		static int2 lastPos;
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
 		{
 			int sync = Game.world.SyncHash();
+
+			if (ev == MouseInputEvent.Down)
+				lastPos = new int2(e.Location);
+
+			if (ev == MouseInputEvent.Move && (e.Button == MouseButtons.Middle || e.Button == (MouseButtons.Left | MouseButtons.Right)))
+			{
+				var p = new int2(e.Location);
+				viewport.Scroll(lastPos - p);
+				lastPos = p;
+			}
 
 			Game.viewport.DispatchMouseInput( world, 
 				new MouseInput
