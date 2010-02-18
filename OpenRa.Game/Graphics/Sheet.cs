@@ -20,7 +20,7 @@
 
 using System.Drawing;
 using OpenRa.FileFormats;
-using OpenRa.GlRenderer;
+using OpenRa.FileFormats.Graphics;
 
 namespace OpenRa.Graphics
 {
@@ -29,7 +29,7 @@ namespace OpenRa.Graphics
 		readonly Renderer renderer;
 		protected readonly Bitmap bitmap;
 
-		Texture texture;
+		ITexture texture;
 
 		internal Sheet(Renderer renderer, Size size)
 		{
@@ -45,10 +45,10 @@ namespace OpenRa.Graphics
 
 		void Resolve()
 		{
-            texture = new Texture(renderer.Device, bitmap);
+            texture = renderer.Device.CreateTexture(bitmap);
 		}
 
-		public Texture Texture
+		public ITexture Texture
 		{
 			get
 			{

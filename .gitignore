@@ -25,3 +25,9 @@ log.txt
 
 # backup files by various editors
 *~
+# dependency DLLs (different for every platform!)
+cg.dll
+cgGL.dll
+glfw.dll
+
+/OpenRa.Gl.dll

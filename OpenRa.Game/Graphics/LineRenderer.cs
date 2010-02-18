@@ -19,15 +19,15 @@
 #endregion
 
 using System.Drawing;
-using OpenRa.GlRenderer;
+using OpenRa.FileFormats.Graphics;
 
 namespace OpenRa.Graphics
 {
 	class LineRenderer
 	{
 		Renderer renderer;
-		VertexBuffer<Vertex> vertexBuffer;
-		IndexBuffer indexBuffer;            /* kindof a waste of space, but the GPU likes indexing, oh well */
+		IVertexBuffer<Vertex> vertexBuffer;
+		IIndexBuffer indexBuffer;            /* kindof a waste of space, but the GPU likes indexing, oh well */
 
 		const int linesPerBatch = 1024;
 
@@ -39,8 +39,8 @@ namespace OpenRa.Graphics
 		public LineRenderer( Renderer renderer )
 		{
 			this.renderer = renderer;
-			vertexBuffer = new VertexBuffer<Vertex>( renderer.Device, vertices.Length, Vertex.Format );
-			indexBuffer = new IndexBuffer( renderer.Device, indices.Length );
+			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>(vertices.Length );
+			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 
 		public void Flush()

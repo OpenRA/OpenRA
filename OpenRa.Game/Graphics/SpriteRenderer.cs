@@ -18,16 +18,16 @@
  */
 #endregion
 
-using OpenRa.GlRenderer;
+using OpenRa.FileFormats.Graphics;
 
 namespace OpenRa.Graphics
 {
 	class SpriteRenderer
 	{
-		VertexBuffer<Vertex> vertexBuffer;
-		IndexBuffer indexBuffer;
+		IVertexBuffer<Vertex> vertexBuffer;
+		IIndexBuffer indexBuffer;
 		Renderer renderer;
-		Shader shader;
+		IShader shader;
 
 		const int spritesPerBatch = 1024;
 
@@ -35,18 +35,15 @@ namespace OpenRa.Graphics
 		ushort[] indices = new ushort[6 * spritesPerBatch];
 		Sheet currentSheet = null;
 		int sprites = 0;
-		ShaderQuality quality;
 		int nv = 0, ni = 0;
 
-		public SpriteRenderer(Renderer renderer, bool allowAlpha, Shader shader)
+		public SpriteRenderer(Renderer renderer, bool allowAlpha, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
 
-			vertexBuffer = new VertexBuffer<Vertex>(renderer.Device, vertices.Length, Vertex.Format);
-			indexBuffer = new IndexBuffer(renderer.Device, indices.Length);
-
-			quality = allowAlpha ? ShaderQuality.High : ShaderQuality.Low;
+			vertexBuffer = renderer.Device.CreateVertexBuffer<Vertex>( vertices.Length );
+			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 
 		public SpriteRenderer(Renderer renderer, bool allowAlpha)
@@ -56,7 +53,6 @@ namespace OpenRa.Graphics
 		{
 			if (sprites > 0)
 			{
-				shader.Quality = quality;
 				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
 				shader.Render(() =>
 				{

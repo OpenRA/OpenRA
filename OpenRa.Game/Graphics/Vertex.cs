@@ -19,7 +19,6 @@
 #endregion
 
 using System.Runtime.InteropServices;
-using OpenRa.GlRenderer;
 
 namespace OpenRa.Graphics
 {
@@ -35,7 +34,5 @@ namespace OpenRa.Graphics
 			this.u = uv.X; this.v = uv.Y;
 			this.p = pc.X; this.c = pc.Y;
 		}
-
-		public const VertexFormat Format = VertexFormat.Position | VertexFormat.Texture2;
 	}
 }

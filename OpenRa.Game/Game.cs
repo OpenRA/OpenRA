@@ -30,6 +30,8 @@ using OpenRa.Network;
 using OpenRa.Support;
 using OpenRa.Traits;
 using Timer = OpenRa.Support.Timer;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace OpenRa
 {
@@ -285,7 +287,7 @@ namespace OpenRa
 			return sp;
 		}
 
-		internal static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
+		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
 		{
 			int sync = Game.world.SyncHash();
 
@@ -302,7 +304,7 @@ namespace OpenRa
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
-		internal static void HandleKeyDown( KeyEventArgs e )
+		public static void HandleKeyDown( KeyEventArgs e )
 		{
 			int sync = Game.world.SyncHash();
 
@@ -315,7 +317,7 @@ namespace OpenRa
 				throw new InvalidOperationException( "Desync in OnKeyDown" );
 		}
 
-		internal static void HandleKeyPress( KeyPressEventArgs e )
+		public static void HandleKeyPress( KeyPressEventArgs e )
 		{
 			int sync = Game.world.SyncHash();
 			
@@ -326,6 +328,82 @@ namespace OpenRa
 			
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyPress" );
+		}
+
+		static Size GetResolution(Settings settings)
+		{
+			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
+			if (Game.Settings.Width > 0 && Game.Settings.Height > 0)
+			{
+				desktopResolution.Width = Game.Settings.Width;
+				desktopResolution.Height = Game.Settings.Height;
+			}
+			return new Size(
+				desktopResolution.Width,
+				desktopResolution.Height);
+		}
+
+		[DllImport("user32")]
+		static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
+
+		public static void PreInit(Settings settings)
+		{
+			while (!File.Exists("redalert.mix"))
+			{
+				var current = Directory.GetCurrentDirectory();
+				if (Directory.GetDirectoryRoot(current) == current)
+					throw new InvalidOperationException("Unable to load MIX files.");
+				Directory.SetCurrentDirectory("..");
+			}
+
+			
+			LoadUserSettings(settings);
+			Game.LobbyInfo.GlobalSettings.Mods = Game.Settings.InitialMods;
+			
+			// Load the default mod to access required files
+			Game.LoadModPackages(new Manifest(Game.LobbyInfo.GlobalSettings.Mods));
+			
+			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
+			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
+			Renderer.SheetSize = Game.Settings.SheetSize;
+			
+			bool windowed = !Game.Settings.Fullscreen;
+			var resolution = GetResolution(settings);
+			renderer = new Renderer(resolution, windowed);
+			resolution = renderer.Resolution;
+
+			var controller = new Controller(() => (Modifiers)(int)0/*ModifierKeys*/);	/* a bit of insane input routing */
+
+			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
+
+			ShowCursor(false);
+			Game.ResetTimer();
+		}
+
+		static void LoadUserSettings(Settings settings)
+		{
+			Game.Settings = new UserSettings();
+			var settingsFile = settings.GetValue("settings", "settings.ini");
+			FileSystem.Mount("./");
+			if (FileSystem.Exists(settingsFile))
+				FieldLoader.Load(Game.Settings,
+					new IniFile(FileSystem.Open(settingsFile)).GetSection("Settings"));
+			FileSystem.UnmountAll();
+		}
+
+		static bool quit;
+		internal static void Run()
+		{
+			while (!quit)
+			{
+				Game.Tick();
+				Application.DoEvents();
+			}
+		}
+
+		public static void Exit()
+		{
+			quit = true;
 		}
 	}
 }
