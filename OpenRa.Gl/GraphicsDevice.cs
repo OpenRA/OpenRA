@@ -91,7 +91,7 @@ namespace OpenRa.GlRenderer
 				{
 					OpenRa.Game.Exit();
 					Glfw.glfwIconifyWindow();
-					return Gl.GL_TRUE;
+					return Gl.GL_FALSE;
 				};
 
 			Glfw.glfwSetWindowTitle("OpenRA");
