@@ -18,10 +18,10 @@ export CC="gcc -arch i386"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Mono.framework/Versions/Current/lib/pkgconfig/
 
 # Package the server binary
-mkbundle --deps --static -o openra_server OpenRA.Server.exe OpenRa.FileFormats.dll
+mkbundle --deps --static -z -o openra_server OpenRA.Server.exe OpenRa.FileFormats.dll
 
 # Package the game binary
-mkbundle --deps --static -o OpenRA OpenRa.Game.exe OpenRa.FileFormats.dll thirdparty/Tao/Tao.Glfw.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll OpenRa.Gl.dll
+mkbundle --deps --static -z -o OpenRA OpenRa.Game.exe OpenRa.FileFormats.dll thirdparty/Tao/Tao.Glfw.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll OpenRa.Gl.dll
 
 # Copy everything into our game bundle template
 cp -R packaging/osx/OpenRA.app .
