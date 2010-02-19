@@ -80,20 +80,21 @@ namespace OpenRa.Graphics
 		Bitmap RenderTextToBitmap(string s, Font f, Color c)
 		{
 			Bitmap b = new Bitmap(256, 256);
-            using (var g = System.Drawing.Graphics.FromImage(b))
+            /*using (var g = System.Drawing.Graphics.FromImage(b))
             {
                 g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                 g.DrawString(s, f, new SolidBrush(c), 0, 0);
                 g.Flush();
-            }
+            }*/
 			return b;
 		}
 
 		int2 GetTextSize(string s, Font f)
 		{
-			Bitmap b = new Bitmap(1,1);
+			return new int2(0,0);
+			/*Bitmap b = new Bitmap(1,1);
 			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
-			return new int2(g.MeasureString(s, f).ToSize());
+			return new int2(g.MeasureString(s, f).ToSize());*/
 		}
 
 		public IGraphicsDevice Device { get { return device; } }
