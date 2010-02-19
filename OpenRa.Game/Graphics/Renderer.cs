@@ -43,7 +43,7 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		//readonly Font fDebug, fTitle;
+		readonly Font fDebug, fTitle;
 
 		Sheet textSheet;
 		SpriteRenderer rgbaRenderer;
