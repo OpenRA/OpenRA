@@ -88,4 +88,7 @@ server: $(server_TARGET)
 seqed: $(seqed_TARGET)
 all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(server_TARGET) $(seqed_TARGET)
 
+dist-osx:
+	packaging/osx/package.sh
+
 .DEFAULT: all
