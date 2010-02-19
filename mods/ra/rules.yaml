@@ -2314,6 +2314,7 @@ DOG:
 		HP: 12
 		Sight: 5
 		Speed: 4
+	-AutoTarget:
 
 E1:
 	Inherits: ^Infantry
