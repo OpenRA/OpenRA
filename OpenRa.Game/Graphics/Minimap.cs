@@ -135,7 +135,7 @@ namespace OpenRa.Graphics
 
 			var bitmap = new Bitmap(oreLayer);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
 			unsafe
 			{
