@@ -6,7 +6,7 @@
 
 # List of game files to copy into the app bundle
 # TODO: This will be significantly shorter once we move the ra files into its mod dir
-GAME_FILES="OpenRA allies.mix conquer.mix expand2.mix general.mix hires.mix interior.mix redalert.mix russian.mix snow.mix sounds.mix temperat.mix line.fx chrome-shp.fx chrome-rgba.fx bogus.SNO bogus.TEM world-shp.fx tileSet.til templates.ini mods maps packaging/osx/settings.ini"
+GAME_FILES="OpenRA shaders mods maps packaging/osx/settings.ini"
 
 # List of system files to copy into the app bundle
 # TODO: Sort out whats going on with libglfw so we don't need to do this
