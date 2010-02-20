@@ -50,7 +50,7 @@ namespace OpenRa.GlRenderer
 			    throw new InvalidOperationException("GL Error");
         }
 
-		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
+		public GraphicsDevice( int width, int height, bool windowed, bool vsync )
 		{
 			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
@@ -59,7 +59,7 @@ namespace OpenRa.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
-			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (fullscreen ? Sdl.SDL_FULLSCREEN : 0));
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 
