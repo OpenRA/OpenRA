@@ -76,12 +76,12 @@ namespace OpenRa.Graphics
 			boldFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
 		}
 
-		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool fullscreen, bool vsync )
+		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool windowed, bool vsync )
 		{
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
 			{
 				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( bool ), typeof( bool ) } )
-					.Invoke( new object[] { width, height, fullscreen, vsync } );
+					.Invoke( new object[] { width, height, windowed, vsync } );
 			}
 			throw new NotImplementedException();
 		}
