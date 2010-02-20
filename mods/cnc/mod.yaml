@@ -2,8 +2,7 @@
 
 Folders:
 	./mods/cnc/
-	./mods/cnc/packages_ra/
-	./shaders
+	./mods/ra/packages/
 	./
 
 Packages:
@@ -19,11 +18,7 @@ Packages:
 # Cannot qualify the RA names because they may live inside a mix
 	~main.mix
 	redalert.mix
-	hires.mix
-	local.mix
 	speech.mix
-	allies.mix
-	russian.mix
 	temperat.mix
 	snow.mix
 	interior.mix

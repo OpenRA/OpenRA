@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -74,7 +74,6 @@ namespace OpenRa
 		readonly Animation cantBuild;
 		readonly Animation ready;
 		readonly Animation clock;
-		const int NumClockFrames = 54;
 
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
@@ -912,9 +911,8 @@ namespace OpenRa
 				{
 					clock.PlayFetchIndex( "idle", 
 						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime) 
-							* NumClockFrames / firstOfThis.TotalTime);
+							* (clock.CurrentSequence.Length - 1)/ firstOfThis.TotalTime);
 					clock.Tick();
-
 					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");
 
 					if (firstOfThis.Done)
@@ -1149,7 +1147,7 @@ namespace OpenRa
 
 					clock.PlayFetchIndex("idle",
 						() => (sp.TotalTime - sp.RemainingTime)
-							* NumClockFrames / sp.TotalTime);
+							* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 					clock.Tick();
 
 					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");

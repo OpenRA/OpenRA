@@ -55,10 +55,10 @@ namespace OpenRa.Graphics
 		{
 			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRa.Gl.dll" ) ), resolution.Width, resolution.Height, windowed, false );
 
-			SpriteShader = device.CreateShader(FileSystem.Open("world-shp.fx"));
-			LineShader = device.CreateShader(FileSystem.Open("line.fx"));
-			RgbaSpriteShader = device.CreateShader(FileSystem.Open("chrome-rgba.fx"));
-			WorldSpriteShader = device.CreateShader(FileSystem.Open("chrome-shp.fx"));
+			SpriteShader = device.CreateShader(FileSystem.Open("shaders/world-shp.fx"));
+			LineShader = device.CreateShader(FileSystem.Open("shaders/line.fx"));
+			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
+			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
 
 			//fDebug = new Font("Tahoma", 10, FontStyle.Regular);
 			//fTitle = new Font("Tahoma", 10, FontStyle.Bold);
