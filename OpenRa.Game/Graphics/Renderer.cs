@@ -27,6 +27,8 @@ using OpenRa.FileFormats;
 using OpenRa.FileFormats.Graphics;
 using OpenRa.Support;
 using System.IO;
+using ISE;
+using Tao.OpenGl;
 
 namespace OpenRa.Graphics
 {
@@ -43,11 +45,8 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		readonly Font fDebug, fTitle;
-
-		Sheet textSheet;
-		SpriteRenderer rgbaRenderer;
-		Sprite textSprite;
+		readonly FTFontGL regularFont, boldFont;
+		const int RenderedFontSize = 48;
 
 		public Size Resolution { get { return device.WindowSize; } }
 
@@ -60,11 +59,21 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
 
-			//fDebug = new Font("Tahoma", 10, FontStyle.Regular);
-			//fTitle = new Font("Tahoma", 10, FontStyle.Bold);
-			textSheet = new Sheet(this, new Size(256, 256));
-			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
-			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
+			int Errors;
+			regularFont = new FTFontGL("FreeSans.ttf", out Errors);
+
+			if (Errors > 0)
+				throw new InvalidOperationException("Error(s) loading font");
+
+			regularFont.ftRenderToTexture(RenderedFontSize, 192);
+			regularFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
+
+			boldFont = new FTFontGL("FreeSansBold.ttf", out Errors);
+			if (Errors > 0)
+				throw new InvalidOperationException("Error(s) loading font");
+
+			boldFont.ftRenderToTexture(RenderedFontSize, 192);
+			boldFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
 		}
 
 		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool fullscreen, bool vsync )
@@ -75,25 +84,6 @@ namespace OpenRa.Graphics
 					.Invoke( new object[] { width, height, fullscreen, vsync } );
 			}
 			throw new NotImplementedException();
-		}
-
-		Bitmap RenderTextToBitmap(string s, Font f, Color c)
-		{
-			Bitmap b = new Bitmap(256, 256);
-            using (var g = System.Drawing.Graphics.FromImage(b))
-            {
-                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
-                g.DrawString(s, f, new SolidBrush(c), 0, 0);
-                g.Flush();
-            }
-			return b;
-		}
-
-		int2 GetTextSize(string s, Font f)
-		{
-			Bitmap b = new Bitmap(1,1);
-			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
-			return new int2(g.MeasureString(s, f).ToSize());
 		}
 
 		public IGraphicsDevice Device { get { return device; } }
@@ -154,38 +144,61 @@ namespace OpenRa.Graphics
 			PerfHistory.Increment("batches", 1);
 		}
 
-		public void DrawText(string text, int2 pos, Color c)
+		static void CheckError()
 		{
-			return;
+			var e = Gl.glGetError();
+			if (e != Gl.GL_NO_ERROR)
+				throw new InvalidOperationException("GL Error: " + Gl.glGetString(e));
+		}
+
+		const float emHeight = 14f;	/* px */
+
+		void DrawTextInner(FTFontGL f, string text, int2 pos, Color c)
+		{
 			using (new PerfSample("text"))
 			{
-				Bitmap b = RenderTextToBitmap(text, fDebug, c);
-				textSheet.Texture.SetData(b);
-				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-				rgbaRenderer.Flush();
+				pos.Y += (int)(emHeight);
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glPushMatrix();
+				Gl.glLoadIdentity();
+
+				Gl.glMatrixMode(Gl.GL_PROJECTION);
+				Gl.glPushMatrix();
+				Gl.glLoadIdentity();
+
+				Gl.glOrtho(0, Resolution.Width, 0, Resolution.Height, 0, 1);
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glTranslatef(pos.X, Resolution.Height - pos.Y, 0);
+				Gl.glScalef(emHeight / RenderedFontSize, emHeight / RenderedFontSize, 1);
+
+				f.ftBeginFont(false);
+				Gl.glColor4f(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
+				f.ftWrite(text);
+				f.ftEndFont();
+
+				Gl.glMatrixMode(Gl.GL_PROJECTION);
+				Gl.glPopMatrix();
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glPopMatrix();
+
+				CheckError();
 			}
 		}
 
-		public void DrawText2(string text, int2 pos, Color c)
-		{
-			return;
-			using (new PerfSample("text"))
-			{
-				Bitmap b = RenderTextToBitmap(text, fTitle, c);
-				textSheet.Texture.SetData(b);
-				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-				rgbaRenderer.Flush();
-			}
-		}
+		public void DrawText(string text, int2 pos, Color c) { DrawTextInner(regularFont, text, pos, c); }
+		public void DrawText2(string text, int2 pos, Color c) { DrawTextInner(boldFont, text, pos, c); }
 
 		public int2 MeasureText(string text)
 		{
-			return new int2(0,0); //GetTextSize(text, fDebug);
+			return new int2((int)(regularFont.ftExtent(ref text) / 3), (int)emHeight);
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return new int2(0,0);// GetTextSize(text, fTitle);
+			return new int2((int)(boldFont.ftExtent(ref text) / 3), (int)emHeight);
 		}
 	}
 }
