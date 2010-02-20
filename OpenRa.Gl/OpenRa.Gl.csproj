@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ISE.FreeType, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1b34ab585684d5ea, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\ISE.FreeType.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>

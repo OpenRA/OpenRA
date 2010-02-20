@@ -28,7 +28,6 @@ using OpenRa.FileFormats.Graphics;
 using OpenRa.Support;
 using System.IO;
 using ISE;
-using Tao.OpenGl;
 
 namespace OpenRa.Graphics
 {
@@ -45,8 +44,7 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		readonly FTFontGL regularFont, boldFont;
-		const int RenderedFontSize = 48;
+		readonly IFont regularFont, boldFont;
 
 		public Size Resolution { get { return device.WindowSize; } }
 
@@ -59,21 +57,8 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
 
-			int Errors;
-			regularFont = new FTFontGL("FreeSans.ttf", out Errors);
-
-			if (Errors > 0)
-				throw new InvalidOperationException("Error(s) loading font");
-
-			regularFont.ftRenderToTexture(RenderedFontSize, 192);
-			regularFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
-
-			boldFont = new FTFontGL("FreeSansBold.ttf", out Errors);
-			if (Errors > 0)
-				throw new InvalidOperationException("Error(s) loading font");
-
-			boldFont.ftRenderToTexture(RenderedFontSize, 192);
-			boldFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
+			regularFont = device.CreateFont( "FreeSans.ttf" );
+			boldFont = device.CreateFont( "FreeSansBold.ttf" );
 		}
 
 		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool windowed, bool vsync )
@@ -144,61 +129,25 @@ namespace OpenRa.Graphics
 			PerfHistory.Increment("batches", 1);
 		}
 
-		static void CheckError()
-		{
-			var e = Gl.glGetError();
-			if (e != Gl.GL_NO_ERROR)
-				throw new InvalidOperationException("GL Error: " + Gl.glGetString(e));
-		}
-
-		const float emHeight = 14f;	/* px */
-
-		void DrawTextInner(FTFontGL f, string text, int2 pos, Color c)
+		public void DrawText( string text, int2 pos, Color c )
 		{
 			using (new PerfSample("text"))
-			{
-				pos.Y += (int)(emHeight);
-
-				Gl.glMatrixMode(Gl.GL_MODELVIEW);
-				Gl.glPushMatrix();
-				Gl.glLoadIdentity();
-
-				Gl.glMatrixMode(Gl.GL_PROJECTION);
-				Gl.glPushMatrix();
-				Gl.glLoadIdentity();
-
-				Gl.glOrtho(0, Resolution.Width, 0, Resolution.Height, 0, 1);
-
-				Gl.glMatrixMode(Gl.GL_MODELVIEW);
-				Gl.glTranslatef(pos.X, Resolution.Height - pos.Y, 0);
-				Gl.glScalef(emHeight / RenderedFontSize, emHeight / RenderedFontSize, 1);
-
-				f.ftBeginFont(false);
-				Gl.glColor4f(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
-				f.ftWrite(text);
-				f.ftEndFont();
-
-				Gl.glMatrixMode(Gl.GL_PROJECTION);
-				Gl.glPopMatrix();
-
-				Gl.glMatrixMode(Gl.GL_MODELVIEW);
-				Gl.glPopMatrix();
-
-				CheckError();
-			}
+				regularFont.DrawText( text, pos, c );
 		}
-
-		public void DrawText(string text, int2 pos, Color c) { DrawTextInner(regularFont, text, pos, c); }
-		public void DrawText2(string text, int2 pos, Color c) { DrawTextInner(boldFont, text, pos, c); }
+		public void DrawText2( string text, int2 pos, Color c )
+		{
+			using (new PerfSample("text"))
+				boldFont.DrawText( text, pos, c );
+		}
 
 		public int2 MeasureText(string text)
 		{
-			return new int2((int)(regularFont.ftExtent(ref text) / 3), (int)emHeight);
+			return regularFont.Measure( text );
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return new int2((int)(boldFont.ftExtent(ref text) / 3), (int)emHeight);
+			return boldFont.Measure( text );
 		}
 	}
 }

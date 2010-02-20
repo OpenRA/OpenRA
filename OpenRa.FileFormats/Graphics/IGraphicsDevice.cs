@@ -25,7 +25,7 @@ namespace OpenRa.FileFormats.Graphics
 		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
 		IIndexBuffer CreateIndexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
-
+		IFont CreateFont( string filename );
 		IShader CreateShader( Stream stream );
 
 		Size WindowSize { get; }
@@ -65,6 +65,13 @@ namespace OpenRa.FileFormats.Graphics
 	public interface ITexture
 	{
 		void SetData( Bitmap bitmap );
+	}
+
+	public interface IFont
+	{
+		void DrawText( string text, int2 pos, Color c );
+
+		int2 Measure( string text );
 	}
 
     public enum PrimitiveType

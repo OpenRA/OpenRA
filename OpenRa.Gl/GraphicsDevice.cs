@@ -28,6 +28,7 @@ using Tao.Cg;
 using Tao.OpenGl;
 using OpenRa.FileFormats.Graphics;
 using Tao.Sdl;
+using ISE;
 
 [assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
@@ -231,6 +232,11 @@ namespace OpenRa.GlRenderer
 			return new Shader( this, stream );
 		}
 
+		public IFont CreateFont( string filename )
+		{
+			return new Font( this, filename );
+		}
+
 		#endregion
 	}
 
@@ -414,4 +420,63 @@ namespace OpenRa.GlRenderer
             bitmap.UnlockBits(bits);
         }
     }
+
+	class Font : IFont
+	{
+		const int RenderedFontSize = 48;
+		const float emHeight = 14f;	/* px */
+
+		GraphicsDevice dev;
+		FTFontGL font;
+
+		public Font( GraphicsDevice dev, string filename )
+		{
+			this.dev = dev;
+			int Errors;
+			font = new FTFontGL(filename, out Errors);
+
+			if (Errors > 0)
+				throw new InvalidOperationException("Error(s) loading font");
+
+			font.ftRenderToTexture(RenderedFontSize, 192);
+			font.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
+		}
+
+		public void DrawText( string text, int2 pos, Color c )
+		{
+			pos.Y += (int)(emHeight);
+
+			Gl.glMatrixMode(Gl.GL_MODELVIEW);
+			Gl.glPushMatrix();
+			Gl.glLoadIdentity();
+
+			Gl.glMatrixMode(Gl.GL_PROJECTION);
+			Gl.glPushMatrix();
+			Gl.glLoadIdentity();
+
+			Gl.glOrtho(0, dev.WindowSize.Width, 0, dev.WindowSize.Height, 0, 1);
+
+			Gl.glMatrixMode(Gl.GL_MODELVIEW);
+			Gl.glTranslatef(pos.X, dev.WindowSize.Height - pos.Y, 0);
+			Gl.glScalef(emHeight / RenderedFontSize, emHeight / RenderedFontSize, 1);
+
+			font.ftBeginFont(false);
+			Gl.glColor4f(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
+			font.ftWrite(text);
+			font.ftEndFont();
+
+			Gl.glMatrixMode(Gl.GL_PROJECTION);
+			Gl.glPopMatrix();
+
+			Gl.glMatrixMode(Gl.GL_MODELVIEW);
+			Gl.glPopMatrix();
+
+			GraphicsDevice.CheckGlError();
+		}
+
+		public int2 Measure( string text )
+		{
+			return new int2((int)(font.ftExtent(ref text) / 3), (int)emHeight);
+		}
+	}
 }
