@@ -8,13 +8,12 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 fileformats_SRCS	=	$(shell find OpenRa.FileFormats/ -iname '*.cs')
 fileformats_TARGET	=	OpenRa.FileFormats.dll
 fileformats_KIND	=	library
-fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Glfw.dll
+fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll
 
 gl_SRCS				= $(shell find OpenRa.Gl/ -iname '*.cs')
 gl_TARGET			= OpenRa.Gl.dll
 gl_KIND				= library
-gl_DEPS				= $(fileformats_TARGET) $(game_TARGET) \
-						thirdparty/Tao/Tao.Glfw.dll 
+gl_DEPS				= $(fileformats_TARGET) $(game_TARGET)
 gl_LIBS				= $(COMMON_LIBS) System.Windows.Forms.dll \
 						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll thirdparty/ISE.FreeType.dll \
 						$(gl_DEPS) $(game_TARGET)

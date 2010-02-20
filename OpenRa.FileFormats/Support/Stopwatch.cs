@@ -18,10 +18,7 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
-using Tao.Glfw;
 using Tao.Sdl;
-
 namespace OpenRa.Support
 {
 	public class Stopwatch
