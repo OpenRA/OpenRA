@@ -46,11 +46,13 @@ namespace OpenRa.Graphics
 		public ITexture PaletteTexture;
 
 		readonly Font fDebug, fTitle;
-		readonly FTFontBitmap testFont;
+		readonly FTFontGL testFont, boldFont;
 		
 		Sheet textSheet;
 		SpriteRenderer rgbaRenderer;
 		Sprite textSprite;
+
+		const int RenderedSize = 48;
 
 		public Size Resolution { get { return device.WindowSize; } }
 
@@ -63,12 +65,25 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("chrome-shp.fx"));
 
-			//fDebug = new Font("Tahoma", 10.0f, FontStyle.Regular);
-			//fTitle = new Font("Tahoma", 10, FontStyle.Bold);
+			fDebug = new Font("Tahoma", 10.0f, FontStyle.Regular);
+			fTitle = new Font("Tahoma", 10, FontStyle.Bold);
+
 			int Errors;
-			testFont = new FTFontBitmap("FreeSans.ttf", out Errors);
-			testFont.ftRenderToTexture(2, 48);
-			testFont.FT_ALIGN = FTFontAlign.FT_ALIGN_CENTERED;
+			testFont = new FTFontGL("FreeSans.ttf", out Errors);
+
+			if (Errors > 0)
+				throw new InvalidOperationException("Error(s) loading font");
+
+			testFont.ftRenderToTexture(RenderedSize, 192);
+			testFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
+
+			boldFont = new FTFontGL("FreeSansBold.ttf", out Errors);
+			if (Errors > 0)
+				throw new InvalidOperationException("Error(s) loading font");
+
+			boldFont.ftRenderToTexture(RenderedSize, 192);
+			boldFont.FT_ALIGN = FTFontAlign.FT_ALIGN_LEFT;
+
 			
 			textSheet = new Sheet(this, new Size(256, 256));
 			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
@@ -85,7 +100,7 @@ namespace OpenRa.Graphics
 			throw new NotImplementedException();
 		}
 
-		Bitmap RenderTextToBitmap(string s, Font f, Color c)
+/*		Bitmap RenderTextToBitmap(string s, Font f, Color c)
 		{
 			Bitmap b = new Bitmap(256, 256);
 			testFont.ftBeginFont(0.9f,0.0f,0.0f,0.5f);
@@ -98,8 +113,8 @@ namespace OpenRa.Graphics
                 g.DrawString(s, f, new SolidBrush(c), 0, 0);
                 g.Flush();
             }*/
-			return b;
-		}
+//			return b;
+//		}
 
 		int2 GetTextSize(string s, Font f)
 		{
@@ -167,36 +182,61 @@ namespace OpenRa.Graphics
 			PerfHistory.Increment("batches", 1);
 		}
 
-		public void DrawText(string text, int2 pos, Color c)
+		static void CheckError()
 		{
-			using (new PerfSample("text"))
-			{											
-				Bitmap b = RenderTextToBitmap(text, fDebug, c);
-				textSheet.Texture.SetData(b);
-				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-				rgbaRenderer.Flush();
-			}
+			var e = Gl.glGetError();
+			if (e != Gl.GL_NO_ERROR)
+				throw new InvalidOperationException("GL Error: " + Gl.glGetString(e));
 		}
 
-		public void DrawText2(string text, int2 pos, Color c)
+		const float emHeight = 14f;	/* px */
+
+		void DrawTextInner(FTFontGL f, string text, int2 pos, Color c)
 		{
 			using (new PerfSample("text"))
 			{
-				Bitmap b = RenderTextToBitmap(text, fTitle, c);
-				textSheet.Texture.SetData(b);
-				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
-				rgbaRenderer.Flush();
+				pos.Y += (int)(emHeight * 2 / 3);
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glPushMatrix();
+				Gl.glLoadIdentity();
+
+				Gl.glMatrixMode(Gl.GL_PROJECTION);
+				Gl.glPushMatrix();
+				Gl.glLoadIdentity();
+
+				Gl.glOrtho(0, Resolution.Width, 0, Resolution.Height, 0, 1);
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glTranslatef(pos.X, Resolution.Height - pos.Y, 0);
+				Gl.glScalef(emHeight / RenderedSize, emHeight / RenderedSize, 1);
+
+				f.ftBeginFont(false);
+				Gl.glColor4f(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
+				f.ftWrite(text);
+				f.ftEndFont();
+
+				Gl.glMatrixMode(Gl.GL_PROJECTION);
+				Gl.glPopMatrix();
+
+				Gl.glMatrixMode(Gl.GL_MODELVIEW);
+				Gl.glPopMatrix();
+
+				CheckError();
 			}
 		}
 
+		public void DrawText(string text, int2 pos, Color c) { DrawTextInner(testFont, text, pos, c); }
+		public void DrawText2(string text, int2 pos, Color c) { DrawTextInner(boldFont, text, pos, c); }
+
 		public int2 MeasureText(string text)
 		{
-			return GetTextSize(text, fDebug);
+			return new int2((int)(testFont.ftExtent(ref text) / 3), (int)emHeight);
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return GetTextSize(text, fTitle);
+			return new int2((int)(boldFont.ftExtent(ref text) / 3), (int)emHeight);
 		}
 	}
 }
