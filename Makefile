@@ -16,7 +16,7 @@ gl_KIND				= library
 gl_DEPS				= $(fileformats_TARGET) $(game_TARGET) \
 						thirdparty/Tao/Tao.Glfw.dll 
 gl_LIBS				= $(COMMON_LIBS) System.Windows.Forms.dll \
-						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao.Externals.dll \
+						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
 						$(gl_DEPS) $(game_TARGET)
 
 game_SRCS			=	$(shell find OpenRa.Game/ -iname '*.cs')
