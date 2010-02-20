@@ -6,7 +6,7 @@
 
 # List of game files to copy into the app bundle
 # TODO: This will be significantly shorter once we move the ra files into its mod dir
-GAME_FILES="OpenRA shaders mods maps packaging/osx/settings.ini"
+GAME_FILES="OpenRA shaders mods maps packaging/osx/settings.ini FreeSans.ttf FreeSansBold.ttf"
 
 # List of system files to copy into the app bundle
 # TODO: Sort out whats going on with libglfw so we don't need to do this
