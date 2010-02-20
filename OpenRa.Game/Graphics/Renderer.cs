@@ -27,6 +27,8 @@ using OpenRa.FileFormats;
 using OpenRa.FileFormats.Graphics;
 using OpenRa.Support;
 using System.IO;
+using ISE;
+using Tao.OpenGl;
 
 namespace OpenRa.Graphics
 {
@@ -44,7 +46,8 @@ namespace OpenRa.Graphics
 		public ITexture PaletteTexture;
 
 		readonly Font fDebug, fTitle;
-
+		readonly FTFontBitmap testFont;
+		
 		Sheet textSheet;
 		SpriteRenderer rgbaRenderer;
 		Sprite textSprite;
@@ -60,8 +63,13 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("chrome-shp.fx"));
 
-			//fDebug = new Font("Tahoma", 10, FontStyle.Regular);
+			//fDebug = new Font("Tahoma", 10.0f, FontStyle.Regular);
 			//fTitle = new Font("Tahoma", 10, FontStyle.Bold);
+			int Errors;
+			testFont = new FTFontBitmap("FreeSans.ttf", out Errors);
+			testFont.ftRenderToTexture(2, 48);
+			testFont.FT_ALIGN = FTFontAlign.FT_ALIGN_CENTERED;
+			
 			textSheet = new Sheet(this, new Size(256, 256));
 			rgbaRenderer = new SpriteRenderer(this, true, RgbaSpriteShader);
 			textSprite = new Sprite(textSheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
@@ -80,6 +88,10 @@ namespace OpenRa.Graphics
 		Bitmap RenderTextToBitmap(string s, Font f, Color c)
 		{
 			Bitmap b = new Bitmap(256, 256);
+			testFont.ftBeginFont(0.9f,0.0f,0.0f,0.5f);
+			testFont.ftWrite("Test",b);
+			testFont.ftEndFont();
+			
             /*using (var g = System.Drawing.Graphics.FromImage(b))
             {
                 g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
@@ -91,7 +103,7 @@ namespace OpenRa.Graphics
 
 		int2 GetTextSize(string s, Font f)
 		{
-			return new int2(0,0);
+			return new int2(50,100);
 			/*Bitmap b = new Bitmap(1,1);
 			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b);
 			return new int2(g.MeasureString(s, f).ToSize());*/
@@ -157,9 +169,8 @@ namespace OpenRa.Graphics
 
 		public void DrawText(string text, int2 pos, Color c)
 		{
-			return;
 			using (new PerfSample("text"))
-			{
+			{											
 				Bitmap b = RenderTextToBitmap(text, fDebug, c);
 				textSheet.Texture.SetData(b);
 				rgbaRenderer.DrawSprite(textSprite, pos.ToFloat2(), "chrome");
@@ -169,7 +180,6 @@ namespace OpenRa.Graphics
 
 		public void DrawText2(string text, int2 pos, Color c)
 		{
-			return;
 			using (new PerfSample("text"))
 			{
 				Bitmap b = RenderTextToBitmap(text, fTitle, c);
@@ -181,12 +191,12 @@ namespace OpenRa.Graphics
 
 		public int2 MeasureText(string text)
 		{
-			return new int2(0,0); //GetTextSize(text, fDebug);
+			return GetTextSize(text, fDebug);
 		}
 
 		public int2 MeasureText2(string text)
 		{
-			return new int2(0,0);// GetTextSize(text, fTitle);
+			return GetTextSize(text, fTitle);
 		}
 	}
 }
