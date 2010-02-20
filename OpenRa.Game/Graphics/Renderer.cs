@@ -27,7 +27,6 @@ using OpenRa.FileFormats;
 using OpenRa.FileFormats.Graphics;
 using OpenRa.Support;
 using System.IO;
-using ISE;
 
 namespace OpenRa.Graphics
 {
