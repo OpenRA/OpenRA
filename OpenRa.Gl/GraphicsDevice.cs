@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,8 +27,7 @@ using System.Windows.Forms;
 using Tao.Cg;
 using Tao.OpenGl;
 using OpenRa.FileFormats.Graphics;
-using Tao.Glfw;
-
+using Tao.Sdl;
 
 [assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
 
@@ -40,10 +39,7 @@ namespace OpenRa.GlRenderer
         internal IntPtr cgContext;
         internal int vertexProfile, fragmentProfile;
 
-		readonly Glfw.GLFWmousebuttonfun mouseButtonCallback;
-		readonly Glfw.GLFWmouseposfun mousePositionCallback;
-		readonly Glfw.GLFWwindowclosefun windowCloseCallback;
-		int mouseX, mouseY;
+		IntPtr surf;
 
 		public Size WindowSize { get { return windowSize; } }
 
@@ -56,54 +52,19 @@ namespace OpenRa.GlRenderer
 
 		public GraphicsDevice( int width, int height, bool fullscreen, bool vsync )
 		{
-			Glfw.glfwInit();
-			Glfw.glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, 
-				/*fullscreen ? Glfw.GLFW_FULLSCREEN : */Glfw.GLFW_WINDOW);
-			
-			Glfw.glfwSetWindowTitle("OpenRA");
-			bool initDone = false;
+			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
-			var lastButtonBits = (MouseButtons)0;
-
-			mouseButtonCallback = ( button, action ) =>
-				{
-					var b = button == Glfw.GLFW_MOUSE_BUTTON_1 ? MouseButtons.Left
-						: button == Glfw.GLFW_MOUSE_BUTTON_2 ? MouseButtons.Right
-						: button == Glfw.GLFW_MOUSE_BUTTON_3 ? MouseButtons.Middle
-						: 0;
-					OpenRa.Game.DispatchMouseInput( action == Glfw.GLFW_PRESS ? MouseInputEvent.Down : MouseInputEvent.Up,
-						new MouseEventArgs( b, action == Glfw.GLFW_PRESS ? 1 : 0, mouseX, mouseY, 0 ), 0 );
-
-					if (action == Glfw.GLFW_PRESS) lastButtonBits |= b;
-					else lastButtonBits &= ~b;
-
-					if (action != Glfw.GLFW_PRESS && action != Glfw.GLFW_RELEASE)
-						throw new InvalidOperationException();
-				};
-
-			mousePositionCallback = (x, y) =>
-				{
-					mouseX = x;
-					mouseY = y;
-					if (initDone)
-						OpenRa.Game.DispatchMouseInput(MouseInputEvent.Move, new MouseEventArgs(lastButtonBits, 0, x, y, 0), 0);
-				};
-			windowCloseCallback = () =>
-				{
-					OpenRa.Game.Exit();
-					// This looks lame on os x
-					//Glfw.glfwIconifyWindow();
-					return Gl.GL_FALSE;
-				};
-
-			Glfw.glfwSetWindowTitle("OpenRA");
-			Glfw.glfwSetMouseButtonCallback( mouseButtonCallback );
-			Glfw.glfwSetMousePosCallback( mousePositionCallback );
-			Glfw.glfwSetWindowCloseCallback( windowCloseCallback );
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (fullscreen ? Sdl.SDL_FULLSCREEN : 0));
+			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
+			Sdl.SDL_ShowCursor(0);
 
 			CheckGlError();
 
-			Glfw.glfwGetWindowSize(out width, out height);
 			windowSize = new Size( width, height );
 
 			cgContext = Cg.cgCreateContext();
@@ -122,8 +83,6 @@ namespace OpenRa.GlRenderer
 			CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
 			CheckGlError();
-
-			initDone = true;
 		}
 
 		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
@@ -161,11 +120,59 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
+		MouseButtons lastButtonBits = (MouseButtons)0;
+
+		static MouseButtons MakeButton(byte b)
+		{
+			return b == Sdl.SDL_BUTTON_LEFT ? MouseButtons.Left
+							: b == Sdl.SDL_BUTTON_RIGHT ? MouseButtons.Right
+							: b == Sdl.SDL_BUTTON_MIDDLE ? MouseButtons.Middle
+							: 0;
+		}
+
         public void Present()
         {
-			Glfw.glfwSwapBuffers();
-			Glfw.glfwPollEvents();
-            CheckGlError();
+			Sdl.SDL_GL_SwapBuffers();
+
+			Sdl.SDL_Event e;
+			while (Sdl.SDL_PollEvent(out e) != 0)
+			{
+				switch (e.type)
+				{
+					case Sdl.SDL_QUIT:
+						OpenRa.Game.Exit();
+						break;
+
+					case Sdl.SDL_MOUSEBUTTONDOWN:
+						{
+							var button = MakeButton(e.button.button);
+							lastButtonBits |= button;
+
+							Game.DispatchMouseInput(MouseInputEvent.Down,
+								new MouseEventArgs(button, 1, e.button.x, e.button.y, 0),
+								Keys.None);
+						} break;
+
+					case Sdl.SDL_MOUSEBUTTONUP:
+						{
+							var button = MakeButton(e.button.button);
+							lastButtonBits &= ~button;
+
+							Game.DispatchMouseInput(MouseInputEvent.Up,
+								new MouseEventArgs(button, 1, e.button.x, e.button.y, 0),
+								Keys.None);
+						} break;
+
+					case Sdl.SDL_MOUSEMOTION:
+						{
+							Game.DispatchMouseInput(MouseInputEvent.Move,
+								new MouseEventArgs(lastButtonBits, 0, e.motion.x, e.motion.y, 0),
+								Keys.None);
+						} break;
+				}
+			}
+
+			CheckGlError();
         }
 
 		public void DrawIndexedPrimitives( PrimitiveType pt, Range<int> vertices, Range<int> indices )
