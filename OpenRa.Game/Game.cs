@@ -359,7 +359,7 @@ namespace OpenRa
 
 		public static void PreInit(Settings settings)
 		{
-			while (!File.Exists("redalert.mix"))
+			while (!Directory.Exists("mods"))
 			{
 				var current = Directory.GetCurrentDirectory();
 				if (Directory.GetDirectoryRoot(current) == current)

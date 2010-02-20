@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -19,35 +19,26 @@
 #endregion
 
 using System.Runtime.InteropServices;
+using Tao.Glfw;
 
 namespace OpenRa.Support
 {
 	public class Stopwatch
 	{
-		//[DllImport("kernel32.dll")]
-		static bool QueryPerformanceCounter(out long value) { value = 1; return true; }
-		//[DllImport("kernel32.dll")]
-		static bool QueryPerformanceFrequency(out long frequency) { frequency = 1; return true; }
-
-		long freq, start;
-
+		double start;
 		public Stopwatch()
 		{
-			QueryPerformanceFrequency(out freq);
-			QueryPerformanceCounter(out start);
+			Reset();
 		}
 
 		public double ElapsedTime()
 		{
-			long current;
-			QueryPerformanceCounter(out current);
-
-			return (current - start) / (double)freq;
+			return (Glfw.glfwGetTime() - start);
 		}
 
 		public void Reset()
 		{
-			QueryPerformanceCounter(out start);
+			start = Glfw.glfwGetTime();
 		}
 	}
 }

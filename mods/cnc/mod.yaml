@@ -2,9 +2,12 @@
 
 Folders:
 	./mods/cnc/
+	./mods/ra/packages/
 	./
+
 Packages:
 	mods/cnc/overrides.mix
+# Fully qualify the cnc package names
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
@@ -12,20 +15,16 @@ Packages:
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
 	mods/cnc/packages/updatec.mix
+# Cannot qualify the RA names because they may live inside a mix
 	~main.mix
 	redalert.mix
-	hires.mix
-	local.mix
 	speech.mix
-	allies.mix
-	russian.mix
 	temperat.mix
 	snow.mix
 	interior.mix
 	general.mix
 	conquer.mix
 	sounds.mix
-
 
 LegacyRules:
 	mods/cnc/minimal.ini:	Minimal rules definitions
@@ -53,7 +52,6 @@ Chrome:
 Assemblies:
 	mods/cnc/OpenRa.Mods.Cnc.dll: Cnc mod traits
 	mods/ra/OpenRa.Mods.RA.dll:	Red alert mod traits
-	
 	
 Maps:
 	scg01ea.ini: GDI Mission 1

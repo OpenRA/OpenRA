@@ -1,7 +1,8 @@
 # Classic Red Alert Mod -- Package Manifest
 
 Folders:
-	./mods/ra/
+	./mods/ra/packages
+	./mods/ra
 	./
 
 Packages:
