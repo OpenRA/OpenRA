@@ -20,12 +20,13 @@
 
 using System.Runtime.InteropServices;
 using Tao.Glfw;
+using Tao.Sdl;
 
 namespace OpenRa.Support
 {
 	public class Stopwatch
 	{
-		double start;
+		int start;
 		public Stopwatch()
 		{
 			Reset();
@@ -33,12 +34,12 @@ namespace OpenRa.Support
 
 		public double ElapsedTime()
 		{
-			return (Glfw.glfwGetTime() - start);
+			return (1.0/1000.0) * (double)(Sdl.SDL_GetTicks() - start);
 		}
 
 		public void Reset()
 		{
-			start = Glfw.glfwGetTime();
+			start = Sdl.SDL_GetTicks();
 		}
 	}
 }
