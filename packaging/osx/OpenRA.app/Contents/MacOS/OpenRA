@@ -5,4 +5,9 @@
 
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 cd "$APP_PATH/Contents/Resources"
+
+if [ ! -e mods/ra/packages/redalert.mix ]; then
+osascript install_ra_mix.scpt
+else
 ./OpenRA
+fi
