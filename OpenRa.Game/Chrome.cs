@@ -233,7 +233,7 @@ namespace OpenRa
 
 		public void DrawDialog(string text)
 		{
-			var w = renderer.MeasureText(text).X + 120;
+			var w = renderer.MeasureText2(text).X + 120;
 			var h = 100;
 			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
 			DrawDialogBackground(r, "dialog");

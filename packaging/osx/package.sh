@@ -1,8 +1,7 @@
 #!/bin/sh
 # OpenRA Packaging script for osx
 #   Creates a .app bundle for OpenRA game, and a command line app for OpenRa server
-#   Statically links all custom dlls into the executable; only requires Mono
-#   to run on a non-development machine
+#   All dependencies are packaged inside the game bundle
 
 # List of game files to copy into the app bundle
 GAME_FILES="OpenRA shaders mods maps packaging/osx/settings.ini FreeSans.ttf FreeSansBold.ttf"
@@ -22,9 +21,7 @@ function patch_mono {
 		fi
 	done
 	for i in $LIBS; do
-		if [ -e OpenRA.app/Contents/${i:9} ]; then
-			echo "File already processed: "${i:9}
-		else
+		if [ ! -e OpenRA.app/Contents/${i:9} ]; then
 			mkdir -p OpenRA.app/Contents/`dirname ${i:9}`
 			cp $i OpenRA.app/Contents/`dirname ${i:9}`
 			patch_mono OpenRA.app/Contents/${i:9}
@@ -63,3 +60,6 @@ done
 
 cp -R /Library/Frameworks/Cg.Framework OpenRa.app/Contents/Frameworks/
 cp -R /Library/Frameworks/SDL.Framework OpenRa.app/Contents/Frameworks/
+
+# Fix permissions
+chmod -R 755 OpenRA.app
