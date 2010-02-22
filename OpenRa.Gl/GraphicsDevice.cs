@@ -124,7 +124,6 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
-		Modifiers mods = 0;
 		MouseButtons lastButtonBits = (MouseButtons)0;
 
 		static MouseButtons MakeButton(byte b)
@@ -135,9 +134,19 @@ namespace OpenRa.GlRenderer
 							: 0;
 		}
 
+		static Modifiers MakeModifiers(int raw)
+		{
+			return ((raw & Sdl.KMOD_ALT) != 0 ? Modifiers.Alt : 0)
+				| ((raw & Sdl.KMOD_CTRL) != 0 ? Modifiers.Ctrl : 0)
+				| ((raw & Sdl.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
+		}
+
         public void Present()
         {
 			Sdl.SDL_GL_SwapBuffers();
+
+			var mods = MakeModifiers(Sdl.SDL_GetModState());
+			Game.HandleModifierKeys(mods);
 
 			Sdl.SDL_Event e;
 			while (Sdl.SDL_PollEvent(out e) != 0)
@@ -177,9 +186,6 @@ namespace OpenRa.GlRenderer
 
 					case Sdl.SDL_KEYDOWN:
 						{
-							mods = ( ( e.key.keysym.mod & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
-									| ( ( e.key.keysym.mod & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
-									| ( ( e.key.keysym.mod & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
 							if( e.key.keysym.unicode != 0 )
 								Game.HandleKeyPress( new KeyPressEventArgs( (char)e.key.keysym.unicode ), mods );
 

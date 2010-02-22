@@ -29,16 +29,8 @@ namespace OpenRa
 {
 	public class Controller : IHandleInput
 	{
-		public IOrderGenerator orderGenerator;
+		public IOrderGenerator orderGenerator = new UnitOrderGenerator();
 		public Selection selection = new Selection();
-
-		readonly Func<Modifiers> GetModifierKeys;
-
-		public Controller(Func<Modifiers> getModifierKeys)
-		{
-			GetModifierKeys = getModifierKeys;
-			CancelInputMode();
-		}
 
 		public void CancelInputMode() { orderGenerator = new UnitOrderGenerator(); }
 
@@ -123,6 +115,7 @@ namespace OpenRa
 		}
 
 		public float2 MousePosition { get { return dragEnd; } }
+		Modifiers modifiers;
 
 		public string ChooseCursor( World world )
 		{
@@ -134,7 +127,7 @@ namespace OpenRa
 				{
 					Location = ( Game.CellSize * MousePosition - Game.viewport.Location ).ToInt2(),
 					Button = MouseButton.Right,
-					Modifiers = GetModifierKeys(),
+					Modifiers = modifiers
 				};
 
 				return orderGenerator.GetCursor( world, MousePosition.ToInt2(), mi );
@@ -145,5 +138,7 @@ namespace OpenRa
 					throw new InvalidOperationException( "Desync in Controller.ChooseCursor" );
 			}
 		}
+
+		public void SetModifiers(Modifiers mods) { modifiers = mods; }
 	}
 }
