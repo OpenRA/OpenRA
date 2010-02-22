@@ -25,6 +25,7 @@ namespace OpenRa.Traits
 	class LimitedAmmoInfo : ITraitInfo
 	{
 		public readonly int Ammo = 0;
+		public readonly int PipCount = 0;
 
 		public object Create(Actor self) { return new LimitedAmmo(self); }
 	}
@@ -53,9 +54,10 @@ namespace OpenRa.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var maxAmmo = self.Info.Traits.Get<LimitedAmmoInfo>().Ammo;
-			return Graphics.Util.MakeArray(maxAmmo, 
-				i => ammo > i ? PipType.Green : PipType.Transparent);
+			var info = self.Info.Traits.Get<LimitedAmmoInfo>();
+			var pips = info.PipCount != 0 ? info.PipCount : info.Ammo;
+			return Graphics.Util.MakeArray(pips, 
+				i => (ammo * pips) / info.Ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}
 }
