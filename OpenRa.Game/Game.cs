@@ -341,6 +341,11 @@ namespace OpenRa
 				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}
 
+		public static void HandleModifierKeys(Modifiers mods)
+		{
+			controller.SetModifiers(mods);
+		}
+
 		static Size GetResolution(Settings settings)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
@@ -353,9 +358,6 @@ namespace OpenRa
 				desktopResolution.Width,
 				desktopResolution.Height);
 		}
-
-	//	[DllImport("user32")]
-	//	static extern int ShowCursor([MarshalAs(UnmanagedType.Bool)] bool visible);
 
 		public static void PreInit(Settings settings)
 		{
@@ -383,7 +385,7 @@ namespace OpenRa
 			renderer = new Renderer(resolution, windowed);
 			resolution = renderer.Resolution;
 
-			var controller = new Controller(() => (Modifiers)(int)0/*ModifierKeys*/);	/* a bit of insane input routing */
+			var controller = new Controller();	/* a bit of insane input routing */
 
 			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
 

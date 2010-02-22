@@ -60,12 +60,13 @@ namespace OpenRa.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
-			Sdl.SDL_putenv( "SDL_VIDEO_WINDOW_POS=0,0" );
+			Environment.SetEnvironmentVariable("SDL_VIDEO_WINDOW_POS", "0,0");
 
-			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_NOFRAME | Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE( 1 );
+			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_INTERVAL, Sdl.SDL_DEFAULT_REPEAT_DELAY);
 
 			CheckGlError();
 
@@ -124,7 +125,6 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
-		Modifiers mods = 0;
 		MouseButtons lastButtonBits = (MouseButtons)0;
 
 		static MouseButtons MakeButton(byte b)
@@ -135,9 +135,19 @@ namespace OpenRa.GlRenderer
 							: 0;
 		}
 
+		static Modifiers MakeModifiers(int raw)
+		{
+			return ((raw & Sdl.KMOD_ALT) != 0 ? Modifiers.Alt : 0)
+				| ((raw & Sdl.KMOD_CTRL) != 0 ? Modifiers.Ctrl : 0)
+				| ((raw & Sdl.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
+		}
+
         public void Present()
         {
 			Sdl.SDL_GL_SwapBuffers();
+
+			var mods = MakeModifiers(Sdl.SDL_GetModState());
+			Game.HandleModifierKeys(mods);
 
 			Sdl.SDL_Event e;
 			while (Sdl.SDL_PollEvent(out e) != 0)
@@ -177,9 +187,6 @@ namespace OpenRa.GlRenderer
 
 					case Sdl.SDL_KEYDOWN:
 						{
-							mods = ( ( e.key.keysym.mod & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
-									| ( ( e.key.keysym.mod & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
-									| ( ( e.key.keysym.mod & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
 							if( e.key.keysym.unicode != 0 )
 								Game.HandleKeyPress( new KeyPressEventArgs( (char)e.key.keysym.unicode ), mods );
 
