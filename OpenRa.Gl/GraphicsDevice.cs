@@ -60,6 +60,8 @@ namespace OpenRa.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
+			Sdl.SDL_putenv( "SDL_VIDEO_WINDOW_POS=0,0" );
+
 			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
@@ -122,6 +124,7 @@ namespace OpenRa.GlRenderer
             CheckGlError();
         }
 
+		Modifiers mods = 0;
 		MouseButtons lastButtonBits = (MouseButtons)0;
 
 		static MouseButtons MakeButton(byte b)
@@ -152,7 +155,7 @@ namespace OpenRa.GlRenderer
 
 							Game.DispatchMouseInput(MouseInputEvent.Down,
 								new MouseEventArgs(button, 1, e.button.x, e.button.y, 0),
-								Keys.None);
+								mods);
 						} break;
 
 					case Sdl.SDL_MOUSEBUTTONUP:
@@ -162,19 +165,19 @@ namespace OpenRa.GlRenderer
 
 							Game.DispatchMouseInput(MouseInputEvent.Up,
 								new MouseEventArgs(button, 1, e.button.x, e.button.y, 0),
-								Keys.None);
+								mods);
 						} break;
 
 					case Sdl.SDL_MOUSEMOTION:
 						{
 							Game.DispatchMouseInput(MouseInputEvent.Move,
 								new MouseEventArgs(lastButtonBits, 0, e.motion.x, e.motion.y, 0),
-								Keys.None);
+								mods);
 						} break;
 
 					case Sdl.SDL_KEYDOWN:
 						{
-							var mods = ( ( e.key.keysym.mod & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
+							mods = ( ( e.key.keysym.mod & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
 									| ( ( e.key.keysym.mod & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
 									| ( ( e.key.keysym.mod & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
 							if( e.key.keysym.unicode != 0 )
@@ -185,6 +188,8 @@ namespace OpenRa.GlRenderer
 								var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
 								if( keyName.Length == 1 )
 									Game.HandleKeyPress( new KeyPressEventArgs( keyName[ 0 ] ), mods );
+								else if( keyName == "f4" && ( ( mods & Modifiers.Alt ) != 0 ) )
+									OpenRa.Game.Exit();
 							}
 						} break;
 

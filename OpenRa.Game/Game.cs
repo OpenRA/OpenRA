@@ -288,7 +288,7 @@ namespace OpenRa
 		}
 
 		static int2 lastPos;
-		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Keys ModifierKeys)
+		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
 			int sync = Game.world.SyncHash();
 
@@ -308,7 +308,7 @@ namespace OpenRa
 					Button = (MouseButton)(int)e.Button,
 					Event = ev,
 					Location = new int2(e.Location),
-					Modifiers = (Modifiers)(int)ModifierKeys,
+					Modifiers = modifierKeys,
 				});
 
 			if( sync != Game.world.SyncHash() )
