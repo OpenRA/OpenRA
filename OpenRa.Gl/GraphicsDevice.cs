@@ -62,7 +62,7 @@ namespace OpenRa.GlRenderer
 
 			Sdl.SDL_putenv( "SDL_VIDEO_WINDOW_POS=0,0" );
 
-			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_NOFRAME | Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE( 1 );
