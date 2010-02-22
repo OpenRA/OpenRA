@@ -26,6 +26,8 @@ namespace OpenRa.Traits
 	class HarvesterInfo : ITraitInfo
 	{
 		public readonly int BailCount = 28;
+		public readonly int PipCount = 7;
+
 		public object Create(Actor self) { return new Harvester(self); }
 	}
 
@@ -91,7 +93,8 @@ namespace OpenRa.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			const int numPips = 7;
+			int numPips = self.Info.Traits.Get<HarvesterInfo>().PipCount;
+
 			for (int i = 0; i < numPips; i++)
 			{
 				if (gemsCarried * 1.0f / self.Info.Traits.Get<HarvesterInfo>().BailCount > i * 1.0f / numPips)
