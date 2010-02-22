@@ -177,7 +177,7 @@ namespace OpenRa
 			buttons.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n".F(
+			renderer.RegularFont.DrawText("RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n".F(
 				Game.RenderFrame,
 				Game.orderManager.FrameNumber,
 				PerfHistory.items["render"].LastValue,
@@ -233,7 +233,7 @@ namespace OpenRa
 
 		public void DrawDialog(string text)
 		{
-			var w = renderer.MeasureText2(text).X + 120;
+			var w = renderer.BoldFont.Measure(text).X + 120;
 			var h = 100;
 			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
 			DrawDialogBackground(r, "dialog");
@@ -326,7 +326,7 @@ namespace OpenRa
 				if (map == currentMap)
 					DrawDialogBackground(itemRect, "panel");
 
-				renderer.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
+				renderer.RegularFont.DrawText(map.Map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
 			}
@@ -444,11 +444,12 @@ namespace OpenRa
 				});
 			}
 
-			renderer.DrawText2("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
-			renderer.DrawText2("Color", new int2(r.Left + 140, r.Top + 50), Color.White);
-			renderer.DrawText2("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
-			renderer.DrawText2("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
-			renderer.DrawText2("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
+			var f = renderer.BoldFont;
+			f.DrawText("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
+			f.DrawText("Color", new int2(r.Left + 140, r.Top + 50), Color.White);
+			f.DrawText("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
+			f.DrawText("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
+			f.DrawText("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
 				
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
@@ -480,16 +481,17 @@ namespace OpenRa
 
 				shpRenderer.Flush();
 
-				renderer.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
+				f = renderer.RegularFont;
+				f.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
 				lineRenderer.FillRect(RectangleF.FromLTRB(paletteRect.Left + Game.viewport.Location.X + 5,
 															paletteRect.Top + Game.viewport.Location.Y + 5,
 															paletteRect.Right + Game.viewport.Location.X - 5,
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex].c);
 				lineRenderer.Flush();
-				renderer.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
-				renderer.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
-				renderer.DrawText((client.SpawnPoint == 0)? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
+				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
+				f.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
+				f.DrawText((client.SpawnPoint == 0)? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;
 			}
 
@@ -738,8 +740,8 @@ namespace OpenRa
 			AddButton(optionsRect, isLmb => optionsPressed = !optionsPressed);
 			shpRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, "chrome");
 			shpRenderer.Flush();
-			
-			renderer.DrawText("Options", new int2((int)(optionsButton.Image.size.X - renderer.MeasureText("Options").X)/2, -2) , Color.White);
+
+			renderer.RegularFont.DrawText("Options", new int2((int)(optionsButton.Image.size.X - renderer.RegularFont.Measure("Options").X) / 2, -2), Color.White);
 		}
 		
 		void DrawOptionsMenu()
@@ -815,9 +817,9 @@ namespace OpenRa
 
 		void RenderChatLine(Tuple<Color, string, string> line, int2 p)
 		{
-			var size = renderer.MeasureText(line.b);
-			renderer.DrawText(line.b, p, line.a);
-			renderer.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
+			var size = renderer.RegularFont.Measure(line.b);
+			renderer.RegularFont.DrawText(line.b, p, line.a);
+			renderer.RegularFont.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 		
 		void TickPaletteAnimation()
@@ -1063,12 +1065,12 @@ namespace OpenRa
 
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
-			renderer.DrawText2(text, pos - new int2(renderer.MeasureText2(text).X, 0), c);
+			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X, 0), c);
 		}
 
 		void DrawCentered(string text, int2 pos, Color c)
 		{
-			renderer.DrawText2(text, pos - new int2(renderer.MeasureText2(text).X/2, 0), c);
+			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X / 2, 0), c);
 		}
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
@@ -1081,7 +1083,7 @@ namespace OpenRa
 			var info = Rules.Info[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
 
-			renderer.DrawText2(buildable.Description, p.ToInt2() + new int2(5,5), Color.White);
+			renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
 
 			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
 				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
@@ -1099,14 +1101,14 @@ namespace OpenRa
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
-				renderer.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
+				renderer.RegularFont.DrawText("Requires {0}".F( string.Join( ", ", prereqs.ToArray() ) ), p.ToInt2(),
 					Color.White);
 			}
 
 			if (buildable.LongDesc != null)
 			{
 				p += new int2(0, 15);
-				renderer.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+				renderer.RegularFont.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
 			}
 		}
 
@@ -1200,7 +1202,7 @@ namespace OpenRa
 
 			pos += new int2(5, 5);
 
-			renderer.DrawText2(sp.Info.Description, pos, Color.White);
+			renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
 
 			var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
 			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
@@ -1208,7 +1210,7 @@ namespace OpenRa
 			if (sp.Info.LongDesc != null)
 			{
 				pos += new int2(0, 25);
-				renderer.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+				renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 			}
 		}
 

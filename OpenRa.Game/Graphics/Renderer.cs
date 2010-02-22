@@ -43,7 +43,7 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		readonly IFont regularFont, boldFont;
+		public readonly IFont RegularFont, BoldFont;
 
 		public Size Resolution { get { return device.WindowSize; } }
 
@@ -56,8 +56,8 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
 
-			regularFont = device.CreateFont( "FreeSans.ttf" );
-			boldFont = device.CreateFont( "FreeSansBold.ttf" );
+			RegularFont = device.CreateFont( "FreeSans.ttf" );
+			BoldFont = device.CreateFont( "FreeSansBold.ttf" );
 		}
 
 		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool windowed, bool vsync )
@@ -126,27 +126,6 @@ namespace OpenRa.Graphics
 			device.DrawIndexedPrimitives(type, vertexPool, numPrimitives);
 
 			PerfHistory.Increment("batches", 1);
-		}
-
-		public void DrawText( string text, int2 pos, Color c )
-		{
-			using (new PerfSample("text"))
-				regularFont.DrawText( text, pos, c );
-		}
-		public void DrawText2( string text, int2 pos, Color c )
-		{
-			using (new PerfSample("text"))
-				boldFont.DrawText( text, pos, c );
-		}
-
-		public int2 MeasureText(string text)
-		{
-			return regularFont.Measure( text );
-		}
-
-		public int2 MeasureText2(string text)
-		{
-			return boldFont.Measure( text );
 		}
 	}
 }
