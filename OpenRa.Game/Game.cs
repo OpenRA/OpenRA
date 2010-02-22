@@ -317,18 +317,14 @@ namespace OpenRa
 
 		public static void HandleKeyDown( KeyEventArgs e )
 		{
-			int sync = Game.world.SyncHash();
+			//int sync = Game.world.SyncHash();
 
-			if( !Game.chat.isChatting )
-				if( e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 )
-					Game.controller.selection.DoControlGroup( world, 
-						(int)e.KeyCode - (int)Keys.D0, (Modifiers)(int)e.Modifiers );
 
-			if( sync != Game.world.SyncHash() )
-				throw new InvalidOperationException( "Desync in OnKeyDown" );
+			//if( sync != Game.world.SyncHash() )
+			//    throw new InvalidOperationException( "Desync in OnKeyDown" );
 		}
 
-		public static void HandleKeyPress( KeyPressEventArgs e )
+		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
 		{
 			int sync = Game.world.SyncHash();
 			
@@ -336,7 +332,11 @@ namespace OpenRa
 				Game.chat.Toggle();
 			else if( Game.chat.isChatting )
 				Game.chat.TypeChar( e.KeyChar );
-			
+			else
+				if( e.KeyChar >= '0' && e.KeyChar <= '9' )
+					Game.controller.selection.DoControlGroup( world, 
+						e.KeyChar - '0', modifiers );
+
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyPress" );
 		}

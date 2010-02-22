@@ -63,6 +63,7 @@ namespace OpenRa.GlRenderer
 			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
+			Sdl.SDL_EnableUNICODE( 1 );
 
 			CheckGlError();
 
@@ -169,6 +170,26 @@ namespace OpenRa.GlRenderer
 							Game.DispatchMouseInput(MouseInputEvent.Move,
 								new MouseEventArgs(lastButtonBits, 0, e.motion.x, e.motion.y, 0),
 								Keys.None);
+						} break;
+
+					case Sdl.SDL_KEYDOWN:
+						{
+							var mods = ( ( e.key.keysym.mod & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
+									| ( ( e.key.keysym.mod & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
+									| ( ( e.key.keysym.mod & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
+							if( e.key.keysym.unicode != 0 )
+								Game.HandleKeyPress( new KeyPressEventArgs( (char)e.key.keysym.unicode ), mods );
+
+							else if( mods != 0 )
+							{
+								var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
+								if( keyName.Length == 1 )
+									Game.HandleKeyPress( new KeyPressEventArgs( keyName[ 0 ] ), mods );
+							}
+						} break;
+
+					case Sdl.SDL_KEYUP:
+						{
 						} break;
 				}
 			}
