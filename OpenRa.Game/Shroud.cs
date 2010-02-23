@@ -114,17 +114,28 @@ namespace OpenRa
 		
 		public void Explore(Actor a)
 		{
+			var sight = a.Info.Traits.Get<OwnedActorInfo>().Sight;
+
 			// Buildings: explore from each cell in the footprint
 			if (a.Info.Traits.Contains<BuildingInfo>())
 			{
 				var bi = a.Info.Traits.Get<BuildingInfo>();
 				foreach (var t in Footprint.Tiles(a.Info.Name, bi, a.Location))
-					Explore(a.World,t,a.Info.Traits.Get<OwnedActorInfo>().Sight);				
+					Explore(a.World, t, sight);
 			}
 			else
-				Explore(a.World,
-					(1f / Game.CellSize * a.CenterLocation).ToInt2(), 
-					a.Info.Traits.Get<OwnedActorInfo>().Sight);
+			{
+				var mobile = a.traits.GetOrDefault<Mobile>();
+				if (mobile != null)
+				{
+					Explore(a.World, mobile.fromCell, sight);
+					Explore(a.World, mobile.toCell, sight);
+				}
+				else
+					Explore(a.World,
+						(1f / Game.CellSize * a.CenterLocation).ToInt2(),
+						sight);
+			}
 		}
 
 		static readonly byte[][] SpecialShroudTiles =
