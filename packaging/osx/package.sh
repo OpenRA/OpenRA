@@ -31,7 +31,7 @@ function patch_mono {
 
 # Force 32-bit build and set the pkg-config path for mono.pc
 export AS="as -arch i386"
-export CC="gcc -arch i386"
+export CC="gcc -arch i386 -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Mono.framework/Versions/Current/lib/pkgconfig/
 
 # Package the server binary
