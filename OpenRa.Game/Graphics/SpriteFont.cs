@@ -76,10 +76,20 @@ namespace OpenRa.Graphics
 				Offset = { X = -_glyph.bitmap_left, Y = -_glyph.bitmap_top }
 			};
 
-			// todo: sensible blit, rather than just `white box`
-			for (var j = 0; j < s.size.Y; j++)
-				for (var i = 0; i < s.size.X; i++)
-					s.sheet.Bitmap.SetPixel(i + s.bounds.Left, j + s.bounds.Top, Color.White);
+			unsafe
+			{
+				var p = (byte*)_glyph.bitmap.buffer;
+
+				for (var j = 0; j < s.size.Y; j++)
+				{
+					for (var i = 0; i < s.size.X; i++)
+						if (p[i] != 0)
+							s.sheet.Bitmap.SetPixel(i + s.bounds.Left, j + s.bounds.Top,
+								Color.FromArgb(p[i], 0xff, 0xff, 0xff));
+
+					p += _glyph.bitmap.pitch;
+				}
+			}
 
 			s.sheet.Texture.SetData(s.sheet.Bitmap);
 			return g;
