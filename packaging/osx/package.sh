@@ -4,10 +4,19 @@
 #   All dependencies are packaged inside the game bundle
 
 # List of game files to copy into the app bundle
-GAME_FILES="OpenRA shaders mods maps packaging/osx/settings.ini FreeSans.ttf FreeSansBold.ttf"
+GAME_FILES="OpenRA shaders  maps packaging/osx/settings.ini FreeSans.ttf FreeSansBold.ttf"
+
+# List of mods to include
+MODS="ra"
+
+# Files/directories to include
+MODS_INCLUDE_FILES="find mods/$m ! -name \"*.mdb\" ! -name \"packages\""
 
 # dylibs referred to by dlls in the gac; won't show up to otool
 GAC_DYLIBS="/Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libMonoPosixHelper.dylib /Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libgdiplus.dylib"
+
+# Remove old app bundle
+rm -r OpenRA.app
 
 # Recursively modify and copy the mono files depended on by OpenRA into the app bundle
 function patch_mono {
@@ -29,6 +38,17 @@ function patch_mono {
 	done
 }
 
+function copy_mods {
+    for m in $MODS; do
+	mkdir -p "OpenRA.app/Contents/Resources/mods/$m"
+
+	#for f in $( find mods/$m \! -name "*.mdb" \! -name "packages"); do
+	#for f in `$MODS_INCLUDE_FILES`; do
+	cp -R "mods/$m/" "OpenRA.app/Contents/Resources/mods/$m/"
+	#done
+    done
+}
+
 # Force 32-bit build and set the pkg-config path for mono.pc
 export AS="as -arch i386"
 export CC="gcc -arch i386 -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
@@ -43,6 +63,7 @@ mkbundle --deps --static -z -o OpenRA OpenRa.Game.exe OpenRa.Gl.dll OpenRa.FileF
 # Copy game files into our game bundle template
 cp -R packaging/osx/OpenRA.app .
 cp -R $GAME_FILES OpenRA.app/Contents/Resources/
+copy_mods
 
 # Copy frameworks into our game bundle template
 mkdir OpenRA.app/Contents/Frameworks/
