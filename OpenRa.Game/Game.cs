@@ -324,6 +324,11 @@ namespace OpenRa
 			//    throw new InvalidOperationException( "Desync in OnKeyDown" );
 		}
 
+		public static bool IsHost
+		{
+			get { return orderManager.Connection.LocalClientId == 0; }
+		}
+
 		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
 		{
 			int sync = Game.world.SyncHash();

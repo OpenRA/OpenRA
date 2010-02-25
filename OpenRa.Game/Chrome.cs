@@ -431,9 +431,8 @@ namespace OpenRa
 			world.Minimap.Draw(minimapRect, true);
 			world.Minimap.DrawSpawnPoints(minimapRect);
 
-			if (Game.world.LocalPlayer.Index == 0)
+			if (Game.IsHost)
 			{
-				// we are host
 				AddUiButton(new int2(r.Right - 100, r.Top + 300), "Change Map",
 				_ =>
 				{
