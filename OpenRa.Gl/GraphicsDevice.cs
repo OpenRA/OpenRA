@@ -59,7 +59,6 @@ namespace OpenRa.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
-
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 			{
 				// pseudo-fullscreen, for sane debugging.
