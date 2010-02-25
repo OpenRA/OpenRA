@@ -36,3 +36,7 @@ glfw.dll
 
 /OpenRa.Gl.dll
 settings.ini
+
+#monodevelop
+*.pidb
+*.userprefs
