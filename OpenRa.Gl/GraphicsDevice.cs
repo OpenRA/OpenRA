@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -60,9 +60,12 @@ namespace OpenRa.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
 
-			Environment.SetEnvironmentVariable("SDL_VIDEO_WINDOW_POS", "0,0");
 
-			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_NOFRAME | Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+			// Breaks os x usability
+			//Environment.SetEnvironmentVariable("SDL_VIDEO_WINDOW_POS", "0,0");
+			//surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_NOFRAME | Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE( 1 );
