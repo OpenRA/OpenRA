@@ -65,11 +65,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tao.FreeType, Version=2.3.5.0, Culture=neutral, PublicKeyToken=e499629dc69cd531, processorArchitecture=MSIL" />
     <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311, processorArchitecture=MSIL" />
-    <Reference Include="ISE.FreeType, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1b34ab585684d5ea">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\ISE.FreeType.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chat.cs" />
@@ -93,6 +90,7 @@
     <Compile Include="Graphics\ChromeProvider.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
+    <Compile Include="Graphics\SpriteFont.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Effects\Missile.cs" />

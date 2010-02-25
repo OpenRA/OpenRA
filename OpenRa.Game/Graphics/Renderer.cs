@@ -43,7 +43,7 @@ namespace OpenRa.Graphics
 
 		public ITexture PaletteTexture;
 
-		public readonly IFont RegularFont, BoldFont;
+		public readonly SpriteFont RegularFont, BoldFont;
 
 		public Size Resolution { get { return device.WindowSize; } }
 
@@ -56,8 +56,11 @@ namespace OpenRa.Graphics
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
 
-			RegularFont = device.CreateFont( "FreeSans.ttf" );
-			BoldFont = device.CreateFont( "FreeSansBold.ttf" );
+//			RegularFont = device.CreateFont( "FreeSans.ttf" );
+//			BoldFont = device.CreateFont( "FreeSansBold.ttf" );
+
+			RegularFont = new SpriteFont(this, "FreeSans.ttf", 14);
+			BoldFont = new SpriteFont(this, "FreeSansBold.ttf", 14);
 		}
 
 		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool windowed, bool vsync )
