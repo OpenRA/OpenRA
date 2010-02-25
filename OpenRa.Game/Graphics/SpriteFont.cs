@@ -95,7 +95,6 @@ namespace OpenRa.Graphics
 				}
 			}
 
-			s.sheet.Texture.SetData(s.sheet.Bitmap);
 			return g;
 		}
 
