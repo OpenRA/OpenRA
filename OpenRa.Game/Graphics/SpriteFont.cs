@@ -44,7 +44,11 @@ namespace OpenRa.Graphics
 				}
 
 				var g = glyphs[s];
-				r.DrawSprite(g.Sprite, p + g.Offset, "chrome");
+				r.DrawSprite(g.Sprite, 
+					new float2(
+						(int)Math.Round(p.X + g.Offset.X, 0),
+						p.Y + g.Offset.Y), 
+					"chrome");
 				p.X += g.Advance;
 			}
 
@@ -72,8 +76,8 @@ namespace OpenRa.Graphics
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = _glyph.metrics.horiAdvance >> 6,
-				Offset = { X = -_glyph.bitmap_left, Y = -_glyph.bitmap_top }
+				Advance = _glyph.metrics.horiAdvance / 64f,
+				Offset = { X = _glyph.bitmap_left, Y = -_glyph.bitmap_top }
 			};
 
 			unsafe
