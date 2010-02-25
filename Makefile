@@ -15,7 +15,7 @@ gl_TARGET			= OpenRa.Gl.dll
 gl_KIND				= library
 gl_DEPS				= $(fileformats_TARGET) $(game_TARGET)
 gl_LIBS				= $(COMMON_LIBS) System.Windows.Forms.dll \
-						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll thirdparty/ISE.FreeType.dll \
+						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
 						$(gl_DEPS) $(game_TARGET)
 
 game_SRCS			=	$(shell find OpenRa.Game/ -iname '*.cs')
@@ -23,7 +23,7 @@ game_TARGET			= OpenRa.Game.exe
 game_KIND			= winexe
 game_DEPS			= $(fileformats_TARGET) 
 game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
-						thirdparty/Tao/Tao.OpenAl.dll
+						thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.Freetype.dll
 game_FLAGS			= -win32icon:OpenRa.Game/OpenRa.ico
 
 ra_SRCS				=	$(shell find OpenRa.Mods.RA/ -iname '*.cs')

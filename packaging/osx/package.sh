@@ -38,7 +38,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Mono.framework/Versi
 mkbundle --deps --static -z -o openra_server OpenRA.Server.exe OpenRa.FileFormats.dll thirdparty/Tao/Tao.Sdl.dll
 
 # Package the game binary
-mkbundle --deps --static -z -o OpenRA OpenRa.Game.exe OpenRa.Gl.dll OpenRa.FileFormats.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll thirdparty/Tao/Tao.Sdl.dll thirdparty/Tao.Externals.dll thirdparty/ISE.FreeType.dll
+mkbundle --deps --static -z -o OpenRA OpenRa.Game.exe OpenRa.Gl.dll OpenRa.FileFormats.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll thirdparty/Tao/Tao.Sdl.dll
 
 # Copy game files into our game bundle template
 cp -R packaging/osx/OpenRA.app .
