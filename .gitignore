@@ -19,9 +19,13 @@ log.txt
 
 /replay.rep
 
+#binary stuff
 /*.dll
 *.mdb
 /*.exe
+OpenRA
+OpenRA.app
+openra_server
 
 # backup files by various editors
 *~

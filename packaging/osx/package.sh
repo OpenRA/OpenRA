@@ -35,7 +35,7 @@ export CC="gcc -arch i386 -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/Ma
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Mono.framework/Versions/Current/lib/pkgconfig/
 
 # Package the server binary
-mkbundle --deps --static -z -o openra_server OpenRA.Server.exe OpenRa.FileFormats.dll
+mkbundle --deps --static -z -o openra_server OpenRA.Server.exe OpenRa.FileFormats.dll thirdparty/Tao/Tao.Sdl.dll
 
 # Package the game binary
 mkbundle --deps --static -z -o OpenRA OpenRa.Game.exe OpenRa.Gl.dll OpenRa.FileFormats.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll thirdparty/Tao/Tao.Sdl.dll thirdparty/Tao.Externals.dll thirdparty/ISE.FreeType.dll
@@ -45,7 +45,7 @@ cp -R packaging/osx/OpenRA.app .
 cp -R $GAME_FILES OpenRA.app/Contents/Resources/
 
 # Copy frameworks into our game bundle template
-mkdir OpenRa.app/Contents/Frameworks/
+mkdir OpenRA.app/Contents/Frameworks/
 patch_mono OpenRA.app/Contents/Resources/OpenRA
 
 # The dylibs referenced by dll.configs in the gac don't show up to otool: patch them manually
@@ -58,8 +58,8 @@ for i in $GAC_DYLIBS; do
 	patch_mono OpenRA.app/Contents/${i:9}
 done
 
-cp -R /Library/Frameworks/Cg.Framework OpenRa.app/Contents/Frameworks/
-cp -R /Library/Frameworks/SDL.Framework OpenRa.app/Contents/Frameworks/
+cp -R /Library/Frameworks/Cg.framework OpenRA.app/Contents/Frameworks/
+cp -R /Library/Frameworks/SDL.framework OpenRA.app/Contents/Frameworks/
 
 # Fix permissions
 chmod -R 755 OpenRA.app
