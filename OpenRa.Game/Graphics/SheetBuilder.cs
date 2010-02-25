@@ -22,24 +22,31 @@ using System.Drawing;
 
 namespace OpenRa.Graphics
 {
-	static class SheetBuilder
+	class SheetBuilder
 	{
+		public static SheetBuilder SharedInstance;
 		public static void Initialize(Renderer r)
+		{
+			SharedInstance = new SheetBuilder(r, TextureChannel.Red);
+		}
+
+		public SheetBuilder(Renderer r, TextureChannel ch)
 		{
 			renderer = r;
 			current = null;
 			rowHeight = 0;
 			channel = null;
+			initialChannel = ch;
 		}
 
-		public static Sprite Add(byte[] src, Size size)
+		public Sprite Add(byte[] src, Size size)
 		{
-			Sprite rect = AddImage(size);
+			Sprite rect = Allocate(size);
 			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}
 
-		public static Sprite Add(Size size, byte paletteIndex)
+		public Sprite Add(Size size, byte paletteIndex)
 		{
 			byte[] data = new byte[size.Width * size.Height];
 			for (int i = 0; i < data.Length; i++)
@@ -48,18 +55,19 @@ namespace OpenRa.Graphics
 			return Add(data, size);
 		}
 
-		static Sheet NewSheet() { return new Sheet( renderer, new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
+		Sheet NewSheet() { return new Sheet( renderer, new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
 
-		static Renderer renderer;
-		static Sheet current = null;
-		static int rowHeight = 0;
-		static Point p;
-		static TextureChannel? channel = null;
+		Renderer renderer;
+		Sheet current = null;
+		int rowHeight = 0;
+		Point p;
+		TextureChannel? channel = null;
+		TextureChannel initialChannel;
 
-		static TextureChannel? NextChannel(TextureChannel? t)
+		TextureChannel? NextChannel(TextureChannel? t)
 		{
 			if (t == null)
-				return TextureChannel.Red;
+				return initialChannel;
 
 			switch (t.Value)
 			{
@@ -72,7 +80,7 @@ namespace OpenRa.Graphics
 			}
 		}
 
-		static Sprite AddImage(Size imageSize)
+		public Sprite Allocate(Size imageSize)
 		{
 			if (current == null)
 			{
