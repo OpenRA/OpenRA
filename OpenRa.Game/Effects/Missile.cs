@@ -81,13 +81,7 @@ namespace OpenRa.Effects
 
 			var dist = Target.CenterLocation - Pos;
 			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Target.IsDead)
-			{
-				world.AddFrameEndTask(w => w.Remove(this));
-
-				if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
-					Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
-				return;
-			}
+				Explode(world);
 
 			var speed = Scale * Weapon.Speed * ((targetAltitude > 0 && Weapon.TurboBoost) ? 1.5f : 1f);
 
@@ -99,7 +93,17 @@ namespace OpenRa.Effects
 				world.AddFrameEndTask(w => w.Add(
 					new Smoke(w, (Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2(), Projectile.Trail)));
 
-			// todo: running out of fuel
+			if (Projectile.RangeLimit != 0 && t > Projectile.RangeLimit * 40)
+				Explode(world);
+		}
+
+		void Explode(World world)
+		{
+			world.AddFrameEndTask(w => w.Remove(this));
+
+			if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
+				Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
+			return;
 		}
 
 		public IEnumerable<Renderable> Render()
