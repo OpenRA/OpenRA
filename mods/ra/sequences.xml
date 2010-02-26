@@ -864,32 +864,26 @@
     <sequence name="minor-damaged-idle" start="16" length="16" />
 	<sequence name="damaged-idle" start="32" length="16" />
 	<sequence name="critical-idle" start="48" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
   <unit name="sbag">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
   <unit name="fenc">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
   <unit name="cycl">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
 	<sequence name="critical-idle" start="32" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
   <unit name="barb">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
   <unit name="wood">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
-    <sequence name="make" start="0" length="1" />
   </unit>
 </sequences>

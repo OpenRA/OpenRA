@@ -57,6 +57,7 @@
 	Wall:
 	Selectable:
 	RenderBuildingWall:
+		HasMakeAnimation: false
 		Palette: terrain
 		DamageStates: 2
 
