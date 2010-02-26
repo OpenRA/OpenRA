@@ -56,4 +56,5 @@
 		Sight: 0
 	Wall:
 	RenderBuildingWall:
+		Palette: terrain
 
