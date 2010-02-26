@@ -2494,23 +2494,58 @@ MEDI:
 	TakeCover:
 	-AutoTarget:
 
+SBAG:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: soviet
+		Cost: 25
+		Description: Sandbag Wall
+		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+
 BRIK:
-	Inherits: ^Building
+	Inherits: ^Wall
 	Buildable:
 		TechLevel: 8
 		Prerequisites: fact
-		Owner: allies,soviet
+		Owner: soviet
 		Cost: 100
 		Description: Concrete Wall
-		LongDesc: Its a wall.
+		LongDesc: Stop units from passing and block enemy fire.
 	Building:
-		Power: 0
-		Capturable: false
-		Bib: no
-		HP: 1
+		HP: 100
 		Armor: none
-		Crewed: no
-		Sight: 0
-	Wall:
-	RenderBuildingWall:
-	-RenderBuilding:
+
+FENC:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: soviet
+		Cost: 25
+		Description: Wire Fence
+		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+CYCL:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+BARB:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+WOOD:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none

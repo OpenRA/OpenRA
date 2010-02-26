@@ -45,3 +45,15 @@
 		Footprint: x
 	RenderBuilding:
 
+^Wall:
+	Category: Building
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		Capturable: false
+		Bib: no
+		Crewed: no
+		Sight: 0
+	Wall:
+	RenderBuildingWall:
+
