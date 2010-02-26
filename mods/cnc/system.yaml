@@ -118,3 +118,5 @@ World:
 	Country@nod:
 		Name: Nod
 		Race: nod
+	SellButton:
+	RepairButton:
