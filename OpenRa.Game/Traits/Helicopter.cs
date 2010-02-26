@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -45,7 +45,10 @@ namespace OpenRa.Traits
 			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor == null)
-				return new Order("Move", self, xy);
+			{
+				if (self.traits.GetOrDefault<IMovement>().CanEnterCell(xy))
+					return new Order("Move", self, xy);
+			}
 
 			if (HeliCanEnter(underCursor)
 				&& underCursor.Owner == self.Owner
@@ -68,7 +71,7 @@ namespace OpenRa.Traits
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
 				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
-				self.QueueActivity(new HeliLand(true));
+				self.QueueActivity(new HeliLand(true));	
 			}
 
 			if (order.OrderString == "Enter")

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -92,8 +92,11 @@ namespace OpenRa.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				self.CancelActivity();
-				self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
+				if (self.traits.GetOrDefault<IMovement>().CanEnterCell(order.TargetLocation))
+				{
+					self.CancelActivity();
+					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
+				}
 			}
 		}
 

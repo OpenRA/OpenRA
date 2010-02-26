@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -65,14 +65,13 @@ namespace OpenRa.Orders
 
 		string CursorForOrderString(string s, Actor a, int2 location)
 		{
-			var movement = a.traits.GetOrDefault<IMovement>();
 			switch (s)
 			{
 				case "Attack": return "attack";
 				case "Heal": return "heal";
 				case "C4": return "c4";
-				case "Move":
-					if (movement.CanEnterCell(location))
+				case "Move": 
+					if (a.traits.GetOrDefault<IMovement>().CanEnterCell(location))
 						return "move";
 					else
 						return "move-blocked";

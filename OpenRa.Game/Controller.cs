@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -63,7 +63,9 @@ namespace OpenRa
 
 			if (voicedActor != null)
 			{
-				Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
+				
+				if(voicedActor.traits.GetOrDefault<IMovement>().CanEnterCell(xy.ToInt2()))
+					Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
 
 				if (isMove)
 					world.Add(new Effects.MoveFlash(world, Game.CellSize * xy));

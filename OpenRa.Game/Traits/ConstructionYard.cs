@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -50,8 +50,10 @@ namespace OpenRa.Traits
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
 				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
 			}
-
-			return new Order("Move", self, xy);
+			if (self.traits.GetOrDefault<IMovement>().CanEnterCell(xy))
+				return new Order("Move", self, xy);
+			else 
+				return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
