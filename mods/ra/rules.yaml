@@ -2499,17 +2499,18 @@ BRIK:
 	Buildable:
 		TechLevel: 8
 		Prerequisites: fact
-		Owner: soviet
+		Owner: allies,soviet
 		Cost: 100
 		Description: Concrete Wall
 		LongDesc: Its a wall.
 	Building:
 		Power: 0
-		Footprint: x
-		Dimensions: 1,1
 		Capturable: false
 		Bib: no
 		HP: 1
 		Armor: none
 		Crewed: no
 		Sight: 0
+	Wall:
+	RenderBuildingWall:
+	-RenderBuilding:
