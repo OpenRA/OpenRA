@@ -2494,3 +2494,22 @@ MEDI:
 	TakeCover:
 	-AutoTarget:
 
+BRIK:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 8
+		Prerequisites: fact
+		Owner: soviet
+		Cost: 100
+		Description: Concrete Wall
+		LongDesc: Its a wall.
+	Building:
+		Power: 0
+		Footprint: x
+		Dimensions: 1,1
+		Capturable: false
+		Bib: no
+		HP: 1
+		Armor: none
+		Crewed: no
+		Sight: 0

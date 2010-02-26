@@ -859,4 +859,9 @@
   <unit name="badr">
     <sequence name="idle" start="0" facings="16" />
   </unit>
+  <unit name="brik">
+    <sequence name="idle" start="15" />
+    <sequence name="damaged-idle" start="31" />
+    <sequence name="make" start="0" length="1" />
+  </unit>
 </sequences>
