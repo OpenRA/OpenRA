@@ -113,18 +113,18 @@ World:
 		BasePalette: terrain
 		Remap: salmon.rem
 		DisplayColor: 153,76,53
-#	PlayerColorPalette@player6:
-#		Name: player6
-#		DisplayName: Green
-#		BasePalette: terrain
-#		Remap: green.rem
-#		DisplayColor: 76,101,60
-#	PlayerColorPalette@player7:
-#		Name: player7
-#		DisplayName: Gray
-#		BasePalette: terrain
-#		Remap: gray.rem
-#		DisplayColor: 133,113,101
+	PlayerColorPalette@player6:
+		Name: player6
+		DisplayName: Green
+		BasePalette: terrain
+		Remap: green.rem
+		DisplayColor: 76,101,60
+	PlayerColorPalette@player7:
+		Name: player7
+		DisplayName: Gray
+		BasePalette: terrain
+		Remap: gray.rem
+		DisplayColor: 133,113,101
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
@@ -188,7 +188,9 @@ World:
 	Country@7:
 		Name: Spain
 		Race: allies
-	
+	SellButton:
+	RepairButton:
+	PowerDownButton:
 	
 MGG:
 	GeneratesGap:
@@ -2494,3 +2496,62 @@ MEDI:
 	TakeCover:
 	-AutoTarget:
 
+SBAG:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: allies
+		Cost: 25
+		Description: Sandbag Wall
+		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+
+FENC:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: soviet
+		Cost: 25
+		Description: Wire Fence
+		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+
+BRIK:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 8
+		Prerequisites: fact
+		Owner: allies,soviet
+		Cost: 100
+		Description: Concrete Wall
+		LongDesc: Stop units from passing and block enemy fire.
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 4
+
+CYCL:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 3
+BARB:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+WOOD:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none

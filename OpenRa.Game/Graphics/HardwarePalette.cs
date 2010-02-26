@@ -28,7 +28,7 @@ namespace OpenRa.Graphics
 {
 	class HardwarePalette : Sheet
 	{
-		const int maxEntries = 16;
+		public const int MaxPalettes = 64;
 		int allocated = 0;
 		
 		// We need to store the Palettes themselves for the remap palettes to work
@@ -36,7 +36,7 @@ namespace OpenRa.Graphics
 		static Dictionary<string, Palette> palettes;
 		static Dictionary<string, int> indices;
 		public HardwarePalette(Renderer renderer, Map map)
-			: base(renderer,new Size(256, maxEntries))
+			: base(renderer,new Size(256, MaxPalettes))
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();

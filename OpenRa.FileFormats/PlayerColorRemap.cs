@@ -21,37 +21,30 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace OpenRa.FileFormats
 {
 	public class PlayerColorRemap : IPaletteRemap
 	{
-		int offset;
-		List<Color> remapColors = new List<Color>();
+		Dictionary<int, Color> remapColors;
 
 		public PlayerColorRemap(Stream s)
 		{
-			using (BinaryReader reader = new BinaryReader(s))
-			{
-				for (int i = 0; i < 16; i++)
-				{
-					byte r = reader.ReadByte();
-					byte g = reader.ReadByte();
-					byte b = reader.ReadByte();
-
-					remapColors.Add(Color.FromArgb(r, g, b));
-				}
-			}
-
-			offset = 80;
+			var yaml = MiniYaml.FromStream(s);
+			remapColors = yaml.ToDictionary(
+				y => int.Parse(y.Key),
+				y => ArrayToColor((int[])FieldLoader.GetValue(
+					typeof(int[]), y.Value.Value.Trim())));
 		}
+
+		static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2], x[3]); }
 
 		public Color GetRemappedColor(Color original, int index)
 		{
-			if (index < offset || index >= offset + remapColors.Count)
-				return original;
-
-			return remapColors[index - offset];
+			Color c;
+			return remapColors.TryGetValue(index, out c) 
+				? c : original;
 		}
 	}
 }

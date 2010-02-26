@@ -52,23 +52,11 @@ namespace OpenRa.Graphics
 			return result;
 		}
 
-		public static readonly int2[] directions =
-			new int2[] {
-				new int2( -1, -1 ),
-				new int2( -1,  0 ),
-				new int2( -1,  1 ),
-				new int2(  0, -1 ),
-				new int2(  0,  1 ),
-				new int2(  1, -1 ),
-				new int2(  1,  0 ),
-				new int2(  1,  1 ),
-			};
-
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni, float2 size)
 		{
-			float2 attrib = new float2(palette / 16.0f, channelSelect[(int)r.channel]);
+			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
 
 			vertices[nv] = new Vertex(o, 
 				r.FastMapTextureCoords(0), attrib);

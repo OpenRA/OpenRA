@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -108,6 +108,7 @@
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\Attack\AttackOmni.cs" />
+    <Compile Include="Traits\Chrome\PowerDownButton.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Player\SpawnDefaultUnits.cs" />
     <Compile Include="Traits\World\BridgeLoadHook.cs" />
@@ -263,6 +264,8 @@
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
+    <Compile Include="Traits\Wall.cs" />
+    <Compile Include="Traits\Render\RenderBuildingWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -48,7 +48,7 @@ namespace OpenRa.Traits.Activities
 		{
 			if( !started )
 			{
-				framesRemaining = self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length;
+				framesRemaining = (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation) ? self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
 				foreach( var ns in self.traits.WithInterface<INotifySold>() )
 					ns.Selling( self );
 

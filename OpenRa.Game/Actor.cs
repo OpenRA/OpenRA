@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -144,9 +144,19 @@ namespace OpenRa
 
 		public DamageState GetDamageState()
 		{
-			if (Health <= 0) return DamageState.Dead;
-			var halfStrength = this.GetMaxHP() * Rules.General.ConditionYellow;
-			return Health < halfStrength ? DamageState.Half : DamageState.Normal;
+			if (Health <= 0)
+				return DamageState.Dead;
+			
+			if (Health < this.GetMaxHP() * Rules.General.ConditionRed)
+				return DamageState.Quarter;
+			
+			if (Health < this.GetMaxHP() * Rules.General.ConditionYellow)
+				return DamageState.Half;
+			
+			if (Health < this.GetMaxHP() * 0.75)
+				return DamageState.ThreeQuarter;
+			
+			return DamageState.Normal;
 		}
 
 		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)

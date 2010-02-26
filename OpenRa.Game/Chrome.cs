@@ -685,50 +685,22 @@ namespace OpenRa
 			rgbaRenderer.Flush();
 		}
 
+		const int chromeButtonGap = 2;
+
 		void DrawButtons( World world )
 		{
-			int2 buttonOrigin = new int2(Game.viewport.Width - 320, 2);
-			// Repair
-			Rectangle repairRect = new Rectangle(buttonOrigin.X, buttonOrigin.Y, repairButton.Image.bounds.Width, repairButton.Image.bounds.Height);
-			var repairDrawPos = new float2(repairRect.Location);
-
-			var hasFact = world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ConstructionYard>().Any();
-
-			if (Game.Settings.RepairRequiresConyard && !hasFact)
-				repairButton.ReplaceAnim("disabled");
-			else
-			{
-				repairButton.ReplaceAnim(Game.controller.orderGenerator is RepairOrderGenerator ? "pressed" : "normal");
-				AddButton(repairRect, isLmb => Game.controller.ToggleInputMode<RepairOrderGenerator>());
-			}
-			shpRenderer.DrawSprite(repairButton.Image, repairDrawPos, "chrome");
+			var origin = new int2(Game.viewport.Width - 200, 2);
 			
-			// Sell
-			Rectangle sellRect = new Rectangle(buttonOrigin.X+40, buttonOrigin.Y, 
-				sellButton.Image.bounds.Width, sellButton.Image.bounds.Height);
-
-			var sellDrawPos = new float2(sellRect.Location);
-
-			sellButton.ReplaceAnim(Game.controller.orderGenerator is SellOrderGenerator ? "pressed" : "normal");
-			
-			AddButton(sellRect, isLmb => Game.controller.ToggleInputMode<SellOrderGenerator>());
-			shpRenderer.DrawSprite(sellButton.Image, sellDrawPos, "chrome");
-			shpRenderer.Flush();
-
-			if (Game.Settings.PowerDownBuildings)
+			foreach (var cb in world.WorldActor.traits.WithInterface<IChromeButton>())
 			{
-				// Power Down
-				Rectangle pwrdownRect = new Rectangle(buttonOrigin.X+80, buttonOrigin.Y,
-					pwrdownButton.Image.bounds.Width, pwrdownButton.Image.bounds.Height);
-
-				var pwrdownDrawPos = new float2(pwrdownRect.Location);
-
-				pwrdownButton.ReplaceAnim(Game.controller.orderGenerator is PowerDownOrderGenerator ? "pressed" : "normal");
-
-				AddButton(pwrdownRect, isLmb => Game.controller.ToggleInputMode<PowerDownOrderGenerator>());
-				shpRenderer.DrawSprite(pwrdownButton.Image, pwrdownDrawPos, "chrome");
+				var button = cb;
+				var anim = new Animation(cb.Image);
+				anim.Play(cb.Enabled ? cb.Pressed ? "pressed" : "normal" : "disabled");
+				origin.X -= (int)anim.Image.size.X + chromeButtonGap;
+				shpRenderer.DrawSprite(anim.Image, origin, "chrome");
+				AddButton(new RectangleF(origin.X, origin.Y, anim.Image.size.X, anim.Image.size.Y),
+					_ => { if (button.Enabled) button.OnClick(); });
 			}
-			shpRenderer.Flush();
 			
 			//Options
 			Rectangle optionsRect = new Rectangle(0,0, optionsButton.Image.bounds.Width, 

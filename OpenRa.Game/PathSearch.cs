@@ -67,7 +67,7 @@ namespace OpenRa
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 					
-			foreach( int2 d in Graphics.Util.directions )
+			foreach( int2 d in directions )
 			{
 				int2 newHere = p.Location + d;
 
@@ -112,6 +112,18 @@ namespace OpenRa
 			}
 			return p.Location;
 		}
+
+		static readonly int2[] directions =
+		{
+			new int2( -1, -1 ),
+			new int2( -1,  0 ),
+			new int2( -1,  1 ),
+			new int2(  0, -1 ),
+			new int2(  0,  1 ),
+			new int2(  1, -1 ),
+			new int2(  1,  0 ),
+			new int2(  1,  1 ),
+		};
 
 		public void AddInitialCell( World world, int2 location )
 		{
