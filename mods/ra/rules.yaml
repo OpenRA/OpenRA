@@ -188,7 +188,9 @@ World:
 	Country@7:
 		Name: Spain
 		Race: allies
-	
+	SellButton:
+	RepairButton:
+	PowerDownButton:
 	
 MGG:
 	GeneratesGap:

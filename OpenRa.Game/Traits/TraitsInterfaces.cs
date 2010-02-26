@@ -132,4 +132,12 @@ namespace OpenRa.Traits
 		IActivity Tick(Actor self);
 		void Cancel(Actor self);
 	}
+
+	public interface IChromeButton
+	{
+		string Image { get; }
+		bool Enabled { get; }
+		bool Pressed { get; }
+		void OnClick();
+	}
 }
