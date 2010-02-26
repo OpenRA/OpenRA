@@ -2499,23 +2499,10 @@ SBAG:
 	Buildable:
 		TechLevel: 2
 		Prerequisites: fact
-		Owner: soviet
+		Owner: allies
 		Cost: 25
 		Description: Sandbag Wall
 		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
-	Building:
-		HP: 100
-		Armor: none
-
-BRIK:
-	Inherits: ^Wall
-	Buildable:
-		TechLevel: 8
-		Prerequisites: fact
-		Owner: soviet
-		Cost: 100
-		Description: Concrete Wall
-		LongDesc: Stop units from passing and block enemy fire.
 	Building:
 		HP: 100
 		Armor: none
@@ -2532,12 +2519,29 @@ FENC:
 	Building:
 		HP: 100
 		Armor: none
+
+BRIK:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 8
+		Prerequisites: fact
+		Owner: allies,soviet
+		Cost: 100
+		Description: Concrete Wall
+		LongDesc: Stop units from passing and block enemy fire.
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 4
+
 CYCL:
 	Inherits: ^Wall
 	Building:
 		HP: 100
 		Armor: none
-
+	RenderBuildingWall:
+		DamageStates: 3
 BARB:
 	Inherits: ^Wall
 	Building:

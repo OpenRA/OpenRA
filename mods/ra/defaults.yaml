@@ -55,6 +55,8 @@
 		Crewed: no
 		Sight: 0
 	Wall:
+	Selectable:
 	RenderBuildingWall:
 		Palette: terrain
+		DamageStates: 2
 

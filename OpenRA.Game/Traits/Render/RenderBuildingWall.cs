@@ -24,12 +24,14 @@ namespace OpenRa.Traits
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
+		public readonly int DamageStates = 2;
 		public override object Create(Actor self) { return new RenderBuildingWall(self); }
 	}
 
 	class RenderBuildingWall : RenderBuilding
 	{
 		string seqName;
+		int damageStates;
 		Actor self;
 		
 		public RenderBuildingWall(Actor self)
@@ -37,8 +39,9 @@ namespace OpenRa.Traits
 		{
 			seqName = "idle";
 			this.self = self;
+			this.damageStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
 		}
-
+		
 		public override void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged) return;
@@ -48,9 +51,20 @@ namespace OpenRa.Traits
 				case DamageState.Normal:
 					seqName = "idle";
 					break;
+				case DamageState.ThreeQuarter:
+					if (damageStates >= 4)
+						seqName = "minor-damaged-idle";
+					break;
 				case DamageState.Half:
 					seqName = "damaged-idle";
 					Sound.Play("kaboom1.aud");
+					break;
+				case DamageState.Quarter:
+					if (damageStates >= 3)
+					{
+						seqName = "critical-idle";
+						Sound.Play("kaboom1.aud");
+					}
 					break;
 			}
 		}

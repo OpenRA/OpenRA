@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,7 +27,7 @@ using OpenRa.Traits.Activities;
 
 namespace OpenRa.Traits
 {
-	public enum DamageState { Normal, Half, Dead };
+	public enum DamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
 	
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray };
