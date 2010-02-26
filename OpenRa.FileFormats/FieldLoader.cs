@@ -48,7 +48,7 @@ namespace OpenRa.FileFormats
 			}
 		}
 
-		static object GetValue( Type fieldType, string x )
+		public static object GetValue( Type fieldType, string x )
 		{
 			if (x != null) x = x.Trim();
 			if( fieldType == typeof( int ) )
