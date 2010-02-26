@@ -302,7 +302,7 @@ namespace OpenRA.Server
 						}
 						int pali;
 						
-						if (!int.TryParse(s, out pali) || pali < 0 || pali > 7)
+						if (!int.TryParse(s, out pali))
 						{
 							Console.WriteLine("Invalid palette: {0}", s);
 							return false;

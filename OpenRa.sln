@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Mods.Cnc", "OpenRa.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRa.Gl", "OpenRa.Gl\OpenRa.Gl.csproj", "{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mkremap", "mkremap\mkremap.csproj", "{3A2C18E7-0379-4D72-8A56-B850CB765197}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A2C18E7-0379-4D72-8A56-B850CB765197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2C18E7-0379-4D72-8A56-B850CB765197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2C18E7-0379-4D72-8A56-B850CB765197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2C18E7-0379-4D72-8A56-B850CB765197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

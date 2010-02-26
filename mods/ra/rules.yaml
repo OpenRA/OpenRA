@@ -125,6 +125,12 @@ World:
 		BasePalette: terrain
 		Remap: gray.rem
 		DisplayColor: 133,113,101
+	PlayerColorPalette@player8:
+		Name: neutral
+		DisplayName: White
+		BasePalette: terrain
+		Remap: white.rem
+		DisplayColor: 255,255,255
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
