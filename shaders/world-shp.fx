@@ -47,12 +47,10 @@ VertexOut Simple_vp(VertexIn v) {
 	return o;
 }
 
-const float2 texelOffset = float2( 0, 1.0f/32.0f );
-
 float4 Palette_fp(VertexOut f) : COLOR0 {
 	float4 x = tex2D(DiffuseTexture, f.Tex0.xy);
 	float2 p = float2( dot(x, f.ChannelMask), f.Tex0.z );
-	return tex2D(Palette, p + texelOffset);
+	return tex2D(Palette, p);
 }
 
 technique low_quality {
