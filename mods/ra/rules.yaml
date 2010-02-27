@@ -2516,7 +2516,7 @@ SBAG:
 		Owner: allies
 		Cost: 25
 		Description: Sandbag Wall
-		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Building:
 		HP: 100
 		Armor: none
@@ -2529,7 +2529,7 @@ FENC:
 		Owner: soviet
 		Cost: 25
 		Description: Wire Fence
-		LongDesc: Stops infantry and blocks enemy fire.\n Can be crushed by tanks.
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Building:
 		HP: 100
 		Armor: none
@@ -2542,7 +2542,7 @@ BRIK:
 		Owner: allies,soviet
 		Cost: 100
 		Description: Concrete Wall
-		LongDesc: Stop units from passing and block enemy fire.
+		LongDesc: Stop units and blocks enemy fire.
 	Building:
 		HP: 100
 		Armor: none

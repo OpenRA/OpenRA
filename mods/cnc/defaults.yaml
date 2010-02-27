@@ -52,3 +52,18 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+^Wall:
+	Category: Building
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		Capturable: false
+		Bib: no
+		Crewed: no
+		Sight: 0
+	Wall:
+	Selectable:
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: player
+		DamageStates: 2

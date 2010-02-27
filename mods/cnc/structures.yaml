@@ -355,3 +355,61 @@ OBLI:
 		FireDelay: 8
 	AutoTarget:
 	-RenderBuilding:
+
+BARB:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+WOOD:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+CYCL:
+	Inherits: ^Wall
+	Buildable:
+		Icon:cyclicnh
+		TechLevel: 5
+		Prerequisites: fact
+		Owner: gdi,nod
+		Cost: 75
+		Description: Chain Link Barrier
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 3
+
+SBAG:
+	Inherits: ^Wall
+	Buildable:
+		Icon:sbagicnh
+		TechLevel: 5
+		Prerequisites: fact
+		Owner: gdi,nod
+		Cost: 50
+		Description: Sandbag Barrier
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Building:
+		HP: 100
+		Armor: none
+
+BRIK:
+	Inherits: ^Wall
+	Buildable:
+		Icon:brikicnh
+		TechLevel: 7
+		Prerequisites: fact
+		Owner: gdi,nod
+		Cost: 100
+		Description: Concrete Barrier
+		LongDesc: Stop units and blocks enemy fire.
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 4

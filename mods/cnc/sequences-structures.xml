@@ -142,4 +142,32 @@
 		<sequence name="critical-active" start="4" length="4" />
 		<sequence name="make" start="0" length="13" src="oblimake" />
 	</unit>
+	<!-- Concrete Barrier -->
+ 	<unit name="brik">
+    	<sequence name="idle" start="0" length="16" />
+   		<sequence name="minor-damaged-idle" start="16" length="16" />
+		<sequence name="damaged-idle" start="32" length="16" />
+		<sequence name="critical-idle" start="48" length="16" />
+	</unit>
+	<!-- Sandbag Barrier -->
+	<unit name="sbag">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
+	</unit>
+	<!-- Chain link Barrier -->
+	<unit name="cycl">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
+		<sequence name="critical-idle" start="32" length="16" />
+	</unit>
+	<!-- Barbed wire Barrier -->
+	<unit name="barb">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
+	</unit>
+	<!-- Wood Barrier -->
+	<unit name="wood">
+		<sequence name="idle" start="0" length="16" />
+		<sequence name="damaged-idle" start="16" length="16" />
+	</unit>
 </sequences>
