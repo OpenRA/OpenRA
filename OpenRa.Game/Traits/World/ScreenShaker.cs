@@ -9,7 +9,7 @@ namespace OpenRa.Traits
 {
 	class ScreenShakerInfo : ITraitInfo
 	{
-		public object Create( Actor self ) { return new ScreenShaker( self ); }
+		public object Create( Actor self ) { return new ScreenShaker(); }
 	}
 	
 	public class ScreenShaker : ITick
@@ -17,23 +17,11 @@ namespace OpenRa.Traits
 		static int ticks = 0;
 		static List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
 		
-		public ScreenShaker (Actor self){}
-		
 		public void Tick (Actor self)
 		{
 			Game.viewport.Scroll(getScrollOffset());
-			UpdateList();
-			ticks++;
-		}
-		
-		void UpdateList()
-		{
-			var toRemove = new List<Tuple<int, float2, int>>();
 			shakeEffects.RemoveAll(t => t.a == ticks);
-			
-			foreach(Tuple<int, float2, int> t in toRemove){
-				shakeEffects.Remove(t);
-			}
+			ticks++;
 		}
 		
 		public static void RegisterShakeEffect(int time, float2 position, int intensity)
