@@ -46,7 +46,85 @@ HARV:
 	Mobile:
 		MovementType: Track
 	RenderUnit:
-	
+
+APC:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: apcicnh
+		TechLevel: 4
+		Prerequisites: pyle
+		Owner: gdi
+		Cost: 700
+		Description: Armored Personnel Carrier
+		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 200
+		Armor: heavy
+		ROT: 5
+		Sight: 4
+		Speed: 35
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,0,0,-4
+		MuzzleFlash: yes
+	RenderUnitMuzzleFlash:
+	AutoTarget:
+	Cargo:
+		PassengerTypes: Foot
+		Passengers: 5
+		UnloadFacing: 220
+
+ARTY:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon:artyicnh
+		TechLevel: 6
+		Prerequisites: afld
+		Owner: nod
+		Cost: 600
+		Description: Artillery
+		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 75
+		Armor: light
+		Crewed: yes
+		ROT: 2
+		Sight: 5
+		Speed: 12
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: Ballistic
+	RenderUnit:
+	Explodes:
+	AutoTarget:
+
+FTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: ftnkicnh
+		TechLevel: 4
+		Prerequisites: hq
+		Owner: nod
+		Cost: 800
+		Description: Flame Tank
+		LongDesc: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Unit:
+		HP: 300
+		Armor: heavy
+		Crewed: yes
+		ROT: 5
+		Sight: 4
+		Speed: 18
+	AttackBase:
+		PrimaryWeapon: BigFlamer
+		PrimaryOffset: 0,0,0,-2
+		MuzzleFlash: yes
+	RenderUnit:
+	AutoTarget:
+
 BGGY:
 	Inherits: ^Vehicle
 	Buildable:
