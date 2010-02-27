@@ -267,6 +267,7 @@
     <Compile Include="Traits\Wall.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Player\EvaAlerts.cs" />
+    <Compile Include="Traits\World\ScreenShaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
