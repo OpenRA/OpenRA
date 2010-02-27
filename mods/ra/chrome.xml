@@ -121,7 +121,7 @@
 		<image name="soviet-Plane" x="134" y="160" width="27" height="41" />
 		<image name="soviet-Ship" x="134" y="200" width="27" height="41" />
 	</collection>
-	<collection name="panel" src="widget-panel.png">
+	<collection name="dialog2" src="widget-panel.png">
 		<image name="border-t" x="4" y="0" width="248" height="4" />
 		<image name="border-b" x="4" y="252" width="248" height="4" />
 		<image name="border-l" x="0" y="4" width="4" height="248" />

@@ -216,7 +216,7 @@ namespace OpenRa
 				Color.White);
 
 			DrawDialogBackground(new Rectangle(r.Left + 30, r.Top + 50, r.Width - 60, 20),
-				"panel");
+				"dialog2");
 
 			var x1 = r.Left + 35;
 			var x2 = r.Right - 35;
@@ -270,7 +270,7 @@ namespace OpenRa
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
 			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
-			DrawDialogBackground( rect, "panel");
+			DrawDialogBackground( rect, "dialog2");
 			DrawCentered(text, new int2(pos.X, pos.Y), Color.White);
 			AddButton(rect, a);
 		}
@@ -284,7 +284,7 @@ namespace OpenRa
 			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
 			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
-					r.Bottom - 50 + 6, 160, 24), "panel");
+					r.Bottom - 50 + 6, 160, 24), "dialog2");
 
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
@@ -309,7 +309,7 @@ namespace OpenRa
 			}
 
 			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-			DrawDialogBackground(mapRect, "panel");
+			DrawDialogBackground(mapRect, "dialog2");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location) + new float2(4, 4), 
 				"chrome", 
@@ -324,7 +324,7 @@ namespace OpenRa
 				var map = mapList.Value.ElementAt(i);
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
-					DrawDialogBackground(itemRect, "panel");
+					DrawDialogBackground(itemRect, "dialog2");
 
 				renderer.RegularFont.DrawText(rgbaRenderer, map.Map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
@@ -424,7 +424,7 @@ namespace OpenRa
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
-			DrawDialogBackground(new Rectangle(r.Right - 324, r.Top + 43, 304, 244),"panel");
+			DrawDialogBackground(new Rectangle(r.Right - 324, r.Top + 43, 304, 244),"dialog2");
 			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
 
 			world.Minimap.Update();
@@ -460,21 +460,21 @@ namespace OpenRa
 				{
 					// todo: name editing
 					var nameRect = new Rectangle(r.Left + 30, y - 2, 95, 22);
-					DrawDialogBackground(nameRect, "panel");
+					DrawDialogBackground(nameRect, "dialog2");
 
-					DrawDialogBackground(paletteRect, "panel");
+					DrawDialogBackground(paletteRect, "dialog2");
 					AddButton(paletteRect, CyclePalette);
 
 					var raceRect = new Rectangle(r.Left + 210, y - 2, 65, 22);
-					DrawDialogBackground(raceRect, "panel");
+					DrawDialogBackground(raceRect, "dialog2");
 					AddButton(raceRect, CycleRace);
 
 					var readyRect = new Rectangle(r.Left + 280, y - 2, 95, 22);
-					DrawDialogBackground(readyRect, "panel");
+					DrawDialogBackground(readyRect, "dialog2");
 					AddButton(readyRect, CycleReady);
 					
 					var spawnPointRect = new Rectangle(r.Left + 380, y - 2, 70, 22);
-					DrawDialogBackground(spawnPointRect, "panel");
+					DrawDialogBackground(spawnPointRect, "dialog2");
 					AddButton(spawnPointRect, CycleSpawnPoint);
 				}
 
@@ -499,8 +499,8 @@ namespace OpenRa
 			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
 			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
 
-			DrawDialogBackground(typingBox, "panel");
-			DrawDialogBackground(chatBox, "panel");
+			DrawDialogBackground(typingBox, "dialog2");
+			DrawDialogBackground(chatBox, "dialog2");
 
 			DrawChat(typingBox, chatBox);
 

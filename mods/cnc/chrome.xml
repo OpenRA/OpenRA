@@ -121,17 +121,6 @@
 		<image name="nod-Plane" x="134" y="160" width="27" height="41" />
 		<image name="nod-Ship" x="134" y="200" width="27" height="41" />
 	</collection>
-	<collection name="panel" src="widget-panel.png">
-		<image name="border-t" x="4" y="0" width="248" height="4" />
-		<image name="border-b" x="4" y="252" width="248" height="4" />
-		<image name="border-l" x="0" y="4" width="4" height="248" />
-		<image name="border-r" x="252" y="4" width="4" height="248" />
-		<image name="corner-tl" x="0" y="0" width="4" height="4" />
-		<image name="corner-tr" x="252" y="0" width="4" height="4" />
-		<image name="corner-bl" x="0" y="252" width="4" height="4" />
-		<image name="corner-br" x="252" y="252" width="4" height="4" />
-		<image name="background" x="4" y="4" width="248" height="248" />
-	</collection>
 	<collection name="dialog" src="dialog.png">
 		<image name="background" x="46" y="46" width="36" height="36" />
 		<image name="border-r" x="82" y="46" width="46" height="36" />
@@ -142,6 +131,17 @@
 		<image name="corner-tr" x="82" y="0" width="46" height="46" />
 		<image name="corner-bl" x="0" y="82" width="46" height="46" />
 		<image name="corner-br" x="82" y="82" width="46" height="46" />
+	</collection>
+	<collection name="dialog2" src="dialog2.png">
+		<image name="background" x="1" y="1" width="126" height="126" />
+		<image name="border-r" x="127" y="1" width="1" height="126" />
+		<image name="border-l" x="0" y="1" width="1" height="126" />
+		<image name="border-b" x="1" y="127" width="126" height="1" />
+		<image name="border-t" x="1" y="0" width="126" height="1" />
+		<image name="corner-tl" x="0" y="0" width="1" height="1" />
+		<image name="corner-tr" x="82" y="0" width="1" height="1" />
+		<image name="corner-bl" x="0" y="82" width="1" height="1" />
+		<image name="corner-br" x="82" y="82" width="1" height="1" />
 	</collection>
 	<collection name="spawnpoints" src="spawnpoints.png">
 		<image name="unowned" x="16" y="0" width="16" height="16" />
