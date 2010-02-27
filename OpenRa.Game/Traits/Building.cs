@@ -93,7 +93,10 @@ namespace OpenRa.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
+			{
+				ScreenShaker.registerShakeEffect(10, self.Location.ToFloat2()*new float2(24, 24), 3);
 				Sound.Play("kaboom22.aud");
+			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
