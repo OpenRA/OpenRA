@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenRA.FileFormats</RootNamespace>
+    <AssemblyName>OpenRA.FileFormats</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AudLoader.cs" />
+    <Compile Include="Blowfish.cs" />
+    <Compile Include="BlowfishKeyProvider.cs" />
+    <Compile Include="Cache.cs" />
+    <Compile Include="Collections\Set.cs" />
+    <Compile Include="DisposableAction.cs" />
+    <Compile Include="Dune2ShpReader.cs" />
+    <Compile Include="Exts.cs" />
+    <Compile Include="FieldLoader.cs" />
+    <Compile Include="FileSystem.cs" />
+    <Compile Include="float2.cs" />
+    <Compile Include="Folder.cs" />
+    <Compile Include="Format2.cs" />
+    <Compile Include="Format40.cs" />
+    <Compile Include="Format80.cs" />
+    <Compile Include="Graphics\IGraphicsDevice.cs" />
+    <Compile Include="Graphics\Vertex.cs" />
+    <Compile Include="IniFile.cs" />
+    <Compile Include="int2.cs" />
+    <Compile Include="IPaletteRemap.cs" />
+    <Compile Include="Lazy.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="MiniYaml.cs" />
+    <Compile Include="PackageEntry.cs" />
+    <Compile Include="Package.cs" />
+    <Compile Include="Pair.cs" />
+    <Compile Include="Palette.cs" />
+    <Compile Include="PlayerColorRemap.cs" />
+    <Compile Include="PriorityQueue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolVersion.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="ShpReader.cs" />
+    <Compile Include="ShroudPaletteRemap.cs" />
+    <Compile Include="SingleColorRemap.cs" />
+    <Compile Include="Support\Log.cs" />
+    <Compile Include="Support\Stopwatch.cs" />
+    <Compile Include="Support\Timer.cs" />
+    <Compile Include="Terrain.cs" />
+    <Compile Include="TileReference.cs" />
+    <Compile Include="TileSet.cs" />
+    <Compile Include="TreeReference.cs" />
+    <Compile Include="Tuple.cs" />
+    <Compile Include="TypeDictionary.cs" />
+    <Compile Include="Walkability.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

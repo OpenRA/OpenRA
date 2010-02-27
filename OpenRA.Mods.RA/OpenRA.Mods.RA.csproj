@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenRA.Mods.RA</RootNamespace>
+    <AssemblyName>OpenRA.Mods.RA</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\CaptureBuilding.cs" />
+    <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\Infiltrate.cs" />
+    <Compile Include="Activities\LayMine.cs" />
+    <Compile Include="Activities\Steal.cs" />
+    <Compile Include="C4Demolition.cs" />
+    <Compile Include="Crates\ArmorUpgradeCrateAction.cs" />
+    <Compile Include="Crates\FirepowerUpgradeCrateAction.cs" />
+    <Compile Include="Crates\GiveCashCrateAction.cs" />
+    <Compile Include="Effects\CrateEffect.cs" />
+    <Compile Include="Effects\GpsSatellite.cs" />
+    <Compile Include="Effects\InvulnEffect.cs" />
+    <Compile Include="Effects\Parachute.cs" />
+    <Compile Include="Effects\SatelliteLaunch.cs" />
+    <Compile Include="EngineerCapture.cs" />
+    <Compile Include="GpsPower.cs" />
+    <Compile Include="InfiltrateForSonarPulse.cs" />
+    <Compile Include="IronCurtainable.cs" />
+    <Compile Include="IronCurtainPower.cs" />
+    <Compile Include="ParaDrop.cs" />
+    <Compile Include="ParatroopersPower.cs" />
+    <Compile Include="RequiresPower.cs" />
+    <Compile Include="Mine.cs" />
+    <Compile Include="Minelayer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderSpy.cs" />
+    <Compile Include="RepairableNear.cs" />
+    <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
+    <Compile Include="SonarPulsePower.cs" />
+    <Compile Include="Spy.cs" />
+    <Compile Include="SpyPlanePower.cs" />
+    <Compile Include="Thief.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
+      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
+      <Name>OpenRA.FileFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
+      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
+      <Name>OpenRA.Game</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
+copy "$(TargetPath)" "$(SolutionDir)mods/ra/"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

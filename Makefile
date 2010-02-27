@@ -5,41 +5,41 @@ PROGRAMS	=fileformats gl game ra cnc aftermath server seqed
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 
-fileformats_SRCS	=	$(shell find OpenRa.FileFormats/ -iname '*.cs')
-fileformats_TARGET	=	OpenRa.FileFormats.dll
+fileformats_SRCS	=	$(shell find OpenRA.FileFormats/ -iname '*.cs')
+fileformats_TARGET	=	OpenRA.FileFormats.dll
 fileformats_KIND	=	library
 fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll
 
-gl_SRCS				= $(shell find OpenRa.Gl/ -iname '*.cs')
-gl_TARGET			= OpenRa.Gl.dll
+gl_SRCS				= $(shell find OpenRA.Gl/ -iname '*.cs')
+gl_TARGET			= OpenRA.Gl.dll
 gl_KIND				= library
 gl_DEPS				= $(fileformats_TARGET) $(game_TARGET)
 gl_LIBS				= $(COMMON_LIBS) System.Windows.Forms.dll \
 						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
 						$(gl_DEPS) $(game_TARGET)
 
-game_SRCS			=	$(shell find OpenRa.Game/ -iname '*.cs')
-game_TARGET			= OpenRa.Game.exe
+game_SRCS			=	$(shell find OpenRA.Game/ -iname '*.cs')
+game_TARGET			= OpenRA.Game.exe
 game_KIND			= winexe
 game_DEPS			= $(fileformats_TARGET) 
 game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
 						thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll
-game_FLAGS			= -win32icon:OpenRa.Game/OpenRa.ico
+game_FLAGS			= -win32icon:OpenRA.Game/OpenRA.ico
 
-ra_SRCS				=	$(shell find OpenRa.Mods.RA/ -iname '*.cs')
-ra_TARGET			=	mods/ra/OpenRa.Mods.RA.dll
+ra_SRCS				=	$(shell find OpenRA.Mods.RA/ -iname '*.cs')
+ra_TARGET			=	mods/ra/OpenRA.Mods.RA.dll
 ra_KIND				=	library
 ra_DEPS				= $(fileformats_TARGET) $(game_TARGET)
 ra_LIBS				= $(COMMON_LIBS) $(ra_DEPS)
 
-cnc_SRCS			=	$(shell find OpenRa.Mods.Cnc/ -iname '*.cs')
-cnc_TARGET			=	mods/cnc/OpenRa.Mods.Cnc.dll
+cnc_SRCS			=	$(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
+cnc_TARGET			=	mods/cnc/OpenRA.Mods.Cnc.dll
 cnc_KIND			=	library
 cnc_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 cnc_LIBS			= $(COMMON_LIBS) $(cnc_DEPS)
 
-aftermath_SRCS		=	$(shell find OpenRa.Mods.Aftermath/ -iname '*.cs')
-aftermath_TARGET	=	mods/aftermath/OpenRa.Mods.Aftermath.dll
+aftermath_SRCS		=	$(shell find OpenRA.Mods.Aftermath/ -iname '*.cs')
+aftermath_TARGET	=	mods/aftermath/OpenRA.Mods.Aftermath.dll
 aftermath_KIND		=	library
 aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
