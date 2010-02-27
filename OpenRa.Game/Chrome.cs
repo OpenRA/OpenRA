@@ -523,13 +523,15 @@ namespace OpenRa
 			if (radarAnimationFrame <= radarSlideAnimationLength)
 				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
 
+			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			
 			// Play radar-on sound at the start of the activate anim (open)
 			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-				Sound.Play("radaron2.aud");
+				Sound.Play(eva.RadarUp);
 
 			// Play radar-on sound at the start of the activate anim (close)
 			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
-				Sound.Play("radardn1.aud");
+				Sound.Play(eva.RadarDown);
 
 			// Minimap height
 			if (radarAnimationFrame >= radarSlideAnimationLength)
@@ -605,7 +607,8 @@ namespace OpenRa
 		
 		void HandleTabClick(string button)
 		{
-			Sound.Play("ramenu1.aud");
+			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			Sound.Play(eva.TabClick);
 			var wasOpen = paletteOpen;
 			paletteOpen = (currentTab == button && wasOpen) ? false : true;
 			currentTab = button;
@@ -816,13 +819,15 @@ namespace OpenRa
 			if (paletteAnimationFrame <= paletteAnimationLength)
 				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
 
-			// Play radar-on sound at the start of the activate anim (open)
+			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			
+			// Play palette-open sound at the start of the activate anim (open)
 			if (paletteAnimationFrame == 1 && paletteOpen)
-				Sound.Play("bleep13.aud");
+				Sound.Play(eva.BuildPaletteOpen);
 
-			// Play radar-on sound at the start of the activate anim (close)
+			// Play palette-close sound at the start of the activate anim (close)
 			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
-				Sound.Play("bleep13.aud");
+				Sound.Play(eva.BuildPaletteClose);
 
 			// Animation is complete
 			if ((paletteAnimationFrame == 0 && !paletteOpen)

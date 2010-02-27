@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -43,7 +43,8 @@ namespace OpenRa.Traits
 			if (order.OrderString == "PowerDown")
 			{
 				IsDisabled = !IsDisabled;
-				Sound.PlayToPlayer(self.Owner, IsDisabled ? "bleep12.aud" : "bleep11.aud");
+				var eva = self.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+				Sound.PlayToPlayer(self.Owner, IsDisabled ? eva.EnablePower : eva.DisablePower);
 			}
 		}
 	}

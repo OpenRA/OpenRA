@@ -177,16 +177,17 @@ namespace OpenRa
 			var diff = Math.Abs(totalMoney - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
-
+			
+			var eva = PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (DisplayCash < totalMoney)
 			{
 				DisplayCash += move;
-				Sound.PlayToPlayer(this, "cashup1.aud");
+				Sound.PlayToPlayer(this, eva.CashTickUp);
 			}
 			else if (DisplayCash > totalMoney)
 			{
 				DisplayCash -= move;
-				Sound.PlayToPlayer(this, "cashdn1.aud");
+				Sound.PlayToPlayer(this, eva.CashTickDown);
 			}
 		}
 

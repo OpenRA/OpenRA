@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -40,9 +40,10 @@ namespace OpenRa.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			var eva = self.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
 					Sound.PlayToPlayer(self.Owner,
-						self.Info.Traits.Get<OwnedActorInfo>().WaterBound ? "navylst1.aud" : "unitlst1.aud");
+						self.Info.Traits.Get<OwnedActorInfo>().WaterBound ? eva.NavalUnitLost : eva.UnitLost);
 		}
 	}
 }

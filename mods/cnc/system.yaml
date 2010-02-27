@@ -9,8 +9,19 @@ Player:
 		CancelledAudio: cancel1.aud
 		ClickAudio: button.aud
 	EvaAlerts:
+		TabClick: button.aud
+		ChatBeep: target1.aud
+		RadarUp: comcntr1.aud
+		RadarDown: powrdn1.aud
+		BuildPaletteOpen: appear1.aud 
+		BuildPaletteClose: appear1.aud
+		CashTickUp: clock1.aud
+		CashTickDown: clock1.aud
 		LowPower: lopower1.aud
 		SilosNeeded: silos1.aud
+		UnitLost: unitlost.aud
+		NavalUnitLost: unitlost.aud
+		PrimaryBuildingSelected: pribldg1.aud
 	PlaceBuilding:
 	SpawnDefaultUnits:
 	

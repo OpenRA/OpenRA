@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRa.FileFormats;
+using OpenRa.Traits;
 
 namespace OpenRa
 {
@@ -68,7 +69,8 @@ namespace OpenRa
 		{
 			Log.Write( "Chat: {0}: {1}", from, text );
 			recentLines.Add(Tuple.New(c, from, text));
-			Sound.Play("rabeep1.aud");
+			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			Sound.Play(eva.ChatBeep);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -37,7 +37,8 @@ namespace OpenRa.Traits
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
-			Sound.PlayToPlayer(thief.Owner, "credit1.aud");
+			var eva = thief.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			Sound.PlayToPlayer(thief.Owner, eva.CreditsStolen);
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
