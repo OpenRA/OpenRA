@@ -94,7 +94,7 @@ namespace OpenRA.Traits
 		{
 			if (e.DamageState == DamageState.Dead)
 			{
-				ScreenShaker.RegisterShakeEffect(10, self.CenterLocation, 1);
+				self.World.WorldActor.traits.Get<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
 				Sound.Play("kaboom22.aud");
 			}
 		}

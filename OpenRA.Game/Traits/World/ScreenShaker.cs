@@ -1,8 +1,26 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
+ * This file is part of OpenRA.
+ * 
+ *  OpenRA is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  OpenRA is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#endregion
 
 using System;
-using System.Linq;
-using OpenRA.Traits;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
@@ -14,8 +32,8 @@ namespace OpenRA.Traits
 	
 	public class ScreenShaker : ITick
 	{
-		static int ticks = 0;
-		static List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
+		int ticks = 0;
+		List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
 		
 		public void Tick (Actor self)
 		{
@@ -24,7 +42,7 @@ namespace OpenRA.Traits
 			ticks++;
 		}
 		
-		public static void RegisterShakeEffect(int time, float2 position, int intensity)
+		public void AddEffect(int time, float2 position, int intensity)
 		{
 			shakeEffects.Add(Tuple.New(ticks + time, position, intensity));
 		}
