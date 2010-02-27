@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -22,7 +22,11 @@ using System.Linq;
 
 namespace OpenRa.Traits
 {
-	class PlaceBuildingInfo : StatelessTraitInfo<PlaceBuilding> { }
+	class PlaceBuildingInfo : StatelessTraitInfo<PlaceBuilding>
+	{
+		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
+		public readonly string SellSound = "cashturn.aud";
+	}
 
 	class PlaceBuilding : IResolveOrder
 	{
@@ -39,8 +43,10 @@ namespace OpenRa.Traits
 						return;
 
 					self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
-					Sound.PlayToPlayer(order.Player, "placbldg.aud");
-					Sound.PlayToPlayer(order.Player, "build5.aud");
+					var info = self.Info.Traits.Get<PlaceBuildingInfo>();
+					
+					foreach (var s in info.BuildSounds)
+						Sound.PlayToPlayer(order.Player, s);
 					
 					var facts = self.World.Queries.OwnedBy[self.Owner]
 						.WithTrait<ConstructionYard>().Select(x => x.Actor);

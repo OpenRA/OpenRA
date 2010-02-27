@@ -929,9 +929,12 @@ namespace OpenRa
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 				var closureItemName = item.Name;
+				
+				var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+				
 				AddButton(rect, buildableItems.Contains(item.Name)
 					? isLmb => HandleBuildPalette(world, closureItemName, isLmb)
-					: (Action<bool>)(_ => Sound.Play("briefing.aud")));
+					: (Action<bool>)(_ => Sound.Play(eva.TabClick)));
 	
 				if (++x == columns) { x = 0; y++; }
 			}
