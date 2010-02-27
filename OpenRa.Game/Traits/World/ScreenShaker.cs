@@ -14,18 +14,18 @@ namespace OpenRa.Traits
 	public class ScreenShaker : ITick
 	{
 		int ticks = 0;
-		static List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
+		private static List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
 		
 		public ScreenShaker (Actor self){}
 		
 		public void Tick (Actor self)
 		{
 			Game.viewport.Scroll(getScrollOffset());
-			updateList();
+			UpdateList();
 			ticks++;
 		}
 		
-		private void updateList()
+		private void UpdateList()
 		{
 			var toRemove = new List<Tuple<int, float2, int>>();
 			
@@ -43,7 +43,7 @@ namespace OpenRa.Traits
 			}
 		}
 		
-		public static void registerShakeEffect(int time, float2 position, int intensity)
+		public static void RegisterShakeEffect(int time, float2 position, int intensity)
 		{
 			shakeEffects.Add(Tuple.New<int, float2, int>(time, position, intensity));
 		}
@@ -53,10 +53,10 @@ namespace OpenRa.Traits
 			int xFreq = 4;
 			int yFreq = 5;
 			
-			return getIntensity() * new float2( (float) Math.Sin((ticks*2*Math.PI)/xFreq) , (float) Math.Cos((ticks*2*Math.PI)/yFreq));
+			return GetIntensity() * new float2( (float) Math.Sin((ticks*2*Math.PI)/xFreq) , (float) Math.Cos((ticks*2*Math.PI)/yFreq));
 		}
 		
-		public float getIntensity()
+		public float GetIntensity()
 		{
 			float intensity = 0;
 			foreach(Tuple<int, float2, int> tuple in shakeEffects)
