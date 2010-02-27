@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace OpenRa
+namespace OpenRA
 {
 	[Flags]
 	public enum MouseButton

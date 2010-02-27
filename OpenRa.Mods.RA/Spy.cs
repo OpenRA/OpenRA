@@ -18,11 +18,11 @@
  */
 #endregion
 
-using OpenRa.Mods.RA.Activities;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class SpyInfo : StatelessTraitInfo<Spy> { }
 

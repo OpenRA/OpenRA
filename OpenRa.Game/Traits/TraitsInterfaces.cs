@@ -20,12 +20,12 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Traits.Activities;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Graphics;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public enum DamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
 	

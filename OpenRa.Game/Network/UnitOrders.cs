@@ -20,9 +20,9 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Network
+namespace OpenRA.Network
 {
 	static class UnitOrders
 	{

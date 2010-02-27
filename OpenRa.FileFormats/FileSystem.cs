@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public static class FileSystem
 	{

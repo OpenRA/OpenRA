@@ -21,7 +21,7 @@
 using System;
 using System.Diagnostics;
 
-namespace OpenRa
+namespace OpenRA
 {
 	static class Program
 	{

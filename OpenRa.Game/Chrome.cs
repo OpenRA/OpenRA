@@ -23,13 +23,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Graphics;
-using OpenRa.Orders;
-using OpenRa.Support;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Orders;
+using OpenRA.Support;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	class Chrome : IHandleInput
 	{
@@ -129,7 +129,7 @@ namespace OpenRa
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,
-					OpenRa.Graphics.Util.MakeArray(3,
+					OpenRA.Graphics.Util.MakeArray(3,
 						n => i.ToString())))
 				.ToDictionary(a => a.First, a => a.Second);
 

@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	/* non-turreted attack */
 	class Attack : IActivity

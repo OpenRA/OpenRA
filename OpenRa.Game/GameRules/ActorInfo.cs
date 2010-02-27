@@ -23,10 +23,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	public class ActorInfo
 	{

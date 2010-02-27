@@ -21,12 +21,12 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class Shroud
 	{

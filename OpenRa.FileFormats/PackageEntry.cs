@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class PackageEntry
 	{

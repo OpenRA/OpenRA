@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.Support
+namespace OpenRA.Support
 {
 	public static class Timer
 	{

@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	[Flags]
 	enum SoundFlags

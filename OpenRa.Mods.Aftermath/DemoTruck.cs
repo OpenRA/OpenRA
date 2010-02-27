@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRa.Effects;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.Aftermath
+namespace OpenRA.Mods.Aftermath
 {
 	class DemoTruckInfo : ITraitInfo
 	{

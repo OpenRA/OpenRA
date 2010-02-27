@@ -22,7 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OpenRa.Collections
+namespace OpenRA.Collections
 {
 	public class Set<T> : IEnumerable<T>
 	{

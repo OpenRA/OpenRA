@@ -22,9 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Network
+namespace OpenRA.Network
 {
 	class OrderManager
 	{

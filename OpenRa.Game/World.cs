@@ -21,14 +21,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Collections;
-using OpenRa.Effects;
-using OpenRa.FileFormats;
-using OpenRa.Graphics;
-using OpenRa.Support;
-using OpenRa.Traits;
+using OpenRA.Collections;
+using OpenRA.Effects;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Support;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class World
 	{

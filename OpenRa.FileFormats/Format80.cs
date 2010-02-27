@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
     class FastByteReader
     {

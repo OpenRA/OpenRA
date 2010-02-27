@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.Graphics;
+using OpenRA.Graphics;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class RenderUnitSpinnerInfo : RenderUnitInfo
 	{

@@ -19,9 +19,9 @@
 #endregion
 
 using System.Drawing;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class PlayerColorPaletteInfo : ITraitInfo
 	{

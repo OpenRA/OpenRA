@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	public class GeneralInfo
 	{

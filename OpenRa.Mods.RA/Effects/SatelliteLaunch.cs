@@ -19,11 +19,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Effects;
-using OpenRa.Graphics;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA.Effects
+namespace OpenRA.Mods.RA.Effects
 {
 	class SatelliteLaunch : IEffect
 	{

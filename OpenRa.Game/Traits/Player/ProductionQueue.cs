@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{

@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Exts
 	{

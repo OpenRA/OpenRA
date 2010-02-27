@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 using Tao.FreeType;
 using System.Runtime.InteropServices;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	class SpriteFont
 	{

@@ -20,7 +20,7 @@
 
 using System.Linq;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public abstract class SupportPowerInfo : ITraitInfo
 	{

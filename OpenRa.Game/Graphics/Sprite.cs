@@ -20,7 +20,7 @@
 
 using System.Drawing;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	public class Sprite
 	{

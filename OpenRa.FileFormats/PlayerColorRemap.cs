@@ -23,7 +23,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class PlayerColorRemap : IPaletteRemap
 	{

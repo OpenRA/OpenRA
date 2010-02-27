@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using OpenRa.Orders;
+using OpenRA.Orders;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class PowerDownButtonInfo : StatelessTraitInfo<PowerDownButton> { }
 

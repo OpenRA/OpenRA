@@ -20,9 +20,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Graphics;
+using OpenRA.Graphics;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class RallyPointInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{

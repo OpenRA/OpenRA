@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	public class Land : IActivity
 	{

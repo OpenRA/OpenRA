@@ -21,10 +21,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	public class WorldRenderer
 	{

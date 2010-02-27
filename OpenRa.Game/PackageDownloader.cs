@@ -24,9 +24,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa
+namespace OpenRA
 {
 	static class PackageDownloader
 	{

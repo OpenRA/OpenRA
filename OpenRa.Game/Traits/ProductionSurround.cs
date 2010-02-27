@@ -19,9 +19,9 @@
 #endregion
 
 using System.Linq;
-using OpenRa.GameRules;
+using OpenRA.GameRules;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class ProductionSurroundInfo : ProductionInfo
 	{

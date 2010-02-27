@@ -20,9 +20,9 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.Aftermath.Orders
+namespace OpenRA.Mods.Aftermath.Orders
 {
 	class SetChronoTankDestination : IOrderGenerator
 	{

@@ -19,7 +19,7 @@
 #endregion
 
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class EvaAlertsInfo : StatelessTraitInfo<EvaAlerts>
 	{

@@ -22,9 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	static class SequenceProvider
 	{

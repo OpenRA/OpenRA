@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class BuildableInfo : StatelessTraitInfo<Buildable>
 	{

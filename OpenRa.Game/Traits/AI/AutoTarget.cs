@@ -20,7 +20,7 @@
 
 using System.Linq;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class AutoTargetInfo : StatelessTraitInfo<AutoTarget> { }
 

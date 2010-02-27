@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.GameRules;
+using OpenRA.GameRules;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class AttackInfo
 	{

@@ -20,7 +20,7 @@
 
 using System.Drawing;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public struct TreeReference
 	{

@@ -24,7 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class Map
 	{

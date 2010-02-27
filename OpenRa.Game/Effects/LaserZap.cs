@@ -20,9 +20,9 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRA.Effects
 {
 	class LaserZap : IEffect
 	{

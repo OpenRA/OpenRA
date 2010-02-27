@@ -22,10 +22,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Graphics;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
-namespace OpenRa.Support
+namespace OpenRA.Support
 {
 	static class PerfHistory
 	{

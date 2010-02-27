@@ -22,10 +22,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public enum PowerState { Normal, Low, Critical };
 

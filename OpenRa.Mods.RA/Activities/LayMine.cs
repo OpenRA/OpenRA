@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	class LayMine : IActivity
 	{

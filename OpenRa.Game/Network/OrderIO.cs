@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRa.Network
+namespace OpenRA.Network
 {
 	static class OrderIO
 	{

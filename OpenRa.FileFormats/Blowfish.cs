@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	class Blowfish
 	{

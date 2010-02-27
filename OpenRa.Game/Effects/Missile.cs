@@ -20,11 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Traits;
+using OpenRA.GameRules;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRA.Effects
 {
 	class Missile : IEffect
 	{

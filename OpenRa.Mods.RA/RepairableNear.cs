@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class RepairableNearInfo : StatelessTraitInfo<RepairableNear> { }
 

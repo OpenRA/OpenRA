@@ -21,10 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	class HardwarePalette : Sheet
 	{

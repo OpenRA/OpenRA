@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	public class UserSettings
 	{

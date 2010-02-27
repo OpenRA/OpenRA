@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,8 +8,8 @@
     <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa</RootNamespace>
-    <AssemblyName>OpenRa.Game</AssemblyName>
+    <RootNamespace>OpenRA</RootNamespace>
+    <AssemblyName>OpenRA.Game</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -270,9 +270,9 @@
     <Compile Include="Traits\World\ScreenShaker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
+      <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -26,8 +26,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
-using OpenRa;
-using OpenRa.FileFormats;
+using OpenRA;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Server
 {

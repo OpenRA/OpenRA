@@ -20,11 +20,11 @@
 
 using System;
 using System.Linq;
-using OpenRa.Effects;
-using OpenRa.GameRules;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	static class Combat			/* some utility bits that are shared between various things */
 	{

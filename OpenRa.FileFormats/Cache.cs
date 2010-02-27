@@ -22,7 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class Cache<T, U> : IEnumerable<KeyValuePair<T, U>>
 	{

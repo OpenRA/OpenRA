@@ -23,12 +23,12 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Reflection;
 using System.Windows.Forms;
-using OpenRa.FileFormats;
-using OpenRa.FileFormats.Graphics;
-using OpenRa.Support;
+using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
+using OpenRA.Support;
 using System.IO;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	internal class Renderer
 	{

@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.Traits.Activities;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class TransformsOnDeployInfo : ITraitInfo
 	{

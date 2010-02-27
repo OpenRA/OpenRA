@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	public class Animation
 	{

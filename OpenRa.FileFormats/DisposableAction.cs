@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class DisposableAction : IDisposable
 	{

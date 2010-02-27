@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
-namespace OpenRa
+namespace OpenRA
 {
 	static class Smudge
 	{

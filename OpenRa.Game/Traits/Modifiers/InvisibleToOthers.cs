@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class InvisibleToOthersInfo : StatelessTraitInfo<InvisibleToOthers> { }
 

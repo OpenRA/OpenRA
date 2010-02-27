@@ -21,7 +21,7 @@
 using System;
 using System.Linq;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	class ReturnToBase : IActivity
 	{

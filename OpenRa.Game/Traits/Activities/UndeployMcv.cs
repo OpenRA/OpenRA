@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	class UndeployMcv : IActivity
 	{

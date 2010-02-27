@@ -19,11 +19,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Mods.RA.Effects;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class ParaDropInfo : ITraitInfo
 	{

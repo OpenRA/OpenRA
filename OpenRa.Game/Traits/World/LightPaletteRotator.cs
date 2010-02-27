@@ -20,7 +20,7 @@
 
 using System.Drawing;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class LightPaletteRotatorInfo : StatelessTraitInfo<LightPaletteRotator> { }
 	class LightPaletteRotator : ITick, IPaletteModifier

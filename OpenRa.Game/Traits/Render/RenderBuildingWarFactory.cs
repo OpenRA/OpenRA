@@ -19,9 +19,9 @@
 #endregion
 
 using System.Linq;
-using OpenRa.Graphics;
+using OpenRA.Graphics;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class RenderWarFactoryInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{

@@ -19,9 +19,9 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	public class VoiceInfo
 	{

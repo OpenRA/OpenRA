@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
 namespace SequenceEditor
 {

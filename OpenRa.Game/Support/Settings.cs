@@ -21,7 +21,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class Settings
 	{

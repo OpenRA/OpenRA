@@ -22,11 +22,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class WorldUtils
 	{

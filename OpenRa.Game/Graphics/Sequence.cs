@@ -20,7 +20,7 @@
 
 using System.Xml;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	public class Sequence
 	{

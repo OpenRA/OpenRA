@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	public class Move : IActivity
 	{

@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using OpenRa.Effects;
+using OpenRA.Effects;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{

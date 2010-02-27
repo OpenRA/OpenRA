@@ -21,7 +21,7 @@
 using System;
 using System.Drawing;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public struct int2
 	{

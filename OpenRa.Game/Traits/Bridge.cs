@@ -21,10 +21,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Graphics;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class BridgeInfo : ITraitInfo
 	{

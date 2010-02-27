@@ -21,10 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Rules
 	{

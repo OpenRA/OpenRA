@@ -22,9 +22,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class SyncAttribute : Attribute { }
 

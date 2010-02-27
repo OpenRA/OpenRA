@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	// allow a nonstandard sell/repair value to avoid
 	// buy-sell exploits like c&c's PROC.

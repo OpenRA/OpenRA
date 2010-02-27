@@ -21,11 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Effects;
-using OpenRa.GameRules;
-using OpenRa.Traits.Activities;
+using OpenRA.Effects;
+using OpenRA.GameRules;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class OwnedActorInfo
 	{

@@ -20,7 +20,7 @@
 
 using System.IO;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Log
 	{

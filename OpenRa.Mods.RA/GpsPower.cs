@@ -19,11 +19,11 @@
 #endregion
 
 using System.Linq;
-using OpenRa.Effects;
-using OpenRa.Mods.RA.Effects;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class GpsPowerInfo : SupportPowerInfo
 	{

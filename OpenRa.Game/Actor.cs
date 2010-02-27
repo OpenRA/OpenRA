@@ -21,12 +21,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class Actor
 	{

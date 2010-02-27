@@ -19,10 +19,10 @@
 #endregion
 
 using System;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Ore
 	{

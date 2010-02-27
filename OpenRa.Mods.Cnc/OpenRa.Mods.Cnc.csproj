@@ -8,8 +8,8 @@
     <ProjectGuid>{2881135D-4D62-493E-8F83-5EEE92CCC6BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.Mods.Cnc</RootNamespace>
-    <AssemblyName>OpenRa.Mods.Cnc</AssemblyName>
+    <RootNamespace>OpenRA.Mods.Cnc</RootNamespace>
+    <AssemblyName>OpenRA.Mods.Cnc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,17 +50,17 @@
     <Compile Include="TiberiumRefinery.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
+      <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRa.Game\OpenRa.Game.csproj">
+    <ProjectReference Include="..\OpenRa.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
-      <Name>OpenRa.Game</Name>
+      <Name>OpenRA.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRa.Mods.RA\OpenRa.Mods.RA.csproj">
+    <ProjectReference Include="..\OpenRa.Mods.RA\OpenRA.Mods.RA.csproj">
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRa.Mods.RA</Name>
+      <Name>OpenRA.Mods.RA</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -20,7 +20,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace OpenRa.FileFormats.Graphics
+namespace OpenRA.FileFormats.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vertex

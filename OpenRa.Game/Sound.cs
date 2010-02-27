@@ -20,12 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRa.FileFormats;
-using OpenRa.Support;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Support;
+using OpenRA.Traits;
 using Tao.OpenAl;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Sound
 	{

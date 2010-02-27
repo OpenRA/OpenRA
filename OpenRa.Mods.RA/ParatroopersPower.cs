@@ -19,10 +19,10 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class ParatroopersPowerInfo : SupportPowerInfo
 	{

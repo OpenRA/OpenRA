@@ -22,7 +22,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace OpenRa
+namespace OpenRA
 {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct float2

@@ -20,11 +20,11 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Traits;
+using OpenRA.GameRules;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	class UiOverlay
 	{

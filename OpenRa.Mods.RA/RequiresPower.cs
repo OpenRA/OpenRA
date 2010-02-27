@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class RequiresPowerInfo : ITraitInfo
 	{

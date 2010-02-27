@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class PaletteFromFileInfo : ITraitInfo
 	{

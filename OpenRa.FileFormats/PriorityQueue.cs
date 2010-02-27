@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class PriorityQueue<T>
 			where T : IComparable<T>

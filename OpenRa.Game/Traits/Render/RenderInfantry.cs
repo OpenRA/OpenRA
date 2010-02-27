@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRa.Effects;
+using OpenRA.Effects;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class RenderInfantryInfo : RenderSimpleInfo
 	{

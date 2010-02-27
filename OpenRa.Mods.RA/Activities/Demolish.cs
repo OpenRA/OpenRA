@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRa.Effects;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	class Demolish : IActivity
 	{

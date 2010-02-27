@@ -20,9 +20,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Orders
+namespace OpenRA.Orders
 {
 	class SellOrderGenerator : IOrderGenerator
 	{

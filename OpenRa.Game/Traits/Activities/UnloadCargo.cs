@@ -20,7 +20,7 @@
 
 using System.Linq;
 
-namespace OpenRa.Traits.Activities
+namespace OpenRA.Traits.Activities
 {
 	public class UnloadCargo : IActivity
 	{

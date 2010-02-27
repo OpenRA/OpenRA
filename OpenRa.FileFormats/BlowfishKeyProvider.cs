@@ -21,7 +21,7 @@
 using System;
 using System.Linq;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
     /* possibly the fugliest C# i've ever seen. */
 

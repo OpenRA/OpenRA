@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	using MiniYamlNodes = Dictionary<string, MiniYaml>;
 

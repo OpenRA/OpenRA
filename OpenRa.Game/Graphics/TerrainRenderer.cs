@@ -19,10 +19,10 @@
 #endregion
 
 using System.Drawing;
-using OpenRa.FileFormats;
-using OpenRa.FileFormats.Graphics;
+using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	class TerrainRenderer
 	{

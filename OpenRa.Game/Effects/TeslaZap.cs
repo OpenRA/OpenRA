@@ -19,10 +19,10 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Graphics;
-using OpenRa.Traits;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRA.Effects
 {
 	class TeslaZap : IEffect
 	{

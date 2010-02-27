@@ -26,12 +26,12 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Tao.Cg;
 using Tao.OpenGl;
-using OpenRa.FileFormats.Graphics;
+using OpenRA.FileFormats.Graphics;
 using Tao.Sdl;
 
-[assembly: Renderer( typeof( OpenRa.GlRenderer.GraphicsDevice ))]
+[assembly: Renderer( typeof( OpenRA.GlRenderer.GraphicsDevice ))]
 
-namespace OpenRa.GlRenderer
+namespace OpenRA.GlRenderer
 {
     public class GraphicsDevice : IGraphicsDevice
     {
@@ -163,7 +163,7 @@ namespace OpenRa.GlRenderer
 				switch (e.type)
 				{
 					case Sdl.SDL_QUIT:
-						OpenRa.Game.Exit();
+						OpenRA.Game.Exit();
 						break;
 
 					case Sdl.SDL_MOUSEBUTTONDOWN:
@@ -204,7 +204,7 @@ namespace OpenRa.GlRenderer
 								if( keyName.Length == 1 )
 									Game.HandleKeyPress( new KeyPressEventArgs( keyName[ 0 ] ), mods );
 								else if( keyName == "f4" && ( ( mods & Modifiers.Alt ) != 0 ) )
-									OpenRa.Game.Exit();
+									OpenRA.Game.Exit();
 							}
 						} break;
 

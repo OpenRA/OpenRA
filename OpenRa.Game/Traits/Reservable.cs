@@ -20,7 +20,7 @@
 
 using System;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class ReservableInfo : ITraitInfo
 	{

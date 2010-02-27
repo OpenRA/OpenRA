@@ -22,10 +22,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRa.Support;
-using OpenRa.Traits;
+using OpenRA.Support;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class PathFinder
 	{

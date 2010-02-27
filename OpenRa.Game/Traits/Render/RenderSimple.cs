@@ -20,9 +20,9 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRa.Graphics;
+using OpenRA.Graphics;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public abstract class RenderSimpleInfo : ITraitInfo
 	{

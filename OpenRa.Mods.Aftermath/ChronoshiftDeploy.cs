@@ -19,11 +19,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Mods.Aftermath.Orders;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Mods.Aftermath.Orders;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.Aftermath
+namespace OpenRA.Mods.Aftermath
 {
 	class ChronoshiftDeployInfo : ITraitInfo
 	{

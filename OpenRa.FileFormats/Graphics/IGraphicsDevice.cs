@@ -22,7 +22,7 @@ using System;
 using System.Drawing;
 using System.IO;
 
-namespace OpenRa.FileFormats.Graphics
+namespace OpenRA.FileFormats.Graphics
 {
 	[AttributeUsage( AttributeTargets.Assembly )]
 	public class RendererAttribute : Attribute

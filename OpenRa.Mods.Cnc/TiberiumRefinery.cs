@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.Cnc
+namespace OpenRA.Mods.Cnc
 {
 	class TiberiumRefineryInfo : ITraitInfo
 	{

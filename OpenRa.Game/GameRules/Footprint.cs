@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	static class Footprint
 	{

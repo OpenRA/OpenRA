@@ -20,10 +20,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Effects;
-using OpenRa.Traits;
+using OpenRA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class MineInfo : ITraitInfo
 	{

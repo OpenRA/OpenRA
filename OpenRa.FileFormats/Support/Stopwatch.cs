@@ -19,7 +19,7 @@
 #endregion
 
 using Tao.Sdl;
-namespace OpenRa.Support
+namespace OpenRA.Support
 {
 	public class Stopwatch
 	{

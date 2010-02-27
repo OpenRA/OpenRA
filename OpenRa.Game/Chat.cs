@@ -20,10 +20,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	class Chat
 	{

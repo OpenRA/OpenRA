@@ -19,10 +19,10 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.GameRules;
-using OpenRa.Traits;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRa.Orders
+namespace OpenRA.Orders
 {
 	class PlaceBuildingOrderGenerator : IOrderGenerator
 	{

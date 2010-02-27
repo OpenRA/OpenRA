@@ -91,9 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
+      <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

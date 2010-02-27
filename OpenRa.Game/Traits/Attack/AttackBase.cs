@@ -22,10 +22,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.Effects;
-using OpenRa.FileFormats;
+using OpenRA.Effects;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class AttackBaseInfo : ITraitInfo
 	{

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{

@@ -19,9 +19,9 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRa.Traits.Activities;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public class CargoInfo : ITraitInfo
 	{

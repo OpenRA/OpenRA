@@ -21,7 +21,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public class TileTemplate
 	{

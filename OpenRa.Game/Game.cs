@@ -23,17 +23,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using OpenRa.FileFormats;
-using OpenRa.GameRules;
-using OpenRa.Graphics;
-using OpenRa.Network;
-using OpenRa.Support;
-using OpenRa.Traits;
-using Timer = OpenRa.Support.Timer;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Graphics;
+using OpenRA.Network;
+using OpenRA.Support;
+using OpenRA.Traits;
+using Timer = OpenRA.Support.Timer;
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Game
 	{

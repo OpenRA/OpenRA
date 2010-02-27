@@ -18,11 +18,11 @@
  */
 #endregion
 
-using OpenRa.GameRules;
-using OpenRa.Traits;
-using OpenRa.Traits.Activities;
+using OpenRA.GameRules;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Mods.Cnc
+namespace OpenRA.Mods.Cnc
 {
 	public class ProductionAirdropInfo : ProductionInfo
 	{

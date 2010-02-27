@@ -20,12 +20,12 @@
 
 using System;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Graphics;
-using OpenRa.Orders;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Orders;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public class Controller : IHandleInput
 	{

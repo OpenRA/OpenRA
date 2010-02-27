@@ -22,7 +22,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public static class FieldLoader
 	{

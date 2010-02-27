@@ -21,9 +21,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Orders
+namespace OpenRA.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{

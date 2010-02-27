@@ -20,9 +20,9 @@
 
 using System;
 using System.Linq;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	static class CursorSheetBuilder
 	{

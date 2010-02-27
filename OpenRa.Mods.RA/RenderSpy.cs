@@ -20,9 +20,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Mods.RA
+namespace OpenRA.Mods.RA
 {
 	class RenderSpyInfo : RenderInfantryInfo
 	{

@@ -1,11 +1,11 @@
 
 using System;
 using System.Linq;
-using OpenRa.Traits;
+using OpenRA.Traits;
 using System.Collections.Generic;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	class ScreenShakerInfo : ITraitInfo
 	{

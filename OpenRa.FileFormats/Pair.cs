@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace OpenRa.FileFormats
+namespace OpenRA.FileFormats
 {
 	public struct Pair<T, U>
 	{

@@ -8,8 +8,8 @@
     <ProjectGuid>{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.GlRenderer</RootNamespace>
-    <AssemblyName>OpenRa.Gl</AssemblyName>
+    <RootNamespace>OpenRA.GlRenderer</RootNamespace>
+    <AssemblyName>OpenRA.Gl</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,13 +52,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
+      <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRa.Game\OpenRa.Game.csproj">
+    <ProjectReference Include="..\OpenRa.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
-      <Name>OpenRa.Game</Name>
+      <Name>OpenRA.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

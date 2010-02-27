@@ -23,9 +23,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenRa.FileFormats.Graphics;
+using OpenRA.FileFormats.Graphics;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	static class Util
 	{

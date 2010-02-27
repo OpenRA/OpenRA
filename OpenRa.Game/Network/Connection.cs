@@ -23,9 +23,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.Network
+namespace OpenRA.Network
 {
 	enum ConnectionState
 	{

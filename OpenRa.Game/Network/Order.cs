@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public sealed class Order
 	{

@@ -21,10 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.GameRules;
-using OpenRa.Traits;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRa
+namespace OpenRA
 {
 	public static class Exts
 	{

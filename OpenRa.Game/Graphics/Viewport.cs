@@ -20,10 +20,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRa.Network;
-using OpenRa.Traits;
+using OpenRA.Network;
+using OpenRA.Traits;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	interface IHandleInput
 	{

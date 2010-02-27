@@ -21,9 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using OpenRa.FileFormats;
+using OpenRA.FileFormats;
 
-namespace OpenRa.GameRules
+namespace OpenRA.GameRules
 {
 	public class InfoLoader<T> : IEnumerable<KeyValuePair<string, T>>
 	{

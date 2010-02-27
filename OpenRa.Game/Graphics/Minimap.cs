@@ -22,10 +22,10 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using OpenRa.FileFormats;
-using OpenRa.Traits;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRa.Graphics
+namespace OpenRA.Graphics
 {
 	class Minimap
 	{

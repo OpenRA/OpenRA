@@ -20,10 +20,10 @@
 
 using System;
 using System.Linq;
-using OpenRa.Graphics;
-using OpenRa.Traits.Activities;
+using OpenRA.Graphics;
+using OpenRA.Traits.Activities;
 
-namespace OpenRa.Traits
+namespace OpenRA.Traits
 {
 	public static class Util
 	{

@@ -8,8 +8,8 @@
     <ProjectGuid>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRa.Mods.RA</RootNamespace>
-    <AssemblyName>OpenRa.Mods.RA</AssemblyName>
+    <RootNamespace>OpenRA.Mods.RA</RootNamespace>
+    <AssemblyName>OpenRA.Mods.RA</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -80,13 +80,13 @@
     <Compile Include="Thief.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">
+    <ProjectReference Include="..\OpenRa.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRa.FileFormats</Name>
+      <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRa.Game\OpenRa.Game.csproj">
+    <ProjectReference Include="..\OpenRa.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
-      <Name>OpenRa.Game</Name>
+      <Name>OpenRA.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

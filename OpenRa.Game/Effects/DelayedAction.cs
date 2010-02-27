@@ -20,9 +20,9 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRa.Traits;
+using OpenRA.Traits;
 
-namespace OpenRa.Effects
+namespace OpenRA.Effects
 {
 	public class DelayedAction : IEffect
 	{
