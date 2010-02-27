@@ -28,7 +28,11 @@ namespace OpenRA.Traits
 		public readonly string Name = null;
 		public readonly string DisplayName = null;
 		public readonly string BasePalette = null;
-		public readonly string Remap = null;
+
+		public readonly int[] Color1 = { 255, 255, 255 };
+		public readonly int[] Color2 = { 0, 0, 0 };
+		public readonly bool SplitRamp = false;
+
 		public readonly int[] DisplayColor = null;
 		public object Create(Actor self) { return new PlayerColorPalette(self, this); }
 	}
@@ -39,9 +43,17 @@ namespace OpenRA.Traits
 		{
 			var wr = self.World.WorldRenderer;
 			var pal = wr.GetPalette(info.BasePalette);
-			var newpal = (info.Remap == null) ? pal : new Palette(pal, new PlayerColorRemap(FileSystem.Open(info.Remap)));
+			var newpal = new Palette(pal, new PlayerColorRemap(
+						ArrayToColor(info.Color1), 
+						ArrayToColor(info.Color2), 
+						info.SplitRamp));
+			
 			wr.AddPalette(info.Name, newpal);
-			Player.RegisterPlayerColor(info.Name, info.DisplayName, Color.FromArgb(info.DisplayColor[0], info.DisplayColor[1], info.DisplayColor[2]));
+
+			Player.RegisterPlayerColor(info.Name, info.DisplayName,
+				ArrayToColor(info.DisplayColor));
 		}
+
+		static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
 	}
 }

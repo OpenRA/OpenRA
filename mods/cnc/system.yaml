@@ -50,30 +50,81 @@ World:
 		DisplayName: Gold
 		BasePalette: player
 		DisplayColor: 228, 200, 112
+		Color1: 246,214,121
+		Color2: 40,32,8
+		SplitRamp: yes
 	PlayerColorPalette@player1:
 		Name: player1
 		DisplayName: Blue
 		BasePalette: player
-		Remap: blue.rem
 		DisplayColor: 56, 72, 125
+		Color1: 85,130,204
+		Color2: 17,33,71
+		SplitRamp: yes
 	PlayerColorPalette@player2:
 		Name: player2
 		DisplayName: Red
 		BasePalette: player
-		Remap: red.rem
-		DisplayColor: 238, 0, 0
+		DisplayColor: 238,0,0
+		Color1: 255,20,0
+		Color2: 56,0,0
+		SplitRamp: yes
 	PlayerColorPalette@player3:
 		Name: player3
 		DisplayName: Orange
 		BasePalette: player
-		Remap: orange.rem
 		DisplayColor: 198,97,0
+		Color1: 255,107,0
+		Color2: 56,0,0
+		SplitRamp: yes
 	PlayerColorPalette@player4:
 		Name: player4
 		DisplayName: Teal
 		BasePalette: player
-		Remap: teal.rem
 		DisplayColor: 28,109,97
+		Color1: 93,194,165
+		Color2: 0,32,32
+		SplitRamp: yes
+	PlayerColorPalette@player5:
+		Name: player5
+		DisplayName: Salmon
+		BasePalette: player
+		DisplayColor: 153,76,53
+		Color1: 210,153,125
+		Color2: 56,0,0
+		SplitRamp: yes
+	PlayerColorPalette@player6:
+		Name: player6
+		DisplayName: Green
+		BasePalette: player
+		DisplayColor: 76,101,60
+		Color1: 160,240,140
+		Color2: 20,20,20
+		SplitRamp: yes
+	PlayerColorPalette@player7:
+		Name: player7
+		DisplayName: Gray
+		BasePalette: player
+		DisplayColor: 133,113,101
+		Color1: 238,238,238
+		Color2: 44,28,24
+		SplitRamp: yes
+	PlayerColorPalette@player8:
+		Name: player8
+		DisplayName: White
+		BasePalette: player
+		DisplayColor: 255,255,255
+		Color1: 255,255,255
+		Color2: 75,75,75
+		SplitRamp: yes
+	PlayerColorPalette@player9:
+		Name: player9
+		DisplayName: Black
+		BasePalette: player
+		DisplayColor: 30,30,30
+		Color1: 80,80,80
+		Color2: 5,5,5
+		SplitRamp: yes
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

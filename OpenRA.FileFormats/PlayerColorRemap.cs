@@ -29,17 +29,25 @@ namespace OpenRA.FileFormats
 	{
 		Dictionary<int, Color> remapColors;
 
-		public PlayerColorRemap(Stream s)
+		public PlayerColorRemap(Color c1, Color c2, bool useSplitRamp)
 		{
-			var yaml = MiniYaml.FromStream(s);
-			remapColors = yaml.ToDictionary(
-				y => int.Parse(y.Key),
-				y => ArrayToColor((int[])FieldLoader.GetValue(
-					typeof(int[]), y.Value.Value.Trim())));
+			var baseIndex = useSplitRamp ? 0xb0 : 80;
+			var ramp = useSplitRamp
+				? new[] { 0, 2, 4, 6, 8, 10, 13, 15, 1, 3, 5, 7, 9, 11, 12, 14 }
+				: new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+			remapColors = ramp.Select((x, i) => Pair.New(baseIndex + i, ColorLerp(x / 16f, c1, c2)))
+				.ToDictionary(u => u.First, u => u.Second);
 		}
 
-		static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2], x[3]); }
-
+		static Color ColorLerp(float t, Color c1, Color c2)
+		{
+			return Color.FromArgb(255,
+				(int)(t * c2.R + (1 - t) * c1.R),
+				(int)(t * c2.G + (1 - t) * c1.G),
+				(int)(t * c2.B + (1 - t) * c1.B));
+		}
+		
 		public Color GetRemappedColor(Color original, int index)
 		{
 			Color c;

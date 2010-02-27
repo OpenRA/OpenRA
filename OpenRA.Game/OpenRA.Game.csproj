@@ -212,7 +212,6 @@
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
-    <Compile Include="Traits\World\PaletteFromRemap.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
