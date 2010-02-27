@@ -43,6 +43,8 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+		BuildSounds: constru2.aud, hvydoor1.aud
+		SellSounds: cashturn.aud
 	RenderBuilding:
 
 ^Tree:
@@ -57,6 +59,8 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+		BuildSounds: hvydoor1.aud
+		SellSounds: cashturn.aud
 		Capturable: false
 		Bib: no
 		Crewed: no

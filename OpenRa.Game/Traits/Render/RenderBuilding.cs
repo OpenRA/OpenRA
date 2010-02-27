@@ -128,7 +128,8 @@ namespace OpenRa.Traits
 			if( !Game.skipMakeAnims && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
 				anim.PlayBackwardsThen( "make", null );
 			
-			Sound.PlayToPlayer(self.Owner, self.Owner.PlayerActor.Info.Traits.Get<PlaceBuildingInfo>().SellSound);
+			foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
+					Sound.PlayToPlayer(self.Owner, s);
 		}
 
 		public void Sold(Actor self) { DoBib(self, true); }

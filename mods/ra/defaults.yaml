@@ -50,6 +50,7 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+		BuildSounds: placbldg.aud
 		Capturable: false
 		Bib: no
 		Crewed: no

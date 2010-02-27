@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -49,6 +49,9 @@ namespace OpenRa.Traits
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool Unsellable = false;
 
+		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
+		public readonly string[] SellSounds = {"cashturn.aud"};
+		
 		public object Create(Actor self) { return new Building(self); }
 	}
 

@@ -46,8 +46,10 @@ namespace OpenRa.Traits.Activities
 				var rb = self.traits.Get<RenderBuilding>();
 				rb.PlayCustomAnimBackwards(self, "make",
 					() => self.World.AddFrameEndTask(w => DoUndeploy(w,self)));
-
-				Sound.PlayToPlayer(self.Owner, self.Owner.PlayerActor.Info.Traits.Get<PlaceBuildingInfo>().SellSound);
+				
+				foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
+					Sound.PlayToPlayer(self.Owner, s);
+				
 				started = true;
 			}
 

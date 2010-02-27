@@ -22,11 +22,7 @@ using System.Linq;
 
 namespace OpenRa.Traits
 {
-	class PlaceBuildingInfo : StatelessTraitInfo<PlaceBuilding>
-	{
-		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
-		public readonly string SellSound = "cashturn.aud";
-	}
+	class PlaceBuildingInfo : StatelessTraitInfo<PlaceBuilding> {}
 
 	class PlaceBuilding : IResolveOrder
 	{
@@ -42,10 +38,9 @@ namespace OpenRa.Traits
 					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 						return;
 
-					self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
-					var info = self.Info.Traits.Get<PlaceBuildingInfo>();
-					
-					foreach (var s in info.BuildSounds)
+					var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+
+					foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
 						Sound.PlayToPlayer(order.Player, s);
 					
 					var facts = self.World.Queries.OwnedBy[self.Owner]

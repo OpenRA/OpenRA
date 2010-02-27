@@ -22,8 +22,6 @@ Player:
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
 	PlaceBuilding:
-		BuildSounds: constru2.aud, hvydoor1.aud
-		SellSound: cashturn.aud
 	SpawnDefaultUnits:
 	
 World:
