@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,15 +27,6 @@ namespace OpenRa.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{
-		public readonly string BuildingSelectAudio = "abldgin1.aud";
-		public readonly string BuildingReadyAudio = "conscmp1.aud";
-		public readonly string BuildingCannotPlaceAudio = "nodeply1.aud";
-		public readonly string UnitSelectAudio = "train1.aud";
-		public readonly string UnitReadyAudio = "unitrdy1.aud";
-		public readonly string OnHoldAudio = "onhold1.aud";
-		public readonly string CancelledAudio = "cancld1.aud";
-		public readonly string ClickAudio = "ramenu1.aud";
-		
 		public object Create(Actor self) { return new ProductionQueue(self); }
 	}
 
@@ -83,7 +74,8 @@ namespace OpenRa.Traits
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
 									if( !hasPlayedSound )
 									{
-										Sound.PlayToPlayer( order.Player, isBuilding ? self.Info.Traits.Get<ProductionQueueInfo>().BuildingReadyAudio : self.Info.Traits.Get<ProductionQueueInfo>().UnitReadyAudio );
+										var eva = self.Info.Traits.Get<EvaAlertsInfo>();
+										Sound.PlayToPlayer( order.Player, isBuilding ? eva.BuildingReadyAudio : eva.UnitReadyAudio );
 										hasPlayedSound = true;
 									}
 									if( !isBuilding )

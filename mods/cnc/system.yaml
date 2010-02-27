@@ -1,5 +1,12 @@
 Player:
 	ProductionQueue:
+	EvaAlerts:
+		TabClick: button.aud
+		ChatBeep: beepy2.aud
+		RadarUp: comcntr1.aud
+		RadarDown: powrdn1.aud
+		BuildPaletteOpen: appear1.aud 
+		BuildPaletteClose: appear1.aud
 		BuildingSelectAudio: bldging1.aud
 		BuildingReadyAudio: constru1.aud
 		BuildingCannotPlaceAudio: deploy1.aud
@@ -7,16 +14,8 @@ Player:
 		UnitReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
-		ClickAudio: button.aud
-	EvaAlerts:
-		TabClick: button.aud
-		ChatBeep: target1.aud
-		RadarUp: comcntr1.aud
-		RadarDown: powrdn1.aud
-		BuildPaletteOpen: appear1.aud 
-		BuildPaletteClose: appear1.aud
-		CashTickUp: clock1.aud
-		CashTickDown: clock1.aud
+#		CashTickUp: clock1.aud
+#		CashTickDown: clock1.aud
 		LowPower: lopower1.aud
 		SilosNeeded: silos1.aud
 		UnitLost: unitlost.aud

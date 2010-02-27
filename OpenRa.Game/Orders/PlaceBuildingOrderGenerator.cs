@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -52,8 +52,8 @@ namespace OpenRa.Orders
 				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
 					|| !world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
 				{
-					var queueInfo = world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>();
-					Sound.Play(queueInfo.BuildingCannotPlaceAudio);
+					var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+					Sound.Play(eva.BuildingCannotPlaceAudio);
 					yield break;
 				}
 

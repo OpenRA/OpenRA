@@ -966,10 +966,10 @@ namespace OpenRa
 
 		void StartProduction( World world, string item )
 		{
-			var queueInfo = world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>();
+			var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
 			var unit = Rules.Info[item];
 
-			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? queueInfo.BuildingSelectAudio : queueInfo.UnitSelectAudio);
+			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
 			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
 		}
 
@@ -978,10 +978,10 @@ namespace OpenRa
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var queueInfo = player.PlayerActor.Info.Traits.Get<Traits.ProductionQueueInfo>();
+			var eva = player.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
-			Sound.Play(queueInfo.ClickAudio);
+			Sound.Play(eva.TabClick);
 
 			if (isLmb)
 			{
@@ -1010,12 +1010,12 @@ namespace OpenRa
 					// instant cancel of things we havent really started yet, and things that are finished
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
-						Sound.Play(queueInfo.CancelledAudio);
+						Sound.Play(eva.CancelledAudio);
 						Game.IssueOrder(Order.CancelProduction(player, item));
 					}
 					else
 					{
-						Sound.Play(queueInfo.OnHoldAudio);
+						Sound.Play(eva.OnHoldAudio);
 						Game.IssueOrder(Order.PauseProduction(player, item, true));
 					}
 				}
