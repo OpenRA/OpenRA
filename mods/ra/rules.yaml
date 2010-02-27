@@ -1,5 +1,6 @@
 Player:
 	ProductionQueue:
+	EvaAlerts:
 	PlaceBuilding:
 	GpsPower:
 		Image: gpssicon

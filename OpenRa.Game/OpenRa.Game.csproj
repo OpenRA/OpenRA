@@ -266,6 +266,7 @@
     <Compile Include="WorldUtils.cs" />
     <Compile Include="Traits\Wall.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
+    <Compile Include="Traits\Player\EvaAlerts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRa.FileFormats\OpenRa.FileFormats.csproj">

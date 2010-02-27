@@ -8,6 +8,9 @@ Player:
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
 		ClickAudio: button.aud
+	EvaAlerts:
+		LowPower: lopower1.aud
+		SilosNeeded: silos1.aud
 	PlaceBuilding:
 	SpawnDefaultUnits:
 	

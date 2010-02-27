@@ -107,7 +107,7 @@ namespace OpenRa
 
 			if (PowerProvided - PowerDrained < 0)
 				if (PowerProvided - PowerDrained  != oldBalance)
-					GiveAdvice("lopower1.aud");
+					GiveAdvice(PlayerActor.Info.Traits.Get<EvaAlertsInfo>().LowPower);
 		}
 				
 		public float GetSiloFullness()
@@ -146,7 +146,7 @@ namespace OpenRa
 				Ore = OreCapacity;		// trim off the overflow.
 
 			if (Ore > .8 * OreCapacity)
-				GiveAdvice("silond1.aud");		// silos needed
+				GiveAdvice(PlayerActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);		// silos needed
 		}
 
 		public bool TakeCash( int num )
