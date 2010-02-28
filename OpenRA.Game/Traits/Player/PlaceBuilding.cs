@@ -35,9 +35,11 @@ namespace OpenRA.Traits
 					var queue = self.traits.Get<ProductionQueue>();
 					var unit = Rules.Info[ order.TargetString ];
 					var producing = queue.CurrentItem(unit.Category);
-					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
-						return;
-
+					
+					// Breaks linebuild
+					//if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
+					//	return;
+					
 					var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 
 					foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)

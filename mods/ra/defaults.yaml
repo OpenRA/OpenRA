@@ -53,9 +53,11 @@
 		BuildSounds: placbldg.aud
 		Capturable: false
 		Bib: no
+		BaseNormal: no
 		Crewed: no
 		Sight: 0
 	Wall:
+	LineBuild:
 	Selectable:
 	RenderBuildingWall:
 		HasMakeAnimation: false

@@ -43,6 +43,7 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+		BaseNormal: no
 		BuildSounds: constru2.aud, hvydoor1.aud
 		SellSounds: cashturn.aud
 	RenderBuilding:
@@ -66,6 +67,7 @@
 		Crewed: no
 		Sight: 0
 	Wall:
+	LineBuild:
 	Selectable:
 	RenderBuildingWall:
 		HasMakeAnimation: false

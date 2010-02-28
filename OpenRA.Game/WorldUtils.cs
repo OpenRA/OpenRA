@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -126,7 +126,27 @@ namespace OpenRA
 				.DefaultIfEmpty( new Actor[] {} )
 				.FirstOrDefault();
 		}
-
+		
+		public static int2 OffsetCell(this World world, int2 cell, int step, int dir)
+		{
+			switch (dir)
+			{
+				case 0:
+					cell.X += step;
+				break;
+				case 1:
+					cell.Y += step;
+				break;
+				case 2:
+					cell.X -= step;
+				break;
+				case 3:
+					cell.Y -= step;
+				break;
+			}
+			return cell;
+		}
+		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
 			return !Footprint.Tiles(name, building, topLeft).Any(

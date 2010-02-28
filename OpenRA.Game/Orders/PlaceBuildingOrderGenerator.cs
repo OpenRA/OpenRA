@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Orders
 {
@@ -56,11 +57,46 @@ namespace OpenRA.Orders
 					Sound.Play(eva.BuildingCannotPlaceAudio);
 					yield break;
 				}
-
+				
 				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, topLeft, Building);
+				
+				// Linebuild for walls.
+				// Assumes a 1x1 footprint; weird things will happen for other footprints
+				if (Rules.Info[ Building ].Traits.Contains<LineBuildInfo>())
+				{
+					int range = Rules.Info[ Building ].Traits.Get<LineBuildInfo>().Range;
+				
+					// Start at place location, search outwards
+					// TODO: First make it work, then make it nice
+					int[] dirs = {0,0,0,0};
+					for (int d = 0; d < 4; d++)
+					{
+						for (int i = 1; i < range; i++)
+						{
+							if (dirs[d] != 0)
+								continue;
+							
+							int2 cell = world.OffsetCell(topLeft,i,d);
+							
+							if (world.IsCellBuildable(cell, BuildingInfo.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,null))
+								continue; // Cell is empty; continue search
+
+							// Cell contains an actor. Is it the type we want?
+							if (world.Queries.WithTrait<LineBuild>().Any(a => (a.Actor.Info.Name == Building && a.Actor.Location.X == cell.X && a.Actor.Location.Y == cell.Y)))
+								dirs[d] = i; // Cell contains actor of correct type
+							else
+								dirs[d] = -1; // Cell is blocked by another actor type
+						}
+						
+						// Place intermediate-line sections
+						if (dirs[d] > 0)
+							for (int i = 1; i < dirs[d]; i++)
+								yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, world.OffsetCell(topLeft,i,d), Building);
+					}
+				}
 			}
 		}
-
+		
 		public void Tick( World world )
 		{
 			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
