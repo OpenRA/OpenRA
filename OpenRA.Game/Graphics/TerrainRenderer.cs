@@ -21,6 +21,7 @@
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -103,6 +104,9 @@ namespace OpenRA.Graphics
 					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
 					terrainSheet.Texture, PrimitiveType.TriangleList, renderer.SpriteShader));
+
+			foreach (var r in Game.world.WorldActor.traits.WithInterface<IRenderOverlay>())
+				r.Render();
 
 			overlayRenderer.Draw();
 		}

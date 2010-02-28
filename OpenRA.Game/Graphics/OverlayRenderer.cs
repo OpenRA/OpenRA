@@ -72,18 +72,18 @@ namespace OpenRA.Graphics
 							Game.CellSize * (float2)location, "terrain");
 					}
 
-					var o = tr.overlay;
-					if (o < overlaySprites.Length)
-					{
-						var location = new int2(x, y);
-						var sprites = overlaySprites[o];
-						var spriteIndex = 0;
-						if (Ore.overlayIsFence[o]) spriteIndex = NearbyFences(x, y);
-						else if (Ore.overlayIsOre[o]) spriteIndex = map.MapTiles[x,y].density - 1;
-						else if (Ore.overlayIsGems[o]) spriteIndex = map.MapTiles[x,y].density - 1;
-						spriteRenderer.DrawSprite(sprites[spriteIndex],
-							Game.CellSize * (float2)location, "terrain");
-					}
+					//var o = tr.overlay;
+					//if (o < overlaySprites.Length)
+					//{
+					//    var location = new int2(x, y);
+					//    var sprites = overlaySprites[o];
+					//    var spriteIndex = 0;
+					//    if (Ore.overlayIsFence[o]) spriteIndex = NearbyFences(x, y);
+					//    else if (Ore.overlayIsOre[o]) spriteIndex = map.MapTiles[x,y].density - 1;
+					//    else if (Ore.overlayIsGems[o]) spriteIndex = map.MapTiles[x,y].density - 1;
+					//    spriteRenderer.DrawSprite(sprites[spriteIndex],
+					//        Game.CellSize * (float2)location, "terrain");
+					//}
 				}
 
 			spriteRenderer.Flush();

@@ -216,6 +216,24 @@ World:
 	SellButton:
 	RepairButton:
 	PowerDownButton:
+	WallLoadHook@sbag:
+		ActorType: sbag
+		OverlayIndices: 0,24
+	WallLoadHook@cycl:
+		ActorType: cycl
+		OverlayIndices: 1
+	WallLoadHook@brik:
+		ActorType: brik
+		OverlayIndices: 2
+	WallLoadHook@fenc:
+		ActorType: fenc
+		OverlayIndices: 3
+	WallLoadHook@wood:
+		ActorType: wood
+		OverlayIndices: 4
+	WallLoadHook@barb:
+		ActorType: barb
+		OverlayIndices: 23
 	
 MGG:
 	GeneratesGap:
