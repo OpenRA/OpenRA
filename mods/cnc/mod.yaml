@@ -15,6 +15,7 @@ Packages:
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
 	mods/cnc/packages/updatec.mix
+	mods/cnc/packages/temperat.mix
 # Cannot qualify the RA names because they may live inside a mix
 	~main.mix
 	redalert.mix

@@ -32,7 +32,7 @@ World:
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
 		Theater: temperat
-		Filename: temperat_ra.pal
+		Filename: temperat.pal
 	PaletteFromFile@player_temperat:
 		Name: player
 		Theater: temperat

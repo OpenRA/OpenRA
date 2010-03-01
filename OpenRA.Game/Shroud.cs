@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -34,7 +34,9 @@ namespace OpenRA
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty = true;
-		bool hasGPS = false;
+		
+		// TODO: Testing
+		bool hasGPS = true;
 		Player owner;
 		Map map;
 		public Rectangle? bounds;

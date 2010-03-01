@@ -1,0 +1,625 @@
+                 COMMAND & CONQUER FILE FORMATS
+
+Revision 4
+
+by Vladan Bato (bat22@geocities.com)
+
+This document explains the file formats used by Command & Conquer.
+
+Command & Conquer is a tradmark of Westwood Studios, Inc.
+Command & Conquer is Copyright (C)1995 Westwood Studios, Inc.
+
+The information provided here is meant for programmers that want to make
+editor and utilites for Command & Conquer. My explanation might not be
+the best one, but it should be enough.
+
+I can't guarantee that the information in here is correct. If you find any
+errors, please report them to me.
+
+In this document I'll use Pascal notation, and any code samples will be in
+Pascal....
+I wanted to rewrite them in C, but I don't have the time to test the code.
+So, to avoid any risks, I'll use the code from Mix Manager.
+
+In case you don't know, the information contained here has been used to
+make the program Mix Manager, which contains a lot of conversion utilities
+for the various formats. For more info, check my homepage (see the end of 
+the document).
+
+===================
+ 1. THE .MIX FILES
+===================
+
+You probably already know the format of these files, but I will add a
+description here for completeness.
+
+The MIX file consists of two parts :
+-A header including the index of all the files contained within
+-A body containing all the files
+
+It's format is :
+
+ Header : record
+            NumFiles : word;    {Number of files in MIX}
+            DataSize : longint; {Size of body}
+            Index    : array [1..NumFiles] of
+              record
+                ID    : longint;  {File ID}
+                Start : longint;  {Offset of file from the start of the 
+body}
+                Size  : longint;  {file size}
+              end;
+          end;
+
+The ID field is computed from the original filename, which is not stored in
+the MIX.
+The records are always sorted by the ID field (the numbers are signed
+longints).
+Note that the offsets are relative to the start of the body so to find the 
+actual offset in the MIX you have to add the size of the header which is  
+NumFiles*12+6
+
+===================
+ 2. THE .PAL FILES
+===================
+
+The most easiest files....
+These files contain the palette in the same format used by VGA cards.
+
+ Palette : array [0..255] of record
+                               red,green,blue:byte;
+                             end;
+
+Note that only the first 6 bits of each number are used, giving a total of
+262144 possible colors (as opposed to the 8 bits used by .PCX files for
+example).
+
+=================================
+ 3. THE TEMPLATE AND .BIN FILES
+=================================
+
+The Template files contain the map graphics, and can be found in the
+theater specific MIX files (TEMPERAT.MIX, WINTER.MIX, DESERT.MIX).
+The .BIN files contain the maps for the missions and are used in conjunction
+with the .INI files.
+
+I won't explain them here. They are explained with great detail in the
+document titled "Command & Conquer maps" I wrote some time ago.
+The said document can be found on my homepage.
+
+===================
+ 5. THE .SHP FILES
+===================
+
+The .SHP files contain almost all the graphics : units, structures, 
+trees,...
+The header has the following structure :
+
+  Header : record
+             NumImages : word;    {Number of images}
+             A,B       : word;    {Unknown}
+             Width,
+             Height    : word;    {Width and Height of the images}
+             C         : longint; {Unknown}
+           end;
+
+If you know something about those unknown fields, please e-mail me.
+Following that there's an array of records, one for each image :
+
+  Offsets : array [0..NumImages+1] of
+              record
+                Offset  : longint;  {Offset and format of image in file}
+                RefOffs : longint;  {Offset and format of image on
+                                     which it is based}
+              end;
+
+The most significant byte (last) of the Offset and RefOffs fields
+contains the format, while the lower three are used for the offset.
+The format byte can have one of the three values : 80h, 40h, 20h.
+I will call the three image formats Format80, Format40 and Format20.
+
+The Format80 images are compressed with a compression method I'll explain
+later.
+
+The Format40 images must be xor-ed with a Format80 image. That's what the
+RefOffs field is used for. It tells which Format80 image they are
+based upon. The Format40 will be explained in detail later.
+
+The Format20 images use the same format as the Format40, the difference is
+that they are xor-ed with the image that precedes them in the file. That can
+be either in Format20 or in Format40.
+The offset part of the RefOffs field contains the number of the first
+Format40 image in the chain, and the format field is always 48h.
+
+Here's an example :
+
+0) Off0(three bytes) 80h 000000h 00h
+1) Off1(three bytes) 80h 000000h 00h
+2) Off2(three bytes) 40h Off1    80h
+3) Off3(three bytes) 80h 000000h 00h
+4) Off4(three bytes) 40h Off1    80h
+5) Off5(three bytes) 20h 000400h 48h
+6) Off6(three bytes) 20h 000400h 48h
+7) Off7(three bytes) 40h Off3    80h
+
+For example to draw image 7, you have to draw the image 3 first (whose 
+offset
+and format are given) and then xor image 7 over it.
+
+To draw image 6, you have to xor it over the previous image, i.e. 5, which
+is format20 again, that means that it has to be xor-ed over image 4, which
+is in format40, i.e. it must be xor-ed over the image in format80 it has a
+reference to. In this case it's image 1. Thus the chain is 1,4,5,6.
+This is one way to see it, the other could be :
+Image 6 is in Format20, the RefOffs field contains the number of the first
+Format40 image in the chain, in this case image 4. To draw Image 4, the
+Image 1 has to be drawn first, next is image 4, and then all the images
+from the 4th to the 6th have to be xor-ed over the previous.
+
+I made some experiments and found out that you don't have to use the
+Format40 and Format20 images. I tried converting all of them into Format80
+and it worked.
+
+Also, when changing graphics, note that all the unit and structure graphics
+should be drawn using the GDI colors, which will be automatically converted
+for the other sides. 
+The palette you should use is one of those found in DESERT.MIX, WINTER.MIX
+and TEMPERAT.MIX. The GDI colors are colors 0B0h-0BFh. The other colors 
+won't be converted and will remain the same for all the sides (be sure to
+use only the colors that are the same all three palettes).
+
+The above applies only to the graphics that appear in all three theaters
+(the .SHP file found in CONQUER.MIX). The graphics for the structures and
+overlays that appear in a single theater (found inside the theater specific
+MIX) can use the palette entries that are unique for that theater (and will
+be shown with garbled colors in the others).
+
+Also a special color is used for shadows. It's color 04h. In the palettes
+it's bright green, but C&C puts a shadow instead of it. I don't know how
+the shadows are calculated however.
+
+You should've noticed that the array has NumImages+2 elements when only
+NumImages elements are needed. The last one contains zeros, and the one 
+before
+that points to the end of the file. These two can be used to identify the 
+file as a .SHP.
+
+Here's the description of the compression formats : Format80 and Format40.
+
+----------
+ Format80
+----------
+
+There are several different commands, with different sizes : form 1 to 5
+bytes.
+The positions mentioned below always refer to the destination buffer (i.e.
+the uncompressed image). The relative positions are relative to the current
+position in the destination buffer, which is one byte beyond the last 
+written
+byte.
+
+I will give some sample code at the end.
+
+(1) 1 byte
+      +---+---+---+---+---+---+---+---+
+      | 1 | 0 |   |   |   |   |   |   |
+      +---+---+---+---+---+---+---+---+
+              \_______________________/
+                         |
+                       Count
+
+      This one means : copy next Count bytes as is from Source to Dest.
+
+(2) 2 bytes
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+  | 0 |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+      \___________/\__________________________________________________/
+            |                             |
+         Count-3                    Relative Pos.
+
+  This means copy Count bytes from Dest at Current Pos.-Rel. Pos. to
+  Current position.
+  Note that you have to add 3 to the number you find in the bits 4-6 of the
+  first byte to obtain the Count.
+  Note that if the Rel. Pos. is 1, that means repeat Count times the 
+previous
+  byte.
+
+(3) 3 bytes
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+  | 1 | 1 |   |   |   |   |   |   |   |               |               |
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+          \_______________________/                  Pos
+                     |
+                 Count-3
+
+  Copy Count bytes from Pos, where Pos is absolute from the start of the
+  destination buffer. (Pos is a word, that means that the images can't be
+  larger than 64K)
+
+(4) 4 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 |   |       |       |  |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+                                            Count          Color
+
+  Write Color Count times.
+  (Count is a word, color is a byte)
+
+(5) 5 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |   |       |       |  |       |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+                                            Count               Pos
+
+  Copy Count bytes from Dest. starting at Pos. Pos is absolute from the 
+start of the Destination buffer.
+  Both Count and Pos are words.
+
+These are all the commands I found out. Maybe there are other ones, but I
+haven't seen them yet.
+
+All the images end with a 80h command.
+
+To make things more clearer here's a piece of code that will uncompress the
+image.
+
+  DP = destination pointer
+  SP = source pointer
+  Source and Dest are the two buffers
+
+
+  SP:=0;
+  DP:=0;
+  repeat
+    Com:=Source[SP];
+    inc(SP);
+    b7:=Com shr 7;  {b7 is bit 7 of Com}
+    case b7 of
+      0 : begin  {copy command (2)}
+            {Count is bits 4-6 + 3}
+            Count:=(Com and $7F) shr 4 + 3;
+            {Position is bits 0-3, with bits 0-7 of next byte}
+            Posit:=(Com and $0F) shl 8+Source[SP];
+            Inc(SP);
+            {Starting pos=Cur pos. - calculated value}
+            Posit:=DP-Posit;
+            for i:=Posit to Posit+Count-1 do
+            begin
+              Dest[DP]:=Dest[i];
+              Inc(DP);
+            end;
+          end;
+      1 : begin
+            {Check bit 6 of Com}
+            b6:=(Com and $40) shr 6;
+            case b6 of
+              0 : begin  {Copy as is command (1)}
+                    Count:=Com and $3F;  {mask 2 topmost bits}
+                    if Count=0 then break; {EOF marker}
+                    for i:=1 to Count do
+                    begin
+                      Dest[DP]:=Source[SP];
+                      Inc(DP);
+                      Inc(SP);
+                    end;
+                  end;
+              1 : begin  {large copy, very large copy and fill commands}
+                    {Count = (bits 0-5 of Com) +3}
+                    {if Com=FEh then fill, if Com=FFh then very large copy}
+                    Count:=Com and $3F;
+                    if Count<$3E then {large copy (3)}
+                    begin
+                      Inc(Count,3);
+                      {Next word = pos. from start of image}
+                      Posit:=Word(Source[SP]);
+                      Inc(SP,2);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end
+                    else if Count=$3F then   {very large copy (5)}
+                    begin
+                      {next 2 words are Count and Pos}
+                      Count:=Word(Source[SP]);
+                      Posit:=Word(Source[SP+2]);
+                      Inc(SP,4);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end else
+                    begin   {Count=$3E, fill (4)}
+                      {Next word is count, the byte after is color}
+                      Count:=Word(Source[SP]);
+                      Inc(SP,2);
+                      b:=Source[SP];
+                      Inc(SP);
+                      for i:=0 to Count-1 do
+                      begin
+                        Dest[DP]:=b;
+                        inc(DP);
+                      end;
+                    end;
+                  end;
+            end;
+          end;
+    end;
+  until false;
+
+Note that you won't be able to compile this code, because the typecasting
+won't work. (But I'm sure you'll be able to fix it).
+
+
+----------
+ Format40
+----------
+
+As I said before the images in Format40 must be xor-ed over a previous 
+image, or against a black screen (as in the .WSA format).
+It is used when there are only minor changes between an image and a 
+following one.
+
+Here I'll assume that the old image is in Dest, and that the Dest pointer is
+set to the beginning of that buffer.
+
+As for the Format80, there are many commands :
+
+
+(1) 1 byte
+               byte
+  +---+---+---+---+---+---+---+---+
+  | 1 |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+
+      \___________________________/
+                   |
+                 Count
+
+  Skip count bytes in Dest (move the pointer forward).
+
+(2) 3 bytes
+              byte                           word
+  +---+---+---+---+---+---+---+---+  +---+-----+-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 0 | ... |       |
+  +---+---+---+---+---+---+---+---+  +---+-----+-------+
+                                         \_____________/
+                                                |
+                                              Count
+
+  Skip count bytes.
+
+(3) 3 bytes
+                byte                              word
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 1 | 0 | ... |       |
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+
+                                             \_____________/
+                                                   |
+                                                 Count
+
+ Xor next count bytes. That means xor count bytes from Source with bytes
+ in Dest.
+
+(4) 4 bytes
+              byte                               word           byte
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+  +-------+
+  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  | 1 | 1 | ... |       |  |       |
+  +---+---+---+---+---+---+---+---+  +---+---+-----+-------+  +-------+
+                                             \_____________/    value
+                                                   |
+                                                 Count
+
+  Xor next count bytes in Dest with value.
+
+5) 1 byte
+               byte
+  +---+---+---+---+---+---+---+---+
+  | 0 |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+
+      \___________________________/
+                   |
+                 Count
+
+  Xor next count bytes from source with dest.
+
+6) 3 bytes
+              byte                     byte       byte
+  +---+---+---+---+---+---+---+---+  +-------+  +-------+
+  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |  |       |  |       |
+  +---+---+---+---+---+---+---+---+  +-------+  +-------+
+                                       Count      Value
+
+  Xor next count bytes with value.
+
+
+All images end with a 80h 00h 00h command.
+
+I think these are all the commands, but there might be some other.
+If you find anything new, please e-mail me.
+
+As before here's some code :
+
+  DP = destination pointer
+  SP = source pointer
+  Source is buffer containing the Format40 data
+  Dest   is the buffer containing the image over which the second has
+         to be xor-ed
+
+
+  SP:=0;
+  DP:=0;
+  repeat
+    Com:=Source[SP];
+    Inc(SP);
+
+    if (Com and $80)<>0 then {if bit 7 set}
+    begin
+      if Com<>$80 then  {small skip command (1)}
+      begin
+        Count:=Com and $7F;
+        Inc(DP,Count);
+      end
+      else  {Big commands}
+      begin
+        Count:=Word(Source[SP]);
+        if Count=0 then break;
+        Inc(SP,2);
+
+        Tc:=(Count and $C000) shr 14;  {Tc=two topmost bits of count}
+
+        case Tc of
+          0,1 : begin  {Big skip (2)}
+                  Inc(DP,Count);
+                end;
+          2 : begin {big xor (3)}
+                Count:=Count and $3FFF;
+                for i:=1 to Count do
+                begin
+                  Dest[DP]:=Dest[DP] xor Source[SP];
+                  Inc(DP);
+                  Inc(SP);
+                end;
+              end;
+          3 : begin  {big repeated xor (4)}
+                Count:=Count and $3FFF;
+                b:=Source[SP];
+                Inc(SP);
+                for i:=1 to Count do
+                begin
+                  Dest[DP]:=Dest[DP] xor b;
+                  Inc(DP);
+                end;
+              end;
+        end;
+      end;
+    end else  {xor command}
+    begin
+      Count:=Com;
+      if Count=0 then
+      begin {repeated xor (6)}
+        Count:=Source[SP];
+        Inc(SP);
+        b:=Source[SP];
+        Inc(SP);
+        for i:=1 to Count do
+        begin
+          Dest[DP]:=Dest[DP] xor b;
+          Inc(DP);
+        end;
+      end else  {copy xor (5)}
+        for i:=1 to Count do
+        begin
+          Dest[DP]:=Dest[DP] xor Source[SP];
+          Inc(DP);
+          Inc(SP);
+        end;
+    end;
+  until false;
+
+
+
+===================
+ 6. THE .CPS FILES
+===================
+
+The .CPS files contain 320x200x256 images. The images are compressed with 
+the Format80 compression method. They may or may not contain a palette.
+
+The header has the following structure :
+
+  Header : record
+             Size    : word;  {File size - 2}
+             Unknown : word;  {Always 0004h}
+             ImSize  : word;  {Size of uncompressed image (always 0FA00h)}
+             Palette : longint; {Is there a palette ?}
+           end;
+
+If Palette is 03000000h then there's a palette after the header, otherwise
+the image follows.  CPS file without palette can be found in the SETUP.MIX 
+file, and they all use the Palette that can be found inside the same .MIX.
+
+The image that follows the palette (or the Header) is in Format80 which is
+explained above.
+
+===================
+ 7. THE .WSA FILES
+===================
+
+
+WSA files contain short animations and can be found in the GENERAL.MIX 
+files.
+They are basically a series of Format40 images, that are then compressed 
+with
+Format80.
+
+The header is :
+
+  Header : record
+             NumFrames : word;  {Number of frames}
+             X,Y       : word;  {Position on screen of the upper left 
+corner}
+             W,H       : word;  {Width and height of the images}
+             Delta     : longint; {Frames/Sec = Delta/(2^10)}
+           end;
+
+Following that there's an array of offsets :
+
+  Offsets : array [0..NumFrames+1] of longint;
+
+The obtain the actual offset, you have to add 300h. That is the size of the
+palette that follows the Offsets array.
+As for .SHP files the two last offsets have a special meaning.
+If the last offset is 0 then the one before it points to the end of file
+(after you added 300h of course).
+If the last one is <>0 then it points to the end of the file, and the
+one before it points to a special frame that gives you the difference 
+between the last and the first frame. This is used when you have to loop the
+animation.
+
+As I said before, the images are in Format40 but are then compressed with
+Format80. That means that you first have to uncompress the Format80 and then
+decode the Format40 image you obtain.
+The first frame should be xor-ed over a black image (filled with zeros), all
+the other are xor-ed over the previous one.
+
+There is a variant of the file without the palette that can be found in
+SETUP.MIX but I wasn't able to decode it (maybe there are some commands I
+don't know about)...
+
+=====================
+ 8. ADDITIONAL NOTES
+=====================
+
+The VQA files (that contain movies) have been decoded by Aaron Glover
+(arn@ibm.net), and are explained in a document he wrote up.
+You can find the document on my homepage (or ask him directly).
+
+What is still missing are the .AUD files.
+It seems that the AUD files use some kind of lossy sound compression,
+which means that it is almost impossible to decode them.
+However if someone manages to work them out, I'd really appreciate some
+info.
+
+I know my explanations are not very good, but you'll have to bear them,
+unless someone else wants to rewrite this.
+
+============
+ 9. CREDITS
+============
+
+I wish to thank the following people :
+
+-Andrew Griffin (buggy@adam.com.au) for starting it all.
+-Aaron Glover (arn@ibm.net) and
+ Denis Moeller (d.moeller@rendsburg.netsurf.de) for their work on .SHP 
+files.
+-Aaron Glover for decoding the VQA files.
+-Carl Kenner (andrew.kenner@unisa.edu.au) for the info on .CPS files.
+
+
+Vladan Bato (bat22@geocities.com)
+http://www.geocities.com/SiliconValley/8682

@@ -76,6 +76,7 @@ namespace OpenRA.FileFormats
 
 					using( Stream s = FileSystem.Open( tilename + suffix ) )
 					{
+						Log.Write(tilename+suffix);
 						if( !tiles.ContainsKey( (ushort)( start + i ) ) )
 							tiles.Add( (ushort)( start + i ), new Terrain( s ) );
 					}
@@ -88,9 +89,11 @@ namespace OpenRA.FileFormats
 		public byte[] GetBytes(TileReference r)
 		{
 			Terrain tile;
-			if( tiles.TryGetValue( r.tile, out tile ) )
-				return tile.TileBitmapBytes[ r.image ];
-
+			try {
+				if( tiles.TryGetValue( r.tile, out tile ) )
+					return tile.TileBitmapBytes[ r.image ];
+			} catch (System.ArgumentOutOfRangeException) {}
+			
 			byte[] missingTile = new byte[ 24 * 24 ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
 				missingTile[ i ] = 0x36;

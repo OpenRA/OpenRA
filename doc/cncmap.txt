@@ -1,0 +1,500 @@
+THE COMMAND & CONQUER MAPS
+
+Rev. 1f
+
+by Vladan Bato (bat22@geocities.com)
+
+This document explains the format of the maps and the associated graphics 
+files. It has also a complete listing of all available map values. 
+This document is meant for people who want to make a C&C scenery editor. 
+You can also use it to edit manually the maps but IMHO it's a suicide if you 
+can't see what you are doing.
+
+ABOUT .MIX FILES
+
+First of all I will explain the structure of MIX files, since all the 
+graphics are in the TEMPERAT, DESERT, and WINTER.MIX files.
+
+Each MIX file contains several internal files that can be extracted. I will 
+refer to the internal files as just "files". 
+The MIX file is made up of two parts: the first one is the Header, the 
+second one is the Body that contains all the files.
+
+The structure of the header is:
+(I will use pascal notation here)
+
+Header = record
+           NumFiles   : word;       {Number of internal files}
+           BodyLength : longint;    {Length of the body}
+           Index : array [1..NumFiles] of 
+             record
+               ID    : longint;   {ID of file, computed from filename}
+               Start : longint;   {Offset of file in the body}
+               Size  : longint;   {Size of the file}
+             end;
+         end;
+
+Of course you can't use directly such a structure in pascal because its 
+length is not fixed.
+Note that the offsets are relative to the start of the body so to find the 
+actual offset in the MIX you have to add the size of the header which is  
+NumFiles*12+6
+
+Note also that the records in the Index are not in the same order as the 
+files are physically stored in the MIX. In this document I will always refer 
+to the record number in the index and not to the file's actual position in 
+the MIX.
+
+ABOUT THE MAP
+
+All the maps are 64x64 squares large. There are 2 bytes of information for 
+each square, thus the file is 8192 bytes long.
+
+The two bytes indicate which image should be placed there. The first one
+indicates in which of the internal files of TEMPERAT, DESERT or WINTER.MIX 
+it is. Each of these internal files contains several images; the second byte 
+tells which of those images should be taken. The images inside one of the 
+internal files, if put together, form a larger image. It can be a bridge, 
+a road section, etc. These are called "templates". Thus, each internal file 
+contains a template. Each template is made of several "tiles" (images).
+Each square of the map contains one tile. It's not necessary to put all
+the tiles of a template on the map. 
+
+There are templates of various sizes: from 1x1 to 6x8.
+(I will always write the dimensions as WidthxHeight)
+The tile numbers range from 0 to WxH-1.
+However there are some tiles, which I call "empty tiles", that don't have 
+any images associated with them. If you try using them C&C will display 
+the default terrain for that Theater instead. There are empty tiles 
+especially in the corners of large templates.
+
+An example may be useful:
+
+The SW-NE bridge in the temperate theater has two empty tiles:
+  XXOr     X - Empty tile   O - other tiles
+  wbbO     b - Bridge 
+  Obbw     w - Water           (This is probably wrong, I can't check now) 
+  rOOO     r - road       
+
+We can see that in the upper left corner there are two empty tiles.
+We can put the values 00 and 01 in our map (as the second byte; the first 
+would be A5h for the bridge), in that case we'll see some grass there. But 
+we can replace those two tiles with anything else without disturbing the 
+rest. What I mean, is that if we changed any other tile, a piece of river 
+would be missing or a rock could be cut, ruining the map; but if we 
+replace the empty tiles everything is OK.
+
+So, when we have an empty tile, we can leave it there, or replace it with 
+anything else. There are two exceptions to this rule however:
+
+1) Sometimes the empty tiles should be water, but if we don't replace them 
+   C&C will show land in the middle of our lake or sea;
+2) There are templates containing roads that finish in one of the corners, 
+   so that the next template must have an empty tile in the opposite corner 
+   to stick to the other. 
+
+An example might help:
+
+Imagine that we have two road sections like these:
+  OOrr OOrr
+  Orrr Orrr
+  rrrO rrrO
+  rrOO rrOO
+
+and we want to stick them diagonally:
+       OOrr
+       Orrr  
+       rrrO 
+       rrOO
+   OOrr           
+   Orrr
+   rrrO
+   rrOO  
+
+Something is obviously missing. We need to add some tiles to fill it like 
+this:
+       OOrr
+       Orrr  
+       rrrO 
+      RrrOO
+   OOrrR           
+   Orrr
+   rrrO
+   rrOO  
+
+The solution could be to have two templates like these:
+   OOOO  ROOO
+   OOOO  OOOO
+   OOOO  OOOO
+   OOOR  OOOO
+or to have one little template with empty tiles:
+   RX
+   XR    (Where X are empty tiles)
+
+Now we can put this between the two road sections, replacing the empty 
+tiles with the corner tiles of the road sections.
+
+There are many road sections like this and  I've indicated them with 
+"(Conn.)" in the table at the end of this document.
+
+ABOUT THE DESERT, TEMPERAT, and WINTER.MIX FILES
+
+These are the files that hold the graphics for the templates. There's one 
+file inside the MIX for each template, and each file has several tiles 
+inside. 
+There are other files inside the MIXes, probably for the trees and other 
+overlay elements but I don't know the format. If somebody knows their 
+format, please let me know.
+
+In each MIX there's also a palette, the entries are:
+DESERT.MIX   entry n. 26
+TEMPERAT.MIX entry n. 62
+WINTER.MIX   entry n. 62
+
+I will now explain the format of the files with map graphics.
+First of all there's a header with the following structure:
+
+Header = record
+           Width  : word;  {Width of images, always 24 (18h)}
+           Heigth : word;  {Heigth of images, always 24}
+           NumTil : word;  {Number of Tiles (may differ from num. of Images}
+           Zero1  : word;      {Seems to be always 0000h}
+           Size   : longint;   {size of file}
+           ImgStart : longint; {Offset of first image}
+           Zero2  : longint;   {Seems to be always 00000000h}
+           ID1    : word;      {Always FFFFh}
+           ID2    : word;      {Always 1A0Dh (or 0D1Ah I can't remeber}
+           Index2 : longint;   {Offset of Index2}
+           Index1 : longint;   {Offset of Index1} {I will explain these 
+later}
+         end;
+
+The images follow the header but I suppose they could be anywhere.
+They are all 24x24 pixel, uncompressed and are one after the other.
+Note that the number of images may differ from the number of tiles if 
+there are some empty tiles. If there are empty tiles, the actual number of 
+images can be smaller than the number of tiles. To work out the number 
+of images you can use the formula : (Index1-ImgStart)/(24*24). 
+However, you won't have to do this if the index is not corrupt.
+
+Index1 has the following format:
+
+  Index1 : array [0..NumTil-1] of byte;
+
+where NumTil is the number of tiles. 
+
+Each entry in Index1 corresponds to one tile, and indicates which image 
+(of that file) is associated with it. If the entry is FFh than that tile 
+is empty.
+
+Index2 is an array of NumImages bytes where NumImages is the real
+number of images in the file. However it's always filled with zeros 
+(sometimes there's a 1 somewhere but I don't know it's meaning).
+
+Note that there's no way to know the dimensions (Width and Height) of the 
+template. If there are 6 tiles it could be 6x1, 1x6, 3x2, 2x3. I worked out 
+the dimensions of all templates myself (It's easy, all you have to do is to 
+try different widths and look at the screen).
+
+
+For example a procedure that has to display template 61h, tile 3 of the 
+Desert theater would do:
+1) Look in the table and find in which file it is in (entry 168 of 
+   DESERT.MIX)
+2) Open that file (seek it inside the MIX)
+3) Read the Header
+4) Read Index1 and read the 4th byte (for tile 3), let it be N
+5) Seek ImgStart+Width*Height*N
+6) Read the Image and display it
+
+AND FINALLY THE TABLE
+
+Here is the table of all available map values (template numbers), the 
+dimensions and the relative entries in the DESERT, WINTER, and TEMPERAT.MIX.
+There's also a brief description for those that don't want or don't know 
+how to write an editor. However, I think that it will be difficult to stick 
+the templates together without seeing them.
+
+An "x" means that the template doesn't exist in that theater. There are many 
+templates that exist only in one theater and will show as black holes in the
+others (causing the HOM effect). The WINTER and TEMPERATE theaters are
+however very similar, and differ only in a few templates.
+The roads and cliffs are mostly the same for the three theaters, but be
+careful about the river and coast templates because they are not the same.
+
+  V  | DES | TEM | WIN | Dim.  | Name     | Description
+-----+-----+-----+-----+-------+----------+---------------------------------
+--
+ 00h | 007 | 011 | 028 | [4x4] | CLEAR1   | Default terrain
+ 01h | 002 | 007 | 007 | [1x1] | W1       | Water (not animated)
+ 02h |  x  | 009 | 009 | [2x2] | W2       | Water
+ 03h |  x  | 087 | 087 | [3x3] | SH1      | Coast WD (1)
+ 04h |  x  | 106 | 105 | [3x3] | SH2      | Coast WD
+ 05h |  x  | 126 | 124 | [1x1] | SH3      | Rock in water
+ 06h |  x  | 143 | 140 | [2x1] | SH4      | Rock in water
+ 07h |  x  | 159 | 157 | [3x3] | SH5      | Coast WD
+ 08h |  x  | 018 | 017 | [3x3] | SH11     | Fjord WD
+ 09h |  x  | 024 | 023 | [3x3] | SH12     | Coast WU
+ 0Ah |  x  | 031 | 031 | [3x3] | SH13     | Coast WU
+ 0Bh |  x  | 037 | 037 | [3x3] | SH14     | Coast WU
+ 0Ch |  x  | 042 | 042 | [3x3] | SH15     | Coast WU
+ 0Dh | 106 | 074 | 074 | [2x2] | S01      | Cliff Left Edge
+ 0Eh | 122 | 093 | 092 | [2x3] | S02      | Cliff Wu-Wd     (2)
+ 0Fh | 138 | 112 | 110 | [2x2] | S03      | Cliff W-E
+ 10h | 154 | 131 | 128 | [2x2] | S04      | Cliff W-E
+ 11h | 170 | 147 | 144 | [2x2] | S05      | Cliff W-E
+ 12h | 185 | 163 | 161 | [2x3] | S06      | Cliff Wd-Eu
+ 13h | 200 | 180 | 179 | [2x2] | S07      | Cliff Right Edge
+ 14h | 212 | 195 | 195 | [2x2] | S08      | Cliff Top Edge
+ 15h | 225 | 208 | 209 | [3x2] | S09      | Cliff N-S
+ 16h | 096 | 064 | 064 | [2x2] | S10      | Cliff N-S
+ 17h | 108 | 078 | 078 | [2x2] | S11      | Cliff N-S
+ 18h | 124 | 097 | 096 | [2x2] | S12      | Cliff N-S
+ 19h | 140 | 117 | 115 | [3x2] | S13      | Cliff N-S
+ 1Ah | 157 | 135 | 132 | [2x2] | S14      | Cliff Bottom Edge
+ 1Bh | 172 | 151 | 149 | [2x2] | S15      | Cliff Left Edge
+ 1Ch | 187 | 167 | 166 | [2x3] | S16      | Cliff Wu-Ed
+ 1Dh | 202 | 184 | 184 | [2x2] | S17      | Cliff W-E
+ 1Eh | 215 | 199 | 200 | [2x2] | S18      | Cliff W-E
+ 1Fh | 228 | 211 | 213 | [2x2] | S19      | Cliff W-E
+ 20h | 098 | 068 | 069 | [2x3] | S20      | Cliff Wu-Ed
+ 21h | 110 | 082 | 082 | [1x2] | S21      | Cliff Right Edge
+ 22h | 126 | 101 | 100 | [2x1] | S22      | Cliff Corner S-E Internal
+ 23h | 142 | 121 | 119 | [3x2] | S23      | Cliff Sl-Nr
+ 24h | 159 | 139 | 136 | [2x2] | S24      | Cliff N-S
+ 25h | 174 | 155 | 153 | [2x2] | S25      | Cliff N-S
+ 26h | 189 | 171 | 170 | [2x2] | S26      | Cliff N-S
+ 27h | 204 | 188 | 188 | [3x2] | S27      | Cliff Nl-Sr
+ 28h | 218 | 202 | 203 | [2x2] | S28      | Cliff Bottom Edge
+ 29h | 230 | 213 | 215 | [2x2] | S29      | Cliff Corner N-E External
+ 2Ah | 101 | 070 | 071 | [2x2] | S30      | Cliff Corner S-E Ext
+ 2Bh | 113 | 084 | 084 | [2x2] | S31      | Cliff Corner W-S Ext
+ 2Ch | 129 | 103 | 102 | [2x2] | S32      | Cliff Corner N-W Ext
+ 2Dh | 145 | 123 | 121 | [2x2] | S33      | Cliff Corner N-E Internal
+ 2Eh | 162 | 141 | 138 | [2x2] | S34      | Cliff Corner S-E Int
+ 2Fh | 177 | 157 | 155 | [2x2] | S35      | Cliff Corner W-S Int
+ 30h | 192 | 173 | 172 | [2x2] | S36      | Cliff Corner W-N Int
+ 31h | 207 | 190 | 190 | [2x2] | S37      | Cliff Junction NW-SE
+ 32h | 221 | 204 | 205 | [2x2] | S38      | Cliff Junction SW-NE
+ 33h |  x  | 027 | 026 | [3x3] | SH32     | Coast Corner N-W Int
+ 34h |  x  | 033 | 033 | [3x3] | SH33     | Coast Corner N-E Int
+ 35h | 017 |  x  |  x  | [4x1] | SH20     | Coast WD
+ 36h | 024 |  x  |  x  | [3x1] | SH21     | Coast WD
+ 37h | 041 |  x  |  x  | [6x2] | SH22     | Coast WD
+ 38h | 049 |  x  |  x  | [2x2] | SH23     | Coast WD
+ 39h | 118 |  x  |  x  | [1x1] | BR1      | Bush
+ 3Ah | 134 |  x  |  x  | [1x1] | BR2      | Bush
+ 3Bh | 150 |  x  |  x  | [1x1] | BR3      | Cactus
+ 3Ch | 166 |  x  |  x  | [1x1] | BR4      | Cactus
+ 3Dh | 181 |  x  |  x  | [1x1] | BR5      | ??? Purple square (bug ?)
+ 3Eh | 196 |  x  |  x  | [2x2] | BR6      | Bushes
+ 3Fh | 210 |  x  |  x  | [2x2] | BR7      | Bushes
+ 40h | 223 |  x  |  x  | [3x2] | BR8      | Bushes
+ 41h | 234 |  x  |  x  | [3x2] | BR9      | Bushes
+ 42h | 016 |  x  |  x  | [2x1] | BR10     | ??? Purple squares (bug ?)
+ 43h | 105 | 073 |  x  | [1x1] | P01      | Bones / Wall    (3)
+ 44h | 121 | 092 |  x  | [1x1] | P02      | Bones / Wall    (3)
+ 45h | 137 | 111 |  x  | [1x1] | P03      | Mud / UFO       (3) (6)
+ 46h | 153 | 130 |  x  | [1x1] | P04      | Rock / UFO      (3) (6)
+ 47h | 169 |  x  |  x  | [2x2] | P05      | Gray Sand
+ 48h | 184 |  x  |  x  | [6x4] | P06      | Gray Sand
+ 49h | 199 | 179 | 178 | [4x2] | P07      | Mud
+ 4Ah |  x  | 194 | 194 | [3x2] | P08      | Mud
+ 4Bh |  x  | 045 | 045 | [3x2] | SH16     | Fjord WU
+ 4Ch | 072 | 047 | 047 | [2x2] | SH17     | Water (anim.)
+ 4Dh | 078 | 049 | 049 | [2x2] | SH18     | Water (anim.)
+ 4Eh | 084 |  x  |  x  | [3x2] | SH19     | Coast WD
+ 4Fh |  x  | 116 | 114 | [3x2] | P13      | Destroyed House
+ 50h |  x  | 134 | 131 | [2x1] | P14      | Walls
+ 51h |  x  |  x  | 148 | [4x2] | P15      | Snow
+ 52h | 001 | 006 | 006 | [1x1] | B1       | Rock
+ 53h | 003 | 008 | 008 | [2x1] | B2       | Rock
+ 54h |  x  | 010 | 010 | [3x1] | B3       | Rock
+ 55h | 004 |  x  |  x  | [1x1] | B4       | ?? Rock (7)
+ 56h | 005 |  x  |  x  | [1x1] | B5       | ?? Rock (7)
+ 57h | 006 |  x  |  x  | [1x1] | B6       | ?? Rock (7)
+ 58h |  x  | 175 | 174 | [3x3] | SH6      | Coast WD
+ 59h |  x  | 191 | 191 | [2x2] | SH7      | Coast Corner W-N External
+ 5Ah |  x  | 205 | 206 | [3x3] | SH8      | Coast Corner S-E Ext
+ 5Bh |  x  | 215 | 217 | [3x3] | SH9      | Coast Corner W-S Ext
+ 5Ch |  x  | 012 | 011 | [2x2] | SH10     | Coast Corner N-E Ext
+ 5Dh | 104 | 072 | 073 | [2x2] | D01      | Road Bottom End
+ 5Eh | 120 | 091 | 091 | [2x2] | D02      | Road Left End
+ 5Fh | 136 | 110 | 109 | [1x2] | D03      | Road Top End
+ 60h | 152 | 129 | 127 | [2x2] | D04      | Road Right End
+ 61h | 168 | 146 | 143 | [3x4] | D05      | Road S-N
+ 62h | 183 | 162 | 160 | [2x3] | D06      | Road S-N
+ 63h | 198 | 178 | 177 | [3x2] | D07      | Road S-N
+ 64h | 211 | 193 | 193 | [3x2] | D08      | Road S-N
+ 65h | 224 | 207 | 208 | [4x3] | D09      | Road W-E
+ 66h | 095 | 063 | 063 | [4x2] | D10      | Road W-E
+ 67h | 107 | 077 | 077 | [2x3] | D11      | Road W-E
+ 68h | 123 | 096 | 095 | [2x2] | D12      | Road W-E
+ 69h | 139 | 115 | 113 | [4x3] | D13      | Road Wu-Ed
+ 6Ah | 156 | 133 | 130 | [3x3] | D14      | Road T N--W+E  (4)
+ 6Bh | 171 | 150 | 147 | [3x3] | D15      | Road Y S--N+E  (4)
+ 6Ch | 186 | 166 | 164 | [3x3] | D16      | Road Y S--N+E
+ 6Dh | 201 | 183 | 182 | [3x2] | D17      | Road T S--W+E
+ 6Eh | 214 | 198 | 198 | [3x3] | D18      | Road T W--N+S
+ 6Fh | 227 | 210 | 211 | [3x3] | D19      | Road + W-N-E-S
+ 70h | 097 | 067 | 067 | [3x3] | D20      | Road Corner N-E
+ 71h | 109 | 081 | 081 | [3x2] | D21      | Road Corner S-E
+ 72h | 125 | 100 | 099 | [3x3] | D22      | Road Corner W-S
+ 73h | 141 | 120 | 118 | [3x3] | D23      | Road Corner W-N
+ 74h | 158 | 138 | 135 | [3x3] | D24      | Road Diagonal NW-SE      (5)
+ 75h | 173 | 154 | 152 | [3x3] | D25      | Road Diag NW-SE
+ 76h | 188 | 170 | 169 | [2x2] | D26      | Road Diag NW-SE (Conn.)  (5)
+ 77h | 203 | 187 | 187 | [2x2] | D27      | Road Diag NW-SE (Conn.)
+ 78h | 217 | 201 | 202 | [2x2] | D28      | Road Corner W-SE (Conn.)
+ 79h | 229 | 212 | 214 | [2x2] | D29      | Road Corner N-SE (Conn.)
+ 7Ah | 100 | 069 | 070 | [2x2] | D30      | Road Y SE--N+W (Conn.)
+ 7Bh | 112 | 083 | 083 | [2x2] | D31      | Road Corner E-NW (Conn.)
+ 7Ch | 128 | 102 | 101 | [2x2] | D32      | Road Corner S-NW (Conn.)
+ 7Dh | 144 | 122 | 120 | [2x2] | D33      | Road Y NW--S+E (Conn.)
+ 7Eh | 161 | 140 | 137 | [3x3] | D34      | Road Diag SW-NE
+ 7Fh | 176 | 156 | 154 | [3x3] | D35      | Road Diag SW-NE
+ 80h | 191 | 172 | 171 | [2x2] | D36      | Road Diag SW-NE (Conn.)
+ 81h | 206 | 189 | 189 | [2x2] | D37      | Road Diag SW-NE (Conn.)
+ 82h | 220 | 203 | 204 | [2x2] | D38      | Road Corner E-SW (Conn.)
+ 83h | 232 | 214 | 216 | [2x2] | D39      | Road Corner N-SW (Conn.)
+ 84h | 103 | 071 | 072 | [2x2] | D40      | Road Y SW--N+E (Conn.)
+ 85h | 115 | 085 | 085 | [2x2] | D41      | Road Corner W-NE (Conn.)
+ 86h | 131 | 104 | 103 | [2x2] | D42      | Road Corner S-NE (Conn.)
+ 87h | 147 | 124 | 122 | [2x2] | D43      | Road Y NE--W+S (Conn.)
+ 88h |  x  | 017 | 016 | [5x4] | RV01     | River W-E
+ 89h |  x  | 023 | 022 | [5x3] | RV02     | River W-E
+ 8Ah |  x  | 030 | 030 | [4x4] | RV03     | River Wu-Ed
+ 8Bh |  x  | 036 | 036 | [4x4] | RV04     | River Wd-Eu
+ 8Ch |  x  | 041 | 041 | [3x3] | RV05     | River N-S
+ 8Dh |  x  | 044 | 044 | [3x2] | RV06     | River N-S
+ 8Eh |  x  | 046 | 046 | [3x2] | RV07     | River N-S
+ 8Fh |  x  | 048 | 048 | [2x2] | RV08     | River Corner S-E
+ 90h |  x  | 052 | 052 | [2x2] | RV09     | River Corner W-S
+ 91h |  x  | 014 | 013 | [2x2] | RV10     | River Corner N-E
+ 92h |  x  | 020 | 019 | [2x2] | RV11     | River Corner W-N
+ 93h |  x  | 026 | 025 | [3x4] | RV12     | River Y N--W+S
+ 94h |  x  | 032 | 032 | [4x4] | RV13     | River Y Eu--W+S
+ 95h | 055 |  x  |  x  | [4x3] | RV14     | River W-E
+ 96h | 060 |  x  |  x  | [4x3] | RV15     | River W-E
+ 97h | 067 |  x  |  x  | [6x4] | RV16     | River Wd-Eu
+ 98h | 073 |  x  |  x  | [6x5] | RV17     | River Wu-Ed
+ 99h | 079 |  x  |  x  | [4x4] | RV18     | River N-S
+ 9Ah | 085 |  x  |  x  | [4x4] | RV19     | River N-S
+ 9Bh | 018 |  x  |  x  | [6x8] | RV20     | River Nr-Sl
+ 9Ch | 025 |  x  |  x  | [5x8] | RV21     | River Nl-Sr
+ 9Dh | 042 |  x  |  x  | [3x3] | RV22     | River Corner E-S
+ 9Eh | 050 |  x  |  x  | [3x3] | RV23     | River Corner W-S
+ 9Fh | 057 |  x  |  x  | [3x3] | RV24     | River Corner N-E
+ A0h | 062 |  x  |  x  | [3x3] | RV25     | River Corner N-W
+ A1h | 009 | 002 | 004 | [3x3] | FORD1    | River Crossing (Road W-E)
+ A2h | 010 | 003 | 005 | [3x3] | FORD2    | River Crossing (Road N-S)
+ A3h | 047 | 057 | 057 | [3x3] | FALLS1   | Falls W-E
+ A4h | 048 | 058 | 058 | [3x2] | FALLS2   | Falls N-S
+ A5h |  x  | 218 | 220 | [4x4] | BRIDGE1  | Bridge SW-NE
+ A6h |  x  | 059 | 059 | [4x4] | BRIDGE1D | Fallen Bridge SW-NE
+ A7h |  x  | 219 | 221 | [5x5] | BRIDGE2  | Bridge NW-SE
+ A8h |  x  | 060 | 060 | [5x5] | BRIDGE2D | Fallen Bridge NW-SE
+ A9h | 236 |  x  |  x  | [6x5] | BRIDGE3  | Bridge SW-NE
+ AAh | 092 |  x  |  x  | [6x5] | BRIDGE3D | Fallen Bridge SW-NE
+ ABh | 237 |  x  |  x  | [6x4] | BRIDGE4  | Bridge NW-SE
+ ACh | 093 |  x  |  x  | [6x4] | BRIDGE4D | Fallen Bridge NW-SE
+ ADh | 056 |  x  |  x  | [3x3] | SH24     | Fjord WD
+ AEh | 061 |  x  |  x  | [3x2] | SH25     | Coast WU
+ AFh | 068 |  x  |  x  | [3x2] | SH26     | Coast WU
+ B0h | 074 |  x  |  x  | [4x1] | SH27     | Coast WU
+ B1h | 080 |  x  |  x  | [3x1] | SH28     | Coast WU
+ B2h | 086 |  x  |  x  | [6x2] | SH29     | Coast WU
+ B3h | 019 |  x  |  x  | [2x2] | SH30     | Coast WU
+ B4h | 027 |  x  |  x  | [3x3] | SH31     | Fjord WU
+ B5h |  x  |  x  | 165 | [2x2] | P16      | Snow
+ B6h |  x  |  x  | 183 | [4x2] | P17      | Snow
+ B7h |  x  |  x  | 199 | [4x3] | P18      | Snow
+ B8h |  x  |  x  | 212 | [4x3] | P19      | Snow
+ B9h |  x  |  x  | 068 | [4x3] | P20      | Snow
+ BAh |  x  | 038 | 038 | [3x3] | SH34     | Coast WR
+ BBh |  x  | 043 | 043 | [3x3] | SH35     | Coast WL
+ BCh | 069 |  x  |  x  | [1x1] | SH36     | Coast Corner S-E Int
+ BDh | 075 |  x  |  x  | [1x1] | SH37     | Coast Corner W-S Int
+ BEh | 081 |  x  |  x  | [1x1] | SH38     | Coast Corner N-E Int
+ BFh | 087 |  x  |  x  | [1x1] | SH39     | Coast Corner N-W Int
+ C0h | 020 |  x  |  x  | [3x3] | SH40     | Coast Corner S-E Int
+ C1h | 028 |  x  |  x  | [3x3] | SH41     | Coast Corner N-W Int
+ C2h | 043 |  x  |  x  | [1x2] | SH42     | Coast WL
+ C3h | 051 |  x  |  x  | [1x3] | SH43     | Coast WL
+ C4h | 058 |  x  |  x  | [1x3] | SH44     | Coast WR
+ C5h | 063 |  x  |  x  | [1x2] | SH45     | Coast WR
+ C6h | 070 |  x  |  x  | [3x3] | SH46     | Coast Corner S-E Int
+ C7h | 076 |  x  |  x  | [3x3] | SH47     | Coast Corner S-E Int
+ C8h | 082 |  x  |  x  | [3x3] | SH48     | Coast Corner N-E Int
+ C9h | 088 |  x  |  x  | [3x3] | SH49     | Coast Corner N-W Int
+ CAh | 021 |  x  |  x  | [4x3] | SH50     | Coast Corner S-E Ext
+ CBh | 029 |  x  |  x  | [4x3] | SH51     | Coast Corner W-S Ext
+ CCh | 044 |  x  |  x  | [4x3] | SH52     | Coast Corner N-E Ext
+ CDh | 052 |  x  |  x  | [4x3] | SH53     | Coast Corner N-W Ext
+ CEh | 059 |  x  |  x  | [3x2] | SH54     | Coast WD
+ CFh | 064 |  x  |  x  | [3x2] | SH55     | Coast WD
+ D0h | 071 |  x  |  x  | [3x2] | SH56     | Coast WU
+ D1h | 077 |  x  |  x  | [3x2] | SH57     | Coast WU
+ D2h | 083 |  x  |  x  | [2x3] | SH58     | Coast WR
+ D3h | 089 |  x  |  x  | [2x3] | SH59     | Coast WR
+ D4h | 022 |  x  |  x  | [2x3] | SH60     | Coast WL
+ D5h | 030 |  x  |  x  | [2x3] | SH61     | Coast WL
+ D6h | 045 |  x  |  x  | [6x1] | SH62     | Coast WD
+ D7h | 053 |  x  |  x  | [4x1] | SH63     | Coast WD
+
+
+!! Warning !!
+Values from D8h-FEh will cause the game to crash  (it just locks up on 
+my computer)!!!
+
+The value FFh indicates the default terrain (I think the 4x4 template is 
+used).
+
+Notes:
+
+(0a) There may be some errors in this table because I typed it in a hurry
+     (you don't know how much time it takes), so if you find any errors
+     please report them to me.
+(0b) The names are taken from the GAME.DAT file. I matched them with the
+     files in the theater mix files. The complete filenames are the names
+     above plus an extension that depends on the theater (.DES, .TEM, .WIN).
+(1) For Coasts, WD, WU, WL, and WR mean : Water on the bottom
+    (Down), Top (Up), left and right.
+(2) For cliffs and roads the two letters indicate from which to which side
+    the Road (or cliff) goes. The lowercase letter means up, down, left,
+    right to indicate in which part of that side it starts.
+    For Example:
+
+    River Wu-Ed :
+     OOOOO
+     rOOOO
+     OrrOO
+     OOOrr
+     OOOOO
+
+(3) These templates exist in both the DESERT and the TEMPERATE theaters but
+    are not the same. I've put a description of both.
+
+(4) For Roads:
+     Roads T and Y mean that the road splits in the shape of a T or a Y.
+     E--N+S means it starts from the east edge then splits in two parts, one
+     going to the north and the other to the south edge
+
+(5) NW or any other corner means that the road ends in that corner and if it
+    says (Conn.), that means that it has an empty tile in that corner.
+    So you have to use the (Conn.) templates to stick together the other
+    ones.
+
+(6) In TEMPERAT.MIX these two files are buggy, they report there are 67h
+    tiles, but if you look at the index you'll see they all point to the
+    second image which (I think) is of uniform color. Only the first tile is
+    ever used.
+
+(7) These three templates don't work in C&C (HOM effect), but their graphics
+    exist in the DESERT.MIX file. Do not use them !
+
+That's all. I hope this info will be used by somebody to make a scenery
+editor.
+
+Report any errors to me. Also, if you have any info about other file formats
+please share it with me.
