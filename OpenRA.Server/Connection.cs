@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -62,7 +62,12 @@ namespace OpenRA.Server
 					if (0 < (len = socket.Receive(rx)))
 						data.AddRange(rx.Take(len));
 					else
+					{
+						if (len == 0)
+							Server.DropClient(this, null);
 						break;
+					}
+						
 				}
 				catch (SocketException e)
 				{
