@@ -18,39 +18,22 @@
  */
 #endregion
 
+using OpenRA.Graphics;
+using System.Collections.Generic;
 namespace OpenRA.Traits
 {
-	class OreGrowthInfo : ITraitInfo
+	class ResourceTypeInfo : ITraitInfo
 	{
-		public readonly float Interval = 1f;
-		public readonly float Chance = .02f;
-		public readonly bool Spreads = true;
-		public readonly bool Grows = true;
+		public readonly int[] Overlays = { };
+		public readonly string[] SpriteNames = { };
+		public readonly string Palette = "terrain";
+		public readonly int ValuePerUnit = 0;
+		public readonly string Name = null;
 
-		public object Create(Actor self) { return new OreGrowth(); }
+		public Sprite[][] Sprites;
+		
+		public object Create(Actor self) { return new ResourceType(); }
 	}
 
-	class OreGrowth : ITick
-	{
-		int remainingTicks;
-
-		public void Tick(Actor self)
-		{
-			if (--remainingTicks <= 0)
-			{
-				var info = self.Info.Traits.Get<OreGrowthInfo>();
-				
-				if (info.Spreads) 
-					Ore.SpreadOre(self.World, 
-						self.World.SharedRandom,
-						info.Chance);
-
-				if (info.Grows)
-					Ore.GrowOre(self.World, self.World.SharedRandom);
-
-				self.World.Minimap.InvalidateOre();
-				remainingTicks = (int)(info.Interval * 60 * 25);
-			}
-		}
-	}
+	class ResourceType { }
 }

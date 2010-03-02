@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Graphics;
 
@@ -26,23 +25,18 @@ namespace OpenRA.Traits
 {
 	class ResourceLayerInfo : ITraitInfo
 	{
-		public readonly string[] SpriteNames = { };
-		public readonly int[] OverlayIndices = { };
-		public readonly string Palette = "terrain";
-		public object Create(Actor self) { return new ResourceLayer(self, this); }
+		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
 	class ResourceLayer : IRenderOverlay, ILoadWorldHook
 	{
-		ResourceLayerInfo info;
-		Sprite[][] sprites;
-		CellContents[,] content = new CellContents[128,128];
 		SpriteRenderer sr;
 
-		public ResourceLayer(Actor self, ResourceLayerInfo info)
+		public ResourceTypeInfo[] resourceTypes;
+		public CellContents[,] content = new CellContents[128, 128];
+
+		public ResourceLayer(Actor self)
 		{
-			this.info = info;
-			sprites = info.SpriteNames.Select( f => SpriteSheetBuilder.LoadAllSprites(f)).ToArray();
 			sr = new SpriteRenderer( Game.renderer, true );
 		}
 
@@ -55,10 +49,12 @@ namespace OpenRA.Traits
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				{
 					if (!shroud.IsExplored(new int2(x, y))) continue;
-					if (content[x, y].contents != null)
-						sr.DrawSprite(content[x, y].contents[content[x, y].density],
+
+					var c = content[x, y];
+					if (c.image != null)
+						sr.DrawSprite(c.image[c.density],
 							Game.CellSize * new int2(x, y),
-							info.Palette);
+							c.type.Palette);
 				}
 
 			sr.Flush();
@@ -66,22 +62,47 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w)
 		{
+			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
+			foreach (var rt in resourceTypes)
+				rt.Sprites = rt.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();
+
 			var map = w.Map;
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
-					if (info.OverlayIndices.Contains(w.Map.MapTiles[x, y].overlay))
-						content[x, y].contents = ChooseContent(w, w.Map.MapTiles[x, y].overlay);
+				{
+					content[x,y].type = resourceTypes.FirstOrDefault(
+						r => r.Overlays.Contains(w.Map.MapTiles[x, y].overlay));
+					if (content[x, y].type != null)
+						content[x, y].image = ChooseContent(w, content[x, y].type);
+				}
+
+			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
+				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+					if (content[x, y].type != null)
+						content[x, y].density = (GetAdjacentCellsWith(content[x, y].type, x, y) *
+							content[x, y].image.Length) / 9;
 		}
 
-		Sprite[] ChooseContent(World w, int overlay)
+		public Sprite[] ChooseContent(World w, ResourceTypeInfo info)
 		{
-			return sprites[w.SharedRandom.Next(sprites.Length)];
+			return info.Sprites[w.SharedRandom.Next(info.Sprites.Length)];
+		}
+
+		public int GetAdjacentCellsWith(ResourceTypeInfo info, int i, int j)
+		{
+			int sum = 0;
+			for (var u = -1; u < 2; u++)
+				for (var v = -1; v < 2; v++)
+					if (content[i+u, j+v].type == info)
+						++sum;
+			return sum;
 		}
 
 		public struct CellContents
 		{
-			public Sprite[] contents;
+			public ResourceTypeInfo type;
+			public Sprite[] image;
 			public int density;
 		}
 	}

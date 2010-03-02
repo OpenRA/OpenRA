@@ -101,16 +101,6 @@ namespace OpenRA
 						++map.MapTiles[i, j].density;
 		}
 
-		public static void InitOreDensity( this Map map )
-		{
-			for (int j = 0; j < 128; j++)
-				for (int i = 0; i < 128; i++)
-				{
-					if (map.ContainsOre(i, j)) map.MapTiles[i, j].density = map.GetOreDensity(i, j);
-					if (map.ContainsGem(i, j)) map.MapTiles[i, j].density = map.GetGemDensity(i, j);
-				}
-		}
-
 		static byte GetOreDensity(this Map map, int i, int j)
 		{
 			int sum = 0;

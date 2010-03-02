@@ -234,6 +234,19 @@ World:
 	WallLoadHook@barb:
 		ActorType: barb
 		OverlayIndices: 23
+	ResourceLayer:
+	ResourceType@ore:
+		Overlays: 5,6,7,8
+		Palette: terrain
+		SpriteNames: gold01,gold02,gold03,gold04
+		ValuePerUnit: 30
+		Name: Ore
+	ResourceType@gem:
+		Overlays: 9,10,11,12
+		Palette: terrain
+		SpriteNames: gem01,gem02,gem03,gem04
+		ValuePerUnit: 60
+		Name: Gems
 	
 MGG:
 	GeneratesGap:
