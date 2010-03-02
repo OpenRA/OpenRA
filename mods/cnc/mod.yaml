@@ -47,6 +47,7 @@ Sequences:
 	mods/cnc/sequences-structures.xml:
 	mods/cnc/sequences-vehicles.xml:
 	mods/cnc/sequences-infantry.xml:
+	mods/cnc/sequences-map.xml:
 	mods/cnc/sequences.xml:	Obsolete; will disappear once done converting
 
 Chrome:

@@ -47,7 +47,7 @@ namespace OpenRA.FileFormats
 
 		public class Global
 		{
-			public string Map = "scm01ea.ini";
+			public string Map = "scm02ea.ini";
 			public string[] Packages = {};	// filename:sha1 pairs.
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;

@@ -28,10 +28,10 @@ namespace OpenRA.FileFormats
 		public readonly int Y;
 		public readonly string Image;
 
-		public TreeReference(int xy, string image)
+		public TreeReference(int xy, string image, int mapSize)
 		{
-			X = xy % 128;
-			Y = xy / 128;
+			X = xy % mapSize;
+			Y = xy / mapSize;
 			Image = image;
 		}
 

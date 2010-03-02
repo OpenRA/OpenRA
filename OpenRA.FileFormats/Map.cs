@@ -32,6 +32,7 @@ namespace OpenRA.FileFormats
 		public readonly string Title;
 		public readonly string Theater;
 
+		public readonly int MapSize;
 		public readonly int XOffset;
 		public readonly int YOffset;
 		public int2 Offset { get { return new int2( XOffset, YOffset ); } }
@@ -40,7 +41,7 @@ namespace OpenRA.FileFormats
 		public readonly int Height;
 		public int2 Size { get { return new int2(Width, Height); } }
 
-		public readonly TileReference[ , ] MapTiles = new TileReference[ 128, 128 ];
+		public readonly TileReference[ , ] MapTiles;
 		public readonly List<TreeReference> Trees = new List<TreeReference>();
 
 		public readonly IEnumerable<int2> SpawnPoints;
@@ -54,10 +55,8 @@ namespace OpenRA.FileFormats
 
 		public Map(IniFile file)
 		{
-			for (int j = 0; j < 128; j++)
-				for (int i = 0; i < 128; i++)
-					MapTiles[i, j] = new TileReference();
-
+			
+			
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
 			BinaryPart = basic.GetValue("BinaryPart", "scm02ea.bin");
@@ -70,25 +69,45 @@ namespace OpenRA.FileFormats
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
 			
+			if (false) // RA map
+			{
+				MapSize = 128;	
+			}
+			else
+			{
+				MapSize = 64;
+			}
 			
+			MapTiles = new TileReference[ MapSize, MapSize ];
+			for (int j = 0; j < MapSize; j++)
+				for (int i = 0; i < MapSize; i++)
+					MapTiles[i, j] = new TileReference();
 
-			//UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
-			//UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
-			//ReadTrees(file);
 			
-			UnpackCncTileData(FileSystem.Open(BinaryPart));
+			if (false) // RA map
+			{
+				UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
+				UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
+				ReadTrees(file);			
+
+			}
+			else // CNC
+			{
+				UnpackBinaryTileData(FileSystem.Open(BinaryPart));
+				ReadCncTrees(file);	
+			}
 			
 			SpawnPoints = file.GetSection("Waypoints")
-				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
-				.Where(a => a.First < 8)
-				.Select(a => a.Second)
-				.ToArray();
+					.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % MapSize, int.Parse(kv.Value) / MapSize)))
+					.Where(a => a.First < 8)
+					.Select(a => a.Second)
+					.ToArray();
 		}
 
-		void UnpackCncTileData( Stream ms )
+		void UnpackBinaryTileData( Stream ms )
 		{		
-			for( int i = 0 ; i < 64 ; i++ )
-				for( int j = 0 ; j < 64 ; j++ )
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
 				{
 					MapTiles[j, i].tile = (byte)ms.ReadByte();	
 					MapTiles[j, i].image = (byte)ms.ReadByte();
@@ -156,12 +175,12 @@ namespace OpenRA.FileFormats
 
 		void UnpackTileData( MemoryStream ms )
 		{
-			for( int i = 0 ; i < 128 ; i++ )
-				for( int j = 0 ; j < 128 ; j++ )
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
 					MapTiles[j, i].tile = ReadWord(ms);
 
-			for( int i = 0 ; i < 128 ; i++ )
-				for( int j = 0 ; j < 128 ; j++ )
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
 				{
 					MapTiles[j, i].image = (byte)ms.ReadByte();
 					if( MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff )
@@ -171,8 +190,8 @@ namespace OpenRA.FileFormats
 
 		void UnpackOverlayData( MemoryStream ms )
 		{
-			for( int i = 0 ; i < 128 ; i++ )
-				for( int j = 0 ; j < 128 ; j++ )
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
 					MapTiles[ j, i ].overlay = ReadByte( ms );
 		}
 
@@ -183,9 +202,20 @@ namespace OpenRA.FileFormats
 				return;
 
 			foreach( KeyValuePair<string, string> kv in terrain )
-				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value ) );
+				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value, MapSize ) );
 		}
+		
+		void ReadCncTrees( IniFile file )
+		{
+			IniSection terrain = file.GetSection( "TERRAIN", true );
+			if( terrain == null )
+				return;
 
+			foreach( KeyValuePair<string, string> kv in terrain )
+				// HACK: remove the ,none from the end
+				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value.Substring(0,kv.Value.Length-5), MapSize ) );
+		}
+		
 		public bool IsInMap(int x, int y)
 		{
 			return (x >= XOffset && y >= YOffset && x < XOffset + Width && y < YOffset + Height);

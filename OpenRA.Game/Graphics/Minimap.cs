@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -93,9 +93,9 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
 			var colors = terrainTypeColors[map.Theater.ToLowerInvariant()];
-			var terrain = new Bitmap(128, 128);
-			for (var y = 0; y < 128; y++)
-				for (var x = 0; x < 128; x++)
+			var terrain = new Bitmap(map.MapSize, map.MapSize);
+			for (var y = 0; y < map.MapSize; y++)
+				for (var x = 0; x < map.MapSize; x++)
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
 						? colors[tileset.GetWalkability(map.MapTiles[x, y])]
 						: shroudColor);

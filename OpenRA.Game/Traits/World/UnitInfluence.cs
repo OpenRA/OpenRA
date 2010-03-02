@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -36,8 +36,8 @@ namespace OpenRA.Traits
 
 		public UnitInfluence( Actor self )
 		{
-			for (int i = 0; i < 128; i++)
-				for (int j = 0; j < 128; j++)
+			for (int i = 0; i < self.World.Map.MapSize; i++)
+				for (int j = 0; j < self.World.Map.MapSize; j++)
 					influence[ i, j ] = new List<Actor>();
 
 			self.World.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
@@ -73,8 +73,8 @@ namespace OpenRA.Traits
 		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheck( Actor self )
 		{
-			for( int y = 0 ; y < 128 ; y++ )
-				for( int x = 0 ; x < 128 ; x++ )
+			for( int y = 0 ; y < self.World.Map.MapSize ; y++ )
+				for( int x = 0 ; x < self.World.Map.MapSize ; x++ )
 					if( influence[ x, y ] != null )
 						foreach (var a in influence[ x, y ])
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )

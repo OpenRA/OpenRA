@@ -1,3 +1,23 @@
+SPLIT3:
+	Inherits: ^Building
+	RenderBuilding:
+		Palette: terrain
+	SeedsOre:
+	-Selectable:
+ROCK1:
+	Inherits: ^Tree
+ROCK2:
+	Inherits: ^Tree
+ROCK3:
+	Inherits: ^Tree
+ROCK4:
+	Inherits: ^Tree
+ROCK5:
+	Inherits: ^Tree
+ROCK6:
+	Inherits: ^Tree
+ROCK7:
+	Inherits: ^Tree
 
 T01:
 	Inherits: ^Tree
@@ -55,7 +75,12 @@ T16:
 
 T17:
 	Inherits: ^Tree
-
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+T18:
+	Inherits: ^Tree
+	
 TC01:
 	Inherits: ^Tree
 	Building:

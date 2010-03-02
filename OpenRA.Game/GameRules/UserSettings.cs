@@ -39,7 +39,7 @@ namespace OpenRA.GameRules
 		// External game settings
 		public readonly string NetworkHost = "";
 		public readonly int NetworkPort = 0;
-		public readonly string Map = "scm01ea.ini";
+		public readonly string Map = "scm02ea.ini";
 		public readonly int Player = 1;
 		public readonly string Replay = "";
 		public readonly string PlayerName = "";
