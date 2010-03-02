@@ -60,9 +60,9 @@ namespace OpenRA.FileFormats
 
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
-			BinaryPart = basic.GetValue("BinaryPart", "scm01ea.bin");
+			BinaryPart = basic.GetValue("BinaryPart", "scm02ea.bin");
 			IniSection map = file.GetSection("Map");
-			Theater = Truncate(map.GetValue("Theater", "TEMPERATE"), 8);
+			Theater = Truncate(map.GetValue("Theater", "DESERT"), 8);
 
 			XOffset = int.Parse(map.GetValue("X", "0"));
 			YOffset = int.Parse(map.GetValue("Y", "0"));
@@ -92,6 +92,9 @@ namespace OpenRA.FileFormats
 				{
 					MapTiles[j, i].tile = (byte)ms.ReadByte();	
 					MapTiles[j, i].image = (byte)ms.ReadByte();
+				
+					if( MapTiles[ j, i ].tile == 0xff )
+						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
 				}
 		}
 
