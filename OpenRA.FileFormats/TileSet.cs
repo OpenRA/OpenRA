@@ -105,8 +105,15 @@ namespace OpenRA.FileFormats
 		{
 			if (r.tile == 0xff || r.tile == 0xffff)
 				r.image = 0;
-
-			return walk[r.tile].TerrainType[r.image];
+			
+			try {
+				return walk[r.tile].TerrainType[r.image];
+			}
+			catch (KeyNotFoundException)
+			{
+				return 0; // Default zero (walkable)
+			}
+			
 		}
 	}
 }

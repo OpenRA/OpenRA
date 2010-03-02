@@ -11,11 +11,13 @@ Packages:
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
-#	mods/cnc/packages/general.mix
+	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
 	mods/cnc/packages/updatec.mix
 	mods/cnc/packages/temperat.mix
+	mods/cnc/packages/winter.mix
+	mods/cnc/packages/desert.mix
 # Cannot qualify the RA names because they may live inside a mix
 	~main.mix
 	redalert.mix
@@ -23,7 +25,7 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
-	general.mix
+#	general.mix
 	conquer.mix
 	sounds.mix
 

@@ -28,6 +28,7 @@ namespace OpenRA.FileFormats
 {
 	public class Map
 	{
+		public readonly string BinaryPart;
 		public readonly string Title;
 		public readonly string Theater;
 
@@ -59,7 +60,7 @@ namespace OpenRA.FileFormats
 
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
-
+			BinaryPart = basic.GetValue("BinaryPart", "scm01ea.bin");
 			IniSection map = file.GetSection("Map");
 			Theater = Truncate(map.GetValue("Theater", "TEMPERATE"), 8);
 
@@ -68,16 +69,31 @@ namespace OpenRA.FileFormats
 
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
+			
+			
 
-			UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
-			UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
-			ReadTrees(file);
-
+			//UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
+			//UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
+			//ReadTrees(file);
+			
+			UnpackCncTileData(FileSystem.Open(BinaryPart));
+			
 			SpawnPoints = file.GetSection("Waypoints")
 				.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % 128, int.Parse(kv.Value) / 128)))
 				.Where(a => a.First < 8)
 				.Select(a => a.Second)
 				.ToArray();
+		}
+
+		void UnpackCncTileData( Stream ms )
+		{		
+			for( int i = 0 ; i < 64 ; i++ )
+				for( int j = 0 ; j < 64 ; j++ )
+				{
+					MapTiles[j, i].tile = (byte)ms.ReadByte();	
+					MapTiles[j, i].image = (byte)ms.ReadByte();
+					Log.Write("Set tile to {0} {1}",MapTiles[j, i].tile,MapTiles[j, i].image);
+				}
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)

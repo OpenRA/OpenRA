@@ -10,11 +10,11 @@ TSI
 ffff
 clear1
 
-; sandy shorelines
-TS-
-56
-0003
-sh{0:00}
+; clear ground
+TSI
+1
+0000
+clear1
 
 ; plain water
 TS-
@@ -22,17 +22,136 @@ TS-
 0001
 w{0}
 
-; cliffs
+; Coastline
+TS-
+5
+0003
+sh{0}
+
+TS-
+1
+0008
+sh11
+
+TS-
+1
+0009
+sh12
+
+TS-
+1
+000A
+sh13
+
+TS-
+1
+000B
+sh14
+
+TS-
+1
+000C
+sh15
+
+; Cliffs
 TS-
 38
-0087
+000D
 s{0:00}
 
-; rocky coast
+; More Coast
 TS-
-38
-003b
-wc{0:00}
+1
+0033
+sh32
+
+TS-
+1
+0034
+sh33
+
+;;; TODO: Add desert only tiles
+
+; Bones/Wall/Mud/UFO/Rock
+TS-
+4
+0043
+p{0:00}
+
+;;; TODO: More desert only tiles
+
+; Mud
+TS-
+4
+0049
+p07
+
+TS-
+4
+004A
+p08
+
+; Ford WU
+TS-
+1
+004B
+sh16
+
+; Water
+TS-
+1
+004C
+sh17
+
+; Water
+TS-
+1
+004D
+sh18
+
+; Destroyed house
+TS-
+1
+004F
+p13
+
+; Walls
+TS-
+1
+0050
+p14
+
+; Rocks
+TS-
+3
+0052
+b{0}
+
+; More coast
+TS-
+1
+0058
+sh6
+
+TS-
+1
+0059
+sh7
+
+TS-
+1
+005A
+sh8
+
+TS-
+1
+005B
+sh9
+
+TS-
+1
+005C
+sh10
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; ROADS
@@ -40,311 +159,67 @@ wc{0:00}
 ; roads
 TS-
 43
-00ad
+005d
 d{0:00}
-
-; road
-TS-
-1
-00e3
-d44
-
-; road
-TS-
-1
-00e4
-d45
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; RIVERS
 
-; river emerging from cliff
-TS-
-4
-00e7
-rc{0:00}
-
 ; rivers
 TS-
 13
-0070
+0088
 rv{0:00}
 
-; river
+; River Crossing
 TS-
-1
-00e5
-rv14
+2
+00A1
+ford{0}
 
-; river
+; Waterfalls
 TS-
-1
-00e6
-rv15
+2
+00A3
+falls{0}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; BRIDGES
 
-; long bridge (north end)
-TS-
-1
-00eb
-br1a
-
-; long bridge (north end, damaged)
-TS-
-1
-00ec
-br1b
-
-; long bridge (north end, broken)
-TS-
-1
-00ed
-br1c
-
-; long bridge (south end)
-TS-
-1
-00ee
-br2a
-
-; long bridge (south end, damaged)
-TS-
-1
-00ef
-br2b
-
-; long bridge (south end, broken)
-TS-
-1
-00f0
-br2c
-
-; long bridge (middle)
-TS-
-1
-00f1
-br3a
-
-; long bridge (middle, damaged)
-TS-
-1
-00f2
-br3b
-
-; long bridge (middle, broken)
-TS-
-1
-00f3
-br3c
-
-; long bridge (middle, broken, south end missing)
-TS-
-1
-00f4
-br3d
-
-; long bridge (middle, broken, north end missing)
-TS-
-1
-00f5
-br3e
-
-; long bridge (water / totally broken)
-TS-
-1
-00f6
-br3f
-
-; long bridge (north surround)
-TS-
-1
-017c
-br1x
-
-; long bridge (south surround)
-TS-
-1
-017d
-br2x
-
 ; short bridge "/"
 TS-
 1
-0083
+00A5
 bridge1
 
 ; short bridge "/" (destroyed)
 TS-
 1
-0084
+00A6
 bridge1d
-
-; short bridge "/" (damaged)
-TS-
-1
-017a
-bridge1h
-
-; short bridge "/" (surround)
-TS-
-1
-017e
-bridge1x
 
 ; short bridge "\"
 TS-
 1
-0085
+00A7
 bridge2
 
 ; short bridge "\" (destroyed)
 TS-
 1
-0086
+00A8
 bridge2d
 
-; short bridge "\" (damaged)
+; More coast
 TS-
 1
-017b
-bridge2h
+00BA
+sh34
 
-; short bridge "\" (surround)
 TS-
 1
-017f
-bridge2x
-
-; fyords
-TS-
-6
-00f7
-f{0:00}
-
-; short fyord
-TS-
-2
-0081
-ford{0}
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; WATERFALLS
-
-; waterfall (E-W)
-TS-
-1
-007d
-falls1
-
-; waterfall (E-W, into sea)
-TS-
-1
-007e
-falls1a
-
-; waterfall (N-S)
-TS-
-1
-007f
-falls2
-
-; waterfall (N-S, into sea)
-TS-
-1
-0080
-falls2a
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; DEBRIS / ROCKS
-
-; random rock chunks (impassable)
-TS-
-3
-0061
-b{0}
-
-; random rock chunks (passable)
-TS-
-11
-00d8
-rf{0:00}
-
-; random debris
-TS-
-4
-0067
-p{0:00}
-
-; random debris
-TS-
-1
-006b
-p07
-
-; random debris
-TS-
-1
-006c
-p08
-
-; random debris
-TS-
-1
-006d
-p13
-
-; random debris
-TS-
-1
-006e
-p14
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; INTERIOR
-
-; walls
---I
-49
-0149
-wall{0:0000}
-
-; black floor
---I
-7
-010c
-flor{0:0000}
-
-; walls with stuff, random tiles
---I
-16
-0180
-xtra{0:0000}
-
-; black/yellow stripe
---I
-11
-013e
-strp{0:0000}
-
-; red stripe
---I
-15
-00fd
-arro{0:0000}
-
-; white floor
---I
-5
-0113
-gflr{0:0000}
-
-; white floor with black/yellow stripe
---I
-11
-0118
-gstr{0:0000}
+00BB
+sh35
 
 ; bogus
 TS-
