@@ -92,7 +92,6 @@ namespace OpenRA.FileFormats
 				{
 					MapTiles[j, i].tile = (byte)ms.ReadByte();	
 					MapTiles[j, i].image = (byte)ms.ReadByte();
-					Log.Write("Set tile to {0} {1}",MapTiles[j, i].tile,MapTiles[j, i].image);
 				}
 		}
 

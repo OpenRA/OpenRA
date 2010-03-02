@@ -1,154 +1,218 @@
 ; clear ground
-TSI
+DTW
 1
 ff
 clear1
 
 ; clear ground
-TSI
-1
-ffff
-clear1
-
-; clear ground
-TSI
+DTW
 1
 0000
 clear1
 
 ; plain water
-TS-
-2
+DTW
+1
 0001
-w{0}
+w1
+
+-TW
+1
+0002
+w2
 
 ; Coastline
-TS-
+-TW
 5
 0003
 sh{0}
 
-TS-
+-TW
 1
 0008
 sh11
 
-TS-
+-TW
 1
 0009
 sh12
 
-TS-
+-TW
 1
 000A
 sh13
 
-TS-
+-TW
 1
 000B
 sh14
 
-TS-
+-TW
 1
 000C
 sh15
 
 ; Cliffs
-TS-
+DTW
 38
 000D
 s{0:00}
 
 ; More Coast
-TS-
+-TW
 1
 0033
 sh32
 
-TS-
+-TW
 1
 0034
 sh33
 
-;;; TODO: Add desert only tiles
+
+D--
+1
+0035
+sh20
+
+D--
+1
+0036
+sh21
+
+D--
+1
+0037
+sh22
+
+D--
+1
+0038
+sh23
+
+
+; Bushes
+D--
+10
+0039
+br{0}
 
 ; Bones/Wall/Mud/UFO/Rock
-TS-
+DT-
 4
 0043
 p{0:00}
 
-;;; TODO: More desert only tiles
+D--
+1
+0047
+p05
 
-; Mud
-TS-
-4
+D--
+1
+0048
+p06
+
+DTW
+1
 0049
 p07
 
-TS-
-4
+-TW
+1
 004A
 p08
 
 ; Ford WU
-TS-
+-TW
 1
 004B
 sh16
 
 ; Water
-TS-
+DTW
 1
 004C
 sh17
 
 ; Water
-TS-
+DTW
 1
 004D
 sh18
 
+D--
+1
+004E
+sh19
+
+
 ; Destroyed house
-TS-
+-TW
 1
 004F
 p13
 
 ; Walls
-TS-
+-TW
 1
 0050
 p14
 
+; Snow
+--W
+1
+0051
+p15
+
 ; Rocks
-TS-
-3
+DTW
+2
 0052
 b{0}
 
+-TW
+1
+0054
+b3
+
+D--
+1
+0055
+b4
+
+D--
+1
+0056
+b5
+
+D--
+1
+0057
+b6
+
 ; More coast
-TS-
+-TW
 1
 0058
 sh6
 
-TS-
+-TW
 1
 0059
 sh7
 
-TS-
+-TW
 1
 005A
 sh8
 
-TS-
+-TW
 1
 005B
 sh9
 
-TS-
+-TW
 1
 005C
 sh10
@@ -157,7 +221,7 @@ sh10
 ; ROADS
 
 ; roads
-TS-
+DTW
 43
 005d
 d{0:00}
@@ -166,19 +230,79 @@ d{0:00}
 ; RIVERS
 
 ; rivers
-TS-
+-TW
 13
 0088
 rv{0:00}
 
+D--
+1
+0095
+rv14
+
+D--
+1
+0096
+rv15
+
+D--
+1
+0097
+rv16
+
+D--
+1
+0098
+rv17
+
+D--
+1
+0099
+rv18
+
+D--
+1
+009A
+rv19
+
+D--
+1
+009B
+rv20
+
+D--
+1
+009C
+rv21
+
+D--
+1
+009D
+rv22
+
+D--
+1
+009E
+rv23
+
+D--
+1
+00AF
+rv24
+
+D--
+1
+00A0
+rv25
+
 ; River Crossing
-TS-
+DTW
 2
 00A1
 ford{0}
 
 ; Waterfalls
-TS-
+DTW
 2
 00A3
 falls{0}
@@ -187,39 +311,270 @@ falls{0}
 ; BRIDGES
 
 ; short bridge "/"
-TS-
+-TW
 1
 00A5
 bridge1
 
 ; short bridge "/" (destroyed)
-TS-
+-TW
 1
 00A6
 bridge1d
 
 ; short bridge "\"
-TS-
+-TW
 1
 00A7
 bridge2
 
 ; short bridge "\" (destroyed)
-TS-
+-TW
 1
 00A8
 bridge2d
 
+; desert short bridge "/"
+D--
+1
+00A9
+bridge3
+
+; desert short bridge "/" (destroyed)
+D--
+1
+00AA
+bridge3d
+
+; desert short bridge "\"
+D--
+1
+00AB
+bridge4
+
+; desert short bridge "\" (destroyed)
+D--
+1
+00AC
+bridge4d
+
+; Desert coast
+D--
+1
+00AD
+sh24
+
+D--
+1
+00AE
+sh25
+
+D--
+1
+00AF
+sh26
+
+D--
+1
+00B0
+sh27
+
+D--
+1
+00B1
+sh28
+
+D--
+1
+00B2
+sh29
+
+D--
+1
+00B3
+sh30
+
+D--
+1
+00B4
+sh31
+
+; Snow
+--W
+1
+00B5
+p16
+
+--W
+1
+00B6
+p17
+
+--W
+1
+00B7
+p18
+
+--W
+1
+00B8
+p19
+
+--W
+1
+00B9
+p20
+
 ; More coast
-TS-
+-TW
 1
 00BA
 sh34
 
-TS-
+-TW
 1
 00BB
 sh35
+
+D--
+1
+00BC
+sh36
+
+D--
+1
+00BD
+sh37
+
+D--
+1
+00BE
+sh38
+
+D--
+1
+00BF
+sh39
+
+D--
+1
+00C0
+sh40
+
+D--
+1
+00C1
+sh41
+
+D--
+1
+00C2
+sh42
+
+D--
+1
+00C3
+sh43
+
+D--
+1
+00C4
+sh44
+
+D--
+1
+00C5
+sh45
+
+D--
+1
+00C6
+sh46
+
+D--
+1
+00C7
+sh47
+
+D--
+1
+00C8
+sh48
+
+D--
+1
+00C9
+sh49
+
+D--
+1
+00CA
+sh50
+
+D--
+1
+00CB
+sh51
+
+D--
+1
+00CC
+sh52
+
+D--
+1
+00CD
+sh53
+
+D--
+1
+00CE
+sh54
+
+D--
+1
+00CF
+sh55
+
+D--
+1
+00D0
+sh56
+
+D--
+1
+00D1
+sh57
+
+D--
+1
+00D2
+sh58
+
+D--
+1
+00D3
+sh59
+
+D--
+1
+00D4
+sh60
+
+D--
+1
+00D5
+sh61
+
+D--
+1
+00D6
+sh62
+
+D--
+1
+00D7
+sh63
 
 ; bogus
 TS-

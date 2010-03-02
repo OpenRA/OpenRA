@@ -25,18 +25,34 @@ Player:
 	SpawnDefaultUnits:
 	
 World:
-	WaterPaletteRotation:
+#	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
-	BridgeLoadHook:
-	PaletteFromFile@terrain_temperat:
+#	BridgeLoadHook:
+	PaletteFromFile@terrain_desert:
+		Name: terrain
+		Theater: desert
+		Filename: desert.pal
+	PaletteFromFile@terrain_temperate:
 		Name: terrain
 		Theater: temperat
 		Filename: temperat.pal
+	PaletteFromFile@terrain_winter:
+		Name: terrain
+		Theater: winter
+		Filename: winter.pal
+	PaletteFromFile@player_desert:
+		Name: player
+		Theater: desert
+		Filename: desert.pal
 	PaletteFromFile@player_temperat:
 		Name: player
 		Theater: temperat
 		Filename: temperat.pal
+	PaletteFromFile@player_winter:
+		Name: player
+		Theater: winter
+		Filename: winter.pal
 	PaletteFromFile@terrain_snow:
 		Name: terrain
 		Theater: snow
