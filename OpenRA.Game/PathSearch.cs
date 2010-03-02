@@ -84,9 +84,7 @@ namespace OpenRA
 				if (!world.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(newHere) && 
 					world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(newHere) != ignoreBuilding)
 					continue;
-				if (world.Map.IsOverlaySolid(newHere))
-					continue;
-				
+
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
 				if (checkForBlocked && (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
 					continue;

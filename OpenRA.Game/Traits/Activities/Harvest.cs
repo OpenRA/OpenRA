@@ -49,17 +49,16 @@ namespace OpenRA.Traits.Activities
 			var harv = self.traits.Get<Harvester>();
 			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
 
-			var isGem = false;
-			if (!self.World.Map.ContainsResource(self.Location) ||
-				!self.World.Map.Harvest(self.Location, out isGem))
+			var resource = self.World.WorldActor.traits.Get<ResourceLayer>().Harvest(self.Location);
+			if (resource == null)
 				return false;
-
+			
 			if (renderUnit.anim.CurrentSequence.Name != "harvest")
 			{
 				isHarvesting = true;
 				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
 			}
-			harv.AcceptResource(isGem);
+			harv.AcceptResource(resource);
 			return true;
 		}
 

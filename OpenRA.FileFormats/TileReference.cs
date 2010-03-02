@@ -26,7 +26,6 @@ namespace OpenRA.FileFormats
 		public byte image;
 		public byte overlay;
 		public byte smudge;
-		public byte density;	/* used for ore/gems */
 
 		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
 

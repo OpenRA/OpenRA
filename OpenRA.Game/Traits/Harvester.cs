@@ -47,9 +47,10 @@ namespace OpenRA.Traits
 		public bool IsFull { get { return oreCarried + gemsCarried == self.Info.Traits.Get<HarvesterInfo>().BailCount; } }
 		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
 
-		public void AcceptResource(bool isGem)
+		public void AcceptResource(ResourceTypeInfo type)
 		{
-			if (isGem) gemsCarried++;
+			// FIXME: harvester probably needs to know *exactly* what it is carrying.
+			if (type.Name == "Gems") gemsCarried++;
 			else oreCarried++;
 		}
 

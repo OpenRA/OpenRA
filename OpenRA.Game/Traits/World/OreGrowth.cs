@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 						info.Chance);
 
 				if (info.Grows)
-					Ore.GrowOre(self.World, self.World.SharedRandom);
+					Ore.GrowOre(self.World);
 
 				self.World.Minimap.InvalidateOre();
 				remainingTicks = (int)(info.Interval * 60 * 25);

@@ -22,7 +22,7 @@ using OpenRA.Graphics;
 using System.Collections.Generic;
 namespace OpenRA.Traits
 {
-	class ResourceTypeInfo : ITraitInfo
+	public class ResourceTypeInfo : ITraitInfo
 	{
 		public readonly int[] Overlays = { };
 		public readonly string[] SpriteNames = { };

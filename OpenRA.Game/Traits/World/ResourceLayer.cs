@@ -20,6 +20,7 @@
 
 using System.Linq;
 using OpenRA.Graphics;
+using System;
 
 namespace OpenRA.Traits
 {
@@ -31,6 +32,7 @@ namespace OpenRA.Traits
 	class ResourceLayer : IRenderOverlay, ILoadWorldHook
 	{
 		SpriteRenderer sr;
+		World w;
 
 		public ResourceTypeInfo[] resourceTypes;
 		public CellContents[,] content = new CellContents[128, 128];
@@ -62,6 +64,7 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w)
 		{
+			this.w = w;
 			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
 			foreach (var rt in resourceTypes)
 				rt.Sprites = rt.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();
@@ -74,7 +77,7 @@ namespace OpenRA.Traits
 					content[x,y].type = resourceTypes.FirstOrDefault(
 						r => r.Overlays.Contains(w.Map.MapTiles[x, y].overlay));
 					if (content[x, y].type != null)
-						content[x, y].image = ChooseContent(w, content[x, y].type);
+						content[x, y].image = ChooseContent(content[x, y].type);
 				}
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
@@ -84,7 +87,7 @@ namespace OpenRA.Traits
 							content[x, y].image.Length) / 9;
 		}
 
-		public Sprite[] ChooseContent(World w, ResourceTypeInfo info)
+		public Sprite[] ChooseContent(ResourceTypeInfo info)
 		{
 			return info.Sprites[w.SharedRandom.Next(info.Sprites.Length)];
 		}
@@ -97,6 +100,33 @@ namespace OpenRA.Traits
 					if (content[i+u, j+v].type == info)
 						++sum;
 			return sum;
+		}
+
+		public void AddResource(ResourceTypeInfo info, int i, int j, int n)
+		{
+			if (content[i, j].type == null)
+			{
+				content[i, j].type = info;
+				content[i, j].image = ChooseContent(info);
+				content[i, j].density = -1;
+			}
+
+			if (content[i, j].type != info)
+				return;
+
+			content[i, j].density = Math.Min(
+				content[i, j].image.Length - 1, 
+				content[i, j].density + n);
+		}
+
+		public ResourceTypeInfo Harvest(int2 p)
+		{
+			var type = content[p.X,p.Y].type;
+			if (type == null) return null;
+
+			if (--content[p.X, p.Y].density < 0)
+				content[p.X, p.Y].type = null;
+			return type;
 		}
 
 		public struct CellContents

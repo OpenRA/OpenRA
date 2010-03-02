@@ -18,12 +18,16 @@
  */
 #endregion
 
+using System.Linq;
+using System;
+
 namespace OpenRA.Traits
 {
 	class SeedsOreInfo : ITraitInfo
 	{
 		public readonly float Chance = .05f;
 		public readonly int Interval = 5;
+		public readonly string ResourceType = "Ore";
 
 		public object Create(Actor self) { return new SeedsOre(); }
 	}
@@ -37,12 +41,20 @@ namespace OpenRA.Traits
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<SeedsOreInfo>();
+				var resourceType = self.World.WorldActor.Info.Traits
+					.WithInterface<ResourceTypeInfo>()
+					.FirstOrDefault(t => t.Name == info.ResourceType);
+
+				if (resourceType == null)
+					throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
+
+				var resLayer = self.World.WorldActor.traits.Get<ResourceLayer>();
 
 				for (var j = -1; j < 2; j++)
 					for (var i = -1; i < 2; i++)
 						if (self.World.SharedRandom.NextDouble() < info.Chance)
-							if (self.World.OreCanSpreadInto(self.Location.X + i, self.Location.Y + j))
-								self.World.Map.AddOre(self.Location.X + i, self.Location.Y + j);
+							if (self.World.IsCellBuildable(self.Location + new int2(i, j), UnitMovementType.Wheel))
+								resLayer.AddResource(resourceType, self.Location.X + i, self.Location.Y + j, 1);
 
 				ticks = info.Interval;
 			}
