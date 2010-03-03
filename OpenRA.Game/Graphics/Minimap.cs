@@ -120,11 +120,13 @@ namespace OpenRA.Graphics
 
 			if (oreLayer == null)
 			{
+				var res = world.WorldActor.traits.Get<ResourceLayer>();
 				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
+				
 				oreLayer = new Bitmap(terrain);
 				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
 					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
-						if (world.Map.ContainsResource(new int2(x, y)))
+						if (res.GetResource(new int2(x,y)) != null)
 							oreLayer.SetPixel(x, y, colors[(int)TerrainMovementType.Ore]);
 			}
 

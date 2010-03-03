@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		World w;
 
 		public ResourceTypeInfo[] resourceTypes;
-		public CellContents[,] content = new CellContents[128, 128];
+		CellContents[,] content = new CellContents[128, 128];
 
 		public ResourceLayer(Actor self)
 		{
@@ -184,6 +184,8 @@ namespace OpenRA.Traits
 						content[i, j].density = 0;
 					}
 		}
+
+		public ResourceTypeInfo GetResource(int2 p) { return content[p.X, p.Y].type; }
 
 		public struct CellContents
 		{

@@ -64,12 +64,14 @@ namespace OpenRA.Traits.Activities
 
 		void FindMoreOre(Actor self)
 		{
+			var res = self.World.WorldActor.traits.Get<ResourceLayer>();
+
 			self.QueueActivity(new Move(
 				() =>
 				{
 					var search = new PathSearch
 					{
-						heuristic = loc => (self.World.Map.ContainsResource(loc) ? 0 : 1),
+						heuristic = loc => (res.GetResource(loc) != null ? 0 : 1),
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};

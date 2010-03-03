@@ -67,10 +67,11 @@ namespace OpenRA
 			var position = Game.controller.MousePosition.ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
 			var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
+			var res = world.WorldActor.traits.Get<ResourceLayer>();
 
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound
-					? UnitMovementType.Float : UnitMovementType.Wheel ) && !world.Map.ContainsResource( t ) )
+					? UnitMovementType.Float : UnitMovementType.Wheel ) && res.GetResource(t) == null )
 					? buildOk : buildBlocked, Game.CellSize * t, "terrain" );
 			
 			// Linebuild for walls.

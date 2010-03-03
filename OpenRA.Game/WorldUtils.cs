@@ -149,8 +149,9 @@ namespace OpenRA
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
+			var res = world.WorldActor.traits.Get<ResourceLayer>();
 			return !Footprint.Tiles(name, building, topLeft).Any(
-				t => !world.Map.IsInMap(t.X, t.Y) || world.Map.ContainsResource(t) || !world.IsCellBuildable(t,
+				t => !world.Map.IsInMap(t.X, t.Y) || res.GetResource(t) != null || !world.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}

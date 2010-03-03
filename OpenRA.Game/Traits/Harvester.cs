@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 				&& underCursor.traits.Contains<IAcceptOre>() && !IsEmpty)
 				return new Order("Deliver", self, underCursor);
 
-			if (underCursor == null && self.World.Map.ContainsResource(xy))
+			if (underCursor == null && self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy) != null)
 				return new Order("Harvest", self, xy);
 
 			return null;
