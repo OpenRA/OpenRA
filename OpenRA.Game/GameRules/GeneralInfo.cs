@@ -64,8 +64,6 @@ namespace OpenRA.GameRules
 		/* Income & Production */
 		public readonly float BuildSpeed = 0;
 		public readonly float BuildupTime = 0;
-		public readonly int GemValue = 0;
-		public readonly int GoldValue = 0;
 		public readonly float OreTruckRate = 0;
 		public readonly bool SeparateAircraft = true;
 		public readonly float SurvivorRate = 0;
