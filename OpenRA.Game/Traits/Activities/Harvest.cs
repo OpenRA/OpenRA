@@ -41,7 +41,7 @@ namespace OpenRA.Traits.Activities
 				return this;
 			else
 			{
-				FindMoreOre(self);
+				FindMoreResource(self);
 				return NextActivity;
 			}
 		}
@@ -64,7 +64,7 @@ namespace OpenRA.Traits.Activities
 			return true;
 		}
 
-		void FindMoreOre(Actor self)
+		void FindMoreResource(Actor self)
 		{
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>();
 			var harv = self.Info.Traits.Get<HarvesterInfo>();
