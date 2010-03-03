@@ -170,12 +170,24 @@ namespace OpenRA.FileFormats
 						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
 				}
 		}
-
+		
+		static string[] overlaySpriteNames =
+		{
+			"sbag", "cycl", "brik", "fenc", "wood",
+			"gold01", "gold02", "gold03", "gold04",
+			"gem01", "gem02", "gem03", "gem04",
+			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
+			"fpls", "wcrate", "scrate", "barb", "sbag",
+		};
+	
 		void UnpackRAOverlayData( MemoryStream ms )
 		{
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
-					MapTiles[ j, i ].overlay = ReadByte( ms );
+				{
+					byte o = ReadByte( ms );
+					MapTiles[ j, i ].overlay = (o == 255) ? null : overlaySpriteNames[o];
+				}
 		}
 
 		void ReadRATrees( IniFile file )

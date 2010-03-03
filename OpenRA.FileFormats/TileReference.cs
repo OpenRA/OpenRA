@@ -24,7 +24,7 @@ namespace OpenRA.FileFormats
 	{
 		public ushort tile;
 		public byte image;
-		public byte overlay;
+		public string overlay;
 		public byte smudge;
 
 		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
