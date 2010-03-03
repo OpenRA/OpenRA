@@ -245,7 +245,7 @@
     <Compile Include="Traits\Render\RenderUnitRotor.cs" />
     <Compile Include="Traits\Render\RenderUnitSpinner.cs" />
     <Compile Include="Traits\Render\RenderUnitTurreted.cs" />
-    <Compile Include="Traits\SeedsOre.cs" />
+    <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\AI\TakeCover.cs" />
