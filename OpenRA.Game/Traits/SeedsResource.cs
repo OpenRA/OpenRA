@@ -23,16 +23,16 @@ using System;
 
 namespace OpenRA.Traits
 {
-	class SeedsOreInfo : ITraitInfo
+	class SeedsResourceInfo : ITraitInfo
 	{
 		public readonly float Chance = .05f;
 		public readonly int Interval = 5;
 		public readonly string ResourceType = "Ore";
 
-		public object Create(Actor self) { return new SeedsOre(); }
+		public object Create(Actor self) { return new SeedsResource(); }
 	}
 
-	class SeedsOre : ITick
+	class SeedsResource : ITick
 	{
 		int ticks;
 
@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 		{
 			if (--ticks <= 0)
 			{
-				var info = self.Info.Traits.Get<SeedsOreInfo>();
+				var info = self.Info.Traits.Get<SeedsResourceInfo>();
 				var resourceType = self.World.WorldActor.Info.Traits
 					.WithInterface<ResourceTypeInfo>()
 					.FirstOrDefault(t => t.Name == info.ResourceType);

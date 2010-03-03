@@ -37,6 +37,6 @@ MINE:
 	Inherits: ^Building
 	RenderBuilding:
 		Palette: terrain
-	SeedsOre:
+	SeedsResource:
 		ResourceType: Tiberium
 	-Selectable:

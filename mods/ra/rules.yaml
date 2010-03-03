@@ -1920,7 +1920,7 @@ TC05:
 
 MINE:
 	Inherits: ^Building
-	SeedsOre:
+	SeedsResource:
 	-Selectable:
 
 BOXES01:
