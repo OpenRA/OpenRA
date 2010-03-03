@@ -31,6 +31,7 @@ namespace OpenRA.FileFormats
 		public readonly string BinaryPart;
 		public readonly string Title;
 		public readonly string Theater;
+		public readonly int INIFormat;
 
 		public readonly int MapSize;
 		public readonly int XOffset;
@@ -58,6 +59,8 @@ namespace OpenRA.FileFormats
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
 			BinaryPart = basic.GetValue("BinaryPart", "scm02ea.bin");
+			INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
+
 			IniSection map = file.GetSection("Map");
 			Theater = Truncate(map.GetValue("Theater", "DESERT"), 8);
 
@@ -67,14 +70,8 @@ namespace OpenRA.FileFormats
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
 			
-			if (false) // RA map
-			{
-				MapSize = 128;
-			}
-			else
-			{
-				MapSize = 64;
-			}
+			Log.Write("Map format is {0}",INIFormat);
+			MapSize = (INIFormat == 3) ? 128 : 64;
 			
 			MapTiles = new TileReference[ MapSize, MapSize ];
 			for (int j = 0; j < MapSize; j++)
@@ -82,15 +79,15 @@ namespace OpenRA.FileFormats
 					MapTiles[i, j] = new TileReference();
 
 			
-			if (false) // RA map
+			if (INIFormat == 3) // RA map
 			{
-				UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
-				UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
+				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
+				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 				ReadRATrees(file);
 			}
 			else // CNC
 			{
-				UnpackBinaryTileData(FileSystem.Open(BinaryPart));
+				UnpackCncTileData(FileSystem.Open(BinaryPart));
 				ReadCncTrees(file);	
 			}
 			
@@ -103,19 +100,6 @@ namespace OpenRA.FileFormats
 					.Where(a => a.First < 8)
 					.Select(a => a.Second)
 					.ToArray();
-		}
-
-		void UnpackBinaryTileData( Stream ms )
-		{		
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-				{
-					MapTiles[j, i].tile = (byte)ms.ReadByte();	
-					MapTiles[j, i].image = (byte)ms.ReadByte();
-				
-					if( MapTiles[ j, i ].tile == 0xff )
-						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
-				}
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
@@ -174,7 +158,7 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
-		void UnpackTileData( MemoryStream ms )
+		void UnpackRATileData( MemoryStream ms )
 		{
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
@@ -189,7 +173,7 @@ namespace OpenRA.FileFormats
 				}
 		}
 
-		void UnpackOverlayData( MemoryStream ms )
+		void UnpackRAOverlayData( MemoryStream ms )
 		{
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
@@ -209,6 +193,19 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
+		void UnpackCncTileData( Stream ms )
+		{		
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
+				{
+					MapTiles[j, i].tile = (byte)ms.ReadByte();	
+					MapTiles[j, i].image = (byte)ms.ReadByte();
+				
+					if( MapTiles[ j, i ].tile == 0xff )
+						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
+				}
+		}
+				
 		void ReadCncTrees( IniFile file )
 		{
 			IniSection terrain = file.GetSection( "TERRAIN", true );
@@ -218,7 +215,7 @@ namespace OpenRA.FileFormats
 			foreach( KeyValuePair<string, string> kv in terrain )
 			{
 				var loc = int.Parse( kv.Key );
-				Actors.Add( new ActorReference( kv.Value.Substring(0,kv.Value.Length-5), new int2(loc % MapSize, loc / MapSize),null));
+				Actors.Add( new ActorReference( kv.Value.Split(',')[0], new int2(loc % MapSize, loc / MapSize),null));
 			}
 		}
 		
