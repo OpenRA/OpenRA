@@ -48,7 +48,8 @@ namespace OpenRA
 			if (impactSound != null) Sound.Play(impactSound + ".aud");
 
 			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
-			if (warhead.Ore) world.Map.DestroyOre(targetTile.X, targetTile.Y);
+			if (warhead.Ore)
+				world.WorldActor.traits.Get<ResourceLayer>().Destroy(targetTile);
 
 			var firepowerModifier = firedBy.traits
 				.WithInterface<IFirepowerModifier>()

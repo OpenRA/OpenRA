@@ -26,15 +26,6 @@ namespace OpenRA
 {
 	public static class Ore
 	{
-		public static void DestroyOre(this Map map, int i, int j)
-		{
-			//if (map.ContainsResource(new int2(i, j)))
-			//{
-			//    map.MapTiles[i, j].density = 0;
-			//    map.MapTiles[i, j].overlay = 0xff;
-			//}
-		}
-
 		public static void SpreadOre(this World world, Random r, float chance)
 		{
 			var map = world.Map;
@@ -99,7 +90,7 @@ namespace OpenRA
 			return ore;
 		}
 
-		public static bool[] overlayIsOre =
+		static bool[] overlayIsOre =
 			{
 				false, false, false, false, false,
 				true, true, true, true,
@@ -108,7 +99,7 @@ namespace OpenRA
 				false, false, false, false, false,
 			};
 
-		public static bool[] overlayIsGems =
+		static bool[] overlayIsGems =
 			{
 				false, false, false, false, false,
 				false, false, false, false,
