@@ -42,7 +42,7 @@ namespace OpenRA.FileFormats
 		public int2 Size { get { return new int2(Width, Height); } }
 
 		public readonly TileReference[ , ] MapTiles;
-		public readonly List<TreeReference> Trees = new List<TreeReference>();
+		public readonly List<ActorReference> Actors = new List<ActorReference>();
 
 		public readonly IEnumerable<int2> SpawnPoints;
 
@@ -54,9 +54,7 @@ namespace OpenRA.FileFormats
 		public string TileSuffix { get { return "." + Truncate(Theater, 3); } }
 
 		public Map(IniFile file)
-		{
-			
-			
+		{			
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
 			BinaryPart = basic.GetValue("BinaryPart", "scm02ea.bin");
@@ -71,7 +69,7 @@ namespace OpenRA.FileFormats
 			
 			if (false) // RA map
 			{
-				MapSize = 128;	
+				MapSize = 128;
 			}
 			else
 			{
@@ -88,14 +86,17 @@ namespace OpenRA.FileFormats
 			{
 				UnpackTileData(ReadPackedSection(file.GetSection("MapPack")));
 				UnpackOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
-				ReadTrees(file);			
-
+				ReadRATrees(file);
 			}
 			else // CNC
 			{
 				UnpackBinaryTileData(FileSystem.Open(BinaryPart));
 				ReadCncTrees(file);	
 			}
+			
+			LoadActors(file, "STRUCTURES");
+			LoadActors(file, "UNITS");
+			LoadActors(file, "INFANTRY");
 			
 			SpawnPoints = file.GetSection("Waypoints")
 					.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % MapSize, int.Parse(kv.Value) / MapSize)))
@@ -195,14 +196,17 @@ namespace OpenRA.FileFormats
 					MapTiles[ j, i ].overlay = ReadByte( ms );
 		}
 
-		void ReadTrees( IniFile file )
+		void ReadRATrees( IniFile file )
 		{
 			IniSection terrain = file.GetSection( "TERRAIN", true );
 			if( terrain == null )
 				return;
-
+			
 			foreach( KeyValuePair<string, string> kv in terrain )
-				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value, MapSize ) );
+			{
+				var loc = int.Parse( kv.Key );
+				Actors.Add( new ActorReference(kv.Value, new int2(loc % MapSize, loc / MapSize), null ) );
+			}
 		}
 		
 		void ReadCncTrees( IniFile file )
@@ -212,8 +216,21 @@ namespace OpenRA.FileFormats
 				return;
 
 			foreach( KeyValuePair<string, string> kv in terrain )
-				// HACK: remove the ,none from the end
-				Trees.Add( new TreeReference( int.Parse( kv.Key ), kv.Value.Substring(0,kv.Value.Length-5), MapSize ) );
+			{
+				var loc = int.Parse( kv.Key );
+				Actors.Add( new ActorReference( kv.Value.Substring(0,kv.Value.Length-5), new int2(loc % MapSize, loc / MapSize),null));
+			}
+		}
+		
+		void LoadActors(IniFile file, string section)
+		{
+			foreach (var s in file.GetSection(section, true))
+			{
+				//num=owner,type,health,location,facing,...
+				var parts = s.Value.Split( ',' );
+				var loc = int.Parse(parts[3]);			
+				Actors.Add( new ActorReference( parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
+			}
 		}
 		
 		public bool IsInMap(int x, int y)

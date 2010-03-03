@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
-   <unit name="rock1">
+  <!-- Blossom Tree -->
+  <unit name="split3">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
+
+  <!-- Rocks -->
+  <unit name="rock1">
     <sequence name="idle" start="0" length="1" />
   </unit>
   <unit name="rock2">
@@ -21,6 +27,8 @@
   <unit name="rock7">
     <sequence name="idle" start="0" length="1" />
   </unit>
+
+  <!-- Trees -->
   <unit name="tc04">
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
@@ -105,6 +113,8 @@
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
   </unit>
+
+  <!-- Civilian Structures -->
   <unit name="v01">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
@@ -182,11 +192,5 @@
   <unit name="v19">
     <sequence name="idle" start="0" length="14" />
     <sequence name="damaged-idle" start="14" length="15" />
-  </unit>
-  <unit name="barl">
-    <sequence name="idle" start="0" length="3" />
-  </unit>
-  <unit name="brl3">
-    <sequence name="idle" start="0" length="3" />
   </unit>
 </sequences>

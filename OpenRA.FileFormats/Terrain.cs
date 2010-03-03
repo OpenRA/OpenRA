@@ -28,13 +28,11 @@ namespace OpenRA.FileFormats
 		public readonly List<byte[]> TileBitmapBytes = new List<byte[]>();
 
 		public Terrain( Stream stream )
-		{
-			int Width, Height, IndexEnd, IndexStart;
-			uint ImgStart;
+		{		
 			// Try loading as a cnc .tem
 			BinaryReader reader = new BinaryReader( stream );
-			Width = reader.ReadUInt16();
-			Height = reader.ReadUInt16();
+			int Width = reader.ReadUInt16();
+			int Height = reader.ReadUInt16();
 
 			if( Width != 24 || Height != 24 )
 				throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
@@ -42,9 +40,10 @@ namespace OpenRA.FileFormats
 			/*NumTiles = */reader.ReadUInt16();
 			/*Zero1 = */reader.ReadUInt16();			
 			/*uint Size = */reader.ReadUInt32();
-			ImgStart = reader.ReadUInt32();
+			uint ImgStart = reader.ReadUInt32();
 			/*Zero2 = */reader.ReadUInt32();
 			
+			int IndexEnd, IndexStart;
 			if (reader.ReadUInt16() == 65535) // ID1 = FFFFh for cnc
 			{
 				/*ID2 = */reader.ReadUInt16();	
@@ -54,7 +53,6 @@ namespace OpenRA.FileFormats
 			else // Load as a ra .tem
 			{
 				stream.Position = 0;	
-				// Try loading as an RA .tem
 				reader = new BinaryReader( stream );
 				Width = reader.ReadUInt16();
 				Height = reader.ReadUInt16();
@@ -73,8 +71,6 @@ namespace OpenRA.FileFormats
 				reader.ReadUInt32();
 				IndexStart = reader.ReadInt32();		
 			}
-			
-			Log.Write("IndexStart: {0}",IndexStart);
 			stream.Position = IndexStart;
 
 			foreach( byte b in new BinaryReader(stream).ReadBytes(IndexEnd - IndexStart) )

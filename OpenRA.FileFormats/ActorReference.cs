@@ -18,23 +18,18 @@
  */
 #endregion
 
-using System.Drawing;
-
 namespace OpenRA.FileFormats
 {
-	public struct TreeReference
+	public struct ActorReference
 	{
-		public readonly int X;
-		public readonly int Y;
-		public readonly string Image;
-
-		public TreeReference(int xy, string image, int mapSize)
+		public readonly int2 Location;
+		public readonly string Name;
+		public readonly string Owner;
+		public ActorReference( string name, int2 location, string owner )
 		{
-			X = xy % mapSize;
-			Y = xy / mapSize;
-			Image = image;
+			Name = name;
+			Location = location;
+			Owner = owner;
 		}
-
-		public Point Location { get { return new Point(X, Y); } }
 	}
 }

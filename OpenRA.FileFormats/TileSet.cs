@@ -76,7 +76,6 @@ namespace OpenRA.FileFormats
 
 					using( Stream s = FileSystem.Open( tilename + suffix ) )
 					{
-						Log.Write(tilename+suffix);
 						if( !tiles.ContainsKey( (ushort)( start + i ) ) )
 							tiles.Add( (ushort)( start + i ), new Terrain( s ) );
 					}
