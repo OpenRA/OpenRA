@@ -153,11 +153,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	OreGrowth:
-		Interval: .3
-		Chance: .02
-		Spreads: yes
-		Grows: yes
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -173,3 +168,5 @@ World:
 		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		ValuePerUnit: 30
 		Name: Tiberium
+		GrowthInterval: .1
+		SpreadInterval: .1

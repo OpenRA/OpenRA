@@ -19,7 +19,7 @@
 #endregion
 
 using OpenRA.Graphics;
-using System.Collections.Generic;
+
 namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
@@ -27,13 +27,41 @@ namespace OpenRA.Traits
 		public readonly int[] Overlays = { };
 		public readonly string[] SpriteNames = { };
 		public readonly string Palette = "terrain";
+
 		public readonly int ValuePerUnit = 0;
 		public readonly string Name = null;
 
+		public readonly float GrowthInterval = 0;
+		public readonly float SpreadInterval = 0;
+
 		public Sprite[][] Sprites;
 		
-		public object Create(Actor self) { return new ResourceType(); }
+		public object Create(Actor self) { return new ResourceType(this); }
 	}
 
-	class ResourceType { }
+	class ResourceType : ITick
+	{
+		int growthTicks;
+		int spreadTicks;
+		ResourceTypeInfo info;
+
+		public ResourceType(ResourceTypeInfo info) { this.info = info; }
+
+		public void Tick(Actor self)
+		{
+			if (info.GrowthInterval != 0 && --growthTicks <= 0)
+			{
+				growthTicks = (int)(info.GrowthInterval * 25 * 60);
+				self.World.WorldActor.traits.Get<ResourceLayer>().Grow(info);
+				self.World.Minimap.InvalidateOre();
+			}
+
+			if (info.SpreadInterval != 0 && --spreadTicks <= 0)
+			{
+				spreadTicks = (int)(info.SpreadInterval * 25 * 60);
+				self.World.WorldActor.traits.Get<ResourceLayer>().Spread(info);
+				self.World.Minimap.InvalidateOre();
+			}
+		}
+	}
 }

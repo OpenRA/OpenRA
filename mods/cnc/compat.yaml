@@ -38,4 +38,5 @@ MINE:
 	RenderBuilding:
 		Palette: terrain
 	SeedsOre:
+		ResourceType: Tiberium
 	-Selectable:

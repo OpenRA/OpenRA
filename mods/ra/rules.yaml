@@ -184,11 +184,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	OreGrowth:
-		Interval: .3
-		Chance: .02
-		Spreads: yes
-		Grows: yes
 	Country@0:
 		Name: England
 		Race: allies
@@ -241,6 +236,8 @@ World:
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 30
 		Name: Ore
+		GrowthInterval: .3
+		SpreadInterval: .7
 	ResourceType@gem:
 		Overlays: 9,10,11,12
 		Palette: terrain

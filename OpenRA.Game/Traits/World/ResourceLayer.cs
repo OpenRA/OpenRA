@@ -159,7 +159,7 @@ namespace OpenRA.Traits
 						++content[i, j].density;
 		}
 
-		public void Spread(ResourceTypeInfo info, Random r, float chance)
+		public void Spread(ResourceTypeInfo info)
 		{
 			var map = w.Map;
 
@@ -170,7 +170,6 @@ namespace OpenRA.Traits
 			for (int j = minj; j < maxj; j++)
 				for (int i = mini; i < maxi; i++)
 					if (content[i,j].type == null
-						&& r.NextDouble() < chance
 						&& GetAdjacentCellsWith(info, i,j ) > 0
 						&& w.IsCellBuildable(new int2(i, j), UnitMovementType.Wheel))
 						growMask[i, j] = true;

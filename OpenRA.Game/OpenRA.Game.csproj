@@ -114,7 +114,6 @@
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Traits\World\CrateSpawner.cs" />
-    <Compile Include="Traits\World\OreGrowth.cs" />
     <Compile Include="Traits\OreRefinery.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CallFunc.cs" />
