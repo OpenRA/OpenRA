@@ -159,6 +159,32 @@ namespace OpenRA.Traits
 						++content[i, j].density;
 		}
 
+		public void Spread(ResourceTypeInfo info, Random r, float chance)
+		{
+			var map = w.Map;
+
+			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
+			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
+
+			var growMask = new bool[128, 128];
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (content[i,j].type == null
+						&& r.NextDouble() < chance
+						&& GetAdjacentCellsWith(info, i,j ) > 0
+						&& w.IsCellBuildable(new int2(i, j), UnitMovementType.Wheel))
+						growMask[i, j] = true;
+
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (growMask[i, j])
+					{
+						content[i, j].type = info;
+						content[i, j].image = ChooseContent(info);
+						content[i, j].density = 0;
+					}
+		}
+
 		public struct CellContents
 		{
 			public ResourceTypeInfo type;

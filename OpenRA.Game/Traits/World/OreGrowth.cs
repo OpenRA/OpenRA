@@ -49,9 +49,8 @@ namespace OpenRA.Traits
 				if (oreResource != null)
 				{
 					if (info.Spreads)
-						Ore.SpreadOre(self.World,
-							self.World.SharedRandom,
-							info.Chance);
+						self.World.WorldActor.traits.Get<ResourceLayer>().Spread(oreResource,
+							self.World.SharedRandom, info.Chance);
 
 					if (info.Grows)
 						self.World.WorldActor.traits.Get<ResourceLayer>().Grow(oreResource);
