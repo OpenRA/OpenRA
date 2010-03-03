@@ -251,7 +251,7 @@ namespace OpenRA
 			public MapInfo(string filename)
 			{
 				Filename = filename.ToLowerInvariant();
-				Map = new Map(new IniFile(FileSystem.Open(Filename)));
+				Map = new Map(Filename);
 			}
 		};
 
@@ -318,9 +318,10 @@ namespace OpenRA
 
 			var y = r.Top + 50;
 			
-			int numListItems = ((r.Bottom - 60 - y ) / 20);	
+			int maxListItems = ((r.Bottom - 60 - y ) / 20);
 			
-			for(int i = mapOffset; i < numListItems + mapOffset; i++, y += 20){
+			for(int i = mapOffset; i < Math.Min(maxListItems + mapOffset, mapList.Value.Count()); i++, y += 20){
+
 				var map = mapList.Value.ElementAt(i);
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
@@ -355,7 +356,7 @@ namespace OpenRA
 			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "\\/",
 			_ =>
 			{
-				mapOffset = (mapOffset + 1 > mapList.Value.Count() - numListItems) ? mapOffset : mapOffset + 1;
+				mapOffset = (mapOffset + 1 > mapList.Value.Count() - maxListItems) ? mapOffset : mapOffset + 1;
 			});
 
 			AddButton(r, _ => { });

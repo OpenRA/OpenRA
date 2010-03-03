@@ -85,6 +85,10 @@
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
   </unit>
+  <unit name="t09">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
   <unit name="t08">
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
@@ -98,6 +102,10 @@
     <sequence name="burn" start="1" length="9" />
   </unit>
   <unit name="t05">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="burn" start="1" length="9" />
+  </unit>
+  <unit name="t04">
     <sequence name="idle" start="0" length="1" />
     <sequence name="burn" start="1" length="9" />
   </unit>

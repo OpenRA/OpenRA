@@ -75,8 +75,7 @@ namespace OpenRA
 		public World()
 		{
 			Timer.Time( "----World.ctor" );
-			
-			Map = new Map( Rules.AllRules );
+			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
 			Timer.Time( "new Map: {0}" );
 			TileSet = new TileSet( Map.TileSuffix );
 			SpriteSheetBuilder.Initialize( Map );

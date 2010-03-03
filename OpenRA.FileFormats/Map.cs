@@ -28,7 +28,6 @@ namespace OpenRA.FileFormats
 {
 	public class Map
 	{
-		public readonly string BinaryPart;
 		public readonly string Title;
 		public readonly string Theater;
 		public readonly int INIFormat;
@@ -54,11 +53,12 @@ namespace OpenRA.FileFormats
 
 		public string TileSuffix { get { return "." + Truncate(Theater, 3); } }
 
-		public Map(IniFile file)
+		public Map(string Filename)
 		{			
+			IniFile file = new IniFile(FileSystem.Open(Filename));
+			
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
-			BinaryPart = basic.GetValue("BinaryPart", "scm02ea.bin");
 			INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
 
 			IniSection map = file.GetSection("Map");
@@ -87,7 +87,7 @@ namespace OpenRA.FileFormats
 			}
 			else // CNC
 			{
-				UnpackCncTileData(FileSystem.Open(BinaryPart));
+				UnpackCncTileData(FileSystem.Open(Filename.Substring(0,Filename.Length-4)+".bin"));
 				ReadCncTrees(file);	
 			}
 			

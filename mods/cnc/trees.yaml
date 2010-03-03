@@ -28,6 +28,9 @@ T02:
 T03:
 	Inherits: ^Tree
 
+T04:
+	Inherits: ^Tree
+
 T05:
 	Inherits: ^Tree
 
@@ -43,6 +46,12 @@ T08:
 		Footprint: x_
 		Dimensions: 2,1
 
+T09:
+	Inherits: ^Tree
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+		
 T10:
 	Inherits: ^Tree
 	Building:

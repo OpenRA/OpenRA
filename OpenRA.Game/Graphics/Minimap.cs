@@ -107,8 +107,8 @@ namespace OpenRA.Graphics
 			/* todo: do this a bit nicer */
 
 			var terrain = RenderTerrainBitmap(map, tileset);
-			foreach (var sp in map.SpawnPoints)
-				terrain.SetPixel(sp.X, sp.Y, Color.White);
+			//foreach (var sp in map.SpawnPoints)
+			//	terrain.SetPixel(sp.X, sp.Y, Color.White);
 
 			return terrain;
 		}
