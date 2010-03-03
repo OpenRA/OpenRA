@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		World w;
 
 		public ResourceTypeInfo[] resourceTypes;
-		CellContents[,] content = new CellContents[128, 128];
+		CellContents[,] content;
 
 		public ResourceLayer(Actor self)
 		{
@@ -65,6 +65,8 @@ namespace OpenRA.Traits
 		public void WorldLoaded(World w)
 		{
 			this.w = w;
+			content = new CellContents[w.Map.MapSize, w.Map.MapSize];
+
 			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
 			foreach (var rt in resourceTypes)
 				rt.Sprites = rt.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();

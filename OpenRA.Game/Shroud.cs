@@ -34,9 +34,7 @@ namespace OpenRA
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
 		Sprite[,] sprites = new Sprite[128, 128];
 		bool dirty = true;
-		
-		// TODO: Testing
-		bool hasGPS = true;
+		bool hasGPS = false;
 		Player owner;
 		Map map;
 		public Rectangle? bounds;

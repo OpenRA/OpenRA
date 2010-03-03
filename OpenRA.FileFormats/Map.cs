@@ -86,6 +86,7 @@ namespace OpenRA.FileFormats
 			else // CNC
 			{
 				UnpackCncTileData(FileSystem.Open(filename.Substring(0,filename.Length-4)+".bin"));
+				ReadCncOverlay(file);
 				ReadCncTrees(file);	
 			}
 			
@@ -171,7 +172,7 @@ namespace OpenRA.FileFormats
 				}
 		}
 		
-		static string[] overlaySpriteNames =
+		static string[] raOverlayNames =
 		{
 			"sbag", "cycl", "brik", "fenc", "wood",
 			"gold01", "gold02", "gold03", "gold04",
@@ -186,7 +187,7 @@ namespace OpenRA.FileFormats
 				for( int j = 0 ; j < MapSize ; j++ )
 				{
 					byte o = ReadByte( ms );
-					MapTiles[ j, i ].overlay = (o == 255) ? null : overlaySpriteNames[o];
+					MapTiles[ j, i ].overlay = (o == 255) ? null : raOverlayNames[o];
 				}
 		}
 
@@ -215,7 +216,24 @@ namespace OpenRA.FileFormats
 						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
 				}
 		}
+		
+		void ReadCncOverlay( IniFile file )
+		{
+			IniSection overlay = file.GetSection( "OVERLAY", true );
+			if( overlay == null )
+				return;
+
+			foreach( KeyValuePair<string, string> kv in overlay )
+			{
+				var loc = int.Parse( kv.Key );
+				int2 cell = new int2(loc % MapSize, loc / MapSize);
 				
+				Log.Write("Overlay {0} at ({1},{2})",kv.Value,cell.X,cell.Y);
+				MapTiles[ cell.X, cell.Y ].overlay = kv.Value.ToLower();
+			}
+		}
+		
+		
 		void ReadCncTrees( IniFile file )
 		{
 			IniSection terrain = file.GetSection( "TERRAIN", true );

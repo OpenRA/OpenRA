@@ -2,13 +2,15 @@ SPLIT2:
 	Inherits: ^Building
 	RenderBuilding:
 		Palette: terrain
-	SeedsOre:
+	SeedsResource:
+		ResourceType:Tiberium
 	-Selectable:
 SPLIT3:
 	Inherits: ^Building
 	RenderBuilding:
 		Palette: terrain
-	SeedsOre:
+	SeedsResource:
+		ResourceType:Tiberium
 	-Selectable:
 ROCK1:
 	Inherits: ^Tree
