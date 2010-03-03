@@ -37,6 +37,8 @@ HARV:
 	Selectable:
 		Priority: 7
 	Harvester:
+		Resources: Tiberium
+		Capacity: 28
 	Unit:
 		HP: 600
 		Armor: light

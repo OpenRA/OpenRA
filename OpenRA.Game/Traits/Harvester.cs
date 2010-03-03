@@ -19,24 +19,24 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	class HarvesterInfo : ITraitInfo
 	{
-		public readonly int BailCount = 28;
+		public readonly int Capacity = 28;
 		public readonly int PipCount = 7;
+		public readonly string[] Resources = { };
 
 		public object Create(Actor self) { return new Harvester(self); }
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips
 	{
-		[Sync]
-		public int oreCarried = 0;					/* sum of these must not exceed capacity */
-		[Sync]
-		public int gemsCarried = 0;
+		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
 		Actor self;
 		public Harvester(Actor self)
@@ -44,22 +44,19 @@ namespace OpenRA.Traits
 			this.self = self;
 		}
 
-		public bool IsFull { get { return oreCarried + gemsCarried == self.Info.Traits.Get<HarvesterInfo>().BailCount; } }
-		public bool IsEmpty { get { return oreCarried == 0 && gemsCarried == 0; } }
+		public bool IsFull { get { return contents.Values.Sum() == self.Info.Traits.Get<HarvesterInfo>().Capacity; } }
+		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 
 		public void AcceptResource(ResourceTypeInfo type)
 		{
-			// FIXME: harvester probably needs to know *exactly* what it is carrying.
-			if (type.Name == "Gems") gemsCarried++;
-			else oreCarried++;
+			if (!contents.ContainsKey(type)) contents[type] = 1;
+			else contents[type]++;
 		}
 
 		public void Deliver(Actor self, Actor proc)
 		{
-			proc.Owner.GiveOre(oreCarried * Rules.General.GoldValue);
-			proc.Owner.GiveOre(gemsCarried * Rules.General.GemValue);
-			oreCarried = 0;
-			gemsCarried = 0;
+			proc.Owner.GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
+			contents.Clear();
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -71,7 +68,11 @@ namespace OpenRA.Traits
 				&& underCursor.traits.Contains<IAcceptOre>() && !IsEmpty)
 				return new Order("Deliver", self, underCursor);
 
-			if (underCursor == null && self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy) != null)
+			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
+
+			if (underCursor == null &&
+				res != null && self.Info.Traits.Get<HarvesterInfo>().Resources
+				.Any(r => r == res.Name))
 				return new Order("Harvest", self, xy);
 
 			return null;
@@ -95,16 +96,12 @@ namespace OpenRA.Traits
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			int numPips = self.Info.Traits.Get<HarvesterInfo>().PipCount;
+			int n = contents.Values.Sum();
 
 			for (int i = 0; i < numPips; i++)
 			{
-				if (gemsCarried * 1.0f / self.Info.Traits.Get<HarvesterInfo>().BailCount > i * 1.0f / numPips)
-				{
-					yield return PipType.Red;
-					continue;
-				}
-
-				if ((gemsCarried + oreCarried) * 1.0f / self.Info.Traits.Get<HarvesterInfo>().BailCount > i * 1.0f / numPips)
+				// todo: pip colors based on ResourceTypeInfo
+				if (n * 1.0f / self.Info.Traits.Get<HarvesterInfo>().Capacity > i * 1.0f / numPips)
 				{
 					yield return PipType.Yellow;
 					continue;

@@ -18,8 +18,8 @@
  */
 #endregion
 
-using System.Linq;
 using System;
+using System.Linq;
 
 namespace OpenRA.Traits
 {

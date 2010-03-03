@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Traits.Activities
 {
 	public class Harvest : IActivity
@@ -65,13 +67,15 @@ namespace OpenRA.Traits.Activities
 		void FindMoreOre(Actor self)
 		{
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>();
+			var harv = self.Info.Traits.Get<HarvesterInfo>();
 
 			self.QueueActivity(new Move(
 				() =>
 				{
 					var search = new PathSearch
 					{
-						heuristic = loc => (res.GetResource(loc) != null ? 0 : 1),
+						heuristic = loc => (res.GetResource(loc) != null 
+							&& harv.Resources.Any( r => res.GetResource(loc).Name == r )) ? 0 : 1,
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};
