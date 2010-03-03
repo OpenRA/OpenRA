@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 
 		Renderer renderer;
 		Map map;
-		OverlayRenderer overlayRenderer;
+		SmudgeRenderer overlayRenderer;
 
 		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
 		{
@@ -69,7 +69,7 @@ namespace OpenRA.Graphics
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 			indexBuffer.SetData( indices );
 
-			overlayRenderer = new OverlayRenderer( renderer, map );
+			overlayRenderer = new SmudgeRenderer( renderer, map );
 		}
 
 		public void Draw( Viewport viewport )

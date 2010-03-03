@@ -23,7 +23,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	class OverlayRenderer
+	class SmudgeRenderer
 	{
 		static string[] smudgeSpriteNames =
 			{ 
@@ -36,7 +36,7 @@ namespace OpenRA.Graphics
 		SpriteRenderer spriteRenderer;
 		Map map;
 
-		public OverlayRenderer( Renderer renderer, Map map )
+		public SmudgeRenderer( Renderer renderer, Map map )
 		{
 			this.spriteRenderer = new SpriteRenderer( renderer, true );
 			this.map = map;

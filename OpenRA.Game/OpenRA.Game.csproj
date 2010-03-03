@@ -143,7 +143,7 @@
     <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
-    <Compile Include="Graphics\OverlayRenderer.cs" />
+    <Compile Include="Graphics\SmudgeRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
