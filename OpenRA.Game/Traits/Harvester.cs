@@ -68,10 +68,9 @@ namespace OpenRA.Traits
 				return new Order("Deliver", self, underCursor);
 
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
+			var info = self.Info.Traits.Get<HarvesterInfo>();
 
-			if (underCursor == null &&
-				res != null && self.Info.Traits.Get<HarvesterInfo>().Resources
-				.Any(r => r == res.Name))
+			if (underCursor == null && res != null && info.Resources.Contains(res.Name))
 				return new Order("Harvest", self, xy);
 
 			return null;
