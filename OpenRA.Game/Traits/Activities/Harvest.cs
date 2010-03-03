@@ -75,7 +75,7 @@ namespace OpenRA.Traits.Activities
 					var search = new PathSearch
 					{
 						heuristic = loc => (res.GetResource(loc) != null 
-							&& harv.Resources.Any( r => res.GetResource(loc).Name == r )) ? 0 : 1,
+							&& harv.Resources.Contains( res.GetResource(loc).Name )) ? 0 : 1,
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};
