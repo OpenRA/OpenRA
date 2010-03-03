@@ -83,8 +83,7 @@ namespace OpenRA.Traits
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 					if (content[x, y].type != null)
-						content[x, y].density = (GetAdjacentCellsWith(content[x, y].type, x, y) *
-							content[x, y].image.Length) / 9;
+						content[x, y].density = GetIdealDensity(x, y);
 		}
 
 		public Sprite[] ChooseContent(ResourceTypeInfo info)
@@ -100,6 +99,12 @@ namespace OpenRA.Traits
 					if (content[i+u, j+v].type == info)
 						++sum;
 			return sum;
+		}
+
+		public int GetIdealDensity(int x, int y)
+		{
+			return (GetAdjacentCellsWith(content[x, y].type, x, y) *
+				content[x, y].image.Length) / 9;
 		}
 
 		public void AddResource(ResourceTypeInfo info, int i, int j, int n)
@@ -127,6 +132,31 @@ namespace OpenRA.Traits
 			if (--content[p.X, p.Y].density < 0)
 				content[p.X, p.Y].type = null;
 			return type;
+		}
+
+		public void Destroy(int2 p)
+		{
+			content[p.X, p.Y].type = null;
+			content[p.X, p.Y].image = null;
+			content[p.X, p.Y].density = 0;
+		}
+
+		public void Grow(ResourceTypeInfo info)
+		{
+			var map = w.Map;
+			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
+			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
+
+			var newDensity = new byte[128, 128];
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (content[i, j].type == info)
+						newDensity[i, j] = (byte)GetIdealDensity(i, j);
+
+			for (int j = minj; j < maxj; j++)
+				for (int i = mini; i < maxi; i++)
+					if (content[i, j].type == info && content[i, j].density < newDensity[i, j])
+						++content[i, j].density;
 		}
 
 		public struct CellContents

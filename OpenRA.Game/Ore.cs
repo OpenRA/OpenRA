@@ -61,24 +61,6 @@ namespace OpenRA
 						map.MapTiles[i, j].overlay = newOverlay[i, j];
 		}
 
-		public static void GrowOre(this World world)
-		{
-			var map = world.Map;
-			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
-			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
-
-			/* phase 2: increase density of existing areas */
-			var newDensity = new byte[128, 128];
-			for (int j = minj; j < maxj; j++)
-				for (int i = mini; i < maxi; i++)
-					if (map.ContainsOre(i, j)) newDensity[i, j] = map.GetOreDensity(i, j);
-
-//			for (int j = minj; j < maxj; j++)
-//				for (int i = mini; i < maxi; i++)
-//					if (map.MapTiles[i, j].density < newDensity[i, j])
-//						++map.MapTiles[i, j].density;
-		}
-
 		static byte GetOreDensity(this Map map, int i, int j)
 		{
 			int sum = 0;

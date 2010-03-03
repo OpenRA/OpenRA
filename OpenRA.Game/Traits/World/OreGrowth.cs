@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Traits
 {
 	class OreGrowthInfo : ITraitInfo
@@ -39,14 +41,21 @@ namespace OpenRA.Traits
 			if (--remainingTicks <= 0)
 			{
 				var info = self.Info.Traits.Get<OreGrowthInfo>();
-				
-				if (info.Spreads) 
-					Ore.SpreadOre(self.World, 
-						self.World.SharedRandom,
-						info.Chance);
 
-				if (info.Grows)
-					Ore.GrowOre(self.World);
+				// HACK HACK: we should push "grows" down to the resource.
+				var oreResource = self.World.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>()
+					.FirstOrDefault(r => r.Name == "Ore");
+
+				if (oreResource != null)
+				{
+					if (info.Spreads)
+						Ore.SpreadOre(self.World,
+							self.World.SharedRandom,
+							info.Chance);
+
+					if (info.Grows)
+						self.World.WorldActor.traits.Get<ResourceLayer>().Grow(oreResource);
+				}
 
 				self.World.Minimap.InvalidateOre();
 				remainingTicks = (int)(info.Interval * 60 * 25);
