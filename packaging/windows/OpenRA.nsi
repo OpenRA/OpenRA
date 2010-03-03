@@ -41,6 +41,14 @@ SectionGroup /e "Mods"
 		SetOutPath "$INSTDIR\mods\cnc"
 		File /r "..\..\mods\cnc\*.*"
 	SectionEnd
+	Section "Red Alert: Aftermath" Aftermath
+		SetOutPath "$INSTDIR\mods\aftermath"
+		File /r "..\..\mods\aftermath\*.*"
+	SectionEnd
+	Section "Red Alert: Next Generation" RA_NG
+		SetOutPath "$INSTDIR\mods\ra-ng"
+		File /r "..\..\mods\ra-ng\*.*"
+	SectionEnd
 SectionGroupEnd
 
 Section "Server" Server
@@ -48,7 +56,30 @@ Section "Server" Server
 	File "..\..\OpenRA.Server\bin\Debug\OpenRA.Server.exe"
 SectionEnd
 
+Var previousSelection
+
 Function .onInit
 	IntOp $0 ${SF_SELECTED} | ${SF_RO}
 	SectionSetFlags ${Client} $0
+	
+	IntOp $previousSelection ${SF_SELECTED} + 0
+FunctionEnd
+
+Function .onSelChange
+	SectionGetFlags ${RA} $0
+	IntOp $1 ${SF_SELECTED} & $0
+	IntCmp $1 $previousSelection done
+
+	IntCmp 0 $1 deselected selected
+	deselected:
+		SectionSetFlags ${Aftermath} ${SF_RO}
+		SectionSetFlags ${RA_NG} ${SF_RO}
+		Goto done
+	selected:
+		SectionSetFlags ${Aftermath} ${SF_SELECTED}
+		SectionSetFlags ${RA_NG} ${SF_SELECTED}
+		Goto done
+
+	done:
+		IntOp $previousSelection $1 + 0
 FunctionEnd
