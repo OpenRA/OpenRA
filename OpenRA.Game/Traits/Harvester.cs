@@ -21,7 +21,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {

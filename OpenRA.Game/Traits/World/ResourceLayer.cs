@@ -18,9 +18,9 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
-using System;
 
 namespace OpenRA.Traits
 {
