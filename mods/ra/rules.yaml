@@ -213,25 +213,25 @@ World:
 	PowerDownButton:
 	WallLoadHook@sbag:
 		ActorType: sbag
-		OverlayIndices: 0,24
+		OverlayTypes: sbag
 	WallLoadHook@cycl:
 		ActorType: cycl
-		OverlayIndices: 1
+		OverlayTypes: cycl
 	WallLoadHook@brik:
 		ActorType: brik
-		OverlayIndices: 2
+		OverlayTypes: brik
 	WallLoadHook@fenc:
 		ActorType: fenc
-		OverlayIndices: 3
+		OverlayTypes: fenc
 	WallLoadHook@wood:
 		ActorType: wood
-		OverlayIndices: 4
+		OverlayTypes: wood
 	WallLoadHook@barb:
 		ActorType: barb
-		OverlayIndices: 23
+		OverlayTypes: barb
 	ResourceLayer:
 	ResourceType@ore:
-		Overlays: 5,6,7,8
+		Overlays: gold01,gold02,gold03,gold04
 		Palette: terrain
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
@@ -239,7 +239,7 @@ World:
 		GrowthInterval: .3
 		SpreadInterval: .7
 	ResourceType@gem:
-		Overlays: 9,10,11,12
+		Overlays: gem01,gem02,gem03,gem04
 		Palette: terrain
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
