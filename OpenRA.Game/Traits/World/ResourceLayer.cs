@@ -104,7 +104,7 @@ namespace OpenRA.Traits
 		public int GetIdealDensity(int x, int y)
 		{
 			return (GetAdjacentCellsWith(content[x, y].type, x, y) *
-				content[x, y].image.Length) / 9;
+				(content[x, y].image.Length - 1)) / 9;
 		}
 
 		public void AddResource(ResourceTypeInfo info, int i, int j, int n)
@@ -130,7 +130,10 @@ namespace OpenRA.Traits
 			if (type == null) return null;
 
 			if (--content[p.X, p.Y].density < 0)
+			{
 				content[p.X, p.Y].type = null;
+				content[p.X, p.Y].image = null;
+			}
 			return type;
 		}
 
