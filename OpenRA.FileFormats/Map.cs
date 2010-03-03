@@ -53,24 +53,22 @@ namespace OpenRA.FileFormats
 
 		public string TileSuffix { get { return "." + Truncate(Theater, 3); } }
 
-		public Map(string Filename)
+		public Map(string filename)
 		{			
-			IniFile file = new IniFile(FileSystem.Open(Filename));
+			IniFile file = new IniFile(FileSystem.Open(filename));
 			
 			IniSection basic = file.GetSection("Basic");
 			Title = basic.GetValue("Name", "(null)");
 			INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
 
 			IniSection map = file.GetSection("Map");
-			Theater = Truncate(map.GetValue("Theater", "DESERT"), 8);
+			Theater = Truncate(map.GetValue("Theater", "TEMPERAT"), 8);
 
 			XOffset = int.Parse(map.GetValue("X", "0"));
 			YOffset = int.Parse(map.GetValue("Y", "0"));
 
 			Width = int.Parse(map.GetValue("Width", "0"));
 			Height = int.Parse(map.GetValue("Height", "0"));
-			
-			Log.Write("Map format is {0}",INIFormat);
 			MapSize = (INIFormat == 3) ? 128 : 64;
 			
 			MapTiles = new TileReference[ MapSize, MapSize ];
@@ -87,7 +85,7 @@ namespace OpenRA.FileFormats
 			}
 			else // CNC
 			{
-				UnpackCncTileData(FileSystem.Open(Filename.Substring(0,Filename.Length-4)+".bin"));
+				UnpackCncTileData(FileSystem.Open(filename.Substring(0,filename.Length-4)+".bin"));
 				ReadCncTrees(file);	
 			}
 			

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.IO;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
@@ -65,12 +66,14 @@ namespace OpenRA.Graphics
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
 			string unitName = eUnit.GetAttribute("name");
-			Log.Write("Loading sequence {0}", unitName);
-			var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
-				.Select(e => new Sequence(unitName, e))
-				.ToDictionary(s => s.Name);
-			
-			units.Add(unitName, sequences);
+			// Log.Write("Loading sequence {0}", unitName);
+			try {
+				var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
+					.Select(e => new Sequence(unitName, e))
+					.ToDictionary(s => s.Name);
+				
+				units.Add(unitName, sequences);
+			} catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art	
 		}
 
 		public static Sequence GetSequence(string unitName, string sequenceName)

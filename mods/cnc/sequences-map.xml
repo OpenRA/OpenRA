@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
-  <!-- Blossom Tree -->
+  <!-- Blossom Trees -->
+  <unit name="split2">
+    <sequence name="idle" start="0" length="1" />
+  </unit>
   <unit name="split3">
     <sequence name="idle" start="0" length="1" />
   </unit>

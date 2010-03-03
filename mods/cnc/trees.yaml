@@ -1,3 +1,9 @@
+SPLIT2:
+	Inherits: ^Building
+	RenderBuilding:
+		Palette: terrain
+	SeedsOre:
+	-Selectable:
 SPLIT3:
 	Inherits: ^Building
 	RenderBuilding:

@@ -18,16 +18,9 @@ Packages:
 	mods/cnc/packages/temperat.mix
 	mods/cnc/packages/winter.mix
 	mods/cnc/packages/desert.mix
-# Cannot qualify the RA names because they may live inside a mix
+# TODO: Obsolete conquer.mix
 	~main.mix
-	redalert.mix
-	speech.mix
-	temperat.mix
-	snow.mix
-	interior.mix
-#	general.mix
 	conquer.mix
-	sounds.mix
 
 LegacyRules:
 	mods/cnc/minimal.ini:	Minimal rules definitions
@@ -47,7 +40,7 @@ Sequences:
 	mods/cnc/sequences-structures.xml:
 	mods/cnc/sequences-vehicles.xml:
 	mods/cnc/sequences-infantry.xml:
-	mods/cnc/sequences-map.xml:
+	mods/cnc/sequences-map.xml: Trees etc
 	mods/cnc/sequences.xml:	Obsolete; will disappear once done converting
 
 Chrome:
@@ -56,7 +49,3 @@ Chrome:
 Assemblies:
 	mods/cnc/OpenRA.Mods.Cnc.dll: Cnc mod traits
 	mods/ra/OpenRA.Mods.RA.dll:	Red alert mod traits
-	
-Maps:
-	scg01ea.ini: GDI Mission 1
-	scm01ea.ini: Green Acres
