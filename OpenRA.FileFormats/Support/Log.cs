@@ -19,12 +19,13 @@
 #endregion
 
 using System.IO;
+using System;
 
 namespace OpenRA
 {
 	public static class Log
 	{
-		static StreamWriter writer = File.CreateText("log.txt");
+		static StreamWriter writer = File.CreateText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "openra.log.txt");
 
 		static Log()
 		{

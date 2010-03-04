@@ -1,5 +1,6 @@
 !include "MUI2.nsh"
 !include "ZipDLL.nsh"
+!include "x64.nsh"
 
 Name "OpenRA"
 OutFile "OpenRA.exe"
@@ -9,8 +10,10 @@ SetCompressor lzma
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\..\COPYING"
+!insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
+;!insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_LANGUAGE "English"
 
@@ -40,10 +43,20 @@ SectionGroup /e "Mods"
 	Section "Red Alert" RA
 		SetOutPath "$INSTDIR\mods\ra"
 		File /r "..\..\mods\ra\*.*"
+		
+		SetOutPath "$OUTDIR\packages"
+		NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
+		ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
+		Delete ra-packages.zip
 	SectionEnd
 	Section "Command & Conquer" CNC
 		SetOutPath "$INSTDIR\mods\cnc"
 		File /r "..\..\mods\cnc\*.*"
+		
+		SetOutPath "$OUTDIR\packages"
+		NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
+		ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
+		Delete cnc-packages.zip
 	SectionEnd
 	Section "Red Alert: Aftermath" Aftermath
 		SetOutPath "$INSTDIR\mods\aftermath"
@@ -64,16 +77,37 @@ SectionEnd
 ;Dependency Sections
 ;***************************
 Section "-OpenAl" OpenAl
-	SetOutPath "$TEMP"
-	NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
-	!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
-	ExecWait "$TEMP\OpenAL\oalinst.exe"
+	IfFileExists $SYSDIR\OpenAL32.dll done installal
+	installal:
+		SetOutPath "$TEMP"
+		NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
+		!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
+		ExecWait "$TEMP\OpenAL\oalinst.exe"
+	done:
 SectionEnd
 
 Section "-Sdl" SDL
-	SetOutPath "$TEMP"
-	NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
-	!insertmacro ZIPDLL_EXTRACT sdl.zip $SYSDIR SDL.dll
+	IfFileExists $SYSDIR\SDL.dll done installsdl
+	installsdl:
+		SetOutPath "$TEMP"
+		NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
+		!insertmacro ZIPDLL_EXTRACT sdl.zip $SYSDIR SDL.dll
+	done:
+SectionEnd
+
+Section "-Freetype" Freetype
+	IfFileExists $SYSDIR\freetype6.dll done installft
+	installft:
+		SetOutPath "$TEMP"
+		NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
+		!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
+		;Epic hack to get around bug in CopyFiles
+		${If} ${RunningX64}
+			CopyFiles "$OUTDIR\bin\freetype6.dll" $WINDIR\SysWOW64
+			Goto done
+		${EndIf}
+		CopyFiles "$OUTDIR\bin\freetype6.dll" $SYSDIR
+	done:
 SectionEnd
 
 ;***************************
