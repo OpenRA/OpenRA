@@ -250,18 +250,21 @@ World:
 		Suffix:sno
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:snow.col
 	Theater@TEMPERAT:
 		Name:Temperate
 		Theater:TEMPERAT
 		Suffix:tem
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:temperat.col
 	Theater@INTERIOR:
 		Name:Interior
 		Theater:INTERIOR
 		Suffix:int
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:temperat.col
 
 MGG:
 	GeneratesGap:

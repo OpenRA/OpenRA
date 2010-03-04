@@ -226,8 +226,6 @@ namespace OpenRA.FileFormats
 			{
 				var loc = int.Parse( kv.Key );
 				int2 cell = new int2(loc % MapSize, loc / MapSize);
-				
-				Log.Write("Overlay {0} at ({1},{2})",kv.Value,cell.X,cell.Y);
 				MapTiles[ cell.X, cell.Y ].overlay = kv.Value.ToLower();
 			}
 		}

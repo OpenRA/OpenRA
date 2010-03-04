@@ -27,6 +27,7 @@ namespace OpenRA.Traits
 		public readonly string Suffix = null;
 		public readonly string Tileset = null;
 		public readonly string Templates = null;
+		public readonly string MapColors = null;
 	}
 	class Theater {}
 }

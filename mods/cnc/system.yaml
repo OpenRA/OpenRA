@@ -211,15 +211,18 @@ World:
 		Suffix:des
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:desert.col
 	Theater@WINTER:
 		Name:Winter
 		Theater:WINTER
 		Suffix:win
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:winter.col
 	Theater@TEMPERAT:
 		Name:Temperate
 		Theater:TEMPERAT
 		Suffix:tem
 		Templates:templates.ini
 		Tileset:tileSet.til
+		MapColors:temperat.col

@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 
 		Sprite ownedSpawnPoint;
 		Sprite unownedSpawnPoint;
-
+		
 		const int alpha = 230;
 
 		public void Tick() { }
@@ -75,29 +75,24 @@ namespace OpenRA.Graphics
 
 			return new Rectangle(m.Offset.X - dw, m.Offset.Y - dh, size, size);
 		}
-
-		static Cache<string, Color[]> terrainTypeColors = new Cache<string, Color[]>(
+		
+		static Cache<string, TerrainColorSet> terrainTypeColors = new Cache<string, TerrainColorSet>(
 			theater =>
 			{
-				var pal = Game.world.WorldRenderer.GetPalette("terrain");
-				return new[] {
-						theater == "snow" ? 0xe3 :0x1a, 
-						0x63, 0x2f, 0x1f, 0x14, 0x64, 0x1f, 0x68, 0x6b, 0x6d, 0x88 }
-					.Select(a => Color.FromArgb(alpha, pal.GetColor(a))).ToArray();
+				return new TerrainColorSet(Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == theater).MapColors);
 			});
-
+		
 		static Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
 
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
-			var colors = terrainTypeColors[map.Theater.ToLowerInvariant()];
 			var terrain = new Bitmap(map.MapSize, map.MapSize);
 			for (var y = 0; y < map.MapSize; y++)
 				for (var x = 0; x < map.MapSize; x++)
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
-						? colors[tileset.GetWalkability(map.MapTiles[x, y])]
+						? Color.FromArgb(alpha, terrainTypeColors[map.Theater].ColorForTerrainType(tileset.GetWalkability(map.MapTiles[x, y])))
 						: shroudColor);
 			return terrain;
 		}
@@ -120,13 +115,12 @@ namespace OpenRA.Graphics
 			if (oreLayer == null)
 			{
 				var res = world.WorldActor.traits.Get<ResourceLayer>();
-				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				
 				oreLayer = new Bitmap(terrain);
 				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
 					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
 						if (res.GetResource(new int2(x,y)) != null)
-							oreLayer.SetPixel(x, y, colors[(int)TerrainMovementType.Ore]);
+							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType((int)TerrainMovementType.Ore)));
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
@@ -140,7 +134,6 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
 				int* c = (int*)bitmapData.Scan0;
 
 				foreach (var a in world.Queries.WithTrait<Unit>().Where( a => a.Actor.Owner != null ))
@@ -158,7 +151,7 @@ namespace OpenRA.Graphics
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
-								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : colors[4]).ToArgb();
+								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(4))).ToArgb();
 					}
 			}
 
