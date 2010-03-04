@@ -59,8 +59,7 @@ namespace OpenRA
 				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
 		}
 
-		public readonly Actor WorldActor;
-
+		public readonly Actor WorldActor;		
 		public readonly PathFinder PathFinder;
 
 		public readonly Map Map;
@@ -75,9 +74,13 @@ namespace OpenRA
 		public World()
 		{
 			Timer.Time( "----World.ctor" );
+			
 			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
 			Timer.Time( "new Map: {0}" );
-			TileSet = new TileSet( Map.TileSuffix );
+			
+			TheaterInfo theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().Where(t => t.Theater == Map.Theater).FirstOrDefault();
+			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
+			
 			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
 

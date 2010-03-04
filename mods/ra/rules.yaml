@@ -244,7 +244,19 @@ World:
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
 		Name: Gems
-	
+	Theater@SNOW:
+		Name:Snow
+		Theater:SNOW
+		Suffix:sno
+		Templates:templates.ini
+		Tileset:tileSet.til
+	Theater@TEMPERAT:
+		Name:Temperate
+		Theater:TEMPERAT
+		Suffix:tem
+		Templates:templates.ini
+		Tileset:tileSet.til
+
 MGG:
 	GeneratesGap:
 		Range: 10

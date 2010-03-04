@@ -269,6 +269,7 @@
     <Compile Include="Traits\Player\EvaAlerts.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\LineBuild.cs" />
+    <Compile Include="Traits\World\Theater.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

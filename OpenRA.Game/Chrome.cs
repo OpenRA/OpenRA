@@ -339,7 +339,9 @@ namespace OpenRA
 			DrawCentered("Size: {0}x{1}".F(currentMap.Map.Width, currentMap.Map.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
-			DrawCentered("Theater: {0}".F(currentMap.Map.Theater, currentMap.Map.Height),
+			
+			TheaterInfo theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().Where(t => t.Theater == currentMap.Map.Theater).FirstOrDefault();
+			DrawCentered("Theater: {0}".F(theaterInfo.Name, currentMap.Map.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
 			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),

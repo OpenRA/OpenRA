@@ -38,9 +38,9 @@ namespace OpenRA.FileFormats
 		Dictionary<string, TileTemplate> walkability 
 			= new Dictionary<string,TileTemplate>();
 
-		public Walkability()
+		public Walkability(string templatesFile)
 		{
-			var file = new IniFile( FileSystem.Open( "templates.ini" ) );
+			var file = new IniFile( FileSystem.Open( templatesFile ) );
 
 			foreach (var section in file.Sections)
 			{

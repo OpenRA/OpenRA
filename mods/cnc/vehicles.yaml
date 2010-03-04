@@ -21,7 +21,7 @@ MCV:
 		Offset:-1,-1
 		DeployDirections: 96
 		TransformSounds: constru2.aud, hvydoor1.aud
-		NoTransformSounds: nodeply1.aud
+		NoTransformSounds: deploy1.aud
 	RenderUnit:
 
 HARV:

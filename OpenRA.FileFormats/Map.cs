@@ -51,8 +51,6 @@ namespace OpenRA.FileFormats
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
 		}
 
-		public string TileSuffix { get { return "." + Truncate(Theater, 3); } }
-
 		public Map(string filename)
 		{			
 			IniFile file = new IniFile(FileSystem.Open(filename));
