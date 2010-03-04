@@ -25,10 +25,32 @@ Player:
 	SpawnDefaultUnits:
 	
 World:
+	ScreenShaker:
 #	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
 #	BridgeLoadHook:
+	Theater@DESERT:
+		Name:Desert
+		Theater:DESERT
+		Suffix:des
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:desert.col
+	Theater@WINTER:
+		Name:Winter
+		Theater:WINTER
+		Suffix:win
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:winter.col
+	Theater@TEMPERAT:
+		Name:Temperate
+		Theater:TEMPERAT
+		Suffix:tem
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:temperat.col
 	PaletteFromFile@terrain_desert:
 		Name: terrain
 		Theater: desert
@@ -41,30 +63,10 @@ World:
 		Name: terrain
 		Theater: winter
 		Filename: winter.pal
-	PaletteFromFile@player_desert:
-		Name: player
-		Theater: desert
-		Filename: desert.pal
-	PaletteFromFile@player_temperat:
-		Name: player
-		Theater: temperat
-		Filename: temperat.pal
-	PaletteFromFile@player_winter:
-		Name: player
-		Theater: winter
-		Filename: winter.pal
-	PaletteFromFile@terrain_snow:
-		Name: terrain
-		Theater: snow
-		Filename: snow_ra.pal
-	PaletteFromFile@player_snow:
-		Name: player
-		Theater: snow
-		Filename: tdbits/winter.pal
 	PlayerColorPalette@player0:
 		Name: player0
 		DisplayName: Gold
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 228, 200, 112
 		Color1: 246,214,121
 		Color2: 40,32,8
@@ -72,7 +74,7 @@ World:
 	PlayerColorPalette@player1:
 		Name: player1
 		DisplayName: Blue
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 56, 72, 125
 		Color1: 85,130,204
 		Color2: 17,33,71
@@ -80,7 +82,7 @@ World:
 	PlayerColorPalette@player2:
 		Name: player2
 		DisplayName: Red
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 238,0,0
 		Color1: 255,20,0
 		Color2: 56,0,0
@@ -88,7 +90,7 @@ World:
 	PlayerColorPalette@player3:
 		Name: player3
 		DisplayName: Orange
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 198,97,0
 		Color1: 255,107,0
 		Color2: 56,0,0
@@ -96,7 +98,7 @@ World:
 	PlayerColorPalette@player4:
 		Name: player4
 		DisplayName: Teal
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 28,109,97
 		Color1: 93,194,165
 		Color2: 0,32,32
@@ -104,7 +106,7 @@ World:
 	PlayerColorPalette@player5:
 		Name: player5
 		DisplayName: Salmon
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 153,76,53
 		Color1: 210,153,125
 		Color2: 56,0,0
@@ -112,7 +114,7 @@ World:
 	PlayerColorPalette@player6:
 		Name: player6
 		DisplayName: Green
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 76,101,60
 		Color1: 160,240,140
 		Color2: 20,20,20
@@ -120,7 +122,7 @@ World:
 	PlayerColorPalette@player7:
 		Name: player7
 		DisplayName: Gray
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 133,113,101
 		Color1: 238,238,238
 		Color2: 44,28,24
@@ -128,7 +130,7 @@ World:
 	PlayerColorPalette@player8:
 		Name: player8
 		DisplayName: White
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 255,255,255
 		Color1: 255,255,255
 		Color2: 75,75,75
@@ -136,7 +138,7 @@ World:
 	PlayerColorPalette@player9:
 		Name: player9
 		DisplayName: Black
-		BasePalette: player
+		BasePalette: terrain
 		DisplayColor: 30,30,30
 		Color1: 80,80,80
 		Color2: 5,5,5
@@ -199,30 +201,9 @@ World:
 	ResourceLayer:
 	ResourceType@green-tib:
 		Overlays: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
-		Palette: player
+		Palette: terrain
 		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		ValuePerUnit: 30
 		Name: Tiberium
 		GrowthInterval: 1
 		SpreadInterval: 6
-	Theater@DESERT:
-		Name:Desert
-		Theater:DESERT
-		Suffix:des
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:desert.col
-	Theater@WINTER:
-		Name:Winter
-		Theater:WINTER
-		Suffix:win
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:winter.col
-	Theater@TEMPERAT:
-		Name:Temperate
-		Theater:TEMPERAT
-		Suffix:tem
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:temperat.col

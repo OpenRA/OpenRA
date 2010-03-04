@@ -160,3 +160,24 @@ BRIDGE2:
 		Footprint: _____ _____
 		Dimensions: 5,2
 		HP: 1000
+BRIDGE3:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+		HP: 1000
+
+BRIDGE4:
+	Bridge:
+		UseAlternateNames: yes
+	Category: Building
+	Selectable:
+	BelowUnits:
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+		HP: 1000
