@@ -15,6 +15,11 @@ SetCompressor lzma
 !insertmacro MUI_PAGE_INSTFILES
 ;!insertmacro MUI_PAGE_FINISH
 
+;!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
 !insertmacro MUI_LANGUAGE "English"
 
 ;***************************
@@ -32,6 +37,8 @@ Section "Client" Client
 	File "..\..\settings-netplay-ra.ini"
 	File "..\..\FreeSans.ttf"
 	File "..\..\FreeSansBold.ttf"
+	
+	File "..\..\OpenRA.Game\OpenRA.ico"
 	
 	File /r "..\..\thirdparty\Tao\*.dll"
 	
@@ -109,6 +116,39 @@ Section "-Freetype" Freetype
 		CopyFiles "$OUTDIR\bin\freetype6.dll" $SYSDIR
 	done:
 SectionEnd
+
+;***************************
+;Uninstaller Sections
+;***************************
+Section "-Uninstaller"
+	WriteUninstaller $INSTDIR\uninstaller.exe
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "DisplayName" "OpenRA"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "UninstallString" "$INSTDIR\uninstaller.exe"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "InstallLocation" "$INSTDIR"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "DisplayIcon" "$INSTDIR\OpenRA.ico"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "Publisher" "IJW Software (New Zealand)"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://open-ra.org"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoModify" "1"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoRepair" "1"
+SectionEnd
+
+Section "Uninstall"
+	RMDir /r $INSTDIR\mods
+	RMDir /r $INSTDIR\shaders
+	Delete $INSTDIR\OpenRA.Game.exe
+	Delete $INSTDIR\OpenRA.Server.exe 
+	Delete $INSTDIR\OpenRA.FileFormats.dll
+	Delete $INSTDIR\OpenRA.Gl.dll
+	Delete $INSTDIR\Tao.*.dll
+	Delete $INSTDIR\COPYING
+	Delete $INSTDIR\HACKING
+	Delete $INSTDIR\INSTALL
+	Delete $INSTDIR\OpenRA.ico
+	Delete $INSTDIR\*.ttf
+	Delete $INSTDIR\settings-netplay-*.ini
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+SectionEnd
+
 
 ;***************************
 ;Section Descriptions
