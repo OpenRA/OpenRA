@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -160,9 +160,9 @@ namespace OpenRA
 
 		static CellInfo[ , ] InitCellInfo()
 		{
-			var cellInfo = new CellInfo[ 128, 128 ];
-			for( int x = 0 ; x < 128 ; x++ )
-				for( int y = 0 ; y < 128 ; y++ )
+			var cellInfo = new CellInfo[ Game.world.Map.MapSize, Game.world.Map.MapSize ];
+			for( int x = 0 ; x < Game.world.Map.MapSize ; x++ )
+				for( int y = 0 ; y < Game.world.Map.MapSize ; y++ )
 					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
 			return cellInfo;
 		}

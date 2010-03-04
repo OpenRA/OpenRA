@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -19,6 +19,7 @@
 #endregion
 
 using OpenRA.GameRules;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -29,11 +30,17 @@ namespace OpenRA.Traits
 
 	public class BuildingInfluence
 	{
-		bool[,] blocked = new bool[128, 128];
-		Actor[,] influence = new Actor[128, 128];
+		bool[,] blocked;
+		Actor[,] influence;
+		Map map;
 
 		public BuildingInfluence( Actor self )
 		{
+			map = self.World.Map;
+			
+			blocked = new bool[map.MapSize, map.MapSize];
+			influence = new Actor[map.MapSize, map.MapSize];
+			
 			self.World.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), true); };
@@ -45,27 +52,22 @@ namespace OpenRA.Traits
 		void ChangeInfluence( Actor a, Building building, bool isAdd )
 		{
 			foreach( var u in Footprint.UnpathableTiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
-				if( IsValid( u ) )
+				if( map.IsInMap( u ) )
 					blocked[ u.X, u.Y ] = isAdd;
 
 			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
-				if( IsValid( u ) )
+				if( map.IsInMap( u ) )
 					influence[ u.X, u.Y ] = isAdd ? a : null;
-		}
-
-		bool IsValid(int2 t)
-		{
-			return !(t.X < 0 || t.Y < 0 || t.X >= 128 || t.Y >= 128);
 		}
 
 		public Actor GetBuildingAt(int2 cell)
 		{
-			if (!IsValid(cell)) return null;
+			if (!map.IsInMap(cell)) return null;
 			return influence[cell.X, cell.Y];
 		}
 
 		public bool CanMoveHere(int2 cell)
 		{
-			return IsValid(cell) && !blocked[cell.X, cell.Y];
+			return map.IsInMap(cell) && !blocked[cell.X, cell.Y];
 		}
 	}}

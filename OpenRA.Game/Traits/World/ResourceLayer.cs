@@ -152,7 +152,7 @@ namespace OpenRA.Traits
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
 
-			var newDensity = new byte[128, 128];
+			var newDensity = new byte[map.MapSize, map.MapSize];
 			for (int j = minj; j < maxj; j++)
 				for (int i = mini; i < maxi; i++)
 					if (content[i, j].type == info)
@@ -171,7 +171,7 @@ namespace OpenRA.Traits
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
 
-			var growMask = new bool[128, 128];
+			var growMask = new bool[map.MapSize, map.MapSize];
 			for (int j = minj; j < maxj; j++)
 				for (int i = mini; i < maxi; i++)
 					if (content[i,j].type == null

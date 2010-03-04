@@ -32,12 +32,14 @@ namespace OpenRA.Traits
 
 	public class UnitInfluence : ITick
 	{
-		List<Actor>[,] influence = new List<Actor>[128, 128];
+		List<Actor>[,] influence;
 
 		public UnitInfluence( Actor self )
 		{
-			for (int i = 0; i < self.World.Map.MapSize; i++)
-				for (int j = 0; j < self.World.Map.MapSize; j++)
+			int size = self.World.Map.MapSize;
+			influence = new List<Actor>[size, size];
+			for (int i = 0; i < size; i++)
+				for (int j = 0; j < size; j++)
 					influence[ i, j ] = new List<Actor>();
 
 			self.World.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );

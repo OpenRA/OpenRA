@@ -66,7 +66,7 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 
 		// for tricky things like bridges.
-		public readonly ICustomTerrain[,] customTerrain = new ICustomTerrain[128, 128];
+		public readonly ICustomTerrain[,] customTerrain;
 
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
@@ -76,6 +76,7 @@ namespace OpenRA
 			Timer.Time( "----World.ctor" );
 			
 			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
+			customTerrain = new ICustomTerrain[Map.MapSize, Map.MapSize];
 			Timer.Time( "new Map: {0}" );
 			
 			TheaterInfo theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().Where(t => t.Theater == Map.Theater).FirstOrDefault();

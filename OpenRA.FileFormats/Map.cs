@@ -256,6 +256,11 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
+		public bool IsInMap(int2 xy)
+		{
+			return IsInMap(xy.X,xy.Y);
+		}
+		
 		public bool IsInMap(int x, int y)
 		{
 			return (x >= XOffset && y >= YOffset && x < XOffset + Width && y < YOffset + Height);
