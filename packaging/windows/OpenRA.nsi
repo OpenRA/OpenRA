@@ -1,4 +1,5 @@
 !include "MUI2.nsh"
+!include "ZipDLL.nsh"
 
 Name "OpenRA"
 OutFile "OpenRA.exe"
@@ -13,6 +14,9 @@ SetCompressor lzma
 
 !insertmacro MUI_LANGUAGE "English"
 
+;***************************
+;Section Definitions
+;***************************
 Section "Client" Client
 	SetOutPath "$INSTDIR"
 	File "..\..\OpenRA.Game\bin\Debug\OpenRA.Game.exe"
@@ -56,6 +60,38 @@ Section "Server" Server
 	File "..\..\OpenRA.Server\bin\Debug\OpenRA.Server.exe"
 SectionEnd
 
+;***************************
+;Dependency Sections
+;***************************
+Section "-OpenAl" OpenAl
+	SetOutPath "$TEMP"
+	NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
+	!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
+	ExecWait "$TEMP\OpenAL\oalinst.exe"
+SectionEnd
+
+;***************************
+;Section Descriptions
+;***************************
+LangString DESC_Client ${LANG_ENGLISH} "OpenRA client and dependencies"
+LangString DESC_Server ${LANG_ENGLISH} "OpenRA server"
+LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
+LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
+LangString DESC_Aftermath ${LANG_ENGLISH} "Red Alert: Aftermath expansion mod (depends on base Red Alert mod)"
+LangString DESC_RA_NG ${LANG_ENGLISH} "Next-gen Red Alert mod (depends on base Red Alert mod)"
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${Client} $(DESC_Client)
+	!insertmacro MUI_DESCRIPTION_TEXT ${Server} $(DESC_Server)
+	!insertmacro MUI_DESCRIPTION_TEXT ${RA} $(DESC_RA)
+	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
+	!insertmacro MUI_DESCRIPTION_TEXT ${Aftermath} $(DESC_Aftermath)
+	!insertmacro MUI_DESCRIPTION_TEXT ${RA_NG} $(DESC_RA_NG)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+;***************************
+;Functions
+;***************************
 Var previousSelection
 
 Function .onInit
