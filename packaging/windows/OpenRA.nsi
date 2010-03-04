@@ -70,6 +70,12 @@ Section "-OpenAl" OpenAl
 	ExecWait "$TEMP\OpenAL\oalinst.exe"
 SectionEnd
 
+Section "-Sdl" SDL
+	SetOutPath "$TEMP"
+	NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
+	!insertmacro ZIPDLL_EXTRACT sdl.zip $SYSDIR SDL.dll
+SectionEnd
+
 ;***************************
 ;Section Descriptions
 ;***************************
