@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -47,8 +47,8 @@ namespace OpenRA.Graphics
 		public Minimap(World world, Renderer r)
 		{
 			this.world = world;
-			sheet = new Sheet(r, new Size(128, 128));
-			mapOnlySheet = new Sheet(r, new Size(128, 128));
+			sheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
+			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
 
 			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
@@ -93,9 +93,9 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
 			var colors = terrainTypeColors[map.Theater.ToLowerInvariant()];
-			var terrain = new Bitmap(128, 128);
-			for (var y = 0; y < 128; y++)
-				for (var x = 0; x < 128; x++)
+			var terrain = new Bitmap(map.MapSize, map.MapSize);
+			for (var y = 0; y < map.MapSize; y++)
+				for (var x = 0; x < map.MapSize; x++)
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
 						? colors[tileset.GetWalkability(map.MapTiles[x, y])]
 						: shroudColor);
@@ -105,14 +105,13 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
 		{
 			/* todo: do this a bit nicer */
-
 			var terrain = RenderTerrainBitmap(map, tileset);
 			foreach (var sp in map.SpawnPoints)
 				terrain.SetPixel(sp.X, sp.Y, Color.White);
 
 			return terrain;
 		}
-
+		
 		public void Update()
 		{
 			if (terrain == null)
@@ -120,11 +119,13 @@ namespace OpenRA.Graphics
 
 			if (oreLayer == null)
 			{
+				var res = world.WorldActor.traits.Get<ResourceLayer>();
 				var colors = terrainTypeColors[world.Map.Theater.ToLowerInvariant()];
+				
 				oreLayer = new Bitmap(terrain);
 				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
 					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
-						if (world.Map.ContainsResource(new int2(x, y)))
+						if (res.GetResource(new int2(x,y)) != null)
 							oreLayer.SetPixel(x, y, colors[(int)TerrainMovementType.Ore]);
 			}
 

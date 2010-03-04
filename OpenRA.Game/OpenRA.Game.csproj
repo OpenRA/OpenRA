@@ -98,7 +98,6 @@
     <Compile Include="Network\OrderManager.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
-    <Compile Include="Ore.cs" />
     <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="Selection.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Traits\World\CrateSpawner.cs" />
-    <Compile Include="Traits\World\OreGrowth.cs" />
     <Compile Include="Traits\OreRefinery.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\CallFunc.cs" />
@@ -145,7 +143,7 @@
     <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
-    <Compile Include="Graphics\OverlayRenderer.cs" />
+    <Compile Include="Graphics\SmudgeRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
@@ -216,6 +214,8 @@
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
+    <Compile Include="Traits\World\ResourceLayer.cs" />
+    <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="Traits\SupportPowers\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
@@ -245,7 +245,7 @@
     <Compile Include="Traits\Render\RenderUnitRotor.cs" />
     <Compile Include="Traits\Render\RenderUnitSpinner.cs" />
     <Compile Include="Traits\Render\RenderUnitTurreted.cs" />
-    <Compile Include="Traits\SeedsOre.cs" />
+    <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Submarine.cs" />
     <Compile Include="Traits\AI\TakeCover.cs" />
@@ -253,6 +253,7 @@
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
+    <Compile Include="Traits\World\WallLoadHook.cs" />
     <Compile Include="Traits\World\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Modifiers\WithShadow.cs" />
     <Compile Include="Network\UnitOrders.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Traits\Player\EvaAlerts.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\LineBuild.cs" />
+    <Compile Include="Traits\World\Theater.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

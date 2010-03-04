@@ -28,7 +28,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
 
-		public readonly Walkability Walkability = new Walkability();
+		public readonly Walkability Walkability;
 		public readonly Dictionary<ushort, TileTemplate> walk 
 			= new Dictionary<ushort, TileTemplate>();
 
@@ -46,12 +46,12 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
-		public TileSet( string suffix )
+		public TileSet( string tilesetFile, string templatesFile, string suffix )
 		{
-			Walkability = new Walkability();
+			Walkability = new Walkability(templatesFile);
 
-			char tileSetChar = char.ToUpperInvariant( suffix[ 1 ] );
-			StreamReader tileIdFile = new StreamReader( FileSystem.Open( "tileSet.til" ) );
+			char tileSetChar = char.ToUpperInvariant( suffix[ 0 ] );
+			StreamReader tileIdFile = new StreamReader( FileSystem.Open(tilesetFile) );
 
 			while( true )
 			{
@@ -74,7 +74,7 @@ namespace OpenRA.FileFormats
 					if (!walk.ContainsKey((ushort)(start + i)))
 						walk.Add((ushort)(start + i), Walkability.GetWalkability(tilename));
 
-					using( Stream s = FileSystem.Open( tilename + suffix ) )
+					using( Stream s = FileSystem.Open( tilename + "." + suffix ) )
 					{
 						if( !tiles.ContainsKey( (ushort)( start + i ) ) )
 							tiles.Add( (ushort)( start + i ), new Terrain( s ) );
@@ -88,9 +88,10 @@ namespace OpenRA.FileFormats
 		public byte[] GetBytes(TileReference r)
 		{
 			Terrain tile;
+
 			if( tiles.TryGetValue( r.tile, out tile ) )
 				return tile.TileBitmapBytes[ r.image ];
-
+			
 			byte[] missingTile = new byte[ 24 * 24 ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
 				missingTile[ i ] = 0x36;
@@ -102,8 +103,15 @@ namespace OpenRA.FileFormats
 		{
 			if (r.tile == 0xff || r.tile == 0xffff)
 				r.image = 0;
-
-			return walk[r.tile].TerrainType[r.image];
+			
+			try {
+				return walk[r.tile].TerrainType[r.image];
+			}
+			catch (KeyNotFoundException)
+			{
+				return 0; // Default zero (walkable)
+			}
+			
 		}
 	}
 }

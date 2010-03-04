@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -39,7 +39,7 @@ namespace OpenRA.GameRules
 		// External game settings
 		public readonly string NetworkHost = "";
 		public readonly int NetworkPort = 0;
-		public readonly string Map = "scm12ea.ini";
+		public readonly string Map = "scm02ea.ini";
 		public readonly int Player = 1;
 		public readonly string Replay = "";
 		public readonly string PlayerName = "";

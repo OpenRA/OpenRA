@@ -184,11 +184,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	OreGrowth:
-		Interval: .3
-		Chance: .02
-		Spreads: yes
-		Grows: yes
 	Country@0:
 		Name: England
 		Race: allies
@@ -216,7 +211,58 @@ World:
 	SellButton:
 	RepairButton:
 	PowerDownButton:
-	
+	WallLoadHook@sbag:
+		ActorType: sbag
+		OverlayTypes: sbag
+	WallLoadHook@cycl:
+		ActorType: cycl
+		OverlayTypes: cycl
+	WallLoadHook@brik:
+		ActorType: brik
+		OverlayTypes: brik
+	WallLoadHook@fenc:
+		ActorType: fenc
+		OverlayTypes: fenc
+	WallLoadHook@wood:
+		ActorType: wood
+		OverlayTypes: wood
+	WallLoadHook@barb:
+		ActorType: barb
+		OverlayTypes: barb
+	ResourceLayer:
+	ResourceType@ore:
+		Overlays: gold01,gold02,gold03,gold04
+		Palette: terrain
+		SpriteNames: gold01,gold02,gold03,gold04
+		ValuePerUnit: 25
+		Name: Ore
+		GrowthInterval: .3
+		SpreadInterval: .7
+	ResourceType@gem:
+		Overlays: gem01,gem02,gem03,gem04
+		Palette: terrain
+		SpriteNames: gem01,gem02,gem03,gem04
+		ValuePerUnit: 50
+		Name: Gems
+	Theater@SNOW:
+		Name:Snow
+		Theater:SNOW
+		Suffix:sno
+		Templates:templates.ini
+		Tileset:tileSet.til
+	Theater@TEMPERAT:
+		Name:Temperate
+		Theater:TEMPERAT
+		Suffix:tem
+		Templates:templates.ini
+		Tileset:tileSet.til
+	Theater@INTERIOR:
+		Name:Interior
+		Theater:INTERIOR
+		Suffix:int
+		Templates:templates.ini
+		Tileset:tileSet.til
+
 MGG:
 	GeneratesGap:
 		Range: 10
@@ -773,6 +819,8 @@ HARV:
 	Selectable:
 		Priority: 7
 	Harvester:
+		Capacity: 28
+		Resources: Ore,Gems
 	Unit:
 		HP: 600
 		Armor: heavy
@@ -1892,7 +1940,7 @@ TC05:
 
 MINE:
 	Inherits: ^Building
-	SeedsOre:
+	SeedsResource:
 	-Selectable:
 
 BOXES01:

@@ -139,8 +139,6 @@ namespace OpenRA
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
-
-			mapChooserSheet = new Sheet(r, new Size(128, 128));
 		}
 
 		List<string> visibleTabs = new List<string>();
@@ -251,7 +249,7 @@ namespace OpenRA
 			public MapInfo(string filename)
 			{
 				Filename = filename.ToLowerInvariant();
-				Map = new Map(new IniFile(FileSystem.Open(Filename)));
+				Map = new Map(Filename);
 			}
 		};
 
@@ -301,6 +299,9 @@ namespace OpenRA
 
 			if (mapPreviewDirty)
 			{
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize)
+					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Map.MapSize, currentMap.Map.MapSize));
+				
 				var b = Minimap.RenderTerrainBitmapWithSpawnPoints(currentMap.Map, Game.world.TileSet);	// tileset -> hack
 				mapChooserSheet.Texture.SetData(b);
 				mapChooserSprite = new Sprite(mapChooserSheet, 
@@ -318,9 +319,10 @@ namespace OpenRA
 
 			var y = r.Top + 50;
 			
-			int numListItems = ((r.Bottom - 60 - y ) / 20);	
+			int maxListItems = ((r.Bottom - 60 - y ) / 20);
 			
-			for(int i = mapOffset; i < numListItems + mapOffset; i++, y += 20){
+			for(int i = mapOffset; i < Math.Min(maxListItems + mapOffset, mapList.Value.Count()); i++, y += 20){
+
 				var map = mapList.Value.ElementAt(i);
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
@@ -338,7 +340,9 @@ namespace OpenRA
 			DrawCentered("Size: {0}x{1}".F(currentMap.Map.Width, currentMap.Map.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
-			DrawCentered("Theater: {0}".F(currentMap.Map.Theater, currentMap.Map.Height),
+			
+			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Map.Theater);
+			DrawCentered("Theater: {0}".F(theaterInfo.Name, currentMap.Map.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
 			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),
@@ -355,7 +359,7 @@ namespace OpenRA
 			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "\\/",
 			_ =>
 			{
-				mapOffset = (mapOffset + 1 > mapList.Value.Count() - numListItems) ? mapOffset : mapOffset + 1;
+				mapOffset = (mapOffset + 1 > mapList.Value.Count() - maxListItems) ? mapOffset : mapOffset + 1;
 			});
 
 			AddButton(r, _ => { });
@@ -424,8 +428,8 @@ namespace OpenRA
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
-			DrawDialogBackground(new Rectangle(r.Right - 324, r.Top + 43, 304, 244),"dialog2");
-			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
+			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
+			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
 
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);

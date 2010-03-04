@@ -140,4 +140,6 @@ namespace OpenRA.Traits
 		bool Pressed { get; }
 		void OnClick();
 	}
+
+	public interface IRenderOverlay { void Render(); }
 }

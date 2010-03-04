@@ -32,10 +32,3 @@ BR3:
 		Footprint: ____ ____
 		Dimensions: 4,2
 		HP: 1000
-
-MINE:
-	Inherits: ^Building
-	RenderBuilding:
-		Palette: terrain
-	SeedsOre:
-	-Selectable:

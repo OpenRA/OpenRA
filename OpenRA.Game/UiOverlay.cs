@@ -56,8 +56,8 @@ namespace OpenRA
 		public void Draw( World world )
 		{
 			if (ShowUnitDebug)
-				for (var j = 0; j < 128; j++)
-					for (var i = 0; i < 128; i++)
+				for (var j = 0; j < world.Map.MapSize; j++)
+					for (var i = 0; i < world.Map.MapSize; i++)
 						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
 		}
@@ -67,10 +67,11 @@ namespace OpenRA
 			var position = Game.controller.MousePosition.ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
 			var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
+			var res = world.WorldActor.traits.Get<ResourceLayer>();
 
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
 				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound
-					? UnitMovementType.Float : UnitMovementType.Wheel ) && !world.Map.ContainsResource( t ) )
+					? UnitMovementType.Float : UnitMovementType.Wheel ) && res.GetResource(t) == null )
 					? buildOk : buildBlocked, Game.CellSize * t, "terrain" );
 			
 			// Linebuild for walls.

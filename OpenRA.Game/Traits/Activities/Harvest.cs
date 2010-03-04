@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Traits.Activities
 {
 	public class Harvest : IActivity
@@ -39,7 +41,7 @@ namespace OpenRA.Traits.Activities
 				return this;
 			else
 			{
-				FindMoreOre(self);
+				FindMoreResource(self);
 				return NextActivity;
 			}
 		}
@@ -49,28 +51,31 @@ namespace OpenRA.Traits.Activities
 			var harv = self.traits.Get<Harvester>();
 			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
 
-			var isGem = false;
-			if (!self.World.Map.ContainsResource(self.Location) ||
-				!self.World.Map.Harvest(self.Location, out isGem))
+			var resource = self.World.WorldActor.traits.Get<ResourceLayer>().Harvest(self.Location);
+			if (resource == null)
 				return false;
-
+			
 			if (renderUnit.anim.CurrentSequence.Name != "harvest")
 			{
 				isHarvesting = true;
 				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
 			}
-			harv.AcceptResource(isGem);
+			harv.AcceptResource(resource);
 			return true;
 		}
 
-		void FindMoreOre(Actor self)
+		void FindMoreResource(Actor self)
 		{
+			var res = self.World.WorldActor.traits.Get<ResourceLayer>();
+			var harv = self.Info.Traits.Get<HarvesterInfo>();
+
 			self.QueueActivity(new Move(
 				() =>
 				{
 					var search = new PathSearch
 					{
-						heuristic = loc => (self.World.Map.ContainsResource(loc) ? 0 : 1),
+						heuristic = loc => (res.GetResource(loc) != null 
+							&& harv.Resources.Contains( res.GetResource(loc).Name )) ? 0 : 1,
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};

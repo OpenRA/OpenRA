@@ -28,28 +28,49 @@ namespace OpenRA.FileFormats
 		public readonly List<byte[]> TileBitmapBytes = new List<byte[]>();
 
 		public Terrain( Stream stream )
-		{
-			int Width, Height;
-
+		{		
+			// Try loading as a cnc .tem
 			BinaryReader reader = new BinaryReader( stream );
-			Width = reader.ReadUInt16();
-			Height = reader.ReadUInt16();
+			int Width = reader.ReadUInt16();
+			int Height = reader.ReadUInt16();
 
 			if( Width != 24 || Height != 24 )
 				throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
-
+			
 			/*NumTiles = */reader.ReadUInt16();
-			reader.ReadUInt16();
-			/*XDim = */reader.ReadUInt16();
-			/*YDim = */reader.ReadUInt16();
-			/*uint FileSize = */reader.ReadUInt32();
+			/*Zero1 = */reader.ReadUInt16();			
+			/*uint Size = */reader.ReadUInt32();
 			uint ImgStart = reader.ReadUInt32();
-			reader.ReadUInt32();
-			reader.ReadUInt32();
-			int IndexEnd = reader.ReadInt32();
-			reader.ReadUInt32();
-			int IndexStart = reader.ReadInt32();
-
+			/*Zero2 = */reader.ReadUInt32();
+			
+			int IndexEnd, IndexStart;
+			if (reader.ReadUInt16() == 65535) // ID1 = FFFFh for cnc
+			{
+				/*ID2 = */reader.ReadUInt16();	
+				IndexEnd = reader.ReadInt32();
+				IndexStart = reader.ReadInt32();
+			}
+			else // Load as a ra .tem
+			{
+				stream.Position = 0;	
+				reader = new BinaryReader( stream );
+				Width = reader.ReadUInt16();
+				Height = reader.ReadUInt16();
+				if( Width != 24 || Height != 24 )
+					throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
+	
+				/*NumTiles = */reader.ReadUInt16();
+				reader.ReadUInt16();
+				/*XDim = */reader.ReadUInt16();
+				/*YDim = */reader.ReadUInt16();
+				/*uint FileSize = */reader.ReadUInt32();
+				ImgStart = reader.ReadUInt32();
+				reader.ReadUInt32();
+				reader.ReadUInt32();
+				IndexEnd = reader.ReadInt32();
+				reader.ReadUInt32();
+				IndexStart = reader.ReadInt32();		
+			}
 			stream.Position = IndexStart;
 
 			foreach( byte b in new BinaryReader(stream).ReadBytes(IndexEnd - IndexStart) )

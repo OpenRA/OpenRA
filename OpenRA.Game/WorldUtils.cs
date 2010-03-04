@@ -149,8 +149,9 @@ namespace OpenRA
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
+			var res = world.WorldActor.traits.Get<ResourceLayer>();
 			return !Footprint.Tiles(name, building, topLeft).Any(
-				t => !world.Map.IsInMap(t.X, t.Y) || world.Map.ContainsResource(t) || !world.IsCellBuildable(t,
+				t => !world.Map.IsInMap(t.X, t.Y) || res.GetResource(t) != null || !world.IsCellBuildable(t,
 					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
 					toIgnore));
 		}
@@ -197,22 +198,6 @@ namespace OpenRA
 				xy.Y = mapEnd.Y;
 
 			return xy;
-		}
-
-		public static void LoadMapActors(this World world, IniFile mapfile)
-		{
-			var toLoad = 
-				mapfile.GetSection("STRUCTURES", true)
-				.Concat(mapfile.GetSection("UNITS", true));
-
-			foreach (var s in toLoad)
-			{
-				//num=owner,type,health,location,facing,...
-				var parts = s.Value.Split( ',' );
-				var loc = int.Parse(parts[3]);
-				world.CreateActor(parts[1].ToLowerInvariant(), new int2(loc % 128, loc / 128),
-					world.players.Values.FirstOrDefault(p => p.InternalName == parts[0]) ?? world.players[0]);
-			}
 		}
 
 		public static int2 ChooseRandomEdgeCell(this World w)

@@ -1,3 +1,31 @@
+SPLIT2:
+	Inherits: ^Building
+	RenderBuilding:
+		Palette: terrain
+	SeedsResource:
+		ResourceType:Tiberium
+	-Selectable:
+SPLIT3:
+	Inherits: ^Building
+	RenderBuilding:
+		Palette: terrain
+	SeedsResource:
+		ResourceType:Tiberium
+	-Selectable:
+ROCK1:
+	Inherits: ^Tree
+ROCK2:
+	Inherits: ^Tree
+ROCK3:
+	Inherits: ^Tree
+ROCK4:
+	Inherits: ^Tree
+ROCK5:
+	Inherits: ^Tree
+ROCK6:
+	Inherits: ^Tree
+ROCK7:
+	Inherits: ^Tree
 
 T01:
 	Inherits: ^Tree
@@ -6,6 +34,9 @@ T02:
 	Inherits: ^Tree
 
 T03:
+	Inherits: ^Tree
+
+T04:
 	Inherits: ^Tree
 
 T05:
@@ -23,6 +54,12 @@ T08:
 		Footprint: x_
 		Dimensions: 2,1
 
+T09:
+	Inherits: ^Tree
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+		
 T10:
 	Inherits: ^Tree
 	Building:
@@ -55,7 +92,12 @@ T16:
 
 T17:
 	Inherits: ^Tree
-
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+T18:
+	Inherits: ^Tree
+	
 TC01:
 	Inherits: ^Tree
 	Building:

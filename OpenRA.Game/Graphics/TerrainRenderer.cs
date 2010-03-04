@@ -21,6 +21,7 @@
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -32,7 +33,7 @@ namespace OpenRA.Graphics
 
 		Renderer renderer;
 		Map map;
-		OverlayRenderer overlayRenderer;
+		SmudgeRenderer overlayRenderer;
 
 		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
 		{
@@ -68,7 +69,7 @@ namespace OpenRA.Graphics
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 			indexBuffer.SetData( indices );
 
-			overlayRenderer = new OverlayRenderer( renderer, map );
+			overlayRenderer = new SmudgeRenderer( renderer, map );
 		}
 
 		public void Draw( Viewport viewport )
@@ -103,6 +104,9 @@ namespace OpenRA.Graphics
 					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
 					terrainSheet.Texture, PrimitiveType.TriangleList, renderer.SpriteShader));
+
+			foreach (var r in Game.world.WorldActor.traits.WithInterface<IRenderOverlay>())
+				r.Render();
 
 			overlayRenderer.Draw();
 		}

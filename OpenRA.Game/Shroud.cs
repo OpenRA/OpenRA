@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -30,22 +30,31 @@ namespace OpenRA
 {
 	public class Shroud
 	{
-		bool[,] explored = new bool[128, 128];
+		bool[,] explored;
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
-		Sprite[,] sprites = new Sprite[128, 128];
+		Sprite[,] sprites;
+		int gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
+		int gapTicks;
+		int[,] gapField;
+		bool[,] gapActive;
+		
 		bool dirty = true;
 		bool hasGPS = false;
 		Player owner;
 		Map map;
 		public Rectangle? bounds;
 
-		public Shroud(Player owner, Map map) { this.owner = owner; this.map = map; }
-		
-		int gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
-		int gapTicks;
-		int[,] gapField = new int[128, 128];
-		bool[,] gapActive = new bool[128, 128];
-		
+		public Shroud(Player owner, Map map)
+		{
+			this.owner = owner;
+			this.map = map;
+			
+			explored = new bool[map.MapSize, map.MapSize];
+			sprites = new Sprite[map.MapSize, map.MapSize];
+			gapField = new int[map.MapSize, map.MapSize];
+			gapActive = new bool[map.MapSize, map.MapSize];
+		}
+
 		public bool HasGPS
 		{
 			get { return hasGPS; }
@@ -57,7 +66,7 @@ namespace OpenRA
 			if (gapTicks > 0) { --gapTicks; return; }
 
 			// Clear active flags
-			gapActive = new bool[128, 128];
+			gapActive = new bool[map.MapSize, map.MapSize];
 			foreach (var a in world.Queries.WithTrait<GeneratesGap>().Where(a => owner != a.Actor.Owner))
 				foreach (var t in a.Trait.GetShroudedTiles())
 				{

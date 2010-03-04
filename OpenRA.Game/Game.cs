@@ -101,11 +101,8 @@ namespace OpenRA
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
 
 			skipMakeAnims = true;
-			foreach (var treeReference in Game.world.Map.Trees)
-				world.CreateActor(treeReference.Image, new int2(treeReference.Location), null);
-			Timer.Time( "trees: {0}" );
-	
-			world.LoadMapActors(Rules.AllRules);
+			foreach (var actorReference in world.Map.Actors)
+				world.CreateActor(actorReference.Name, actorReference.Location, world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner) ?? world.players[0]);	
 			skipMakeAnims = false;
 			Timer.Time( "map actors: {0}" );
 

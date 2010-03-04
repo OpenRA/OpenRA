@@ -25,18 +25,34 @@ Player:
 	SpawnDefaultUnits:
 	
 World:
-	WaterPaletteRotation:
+#	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
-	BridgeLoadHook:
-	PaletteFromFile@terrain_temperat:
+#	BridgeLoadHook:
+	PaletteFromFile@terrain_desert:
+		Name: terrain
+		Theater: desert
+		Filename: desert.pal
+	PaletteFromFile@terrain_temperate:
 		Name: terrain
 		Theater: temperat
-		Filename: temperat_ra.pal
+		Filename: temperat.pal
+	PaletteFromFile@terrain_winter:
+		Name: terrain
+		Theater: winter
+		Filename: winter.pal
+	PaletteFromFile@player_desert:
+		Name: player
+		Theater: desert
+		Filename: desert.pal
 	PaletteFromFile@player_temperat:
 		Name: player
 		Theater: temperat
 		Filename: temperat.pal
+	PaletteFromFile@player_winter:
+		Name: player
+		Theater: winter
+		Filename: winter.pal
 	PaletteFromFile@terrain_snow:
 		Name: terrain
 		Theater: snow
@@ -153,11 +169,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	OreGrowth:
-		Interval: .3
-		Chance: .02
-		Spreads: yes
-		Grows: yes
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -166,3 +177,49 @@ World:
 		Race: nod
 	SellButton:
 	RepairButton:
+	ChoosePaletteOnSelect:
+	WallLoadHook@sbag:
+		ActorType: sbag
+		OverlayTypes: sbag
+	WallLoadHook@cycl:
+		ActorType: cycl
+		OverlayTypes: cycl
+	WallLoadHook@brik:
+		ActorType: brik
+		OverlayTypes: brik
+	WallLoadHook@fenc:
+		ActorType: fenc
+		OverlayTypes: fenc
+	WallLoadHook@wood:
+		ActorType: wood
+		OverlayTypes: wood
+	WallLoadHook@barb:
+		ActorType: barb
+		OverlayTypes: barb
+	ResourceLayer:
+	ResourceType@green-tib:
+		Overlays: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		Palette: player
+		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		ValuePerUnit: 30
+		Name: Tiberium
+		GrowthInterval: 1
+		SpreadInterval: 6
+	Theater@DESERT:
+		Name:Desert
+		Theater:DESERT
+		Suffix:des
+		Templates:templates.ini
+		Tileset:tileSet.til
+	Theater@WINTER:
+		Name:Winter
+		Theater:WINTER
+		Suffix:win
+		Templates:templates.ini
+		Tileset:tileSet.til
+	Theater@TEMPERAT:
+		Name:Temperate
+		Theater:TEMPERAT
+		Suffix:tem
+		Templates:templates.ini
+		Tileset:tileSet.til

@@ -35,10 +35,11 @@ namespace OpenRA
 		public PathFinder( World world )
 		{
 			this.world = world;
+			var map = world.Map;
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
-				passableCost[(int)umt] = new float[128, 128];
-			for( int x = 0 ; x < 128 ; x++ )
-				for( int y = 0 ; y < 128 ; y++ )
+				passableCost[(int)umt] = new float[map.MapSize, map.MapSize];
+			for( int x = 0 ; x < map.MapSize ; x++ )
+				for( int y = 0 ; y < map.MapSize ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 						passableCost[(int)umt][ x, y ] = ( world.Map.IsInMap( x, y ) )
 							? (float)TerrainCosts.Cost( umt, world.TileSet.GetWalkability( world.Map.MapTiles[ x, y ] ) )

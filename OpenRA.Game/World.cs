@@ -59,15 +59,14 @@ namespace OpenRA
 				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
 		}
 
-		public readonly Actor WorldActor;
-
+		public readonly Actor WorldActor;		
 		public readonly PathFinder PathFinder;
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
 		// for tricky things like bridges.
-		public readonly ICustomTerrain[,] customTerrain = new ICustomTerrain[128, 128];
+		public readonly ICustomTerrain[,] customTerrain;
 
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
@@ -76,9 +75,13 @@ namespace OpenRA
 		{
 			Timer.Time( "----World.ctor" );
 			
-			Map = new Map( Rules.AllRules );
+			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
+			customTerrain = new ICustomTerrain[Map.MapSize, Map.MapSize];
 			Timer.Time( "new Map: {0}" );
-			TileSet = new TileSet( Map.TileSuffix );
+			
+			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == Map.Theater);
+			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
+			
 			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
 
