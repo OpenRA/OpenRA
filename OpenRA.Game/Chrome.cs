@@ -341,7 +341,7 @@ namespace OpenRA
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
 			
-			TheaterInfo theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().Where(t => t.Theater == currentMap.Map.Theater).FirstOrDefault();
+			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Map.Theater);
 			DrawCentered("Theater: {0}".F(theaterInfo.Name, currentMap.Map.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;

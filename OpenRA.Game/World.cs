@@ -79,7 +79,7 @@ namespace OpenRA
 			customTerrain = new ICustomTerrain[Map.MapSize, Map.MapSize];
 			Timer.Time( "new Map: {0}" );
 			
-			TheaterInfo theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().Where(t => t.Theater == Map.Theater).FirstOrDefault();
+			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == Map.Theater);
 			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
 			
 			SpriteSheetBuilder.Initialize( Map );

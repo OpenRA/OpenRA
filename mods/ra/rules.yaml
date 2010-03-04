@@ -256,6 +256,12 @@ World:
 		Suffix:tem
 		Templates:templates.ini
 		Tileset:tileSet.til
+	Theater@INTERIOR:
+		Name:Interior
+		Theater:INTERIOR
+		Suffix:int
+		Templates:templates.ini
+		Tileset:tileSet.til
 
 MGG:
 	GeneratesGap:
