@@ -139,8 +139,6 @@ namespace OpenRA
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
-
-			mapChooserSheet = new Sheet(r, new Size(128, 128));
 		}
 
 		List<string> visibleTabs = new List<string>();
@@ -301,6 +299,9 @@ namespace OpenRA
 
 			if (mapPreviewDirty)
 			{
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize)
+					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Map.MapSize, currentMap.Map.MapSize));
+				
 				var b = Minimap.RenderTerrainBitmapWithSpawnPoints(currentMap.Map, Game.world.TileSet);	// tileset -> hack
 				mapChooserSheet.Texture.SetData(b);
 				mapChooserSprite = new Sprite(mapChooserSheet, 
@@ -427,8 +428,8 @@ namespace OpenRA
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
-			DrawDialogBackground(new Rectangle(r.Right - 324, r.Top + 43, 304, 244),"dialog2");
-			var minimapRect = new Rectangle(r.Right - 322, r.Top + 45, 300, 240);
+			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
+			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
 
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);

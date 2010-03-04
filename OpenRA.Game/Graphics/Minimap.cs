@@ -47,8 +47,8 @@ namespace OpenRA.Graphics
 		public Minimap(World world, Renderer r)
 		{
 			this.world = world;
-			sheet = new Sheet(r, new Size(128, 128));
-			mapOnlySheet = new Sheet(r, new Size(128, 128));
+			sheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
+			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
 
 			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
@@ -105,14 +105,13 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
 		{
 			/* todo: do this a bit nicer */
-
 			var terrain = RenderTerrainBitmap(map, tileset);
-			//foreach (var sp in map.SpawnPoints)
-			//	terrain.SetPixel(sp.X, sp.Y, Color.White);
+			foreach (var sp in map.SpawnPoints)
+				terrain.SetPixel(sp.X, sp.Y, Color.White);
 
 			return terrain;
 		}
-
+		
 		public void Update()
 		{
 			if (terrain == null)

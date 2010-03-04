@@ -93,6 +93,7 @@ namespace OpenRA.FileFormats
 			LoadActors(file, "INFANTRY");
 			
 			SpawnPoints = file.GetSection("Waypoints")
+					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % MapSize, int.Parse(kv.Value) / MapSize)))
 					.Where(a => a.First < 8)
 					.Select(a => a.Second)
