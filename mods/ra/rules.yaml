@@ -538,6 +538,7 @@ PDOX:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+		Bib: yes
 	Chronosphere:
 	IronCurtainable:
 
