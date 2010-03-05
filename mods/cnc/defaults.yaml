@@ -45,8 +45,9 @@
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
 		SellSounds: cashturn.aud
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
 	RenderBuilding:
-
 ^Tree:
 	Category: Building
 	RenderBuilding:
@@ -66,6 +67,8 @@
 		BaseNormal: no
 		Crewed: no
 		Sight: 0
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
 	Wall:
 	LineBuild:
 	Selectable:

@@ -238,7 +238,6 @@
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
-    <Compile Include="Traits\Modifiers\Cloak.cs" />
     <Compile Include="Traits\Render\RenderUnit.cs" />
     <Compile Include="Traits\Render\RenderUnitMuzzleFlash.cs" />
     <Compile Include="Traits\Render\RenderUnitReload.cs" />

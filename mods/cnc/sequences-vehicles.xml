@@ -92,7 +92,7 @@
 	<!-- Rocket Launcher -->
 	<unit name="msam">
 		<sequence name="idle" start="0" facings="32" />
-		<sequence name="turret-1" start="32" facings="16" />
+		<sequence name="turret" start="32" facings="16" />
 		<sequence name="turret-2" start="48" facings="16" />
 		<sequence name="turret-3" start="64" facings="32" />
 	</unit>
@@ -100,7 +100,7 @@
 	<!-- SSM Launcher -->
 	<unit name="mlrs">
 		<sequence name="idle" start="0" facings="32" />
-		<sequence name="turret-1" start="32" facings="32" />
+		<sequence name="turret" start="32" facings="32" />
 		<sequence name="turret-2" start="64" facings="32" />
 		<sequence name="turret-3" start="96" facings="32" />
 	</unit>
@@ -136,5 +136,5 @@
 		<sequence name="right" start="96" length="32" />
 		<sequence name="right-damaged" start="128" length="32" />
 		<sequence name="right-critical" start="160" length="32" />
-	</unit>-->
+	</unit>
 </sequences>
