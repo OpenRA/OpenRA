@@ -256,6 +256,110 @@ MTNK:
 	RenderUnitTurreted:
 	AutoTarget:
 
+HTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: htnkicnh
+		TechLevel: 5
+		Prerequisites: weap, fix
+		Owner: gdi
+		Cost: 1500
+		Description: Mammoth Tank
+		LongDesc: Heavily armored GDI Tank.\n  Strong vs Everything
+	Unit:
+		HP: 600
+		Armor: heavy
+		Crewed: yes
+		Sight: 4
+		Speed: 12
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 120mmAPR
+		SecondaryWeapon: MissilePack
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
+
+MSAM:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: msamicnh
+		TechLevel: 7
+		Prerequisites: weap, eye
+		Owner: gdi
+		Cost: 800
+		Description: Rocket Launcher
+		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 100
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 18
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 227mm
+		PrimaryOffset: 0,5,0,0
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
+
+MLRS:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: mlrsicnh
+		TechLevel: 7
+#		Prerequisites: afld, atwr
+		Owner: nod
+		Cost: 750
+		Description: SSM Launcher
+		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 120
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 18
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: HonestJohn
+		PrimaryOffset: 0,5,0,0
+	RenderUnitTurreted:
+	AutoTarget:
+
+STNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Icon: stnkicnh
+		TechLevel: 5
+		Prerequisites: afld, hq
+		Owner: nod
+		Cost: 900
+		Description: Stealth Tank
+		LongDesc: TODO
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 30
+	Cloak:
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: Rockets
+	RenderUnit:
+	AutoTarget:
+
 TRAN:
 	Inherits: ^Plane
 	Buildable:

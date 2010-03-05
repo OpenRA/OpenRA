@@ -114,7 +114,7 @@ namespace OpenRA.Traits
 					break;
 				case DamageState.Half:
 					anim.ReplaceAnim("damaged-idle");
-					Sound.Play("kaboom1.aud");
+					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
 					break;
 				case DamageState.Dead:
 					DoBib(self, true);

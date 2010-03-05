@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -20,14 +20,16 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+
+namespace OpenRA.Mods.Cnc
 {
 	class CloakInfo : ITraitInfo
 	{
 		public readonly float CloakDelay = 1.2f; // Seconds
-		public readonly string CloakSound = "ironcur9.aud";
-		public readonly string UncloakSound = "ironcur9.aud";
+		public readonly string CloakSound = "appear1.aud";
+		public readonly string UncloakSound = "appear1.aud";
 		public object Create(Actor self) { return new Cloak(self); }
 	}
 

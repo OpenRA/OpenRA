@@ -51,7 +51,8 @@ namespace OpenRA.Traits
 
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
-		
+		public readonly string DamagedSound = "kaboom1.aud";
+		public readonly string DestroyedSound = "kaboom22.aud";
 		public object Create(Actor self) { return new Building(self); }
 	}
 
@@ -95,7 +96,7 @@ namespace OpenRA.Traits
 			if (e.DamageState == DamageState.Dead)
 			{
 				self.World.WorldActor.traits.Get<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
-				Sound.Play("kaboom22.aud");
+				Sound.Play(Info.DestroyedSound);
 			}
 		}
 

@@ -57,13 +57,13 @@ namespace OpenRA.Traits
 					break;
 				case DamageState.Half:
 					seqName = "damaged-idle";
-					Sound.Play("kaboom1.aud");
+					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
 					break;
 				case DamageState.Quarter:
 					if (damageStates >= 3)
 					{
 						seqName = "critical-idle";
-						Sound.Play("kaboom1.aud");
+						Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
 					}
 					break;
 			}
