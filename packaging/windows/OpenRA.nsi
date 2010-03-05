@@ -1,6 +1,5 @@
 !include "MUI2.nsh"
 !include "ZipDLL.nsh"
-!include "x64.nsh"
 
 Name "OpenRA"
 OutFile "OpenRA.exe"
@@ -94,27 +93,16 @@ Section "-OpenAl" OpenAl
 SectionEnd
 
 Section "-Sdl" SDL
-	IfFileExists $SYSDIR\SDL.dll done installsdl
-	installsdl:
-		SetOutPath "$TEMP"
-		NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
-		!insertmacro ZIPDLL_EXTRACT sdl.zip $SYSDIR SDL.dll
-	done:
+	SetOutPath "$TEMP"
+	NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
+	!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
 SectionEnd
 
 Section "-Freetype" Freetype
-	IfFileExists $SYSDIR\freetype6.dll done installft
-	installft:
-		SetOutPath "$TEMP"
-		NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
-		!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
-		;Epic hack to get around bug in CopyFiles
-		${If} ${RunningX64}
-			CopyFiles "$OUTDIR\bin\freetype6.dll" $WINDIR\SysWOW64
-			Goto done
-		${EndIf}
-		CopyFiles "$OUTDIR\bin\freetype6.dll" $SYSDIR
-	done:
+	SetOutPath "$TEMP"
+	NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
+	!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
+	CopyFiles "$OUTDIR\bin\freetype6.dll" $INSTDIR
 SectionEnd
 
 ;***************************
@@ -146,6 +134,8 @@ Section "Uninstall"
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete $INSTDIR\settings-netplay-*.ini
+	Delete $INSTDIR\freetype6.dll
+	Delete $INSTDIR\SDL.dll
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 SectionEnd
 
