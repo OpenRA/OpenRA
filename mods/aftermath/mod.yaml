@@ -2,12 +2,11 @@
 # Requires classic RA mod
 
 Packages:
-	mods/aftermath/am-sounds.mix:		repack of the bits the aftermath installer hacks into an RA mix
-	expand2.mix
-	hires1.mix
+	mods/aftermath/packages/am-sounds.mix:		repack of the bits the aftermath installer hacks into an RA mix
+	mods/aftermath/packages/expand2.mix
+	mods/aftermath/packages/hires1.mix
 
 LegacyRules:
-	mods/aftermath/aftrmath.ini:	More or less original Aftermath rules file.
 	mods/aftermath/aftermathUnits.ini:	OpenRA patches
 
 Rules:

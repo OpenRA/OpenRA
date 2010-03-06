@@ -32,7 +32,7 @@ STNK:
 		PrimaryWeapon: APTusk
 		Recoil: 2
 	RenderUnitTurreted:
-	Cloak:
+;	Cloak:
 
 TTNK:
 	Inherits: ^Vehicle
@@ -155,3 +155,62 @@ MECH:
 	TakeCover:
 	-AutoTarget:
 
+ANT1:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: AntVoice
+	Unit:
+		HP: 125
+		Armor: heavy
+		Crewed: no
+		ROT: 8
+		Sight: 3
+		Speed: 8
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: Mandible
+	RenderInfantry:
+		Image: ANT1
+	-SquishByTank:
+	-Passenger:
+ 
+ANT2:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: AntVoice
+	Unit:
+		HP: 75
+		Armor: heavy
+		Crewed: no
+		ROT: 6
+		Sight: 3
+		Speed: 8
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: FireballLauncher
+	RenderInfantry:
+		Image: ANT2
+	-SquishByTank:
+	-Passenger:
+ 
+ANT3:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: AntVoice
+	Unit:
+		HP: 85
+		Armor: light
+		Crewed: no
+		ROT: 9
+		Sight: 3
+		Speed: 7
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: TeslaZap
+	RenderInfantry:
+		Image: ANT3
+	-SquishByTank:
+	-Passenger:
