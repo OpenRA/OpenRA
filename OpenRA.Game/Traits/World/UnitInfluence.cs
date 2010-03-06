@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -33,10 +34,12 @@ namespace OpenRA.Traits
 	public class UnitInfluence : ITick
 	{
 		List<Actor>[,] influence;
+		Map map;
 
 		public UnitInfluence( Actor self )
 		{
-			int size = self.World.Map.MapSize;
+			map = self.World.Map;
+			var size = self.World.Map.MapSize;
 			influence = new List<Actor>[size, size];
 			for (int i = 0; i < size; i++)
 				for (int j = 0; j < size; j++)
@@ -88,8 +91,10 @@ namespace OpenRA.Traits
 						throw new InvalidOperationException( "UIM: Sanity check failed B" );
 		}
 
+		Actor[] noActors = { };
 		public IEnumerable<Actor> GetUnitsAt( int2 a )
 		{
+			if (!map.IsInMap(a)) return noActors;
 			return influence[ a.X, a.Y ];
 		}
 

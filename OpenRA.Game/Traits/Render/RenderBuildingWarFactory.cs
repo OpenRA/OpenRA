@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 		public void Tick(Actor self)
 		{
 			if (isOpen && !self.World.WorldActor.traits.Get<UnitInfluence>()
-				.GetUnitsAt(((1/24f) * self.CenterLocation).ToInt2()).Any())
+				.GetUnitsAt(((1f/Game.CellSize) * self.CenterLocation).ToInt2()).Any())
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(GetPrefix(self) + "build-top", () => roof.Play(GetPrefix(self) + "idle-top"));
