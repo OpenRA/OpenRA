@@ -15,3 +15,43 @@ E1:
 	AttackBase:
 		PrimaryWeapon: M16
 	TakeCover:
+	
+E2:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 1
+		Owner: gdi
+		Cost: 160
+		Description: Grenadier
+		LongDesc: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Icon: e2icnh
+	Selectable:
+		Bounds: 12,17,0,-6
+	Unit:
+		HP: 50
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Grenade
+		PrimaryOffset: 0,0,0,-10
+		FireDelay: 15
+	TakeCover:	
+	
+E3:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 2
+		Owner: nod
+		Cost: 300
+		Description: Rocket Soldier
+		LongDesc: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Icon: e3icnh
+	Selectable:
+		Bounds: 12,17,0,-6
+	Unit:
+		HP: 45
+		Speed: 3
+	AttackBase:
+		PrimaryWeapon: Rockets
+		PrimaryOffset: 0,0,0,-10
+		FireDelay: 15
+	TakeCover:	
