@@ -50,6 +50,7 @@ Player:
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: MSLO
 		TechLevel: 12
+		MissileWeapon: atomic
 	SonarPulsePower:
 		Image: sonricon
 		ChargeTime: 10

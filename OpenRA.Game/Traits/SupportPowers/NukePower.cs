@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
@@ -56,8 +57,8 @@ namespace OpenRA.Traits
 					if (Owner != Owner.World.LocalPlayer)
 						Sound.Play("alaunch1.aud");
 
-					// TODO: FIRE ZE MISSILES
-					//w.Add(new NukeLaunch(silo));
+					//FIRE ZE MISSILES
+					w.Add(new NukeLaunch(silo, Info.MissileWeapon, order.TargetLocation));
 				});
 				
 				Game.controller.CancelInputMode();

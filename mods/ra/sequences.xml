@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -862,8 +862,8 @@
   <unit name="brik">
     <sequence name="idle" start="0" length="16" />
     <sequence name="minor-damaged-idle" start="16" length="16" />
-	<sequence name="damaged-idle" start="32" length="16" />
-	<sequence name="critical-idle" start="48" length="16" />
+    <sequence name="damaged-idle" start="32" length="16" />
+    <sequence name="critical-idle" start="48" length="16" />
   </unit>
   <unit name="sbag">
     <sequence name="idle" start="0" length="16" />
@@ -876,7 +876,7 @@
   <unit name="cycl">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
-	<sequence name="critical-idle" start="32" length="16" />
+    <sequence name="critical-idle" start="32" length="16" />
   </unit>
   <unit name="barb">
     <sequence name="idle" start="0" length="16" />
@@ -885,5 +885,11 @@
   <unit name="wood">
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
+  </unit>
+  <unit name="atomicup">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="atomicdn">
+    <sequence name="idle" start="0" length="4" />
   </unit>
 </sequences>
