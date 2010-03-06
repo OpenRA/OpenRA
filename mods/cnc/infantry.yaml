@@ -8,7 +8,7 @@ E1:
 		LongDesc: General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles
 		Icon: e1icnh
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,-6
 	Unit:
 		HP: 50
 		Speed: 4
