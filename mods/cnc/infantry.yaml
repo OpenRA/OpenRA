@@ -1,0 +1,17 @@
+E1:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 1
+		Owner: gdi, nod
+		Cost: 100
+		Description: Minigunner
+		LongDesc: General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e1icnh
+	Selectable:
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 50
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: M16
+	TakeCover:
