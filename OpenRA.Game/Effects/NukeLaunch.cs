@@ -79,11 +79,7 @@ namespace OpenRA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			var weapon = new WeaponInfo();
-			//Epic reflection hack that'll probably break on mono
-			typeof(WeaponInfo).GetField("Damage").SetValue(weapon, 1000);
-			typeof(WeaponInfo).GetField("Projectile").SetValue(weapon, "NukeDown");
-			typeof(WeaponInfo).GetField("Warhead").SetValue(weapon, "Nuke");
+			var weapon = Rules.WeaponInfo["Atomic"];
 			Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, projectileDown, nukeWarhead, silo);
 		}
 
