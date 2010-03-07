@@ -4,7 +4,7 @@
   <unit name="clock">
     <sequence name="idle" start="0" length="*" src="hclock" />
   </unit>
-  <cursor src="mouse">
+  <cursor src="mouse2">
     <sequence name="default" start="0" />
     <sequence name="scroll" start="1" length="8" />
     <sequence name="generic-blocked" start="9" />

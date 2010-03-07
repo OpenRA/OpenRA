@@ -105,7 +105,7 @@ namespace SequenceEditor
 			Doc = new XmlDocument(); 
 			Doc.Load(XmlFilename);
 
-			var tempPal = new Palette(FileSystem.Open(args[2]));
+			var tempPal = new Palette(FileSystem.Open(args[2]), true);
 			Pal = tempPal;
 
 			UnitName = GetTextForm.GetString("Unit to edit?", "e1");

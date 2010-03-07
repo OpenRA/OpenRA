@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats
 			return colors[index];
 		}
 
-		public Palette(Stream s)
+		public Palette(Stream s, bool remapTransparent)
 		{
 			using (BinaryReader reader = new BinaryReader(s))
 			{
@@ -46,9 +46,14 @@ namespace OpenRA.FileFormats
 					colors.Add(Color.FromArgb(r, g, b));
 				}
 			}
+
 			colors[0] = Color.FromArgb(0, 0, 0, 0);
-			colors[3] = Color.FromArgb(178, 0, 0, 0);
-			colors[4] = Color.FromArgb(140, 0, 0, 0);
+
+			if (remapTransparent)
+			{
+				colors[3] = Color.FromArgb(178, 0, 0, 0);
+				colors[4] = Color.FromArgb(140, 0, 0, 0);
+			}
 		}
 
 		public Palette(Palette p, IPaletteRemap r)

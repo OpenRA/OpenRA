@@ -152,6 +152,7 @@ World:
 	PaletteFromFile@cursor:
 		Name: cursor
 		Filename: temperat.pal
+		Transparent: no
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
