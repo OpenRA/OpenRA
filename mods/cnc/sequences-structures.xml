@@ -1,173 +1,160 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
-	<!-- Construction Yard -->
-	<unit name="fact">
-		<sequence name="idle" start="0" />
-		<sequence name="build" start="0" length="24" />
-		<sequence name="damaged-idle" start="25" />
-		<sequence name="damaged-build" start="25" length="24" />
-		<sequence name="critical-idle" start="48" />
-		<sequence name="critical-build" start="25" length="24" />
-		<sequence name="make" start="0" length="32" src="factmake" />
-	</unit>
-	
-	<!-- Power Plant -->
-	<unit name="nuke">
-		<sequence name="idle" start="0" length="4" />
-		<sequence name="damaged-idle" start="4" length="4" />
-		<sequence name="critical-idle" start="8" length="1" />
-		<sequence name="make" start="0" length="*" src="nukemake" />
-	</unit>
-	
-	<!-- Tiberium Refinary -->
-	<unit name="proc">
-		<sequence name="idle" start="0" />
-		<sequence name="active" start="0" length="30" />
-		<sequence name="damaged-idle" start="30" />
-		<sequence name="damaged-active" start="30" length="30" />
-		<sequence name="critical-idle" start="60" />
-		<sequence name="critical-active" start="30" length="30" />
-		<sequence name="make" start="0" length="*" src="procmake" />
-	</unit>
-	
-	<!-- Tiberium Silo -->
-	<unit name="silo">
-		<sequence name="idle" start="0" length="5" />
-		<sequence name="damaged-idle" start="5" length="5" />
-		<sequence name="critical-idle" start="10" length="1" />
-		<sequence name="make" start="0" length="*" src="silomake" />
-	</unit>
-	
-	<!-- Hand of Nod -->
-	<unit name="hand">
-		<sequence name="idle" start="0" length="1" />
-		<sequence name="damaged-idle" start="1" length="1" />
-		<sequence name="critical-idle" start="2" length="1" />
-		<sequence name="make" start="0" length="*" src="handmake" />
-	</unit>
-	
-	<!-- GDI Barracks -->
-	<unit name="pyle">
-		<sequence name="idle" start="0" length="10" />
-		<sequence name="damaged-idle" start="10" length="10" />
-		<sequence name="critical-idle" start="20" length="1" />
-		<sequence name="make" start="0" length="*" src="pylemake" />
-	</unit>
-	
-	<!-- GDI Weapons factor -->
-	<unit name="weap">
-		<sequence name="idle" start="0" />
-		<sequence name="damaged-idle" start="1" />
-		<sequence name="critical-idle" start="2" />
-		<sequence name="build-top" start="0" length="10" src="weap2" />
-		<sequence name="damaged-build-top" start="10" length="10" src="weap2" />
-		<sequence name="critical-build-top" start="10" length="10" src="weap2" />
-		<sequence name="idle-top" start="0" length="1" src="weap2" />
-		<sequence name="damaged-idle-top" start="4" length="1" src="weap2" />
-		<sequence name="critical-idle-top" start="4" length="1" src="weap2" />
-		<sequence name="make" start="0" length="*" src="weapmake" />
-	</unit>
-	
-	<!-- Nod Airfield -->
-	<unit name="afld">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-		<sequence name="critical-idle" start="32" length="1" />
-		<sequence name="make" start="0" length="*" src="afldmake" />
-	</unit>
-	
-	<!-- Communications Center -->
-	<unit name="hq">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-		<sequence name="critical-idle" start="32" />
-		<sequence name="make" start="0" length="*" src="hqmake" />
-	</unit>
-
-	<!-- Advanced Power Plant -->
-	<unit name="nuk2">
-		<sequence name="idle" start="0" length="4" />
-		<sequence name="damaged-idle" start="4" length="4" />
-		<sequence name="critical-idle" start="8" length="1" />
-		<sequence name="make" start="0" length="*" src="nuk2make" />
-	</unit>
-
-	<!-- helipad -->
-	<unit name="hpad">
-		<sequence name="idle" start="0" length="1" />
-		<sequence name="damaged-idle" start="7" length="1" />
-		<sequence name="critical-idle" start="14" length="1" />
-		<sequence name="active" start="1" length="6" />
-		<sequence name="damaged-active" start="8" length="6" />
-		<sequence name="critical-active" start="14" length="1" />
-		<sequence name="make" start="0" length="20" src="hpadmake" />
-	</unit>
-
-	<!-- Repair Facility -->
-	<unit name="fix">
-		<sequence name="idle" start="0" length="1" />
-		<sequence name="damaged-idle" start="7" length="1" />
-		<sequence name="critical-idle" start="14" length="1" />
-		<sequence name="active" start="0" length="7" />
-		<sequence name="damaged-active" start="7" length="7" />
-		<sequence name="critical-active" start="14" length="1" />
-		<sequence name="make" start="0" length="14" src="fixmake" />
-	</unit>
-	
-	<!-- Advanced Communications Center -->
-	<unit name="eye">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-		<sequence name="critical-idle" start="32" />
-		<sequence name="make" start="0" length="*" src="eyemake" />
-	</unit>
-
-	<!-- Temple of Nod -->
-	<unit name="tmpl">
-		<sequence name="idle" start="0" />
-		<sequence name="damaged-idle" start="5" />
-		<sequence name="critical-idle" start="10" />
-		<sequence name="active" start="0" length="5" />
-		<sequence name="damaged-active" start="5" length="5" />
-		<sequence name="critical-active" start="5" length="5" />
-		<sequence name="make" start="0" length="*" src="tmplmake" />
-	</unit>
-	<!-- Obelisk of Light -->
-	<unit name="obli">
-		<sequence name="idle" start="0" length="1" />
-		<sequence name="damaged-idle" start="4" length="1" />
-		<sequence name="critical-idle" start="8" length="1" />
-		<sequence name="active" start="0" length="4" />
-		<sequence name="damaged-active" start="4" length="4" />
-		<sequence name="critical-active" start="4" length="4" />
-		<sequence name="make" start="0" length="13" src="oblimake" />
-	</unit>
-	<!-- Concrete Barrier -->
- 	<unit name="brik">
-    	<sequence name="idle" start="0" length="16" />
-   		<sequence name="minor-damaged-idle" start="16" length="16" />
-		<sequence name="damaged-idle" start="32" length="16" />
-		<sequence name="critical-idle" start="48" length="16" />
-	</unit>
-	<!-- Sandbag Barrier -->
-	<unit name="sbag">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-	</unit>
-	<!-- Chain link Barrier -->
-	<unit name="cycl">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-		<sequence name="critical-idle" start="32" length="16" />
-	</unit>
-	<!-- Barbed wire Barrier -->
-	<unit name="barb">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-	</unit>
-	<!-- Wood Barrier -->
-	<unit name="wood">
-		<sequence name="idle" start="0" length="16" />
-		<sequence name="damaged-idle" start="16" length="16" />
-	</unit>
+  <!-- Construction Yard -->
+  <unit name="fact">
+    <sequence name="build" start="4" length="20" />
+    <sequence name="idle" start="0" length="4" />
+    <sequence name="critical-build" start="28" length="20" />
+    <sequence name="damaged-build" start="28" length="20" />
+    <sequence name="critical-idle" start="48" length="1" />
+    <sequence name="damaged-idle" start="24" length="4" />
+    <sequence name="make" start="0" length="32" src="factmake" />
+  </unit>
+  <!-- Power Plant -->
+  <unit name="nuke">
+    <sequence name="idle" start="0" length="4" />
+    <sequence name="damaged-idle" start="4" length="4" />
+    <sequence name="critical-idle" start="8" length="1" />
+    <sequence name="make" start="0" length="*" src="nukemake" />
+  </unit>
+  <!-- Tiberium Refinary -->
+  <unit name="proc">
+    <sequence name="idle" start="0" />
+    <sequence name="active" start="0" length="30" />
+    <sequence name="damaged-idle" start="30" />
+    <sequence name="damaged-active" start="30" length="30" />
+    <sequence name="critical-idle" start="60" />
+    <sequence name="critical-active" start="30" length="30" />
+    <sequence name="make" start="0" length="*" src="procmake" />
+  </unit>
+  <!-- Tiberium Silo -->
+  <unit name="silo">
+    <sequence name="idle" start="0" length="5" />
+    <sequence name="damaged-idle" start="5" length="5" />
+    <sequence name="critical-idle" start="10" length="1" />
+    <sequence name="make" start="0" length="*" src="silomake" />
+  </unit>
+  <!-- Hand of Nod -->
+  <unit name="hand">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="make" start="0" length="*" src="handmake" />
+  </unit>
+  <!-- GDI Barracks -->
+  <unit name="pyle">
+    <sequence name="idle" start="0" length="10" />
+    <sequence name="damaged-idle" start="10" length="10" />
+    <sequence name="critical-idle" start="20" length="1" />
+    <sequence name="make" start="0" length="*" src="pylemake" />
+  </unit>
+  <!-- GDI Weapons factor -->
+  <unit name="weap">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="1" />
+    <sequence name="critical-idle" start="2" />
+    <sequence name="build-top" start="0" length="10" src="weap2" />
+    <sequence name="damaged-build-top" start="10" length="10" src="weap2" />
+    <sequence name="critical-build-top" start="10" length="10" src="weap2" />
+    <sequence name="idle-top" start="0" length="1" src="weap2" />
+    <sequence name="damaged-idle-top" start="4" length="1" src="weap2" />
+    <sequence name="critical-idle-top" start="4" length="1" src="weap2" />
+    <sequence name="make" start="0" length="*" src="weapmake" />
+  </unit>
+  <!-- Nod Airfield -->
+  <unit name="afld">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="critical-idle" start="32" length="1" />
+    <sequence name="make" start="0" length="*" src="afldmake" />
+  </unit>
+  <!-- Communications Center -->
+  <unit name="hq">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="critical-idle" start="32" />
+    <sequence name="make" start="0" length="*" src="hqmake" />
+  </unit>
+  <!-- Advanced Power Plant -->
+  <unit name="nuk2">
+    <sequence name="idle" start="0" length="4" />
+    <sequence name="damaged-idle" start="4" length="4" />
+    <sequence name="critical-idle" start="8" length="1" />
+    <sequence name="make" start="0" length="*" src="nuk2make" />
+  </unit>
+  <!-- helipad -->
+  <unit name="hpad">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="critical-idle" start="14" length="1" />
+    <sequence name="active" start="1" length="6" />
+    <sequence name="damaged-active" start="8" length="6" />
+    <sequence name="critical-active" start="14" length="1" />
+    <sequence name="make" start="0" length="20" src="hpadmake" />
+  </unit>
+  <!-- Repair Facility -->
+  <unit name="fix">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="7" length="1" />
+    <sequence name="critical-idle" start="14" length="1" />
+    <sequence name="active" start="0" length="7" />
+    <sequence name="damaged-active" start="7" length="7" />
+    <sequence name="critical-active" start="14" length="1" />
+    <sequence name="make" start="0" length="14" src="fixmake" />
+  </unit>
+  <!-- Advanced Communications Center -->
+  <unit name="eye">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="critical-idle" start="32" />
+    <sequence name="make" start="0" length="*" src="eyemake" />
+  </unit>
+  <!-- Temple of Nod -->
+  <unit name="tmpl">
+    <sequence name="idle" start="0" />
+    <sequence name="damaged-idle" start="5" />
+    <sequence name="critical-idle" start="10" />
+    <sequence name="active" start="0" length="5" />
+    <sequence name="damaged-active" start="5" length="5" />
+    <sequence name="critical-active" start="5" length="5" />
+    <sequence name="make" start="0" length="*" src="tmplmake" />
+  </unit>
+  <!-- Obelisk of Light -->
+  <unit name="obli">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="4" length="1" />
+    <sequence name="critical-idle" start="8" length="1" />
+    <sequence name="active" start="0" length="4" />
+    <sequence name="damaged-active" start="4" length="4" />
+    <sequence name="critical-active" start="4" length="4" />
+    <sequence name="make" start="0" length="13" src="oblimake" />
+  </unit>
+  <!-- Concrete Barrier -->
+  <unit name="brik">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="minor-damaged-idle" start="16" length="16" />
+    <sequence name="damaged-idle" start="32" length="16" />
+    <sequence name="critical-idle" start="48" length="16" />
+  </unit>
+  <!-- Sandbag Barrier -->
+  <unit name="sbag">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+  </unit>
+  <!-- Chain link Barrier -->
+  <unit name="cycl">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="critical-idle" start="32" length="16" />
+  </unit>
+  <!-- Barbed wire Barrier -->
+  <unit name="barb">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+  </unit>
+  <!-- Wood Barrier -->
+  <unit name="wood">
+    <sequence name="idle" start="0" length="16" />
+    <sequence name="damaged-idle" start="16" length="16" />
+  </unit>
 </sequences>
