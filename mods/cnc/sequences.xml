@@ -48,6 +48,15 @@
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
   </unit>
+
+<!-- Notes on explosions:
+cnc does not recognize water explosions, so these will cause problems (missing art)
+it also defines the following sets of explosions that we are not using all of: 
+	frag1, frag3 : medium explosions
+	napalm1, napalm2, napalm3 : small, medium, large fire
+	veh-hit1, veh-hit2, veh-hit3
+-->
+
   <unit name="explosion">
     <sequence name="1" start="0" length="4" src="piff" />
     <sequence name="2" start="0" length="8" src="piffpiff" />
@@ -65,9 +74,6 @@
     <sequence name="8" start="0" length="22" src="art-exp1" />
   </unit>
   <unit name="pips">
-	<!-- TODO: Pull these out into their own shp in overrides -->
-    <sequence name="groups" start="8" length="10" />
-
     <sequence name="ready" start="3" length="1" src="hpips" />
     <sequence name="hold" start="4" length="1" src="hpips" />
     <sequence name="pip-empty" start="0" length="1" src="hpips" />
@@ -76,6 +82,7 @@
     <sequence name="pip-gray" start="6" length="1" src="hpips" />
     <sequence name="pip-red" start="7" length="1" src="hpips" />
     <sequence name="tag-primary" start="2" length="1" src="hpips" />
+    <sequence name="groups" start="1" length="10" src="pdigits" />
   </unit>
   <unit name="flagfly">
     <sequence name="idle" start="0" length="14" />
@@ -125,6 +132,5 @@
     <sequence name="idle" start="0" src="wcrate" />
   </unit>
   <unit name="crate-effects">
-    <sequence name="speed" start="0" length="*" src="speed" />
   </unit>
 </sequences>

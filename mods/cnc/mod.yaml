@@ -2,12 +2,9 @@
 
 Folders:
 	./mods/cnc/
-	./mods/ra/packages/
 	./
-
 Packages:
 	mods/cnc/overrides.mix
-# Fully qualify the cnc package names
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
@@ -18,9 +15,6 @@ Packages:
 	mods/cnc/packages/temperat.mix
 	mods/cnc/packages/winter.mix
 	mods/cnc/packages/desert.mix
-# TODO: Obsolete conquer.mix
-	~main.mix
-	conquer.mix
 
 LegacyRules:
 	mods/cnc/minimal.ini:	Minimal rules definitions
