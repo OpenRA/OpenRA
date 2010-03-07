@@ -44,21 +44,33 @@ namespace OpenRA.Traits.Activities
 
 			var unit = self.traits.Get<Unit>();
 
+			var desiredFacing = Util.GetFacing(d, unit.Facing);
+			if (unit.Altitude == CruiseAltitude)
+				Util.TickFacing(ref unit.Facing, desiredFacing, 
+					self.Info.Traits.Get<UnitInfo>().ROT);
+			
 			if (unit.Altitude < CruiseAltitude)
 				++unit.Altitude;
 
-			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			if (unit.Altitude == CruiseAltitude)
-				Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
+			FlyUtil.Fly(self, CruiseAltitude);
+			return this;
+		}
+
+		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
+	}
+
+	public static class FlyUtil
+	{
+		public static void Fly(Actor self, int desiredAltitude )
+		{
+			var unit = self.traits.Get<Unit>();
 			var speed = .2f * Util.GetEffectiveSpeed(self);
 			var angle = unit.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
-			return this;
+			unit.Altitude += Math.Sign(desiredAltitude - unit.Altitude);
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

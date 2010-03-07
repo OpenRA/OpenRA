@@ -73,9 +73,8 @@ namespace OpenRA.Mods.RA
 
 		void FinishedDropping(Actor self)
 		{
-			// this kindof sucks, actually.
 			self.CancelActivity();
-			self.QueueActivity(new Fly(Util.CenterOfCell(self.World.ChooseRandomEdgeCell())));
+			self.QueueActivity(new FlyOffMap(20));
 			self.QueueActivity(new RemoveSelf());
 		}
 	}

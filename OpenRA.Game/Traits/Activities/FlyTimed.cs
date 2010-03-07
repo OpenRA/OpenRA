@@ -22,7 +22,7 @@ using System;
 
 namespace OpenRA.Traits.Activities
 {
-	class FlyTimed : IActivity
+	public class FlyTimed : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		int remainingTicks;
@@ -32,22 +32,30 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (remainingTicks == 0)
-				return NextActivity;
-
-			--remainingTicks;
-
-			var unit = self.traits.Get<Unit>();
-			var speed = .2f * Util.GetEffectiveSpeed(self);
-			var angle = unit.Facing / 128f * Math.PI;
-
-			self.CenterLocation += speed * -float2.FromAngle((float)angle);
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
-
-			unit.Altitude += Math.Sign(targetAltitude - unit.Altitude);
+			if (remainingTicks-- == 0) return NextActivity;
+			FlyUtil.Fly(self, targetAltitude);
 			return this;
 		}
 
 		public void Cancel(Actor self) { remainingTicks = 0; NextActivity = null; }
 	}
+
+	public class FlyOffMap : IActivity
+	{
+		public IActivity NextActivity { get; set; }
+		readonly int targetAltitude;
+		bool isCanceled;
+
+		public FlyOffMap(int targetAltitude) { this.targetAltitude = targetAltitude; }
+		
+		public IActivity Tick(Actor self)
+		{
+			if (isCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
+			FlyUtil.Fly(self, targetAltitude);
+			return this;
+		}
+
+		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
+	}
+
 }
