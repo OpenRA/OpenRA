@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Cnc
 		{
 			var owner = self.Owner;
 			
-			// Start beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
+			// Start and end beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
 			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width+15, self.Location.Y);
-			var endPos = new int2(owner.World.Map.XOffset, self.Location.Y);
+			var endPos = new int2(owner.World.Map.XOffset-15, self.Location.Y);
 			var unloadOffset = new int2(1,1);
 			var exitOffset = new int2(3,1);
 			

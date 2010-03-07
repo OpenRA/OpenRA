@@ -48,7 +48,6 @@
     <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TiberiumRefinery.cs" />
-    <Compile Include="Cloak.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

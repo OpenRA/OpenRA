@@ -32,7 +32,9 @@ STNK:
 		PrimaryWeapon: APTusk
 		Recoil: 2
 	RenderUnitTurreted:
-;	Cloak:
+	Cloak:
+		CloakSound:ironcur9.aud
+		UncloakSound:ironcur9.aud
 
 TTNK:
 	Inherits: ^Vehicle

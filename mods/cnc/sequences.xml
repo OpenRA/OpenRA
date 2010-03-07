@@ -50,8 +50,8 @@
   </unit>
 
 <!-- Notes on explosions:
-cnc does not recognize water explosions, so these will cause problems (missing art)
-it also defines the following sets of explosions that we are not using all of: 
+these are mostly broken now that we don't depend on RA
+cnc mixen also include the following sets of explosions that we are not using all of: 
 	frag1, frag3 : medium explosions
 	napalm1, napalm2, napalm3 : small, medium, large fire
 	veh-hit1, veh-hit2, veh-hit3
