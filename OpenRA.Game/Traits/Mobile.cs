@@ -26,6 +26,8 @@ namespace OpenRA.Traits
 	public class MobileInfo : ITraitInfo
 	{
 		public readonly UnitMovementType MovementType = UnitMovementType.Wheel;
+		public readonly int WaitAverage = 60;
+		public readonly int WaitSpread = 20;
 
 		public object Create(Actor self) { return new Mobile(self); }
 	}

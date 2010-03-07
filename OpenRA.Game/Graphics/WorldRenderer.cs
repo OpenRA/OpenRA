@@ -200,7 +200,7 @@ namespace OpenRA.Graphics
 				}
 			}	
 
-			if (ShowUnitPaths)
+			//if (ShowUnitPaths)
 			{
 				var mobile = selectedUnit.traits.GetOrDefault<Mobile>();
 				if (mobile != null)

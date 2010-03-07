@@ -151,6 +151,9 @@ namespace OpenRA.Traits.Activities
 				throw new InvalidOperationException( "(Move) Sanity check failed" );
 		}
 
+		bool hasWaited;
+		int waitTicksRemaining;
+
 		int2? PopPath( Actor self, Mobile mobile )
 		{
 			if( path.Count == 0 ) return null;
@@ -163,6 +166,16 @@ namespace OpenRA.Traits.Activities
 					return null;
 				}
 
+				if (!hasWaited)
+				{
+					var info = self.Info.Traits.Get<MobileInfo>();
+					waitTicksRemaining = info.WaitAverage + self.World.SharedRandom.Next(-info.WaitSpread, info.WaitSpread);
+					hasWaited = true;
+				}
+
+				if (--waitTicksRemaining >= 0)
+					return null;
+
 				self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
 				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
 
@@ -172,6 +185,7 @@ namespace OpenRA.Traits.Activities
 
 				return null;
 			}
+			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
 			return nextCell;
 		}
