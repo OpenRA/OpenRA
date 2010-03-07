@@ -47,18 +47,13 @@ namespace OpenRA
 
 		public static void AddSmudge(this Map map, int2 targetTile, WarheadInfo warhead)
 		{
-			switch (warhead.Explosion)		/* todo: push the scorch/crater behavior into data */
-			{
-				case 4:
-				case 5:
-					map.AddSmudge(true, targetTile.X, targetTile.Y);
-					break;
-
-				case 3:
-				case 6:
-					map.AddSmudge(false, targetTile.X, targetTile.Y);
-					break;
-			}
+			if (warhead.SmudgeType == SmudgeType.None) return;
+			if (warhead.SmudgeSize[0] == 0 && warhead.SmudgeSize[1] == 0)
+				map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, targetTile.X, targetTile.Y);
+			else
+				foreach (var t in Game.world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
+					if ((t - targetTile).LengthSquared >= warhead.SmudgeSize[1] * warhead.SmudgeSize[1])
+						map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, t.X, t.Y);
 		}
 
 		static int lastSmudge = 0;

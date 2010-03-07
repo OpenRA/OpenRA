@@ -28,6 +28,8 @@ namespace OpenRA.GameRules
 		public readonly bool Wood = false;
 		public readonly bool Ore = false;
 		public readonly int Explosion = 0;
+		public readonly SmudgeType SmudgeType = SmudgeType.None;
+		public readonly int[] SmudgeSize = { 0,0 };
 		public readonly int InfDeath = 0;
 		public readonly string ImpactSound = null;
 		public readonly string WaterImpactSound = null;
@@ -42,5 +44,12 @@ namespace OpenRA.GameRules
 		light = 2,
 		heavy = 3,
 		concrete = 4,
+	}
+
+	public enum SmudgeType
+	{
+		None = 0,
+		Crater = 1,
+		Scorch = 2,
 	}
 }
