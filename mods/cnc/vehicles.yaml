@@ -173,7 +173,9 @@ BIKE:
 	AttackBase:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: -4,0,25,4,0,-25
+		PrimaryLocalOffset: -4,0,25
+		SecondaryWeapon: Rockets
+		SecondaryLocalOffset: 4,0,-25
 	RenderUnit:
 	AutoTarget:
 	
