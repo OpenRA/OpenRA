@@ -438,3 +438,24 @@ GUN:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
 	-RenderBuilding:
+	
+GTWR:
+	Inherits: ^Building
+	Buildable:
+		Icon: gtwricnh
+		TechLevel: 2
+		Prerequisites: pyle
+		Owner: gdi
+		Cost: 400
+		Description: Guard Tower
+		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Building:
+		Power: -15
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	AttackOmni:
+		PrimaryWeapon: HighV
+	AutoTarget:
+	IronCurtainable:

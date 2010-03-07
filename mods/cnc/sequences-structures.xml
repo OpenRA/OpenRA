@@ -164,4 +164,10 @@
     <sequence name="damaged-recoil" start="96" facings="32" />
     <sequence name="make" start="0" length="20" src="gunmake" />
   </unit>
+  <unit name="gtwr">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="make" start="0" length="20" src="gtwrmake" />
+  </unit>
 </sequences>
