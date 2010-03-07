@@ -51,7 +51,7 @@ namespace OpenRA
 
 		public void TypeChar(char c)
 		{
-			if (c == '\b')
+			if (c == '\b' || c == 0x7f)
 			{
 				if (typing.Length > 0)
 					typing = typing.Remove(typing.Length - 1);
