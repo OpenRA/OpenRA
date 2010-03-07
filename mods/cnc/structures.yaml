@@ -413,3 +413,28 @@ BRIK:
 		Armor: none
 	RenderBuildingWall:
 		DamageStates: 4
+		
+GUN:
+	Inherits: ^Building
+	Buildable:
+		Icon: gunicnh
+		TechLevel: 4
+		Prerequisites: hand
+		Owner: nod
+		Cost: 600
+		Description: Turret
+		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Building:
+		Power: -20
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: TurretGun
+	AutoTarget:
+	-RenderBuilding:

@@ -53,5 +53,5 @@ E3:
 	AttackBase:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-10
-		FireDelay: 15
+		FireDelay: 5
 	TakeCover:	
