@@ -25,14 +25,14 @@ namespace OpenRA.Graphics
 	public class Sequence
 	{
 		readonly Sprite[] sprites;
-		readonly int start, length, facings, speed;
+		readonly int start, length, facings, tick;
 
 		public readonly string Name;
 		public int Start { get { return start; } }
 		public int End { get { return start + length; } }
 		public int Length { get { return length; } }
 		public int Facings { get { return facings; } }
-		public int Speed { get { return speed; } }
+		public int Tick { get { return tick; } }
 
 		public Sequence(string unit, XmlElement e)
 		{
@@ -56,10 +56,10 @@ namespace OpenRA.Graphics
 			else
 				facings = 1;
 
-			if (e.HasAttribute("speed"))
-				speed = int.Parse(e.GetAttribute("speed"));
+			if (e.HasAttribute("tick"))
+				tick = int.Parse(e.GetAttribute("tick"));
 			else
-				speed = 40;
+				tick = 40;
 		}
 
 		public Sprite GetSprite( int frame )

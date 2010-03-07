@@ -126,7 +126,7 @@ namespace OpenRA.Graphics
 				while( timeUntilNextFrame <= 0 )
 				{
 					tickFunc();
-					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Speed : 40; // 25 fps == 40 ms
+					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : 40; // 25 fps == 40 ms
 				}
 			}
 		}
