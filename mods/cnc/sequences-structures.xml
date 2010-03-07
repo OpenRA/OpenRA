@@ -3,18 +3,18 @@
   <!-- Construction Yard -->
   <unit name="fact">
     <sequence name="build" start="4" length="20" />
-    <sequence name="idle" start="0" length="4" />
+    <sequence name="idle" start="0" length="4" speed="80"/>
     <sequence name="critical-build" start="28" length="20" />
     <sequence name="damaged-build" start="28" length="20" />
-    <sequence name="critical-idle" start="48" length="1" />
-    <sequence name="damaged-idle" start="24" length="4" />
+    <sequence name="critical-idle" start="48" length="1"/>
+    <sequence name="damaged-idle" start="24" length="4" speed="80"/>
     <sequence name="make" start="0" length="32" src="factmake" />
   </unit>
   <!-- Power Plant -->
   <unit name="nuke">
-    <sequence name="idle" start="0" length="4" />
-    <sequence name="damaged-idle" start="4" length="4" />
-    <sequence name="critical-idle" start="8" length="1" />
+    <sequence name="idle" start="0" length="4" speed="160"/>
+    <sequence name="damaged-idle" start="4" length="4" speed="160"/>
+    <sequence name="critical-idle" start="8" length="1" speed="160"/>
     <sequence name="make" start="0" length="*" src="nukemake" />
   </unit>
   <!-- Tiberium Refinary -->
