@@ -72,6 +72,7 @@
 	Wall:
 	LineBuild:
 	Selectable:
+		Priority: 1
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
