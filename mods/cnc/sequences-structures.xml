@@ -63,22 +63,22 @@
   </unit>
   <!-- Nod Airfield -->
   <unit name="afld">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="idle" start="0" length="16" tick="120"/>
+    <sequence name="damaged-idle" start="16" length="16" tick="120"/>
     <sequence name="critical-idle" start="32" length="1" />
     <sequence name="make" start="0" length="*" src="afldmake" />
   </unit>
   <!-- Communications Center -->
   <unit name="hq">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="idle" start="0" length="16" tick="200"/>
+    <sequence name="damaged-idle" start="16" length="16" tick="200"/>
     <sequence name="critical-idle" start="32" />
     <sequence name="make" start="0" length="*" src="hqmake" />
   </unit>
   <!-- Advanced Power Plant -->
   <unit name="nuk2">
-    <sequence name="idle" start="0" length="4" />
-    <sequence name="damaged-idle" start="4" length="4" />
+    <sequence name="idle" start="0" length="4" tick="400"/>
+    <sequence name="damaged-idle" start="4" length="4" tick="400"/>
     <sequence name="critical-idle" start="8" length="1" />
     <sequence name="make" start="0" length="*" src="nuk2make" />
   </unit>
@@ -104,8 +104,8 @@
   </unit>
   <!-- Advanced Communications Center -->
   <unit name="eye">
-    <sequence name="idle" start="0" length="16" />
-    <sequence name="damaged-idle" start="16" length="16" />
+    <sequence name="idle" start="0" length="16" tick="200"/>
+    <sequence name="damaged-idle" start="16" length="16" tick="200"/>
     <sequence name="critical-idle" start="32" />
     <sequence name="make" start="0" length="*" src="eyemake" />
   </unit>
