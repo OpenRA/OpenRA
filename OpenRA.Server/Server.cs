@@ -364,7 +364,7 @@ namespace OpenRA.Server
 							return true;
 						}
 					}},
-				{ "addmod",
+				{ "mods",
 					s =>
 					{
 						if (GameStarted)
@@ -373,21 +373,9 @@ namespace OpenRA.Server
 							return true;
 						}
 
-						Console.WriteLine("** Added mod: `{0}`", s);
-						try
-						{
-							lobbyInfo.GlobalSettings.Mods = 
-								lobbyInfo.GlobalSettings.Mods.Concat( new[] { s } ).ToArray();
-							SyncLobbyInfo();
-							SendChatTo(conn, "Added mod: " + s );
-							return true;
-						}
-						catch
-						{
-							Console.WriteLine("Adding the mod failed.");
-							SendChatTo( conn, "Adding the mod failed.");
-							return true;
-						}
+						lobbyInfo.GlobalSettings.Mods = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+						SyncLobbyInfo();
+						return true;
 					}},
 			};
 
