@@ -177,7 +177,11 @@ namespace OpenRA
 				var source = 0;
 				Al.alGenSources(1, out source);
 				if (0 != Al.alGetError())
-					throw new InvalidOperationException("failed generating source {0}".F(i));
+				{
+					Log.Write("Failed generating OpenAL source {0}", i);
+					return;
+				}
+					
 				sourcePool.Add(source, false);
 			}
 		}
