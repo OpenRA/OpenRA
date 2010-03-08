@@ -279,7 +279,7 @@ HTNK:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
-		PrimaryWeapon: 120mmAPR
+		PrimaryWeapon: 120mm
 		SecondaryWeapon: MissilePack
 		Recoil: 3
 	RenderUnitTurreted:

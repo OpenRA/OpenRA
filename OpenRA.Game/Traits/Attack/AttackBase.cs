@@ -182,7 +182,8 @@ namespace OpenRA.Traits
 				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
 				{
 					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
-						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : unit.Facing);
+						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : 
+						unit != null ? unit.Facing : Util.GetFacing( thisTarget.CenterLocation - self.CenterLocation, 0 ));
 	
 					self.World.Add(new Missile(weapon, self.Owner, self,
 						firePos, thisTarget, srcAltitude, fireFacing));
