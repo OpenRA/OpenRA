@@ -56,10 +56,6 @@ namespace OpenRA.Traits.Activities
 			return this;
 		}
 
-		public void Cancel(Actor self)
-		{
-			// Cancel can't happen between this being moved to the head of the list, and it being Ticked.
-			throw new InvalidOperationException("UndeployMcvAction: Cancel() should never occur.");
-		}
+		public void Cancel(Actor self) {}
 	}
 }
