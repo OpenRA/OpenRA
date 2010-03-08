@@ -28,6 +28,8 @@ using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Traits;
 
+using XRandom = OpenRA.Thirdparty.Random;
+
 namespace OpenRA
 {
 	public class World
@@ -36,8 +38,8 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 
-		public Random SharedRandom = new Random(0);	// synced
-		public Random CosmeticRandom = new Random();	// not synced
+		public XRandom SharedRandom = new XRandom(0);	// synced
+		public XRandom CosmeticRandom = new XRandom();	// not synced
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
