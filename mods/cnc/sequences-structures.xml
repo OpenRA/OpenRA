@@ -170,4 +170,10 @@
     <sequence name="critical-idle" start="2" length="1" />
     <sequence name="make" start="0" length="20" src="gtwrmake" />
   </unit>
+  <unit name="atwr">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="make" start="0" length="14" src="atwrmake" />
+  </unit>
 </sequences>
