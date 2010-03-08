@@ -446,16 +446,36 @@ GTWR:
 		TechLevel: 2
 		Prerequisites: pyle
 		Owner: gdi
-		Cost: 400
+		Cost: 500
 		Description: Guard Tower
 		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
-		Power: -15
+		Power: -10
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 5
+		Sight: 3
 	AttackOmni:
 		PrimaryWeapon: HighV
 	AutoTarget:
-	IronCurtainable:
+	
+ATWR:
+	Inherits: ^Building
+	Buildable:
+		Icon: atwricnh
+		TechLevel: 4
+		Prerequisites: hq
+		Owner: gdi
+		Cost: 1000
+		Description: Advanced Guard Tower
+		LongDesc: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
+	Building:
+		Power: -20
+		HP: 600
+		Armor: light
+		Crewed: yes
+		Sight: 4
+	AttackOmni:
+		PrimaryWeapon: Tomahawk
+		SecondaryWeapon: Tomahawk
+	AutoTarget:
