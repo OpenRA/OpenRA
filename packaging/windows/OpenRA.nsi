@@ -27,6 +27,15 @@ SetCompressor lzma
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\..\COPYING"
 !insertmacro MUI_PAGE_DIRECTORY
+
+!define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\OpenRA"
+!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "OpenRA"
+
+Var StartMenuFolder
+!insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 ;!insertmacro MUI_PAGE_FINISH
@@ -61,9 +70,11 @@ Section "Client" Client
 	File "cg.dll"
 	File "cgGL.dll"
 	
-	CreateDirectory "$SMPROGRAMS\OpenRA"
-	CreateShortCut "$SMPROGRAMS\OpenRA\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
-		"$OUTDIR\OpenRA.ico" "" "" "" "OpenRA Client"
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
+			"$OUTDIR\OpenRA.ico" "" "" "" "OpenRA Client"
+	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\shaders"
 	File /r "..\..\shaders\*.fx"
@@ -75,10 +86,11 @@ SectionGroup /e "Mods"
 		File /r "..\..\mods\ra\*.*"
 		MessageBox MB_YESNO "Setup will now download and install the Red Alert packages.$\n\
 			The size of the download will be approximately 7MB in size.$\n\
-			If you do not wish to download them at this time, you can find instructions on how to\
+			If you do not wish to download them at this time, you can find instructions on how to \
 			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
 			Continue?" IDYES download IDNO done
 		download:
+			AddSize 10137
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
 			ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
@@ -91,10 +103,11 @@ SectionGroup /e "Mods"
 		
 		MessageBox MB_YESNO "Setup will now download and install the Command and Conquer packages.$\n\
 			The size of the download will be approximately 6MB in size.$\n\
-			If you do not wish to download them at this time, you can find instructions on how to\
+			If you do not wish to download them at this time, you can find instructions on how to \
 			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
 			Continue?" IDYES download IDNO done
 		download:
+			AddSize 9431
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
 			ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
@@ -114,14 +127,18 @@ SectionGroupEnd
 Section "Server" Server
 	SetOutPath "$INSTDIR"
 	File "..\..\OpenRA.Server\bin\Debug\OpenRA.Server.exe"
-	CreateShortCut "$SMPROGRAMS\OpenRA\OpenRA Server.lnk" "$OUTDIR\OpenRA.Server.exe" "" \
-		"" "" "" "" "OpenRA Server"
+	
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Server.lnk" "$OUTDIR\OpenRA.Server.exe" "" \
+			"" "" "" "" "OpenRA Server"
+	!insertmacro MUI_STARTMENU_WRITE_END	
 SectionEnd
 
 ;***************************
 ;Dependency Sections
 ;***************************
 Section "-OpenAl" OpenAl
+	AddSize 768
 	IfFileExists $SYSDIR\OpenAL32.dll done installal
 	installal:
 		SetOutPath "$TEMP"
@@ -132,12 +149,14 @@ Section "-OpenAl" OpenAl
 SectionEnd
 
 Section "-Sdl" SDL
+	AddSize 317
 	SetOutPath "$TEMP"
 	NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
 	!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
 SectionEnd
 
 Section "-Freetype" Freetype
+	AddSize 583
 	SetOutPath "$TEMP"
 	NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
 	!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
@@ -160,8 +179,11 @@ Section "-Uninstaller"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://open-ra.org"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoModify" "1"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoRepair" "1"
-	CreateShortCut "$SMPROGRAMS\OpenRA\Uninstall.lnk" "$INSTDIR\uninstaller.exe" "" \
-		"" "" "" "" "Uninstall OpenRA"
+	
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\uninstaller.exe" "" \
+			"" "" "" "" "Uninstall OpenRA"
+	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
 Section "Uninstall"
@@ -180,8 +202,16 @@ Section "Uninstall"
 	Delete $INSTDIR\settings-netplay-*.ini
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL.dll
+	Delete $INSTDIR\cg.dll
+	Delete $INSTDIR\cgGL.dll
+	Delete $INSTDIR\zlib1.dll
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
-	RMDir /r $SMPROGRAMS\OpenRA
+	Delete $INSTDIR\uninstaller.exe
+	RMDir $INSTDIR
+	
+	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
+	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
+	DeleteRegKey HKCU "Software\OpenRA"
 SectionEnd
 
 ;***************************
