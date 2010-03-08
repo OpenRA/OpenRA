@@ -58,6 +58,13 @@ Section "Client" Client
 	
 	File /r "..\..\thirdparty\Tao\*.dll"
 	
+	File "cg.dll"
+	File "cgGL.dll"
+	
+	CreateDirectory "$SMPROGRAMS\OpenRA"
+	CreateShortCut "$SMPROGRAMS\OpenRA\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
+		"$OUTDIR\OpenRA.ico" "" "" "" "OpenRA Client"
+	
 	SetOutPath "$INSTDIR\shaders"
 	File /r "..\..\shaders\*.fx"
 SectionEnd
@@ -66,20 +73,33 @@ SectionGroup /e "Mods"
 	Section "Red Alert" RA
 		SetOutPath "$INSTDIR\mods\ra"
 		File /r "..\..\mods\ra\*.*"
-		
-		SetOutPath "$OUTDIR\packages"
-		NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
-		ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
-		Delete ra-packages.zip
+		MessageBox MB_YESNO "Setup will now download and install the Red Alert packages.$\n\
+			The size of the download will be approximately 7MB in size.$\n\
+			If you do not wish to download them at this time, you can find instructions on how to\
+			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
+			Continue?" IDYES download IDNO done
+		download:
+			SetOutPath "$OUTDIR\packages"
+			NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
+			ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
+			Delete ra-packages.zip
+		done:
 	SectionEnd
 	Section "Command & Conquer" CNC
 		SetOutPath "$INSTDIR\mods\cnc"
 		File /r "..\..\mods\cnc\*.*"
 		
-		SetOutPath "$OUTDIR\packages"
-		NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
-		ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
-		Delete cnc-packages.zip
+		MessageBox MB_YESNO "Setup will now download and install the Command and Conquer packages.$\n\
+			The size of the download will be approximately 6MB in size.$\n\
+			If you do not wish to download them at this time, you can find instructions on how to\
+			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
+			Continue?" IDYES download IDNO done
+		download:
+			SetOutPath "$OUTDIR\packages"
+			NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
+			ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
+			Delete cnc-packages.zip
+		done:
 	SectionEnd
 	Section "Red Alert: Aftermath" Aftermath
 		SetOutPath "$INSTDIR\mods\aftermath"
@@ -94,6 +114,8 @@ SectionGroupEnd
 Section "Server" Server
 	SetOutPath "$INSTDIR"
 	File "..\..\OpenRA.Server\bin\Debug\OpenRA.Server.exe"
+	CreateShortCut "$SMPROGRAMS\OpenRA\OpenRA Server.lnk" "$OUTDIR\OpenRA.Server.exe" "" \
+		"" "" "" "" "OpenRA Server"
 SectionEnd
 
 ;***************************
@@ -120,6 +142,9 @@ Section "-Freetype" Freetype
 	NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
 	!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
 	CopyFiles "$OUTDIR\bin\freetype6.dll" $INSTDIR
+	NSISdl::download http://www.zlib.net/zlib123-dll.zip zlib.zip
+	!insertmacro ZIPDLL_EXTRACT zlib.zip $OUTDIR zlib1.dll
+	CopyFiles "$OUTDIR\zlib1.dll" $INSTDIR
 SectionEnd
 
 ;***************************
@@ -135,6 +160,8 @@ Section "-Uninstaller"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://open-ra.org"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoModify" "1"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoRepair" "1"
+	CreateShortCut "$SMPROGRAMS\OpenRA\Uninstall.lnk" "$INSTDIR\uninstaller.exe" "" \
+		"" "" "" "" "Uninstall OpenRA"
 SectionEnd
 
 Section "Uninstall"
@@ -154,8 +181,8 @@ Section "Uninstall"
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL.dll
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+	RMDir /r $SMPROGRAMS\OpenRA
 SectionEnd
-
 
 ;***************************
 ;Section Descriptions
@@ -199,8 +226,8 @@ Function .onSelChange
 		SectionSetFlags ${RA_NG} ${SF_RO}
 		Goto done
 	selected:
-		SectionSetFlags ${Aftermath} ${SF_SELECTED}
-		SectionSetFlags ${RA_NG} ${SF_SELECTED}
+		SectionSetFlags ${Aftermath} 0
+		SectionSetFlags ${RA_NG} 0
 		Goto done
 
 	done:
