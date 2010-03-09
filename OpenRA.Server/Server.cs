@@ -27,6 +27,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using OpenRA.FileFormats;
+using System.Threading;
 
 namespace OpenRA.Server
 {
@@ -38,16 +39,17 @@ namespace OpenRA.Server
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo;
 		static bool GameStarted = false;
-		static string[] defaultMods = new string[] { "ra" };
+		static string[] initialMods;
 
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		public static int Main(string[] args)
+		public static int ServerMain(string[] mods, AutoResetEvent e)
 		{
-			if (args.Length > 0) defaultMods = args;
+			initialMods = mods;
+
 			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = defaultMods;
+			lobbyInfo.GlobalSettings.Mods = mods;
 
 			Console.WriteLine("Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
@@ -63,6 +65,8 @@ namespace OpenRA.Server
 				Console.WriteLine("Server failed to start.");
 				return 1;
 			}
+
+			e.Set();	// we're done starting up
 			
 			for (; ; )
 			{
@@ -510,7 +514,7 @@ namespace OpenRA.Server
 			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = defaultMods;
+			lobbyInfo.GlobalSettings.Mods = initialMods;
 			GameStarted = false;
 		}
 
@@ -536,6 +540,27 @@ namespace OpenRA.Server
 
 			DispatchOrders(null, 0,
 				new ServerOrder("SyncInfo", clientData.WriteToString()).Serialize());
+		}
+	}
+
+	// temporary threaded inproc server wrapper.
+	public static class InprocServer
+	{
+		static Thread t;
+
+		public static void Start( string[] mods )
+		{
+			var e = new AutoResetEvent(false);
+			t = new Thread(() => Server.ServerMain(mods, e)) { IsBackground = true };
+
+			t.Start();
+			e.WaitOne();	// when the event is signaled, the server is finished initializing
+		}
+
+		public static void Stop()
+		{
+			if (t != null)
+				t.Abort();
 		}
 	}
 }

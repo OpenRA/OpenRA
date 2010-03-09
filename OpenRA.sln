@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.FileFormats", "OpenRA.FileFormats\OpenRA.FileFormats.csproj", "{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
+	ProjectSection(ProjectDependencies) = postProject
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817} = {76F621A1-3D8E-4A99-9F7E-B071EB657817}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceEditor", "SequenceEditor\SequenceEditor.csproj", "{230F65CE-A6DE-4235-8B38-13A3D606C7F7}"
 EndProject

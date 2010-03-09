@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
@@ -30,9 +32,7 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Diagnostics;
+using OpenRA.Server;
 
 namespace OpenRA
 {
@@ -56,7 +56,7 @@ namespace OpenRA
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
 		
-		internal static Process Server;
+		
 
 		public static void LoadModPackages(Manifest manifest)
 		{
@@ -151,15 +151,13 @@ namespace OpenRA
 		
 		internal static void CreateServer()
 		{
-			Server = new Process();
-			Server.StartInfo.FileName = "OpenRA.Server.exe";
-            Server.StartInfo.Arguments = string.Join(" ",Game.LobbyInfo.GlobalSettings.Mods);
-            Server.Start();
+			// todo: LobbyInfo is the wrong place for this.
+			InprocServer.Start(Game.LobbyInfo.GlobalSettings.Mods);
 		}
 		
 		internal static void CloseServer()
 		{
-			Server.Kill();	
+			InprocServer.Stop();
 		}
 		
 		static int lastTime = Environment.TickCount;
@@ -441,9 +439,6 @@ namespace OpenRA
 
 		public static void Exit()
 		{
-			if (Server != null)
-				CloseServer();
-			
 			quit = true;
 		}
 	}
