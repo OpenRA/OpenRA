@@ -3,7 +3,6 @@ title=OpenRA
 size=70m
 dmgName=OpenRA.dmg
 
-mv openra_server ${source}
 mv OpenRA.app ${source}
 
 hdiutil create -srcfolder "${source}" -volname "${title}" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size ${size} temp.dmg
@@ -23,7 +22,6 @@ echo '
            set background picture of theViewOptions to file ".background:bg.png"
            make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
            set position of item "OpenRA.app" of container window to {100, 90}
-	       set position of item "openra_server" of container window to {100, 210}
            set position of item "Applications" of container window to {375, 150}
 		   close
 		   open
@@ -39,4 +37,3 @@ hdiutil detach ${device}
 hdiutil convert "./temp.dmg" -format UDZO -imagekey zlib-level=9 -o "${dmgName}"
 rm -f ./temp.dmg
 rm -rf ${source}OpenRA.app
-rm -f ${source}openra_server
