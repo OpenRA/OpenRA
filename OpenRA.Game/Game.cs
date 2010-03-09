@@ -333,15 +333,6 @@ namespace OpenRA
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
-		public static void HandleKeyDown( KeyEventArgs e )
-		{
-			//int sync = Game.world.SyncHash();
-
-
-			//if( sync != Game.world.SyncHash() )
-			//    throw new InvalidOperationException( "Desync in OnKeyDown" );
-		}
-
 		public static bool IsHost
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
