@@ -33,6 +33,7 @@ using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
 using OpenRA.Server;
+using System.Net;
 
 namespace OpenRA
 {
@@ -153,6 +154,7 @@ namespace OpenRA
 		{
 			// todo: LobbyInfo is the wrong place for this.
 			InprocServer.Start(Game.LobbyInfo.GlobalSettings.Mods);
+			JoinServer(IPAddress.Loopback.ToString(), 1234);
 		}
 		
 		internal static void CloseServer()
