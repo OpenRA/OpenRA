@@ -31,6 +31,12 @@ namespace OpenRA
 		public static void DoImpact(int2 loc, int2 visualLoc,
 			WeaponInfo weapon, ProjectileInfo projectile, WarheadInfo warhead, Actor firedBy)
 		{
+			DoImpact(loc, visualLoc, weapon, projectile, warhead, firedBy, false);
+		}
+
+		public static void DoImpact(int2 loc, int2 visualLoc,
+			WeaponInfo weapon, ProjectileInfo projectile, WarheadInfo warhead, Actor firedBy, bool nukeDamage)
+		{
 			var world = firedBy.World;
 
 			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
@@ -62,6 +68,17 @@ namespace OpenRA
 			foreach (var victim in hitActors)
 				victim.InflictDamage(firedBy, 
 					(int)GetDamageToInflict(victim, loc, weapon, warhead, firepowerModifier), warhead);
+
+			if (!nukeDamage) return;
+			foreach (var t in world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
+			{
+				var x = Util.CenterOfCell(t);
+				foreach (var unit in world.FindUnits(x, x))
+				{
+					unit.InflictDamage(firedBy,
+						(int)(weapon.Damage * warhead.EffectivenessAgainst(unit.Info.Traits.Get<OwnedActorInfo>().Armor)) / 4, warhead);
+				}
+			}
 		}
 
 		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead, float modifier)

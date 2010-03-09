@@ -79,7 +79,9 @@ namespace OpenRA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, Rules.ProjectileInfo[weapon.Projectile], Rules.WarheadInfo[weapon.Warhead], silo);
+			var warhead = Rules.WarheadInfo[weapon.Warhead];
+			Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, Rules.ProjectileInfo[weapon.Projectile], warhead, silo, true);
+			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 
 		public IEnumerable<Renderable> Render()
