@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -29,6 +29,7 @@ namespace OpenRA.Network
 {
 	enum ConnectionState
 	{
+		PreConnecting,
 		NotConnected,
 		Connecting,
 		Connected,
@@ -58,7 +59,7 @@ namespace OpenRA.Network
 
 		public virtual ConnectionState ConnectionState
 		{
-			get { return ConnectionState.Connected; }
+			get { return ConnectionState.PreConnecting; }
 		}
 
 		public virtual void Send( byte[] packet )

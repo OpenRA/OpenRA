@@ -125,18 +125,20 @@ namespace OpenRA
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
 			Game.controller = controller;
-
+			
 			ChangeMap(mapName);
 
 			if (Settings.Replay != "")
 				throw new NotImplementedException();
 			else
 			{
-				var connection = (string.IsNullOrEmpty(Settings.NetworkHost))
-					? new EchoConnection()
-					: new NetworkConnection( Settings.NetworkHost, Settings.NetworkPort );
-				orderManager = new OrderManager(connection, "replay.rep");
+				orderManager = new OrderManager(new EchoConnection());
 			}
+		}
+		
+		internal static void JoinServer(string host, int port)
+		{
+			orderManager = new OrderManager(new NetworkConnection( host, port ), "replay.rep");
 		}
 
 		static int lastTime = Environment.TickCount;

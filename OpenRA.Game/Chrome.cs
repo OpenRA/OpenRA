@@ -411,6 +411,35 @@ namespace OpenRA
 			
 		}
 
+		public void DrawMainMenu( World world )
+		{
+			buttons.Clear();
+
+			var w = 250;
+			var h = 200;
+			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
+			DrawDialogBackground(r, "dialog");
+			DrawCentered("OpenRA Main Menu", new int2(r.Left + w / 2, r.Top + 20), Color.White);
+			
+			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Server",
+				_ =>
+				{
+					Game.JoinServer("localhost", 1234);
+				});
+			
+			AddUiButton(new int2(r.Left + w/2, r.Top + 105), "Create Server",
+				_ =>
+				{
+					
+				});
+			
+			AddUiButton(new int2(r.Left + w/2, r.Top + 140), "Quit",
+				_ =>
+				{
+					Game.Exit();
+				});
+		}
+		
 		public void DrawLobby( World world )
 		{
 			buttons.Clear();
