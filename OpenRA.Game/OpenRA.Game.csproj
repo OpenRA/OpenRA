@@ -102,6 +102,10 @@
     <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="Selection.cs" />
+    <Compile Include="Server\Connection.cs" />
+    <Compile Include="Server\Exts.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Shroud.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
@@ -276,10 +280,6 @@
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Server\OpenRA.Server.csproj">
-      <Project>{76F621A1-3D8E-4A99-9F7E-B071EB657817}</Project>
-      <Name>OpenRA.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
