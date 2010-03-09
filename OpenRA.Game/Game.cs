@@ -32,6 +32,7 @@ using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Diagnostics;
 
 namespace OpenRA
 {
@@ -54,6 +55,8 @@ namespace OpenRA
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
+		
+		internal static Process Server;
 
 		public static void LoadModPackages(Manifest manifest)
 		{
@@ -132,7 +135,7 @@ namespace OpenRA
 				throw new NotImplementedException();
 			else
 			{
-				orderManager = new OrderManager(new EchoConnection());
+				JoinLocal();
 			}
 		}
 		
@@ -140,7 +143,25 @@ namespace OpenRA
 		{
 			orderManager = new OrderManager(new NetworkConnection( host, port ), "replay.rep");
 		}
-
+		
+		internal static void JoinLocal()
+		{
+			orderManager = new OrderManager(new EchoConnection());
+		}
+		
+		internal static void CreateServer()
+		{
+			Server = new Process();
+			Server.StartInfo.FileName = "OpenRA.Server.exe";
+            Server.StartInfo.Arguments = string.Join(" ",Game.LobbyInfo.GlobalSettings.Mods);
+            Server.Start();
+		}
+		
+		internal static void CloseServer()
+		{
+			Server.Kill();	
+		}
+		
 		static int lastTime = Environment.TickCount;
 
 		public static void ResetTimer()
@@ -420,6 +441,9 @@ namespace OpenRA
 
 		public static void Exit()
 		{
+			if (Server != null)
+				CloseServer();
+			
 			quit = true;
 		}
 	}

@@ -231,14 +231,30 @@ namespace OpenRA
 
 		public void DrawDialog(string text)
 		{
-			var w = renderer.BoldFont.Measure(text).X + 120;
-			var h = 100;
+			DrawDialog(text, null, _ => { }, null, _ => { });
+		}
+		
+		public void DrawDialog(string text, string button1String, Action<bool> button1Action, string button2String, Action<bool> button2Action)
+		{
+			var w = Math.Max(renderer.BoldFont.Measure(text).X + 120, 400);
+			var h = (button1String == null) ? 100 : 140;
 			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
 			DrawDialogBackground(r, "dialog");
-			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - 8), Color.White);
+			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - ((button1String == null) ? 8 : 28)), Color.White);
 
 			// don't allow clicks through the dialog
 			AddButton(r, _ => { });
+			
+			if (button1String != null)
+			{
+				AddUiButton(new int2(r.Right - 300, r.Bottom - 40),button1String, button1Action);
+			}
+			
+			if (button2String != null)
+			{
+				AddUiButton(new int2(r.Right - 100, r.Bottom - 40),button2String, button2Action);
+			}
+				
 		}
 
 		class MapInfo
@@ -421,16 +437,16 @@ namespace OpenRA
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Main Menu", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			
-			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Server",
+			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Game",
 				_ =>
 				{
 					Game.JoinServer("localhost", 1234);
 				});
 			
-			AddUiButton(new int2(r.Left + w/2, r.Top + 105), "Create Server",
+			AddUiButton(new int2(r.Left + w/2, r.Top + 105), "Create Game",
 				_ =>
 				{
-					
+					Game.CreateServer();
 				});
 			
 			AddUiButton(new int2(r.Left + w/2, r.Top + 140), "Quit",

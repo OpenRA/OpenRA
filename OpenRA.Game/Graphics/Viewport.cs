@@ -92,7 +92,8 @@ namespace OpenRA.Graphics
 						Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 						break;
 					case ConnectionState.NotConnected:
-						Game.chrome.DrawDialog("Connection failed.");
+						// Todo: Hook these up
+						Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
 						break;
 					case ConnectionState.Connected:
 						Game.chrome.DrawLobby( world );
