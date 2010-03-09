@@ -7,7 +7,7 @@
 GAME_FILES="OpenRA shaders  maps packaging/osx/settings.ini FreeSans.ttf FreeSansBold.ttf"
 
 # List of mods to include
-MODS="ra"
+MODS="ra cnc"
 
 # Files/directories to include
 MODS_INCLUDE_FILES="find mods/$m ! -name \"*.mdb\" ! -name \"packages\""
