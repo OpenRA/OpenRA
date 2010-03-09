@@ -140,4 +140,56 @@ namespace OpenRA.Network
 			ms.WriteTo( socket.GetStream() );
 		}
 	}
+
+	class ReplayConnection : IConnection
+	{
+		uint nextFrame = 1;
+		FileStream replayStream;
+
+		public ReplayConnection( string replayFilename )
+		{
+			replayStream = File.OpenRead( replayFilename );
+		}
+
+		public int LocalClientId
+		{
+			get { return 0; }
+		}
+
+		public ConnectionState ConnectionState
+		{
+			get { return ConnectionState.Connected; }
+		}
+
+		public void Send( byte[] packet )
+		{
+			// do nothing; ignore locally generated orders
+		}
+
+		public void Receive( Action<int, byte[]> packetFn )
+		{
+			if( replayStream != null )
+			{
+				var reader = new BinaryReader( replayStream );
+				while( replayStream.Position < replayStream.Length )
+				{
+					var client = reader.ReadInt32();
+					var packetLen = reader.ReadInt32();
+					var packet = reader.ReadBytes( packetLen );
+					packetFn( client, packet );
+
+					if( !Game.orderManager.GameStarted )
+						return;
+				}
+				replayStream = null;
+			}
+			else
+			{
+				var ms = new MemoryStream();
+				ms.Write( BitConverter.GetBytes( nextFrame++ ) );
+				ms.Write( new byte[] { 0xEF } );
+				packetFn( 0, ms.ToArray() );
+			}
+		}
+	}
 }

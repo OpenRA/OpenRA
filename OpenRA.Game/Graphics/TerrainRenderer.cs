@@ -98,6 +98,8 @@ namespace OpenRA.Graphics
 					firstRow = r.Bottom - map.YOffset;
 			}
 
+			if( lastRow < firstRow ) lastRow = firstRow;
+
 			renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
 			renderer.SpriteShader.Render(() =>
 				renderer.DrawBatch(vertexBuffer, indexBuffer,

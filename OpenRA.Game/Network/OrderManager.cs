@@ -40,6 +40,8 @@ namespace OpenRA.Network
 		List<int> readyForFrames = new List<int>();
 		List<Order> localOrders = new List<Order>();
 
+		FileStream replaySaveFile;
+
 		public void StartGame()
 		{
 			if (GameStarted) return;
@@ -59,6 +61,7 @@ namespace OpenRA.Network
 		public OrderManager( IConnection conn, string replayFilename )
 			: this( conn )
 		{
+			replaySaveFile = File.Create( replayFilename );
 		}
 
 		public void IssueOrders( Order[] orders )
@@ -96,8 +99,11 @@ namespace OpenRA.Network
 				} );
 
 			foreach( var p in immediatePackets )
+			{
 				foreach( var o in p.Second.ToOrderList( world ) )
 					UnitOrders.ProcessOrder( world, p.First, o );
+				WriteImmediateToReplay( immediatePackets );
+			}
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -150,9 +156,38 @@ namespace OpenRA.Network
 
 			var ss = sync.SerializeSync( FrameNumber );
 			Connection.Send( ss );
+			WriteToReplay( frameData, ss );
+
 			CheckSync( ss );
 
 			++frameNumber;
+		}
+
+		void WriteToReplay( Dictionary<int, byte[]> frameData, byte[] syncData )
+		{
+			if( replaySaveFile == null ) return;
+
+			foreach( var f in frameData )
+			{
+				replaySaveFile.Write( BitConverter.GetBytes( f.Key ) );
+				replaySaveFile.Write( BitConverter.GetBytes( f.Value.Length ) );
+				replaySaveFile.Write( f.Value );
+			}
+			replaySaveFile.Write( BitConverter.GetBytes( (int)0 ) );
+			replaySaveFile.Write( BitConverter.GetBytes( (int)syncData.Length ) );
+			replaySaveFile.Write( syncData );
+		}
+
+		void WriteImmediateToReplay( List<Pair<int, byte[]>> immediatePackets )
+		{
+			if( replaySaveFile == null ) return;
+
+			foreach( var i in immediatePackets )
+			{
+				replaySaveFile.Write( BitConverter.GetBytes( i.First ) );
+				replaySaveFile.Write( BitConverter.GetBytes( i.Second.Length ) );
+				replaySaveFile.Write( i.Second );
+			}
 		}
 	}
 }

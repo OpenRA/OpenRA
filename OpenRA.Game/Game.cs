@@ -132,8 +132,11 @@ namespace OpenRA
 			
 			ChangeMap(mapName);
 
-			if (Settings.Replay != "")
-				throw new NotImplementedException();
+			if( Settings.Replay != "" )
+			{
+				var connection = new ReplayConnection( Settings.Replay );
+				orderManager = new OrderManager( connection );
+			}
 			else
 			{
 				JoinLocal();
@@ -266,13 +269,14 @@ namespace OpenRA
 
 		public static void StartGame()
 		{
+			if( Game.orderManager.GameStarted ) return;
 			Game.chat.Reset();
 			
 			var taken = LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
 				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
 
 			var available = world.Map.SpawnPoints.Except(taken).ToList();
-				
+
 			foreach (var client in LobbyInfo.Clients)
 			{
 				var sp = (client.SpawnPoint == 0) 
