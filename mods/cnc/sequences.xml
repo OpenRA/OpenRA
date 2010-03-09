@@ -73,7 +73,7 @@
     <sequence name="pip-gray" start="6" length="1" src="hpips" />
     <sequence name="pip-red" start="7" length="1" src="hpips" />
     <sequence name="tag-primary" start="2" length="1" src="hpips" />
-    <sequence name="groups" start="1" length="10" src="pdigits" />
+    <sequence name="groups" start="0" length="10" src="pdigits" />
   </unit>
   <unit name="flagfly">
     <sequence name="idle" start="0" length="14" />
