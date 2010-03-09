@@ -440,7 +440,7 @@ namespace OpenRA
 			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Game",
 				_ =>
 				{
-					Game.JoinServer("localhost", 1234);
+					Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				});
 			
 			AddUiButton(new int2(r.Left + w/2, r.Top + 105), "Create Game",
