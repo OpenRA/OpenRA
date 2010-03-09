@@ -105,6 +105,14 @@ namespace OpenRA.Server
 			var newConn = new Connection { socket = listener.AcceptSocket() };
 			try
 			{
+				if (GameStarted)
+				{
+					Console.WriteLine("Rejected connection from {0}; game is already started.", 
+						newConn.socket.RemoteEndPoint);
+					newConn.socket.Close();
+					return;
+				}
+
 				newConn.socket.Blocking = false;
 				newConn.socket.NoDelay = true;
 
