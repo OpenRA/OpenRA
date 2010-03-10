@@ -40,3 +40,5 @@ settings.ini
 #monodevelop
 *.pidb
 *.userprefs
+
+packaging/windows/*.exe

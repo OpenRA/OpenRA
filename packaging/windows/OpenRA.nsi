@@ -65,7 +65,7 @@ Section "Client" Client
 	
 	File "..\..\OpenRA.Game\OpenRA.ico"
 	
-	File /r "..\..\thirdparty\Tao\*.dll"
+	File "..\..\thirdparty\Tao\*.dll"
 	
 	File "cg.dll"
 	File "cgGL.dll"
@@ -77,13 +77,13 @@ Section "Client" Client
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\shaders"
-	File /r "..\..\shaders\*.fx"
+	File "..\..\shaders\*.fx"
 SectionEnd
 
 SectionGroup /e "Mods"
 	Section "Red Alert" RA
 		SetOutPath "$INSTDIR\mods\ra"
-		File /r "..\..\mods\ra\*.*"
+		File "..\..\mods\ra\*.*"
 		MessageBox MB_YESNO "Setup will now download and install the Red Alert packages.$\n\
 			The size of the download will be approximately 7MB in size.$\n\
 			If you do not wish to download them at this time, you can find instructions on how to \
@@ -99,7 +99,7 @@ SectionGroup /e "Mods"
 	SectionEnd
 	Section "Command & Conquer" CNC
 		SetOutPath "$INSTDIR\mods\cnc"
-		File /r "..\..\mods\cnc\*.*"
+		File "..\..\mods\cnc\*.*"
 		
 		MessageBox MB_YESNO "Setup will now download and install the Command and Conquer packages.$\n\
 			The size of the download will be approximately 6MB in size.$\n\
@@ -116,11 +116,11 @@ SectionGroup /e "Mods"
 	SectionEnd
 	Section "Red Alert: Aftermath" Aftermath
 		SetOutPath "$INSTDIR\mods\aftermath"
-		File /r "..\..\mods\aftermath\*.*"
+		File "..\..\mods\aftermath\*.*"
 	SectionEnd
 	Section "Red Alert: Next Generation" RA_NG
 		SetOutPath "$INSTDIR\mods\ra-ng"
-		File /r "..\..\mods\ra-ng\*.*"
+		File "..\..\mods\ra-ng\*.*"
 	SectionEnd
 SectionGroupEnd
 
