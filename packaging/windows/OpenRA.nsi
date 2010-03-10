@@ -124,16 +124,6 @@ SectionGroup /e "Mods"
 	SectionEnd
 SectionGroupEnd
 
-Section "Server" Server
-	SetOutPath "$INSTDIR"
-	File "..\..\OpenRA.Server\bin\Debug\OpenRA.Server.exe"
-	
-	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Server.lnk" "$OUTDIR\OpenRA.Server.exe" "" \
-			"" "" "" "" "OpenRA Server"
-	!insertmacro MUI_STARTMENU_WRITE_END	
-SectionEnd
-
 ;***************************
 ;Dependency Sections
 ;***************************
@@ -190,7 +180,6 @@ Section "Uninstall"
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\shaders
 	Delete $INSTDIR\OpenRA.Game.exe
-	Delete $INSTDIR\OpenRA.Server.exe 
 	Delete $INSTDIR\OpenRA.FileFormats.dll
 	Delete $INSTDIR\OpenRA.Gl.dll
 	Delete $INSTDIR\Tao.*.dll
@@ -218,7 +207,6 @@ SectionEnd
 ;Section Descriptions
 ;***************************
 LangString DESC_Client ${LANG_ENGLISH} "OpenRA client and dependencies"
-LangString DESC_Server ${LANG_ENGLISH} "OpenRA server"
 LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
 LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
 LangString DESC_Aftermath ${LANG_ENGLISH} "Red Alert: Aftermath expansion mod (depends on base Red Alert mod)"
@@ -226,7 +214,6 @@ LangString DESC_RA_NG ${LANG_ENGLISH} "Next-gen Red Alert mod (depends on base R
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${Client} $(DESC_Client)
-	!insertmacro MUI_DESCRIPTION_TEXT ${Server} $(DESC_Server)
 	!insertmacro MUI_DESCRIPTION_TEXT ${RA} $(DESC_RA)
 	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${Aftermath} $(DESC_Aftermath)
