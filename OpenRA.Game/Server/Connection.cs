@@ -34,6 +34,8 @@ namespace OpenRA.Server
 		public int ExpectLength = 8;
 		public int Frame = 0;
 
+		public int MostRecentFrame = 0;
+
 		/* client data */
 		public int PlayerIndex;
 
@@ -98,6 +100,7 @@ namespace OpenRA.Server
 						case ReceiveState.Data:
 							{
 								Server.DispatchOrders(this, Frame, bytes);
+								MostRecentFrame = Frame;
 								ExpectLength = 8;
 								State = ReceiveState.Header;
 

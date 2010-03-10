@@ -28,16 +28,17 @@ namespace OpenRA.Network
 {
 	class OrderManager
 	{
-		int frameNumber = 0;
+		public int FrameNumber { get; private set; }
 
 		public int FramesAhead = 0;
 
-		public bool GameStarted { get { return frameNumber != 0; } }
+		public bool GameStarted { get { return FrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
+
+		Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
 
 		Dictionary<int, Dictionary<int, byte[]>> frameClientData = 
 			new Dictionary<int, Dictionary<int, byte[]>>();
-		List<int> readyForFrames = new List<int>();
 		List<Order> localOrders = new List<Order>();
 
 		FileStream replaySaveFile;
@@ -46,12 +47,10 @@ namespace OpenRA.Network
 		{
 			if (GameStarted) return;
 
-			frameNumber = 1;
-			for( int i = frameNumber ; i <= FramesAhead ; i++ )
+			FrameNumber = 1;
+			for( int i = FrameNumber ; i <= FramesAhead ; i++ )
 				Connection.Send( new List<Order>().Serialize( i ) );
 		}
-
-		public int FrameNumber { get { return frameNumber; } }
 
 		public OrderManager( IConnection conn )
 		{
@@ -88,8 +87,8 @@ namespace OpenRA.Network
 				( clientId, packet ) =>
 				{
 					var frame = BitConverter.ToInt32( packet, 0 );
-					if( packet.Length == 5 && packet[ 4 ] == 0xEF )
-						readyForFrames.Add( frame );
+					if( packet.Length == 5 && packet[ 4 ] == 0xBF )
+						clientQuitTimes[ clientId ] = frame;
 					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
 						CheckSync( packet );
 					else if( frame == 0 )
@@ -132,23 +131,31 @@ namespace OpenRA.Network
 
 		public bool IsReadyForNextFrame
 		{
-			get { return readyForFrames.Contains( FrameNumber ); }
+			get
+			{
+				return FrameNumber > 0 &&
+					clientQuitTimes
+						.Where( x => FrameNumber <= x.Value )
+						.All( x => frameClientData.GetOrAdd( FrameNumber ).ContainsKey( x.Key ) );
+			}
 		}
 
 		public void Tick( World world )
 		{
 			if( !IsReadyForNextFrame )
 				throw new InvalidOperationException();
-			readyForFrames.RemoveAll( f => f <= FrameNumber );
 
 			Connection.Send( localOrders.Serialize( FrameNumber + FramesAhead ) );
 			localOrders.Clear();
 
-			var frameData = frameClientData[ FrameNumber ];
+			var frameData = clientQuitTimes
+				.Where( x => FrameNumber <= x.Value )
+				.OrderBy( x => x.Key )
+				.ToDictionary( k => k.Key, v => frameClientData[ FrameNumber ][ v.Key ] );
 			var sync = new List<int>();
 			sync.Add( world.SyncHash() );
 
-			foreach( var order in frameData.OrderBy( p => p.Key ).SelectMany( o => o.Value.ToOrderList( world ).Select( a => new { Client = o.Key, Order = a } ) ) )
+			foreach( var order in frameData.SelectMany( o => o.Value.ToOrderList( world ).Select( a => new { Client = o.Key, Order = a } ) ) )
 			{
 				UnitOrders.ProcessOrder( world, order.Client, order.Order );
 				sync.Add( world.SyncHash() );
@@ -160,7 +167,7 @@ namespace OpenRA.Network
 
 			CheckSync( ss );
 
-			++frameNumber;
+			++FrameNumber;
 		}
 
 		void WriteToReplay( Dictionary<int, byte[]> frameData, byte[] syncData )

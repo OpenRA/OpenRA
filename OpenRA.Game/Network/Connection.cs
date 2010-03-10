@@ -168,28 +168,20 @@ namespace OpenRA.Network
 
 		public void Receive( Action<int, byte[]> packetFn )
 		{
-			if( replayStream != null )
-			{
-				var reader = new BinaryReader( replayStream );
-				while( replayStream.Position < replayStream.Length )
-				{
-					var client = reader.ReadInt32();
-					var packetLen = reader.ReadInt32();
-					var packet = reader.ReadBytes( packetLen );
-					packetFn( client, packet );
+			if( replayStream == null ) return;
 
-					if( !Game.orderManager.GameStarted )
-						return;
-				}
-				replayStream = null;
-			}
-			else
+			var reader = new BinaryReader( replayStream );
+			while( replayStream.Position < replayStream.Length )
 			{
-				var ms = new MemoryStream();
-				ms.Write( BitConverter.GetBytes( nextFrame++ ) );
-				ms.Write( new byte[] { 0xEF } );
-				packetFn( 0, ms.ToArray() );
+				var client = reader.ReadInt32();
+				var packetLen = reader.ReadInt32();
+				var packet = reader.ReadBytes( packetLen );
+				packetFn( client, packet );
+
+				if( !Game.orderManager.GameStarted )
+					return;
 			}
+			replayStream = null;
 		}
 	}
 }

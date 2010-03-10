@@ -156,7 +156,6 @@ namespace OpenRA.Server
 				if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
 				{
 					inFlightFrames.Remove(conn.Frame);
-					DispatchOrders(null, conn.Frame, new byte[] { 0xef });
 				}
 			}
 		}
@@ -431,10 +430,14 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 
 						// start the game if everyone is ready.
-						if (conns.All(c => GetClient(c).State == Session.ClientState.Ready))
+						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
 						{
 							Console.WriteLine("All players are ready. Starting the game!");
 							GameStarted = true;
+							foreach( var c in conns )
+								foreach( var d in conns )
+									DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
+
 							DispatchOrders(null, 0,
 								new ServerOrder("StartGame", "").Serialize());
 						}
@@ -494,15 +497,9 @@ namespace OpenRA.Server
 
 			lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
-			/* don't get stuck waiting for the dropped player, if they were the one holding up a frame */
+			foreach( var c in conns )
+				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 			
-			foreach( var f in inFlightFrames.ToArray() )
-			if (conns.All(c => f.Value.Contains(c)))
-			{
-				inFlightFrames.Remove(f.Key);
-				DispatchOrders(null, f.Key, new byte[] { 0xef });
-			}
-
 			if (conns.Count == 0) OnServerEmpty();
 			else SyncLobbyInfo();
 		}
