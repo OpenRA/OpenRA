@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
@@ -30,8 +32,8 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
-using System.Runtime.InteropServices;
-using System.IO;
+using OpenRA.Server;
+using System.Net;
 
 namespace OpenRA
 {
@@ -54,6 +56,8 @@ namespace OpenRA
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
+		
+		
 
 		public static void LoadModPackages(Manifest manifest)
 		{
@@ -125,20 +129,39 @@ namespace OpenRA
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
 			Game.controller = controller;
-
+			
 			ChangeMap(mapName);
 
 			if (Settings.Replay != "")
 				throw new NotImplementedException();
 			else
 			{
-				var connection = (string.IsNullOrEmpty(Settings.NetworkHost))
-					? new EchoConnection()
-					: new NetworkConnection( Settings.NetworkHost, Settings.NetworkPort );
-				orderManager = new OrderManager(connection, "replay.rep");
+				JoinLocal();
 			}
 		}
-
+		
+		internal static void JoinServer(string host, int port)
+		{
+			orderManager = new OrderManager(new NetworkConnection( host, port ), "replay.rep");
+		}
+		
+		internal static void JoinLocal()
+		{
+			orderManager = new OrderManager(new EchoConnection());
+		}
+		
+		internal static void CreateServer()
+		{
+			// todo: LobbyInfo is the wrong place for this.
+			InprocServer.Start(Game.LobbyInfo.GlobalSettings.Mods);
+			JoinServer(IPAddress.Loopback.ToString(), 1234);
+		}
+		
+		internal static void CloseServer()
+		{
+			InprocServer.Stop();
+		}
+		
 		static int lastTime = Environment.TickCount;
 
 		public static void ResetTimer()
@@ -310,15 +333,6 @@ namespace OpenRA
 
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
-		}
-
-		public static void HandleKeyDown( KeyEventArgs e )
-		{
-			//int sync = Game.world.SyncHash();
-
-
-			//if( sync != Game.world.SyncHash() )
-			//    throw new InvalidOperationException( "Desync in OnKeyDown" );
 		}
 
 		public static bool IsHost

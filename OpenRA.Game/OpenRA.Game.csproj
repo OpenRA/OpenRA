@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,6 +102,10 @@
     <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="Selection.cs" />
+    <Compile Include="Server\Connection.cs" />
+    <Compile Include="Server\Exts.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Shroud.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />

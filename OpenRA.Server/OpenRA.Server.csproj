@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{76F621A1-3D8E-4A99-9F7E-B071EB657817}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenRA.Server</RootNamespace>
     <AssemblyName>OpenRA.Server</AssemblyName>
@@ -48,11 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
-    <Compile Include="Exts.cs" />
-    <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerOrder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -68,4 +64,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

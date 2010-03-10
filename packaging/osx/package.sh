@@ -54,9 +54,6 @@ export AS="as -arch i386"
 export CC="gcc -arch i386 -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Mono.framework/Versions/Current/lib/pkgconfig/
 
-# Package the server binary
-mkbundle --deps --static -z -o openra_server OpenRA.Server.exe OpenRA.FileFormats.dll thirdparty/Tao/Tao.Sdl.dll
-
 # Package the game binary
 mkbundle --deps --static -z -o OpenRA OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll thirdparty/Tao/Tao.Sdl.dll
 

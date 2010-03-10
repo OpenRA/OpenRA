@@ -44,12 +44,6 @@ aftermath_KIND		=	library
 aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
 
-server_SRCS			= $(shell find OpenRA.Server/ -iname '*.cs')
-server_TARGET		= OpenRA.Server.exe
-server_KIND			= winexe
-server_DEPS			= $(fileformats_TARGET)
-server_LIBS			= $(COMMON_LIBS) $(server_DEPS)
-
 seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
 seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
@@ -83,9 +77,8 @@ clean:
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
 
 mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
-server: $(server_TARGET)
 seqed: $(seqed_TARGET)
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(server_TARGET) $(seqed_TARGET)
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET)
 
 dist-osx:
 	packaging/osx/package.sh

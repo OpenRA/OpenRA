@@ -85,11 +85,15 @@ namespace OpenRA.Graphics
 
 				switch( Game.orderManager.Connection.ConnectionState )
 				{
+					case ConnectionState.PreConnecting:
+						Game.chrome.DrawMainMenu( world );
+						break;
 					case ConnectionState.Connecting:
 						Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 						break;
 					case ConnectionState.NotConnected:
-						Game.chrome.DrawDialog("Connection failed.");
+						// Todo: Hook these up
+						Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
 						break;
 					case ConnectionState.Connected:
 						Game.chrome.DrawLobby( world );
