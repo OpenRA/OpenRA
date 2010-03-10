@@ -44,7 +44,7 @@ namespace OpenRA.Server
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		public static int ServerMain(string[] mods, AutoResetEvent e)
+		public static void ServerMain(string[] mods)
 		{
 			initialMods = mods;
 
@@ -58,35 +58,33 @@ namespace OpenRA.Server
 			try
 			{
 				listener.Start();
-				Console.WriteLine("Server started.");
 			}
 			catch (Exception)
 			{
-				Console.WriteLine("Server failed to start.");
-				return 1;
+				throw new InvalidOperationException( "Unable to start server: port is already in use" );
 			}
 
-			e.Set();	// we're done starting up
-			
-			for (; ; )
+			new Thread( _ =>
 			{
-				var checkRead = new ArrayList();
-				checkRead.Add(listener.Server);
-				foreach (var c in conns) checkRead.Add(c.socket);
+				for( ; ; )
+				{
+					var checkRead = new ArrayList();
+					checkRead.Add( listener.Server );
+					foreach( var c in conns ) checkRead.Add( c.socket );
 
-				var isSendingPackages = conns.Any(c => c.Stream != null);
+					var isSendingPackages = conns.Any( c => c.Stream != null );
 
-				/* msdn lies, -1 doesnt work. this is ~1h instead. */
-				Socket.Select(checkRead, null, null, isSendingPackages ? DownloadChunkInterval : -2 );
+					/* msdn lies, -1 doesnt work. this is ~1h instead. */
+					Socket.Select( checkRead, null, null, isSendingPackages ? DownloadChunkInterval : -2 );
 
-				foreach (Socket s in checkRead)
-					if (s == listener.Server) AcceptConnection();
-					else conns.Single(c => c.socket == s).ReadData();
+					foreach( Socket s in checkRead )
+						if( s == listener.Server ) AcceptConnection();
+						else conns.Single( c => c.socket == s ).ReadData();
 
-				foreach (var c in conns.Where(a => a.Stream != null).ToArray())
-					SendNextChunk(c);
-			}
-
+					foreach( var c in conns.Where( a => a.Stream != null ).ToArray() )
+						SendNextChunk( c );
+				}
+			} ) { IsBackground = true }.Start();
 		}
 
 		static int ChooseFreePlayerIndex()
@@ -550,11 +548,7 @@ namespace OpenRA.Server
 
 		public static void Start( string[] mods )
 		{
-			var e = new AutoResetEvent(false);
-			t = new Thread(() => Server.ServerMain(mods, e)) { IsBackground = true };
-
-			t.Start();
-			e.WaitOne();	// when the event is signaled, the server is finished initializing
+			Server.ServerMain( mods );
 		}
 
 		public static void Stop()
