@@ -93,6 +93,9 @@ SectionGroup /e "Mods"
 			AddSize 10137
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
+			Pop $R0
+			StrCmp $R0 "success" +2
+				Abort
 			ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
 			Delete ra-packages.zip
 		done:
@@ -110,6 +113,9 @@ SectionGroup /e "Mods"
 			AddSize 9431
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
+			Pop $R0
+			StrCmp $R0 "success" +2
+				Abort
 			ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
 			Delete cnc-packages.zip
 		done:
@@ -133,6 +139,9 @@ Section "-OpenAl" OpenAl
 	installal:
 		SetOutPath "$TEMP"
 		NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
+		Pop $R0
+		StrCmp $R0 "success" +2
+			Abort
 		!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
 		ExecWait "$TEMP\OpenAL\oalinst.exe"
 	done:
@@ -149,9 +158,15 @@ Section "-Freetype" Freetype
 	AddSize 583
 	SetOutPath "$TEMP"
 	NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
+	Pop $R0
+	StrCmp $R0 "success" +2
+		Abort
 	!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
 	CopyFiles "$OUTDIR\bin\freetype6.dll" $INSTDIR
 	NSISdl::download http://www.zlib.net/zlib123-dll.zip zlib.zip
+	Pop $R0
+	StrCmp $R0 "success" +2
+		Abort
 	!insertmacro ZIPDLL_EXTRACT zlib.zip $OUTDIR zlib1.dll
 	CopyFiles "$OUTDIR\zlib1.dll" $INSTDIR
 SectionEnd
@@ -176,7 +191,8 @@ Section "-Uninstaller"
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
-Section "Uninstall"
+!macro Clean UN
+Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\shaders
 	Delete $INSTDIR\OpenRA.Game.exe
@@ -201,6 +217,14 @@ Section "Uninstall"
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
 	DeleteRegKey HKCU "Software\OpenRA"
+FunctionEnd
+!macroend
+
+!insertmacro Clean ""
+!insertmacro Clean "un."
+
+Section "Uninstall"
+	Call un.Clean
 SectionEnd
 
 ;***************************
@@ -221,7 +245,7 @@ LangString DESC_RA_NG ${LANG_ENGLISH} "Next-gen Red Alert mod (depends on base R
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;***************************
-;Functions
+;Callbacks
 ;***************************
 Var previousSelection
 
@@ -249,4 +273,8 @@ Function .onSelChange
 
 	done:
 		IntOp $previousSelection $1 + 0
+FunctionEnd
+
+Function .onInstFailed
+	Call Clean
 FunctionEnd
