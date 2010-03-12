@@ -34,19 +34,28 @@ namespace OpenRA.Server
 	static class Server
 	{
 		static List<Connection> conns = new List<Connection>();
-		static TcpListener listener = new TcpListener(IPAddress.Any, 1234);
+		static TcpListener listener;
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo;
 		static bool GameStarted = false;
 		static string[] initialMods;
+		static string Name;
+		static WebClient wc = new WebClient();
+		static int ExternalPort;
 
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		public static void ServerMain(string[] mods)
+		const int MasterPingInterval = 60 * 5;	// 5 minutes
+		static int lastPing = 0;
+
+		public static void ServerMain(string name, int port, int extport, string[] mods)
 		{
+			listener = new TcpListener(IPAddress.Any, port);
 			initialMods = mods;
+			Name = name;
+			ExternalPort = extport;
 
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = mods;
@@ -75,7 +84,7 @@ namespace OpenRA.Server
 					var isSendingPackages = conns.Any( c => c.Stream != null );
 
 					/* msdn lies, -1 doesnt work. this is ~1h instead. */
-					Socket.Select( checkRead, null, null, isSendingPackages ? DownloadChunkInterval : -2 );
+					Socket.Select( checkRead, null, null, isSendingPackages ? DownloadChunkInterval : MasterPingInterval * 1000000 );
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
@@ -83,6 +92,9 @@ namespace OpenRA.Server
 
 					foreach( var c in conns.Where( a => a.Stream != null ).ToArray() )
 						SendNextChunk( c );
+
+					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
+						PingMasterServer();
 				}
 			} ) { IsBackground = true }.Start();
 		}
@@ -535,23 +547,32 @@ namespace OpenRA.Server
 
 			DispatchOrders(null, 0,
 				new ServerOrder("SyncInfo", clientData.WriteToString()).Serialize());
+
+			PingMasterServer();
+		}
+
+		static void PingMasterServer()
+		{
+			if (wc.IsBusy) return;
+
+			wc.DownloadDataAsync(new Uri(
+				"http://open-ra.org/master/ping.php?port={0}&name={1}&state={2}&players={3}".F(
+				ExternalPort, Uri.EscapeUriString(Name),
+				GameStarted ? 2 : 1,	// todo: post-game states, etc.
+				lobbyInfo.Clients.Count)));
+
+			lastPing = Environment.TickCount;
 		}
 	}
 
 	// temporary threaded inproc server wrapper.
 	public static class InprocServer
 	{
-		static Thread t;
-
 		public static void Start( string[] mods )
 		{
-			Server.ServerMain( mods );
+			Server.ServerMain( "OpenRA Server", 1234, 1234, mods );
 		}
 
-		public static void Stop()
-		{
-			if (t != null)
-				t.Abort();
-		}
+		public static void Stop() { }
 	}
 }
