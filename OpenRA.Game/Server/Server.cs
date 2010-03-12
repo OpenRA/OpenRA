@@ -452,6 +452,8 @@ namespace OpenRA.Server
 
 							DispatchOrders(null, 0,
 								new ServerOrder("StartGame", "").Serialize());
+
+							PingMasterServer();
 						}
 					}
 					break;
