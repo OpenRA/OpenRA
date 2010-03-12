@@ -156,13 +156,12 @@ namespace OpenRA
 		internal static void CreateServer()
 		{
 			// todo: LobbyInfo is the wrong place for this.
-			InprocServer.Start(Game.LobbyInfo.GlobalSettings.Mods);
-			JoinServer(IPAddress.Loopback.ToString(), 1234);
-		}
-		
-		internal static void CloseServer()
-		{
-			InprocServer.Stop();
+			var mods = LobbyInfo.GlobalSettings.Mods;
+			var gameName = "{0} ({1})".F( Settings.GameName, string.Join( ",", mods ) );
+
+			Server.Server.ServerMain(gameName, Settings.ListenPort, 
+				Settings.ExternalPort, mods);
+			JoinServer(IPAddress.Loopback.ToString(), Settings.ListenPort);
 		}
 		
 		static int lastTime = Environment.TickCount;

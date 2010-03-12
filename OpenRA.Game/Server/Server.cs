@@ -26,8 +26,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
-using OpenRA.FileFormats;
 using System.Threading;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Server
 {
@@ -565,16 +565,5 @@ namespace OpenRA.Server
 
 			lastPing = Environment.TickCount;
 		}
-	}
-
-	// temporary threaded inproc server wrapper.
-	public static class InprocServer
-	{
-		public static void Start( string[] mods )
-		{
-			Server.ServerMain( "OpenRA Server", 1234, 1234, mods );
-		}
-
-		public static void Stop() { }
 	}
 }

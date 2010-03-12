@@ -44,6 +44,10 @@ namespace OpenRA.GameRules
 		public readonly string Replay = "";
 		public readonly string PlayerName = "";
 		public readonly string[] InitialMods = { "ra" };
+
+		public readonly string GameName = "OpenRA Game";
+		public readonly int ListenPort = 1234;
+		public readonly int ExternalPort = 1234;
 		
 		// Gameplay options
 		// TODO: These need to die
