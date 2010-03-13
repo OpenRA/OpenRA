@@ -17,7 +17,9 @@
 		'\'' . sqlite_escape_string( $addr ) . '\', '.
 		sqlite_escape_string( $_REQUEST['players'] ) . ', '.
 		sqlite_escape_string( $_REQUEST['state'] ) . ', '.
-		time() . ')';
+		time() . ', '.
+		'\'' . sqlite_escape_string( $_REQUEST['map'] ) . '\', '.
+		'\'' . sqlite_escape_string( $_REQUEST['mods'] ) . '\')';
 		
 	echo $q;	
 	

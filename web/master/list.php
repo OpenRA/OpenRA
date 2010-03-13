@@ -19,6 +19,8 @@
 		echo "\tAddress: " . $a['address'] . "\n";
 		echo "\tState: " . $a['state'] . "\n";
 		echo "\tPlayers: " . $a['players'] . "\n";
+		echo "\tMap: " . $a['map'] . "\n";
+		echo "\tMods: " . $a['mods'] . "\n";
 		echo "\tTTL: " . ($stale - (time() - $a['ts'])) . "\n";
 	}
 	

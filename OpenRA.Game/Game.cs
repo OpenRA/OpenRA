@@ -20,10 +20,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
@@ -32,8 +32,6 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
-using OpenRA.Server;
-using System.Net;
 
 namespace OpenRA
 {
@@ -156,11 +154,9 @@ namespace OpenRA
 		internal static void CreateServer()
 		{
 			// todo: LobbyInfo is the wrong place for this.
-			var mods = LobbyInfo.GlobalSettings.Mods;
-			var gameName = "{0} ({1})".F( Settings.GameName, string.Join( ",", mods ) );
+			Server.Server.ServerMain(Settings.GameName, Settings.ListenPort, 
+				Settings.ExternalPort, LobbyInfo.GlobalSettings.Mods);
 
-			Server.Server.ServerMain(gameName, Settings.ListenPort, 
-				Settings.ExternalPort, mods);
 			JoinServer(IPAddress.Loopback.ToString(), Settings.ListenPort);
 		}
 		
@@ -387,7 +383,6 @@ namespace OpenRA
 					throw new InvalidOperationException("Unable to load MIX files.");
 				Directory.SetCurrentDirectory("..");
 			}
-
 			
 			LoadUserSettings(settings);
 			Game.LobbyInfo.GlobalSettings.Mods = Game.Settings.InitialMods;
@@ -408,7 +403,6 @@ namespace OpenRA
 
 			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
 
-		//	ShowCursor(false);
 			Game.ResetTimer();
 		}
 

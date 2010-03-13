@@ -47,7 +47,8 @@ namespace OpenRA.Server
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		const int MasterPingInterval = 60 * 5;	// 5 minutes
+		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
+												// of leeway.
 		static int lastPing = 0;
 
 		public static void ServerMain(string name, int port, int extport, string[] mods)
@@ -558,10 +559,12 @@ namespace OpenRA.Server
 			if (wc.IsBusy) return;
 
 			wc.DownloadDataAsync(new Uri(
-				"http://open-ra.org/master/ping.php?port={0}&name={1}&state={2}&players={3}".F(
+				"http://open-ra.org/master/ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}".F(
 				ExternalPort, Uri.EscapeUriString(Name),
 				GameStarted ? 2 : 1,	// todo: post-game states, etc.
-				lobbyInfo.Clients.Count)));
+				lobbyInfo.Clients.Count,
+				string.Join(",", lobbyInfo.GlobalSettings.Mods),
+				lobbyInfo.GlobalSettings.Map)));
 
 			lastPing = Environment.TickCount;
 		}
