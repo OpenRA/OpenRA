@@ -40,12 +40,15 @@ namespace OpenRA.FileFormats
 		public static void Load(object self, MiniYaml my)
 		{
 			foreach (var x in my.Nodes)
-			{
-				var field = self.GetType().GetField(x.Key.Trim());
-				if (field == null)
-					throw new NotImplementedException("Missing field `{0}` on `{1}`".F(x.Key.Trim(), self.GetType().Name));
-				field.SetValue(self, GetValue(field.FieldType, x.Value.Value));
-			}
+				LoadField( self, x.Key, x.Value );
+		}
+
+		public static void LoadField( object self, string key, MiniYaml value )
+		{
+			var field = self.GetType().GetField( key.Trim() );
+			if( field == null )
+				throw new NotImplementedException( "Missing field `{0}` on `{1}`".F( key.Trim(), self.GetType().Name ) );
+			field.SetValue( self, GetValue( field.FieldType, value.Value ) );
 		}
 
 		public static object GetValue( Type fieldType, string x )
