@@ -1,6 +1,7 @@
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using OpenRA.Widgets.Actions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,6 +13,7 @@ namespace OpenRA
 	class WidgetLoader
 	{
 		static Pair<Assembly, string>[] ModAssemblies;
+		public static Pair<Assembly, string>[] WidgetActionAssemblies;
 		public static void LoadModAssemblies(Manifest m)
 		{
 			var asms = new List<Pair<Assembly, string>>();
@@ -23,6 +25,16 @@ namespace OpenRA
 			foreach (var a in m.Assemblies)
 				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
 			ModAssemblies = asms.ToArray();
+			
+			asms.Clear();
+
+			// all the core stuff is in this assembly
+			asms.Add(Pair.New(typeof(IWidgetAction).Assembly, typeof(IWidgetAction).Namespace));
+
+			// add the mods
+			foreach (var a in m.Assemblies)
+				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
+			WidgetActionAssemblies = asms.ToArray();
 		}
 		
 		public static Widget LoadWidget( MiniYaml node )

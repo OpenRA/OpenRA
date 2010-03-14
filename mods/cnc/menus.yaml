@@ -19,6 +19,7 @@ Background:
 			Width:160
 			Height:25
 			Text:Join Game
+			Action:JoinServerButtonAction
 		Button@MAINMENU_BUTTON_CREATE:
 			Id:MAINMENU_BUTTON_CREATE
 			X:445
@@ -26,6 +27,7 @@ Background:
 			Width:160
 			Height:25
 			Text:Create Game
+			Action:CreateServerButtonAction
 		Button@MAINMENU_BUTTON_QUIT:
 			Id:MAINMENU_BUTTON_QUIT
 			X:445
@@ -33,3 +35,4 @@ Background:
 			Width:160
 			Height:25
 			Text:Quit
+			Action:QuitButtonAction

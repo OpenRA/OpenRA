@@ -12,6 +12,7 @@ namespace OpenRA.Widgets
 		public readonly int Y = 0;
 		public readonly int Width = 0;
 		public readonly int Height = 0;
+		
 		public readonly List<Widget> Children = new List<Widget>();
 		public Rectangle Bounds
 		{

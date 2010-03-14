@@ -428,32 +428,6 @@ namespace OpenRA
 		public void DrawMainMenu( World world )
 		{
 			rootWidget.Draw(rgbaRenderer,renderer);
-			buttons.Clear();
-
-			var w = 250;
-			var h = 200;
-			var r = new Rectangle( 0, 0, w, h );
-			DrawDialogBackground(r, "dialog");
-			DrawCentered("OpenRA Main Menu", new int2(r.Left + w / 2, r.Top + 20), Color.White);
-			
-			
-			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Game",
-				_ =>
-				{
-					Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
-				});
-			
-			AddUiButton(new int2(r.Left + w/2, r.Top + 105), "Create Game",
-				_ =>
-				{
-					Game.CreateServer();
-				});
-			
-			AddUiButton(new int2(r.Left + w/2, r.Top + 140), "Quit",
-				_ =>
-				{
-					Game.Exit();
-				});
 		}
 		
 		public void DrawLobby( World world )

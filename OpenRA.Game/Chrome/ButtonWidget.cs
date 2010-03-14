@@ -1,4 +1,6 @@
 using OpenRA.Graphics;
+using OpenRA.Widgets.Actions;
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -7,16 +9,21 @@ namespace OpenRA.Widgets
 	class ButtonWidget : Widget
 	{
 		public readonly string Text = null;
-		
+		public readonly string Action = null;
+
 		public override bool HandleInput(MouseInput mi)
 		{
-			// TEMPORARY: Define a default mouse button event - quit the game
-			if (mi.Event == MouseInputEvent.Down && ClickRect.Contains(mi.Location.X,mi.Location.Y))
+			if (Action != null && mi.Event == MouseInputEvent.Down && ClickRect.Contains(mi.Location.X,mi.Location.Y))
 			{
-				Game.Exit();
-				return true;
+				foreach (var mod in WidgetLoader.WidgetActionAssemblies)
+				{
+					var act = (IWidgetAction)mod.First.CreateInstance(mod.Second + "."+Action);
+					if (act == null) return false;
+					Log.Write("Calling: "+mod.Second + "."+Action);
+					return act.OnClick(mi);
+				}
+				throw new InvalidOperationException("Cannot locate WidgetAction: {0}".F(Action));
 			}
-			
 			return base.HandleInput(mi);
 		}
 		
