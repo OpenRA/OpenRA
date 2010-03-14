@@ -50,9 +50,6 @@ namespace OpenRA
 		bool optionsPressed = false;
 
 		// Buttons
-		readonly Animation repairButton;
-		readonly Animation sellButton;
-		readonly Animation pwrdownButton;
 		readonly Animation optionsButton;
 
 		// Build Palette tabs
@@ -101,15 +98,6 @@ namespace OpenRA
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
 			shpRenderer = new SpriteRenderer(renderer, true, renderer.WorldSpriteShader);
-
-			repairButton = new Animation("repair");
-			repairButton.PlayRepeating("normal");
-
-			sellButton = new Animation("sell");
-			sellButton.PlayRepeating("normal");
-
-			pwrdownButton = new Animation("repair");
-			pwrdownButton.PlayRepeating("normal");
 			
 			optionsButton = new Animation("tabs");
 			optionsButton.PlayRepeating("left-normal");
