@@ -92,6 +92,9 @@ namespace OpenRA
 		Sprite mapChooserSprite;
 		int mapOffset = 0;
 		
+
+		Widget rootWidget;
+				
 		public Chrome(Renderer r)
 		{
 			this.renderer = r;
@@ -127,6 +130,12 @@ namespace OpenRA
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
+			
+			// TODO: make this generic
+			var widgetYaml = MiniYaml.FromFile("mods/cnc/menus.yaml");
+			// Hack around a bug in MiniYaml
+			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
+			rootWidget = ChromeWindow.LoadWidget(widgetYaml.Values.FirstOrDefault());
 		}
 
 		List<string> visibleTabs = new List<string>();
@@ -417,6 +426,7 @@ namespace OpenRA
 
 		public void DrawMainMenu( World world )
 		{
+			rootWidget.Draw(rgbaRenderer,renderer);
 			buttons.Clear();
 
 			var w = 250;
@@ -425,6 +435,7 @@ namespace OpenRA
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Main Menu", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			
+			/*
 			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Game",
 				_ =>
 				{
@@ -436,7 +447,7 @@ namespace OpenRA
 				{
 					Game.CreateServer();
 				});
-			
+			*/
 			AddUiButton(new int2(r.Left + w/2, r.Top + 140), "Quit",
 				_ =>
 				{

@@ -1,0 +1,13 @@
+Container:
+	Id:ROOT
+	X:10
+	Y:10
+	Width:400
+	Height:400
+	Children:
+		Button:
+			Id:BUTTON1
+			X:40
+			Y:80
+			Width:100
+			Height:80
