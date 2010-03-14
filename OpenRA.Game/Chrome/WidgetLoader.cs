@@ -36,13 +36,13 @@ namespace OpenRA
 					{
 						// Hack around a bug in MiniYaml
 						c.Value.Value = c.Key;
-						widget.Children.Add( LoadWidget( c.Value ) );
+						widget.AddChild( LoadWidget( c.Value ) );
 					}
 				}
 				else
 					FieldLoader.LoadField( widget, child.Key, child.Value );
 			}
-	
+			widget.Initialize();
 			return widget;
 		}
 	

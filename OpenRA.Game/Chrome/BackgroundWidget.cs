@@ -10,7 +10,7 @@ namespace OpenRA.Widgets
 		{
 			string collection = "dialog";
 			
-			Rectangle r = new Rectangle(X,Y,Width,Height);
+			Rectangle r = Bounds;
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 			
 			string[] images = { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };

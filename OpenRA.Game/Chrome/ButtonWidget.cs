@@ -8,11 +8,23 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Text = null;
 		
+		public override bool HandleInput(MouseInput mi)
+		{
+			// TEMPORARY: Define a default mouse button event - quit the game
+			if (mi.Event == MouseInputEvent.Down && ClickRect.Contains(mi.Location.X,mi.Location.Y))
+			{
+				Game.Exit();
+				return true;
+			}
+			
+			return base.HandleInput(mi);
+		}
+		
 		public override void Draw(SpriteRenderer rgbaRenderer, Renderer renderer)
 		{
 			string collection = "dialog2";
 			
-			Rectangle r = new Rectangle(X,Y,Width,Height);
+			Rectangle r = Bounds;
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 			
 			string[] images = { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };

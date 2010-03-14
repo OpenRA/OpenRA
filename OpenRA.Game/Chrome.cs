@@ -1077,6 +1077,9 @@ namespace OpenRA
 		int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
+			if (rootWidget.HandleInput(mi))
+				return true;
+			
 			if (mi.Event == MouseInputEvent.Move)
 				lastMousePos = mi.Location;
 
