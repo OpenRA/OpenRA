@@ -12,7 +12,7 @@ namespace OpenRA.Widgets
 		public readonly int Y = 0;
 		public readonly int Width = 0;
 		public readonly int Height = 0;
-		
+		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 		public Rectangle Bounds
 		{
@@ -32,12 +32,16 @@ namespace OpenRA.Widgets
 		
 		public virtual void Draw(SpriteRenderer rgbaRenderer, Renderer renderer)
 		{
-			foreach (var child in Children)
-				child.Draw(rgbaRenderer, renderer);
+			if (Visible)
+				foreach (var child in Children)
+					child.Draw(rgbaRenderer, renderer);
 		}
 		
 		public virtual bool HandleInput(MouseInput mi)
 		{
+			if (!Visible)
+				return false;
+			
 			bool caught = false;
 			if (ClickRect.Contains(mi.Location.X,mi.Location.Y))
 			{
@@ -56,6 +60,19 @@ namespace OpenRA.Widgets
 		{
 			Children.Add( child );
 		}
+		
+		public Widget GetWidget(string id)
+		{
+			if (this.Id == id)
+				return this;
+			
+			foreach (var child in Children)
+				if (child.GetWidget(id) != null)
+					return child;
+			
+			return null;
+		}
+		
 	}
 	class ContainerWidget : Widget {	}
 }

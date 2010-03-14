@@ -92,10 +92,7 @@ namespace OpenRA
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
 		int mapOffset = 0;
-		
-
-		Widget rootWidget;
-				
+						
 		public Chrome(Renderer r)
 		{
 			this.renderer = r;
@@ -136,7 +133,7 @@ namespace OpenRA
 			var widgetYaml = MiniYaml.FromFile("mods/cnc/menus.yaml");
 			// Hack around a bug in MiniYaml
 			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
-			rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());
+			WidgetLoader.rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());
 		}
 
 		List<string> visibleTabs = new List<string>();
@@ -427,7 +424,7 @@ namespace OpenRA
 
 		public void DrawMainMenu( World world )
 		{
-			rootWidget.Draw(rgbaRenderer,renderer);
+			WidgetLoader.rootWidget.Draw(rgbaRenderer,renderer);
 		}
 		
 		public void DrawLobby( World world )
@@ -1051,7 +1048,7 @@ namespace OpenRA
 		int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
-			if (rootWidget.HandleInput(mi))
+			if (WidgetLoader.rootWidget.HandleInput(mi))
 				return true;
 			
 			if (mi.Event == MouseInputEvent.Move)

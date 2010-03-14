@@ -1,38 +1,86 @@
-Background:
-	Id:MAINMENU_BG
-	X:400
-	Y:200
-	Width:250
-	Height:200
+Container:
 	Children:
-		Label@MAINMENU_LABEL_TITLE:
-			Id:MAINMENU_LABEL_TITLE
-			X:445
-			Y:220
-			Width:160
-			Height:25
-			Text:OpenRA Main Menu
-		Button@MAINMENU_BUTTON_JOIN:
-			Id:MAINMENU_BUTTON_JOIN
-			X:445
-			Y:270
-			Width:160
-			Height:25
-			Text:Join Game
-			Action:JoinServerButtonAction
-		Button@MAINMENU_BUTTON_CREATE:
-			Id:MAINMENU_BUTTON_CREATE
-			X:445
-			Y:305
-			Width:160
-			Height:25
-			Text:Create Game
-			Action:CreateServerButtonAction
-		Button@MAINMENU_BUTTON_QUIT:
-			Id:MAINMENU_BUTTON_QUIT
-			X:445
-			Y:340
-			Width:160
-			Height:25
-			Text:Quit
-			Action:QuitButtonAction
+		Background@MAINMENU_BG:
+			Id:MAINMENU_BG
+			X:400
+			Y:200
+			Width:250
+			Height:200
+			Children:
+				Label@MAINMENU_LABEL_TITLE:
+					Id:MAINMENU_LABEL_TITLE
+					X:445
+					Y:220
+					Width:160
+					Height:25
+					Text:OpenRA Main Menu
+					Align:Center
+				Button@MAINMENU_BUTTON_JOIN:
+					Id:MAINMENU_BUTTON_JOIN
+					X:445
+					Y:270
+					Width:160
+					Height:25
+					Text:Join Game
+					Action:JoinServerButtonAction
+				Button@MAINMENU_BUTTON_CREATE:
+					Id:MAINMENU_BUTTON_CREATE
+					X:445
+					Y:305
+					Width:160
+					Height:25
+					Text:Create Game
+					Action:OpenCreateServerMenuButtonAction
+				Button@MAINMENU_BUTTON_QUIT:
+					Id:MAINMENU_BUTTON_QUIT
+					X:445
+					Y:340
+					Width:160
+					Height:25
+					Text:Quit
+					Action:QuitButtonAction
+		Background@CREATESERVER_BG:
+			Id:CREATESERVER_BG
+			X:300
+			Y:200
+			Width:450
+			Height:145
+			Visible:false
+			Children:
+				Label@CREATESERVER_LABEL_TITLE:
+					Id:CREATESERVER_LABEL_TITLE
+					X:445
+					Y:220
+					Width:160
+					Height:25
+					Text:Create Server
+					Align:Center
+				Button@CREATESERVER_CHECKBOX_HIDDEN:
+					Id:CREATESERVER_CHECKBOX_HIDDEN
+					X:400
+					Y:260
+					Width:20
+					Height:20
+				Label@CREATESERVER_LABEL_HIDDENGAME:
+					Id:CREATESERVER_LABEL_HIDDENGAME
+					X:435
+					Y:260
+					Width:300
+					Height:25
+					Text:Hide from Server Browser
+				Button@CREATESERVER_BUTTON_CANCEL:
+					Id:CREATESERVER_BUTTON_CANCEL
+					X:400
+					Y:300
+					Width:160
+					Height:25
+					Text:Cancel
+					Action:CloseCreateServerMenuButtonAction
+				Button@CREATESERVER_BUTTON_START:
+					Id:CREATESERVER_BUTTON_START
+					X:570
+					Y:300
+					Width:160
+					Height:25
+					Text:Create
+					Action:CreateServerMenuButtonAction

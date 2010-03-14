@@ -25,7 +25,27 @@ namespace OpenRA.Widgets.Actions
 		}
 	}
 	
-	public class CreateServerButtonAction : IWidgetAction
+	public class OpenCreateServerMenuButtonAction : IWidgetAction
+	{
+		public bool OnClick(MouseInput mi)
+		{
+			WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+			WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = true;
+			return true;
+		}
+	}
+	
+	public class CloseCreateServerMenuButtonAction : IWidgetAction
+	{
+		public bool OnClick(MouseInput mi)
+		{
+			WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+			WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
+			return true;
+		}
+	}
+	
+	public class CreateServerMenuButtonAction : IWidgetAction
 	{
 		public bool OnClick(MouseInput mi)
 		{

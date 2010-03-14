@@ -37,6 +37,7 @@ namespace OpenRA
 			WidgetActionAssemblies = asms.ToArray();
 		}
 		
+		public static Widget rootWidget;
 		public static Widget LoadWidget( MiniYaml node )
 		{
 			var widget = NewWidget( node.Value );
