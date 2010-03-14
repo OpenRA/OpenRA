@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -66,6 +66,7 @@ namespace OpenRA
 			var yamlRules = m.Rules.Reverse().Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
 			ActorInfo.LoadModAssemblies(m);
+			WidgetLoader.LoadModAssemblies(m);
 			Info = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
 				Info.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));

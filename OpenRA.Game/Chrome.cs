@@ -28,6 +28,7 @@ using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -135,7 +136,7 @@ namespace OpenRA
 			var widgetYaml = MiniYaml.FromFile("mods/cnc/menus.yaml");
 			// Hack around a bug in MiniYaml
 			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
-			rootWidget = ChromeWindow.LoadWidget(widgetYaml.Values.FirstOrDefault());
+			rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());
 		}
 
 		List<string> visibleTabs = new List<string>();
@@ -431,11 +432,11 @@ namespace OpenRA
 
 			var w = 250;
 			var h = 200;
-			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
+			var r = new Rectangle( 0, 0, w, h );
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Main Menu", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			
-			/*
+			
 			AddUiButton(new int2(r.Left + w/2, r.Top + 70), "Join Game",
 				_ =>
 				{
@@ -447,7 +448,7 @@ namespace OpenRA
 				{
 					Game.CreateServer();
 				});
-			*/
+			
 			AddUiButton(new int2(r.Left + w/2, r.Top + 140), "Quit",
 				_ =>
 				{

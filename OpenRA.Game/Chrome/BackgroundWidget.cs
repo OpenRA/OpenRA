@@ -1,20 +1,12 @@
-using System.Collections.Generic;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using System.Drawing;
+using System.Collections.Generic;
 
-namespace OpenRA
+namespace OpenRA.Widgets
 {
-	class Widget
+	class BackgroundWidget : Widget
 	{
-		public readonly string Id = null;
-		public readonly int X = 0;
-		public readonly int Y = 0;
-		public readonly int Width = 0;
-		public readonly int Height = 0;
-		public readonly List<Widget> Children = new List<Widget>();
-		
-		public void Draw(SpriteRenderer rgbaRenderer, Renderer renderer)
+		public override void Draw(SpriteRenderer rgbaRenderer, Renderer renderer)
 		{
 			string collection = "dialog";
 			
@@ -49,42 +41,7 @@ namespace OpenRA
 
 			renderer.Device.DisableScissor();
 		
-			foreach (var child in Children)
-				child.Draw(rgbaRenderer, renderer);
-		}
-	}
-	
-	class ChromeWindow
-	{
-		public static Widget LoadWidget( MiniYaml node )
-		{
-			Widget widget = NewWidget( node.Value );
-			foreach( var child in node.Nodes )
-			{
-				if( child.Key == "Children" )
-				{
-					foreach( var c in child.Value.Nodes )
-					{
-						// Hack around a bug in MiniYaml
-						c.Value.Value = c.Key;
-						widget.Children.Add( LoadWidget( c.Value ) );
-					}
-				}
-				else
-					FieldLoader.LoadField( widget, child.Key, child.Value );
-			}
-	
-			return widget;
-		}
-	
-		static Widget NewWidget( string widgetType )
-		{
-			if( widgetType.Contains( "@" ) )
-				widgetType = widgetType.Substring( 0, widgetType.IndexOf( "@" ) );
-			// TODO: make a particular widget by reflection, or by `switch( widgetType )`
-			
-			Log.Write("Creating Widget of type {0}",widgetType);
-			return new Widget();
+			base.Draw(rgbaRenderer,renderer);
 		}
 	}
 }

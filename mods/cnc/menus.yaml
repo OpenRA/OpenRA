@@ -1,13 +1,35 @@
-Container:
-	Id:ROOT
-	X:10
-	Y:10
-	Width:400
-	Height:400
+Background:
+	Id:MAINMENU_BG
+	X:400
+	Y:200
+	Width:250
+	Height:200
 	Children:
-		Button:
-			Id:BUTTON1
-			X:40
-			Y:80
-			Width:100
-			Height:80
+		Label@MAINMENU_LABEL_TITLE:
+			Id:MAINMENU_LABEL_TITLE
+			X:445
+			Y:220
+			Width:160
+			Height:25
+			Text:OpenRA Main Menu
+		Button@MAINMENU_BUTTON_JOIN:
+			Id:MAINMENU_BUTTON_JOIN
+			X:445
+			Y:270
+			Width:160
+			Height:25
+			Text:Join Game
+		Button@MAINMENU_BUTTON_CREATE:
+			Id:MAINMENU_BUTTON_CREATE
+			X:445
+			Y:305
+			Width:160
+			Height:25
+			Text:Create Game
+		Button@MAINMENU_BUTTON_QUIT:
+			Id:MAINMENU_BUTTON_QUIT
+			X:445
+			Y:340
+			Width:160
+			Height:25
+			Text:Quit

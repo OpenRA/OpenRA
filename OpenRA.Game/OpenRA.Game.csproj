@@ -276,7 +276,11 @@
     <Compile Include="Traits\LineBuild.cs" />
     <Compile Include="Traits\World\Theater.cs" />
     <Compile Include="Traits\Cloak.cs" />
-    <Compile Include="Chrome\ChromeWindow.cs" />
+    <Compile Include="Chrome\WidgetLoader.cs" />
+    <Compile Include="Chrome\ButtonWidget.cs" />
+    <Compile Include="Chrome\Widget.cs" />
+    <Compile Include="Chrome\BackgroundWidget.cs" />
+    <Compile Include="Chrome\LabelWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
