@@ -74,7 +74,8 @@ namespace OpenRA
 			var asms = new List<Pair<Assembly, string>> (typeof(Game).Assembly.GetTypes()
 			                                             .Select(a => a.Namespace)
 			                                             .Distinct()
-			                                             .Select(b => Pair.New(typeof(Game).Assembly, b)));
+			                                             .Where(b => b != null)
+			                                             .Select(c => Pair.New(typeof(Game).Assembly, c)));
 
 			// Mod assemblies assumed to contain a single namespace
 			foreach (var a in m.Assemblies)

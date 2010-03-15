@@ -281,7 +281,7 @@
     <Compile Include="Chrome\Widget.cs" />
     <Compile Include="Chrome\BackgroundWidget.cs" />
     <Compile Include="Chrome\LabelWidget.cs" />
-    <Compile Include="Chrome\WidgetActions.cs" />
+    <Compile Include="Chrome\DefaultWidgetDelegates.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
