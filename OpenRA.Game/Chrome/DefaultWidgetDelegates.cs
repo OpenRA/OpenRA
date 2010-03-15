@@ -63,7 +63,7 @@ namespace OpenRA.Widgets.Delegates
 				int i = 0;
 				GameList = MasterServerQuery.GetGameList(Game.Settings.MasterServer);
 				
-				bg.Children.Clear();
+				//bg.Children.Clear();
 
 				foreach (var game in GameList)
 				{
