@@ -96,14 +96,14 @@ Container:
 					Id:JOINSERVER_LABEL_TITLE
 					X:0
 					Y:20
-					Width:250
+					Width:450
 					Height:25
 					Text:Quick'n'dirty Server Browser
 					Align:Center
 				Button@JOINSERVER_BUTTON_CANCEL:
 					Id:JOINSERVER_BUTTON_CANCEL
-					X:PARENT_RIGHT - 170
-					Y:PARENT_BOTTOM - 35
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
 					Width:160
 					Height:25
 					Text:Cancel

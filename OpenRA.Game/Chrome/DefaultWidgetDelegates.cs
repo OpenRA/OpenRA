@@ -72,7 +72,7 @@ namespace OpenRA.Widgets.Delegates
 				foreach (var game in GameList)
 				{
 					ButtonWidget b = new ButtonWidget();
-					b.Bounds = new Rectangle(bg.Bounds.X + 10, bg.Bounds.Y + height, width, 25);	
+					b.Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25);	
 					b.GetType().GetField("Id").SetValue( b, "JOIN_GAME_{0}".F(i));
 					b.GetType().GetField("Text").SetValue( b, "{0} ({1})".F(game.Name, game.Address));
 					b.GetType().GetField("Delegate").SetValue( b, "ServerBrowserDelegate");
