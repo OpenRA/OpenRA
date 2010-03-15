@@ -50,9 +50,11 @@ namespace OpenRA.Server
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
 		static int lastPing = 0;
+		static bool isInternetServer;
 
-		public static void ServerMain(string name, int port, int extport, string[] mods)
+		public static void ServerMain(bool internetServer, string name, int port, int extport, string[] mods)
 		{
+			isInternetServer = internetServer;
 			listener = new TcpListener(IPAddress.Any, port);
 			initialMods = mods;
 			Name = name;
@@ -556,7 +558,7 @@ namespace OpenRA.Server
 
 		static void PingMasterServer()
 		{
-			if (wc.IsBusy) return;
+			if (wc.IsBusy || !isInternetServer) return;
 
 			wc.DownloadDataAsync(new Uri(
 				"http://open-ra.org/master/ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}".F(

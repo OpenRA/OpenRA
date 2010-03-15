@@ -48,6 +48,7 @@ namespace OpenRA.GameRules
 		public readonly string GameName = "OpenRA Game";
 		public readonly int ListenPort = 1234;
 		public readonly int ExternalPort = 1234;
+		public readonly bool InternetServer = true;
 		
 		// Gameplay options
 		// TODO: These need to die
