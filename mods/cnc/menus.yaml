@@ -41,7 +41,7 @@ Container:
 					Delegate:MainMenuButtonsDelegate
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
-			X:300
+			X:WINDOW_RIGHT/2 - 225
 			Y:200
 			Width:450
 			Height:145
