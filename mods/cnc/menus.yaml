@@ -22,7 +22,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Join Game
-					Delegate:MainMenuButtonsDelegate
+					Delegate:ServerBrowserDelegate
 				Button@MAINMENU_BUTTON_CREATE:
 					Id:MAINMENU_BUTTON_CREATE
 					X:45
@@ -83,4 +83,28 @@ Container:
 					Width:160
 					Height:25
 					Text:Create
+					Delegate:MainMenuButtonsDelegate
+		Background@JOINSERVER_BG:
+			Id:JOINSERVER_BG
+			X:WINDOW_RIGHT/2 - 225
+			Y:200
+			Width:450
+			Height:400
+			Visible:false
+			Children:
+				Label@JOINSERVER_LABEL_TITLE:
+					Id:JOINSERVER_LABEL_TITLE
+					X:0
+					Y:20
+					Width:250
+					Height:25
+					Text:Quick'n'dirty Server Browser
+					Align:Center
+				Button@JOINSERVER_BUTTON_CANCEL:
+					Id:JOINSERVER_BUTTON_CANCEL
+					X:PARENT_RIGHT - 170
+					Y:PARENT_BOTTOM - 35
+					Width:160
+					Height:25
+					Text:Cancel
 					Delegate:MainMenuButtonsDelegate
