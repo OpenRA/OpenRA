@@ -22,10 +22,10 @@ namespace OpenRA.FileFormats
 			{
 				switch (t[0])
 				{
-					case '+': ApplyBinop(s, (x, y) => x + y); break;
-					case '-': ApplyBinop(s, (x, y) => x - y); break;
-					case '*': ApplyBinop(s, (x, y) => x * y); break;
-					case '/': ApplyBinop(s, (x, y) => x / y); break;
+					case '+': ApplyBinop(s, (x, y) => y + x); break;
+					case '-': ApplyBinop(s, (x, y) => y - x); break;
+					case '*': ApplyBinop(s, (x, y) => y * x); break;
+					case '/': ApplyBinop(s, (x, y) => y / x); break;
 					default: s.Push(int.Parse(t)); break;
 				}
 			}
@@ -65,7 +65,7 @@ namespace OpenRA.FileFormats
 		}
 
 		static readonly Dictionary<string, int> Prec
-			= new Dictionary<string, int> { { "+", 0 }, { "-", 0 }, { "*", 1 }, { "/", 1 } };
+			= new Dictionary<string, int> { { "+", 0 }, { "-", 0 }, { "*", 1 }, { "/", 1 }, { "(", -1 } };
 
 		static IEnumerable<string> Tokens(string expr, string ops)
 		{
