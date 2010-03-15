@@ -51,9 +51,11 @@ namespace OpenRA.Server
 												// of leeway.
 		static int lastPing = 0;
 		static bool isInternetServer;
+		static string masterServerUrl;
 
-		public static void ServerMain(bool internetServer, string name, int port, int extport, string[] mods)
+		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods)
 		{
+			Server.masterServerUrl = masterServerUrl;
 			isInternetServer = internetServer;
 			listener = new TcpListener(IPAddress.Any, port);
 			initialMods = mods;
@@ -561,7 +563,7 @@ namespace OpenRA.Server
 			if (wc.IsBusy || !isInternetServer) return;
 
 			wc.DownloadDataAsync(new Uri(
-				"http://open-ra.org/master/ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}".F(
+				masterServerUrl + "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}".F(
 				ExternalPort, Uri.EscapeUriString(Name),
 				GameStarted ? 2 : 1,	// todo: post-game states, etc.
 				lobbyInfo.Clients.Count,

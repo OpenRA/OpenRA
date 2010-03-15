@@ -154,7 +154,7 @@ namespace OpenRA
 		internal static void CreateServer()
 		{
 			// todo: LobbyInfo is the wrong place for this.
-			Server.Server.ServerMain(Settings.InternetServer, Settings.GameName, Settings.ListenPort, 
+			Server.Server.ServerMain(Settings.InternetServer, Settings.MasterServer, Settings.GameName, Settings.ListenPort, 
 				Settings.ExternalPort, LobbyInfo.GlobalSettings.Mods);
 
 			JoinServer(IPAddress.Loopback.ToString(), Settings.ListenPort);

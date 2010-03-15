@@ -49,6 +49,7 @@ namespace OpenRA.GameRules
 		public readonly int ListenPort = 1234;
 		public readonly int ExternalPort = 1234;
 		public readonly bool InternetServer = true;
+		public readonly string MasterServer = "http://open-ra.org/master/";
 		
 		// Gameplay options
 		// TODO: These need to die
