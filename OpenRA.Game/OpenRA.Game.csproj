@@ -104,6 +104,7 @@
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />
+    <Compile Include="Server\MasterServerQuery.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Shroud.cs" />
