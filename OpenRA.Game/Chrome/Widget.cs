@@ -28,9 +28,7 @@ namespace OpenRA.Widgets
 		
 		public virtual void Initialize()
 		{
-			Log.Write("{0} has parent {1}", Id, Parent == null ? "NULL" : Parent.Id);
-			
-			// Evaluate the bounds rectangle
+			// Parse the YAML equations to find the widget bounds
 			Rectangle parentBounds = (Parent == null) ? new Rectangle(0,0,Game.viewport.Width,Game.viewport.Height) : Parent.Bounds;
 			
 			Dictionary<string, int> substitutions = new Dictionary<string, int>();
@@ -49,12 +47,12 @@ namespace OpenRA.Widgets
 			                       width,
 			                       height);
 			
-			// Create the clickrect
+			// Calculate the region that we accept mouse events in
 			EventBounds = Bounds;	
 			foreach (var child in Children)
 			{
 				child.Initialize();
-				EventBounds = Rectangle.Union(EventBounds, child.Bounds);
+				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
 			}
 
 		}
@@ -63,7 +61,7 @@ namespace OpenRA.Widgets
 		{
 			EventBounds = Bounds;
 			foreach (var child in Children)
-				EventBounds = Rectangle.Union(EventBounds, child.Bounds);
+				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
 			
 			Parent.UpdateEventBounds();
 		}
@@ -76,10 +74,8 @@ namespace OpenRA.Widgets
 			
 			// Can any of our children handle this?
 			foreach (var child in Children)
-			{
 				if (child.HandleInput(mi))
 					return true;
-			}
 
 			// Mousedown
 			if (Delegate != null && mi.Event == MouseInputEvent.Down)
@@ -107,8 +103,6 @@ namespace OpenRA.Widgets
 		public void AddChild(Widget child)
 		{
 			child.Parent = this;
-			Log.Write("{0} setting parent {1}", child.Id, Id);
-
 			Children.Add( child );
 		}
 		
