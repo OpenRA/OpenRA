@@ -56,6 +56,7 @@
     <Compile Include="Collections\Set.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="Dune2ShpReader.cs" />
+    <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
     <Compile Include="FileSystem.cs" />
