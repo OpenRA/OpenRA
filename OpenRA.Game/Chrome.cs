@@ -134,6 +134,7 @@ namespace OpenRA
 			// Hack around a bug in MiniYaml
 			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
 			WidgetLoader.rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());
+			WidgetLoader.rootWidget.Initialize();
 		}
 
 		List<string> visibleTabs = new List<string>();

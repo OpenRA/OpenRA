@@ -30,10 +30,9 @@ namespace OpenRA
 				else
 					FieldLoader.LoadField( widget, child.Key, child.Value );
 			}
-			widget.Initialize();
 			return widget;
 		}
-	
+			
 		static Widget NewWidget( string widgetType )
 		{
 			if( widgetType.Contains( "@" ) )

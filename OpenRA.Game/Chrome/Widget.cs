@@ -23,44 +23,66 @@ namespace OpenRA.Widgets
 
 		// Calculated internally
 		public Rectangle Bounds;
-		public Rectangle ClickRect;
+		public Rectangle EventBounds;
+		public Widget Parent = null;
 		
 		public virtual void Initialize()
 		{
+			Log.Write("{0} has parent {1}", Id, Parent == null ? "NULL" : Parent.Id);
+			
 			// Evaluate the bounds rectangle
-			Bounds = new Rectangle(int.Parse(X),int.Parse(Y),int.Parse(Width),int.Parse(Height));
-		
+			Rectangle parentBounds = (Parent == null) ? new Rectangle(0,0,Game.viewport.Width,Game.viewport.Height) : Parent.Bounds;
+			
+			Dictionary<string, int> substitutions = new Dictionary<string, int>();
+				substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
+				substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
+				substitutions.Add("PARENT_RIGHT", parentBounds.Width);
+				substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+			int width = Evaluator.Evaluate(Width, substitutions);
+			int height = Evaluator.Evaluate(Height, substitutions);
+					
+			substitutions.Add("WIDTH", width);
+			substitutions.Add("HEIGHT", height);
+			
+			Bounds = new Rectangle(parentBounds.X + Evaluator.Evaluate(X, substitutions),
+			                       parentBounds.Y + Evaluator.Evaluate(Y, substitutions),
+			                       width,
+			                       height);
 			
 			// Create the clickrect
-			ClickRect = Bounds;	
+			EventBounds = Bounds;	
 			foreach (var child in Children)
-				ClickRect = Rectangle.Union(ClickRect, child.Bounds);
+			{
+				child.Initialize();
+				EventBounds = Rectangle.Union(EventBounds, child.Bounds);
+			}
 
+		}
+		
+		public virtual void UpdateEventBounds()
+		{
+			EventBounds = Bounds;
+			foreach (var child in Children)
+				EventBounds = Rectangle.Union(EventBounds, child.Bounds);
+			
+			Parent.UpdateEventBounds();
 		}
 		
 		public virtual bool HandleInput(MouseInput mi)
 		{
-			if (!Visible)
+			// Are we able to handle this event?
+			if (!Visible || !EventBounds.Contains(mi.Location.X,mi.Location.Y))
 				return false;
 			
-			// Do any of our children handle this?
-			bool caught = false;
-			if (ClickRect.Contains(mi.Location.X,mi.Location.Y))
+			// Can any of our children handle this?
+			foreach (var child in Children)
 			{
-				foreach (var child in Children)
-				{
-					caught = child.HandleInput(mi);
-					if (caught)
-						break;
-				}
+				if (child.HandleInput(mi))
+					return true;
 			}
-			
-			// Child has handled the event
-			if (caught)
-				return true;
-						
+
 			// Mousedown
-			if (Delegate != null && mi.Event == MouseInputEvent.Down && ClickRect.Contains(mi.Location.X,mi.Location.Y))
+			if (Delegate != null && mi.Event == MouseInputEvent.Down)
 			{
 				foreach (var mod in Game.ModAssemblies)
 				{
@@ -84,6 +106,9 @@ namespace OpenRA.Widgets
 		
 		public void AddChild(Widget child)
 		{
+			child.Parent = this;
+			Log.Write("{0} setting parent {1}", child.Id, Id);
+
 			Children.Add( child );
 		}
 		

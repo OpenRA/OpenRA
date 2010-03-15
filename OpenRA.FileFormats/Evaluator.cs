@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +29,6 @@ namespace OpenRA.FileFormats
 					default: s.Push(int.Parse(t)); break;
 				}
 			}
-
 			return s.Pop();
 		}
 
@@ -43,7 +42,6 @@ namespace OpenRA.FileFormats
 		static IEnumerable<string> ToPostfix(IEnumerable<string> toks, Dictionary<string, int> syms)
 		{
 			var s = new Stack<string>();
-
 			foreach (var t in toks)
 			{
 				if (t[0] == '(') s.Push(t);
@@ -53,14 +51,20 @@ namespace OpenRA.FileFormats
 					while ((temp = s.Pop()) != "(") yield return temp;
 				}
 				else if (char.IsNumber(t[0])) yield return t;
-				else if (char.IsLetter(t[0])) yield return syms[t].ToString();
+				else if (char.IsLetter(t[0])) 
+				{
+					if (!syms.ContainsKey(t))
+						throw new InvalidOperationException("Substitution `{0}` undefined".F(t));
+					    
+					yield return syms[t].ToString();;
+				}
 				else
 				{
 					while (s.Count > 0 && Prec[t] <= Prec[s.Peek()]) yield return s.Pop();
 					s.Push(t);
 				}
 			}
-
+			
 			while (s.Count > 0) yield return s.Pop();
 		}
 
