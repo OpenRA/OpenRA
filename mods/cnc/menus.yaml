@@ -100,6 +100,14 @@ Container:
 					Height:25
 					Text:Quick'n'dirty Server Browser
 					Align:Center
+				Button@JOINSERVER_BUTTON_DIRECTCONNECT:
+					Id:JOINSERVER_BUTTON_DIRECTCONNECT
+					X:PARENT_RIGHT - 360
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Direct Connect
+					Delegate:ServerBrowserDelegate
 				Button@JOINSERVER_BUTTON_CANCEL:
 					Id:JOINSERVER_BUTTON_CANCEL
 					X:PARENT_RIGHT - 180
@@ -107,4 +115,4 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
-					Delegate:MainMenuButtonsDelegate
+					Delegate:ServerBrowserDelegate

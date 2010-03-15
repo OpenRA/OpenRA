@@ -40,13 +40,7 @@ namespace OpenRA.Widgets.Delegates
 				Game.CreateServer();
 				return true;
 			}
-			
-			if (w.Id == "JOINSERVER_BUTTON_CANCEL")
-			{
-				WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
-				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
-				return true;
-			}
+
 			return false;
 		}
 	}
@@ -86,6 +80,12 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			}
 			
+			if (w.Id == "JOINSERVER_BUTTON_DIRECTCONNECT")
+			{
+				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+				return true;
+			}
+			
 			if (w.Id.Substring(0,10) == "JOIN_GAME_")
 			{
 				int index = int.Parse(w.Id.Substring(10));
@@ -94,6 +94,13 @@ namespace OpenRA.Widgets.Delegates
 				Game.JoinServer(game.Address.Split(':')[0], int.Parse(game.Address.Split(':')[1]));
 				return true;
 			}			
+				
+			if (w.Id == "JOINSERVER_BUTTON_CANCEL")
+			{
+				WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
+				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				return true;
+			}
 			
 			return false;
 		}
