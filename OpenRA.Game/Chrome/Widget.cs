@@ -5,27 +5,32 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets.Delegates;
 
+
 namespace OpenRA.Widgets
 {
 	public class Widget
 	{
-		// Typically defined in YAML
+		// Info defined in YAML
 		public readonly string Id = null;
-		public readonly int X = 0;
-		public readonly int Y = 0;
-		public readonly int Width = 0;
-		public readonly int Height = 0;
+		public readonly string X = "0";
+		public readonly string Y = "0";
+		public readonly string Width = "0";
+		public readonly string Height = "0";
 		public readonly string Delegate = null;
 
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Calculated internally
-		public Rectangle Bounds {get {return new Rectangle(X,Y,Width, Height);}}
+		public Rectangle Bounds;
 		public Rectangle ClickRect;
 		
 		public virtual void Initialize()
 		{
+			// Evaluate the bounds rectangle
+			Bounds = new Rectangle(int.Parse(X),int.Parse(Y),int.Parse(Width),int.Parse(Height));
+		
+			
 			// Create the clickrect
 			ClickRect = Bounds;	
 			foreach (var child in Children)
