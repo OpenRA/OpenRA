@@ -9,24 +9,27 @@ namespace OpenRA.Widgets
 		public readonly string Text = null;
 		public readonly string Align = "Left";
 		
-		public override void Draw(SpriteRenderer rgbaRenderer, Renderer renderer)
+		public override void Draw()
 		{		
-			if (Visible)
+			if (!Visible)
 			{
-				Rectangle r = Bounds;
-				renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
-				
-				int2 bounds = renderer.BoldFont.Measure(Text);
-				int2 position = new int2(X,Y);
-				
-				if (Align == "Center")
-					position = new int2(X+Width/2, Y+Height/2) - new int2(bounds.X / 2, bounds.Y/2);
-				
-				
-				renderer.BoldFont.DrawText(rgbaRenderer, Text, position, Color.White);
-				renderer.Device.DisableScissor();
+				base.Draw();
+				return;
 			}
-			base.Draw(rgbaRenderer,renderer);
+		
+			Rectangle r = Bounds;
+			Game.chrome.renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
+			
+			int2 bounds = Game.chrome.renderer.BoldFont.Measure(Text);
+			int2 position = new int2(X,Y);
+			
+			if (Align == "Center")
+				position = new int2(X+Width/2, Y+Height/2) - new int2(bounds.X / 2, bounds.Y/2);
+			
+			
+			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text, position, Color.White);
+			Game.chrome.renderer.Device.DisableScissor();
+			base.Draw();
 		}
 	}
 }

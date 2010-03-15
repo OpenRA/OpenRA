@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using System.Reflection;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -54,8 +55,7 @@ namespace OpenRA
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
 		static bool changePending;
-		
-		
+		public static Pair<Assembly, string>[] ModAssemblies;
 
 		public static void LoadModPackages(Manifest manifest)
 		{
@@ -68,13 +68,32 @@ namespace OpenRA
 			Timer.Time("mount temporary packages: {0}");
 		}
 		
+		internal static void LoadModAssemblies(Manifest m)
+		{	
+			// All the core namespaces
+			var asms = new List<Pair<Assembly, string>> (typeof(Game).Assembly.GetTypes()
+			                                             .Select(a => a.Namespace)
+			                                             .Distinct()
+			                                             .Select(b => Pair.New(typeof(Game).Assembly, b)));
+
+			// Mod assemblies assumed to contain a single namespace
+			foreach (var a in m.Assemblies)
+				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
+			ModAssemblies = asms.ToArray();
+			
+			foreach(var foo in ModAssemblies)
+			{
+				Log.Write("Tracking namespace {0} for reflection",foo.Second);
+			}
+		}
+		
 		public static void ChangeMap(string mapName)
 		{
 			Timer.Time( "----ChangeMap" );
 
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
-
+			Game.LoadModAssemblies(manifest);
 			Game.changePending = false;
 			Game.mapName = mapName;
 			SheetBuilder.Initialize(renderer);
@@ -113,14 +132,14 @@ namespace OpenRA
 
 			Timer.Time( "----end ChangeMap" );
 			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
-		}
+		}	
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
 			
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
-
+			
 			// todo
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;

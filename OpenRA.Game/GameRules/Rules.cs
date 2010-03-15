@@ -65,8 +65,6 @@ namespace OpenRA
 	
 			var yamlRules = m.Rules.Reverse().Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
-			ActorInfo.LoadModAssemblies(m);
-			WidgetLoader.LoadModAssemblies(m);
 			Info = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
 				Info.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));

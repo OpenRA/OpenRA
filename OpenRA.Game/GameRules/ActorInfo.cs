@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -20,9 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -71,26 +69,12 @@ namespace OpenRA.GameRules
 			return node;
 		}
 
-		static Pair<Assembly, string>[] ModAssemblies;
-		public static void LoadModAssemblies(Manifest m)
-		{
-			var asms = new List<Pair<Assembly, string>>();
-
-			// all the core stuff is in this assembly
-			asms.Add(Pair.New(typeof(ITraitInfo).Assembly, typeof(ITraitInfo).Namespace));
-
-			// add the mods
-			foreach (var a in m.Assemblies)
-				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
-			ModAssemblies = asms.ToArray();
-		}
-
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
 			if (traitName.Contains('@'))
 				traitName = traitName.Substring(0, traitName.IndexOf('@'));
 
-			foreach (var mod in ModAssemblies)
+			foreach (var mod in Game.ModAssemblies)
 			{
 				var fullTypeName = mod.Second + "." + traitName + "Info";
 				var info = (ITraitInfo)mod.First.CreateInstance(fullTypeName);

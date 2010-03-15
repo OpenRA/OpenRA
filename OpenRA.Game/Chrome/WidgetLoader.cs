@@ -1,42 +1,17 @@
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
-using OpenRA.Widgets.Actions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 
 namespace OpenRA
 {
 	class WidgetLoader
 	{
-		static Pair<Assembly, string>[] ModAssemblies;
-		public static Pair<Assembly, string>[] WidgetActionAssemblies;
-		public static void LoadModAssemblies(Manifest m)
-		{
-			var asms = new List<Pair<Assembly, string>>();
-
-			// all the core stuff is in this assembly
-			asms.Add(Pair.New(typeof(Widget).Assembly, typeof(Widget).Namespace));
-
-			// add the mods
-			foreach (var a in m.Assemblies)
-				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
-			ModAssemblies = asms.ToArray();
-			
-			asms.Clear();
-
-			// all the core stuff is in this assembly
-			asms.Add(Pair.New(typeof(IWidgetAction).Assembly, typeof(IWidgetAction).Namespace));
-
-			// add the mods
-			foreach (var a in m.Assemblies)
-				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
-			WidgetActionAssemblies = asms.ToArray();
-		}
-		
 		public static Widget rootWidget;
 		public static Widget LoadWidget( MiniYaml node )
 		{
@@ -64,7 +39,7 @@ namespace OpenRA
 			if( widgetType.Contains( "@" ) )
 				widgetType = widgetType.Substring( 0, widgetType.IndexOf( "@" ) );
 			
-			foreach (var mod in ModAssemblies)
+			foreach (var mod in Game.ModAssemblies)
 			{
 				var fullTypeName = mod.Second + "." + widgetType + "Widget";
 				var widget = (Widget)mod.First.CreateInstance(fullTypeName);

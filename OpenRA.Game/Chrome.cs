@@ -34,9 +34,9 @@ namespace OpenRA
 {
 	class Chrome : IHandleInput
 	{
-		readonly Renderer renderer;
+		public readonly Renderer renderer;
+		public readonly SpriteRenderer rgbaRenderer;
 		readonly LineRenderer lineRenderer;
-		readonly SpriteRenderer rgbaRenderer;
 		readonly SpriteRenderer shpRenderer;
 		
 		string chromeCollection;
@@ -424,7 +424,7 @@ namespace OpenRA
 
 		public void DrawMainMenu( World world )
 		{
-			WidgetLoader.rootWidget.Draw(rgbaRenderer,renderer);
+			WidgetLoader.rootWidget.Draw();
 		}
 		
 		public void DrawLobby( World world )

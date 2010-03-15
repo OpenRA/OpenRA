@@ -3,54 +3,49 @@ using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
-namespace OpenRA.Widgets.Actions
+namespace OpenRA.Widgets.Delegates
 {
-	public interface IWidgetAction { bool OnClick(MouseInput mi); }
+	public interface IWidgetDelegate { bool OnClick(Widget w, MouseInput mi); }
 
-	public class QuitButtonAction : IWidgetAction
+	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
-		public bool OnClick(MouseInput mi)
+		public bool OnClick(Widget w, MouseInput mi)
 		{
-			Game.Exit();	
-			return true;
-		}
-	}
-	
-	public class JoinServerButtonAction : IWidgetAction
-	{
-		public bool OnClick(MouseInput mi)
-		{
-			Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
-			return true;
-		}
-	}
-	
-	public class OpenCreateServerMenuButtonAction : IWidgetAction
-	{
-		public bool OnClick(MouseInput mi)
-		{
-			WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-			WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = true;
-			return true;
-		}
-	}
-	
-	public class CloseCreateServerMenuButtonAction : IWidgetAction
-	{
-		public bool OnClick(MouseInput mi)
-		{
-			WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
-			WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
-			return true;
-		}
-	}
-	
-	public class CreateServerMenuButtonAction : IWidgetAction
-	{
-		public bool OnClick(MouseInput mi)
-		{
-			Game.CreateServer();
-			return true;
+			// Main Menu root
+			if (w.Id == "MAINMENU_BUTTON_QUIT")
+			{
+				Game.Exit();	
+				return true;
+			}
+			
+			if (w.Id == "MAINMENU_BUTTON_JOIN")
+			{
+				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+				return true;
+			}
+			
+			if (w.Id == "MAINMENU_BUTTON_CREATE")
+			{
+				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+				WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = true;
+				return true;
+			}
+			
+			// "Create Server" submenu
+			if (w.Id == "CREATESERVER_BUTTON_CANCEL")
+			{
+				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
+				return true;
+			}
+			
+			if (w.Id == "CREATESERVER_BUTTON_START")
+			{
+				Game.CreateServer();
+				return true;
+			}
+			
+			return false;
 		}
 	}
 }
