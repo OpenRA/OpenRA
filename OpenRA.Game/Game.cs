@@ -71,11 +71,9 @@ namespace OpenRA
 		internal static void LoadModAssemblies(Manifest m)
 		{	
 			// All the core namespaces
-			var asms = new List<Pair<Assembly, string>> (typeof(Game).Assembly.GetTypes()
-			                                             .Select(a => a.Namespace)
-			                                             .Distinct()
-			                                             .Where(b => b != null)
-			                                             .Select(c => Pair.New(typeof(Game).Assembly, c)));
+			var asms = typeof(Game).Assembly.GetNamespaces()
+				.Select(c => Pair.New(typeof(Game).Assembly, c))
+				.ToList();
 
 			// Mod assemblies assumed to contain a single namespace
 			foreach (var a in m.Assemblies)

@@ -20,6 +20,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -34,6 +36,11 @@ namespace OpenRA
 		{
 			foreach( var ee in e )
 				fn( ee );
+		}
+
+		public static IEnumerable<string> GetNamespaces(this Assembly a)
+		{
+			return a.GetTypes().Select(t => t.Namespace).Distinct().Where(n => n != null);
 		}
 	}
 }
