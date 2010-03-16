@@ -47,7 +47,8 @@ namespace OpenRA.Widgets.Delegates
 	
 	public class ServerBrowserDelegate : IWidgetDelegate
 	{
-		IEnumerable<GameServer> GameList;
+		GameServer[] GameList;
+		List<Widget> GameButtons = new List<Widget>();
 		
 		public bool OnClick(Widget w, MouseInput mi)
 		{
@@ -55,15 +56,16 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "MAINMENU_BUTTON_JOIN")
 			{
 				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-				Widget bg = 	WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG");
+				Widget bg = WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG");
 				bg.Visible = true;
 				
 				int height = 50;
 				int width = 300;
 				int i = 0;
-				GameList = MasterServerQuery.GetGameList(Game.Settings.MasterServer);
-				
-				//bg.Children.Clear();
+				GameList = MasterServerQuery.GetGameList(Game.Settings.MasterServer).ToArray();
+
+				bg.Children.RemoveAll(a => GameButtons.Contains(a));
+				GameButtons.Clear();
 
 				foreach (var game in GameList)
 				{
@@ -75,6 +77,7 @@ namespace OpenRA.Widgets.Delegates
 				
 					b.EventBounds = b.Bounds;
 					bg.AddChild(b);
+					GameButtons.Add(b);
 					
 					height += 35;
 				}
@@ -91,8 +94,7 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id.Substring(0,10) == "JOIN_GAME_")
 			{
 				int index = int.Parse(w.Id.Substring(10));
-				GameList = MasterServerQuery.GetGameList(Game.Settings.MasterServer);
-				var game = GameList.ElementAt(index);
+				var game = GameList[index];
 				Game.JoinServer(game.Address.Split(':')[0], int.Parse(game.Address.Split(':')[1]));
 				return true;
 			}			
