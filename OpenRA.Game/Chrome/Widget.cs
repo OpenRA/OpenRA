@@ -25,6 +25,8 @@ namespace OpenRA.Widgets
 		public Rectangle Bounds;
 		public Rectangle EventBounds;
 		public Widget Parent = null;
+
+		public Widget() { InputHandler = Lazy.New(() => BindHandler(Delegate)); }
 		
 		public virtual void Initialize()
 		{
@@ -54,8 +56,6 @@ namespace OpenRA.Widgets
 				child.Initialize();
 				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
 			}
-
-			InputHandler = Lazy.New(() => BindHandler(Delegate));
 		}
 
 		static IWidgetDelegate BindHandler(string name)
