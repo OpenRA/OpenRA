@@ -3,7 +3,7 @@ Container:
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:WINDOW_RIGHT/2 - 125
-			Y:200
+			Y:WINDOW_BOTTOM/2 - 100
 			Width:250
 			Height:200
 			Children:
@@ -42,7 +42,7 @@ Container:
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
 			X:WINDOW_RIGHT/2 - 225
-			Y:200
+			Y:WINDOW_BOTTOM/2 - 72
 			Width:450
 			Height:145
 			Visible:false
@@ -87,7 +87,7 @@ Container:
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
 			X:WINDOW_RIGHT/2 - 225
-			Y:200
+			Y:WINDOW_BOTTOM/2 - 200
 			Width:450
 			Height:400
 			Visible:false
