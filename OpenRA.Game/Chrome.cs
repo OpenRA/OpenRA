@@ -29,6 +29,7 @@ using OpenRA.Orders;
 using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Network;
 
 namespace OpenRA
 {
@@ -1065,8 +1066,11 @@ namespace OpenRA
 
 		public bool HitTest(int2 mousePos)
 		{
-			return rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y) 
-				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
+			if (Game.orderManager.Connection.ConnectionState == ConnectionState.PreConnecting)
+				if (rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y))
+					return true;
+
+			return buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 
 		void DrawRightAligned(string text, int2 pos, Color c)
