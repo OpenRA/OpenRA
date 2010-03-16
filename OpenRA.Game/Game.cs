@@ -122,7 +122,9 @@ namespace OpenRA
 
 			skipMakeAnims = true;
 			foreach (var actorReference in world.Map.Actors)
-				world.CreateActor(actorReference.Name, actorReference.Location, world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner) ?? world.players[0]);	
+				world.CreateActor(actorReference.Name, actorReference.Location, 
+					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner) 
+					?? world.players[0]);	
 			skipMakeAnims = false;
 			Timer.Time( "map actors: {0}" );
 
