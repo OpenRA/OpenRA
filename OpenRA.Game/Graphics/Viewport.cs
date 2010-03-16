@@ -83,11 +83,9 @@ namespace OpenRA.Graphics
 			{
 				// what a hack. as soon as we have some real chrome stuff...
 
+				Game.chrome.DrawMainMenu(world);
 				switch( Game.orderManager.Connection.ConnectionState )
 				{
-					case ConnectionState.PreConnecting:
-						Game.chrome.DrawMainMenu( world );
-						break;
 					case ConnectionState.Connecting:
 						Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 						break;
