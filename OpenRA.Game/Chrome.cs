@@ -93,7 +93,7 @@ namespace OpenRA
 		Sprite mapChooserSprite;
 		int mapOffset = 0;
 						
-		public Chrome(Renderer r)
+		public Chrome(Renderer r, Manifest m)
 		{
 			this.renderer = r;
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
@@ -129,8 +129,8 @@ namespace OpenRA
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
 			
-			// TODO: make this generic
-			var widgetYaml = MiniYaml.FromFile("mods/cnc/menus.yaml");
+			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+
 			// Hack around a bug in MiniYaml
 			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
 			WidgetLoader.rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());

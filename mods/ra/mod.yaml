@@ -35,3 +35,6 @@ Chrome:
 	
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll:	Traits used
+
+ChromeLayout:
+	mods/ra/menus.yaml:

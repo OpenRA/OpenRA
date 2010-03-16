@@ -128,7 +128,7 @@ namespace OpenRA
 			skipMakeAnims = false;
 			Timer.Time( "map actors: {0}" );
 
-			chrome = new Chrome(renderer);
+			chrome = new Chrome(renderer, manifest);
 			Timer.Time( "chrome: {0}" );
 
 			Timer.Time( "----end ChangeMap" );
