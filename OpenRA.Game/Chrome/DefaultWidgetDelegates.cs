@@ -87,12 +87,14 @@ namespace OpenRA.Widgets.Delegates
 			
 			if (w.Id == "JOINSERVER_BUTTON_DIRECTCONNECT")
 			{
+				Game.chrome.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
 				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				return true;
 			}
 			
 			if (w.Id.Substring(0,10) == "JOIN_GAME_")
 			{
+				Game.chrome.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
 				int index = int.Parse(w.Id.Substring(10));
 				var game = GameList[index];
 				Game.JoinServer(game.Address.Split(':')[0], int.Parse(game.Address.Split(':')[1]));
