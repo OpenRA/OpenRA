@@ -131,9 +131,7 @@ namespace OpenRA
 			
 			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
-			// Hack around a bug in MiniYaml
-			widgetYaml.Values.FirstOrDefault().Value = widgetYaml.Keys.FirstOrDefault();
-			WidgetLoader.rootWidget = WidgetLoader.LoadWidget(widgetYaml.Values.FirstOrDefault());
+			WidgetLoader.rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
 			WidgetLoader.rootWidget.Initialize();
 		}
 

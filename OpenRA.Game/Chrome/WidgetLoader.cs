@@ -1,49 +1,38 @@
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
-using OpenRA.Widgets;
 using System;
+using OpenRA.FileFormats;
+using OpenRA.Widgets;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Linq;
 
 namespace OpenRA
 {
 	class WidgetLoader
 	{
 		public static Widget rootWidget;
-		public static Widget LoadWidget( MiniYaml node )
+		public static Widget LoadWidget(KeyValuePair<string, MiniYaml> node)
 		{
-			var widget = NewWidget( node.Value );
-			foreach( var child in node.Nodes )
+			var widget = NewWidget(node.Key);
+			foreach (var child in node.Value.Nodes)
 			{
-				if( child.Key == "Children" )
-				{
-					foreach( var c in child.Value.Nodes )
-					{
-						// Hack around a bug in MiniYaml
-						c.Value.Value = c.Key;
-						widget.AddChild( LoadWidget( c.Value ) );
-					}
-				}
+				if (child.Key == "Children")
+					foreach (var c in child.Value.Nodes)
+						widget.AddChild(LoadWidget(c));
 				else
-					FieldLoader.LoadField( widget, child.Key, child.Value );
+					FieldLoader.LoadField(widget, child.Key, child.Value);
 			}
 			return widget;
 		}
-			
-		static Widget NewWidget( string widgetType )
+
+		static Widget NewWidget(string widgetType)
 		{
 			widgetType = widgetType.Split('@')[0];
-			
+
 			foreach (var mod in Game.ModAssemblies)
 			{
 				var fullTypeName = mod.Second + "." + widgetType + "Widget";
 				var widget = (Widget)mod.First.CreateInstance(fullTypeName);
 				if (widget == null) continue;
-				
-				Log.Write("Creating Widget of type {0}",widgetType);
+
+				Log.Write("Creating Widget of type {0}", widgetType);
 				return widget;
 			}
 
