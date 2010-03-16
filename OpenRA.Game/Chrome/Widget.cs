@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Widgets.Delegates;
-
 
 namespace OpenRA.Widgets
 {
@@ -54,7 +52,6 @@ namespace OpenRA.Widgets
 				child.Initialize();
 				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
 			}
-
 		}
 		
 		public virtual void UpdateEventBounds()
@@ -119,5 +116,6 @@ namespace OpenRA.Widgets
 		}
 		
 	}
-	class ContainerWidget : Widget {	}
+
+	class ContainerWidget : Widget { }
 }

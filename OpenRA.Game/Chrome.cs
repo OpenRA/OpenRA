@@ -1069,7 +1069,8 @@ namespace OpenRA
 
 		public bool HitTest(int2 mousePos)
 		{
-			return buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
+			return WidgetLoader.rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y) 
+				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 
 		void DrawRightAligned(string text, int2 pos, Color c)
