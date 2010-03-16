@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);
 
-			renderer.BeginFrame(r1, r2, scrollPosition);
+			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
 
 			if( Game.orderManager.GameStarted )
 			{
