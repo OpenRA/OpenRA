@@ -35,8 +35,7 @@ namespace OpenRA
 			
 		static Widget NewWidget( string widgetType )
 		{
-			if( widgetType.Contains( "@" ) )
-				widgetType = widgetType.Substring( 0, widgetType.IndexOf( "@" ) );
+			widgetType = widgetType.Split('@')[0];
 			
 			foreach (var mod in Game.ModAssemblies)
 			{
