@@ -7,7 +7,6 @@ namespace OpenRA
 {
 	class WidgetLoader
 	{
-		public static Widget rootWidget;
 		public static Widget LoadWidget(KeyValuePair<string, MiniYaml> node)
 		{
 			var widget = NewWidget(node.Key);

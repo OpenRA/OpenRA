@@ -22,16 +22,16 @@ namespace OpenRA.Widgets.Delegates
 			
 			if (w.Id == "MAINMENU_BUTTON_CREATE")
 			{
-				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-				WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+				Game.chrome.rootWidget.GetWidget("CREATESERVER_BG").Visible = true;
 				return true;
 			}
 			
 			// "Create Server" submenu
 			if (w.Id == "CREATESERVER_BUTTON_CANCEL")
 			{
-				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
-				WidgetLoader.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
 				return true;
 			}
 			
@@ -55,8 +55,8 @@ namespace OpenRA.Widgets.Delegates
 			// Main Menu root
 			if (w.Id == "MAINMENU_BUTTON_JOIN")
 			{
-				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-				Widget bg = WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG");
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+				Widget bg = Game.chrome.rootWidget.GetWidget("JOINSERVER_BG");
 				bg.Visible = true;
 				
 				int height = 50;
@@ -101,8 +101,8 @@ namespace OpenRA.Widgets.Delegates
 				
 			if (w.Id == "JOINSERVER_BUTTON_CANCEL")
 			{
-				WidgetLoader.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
-				WidgetLoader.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
 				return true;
 			}
 			

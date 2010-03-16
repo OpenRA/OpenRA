@@ -131,10 +131,11 @@ namespace OpenRA
 			
 			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
-			WidgetLoader.rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
-			WidgetLoader.rootWidget.Initialize();
+			rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
+			rootWidget.Initialize();
 		}
 
+		public Widget rootWidget;
 		List<string> visibleTabs = new List<string>();
 		
 		public void Tick(World world)
@@ -421,10 +422,7 @@ namespace OpenRA
 			
 		}
 
-		public void DrawMainMenu( World world )
-		{
-			WidgetLoader.rootWidget.Draw();
-		}
+		public void DrawMainMenu(World world) { rootWidget.Draw(); }
 		
 		public void DrawLobby( World world )
 		{
@@ -1047,7 +1045,7 @@ namespace OpenRA
 		int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
-			if (WidgetLoader.rootWidget.HandleInput(mi))
+			if (rootWidget.HandleInput(mi))
 				return true;
 			
 			if (mi.Event == MouseInputEvent.Move)
@@ -1067,7 +1065,7 @@ namespace OpenRA
 
 		public bool HitTest(int2 mousePos)
 		{
-			return WidgetLoader.rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y) 
+			return rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y) 
 				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 
