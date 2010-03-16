@@ -52,9 +52,6 @@ namespace OpenRA.Orders
 
 		public void Tick( World world )
 		{
-			if (!Game.Settings.RepairRequiresConyard)
-				return;
-
 			var hasFact = world.Queries.OwnedBy[world.LocalPlayer]
 				.WithTrait<ConstructionYard>()
 				.Any();

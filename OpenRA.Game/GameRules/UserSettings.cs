@@ -50,10 +50,5 @@ namespace OpenRA.GameRules
 		public readonly int ExternalPort = 1234;
 		public readonly bool InternetServer = true;
 		public readonly string MasterServer = "http://open-ra.org/master/";
-		
-		// Gameplay options
-		// TODO: These need to die
-		public readonly bool RepairRequiresConyard = true;
-		public readonly bool PowerDownBuildings = true;
 	}
 }

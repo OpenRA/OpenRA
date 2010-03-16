@@ -151,14 +151,9 @@ namespace OpenRA
 			ChangeMap(mapName);
 
 			if( Settings.Replay != "" )
-			{
-				var connection = new ReplayConnection( Settings.Replay );
-				orderManager = new OrderManager( connection );
-			}
+				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
 			else
-			{
 				JoinLocal();
-			}
 		}
 		
 		internal static void JoinServer(string host, int port)
@@ -421,7 +416,7 @@ namespace OpenRA
 			renderer = new Renderer(resolution, windowed);
 			resolution = renderer.Resolution;
 
-			var controller = new Controller();	/* a bit of insane input routing */
+			var controller = new Controller();
 
 			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
 

@@ -24,20 +24,25 @@ namespace OpenRA.Traits
 		public void OnClick() { Game.controller.ToggleInputMode<SellOrderGenerator>(); }
 	}
 
-	class RepairButtonInfo : StatelessTraitInfo<RepairButton> { }
+	class RepairButtonInfo : ITraitInfo
+	{
+		public readonly bool RequiresConstructionYard = true;
+		public object Create(Actor self) { return new RepairButton(this); }
+	}
 
 	class RepairButton : IChromeButton
 	{
-		public string Image { get { return "repair"; } }	// todo: art
+		RepairButtonInfo info;
+		public RepairButton( RepairButtonInfo info ) { this.info = info; }
+
+		public string Image { get { return "repair"; } }
 		public bool Enabled
 		{
 			get
 			{
-				if (!Game.Settings.RepairRequiresConyard)
-					return true;
-
-				return Game.world.Queries.OwnedBy[Game.world.LocalPlayer]
-					.WithTrait<ConstructionYard>().Any();
+				return !info.RequiresConstructionYard ||
+					Game.world.Queries.OwnedBy[Game.world.LocalPlayer]
+						.WithTrait<ConstructionYard>().Any();
 			}
 		}
 
