@@ -16,6 +16,8 @@ namespace OpenRA.Widgets
 		public readonly string Height = "0";
 		public readonly string Delegate = null;
 
+		public Lazy<IWidgetDelegate> InputHandler;
+
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
@@ -52,6 +54,21 @@ namespace OpenRA.Widgets
 				child.Initialize();
 				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
 			}
+
+			InputHandler = Lazy.New(() => BindHandler(Delegate));
+		}
+
+		static IWidgetDelegate BindHandler(string name)
+		{
+			if (name == null) return null;
+
+			foreach (var mod in Game.ModAssemblies)
+			{
+				var act = (IWidgetDelegate)mod.First.CreateInstance(mod.Second + "." + name);
+				if (act != null) return act;
+			}
+
+			throw new InvalidOperationException("Cannot locate widget delegate: {0}".F(name));
 		}
 		
 		public virtual void UpdateEventBounds()
@@ -75,17 +92,9 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Mousedown
-			if (Delegate != null && mi.Event == MouseInputEvent.Down)
-			{
-				foreach (var mod in Game.ModAssemblies)
-				{
-					var act = (IWidgetDelegate)mod.First.CreateInstance(mod.Second + "."+Delegate);
-					if (act == null) continue;
-					
-					return act.OnClick(this, mi);
-				}
-				throw new InvalidOperationException("Cannot locate widget delegate: {0}".F(Delegate));
-			}
+			// todo: route the other events too!
+			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Down)
+				return InputHandler.Value.OnClick(this, mi);
 			
 			return false;
 		}
