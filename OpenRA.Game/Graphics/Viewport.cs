@@ -83,7 +83,7 @@ namespace OpenRA.Graphics
 			{
 				// what a hack. as soon as we have some real chrome stuff...
 
-				Game.chrome.DrawMainMenu(world);
+				Game.chrome.DrawWidgets(world);
 				switch( Game.orderManager.Connection.ConnectionState )
 				{
 					case ConnectionState.Connecting:

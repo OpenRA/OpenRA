@@ -423,7 +423,7 @@ namespace OpenRA
 			
 		}
 
-		public void DrawMainMenu(World world) { rootWidget.Draw(); }
+		public void DrawWidgets(World world) { rootWidget.Draw(); }
 		
 		public void DrawLobby( World world )
 		{
