@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Widgets.Delegates;
+using System.Linq;
 
 namespace OpenRA.Widgets
 {
@@ -23,7 +24,6 @@ namespace OpenRA.Widgets
 
 		// Calculated internally
 		public Rectangle Bounds;
-		public Rectangle EventBounds;
 		public Widget Parent = null;
 
 		public Widget() { InputHandler = Lazy.New(() => BindHandler(Delegate)); }
@@ -49,13 +49,16 @@ namespace OpenRA.Widgets
 			                       width,
 			                       height);
 			
-			// Calculate the region that we accept mouse events in
-			EventBounds = Bounds;	
 			foreach (var child in Children)
-			{
 				child.Initialize();
-				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
-			}
+		}
+
+		public Rectangle GetEventBounds()
+		{
+			return Children
+				.Where(c => c.Visible)
+				.Select(c => c.GetEventBounds())
+				.Aggregate(Bounds, Rectangle.Union);
 		}
 
 		static IWidgetDelegate BindHandler(string name)
@@ -71,19 +74,10 @@ namespace OpenRA.Widgets
 			throw new InvalidOperationException("Cannot locate widget delegate: {0}".F(name));
 		}
 		
-		public virtual void UpdateEventBounds()
-		{
-			EventBounds = Bounds;
-			foreach (var child in Children)
-				EventBounds = Rectangle.Union(EventBounds, child.EventBounds);
-			
-			Parent.UpdateEventBounds();
-		}
-		
 		public virtual bool HandleInput(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!Visible || !EventBounds.Contains(mi.Location.X,mi.Location.Y))
+			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
 				return false;
 			
 			// Can any of our children handle this?

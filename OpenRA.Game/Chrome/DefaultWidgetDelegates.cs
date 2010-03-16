@@ -37,6 +37,7 @@ namespace OpenRA.Widgets.Delegates
 			
 			if (w.Id == "CREATESERVER_BUTTON_START")
 			{
+				Game.chrome.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
 				Game.CreateServer();
 				return true;
 			}
@@ -75,7 +76,6 @@ namespace OpenRA.Widgets.Delegates
 					b.GetType().GetField("Text").SetValue( b, "{0} ({1})".F(game.Name, game.Address));
 					b.GetType().GetField("Delegate").SetValue( b, "ServerBrowserDelegate");
 				
-					b.EventBounds = b.Bounds;
 					bg.AddChild(b);
 					GameButtons.Add(b);
 					

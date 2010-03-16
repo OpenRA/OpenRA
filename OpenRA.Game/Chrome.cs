@@ -1066,11 +1066,8 @@ namespace OpenRA
 
 		public bool HitTest(int2 mousePos)
 		{
-			if (Game.orderManager.Connection.ConnectionState == ConnectionState.PreConnecting)
-				if (rootWidget.EventBounds.Contains(mousePos.X, mousePos.Y))
-					return true;
-
-			return buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
+			return rootWidget.GetEventBounds().Contains(mousePos.X, mousePos.Y) 
+				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 
 		void DrawRightAligned(string text, int2 pos, Color c)
