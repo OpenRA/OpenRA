@@ -47,8 +47,8 @@ namespace OpenRA.Widgets.Delegates
 	
 	public class ServerBrowserDelegate : IWidgetDelegate
 	{
-		GameServer[] GameList;
-		List<Widget> GameButtons = new List<Widget>();
+		static GameServer[] GameList;
+		static List<Widget> GameButtons = new List<Widget>();
 		
 		public bool OnClick(Widget w, MouseInput mi)
 		{
