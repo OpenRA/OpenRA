@@ -23,6 +23,6 @@ namespace OpenRA.FileFormats
 	public static class ProtocolVersion
 	{
 		// you *must* increment this whenever you make an incompatible protocol change
-		public static readonly int Version = 3;
+		public static readonly int Version = 4;
 	}
 }

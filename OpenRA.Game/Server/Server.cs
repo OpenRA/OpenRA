@@ -258,6 +258,39 @@ namespace OpenRA.Server
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
+				{ "ready",
+					s =>
+					{
+						// if we're downloading, we can't ready up.
+
+						var client = GetClient(conn);
+						if (client.State == Session.ClientState.NotReady)
+							client.State = Session.ClientState.Ready;
+						else if (client.State == Session.ClientState.Ready)
+							client.State = Session.ClientState.NotReady;
+
+						Console.WriteLine("Player @{0} is {1}",
+							conn.socket.RemoteEndPoint, client.State);
+
+						SyncLobbyInfo();
+
+						// start the game if everyone is ready.
+						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
+						{
+							Console.WriteLine("All players are ready. Starting the game!");
+							GameStarted = true;
+							foreach( var c in conns )
+								foreach( var d in conns )
+									DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
+
+							DispatchOrders(null, 0,
+								new ServerOrder("StartGame", "").Serialize());
+
+							PingMasterServer();
+						}
+
+						return true;
+					}},
 				{ "name", 
 					s => 
 					{
@@ -431,38 +464,6 @@ namespace OpenRA.Server
 		{
 			switch (so.Name)
 			{
-				case "ToggleReady":
-					{
-						// if we're downloading, we can't ready up.
-
-						var client = GetClient(conn);
-						if (client.State == Session.ClientState.NotReady)
-							client.State = Session.ClientState.Ready;
-						else if (client.State == Session.ClientState.Ready)
-							client.State = Session.ClientState.NotReady;
-
-						Console.WriteLine("Player @{0} is {1}",
-							conn.socket.RemoteEndPoint, client.State);
-
-						SyncLobbyInfo();
-
-						// start the game if everyone is ready.
-						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
-						{
-							Console.WriteLine("All players are ready. Starting the game!");
-							GameStarted = true;
-							foreach( var c in conns )
-								foreach( var d in conns )
-									DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
-
-							DispatchOrders(null, 0,
-								new ServerOrder("StartGame", "").Serialize());
-
-							PingMasterServer();
-						}
-					}
-					break;
-
 				case "Chat":
 					if (so.Data.StartsWith("/"))
 					{

@@ -411,8 +411,7 @@ namespace OpenRA
 
 		void CycleReady(bool left)
 		{
-			Game.IssueOrder(
-				new Order("ToggleReady", Game.world.LocalPlayer.PlayerActor, "") { IsImmediate = true });
+			Game.IssueOrder(Order.Chat("/ready"));
 		}
 
 		void CycleSpawnPoint(bool left)
