@@ -75,14 +75,16 @@ namespace OpenRA
 		public Player( World world, int index, Session.Client client )
 		{
 			Shroud = new Shroud(this, world.Map);
+
 			this.PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);
 
 			this.PaletteIndex = client != null ? client.PaletteIndex : index;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
-			this.Country = world.GetCountries().FirstOrDefault( c => client != null && client.Country == c.Name )
-			?? world.GetCountries().First();
+			this.Country = world.GetCountries()
+				.FirstOrDefault( c => client != null && client.Country == c.Name )
+				?? world.GetCountries().First();
 		}
 	
 		void UpdatePower()
