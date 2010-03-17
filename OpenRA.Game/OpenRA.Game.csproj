@@ -116,7 +116,7 @@
     <Compile Include="Traits\Chrome\PowerDownButton.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\Modifiers\ForcedPalette.cs" />
-    <Compile Include="Traits\Player\SpawnDefaultUnits.cs" />
+    <Compile Include="Traits\World\SpawnDefaultUnits.cs" />
     <Compile Include="Traits\World\BridgeLoadHook.cs" />
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />

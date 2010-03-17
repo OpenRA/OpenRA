@@ -59,7 +59,6 @@ Player:
 		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
-	SpawnDefaultUnits:
 
 World:
 	ScreenShaker:
@@ -266,6 +265,7 @@ World:
 		Templates:templates.ini
 		Tileset:tileSet.til
 		MapColors:temperat.col
+	SpawnDefaultUnits:
 
 MGG:
 	GeneratesGap:

@@ -138,11 +138,9 @@ namespace OpenRA
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
-			
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
 			
-			// todo
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -284,44 +282,12 @@ namespace OpenRA
 		{
 			if( Game.orderManager.GameStarted ) return;
 			Game.chat.Reset();
-			
-			var taken = LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
-				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
 
-			var available = world.Map.SpawnPoints.Except(taken).ToList();
-
-			foreach (var client in LobbyInfo.Clients)
-			{
-				var sp = (client.SpawnPoint == 0) 
-					? ChooseSpawnPoint(available, taken) 
-					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
-
-				foreach (var ssu in world.players[client.Index].PlayerActor
-					.traits.WithInterface<IOnGameStart>())
-					ssu.GameStarted(world.players[client.Index], sp);
-			}
+			foreach (var gs in Game.world.WorldActor.traits.WithInterface<IGameStarted>())
+				gs.GameStarted(world);
 
 			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );
 			orderManager.StartGame();
-		}
-
-		static int2 ChooseSpawnPoint(List<int2> available, List<int2> taken)
-		{
-			if (available.Count == 0)
-				throw new InvalidOperationException("No free spawnpoint.");
-
-			var n = taken.Count == 0 
-				? world.SharedRandom.Next(available.Count)
-				: available			// pick the most distant spawnpoint from everyone else
-					.Select((k,i) => Pair.New(k,i))
-					.OrderByDescending(a => taken.Sum(t => (t - a.First).LengthSquared))
-					.Select(a => a.Second)
-					.First();
-			
-			var sp = available[n];
-			available.RemoveAt(n);
-			taken.Add(sp);
-			return sp;
 		}
 
 		static int2 lastPos;

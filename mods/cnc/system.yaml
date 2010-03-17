@@ -22,7 +22,6 @@ Player:
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
 	PlaceBuilding:
-	SpawnDefaultUnits:
 	
 World:
 	ScreenShaker:
@@ -208,3 +207,4 @@ World:
 		Name: Tiberium
 		GrowthInterval: 1
 		SpreadInterval: 6
+	SpawnDefaultUnits:
