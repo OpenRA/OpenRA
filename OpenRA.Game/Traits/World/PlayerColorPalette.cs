@@ -34,6 +34,8 @@ namespace OpenRA.Traits
 		public readonly bool SplitRamp = false;
 
 		public readonly int[] DisplayColor = null;
+		public readonly bool Playable = true;
+
 		public object Create(Actor self) { return new PlayerColorPalette(self, this); }
 	}
 
@@ -50,8 +52,9 @@ namespace OpenRA.Traits
 			
 			wr.AddPalette(info.Name, newpal);
 
-			Player.RegisterPlayerColor(info.Name, info.DisplayName,
-				ArrayToColor(info.DisplayColor));
+			if (info.Playable)
+				Player.RegisterPlayerColor(info.Name, info.DisplayName,
+					ArrayToColor(info.DisplayColor));
 		}
 
 		static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }

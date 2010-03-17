@@ -53,7 +53,7 @@ namespace OpenRA
 
 		public Player NeutralPlayer
 		{
-			get { return players[0]; }		// todo, perhaps.
+			get { return players.Single(p => p.Value.InternalName == "Neutral").Value; }
 		}
 
 		public void SetLocalPlayer(int index)
