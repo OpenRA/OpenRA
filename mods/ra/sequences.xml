@@ -832,7 +832,7 @@
   </unit>
   <unit name="crate">
     <sequence name="idle" start="0" length="1" src="wcrate" />
-    <sequence name="water" start="0" length="4" src="wwcrate" />
+    <sequence name="water" start="0" length="4" src="wwcrate" tick="500" />
   </unit>
   <unit name="crate-effects">
     <sequence name="speed" start="0" length="20" src="speed" />
