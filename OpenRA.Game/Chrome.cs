@@ -754,7 +754,7 @@ namespace OpenRA
 			renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 
 			string[] images = { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
-			var ss = Graphics.Util.MakeArray(9, n => ChromeProvider.GetImage(renderer, collection,images[n]));
+			var ss = images.Select(x => ChromeProvider.GetImage(renderer, collection, x)).ToArray();
 			
 			for( var x = r.Left + (int)ss[2].size.X; x < r.Right - (int)ss[3].size.X; x += (int)ss[8].size.X )
 				for( var y = r.Top + (int)ss[0].size.Y; y < r.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y )
