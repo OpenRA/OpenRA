@@ -262,19 +262,21 @@ namespace OpenRA
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
 
+		public static bool IsStarted { get { return orderManager.GameStarted; } }
+
 		public static void StartGame()
 		{
-			if( Game.orderManager.GameStarted ) return;
-			Game.chat.Reset();
+			if( orderManager.GameStarted ) return;
+			chat.Reset();
 
 			// todo: only spawn a neutral player + a player for each client
 			for (int i = 0; i < 8; i++)
 				world.players[i] = new Player(world, i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 
-			foreach (var gs in Game.world.WorldActor.traits.WithInterface<IGameStarted>())
+			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 
-			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );
+			Game.viewport.GoToStartLocation( world.LocalPlayer );
 			orderManager.StartGame();
 		}
 
