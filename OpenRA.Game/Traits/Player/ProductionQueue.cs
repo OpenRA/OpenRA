@@ -74,7 +74,7 @@ namespace OpenRA.Traits
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
 									if( !hasPlayedSound )
 									{
-										var eva = self.Info.Traits.Get<EvaAlertsInfo>();
+										var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 										Sound.PlayToPlayer( order.Player, isBuilding ? eva.BuildingReadyAudio : eva.UnitReadyAudio );
 										hasPlayedSound = true;
 									}

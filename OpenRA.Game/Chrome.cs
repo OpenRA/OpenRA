@@ -542,7 +542,7 @@ namespace OpenRA
 			if (radarAnimationFrame <= radarSlideAnimationLength)
 				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
 
-			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			
 			// Play radar-on sound at the start of the activate anim (open)
 			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
@@ -626,7 +626,7 @@ namespace OpenRA
 		
 		void HandleTabClick(string button)
 		{
-			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.TabClick);
 			var wasOpen = paletteOpen;
 			paletteOpen = (currentTab == button && wasOpen) ? false : true;
@@ -838,7 +838,7 @@ namespace OpenRA
 			if (paletteAnimationFrame <= paletteAnimationLength)
 				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
 
-			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			
 			// Play palette-open sound at the start of the activate anim (open)
 			if (paletteAnimationFrame == 1 && paletteOpen)
@@ -949,7 +949,7 @@ namespace OpenRA
 
 				var closureItemName = item.Name;
 				
-				var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+				var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 				
 				AddButton(rect, buildableItems.Contains(item.Name)
 					? isLmb => HandleBuildPalette(world, closureItemName, isLmb)
@@ -988,7 +988,7 @@ namespace OpenRA
 
 		void StartProduction( World world, string item )
 		{
-			var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var unit = Rules.Info[item];
 
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
@@ -1000,7 +1000,7 @@ namespace OpenRA
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
 			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var eva = player.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
 			Sound.Play(eva.TabClick);

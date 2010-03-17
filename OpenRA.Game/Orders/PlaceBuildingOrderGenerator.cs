@@ -52,7 +52,7 @@ namespace OpenRA.Orders
 				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
 					|| !world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
 				{
-					var eva = world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+					var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 					Sound.Play(eva.BuildingCannotPlaceAudio);
 					yield break;
 				}

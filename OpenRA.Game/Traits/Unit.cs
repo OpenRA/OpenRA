@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			var eva = self.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
 					Sound.PlayToPlayer(self.Owner,
 						self.Info.Traits.Get<OwnedActorInfo>().WaterBound ? eva.NavalUnitLost : eva.UnitLost);

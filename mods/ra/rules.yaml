@@ -1,6 +1,5 @@
 Player:
 	ProductionQueue:
-	EvaAlerts:
 	PlaceBuilding:
 	GpsPower:
 		Image: gpssicon
@@ -267,6 +266,7 @@ World:
 		MapColors:temperat.col
 	SpawnMapActors:
 	SpawnDefaultUnits:
+	EvaAlerts:
 
 MGG:
 	GeneratesGap:

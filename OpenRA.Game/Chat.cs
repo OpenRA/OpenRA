@@ -69,7 +69,7 @@ namespace OpenRA
 		{
 			Log.Write( "Chat: {0}: {1}", from, text );
 			recentLines.Add(Tuple.New(c, from, text));
-			var eva = Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.ChatBeep);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}

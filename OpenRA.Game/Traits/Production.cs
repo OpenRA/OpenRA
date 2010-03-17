@@ -138,7 +138,7 @@ namespace OpenRA.Traits
 			}
 			isPrimary = true;
 			
-			var eva = self.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.PlayToPlayer(self.Owner,eva.PrimaryBuildingSelected);
 		}
 	}

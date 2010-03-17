@@ -1,26 +1,5 @@
 Player:
 	ProductionQueue:
-	EvaAlerts:
-		TabClick: button.aud
-		ChatBeep: beepy2.aud
-		RadarUp: comcntr1.aud
-		RadarDown: powrdn1.aud
-		BuildPaletteOpen: appear1.aud 
-		BuildPaletteClose: appear1.aud
-		BuildingSelectAudio: bldging1.aud
-		BuildingReadyAudio: constru1.aud
-		BuildingCannotPlaceAudio: deploy1.aud
-		UnitSelectAudio: bldging1.aud
-		UnitReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
-		CashTickUp: tone15.aud
-		CashTickDown: 
-		LowPower: lopower1.aud
-		SilosNeeded: silos1.aud
-		UnitLost: unitlost.aud
-		NavalUnitLost: unitlost.aud
-		PrimaryBuildingSelected: pribldg1.aud
 	PlaceBuilding:
 	
 World:
@@ -209,3 +188,24 @@ World:
 		SpreadInterval: 6
 	SpawnMapActors:
 	SpawnDefaultUnits:
+	EvaAlerts:
+		TabClick: button.aud
+		ChatBeep: beepy2.aud
+		RadarUp: comcntr1.aud
+		RadarDown: powrdn1.aud
+		BuildPaletteOpen: appear1.aud 
+		BuildPaletteClose: appear1.aud
+		BuildingSelectAudio: bldging1.aud
+		BuildingReadyAudio: constru1.aud
+		BuildingCannotPlaceAudio: deploy1.aud
+		UnitSelectAudio: bldging1.aud
+		UnitReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
+		CashTickUp: tone15.aud
+		CashTickDown: 
+		LowPower: lopower1.aud
+		SilosNeeded: silos1.aud
+		UnitLost: unitlost.aud
+		NavalUnitLost: unitlost.aud
+		PrimaryBuildingSelected: pribldg1.aud

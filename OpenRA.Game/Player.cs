@@ -107,7 +107,7 @@ namespace OpenRA
 
 			if (PowerProvided - PowerDrained < 0)
 				if (PowerProvided - PowerDrained  != oldBalance)
-					GiveAdvice(PlayerActor.Info.Traits.Get<EvaAlertsInfo>().LowPower);
+					GiveAdvice(World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().LowPower);
 		}
 				
 		public float GetSiloFullness()
@@ -146,7 +146,7 @@ namespace OpenRA
 				Ore = OreCapacity;		// trim off the overflow.
 
 			if (Ore > .8 * OreCapacity)
-				GiveAdvice(PlayerActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);		// silos needed
+				GiveAdvice(World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);
 		}
 
 		public bool TakeCash( int num )
@@ -178,7 +178,7 @@ namespace OpenRA
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
 			
-			var eva = PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (DisplayCash < totalMoney)
 			{
 				DisplayCash += move;

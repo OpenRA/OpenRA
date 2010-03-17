@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 			self.Owner.TakeCash(toSteal);
 			thief.Owner.GiveCash(toSteal);
 			
-			var eva = thief.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = thief.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.PlayToPlayer(thief.Owner, eva.CreditsStolen);
 		}
 		

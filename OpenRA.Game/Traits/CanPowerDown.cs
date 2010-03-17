@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 			if (order.OrderString == "PowerDown")
 			{
 				IsDisabled = !IsDisabled;
-				var eva = self.Owner.PlayerActor.Info.Traits.Get<EvaAlertsInfo>();
+				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 				Sound.PlayToPlayer(self.Owner, IsDisabled ? eva.EnablePower : eva.DisablePower);
 			}
 		}
