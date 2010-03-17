@@ -271,6 +271,8 @@ namespace OpenRA
 			for (int i = 0; i < 8; i++)
 				world.players[i] = new Player(world, i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
 
+			world.Queries = new World.AllQueries(world);
+
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 

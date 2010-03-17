@@ -65,7 +65,8 @@ namespace OpenRA.Graphics
 		ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public void DrawRegions( World world )
 		{
-			world.WorldRenderer.palette.Update(world.Queries.WithTraitMultiple<IPaletteModifier>().Select(t=>t.Trait));
+			world.WorldRenderer.palette.Update(
+				world.WorldActor.traits.WithInterface<IPaletteModifier>());
 
 			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);

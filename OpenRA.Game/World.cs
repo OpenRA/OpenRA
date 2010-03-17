@@ -99,9 +99,6 @@ namespace OpenRA
 
 			Timer.Time( "worldActor, players: {0}" );
 
-			Queries = new AllQueries( this );
-			Timer.Time( "queries: {0}" );
-
 			foreach (var wlh in WorldActor.traits.WithInterface<ILoadWorldHook>())
 				wlh.WorldLoaded(this);
 
@@ -252,6 +249,6 @@ namespace OpenRA
 			}
 		}
 
-		public readonly AllQueries Queries;
+		public AllQueries Queries;
 	}
 }

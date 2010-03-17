@@ -37,8 +37,8 @@ namespace OpenRA.Traits
 					if (IsBridge(w, w.Map.MapTiles[i, j].tile))
 						ConvertBridgeToActor(w, i, j);
 
-			foreach (var br in w.Queries.WithTraitMultiple<Bridge>())
-				br.Trait.FinalizeBridges(w);
+			foreach (var br in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
+				br.FinalizeBridges(w);
 		}
 
 		static void ConvertBridgeToActor(World w, int i, int j)
