@@ -32,8 +32,9 @@ namespace OpenRA.Network
 			{
 			case "Chat":
 				{
-					var player = world.players.Values.Where( p => p.Index == clientId ).Single();
-					Game.chat.AddLine(player, order.TargetString);
+					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
+					if (client != null)
+						Game.chat.AddLine(client, order.TargetString);
 					break;
 				}
 			case "StartGame":

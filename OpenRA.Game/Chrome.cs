@@ -509,7 +509,7 @@ namespace OpenRA
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex].c);
 				lineRenderer.Flush();
-				f.DrawText(rgbaRenderer, client.Country, new int2(r.Left + 220, y), Color.White);
+				f.DrawText(rgbaRenderer, client.Country ?? "Unknown", new int2(r.Left + 220, y), Color.White);
 				f.DrawText(rgbaRenderer, client.State.ToString(), new int2(r.Left + 290, y), Color.White);
 				f.DrawText(rgbaRenderer, (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;

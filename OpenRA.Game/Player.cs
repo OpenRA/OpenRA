@@ -195,7 +195,7 @@ namespace OpenRA
 		{
 			if (PlayerName != client.Name)
 			{
-				Game.chat.AddLine(this, "is now known as " + client.Name);
+				//Game.chat.AddLine(this, "is now known as " + client.Name);
 				PlayerName = client.Name;
 			}
 
@@ -204,20 +204,20 @@ namespace OpenRA
 
 			if (Country.Name != client.Country)
 			{
-				Game.chat.AddLine(this, "is now playing {0}".F(client.Country));
+				//Game.chat.AddLine(this, "is now playing {0}".F(client.Country));
 				Country = PlayerActor.World.GetCountries().First(c => c.Name == client.Country);
 			}
 
 			if (PaletteIndex != client.PaletteIndex)
 			{
 				PaletteIndex = client.PaletteIndex;
-				Game.chat.AddLine(this, "has changed color to {0}".F(PlayerColors[client.PaletteIndex].b));
+				//Game.chat.AddLine(this, "has changed color to {0}".F(PlayerColors[client.PaletteIndex].b));
 			}
 
 			if (SpawnPointIndex != client.SpawnPoint)
 			{
 				SpawnPointIndex = client.SpawnPoint;
-				Game.chat.AddLine(this, "has changed spawn point to {0}".F(client.SpawnPoint));
+				//Game.chat.AddLine(this, "has changed spawn point to {0}".F(client.SpawnPoint));
 			}
 		}
 	}

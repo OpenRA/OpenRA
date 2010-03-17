@@ -60,9 +60,9 @@ namespace OpenRA
 				typing += c;
 		}
 
-		public void AddLine(Player p, string text)
+		public void AddLine(Session.Client p, string text)
 		{
-			AddLine(p.Color, p.PlayerName, text);
+			AddLine(Player.PlayerColors[p.PaletteIndex].c, p.Name, text);
 		}
 
 		public void AddLine(Color c, string from, string text)

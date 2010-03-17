@@ -238,8 +238,6 @@ namespace OpenRA
 				var client = new Session.Client();
 				FieldLoader.Load(client, y.Value);
 				session.Clients.Add(client);
-
-				world.players[index].SyncFromLobby(client);
 			}
 
 			LobbyInfo = session;
