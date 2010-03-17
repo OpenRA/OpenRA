@@ -1048,10 +1048,7 @@ namespace OpenRA
 		public bool HandleInput(World world, MouseInput mi)
 		{
 			if (selectedWidget != null)
-			{
-				selectedWidget.HandleInput(mi);
-				return true;
-			}
+				return selectedWidget.HandleInput(mi);
 				
 			if (rootWidget.HandleInput(mi))
 				return true;
