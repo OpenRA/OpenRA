@@ -17,7 +17,7 @@ namespace OpenRA.Widgets
 		public readonly string Height = "0";
 		public readonly string Delegate = null;
 
-		public Lazy<IWidgetDelegate> InputHandler;
+		public Lazy<WidgetDelegate> InputHandler;
 
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
@@ -61,13 +61,13 @@ namespace OpenRA.Widgets
 				.Aggregate(Bounds, Rectangle.Union);
 		}
 
-		static IWidgetDelegate BindHandler(string name)
+		static WidgetDelegate BindHandler(string name)
 		{
 			if (name == null) return null;
 
 			foreach (var mod in Game.ModAssemblies)
 			{
-				var act = (IWidgetDelegate)mod.First.CreateInstance(mod.Second + "." + name);
+				var act = (WidgetDelegate)mod.First.CreateInstance(mod.Second + "." + name);
 				if (act != null) return act;
 			}
 
@@ -86,10 +86,16 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Mousedown
-			// todo: route the other events too!
+			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Down)
+				return InputHandler.Value.OnMouseDown(this, mi);
+			
+			// Mouseup
 			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Up)
-				return InputHandler.Value.OnClick(this, mi);
-
+				return InputHandler.Value.OnMouseUp(this, mi);
+			
+			// Mousemove
+			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Move)
+				return InputHandler.Value.OnMouseMove(this, mi);
 			return false;
 		}
 		

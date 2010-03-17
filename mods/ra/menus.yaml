@@ -30,7 +30,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Create Game
-					Delegate:MainMenuButtonsDelegate
+					Delegate:CreateServerMenuDelegate
 				Button@MAINMENU_BUTTON_QUIT:
 					Id:MAINMENU_BUTTON_QUIT
 					X:45
@@ -55,35 +55,36 @@ Container:
 					Height:25
 					Text:Create Server
 					Align:Center
-				Button@CREATESERVER_CHECKBOX_HIDDEN:
-					Id:CREATESERVER_CHECKBOX_HIDDEN
+				Checkbox@CREATESERVER_CHECKBOX_ONLINE:
+					Id:CREATESERVER_CHECKBOX_ONLINE
 					X:100
 					Y:60
 					Width:20
 					Height:20
-				Label@CREATESERVER_LABEL_HIDDENGAME:
-					Id:CREATESERVER_LABEL_HIDDENGAME
+					Delegate:CreateServerMenuDelegate
+				Label@CREATESERVER_LABEL_ONLINE:
+					Id:CREATESERVER_LABEL_ONLINE
 					X:135
 					Y:60
 					Width:300
 					Height:25
-					Text:Hide from Server Browser
-				Button@CREATESERVER_BUTTON_CANCEL:
-					Id:CREATESERVER_BUTTON_CANCEL
+					Text:Advertise game Online
+				Button@CREATESERVER_BUTTON_START:
+					Id:CREATESERVER_BUTTON_START
 					X:100
 					Y:100
 					Width:160
 					Height:25
-					Text:Cancel
-					Delegate:MainMenuButtonsDelegate
-				Button@CREATESERVER_BUTTON_START:
-					Id:CREATESERVER_BUTTON_START
+					Text:Create
+					Delegate:CreateServerMenuDelegate
+				Button@CREATESERVER_BUTTON_CANCEL:
+					Id:CREATESERVER_BUTTON_CANCEL
 					X:270
 					Y:100
 					Width:160
 					Height:25
-					Text:Create
-					Delegate:MainMenuButtonsDelegate
+					Text:Cancel
+					Delegate:CreateServerMenuDelegate
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
 			X:WINDOW_RIGHT/2 - 225

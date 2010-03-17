@@ -4,45 +4,8 @@ using System.Collections.Generic;
 
 namespace OpenRA.Widgets
 {
-	class ButtonWidget : Widget
-	{
-		public readonly string Text = "";
-		public bool Depressed = false;
-		public int VisualHeight = 1;
-		public override bool HandleInput(MouseInput mi)
-		{
-			if (Game.chrome.selectedWidget == this)
-				Depressed = (GetEventBounds().Contains(mi.Location.X,mi.Location.Y)) ? true : false;
-			
-			// Relinquish focus
-			if (Game.chrome.selectedWidget == this && mi.Event == MouseInputEvent.Up)
-			{
-				Game.chrome.selectedWidget = null;
-				Depressed = false;
-			}
-			
-			// Are we able to handle this event?
-			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-				return base.HandleInput(mi);
-			
-			
-			if (base.HandleInput(mi))
-				return true;
-			
-			// Give button focus only while the mouse is down
-			// This is a bit of a hack: it will become cleaner soonish
-			// It will also steal events from any potential children
-			// We also want to play a click sound
-			if (mi.Event == MouseInputEvent.Down)
-			{
-				Game.chrome.selectedWidget = this;
-				Depressed = true;
-				return true;
-			}
-			
-			return false;
-		}
-		
+	class CheckboxWidget : Widget
+	{	
 		public override void Draw()
 		{
 			if (!Visible)
@@ -50,11 +13,13 @@ namespace OpenRA.Widgets
 				base.Draw();
 				return;
 			}
-		
-			string collection = (Depressed) ? "dialog3" : "dialog2";
-			int2 stateOffset = (Depressed) ? new int2(VisualHeight,VisualHeight) : new int2(0,0);
-			Game.chrome.renderer.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height);
+			bool selected = false;
+			if (InputHandler.Value != null)
+				selected = InputHandler.Value.GetState(this);
+
+			string collection = (selected) ? "dialog3" : "dialog2";
 			
+			Game.chrome.renderer.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height);
 			string[] images = { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
 			var ss = Graphics.Util.MakeArray(9, n => ChromeProvider.GetImage(Game.chrome.renderer, collection,images[n]));
 			
@@ -79,10 +44,7 @@ namespace OpenRA.Widgets
 			Game.chrome.rgbaRenderer.DrawSprite(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top), "chrome");
 			Game.chrome.rgbaRenderer.DrawSprite(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y), "chrome");
 			Game.chrome.rgbaRenderer.DrawSprite(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y), "chrome");
-			Game.chrome.rgbaRenderer.Flush();
-			
-			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text, new int2(Bounds.X+Bounds.Width/2, Bounds.Y+Bounds.Height/2) - new int2(Game.chrome.renderer.BoldFont.Measure(Text).X / 2, Game.chrome.renderer.BoldFont.Measure(Text).Y/2) + stateOffset, Color.White);
-			
+			Game.chrome.rgbaRenderer.Flush();			
 			Game.chrome.renderer.Device.DisableScissor();
 			
 			base.Draw();

@@ -155,18 +155,7 @@ namespace OpenRA
 		{
 			orderManager = new OrderManager(new EchoConnection());
 		}
-		
-		internal static void CreateServer()
-		{
-			Log.Write("Creating server");
-			// todo: LobbyInfo is the wrong place for this.
-			Server.Server.ServerMain(Settings.InternetServer, Settings.MasterServer, Settings.GameName, Settings.ListenPort, 
-				Settings.ExternalPort, LobbyInfo.GlobalSettings.Mods);
-			
-			Log.Write("Joining server");
-			JoinServer(IPAddress.Loopback.ToString(), Settings.ListenPort);
-		}
-		
+				
 		static int lastTime = Environment.TickCount;
 
 		public static void ResetTimer()

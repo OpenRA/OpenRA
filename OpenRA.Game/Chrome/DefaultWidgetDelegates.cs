@@ -1,17 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System.Net;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Server;
 
 namespace OpenRA.Widgets.Delegates
 {
-	public interface IWidgetDelegate { bool OnClick(Widget w, MouseInput mi); }
-
-	public class MainMenuButtonsDelegate : IWidgetDelegate
+	public class WidgetDelegate
+	{
+		// For checkboxes
+		public virtual bool GetState(Widget w) { return false; }
+		
+		// For any widget
+		public virtual bool OnMouseDown(Widget w, MouseInput mi) { return false; }
+		public virtual bool OnMouseUp(Widget w, MouseInput mi) { return false; }
+		public virtual bool OnMouseMove(Widget w, MouseInput mi) { return false; }
+	}
+	
+	public class MainMenuButtonsDelegate : WidgetDelegate
 	{	
-		public bool OnClick(Widget w, MouseInput mi)
+		public override bool OnMouseUp(Widget w, MouseInput mi)
 		{
 			// Main Menu root
 			if (w.Id == "MAINMENU_BUTTON_QUIT")
@@ -19,7 +29,35 @@ namespace OpenRA.Widgets.Delegates
 				Game.Exit();	
 				return true;
 			}
+			return false;
+		}
+	}
+	
+	public class CreateServerMenuDelegate : WidgetDelegate
+	{
+		static bool AdvertiseServerOnline = Game.Settings.InternetServer;
+		
+		public override bool GetState(Widget w)
+		{
+			if (w.Id == "CREATESERVER_CHECKBOX_ONLINE")
+				return AdvertiseServerOnline;
 			
+			return false;
+		}
+		
+		public override bool OnMouseDown(Widget w, MouseInput mi)
+		{
+			if (w.Id == "CREATESERVER_CHECKBOX_ONLINE")
+			{
+				AdvertiseServerOnline = !AdvertiseServerOnline;
+				return true;
+			}
+			
+			return false;
+		}
+		
+		public override bool OnMouseUp(Widget w, MouseInput mi)
+		{
 			if (w.Id == "MAINMENU_BUTTON_CREATE")
 			{
 				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
@@ -27,7 +65,6 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			}
 			
-			// "Create Server" submenu
 			if (w.Id == "CREATESERVER_BUTTON_CANCEL")
 			{
 				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
@@ -38,7 +75,14 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "CREATESERVER_BUTTON_START")
 			{
 				Game.chrome.rootWidget.GetWidget("CREATESERVER_BG").Visible = false;
-				Game.CreateServer();
+				Log.Write("Creating server");
+				
+				Server.Server.ServerMain(AdvertiseServerOnline, Game.Settings.MasterServer, 
+				                        Game.Settings.GameName, Game.Settings.ListenPort, 
+										Game.Settings.ExternalPort, Game.Settings.InitialMods);
+				
+				Log.Write("Joining server");
+				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
 			}
 
@@ -46,12 +90,12 @@ namespace OpenRA.Widgets.Delegates
 		}
 	}
 	
-	public class ServerBrowserDelegate : IWidgetDelegate
+	public class ServerBrowserDelegate : WidgetDelegate
 	{
 		static GameServer[] GameList;
 		static List<Widget> GameButtons = new List<Widget>();
 		
-		public bool OnClick(Widget w, MouseInput mi)
+		public override bool OnMouseUp(Widget w, MouseInput mi)
 		{
 			// Main Menu root
 			if (w.Id == "MAINMENU_BUTTON_JOIN")
