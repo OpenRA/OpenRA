@@ -97,9 +97,6 @@ namespace OpenRA
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
 
-			for (int i = 0; i < 8; i++)
-				players[i] = new Player(this, i, Game.LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
-
 			Timer.Time( "worldActor, players: {0}" );
 
 			Queries = new AllQueries( this );

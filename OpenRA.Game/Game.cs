@@ -267,6 +267,10 @@ namespace OpenRA
 			if( Game.orderManager.GameStarted ) return;
 			Game.chat.Reset();
 
+			// todo: only spawn a neutral player + a player for each client
+			for (int i = 0; i < 8; i++)
+				world.players[i] = new Player(world, i, LobbyInfo.Clients.FirstOrDefault(a => a.Index == i));
+
 			foreach (var gs in Game.world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 
