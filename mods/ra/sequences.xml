@@ -828,7 +828,7 @@
     <sequence name="idle" start="0" length="4" />
   </unit>
   <unit name="u2">
-    <sequence name="idle" start="0" length="16" />
+    <sequence name="idle" start="0" facings="16" />
   </unit>
   <unit name="crate">
     <sequence name="idle" start="0" length="1" src="wcrate" />
