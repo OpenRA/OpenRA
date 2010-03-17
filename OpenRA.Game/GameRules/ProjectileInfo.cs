@@ -34,7 +34,6 @@ namespace OpenRA.GameRules
 		public readonly bool Parachuted = false;
 		public readonly bool Proximity = false;
 		public readonly int ROT = 0;
-		public readonly bool Rotates = false;
 		public readonly bool Shadow = true;
 		public readonly bool UnderWater = false;
 		public readonly int RangeLimit = 0;
