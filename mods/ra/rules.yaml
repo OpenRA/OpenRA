@@ -265,6 +265,7 @@ World:
 		Templates:templates.ini
 		Tileset:tileSet.til
 		MapColors:temperat.col
+	SpawnMapActors:
 	SpawnDefaultUnits:
 
 MGG:

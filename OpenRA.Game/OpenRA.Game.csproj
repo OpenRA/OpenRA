@@ -258,6 +258,7 @@
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
+    <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
     <Compile Include="Traits\World\WallLoadHook.cs" />
     <Compile Include="Traits\World\WaterPaletteRotation.cs" />

@@ -120,15 +120,6 @@ namespace OpenRA
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
 
-			// todo: delay this
-			skipMakeAnims = true;
-			foreach (var actorReference in world.Map.Actors)
-				world.CreateActor(actorReference.Name, actorReference.Location,
-					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner)
-					?? world.NeutralPlayer);
-			skipMakeAnims = false;
-			Timer.Time( "map actors: {0}" );
-
 			chrome = new Chrome(renderer, manifest);
 			Timer.Time( "chrome: {0}" );
 

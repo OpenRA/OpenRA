@@ -207,4 +207,5 @@ World:
 		Name: Tiberium
 		GrowthInterval: 1
 		SpreadInterval: 6
+	SpawnMapActors:
 	SpawnDefaultUnits:
