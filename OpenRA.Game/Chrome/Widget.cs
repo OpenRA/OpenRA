@@ -87,9 +87,9 @@ namespace OpenRA.Widgets
 
 			// Mousedown
 			// todo: route the other events too!
-			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Down)
+			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Up)
 				return InputHandler.Value.OnClick(this, mi);
-			
+
 			return false;
 		}
 		

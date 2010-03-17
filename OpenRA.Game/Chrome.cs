@@ -136,6 +136,8 @@ namespace OpenRA
 		}
 
 		public Widget rootWidget;
+		public Widget selectedWidget;
+		
 		List<string> visibleTabs = new List<string>();
 		
 		public void Tick(World world)
@@ -1045,6 +1047,12 @@ namespace OpenRA
 		int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
+			if (selectedWidget != null)
+			{
+				selectedWidget.HandleInput(mi);
+				return true;
+			}
+				
 			if (rootWidget.HandleInput(mi))
 				return true;
 			
@@ -1065,6 +1073,9 @@ namespace OpenRA
 
 		public bool HitTest(int2 mousePos)
 		{
+			if (selectedWidget != null)
+				return true;
+			
 			return rootWidget.GetEventBounds().Contains(mousePos.X, mousePos.Y) 
 				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
