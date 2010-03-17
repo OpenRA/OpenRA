@@ -13,22 +13,19 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new WallLoadHook( self, this ); }
 	}
 
-	class WallLoadHook : ILoadWorldHook
+	class WallLoadHook : IGameStarted
 	{
 		WallLoadHookInfo info;
-		public WallLoadHook(Actor self, WallLoadHookInfo info)
-		{
-			this.info = info;
-		}
+		public WallLoadHook(Actor self, WallLoadHookInfo info) { this.info = info; }
 
-		public void WorldLoaded(World w)
+		public void GameStarted(World w)
 		{
 			var map = w.Map;
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 					if (info.OverlayTypes.Contains(w.Map.MapTiles[x, y].overlay))
-						w.CreateActor(info.ActorType, new int2(x, y), w.players[0]);	// todo: neutral player or null?
+						w.CreateActor(info.ActorType, new int2(x, y), w.NeutralPlayer);
 		}
 	}
 }
