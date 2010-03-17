@@ -66,19 +66,29 @@ namespace OpenRA
 
 		public Shroud Shroud;
 
-		public Player( World world, int index, Session.Client client )
+		public Player( World world, Session.Client client )
 		{
 			Shroud = new Shroud(this, world.Map);
 
-			this.PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
-			this.Index = index;
-			this.InternalName = "Multi{0}".F(index);
+			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 
-			var paletteIndex = client != null ? client.PaletteIndex : index;
-			this.Palette = PlayerColors[paletteIndex].a;
-			this.Color = PlayerColors[paletteIndex].c;
-			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
-			this.Country = world.GetCountries()
+			if (client != null)
+			{
+				Index = client.Index;
+				Palette = PlayerColors[client.PaletteIndex].a;
+				Color = PlayerColors[client.PaletteIndex].c;
+				PlayerName = client.Name;
+				InternalName = "Multi{0}".F(client.Index);
+			}
+			else
+			{
+				Index = -1;
+				PlayerName = InternalName = "Neutral";
+				Palette = "neutral";
+				Color = Color.Gray;	// HACK HACK
+			}
+			
+			Country = world.GetCountries()
 				.FirstOrDefault( c => client != null && client.Country == c.Name )
 				?? world.GetCountries().First();
 		}
