@@ -53,6 +53,8 @@ namespace OpenRA
 			sprites = new Sprite[map.MapSize, map.MapSize];
 			gapField = new int[map.MapSize, map.MapSize];
 			gapActive = new bool[map.MapSize, map.MapSize];
+
+			shadowBits[0].sheet.Texture.SetData(shadowBits[0].sheet.Bitmap);	// HACK
 		}
 
 		public bool HasGPS
@@ -207,6 +209,8 @@ namespace OpenRA
 			var minx = bounds.HasValue ? Math.Max(map.XOffset, bounds.Value.Left) : map.XOffset;
 			var maxx = bounds.HasValue ? Math.Min(map.XOffset + map.Width, bounds.Value.Right) : map.XOffset + map.Width;
 
+			var shroudPalette = "shroud";
+
 			for (var j = miny; j < maxy; j++)
 			{
 				var starti = minx;
@@ -219,21 +223,21 @@ namespace OpenRA
 					{
 						r.DrawSprite(sprites[starti,j],
 						    Game.CellSize * new float2(starti, j),
-						    "shroud",
+						    shroudPalette,
 						    new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i+1;
 					}
 
 					r.DrawSprite(sprites[i, j],
 						Game.CellSize * new float2(i, j),
-						"shroud");
+						shroudPalette);
 					starti = i+1;
 				}
 
 				if (starti < maxx)
 					r.DrawSprite(sprites[starti, j],
 						Game.CellSize * new float2(starti, j),
-						"shroud",
+						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
 			}
 		}
