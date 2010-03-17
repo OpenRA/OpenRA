@@ -43,6 +43,8 @@ namespace OpenRA
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
+		public void AddPlayer(Player p) { players[p.Index] = p; }
+
 		int localPlayerIndex;
 		public Player LocalPlayer
 		{
