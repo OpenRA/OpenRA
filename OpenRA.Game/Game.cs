@@ -146,9 +146,13 @@ namespace OpenRA
 				JoinLocal();
 		}
 		
+		public static string CurrentHost = "";
+		public static int CurrentPort = 0;
 		internal static void JoinServer(string host, int port)
 		{
-			orderManager = new OrderManager(new NetworkConnection( host, port ), "replay.rep");
+			CurrentHost = host;
+			CurrentPort = port;
+			orderManager = new OrderManager(new NetworkConnection( host, port )); // TODO: supplying a replay file prevents osx from joining a game
 		}
 		
 		internal static void JoinLocal()

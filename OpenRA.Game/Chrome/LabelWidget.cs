@@ -6,8 +6,8 @@ namespace OpenRA.Widgets
 {
 	class LabelWidget : Widget
 	{
-		public readonly string Text = null;
-		public readonly string Align = "Left";
+		public string Text = "";
+		public string Align = "Left";
 		
 		public override void Draw()
 		{		

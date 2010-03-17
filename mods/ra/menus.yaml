@@ -117,51 +117,77 @@ Container:
 					Height:25
 					Text:Cancel
 					Delegate:ServerBrowserDelegate
-		Background@CONNECTION_BG:
-			Id:CONNECTION_BG
+		Background@CONNECTION_FAILED_BG:
+			Id:CONNECTION_FAILED_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
-			Height:400
+			Height:150
 			Visible:false
 			Children:
-				Label@CONNECTION_LABEL_TITLE:
-					Id:CONNECTION_LABEL_TITLE
+				Label@CONNECTION_FAILED_TITLE:
+					Id:CONNECTION_FAILED_TITLE
+					X:0
+					Y:20
+					Width:450
+					Height:25
+					Text:Connection Failed
+					Align:Center
+				Label@CONNECTION_FAILED_DESC:
+					Id:CONNECTION_FAILED_DESC
+					X:0
+					Y:60
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
+					Align:Center
+					Delegate:ConnectionDialogsDelegate
+				Button@CONNECTION_BUTTON_RETRY:
+					Id:CONNECTION_BUTTON_RETRY
+					X:PARENT_RIGHT - 360
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Retry
+					Delegate:ConnectionDialogsDelegate
+				Button@CONNECTION_BUTTON_CANCEL:
+					Id:CONNECTION_BUTTON_CANCEL
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Cancel
+					Delegate:ConnectionDialogsDelegate
+		Background@CONNECTING_BG:
+			Id:CONNECTING_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:450
+			Height:150
+			Visible:false
+			Children:
+				Label@CONNECTING_TITLE:
+					Id:CONNECTING_TITLE
 					X:0
 					Y:20
 					Width:450
 					Height:25
 					Text:Connecting
 					Align:Center
-				Container:
-				    Id:CONNECTION_GROUP_CONNECTING
-				    Visible:false
-				    Children:
-        				Button@CONNECTION_BUTTON_ABORT:
-        					Id:CONNECTION_BUTTON_ABORT
-        					X:PARENT_RIGHT - 180
-        					Y:PARENT_BOTTOM - 45
-        					Width:160
-        					Height:25
-        					Text:Abort
-        					Delegate:ServerBrowserDelegate
-				Container:
-				    Id:CONNECTION_GROUP_FAILED
-				    Visible:false
-				    Children:
-				        Button@CONNECTION_BUTTON_RETRY:
-        					Id:CONNECTION_BUTTON_RETRY
-        					X:PARENT_RIGHT - 360
-        					Y:PARENT_BOTTOM - 45
-        					Width:160
-        					Height:25
-        					Text:Retry
-        					Delegate:ServerBrowserDelegate
-        				Button@CONNECTION_BUTTON_CANCEL:
-        					Id:CONNECTION_BUTTON_CANCEL
-        					X:PARENT_RIGHT - 180
-        					Y:PARENT_BOTTOM - 45
-        					Width:160
-        					Height:25
-        					Text:Cancel
-        					Delegate:ServerBrowserDelegate
+				Label@CONNECTING_DESC:
+					Id:CONNECTING_DESC
+					X:0
+					Y:60
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
+					Align:Center
+					Delegate:ConnectionDialogsDelegate
+				Button@CONNECTION_BUTTON_ABORT:
+					Id:CONNECTION_BUTTON_ABORT
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Abort
+					Delegate:ConnectionDialogsDelegate

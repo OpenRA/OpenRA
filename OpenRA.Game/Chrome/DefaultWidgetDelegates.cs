@@ -155,4 +155,33 @@ namespace OpenRA.Widgets.Delegates
 			return false;
 		}
 	}
+	
+	public class ConnectionDialogsDelegate : WidgetDelegate
+	{	
+		public override bool OnMouseUp(Widget w, MouseInput mi)
+		{
+			// Main Menu root
+			if (w.Id == "CONNECTION_BUTTON_ABORT")
+			{
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+				return true;
+			}
+			
+			if (w.Id == "CONNECTION_BUTTON_CANCEL")
+			{
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+				return true;
+			}
+			
+			if (w.Id == "CONNECTION_BUTTON_RETRY")
+			{
+				Game.JoinServer(Game.CurrentHost,Game.CurrentPort);
+				return true;
+			}
+			return false;
+		}
+	}
+	
 }

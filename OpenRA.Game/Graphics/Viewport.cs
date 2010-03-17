@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Graphics
 {
@@ -60,7 +61,8 @@ namespace OpenRA.Graphics
 
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
-
+		
+		ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public void DrawRegions( World world )
 		{
 			world.WorldRenderer.palette.Update(world.Queries.WithTraitMultiple<IPaletteModifier>().Select(t=>t.Trait));
@@ -81,22 +83,52 @@ namespace OpenRA.Graphics
 			}
 			else
 			{
-				// what a hack. as soon as we have some real chrome stuff...
-
-				Game.chrome.DrawWidgets(world);
-				switch( Game.orderManager.Connection.ConnectionState )
+				// Still hacky, but at least it uses widgets
+				// TODO: Clean up the logic of this beast
+				// TODO: Have a proper "In main menu" state
+				ConnectionState state = Game.orderManager.Connection.ConnectionState;
+				if (state != lastConnectionState)
 				{
-					case ConnectionState.Connecting:
-						Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
-						break;
-					case ConnectionState.NotConnected:
-						// Todo: Hook these up
-						Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
-						break;
-					case ConnectionState.Connected:
-						Game.chrome.DrawLobby( world );
-						break;
+					switch( Game.orderManager.Connection.ConnectionState )
+					{
+						case ConnectionState.PreConnecting:
+							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+							break;
+						case ConnectionState.Connecting:
+							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = true;
+							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+
+							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Connecting abort";
+
+							//Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
+							break;
+						case ConnectionState.NotConnected:
+							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = true;
+
+							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Not Connected Retry/fail";
+							//Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
+							break;
+						case ConnectionState.Connected:
+							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+							//Game.chrome.DrawLobby( world );
+							break;
+					}
 				}
+				
+				// TODO: Kill this (hopefully!) soon
+				if (state == ConnectionState.Connected)
+					Game.chrome.DrawLobby( world );
+				
+				lastConnectionState = state;
+				Game.chrome.DrawWidgets(world);
+
 			}
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );

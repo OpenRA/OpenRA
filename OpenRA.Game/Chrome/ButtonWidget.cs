@@ -6,7 +6,7 @@ namespace OpenRA.Widgets
 {
 	class ButtonWidget : Widget
 	{
-		public readonly string Text = "";
+		public string Text = "";
 		public bool Depressed = false;
 		public int VisualHeight = 1;
 		public override bool HandleInput(MouseInput mi)
