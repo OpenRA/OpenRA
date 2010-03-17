@@ -179,8 +179,8 @@ namespace OpenRA.Graphics
 		public void DrawSpawnPoints(RectangleF rect)
 		{
 			var points = world.Map.SpawnPoints
-				.Select( (sp,i) => Pair.New(sp,world.players.Values.FirstOrDefault( 
-					p => p.SpawnPointIndex == i + 1 ) ))
+				.Select( (sp,i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault( 
+					c => c.SpawnPoint == i + 1 ) ))
 				.ToList();
 
 			foreach (var p in points)
@@ -194,7 +194,7 @@ namespace OpenRA.Graphics
 					lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), p.Second.Color);
+						12, 12), Player.PlayerColors[ p.Second.PaletteIndex ].c);
 			
 					rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
 				}

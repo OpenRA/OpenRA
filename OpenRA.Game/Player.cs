@@ -44,7 +44,6 @@ namespace OpenRA
 		public int DisplayCash = 0;
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
-		public int SpawnPointIndex = 0;
 
 		public World World { get { return PlayerActor.World; } }
 
@@ -188,36 +187,6 @@ namespace OpenRA
 			{
 				DisplayCash -= move;
 				Sound.PlayToPlayer(this, eva.CashTickDown);
-			}
-		}
-
-		public void SyncFromLobby(Session.Client client)
-		{
-			if (PlayerName != client.Name)
-			{
-				//Game.chat.AddLine(this, "is now known as " + client.Name);
-				PlayerName = client.Name;
-			}
-
-			if (string.IsNullOrEmpty(client.Country))
-				client.Country = PlayerActor.World.GetCountries().First().Name;
-
-			if (Country.Name != client.Country)
-			{
-				//Game.chat.AddLine(this, "is now playing {0}".F(client.Country));
-				Country = PlayerActor.World.GetCountries().First(c => c.Name == client.Country);
-			}
-
-			if (PaletteIndex != client.PaletteIndex)
-			{
-				PaletteIndex = client.PaletteIndex;
-				//Game.chat.AddLine(this, "has changed color to {0}".F(PlayerColors[client.PaletteIndex].b));
-			}
-
-			if (SpawnPointIndex != client.SpawnPoint)
-			{
-				SpawnPointIndex = client.SpawnPoint;
-				//Game.chat.AddLine(this, "has changed spawn point to {0}".F(client.SpawnPoint));
 			}
 		}
 	}
