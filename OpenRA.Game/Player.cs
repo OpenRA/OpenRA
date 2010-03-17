@@ -32,12 +32,16 @@ namespace OpenRA
 	public class Player
 	{
 		public Actor PlayerActor;
-		public int PaletteIndex;
 		public int Kills;
-		public string PlayerName;
-		public string InternalName;
-		public CountryInfo Country;
+
+		public readonly string Palette;
+		public readonly Color Color;
+		
+		public readonly string PlayerName;
+		public readonly string InternalName;
+		public readonly CountryInfo Country;
 		public readonly int Index;
+
 		public int Cash = 10000;
 		public int Ore = 0;
 		public int OreCapacity;
@@ -60,16 +64,6 @@ namespace OpenRA
 			PlayerColors.Add(new Tuple<string, string, Color>(palette, name, c));
 		}
 
-		public Color Color
-		{
-			get { return PlayerColors[PaletteIndex].c; }
-		}
-		
-		public string Palette
-		{
-			get { return PlayerColors[PaletteIndex].a; }
-		}
-
 		public Shroud Shroud;
 
 		public Player( World world, int index, Session.Client client )
@@ -80,7 +74,9 @@ namespace OpenRA
 			this.Index = index;
 			this.InternalName = "Multi{0}".F(index);
 
-			this.PaletteIndex = client != null ? client.PaletteIndex : index;
+			var paletteIndex = client != null ? client.PaletteIndex : index;
+			this.Palette = PlayerColors[paletteIndex].a;
+			this.Color = PlayerColors[paletteIndex].c;
 			this.PlayerName = client != null ? client.Name : "Player {0}".F(index+1);
 			this.Country = world.GetCountries()
 				.FirstOrDefault( c => client != null && client.Country == c.Name )

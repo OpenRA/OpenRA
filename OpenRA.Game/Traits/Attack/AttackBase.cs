@@ -173,7 +173,7 @@ namespace OpenRA.Traits
 				if ( weapon.RenderAsLaser )
 				{
 					// TODO: This is a hack; should probably use a particular palette index
-					Color bc = (weapon.UsePlayerColor) ? Player.PlayerColors[self.Owner.PaletteIndex].c : Color.Red;
+					Color bc = (weapon.UsePlayerColor) ? self.Owner.Color : Color.Red;
 					self.World.Add(new LaserZap(firePos, thisTarget.CenterLocation.ToInt2(), weapon.BeamRadius, bc));
 				}	
 				if( weapon.RenderAsTesla )
