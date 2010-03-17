@@ -65,3 +65,10 @@
 		Palette: terrain
 		DamageStates: 2
 
+^Tree:
+	Category: Building
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: x
+		Dimensions: 1,1

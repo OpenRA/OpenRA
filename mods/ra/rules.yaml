@@ -1807,185 +1807,166 @@ DOMF:
 	Fake:
 
 T01:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T02:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T03:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T05:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T06:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T07:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T08:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-	-Selectable:
+	
 
 T10:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	-Selectable:
+	
 
 T11:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	-Selectable:
 
 T12:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T13:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T14:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	-Selectable:
 
 T15:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	-Selectable:
 
 T16:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 T17:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	-Selectable:
 
 TC01:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	-Selectable:
 
 TC02:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	-Selectable:
 
 TC03:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
-	-Selectable:
 
 TC04:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	-Selectable:
 
 TC05:
-	Inherits: ^Building
+	Inherits: ^Tree
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	-Selectable:
 
 MINE:
-	Inherits: ^Building
+	Inherits: ^Tree
 	SeedsResource:
-	-Selectable:
 
 BOXES01:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES02:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES03:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES04:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES05:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES06:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES07:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES08:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 BOXES09:
-	Inherits: ^Building
-	-Selectable:
+	Inherits: ^Tree
+	
 
 FCOM:
 	Inherits: ^Building
