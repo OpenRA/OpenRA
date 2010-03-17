@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -59,16 +59,20 @@ namespace OpenRA.FileFormats
 
 				var colon = t.IndexOf(':');
 				var d = new Dictionary<string, MiniYaml>();
-
-				if (colon == -1)
-					levels[level].Add(t.Trim(), new MiniYaml(null, d));
-				else
+				try
 				{
-					var value = t.Substring(colon + 1).Trim();
-					if (value.Length == 0)
-						value = null;
-					levels[level].Add(t.Substring(0, colon).Trim(), new MiniYaml(value, d));
+					if (colon == -1)
+						levels[level].Add(t.Trim(), new MiniYaml(null, d));
+					else
+					{
+						var value = t.Substring(colon + 1).Trim();
+						if (value.Length == 0)
+							value = null;
+						levels[level].Add(t.Substring(0, colon).Trim(), new MiniYaml(value, d));
+					}
 				}
+				catch (ArgumentException) { throw new InvalidDataException("Duplicate Identifier:`{0}`".F(t)); }
+				
 				levels.Add(d);
 			}
 			return levels[0];

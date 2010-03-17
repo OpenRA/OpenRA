@@ -2,8 +2,8 @@ Container:
 	Children:
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
-			X:WINDOW_RIGHT/2 - 125
-			Y:WINDOW_BOTTOM/2 - 100
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:250
 			Height:200
 			Children:
@@ -41,8 +41,8 @@ Container:
 					Delegate:MainMenuButtonsDelegate
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
-			X:WINDOW_RIGHT/2 - 225
-			Y:WINDOW_BOTTOM/2 - 72
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
 			Height:145
 			Visible:false
@@ -87,8 +87,8 @@ Container:
 					Delegate:CreateServerMenuDelegate
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
-			X:WINDOW_RIGHT/2 - 225
-			Y:WINDOW_BOTTOM/2 - 200
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
 			Height:400
 			Visible:false
@@ -117,3 +117,51 @@ Container:
 					Height:25
 					Text:Cancel
 					Delegate:ServerBrowserDelegate
+		Background@CONNECTION_BG:
+			Id:CONNECTION_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:450
+			Height:400
+			Visible:false
+			Children:
+				Label@CONNECTION_LABEL_TITLE:
+					Id:CONNECTION_LABEL_TITLE
+					X:0
+					Y:20
+					Width:450
+					Height:25
+					Text:Connecting
+					Align:Center
+				Container@CONNECTION_GROUP_CONNECTING:
+					Id:CONNECTION_GROUP_CONNECTING
+					Visible:false
+					Children:
+						Button@CONNECTION_BUTTON_ABORT:
+							Id:CONNECTION_BUTTON_ABORT
+							X:PARENT_RIGHT - 180
+							Y:PARENT_BOTTOM - 45
+							Width:160
+							Height:25
+							Text:Abort
+							Delegate:ServerBrowserDelegate
+				Container@CONNECTION_GROUP_FAILED:
+					Id:CONNECTION_GROUP_FAILED
+					Visible:false
+					Children:
+						Button@CONNECTION_BUTTON_RETRY:
+							Id:CONNECTION_BUTTON_RETRY
+							X:PARENT_RIGHT - 360
+							Y:PARENT_BOTTOM - 45
+							Width:160
+							Height:25
+							Text:Retry
+							Delegate:ServerBrowserDelegate
+						Button@CONNECTION_BUTTON_CANCEL:
+							Id:CONNECTION_BUTTON_CANCEL
+							X:PARENT_RIGHT - 180
+							Y:PARENT_BOTTOM - 45
+							Width:160
+							Height:25
+							Text:Cancel
+							Delegate:ServerBrowserDelegate
