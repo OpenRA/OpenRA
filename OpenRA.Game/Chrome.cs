@@ -398,10 +398,13 @@ namespace OpenRA
 		void CycleRace(bool left)
 		{
 			var countries = Game.world.GetCountries();
-			var nextCountry = countries.Concat(countries)
+			var nextCountry = countries
 				.SkipWhile(c => c.Name != Game.LocalClient.Country)
 				.Skip(1)
-				.First();
+				.FirstOrDefault();
+
+			if (nextCountry == null)
+				nextCountry = countries.First();
 
 			Game.IssueOrder(Order.Chat("/race " + nextCountry.Name));
 		}
