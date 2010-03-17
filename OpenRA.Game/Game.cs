@@ -19,13 +19,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Windows.Forms;
 using System.Reflection;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
