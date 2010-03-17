@@ -386,9 +386,9 @@ namespace OpenRA
 		{
 			var d = left ? +1 : Player.PlayerColors.Count() - 1;
 
-			var newIndex = ((int)Game.world.LocalPlayer.PaletteIndex + d) % Player.PlayerColors.Count();
+			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Player.PlayerColors.Count();
 				
-			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.PaletteIndex)
+			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.LocalClient.PaletteIndex)
 				newIndex = (newIndex + d) % Player.PlayerColors.Count();
 			
 			Game.IssueOrder(
@@ -399,7 +399,7 @@ namespace OpenRA
 		{
 			var countries = Game.world.GetCountries();
 			var nextCountry = countries.Concat(countries)
-				.SkipWhile(c => c != Game.world.LocalPlayer.Country)
+				.SkipWhile(c => c.Name != Game.LocalClient.Country)
 				.Skip(1)
 				.First();
 
@@ -416,9 +416,9 @@ namespace OpenRA
 		{
 			var d = left ? +1 : Game.world.Map.SpawnPoints.Count();
 
-			var newIndex = (Game.world.LocalPlayer.SpawnPointIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
+			var newIndex = (Game.LocalClient.SpawnPoint + d) % (Game.world.Map.SpawnPoints.Count()+1);
 
-			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.world.LocalPlayer.SpawnPointIndex)
+			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.LocalClient.SpawnPoint)
 				newIndex = (newIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
 
 			Game.IssueOrder(

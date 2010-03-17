@@ -311,6 +311,11 @@ namespace OpenRA
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
 
+		public static Session.Client LocalClient
+		{
+			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
+		}
+
 		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
 		{
 			int sync = Game.world.SyncHash();
