@@ -53,8 +53,6 @@ namespace OpenRA
 			sprites = new Sprite[map.MapSize, map.MapSize];
 			gapField = new int[map.MapSize, map.MapSize];
 			gapActive = new bool[map.MapSize, map.MapSize];
-
-			shadowBits[0].sheet.Texture.SetData(shadowBits[0].sheet.Bitmap);	// HACK
 		}
 
 		public bool HasGPS

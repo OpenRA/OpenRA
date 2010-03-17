@@ -28,8 +28,8 @@ namespace OpenRA.Graphics
 	{
 		readonly Renderer renderer;
 		protected readonly Bitmap bitmap;
-
 		ITexture texture;
+		bool dirty;
 
 		internal Sheet(Renderer renderer, Size size)
 		{
@@ -43,17 +43,18 @@ namespace OpenRA.Graphics
 			this.bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 		}
 
-		void Resolve()
-		{
-            texture = renderer.Device.CreateTexture(bitmap);
-		}
-
 		public ITexture Texture
 		{
 			get
 			{
 				if (texture == null)
-					Resolve();
+					texture = renderer.Device.CreateTexture(bitmap);
+
+				if (dirty)
+				{
+					texture.SetData(bitmap);
+					dirty = false;
+				}
 
 				return texture;
 			}
@@ -68,5 +69,7 @@ namespace OpenRA.Graphics
 		}
 
 		public Bitmap Bitmap { get { return bitmap; } }	// for perf
+
+		public void MakeDirty() { dirty = true; }
 	}
 }

@@ -111,6 +111,7 @@ namespace OpenRA.Graphics
 			}
 
 			Sprite rect = new Sprite(current, new Rectangle(p, imageSize), channel.Value);
+			current.MakeDirty();
 			p.X += imageSize.Width;
 
 			return rect;
