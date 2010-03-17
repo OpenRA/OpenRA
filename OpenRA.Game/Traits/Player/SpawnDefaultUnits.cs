@@ -24,9 +24,9 @@ namespace OpenRA.Traits
 
 	class SpawnDefaultUnits : IOnGameStart
 	{
-		public void SpawnStartingUnits(Player p, int2 sp)
+		public void GameStarted(Player p, int2 sp)
 		{
-			p.PlayerActor.World.CreateActor("mcv", sp, p);
+			p.World.CreateActor("mcv", sp, p);
 		}
 	}
 }

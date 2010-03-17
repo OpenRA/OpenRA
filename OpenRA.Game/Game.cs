@@ -120,11 +120,12 @@ namespace OpenRA
 			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
 
+			// todo: delay this
 			skipMakeAnims = true;
 			foreach (var actorReference in world.Map.Actors)
-				world.CreateActor(actorReference.Name, actorReference.Location, 
-					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner) 
-					?? world.players[0]);	
+				world.CreateActor(actorReference.Name, actorReference.Location,
+					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Owner)
+					?? world.NeutralPlayer);
 			skipMakeAnims = false;
 			Timer.Time( "map actors: {0}" );
 
@@ -297,7 +298,7 @@ namespace OpenRA
 
 				foreach (var ssu in world.players[client.Index].PlayerActor
 					.traits.WithInterface<IOnGameStart>())
-					ssu.SpawnStartingUnits(world.players[client.Index], sp);
+					ssu.GameStarted(world.players[client.Index], sp);
 			}
 
 			Game.viewport.GoToStartLocation( Game.world.LocalPlayer );

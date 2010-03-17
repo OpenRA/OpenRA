@@ -29,7 +29,6 @@ using OpenRA.Orders;
 using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Network;
 
 namespace OpenRA
 {

@@ -143,7 +143,7 @@ namespace OpenRA.Network
 
 	class ReplayConnection : IConnection
 	{
-		uint nextFrame = 1;
+		//uint nextFrame = 1;
 		FileStream replayStream;
 
 		public ReplayConnection( string replayFilename )

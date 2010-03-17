@@ -124,7 +124,7 @@ namespace OpenRA.Traits
 
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface ILoadWorldHook { void WorldLoaded(World w); }
-	public interface IOnGameStart { void SpawnStartingUnits(Player p, int2 sp); }
+	public interface IOnGameStart { void GameStarted(Player p, int2 sp); }
 
 	public interface IActivity
 	{

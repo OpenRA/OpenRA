@@ -49,6 +49,11 @@ namespace OpenRA
 			get { return players[localPlayerIndex]; }
 		}
 
+		public Player NeutralPlayer
+		{
+			get { return players[0]; }		// todo, perhaps.
+		}
+
 		public void SetLocalPlayer(int index)
 		{
 			if (index != localPlayerIndex)
