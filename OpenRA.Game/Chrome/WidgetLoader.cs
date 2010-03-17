@@ -16,7 +16,7 @@ namespace OpenRA
 					foreach (var c in child.Value.Nodes)
 						widget.AddChild(LoadWidget(c));
 				else
-					FieldLoader.LoadField(widget, child.Key, child.Value);
+					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 			}
 			return widget;
 		}
