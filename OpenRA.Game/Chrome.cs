@@ -397,16 +397,16 @@ namespace OpenRA
 
 		void CycleRace(bool left)
 		{
-			var countries = Game.world.GetCountries();
+			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Name));
 			var nextCountry = countries
-				.SkipWhile(c => c.Name != Game.LocalClient.Country)
+				.SkipWhile(c => c != Game.LocalClient.Country)
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (nextCountry == null)
 				nextCountry = countries.First();
 
-			Game.IssueOrder(Order.Chat("/race " + nextCountry.Name));
+			Game.IssueOrder(Order.Chat("/race " + nextCountry));
 		}
 
 		void CycleReady(bool left)
@@ -511,7 +511,7 @@ namespace OpenRA
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex].c);
 				lineRenderer.Flush();
-				f.DrawText(rgbaRenderer, client.Country ?? "Unknown", new int2(r.Left + 220, y), Color.White);
+				f.DrawText(rgbaRenderer, client.Country, new int2(r.Left + 220, y), Color.White);
 				f.DrawText(rgbaRenderer, client.State.ToString(), new int2(r.Left + 290, y), Color.White);
 				f.DrawText(rgbaRenderer, (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;

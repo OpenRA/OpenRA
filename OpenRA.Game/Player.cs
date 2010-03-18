@@ -87,10 +87,10 @@ namespace OpenRA
 				Palette = "neutral";
 				Color = Color.Gray;	// HACK HACK
 			}
-			
+
 			Country = world.GetCountries()
-				.FirstOrDefault( c => client != null && client.Country == c.Name )
-				?? world.GetCountries().First();
+				.FirstOrDefault(c => client != null && client.Country == c.Name)
+				?? world.GetCountries().Random(world.SharedRandom);
 		}
 	
 		void UpdatePower()

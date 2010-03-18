@@ -86,5 +86,11 @@ namespace OpenRA
 				d.Add( k, ret = createFn( k ) );
 			return ret;
 		}
+
+		public static T Random<T>(this IEnumerable<T> ts, Thirdparty.Random r)
+		{
+			var xs = ts.ToArray();
+			return xs[r.Next(xs.Length)];
+		}
 	}
 }
