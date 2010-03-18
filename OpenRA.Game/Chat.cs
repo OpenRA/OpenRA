@@ -67,7 +67,6 @@ namespace OpenRA
 
 		public void AddLine(Color c, string from, string text)
 		{
-			Log.Write( "Chat: {0}: {1}", from, text );
 			recentLines.Add(Tuple.New(c, from, text));
 			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.ChatBeep);

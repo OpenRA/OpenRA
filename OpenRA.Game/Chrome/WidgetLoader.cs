@@ -51,7 +51,6 @@ namespace OpenRA
 				var widget = (Widget)mod.First.CreateInstance(fullTypeName);
 				if (widget == null) continue;
 
-				Log.Write("Creating Widget of type {0}", widgetType);
 				return widget;
 			}
 

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -41,7 +41,6 @@ namespace OpenRA.Traits
 			if (info.Theatre == null ||
 				info.Theatre.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
 			{
-				Log.Write("Loading palette {0} from RGBA {1} {2} {3} {4}",info.Name,info.R,info.G,info.B,info.A);
 				// TODO: This shouldn't rely on a base palette
 				var wr = self.World.WorldRenderer;
 				var pal = wr.GetPalette("player0");

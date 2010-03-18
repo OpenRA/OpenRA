@@ -31,7 +31,6 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			Log.Write( "GetContent from folder: {0}", filename );
 			try { return File.OpenRead( Path.Combine( path, filename ) ); }
 			catch { return null; }
 		}

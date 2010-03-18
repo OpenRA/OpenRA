@@ -60,13 +60,11 @@ namespace OpenRA.Graphics
 			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
 				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, eSequence));
 
-			Log.Write("* LoadSequencesForCursor() done");
 		}
 
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
 			string unitName = eUnit.GetAttribute("name");
-			// Log.Write("Loading sequence {0}", unitName);
 			try {
 				var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
 					.Select(e => new Sequence(unitName, e))

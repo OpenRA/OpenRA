@@ -65,7 +65,6 @@ namespace OpenRA.Traits
 						var crusher = GetUnitsAt(cell).Where(b => a != b && self.World.IsActorCrushableByActor(a, b)).FirstOrDefault();
 						if (crusher != null)
 						{
-							Log.Write("{0} crushes {1}", crusher.Info.Name, a.Info.Name);
 							// Apply the crush action
 							foreach (var crush in a.traits.WithInterface<ICrushable>())
 								crush.OnCrush(crusher);

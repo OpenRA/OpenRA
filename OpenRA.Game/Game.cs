@@ -77,11 +77,6 @@ namespace OpenRA
 			foreach (var a in m.Assemblies)
 				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
 			ModAssemblies = asms.ToArray();
-			
-			foreach(var foo in ModAssemblies)
-			{
-				Log.Write("Tracking namespace {0} for reflection",foo.Second);
-			}
 		}
 		
 		public static void ChangeMap(string mapName)

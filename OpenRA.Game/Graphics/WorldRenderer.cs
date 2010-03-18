@@ -48,7 +48,6 @@ namespace OpenRA.Graphics
 			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
 			palette = new HardwarePalette(renderer, world.Map);
-			Log.Write("Created worldrenderer");
 		}
 		
 		public int GetPaletteIndex(string name)

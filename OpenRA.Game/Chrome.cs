@@ -835,8 +835,6 @@ namespace OpenRA
 				paletteAnimationFrame++;
 			else
 				paletteAnimationFrame--;
-
-			Log.Write("{0}",paletteAnimationFrame);
 			
 			// Calculate palette position
 			if (paletteAnimationFrame <= paletteAnimationLength)
