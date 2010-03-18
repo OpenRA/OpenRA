@@ -174,12 +174,14 @@ namespace OpenRA
 			buttons.Clear();
 
 			renderer.Device.DisableScissor();
-			renderer.RegularFont.DrawText( rgbaRenderer, "RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n".F(
-				Game.RenderFrame,
-				Game.orderManager.FrameNumber,
-				PerfHistory.items["render"].LastValue,
-				PerfHistory.items["tick_time"].LastValue), 
-				new int2(140, 15), Color.White);
+			
+			if (Game.Settings.PerfText)
+				renderer.RegularFont.DrawText( rgbaRenderer, "RenderFrame {0} ({2:F1} ms)\nTick {1} ({3:F1} ms)\n".F(
+					Game.RenderFrame,
+					Game.orderManager.FrameNumber,
+					PerfHistory.items["render"].LastValue,
+					PerfHistory.items["tick_time"].LastValue), 
+					new int2(140, 15), Color.White);
 
 			if (Game.Settings.PerfGraph)
 				PerfHistory.Render(renderer, world.WorldRenderer.lineRenderer);

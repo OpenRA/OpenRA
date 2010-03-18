@@ -26,6 +26,7 @@ namespace OpenRA.GameRules
 		public readonly bool UnitDebug = false;
 		public readonly bool PathDebug = false;
 		public readonly bool PerfGraph = true;
+		public readonly bool PerfText = true;
 		
 		// Window settings
 		public readonly int Width = 0;
