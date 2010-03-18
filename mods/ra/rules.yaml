@@ -1475,6 +1475,11 @@ PROC:
 	IronCurtainable:
 	CustomSellValue:
 		Value: 600
+	HasUnitOnBuild:
+		Unit: HARV
+		InitialActivity: Harvest
+		SpawnOffset: 1,2
+		Facing: 64
 
 SILO:
 	Inherits: ^Building
