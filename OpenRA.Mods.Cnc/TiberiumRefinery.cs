@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -34,14 +34,6 @@ namespace OpenRA.Mods.Cnc
 		public TiberiumRefinery(Actor self)
 		{
 			this.self = self;
-			self.World.AddFrameEndTask(
-				w =>
-				{		/* create the free harvester! */
-					var harvester = w.CreateActor("harv", self.Location + new int2(0, 2), self.Owner);
-					var unit = harvester.traits.Get<Unit>();
-					unit.Facing = 64;
-					harvester.QueueActivity(new Harvest());
-				});
 		}
 
 		public int2 DeliverOffset {	get { return new int2(0, 2); } }
