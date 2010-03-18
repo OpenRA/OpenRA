@@ -25,7 +25,6 @@ log.txt
 /*.exe
 OpenRA
 OpenRA.app
-openra_server
 
 # backup files by various editors
 *~
@@ -42,3 +41,12 @@ settings.ini
 *.userprefs
 
 packaging/windows/*.exe
+
+# osx build crap
+packaging/osx/launcher/build/
+packaging/osx/launcher/OpenRA.xcodeproj/*.pbxuser
+packaging/osx/launcher/OpenRA.xcodeproj/*.perspectivev3
+packaging/osx/launcher/OpenRA.xcodeproj/*.mode1v3
+temp.c
+temp.o
+temp.s
