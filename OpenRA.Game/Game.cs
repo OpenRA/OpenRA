@@ -75,7 +75,11 @@ namespace OpenRA
 
 			// Mod assemblies assumed to contain a single namespace
 			foreach (var a in m.Assemblies)
-				asms.Add(Pair.New(Assembly.LoadFile(Path.GetFullPath(a)), Path.GetFileNameWithoutExtension(a)));
+				if (Verifier.IsSafe( Path.GetFullPath(a)))
+					asms.Add(Pair.New(
+						Assembly.LoadFile(Path.GetFullPath(a)), 
+						Path.GetFileNameWithoutExtension(a)));
+
 			ModAssemblies = asms.ToArray();
 		}
 		

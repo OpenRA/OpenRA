@@ -95,6 +95,7 @@
     <Compile Include="TileSet.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="TypeDictionary.cs" />
+    <Compile Include="Verifier.cs" />
     <Compile Include="Walkability.cs" />
     <Compile Include="ActorReference.cs" />
     <Compile Include="TerrainColorSet.cs" />
