@@ -1,6 +1,18 @@
 Player:
 	ProductionQueue:
 	PlaceBuilding:
+	NukePower:
+		Image: atomicnh
+		ChargeTime: 13
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at a target location.
+		Prerequisites: TMPL
+		TechLevel: 12
+		MissileWeapon: atomic
+		BeginChargeSound: 
+		EndChargeSound: nukavail.aud
+		SelectTargetSound: select1.aud
+		LaunchSound: nukemisl.aud
 	
 World:
 	ScreenShaker:

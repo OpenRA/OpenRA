@@ -50,6 +50,10 @@ Player:
 		Prerequisites: MSLO
 		TechLevel: 12
 		MissileWeapon: atomic
+		BeginChargeSound: aprep1.aud
+		EndChargeSound: aready1.aud
+		SelectTargetSound: slcttgt1.aud
+		LaunchSound: alaunch1.aud
 	SonarPulsePower:
 		Image: sonricon
 		ChargeTime: 10

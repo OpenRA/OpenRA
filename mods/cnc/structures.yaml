@@ -333,6 +333,7 @@ TMPL:
 		Armor: light
 		Crewed: yes
 		Sight: 4
+	NukeSilo:
 
 OBLI:
 	RequiresPower:

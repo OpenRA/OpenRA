@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -32,13 +32,13 @@ namespace OpenRA.Traits
 	class NukePower : SupportPower, IResolveOrder
 	{
 		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
-
-		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, "aprep1.aud"); }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "aready1.aud"); }
+	
+		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, Info.BeginChargeSound); }
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();
-			Sound.Play("slcttgt1.aud");
+			Sound.Play(Info.SelectTargetSound);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -55,7 +55,7 @@ namespace OpenRA.Traits
 				{
 					// Play to everyone but the current player
 					if (Owner != Owner.World.LocalPlayer)
-						Sound.Play("alaunch1.aud");
+						Sound.Play(Info.LaunchSound);
 
 					//FIRE ZE MISSILES
 					w.Add(new NukeLaunch(silo, Info.MissileWeapon, order.TargetLocation));

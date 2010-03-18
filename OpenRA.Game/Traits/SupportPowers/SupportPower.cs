@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -34,6 +34,12 @@ namespace OpenRA.Traits
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
 		public readonly string MissileWeapon = "";
+		
+		public readonly string BeginChargeSound = null;
+		public readonly string EndChargeSound = null;
+		public readonly string SelectTargetSound = null;
+		public readonly string LaunchSound = null;
+		
 
 		public abstract object Create(Actor self);
 	}

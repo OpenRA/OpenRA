@@ -48,6 +48,12 @@
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
   </unit>
+  <unit name="atomicup">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="atomicdn">
+    <sequence name="idle" start="0" length="4" />
+  </unit>
   <unit name="explosion">
     <sequence name="1" start="0" length="4" src="piff" />
     <sequence name="2" start="0" length="8" src="piffpiff" />
