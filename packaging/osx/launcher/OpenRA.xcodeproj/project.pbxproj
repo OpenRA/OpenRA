@@ -14,6 +14,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DA1241101151F194002EFE2B /* OpenRa.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA12410F1151F194002EFE2B /* OpenRa.icns */; };
+		DAFD657B11520799001F4C97 /* launcher.ini in Resources */ = {isa = PBXBuildFile; fileRef = DAFD657A11520799001F4C97 /* launcher.ini */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		8D1107310486CEB800E47090 /* OpenRA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenRA-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA12410F1151F194002EFE2B /* OpenRa.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRa.icns; sourceTree = "<group>"; };
+		DAFD657A11520799001F4C97 /* launcher.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = launcher.ini; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DAFD657A11520799001F4C97 /* launcher.ini */,
 				8D1107310486CEB800E47090 /* OpenRA-Info.plist */,
 				DA12410F1151F194002EFE2B /* OpenRa.icns */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -171,6 +174,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				DA1241101151F194002EFE2B /* OpenRa.icns in Resources */,
+				DAFD657B11520799001F4C97 /* launcher.ini in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

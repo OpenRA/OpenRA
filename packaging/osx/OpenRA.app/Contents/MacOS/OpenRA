@@ -9,5 +9,5 @@ cd "$APP_PATH/Contents/Resources"
 if [ ! -e mods/ra/packages/redalert.mix ]; then
 osascript install_ra_mix.scpt
 else
-./OpenRA
+./OpenRA settings=../../../launcher.ini
 fi
