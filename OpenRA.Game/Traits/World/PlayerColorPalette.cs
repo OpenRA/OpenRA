@@ -37,6 +37,8 @@ namespace OpenRA.Traits
 		public readonly bool Playable = true;
 
 		public object Create(Actor self) { return new PlayerColorPalette(self, this); }
+
+		public Color Color { get { return Util.ArrayToColor(DisplayColor); } }
 	}
 
 	class PlayerColorPalette
@@ -46,17 +48,13 @@ namespace OpenRA.Traits
 			var wr = self.World.WorldRenderer;
 			var pal = wr.GetPalette(info.BasePalette);
 			var newpal = new Palette(pal, new PlayerColorRemap(
-						ArrayToColor(info.Color1), 
-						ArrayToColor(info.Color2), 
+						Util.ArrayToColor(info.Color1),
+						Util.ArrayToColor(info.Color2), 
 						info.SplitRamp));
 			
 			wr.AddPalette(info.Name, newpal);
-
-			if (info.Playable)
-				Player.RegisterPlayerColor(info.Name, info.DisplayName,
-					ArrayToColor(info.DisplayColor));
 		}
 
-		static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
+		
 	}
 }

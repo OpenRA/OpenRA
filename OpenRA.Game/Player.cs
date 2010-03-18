@@ -49,22 +49,20 @@ namespace OpenRA
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
 
+		public Shroud Shroud;
+
 		public World World { get { return PlayerActor.World; } }
 
-		public static List<Tuple<string, string, Color>> PlayerColors = new List<Tuple<string, string, Color>>();
-		public static void ResetPlayerColorList()
+		public static List<Tuple<string, string, Color>> PlayerColors
 		{
-			// This is unsafe if the mapchange introduces/removes mods that defines new colors
-			// TODO: ensure that each player's palette index is reassigned appropriately
-			PlayerColors = new List<Tuple<string, string, Color>>();
+			get
+			{
+				return Game.world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>()
+					.Where(p => p.Playable)
+					.Select(p => Tuple.New(p.Name, p.DisplayName, p.Color))
+					.ToList();
+			}
 		}
-		
-		public static void RegisterPlayerColor(string palette, string name, Color c)
-		{
-			PlayerColors.Add(new Tuple<string, string, Color>(palette, name, c));
-		}
-
-		public Shroud Shroud;
 
 		public Player( World world, Session.Client client )
 		{

@@ -102,7 +102,6 @@ namespace OpenRA
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 
-			Player.ResetPlayerColorList();
 			ChromeProvider.Initialize(manifest.Chrome);
 
 			world = new World();

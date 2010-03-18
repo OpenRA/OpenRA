@@ -19,9 +19,9 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
@@ -161,5 +161,7 @@ namespace OpenRA.Traits
 			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
 				.Where(w => w != null).Max(w => w.Range);
 		}
+
+		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
 	}
 }
