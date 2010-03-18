@@ -20,8 +20,35 @@
 
 
 @interface Controller : NSObject {
+	// Main Window
+	NSString *localDownloadPath;
+	NSString *packageDirectory;
+	NSURLDownload *currentDownload;
+    long long expectedData;
+    long long downloadedData;
+	BOOL downloading;
 
+	
+	IBOutlet NSWindow *mainWindow;
+	
+	// Download Sheet
+	IBOutlet NSWindow *downloadSheet;
+	IBOutlet id infoText;
+	IBOutlet id downloadButton;
+	IBOutlet id cancelButton;
+
+	IBOutlet id downloadBar;
+	IBOutlet id statusText;
+	IBOutlet id abortButton;
 }
+
+-(IBAction)showDownloadSheet:(id)sender;
+- (IBAction)dismissDownloadSheet:(id)sender;
+
+
 -(IBAction)launchApp:(id)sender;
+- (IBAction)startDownload:(id)sender;
+- (IBAction)stopDownload:(id)sender;
+- (void)extractPackages;
 
 @end

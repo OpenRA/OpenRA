@@ -16,7 +16,7 @@ MODS_INCLUDE_FILES="find mods/$m ! -name \"*.mdb\" ! -name \"packages\""
 GAC_DYLIBS="/Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libMonoPosixHelper.dylib /Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libgdiplus.dylib"
 
 # Remove old app bundle
-rm -r OpenRA.app OpenRA
+rm -r OpenRA.app
 
 # Recursively modify and copy the mono files depended on by OpenRA into the app bundle
 function patch_mono {
