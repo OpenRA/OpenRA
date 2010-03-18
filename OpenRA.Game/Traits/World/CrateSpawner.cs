@@ -57,22 +57,23 @@ namespace OpenRA.Traits
 			}
 		}
 
+		const int ChooseCrateLocationAttempts = 100;
+
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
-			int count = 0, threshold = 100;
-			for (; ; )
+
+			for (var n = 0; n < ChooseCrateLocationAttempts; n++)
 			{
-				var p = new int2(self.World.SharedRandom.Next(0, 127), self.World.SharedRandom.Next(0, 127));
+				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
+
 				if (self.World.IsCellBuildable(p, umt))
 				{
 					self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", p, self.Owner)));
 					break;
 				}
-				if (count++ > threshold)
-					break;
 			}
 		}
 	}

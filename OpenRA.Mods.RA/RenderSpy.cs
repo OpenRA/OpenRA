@@ -31,10 +31,7 @@ namespace OpenRA.Mods.RA
 
 	class RenderSpy : RenderInfantry, IRenderModifier
 	{
-		public RenderSpy(Actor self)
-			: base(self)
-		{
-		}
+		public RenderSpy(Actor self) : base(self) { }
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{

@@ -212,6 +212,13 @@ namespace OpenRA
 					: (edge ? w.Map.YOffset : w.Map.YOffset + w.Map.Height));
 		}
 
+		public static int2 ChooseRandomCell(this World w, Thirdparty.Random r)
+		{
+			return new int2(
+				r.Next(w.Map.XOffset, w.Map.XOffset + w.Map.Width),
+				r.Next(w.Map.YOffset, w.Map.YOffset + w.Map.Height));
+		}
+
 		public static IEnumerable<CountryInfo> GetCountries(this World w)
 		{
 			return w.WorldActor.Info.Traits.WithInterface<CountryInfo>();
