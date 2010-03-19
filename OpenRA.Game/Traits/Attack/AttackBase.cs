@@ -214,13 +214,13 @@ namespace OpenRA.Traits
 			{
 				if (underCursor.Owner == null)
 					return null;
-				if (underCursor.Owner != self.Owner && !forceFire)
+				if (self.Owner.Stances[ underCursor.Owner ] != Stance.Ally && !forceFire)
 					return null;
 				if (underCursor.Health >= underCursor.GetMaxHP())
 					return null;	// don't allow healing of fully-healed stuff!
 			}
 			else
-				if ((underCursor.Owner == self.Owner || underCursor.Owner == null) && !forceFire)
+				if ((self.Owner.Stances[ underCursor.Owner ] != Stance.Enemy) && !forceFire)
 					return null;
 			
 			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
