@@ -58,13 +58,9 @@ namespace OpenRA
 
 		public void SetLocalPlayer(int index)
 		{
-			if (index != localPlayerIndex)
-			{
-				localPlayerIndex = index;
-				Game.viewport.GoToStartLocation(LocalPlayer);
-				//Game.chat.AddLine(LocalPlayer, "is now YOU");
-			}
-			if (!string.IsNullOrEmpty(Game.Settings.PlayerName) && LocalPlayer.PlayerName != Game.Settings.PlayerName)
+			localPlayerIndex = index;
+			if (!string.IsNullOrEmpty(Game.Settings.PlayerName) 
+				&& Game.LobbyInfo.Clients[index].Name != Game.Settings.PlayerName)
 				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
 		}
 
