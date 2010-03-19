@@ -61,7 +61,6 @@ namespace OpenRA.Traits
 
 		Actor ChooseTarget(Actor self, float range)
 		{
-			Game.chat.AddLine(Color.White, "Debug", "AutoTarget.ChooseTarget()");
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
