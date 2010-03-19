@@ -282,8 +282,16 @@ namespace OpenRA
 			if (p == q) return Stance.Ally;
 			if (p == world.NeutralPlayer || q == world.NeutralPlayer) return Stance.Neutral;
 
-			// todo: allies based on team index in LobbyInfo
-			return Stance.Enemy;
+			var pc = GetClientForPlayer(p);
+			var qc = GetClientForPlayer(q);
+
+			return pc.Team != 0 && pc.Team == qc.Team 
+				? Stance.Ally : Stance.Enemy;
+		}
+
+		static Session.Client GetClientForPlayer(Player p)
+		{
+			return LobbyInfo.Clients.Single(c => c.Index == p.Index);
 		}
 
 		static int2 lastPos;
