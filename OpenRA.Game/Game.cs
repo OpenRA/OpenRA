@@ -263,6 +263,10 @@ namespace OpenRA
 
 			foreach (var c in LobbyInfo.Clients)
 				world.AddPlayer(new Player(world, c));
+
+			foreach (var p in world.players.Values)
+				foreach (var q in world.players.Values)
+					p.Stances[q] = ChooseInitialStance(p, q);
 			
 			world.Queries = new World.AllQueries(world);
 
@@ -271,6 +275,15 @@ namespace OpenRA
 
 			Game.viewport.GoToStartLocation( world.LocalPlayer );
 			orderManager.StartGame();
+		}
+
+		static Stance ChooseInitialStance(Player p, Player q)
+		{
+			if (p == q) return Stance.Ally;
+			if (p == world.NeutralPlayer || q == world.NeutralPlayer) return Stance.Neutral;
+
+			// todo: allies based on team index in LobbyInfo
+			return Stance.Enemy;
 		}
 
 		static int2 lastPos;

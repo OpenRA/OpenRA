@@ -195,5 +195,7 @@ namespace OpenRA
 				Sound.PlayToPlayer(this, eva.CashTickDown);
 			}
 		}
+
+		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
 	}
 }
