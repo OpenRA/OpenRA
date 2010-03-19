@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Drawing;
 
 namespace OpenRA.Traits.Activities
 {
@@ -96,7 +97,7 @@ namespace OpenRA.Traits.Activities
 				return this;
 			}
 
-			if( destination == self.Location )
+			if (destination == self.Location)
 				return NextActivity;
 
 			if( path == null )

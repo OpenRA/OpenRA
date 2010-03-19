@@ -19,13 +19,20 @@
 #endregion
 
 using System.Linq;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	class AutoTargetInfo : StatelessTraitInfo<AutoTarget> { }
+	class AutoTargetInfo : StatelessTraitInfo<AutoTarget>
+	{
+		public readonly float ScanTimeAverage = 2f;
+		public readonly float ScanTimeSpread = .5f;
+	}
 
 	class AutoTarget : ITick, INotifyDamage
 	{
+		int nextScanTime = 0;
+
 		void AttackTarget(Actor self, Actor target)
 		{
 			var attack = self.traits.Get<AttackBase>();
@@ -37,16 +44,24 @@ namespace OpenRA.Traits
 		{
 			if (!self.IsIdle) return;
 
-			var attack = self.traits.Get<AttackBase>();
-			var range = Util.GetMaximumRange(self);
-			
-			if (attack.target == null || 
-				(attack.target.Location - self.Location).LengthSquared > range * range + 2)
-				AttackTarget(self, ChooseTarget(self, range));
+			if (--nextScanTime <= 0)
+			{
+				var attack = self.traits.Get<AttackBase>();
+				var range = Util.GetMaximumRange(self);
+
+				if (attack.target == null ||
+					(attack.target.Location - self.Location).LengthSquared > range * range + 2)
+					AttackTarget(self, ChooseTarget(self, range));
+
+				var info = self.Info.Traits.Get<AutoTargetInfo>();
+				nextScanTime = (int)(25 * (info.ScanTimeAverage + 
+					(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
+			}
 		}
 
 		Actor ChooseTarget(Actor self, float range)
 		{
+			Game.chat.AddLine(Color.White, "Debug", "AutoTarget.ChooseTarget()");
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
