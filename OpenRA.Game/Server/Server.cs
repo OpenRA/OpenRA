@@ -148,7 +148,9 @@ namespace OpenRA.Server
 						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
 						Country = "Random",
-						State = Session.ClientState.NotReady
+						State = Session.ClientState.NotReady,
+						SpawnPoint = 0,
+						Team = 0,
 					});
 
 				Console.WriteLine("Client {0}: Accepted connection from {1}",
@@ -321,6 +323,22 @@ namespace OpenRA.Server
 						}
 
 						GetClient(conn).Country = s;
+						SyncLobbyInfo();
+						return true;
+					}},	
+				{ "team",
+					s => 
+					{
+						if (GameStarted) 
+						{
+							SendChatTo( conn, "You can't change your team after the game has started" );
+							return true;
+						}
+
+						int team;
+						if (!int.TryParse(s, out team)) { Console.WriteLine("Invalid team: {0}", s ); return false; }
+
+						GetClient(conn).Team = team;
 						SyncLobbyInfo();
 						return true;
 					}},	

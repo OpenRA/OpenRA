@@ -43,6 +43,7 @@ namespace OpenRA.FileFormats
 			public int SpawnPoint;
 			public string Name;
 			public ClientState State;
+			public int Team;
 		}
 
 		public class Global
