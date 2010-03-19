@@ -234,6 +234,9 @@ namespace OpenRA
 
 			LobbyInfo = session;
 
+			if (!IsStarted)
+				world.SharedRandom = new OpenRA.Thirdparty.Random(LobbyInfo.GlobalSettings.RandomSeed);
+
 			if (Game.orderManager.Connection.ConnectionState == ConnectionState.Connected)
 				world.SetLocalPlayer(Game.orderManager.Connection.LocalClientId);
 

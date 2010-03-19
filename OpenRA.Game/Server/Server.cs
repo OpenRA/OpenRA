@@ -43,6 +43,7 @@ namespace OpenRA.Server
 		static string Name;
 		static WebClient wc = new WebClient();
 		static int ExternalPort;
+		static int randomSeed;
 
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
@@ -61,9 +62,11 @@ namespace OpenRA.Server
 			initialMods = mods;
 			Name = name;
 			ExternalPort = extport;
+			randomSeed = (int)DateTime.Now.ToBinary();
 
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = mods;
+			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 
 			Console.WriteLine("Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
@@ -548,6 +551,7 @@ namespace OpenRA.Server
 			inFlightFrames.Clear();
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = initialMods;
+			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			GameStarted = false;
 		}
 
