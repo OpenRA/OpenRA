@@ -73,6 +73,9 @@ namespace OpenRA.Mods.RA.Effects
 						{
 							cargo.Location = loc;
 							cargo.CenterLocation = Util.CenterOfCell(loc);
+
+							if (cargo.traits.Contains<IOccupySpace>())
+								world.WorldActor.traits.Get<UnitInfluence>().Add(cargo, cargo.traits.Get<IOccupySpace>());
 						}
 						w.Add(cargo);
 					});

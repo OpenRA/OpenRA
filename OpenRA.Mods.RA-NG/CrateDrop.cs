@@ -75,6 +75,8 @@ namespace OpenRA.Mods.RA_NG
 						{
 							var crate = new Actor(w, "crate", new int2(0, 0), w.NeutralPlayer);
 							crates.Add(crate);
+							self.World.WorldActor.traits.Get<UnitInfluence>().Remove(crate, crate.traits.Get<IOccupySpace>());
+
 							var plane = w.CreateActor("BADR", w.ChooseRandomEdgeCell(), w.NeutralPlayer);
 							plane.CancelActivity();
 							plane.QueueActivity(new FlyCircle(p));

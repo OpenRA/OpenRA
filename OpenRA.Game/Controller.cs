@@ -125,6 +125,9 @@ namespace OpenRA
 
 			try
 			{
+				if (!Game.IsStarted)
+					return "default";
+
 				var mi = new MouseInput
 				{
 					Location = ( Game.CellSize * MousePosition - Game.viewport.Location ).ToInt2(),
