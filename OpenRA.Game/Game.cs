@@ -87,6 +87,8 @@ namespace OpenRA
 					Log.Write("Assembly `{0}` cannot be verified. Failures:", a);
 					foreach (var f in failures)
 						Log.Write("\t{0}", f);
+
+					throw new InvalidOperationException("Failed verification. See the log for further details.");
 				}
 			}
 

@@ -29,11 +29,26 @@ namespace OpenRA.FileFormats
 	public static class Verifier
 	{
 		static readonly string[] AllowedPatterns = {
-													   /* todo */
-												   };
+		   "System.Collections.Generic.*",
+		   "System.Linq.*",
+		   "OpenRA.*",
+		   "System.Collections.*",
+		   "System.Func*",
+		   "System.String:*",
+		   "System.IDisposable:*",
+		   "System.Action*",
+		   "System.Object:*",
+		   "System.Math:*",
+		   "System.Predicate*",
+		   "System.NotSupportedException:.ctor",
+		   "System.Threading.Thread:get_CurrentThread",
+		   "System.Threading.Thread:get_ManagedThreadId",
+	   };
 
 		public static bool IsSafe(string filename, List<string> failures)
 		{
+			Log.Write("Start verification: {0}", filename);
+
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += (s, a) => Assembly.ReflectionOnlyLoad(a.Name);
 			var flags = BindingFlags.Instance | BindingFlags.Static |
 				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
@@ -53,13 +68,13 @@ namespace OpenRA.FileFormats
 				.SelectMany(x => x.GetMembers(flags))
 				.SelectMany(x => FunctionsUsedBy(x))
 				.Where(x => x.DeclaringType.Assembly != assembly)
-				.Select(x => string.Format("{0}:{1}", x.DeclaringType.FullName, x))
+				.Select(x => string.Format("{0}:{1}", x.DeclaringType.FullName, x.Name))
 				.OrderBy(x => x)
 				.Distinct())
 				if (!IsAllowed(fn))
 					failures.Add("Unsafe function: {0}".F(fn));
 
-			return failures.Count > 0;
+			return failures.Count == 0;
 		}
 
 		static bool IsAllowed(string fn)
@@ -74,6 +89,8 @@ namespace OpenRA.FileFormats
 					if (fn == p) return true;
 				}
 
+			Log.Write(fn);
+			
 			return false;
 		}
 
