@@ -62,8 +62,12 @@ namespace OpenRA
 				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
 			VoiceInfo = new InfoLoader<VoiceInfo>(
 				Pair.New<string, Func<string, VoiceInfo>>("Voice", _ => new VoiceInfo()));
-	
-			var yamlRules = m.Rules.Reverse().Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+
+			Log.Write("Using rules files: ");
+			foreach (var y in m.Rules)
+				Log.Write(" -- {0}", y);
+
+			var yamlRules = m.Rules.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 
 			Info = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
