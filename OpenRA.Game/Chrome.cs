@@ -36,7 +36,7 @@ namespace OpenRA
 	{
 		public readonly Renderer renderer;
 		public readonly SpriteRenderer rgbaRenderer;
-		readonly LineRenderer lineRenderer;
+		public readonly LineRenderer lineRenderer;
 		readonly SpriteRenderer shpRenderer;
 		
 		string chromeCollection;
