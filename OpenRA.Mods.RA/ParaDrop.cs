@@ -25,13 +25,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class ParaDropInfo : ITraitInfo
+	public class ParaDropInfo : ITraitInfo
 	{
 		public readonly int LZRange = 4;
 		public object Create(Actor self) { return new ParaDrop(); }
 	}
 
-	class ParaDrop : ITick
+	public class ParaDrop : ITick
 	{
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;

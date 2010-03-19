@@ -5,8 +5,11 @@ Packages:
 LegacyRules:
 
 Rules:
+	mods/ra-ng/rules.yaml
 	mods/ra-ng/defense-queue.yaml
 
 Sequences:
 
 Assemblies:
+	mods/ra-ng/OpenRA.Mods.RA_NG.dll:
+	mods/ra/OpenRA.Mods.RA.dll:

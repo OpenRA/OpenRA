@@ -1,0 +1,7 @@
+World:
+	-CrateSpawner:
+	CrateDrop:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 20
+		WaterChance: .2
