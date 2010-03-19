@@ -204,7 +204,7 @@ namespace OpenRA.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Left || underCursor == null) return null;
+			if (mi.Button == MouseButton.Left || underCursor == null || underCursor.Owner == null) return null;
 			if (self == underCursor) return null;
 
 			var isHeal = self.GetPrimaryWeapon().Damage < 0;
