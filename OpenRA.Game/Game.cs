@@ -31,6 +31,7 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
+using System.Collections.Generic;
 
 namespace OpenRA
 {
@@ -75,10 +76,19 @@ namespace OpenRA
 
 			// Mod assemblies assumed to contain a single namespace
 			foreach (var a in m.Assemblies)
-				if (Verifier.IsSafe( Path.GetFullPath(a)))
+			{
+				var failures = new List<string>();
+				if (Verifier.IsSafe(Path.GetFullPath(a), failures))
 					asms.Add(Pair.New(
-						Assembly.LoadFile(Path.GetFullPath(a)), 
+						Assembly.LoadFile(Path.GetFullPath(a)),
 						Path.GetFileNameWithoutExtension(a)));
+				else
+				{
+					Log.Write("Assembly `{0}` cannot be verified. Failures:", a);
+					foreach (var f in failures)
+						Log.Write("\t{0}", f);
+				}
+			}
 
 			ModAssemblies = asms.ToArray();
 		}
