@@ -6,7 +6,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-4C26-8171-CF45EE01E97A}"
 	ProjectSection(SolutionItems) = preProject
 		mods\ra\defaults.yaml = mods\ra\defaults.yaml
-		mods\ra\merge-rules.yaml = mods\ra\merge-rules.yaml
 		mods\ra\mod.yaml = mods\ra\mod.yaml
 		mods\ra\nopower.shp = mods\ra\nopower.shp
 		mods\ra\rules.ini = mods\ra\rules.ini
@@ -25,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aftermath", "aftermath", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra-ng", "ra-ng", "{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43}"
 	ProjectSection(SolutionItems) = preProject
+		mods\ra-ng\crate-drop.yaml = mods\ra-ng\crate-drop.yaml
 		mods\ra-ng\defense-queue.yaml = mods\ra-ng\defense-queue.yaml
 		mods\ra-ng\mod.yaml = mods\ra-ng\mod.yaml
 	EndProjectSection
@@ -39,8 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shaders", "shaders", "{119A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "settings", "settings", "{CCCBD235-11AB-4FA2-9641-93038EACAFC8}"
 	ProjectSection(SolutionItems) = preProject
-		settings-netplay-local-aftermath.ini = settings-netplay-local-aftermath.ini
-		settings-netplay-local.ini = settings-netplay-local.ini
+		settings-netplay-cnc.ini = settings-netplay-cnc.ini
+		settings-netplay-ra.ini = settings-netplay-ra.ini
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "globals", "globals", "{27CA9A65-2FEE-4995-B7F0-E5BE1BB5494B}"
@@ -58,18 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3FB8CE49-01F
 		doc\RACG110.TXT = doc\RACG110.TXT
 		doc\raff.txt = doc\raff.txt
 		doc\shp dune 2.txt = doc\shp dune 2.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remaps", "remaps", "{CA06F234-23DF-4DF3-95D5-42F6C67A387D}"
-	ProjectSection(SolutionItems) = preProject
-		mods\ra\blue.rem = mods\ra\blue.rem
-		mods\ra\gold.rem = mods\ra\gold.rem
-		mods\ra\gray.rem = mods\ra\gray.rem
-		mods\ra\green.rem = mods\ra\green.rem
-		mods\ra\orange.rem = mods\ra\orange.rem
-		mods\ra\red.rem = mods\ra\red.rem
-		mods\ra\salmon.rem = mods\ra\salmon.rem
-		mods\ra\teal.rem = mods\ra\teal.rem
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2DF-4000-A4F7-AFDB4C282698}"
@@ -108,6 +96,5 @@ Global
 		{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{65D8A06F-F2DF-4000-A4F7-AFDB4C282698} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
-		{CA06F234-23DF-4DF3-95D5-42F6C67A387D} = {59F0734D-2F86-4C26-8171-CF45EE01E97A}
 	EndGlobalSection
 EndGlobal
