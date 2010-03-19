@@ -37,8 +37,19 @@ namespace OpenRA.Traits.Activities
 		public Actor ignoreBuilding;
 
 		MovePart move;
+		int ticksBeforePathing;
 
-		public Move( int2 destination, int nearEnough )
+		const int avgTicksBeforePathing = 5;
+		const int spreadTicksBeforePathing = 5;
+
+		Move()
+		{
+			ticksBeforePathing = avgTicksBeforePathing + 
+				Game.world.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+		}
+
+		public Move( int2 destination, int nearEnough ) 
+			: this()
 		{
 			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPath(
 				self.Location, destination,
@@ -48,6 +59,7 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move(int2 destination, Actor ignoreBuilding)
+			: this()
 		{
 			this.getPath = (self, mobile) => 
 				self.World.PathFinder.FindPath(
@@ -60,6 +72,7 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move( Actor target, int range )
+			: this()
 		{
 			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPathToRange(
 				self.Location, target.Location,
@@ -69,6 +82,7 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move(Func<List<int2>> getPath)
+			: this()
 		{
 			this.getPath = (_, _2) => getPath();
 			this.destination = null;
@@ -102,6 +116,12 @@ namespace OpenRA.Traits.Activities
 
 			if( path == null )
 			{
+				if (ticksBeforePathing > 0)
+				{
+					--ticksBeforePathing;
+					return this;
+				}
+
 				path = getPath( self, mobile ).TakeWhile( a => a != self.Location ).ToList();
 				SanityCheckPath( mobile );
 			}
