@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA_NG
 {
@@ -72,9 +73,11 @@ namespace OpenRA.Mods.RA_NG
 				{
 					self.World.AddFrameEndTask(w =>
 						{
-							var crate = new Actor(w, "crate", new int2(0, 0), self.Owner);
+							var crate = new Actor(w, "crate", new int2(0, 0), w.NeutralPlayer);
 							crates.Add(crate);
-							var plane = w.CreateActor("BADR", w.ChooseRandomEdgeCell(), self.Owner);
+							var plane = w.CreateActor("BADR", w.ChooseRandomEdgeCell(), w.NeutralPlayer);
+							plane.CancelActivity();
+							plane.QueueActivity(new FlyCircle(p));
 							plane.traits.Get<ParaDrop>().SetLZ(p);
 							plane.traits.Get<Cargo>().Load(plane, crate);
 						});

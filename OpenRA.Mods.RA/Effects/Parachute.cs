@@ -65,9 +65,16 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w =>
 					{
 						w.Remove(this);
-						w.Add(cargo);
+						int2 loc = ((1 / 24f) * location).ToInt2();
 						cargo.CancelActivity();
-						cargo.traits.Get<Mobile>().TeleportTo(cargo, ((1 / 24f) * location).ToInt2());
+						if (cargo.traits.Contains<Mobile>())
+							cargo.traits.Get<Mobile>().TeleportTo(cargo, loc);
+						else
+						{
+							cargo.Location = loc;
+							cargo.CenterLocation = Util.CenterOfCell(loc);
+						}
+						w.Add(cargo);
 					});
 		}
 

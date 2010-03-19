@@ -348,6 +348,7 @@ namespace OpenRA
 
 		public static void PreInit(Settings settings)
 		{
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			while (!Directory.Exists("mods"))
 			{
 				var current = Directory.GetCurrentDirectory();
