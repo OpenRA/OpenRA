@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
-				.Where(a => a.Owner != null && a.Owner != self.Owner)	/* todo: one day deal with friendly players */
+				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 			if (!Combat.HasAnyValidWeapons(self, e.Attacker))
 				return;
 
-			if (e.Attacker.Owner == self.Owner)
+			if (self.Owner.Stances[e.Attacker.Owner] == Stance.Ally)
 				return;	// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
 
 			if (e.Damage < 0)

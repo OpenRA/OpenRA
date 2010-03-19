@@ -65,7 +65,7 @@ namespace OpenRA.Traits
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
-				.Where(a => a.Owner == self.Owner && a != self)	/* todo: one day deal with friendly players */
+				.Where(a => a != self && self.Owner.Stances[ a.Owner ] == Stance.Ally)
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
 				.Where(a => a.Health < a.Info.Traits.Get<OwnedActorInfo>().HP)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
