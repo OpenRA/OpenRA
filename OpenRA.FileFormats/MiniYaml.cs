@@ -113,9 +113,10 @@ namespace OpenRA.FileFormats
 				a.TryGetValue( key, out aa );
 				b.TryGetValue( key, out bb );
 
-				if( key.Length > 0 && key[ 0 ] == '-' )
-					continue;
-				else if( noInherit.Contains( key ) )
+//				if( key.Length > 0 && key[ 0 ] == '-' )
+//					continue;
+			//	else 
+				if( noInherit.Contains( key ) )
 				{
 					if( aa != null )
 						ret.Add( key, aa );

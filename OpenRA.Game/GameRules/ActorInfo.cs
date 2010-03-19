@@ -42,7 +42,7 @@ namespace OpenRA.GameRules
 				Category = categoryNode.Value;
 
 			foreach( var t in mergedNode )
-				if( t.Key != "Inherits" && t.Key != "Category" )
+				if( t.Key != "Inherits" && t.Key != "Category" && !t.Key.StartsWith("-") )
 					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );
 		}
 

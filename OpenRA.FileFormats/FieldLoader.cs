@@ -35,7 +35,8 @@ namespace OpenRA.FileFormats
 		public static void Load(object self, MiniYaml my)
 		{
 			foreach (var x in my.Nodes)
-				LoadField( self, x.Key, x.Value.Value );
+				if (!x.Key.StartsWith("-"))
+					LoadField( self, x.Key, x.Value.Value );
 		}
 
 		public static void LoadField( object self, string key, string value )
