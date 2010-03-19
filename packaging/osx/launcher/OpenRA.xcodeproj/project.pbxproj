@@ -13,6 +13,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DA1241101151F194002EFE2B /* OpenRa.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA12410F1151F194002EFE2B /* OpenRa.icns */; };
+		DAAB5C7911536D6500DCCB80 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB5C7811536D6500DCCB80 /* Settings.m */; };
 		DAFD657B11520799001F4C97 /* launcher.ini in Resources */ = {isa = PBXBuildFile; fileRef = DAFD657A11520799001F4C97 /* launcher.ini */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,8 @@
 		8D1107310486CEB800E47090 /* OpenRA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenRA-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA12410F1151F194002EFE2B /* OpenRa.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRa.icns; sourceTree = "<group>"; };
+		DAAB5C7711536D6500DCCB80 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		DAAB5C7811536D6500DCCB80 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		DAFD657A11520799001F4C97 /* launcher.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = launcher.ini; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +53,8 @@
 			children = (
 				8990E7AD1151C0F20089C198 /* Controller.h */,
 				8990E7AE1151C0F20089C198 /* Controller.m */,
+				DAAB5C7711536D6500DCCB80 /* Settings.h */,
+				DAAB5C7811536D6500DCCB80 /* Settings.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				8990E7AF1151C0F20089C198 /* Controller.m in Sources */,
+				DAAB5C7911536D6500DCCB80 /* Settings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="569"/>
 			<integer value="29"/>
+			<integer value="569"/>
 			<integer value="372"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -925,6 +925,7 @@
 							<reference ref="926167763"/>
 						</object>
 						<reference key="parent" ref="439893737"/>
+						<string key="objectName">cnc</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">534</int>
@@ -944,6 +945,7 @@
 							<reference ref="1057175677"/>
 						</object>
 						<reference key="parent" ref="439893737"/>
+						<string key="objectName">ra</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">549</int>
@@ -1215,7 +1217,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{226, 941}, {221, 20}}</string>
+					<string>{{226, 836}, {221, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>

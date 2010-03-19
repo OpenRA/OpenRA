@@ -17,12 +17,28 @@
  */
 
 #import "Controller.h"
-
+#import "Settings.h"
 
 @implementation Controller
 
+- (void)awakeFromNib
+{
+	NSURL *settingsFile = [NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"launcher.ini"]];
+	settings = [[Settings alloc] init];
+	
+	[settings loadSettingsFile:settingsFile];
+	
+	modButtonMappings = [[NSDictionary dictionaryWithObjectsAndKeys:
+						 @"cnc",@"C&C",
+						 @"ra",@"Red Alert",
+						 nil] retain];
+}
+
 -(IBAction)launchApp:(id)sender
 {
+	[settings setValue:[modButtonMappings objectForKey:[sender title]] forSetting:@"InitialMods"];
+	[settings save];
+	
 	[[NSWorkspace sharedWorkspace] launchApplication:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app"]];
 	[NSApp terminate: nil];
 }
@@ -139,5 +155,13 @@
 		[statusText setStringValue:[NSString stringWithFormat:@"Downloading %.1f of %f",downloadedData,expectedData]];
 	}
 }
+
+- (void) dealloc
+{
+	[modButtonMappings release];
+	[settings release];
+	[super dealloc];
+}
+
 
 @end

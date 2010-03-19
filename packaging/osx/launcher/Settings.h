@@ -18,41 +18,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Settings;
-@interface Controller : NSObject {
-	// Main Window
-	NSDictionary *modButtonMappings;
-	Settings *settings;
-	
-	// Package Downloader
-	NSString *localDownloadPath;
-	NSString *packageDirectory;
-	NSURLDownload *currentDownload;
-    long long expectedData;
-    long long downloadedData;
-	BOOL downloading;
 
-	
-	IBOutlet NSWindow *mainWindow;
-	
-	// Download Sheet
-	IBOutlet NSWindow *downloadSheet;
-	IBOutlet id infoText;
-	IBOutlet id downloadButton;
-	IBOutlet id cancelButton;
-
-	IBOutlet id downloadBar;
-	IBOutlet id statusText;
-	IBOutlet id abortButton;
+@interface Settings : NSObject {
+	NSMutableDictionary *settings;
+	NSURL *filePath;
 }
 
--(IBAction)showDownloadSheet:(id)sender;
-- (IBAction)dismissDownloadSheet:(id)sender;
 
-
--(IBAction)launchApp:(id)sender;
-- (IBAction)startDownload:(id)sender;
-- (IBAction)stopDownload:(id)sender;
-- (void)extractPackages;
-
+- (NSString *)valueForSetting:(NSString *)key;
+- (void)setValue:(NSString *)value forSetting:(NSString *)key;
+- (void)loadSettingsFile:(NSURL *)filePath;
+- (void)save;
+- (void)saveToFile:(NSURL *)filePath;
 @end
