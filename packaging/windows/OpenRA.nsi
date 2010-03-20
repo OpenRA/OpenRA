@@ -157,18 +157,11 @@ SectionEnd
 Section "-Freetype" Freetype
 	AddSize 583
 	SetOutPath "$TEMP"
-	NSISdl::download http://downloads.sourceforge.net/project/gnuwin32/freetype/2.3.5-1/freetype-2.3.5-1-bin.zip freetype.zip
+	NSISdl::download http://www.open-ra.org/releases/windows/freetype-zlib.zip freetype-zlib.zip
 	Pop $R0
 	StrCmp $R0 "success" +2
 		Abort
-	!insertmacro ZIPDLL_EXTRACT freetype.zip $OUTDIR bin\freetype6.dll
-	CopyFiles "$OUTDIR\bin\freetype6.dll" $INSTDIR
-	NSISdl::download http://www.zlib.net/zlib123-dll.zip zlib.zip
-	Pop $R0
-	StrCmp $R0 "success" +2
-		Abort
-	!insertmacro ZIPDLL_EXTRACT zlib.zip $OUTDIR zlib1.dll
-	CopyFiles "$OUTDIR\zlib1.dll" $INSTDIR
+	ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
 SectionEnd
 
 ;***************************
