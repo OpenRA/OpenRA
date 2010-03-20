@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
+			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy) return null;
 			if (!underCursor.traits.Contains<IAcceptThief>()) return null;
 
 			return new Order("Steal", self, underCursor);
