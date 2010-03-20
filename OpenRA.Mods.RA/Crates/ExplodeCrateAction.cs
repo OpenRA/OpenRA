@@ -5,7 +5,7 @@ using System.Text;
 using OpenRA.Traits;
 using OpenRA.Effects;
 
-namespace OpenRA.Mods.RA.Crates
+namespace OpenRA.Mods.RA
 {
 	class ExplodeCrateActionInfo : ITraitInfo
 	{
@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Crates
 		public ExplodeCrateAction(Actor self, ExplodeCrateActionInfo info)
 		{
 			this.self = self;
+			this.info = info;
 		}
 
 		public int SelectionShares

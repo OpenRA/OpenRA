@@ -646,6 +646,12 @@ CRATE:
 	ArmorUpgradeCrateAction:
 		Multiplier: 2.0
 		SelectionShares: 10
+	ExplodeCrateAction@fire:
+		Weapon: Napalm
+		SelectionShares: 80
+	ExplodeCrateAction@boom:
+		Weapon: UnitExplode
+		SelectionShares: 80
 	Unit:
 		HP: 1
 	RenderUnit:

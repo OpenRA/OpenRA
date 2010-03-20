@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 	openra/sequences.xml
 
 		this file describes animation sequences for structures and units.
@@ -891,5 +891,8 @@
   </unit>
   <unit name="atomicdn">
     <sequence name="idle" start="0" length="4" />
+  </unit>
+  <unit name="bomblet">
+    <sequence name="idle" start="0" length="7" />
   </unit>
 </sequences>
