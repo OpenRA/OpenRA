@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA_NG
 				var info = self.Info.Traits.Get<CrateDropInfo>();
 				ticks = info.SpawnInterval * 25;		// todo: randomize
 
-				crates.RemoveAll(x => !x.IsInWorld);
+				crates.RemoveAll(x => !x.IsInWorld);	// BUG: this removes crates that are cargo of a BADR!
 				
 				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
 					+ (crates.Count < info.Maximum ? 1 : 0);
@@ -63,12 +63,13 @@ namespace OpenRA.Mods.RA_NG
 
 		void SpawnCrate(Actor self, CrateDropInfo info)
 		{
+			var threshold = 100;
+
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
-			int count = 0, threshold = 100;
-			for (; ; )
+			for (var n = 0; n < threshold; n++ )
 			{
-				var p = new int2(self.World.SharedRandom.Next(0, 127), self.World.SharedRandom.Next(0, 127));
+				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 				if (self.World.IsCellBuildable(p, umt))
 				{
 					self.World.AddFrameEndTask(w =>
@@ -83,10 +84,8 @@ namespace OpenRA.Mods.RA_NG
 							plane.traits.Get<ParaDrop>().SetLZ(p);
 							plane.traits.Get<Cargo>().Load(plane, crate);
 						});
-					break;
+					return;
 				}
-				if (count++ > threshold)
-					break;
 			}
 		}
 	}
