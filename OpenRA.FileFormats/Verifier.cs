@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -43,6 +43,10 @@ namespace OpenRA.FileFormats
 		   "System.NotSupportedException:.ctor",
 		   "System.Threading.Thread:get_CurrentThread",
 		   "System.Threading.Thread:get_ManagedThreadId",
+			
+		   // Fixes to let the game run: should be checked by someone knowledgeable
+		   "System.Threading.Interlocked:CompareExchange",
+		   "System.Drawing.Color:*",
 	   };
 
 		public static bool IsSafe(string filename, List<string> failures)
