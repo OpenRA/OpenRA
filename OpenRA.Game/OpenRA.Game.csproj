@@ -285,6 +285,7 @@
     <Compile Include="Chrome\DefaultWidgetDelegates.cs" />
     <Compile Include="Chrome\CheckboxWidget.cs" />
     <Compile Include="Traits\HasUnitOnBuild.cs" />
+    <Compile Include="Traits\Activities\Wait.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
