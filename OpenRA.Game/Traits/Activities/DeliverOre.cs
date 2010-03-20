@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -77,7 +77,7 @@ namespace OpenRA.Traits.Activities
 			{
 				refinery = ChooseRefinery(self);
 				if (refinery == null)
-					return this;		// todo: back off for a while!
+					return new Wait(10) { NextActivity = this };
 
 				return new Move(refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
 			}
@@ -87,7 +87,7 @@ namespace OpenRA.Traits.Activities
 				refinery.traits.Get<IAcceptOre>().OnDock(self, this);
 			}
 			
-			return this;
+			return new Wait(10) { NextActivity = this };
 		}
 
 		public void Cancel(Actor self)
