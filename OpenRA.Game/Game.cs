@@ -227,6 +227,8 @@ namespace OpenRA
 
 		public static void SyncLobbyInfo(string data)
 		{
+			var oldLobbyInfo = LobbyInfo;
+
 			var session = new Session();
 			session.GlobalSettings.Mods = Settings.InitialMods;
 
@@ -267,6 +269,13 @@ namespace OpenRA
 			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages)
 				|| mapName != LobbyInfo.GlobalSettings.Map)
 				changePending = true;
+
+			if (string.Join(",", oldLobbyInfo.GlobalSettings.Mods)
+				!= string.Join(",", LobbyInfo.GlobalSettings.Mods))
+			{
+				chat.AddLine(Color.White, "Debug", "Mods list changed, reloading.");
+				changePending = true;
+			}
 		}
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
