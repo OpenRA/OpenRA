@@ -36,6 +36,33 @@ namespace OpenRA.Traits.Activities
 			this.refinery = refinery;
 		}
 
+		Actor ChooseRefinery(Actor self)
+		{
+			var mobile = self.traits.Get<Mobile>();
+
+			var search = new PathSearch
+			{
+				heuristic = PathSearch.DefaultEstimator(self.Location),
+				umt = mobile.GetMovementType(),
+				checkForBlocked = false,
+			};
+			var refineries = self.World.Queries.OwnedBy[self.Owner]
+				.Where(x => x.traits.Contains<IAcceptOre>())
+				.ToList();
+			if (refinery != null)
+				search.AddInitialCell(self.World, refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset);
+			else
+				foreach (var r in refineries)
+					search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
+
+			var path = self.World.PathFinder.FindPath(search);
+			path.Reverse();
+			if (path.Count != 0)
+				return refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
+			else
+				return null;
+		}
+
 		public IActivity Tick( Actor self )
 		{
 			var mobile = self.traits.Get<Mobile>();
@@ -48,31 +75,11 @@ namespace OpenRA.Traits.Activities
 
 			if( refinery == null || self.Location != refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset )
 			{
-				var search = new PathSearch
-				{
-					heuristic = PathSearch.DefaultEstimator( self.Location ),
-					umt = mobile.GetMovementType(),
-					checkForBlocked = false,
-				};
-				var refineries = self.World.Queries.OwnedBy[self.Owner]
-					.Where(x => x.traits.Contains<IAcceptOre>())
-					.ToList();
-				if( refinery != null )
-					search.AddInitialCell(self.World, refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset);
-				else
-					foreach( var r in refineries )
-						search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
+				refinery = ChooseRefinery(self);
+				if (refinery == null)
+					return this;		// todo: back off for a while!
 
-				var path = self.World.PathFinder.FindPath( search );
-				path.Reverse();
-				if( path.Count != 0 )
-				{
-					refinery = refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
-					return new Move( () => path ) { NextActivity = this };
-				}
-				else
-					// no refineries reachable?
-					return this;
+				return new Move(refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
 			}
 			else if (!isDocking)
 			{
