@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 				if (self.World.IsCellBuildable(p, umt))
 				{
 					self.World.AddFrameEndTask(
-						w => crates.Add(w.CreateActor("crate", p, self.Owner)));
+						w => crates.Add(w.CreateActor("crate", p, self.World.NeutralPlayer)));
 					break;
 				}
 			}
