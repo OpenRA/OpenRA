@@ -102,6 +102,7 @@ namespace OpenRA
 		public void ResetExplored()
 		{
 			explored = new bool[map.MapSize, map.MapSize];
+			dirty = true;
 		}
 		
 		Rectangle MakeRect(int2 center, int range)
