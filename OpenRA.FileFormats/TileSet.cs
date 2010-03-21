@@ -72,7 +72,7 @@ namespace OpenRA.FileFormats
 					string tilename = string.Format(pattern, i + 1);
 
 					if (!walk.ContainsKey((ushort)(start + i)))
-						walk.Add((ushort)(start + i), Walkability.GetTerrainType(tilename));
+						walk.Add((ushort)(start + i), Walkability.GetTileTemplate(tilename));
 
 					using( Stream s = FileSystem.Open( tilename + "." + suffix ) )
 					{

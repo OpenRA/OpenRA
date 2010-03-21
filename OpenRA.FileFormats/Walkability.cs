@@ -50,7 +50,7 @@ namespace OpenRA.FileFormats
 	
 	public class Walkability
 	{
-		Dictionary<string, TileTemplate> walkability 
+		Dictionary<string, TileTemplate> templates 
 			= new Dictionary<string,TileTemplate>();
 
 		public Walkability(string templatesFile)
@@ -77,13 +77,13 @@ namespace OpenRA.FileFormats
 				tile.Index = -1;
 				int.TryParse(section.Name.Substring(3), out tile.Index);
 
-				walkability[tile.Name] = tile;
+				templates[tile.Name] = tile;
 			}
 		}
 
-		public TileTemplate GetTerrainType(string terrainName)
+		public TileTemplate GetTileTemplate(string terrainName)
 		{
-			return walkability[terrainName];
+			return templates[terrainName];
 		}
 	}
 }

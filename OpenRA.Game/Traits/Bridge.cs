@@ -97,7 +97,7 @@ namespace OpenRA.Traits
 			var numStates = self.Info.Traits.Get<BridgeInfo>().Long ? 6 : 3;
 			for (var n = 0; n < numStates; n++)
 			{
-				var stateTemplate = world.TileSet.Walkability.GetTerrainType(NameFromState(template, n));
+				var stateTemplate = world.TileSet.Walkability.GetTileTemplate(NameFromState(template, n));
 				Templates.Add( stateTemplate );
 
 				TileSprites.Add(replacedTiles.ToDictionary(
