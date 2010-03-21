@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 				for (var j = -1; j < 2; j++)
 					for (var i = -1; i < 2; i++)
 						if (self.World.SharedRandom.NextDouble() < info.Chance)
-							if (self.World.IsCellBuildable(self.Location + new int2(i, j), UnitMovementType.Wheel))
+							if (self.World.IsCellBuildable(self.Location + new int2(i, j), false))
 								resLayer.AddResource(resourceType, self.Location.X + i, self.Location.Y + j, 1);
 
 				ticks = info.Interval;

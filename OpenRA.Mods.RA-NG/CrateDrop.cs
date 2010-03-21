@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -64,13 +64,12 @@ namespace OpenRA.Mods.RA_NG
 		void SpawnCrate(Actor self, CrateDropInfo info)
 		{
 			var threshold = 100;
-
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
-			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
+
 			for (var n = 0; n < threshold; n++ )
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
-				if (self.World.IsCellBuildable(p, umt))
+				if (self.World.IsCellBuildable(p, inWater))
 				{
 					self.World.AddFrameEndTask(w =>
 						{

@@ -71,8 +71,7 @@ namespace OpenRA
 			var res = world.WorldActor.traits.Get<ResourceLayer>();
 
 			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
-				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound
-					? UnitMovementType.Float : UnitMovementType.Wheel ) && res.GetResource(t) == null )
+				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound) && res.GetResource(t) == null )
 					? buildOk : buildBlocked, Game.CellSize * t, "terrain" );
 			
 			// Linebuild for walls.
@@ -105,7 +104,7 @@ namespace OpenRA
 						continue;
 
 					int2 cell = topLeft + i * vecs[d];
-					if (world.IsCellBuildable(cell, bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, null))
+					if (world.IsCellBuildable(cell, bi.WaterBound))
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?

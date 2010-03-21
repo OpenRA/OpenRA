@@ -176,7 +176,7 @@ namespace OpenRA.Traits
 				for (int i = mini; i < maxi; i++)
 					if (content[i,j].type == null
 						&& GetAdjacentCellsWith(info, i,j ) > 0
-						&& w.IsCellBuildable(new int2(i, j), UnitMovementType.Wheel))
+						&& w.IsCellBuildable(new int2(i, j), false))
 						growMask[i, j] = true;
 
 			for (int j = minj; j < maxj; j++)

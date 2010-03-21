@@ -62,13 +62,12 @@ namespace OpenRA.Traits
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
-			var umt = inWater ? UnitMovementType.Float : UnitMovementType.Wheel;
 
 			for (var n = 0; n < ChooseCrateLocationAttempts; n++)
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 
-				if (self.World.IsCellBuildable(p, umt))
+				if (self.World.IsCellBuildable(p, inWater))
 				{
 					self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", p, self.World.NeutralPlayer)));

@@ -38,16 +38,19 @@ namespace OpenRA
 			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Cost(umt, world.TileSet.GetTerrainType(world.Map.MapTiles[a.X,a.Y])) < double.PositiveInfinity;
 		}
 		
-		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt)
+		public static bool IsCellBuildable(this World world, int2 a, bool waterBound)
 		{
-			return world.IsCellBuildable(a, umt, null);
+			return world.IsCellBuildable(a, waterBound, null);	
 		}
 		
-		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt, Actor toIgnore)
+		public static bool IsCellBuildable(this World world, int2 a, bool waterBound, Actor toIgnore)
 		{
 			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
-
+			
+			if (waterBound)
+				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == TerrainMovementType.Water;
+			
 			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Buildable(world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y]));
 		}
 
@@ -136,8 +139,7 @@ namespace OpenRA
 			var res = world.WorldActor.traits.Get<ResourceLayer>();
 			return !Footprint.Tiles(name, building, topLeft).Any(
 				t => !world.Map.IsInMap(t.X, t.Y) || res.GetResource(t) != null || !world.IsCellBuildable(t,
-					building.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel,
-					toIgnore));
+					building.WaterBound, toIgnore));
 		}
 
 		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)

@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 	{
 		public ProductionSurround(Actor self) : base(self) { }
 
-		static int2? FindAdjacentTile(Actor self, UnitMovementType umt)
+		static int2? FindAdjacentTile(Actor self, bool waterBound)
 		{
 			var tiles = Footprint.Tiles(self, self.traits.Get<Traits.Building>());
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (self.World.IsCellBuildable(new int2(i, j), umt))
+					if (self.World.IsCellBuildable(new int2(i, j), waterBound))
 						return new int2(i, j);
 
 			return null;
@@ -48,8 +48,7 @@ namespace OpenRA.Traits
 
 		public override int2? CreationLocation(Actor self, ActorInfo producee)
 		{
-			return FindAdjacentTile(self, producee.Traits.Get<OwnedActorInfo>().WaterBound ?
-					UnitMovementType.Float : UnitMovementType.Wheel);	/* hackety hack */
+			return FindAdjacentTile(self, producee.Traits.Get<OwnedActorInfo>().WaterBound);
 		}
 
 		public override int CreationFacing(Actor self, Actor newUnit)
