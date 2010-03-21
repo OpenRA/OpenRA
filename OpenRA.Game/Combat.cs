@@ -23,6 +23,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA
 {
@@ -41,7 +42,7 @@ namespace OpenRA
 
 			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
 
-			var isWater = (Game.world.GetTerrainType(targetTile) == TerrainMovementType.Water);
+			var isWater = (Game.world.GetTerrainType(targetTile) == TerrainType.Water);
 				
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(

@@ -49,7 +49,7 @@ namespace OpenRA
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 			
 			if (waterBound)
-				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == TerrainMovementType.Water;
+				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == TerrainType.Water;
 			
 			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Buildable(world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y]));
 		}
@@ -129,9 +129,9 @@ namespace OpenRA
 				.FirstOrDefault();
 		}
 		
-		public static TerrainMovementType GetTerrainType(this World world, int2 cell)
+		public static TerrainType GetTerrainType(this World world, int2 cell)
 		{
-			return (TerrainMovementType)world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
+			return (TerrainType)world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
 		}
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)

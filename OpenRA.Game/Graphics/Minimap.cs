@@ -120,7 +120,7 @@ namespace OpenRA.Graphics
 				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
 					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
 						if (res.GetResource(new int2(x,y)) != null)
-							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType((int)TerrainMovementType.Ore)));
+							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Ore)));
 			}
 
 			mapOnlySheet.Texture.SetData(oreLayer);
@@ -151,7 +151,7 @@ namespace OpenRA.Graphics
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
-								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(4))).ToArgb();
+								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Tree))).ToArgb();
 					}
 			}
 

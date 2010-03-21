@@ -19,6 +19,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.FileFormats;
 
 namespace OpenRA
 {
@@ -29,21 +30,6 @@ namespace OpenRA
 		Wheel = 2,
 		Float = 3,
 		Fly = 4,
-	}
-
-	public enum TerrainMovementType : byte
-	{
-		Clear = 0,
-		Water = 1,
-		Road = 2,
-		Rock = 3,
-		//Tree = 4,
-		River = 5,
-		Rough = 6,
-		Wall = 7,
-		Beach = 8,
-		Ore = 9,
-		Special = 10,
 	}
 
 	static class TerrainCosts
@@ -57,7 +43,7 @@ namespace OpenRA
 			for( int i = 0 ; i < 11 ; i++ )
 			{
 				if( i == 4 ) continue;
-				var section = Rules.AllRules.GetSection( ( (TerrainMovementType)i ).ToString() );
+				var section = Rules.AllRules.GetSection( ( (TerrainType)i ).ToString() );
 				for( int j = 0 ; j < 4 ; j++ )
 				{
 					string val = section.GetValue( ( (UnitMovementType)j ).ToString(), "0%" );
@@ -67,14 +53,14 @@ namespace OpenRA
 			}
 		}
 		
-		public static bool Buildable(int r)
+		public static bool Buildable(TerrainType r)
 		{
-			return buildable[r];
+			return buildable[(int)r];
 		}
 		
-		public static float Cost( UnitMovementType unitMovementType, int r )
+		public static float Cost( UnitMovementType unitMovementType, TerrainType r )
 		{
-			return costs[ (byte)unitMovementType ][ r ];
+			return costs[ (byte)unitMovementType ][ (int)r ];
 		}
 	}
 }

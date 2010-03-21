@@ -99,7 +99,7 @@ namespace OpenRA.FileFormats
 			return missingTile;
 		}
 
-		public int GetTerrainType(TileReference r)
+		public TerrainType GetTerrainType(TileReference r)
 		{
 			if (r.tile == 0xff || r.tile == 0xffff)
 				r.image = 0;

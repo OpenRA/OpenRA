@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 			this.self = self;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 
-			if (self.World.GetTerrainType(self.Location) == TerrainMovementType.Water)
+			if (self.World.GetTerrainType(self.Location) == TerrainType.Water)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating("water");
 		}
 

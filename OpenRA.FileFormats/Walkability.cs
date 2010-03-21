@@ -20,9 +20,24 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 namespace OpenRA.FileFormats
 {
+	public enum TerrainType : byte
+	{
+		Clear = 0,
+		Water = 1,
+		Road = 2,
+		Rock = 3,
+		Tree = 4,
+		River = 5,
+		Rough = 6,
+		Wall = 7,
+		Beach = 8,
+		Ore = 9,
+		Special = 10,
+	}
+	
 	public class TileTemplate
 	{
 		public int Index; // not valid for `interior` stuff. only used for bridges.
@@ -30,9 +45,9 @@ namespace OpenRA.FileFormats
 		public int2 Size;
 		public string Bridge;
 		public float HP;
-		public Dictionary<int, int> TerrainType = new Dictionary<int, int>();
+		public Dictionary<int, TerrainType> TerrainType = new Dictionary<int, TerrainType>();
 	}
-
+	
 	public class Walkability
 	{
 		Dictionary<string, TileTemplate> walkability 
@@ -53,11 +68,12 @@ namespace OpenRA.FileFormats
 						.Where(p => p.Key.StartsWith("tiletype"))
 						.ToDictionary(
 							p => int.Parse(p.Key.Substring(8)),
-							p => int.Parse(p.Value)),
+							p => (TerrainType)Enum.Parse(typeof(TerrainType),p.Value)),
 					Name = section.GetValue("Name", null).ToLowerInvariant(),
 					Bridge = section.GetValue("bridge", null),
 					HP = float.Parse(section.GetValue("hp", "0"))
 				};
+								
 				tile.Index = -1;
 				int.TryParse(section.Name.Substring(3), out tile.Index);
 

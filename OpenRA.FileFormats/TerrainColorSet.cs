@@ -21,12 +21,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
-
+using System;
 namespace OpenRA.FileFormats
 {
 	public class TerrainColorSet
 	{
-		public readonly Dictionary<int, Color> colors = new Dictionary<int, Color>();
+		public readonly Dictionary<TerrainType, Color> colors = new Dictionary<TerrainType, Color>();
 
 		string NextLine( StreamReader reader )
 		{
@@ -51,17 +51,17 @@ namespace OpenRA.FileFormats
 				string line = NextLine( file );
 				if( line == null )
 					break;
-				
-				string[] entries = line.Split(',');
-				int key = int.Parse(entries[0]);
-				Color val = Color.FromArgb(int.Parse(entries[1]),int.Parse(entries[2]),int.Parse(entries[3]));
+				string[] kv = line.Split('=');
+				TerrainType key = (TerrainType)Enum.Parse(typeof(TerrainType),kv[0]);
+				string[] entries = kv[1].Split(',');
+				Color val = Color.FromArgb(int.Parse(entries[0]),int.Parse(entries[1]),int.Parse(entries[2]));
 				colors.Add(key,val);
 			}
 
 			file.Close();
 		}
 		
-		public Color ColorForTerrainType(int type)
+		public Color ColorForTerrainType(TerrainType type)
 		{
 			return colors[type];	
 		}
