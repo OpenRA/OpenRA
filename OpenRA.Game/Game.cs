@@ -360,18 +360,36 @@ namespace OpenRA
 			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
 		}
 
+		static Dictionary<char, char> RemapKeys = new Dictionary<char, char>
+		{
+			{ '!', '1' },
+			{ '@', '2' },
+			{ '#', '3' },
+			{ '$', '4' },
+			{ '%', '5' },
+			{ '^', '6' },
+			{ '&', '7' },
+			{ '*', '8' },
+			{ '(', '9' },
+			{ ')', '0' },
+		};
+
 		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
 		{
 			int sync = Game.world.SyncHash();
 			
 			if( e.KeyChar == '\r' )
 				Game.chat.Toggle();
-			else if( Game.chat.isChatting )
-				Game.chat.TypeChar( e.KeyChar );
+			else if (Game.chat.isChatting)
+				Game.chat.TypeChar(e.KeyChar);
 			else
-				if( e.KeyChar >= '0' && e.KeyChar <= '9' )
-					Game.controller.selection.DoControlGroup( world, 
-						e.KeyChar - '0', modifiers );
+			{
+				var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
+
+				if (c >= '0' && c <= '9')
+					Game.controller.selection.DoControlGroup(world,
+						c - '0', modifiers);
+			}
 
 			if( sync != Game.world.SyncHash() )
 				throw new InvalidOperationException( "Desync in OnKeyPress" );
