@@ -66,9 +66,12 @@ namespace OpenRA.Traits
 			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
 		}
 
-		protected bool CanAttack(Actor self)
+		protected virtual bool CanAttack(Actor self)
 		{
-			return target != null;
+			if( target == null ) return false;
+			if( ( primaryFireDelay > 0 ) && ( secondaryFireDelay > 0 ) ) return false;
+
+			return true;
 		}
 
 		public bool IsReloading()
@@ -108,6 +111,8 @@ namespace OpenRA.Traits
 
 		public void DoAttack(Actor self)
 		{
+			if( !CanAttack( self ) ) return;
+
 			var unit = self.traits.GetOrDefault<Unit>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
@@ -165,7 +170,7 @@ namespace OpenRA.Traits
 			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			ScheduleDelayedAction(info.FireDelay, () =>
+			ScheduleDelayedAction( FireDelay( self, info ), () =>
 			{
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
@@ -200,6 +205,11 @@ namespace OpenRA.Traits
 				na.Attacking(self);
 
 			return true;
+		}
+
+		public virtual int FireDelay( Actor self, AttackBaseInfo info )
+		{
+			return info.FireDelay;
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)

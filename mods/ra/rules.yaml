@@ -570,7 +570,7 @@ TSLA:
 		Crewed: yes
 		Sight: 8
 	RenderBuildingCharge:
-	AttackOmni:
+	AttackTesla:
 		PrimaryWeapon: TeslaZap
 		FireDelay: 8
 	AutoTarget:

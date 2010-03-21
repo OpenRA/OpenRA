@@ -31,20 +31,22 @@ namespace OpenRA.Traits
 	{
 		public AttackTurreted(Actor self) : base(self) { }
 
-		public override void Tick(Actor self)
+		protected override bool CanAttack( Actor self )
 		{
-			base.Tick(self);
-
-			if( !CanAttack( self ) ) return;
-
-			if (self.traits.Contains<Building>() && !buildComplete)
-				return;		/* base defenses can't do anything until they finish building !*/
+			if( self.traits.Contains<Building>() && !buildComplete )
+				return false;
 
 			var turreted = self.traits.Get<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )
-				return;
+				return false;
 
+			return base.CanAttack( self );
+		}
+
+		public override void Tick(Actor self)
+		{
+			base.Tick(self);
 			DoAttack( self );
 		}
 

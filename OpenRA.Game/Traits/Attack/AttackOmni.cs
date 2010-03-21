@@ -32,13 +32,15 @@ namespace OpenRA.Traits
 
 		public AttackOmni(Actor self) : base(self) { }
 
+		protected override bool CanAttack( Actor self )
+		{
+			var isBuilding = ( self.traits.Contains<Building>() && !buildComplete );
+			return base.CanAttack( self ) && !isBuilding;
+		}
+
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			
-			if (!CanAttack(self)) return;
-			if (self.traits.Contains<Building>() && !buildComplete) return;
-
 			DoAttack(self);
 		}
 

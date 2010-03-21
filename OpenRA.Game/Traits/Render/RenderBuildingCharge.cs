@@ -27,14 +27,14 @@ namespace OpenRA.Traits
 	}
 
 	/* used for tesla */
-	class RenderBuildingCharge : RenderBuilding, INotifyAttack
+	class RenderBuildingCharge : RenderBuilding
 	{
 		public RenderBuildingCharge(Actor self)
 			: base(self)
 		{
 		}
 
-		public void Attacking(Actor self)
+		public void PlayCharge(Actor self)
 		{
 			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio);
 			anim.PlayThen(GetPrefix(self) + "active", 
