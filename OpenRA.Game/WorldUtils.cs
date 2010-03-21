@@ -127,26 +127,6 @@ namespace OpenRA
 				.FirstOrDefault();
 		}
 		
-		public static int2 OffsetCell(this World world, int2 cell, int step, int dir)
-		{
-			switch (dir)
-			{
-				case 0:
-					cell.X += step;
-				break;
-				case 1:
-					cell.Y += step;
-				break;
-				case 2:
-					cell.X -= step;
-				break;
-				case 3:
-					cell.Y -= step;
-				break;
-			}
-			return cell;
-		}
-		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
 			var res = world.WorldActor.traits.Get<ResourceLayer>();

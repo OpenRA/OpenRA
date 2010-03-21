@@ -104,8 +104,7 @@ namespace OpenRA
 					if (dirs[d] != 0)
 						continue;
 
-					int2 cell = world.OffsetCell(topLeft, i, d);
-
+					int2 cell = topLeft + i * vecs[d];
 					if (world.IsCellBuildable(cell, bi.WaterBound ? UnitMovementType.Float : UnitMovementType.Wheel, null))
 						continue; // Cell is empty; continue search
 
