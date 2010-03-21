@@ -654,11 +654,11 @@ CRATE:
 		Notification: armorup1.aud
 		Effect: armor
 	ExplodeCrateAction@fire:
-		Weapon: Napalm
-		SelectionShares: 80
+		Weapon: CrateNapalm
+		SelectionShares: 5
 	ExplodeCrateAction@boom:
-		Weapon: UnitExplode
-		SelectionShares: 80
+		Weapon: CrateExplosion
+		SelectionShares: 5
 	Unit:
 		HP: 1
 	RenderUnit:

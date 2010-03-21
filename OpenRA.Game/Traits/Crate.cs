@@ -26,10 +26,8 @@ using OpenRA.FileFormats;
  * Crates left to implement:
 Cloak=0,STEALTH2                ; enable cloaking on nearby objects
 Darkness=1,EMPULSE              ; cloak entire radar map
-Explosion=5,NONE,500            ; high explosive baddie (damage per explosion)
 HealBase=1,INVUN                ; all buildings to full strength
 ICBM=1,MISSILE2                 ; nuke missile one time shot
-Napalm=5,NONE,600               ; fire explosion baddie (damage)
 ParaBomb=3,PARABOX              ; para-bomb raid one time shot
 Reveal=1,EARTH                  ; reveal entire radar map
 Sonar=3,SONARBOX                ; one time sonar pulse
