@@ -164,9 +164,9 @@ namespace OpenRA
 			return new Order("Chat", null, text) { IsImmediate = true };
 		}
 
-		public static Order StartProduction(Player subject, string item)
+		public static Order StartProduction(Player subject, string item, int count)
 		{
-			return new Order("StartProduction", subject.PlayerActor, item );
+			return new Order("StartProduction", subject.PlayerActor, new int2( count, 0 ), item );
 		}
 
 		public static Order PauseProduction(Player subject, string item, bool pause)

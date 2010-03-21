@@ -145,5 +145,6 @@ namespace OpenRA
 		}
 
 		public void SetModifiers(Modifiers mods) { modifiers = mods; }
+		public Modifiers GetModifiers() { return modifiers; }
 	}
 }

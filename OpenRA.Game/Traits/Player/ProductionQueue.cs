@@ -52,33 +52,36 @@ namespace OpenRA.Traits
 			{
 			case "StartProduction":
 				{
-					var unit = Rules.Info[ order.TargetString ];
-					var ui = unit.Traits.Get<BuildableInfo>();
-					var time = ui.Cost
-						* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
-						 * ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
-						 / 1000;
+					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
+					{
+						var unit = Rules.Info[order.TargetString];
+						var ui = unit.Traits.Get<BuildableInfo>();
+						var time = ui.Cost
+							* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
+							 * (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+							 / 1000;
 
-					if( !Rules.TechTree.BuildableItems( order.Player, unit.Category ).Contains( order.TargetString ) )
-						return;	/* you can't build that!! */
+						if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
+							return;	/* you can't build that!! */
 
-					bool hasPlayedSound = false;
+						bool hasPlayedSound = false;
 
-					BeginProduction( unit.Category,
-						new ProductionItem( order.TargetString, (int)time, ui.Cost,
-							() => self.World.AddFrameEndTask(
-								_ =>
-								{
-									var isBuilding = unit.Traits.Contains<BuildingInfo>();
-									if( !hasPlayedSound )
+						BeginProduction(unit.Category,
+							new ProductionItem(order.TargetString, (int)time, ui.Cost,
+								() => self.World.AddFrameEndTask(
+									_ =>
 									{
-										var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-										Sound.PlayToPlayer( order.Player, isBuilding ? eva.BuildingReadyAudio : eva.UnitReadyAudio );
-										hasPlayedSound = true;
-									}
-									if( !isBuilding )
-										BuildUnit( order.TargetString );
-								} ) ) );
+										var isBuilding = unit.Traits.Contains<BuildingInfo>();
+										if (!hasPlayedSound)
+										{
+											var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+											Sound.PlayToPlayer(order.Player, isBuilding ? eva.BuildingReadyAudio : eva.UnitReadyAudio);
+											hasPlayedSound = true;
+										}
+										if (!isBuilding)
+											BuildUnit(order.TargetString);
+									})));
+					}
 					break;
 				}
 			case "PauseProduction":

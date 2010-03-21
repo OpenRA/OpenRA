@@ -996,7 +996,7 @@ namespace OpenRA
 			var unit = Rules.Info[item];
 
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
-			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item));
+			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item, Game.controller.GetModifiers().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
 		void HandleBuildPalette( World world, string item, bool isLmb )
