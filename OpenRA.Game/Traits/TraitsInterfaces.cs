@@ -82,13 +82,7 @@ namespace OpenRA.Traits
 		bool IsCrushableBy(UnitMovementType umt, Player player);
 		bool IsPathableCrush(UnitMovementType umt, Player player);
 	}
-	
-	public interface ICrateAction
-	{
-		int GetSelectionShares(Actor collector);
-		void Activate(Actor collector);
-	}
-	
+		
 	public struct Renderable
 	{
 		public readonly Sprite Sprite;

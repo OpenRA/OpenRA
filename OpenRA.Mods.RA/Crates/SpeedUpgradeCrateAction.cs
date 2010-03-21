@@ -18,43 +18,29 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SpeedUpgradeCrateActionInfo : ITraitInfo
+	class SpeedUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 1.7f;
-		public int SelectionShares = 10;
-		public string Effect = null;
-		public string Notification = null;
-		public object Create(Actor self) { return new SpeedUpgradeCrateAction(self); }
+		public override object Create(Actor self) { return new SpeedUpgradeCrateAction(self, this); }
 	}
 
-	class SpeedUpgradeCrateAction : ICrateAction
+	class SpeedUpgradeCrateAction : CrateAction
 	{
-		Actor self;
-		public SpeedUpgradeCrateAction(Actor self)
+		public SpeedUpgradeCrateAction(Actor self, SpeedUpgradeCrateActionInfo info)
+			: base(self, info) {}
+				
+		public override void Activate(Actor collector)
 		{
-			this.self = self;
-		}
-		
-		public int GetSelectionShares(Actor collector)
-		{
-			return self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().SelectionShares;
-		}
-		
-		public void Activate(Actor collector)
-		{
-			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Notification);
-			
 			collector.World.AddFrameEndTask(w => 
 			{
-				var multiplier = self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Multiplier;
+				var multiplier = (info as SpeedUpgradeCrateActionInfo).Multiplier;
 				collector.traits.Add(new SpeedUpgrade(multiplier));
-				w.Add(new CrateEffect(collector, self.Info.Traits.Get<SpeedUpgradeCrateActionInfo>().Effect));
 			});
+			base.Activate(collector);
 		}
 	}
 	

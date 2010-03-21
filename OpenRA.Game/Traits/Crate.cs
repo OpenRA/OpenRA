@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			var shares = self.traits.WithInterface<ICrateAction>().Select(a => Pair.New(a, a.GetSelectionShares(crusher)));
+			var shares = self.traits.WithInterface<CrateAction>().Select(a => Pair.New(a, a.GetSelectionShares(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 

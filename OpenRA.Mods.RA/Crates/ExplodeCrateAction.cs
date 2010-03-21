@@ -7,39 +7,24 @@ using OpenRA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class ExplodeCrateActionInfo : ITraitInfo
+	class ExplodeCrateActionInfo : CrateActionInfo
 	{
 		public string Weapon = null;
-		public int SelectionShares = 5;
-		public string Effect = null;
-		public string Notification = null;
-		public object Create(Actor self) { return new ExplodeCrateAction(self, this); }
+		public override object Create(Actor self) { return new ExplodeCrateAction(self, this); }
 	}
 
-	class ExplodeCrateAction : ICrateAction
+	class ExplodeCrateAction : CrateAction
 	{
-		Actor self;
-		ExplodeCrateActionInfo info;
-
 		public ExplodeCrateAction(Actor self, ExplodeCrateActionInfo info)
-		{
-			this.self = self;
-			this.info = info;
-		}
+			: base(self, info) {}
 
-		public int GetSelectionShares(Actor collector)
+		public override void Activate(Actor collector)
 		{
-			return info.SelectionShares;
-		}
-
-		public void Activate(Actor collector)
-		{
-			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<ExplodeCrateActionInfo>().Notification);
-
 			self.World.AddFrameEndTask(
-				w => w.Add(new Bullet(info.Weapon, self.Owner,
+				w => w.Add(new Bullet((info as ExplodeCrateActionInfo).Weapon, self.Owner,
 					self, self.CenterLocation.ToInt2(), self.CenterLocation.ToInt2(),
 					0, 0)));
+			base.Activate(collector);
 		}
 	}
 }

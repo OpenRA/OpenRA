@@ -18,43 +18,30 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ArmorUpgradeCrateActionInfo : ITraitInfo
+	class ArmorUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 2.0f;
-		public int SelectionShares = 10;
-		public string Effect = null;
-		public string Notification = null;
-		public object Create(Actor self) { return new ArmorUpgradeCrateAction(self); }
+		public override object Create(Actor self) { return new ArmorUpgradeCrateAction(self, this); }
 	}
 
-	class ArmorUpgradeCrateAction : ICrateAction
+	class ArmorUpgradeCrateAction : CrateAction
 	{
-		Actor self;
-		public ArmorUpgradeCrateAction(Actor self)
-		{
-			this.self = self;
-		}
+		public ArmorUpgradeCrateAction(Actor self, ArmorUpgradeCrateActionInfo info)
+			: base(self, info) {}
 
-		public int GetSelectionShares(Actor collector)
+		public override void Activate(Actor collector)
 		{
-			return self.Info.Traits.Get<ArmorUpgradeCrateActionInfo>().SelectionShares;
-		}
-
-		public void Activate(Actor collector)
-		{
-			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<ArmorUpgradeCrateActionInfo>().Notification);
-
 			collector.World.AddFrameEndTask(w =>
 			{
-				var multiplier = self.Info.Traits.Get<ArmorUpgradeCrateActionInfo>().Multiplier;
+				var multiplier = (info as ArmorUpgradeCrateActionInfo).Multiplier;
 				collector.traits.Add(new ArmorUpgrade(multiplier));
-				w.Add(new CrateEffect(collector, self.Info.Traits.Get<ArmorUpgradeCrateActionInfo>().Effect));
 			});
+			
+			base.Activate(collector);
 		}
 	}
 

@@ -18,43 +18,29 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GiveCashCrateActionInfo : ITraitInfo
+	class GiveCashCrateActionInfo : CrateActionInfo
 	{
 		public int Amount = 2000;
-		public int SelectionShares = 10;
-		public string Effect = null;
-		public string Notification = null;
-		public object Create(Actor self) { return new GiveCashCrateAction(self); }
+		public override object Create(Actor self) { return new GiveCashCrateAction(self, this); }
 	}
 
-	class GiveCashCrateAction : ICrateAction
+	class GiveCashCrateAction : CrateAction
 	{
-		Actor self;
-		public GiveCashCrateAction(Actor self)
-		{
-			this.self = self;
-		}
+		public GiveCashCrateAction(Actor self, GiveCashCrateActionInfo info)
+			: base(self, info) {}
 
-		public int GetSelectionShares(Actor collector)
+		public override void Activate(Actor collector)
 		{
-			return self.Info.Traits.Get<GiveCashCrateActionInfo>().SelectionShares;
-		}
-
-		public void Activate(Actor collector)
-		{
-			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<GiveCashCrateActionInfo>().Notification);
-
 			collector.World.AddFrameEndTask(w =>
 			{
-				var amount = self.Info.Traits.Get<GiveCashCrateActionInfo>().Amount;
+				var amount = (info as GiveCashCrateActionInfo).Amount;
 				collector.Owner.GiveCash(amount);
-				w.Add(new CrateEffect(collector, self.Info.Traits.Get<GiveCashCrateActionInfo>().Effect));
 			});
+			base.Activate(collector);
 		}
 	}
 }

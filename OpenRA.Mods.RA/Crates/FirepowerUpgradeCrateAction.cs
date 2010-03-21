@@ -18,45 +18,38 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class FirepowerUpgradeCrateActionInfo : ITraitInfo
+	class FirepowerUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 2.0f;
-		public int SelectionShares = 10;
-		public string Effect = null;
-		public string Notification = null;
-		public object Create(Actor self) { return new FirepowerUpgradeCrateAction(self); }
+		public override object Create(Actor self) { return new FirepowerUpgradeCrateAction(self, this); }
 	}
 
-	class FirepowerUpgradeCrateAction : ICrateAction
+	class FirepowerUpgradeCrateAction : CrateAction
 	{
-		Actor self;
-		public FirepowerUpgradeCrateAction(Actor self)
-		{
-			this.self = self;
-		}
-
-		public int GetSelectionShares(Actor collector)
+		public FirepowerUpgradeCrateAction(Actor self, FirepowerUpgradeCrateActionInfo info)
+			: base(self, info) {}
+		
+		public override int GetSelectionShares(Actor collector)
 		{
 			if (collector.GetPrimaryWeapon() == null && collector.GetSecondaryWeapon() == null)
 				return 0;
 			
-			return self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().SelectionShares;
+			return base.GetSelectionShares(collector);
 		}
 
-		public void Activate(Actor collector)
+		public override void Activate(Actor collector)
 		{
-			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Notification);
 			collector.World.AddFrameEndTask(w =>
 			{
-				var multiplier = self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Multiplier;
+				var multiplier = (info as FirepowerUpgradeCrateActionInfo).Multiplier;
 				collector.traits.Add(new FirepowerUpgrade(multiplier));
-				w.Add(new CrateEffect(collector, self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Effect));
 			});
+			
+			base.Activate(collector);
 		}
 	}
 
