@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 			this.self = self;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 
-			if (self.World.IsWater(self.Location))
+			if (self.World.GetTerrainType(self.Location) == TerrainMovementType.Water)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating("water");
 		}
 

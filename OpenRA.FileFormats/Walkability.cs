@@ -65,7 +65,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public TileTemplate GetWalkability(string terrainName)
+		public TileTemplate GetTerrainType(string terrainName)
 		{
 			return walkability[terrainName];
 		}

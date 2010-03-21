@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -35,7 +35,7 @@ namespace OpenRA.Traits.Activities
 			if (unit.Altitude == 0)
 				return NextActivity;
 
-			if (requireSpace && !self.World.IsCellBuildable(self.Location, UnitMovementType.Foot))
+			if (requireSpace && !self.World.IsPathableCell(self.Location, UnitMovementType.Foot))
 				return this;	// fail to land if no space
 
 			--unit.Altitude;

@@ -42,7 +42,7 @@ namespace OpenRA
 				for( int y = 0 ; y < map.MapSize ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 						passableCost[(int)umt][ x, y ] = ( world.Map.IsInMap( x, y ) )
-							? (float)TerrainCosts.Cost( umt, world.TileSet.GetWalkability( world.Map.MapTiles[ x, y ] ) )
+							? (float)TerrainCosts.Cost( umt, world.TileSet.GetTerrainType( world.Map.MapTiles[ x, y ] ) )
 							: float.PositiveInfinity;
 		}
 
@@ -64,7 +64,7 @@ namespace OpenRA
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => world.IsCellBuildable( t, umt ) );
+					.Where( t => world.IsPathableCell( t, umt ) );
 
 				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
 				path.Reverse();

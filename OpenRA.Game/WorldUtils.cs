@@ -30,19 +30,25 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
+		public static bool IsPathableCell(this World world, int2 a, UnitMovementType umt)
+		{
+			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
+			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any()) return false;
+			
+			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Cost(umt, world.TileSet.GetTerrainType(world.Map.MapTiles[a.X,a.Y])) < double.PositiveInfinity;
+		}
+		
 		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt)
 		{
 			return world.IsCellBuildable(a, umt, null);
 		}
-
+		
 		public static bool IsCellBuildable(this World world, int2 a, UnitMovementType umt, Actor toIgnore)
 		{
 			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
-			return world.Map.IsInMap(a.X, a.Y) &&
-				TerrainCosts.Cost(umt,
-					world.TileSet.GetWalkability(world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Buildable(world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y]));
 		}
 
 		public static bool IsActorCrushableByActor(this World world, Actor a, Actor b)
@@ -63,13 +69,6 @@ namespace OpenRA
 			return a != null &&
 				a.traits.WithInterface<ICrushable>()
 				.Any(c => c.IsCrushableBy(umt, a.Owner));
-		}
-		
-		public static bool IsWater(this World world, int2 a)
-		{
-			return world.Map.IsInMap(a.X, a.Y) &&
-				TerrainCosts.Cost(UnitMovementType.Float,
-					world.TileSet.GetWalkability(world.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
@@ -125,6 +124,11 @@ namespace OpenRA
 				.Select( g => g.AsEnumerable() )
 				.DefaultIfEmpty( new Actor[] {} )
 				.FirstOrDefault();
+		}
+		
+		public static TerrainMovementType GetTerrainType(this World world, int2 cell)
+		{
+			return (TerrainMovementType)world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
 		}
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)

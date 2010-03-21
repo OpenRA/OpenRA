@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -36,7 +36,7 @@ namespace OpenRA.Traits.Activities
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 					if ((i != 0 || j != 0) && 
-						self.World.IsCellBuildable(self.Location + new int2(i, j), 
+						self.World.IsPathableCell(self.Location + new int2(i, j), 
 							UnitMovementType.Foot))
 						return self.Location + new int2(i, j);
 

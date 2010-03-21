@@ -31,7 +31,7 @@ namespace OpenRA
 		Fly = 4,
 	}
 
-	enum TerrainMovementType : byte
+	public enum TerrainMovementType : byte
 	{
 		Clear = 0,
 		Water = 1,
@@ -50,7 +50,8 @@ namespace OpenRA
 	{
 		static float[][] costs = Util.MakeArray<float[]>(4,
 			a => Util.MakeArray<float>(11, b => float.PositiveInfinity));
-
+		
+		static bool[] buildable = Util.MakeArray<bool>(11,b => false);
 		static TerrainCosts()
 		{
 			for( int i = 0 ; i < 11 ; i++ )
@@ -62,9 +63,15 @@ namespace OpenRA
 					string val = section.GetValue( ( (UnitMovementType)j ).ToString(), "0%" );
 					costs[j][i] = 100f / float.Parse(val.Substring(0, val.Length - 1));
 				}
+				buildable[i] = (section.GetValue("Buildable", "no") == "yes");
 			}
 		}
-
+		
+		public static bool Buildable(int r)
+		{
+			return buildable[r];
+		}
+		
 		public static float Cost( UnitMovementType unitMovementType, int r )
 		{
 			return costs[ (byte)unitMovementType ][ r ];

@@ -91,7 +91,7 @@ namespace OpenRA.Traits
 			
 			return self.World.Map.IsInMap(a.X, a.Y) &&
 				TerrainCosts.Cost(GetMovementType(),
-					self.World.TileSet.GetWalkability(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+					self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
 		}
 	}
 }

@@ -72,7 +72,7 @@ namespace OpenRA.FileFormats
 					string tilename = string.Format(pattern, i + 1);
 
 					if (!walk.ContainsKey((ushort)(start + i)))
-						walk.Add((ushort)(start + i), Walkability.GetWalkability(tilename));
+						walk.Add((ushort)(start + i), Walkability.GetTerrainType(tilename));
 
 					using( Stream s = FileSystem.Open( tilename + "." + suffix ) )
 					{
@@ -99,7 +99,7 @@ namespace OpenRA.FileFormats
 			return missingTile;
 		}
 
-		public int GetWalkability(TileReference r)
+		public int GetTerrainType(TileReference r)
 		{
 			if (r.tile == 0xff || r.tile == 0xffff)
 				r.image = 0;

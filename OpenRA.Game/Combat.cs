@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -41,15 +41,14 @@ namespace OpenRA
 
 			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
 
-			var isWater = world.IsWater(targetTile);
-			var hitWater = world.IsCellBuildable(targetTile, UnitMovementType.Float);
-
+			var isWater = (Game.world.GetTerrainType(targetTile) == TerrainMovementType.Water);
+				
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, visualLoc, warhead.Explosion, hitWater)));
+					w => w.Add(new Explosion(w, visualLoc, warhead.Explosion, isWater)));
 
 			var impactSound = warhead.ImpactSound;
-			if (hitWater && warhead.WaterImpactSound != null)
+			if (isWater && warhead.WaterImpactSound != null)
 				impactSound = warhead.WaterImpactSound;
 			if (impactSound != null) Sound.Play(impactSound + ".aud");
 

@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 			for (var y = 0; y < map.MapSize; y++)
 				for (var x = 0; x < map.MapSize; x++)
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
-						? Color.FromArgb(alpha, terrainTypeColors[map.Theater].ColorForTerrainType(tileset.GetWalkability(map.MapTiles[x, y])))
+						? Color.FromArgb(alpha, terrainTypeColors[map.Theater].ColorForTerrainType(tileset.GetTerrainType(map.MapTiles[x, y])))
 						: shroudColor);
 			return terrain;
 		}
