@@ -97,6 +97,7 @@ namespace OpenRA.Network
 				try
 				{
 					socket = new TcpClient( host, port );
+					socket.NoDelay = true;
 					var reader = new BinaryReader( socket.GetStream() );
 					var serverProtocol = reader.ReadInt32();
 
