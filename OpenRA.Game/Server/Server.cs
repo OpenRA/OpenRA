@@ -220,14 +220,14 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				c.socket.Blocking = true;
-				c.socket.Send(BitConverter.GetBytes(data.Length + 4));
-				c.socket.Send(BitConverter.GetBytes(client));
-				c.socket.Send(BitConverter.GetBytes(frame));
-				c.socket.Send(data);
-				c.socket.Blocking = false;
+				var ms = new MemoryStream();
+				ms.Write( BitConverter.GetBytes( data.Length + 4 ) );
+				ms.Write( BitConverter.GetBytes( client ) );
+				ms.Write( BitConverter.GetBytes( frame ) );
+				ms.Write( data );
+				c.socket.Send( ms.ToArray() );
 			}
-			catch (Exception e) { DropClient(c, e); }
+			catch( Exception e ) { DropClient( c, e ); }
 		}
 
 		public static void DispatchOrders(Connection conn, int frame, byte[] data)
