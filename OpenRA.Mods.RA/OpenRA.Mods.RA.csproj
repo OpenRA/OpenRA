@@ -78,6 +78,7 @@
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
     <Compile Include="Thief.cs" />
+    <Compile Include="Crates\ResetRadarCrateAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

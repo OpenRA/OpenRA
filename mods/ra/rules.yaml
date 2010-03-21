@@ -659,6 +659,9 @@ CRATE:
 	ExplodeCrateAction@boom:
 		Weapon: CrateExplosion
 		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 10
+		Effect: hide-map
 	Unit:
 		HP: 1
 	RenderUnit:

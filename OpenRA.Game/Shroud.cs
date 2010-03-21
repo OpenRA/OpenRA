@@ -98,7 +98,12 @@ namespace OpenRA
 			
 			return IsExplored(x,y);
 		}
-
+		
+		public void ResetExplored()
+		{
+			explored = new bool[map.MapSize, map.MapSize];
+		}
+		
 		Rectangle MakeRect(int2 center, int range)
 		{
 			return new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
