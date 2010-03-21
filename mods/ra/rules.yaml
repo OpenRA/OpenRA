@@ -637,15 +637,22 @@ CRATE:
 	SpeedUpgradeCrateAction:
 		Multiplier: 1.7
 		SelectionShares: 10
+		Notification: unitspd1.aud
+		Effect: speed
 	GiveCashCrateAction:
 		Amount: 2000
 		SelectionShares: 50
+		Effect: dollar
 	FirepowerUpgradeCrateAction:
 		Multiplier: 2.0
 		SelectionShares: 10
+		Notification: firepo1.aud
+		Effect: fpower
 	ArmorUpgradeCrateAction:
 		Multiplier: 2.0
 		SelectionShares: 10
+		Notification: armorup1.aud
+		Effect: armor
 	ExplodeCrateAction@fire:
 		Weapon: Napalm
 		SelectionShares: 80

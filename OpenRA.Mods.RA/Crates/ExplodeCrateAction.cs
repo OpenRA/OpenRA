@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,8 @@ namespace OpenRA.Mods.RA
 	{
 		public string Weapon = null;
 		public int SelectionShares = 5;
-
+		public string Effect = null;
+		public string Notification = null;
 		public object Create(Actor self) { return new ExplodeCrateAction(self, this); }
 	}
 
@@ -26,13 +27,15 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public int SelectionShares
+		public int GetSelectionShares(Actor collector)
 		{
-			get { return info.SelectionShares; }
+			return info.SelectionShares;
 		}
 
 		public void Activate(Actor collector)
 		{
+			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<ExplodeCrateActionInfo>().Notification);
+
 			self.World.AddFrameEndTask(
 				w => w.Add(new Bullet(info.Weapon, self.Owner,
 					self, self.CenterLocation.ToInt2(), self.CenterLocation.ToInt2(),

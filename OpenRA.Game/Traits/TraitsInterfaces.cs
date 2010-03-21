@@ -85,7 +85,7 @@ namespace OpenRA.Traits
 	
 	public interface ICrateAction
 	{
-		int SelectionShares { get; }
+		int GetSelectionShares(Actor collector);
 		void Activate(Actor collector);
 	}
 	

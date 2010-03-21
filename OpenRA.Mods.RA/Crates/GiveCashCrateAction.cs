@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,6 +27,8 @@ namespace OpenRA.Mods.RA
 	{
 		public int Amount = 2000;
 		public int SelectionShares = 10;
+		public string Effect = null;
+		public string Notification = null;
 		public object Create(Actor self) { return new GiveCashCrateAction(self); }
 	}
 
@@ -38,18 +40,20 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 		}
 
-		public int SelectionShares
+		public int GetSelectionShares(Actor collector)
 		{
-			get { return self.Info.Traits.Get<GiveCashCrateActionInfo>().SelectionShares; }
+			return self.Info.Traits.Get<GiveCashCrateActionInfo>().SelectionShares;
 		}
 
 		public void Activate(Actor collector)
 		{
+			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<GiveCashCrateActionInfo>().Notification);
+
 			collector.World.AddFrameEndTask(w =>
 			{
 				var amount = self.Info.Traits.Get<GiveCashCrateActionInfo>().Amount;
 				collector.Owner.GiveCash(amount);
-				w.Add(new CrateEffect(collector, "dollar"));
+				w.Add(new CrateEffect(collector, self.Info.Traits.Get<GiveCashCrateActionInfo>().Effect));
 			});
 		}
 	}

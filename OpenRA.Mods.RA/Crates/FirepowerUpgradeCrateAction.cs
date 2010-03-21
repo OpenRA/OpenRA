@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,6 +27,8 @@ namespace OpenRA.Mods.RA
 	{
 		public float Multiplier = 2.0f;
 		public int SelectionShares = 10;
+		public string Effect = null;
+		public string Notification = null;
 		public object Create(Actor self) { return new FirepowerUpgradeCrateAction(self); }
 	}
 
@@ -38,19 +40,22 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 		}
 
-		public int SelectionShares
+		public int GetSelectionShares(Actor collector)
 		{
-			get { return self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().SelectionShares; }
+			if (collector.GetPrimaryWeapon() == null && collector.GetSecondaryWeapon() == null)
+				return 0;
+			
+			return self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().SelectionShares;
 		}
 
 		public void Activate(Actor collector)
 		{
-			Sound.PlayToPlayer(collector.Owner, "firepo1.aud");
+			Sound.PlayToPlayer(collector.Owner, self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Notification);
 			collector.World.AddFrameEndTask(w =>
 			{
 				var multiplier = self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Multiplier;
 				collector.traits.Add(new FirepowerUpgrade(multiplier));
-				w.Add(new CrateEffect(collector, "fpower"));
+				w.Add(new CrateEffect(collector, self.Info.Traits.Get<FirepowerUpgradeCrateActionInfo>().Effect));
 			});
 		}
 	}
