@@ -240,8 +240,8 @@ World:
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
 		Name: Ore
-		GrowthInterval: .3
-		SpreadInterval: .7
+		GrowthInterval: .6
+		SpreadInterval: 1.3
 	ResourceType@gem:
 		Overlays: gem01,gem02,gem03,gem04
 		Palette: terrain
