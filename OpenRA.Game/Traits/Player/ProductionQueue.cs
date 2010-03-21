@@ -59,8 +59,6 @@ namespace OpenRA.Traits
 						 * ( 25 * 60 ) /* frames per min */				/* todo: build acceleration, if we do that */
 						 / 1000;
 
-					time = .08f * time;						/* temporary hax so we can build stuff fast for test */
-
 					if( !Rules.TechTree.BuildableItems( order.Player, unit.Category ).Contains( order.TargetString ) )
 						return;	/* you can't build that!! */
 
