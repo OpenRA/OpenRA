@@ -299,6 +299,18 @@ namespace OpenRA.Server
 				{ "name", 
 					s => 
 					{
+						if (GameStarted)
+						{
+							SendChatTo( conn, "You can't change your name after the game has started" );
+							return true;
+						}
+
+						if (s.Trim() == "")
+						{
+							SendChatTo( conn, "Blank names are not permitted." );
+							return true;
+						}
+
 						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 						GetClient(conn).Name = s;
 						SyncLobbyInfo();
