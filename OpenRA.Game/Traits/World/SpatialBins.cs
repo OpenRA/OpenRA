@@ -52,6 +52,8 @@ namespace OpenRA.Traits
 
 		IEnumerable<Actor> ActorsInBins(int i1, int i2, int j1, int j2)
 		{
+			if (bins[0, 0] == null) yield break;	// hack
+
 			j1 = Math.Max(0, j1); j2 = Math.Min(j2, bins.GetUpperBound(1) - 1);
 			i1 = Math.Max(0, i1); i2 = Math.Min(i2, bins.GetUpperBound(0) - 1);
 			for (var j = j1; j <= j2; j++)
