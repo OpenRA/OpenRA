@@ -222,3 +222,4 @@ World:
 		UnitLost: unitlost.aud
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
+	SpatialBins:
