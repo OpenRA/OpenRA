@@ -165,6 +165,20 @@ Container:
 					Width:300
 					Height:25
 					Text:Show Performance Graph
+				Checkbox@SETTINGS_CHECKBOX_PERFTEXT:
+					Id:SETTINGS_CHECKBOX_PERFTEXT
+					X:100
+					Y:180
+					Width:20
+					Height:20
+					Delegate:SettingsMenuDelegate
+				Label@SETTINGS_LABEL_PERFTEXT:
+					Id:SETTINGS_LABEL_PERFTEXT
+					X:135
+					Y:180
+					Width:300
+					Height:25
+					Text:Show Performance Text
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180

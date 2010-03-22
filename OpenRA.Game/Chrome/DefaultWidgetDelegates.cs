@@ -67,6 +67,9 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
 				return Game.Settings.PerfGraph;
 
+			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT")
+				return Game.Settings.PerfText;
+
 			return false;
 		}
 
@@ -93,6 +96,12 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
 			{
 				Game.Settings.PerfGraph = !Game.Settings.PerfGraph;
+				return true;
+			}
+
+			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT")
+			{
+				Game.Settings.PerfText = !Game.Settings.PerfText;
 				return true;
 			}
 
