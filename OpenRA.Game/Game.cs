@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,6 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
-using System.Collections.Generic;
 
 namespace OpenRA
 {
@@ -144,6 +144,7 @@ namespace OpenRA
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
+			PerfHistory.items["cursor"].hasNormalTick = false;
 			Game.controller = controller;
 			
 			ChangeMap(mapName);
@@ -223,6 +224,7 @@ namespace OpenRA
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
 			PerfHistory.items["text"].Tick();
+			PerfHistory.items["cursor"].Tick();
 		}
 
 		public static void SyncLobbyInfo(string data)

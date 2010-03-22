@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Support;
 
 namespace OpenRA.Orders
 {
@@ -52,15 +53,18 @@ namespace OpenRA.Orders
 
 		string ChooseCursor( World world, MouseInput mi )
 		{
-			var p = Game.controller.MousePosition;
-			var c = Order(world, p.ToInt2(), mi)
-				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
-				.FirstOrDefault(a => a != null);
+			using (new PerfSample("cursor"))
+			{
+				var p = Game.controller.MousePosition;
+				var c = Order(world, p.ToInt2(), mi)
+					.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
+					.FirstOrDefault(a => a != null);
 
-			return c ??
-				(world.SelectActorsInBox(Game.CellSize * p, 
-				Game.CellSize * p).Any()
-					? "select" : "default");
+				return c ??
+					(world.SelectActorsInBox(Game.CellSize * p,
+					Game.CellSize * p).Any()
+						? "select" : "default");
+			}
 		}
 
 		string CursorForOrderString(string s, Actor a, int2 location)
