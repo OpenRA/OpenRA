@@ -134,19 +134,32 @@ namespace OpenRA.Graphics
 			foreach (var e in world.Effects)
 				DrawSpriteList(bounds, e.Render());
 
-			uiOverlay.Draw( world );
+			uiOverlay.Draw(world);
 
 			spriteRenderer.Flush();
 
-			DrawBandBox();			
+			DrawBandBox();
 
 			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.Render( world );
+				Game.controller.orderGenerator.Render(world);
 
 			world.LocalPlayer.Shroud.Draw(spriteRenderer);
 
-			lineRenderer.Flush();
 			spriteRenderer.Flush();
+
+			renderer.Device.DisableScissor();
+
+			{
+				var a = new float2( bounds.Left, bounds.Top );
+				var b = new float2( bounds.Right - a.X, 0);
+				var c = new float2(0, bounds.Bottom - a.Y);
+				lineRenderer.DrawLine(a, a + b, Color.Red, Color.Red);
+				lineRenderer.DrawLine(a + b, a + b + c, Color.Red, Color.Red);
+				lineRenderer.DrawLine(a + b + c, a + c, Color.Red, Color.Red);
+				lineRenderer.DrawLine(a, a + c, Color.Red, Color.Red);
+			}
+
+			lineRenderer.Flush();
 		}
 
 		void DrawBandBox()
