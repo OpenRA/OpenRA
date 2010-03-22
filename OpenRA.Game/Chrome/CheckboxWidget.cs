@@ -24,7 +24,9 @@ using System.Drawing;
 namespace OpenRA.Widgets
 {
 	class CheckboxWidget : Widget
-	{	
+	{
+		public string Text = "";
+
 		public override void Draw()
 		{
 			if (!Visible)
@@ -35,7 +37,13 @@ namespace OpenRA.Widgets
 
 			var selected = InputHandler.Value != null ? InputHandler.Value.GetState(this) : false;
 
-			WidgetUtils.DrawPanel("dialog3", Bounds, () => { });
+			WidgetUtils.DrawPanel("dialog3",
+				new Rectangle(Bounds.Location,
+					new Size(Bounds.Height, Bounds.Height)),
+					() => { });
+
+			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text,
+				new float2(Bounds.Left + Bounds.Height * 2, Bounds.Top), Color.White);
 
 			if (selected)
 			{
@@ -43,7 +51,7 @@ namespace OpenRA.Widgets
 					new RectangleF( 
 						Game.viewport.Location.X + Bounds.Left + 4, 
 						Game.viewport.Location.Y + Bounds.Top + 5,
-						Bounds.Width - 9,
+						Bounds.Height - 9,
 						Bounds.Height - 9), 
 						Color.White);
 				Game.chrome.lineRenderer.Flush();
