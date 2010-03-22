@@ -126,8 +126,7 @@ namespace OpenRA.Graphics
 
 			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
 
-			var foos = world.Actors;
-			var bars = world.FindUnits(
+			var foos = world.FindUnits(
 				new float2(bounds.Left, bounds.Top),
 				new float2(bounds.Right, bounds.Bottom));
 
@@ -154,19 +153,6 @@ namespace OpenRA.Graphics
 
 			renderer.Device.DisableScissor();
 
-			foreach (var bar in bars)
-			{
-				var baz = bar.GetBounds(true);
-
-				var a = new float2(baz.Left, baz.Top);
-				var b = new float2(baz.Right - a.X, 0);
-				var c = new float2(0, baz.Bottom - a.Y);
-				lineRenderer.DrawLine(a, a + b, Color.Green, Color.Green);
-				lineRenderer.DrawLine(a + b, a + b + c, Color.Green, Color.Green);
-				lineRenderer.DrawLine(a + b + c, a + c, Color.Green, Color.Green);
-				lineRenderer.DrawLine(a, a + c, Color.Green, Color.Green);
-			}
-
 			{
 				var a = new float2(bounds.Left, bounds.Top);
 				var b = new float2(bounds.Right - a.X, 0);
@@ -176,7 +162,8 @@ namespace OpenRA.Graphics
 				lineRenderer.DrawLine(a + b + c, a + c, Color.Red, Color.Red);
 				lineRenderer.DrawLine(a, a + c, Color.Red, Color.Red);
 
-				bounds = GetBoundsRect();
+				bounds = world.LocalPlayer.Shroud.bounds.Value;
+
 				a = new float2(bounds.Left, bounds.Top);
 				b = new float2(bounds.Right - a.X, 0);
 				c = new float2(0, bounds.Bottom - a.Y);
@@ -187,7 +174,7 @@ namespace OpenRA.Graphics
 			}
 
 			{
-				for (var j = 0; j < Game.world.Map.MapSize; 
+				for (var j = 0; j < Game.world.Map.MapSize;
 					j += Game.world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
 				{
 					lineRenderer.DrawLine(new float2(0, j * 24), new float2(Game.world.Map.MapSize * 24, j * 24), Color.Black, Color.Black);

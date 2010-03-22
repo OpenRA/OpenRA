@@ -273,6 +273,7 @@ World:
 	SpawnDefaultUnits:
 	EvaAlerts:
 	SpatialBins:
+		BinSize: 4
 
 MGG:
 	GeneratesGap:

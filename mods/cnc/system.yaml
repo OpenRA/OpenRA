@@ -223,3 +223,4 @@ World:
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
 	SpatialBins:
+		BinSize: 4

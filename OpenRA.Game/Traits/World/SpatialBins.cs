@@ -66,7 +66,7 @@ namespace OpenRA.Traits
 		{
 			var r = RectangleF.FromLTRB(a.X, a.Y, b.X, b.Y);
 
-			return ActorsInBins(a.X / scale, a.Y / scale, b.X / scale, b.Y / scale)
+			return ActorsInBins(a.X / scale, b.X / scale, a.Y / scale, b.Y / scale)
 				.Distinct()
 				.Where(u => u.GetBounds(true).IntersectsWith(r));
 		}
