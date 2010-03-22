@@ -143,7 +143,19 @@ namespace OpenRA.Widgets
 			
 			return null;
 		}
+
+		public Widget GetCurrentMenu() { return Children.FirstOrDefault(c => c.Visible); }
 		
+		public Widget ShowMenu(string menu)
+		{
+			GetCurrentMenu().Visible = false;
+
+			var widget = GetWidget(menu);
+			if (widget != null)
+				widget.Visible = true;
+
+			return widget;
+		}
 	}
 
 	class ContainerWidget : Widget { }
