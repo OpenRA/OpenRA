@@ -37,6 +37,7 @@ namespace OpenRA.Graphics
 		internal readonly HardwarePalette palette;
 
 		public static bool ShowUnitPaths = false;
+		public static bool ShowBinDebug = false;
 
 		internal WorldRenderer(World world, Renderer renderer)
 		{
@@ -153,6 +154,14 @@ namespace OpenRA.Graphics
 
 			renderer.Device.DisableScissor();
 
+			if (ShowBinDebug)
+				DrawBins( bounds );
+
+			lineRenderer.Flush();
+		}
+
+		void DrawBins(RectangleF bounds)
+		{
 			{
 				var a = new float2(bounds.Left, bounds.Top);
 				var b = new float2(bounds.Right - a.X, 0);
@@ -173,16 +182,12 @@ namespace OpenRA.Graphics
 				lineRenderer.DrawLine(a, a + c, Color.Blue, Color.Blue);
 			}
 
+			for (var j = 0; j < Game.world.Map.MapSize;
+				j += Game.world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
 			{
-				for (var j = 0; j < Game.world.Map.MapSize;
-					j += Game.world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
-				{
-					lineRenderer.DrawLine(new float2(0, j * 24), new float2(Game.world.Map.MapSize * 24, j * 24), Color.Black, Color.Black);
-					lineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, Game.world.Map.MapSize * 24), Color.Black, Color.Black);
-				}
+				lineRenderer.DrawLine(new float2(0, j * 24), new float2(Game.world.Map.MapSize * 24, j * 24), Color.Black, Color.Black);
+				lineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, Game.world.Map.MapSize * 24), Color.Black, Color.Black);
 			}
-
-			lineRenderer.Flush();
 		}
 
 		void DrawBandBox()
