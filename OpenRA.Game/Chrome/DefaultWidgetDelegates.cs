@@ -64,6 +64,9 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
 				return Game.Settings.IndexDebug;
 
+			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
+				return Game.Settings.PerfGraph;
+
 			return false;
 		}
 
@@ -84,6 +87,12 @@ namespace OpenRA.Widgets.Delegates
 			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
 			{
 				Game.Settings.IndexDebug = !Game.Settings.IndexDebug;
+				return true;
+			}
+
+			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
+			{
+				Game.Settings.PerfGraph = !Game.Settings.PerfGraph;
 				return true;
 			}
 

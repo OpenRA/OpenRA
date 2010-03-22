@@ -151,6 +151,20 @@ Container:
 					Width:300
 					Height:25
 					Text:Show Spatial Index Debug
+				Checkbox@SETTINGS_CHECKBOX_PERFGRAPH:
+					Id:SETTINGS_CHECKBOX_PERFGRAPH
+					X:100
+					Y:150
+					Width:20
+					Height:20
+					Delegate:SettingsMenuDelegate
+				Label@SETTINGS_LABEL_PERFGRAPH:
+					Id:SETTINGS_LABEL_PERFGRAPH
+					X:135
+					Y:150
+					Width:300
+					Height:25
+					Text:Show Performance Graph
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180
