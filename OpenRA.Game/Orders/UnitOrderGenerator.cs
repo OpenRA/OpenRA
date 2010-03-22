@@ -51,15 +51,16 @@ namespace OpenRA.Orders
 			return ChooseCursor(world, mi);
 		}
 
-		string ChooseCursor( World world, MouseInput mi )
+		string ChooseCursor(World world, MouseInput mi)
 		{
+
+			var p = Game.controller.MousePosition;
+			var c = Order(world, p.ToInt2(), mi)
+				.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
+				.FirstOrDefault(a => a != null);
+
 			using (new PerfSample("cursor"))
 			{
-				var p = Game.controller.MousePosition;
-				var c = Order(world, p.ToInt2(), mi)
-					.Select(o => CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation))
-					.FirstOrDefault(a => a != null);
-
 				return c ??
 					(world.SelectActorsInBox(Game.CellSize * p,
 					Game.CellSize * p).Any()

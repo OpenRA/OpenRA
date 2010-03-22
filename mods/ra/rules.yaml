@@ -272,6 +272,7 @@ World:
 	SpawnMapActors:
 	SpawnDefaultUnits:
 	EvaAlerts:
+	SpatialBins:
 
 MGG:
 	GeneratesGap:
