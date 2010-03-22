@@ -23,10 +23,11 @@ namespace OpenRA.GameRules
 	public class UserSettings
 	{
 		// Debug settings
-		public readonly bool UnitDebug = false;
-		public readonly bool PathDebug = false;
-		public readonly bool PerfGraph = true;
-		public readonly bool PerfText = true;
+		public bool UnitDebug = false;
+		public bool PathDebug = false;
+		public bool PerfGraph = true;
+		public bool PerfText = true;
+		public bool IndexDebug = false;
 		
 		// Window settings
 		public readonly int Width = 0;

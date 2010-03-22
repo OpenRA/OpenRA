@@ -50,6 +50,65 @@ namespace OpenRA.Widgets.Delegates
 			return false;
 		}
 	}
+
+	public class SettingsMenuDelegate : WidgetDelegate
+	{
+		public override bool GetState(Widget w)
+		{
+			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG")
+				return Game.Settings.UnitDebug;
+
+			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG")
+				return Game.Settings.PathDebug;
+
+			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
+				return Game.Settings.IndexDebug;
+
+			return false;
+		}
+
+		public override bool OnMouseDown(Widget w, MouseInput mi)
+		{
+			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG")
+			{
+				Game.Settings.UnitDebug = !Game.Settings.UnitDebug;
+				return true;
+			}
+
+			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG")
+			{
+				Game.Settings.PathDebug = !Game.Settings.PathDebug;
+				return true;
+			}
+
+			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
+			{
+				Game.Settings.IndexDebug = !Game.Settings.IndexDebug;
+				return true;
+			}
+
+			return false;
+		}
+
+		public override bool OnMouseUp(Widget w, MouseInput mi)
+		{
+			if (w.Id == "MAINMENU_BUTTON_SETTINGS")
+			{
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+				Game.chrome.rootWidget.GetWidget("SETTINGS_BG").Visible = true;
+				return true;
+			}
+
+			if (w.Id == "SETTINGS_BUTTON_OK")
+			{
+				Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+				Game.chrome.rootWidget.GetWidget("SETTINGS_BG").Visible = false;
+				return true;
+			}
+
+			return false;
+		}
+	}
 	
 	public class CreateServerMenuDelegate : WidgetDelegate
 	{

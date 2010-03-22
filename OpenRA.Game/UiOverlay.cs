@@ -32,8 +32,6 @@ namespace OpenRA
 		SpriteRenderer spriteRenderer;
 		Sprite buildOk, buildBlocked, unitDebug;
 
-		public static bool ShowUnitDebug = false;
-
 		public UiOverlay(SpriteRenderer spriteRenderer)
 		{
 			this.spriteRenderer = spriteRenderer;
@@ -56,7 +54,7 @@ namespace OpenRA
 
 		public void Draw( World world )
 		{
-			if (ShowUnitDebug)
+			if (Game.Settings.UnitDebug)
 				for (var j = 0; j < world.Map.MapSize; j++)
 					for (var i = 0; i < world.Map.MapSize; i++)
 						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())

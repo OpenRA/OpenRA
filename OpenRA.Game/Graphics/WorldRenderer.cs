@@ -36,9 +36,6 @@ namespace OpenRA.Graphics
 		internal readonly Renderer renderer;
 		internal readonly HardwarePalette palette;
 
-		public static bool ShowUnitPaths = false;
-		public static bool ShowBinDebug = false;
-
 		internal WorldRenderer(World world, Renderer renderer)
 		{
 			this.world = world;
@@ -154,8 +151,8 @@ namespace OpenRA.Graphics
 
 			renderer.Device.DisableScissor();
 
-			if (ShowBinDebug)
-				DrawBins( bounds );
+			if (Game.Settings.IndexDebug)
+				DrawBins(bounds);
 
 			lineRenderer.Flush();
 		}
@@ -240,7 +237,7 @@ namespace OpenRA.Graphics
 				}
 			}	
 
-			if (ShowUnitPaths)
+			if (Game.Settings.PathDebug)
 			{
 				var mobile = selectedUnit.traits.GetOrDefault<Mobile>();
 				if (mobile != null)

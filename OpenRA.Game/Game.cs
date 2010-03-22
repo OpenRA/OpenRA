@@ -432,8 +432,6 @@ namespace OpenRA
 			// Load the default mod to access required files
 			Game.LoadModPackages(new Manifest(Game.LobbyInfo.GlobalSettings.Mods));
 			
-			UiOverlay.ShowUnitDebug = Game.Settings.UnitDebug;
-			WorldRenderer.ShowUnitPaths = Game.Settings.PathDebug;
 			Renderer.SheetSize = Game.Settings.SheetSize;
 			
 			bool windowed = !Game.Settings.Fullscreen;
