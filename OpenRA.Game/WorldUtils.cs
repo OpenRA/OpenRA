@@ -82,7 +82,9 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindUnits(this World world, float2 a, float2 b)
 		{
-			return world.WorldActor.traits.Get<SpatialBins>().ActorsInBox(a.ToInt2(), b.ToInt2());
+			var u = float2.Min(a, b).ToInt2();
+			var v = float2.Max(a, b).ToInt2();
+			return world.WorldActor.traits.Get<SpatialBins>().ActorsInBox(u,v);
 		}
 
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, float2 a, float r)
