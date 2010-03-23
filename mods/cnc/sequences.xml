@@ -130,4 +130,7 @@
   </unit>
   <unit name="crate-effects">
   </unit>
+  <unit name="ionsfx">
+    <sequence name="idle" start="0" length="15" />
+  </unit>
 </sequences>

@@ -39,10 +39,7 @@ namespace OpenRA.Mods.Cnc.Effects
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick(World world)
-		{
-			throw new NotImplementedException();
-		}
+		public void Tick(World world) { anim.Tick(); }
 
 		public IEnumerable<Renderable> Render()
 		{
