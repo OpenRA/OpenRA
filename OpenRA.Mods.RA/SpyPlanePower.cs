@@ -53,6 +53,8 @@ namespace OpenRA.Mods.RA
 				var enterCell = self.World.ChooseRandomEdgeCell();
 
 				var plane = self.World.CreateActor("U2", enterCell, self.Owner);
+				plane.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - enterCell, 0);
+
 				plane.CancelActivity();
 				plane.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 				plane.QueueActivity(new CallFunc(
