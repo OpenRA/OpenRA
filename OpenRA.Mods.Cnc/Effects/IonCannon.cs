@@ -18,33 +18,37 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Effects
+namespace OpenRA.Mods.Cnc.Effects
 {
-	public class Explosion : IEffect
+	class IonCannon : IEffect
 	{
+		int2 Target;
 		Animation anim;
-		int2 pos;
 
-		public Explosion(World world, int2 pixelPos, int style, bool isWater)
+		public IonCannon(World world, int2 location)
 		{
-			this.pos = pixelPos;
-			var variantSuffix = isWater ? "w" : "";
-			anim = new Animation("explosion");
-			anim.PlayThen(style.ToString() + variantSuffix,
+			Target = location;
+			anim = new Animation("ionsfx");
+			anim.PlayThen("idle",
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick( World world ) { anim.Tick(); }
+		public void Tick(World world)
+		{
+			throw new NotImplementedException();
+		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect");
+			yield return new Renderable(anim.Image,
+				Target - new float2(.5f * anim.Image.size.X, anim.Image.size.Y - Game.CellSize),
+				"effect");
 		}
-
-		public Player Owner { get { return null; } }
 	}
 }

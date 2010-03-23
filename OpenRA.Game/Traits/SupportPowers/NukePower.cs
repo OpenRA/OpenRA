@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();
-			Sound.Play(Info.SelectTargetSound);
+			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -82,8 +82,6 @@ namespace OpenRA.Traits
 			{
 				if (mi.Button == MouseButton.Left)
 					yield return new Order("NuclearMissile", world.LocalPlayer.PlayerActor, xy);
-
-				yield break;
 			}
 
 			public void Tick(World world)
