@@ -309,6 +309,7 @@ EYE:
 		Crewed: yes
 		Sight: 10
 	ProvidesRadar:
+	IonControl:
 	
 TMPL:
 	RequiresPower:
