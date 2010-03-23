@@ -13,6 +13,16 @@ Player:
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
 		LaunchSound: nukemisl.aud
+	IonCannonPower:
+		Image: ionicnh
+		ChargeTime: 1
+		Description: Ion Cannon
+		LongDesc: Discharges the orbital Ion Cannon at your target.
+		Prerequisites: EYE
+		TechLevel: 12
+		BeginChargeSound: ionchrg1.aud
+		EndChargeSound: ionredy1.aud
+		LaunchSound: ion1.aud
 	
 World:
 	ScreenShaker:
