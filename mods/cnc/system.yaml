@@ -23,6 +23,7 @@ Player:
 		BeginChargeSound: ionchrg1.aud
 		EndChargeSound: ionredy1.aud
 		LaunchSound: ion1.aud
+		SelectTargetSound: select1.aud
 	
 World:
 	ScreenShaker:
