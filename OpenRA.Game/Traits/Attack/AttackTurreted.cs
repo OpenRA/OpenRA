@@ -36,6 +36,7 @@ namespace OpenRA.Traits
 			if( self.traits.Contains<Building>() && !buildComplete )
 				return false;
 
+			if (target == null) return false;
 			var turreted = self.traits.Get<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )
