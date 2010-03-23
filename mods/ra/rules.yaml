@@ -1290,6 +1290,7 @@ U2:
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
+	-Selectable:
 
 PBOX:
 	Inherits: ^Building
