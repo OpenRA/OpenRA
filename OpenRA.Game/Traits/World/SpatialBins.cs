@@ -28,8 +28,8 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			for (var j = 0; j < bins.GetUpperBound(1); j++)
-				for (var i = 0; i < bins.GetUpperBound(0); i++)
+			for (var j = 0; j <= bins.GetUpperBound(1); j++)
+				for (var i = 0; i <= bins.GetUpperBound(0); i++)
 					bins[i, j] = new List<Actor>();
 
 			foreach (var a in self.World.Actors)
@@ -54,8 +54,8 @@ namespace OpenRA.Traits
 		{
 			if (bins[0, 0] == null) yield break;	// hack
 
-			j1 = Math.Max(0, j1); j2 = Math.Min(j2, bins.GetUpperBound(1) - 1);
-			i1 = Math.Max(0, i1); i2 = Math.Min(i2, bins.GetUpperBound(0) - 1);
+			j1 = Math.Max(0, j1); j2 = Math.Min(j2, bins.GetUpperBound(1));
+			i1 = Math.Max(0, i1); i2 = Math.Min(i2, bins.GetUpperBound(0));
 			for (var j = j1; j <= j2; j++)
 				for (var i = i1; i <= i2; i++)
 					foreach (var a in bins[i, j])
