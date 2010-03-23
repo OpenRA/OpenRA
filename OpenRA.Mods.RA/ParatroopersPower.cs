@@ -77,6 +77,7 @@ namespace OpenRA.Mods.RA
 			owner.World.AddFrameEndTask(w =>
 			{
 				var a = w.CreateActor("BADR", startPos, owner);
+				a.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
 
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));
