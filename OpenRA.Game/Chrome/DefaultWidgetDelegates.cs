@@ -55,21 +55,11 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public override bool GetState(Widget w)
 		{
-			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG")
-				return Game.Settings.UnitDebug;
-
-			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG")
-				return Game.Settings.PathDebug;
-
-			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
-				return Game.Settings.IndexDebug;
-
-			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
-				return Game.Settings.PerfGraph;
-
-			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT")
-				return Game.Settings.PerfText;
-
+			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG") return Game.Settings.UnitDebug;
+			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG") return Game.Settings.PathDebug;
+			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG") return Game.Settings.IndexDebug;
+			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH") return Game.Settings.PerfGraph;
+			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT") return Game.Settings.PerfText;
 			return false;
 		}
 
