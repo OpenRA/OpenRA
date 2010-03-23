@@ -16,7 +16,8 @@ namespace OpenRA.Server
 			var str = Encoding.UTF8.GetString(data);
 
 			var yaml = MiniYaml.FromString(str);
-			return yaml.Select(a => { var gs = new GameServer(); FieldLoader.Load(gs, a.Value); return gs; });
+			return yaml.Select(a => { var gs = new GameServer(); FieldLoader.Load(gs, a.Value); return gs; })
+				.Where(gs => gs.Address != null);
 		}
 	}
 
