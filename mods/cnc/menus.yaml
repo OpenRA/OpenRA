@@ -5,7 +5,7 @@ Container:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:250
-			Height:200
+			Height:250
 			Children:
 				Label@MAINMENU_LABEL_TITLE:
 					Id:MAINMENU_LABEL_TITLE
@@ -31,10 +31,18 @@ Container:
 					Height:25
 					Text:Create Game
 					Delegate:CreateServerMenuDelegate
+				Button@MAINMENU_BUTTON_SETTINGS:
+					Id:MAINMENU_BUTTON_SETTINGS
+					X:45
+					Y:150
+					Width:160
+					Height:25
+					Text:Settings
+					Delegate:SettingsMenuDelegate
 				Button@MAINMENU_BUTTON_QUIT:
 					Id:MAINMENU_BUTTON_QUIT
 					X:45
-					Y:150
+					Y:190
 					Width:160
 					Height:25
 					Text:Quit
@@ -59,16 +67,10 @@ Container:
 					Id:CREATESERVER_CHECKBOX_ONLINE
 					X:100
 					Y:60
-					Width:20
-					Height:20
-					Delegate:CreateServerMenuDelegate
-				Label@CREATESERVER_LABEL_ONLINE:
-					Id:CREATESERVER_LABEL_ONLINE
-					X:135
-					Y:60
 					Width:300
-					Height:25
+					Height:20
 					Text:Advertise game Online
+					Delegate:CreateServerMenuDelegate
 				Button@CREATESERVER_BUTTON_START:
 					Id:CREATESERVER_BUTTON_START
 					X:100
@@ -85,6 +87,70 @@ Container:
 					Height:25
 					Text:Cancel
 					Delegate:CreateServerMenuDelegate
+		Background@SETTINGS_BG:
+			Id:SETTINGS_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM- HEIGHT)/2
+			Width: 450
+			Height: 300
+			Visible: false
+			Children:
+				Label@SETTINGS_LABEL_TITLE:
+					Id:SETTINGS_LABEL_TITLE
+					X:0
+					Y:20
+					Width:450
+					Height:25
+					Text:Settings
+					Align:Center
+				Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
+					Id:SETTINGS_CHECKBOX_UNITDEBUG
+					X:100
+					Y:60
+					Width:300
+					Height:20
+					Text:Show Occupied Cells
+					Delegate:SettingsMenuDelegate
+				Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
+					Id:SETTINGS_CHECKBOX_PATHDEBUG
+					X:100
+					Y:90
+					Width:300
+					Height:20
+					Text:Show Unit Paths
+					Delegate:SettingsMenuDelegate
+				Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
+					Id:SETTINGS_CHECKBOX_INDEXDEBUG
+					X:100
+					Y:120
+					Width:300
+					Height:20
+					Text:Show Spatial Index Debug
+					Delegate:SettingsMenuDelegate
+				Checkbox@SETTINGS_CHECKBOX_PERFGRAPH:
+					Id:SETTINGS_CHECKBOX_PERFGRAPH
+					X:100
+					Y:150
+					Width:300
+					Height:20
+					Text:Show Performance Graph
+					Delegate:SettingsMenuDelegate
+				Checkbox@SETTINGS_CHECKBOX_PERFTEXT:
+					Id:SETTINGS_CHECKBOX_PERFTEXT
+					X:100
+					Y:180
+					Width:300
+					Height:20
+					Text:Show Performance Text
+					Delegate:SettingsMenuDelegate
+				Button@SETTINGS_BUTTON_OK:
+					Id:SETTINGS_BUTTON_OK
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:OK
+					Delegate:SettingsMenuDelegate
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
