@@ -124,11 +124,11 @@ namespace OpenRA.Graphics
 
 			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
 
-			var foos = world.FindUnits(
+			var actors = world.FindUnits(
 				new float2(bounds.Left, bounds.Top),
 				new float2(bounds.Right, bounds.Bottom));
 
-			var renderables = foos.SelectMany(a => a.Render())
+			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
 			DrawSpriteList(bounds, renderables);
