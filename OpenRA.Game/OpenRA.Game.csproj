@@ -75,6 +75,12 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
+    <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
+    <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
+    <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
+    <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
+    <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
+    <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
@@ -283,13 +289,13 @@
     <Compile Include="Traits\LineBuild.cs" />
     <Compile Include="Traits\World\Theater.cs" />
     <Compile Include="Traits\Cloak.cs" />
-    <Compile Include="Chrome\WidgetLoader.cs" />
-    <Compile Include="Chrome\ButtonWidget.cs" />
-    <Compile Include="Chrome\Widget.cs" />
-    <Compile Include="Chrome\BackgroundWidget.cs" />
-    <Compile Include="Chrome\LabelWidget.cs" />
-    <Compile Include="Chrome\DefaultWidgetDelegates.cs" />
-    <Compile Include="Chrome\CheckboxWidget.cs" />
+    <Compile Include="Widgets\WidgetLoader.cs" />
+    <Compile Include="Widgets\ButtonWidget.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\BackgroundWidget.cs" />
+    <Compile Include="Widgets\LabelWidget.cs" />
+    <Compile Include="Widgets\Delegates\WidgetDelegate.cs" />
+    <Compile Include="Widgets\CheckboxWidget.cs" />
     <Compile Include="Traits\HasUnitOnBuild.cs" />
     <Compile Include="Traits\Activities\Wait.cs" />
     <Compile Include="Traits\CrateAction.cs" />

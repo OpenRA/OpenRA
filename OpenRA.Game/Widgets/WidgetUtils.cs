@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,28 +18,14 @@
  */
 #endregion
 
+
+using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using System.Drawing;
-using System;
 
 namespace OpenRA.Widgets
 {
-	class BackgroundWidget : Widget
-	{
-		public override void Draw()
-		{
-			if (!Visible)
-			{
-				base.Draw();
-				return;
-			}
-
-			WidgetUtils.DrawPanel("dialog", Bounds, null);
-			base.Draw();
-		}
-	}
-
 	static class WidgetUtils
 	{
 		public static void DrawPanel(string collection, Rectangle Bounds, Action a)
