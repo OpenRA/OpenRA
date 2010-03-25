@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath server seqed
+PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng server seqed
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 
@@ -44,6 +44,12 @@ aftermath_KIND		=	library
 aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
 
+ra_ng_SRCS		=	$(shell find OpenRA.Mods.RA-NG/ -iname '*.cs')
+ra_ng_TARGET		=	mods/ra-ng/OpenRA.Mods.RA_NG.dll
+ra_ng_KIND		=	library
+ra_ng_DEPS		= $(ra_TARGET) $(fileformats_TARGET) $(game_TARGET)
+ra_ng_LIBS		= $(COMMON_LIBS) $(ra_ng_DEPS)
+
 seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
 seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
@@ -76,9 +82,9 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
 
-mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
+mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
 seqed: $(seqed_TARGET)
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET)
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET)
 
 dist-osx:
 	packaging/osx/package.sh
