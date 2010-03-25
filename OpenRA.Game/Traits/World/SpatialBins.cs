@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,16 +34,15 @@ namespace OpenRA.Traits
 
 			foreach (var a in self.World.Actors)
 			{
-				if (a.Location.X >= self.World.Map.MapSize
-					|| a.Location.Y >= self.World.Map.MapSize)
+				if (!self.World.Map.IsInMap(a.Location))
 					continue;
-
+				
 				var bounds = a.GetBounds(true);
 				var i1 = (int)bounds.Left / scale;
 				var i2 = (int)bounds.Right / scale;
 				var j1 = (int)bounds.Top / scale;
 				var j2 = (int)bounds.Bottom / scale;
-
+				
 				for (var j = j1; j <= j2; j++)
 					for (var i = i1; i <= i2; i++)
 						bins[i, j].Add(a);
