@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 				plane.QueueActivity(new CallFunc(
 					() => Owner.Shroud.Explore(Owner.World, order.TargetLocation,
 						(Info as SpyPlanePowerInfo).Range)));
-				plane.QueueActivity(new FlyOffMap(20));
+				plane.QueueActivity(new FlyOffMap { Interruptible = false });
 				plane.QueueActivity(new RemoveSelf());
 			}
 		}

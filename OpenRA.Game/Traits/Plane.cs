@@ -73,8 +73,6 @@ namespace OpenRA.Traits
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity(new ReturnToBase(self, null));
-				self.QueueActivity(new Rearm());
 			}
 
 			if (order.OrderString == "Enter")

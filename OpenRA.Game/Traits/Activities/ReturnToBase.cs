@@ -34,17 +34,12 @@ namespace OpenRA.Traits.Activities
 		float2 w1, w2, w3;	/* tangent points to turn circles */
 		float2 landPoint;
 
-		Actor ChooseAirfield(Actor self)
+		public static Actor ChooseAirfield(Actor self)
 		{
-			var airfield = self.World.Queries.OwnedBy[self.Owner]
+			return self.World.Queries.OwnedBy[self.Owner]
 				.Where(a => a.Info.Name == "afld"
 					&& !Reservable.IsReserved(a))
 				.FirstOrDefault();
-
-			if (airfield == null)
-				throw new NotImplementedException("nowhere to land; what to do?");
-
-			return airfield;
 		}
 
 		void Calculate(Actor self)

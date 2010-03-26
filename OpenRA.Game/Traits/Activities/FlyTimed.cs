@@ -26,12 +26,12 @@ namespace OpenRA.Traits.Activities
 	{
 		public IActivity NextActivity { get; set; }
 		int remainingTicks;
-		int targetAltitude;
 
-		public FlyTimed(int ticks, int targetAltitude) { remainingTicks = ticks; this.targetAltitude = targetAltitude; }
+		public FlyTimed(int ticks) { remainingTicks = ticks; }
 
 		public IActivity Tick(Actor self)
 		{
+			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			if (remainingTicks-- == 0) return NextActivity;
 			FlyUtil.Fly(self, targetAltitude);
 			return this;
@@ -43,19 +43,25 @@ namespace OpenRA.Traits.Activities
 	public class FlyOffMap : IActivity
 	{
 		public IActivity NextActivity { get; set; }
-		readonly int targetAltitude;
 		bool isCanceled;
+		public bool Interruptible = true;
 
-		public FlyOffMap(int targetAltitude) { this.targetAltitude = targetAltitude; }
-		
 		public IActivity Tick(Actor self)
 		{
+			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			if (isCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
 			FlyUtil.Fly(self, targetAltitude);
 			return this;
 		}
 
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
+		public void Cancel(Actor self)
+		{
+			if (Interruptible)
+			{
+				isCanceled = true; 
+				NextActivity = null;
+			}
+		}
 	}
 
 }

@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 		void FinishedDropping(Actor self)
 		{
 			self.CancelActivity();
-			self.QueueActivity(new FlyOffMap(20));
+			self.QueueActivity(new FlyOffMap { Interruptible = false });
 			self.QueueActivity(new RemoveSelf());
 		}
 	}

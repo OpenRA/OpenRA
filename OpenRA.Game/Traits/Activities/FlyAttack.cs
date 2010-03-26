@@ -38,7 +38,7 @@ namespace OpenRA.Traits.Activities
 
 			return Util.SequenceActivities(
 				new Fly(Target.CenterLocation),
-				new FlyTimed(50, 20),
+				new FlyTimed(50),
 				this);
 		}
 
@@ -60,7 +60,7 @@ namespace OpenRA.Traits.Activities
 
 			return Util.SequenceActivities(
 				new Fly(Util.CenterOfCell(Target)),
-				new FlyTimed(50, 20),
+				new FlyTimed(50),
 				this);
 		}
 

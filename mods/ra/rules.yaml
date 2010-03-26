@@ -1149,6 +1149,7 @@ MIG:
 	LimitedAmmo:
 		Ammo: 3
 	IronCurtainable:
+	ReturnOnIdle:
 
 YAK:
 	Inherits: ^Plane
@@ -1177,6 +1178,7 @@ YAK:
 	LimitedAmmo:
 		Ammo: 15
 	IronCurtainable:
+	ReturnOnIdle:
 
 TRAN:
 	Inherits: ^Plane

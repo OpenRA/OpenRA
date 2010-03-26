@@ -20,6 +20,7 @@
 
 using System;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Traits.AI
 {
@@ -34,8 +35,17 @@ namespace OpenRA.Traits.AI
 			var altitude = self.traits.Get<Unit>().Altitude;
 			if (altitude == 0) return;	// we're on the ground, let's stay there.
 
-			self.QueueActivity(new ReturnToBase(self, null));
-			self.QueueActivity(new Rearm());
+			var airfield = ReturnToBase.ChooseAirfield(self);
+			if (airfield != null)
+			{
+				self.QueueActivity(new ReturnToBase(self, airfield));
+				self.QueueActivity(new Rearm());
+			}
+			else
+			{
+				Game.chat.AddLine(Color.White, "Debug", "Plane has nowhere to land; flying away");
+				self.QueueActivity(new FlyOffMap());
+			}
 		}
 	}
 }
