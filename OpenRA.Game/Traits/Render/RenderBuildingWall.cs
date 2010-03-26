@@ -41,12 +41,36 @@ namespace OpenRA.Traits
 			this.self = self;
 			this.damageStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
 		}
-		
+
+		enum ExtendedDamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
+
+		ExtendedDamageState GetExtendedState( Actor self, int damage )
+		{
+			var effectiveHealth = self.Health + damage;
+
+			if (effectiveHealth <= 0)
+				return ExtendedDamageState.Dead;
+
+			if (effectiveHealth < self.GetMaxHP() * Rules.General.ConditionRed)
+				return ExtendedDamageState.Quarter;
+
+			if (effectiveHealth < self.GetMaxHP() * Rules.General.ConditionYellow)
+				return ExtendedDamageState.Half;
+
+			if (effectiveHealth < self.GetMaxHP() * 0.75)
+				return ExtendedDamageState.ThreeQuarter;
+
+			return ExtendedDamageState.Normal;
+		}
+
 		public override void Damaged(Actor self, AttackInfo e)
 		{
-			if (!e.ExtendedDamageStateChanged) return;
+			var oldState = GetExtendedState(self, e.Damage);
+			var newState = GetExtendedState(self, 0);
 
-			switch (e.ExtendedDamageState)
+			if (oldState == newState) return;
+
+			switch (newState)
 			{
 				case ExtendedDamageState.Normal:
 					seqName = "idle";
