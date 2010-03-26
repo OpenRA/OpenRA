@@ -65,11 +65,20 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			while (currentActivity != null)
+			while (currentActivity != null && !(currentActivity is Idle))
 			{
 				var a = currentActivity;
 				currentActivity = a.Tick(this) ?? new Idle();
-				if (a == currentActivity || currentActivity is Idle) break;
+
+				if (a == currentActivity) break;
+
+				if (currentActivity is Idle)
+				{
+					foreach (var ni in traits.WithInterface<INotifyIdle>())
+						ni.Idle(this);
+
+					break;
+				}
 			}
 		}
 

@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
+    <Compile Include="Traits\AI\ReturnOnIdle.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
     <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />

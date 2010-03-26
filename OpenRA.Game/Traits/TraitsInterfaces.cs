@@ -137,4 +137,5 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render(); }
+	public interface INotifyIdle { void Idle(Actor self); }
 }
