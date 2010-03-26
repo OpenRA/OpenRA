@@ -51,10 +51,7 @@ namespace OpenRA
 			get { return players[localPlayerIndex]; }
 		}
 
-		public Player NeutralPlayer
-		{
-			get { return players.Single(p => p.Value.InternalName == "Neutral").Value; }
-		}
+		public Player NeutralPlayer { get; private set; }
 
 		public void SetLocalPlayer(int index)
 		{
@@ -95,7 +92,7 @@ namespace OpenRA
 			Timer.Time("renderer: {0}");
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
-			AddPlayer(new Player(this, null));		// add the neutral player
+			AddPlayer(NeutralPlayer = new Player(this, null));		// add the neutral player
 
 			Timer.Time( "worldActor: {0}" );
 
