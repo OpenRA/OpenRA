@@ -134,12 +134,12 @@ namespace OpenRA.Traits
 				Templates[state].TerrainType[Tiles[p]]);
 		}
 
-		bool IsIntact(Bridge b)
+		static bool IsIntact(Bridge b)
 		{
 			return b != null && b.self.IsInWorld && b.self.Health > 0;
 		}
 
-		bool IsLong(Bridge b)
+		static bool IsLong(Bridge b)
 		{
 			return b != null && b.self.IsInWorld && b.self.Info.Traits.Get<BridgeInfo>().Long;
 		}
