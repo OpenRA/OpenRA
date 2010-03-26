@@ -342,15 +342,12 @@ MINP:
 		Warhead: APMine
 		TriggeredBy: Foot, Wheel, Track
 		AvoidFriendly: yes
-	Inherits: ^Building
 	Unit:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
-	-Selectable:
-	-Building:
-	-RenderBuilding:
+	Category: Building
 
 MINV:
 	Mine:
@@ -358,15 +355,12 @@ MINV:
 		Warhead: ATMine
 		TriggeredBy: Wheel, Track
 		AvoidFriendly: yes
-	Inherits: ^Building
 	Unit:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
-	-Selectable:
-	-Building:
-	-RenderBuilding:
+	Category: Building
 
 BR1:
 	Bridge:
