@@ -72,7 +72,7 @@ namespace OpenRA.Traits
 
 			if (replacedTiles.Any())
 			{
-				var a = w.CreateActor(template.Bridge, new int2(ni, nj), null);
+				var a = w.CreateActor(template.Bridge, new int2(ni, nj), w.NeutralPlayer);
 				var br = a.traits.Get<Bridge>();
 				br.SetTiles(w, template, replacedTiles);
 			}

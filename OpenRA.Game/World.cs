@@ -84,7 +84,8 @@ namespace OpenRA
 			customTerrain = new ICustomTerrain[Map.MapSize, Map.MapSize];
 			Timer.Time( "new Map: {0}" );
 			
-			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == Map.Theater);
+			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
+				.FirstOrDefault(t => t.Theater == Map.Theater);
 			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
 			
 			SpriteSheetBuilder.Initialize( Map );
@@ -94,8 +95,9 @@ namespace OpenRA
 			Timer.Time("renderer: {0}");
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+			AddPlayer(new Player(this, null));		// add the neutral player
 
-			Timer.Time( "worldActor, players: {0}" );
+			Timer.Time( "worldActor: {0}" );
 
 			foreach (var wlh in WorldActor.traits.WithInterface<ILoadWorldHook>())
 				wlh.WorldLoaded(this);

@@ -289,8 +289,6 @@ namespace OpenRA
 			if( orderManager.GameStarted ) return;
 			chat.Reset();
 
-			world.AddPlayer(new Player(world, null));	// neutral player
-
 			foreach (var c in LobbyInfo.Clients)
 				world.AddPlayer(new Player(world, c));
 
