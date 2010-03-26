@@ -203,15 +203,6 @@ World:
 	Country@4:
 		Name: Russia
 		Race: soviet
-	Country@5:
-		Name: Greece
-		Race: allies
-	Country@6:
-		Name: Turkey
-		Race: allies
-	Country@7:
-		Name: Spain
-		Race: allies
 	SellButton:
 	RepairButton:
 	PowerDownButton:
