@@ -146,16 +146,27 @@ namespace OpenRA
 			if (Health <= 0)
 				return DamageState.Dead;
 			
-			if (Health < this.GetMaxHP() * Rules.General.ConditionRed)
-				return DamageState.Quarter;
-			
 			if (Health < this.GetMaxHP() * Rules.General.ConditionYellow)
 				return DamageState.Half;
-			
-			if (Health < this.GetMaxHP() * 0.75)
-				return DamageState.ThreeQuarter;
-			
+
 			return DamageState.Normal;
+		}
+
+		public ExtendedDamageState GetExtendedDamageState()
+		{
+			if (Health <= 0)
+				return ExtendedDamageState.Dead;
+
+			if (Health < this.GetMaxHP() * Rules.General.ConditionRed)
+				return ExtendedDamageState.Quarter;
+
+			if (Health < this.GetMaxHP() * Rules.General.ConditionYellow)
+				return ExtendedDamageState.Half;
+
+			if (Health < this.GetMaxHP() * 0.75)
+				return ExtendedDamageState.ThreeQuarter;
+
+			return ExtendedDamageState.Normal;
 		}
 
 		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)
@@ -163,6 +174,7 @@ namespace OpenRA
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
 			var oldState = GetDamageState();
+			var oldExtendedState = GetExtendedDamageState();
 
 			/* apply the damage modifiers, if we have any. */
 			damage = (int)traits.WithInterface<IDamageModifier>().Aggregate(
@@ -184,6 +196,7 @@ namespace OpenRA
 			if (Health > maxHP)	Health = maxHP;
 
 			var newState = GetDamageState();
+			var newExtendedState = GetExtendedDamageState();
 
 			foreach (var nd in traits.WithInterface<INotifyDamage>())
 				nd.Damaged(this, new AttackInfo
@@ -192,6 +205,8 @@ namespace OpenRA
 					Damage = damage,
 					DamageState = newState,
 					DamageStateChanged = newState != oldState,
+					ExtendedDamageState = newExtendedState,
+					ExtendedDamageStateChanged = newExtendedState != oldExtendedState,
 					Warhead = warhead
 				});
 		}

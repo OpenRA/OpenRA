@@ -44,22 +44,22 @@ namespace OpenRA.Traits
 		
 		public override void Damaged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
+			if (!e.ExtendedDamageStateChanged) return;
 
-			switch (e.DamageState)
+			switch (e.ExtendedDamageState)
 			{
-				case DamageState.Normal:
+				case ExtendedDamageState.Normal:
 					seqName = "idle";
 					break;
-				case DamageState.ThreeQuarter:
+				case ExtendedDamageState.ThreeQuarter:
 					if (damageStates >= 4)
 						seqName = "minor-damaged-idle";
 					break;
-				case DamageState.Half:
+				case ExtendedDamageState.Half:
 					seqName = "damaged-idle";
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
 					break;
-				case DamageState.Quarter:
+				case ExtendedDamageState.Quarter:
 					if (damageStates >= 3)
 					{
 						seqName = "critical-idle";

@@ -28,6 +28,8 @@ namespace OpenRA.Traits
 		public WarheadInfo Warhead;
 		public int Damage;
 		public DamageState DamageState;
+		public ExtendedDamageState ExtendedDamageState;		// for 3,4-state stuff
 		public bool DamageStateChanged;
+		public bool ExtendedDamageStateChanged;
 	}
 }

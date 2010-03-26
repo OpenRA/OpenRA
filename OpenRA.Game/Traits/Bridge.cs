@@ -144,28 +144,9 @@ namespace OpenRA.Traits
 			return b != null && b.self.IsInWorld && b.self.Info.Traits.Get<BridgeInfo>().Long;
 		}
 
-		// HACK because paul broke the world with his extended damage states... :(
-		static DamageState MapDamageState(DamageState ds)
-		{
-			switch (ds)
-			{
-				case DamageState.Normal:
-				case DamageState.ThreeQuarter:
-					return DamageState.Normal;
-
-				case DamageState.Half:
-				case DamageState.Quarter:
-					return DamageState.Half;
-
-				case DamageState.Dead:
-				default:
-					return DamageState.Dead;
-			}
-		}
-
 		void UpdateState()
 		{
-			var ds = MapDamageState(self.GetDamageState());
+			var ds = self.GetDamageState();
 			if (!self.Info.Traits.Get<BridgeInfo>().Long)
 			{
 				state = (int)ds; 

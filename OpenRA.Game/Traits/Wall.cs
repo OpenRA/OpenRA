@@ -18,13 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Effects;
-using OpenRA.GameRules;
-using OpenRA.Traits.Activities;
-
 namespace OpenRA.Traits
 {
 	public class WallInfo : StatelessTraitInfo<Wall> {}

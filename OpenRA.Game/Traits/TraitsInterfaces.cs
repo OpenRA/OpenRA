@@ -27,7 +27,8 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	public enum DamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
+	public enum DamageState { Normal, Half, Dead };
+	public enum ExtendedDamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
 	
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray };
