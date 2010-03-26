@@ -721,12 +721,14 @@ namespace OpenRA
 			
 			foreach (var cb in world.WorldActor.traits.WithInterface<IChromeButton>())
 			{
+				var state = cb.Enabled ? cb.Pressed ? "pressed" : "normal" : "disabled";
+				var image = ChromeProvider.GetImage(renderer, cb.Image + "-button", state);
+				
+				origin.X -= (int)image.size.X + chromeButtonGap;
+				rgbaRenderer.DrawSprite(image, origin, "chrome");
+
 				var button = cb;
-				var anim = new Animation(cb.Image);
-				anim.Play(cb.Enabled ? cb.Pressed ? "pressed" : "normal" : "disabled");
-				origin.X -= (int)anim.Image.size.X + chromeButtonGap;
-				shpRenderer.DrawSprite(anim.Image, origin, "chrome");
-				AddButton(new RectangleF(origin.X, origin.Y, anim.Image.size.X, anim.Image.size.Y),
+				AddButton(new RectangleF(origin.X, origin.Y, image.size.X, image.size.Y),
 					_ => { if (button.Enabled) button.OnClick(); });
 			}
 			

@@ -8,7 +8,7 @@ namespace OpenRA.Traits
 
 	class PowerDownButton : IChromeButton
 	{
-		public string Image { get { return "repair"; } }	// todo: art
+		public string Image { get { return "power"; } }
 		public bool Enabled { get { return true; } }
 		public bool Pressed { get { return Game.controller.orderGenerator is PowerDownOrderGenerator; } }
 		public void OnClick() { Game.controller.ToggleInputMode<PowerDownOrderGenerator>(); }
