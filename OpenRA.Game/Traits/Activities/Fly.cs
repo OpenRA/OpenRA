@@ -31,11 +31,11 @@ namespace OpenRA.Traits.Activities
 		public Fly(int2 pos) { Pos = Util.CenterOfCell(pos); }
 		
 		public IActivity NextActivity { get; set; }
-
-		const int CruiseAltitude = 20;
 		
 		public IActivity Tick(Actor self)
 		{
+			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+
 			if (isCanceled) return NextActivity;
 
 			var d = Pos - self.CenterLocation;
@@ -45,14 +45,14 @@ namespace OpenRA.Traits.Activities
 			var unit = self.traits.Get<Unit>();
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			if (unit.Altitude == CruiseAltitude)
+			if (unit.Altitude == cruiseAltitude)
 				Util.TickFacing(ref unit.Facing, desiredFacing, 
 					self.Info.Traits.Get<UnitInfo>().ROT);
-			
-			if (unit.Altitude < CruiseAltitude)
+
+			if (unit.Altitude < cruiseAltitude)
 				++unit.Altitude;
 
-			FlyUtil.Fly(self, CruiseAltitude);
+			FlyUtil.Fly(self, cruiseAltitude);
 			return this;
 		}
 

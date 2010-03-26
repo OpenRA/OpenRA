@@ -19,12 +19,17 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
 	class PlaneInfo : ITraitInfo
 	{
+		public readonly int CruiseAltitude = 20;
+		public readonly string[] RearmBuildings = { "afld" };
+		public readonly string[] RepairBuildings = { "fix" };
+
 		public object Create(Actor self) { return new Plane(self); }
 	}
 
@@ -34,22 +39,21 @@ namespace OpenRA.Traits
 
 		public Plane(Actor self) {}
 
-		// todo: push into data!
-		static bool PlaneCanEnter(Actor a)
+		static bool PlaneCanEnter(Actor self, Actor a)
 		{
-			if (a.Info.Name == "afld") return true;
-			if (a.Info.Name == "fix") return true;
-			return false;
+			var plane = self.Info.Traits.Get<PlaneInfo>();
+			return plane.RearmBuildings.Contains(a.Info.Name) 
+				|| plane.RepairBuildings.Contains(a.Info.Name);
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
+			
 			if (underCursor == null)
-			{
-					return new Order("Move", self, xy);
-			}
-			if (PlaneCanEnter(underCursor)
+				return new Order("Move", self, xy);
+
+			if (PlaneCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor);
@@ -80,10 +84,13 @@ namespace OpenRA.Traits
 				if (res != null)
 					reservation = res.Reserve(self);
 
+				var info = self.Info.Traits.Get<PlaneInfo>();
+
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(order.TargetActor.Info.Name == "afld"
-					? (IActivity)new Rearm() : new Repair(true));
+				self.QueueActivity(
+					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
+						? (IActivity)new Rearm() : new Repair(true));
 			}
 		}
 
