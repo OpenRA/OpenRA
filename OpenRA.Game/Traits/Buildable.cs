@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 		public readonly string LongDesc = "";
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
-		public readonly int BuildPaletteOrder = 0;
+		public readonly int BuildPaletteOrder = 50;
 	}
 
 	class Buildable { }

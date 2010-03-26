@@ -480,6 +480,7 @@ SYRD:
 		Cost: 650
 		Description: Shipyard
 		LongDesc: Produces and repairs ships
+		BuildPaletteOrder: 4
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -611,6 +612,7 @@ DOME:
 		Cost: 1000
 		Description: Radar Dome
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
+		BuildPaletteOrder: 6
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -1428,6 +1430,7 @@ WEAP:
 		Cost: 2000
 		Description: War Factory
 		LongDesc: Produces tanks & light vehicles.
+		BuildPaletteOrder: 5
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -1472,6 +1475,7 @@ PROC:
 		Cost: 2000
 		Description: Ore Refinery
 		LongDesc: Converts Ore and Gems into money
+		BuildPaletteOrder: 1
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -1575,6 +1579,7 @@ POWR:
 		Cost: 300
 		Description: Power Plant
 		LongDesc: Provides power for other structures
+		BuildPaletteOrder: 0
 	Building:
 		Power: 100
 		Footprint: xx xx
@@ -1596,6 +1601,7 @@ APWR:
 		Cost: 500
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
+		BuildPaletteOrder:2
 	Building:
 		Power: 200
 		Footprint: ___ xxx xxx
@@ -1639,6 +1645,7 @@ BARR:
 		Cost: 300
 		Description: Soviet Barracks
 		LongDesc: Produces infantry
+		BuildPaletteOrder: 3
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1663,6 +1670,7 @@ TENT:
 		Cost: 300
 		Description: Allied Barracks
 		LongDesc: Produces infantry
+		BuildPaletteOrder: 3
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1726,6 +1734,7 @@ FACF:
 		Cost: 50
 		Description: Fake Construction Yard
 		LongDesc: Looks like a Construction Yard.
+		BuildPaletteOrder: 90
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1749,6 +1758,7 @@ WEAF:
 		Cost: 50
 		Description: Fake War Factory
 		LongDesc: Looks like a War Factory.
+		BuildPaletteOrder: 90
 	Building:
 		Power: -2
 		Footprint: xxx xxx
@@ -1773,6 +1783,7 @@ SYRF:
 		Cost: 50
 		Description: Fake Shipyard
 		LongDesc: Looks like a Shipyard
+		BuildPaletteOrder: 90
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1812,6 +1823,7 @@ DOMF:
 		Cost: 50
 		Description: Fake Radar Dome
 		LongDesc: Looks like a Radar Dome
+		BuildPaletteOrder: 90
 	Building:
 		Power: -2
 		Footprint: xx xx
@@ -2586,6 +2598,7 @@ SBAG:
 		Cost: 25
 		Description: Sandbag Wall
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		BuildPaletteOrder: 100
 	Building:
 		HP: 100
 		Armor: none
@@ -2599,6 +2612,7 @@ FENC:
 		Cost: 25
 		Description: Wire Fence
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		BuildPaletteOrder: 100
 	Building:
 		HP: 100
 		Armor: none
@@ -2612,6 +2626,7 @@ BRIK:
 		Cost: 100
 		Description: Concrete Wall
 		LongDesc: Stop units and blocks enemy fire.
+		BuildPaletteOrder: 100
 	Building:
 		HP: 100
 		Armor: none

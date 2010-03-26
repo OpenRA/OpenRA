@@ -877,7 +877,8 @@ namespace OpenRA
 
 			var allBuildables = Rules.TechTree.AllBuildables(queueName)
 				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(world.LocalPlayer.Country.Race))
-				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
+				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder)
+				.ThenBy(a => a.Traits.Get<BuildableInfo>().TechLevel).ToArray();
 
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
 
