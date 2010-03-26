@@ -875,32 +875,36 @@ namespace OpenRA
 
 			var buildableItems = Rules.TechTree.BuildableItems(world.LocalPlayer, queueName).ToArray();
 
-			var allBuildables = Rules.TechTree.AllBuildables(world.LocalPlayer, queueName)
-				.Where(a => a.Traits.Contains<BuildableInfo>())
+			var allBuildables = Rules.TechTree.AllBuildables(queueName)
 				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(world.LocalPlayer.Country.Race))
-				.OrderBy(a => a.Traits.Get<BuildableInfo>().TechLevel);
+				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
 
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 
 			string tooltipItem = null;
 
 			// Draw the top border
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9), "chrome");
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "top"), 
+				new float2(origin.X - 9, origin.Y - 9), "chrome");
+
+			var numActualRows = Math.Max((allBuildables.Length + columns - 1) / columns, paletteRows);
+			for (var w = 0; w < numActualRows; w++)
+				rgbaRenderer.DrawSprite(
+					ChromeProvider.GetImage(renderer, paletteCollection,
+					"bg-" + (w % 4).ToString()),
+					new float2(origin.X - 9, origin.Y + 48 * w),
+					"chrome");
+
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bottom"), 
+				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows), "chrome");
+
+			rgbaRenderer.Flush();
 
 			// Draw the icons
-			int lasty = -1;
 			foreach (var item in allBuildables)
-			{
-				// Draw the background for this row
-				if (y != lasty)
-				{
-					rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), "chrome");
-					rgbaRenderer.Flush();
-					lasty = y;
-				}
-				
+			{	
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
@@ -962,30 +966,28 @@ namespace OpenRA
 				if (++x == columns) { x = 0; y++; }
 			}
 			if (x != 0) y++;
-			
-			while (y < paletteRows)
-			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bg-" + (y % 4).ToString()), new float2(origin.X - 9, origin.Y + 48 * y), "chrome");
-				y++;
-			}
 
 			foreach (var ob in overlayBits)
 				shpRenderer.DrawSprite(ob.First, ob.Second, "chrome");
 
 			shpRenderer.Flush();
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bottom"), new float2(origin.X - 9, origin.Y - 1 + 48 * y), "chrome");
-
+			
 			// Draw dock
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-top"), new float2(Game.viewport.Width - 14, origin.Y - 23), "chrome");
-			for (int i = 0; i < y; i++)
-			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-" + (y % 4).ToString()), new float2(Game.viewport.Width - 14, origin.Y + 48 * i), "chrome");
-			}
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * y), "chrome");
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-top"), 
+				new float2(Game.viewport.Width - 14, origin.Y - 23), "chrome");
+
+			for (int i = 0; i < numActualRows; i++)
+				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-" + (i % 4).ToString()), 
+					new float2(Game.viewport.Width - 14, origin.Y + 48 * i), "chrome");
+
+			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), 
+				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows), "chrome");
+
 			rgbaRenderer.Flush();
 
 			if (tooltipItem != null && paletteOpen)
-				DrawProductionTooltip(world, tooltipItem, new float2(Game.viewport.Width, origin.Y + y * 48 + 9).ToInt2()/*tooltipPos*/);
+				DrawProductionTooltip(world, tooltipItem, 
+					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 				
 			return y*48+9;
 		}
@@ -996,7 +998,8 @@ namespace OpenRA
 			var unit = Rules.Info[item];
 
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
-			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item, Game.controller.GetModifiers().HasModifier(Modifiers.Shift) ? 5 : 1));
+			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item, 
+				Game.controller.GetModifiers().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
 		void HandleBuildPalette( World world, string item, bool isLmb )

@@ -75,12 +75,12 @@ namespace OpenRA.GameRules
 		public IEnumerable<string> BuildableItems( Player player, params string[] categories )
 		{
 			var playerBuildings = GatherBuildings( player );
-			foreach( var unit in AllBuildables( player, categories ) )
+			foreach (var unit in AllBuildables(categories))
 				if( CanBuild( unit, player, playerBuildings ) )
 					yield return unit.Name;
 		}
 
-		public IEnumerable<ActorInfo> AllBuildables(Player player, params string[] categories)
+		public IEnumerable<ActorInfo> AllBuildables(params string[] categories)
 		{
 			return Rules.Info.Values
 				.Where( x => x.Name[ 0 ] != '^' )
