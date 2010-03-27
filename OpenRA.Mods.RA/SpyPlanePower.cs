@@ -53,6 +53,7 @@ namespace OpenRA.Mods.RA
 				var enterCell = self.World.ChooseRandomEdgeCell();
 
 				var plane = self.World.CreateActor("U2", enterCell, self.Owner);
+				plane.traits.Get<Unit>().Altitude = plane.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 				plane.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - enterCell, 0);
 
 				plane.CancelActivity();

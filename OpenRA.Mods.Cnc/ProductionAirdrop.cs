@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Cnc
 				var a = w.CreateActor("C17", startPos, owner);
 				var cargo = a.traits.Get<Cargo>();
 				a.traits.Get<Unit>().Facing = 64;
+				a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
 				var newUnit = new Actor(self.World, producee.Name, new int2(0, 0), self.Owner);
 				cargo.Load(a, newUnit);

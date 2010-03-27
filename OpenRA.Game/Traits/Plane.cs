@@ -24,7 +24,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class PlaneInfo : ITraitInfo
+	public class PlaneInfo : ITraitInfo
 	{
 		public readonly int CruiseAltitude = 20;
 		public readonly string[] RearmBuildings = { "afld" };
@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Plane(self); }
 	}
 
-	class Plane : IIssueOrder, IResolveOrder, IMovement
+	public class Plane : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
 

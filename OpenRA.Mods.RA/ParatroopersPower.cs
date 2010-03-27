@@ -78,6 +78,7 @@ namespace OpenRA.Mods.RA
 			{
 				var a = w.CreateActor("BADR", startPos, owner);
 				a.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
+				a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));
