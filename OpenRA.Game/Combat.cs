@@ -91,7 +91,7 @@ namespace OpenRA
 			if (!WeaponValidForTarget(weapon, target))
 				return 0f;
 			
-			var distance = (target.CenterLocation - loc).Length*1/24f;
+			var distance = (target.CenterLocation - loc).Length;
 			var rawDamage = weapon.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
 			return rawDamage * multiplier;
