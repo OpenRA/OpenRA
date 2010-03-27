@@ -180,7 +180,7 @@ namespace OpenRA.Traits
 			// Something went wrong somewhere...
 			if( producer == null )
 			{
-				CancelProduction( newUnitType.Category );
+				CancelProduction( name );
 				return;
 			}
 
