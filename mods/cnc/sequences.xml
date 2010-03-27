@@ -111,16 +111,6 @@
   <unit name="select">
     <sequence name="repair" start="2" length="1" />
   </unit>
-  <unit name="repair">
-    <sequence name="normal" start="0" length="1" src="hrepair" />
-    <sequence name="pressed" start="1" length="1" src="hrepair" />
-    <sequence name="disabled" start="0" length="1" src="hrepair" />
-  </unit>
-  <unit name="sell">
-    <sequence name="normal" start="0" length="1" src="hsell" />
-    <sequence name="pressed" start="1" length="1" src="hsell" />
-    <sequence name="disabled" start="0" length="1" src="hsell" />
-  </unit>
   <unit name="tabs">
     <sequence name="left-normal" start="0" length="1" src="htabs" />
     <sequence name="left-pressed" start="1" length="1" src="htabs" />
