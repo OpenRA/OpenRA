@@ -194,7 +194,7 @@ namespace OpenRA.Graphics
 					lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), Player.PlayerColors[ p.Second.PaletteIndex ].c);
+						12, 12), Player.PlayerColors[ p.Second.PaletteIndex % Player.PlayerColors.Count() ].c);
 			
 					rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
 				}

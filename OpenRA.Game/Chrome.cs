@@ -512,7 +512,7 @@ namespace OpenRA
 															paletteRect.Top + Game.viewport.Location.Y + 5,
 															paletteRect.Right + Game.viewport.Location.X - 5,
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
-													Player.PlayerColors[client.PaletteIndex].c);
+													Player.PlayerColors[client.PaletteIndex % Player.PlayerColors.Count()].c);
 				lineRenderer.Flush();
 				f.DrawText(rgbaRenderer, client.Country, new int2(r.Left + 220, y), Color.White);
 				f.DrawText(rgbaRenderer, client.State.ToString(), new int2(r.Left + 290, y), Color.White);
