@@ -72,18 +72,15 @@ namespace OpenRA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			if (!self.IsIdle) return;
+
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (!Combat.HasAnyValidWeapons(self, e.Attacker))
-				return;
+			if (!Combat.HasAnyValidWeapons(self, e.Attacker)) return;
 
-			if (self.Owner.Stances[e.Attacker.Owner] == Stance.Ally)
-				return;	// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
+			// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
+			if (self.Owner.Stances[e.Attacker.Owner] == Stance.Ally) return;
 
-			if (e.Damage < 0)
-				return;	// don't retaliate against healers
-
-			var attack = self.traits.Get<AttackBase>();
-			if (attack.target != null) return;
+			if (e.Damage < 0) return;	// don't retaliate against healers
 
 			AttackTarget(self, e.Attacker);
 		}
