@@ -180,6 +180,9 @@ namespace OpenRA
 
 		internal static Chat chat = new Chat();
 
+		public static int LocalTick = 0;
+		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
+
 		public static void Tick()
 		{
 			if (changePending && PackageDownloader.IsIdle())
@@ -199,9 +202,14 @@ namespace OpenRA
 
 					orderManager.TickImmediate( world );
 
-					if (orderManager.IsReadyForNextFrame)
+					var isNetTick = LocalTick % NetTickScale == 0;
+
+					if (!isNetTick || orderManager.IsReadyForNextFrame)
 					{
-						orderManager.Tick(world);
+						++LocalTick;
+
+						if (isNetTick) orderManager.Tick(world);
+
 						controller.orderGenerator.Tick(world);
 						controller.selection.Tick(world);
 
