@@ -53,7 +53,7 @@ namespace OpenRA.Orders
 
 		string ChooseCursor(World world, MouseInput mi)
 		{
-			using (new PerfSample("cursor"))
+			//using (new PerfSample("cursor"))
 			{
 				var p = Game.controller.MousePosition;
 				var c = Order(world, p.ToInt2(), mi)

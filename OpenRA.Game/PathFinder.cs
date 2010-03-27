@@ -50,6 +50,8 @@ namespace OpenRA
 		{
 			using (new PerfSample("find_unit_path"))
 			{
+				Game.Debug("FindUnitPath {0} -> {1}".F(from, target));
+
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, target, from, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)),
 					PathSearch.FromPoint(world, from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
@@ -61,7 +63,7 @@ namespace OpenRA
 
 		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
 		{
-			using( new PerfSample( "find_unit_path_multiple_src" ) )
+			//using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
 				var tilesInRange = world.FindTilesInCircle(target, range)
 					.Where( t => world.IsPathableCell( t, umt ) );
@@ -82,7 +84,7 @@ namespace OpenRA
 
 		public List<int2> FindPath( PathSearch search )
 		{
-			using (new PerfSample("find_path_inner"))
+			//using (new PerfSample("find_path_inner"))
 			{
 				while (!search.queue.Empty)
 				{

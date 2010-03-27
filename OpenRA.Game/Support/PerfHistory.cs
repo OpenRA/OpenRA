@@ -29,7 +29,11 @@ namespace OpenRA.Support
 {
 	static class PerfHistory
 	{
-		static readonly Color[] colors = { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Orange, Color.Fuchsia, Color.Lime, Color.LightBlue, Color.White, Color.Black };
+		static readonly Color[] colors = { Color.Red, Color.Green, 
+											 Color.Blue, Color.Yellow, 
+											 Color.Orange, Color.Fuchsia, 
+											 Color.Lime, Color.LightBlue, 
+											 Color.White, Color.Teal };
 		static int nextColor;
 
 		public static Cache<string, PerfItem> items = new Cache<string, PerfItem>(

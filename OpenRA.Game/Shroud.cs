@@ -25,6 +25,7 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -112,19 +113,22 @@ namespace OpenRA
 
 		public void Explore(World w, int2 center, int range)
 		{
-			if (range == 0)
-				return;
-
-			var box = MakeRect(center, range);
-			bounds = bounds.HasValue ? 
-				Rectangle.Union(bounds.Value, box) : box;
-			
-			foreach (var t in w.FindTilesInCircle(center, range))
+			using (new PerfSample("explore"))
 			{
-				explored[t.X, t.Y] = true;
-				gapField[t.X, t.Y] = 0;
+				if (range == 0)
+					return;
+
+				var box = MakeRect(center, range);
+				bounds = bounds.HasValue ?
+					Rectangle.Union(bounds.Value, box) : box;
+
+				foreach (var t in w.FindTilesInCircle(center, range))
+				{
+					explored[t.X, t.Y] = true;
+					gapField[t.X, t.Y] = 0;
+				}
+				dirty = true;
 			}
-			dirty = true;
 		}
 		
 		public void Explore(Actor a)

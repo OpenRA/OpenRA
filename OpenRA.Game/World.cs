@@ -166,7 +166,7 @@ namespace OpenRA
 
 		public int SyncHash()
 		{
-			using (new PerfSample("synchash"))
+			//using (new PerfSample("synchash"))
 			{
 				int ret = 0;
 				foreach (var a in Actors)
