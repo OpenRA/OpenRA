@@ -38,10 +38,10 @@ namespace OpenRA.Traits
 					continue;
 				
 				var bounds = a.GetBounds(true);
-				var i1 = (int)bounds.Left / scale;
-				var i2 = (int)bounds.Right / scale;
-				var j1 = (int)bounds.Top / scale;
-				var j2 = (int)bounds.Bottom / scale;
+				var i1 = Math.Max(0, (int)bounds.Left / scale);
+				var i2 = Math.Min(bins.GetUpperBound(0), (int)bounds.Right / scale);
+				var j1 = Math.Max(0, (int)bounds.Top / scale);
+				var j2 = Math.Min(bins.GetUpperBound(1), (int)bounds.Bottom / scale);
 				
 				for (var j = j1; j <= j2; j++)
 					for (var i = i1; i <= i2; i++)
