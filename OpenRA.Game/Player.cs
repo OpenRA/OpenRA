@@ -73,8 +73,8 @@ namespace OpenRA
 			if (client != null)
 			{
 				Index = client.Index;
-				Palette = PlayerColors[client.PaletteIndex].a;
-				Color = PlayerColors[client.PaletteIndex].c;
+				Palette = PlayerColors[client.PaletteIndex % PlayerColors.Count()].a;
+				Color = PlayerColors[client.PaletteIndex % PlayerColors.Count()].c;
 				PlayerName = client.Name;
 				InternalName = "Multi{0}".F(client.Index);
 			}
