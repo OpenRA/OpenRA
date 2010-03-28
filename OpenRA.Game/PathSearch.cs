@@ -36,10 +36,17 @@ namespace OpenRA
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
 
+		BuildingInfluence buildingInfluence;
+		UnitInfluence unitInfluence;
+
 		public PathSearch()
 		{
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
+
+			// hack: should be passing in World, not using Game.world.
+			buildingInfluence = Game.world.WorldActor.traits.Get<BuildingInfluence>();
+			unitInfluence = Game.world.WorldActor.traits.Get<UnitInfluence>();
 		}
 
 		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
@@ -67,8 +74,6 @@ namespace OpenRA
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 
-			var bi = world.WorldActor.traits.Get<BuildingInfluence>();
-					
 			foreach( int2 d in directions )
 			{
 				int2 newHere = p.Location + d;
@@ -83,11 +88,11 @@ namespace OpenRA
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!bi.CanMoveHere(newHere, ignoreBuilding))
+				if (!buildingInfluence.CanMoveHere(newHere, ignoreBuilding))
 					continue;
 
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
+				if (checkForBlocked && (unitInfluence.GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
