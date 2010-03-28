@@ -70,4 +70,10 @@ namespace OpenRA.Traits
 		{
 			return map.IsInMap(cell) && !blocked[cell.X, cell.Y];
 		}
+
+		public bool CanMoveHere(int2 cell, Actor toIgnore)
+		{
+			return map.IsInMap(cell) && 
+				(!blocked[cell.X, cell.Y] || influence[cell.X, cell.Y] == toIgnore);
+		}
 	}}

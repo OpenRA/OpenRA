@@ -66,6 +66,8 @@ namespace OpenRA
 
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
+
+			var bi = world.WorldActor.traits.Get<BuildingInfluence>();
 					
 			foreach( int2 d in directions )
 			{
@@ -81,8 +83,7 @@ namespace OpenRA
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!world.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(newHere) && 
-					world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(newHere) != ignoreBuilding)
+				if (!bi.CanMoveHere(newHere, ignoreBuilding))
 					continue;
 
 				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
