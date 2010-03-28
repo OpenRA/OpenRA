@@ -67,16 +67,7 @@ namespace OpenRA.Graphics
 			IEnumerable<Renderable> images)
 		{
 			foreach (var image in images)
-			{
-				var loc = image.Pos;
-
-				if (loc.X > rect.Right || loc.X < rect.Left - image.Sprite.bounds.Width)
-					continue;
-				if (loc.Y > rect.Bottom || loc.Y < rect.Top - image.Sprite.bounds.Height)
-					continue;
-
-				spriteRenderer.DrawSprite(image.Sprite, loc, image.Palette);
-			}
+				spriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
 		}
 
 		class SpriteComparer : IComparer<Renderable>

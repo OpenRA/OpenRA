@@ -46,10 +46,29 @@ namespace OpenRA
 							: float.PositiveInfinity;
 		}
 
+		class CachedPath
+		{
+			public int2 from;
+			public int2 to;
+			public UnitMovementType umt;
+			public List<int2> result;
+			public int tick;
+		}
+
+		List<CachedPath> CachedPaths = new List<CachedPath>();
+		const int MaxPathAge = 50;	/* x 40ms ticks */
+
 		public List<int2> FindUnitPath( int2 from, int2 target, UnitMovementType umt )
 		{
 			using (new PerfSample("find_unit_path"))
 			{
+				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.umt == umt);
+				if (cached != null)
+				{
+					cached.tick = Game.LocalTick;
+					return new List<int2>(cached.result);
+				}
+
 				Game.Debug("FindUnitPath {0} -> {1}".F(from, target));
 
 				var pb = FindBidiPath(
@@ -57,7 +76,10 @@ namespace OpenRA
 					PathSearch.FromPoint(world, from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
 
 				CheckSanePath2(pb, from, target);
-				return pb;
+
+				CachedPaths.RemoveAll(p => Game.LocalTick - p.tick > MaxPathAge);
+				CachedPaths.Add(new CachedPath { from = from, to = target, umt = umt, result = pb, tick = Game.LocalTick });
+				return new List<int2>(pb);
 			}
 		}
 
