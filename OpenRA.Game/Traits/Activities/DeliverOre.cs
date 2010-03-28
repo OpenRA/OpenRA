@@ -40,7 +40,7 @@ namespace OpenRA.Traits.Activities
 		{
 			var mobile = self.traits.Get<Mobile>();
 
-			var search = new PathSearch
+			var search = new PathSearch(self.World)
 			{
 				heuristic = PathSearch.DefaultEstimator(self.Location),
 				umt = mobile.GetMovementType(),

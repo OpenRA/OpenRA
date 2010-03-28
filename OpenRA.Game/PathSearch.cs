@@ -39,14 +39,13 @@ namespace OpenRA
 		BuildingInfluence buildingInfluence;
 		UnitInfluence unitInfluence;
 
-		public PathSearch()
+		public PathSearch(World world)
 		{
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
 
-			// hack: should be passing in World, not using Game.world.
-			buildingInfluence = Game.world.WorldActor.traits.Get<BuildingInfluence>();
-			unitInfluence = Game.world.WorldActor.traits.Get<UnitInfluence>();
+			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
+			unitInfluence = world.WorldActor.traits.Get<UnitInfluence>();
 		}
 
 		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
@@ -140,7 +139,7 @@ namespace OpenRA
 
 		public static PathSearch FromPoint( World world, int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
 		{
-			var search = new PathSearch {
+			var search = new PathSearch(world) {
 				heuristic = DefaultEstimator( target ),
 				umt = umt,
 				checkForBlocked = checkForBlocked };
@@ -151,7 +150,7 @@ namespace OpenRA
 
 		public static PathSearch FromPoints(World world, IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
 		{
-			var search = new PathSearch
+			var search = new PathSearch(world)
 			{
 				heuristic = DefaultEstimator(target),
 				umt = umt,

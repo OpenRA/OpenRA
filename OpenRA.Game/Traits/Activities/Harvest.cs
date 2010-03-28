@@ -72,7 +72,7 @@ namespace OpenRA.Traits.Activities
 			self.QueueActivity(new Move(
 				() =>
 				{
-					var search = new PathSearch
+					var search = new PathSearch(self.World)
 					{
 						heuristic = loc => (res.GetResource(loc) != null 
 							&& harv.Resources.Contains( res.GetResource(loc).Name )) ? 0 : 1,
