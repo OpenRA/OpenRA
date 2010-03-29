@@ -49,7 +49,7 @@ namespace OpenRA
 		public int PowerProvided = 0;
 		public int PowerDrained = 0;
 
-		public Shroud Shroud;
+		public ShroudRenderer Shroud;
 		public World World { get; private set; }
 
 		public static List<Tuple<string, string, Color>> PlayerColors
@@ -66,7 +66,7 @@ namespace OpenRA
 		public Player( World world, Session.Client client )
 		{
 			World = world;
-			Shroud = new Shroud(this, world.Map);
+			Shroud = new ShroudRenderer(this, world.Map);
 
 			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 

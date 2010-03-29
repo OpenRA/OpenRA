@@ -119,7 +119,7 @@
     <Compile Include="Server\MasterServerQuery.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
-    <Compile Include="Shroud.cs" />
+    <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\PerfHistory.cs" />
