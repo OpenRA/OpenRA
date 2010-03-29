@@ -102,6 +102,13 @@ namespace OpenRA
 					continue;
 
 				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere;
+
+				// directional bonuses for smoother flow!
+				if (((newHere.X & 1) == 0) && d.Y < 0) cellCost -= .1f;
+				else if (((newHere.X & 1) == 1) && d.Y > 0) cellCost -= .1f;
+				if (((newHere.Y & 1) == 0) && d.X < 0) cellCost -= .1f;
+				else if (((newHere.Y & 1) == 1) && d.X > 0) cellCost -= .1f;
+
 				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
