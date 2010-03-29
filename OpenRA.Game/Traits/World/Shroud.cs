@@ -18,10 +18,10 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
 using System.Collections.Generic;
-using OpenRA.GameRules;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -101,5 +101,7 @@ namespace OpenRA.Traits
 
 			vis.Remove(a);
 		}
+
+		public void UpdateActor(Actor a) { RemoveActor(a); AddActor(a); }
 	}
 }

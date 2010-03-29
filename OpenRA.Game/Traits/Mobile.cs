@@ -52,6 +52,10 @@ namespace OpenRA.Traits
 				{
 					self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
 					self.Location = value;
+
+					self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
+
+					// todo: dies
 					self.Owner.Shroud.Explore(self);
 				}
 				self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
