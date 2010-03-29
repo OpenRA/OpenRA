@@ -43,7 +43,7 @@ namespace OpenRA.Traits.AI
 			}
 			else
 			{
-				Game.chat.AddLine(Color.White, "Debug", "Plane has nowhere to land; flying away");
+				Game.Debug("Plane has nowhere to land; flying away");
 				self.QueueActivity(new FlyOffMap());
 			}
 		}

@@ -132,7 +132,7 @@ namespace OpenRA
 			Timer.Time( "chrome: {0}" );
 
 			Timer.Time( "----end ChangeMap" );
-			chat.AddLine(Color.White, "Debug", "Map change {0} -> {1}".F(Game.mapName, mapName));
+			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}	
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
@@ -272,8 +272,7 @@ namespace OpenRA
 				&& !Game.orderManager.GameStarted)
 			{
 				Game.orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
-				Game.chat.AddLine(Color.White, "Server",
-					"Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
+				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 
 			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages)
@@ -283,7 +282,7 @@ namespace OpenRA
 			if (string.Join(",", oldLobbyInfo.GlobalSettings.Mods)
 				!= string.Join(",", LobbyInfo.GlobalSettings.Mods))
 			{
-				chat.AddLine(Color.White, "Debug", "Mods list changed, reloading.");
+				Debug("Mods list changed, reloading: {0}".F(string.Join(",", LobbyInfo.GlobalSettings.Mods)));
 				changePending = true;
 			}
 		}
@@ -473,14 +472,8 @@ namespace OpenRA
 			}
 		}
 
-		public static void Exit()
-		{
-			quit = true;
-		}
+		public static void Exit() { quit = true; }
 
-		public static void Debug(string s)
-		{
-			chat.AddLine(Color.White, "Debug", s);
-		}
+		public static void Debug(string s) { chat.AddLine(Color.White, "Debug", s); }
 	}
 }

@@ -85,7 +85,7 @@ namespace OpenRA
 
 			content = new MemoryStream();
 
-			Game.chat.AddLine(Color.White, "Debug", "Requesting package: {0}".F(currentPackage));
+			Game.Debug("Requesting package: {0}".F(currentPackage));
 
 			Game.IssueOrder(
 				new Order("RequestFile", null, currentPackage) { IsImmediate = true });
@@ -102,7 +102,7 @@ namespace OpenRA
 			if (CalculateSHA1(parts[0]) != parts[1])
 				throw new InvalidOperationException("Broken download");
 
-			Game.chat.AddLine(Color.White, "Debug", "Finished receiving package: {0}".F(currentPackage));
+			Game.Debug("Finished receiving package: {0}".F(currentPackage));
 
 			currentPackage = null;
 
@@ -120,17 +120,17 @@ namespace OpenRA
 			var parts = p.Split(':');
 			if (!File.Exists(parts[0]))
 			{
-				Game.chat.AddLine(Color.White, "Debug", "Missing package: {0}".F(p));
+				Game.Debug("Missing package: {0}".F(p));
 				return false;
 			}
 
 			if (CalculateSHA1(parts[0]) != parts[1])
 			{
-				Game.chat.AddLine(Color.White, "Debug", "Bad SHA1 for package; redownloading: {0}".F(p));
+				Game.Debug("Bad SHA1 for package; redownloading: {0}".F(p));
 				return false;
 			}
 
-			Game.chat.AddLine(Color.White, "Debug", "Verified package: {0}".F(p));
+			Game.Debug("Verified package: {0}".F(p));
 			return true;
 		}
 
