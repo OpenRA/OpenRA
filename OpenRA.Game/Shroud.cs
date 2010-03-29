@@ -90,24 +90,24 @@ namespace OpenRA
 		
 		Sprite ChooseShroud(int i, int j)
 		{
-			if( !IsExplored( i, j ) ) return shadowBits[ 0xf ];
+			if( !shroud.exploredCells[ i, j ] ) return shadowBits[ 0xf ];
 
 			// bits are for unexploredness: up, right, down, left
 			var v = 0;
 			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
 
-			if( !IsExplored( i, j - 1 ) ) { v |= 1; u |= 3; }
-			if( !IsExplored( i + 1, j ) ) { v |= 2; u |= 6; }
-			if( !IsExplored( i, j + 1 ) ) { v |= 4; u |= 12; }
-			if( !IsExplored( i - 1, j ) ) { v |= 8; u |= 9; }
+			if( !shroud.exploredCells[ i, j - 1 ] ) { v |= 1; u |= 3; }
+			if( !shroud.exploredCells[ i + 1, j ] ) { v |= 2; u |= 6; }
+			if( !shroud.exploredCells[ i, j + 1 ] ) { v |= 4; u |= 12; }
+			if( !shroud.exploredCells[ i - 1, j ] ) { v |= 8; u |= 9; }
 
 			var uSides = u;
 
-			if( !IsExplored( i - 1, j - 1 ) ) u |= 1;
-			if( !IsExplored( i + 1, j - 1 ) ) u |= 2;
-			if( !IsExplored( i + 1, j + 1 ) ) u |= 4;
-			if( !IsExplored( i - 1, j + 1 ) ) u |= 8;
+			if( !shroud.exploredCells[ i - 1, j - 1 ] ) u |= 1;
+			if( !shroud.exploredCells[ i + 1, j - 1 ] ) u |= 2;
+			if( !shroud.exploredCells[ i + 1, j + 1 ] ) u |= 4;
+			if( !shroud.exploredCells[ i - 1, j + 1 ] ) u |= 8;
 
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
