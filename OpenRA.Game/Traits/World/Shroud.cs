@@ -20,6 +20,8 @@
 
 using OpenRA.FileFormats;
 using System.Collections.Generic;
+using OpenRA.GameRules;
+using System.Linq;
 
 namespace OpenRA.Traits
 {
@@ -32,12 +34,14 @@ namespace OpenRA.Traits
 	{
 		Map map;
 		int[,] visibleCells;
+		bool[,] exploredCells;
 		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
 			map = self.World.Map;
 			visibleCells = new int[map.MapSize, map.MapSize];
+			exploredCells = new bool[map.MapSize, map.MapSize];
 
 			self.World.ActorAdded += AddActor;
 			self.World.ActorRemoved += RemoveActor;
@@ -52,6 +56,38 @@ namespace OpenRA.Traits
 		void AddActor(Actor a)
 		{
 			if (a.Owner != a.Owner.World.LocalPlayer) return;
+
+			var v = new ActorVisibility
+			{
+				range = a.Info.Traits.Get<OwnedActorInfo>().Sight,
+				vis = GetVisOrigins(a).ToArray()
+			};
+
+			foreach (var p in v.vis)
+				foreach (var q in a.World.FindTilesInCircle(p, v.range))
+				{
+					++visibleCells[q.X, q.Y];
+					exploredCells[q.X, q.Y] = true;
+				}
+
+			vis[a] = v;
+		}
+
+		static IEnumerable<int2> GetVisOrigins(Actor a)
+		{
+			if (a.Info.Traits.Contains<BuildingInfo>())
+			{
+				var bi = a.Info.Traits.Get<BuildingInfo>();
+				return Footprint.Tiles(a.Info.Name, bi, a.Location);
+			}
+			else
+			{
+				var mobile = a.traits.GetOrDefault<Mobile>();
+				if (mobile != null)
+					return new[] { mobile.fromCell, mobile.toCell };
+				else
+					return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
+			}
 		}
 
 		void RemoveActor(Actor a)
