@@ -187,7 +187,10 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette:
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
 	Country@0:
 		Name: England
 		Race: allies

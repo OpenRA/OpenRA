@@ -43,8 +43,8 @@ namespace OpenRA.FileFormats
 				return new[] { 
 					Color.Transparent, Color.Green, 
 					Color.Blue, Color.Yellow, 
-					Color.Transparent, 
-					Color.Transparent, 
+					Color.FromArgb(128,0,0,0), 
+					Color.FromArgb(128,0,0,0), 
 					Color.FromArgb(128,0,0,0), 
 					Color.FromArgb(64,0,0,0)}[index % 8];
 			else
