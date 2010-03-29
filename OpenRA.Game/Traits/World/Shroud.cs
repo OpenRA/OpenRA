@@ -35,7 +35,6 @@ namespace OpenRA.Traits
 		Map map;
 		int[,] visibleCells;
 		bool[,] exploredCells;
-		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
@@ -47,11 +46,10 @@ namespace OpenRA.Traits
 			self.World.ActorRemoved += RemoveActor;
 		}
 
-		class ActorVisibility
-		{
-			public int range;
-			public int2[] vis;
-		}
+		// cache of positions that were added, so no matter what crazy trait code does, it
+		// can't make us invalid.
+		class ActorVisibility { public int range; public int2[] vis; }
+		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		void AddActor(Actor a)
 		{
@@ -102,6 +100,10 @@ namespace OpenRA.Traits
 			vis.Remove(a);
 		}
 
-		public void UpdateActor(Actor a) { RemoveActor(a); AddActor(a); }
+		public void UpdateActor(Actor a)
+		{
+			if (a.Owner != a.Owner.World.LocalPlayer) return;
+			RemoveActor(a); AddActor(a);
+		}
 	}
 }
