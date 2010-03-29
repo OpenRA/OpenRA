@@ -24,6 +24,9 @@ namespace OpenRA.FileFormats
 {
 	public class ShroudPaletteRemap : IPaletteRemap
 	{
+		bool isFog;
+
+		public ShroudPaletteRemap(bool isFog) { this.isFog = isFog; }
 		public Color GetRemappedColor(Color original, int index)
 		{
 			// false-color version for debug
@@ -36,13 +39,22 @@ namespace OpenRA.FileFormats
 			//    Color.Purple, 
 			//    Color.Cyan}[index % 8];
 
-			return new[] { 
-			    Color.Transparent, Color.Green, 
-			    Color.Blue, Color.Yellow, 
-			    Color.Black, 
-			    Color.FromArgb(192,0,0,0), 
-			    Color.FromArgb(128,0,0,0), 
-			    Color.FromArgb(64,0,0,0)}[index % 8];
+			if (isFog)
+				return new[] { 
+					Color.Transparent, Color.Green, 
+					Color.Blue, Color.Yellow, 
+					Color.Transparent, 
+					Color.Transparent, 
+					Color.FromArgb(128,0,0,0), 
+					Color.FromArgb(64,0,0,0)}[index % 8];
+			else
+				return new[] { 
+					Color.Transparent, Color.Green, 
+					Color.Blue, Color.Yellow, 
+					Color.Black, 
+					Color.FromArgb(128,0,0,0), 
+					Color.Transparent, 
+					Color.Transparent}[index % 8];
 		}
 	}
 }

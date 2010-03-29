@@ -19,24 +19,36 @@
 #endregion
 
 using OpenRA.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
-	class ShroudPaletteInfo : ITraitInfo
+	class ShroudInfo : ITraitInfo
 	{
-		public readonly string Name = "shroud";
-		public readonly bool IsFog = false;
-		public object Create(Actor self) { return new ShroudPalette(self, this); }
+		public object Create(Actor self) { return new Shroud(self, this); }
 	}
 
-	class ShroudPalette
+	class Shroud
 	{
-		public ShroudPalette(Actor self, ShroudPaletteInfo info)
+		Map map;
+		int[,] visibleCells;
+
+		public Shroud(Actor self, ShroudInfo info)
 		{
-				// TODO: This shouldn't rely on a base palette
-				var wr = self.World.WorldRenderer;
-				var pal = wr.GetPalette("terrain");
-				wr.AddPalette(info.Name, new Palette(pal, new ShroudPaletteRemap(info.IsFog)));
+			map = self.World.Map;
+			visibleCells = new int[map.MapSize, map.MapSize];
+
+			self.World.ActorAdded += AddActor;
+			self.World.ActorRemoved += RemoveActor;
 		}
+
+		class ActorVisibility
+		{
+			int range;
+			int2[] vis;
+		}
+
+		void AddActor(Actor a) { }
+		void RemoveActor(Actor a) { }
 	}
 }

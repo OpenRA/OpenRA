@@ -24,8 +24,8 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -64,6 +64,8 @@ namespace OpenRA
 
 		public void Tick( World world )
 		{
+			if (owner != owner.World.LocalPlayer) return;
+
 			if (gapTicks > 0) { --gapTicks; return; }
 
 			// Clear active flags
@@ -102,6 +104,8 @@ namespace OpenRA
 		
 		public void ResetExplored()
 		{
+			if (owner != owner.World.LocalPlayer) return;
+
 			explored = new bool[map.MapSize, map.MapSize];
 			dirty = true;
 		}
@@ -113,6 +117,8 @@ namespace OpenRA
 
 		public void Explore(World w, int2 center, int range)
 		{
+			if (owner != owner.World.LocalPlayer) return;
+
 			using (new PerfSample("explore"))
 			{
 				if (range == 0)
@@ -133,6 +139,8 @@ namespace OpenRA
 		
 		public void Explore(Actor a)
 		{
+			if (owner != owner.World.LocalPlayer) return;
+
 			var sight = a.Info.Traits.Get<OwnedActorInfo>().Sight;
 
 			// Buildings: explore from each cell in the footprint
