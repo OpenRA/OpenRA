@@ -173,7 +173,10 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette:
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -235,3 +238,4 @@ World:
 		PrimaryBuildingSelected: pribldg1.aud
 	SpatialBins:
 		BinSize: 4
+	Shroud:
