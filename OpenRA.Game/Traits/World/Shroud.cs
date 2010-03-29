@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
@@ -33,8 +34,10 @@ namespace OpenRA.Traits
 	class Shroud
 	{
 		Map map;
-		int[,] visibleCells;
-		bool[,] exploredCells;
+
+		public int[,] visibleCells;
+		public bool[,] exploredCells;
+		public Rectangle? exploredBounds;
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
@@ -53,7 +56,7 @@ namespace OpenRA.Traits
 
 		void AddActor(Actor a)
 		{
-			if (a.Owner != a.Owner.World.LocalPlayer) return;
+			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
 
 			var v = new ActorVisibility
 			{
@@ -62,11 +65,17 @@ namespace OpenRA.Traits
 			};
 
 			foreach (var p in v.vis)
+			{
 				foreach (var q in a.World.FindTilesInCircle(p, v.range))
 				{
 					++visibleCells[q.X, q.Y];
 					exploredCells[q.X, q.Y] = true;
 				}
+
+				var box = new Rectangle(p.X - v.range, p.Y - v.range, 2 * v.range + 1, 2 * v.range + 1);
+				exploredBounds = exploredBounds.HasValue ?
+					Rectangle.Union(exploredBounds.Value, box) : box;
+			}
 
 			vis[a] = v;
 		}
@@ -102,7 +111,7 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner != a.Owner.World.LocalPlayer) return;
+			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
 			RemoveActor(a); AddActor(a);
 		}
 	}

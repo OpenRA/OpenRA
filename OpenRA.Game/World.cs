@@ -48,7 +48,7 @@ namespace OpenRA
 		int localPlayerIndex;
 		public Player LocalPlayer
 		{
-			get { return players[localPlayerIndex]; }
+			get { return players.ContainsKey(localPlayerIndex) ? players[localPlayerIndex] : null; }
 		}
 
 		public Player NeutralPlayer { get; private set; }

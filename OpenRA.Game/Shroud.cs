@@ -31,29 +31,25 @@ namespace OpenRA
 {
 	public class Shroud
 	{
-		bool[,] explored;
+		Traits.Shroud shroud;
 		Sprite[] shadowBits = SpriteSheetBuilder.LoadAllSprites("shadow");
-		Sprite[,] sprites;
-		int gapOpaqueTicks = (int)(Rules.General.GapRegenInterval * 25 * 60);
-		int gapTicks;
-		int[,] gapField;
-		bool[,] gapActive;
+		Sprite[,] sprites, fogSprites;
 		
 		bool dirty = true;
 		bool hasGPS = false;
 		Player owner;
 		Map map;
-		public Rectangle? bounds;
+
+		public Rectangle? bounds { get { return shroud.exploredBounds; } }
 
 		public Shroud(Player owner, Map map)
 		{
+			this.shroud = owner.World.WorldActor.traits.Get<Traits.Shroud>();
 			this.owner = owner;
 			this.map = map;
 			
-			explored = new bool[map.MapSize, map.MapSize];
 			sprites = new Sprite[map.MapSize, map.MapSize];
-			gapField = new int[map.MapSize, map.MapSize];
-			gapActive = new bool[map.MapSize, map.MapSize];
+			fogSprites = new Sprite[map.MapSize, map.MapSize];
 		}
 
 		public bool HasGPS
@@ -62,108 +58,15 @@ namespace OpenRA
 			set { hasGPS = value; dirty = true;}
 		}
 
-		public void Tick( World world )
-		{
-			if (owner != owner.World.LocalPlayer) return;
-
-			if (gapTicks > 0) { --gapTicks; return; }
-
-			// Clear active flags
-			gapActive = new bool[map.MapSize, map.MapSize];
-			foreach (var a in world.Queries.WithTrait<GeneratesGap>().Where(a => owner != a.Actor.Owner))
-				foreach (var t in a.Trait.GetShroudedTiles())
-				{
-					gapActive[t.X, t.Y] = true;
-					explored[t.X, t.Y] = false;
-					dirty = true;
-				}
-
-			gapTicks = gapOpaqueTicks;
-		}
-		
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
-		public bool IsExplored(int x, int y)
-		{
-			if (gapField[ x, y ] > 0)
-				return false;
-			
-			if (hasGPS)
-				return true;
-			
-			return explored[ x, y ];
-		}
+		bool IsExplored(int x, int y) { return shroud.exploredCells[x,y]; }
+
+		public bool DisplayOnRadar(int x, int y) { return IsExplored(x, y); }
 		
-		public bool DisplayOnRadar(int x, int y)
-		{
-			// Active gap is never shown on radar, even if a unit is in range
-			if (gapActive[x , y])
-				return false;
-			
-			return IsExplored(x,y);
-		}
-		
-		public void ResetExplored()
-		{
-			if (owner != owner.World.LocalPlayer) return;
+		public void ResetExplored() { }	// todo
 
-			explored = new bool[map.MapSize, map.MapSize];
-			dirty = true;
-		}
-		
-		Rectangle MakeRect(int2 center, int range)
-		{
-			return new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
-		}
-
-		public void Explore(World w, int2 center, int range)
-		{
-			if (owner != owner.World.LocalPlayer) return;
-
-			using (new PerfSample("explore"))
-			{
-				if (range == 0)
-					return;
-
-				var box = MakeRect(center, range);
-				bounds = bounds.HasValue ?
-					Rectangle.Union(bounds.Value, box) : box;
-
-				foreach (var t in w.FindTilesInCircle(center, range))
-				{
-					explored[t.X, t.Y] = true;
-					gapField[t.X, t.Y] = 0;
-				}
-				dirty = true;
-			}
-		}
-		
-		public void Explore(Actor a)
-		{
-			if (owner != owner.World.LocalPlayer) return;
-
-			var sight = a.Info.Traits.Get<OwnedActorInfo>().Sight;
-
-			// Buildings: explore from each cell in the footprint
-			if (a.Info.Traits.Contains<BuildingInfo>())
-			{
-				var bi = a.Info.Traits.Get<BuildingInfo>();
-				foreach (var t in Footprint.Tiles(a.Info.Name, bi, a.Location))
-					Explore(a.World, t, sight);
-			}
-			else
-			{
-				var mobile = a.traits.GetOrDefault<Mobile>();
-				if (mobile != null)
-				{
-					Explore(a.World, mobile.fromCell, sight);
-					Explore(a.World, mobile.toCell, sight);
-				}
-				else
-					Explore(a.World,
-						(1f / Game.CellSize * a.CenterLocation).ToInt2(),
-						sight);
-			}
-		}
+		public void Explore(World w, int2 center, int range) { dirty = true; }
+		public void Explore(Actor a) { if (a.Owner == a.World.LocalPlayer) dirty = true; }
 
 		static readonly byte[][] SpecialShroudTiles =
 		{
@@ -209,6 +112,30 @@ namespace OpenRA
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
 
+		Sprite ChooseFog(int i, int j)
+		{
+			if (shroud.visibleCells[i, j] == 0) return shadowBits[0xf];
+
+			// bits are for unexploredness: up, right, down, left
+			var v = 0;
+			// bits are for unexploredness: TL, TR, BR, BL
+			var u = 0;
+
+			if (shroud.visibleCells[i, j - 1] == 0) { v |= 1; u |= 3; }
+			if (shroud.visibleCells[i + 1, j] == 0) { v |= 2; u |= 6; }
+			if (shroud.visibleCells[i, j + 1] == 0) { v |= 4; u |= 12; }
+			if (shroud.visibleCells[i - 1, j] == 0) { v |= 8; u |= 9; }
+
+			var uSides = u;
+
+			if (shroud.visibleCells[i - 1, j - 1] == 0) u |= 1;
+			if (shroud.visibleCells[i + 1, j - 1] == 0) u |= 2;
+			if (shroud.visibleCells[i + 1, j + 1] == 0) u |= 4;
+			if (shroud.visibleCells[i - 1, j + 1] == 0) u |= 8;
+
+			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
+		}
+
 		internal void Draw(SpriteRenderer r)
 		{
 			if (dirty)
@@ -217,6 +144,9 @@ namespace OpenRA
 				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
 					for (int i = map.XOffset; i < map.XOffset + map.Width; i++)
 						sprites[i, j] = ChooseShroud(i, j);
+				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
+					for (int i = map.XOffset; i < map.XOffset + map.Width; i++)
+						fogSprites[i, j] = ChooseFog(i, j);
 			}
 
 			var miny = bounds.HasValue ? Math.Max(map.YOffset, bounds.Value.Top) : map.YOffset;
@@ -225,7 +155,39 @@ namespace OpenRA
 			var minx = bounds.HasValue ? Math.Max(map.XOffset, bounds.Value.Left) : map.XOffset;
 			var maxx = bounds.HasValue ? Math.Min(map.XOffset + map.Width, bounds.Value.Right) : map.XOffset + map.Width;
 
-			var shroudPalette = "shroud";
+			var shroudPalette = "fog";
+
+			for (var j = miny; j < maxy; j++)
+			{
+				var starti = minx;
+				for (var i = minx; i < maxx; i++)
+				{
+					if (fogSprites[i, j] == shadowBits[0x0f])
+						continue;
+
+					if (starti != i)
+					{
+						r.DrawSprite(fogSprites[starti, j],
+						    Game.CellSize * new float2(starti, j),
+						    shroudPalette,
+						    new float2(Game.CellSize * (i - starti), Game.CellSize));
+						starti = i+1;
+					}
+
+					r.DrawSprite(fogSprites[i, j],
+						Game.CellSize * new float2(i, j),
+						shroudPalette);
+					starti = i+1;
+				}
+
+				if (starti < maxx)
+					r.DrawSprite(fogSprites[starti, j],
+						Game.CellSize * new float2(starti, j),
+						shroudPalette,
+						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
+			}
+
+			shroudPalette = "shroud";
 
 			for (var j = miny; j < maxy; j++)
 			{
@@ -237,17 +199,17 @@ namespace OpenRA
 
 					if (starti != i)
 					{
-						r.DrawSprite(sprites[starti,j],
-						    Game.CellSize * new float2(starti, j),
-						    shroudPalette,
-						    new float2(Game.CellSize * (i - starti), Game.CellSize));
-						starti = i+1;
+						r.DrawSprite(sprites[starti, j],
+							Game.CellSize * new float2(starti, j),
+							shroudPalette,
+							new float2(Game.CellSize * (i - starti), Game.CellSize));
+						starti = i + 1;
 					}
 
 					r.DrawSprite(sprites[i, j],
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
-					starti = i+1;
+					starti = i + 1;
 				}
 
 				if (starti < maxx)

@@ -50,8 +50,7 @@ namespace OpenRA
 		public int PowerDrained = 0;
 
 		public Shroud Shroud;
-
-		public World World { get { return PlayerActor.World; } }
+		public World World { get; private set; }
 
 		public static List<Tuple<string, string, Color>> PlayerColors
 		{
@@ -66,6 +65,7 @@ namespace OpenRA
 
 		public Player( World world, Session.Client client )
 		{
+			World = world;
 			Shroud = new Shroud(this, world.Map);
 
 			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
@@ -176,7 +176,6 @@ namespace OpenRA
 		{
 			UpdatePower();
 			UpdateOreCapacity();
-			Shroud.Tick( World );
 
 			var totalMoney = Cash + Ore;
 			var diff = Math.Abs(totalMoney - DisplayCash);
