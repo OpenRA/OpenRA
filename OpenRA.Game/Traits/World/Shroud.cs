@@ -32,6 +32,7 @@ namespace OpenRA.Traits
 	{
 		Map map;
 		int[,] visibleCells;
+		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
@@ -44,11 +45,25 @@ namespace OpenRA.Traits
 
 		class ActorVisibility
 		{
-			int range;
-			int2[] vis;
+			public int range;
+			public int2[] vis;
 		}
 
-		void AddActor(Actor a) { }
-		void RemoveActor(Actor a) { }
+		void AddActor(Actor a)
+		{
+			if (a.Owner != a.Owner.World.LocalPlayer) return;
+		}
+
+		void RemoveActor(Actor a)
+		{
+			ActorVisibility v;
+			if (!vis.TryGetValue(a, out v)) return;
+
+			foreach (var p in v.vis)
+				foreach (var q in a.World.FindTilesInCircle(p, v.range))
+					--visibleCells[q.X, q.Y];
+
+			vis.Remove(a);
+		}
 	}
 }
