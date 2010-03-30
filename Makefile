@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng server seqed
+PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng seqed mapcvtr
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 
@@ -56,8 +56,13 @@ seqed_KIND			= winexe
 seqed_DEPS			= $(fileformats_TARGET)
 seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
 
-# -platform:x86
+mapcvtr_SRCS		= $(shell find MapConverter/ -iname '*.cs')
+mapcvtr_TARGET		= MapConverter.exe
+mapcvtr_KIND		= winexe
+mapcvtr_DEPS		= $(fileformats_TARGET)
+mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 
+# -platform:x86
 
 
 define BUILD_ASSEMBLY
@@ -76,7 +81,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 
 .SUFFIXES:
-.PHONY: clean all default mods server seqed
+.PHONY: clean all default mods seqed mapcvtr
 
 
 clean: 
@@ -84,7 +89,8 @@ clean:
 
 mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
 seqed: $(seqed_TARGET)
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET)
+mapcvtr: $(mapcvtr_TARGET)
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
 
 dist-osx:
 	packaging/osx/package.sh
