@@ -117,11 +117,6 @@ namespace OpenRA
 
 			world = new World();
 						
-			Game.world.ActorAdded += a => 
-			{ 
-				if (a.Owner != null && a.Info.Traits.Contains<OwnedActorInfo>()) 
-					a.Owner.Shroud.Explore(a); 
-			};
 			Timer.Time( "world: {0}" );
 			
 			SequenceProvider.Initialize(manifest.Sequences);

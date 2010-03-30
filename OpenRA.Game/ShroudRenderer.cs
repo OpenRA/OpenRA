@@ -61,9 +61,6 @@ namespace OpenRA
 
 		public bool DisplayOnRadar(int x, int y) { return IsExplored(x, y); }
 
-		public void Explore(World w, int2 center, int range) { dirty = true; }
-		public void Explore(Actor a) { if (a.Owner == a.World.LocalPlayer) dirty = true; }
-
 		static readonly byte[][] SpecialShroudTiles =
 		{
 			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
