@@ -28,6 +28,19 @@ using OpenRA.FileFormats;
 
 namespace MapConverter
 {
+	public class MapData
+	{
+		public int MapFormat;
+		public string Title;
+		public string Theater;
+		public int2 Size;
+		public int[] Bounds;
+		public ushort[] Tiles;
+		public byte[] Images;
+		public string[] Resources;
+		//public string[] Actors;
+	}
+	
 	public class IniMap
 	{
 		public readonly string Title;
@@ -55,7 +68,50 @@ namespace MapConverter
 		
 		public void Save(string filename)
 		{
-
+			List<string> validResources = new List<string>(){	"gold01", "gold02", "gold03", "gold04",
+										"gem01", "gem02", "gem03", "gem04"};
+			
+			// Metadata
+			var data = new MapData();
+			data.MapFormat = 1;
+			data.Title = Title;
+			data.Theater = Theater;
+			data.Bounds = new int[] {XOffset, YOffset, Width, Height};
+			data.Size = new int2(MapSize,MapSize);
+			// Tiles
+			var images = new List<byte>();
+			var tiles = new List<ushort>();
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
+				{			
+					tiles.Add(MapTiles[j,i].tile);
+					if(MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff)
+						images.Add(byte.MaxValue);
+					else
+						images.Add(MapTiles[j,i].image);
+				}
+			
+			data.Tiles = tiles.ToArray();
+			data.Images = images.ToArray();
+			
+			// Resources
+			var resources = new List<string>();
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
+				{
+					string res = "";	
+					if (validResources.Contains(MapTiles[ j, i ].overlay))
+						res = MapTiles[ j, i ].overlay;
+					
+					resources.Add(res);
+				}
+			data.Resources = resources.ToArray();
+			
+			
+			Dictionary<string, MiniYaml> Nodes = new Dictionary<string,MiniYaml>();
+			Nodes.Add("MAP",FieldSaver.Save(data));
+			Nodes.WriteToFile(filename);
+			
 		}
 
 		public IniMap(string filename)
