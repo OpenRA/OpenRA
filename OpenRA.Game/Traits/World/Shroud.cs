@@ -26,12 +26,12 @@ using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	class ShroudInfo : ITraitInfo
+	public class ShroudInfo : ITraitInfo
 	{
 		public object Create(Actor self) { return new Shroud(self, this); }
 	}
 
-	class Shroud
+	public class Shroud
 	{
 		Map map;
 
@@ -123,6 +123,13 @@ namespace OpenRA.Traits
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
 			exploredBounds = exploredBounds.HasValue ?
 				Rectangle.Union(exploredBounds.Value, box) : box;
+		}
+
+		public void ResetExploration()		// for `hide map` crate
+		{
+			for (var j = 0; j <= exploredCells.GetUpperBound(1); j++)
+				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
+					exploredCells[i, j] = visibleCells[i, j] > 0;
 		}
 	}
 }

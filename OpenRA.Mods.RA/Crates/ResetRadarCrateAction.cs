@@ -34,8 +34,9 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			collector.Owner.Shroud.ResetExplored();
 			base.Activate(collector);
+			if (collector.Owner == collector.World.LocalPlayer)
+				collector.World.WorldActor.traits.Get<Shroud>().ResetExploration();
 		}
 	}
 }

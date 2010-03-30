@@ -58,8 +58,6 @@ namespace OpenRA
 		bool IsExplored(int x, int y) { return shroud.exploredCells[x,y]; }
 
 		public bool DisplayOnRadar(int x, int y) { return IsExplored(x, y); }
-		
-		public void ResetExplored() { }	// todo
 
 		public void Explore(World w, int2 center, int range) { dirty = true; }
 		public void Explore(Actor a) { if (a.Owner == a.World.LocalPlayer) dirty = true; }
