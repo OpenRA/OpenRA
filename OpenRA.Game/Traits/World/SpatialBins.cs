@@ -34,10 +34,13 @@ namespace OpenRA.Traits
 
 			foreach (var a in self.World.Actors)
 			{
-				if (!self.World.Map.IsInMap(a.Location))
-					continue;
-				
 				var bounds = a.GetBounds(true);
+
+				if (bounds.Right <= Game.CellSize * self.World.Map.XOffset) continue;
+				if (bounds.Bottom <= Game.CellSize * self.World.Map.YOffset) continue;
+				if (bounds.Left >= Game.CellSize * (self.World.Map.XOffset + self.World.Map.Width)) continue;
+				if (bounds.Top >= Game.CellSize * (self.World.Map.YOffset + self.World.Map.Height)) continue;
+
 				var i1 = Math.Max(0, (int)bounds.Left / scale);
 				var i2 = Math.Min(bins.GetUpperBound(0), (int)bounds.Right / scale);
 				var j1 = Math.Max(0, (int)bounds.Top / scale);
