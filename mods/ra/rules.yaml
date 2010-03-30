@@ -2651,3 +2651,8 @@ WOOD:
 	Building:
 		HP: 100
 		Armor: none
+
+CAMERA:
+	Unit:
+		HP:1000
+		Sight: 10

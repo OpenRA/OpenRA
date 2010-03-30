@@ -23,6 +23,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using System.Drawing;
+using System;
 
 namespace OpenRA.Traits
 {
@@ -38,6 +39,7 @@ namespace OpenRA.Traits
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		public Rectangle? exploredBounds;
+		public event Action Dirty = () => { };
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
@@ -78,6 +80,8 @@ namespace OpenRA.Traits
 			}
 
 			vis[a] = v;
+
+			Dirty();
 		}
 
 		static IEnumerable<int2> GetVisOrigins(Actor a)
@@ -107,6 +111,8 @@ namespace OpenRA.Traits
 					--visibleCells[q.X, q.Y];
 
 			vis.Remove(a);
+
+			Dirty();
 		}
 
 		public void UpdateActor(Actor a)
@@ -123,6 +129,8 @@ namespace OpenRA.Traits
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
 			exploredBounds = exploredBounds.HasValue ?
 				Rectangle.Union(exploredBounds.Value, box) : box;
+
+			Dirty();
 		}
 
 		public void ResetExploration()		// for `hide map` crate
@@ -130,6 +138,8 @@ namespace OpenRA.Traits
 			for (var j = 0; j <= exploredCells.GetUpperBound(1); j++)
 				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
 					exploredCells[i, j] = visibleCells[i, j] > 0;
+
+			Dirty();
 		}
 	}
 }

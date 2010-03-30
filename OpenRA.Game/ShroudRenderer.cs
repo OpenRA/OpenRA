@@ -46,6 +46,8 @@ namespace OpenRA
 			
 			sprites = new Sprite[map.MapSize, map.MapSize];
 			fogSprites = new Sprite[map.MapSize, map.MapSize];
+
+			shroud.Dirty += () => dirty = true;
 		}
 
 		public bool HasGPS

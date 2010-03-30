@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class SpyPlanePowerInfo : SupportPowerInfo
 	{
-		public readonly int Range = 10;
+		public readonly float RevealTime = .1f;	// minutes
 		public override object Create(Actor self) { return new SpyPlanePower(self,this); }
 	}
 
@@ -58,9 +58,13 @@ namespace OpenRA.Mods.RA
 
 				plane.CancelActivity();
 				plane.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
-				plane.QueueActivity(new CallFunc(
-					() => Owner.Shroud.Explore(Owner.World, order.TargetLocation,
-						(Info as SpyPlanePowerInfo).Range)));
+				plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w => 
+					{
+						
+						var camera = w.CreateActor("camera", order.TargetLocation, Owner);
+						camera.QueueActivity(new Wait((int)(25 * 60 * (Info as SpyPlanePowerInfo).RevealTime)));
+						camera.QueueActivity(new RemoveSelf());
+					})));
 				plane.QueueActivity(new FlyOffMap { Interruptible = false });
 				plane.QueueActivity(new RemoveSelf());
 			}
