@@ -20,6 +20,8 @@
 
 using System;
 using OpenRA.Graphics;
+using System.Collections.Generic;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -28,14 +30,17 @@ namespace OpenRA.Traits
 		public override object Create(Actor self) { return new RenderUnit(self); }
 	}
 
-	class RenderUnit : RenderSimple, INotifyDamage
+	class RenderUnit : RenderSimple, INotifyDamage, IRenderModifier
 	{
+		Shroud shroud;
+
 		public RenderUnit(Actor self)
 			: base(self, () => self.traits.Get<Unit>().Facing)
 		{
 			anim.Play("idle");
-
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
+
+			shroud = self.World.WorldActor.traits.Get<Shroud>();
 		}
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
@@ -56,6 +61,15 @@ namespace OpenRA.Traits
 				() => smoke.PlayThen( "loop",
 					() => smoke.PlayBackwardsThen( "end",
 						() => isSmoking = false ) ) );
+		}
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			if (self.Owner == self.World.LocalPlayer ||
+				shroud.visibleCells[self.Location.X, self.Location.Y] > 0)
+				return r;
+
+			return new Renderable[] { };
 		}
 	}
 }
