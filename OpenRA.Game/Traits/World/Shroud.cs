@@ -56,6 +56,21 @@ namespace OpenRA.Traits
 		class ActorVisibility { public int range; public int2[] vis; }
 		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
+		static IEnumerable<int2> FindVisibleTiles(World world, int2 a, int r)
+		{
+			var min = a - new int2(r, r);
+			var max = a + new int2(r, r);
+			if (min.X < world.Map.XOffset - 1) min.X = world.Map.XOffset - 1;
+			if (min.Y < world.Map.YOffset - 1) min.Y = world.Map.YOffset - 1;
+			if (max.X > world.Map.XOffset + world.Map.Width) max.X = world.Map.XOffset + world.Map.Width;
+			if (max.Y > world.Map.YOffset + world.Map.Height) max.Y = world.Map.YOffset + world.Map.Height;
+
+			for (var j = min.Y; j <= max.Y; j++)
+				for (var i = min.X; i <= max.X; i++)
+					if (r * r >= (new int2(i, j) - a).LengthSquared)
+						yield return new int2(i, j);
+		}
+
 		void AddActor(Actor a)
 		{
 			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
@@ -68,7 +83,7 @@ namespace OpenRA.Traits
 
 			foreach (var p in v.vis)
 			{
-				foreach (var q in a.World.FindTilesInCircle(p, v.range))
+				foreach (var q in FindVisibleTiles(a.World, p, v.range))
 				{
 					++visibleCells[q.X, q.Y];
 					exploredCells[q.X, q.Y] = true;
@@ -107,7 +122,7 @@ namespace OpenRA.Traits
 			if (!vis.TryGetValue(a, out v)) return;
 
 			foreach (var p in v.vis)
-				foreach (var q in a.World.FindTilesInCircle(p, v.range))
+				foreach (var q in FindVisibleTiles(a.World, p, v.range))
 					--visibleCells[q.X, q.Y];
 
 			vis.Remove(a);
@@ -123,7 +138,7 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, int2 center, int range)
 		{
-			foreach (var q in world.FindTilesInCircle(center, range))
+			foreach (var q in FindVisibleTiles(world, center, range))
 				exploredCells[q.X, q.Y] = true;
 
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
