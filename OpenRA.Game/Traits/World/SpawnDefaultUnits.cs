@@ -25,7 +25,10 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class SpawnDefaultUnitsInfo : StatelessTraitInfo<SpawnDefaultUnits> { }
+	class SpawnDefaultUnitsInfo : StatelessTraitInfo<SpawnDefaultUnits>
+	{
+		public readonly int InitialExploreRange = 5;
+	}
 
 	class SpawnDefaultUnits : IGameStarted
 	{
@@ -48,6 +51,10 @@ namespace OpenRA.Traits
 		void SpawnUnitsForPlayer(Player p, int2 sp)
 		{
 			p.World.CreateActor("mcv", sp, p);
+
+			if (p == p.World.LocalPlayer)
+				p.World.WorldActor.traits.Get<Shroud>().Explore( p.World, sp, 
+					p.World.WorldActor.Info.Traits.Get<SpawnDefaultUnitsInfo>().InitialExploreRange);
 		}
 
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)

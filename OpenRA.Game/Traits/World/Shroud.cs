@@ -114,5 +114,15 @@ namespace OpenRA.Traits
 			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
 			RemoveActor(a); AddActor(a);
 		}
+
+		public void Explore(World world, int2 center, int range)
+		{
+			foreach (var q in world.FindTilesInCircle(center, range))
+				exploredCells[q.X, q.Y] = true;
+
+			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
+			exploredBounds = exploredBounds.HasValue ?
+				Rectangle.Union(exploredBounds.Value, box) : box;
+		}
 	}
 }
