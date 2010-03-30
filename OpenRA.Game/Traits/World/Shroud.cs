@@ -84,7 +84,7 @@ namespace OpenRA.Traits
 			Dirty();
 		}
 
-		static IEnumerable<int2> GetVisOrigins(Actor a)
+		public static IEnumerable<int2> GetVisOrigins(Actor a)
 		{
 			if (a.Info.Traits.Contains<BuildingInfo>())
 			{

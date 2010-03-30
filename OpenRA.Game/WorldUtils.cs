@@ -117,7 +117,7 @@ namespace OpenRA
 		public static IEnumerable<Actor> SelectActorsInBox(this World world, float2 a, float2 b)
 		{
 			return world.FindUnits(a, b)
-				.Where( x => x.traits.Contains<Selectable>() )
+				.Where( x => x.traits.Contains<Selectable>() && x.IsVisible() )
 				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
@@ -136,6 +136,14 @@ namespace OpenRA
 			return !Footprint.Tiles(name, building, topLeft).Any(
 				t => !world.Map.IsInMap(t.X, t.Y) || res.GetResource(t) != null || !world.IsCellBuildable(t,
 					building.WaterBound, toIgnore));
+		}
+
+		public static bool IsVisible(this Actor a)
+		{
+			var shroud = a.World.WorldActor.traits.Get<Shroud>();
+			return a.traits.Contains<Unit>()
+				? Shroud.GetVisOrigins(a).Any(o => shroud.visibleCells[o.X, o.Y] > 0)
+				: Shroud.GetVisOrigins(a).Any(o => shroud.exploredCells[o.X, o.Y]);
 		}
 
 		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
