@@ -35,10 +35,8 @@ namespace MapConverter
 		public string Theater;
 		public int2 Size;
 		public int[] Bounds;
-		public ushort[] Tiles;
-		public byte[] Images;
-		public string[] Resources;
-		//public string[] Actors;
+		public string TileData;
+		public string ResourceData;
 	}
 	
 	public class IniMap
@@ -68,8 +66,17 @@ namespace MapConverter
 		
 		public void Save(string filename)
 		{
-			List<string> validResources = new List<string>(){	"gold01", "gold02", "gold03", "gold04",
-										"gem01", "gem02", "gem03", "gem04"};
+			Dictionary< string, Pair<byte,byte> > resourceMapping = new Dictionary<string, Pair<byte, byte>>() {
+				{ "gold01", new Pair<byte,byte>(1,0) },
+				{ "gold02", new Pair<byte,byte>(1,1) },
+				{ "gold03", new Pair<byte,byte>(1,2) },
+				{ "gold04", new Pair<byte,byte>(1,3) },
+				
+				{ "gem01", new Pair<byte,byte>(2,0) },
+				{ "gem02", new Pair<byte,byte>(2,1) },
+				{ "gem03", new Pair<byte,byte>(2,2) },
+				{ "gem04", new Pair<byte,byte>(2,3) },
+			};
 			
 			// Metadata
 			var data = new MapData();
@@ -78,35 +85,46 @@ namespace MapConverter
 			data.Theater = Theater;
 			data.Bounds = new int[] {XOffset, YOffset, Width, Height};
 			data.Size = new int2(MapSize,MapSize);
-			// Tiles
-			var images = new List<byte>();
-			var tiles = new List<ushort>();
+			
+			
+			// Tile data is stored as a base-64 encoded stream of
+			// {(2-byte) tile index, (1-byte) image index} pairs
+			MemoryStream tiles = new MemoryStream();
+			BinaryWriter writer = new BinaryWriter( tiles );
+			
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
 				{			
-					tiles.Add(MapTiles[j,i].tile);
-					if(MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff)
-						images.Add(byte.MaxValue);
-					else
-						images.Add(MapTiles[j,i].image);
+					writer.Write( MapTiles[j,i].tile );
+					// Semi-hack: Convert clear and water tiles to "pick an image for me" magic number
+					byte image = (MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff) ? byte.MaxValue : MapTiles[j,i].image;
+					writer.Write(image);
 				}
+			writer.Flush();
+			data.TileData = Convert.ToBase64String(tiles.ToArray());	
 			
-			data.Tiles = tiles.ToArray();
-			data.Images = images.ToArray();
+			// Resource data is stored as a base-64 encoded stream of
+			// {(1-byte) resource index, (1-byte) image index} pairs
+			MemoryStream resources = new MemoryStream();
+			writer = new BinaryWriter( resources );
 			
-			// Resources
-			var resources = new List<string>();
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
-				{
-					string res = "";	
-					if (validResources.Contains(MapTiles[ j, i ].overlay))
-						res = MapTiles[ j, i ].overlay;
+				{			
+					byte type = 0;
+					byte image = 0;
+					if (MapTiles[j,i].overlay != null)
+					{
+						var res = resourceMapping[MapTiles[j,i].overlay];
+						type = res.First;
+						image = res.Second;
+					}
 					
-					resources.Add(res);
+					writer.Write(type);
+					writer.Write(image);
 				}
-			data.Resources = resources.ToArray();
-			
+			writer.Flush();
+			data.ResourceData = Convert.ToBase64String(resources.ToArray());	
 			
 			Dictionary<string, MiniYaml> Nodes = new Dictionary<string,MiniYaml>();
 			Nodes.Add("MAP",FieldSaver.Save(data));
