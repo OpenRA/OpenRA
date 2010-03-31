@@ -66,6 +66,7 @@ namespace OpenRA.FileFormats
 		public readonly string[] Chrome = { };
 		public readonly string[] Assemblies = { };
 		public readonly string[] ChromeLayout = { };
+		public readonly string[] Weapons = { };
 
 		public Manifest(string[] mods)
 		{
@@ -81,6 +82,7 @@ namespace OpenRA.FileFormats
 			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");
 			ChromeLayout = YamlList(yaml, "ChromeLayout");
+			Weapons = YamlList(yaml, "Weapons");
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key) { return ys[key].Nodes.Keys.ToArray(); }

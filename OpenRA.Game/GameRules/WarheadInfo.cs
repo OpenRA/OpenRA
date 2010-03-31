@@ -33,6 +33,7 @@ namespace OpenRA.GameRules
 		public readonly int InfDeath = 0;
 		public readonly string ImpactSound = null;
 		public readonly string WaterImpactSound = null;
+		public readonly int Damage = 0;		// for new weapons infrastructure
 
 		public float EffectivenessAgainst(ArmorType at) { return Verses[ (int)at ]; }
 	}

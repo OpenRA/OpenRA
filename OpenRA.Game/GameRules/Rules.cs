@@ -37,6 +37,7 @@ namespace OpenRA
 		public static TechTree TechTree;
 
 		public static Dictionary<string, ActorInfo> Info;
+		public static Dictionary<string, NewWeaponInfo> Weapons;
 
 		public static void LoadRules(string map, Manifest m)
 		{
@@ -64,10 +65,14 @@ namespace OpenRA
 				Log.Write(" -- {0}", y);
 
 			var yamlRules = m.Rules.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-
 			Info = new Dictionary<string, ActorInfo>();
 			foreach( var kv in yamlRules )
 				Info.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
+
+			var weaponsYaml = m.Weapons.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+			Weapons = new Dictionary<string, NewWeaponInfo>();
+			foreach (var kv in weaponsYaml)
+				Weapons.Add(kv.Key.ToLowerInvariant(), new NewWeaponInfo(kv.Key.ToLowerInvariant(), kv.Value));
 
 			TechTree = new TechTree();
 		}

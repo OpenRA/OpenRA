@@ -21,7 +21,7 @@ ZSU-23:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Versus: 30%,75%,75%,100%,50%
+		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		Damage: 25
 		

@@ -26,7 +26,6 @@ LegacyRules:
 Rules:
 	mods/ra/defaults.yaml:	Basic stuff
 	mods/ra/rules.yaml:	OpenRA actorinfos
-	mods/ra/weapons.yaml: Weapon definitions
 
 Sequences:
 	mods/ra/sequences.xml:	Original animation sequences
@@ -39,3 +38,6 @@ Assemblies:
 
 ChromeLayout:
 	mods/ra/menus.yaml:
+
+Weapons:
+	mods/ra/weapons.yaml

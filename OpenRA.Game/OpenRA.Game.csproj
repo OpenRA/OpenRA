@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
+    <Compile Include="GameRules\NewWeaponInfo.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
