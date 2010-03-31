@@ -486,6 +486,7 @@ Stinger:
 		ROT: 20
 		RangeLimit: 20
 		TurboBoost: true
+		Speed: 20
 	Warhead:
 		Spread: 3
 		Wall: true
@@ -495,3 +496,145 @@ Stinger:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 30
+		
+TorpTube:
+	ROF: 60
+	Range: 9
+	Report: TORPEDO1
+	Bullet:
+		UnderWater: yes
+		Image: MISSILE
+		ASW: true
+		Speed: 15
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 30%,75%,75%,100%,50%
+		Explosion: 4
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 90
+		
+2Inch:
+	ROF: 60
+	Range: 5.5
+	Report: CANNON2
+	Bullet:
+		Speed: 25
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 30%,75%,75%,100%,50%
+		Explosion: 4
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 25
+		
+DepthCharge:
+	ROF: 60
+	Range: 5
+	Bullet:
+		Speed: 5
+		Image: BOMB
+		Arching: true
+		High: true
+		Inaccurate: true
+		ASW: true
+		AG: false
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 30%,75%,75%,100%,50%
+		Explosion: 4
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 80
+		
+ParaBomb:
+	ROF: 4
+	Range: 4.5
+	Report: CHUTE1
+	Bullet:
+		Arm: 24
+		RangeLimit: 24
+		High: true
+		Image: PARABOMB
+		Speed: 5
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 30%,75%,75%,100%,50%
+		Explosion: 4
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 300
+		
+DogJaw:
+	ROF: 10
+	Range: 2.2
+	Report: DOGG5P
+	Missile:
+		Image: DOGBULLT
+		Proximity: yes
+		ROT: 20
+		Speed: 20
+	Warhead:
+		Spread: 5
+		Verses: 100%,0%,0%,0%,0%
+		InfDeath: 0
+		Damage: 100
+		
+Heal:
+	ROF: 80
+	Range: 4
+	Report: HEAL2
+	Bullet:
+		Speed: 100
+	Warhead:
+		Spread: 5
+		Verses: 100%,0%,0%,0%,0%
+		InfDeath: 0
+		Damage: -50
+		
+SCUD:
+	ROF: 400
+	Range: 10
+	Report: MISSILE1
+	Bullet:
+		Speed: 25
+		Arm: 10
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		Inaccurate: true
+		Image: V2
+	Warhead:
+		Spread: 6
+		Wall: true
+		Wood: true
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 5
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 600
+		
+Atomic:
+	Nuke:
+		Image: Nuke
+	Warhead:
+		Damage: 1000
+		Spread: 6
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 90%,100%,60%,25%,50%
+		Explosion: 6
+		InfDeath: 4
+		SmudgeType: Scorch
+		SmudgeSize: 5,4

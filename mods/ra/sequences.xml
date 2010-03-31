@@ -885,4 +885,8 @@
   <unit name="bomblet">
     <sequence name="idle" start="0" length="7" />
   </unit>
+  <unit name="nuke">
+    <sequence name="up" start="0" length="4" src="atomicup" />
+    <sequence name="down" start="0" length="4" src="atomicdn" />
+  </unit>
 </sequences>
