@@ -568,6 +568,7 @@ TSLA:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
+	RenderRangeCircle:
 
 AGUN:
 	RequiresPower:
@@ -598,6 +599,7 @@ AGUN:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
+	RenderRangeCircle:
 
 DOME:
 	RequiresPower:
@@ -1304,6 +1306,7 @@ PBOX:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
+	RenderRangeCircle:
 
 HBOX:
 	Inherits: ^Building
@@ -1324,6 +1327,7 @@ HBOX:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
 	IronCurtainable:
+	RenderRangeCircle:
 
 GUN:
 	Inherits: ^Building
@@ -1349,6 +1353,7 @@ GUN:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
+	RenderRangeCircle:
 
 FTUR:
 	Inherits: ^Building
@@ -1370,6 +1375,7 @@ FTUR:
 		PrimaryOffset: 0,0,12,8
 	AutoTarget:
 	IronCurtainable:
+	RenderRangeCircle:
 
 SAM:
 	Inherits: ^Building
@@ -1397,6 +1403,7 @@ SAM:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
+	RenderRangeCircle:
 
 ATEK:
 	Inherits: ^Building

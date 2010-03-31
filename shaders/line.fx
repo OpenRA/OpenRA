@@ -37,7 +37,7 @@ technique high_quality {
 		VertexProgram = compile latest Simple_vp();
 		FragmentProgram = compile latest Simple_fp();
 		
-		//SrcBlend = SrcAlpha;
-		//DestBlend = InvSrcAlpha;
+		BlendEquation = FuncAdd;
+		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }

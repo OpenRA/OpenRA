@@ -42,8 +42,12 @@ namespace OpenRA.Orders
 
 		public void Render( World world )
 		{
-			foreach( var a in Game.controller.selection.Actors )
-				world.WorldRenderer.DrawSelectionBox( a, Color.White, true );
+			foreach (var a in Game.controller.selection.Actors)
+			{
+				world.WorldRenderer.DrawSelectionBox(a, Color.White, true);
+				if (a.traits.Contains<RenderRangeCircle>())
+					world.WorldRenderer.DrawRangeCircle(a);
+			}
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )

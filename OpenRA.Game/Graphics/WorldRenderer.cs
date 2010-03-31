@@ -339,5 +339,32 @@ namespace OpenRA.Graphics
 				}
 			}
 		}
+
+		public void DrawRangeCircle(Actor selectedUnit)
+		{
+			if (selectedUnit.Owner != world.LocalPlayer)
+				return;
+
+			var range = (int)selectedUnit.GetPrimaryWeapon().Range;
+			var r2 = range * range;
+
+			var c = Color.FromArgb(128, Color.Yellow);
+
+			foreach (var t in world.FindTilesInCircle(selectedUnit.Location, range))
+			{
+				if ((selectedUnit.Location - t - new int2(-1, 0)).LengthSquared > r2)
+					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
+						c,c);
+				if ((selectedUnit.Location - t - new int2(1, 0)).LengthSquared > r2)
+					lineRenderer.DrawLine(Game.CellSize * (t + new int2(1,0)), Game.CellSize * (t + new int2(1, 1)),
+						c,c);
+				if ((selectedUnit.Location - t - new int2(0,-1)).LengthSquared > r2)
+					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1,0)),
+						c,c);
+				if ((selectedUnit.Location - t - new int2(0,1)).LengthSquared > r2)
+					lineRenderer.DrawLine(Game.CellSize * (t + new int2(0,1)), Game.CellSize * (t + new int2(1, 1)),
+						c,c);
+			}
+		}
 	}
 }
