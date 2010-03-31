@@ -30,13 +30,23 @@ namespace MapConverter
 {
 	public class MapData
 	{
+		// General info
 		public int MapFormat;
 		public string Title;
-		public string Theater;
+		public string Description;
+		public string Author;
+		public int Players;
+		
+		// 'Simple' map data
+		public string Tileset;
 		public int2 Size;
 		public int[] Bounds;
+		
+		// 'Complex' map data
 		public string TileData;
 		public string ResourceData;
+		public string[] Waypoints;
+		public string[] Actors;
 	}
 	
 	public class IniMap
@@ -82,7 +92,10 @@ namespace MapConverter
 			var data = new MapData();
 			data.MapFormat = 1;
 			data.Title = Title;
-			data.Theater = Theater;
+			data.Players = SpawnPoints.Count();
+			data.Author = "Westwood Studios";
+			data.Description = "";
+			data.Tileset = Theater;
 			data.Bounds = new int[] {XOffset, YOffset, Width, Height};
 			data.Size = new int2(MapSize,MapSize);
 			
@@ -125,6 +138,14 @@ namespace MapConverter
 				}
 			writer.Flush();
 			data.ResourceData = Convert.ToBase64String(resources.ToArray());	
+			
+			// Spawn points
+			int s = 0;
+			data.Waypoints = SpawnPoints.Select(t => "spawn{0}={1}|{2}".F(s++,t.X,t.Y)).ToArray();
+			
+			// Actors
+			s = 0;
+			data.Actors = Actors.Select(t=>"actor{0}={1}|{2}|{3}".F(s++,t.Name,t.Location.X,t.Location.Y)).ToArray();
 			
 			Dictionary<string, MiniYaml> Nodes = new Dictionary<string,MiniYaml>();
 			Nodes.Add("MAP",FieldSaver.Save(data));
