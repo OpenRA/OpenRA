@@ -166,39 +166,33 @@ namespace OpenRA.Traits
 				burst = weapon.Burst;
 			}
 
-			var firePos = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2();
-			var thisTarget = target;	// closure.
-			var destUnit = thisTarget.traits.GetOrDefault<Unit>();
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
+			var destUnit = target.traits.GetOrDefault<Unit>();
 
-			ScheduleDelayedAction( FireDelay( self, info ), () =>
+			var args = new ProjectileArgs
 			{
-				var srcAltitude = unit != null ? unit.Altitude : 0;
-				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
+				weapon = Rules.Weapons[weaponName],
 
-				var fireFacing = thisLocalOffset.ElementAtOrDefault(2) +
-						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
-						unit != null ? unit.Facing : Util.GetFacing(thisTarget.CenterLocation - self.CenterLocation, 0));
+				firedBy = self,
+				target = target,
 
-				var newWeaponInfo = Rules.Weapons[weaponName];
-				var args = new ProjectileArgs
-				{
-					firedBy = self,
-					srcAltitude = srcAltitude,
-					destAltitude = destAltitude,
-					target = thisTarget,
-					facing = fireFacing,
-					weapon = newWeaponInfo,
-					src = firePos,
-					dest = thisTarget.CenterLocation.ToInt2()
-				};
-
-				var projectile = newWeaponInfo.Projectile.Create(args);
+				src = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
+				srcAltitude = unit != null ? unit.Altitude : 0,
+				dest = target.CenterLocation.ToInt2(),
+				destAltitude = destUnit != null ? destUnit.Altitude : 0,
+				
+				facing = thisLocalOffset.ElementAtOrDefault(2) +
+					(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
+					unit != null ? unit.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+			};
+			
+			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
+			{
+				var projectile = args.weapon.Projectile.Create(args);
 				if (projectile != null)
 					self.World.Add(projectile);
-				
-				if (!string.IsNullOrEmpty(newWeaponInfo.Report))
-					Sound.Play(newWeaponInfo.Report + ".aud");
+
+				if (!string.IsNullOrEmpty(args.weapon.Report))
+					Sound.Play(args.weapon.Report + ".aud");
 			});
 
 			foreach (var na in self.traits.WithInterface<INotifyAttack>())
