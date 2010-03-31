@@ -425,3 +425,73 @@ Nike:
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 50
+
+RedEye:
+	ROF: 50
+	Range: 7.5
+	Report: MISSILE1
+	Missile:
+		Arm: 3
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		AA: true
+		AG: false
+		Image: MISSILE
+		ROT: 20
+		RangeLimit: 30
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 5
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 50
+
+8Inch:
+	ROF: 160
+	Range: 22
+	Report: TURRET1
+	Bullet:
+		Speed: 12
+		High: true
+		Arching: true
+		Inaccurate:true
+		Image: 120MM
+	Warhead:
+		Spread: 6
+		Wall: true
+		Wood: true
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 5
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 500
+
+Stinger:
+	ROF: 60
+	Range: 9
+	Report: MISSILE6
+	Missile:
+		Arm: 3
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		AA: true
+		Image: DRAGON
+		ROT: 20
+		RangeLimit: 20
+		TurboBoost: true
+	Warhead:
+		Spread: 3
+		Wall: true
+		Wood: true
+		Verses: 30%,75%,75%,100%,50%
+		Explosion: 4
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 30
