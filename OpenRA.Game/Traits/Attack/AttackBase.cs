@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -174,31 +175,30 @@ namespace OpenRA.Traits
 			{
 				var srcAltitude = unit != null ? unit.Altitude : 0;
 				var destAltitude = destUnit != null ? destUnit.Altitude : 0;
+
+				var fireFacing = thisLocalOffset.ElementAtOrDefault(2) +
+						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
+						unit != null ? unit.Facing : Util.GetFacing(thisTarget.CenterLocation - self.CenterLocation, 0));
+
+				var newWeaponInfo = Rules.Weapons[weaponName];
+				var args = new ProjectileArgs
+				{
+					firedBy = self,
+					srcAltitude = srcAltitude,
+					destAltitude = destAltitude,
+					target = thisTarget,
+					facing = fireFacing,
+					weapon = newWeaponInfo,
+					src = firePos,
+					dest = thisTarget.CenterLocation.ToInt2()
+				};
+
+				var projectile = newWeaponInfo.Projectile.Create(args);
+				if (projectile != null)
+					self.World.Add(projectile);
 				
-				if ( weapon.RenderAsLaser )
-				{
-					// TODO: This is a hack; should probably use a particular palette index
-					Color bc = (weapon.UsePlayerColor) ? self.Owner.Color : Color.Red;
-					self.World.Add(new LaserZap(firePos, thisTarget.CenterLocation.ToInt2(), weapon.BeamRadius, bc));
-				}	
-				if( weapon.RenderAsTesla )
-					self.World.Add( new TeslaZap( firePos, thisTarget.CenterLocation.ToInt2() ) );
-
-				if (Rules.ProjectileInfo[weapon.Projectile].ROT != 0)
-				{
-					var fireFacing = thisLocalOffset.ElementAtOrDefault(2) + 
-						(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing : 
-						unit != null ? unit.Facing : Util.GetFacing( thisTarget.CenterLocation - self.CenterLocation, 0 ));
-	
-					self.World.Add(new Missile(weapon, self.Owner, self,
-						firePos, thisTarget, srcAltitude, fireFacing));
-				}
-				else
-					self.World.Add(new Bullet(weapon, self.Owner, self,
-						firePos, thisTarget.CenterLocation.ToInt2(), srcAltitude, destAltitude));
-
-				if (!string.IsNullOrEmpty(weapon.Report))
-					Sound.Play(weapon.Report + ".aud");
+				if (!string.IsNullOrEmpty(newWeaponInfo.Report))
+					Sound.Play(newWeaponInfo.Report + ".aud");
 			});
 
 			foreach (var na in self.traits.WithInterface<INotifyAttack>())

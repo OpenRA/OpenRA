@@ -29,7 +29,7 @@ namespace OpenRA.GameRules
 	{
 		public NewWeaponInfo weapon;
 		public Actor firedBy;
-		public int2 offset;
+		public int2 src;
 		public int srcAltitude;
 		public int facing;
 		public Actor target;
