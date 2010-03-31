@@ -21,12 +21,25 @@
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Effects;
+using System;
 
 namespace OpenRA.GameRules
 {
+	public class ProjectileArgs
+	{
+		public NewWeaponInfo weapon;
+		public Actor firedBy;
+		public int2 offset;
+		public int srcAltitude;
+		public int facing;
+		public Actor target;
+		public int2 dest;
+		public int destAltitude;
+	}
+
 	public interface IProjectileInfo
 	{
-		IEffect Create();	// todo: args for this
+		IEffect Create(ProjectileArgs args);
 	}
 
 	public class NewWeaponInfo
@@ -34,6 +47,8 @@ namespace OpenRA.GameRules
 		public readonly float Range = 0;
 		public readonly string Report = null;
 		public readonly int ROF = 1;
+		public readonly int Burst = 1;
+		public readonly bool Charges = false;
 
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
@@ -48,6 +63,8 @@ namespace OpenRA.GameRules
 					case "Range": FieldLoader.LoadField(this, "Range", content.Nodes["Range"].Value); break;
 					case "ROF": FieldLoader.LoadField(this, "ROF", content.Nodes["ROF"].Value); break;
 					case "Report": FieldLoader.LoadField(this, "Report", content.Nodes["Report"].Value); break;
+					case "Burst": FieldLoader.LoadField(this, "Burst", content.Nodes["Burst"].Value); break;
+					case "Charges": FieldLoader.LoadField(this, "Charges", content.Nodes["Charges"].Value); break;
 
 					case "Warhead":
 						{
@@ -59,9 +76,11 @@ namespace OpenRA.GameRules
 					// in this case, it's an implementation of IProjectileInfo
 					default:
 						{
-							// todo: create the right implementation!
-							// fill it with the args
-							// etc etc
+							var fullTypeName = typeof(IEffect).Namespace + "." + key + "Info";
+							Projectile = (IProjectileInfo)typeof(IEffect).Assembly.CreateInstance(fullTypeName);
+							if (Projectile == null)
+								throw new InvalidOperationException("Cannot locate projectile type: {0}".F(key));
+							FieldLoader.Load(Projectile, kv.Value);
 						} break;
 				}
 			}	

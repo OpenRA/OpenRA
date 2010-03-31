@@ -43,7 +43,7 @@ namespace OpenRA.GameRules
 
 			foreach( var t in mergedNode )
 				if( t.Key != "Inherits" && t.Key != "Category" && !t.Key.StartsWith("-") )
-					Traits.Add( LoadTraitInfo( t.Key, t.Value ) );
+					Traits.Add( LoadTraitInfo( t.Key.Split('@')[0], t.Value ) );
 		}
 
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
@@ -71,9 +71,6 @@ namespace OpenRA.GameRules
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
-			if (traitName.Contains('@'))
-				traitName = traitName.Substring(0, traitName.IndexOf('@'));
-
 			foreach (var mod in Game.ModAssemblies)
 			{
 				var fullTypeName = mod.Second + "." + traitName + "Info";

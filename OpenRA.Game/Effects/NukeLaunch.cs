@@ -28,6 +28,12 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Effects
 {
+	class NukeInfo : IProjectileInfo
+	{
+		public readonly string Image = null;
+		public IEffect Create(ProjectileArgs args) { return null; }
+	}
+
 	class NukeLaunch : IEffect
 	{
 		readonly ProjectileInfo projectileUp, projectileDown;

@@ -26,6 +26,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
+	class MissileInfo : IProjectileInfo
+	{
+		public readonly int Speed = 1;
+		public readonly int Arm = 0;
+		public readonly bool High = false;
+		public readonly bool Shadow = true;
+		public readonly bool Proximity = false;
+		public readonly string Trail = null;
+		public readonly bool Inaccurate = false;
+		public readonly bool AA = false;
+		public readonly bool AG = true;
+		public readonly bool ASW = false;
+		public readonly string Image = null;
+		public readonly int ROT = 5;
+		public readonly int RangeLimit = 0;
+		public readonly bool TurboBoost = false;
+
+		public IEffect Create(ProjectileArgs args) { return null; }
+	}
+
 	class Missile : IEffect
 	{
 		readonly Actor FiredBy;

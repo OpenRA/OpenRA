@@ -21,9 +21,15 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.GameRules;
 
 namespace OpenRA.Effects
 {
+	class TeslaZapInfo : IProjectileInfo
+	{
+		public IEffect Create(ProjectileArgs args) { return null; }
+	}
+
 	class TeslaZap : IEffect
 	{
 		readonly int2 from, to;

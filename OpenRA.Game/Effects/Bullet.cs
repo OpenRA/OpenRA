@@ -25,6 +25,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
+	class BulletInfo : IProjectileInfo
+	{
+		public readonly int Speed = 1;
+		public readonly bool AA = false;
+		public readonly bool AG = true;
+		public readonly bool ASW = false;
+		public readonly string Trail = null;
+		public readonly bool Inaccurate = false;
+		public readonly string Image = null;
+		public readonly bool High = false;
+		public readonly bool Arcing = false;
+		public readonly int RangeLimit = 0;
+		public readonly int Arm = 0;
+		public readonly bool UnderWater = false;
+		public readonly bool Shadow = false;
+		public readonly bool Proximity = false;
+
+		public IEffect Create(ProjectileArgs args) { return null; }
+	}
+
 	public class Bullet : IEffect
 	{
 		readonly Player Owner;
