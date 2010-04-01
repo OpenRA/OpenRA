@@ -24,12 +24,12 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	class ResourceLayerInfo : ITraitInfo
+	public class ResourceLayerInfo : ITraitInfo
 	{
 		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
-	class ResourceLayer// : IRenderOverlay, ILoadWorldHook
+	public class ResourceLayer// : IRenderOverlay, ILoadWorldHook
 	{
 		public ResourceLayer(Actor self) {}
 		public void Destroy(int2 p){}

@@ -76,8 +76,8 @@ namespace OpenRA.Traits
 		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheck( Actor self )
 		{
-			for( int y = 0 ; y < self.World.Map.MapSize.Y ; y++ )
-				for( int x = 0 ; x < self.World.Map.MapSize.X ; x++ )
+			for( int x = 0 ; x < self.World.Map.MapSize.X ; x++ )
+				for( int y = 0 ; y < self.World.Map.MapSize.Y ; y++ )
 					if( influence[ x, y ] != null )
 						foreach (var a in influence[ x, y ])
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
