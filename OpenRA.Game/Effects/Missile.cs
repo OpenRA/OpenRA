@@ -117,8 +117,8 @@ namespace OpenRA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 
-			if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
-				Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
+		//	if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
+		//		Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
 			return;
 		}
 

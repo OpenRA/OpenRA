@@ -29,56 +29,44 @@ namespace OpenRA
 {
 	static class Combat			/* some utility bits that are shared between various things */
 	{
-		public static void DoImpact(int2 loc, int2 visualLoc,
-			WeaponInfo weapon, ProjectileInfo projectile, WarheadInfo warhead, Actor firedBy)
+		static string GetImpactSound(WarheadInfo warhead, bool isWater)
 		{
-			DoImpact(loc, visualLoc, weapon, projectile, warhead, firedBy, false);
+			if (isWater && warhead.WaterImpactSound != null)
+				return warhead.WaterImpactSound + ".aud";
+
+			if (warhead.ImpactSound != null)
+				return warhead.ImpactSound + ".aud";
+
+			return null;
 		}
 
-		public static void DoImpact(int2 loc, int2 visualLoc,
-			WeaponInfo weapon, ProjectileInfo projectile, WarheadInfo warhead, Actor firedBy, bool nukeDamage)
+		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args, int2 visualLocation)
 		{
-			var world = firedBy.World;
+			var world = args.firedBy.World;
+			var targetTile = ((1f / Game.CellSize) * args.dest.ToFloat2()).ToInt2();
+			var isWater = world.GetTerrainType(targetTile) == TerrainType.Water;
 
-			var targetTile = ((1f / Game.CellSize) * loc.ToFloat2()).ToInt2();
-
-			var isWater = (Game.world.GetTerrainType(targetTile) == TerrainType.Water);
-				
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, visualLoc, warhead.Explosion, isWater)));
+					w => w.Add(new Explosion(w, visualLocation, warhead.Explosion, isWater)));
 
-			var impactSound = warhead.ImpactSound;
-			if (isWater && warhead.WaterImpactSound != null)
-				impactSound = warhead.WaterImpactSound;
-			if (impactSound != null) Sound.Play(impactSound + ".aud");
+			Sound.Play(GetImpactSound(warhead, isWater));
 
 			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
 			if (warhead.Ore)
 				world.WorldActor.traits.Get<ResourceLayer>().Destroy(targetTile);
 
-			var firepowerModifier = firedBy.traits
+			var firepowerModifier = args.firedBy.traits
 				.WithInterface<IFirepowerModifier>()
 				.Select(a => a.GetFirepowerModifier())
 				.Product();
 
-			var maxSpread = GetMaximumSpread(weapon, warhead, firepowerModifier);
-			var hitActors = world.FindUnitsInCircle(loc, maxSpread);
-			
-			foreach (var victim in hitActors)
-				victim.InflictDamage(firedBy, 
-					(int)GetDamageToInflict(victim, loc, weapon, warhead, firepowerModifier), warhead);
+			var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
+			var hitActors = world.FindUnitsInCircle(args.dest, maxSpread);
 
-			if (!nukeDamage) return;
-			foreach (var t in world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
-			{
-				var x = Util.CenterOfCell(t);
-				foreach (var unit in world.FindUnits(x, x))
-				{
-					unit.InflictDamage(firedBy,
-						(int)(weapon.Damage * warhead.EffectivenessAgainst(unit.Info.Traits.Get<OwnedActorInfo>().Armor)) / 4, warhead);
-				}
-			}
+			foreach (var victim in hitActors)
+				victim.InflictDamage(args.firedBy,
+					(int)GetDamageToInflict(victim, args, warhead, firepowerModifier), warhead);
 		}
 
 		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead, float modifier)
@@ -86,13 +74,10 @@ namespace OpenRA
 			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage * modifier), 2));
 		}
 
-		static float GetDamageToInflict(Actor target, int2 loc, WeaponInfo weapon, WarheadInfo warhead, float modifier)
+		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
-			if (!WeaponValidForTarget(weapon, target))
-				return 0f;
-			
-			var distance = (target.CenterLocation - loc).Length;
-			var rawDamage = weapon.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
+			var distance = (target.CenterLocation - args.dest).Length;
+			var rawDamage = warhead.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
 			return rawDamage * multiplier;
 		}

@@ -81,8 +81,7 @@ namespace OpenRA.Effects
 			if (t > TotalTime())		/* remove finished bullets */
 			{
 				world.AddFrameEndTask(w => w.Remove(this));
-				//Combat.DoImpact(Args.dest, VisualDest - new int2( 0, Args.destAltitude ), 
-				//	Weapon, Projectile, Warhead, FiredBy);
+				Combat.DoImpact(Args.weapon.Warheads[0], Args, VisualDest - new int2(0, Args.destAltitude));
 			}
 
 			if (Info.Trail != null)

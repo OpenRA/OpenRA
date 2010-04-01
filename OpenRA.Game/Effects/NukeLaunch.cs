@@ -83,7 +83,7 @@ namespace OpenRA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 			var warhead = Rules.WarheadInfo[weapon.Warhead];
-			Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, Rules.ProjectileInfo[weapon.Projectile], warhead, silo, true);
+			//Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, Rules.ProjectileInfo[weapon.Projectile], warhead, silo, true);
 			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 
