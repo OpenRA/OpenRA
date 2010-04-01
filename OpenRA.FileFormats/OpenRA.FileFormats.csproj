@@ -102,6 +102,7 @@
     <Compile Include="FileFormats\Format80.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
+    <Compile Include="Map\NewTileReference.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

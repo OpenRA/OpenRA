@@ -28,141 +28,62 @@ using OpenRA.FileFormats;
 
 namespace MapConverter
 {
-	public class MapData
+	public class MapConverter
 	{
-		// General info
-		public int MapFormat;
-		public string Title;
-		public string Description;
-		public string Author;
-		public int Players;
-		
-		// 'Simple' map data
-		public string Tileset;
-		public int2 Size;
-		public int[] Bounds;
-		
-		// 'Complex' map data
-		public string TileData;
-		public string ResourceData;
-		public string[] Waypoints;
-		public string[] Actors;
-	}
-	
-	public class IniMap
-	{
-		public readonly string Title;
-		public readonly string Theater;
 		public readonly int INIFormat;
 
 		public readonly int MapSize;
 		public readonly int XOffset;
 		public readonly int YOffset;
-		public int2 Offset { get { return new int2( XOffset, YOffset ); } }
 
 		public readonly int Width;
 		public readonly int Height;
-		public int2 Size { get { return new int2(Width, Height); } }
-
-		public readonly TileReference[ , ] MapTiles;
-		public readonly List<ActorReference> Actors = new List<ActorReference>();
-
-		public readonly IEnumerable<int2> SpawnPoints;
+		public NewMap Map = new NewMap();
 
 		static string Truncate( string s, int maxLength )
 		{
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
 		}
 		
-		public void Save(string filename)
+		
+		static string[] raOverlayNames =
 		{
-			Dictionary< string, Pair<byte,byte> > resourceMapping = new Dictionary<string, Pair<byte, byte>>() {
-				{ "gold01", new Pair<byte,byte>(1,0) },
-				{ "gold02", new Pair<byte,byte>(1,1) },
-				{ "gold03", new Pair<byte,byte>(1,2) },
-				{ "gold04", new Pair<byte,byte>(1,3) },
-				
-				{ "gem01", new Pair<byte,byte>(2,0) },
-				{ "gem02", new Pair<byte,byte>(2,1) },
-				{ "gem03", new Pair<byte,byte>(2,2) },
-				{ "gem04", new Pair<byte,byte>(2,3) },
-			};
+			"sbag", "cycl", "brik", "fenc", "wood",
+			"gold01", "gold02", "gold03", "gold04",
+			"gem01", "gem02", "gem03", "gem04",
+			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
+			"fpls", "wcrate", "scrate", "barb", "sbag",
+		};
+		
+		Dictionary< string, Pair<byte,byte> > resourceMapping = new Dictionary<string, Pair<byte, byte>>() {
+			{ "gold01", new Pair<byte,byte>(1,0) },
+			{ "gold02", new Pair<byte,byte>(1,1) },
+			{ "gold03", new Pair<byte,byte>(1,2) },
+			{ "gold04", new Pair<byte,byte>(1,3) },
 			
-			// Metadata
-			var data = new MapData();
-			data.MapFormat = 1;
-			data.Title = Title;
-			data.Players = SpawnPoints.Count();
-			data.Author = "Westwood Studios";
-			data.Description = "";
-			data.Tileset = Theater;
-			data.Bounds = new int[] {XOffset, YOffset, Width, Height};
-			data.Size = new int2(MapSize,MapSize);
+			{ "gem01", new Pair<byte,byte>(2,0) },
+			{ "gem02", new Pair<byte,byte>(2,1) },
+			{ "gem03", new Pair<byte,byte>(2,2) },
+			{ "gem04", new Pair<byte,byte>(2,3) },
 			
+			// TODO Add cnc tiberium
+		};
+		
+		
+		public MapConverter(string filename)
+		{						
+			Map.Author = "Westwood Studios";
 			
-			// Tile data is stored as a base-64 encoded stream of
-			// {(2-byte) tile index, (1-byte) image index} pairs
-			MemoryStream tiles = new MemoryStream();
-			BinaryWriter writer = new BinaryWriter( tiles );
-			
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-				{			
-					writer.Write( MapTiles[j,i].tile );
-					// Semi-hack: Convert clear and water tiles to "pick an image for me" magic number
-					byte image = (MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff) ? byte.MaxValue : MapTiles[j,i].image;
-					writer.Write(image);
-				}
-			writer.Flush();
-			data.TileData = Convert.ToBase64String(tiles.ToArray());	
-			
-			// Resource data is stored as a base-64 encoded stream of
-			// {(1-byte) resource index, (1-byte) image index} pairs
-			MemoryStream resources = new MemoryStream();
-			writer = new BinaryWriter( resources );
-			
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-				{			
-					byte type = 0;
-					byte image = 0;
-					if (MapTiles[j,i].overlay != null)
-					{
-						var res = resourceMapping[MapTiles[j,i].overlay];
-						type = res.First;
-						image = res.Second;
-					}
-					
-					writer.Write(type);
-					writer.Write(image);
-				}
-			writer.Flush();
-			data.ResourceData = Convert.ToBase64String(resources.ToArray());	
-			
-			// Spawn points
-			int s = 0;
-			data.Waypoints = SpawnPoints.Select(t => "spawn{0}={1}|{2}".F(s++,t.X,t.Y)).ToArray();
-			
-			// Actors
-			s = 0;
-			data.Actors = Actors.Select(t=>"actor{0}={1}|{2}|{3}".F(s++,t.Name,t.Location.X,t.Location.Y)).ToArray();
-			
-			Dictionary<string, MiniYaml> Nodes = new Dictionary<string,MiniYaml>();
-			Nodes.Add("MAP",FieldSaver.Save(data));
-			Nodes.WriteToFile(filename);
-			
-		}
-
-		public IniMap(string filename)
-		{			
 			IniFile file = new IniFile(FileSystem.Open(filename));
 			
 			IniSection basic = file.GetSection("Basic");
-			Title = basic.GetValue("Name", "(null)");
+			Map.Title = basic.GetValue("Name", "(null)");
+			
+			
 			INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
 
 			IniSection map = file.GetSection("Map");
-			Theater = Truncate(map.GetValue("Theater", "TEMPERAT"), 8);
+			Map.Tileset = Truncate(map.GetValue("Theater", "TEMPERAT"), 8);
 
 			XOffset = int.Parse(map.GetValue("X", "0"));
 			YOffset = int.Parse(map.GetValue("Y", "0"));
@@ -171,11 +92,9 @@ namespace MapConverter
 			Height = int.Parse(map.GetValue("Height", "0"));
 			MapSize = (INIFormat == 3) ? 128 : 64;
 			
-			MapTiles = new TileReference[ MapSize, MapSize ];
-			for (int j = 0; j < MapSize; j++)
-				for (int i = 0; i < MapSize; i++)
-					MapTiles[i, j] = new TileReference();
-
+			Map.Size.X = MapSize;
+			Map.Size.Y = MapSize;
+			Map.Bounds = new int[] {XOffset, YOffset, Width, Height};
 			
 			if (INIFormat == 3) // RA map
 			{
@@ -193,13 +112,17 @@ namespace MapConverter
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
-			
-			SpawnPoints = file.GetSection("Waypoints")
+		
+			var wp = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % MapSize, int.Parse(kv.Value) / MapSize)))
 					.Where(a => a.First < 8)
-					.Select(a => a.Second)
 					.ToArray();
+			
+			Map.PlayerCount = wp.Count();
+			
+			foreach (var kv in wp)
+				Map.Waypoints.Add("spawn"+kv.First, kv.Second);
 		}
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
@@ -260,35 +183,37 @@ namespace MapConverter
 
 		void UnpackRATileData( MemoryStream ms )
 		{
+			Map.MapTiles = new NewTileReference<ushort, byte>[ MapSize, MapSize ];
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
-					MapTiles[j, i].tile = ReadWord(ms);
+					Map.MapTiles[j, i] = new NewTileReference<ushort,byte>();
+			
+			for( int i = 0 ; i < MapSize ; i++ )
+				for( int j = 0 ; j < MapSize ; j++ )
+					Map.MapTiles[j, i].type = ReadWord(ms);
 
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
 				{
-					MapTiles[j, i].image = (byte)ms.ReadByte();
-					if( MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff )
-						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
+					Map.MapTiles[j, i].index = (byte)ms.ReadByte();
+					if( Map.MapTiles[ j, i ].type == 0xff || Map.MapTiles[ j, i ].type == 0xffff )
+						Map.MapTiles[ j, i ].index = byte.MaxValue;
 				}
 		}
-		
-		static string[] raOverlayNames =
-		{
-			"sbag", "cycl", "brik", "fenc", "wood",
-			"gold01", "gold02", "gold03", "gold04",
-			"gem01", "gem02", "gem03", "gem04",
-			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
-			"fpls", "wcrate", "scrate", "barb", "sbag",
-		};
 	
 		void UnpackRAOverlayData( MemoryStream ms )
 		{
+			Map.MapResources = new NewTileReference<byte, byte>[ MapSize, MapSize ];		
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
 				{
 					byte o = ReadByte( ms );
-					MapTiles[ j, i ].overlay = (o == 255) ? null : raOverlayNames[o];
+					var res = Pair.New((byte)0,(byte)0);
+					
+					if (o != 255 && resourceMapping.ContainsKey(raOverlayNames[o]))
+						res = resourceMapping[raOverlayNames[o]];
+				
+					Map.MapResources[j, i] = new NewTileReference<byte,byte>(res.First, res.Second);
 				}
 		}
 
@@ -297,17 +222,17 @@ namespace MapConverter
 			IniSection terrain = file.GetSection( "TERRAIN", true );
 			if( terrain == null )
 				return;
-			
+			int a = 0;
 			foreach( KeyValuePair<string, string> kv in terrain )
 			{
 				var loc = int.Parse( kv.Key );
-				Actors.Add( new ActorReference(kv.Value, new int2(loc % MapSize, loc / MapSize), null ) );
+				Map.Actors.Add("Actor"+a++, new ActorReference(kv.Value, new int2(loc % MapSize, loc / MapSize), null ) );
 			}
 		}
 		
 		void UnpackCncTileData( Stream ms )
 		{		
-			for( int i = 0 ; i < MapSize ; i++ )
+			/*for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
 				{
 					MapTiles[j, i].tile = (byte)ms.ReadByte();	
@@ -315,12 +240,12 @@ namespace MapConverter
 				
 					if( MapTiles[ j, i ].tile == 0xff )
 						MapTiles[ j, i ].image = (byte)( i % 4 + ( j % 4 ) * 4 );
-				}
+				}*/
 		}
 		
 		void ReadCncOverlay( IniFile file )
 		{
-			IniSection overlay = file.GetSection( "OVERLAY", true );
+			/*IniSection overlay = file.GetSection( "OVERLAY", true );
 			if( overlay == null )
 				return;
 
@@ -329,7 +254,7 @@ namespace MapConverter
 				var loc = int.Parse( kv.Key );
 				int2 cell = new int2(loc % MapSize, loc / MapSize);
 				MapTiles[ cell.X, cell.Y ].overlay = kv.Value.ToLower();
-			}
+			}*/
 		}
 		
 		
@@ -338,33 +263,31 @@ namespace MapConverter
 			IniSection terrain = file.GetSection( "TERRAIN", true );
 			if( terrain == null )
 				return;
-
+			
+			int a = 0;
 			foreach( KeyValuePair<string, string> kv in terrain )
 			{
 				var loc = int.Parse( kv.Key );
-				Actors.Add( new ActorReference( kv.Value.Split(',')[0], new int2(loc % MapSize, loc / MapSize),null));
+				Map.Actors.Add("Actor"+a++, new ActorReference( kv.Value.Split(',')[0], new int2(loc % MapSize, loc / MapSize),null));
 			}
 		}
 		
 		void LoadActors(IniFile file, string section)
 		{
+			int a = 0;
 			foreach (var s in file.GetSection(section, true))
 			{
 				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
 				var loc = int.Parse(parts[3]);			
-				Actors.Add( new ActorReference( parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
+				Map.Actors.Add("Actor"+a++, new ActorReference( parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
 			}
 		}
 		
-		public bool IsInMap(int2 xy)
+		public void Save(string filepath)
 		{
-			return IsInMap(xy.X,xy.Y);
-		}
-		
-		public bool IsInMap(int x, int y)
-		{
-			return (x >= XOffset && y >= YOffset && x < XOffset + Width && y < YOffset + Height);
+			Map.Tiledata = filepath+".bin";
+			Map.Save(filepath+".yaml");
 		}
 	}
 }

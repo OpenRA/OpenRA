@@ -28,30 +28,33 @@ namespace OpenRA.FileFormats
 {
 	public class NewMap
 	{
-		// General info
-		public byte MapFormat = 1;
+		// Yaml map data
+		public int MapFormat = 1;
 		public string Title;
 		public string Description;
 		public string Author;
 		public int PlayerCount;
 		public string Preview;
-		
-		// 'Simple' map data
-		public string Tiledata;
-		public byte TileFormat = 1;
-		public string Tileset;
-		public int2 Size;
 		public int[] Bounds;
-		
-		// 'Complex' map data	
-		public TileReference[ , ] MapTiles;
+		public string Tileset;
+
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
 		
+		// Binary map data
+		public string Tiledata;
+		public byte TileFormat = 1;
+		public int2 Size;
+		public NewTileReference<ushort,byte>[ , ] MapTiles;
+		public NewTileReference<byte, byte>[ , ] MapResources;
+		
+		
 		List<string> SimpleFields = new List<string>() {
-			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Size", "Tiledata", "Preview", "Bounds"
+			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "Bounds"
 		};
+		
+		public NewMap() {}
 		
 		public NewMap(string filename)
 		{			
@@ -84,12 +87,61 @@ namespace OpenRA.FileFormats
 			
 			// Rules
 			Rules = yaml["Rules"].Nodes;
+			
+			LoadBinaryData(Tiledata);
 		}
 		
 		
+		public void Save(string filepath)
+		{
+			// Do stuff
+			
+			SaveBinaryData(Tiledata);
+		}
+		
+		static byte ReadByte( Stream s )
+		{
+			int ret = s.ReadByte();
+			if( ret == -1 )
+				throw new NotImplementedException();
+			return (byte)ret;
+		}
+
+		static ushort ReadWord(Stream s)
+		{
+			ushort ret = ReadByte(s);
+			ret |= (ushort)(ReadByte(s) << 8);
+
+			return ret;
+		}
+		
+		public void LoadBinaryData(string filename)
+		{
+			Console.Write("path: {0}",filename);
+			
+			Stream dataStream = FileSystem.Open(filename);
+
+			// Load header info
+			byte version = ReadByte(dataStream);
+			Size.X = ReadWord(dataStream);
+			Size.Y = ReadWord(dataStream);
+			
+			MapTiles = new NewTileReference<ushort, byte>[ Size.X, Size.Y ];
+			MapResources = new NewTileReference<byte, byte>[ Size.X, Size.Y ];
+			
+			// Load tile data
+			for( int i = 0 ; i < Size.X ; i++ )
+				for( int j = 0 ; j < Size.Y ; j++ )
+					MapTiles[i, j] = new NewTileReference<ushort,byte>(ReadWord(dataStream),ReadByte(dataStream));
+			
+			// Load resource data
+			for( int i = 0 ; i < Size.X ; i++ )
+				for( int j = 0 ; j < Size.Y ; j++ )
+					MapResources[i, j] = new NewTileReference<byte,byte>(ReadByte(dataStream),ReadByte(dataStream));
+		}
+		
 		public void SaveBinaryData(string filepath)
 		{
-			
 			FileStream dataStream = new FileStream(filepath+".tmp", FileMode.Create, FileAccess.Write);
 			BinaryWriter writer = new BinaryWriter( dataStream );
 			writer.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -99,39 +151,24 @@ namespace OpenRA.FileFormats
 			writer.Write((ushort)Size.X);
 			writer.Write((ushort)Size.Y);
 			
-			// Tile data is stored as a base-64 encoded stream of
-			// {(2-byte) tile index, (1-byte) image index} pairs
+			// Tile data
 			for( int i = 0 ; i < Size.X ; i++ )
 				for( int j = 0 ; j < Size.Y ; j++ )
 				{			
-					writer.Write( MapTiles[j,i].tile );
-					// Semi-hack: Convert clear and water tiles to "pick an image for me" magic number
-					byte image = (MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff) ? byte.MaxValue : MapTiles[j,i].image;
-					writer.Write(image);
+					writer.Write( MapTiles[j,i].type );
+					writer.Write( MapTiles[ j, i ].index );
 				}
-			
-			
-			// TODO: Need a proper resources array to write
-			/*
-			// Resource data is stored as a base-64 encoded stream of
-			// {(1-byte) resource index, (1-byte) image index} pairs			
+						
+			// Resource data	
 			for( int i = 0 ; i < Size.X ; i++ )
 				for( int j = 0 ; j < Size.Y ; j++ )
-				{			
-					byte type = 0;
-					byte image = 0;
-					if (MapTiles[j,i].overlay != null)
-					{
-						var res = resourceMapping[MapTiles[j,i].overlay];
-						type = res.First;
-						image = res.Second;
-					}
-					
-					writer.Write(type);
-					writer.Write(image);
+				{					
+					writer.Write( MapResources[j,i].type );
+					writer.Write( MapResources[j,i].index );
 				}
-			*/
+			
 			writer.Flush();
+			writer.Close();
 		}
 		
 		public void DebugContents()

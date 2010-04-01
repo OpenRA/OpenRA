@@ -19,11 +19,9 @@ namespace MapConverter
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
-			var map = new NewMap(args[2]);
-			map.DebugContents();
-			
-			//var map = new IniMap(args[1]);
-			//map.Save(args[2]);
+			var converter = new MapConverter(args[1]);
+			converter.Map.DebugContents();
+			converter.Save(args[2]);
 		}
 	}
 }

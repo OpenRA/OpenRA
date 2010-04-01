@@ -4,9 +4,8 @@ Description:
 Author: Me
 PlayerCount: 2
 Tileset: TEMPERAT
-Size: 100,97
-TileData: testmap.bin
 Preview: testmap.png
+Tiledata: testmap.bin
 
 Waypoints:
 	spawn0: 36,75
