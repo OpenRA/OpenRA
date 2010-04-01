@@ -18,8 +18,7 @@ Packages:
 
 LegacyRules:
 	mods/cnc/minimal.ini:	Minimal rules definitions
-	mods/cnc/weapons.ini:	Weapons are still in the old format
-	mods/cnc/voices.ini:	Voices are still in the old format
+	
 Rules:
 	mods/cnc/defaults.yaml:		Basic stuff
 	mods/cnc/system.yaml:		Player and world actors
@@ -46,3 +45,9 @@ Assemblies:
 
 ChromeLayout:
 	mods/cnc/menus.yaml:
+	
+Weapons:
+	mods/cnc/weapons.yaml:
+	
+Voices:
+	mods/cnc/voices.yaml:

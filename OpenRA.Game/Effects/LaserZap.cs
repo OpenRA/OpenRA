@@ -20,13 +20,16 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Traits;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
 	class LaserZapInfo : IProjectileInfo
 	{
+		public readonly int BeamRadius = 1;
+		public readonly bool UsePlayerColor = false;
+
 		public IEffect Create(ProjectileArgs args) { return null; /* todo: fix me so OBLI works again */ }
 	}
 

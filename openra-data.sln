@@ -84,8 +84,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2D
 		mods\cnc\temperat_ra.pal = mods\cnc\temperat_ra.pal
 		mods\cnc\trees.yaml = mods\cnc\trees.yaml
 		mods\cnc\vehicles.yaml = mods\cnc\vehicles.yaml
-		mods\cnc\voices.ini = mods\cnc\voices.ini
-		mods\cnc\weapons.ini = mods\cnc\weapons.ini
+		mods\cnc\voices.yaml = mods\cnc\voices.yaml
+		mods\cnc\weapons.yaml = mods\cnc\weapons.yaml
 		mods\cnc\widget-panel.png = mods\cnc\widget-panel.png
 	EndProjectSection
 EndProject
