@@ -374,11 +374,6 @@ Napalm:
 		Damage: 100
 		
 CrateNapalm:
-	ROF: 20
-	Range: 4.5
-	Bullet:
-		Image: BOMBLET
-		Speed: 5
 	Warhead:
 		Spread: 4
 		Wood: yes
@@ -388,6 +383,16 @@ CrateNapalm:
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 600
+		
+CrateExplosion:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 8
+		InfDeath: 3
+		ImpactSound: kaboom15
+		
 		
 TeslaZap:
 	ROF: 120
@@ -623,7 +628,7 @@ SCUD:
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 600
-		
+
 Atomic:
 	Nuke:
 		Image: Nuke
@@ -638,3 +643,37 @@ Atomic:
 		InfDeath: 4
 		SmudgeType: Scorch
 		SmudgeSize: 5,4
+
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 8
+		InfDeath: 3
+		ImpactSound: kaboom15
+
+Crush:
+	Warhead:
+		Verses: 100%,100%,100%,100%,100%
+		ImpactSound: squishy2
+		Damage: 100
+
+ATMine:
+	Warhead:
+		Verses: 0%,0%,100%,100%,0%
+		ImpactSound: mineblo1
+		Explosion: 5
+
+APMine:
+	Warhead:
+		Verses: 100%,0%,0%,0%,0%
+		ImpactSound: mine1
+		InfDeath: 2
+		Explosion: 3
+		
+Demolish:
+	Warhead:
+		Verses: 100%,100%,100%,100%,100%
+		ImpactSound: kaboom25
+		Explosion: 7
