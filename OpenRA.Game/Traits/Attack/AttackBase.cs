@@ -170,7 +170,7 @@ namespace OpenRA.Traits
 
 			var args = new ProjectileArgs
 			{
-				weapon = Rules.Weapons[weaponName],
+				weapon = Rules.Weapons[weaponName.ToLowerInvariant()],
 
 				firedBy = self,
 				target = target,
