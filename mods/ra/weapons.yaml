@@ -640,7 +640,6 @@ Atomic:
 	Warhead@inner-nuke:
 		DamageModel: PerCell
 		Damage: 150
-		SmudgeType: Scorch
 		SmudgeSize: 3,2
 		Wall: true
 		Wood: true

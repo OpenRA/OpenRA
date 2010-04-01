@@ -53,7 +53,8 @@ namespace OpenRA
 			else
 				foreach (var t in Game.world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
 					if ((t - targetTile).LengthSquared >= warhead.SmudgeSize[1] * warhead.SmudgeSize[1])
-						map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, t.X, t.Y);
+						if (Game.world.GetTerrainType(t) != TerrainType.Water)
+							map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, t.X, t.Y);
 		}
 
 		static int lastSmudge = 0;
