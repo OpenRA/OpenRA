@@ -28,9 +28,8 @@ namespace OpenRA.Mods.RA
 {
 	class MineInfo : ITraitInfo
 	{
-		public readonly int Damage = 0;
 		public readonly UnitMovementType[] TriggeredBy = { };
-		public readonly string Warhead = "ATMine";
+		public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 
 		public object Create(Actor self) { return new Mine(self); }
@@ -51,7 +50,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var info = self.Info.Traits.Get<MineInfo>();
-			Combat.DoExplosion(self, info.Warhead, self.CenterLocation.ToInt2(), 0);
+			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation.ToInt2(), 0);
 			self.QueueActivity(new RemoveSelf());
 		}
 

@@ -345,8 +345,7 @@ MRJ:
 
 MINP:
 	Mine:
-		Damage: 1000
-		Warhead: APMine
+		Weapon: APMine
 		TriggeredBy: Foot, Wheel, Track
 		AvoidFriendly: yes
 	Unit:
@@ -358,8 +357,7 @@ MINP:
 
 MINV:
 	Mine:
-		Damage: 1200
-		Warhead: ATMine
+		Weapon: ATMine
 		TriggeredBy: Wheel, Track
 		AvoidFriendly: yes
 	Unit:

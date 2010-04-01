@@ -657,12 +657,14 @@ Crush:
 
 ATMine:
 	Warhead:
+		Damage: 1000
 		Verses: 0%,0%,100%,100%,0%
 		ImpactSound: mineblo1
 		Explosion: 5
 
 APMine:
 	Warhead:
+		Damage: 1200
 		Verses: 100%,0%,0%,0%,0%
 		ImpactSound: mine1
 		InfDeath: 2
