@@ -20,25 +20,26 @@
 
 namespace OpenRA.FileFormats
 {
-	public struct OldTileReference
+	public struct TileReference<T, U>
 	{
-		public ushort tile;
-		public byte image;
-		public string overlay;
-		public byte smudge;
-
-		public override int GetHashCode() { return tile.GetHashCode() ^ image.GetHashCode(); }
-
-		public override bool Equals( object obj )
+		public T type;
+		public U index;
+		public U image;
+		
+		public TileReference(T t, U i)
 		{
-			if( obj == null )
-				return false;
-
-			OldTileReference r = (OldTileReference)obj;
-			return ( r.image == image && r.tile == tile );
+			type = t;
+			index = i;
+			image = i;
+		}
+		
+		public TileReference(T t, U i, U im)
+		{
+			type = t;
+			index = i;
+			image = im;
 		}
 
-		public static bool operator ==( OldTileReference a, OldTileReference b ) { return a.Equals( b ); }
-		public static bool operator !=( OldTileReference a, OldTileReference b ) { return !a.Equals( b ); }
+		public override int GetHashCode() { return type.GetHashCode() ^ index.GetHashCode(); }
 	}
 }

@@ -79,7 +79,6 @@
     <Compile Include="TypeDictionary.cs" />
     <Compile Include="Map\ActorReference.cs" />
     <Compile Include="Map\Map.cs" />
-    <Compile Include="Map\NewMap.cs" />
     <Compile Include="Map\TileReference.cs" />
     <Compile Include="Map\Walkability.cs" />
     <Compile Include="Map\Terrain.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="FileFormats\Format80.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
-    <Compile Include="Map\NewTileReference.cs" />
     <Compile Include="Primitives\int2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
