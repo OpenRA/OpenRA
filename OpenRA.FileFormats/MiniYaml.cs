@@ -169,5 +169,13 @@ namespace OpenRA.FileFormats
 					yield return "";
 			}
 		}
+		
+		public static IEnumerable< Pair<string,string> >ToPairs(this MiniYamlNodes y)
+		{
+			foreach (var kv in y)
+			{
+				yield return Pair.New(kv.Key,kv.Value.Value);
+			}
+		}
 	}
 }

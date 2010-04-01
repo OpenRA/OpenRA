@@ -1,0 +1,46 @@
+MapFormat: 1
+Title: Scripted Multiplayer map
+Description:
+Author: Me
+PlayerCount: 2
+Tileset: TEMPERAT
+Size: 100,97
+TileData: testmap.bin
+Preview: testmap.png
+
+Waypoints:
+	spawn0: 36,75
+	spawn1: 92,29
+
+Players:
+	neutral:
+		Color:Gray
+		Type:Scripted
+		NoSpawn:true
+	ai:
+		Type:BrutalAI
+		Color:Red
+		Country:Russia
+#			AI player starts with a pre-placed base			
+		NoSpawn:true
+	player0:
+	player1:
+
+Actors: 
+	tree0: TC05 neutral 93,90
+	tree1: TC04 neutral 92,92
+	tree2: TC01 neutral 88,92
+	tree3: T11 neutral 96,93
+	tree4: T08 neutral 90,94
+	mine0: MINE neutral 67,103
+	
+#		<A bunch of pre-placed stuff to give ai player an advantage>
+	pwn01: 4tnk ai 1,1
+	pwn02: 4tnk ai 1,2
+	pwn03: 4tnk ai 1,3
+#		...
+
+Rules:
+	Player:
+		ChronoshiftPower:
+			ChargeTime:1
