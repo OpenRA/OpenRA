@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -302,6 +302,7 @@
     <Compile Include="Traits\Activities\Wait.cs" />
     <Compile Include="Traits\CrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
+    <Compile Include="Traits\Defaults\GlobalDefaults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -337,4 +338,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Traits\Defaults\" />
+  </ItemGroup>
 </Project>

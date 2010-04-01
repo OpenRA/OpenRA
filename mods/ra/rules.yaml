@@ -63,6 +63,69 @@ Player:
 		GivenAuto: no
 		OneShot: yes
 
+Defaults:
+	GlobalDefaults:
+		GapRegenInterval: .1
+		BadgerBombCount: 1
+		QuakeChance: 20%
+		QuakeDamage: 33%
+		VortexChance: 20%
+		VortexDamage: 200
+		VortexRange: 10
+		VortexSpeed: 10
+		RefundPercent: 50%
+		ReloadRate: .04
+		RepairPercent: 20%
+		RepairRate: .016
+		RepairStep: 7
+		URepairPercent: 20%
+		URepairStep: 10
+		TurboBoost: 1.5
+		BallisticScatter: 1.0
+		ExpSpread: .3
+		FireSupress: 1
+		HomingScatter: 2.0
+		MaxDamage: 1000
+		MinDamage: 1
+		OreExplosive: no
+		PlayerAutoCrush: no
+		PlayerReturnFire: no
+		PlayerScatter: no
+		TreeTargeting: no
+		Incoming: 10
+		BuildSpeed: .4 
+		BuildupTime: .06
+		OreTruckRate: 1
+		SeparateAircraft: no
+		SurvivorRate: .4
+		AllyReveal: yes
+		ConditionRed: 25%
+		ConditionYellow: 50%
+		DropZoneRadius: 4
+		EnemyHealth: yes
+		Gravity: 3
+		IdleActionFrequency: .1
+		MessageDelay: .6
+		MovieTime: .06
+		NamedCivilians: no
+		SavourDelay: .03
+		SpeakDelay: 2
+		TimerWarning: 2
+		FlashLowPower: yes
+		CurleyShuffle: no
+		BaseBias: 2
+		BaseDefenseDelay: .25
+		CloseEnough: 2.75
+		DamageDelay: 1
+		GameSpeeBias: 1
+		LZScanRadius: 16
+		MineAware: yes
+		Stray: 2.0 
+		SubmergeDelay: .02
+		SuspendDelay: 2
+		SuspendPriority: 20
+		TeamDelay: .6
+
 World:
 	ScreenShaker:
 	WaterPaletteRotation:
@@ -269,6 +332,7 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
+		ShroudRate: 4
 
 MGG:
 	GeneratesGap:
@@ -2570,6 +2634,7 @@ E7:
 		Sight: 6
 		Speed: 5
 	C4Demolition:
+		C4Delay: .03
 	AttackBase:
 		PrimaryWeapon: Colt45
 		SecondaryWeapon: Colt45

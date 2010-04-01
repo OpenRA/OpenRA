@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -24,10 +24,20 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class C4DemolitionInfo : StatelessTraitInfo<C4Demolition> { }
+	class C4DemolitionInfo : ITraitInfo
+	{
+		public readonly float C4Delay = 0;
+		public object Create(Actor self) { return new C4Demolition(self); }
+	}
 
 	class C4Demolition : IIssueOrder, IResolveOrder
 	{
+		Actor self;
+		public C4Demolition(Actor self)
+		{
+			this.self = self;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
