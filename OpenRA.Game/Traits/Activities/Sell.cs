@@ -33,7 +33,7 @@ namespace OpenRA.Traits.Activities
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var cost = csv != null ? csv.Value : self.Info.Traits.Get<BuildableInfo>().Cost;
 			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
-			var refund = Rules.General.RefundPercent * self.Health * cost / hp;
+			var refund = self.World.Defaults.RefundPercent * self.Health * cost / hp;
 
 			self.Owner.GiveCash((int)refund);
 			self.Health = 0;

@@ -157,7 +157,7 @@ namespace OpenRA
 			if (Health <= 0)
 				return DamageState.Dead;
 			
-			if (Health < this.GetMaxHP() * Rules.General.ConditionYellow)
+			if (Health < this.GetMaxHP() * World.Defaults.ConditionYellow)
 				return DamageState.Half;
 
 			return DamageState.Normal;

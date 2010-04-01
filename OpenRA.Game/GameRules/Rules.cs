@@ -34,7 +34,6 @@ namespace OpenRA
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
-		public static GeneralInfo General;
 		public static TechTree TechTree;
 
 		public static Dictionary<string, ActorInfo> Info;
@@ -44,9 +43,6 @@ namespace OpenRA
 			var legacyRules = m.LegacyRules.Reverse().ToList();
 			legacyRules.Insert(0, map);
 			AllRules = new IniFile(legacyRules.Select(a => FileSystem.Open(a)).ToArray());
-
-			General = new GeneralInfo();
-			FieldLoader.Load(General, AllRules.GetSection("General"));
 
 			LoadCategories(
 				"Weapon",

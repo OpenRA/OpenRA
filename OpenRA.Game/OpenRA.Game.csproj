@@ -302,7 +302,7 @@
     <Compile Include="Traits\Activities\Wait.cs" />
     <Compile Include="Traits\CrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
-    <Compile Include="Traits\Defaults\GlobalDefaults.cs" />
+    <Compile Include="Traits\World\GlobalDefaults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -338,7 +338,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Traits\Defaults\" />
-  </ItemGroup>
 </Project>

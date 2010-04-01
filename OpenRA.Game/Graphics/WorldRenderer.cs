@@ -255,8 +255,8 @@ namespace OpenRA.Graphics
 			lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
 			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Traits.Get<OwnedActorInfo>().HP;
-			var healthColor = (healthAmount < Rules.General.ConditionRed) ? Color.Red
-				: (healthAmount < Rules.General.ConditionYellow) ? Color.Yellow
+			var healthColor = (healthAmount < selectedUnit.World.Defaults.ConditionRed) ? Color.Red
+				: (healthAmount < selectedUnit.World.Defaults.ConditionYellow) ? Color.Yellow
 				: Color.LimeGreen;
 
 			var healthColor2 = Color.FromArgb(

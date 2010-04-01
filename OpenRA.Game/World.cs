@@ -66,6 +66,7 @@ namespace OpenRA
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
+		public GlobalDefaultsInfo Defaults { get {return WorldActor.Info.Traits.Get<GlobalDefaultsInfo>();}}
 
 		// for tricky things like bridges.
 		public readonly ICustomTerrain[,] customTerrain;
@@ -114,7 +115,7 @@ namespace OpenRA
 			Add( a );
 			return a;
 		}
-
+		
 		public void Add(Actor a)
 		{
 			a.IsInWorld = true;

@@ -1,9 +1,9 @@
 
 using System;
 
-namespace OpenRA.Traits.Defaults
+namespace OpenRA.Traits
 {
-	class GlobalDefaultsInfo : ITraitInfo
+	public class GlobalDefaultsInfo : StatelessTraitInfo<GlobalDefaults>
 	{
 		/* Special Weapons */
 		public readonly float GapRegenInterval =0;
@@ -80,15 +80,8 @@ namespace OpenRA.Traits.Defaults
 		public readonly int SuspendPriority = 0;
 		public readonly float TeamDelay = 0;
 		
-		public object Create(Actor self) { return new GlobalDefaults(self); }
+		public readonly int LowPowerSlowdown = 3;
 	}
 
-	public class GlobalDefaults
-	{
-		Actor self;
-		public GlobalDefaults (Actor self)
-		{
-			this.self = self;
-		}
-	}
+	public class GlobalDefaults {}
 }

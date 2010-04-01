@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -26,11 +26,15 @@ namespace OpenRA.Effects
 {
 	class RepairIndicator : IEffect
 	{
-		int framesLeft = (int)(Rules.General.RepairRate * 25 * 60 / 2);
+		int framesLeft;
 		Actor a;
 		Animation anim = new Animation("select");
 
-		public RepairIndicator(Actor a) { this.a = a; anim.PlayRepeating("repair"); }
+		public RepairIndicator(Actor a) 
+		{ 
+			this.a = a; anim.PlayRepeating("repair"); 
+			framesLeft =  (int)(a.World.Defaults.RepairRate * 25 * 60 / 2);
+		}
 
 		public void Tick( World world )
 		{

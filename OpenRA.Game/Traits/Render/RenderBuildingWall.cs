@@ -51,10 +51,10 @@ namespace OpenRA.Traits
 			if (effectiveHealth <= 0)
 				return ExtendedDamageState.Dead;
 
-			if (effectiveHealth < self.GetMaxHP() * Rules.General.ConditionRed)
+			if (effectiveHealth < self.GetMaxHP() * self.World.Defaults.ConditionRed)
 				return ExtendedDamageState.Quarter;
 
-			if (effectiveHealth < self.GetMaxHP() * Rules.General.ConditionYellow)
+			if (effectiveHealth < self.GetMaxHP() * self.World.Defaults.ConditionYellow)
 				return ExtendedDamageState.Half;
 
 			if (effectiveHealth < self.GetMaxHP() * 0.75)

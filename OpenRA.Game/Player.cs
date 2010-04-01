@@ -138,7 +138,7 @@ namespace OpenRA
 		void GiveAdvice(string advice)
 		{
 			// todo: store the condition or something.
-			// repeat after Rules.General.SpeakDelay, as long as the condition holds.
+			// repeat after World.Defaults.SpeakDelay, as long as the condition holds.
 			Sound.PlayToPlayer(this, advice);
 		}
 

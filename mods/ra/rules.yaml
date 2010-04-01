@@ -63,7 +63,7 @@ Player:
 		GivenAuto: no
 		OneShot: yes
 
-Defaults:
+World:
 	GlobalDefaults:
 		GapRegenInterval: .1
 		BadgerBombCount: 1
@@ -125,8 +125,7 @@ Defaults:
 		SuspendDelay: 2
 		SuspendPriority: 20
 		TeamDelay: .6
-
-World:
+		LowPowerSlowdown: 3
 	ScreenShaker:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:

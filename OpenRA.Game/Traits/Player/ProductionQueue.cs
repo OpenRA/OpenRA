@@ -57,7 +57,7 @@ namespace OpenRA.Traits
 						var unit = Rules.Info[order.TargetString];
 						var ui = unit.Traits.Get<BuildableInfo>();
 						var time = ui.Cost
-							* Rules.General.BuildSpeed						/* todo: country-specific build speed bonus */
+							* self.World.Defaults.BuildSpeed						/* todo: country-specific build speed bonus */
 							 * (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 							 / 1000;
 
@@ -226,7 +226,7 @@ namespace OpenRA.Traits
 			if (player.GetPowerState() != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
-					slowdown = Rules.General.LowPowerSlowdown;
+					slowdown = player.World.Defaults.LowPowerSlowdown;
 				else
 					return;
 			}

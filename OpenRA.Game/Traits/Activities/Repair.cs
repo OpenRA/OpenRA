@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -39,8 +39,8 @@ namespace OpenRA.Traits.Activities
 				var unitCost = self.Info.Traits.Get<BuildableInfo>().Cost;
 				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
-				var costPerHp = (Rules.General.URepairPercent * unitCost) / hp;
-				var hpToRepair = Math.Min(Rules.General.URepairStep, hp - self.Health);
+				var costPerHp = (self.World.Defaults.URepairPercent * unitCost) / hp;
+				var hpToRepair = Math.Min(self.World.Defaults.URepairStep, hp - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -59,7 +59,7 @@ namespace OpenRA.Traits.Activities
 					hostBuilding.traits.Get<RenderBuilding>()
 						.PlayCustomAnim(hostBuilding, "active");
 
-				remainingTicks = (int)(Rules.General.RepairRate * 60 * 25);
+				remainingTicks = (int)(self.World.Defaults.RepairRate * 60 * 25);
 			}
 			else
 				--remainingTicks;
