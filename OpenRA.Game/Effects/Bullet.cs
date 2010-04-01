@@ -25,7 +25,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
-	class BulletInfo : IProjectileInfo
+	public class BulletInfo : IProjectileInfo
 	{
 		public readonly int Speed = 1;
 		public readonly bool AA = false;
@@ -42,56 +42,37 @@ namespace OpenRA.Effects
 		public readonly bool Shadow = false;
 		public readonly bool Proximity = false;
 
-		public IEffect Create(ProjectileArgs args) { return null; }
+		public IEffect Create(ProjectileArgs args) { return new Bullet( this, args ); }
 	}
 
 	public class Bullet : IEffect
 	{
-		readonly Player Owner;
-		readonly Actor FiredBy;
-		readonly WeaponInfo Weapon;
-		readonly ProjectileInfo Projectile;
-		readonly WarheadInfo Warhead;
-		readonly int2 Src;
-		readonly int2 Dest;
+		readonly BulletInfo Info;
+		readonly ProjectileArgs Args;
 		readonly int2 VisualDest;
-		readonly int SrcAltitude;
-		readonly int DestAltitude;
-
+		
 		int t = 0;
 		Animation anim;
 
 		const int BaseBulletSpeed = 100;		/* pixels / 40ms frame */
 
-		public Bullet(string weapon, Player owner, Actor firedBy,
-			int2 src, int2 dest, int srcAltitude, int destAltitude)
-			: this(Rules.WeaponInfo[weapon], owner, firedBy, src, dest, srcAltitude, destAltitude) { }
-
-		/* src, dest are *pixel* coords */
-		public Bullet(WeaponInfo weapon, Player owner, Actor firedBy, 
-			int2 src, int2 dest, int srcAltitude, int destAltitude)
+		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
-			Owner = owner;
-			FiredBy = firedBy;
-			Src = src;
-			Dest = dest;
-			SrcAltitude = srcAltitude;
-			DestAltitude = destAltitude;
-			VisualDest = Dest + new int2(
-						firedBy.World.CosmeticRandom.Next(-10, 10),
-						firedBy.World.CosmeticRandom.Next(-10, 10));
-			Weapon = weapon;
-			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
-			Warhead = Rules.WarheadInfo[Weapon.Warhead];
+			Info = info;
+			Args = args;
 
-			if (Projectile.Image != null && Projectile.Image != "none")
+			VisualDest = args.dest + new int2(
+						args.firedBy.World.CosmeticRandom.Next(-10, 10),
+						args.firedBy.World.CosmeticRandom.Next(-10, 10));
+
+			if (Info.Image != null)
 			{
-				anim = new Animation(Projectile.Image, () => Traits.Util.GetFacing((dest - src).ToFloat2(), 0));
+				anim = new Animation(Info.Image, () => Traits.Util.GetFacing(Args.dest - Args.src, 0));
 				anim.PlayRepeating("idle");
 			}
 		}
 
-		int TotalTime() { return (Dest - Src).Length * BaseBulletSpeed / Weapon.Speed; }
+		int TotalTime() { return (Args.dest - Args.src).Length * BaseBulletSpeed / Info.Speed; }
 
 		public void Tick( World world )
 		{
@@ -100,23 +81,23 @@ namespace OpenRA.Effects
 			if (t > TotalTime())		/* remove finished bullets */
 			{
 				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpact(Dest, VisualDest - new int2( 0, DestAltitude ), 
-					Weapon, Projectile, Warhead, FiredBy);
+				//Combat.DoImpact(Args.dest, VisualDest - new int2( 0, Args.destAltitude ), 
+				//	Weapon, Projectile, Warhead, FiredBy);
 			}
 
-			if (Projectile.Trail != null)
+			if (Info.Trail != null)
 			{
 				var at = (float)t / TotalTime();
-				var altitude = float2.Lerp(SrcAltitude, DestAltitude, at);
-				var pos = float2.Lerp(Src.ToFloat2(), VisualDest.ToFloat2(), at)
+				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
+				var pos = float2.Lerp(Args.src, VisualDest, at)
 					- 0.5f * anim.Image.size - new float2(0, altitude);
 
-				var highPos = (Projectile.High || Projectile.Arcing)
-					? (pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at)))
+				var highPos = (Info.High || Info.Arcing)
+					? (pos - new float2(0, (VisualDest - Args.src).Length * height * 4 * at * (1 - at)))
 					: pos;
 
 				world.AddFrameEndTask(w => w.Add(
-					new Smoke(w, highPos.ToInt2(), Projectile.Trail)));
+					new Smoke(w, highPos.ToInt2(), Info.Trail)));
 			}
 		}
 
@@ -128,21 +109,22 @@ namespace OpenRA.Effects
 			{
 				var at = (float)t / TotalTime();
 
-				var altitude = float2.Lerp(SrcAltitude, DestAltitude, at);
-				var pos = float2.Lerp( Src.ToFloat2(), VisualDest.ToFloat2(), at)
+				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
+				var pos = float2.Lerp( Args.src, VisualDest, at)
 					- 0.5f * anim.Image.size - new float2( 0, altitude );
 
-				if (Projectile.High || Projectile.Arcing)
+				if (Info.High || Info.Arcing)
 				{
-					if (Projectile.Shadow)
+					if (Info.Shadow)
 						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 
-					var highPos = pos - new float2(0, (VisualDest - Src).Length * height * 4 * at * (1 - at));
+					var highPos = pos - new float2(0, (VisualDest - Args.src).Length * height * 4 * at * (1 - at));
 
-					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Owner.Palette);
+					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette);
 				}
 				else
-					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, Projectile.UnderWater ? "shadow" : Owner.Palette);
+					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
+						Info.UnderWater ? "shadow" : Args.firedBy.Owner.Palette);
 			}
 		}
 	}

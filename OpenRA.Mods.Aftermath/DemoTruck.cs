@@ -56,8 +56,8 @@ namespace OpenRA.Mods.Aftermath
 			self.World.AddFrameEndTask( w =>
 			{
 				// Fire weapon		
-				w.Add(new Bullet(info.PrimaryWeapon, detonatedBy.Owner, detonatedBy,
-					detonateLocation, detonateLocation, altitude, altitude));
+				//w.Add(new Bullet(info.PrimaryWeapon, detonatedBy.Owner, detonatedBy,
+				//	detonateLocation, detonateLocation, altitude, altitude));
 				
 				var weapon = Rules.WeaponInfo[info.PrimaryWeapon];
 				if (!string.IsNullOrEmpty(weapon.Report))

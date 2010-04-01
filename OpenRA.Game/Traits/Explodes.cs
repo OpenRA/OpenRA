@@ -33,10 +33,11 @@ namespace OpenRA.Traits
 				var unit = self.traits.GetOrDefault<Unit>();
 				var altitude = unit != null ? unit.Altitude : 0;
 
-				self.World.AddFrameEndTask(
-					w => w.Add(new Bullet("UnitExplode", e.Attacker.Owner, e.Attacker,
-						self.CenterLocation.ToInt2(), self.CenterLocation.ToInt2(),
-						altitude, altitude)));
+//				self.World.AddFrameEndTask(
+//					w => w.Add(new Bullet(
+//						"UnitExplode", e.Attacker.Owner, e.Attacker,
+//						self.CenterLocation.ToInt2(), self.CenterLocation.ToInt2(),
+//						altitude, altitude)));
 			}
 		}
 	}
