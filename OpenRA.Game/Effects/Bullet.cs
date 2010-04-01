@@ -28,9 +28,6 @@ namespace OpenRA.Effects
 	public class BulletInfo : IProjectileInfo
 	{
 		public readonly int Speed = 1;
-		public readonly bool AA = false;
-		public readonly bool AG = true;
-		public readonly bool ASW = false;
 		public readonly string Trail = null;
 		public readonly bool Inaccurate = false;
 		public readonly string Image = null;
@@ -38,7 +35,6 @@ namespace OpenRA.Effects
 		public readonly bool Arcing = false;
 		public readonly int RangeLimit = 0;
 		public readonly int Arm = 0;
-		public readonly bool UnderWater = false;
 		public readonly bool Shadow = false;
 		public readonly bool Proximity = false;
 
@@ -119,7 +115,7 @@ namespace OpenRA.Effects
 				}
 				else
 					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
-						Info.UnderWater ? "shadow" : Args.firedBy.Owner.Palette);
+						Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette);
 			}
 		}
 

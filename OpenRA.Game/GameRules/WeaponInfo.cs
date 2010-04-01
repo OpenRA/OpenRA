@@ -81,7 +81,8 @@ namespace OpenRA.GameRules
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
-		public readonly string[] ValidTargets = { "Vehicle", "Infantry" };
+		public readonly bool Underwater = false;
+		public readonly string[] ValidTargets = { "Vehicle", "Infantry", "Building", "Defense", "Ship" };
 
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
@@ -98,6 +99,8 @@ namespace OpenRA.GameRules
 					case "Report": FieldLoader.LoadField(this, "Report", content.Nodes["Report"].Value); break;
 					case "Burst": FieldLoader.LoadField(this, "Burst", content.Nodes["Burst"].Value); break;
 					case "Charges": FieldLoader.LoadField(this, "Charges", content.Nodes["Charges"].Value); break;
+					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.Nodes["ValidTargets"].Value); break;
+					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.Nodes["Underwater"].Value); break;
 
 					case "Warhead":
 						{

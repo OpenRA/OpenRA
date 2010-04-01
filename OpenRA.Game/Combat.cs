@@ -117,9 +117,8 @@ namespace OpenRA
 			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor) <= 0))
 				return false;
 
-			/* todo: access to UnderWater is interesting */
-//			if (projectile.UnderWater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
-//				return false;
+			if (weapon.Underwater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
+				return false;
 
 			return true;
 		}

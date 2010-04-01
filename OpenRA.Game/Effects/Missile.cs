@@ -35,9 +35,6 @@ namespace OpenRA.Effects
 		public readonly bool Proximity = false;
 		public readonly string Trail = null;
 		public readonly bool Inaccurate = false;
-		public readonly bool AA = false;
-		public readonly bool AG = true;
-		public readonly bool ASW = false;
 		public readonly string Image = null;
 		public readonly int ROT = 5;
 		public readonly int RangeLimit = 0;
