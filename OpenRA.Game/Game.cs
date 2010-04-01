@@ -125,7 +125,7 @@ namespace OpenRA
 			Timer.Time( "world: {0}" );
 			
 			SequenceProvider.Initialize(manifest.Sequences);
-			viewport = new Viewport(clientSize, Game.world.Map.Offset, Game.world.Map.Offset + Game.world.Map.Size, renderer);
+			viewport = new Viewport(clientSize, Game.world.Map.TopLeft, Game.world.Map.BottomRight, renderer);
 			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
 
 			chrome = new Chrome(renderer, manifest);

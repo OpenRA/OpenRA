@@ -39,10 +39,9 @@ namespace OpenRA.Traits
 		public UnitInfluence( Actor self )
 		{
 			map = self.World.Map;
-			var size = self.World.Map.MapSize;
-			influence = new List<Actor>[size, size];
-			for (int i = 0; i < size; i++)
-				for (int j = 0; j < size; j++)
+			influence = new List<Actor>[self.World.Map.MapSize.X, self.World.Map.MapSize.Y];
+			for (int i = 0; i < self.World.Map.MapSize.X; i++)
+				for (int j = 0; j < self.World.Map.MapSize.Y; j++)
 					influence[ i, j ] = new List<Actor>();
 
 			self.World.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
@@ -77,8 +76,8 @@ namespace OpenRA.Traits
 		[Conditional( "SANITY_CHECKS" )]
 		void SanityCheck( Actor self )
 		{
-			for( int y = 0 ; y < self.World.Map.MapSize ; y++ )
-				for( int x = 0 ; x < self.World.Map.MapSize ; x++ )
+			for( int y = 0 ; y < self.World.Map.MapSize.Y ; y++ )
+				for( int x = 0 ; x < self.World.Map.MapSize.X ; x++ )
 					if( influence[ x, y ] != null )
 						foreach (var a in influence[ x, y ])
 							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )

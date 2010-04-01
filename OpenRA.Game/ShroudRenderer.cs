@@ -44,8 +44,8 @@ namespace OpenRA
 			this.owner = owner;
 			this.map = map;
 			
-			sprites = new Sprite[map.MapSize, map.MapSize];
-			fogSprites = new Sprite[map.MapSize, map.MapSize];
+			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
+			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 
 			shroud.Dirty += () => dirty = true;
 		}
@@ -135,11 +135,11 @@ namespace OpenRA
 			if (dirty)
 			{
 				dirty = false;
-				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
-					for (int i = map.XOffset; i < map.XOffset + map.Width; i++)
+				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 						sprites[i, j] = ChooseShroud(i, j);
-				for (int j = map.YOffset; j < map.YOffset + map.Height; j++)
-					for (int i = map.XOffset; i < map.XOffset + map.Width; i++)
+				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 						fogSprites[i, j] = ChooseFog(i, j);
 			}
 

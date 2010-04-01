@@ -20,8 +20,8 @@ namespace OpenRA.Traits
 		public SpatialBins(Actor self, SpatialBinsInfo info)
 		{
 			bins = new List<Actor>[
-				self.World.Map.MapSize / info.BinSize,
-				self.World.Map.MapSize / info.BinSize];
+				self.World.Map.MapSize.X / info.BinSize,
+				self.World.Map.MapSize.Y / info.BinSize];
 
 			scale = Game.CellSize * info.BinSize;
 		}

@@ -317,8 +317,8 @@ namespace OpenRA
 
 			if (mapPreviewDirty)
 			{
-				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize)
-					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Map.MapSize, currentMap.Map.MapSize));
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize.X || mapChooserSheet.Size.Height != currentMap.Map.MapSize.Y)
+					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Map.MapSize.X, currentMap.Map.MapSize.Y));
 				
 				var b = Minimap.RenderTerrainBitmapWithSpawnPoints(currentMap.Map, Game.world.TileSet);	// tileset -> hack
 				mapChooserSheet.Texture.SetData(b);

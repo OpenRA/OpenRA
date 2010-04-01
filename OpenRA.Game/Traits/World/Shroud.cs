@@ -44,8 +44,8 @@ namespace OpenRA.Traits
 		public Shroud(Actor self, ShroudInfo info)
 		{
 			map = self.World.Map;
-			visibleCells = new int[map.MapSize, map.MapSize];
-			exploredCells = new bool[map.MapSize, map.MapSize];
+			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
+			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
 
 			self.World.ActorAdded += AddActor;
 			self.World.ActorRemoved += RemoveActor;

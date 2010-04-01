@@ -179,8 +179,9 @@ namespace OpenRA
 
 		static int2 ClampToWorld( this World world, int2 xy )
 		{
-			var mapStart = world.Map.Offset;
-			var mapEnd = world.Map.Offset + world.Map.Size;
+			var mapStart = world.Map.TopLeft;
+			// TODO: Revist this and fix properly
+			var mapEnd = world.Map.BottomRight;
 			if( xy.X < mapStart.X )
 				xy.X = mapStart.X;
 			if( xy.X > mapEnd.X )

@@ -170,11 +170,11 @@ namespace OpenRA.Graphics
 				lineRenderer.DrawLine(a, a + c, Color.Blue, Color.Blue);
 			}
 
-			for (var j = 0; j < Game.world.Map.MapSize;
+			for (var j = 0; j < Game.world.Map.MapSize.Y;
 				j += Game.world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
 			{
-				lineRenderer.DrawLine(new float2(0, j * 24), new float2(Game.world.Map.MapSize * 24, j * 24), Color.Black, Color.Black);
-				lineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, Game.world.Map.MapSize * 24), Color.Black, Color.Black);
+				lineRenderer.DrawLine(new float2(0, j * 24), new float2(Game.world.Map.MapSize.X * 24, j * 24), Color.Black, Color.Black);
+				lineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, Game.world.Map.MapSize.Y * 24), Color.Black, Color.Black);
 			}
 		}
 

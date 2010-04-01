@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -30,8 +30,8 @@ namespace OpenRA.FileFormats
 
 		public static int[,] Extract(Map m, Func<int, int, int> f)
 		{
-			var result = new int[m.MapSize, m.MapSize];
-			var types = new int[m.MapSize, m.MapSize];
+			var result = new int[m.MapSize.X, m.MapSize.Y];
+			var types = new int[m.MapSize.X, m.MapSize.Y];
 			var d = new Dictionary<int, Node>();
 			var n = 1;
 

@@ -47,8 +47,8 @@ namespace OpenRA.Graphics
 		public Minimap(World world, Renderer r)
 		{
 			this.world = world;
-			sheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
-			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize, world.Map.MapSize));
+			sheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
+			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
 
 			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 			var dw = (size - world.Map.Width) / 2;
 			var dh = (size - world.Map.Height) / 2;
 
-			bounds = new Rectangle(world.Map.Offset.X - dw, world.Map.Offset.Y - dh, size, size);
+			bounds = new Rectangle(world.Map.TopLeft.X - dw, world.Map.TopLeft.Y - dh, size, size);
 
 			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
 			mapOnlySprite = new Sprite(mapOnlySheet, bounds, TextureChannel.Alpha);
@@ -73,7 +73,7 @@ namespace OpenRA.Graphics
 			var dw = (size - m.Width) / 2;
 			var dh = (size - m.Height) / 2;
 
-			return new Rectangle(m.Offset.X - dw, m.Offset.Y - dh, size, size);
+			return new Rectangle(m.TopLeft.X - dw, m.TopLeft.Y - dh, size, size);
 		}
 		
 		static Cache<string, TerrainColorSet> terrainTypeColors = new Cache<string, TerrainColorSet>(
@@ -88,9 +88,9 @@ namespace OpenRA.Graphics
 
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
-			var terrain = new Bitmap(map.MapSize, map.MapSize);
-			for (var y = 0; y < map.MapSize; y++)
-				for (var x = 0; x < map.MapSize; x++)
+			var terrain = new Bitmap(map.MapSize.X, map.MapSize.Y);
+			for (var y = 0; y < map.MapSize.Y; y++)
+				for (var x = 0; x < map.MapSize.X; x++)
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
 						? Color.FromArgb(alpha, terrainTypeColors[map.Theater].ColorForTerrainType(tileset.GetTerrainType(map.MapTiles[x, y])))
 						: shroudColor);
@@ -117,8 +117,8 @@ namespace OpenRA.Graphics
 				var res = world.WorldActor.traits.Get<ResourceLayer>();
 				
 				oreLayer = new Bitmap(terrain);
-				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
-					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
+				for (var y = world.Map.TopLeft.Y; y < world.Map.BottomRight.Y; y++)
+					for (var x = world.Map.TopLeft.X; x < world.Map.BottomRight.X; x++)
 						if (res.GetResource(new int2(x,y)) != null)
 							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Ore)));
 			}
@@ -140,8 +140,8 @@ namespace OpenRA.Graphics
 					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
 						Color.FromArgb(alpha, a.Actor.Owner.Color).ToArgb();
 
-				for (var y = world.Map.YOffset; y < world.Map.YOffset + world.Map.Height; y++)
-					for (var x = world.Map.XOffset; x < world.Map.XOffset + world.Map.Width; x++)
+				for (var y = world.Map.BottomRight.Y; y < world.Map.YOffset + world.Map.BottomRight.Y; y++)
+					for (var x = world.Map.TopLeft.X; x < world.Map.BottomRight.X; x++)
 					{
 						if (!world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
 						{

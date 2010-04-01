@@ -92,9 +92,10 @@ namespace MapConverter
 			Height = int.Parse(map.GetValue("Height", "0"));
 			MapSize = (INIFormat == 3) ? 128 : 64;
 			
-			Map.Size.X = MapSize;
-			Map.Size.Y = MapSize;
-			Map.Bounds = new int[] {XOffset, YOffset, Width, Height};
+			Map.MapSize.X = MapSize;
+			Map.MapSize.Y = MapSize;
+			Map.TopLeft = new int2 (XOffset, YOffset);
+			Map.BottomRight = new int2(XOffset+Width,YOffset+Height);
 			
 			if (INIFormat == 3) // RA map
 			{
@@ -184,28 +185,28 @@ namespace MapConverter
 		void UnpackRATileData( MemoryStream ms )
 		{
 			Map.MapTiles = new TileReference<ushort, byte>[ MapSize, MapSize ];
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-					Map.MapTiles[j, i] = new TileReference<ushort,byte>();
+			for( int j = 0 ; j < MapSize ; j++ )
+				for( int i = 0 ; i < MapSize ; i++ )
+					Map.MapTiles[i,j] = new TileReference<ushort,byte>();
 			
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-					Map.MapTiles[j, i].type = ReadWord(ms);
+			for( int j = 0 ; j < MapSize ; j++ )
+				for( int i = 0 ; i < MapSize ; i++ )
+					Map.MapTiles[i,j].type = ReadWord(ms);
 
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
+			for( int j = 0 ; j < MapSize ; j++ )
+				for( int i = 0 ; i < MapSize ; i++ )
 				{
-					Map.MapTiles[j, i].index = (byte)ms.ReadByte();
-					if( Map.MapTiles[ j, i ].type == 0xff || Map.MapTiles[ j, i ].type == 0xffff )
-						Map.MapTiles[ j, i ].index = byte.MaxValue;
+					Map.MapTiles[i,j].index = (byte)ms.ReadByte();
+					if( Map.MapTiles[i,j].type == 0xff || Map.MapTiles[i,j].type == 0xffff )
+						Map.MapTiles[i,j].index = byte.MaxValue;
 				}
 		}
 	
 		void UnpackRAOverlayData( MemoryStream ms )
 		{
 			Map.MapResources = new TileReference<byte, byte>[ MapSize, MapSize ];		
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
+			for( int j = 0 ; j < MapSize ; j++ )
+				for( int i = 0 ; i < MapSize ; i++ )
 				{
 					byte o = ReadByte( ms );
 					var res = Pair.New((byte)0,(byte)0);
@@ -213,7 +214,7 @@ namespace MapConverter
 					if (o != 255 && resourceMapping.ContainsKey(raOverlayNames[o]))
 						res = resourceMapping[raOverlayNames[o]];
 				
-					Map.MapResources[j, i] = new TileReference<byte,byte>(res.First, res.Second);
+					Map.MapResources[i,j] = new TileReference<byte,byte>(res.First, res.Second);
 				}
 		}
 

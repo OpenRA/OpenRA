@@ -55,8 +55,8 @@ namespace OpenRA
 		public void Draw( World world )
 		{
 			if (Game.Settings.UnitDebug)
-				for (var j = 0; j < world.Map.MapSize; j++)
-					for (var i = 0; i < world.Map.MapSize; i++)
+				for (var j = 0; j < world.Map.MapSize.Y; j++)
+					for (var i = 0; i < world.Map.MapSize.X; i++)
 						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
 		}

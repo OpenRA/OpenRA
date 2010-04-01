@@ -38,8 +38,8 @@ namespace OpenRA.Traits
 		{
 			map = self.World.Map;
 			
-			blocked = new bool[map.MapSize, map.MapSize];
-			influence = new Actor[map.MapSize, map.MapSize];
+			blocked = new bool[map.MapSize.X, map.MapSize.Y];
+			influence = new Actor[map.MapSize.X, map.MapSize.Y];
 			
 			self.World.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 

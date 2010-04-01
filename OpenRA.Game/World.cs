@@ -79,7 +79,7 @@ namespace OpenRA
 			Timer.Time( "----World.ctor" );
 			
 			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
-			customTerrain = new ICustomTerrain[Map.MapSize, Map.MapSize];
+			customTerrain = new ICustomTerrain[Map.MapSize.X, Map.MapSize.Y];
 			Timer.Time( "new Map: {0}" );
 			
 			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()

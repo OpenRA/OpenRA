@@ -1,68 +1,61 @@
 MapFormat: 1
 
-Title: Isle of Fury (6-8)
+Title: Middle Mayhem (2)
 
 Author: Westwood Studios
 
-PlayerCount: 8
+PlayerCount: 2
 
-Tileset: TEMPERAT
+Tileset: SNOW
 
 Tiledata: testmap.bin
 
-Size: 128,128
+MapSize: 128,128
 
-Bounds: 14,17,96,96
+TopLeft: 27,26
+
+BottomRight: 102,91
 
 Actors:
-	Actor0: TC05 Neutral 93,90
-	Actor1: TC04 Neutral 92,92
-	Actor2: TC01 Neutral 88,92
-	Actor3: T11 Neutral 96,93
-	Actor4: T08 Neutral 90,94
-	Actor5: MINE Neutral 67,103
-	Actor6: MINE Neutral 52,97
-	Actor7: MINE Neutral 48,81
-	Actor8: TC05 Neutral 59,103
-	Actor9: TC01 Neutral 52,102
-	Actor10: T08 Neutral 71,97
-	Actor11: T08 Neutral 50,94
-	Actor12: MINE Neutral 47,78
-	Actor13: T14 Neutral 41,52
-	Actor14: MINE Neutral 37,44
-	Actor15: MINE Neutral 27,52
-	Actor16: MINE Neutral 64,79
-	Actor17: MINE Neutral 64,62
-	Actor18: MINE Neutral 61,24
-	Actor19: MINE Neutral 68,27
-	Actor20: MINE Neutral 61,35
-	Actor21: MINE Neutral 89,50
-	Actor22: MINE Neutral 67,98
-	Actor23: TC04 Neutral 53,73
-	Actor24: TC03 Neutral 81,65
-	Actor25: TC04 Neutral 97,41
-	Actor26: TC05 Neutral 67,49
-	Actor27: TC02 Neutral 53,59
-	Actor28: TC03 Neutral 22,51
-	Actor29: TC01 Neutral 25,53
-	Actor30: TC01 Neutral 47,22
-	Actor31: TC02 Neutral 32,36
-	Actor32: TC02 Neutral 25,77
-	Actor33: TC04 Neutral 28,81
-	Actor34: TC02 Neutral 29,87
-	Actor35: T08 Neutral 25,81
-	Actor36: T08 Neutral 52,59
-	Actor37: T08 Neutral 51,57
+	Actor0: TC05 Neutral 62,58
+	Actor1: TC04 Neutral 64,63
+	Actor2: TC03 Neutral 73,60
+	Actor3: TC03 Neutral 55,48
+	Actor4: TC01 Neutral 58,51
+	Actor5: TC01 Neutral 54,68
+	Actor6: T17 Neutral 60,68
+	Actor7: TC02 Neutral 48,57
+	Actor8: TC05 Neutral 68,63
+	Actor9: T16 Neutral 71,63
+	Actor10: T16 Neutral 70,55
+	Actor11: TC01 Neutral 83,57
+	Actor12: TC02 Neutral 62,54
+	Actor13: T08 Neutral 62,56
+	Actor14: T01 Neutral 49,80
+	Actor15: TC04 Neutral 50,81
+	Actor16: T16 Neutral 53,82
+	Actor17: TC02 Neutral 42,79
+	Actor18: TC03 Neutral 27,26
+	Actor19: T01 Neutral 29,48
+	Actor20: T02 Neutral 31,50
+	Actor21: T03 Neutral 32,59
+	Actor22: TC05 Neutral 56,88
+	Actor23: TC03 Neutral 54,89
+	Actor24: T16 Neutral 56,89
+	Actor25: T15 Neutral 52,89
+	Actor26: T14 Neutral 64,78
+	Actor27: TC01 Neutral 27,44
+	Actor28: TC01 Neutral 45,39
+	Actor29: T17 Neutral 76,26
+	Actor30: MINE Neutral 68,53
+	Actor31: MINE Neutral 54,57
+	Actor32: MINE Neutral 53,65
+	Actor33: MINE Neutral 65,68
+	Actor34: MINE Neutral 80,61
 
 Waypoints:
-	spawn0: 87,100
-	spawn1: 36,75
-	spawn2: 92,29
-	spawn3: 31,30
-	spawn4: 61,54
-	spawn5: 91,63
-	spawn6: 34,97
-	spawn7: 63,83
+	spawn0: 34,84
+	spawn1: 35,34
 
 Rules:
 

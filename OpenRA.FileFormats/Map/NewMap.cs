@@ -36,7 +36,6 @@ namespace OpenRA.FileFormats
 		public string Author;
 		public int PlayerCount;
 		public string Preview;
-		public int[] Bounds;
 		public string Tileset;
 
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
@@ -46,26 +45,25 @@ namespace OpenRA.FileFormats
 		// Binary map data
 		public string Tiledata;
 		public byte TileFormat = 1;
-		public int2 Size;
+		public int2 MapSize;
+		
+		public int2 TopLeft;
+		public int2 BottomRight;
+		
 		public TileReference<ushort,byte>[ , ] MapTiles;
 		public TileReference<byte, byte>[ , ] MapResources;
 		
 		
 		// Temporary compat hacks
-		public int MapSize {get {return Size.X;}}
-		public int XOffset {get {return Bounds[0];}}
-		public int YOffset {get {return Bounds[1];}}
-		public int2 Offset { get { return new int2( Bounds[0], Bounds[1] ); } }
-		public int Width {get {return Bounds[2];}}
-		public int Height {get {return Bounds[3];}}
+		public int XOffset {get {return TopLeft.X;}}
+		public int YOffset {get {return TopLeft.Y;}}
+		public int Width {get {return BottomRight.X-TopLeft.X;}}
+		public int Height {get {return BottomRight.Y-TopLeft.Y;}}
 		public string Theater {get {return Tileset;}}
 		public IEnumerable<int2> SpawnPoints {get {return Waypoints.Select(kv => kv.Value);}}
-
-		
-		
 		
 		List<string> SimpleFields = new List<string>() {
-			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "Size", "Bounds"
+			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "MapSize", "TopLeft", "BottomRight"
 		};
 		
 		public Map() {}
@@ -150,26 +148,26 @@ namespace OpenRA.FileFormats
 
 			// Load header info
 			byte version = ReadByte(dataStream);
-			Size.X = ReadWord(dataStream);
-			Size.Y = ReadWord(dataStream);
+			MapSize.X = ReadWord(dataStream);
+			MapSize.Y = ReadWord(dataStream);
 			
-			MapTiles = new TileReference<ushort, byte>[ Size.X, Size.Y ];
-			MapResources = new TileReference<byte, byte>[ Size.X, Size.Y ];
+			MapTiles = new TileReference<ushort, byte>[ MapSize.X, MapSize.Y ];
+			MapResources = new TileReference<byte, byte>[ MapSize.X, MapSize.Y ];
 	
 			// Load tile data
-			for( int i = 0 ; i < Size.X ; i++ )
-				for( int j = 0 ; j < Size.Y ; j++ )
+			for( int i = 0 ; i < MapSize.X ; i++ )
+				for( int j = 0 ; j < MapSize.Y ; j++ )
 				{
 					ushort tile = ReadWord(dataStream);
 					byte index = ReadByte(dataStream);
 					byte image = (index == byte.MaxValue) ? (byte)( i % 4 + ( j % 4 ) * 4 ) : index;
-					MapTiles[i, j] = new TileReference<ushort,byte>(tile,index, image);
+					MapTiles[i,j] = new TileReference<ushort,byte>(tile,index, image);
 				}
 			
 			// Load resource data
-			for( int i = 0 ; i < Size.X ; i++ )
-				for( int j = 0 ; j < Size.Y ; j++ )
-					MapResources[i, j] = new TileReference<byte,byte>(ReadByte(dataStream),ReadByte(dataStream));
+			for( int i = 0 ; i < MapSize.X ; i++ )
+				for( int j = 0 ; j < MapSize.Y ; j++ )
+					MapResources[i,j] = new TileReference<byte,byte>(ReadByte(dataStream),ReadByte(dataStream));
 		}
 		
 		public void SaveBinaryData(string filepath)
@@ -180,23 +178,23 @@ namespace OpenRA.FileFormats
 			
 			// File header consists of a version byte, followed by 2 ushorts for width and height
 			writer.Write(TileFormat);
-			writer.Write((ushort)Size.X);
-			writer.Write((ushort)Size.Y);
+			writer.Write((ushort)MapSize.X);
+			writer.Write((ushort)MapSize.Y);
 			
 			// Tile data
-			for( int i = 0 ; i < Size.X ; i++ )
-				for( int j = 0 ; j < Size.Y ; j++ )
+			for( int i = 0 ; i < MapSize.X ; i++ )
+				for( int j = 0 ; j < MapSize.Y ; j++ )
 				{			
-					writer.Write( MapTiles[j,i].type );
-					writer.Write( MapTiles[ j, i ].index );
+					writer.Write( MapTiles[i,j].type );
+					writer.Write( MapTiles[i,j].index );
 				}
 						
 			// Resource data	
-			for( int i = 0 ; i < Size.X ; i++ )
-				for( int j = 0 ; j < Size.Y ; j++ )
+			for( int i = 0 ; i < MapSize.X ; i++ )
+				for( int j = 0 ; j < MapSize.Y ; j++ )
 				{					
-					writer.Write( MapResources[j,i].type );
-					writer.Write( MapResources[j,i].index );
+					writer.Write( MapResources[i,j].type );
+					writer.Write( MapResources[i,j].index );
 				}
 			
 			writer.Flush();
@@ -211,7 +209,7 @@ namespace OpenRA.FileFormats
 		
 		public bool IsInMap(int x, int y)
 		{
-			return (x >= Bounds[0] && y >= Bounds[1] && x < Bounds[0] + Bounds[2] && y < Bounds[1] + Bounds[3]);
+			return (x >= TopLeft.X && y >= TopLeft.Y && x < BottomRight.X && y < BottomRight.Y);
 		}
 		
 		public void DebugContents()

@@ -173,9 +173,9 @@ namespace OpenRA
 
 		static CellInfo[ , ] InitCellInfo()
 		{
-			var cellInfo = new CellInfo[ Game.world.Map.MapSize, Game.world.Map.MapSize ];
-			for( int x = 0 ; x < Game.world.Map.MapSize ; x++ )
-				for( int y = 0 ; y < Game.world.Map.MapSize ; y++ )
+			var cellInfo = new CellInfo[ Game.world.Map.MapSize.X, Game.world.Map.MapSize.Y ];
+			for( int x = 0 ; x < Game.world.Map.MapSize.X ; x++ )
+				for( int y = 0 ; y < Game.world.Map.MapSize.Y ; y++ )
 					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
 			return cellInfo;
 		}
