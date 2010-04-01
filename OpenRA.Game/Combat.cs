@@ -109,25 +109,19 @@ namespace OpenRA
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			return true;		// massive hack, and very wrong.
-
-			/*var projectile = Rules.ProjectileInfo[weapon.Projectile];
-			var warhead = Rules.WarheadInfo[weapon.Warhead];
 			var unit = target.traits.GetOrDefault<Unit>();
 
-			if (warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor) <= 0)
+			if (!weapon.ValidTargets.Contains(target.Info.Category))
 				return false;
 
-			if (target.traits.Contains<Submarine>())
-				return projectile.ASW;
-
-			if (unit != null && unit.Altitude > 0)
-				return projectile.AA;
-
-			if (projectile.UnderWater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
+			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor) <= 0))
 				return false;
 
-			return projectile.AG;*/
+			/* todo: access to UnderWater is interesting */
+//			if (projectile.UnderWater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
+//				return false;
+
+			return true;
 		}
 
 		public static bool HasAnyValidWeapons(Actor self, Actor target)

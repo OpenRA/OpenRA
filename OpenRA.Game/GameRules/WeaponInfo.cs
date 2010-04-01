@@ -81,6 +81,7 @@ namespace OpenRA.GameRules
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
+		public readonly string[] ValidTargets = { "Vehicle", "Infantry" };
 
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
