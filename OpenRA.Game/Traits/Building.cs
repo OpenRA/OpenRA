@@ -34,6 +34,7 @@ namespace OpenRA.Traits
 		public readonly bool Crewed = false;		// replace with trait?
 		public readonly int Sight = 0;
 		public readonly bool WaterBound = false;
+		public readonly string TargetType = "Ground";
 	}
 
 	public class BuildingInfo : OwnedActorInfo, ITraitInfo

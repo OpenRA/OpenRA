@@ -109,15 +109,15 @@ namespace OpenRA
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			var unit = target.traits.GetOrDefault<Unit>();
+			var ownedInfo = target.Info.Traits.GetOrDefault<OwnedActorInfo>();
 
-			if (!weapon.ValidTargets.Contains(target.Info.Category))
+			if (!weapon.ValidTargets.Contains(ownedInfo.TargetType))
 				return false;
 
-			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor) <= 0))
+			if (weapon.Warheads.All( w => w.EffectivenessAgainst(ownedInfo.Armor) <= 0))
 				return false;
 
-			if (weapon.Underwater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
+			if (weapon.Underwater && !ownedInfo.WaterBound)
 				return false;
 
 			return true;

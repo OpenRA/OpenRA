@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 		mods\ra\rules.ini = mods\ra\rules.ini
 		mods\ra\rules.yaml = mods\ra\rules.yaml
 		mods\ra\sequences.xml = mods\ra\sequences.xml
+		mods\ra\voices.yaml = mods\ra\voices.yaml
+		mods\ra\weapons.yaml = mods\ra\weapons.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aftermath", "aftermath", "{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78}"

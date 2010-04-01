@@ -15,7 +15,7 @@ ZSU-23:
 	ROF: 10
 	Range: 6
 	Report: AACANON3
-	ValidTargets: Plane
+	ValidTargets: Air
 	Bullet:
 		Speed: 100
 	Warhead:
@@ -41,7 +41,7 @@ Maverick:
 	ROF: 3
 	Range: 6
 	Report: MISSILE7
-	ValidTargets: Vehicle, Infantry, Plane, Building, Defense, Ship
+	ValidTargets: Ground, Air
 	Missile:
 		Speed: 30
 		Arm: 2
@@ -140,7 +140,7 @@ Dragon:
 	ROF: 50
 	Range: 5
 	Report: MISSILE6
-	ValidTargets: Vehicle, Infantry, Plane, Building, Defense, Ship
+	ValidTargets: Ground, Air
 	Missile:
 		Speed: 25
 		Arm: 2
@@ -166,7 +166,7 @@ Hellfire:
 	ROF: 60
 	Range: 4
 	Report: MISSILE6
-	ValidTargets: Vehicle, Infantry, Plane, Building, Defense, Ship
+	ValidTargets: Ground, Air
 	Missile:
 		Speed: 30
 		Arm: 2
@@ -298,7 +298,7 @@ MammothTusk:
 	Range: 5
 	Report: MISSILE6
 	Burst: 2
-	ValidTargets: Vehicle, Infantry, Plane, Building, Defense, Ship
+	ValidTargets: Ground, Air
 	Missile:
 		Speed: 30
 		Arm: 2
@@ -409,7 +409,7 @@ Nike:
 	ROF: 20
 	Range: 7.5
 	Report: MISSILE1
-	ValidTargets: Plane
+	ValidTargets: Air
 	Missile:
 		Arm: 3
 		High: true
@@ -433,7 +433,7 @@ RedEye:
 	ROF: 50
 	Range: 7.5
 	Report: MISSILE1
-	ValidTargets: Plane
+	ValidTargets: Air
 	Missile:
 		Arm: 3
 		High: true
@@ -477,7 +477,7 @@ Stinger:
 	ROF: 60
 	Range: 9
 	Report: MISSILE6
-	ValidTargets: Vehicle, Infantry, Plane, Building, Defense, Ship
+	ValidTargets: Ground, Air
 	Missile:
 		Arm: 3
 		High: true
@@ -503,7 +503,7 @@ TorpTube:
 	ROF: 60
 	Range: 9
 	Report: TORPEDO1
-	ValidTargets: Ship, Building
+	ValidTargets: Ground, Sub
 	Underwater: yes
 	Bullet:
 		Image: MISSILE
@@ -538,7 +538,7 @@ TorpTube:
 DepthCharge:
 	ROF: 60
 	Range: 5
-	ValidTargets: Ship
+	ValidTargets: Sub
 	Bullet:
 		Speed: 5
 		Image: BOMB
