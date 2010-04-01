@@ -70,7 +70,7 @@ namespace OpenRA.FileFormats
 		
 		public Map(string filename)
 		{			
-			var yaml = MiniYaml.FromFile(filename);
+			var yaml = MiniYaml.FromFileInPackage(filename);
 			
 			// 'Simple' metadata
 			foreach (var field in SimpleFields)

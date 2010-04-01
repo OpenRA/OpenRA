@@ -48,7 +48,7 @@ namespace OpenRA.FileFormats
 
 		public class Global
 		{
-			public string Map = "mods/ra/testmap.yaml";
+			public string Map = "testmap.yaml";
 			public string[] Packages = {};	// filename:sha1 pairs.
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;

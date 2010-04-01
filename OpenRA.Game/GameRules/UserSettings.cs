@@ -41,7 +41,7 @@ namespace OpenRA.GameRules
 		// External game settings
 		public readonly string NetworkHost = "";
 		public readonly int NetworkPort = 0;
-		public readonly string Map = "mods/ra/testmap.yaml";
+		public readonly string Map = "testmap.yaml";
 		public readonly int Player = 1;
 		public readonly string Replay = "";
 		public readonly string PlayerName = "";

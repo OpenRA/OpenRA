@@ -83,8 +83,20 @@ namespace OpenRA.FileFormats
 			return levels[0];
 		}
 
-		public static Dictionary<string, MiniYaml> FromFile( string path )
+		public static Dictionary<string, MiniYaml> FromFileInPackage( string path )
 		{
+			StreamReader reader = new StreamReader( FileSystem.Open(path) );
+			List<string> lines = new List<string>();
+			
+			while( !reader.EndOfStream )
+				lines.Add(reader.ReadLine());
+			reader.Close();
+			
+			return FromLines(lines.ToArray());
+		}
+		
+		public static Dictionary<string, MiniYaml> FromFile( string path )
+		{			
 			return FromLines(File.ReadAllLines( path ));
 		}
 

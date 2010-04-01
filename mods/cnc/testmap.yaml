@@ -1,0 +1,180 @@
+MapFormat: 1
+
+Title: (null)
+
+Author: Westwood Studios
+
+PlayerCount: 7
+
+Tileset: TEMPERAT
+
+Tiledata: testmap.bin
+
+MapSize: 64,64
+
+TopLeft: 31,31
+
+BottomRight: 62,62
+
+Actors:
+	Actor0: sbag Neutral 50,55
+	Actor1: sbag Neutral 49,55
+	Actor2: sbag Neutral 48,55
+	Actor3: sbag Neutral 51,54
+	Actor4: sbag Neutral 50,54
+	Actor5: sbag Neutral 61,38
+	Actor6: sbag Neutral 60,38
+	Actor7: sbag Neutral 59,38
+	Actor8: sbag Neutral 58,38
+	Actor9: sbag Neutral 57,38
+	Actor10: sbag Neutral 53,38
+	Actor11: sbag Neutral 52,38
+	Actor12: sbag Neutral 51,38
+	Actor13: sbag Neutral 50,38
+	Actor14: sbag Neutral 49,38
+	Actor15: sbag Neutral 48,38
+	Actor16: sbag Neutral 47,38
+	Actor17: sbag Neutral 44,38
+	Actor18: sbag Neutral 43,38
+	Actor19: sbag Neutral 42,38
+	Actor20: sbag Neutral 61,37
+	Actor21: sbag Neutral 47,37
+	Actor22: sbag Neutral 42,37
+	Actor23: sbag Neutral 61,36
+	Actor24: sbag Neutral 47,36
+	Actor25: sbag Neutral 42,36
+	Actor26: sbag Neutral 61,35
+	Actor27: sbag Neutral 61,34
+	Actor28: sbag Neutral 47,34
+	Actor29: sbag Neutral 61,33
+	Actor30: sbag Neutral 47,33
+	Actor31: sbag Neutral 61,32
+	Actor32: sbag Neutral 47,32
+	Actor33: sbag Neutral 61,31
+	Actor34: sbag Neutral 60,31
+	Actor35: sbag Neutral 59,31
+	Actor36: sbag Neutral 58,31
+	Actor37: sbag Neutral 57,31
+	Actor38: sbag Neutral 56,31
+	Actor39: sbag Neutral 55,31
+	Actor40: sbag Neutral 54,31
+	Actor41: sbag Neutral 53,31
+	Actor42: sbag Neutral 52,31
+	Actor43: sbag Neutral 51,31
+	Actor44: sbag Neutral 50,31
+	Actor45: sbag Neutral 49,31
+	Actor46: sbag Neutral 48,31
+	Actor47: sbag Neutral 47,31
+	Actor48: tc04 Neutral 49,42
+	Actor49: t02 Neutral 36,48
+	Actor50: t01 Neutral 39,51
+	Actor51: t02 Neutral 48,53
+	Actor52: t16 Neutral 56,46
+	Actor53: tc04 Neutral 57,45
+	Actor54: tc05 Neutral 56,42
+	Actor55: t01 Neutral 57,49
+	Actor56: t02 Neutral 59,47
+	Actor57: t01 Neutral 46,50
+	Actor58: t01 Neutral 49,48
+	Actor59: tc02 Neutral 48,47
+	Actor60: t16 Neutral 43,48
+	Actor61: t07 Neutral 42,40
+	Actor62: t02 Neutral 44,48
+	Actor63: tc02 Neutral 44,49
+	Actor64: tc01 Neutral 42,41
+	Actor65: tc01 Neutral 44,50
+	Actor66: t06 Neutral 40,54
+	Actor67: tc02 Neutral 58,49
+	Actor68: t07 Neutral 41,40
+	Actor69: t07 Neutral 61,40
+	Actor70: t06 Neutral 39,35
+	Actor71: tc05 Neutral 31,34
+	Actor72: tc04 Neutral 37,34
+	Actor73: tc02 Neutral 31,37
+	Actor74: tc02 Neutral 55,45
+	Actor75: tc01 Neutral 54,42
+	Actor76: t01 Neutral 32,31
+	Actor77: tc02 Neutral 33,31
+	Actor78: pyle GoodGuy 55,51
+	Actor79: silo BadGuy 57,32
+	Actor80: silo BadGuy 59,32
+	Actor81: nuke BadGuy 55,32
+	Actor82: fact BadGuy 52,32
+	Actor83: nuke GoodGuy 53,52
+	Actor84: proc BadGuy 57,34
+	Actor85: bggy BadGuy 52,39
+	Actor86: harv BadGuy 50,35
+	Actor87: jeep GoodGuy 54,49
+	Actor88: jeep GoodGuy 57,49
+	Actor89: bggy BadGuy 33,37
+	Actor90: bggy BadGuy 51,50
+	Actor91: bggy BadGuy 59,39
+	Actor92: jeep GoodGuy 56,54
+	Actor93: e1 BadGuy 48,32
+	Actor94: e1 BadGuy 35,31
+	Actor95: e1 BadGuy 39,31
+	Actor96: e1 BadGuy 49,32
+	Actor97: e1 BadGuy 37,32
+	Actor98: e1 BadGuy 50,34
+	Actor99: e1 BadGuy 50,32
+	Actor100: e1 BadGuy 36,31
+	Actor101: e1 BadGuy 49,34
+	Actor102: e1 BadGuy 36,32
+	Actor103: e1 BadGuy 49,33
+	Actor104: e1 BadGuy 48,33
+	Actor105: e1 BadGuy 46,33
+	Actor106: e1 BadGuy 46,34
+	Actor107: e1 BadGuy 40,37
+	Actor108: e1 BadGuy 40,38
+	Actor109: e1 BadGuy 41,37
+	Actor110: e1 BadGuy 41,38
+	Actor111: e1 BadGuy 50,39
+	Actor112: e1 BadGuy 60,36
+	Actor113: e1 BadGuy 60,37
+	Actor114: e1 BadGuy 60,37
+	Actor115: e1 BadGuy 35,39
+	Actor116: e1 BadGuy 50,37
+	Actor117: e1 BadGuy 58,39
+	Actor118: e1 BadGuy 60,40
+	Actor119: e1 BadGuy 61,39
+	Actor120: e1 BadGuy 59,34
+	Actor121: e1 BadGuy 60,34
+	Actor122: e1 BadGuy 56,32
+	Actor123: e1 BadGuy 51,32
+	Actor124: e1 BadGuy 60,34
+	Actor125: e1 BadGuy 52,53
+	Actor126: e1 BadGuy 38,49
+	Actor127: e1 BadGuy 38,48
+	Actor128: e1 BadGuy 53,40
+	Actor129: e1 BadGuy 45,36
+	Actor130: e1 GoodGuy 50,51
+	Actor131: e1 GoodGuy 50,50
+	Actor132: e1 GoodGuy 53,49
+	Actor133: e1 GoodGuy 51,49
+	Actor134: e1 BadGuy 52,40
+	Actor135: e1 GoodGuy 52,50
+	Actor136: e1 GoodGuy 56,49
+	Actor137: e1 BadGuy 55,42
+	Actor138: e1 BadGuy 56,42
+	Actor139: e1 BadGuy 45,36
+	Actor140: e1 BadGuy 44,36
+	Actor141: e1 BadGuy 54,48
+	Actor142: e1 BadGuy 52,52
+	Actor143: e1 BadGuy 48,37
+	Actor144: e1 BadGuy 37,37
+	Actor145: e1 BadGuy 50,37
+	Actor146: e1 BadGuy 38,32
+	Actor147: e1 BadGuy 49,36
+	Actor148: e1 BadGuy 48,36
+
+Waypoints:
+	spawn6: 54,39
+	spawn5: 46,37
+	spawn4: 46,41
+	spawn3: 59,41
+	spawn2: 54,55
+	spawn1: 38,54
+	spawn0: 35,33
+
+Rules:
+
