@@ -78,11 +78,7 @@ namespace OpenRA.Effects
 		{
 			t += 40;
 
-			if (t > TotalTime())		/* remove finished bullets */
-			{
-				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpact(Args.weapon.Warheads[0], Args, VisualDest - new int2(0, Args.destAltitude));
-			}
+			if (t > TotalTime()) Explode( world );
 
 			if (Info.Trail != null)
 			{
@@ -125,6 +121,12 @@ namespace OpenRA.Effects
 					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
 						Info.UnderWater ? "shadow" : Args.firedBy.Owner.Palette);
 			}
+		}
+
+		void Explode( World world )
+		{
+			world.AddFrameEndTask(w => w.Remove(this));
+			Combat.DoImpacts(Args, VisualDest - new int2(0, Args.destAltitude));
 		}
 	}
 }

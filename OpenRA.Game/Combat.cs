@@ -69,6 +69,19 @@ namespace OpenRA
 					(int)GetDamageToInflict(victim, args, warhead, firepowerModifier), warhead);
 		}
 
+		public static void DoImpacts(ProjectileArgs args, int2 visualLocation)
+		{
+			foreach (var warhead in args.weapon.Warheads)
+			{
+				Action a = () => DoImpact(warhead, args, visualLocation);
+				if (warhead.Delay > 0)
+					args.firedBy.World.AddFrameEndTask(
+						w => w.Add(new DelayedAction(warhead.Delay, a)));
+				else
+					a();
+			}
+		}
+
 		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead, float modifier)
 		{
 			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage * modifier), 2));
