@@ -29,16 +29,8 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
-	public class ResourceLayer// : IRenderOverlay, ILoadWorldHook
-	{
-		public ResourceLayer(Actor self) {}
-		public void Destroy(int2 p){}
-		public ResourceTypeInfo GetResource(int2 p) {return null;}
-		public ResourceTypeInfo Harvest(int2 p) {return null;}
-		public void AddResource(ResourceTypeInfo info, int i, int j, int n) {}
-		public void Grow(ResourceTypeInfo info) {}
-		public void Spread(ResourceTypeInfo info) {}
-		/*
+	public class ResourceLayer: IRenderOverlay, ILoadWorldHook
+	{		
 		SpriteRenderer sr;
 		World w;
 
@@ -73,7 +65,7 @@ namespace OpenRA.Traits
 		public void WorldLoaded(World w)
 		{
 			this.w = w;
-			content = new CellContents[w.Map.MapSize, w.Map.MapSize];
+			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
 
 			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
 			foreach (var rt in resourceTypes)
@@ -81,11 +73,11 @@ namespace OpenRA.Traits
 
 			var map = w.Map;
 
-			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
-				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
 					content[x,y].type = resourceTypes.FirstOrDefault(
-						r => r.Overlays.Contains(w.Map.MapTiles[x, y].overlay));
+						r => r.ResourceType == w.Map.MapResources[x,y].type);
 					if (content[x, y].type != null)
 						content[x, y].image = ChooseContent(content[x, y].type);
 				}
@@ -157,17 +149,14 @@ namespace OpenRA.Traits
 		public void Grow(ResourceTypeInfo info)
 		{
 			var map = w.Map;
-			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
-			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
-
-			var newDensity = new byte[map.MapSize, map.MapSize];
-			for (int j = minj; j < maxj; j++)
-				for (int i = mini; i < maxi; i++)
+			var newDensity = new byte[map.MapSize.X, map.MapSize.Y];
+			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (content[i, j].type == info)
 						newDensity[i, j] = (byte)GetIdealDensity(i, j);
 
-			for (int j = minj; j < maxj; j++)
-				for (int i = mini; i < maxi; i++)
+			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (content[i, j].type == info && content[i, j].density < newDensity[i, j])
 						++content[i, j].density;
 		}
@@ -179,16 +168,16 @@ namespace OpenRA.Traits
 			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
 			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
 
-			var growMask = new bool[map.MapSize, map.MapSize];
-			for (int j = minj; j < maxj; j++)
-				for (int i = mini; i < maxi; i++)
+			var growMask = new bool[map.MapSize.X, map.MapSize.Y];
+			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (content[i,j].type == null
 						&& GetAdjacentCellsWith(info, i,j ) > 0
 						&& w.IsCellBuildable(new int2(i, j), false))
 						growMask[i, j] = true;
 
-			for (int j = minj; j < maxj; j++)
-				for (int i = mini; i < maxi; i++)
+			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (growMask[i, j])
 					{
 						content[i, j].type = info;
@@ -206,6 +195,5 @@ namespace OpenRA.Traits
 			public Sprite[] image;
 			public int density;
 		}
-		*/
 	}
 }

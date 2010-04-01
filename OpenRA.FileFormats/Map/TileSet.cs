@@ -88,16 +88,12 @@ namespace OpenRA.FileFormats
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{
 			Terrain tile;
-			Log.Write("Attempting to load tile {0} {1}",r.type,r.image);
 			try {
 				if( tiles.TryGetValue( r.type, out tile ) )
 					return tile.TileBitmapBytes[ r.image ];
 			}
-			catch (System.ArgumentOutOfRangeException)
-			{
-				tiles.TryGetValue( 0xfffe, out tile );
-				return tile.TileBitmapBytes[ 0 ];
-			}
+			catch (System.ArgumentOutOfRangeException) {	}
+			
 			byte[] missingTile = new byte[ 24 * 24 ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
 				missingTile[ i ] = 0x36;

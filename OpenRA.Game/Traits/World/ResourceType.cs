@@ -24,9 +24,9 @@ namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
 	{
-		public readonly string[] Overlays = { };
 		public readonly string[] SpriteNames = { };
 		public readonly string Palette = "terrain";
+		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;
 		public readonly string Name = null;

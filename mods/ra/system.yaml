@@ -232,7 +232,7 @@ World:
 		OverlayTypes: barb
 	ResourceLayer:
 	ResourceType@ore:
-		Overlays: gold01,gold02,gold03,gold04
+		ResourceType: 1
 		Palette: terrain
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
@@ -240,7 +240,7 @@ World:
 		GrowthInterval: 1.2
 		SpreadInterval: 2.0
 	ResourceType@gem:
-		Overlays: gem01,gem02,gem03,gem04
+		ResourceType: 1
 		Palette: terrain
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50

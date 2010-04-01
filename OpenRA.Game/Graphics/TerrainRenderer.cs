@@ -50,11 +50,10 @@ namespace OpenRA.Graphics
 
 			int nv = 0;
 			int ni = 0;
-			for( int i = map.TopLeft.X ; i < map.BottomRight.X; i++ )
-				for( int j = map.TopLeft.Y ; j < map.BottomRight.Y; j++ )
+			for( int j = map.TopLeft.Y ; j < map.BottomRight.Y; j++ )
+				for( int i = map.TopLeft.X ; i < map.BottomRight.X; i++ )
 				{
-				Log.Write("{0} {1}",i,j);	
-				Sprite tile = tileMapping[map.MapTiles[i, j]];
+					Sprite tile = tileMapping[map.MapTiles[i, j]];
 					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
 					// before the palettes are created
 					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni, tile.size);
