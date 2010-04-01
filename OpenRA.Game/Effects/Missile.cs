@@ -43,37 +43,32 @@ namespace OpenRA.Effects
 		public readonly int RangeLimit = 0;
 		public readonly bool TurboBoost = false;
 
-		public IEffect Create(ProjectileArgs args) { return null; }
+		public IEffect Create(ProjectileArgs args) { return new Missile( this, args ); }
 	}
 
 	class Missile : IEffect
 	{
-		readonly Actor FiredBy;
-		readonly WeaponInfo Weapon;
-		readonly ProjectileInfo Projectile;
-		readonly WarheadInfo Warhead;
+		readonly MissileInfo Info;
+		readonly ProjectileArgs Args;
+
 		float2 Pos;
-		readonly Actor Target;
 		readonly Animation anim;
 		int Facing;
 		int t;
 		int Altitude;
 
-		public Missile(WeaponInfo weapon, Player owner, Actor firedBy,
-			int2 src, Actor target, int altitude, int facing)
+		public Missile(MissileInfo info, ProjectileArgs args)
 		{
-			Weapon = weapon;
-			Projectile = Rules.ProjectileInfo[Weapon.Projectile];
-			Warhead = Rules.WarheadInfo[Weapon.Warhead];
-			FiredBy = firedBy;
-			Target = target;
-			Pos = src.ToFloat2();
-			Altitude = altitude;
-			Facing = facing;
+			Info = info;
+			Args = args;
 
-			if (Projectile.Image != null && Projectile.Image != "none")
+			Pos = Args.src;
+			Altitude = Args.srcAltitude;
+			Facing = Args.facing;
+
+			if (Info.Image != null)
 			{
-				anim = new Animation(Projectile.Image, () => Facing);
+				anim = new Animation(Info.Image, () => Facing);
 				anim.PlayRepeating("idle");
 			}
 		}
@@ -85,41 +80,40 @@ namespace OpenRA.Effects
 		{
 			t += 40;
 
-			var targetUnit = Target.traits.GetOrDefault<Unit>();
+			var targetUnit = Args.target.traits.GetOrDefault<Unit>();
 			var targetAltitude = targetUnit != null ? targetUnit.Altitude : 0;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
-			Traits.Util.TickFacing(ref Facing, 
-				Traits.Util.GetFacing(Target.CenterLocation - Pos, Facing),
-				Projectile.ROT);
+			Traits.Util.TickFacing(ref Facing,
+				Traits.Util.GetFacing(Args.target.CenterLocation - Pos, Facing),
+				Info.ROT);
 
 			anim.Tick();
 
-			var dist = Target.CenterLocation - Pos;
-			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Target.IsDead)
+			var dist = Args.target.CenterLocation - Pos;
+			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Args.target.IsDead)
 				Explode(world);
 
-			var speed = Scale * Weapon.Speed * ((targetAltitude > 0 && Weapon.TurboBoost) ? 1.5f : 1f);
+			var speed = Scale * Info.Speed * ((targetAltitude > 0 && Info.TurboBoost) ? 1.5f : 1f);
 
 			var angle = Facing / 128f * Math.PI;
 			var move = speed * -float2.FromAngle((float)angle);
 			Pos += move;
 
-			if (Projectile.Trail != null)
+			if (Info.Trail != null)
 				world.AddFrameEndTask(w => w.Add(
-					new Smoke(w, (Pos - 1.5f * move - new int2( 0, Altitude )).ToInt2(), Projectile.Trail)));
+					new Smoke(w, (Pos - 1.5f * move - new int2(0, Altitude)).ToInt2(), Info.Trail)));
 
-			if (Projectile.RangeLimit != 0 && t > Projectile.RangeLimit * 40)
+			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
 				Explode(world);
 		}
 
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-
-		//	if (t > Projectile.Arm * 40)	/* don't blow up in our launcher's face! */
-		//		Combat.DoImpact(Pos.ToInt2(), Pos.ToInt2(), Weapon, Projectile, Warhead, FiredBy);
-			return;
+			Args.dest = Pos.ToInt2();
+			if (t > Info.Arm * 40)	/* don't blow up in our launcher's face! */
+				Combat.DoImpacts(Args, Pos.ToInt2());
 		}
 
 		public IEnumerable<Renderable> Render()
