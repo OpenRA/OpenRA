@@ -38,7 +38,7 @@ namespace MapConverter
 
 		public readonly int Width;
 		public readonly int Height;
-		public NewMap Map = new NewMap();
+		public Map Map = new Map();
 
 		static string Truncate( string s, int maxLength )
 		{
@@ -183,10 +183,10 @@ namespace MapConverter
 
 		void UnpackRATileData( MemoryStream ms )
 		{
-			Map.MapTiles = new NewTileReference<ushort, byte>[ MapSize, MapSize ];
+			Map.MapTiles = new TileReference<ushort, byte>[ MapSize, MapSize ];
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
-					Map.MapTiles[j, i] = new NewTileReference<ushort,byte>();
+					Map.MapTiles[j, i] = new TileReference<ushort,byte>();
 			
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
@@ -203,7 +203,7 @@ namespace MapConverter
 	
 		void UnpackRAOverlayData( MemoryStream ms )
 		{
-			Map.MapResources = new NewTileReference<byte, byte>[ MapSize, MapSize ];		
+			Map.MapResources = new TileReference<byte, byte>[ MapSize, MapSize ];		
 			for( int i = 0 ; i < MapSize ; i++ )
 				for( int j = 0 ; j < MapSize ; j++ )
 				{
@@ -213,7 +213,7 @@ namespace MapConverter
 					if (o != 255 && resourceMapping.ContainsKey(raOverlayNames[o]))
 						res = resourceMapping[raOverlayNames[o]];
 				
-					Map.MapResources[j, i] = new NewTileReference<byte,byte>(res.First, res.Second);
+					Map.MapResources[j, i] = new TileReference<byte,byte>(res.First, res.Second);
 				}
 		}
 

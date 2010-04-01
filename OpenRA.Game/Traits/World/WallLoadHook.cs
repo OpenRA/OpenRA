@@ -13,11 +13,11 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new WallLoadHook( self, this ); }
 	}
 
-	class WallLoadHook : IGameStarted
+	class WallLoadHook // : IGameStarted
 	{
 		WallLoadHookInfo info;
 		public WallLoadHook(Actor self, WallLoadHookInfo info) { this.info = info; }
-
+		/*
 		public void GameStarted(World w)
 		{
 			var map = w.Map;
@@ -27,5 +27,6 @@ namespace OpenRA.Traits
 					if (info.OverlayTypes.Contains(w.Map.MapTiles[x, y].overlay))
 						w.CreateActor(info.ActorType, new int2(x, y), w.NeutralPlayer);
 		}
+		*/
 	}
 }

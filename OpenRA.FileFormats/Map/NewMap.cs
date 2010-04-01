@@ -27,7 +27,7 @@ using System.Reflection;
 
 namespace OpenRA.FileFormats
 {
-	public class NewMap
+	public class Map
 	{
 		// Yaml map data
 		public int MapFormat = 1;
@@ -47,17 +47,30 @@ namespace OpenRA.FileFormats
 		public string Tiledata;
 		public byte TileFormat = 1;
 		public int2 Size;
-		public NewTileReference<ushort,byte>[ , ] MapTiles;
-		public NewTileReference<byte, byte>[ , ] MapResources;
+		public TileReference<ushort,byte>[ , ] MapTiles;
+		public TileReference<byte, byte>[ , ] MapResources;
+		
+		
+		// Temporary compat hacks
+		public int MapSize {get {return Size.X;}}
+		public int XOffset {get {return Bounds[0];}}
+		public int YOffset {get {return Bounds[1];}}
+		public int2 Offset { get { return new int2( Bounds[0], Bounds[1] ); } }
+		public int Width {get {return Bounds[2];}}
+		public int Height {get {return Bounds[3];}}
+		public string Theater {get {return Tileset;}}
+		public IEnumerable<int2> SpawnPoints {get {return Waypoints.Select(kv => kv.Value);}}
+
+		
 		
 		
 		List<string> SimpleFields = new List<string>() {
 			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "Size", "Bounds"
 		};
 		
-		public NewMap() {}
+		public Map() {}
 		
-		public NewMap(string filename)
+		public Map(string filename)
 		{			
 			var yaml = MiniYaml.FromFile(filename);
 			
@@ -140,18 +153,23 @@ namespace OpenRA.FileFormats
 			Size.X = ReadWord(dataStream);
 			Size.Y = ReadWord(dataStream);
 			
-			MapTiles = new NewTileReference<ushort, byte>[ Size.X, Size.Y ];
-			MapResources = new NewTileReference<byte, byte>[ Size.X, Size.Y ];
-			
+			MapTiles = new TileReference<ushort, byte>[ Size.X, Size.Y ];
+			MapResources = new TileReference<byte, byte>[ Size.X, Size.Y ];
+	
 			// Load tile data
 			for( int i = 0 ; i < Size.X ; i++ )
 				for( int j = 0 ; j < Size.Y ; j++ )
-					MapTiles[i, j] = new NewTileReference<ushort,byte>(ReadWord(dataStream),ReadByte(dataStream));
+				{
+					ushort tile = ReadWord(dataStream);
+					byte index = ReadByte(dataStream);
+					byte image = (index == byte.MaxValue) ? (byte)( i % 4 + ( j % 4 ) * 4 ) : index;
+					MapTiles[i, j] = new TileReference<ushort,byte>(tile,index, image);
+				}
 			
 			// Load resource data
 			for( int i = 0 ; i < Size.X ; i++ )
 				for( int j = 0 ; j < Size.Y ; j++ )
-					MapResources[i, j] = new NewTileReference<byte,byte>(ReadByte(dataStream),ReadByte(dataStream));
+					MapResources[i, j] = new TileReference<byte,byte>(ReadByte(dataStream),ReadByte(dataStream));
 		}
 		
 		public void SaveBinaryData(string filepath)
@@ -184,6 +202,16 @@ namespace OpenRA.FileFormats
 			writer.Flush();
 			writer.Close();
 			File.Move(filepath+".tmp",filepath);
+		}
+		
+		public bool IsInMap(int2 xy)
+		{
+			return IsInMap(xy.X,xy.Y);
+		}
+		
+		public bool IsInMap(int x, int y)
+		{
+			return (x >= Bounds[0] && y >= Bounds[1] && x < Bounds[0] + Bounds[2] && y < Bounds[1] + Bounds[3]);
 		}
 		
 		public void DebugContents()

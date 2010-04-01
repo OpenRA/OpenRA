@@ -26,7 +26,7 @@ using System.Text;
 
 namespace OpenRA.FileFormats
 {
-	public class Map
+	public class OldMap
 	{
 		public readonly string Title;
 		public readonly string Theater;
@@ -41,7 +41,7 @@ namespace OpenRA.FileFormats
 		public readonly int Height;
 		public int2 Size { get { return new int2(Width, Height); } }
 
-		public readonly TileReference[ , ] MapTiles;
+		public readonly OldTileReference[ , ] MapTiles;
 		public readonly List<ActorReference> Actors = new List<ActorReference>();
 
 		public readonly IEnumerable<int2> SpawnPoints;
@@ -51,7 +51,7 @@ namespace OpenRA.FileFormats
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
 		}
 
-		public Map(string filename)
+		public OldMap(string filename)
 		{			
 			IniFile file = new IniFile(FileSystem.Open(filename));
 			
@@ -69,10 +69,10 @@ namespace OpenRA.FileFormats
 			Height = int.Parse(map.GetValue("Height", "0"));
 			MapSize = (INIFormat == 3) ? 128 : 64;
 			
-			MapTiles = new TileReference[ MapSize, MapSize ];
+			MapTiles = new OldTileReference[ MapSize, MapSize ];
 			for (int j = 0; j < MapSize; j++)
 				for (int i = 0; i < MapSize; i++)
-					MapTiles[i, j] = new TileReference();
+					MapTiles[i, j] = new OldTileReference();
 
 			
 			if (INIFormat == 3) // RA map

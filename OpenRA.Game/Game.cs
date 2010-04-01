@@ -113,7 +113,7 @@ namespace OpenRA
 			
 			LoadModPackages(manifest);
 			
-			Rules.LoadRules(mapName, manifest);
+			Rules.LoadRules(manifest);
 			Timer.Time( "load rules: {0}" );
 
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.

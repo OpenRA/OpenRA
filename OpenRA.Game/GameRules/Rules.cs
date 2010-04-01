@@ -35,7 +35,7 @@ namespace OpenRA
 		public static Dictionary<string, VoiceInfo> Voices;
 		public static Dictionary<TerrainType, TerrainCost> TerrainTypes;
 
-		public static void LoadRules(string map, Manifest m)
+		public static void LoadRules(Manifest m)
 		{
 			Log.Write("Using rules files: ");
 			foreach (var y in m.Rules)

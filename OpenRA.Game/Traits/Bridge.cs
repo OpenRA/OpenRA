@@ -36,8 +36,10 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
-	class Bridge : IRender, ICustomTerrain, INotifyDamage
+	class Bridge // : IRender, ICustomTerrain, INotifyDamage
 	{
+		public Bridge(Actor self) { }
+		/*
 		Dictionary<int2, int> Tiles;
 		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
 		List<TileTemplate> Templates = new List<TileTemplate>();
@@ -47,7 +49,7 @@ namespace OpenRA.Traits
 		Bridge northNeighbour, southNeighbour;
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
-
+		
 		static string cachedTheater;
 		static Cache<TileReference, Sprite> sprites;
 
@@ -169,5 +171,6 @@ namespace OpenRA.Traits
 				if (southNeighbour != null) southNeighbour.UpdateState();
 			}
 		}
+		*/
 	}
 }

@@ -29,8 +29,16 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
-	public class ResourceLayer : IRenderOverlay, ILoadWorldHook
+	class ResourceLayer// : IRenderOverlay, ILoadWorldHook
 	{
+		public ResourceLayer(Actor self) {}
+		public void Destroy(int2 p){}
+		public ResourceTypeInfo GetResource(int2 p) {return null;}
+		public ResourceTypeInfo Harvest(int2 p) {return null;}
+		public void AddResource(ResourceTypeInfo info, int i, int j, int n) {}
+		public void Grow(ResourceTypeInfo info) {}
+		public void Spread(ResourceTypeInfo info) {}
+		/*
 		SpriteRenderer sr;
 		World w;
 
@@ -41,7 +49,7 @@ namespace OpenRA.Traits
 		{
 			sr = new SpriteRenderer( Game.renderer, true );
 		}
-
+		
 		public void Render()
 		{
 			var shroud = Game.world.LocalPlayer.Shroud;
@@ -87,7 +95,7 @@ namespace OpenRA.Traits
 					if (content[x, y].type != null)
 						content[x, y].density = GetIdealDensity(x, y);
 		}
-
+		
 		public Sprite[] ChooseContent(ResourceTypeInfo info)
 		{
 			return info.Sprites[w.SharedRandom.Next(info.Sprites.Length)];
@@ -187,6 +195,7 @@ namespace OpenRA.Traits
 						content[i, j].image = ChooseContent(info);
 						content[i, j].density = 0;
 					}
+			
 		}
 
 		public ResourceTypeInfo GetResource(int2 p) { return content[p.X, p.Y].type; }
@@ -197,5 +206,6 @@ namespace OpenRA.Traits
 			public Sprite[] image;
 			public int density;
 		}
+		*/
 	}
 }

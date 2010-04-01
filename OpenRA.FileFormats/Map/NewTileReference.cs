@@ -20,15 +20,24 @@
 
 namespace OpenRA.FileFormats
 {
-	public struct NewTileReference<T, U>
+	public struct TileReference<T, U>
 	{
 		public T type;
 		public U index;
+		public U image;
 		
-		public NewTileReference(T t, U i)
+		public TileReference(T t, U i)
 		{
 			type = t;
 			index = i;
+			image = i;
+		}
+		
+		public TileReference(T t, U i, U im)
+		{
+			type = t;
+			index = i;
+			image = im;
 		}
 
 		public override int GetHashCode() { return type.GetHashCode() ^ index.GetHashCode(); }

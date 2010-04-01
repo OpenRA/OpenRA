@@ -58,6 +58,7 @@ namespace OpenRA.Traits
 
 		void DoBib(Actor self, bool isRemove)
 		{
+			/*
 			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
 			if (buildingInfo.Bib)
 			{
@@ -77,6 +78,7 @@ namespace OpenRA.Traits
 						self.World.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
 				}
 			}
+			*/
 		}
 
 		protected string GetPrefix(Actor self)

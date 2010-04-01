@@ -1,45 +1,68 @@
 MapFormat: 1
-Title: Scripted Multiplayer map
-Description:
-Author: Me
-PlayerCount: 2
+
+Title: Isle of Fury (6-8)
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
 Tileset: TEMPERAT
-Preview: testmap.png
+
 Tiledata: testmap.bin
 
+Size: 128,128
+
+Bounds: 14,17,96,96
+
+Actors:
+	Actor0: TC05 Neutral 93,90
+	Actor1: TC04 Neutral 92,92
+	Actor2: TC01 Neutral 88,92
+	Actor3: T11 Neutral 96,93
+	Actor4: T08 Neutral 90,94
+	Actor5: MINE Neutral 67,103
+	Actor6: MINE Neutral 52,97
+	Actor7: MINE Neutral 48,81
+	Actor8: TC05 Neutral 59,103
+	Actor9: TC01 Neutral 52,102
+	Actor10: T08 Neutral 71,97
+	Actor11: T08 Neutral 50,94
+	Actor12: MINE Neutral 47,78
+	Actor13: T14 Neutral 41,52
+	Actor14: MINE Neutral 37,44
+	Actor15: MINE Neutral 27,52
+	Actor16: MINE Neutral 64,79
+	Actor17: MINE Neutral 64,62
+	Actor18: MINE Neutral 61,24
+	Actor19: MINE Neutral 68,27
+	Actor20: MINE Neutral 61,35
+	Actor21: MINE Neutral 89,50
+	Actor22: MINE Neutral 67,98
+	Actor23: TC04 Neutral 53,73
+	Actor24: TC03 Neutral 81,65
+	Actor25: TC04 Neutral 97,41
+	Actor26: TC05 Neutral 67,49
+	Actor27: TC02 Neutral 53,59
+	Actor28: TC03 Neutral 22,51
+	Actor29: TC01 Neutral 25,53
+	Actor30: TC01 Neutral 47,22
+	Actor31: TC02 Neutral 32,36
+	Actor32: TC02 Neutral 25,77
+	Actor33: TC04 Neutral 28,81
+	Actor34: TC02 Neutral 29,87
+	Actor35: T08 Neutral 25,81
+	Actor36: T08 Neutral 52,59
+	Actor37: T08 Neutral 51,57
+
 Waypoints:
-	spawn0: 36,75
-	spawn1: 92,29
-
-Players:
-	neutral:
-		Color:Gray
-		Type:Scripted
-		NoSpawn:true
-	ai:
-		Type:BrutalAI
-		Color:Red
-		Country:Russia
-#			AI player starts with a pre-placed base			
-		NoSpawn:true
-	player0:
-	player1:
-
-Actors: 
-	tree0: TC05 neutral 93,90
-	tree1: TC04 neutral 92,92
-	tree2: TC01 neutral 88,92
-	tree3: T11 neutral 96,93
-	tree4: T08 neutral 90,94
-	mine0: MINE neutral 67,103
-	
-#		<A bunch of pre-placed stuff to give ai player an advantage>
-	pwn01: 4tnk ai 1,1
-	pwn02: 4tnk ai 1,2
-	pwn03: 4tnk ai 1,3
-#		...
+	spawn0: 87,100
+	spawn1: 36,75
+	spawn2: 92,29
+	spawn3: 31,30
+	spawn4: 61,54
+	spawn5: 91,63
+	spawn6: 34,97
+	spawn7: 63,83
 
 Rules:
-	Player:
-		ChronoshiftPower:
-			ChargeTime:1
+

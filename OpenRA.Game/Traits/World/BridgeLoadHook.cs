@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -25,9 +25,9 @@ namespace OpenRA.Traits
 {
 	class BridgeLoadHookInfo : StatelessTraitInfo<BridgeLoadHook> { }
 
-	class BridgeLoadHook : ILoadWorldHook
+	class BridgeLoadHook// : ILoadWorldHook
 	{
-		static void MakeBridges(World w)
+		/*static void MakeBridges(World w)
 		{
 			var mini = w.Map.XOffset; var maxi = w.Map.XOffset + w.Map.Width;
 			var minj = w.Map.YOffset; var maxj = w.Map.YOffset + w.Map.Height;
@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 			foreach (var br in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
 				br.FinalizeBridges(w);
 		}
-
+		
 		static void ConvertBridgeToActor(World w, int i, int j)
 		{
 			var tile = w.Map.MapTiles[i, j].tile;
@@ -84,5 +84,6 @@ namespace OpenRA.Traits
 		}
 
 		public void WorldLoaded(World w) { MakeBridges(w); }
+		*/
 	}
 }

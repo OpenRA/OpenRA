@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -31,22 +31,25 @@ namespace OpenRA
 
 		public static void AddSmudge(this Map map, bool isCrater, int x, int y)
 		{
+			/*
 			var smudge = map.MapTiles[x, y].smudge;
 			if (smudge == 0)
 				map.MapTiles[x, y].smudge = (byte) (isCrater
 					? (firstCrater + framesPerCrater * ChooseSmudge())
 					: (firstScorch + ChooseSmudge()));
 
-			if (smudge < firstCrater || !isCrater) return; /* bib or scorch; don't change */
+			if (smudge < firstCrater || !isCrater) return; / * bib or scorch; don't change * /
 			
-			/* deepen the crater */
+			/ * deepen the crater * /
 			var amount = (smudge - firstCrater) % framesPerCrater;
 			if (amount < framesPerCrater - 1)
 				map.MapTiles[x, y].smudge++;
+			*/
 		}
 
 		public static void AddSmudge(this Map map, int2 targetTile, WarheadInfo warhead)
 		{
+			/*
 			if (warhead.SmudgeType == SmudgeType.None) return;
 			if (warhead.Size[0] == 0 && warhead.Size[1] == 0)
 				map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, targetTile.X, targetTile.Y);
@@ -55,9 +58,10 @@ namespace OpenRA
 					if ((t - targetTile).LengthSquared >= warhead.Size[1] * warhead.Size[1])
 						if (Rules.TerrainTypes[Game.world.GetTerrainType(t)].AcceptSmudge)
 							map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, t.X, t.Y);
+			*/
 		}
 
 		static int lastSmudge = 0;
-		static int ChooseSmudge() { lastSmudge = (lastSmudge + 1) % 6; return lastSmudge; }
+		static int ChooseSmudge() { return 0; /*lastSmudge = (lastSmudge + 1) % 6; return lastSmudge; */}
 	}
 }

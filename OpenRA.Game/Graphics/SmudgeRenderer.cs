@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -46,6 +46,7 @@ namespace OpenRA.Graphics
 
 		public void Draw()
 		{
+			/*
 			var shroud = Game.world.LocalPlayer.Shroud;
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
@@ -63,6 +64,7 @@ namespace OpenRA.Graphics
 				}
 
 			spriteRenderer.Flush();
+			*/
 		}
 	}
 }
