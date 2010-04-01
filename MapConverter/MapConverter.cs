@@ -213,7 +213,7 @@ namespace MapConverter
 			for( int j = 0 ; j < MapSize ; j++ )
 				for( int i = 0 ; i < MapSize ; i++ )
 				{
-					Map.MapTiles[i,j].index = (byte)ms.ReadByte();
+					Map.MapTiles[i,j].index = ReadByte(ms);
 					if( Map.MapTiles[i,j].type == 0xff || Map.MapTiles[i,j].type == 0xffff )
 						Map.MapTiles[i,j].index = byte.MaxValue;
 				}
@@ -258,17 +258,17 @@ namespace MapConverter
 				for( int j = 0 ; j < MapSize ; j++ )
 					Map.MapTiles[i,j] = new TileReference<ushort,byte>();
 			
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
+			for( int j = 0 ; j < MapSize ; j++ )
+				for( int i = 0 ; i < MapSize ; i++ )
 				{
-					Map.MapTiles[i,j].type = (ushort)ms.ReadByte();
-					Map.MapTiles[i,j].image = (byte)ms.ReadByte();
-				
-					if( Map.MapTiles[i,j].type == 0xff || Map.MapTiles[i,j].type == 0xffff )
-						Map.MapTiles[i,j].image = (byte)( i % 4 + ( j % 4 ) * 4 );
+					Map.MapTiles[i,j].type = ReadByte(ms);
+					Map.MapTiles[i,j].index = ReadByte(ms);
+					
+					if( Map.MapTiles[i,j].type == 0xff )
+						Map.MapTiles[i,j].index = byte.MaxValue;
 				}			
 		}
-		
+				
 		void ReadCncOverlay( IniFile file )
 		{
 			IniSection overlay = file.GetSection( "OVERLAY", true );
