@@ -27,20 +27,20 @@ namespace OpenRA.Effects
 {
 	class TeslaZapInfo : IProjectileInfo
 	{
-		public IEffect Create(ProjectileArgs args) { return null; }
+		public IEffect Create(ProjectileArgs args) { return new TeslaZap( this, args ); }
 	}
 
 	class TeslaZap : IEffect
 	{
-		readonly int2 from, to;
+		readonly ProjectileArgs Args;
 		readonly Sequence tesla;
 		int timeUntilRemove = 2; // # of frames
+		bool doneDamage = false;
 
-		public TeslaZap( int2 from, int2 to )
+		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
-			this.from = from;
-			this.to = to;
-			this.tesla = SequenceProvider.GetSequence( "litning", "bright" );
+			Args = args;
+			tesla = SequenceProvider.GetSequence("litning", "bright");
 		}
 
 		public void Tick( World world )
@@ -48,10 +48,19 @@ namespace OpenRA.Effects
 			if( timeUntilRemove <= 0 )
 				world.AddFrameEndTask( w => w.Remove( this ) );
 			--timeUntilRemove;
+
+			if (!doneDamage)
+			{
+				Combat.DoImpacts(Args, Args.dest);
+				doneDamage = true;
+			}
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
+			var from = Args.src;
+			var to = Args.dest;
+
 			if( from.X < to.X )
 				return DrawZap( from, to, tesla );
 			else if( from.X > to.X || from.Y > to.Y )
