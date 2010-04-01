@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace OpenRA.FileFormats
 {
@@ -51,7 +52,7 @@ namespace OpenRA.FileFormats
 		
 		
 		List<string> SimpleFields = new List<string>() {
-			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "Bounds"
+			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "Size", "Bounds"
 		};
 		
 		public NewMap() {}
@@ -94,9 +95,22 @@ namespace OpenRA.FileFormats
 		
 		public void Save(string filepath)
 		{
-			// Do stuff
+			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
+			var d = new Dictionary<string, MiniYaml>();
+			foreach (var field in SimpleFields)
+			{
+				FieldInfo f = this.GetType().GetField(field);
+				if (f.GetValue(this) == null) continue;
+				root.Add(field,new MiniYaml(FieldSaver.FormatValue(this,f),null));
+			}			
+			root.Add("Actors",MiniYaml.FromDictionary<string,ActorReference>(Actors));
+			root.Add("Waypoints",MiniYaml.FromDictionary<string,int2>(Waypoints));
+
+			// TODO: Players
 			
+			root.Add("Rules",new MiniYaml(null,Rules));
 			SaveBinaryData(Tiledata);
+			root.WriteToFile(filepath);
 		}
 		
 		static byte ReadByte( Stream s )
@@ -169,6 +183,7 @@ namespace OpenRA.FileFormats
 			
 			writer.Flush();
 			writer.Close();
+			File.Move(filepath+".tmp",filepath);
 		}
 		
 		public void DebugContents()

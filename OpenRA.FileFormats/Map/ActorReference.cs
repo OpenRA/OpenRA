@@ -31,5 +31,11 @@ namespace OpenRA.FileFormats
 			Location = location;
 			Owner = owner;
 		}
+		
+		public override string ToString ()
+		{
+			return string.Format("{0} {1} {2},{3}", Name, Owner, Location.X,Location.Y);
+		}
+
 	}
 }

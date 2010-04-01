@@ -39,7 +39,12 @@ namespace OpenRA.FileFormats
 			Value = value;
 			Nodes = nodes;
 		}
-
+		
+		public static MiniYaml FromDictionary<K,V>(Dictionary<K,V>dict)
+		{
+			return new MiniYaml( null, dict.ToDictionary( x=>x.Key.ToString(), x=>new MiniYaml(x.Value.ToString())));
+		}
+		
 		static Dictionary<string, MiniYaml> FromLines(string[] lines)
 		{
 			var levels = new List<Dictionary<string, MiniYaml>>();

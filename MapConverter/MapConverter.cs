@@ -226,7 +226,7 @@ namespace MapConverter
 			foreach( KeyValuePair<string, string> kv in terrain )
 			{
 				var loc = int.Parse( kv.Key );
-				Map.Actors.Add("Actor"+a++, new ActorReference(kv.Value, new int2(loc % MapSize, loc / MapSize), null ) );
+				Map.Actors.Add("Actor"+a++, new ActorReference(kv.Value, new int2(loc % MapSize, loc / MapSize), "Neutral" ) );
 			}
 		}
 		
@@ -268,7 +268,7 @@ namespace MapConverter
 			foreach( KeyValuePair<string, string> kv in terrain )
 			{
 				var loc = int.Parse( kv.Key );
-				Map.Actors.Add("Actor"+a++, new ActorReference( kv.Value.Split(',')[0], new int2(loc % MapSize, loc / MapSize),null));
+				Map.Actors.Add("Actor"+a++, new ActorReference( kv.Value.Split(',')[0], new int2(loc % MapSize, loc / MapSize),"Neutral"));
 			}
 		}
 		
@@ -279,7 +279,9 @@ namespace MapConverter
 			{
 				//num=owner,type,health,location,facing,...
 				var parts = s.Value.Split( ',' );
-				var loc = int.Parse(parts[3]);			
+				var loc = int.Parse(parts[3]);
+				if (parts[0] == "")
+					parts[0] = "Neutral";
 				Map.Actors.Add("Actor"+a++, new ActorReference( parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
 			}
 		}

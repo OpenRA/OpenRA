@@ -85,7 +85,6 @@
     <Compile Include="Map\Terrain.cs" />
     <Compile Include="Primitives\Cache.cs" />
     <Compile Include="Primitives\float2.cs" />
-    <Compile Include="Properties\int2.cs" />
     <Compile Include="Primitives\Pair.cs" />
     <Compile Include="Map\TerrainColorSet.cs" />
     <Compile Include="Primitives\Tuple.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
     <Compile Include="Map\NewTileReference.cs" />
+    <Compile Include="Primitives\int2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
