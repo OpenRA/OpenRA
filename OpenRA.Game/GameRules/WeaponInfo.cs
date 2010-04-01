@@ -25,9 +25,44 @@ using System;
 
 namespace OpenRA.GameRules
 {
+	public class WarheadInfo
+	{
+		public readonly int Spread = 1;
+		public readonly float[] Verses = { 1, 1, 1, 1, 1 };
+		public readonly bool Wall = false;
+		public readonly bool Wood = false;
+		public readonly bool Ore = false;
+		public readonly int Explosion = 0;
+		public readonly SmudgeType SmudgeType = SmudgeType.None;
+		public readonly int[] SmudgeSize = { 0, 0 };
+		public readonly int InfDeath = 0;
+		public readonly string ImpactSound = null;
+		public readonly string WaterImpactSound = null;
+		public readonly int Damage = 0;		// for new weapons infrastructure
+		public readonly int Delay = 0;		// delay in ticks before dealing the damage. 0=instant
+
+		public float EffectivenessAgainst(ArmorType at) { return Verses[(int)at]; }
+	}
+
+	public enum ArmorType
+	{
+		none = 0,
+		wood = 1,
+		light = 2,
+		heavy = 3,
+		concrete = 4,
+	}
+
+	public enum SmudgeType
+	{
+		None = 0,
+		Crater = 1,
+		Scorch = 2,
+	}
+
 	public class ProjectileArgs
 	{
-		public NewWeaponInfo weapon;
+		public WeaponInfo weapon;
 		public Actor firedBy;
 		public int2 src;
 		public int srcAltitude;
@@ -37,12 +72,9 @@ namespace OpenRA.GameRules
 		public int destAltitude;
 	}
 
-	public interface IProjectileInfo
-	{
-		IEffect Create(ProjectileArgs args);
-	}
+	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
 
-	public class NewWeaponInfo
+	public class WeaponInfo
 	{
 		public readonly float Range = 0;
 		public readonly string Report = null;
@@ -53,7 +85,7 @@ namespace OpenRA.GameRules
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
 
-		public NewWeaponInfo(string name, MiniYaml content)
+		public WeaponInfo(string name, MiniYaml content)
 		{
 			foreach (var kv in content.Nodes)
 			{

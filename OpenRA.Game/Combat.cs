@@ -90,7 +90,7 @@ namespace OpenRA
 			return rawDamage * multiplier;
 		}
 
-		public static bool WeaponValidForTarget(NewWeaponInfo weapon, Actor target)
+		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
 			return true;		// massive hack, and very wrong.
 

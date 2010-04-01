@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
-    <Compile Include="GameRules\NewWeaponInfo.cs" />
+    <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
@@ -155,7 +155,6 @@
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\InfoLoader.cs" />
     <Compile Include="GameRules\Rules.cs" />
-    <Compile Include="GameRules\WarheadInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\CursorSequence.cs" />

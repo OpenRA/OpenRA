@@ -44,7 +44,7 @@ namespace OpenRA
 			return xs.Aggregate(1f, (a, x) => a * x);
 		}
 
-		public static NewWeaponInfo GetPrimaryWeapon(this Actor self)
+		public static WeaponInfo GetPrimaryWeapon(this Actor self)
 		{
 			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
@@ -55,7 +55,7 @@ namespace OpenRA
 			return Rules.Weapons[weapon.ToLowerInvariant()];
 		}
 
-		public static NewWeaponInfo GetSecondaryWeapon(this Actor self)
+		public static WeaponInfo GetSecondaryWeapon(this Actor self)
 		{
 			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
