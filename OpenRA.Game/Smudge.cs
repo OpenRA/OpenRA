@@ -48,11 +48,11 @@ namespace OpenRA
 		public static void AddSmudge(this Map map, int2 targetTile, WarheadInfo warhead)
 		{
 			if (warhead.SmudgeType == SmudgeType.None) return;
-			if (warhead.SmudgeSize[0] == 0 && warhead.SmudgeSize[1] == 0)
+			if (warhead.Size[0] == 0 && warhead.Size[1] == 0)
 				map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, targetTile.X, targetTile.Y);
 			else
-				foreach (var t in Game.world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
-					if ((t - targetTile).LengthSquared >= warhead.SmudgeSize[1] * warhead.SmudgeSize[1])
+				foreach (var t in Game.world.FindTilesInCircle(targetTile, warhead.Size[0]))
+					if ((t - targetTile).LengthSquared >= warhead.Size[1] * warhead.Size[1])
 						if (Game.world.GetTerrainType(t) != TerrainType.Water)
 							map.AddSmudge(warhead.SmudgeType == SmudgeType.Crater, t.X, t.Y);
 		}

@@ -34,13 +34,13 @@ namespace OpenRA.GameRules
 		public readonly bool Ore = false;								// can this damage ore?
 		public readonly int Explosion = 0;								// explosion effect to use
 		public readonly SmudgeType SmudgeType = SmudgeType.None;		// type of smudge to apply
-		public readonly int[] SmudgeSize = { 0, 0 };					// bounds of the smudge. first value is the outer radius; second value is the inner radius.
+		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
 		public readonly int InfDeath = 0;								// infantry death animation to use
 		public readonly string ImpactSound = null;						// sound to play on impact
 		public readonly string WaterImpactSound = null;					// sound to play on impact with water
 		public readonly int Damage = 0;									// how much (raw) damage to deal
 		public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
-		public readonly DamageModel DamageModel = DamageModel.Normal;	// 
+		public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
 
 		public float EffectivenessAgainst(ArmorType at) { return Verses[(int)at]; }
 	}

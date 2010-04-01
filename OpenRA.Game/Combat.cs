@@ -75,7 +75,7 @@ namespace OpenRA
 
 				case DamageModel.PerCell:
 					{
-						foreach (var t in world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
+						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
 							foreach (var unit in world.FindUnits(Game.CellSize * t, Game.CellSize * (t + new float2(1,1))))
 								unit.InflictDamage(args.firedBy,
 									(int)(warhead.Damage * warhead.EffectivenessAgainst(
