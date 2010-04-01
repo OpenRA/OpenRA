@@ -1,6 +1,6 @@
 MapFormat: 1
 
-Title: Middle Mayhem (2)
+Title: Lesson in Blood
 
 Author: Westwood Studios
 
@@ -12,50 +12,167 @@ Tiledata: testmap.bin
 
 MapSize: 128,128
 
-TopLeft: 27,26
+TopLeft: 32,47
 
-BottomRight: 102,91
+BottomRight: 64,85
 
 Actors:
-	Actor0: TC05 Neutral 62,58
-	Actor1: TC04 Neutral 64,63
-	Actor2: TC03 Neutral 73,60
-	Actor3: TC03 Neutral 55,48
-	Actor4: TC01 Neutral 58,51
-	Actor5: TC01 Neutral 54,68
-	Actor6: T17 Neutral 60,68
-	Actor7: TC02 Neutral 48,57
-	Actor8: TC05 Neutral 68,63
-	Actor9: T16 Neutral 71,63
-	Actor10: T16 Neutral 70,55
-	Actor11: TC01 Neutral 83,57
-	Actor12: TC02 Neutral 62,54
-	Actor13: T08 Neutral 62,56
-	Actor14: T01 Neutral 49,80
-	Actor15: TC04 Neutral 50,81
-	Actor16: T16 Neutral 53,82
-	Actor17: TC02 Neutral 42,79
-	Actor18: TC03 Neutral 27,26
-	Actor19: T01 Neutral 29,48
-	Actor20: T02 Neutral 31,50
-	Actor21: T03 Neutral 32,59
-	Actor22: TC05 Neutral 56,88
-	Actor23: TC03 Neutral 54,89
-	Actor24: T16 Neutral 56,89
-	Actor25: T15 Neutral 52,89
-	Actor26: T14 Neutral 64,78
-	Actor27: TC01 Neutral 27,44
-	Actor28: TC01 Neutral 45,39
-	Actor29: T17 Neutral 76,26
-	Actor30: MINE Neutral 68,53
-	Actor31: MINE Neutral 54,57
-	Actor32: MINE Neutral 53,65
-	Actor33: MINE Neutral 65,68
-	Actor34: MINE Neutral 80,61
+	Actor0: wood Neutral 44,50
+	Actor1: wood Neutral 44,51
+	Actor2: wood Neutral 44,52
+	Actor3: wood Neutral 44,53
+	Actor4: wood Neutral 45,53
+	Actor5: crate Neutral 40,64
+	Actor6: wood Neutral 56,65
+	Actor7: v14 Neutral 54,66
+	Actor8: v14 Neutral 55,66
+	Actor9: wood Neutral 56,66
+	Actor10: wood Neutral 53,67
+	Actor11: wood Neutral 55,67
+	Actor12: wood Neutral 56,67
+	Actor13: wood Neutral 45,69
+	Actor14: wood Neutral 46,69
+	Actor15: wood Neutral 47,69
+	Actor16: wood Neutral 45,70
+	Actor17: wood Neutral 51,70
+	Actor18: wood Neutral 53,71
+	Actor19: wood Neutral 52,72
+	Actor20: wood Neutral 53,72
+	Actor21: T16 Neutral 53,52
+	Actor22: TC03 Neutral 60,61
+	Actor23: TC01 Neutral 48,47
+	Actor24: T06 Neutral 73,59
+	Actor25: T01 Neutral 49,74
+	Actor26: T14 Neutral 60,69
+	Actor27: T16 Neutral 59,72
+	Actor28: T14 Neutral 60,72
+	Actor29: T07 Neutral 62,72
+	Actor30: T10 Neutral 54,74
+	Actor31: TC02 Neutral 46,49
+	Actor32: T01 Neutral 53,57
+	Actor33: TC05 Neutral 41,51
+	Actor34: T06 Neutral 44,53
+	Actor35: T01 Neutral 44,70
+	Actor36: T16 Neutral 52,72
+	Actor37: TC02 Neutral 32,51
+	Actor38: TC04 Neutral 32,55
+	Actor39: TC05 Neutral 32,60
+	Actor40: TC02 Neutral 42,57
+	Actor41: TC02 Neutral 43,68
+	Actor42: TC01 Neutral 42,67
+	Actor43: TC04 Neutral 32,72
+	Actor44: TC03 Neutral 51,77
+	Actor45: TC01 Neutral 39,72
+	Actor46: T17 Neutral 35,76
+	Actor47: T15 Neutral 59,75
+	Actor48: TC03 Neutral 35,65
+	Actor49: T01 Neutral 35,56
+	Actor50: T10 Neutral 47,59
+	Actor51: T08 Neutral 48,64
+	Actor52: barl GoodGuy 33,54
+	Actor53: brl3 GoodGuy 57,53
+	Actor54: v08 France 41,54
+	Actor55: v07 France 54,65
+	Actor56: v07 France 38,52
+	Actor57: v06 France 46,51
+	Actor58: v05 France 36,55
+	Actor59: v04 France 35,51
+	Actor60: v02 France 36,57
+	Actor61: brl3 GoodGuy 34,52
+	Actor62: barl GoodGuy 57,54
+	Actor63: barl GoodGuy 55,54
+	Actor64: brl3 Germany 51,72
+	Actor65: brl3 Germany 51,71
+	Actor66: brl3 Germany 47,71
+	Actor67: barl Germany 46,71
+	Actor68: barl Germany 47,70
+	Actor69: brl3 GoodGuy 43,50
+	Actor70: brl3 GoodGuy 45,52
+	Actor71: barl France 41,51
+	Actor72: barl Germany 50,72
+	Actor73: barl GoodGuy 42,50
+	Actor74: afld USSR 35,81
+	Actor75: powr USSR 43,82
+	Actor76: barl GoodGuy 56,53
+	Actor77: barl GoodGuy 58,53
+	Actor78: brl3 GoodGuy 59,53
+	Actor79: brl3 GoodGuy 54,53
+	Actor80: barl GoodGuy 59,56
+	Actor81: brl3 GoodGuy 48,66
+	Actor82: barl GoodGuy 45,65
+	Actor83: barl GoodGuy 34,57
+	Actor84: brl3 GoodGuy 35,58
+	Actor85: barl GoodGuy 46,67
+	Actor86: barl GoodGuy 48,67
+	Actor87: brl3 GoodGuy 38,65
+	Actor88: barl GoodGuy 40,52
+	Actor89: barl GoodGuy 39,64
+	Actor90: brl3 GoodGuy 41,53
+	Actor91: brl3 GoodGuy 46,66
+	Actor92: afld USSR 39,77
+	Actor93: powr USSR 45,82
+	Actor94: afld USSR 37,79
+	Actor95: barl GoodGuy 35,56
+	Actor96: brl3 GoodGuy 38,64
+	Actor97: brl3 GoodGuy 34,55
+	Actor98: barl GoodGuy 35,55
+	Actor99: barl GoodGuy 45,50
+	Actor100: v04 France 58,54
+	Actor101: v02 France 56,54
+	Actor102: dome USSR 45,79
+	Actor103: barl GoodGuy 46,61
+	Actor104: brl3 GoodGuy 43,66
+	Actor105: barl GoodGuy 43,67
+	Actor106: brl3 GoodGuy 59,57
+	Actor107: barl GoodGuy 57,58
+	Actor108: barl GoodGuy 58,58
+	Actor109: brl3 GoodGuy 59,58
+	Actor110: brl3 GoodGuy 56,58
+	Actor111: barl GoodGuy 56,59
+	Actor112: barl GoodGuy 56,60
+	Actor113: barl GoodGuy 41,68
+	Actor114: barl GoodGuy 42,67
+	Actor115: brl3 GoodGuy 49,55
+	Actor116: barl GoodGuy 48,55
+	Actor117: barl GoodGuy 47,56
+	Actor118: brl3 GoodGuy 46,56
+	Actor119: pbox France 46,55
+	Actor120: pbox France 48,54
+	Actor121: barl GoodGuy 34,51
+	Actor122: v05 France 48,62
+	Actor123: v01 France 40,63
+	Actor124: jeep France 46,52
+	Actor125: jeep France 44,76
+	Actor126: jeep France 55,57
+	Actor127: jeep France 39,65
+#	Actor128: c9 France 50,64
+#	Actor129: c8 France 47,61
+#	Actor130: c8 Turkey 41,50
+#	Actor131: c6 France 46,61
+#	Actor132: c5 France 46,61
+#	Actor133: c4 France 44,67
+#	Actor134: c2 France 40,54
+#	Actor135: c2 France 45,61
+	Actor136: e1 France 54,60
+	Actor137: e1 France 49,60
+#	Actor138: c5 France 45,51
+	Actor139: e1 France 34,58
+	Actor140: e1 France 53,54
+	Actor141: e1 France 58,56
+	Actor142: e1 France 58,52
+	Actor143: e1 France 54,64
+#	Actor144: c7 France 56,54
+	Actor145: e1 France 40,51
+	Actor146: e1 France 35,53
+	Actor147: e1 France 35,54
+	Actor148: e1 France 43,64
+	Actor149: e1 France 56,63
+	Actor150: e1 France 40,67
+	Actor151: e1 USSR 42,81
 
 Waypoints:
-	spawn0: 34,84
-	spawn1: 35,34
+	spawn3: 47,51
+	spawn6: 58,55
 
 Rules:
 

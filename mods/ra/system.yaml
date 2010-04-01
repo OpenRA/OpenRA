@@ -212,24 +212,6 @@ World:
 	SellButton:
 	RepairButton:
 	PowerDownButton:
-	WallLoadHook@sbag:
-		ActorType: sbag
-		OverlayTypes: sbag
-	WallLoadHook@cycl:
-		ActorType: cycl
-		OverlayTypes: cycl
-	WallLoadHook@brik:
-		ActorType: brik
-		OverlayTypes: brik
-	WallLoadHook@fenc:
-		ActorType: fenc
-		OverlayTypes: fenc
-	WallLoadHook@wood:
-		ActorType: wood
-		OverlayTypes: wood
-	WallLoadHook@barb:
-		ActorType: barb
-		OverlayTypes: barb
 	ResourceLayer:
 	ResourceType@ore:
 		ResourceType: 1

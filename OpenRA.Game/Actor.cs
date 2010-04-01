@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -55,6 +56,9 @@ namespace OpenRA
 
 			if (name != null)
 			{
+				if (!Rules.Info.ContainsKey(name.ToLowerInvariant()))
+					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
+				
 				Info = Rules.Info[name.ToLowerInvariant()];
 				Health = this.GetMaxHP();
 
