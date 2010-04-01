@@ -628,7 +628,7 @@ SCUD:
 Atomic:
 	Nuke:
 		Image: Nuke
-	Warhead:
+	Warhead@impact:
 		Damage: 1000
 		Spread: 6
 		Wall: true
@@ -637,8 +637,29 @@ Atomic:
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 6
 		InfDeath: 4
+	Warhead@inner-nuke:
+		DamageModel: PerCell
+		Damage: 150
+		SmudgeType: Scorch
+		SmudgeSize: 3,2
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 90%,100%,60%,25%,50%
+		Delay: 3
+		InfDeath: 4
+	Warhead@outer-nuke:
+		DamageModel: PerCell
+		Damage: 150
 		SmudgeType: Scorch
 		SmudgeSize: 5,4
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 90%,100%,60%,25%,50%
+		Delay: 3
+		InfDeath: 4
+
 
 UnitExplode:
 	Warhead:

@@ -27,19 +27,20 @@ namespace OpenRA.GameRules
 {
 	public class WarheadInfo
 	{
-		public readonly int Spread = 1;
-		public readonly float[] Verses = { 1, 1, 1, 1, 1 };
-		public readonly bool Wall = false;
-		public readonly bool Wood = false;
-		public readonly bool Ore = false;
-		public readonly int Explosion = 0;
-		public readonly SmudgeType SmudgeType = SmudgeType.None;
-		public readonly int[] SmudgeSize = { 0, 0 };
-		public readonly int InfDeath = 0;
-		public readonly string ImpactSound = null;
-		public readonly string WaterImpactSound = null;
-		public readonly int Damage = 0;		// for new weapons infrastructure
-		public readonly int Delay = 0;		// delay in ticks before dealing the damage. 0=instant
+		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
+		public readonly float[] Verses = { 1, 1, 1, 1, 1 };				// damage vs each armortype
+		public readonly bool Wall = false;								// can this damage walls?
+		public readonly bool Wood = false;								// can this damage wood?
+		public readonly bool Ore = false;								// can this damage ore?
+		public readonly int Explosion = 0;								// explosion effect to use
+		public readonly SmudgeType SmudgeType = SmudgeType.None;		// type of smudge to apply
+		public readonly int[] SmudgeSize = { 0, 0 };					// bounds of the smudge. first value is the outer radius; second value is the inner radius.
+		public readonly int InfDeath = 0;								// infantry death animation to use
+		public readonly string ImpactSound = null;						// sound to play on impact
+		public readonly string WaterImpactSound = null;					// sound to play on impact with water
+		public readonly int Damage = 0;									// how much (raw) damage to deal
+		public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
+		public readonly DamageModel DamageModel = DamageModel.Normal;	// 
 
 		public float EffectivenessAgainst(ArmorType at) { return Verses[(int)at]; }
 	}
@@ -58,6 +59,12 @@ namespace OpenRA.GameRules
 		None = 0,
 		Crater = 1,
 		Scorch = 2,
+	}
+
+	public enum DamageModel
+	{
+		Normal,								// classic RA damage model: point actors, distance-based falloff
+		PerCell,							// like RA's "nuke damage"
 	}
 
 	public class ProjectileArgs

@@ -46,7 +46,7 @@ Player:
 		DropItems: E1,E1,E1,E3,E3
 	NukePower:
 		Image: atomicon
-		ChargeTime: 13
+		ChargeTime: .1
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: MSLO
@@ -429,7 +429,7 @@ MSLO:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 13
-		Prerequisites: @Tech Center
+		Prerequisites: powr
 		Owner: soviet,allies
 		Cost: 2500
 		Description: Missile Silo

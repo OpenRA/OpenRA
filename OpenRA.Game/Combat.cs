@@ -61,12 +61,30 @@ namespace OpenRA
 				.Select(a => a.GetFirepowerModifier())
 				.Product();
 
-			var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
-			var hitActors = world.FindUnitsInCircle(args.dest, maxSpread);
+			switch (warhead.DamageModel)
+			{
+				case DamageModel.Normal:
+					{
+						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
+						var hitActors = world.FindUnitsInCircle(args.dest, maxSpread);
 
-			foreach (var victim in hitActors)
-				victim.InflictDamage(args.firedBy,
-					(int)GetDamageToInflict(victim, args, warhead, firepowerModifier), warhead);
+						foreach (var victim in hitActors)
+							victim.InflictDamage(args.firedBy,
+								(int)GetDamageToInflict(victim, args, warhead, firepowerModifier), warhead);
+					} break;
+
+				case DamageModel.PerCell:
+					{
+						foreach (var t in world.FindTilesInCircle(targetTile, warhead.SmudgeSize[0]))
+						{
+							var x = Util.CenterOfCell(t);
+							foreach (var unit in world.FindUnits(x, x))
+								unit.InflictDamage(args.firedBy,
+									(int)(warhead.Damage * warhead.EffectivenessAgainst(
+									unit.Info.Traits.Get<OwnedActorInfo>().Armor)), warhead);
+						}
+					} break;
+			}
 		}
 
 		public static void DoImpacts(ProjectileArgs args, int2 visualLocation)
