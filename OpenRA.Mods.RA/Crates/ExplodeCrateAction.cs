@@ -20,10 +20,7 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			//self.World.AddFrameEndTask(
-			//	w => w.Add(new Bullet((info as ExplodeCrateActionInfo).Weapon, self.Owner,
-			//		self, self.CenterLocation.ToInt2(), self.CenterLocation.ToInt2(),
-			//		0, 0)));
+			Combat.DoExplosion(self, (info as ExplodeCrateActionInfo).Weapon, collector.CenterLocation.ToInt2(), 0);
 			base.Activate(collector);
 		}
 	}
