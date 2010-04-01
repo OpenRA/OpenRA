@@ -59,9 +59,9 @@ namespace OpenRA.Mods.Aftermath
 				//w.Add(new Bullet(info.PrimaryWeapon, detonatedBy.Owner, detonatedBy,
 				//	detonateLocation, detonateLocation, altitude, altitude));
 				
-				var weapon = Rules.WeaponInfo[info.PrimaryWeapon];
-				if (!string.IsNullOrEmpty(weapon.Report))
-					Sound.Play(weapon.Report + ".aud");
+				//var weapon = Rules.WeaponInfo[info.PrimaryWeapon];
+				//if (!string.IsNullOrEmpty(weapon.Report))
+				//	Sound.Play(weapon.Report + ".aud");
 
 				// Remove from world
 				self.Health = 0;

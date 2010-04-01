@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 		public override int FireDelay( Actor self, AttackBaseInfo info )
 		{
 			primaryFireDelay = 8;
-			timeToRecharge = Rules.WeaponInfo[ info.PrimaryWeapon ].ROF;
+			timeToRecharge = self.GetPrimaryWeapon().ROF;
 			--charges;
 
 			if( target != sameTarget )

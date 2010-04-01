@@ -82,11 +82,6 @@ namespace OpenRA
 			}
 		}
 
-		static float GetMaximumSpread(WeaponInfo weapon, WarheadInfo warhead, float modifier)
-		{
-			return (int)(warhead.Spread * Math.Log(Math.Abs(weapon.Damage * modifier), 2));
-		}
-
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			var distance = (target.CenterLocation - args.dest).Length;
@@ -95,7 +90,7 @@ namespace OpenRA
 			return rawDamage * multiplier;
 		}
 
-		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
+		public static bool WeaponValidForTarget(NewWeaponInfo weapon, Actor target)
 		{
 			return true;		// massive hack, and very wrong.
 

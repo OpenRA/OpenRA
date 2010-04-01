@@ -40,13 +40,11 @@ namespace OpenRA.Effects
 		readonly int targetAltitude = 400;
 		int altitude;
 		bool goingUp = true;
-		WeaponInfo weapon;
 
 		public NukeLaunch(Actor silo, string weapon, int2 targetLocation)
 		{
 			this.silo = silo;
 			this.targetLocation = targetLocation;
-			this.weapon = Rules.WeaponInfo[weapon];
 			anim = new Animation("nuke");
 			anim.PlayRepeating("up");
 			pos = silo.CenterLocation;

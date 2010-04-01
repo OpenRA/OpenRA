@@ -30,7 +30,6 @@ namespace OpenRA
 	{
 		public static IniFile AllRules;
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
-		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static TechTree TechTree;
@@ -50,8 +49,6 @@ namespace OpenRA
 				"Projectile",
 				"Voice");
 
-			WeaponInfo = new InfoLoader<WeaponInfo>(
-				Pair.New<string, Func<string, WeaponInfo>>("Weapon", _ => new WeaponInfo()));
 			WarheadInfo = new InfoLoader<WarheadInfo>(
 				Pair.New<string, Func<string, WarheadInfo>>("Warhead", _ => new WarheadInfo()));
 			VoiceInfo = new InfoLoader<VoiceInfo>(

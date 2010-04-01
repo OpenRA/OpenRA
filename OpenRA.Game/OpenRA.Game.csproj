@@ -156,7 +156,6 @@
     <Compile Include="GameRules\InfoLoader.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\WarheadInfo.cs" />
-    <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\CursorSequence.cs" />

@@ -142,7 +142,7 @@ namespace OpenRA.Traits
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return false;
 
-			var weapon = Rules.WeaponInfo[weaponName];
+			var weapon = Rules.Weapons[weaponName.ToLowerInvariant()];
 			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return false;
 
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
@@ -211,7 +211,7 @@ namespace OpenRA.Traits
 			if (mi.Button == MouseButton.Left || underCursor == null || underCursor.Owner == null) return null;
 			if (self == underCursor) return null;
 
-			var isHeal = self.GetPrimaryWeapon().Damage < 0;
+			var isHeal = self.GetPrimaryWeapon().Warheads.First().Damage < 0;
 			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 
 			if (isHeal)

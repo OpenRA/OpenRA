@@ -44,7 +44,7 @@ namespace OpenRA
 			return xs.Aggregate(1f, (a, x) => a * x);
 		}
 
-		public static WeaponInfo GetPrimaryWeapon(this Actor self)
+		public static NewWeaponInfo GetPrimaryWeapon(this Actor self)
 		{
 			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
@@ -52,10 +52,10 @@ namespace OpenRA
 			var weapon = info.PrimaryWeapon;
 			if (weapon == null) return null;
 
-			return Rules.WeaponInfo[weapon];
+			return Rules.Weapons[weapon.ToLowerInvariant()];
 		}
 
-		public static WeaponInfo GetSecondaryWeapon(this Actor self)
+		public static NewWeaponInfo GetSecondaryWeapon(this Actor self)
 		{
 			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (info == null) return null;
@@ -63,7 +63,7 @@ namespace OpenRA
 			var weapon = info.SecondaryWeapon;
 			if (weapon == null) return null;
 
-			return Rules.WeaponInfo[weapon];
+			return Rules.Weapons[weapon.ToLowerInvariant()];
 		}
 
 		public static int GetMaxHP(this Actor self)
