@@ -21,9 +21,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.GameRules;
 
 namespace OpenRA.Effects
 {
+	class LaserZapInfo : IProjectileInfo
+	{
+		public IEffect Create(ProjectileArgs args) { return null; /* todo: fix me so OBLI works again */ }
+	}
+
 	class LaserZap : IEffect
 	{
 		readonly int2 from, to;
