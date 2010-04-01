@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 	public class NewMap
 	{
 		// General info
-		public int MapFormat;
+		public byte MapFormat = 1;
 		public string Title;
 		public string Description;
 		public string Author;
@@ -38,6 +38,7 @@ namespace OpenRA.FileFormats
 		
 		// 'Simple' map data
 		public string Tiledata;
+		public byte TileFormat = 1;
 		public string Tileset;
 		public int2 Size;
 		public int[] Bounds;
@@ -83,6 +84,54 @@ namespace OpenRA.FileFormats
 			
 			// Rules
 			Rules = yaml["Rules"].Nodes;
+		}
+		
+		
+		public void SaveBinaryData(string filepath)
+		{
+			
+			FileStream dataStream = new FileStream(filepath+".tmp", FileMode.Create, FileAccess.Write);
+			BinaryWriter writer = new BinaryWriter( dataStream );
+			writer.BaseStream.Seek(0, SeekOrigin.Begin);
+			
+			// File header consists of a version byte, followed by 2 ushorts for width and height
+			writer.Write(TileFormat);
+			writer.Write((ushort)Size.X);
+			writer.Write((ushort)Size.Y);
+			
+			// Tile data is stored as a base-64 encoded stream of
+			// {(2-byte) tile index, (1-byte) image index} pairs
+			for( int i = 0 ; i < Size.X ; i++ )
+				for( int j = 0 ; j < Size.Y ; j++ )
+				{			
+					writer.Write( MapTiles[j,i].tile );
+					// Semi-hack: Convert clear and water tiles to "pick an image for me" magic number
+					byte image = (MapTiles[ j, i ].tile == 0xff || MapTiles[ j, i ].tile == 0xffff) ? byte.MaxValue : MapTiles[j,i].image;
+					writer.Write(image);
+				}
+			
+			
+			// TODO: Need a proper resources array to write
+			/*
+			// Resource data is stored as a base-64 encoded stream of
+			// {(1-byte) resource index, (1-byte) image index} pairs			
+			for( int i = 0 ; i < Size.X ; i++ )
+				for( int j = 0 ; j < Size.Y ; j++ )
+				{			
+					byte type = 0;
+					byte image = 0;
+					if (MapTiles[j,i].overlay != null)
+					{
+						var res = resourceMapping[MapTiles[j,i].overlay];
+						type = res.First;
+						image = res.Second;
+					}
+					
+					writer.Write(type);
+					writer.Write(image);
+				}
+			*/
+			writer.Flush();
 		}
 		
 		public void DebugContents()

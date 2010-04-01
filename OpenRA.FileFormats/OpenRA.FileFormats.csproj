@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,56 +52,56 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudLoader.cs" />
-    <Compile Include="Blowfish.cs" />
-    <Compile Include="BlowfishKeyProvider.cs" />
-    <Compile Include="Cache.cs" />
-    <Compile Include="Collections\Set.cs" />
     <Compile Include="ConnectedComponents.cs" />
     <Compile Include="DisposableAction.cs" />
-    <Compile Include="Dune2ShpReader.cs" />
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
     <Compile Include="FileSystem.cs" />
-    <Compile Include="float2.cs" />
     <Compile Include="Folder.cs" />
-    <Compile Include="Format2.cs" />
-    <Compile Include="Format40.cs" />
-    <Compile Include="Format80.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="int2.cs" />
     <Compile Include="IPaletteRemap.cs" />
-    <Compile Include="Lazy.cs" />
-    <Compile Include="Map.cs" />
     <Compile Include="MiniYaml.cs" />
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
-    <Compile Include="Pair.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PlayerColorRemap.cs" />
-    <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolVersion.cs" />
     <Compile Include="Thirdparty\Random.cs" />
     <Compile Include="Session.cs" />
-    <Compile Include="ShpReader.cs" />
     <Compile Include="ShroudPaletteRemap.cs" />
     <Compile Include="SingleColorRemap.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\Timer.cs" />
-    <Compile Include="Terrain.cs" />
-    <Compile Include="TileReference.cs" />
-    <Compile Include="TileSet.cs" />
-    <Compile Include="Tuple.cs" />
     <Compile Include="TypeDictionary.cs" />
-    <Compile Include="Walkability.cs" />
-    <Compile Include="ActorReference.cs" />
-    <Compile Include="TerrainColorSet.cs" />
-    <Compile Include="NewMap.cs" />
+    <Compile Include="Map\ActorReference.cs" />
+    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\NewMap.cs" />
+    <Compile Include="Map\TileReference.cs" />
+    <Compile Include="Map\Walkability.cs" />
+    <Compile Include="Map\Terrain.cs" />
+    <Compile Include="Primitives\Cache.cs" />
+    <Compile Include="Primitives\float2.cs" />
+    <Compile Include="Properties\int2.cs" />
+    <Compile Include="Primitives\Pair.cs" />
+    <Compile Include="Map\TerrainColorSet.cs" />
+    <Compile Include="Primitives\Tuple.cs" />
+    <Compile Include="Map\TileSet.cs" />
+    <Compile Include="Primitives\PriorityQueue.cs" />
+    <Compile Include="Primitives\Lazy.cs" />
+    <Compile Include="FileFormats\AudLoader.cs" />
+    <Compile Include="FileFormats\Blowfish.cs" />
+    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
+    <Compile Include="Primitives\Set.cs" />
+    <Compile Include="Graphics\Dune2ShpReader.cs" />
+    <Compile Include="FileFormats\Format2.cs" />
+    <Compile Include="FileFormats\Format40.cs" />
+    <Compile Include="FileFormats\Format80.cs" />
+    <Compile Include="FileFormats\IniFile.cs" />
+    <Compile Include="Graphics\ShpReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
