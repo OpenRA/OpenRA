@@ -164,10 +164,6 @@ namespace OpenRA.Traits
 		public void Spread(ResourceTypeInfo info)
 		{
 			var map = w.Map;
-
-			var mini = map.XOffset; var maxi = map.XOffset + map.Width;
-			var minj = map.YOffset; var maxj = map.YOffset + map.Height;
-
 			var growMask = new bool[map.MapSize.X, map.MapSize.Y];
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)

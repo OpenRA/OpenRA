@@ -88,11 +88,8 @@ namespace OpenRA.FileFormats
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{
 			Terrain tile;
-			try {
-				if( tiles.TryGetValue( r.type, out tile ) )
-					return tile.TileBitmapBytes[ r.image ];
-			}
-			catch (System.ArgumentOutOfRangeException) {	}
+			if( tiles.TryGetValue( r.type, out tile ) )
+				return tile.TileBitmapBytes[ r.image ];
 			
 			byte[] missingTile = new byte[ 24 * 24 ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
@@ -101,16 +98,13 @@ namespace OpenRA.FileFormats
 			return missingTile;
 		}
 
-		public TerrainType GetTerrainType(TileReference<ushort,byte> r)
-		{			
-			try {
-				return walk[r.type].TerrainType[r.image];
-			}
-			catch (KeyNotFoundException)
-			{
-				return 0; // Default zero (walkable)
-			}
-			
+		public TerrainType GetTerrainType( TileReference<ushort, byte> r )
+		{
+			var tt = walk[ r.type ].TerrainType;
+			TerrainType ret;
+				if( !tt.TryGetValue( r.image, out ret ) )
+				return 0;// Default zero (walkable)
+			return ret;
 		}
 	}
 }
