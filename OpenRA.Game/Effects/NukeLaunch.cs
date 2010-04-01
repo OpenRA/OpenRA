@@ -33,7 +33,6 @@ namespace OpenRA.Effects
 
 	class NukeLaunch : IEffect
 	{
-		readonly ProjectileInfo projectileUp, projectileDown;
 		readonly Actor silo;
 		Animation anim;
 		float2 pos;
@@ -48,11 +47,8 @@ namespace OpenRA.Effects
 			this.silo = silo;
 			this.targetLocation = targetLocation;
 			this.weapon = Rules.WeaponInfo[weapon];
-			projectileUp = Rules.ProjectileInfo["NukeUp"];
-			projectileDown = Rules.ProjectileInfo["NukeDown"];
-
-			anim = new Animation(projectileUp.Image);
-			anim.PlayRepeating("idle");
+			anim = new Animation("nuke");
+			anim.PlayRepeating("up");
 			pos = silo.CenterLocation;
 		}
 
@@ -66,8 +62,8 @@ namespace OpenRA.Effects
 				if (altitude >= targetAltitude)
 				{
 					pos = OpenRA.Traits.Util.CenterOfCell(targetLocation);
-					anim = new Animation(projectileDown.Image);
-					anim.PlayRepeating("idle");
+					anim = new Animation("nuke");
+					anim.PlayRepeating("down");
 					goingUp = false;
 				}
 			}
@@ -82,7 +78,7 @@ namespace OpenRA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			var warhead = Rules.WarheadInfo[weapon.Warhead];
+			//var warhead = Rules.WarheadInfo[weapon.Warhead];
 			//Combat.DoImpact(pos.ToInt2(), pos.ToInt2(), weapon, Rules.ProjectileInfo[weapon.Projectile], warhead, silo, true);
 			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
 		}

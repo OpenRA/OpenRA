@@ -32,7 +32,6 @@ namespace OpenRA
 		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
 		public static InfoLoader<WeaponInfo> WeaponInfo;
 		public static InfoLoader<WarheadInfo> WarheadInfo;
-		public static InfoLoader<ProjectileInfo> ProjectileInfo;
 		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static TechTree TechTree;
 
@@ -55,8 +54,6 @@ namespace OpenRA
 				Pair.New<string, Func<string, WeaponInfo>>("Weapon", _ => new WeaponInfo()));
 			WarheadInfo = new InfoLoader<WarheadInfo>(
 				Pair.New<string, Func<string, WarheadInfo>>("Warhead", _ => new WarheadInfo()));
-			ProjectileInfo = new InfoLoader<ProjectileInfo>(
-				Pair.New<string, Func<string, ProjectileInfo>>("Projectile", _ => new ProjectileInfo()));
 			VoiceInfo = new InfoLoader<VoiceInfo>(
 				Pair.New<string, Func<string, VoiceInfo>>("Voice", _ => new VoiceInfo()));
 

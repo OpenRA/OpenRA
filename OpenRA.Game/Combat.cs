@@ -97,7 +97,9 @@ namespace OpenRA
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			var projectile = Rules.ProjectileInfo[weapon.Projectile];
+			return true;		// massive hack, and very wrong.
+
+			/*var projectile = Rules.ProjectileInfo[weapon.Projectile];
 			var warhead = Rules.WarheadInfo[weapon.Warhead];
 			var unit = target.traits.GetOrDefault<Unit>();
 
@@ -113,7 +115,7 @@ namespace OpenRA
 			if (projectile.UnderWater && !target.Info.Traits.Get<OwnedActorInfo>().WaterBound)
 				return false;
 
-			return projectile.AG;
+			return projectile.AG;*/
 		}
 
 		public static bool HasAnyValidWeapons(Actor self, Actor target)
