@@ -51,7 +51,7 @@ namespace OpenRA.Traits.Activities
 					return this;
 				}
 
-				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
+				self.InflictDamage(self, -hpToRepair, null);
 				if (self.Health == hp)
 					return NextActivity;
 

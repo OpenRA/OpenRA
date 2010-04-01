@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 			if (--ticks <= 0)
 			{
 				ticks = info.Ticks;
-				self.InflictDamage(self, -info.Step, Rules.WarheadInfo["Super"]);
+				self.InflictDamage(self, -info.Step, null);
 			}
 		}
 	}

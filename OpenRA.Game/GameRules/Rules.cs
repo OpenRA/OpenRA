@@ -29,13 +29,11 @@ namespace OpenRA
 	public static class Rules
 	{
 		public static IniFile AllRules;
-		public static Dictionary<string, List<string>> Categories = new Dictionary<string, List<string>>();
-		public static InfoLoader<WarheadInfo> WarheadInfo;
-		public static InfoLoader<VoiceInfo> VoiceInfo;
 		public static TechTree TechTree;
 
 		public static Dictionary<string, ActorInfo> Info;
 		public static Dictionary<string, WeaponInfo> Weapons;
+		public static Dictionary<string, VoiceInfo> Voices;
 
 		public static void LoadRules(string map, Manifest m)
 		{
@@ -43,38 +41,21 @@ namespace OpenRA
 			legacyRules.Insert(0, map);
 			AllRules = new IniFile(legacyRules.Select(a => FileSystem.Open(a)).ToArray());
 
-			LoadCategories(
-				"Weapon",
-				"Warhead",
-				"Projectile",
-				"Voice");
-
-			WarheadInfo = new InfoLoader<WarheadInfo>(
-				Pair.New<string, Func<string, WarheadInfo>>("Warhead", _ => new WarheadInfo()));
-			VoiceInfo = new InfoLoader<VoiceInfo>(
-				Pair.New<string, Func<string, VoiceInfo>>("Voice", _ => new VoiceInfo()));
-
 			Log.Write("Using rules files: ");
 			foreach (var y in m.Rules)
 				Log.Write(" -- {0}", y);
 
-			var yamlRules = m.Rules.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-			Info = new Dictionary<string, ActorInfo>();
-			foreach( var kv in yamlRules )
-				Info.Add(kv.Key.ToLowerInvariant(), new ActorInfo(kv.Key.ToLowerInvariant(), kv.Value, yamlRules));
-
-			var weaponsYaml = m.Weapons.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-			Weapons = new Dictionary<string, WeaponInfo>();
-			foreach (var kv in weaponsYaml)
-				Weapons.Add(kv.Key.ToLowerInvariant(), new WeaponInfo(kv.Key.ToLowerInvariant(), kv.Value));
+			Info = LoadYamlRules(m.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+			Weapons = LoadYamlRules(m.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+			Voices = LoadYamlRules(m.Voices, (k, _) => new VoiceInfo(k.Value));
 
 			TechTree = new TechTree();
 		}
 
-		static void LoadCategories(params string[] types)
+		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
 		{
-			foreach (var t in types)
-				Categories[t] = AllRules.GetSection(t + "Types").Select(x => x.Key.ToLowerInvariant()).ToList();
+			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
 		}
 	}
 }

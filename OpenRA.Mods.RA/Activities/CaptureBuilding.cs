@@ -35,23 +35,21 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (target == null || target.IsDead) return NextActivity;
 
-			var warhead = Rules.WarheadInfo["Super"];
-
 			if (self.Owner.Stances[ target.Owner ] == Stance.Ally)
 			{
 				if (target.Health == target.Info.Traits.Get<OwnedActorInfo>().HP)
 					return NextActivity;
-				target.InflictDamage(self, -EngineerCapture.EngineerDamage, warhead);
+				target.InflictDamage(self, -EngineerCapture.EngineerDamage, null);
 			}
 			else
 			{
 				if (target.Health - EngineerCapture.EngineerDamage <= 0)
 				{
 					target.Owner = self.Owner;
-					target.InflictDamage(self, target.Health - EngineerCapture.EngineerDamage, warhead);
+					target.InflictDamage(self, target.Health - EngineerCapture.EngineerDamage, null);
 				}
 				else
-					target.InflictDamage(self, EngineerCapture.EngineerDamage, warhead);
+					target.InflictDamage(self, EngineerCapture.EngineerDamage, null);
 			}
 
 			// the engineer is sacrificed.

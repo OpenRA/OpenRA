@@ -58,15 +58,10 @@ namespace OpenRA.FileFormats
 
 	public class Manifest
 	{
-		public readonly string[] Folders = { };
-		public readonly string[] Packages = { };
-		public readonly string[] LegacyRules = { };
-		public readonly string[] Rules = { };
-		public readonly string[] Sequences = { };
-		public readonly string[] Chrome = { };
-		public readonly string[] Assemblies = { };
-		public readonly string[] ChromeLayout = { };
-		public readonly string[] Weapons = { };
+		public readonly string[] 
+			Folders, Packages, LegacyRules, Rules, 
+			Sequences, Chrome, Assemblies, ChromeLayout, 
+			Weapons, Voices;
 
 		public Manifest(string[] mods)
 		{
@@ -83,6 +78,7 @@ namespace OpenRA.FileFormats
 			Assemblies = YamlList(yaml, "Assemblies");
 			ChromeLayout = YamlList(yaml, "ChromeLayout");
 			Weapons = YamlList(yaml, "Weapons");
+			Voices = YamlList(yaml, "Voices");
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key) { return ys[key].Nodes.Keys.ToArray(); }

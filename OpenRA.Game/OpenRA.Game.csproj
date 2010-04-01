@@ -153,7 +153,6 @@
     <Compile Include="Cursor.cs" />
     <Compile Include="Effects\Explosion.cs" />
     <Compile Include="GameRules\Footprint.cs" />
-    <Compile Include="GameRules\InfoLoader.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />

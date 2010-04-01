@@ -27,7 +27,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA
 {
-	static class Combat			/* some utility bits that are shared between various things */
+	public static class Combat			/* some utility bits that are shared between various things */
 	{
 		static string GetImpactSound(WarheadInfo warhead, bool isWater)
 		{
@@ -80,6 +80,23 @@ namespace OpenRA
 				else
 					a();
 			}
+		}
+
+		public static void DoExplosion(Actor attacker, string weapontype, int2 location, int altitude)
+		{
+			var args = new ProjectileArgs
+			{
+				src = location,
+				dest = location,
+				srcAltitude = altitude,
+				destAltitude = altitude,
+				firedBy = attacker,
+				target = null,
+				weapon = Rules.Weapons[ weapontype.ToLowerInvariant() ],
+				facing = 0
+			};
+
+			DoImpacts(args, location);
 		}
 
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)

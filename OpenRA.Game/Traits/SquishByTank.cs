@@ -35,7 +35,8 @@ namespace OpenRA.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			self.InflictDamage(crusher, self.Health, Rules.WarheadInfo["Crush"]);
+			// ... this wasnt working ANYWAY ...
+			// self.InflictDamage(crusher, self.Health, Rules.WarheadInfo["Crush"]);
 		}
 		
 		public bool IsPathableCrush(UnitMovementType umt, Player player)

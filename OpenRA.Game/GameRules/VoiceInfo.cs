@@ -34,8 +34,10 @@ namespace OpenRA.GameRules
 
 		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
 
-		public VoiceInfo()
+		public VoiceInfo( MiniYaml y )
 		{
+			FieldLoader.Load(this, y);
+
 			Pools = Lazy.New(() =>
 				new Dictionary<string, VoicePool>
 				{

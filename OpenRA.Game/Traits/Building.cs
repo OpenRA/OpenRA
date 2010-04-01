@@ -135,7 +135,7 @@ namespace OpenRA.Traits
 				}
 
 				self.World.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
-				self.InflictDamage(self, -hpToRepair, Rules.WarheadInfo["Super"]);
+				self.InflictDamage(self, -hpToRepair, null);
 				if (self.Health == maxHP)
 				{
 					isRepairing = false;

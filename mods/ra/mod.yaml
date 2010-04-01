@@ -41,3 +41,6 @@ ChromeLayout:
 
 Weapons:
 	mods/ra/weapons.yaml
+	
+Voices:
+	mods/ra/voices.yaml

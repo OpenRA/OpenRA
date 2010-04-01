@@ -102,16 +102,6 @@ namespace OpenRA
 					music.Volume = value;
 			}
 		}
-					
-		//public static void SeekMusic(uint delta)
-		//{
-		//    if (music != null)
-		//    {
-		//        music.PlayPosition += delta;
-		//        if (music.PlayPosition < 0 || music.PlayPosition > music.PlayLength) 
-		//            music.PlayPosition = 0;
-		//    }
-		//}
 		
 		public static void PlayVoice(string phrase, Actor voicedUnit)
 		{
@@ -120,7 +110,7 @@ namespace OpenRA
 			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (mi == null) return;
 
-			var vi = Rules.VoiceInfo[mi.Voice];
+			var vi = Rules.Voices[mi.Voice.ToLowerInvariant()];
 
 			var clip = vi.Pools.Value[phrase].GetNext();
 			if (clip == null)

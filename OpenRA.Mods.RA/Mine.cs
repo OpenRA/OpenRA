@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -50,14 +51,8 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var info = self.Info.Traits.Get<MineInfo>();
-			var warhead = Rules.WarheadInfo[info.Warhead];
-
-			self.World.AddFrameEndTask(w =>
-			{
-				w.Remove(self);
-				w.Add(new Explosion(w, self.CenterLocation.ToInt2(), warhead.Explosion, false));
-				crusher.InflictDamage(crusher, info.Damage, warhead);
-			});
+			Combat.DoExplosion(self, info.Warhead, self.CenterLocation.ToInt2(), 0);
+			self.QueueActivity(new RemoveSelf());
 		}
 
 		public bool IsPathableCrush(UnitMovementType umt, Player player)
