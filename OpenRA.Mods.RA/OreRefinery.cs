@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 		}
 		public int2 DeliverOffset {	get { return new int2(1, 2); } }
-		public void OnDock(Actor harv, DeliverOre dockOrder)
+		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{
 			var unit = harv.traits.Get<Unit>();
 			if (unit.Facing != 64)

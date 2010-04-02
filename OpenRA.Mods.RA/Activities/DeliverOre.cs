@@ -19,19 +19,21 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	public class DeliverOre : IActivity
+	public class DeliverResources : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 
 		bool isDocking;
 		Actor refinery;
 
-		public DeliverOre() { }
+		public DeliverResources() { }
 
-		public DeliverOre( Actor refinery )
+		public DeliverResources( Actor refinery )
 		{
 			this.refinery = refinery;
 		}

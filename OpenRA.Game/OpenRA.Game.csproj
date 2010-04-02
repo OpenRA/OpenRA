@@ -144,7 +144,6 @@
     <Compile Include="Traits\Activities\HeliFly.cs" />
     <Compile Include="Traits\Activities\HeliLand.cs" />
     <Compile Include="Traits\Activities\HeliReturn.cs" />
-    <Compile Include="Traits\Activities\DeliverOre.cs" />
     <Compile Include="Traits\Activities\TransformIntoActor.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Effects\Bullet.cs" />
@@ -188,7 +187,6 @@
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
     <Compile Include="GameRules\TerrainCost.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
-    <Compile Include="Traits\Activities\Harvest.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
@@ -213,7 +211,6 @@
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\GeneratesGap.cs" />
-    <Compile Include="Traits\Harvester.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />

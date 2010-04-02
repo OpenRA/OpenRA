@@ -18,6 +18,8 @@
  */
 #endregion
 
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
@@ -37,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 		}
 
 		public int2 DeliverOffset {	get { return new int2(0, 2); } }
-		public void OnDock(Actor harv, DeliverOre dockOrder)
+		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{
 			// Todo: need to be careful about cancellation and multiple harvs
 			harv.QueueActivity(new Move(self.Location + new int2(1,1), self));

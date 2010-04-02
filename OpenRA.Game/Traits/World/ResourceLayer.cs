@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
-	class ResourceLayer : IRenderOverlay, ILoadWorldHook
+	public class ResourceLayer : IRenderOverlay, ILoadWorldHook
 	{
 		SpriteRenderer sr;
 		World w;

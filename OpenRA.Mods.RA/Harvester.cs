@@ -20,9 +20,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class HarvesterInfo : ITraitInfo
 	{
@@ -87,7 +89,7 @@ namespace OpenRA.Traits
 			else if (order.OrderString == "Deliver")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new DeliverOre(order.TargetActor));
+				self.QueueActivity(new DeliverResources(order.TargetActor));
 			}
 		}
 

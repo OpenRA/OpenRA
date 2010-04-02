@@ -20,8 +20,10 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	public class Harvest : IActivity
 	{
@@ -36,7 +38,7 @@ namespace OpenRA.Traits.Activities
 			var harv = self.traits.Get<Harvester>();
 
 			if( harv.IsFull )
-				return new DeliverOre { NextActivity = NextActivity };
+				return new DeliverResources { NextActivity = NextActivity };
 
 			if (HarvestThisTile(self))
 				return this;

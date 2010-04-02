@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureBuilding.cs" />
+    <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\LayMine.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
+    <Compile Include="Activities\Harvest.cs" />
+    <Compile Include="Harvester.cs" />
     <Compile Include="OreRefinery.cs" />
     <Compile Include="SupportPowers\ChronoshiftPaletteEffect.cs" />
     <Compile Include="SupportPowers\ChronoshiftPower.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="SupportPowers\NukePower.cs" />
     <Compile Include="Thief.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
+    <Compile Include="TraitsInterfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
