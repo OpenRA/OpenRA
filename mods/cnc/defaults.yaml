@@ -10,6 +10,7 @@
 	Chronoshiftable: 
 	Passenger: 
 	IronCurtainable: 
+	HiddenUnderFog:
 
 ^Infantry:
 	Category: Infantry
@@ -23,6 +24,7 @@
 	SquishByTank:
 	AutoTarget:
 	Passenger:
+	HiddenUnderFog:
 
 ^Ship:
 	Category: Ship
@@ -30,11 +32,13 @@
 	Mobile:
 		MovementType: Float
 	Selectable:
+	HiddenUnderFog:
 
 ^Plane:
 	Category: Plane
 	Unit:
 	Selectable:
+	HiddenUnderFog:
 
 ^Building:
 	Category: Building
@@ -48,6 +52,7 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	RenderBuilding:
+
 ^Tree:
 	Category: Building
 	RenderBuilding:
@@ -55,6 +60,7 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+
 ^Wall:
 	Category: Building
 	Building:

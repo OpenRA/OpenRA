@@ -10,6 +10,7 @@
 	Chronoshiftable: 
 	Passenger: 
 	IronCurtainable: 
+	HiddenUnderFog:
 
 ^Infantry:
 	Category: Infantry
@@ -23,6 +24,7 @@
 	SquishByTank:
 	AutoTarget:
 	Passenger:
+	HiddenUnderFog:
 
 ^Ship:
 	Category: Ship
@@ -30,12 +32,14 @@
 	Mobile:
 		MovementType: Float
 	Selectable:
+	HiddenUnderFog:
 
 ^Plane:
 	Category: Plane
 	Unit:
 		TargetType: Air
 	Selectable:
+	HiddenUnderFog:
 
 ^Building:
 	Category: Building

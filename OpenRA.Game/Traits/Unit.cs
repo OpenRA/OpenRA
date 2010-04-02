@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 		[Sync]
 		public int Altitude;
 
-		public Unit( Actor self ) { }
+		public Unit(Actor self) { }
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
