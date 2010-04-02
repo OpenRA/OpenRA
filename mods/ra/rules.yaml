@@ -272,7 +272,6 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
-		ShroudRate: 4
 
 MGG:
 	GeneratesGap:

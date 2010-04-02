@@ -29,7 +29,6 @@ namespace OpenRA.Traits
 {
 	public class ShroudInfo : ITraitInfo
 	{
-		public readonly int ShroudRate = 0;
 		public object Create(Actor self) { return new Shroud(self, this); }
 	}
 
