@@ -81,15 +81,12 @@ Section "Client" Client
 SectionEnd
 
 SectionGroup /e "Mods"
-	Section "Red Alert" RA
-		SetOutPath "$INSTDIR\mods\ra"
-		File "..\..\mods\ra\*.*"
-		MessageBox MB_YESNO "Setup will now download and install the Red Alert packages.$\n\
-			The size of the download will be approximately 7MB in size.$\n\
-			If you do not wish to download them at this time, you can find instructions on how to \
-			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
-			Continue?" IDYES download IDNO done
-		download:
+	SectionGroup "Red Alert" RA
+		Section "-RA_Core"
+			SetOutPath "$INSTDIR\mods\ra"
+			File "..\..\mods\ra\*.*"
+		SectionEnd
+		Section "Download content" RA_Content
 			AddSize 10137
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
@@ -98,18 +95,14 @@ SectionGroup /e "Mods"
 				Abort
 			ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
 			Delete ra-packages.zip
-		done:
-	SectionEnd
-	Section "Command & Conquer" CNC
-		SetOutPath "$INSTDIR\mods\cnc"
-		File "..\..\mods\cnc\*.*"
-		
-		MessageBox MB_YESNO "Setup will now download and install the Command and Conquer packages.$\n\
-			The size of the download will be approximately 6MB in size.$\n\
-			If you do not wish to download them at this time, you can find instructions on how to \
-			download the packages in the INSTALL file found in the OpenRA program directory$\n$\n\
-			Continue?" IDYES download IDNO done
-		download:
+		SectionEnd
+	SectionGroupEnd
+	SectionGroup "Command & Conquer" CNC
+		Section "-CNC_Core"
+			SetOutPath "$INSTDIR\mods\cnc"
+			File "..\..\mods\cnc\*.*"
+		SectionEnd
+		Section "Download content" CNC_Content
 			AddSize 9431
 			SetOutPath "$OUTDIR\packages"
 			NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
@@ -118,12 +111,24 @@ SectionGroup /e "Mods"
 				Abort
 			ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
 			Delete cnc-packages.zip
-		done:
-	SectionEnd
-	Section "Red Alert: Aftermath" Aftermath
-		SetOutPath "$INSTDIR\mods\aftermath"
-		File "..\..\mods\aftermath\*.*"
-	SectionEnd
+		SectionEnd
+	SectionGroupEnd
+	SectionGroup "Red Alert: Aftermath" Aftermath
+		Section "-AM_Core"
+			SetOutPath "$INSTDIR\mods\aftermath"
+			File "..\..\mods\aftermath\*.*"
+		SectionEnd
+		Section "Download content" AM_Content
+			AddSize 5941
+			SetOutPath "$OUTDIR\packages"
+			NSISdl::download http://open-ra.org/packages/aftermath-packages.zip aftermath-packages.zip
+			Pop $R0
+			StrCmp $R0 "success" +2
+				Abort
+			ZipDLL::extractall "aftermath-packages.zip" "$OUTDIR"
+			Delete aftermath-packages.zip
+		SectionEnd
+	SectionGroupEnd
 	Section "Red Alert: Next Generation" RA_NG
 		SetOutPath "$INSTDIR\mods\ra-ng"
 		File "..\..\mods\ra-ng\*.*"
@@ -240,33 +245,6 @@ LangString DESC_RA_NG ${LANG_ENGLISH} "Next-gen Red Alert mod (depends on base R
 ;***************************
 ;Callbacks
 ;***************************
-Var previousSelection
-
-Function .onInit
-	IntOp $0 ${SF_SELECTED} | ${SF_RO}
-	SectionSetFlags ${Client} $0
-	
-	IntOp $previousSelection ${SF_SELECTED} + 0
-FunctionEnd
-
-Function .onSelChange
-	SectionGetFlags ${RA} $0
-	IntOp $1 ${SF_SELECTED} & $0
-	IntCmp $1 $previousSelection done
-
-	IntCmp 0 $1 deselected selected
-	deselected:
-		SectionSetFlags ${Aftermath} ${SF_RO}
-		SectionSetFlags ${RA_NG} ${SF_RO}
-		Goto done
-	selected:
-		SectionSetFlags ${Aftermath} 0
-		SectionSetFlags ${RA_NG} 0
-		Goto done
-
-	done:
-		IntOp $previousSelection $1 + 0
-FunctionEnd
 
 Function .onInstFailed
 	Call Clean
