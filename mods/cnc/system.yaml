@@ -1,5 +1,7 @@
 Player:
 	ProductionQueue:
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 	PlaceBuilding:
 	NukePower:
 		Image: atomicnh

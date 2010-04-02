@@ -27,6 +27,8 @@ namespace OpenRA.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{
+		public readonly float BuildSpeed = 0.4f;
+		public readonly int LowPowerSlowdown = 3;
 		public object Create(Actor self) { return new ProductionQueue(self); }
 	}
 
@@ -57,7 +59,7 @@ namespace OpenRA.Traits
 						var unit = Rules.Info[order.TargetString];
 						var ui = unit.Traits.Get<BuildableInfo>();
 						var time = ui.Cost
-							* self.World.Defaults.BuildSpeed						/* todo: country-specific build speed bonus */
+							* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
 							 * (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 							 / 1000;
 
@@ -192,7 +194,7 @@ namespace OpenRA.Traits
 	class ProductionItem
 	{
 		public readonly string Item;
-
+		
 		public readonly int TotalTime;
 		public readonly int TotalCost;
 		public int RemainingTime { get; private set; }
@@ -226,14 +228,13 @@ namespace OpenRA.Traits
 			if (player.GetPowerState() != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
-					slowdown = player.World.Defaults.LowPowerSlowdown;
+					slowdown = player.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown; 
 				else
 					return;
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
 			if (costThisFrame != 0 && !player.TakeCash(costThisFrame)) return;
-
 			RemainingCost -= costThisFrame;
 			RemainingTime -= 1;
 			if (RemainingTime > 0) return;

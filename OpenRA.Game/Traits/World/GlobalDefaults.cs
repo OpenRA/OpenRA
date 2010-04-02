@@ -42,7 +42,6 @@ namespace OpenRA.Traits
 		public readonly int Incoming = 10;
 		
 		/* Income & Production */
-		public readonly float BuildSpeed = 0.4f;
 		public readonly float BuildupTime = 0.06f;
 		public readonly float OreTruckRate = 1;
 		public readonly bool SeparateAircraft = false;
@@ -75,12 +74,9 @@ namespace OpenRA.Traits
 		public readonly int LZScanRadius = 16;
 		public readonly bool MineAware = true;
 		public readonly float Stray = 2.0f;
-		public readonly float SubmergeDelay = 0.02f;
 		public readonly float SuspendDelay = 2.0f;
 		public readonly int SuspendPriority = 20;
 		public readonly float TeamDelay = 0.6f;
-		
-		public readonly int LowPowerSlowdown = 3;
 	}
 
 	public class GlobalDefaults {}
