@@ -2,8 +2,6 @@
 
 Packages:
 
-LegacyRules:
-
 Rules:
 	mods/ra-ng/crate-drop.yaml
 	mods/ra-ng/defense-queue.yaml

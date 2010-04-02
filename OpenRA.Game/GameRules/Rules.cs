@@ -28,7 +28,6 @@ namespace OpenRA
 {
 	public static class Rules
 	{
-		public static IniFile AllRules;
 		public static TechTree TechTree;
 
 		public static Dictionary<string, ActorInfo> Info;
@@ -38,10 +37,6 @@ namespace OpenRA
 
 		public static void LoadRules(string map, Manifest m)
 		{
-			var legacyRules = m.LegacyRules.Reverse().ToList();
-			legacyRules.Insert(0, map);
-			AllRules = new IniFile(legacyRules.Select(a => FileSystem.Open(a)).ToArray());
-
 			Log.Write("Using rules files: ");
 			foreach (var y in m.Rules)
 				Log.Write(" -- {0}", y);

@@ -6,9 +6,6 @@ Packages:
 	mods/aftermath/packages/expand2.mix
 	mods/aftermath/packages/hires1.mix
 
-LegacyRules:
-	mods/aftermath/aftermathUnits.ini:	OpenRA patches
-
 Rules:
 	mods/aftermath/rules.yaml:	OpenRA actorinfos
 

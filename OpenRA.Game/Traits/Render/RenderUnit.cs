@@ -20,8 +20,6 @@
 
 using System;
 using OpenRA.Graphics;
-using System.Collections.Generic;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {

@@ -59,7 +59,7 @@ namespace OpenRA.FileFormats
 	public class Manifest
 	{
 		public readonly string[] 
-			Folders, Packages, LegacyRules, Rules, 
+			Folders, Packages, Rules, 
 			Sequences, Chrome, Assemblies, ChromeLayout, 
 			Weapons, Voices, Terrain;
 
@@ -71,7 +71,6 @@ namespace OpenRA.FileFormats
 				
 			Folders = YamlList(yaml, "Folders");
 			Packages = YamlList(yaml, "Packages");
-			LegacyRules = YamlList(yaml, "LegacyRules");
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
 			Chrome = YamlList(yaml, "Chrome");

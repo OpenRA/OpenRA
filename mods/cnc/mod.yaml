@@ -16,9 +16,6 @@ Packages:
 	mods/cnc/packages/winter.mix
 	mods/cnc/packages/desert.mix
 
-LegacyRules:
-	mods/cnc/minimal.ini:	Minimal rules definitions
-	
 Rules:
 	mods/cnc/defaults.yaml:		Basic stuff
 	mods/cnc/system.yaml:		Player and world actors

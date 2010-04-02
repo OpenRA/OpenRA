@@ -20,9 +20,6 @@ Packages:
 	snow.mix
 	interior.mix
 
-LegacyRules:
-	mods/ra/rules.ini
-
 Rules:
 	mods/ra/defaults.yaml:	Basic stuff
 	mods/ra/rules.yaml:	OpenRA actorinfos
