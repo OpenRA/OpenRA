@@ -18,7 +18,9 @@
  */
 #endregion
 
-namespace OpenRA.Traits.Activities
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA.Activities
 {
 	public class Teleport : IActivity
 	{

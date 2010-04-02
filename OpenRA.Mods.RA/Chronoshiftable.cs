@@ -18,7 +18,10 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
+
+namespace OpenRA.Mods.RA
 {
 	class ChronoshiftableInfo : ITraitInfo
 	{
@@ -48,7 +51,7 @@ namespace OpenRA.Traits
 			{
 				self.CancelActivity();
 				// Todo: need a new Teleport method that will move to the closest available cell
-				self.QueueActivity(new Activities.Teleport(chronoshiftOrigin));
+				self.QueueActivity(new Teleport(chronoshiftOrigin));
 			}
 		}
 
@@ -71,7 +74,7 @@ namespace OpenRA.Traits
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Activities.Teleport(targetLocation));
+			self.QueueActivity(new Teleport(targetLocation));
 			
 			return true;
 		}

@@ -19,8 +19,9 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.SupportPowers
 {
 	class ChronoshiftPaletteEffectInfo : StatelessTraitInfo<ChronoshiftPaletteEffect> { }
 

@@ -20,6 +20,7 @@
 
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Aftermath
 {

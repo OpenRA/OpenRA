@@ -168,7 +168,6 @@
     <Compile Include="Traits\Activities\Repair.cs" />
     <Compile Include="Traits\Activities\ReturnToBase.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
-    <Compile Include="Traits\Activities\Teleport.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Player.cs" />
@@ -211,8 +210,6 @@
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\CanPowerDown.cs" />
     <Compile Include="Traits\Cargo.cs" />
-    <Compile Include="Traits\Chronoshiftable.cs" />
-    <Compile Include="Traits\World\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\Crate.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
