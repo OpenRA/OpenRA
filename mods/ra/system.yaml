@@ -212,6 +212,7 @@ World:
 	SellButton:
 	RepairButton:
 	PowerDownButton:
+	BibLayer:
 	ResourceLayer:
 	ResourceType@ore:
 		ResourceType: 1

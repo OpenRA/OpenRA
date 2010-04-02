@@ -5,11 +5,11 @@ FCOM:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+	Bib:
 
 V01:
 	Inherits: ^Building
@@ -387,9 +387,9 @@ MISS:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
+	Bib:
 
 BR1:
 	Bridge:

@@ -57,7 +57,6 @@
 		Footprint: x
 		BuildSounds: placbldg.aud
 		Capturable: false
-		Bib: no
 		BaseNormal: no
 		Crewed: no
 		Sight: 0

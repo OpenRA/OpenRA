@@ -113,7 +113,7 @@ IRON:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-		Bib: yes
+	Bib:
 	IronCurtainable:
 	IronCurtain:
 
@@ -137,7 +137,7 @@ PDOX:
 		Armor: wood
 		Crewed: yes
 		Sight: 10
-		Bib: yes
+	Bib:
 	Chronosphere:
 	IronCurtainable:
 
@@ -217,11 +217,11 @@ DOME:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 1000
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+	Bib:
 	ProvidesRadar:
 	IronCurtainable:
 
@@ -358,11 +358,11 @@ ATEK:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+	Bib:
 	IronCurtainable:
 	GpsLaunchSite:
 
@@ -381,11 +381,11 @@ WEAP:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
-		Bib: yes
 		HP: 1000
 		Armor: light
 		Crewed: yes
 		Sight: 4
+	Bib:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
@@ -399,11 +399,11 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 1000
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
+	Bib:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
@@ -426,11 +426,11 @@ PROC:
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 900
 		Armor: wood
 		Crewed: yes
 		Sight: 6
+	Bib:
 	OreRefinery:
 	StoresOre:
 		Pips: 17
@@ -480,11 +480,11 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
+	Bib:
 	Production:
 		SpawnOffset: 0,-4
 		Produces: Plane
@@ -530,11 +530,11 @@ POWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 4
+	Bib:
 	IronCurtainable:
 
 APWR:
@@ -552,11 +552,11 @@ APWR:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 700
 		Armor: wood
 		Crewed: yes
 		Sight: 4
+	Bib:
 	IronCurtainable:
 
 STEK:
@@ -574,11 +574,11 @@ STEK:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
-		Bib: yes
 		HP: 600
 		Armor: wood
 		Crewed: yes
 		Sight: 4
+	Bib:
 	IronCurtainable:
 
 BARR:
@@ -596,11 +596,11 @@ BARR:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
+	Bib:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -621,11 +621,11 @@ TENT:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
+	Bib:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -687,9 +687,9 @@ FACF:
 		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
-		Bib: yes
 		HP: 30
 		Sight: 4
+	Bib:
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -711,9 +711,9 @@ WEAF:
 		Dimensions: 3,2
 		Capturable: true
 		BaseNormal: no
-		Bib: yes
 		HP: 30
 		Sight: 4
+	Bib:
 	RenderWarFactory:
 	RenderBuilding:
 		Image: WEAP
@@ -776,9 +776,9 @@ DOMF:
 		Dimensions: 2,2
 		Capturable: true
 		BaseNormal: no
-		Bib: yes
 		HP: 30
 		Sight: 4
+	Bib:
 	RenderBuilding:
 		Image: DOME
 	Fake:

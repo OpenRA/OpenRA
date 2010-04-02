@@ -152,8 +152,10 @@ namespace OpenRA
 
 		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
 		{
+			
+			
 			var buildingMaxBounds = bi.Dimensions;
-			if( bi.Bib )
+			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
 				buildingMaxBounds.Y += 1;
 
 			var scanStart = world.ClampToWorld( topLeft - new int2( bi.Adjacent, bi.Adjacent ) );

@@ -42,7 +42,6 @@ namespace OpenRA.Traits
 		public readonly int Power = 0;
 		public readonly bool BaseNormal = true;
 		public readonly int Adjacent = 2;
-		public readonly bool Bib = false;
 		public readonly bool Capturable = false;
 		public readonly bool Repairable = true;
 		public readonly string Footprint = "x";

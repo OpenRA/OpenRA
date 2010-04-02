@@ -5,11 +5,11 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 3
+	Bib:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
@@ -30,11 +30,11 @@ NUKE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 200
 		Armor: wood
 		Crewed: yes
 		Sight: 2
+	Bib:
 
 PROC:
 	Inherits: ^Building
@@ -51,11 +51,11 @@ PROC:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 450
 		Armor: wood
 		Crewed: yes
 		Sight: 4
+	Bib:
 	TiberiumRefinery:
 	StoresOre:
 		Pips: 17
@@ -108,11 +108,11 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 3
+	Bib:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -133,11 +133,11 @@ HAND:
 		Footprint: __ xx xx
 		Dimensions: 2,3
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 3
+	Bib:
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -157,11 +157,11 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 		Capturable: true
-		Bib: yes
 		HP: 500
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
+	Bib:
 	RallyPoint:
 	BelowUnits:
 	ProductionAirdrop:
@@ -182,11 +182,11 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
-		Bib: yes
 		HP: 200
 		Armor: light
 		Crewed: yes
 		Sight: 3
+	Bib:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
@@ -209,11 +209,11 @@ HQ:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 500
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+	Bib:
 	ProvidesRadar:
 
 NUK2:
@@ -231,11 +231,11 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 700
 		Armor: wood
 		Crewed: yes
 		Sight: 2
+	Bib:
 		
 FIX:
 	Inherits: ^Building
@@ -275,11 +275,11 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 3
+	Bib:
 	Production:
 		SpawnOffset: 0,-4
 		Produces: Plane
@@ -304,11 +304,11 @@ EYE:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
-		Bib: yes
 		HP: 500
 		Armor: wood
 		Crewed: yes
 		Sight: 10
+	Bib:
 	ProvidesRadar:
 	IonControl:
 	
@@ -330,11 +330,11 @@ TMPL:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: false
-		Bib: yes
 		HP: 1000
 		Armor: light
 		Crewed: yes
 		Sight: 4
+	Bib:
 	NukeSilo:
 
 OBLI:

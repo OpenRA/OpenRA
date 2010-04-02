@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -32,7 +32,8 @@ namespace OpenRA.GameRules
 			var dim = buildingInfo.Dimensions;
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
-			if (buildingInfo.Bib)
+			
+			if (Rules.Info[ name ].Traits.Contains<BibInfo>())
 			{
 				dim.Y += 1;
 				footprint = footprint.Concat(new char[dim.X]);

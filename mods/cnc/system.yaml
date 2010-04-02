@@ -189,6 +189,7 @@ World:
 	SellButton:
 	RepairButton:
 	ChoosePaletteOnSelect:
+	BibLayer:
 	ResourceLayer:
 	ResourceType@green-tib:
 		ResourceType: 1

@@ -31,8 +31,6 @@ namespace OpenRA.Traits
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
-		static readonly int[] bibStarts = { 0, 0, 1, 5, 11 };
-
 		public RenderBuilding( Actor self )
 			: this( self, () => 0 )
 		{
@@ -45,8 +43,6 @@ namespace OpenRA.Traits
 				Complete( self );
 			else
 				anim.PlayThen( "make", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
-
-			DoBib(self, false);
 		}
 
 		void Complete( Actor self )
@@ -54,31 +50,6 @@ namespace OpenRA.Traits
 			anim.PlayRepeating( GetPrefix(self) + "idle" );
 			foreach( var x in self.traits.WithInterface<INotifyBuildComplete>() )
 				x.BuildingComplete( self );
-		}
-
-		void DoBib(Actor self, bool isRemove)
-		{
-			/*
-			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
-			if (buildingInfo.Bib)
-			{
-				var size = buildingInfo.Dimensions.X;
-				var bibOffset = buildingInfo.Dimensions.Y - 1;
-				var startIndex = bibStarts[size];
-
-				for (int i = 0; i < 2 * size; i++)
-				{
-					var p = self.Location + new int2(i % size, i / size + bibOffset);
-					if (isRemove)
-					{
-						if (self.World.Map.MapTiles[p.X, p.Y].smudge == (byte)(i + startIndex))
-							self.World.Map.MapTiles[ p.X, p.Y ].smudge = 0;
-					}
-					else
-						self.World.Map.MapTiles[p.X, p.Y].smudge = (byte)(i + startIndex);
-				}
-			}
-			*/
 		}
 
 		protected string GetPrefix(Actor self)
@@ -119,7 +90,6 @@ namespace OpenRA.Traits
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
 					break;
 				case DamageState.Dead:
-					DoBib(self, true);
 					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), 7, false)));
 					break;
 			}
@@ -134,6 +104,6 @@ namespace OpenRA.Traits
 					Sound.PlayToPlayer(self.Owner, s);
 		}
 
-		public void Sold(Actor self) { DoBib(self, true); }
+		public void Sold(Actor self) {}
 	}
 }

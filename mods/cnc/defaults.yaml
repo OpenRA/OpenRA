@@ -70,7 +70,6 @@
 		BuildSounds: hvydoor1.aud
 		SellSounds: cashturn.aud
 		Capturable: false
-		Bib: no
 		BaseNormal: no
 		Crewed: no
 		Sight: 0
