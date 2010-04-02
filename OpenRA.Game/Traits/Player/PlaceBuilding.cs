@@ -36,9 +36,8 @@ namespace OpenRA.Traits
 					var unit = Rules.Info[ order.TargetString ];
 					var producing = queue.CurrentItem(unit.Category);
 					
-					// Breaks linebuild
-					//if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
-					//	return;
+					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
+						return;
 					
 					var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 

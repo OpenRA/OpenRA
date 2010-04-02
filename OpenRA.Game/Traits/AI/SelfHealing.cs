@@ -31,8 +31,8 @@ namespace OpenRA.Traits
 
 	class SelfHealing : ITick
 	{
+		[Sync]
 		int ticks;
-
 
 		public void Tick(Actor self)
 		{

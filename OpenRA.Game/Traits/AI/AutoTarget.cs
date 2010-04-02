@@ -31,6 +31,7 @@ namespace OpenRA.Traits
 
 	class AutoTarget : ITick, INotifyDamage
 	{
+		[Sync]
 		int nextScanTime = 0;
 
 		void AttackTarget(Actor self, Actor target)
