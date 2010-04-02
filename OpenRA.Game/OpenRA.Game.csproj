@@ -91,7 +91,6 @@
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
-    <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
@@ -214,7 +213,6 @@
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\World\ChronoshiftPaletteEffect.cs" />
-    <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\Crate.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
@@ -225,7 +223,6 @@
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\World\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
-    <Compile Include="Traits\SupportPowers\NukePower.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\Passenger.cs" />

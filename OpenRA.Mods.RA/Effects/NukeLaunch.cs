@@ -19,11 +19,12 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Effects
+namespace OpenRA.Mods.RA.Effects
 {
 	class NukeInfo : IProjectileInfo
 	{
