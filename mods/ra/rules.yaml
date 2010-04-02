@@ -2510,6 +2510,8 @@ E6:
 	Unit:
 		HP: 25
 		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
 	EngineerCapture:
 	TakeCover:
 	-AutoTarget:
@@ -2530,6 +2532,8 @@ SPY:
 		HP: 25
 		Sight: 5
 		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
 	RenderSpy:
 	TakeCover:
 	Spy:
@@ -2552,6 +2556,8 @@ THF:
 		HP: 25
 		Sight: 5
 		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
 	TakeCover:
 	Thief:
 	-AutoTarget:
@@ -2594,6 +2600,8 @@ MEDI:
 		HP: 80
 		Sight: 3
 		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
 	AutoHeal:
 	AttackBase:
 		PrimaryWeapon: Heal

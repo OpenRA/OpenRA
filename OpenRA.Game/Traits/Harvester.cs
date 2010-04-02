@@ -100,11 +100,9 @@ namespace OpenRA.Traits
 			{
 				// todo: pip colors based on ResourceTypeInfo
 				if (n * 1.0f / self.Info.Traits.Get<HarvesterInfo>().Capacity > i * 1.0f / numPips)
-				{
 					yield return PipType.Yellow;
-					continue;
-				}
-				yield return PipType.Transparent;
+				else
+					yield return PipType.Transparent;
 			}
 		}
 	}

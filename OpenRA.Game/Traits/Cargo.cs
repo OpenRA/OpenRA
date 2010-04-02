@@ -92,16 +92,7 @@ namespace OpenRA.Traits
 
 		static PipType GetPipForPassenger(Actor a)
 		{
-			// probably not actually right yet; fix to match real-ra
-
-			if (a.traits.Contains<AutoHeal>())
-				return PipType.Yellow;
-			if (!a.traits.Contains<AttackBase>())
-				return PipType.Yellow;	// noncombat [E6,SPY,THF]
-
-			// todo: fix E7 color again.
-
-			return PipType.Green;
+			return a.traits.Get<Passenger>().ColorOfCargoPip( a );
 		}
 
 		public void Load(Actor self, Actor a)

@@ -23,7 +23,10 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class PassengerInfo : StatelessTraitInfo<Passenger> {}
+	class PassengerInfo : StatelessTraitInfo<Passenger>
+	{
+		public readonly PipType ColorOfCargoPip = PipType.Green;
+	}
 
 	class Passenger : IIssueOrder, IResolveOrder
 	{
@@ -54,6 +57,11 @@ namespace OpenRA.Traits
 				self.QueueActivity(new Move(order.TargetActor.Location, 1));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
+		}
+
+		public PipType ColorOfCargoPip( Actor self )
+		{
+			return self.Info.Traits.Get<PassengerInfo>().ColorOfCargoPip;
 		}
 	}
 }
