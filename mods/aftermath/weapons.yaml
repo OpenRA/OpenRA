@@ -1,0 +1,124 @@
+PortaTesla:
+	ROF: 70
+	Range: 3.5
+	Report: SHKTROP1
+	Charges: yes
+	TeslaZap:
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 5
+		Damage: 45
+
+TTankZap:
+	ROF: 120
+	Range: 7
+	Report: TESLA1
+	Charges: yes
+	TeslaZap:
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 5
+		Damage: 100
+
+GoodWrench:
+	Report: FIXIT1
+	ROF: 80
+	Range: 1.83
+	Bullet:
+		Speed: 100
+	Warhead:
+		Spread: 1
+		Verses: 0%,0%,100%,100%,100%
+		InfDeath: 0
+		Damage: -100
+
+SubSCUD:
+	ROF: 120
+	Range: 14
+	Burst: 2
+	Report: MISSILE6
+	Missile:
+		Arm: 3
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		Image: DRAGON
+		ROT: 20
+		RangeLimit: 60
+		TurboBoost: true
+		Speed: 20
+	Warhead:
+		Spread: 6
+		Wall: true
+		Wood: true
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 5
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 400
+
+APTusk:
+	ROF: 80
+	Range: 5
+	Burst: 2
+	Report: MISSILE6
+	ValidTargets: Ground, Air
+	Missile:
+		Speed: 30
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		Inaccurate: true
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 20
+	Warhead:
+		Spread: 6
+		Wall: true
+		Wood: true
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 5
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 75
+
+Democharge:
+	ROF: 80
+	Range: 1.75
+	Warhead@impact:
+		Damage: 1000
+		Spread: 6
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 90%,100%,60%,25%,50%
+		Explosion: 6
+		InfDeath: 4
+	Warhead@areanuke:
+		DamageModel: PerCell
+		Damage: 250
+		SmudgeType: Scorch
+		Size: 5,4
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 90%,100%,60%,25%,50%
+		Delay: 3
+		InfDeath: 4
+
+Mandible:
+	Report: ANTBITE
+	ROF: 15
+	Range: 1.5
+	Bullet:
+		Speed: 100
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 5
+		Damage: 50

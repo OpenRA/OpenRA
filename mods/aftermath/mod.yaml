@@ -14,3 +14,9 @@ Sequences:
 
 Assemblies:
 	mods/aftermath/OpenRA.Mods.Aftermath.dll:	Traits used
+
+Weapons:
+	mods/aftermath/weapons.yaml
+
+Voices:
+	mods/aftermath/voices.yaml

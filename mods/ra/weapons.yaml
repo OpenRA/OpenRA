@@ -649,7 +649,6 @@ Atomic:
 		Delay: 3
 		InfDeath: 4
 
-
 UnitExplode:
 	Warhead:
 		Damage: 500
