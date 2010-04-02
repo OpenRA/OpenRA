@@ -258,6 +258,7 @@ FIX:
 		Sight: 3
 	BelowUnits:
 	Reservable:
+	RepairsUnits:
 
 HPAD:
 	Inherits: ^Building

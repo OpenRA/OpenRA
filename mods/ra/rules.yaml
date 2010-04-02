@@ -1736,6 +1736,7 @@ FIX:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
+	RepairsUnits:
 
 FACF:
 	Inherits: ^Building

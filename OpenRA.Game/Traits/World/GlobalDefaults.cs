@@ -23,8 +23,7 @@ namespace OpenRA.Traits
 		public readonly float RepairPercent = 0.2f;
 		public readonly float RepairRate = 0.016f;
 		public readonly int RepairStep = 7;
-		public readonly float URepairPercent = 0.2f;
-		public readonly int URepairStep = 10;
+
 		
 		/* Combat & Damage */
 		public readonly float TurboBoost = 1.5f;

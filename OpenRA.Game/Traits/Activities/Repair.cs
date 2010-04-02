@@ -36,11 +36,14 @@ namespace OpenRA.Traits.Activities
 			if (isCanceled) return NextActivity;
 			if (remainingTicks == 0)
 			{
+				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
+					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
+				
 				var unitCost = self.Info.Traits.Get<BuildableInfo>().Cost;
 				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
-				var costPerHp = (self.World.Defaults.URepairPercent * unitCost) / hp;
-				var hpToRepair = Math.Min(self.World.Defaults.URepairStep, hp - self.Health);
+				var costPerHp = (hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
+				var hpToRepair = Math.Min(hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.TakeCash(cost))
 				{
@@ -52,8 +55,7 @@ namespace OpenRA.Traits.Activities
 				if (self.Health == hp)
 					return NextActivity;
 
-				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
+
 
 				if (hostBuilding != null)
 					hostBuilding.traits.Get<RenderBuilding>()

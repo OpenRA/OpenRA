@@ -302,6 +302,7 @@
     <Compile Include="Traits\CrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Traits\World\GlobalDefaults.cs" />
+    <Compile Include="Traits\RepairsUnits.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
