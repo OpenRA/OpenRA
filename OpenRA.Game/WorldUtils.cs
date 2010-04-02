@@ -34,8 +34,10 @@ namespace OpenRA
 		{
 			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any()) return false;
-			
-			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Cost(umt, world.TileSet.GetTerrainType(world.Map.MapTiles[a.X,a.Y])) < double.PositiveInfinity;
+
+			return world.Map.IsInMap(a.X, a.Y) &&
+				Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y])]
+				.GetCost(umt) < float.PositiveInfinity;
 		}
 		
 		public static bool IsCellBuildable(this World world, int2 a, bool waterBound)
@@ -50,8 +52,10 @@ namespace OpenRA
 			
 			if (waterBound)
 				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == TerrainType.Water;
-			
-			return world.Map.IsInMap(a.X, a.Y) && TerrainCosts.Buildable(world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y]));
+
+			return world.Map.IsInMap(a.X, a.Y) &&
+				Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y])]
+				.Buildable;
 		}
 
 		public static bool IsActorCrushableByActor(this World world, Actor a, Actor b)

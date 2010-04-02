@@ -19,6 +19,7 @@
 #endregion
 
 using OpenRA.Traits.Activities;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -66,10 +67,7 @@ namespace OpenRA.Traits
 		}
 	
 		// HACK: This should make reference to an MCV actor, and use of its Mobile trait
-		public UnitMovementType GetMovementType()
-		{
-			return UnitMovementType.Wheel;
-		}
+		public UnitMovementType GetMovementType() { return UnitMovementType.Wheel; }
 		
 		public bool CanEnterCell(int2 a)
 		{
@@ -88,10 +86,10 @@ namespace OpenRA.Traits
 			}
 			
 			if (!crushable) return false;
-			
+
 			return self.World.Map.IsInMap(a.X, a.Y) &&
-				TerrainCosts.Cost(GetMovementType(),
-					self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])]
+				.GetCost(GetMovementType()) < float.PositiveInfinity;
 		}
 	}
 }

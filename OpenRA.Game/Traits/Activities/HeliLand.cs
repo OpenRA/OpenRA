@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 namespace OpenRA.Traits.Activities
 {
 	class HeliLand : IActivity

@@ -20,6 +20,7 @@
 
 using System;
 using OpenRA.Traits.Activities;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {

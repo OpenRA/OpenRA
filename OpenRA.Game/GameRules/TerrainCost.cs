@@ -18,10 +18,11 @@
  */
 #endregion
 
-using OpenRA.Graphics;
+using System;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
-namespace OpenRA
+namespace OpenRA.GameRules
 {
 	public enum UnitMovementType : byte
 	{
@@ -32,35 +33,26 @@ namespace OpenRA
 		Fly = 4,
 	}
 
-	static class TerrainCosts
+	public class TerrainCost
 	{
-		static float[][] costs = Util.MakeArray<float[]>(4,
-			a => Util.MakeArray<float>(11, b => float.PositiveInfinity));
-		
-		static bool[] buildable = Util.MakeArray<bool>(11,b => false);
-		static TerrainCosts()
+		public readonly bool Buildable = true;
+		public readonly float Foot = 0, Track = 0, Wheel = 0, Float = 0;
+		public readonly bool AcceptSmudge = true;
+
+		public TerrainCost(MiniYaml y) { FieldLoader.Load(this, y); }
+
+		public float GetCost(UnitMovementType umt)
 		{
-			for( int i = 0 ; i < 11 ; i++ )
+			switch (umt)			/* todo: make this nice */
 			{
-				if( i == 4 ) continue;
-				var section = Rules.AllRules.GetSection( ( (TerrainType)i ).ToString() );
-				for( int j = 0 ; j < 4 ; j++ )
-				{
-					string val = section.GetValue( ( (UnitMovementType)j ).ToString(), "0%" );
-					costs[j][i] = 100f / float.Parse(val.Substring(0, val.Length - 1));
-				}
-				buildable[i] = (section.GetValue("Buildable", "no") == "yes");
+				case UnitMovementType.Fly: return 1;
+				case UnitMovementType.Foot: return 1 / Foot;
+				case UnitMovementType.Wheel: return 1 / Wheel;
+				case UnitMovementType.Track: return 1 / Track;
+				case UnitMovementType.Float: return 1 / Float;
+				default:
+					throw new InvalidOperationException("wtf?");
 			}
-		}
-		
-		public static bool Buildable(TerrainType r)
-		{
-			return buildable[(int)r];
-		}
-		
-		public static float Cost( UnitMovementType unitMovementType, TerrainType r )
-		{
-			return costs[ (byte)unitMovementType ][ (int)r ];
 		}
 	}
 }

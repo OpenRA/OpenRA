@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 namespace OpenRA.Traits
 {
 	class SquishByTankInfo : ITraitInfo

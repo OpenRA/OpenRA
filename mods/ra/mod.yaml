@@ -44,3 +44,6 @@ Weapons:
 	
 Voices:
 	mods/ra/voices.yaml
+	
+Terrain:
+	mods/ra/terrain.yaml

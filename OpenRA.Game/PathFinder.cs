@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.GameRules;
 
 namespace OpenRA
 {
@@ -38,11 +39,12 @@ namespace OpenRA
 			var map = world.Map;
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
 				passableCost[(int)umt] = new float[map.MapSize, map.MapSize];
-			for( int x = 0 ; x < map.MapSize ; x++ )
-				for( int y = 0 ; y < map.MapSize ; y++ )
-					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
-						passableCost[(int)umt][ x, y ] = ( world.Map.IsInMap( x, y ) )
-							? (float)TerrainCosts.Cost( umt, world.TileSet.GetTerrainType( world.Map.MapTiles[ x, y ] ) )
+			for (int x = 0; x < map.MapSize; x++)
+				for (int y = 0; y < map.MapSize; y++)
+					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
+						passableCost[(int)umt][x, y] = (world.Map.IsInMap(x, y))
+							? (float)Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[x, y])]
+								.GetCost(umt)
 							: float.PositiveInfinity;
 		}
 

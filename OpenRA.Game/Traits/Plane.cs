@@ -21,6 +21,7 @@
 using System;
 using System.Linq;
 using OpenRA.Traits.Activities;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {

@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -128,10 +129,7 @@ namespace OpenRA.Traits
 
 		public float GetCost(int2 p, UnitMovementType umt)
 		{
-			// just use the standard walkability from templates.ini. no hackery.
-
-			return TerrainCosts.Cost(umt, 
-				Templates[state].TerrainType[Tiles[p]]);
+			return Rules.TerrainTypes[Templates[state].TerrainType[Tiles[p]]].GetCost(umt);
 		}
 
 		static bool IsIntact(Bridge b)

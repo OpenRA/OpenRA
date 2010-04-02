@@ -51,3 +51,6 @@ Weapons:
 	
 Voices:
 	mods/cnc/voices.yaml:
+	
+Terrain:
+	mods/cnc/terrain.yaml

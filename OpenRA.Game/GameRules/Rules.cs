@@ -34,6 +34,7 @@ namespace OpenRA
 		public static Dictionary<string, ActorInfo> Info;
 		public static Dictionary<string, WeaponInfo> Weapons;
 		public static Dictionary<string, VoiceInfo> Voices;
+		public static Dictionary<TerrainType, TerrainCost> TerrainTypes;
 
 		public static void LoadRules(string map, Manifest m)
 		{
@@ -48,6 +49,8 @@ namespace OpenRA
 			Info = LoadYamlRules(m.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 			Voices = LoadYamlRules(m.Voices, (k, _) => new VoiceInfo(k.Value));
+			TerrainTypes = LoadYamlRules(m.Terrain, (k, _) => new TerrainCost(k.Value))
+				.ToDictionary(kv => (TerrainType)Enum.Parse(typeof(TerrainType), kv.Key, true), kv => kv.Value);
 
 			TechTree = new TechTree();
 		}

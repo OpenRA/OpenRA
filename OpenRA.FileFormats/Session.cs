@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 		public readonly string[] 
 			Folders, Packages, LegacyRules, Rules, 
 			Sequences, Chrome, Assemblies, ChromeLayout, 
-			Weapons, Voices;
+			Weapons, Voices, Terrain;
 
 		public Manifest(string[] mods)
 		{
@@ -79,6 +79,7 @@ namespace OpenRA.FileFormats
 			ChromeLayout = YamlList(yaml, "ChromeLayout");
 			Weapons = YamlList(yaml, "Weapons");
 			Voices = YamlList(yaml, "Voices");
+			Terrain = YamlList(yaml, "Terrain");
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key) { return ys[key].Nodes.Keys.ToArray(); }

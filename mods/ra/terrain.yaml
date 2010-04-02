@@ -1,0 +1,82 @@
+Clear:
+	Foot: 90%
+	Track: 80%
+	Wheel: 60%
+	Float: 0%
+	Buildable: yes
+
+Rough:
+	Foot: 80%
+	Track: 70%
+	Wheel: 40%
+	Float: 0%
+	Buildable: no
+
+Road:
+	Foot: 100%
+	Track: 100%
+	Wheel: 100%
+	Float: 0%
+	Buildable: yes
+	
+Tree:
+	Foot: 0%
+	Track: 0%
+	Wheel: 0%
+	Float: 0%
+	Buildable: no
+	AcceptSmudge: no
+
+Water:
+	Foot: 0%
+	Track: 0%
+	Wheel: 0%
+	Float: 100%
+	Buildable: no
+	AcceptSmudge: no
+
+Rock:
+	Foot: 0%
+	Track: 0%
+	Wheel: 0%
+	Float: 0%
+	Buildable: no
+	AcceptSmudge: no
+
+Wall:
+	Foot: 0%
+	Track: 0%
+	Wheel: 0%
+	Float: 0%
+	Buildable: no
+
+Ore:
+	Foot: 90%
+	Track: 70%
+	Wheel: 50%
+	Float: 0%
+	Buildable: no
+
+Beach:
+	Foot: 80%
+	Track: 70%
+	Wheel: 40%
+	Float: 0%
+	Buildable: no
+	AcceptSmudge: no
+
+River:
+	Foot: 0%
+	Track: 0%
+	Wheel: 0%
+	Float: 0%
+	Buildable: no
+	AcceptSmudge: no
+
+Special:
+	Foot: 100%
+	Track: 100%
+	Wheel: 100%
+	Float: 100%
+	Buildable: no
+	AcceptSmudge: no

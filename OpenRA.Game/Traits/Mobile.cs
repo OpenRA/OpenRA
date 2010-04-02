@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -131,10 +132,10 @@ namespace OpenRA.Traits
 			}
 			
 			if (!crushable) return false;
-			
+
 			return self.World.Map.IsInMap(a.X, a.Y) &&
-				TerrainCosts.Cost(GetMovementType(),
-					self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])) < double.PositiveInfinity;
+				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])]
+				.GetCost(GetMovementType()) < float.PositiveInfinity;
 		}
 
 		public IEnumerable<int2> GetCurrentPath()

@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 /*
  * Crates left to implement:
@@ -75,24 +76,15 @@ namespace OpenRA.Traits
 					n -= s.Second;
 		}
 
-		public bool IsPathableCrush(UnitMovementType umt, Player player)
-		{
-			return true;
-		}
-
-		public bool IsCrushableBy(UnitMovementType umt, Player player)
-		{
-			return true;
-		}
+		public bool IsPathableCrush(UnitMovementType umt, Player player) { return true; }
+		public bool IsCrushableBy(UnitMovementType umt, Player player) { return true; }
 
 		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 		
 		public void Tick(Actor self)
 		{
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
-			{
 				self.World.AddFrameEndTask(w =>	w.Remove(self));
-			}
 		}
 	}
 }

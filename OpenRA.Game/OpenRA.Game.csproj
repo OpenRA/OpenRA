@@ -188,7 +188,7 @@
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
-    <Compile Include="TerrainCosts.cs" />
+    <Compile Include="GameRules\TerrainCost.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Traits\Activities\Harvest.cs" />
     <Compile Include="Traits\Activities\Move.cs" />

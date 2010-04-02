@@ -23,6 +23,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA
 {
