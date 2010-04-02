@@ -36,10 +36,8 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
-	class Bridge // : IRender, ICustomTerrain, INotifyDamage
+	class Bridge: IRender, ICustomTerrain, INotifyDamage
 	{
-		public Bridge(Actor self) { }
-		/*
 		Dictionary<int2, int> Tiles;
 		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
 		List<TileTemplate> Templates = new List<TileTemplate>();
@@ -50,8 +48,8 @@ namespace OpenRA.Traits
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
 		
-		static string cachedTheater;
-		static Cache<TileReference, Sprite> sprites;
+		static string cachedTileset;
+		static Cache<TileReference<ushort,byte>, Sprite> sprites;
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
@@ -89,10 +87,10 @@ namespace OpenRA.Traits
 			foreach (var t in replacedTiles.Keys)
 				world.customTerrain[t.X, t.Y] = this;
 
-			if (cachedTheater != world.Map.Theater)
+			if (cachedTileset != world.Map.Tileset)
 			{
-				cachedTheater = world.Map.Theater;
-				sprites = new Cache<TileReference, Sprite>(
+				cachedTileset = world.Map.Tileset;
+				sprites = new Cache<TileReference<ushort,byte>, Sprite>(
 				x => SheetBuilder.SharedInstance.Add(world.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));
 			}
@@ -105,7 +103,7 @@ namespace OpenRA.Traits
 
 				TileSprites.Add(replacedTiles.ToDictionary(
 					a => a.Key,
-					a => sprites[new TileReference { tile = (ushort)stateTemplate.Index, image = (byte)a.Value }]));
+					a => sprites[new TileReference<ushort,byte>((ushort)stateTemplate.Index, (byte)a.Value)]));
 			}
 
 			self.Health = (int)(self.GetMaxHP() * template.HP);
@@ -171,6 +169,5 @@ namespace OpenRA.Traits
 				if (southNeighbour != null) southNeighbour.UpdateState();
 			}
 		}
-		*/
 	}
 }
