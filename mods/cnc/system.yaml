@@ -26,6 +26,7 @@ Player:
 		SelectTargetSound: select1.aud
 	
 World:
+	GlobalDefaults:
 	ScreenShaker:
 #	WaterPaletteRotation:
 	BuildingInfluence:
