@@ -55,6 +55,7 @@
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
+    <Compile Include="OreRefinery.cs" />
     <Compile Include="SupportPowers\ChronoshiftPaletteEffect.cs" />
     <Compile Include="SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Crates\ArmorUpgradeCrateAction.cs" />

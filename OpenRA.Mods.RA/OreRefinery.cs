@@ -18,9 +18,10 @@
  */
 #endregion
 
+using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class OreRefineryInfo : ITraitInfo
 	{

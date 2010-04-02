@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		public override object Create(Actor self) { return new RenderUnit(self); }
 	}
 
-	class RenderUnit : RenderSimple, INotifyDamage
+	public class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)
 			: base(self, () => self.traits.Get<Unit>().Facing)
