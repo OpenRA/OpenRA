@@ -56,14 +56,11 @@ namespace OpenRA.Mods.Aftermath
 
 			self.World.AddFrameEndTask( w =>
 			{
-				// Fire weapon		
-				//w.Add(new Bullet(info.PrimaryWeapon, detonatedBy.Owner, detonatedBy,
-				//	detonateLocation, detonateLocation, altitude, altitude));
+				Combat.DoExplosion(self, info.PrimaryWeapon, detonateLocation, altitude);
+				var report = self.GetPrimaryWeapon().Report;
+				if (report != null)
+					Sound.Play(report + ".aud");
 				
-				//var weapon = Rules.WeaponInfo[info.PrimaryWeapon];
-				//if (!string.IsNullOrEmpty(weapon.Report))
-				//	Sound.Play(weapon.Report + ".aud");
-
 				// Remove from world
 				self.Health = 0;
 				detonatedBy.Owner.Kills++;
