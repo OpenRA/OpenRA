@@ -248,12 +248,11 @@ namespace OpenRA.Traits
 
 		protected virtual void QueueAttack(Actor self, Order order)
 		{
-			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
 
 			self.QueueActivity(new Activities.Attack(order.TargetActor,
-					Math.Max(0, (int)weapon.Range - RangeTolerance)));
+					Math.Max(0, (int)weapon.Range)));
 		}
 	}
 }
