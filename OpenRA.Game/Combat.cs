@@ -116,7 +116,9 @@ namespace OpenRA
 
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
-			var distance = (target.CenterLocation - args.dest).Length;
+			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
+			var radius = selectable != null ? selectable.Radius : 0;
+			var distance = Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
 			var rawDamage = warhead.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
 			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
 			return rawDamage * multiplier;

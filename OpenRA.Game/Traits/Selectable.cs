@@ -25,6 +25,7 @@ namespace OpenRA.Traits
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
 		public readonly string Voice = "GenericVoice";
+		public readonly float Radius = 10;
 	}
 
 	public class Selectable {}
