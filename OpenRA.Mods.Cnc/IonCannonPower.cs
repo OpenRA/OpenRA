@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Cnc
 				Owner.World.AddFrameEndTask(w =>
 					{
 						Sound.Play(Info.LaunchSound);
-						w.Add(new IonCannon(w, order.TargetLocation));
+						w.Add(new IonCannon(self, w, order.TargetLocation));
 					});
 
 				Game.controller.CancelInputMode();

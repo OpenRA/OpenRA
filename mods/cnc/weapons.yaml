@@ -32,6 +32,27 @@ Atomic:
 		Delay: 3
 		InfDeath: 4
 
+IonCannon:
+	Warhead@impact:
+		Damage: 500
+		Spread: 6
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 4
+	Warhead@area:
+		DamageMode: PerCell
+		Damage: 200
+		SmudgeType: Scorch
+		Size: 2,1
+		Wall: true
+		Wood: true
+		Ore: true
+		Verses: 100%,100%,100%,100%,100%
+		Delay: 3
+		InfDeath: 4
+
 Sniper: 
 	Report: RAMGUN2
 	ROF: 40

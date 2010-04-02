@@ -17,7 +17,7 @@ Player:
 		LaunchSound: nukemisl.aud
 	IonCannonPower:
 		Image: ionicnh
-		ChargeTime: 1
+		ChargeTime: 3
 		Description: Ion Cannon
 		LongDesc: Discharges the orbital Ion Cannon at your target.
 		Prerequisites: EYE
