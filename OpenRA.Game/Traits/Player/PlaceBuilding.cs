@@ -28,31 +28,46 @@ namespace OpenRA.Traits
 	{
 		public void ResolveOrder( Actor self, Order order )
 		{
-			if( order.OrderString == "PlaceBuilding" )
+			if( order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild" )
 			{
 				self.World.AddFrameEndTask( _ =>
 				{
 					var queue = self.traits.Get<ProductionQueue>();
 					var unit = Rules.Info[ order.TargetString ];
 					var producing = queue.CurrentItem(unit.Category);
-					
+
 					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
 						return;
-					
-					var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 
-					foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
-						Sound.PlayToPlayer(order.Player, s);
-					
+					if( order.OrderString == "LineBuild" )
+					{
+						bool playSounds = true;
+						var buildingInfo = unit.Traits.Get<BuildingInfo>();
+						foreach( var t in LineBuildUtils.GetLineBuildCells( self.World, order.TargetLocation, order.TargetString, buildingInfo ) )
+						{
+							var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+							if( playSounds )
+								foreach( var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds )
+									Sound.PlayToPlayer( order.Player, s );
+							playSounds = false;
+						}
+					}
+					else
+					{
+						var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+						foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
+							Sound.PlayToPlayer(order.Player, s);
+					}
+
 					var facts = self.World.Queries.OwnedBy[self.Owner]
 						.WithTrait<ConstructionYard>().Select(x => x.Actor);
-					
+
 					var primaryFact = facts.Where(y => y.traits.Get<Production>().IsPrimary);
 					var fact = (primaryFact.Count() > 0) ? primaryFact.FirstOrDefault() : facts.FirstOrDefault();
 
 					if (fact != null)
 						fact.traits.Get<RenderBuilding>().PlayCustomAnim(fact, "build");
-						
+
 					queue.FinishProduction(unit.Category);
 				} );
 			}

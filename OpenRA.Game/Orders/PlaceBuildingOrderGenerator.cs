@@ -57,13 +57,10 @@ namespace OpenRA.Orders
 					yield break;
 				}
 				
-				yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, topLeft, Building);
-				
-				// Linebuild for walls.
-				// Assumes a 1x1 footprint; weird things will happen for other footprints
 				if (Rules.Info[ Building ].Traits.Contains<LineBuildInfo>())
-					foreach( var t in LineBuildUtils.GetLineBuildCells( world, topLeft, Building, BuildingInfo ))
-						yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, t, Building);
+					yield return new Order("LineBuild", Producer.Owner.PlayerActor, topLeft, Building);
+				else
+					yield return new Order("PlaceBuilding", Producer.Owner.PlayerActor, topLeft, Building);
 			}
 		}
 		
