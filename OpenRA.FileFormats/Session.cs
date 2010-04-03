@@ -48,7 +48,7 @@ namespace OpenRA.FileFormats
 
 		public class Global
 		{
-			public string Map = "testmap";
+			public string Map;
 			public string[] Packages = {};	// filename:sha1 pairs.
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;
@@ -62,6 +62,8 @@ namespace OpenRA.FileFormats
 			Folders, Packages, Rules, 
 			Sequences, Chrome, Assemblies, ChromeLayout, 
 			Weapons, Voices, Terrain;
+		
+		public readonly string ShellmapUid;
 
 		public Manifest(string[] mods)
 		{
@@ -79,6 +81,8 @@ namespace OpenRA.FileFormats
 			Weapons = YamlList(yaml, "Weapons");
 			Voices = YamlList(yaml, "Voices");
 			Terrain = YamlList(yaml, "Terrain");
+			
+			ShellmapUid = yaml["ShellmapUid"].Value;
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key) { return ys[key].Nodes.Keys.ToArray(); }

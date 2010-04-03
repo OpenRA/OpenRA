@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -54,7 +54,7 @@ namespace OpenRA.Server
 		static bool isInternetServer;
 		static string masterServerUrl;
 
-		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods)
+		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map)
 		{
 			Server.masterServerUrl = masterServerUrl;
 			isInternetServer = internetServer;
@@ -67,10 +67,13 @@ namespace OpenRA.Server
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = mods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
-
+			lobbyInfo.GlobalSettings.Map = map;
+			
 			Console.WriteLine("Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Console.WriteLine("- {0}", m);
+			
+			Console.WriteLine("Initial map: {0}",lobbyInfo.GlobalSettings.Map);
 			
 			try
 			{

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -19,7 +19,8 @@
 #endregion
 
 using System.Net;
-
+using System.Linq;
+using System.Collections.Generic;
 namespace OpenRA.Widgets.Delegates
 {
 	public class CreateServerMenuDelegate : WidgetDelegate
@@ -63,10 +64,20 @@ namespace OpenRA.Widgets.Delegates
 			{
 				Game.chrome.rootWidget.ShowMenu(null);
 				Log.Write("Creating server");
+				
+				
+				// TODO: Get this from a map chooser
+				string map = Game.AvailableMaps.Keys.FirstOrDefault();
+				
+				// TODO: Get this from a mod chooser
+				var mods = Game.Settings.InitialMods;
+				
+				// TODO: Get this from a textbox
+				var gameName = Game.Settings.GameName;
 
 				Server.Server.ServerMain(AdvertiseServerOnline, Game.Settings.MasterServer,
-										Game.Settings.GameName, Game.Settings.ListenPort,
-										Game.Settings.ExternalPort, Game.Settings.InitialMods);
+										gameName, Game.Settings.ListenPort,
+										Game.Settings.ExternalPort, mods, map);
 
 				Log.Write("Joining server");
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);

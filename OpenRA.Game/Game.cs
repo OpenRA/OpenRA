@@ -131,11 +131,7 @@ namespace OpenRA
 			
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
-			
-			// TODO: Only do this on mod change
-			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-			Timer.Time( "maplist: {0}" );
-			
+						
 			Game.LoadModAssemblies(manifest);
 			Game.changePending = false;
 			Game.mapName = mapName;
@@ -165,7 +161,7 @@ namespace OpenRA
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
 
-		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
+		internal static void Initialize(Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
 			Game.renderer = renderer;
 			Game.clientSize = clientSize;
@@ -176,8 +172,9 @@ namespace OpenRA
 			PerfHistory.items["text"].hasNormalTick = false;
 			PerfHistory.items["cursor"].hasNormalTick = false;
 			Game.controller = controller;
+			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 			
-			ChangeMap(mapName);
+			ChangeMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			if( Settings.Replay != "" )
 				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
@@ -217,6 +214,10 @@ namespace OpenRA
 		{
 			if (changePending && PackageDownloader.IsIdle())
 			{
+				// TODO: Only do this on mod change
+				AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
+				Timer.Time( "maplist: {0}" );
+					
 				ChangeMap(LobbyInfo.GlobalSettings.Map);
 				return;
 			}
@@ -457,7 +458,7 @@ namespace OpenRA
 			{
 				var current = Directory.GetCurrentDirectory();
 				if (Directory.GetDirectoryRoot(current) == current)
-					throw new InvalidOperationException("Unable to load MIX files.");
+					throw new InvalidOperationException("Unable to find game root.");
 				Directory.SetCurrentDirectory("..");
 			}
 			
@@ -476,7 +477,7 @@ namespace OpenRA
 
 			var controller = new Controller();
 
-			Game.Initialize(Game.Settings.Map, renderer, new int2(resolution), Game.Settings.Player, controller);
+			Game.Initialize(renderer, new int2(resolution), Game.Settings.Player, controller);
 
 			Game.ResetTimer();
 		}
