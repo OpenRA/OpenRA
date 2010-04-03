@@ -35,19 +35,19 @@ ra_LIBS				= $(COMMON_LIBS) $(ra_DEPS)
 cnc_SRCS			=	$(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 cnc_TARGET			=	mods/cnc/OpenRA.Mods.Cnc.dll
 cnc_KIND			=	library
-cnc_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+cnc_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
 cnc_LIBS			= $(COMMON_LIBS) $(cnc_DEPS)
 
 aftermath_SRCS		=	$(shell find OpenRA.Mods.Aftermath/ -iname '*.cs')
 aftermath_TARGET	=	mods/aftermath/OpenRA.Mods.Aftermath.dll
 aftermath_KIND		=	library
-aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
 
 ra_ng_SRCS		=	$(shell find OpenRA.Mods.RA-NG/ -iname '*.cs')
 ra_ng_TARGET		=	mods/ra-ng/OpenRA.Mods.RA_NG.dll
 ra_ng_KIND		=	library
-ra_ng_DEPS		= $(ra_TARGET) $(fileformats_TARGET) $(game_TARGET)
+ra_ng_DEPS		= $(ra_TARGET) $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
 ra_ng_LIBS		= $(COMMON_LIBS) $(ra_ng_DEPS)
 
 seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
