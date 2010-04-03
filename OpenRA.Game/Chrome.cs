@@ -319,10 +319,9 @@ namespace OpenRA
 			var y = r.Top + 50;
 			
 			int maxListItems = ((r.Bottom - 60 - y ) / 20);
-
-			//for(int i = mapOffset; i < Math.Min(maxListItems + mapOffset, Game.AvailableMaps.Count()); i++, y += 20)
-			
-			// TODO: Show the appropriate subset of data
+		
+			// Don't bother showing a subset of the data
+			// This will be fixed properly when we move the map list to widgets
 			foreach (var kv in Game.AvailableMaps)
 			{
 				var map = kv.Value;
@@ -352,21 +351,6 @@ namespace OpenRA
 			DrawCentered("Spawnpoints: {0}".F(currentMap.PlayerCount),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			
-			/*
-			y += 30;
-			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "^",
-			_ =>
-			{
-				mapOffset = (mapOffset - 1 < 0) ? 0 : mapOffset - 1;
-			});
-			
-			y += 30;
-			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "\\/",
-			_ =>
-			{
-				mapOffset = (mapOffset + 1 > mapList.Value.Count() - maxListItems) ? mapOffset : mapOffset + 1;
-			});
-			*/
 			AddButton(r, _ => { });
 		}
 		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }

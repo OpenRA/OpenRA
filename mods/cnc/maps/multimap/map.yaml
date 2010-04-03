@@ -1,0 +1,60 @@
+Uid: 305604695
+
+MapFormat: 1
+
+Title: Sand Trap
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+TopLeft: 3,3
+
+BottomRight: 60,61
+
+Actors:
+	Actor0: split3 Neutral 21,55
+	Actor1: split3 Neutral 19,19
+	Actor2: split3 Neutral 8,4
+	Actor3: t18 Neutral 3,31
+	Actor4: t18 Neutral 22,34
+	Actor5: t18 Neutral 26,37
+	Actor6: t08 Neutral 4,37
+	Actor7: t08 Neutral 7,38
+	Actor8: t08 Neutral 5,37
+	Actor9: rock1 Neutral 29,14
+	Actor10: rock1 Neutral 3,5
+	Actor11: rock6 Neutral 44,5
+	Actor12: t08 Neutral 53,42
+	Actor13: t08 Neutral 54,17
+	Actor14: t08 Neutral 53,55
+	Actor15: t08 Neutral 37,32
+	Actor16: t08 Neutral 39,33
+	Actor17: t08 Neutral 38,32
+	Actor18: t08 Neutral 46,31
+	Actor19: rock1 Neutral 3,12
+	Actor20: rock1 Neutral 38,30
+	Actor21: t08 Neutral 27,35
+	Actor22: split3 Neutral 7,43
+	Actor23: split3 Neutral 19,39
+	Actor24: split3 Neutral 44,53
+	Actor25: split3 Neutral 44,13
+	Actor26: split3 Neutral 41,33
+	Actor27: split3 Neutral 41,3
+
+Waypoints:
+	spawn7: 20,5
+	spawn6: 56,5
+	spawn5: 52,35
+	spawn4: 6,52
+	spawn3: 25,58
+	spawn2: 48,58
+	spawn1: 33,16
+	spawn0: 6,16
+
+Rules:
+

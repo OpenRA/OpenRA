@@ -101,6 +101,13 @@ namespace OpenRA.FileFormats
 			LoadBinaryData();
 		}
 		
+		public void UpdateUid()
+		{
+			// TODO: Do this properly.
+			// Use a hash of the important data
+			Random foo = new Random();
+			Uid = foo.Next().ToString();
+		}
 		
 		public void Save(string filepath)
 		{
@@ -116,10 +123,9 @@ namespace OpenRA.FileFormats
 			root.Add("Waypoints",MiniYaml.FromDictionary<string,int2>(Waypoints));
 
 			// TODO: Players
-			
 			root.Add("Rules",new MiniYaml(null,Rules));
-			SaveBinaryData(filepath+"map.bin");
-			root.WriteToFile(filepath+"map.yaml");
+			SaveBinaryData(Path.Combine(filepath,"map.bin"));
+			root.WriteToFile(Path.Combine(filepath,"map.yaml"));
 		}
 		
 		static byte ReadByte( Stream s )

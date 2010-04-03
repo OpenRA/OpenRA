@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
 using OpenRA;
 using OpenRA.FileFormats;
 
@@ -40,7 +42,7 @@ namespace MapConverter
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 		
-		Dictionary< string, Pair<byte,byte> > overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
+		static Dictionary< string, Pair<byte,byte> > overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
 		{
 			// RA Gems, Gold
 			{ "gold01", new Pair<byte,byte>(1,0) },
@@ -68,7 +70,7 @@ namespace MapConverter
 			{ "ti12", new Pair<byte,byte>(1,11) },
 		};
 		
-		Dictionary<string, string> overlayActorMapping = new Dictionary<string,string>() {
+		static Dictionary<string, string> overlayActorMapping = new Dictionary<string,string>() {
 			// Fences
 			{"sbag","sbag"},
 			{"cycl","cycl"},
@@ -92,11 +94,44 @@ namespace MapConverter
 		
 		int MapSize;
 		int ActorCount = 0; 
-		public Map Map = new Map();
+		Map Map = new Map();
+		Manifest manifest;
 
-		public MapConverter(string filename)
+		public MapConverter(string[] args)
 		{
-			IniFile file = new IniFile(FileSystem.Open(filename));
+			if (args.Length != 3)
+			{
+				Console.WriteLine("usage: MapConverter mod[,mod]* input-map.ini output-map.yaml");
+				return;
+			}
+
+			var mods = args[0].Split(',');
+			manifest = new Manifest(mods);
+
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			
+			ConvertIniMap(args[1]);
+			Map.DebugContents();
+			Save(args[2]);
+		}
+		
+		
+		static Dictionary<Pair<string,string>,Pair<string,string> > fileMapping = new Dictionary<Pair<string,string>,Pair<string,string> >()
+		{
+			{Pair.New("ra","TEMPERAT"),Pair.New("tem","temperat.col")},
+			{Pair.New("ra","SNOW"),Pair.New("sno","snow.col")},
+			{Pair.New("ra","INTERIOR"),Pair.New("int","temperat.col")},
+			{Pair.New("cnc","DESERT"),Pair.New("des","desert.col")},
+			{Pair.New("cnc","TEMPERAT"),Pair.New("tem","temperat.col")},
+			{Pair.New("cnc","WINTER"),Pair.New("win","winter.col")},
+		};
+		
+		TerrainColorSet terrainTypeColors;
+		TileSet tileset;
+		public void ConvertIniMap(string iniFile)
+		{
+			IniFile file = new IniFile(FileSystem.Open(iniFile));
 			IniSection basic = file.GetSection("Basic");
 			IniSection map = file.GetSection("Map");
 			var INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
@@ -119,12 +154,16 @@ namespace MapConverter
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
 				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 				ReadRATrees(file);
+				terrainTypeColors = new TerrainColorSet(fileMapping[Pair.New("ra",Map.Tileset)].Second);
+				tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("ra",Map.Tileset)].First);
 			}
 			else // CNC
 			{
-				UnpackCncTileData(FileSystem.Open(filename.Substring(0,filename.Length-4)+".bin"));
+				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0,iniFile.Length-4)+".bin"));
 				ReadCncOverlay(file);
-				ReadCncTrees(file);	
+				ReadCncTrees(file);
+				terrainTypeColors = new TerrainColorSet(fileMapping[Pair.New("cnc",Map.Tileset)].Second);
+				tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("cnc",Map.Tileset)].First);
 			}
 			
 			LoadActors(file, "STRUCTURES");
@@ -142,7 +181,7 @@ namespace MapConverter
 			foreach (var kv in wp)
 				Map.Waypoints.Add("spawn"+kv.First, kv.Second);
 		}
-
+		
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -324,8 +363,29 @@ namespace MapConverter
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
 		}
 		
+		public void SavePreviewImage(string filepath)
+		{
+			var xs = Map.TopLeft.X;
+			var ys = Map.TopLeft.Y;
+			
+			var bitmap = new Bitmap(Map.Width, Map.Height);
+			for (var x = 0; x < Map.Width; x++)
+				for (var y = 0; y < Map.Height; y++)
+					bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(tileset.GetTerrainType(Map.MapTiles[x+xs, y+ys])));
+		
+			for (var x = 0; x < Map.Width; x++)
+				for (var y = 0; y < Map.Height; y++)
+					if (Map.MapResources[x+xs, y+ys].type > 0)
+						bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(TerrainType.Ore));
+				
+			bitmap.Save(filepath,ImageFormat.Png);
+		}
+		
 		public void Save(string filepath)
 		{
+			Directory.CreateDirectory(filepath);
+			SavePreviewImage(Path.Combine(filepath,"preview.png"));
+			Map.UpdateUid();			
 			Map.Save(filepath);
 		}
 	}
