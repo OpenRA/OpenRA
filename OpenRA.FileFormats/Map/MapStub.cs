@@ -18,12 +18,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Reflection;
+using System.Drawing;
 
 namespace OpenRA.FileFormats
 {
@@ -37,16 +33,16 @@ namespace OpenRA.FileFormats
 		public string Description;
 		public string Author;
 		public int PlayerCount;
-		public string Preview;
 		public string Tileset;
 		
 		public int2 TopLeft;
 		public int2 BottomRight;
 		public int Width {get {return BottomRight.X - TopLeft.X;}}
 		public int Height {get {return BottomRight.Y - TopLeft.Y;}}
+		public Lazy<Bitmap> Preview;
 		
 		static List<string> Fields = new List<string>() {
-			"Uid", "Title", "Description", "Author", "PlayerCount", "Tileset", "Preview", "TopLeft", "BottomRight"
+			"Uid", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
 		
 		public MapStub() {}
@@ -55,8 +51,12 @@ namespace OpenRA.FileFormats
 		{			
 			Package = package;
 			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
-						
 			FieldLoader.LoadFields(this,yaml,Fields);
+			
+			Preview = Lazy.New(
+				() => {return new Bitmap(Package.GetContent("preview.png"));}
+			);
 		}
+		
 	}
 }

@@ -1,0 +1,58 @@
+Uid: 846202401
+
+MapFormat: 1
+
+Title: Equal Opportunity (2)
+
+Author: Westwood Studios
+
+PlayerCount: 5
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 28,26
+
+BottomRight: 99,97
+
+Actors:
+	Actor0: sbag Neutral 61,96
+	Actor1: tc03 Neutral 38,66
+	Actor2: tc03 Neutral 55,35
+	Actor3: tc02 Neutral 45,37
+	Actor4: tc03 Neutral 71,71
+	Actor5: tc02 Neutral 72,72
+	Actor6: t01 Neutral 61,62
+	Actor7: t03 Neutral 67,77
+	Actor8: t06 Neutral 53,87
+	Actor9: t10 Neutral 62,70
+	Actor10: t02 Neutral 66,51
+	Actor11: t05 Neutral 71,57
+	Actor12: tc01 Neutral 76,47
+	Actor13: t07 Neutral 81,53
+	Actor14: t12 Neutral 73,54
+	Actor15: t06 Neutral 69,56
+	Actor16: t11 Neutral 39,84
+	Actor17: t14 Neutral 77,32
+	Actor18: t12 Neutral 69,43
+	Actor19: tc02 Neutral 62,52
+	Actor20: tc03 Neutral 74,86
+	Actor21: tc05 Neutral 76,62
+	Actor22: tc04 Neutral 48,62
+	Actor23: mine Neutral 40,45
+	Actor24: mine Neutral 89,85
+	Actor25: mine Neutral 75,64
+	Actor26: mine Neutral 46,64
+	Actor27: mine Neutral 87,37
+	Actor28: mine Neutral 49,87
+
+Waypoints:
+	spawn0: 46,43
+	spawn1: 80,80
+	spawn2: 77,39
+	spawn3: 47,81
+	spawn4: 47,81
+
+Rules:
+

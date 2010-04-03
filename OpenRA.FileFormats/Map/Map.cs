@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 
 namespace OpenRA.FileFormats
@@ -204,6 +203,7 @@ namespace OpenRA.FileFormats
 			
 			writer.Flush();
 			writer.Close();
+			File.Delete(filepath);
 			File.Move(filepath+".tmp",filepath);
 		}
 		

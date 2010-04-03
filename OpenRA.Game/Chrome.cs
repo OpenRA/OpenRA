@@ -294,28 +294,26 @@ namespace OpenRA
 				{
 					showMapChooser = false;
 				});
-			/*
+			
 			if (mapPreviewDirty)
 			{
-				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize.X || mapChooserSheet.Size.Height != currentMap.Map.MapSize.Y)
-					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Map.MapSize.X, currentMap.Map.MapSize.Y));
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Width || mapChooserSheet.Size.Height != currentMap.Height)
+					mapChooserSheet = new Sheet(renderer, new Size(currentMap.Width, currentMap.Height));
 				
-				var b = Minimap.RenderTerrainBitmapWithSpawnPoints(currentMap.Map, Game.world.TileSet);	// tileset -> hack
-				mapChooserSheet.Texture.SetData(b);
-				mapChooserSprite = new Sprite(mapChooserSheet, 
-					Minimap.MakeMinimapBounds(currentMap.Map), TextureChannel.Alpha);
+				mapChooserSheet.Texture.SetData(currentMap.Preview.Value);
+				mapChooserSprite = new Sprite(mapChooserSheet, new Rectangle(0,0,currentMap.Width, currentMap.Height), TextureChannel.Alpha);
 				mapPreviewDirty = false;
 			}
-			*/
+			
 			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-			/*
+			
 			DrawDialogBackground(mapRect, "dialog2");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location) + new float2(4, 4), 
 				"chrome", 
 				new float2(mapRect.Size) - new float2(8, 8));
 			rgbaRenderer.Flush();
-			*/
+			
 			var y = r.Top + 50;
 			
 			int maxListItems = ((r.Bottom - 60 - y ) / 20);

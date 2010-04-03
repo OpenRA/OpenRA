@@ -1,0 +1,77 @@
+Uid: 708244922
+
+MapFormat: 1
+
+Title: Lost Arena
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+TopLeft: 2,1
+
+BottomRight: 61,62
+
+Actors:
+	Actor0: tc05 Neutral 47,54
+	Actor1: t01 Neutral 53,25
+	Actor2: t05 Neutral 53,26
+	Actor3: t06 Neutral 52,26
+	Actor4: t11 Neutral 49,25
+	Actor5: t08 Neutral 52,28
+	Actor6: t12 Neutral 48,25
+	Actor7: t10 Neutral 56,16
+	Actor8: tc04 Neutral 44,1
+	Actor9: tc03 Neutral 42,1
+	Actor10: tc05 Neutral 58,1
+	Actor11: tc04 Neutral 13,32
+	Actor12: tc05 Neutral 10,32
+	Actor13: tc04 Neutral 2,25
+	Actor14: tc05 Neutral 18,29
+	Actor15: t08 Neutral 23,14
+	Actor16: t07 Neutral 22,13
+	Actor17: t07 Neutral 15,11
+	Actor18: t02 Neutral 16,10
+	Actor19: split2 Neutral 58,34
+	Actor20: split2 Neutral 33,21
+	Actor21: split3 Neutral 45,11
+	Actor22: split2 Neutral 2,10
+	Actor23: split2 Neutral 19,2
+	Actor24: split3 Neutral 47,29
+	Actor25: split2 Neutral 35,58
+	Actor26: split3 Neutral 6,49
+	Actor27: tc02 Neutral 2,53
+	Actor28: tc03 Neutral 24,46
+	Actor29: tc02 Neutral 26,46
+	Actor30: tc02 Neutral 35,49
+	Actor31: tc01 Neutral 32,47
+	Actor32: tc02 Neutral 33,46
+	Actor33: tc03 Neutral 16,53
+	Actor34: tc05 Neutral 13,53
+	Actor35: split2 Neutral 43,51
+	Actor36: split3 Neutral 42,52
+	Actor37: tc04 Neutral 39,50
+	Actor38: tc03 Neutral 47,41
+	Actor39: tc04 Neutral 40,44
+	Actor40: tc05 Neutral 53,46
+	Actor41: tc03 Neutral 34,48
+	Actor42: tc05 Neutral 21,46
+	Actor43: tc05 Neutral 37,44
+	Actor44: split3 Neutral 55,40
+
+Waypoints:
+	spawn7: 56,31
+	spawn6: 32,25
+	spawn5: 10,4
+	spawn4: 7,31
+	spawn3: 5,59
+	spawn2: 27,39
+	spawn1: 57,59
+	spawn0: 49,4
+
+Rules:
+

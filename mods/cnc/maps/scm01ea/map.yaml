@@ -1,0 +1,94 @@
+Uid: testmap
+
+MapFormat: 1
+
+Title: GREEN ACRES
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+TopLeft: 3,11
+
+BottomRight: 61,60
+
+Actors:
+	Actor0: tc04 Neutral 44,15
+	Actor1: tc03 Neutral 42,15
+	Actor2: tc03 Neutral 34,35
+	Actor3: tc04 Neutral 33,33
+	Actor4: tc04 Neutral 53,42
+	Actor5: tc02 Neutral 55,41
+	Actor6: t02 Neutral 25,39
+	Actor7: t01 Neutral 28,40
+	Actor8: split2 Neutral 13,26
+	Actor9: split3 Neutral 20,45
+	Actor10: split3 Neutral 42,54
+	Actor11: split3 Neutral 29,35
+	Actor12: split2 Neutral 54,22
+	Actor13: split3 Neutral 34,11
+	Actor14: tc01 Neutral 15,30
+	Actor15: t17 Neutral 13,31
+	Actor16: tc05 Neutral 4,27
+	Actor17: tc04 Neutral 10,32
+	Actor18: tc04 Neutral 18,18
+	Actor19: tc02 Neutral 16,31
+	Actor20: t07 Neutral 18,29
+	Actor21: t06 Neutral 29,37
+	Actor22: t07 Neutral 36,28
+	Actor23: t06 Neutral 35,22
+	Actor24: t07 Neutral 34,24
+	Actor25: t07 Neutral 42,27
+	Actor26: t07 Neutral 31,44
+	Actor27: t16 Neutral 33,46
+	Actor28: t17 Neutral 30,45
+	Actor29: tc02 Neutral 31,45
+	Actor30: tc04 Neutral 41,25
+	Actor31: tc04 Neutral 41,41
+	Actor32: tc04 Neutral 16,41
+	Actor33: t02 Neutral 51,11
+	Actor34: t02 Neutral 12,12
+	Actor35: t03 Neutral 11,12
+	Actor36: t16 Neutral 12,43
+	Actor37: tc02 Neutral 19,56
+	Actor38: t16 Neutral 36,17
+	Actor39: t17 Neutral 38,12
+	Actor40: tc01 Neutral 38,13
+	Actor41: tc02 Neutral 46,12
+	Actor42: t07 Neutral 21,52
+	Actor43: tc04 Neutral 22,51
+	Actor44: tc04 Neutral 32,15
+	Actor45: tc02 Neutral 31,19
+	Actor46: tc01 Neutral 21,15
+	Actor47: t01 Neutral 17,18
+	Actor48: tc04 Neutral 47,32
+	Actor49: tc01 Neutral 47,31
+	Actor50: split2 Neutral 13,42
+	Actor51: split2 Neutral 38,21
+	Actor52: split3 Neutral 46,43
+	Actor53: t01 Neutral 60,53
+	Actor54: tc05 Neutral 58,25
+	Actor55: tc04 Neutral 56,26
+	Actor56: tc03 Neutral 54,26
+	Actor57: tc02 Neutral 52,26
+	Actor58: tc01 Neutral 51,27
+	Actor59: tc02 Neutral 49,35
+	Actor60: tc04 Neutral 45,34
+	Actor61: tc03 Neutral 47,36
+
+Waypoints:
+	spawn7: 8,54
+	spawn6: 53,55
+	spawn5: 58,35
+	spawn4: 33,58
+	spawn3: 40,34
+	spawn2: 57,14
+	spawn1: 18,12
+	spawn0: 5,19
+
+Rules:
+
