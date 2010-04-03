@@ -326,8 +326,7 @@ namespace MapConverter
 		
 		public void Save(string filepath)
 		{
-			Map.Tiledata = filepath+".bin";
-			Map.Save(filepath+".yaml");
+			Map.Save(filepath);
 		}
 	}
 }

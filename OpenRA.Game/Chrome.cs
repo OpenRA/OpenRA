@@ -258,7 +258,7 @@ namespace OpenRA
 			}
 				
 		}
-
+		/*
 		class MapInfo
 		{
 			public readonly string Filename;
@@ -278,11 +278,12 @@ namespace OpenRA
 				var mapsFolderMaps = Directory.GetFiles("maps/");
 				return builtinMaps.Concat(mapsFolderMaps).Select(a => new MapInfo(a)).ToList();
 			});
-
+		
+		
 		bool showMapChooser = false;
 		MapInfo currentMap;
 		bool mapPreviewDirty = true;
-
+		*/
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
 			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
@@ -293,7 +294,7 @@ namespace OpenRA
 
 		public void DrawMapChooser()
 		{
-			var w = 800;
+			/*var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, "dialog");
@@ -381,6 +382,7 @@ namespace OpenRA
 			});
 
 			AddButton(r, _ => { });
+			*/
 		}
 		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
 		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
@@ -437,13 +439,14 @@ namespace OpenRA
 		{
 			buttons.Clear();
 			DrawDownloadBar();
-
+			/*
 			if (showMapChooser)
 			{
 				DrawMapChooser();
 				return;
 			}
-
+			*/
+			
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
@@ -456,7 +459,7 @@ namespace OpenRA
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);
 			world.Minimap.DrawSpawnPoints(minimapRect);
-
+			/*
 			if (Game.IsHost)
 			{
 				AddUiButton(new int2(r.Right - 100, r.Top + 300), "Change Map",
@@ -468,7 +471,8 @@ namespace OpenRA
 					mapPreviewDirty = true;
 				});
 			}
-
+			*/
+			
 			var f = renderer.BoldFont;
 			f.DrawText(rgbaRenderer, "Name", new int2(r.Left + 40, r.Top + 50), Color.White);
 			f.DrawText(rgbaRenderer, "Color", new int2(r.Left + 140, r.Top + 50), Color.White);

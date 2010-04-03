@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -38,6 +39,16 @@ namespace OpenRA.FileFormats
 				if (!x.Key.StartsWith("-"))
 					LoadField( self, x.Key, x.Value.Value );
 		}
+		
+		public static void LoadFields( object self, Dictionary<string,MiniYaml> my, IEnumerable<string> fields )
+		{
+			foreach (var field in fields)
+			{
+				if (!my.ContainsKey(field)) continue;
+				FieldLoader.LoadField(self,field,my[field].Value);
+			}
+		}
+		
 
 		public static void LoadField( object self, string key, string value )
 		{

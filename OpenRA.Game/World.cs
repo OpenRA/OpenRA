@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -78,7 +79,27 @@ namespace OpenRA
 		{
 			Timer.Time( "----World.ctor" );
 			
-			Map = new Map( Game.LobbyInfo.GlobalSettings.Map );
+			// TODO: Do this properly
+			string mapPath = null;
+			foreach (var mod in Game.LobbyInfo.GlobalSettings.Mods)
+			{
+				var path = "mods/"+mod+"/maps/"+Game.LobbyInfo.GlobalSettings.Map+"/";
+				if (Directory.Exists(path))
+				{
+					mapPath = path;
+					break;
+				}
+			}
+			if (mapPath == null)
+			{
+				var path = "maps/"+Game.LobbyInfo.GlobalSettings.Map+"/";
+				if (!Directory.Exists(path))
+					throw new InvalidDataException("Unknown map `{0}`".F(Game.LobbyInfo.GlobalSettings.Map));
+				mapPath = path;
+			}
+			Map = new Map( new Folder(mapPath) );
+			
+			
 			customTerrain = new ICustomTerrain[Map.MapSize.X, Map.MapSize.Y];
 			Timer.Time( "new Map: {0}" );
 			

@@ -1,19 +1,10 @@
 MapFormat: 1
-
-Title: (null)
-
+Title: GDI Mission 2
 Author: Westwood Studios
-
-PlayerCount: 7
-
+PlayerCount: 1
 Tileset: TEMPERAT
-
-Tiledata: testmap.bin
-
 MapSize: 64,64
-
 TopLeft: 31,31
-
 BottomRight: 62,62
 
 Actors:
@@ -95,21 +86,21 @@ Actors:
 	Actor75: tc01 Neutral 54,42
 	Actor76: t01 Neutral 32,31
 	Actor77: tc02 Neutral 33,31
-	Actor78: pyle GoodGuy 55,51
+#	Actor78: pyle GoodGuy 55,51
 	Actor79: silo BadGuy 57,32
 	Actor80: silo BadGuy 59,32
 	Actor81: nuke BadGuy 55,32
 	Actor82: fact BadGuy 52,32
-	Actor83: nuke GoodGuy 53,52
+#	Actor83: nuke GoodGuy 53,52
 	Actor84: proc BadGuy 57,34
 	Actor85: bggy BadGuy 52,39
 	Actor86: harv BadGuy 50,35
-	Actor87: jeep GoodGuy 54,49
-	Actor88: jeep GoodGuy 57,49
+#	Actor87: jeep GoodGuy 54,49
+#	Actor88: jeep GoodGuy 57,49
 	Actor89: bggy BadGuy 33,37
 	Actor90: bggy BadGuy 51,50
 	Actor91: bggy BadGuy 59,39
-	Actor92: jeep GoodGuy 56,54
+#	Actor92: jeep GoodGuy 56,54
 	Actor93: e1 BadGuy 48,32
 	Actor94: e1 BadGuy 35,31
 	Actor95: e1 BadGuy 39,31
@@ -147,13 +138,13 @@ Actors:
 	Actor127: e1 BadGuy 38,48
 	Actor128: e1 BadGuy 53,40
 	Actor129: e1 BadGuy 45,36
-	Actor130: e1 GoodGuy 50,51
-	Actor131: e1 GoodGuy 50,50
-	Actor132: e1 GoodGuy 53,49
-	Actor133: e1 GoodGuy 51,49
+#	Actor130: e1 GoodGuy 50,51
+#	Actor131: e1 GoodGuy 50,50
+#	Actor132: e1 GoodGuy 53,49
+#	Actor133: e1 GoodGuy 51,49
 	Actor134: e1 BadGuy 52,40
-	Actor135: e1 GoodGuy 52,50
-	Actor136: e1 GoodGuy 56,49
+#	Actor135: e1 GoodGuy 52,50
+#	Actor136: e1 GoodGuy 56,49
 	Actor137: e1 BadGuy 55,42
 	Actor138: e1 BadGuy 56,42
 	Actor139: e1 BadGuy 45,36
@@ -168,13 +159,7 @@ Actors:
 	Actor148: e1 BadGuy 48,36
 
 Waypoints:
-	spawn6: 54,39
-	spawn5: 46,37
-	spawn4: 46,41
-	spawn3: 59,41
-	spawn2: 54,55
-	spawn1: 38,54
-	spawn0: 35,33
+	spawn0: 54,55
 
 Rules:
 

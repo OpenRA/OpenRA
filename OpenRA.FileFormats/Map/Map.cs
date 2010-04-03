@@ -29,13 +29,14 @@ namespace OpenRA.FileFormats
 {
 	public class Map
 	{
+		public IFolder Package;
+		
 		// Yaml map data
 		public int MapFormat = 1;
 		public string Title;
 		public string Description;
 		public string Author;
 		public int PlayerCount;
-		public string Preview;
 		public string Tileset;
 
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
@@ -43,7 +44,6 @@ namespace OpenRA.FileFormats
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
 		
 		// Binary map data
-		public string Tiledata;
 		public byte TileFormat = 1;
 		public int2 MapSize;
 		
@@ -62,22 +62,19 @@ namespace OpenRA.FileFormats
 		public string Theater {get {return Tileset;}}
 		public IEnumerable<int2> SpawnPoints {get {return Waypoints.Select(kv => kv.Value);}}
 		
-		List<string> SimpleFields = new List<string>() {
-			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "Tiledata", "Preview", "MapSize", "TopLeft", "BottomRight"
+		static List<string> SimpleFields = new List<string>() {
+			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
 		};
 		
 		public Map() {}
 		
-		public Map(string filename)
+		public Map(IFolder package)
 		{			
-			var yaml = MiniYaml.FromFileInPackage(filename);
+			Package = package;
+			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
 			
 			// 'Simple' metadata
-			foreach (var field in SimpleFields)
-			{
-				if (!yaml.ContainsKey(field)) continue;
-				FieldLoader.LoadField(this,field,yaml[field].Value);
-			}
+			FieldLoader.LoadFields(this,yaml,SimpleFields);
 			
 			// Waypoints
 			foreach (var wp in yaml["Waypoints"].Nodes)
@@ -100,7 +97,7 @@ namespace OpenRA.FileFormats
 			// Rules
 			Rules = yaml["Rules"].Nodes;
 			
-			LoadBinaryData(Tiledata);
+			LoadBinaryData();
 		}
 		
 		
@@ -120,8 +117,8 @@ namespace OpenRA.FileFormats
 			// TODO: Players
 			
 			root.Add("Rules",new MiniYaml(null,Rules));
-			SaveBinaryData(Tiledata);
-			root.WriteToFile(filepath);
+			SaveBinaryData(filepath+"map.bin");
+			root.WriteToFile(filepath+"map.yaml");
 		}
 		
 		static byte ReadByte( Stream s )
@@ -140,16 +137,17 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 		
-		public void LoadBinaryData(string filename)
-		{
-			Console.Write("path: {0}",filename);
-			
-			Stream dataStream = FileSystem.Open(filename);
+		public void LoadBinaryData()
+		{ 
+			Stream dataStream = Package.GetContent("map.bin");
 
 			// Load header info
 			byte version = ReadByte(dataStream);
-			MapSize.X = ReadWord(dataStream);
-			MapSize.Y = ReadWord(dataStream);
+			var width = ReadWord(dataStream);
+			var height = ReadWord(dataStream);
+			
+			if (width != MapSize.X || height != MapSize.Y)
+				throw new InvalidDataException("Invalid tile data");
 			
 			MapTiles = new TileReference<ushort, byte>[ MapSize.X, MapSize.Y ];
 			MapResources = new TileReference<byte, byte>[ MapSize.X, MapSize.Y ];
