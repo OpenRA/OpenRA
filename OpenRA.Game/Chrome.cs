@@ -258,32 +258,11 @@ namespace OpenRA
 			}
 				
 		}
-		/*
-		class MapInfo
-		{
-			public readonly string Filename;
-			public readonly Map Map;
-
-			public MapInfo(string filename)
-			{
-				Filename = filename.ToLowerInvariant();
-				Map = new Map(Filename);
-			}
-		};
-
-		Lazy<List<MapInfo>> mapList = Lazy.New(
-			() =>
-			{
-				var builtinMaps = new IniFile(FileSystem.Open("missions.pkt")).GetSection("Missions").Select(a => a.Key);
-				var mapsFolderMaps = Directory.GetFiles("maps/");
-				return builtinMaps.Concat(mapsFolderMaps).Select(a => new MapInfo(a)).ToList();
-			});
-		
 		
 		bool showMapChooser = false;
-		MapInfo currentMap;
+		MapStub currentMap;
 		bool mapPreviewDirty = true;
-		*/
+
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
 			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
@@ -294,7 +273,7 @@ namespace OpenRA
 
 		public void DrawMapChooser()
 		{
-			/*var w = 800;
+			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, "dialog");
@@ -302,11 +281,11 @@ namespace OpenRA
 
 			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
 					r.Bottom - 50 + 6, 160, 24), "dialog2");
-
+			
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
 				{
-					Game.IssueOrder(Order.Chat("/map " + currentMap.Filename));
+					Game.IssueOrder(Order.Chat("/map " + currentMap.Uid));
 					showMapChooser = false;
 				});
 
@@ -315,7 +294,7 @@ namespace OpenRA
 				{
 					showMapChooser = false;
 				});
-
+			/*
 			if (mapPreviewDirty)
 			{
 				if (mapChooserSheet == null || mapChooserSheet.Size.Width != currentMap.Map.MapSize.X || mapChooserSheet.Size.Height != currentMap.Map.MapSize.Y)
@@ -327,46 +306,53 @@ namespace OpenRA
 					Minimap.MakeMinimapBounds(currentMap.Map), TextureChannel.Alpha);
 				mapPreviewDirty = false;
 			}
-
+			*/
 			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
+			/*
 			DrawDialogBackground(mapRect, "dialog2");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location) + new float2(4, 4), 
 				"chrome", 
 				new float2(mapRect.Size) - new float2(8, 8));
 			rgbaRenderer.Flush();
-
+			*/
 			var y = r.Top + 50;
 			
 			int maxListItems = ((r.Bottom - 60 - y ) / 20);
-			
-			for(int i = mapOffset; i < Math.Min(maxListItems + mapOffset, mapList.Value.Count()); i++, y += 20){
 
-				var map = mapList.Value.ElementAt(i);
+			//for(int i = mapOffset; i < Math.Min(maxListItems + mapOffset, Game.AvailableMaps.Count()); i++, y += 20)
+			
+			// TODO: Show the appropriate subset of data
+			foreach (var kv in Game.AvailableMaps)
+			{
+				var map = kv.Value;
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
 					DrawDialogBackground(itemRect, "dialog2");
 
-				renderer.RegularFont.DrawText(rgbaRenderer, map.Map.Title, new int2(r.Left + 60, y), Color.White);
+				renderer.RegularFont.DrawText(rgbaRenderer, map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
+				
+				y += 20;
 			}
 
 			y = mapRect.Bottom + 20;
-			DrawCentered("Title: {0}".F(currentMap.Map.Title, currentMap.Map.Height),
+			DrawCentered("Title: {0}".F(currentMap.Title),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
-			DrawCentered("Size: {0}x{1}".F(currentMap.Map.Width, currentMap.Map.Height),
+			DrawCentered("Size: {0}x{1}".F(currentMap.Width, currentMap.Height),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
 			
-			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Map.Theater);
-			DrawCentered("Theater: {0}".F(theaterInfo.Name, currentMap.Map.Height),
+			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Tileset);
+			DrawCentered("Theater: {0}".F(theaterInfo.Name),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
 			y += 20;
-			DrawCentered("Spawnpoints: {0}".F(currentMap.Map.SpawnPoints.Count()),
+			DrawCentered("Spawnpoints: {0}".F(currentMap.PlayerCount),
 				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
-
+			
+			/*
 			y += 30;
 			AddUiButton(new int2(mapRect.Left + mapRect.Width / 2, y), "^",
 			_ =>
@@ -380,9 +366,8 @@ namespace OpenRA
 			{
 				mapOffset = (mapOffset + 1 > mapList.Value.Count() - maxListItems) ? mapOffset : mapOffset + 1;
 			});
-
-			AddButton(r, _ => { });
 			*/
+			AddButton(r, _ => { });
 		}
 		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
 		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
@@ -439,13 +424,12 @@ namespace OpenRA
 		{
 			buttons.Clear();
 			DrawDownloadBar();
-			/*
+			
 			if (showMapChooser)
 			{
 				DrawMapChooser();
 				return;
 			}
-			*/
 			
 			var w = 800;
 			var h = 600;
@@ -459,19 +443,18 @@ namespace OpenRA
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);
 			world.Minimap.DrawSpawnPoints(minimapRect);
-			/*
+			
 			if (Game.IsHost)
 			{
 				AddUiButton(new int2(r.Right - 100, r.Top + 300), "Change Map",
 				_ =>
 				{
-					showMapChooser = true;
-					currentMap = mapList.Value.Single(
-						m => m.Filename == Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant());
+					showMapChooser = true;					
+					currentMap = Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant()];
 					mapPreviewDirty = true;
 				});
 			}
-			*/
+			
 			
 			var f = renderer.BoldFont;
 			f.DrawText(rgbaRenderer, "Name", new int2(r.Left + 40, r.Top + 50), Color.White);

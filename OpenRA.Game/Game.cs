@@ -100,12 +100,42 @@ namespace OpenRA
 			throw new InvalidOperationException("Cannot locate type: {0}".F(classname));
 		}
 		
+		public static Dictionary<string,MapStub> AvailableMaps;
+		
+		// TODO: Do this nicer
+		public static Dictionary<string,MapStub> FindMaps(string[] mods)
+		{
+			Console.WriteLine("Finding maps");
+			foreach (var mod in mods)
+				Console.WriteLine(mod);
+			
+			
+			List<string> paths = new List<string>();	
+			foreach (var mod in mods)
+				paths.AddRange(Directory.GetDirectories("mods/"+mod+"/maps/"));
+			
+			paths.AddRange(Directory.GetDirectories("maps/"));
+			
+			Dictionary<string,MapStub> maps = new Dictionary<string, MapStub>();
+			foreach (var path in paths)
+			{
+				MapStub stub = new MapStub(new Folder(path));
+				maps.Add(stub.Uid,stub);
+			}
+			return maps;
+		}
+		
 		public static void ChangeMap(string mapName)
 		{
 			Timer.Time( "----ChangeMap" );
-
+			
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
+			
+			// TODO: Only do this on mod change
+			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
+			Timer.Time( "maplist: {0}" );
+			
 			Game.LoadModAssemblies(manifest);
 			Game.changePending = false;
 			Game.mapName = mapName;
@@ -133,7 +163,7 @@ namespace OpenRA
 
 			Timer.Time( "----end ChangeMap" );
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
-		}	
+		}
 
 		internal static void Initialize(string mapName, Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
 		{
