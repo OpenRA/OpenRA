@@ -78,10 +78,12 @@ namespace OpenRA
 			foreach (var a in m.Assemblies)
 			{
 				var failures = new List<string>();
-				if (Verifier.IsSafe(Path.GetFullPath(a), failures))
-					asms.Add(Pair.New(
-						Assembly.LoadFile(Path.GetFullPath(a)),
-						Path.GetFileNameWithoutExtension(a)));
+				var fullpath = Path.GetFullPath(a);
+				if (Verifier.IsSafe(fullpath, failures))
+				{
+					var asm = Assembly.LoadFile(fullpath);
+					asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
+				}
 				else
 				{
 					Log.Write("Assembly `{0}` cannot be verified. Failures:", a);
