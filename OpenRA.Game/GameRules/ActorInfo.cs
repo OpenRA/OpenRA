@@ -71,16 +71,9 @@ namespace OpenRA.GameRules
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
-			foreach (var mod in Game.ModAssemblies)
-			{
-				var fullTypeName = mod.Second + "." + traitName + "Info";
-				var info = (ITraitInfo)mod.First.CreateInstance(fullTypeName);
-				if (info == null) continue;
-				FieldLoader.Load(info, my);
-				return info;
-			}
-
-			throw new InvalidOperationException("Cannot locate trait: {0}".F(traitName));
+			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
+			FieldLoader.Load(info, my);
+			return info;
 		}
 
 		public IEnumerable<ITraitInfo> TraitsInConstructOrder()

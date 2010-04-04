@@ -56,7 +56,7 @@ namespace OpenRA
 		static bool changePending;
 		public static Pair<Assembly, string>[] ModAssemblies;
 
-		public static void LoadModPackages(Manifest manifest)
+		static void LoadModPackages(Manifest manifest)
 		{
 			FileSystem.UnmountAll();
 			Timer.Time("reset: {0}");
@@ -67,7 +67,7 @@ namespace OpenRA
 			Timer.Time("mount temporary packages: {0}");
 		}
 		
-		internal static void LoadModAssemblies(Manifest m)
+		static void LoadModAssemblies(Manifest m)
 		{	
 			// All the core namespaces
 			var asms = typeof(Game).Assembly.GetNamespaces()
@@ -95,6 +95,19 @@ namespace OpenRA
 			}
 
 			ModAssemblies = asms.ToArray();
+		}
+
+		public static T CreateObject<T>(string classname)
+		{
+			foreach (var mod in ModAssemblies)
+			{
+				var fullTypeName = mod.Second + "." + classname;
+				var obj = mod.First.CreateInstance(fullTypeName);
+				if (obj != null)
+					return (T)obj;
+			}
+
+			throw new InvalidOperationException("Cannot locate type: {0}".F(classname));
 		}
 		
 		public static void ChangeMap(string mapName)
