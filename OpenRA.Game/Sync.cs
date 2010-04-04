@@ -28,7 +28,7 @@ namespace OpenRA
 {
 	public class SyncAttribute : Attribute { }
 
-	static class Sync
+	public static class Sync
 	{
 		static Cache<Type, Func<object, int>> hashFuncCache = new Cache<Type, Func<object, int>>( t => GenerateHashFunc( t ) );
 
