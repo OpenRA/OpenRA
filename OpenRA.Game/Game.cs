@@ -79,19 +79,9 @@ namespace OpenRA
 			{
 				var failures = new List<string>();
 				var fullpath = Path.GetFullPath(a);
-				if (Verifier.IsSafe(fullpath, failures))
-				{
-					var asm = Assembly.LoadFile(fullpath);
-					asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
-				}
-				else
-				{
-					Log.Write("Assembly `{0}` cannot be verified. Failures:", a);
-					foreach (var f in failures)
-						Log.Write("\t{0}", f);
 
-					throw new InvalidOperationException("Failed verification. See the log for further details.");
-				}
+				var asm = Assembly.LoadFile(fullpath);
+				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
 			}
 
 			ModAssemblies = asms.ToArray();
