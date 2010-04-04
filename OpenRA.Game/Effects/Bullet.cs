@@ -57,9 +57,7 @@ namespace OpenRA.Effects
 			Info = info;
 			Args = args;
 
-			VisualDest = args.dest + new int2(
-						args.firedBy.World.CosmeticRandom.Next(-10, 10),
-						args.firedBy.World.CosmeticRandom.Next(-10, 10));
+			VisualDest = args.dest + (10 * args.firedBy.World.CosmeticRandom.Gauss2D(1)).ToInt2();
 
 			if (Info.Image != null)
 			{

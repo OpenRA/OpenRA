@@ -217,5 +217,18 @@ namespace OpenRA
 		{
 			return w.WorldActor.Info.Traits.WithInterface<CountryInfo>();
 		}
+
+		public static float Gauss1D(this Thirdparty.Random r, int samples)
+		{
+			var xs = Graphics.Util.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1);
+			return xs.Sum() / samples;
+		}
+
+		// Returns a random offset in the range [-1..1,-1..1] with a separable 
+		// Gauss distribution with 'samples' values taken for each axis
+		public static float2 Gauss2D(this Thirdparty.Random r, int samples)
+		{
+			return new float2(Gauss1D(r, samples), Gauss1D(r, samples));
+		}
 	}
 }
