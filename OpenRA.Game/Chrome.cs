@@ -114,7 +114,7 @@ namespace OpenRA
 					u => u.Image,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Image)[0]);
 
-			var groups = Rules.Info.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
+			var groups = Rules.Categories();
 			
 			tabImageNames = groups.Select(
 				(g, i) => Pair.New(g,

@@ -19,6 +19,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
@@ -30,8 +31,10 @@ namespace OpenRA.Traits
 		{
 			if( order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild" )
 			{
-				self.World.AddFrameEndTask( _ =>
+				self.World.AddFrameEndTask( w =>
 				{
+					var prevItems = GetNumBuildables(self.Owner);
+
 					var queue = self.traits.Get<ProductionQueue>();
 					var unit = Rules.Info[ order.TargetString ];
 					var producing = queue.CurrentItem(unit.Category);
@@ -43,9 +46,9 @@ namespace OpenRA.Traits
 					{
 						bool playSounds = true;
 						var buildingInfo = unit.Traits.Get<BuildingInfo>();
-						foreach( var t in LineBuildUtils.GetLineBuildCells( self.World, order.TargetLocation, order.TargetString, buildingInfo ) )
+						foreach( var t in LineBuildUtils.GetLineBuildCells( w, order.TargetLocation, order.TargetString, buildingInfo ) )
 						{
-							var building = self.World.CreateActor( order.TargetString, t, order.Player );
+							var building = w.CreateActor( order.TargetString, t, order.Player );
 							if( playSounds )
 								foreach( var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds )
 									Sound.PlayToPlayer( order.Player, s );
@@ -54,12 +57,12 @@ namespace OpenRA.Traits
 					}
 					else
 					{
-						var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+						var building = w.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 						foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
 							Sound.PlayToPlayer(order.Player, s);
 					}
 
-					var facts = self.World.Queries.OwnedBy[self.Owner]
+					var facts = w.Queries.OwnedBy[self.Owner]
 						.WithTrait<ConstructionYard>().Select(x => x.Actor);
 
 					var primaryFact = facts.Where(y => y.traits.Get<Production>().IsPrimary);
@@ -69,8 +72,19 @@ namespace OpenRA.Traits
 						fact.traits.Get<RenderBuilding>().PlayCustomAnim(fact, "build");
 
 					queue.FinishProduction(unit.Category);
+
+					if (GetNumBuildables(self.Owner) > prevItems)
+						w.Add(new DelayedAction(10,
+							() => Sound.PlayToPlayer(order.Player,
+								w.WorldActor.Info.Traits.Get<EvaAlertsInfo>().NewOptions)));
 				} );
 			}
+		}
+
+		static int GetNumBuildables(Player p)
+		{
+			if (p != p.World.LocalPlayer) return 0;		// this only matters for local players.
+			return Rules.TechTree.BuildableItems(p, Rules.Categories().ToArray()).Count();
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 		public readonly string OnHoldAudio = "onhold1.aud";
 		public readonly string CancelledAudio = "cancld1.aud";
 		public readonly string ClickAudio = "ramenu1.aud";
-		
+		public readonly string NewOptions = "newopt1.aud";
 		
 		// For manual powerup/down in ra-ng
 		public readonly string DisablePower = "bleep11.aud";
