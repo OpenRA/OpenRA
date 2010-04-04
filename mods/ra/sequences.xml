@@ -122,11 +122,11 @@
   </unit>
   <!-- airfield -->
   <unit name="afld">
-    <sequence name="idle" start="4" length="4" />
-    <sequence name="damaged-idle" start="12" length="4" />
+    <sequence name="idle" start="4" length="4" tick="160"/>
+    <sequence name="damaged-idle" start="12" length="4" tick="160"/>
     <sequence name="make" start="0" length="11" src="afldmake" />
-    <sequence name="active" start="0" length="4" />
-    <sequence name="damaged-active" start="8" length="4" />
+    <sequence name="active" start="0" length="4" tick="160"/>
+    <sequence name="damaged-active" start="8" length="4" tick="160"/>
   </unit>
   <!-- sub pen -->
   <unit name="spen">
