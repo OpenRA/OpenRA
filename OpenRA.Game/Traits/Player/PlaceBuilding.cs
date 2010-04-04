@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 						var buildingInfo = unit.Traits.Get<BuildingInfo>();
 						foreach( var t in LineBuildUtils.GetLineBuildCells( self.World, order.TargetLocation, order.TargetString, buildingInfo ) )
 						{
-							var building = self.World.CreateActor( order.TargetString, order.TargetLocation, order.Player );
+							var building = self.World.CreateActor( order.TargetString, t, order.Player );
 							if( playSounds )
 								foreach( var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds )
 									Sound.PlayToPlayer( order.Player, s );
