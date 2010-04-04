@@ -93,7 +93,7 @@ Rockets:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
@@ -161,7 +161,7 @@ Grenade:
 		Speed: 5
 		High: yes
 		Arcing: yes
-		Inaccurate: yes
+		Inaccuracy: 5
 		Image: BOMB
 	Warhead:
 		Spread: 6
@@ -251,7 +251,7 @@ MissilePack:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
@@ -276,7 +276,7 @@ MissilePack:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 5
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
@@ -299,7 +299,7 @@ Ballistic:
 		Speed: 12
 		High: yes
 		Arcing: yes
-		Inaccurate: yes
+		Inaccuracy: 5
 		Image: 120MM
 	Warhead:
 		Damage: 150
@@ -333,7 +333,7 @@ BoatMissile:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 5
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
@@ -357,7 +357,7 @@ Tomahawk:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
@@ -436,7 +436,7 @@ HonestJohn:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccurate: yes
+		Inaccuracy: 3
 		Image: MISSILE
 		Speed: 15
 	Warhead:

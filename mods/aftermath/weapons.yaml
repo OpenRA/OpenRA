@@ -73,7 +73,7 @@ APTusk:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 20

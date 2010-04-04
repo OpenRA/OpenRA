@@ -29,7 +29,7 @@ namespace OpenRA.Effects
 	{
 		public readonly int Speed = 1;
 		public readonly string Trail = null;
-		public readonly bool Inaccurate = false;
+		public readonly float Inaccuracy = 0;			// expressed as pixels/cell^2
 		public readonly string Image = null;
 		public readonly bool High = false;
 		public readonly bool Arcing = false;
@@ -57,7 +57,13 @@ namespace OpenRA.Effects
 			Info = info;
 			Args = args;
 
-			VisualDest = args.dest + (10 * args.firedBy.World.CosmeticRandom.Gauss2D(1)).ToInt2();
+			if (info.Inaccuracy > 0)
+			{
+				var factor = (Args.dest - Args.src).LengthSquared / (Game.CellSize * Game.CellSize);
+				Args.dest += (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+			}
+
+			VisualDest = Args.dest + (10 * args.firedBy.World.CosmeticRandom.Gauss2D(1)).ToInt2();
 
 			if (Info.Image != null)
 			{

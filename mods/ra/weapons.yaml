@@ -49,7 +49,7 @@ Maverick:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 20
@@ -148,7 +148,7 @@ Dragon:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 20
@@ -174,7 +174,7 @@ Hellfire:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 20
@@ -195,7 +195,7 @@ Grenade:
 		Speed: 5
 		High: true
 		Arcing: true
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: BOMB
 	Warhead:
 		Spread: 6
@@ -306,7 +306,7 @@ MammothTusk:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 20
@@ -328,7 +328,7 @@ MammothTusk:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccurate:true
+		Inaccuracy: 5
 		Image: 120MM
 	Warhead:
 		Spread: 6
@@ -461,7 +461,7 @@ RedEye:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccurate:true
+		Inaccuracy: 3
 		Image: 120MM
 	Warhead:
 		Spread: 6
@@ -544,7 +544,7 @@ DepthCharge:
 		Image: BOMB
 		Arcing: true
 		High: true
-		Inaccurate: true
+		Inaccuracy: 3
 	Warhead:
 		Spread: 3
 		Wall: true
@@ -613,7 +613,7 @@ SCUD:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccurate: true
+		Inaccuracy: 5
 		Image: V2
 	Warhead:
 		Spread: 6

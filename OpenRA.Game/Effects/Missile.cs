@@ -34,7 +34,7 @@ namespace OpenRA.Effects
 		public readonly bool Shadow = true;
 		public readonly bool Proximity = false;
 		public readonly string Trail = null;
-		public readonly bool Inaccurate = false;
+		public readonly float Inaccuracy = 0;			// pixels/cell^2, not yet implemented for missiles
 		public readonly string Image = null;
 		public readonly int ROT = 5;
 		public readonly int RangeLimit = 0;
@@ -48,6 +48,7 @@ namespace OpenRA.Effects
 		readonly MissileInfo Info;
 		readonly ProjectileArgs Args;
 
+		int2 offset;
 		float2 Pos;
 		readonly Animation anim;
 		int Facing;
@@ -63,6 +64,12 @@ namespace OpenRA.Effects
 			Altitude = Args.srcAltitude;
 			Facing = Args.facing;
 
+			if (info.Inaccuracy > 0)
+			{
+				var factor = (Args.dest - Args.src).LengthSquared / (Game.CellSize * Game.CellSize);
+				offset = (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+			}
+
 			if (Info.Image != null)
 			{
 				anim = new Animation(Info.Image, () => Facing);
@@ -77,17 +84,19 @@ namespace OpenRA.Effects
 		{
 			t += 40;
 
+			var targetPosition = Args.target.CenterLocation + offset;
+
 			var targetUnit = Args.target.traits.GetOrDefault<Unit>();
 			var targetAltitude = targetUnit != null ? targetUnit.Altitude : 0;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
 			Traits.Util.TickFacing(ref Facing,
-				Traits.Util.GetFacing(Args.target.CenterLocation - Pos, Facing),
+				Traits.Util.GetFacing(targetPosition - Pos, Facing),
 				Info.ROT);
 
 			anim.Tick();
 
-			var dist = Args.target.CenterLocation - Pos;
+			var dist = targetPosition - Pos;
 			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Args.target.IsDead)
 				Explode(world);
 
