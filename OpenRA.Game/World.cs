@@ -75,11 +75,14 @@ namespace OpenRA
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
 		
-		public World()
+		public World(string mapUid)
 		{
 			Timer.Time( "----World.ctor" );
 			
-			Map = new Map( Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Package );
+			if (!Game.AvailableMaps.ContainsKey(mapUid))
+				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapUid));
+			
+			Map = new Map( Game.AvailableMaps[mapUid].Package );
 			customTerrain = new ICustomTerrain[Map.MapSize.X, Map.MapSize.Y];
 			Timer.Time( "new Map: {0}" );
 			

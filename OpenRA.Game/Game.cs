@@ -146,7 +146,7 @@ namespace OpenRA
 
 			ChromeProvider.Initialize(manifest.Chrome);
 
-			world = new World();
+			world = new World(mapName);
 						
 			Timer.Time( "world: {0}" );
 			
