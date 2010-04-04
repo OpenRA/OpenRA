@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System;
 
 namespace OpenRA.FileFormats
 {
@@ -58,5 +59,15 @@ namespace OpenRA.FileFormats
 			);
 		}
 		
+		public Rectangle PreviewBounds(Rectangle container)
+		{
+			float scale = Math.Min(container.Width*1.0f/Width,container.Height*1.0f/Height);
+						
+			var size = Math.Max(Width, Height);
+			var dw = (int)(scale*(size - Width)) / 2;
+			var dh = (int)(scale*(size - Height)) / 2;
+
+			return new Rectangle(container.X + dw, container.Y + dh, (int)(Width*scale), (int)(Height*scale));
+		}
 	}
 }

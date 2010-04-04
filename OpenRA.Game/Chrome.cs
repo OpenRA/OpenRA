@@ -305,13 +305,14 @@ namespace OpenRA
 				mapPreviewDirty = false;
 			}
 			
-			var mapRect = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
+			var mapContainer = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
+			var mapRect = currentMap.PreviewBounds(new Rectangle(mapContainer.X+4,mapContainer.Y+4,mapContainer.Width-8,mapContainer.Height-8));
 			
-			DrawDialogBackground(mapRect, "dialog2");
+			DrawDialogBackground(mapContainer, "dialog2");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
-				new float2(mapRect.Location) + new float2(4, 4), 
+				new float2(mapRect.Location), 
 				"chrome", 
-				new float2(mapRect.Size) - new float2(8, 8));
+				new float2(mapRect.Size));
 			rgbaRenderer.Flush();
 			
 			var y = r.Top + 50;
@@ -334,20 +335,20 @@ namespace OpenRA
 				y += 20;
 			}
 
-			y = mapRect.Bottom + 20;
+			y = mapContainer.Bottom + 20;
 			DrawCentered("Title: {0}".F(currentMap.Title),
-				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 			DrawCentered("Size: {0}x{1}".F(currentMap.Width, currentMap.Height),
-				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 			
 			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Tileset);
 			DrawCentered("Theater: {0}".F(theaterInfo.Name),
-				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 			DrawCentered("Spawnpoints: {0}".F(currentMap.PlayerCount),
-				new int2(mapRect.Left + mapRect.Width / 2, y), Color.White);
+				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			
 			AddButton(r, _ => { });
 		}
@@ -420,6 +421,7 @@ namespace OpenRA
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 
 			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
+			
 			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
 
 			world.Minimap.Update();
