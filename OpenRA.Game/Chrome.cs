@@ -404,7 +404,7 @@ namespace OpenRA
 
 		public void DrawWidgets(World world) { rootWidget.Draw(); shpRenderer.Flush(); rgbaRenderer.Flush(); }
 		
-		public void DrawLobby( World world )
+		public void DrawLobby()
 		{
 			buttons.Clear();
 			DrawDownloadBar();
@@ -425,10 +425,12 @@ namespace OpenRA
 			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
 			
 			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
-
+			
+			/*
 			world.Minimap.Update();
 			world.Minimap.Draw(minimapRect, true);
 			world.Minimap.DrawSpawnPoints(minimapRect);
+			*/
 			
 			if (Game.IsHost)
 			{

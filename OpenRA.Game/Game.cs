@@ -53,7 +53,8 @@ namespace OpenRA
 		static int2 clientSize;
 		static string mapName;
 		internal static Session LobbyInfo = new Session();
-		static bool changePending;
+		static bool packageChangePending;
+		static bool mapChangePending;
 		public static Pair<Assembly, string>[] ModAssemblies;
 
 		static void LoadModPackages(Manifest manifest)
@@ -125,29 +126,36 @@ namespace OpenRA
 			return maps;
 		}
 		
+		public static void ChangeMods()
+		{
+			Timer.Time( "----ChangeMods" );
+			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			Timer.Time( "manifest: {0}" );
+			Game.LoadModAssemblies(manifest);
+			SheetBuilder.Initialize(renderer);
+			LoadModPackages(manifest);
+			Timer.Time( "load assemblies, packages: {0}" );
+			Rules.LoadRules(manifest);
+			Timer.Time( "load rules: {0}" );
+			Game.packageChangePending = false;
+		}
+		
 		public static void ChangeMap(string mapName)
 		{
-			Timer.Time( "----ChangeMap" );
+			Game.mapName = mapName;
+			Game.mapChangePending = false;
+		}
+		
+		public static void LoadMap(string mapName)
+		{
+			Timer.Time( "----LoadMap" );
 			
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
-						
-			Game.LoadModAssemblies(manifest);
-			Game.changePending = false;
-			Game.mapName = mapName;
-			SheetBuilder.Initialize(renderer);
 			
-			LoadModPackages(manifest);
-			
-			Rules.LoadRules(manifest);
-			Timer.Time( "load rules: {0}" );
-
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
-
 			ChromeProvider.Initialize(manifest.Chrome);
-
 			world = new World(mapName);
-						
 			Timer.Time( "world: {0}" );
 			
 			SequenceProvider.Initialize(manifest.Sequences);
@@ -157,7 +165,7 @@ namespace OpenRA
 			chrome = new Chrome(renderer, manifest);
 			Timer.Time( "chrome: {0}" );
 
-			Timer.Time( "----end ChangeMap" );
+			Timer.Time( "----end LoadMap" );
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
 
@@ -174,7 +182,8 @@ namespace OpenRA
 			Game.controller = controller;
 			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 			
-			ChangeMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
+			ChangeMods();
+			LoadMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			if( Settings.Replay != "" )
 				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
@@ -212,13 +221,18 @@ namespace OpenRA
 
 		public static void Tick()
 		{
-			if (changePending && PackageDownloader.IsIdle())
+			if (packageChangePending && PackageDownloader.IsIdle())
 			{
 				// TODO: Only do this on mod change
 				Timer.Time("----begin maplist");
 				AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 				Timer.Time( "maplist: {0}" );
-					
+				ChangeMods();
+				return;
+			}
+			
+			if (mapChangePending && PackageDownloader.IsIdle())
+			{
 				ChangeMap(LobbyInfo.GlobalSettings.Map);
 				return;
 			}
@@ -307,15 +321,17 @@ namespace OpenRA
 				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 
-			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages)
-				|| mapName != LobbyInfo.GlobalSettings.Map)
-				changePending = true;
-
+			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages))
+				packageChangePending = true;
+			
+			if (mapName != LobbyInfo.GlobalSettings.Map)
+				mapChangePending = true;
+			
 			if (string.Join(",", oldLobbyInfo.GlobalSettings.Mods)
 				!= string.Join(",", LobbyInfo.GlobalSettings.Mods))
 			{
 				Debug("Mods list changed, reloading: {0}".F(string.Join(",", LobbyInfo.GlobalSettings.Mods)));
-				changePending = true;
+				packageChangePending = true;
 			}
 		}
 
@@ -325,6 +341,7 @@ namespace OpenRA
 
 		public static void StartGame()
 		{
+			LoadMap(LobbyInfo.GlobalSettings.Map);
 			if( orderManager.GameStarted ) return;
 			chat.Reset();
 

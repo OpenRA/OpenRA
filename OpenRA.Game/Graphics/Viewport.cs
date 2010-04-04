@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 				
 				// TODO: Kill this (hopefully!) soon
 				if (state == ConnectionState.Connected)
-					Game.chrome.DrawLobby( world );
+					Game.chrome.DrawLobby();
 				
 				lastConnectionState = state;
 				Game.chrome.DrawWidgets(world);
