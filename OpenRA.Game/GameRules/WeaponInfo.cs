@@ -119,10 +119,7 @@ namespace OpenRA.GameRules
 					// in this case, it's an implementation of IProjectileInfo
 					default:
 						{
-							var fullTypeName = typeof(IEffect).Namespace + "." + key + "Info";
-							Projectile = (IProjectileInfo)typeof(IEffect).Assembly.CreateInstance(fullTypeName);
-							if (Projectile == null)
-								throw new InvalidOperationException("Cannot locate projectile type: {0}".F(key));
+							Projectile = Game.CreateObject<IProjectileInfo>(key + "Info");
 							FieldLoader.Load(Projectile, kv.Value);
 						} break;
 				}
