@@ -95,12 +95,12 @@ namespace OpenRA
 			return (Func<object,int>)d.CreateDelegate( typeof( Func<object,int> ) );
 		}
 
-		internal static int hash_int2( int2 i2 )
+		public static int hash_int2( int2 i2 )
 		{
 			return ( ( i2.X * 5 ) ^ ( i2.Y * 3 ) ) / 4;
 		}
 
-		internal static int hash_tdict( TypeDictionary d )
+		public static int hash_tdict( TypeDictionary d )
 		{
 			int ret = 0;
 			foreach( var o in d )
@@ -108,14 +108,14 @@ namespace OpenRA
 			return ret;
 		}
 
-		internal static int hash_actor( Actor a )
+		public static int hash_actor( Actor a )
 		{
 			if( a != null )
 				return (int)( a.ActorID << 16 );
 			return 0;
 		}
 
-		internal static int hash_player( Player p )
+		public static int hash_player( Player p )
 		{
 			if( p != null )
 				return p.Index * 0x567;
