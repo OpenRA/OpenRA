@@ -65,19 +65,23 @@ namespace OpenRA
 		{
 			var position = Game.controller.MousePosition.ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
-			var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
-			var res = world.WorldActor.traits.Get<ResourceLayer>();
-
-			foreach( var t in Footprint.Tiles( name, bi, topLeft ) )
-				spriteRenderer.DrawSprite( ( isCloseEnough && world.IsCellBuildable( t, bi.WaterBound) && res.GetResource(t) == null )
-					? buildOk : buildBlocked, Game.CellSize * t, "terrain" );
 			
 			// Linebuild for walls.
 			// Assumes a 1x1 footprint; weird things will happen for other footprints
-			if (Rules.Info[ name ].Traits.Contains<LineBuildInfo>())
-				foreach( var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi ) )
-					spriteRenderer.DrawSprite(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t) 
+			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
+			{
+				foreach (var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi))
+					spriteRenderer.DrawSprite(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t)
 						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
+			}
+			else
+			{
+				var res = world.WorldActor.traits.Get<ResourceLayer>();
+				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
+				foreach (var t in Footprint.Tiles(name, bi, topLeft))
+					spriteRenderer.DrawSprite((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null)
+						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
+			}
 			
 			spriteRenderer.Flush();
 		}
@@ -89,6 +93,9 @@ namespace OpenRA
 		{
 			int range = Rules.Info[name].Traits.Get<LineBuildInfo>().Range;
 			var topLeft = location;	// 1x1 assumption!
+
+			if (world.IsCellBuildable(topLeft, bi.WaterBound))
+				yield return topLeft;
 
 			// Start at place location, search outwards
 			// TODO: First make it work, then make it nice
