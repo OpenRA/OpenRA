@@ -21,8 +21,13 @@ Packages:
 	interior.mix
 
 Rules:
-	mods/ra/defaults.yaml:	Basic stuff
-	mods/ra/rules.yaml:	OpenRA actorinfos
+	mods/ra/defaults.yaml
+	mods/ra/system.yaml
+	mods/ra/vehicles.yaml
+	mods/ra/structures.yaml
+	mods/ra/infantry.yaml
+	mods/ra/civilian.yaml
+	mods/ra/trees.yaml
 
 Sequences:
 	mods/ra/sequences.xml:	Original animation sequences

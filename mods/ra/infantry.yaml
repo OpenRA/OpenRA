@@ -1,0 +1,205 @@
+DOG:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 3
+		Prerequisites: kenn
+		BuiltAt: KENN
+		Owner: soviet
+		Cost: 200
+		Description: Attack Dog
+		LongDesc: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Selectable:
+		Voice: DogVoice
+		Bounds: 12,17,-1,-4
+	Unit:
+		HP: 12
+		Sight: 5
+		Speed: 4
+	-AutoTarget:
+
+E1:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 1
+		Owner: allies,soviet
+		Cost: 100
+		Description: Rifle Infantry
+		LongDesc: General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 50
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: M1Carbine
+	TakeCover:
+
+E2:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 1
+		Owner: soviet
+		Cost: 160
+		Description: Grenadier
+		LongDesc: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 50
+		Speed: 5
+	AttackBase:
+		PrimaryWeapon: Grenade
+		PrimaryOffset: 0,0,0,-13
+		FireDelay: 15
+	TakeCover:
+
+E3:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 2
+		Owner: allies,soviet
+		Cost: 300
+		Description: Rocket Soldier
+		LongDesc: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+	Selectable:
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 45
+		Speed: 3
+	AttackBase:
+		PrimaryWeapon: RedEye
+		SecondaryWeapon: Dragon
+		PrimaryOffset: 0,0,0,-13
+	TakeCover:
+
+E4:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 6
+		Prerequisites: stek
+		Owner: soviet
+		Cost: 300
+		Description: Flamethrower
+		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 40
+		Speed: 3
+	AttackBase:
+		PrimaryWeapon: Flamer
+		PrimaryOffset: 0,0,0,-7
+		FireDelay: 8
+	TakeCover:
+
+E6:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 5
+		Owner: soviet,allies
+		Cost: 500
+		Description: Engineer
+		LongDesc: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Voice: EngineerVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 25
+		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
+	EngineerCapture:
+	TakeCover:
+	-AutoTarget:
+
+SPY:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 6
+		Prerequisites: dome
+		Owner: allies
+		Cost: 500
+		Description: Spy
+		LongDesc: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+	Selectable:
+		Voice: SpyVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 25
+		Sight: 5
+		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
+	RenderSpy:
+	TakeCover:
+	Spy:
+	-RenderInfantry:
+	-AutoTarget:
+
+THF:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 11
+		Prerequisites: atek
+		Owner: allies
+		Cost: 500
+		Description: Thief
+		LongDesc: Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed
+	Selectable:
+		Voice: ThiefVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 25
+		Sight: 5
+		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
+	TakeCover:
+	Thief:
+	-AutoTarget:
+
+E7:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 11
+		Prerequisites: @Tech Center
+		Owner: allies,soviet
+		Cost: 1200
+		Description: Tanya
+		LongDesc: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
+	Selectable:
+		Voice: TanyaVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 100
+		Sight: 6
+		Speed: 5
+	C4Demolition:
+		C4Delay: .03
+	AttackBase:
+		PrimaryWeapon: Colt45
+		SecondaryWeapon: Colt45
+	TakeCover:
+
+MEDI:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 2
+		Owner: allies
+		Cost: 800
+		Description: Medic
+		LongDesc: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Voice: MedicVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 80
+		Sight: 3
+		Speed: 4
+	Passenger:
+		ColorOfCargoPip: Yellow
+	AutoHeal:
+	AttackBase:
+		PrimaryWeapon: Heal
+	TakeCover:
+	-AutoTarget:

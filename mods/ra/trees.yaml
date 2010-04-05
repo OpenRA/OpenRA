@@ -1,0 +1,160 @@
+T01:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T02:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T03:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T05:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T06:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T07:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T08:
+	Inherits: ^Tree
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	
+
+T10:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	
+
+T11:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+
+T12:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T13:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T14:
+	Inherits: ^Tree
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+
+T15:
+	Inherits: ^Tree
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+
+T16:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+T17:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+
+TC01:
+	Inherits: ^Tree
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+
+TC02:
+	Inherits: ^Tree
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+
+TC03:
+	Inherits: ^Tree
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+
+TC04:
+	Inherits: ^Tree
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+
+TC05:
+	Inherits: ^Tree
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+
+MINE:
+	Inherits: ^Tree
+	SeedsResource:
+
+BOXES01:
+	Inherits: ^Tree
+	
+
+BOXES02:
+	Inherits: ^Tree
+	
+
+BOXES03:
+	Inherits: ^Tree
+	
+
+BOXES04:
+	Inherits: ^Tree
+	
+
+BOXES05:
+	Inherits: ^Tree
+	
+
+BOXES06:
+	Inherits: ^Tree
+	
+
+BOXES07:
+	Inherits: ^Tree
+	
+
+BOXES08:
+	Inherits: ^Tree
+	
+
+BOXES09:
+	Inherits: ^Tree

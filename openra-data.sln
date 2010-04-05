@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 		mods\ra\defaults.yaml = mods\ra\defaults.yaml
 		mods\ra\mod.yaml = mods\ra\mod.yaml
 		mods\ra\nopower.shp = mods\ra\nopower.shp
-		mods\ra\rules.ini = mods\ra\rules.ini
 		mods\ra\rules.yaml = mods\ra\rules.yaml
 		mods\ra\sequences.xml = mods\ra\sequences.xml
 		mods\ra\voices.yaml = mods\ra\voices.yaml
@@ -17,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra", "ra", "{59F0734D-2F86-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aftermath", "aftermath", "{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78}"
 	ProjectSection(SolutionItems) = preProject
-		mods\aftermath\aftermathUnits.ini = mods\aftermath\aftermathUnits.ini
-		mods\aftermath\aftrmath.ini = mods\aftermath\aftrmath.ini
 		mods\aftermath\mod.yaml = mods\aftermath\mod.yaml
 		mods\aftermath\rules.yaml = mods\aftermath\rules.yaml
 		mods\aftermath\sequences.xml = mods\aftermath\sequences.xml
+		mods\aftermath\voices.yaml = mods\aftermath\voices.yaml
+		mods\aftermath\weapons.yaml = mods\aftermath\weapons.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra-ng", "ra-ng", "{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43}"
@@ -72,7 +71,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2D
 		mods\cnc\defaults.yaml = mods\cnc\defaults.yaml
 		mods\cnc\dialog.png = mods\cnc\dialog.png
 		mods\cnc\infantry.yaml = mods\cnc\infantry.yaml
-		mods\cnc\minimal.ini = mods\cnc\minimal.ini
 		mods\cnc\mod.yaml = mods\cnc\mod.yaml
 		mods\cnc\sequences-infantry.xml = mods\cnc\sequences-infantry.xml
 		mods\cnc\sequences-structures.xml = mods\cnc\sequences-structures.xml

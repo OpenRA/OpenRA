@@ -1,0 +1,671 @@
+MGG:
+	GeneratesGap:
+		Range: 10
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 11
+		Prerequisites: weap,atek
+		Owner: allies
+		Cost: 600
+		Description: Mobile Gap Generator
+		LongDesc: Regenerates Fog of War in a small area \naround the unit.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 9
+	RenderUnitSpinner:
+		Offset: 0,6,0,-3
+
+MRJ:
+	JamsRadar:
+		Range: 10
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 12
+		Prerequisites: weap,dome
+		Owner: allies
+		Cost: 600
+		Description: Radar Jammer
+		LongDesc: Hides nearby units on the enemy's minimap.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 110
+		Armor: light
+		Crewed: yes
+		Sight: 7
+		Speed: 9
+	Mobile:
+		MovementType: Track
+	RenderUnitSpinner:
+		Offset: 0,4,0,-6
+
+BADR:
+	ParaDrop:
+		LZRange: 4
+	Inherits: ^Plane
+	Unit:
+		HP: 60
+		Armor: light
+		ROT: 5
+		Sight: 0
+		Speed: 16
+	Plane:
+	RenderUnit:
+	WithShadow:
+	IronCurtainable:
+	Cargo:
+		Passengers: 10
+	-Selectable:
+
+V2RL:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 4
+		Prerequisites: weap,dome
+		Owner: soviet
+		Cost: 700
+		Description: V2 Rocket
+		LongDesc: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 150
+		Armor: light
+		Crewed: yes
+		Sight: 5
+		Speed: 7
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: SCUD
+	RenderUnitReload:
+	AutoTarget:
+
+1TNK:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 4
+		Prerequisites: weap
+		Owner: allies
+		Cost: 700
+		Description: Light Tank
+		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 300
+		Armor: heavy
+		Crewed: yes
+		Sight: 4
+		Speed: 9
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 75mm
+		Recoil: 2
+	RenderUnitTurreted:
+	AutoTarget:
+
+2TNK:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 6
+		Prerequisites: weap
+		Owner: allies
+		Cost: 800
+		Description: Medium Tank
+		LongDesc: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Unit:
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+		Speed: 8
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 90mm
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
+
+3TNK:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 4
+		Prerequisites: weap
+		Owner: soviet
+		Cost: 950
+		Description: Heavy Tank
+		LongDesc: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Unit:
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+		Speed: 7
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 105mm
+		SecondaryWeapon: 105mm
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
+
+4TNK:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 10
+		Prerequisites: weap,stek
+		Owner: soviet
+		Cost: 1700
+		Description: Mammoth Tank
+		LongDesc: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+	Unit:
+		HP: 600
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+		Speed: 4
+	Mobile:
+		MovementType: Track
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 120mm
+		SecondaryWeapon: MammothTusk
+		PrimaryLocalOffset: -4,-5,0,4,-5,0
+		SecondaryLocalOffset: -7,2,25,7,2,-25
+		Recoil: 4
+	RenderUnitTurreted:
+	AutoTarget:
+
+ARTY:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 8
+		Prerequisites: weap
+		Owner: allies
+		Cost: 600
+		Description: Artillery
+		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 75
+		Armor: light
+		Crewed: yes
+		ROT: 2
+		Sight: 5
+		Speed: 6
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: 155mm
+	RenderUnit:
+	Explodes:
+	AutoTarget:
+
+HARV:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 1
+		Prerequisites: weap,proc
+		Owner: allies,soviet
+		Cost: 1400
+		Description: Ore Truck
+		LongDesc: Collects Ore and Gems for processing.\n  Unarmed
+	Selectable:
+		Priority: 7
+	Harvester:
+		Capacity: 28
+		Resources: Ore,Gems
+	Unit:
+		HP: 600
+		Armor: heavy
+		Crewed: yes
+		Sight: 4
+		Speed: 6
+	Mobile:
+		MovementType: Track
+	RenderUnit:
+
+MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 11
+		Prerequisites: weap,fix
+		Owner: allies,soviet
+		Cost: 2500
+		Description: Mobile Construction Vehicle
+		LongDesc: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+	Unit:
+		HP: 600
+		Armor: light
+		Crewed: yes
+		Sight: 4
+		Speed: 6
+	TransformsOnDeploy:
+		TransformsInto: fact
+		Offset:-1,-1
+		DeployDirections: 96
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformSounds: nodeply1.aud
+	RenderUnit:
+
+JEEP:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 3
+		Prerequisites: weap
+		Owner: allies
+		Cost: 600
+		Description: Ranger
+		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 150
+		Armor: light
+		Crewed: yes
+		ROT: 10
+		Sight: 6
+		Speed: 10
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: M60mg
+		PrimaryOffset: 0,0,0,-2
+		MuzzleFlash: yes
+	RenderUnitTurreted:
+	AutoTarget:
+
+APC:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 5
+		Prerequisites: weap,tent
+		Owner: allies
+		Cost: 800
+		Description: Armored Personnel Carrier
+		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Unit:
+		HP: 200
+		Armor: heavy
+		Sight: 5
+		Speed: 10
+	Mobile:
+		MovementType: Track
+	AttackBase:
+		PrimaryWeapon: M60mg
+		PrimaryOffset: 0,0,0,-4
+		MuzzleFlash: yes
+	RenderUnitMuzzleFlash:
+	AutoTarget:
+	Cargo:
+		PassengerTypes: Foot
+		Passengers: 5
+		UnloadFacing: 220
+
+MNLY.AP:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 3
+		Prerequisites: weap,fix
+		Owner: soviet
+		Cost: 800
+		Icon: MNLYICON
+		Description: Minelayer (Anti-Personnel)
+		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
+	Unit:
+		HP: 100
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+		Speed: 9
+	Mobile:
+		MovementType: Track
+	RenderUnit:
+		Image: MNLY
+	Minelayer:
+		Mine: MINP
+	MineImmune:
+	LimitedAmmo:
+		Ammo: 5
+
+MNLY.AT:
+	Inherits: ^Vehicle
+	Buildable:
+		TechLevel: 3
+		Prerequisites: weap,fix
+		Owner: allies
+		Cost: 800
+		Icon: MNLYICON
+		Description: Minelayer (Anti-Tank)
+		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
+	Unit:
+		HP: 100
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+		Speed: 9
+	Mobile:
+		MovementType: Track
+	RenderUnit:
+		Image: MNLY
+	Minelayer:
+		Mine: MINV
+	MineImmune:
+	LimitedAmmo:
+		Ammo: 5
+
+TRUK:
+	Inherits: ^Vehicle
+	Unit:
+		HP: 110
+		Armor: light
+		Sight: 3
+		Speed: 10
+	RenderUnit:
+
+SS:
+	Inherits: ^Ship
+	Buildable:
+		TechLevel: 5
+		Prerequisites: spen
+		BuiltAt: spen
+		Owner: soviet
+		Cost: 950
+		Description: Submarine
+		LongDesc: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+	Unit:
+		HP: 120
+		Armor: light
+		ROT: 7
+		Sight: 6
+		Speed: 6
+		WaterBound: yes
+		TargetType: Sub
+	RenderUnit:
+	Submarine:
+	AttackBase:
+		PrimaryWeapon: TorpTube
+		FireDelay: 2
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+DD:
+	Inherits: ^Ship
+	Buildable:
+		TechLevel: 7
+		Prerequisites: syrd
+		BuiltAt: syrd
+		Owner: allies
+		Cost: 1000
+		Description: Destroyer
+		LongDesc: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+	Unit:
+		HP: 400
+		Armor: heavy
+		ROT: 7
+		Sight: 6
+		Speed: 6
+		WaterBound: yes
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+		PrimaryWeapon: Stinger
+		SecondaryWeapon: DepthCharge
+		PrimaryOffset: 0,-8,0,-3
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+CA:
+	Inherits: ^Ship
+	Buildable:
+		TechLevel: 10
+		Prerequisites: syrd,atek
+		BuiltAt: syrd
+		Owner: allies
+		Cost: 2000
+		Description: Cruiser
+		LongDesc: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+	Unit:
+		HP: 700
+		Armor: heavy
+		ROT: 5
+		Sight: 7
+		Speed: 4
+		WaterBound: yes
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 8Inch
+		SecondaryWeapon: 8Inch
+		PrimaryOffset: 0,17,0,-2
+		SecondaryOffset: 0,-17,0,-2
+		Recoil: 3
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+LST:
+	Inherits: ^Ship
+	Buildable:
+		TechLevel: 3
+		Owner: allies,soviet
+		Cost: 700
+		Description: Transport
+		LongDesc: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+	Unit:
+		HP: 350
+		Armor: heavy
+		ROT: 10
+		Sight: 6
+		Speed: 14
+		WaterBound: yes
+	RenderUnit:
+	Cargo:
+		PassengerTypes: Foot,Wheel,Track
+		Passengers: 5
+	IronCurtainable:
+	RepairableNear:
+
+PT:
+	Inherits: ^Ship
+	Buildable:
+		TechLevel: 5
+		Prerequisites: syrd
+		BuiltAt: syrd
+		Owner: allies
+		Cost: 500
+		Description: Gunboat
+		LongDesc: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+	Unit:
+		HP: 200
+		Armor: heavy
+		ROT: 7
+		Sight: 7
+		Speed: 9
+		WaterBound: yes
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+		PrimaryWeapon: 2Inch
+		SecondaryWeapon: DepthCharge
+		PrimaryOffset: 0,-6,0,-1
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+MIG:
+	Inherits: ^Plane
+	Buildable:
+		TechLevel: 10
+		Prerequisites: afld
+		BuiltAt: afld
+		Owner: soviet
+		Cost: 1200
+		Description: Mig Attack Plane
+		LongDesc: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
+	Unit:
+		HP: 50
+		Armor: light
+		InitialFacing: 192
+		ROT: 5
+		Sight: 0
+		Speed: 20
+	AttackPlane:
+		PrimaryWeapon: Maverick
+		SecondaryWeapon: Maverick
+	Plane:
+	RenderUnit:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 3
+	IronCurtainable:
+	ReturnOnIdle:
+
+YAK:
+	Inherits: ^Plane
+	Buildable:
+		TechLevel: 5
+		Prerequisites: afld
+		BuiltAt: afld
+		Owner: soviet
+		Cost: 800
+		Description: Yak Attack Plane
+		LongDesc: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
+	Unit:
+		HP: 60
+		Armor: light
+		Crewed: yes
+		InitialFacing: 192
+		ROT: 5
+		Sight: 0
+		Speed: 16
+	AttackPlane:
+		PrimaryWeapon: ChainGun
+		SecondaryWeapon: ChainGun
+	Plane:
+	RenderUnit:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 15
+	IronCurtainable:
+	ReturnOnIdle:
+
+TRAN:
+	Inherits: ^Plane
+	Buildable:
+		TechLevel: 11
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: allies
+		Cost: 1200
+		Description: Transport Helicopter
+		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
+	Unit:
+		HP: 90
+		Armor: light
+		InitialFacing: 20
+		ROT: 5
+		Sight: 0
+		Speed: 12
+	Helicopter:
+	RenderUnitRotor:
+		PrimaryOffset: 0,14,0,-4
+		SecondaryOffset: 0,-14,0,-2
+	WithShadow:
+	Cargo:
+		PassengerTypes: Foot
+		Passengers: 5
+	IronCurtainable:
+
+HELI:
+	Inherits: ^Plane
+	Buildable:
+		TechLevel: 9
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: allies
+		Cost: 1200
+		Description: Longbow
+		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Unit:
+		HP: 225
+		Armor: heavy
+		Crewed: yes
+		InitialFacing: 20
+		ROT: 4
+		Sight: 0
+		Speed: 16
+	AttackHeli:
+		PrimaryWeapon: Hellfire
+		SecondaryWeapon: Hellfire
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
+	Helicopter:
+	RenderUnitRotor:
+		PrimaryOffset: 0,0,0,-2
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 6
+	IronCurtainable:
+
+HIND:
+	Inherits: ^Plane
+	Buildable:
+		TechLevel: 9
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: allies
+		Cost: 1200
+		Description: Hind
+		LongDesc: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+	Unit:
+		HP: 225
+		Armor: heavy
+		Crewed: yes
+		InitialFacing: 20
+		ROT: 4
+		Sight: 0
+		Speed: 12
+	AttackHeli:
+		PrimaryWeapon: ChainGun
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
+	Helicopter:
+	RenderUnitRotor:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 12
+	IronCurtainable:
+
+U2:
+	Inherits: ^Plane
+	Unit:
+		HP: 2000
+		Armor: heavy
+		ROT: 7
+		Sight: 0
+		Speed: 40
+	Plane:
+	RenderUnit:
+	WithShadow:
+	IronCurtainable:
+	-Selectable:

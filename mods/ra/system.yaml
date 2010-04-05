@@ -1,0 +1,339 @@
+Player:
+	ProductionQueue:
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	PlaceBuilding:
+	GpsPower:
+		Image: gpssicon
+		OneShot: yes
+		ChargeTime: 8
+		Description: GPS Satellite
+		LongDesc: Reveals the entire map
+		Prerequisites: ATEK
+		TechLevel: 12
+		RevealDelay: 15
+	ChronoshiftPower:
+		Image: warpicon
+		ChargeTime: 7
+		Description: Chronoshift
+		LongDesc: Temporarily teleports a vehicle across \nthe map.
+		Prerequisites: PDOX
+		TechLevel: 12
+		Duration: 3
+		KillCargo: yes
+	IronCurtainPower:
+		Image: infxicon
+		ChargeTime: 11
+		Description: Invulnerability
+		LongDesc: Makes a single unit invulnerable for a \nshort time.
+		Prerequisites: IRON
+		TechLevel: 12
+		Duration: .75
+	SpyPlanePower:
+		Image: smigicon
+		ChargeTime: 3
+		Description: Spy Plane
+		LongDesc: Reveals an area of the map.
+		Prerequisites: AFLD
+		TechLevel: 5
+	ParatroopersPower:
+		Image: pinficon
+		ChargeTime: 6
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of Riflemen \n anywhere on the map
+		Prerequisites: AFLD
+		TechLevel: 5
+		DropItems: E1,E1,E1,E3,E3
+	NukePower:
+		Image: atomicon
+		ChargeTime: 13
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at a target location.
+		Prerequisites: MSLO
+		TechLevel: 12
+		MissileWeapon: atomic
+		BeginChargeSound: aprep1.aud
+		EndChargeSound: aready1.aud
+		SelectTargetSound: slcttgt1.aud
+		LaunchSound: alaunch1.aud
+	SonarPulsePower:
+		Image: sonricon
+		ChargeTime: 10
+		Description: Sonar Pulse
+		LongDesc: Reveals all submarines on the map for a \nshort time.
+		TechLevel: 5
+		GivenAuto: no
+		OneShot: yes
+
+World:
+	GlobalDefaults:
+	ScreenShaker:
+	WaterPaletteRotation:
+	ChronoshiftPaletteEffect:
+	LightPaletteRotator:
+	BuildingInfluence:
+	UnitInfluence:
+	ChoosePaletteOnSelect:
+	BridgeLoadHook:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 30
+		WaterChance: .2
+	PaletteFromFile@terrain_temperat:
+		Name: terrain
+		Filename: temperat.pal
+	PaletteFromFile@terrain_snow:
+		Name: snow
+		Filename: snow.pal
+	PlayerColorPalette@player0:
+		Name: player0
+		DisplayName: Gold
+		BasePalette: terrain
+		DisplayColor: 228, 200, 112
+		Color1: 246,214,121
+		Color2: 40,32,8
+	PlayerColorPalette@player1:
+		Name: player1
+		DisplayName: Blue
+		BasePalette: terrain
+		DisplayColor: 56, 72, 125
+		Color1: 226,230,246
+		Color2: 8,20,52
+	PlayerColorPalette@player2:
+		Name: player2
+		DisplayName: Red
+		BasePalette: terrain
+		DisplayColor: 238,0,0
+		Color1: 255,20,0
+		Color2: 56,0,0
+	PlayerColorPalette@player3:
+		Name: player3
+		DisplayName: Orange
+		BasePalette: terrain
+		DisplayColor: 198,97,0
+		Color1: 255,230,149
+		Color2: 56,0,0
+	PlayerColorPalette@player4:
+		Name: player4
+		DisplayName: Teal
+		BasePalette: terrain
+		DisplayColor: 28,109,97
+		Color1: 93,194,165
+		Color2: 0,32,32
+	PlayerColorPalette@player5:
+		Name: player5
+		DisplayName: Salmon
+		BasePalette: terrain
+		DisplayColor: 153,76,53
+		Color1: 210,153,125
+		Color2: 56,0,0
+	PlayerColorPalette@player6:
+		Name: player6
+		DisplayName: Green
+		BasePalette: terrain
+		DisplayColor: 76,101,60
+		Color1: 160,240,140
+		Color2: 20,20,20
+	PlayerColorPalette@player7:
+		Name: player7
+		DisplayName: White
+		BasePalette: terrain
+		DisplayColor: 255,255,255
+		Color1: 255,255,255
+		Color2: 75,75,75
+	PlayerColorPalette@player8:
+		Name: player8
+		DisplayName: Black
+		BasePalette: terrain
+		DisplayColor: 30,30,30
+		Color1: 80,80,80
+		Color2: 5,5,5
+	PlayerColorPalette@neutral:
+		Name: neutral
+		DisplayName: Neutral
+		BasePalette: terrain
+		DisplayColor: 133,113,101
+		Color1: 238,238,238
+		Color2: 44,28,24
+		Playable: no
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
+	Country@0:
+		Name: England
+		Race: allies
+	Country@1:
+		Name: Germany
+		Race: allies
+	Country@2:
+		Name: France
+		Race: allies
+	Country@3:
+		Name: Ukraine
+		Race: soviet
+	Country@4:
+		Name: Russia
+		Race: soviet
+	SellButton:
+	RepairButton:
+	PowerDownButton:
+	WallLoadHook@sbag:
+		ActorType: sbag
+		OverlayTypes: sbag
+	WallLoadHook@cycl:
+		ActorType: cycl
+		OverlayTypes: cycl
+	WallLoadHook@brik:
+		ActorType: brik
+		OverlayTypes: brik
+	WallLoadHook@fenc:
+		ActorType: fenc
+		OverlayTypes: fenc
+	WallLoadHook@wood:
+		ActorType: wood
+		OverlayTypes: wood
+	WallLoadHook@barb:
+		ActorType: barb
+		OverlayTypes: barb
+	ResourceLayer:
+	ResourceType@ore:
+		Overlays: gold01,gold02,gold03,gold04
+		Palette: terrain
+		SpriteNames: gold01,gold02,gold03,gold04
+		ValuePerUnit: 25
+		Name: Ore
+		GrowthInterval: 1.2
+		SpreadInterval: 2.0
+	ResourceType@gem:
+		Overlays: gem01,gem02,gem03,gem04
+		Palette: terrain
+		SpriteNames: gem01,gem02,gem03,gem04
+		ValuePerUnit: 50
+		Name: Gems
+	Theater@SNOW:
+		Name:Snow
+		Theater:SNOW
+		Suffix:sno
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:snow.col
+	Theater@TEMPERAT:
+		Name:Temperate
+		Theater:TEMPERAT
+		Suffix:tem
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:temperat.col
+	Theater@INTERIOR:
+		Name:Interior
+		Theater:INTERIOR
+		Suffix:int
+		Templates:templates.ini
+		Tileset:tileSet.til
+		MapColors:temperat.col
+	SpawnMapActors:
+	SpawnDefaultUnits:
+	EvaAlerts:
+	SpatialBins:
+		BinSize: 4
+	Shroud:
+
+MINP:
+	Mine:
+		Weapon: APMine
+		TriggeredBy: Foot, Wheel, Track
+		AvoidFriendly: yes
+	Unit:
+		HP: 1
+	RenderUnit:
+	BelowUnits:
+	InvisibleToOthers:
+	Category: Building
+
+MINV:
+	Mine:
+		Weapon: ATMine
+		TriggeredBy: Wheel, Track
+		AvoidFriendly: yes
+	Unit:
+		HP: 1
+	RenderUnit:
+	BelowUnits:
+	InvisibleToOthers:
+	Category: Building
+
+CRATE:
+	Crate:
+		Lifetime: 120
+	SpeedUpgradeCrateAction:
+		Multiplier: 1.7
+		SelectionShares: 10
+		Notification: unitspd1.aud
+		Effect: speed
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 50
+		Effect: dollar
+	FirepowerUpgradeCrateAction:
+		Multiplier: 2.0
+		SelectionShares: 10
+		Notification: firepo1.aud
+		Effect: fpower
+	ArmorUpgradeCrateAction:
+		Multiplier: 2.0
+		SelectionShares: 10
+		Notification: armorup1.aud
+		Effect: armor
+	ExplodeCrateAction@fire:
+		Weapon: CrateNapalm
+		SelectionShares: 5
+	ExplodeCrateAction@boom:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 10
+		Effect: hide-map
+	Unit:
+		HP: 1
+	RenderUnit:
+	BelowUnits:
+
+CAMERA:
+	Unit:
+		HP:1000
+		Sight: 10

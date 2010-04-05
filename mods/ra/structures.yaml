@@ -1,0 +1,847 @@
+MSLO:
+	NukeSilo:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 13
+		Prerequisites: @Tech Center
+		Owner: soviet,allies
+		Cost: 2500
+		Description: Missile Silo
+		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+	Building:
+		Power: -100
+		Footprint: xx
+		Dimensions: 2,1
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	IronCurtainable:
+
+GAP:
+	RequiresPower:
+	CanPowerDown:
+	GeneratesGap:
+		Range: 10
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 10
+		Prerequisites: atek
+		Owner: allies
+		Cost: 500
+		Description: Gap Generator
+		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
+	Building:
+		Power: -60
+		Footprint: _ x
+		Dimensions: 1,2
+		Capturable: true
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	IronCurtainable:
+
+SPEN:
+	InfiltrateForSonarPulse:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: powr
+		Owner: soviet
+		Cost: 650
+		Description: Sub Pen
+		LongDesc: Produces and repairs submarines and \ntransports
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 1000
+		Armor: light
+		WaterBound: yes
+		Sight: 4
+	ProductionSurround:
+		Produces: Ship
+	IronCurtainable:
+
+SYRD:
+	InfiltrateForSonarPulse:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: powr
+		Owner: allies
+		Cost: 650
+		Description: Shipyard
+		LongDesc: Produces and repairs ships
+		BuildPaletteOrder: 4
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 1000
+		Armor: light
+		WaterBound: yes
+		Sight: 4
+	ProductionSurround:
+		Produces: Ship
+	IronCurtainable:
+
+IRON:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 12
+		Prerequisites: stek
+		Owner: soviet
+		Cost: 2800
+		Description: Iron Curtain
+		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+		Bib: yes
+	IronCurtainable:
+	IronCurtain:
+
+PDOX:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 12
+		Prerequisites: atek
+		Owner: allies
+		Cost: 2800
+		Description: Chronosphere
+		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+		Bib: yes
+	Chronosphere:
+	IronCurtainable:
+
+TSLA:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 7
+		Prerequisites: weap
+		Owner: soviet
+		Cost: 1500
+		Description: Tesla Coil
+		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+	Building:
+		Power: -150
+		Footprint: _ x
+		Dimensions: 1,2
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 8
+	RenderBuildingCharge:
+	AttackTesla:
+		PrimaryWeapon: TeslaZap
+		FireDelay: 8
+	AutoTarget:
+	IronCurtainable:
+	-RenderBuilding:
+	RenderRangeCircle:
+
+AGUN:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 5
+		Prerequisites: dome
+		Owner: allies
+		Cost: 600
+		Description: AA Gun
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Building:
+		Power: -50
+		Footprint: _ x
+		Dimensions: 1,2
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+	Turreted:
+		ROT: 15
+		InitialFacing: 224
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: ZSU-23
+		SecondaryWeapon: ZSU-23
+	AutoTarget:
+	IronCurtainable:
+	-RenderBuilding:
+	RenderRangeCircle:
+
+DOME:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 1000
+		Description: Radar Dome
+		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
+		BuildPaletteOrder: 6
+	Building:
+		Power: -40
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	ProvidesRadar:
+	IronCurtainable:
+
+PBOX:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 2
+		Prerequisites: tent
+		Owner: allies
+		Cost: 400
+		Description: Pillbox
+		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Building:
+		Power: -15
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	AttackOmni:
+		PrimaryWeapon: Vulcan
+	AutoTarget:
+	IronCurtainable:
+	RenderRangeCircle:
+
+HBOX:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: tent
+		Owner: allies
+		Cost: 600
+		Description: Camo Pillbox
+		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Building:
+		Power: -15
+		HP: 600
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	AttackOmni:
+		PrimaryWeapon: Vulcan
+	AutoTarget:
+	IronCurtainable:
+	RenderRangeCircle:
+
+GUN:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 4
+		Prerequisites: tent
+		Owner: allies
+		Cost: 600
+		Description: Turret
+		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Building:
+		Power: -40
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: TurretGun
+	AutoTarget:
+	IronCurtainable:
+	-RenderBuilding:
+	RenderRangeCircle:
+
+FTUR:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 2
+		Prerequisites: barr
+		Owner: soviet
+		Cost: 600
+		Description: Flame Turret
+		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
+	Building:
+		Power: -20
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 6
+	AttackOmni:
+		PrimaryWeapon: FireballLauncher
+		PrimaryOffset: 0,0,12,8
+	AutoTarget:
+	IronCurtainable:
+	RenderRangeCircle:
+
+SAM:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 9
+		Prerequisites: dome
+		Owner: soviet
+		Cost: 750
+		Description: SAM Site
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Building:
+		Power: -20
+		Footprint: xx
+		Dimensions: 2,1
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	Turreted:
+		ROT: 30
+		InitialFacing: 0
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: Nike
+	AutoTarget:
+	IronCurtainable:
+	-RenderBuilding:
+	RenderRangeCircle:
+
+ATEK:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 10
+		Prerequisites: weap,dome
+		Owner: allies
+		Cost: 1500
+		Description: Allied Tech Center
+		LongDesc: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
+		AlternateName: @Tech Center
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	IronCurtainable:
+	GpsLaunchSite:
+
+WEAP:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: soviet,allies
+		Cost: 2000
+		Description: War Factory
+		LongDesc: Produces tanks & light vehicles.
+		BuildPaletteOrder: 5
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+		Capturable: true
+		Bib: yes
+		HP: 1000
+		Armor: light
+		Crewed: yes
+		Sight: 4
+	RenderWarFactory:
+	RallyPoint:
+	Production:
+		Produces: Vehicle
+	IronCurtainable:
+
+FACT:
+	Inherits: ^Building
+	Building:
+		Power: 0
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 1000
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	Production:
+		Produces: Building,Defense
+	ConstructionYard:
+	IronCurtainable: 
+	CustomSellValue:
+		Value: 2500
+
+PROC:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Prerequisites: powr
+		Owner: allies,soviet
+		Cost: 2000
+		Description: Ore Refinery
+		LongDesc: Converts Ore and Gems into money
+		BuildPaletteOrder: 1
+	Building:
+		Power: -30
+		Footprint: _x_ xxx x==
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 900
+		Armor: wood
+		Crewed: yes
+		Sight: 6
+	OreRefinery:
+	StoresOre:
+		Pips: 17
+		Capacity: 2000
+	IronCurtainable:
+	CustomSellValue:
+		Value: 600
+	HasUnitOnBuild:
+		Unit: HARV
+		InitialActivity: Harvest
+		SpawnOffset: 1,2
+		Facing: 64
+
+SILO:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Prerequisites: proc
+		Owner: allies,soviet
+		Cost: 150
+		Description: Silo
+		LongDesc: Stores excess harvested Ore
+	Building:
+		Power: -10
+		Capturable: true
+		HP: 300
+		Armor: wood
+		Sight: 4
+	RenderBuildingOre:
+	StoresOre:
+		Pips: 5
+		Capacity: 1500
+	IronCurtainable:
+	-RenderBuilding:
+
+HPAD:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 9
+		Prerequisites: dome
+		Owner: allies
+		Cost: 1500
+		Description: Helipad
+		LongDesc: Produces and reloads helicopters
+	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 800
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	Production:
+		SpawnOffset: 0,-4
+		Produces: Plane
+	BelowUnits:
+	Reservable:
+	IronCurtainable:
+
+AFLD:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 5
+		Prerequisites: dome
+		Owner: soviet
+		Cost: 600
+		Description: Airstrip
+		LongDesc: Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+		Capturable: true
+		HP: 1000
+		Armor: heavy
+		Crewed: yes
+		Sight: 7
+	Production:
+		Produces: Plane
+	BelowUnits:
+	Reservable:
+	IronCurtainable:
+
+POWR:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Owner: allies,soviet
+		Cost: 300
+		Description: Power Plant
+		LongDesc: Provides power for other structures
+		BuildPaletteOrder: 0
+	Building:
+		Power: 100
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 400
+		Armor: wood
+		Crewed: yes
+		Sight: 4
+	IronCurtainable:
+
+APWR:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 8
+		Prerequisites: powr
+		Owner: allies,soviet
+		Cost: 500
+		Description: Advanced Power Plant
+		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
+		BuildPaletteOrder:2
+	Building:
+		Power: 200
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		Bib: yes
+		HP: 700
+		Armor: wood
+		Crewed: yes
+		Sight: 4
+	IronCurtainable:
+
+STEK:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 6
+		Prerequisites: weap,dome
+		Owner: soviet
+		Cost: 1500
+		Description: Soviet Tech Center
+		LongDesc: Provides Soviet advanced technologies
+		AlternateName: @Tech Center
+	Building:
+		Power: -100
+		Footprint: xxx xxx
+		Dimensions: 3,2
+		Capturable: true
+		Bib: yes
+		HP: 600
+		Armor: wood
+		Crewed: yes
+		Sight: 4
+	IronCurtainable:
+
+BARR:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Prerequisites: powr
+		Owner: soviet
+		Cost: 300
+		Description: Soviet Barracks
+		LongDesc: Produces infantry
+		BuildPaletteOrder: 3
+	Building:
+		Power: -20
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 800
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	RallyPoint:
+	Production:
+		Produces: Infantry
+	IronCurtainable:
+
+TENT:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Prerequisites: powr
+		Owner: allies
+		Cost: 300
+		Description: Allied Barracks
+		LongDesc: Produces infantry
+		BuildPaletteOrder: 3
+	Building:
+		Power: -20
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		Bib: yes
+		HP: 800
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	RallyPoint:
+	Production:
+		Produces: Infantry
+	IronCurtainable:
+
+KENN:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: barr
+		Owner: soviet
+		Cost: 200
+		Description: Kennel
+		LongDesc: Produces attack dogs
+	Building:
+		Power: -10
+		HP: 400
+		Armor: wood
+		Sight: 4
+	RallyPoint:
+	Production:
+	IronCurtainable:
+
+FIX:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: weap
+		Owner: allies,soviet
+		Cost: 1200
+		Description: Service Depot
+		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
+	Building:
+		Power: -30
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
+		Capturable: true
+		HP: 800
+		Armor: wood
+		Crewed: yes
+		Sight: 5
+	BelowUnits:
+	Reservable:
+	IronCurtainable:
+	RepairsUnits:
+
+FACF:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 1
+		Owner: allies
+		Cost: 50
+		Description: Fake Construction Yard
+		LongDesc: Looks like a Construction Yard.
+		BuildPaletteOrder: 90
+	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
+		HP: 30
+		Sight: 4
+	RenderBuilding:
+		Image: FACT
+	Fake:
+	IronCurtainable:
+
+WEAF:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: allies
+		Cost: 50
+		Description: Fake War Factory
+		LongDesc: Looks like a War Factory.
+		BuildPaletteOrder: 90
+	Building:
+		Power: -2
+		Footprint: xxx xxx
+		Dimensions: 3,2
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
+		HP: 30
+		Sight: 4
+	RenderWarFactory:
+	RenderBuilding:
+		Image: WEAP
+	Fake:
+	IronCurtainable:
+
+SYRF:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: powr
+		Owner: allies
+		Cost: 50
+		Description: Fake Shipyard
+		LongDesc: Looks like a Shipyard
+		BuildPaletteOrder: 90
+	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 30
+		WaterBound: yes
+		Sight: 4
+	RenderBuilding:
+		Image: SYRD
+	Fake:
+
+SPEF:
+	Inherits: ^Building
+	Building:
+		Power: -2
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		Capturable: true
+		BaseNormal: no
+		Adjacent: 8
+		HP: 30
+		WaterBound: yes
+		Sight: 4
+	RenderBuilding:
+		Image: SPEN
+	Fake:
+
+DOMF:
+	Inherits: ^Building
+	Buildable:
+		TechLevel: 3
+		Prerequisites: proc
+		Owner: allies
+		Cost: 50
+		Description: Fake Radar Dome
+		LongDesc: Looks like a Radar Dome
+		BuildPaletteOrder: 90
+	Building:
+		Power: -2
+		Footprint: xx xx
+		Dimensions: 2,2
+		Capturable: true
+		BaseNormal: no
+		Bib: yes
+		HP: 30
+		Sight: 4
+	RenderBuilding:
+		Image: DOME
+	Fake:
+
+SBAG:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: allies
+		Cost: 25
+		Description: Sandbag Wall
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		BuildPaletteOrder: 100
+	Building:
+		HP: 100
+		Armor: none
+
+FENC:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 2
+		Prerequisites: fact
+		Owner: soviet
+		Cost: 25
+		Description: Wire Fence
+		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		BuildPaletteOrder: 100
+	Building:
+		HP: 100
+		Armor: none
+
+BRIK:
+	Inherits: ^Wall
+	Buildable:
+		TechLevel: 8
+		Prerequisites: fact
+		Owner: allies,soviet
+		Cost: 100
+		Description: Concrete Wall
+		LongDesc: Stop units and blocks enemy fire.
+		BuildPaletteOrder: 100
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 4
+
+CYCL:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+	RenderBuildingWall:
+		DamageStates: 3
+BARB:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+
+WOOD:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
