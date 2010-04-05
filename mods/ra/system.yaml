@@ -223,7 +223,7 @@ World:
 		GrowthInterval: 1.2
 		SpreadInterval: 2.0
 	ResourceType@gem:
-		ResourceType: 1
+		ResourceType: 2
 		Palette: terrain
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
