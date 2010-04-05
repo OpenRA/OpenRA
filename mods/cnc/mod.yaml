@@ -37,8 +37,8 @@ Chrome:
 	mods/cnc/chrome.xml:
 	
 Assemblies:
-	mods/cnc/OpenRA.Mods.Cnc.dll: Cnc mod traits
 	mods/ra/OpenRA.Mods.RA.dll:	Red alert mod traits
+	mods/cnc/OpenRA.Mods.Cnc.dll: Cnc mod traits
 
 ChromeLayout:
 	mods/cnc/menus.yaml:

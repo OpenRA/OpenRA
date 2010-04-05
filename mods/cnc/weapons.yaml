@@ -42,7 +42,7 @@ IonCannon:
 		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 4
 	Warhead@area:
-		DamageMode: PerCell
+		DamageModel: PerCell
 		Damage: 200
 		SmudgeType: Scorch
 		Size: 2,1

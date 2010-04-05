@@ -52,6 +52,7 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	RenderBuilding:
+	CriticalBuildingState:
 
 ^Tree:
 	Category: Building
