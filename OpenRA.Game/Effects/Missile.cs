@@ -34,7 +34,7 @@ namespace OpenRA.Effects
 		public readonly bool Shadow = true;
 		public readonly bool Proximity = false;
 		public readonly string Trail = null;
-		public readonly float Inaccuracy = 0;			// pixels/cell^2, not yet implemented for missiles
+		public readonly float Inaccuracy = 0;
 		public readonly string Image = null;
 		public readonly int ROT = 5;
 		public readonly int RangeLimit = 0;
@@ -65,10 +65,7 @@ namespace OpenRA.Effects
 			Facing = Args.facing;
 
 			if (info.Inaccuracy > 0)
-			{
-				var factor = (Args.dest - Args.src).LengthSquared / (Game.CellSize * Game.CellSize);
-				offset = (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
-			}
+				offset = (info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 
 			if (Info.Image != null)
 			{

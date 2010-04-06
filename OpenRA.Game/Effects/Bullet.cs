@@ -29,7 +29,7 @@ namespace OpenRA.Effects
 	{
 		public readonly int Speed = 1;
 		public readonly string Trail = null;
-		public readonly float Inaccuracy = 0;			// expressed as pixels/cell^2
+		public readonly float Inaccuracy = 0;			// pixels at maximum range
 		public readonly string Image = null;
 		public readonly bool High = false;
 		public readonly bool Arcing = false;
@@ -59,7 +59,7 @@ namespace OpenRA.Effects
 
 			if (info.Inaccuracy > 0)
 			{
-				var factor = (Args.dest - Args.src).LengthSquared / (Game.CellSize * Game.CellSize);
+				var factor = ((Args.dest - Args.src).Length / Game.CellSize) / args.weapon.Range;
 				Args.dest += (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 			}
 
