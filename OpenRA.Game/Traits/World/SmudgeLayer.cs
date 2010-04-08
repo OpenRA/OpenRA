@@ -23,13 +23,12 @@ using System.Linq;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.FileFormats;
-using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
 	class SmudgeLayerInfo : ITraitInfo
 	{
-		public readonly SmudgeType Type = SmudgeType.Scorch;
+		public readonly string Type = "Scorch";
 		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
 		public readonly int[] Depths = {1,1,1,1,1,1};
 		public object Create(Actor self) { return new SmudgeLayer(self, this); }
@@ -39,12 +38,10 @@ namespace OpenRA.Traits
 	{		
 		public SmudgeLayerInfo Info;
 		SpriteRenderer spriteRenderer;
-		World world;
-		
 		TileReference<byte,byte>[,] tiles;
 		Sprite[][] smudgeSprites;
-		string[] smudgeTypes;
-		
+		World world;
+
 		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
 		{
 			spriteRenderer = new SpriteRenderer( Game.renderer, true );			

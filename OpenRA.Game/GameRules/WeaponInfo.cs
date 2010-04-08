@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -33,7 +33,7 @@ namespace OpenRA.GameRules
 		public readonly bool Wood = false;								// can this damage wood?
 		public readonly bool Ore = false;								// can this damage ore?
 		public readonly int Explosion = 0;								// explosion effect to use
-		public readonly SmudgeType SmudgeType = SmudgeType.None;		// type of smudge to apply
+		public readonly string SmudgeType = null;						// type of smudge to apply
 		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
 		public readonly int InfDeath = 0;								// infantry death animation to use
 		public readonly string ImpactSound = null;						// sound to play on impact
@@ -52,13 +52,6 @@ namespace OpenRA.GameRules
 		light = 2,
 		heavy = 3,
 		concrete = 4,
-	}
-
-	public enum SmudgeType
-	{
-		None = 0,
-		Crater = 1,
-		Scorch = 2,
 	}
 
 	public enum DamageModel
