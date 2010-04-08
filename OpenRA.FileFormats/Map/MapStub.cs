@@ -18,10 +18,9 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System;
 
 namespace OpenRA.FileFormats
 {
@@ -36,43 +35,41 @@ namespace OpenRA.FileFormats
 		public string Author;
 		public int PlayerCount;
 		public string Tileset;
-		
+
 		public int2 TopLeft;
 		public int2 BottomRight;
-		public int Width {get {return BottomRight.X - TopLeft.X;}}
-		public int Height {get {return BottomRight.Y - TopLeft.Y;}}
+		public int Width { get { return BottomRight.X - TopLeft.X; } }
+		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
 		public Lazy<Bitmap> Preview;
-		
+
 		static List<string> Fields = new List<string>() {
 			"Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
-		
-		public MapStub() {}
-		
+
+		public MapStub() { }
+
 		public MapStub(IFolder package)
-		{			
+		{
 			Package = package;
 			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
-			FieldLoader.LoadFields(this,yaml,Fields);
-			
+			FieldLoader.LoadFields(this, yaml, Fields);
+
 			Preview = Lazy.New(
-				() => {return new Bitmap(Package.GetContent("preview.png"));}
+				() => { return new Bitmap(Package.GetContent("preview.png")); }
 			);
-			
-			StreamReader uidStream = new StreamReader(Package.GetContent("map.uid"));
-			Uid = uidStream.ReadLine();
-			uidStream.Close();
+
+			Uid = Package.GetContent("map.uid").ReadAllText();
 		}
-		
+
 		public Rectangle PreviewBounds(Rectangle container)
 		{
-			float scale = Math.Min(container.Width*1.0f/Width,container.Height*1.0f/Height);
-						
-			var size = Math.Max(Width, Height);
-			var dw = (int)(scale*(size - Width)) / 2;
-			var dh = (int)(scale*(size - Height)) / 2;
+			float scale = Math.Min(container.Width * 1.0f / Width, container.Height * 1.0f / Height);
 
-			return new Rectangle(container.X + dw, container.Y + dh, (int)(Width*scale), (int)(Height*scale));
+			var size = Math.Max(Width, Height);
+			var dw = (int)(scale * (size - Width)) / 2;
+			var dh = (int)(scale * (size - Height)) / 2;
+
+			return new Rectangle(container.X + dw, container.Y + dh, (int)(Width * scale), (int)(Height * scale));
 		}
 	}
 }

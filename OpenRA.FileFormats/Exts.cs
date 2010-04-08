@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.IO;
 
 namespace OpenRA
 {
@@ -41,6 +42,23 @@ namespace OpenRA
 		public static IEnumerable<string> GetNamespaces(this Assembly a)
 		{
 			return a.GetTypes().Select(t => t.Namespace).Distinct().Where(n => n != null);
+		}
+
+		public static string ReadAllText(this Stream s)
+		{
+			using (s)
+			using (var sr = new StreamReader(s))
+				return sr.ReadToEnd();
+		}
+
+		public static byte[] ReadAllBytes(this Stream s)
+		{
+			using (s)
+			{
+				var data = new byte[s.Length - s.Position];
+				s.Read(data, 0, data.Length);
+				return data;
+			}
 		}
 	}
 }
