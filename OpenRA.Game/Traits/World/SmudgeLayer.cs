@@ -54,7 +54,14 @@ namespace OpenRA.Traits
 			world = w;
 			tiles = new TileReference<byte,byte>[w.Map.MapSize.X,w.Map.MapSize.Y];
 			
-			// TODO: Parse map and add initial smudges
+			// Add map smudges
+			foreach (var s in w.Map.Smudges)
+			{
+				if (!Info.Types.Contains(s.Type))
+					continue;
+				tiles[s.Location.X,s.Location.Y] = new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
+				                                                  (byte)s.Depth);
+			}
 		}
 		
 		public void AddSmudge(int2 loc)

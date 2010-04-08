@@ -90,7 +90,7 @@ namespace OpenRA.FileFormats
 			foreach (var kv in yaml["Actors"].Nodes)
 			{
 				string[] vals = kv.Value.Value.Split(' ');
-				string[] loc = vals[1].Split(',');
+				string[] loc = vals[2].Split(',');
 				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,vals[2]);
 				Actors.Add(kv.Key,a);
 			}
@@ -99,9 +99,10 @@ namespace OpenRA.FileFormats
 			foreach (var kv in yaml["Smudges"].Nodes)
 			{
 				string[] vals = kv.Key.Split(' ');
-				string[] loc = vals[2].Split(',');
-				Smudges.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,int.Parse(vals[1])));
+				string[] loc = vals[1].Split(',');
+				Smudges.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,int.Parse(vals[2])));
 			}
+			
 			// Rules
 			Rules = yaml["Rules"].Nodes;
 			
