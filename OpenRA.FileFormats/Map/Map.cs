@@ -182,8 +182,6 @@ namespace OpenRA.FileFormats
 			using (var dataStream = File.Create(filepath + ".tmp"))
 			using (var writer = new BinaryWriter(dataStream))
 			{
-				writer.BaseStream.Seek(0, SeekOrigin.Begin);
-
 				// File header consists of a version byte, followed by 2 ushorts for width and height
 				writer.Write(TileFormat);
 				writer.Write((ushort)MapSize.X);
