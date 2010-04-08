@@ -126,7 +126,24 @@ namespace OpenRA.Network
 
 		void OutOfSync( int frame )
 		{
-			throw new InvalidOperationException( "out of sync in frame {0}".F( frame ) );
+			string ErrorString = "out of sync in frame {0}.\n";
+			
+			var frameData = clientQuitTimes
+				.Where( x => frame <= x.Value )
+				.OrderBy( x => x.Key )
+				.ToDictionary( k => k.Key, v => frameClientData[ FrameNumber ][ v.Key ] );
+
+			foreach( var order in frameData.SelectMany( o => o.Value.ToOrderList( Game.world ).Select( a => new { Client = o.Key, Order = a } ) ) ) 
+			{
+				ErrorString += "OrderString: {0} \n".F(order.Order.OrderString);
+				ErrorString += (order.Order.Subject != null)? "\t Subject: {0}.\n".F(order.Order.Subject.Info.Name) : "";
+				ErrorString += (order.Order.TargetActor != null)? "\t TargetActor: {0}.\n".F(order.Order.TargetActor.Info.Name) : "";
+				ErrorString += (order.Order.TargetLocation != null)? "\t TargetLocation: {0}.\n".F(order.Order.TargetLocation) : "";
+				ErrorString += (order.Order.TargetString != null)? "\t TargetString: {0}.\n".F(order.Order.TargetString) : "";
+				ErrorString += (order.Order.TargetString)? "\t IsImmediate: true.\n" : "";
+			}
+			
+			throw new InvalidOperationException( ErrorString.F( frame ) );
 		}
 
 		public bool IsReadyForNextFrame
