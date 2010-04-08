@@ -140,7 +140,7 @@ namespace OpenRA.Network
 				ErrorString += (order.Order.TargetActor != null)? "\t TargetActor: {0}.\n".F(order.Order.TargetActor.Info.Name) : "";
 				ErrorString += (order.Order.TargetLocation != null)? "\t TargetLocation: {0}.\n".F(order.Order.TargetLocation) : "";
 				ErrorString += (order.Order.TargetString != null)? "\t TargetString: {0}.\n".F(order.Order.TargetString) : "";
-				ErrorString += (order.Order.TargetString)? "\t IsImmediate: true.\n" : "";
+				ErrorString += (order.Order.IsImmediate)? "\t IsImmediate: true.\n" : "";
 			}
 			
 			throw new InvalidOperationException( ErrorString.F( frame ) );
