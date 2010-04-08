@@ -33,7 +33,6 @@ namespace OpenRA.Graphics
 
 		Renderer renderer;
 		Map map;
-		SmudgeRenderer overlayRenderer;
 
 		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
 		{
@@ -68,8 +67,6 @@ namespace OpenRA.Graphics
 
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 			indexBuffer.SetData( indices );
-
-			overlayRenderer = new SmudgeRenderer( renderer, map );
 		}
 
 		public void Draw( Viewport viewport )
@@ -109,8 +106,6 @@ namespace OpenRA.Graphics
 
 			foreach (var r in Game.world.WorldActor.traits.WithInterface<IRenderOverlay>())
 				r.Render();
-
-			overlayRenderer.Draw();
 		}
 	}
 }

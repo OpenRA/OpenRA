@@ -51,8 +51,14 @@ namespace OpenRA
 					w => w.Add(new Explosion(w, visualLocation, warhead.Explosion, isWater)));
 
 			Sound.Play(GetImpactSound(warhead, isWater));
-
-			if (!isWater) world.Map.AddSmudge(targetTile, warhead);
+			
+			if (warhead.SmudgeType != SmudgeType.None)
+			{
+				var smudgeLayer = world.WorldActor.traits.WithInterface<SmudgeLayer>().FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
+				if (!isWater)
+					smudgeLayer.AddSmudge(targetTile);
+			}
+			
 			if (warhead.Ore)
 				world.WorldActor.traits.Get<ResourceLayer>().Destroy(targetTile);
 

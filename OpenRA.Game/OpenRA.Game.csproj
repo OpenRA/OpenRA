@@ -65,11 +65,11 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tao.FreeType, Version=2.3.5.0, Culture=neutral, PublicKeyToken=e499629dc69cd531, processorArchitecture=MSIL">
+    <Reference Include="Tao.FreeType, Version=2.3.5.0, Culture=neutral, PublicKeyToken=e499629dc69cd531">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.FreeType.dll</HintPath>
     </Reference>
-    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311, processorArchitecture=MSIL">
+    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
     </Reference>
@@ -122,7 +122,6 @@
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="ShroudRenderer.cs" />
-    <Compile Include="Smudge.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
@@ -159,7 +158,6 @@
     <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
-    <Compile Include="Graphics\SmudgeRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Traits\Activities\Land.cs" />
@@ -293,6 +291,7 @@
     <Compile Include="Traits\World\GlobalDefaults.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
     <Compile Include="Traits\World\BibLayer.cs" />
+    <Compile Include="Traits\World\SmudgeLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

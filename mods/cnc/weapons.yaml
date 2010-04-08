@@ -127,6 +127,7 @@ Rockets:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 30
 
 Flamethrower: 
@@ -142,6 +143,7 @@ Flamethrower:
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
+		SmudgeType: Scorch
 		Damage: 35
 
 BigFlamer: 
@@ -157,6 +159,7 @@ BigFlamer:
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
+		SmudgeType: Scorch
 		Damage: 50
 
 Chemspray: 
@@ -173,6 +176,7 @@ Chemspray:
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
+		SmudgeType: Scorch
 		ImpactSound: xplos
 
 Grenade: 
@@ -192,6 +196,7 @@ Grenade:
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 50
 
 70mm: 
@@ -209,6 +214,7 @@ Grenade:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 25
 
 105mm: 
@@ -226,6 +232,7 @@ Grenade:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 30
 
 120mm: 
@@ -243,6 +250,7 @@ Grenade:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 40
 
 TurretGun: 
@@ -260,6 +268,7 @@ TurretGun:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 40
 
 MissilePack:
@@ -285,6 +294,7 @@ MissilePack:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 75
 
 227mm: 
@@ -310,6 +320,7 @@ MissilePack:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 75
 
 Ballistic:
@@ -330,6 +341,7 @@ Ballistic:
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
+		SmudgeType: Crater
 		ImpactSound: xplos
 
 MachineGun: 
@@ -367,6 +379,7 @@ BoatMissile:
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 60
 
 Tomahawk: 
@@ -391,6 +404,7 @@ Tomahawk:
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 60
 
 Napalm:
@@ -409,6 +423,7 @@ Napalm:
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
+		SmudgeType: Scorch
 		Damage: 100
 
 Laser: 
@@ -423,6 +438,7 @@ Laser:
 		Spread: 1
 		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 4
+		SmudgeType: Scorch
 		Damage: 200
 
 Nike: 
@@ -446,6 +462,7 @@ Nike:
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 50
 
 HonestJohn:
@@ -467,4 +484,5 @@ HonestJohn:
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
+		SmudgeType: Scorch
 		Damage: 100

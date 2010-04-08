@@ -23,66 +23,60 @@ using System.Linq;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	class BibLayerInfo : ITraitInfo
+	class SmudgeLayerInfo : ITraitInfo
 	{
-		public readonly string[] BibTypes = {"bib3", "bib2", "bib1"};
-		public readonly int[] BibWidths = {2,3,4};
-		public object Create(Actor self) { return new BibLayer(self, this); }
+		public readonly SmudgeType Type = SmudgeType.Scorch;
+		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
+		public readonly int[] Depths = {1,1,1,1,1,1};
+		public object Create(Actor self) { return new SmudgeLayer(self, this); }
 	}
 
-	class BibLayer: IRenderOverlay, ILoadWorldHook
+	class SmudgeLayer: IRenderOverlay, ILoadWorldHook
 	{		
+		public SmudgeLayerInfo Info;
 		SpriteRenderer spriteRenderer;
 		World world;
-		BibLayerInfo info;
 		
 		TileReference<byte,byte>[,] tiles;
-		Sprite[][] bibSprites;
+		Sprite[][] smudgeSprites;
+		string[] smudgeTypes;
 		
-		public BibLayer(Actor self, BibLayerInfo info)
+		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
 		{
 			spriteRenderer = new SpriteRenderer( Game.renderer, true );			
-			this.info = info;
-			bibSprites = info.BibTypes.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
-			
-			self.World.ActorAdded +=
-				a => { if (a.traits.Contains<Bib>()) DoBib(a,true); };
-			self.World.ActorRemoved +=
-				a => { if (a.traits.Contains<Bib>()) DoBib(a,false); };
+			this.Info = info;
+			smudgeSprites = Info.Types.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 		}
 		
 		public void WorldLoaded(World w)
 		{
 			world = w;
 			tiles = new TileReference<byte,byte>[w.Map.MapSize.X,w.Map.MapSize.Y];
+			
+			// TODO: Parse map and add initial smudges
 		}
 		
-		public void DoBib(Actor b, bool isAdd)
-		{
-			var buildingInfo = b.Info.Traits.Get<BuildingInfo>();			
-			var size = buildingInfo.Dimensions.X;
-			var bibOffset = buildingInfo.Dimensions.Y - 1;
-			
-			int bib = Array.IndexOf(info.BibWidths,size);
-			if (bib < 0)
+		public void AddSmudge(int2 loc)
+		{			
+			// No smudge; create a new one
+			if (tiles[loc.X, loc.Y].type == 0)
 			{
-				Log.Write("Cannot bib {0}-wide building {1}",size,b.Info.Name);
+				byte st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
+				tiles[loc.X,loc.Y] = new TileReference<byte,byte>(st,(byte)0);
 				return;
 			}
 			
-			for (int i = 0; i < 2 * size; i++)
-			{
-				var p = b.Location + new int2(i % size, i / size + bibOffset);
-				byte type = (byte)((isAdd) ? bib+1 : 0);
-				byte index = (byte)i;
-				
-				tiles[p.X,p.Y] = new TileReference<byte,byte>(type,index);
-			}
+			// Existing smudge; make it deeper
+			int depth = Info.Depths[tiles[loc.X, loc.Y].type-1];
+			if (tiles[loc.X, loc.Y].image >= depth - 1) return; /* Smudge is at maximum depth */
+			
+			tiles[loc.X,loc.Y].image++;
 		}
-
+		
 		public void Render()
 		{
 			var shroud = world.LocalPlayer.Shroud;
@@ -95,14 +89,11 @@ namespace OpenRA.Traits
 					var t = new int2(x, y);
 					if (!shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
 						
-					spriteRenderer.DrawSprite(bibSprites[tiles[x,y].type- 1][tiles[x,y].image],
+					spriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
 						Game.CellSize * (float2)t, "terrain");
 				}
 			
 			spriteRenderer.Flush();
 		}
 	}
-	
-	class BibInfo : StatelessTraitInfo<Bib> { }
-	public class Bib { }
 }
