@@ -40,6 +40,7 @@ namespace OpenRA.FileFormats
 		public string Tileset;
 
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
+		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
 		
@@ -86,14 +87,21 @@ namespace OpenRA.FileFormats
 			// TODO: Players
 			
 			// Actors
-			foreach (var kv in yaml["Actors"].Nodes.ToPairs())
+			foreach (var kv in yaml["Actors"].Nodes)
 			{
-				string[] vals = kv.Second.Split(' ');
-				string[] loc = vals[2].Split(',');
-				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,vals[1]);
-				Actors.Add(kv.First,a);
+				string[] vals = kv.Value.Value.Split(' ');
+				string[] loc = vals[1].Split(',');
+				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,vals[2]);
+				Actors.Add(kv.Key,a);
 			}
 			
+			// Smudges
+			foreach (var kv in yaml["Smudges"].Nodes)
+			{
+				string[] vals = kv.Key.Split(' ');
+				string[] loc = vals[2].Split(',');
+				Smudges.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]),int.Parse(loc[1])) ,int.Parse(vals[1])));
+			}
 			// Rules
 			Rules = yaml["Rules"].Nodes;
 			
@@ -120,7 +128,7 @@ namespace OpenRA.FileFormats
 			}			
 			root.Add("Actors",MiniYaml.FromDictionary<string,ActorReference>(Actors));
 			root.Add("Waypoints",MiniYaml.FromDictionary<string,int2>(Waypoints));
-
+			root.Add("Smudges",MiniYaml.FromList<SmudgeReference>(Smudges));
 			// TODO: Players
 			root.Add("Rules",new MiniYaml(null,Rules));
 			SaveBinaryData(Path.Combine(filepath,"map.bin"));
@@ -229,6 +237,11 @@ namespace OpenRA.FileFormats
 			Console.WriteLine("Loaded Actors:");
 			foreach (var wp in Actors)
 				Console.WriteLine("\t{0} => {1} {2} {3}",wp.Key,wp.Value.Name, wp.Value.Owner,wp.Value.Location);
+			
+			Console.WriteLine("Loaded Smudges:");
+			foreach (var s in Smudges)
+				Console.WriteLine("\t{0} {1} {2}",s.Type,s.Location,s.Depth);
+			
 		}
 	}
 }

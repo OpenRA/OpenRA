@@ -169,6 +169,7 @@ namespace MapConverter
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
+			LoadSmudges(file, "SMUDGE");
 		
 			var wp = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
@@ -358,6 +359,16 @@ namespace MapConverter
 			}
 		}
 		
+		void LoadSmudges(IniFile file, string section)
+		{
+			foreach (var s in file.GetSection(section, true))
+			{
+				//loc=type,loc,depth
+				var parts = s.Value.Split( ',' );
+				var loc = int.Parse(parts[1]);
+				Map.Smudges.Add(new SmudgeReference(parts[0].ToLowerInvariant(),new int2(loc % MapSize, loc / MapSize),int.Parse(parts[2])));
+			}
+		}
 		static string Truncate( string s, int maxLength )
 		{
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );

@@ -45,6 +45,12 @@ namespace OpenRA.FileFormats
 			return new MiniYaml( null, dict.ToDictionary( x=>x.Key.ToString(), x=>new MiniYaml(x.Value.ToString())));
 		}
 		
+		public static MiniYaml FromList<T>(List<T>list)
+		{
+			var d = new Dictionary<string, MiniYaml>();
+			return new MiniYaml( null, list.ToDictionary( x=>x.ToString(), x=>new MiniYaml(null)));
+		}
+		
 		static Dictionary<string, MiniYaml> FromLines(string[] lines)
 		{
 			var levels = new List<Dictionary<string, MiniYaml>>();
@@ -184,14 +190,6 @@ namespace OpenRA.FileFormats
 					yield return line;
 				if (lowest)
 					yield return "";
-			}
-		}
-		
-		public static IEnumerable< Pair<string,string> >ToPairs(this MiniYamlNodes y)
-		{
-			foreach (var kv in y)
-			{
-				yield return Pair.New(kv.Key,kv.Value.Value);
 			}
 		}
 	}
