@@ -35,7 +35,7 @@ namespace OpenRA.Network
 		public bool GameStarted { get { return FrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 		
-		public readonly int SyncHeaderSize = 5;
+		public readonly int SyncHeaderSize = 9;
 		
 		Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
 
@@ -123,10 +123,10 @@ namespace OpenRA.Network
 					{
 						if( packet[ i ] != existingSync[ i ] )
 						{
-							if ( i < SyncHeaderSize + sizeof(int) )
+							if ( i < SyncHeaderSize )
 								OutOfSync(frame, "Tick");
 							else
-							OutOfSync( frame ,  (i - SyncHeaderSize - sizeof(int)) / 4);
+							OutOfSync( frame ,  (i - SyncHeaderSize) / 4);
 						}
 					}
 				}

@@ -134,9 +134,9 @@ namespace OpenRA
 		
 		public override string ToString()
 		{
-			return "OrderString: \"{0}\" \n\t Subject: \"{0}\"." +
-				"\n\t TargetActor: \"{0}\" \n\t TargetLocation: {0}.\n\t TargetString: \"{0}\".\n\t IsImmediate: {0}.\n".F(
-			         	OrderString, Subject, TargetActor, TargetLocation, TargetString, IsImmediate);
+			return "OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
+				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n".F(
+			    		OrderString, Subject, TargetActor.Info.Name , TargetLocation, TargetString, IsImmediate, Player.PlayerName);
 		}
 
 		static uint UIntFromActor(Actor a)
