@@ -131,6 +131,13 @@ namespace OpenRA
 					throw new NotImplementedException();
 			}
 		}
+		
+		public override string ToString()
+		{
+			return "OrderString: \"{0}\" \n\t Subject: \"{0}\"." +
+				"\n\t TargetActor: \"{0}\" \n\t TargetLocation: {0}.\n\t TargetString: \"{0}\".\n\t IsImmediate: {0}.\n".F(
+			         	OrderString, Subject, TargetActor, TargetLocation, TargetString, IsImmediate);
+		}
 
 		static uint UIntFromActor(Actor a)
 		{

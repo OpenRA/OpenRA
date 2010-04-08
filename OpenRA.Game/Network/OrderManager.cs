@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -34,7 +34,9 @@ namespace OpenRA.Network
 
 		public bool GameStarted { get { return FrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
-
+		
+		public readonly int SyncHeaderSize = 5;
+		
 		Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
 
 		Dictionary<int, Dictionary<int, byte[]>> frameClientData = 
@@ -116,34 +118,42 @@ namespace OpenRA.Network
 				if( packet.Length != existingSync.Length )
 					OutOfSync( frame );
 				else
+				{
 					for( int i = 0 ; i < packet.Length ; i++ )
+					{
 						if( packet[ i ] != existingSync[ i ] )
-							OutOfSync( frame );
+						{
+							if ( i < SyncHeaderSize + sizeof(int) )
+								OutOfSync(frame, "Tick");
+							else
+							OutOfSync( frame ,  (i - SyncHeaderSize - sizeof(int)) / 4);
+						}
+					}
+				}
 			}
 			else
 				syncForFrame.Add( frame, packet );
 		}
 
-		void OutOfSync( int frame )
-		{
-			string ErrorString = "out of sync in frame {0}.\n";
-			
+		void OutOfSync( int frame , int index)
+		{	
 			var frameData = clientQuitTimes
 				.Where( x => frame <= x.Value )
 				.OrderBy( x => x.Key )
 				.ToDictionary( k => k.Key, v => frameClientData[ FrameNumber ][ v.Key ] );
-
-			foreach( var order in frameData.SelectMany( o => o.Value.ToOrderList( Game.world ).Select( a => new { Client = o.Key, Order = a } ) ) ) 
-			{
-				ErrorString += "OrderString: {0} \n".F(order.Order.OrderString);
-				ErrorString += (order.Order.Subject != null)? "\t Subject: {0}.\n".F(order.Order.Subject.Info.Name) : "";
-				ErrorString += (order.Order.TargetActor != null)? "\t TargetActor: {0}.\n".F(order.Order.TargetActor.Info.Name) : "";
-				ErrorString += (order.Order.TargetLocation != null)? "\t TargetLocation: {0}.\n".F(order.Order.TargetLocation) : "";
-				ErrorString += (order.Order.TargetString != null)? "\t TargetString: {0}.\n".F(order.Order.TargetString) : "";
-				ErrorString += (order.Order.IsImmediate)? "\t IsImmediate: true.\n" : "";
-			}
 			
-			throw new InvalidOperationException( ErrorString.F( frame ) );
+			var order = frameData.SelectMany( o => o.Value.ToOrderList( Game.world ).Select( a => new { Client = o.Key, Order = a } ) ).ElementAt(index);
+			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, order.Order.ToString()));
+		}
+		
+		void OutOfSync(int frame)
+		{
+			throw new InvalidOperationException("Out of sync in frame {0}.\n".F(frame));
+		}
+		
+		void OutOfSync(int frame, string blame)
+		{
+			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n".F(frame, blame));
 		}
 
 		public bool IsReadyForNextFrame
