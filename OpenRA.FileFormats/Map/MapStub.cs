@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System;
 
 namespace OpenRA.FileFormats
@@ -43,7 +44,7 @@ namespace OpenRA.FileFormats
 		public Lazy<Bitmap> Preview;
 		
 		static List<string> Fields = new List<string>() {
-			"Uid", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
+			"Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
 		
 		public MapStub() {}
@@ -57,6 +58,10 @@ namespace OpenRA.FileFormats
 			Preview = Lazy.New(
 				() => {return new Bitmap(Package.GetContent("preview.png"));}
 			);
+			
+			StreamReader uidStream = new StreamReader(Package.GetContent("map.uid"));
+			Uid = uidStream.ReadLine();
+			uidStream.Close();
 		}
 		
 		public Rectangle PreviewBounds(Rectangle container)

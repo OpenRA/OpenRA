@@ -395,8 +395,9 @@ namespace MapConverter
 		public void Save(string filepath)
 		{
 			Directory.CreateDirectory(filepath);
+			
+			Map.Package = new Folder(filepath);
 			SavePreviewImage(Path.Combine(filepath,"preview.png"));
-			Map.UpdateUid();			
 			Map.Save(filepath);
 		}
 	}

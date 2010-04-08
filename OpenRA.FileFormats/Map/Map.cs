@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace OpenRA.FileFormats
 {
@@ -30,7 +31,7 @@ namespace OpenRA.FileFormats
 	{
 		public IFolder Package;
 		public string Uid;
-
+		
 		// Yaml map data
 		public int MapFormat = 1;
 		public string Title;
@@ -64,7 +65,7 @@ namespace OpenRA.FileFormats
 		public IEnumerable<int2> SpawnPoints {get {return Waypoints.Select(kv => kv.Value);}}
 		
 		static List<string> SimpleFields = new List<string>() {
-			"Uid", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
+			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
 		};
 		
 		public Map() {}
@@ -83,9 +84,7 @@ namespace OpenRA.FileFormats
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]),int.Parse(loc[1])));
 			}
-			
-			// TODO: Players
-			
+						
 			// Actors
 			foreach (var kv in yaml["Actors"].Nodes)
 			{
@@ -106,15 +105,8 @@ namespace OpenRA.FileFormats
 			// Rules
 			Rules = yaml["Rules"].Nodes;
 			
+			LoadUid();
 			LoadBinaryData();
-		}
-		
-		public void UpdateUid()
-		{
-			// TODO: Do this properly.
-			// Use a hash of the important data
-			Random foo = new Random();
-			Uid = foo.Next().ToString();
 		}
 		
 		public void Save(string filepath)
@@ -126,14 +118,15 @@ namespace OpenRA.FileFormats
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
 				root.Add(field,new MiniYaml(FieldSaver.FormatValue(this,f),null));
-			}			
+			}
+			
 			root.Add("Actors",MiniYaml.FromDictionary<string,ActorReference>(Actors));
 			root.Add("Waypoints",MiniYaml.FromDictionary<string,int2>(Waypoints));
 			root.Add("Smudges",MiniYaml.FromList<SmudgeReference>(Smudges));
-			// TODO: Players
 			root.Add("Rules",new MiniYaml(null,Rules));
 			SaveBinaryData(Path.Combine(filepath,"map.bin"));
 			root.WriteToFile(Path.Combine(filepath,"map.yaml"));
+			SaveUid(Path.Combine(filepath,"map.uid"));
 		}
 		
 		static byte ReadByte( Stream s )
@@ -214,6 +207,34 @@ namespace OpenRA.FileFormats
 			writer.Close();
 			File.Delete(filepath);
 			File.Move(filepath+".tmp",filepath);
+		}
+		
+		public void LoadUid()
+		{
+			StreamReader uidStream = new StreamReader(Package.GetContent("map.uid"));
+			Uid = uidStream.ReadLine();
+			uidStream.Close();
+		}
+		
+		public void SaveUid(string filename)
+		{
+			// UID is calculated by taking an SHA1 of the yaml and binary data
+			// Read the relevant data into a buffer
+			var yamlStream = Package.GetContent("map.yaml");
+			var binaryStream = Package.GetContent("map.bin");
+			var data = new byte[yamlStream.Length+binaryStream.Length];
+
+			yamlStream.Read(data,0,(int)yamlStream.Length);
+			binaryStream.Read(data,(int)yamlStream.Length,(int)binaryStream.Length);
+			
+			// Take the SHA1
+			using (var csp = SHA1.Create())
+				Uid = new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+			
+			// Save to file
+			StreamWriter file = new System.IO.StreamWriter(filename);
+			file.WriteLine(Uid);
+			file.Close();
 		}
 		
 		public bool IsInMap(int2 xy)
