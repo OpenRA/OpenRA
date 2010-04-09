@@ -85,7 +85,6 @@ namespace OpenRA.Traits
 
 		public void Render()
 		{
-			var shroud = world.LocalPlayer.Shroud;
 			var tl = world.Map.TopLeft;
 			var br = world.Map.BottomRight;
 			
@@ -93,7 +92,7 @@ namespace OpenRA.Traits
 				for (int y = tl.Y; y < br.Y; y++)
 				{
 					var t = new int2(x, y);
-					if (!shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
+					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
 						
 					spriteRenderer.DrawSprite(bibSprites[tiles[x,y].type- 1][tiles[x,y].image],
 						Game.CellSize * (float2)t, "terrain");

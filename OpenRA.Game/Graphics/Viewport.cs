@@ -72,12 +72,10 @@ namespace OpenRA.Graphics
 			float2 r2 = new float2(-1, 1);
 
 			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
-
+			world.WorldRenderer.Draw();
 			if( Game.orderManager.GameStarted )
 			{
-				world.WorldRenderer.Draw();
-				Game.chrome.Draw( world );
-				
+				Game.chrome.Draw( world );	
 
 				if( Game.orderManager.Connection.ConnectionState == ConnectionState.NotConnected )
 					Game.chrome.DrawDialog("Connection lost.");

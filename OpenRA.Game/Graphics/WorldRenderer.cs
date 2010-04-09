@@ -84,7 +84,7 @@ namespace OpenRA.Graphics
 
 		Rectangle GetBoundsRect()
 		{
-			if (!world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
+			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
 			{
 				var r = world.LocalPlayer.Shroud.bounds.Value;
 
@@ -136,7 +136,8 @@ namespace OpenRA.Graphics
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render(world);
 
-			world.LocalPlayer.Shroud.Draw(spriteRenderer);
+			if (world.LocalPlayer != null)
+				world.LocalPlayer.Shroud.Draw(spriteRenderer);
 
 			spriteRenderer.Flush();
 

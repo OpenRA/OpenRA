@@ -44,13 +44,12 @@ namespace OpenRA.Traits
 		
 		public void Render()
 		{
-			var shroud = Game.world.LocalPlayer.Shroud;
 			var map = Game.world.Map;
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				{
-					if (!shroud.IsExplored(new int2(x, y))) continue;
+					if (Game.world.LocalPlayer != null && !Game.world.LocalPlayer.Shroud.IsExplored(new int2(x, y))) continue;
 
 					var c = content[x, y];
 					if (c.image != null)
