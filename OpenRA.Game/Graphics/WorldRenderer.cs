@@ -149,27 +149,22 @@ namespace OpenRA.Graphics
 			lineRenderer.Flush();
 		}
 
+		void DrawBox(RectangleF r, Color color)
+		{
+			var a = new float2(r.Left, r.Top);
+			var b = new float2(r.Right - a.X, 0);
+			var c = new float2(0, r.Bottom - a.Y);
+			lineRenderer.DrawLine(a, a + b, color, color);
+			lineRenderer.DrawLine(a + b, a + b + c, color, color);
+			lineRenderer.DrawLine(a + b + c, a + c, color, color);
+			lineRenderer.DrawLine(a, a + c, color, color);
+		}
+
 		void DrawBins(RectangleF bounds)
 		{
-			{
-				var a = new float2(bounds.Left, bounds.Top);
-				var b = new float2(bounds.Right - a.X, 0);
-				var c = new float2(0, bounds.Bottom - a.Y);
-				lineRenderer.DrawLine(a, a + b, Color.Red, Color.Red);
-				lineRenderer.DrawLine(a + b, a + b + c, Color.Red, Color.Red);
-				lineRenderer.DrawLine(a + b + c, a + c, Color.Red, Color.Red);
-				lineRenderer.DrawLine(a, a + c, Color.Red, Color.Red);
-
-				bounds = world.LocalPlayer.Shroud.bounds.Value;
-
-				a = new float2(bounds.Left, bounds.Top);
-				b = new float2(bounds.Right - a.X, 0);
-				c = new float2(0, bounds.Bottom - a.Y);
-				lineRenderer.DrawLine(a, a + b, Color.Blue, Color.Blue);
-				lineRenderer.DrawLine(a + b, a + b + c, Color.Blue, Color.Blue);
-				lineRenderer.DrawLine(a + b + c, a + c, Color.Blue, Color.Blue);
-				lineRenderer.DrawLine(a, a + c, Color.Blue, Color.Blue);
-			}
+			DrawBox(bounds, Color.Red);
+			if (world.LocalPlayer != null)
+				DrawBox(world.LocalPlayer.Shroud.bounds.Value, Color.Blue);
 
 			for (var j = 0; j < Game.world.Map.MapSize.Y;
 				j += Game.world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
