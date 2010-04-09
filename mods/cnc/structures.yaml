@@ -360,6 +360,7 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 	AttackOmni:
 		PrimaryWeapon: Laser
+		PrimaryOffset: 0,0,0,-16
 		FireDelay: 8
 	AutoTarget:
 	-RenderBuilding:

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -117,7 +117,7 @@ namespace OpenRA.Traits
 
 		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)
 		{
-			if( unit == null ) return int2.Zero;	/* things that don't have a rotating base don't need the turrets repositioned */
+			if( unit == null ) return offset.AbsOffset();	/* things that don't have a rotating base don't need the turrets repositioned */
 
 			var ru = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
