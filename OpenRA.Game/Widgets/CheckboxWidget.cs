@@ -55,6 +55,8 @@ namespace OpenRA.Widgets
 						Color.White);
 				Game.chrome.lineRenderer.Flush();
 			}
+
+			Game.chrome.rgbaRenderer.Flush();
 			
 			base.Draw();
 		}

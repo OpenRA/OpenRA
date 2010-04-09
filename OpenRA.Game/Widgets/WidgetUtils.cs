@@ -59,10 +59,10 @@ namespace OpenRA.Widgets
 			sr.DrawSprite(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top), "chrome");
 			sr.DrawSprite(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y), "chrome");
 			sr.DrawSprite(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y), "chrome");
-			sr.Flush();
 
 			if (a != null) a();
 
+			sr.Flush();		// because the scissor is changing
 			r.Device.DisableScissor();
 		}
 	}

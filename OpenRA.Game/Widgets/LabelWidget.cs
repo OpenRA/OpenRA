@@ -46,6 +46,7 @@ namespace OpenRA.Widgets
 					- new int2(textSize.X / 2, textSize.Y/2);
 			
 			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text, position, Color.White);
+			Game.chrome.rgbaRenderer.Flush();
 			Game.chrome.renderer.Device.DisableScissor();
 			base.Draw();
 		}

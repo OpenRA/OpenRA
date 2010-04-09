@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 				p.X += g.Advance;
 			}
 
-			r.Flush();
+		//	r.Flush();
 		}
 
 		public int2 Measure(string text)

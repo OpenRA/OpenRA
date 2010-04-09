@@ -268,6 +268,7 @@ namespace OpenRA
 			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
 			DrawDialogBackground( rect, "dialog2");
 			DrawCentered(text, new int2(pos.X, pos.Y), Color.White);
+			rgbaRenderer.Flush();
 			AddButton(rect, a);
 		}
 
@@ -278,6 +279,7 @@ namespace OpenRA
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
+			rgbaRenderer.Flush();
 
 			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
 					r.Bottom - 50 + 6, 160, 24), "dialog2");
@@ -401,7 +403,7 @@ namespace OpenRA
 			
 		}
 
-		public void DrawWidgets(World world) { rootWidget.Draw(); }
+		public void DrawWidgets(World world) { rootWidget.Draw(); shpRenderer.Flush(); rgbaRenderer.Flush(); }
 		
 		public void DrawLobby( World world )
 		{
@@ -419,6 +421,7 @@ namespace OpenRA
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
+			rgbaRenderer.Flush();
 
 			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
 			
@@ -446,6 +449,8 @@ namespace OpenRA
 			f.DrawText(rgbaRenderer, "Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
 			f.DrawText(rgbaRenderer, "Status", new int2(r.Left + 290, r.Top + 50), Color.White);
 			f.DrawText(rgbaRenderer, "Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
+
+			rgbaRenderer.Flush();
 				
 			var y = r.Top + 80;
 			foreach (var client in Game.LobbyInfo.Clients)
