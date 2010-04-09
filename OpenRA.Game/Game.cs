@@ -215,6 +215,7 @@ namespace OpenRA
 			if (changePending && PackageDownloader.IsIdle())
 			{
 				// TODO: Only do this on mod change
+				Timer.Time("----begin maplist");
 				AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 				Timer.Time( "maplist: {0}" );
 					
