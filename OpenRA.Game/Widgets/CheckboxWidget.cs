@@ -19,13 +19,15 @@
 #endregion
 
 using System.Drawing;
+using System;
 
 namespace OpenRA.Widgets
 {
 	class CheckboxWidget : Widget
 	{
 		public string Text = "";
-
+		public Func<bool> Checked = () => {return false;};
+		
 		public override void Draw()
 		{
 			if (!Visible)
@@ -33,8 +35,6 @@ namespace OpenRA.Widgets
 				base.Draw();
 				return;
 			}
-
-			var selected = InputHandler.Value != null ? InputHandler.Value.GetState(this) : false;
 
 			WidgetUtils.DrawPanel("dialog3",
 				new Rectangle(Bounds.Location,
@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text,
 				new float2(Bounds.Left + Bounds.Height * 2, Bounds.Top), Color.White);
 
-			if (selected)
+			if (Checked())
 			{
 				Game.chrome.lineRenderer.FillRect(
 					new RectangleF( 

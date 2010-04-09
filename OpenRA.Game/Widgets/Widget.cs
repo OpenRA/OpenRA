@@ -37,7 +37,7 @@ namespace OpenRA.Widgets
 		public readonly string Height = "0";
 		public readonly string Delegate = null;
 
-		public Lazy<WidgetDelegate> InputHandler;
+		public Lazy<IWidgetDelegate> InputHandler;
 
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
@@ -81,18 +81,16 @@ namespace OpenRA.Widgets
 				.Aggregate(Bounds, Rectangle.Union);
 		}
 
-		static WidgetDelegate BindHandler(string name)
+		static IWidgetDelegate BindHandler(string name)
 		{
 			if (name == null) return null;
-
-			foreach (var mod in Game.ModAssemblies)
-			{
-				var act = (WidgetDelegate)mod.First.CreateInstance(mod.Second + "." + name);
-				if (act != null) return act;
-			}
-
-			throw new InvalidOperationException("Cannot locate widget delegate: {0}".F(name));
+			return Game.CreateObject<IWidgetDelegate>(name);
 		}
+		
+		// Common Funcs that most widgets will want
+		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
+		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
+		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
 		
 		public virtual bool HandleInput(MouseInput mi)
 		{
@@ -107,15 +105,15 @@ namespace OpenRA.Widgets
 
 			// Mousedown
 			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Down)
-				return InputHandler.Value.OnMouseDown(this, mi);
+				return OnMouseDown(mi);
 			
 			// Mouseup
 			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Up)
-				return InputHandler.Value.OnMouseUp(this, mi);
+				return OnMouseUp(mi);
 			
 			// Mousemove
 			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Move)
-				return InputHandler.Value.OnMouseMove(this, mi);
+				return OnMouseMove(mi);
 			return false;
 		}
 		
@@ -138,10 +136,16 @@ namespace OpenRA.Widgets
 				return this;
 			
 			foreach (var child in Children)
-				if (child.GetWidget(id) != null)
-					return child;
-			
+			{
+				var w = child.GetWidget(id);
+				if (w != null)
+					return w;
+			}
 			return null;
+		}
+		public T GetWidget<T>(string id) where T : Widget
+		{
+			return (T)GetWidget(id);
 		}
 
 		public Widget GetCurrentMenu() { return Children.FirstOrDefault(c => c.Visible); }
@@ -159,4 +163,5 @@ namespace OpenRA.Widgets
 	}
 
 	class ContainerWidget : Widget { }
+	public interface IWidgetDelegate { }
 }

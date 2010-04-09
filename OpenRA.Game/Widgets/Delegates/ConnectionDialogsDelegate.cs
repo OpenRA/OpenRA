@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -20,29 +20,23 @@
 
 namespace OpenRA.Widgets.Delegates
 {
-	public class ConnectionDialogsDelegate : WidgetDelegate
+	public class ConnectionDialogsDelegate : IWidgetDelegate
 	{
-		public override bool OnMouseUp(Widget w, MouseInput mi)
+		public ConnectionDialogsDelegate()
 		{
-			// Main Menu root
-			if (w.Id == "CONNECTION_BUTTON_ABORT")
-			{
+			var r = Game.chrome.rootWidget;
+			r.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
 				return true;
-			}
-
-			if (w.Id == "CONNECTION_BUTTON_CANCEL")
-			{
+			};
+			r.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
 				return true;
-			}
-
-			if (w.Id == "CONNECTION_BUTTON_RETRY")
-			{
+			};
+			r.GetWidget("CONNECTION_BUTTON_RETRY").OnMouseUp = mi => {
 				Game.JoinServer(Game.CurrentHost, Game.CurrentPort);
 				return true;
-			}
-			return false;
+			};
 		}
 	}
 }

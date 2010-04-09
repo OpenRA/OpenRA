@@ -285,7 +285,6 @@
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
-    <Compile Include="Widgets\Delegates\WidgetDelegate.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
     <Compile Include="Traits\HasUnitOnBuild.cs" />
     <Compile Include="Traits\Activities\Wait.cs" />

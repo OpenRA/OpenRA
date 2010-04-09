@@ -1,72 +1,58 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace OpenRA.Widgets.Delegates
 {
-	public class SettingsMenuDelegate : WidgetDelegate
+	public class SettingsMenuDelegate : IWidgetDelegate
 	{
-		public override bool GetState(Widget w)
+		public SettingsMenuDelegate()
 		{
-			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG") return Game.Settings.UnitDebug;
-			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG") return Game.Settings.PathDebug;
-			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG") return Game.Settings.IndexDebug;
-			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH") return Game.Settings.PerfGraph;
-			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT") return Game.Settings.PerfText;
-			return false;
-		}
-
-		public override bool OnMouseDown(Widget w, MouseInput mi)
-		{
-			if (w.Id == "SETTINGS_CHECKBOX_UNITDEBUG")
-			{
+			var r = Game.chrome.rootWidget;
+			
+			// Checkboxes		
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = () => {return Game.Settings.UnitDebug;};
+			r.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
 				Game.Settings.UnitDebug = !Game.Settings.UnitDebug;
 				return true;
-			}
-
-			if (w.Id == "SETTINGS_CHECKBOX_PATHDEBUG")
-			{
+			};
+			
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = () => {return Game.Settings.PathDebug;};
+			r.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => {
 				Game.Settings.PathDebug = !Game.Settings.PathDebug;
 				return true;
-			}
-
-			if (w.Id == "SETTINGS_CHECKBOX_INDEXDEBUG")
-			{
+			};
+			
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = () => {return Game.Settings.IndexDebug;};
+			r.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => {
 				Game.Settings.IndexDebug = !Game.Settings.IndexDebug;
 				return true;
-			}
-
-			if (w.Id == "SETTINGS_CHECKBOX_PERFGRAPH")
-			{
+			};
+			
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFGRAPH").Checked = () => {return Game.Settings.PerfGraph;};
+			r.GetWidget("SETTINGS_CHECKBOX_PERFGRAPH").OnMouseDown = mi => {
 				Game.Settings.PerfGraph = !Game.Settings.PerfGraph;
 				return true;
-			}
-
-			if (w.Id == "SETTINGS_CHECKBOX_PERFTEXT")
-			{
+			};
+			
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFTEXT").Checked = () => {return Game.Settings.PerfText;};
+			r.GetWidget("SETTINGS_CHECKBOX_PERFTEXT").OnMouseDown = mi => {
 				Game.Settings.PerfText = !Game.Settings.PerfText;
 				return true;
-			}
-
-			return false;
-		}
-
-		public override bool OnMouseUp(Widget w, MouseInput mi)
-		{
-			if (w.Id == "MAINMENU_BUTTON_SETTINGS")
-			{
+			};
+			
+			
+			// Menu Buttons
+			r.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("SETTINGS_BG");
 				return true;
-			}
-
-			if (w.Id == "SETTINGS_BUTTON_OK")
-			{
+			};
+			
+			r.GetWidget("SETTINGS_BUTTON_OK").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
 				return true;
-			}
-
-			return false;
+			};
 		}
 	}
 }

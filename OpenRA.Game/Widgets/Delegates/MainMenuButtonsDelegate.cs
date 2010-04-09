@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -17,20 +17,14 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-
+using System;
 namespace OpenRA.Widgets.Delegates
 {
-	public class MainMenuButtonsDelegate : WidgetDelegate
+	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
-		public override bool OnMouseUp(Widget w, MouseInput mi)
+		public MainMenuButtonsDelegate()
 		{
-			// Main Menu root
-			if (w.Id == "MAINMENU_BUTTON_QUIT")
-			{
-				Game.Exit();
-				return true;
-			}
-			return false;
+			Game.chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => {Game.Exit(); return true;};
 		}
 	}
 }

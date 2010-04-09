@@ -23,48 +23,26 @@ using System.Linq;
 using System.Collections.Generic;
 namespace OpenRA.Widgets.Delegates
 {
-	public class CreateServerMenuDelegate : WidgetDelegate
+	public class CreateServerMenuDelegate : IWidgetDelegate
 	{
 		static bool AdvertiseServerOnline = Game.Settings.InternetServer;
-
-		public override bool GetState(Widget w)
+		
+		public CreateServerMenuDelegate()
 		{
-			if (w.Id == "CREATESERVER_CHECKBOX_ONLINE")
-				return AdvertiseServerOnline;
-
-			return false;
-		}
-
-		public override bool OnMouseDown(Widget w, MouseInput mi)
-		{
-			if (w.Id == "CREATESERVER_CHECKBOX_ONLINE")
-			{
-				AdvertiseServerOnline = !AdvertiseServerOnline;
-				return true;
-			}
-
-			return false;
-		}
-
-		public override bool OnMouseUp(Widget w, MouseInput mi)
-		{
-			if (w.Id == "MAINMENU_BUTTON_CREATE")
-			{
+			var r = Game.chrome.rootWidget;
+			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("CREATESERVER_BG");
 				return true;
-			}
-
-			if (w.Id == "CREATESERVER_BUTTON_CANCEL")
-			{
+			};
+			
+			r.GetWidget("CREATESERVER_BUTTON_CANCEL").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
 				return true;
-			}
-
-			if (w.Id == "CREATESERVER_BUTTON_START")
-			{
+			};
+			
+			r.GetWidget("CREATESERVER_BUTTON_START").OnMouseUp = mi => {
 				Game.chrome.rootWidget.ShowMenu(null);
 				Log.Write("Creating server");
-				
 				
 				// TODO: Get this from a map chooser
 				string map = Game.AvailableMaps.Keys.FirstOrDefault();
@@ -82,9 +60,13 @@ namespace OpenRA.Widgets.Delegates
 				Log.Write("Joining server");
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
-			}
-
-			return false;
+			};
+			
+			r.GetWidget<CheckboxWidget>("CREATESERVER_CHECKBOX_ONLINE").Checked = () => {return AdvertiseServerOnline;};
+			r.GetWidget("CREATESERVER_CHECKBOX_ONLINE").OnMouseDown = mi => {
+				AdvertiseServerOnline = !AdvertiseServerOnline;
+				return true;	
+			};
 		}
 	}
 }
