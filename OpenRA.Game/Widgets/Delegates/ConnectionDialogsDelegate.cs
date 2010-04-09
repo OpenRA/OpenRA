@@ -24,13 +24,13 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public ConnectionDialogsDelegate()
 		{
-			var r = Game.chrome.rootWidget;
+			var r = Chrome.rootWidget;
 			r.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
+				r.ShowMenu("MAINMENU_BG");
 				return true;
 			};
 			r.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
+				r.ShowMenu("MAINMENU_BG");
 				return true;
 			};
 			r.GetWidget("CONNECTION_BUTTON_RETRY").OnMouseUp = mi => {

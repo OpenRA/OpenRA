@@ -29,19 +29,19 @@ namespace OpenRA.Widgets.Delegates
 		
 		public CreateServerMenuDelegate()
 		{
-			var r = Game.chrome.rootWidget;
+			var r = Chrome.rootWidget;
 			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("CREATESERVER_BG");
+				r.ShowMenu("CREATESERVER_BG");
 				return true;
 			};
 			
 			r.GetWidget("CREATESERVER_BUTTON_CANCEL").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
+				r.ShowMenu("MAINMENU_BG");
 				return true;
 			};
 			
 			r.GetWidget("CREATESERVER_BUTTON_START").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu(null);
+				r.ShowMenu(null);
 				Log.Write("Creating server");
 				
 				// TODO: Get this from a map chooser

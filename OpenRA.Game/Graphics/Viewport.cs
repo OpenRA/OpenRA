@@ -93,31 +93,31 @@ namespace OpenRA.Graphics
 					switch( Game.orderManager.Connection.ConnectionState )
 					{
 						case ConnectionState.PreConnecting:
-							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
-							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
+							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
 							break;
 						case ConnectionState.Connecting:
-							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = true;
-							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = true;
+							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
 
 							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Connecting abort";
 
 							//Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 							break;
 						case ConnectionState.NotConnected:
-							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = true;
+							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = true;
 
 							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Not Connected Retry/fail";
 							//Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
 							break;
 						case ConnectionState.Connected:
-							Game.chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Game.chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
+							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
 							//Game.chrome.DrawLobby( world );
 							break;
 					}
@@ -128,9 +128,9 @@ namespace OpenRA.Graphics
 					Game.chrome.DrawLobby();
 				
 				lastConnectionState = state;
-				Game.chrome.DrawWidgets(world);
 
 			}
+			Game.chrome.DrawWidgets(world);
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);

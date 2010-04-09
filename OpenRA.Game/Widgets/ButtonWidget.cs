@@ -29,13 +29,13 @@ namespace OpenRA.Widgets
 		public int VisualHeight = 1;
 		public override bool HandleInput(MouseInput mi)
 		{
-			if (Game.chrome.selectedWidget == this)
+			if (Chrome.selectedWidget == this)
 				Depressed = (GetEventBounds().Contains(mi.Location.X,mi.Location.Y)) ? true : false;
 			
 			// Relinquish focus
-			if (Game.chrome.selectedWidget == this && mi.Event == MouseInputEvent.Up)
+			if (Chrome.selectedWidget == this && mi.Event == MouseInputEvent.Up)
 			{
-				Game.chrome.selectedWidget = null;
+				Chrome.selectedWidget = null;
 				Depressed = false;
 			}
 			
@@ -53,7 +53,7 @@ namespace OpenRA.Widgets
 			// We also want to play a click sound
 			if (mi.Event == MouseInputEvent.Down)
 			{
-				Game.chrome.selectedWidget = this;
+				Chrome.selectedWidget = this;
 				Depressed = true;
 				return true;
 			}

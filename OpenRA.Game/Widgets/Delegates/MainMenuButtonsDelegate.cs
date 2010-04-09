@@ -24,7 +24,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public MainMenuButtonsDelegate()
 		{
-			Game.chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => {Game.Exit(); return true;};
+			Chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => {Game.Exit(); return true;};
 		}
 	}
 }

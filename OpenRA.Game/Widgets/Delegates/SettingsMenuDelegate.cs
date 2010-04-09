@@ -9,7 +9,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public SettingsMenuDelegate()
 		{
-			var r = Game.chrome.rootWidget;
+			var r = Chrome.rootWidget;
 			
 			// Checkboxes		
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = () => {return Game.Settings.UnitDebug;};
@@ -45,12 +45,12 @@ namespace OpenRA.Widgets.Delegates
 			
 			// Menu Buttons
 			r.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("SETTINGS_BG");
+				r.ShowMenu("SETTINGS_BG");
 				return true;
 			};
 			
 			r.GetWidget("SETTINGS_BUTTON_OK").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
+				r.ShowMenu("MAINMENU_BG");
 				return true;
 			};
 		}

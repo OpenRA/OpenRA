@@ -32,10 +32,10 @@ namespace OpenRA.Widgets.Delegates
 
 		public ServerBrowserDelegate()
 		{
-			var r = Game.chrome.rootWidget;
+			var r = Chrome.rootWidget;
 			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = 
 			mi => {
-				var bg = Game.chrome.rootWidget.ShowMenu("JOINSERVER_BG");
+				var bg = r.ShowMenu("JOINSERVER_BG");
 				int height = 50;
 				int width = 300;
 				int i = 0;
@@ -53,7 +53,7 @@ namespace OpenRA.Widgets.Delegates
 					b.GetType().GetField("Delegate").SetValue(b, "ServerBrowserDelegate");
 					
 					b.OnMouseUp = nmi => {
-						Game.chrome.rootWidget.GetWidget("JOINSERVER_BG").Visible = false;
+						r.GetWidget("JOINSERVER_BG").Visible = false;
 						Game.JoinServer(GameList[i].Address.Split(':')[0], int.Parse(GameList[i].Address.Split(':')[1]));
 						return true;
 					};
@@ -74,7 +74,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi => {
-				Game.chrome.rootWidget.ShowMenu("MAINMENU_BG");
+				r.ShowMenu("MAINMENU_BG");
 				return true;
 			};
 		}

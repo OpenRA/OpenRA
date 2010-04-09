@@ -130,13 +130,16 @@ namespace OpenRA
 			clock = new Animation("clock");
 			
 			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-
-			rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
-			rootWidget.Initialize();
+			
+			if (rootWidget == null)
+			{
+				rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
+				rootWidget.Initialize();
+			}
 		}
 
-		public Widget rootWidget;
-		public Widget selectedWidget;
+		public static Widget rootWidget = null;
+		public static Widget selectedWidget;
 		
 		List<string> visibleTabs = new List<string>();
 		
