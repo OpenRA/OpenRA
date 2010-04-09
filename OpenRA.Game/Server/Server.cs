@@ -467,8 +467,9 @@ namespace OpenRA.Server
 							SendChatTo( conn, "You can't change mods after the game has started" );
 							return true;
 						}
-
-						lobbyInfo.GlobalSettings.Mods = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+						var args = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+						lobbyInfo.GlobalSettings.Mods = args.GetRange(0,args.Count - 1).ToArray();
+						lobbyInfo.GlobalSettings.Map = args.Last();
 						SyncLobbyInfo();
 						return true;
 					}},

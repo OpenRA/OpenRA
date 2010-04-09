@@ -138,6 +138,8 @@ namespace OpenRA
 			Rules.LoadRules(manifest);
 			Timer.Time( "load rules: {0}" );
 			Game.packageChangePending = false;
+			
+			LoadMap(manifest.ShellmapUid);
 		}
 		
 		public static void ChangeMap(string mapName)
