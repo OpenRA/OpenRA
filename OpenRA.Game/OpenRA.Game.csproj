@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
+    <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
