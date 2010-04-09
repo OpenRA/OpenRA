@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -43,6 +43,9 @@ namespace OpenRA.GameRules
 		public Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
+			if (player == null)
+				return ret;
+
 			foreach( var b in player.World.Queries.OwnedBy[player].Where( x=>x.Info.Traits.Contains<BuildingInfo>() ) )
 			{
 				ret[ b.Info.Name ].Add( b );
@@ -56,6 +59,9 @@ namespace OpenRA.GameRules
 
 		public bool CanBuild( ActorInfo info, Player player, Cache<string, List<Actor>> playerBuildings )
 		{
+			if (player == null)
+				return false;
+			
 			var bi = info.Traits.GetOrDefault<BuildableInfo>();
 			if( bi == null ) return false;
 
@@ -74,6 +80,9 @@ namespace OpenRA.GameRules
 
 		public IEnumerable<string> BuildableItems( Player player, params string[] categories )
 		{
+			if (player == null)
+				yield break;
+			
 			var playerBuildings = GatherBuildings( player );
 			foreach (var unit in AllBuildables(categories))
 				if( CanBuild( unit, player, playerBuildings ) )

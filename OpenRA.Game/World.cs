@@ -155,7 +155,10 @@ namespace OpenRA
 			frameEndActions = new List<Action<World>>();
 			foreach (var a in acts) a(this);
 
-			Minimap.Update();
+			// TODO: This doesn't even belong here -> move into a widget
+			if (LocalPlayer != null)
+				Minimap.Update();
+			
 			foreach (var player in players.Values)
 				player.Tick();
 		}

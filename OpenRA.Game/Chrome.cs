@@ -146,7 +146,8 @@ namespace OpenRA
 		public void Tick(World world)
 		{
 			if (!Game.IsStarted) return;
-
+			if (world.LocalPlayer == null) return;
+			
 			TickPaletteAnimation();
 			TickRadarAnimation();
 

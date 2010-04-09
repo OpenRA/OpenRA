@@ -185,12 +185,13 @@ namespace OpenRA
 			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 			
 			ChangeMods();
-			LoadMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			if( Settings.Replay != "" )
 				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
 			else
 				JoinLocal();
+			
+			 LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 		}
 		
 		public static string CurrentHost = "";
@@ -340,7 +341,21 @@ namespace OpenRA
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
 
 		public static bool IsStarted { get { return orderManager.GameStarted; } }
+		
+		public static void LoadShellMap(string map)
+		{
+			LoadMap(map);			
+			world.Queries = new World.AllQueries(world);
 
+			foreach (var p in world.players.Values)
+				foreach (var q in world.players.Values)
+					p.Stances[q] = ChooseInitialStance(p, q);
+						
+			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
+				gs.GameStarted(world);
+			orderManager.StartGame();
+		}
+		
 		public static void StartGame()
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);

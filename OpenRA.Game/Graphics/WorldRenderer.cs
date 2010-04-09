@@ -23,7 +23,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
-
+using System;
 namespace OpenRA.Graphics
 {
 	public class WorldRenderer
@@ -118,7 +118,7 @@ namespace OpenRA.Graphics
 			var actors = world.FindUnits(
 				new float2(bounds.Left, bounds.Top),
 				new float2(bounds.Right, bounds.Bottom));
-
+						
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
