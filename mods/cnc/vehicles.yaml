@@ -482,3 +482,4 @@ A10:
 		Ammo: 10
 	CarpetBomb:
 		Weapon: Napalm
+		Range: 3

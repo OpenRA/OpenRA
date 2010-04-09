@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Cnc
 						var a = w.CreateActor("a10", startPos, Owner);
 						a.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
 						a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+						a.traits.Get<CarpetBomb>().SetTarget(order.TargetLocation);
 
 						a.CancelActivity();
 						a.QueueActivity(new Fly(order.TargetLocation));

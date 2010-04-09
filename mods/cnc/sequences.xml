@@ -123,8 +123,11 @@
   <unit name="ionsfx">
     <sequence name="idle" start="0" length="15" />
   </unit>
-	<unit name="atomic">
-		<sequence name="up" start="0" length="*" src="atomicup" />
-		<sequence name="down" start="0" length="*" src="atomicdn" />
-	</unit>
+  <unit name="atomic">
+    <sequence name="up" start="0" length="*" src="atomicup" />
+    <sequence name="down" start="0" length="*" src="atomicdn" />
+  </unit>
+  <unit name="bomblet">
+    <sequence name="idle" start="0" length="7" />
+  </unit>
 </sequences>
