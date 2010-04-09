@@ -58,10 +58,8 @@ namespace OpenRA.Mods.Cnc
 
 						a.CancelActivity();
 						a.QueueActivity(new Fly(order.TargetLocation));
-						self.QueueActivity(new FlyOffMap { Interruptible = false });
-						self.QueueActivity(new RemoveSelf());
-
-						// todo: napalm
+						a.QueueActivity(new FlyOffMap { Interruptible = false });
+						a.QueueActivity(new RemoveSelf());
 					});
 
 				Game.controller.CancelInputMode();
