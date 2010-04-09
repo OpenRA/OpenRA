@@ -75,7 +75,7 @@ namespace OpenRA
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
 		
-		public World(string mapUid)
+		public World(Manifest manifest, string mapUid)
 		{
 			Timer.Time( "----World.ctor" );
 			
@@ -83,9 +83,14 @@ namespace OpenRA
 				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapUid));
 			
 			Map = new Map( Game.AvailableMaps[mapUid].Package );
+
+			
 			customTerrain = new ICustomTerrain[Map.MapSize.X, Map.MapSize.Y];
 			Timer.Time( "new Map: {0}" );
 			
+			Rules.LoadRules(manifest,Map);
+			Timer.Time( "load rules: {0}" );
+				
 			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
 				.FirstOrDefault(t => t.Theater == Map.Theater);
 			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);

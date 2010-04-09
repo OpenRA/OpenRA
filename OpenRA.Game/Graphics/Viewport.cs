@@ -165,6 +165,11 @@ namespace OpenRA.Graphics
 		{
 			return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + Location);
 		}
+		
+		public void Center(int2 loc)
+		{
+			scrollPosition = (Game.CellSize*loc - .5f * new float2(Width, Height)).ToInt2();
+		}
 
 		public void Center(IEnumerable<Actor> actors)
 		{

@@ -415,4 +415,5 @@ Waypoints:
 Smudges:
 
 Rules:
-
+	World:
+		DefaultShellmapScript:

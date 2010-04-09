@@ -44,8 +44,12 @@ namespace OpenRA.FileFormats
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
+		
+		// Rules overrides
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
-
+		public Dictionary<string, MiniYaml> Weapons = new Dictionary<string, MiniYaml>();
+		public Dictionary<string, MiniYaml> Voices = new Dictionary<string, MiniYaml>();
+		public Dictionary<string, MiniYaml> Terrain = new Dictionary<string, MiniYaml>();
 		// Binary map data
 		public byte TileFormat = 1;
 		public int2 MapSize;

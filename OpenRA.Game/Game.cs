@@ -135,8 +135,6 @@ namespace OpenRA
 			SheetBuilder.Initialize(renderer);
 			LoadModPackages(manifest);
 			Timer.Time( "load assemblies, packages: {0}" );
-			Rules.LoadRules(manifest);
-			Timer.Time( "load rules: {0}" );
 			Game.packageChangePending = false;
 			
 			LoadMap(manifest.ShellmapUid);
@@ -157,7 +155,7 @@ namespace OpenRA
 			
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			ChromeProvider.Initialize(manifest.Chrome);
-			world = new World(mapName);
+			world = new World(manifest,mapName);
 			Timer.Time( "world: {0}" );
 			
 			SequenceProvider.Initialize(manifest.Sequences);
@@ -169,6 +167,11 @@ namespace OpenRA
 
 			Timer.Time( "----end LoadMap" );
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
+		}
+		
+		public static void MoveViewport(int2 loc)
+		{
+			viewport.Center(loc);
 		}
 
 		internal static void Initialize(Renderer renderer, int2 clientSize, int localPlayer, Controller controller)

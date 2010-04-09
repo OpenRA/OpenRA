@@ -49,10 +49,32 @@ namespace OpenRA
 
 			TechTree = new TechTree();
 		}
-
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
 		{
 			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
+		}
+		
+		public static void LoadRules(Manifest m, Map map)
+		{
+			Log.Write("Using rules files: ");
+			foreach (var y in m.Rules)
+				Log.Write(" -- {0}", y);
+			
+			Log.Write("Using Map: {0}",map.Uid);
+
+			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
+			TerrainTypes = LoadYamlRules(m.Terrain, map.Terrain, (k, _) => new TerrainCost(k.Value))
+				.ToDictionary(kv => (TerrainType)Enum.Parse(typeof(TerrainType), kv.Key, true), kv => kv.Value);
+
+			TechTree = new TechTree();
+		}
+		
+		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Dictionary<string,MiniYaml>dict, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
+		{
+			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.Merge);
 			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
 		}
 
