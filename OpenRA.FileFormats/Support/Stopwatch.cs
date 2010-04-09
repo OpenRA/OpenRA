@@ -18,25 +18,24 @@
  */
 #endregion
 
-using Tao.Sdl;
 namespace OpenRA.Support
 {
 	public class Stopwatch
 	{
-		int start;
-		public Stopwatch()
+		System.Diagnostics.Stopwatch sw;
+		public Stopwatch ()
 		{
 			Reset();
 		}
 
 		public double ElapsedTime()
 		{
-			return (1.0/1000.0) * (double)(Sdl.SDL_GetTicks() - start);
+			return sw.Elapsed.TotalMilliseconds / 1000.0;
 		}
 
 		public void Reset()
 		{
-			start = Sdl.SDL_GetTicks();
+			sw = System.Diagnostics.Stopwatch.StartNew();
 		}
 	}
 }
