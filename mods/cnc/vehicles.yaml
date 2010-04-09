@@ -480,3 +480,5 @@ A10:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 10
+	CarpetBomb:
+		Weapon: Napalm

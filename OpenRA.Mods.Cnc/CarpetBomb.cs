@@ -1,22 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRA.Traits;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
+ * This file is part of OpenRA.
+ * 
+ *  OpenRA is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  OpenRA is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#endregion
+
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
 	class CarpetBombInfo : ITraitInfo
 	{
 		public readonly string Weapon = null;
-		public readonly int Interval = 0;
 		public readonly int Range = 0;
 
 		public object Create(Actor self) { return new CarpetBomb(self); }
 	}
 
-	class CarpetBomb : ITick
+	class CarpetBomb : ITick			// todo: maybe integrate this better with the normal weapons system?
 	{
 		int2 Target;
 		int dropDelay;
@@ -38,7 +53,8 @@ namespace OpenRA.Mods.Cnc
 
 			if (--dropDelay <= 0)
 			{
-				dropDelay = info.Interval;
+				var weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
+				dropDelay = weapon.ROF;
 
 				var args = new ProjectileArgs
 				{
@@ -48,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 					dest = self.CenterLocation.ToInt2(),
 					facing = self.traits.Get<Unit>().Facing,
 					firedBy = self,
-					weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()]
+					weapon = weapon
 				};
 
 				self.World.Add(args.weapon.Projectile.Create(args));

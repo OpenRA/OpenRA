@@ -409,12 +409,7 @@ Tomahawk:
 
 Napalm:
 	ROF: 5
-	Range: 4.5
-	Bullet:
-		Speed: 5
-		Arm: 24
-		RangeLimit: 24
-		High: yes
+	GravityBomb:
 		Image: BOMBLET
 	Warhead:
 		Spread: 8
