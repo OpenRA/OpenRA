@@ -29,7 +29,8 @@ Player:
 	AirstrikePower:
 		Image: a10icnh
 		ChargeTime: 8
-		Description: Delivers a load of napalm on your target.
+		Description: Airstrike
+		LongDesc: Delivers a load of napalm on your target.
 		Prerequisites: hq
 		TechLevel: 8
 		EndChargeSound: airredy1.aud
