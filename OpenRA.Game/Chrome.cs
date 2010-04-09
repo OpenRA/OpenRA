@@ -281,9 +281,6 @@ namespace OpenRA
 			DrawCentered("Choose Map", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			rgbaRenderer.Flush();
 
-			DrawDialogBackground(new Rectangle(r.Right - 200 - 160 / 2,
-					r.Bottom - 50 + 6, 160, 24), "dialog2");
-			
 			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
 				_ =>
 				{
@@ -328,12 +325,14 @@ namespace OpenRA
 				var map = kv.Value;
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
+				{
+					rgbaRenderer.Flush();
 					DrawDialogBackground(itemRect, "dialog2");
+				}
 
 				renderer.RegularFont.DrawText(rgbaRenderer, map.Title, new int2(r.Left + 60, y), Color.White);
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
-				
 				y += 20;
 			}
 
