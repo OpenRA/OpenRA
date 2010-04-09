@@ -26,6 +26,13 @@ Player:
 		EndChargeSound: ionredy1.aud
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
+	AirstrikePower:
+		Image: a10icnh
+		ChargeTime: 8
+		Description: Delivers a load of napalm on your target.
+		Prerequisites: hq
+		TechLevel: 8
+		EndChargeSound: airredy1.aud
 	
 World:
 	GlobalDefaults:
