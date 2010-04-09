@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new SelectTarget();
-			Sound.Play("slcttgt1.aud");
+			Sound.Play(Info.SelectTargetSound);
 		}
 
 		class SelectTarget : IOrderGenerator

@@ -450,7 +450,6 @@ ORCA:
 	LimitedAmmo:
 		Ammo: 6
 
-
 C17:
 	ParaDrop:
 		LZRange: 1
@@ -467,3 +466,17 @@ C17:
 	Cargo:
 		Passengers: 10
 	-Selectable:
+
+A10:
+	Inherits: ^Plane
+	Unit:
+		HP: 60
+		Armor: light
+		ROT: 4
+		Sight: 0
+		Speed: 25
+	Plane:
+	RenderUnit:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 10

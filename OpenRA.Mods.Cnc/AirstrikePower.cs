@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -14,6 +15,14 @@ namespace OpenRA.Mods.Cnc
 	class AirstrikePower : SupportPower, IResolveOrder
 	{
 		public AirstrikePower(Actor self, AirstrikePowerInfo info) : base(self, info) { }
+
+		protected override void OnActivate()
+		{
+			Game.controller.orderGenerator = new SelectTarget();
+			Sound.Play(Info.SelectTargetSound);
+		}
+
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
 
 		class SelectTarget : IOrderGenerator
 		{
@@ -40,7 +49,20 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (order.OrderString == "Airstrike")
 			{
-				// todo: spawn a10, have it dump napalm all over the target
+				var startPos = Owner.World.ChooseRandomEdgeCell();
+				Owner.World.AddFrameEndTask(w =>
+					{
+						var a = w.CreateActor("a10", startPos, Owner);
+						a.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
+						a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+
+						a.CancelActivity();
+						a.QueueActivity(new Fly(order.TargetLocation));
+						self.QueueActivity(new FlyOffMap { Interruptible = false });
+						self.QueueActivity(new RemoveSelf());
+
+						// todo: napalm
+					});
 
 				Game.controller.CancelInputMode();
 				FinishActivate();
