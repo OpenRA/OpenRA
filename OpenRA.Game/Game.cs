@@ -153,14 +153,20 @@ namespace OpenRA
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
 			
+			if (!Game.AvailableMaps.ContainsKey(mapName))
+				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapName));
+			
+			var map = new Map( Game.AvailableMaps[mapName].Package );
+			
+			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			ChromeProvider.Initialize(manifest.Chrome);
-			world = new World(manifest,mapName);
+			Timer.Time( "viewport, ChromeProvider: {0}" );
+			world = new World(manifest,map);
 			Timer.Time( "world: {0}" );
 			
 			SequenceProvider.Initialize(manifest.Sequences);
-			viewport = new Viewport(clientSize, Game.world.Map.TopLeft, Game.world.Map.BottomRight, renderer);
-			Timer.Time( "ChromeProv, SeqProv, viewport: {0}" );
+			Timer.Time( "ChromeProv, SeqProv: {0}" );
 
 			chrome = new Chrome(renderer, manifest);
 			Timer.Time( "chrome: {0}" );
