@@ -136,8 +136,6 @@ namespace OpenRA
 			LoadModPackages(manifest);
 			Timer.Time( "load assemblies, packages: {0}" );
 			Game.packageChangePending = false;
-			
-			LoadMap(manifest.ShellmapUid);
 		}
 		
 		public static void ChangeMap(string mapName)

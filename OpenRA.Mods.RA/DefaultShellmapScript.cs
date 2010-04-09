@@ -29,21 +29,12 @@ namespace OpenRA.Mods.RA
 		public object Create(Actor self) { return new DefaultShellmapScript(); }
 	}
 
-	class DefaultShellmapScript : ITick, ILoadWorldHook
+	class DefaultShellmapScript: ILoadWorldHook
 	{		
 		public void WorldLoaded(World w)
 		{
-			// Set the viewport location
 			Game.MoveViewport(new int2(85,65));
-		}
-		
-		// Rude hack around the multiple-creation bug:
-		// wait long enough for the transient copies to die before starting
-		int initialDelay = 20;
-		public void Tick(Actor self)
-		{
-			if (initialDelay > 0 && --initialDelay == 0)
-				Sound.PlayMusic("hell226m.aud");
+			Sound.PlayMusic("hell226m.aud");
 		}
 	}
 }
