@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -30,21 +30,25 @@ namespace OpenRA.Effects
 		public readonly int BeamRadius = 1;
 		public readonly bool UsePlayerColor = false;
 
-		public IEffect Create(ProjectileArgs args) { return null; /* todo: fix me so OBLI works again */ }
+		public IEffect Create(ProjectileArgs args) 
+		{
+			Color c = UsePlayerColor ? args.firedBy.Owner.Color : Color.Red;
+			return new LaserZap(args, BeamRadius, c);
+		}
 	}
 
 	class LaserZap : IEffect
 	{
-		readonly int2 from, to;
+		ProjectileArgs args;
 		readonly int radius;
 		int timeUntilRemove = 10; // # of frames
 		int totalTime = 10;
 		Color color;
+		bool doneDamage = false;
 		
-		public LaserZap(int2 from, int2 to, int radius, Color color)
+		public LaserZap(ProjectileArgs args, int radius, Color color)
 		{
-			this.from = from;
-			this.to = to;
+			this.args = args;
 			this.color = color;
 			this.radius = radius;
 		}
@@ -54,6 +58,12 @@ namespace OpenRA.Effects
 			if (timeUntilRemove <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 			--timeUntilRemove;
+			
+			if (!doneDamage)
+			{
+				Combat.DoImpacts(args, args.dest);
+				doneDamage = true;
+			}
 		}
 
 		public IEnumerable<Renderable> Render()
@@ -61,11 +71,11 @@ namespace OpenRA.Effects
 			int alpha = (int)((1-(float)(totalTime-timeUntilRemove)/totalTime)*255);
 			Color rc = Color.FromArgb(alpha,color);
 			
-			float2 unit = 1.0f/(from - to).Length*(from - to).ToFloat2();
+			float2 unit = 1.0f/(args.src - args.dest).Length*(args.src - args.dest).ToFloat2();
 			float2 norm = new float2(-unit.Y, unit.X);
 			
 			for (int i = -radius; i < radius; i++)
-				Game.world.WorldRenderer.lineRenderer.DrawLine(from + i * norm, to + i * norm, rc, rc);
+				Game.world.WorldRenderer.lineRenderer.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
 			
 			yield break;
 		}
