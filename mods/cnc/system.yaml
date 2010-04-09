@@ -34,6 +34,7 @@ Player:
 		Prerequisites: nuke
 		TechLevel: 8
 		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
 	
 World:
 	GlobalDefaults:
