@@ -148,6 +148,7 @@ namespace MapConverter
 			Map.MapSize.Y = MapSize;
 			Map.TopLeft = new int2 (XOffset, YOffset);
 			Map.BottomRight = new int2(XOffset+Width,YOffset+Height);
+			Map.Selectable = true;
 			
 			if (INIFormat == 3) // RA map
 			{

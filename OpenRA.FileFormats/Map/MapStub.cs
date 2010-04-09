@@ -27,9 +27,11 @@ namespace OpenRA.FileFormats
 	public class MapStub
 	{
 		public IFolder Package;
-
+		
 		// Yaml map data
 		public string Uid;
+		public bool Selectable;
+
 		public string Title;
 		public string Description;
 		public string Author;
@@ -43,7 +45,7 @@ namespace OpenRA.FileFormats
 		public Lazy<Bitmap> Preview;
 
 		static List<string> Fields = new List<string>() {
-			"Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
+			"Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
 
 		public MapStub() { }

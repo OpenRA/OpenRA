@@ -326,6 +326,9 @@ namespace OpenRA
 			foreach (var kv in Game.AvailableMaps)
 			{
 				var map = kv.Value;
+				if (!map.Selectable)
+					continue;
+				
 				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
 				if (map == currentMap)
 				{

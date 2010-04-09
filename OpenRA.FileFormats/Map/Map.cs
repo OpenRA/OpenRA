@@ -33,6 +33,7 @@ namespace OpenRA.FileFormats
 		public string Uid;
 
 		// Yaml map data
+		public bool Selectable;
 		public int MapFormat = 1;
 		public string Title;
 		public string Description;
@@ -65,7 +66,7 @@ namespace OpenRA.FileFormats
 		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
 
 		static List<string> SimpleFields = new List<string>() {
-			"MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
+			"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
 		};
 
 		public Map() { }
