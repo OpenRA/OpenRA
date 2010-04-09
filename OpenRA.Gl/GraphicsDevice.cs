@@ -24,9 +24,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 using Tao.OpenGl;
-using OpenRA.FileFormats.Graphics;
 using Tao.Sdl;
 
 [assembly: Renderer( typeof( OpenRA.GlRenderer.GraphicsDevice ))]
