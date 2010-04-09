@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 
 				w.Add(new SatelliteLaunch(launchSite));
 				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25, 
-					() => Owner.Shroud.HasGPS = true));
+					() => Owner.Shroud.Disabled = true));
 			});
 
 			FinishActivate();

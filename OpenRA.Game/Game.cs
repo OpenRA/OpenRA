@@ -151,7 +151,7 @@ namespace OpenRA
 		public static void LoadMap(string mapName)
 		{
 			Timer.Time( "----LoadMap" );
-			
+			SheetBuilder.Initialize(renderer);
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
 			

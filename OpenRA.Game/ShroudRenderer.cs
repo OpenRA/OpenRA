@@ -32,7 +32,7 @@ namespace OpenRA
 		Sprite[,] sprites, fogSprites;
 		
 		bool dirty = true;
-		bool hasGPS = false;
+		bool disabled = false;
 		Player owner;
 		Map map;
 
@@ -50,14 +50,19 @@ namespace OpenRA
 			shroud.Dirty += () => dirty = true;
 		}
 
-		public bool HasGPS
+		public bool Disabled
 		{
-			get { return hasGPS; }
-			set { hasGPS = value; dirty = true;}
+			get { return disabled; }
+			set { disabled = value; dirty = true;}
 		}
 
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
-		bool IsExplored(int x, int y) { return shroud.exploredCells[x,y]; }
+		bool IsExplored(int x, int y)
+		{
+			if (disabled)
+				return true;
+			return shroud.exploredCells[x,y];
+		}
 
 		public bool DisplayOnRadar(int x, int y) { return IsExplored(x, y); }
 
@@ -132,6 +137,9 @@ namespace OpenRA
 
 		internal void Draw(SpriteRenderer r)
 		{
+			if (disabled)
+				return;
+			
 			if (dirty)
 			{
 				dirty = false;

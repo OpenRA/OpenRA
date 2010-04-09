@@ -17,7 +17,7 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-
+using System;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
@@ -47,6 +47,8 @@ namespace OpenRA.Graphics
 			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
 			ushort[] indices = new ushort[6 * map.Height * map.Width];
 
+			terrainSheet = tileMapping[map.MapTiles[map.TopLeft.X, map.TopLeft.Y]].sheet;
+
 			int nv = 0;
 			int ni = 0;
 			for( int j = map.TopLeft.Y ; j < map.BottomRight.Y; j++ )
@@ -58,9 +60,10 @@ namespace OpenRA.Graphics
 					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
+					
+					if (tileMapping[map.MapTiles[i, j]].sheet != terrainSheet)
+						throw new InvalidOperationException("Terrain sprites span multiple sheets");
 				}
-
-			terrainSheet = tileMapping[map.MapTiles[map.TopLeft.X, map.TopLeft.Y]].sheet;
 
 			vertexBuffer = renderer.Device.CreateVertexBuffer( vertices.Length );
 			vertexBuffer.SetData( vertices );
@@ -85,7 +88,7 @@ namespace OpenRA.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-			if (!Game.world.LocalPlayer.Shroud.HasGPS && Game.world.LocalPlayer.Shroud.bounds.HasValue)
+			if (!Game.world.LocalPlayer.Shroud.Disabled && Game.world.LocalPlayer.Shroud.bounds.HasValue)
 			{
 				var r = Game.world.LocalPlayer.Shroud.bounds.Value;
 				if (firstRow < r.Top - map.YOffset)

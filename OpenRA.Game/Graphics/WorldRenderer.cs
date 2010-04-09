@@ -84,7 +84,7 @@ namespace OpenRA.Graphics
 
 		Rectangle GetBoundsRect()
 		{
-			if (!world.LocalPlayer.Shroud.HasGPS && world.LocalPlayer.Shroud.bounds.HasValue)
+			if (!world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
 			{
 				var r = world.LocalPlayer.Shroud.bounds.Value;
 
