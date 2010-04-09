@@ -49,6 +49,7 @@
 		Dimensions: 1,1
 		Footprint: x
 	RenderBuilding:
+	EmitInfantryOnSell:
 
 ^Wall:
 	Category: Building

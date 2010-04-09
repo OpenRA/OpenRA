@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 
 		static int2? FindAdjacentTile(Actor self, bool waterBound)
 		{
-			var tiles = Footprint.Tiles(self, self.traits.Get<Traits.Building>());
+			var tiles = Footprint.Tiles(self);
 			var min = tiles.Aggregate(int2.Min) - new int2(1, 1);
 			var max = tiles.Aggregate(int2.Max) + new int2(1, 1);
 

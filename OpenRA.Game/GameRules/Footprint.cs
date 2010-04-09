@@ -42,7 +42,7 @@ namespace OpenRA.GameRules
 			return TilesWhere( name, dim, footprint.ToArray(), a => a != '_' ).Select( t => t + topLeft );
 		}
 
-		public static IEnumerable<int2> Tiles(Actor a, Traits.Building building)
+		public static IEnumerable<int2> Tiles(Actor a)
 		{
 			return Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location );
 		}
