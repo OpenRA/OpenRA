@@ -23,6 +23,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.RA.SupportPowers
 {
@@ -39,7 +40,8 @@ namespace OpenRA.Mods.RA.SupportPowers
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.controller.orderGenerator =
+				new GenericSelectTargetWithBuilding<NukeSilo>(Owner.PlayerActor, "NuclearMissile", "nuke");
 			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 
@@ -66,38 +68,6 @@ namespace OpenRA.Mods.RA.SupportPowers
 				Game.controller.CancelInputMode();
 				FinishActivate();
 			}
-		}
-
-		class SelectTarget : IOrderGenerator
-		{
-			public SelectTarget() {	}
-
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Right)
-					Game.controller.CancelInputMode();
-
-				return OrderInner(world, xy, mi);
-			}
-
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left)
-					yield return new Order("NuclearMissile", world.LocalPlayer.PlayerActor, xy);
-			}
-
-			public void Tick(World world)
-			{
-				var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<NukeSilo>()
-					.Any();
-
-				if (!hasStructure)
-					Game.controller.CancelInputMode();
-			}
-
-			public void Render(World world) { }
-			public string GetCursor(World world, int2 xy, MouseInput mi) { return "nuke"; }
 		}
 	}
 
