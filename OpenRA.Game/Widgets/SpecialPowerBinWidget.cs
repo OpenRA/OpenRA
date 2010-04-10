@@ -107,6 +107,29 @@ namespace OpenRA.Widgets
 				if (sp.IsAvailable)
 				{
 					var drawPos = new float2(Bounds.X + 5, y);
+					var rect = new Rectangle(Bounds.X + 5, y, 64, 48);
+
+					if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+					{
+						var pos = drawPos.ToInt2();
+						var tooltipBounds = new Rectangle(pos.X-3,pos.Y-3,350,54);
+						WidgetUtils.DrawPanel("dialog4", tooltipBounds, null);
+						
+						pos += new int2(70, 5);
+						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.Description, pos, Color.White);
+			
+						var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
+						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, timer, drawPos.ToInt2() + new int2((int)tooltipBounds.Width - Game.chrome.renderer.BoldFont.Measure(timer).X - 10, 0), Color.White);
+			
+						if (sp.Info.LongDesc != null)
+						{
+							pos += new int2(0, 25);
+							Game.chrome.renderer.RegularFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+						}
+			
+						Game.chrome.rgbaRenderer.Flush();
+					}
+					
 					WidgetUtils.DrawSHP(image, drawPos);
 
 					clock.PlayFetchIndex("idle",
@@ -116,7 +139,6 @@ namespace OpenRA.Widgets
 
 					WidgetUtils.DrawSHP(clock.Image, drawPos);
 
-					var rect = new Rectangle(Bounds.X + 5, y, 64, 48);
 					if (sp.IsReady)
 					{
 						ready.Play("ready");
@@ -124,21 +146,11 @@ namespace OpenRA.Widgets
 					}
 					
 					buttons.Add(Pair.New(rect,HandleSupportPower(sp)));
-					
-					if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
-					{
-						tooltipItem = sp;
-						tooltipPos = drawPos.ToInt2() + new int2(72, 0);
-					}
-					
+										
 					y += 51;
 				}
 			}
 			Game.chrome.shpRenderer.Flush();
-			
-			if (tooltipItem != null)
-				DrawSupportPowerTooltip(world, tooltipItem, tooltipPos);
-			
 			base.Draw(world);
 		}
 		
@@ -153,26 +165,6 @@ namespace OpenRA.Widgets
 			var minutes = seconds / 60;
 
 			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
-		}
-
-		void DrawSupportPowerTooltip(World world, SupportPower sp, int2 pos)
-		{
-			var tooltipBounds = new Rectangle(pos.X,pos.Y,400,100);
-			WidgetUtils.DrawPanel("dialog4", tooltipBounds, null);
-			
-			pos += new int2(5, 5);
-			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.Description, pos, Color.White);
-
-			var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
-			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, timer, pos + new int2((int)tooltipBounds.Width - Game.chrome.renderer.BoldFont.Measure(timer).X - 10, 0), Color.White);
-
-			if (sp.Info.LongDesc != null)
-			{
-				pos += new int2(0, 25);
-				Game.chrome.renderer.RegularFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
-			}
-
-			Game.chrome.rgbaRenderer.Flush();
 		}
 	}
 }

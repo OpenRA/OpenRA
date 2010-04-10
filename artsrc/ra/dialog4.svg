@@ -14,7 +14,10 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="dialog4.svg">
+   sodipodi:docname="dialog4.svg"
+   inkscape:export-filename="/Users/paul/src/OpenRA/mods/ra/dialog4.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs2818">
     <inkscape:perspective
@@ -68,7 +71,7 @@
      id="layer1"
      transform="translate(0,-988.36218)">
     <rect
-       style="fill:#000000;fill-opacity:0.75102042;stroke:none"
+       style="fill:#000000;fill-opacity:0.62448978;stroke:none"
        id="rect2826"
        width="64"
        height="64"
