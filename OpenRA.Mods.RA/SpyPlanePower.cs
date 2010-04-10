@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "spypln1.aud"); }
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
 			Sound.Play("slcttgt1.aud");
 		}
 
@@ -68,25 +69,6 @@ namespace OpenRA.Mods.RA
 				plane.QueueActivity(new FlyOffMap { Interruptible = false });
 				plane.QueueActivity(new RemoveSelf());
 			}
-		}
-
-		class SelectTarget : IOrderGenerator
-		{
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Right)
-				{
-					Game.controller.CancelInputMode();
-					yield break;
-				}
-
-				yield return new Order("SpyPlane", world.LocalPlayer.PlayerActor, xy);
-			}
-
-			public void Tick(World world) {}
-			public void Render(World world) {}
-
-			public string GetCursor(World world, int2 xy, MouseInput mi) { return "ability"; }
 		}
 	}
 }
