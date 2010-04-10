@@ -218,7 +218,7 @@ namespace OpenRA
 			{
 				int state;
 				Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
-				if (state != Al.AL_PLAYING || state != Al.AL_PAUSED)
+				if (state != Al.AL_PLAYING && state != Al.AL_PAUSED)
 					freeSources.Add(key);
 			}
 
