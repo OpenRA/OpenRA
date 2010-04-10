@@ -1,9 +1,27 @@
-﻿using System;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
+ * This file is part of OpenRA.
+ * 
+ *  OpenRA is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  OpenRA is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#endregion
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -18,32 +36,11 @@ namespace OpenRA.Mods.Cnc
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, "Airstrike", "ability");
 			Sound.Play(Info.SelectTargetSound);
 		}
 
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
-
-		class SelectTarget : IOrderGenerator
-		{
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Right)
-					Game.controller.CancelInputMode();
-				return OrderInner(world, xy, mi);
-			}
-
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left)
-					yield return new Order("Airstrike", world.LocalPlayer.PlayerActor, xy);
-			}
-
-			public void Tick(World world) { }
-			public void Render(World world) { }
-
-			public string GetCursor(World world, int2 xy, MouseInput mi) { return "ability"; }
-		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
