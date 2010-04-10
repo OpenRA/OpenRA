@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Cnc
 			if (order.OrderString == "Airstrike")
 			{
 				var startPos = Owner.World.ChooseRandomEdgeCell();
+
 				Owner.World.AddFrameEndTask(w =>
 					{
 						var a = w.CreateActor("a10", startPos, Owner);
@@ -60,7 +61,9 @@ namespace OpenRA.Mods.Cnc
 						a.QueueActivity(new RemoveSelf());
 					});
 
-				Game.controller.CancelInputMode();
+				if (Owner == Owner.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+
 				FinishActivate();
 			}
 		}

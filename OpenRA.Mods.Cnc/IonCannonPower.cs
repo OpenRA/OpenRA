@@ -45,7 +45,9 @@ namespace OpenRA.Mods.Cnc
 						w.Add(new IonCannon(self, w, order.TargetLocation));
 					});
 
-				Game.controller.CancelInputMode();
+				if (Owner == Owner.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+
 				FinishActivate();
 			}
 		}
