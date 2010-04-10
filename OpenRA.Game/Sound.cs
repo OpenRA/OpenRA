@@ -32,11 +32,14 @@ namespace OpenRA
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;
 		static ISound music;
+		
+		static bool paused;
+		static bool stopped;
 
 		//TODO: read these from somewhere?
 		static float soundVolume;
 		static float musicVolume;
-	//	static bool paused;
+
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -51,6 +54,8 @@ namespace OpenRA
 			music = null;
 			soundVolume = soundEngine.Volume;
 			musicVolume = soundEngine.Volume;
+			paused = false;
+			stopped = false;
 		}
 
 		public static void Play(string name)
@@ -71,16 +76,33 @@ namespace OpenRA
 
 		public static void PlayMusic(string name)
 		{
+			if (name == "" || name == null)
+				return;
+			
 			var sound = sounds[name];
 			music = soundEngine.Play2D(sound, true);
 			music.Volume = musicVolume;
 		}
 
-		//public static bool Paused
-		//{
-		//    get { return paused; }
-		//    set { paused = value; soundEngine.SetAllSoundsPaused(paused); }
-		//}
+		public static bool MusicPaused
+		{
+		    get { return paused; }
+		    set { 
+				paused = value; 
+				if (music != null)
+					soundEngine.PauseSound(music, paused);
+			}
+		}
+		
+		public static bool MusicStopped
+		{
+		    get { return stopped; }
+		    set { 
+				stopped = value; 
+				if (music != null && stopped)
+					soundEngine.StopSound(music);
+			}
+		}
 
 		public static float Volume
 		{
@@ -137,6 +159,10 @@ namespace OpenRA
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop);
 		float Volume { get; set; }
+		void PauseSound(ISound sound, bool paused);
+		void StopSound(ISound sound);
+		void SetAllSoundsPaused(bool paused);
+		void StopAllSounds();
 	}
 
 	interface ISoundSource {}
@@ -192,7 +218,7 @@ namespace OpenRA
 			{
 				int state;
 				Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
-				if (state != Al.AL_PLAYING)
+				if (state != Al.AL_PLAYING || state != Al.AL_PAUSED)
 					freeSources.Add(key);
 			}
 
@@ -223,6 +249,52 @@ namespace OpenRA
 			get { return volume; }
 			set { Al.alListenerf(Al.AL_GAIN, volume = value); }
 		}
+		
+		public void PauseSound(ISound sound, bool paused)
+		{
+			int key = ((OpenAlSound) sound).source;
+			int state;
+			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
+			if (state == Al.AL_PLAYING && paused)
+				Al.alSourcePause(key);
+			else if (state == Al.AL_PAUSED && !paused)
+				Al.alSourcePlay(key);
+		}
+		
+		public void SetAllSoundsPaused(bool paused)
+		{	
+			foreach (int key in sourcePool.Keys)
+			{
+				int state;
+				Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
+				if (state == Al.AL_PLAYING && paused)
+					Al.alSourcePause(key);
+				else if (state == Al.AL_PAUSED && !paused)
+					Al.alSourcePlay(key);
+					
+			}
+		}
+		
+		public void StopSound(ISound sound)
+		{
+			int key = ((OpenAlSound) sound).source;
+			int state;
+			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
+			if (state == Al.AL_PLAYING || state == Al.AL_PAUSED)
+				Al.alSourceStop(key);
+		}
+		
+		public void StopAllSounds()
+		{
+			foreach (int key in sourcePool.Keys)
+			{
+				int state;
+				Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
+				if (state == Al.AL_PLAYING || state == Al.AL_PAUSED)
+					Al.alSourceStop(key);
+			}
+		}
+		
 	}
 
 	class OpenAlSoundSource : ISoundSource
