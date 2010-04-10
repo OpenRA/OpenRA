@@ -28,10 +28,10 @@ Player:
 		SelectTargetSound: select1.aud
 	AirstrikePower:
 		Image: a10icnh
-		ChargeTime: .2
+		ChargeTime: 8
 		Description: Airstrike
 		LongDesc: Delivers a load of napalm on your target.
-		Prerequisites: nuke
+		Prerequisites: hq
 		TechLevel: 8
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
