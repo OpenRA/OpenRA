@@ -35,11 +35,13 @@ namespace OpenRA.Mods.RA
 	{
 		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
 
+		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
+
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = 
 				new GenericSelectTarget( Owner.PlayerActor, "ParatroopersActivate", "ability" );
-			Sound.Play(Info.SelectTargetSound);
+			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
