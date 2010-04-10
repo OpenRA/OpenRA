@@ -271,12 +271,14 @@ namespace OpenRA
 				{
 					Game.IssueOrder(Order.Chat("/map " + currentMap.Uid));
 					showMapChooser = false;
+					mapPreviewDirty = true;
 				});
 
 			AddUiButton(new int2(r.Right - 200, r.Bottom - 40), "Cancel",
 				_ =>
 				{
 					showMapChooser = false;
+					mapPreviewDirty = true;
 				});
 			
 			if (mapPreviewDirty)
@@ -320,6 +322,7 @@ namespace OpenRA
 				}
 
 				renderer.RegularFont.DrawText(rgbaRenderer, map.Title, new int2(r.Left + 60, y), Color.White);
+				rgbaRenderer.Flush();
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
 				y += 20;
@@ -420,6 +423,7 @@ namespace OpenRA
 			rgbaRenderer.Flush();
 		}
 		
+		string lastMap = "";
 		public void DrawLobby()
 		{
 			buttons.Clear();
@@ -429,6 +433,13 @@ namespace OpenRA
 			{
 				DrawMapChooser();
 				return;
+			}
+			
+			// HACK HACK HACK
+			if (lastMap != Game.LobbyInfo.GlobalSettings.Map)
+			{
+				mapPreviewDirty = true;
+				lastMap = Game.LobbyInfo.GlobalSettings.Map;
 			}
 			
 			var w = 800;
