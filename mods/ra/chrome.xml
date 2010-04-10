@@ -155,15 +155,15 @@
 		<image name="background" x="5" y="5" width="52" height="52" />
 	</collection>
 	<collection name="dialog" src="dialog.png">
-		<image name="background" x="0" y="0" width="624" height="384" />
-		<image name="border-r" x="624" y="0" width="14" height="200" />
-		<image name="border-l" x="638" y="0" width="14" height="200" />
-		<image name="border-b" x="46" y="399" width="320" height="16" />
-		<image name="border-t" x="46" y="384" width="320" height="16" />
-		<image name="corner-tl" x="0" y="384" width="23" height="24" />
-		<image name="corner-tr" x="23" y="384" width="23" height="24" />
-		<image name="corner-bl" x="0" y="407" width="23" height="24" />
-		<image name="corner-br" x="23" y="407" width="23" height="24" />
+		<image name="background" x="0" y="0" width="480" height="480" />
+		<image name="border-r" x="489" y="0" width="9" height="192" />
+		<image name="border-l" x="480" y="0" width="9" height="192" />
+		<image name="border-b" x="0" y="489" width="191" height="9" />
+		<image name="border-t" x="0" y="480" width="191" height="9" />
+		<image name="corner-tl" x="191" y="480" width="9" height="9" />
+		<image name="corner-tr" x="200" y="480" width="9" height="9" />
+		<image name="corner-bl" x="191" y="489" width="9" height="9" />
+		<image name="corner-br" x="200" y="489" width="9" height="9" />
 	</collection>
 	<collection name="spawnpoints" src="spawnpoints.png">
 		<image name="unowned" x="16" y="0" width="16" height="16" />
