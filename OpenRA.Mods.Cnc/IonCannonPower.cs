@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Traits;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -33,36 +34,6 @@ namespace OpenRA.Mods.Cnc
 	class IonCannonPower : SupportPower, IResolveOrder
 	{
 		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
-
-		class SelectTarget : IOrderGenerator
-		{
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Right)
-					Game.controller.CancelInputMode();
-				return OrderInner(world, xy, mi);
-			}
-
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left)
-					yield return new Order("IonCannon", world.LocalPlayer.PlayerActor, xy);
-			}
-
-			public void Tick(World world)
-			{
-				var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<IonControl>()
-					.Any();
-
-				if (!hasStructure)
-					Game.controller.CancelInputMode();
-			}
-
-			public void Render(World world) { }
-
-			public string GetCursor(World world, int2 xy, MouseInput mi) { return "ability"; }
-		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -84,7 +55,8 @@ namespace OpenRA.Mods.Cnc
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.controller.orderGenerator =
+				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
 			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 	}

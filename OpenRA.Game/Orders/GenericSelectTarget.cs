@@ -19,6 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Orders
 {
@@ -48,9 +49,28 @@ namespace OpenRA.Orders
 				yield return new Order(order, subject, xy);
 		}
 
-		public void Tick(World world) { }
+		public virtual void Tick(World world) { }
 		public void Render(World world) { }
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return cursor; }
 	}
+
+	// variant that requires a tag trait (T) to be present on some actor owned
+	// by the activating player
+	public class GenericSelectTargetWithBuilding<T> : GenericSelectTarget
+	{
+		public GenericSelectTargetWithBuilding(Actor subject, string order, string cursor)
+			: base(subject, order, cursor) { }
+
+		public override void Tick(World world)
+		{
+			var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
+					.WithTrait<T>()
+					.Any();
+
+			if (!hasStructure)
+				Game.controller.CancelInputMode();
+		}
+	}
+
 }
