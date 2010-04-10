@@ -288,15 +288,16 @@ namespace OpenRA
 				mapChooserSprite = new Sprite(mapChooserSheet, new Rectangle(0,0,currentMap.Width, currentMap.Height), TextureChannel.Alpha);
 				mapPreviewDirty = false;
 			}
-			
+			var mapBackground = new Rectangle(r.Right - 284, r.Top + 26, 264, 264);
 			var mapContainer = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-			var mapRect = currentMap.PreviewBounds(new Rectangle(mapContainer.X+4,mapContainer.Y+4,mapContainer.Width-8,mapContainer.Height-8));
+			var mapRect = currentMap.PreviewBounds(new Rectangle(mapContainer.X,mapContainer.Y,mapContainer.Width,mapContainer.Height));
 			
-			DrawDialogBackground(mapContainer, "dialog2");
+			DrawDialogBackground(mapBackground, "dialog3");
 			rgbaRenderer.DrawSprite(mapChooserSprite, 
 				new float2(mapRect.Location), 
 				"chrome", 
 				new float2(mapRect.Size));
+			DrawSpawnPoints(currentMap,mapContainer);
 			rgbaRenderer.Flush();
 			
 			var y = r.Top + 50;
@@ -391,7 +392,34 @@ namespace OpenRA
 		}
 
 		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
+		public void DrawSpawnPoints(MapStub map, Rectangle container)
+		{
+			var points = map.Waypoints;
+			//	.Select( (sp,i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault( 
+			//		c => c.SpawnPoint == i + 1 ) ))
+			//	.ToList();
+			
+			foreach (var p in points)
+			{
+				var pos = map.ConvertToPreview(p.Value,container);
 
+				//if (p.Second == null)
+					rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, "spawnpoints", "unowned"), pos, "chrome");
+				//else
+				//{
+				//	lineRenderer.FillRect(new RectangleF(
+				//		Game.viewport.Location.X + pos.X + 2,
+				//		Game.viewport.Location.Y + pos.Y + 2,
+				//		12, 12), Player.PlayerColors[ p.Second.PaletteIndex % Player.PlayerColors.Count() ].c);
+				//
+				//	rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
+				//}
+			}
+
+			lineRenderer.Flush();
+			rgbaRenderer.Flush();
+		}
+		
 		public void DrawLobby()
 		{
 			buttons.Clear();
@@ -409,16 +437,32 @@ namespace OpenRA
 			DrawDialogBackground(r, "dialog");
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			rgbaRenderer.Flush();
-
-			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog3");
 			
-			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
-			
-			/*
-			world.Minimap.Update();
-			world.Minimap.Draw(minimapRect, true);
-			world.Minimap.DrawSpawnPoints(minimapRect);
-			*/
+			if (Game.LobbyInfo.GlobalSettings.Map != null)
+			{
+				var mapBackground = new Rectangle(r.Right - 268, r.Top + 39, 252, 252);
+				var mapContainer = new Rectangle(r.Right - 264, r.Top + 43, 244, 244);
+				var mapRect = Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].PreviewBounds(new Rectangle(mapContainer.X,mapContainer.Y,mapContainer.Width,mapContainer.Height));
+				DrawDialogBackground(mapBackground,"dialog3");
+				
+				if (mapPreviewDirty)
+				{
+					if (mapChooserSheet == null || mapChooserSheet.Size.Width != Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Width || mapChooserSheet.Size.Height != Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Height)
+						mapChooserSheet = new Sheet(renderer, new Size(Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Width, Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Height));
+					
+					mapChooserSheet.Texture.SetData(Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Preview.Value);
+					mapChooserSprite = new Sprite(mapChooserSheet, new Rectangle(0,0,Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Width, Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map].Height), TextureChannel.Alpha);
+					mapPreviewDirty = false;
+				}
+				
+				rgbaRenderer.DrawSprite(mapChooserSprite, 
+					new float2(mapRect.Location), 
+					"chrome", 
+					new float2(mapRect.Size));
+					
+				DrawSpawnPoints(Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map],mapContainer);
+				rgbaRenderer.Flush();
+				}
 			
 			if (Game.IsHost)
 			{
@@ -426,7 +470,7 @@ namespace OpenRA
 				_ =>
 				{
 					showMapChooser = true;					
-					currentMap = Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map.ToLowerInvariant()];
+					currentMap = Game.AvailableMaps[Game.LobbyInfo.GlobalSettings.Map];
 					mapPreviewDirty = true;
 				});
 			}

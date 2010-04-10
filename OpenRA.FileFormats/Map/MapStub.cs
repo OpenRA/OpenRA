@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 
 namespace OpenRA.FileFormats
@@ -37,6 +38,7 @@ namespace OpenRA.FileFormats
 		public string Author;
 		public int PlayerCount;
 		public string Tileset;
+		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 
 		public int2 TopLeft;
 		public int2 BottomRight;
@@ -55,14 +57,32 @@ namespace OpenRA.FileFormats
 			Package = package;
 			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
 			FieldLoader.LoadFields(this, yaml, Fields);
-
+			
+			// Waypoints
+			foreach (var wp in yaml["Waypoints"].Nodes)
+			{
+				string[] loc = wp.Value.Value.Split(',');
+				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
+			}
+			
 			Preview = Lazy.New(
 				() => { return new Bitmap(Package.GetContent("preview.png")); }
 			);
 
 			Uid = Package.GetContent("map.uid").ReadAllText();
 		}
+		
+		public int2 ConvertToPreview(int2 point, Rectangle container)
+		{
+			float scale = Math.Min(container.Width * 1.0f / Width, container.Height * 1.0f / Height);
 
+			var size = Math.Max(Width, Height);
+			var dw = (int)(scale * (size - Width)) / 2;
+			var dh = (int)(scale * (size - Height)) / 2;
+
+			return new int2(container.X + dw + (int)(scale*(point.X - TopLeft.X)) , container.Y + dh + (int)(scale*(point.Y - TopLeft.Y)));
+		}
+		
 		public Rectangle PreviewBounds(Rectangle container)
 		{
 			float scale = Math.Min(container.Width * 1.0f / Width, container.Height * 1.0f / Height);
