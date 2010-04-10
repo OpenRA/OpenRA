@@ -12,6 +12,7 @@ Player:
 		Prerequisites: ATEK
 		TechLevel: 12
 		RevealDelay: 15
+		LaunchSound: satlnch1.aud
 	ChronoshiftPower:
 		Image: warpicon
 		ChargeTime: 7

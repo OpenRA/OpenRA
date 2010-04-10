@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 			Owner.World.AddFrameEndTask(w =>
 			{
-				Sound.PlayToPlayer(Owner, "satlnch1.aud");
+				Sound.PlayToPlayer(Owner, Info.LaunchSound);
 
 				w.Add(new SatelliteLaunch(launchSite));
 				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25, 

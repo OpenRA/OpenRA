@@ -18,11 +18,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Cnc.Effects;
-using OpenRA.Traits;
 using OpenRA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
