@@ -159,18 +159,18 @@
 		<image name="owned" x="0" y="0" width="16" height="16" />
 	</collection>
 	<collection name="sell-button" src="buttons.png">
-		<image name="normal" x="0" y="0" width="33" height="28" />
-		<image name="pressed" x="33" y="0" width="33" height="28" />
-		<image name="disabled" x="66" y="0" width="33" height="28" />
+		<image name="normal" x="0" y="0" width="34" height="28" />
+		<image name="pressed" x="34" y="0" width="34" height="28" />
+		<image name="disabled" x="68" y="0" width="34" height="28" />
 	</collection>
 	<collection name="repair-button" src="buttons.png">
-		<image name="normal" x="0" y="28" width="33" height="28" />
-		<image name="pressed" x="33" y="28" width="33" height="28" />
-		<image name="disabled" x="66" y="28" width="33" height="28" />
+		<image name="normal" x="0" y="28" width="34" height="28" />
+		<image name="pressed" x="34" y="28" width="34" height="28" />
+		<image name="disabled" x="68" y="28" width="34" height="28" />
 	</collection>
 	<collection name="power-button" src="buttons.png">
-		<image name="normal" x="0" y="54" width="33" height="28" />
-		<image name="pressed" x="33" y="54" width="33" height="28" />
-		<image name="disabled" x="66" y="54" width="33" height="28" />
+		<image name="normal" x="0" y="56" width="34" height="28" />
+		<image name="pressed" x="34" y="56" width="34" height="28" />
+		<image name="disabled" x="68" y="56" width="34" height="28" />
 	</collection>
 </chrome>

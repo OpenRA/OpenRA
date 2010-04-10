@@ -121,7 +121,29 @@
 		<image name="soviet-Plane" x="134" y="160" width="27" height="41" />
 		<image name="soviet-Ship" x="134" y="200" width="27" height="41" />
 	</collection>
-	<collection name="dialog2" src="widget-panel.png">
+	<collection name="dialog2" src="dialog2.png">
+		<image name="background" x="1" y="1" width="126" height="126" />
+		<image name="border-r" x="127" y="1" width="1" height="126" />
+		<image name="border-l" x="0" y="1" width="1" height="126" />
+		<image name="border-b" x="1" y="127" width="126" height="1" />
+		<image name="border-t" x="1" y="0" width="126" height="1" />
+		<image name="corner-tl" x="0" y="0" width="1" height="1" />
+		<image name="corner-tr" x="82" y="0" width="1" height="1" />
+		<image name="corner-bl" x="0" y="82" width="1" height="1" />
+		<image name="corner-br" x="82" y="82" width="1" height="1" />
+	</collection>
+	<collection name="dialog3" src="dialog3.png">
+		<image name="background" x="1" y="1" width="126" height="126" />
+		<image name="border-r" x="127" y="1" width="1" height="126" />
+		<image name="border-l" x="0" y="1" width="1" height="126" />
+		<image name="border-b" x="1" y="127" width="126" height="1" />
+		<image name="border-t" x="1" y="0" width="126" height="1" />
+		<image name="corner-tl" x="0" y="0" width="1" height="1" />
+		<image name="corner-tr" x="82" y="0" width="1" height="1" />
+		<image name="corner-bl" x="0" y="82" width="1" height="1" />
+		<image name="corner-br" x="82" y="82" width="1" height="1" />
+	</collection>
+	<collection name="dialog2-old" src="widget-panel.png">
 		<image name="border-t" x="4" y="0" width="248" height="4" />
 		<image name="border-b" x="4" y="252" width="248" height="4" />
 		<image name="border-l" x="0" y="4" width="4" height="248" />
@@ -132,7 +154,7 @@
 		<image name="corner-br" x="252" y="252" width="4" height="4" />
 		<image name="background" x="4" y="4" width="248" height="248" />
 	</collection>
-	<collection name="dialog3" src="widget-panel.png">
+	<collection name="dialog3-old" src="widget-panel.png">
 		<image name="border-t" x="4" y="0" width="248" height="4" />
 		<image name="border-b" x="4" y="252" width="248" height="4" />
 		<image name="border-l" x="0" y="4" width="4" height="248" />
@@ -169,19 +191,19 @@
 		<image name="unowned" x="16" y="0" width="16" height="16" />
 		<image name="owned" x="0" y="0" width="16" height="16" />
 	</collection>
-	<collection name="sell-button" src="dialog.png">
-		<image name="normal" x="0" y="448" width="33" height="28" />
-		<image name="pressed" x="33" y="448" width="33" height="28" />
-		<image name="disabled" x="66" y="448" width="33" height="28" />
+	<collection name="sell-button" src="buttons.png">
+		<image name="normal" x="0" y="0" width="34" height="28" />
+		<image name="pressed" x="34" y="0" width="34" height="28" />
+		<image name="disabled" x="68" y="0" width="34" height="28" />
 	</collection>
-	<collection name="repair-button" src="dialog.png">
-		<image name="normal" x="0" y="476" width="33" height="28" />
-		<image name="pressed" x="33" y="476" width="33" height="28" />
-		<image name="disabled" x="66" y="476" width="33" height="28" />
+	<collection name="repair-button" src="buttons.png">
+		<image name="normal" x="0" y="28" width="34" height="28" />
+		<image name="pressed" x="34" y="28" width="34" height="28" />
+		<image name="disabled" x="68" y="28" width="34" height="28" />
 	</collection>
-	<collection name="power-button" src="dialog.png">
-		<image name="normal" x="0" y="504" width="33" height="28" />
-		<image name="pressed" x="33" y="504" width="33" height="28" />
-		<image name="disabled" x="66" y="504" width="33" height="28" />
+	<collection name="power-button" src="buttons.png">
+		<image name="normal" x="0" y="56" width="34" height="28" />
+		<image name="pressed" x="34" y="56" width="34" height="28" />
+		<image name="disabled" x="68" y="56" width="34" height="28" />
 	</collection>
 </chrome>

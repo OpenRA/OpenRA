@@ -410,7 +410,7 @@ namespace OpenRA
 			DrawCentered("OpenRA Multiplayer Lobby", new int2(r.Left + w / 2, r.Top + 20), Color.White);
 			rgbaRenderer.Flush();
 
-			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog2");
+			DrawDialogBackground(new Rectangle(r.Right - 264, r.Top + 43, 244, 244),"dialog3");
 			
 			var minimapRect = new Rectangle(r.Right - 262, r.Top + 45, 240, 240);
 			
@@ -451,21 +451,21 @@ namespace OpenRA
 				{
 					// todo: name editing
 					var nameRect = new Rectangle(r.Left + 30, y - 2, 95, 22);
-					DrawDialogBackground(nameRect, "dialog2");
+					DrawDialogBackground(nameRect, "dialog3");
 
-					DrawDialogBackground(paletteRect, "dialog2");
+					DrawDialogBackground(paletteRect, "dialog3");
 					AddButton(paletteRect, CyclePalette);
 
 					var raceRect = new Rectangle(r.Left + 210, y - 2, 65, 22);
-					DrawDialogBackground(raceRect, "dialog2");
+					DrawDialogBackground(raceRect, "dialog3");
 					AddButton(raceRect, CycleRace);
 
 					var readyRect = new Rectangle(r.Left + 280, y - 2, 95, 22);
-					DrawDialogBackground(readyRect, "dialog2");
+					DrawDialogBackground(readyRect, "dialog3");
 					AddButton(readyRect, CycleReady);
 					
 					var spawnPointRect = new Rectangle(r.Left + 380, y - 2, 70, 22);
-					DrawDialogBackground(spawnPointRect, "dialog2");
+					DrawDialogBackground(spawnPointRect, "dialog3");
 					AddButton(spawnPointRect, CycleSpawnPoint);
 				}
 
@@ -491,7 +491,7 @@ namespace OpenRA
 			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
 
 			DrawDialogBackground(typingBox, "dialog2");
-			DrawDialogBackground(chatBox, "dialog2");
+			DrawDialogBackground(chatBox, "dialog3");
 
 			DrawChat(typingBox, chatBox);
 
