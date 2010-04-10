@@ -48,14 +48,18 @@ namespace OpenRA.Widgets
 			var r = Game.chrome.renderer;
 			var sr = Game.chrome.rgbaRenderer;
 
-			r.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height);
 
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
 			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
-
+			
+			// Don't draw the background below the bottom/right borders
+			r.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width - (int)ss[3].size.X, Bounds.Height - (int)ss[1].size.Y);
 			for (var x = Bounds.Left + (int)ss[2].size.X; x < Bounds.Right - (int)ss[3].size.X; x += (int)ss[8].size.X)
 				for (var y = Bounds.Top + (int)ss[0].size.Y; y < Bounds.Bottom - (int)ss[1].size.Y; y += (int)ss[8].size.Y)
 					sr.DrawSprite(ss[8], new float2(x, y), "chrome");
+			
+			sr.Flush();		// because the scissor is changing
+			r.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height - (int)ss[1].size.Y);
 
 			//draw borders
 			for (var y = Bounds.Top + (int)ss[0].size.Y; y < Bounds.Bottom - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
@@ -64,11 +68,17 @@ namespace OpenRA.Widgets
 				sr.DrawSprite(ss[3], new float2(Bounds.Right - ss[3].size.X, y), "chrome");
 			}
 
+			sr.Flush();		// because the scissor is changing
+			r.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width - (int)ss[3].size.X, Bounds.Height);
+
 			for (var x = Bounds.Left + (int)ss[2].size.X; x < Bounds.Right - (int)ss[3].size.X; x += (int)ss[0].size.X)
 			{
 				sr.DrawSprite(ss[0], new float2(x, Bounds.Top), "chrome");
 				sr.DrawSprite(ss[1], new float2(x, Bounds.Bottom - ss[1].size.Y), "chrome");
 			}
+
+			sr.Flush();		// because the scissor is changing
+			r.Device.EnableScissor(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height);
 
 			sr.DrawSprite(ss[4], new float2(Bounds.Left, Bounds.Top), "chrome");
 			sr.DrawSprite(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top), "chrome");

@@ -158,7 +158,7 @@ namespace OpenRA.Widgets
 		void DrawSupportPowerTooltip(World world, SupportPower sp, int2 pos)
 		{
 			var tooltipBounds = new Rectangle(pos.X,pos.Y,400,100);
-			WidgetUtils.DrawPanel("dialog", tooltipBounds, null);
+			WidgetUtils.DrawPanel("dialog4", tooltipBounds, null);
 			
 			pos += new int2(5, 5);
 			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.Description, pos, Color.White);
