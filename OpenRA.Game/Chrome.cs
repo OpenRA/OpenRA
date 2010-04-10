@@ -390,7 +390,7 @@ namespace OpenRA
 			
 		}
 
-		public void DrawWidgets(World world) { rootWidget.Draw(); shpRenderer.Flush(); rgbaRenderer.Flush(); }
+		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
 
 		public void DrawLobby()
 		{
