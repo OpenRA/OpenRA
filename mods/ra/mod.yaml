@@ -10,7 +10,6 @@ Packages:
 	redalert.mix
 	conquer.mix
 	hires.mix
-	general.mix
 	local.mix
 	sounds.mix
 	speech.mix
@@ -19,6 +18,7 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
+	scores.mix
 
 Rules:
 	mods/ra/defaults.yaml
