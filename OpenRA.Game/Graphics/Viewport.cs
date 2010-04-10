@@ -63,6 +63,7 @@ namespace OpenRA.Graphics
 		}
 		
 		ConnectionState lastConnectionState = ConnectionState.PreConnecting;
+		bool gameWasStarted = false;
 		public void DrawRegions( World world )
 		{
 			world.WorldRenderer.palette.Update(
@@ -73,10 +74,15 @@ namespace OpenRA.Graphics
 
 			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
 			world.WorldRenderer.Draw();
-			if( Game.orderManager.GameStarted )
+			if( Game.orderManager.GameStarted && world.LocalPlayer != null)
 			{
-				if (world.LocalPlayer != null)
-					Game.chrome.Draw( world );	
+				if (!gameWasStarted)
+				{
+					Chrome.rootWidget.ShowMenu("INGAME_ROOT");
+					gameWasStarted = true;
+				}
+				
+				Game.chrome.Draw( world );	
 
 				if( Game.orderManager.Connection.ConnectionState == ConnectionState.NotConnected )
 					Game.chrome.DrawDialog("Connection lost.");

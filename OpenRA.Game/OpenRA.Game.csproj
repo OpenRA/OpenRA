@@ -294,6 +294,7 @@
     <Compile Include="Traits\RepairsUnits.cs" />
     <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
+    <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

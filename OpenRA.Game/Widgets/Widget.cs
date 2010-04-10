@@ -152,7 +152,9 @@ namespace OpenRA.Widgets
 		
 		public Widget ShowMenu(string menu)
 		{
-			GetCurrentMenu().Visible = false;
+			var m = GetCurrentMenu();
+			if (m != null)
+				m.Visible = false;
 
 			var widget = GetWidget(menu);
 			if (widget != null)

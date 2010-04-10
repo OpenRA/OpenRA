@@ -47,12 +47,6 @@ namespace OpenRA
 		// Special power bin
 		readonly Dictionary<string, Sprite> spsprites;
 		
-		// Options menu (to be refactored)
-		bool optionsPressed = false;
-
-		// Buttons
-		readonly Animation optionsButton;
-
 		// Build Palette tabs
 		string currentTab = "Building";
 		bool paletteOpen = false;
@@ -99,10 +93,7 @@ namespace OpenRA
 			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
 			shpRenderer = new SpriteRenderer(renderer, true, renderer.WorldSpriteShader);
-			
-			optionsButton = new Animation("tabs");
-			optionsButton.PlayRepeating("left-normal");
-
+		
 			tabSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
@@ -202,7 +193,6 @@ namespace OpenRA
 			DrawSupportPowers( world );
 			DrawBuildTabs(world, paletteHeight);
 			DrawChat();
-			DrawOptionsMenu();
 		}
 
 		public void DrawDownloadBar()
@@ -715,31 +705,6 @@ namespace OpenRA
 				var button = cb;
 				AddButton(new RectangleF(origin.X, origin.Y, image.size.X, image.size.Y),
 					_ => { if (button.Enabled) button.OnClick(); });
-			}
-			
-			//Options
-			Rectangle optionsRect = new Rectangle(0,0, optionsButton.Image.bounds.Width, 
-				optionsButton.Image.bounds.Height);
-			
-			var optionsDrawPos = new float2(optionsRect.Location);
-			
-			optionsButton.ReplaceAnim(optionsPressed ? "left-pressed" : "left-normal");
-			
-			AddButton(optionsRect, isLmb => optionsPressed = !optionsPressed);
-			shpRenderer.DrawSprite(optionsButton.Image, optionsDrawPos, "chrome");
-			shpRenderer.Flush();
-
-			renderer.RegularFont.DrawText(rgbaRenderer, "Options", new int2((int)(optionsButton.Image.size.X - renderer.RegularFont.Measure("Options").X) / 2, -2), Color.White);
-		}
-		
-		void DrawOptionsMenu()
-		{
-			if (optionsPressed){
-				var width = 500;
-				var height = 300;
-				
-				DrawDialogBackground(new Rectangle((Game.viewport.Width - width)/ 2, (Game.viewport.Height-height) / 2,
-					width, height), "dialog");
 			}
 		}
 
