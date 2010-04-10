@@ -37,10 +37,7 @@ namespace OpenRA.Mods.Cnc
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, "Airstrike", "ability");
-			Sound.Play(Info.SelectTargetSound);
 		}
-
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{

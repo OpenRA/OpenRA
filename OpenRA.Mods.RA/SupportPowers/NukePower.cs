@@ -36,13 +36,10 @@ namespace OpenRA.Mods.RA.SupportPowers
 	{
 		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
 	
-		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, Info.BeginChargeSound); }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator =
 				new GenericSelectTargetWithBuilding<NukeSilo>(Owner.PlayerActor, "NuclearMissile", "nuke");
-			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

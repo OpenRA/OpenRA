@@ -86,6 +86,7 @@ namespace OpenRA.Traits
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
 				{
+					Sound.PlayToPlayer(Owner, Info.BeginChargeSound);
 					OnBeginCharging();
 					notifiedCharging = true;
 				}
@@ -94,6 +95,7 @@ namespace OpenRA.Traits
 			if (RemainingTime == 0
 				&& !notifiedReady)
 			{
+				Sound.PlayToPlayer(Owner, Info.EndChargeSound);
 				OnFinishCharging();
 				notifiedReady = true;
 			}
@@ -150,6 +152,7 @@ namespace OpenRA.Traits
 				return;
 			}
 
+			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 			OnActivate();
 		}
 	}

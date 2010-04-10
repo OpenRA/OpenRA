@@ -52,14 +52,10 @@ namespace OpenRA.Mods.Cnc
 			}
 		}
 
-		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, Info.BeginChargeSound); }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, Info.EndChargeSound); }
-
 		protected override void OnActivate()
 		{
 			Game.controller.orderGenerator =
 				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
-			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 		}
 	}
 
