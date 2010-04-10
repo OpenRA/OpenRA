@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -36,25 +37,9 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.controller.orderGenerator = 
+				new GenericSelectTarget( Owner.PlayerActor, "ParatroopersActivate", "ability" );
 			Sound.Play(Info.SelectTargetSound);
-		}
-
-		class SelectTarget : IOrderGenerator
-		{
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left)
-					yield return new Order("ParatroopersActivate", world.LocalPlayer.PlayerActor, xy);
-			}
-
-			public void Tick(World world) {}
-			public void Render(World world) {}
-
-			public string GetCursor(World world, int2 xy, MouseInput mi)
-			{
-				return "ability";
-			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
