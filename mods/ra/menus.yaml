@@ -314,3 +314,36 @@ Container:
 							Height:25
 							Text:Quit
 							Delegate:IngameChromeDelegate
+		Background@MUSIC_BG:
+			Id:MUSIC_BG
+			X:WINDOW_RIGHT - 100
+			Y:WINDOW_BOTTOM - 65
+			Width: 90
+			Height: 55
+			Visible: true
+			Children:
+				Button@BUTTON_PLAY:
+					Id:BUTTON_PLAY
+					Visible:false
+					X:15
+					Y:15
+					Width:25
+					Height:25
+					Text:|>
+					Delegate:MusicPlayerDelegate
+				Button@BUTTON_PAUSE:
+					Id:BUTTON_PAUSE
+					X:15
+					Y:15
+					Width:25
+					Height:25
+					Text:||
+					Delegate:MusicPlayerDelegate
+				Button@BUTTON_STOP:
+					Id:BUTTON_STOP
+					X:50
+					Y:15
+					Width:25
+					Height:25
+					Text:[]
+					Delegate:MusicPlayerDelegate
