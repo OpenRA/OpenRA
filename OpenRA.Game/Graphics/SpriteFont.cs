@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -57,7 +57,7 @@ namespace OpenRA.Graphics
 
 		public int2 Measure(string text)
 		{
-			return new int2((int)text.Split( '\n' ).Max( s => s.Sum(a => glyphs[a].Advance)), size);
+			return new int2((int)text.Split( '\n' ).Max( s => s.Sum(a => glyphs[a].Advance)), text.Split('\n').Count()*size);
 		}
 
 		Cache<char, GlyphInfo> glyphs;

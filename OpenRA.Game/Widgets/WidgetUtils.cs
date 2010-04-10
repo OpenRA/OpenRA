@@ -90,5 +90,95 @@ namespace OpenRA.Widgets
 			sr.Flush();		// because the scissor is changing
 			r.Device.DisableScissor();
 		}
+	
+		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br, Action a)
+		{
+			var r = Game.chrome.renderer;
+			var sr = Game.chrome.rgbaRenderer;
+			
+			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background"};
+			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
+		
+			// Draw the background for the left part
+			r.Device.EnableScissor(tl.X, tl.Y, m.X-tl.X + (int)ss[2].size.X, m.Y-tl.Y - (int)ss[1].size.Y);
+			for (var x = tl.X + (int)ss[2].size.X; x < m.X + (int)ss[2].size.X; x += (int)ss[8].size.X)
+				for (var y = tl.Y + (int)ss[0].size.Y; y < m.Y - (int)ss[1].size.Y; y += (int)ss[8].size.Y)
+					DrawRGBA(ss[8], new float2(x, y));
+			
+			// Left border
+			for (var y = tl.Y + (int)ss[0].size.Y; y < m.Y - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
+				DrawRGBA(ss[2], new float2(tl.X, y));
+			
+			sr.Flush();
+			r.Device.EnableScissor(tl.X, tl.Y, m.X-tl.X, m.Y-tl.Y);
+
+			// bottom-left border
+			for (var x = tl.X + (int)ss[2].size.X; x < m.X - (int)ss[2].size.X; x += (int)ss[0].size.X)
+				DrawRGBA(ss[1], new float2(x, m.Y - ss[1].size.Y));
+			
+			// BL corner
+			DrawRGBA(ss[6], new float2(tl.X,m.Y - (int)ss[2].size.X));
+			
+			sr.Flush(); 
+			r.Device.EnableScissor(m.X, tl.Y, br.X - m.X - (int)ss[3].size.X, br.Y - tl.Y - (int)ss[1].size.Y);
+			
+			// Background for the right part
+			for (var x = m.X + (int)ss[2].size.X; x < br.X - (int)ss[3].size.X; x += (int)ss[8].size.X)
+				for (var y = tl.Y + (int)ss[0].size.Y; y < br.Y - (int)ss[1].size.Y; y += (int)ss[8].size.Y)
+					DrawRGBA(ss[8], new float2(x, y));
+						
+			// Top border
+			sr.Flush(); 
+			r.Device.EnableScissor(tl.X, tl.Y, br.X - tl.X - (int)ss[3].size.X, (int)ss[0].size.Y);
+			for (var x = tl.X + (int)ss[2].size.X; x < br.X - (int)ss[3].size.X; x += (int)ss[1].size.X)
+				DrawRGBA(ss[0], new float2(x, tl.Y));
+			
+			// TL corner
+			DrawRGBA(ss[4], new float2(tl.X,tl.Y));
+			
+			sr.Flush(); 
+			r.Device.EnableScissor(br.X - (int)ss[3].size.X, tl.Y, (int)ss[3].size.X, br.Y - tl.Y - (int)ss[1].size.Y);
+			
+			// Right border
+			for (var y = tl.Y + (int)ss[0].size.Y; y < br.Y - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
+				DrawRGBA(ss[3], new float2(br.X - (int)ss[3].size.X, y));
+			
+			// TR corner
+			DrawRGBA(ss[5], new float2(br.X- (int)ss[3].size.X,tl.Y));
+				
+			// Bottom border
+			sr.Flush(); 
+			r.Device.EnableScissor(m.X, br.Y - (int)ss[1].size.Y, br.X - m.X - (int)ss[3].size.X,(int)ss[1].size.Y);
+			for (var x = m.X + (int)ss[2].size.X; x < br.X - (int)ss[3].size.X; x += (int)ss[1].size.X)
+				DrawRGBA(ss[1], new float2(x, br.Y - (int)ss[1].size.Y));
+			
+			// BR corner
+			sr.Flush();
+			r.Device.DisableScissor();
+			DrawRGBA(ss[7], new float2(br.X - (int)ss[7].size.X, br.Y - (int)ss[7].size.Y));
+			
+			// Left border
+			sr.Flush();
+			r.Device.EnableScissor(m.X, m.Y-1, (int)ss[2].size.X, br.Y - m.Y - (int)ss[1].size.Y+1);
+			for (var y = m.Y-1; y < br.Y - (int)ss[1].size.Y; y += (int)ss[2].size.Y)
+				DrawRGBA(ss[2], new float2(m.X, y));
+			
+			// BL corner
+			sr.Flush();
+			r.Device.DisableScissor();
+			DrawRGBA(ss[6], new float2(m.X,br.Y - (int)ss[7].size.Y));
+
+			// Patch the hole
+			sr.Flush();
+			r.Device.EnableScissor(m.X, m.Y-(int)ss[1].size.Y, (int)ss[2].size.X, (int)ss[1].size.Y-1);
+			for (var x = m.X; x < m.X + (int)ss[2].size.X; x += (int)ss[8].size.X)
+				for (var y = m.Y-(int)ss[1].size.Y; y < m.Y-1; y += (int)ss[8].size.Y)
+					DrawRGBA(ss[8], new float2(x, y));
+		
+			if (a != null) a();
+
+			sr.Flush();		// because the scissor is changing
+			r.Device.DisableScissor();
+		}
 	}
 }

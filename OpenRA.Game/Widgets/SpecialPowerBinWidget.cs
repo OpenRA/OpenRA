@@ -113,17 +113,28 @@ namespace OpenRA.Widgets
 					{
 						var pos = drawPos.ToInt2();
 						var tooltipBounds = new Rectangle(pos.X-3,pos.Y-3,350,54);
-						WidgetUtils.DrawPanel("dialog4", tooltipBounds, null);
 						
-						pos += new int2(70, 5);
+						var tl = new int2(pos.X-3,pos.Y-3);
+						var m = new int2(pos.X+64+3,pos.Y+48+3);
+						var br = tl + new int2(64+3+20,60);
+						
+						if (sp.Info.LongDesc != null)
+							br += Game.chrome.renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
+						else
+							br += new int2(300,0);
+						
+						WidgetUtils.DrawRightTooltip("dialog4", tl, m, br, null);
+						
+						pos += new int2(77, 5);
 						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.Description, pos, Color.White);
-			
-						var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
-						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, timer, drawPos.ToInt2() + new int2((int)tooltipBounds.Width - Game.chrome.renderer.BoldFont.Measure(timer).X - 10, 0), Color.White);
-			
+						
+						pos += new int2(0,20);
+						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, "/ {0}".F(FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						
 						if (sp.Info.LongDesc != null)
 						{
-							pos += new int2(0, 25);
+							pos += new int2(0, 20);
 							Game.chrome.renderer.RegularFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 						}
 			
