@@ -69,6 +69,7 @@ namespace OpenRA.Widgets
 			                       width,
 			                       height);
 			
+			
 			foreach (var child in Children)
 				child.Initialize();
 		}
@@ -91,6 +92,7 @@ namespace OpenRA.Widgets
 		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
+
 		
 		public virtual bool HandleInput(MouseInput mi)
 		{
@@ -117,11 +119,11 @@ namespace OpenRA.Widgets
 			return false;
 		}
 		
-		public virtual void Draw()
+		public virtual void Draw(World world)
 		{
 			if (Visible)
 				foreach (var child in Children)
-					child.Draw();
+					child.Draw(world);
 		}
 		
 		public void AddChild(Widget child)

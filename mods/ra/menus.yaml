@@ -261,6 +261,11 @@ Container:
 			Id:INGAME_ROOT
 			Visible:false
 			Children:
+				SpecialPowerBin@INGAME_POWERS_BIN:
+					Id:INGAME_POWERS_BIN
+					X:0
+					Y:25
+					Delegate:IngameChromeDelegate
 				Button@INGAME_OPTIONS_BUTTON:
 					Id:INGAME_OPTIONS_BUTTON
 					X:0

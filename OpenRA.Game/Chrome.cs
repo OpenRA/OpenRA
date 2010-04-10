@@ -37,15 +37,12 @@ namespace OpenRA
 		public readonly Renderer renderer;
 		public readonly SpriteRenderer rgbaRenderer;
 		public readonly LineRenderer lineRenderer;
-		readonly SpriteRenderer shpRenderer;
+		public readonly SpriteRenderer shpRenderer;
 		
 		string chromeCollection;
 		string radarCollection;
 		string paletteCollection;
 		string digitCollection;
-		
-		// Special power bin
-		readonly Dictionary<string, Sprite> spsprites;
 		
 		// Build Palette tabs
 		string currentTab = "Building";
@@ -99,11 +96,6 @@ namespace OpenRA
 				.ToDictionary(
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<BuildableInfo>().Icon ?? (u.Name + "icon"))[0]);
-
-			spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
-				.ToDictionary(
-					u => u.Image,
-					u => SpriteSheetBuilder.LoadAllSprites(u.Image)[0]);
 
 			var groups = Rules.Categories();
 			
@@ -190,7 +182,6 @@ namespace OpenRA
 			DrawButtons( world );
 			
 			int paletteHeight = DrawBuildPalette(world, currentTab);
-			DrawSupportPowers( world );
 			DrawBuildTabs(world, paletteHeight);
 			DrawChat();
 		}
@@ -400,7 +391,7 @@ namespace OpenRA
 		}
 
 		public void DrawWidgets(World world) { rootWidget.Draw(); shpRenderer.Flush(); rgbaRenderer.Flush(); }
-		
+
 		public void DrawLobby()
 		{
 			buttons.Clear();
@@ -1004,7 +995,7 @@ namespace OpenRA
 			}
 		}
 
-		int2 lastMousePos;
+		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
 			if (selectedWidget != null)
@@ -1094,102 +1085,6 @@ namespace OpenRA
 				return "any " + a.Substring( 1 );
 			else
 				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
-		}
-
-		void DrawSupportPowers( World world )
-		{
-			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
-			var numPowers = powers.Count(p => p.IsAvailable);
-
-			if (numPowers == 0) return;
-
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-top"), new float2(0, 14), "chrome");
-			for (var i = 1; i < numPowers; i++)
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-middle"), new float2(0, 14 + i * 51), "chrome");
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "specialbin-bottom"), new float2(0, 14 + numPowers * 51), "chrome");
-
-			rgbaRenderer.Flush();
-
-			var y = 24;
-
-			SupportPower tooltipItem = null;
-			int2 tooltipPos = int2.Zero;
-
-			foreach (var sp in powers)
-			{
-				var image = spsprites[sp.Info.Image];
-				if (sp.IsAvailable)
-				{
-					var drawPos = new float2(5, y);
-					shpRenderer.DrawSprite(image, drawPos, "chrome");
-
-					clock.PlayFetchIndex("idle",
-						() => (sp.TotalTime - sp.RemainingTime)
-							* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
-					clock.Tick();
-
-					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");
-
-					var rect = new Rectangle(5, y, 64, 48);
-					if (sp.IsReady)
-					{
-						ready.Play("ready");
-						shpRenderer.DrawSprite(ready.Image, 
-							drawPos + new float2((64 - ready.Image.size.X) / 2, 2), 
-							"chrome");
-					}
-
-					AddButton(rect, HandleSupportPower(sp));
-
-					if (rect.Contains(lastMousePos.ToPoint()))
-					{
-						tooltipItem = sp;
-						tooltipPos = drawPos.ToInt2() + new int2(72, 0);
-					}
-
-					y += 51;
-				}
-			}
-
-			shpRenderer.Flush();
-
-			if (tooltipItem != null)
-				DrawSupportPowerTooltip(world, tooltipItem, tooltipPos);
-		}
-
-		Action<bool> HandleSupportPower(SupportPower sp)
-		{
-			return b => { if (b) sp.Activate(); };
-		}
-
-		string FormatTime(int ticks)
-		{
-			var seconds = ticks / 25;
-			var minutes = seconds / 60;
-
-			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
-		}
-
-		void DrawSupportPowerTooltip(World world, SupportPower sp, int2 pos)
-		{
-			var tooltipSprite = ChromeProvider.GetImage(renderer, chromeCollection, "tooltip-bg");
-			rgbaRenderer.DrawSprite(tooltipSprite, pos, "chrome");
-			rgbaRenderer.Flush();
-
-			pos += new int2(5, 5);
-
-			renderer.BoldFont.DrawText(rgbaRenderer, sp.Info.Description, pos, Color.White);
-
-			var timer = "Charge Time: {0}".F(FormatTime(sp.RemainingTime));
-			DrawRightAligned(timer, pos + new int2((int)tooltipSprite.size.X - 10, 0), Color.White);
-
-			if (sp.Info.LongDesc != null)
-			{
-				pos += new int2(0, 25);
-				renderer.RegularFont.DrawText(rgbaRenderer, sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
-			}
-
-			rgbaRenderer.Flush();
 		}
 
 		public void SetCurrentTab(string produces)

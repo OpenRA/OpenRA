@@ -27,11 +27,11 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public string Align = "Left";
 		
-		public override void Draw()
+		public override void Draw(World world)
 		{		
 			if (!Visible)
 			{
-				base.Draw();
+				base.Draw(world);
 				return;
 			}
 		
@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text, position, Color.White);
 			Game.chrome.rgbaRenderer.Flush();
 			Game.chrome.renderer.Device.DisableScissor();
-			base.Draw();
+			base.Draw(world);
 		}
 	}
 }

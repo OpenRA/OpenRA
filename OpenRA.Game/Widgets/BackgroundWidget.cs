@@ -22,16 +22,16 @@ namespace OpenRA.Widgets
 {
 	class BackgroundWidget : Widget
 	{
-		public override void Draw()
+		public override void Draw(World world)
 		{
 			if (!Visible)
 			{
-				base.Draw();
+				base.Draw(world);
 				return;
 			}
 
 			WidgetUtils.DrawPanel("dialog", Bounds, null);
-			base.Draw();
+			base.Draw(world);
 		}
 	}
 }

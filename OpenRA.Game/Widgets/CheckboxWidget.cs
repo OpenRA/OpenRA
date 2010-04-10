@@ -28,11 +28,11 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public Func<bool> Checked = () => {return false;};
 		
-		public override void Draw()
+		public override void Draw(World world)
 		{
 			if (!Visible)
 			{
-				base.Draw();
+				base.Draw(world);
 				return;
 			}
 
@@ -58,7 +58,7 @@ namespace OpenRA.Widgets
 
 			Game.chrome.rgbaRenderer.Flush();
 			
-			base.Draw();
+			base.Draw(world);
 		}
 	}
 }

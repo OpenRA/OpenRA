@@ -61,11 +61,11 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		public override void Draw()
+		public override void Draw(World world)
 		{
 			if (!Visible)
 			{
-				base.Draw();
+				base.Draw(world);
 				return;
 			}
 
@@ -76,7 +76,7 @@ namespace OpenRA.Widgets
 					- new int2(Game.chrome.renderer.BoldFont.Measure(Text).X / 2,
 				Game.chrome.renderer.BoldFont.Measure(Text).Y / 2) + stateOffset, Color.White));
 
-			base.Draw();
+			base.Draw(world);
 		}
 	}
 }

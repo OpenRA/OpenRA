@@ -295,6 +295,7 @@
     <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
     <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
+    <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

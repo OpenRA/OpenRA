@@ -257,3 +257,60 @@ Container:
 					Height:25
 					Text:Abort
 					Delegate:ConnectionDialogsDelegate
+		Container@INGAME_ROOT:
+			Id:INGAME_ROOT
+			Visible:false
+			Children:
+				SpecialPowerBin@INGAME_POWERS_BIN:
+					Id:INGAME_POWERS_BIN
+					X:0
+					Y:25
+					Delegate:IngameChromeDelegate
+				Button@INGAME_OPTIONS_BUTTON:
+					Id:INGAME_OPTIONS_BUTTON
+					X:0
+					Y:0
+					Width:160
+					Height:25
+					Text:Options
+					Delegate:IngameChromeDelegate
+				Background@INGAME_OPTIONS_BG:
+					Id:INGAME_OPTIONS_BG
+					X:(WINDOW_RIGHT - WIDTH)/2
+					Y:(WINDOW_BOTTOM - HEIGHT)/2
+					Width:300
+					Height:220
+					Visible:false
+					Children:
+						Label@LABEL_TITLE:
+							Id:LABEL_TITLE
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:20
+							Width:250
+							Height:25
+							Text:Options
+							Align:Center
+						Button@BUTTON_SETTINGS:
+							Id:BUTTON_SETTINGS
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:80
+							Width:160
+							Height:25
+							Text:Settings
+							Delegate:IngameChromeDelegate
+						Button@BUTTON_DISCONNECT:
+							Id:BUTTON_DISCONNECT
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:120
+							Width:160
+							Height:25
+							Text:Disconnect
+							Delegate:IngameChromeDelegate
+						Button@BUTTON_QUIT:
+							Id:BUTTON_QUIT
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:160
+							Width:160
+							Height:25
+							Text:Quit
+							Delegate:IngameChromeDelegate

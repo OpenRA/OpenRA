@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -28,6 +28,21 @@ namespace OpenRA.Widgets
 {
 	static class WidgetUtils
 	{
+		public static Sprite GetChromeImage(World world, string name)
+		{
+			return ChromeProvider.GetImage(Game.chrome.renderer, "chrome-" + world.LocalPlayer.Country.Race, name);
+		}
+		
+		public static void DrawRGBA(Sprite s, float2 pos)
+		{
+			Game.chrome.rgbaRenderer.DrawSprite(s,pos,"chrome");
+		}
+		
+		public static void DrawSHP(Sprite s, float2 pos)
+		{
+			Game.chrome.shpRenderer.DrawSprite(s,pos,"chrome");
+		}
+		
 		public static void DrawPanel(string collection, Rectangle Bounds, Action a)
 		{
 			var r = Game.chrome.renderer;
