@@ -151,7 +151,11 @@ namespace OpenRA.Widgets
 			return (T)GetWidget(id);
 		}
 
-		public Widget GetCurrentMenu() { return Children.FirstOrDefault(c => c.Visible); }
+		public Widget GetCurrentMenu()
+		{
+			// HACK HACK HACK (this method will vanish soon, so not going to hack the widget yaml itself)
+			return Children.FirstOrDefault(c => c.Visible && c.Id != "MUSIC_BG" && c.Id != "PERF_BG");
+		}
 		
 		public Widget ShowMenu(string menu)
 		{

@@ -51,22 +51,6 @@ namespace OpenRA.Widgets.Delegates
 				Game.Exit();
 				return true;
 			};
-			
-			// Perf text
-			var perfText = gameRoot.GetWidget<LabelWidget>("PERFTEXT");
-			perfText.GetText = () => {
-				return "RenderFrame {0} ({2:F1} ms)\nTick {4}/ Net{1} ({3:F1} ms)".F(
-					Game.RenderFrame,
-					Game.orderManager.FrameNumber,
-					PerfHistory.items["render"].LastValue,
-					PerfHistory.items["tick_time"].LastValue,
-					Game.LocalTick);
-			};
-			perfText.IsVisible = () => {return (perfText.Visible && Game.Settings.PerfText);};
-			
-			// Perf graph
-			var perfGraph = gameRoot.GetWidget("PERFGRAPH");
-			perfGraph.IsVisible = () => {return (perfGraph.Visible && Game.Settings.PerfGraph);};
 		}
 	}
 }

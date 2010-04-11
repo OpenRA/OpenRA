@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 			float2 basis = new float2(-Bounds.Width/100,-Bounds.Height/100);
 
 			Game.chrome.lineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
-			Game.chrome.lineRenderer.DrawLine(origin + new float2(100,0) * basis, origin + new float2(100,70) * basis, Color.White, Color.White);
+			Game.chrome.lineRenderer.DrawLine(origin + new float2(100,0) * basis, origin + new float2(100,100) * basis, Color.White, Color.White);
 
 			foreach (var item in PerfHistory.items.Values)
 			{
