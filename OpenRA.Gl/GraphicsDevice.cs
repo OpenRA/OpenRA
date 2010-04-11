@@ -437,10 +437,16 @@ namespace OpenRA.GlRenderer
 
         public void SetData(Bitmap bitmap)
         {
+			if( !IsPowerOf2( bitmap.Width ) || !IsPowerOf2( bitmap.Height ) )
+			{
+				//throw new InvalidOperationException( "non-power-of-2-texture" );
+				bitmap = new Bitmap( bitmap, new Size( NextPowerOf2( bitmap.Width ), NextPowerOf2( bitmap.Height ) ) );
+			}
+
 			Gl.glBindTexture( Gl.GL_TEXTURE_2D, texture );
 			GraphicsDevice.CheckGlError();
 
-            var bits = bitmap.LockBits(
+			var bits = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
                 ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
@@ -455,5 +461,21 @@ namespace OpenRA.GlRenderer
 
             bitmap.UnlockBits(bits);
         }
+
+		bool IsPowerOf2( int v )
+		{
+			return ( v & ( v - 1 ) ) == 0;
+		}
+
+		int NextPowerOf2( int v )
+		{
+			--v;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			++v;
+			return v;
+		}
     }
 }
