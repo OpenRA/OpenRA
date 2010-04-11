@@ -61,7 +61,7 @@ namespace OpenRA.Graphics
 					renderer.DrawBatch(vertexBuffer, indexBuffer,
 						new Range<int>(0, nv),
 						new Range<int>(0, ni),
-						currentSheet.Texture, PrimitiveType.TriangleList,
+						PrimitiveType.TriangleList,
 						shader);
 				});
 

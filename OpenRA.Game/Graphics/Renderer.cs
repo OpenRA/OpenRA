@@ -110,12 +110,9 @@ namespace OpenRA.Graphics
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
-			Range<int> vertexRange, Range<int> indexRange, ITexture texture, PrimitiveType type, IShader shader)
+			Range<int> vertexRange, Range<int> indexRange, PrimitiveType type, IShader shader)
 			where T : struct
 		{
-			shader.SetValue("DiffuseTexture", texture);
-			shader.Commit();
-
 			vertices.Bind();
 			indices.Bind();
 
@@ -125,12 +122,9 @@ namespace OpenRA.Graphics
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
-			int vertexPool, int numPrimitives, ITexture texture, PrimitiveType type)
+			int vertexPool, int numPrimitives, PrimitiveType type)
 			where T : struct
 		{
-			SpriteShader.SetValue("DiffuseTexture", texture);
-			SpriteShader.Commit();
-
 			vertices.Bind();
 			indices.Bind();
 

@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 					vertexBuffer.SetData( vertices );
 					indexBuffer.SetData( indices );
 					renderer.DrawBatch( vertexBuffer, indexBuffer,
-					nv, ni / 2, null, PrimitiveType.LineList );
+					nv, ni / 2, PrimitiveType.LineList );
 				} );
 
 				nv = 0; ni = 0;
