@@ -1068,7 +1068,7 @@ namespace OpenRA
 			if (selectedWidget != null)
 				return true;
 			
-			return rootWidget.GetEventBounds().Contains(mousePos.X, mousePos.Y) 
+			return rootWidget.HitTest(mousePos)
 				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
 		}
 

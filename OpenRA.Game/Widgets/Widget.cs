@@ -36,6 +36,7 @@ namespace OpenRA.Widgets
 		public readonly string Width = "0";
 		public readonly string Height = "0";
 		public readonly string Delegate = null;
+		public readonly bool ClickThrough = false;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
@@ -85,6 +86,14 @@ namespace OpenRA.Widgets
 		{
 			foreach(var d in Delegates)
 				Game.CreateObject<IWidgetDelegate>(d);
+		}
+		
+		public bool HitTest(int2 xy)
+		{
+			if (!IsVisible()) return false;
+			if (Bounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
+			
+			return Children.Any(c => c.HitTest(xy));
 		}
 		
 		public Rectangle GetEventBounds()

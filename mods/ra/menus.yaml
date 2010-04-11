@@ -1,4 +1,5 @@
 Container:
+	ClickThrough:true
 	Children:
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
@@ -297,6 +298,7 @@ Container:
 							Height:25
 							Text:Quit
 		Background@PERF_BG:
+			ClickThrough:true
 			Id:PERF_BG
 			Background:dialog4
 			Delegate:PerfDebugDelegate
@@ -307,12 +309,14 @@ Container:
 			Visible: true
 			Children:
 				PerfGraph@GRAPH:
+					ClickThrough:true
 					Id:GRAPH
 					X:5
 					Y:5
 					Width:200
 					Height:200
 				Label@TEXT:
+					ClickThrough:true
 					Id:TEXT
 					Bold: false
 					X:20

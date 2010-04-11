@@ -1,4 +1,5 @@
 Container:
+	ClickThrough:true
 	Children:
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
@@ -248,19 +249,6 @@ Container:
 			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
-				PerfGraph@PERFGRAPH:
-					Id:PERFGRAPH
-					X:10
-					Y:WINDOW_BOTTOM - 250
-					Width:200
-					Height:200
-				Label@PERFTEXT:
-					Id:PERFTEXT
-					Bold: false
-					X:10
-					Y:WINDOW_BOTTOM - 40
-					Width:200
-					Height:100
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0
@@ -309,6 +297,32 @@ Container:
 							Width:160
 							Height:25
 							Text:Quit
+		Background@PERF_BG:
+			ClickThrough:true
+			Id:PERF_BG
+			Background:dialog4
+			Delegate:PerfDebugDelegate
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
+			Visible: true
+			Children:
+				PerfGraph@GRAPH:
+					ClickThrough:true
+					Id:GRAPH
+					X:5
+					Y:5
+					Width:200
+					Height:200
+				Label@TEXT:
+					ClickThrough:true
+					Id:TEXT
+					Bold: false
+					X:20
+					Y:210
+					Width:200
+					Height:100
 		Background@MUSIC_BG:
 			Id:MUSIC_BG
 			Delegate:MusicPlayerDelegate
