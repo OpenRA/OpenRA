@@ -35,12 +35,12 @@ namespace OpenRA.Widgets
 		
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
-			Game.chrome.rgbaRenderer.DrawSprite(s,pos,"chrome");
+			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
 		
 		public static void DrawSHP(Sprite s, float2 pos)
 		{
-			Game.chrome.shpRenderer.DrawSprite(s,pos,"chrome");
+			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
 		
 		public static void DrawPanel(string collection, Rectangle Bounds, Action a)
@@ -89,7 +89,7 @@ namespace OpenRA.Widgets
 			DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
 
 			if (a != null) a();
-			Game.chrome.rgbaRenderer.Flush();
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 		
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
@@ -191,7 +191,7 @@ namespace OpenRA.Widgets
 			DrawRGBA(ss[7], new float2(br.X - (int)ss[7].size.X, br.Y - (int)ss[7].size.Y));
 			
 			if (a != null) a();
-			Game.chrome.rgbaRenderer.Flush();
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }

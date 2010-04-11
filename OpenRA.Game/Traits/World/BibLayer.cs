@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 		
 		public BibLayer(Actor self, BibLayerInfo info)
 		{
-			spriteRenderer = new SpriteRenderer( Game.renderer );			
+			spriteRenderer = Game.renderer.SpriteRenderer;
 			this.info = info;
 			bibSprites = info.BibTypes.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 			

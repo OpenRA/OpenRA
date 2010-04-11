@@ -55,8 +55,8 @@ namespace OpenRA.Widgets
 				position = new int2(Bounds.X+Bounds.Width/2, Bounds.Y+Bounds.Height/2) 
 					- new int2(textSize.X / 2, textSize.Y/2);
 			
-			font.DrawText(Game.chrome.rgbaRenderer, text, position, Color.White);
-			Game.chrome.rgbaRenderer.Flush();
+			font.DrawText(text, position, Color.White);
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			Game.chrome.renderer.Device.DisableScissor();
 			base.Draw(world);
 		}

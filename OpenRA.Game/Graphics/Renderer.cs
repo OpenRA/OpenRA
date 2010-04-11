@@ -41,6 +41,10 @@ namespace OpenRA.Graphics
 		public IShader RgbaSpriteShader { get; private set; }
 		public IShader WorldSpriteShader { get; private set; }
 
+		public SpriteRenderer SpriteRenderer { get; private set; }
+		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
+		public SpriteRenderer WorldSpriteRenderer { get; private set; }
+
 		public ITexture PaletteTexture;
 
 		public readonly SpriteFont RegularFont, BoldFont;
@@ -55,6 +59,10 @@ namespace OpenRA.Graphics
 			LineShader = device.CreateShader(FileSystem.Open("shaders/line.fx"));
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
 			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
+
+			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
+			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
+			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
 
 //			RegularFont = device.CreateFont( "FreeSans.ttf" );
 //			BoldFont = device.CreateFont( "FreeSansBold.ttf" );

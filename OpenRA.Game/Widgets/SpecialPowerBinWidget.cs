@@ -94,7 +94,7 @@ namespace OpenRA.Widgets
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(Bounds.X, Bounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(Bounds.X, Bounds.Y + numPowers * 51));
-			Game.chrome.rgbaRenderer.Flush();
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			
 			// Hack Hack Hack
 			Bounds.Width = 69;
@@ -126,19 +126,19 @@ namespace OpenRA.Widgets
 						WidgetUtils.DrawRightTooltip("dialog4", tl, m, br, null);
 						
 						pos += new int2(77, 5);
-						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.Description, pos, Color.White);
+						Game.chrome.renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
 						
 						pos += new int2(0,20);
-						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, "/ {0}".F(FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						Game.chrome.renderer.BoldFont.DrawText(FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.chrome.renderer.BoldFont.DrawText("/ {0}".F(FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
 						
 						if (sp.Info.LongDesc != null)
 						{
 							pos += new int2(0, 20);
-							Game.chrome.renderer.RegularFont.DrawText(Game.chrome.rgbaRenderer, sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+							Game.chrome.renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 						}
 			
-						Game.chrome.rgbaRenderer.Flush();
+						Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 					}
 					
 					WidgetUtils.DrawSHP(image, drawPos);
@@ -161,7 +161,7 @@ namespace OpenRA.Widgets
 					y += 51;
 				}
 			}
-			Game.chrome.shpRenderer.Flush();
+			Game.chrome.renderer.WorldSpriteRenderer.Flush();
 			base.Draw(world);
 		}
 		

@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			cursorRenderer = new SpriteRenderer(renderer);
+			cursorRenderer = renderer.SpriteRenderer;
 
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
@@ -67,6 +67,8 @@ namespace OpenRA.Graphics
 		bool gameWasStarted = false;
 		public void DrawRegions( World world )
 		{
+			Timer.Time( "DrawRegions start" );
+
 			world.WorldRenderer.palette.Update(
 				world.WorldActor.traits.WithInterface<IPaletteModifier>());
 
@@ -75,6 +77,7 @@ namespace OpenRA.Graphics
 
 			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
 			world.WorldRenderer.Draw();
+			Timer.Time( "worldRenderer: {0}" );
 			if( Game.orderManager.GameStarted && world.LocalPlayer != null)
 			{
 				if (!gameWasStarted)
@@ -136,12 +139,16 @@ namespace OpenRA.Graphics
 				lastConnectionState = state;
 
 			}
+			Timer.Time( "checking connections: {0}" );
+
 			Game.chrome.DrawWidgets(world);
+			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
 			cursorRenderer.Flush();
+			Timer.Time( "cursors: {0}" );
 
 			renderer.EndFrame();
 		}

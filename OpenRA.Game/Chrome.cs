@@ -35,9 +35,10 @@ namespace OpenRA
 	class Chrome : IHandleInput
 	{
 		public readonly Renderer renderer;
-		public readonly SpriteRenderer rgbaRenderer;
 		public readonly LineRenderer lineRenderer;
-		public readonly SpriteRenderer shpRenderer;
+
+		SpriteRenderer rgbaRenderer { get { return renderer.RgbaSpriteRenderer; } }
+		SpriteRenderer shpRenderer { get { return renderer.WorldSpriteRenderer; } }
 		
 		string chromeCollection;
 		string radarCollection;
@@ -87,9 +88,7 @@ namespace OpenRA
 		public Chrome(Renderer r, Manifest m)
 		{
 			this.renderer = r;
-			rgbaRenderer = new SpriteRenderer(renderer, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
-			shpRenderer = new SpriteRenderer(renderer, renderer.WorldSpriteShader);
 		
 			tabSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())
@@ -311,7 +310,7 @@ namespace OpenRA
 					DrawDialogBackground(itemRect, "dialog2");
 				}
 
-				renderer.RegularFont.DrawText(rgbaRenderer, map.Title, new int2(r.Left + 60, y), Color.White);
+				renderer.RegularFont.DrawText(map.Title, new int2(r.Left + 60, y), Color.White);
 				rgbaRenderer.Flush();
 				var closureMap = map;
 				AddButton(itemRect, _ => { currentMap = closureMap; mapPreviewDirty = true; });
@@ -478,11 +477,11 @@ namespace OpenRA
 			
 			
 			var f = renderer.BoldFont;
-			f.DrawText(rgbaRenderer, "Name", new int2(r.Left + 40, r.Top + 50), Color.White);
-			f.DrawText(rgbaRenderer, "Color", new int2(r.Left + 140, r.Top + 50), Color.White);
-			f.DrawText(rgbaRenderer, "Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
-			f.DrawText(rgbaRenderer, "Status", new int2(r.Left + 290, r.Top + 50), Color.White);
-			f.DrawText(rgbaRenderer, "Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
+			f.DrawText("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
+			f.DrawText("Color", new int2(r.Left + 140, r.Top + 50), Color.White);
+			f.DrawText("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
+			f.DrawText("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
+			f.DrawText("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
 
 			rgbaRenderer.Flush();
 				
@@ -517,16 +516,16 @@ namespace OpenRA
 				shpRenderer.Flush();
 
 				f = renderer.RegularFont;
-				f.DrawText(rgbaRenderer, client.Name, new int2(r.Left + 40, y), Color.White);
+				f.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
 				lineRenderer.FillRect(RectangleF.FromLTRB(paletteRect.Left + Game.viewport.Location.X + 5,
 															paletteRect.Top + Game.viewport.Location.Y + 5,
 															paletteRect.Right + Game.viewport.Location.X - 5,
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
 													Player.PlayerColors[client.PaletteIndex % Player.PlayerColors.Count()].c);
 				lineRenderer.Flush();
-				f.DrawText(rgbaRenderer, client.Country, new int2(r.Left + 220, y), Color.White);
-				f.DrawText(rgbaRenderer, client.State.ToString(), new int2(r.Left + 290, y), Color.White);
-				f.DrawText(rgbaRenderer, (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
+				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
+				f.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
+				f.DrawText((client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
 				y += 30;
 
 				rgbaRenderer.Flush();
@@ -811,8 +810,8 @@ namespace OpenRA
 		void RenderChatLine(Tuple<Color, string, string> line, int2 p)
 		{
 			var size = renderer.RegularFont.Measure(line.b);
-			renderer.RegularFont.DrawText(rgbaRenderer, line.b, p, line.a);
-			renderer.RegularFont.DrawText(rgbaRenderer, line.c, p + new int2(size.X + 10, 0), Color.White);
+			renderer.RegularFont.DrawText(line.b, p, line.a);
+			renderer.RegularFont.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 		
 		void TickPaletteAnimation()
@@ -1075,12 +1074,12 @@ namespace OpenRA
 
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
-			renderer.BoldFont.DrawText(rgbaRenderer, text, pos - new int2(renderer.BoldFont.Measure(text).X, 0), c);
+			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X, 0), c);
 		}
 
 		void DrawCentered(string text, int2 pos, Color c)
 		{
-			renderer.BoldFont.DrawText(rgbaRenderer, text, pos - new int2(renderer.BoldFont.Measure(text).X / 2, 0), c);
+			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X / 2, 0), c);
 		}
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
@@ -1093,7 +1092,7 @@ namespace OpenRA
 			var info = Rules.Info[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
 
-			renderer.BoldFont.DrawText(rgbaRenderer, buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
+			renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
 
 			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
 				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
@@ -1111,14 +1110,14 @@ namespace OpenRA
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
-				renderer.RegularFont.DrawText(rgbaRenderer, "Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
+				renderer.RegularFont.DrawText("Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
 					Color.White);
 			}
 
 			if (buildable.LongDesc != null)
 			{
 				p += new int2(0, 15);
-				renderer.RegularFont.DrawText(rgbaRenderer, buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
+				renderer.RegularFont.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
 			}
 
 			rgbaRenderer.Flush();

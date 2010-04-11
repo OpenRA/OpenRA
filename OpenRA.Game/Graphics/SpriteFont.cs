@@ -9,9 +9,12 @@ namespace OpenRA.Graphics
 {
 	class SpriteFont
 	{
+		Renderer renderer;
 		int size;
+
 		public SpriteFont(Renderer r, string name, int size)
 		{
+			this.renderer = r;
 			this.size = size;
 
 			if (0 != FT.FT_New_Face(library, name, 0, out face))
@@ -29,7 +32,7 @@ namespace OpenRA.Graphics
 					throw new InvalidOperationException();
 		}
 
-		public void DrawText(SpriteRenderer r, string text, float2 location, Color c)
+		public void DrawText( string text, float2 location, Color c )
 		{
 			location.Y += size;	// baseline vs top
 
@@ -44,7 +47,7 @@ namespace OpenRA.Graphics
 				}
 
 				var g = glyphs[s];
-				r.DrawSprite(g.Sprite, 
+				renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
 					new float2(
 						(int)Math.Round(p.X + g.Offset.X, 0),
 						p.Y + g.Offset.Y), 

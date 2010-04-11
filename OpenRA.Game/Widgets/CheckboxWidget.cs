@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 					new Size(Bounds.Height, Bounds.Height)),
 					() => { });
 
-			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text,
+			Game.chrome.renderer.BoldFont.DrawText(Text,
 				new float2(Bounds.Left + Bounds.Height * 2, Bounds.Top), Color.White);
 
 			if (Checked())
@@ -56,7 +56,7 @@ namespace OpenRA.Widgets
 				Game.chrome.lineRenderer.Flush();
 			}
 
-			Game.chrome.rgbaRenderer.Flush();
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			
 			base.Draw(world);
 		}
