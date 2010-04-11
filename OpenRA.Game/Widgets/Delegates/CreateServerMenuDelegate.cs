@@ -31,17 +31,17 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Chrome.rootWidget;
 			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
-				r.ShowMenu("CREATESERVER_BG");
+				r.OpenWindow("CREATESERVER_BG");
 				return true;
 			};
 			
 			r.GetWidget("CREATESERVER_BUTTON_CANCEL").OnMouseUp = mi => {
-				r.ShowMenu("MAINMENU_BG");
+				r.CloseWindow();
 				return true;
 			};
 			
 			r.GetWidget("CREATESERVER_BUTTON_START").OnMouseUp = mi => {
-				r.ShowMenu(null);
+				r.OpenWindow("SERVER_LOBBY");
 				Log.Write("Creating server");
 				
 				// TODO: Get this from a map chooser

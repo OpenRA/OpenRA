@@ -43,7 +43,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			optionsBG.GetWidget("BUTTON_SETTINGS").OnMouseUp = mi => {
-				// Todo: Unfail ShowMenu to work with multiple root menus
+				r.OpenWindow("SETTINGS_BG");
 				return true;
 			};
 			

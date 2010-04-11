@@ -237,6 +237,8 @@ Container:
 					Width:160
 					Height:25
 					Text:Abort
+		Container@SERVER_LOBBY:
+			Id:SERVER_LOBBY
 		Container@INGAME_ROOT:
 			Id:INGAME_ROOT
 			Delegate:IngameChromeDelegate

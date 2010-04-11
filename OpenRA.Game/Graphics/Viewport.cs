@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 			{
 				if (!gameWasStarted)
 				{
-					Chrome.rootWidget.ShowMenu("INGAME_ROOT");
+					Chrome.rootWidget.OpenWindow("INGAME_ROOT");
 					gameWasStarted = true;
 				}
 				

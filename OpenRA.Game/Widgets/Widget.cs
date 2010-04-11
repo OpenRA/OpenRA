@@ -44,6 +44,7 @@ namespace OpenRA.Widgets
 		public Rectangle Bounds;
 		public Widget Parent = null;
 		static List<string> Delegates = new List<string>();
+		public static Stack<string> WindowList = new Stack<string>();
 		
 		// Common Funcs that most widgets will want
 		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
@@ -160,23 +161,26 @@ namespace OpenRA.Widgets
 			return (T)GetWidget(id);
 		}
 
-		public Widget GetCurrentMenu()
+		public Widget GetWindow()
 		{
+			return Chrome.rootWidget.GetWidget(WindowList.Peek());
 			// HACK HACK HACK (this method will vanish soon, so not going to hack the widget yaml itself)
-			return Children.FirstOrDefault(c => c.Visible && c.Id != "MUSIC_BG" && c.Id != "PERF_BG");
+			//return Children.FirstOrDefault(c => c.Visible && c.Id != "MUSIC_BG" && c.Id != "PERF_BG");
 		}
 		
-		public Widget ShowMenu(string menu)
+		public void CloseWindow()
 		{
-			var m = GetCurrentMenu();
-			if (m != null)
-				m.Visible = false;
+			Chrome.rootWidget.GetWidget(WindowList.Pop()).Visible = false;
+			Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = true;
+		}
 
-			var widget = GetWidget(menu);
-			if (widget != null)
-				widget.Visible = true;
-
-			return widget;
+		public Widget OpenWindow(string id)
+		{
+			Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = false;
+			WindowList.Push(id);
+			var window = Chrome.rootWidget.GetWidget(id);
+			window.Visible = true;
+			return window;
 		}
 	}
 

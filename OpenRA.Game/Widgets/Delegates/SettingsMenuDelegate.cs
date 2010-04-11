@@ -38,12 +38,12 @@ namespace OpenRA.Widgets.Delegates
 						
 			// Menu Buttons
 			r.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
-				r.ShowMenu("SETTINGS_BG");
+				r.OpenWindow("SETTINGS_BG");
 				return true;
 			};
 			
 			r.GetWidget("SETTINGS_BUTTON_OK").OnMouseUp = mi => {
-				r.ShowMenu("MAINMENU_BG");
+				r.CloseWindow();
 				return true;
 			};
 		}

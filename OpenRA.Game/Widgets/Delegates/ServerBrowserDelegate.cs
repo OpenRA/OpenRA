@@ -35,7 +35,7 @@ namespace OpenRA.Widgets.Delegates
 			var r = Chrome.rootWidget;
 			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = 
 			mi => {
-				var bg = r.ShowMenu("JOINSERVER_BG");
+				var bg = r.OpenWindow("JOINSERVER_BG");
 				int height = 50;
 				int width = 300;
 				int i = 0;
@@ -68,13 +68,13 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi => {
-				r.GetWidget("JOINSERVER_BG").Visible = false;
+				r.CloseWindow();
 				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				return true;
 			};
 			
 			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi => {
-				r.ShowMenu("MAINMENU_BG");
+				r.CloseWindow();
 				return true;
 			};
 		}

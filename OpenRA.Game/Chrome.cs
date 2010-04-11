@@ -119,6 +119,7 @@ namespace OpenRA
 				rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
 				rootWidget.Initialize();
 				rootWidget.InitDelegates();
+				Widget.WindowList.Push("MAINMENU_BG");
 			}
 		}
 
