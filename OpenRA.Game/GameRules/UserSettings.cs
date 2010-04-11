@@ -35,7 +35,7 @@ namespace OpenRA.GameRules
 		
 		// Internal game settings
 		public readonly int Timestep = 40;
-		public readonly int SheetSize = 512;
+		public readonly int SheetSize = 2048;
 		
 		// External game settings
 		public readonly string NetworkHost = "";
