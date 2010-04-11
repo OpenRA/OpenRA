@@ -156,13 +156,13 @@
 	</collection>
 	<collection name="dialog4" src="dialog4.png">
 		<image name="border-t" x="5" y="0" width="52" height="6" />
-		<image name="border-b" x="5" y="59" width="52" height="6" />
+		<image name="border-b" x="5" y="58" width="52" height="6" />
 		<image name="border-l" x="0" y="5" width="6" height="54" />
-		<image name="border-r" x="59" y="5" width="6" height="54" />
+		<image name="border-r" x="58" y="5" width="6" height="54" />
 		<image name="corner-tl" x="0" y="0" width="6" height="6" />
-		<image name="corner-tr" x="59" y="0" width="6" height="6" />
-		<image name="corner-bl" x="0" y="59" width="6" height="6" />
-		<image name="corner-br" x="59" y="59" width="6" height="6" />
+		<image name="corner-tr" x="58" y="0" width="6" height="6" />
+		<image name="corner-bl" x="0" y="58" width="6" height="6" />
+		<image name="corner-br" x="58" y="58" width="6" height="6" />
 		<image name="background" x="5" y="5" width="52" height="52" />
 	</collection>
 	<collection name="spawnpoints" src="spawnpoints.png">
