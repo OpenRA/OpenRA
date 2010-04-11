@@ -46,8 +46,6 @@ namespace OpenRA.Widgets
 			
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var text = GetText();
-			Rectangle r = Bounds;			
-			Game.chrome.renderer.Device.EnableScissor(r.Left,r.Top,r.Width,r.Height);
 			int2 textSize = font.Measure(text);
 			int2 position = new int2(Bounds.X,Bounds.Y);
 			
@@ -56,8 +54,6 @@ namespace OpenRA.Widgets
 					- new int2(textSize.X / 2, textSize.Y/2);
 			
 			font.DrawText(text, position, Color.White);
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-			Game.chrome.renderer.Device.DisableScissor();
 			base.Draw(world);
 		}
 	}

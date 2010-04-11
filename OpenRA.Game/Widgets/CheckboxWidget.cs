@@ -46,6 +46,8 @@ namespace OpenRA.Widgets
 
 			if (Checked())
 			{
+				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+
 				Game.chrome.lineRenderer.FillRect(
 					new RectangleF( 
 						Game.viewport.Location.X + Bounds.Left + 4, 
@@ -56,8 +58,6 @@ namespace OpenRA.Widgets
 				Game.chrome.lineRenderer.Flush();
 			}
 
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-			
 			base.Draw(world);
 		}
 	}

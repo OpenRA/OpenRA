@@ -191,7 +191,6 @@ namespace OpenRA.Widgets
 			DrawRGBA(ss[7], new float2(br.X - (int)ss[7].size.X, br.Y - (int)ss[7].size.Y));
 			
 			if (a != null) a();
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }

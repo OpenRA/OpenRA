@@ -94,7 +94,6 @@ namespace OpenRA.Widgets
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(Bounds.X, Bounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(Bounds.X, Bounds.Y + numPowers * 51));
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			
 			// Hack Hack Hack
 			Bounds.Width = 69;
@@ -137,10 +136,8 @@ namespace OpenRA.Widgets
 							pos += new int2(0, 20);
 							Game.chrome.renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 						}
-			
-						Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 					}
-					
+
 					WidgetUtils.DrawSHP(image, drawPos);
 
 					clock.PlayFetchIndex("idle",
@@ -155,9 +152,9 @@ namespace OpenRA.Widgets
 						ready.Play("ready");
 						WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2));
 					}
-					
+
 					buttons.Add(Pair.New(rect,HandleSupportPower(sp)));
-										
+
 					y += 51;
 				}
 			}
