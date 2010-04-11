@@ -297,6 +297,7 @@
     <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
     <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
     <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
+    <Compile Include="Widgets\PerfGraphWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

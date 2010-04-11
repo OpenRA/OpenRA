@@ -48,6 +48,12 @@ namespace OpenRA.Widgets
 
 		public Widget() { InputHandler = Lazy.New(() => BindHandler(Delegate)); }
 		
+		// Common Funcs that most widgets will want
+		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
+		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
+		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
+		public Func<bool> IsVisible;
+
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
@@ -69,6 +75,8 @@ namespace OpenRA.Widgets
 			                       width,
 			                       height);
 			
+			// Non-static func definitions
+			IsVisible = () => {return Visible;};
 			
 			foreach (var child in Children)
 				child.Initialize();
@@ -87,13 +95,7 @@ namespace OpenRA.Widgets
 			if (name == null) return null;
 			return Game.CreateObject<IWidgetDelegate>(name);
 		}
-		
-		// Common Funcs that most widgets will want
-		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
-		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
-		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
-
-		
+				
 		public virtual bool HandleInput(MouseInput mi)
 		{
 			// Are we able to handle this event?

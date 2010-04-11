@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -54,31 +54,6 @@ namespace OpenRA.Support
 			foreach (var item in items.Values)
 				if (item.hasNormalTick)
 					item.Tick();
-		}
-
-		public static void Render(Renderer r, LineRenderer lr)
-		{
-			float2 origin = Game.viewport.Location + new float2(330, Game.viewport.Height - 30);
-			float2 basis = new float2(-3, -3);
-
-			lr.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
-			lr.DrawLine(origin + new float2(100,0) * basis, origin + new float2(100,70) * basis, Color.White, Color.White);
-
-			foreach (var item in items.Values)
-			{
-				int n = 0;
-				item.Samples().Aggregate((a, b) =>
-				{
-					lr.DrawLine(
-						origin + new float2(n, (float)a) * basis,
-						origin + new float2(n+1, (float)b) * basis,
-						item.c, item.c);
-					++n;
-					return b;
-				});
-			}
-
-			lr.Flush();
 		}
 	}
 

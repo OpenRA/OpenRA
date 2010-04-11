@@ -19,6 +19,8 @@
 #endregion
 using System;
 using OpenRA.FileFormats;
+using OpenRA.Support;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class IngameChromeDelegate : IWidgetDelegate
@@ -26,7 +28,8 @@ namespace OpenRA.Widgets.Delegates
 		public IngameChromeDelegate()
 		{
 			var r = Chrome.rootWidget;
-			var optionsBG = r.GetWidget("INGAME_OPTIONS_BG");
+			var gameRoot = r.GetWidget("INGAME_ROOT");
+			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
 				optionsBG.Visible = !optionsBG.Visible;
 				return true;
@@ -49,6 +52,21 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
+			// Perf text
+			var perfText = gameRoot.GetWidget<LabelWidget>("PERFTEXT");
+			perfText.GetText = () => {
+				return "RenderFrame {0} ({2:F1} ms)\nTick {4}/ Net{1} ({3:F1} ms)".F(
+					Game.RenderFrame,
+					Game.orderManager.FrameNumber,
+					PerfHistory.items["render"].LastValue,
+					PerfHistory.items["tick_time"].LastValue,
+					Game.LocalTick);
+			};
+			perfText.IsVisible = () => {return (perfText.Visible && Game.Settings.PerfText);};
+			
+			// Perf graph
+			var perfGraph = gameRoot.GetWidget("PERFGRAPH");
+			perfGraph.IsVisible = () => {return (perfGraph.Visible && Game.Settings.PerfGraph);};
 		}
 	}
 }

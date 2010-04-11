@@ -19,6 +19,7 @@
 #endregion
 
 using System.Drawing;
+using System;
 
 namespace OpenRA.Widgets
 {
@@ -26,26 +27,35 @@ namespace OpenRA.Widgets
 	{
 		public string Text = "";
 		public string Align = "Left";
+		public bool Bold = true;
+		public Func<string> GetText;
 		
+		public override void Initialize()
+		{
+			base.Initialize();
+			GetText = () => {return Text;};
+		}
+
 		public override void Draw(World world)
 		{		
-			if (!Visible)
+			if (!IsVisible())
 			{
 				base.Draw(world);
 				return;
 			}
-		
-			Rectangle r = Bounds;
-			Game.chrome.renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 			
-			int2 textSize = Game.chrome.renderer.BoldFont.Measure(Text);
+			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
+			var text = GetText();
+			Rectangle r = Bounds;			
+			Game.chrome.renderer.Device.EnableScissor(r.Left,r.Top,r.Width,r.Height);
+			int2 textSize = font.Measure(text);
 			int2 position = new int2(Bounds.X,Bounds.Y);
 			
 			if (Align == "Center")
 				position = new int2(Bounds.X+Bounds.Width/2, Bounds.Y+Bounds.Height/2) 
 					- new int2(textSize.X / 2, textSize.Y/2);
 			
-			Game.chrome.renderer.BoldFont.DrawText(Game.chrome.rgbaRenderer, Text, position, Color.White);
+			font.DrawText(Game.chrome.rgbaRenderer, text, position, Color.White);
 			Game.chrome.rgbaRenderer.Flush();
 			Game.chrome.renderer.Device.DisableScissor();
 			base.Draw(world);

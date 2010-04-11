@@ -162,18 +162,6 @@ namespace OpenRA
 
 			renderer.Device.DisableScissor();
 			
-			if (Game.Settings.PerfText)
-				renderer.RegularFont.DrawText( rgbaRenderer, "RenderFrame {0} ({2:F1} ms)\nTick {4}/ Net{1} ({3:F1} ms)\n".F(
-					Game.RenderFrame,
-					Game.orderManager.FrameNumber,
-					PerfHistory.items["render"].LastValue,
-					PerfHistory.items["tick_time"].LastValue,
-					Game.LocalTick), 
-					new int2(140, 15), Color.White);
-
-			if (Game.Settings.PerfGraph)
-				PerfHistory.Render(renderer, world.WorldRenderer.lineRenderer);
-
 			DrawRadar( world );
 			DrawPower( world );
 			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), "chrome");

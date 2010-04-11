@@ -261,6 +261,21 @@ Container:
 			Id:INGAME_ROOT
 			Visible:false
 			Children:
+				PerfGraph@PERFGRAPH:
+					Id:PERFGRAPH
+					X:10
+					Y:WINDOW_BOTTOM - 250
+					Width:200
+					Height:200
+					Delegate:IngameChromeDelegate
+				Label@PERFTEXT:
+					Id:PERFTEXT
+					Bold: false
+					X:10
+					Y:WINDOW_BOTTOM - 40
+					Width:200
+					Height:100
+					Delegate:IngameChromeDelegate
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0
