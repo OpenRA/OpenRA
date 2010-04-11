@@ -139,18 +139,20 @@ namespace OpenRA.Graphics
 				lastConnectionState = state;
 
 			}
-			Timer.Time( "checking connections: {0}" );
-
 			Game.chrome.DrawWidgets(world);
 			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
-			cursorRenderer.Flush();
 			Timer.Time( "cursors: {0}" );
 
+			renderer.RgbaSpriteRenderer.Flush();
+			renderer.SpriteRenderer.Flush();
+			renderer.WorldSpriteRenderer.Flush();
+
 			renderer.EndFrame();
+			Timer.Time( "endFrame: {0}" );
 		}
 
 		public void Tick()
