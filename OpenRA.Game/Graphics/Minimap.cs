@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
 
 			lineRenderer = new LineRenderer(r);
-			rgbaRenderer = new SpriteRenderer(r, true, r.RgbaSpriteShader);
+			rgbaRenderer = new SpriteRenderer(r, r.RgbaSpriteShader);
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			var dw = (size - world.Map.Width) / 2;
 			var dh = (size - world.Map.Height) / 2;

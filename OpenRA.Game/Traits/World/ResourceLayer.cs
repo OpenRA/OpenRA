@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 
 		public ResourceLayer(Actor self)
 		{
-			sr = new SpriteRenderer( Game.renderer, true );
+			sr = new SpriteRenderer( Game.renderer );
 		}
 		
 		public void Render()

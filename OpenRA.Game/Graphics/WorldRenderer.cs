@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 			this.renderer = renderer;
 
 			terrainRenderer = new TerrainRenderer(world, renderer, this);
-			spriteRenderer = new SpriteRenderer(renderer, true);
+			spriteRenderer = new SpriteRenderer(renderer);
 			lineRenderer = new LineRenderer(renderer);
 			uiOverlay = new UiOverlay(spriteRenderer);
 			palette = new HardwarePalette(renderer, world.Map);

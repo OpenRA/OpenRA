@@ -87,9 +87,9 @@ namespace OpenRA
 		public Chrome(Renderer r, Manifest m)
 		{
 			this.renderer = r;
-			rgbaRenderer = new SpriteRenderer(renderer, true, renderer.RgbaSpriteShader);
+			rgbaRenderer = new SpriteRenderer(renderer, renderer.RgbaSpriteShader);
 			lineRenderer = new LineRenderer(renderer);
-			shpRenderer = new SpriteRenderer(renderer, true, renderer.WorldSpriteShader);
+			shpRenderer = new SpriteRenderer(renderer, renderer.WorldSpriteShader);
 		
 			tabSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>())

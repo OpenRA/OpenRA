@@ -23,6 +23,7 @@ using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
@@ -57,7 +58,7 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			cursorRenderer = new SpriteRenderer(renderer, true);
+			cursorRenderer = new SpriteRenderer(renderer);
 
 			this.scrollPosition = Game.CellSize* mapStart;
 		}

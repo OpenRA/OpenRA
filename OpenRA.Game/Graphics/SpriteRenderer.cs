@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 		int sprites = 0;
 		int nv = 0, ni = 0;
 
-		public SpriteRenderer(Renderer renderer, bool allowAlpha, IShader shader)
+		public SpriteRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
@@ -46,8 +46,8 @@ namespace OpenRA.Graphics
 			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 
-		public SpriteRenderer(Renderer renderer, bool allowAlpha)
-			: this(renderer, allowAlpha, renderer.SpriteShader) { }
+		public SpriteRenderer(Renderer renderer)
+			: this(renderer, renderer.SpriteShader) { }
 
 		public void Flush()
 		{
