@@ -34,12 +34,13 @@ namespace OpenRA.Widgets.Delegates
 			// Perf text
 			var perfText = perfRoot.GetWidget<LabelWidget>("TEXT");
 			perfText.GetText = () => {
-				return "RenderFrame {0} ({2:F1} ms)\nTick {4}/ Net{1} ({3:F1} ms)".F(
+				return "Render {0} ({5}={2:F1} ms)\nTick {4} ({3:F1} ms)".F(
 					Game.RenderFrame,
 					Game.orderManager.FrameNumber,
 					PerfHistory.items["render"].LastValue,
 					PerfHistory.items["tick_time"].LastValue,
-					Game.LocalTick);
+					Game.LocalTick,
+					PerfHistory.items["batches"].LastValue);
 			};
 		}
 	}
