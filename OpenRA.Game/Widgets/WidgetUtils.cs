@@ -93,13 +93,18 @@ namespace OpenRA.Widgets
 		
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
 		{
-			Game.chrome.renderer.Device.EnableScissor(r.Left, r.Top, r.Width, r.Height);
 			for (var x = r.Left; x < r.Right; x += (int)s.size.X)
 				for (var y = r.Top; y < r.Bottom; y += (int)s.size.Y)
-					DrawRGBA(s, new float2(x, y));
-			
-			Game.chrome.rgbaRenderer.Flush();
-			Game.chrome.renderer.Device.DisableScissor();
+				{
+					var ss = s;
+					var left = new int2(r.Right - x, r.Bottom - y);
+					if (left.X < (int)s.size.X || left.Y < (int)s.size.Y)
+					{
+						Rectangle rr = new Rectangle(s.bounds.Left,s.bounds.Top,Math.Min(left.X,(int)s.size.X),Math.Min(left.Y,(int)s.size.Y));
+						ss = new Sprite(s.sheet,rr,s.channel);
+					}
+					DrawRGBA(ss, new float2(x, y));
+				}
 		}
 	
 		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br, Action a)
