@@ -492,8 +492,7 @@ namespace OpenRA.Server
 
 			lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
-			foreach( var c in conns )
-				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
+			DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 			
 			if (conns.Count == 0) OnServerEmpty();
 			else SyncLobbyInfo();

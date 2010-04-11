@@ -78,7 +78,6 @@ namespace OpenRA
 			// Mod assemblies assumed to contain a single namespace
 			foreach (var a in m.Assemblies)
 			{
-				var failures = new List<string>();
 				var fullpath = Path.GetFullPath(a);
 
 				var asm = Assembly.LoadFile(fullpath);

@@ -34,7 +34,6 @@ namespace OpenRA.Widgets
 		Animation ready;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
-		string chromeCollection;
 		
 		public override void Initialize()
 		{
@@ -87,9 +86,6 @@ namespace OpenRA.Widgets
 			var numPowers = powers.Count(p => p.IsAvailable);
 			if (numPowers == 0) return;
 			
-			SupportPower tooltipItem = null;
-			int2 tooltipPos = int2.Zero;											
-
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(Bounds.X,Bounds.Y));
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(Bounds.X, Bounds.Y + i * 51));
@@ -112,9 +108,7 @@ namespace OpenRA.Widgets
 
 					if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
 					{
-						var pos = drawPos.ToInt2();
-						var tooltipBounds = new Rectangle(pos.X-3,pos.Y-3,350,54);
-						
+						var pos = drawPos.ToInt2();					
 						var tl = new int2(pos.X-3,pos.Y-3);
 						var m = new int2(pos.X+64+3,pos.Y+48+3);
 						var br = tl + new int2(64+3+20,60);

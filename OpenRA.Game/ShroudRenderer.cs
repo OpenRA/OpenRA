@@ -33,7 +33,6 @@ namespace OpenRA
 		
 		bool dirty = true;
 		bool disabled = false;
-		Player owner;
 		Map map;
 
 		public Rectangle? bounds { get { return shroud.exploredBounds; } }
@@ -41,7 +40,6 @@ namespace OpenRA
 		public ShroudRenderer(Player owner, Map map)
 		{
 			this.shroud = owner.World.WorldActor.traits.Get<Traits.Shroud>();
-			this.owner = owner;
 			this.map = map;
 			
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];

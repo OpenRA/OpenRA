@@ -117,7 +117,6 @@ namespace OpenRA.FileFormats
 		public void Save(string filepath)
 		{
 			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
-			var d = new Dictionary<string, MiniYaml>();
 			foreach (var field in SimpleFields)
 			{
 				FieldInfo f = this.GetType().GetField(field);

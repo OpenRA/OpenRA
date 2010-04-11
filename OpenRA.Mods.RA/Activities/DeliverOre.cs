@@ -67,8 +67,6 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var mobile = self.traits.Get<Mobile>();
-
 			if( NextActivity != null )
 				return NextActivity;
 

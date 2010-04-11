@@ -32,11 +32,7 @@ namespace OpenRA.Mods.RA
 
 	class C4Demolition : IIssueOrder, IResolveOrder
 	{
-		Actor self;
-		public C4Demolition(Actor self)
-		{
-			this.self = self;
-		}
+		public C4Demolition(Actor self)	{}
 		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

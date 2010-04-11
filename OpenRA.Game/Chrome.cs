@@ -83,7 +83,6 @@ namespace OpenRA
 		// mapchooser
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
-		int mapOffset = 0;
 						
 		public Chrome(Renderer r, Manifest m)
 		{
@@ -260,9 +259,7 @@ namespace OpenRA
 			rgbaRenderer.Flush();
 			
 			var y = r.Top + 50;
-			
-			int maxListItems = ((r.Bottom - 60 - y ) / 20);
-		
+					
 			// Don't bother showing a subset of the data
 			// This will be fixed properly when we move the map list to widgets
 			foreach (var kv in Game.AvailableMaps)
@@ -813,7 +810,6 @@ namespace OpenRA
 				paletteAnimating = false;
 			}
 		}
-		
 		
 		// Return an int telling us the y coordinate at the bottom of the palette
 		int DrawBuildPalette( World world, string queueName )

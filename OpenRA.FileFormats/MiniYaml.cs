@@ -47,7 +47,6 @@ namespace OpenRA.FileFormats
 		
 		public static MiniYaml FromList<T>(List<T>list)
 		{
-			var d = new Dictionary<string, MiniYaml>();
 			return new MiniYaml( null, list.ToDictionary( x=>x.ToString(), x=>new MiniYaml(null)));
 		}
 		
