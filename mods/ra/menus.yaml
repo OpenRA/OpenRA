@@ -308,6 +308,12 @@ Container:
 					Id:INGAME_POWERS_BIN
 					X:0
 					Y:25
+				BuildPalette@INGAME_BUILD_PALETTE:
+					Id:INGAME_BUILD_PALETTE
+					X:WINDOW_RIGHT - 250
+					Y:280
+					Width:250
+					Height:500
 				Button@INGAME_OPTIONS_BUTTON:
 					Id:INGAME_OPTIONS_BUTTON
 					X:0

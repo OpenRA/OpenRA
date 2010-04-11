@@ -40,27 +40,8 @@ namespace OpenRA
 		
 		string chromeCollection;
 		string radarCollection;
-		string paletteCollection;
-		
-		// Build Palette tabs
-		string currentTab = "Building";
-		bool paletteOpen = false;
-		readonly Dictionary<string, string[]> tabImageNames;
-		readonly Dictionary<string, Sprite> tabSprites;
-		
-		// Build Palette
-		const int paletteColumns = 3;
-		const int paletteRows = 5;
-		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
-		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
-		static float2 paletteOrigin = paletteClosedOrigin;
-		const int paletteAnimationLength = 7;
-		int paletteAnimationFrame = 0;
-		bool paletteAnimating = false;
+
 		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
-		readonly Animation cantBuild;
-		readonly Animation ready;
-		readonly Animation clock;
 
 		// Radar
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
@@ -83,28 +64,7 @@ namespace OpenRA
 		{
 			this.renderer = r;
 			lineRenderer = new LineRenderer(renderer);
-		
-			tabSprites = Rules.Info.Values
-				.Where(u => u.Traits.Contains<BuildableInfo>())
-				.ToDictionary(
-					u => u.Name,
-					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<BuildableInfo>().Icon ?? (u.Name + "icon"))[0]);
-
-			var groups = Rules.Categories();
-			
-			tabImageNames = groups.Select(
-				(g, i) => Pair.New(g,
-					OpenRA.Graphics.Util.MakeArray(3,
-						n => i.ToString())))
-				.ToDictionary(a => a.First, a => a.Second);
-
-			cantBuild = new Animation("clock");
-			cantBuild.PlayFetchIndex("idle", () => 0);
-
-			ready = new Animation("pips");
-			ready.PlayRepeating("ready");
-			clock = new Animation("clock");
-			
+					
 			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 			
 			if (rootWidget == null)
@@ -118,9 +78,7 @@ namespace OpenRA
 
 		public static Widget rootWidget = null;
 		public static Widget selectedWidget;
-		
-		List<string> visibleTabs = new List<string>();
-		
+				
 		public void Tick(World world)
 		{
 			if (!world.GameHasStarted) return;
@@ -129,28 +87,14 @@ namespace OpenRA
 			if (worldTooltipTicks < worldTooltipDelay)
 				++worldTooltipTicks;
 			
-			TickPaletteAnimation();
+			rootWidget.Tick(world);
+			
 			TickRadarAnimation();
-
-			visibleTabs.Clear();
-			foreach (var q in tabImageNames)
-				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
-				{
-					if (currentTab == q.Key)
-						currentTab = null;
-				}
-				else
-					visibleTabs.Add(q.Key);
-
-			if (currentTab == null)
-				currentTab = visibleTabs.FirstOrDefault();
 		}
 				
 		public void Draw( World world )
 		{
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
-			paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
-			chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
 			buttons.Clear();
 
@@ -159,9 +103,6 @@ namespace OpenRA
 			DrawRadar( world );
 			DrawPower( world );
 			rgbaRenderer.Flush();
-			
-			int paletteHeight = DrawBuildPalette(world, currentTab);
-			DrawBuildTabs(world, paletteHeight);
 			DrawChat();
 
 			DrawWorldTooltip(world);
@@ -489,60 +430,7 @@ namespace OpenRA
 			{ "Ship", "Ships" },
 			{ "Vehicle", "Vehicles" },
 		};
-		
-		void DrawBuildTabs( World world, int paletteHeight)
-		{
-			const int tabWidth = 24;
-			const int tabHeight = 40;
-			var x = paletteOrigin.X - tabWidth;
-			var y = paletteOrigin.Y + 9;
 
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-
-			foreach (var q in tabImageNames)
-			{
-				var groupName = q.Key;
-				if (!visibleTabs.Contains(groupName))
-					continue;
-
-				string[] tabKeys = { "normal", "ready", "selected" };
-				var producing = queue.CurrentItem(groupName);
-				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
-				var race = world.LocalPlayer.Country.Race;
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), "chrome");
-
-				var rect = new RectangleF(x, y, tabWidth, tabHeight);
-				buttons.Add(Pair.New(rect, (Action<bool>)(isLmb => HandleTabClick(groupName))));
-
-				if (rect.Contains(lastMousePos.ToPointF()))
-				{
-					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
-					var sz = renderer.BoldFont.Measure(text);
-					WidgetUtils.DrawPanelPartial("dialog4",
-						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
-						PanelSides.All);
-
-					renderer.BoldFont.DrawText(text, 
-						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
-				}
-
-				y += tabHeight;
-			}
-
-			rgbaRenderer.Flush();
-		}
-		
-		void HandleTabClick(string button)
-		{
-			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-			Sound.Play(eva.TabClick);
-			var wasOpen = paletteOpen;
-			paletteOpen = (currentTab == button && wasOpen) ? false : true;
-			currentTab = button;
-			if (wasOpen != paletteOpen)
-				paletteAnimating = true;
-		}
-		
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		
@@ -667,230 +555,6 @@ namespace OpenRA
 			renderer.RegularFont.DrawText(line.b, p, line.a);
 			renderer.RegularFont.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
-		
-		void TickPaletteAnimation()
-		{		
-			if (!paletteAnimating)
-				return;
-
-			// Increment frame
-			if (paletteOpen)
-				paletteAnimationFrame++;
-			else
-				paletteAnimationFrame--;
-			
-			// Calculate palette position
-			if (paletteAnimationFrame <= paletteAnimationLength)
-				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
-
-			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-			
-			// Play palette-open sound at the start of the activate anim (open)
-			if (paletteAnimationFrame == 1 && paletteOpen)
-				Sound.Play(eva.BuildPaletteOpen);
-
-			// Play palette-close sound at the start of the activate anim (close)
-			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
-				Sound.Play(eva.BuildPaletteClose);
-
-			// Animation is complete
-			if ((paletteAnimationFrame == 0 && !paletteOpen)
-					|| (paletteAnimationFrame == paletteAnimationLength && paletteOpen))
-			{
-				paletteAnimating = false;
-			}
-		}
-		
-		// Return an int telling us the y coordinate at the bottom of the palette
-		int DrawBuildPalette( World world, string queueName )
-		{
-			// Hack
-			int columns = paletteColumns;
-			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
-			
-			if (queueName == null) return 0;
-
-			var x = 0;
-			var y = 0;
-
-			var buildableItems = Rules.TechTree.BuildableItems(world.LocalPlayer, queueName).ToArray();
-
-			var allBuildables = Rules.TechTree.AllBuildables(queueName)
-				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(world.LocalPlayer.Country.Race))
-				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder)
-				.ThenBy(a => a.Traits.Get<BuildableInfo>().TechLevel).ToArray();
-
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
-
-			var overlayBits = new List<Pair<Sprite, float2>>();
-
-			string tooltipItem = null;
-
-			// Draw the top border
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "top"), 
-				new float2(origin.X - 9, origin.Y - 9), "chrome");
-
-			var numActualRows = Math.Max((allBuildables.Length + columns - 1) / columns, paletteRows);
-			for (var w = 0; w < numActualRows; w++)
-				rgbaRenderer.DrawSprite(
-					ChromeProvider.GetImage(renderer, paletteCollection,
-					"bg-" + (w % 4).ToString()),
-					new float2(origin.X - 9, origin.Y + 48 * w),
-					"chrome");
-
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "bottom"), 
-				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows), "chrome");
-
-			rgbaRenderer.Flush();
-
-			// Draw the icons
-			foreach (var item in allBuildables)
-			{	
-				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
-				var drawPos = new float2(rect.Location);
-				var isBuildingSomething = queue.CurrentItem(queueName) != null;
-
-				shpRenderer.DrawSprite(tabSprites[item.Name], drawPos, "chrome");
-
-				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
-
-				if (rect.Contains(lastMousePos.ToPoint()))
-					tooltipItem = item.Name;
-
-				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
-
-				if (firstOfThis != null)
-				{
-					clock.PlayFetchIndex( "idle", 
-						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime) 
-							* (clock.CurrentSequence.Length - 1)/ firstOfThis.TotalTime);
-					clock.Tick();
-					shpRenderer.DrawSprite(clock.Image, drawPos, "chrome");
-
-					if (firstOfThis.Done)
-					{
-						ready.Play("ready");
-						overlayBits.Add(Pair.New(ready.Image, overlayPos));
-					}
-					else if (firstOfThis.Paused)
-					{
-						ready.Play("hold");
-						overlayBits.Add(Pair.New(ready.Image, overlayPos));
-					}
-
-					var repeats = queue.AllItems(queueName).Count(a => a.Item == item.Name);
-					if (repeats > 1 || queue.CurrentItem(queueName) != firstOfThis)
-					{
-						var offset = -22;
-						var digits = repeats.ToString();
-						foreach (var d in digits)
-						{
-							ready.PlayFetchIndex("groups", () => d - '0');
-							ready.Tick();
-							overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
-							offset += 6;
-						}
-					}
-				}
-				else
-					if (!buildableItems.Contains(item.Name) || isBuildingSomething)
-						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
-
-				var closureItemName = item.Name;
-				
-				var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-				
-				AddButton(rect, buildableItems.Contains(item.Name)
-					? isLmb => HandleBuildPalette(world, closureItemName, isLmb)
-					: (Action<bool>)(_ => Sound.Play(eva.TabClick)));
-	
-				if (++x == columns) { x = 0; y++; }
-			}
-			if (x != 0) y++;
-
-			foreach (var ob in overlayBits)
-				shpRenderer.DrawSprite(ob.First, ob.Second, "chrome");
-
-			shpRenderer.Flush();
-			
-			// Draw dock
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-top"), 
-				new float2(Game.viewport.Width - 14, origin.Y - 23), "chrome");
-
-			for (int i = 0; i < numActualRows; i++)
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-" + (i % 4).ToString()), 
-					new float2(Game.viewport.Width - 14, origin.Y + 48 * i), "chrome");
-
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, paletteCollection, "dock-bottom"), 
-				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows), "chrome");
-
-			rgbaRenderer.Flush();
-
-			if (tooltipItem != null && paletteOpen)
-				DrawProductionTooltip(world, tooltipItem, 
-					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
-				
-			return y*48+9;
-		}
-
-		void StartProduction( World world, string item )
-		{
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			var unit = Rules.Info[item];
-
-			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
-			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item, 
-				Game.controller.GetModifiers().HasModifier(Modifiers.Shift) ? 5 : 1));
-		}
-
-		void HandleBuildPalette( World world, string item, bool isLmb )
-		{
-			var player = world.LocalPlayer;
-			var unit = Rules.Info[item];
-			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
-
-			Sound.Play(eva.TabClick);
-
-			if (isLmb)
-			{
-				if (producing != null && producing == queue.CurrentItem(unit.Category))
-				{
-					if (producing.Done)
-					{
-						if (unit.Traits.Contains<BuildingInfo>())
-							Game.controller.orderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
-						return;
-					}
-
-					if (producing.Paused)
-					{
-						Game.IssueOrder(Order.PauseProduction(player, item, false));
-						return;
-					}
-				}
-
-				StartProduction(world, item);
-			}
-			else
-			{
-				if (producing != null)
-				{
-					// instant cancel of things we havent really started yet, and things that are finished
-					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
-					{
-						Sound.Play(eva.CancelledAudio);
-						Game.IssueOrder(Order.CancelProduction(player, item));
-					}
-					else
-					{
-						Sound.Play(eva.OnHoldAudio);
-						Game.IssueOrder(Order.PauseProduction(player, item, true));
-					}
-				}
-			}
-		}
 
 		const int worldTooltipDelay = 10;		/* ticks */
 
@@ -939,63 +603,6 @@ namespace OpenRA
 		void DrawCentered(string text, int2 pos, Color c)
 		{
 			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X / 2, 0), c);
-		}
-
-		void DrawProductionTooltip(World world, string unit, int2 pos)
-		{
-			var tooltipSprite = ChromeProvider.GetImage(renderer, chromeCollection, "tooltip-bg");
-			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
-			rgbaRenderer.DrawSprite(tooltipSprite, p, "chrome");
-			
-
-			var info = Rules.Info[unit];
-			var buildable = info.Traits.Get<BuildableInfo>();
-
-			renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
-
-			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
-				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
-
-			var bi = info.Traits.GetOrDefault<BuildingInfo>();
-			if (bi != null)
-				DrawRightAligned("ϟ{0}".F(bi.Power), pos + new int2(-5, 20),
-					world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
-					? Color.White : Color.Red);
-
-			var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
-			p += new int2(5, 5);
-			p += new int2(0, 15);
-			if (!Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings))
-			{
-				var prereqs = buildable.Prerequisites
-					.Select( a => Description( a ) );
-				renderer.RegularFont.DrawText("Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
-					Color.White);
-			}
-
-			if (buildable.LongDesc != null)
-			{
-				p += new int2(0, 15);
-				renderer.RegularFont.DrawText(buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
-			}
-
-			rgbaRenderer.Flush();
-		}
-
-		static string Description( string a )
-		{
-			if( a[ 0 ] == '@' )
-				return "any " + a.Substring( 1 );
-			else
-				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
-		}
-
-		public void SetCurrentTab(string produces)
-		{
-			if (!paletteOpen)
-				paletteAnimating = true;
-			paletteOpen = true;
-			currentTab = produces;
 		}
 	}
 }

@@ -138,6 +138,13 @@ namespace OpenRA.Widgets
 					child.Draw(world);
 		}
 		
+		public virtual void Tick(World world)
+		{
+			if (IsVisible())
+				foreach (var child in Children)
+					child.Tick(world);
+		}
+		
 		public void AddChild(Widget child)
 		{
 			child.Parent = this;

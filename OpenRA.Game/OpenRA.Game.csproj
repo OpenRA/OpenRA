@@ -303,6 +303,7 @@
     <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
+    <Compile Include="Widgets\BuildPaletteWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
