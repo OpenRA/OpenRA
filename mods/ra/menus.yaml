@@ -6,6 +6,7 @@ Container:
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:250
 			Height:250
+			Delegate:MainMenuButtonsDelegate
 			Children:
 				Label@MAINMENU_LABEL_TITLE:
 					Id:MAINMENU_LABEL_TITLE
@@ -22,7 +23,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Join Game
-					Delegate:ServerBrowserDelegate
 				Button@MAINMENU_BUTTON_CREATE:
 					Id:MAINMENU_BUTTON_CREATE
 					X:45
@@ -30,7 +30,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Create Game
-					Delegate:CreateServerMenuDelegate
 				Button@MAINMENU_BUTTON_SETTINGS:
 					Id:MAINMENU_BUTTON_SETTINGS
 					X:45
@@ -38,7 +37,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Settings
-					Delegate:SettingsMenuDelegate
 				Button@MAINMENU_BUTTON_QUIT:
 					Id:MAINMENU_BUTTON_QUIT
 					X:45
@@ -46,9 +44,9 @@ Container:
 					Width:160
 					Height:25
 					Text:Quit
-					Delegate:MainMenuButtonsDelegate
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
+			Delegate:CreateServerMenuDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -70,7 +68,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Advertise game Online
-					Delegate:CreateServerMenuDelegate
 				Button@CREATESERVER_BUTTON_START:
 					Id:CREATESERVER_BUTTON_START
 					X:100
@@ -78,7 +75,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Create
-					Delegate:CreateServerMenuDelegate
 				Button@CREATESERVER_BUTTON_CANCEL:
 					Id:CREATESERVER_BUTTON_CANCEL
 					X:270
@@ -86,9 +82,9 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
-					Delegate:CreateServerMenuDelegate
 		Background@SETTINGS_BG:
 			Id:SETTINGS_BG
+			Delegate:SettingsMenuDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM- HEIGHT)/2
 			Width: 450
@@ -110,7 +106,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Occupied Cells
-					Delegate:SettingsMenuDelegate
 				Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
 					Id:SETTINGS_CHECKBOX_PATHDEBUG
 					X:100
@@ -118,7 +113,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Unit Paths
-					Delegate:SettingsMenuDelegate
 				Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
 					Id:SETTINGS_CHECKBOX_INDEXDEBUG
 					X:100
@@ -126,7 +120,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Spatial Index Debug
-					Delegate:SettingsMenuDelegate
 				Checkbox@SETTINGS_CHECKBOX_PERFGRAPH:
 					Id:SETTINGS_CHECKBOX_PERFGRAPH
 					X:100
@@ -134,7 +127,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Performance Graph
-					Delegate:SettingsMenuDelegate
 				Checkbox@SETTINGS_CHECKBOX_PERFTEXT:
 					Id:SETTINGS_CHECKBOX_PERFTEXT
 					X:100
@@ -142,7 +134,6 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Performance Text
-					Delegate:SettingsMenuDelegate
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180
@@ -150,9 +141,9 @@ Container:
 					Width:160
 					Height:25
 					Text:OK
-					Delegate:SettingsMenuDelegate
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
+			Delegate:ServerBrowserDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -174,7 +165,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Direct Connect
-					Delegate:ServerBrowserDelegate
 				Button@JOINSERVER_BUTTON_CANCEL:
 					Id:JOINSERVER_BUTTON_CANCEL
 					X:PARENT_RIGHT - 180
@@ -182,9 +172,9 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
-					Delegate:ServerBrowserDelegate
 		Background@CONNECTION_FAILED_BG:
 			Id:CONNECTION_FAILED_BG
+			Delegate:ConnectionDialogsDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -207,7 +197,6 @@ Container:
 					Height:25
 					Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
 					Align:Center
-					Delegate:ConnectionDialogsDelegate
 				Button@CONNECTION_BUTTON_RETRY:
 					Id:CONNECTION_BUTTON_RETRY
 					X:PARENT_RIGHT - 360
@@ -215,7 +204,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Retry
-					Delegate:ConnectionDialogsDelegate
 				Button@CONNECTION_BUTTON_CANCEL:
 					Id:CONNECTION_BUTTON_CANCEL
 					X:PARENT_RIGHT - 180
@@ -223,9 +211,9 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
-					Delegate:ConnectionDialogsDelegate
 		Background@CONNECTING_BG:
 			Id:CONNECTING_BG
+			Delegate:ConnectionDialogsDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -248,7 +236,6 @@ Container:
 					Height:25
 					Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
 					Align:Center
-					Delegate:ConnectionDialogsDelegate
 				Button@CONNECTION_BUTTON_ABORT:
 					Id:CONNECTION_BUTTON_ABORT
 					X:PARENT_RIGHT - 180
@@ -256,9 +243,9 @@ Container:
 					Width:160
 					Height:25
 					Text:Abort
-					Delegate:ConnectionDialogsDelegate
 		Container@INGAME_ROOT:
 			Id:INGAME_ROOT
+			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
 				PerfGraph@PERFGRAPH:
@@ -267,7 +254,6 @@ Container:
 					Y:WINDOW_BOTTOM - 250
 					Width:200
 					Height:200
-					Delegate:IngameChromeDelegate
 				Label@PERFTEXT:
 					Id:PERFTEXT
 					Bold: false
@@ -275,12 +261,10 @@ Container:
 					Y:WINDOW_BOTTOM - 40
 					Width:200
 					Height:100
-					Delegate:IngameChromeDelegate
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0
 					Y:25
-					Delegate:IngameChromeDelegate
 				Button@INGAME_OPTIONS_BUTTON:
 					Id:INGAME_OPTIONS_BUTTON
 					X:0
@@ -288,7 +272,6 @@ Container:
 					Width:160
 					Height:25
 					Text:Options
-					Delegate:IngameChromeDelegate
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2
@@ -312,7 +295,6 @@ Container:
 							Width:160
 							Height:25
 							Text:Settings
-							Delegate:IngameChromeDelegate
 						Button@BUTTON_DISCONNECT:
 							Id:BUTTON_DISCONNECT
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -320,7 +302,6 @@ Container:
 							Width:160
 							Height:25
 							Text:Disconnect
-							Delegate:IngameChromeDelegate
 						Button@BUTTON_QUIT:
 							Id:BUTTON_QUIT
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -328,9 +309,9 @@ Container:
 							Width:160
 							Height:25
 							Text:Quit
-							Delegate:IngameChromeDelegate
 		Background@MUSIC_BG:
 			Id:MUSIC_BG
+			Delegate:MusicPlayerDelegate
 			X:WINDOW_RIGHT - 100
 			Y:WINDOW_BOTTOM - 65
 			Width: 90
@@ -345,7 +326,6 @@ Container:
 					Width:25
 					Height:25
 					Text:|>
-					Delegate:MusicPlayerDelegate
 				Button@BUTTON_PAUSE:
 					Id:BUTTON_PAUSE
 					X:15
@@ -353,7 +333,6 @@ Container:
 					Width:25
 					Height:25
 					Text:||
-					Delegate:MusicPlayerDelegate
 				Button@BUTTON_STOP:
 					Id:BUTTON_STOP
 					X:50
@@ -361,4 +340,3 @@ Container:
 					Width:25
 					Height:25
 					Text:[]
-					Delegate:MusicPlayerDelegate

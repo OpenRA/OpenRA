@@ -36,17 +36,13 @@ namespace OpenRA.Widgets
 		public readonly string Width = "0";
 		public readonly string Height = "0";
 		public readonly string Delegate = null;
-
-		public Lazy<IWidgetDelegate> InputHandler;
-
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Calculated internally
 		public Rectangle Bounds;
 		public Widget Parent = null;
-
-		public Widget() { InputHandler = Lazy.New(() => BindHandler(Delegate)); }
+		static List<string> Delegates = new List<string>();
 		
 		// Common Funcs that most widgets will want
 		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
@@ -78,22 +74,25 @@ namespace OpenRA.Widgets
 			// Non-static func definitions
 			IsVisible = () => {return Visible;};
 			
+			if (Delegate != null && !Delegates.Contains(Delegate))
+					Delegates.Add(Delegate);
+			
 			foreach (var child in Children)
 				child.Initialize();
 		}
-
+		
+		public void InitDelegates()
+		{
+			foreach(var d in Delegates)
+				Game.CreateObject<IWidgetDelegate>(d);
+		}
+		
 		public Rectangle GetEventBounds()
 		{
 			return Children
 				.Where(c => c.Visible)
 				.Select(c => c.GetEventBounds())
 				.Aggregate(Bounds, Rectangle.Union);
-		}
-
-		static IWidgetDelegate BindHandler(string name)
-		{
-			if (name == null) return null;
-			return Game.CreateObject<IWidgetDelegate>(name);
 		}
 				
 		public virtual bool HandleInput(MouseInput mi)
@@ -108,15 +107,15 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Mousedown
-			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Down)
+			if (mi.Event == MouseInputEvent.Down)
 				return OnMouseDown(mi);
 			
 			// Mouseup
-			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Up)
+			if (mi.Event == MouseInputEvent.Up)
 				return OnMouseUp(mi);
 			
 			// Mousemove
-			if (InputHandler.Value != null && mi.Event == MouseInputEvent.Move)
+			if (mi.Event == MouseInputEvent.Move)
 				return OnMouseMove(mi);
 			return false;
 		}

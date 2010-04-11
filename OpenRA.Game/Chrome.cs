@@ -118,6 +118,7 @@ namespace OpenRA
 			{
 				rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
 				rootWidget.Initialize();
+				rootWidget.InitDelegates();
 			}
 		}
 
