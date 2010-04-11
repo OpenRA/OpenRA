@@ -57,7 +57,7 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
-			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 0);
 
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 			{
