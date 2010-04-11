@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 		public readonly string Background = "dialog";
 		public override void Draw(World world)
 		{
-			if (!Visible)
+			if (!IsVisible())
 			{
 				base.Draw(world);
 				return;

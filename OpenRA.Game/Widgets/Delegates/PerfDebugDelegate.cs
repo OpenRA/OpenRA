@@ -29,6 +29,7 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Chrome.rootWidget;
 			var perfRoot = r.GetWidget("PERF_BG");
+			perfRoot.IsVisible = () => {return (perfRoot.Visible && Game.Settings.PerfDebug);};
 			
 			// Perf text
 			var perfText = perfRoot.GetWidget<LabelWidget>("TEXT");
@@ -40,11 +41,6 @@ namespace OpenRA.Widgets.Delegates
 					PerfHistory.items["tick_time"].LastValue,
 					Game.LocalTick);
 			};
-			perfText.IsVisible = () => {return (perfText.Visible && Game.Settings.PerfText);};
-			
-			// Perf graph
-			var perfGraph = perfRoot.GetWidget("GRAPH");
-			perfGraph.IsVisible = () => {return (perfGraph.Visible && Game.Settings.PerfGraph);};
 		}
 	}
 }

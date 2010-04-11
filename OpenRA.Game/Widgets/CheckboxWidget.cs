@@ -30,7 +30,7 @@ namespace OpenRA.Widgets
 		
 		public override void Draw(World world)
 		{
-			if (!Visible)
+			if (!IsVisible())
 			{
 				base.Draw(world);
 				return;

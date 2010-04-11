@@ -107,7 +107,7 @@ namespace OpenRA.Widgets
 		public virtual bool HandleInput(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
+			if (!IsVisible() || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
 				return false;
 			
 			// Can any of our children handle this?
@@ -131,7 +131,7 @@ namespace OpenRA.Widgets
 		
 		public virtual void Draw(World world)
 		{
-			if (Visible)
+			if (IsVisible())
 				foreach (var child in Children)
 					child.Draw(world);
 		}

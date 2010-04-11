@@ -25,8 +25,7 @@ namespace OpenRA.GameRules
 		// Debug settings
 		public bool UnitDebug = false;
 		public bool PathDebug = false;
-		public bool PerfGraph = true;
-		public bool PerfText = true;
+		public bool PerfDebug = true;
 		public bool IndexDebug = false;
 		
 		// Window settings

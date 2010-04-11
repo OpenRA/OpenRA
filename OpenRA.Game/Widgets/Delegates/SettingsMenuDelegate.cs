@@ -30,19 +30,12 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFGRAPH").Checked = () => {return Game.Settings.PerfGraph;};
-			r.GetWidget("SETTINGS_CHECKBOX_PERFGRAPH").OnMouseDown = mi => {
-				Game.Settings.PerfGraph = !Game.Settings.PerfGraph;
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFDEBUG").Checked = () => {return Game.Settings.PerfDebug;};
+			r.GetWidget("SETTINGS_CHECKBOX_PERFDEBUG").OnMouseDown = mi => {
+				Game.Settings.PerfDebug = !Game.Settings.PerfDebug;
 				return true;
 			};
-			
-			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFTEXT").Checked = () => {return Game.Settings.PerfText;};
-			r.GetWidget("SETTINGS_CHECKBOX_PERFTEXT").OnMouseDown = mi => {
-				Game.Settings.PerfText = !Game.Settings.PerfText;
-				return true;
-			};
-			
-			
+						
 			// Menu Buttons
 			r.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
 				r.ShowMenu("SETTINGS_BG");

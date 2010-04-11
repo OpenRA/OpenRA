@@ -121,20 +121,13 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Spatial Index Debug
-				Checkbox@SETTINGS_CHECKBOX_PERFGRAPH:
-					Id:SETTINGS_CHECKBOX_PERFGRAPH
+				Checkbox@SETTINGS_CHECKBOX_PERFDEBUG:
+					Id:SETTINGS_CHECKBOX_PERFDEBUG
 					X:100
 					Y:150
 					Width:300
 					Height:20
-					Text:Show Performance Graph
-				Checkbox@SETTINGS_CHECKBOX_PERFTEXT:
-					Id:SETTINGS_CHECKBOX_PERFTEXT
-					X:100
-					Y:180
-					Width:300
-					Height:20
-					Text:Show Performance Text
+					Text:Show Performance Information
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180
@@ -306,7 +299,6 @@ Container:
 			Y:WINDOW_BOTTOM - 250
 			Width: 210
 			Height: 250
-			Visible: true
 			Children:
 				PerfGraph@GRAPH:
 					ClickThrough:true
