@@ -366,8 +366,10 @@ namespace OpenRA
 		public static void StartGame()
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
-			if( orderManager.GameStarted ) return;
+			if (orderManager.GameStarted) return;
 			chat.Reset();
+
+			world.SetLocalPlayer(orderManager.Connection.LocalClientId);
 
 			foreach (var c in LobbyInfo.Clients)
 				world.AddPlayer(new Player(world, c));
