@@ -352,3 +352,4 @@ FLARE:
 		Sight: 3
 	RenderFlare:
 		Image: smokland
+	HiddenUnderFog:
