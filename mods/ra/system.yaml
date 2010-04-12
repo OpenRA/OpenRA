@@ -334,7 +334,8 @@ CRATE:
 		Effect: hide-map
 	SupportPowerCrateAction@parabombs:
 		Power: AirstrikePower
-		SelectionShares: 200
+		SelectionShares: 5
+		Effect: parabombs
 	Unit:
 		HP: 1
 	RenderUnit:
