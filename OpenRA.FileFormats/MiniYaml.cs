@@ -114,7 +114,7 @@ namespace OpenRA.FileFormats
 
 		public static Dictionary<string, MiniYaml> FromString(string text)
 		{
-			return FromLines(text.Split('\n'));
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));
 		}
 
 		public static Dictionary<string, MiniYaml> Merge( Dictionary<string, MiniYaml> a, Dictionary<string, MiniYaml> b )

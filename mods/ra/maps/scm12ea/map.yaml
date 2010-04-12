@@ -1,0 +1,105 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: raraku (4-8)
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 15,15
+
+BottomRight: 111,111
+
+Actors:
+	Actor0: tc04 Neutral 57,17
+	Actor1: tc05 Neutral 61,22
+	Actor2: tc03 Neutral 55,25
+	Actor3: tc02 Neutral 65,16
+	Actor4: t17 Neutral 62,18
+	Actor5: tc04 Neutral 51,14
+	Actor6: tc03 Neutral 68,29
+	Actor7: tc01 Neutral 58,29
+	Actor8: tc05 Neutral 50,38
+	Actor9: tc02 Neutral 45,30
+	Actor10: tc05 Neutral 97,16
+	Actor11: tc04 Neutral 96,15
+	Actor12: tc03 Neutral 96,24
+	Actor13: tc05 Neutral 26,30
+	Actor14: tc04 Neutral 15,28
+	Actor15: tc05 Neutral 16,29
+	Actor16: tc03 Neutral 25,32
+	Actor17: tc04 Neutral 23,92
+	Actor18: tc05 Neutral 24,93
+	Actor19: tc03 Neutral 96,90
+	Actor20: tc05 Neutral 96,76
+	Actor21: tc01 Neutral 86,77
+	Actor22: t16 Neutral 90,80
+	Actor23: tc02 Neutral 37,86
+	Actor24: t17 Neutral 80,56
+	Actor25: tc02 Neutral 76,66
+	Actor26: tc04 Neutral 56,61
+	Actor27: tc05 Neutral 52,59
+	Actor28: tc03 Neutral 30,49
+	Actor29: tc02 Neutral 25,69
+	Actor30: t16 Neutral 34,72
+	Actor31: tc03 Neutral 42,54
+	Actor32: mine Neutral 73,79
+	Actor33: mine Neutral 49,34
+	Actor34: mine Neutral 105,22
+	Actor35: mine Neutral 101,80
+	Actor36: mine Neutral 43,107
+	Actor37: mine Neutral 24,47
+	Actor38: tc01 Neutral 84,90
+	Actor39: t16 Neutral 83,91
+	Actor40: tc02 Neutral 18,101
+	Actor41: tc01 Neutral 17,107
+	Actor42: t16 Neutral 15,95
+	Actor43: tc04 Neutral 17,16
+	Actor44: tc01 Neutral 42,28
+	Actor45: tc05 Neutral 79,31
+	Actor46: tc03 Neutral 109,15
+	Actor47: tc02 Neutral 107,15
+	Actor48: tc02 Neutral 105,33
+	Actor49: tc02 Neutral 104,32
+	Actor50: tc04 Neutral 45,85
+	Actor51: tc05 Neutral 75,97
+	Actor52: t16 Neutral 76,99
+	Actor53: tc01 Neutral 88,89
+	Actor54: tc02 Neutral 35,91
+	Actor55: tc01 Neutral 39,31
+	Actor56: tc03 Neutral 14,59
+	Actor57: tc02 Neutral 15,57
+	Actor58: tc01 Neutral 21,14
+	Actor59: mine Neutral 74,62
+	Actor60: mine Neutral 43,21
+	Actor61: tc02 Neutral 36,109
+	Actor62: tc01 Neutral 109,44
+	Actor63: tc02 Neutral 98,38
+	Actor64: tc03 Neutral 72,69
+	Actor65: tc01 Neutral 89,14
+	Actor66: tc04 Neutral 81,47
+	Actor67: tc01 Neutral 100,94
+	Actor68: tc02 Neutral 102,86
+	Actor69: tc05 Neutral 89,54
+	Actor70: tc01 Neutral 89,53
+
+Waypoints:
+	spawn0: 26,102
+	spawn1: 88,24
+	spawn2: 90,97
+	spawn3: 26,23
+	spawn4: 63,88
+	spawn5: 59,53
+	spawn6: 29,61
+	spawn7: 104,51
+
+Smudges:
+
+Rules:
+

@@ -1,0 +1,61 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: first come first serve (4)
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 22,22
+
+BottomRight: 106,106
+
+Actors:
+	Actor0: mine Neutral 40,92
+	Actor1: mine Neutral 89,35
+	Actor2: mine Neutral 64,64
+	Actor3: tc05 Neutral 43,87
+	Actor4: tc04 Neutral 42,75
+	Actor5: tc02 Neutral 57,75
+	Actor6: tc02 Neutral 62,86
+	Actor7: tc04 Neutral 64,38
+	Actor8: tc04 Neutral 84,29
+	Actor9: tc02 Neutral 96,40
+	Actor10: tc03 Neutral 66,79
+	Actor11: tc02 Neutral 54,88
+	Actor12: tc01 Neutral 41,80
+	Actor13: tc04 Neutral 52,29
+	Actor14: tc03 Neutral 94,30
+	Actor15: tc05 Neutral 39,95
+	Actor16: t17 Neutral 35,87
+	Actor17: tc05 Neutral 68,50
+	Actor18: mine Neutral 74,45
+	Actor19: mine Neutral 52,81
+	Actor20: tc03 Neutral 86,94
+	Actor21: tc04 Neutral 32,29
+	Actor22: tc01 Neutral 42,57
+	Actor23: tc03 Neutral 83,45
+	Actor24: tc03 Neutral 89,79
+	Actor25: tc01 Neutral 81,78
+	Actor26: t16 Neutral 37,45
+	Actor27: tc04 Neutral 64,30
+	Actor28: tc01 Neutral 77,39
+	Actor29: t16 Neutral 73,54
+	Actor30: t16 Neutral 37,90
+
+Waypoints:
+	spawn0: 40,67
+	spawn1: 89,61
+	spawn2: 54,39
+	spawn3: 70,89
+
+Smudges:
+
+Rules:
+

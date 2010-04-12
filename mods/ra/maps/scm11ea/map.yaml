@@ -1,0 +1,57 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: Island hoppers (4)
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 11,19
+
+BottomRight: 107,115
+
+Actors:
+	Actor0: t01 Neutral 62,77
+	Actor1: tc01 Neutral 61,80
+	Actor2: t08 Neutral 59,76
+	Actor3: tc05 Neutral 53,99
+	Actor4: tc05 Neutral 18,68
+	Actor5: tc05 Neutral 59,34
+	Actor6: tc04 Neutral 98,68
+	Actor7: tc04 Neutral 39,24
+	Actor8: tc04 Neutral 80,105
+	Actor9: tc03 Neutral 41,105
+	Actor10: tc02 Neutral 18,80
+	Actor11: tc02 Neutral 57,23
+	Actor12: tc01 Neutral 98,81
+	Actor13: t17 Neutral 97,50
+	Actor14: t16 Neutral 67,101
+	Actor15: t15 Neutral 31,103
+	Actor16: t14 Neutral 21,48
+	Actor17: t11 Neutral 62,26
+	Actor18: t10 Neutral 93,66
+	Actor19: mine Neutral 44,59
+	Actor20: mine Neutral 87,48
+	Actor21: mine Neutral 84,89
+	Actor22: mine Neutral 45,86
+	Actor23: mine Neutral 70,26
+	Actor24: mine Neutral 66,103
+	Actor25: mine Neutral 46,102
+	Actor26: mine Neutral 50,31
+
+Waypoints:
+	spawn0: 41,53
+	spawn1: 79,84
+	spawn2: 81,50
+	spawn3: 40,84
+
+Smudges:
+
+Rules:
+
