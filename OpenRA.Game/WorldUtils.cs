@@ -96,9 +96,11 @@ namespace OpenRA
 			var min = a - new float2(r, r);
 			var max = a + new float2(r, r);
 
+			var actors = world.FindUnits( min, max );
+
 			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
-			var inBox = world.Actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
+			var inBox = actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
 
 			return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 		}
