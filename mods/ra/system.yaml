@@ -345,3 +345,10 @@ CAMERA:
 	Unit:
 		HP:1000
 		Sight: 10
+
+FLARE:
+	Unit:
+		HP:1000
+		Sight: 3
+	RenderFlare:
+		Image: smokland

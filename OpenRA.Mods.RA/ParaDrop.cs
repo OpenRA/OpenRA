@@ -35,10 +35,12 @@ namespace OpenRA.Mods.RA
 	{
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;
+		Actor flare;
 
-		public void SetLZ( int2 lz )
+		public void SetLZ( int2 lz, Actor flare )
 		{
 			this.lz = lz;
+			this.flare = flare;
 			droppedAt.Clear();
 		}
 
@@ -76,6 +78,13 @@ namespace OpenRA.Mods.RA
 			self.CancelActivity();
 			self.QueueActivity(new FlyOffMap { Interruptible = false });
 			self.QueueActivity(new RemoveSelf());
+
+			if (flare != null)
+			{
+				flare.CancelActivity();
+				flare.QueueActivity(new Wait(300));
+				flare.QueueActivity(new RemoveSelf());
+			}
 		}
 	}
 }

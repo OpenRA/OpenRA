@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA_NG
 							plane.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
 							plane.CancelActivity();
 							plane.QueueActivity(new FlyCircle(p));
-							plane.traits.Get<ParaDrop>().SetLZ(p);
+							plane.traits.Get<ParaDrop>().SetLZ(p, null);
 							plane.traits.Get<Cargo>().Load(plane, crate);
 						});
 					return;
