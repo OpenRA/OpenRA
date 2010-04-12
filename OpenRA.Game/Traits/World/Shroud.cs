@@ -75,6 +75,12 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
 
+			if (vis.ContainsKey(a))
+			{
+				Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
+				RemoveActor(a);
+			}
+
 			var v = new ActorVisibility
 			{
 				range = a.Info.Traits.Get<OwnedActorInfo>().Sight,
