@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA
 {
@@ -36,11 +38,13 @@ namespace OpenRA.Mods.RA
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;
 		Actor flare;
+		bool waterDrop;
 
-		public void SetLZ( int2 lz, Actor flare )
+		public void SetLZ( int2 lz, Actor flare, bool waterDrop )
 		{
 			this.lz = lz;
 			this.flare = flare;
+			this.waterDrop = waterDrop;
 			droppedAt.Clear();
 		}
 
@@ -50,7 +54,8 @@ namespace OpenRA.Mods.RA
 
 			if ((self.Location - lz).LengthSquared <= r * r && !droppedAt.Contains(self.Location))
 			{
-				// todo: check is this is a good drop cell.
+				if (!IsSuitableCell(self, self.Location))
+					return;
 
 				// unload a dude here
 				droppedAt.Add(self.Location);
@@ -71,6 +76,12 @@ namespace OpenRA.Mods.RA
 					Sound.Play("chute1.aud");
 				}
 			}
+		}
+
+		bool IsSuitableCell(Actor self, int2 p)
+		{
+			// rude hack
+			return self.World.IsCellBuildable(p, waterDrop);
 		}
 
 		void FinishedDropping(Actor self)

@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));
-				a.traits.Get<ParaDrop>().SetLZ(p, flare);
+				a.traits.Get<ParaDrop>().SetLZ(p, flare, false);
 
 				var cargo = a.traits.Get<Cargo>();
 				foreach (var i in items)
