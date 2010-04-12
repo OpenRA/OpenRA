@@ -94,6 +94,8 @@ namespace OpenRA.Widgets
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(Bounds.X, Bounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(Bounds.X, Bounds.Y + numPowers * 51));
+
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			
 			// Hack Hack Hack
 			Bounds.Width = 69;
