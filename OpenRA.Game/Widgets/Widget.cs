@@ -52,6 +52,8 @@ namespace OpenRA.Widgets
 		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
 		public Func<bool> IsVisible;
 
+		public Widget() { IsVisible = () => Visible; }
+
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
@@ -74,7 +76,6 @@ namespace OpenRA.Widgets
 			                       height);
 			
 			// Non-static func definitions
-			IsVisible = () => {return Visible;};
 			
 			if (Delegate != null && !Delegates.Contains(Delegate))
 					Delegates.Add(Delegate);
