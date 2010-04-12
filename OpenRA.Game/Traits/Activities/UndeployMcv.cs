@@ -30,9 +30,6 @@ namespace OpenRA.Traits.Activities
 
 		void DoUndeploy(World w,Actor self)
 		{
-			self.Health = 0;
-			foreach (var ns in self.traits.WithInterface<INotifySold>())
-				ns.Sold(self);
 			w.Remove(self);
 			
 			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
