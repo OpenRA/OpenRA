@@ -45,14 +45,14 @@ namespace OpenRA.Orders
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left)
+			if (mi.Button == MouseButton.Left && world.Map.IsInMap(xy))
 				yield return new Order(order, subject, xy);
 		}
 
 		public virtual void Tick(World world) { }
 		public void Render(World world) { }
 
-		public string GetCursor(World world, int2 xy, MouseInput mi) { return cursor; }
+		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
 
 	// variant that requires a tag trait (T) to be present on some actor owned
