@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Crates
 			var p = collector.Owner.PlayerActor.traits.WithInterface<SupportPower>()
 				.FirstOrDefault(sp => sp.GetType().Name == (info as SupportPowerCrateActionInfo).Power);
 
-			if (p != null) p.Give(0f);
+			if (p != null) p.Give(1);
 
 			base.Activate(collector);
 		}
