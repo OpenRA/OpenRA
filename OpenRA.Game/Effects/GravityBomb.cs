@@ -43,7 +43,10 @@ namespace OpenRA.Effects
 			altitude = args.srcAltitude;
 
 			anim = new Animation(info.Image);
-			anim.PlayRepeating("idle");
+			if (anim.HasSequence("open"))
+				anim.PlayThen("open", () => anim.PlayRepeating("idle"));
+			else
+				anim.PlayRepeating("idle");
 		}
 
 		public void Tick(World world)

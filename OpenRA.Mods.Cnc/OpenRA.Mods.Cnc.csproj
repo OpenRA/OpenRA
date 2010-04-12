@@ -45,8 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirstrikePower.cs" />
-    <Compile Include="CarpetBomb.cs" />
     <Compile Include="CriticalBuildingState.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />

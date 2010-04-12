@@ -35,6 +35,7 @@ Player:
 		TechLevel: 8
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
+		UnitType: a10
 	
 World:
 	GlobalDefaults:

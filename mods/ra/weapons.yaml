@@ -556,24 +556,21 @@ DepthCharge:
 		Damage: 80
 		
 ParaBomb:
-	ROF: 4
+	ROF: 10
 	Range: 4.5
 	Report: CHUTE1
-	Bullet:
-		Arm: 24
-		RangeLimit: 24
-		High: true
+	GravityBomb:
 		Image: PARABOMB
-		Speed: 5
 	Warhead:
 		Spread: 3
 		Wall: true
 		Wood: true
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: 8
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 300
+		Damage: 500
+		ImpactSound: kaboom15
 		
 DogJaw:
 	ROF: 10

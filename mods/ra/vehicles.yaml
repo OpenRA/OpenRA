@@ -61,6 +61,26 @@ BADR:
 	Cargo:
 		Passengers: 10
 	-Selectable:
+	
+BADR.bomber:
+	CarpetBomb:
+		Range: 3
+		Weapon: ParaBomb
+	Inherits: ^Plane
+	Unit:
+		HP: 60
+		Armor: light
+		ROT: 5
+		Sight: 0
+		Speed: 16
+	Plane:
+	LimitedAmmo:
+		Ammo: 7
+	RenderUnit:
+		Image: badr
+	WithShadow:
+	IronCurtainable:	
+	-Selectable:
 
 V2RL:
 	Inherits: ^Vehicle

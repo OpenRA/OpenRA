@@ -66,6 +66,18 @@ Player:
 		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
+	AirstrikePower:
+		Image: pbmbicon
+		ChargeTime: .2
+		Description: Parabombs
+		LongDesc: A Badger drops a load of parachuted bombs on your target.
+		TechLevel: 5
+		Prerequisites: POWR
+#		GivenAuto: no
+#		OneShot: yes
+		UnitType: badr.bomber
+		SelectTargetSound: slcttgt1.aud
+		
 
 World:
 	GlobalDefaults:

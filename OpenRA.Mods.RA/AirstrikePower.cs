@@ -22,10 +22,11 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.RA
 {
 	class AirstrikePowerInfo : SupportPowerInfo
 	{
+		public readonly string UnitType = "badr.bomber";
 		public override object Create(Actor self) { return new AirstrikePower(self, this); }
 	}
 
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Cnc
 
 				Owner.World.AddFrameEndTask(w =>
 					{
-						var a = w.CreateActor("a10", startPos, Owner);
+						var a = w.CreateActor((Info as AirstrikePowerInfo).UnitType, startPos, Owner);
 						a.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
 						a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 						a.traits.Get<CarpetBomb>().SetTarget(order.TargetLocation);

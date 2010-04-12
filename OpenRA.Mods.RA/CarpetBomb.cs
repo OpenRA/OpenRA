@@ -21,7 +21,7 @@
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.RA
 {
 	class CarpetBombInfo : ITraitInfo
 	{
@@ -68,6 +68,9 @@ namespace OpenRA.Mods.Cnc
 				};
 
 				self.World.Add(args.weapon.Projectile.Create(args));
+
+				if (!string.IsNullOrEmpty(args.weapon.Report))
+					Sound.Play(args.weapon.Report + ".aud");
 			}
 		}
 	}
