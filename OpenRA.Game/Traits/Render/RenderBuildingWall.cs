@@ -19,6 +19,7 @@
 #endregion
 
 using System.Linq;
+using System;
 
 namespace OpenRA.Traits
 {
@@ -33,6 +34,7 @@ namespace OpenRA.Traits
 		string seqName;
 		int damageStates;
 		Actor self;
+		int adjacentWalls = 0;
 		
 		public RenderBuildingWall(Actor self)
 			: base(self)
@@ -40,6 +42,8 @@ namespace OpenRA.Traits
 			seqName = "idle";
 			this.self = self;
 			this.damageStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
+
+			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}
 
 		enum ExtendedDamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
@@ -91,37 +95,36 @@ namespace OpenRA.Traits
 					}
 					break;
 			}
+
+			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}
-		
+
+		bool hasTicked = false;
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			
-			// TODO: This only needs updating when a wall is built or destroyed
-			int index = NearbyWalls( self.Location );
-			
-			anim.PlayFetchIndex(seqName, () => index);
 
+			if (!hasTicked)
+			{
+				var oneCell = new float2(Game.CellSize, Game.CellSize);
+				var adjWalls = self.World.FindUnits(self.CenterLocation - oneCell, self.CenterLocation + oneCell)
+					.Where(a => a.Info == self.Info && a != self);
+
+				foreach (var w in adjWalls)
+				{
+					w.traits.Get<RenderBuildingWall>().AddAdjacentWall(w, self);
+					AddAdjacentWall(self, w);
+				}
+				hasTicked = true;
+			}
 		}
-		bool IsWall( int x, int y)
+
+		void AddAdjacentWall(Actor self, Actor other)
 		{
-			return self.World.Queries.WithTrait<Wall>().Any(a => (a.Actor.Info.Name == self.Info.Name && a.Actor.Location.X == x && a.Actor.Location.Y == y));
+			if (other.Location == self.Location + new int2(0, -1)) adjacentWalls |= 1;
+			if (other.Location == self.Location + new int2(+1, 0)) adjacentWalls |= 2;
+			if (other.Location == self.Location + new int2(0, +1)) adjacentWalls |= 4;
+			if (other.Location == self.Location + new int2(-1, 0)) adjacentWalls |= 8;
 		}
-		
-		int NearbyWalls( int2 xy )
-		{
-			int ret = 0;
-			
-			if( IsWall( xy.X, xy.Y - 1 ) )
-				ret |= 1;
-			if( IsWall( xy.X + 1, xy.Y ) )
-				ret |= 2;
-			if( IsWall( xy.X, xy.Y + 1 ) )
-				ret |= 4;
-			if( IsWall( xy.X - 1, xy.Y ) )
-				ret |= 8;
-			return ret;
-		}
-		
 	}
 }
