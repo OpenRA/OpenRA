@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA_NG
 {
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.RA_NG
 			for (var n = 0; n < threshold; n++ )
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
-				if (self.World.IsCellBuildable(p, inWater))
+				if (self.World.IsPathableCell(p, inWater ? UnitMovementType.Float : UnitMovementType.Wheel))
 				{
 					self.World.AddFrameEndTask(w =>
 						{

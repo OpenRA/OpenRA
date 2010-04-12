@@ -80,8 +80,7 @@ namespace OpenRA.Mods.RA
 
 		bool IsSuitableCell(Actor self, int2 p)
 		{
-			// rude hack
-			return self.World.IsCellBuildable(p, waterDrop);
+			return self.World.IsPathableCell(p, waterDrop ? UnitMovementType.Float : UnitMovementType.Wheel);
 		}
 
 		void FinishedDropping(Actor self)
