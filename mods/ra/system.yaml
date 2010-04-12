@@ -61,20 +61,19 @@ Player:
 	SonarPulsePower:
 		Image: sonricon
 		ChargeTime: 10
-		Description: Sonar Pulse
+		Description: Sonar Pulse (Single Use)
 		LongDesc: Reveals all submarines on the map for a \nshort time.
 		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
 	AirstrikePower:
 		Image: pbmbicon
-		ChargeTime: .2
-		Description: Parabombs
+		ChargeTime: 5
+		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted bombs on your target.
 		TechLevel: 5
-		Prerequisites: POWR
-#		GivenAuto: no
-#		OneShot: yes
+		GivenAuto: no
+		OneShot: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		
@@ -333,6 +332,9 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 10
 		Effect: hide-map
+	SupportPowerCrateAction@parabombs:
+		Power: AirstrikePower
+		SelectionShares: 200
 	Unit:
 		HP: 1
 	RenderUnit:
