@@ -57,6 +57,7 @@
     <Compile Include="C4Demolition.cs" />
     <Compile Include="CarpetBomb.cs" />
     <Compile Include="Chronoshiftable.cs" />
+    <Compile Include="Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="Harvester.cs" />
