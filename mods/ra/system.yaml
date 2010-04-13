@@ -76,6 +76,8 @@ Player:
 		OneShot: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
+	VictoryConditions:
+		ShortGameUnits: mcv
 		
 
 World:

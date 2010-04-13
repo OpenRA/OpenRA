@@ -1,6 +1,14 @@
 Container:
 	ClickThrough:true
 	Children:
+		PostGame@POSTGAME_TEXT:
+			Id:POSTGAME_TEXT
+			X:0
+			Y:0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			ClickThrough: true
+			Visible: true
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:(WINDOW_RIGHT - WIDTH)/2

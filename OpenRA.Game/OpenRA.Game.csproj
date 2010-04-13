@@ -82,6 +82,7 @@
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
+    <Compile Include="Traits\Player\VictoryConditions.cs" />
     <Compile Include="Traits\Render\HiddenUnderFog.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
     <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
+    <Compile Include="Widgets\PostGameWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Effects\Corpse.cs" />
