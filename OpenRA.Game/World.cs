@@ -39,8 +39,7 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		List<Action<World>> frameEndActions = new List<Action<World>>();
 
-		public XRandom SharedRandom = new XRandom(0);	// synced
-		public XRandom CosmeticRandom = new XRandom();	// not synced
+		public XRandom SharedRandom = new XRandom(0);
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 

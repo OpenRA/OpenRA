@@ -63,7 +63,7 @@ namespace OpenRA.Effects
 				Args.dest += (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 			}
 
-			VisualDest = Args.dest + (10 * args.firedBy.World.CosmeticRandom.Gauss2D(1)).ToInt2();
+			VisualDest = Args.dest + (10 * Game.CosmeticRandom.Gauss2D(1)).ToInt2();
 
 			if (Info.Image != null)
 			{

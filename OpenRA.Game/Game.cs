@@ -31,7 +31,9 @@ using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
+
 using Timer = OpenRA.Support.Timer;
+using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA
 {
@@ -48,6 +50,8 @@ namespace OpenRA
 		internal static OrderManager orderManager;
 
 		public static bool skipMakeAnims = true;
+
+		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
 		internal static Renderer renderer;
 		static int2 clientSize;
