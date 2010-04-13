@@ -46,16 +46,19 @@ namespace OpenRA.Widgets.Delegates
 
 				foreach (var game in GameList)
 				{
-					ButtonWidget b = new ButtonWidget();
-					b.Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25);
-					b.GetType().GetField("Id").SetValue(b, "JOIN_GAME_{0}".F(i));
-					b.GetType().GetField("Text").SetValue(b, "{0} ({1})".F(game.Name, game.Address));
-					b.GetType().GetField("Delegate").SetValue(b, "ServerBrowserDelegate");
+					var b = new ButtonWidget
+					{
+						Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25),
+						Id = "JOIN_GAME_{0}".F( i ),
+						Text = "{0} ({1})".F( game.Name, game.Address ),
+						Delegate = "ServerBrowserDelegate",
 					
-					b.OnMouseUp = nmi => {
-						r.GetWidget("JOINSERVER_BG").Visible = false;
-						Game.JoinServer(GameList[i].Address.Split(':')[0], int.Parse(GameList[i].Address.Split(':')[1]));
-						return true;
+						OnMouseUp = nmi =>
+						{
+							r.GetWidget("JOINSERVER_BG").Visible = false;
+							Game.JoinServer(GameList[i].Address.Split(':')[0], int.Parse(GameList[i].Address.Split(':')[1]));
+							return true;
+						},
 					};
 					
 					bg.AddChild(b);

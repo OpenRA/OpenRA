@@ -30,13 +30,13 @@ namespace OpenRA.Widgets
 	public class Widget
 	{
 		// Info defined in YAML
-		public readonly string Id = null;
-		public readonly string X = "0";
-		public readonly string Y = "0";
-		public readonly string Width = "0";
-		public readonly string Height = "0";
-		public readonly string Delegate = null;
-		public readonly bool ClickThrough = false;
+		public string Id = null;
+		public string X = "0";
+		public string Y = "0";
+		public string Width = "0";
+		public string Height = "0";
+		public string Delegate = null;
+		public bool ClickThrough = false;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
