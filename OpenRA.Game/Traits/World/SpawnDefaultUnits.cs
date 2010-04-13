@@ -25,7 +25,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class SpawnDefaultUnitsInfo : StatelessTraitInfo<SpawnDefaultUnits>
+	class SpawnDefaultUnitsInfo : TraitInfo<SpawnDefaultUnits>
 	{
 		public readonly int InitialExploreRange = 5;
 	}

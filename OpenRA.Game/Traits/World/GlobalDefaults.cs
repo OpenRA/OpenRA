@@ -3,7 +3,7 @@ using System;
 
 namespace OpenRA.Traits
 {
-	public class GlobalDefaultsInfo : StatelessTraitInfo<GlobalDefaults>
+	public class GlobalDefaultsInfo : TraitInfo<GlobalDefaults>
 	{
 		/* Special Weapons */
 		public readonly float GapRegenInterval = 0.1f;

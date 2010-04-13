@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class BelowUnitsInfo : StatelessTraitInfo<BelowUnits> { }
+	class BelowUnitsInfo : TraitInfo<BelowUnits> { }
 
 	class BelowUnits : IRenderModifier
 	{

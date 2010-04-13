@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class MinelayerInfo : StatelessTraitInfo<Minelayer>
+	class MinelayerInfo : TraitInfo<Minelayer>
 	{
 		public readonly string Mine = "minv";
 	}

@@ -23,7 +23,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class PassengerInfo : StatelessTraitInfo<Passenger>
+	class PassengerInfo : TraitInfo<Passenger>
 	{
 		public readonly PipType ColorOfCargoPip = PipType.Green;
 	}

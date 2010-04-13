@@ -67,6 +67,6 @@ namespace OpenRA.Mods.RA.SupportPowers
 	}
 
 	// tag trait for the building
-	class NukeSiloInfo : StatelessTraitInfo<NukeSilo> { }
+	class NukeSiloInfo : TraitInfo<NukeSilo> { }
 	class NukeSilo { }
 }

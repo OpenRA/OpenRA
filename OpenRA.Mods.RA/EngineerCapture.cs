@@ -24,7 +24,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerCaptureInfo : StatelessTraitInfo<EngineerCapture> { }
+	class EngineerCaptureInfo : TraitInfo<EngineerCapture> { }
 
 	class EngineerCapture : IIssueOrder, IResolveOrder
 	{

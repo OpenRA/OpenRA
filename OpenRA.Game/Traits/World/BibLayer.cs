@@ -102,6 +102,6 @@ namespace OpenRA.Traits
 		}
 	}
 	
-	class BibInfo : StatelessTraitInfo<Bib> { }
+	class BibInfo : TraitInfo<Bib> { }
 	public class Bib { }
 }

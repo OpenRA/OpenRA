@@ -20,6 +20,6 @@
 
 namespace OpenRA.Traits
 {
-	public class WallInfo : StatelessTraitInfo<Wall> {}
+	public class WallInfo : TraitInfo<Wall> {}
 	public class Wall {}
 }

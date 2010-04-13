@@ -23,7 +23,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class AutoHealInfo : StatelessTraitInfo<AutoHeal> { }
+	class AutoHealInfo : TraitInfo<AutoHeal> { }
 
 	class AutoHeal : ITick
 	{

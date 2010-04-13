@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class ChoosePaletteOnSelectInfo : StatelessTraitInfo<ChoosePaletteOnSelect> { }
+	class ChoosePaletteOnSelectInfo : TraitInfo<ChoosePaletteOnSelect> { }
 
 	class ChoosePaletteOnSelect : INotifySelection
 	{

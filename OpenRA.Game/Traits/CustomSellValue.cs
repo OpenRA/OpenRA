@@ -23,7 +23,7 @@ namespace OpenRA.Traits
 	// allow a nonstandard sell/repair value to avoid
 	// buy-sell exploits like c&c's PROC.
 
-	class CustomSellValueInfo : StatelessTraitInfo<CustomSellValue>
+	class CustomSellValueInfo : TraitInfo<CustomSellValue>
 	{
 		public readonly int Value = 0;
 	}

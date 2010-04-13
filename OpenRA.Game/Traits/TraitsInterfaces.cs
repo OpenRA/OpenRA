@@ -102,12 +102,7 @@ namespace OpenRA.Traits
 
 	public interface ITraitInfo { object Create(Actor self); }
 
-	public class StatelessTraitInfo<T> : ITraitInfo
-		where T : new()
-	{
-		static Lazy<T> Instance = Lazy.New(() => new T());
-		public object Create(Actor self) { return Instance.Value; }
-	}
+	public class TraitInfo<T> : ITraitInfo where T : new() { public object Create(Actor self) { return new T(); } }
 
 	public interface ITraitPrerequisite<T> { }
 

@@ -24,7 +24,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class ThiefInfo : StatelessTraitInfo<Thief> { }
+	class ThiefInfo : TraitInfo<Thief> { }
 
 	class Thief : IIssueOrder, IResolveOrder
 	{

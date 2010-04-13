@@ -21,7 +21,7 @@
 
 namespace OpenRA.Traits
 {
-	class EvaAlertsInfo : StatelessTraitInfo<EvaAlerts>
+	class EvaAlertsInfo : TraitInfo<EvaAlerts>
 	{
 		// Sound effects
 		public readonly string TabClick = "ramenu1.aud";

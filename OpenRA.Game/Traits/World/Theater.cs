@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits
 {
-	class TheaterInfo : StatelessTraitInfo<Theater> 
+	class TheaterInfo : TraitInfo<Theater> 
 	{
 		public readonly string Name = null;
 		public readonly string Theater = null;

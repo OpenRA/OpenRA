@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class BridgeLoadHookInfo : StatelessTraitInfo<BridgeLoadHook> { }
+	class BridgeLoadHookInfo : TraitInfo<BridgeLoadHook> { }
 
 	class BridgeLoadHook : ILoadWorldHook
 	{

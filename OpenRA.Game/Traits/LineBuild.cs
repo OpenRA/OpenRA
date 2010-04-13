@@ -27,7 +27,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	public class LineBuildInfo : StatelessTraitInfo<LineBuild>
+	public class LineBuildInfo : TraitInfo<LineBuild>
 	{
 		public readonly int Range = 5;
 	}

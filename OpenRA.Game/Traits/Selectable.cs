@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits
 {
-	public class SelectableInfo : StatelessTraitInfo<Selectable>
+	public class SelectableInfo : TraitInfo<Selectable>
 	{
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;

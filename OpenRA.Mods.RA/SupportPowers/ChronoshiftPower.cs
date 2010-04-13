@@ -183,6 +183,6 @@ namespace OpenRA.Mods.RA.SupportPowers
 	}
 	
 	// tag trait to identify the building
-	class ChronosphereInfo : StatelessTraitInfo<Chronosphere> { }
+	class ChronosphereInfo : TraitInfo<Chronosphere> { }
 	public class Chronosphere { }
 }

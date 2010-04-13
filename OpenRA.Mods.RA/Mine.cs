@@ -69,6 +69,6 @@ namespace OpenRA.Mods.RA
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */
-	class MineImmuneInfo : StatelessTraitInfo<MineImmune> { }
+	class MineImmuneInfo : TraitInfo<MineImmune> { }
 	class MineImmune { }
 }

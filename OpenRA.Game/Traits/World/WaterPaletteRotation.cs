@@ -22,7 +22,7 @@ using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	class WaterPaletteRotationInfo : StatelessTraitInfo<WaterPaletteRotation> { }
+	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> { }
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{

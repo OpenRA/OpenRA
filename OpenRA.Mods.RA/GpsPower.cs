@@ -58,6 +58,6 @@ namespace OpenRA.Mods.RA
 	}
 
 	// tag trait to identify the building
-	class GpsLaunchSiteInfo : StatelessTraitInfo<GpsLaunchSite> { }
+	class GpsLaunchSiteInfo : TraitInfo<GpsLaunchSite> { }
 	class GpsLaunchSite { }
 }

@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits
 {
-	class BuildableInfo : StatelessTraitInfo<Buildable>
+	class BuildableInfo : TraitInfo<Buildable>
 	{
 		public readonly int TechLevel = -1;
 		public readonly string[] Prerequisites = { };

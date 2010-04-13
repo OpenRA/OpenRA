@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
-	class FakeInfo : StatelessTraitInfo<Fake> { }
+	class FakeInfo : TraitInfo<Fake> { }
 
 	class Fake : ITags
 	{

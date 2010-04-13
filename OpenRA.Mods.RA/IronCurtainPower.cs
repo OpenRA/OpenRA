@@ -114,6 +114,6 @@ namespace OpenRA.Mods.RA
 	}
 
 	// tag trait for the building
-	class IronCurtainInfo : StatelessTraitInfo<IronCurtain> { }
+	class IronCurtainInfo : TraitInfo<IronCurtain> { }
 	class IronCurtain { }
 }

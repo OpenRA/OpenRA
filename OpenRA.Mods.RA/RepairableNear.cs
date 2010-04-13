@@ -23,7 +23,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableNearInfo : StatelessTraitInfo<RepairableNear> { }
+	class RepairableNearInfo : TraitInfo<RepairableNear> { }
 
 	class RepairableNear : IIssueOrder, IResolveOrder
 	{

@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class WithShadowInfo : StatelessTraitInfo<WithShadow> {}
+	class WithShadowInfo : TraitInfo<WithShadow> {}
 
 	class WithShadow : IRenderModifier
 	{

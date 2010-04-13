@@ -24,7 +24,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class SpyInfo : StatelessTraitInfo<Spy> { }
+	class SpyInfo : TraitInfo<Spy> { }
 
 	class Spy : IIssueOrder, IResolveOrder
 	{

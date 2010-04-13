@@ -57,6 +57,6 @@ namespace OpenRA.Mods.Cnc
 		}
 	}
 
-	class IonControlInfo : StatelessTraitInfo<IonControl> { }
+	class IonControlInfo : TraitInfo<IonControl> { }
 	class IonControl { }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenRA.Traits
 {
-	class SpawnMapActorsInfo : StatelessTraitInfo<SpawnMapActors> { }
+	class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
 	class SpawnMapActors : IGameStarted
 	{

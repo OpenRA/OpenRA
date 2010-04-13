@@ -22,7 +22,7 @@ using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
-	class ExplodesInfo : StatelessTraitInfo<Explodes> { }
+	class ExplodesInfo : TraitInfo<Explodes> { }
 
 	class Explodes : INotifyDamage
 	{

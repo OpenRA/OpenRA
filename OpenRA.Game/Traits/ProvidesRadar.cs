@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	class JamsRadarInfo : StatelessTraitInfo<JamsRadar>
+	class JamsRadarInfo : TraitInfo<JamsRadar>
 	{
 		public readonly int Range = 0;
 	}

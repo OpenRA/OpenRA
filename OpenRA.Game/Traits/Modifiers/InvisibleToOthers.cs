@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
-	class InvisibleToOthersInfo : StatelessTraitInfo<InvisibleToOthers> { }
+	class InvisibleToOthersInfo : TraitInfo<InvisibleToOthers> { }
 
 	class InvisibleToOthers : IRenderModifier
 	{

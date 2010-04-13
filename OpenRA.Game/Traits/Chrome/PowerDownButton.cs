@@ -4,7 +4,7 @@ using OpenRA.Orders;
 
 namespace OpenRA.Traits
 {
-	class PowerDownButtonInfo : StatelessTraitInfo<PowerDownButton> { }
+	class PowerDownButtonInfo : TraitInfo<PowerDownButton> { }
 
 	class PowerDownButton : IChromeButton
 	{
@@ -14,7 +14,7 @@ namespace OpenRA.Traits
 		public void OnClick() { Game.controller.ToggleInputMode<PowerDownOrderGenerator>(); }
 	}
 
-	class SellButtonInfo : StatelessTraitInfo<SellButton> { }
+	class SellButtonInfo : TraitInfo<SellButton> { }
 
 	class SellButton : IChromeButton
 	{

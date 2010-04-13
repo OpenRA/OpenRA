@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
-	class StoresOreInfo : StatelessTraitInfo<StoresOre>
+	class StoresOreInfo : TraitInfo<StoresOre>
 	{
 		public readonly int Pips = 0;
 		public readonly int Capacity = 0;

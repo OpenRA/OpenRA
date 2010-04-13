@@ -22,7 +22,7 @@ using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	class LightPaletteRotatorInfo : StatelessTraitInfo<LightPaletteRotator> { }
+	class LightPaletteRotatorInfo : TraitInfo<LightPaletteRotator> { }
 	class LightPaletteRotator : ITick, IPaletteModifier
 	{
 		float t = 0;

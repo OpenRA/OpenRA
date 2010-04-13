@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.SupportPowers
 {
-	class ChronoshiftPaletteEffectInfo : StatelessTraitInfo<ChronoshiftPaletteEffect> { }
+	class ChronoshiftPaletteEffectInfo : TraitInfo<ChronoshiftPaletteEffect> { }
 
 	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{

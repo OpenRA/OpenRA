@@ -24,7 +24,7 @@ using System.Drawing;
 
 namespace OpenRA.Traits.AI
 {
-	class ReturnOnIdleInfo : StatelessTraitInfo<ReturnOnIdle> { }
+	class ReturnOnIdleInfo : TraitInfo<ReturnOnIdle> { }
 
 	// fly home or fly-off-map behavior for idle planes
 

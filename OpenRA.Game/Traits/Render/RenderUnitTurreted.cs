@@ -65,6 +65,6 @@ namespace OpenRA.Traits
 		}
 	}
 
-	class RenderRangeCircleInfo : StatelessTraitInfo<RenderRangeCircle> { }
+	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle> { }
 	class RenderRangeCircle { }
 }

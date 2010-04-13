@@ -23,7 +23,7 @@ using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
-	class PlaceBuildingInfo : StatelessTraitInfo<PlaceBuilding> {}
+	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> {}
 
 	class PlaceBuilding : IResolveOrder
 	{

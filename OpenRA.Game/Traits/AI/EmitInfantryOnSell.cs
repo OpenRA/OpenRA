@@ -6,7 +6,7 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits.AI
 {
-	class EmitInfantryOnSellInfo : StatelessTraitInfo<EmitInfantryOnSell>
+	class EmitInfantryOnSellInfo : TraitInfo<EmitInfantryOnSell>
 	{
 		public readonly float ValueFraction = .4f;
 		public readonly float MinHpFraction = .3f;

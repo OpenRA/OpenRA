@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForSonarPulseInfo : StatelessTraitInfo<InfiltrateForSonarPulse> { }
+	class InfiltrateForSonarPulseInfo : TraitInfo<InfiltrateForSonarPulse> { }
 	
 	class InfiltrateForSonarPulse : IAcceptSpy
 	{
