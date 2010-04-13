@@ -9,31 +9,22 @@ namespace OpenRA.Widgets
 {
 	class PostGameWidget : Widget
 	{
-		string text;
-
 		public override void Draw(World world)
 		{
 			base.Draw(world);
 
-			if (world.LocalPlayer == null) text = null;
+			if (world.LocalPlayer == null) return;
 
-			else if (world.players.Count > 2)	/* more than just us + neutral */
+			if (world.players.Count > 2)	/* more than just us + neutral */
 			{
 				var conds = world.Queries.WithTrait<IVictoryConditions>()
 					.Where(c => c.Actor.Owner != world.NeutralPlayer);
 
 				if (conds.Any(c => c.Actor.Owner == world.LocalPlayer && c.Trait.HasLost))
-					text = "YOU ARE DEFEATED";
+					DrawText("YOU ARE DEFEATED");
 				else if (conds.All(c => c.Actor.Owner == world.LocalPlayer || c.Trait.HasLost))
-					text = "YOU ARE VICTORIOUS";
-				else
-					text = null;
+					DrawText("YOU ARE VICTORIOUS");
 			}
-			else
-				text = null;
-
-			if (text != null)
-				DrawText(text);
 		}
 
 		void DrawText(string s)
