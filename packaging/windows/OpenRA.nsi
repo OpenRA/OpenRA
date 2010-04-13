@@ -60,8 +60,7 @@ Section "Client" Client
 	File "..\..\INSTALL"
 	File "..\..\settings-netplay-cnc.ini"
 	File "..\..\settings-netplay-ra.ini"
-	File "..\..\FreeSans.ttf"
-	File "..\..\FreeSansBold.ttf"
+	File "..\..\*.ttf"
 	
 	File "..\..\OpenRA.Game\OpenRA.ico"
 	
@@ -78,6 +77,8 @@ Section "Client" Client
 	
 	SetOutPath "$INSTDIR\shaders"
 	File "..\..\shaders\*.fx"
+	SetOutPath "$INSTDIR\maps"
+	File "..\..\maps\README"
 SectionEnd
 
 SectionGroup /e "Mods"
