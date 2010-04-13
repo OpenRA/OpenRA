@@ -68,7 +68,7 @@ namespace OpenRA
 		public void AddLine(Color c, string from, string text)
 		{
 			recentLines.Add(Tuple.New(c, from, text));
-			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.ChatBeep);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
