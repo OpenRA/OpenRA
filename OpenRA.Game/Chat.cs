@@ -62,7 +62,7 @@ namespace OpenRA
 
 		public void AddLine(Session.Client p, string text)
 		{
-			AddLine(Player.PlayerColors[p.PaletteIndex].c, p.Name, text);
+			AddLine(Player.PlayerColors( Game.world )[p.PaletteIndex].c, p.Name, text);
 		}
 
 		public void AddLine(Color c, string from, string text)

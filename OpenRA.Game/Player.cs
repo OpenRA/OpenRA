@@ -52,15 +52,12 @@ namespace OpenRA
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
 
-		public static List<Tuple<string, string, Color>> PlayerColors
+		public static List<Tuple<string, string, Color>> PlayerColors( World world )
 		{
-			get
-			{
-				return Game.world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>()
-					.Where(p => p.Playable)
-					.Select(p => Tuple.New(p.Name, p.DisplayName, p.Color))
-					.ToList();
-			}
+			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>()
+				.Where(p => p.Playable)
+				.Select(p => Tuple.New(p.Name, p.DisplayName, p.Color))
+				.ToList();
 		}
 
 		public Player( World world, Session.Client client )
@@ -73,8 +70,8 @@ namespace OpenRA
 			if (client != null)
 			{
 				Index = client.Index;
-				Palette = PlayerColors[client.PaletteIndex % PlayerColors.Count()].a;
-				Color = PlayerColors[client.PaletteIndex % PlayerColors.Count()].c;
+				Palette = PlayerColors(world)[client.PaletteIndex % PlayerColors(world).Count()].a;
+				Color = PlayerColors(world)[client.PaletteIndex % PlayerColors(world).Count()].c;
 				PlayerName = client.Name;
 				InternalName = "Multi{0}".F(client.Index);
 			}

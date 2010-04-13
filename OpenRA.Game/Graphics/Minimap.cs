@@ -79,7 +79,7 @@ namespace OpenRA.Graphics
 		static Cache<string, TerrainColorSet> terrainTypeColors = new Cache<string, TerrainColorSet>(
 			theater =>
 			{
-				return new TerrainColorSet(Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == theater).MapColors);
+				return new TerrainColorSet(Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == theater).MapColors);
 			});
 		
 		static Color shroudColor;
@@ -194,7 +194,7 @@ namespace OpenRA.Graphics
 					lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), Player.PlayerColors[ p.Second.PaletteIndex % Player.PlayerColors.Count() ].c);
+						12, 12), Player.PlayerColors(world)[ p.Second.PaletteIndex % Player.PlayerColors(world).Count() ].c);
 			
 					rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
 				}

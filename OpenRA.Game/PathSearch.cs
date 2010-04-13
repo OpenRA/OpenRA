@@ -29,6 +29,7 @@ namespace OpenRA
 {
 	public class PathSearch
 	{
+		World world;
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, float> heuristic;
@@ -42,6 +43,7 @@ namespace OpenRA
 
 		public PathSearch(World world)
 		{
+			this.world = world;
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
 
@@ -171,11 +173,11 @@ namespace OpenRA
 			return search;
 		}
 
-		static CellInfo[ , ] InitCellInfo()
+		CellInfo[ , ] InitCellInfo()
 		{
-			var cellInfo = new CellInfo[ Game.world.Map.MapSize.X, Game.world.Map.MapSize.Y ];
-			for( int x = 0 ; x < Game.world.Map.MapSize.X ; x++ )
-				for( int y = 0 ; y < Game.world.Map.MapSize.Y ; y++ )
+			var cellInfo = new CellInfo[ world.Map.MapSize.X, world.Map.MapSize.Y ];
+			for( int x = 0 ; x < world.Map.MapSize.X ; x++ )
+				for( int y = 0 ; y < world.Map.MapSize.Y ; y++ )
 					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
 			return cellInfo;
 		}

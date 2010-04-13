@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 	public class ResourceLayer: IRenderOverlay, ILoadWorldHook
 	{		
 		SpriteRenderer sr;
-		World w;
+		World world;
 
 		public ResourceTypeInfo[] resourceTypes;
 		CellContents[,] content;
@@ -44,12 +44,12 @@ namespace OpenRA.Traits
 		
 		public void Render()
 		{
-			var map = Game.world.Map;
+			var map = world.Map;
 
 			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				{
-					if (Game.world.LocalPlayer != null && !Game.world.LocalPlayer.Shroud.IsExplored(new int2(x, y))) continue;
+					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(new int2(x, y))) continue;
 
 					var c = content[x, y];
 					if (c.image != null)
@@ -63,7 +63,7 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w)
 		{
-			this.w = w;
+			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
 
 			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
@@ -89,7 +89,7 @@ namespace OpenRA.Traits
 		
 		public Sprite[] ChooseContent(ResourceTypeInfo info)
 		{
-			return info.Sprites[w.SharedRandom.Next(info.Sprites.Length)];
+			return info.Sprites[world.SharedRandom.Next(info.Sprites.Length)];
 		}
 
 		public int GetAdjacentCellsWith(ResourceTypeInfo info, int i, int j)
@@ -147,7 +147,7 @@ namespace OpenRA.Traits
 
 		public void Grow(ResourceTypeInfo info)
 		{
-			var map = w.Map;
+			var map = world.Map;
 			var newDensity = new byte[map.MapSize.X, map.MapSize.Y];
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
@@ -162,13 +162,13 @@ namespace OpenRA.Traits
 
 		public void Spread(ResourceTypeInfo info)
 		{
-			var map = w.Map;
+			var map = world.Map;
 			var growMask = new bool[map.MapSize.X, map.MapSize.Y];
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (content[i,j].type == null
 						&& GetAdjacentCellsWith(info, i,j ) > 0
-						&& w.IsCellBuildable(new int2(i, j), false))
+						&& world.IsCellBuildable(new int2(i, j), false))
 						growMask[i, j] = true;
 
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)

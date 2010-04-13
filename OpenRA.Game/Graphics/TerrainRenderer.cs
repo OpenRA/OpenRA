@@ -31,11 +31,13 @@ namespace OpenRA.Graphics
 		IIndexBuffer indexBuffer;
 		Sheet terrainSheet;
 
+		World world;
 		Renderer renderer;
 		Map map;
 
 		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
 		{
+			this.world = world;
 			this.renderer = renderer;
 			this.map = world.Map;
 
@@ -88,9 +90,9 @@ namespace OpenRA.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-			if (Game.world.LocalPlayer != null && !Game.world.LocalPlayer.Shroud.Disabled && Game.world.LocalPlayer.Shroud.bounds.HasValue)
+			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
 			{
-				var r = Game.world.LocalPlayer.Shroud.bounds.Value;
+				var r = world.LocalPlayer.Shroud.bounds.Value;
 				if (firstRow < r.Top - map.YOffset)
 					firstRow = r.Top - map.YOffset;
 
@@ -107,7 +109,7 @@ namespace OpenRA.Graphics
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
 					PrimitiveType.TriangleList, renderer.SpriteShader));
 
-			foreach (var r in Game.world.WorldActor.traits.WithInterface<IRenderOverlay>())
+			foreach (var r in world.WorldActor.traits.WithInterface<IRenderOverlay>())
 				r.Render();
 		}
 	}

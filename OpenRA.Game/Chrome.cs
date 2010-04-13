@@ -325,7 +325,7 @@ namespace OpenRA
 				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 			
-			var theaterInfo = Game.world.WorldActor.Info.Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Tileset);
+			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Tileset);
 			DrawCentered("Theater: {0}".F(theaterInfo.Name),
 				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
@@ -339,12 +339,12 @@ namespace OpenRA
 		
 		void CyclePalette(bool left)
 		{
-			var d = left ? +1 : Player.PlayerColors.Count() - 1;
+			var d = left ? +1 : Player.PlayerColors(Game.world).Count() - 1;
 
-			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Player.PlayerColors.Count();
+			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Player.PlayerColors(Game.world).Count();
 				
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.LocalClient.PaletteIndex)
-				newIndex = (newIndex + d) % Player.PlayerColors.Count();
+				newIndex = (newIndex + d) % Player.PlayerColors(Game.world).Count();
 			
 			Game.IssueOrder(
 				Order.Chat("/pal " + newIndex));
@@ -521,7 +521,7 @@ namespace OpenRA
 															paletteRect.Top + Game.viewport.Location.Y + 5,
 															paletteRect.Right + Game.viewport.Location.X - 5,
 															paletteRect.Bottom+Game.viewport.Location.Y - 5),
-													Player.PlayerColors[client.PaletteIndex % Player.PlayerColors.Count()].c);
+													Player.PlayerColors(Game.world)[client.PaletteIndex % Player.PlayerColors(Game.world).Count()].c);
 				lineRenderer.Flush();
 				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
 				f.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
@@ -558,7 +558,7 @@ namespace OpenRA
 			if (radarAnimationFrame <= radarSlideAnimationLength)
 				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
 
-			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			
 			// Play radar-on sound at the start of the activate anim (open)
 			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
@@ -642,7 +642,7 @@ namespace OpenRA
 		
 		void HandleTabClick(string button)
 		{
-			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.TabClick);
 			var wasOpen = paletteOpen;
 			paletteOpen = (currentTab == button && wasOpen) ? false : true;
@@ -829,7 +829,7 @@ namespace OpenRA
 			if (paletteAnimationFrame <= paletteAnimationLength)
 				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
 
-			var eva = Game.world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			
 			// Play palette-open sound at the start of the activate anim (open)
 			if (paletteAnimationFrame == 1 && paletteOpen)
