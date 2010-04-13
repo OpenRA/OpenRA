@@ -117,7 +117,6 @@
     <Compile Include="Network\OrderManager.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\SellOrderGenerator.cs" />
-    <Compile Include="PackageDownloader.cs" />
     <Compile Include="PathSearch.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />

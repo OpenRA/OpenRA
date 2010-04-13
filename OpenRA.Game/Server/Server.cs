@@ -92,17 +92,12 @@ namespace OpenRA.Server
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
 
-					var isSendingPackages = conns.Any( c => c.Stream != null );
-
 					/* msdn lies, -1 doesnt work. this is ~1h instead. */
-					Socket.Select( checkRead, null, null, isSendingPackages ? DownloadChunkInterval : MasterPingInterval * 1000000 );
+					Socket.Select( checkRead, null, null, MasterPingInterval * 1000000 );
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
 						else conns.Single( c => c.socket == s ).ReadData();
-
-					foreach( var c in conns.Where( a => a.Stream != null ).ToArray() )
-						SendNextChunk( c );
 
 					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
 						PingMasterServer();
@@ -183,40 +178,6 @@ namespace OpenRA.Server
 					inFlightFrames.Remove(conn.Frame);
 				}
 			}
-		}
-
-		class Chunk { public int Index = 0; public int Count = 0; public string Data = ""; }
-
-		static void SendNextChunk(Connection c)
-		{
-			try
-			{
-				var data = c.Stream.Read(Math.Min(DownloadChunkSize, c.RemainingBytes));
-				if (data.Length != 0)
-				{
-					var chunk = new Chunk
-					{
-						Index = c.NextChunk++,
-						Count = c.NumChunks,
-						Data = Convert.ToBase64String(data)
-					};
-
-					DispatchOrdersToClient(c, 0, 0,
-						new ServerOrder("FileChunk",
-							FieldSaver.Save(chunk).Nodes.WriteToString()).Serialize());
-				}
-
-				c.RemainingBytes -= data.Length;
-				if (c.RemainingBytes == 0)
-				{
-					GetClient(c).State = Session.ClientState.NotReady;
-					c.Stream.Dispose();
-					c.Stream = null;
-
-					SyncLobbyInfo();
-				}
-			}
-			catch (Exception e) { DropClient(c, e); }
 		}
 
 		static void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
@@ -513,29 +474,6 @@ namespace OpenRA.Server
 					else
 						foreach (var c in conns.Except(conn).ToArray())
 							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
-					break;
-
-				case "RequestFile":
-					{
-						Console.WriteLine("** Requesting file: `{0}`", so.Data);
-						var client = GetClient(conn);
-						client.State = Session.ClientState.Downloading;
-
-						var filename = so.Data.Split(':')[0];
-
-						if (conn.Stream != null)
-							conn.Stream.Dispose();
-
-						conn.Stream = File.OpenRead(filename);
-						// todo: validate that the SHA1 they asked for matches what we've got.
-
-						var length = (int) new FileInfo(filename).Length;
-						conn.NextChunk = 0;
-						conn.NumChunks = (length + DownloadChunkSize - 1) / DownloadChunkSize;
-						conn.RemainingBytes = length;
-
-						SyncLobbyInfo();
-					}
 					break;
 			}
 		}

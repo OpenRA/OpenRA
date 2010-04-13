@@ -152,8 +152,6 @@ namespace OpenRA
 				
 		public void Draw( World world )
 		{
-			DrawDownloadBar();
-
 			chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 			paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
@@ -173,36 +171,6 @@ namespace OpenRA
 			int paletteHeight = DrawBuildPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
 			DrawChat();
-		}
-
-		public void DrawDownloadBar()
-		{
-			if (PackageDownloader.IsIdle())
-				return;
-
-			var r = new Rectangle((Game.viewport.Width - 400) / 2, Game.viewport.Height - 110, 400, 100);
-			DrawDialogBackground(r, "dialog");
-
-			DrawCentered("Downloading: {0} (+{1} more)".F(
-				PackageDownloader.CurrentPackage.Split(':')[0],
-				PackageDownloader.RemainingPackages),
-				new int2( Game.viewport.Width  /2, Game.viewport.Height - 90),
-				Color.White);
-
-			DrawDialogBackground(new Rectangle(r.Left + 30, r.Top + 50, r.Width - 60, 20),
-				"dialog2");
-
-			var x1 = r.Left + 35;
-			var x2 = r.Right - 35;
-			var x = float2.Lerp(x1, x2, PackageDownloader.Fraction);
-
-			for (var y = r.Top + 55; y < r.Top + 65; y++)
-				lineRenderer.DrawLine(
-					new float2(x1, y) + Game.viewport.Location, 
-					new float2(x, y) + Game.viewport.Location,
-					Color.White, Color.White);
-
-			lineRenderer.Flush();
 		}
 
 		public void DrawDialog(string text)
@@ -416,7 +384,6 @@ namespace OpenRA
 		public void DrawLobby()
 		{
 			buttons.Clear();
-			DrawDownloadBar();
 			
 			if (showMapChooser)
 			{

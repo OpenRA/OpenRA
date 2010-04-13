@@ -48,12 +48,6 @@ namespace OpenRA.Network
 					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
-			case "FileChunk":
-				{
-					PackageDownloader.ReceiveChunk(order.TargetString);
-					break;
-				}
-
 			default:
 				{
 					if( !order.IsImmediate )

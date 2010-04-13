@@ -39,12 +39,6 @@ namespace OpenRA.Server
 		/* client data */
 		public int PlayerIndex;
 
-		/* file server state */
-		public int NextChunk = 0;
-		public int NumChunks = 0;
-		public int RemainingBytes = 0;
-		public Stream Stream = null;
-
 		public byte[] PopBytes(int n)
 		{
 			var result = data.GetRange(0, n);

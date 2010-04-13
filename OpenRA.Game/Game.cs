@@ -231,7 +231,7 @@ namespace OpenRA
 
 		public static void Tick()
 		{
-			if (packageChangePending && PackageDownloader.IsIdle())
+			if (packageChangePending)
 			{
 				// TODO: Only do this on mod change
 				Timer.Time("----begin maplist");
@@ -241,7 +241,7 @@ namespace OpenRA
 				return;
 			}
 			
-			if (mapChangePending && PackageDownloader.IsIdle())
+			if (mapChangePending)
 			{
 				ChangeMap(LobbyInfo.GlobalSettings.Map);
 				return;
@@ -331,9 +331,6 @@ namespace OpenRA
 				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 
-			if (PackageDownloader.SetPackageList(LobbyInfo.GlobalSettings.Packages))
-				packageChangePending = true;
-			
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 				mapChangePending = true;
 			
