@@ -198,17 +198,13 @@ namespace OpenRA
 		{
 			readonly World world;
 
-			public readonly Dictionary<Player, OwnedByCachedView> OwnedBy = new Dictionary<Player, OwnedByCachedView>();
+			public readonly Cache<Player, OwnedByCachedView> OwnedBy;
 			readonly TypeDictionary hasTrait = new TypeDictionary();
 
 			public AllQueries( World world )
 			{
 				this.world = world;
-				foreach( var p in world.players.Values )
-				{
-					var player = p;
-					OwnedBy.Add( player, new OwnedByCachedView( world, world.actors, x => x.Owner == player ) );
-				}
+				OwnedBy = new Cache<Player, OwnedByCachedView>(p => new OwnedByCachedView(world, world.actors, x => x.Owner == p));
 			}
 
 			public CachedView<Actor, TraitPair<T>> WithTrait<T>()
