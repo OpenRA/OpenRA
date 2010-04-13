@@ -125,7 +125,7 @@ namespace OpenRA
 
 			try
 			{
-				if (!Game.IsStarted)
+				if (!world.GameHasStarted)
 					return "default";
 
 				var mi = new MouseInput

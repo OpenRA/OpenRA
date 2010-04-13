@@ -318,7 +318,7 @@ namespace OpenRA
 
 			LobbyInfo = session;
 
-			if (!IsStarted)
+			if (!world.GameHasStarted)
 				world.SharedRandom = new OpenRA.Thirdparty.Random(LobbyInfo.GlobalSettings.RandomSeed);
 
 			if (Game.orderManager.Connection.ConnectionState == ConnectionState.Connected)
@@ -347,8 +347,6 @@ namespace OpenRA
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
 
-		public static bool IsStarted { get { return orderManager.GameStarted; } }
-		
 		public static void LoadShellMap(string map)
 		{
 			LoadMap(map);			

@@ -46,6 +46,8 @@ namespace OpenRA
 
 		public void AddPlayer(Player p) { players[p.Index] = p; }
 
+		public bool GameHasStarted { get { return Game.orderManager.GameStarted; } }
+
 		int localPlayerIndex;
 		public Player LocalPlayer
 		{

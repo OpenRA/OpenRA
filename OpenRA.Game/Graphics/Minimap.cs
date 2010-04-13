@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 
 			mapOnlySheet.Texture.SetData(oreLayer);
 
-			if (!Game.IsStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
+			if (!world.GameHasStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
 
 			var bitmap = new Bitmap(oreLayer);
