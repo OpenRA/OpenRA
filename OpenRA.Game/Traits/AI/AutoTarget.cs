@@ -23,10 +23,12 @@ using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	class AutoTargetInfo : StatelessTraitInfo<AutoTarget>
+	class AutoTargetInfo : ITraitInfo
 	{
 		public readonly float ScanTimeAverage = 2f;
 		public readonly float ScanTimeSpread = .5f;
+
+		public object Create(Actor self) { return new AutoTarget(); }
 	}
 
 	class AutoTarget : ITick, INotifyDamage
