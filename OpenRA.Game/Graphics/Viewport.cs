@@ -122,16 +122,21 @@ namespace OpenRA.Graphics
 							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
 							break;
 					}
-				}
 				
-				// TODO: Kill this (hopefully!) soon
-				if (state == ConnectionState.Connected)
-					Game.chrome.DrawLobby();
+					// TODO: Kill this (hopefully!) soon
+					if (state == ConnectionState.Connected)
+						Chrome.rootWidget.OpenWindow( "SERVER_LOBBY" );
+				}
 				
 				lastConnectionState = state;
 
 			}
 			Game.chrome.DrawWidgets(world);
+			if( Chrome.rootWidget.GetWidget( "SERVER_LOBBY" ).Visible )
+				Game.chrome.DrawLobby();
+			else if( Chrome.rootWidget.GetWidget( "MAP_CHOOSER" ).Visible )
+				Game.chrome.DrawMapChooser();
+
 			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
