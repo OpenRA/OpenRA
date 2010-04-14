@@ -916,7 +916,7 @@
     <sequence name="idle" start="8" length="5" />
   </unit>
   <unit name="smokland">
-    <sequence name="open" start="0" length="60" tick="120"/>
-    <sequence name="idle" start="60" length="32" tick="120"/>
+    <sequence name="open" start="0" length="60" tick="120" src="playersmoke"/>
+    <sequence name="idle" start="60" length="32" tick="120" src="playersmoke"/>
   </unit>
 </sequences>
