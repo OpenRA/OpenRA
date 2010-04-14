@@ -76,6 +76,7 @@ Player:
 		OneShot: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
+		FlareType: flare
 	VictoryConditions:
 		ShortGameUnits: mcv
 		

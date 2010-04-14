@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA
 	class AirstrikePowerInfo : SupportPowerInfo
 	{
 		public readonly string UnitType = "badr.bomber";
+		public readonly string FlareType = null;
 		public override object Create(Actor self) { return new AirstrikePower(self, this); }
 	}
 
@@ -47,6 +48,9 @@ namespace OpenRA.Mods.RA
 
 				Owner.World.AddFrameEndTask(w =>
 					{
+						var flareType = (Info as AirstrikePowerInfo).FlareType;
+						var flare = flareType != null ? w.CreateActor(flareType, order.TargetLocation, Owner) : null;
+
 						var a = w.CreateActor((Info as AirstrikePowerInfo).UnitType, startPos, Owner);
 						a.traits.Get<Unit>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
 						a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
@@ -54,6 +58,10 @@ namespace OpenRA.Mods.RA
 
 						a.CancelActivity();
 						a.QueueActivity(new Fly(order.TargetLocation));
+
+						if (flare != null)
+							a.QueueActivity(new CallFunc(() => Owner.World.AddFrameEndTask(_w => _w.Remove(flare))));
+
 						a.QueueActivity(new FlyOffMap { Interruptible = false });
 						a.QueueActivity(new RemoveSelf());
 					});
