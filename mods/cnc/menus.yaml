@@ -1,6 +1,14 @@
 Container:
 	ClickThrough:true
 	Children:
+		PostGame@POSTGAME_TEXT:
+			Id:POSTGAME_TEXT
+			X:0
+			Y:0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			ClickThrough: true
+			Visible: true
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
@@ -237,8 +245,60 @@ Container:
 					Width:160
 					Height:25
 					Text:Abort
-		Container@SERVER_LOBBY:
+		Background@SERVER_LOBBY:
 			Id:SERVER_LOBBY
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:800
+			Height:600
+			Visible:false
+			Children:
+				Label@LOBBY_TITLE:
+					X:0
+					Y:20
+					Align:Center
+					Width:800
+					Height:20
+					Text:OpenRA Multiplayer Lobby
+				Background@LOBBY_MAP_BG:
+					X:PARENT_RIGHT-268
+					Y:39
+					Width:252
+					Height:252
+					Background:dialog3
+					Children:
+						MapPreview@LOBBY_MAP_PREVIEW:
+							X:4
+							Y:4
+							Width:244
+							Height:244
+		Background@MAP_CHOOSER:
+			Id:MAP_CHOOSER
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:800
+			Height:600
+			Visible:false
+			Children:
+				Label@MAPCHOOSER_TITLE:
+					X:0
+					Y:20
+					Align:Center
+					Width:800
+					Height:20
+					Text:Choose Map
+				Background@MAPCHOOSER_MAP_BG:
+					X:PARENT_RIGHT-268
+					Y:39
+					Width:252
+					Height:252
+					Background:dialog3
+					Children:
+						MapPreview@MAPCHOOSER_MAP_PREVIEW:
+							X:4
+							Y:4
+							Width:244
+							Height:244
 		Container@INGAME_ROOT:
 			Id:INGAME_ROOT
 			Delegate:IngameChromeDelegate
@@ -255,6 +315,19 @@ Container:
 					Width:160
 					Height:25
 					Text:Options
+				Button@INGAME_DIPLOMACY_BUTTON:
+					Id:INGAME_DIPLOMACY_BUTTON
+					X:162
+					Y:0
+					Width:160
+					Height:25
+					Text:Diplomacy
+				MoneyBin@INGAME_MONEY_BIN:
+					Id:INGAME_MONEY_BIN
+					X:WINDOW_RIGHT - WIDTH
+					Y:0
+					Width:320
+					Height: 32
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2

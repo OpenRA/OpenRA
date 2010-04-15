@@ -73,6 +73,9 @@ namespace OpenRA.Widgets
 						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "owned"), pos, "chrome");
 				}
 			}
+
+			Game.chrome.lineRenderer.Flush();
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }
