@@ -315,6 +315,13 @@ Container:
 					Width:160
 					Height:25
 					Text:Options
+				Button@INGAME_DIPLOMACY_BUTTON:
+					Id:INGAME_DIPLOMACY_BUTTON
+					X:162
+					Y:0
+					Width:160
+					Height:25
+					Text:Diplomacy
 				MoneyBin@INGAME_MONEY_BIN:
 					Id:INGAME_MONEY_BIN
 					X:WINDOW_RIGHT - WIDTH
