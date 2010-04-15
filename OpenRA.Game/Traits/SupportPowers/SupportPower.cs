@@ -33,7 +33,6 @@ namespace OpenRA.Traits
 		public readonly string[] Prerequisites = { };
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
-		public readonly string MissileWeapon = "";
 		
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;

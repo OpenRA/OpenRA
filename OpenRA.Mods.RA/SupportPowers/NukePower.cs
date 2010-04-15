@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.SupportPowers
 {
 	class NukePowerInfo : SupportPowerInfo
 	{
+		public readonly string MissileWeapon = "";
 		public override object Create(Actor self) { return new NukePower(self, this); }
 	}
 	
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.RA.SupportPowers
 						Sound.Play(Info.LaunchSound);
 
 					//FIRE ZE MISSILES
-					w.Add(new NukeLaunch(silo, Info.MissileWeapon, order.TargetLocation));
+					w.Add(new NukeLaunch(silo, (Info as NukePowerInfo).MissileWeapon, order.TargetLocation));
 				});
 				
 				Game.controller.CancelInputMode();
