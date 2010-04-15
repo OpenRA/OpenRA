@@ -42,54 +42,48 @@ namespace OpenRA.Widgets
 		{
 			Game.chrome.renderer.WorldSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
-		
+
 		public static void DrawPanel(string collection, Rectangle Bounds, Action a)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
 			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
-			
+
 			// Background
 			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-                                 Bounds.Top + (int)ss[0].size.Y,
-                                 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-                                 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
-                   ss[8]);
+								 Bounds.Top + (int)ss[0].size.Y,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[8]);
 
 			// Left border
 			FillRectWithSprite(new Rectangle(Bounds.Left,
-                                 Bounds.Top + (int)ss[0].size.Y,
-                                 (int)ss[2].size.X,
-                                 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
-                   ss[2]);
-			
+								 Bounds.Top + (int)ss[0].size.Y,
+								 (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[2]);
+
 			// Right border
 			FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
-                                 Bounds.Top + (int)ss[0].size.Y,
-                                 (int)ss[2].size.X,
-                                 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
-                   ss[3]);
-			
+								 Bounds.Top + (int)ss[0].size.Y,
+								 (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[3]);
+
 			// Top border
 			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-                                 Bounds.Top,
-                                 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-                                 (int)ss[0].size.Y),
-                   ss[0]);
-			
+								 Bounds.Top,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 (int)ss[0].size.Y), ss[0]);
+
 			// Bottom border
 			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-                                Bounds.Bottom - (int)ss[1].size.Y,
-                                 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-                                 (int)ss[0].size.Y),
-                   ss[1]);
-			
+								Bounds.Bottom - (int)ss[1].size.Y,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 (int)ss[0].size.Y), ss[1]);
+
 			DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
 			DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
 			DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
 			DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
 
 			if (a != null) a();
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 		
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
@@ -108,6 +102,7 @@ namespace OpenRA.Widgets
 				}
 		}
 	
+		// todo: write this in terms of 3 DrawPanelPartial calls
 		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br, Action a)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background"};
@@ -192,5 +187,79 @@ namespace OpenRA.Widgets
 			
 			if (a != null) a();
 		}
+
+		static bool HasFlags(this PanelSides a, PanelSides b) { return (a & b) == b; }
+		public static Rectangle InflateBy(this Rectangle rect, int l, int t, int r, int b)
+		{
+			return Rectangle.FromLTRB(rect.Left - l, rect.Top - t,
+				rect.Right + r, rect.Bottom + b);
+		}
+
+		public static void DrawPanelPartial(string collection, Rectangle Bounds, PanelSides ps)
+		{
+			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
+			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
+
+			// Background
+			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
+								 Bounds.Top + (int)ss[0].size.Y,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+				   ss[8]);
+
+			// Left border
+			if (ps.HasFlags(PanelSides.Left))
+				FillRectWithSprite(new Rectangle(Bounds.Left,
+									 Bounds.Top + (int)ss[0].size.Y,
+									 (int)ss[2].size.X,
+									 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+					   ss[2]);
+
+			// Right border
+			if (ps.HasFlags(PanelSides.Right))
+				FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
+									 Bounds.Top + (int)ss[0].size.Y,
+									 (int)ss[2].size.X,
+									 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+					   ss[3]);
+
+			// Top border
+			if (ps.HasFlags(PanelSides.Top))
+				FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
+									 Bounds.Top,
+									 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+									 (int)ss[0].size.Y),
+					   ss[0]);
+
+			// Bottom border
+			if (ps.HasFlags(PanelSides.Bottom))
+				FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
+									Bounds.Bottom - (int)ss[1].size.Y,
+									 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+									 (int)ss[0].size.Y),
+					   ss[1]);
+
+			if (ps.HasFlags(PanelSides.Left | PanelSides.Top))
+				DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
+			if (ps.HasFlags(PanelSides.Right | PanelSides.Top))
+				DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
+			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom))
+				DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
+			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
+				DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
+
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+		}
+	}
+
+	[Flags]
+	public enum PanelSides
+	{
+		Left = 1,
+		Top = 2,
+		Right = 4,
+		Bottom = 8,
+
+		All = Left | Top | Right | Bottom
 	}
 }

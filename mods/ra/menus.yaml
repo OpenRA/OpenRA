@@ -263,6 +263,12 @@ Container:
 					Width:160
 					Height:25
 					Text:Options
+				MoneyBin@INGAME_MONEY_BIN:
+					Id:INGAME_MONEY_BIN
+					X:WINDOW_RIGHT - WIDTH
+					Y:0
+					Width:320
+					Height: 32
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2

@@ -123,6 +123,8 @@ namespace OpenRA.Traits
 		bool Enabled { get; }
 		bool Pressed { get; }
 		void OnClick();
+		string Description { get; }
+		string LongDesc { get; }
 	}
 
 	public interface IRenderOverlay { void Render(); }

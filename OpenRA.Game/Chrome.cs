@@ -21,12 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
-using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -43,7 +41,6 @@ namespace OpenRA
 		string chromeCollection;
 		string radarCollection;
 		string paletteCollection;
-		string digitCollection;
 		
 		// Build Palette tabs
 		string currentTab = "Building";
@@ -151,10 +148,9 @@ namespace OpenRA
 				
 		public void Draw( World world )
 		{
-			chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 			paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
-			digitCollection = "digits-" + world.LocalPlayer.Country.Race;
+			chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
 			buttons.Clear();
 
@@ -162,10 +158,7 @@ namespace OpenRA
 			
 			DrawRadar( world );
 			DrawPower( world );
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, chromeCollection, "moneybin"), new float2(Game.viewport.Width - 320, 0), "chrome");
-			DrawMoney( world );
 			rgbaRenderer.Flush();
-			DrawButtons( world );
 			
 			int paletteHeight = DrawBuildPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
@@ -622,17 +615,6 @@ namespace OpenRA
 				Game.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
 		}
 
-		void DrawMoney( World world )
-		{
-			var moneyDigits = world.LocalPlayer.DisplayCash.ToString();
-			var x = Game.viewport.Width - 65;
-			foreach (var d in moneyDigits.Reverse())
-			{
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, digitCollection, (d - '0').ToString()), new float2(x, 6), "chrome");
-				x -= 14;
-			}
-		}
-
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		
@@ -685,26 +667,6 @@ namespace OpenRA
 		
 			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
 			rgbaRenderer.Flush();
-		}
-
-		const int chromeButtonGap = 2;
-
-		void DrawButtons( World world )
-		{
-			var origin = new int2(Game.viewport.Width - 200, 2);
-			
-			foreach (var cb in world.WorldActor.traits.WithInterface<IChromeButton>())
-			{
-				var state = cb.Enabled ? cb.Pressed ? "pressed" : "normal" : "disabled";
-				var image = ChromeProvider.GetImage(renderer, cb.Image + "-button", state);
-				
-				origin.X -= (int)image.size.X + chromeButtonGap;
-				rgbaRenderer.DrawSprite(image, origin, "chrome");
-
-				var button = cb;
-				AddButton(new RectangleF(origin.X, origin.Y, image.size.X, image.size.Y),
-					_ => { if (button.Enabled) button.OnClick(); });
-			}
 		}
 
 		void DrawDialogBackground(Rectangle r, string collection)

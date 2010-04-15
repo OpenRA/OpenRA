@@ -91,6 +91,7 @@
     <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
     <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
+    <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\PostGameWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Combat.cs" />

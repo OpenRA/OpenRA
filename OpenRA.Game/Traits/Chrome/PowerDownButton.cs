@@ -12,6 +12,9 @@ namespace OpenRA.Traits
 		public bool Enabled { get { return true; } }
 		public bool Pressed { get { return Game.controller.orderGenerator is PowerDownOrderGenerator; } }
 		public void OnClick() { Game.controller.ToggleInputMode<PowerDownOrderGenerator>(); }
+
+		public string Description { get { return "Powerdown"; } }
+		public string LongDesc { get { return "Disable unneeded structures so their \npower can be used elsewhere"; } }
 	}
 
 	class SellButtonInfo : TraitInfo<SellButton> { }
@@ -22,6 +25,9 @@ namespace OpenRA.Traits
 		public bool Enabled { get { return true; } }
 		public bool Pressed { get { return Game.controller.orderGenerator is SellOrderGenerator; } }
 		public void OnClick() { Game.controller.ToggleInputMode<SellOrderGenerator>(); }
+
+		public string Description { get { return "Sell"; } }
+		public string LongDesc { get { return "Sell buildings, reclaiming a \nproportion of their build cost"; } }
 	}
 
 	class RepairButtonInfo : ITraitInfo
@@ -48,5 +54,15 @@ namespace OpenRA.Traits
 
 		public bool Pressed { get { return Game.controller.orderGenerator is RepairOrderGenerator; } }
 		public void OnClick() { Game.controller.ToggleInputMode<RepairOrderGenerator>(); }
+
+		public string Description { get { return "Repair"; } }
+		public string LongDesc
+		{
+			get
+			{
+				var s = "Repair damaged buildings";
+				return Enabled ? s : s + "\n\nRequires: Construction Yard";
+			}
+		}
 	}
 }
