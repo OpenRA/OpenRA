@@ -45,43 +45,7 @@ namespace OpenRA.Widgets
 
 		public static void DrawPanel(string collection, Rectangle Bounds)
 		{
-			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
-			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
-
-			// Background
-			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[8]);
-
-			// Left border
-			FillRectWithSprite(new Rectangle(Bounds.Left,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[2]);
-
-			// Right border
-			FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y), ss[3]);
-
-			// Top border
-			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								 Bounds.Top,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 (int)ss[0].size.Y), ss[0]);
-
-			// Bottom border
-			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								Bounds.Bottom - (int)ss[1].size.Y,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 (int)ss[0].size.Y), ss[1]);
-
-			DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
-			DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
-			DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
-			DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
+			DrawPanelPartial(collection, Bounds, PanelSides.All);
 		}
 		
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
