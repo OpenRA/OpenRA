@@ -72,7 +72,7 @@ namespace OpenRA.Widgets
 		}
 	
 		// todo: write this in terms of 3 DrawPanelPartial calls
-		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br, Action a)
+		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background"};
 			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
@@ -153,8 +153,6 @@ namespace OpenRA.Widgets
 
 			// BR corner
 			DrawRGBA(ss[7], new float2(br.X - (int)ss[7].size.X, br.Y - (int)ss[7].size.Y));
-			
-			if (a != null) a();
 		}
 
 		static bool HasFlags(this PanelSides a, PanelSides b) { return (a & b) == b; }

@@ -118,7 +118,7 @@ namespace OpenRA.Widgets
 						else
 							br += new int2(300,0);
 						
-						WidgetUtils.DrawRightTooltip("dialog4", tl, m, br, null);
+						WidgetUtils.DrawRightTooltip("dialog4", tl, m, br);
 						
 						pos += new int2(77, 5);
 						Game.chrome.renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
