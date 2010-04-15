@@ -567,6 +567,15 @@ namespace OpenRA
 		}
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
+
+		Dictionary<string, string> CategoryNameRemaps = new Dictionary<string, string>
+		{
+			{ "Building", "Structures" },
+			{ "Defense", "Defenses" },
+			{ "Plane", "Aircraft" },
+			{ "Ship", "Ships" },
+			{ "Vehicle", "Vehicles" },
+		};
 		
 		void DrawBuildTabs( World world, int paletteHeight)
 		{
@@ -589,8 +598,21 @@ namespace OpenRA
 				var race = world.LocalPlayer.Country.Race;
 				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y), "chrome");
 
-				buttons.Add(Pair.New(new RectangleF(x, y, tabWidth, tabHeight),
-					(Action<bool>)(isLmb => HandleTabClick(groupName))));
+				var rect = new RectangleF(x, y, tabWidth, tabHeight);
+				buttons.Add(Pair.New(rect, (Action<bool>)(isLmb => HandleTabClick(groupName))));
+
+				if (rect.Contains(lastMousePos.ToPointF()))
+				{
+					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
+					var sz = renderer.BoldFont.Measure(text);
+					WidgetUtils.DrawPanelPartial("dialog4",
+						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
+						PanelSides.All);
+
+					renderer.BoldFont.DrawText(text, 
+						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
+				}
+
 				y += tabHeight;
 			}
 
