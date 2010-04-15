@@ -110,24 +110,16 @@ namespace OpenRA.Graphics
 							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
 							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = true;
 							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
-
-							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Connecting abort";
-
-							//Game.chrome.DrawDialog("Connecting to {0}:{1}...".F( Game.Settings.NetworkHost, Game.Settings.NetworkPort ));
 							break;
 						case ConnectionState.NotConnected:
 							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
 							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
 							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = true;
-
-							//(Game.chrome.rootWidget.GetWidget("CONNECTION_GROUP_FAILED") as LabelWidget).Text = "Not Connected Retry/fail";
-							//Game.chrome.DrawDialog("Connection failed.", "Retry", _ => {}, "Cancel",_ => {});
 							break;
 						case ConnectionState.Connected:
 							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
 							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
 							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
-							//Game.chrome.DrawLobby( world );
 							break;
 					}
 				}

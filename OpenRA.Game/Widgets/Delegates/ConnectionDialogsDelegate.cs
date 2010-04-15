@@ -37,6 +37,12 @@ namespace OpenRA.Widgets.Delegates
 				Game.JoinServer(Game.CurrentHost, Game.CurrentPort);
 				return true;
 			};
+
+			r.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
+				"Connecting to {0}:{1}...".F(Game.CurrentHost, Game.CurrentPort);
+
+			r.GetWidget<LabelWidget>("CONNECTION_FAILED_DESC").GetText = () =>
+				"Could not connect to {0}:{1}".F(Game.CurrentHost, Game.CurrentPort);
 		}
 	}
 }
