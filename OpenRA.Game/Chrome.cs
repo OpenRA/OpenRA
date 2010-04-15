@@ -345,33 +345,6 @@ namespace OpenRA
 		}
 
 		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
-		public void DrawSpawnPoints(MapStub map, Rectangle container)
-		{
-			var points = map.Waypoints;
-			//	.Select( (sp,i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault( 
-			//		c => c.SpawnPoint == i + 1 ) ))
-			//	.ToList();
-			
-			foreach (var p in points)
-			{
-				var pos = map.ConvertToPreview(p.Value,container);
-
-				//if (p.Second == null)
-					rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, "spawnpoints", "unowned"), pos, "chrome");
-				//else
-				//{
-				//	lineRenderer.FillRect(new RectangleF(
-				//		Game.viewport.Location.X + pos.X + 2,
-				//		Game.viewport.Location.Y + pos.Y + 2,
-				//		12, 12), Player.PlayerColors[ p.Second.PaletteIndex % Player.PlayerColors.Count() ].c);
-				//
-				//	rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
-				//}
-			}
-
-			lineRenderer.Flush();
-			rgbaRenderer.Flush();
-		}
 		
 		public void DrawLobby()
 		{

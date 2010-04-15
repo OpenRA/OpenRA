@@ -12,7 +12,6 @@ namespace OpenRA.Widgets
 	{
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
-		bool showMapChooser = false;
 		bool mapPreviewDirty = true;
 		MapStub lastMap;
 
@@ -44,8 +43,36 @@ namespace OpenRA.Widgets
 				"chrome",
 				new float2( mapRect.Size ) );
 
-			Game.chrome.DrawSpawnPoints( map, Parent.Bounds );
+			DrawSpawnPoints( map, Parent.Bounds, world );
 			base.Draw( world );
+		}
+
+		void DrawSpawnPoints(MapStub map, Rectangle container, World world)
+		{
+			var points = map.Waypoints
+				.Select((sp, i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault(
+					c => c.SpawnPoint == i + 1)))
+				.ToList();
+
+			foreach (var p in points)
+			{
+				var pos = map.ConvertToPreview(p.First.Value, container);
+
+				if (p.Second == null)
+					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
+						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "unowned"), pos, "chrome");
+				else
+				{
+					var playerColors = Player.PlayerColors(world);
+					Game.chrome.lineRenderer.FillRect(new RectangleF(
+						Game.viewport.Location.X + pos.X + 2,
+						Game.viewport.Location.Y + pos.Y + 2,
+						12, 12), playerColors[p.Second.PaletteIndex % playerColors.Count()].c);
+
+					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
+						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "owned"), pos, "chrome");
+				}
+			}
 		}
 	}
 }
