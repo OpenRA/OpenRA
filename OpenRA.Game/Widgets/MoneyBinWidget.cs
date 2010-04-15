@@ -82,30 +82,26 @@ namespace OpenRA.Widgets
 					br.Y += u.Y;
 					br += new int2(-15, 25);
 
-					var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
-					var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, "dialog4", i)).ToArray();
-					
+					var border = WidgetUtils.GetBorderSizes("dialog4");
+
 					WidgetUtils.DrawPanelPartial("dialog4", rect
-						.InflateBy(0, 0, 0, (int)ss[1].size.Y), 
+						.InflateBy(0, 0, 0, border[1]),
 						PanelSides.Top | PanelSides.Left | PanelSides.Right);
 
 					WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(br.X, m.Y, pos.X - br.X, br.Y - m.Y)
-						.InflateBy(0, 0, (int)ss[3].size.X, 0),
+						.InflateBy(0, 0, border[3], 0),
 						PanelSides.Top | PanelSides.Left | PanelSides.Bottom);
 
 					WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(pos.X, m.Y, m.X - pos.X, br.Y - m.Y)
-						.InflateBy((int)ss[2].size.X, (int)ss[0].size.Y, 0, 0),
+						.InflateBy(border[2], border[0], 0, 0),
 						PanelSides.Right | PanelSides.Bottom);
 
 					pos.X = br.X + 8;
 					pos.Y = m.Y + 8;
 					Game.chrome.renderer.BoldFont.DrawText(cb.Description, pos, Color.White);
 
-					if (cb.LongDesc != null)
-					{
-						pos += new int2(0, 20);
-						Game.chrome.renderer.RegularFont.DrawText(cb.LongDesc.Replace("\\n", "\n"), pos, Color.White);
-					}
+					pos += new int2(0, 20);
+					Game.chrome.renderer.RegularFont.DrawText(cb.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 				}
 
 				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(image, origin, "chrome");

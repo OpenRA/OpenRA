@@ -63,6 +63,13 @@ namespace OpenRA.Widgets
 					DrawRGBA(ss, new float2(x, y));
 				}
 		}
+
+		public static int[] GetBorderSizes(string collection)
+		{
+			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
+			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, "dialog4", i)).ToArray();
+			return new[] { (int)ss[0].size.Y, (int)ss[1].size.Y, (int)ss[2].size.X, (int)ss[3].size.X };
+		}
 	
 		// todo: write this in terms of 3 DrawPanelPartial calls
 		public static void DrawRightTooltip(string collection, int2 tl, int2 m, int2 br, Action a)
