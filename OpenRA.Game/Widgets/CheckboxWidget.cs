@@ -36,10 +36,8 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			WidgetUtils.DrawPanel("dialog3",
-				new Rectangle(Bounds.Location,
-					new Size(Bounds.Height, Bounds.Height)),
-					() => { });
+			WidgetUtils.DrawPanel("dialog3", new Rectangle(Bounds.Location,
+					new Size(Bounds.Height, Bounds.Height)));
 
 			Game.chrome.renderer.BoldFont.DrawText(Text,
 				new float2(Bounds.Left + Bounds.Height * 2, Bounds.Top), Color.White);

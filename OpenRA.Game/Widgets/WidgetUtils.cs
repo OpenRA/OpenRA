@@ -43,7 +43,7 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.WorldSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
 
-		public static void DrawPanel(string collection, Rectangle Bounds, Action a)
+		public static void DrawPanel(string collection, Rectangle Bounds)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
 			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
@@ -82,8 +82,6 @@ namespace OpenRA.Widgets
 			DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
 			DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
 			DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
-
-			if (a != null) a();
 		}
 		
 		public static void FillRectWithSprite(Rectangle r, Sprite s)

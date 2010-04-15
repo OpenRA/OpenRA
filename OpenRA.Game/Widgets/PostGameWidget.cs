@@ -35,7 +35,7 @@ namespace OpenRA.Widgets
 				(Game.viewport.Width - size.X - 40) / 2,
 				(Game.viewport.Height - size.Y - 10) / 2,
 				size.X + 40,
-				size.Y + 13), null);
+				size.Y + 13));
 
 			Game.chrome.renderer.TitleFont.DrawText(s, 
 				new float2((Game.viewport.Width - size.X) / 2,

@@ -31,7 +31,7 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			WidgetUtils.DrawPanel(Background, Bounds, null);
+			WidgetUtils.DrawPanel(Background, Bounds);
 			base.Draw(world);
 		}
 	}

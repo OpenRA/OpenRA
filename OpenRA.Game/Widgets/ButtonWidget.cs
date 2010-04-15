@@ -70,7 +70,7 @@ namespace OpenRA.Widgets
 			}
 
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", Bounds, null);
+			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", Bounds);
 
 			Game.chrome.renderer.BoldFont.DrawText(Text,
 				new int2(Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 2)
