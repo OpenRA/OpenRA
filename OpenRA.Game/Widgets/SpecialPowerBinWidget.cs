@@ -117,8 +117,15 @@ namespace OpenRA.Widgets
 							br += Game.chrome.renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
 						else
 							br += new int2(300,0);
-						
-						WidgetUtils.DrawRightTooltip("dialog4", tl, m, br);
+
+						var border = WidgetUtils.GetBorderSizes("dialog4");
+
+						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(tl.X, tl.Y, m.X + border[3], m.Y),
+							PanelSides.Left | PanelSides.Top | PanelSides.Bottom);
+						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X - border[2], tl.Y, br.X, m.Y + border[1]),
+							PanelSides.Top | PanelSides.Right);
+						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X, m.Y - border[1], br.X, br.Y),
+							PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
 						
 						pos += new int2(77, 5);
 						Game.chrome.renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
