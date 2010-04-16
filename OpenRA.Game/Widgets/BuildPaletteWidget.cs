@@ -280,7 +280,7 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.WorldSpriteRenderer.Flush();
 
 			// Tooltip
-			if (tooltipItem != null)
+			if (tooltipItem != null && !paletteAnimating && paletteOpen)
 				DrawProductionTooltip(world, tooltipItem, 
 					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 
@@ -450,14 +450,17 @@ namespace OpenRA.Widgets
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
 		{
+			pos.Y += 15;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
-			var tooltipSprite = ChromeProvider.GetImage(Game.chrome.renderer, chromeCollection, "tooltip-bg");
-			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
-			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(tooltipSprite, p, "chrome");
+			var p = pos.ToFloat2() - new float2(297, -3);
 
 			var info = Rules.Info[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
+
+			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n"));
+
+			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize.Y + 50));
 
 			Game.chrome.renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
 
@@ -466,7 +469,7 @@ namespace OpenRA.Widgets
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
-				DrawRightAligned("Power: {0}".F(bi.Power), pos + new int2(-5, 20),
+				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
 					world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
 					? Color.White : Color.Red);
 
@@ -477,15 +480,15 @@ namespace OpenRA.Widgets
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
-				Game.chrome.renderer.RegularFont.DrawText("Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
+				Game.chrome.renderer.RegularFont.DrawText(
+					"Requires {0}".F(string.Join(", ", prereqs.ToArray())), 
+					p.ToInt2(),
 					Color.White);
 			}
 
-			if (buildable.LongDesc != null)
-			{
-				p += new int2(0, 15);
-				Game.chrome.renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), p.ToInt2(), Color.White);
-			}
+			p += new int2(0, 15);
+			Game.chrome.renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), 
+				p.ToInt2(), Color.White);
 
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
