@@ -50,7 +50,7 @@
 		Footprint: x
 	RenderBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: e1,c1,c2,e6,e3
+		ActorTypes: e1,e1,e1,c1,c2,e6
 
 ^Wall:
 	Category: Building
