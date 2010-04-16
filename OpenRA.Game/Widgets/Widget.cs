@@ -117,18 +117,11 @@ namespace OpenRA.Widgets
 				if (child.HandleInput(mi))
 					return true;
 
-			// Mousedown
-			if (mi.Event == MouseInputEvent.Down)
-				return OnMouseDown(mi);
-			
-			// Mouseup
-			if (mi.Event == MouseInputEvent.Up)
-				return OnMouseUp(mi);
-			
-			// Mousemove
-			if (mi.Event == MouseInputEvent.Move)
-				return OnMouseMove(mi);
-			return false;
+			if (mi.Event == MouseInputEvent.Down) return OnMouseDown(mi);
+			if (mi.Event == MouseInputEvent.Up) return OnMouseUp(mi);
+			if (mi.Event == MouseInputEvent.Move) return OnMouseMove(mi);
+
+			throw new InvalidOperationException("Impossible");
 		}
 		
 		public virtual void Draw(World world)
