@@ -165,31 +165,36 @@ namespace OpenRA
 			DrawBuildTabs(world, paletteHeight);
 			DrawChat();
 
-			if (worldTooltipTicks >= worldTooltipDelay && world != null && world.LocalPlayer != null)
-			{
-				var actor = world.FindUnitsAtMouse(lastMousePos).FirstOrDefault();
-				if (actor == null) return;
+			DrawWorldTooltip(world);
+		}
 
-				var text = actor.Info.Traits.Contains<BuildableInfo>() ? actor.Info.Traits.Get<BuildableInfo>().Description : actor.Info.Name;
-				var text2 = (actor.Owner == world.LocalPlayer)
-					? "" : (actor.Owner == world.NeutralPlayer ? "{0}" : "{0} ({1})").F(actor.Owner.PlayerName, world.LocalPlayer.Stances[actor.Owner]);
+		void DrawWorldTooltip(World world)
+		{
+			if (worldTooltipTicks < worldTooltipDelay || world == null || world.LocalPlayer == null)
+				return;
 
-				var sz = renderer.BoldFont.Measure(text);
-				var sz2 = renderer.RegularFont.Measure(text2);
+			var actor = world.FindUnitsAtMouse(lastMousePos).FirstOrDefault();
+			if (actor == null) return;
 
-				sz.X = Math.Max(sz.X, sz2.X);
+			var text = actor.Info.Traits.Contains<BuildableInfo>() ? actor.Info.Traits.Get<BuildableInfo>().Description : actor.Info.Name;
+			var text2 = (actor.Owner == world.LocalPlayer)
+				? "" : (actor.Owner == world.NeutralPlayer ? "{0}" : "{0} ({1})").F(actor.Owner.PlayerName, world.LocalPlayer.Stances[actor.Owner]);
 
-				if (text2 != "") sz.Y += sz2.Y + 2;
+			var sz = renderer.BoldFont.Measure(text);
+			var sz2 = renderer.RegularFont.Measure(text2);
 
-				sz.X += 20;
-				sz.Y += 24;
+			sz.X = Math.Max(sz.X, sz2.X);
 
-				WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
-					lastMousePos.X + 20, lastMousePos.Y + 20, lastMousePos.X + sz.X + 20, lastMousePos.Y + sz.Y + 20));
+			if (text2 != "") sz.Y += sz2.Y + 2;
 
-				renderer.BoldFont.DrawText(text, new float2(lastMousePos.X + 30, lastMousePos.Y + 30), Color.White);
-				renderer.RegularFont.DrawText(text2, new float2(lastMousePos.X + 30, lastMousePos.Y + 50), Color.White);
-			}
+			sz.X += 20;
+			sz.Y += 24;
+
+			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
+				lastMousePos.X + 20, lastMousePos.Y + 20, lastMousePos.X + sz.X + 20, lastMousePos.Y + sz.Y + 20));
+
+			renderer.BoldFont.DrawText(text, new float2(lastMousePos.X + 30, lastMousePos.Y + 30), Color.White);
+			renderer.RegularFont.DrawText(text2, new float2(lastMousePos.X + 30, lastMousePos.Y + 50), Color.White);
 		}
 
 		public void DrawDialog(string text)
