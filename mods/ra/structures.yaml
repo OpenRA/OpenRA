@@ -410,6 +410,9 @@ FACT:
 		Produces: Building,Defense
 	ConstructionYard:
 	IronCurtainable: 
+	Valued:
+		Cost: 2500
+		Description: Construction Yard
 	CustomSellValue:
 		Value: 2500
 

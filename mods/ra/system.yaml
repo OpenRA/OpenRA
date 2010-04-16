@@ -305,6 +305,9 @@ MINV:
 	Category: Building
 
 CRATE:
+	Valued:
+		Cost: 0
+		Description: Crate
 	Crate:
 		Lifetime: 120
 	SpeedUpgradeCrateAction:
