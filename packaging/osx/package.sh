@@ -4,7 +4,7 @@
 #   All dependencies are packaged inside the game bundle
 
 # List of game files to copy into the app bundle
-GAME_FILES="OpenRA shaders maps FreeSans.ttf FreeSansBold.ttf"
+GAME_FILES="OpenRA shaders maps FreeSans.ttf FreeSansBold.ttf titles.ttf"
 
 # List of mods to include
 MODS="ra cnc"
@@ -13,7 +13,7 @@ MODS="ra cnc"
 MODS_INCLUDE_FILES="find mods/$m ! -name \"*.mdb\" ! -name \"packages\""
 
 # dylibs referred to by dlls in the gac; won't show up to otool
-GAC_DYLIBS="/Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libMonoPosixHelper.dylib /Library/Frameworks/Mono.framework/Versions/2.6.1/lib/libgdiplus.dylib"
+GAC_DYLIBS="/Library/Frameworks/Mono.framework/Versions/2.6.3/lib/libMonoPosixHelper.dylib /Library/Frameworks/Mono.framework/Versions/2.6.3/lib/libgdiplus.dylib "
 
 # Remove old app bundle
 rm -r OpenRA.app
