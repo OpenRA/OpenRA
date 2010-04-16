@@ -196,34 +196,6 @@ namespace OpenRA
 			renderer.BoldFont.DrawText(text, new float2(lastMousePos.X + 30, lastMousePos.Y + 30), Color.White);
 			renderer.RegularFont.DrawText(text2, new float2(lastMousePos.X + 30, lastMousePos.Y + 50), Color.White);
 		}
-
-		public void DrawDialog(string text)
-		{
-			DrawDialog(text, null, _ => { }, null, _ => { });
-		}
-		
-		public void DrawDialog(string text, string button1String, Action<bool> button1Action, string button2String, Action<bool> button2Action)
-		{
-			var w = Math.Max(renderer.BoldFont.Measure(text).X + 120, 400);
-			var h = (button1String == null) ? 100 : 140;
-			var r = new Rectangle((Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h);
-			DrawDialogBackground(r, "dialog");
-			DrawCentered(text, new int2(Game.viewport.Width / 2, Game.viewport.Height / 2 - ((button1String == null) ? 8 : 28)), Color.White);
-
-			// don't allow clicks through the dialog
-			AddButton(r, _ => { });
-			
-			if (button1String != null)
-			{
-				AddUiButton(new int2(r.Right - 300, r.Bottom - 40),button1String, button1Action);
-			}
-			
-			if (button2String != null)
-			{
-				AddUiButton(new int2(r.Right - 100, r.Bottom - 40),button2String, button2Action);
-			}
-				
-		}
 		
 		void AddUiButton(int2 pos, string text, Action<bool> a)
 		{
