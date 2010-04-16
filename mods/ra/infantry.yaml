@@ -203,3 +203,27 @@ MEDI:
 		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
+	
+C1:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C2:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
