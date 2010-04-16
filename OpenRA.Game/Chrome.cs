@@ -119,7 +119,7 @@ namespace OpenRA
 			var actor = world.FindUnitsAtMouse(lastMousePos).FirstOrDefault();
 			if (actor == null) return;
 
-			var text = actor.Info.Traits.Contains<BuildableInfo>() ? actor.Info.Traits.Get<BuildableInfo>().Description : actor.Info.Name;
+			var text = actor.Info.Traits.Contains<ValuedInfo>() ? actor.Info.Traits.Get<ValuedInfo>().Description : actor.Info.Name;
 			var text2 = (actor.Owner == world.LocalPlayer)
 				? "" : (actor.Owner == world.NeutralPlayer ? "{0}" : "{0} ({1})").F(actor.Owner.PlayerName, world.LocalPlayer.Stances[actor.Owner]);
 

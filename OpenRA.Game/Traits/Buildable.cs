@@ -20,19 +20,29 @@
 
 namespace OpenRA.Traits
 {
-	class BuildableInfo : TraitInfo<Buildable>
+	class ValuedInfo : ITraitInfo
+	{
+		public readonly int Cost = 0;
+		public readonly string Description = "";
+		public readonly string LongDesc = "";
+
+		public virtual object Create(Actor self) { return new Valued(); }
+	}
+
+	class BuildableInfo : ValuedInfo
 	{
 		public readonly int TechLevel = -1;
 		public readonly string[] Prerequisites = { };
 		public readonly string[] BuiltAt = { };
 		public readonly string[] Owner = { };
-		public readonly int Cost = 0;
-		public readonly string Description = "";
-		public readonly string LongDesc = "";
+		
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
 		public readonly int BuildPaletteOrder = 50;
+
+		public override object Create(Actor self) { return new Buildable(); }
 	}
 
+	class Valued { }		/* halfway to buildable */
 	class Buildable { }
 }

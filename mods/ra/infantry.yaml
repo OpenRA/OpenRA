@@ -209,6 +209,9 @@ C1:
 	Selectable:
 		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
 	Unit:
 		HP: 20
 		Sight: 2
@@ -221,6 +224,9 @@ C2:
 	Selectable:
 		Voice: CivilianFemaleVoice
 		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
 	Unit:
 		HP: 20
 		Sight: 2

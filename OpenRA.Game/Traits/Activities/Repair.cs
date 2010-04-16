@@ -39,7 +39,7 @@ namespace OpenRA.Traits.Activities
 				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
 				
-				var unitCost = self.Info.Traits.Get<BuildableInfo>().Cost;
+				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
 				var costPerHp = (hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;

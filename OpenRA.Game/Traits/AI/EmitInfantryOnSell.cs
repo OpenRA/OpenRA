@@ -21,13 +21,13 @@ namespace OpenRA.Traits.AI
 		{
 			var info = self.Info.Traits.Get<EmitInfantryOnSellInfo>();
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-			var cost = csv != null ? csv.Value : self.Info.Traits.Get<BuildableInfo>().Cost;
+			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
 			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 			var hpFraction = Math.Max(info.MinHpFraction, hp / self.GetMaxHP());
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
 			var eligibleLocations = Footprint.Tiles(self).ToList();
 			// todo: fix this for unbuildables in ActorTypes, like civilians.
-			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<BuildableInfo>().Cost }).ToArray();
+			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{
