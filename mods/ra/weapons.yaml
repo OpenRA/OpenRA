@@ -112,7 +112,7 @@ ChainGun:
 		
 Pistol:
 	ROF: 7
-	Range: 1.75
+	Range: 3
 	Report: GUN27
 	Bullet:
 		Speed: 100
