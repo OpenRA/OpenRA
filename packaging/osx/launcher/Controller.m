@@ -36,23 +36,32 @@
 	NSString *modString = [[mods objectAtIndex:[modsList selectedRow]] objectForKey:@"Mods"];
 	[settings setValue:modString forSetting:@"InitialMods"];
 	[settings save];
-	
-	// Launch the game
-    NSMutableArray *args = [NSMutableArray arrayWithObjects:@"settings=../../../launcher.ini",nil];
+
+	// Neither NSTask or NSWorkspace do what we want on pre-10.6 (we want *both* Info.plist and argument support)
+	// so use the LaunchServices api directly
 	NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app/Contents/MacOS/OpenRA"];
+	NSArray *args = [NSArray arrayWithObjects:@"settings=../../../launcher.ini",nil];
+
+	FSRef appRef;
+	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:path], &appRef);
 	
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:path];
-    [task setArguments:args];
-    [task launch];
+	// Set the launch parameters
+	LSApplicationParameters params;
+		params.version = 0;
+		params.flags = kLSLaunchDefaults;
+		params.application = &appRef;
+		params.asyncLaunchRefCon = NULL;
+		params.environment = NULL; // CFDictionaryRef of environment variables; could be useful
+		params.argv = (CFArrayRef)args;
+		params.initialEvent = NULL;
 	
-	// Bring the game to the front
 	ProcessSerialNumber psn;
-	if (noErr == GetProcessForPID([task processIdentifier], &psn)) {
-		SetFrontProcess(&psn);
-	}
-	[task release];
+	OSStatus err = LSOpenApplication(&params, &psn);
 	
+	// Bring the game window to the front
+	if (err == noErr)
+		SetFrontProcess(&psn);
+
 	// Close the launcher
 	[NSApp terminate: nil];
 }
