@@ -38,7 +38,7 @@ namespace OpenRA.Traits.Render
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (self.Owner == self.World.LocalPlayer || shroud.visibleCells[self.Location.X, self.Location.Y] > 0)
+			if (self.World.LocalPlayer == null || self.Owner == self.World.LocalPlayer || shroud.visibleCells[self.Location.X, self.Location.Y] > 0)
 				return r;
 
 			return new Renderable[] { };
