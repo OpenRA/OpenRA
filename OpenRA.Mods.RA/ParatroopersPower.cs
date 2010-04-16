@@ -27,6 +27,9 @@ namespace OpenRA.Mods.RA
 	class ParatroopersPowerInfo : SupportPowerInfo
 	{
 		public string[] DropItems = { };
+		public string UnitType = "badr";
+		public string FlareType = "flare";
+
 		public override object Create(Actor self) { return new ParatroopersPower(self,this); }
 	}
 
@@ -54,14 +57,15 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		static void DoParadrop(Player owner, int2 p, string[] items)
+		void DoParadrop(Player owner, int2 p, string[] items)
 		{
 			var startPos = owner.World.ChooseRandomEdgeCell();
 			owner.World.AddFrameEndTask(w =>
 			{
-				var flare = w.CreateActor("FLARE", p, owner);
+				var flareType = (Info as ParatroopersPowerInfo).FlareType;
+				var flare = flareType != null ? w.CreateActor(flareType, p, owner) : null;
 
-				var a = w.CreateActor("BADR", startPos, owner);
+				var a = w.CreateActor((Info as ParatroopersPowerInfo).UnitType, startPos, owner);
 				a.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
 				a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
