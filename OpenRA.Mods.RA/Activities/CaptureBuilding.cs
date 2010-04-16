@@ -44,7 +44,13 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				if (target.Health - EngineerCapture.EngineerDamage <= 0)
 				{
-					target.Owner = self.Owner;
+					target.World.AddFrameEndTask(w =>
+						{		// momentarily remove from world so the ownership queries don't get confused
+							w.Remove(target);
+							target.Owner = self.Owner;
+							w.Add(target);
+						});
+
 					target.InflictDamage(self, target.Health - EngineerCapture.EngineerDamage, null);
 				}
 				else
