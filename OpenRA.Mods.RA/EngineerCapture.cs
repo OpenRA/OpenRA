@@ -39,7 +39,10 @@ namespace OpenRA.Mods.RA
 			// todo: other bits
 			if (underCursor.Owner == null) return null;	// don't allow capturing of bridges, etc.
 
-			return new Order(underCursor.Health <= EngineerDamage ? "Capture" : "Infiltrate",
+			var isCapture = underCursor.Health <= EngineerDamage &&
+				self.Owner.Stances[underCursor.Owner] != Stance.Ally;
+
+			return new Order(isCapture ? "Capture" : "Infiltrate",
 				self, underCursor);
 		}
 
