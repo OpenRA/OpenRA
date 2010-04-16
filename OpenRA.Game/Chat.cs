@@ -47,6 +47,7 @@ namespace OpenRA
 		{
 			typing = "";
 			isChatting = false;
+			recentLines.Clear();
 		}
 
 		public void TypeChar(char c)
