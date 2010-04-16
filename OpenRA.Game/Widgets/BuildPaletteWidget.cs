@@ -166,7 +166,7 @@ namespace OpenRA.Widgets
 			int paletteHeight = DrawPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
 		}
-		
+
 		int DrawPalette(World world, string queueName)
 		{
 			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
@@ -177,14 +177,14 @@ namespace OpenRA.Widgets
 				return 0;
 			}
 			buttons.Clear();
-			
-			
+
+
 			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
-			
+
 			if (queueName == null) return 0;
 
 			// Collect info
-			
+
 			var x = 0;
 			var y = 0;
 			var buildableItems = Rules.TechTree.BuildableItems(world.LocalPlayer, queueName).ToArray();
@@ -197,7 +197,7 @@ namespace OpenRA.Widgets
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 			var numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
-			
+
 			// Palette Background
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
 			for (var w = 0; w < numActualRows; w++)
@@ -205,36 +205,36 @@ namespace OpenRA.Widgets
 					ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection,
 					"bg-" + (w % 4).ToString()),
 					new float2(origin.X - 9, origin.Y + 48 * w));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "bottom"), 
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "bottom"),
 				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-			
-			
+
+
 			// Icons
 			string tooltipItem = null;
 			float2 tooltipPos = float2.Zero;
 			foreach (var item in allBuildables)
-			{	
+			{
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = new float2(rect.Location);
 				var isBuildingSomething = queue.CurrentItem(queueName) != null;
 				WidgetUtils.DrawSHP(tabSprites[item.Name], drawPos);
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
-				
+
 				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
 				{
 					tooltipItem = item.Name;
 					tooltipPos = drawPos;
 				}
-				
+
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
 				if (firstOfThis != null)
 				{
-					clock.PlayFetchIndex( "idle", 
-						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime) 
-							* (clock.CurrentSequence.Length - 1)/ firstOfThis.TotalTime);
+					clock.PlayFetchIndex("idle",
+						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
+							* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
 					clock.Tick();
 					WidgetUtils.DrawSHP(clock.Image, drawPos);
 
@@ -266,10 +266,10 @@ namespace OpenRA.Widgets
 				else
 					if (!buildableItems.Contains(item.Name) || isBuildingSomething)
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
-				
+
 				var closureName = buildableItems.Contains(item.Name) ? item.Name : null;
-				buttons.Add(Pair.New(new Rectangle((int)rect.X,(int)rect.Y,(int)rect.Width,(int)rect.Height), HandleClick(closureName, world)));
-				
+				buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
+
 				if (++x == Columns) { x = 0; y++; }
 			}
 			if (x != 0) y++;
@@ -278,74 +278,25 @@ namespace OpenRA.Widgets
 				WidgetUtils.DrawSHP(ob.First, ob.Second);
 
 			Game.chrome.renderer.WorldSpriteRenderer.Flush();
-			
+
 			// Tooltip
 			if (tooltipItem != null)
-			{
-				var info = Rules.Info[tooltipItem];
-				var buildable = info.Traits.Get<BuildableInfo>();
-				
-				var pos = tooltipPos.ToInt2();					
-				var tl = new int2(pos.X-3,pos.Y-3);
-				var m = new int2(pos.X+64+3,pos.Y+48+3);
-				var br = tl + new int2(64+3+20,60);
-				
-				//if (sp.Info.LongDesc != null)
-				//	br += Game.chrome.renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
-				//else
-					br += new int2(300,0);
-				
-				//WidgetUtils.DrawRightTooltip("dialog4", tl, m, br, null);
-				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-				
-				/*
-				renderer.BoldFont.DrawText(rgbaRenderer, buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
+				DrawProductionTooltip(world, tooltipItem, 
+					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 
-				DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
-					world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
-	
-				var bi = info.Traits.GetOrDefault<BuildingInfo>();
-				if (bi != null)
-					DrawRightAligned("Power: {0}".F(bi.Power), pos + new int2(-5, 20),
-						world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
-						? Color.White : Color.Red);
-	
-				var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
-				p += new int2(5, 5);
-				p += new int2(0, 15);
-				if (!Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings))
-				{
-					var prereqs = buildable.Prerequisites
-						.Select( a => Description( a ) );
-					renderer.RegularFont.DrawText(rgbaRenderer, "Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
-						Color.White);
-				}
-	
-				if (buildable.LongDesc != null)
-				{
-					p += new int2(0, 15);
-					renderer.RegularFont.DrawText(rgbaRenderer, buildable.LongDesc.Replace( "\\n", "\n" ), p.ToInt2(), Color.White);
-				}
-				*/
-				
-				// Draw the icon again, over the tooltip
-				WidgetUtils.DrawSHP(tabSprites[tooltipItem], tooltipPos);
-				Game.chrome.renderer.WorldSpriteRenderer.Flush();
-			}
-			
 			// Palette Dock
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-top"), 
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-top"),
 				new float2(Game.viewport.Width - 14, origin.Y - 23));
 
 			for (int i = 0; i < numActualRows; i++)
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-" + (i % 4).ToString()), 
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-" + (i % 4).ToString()),
 					new float2(Game.viewport.Width - 14, origin.Y + 48 * i));
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-bottom"), 
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-bottom"),
 				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows));
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-			
-			return 48*y+9;
+
+			return 48 * y + 9;
 		}
 		
 		Action<MouseInput> HandleClick(string name, World world)
@@ -488,6 +439,54 @@ namespace OpenRA.Widgets
 				y += tabHeight;
 			}
 			
+			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+		}
+
+		void DrawRightAligned(string text, int2 pos, Color c)
+		{
+			Game.chrome.renderer.BoldFont.DrawText(text, 
+				pos - new int2(Game.chrome.renderer.BoldFont.Measure(text).X, 0), c);
+		}
+
+		void DrawProductionTooltip(World world, string unit, int2 pos)
+		{
+			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
+
+			var tooltipSprite = ChromeProvider.GetImage(Game.chrome.renderer, chromeCollection, "tooltip-bg");
+			var p = pos.ToFloat2() - new float2(tooltipSprite.size.X, 0);
+			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(tooltipSprite, p, "chrome");
+
+			var info = Rules.Info[unit];
+			var buildable = info.Traits.Get<BuildableInfo>();
+
+			Game.chrome.renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
+
+			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
+				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
+
+			var bi = info.Traits.GetOrDefault<BuildingInfo>();
+			if (bi != null)
+				DrawRightAligned("Power: {0}".F(bi.Power), pos + new int2(-5, 20),
+					world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
+					? Color.White : Color.Red);
+
+			var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
+			p += new int2(5, 5);
+			p += new int2(0, 15);
+			if (!Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings))
+			{
+				var prereqs = buildable.Prerequisites
+					.Select( a => Description( a ) );
+				Game.chrome.renderer.RegularFont.DrawText("Requires {0}".F(string.Join(", ", prereqs.ToArray())), p.ToInt2(),
+					Color.White);
+			}
+
+			if (buildable.LongDesc != null)
+			{
+				p += new int2(0, 15);
+				Game.chrome.renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), p.ToInt2(), Color.White);
+			}
+
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
