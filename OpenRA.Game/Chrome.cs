@@ -422,15 +422,6 @@ namespace OpenRA
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
 
-		Dictionary<string, string> CategoryNameRemaps = new Dictionary<string, string>
-		{
-			{ "Building", "Structures" },
-			{ "Defense", "Defenses" },
-			{ "Plane", "Aircraft" },
-			{ "Ship", "Ships" },
-			{ "Vehicle", "Vehicles" },
-		};
-
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		

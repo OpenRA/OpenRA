@@ -447,6 +447,15 @@ namespace OpenRA.Widgets
 			Game.IssueOrder(Order.StartProduction(world.LocalPlayer, item, 
 				Game.controller.GetModifiers().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
+
+		static Dictionary<string, string> CategoryNameRemaps = new Dictionary<string, string>
+		{
+			{ "Building", "Structures" },
+			{ "Defense", "Defenses" },
+			{ "Plane", "Aircraft" },
+			{ "Ship", "Ships" },
+			{ "Vehicle", "Vehicles" },
+		};
 		
 		void DrawBuildTabs( World world, int paletteHeight)
 		{
@@ -469,8 +478,21 @@ namespace OpenRA.Widgets
 				var race = world.LocalPlayer.Country.Race;
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
 				
-				buttons.Add(Pair.New(new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight),
-				                     HandleTabClick(groupName, world)));
+				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
+				buttons.Add(Pair.New(rect, HandleTabClick(groupName, world)));
+
+				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+				{
+					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
+					var sz = Game.chrome.renderer.BoldFont.Measure(text);
+					WidgetUtils.DrawPanelPartial("dialog4",
+						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
+						PanelSides.All);
+
+					Game.chrome.renderer.BoldFont.DrawText(text, 
+						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
+				}
+
 				y += tabHeight;
 			}
 			
