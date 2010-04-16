@@ -80,7 +80,7 @@ HighV:
 
 Pistol: 
 	ROF: 7
-	Range: 1.75
+	Range: 3
 	Report: GUN18
 	Bullet:
 		Speed: 100
