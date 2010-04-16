@@ -20,9 +20,12 @@
 
 @class Settings;
 @interface Controller : NSObject {
+
 	// Main Window
-	NSDictionary *modButtonMappings;
+	IBOutlet NSWindow *mainWindow;
 	Settings *settings;
+	IBOutlet id modsList;
+	NSArray *mods;
 	
 	// Package Downloader
 	NSString *localDownloadPath;
@@ -31,9 +34,6 @@
     long long expectedData;
     long long downloadedData;
 	BOOL downloading;
-
-	
-	IBOutlet NSWindow *mainWindow;
 	
 	// Download Sheet
 	IBOutlet NSWindow *downloadSheet;

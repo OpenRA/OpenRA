@@ -25,24 +25,49 @@
 {
 	NSURL *settingsFile = [NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"launcher.ini"]];
 	settings = [[Settings alloc] init];
-	
 	[settings loadSettingsFile:settingsFile];
-	
-	modButtonMappings = [[NSDictionary dictionaryWithObjectsAndKeys:
-						 @"cnc",@"C&C",
-						 @"ra",@"Red Alert",
-						 nil] retain];
+
+	mods = [[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"mods.plist"]] retain];
 }
 
+#pragma mark Main window
 -(IBAction)launchApp:(id)sender
 {
-	[settings setValue:[modButtonMappings objectForKey:[sender title]] forSetting:@"InitialMods"];
+	NSString *modString = [[mods objectAtIndex:[modsList selectedRow]] objectForKey:@"Mods"];
+	[settings setValue:modString forSetting:@"InitialMods"];
 	[settings save];
 	
 	[[NSWorkspace sharedWorkspace] launchApplication:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app"]];
 	[NSApp terminate: nil];
 }
 
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	return [mods count];
+}
+
+- (id)tableView:(NSTableView *)table
+	objectValueForTableColumn:(NSTableColumn *)column
+						  row:(NSInteger)row
+{
+	if (row >= [mods count])
+		return @"";
+	
+	if ([[column identifier] isEqualToString:@"name"])
+	{
+		return [[mods objectAtIndex:row] objectForKey:@"Name"];
+	}
+	
+	if ([[column identifier] isEqualToString:@"status"])
+	{
+		// Todo: get mod status
+		return @"Todo";//[[mods objectAtIndex:row] objectForKey:@"Name"];
+	}
+	
+	return @"";
+}
+
+#pragma mark Downloads sheet
 -(IBAction)showDownloadSheet:(id)sender
 {
 	[NSApp beginSheet:downloadSheet modalForWindow:mainWindow
@@ -158,7 +183,7 @@
 
 - (void) dealloc
 {
-	[modButtonMappings release];
+	[mods release];
 	[settings release];
 	[super dealloc];
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Name</key>
+		<string>Command &amp; Conquer</string>
+		<key>Mods</key>
+		<string>cnc</string>
+		<key>RequiredFiles</key>
+		<dict>
+			<key>mods/ra/packages/conquer.mix</key>
+			<string>http://open-ra.org/packages/cnc-packages.zip</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Red Alert</string>
+		<key>Mods</key>
+		<string>ra</string>
+		<key>RequiredFiles</key>
+		<dict>
+			<key>mods/ra/packages/main.mix</key>
+			<string>http://open-ra.org/packages/ra-packages.zip</string>
+		</dict>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Red Alert with The Aftermath</string>
+		<key>Mods</key>
+		<string>ra,aftermath</string>
+		<key>RequiredFiles</key>
+		<dict>
+			<key>mods/ra/packages/main.mix</key>
+			<string>http://open-ra.org/packages/ra-packages.zip</string>
+			<key>mods/aftermath/packages/expand2.mix</key>
+			<string>http://open-ra.org/packages/aftermath-packages.zip</string>
+		</dict>
+	</dict>
+</array>
+</plist>
