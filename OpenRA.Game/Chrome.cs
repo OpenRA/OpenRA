@@ -136,7 +136,6 @@ namespace OpenRA
 			foreach (var q in tabImageNames)
 				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
 				{
-					CheckDeadTab(world, q.Key);
 					if (currentTab == q.Key)
 						currentTab = null;
 				}
@@ -544,13 +543,6 @@ namespace OpenRA
 				paletteAnimating = true;
 		}
 		
-		void CheckDeadTab( World world, string groupName )
-		{
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			foreach( var item in queue.AllItems( groupName ) )
-				Game.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));		
-		}
-
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		

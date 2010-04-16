@@ -44,8 +44,15 @@ namespace OpenRA.Traits
 		public void Tick( Actor self )
 		{
 			foreach( var p in production )
+			{
+				while( p.Value.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, p.Key ).Contains( p.Value[ 0 ].Item ) )
+				{
+					self.Owner.GiveCash(p.Value[0].TotalCost - p.Value[0].RemainingCost); // refund what's been paid so far.
+					FinishProduction(p.Key);
+				}
 				if( p.Value.Count > 0 )
-					(p.Value)[0].Tick( self.Owner );
+					( p.Value )[ 0 ].Tick( self.Owner );
+			}
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -127,7 +134,7 @@ namespace OpenRA.Traits
 			{
 				queue.RemoveAt(lastIndex);
 			}
-			else
+			else if( lastIndex == 0 )
 			{
 				var item = queue[0];
 				self.Owner.GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.

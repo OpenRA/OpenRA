@@ -47,7 +47,7 @@ namespace OpenRA
 
 		static void Run( string[] args )
 		{
-			Game.PreInit( new Settings( args ) );
+			Game.Initialize( new Settings( args ) );
 			Game.Run();
 		}
 	}

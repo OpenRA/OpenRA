@@ -181,29 +181,6 @@ namespace OpenRA
 			viewport.Center(loc);
 		}
 
-		internal static void Initialize(Renderer renderer, int2 clientSize, int localPlayer, Controller controller)
-		{
-			Game.renderer = renderer;
-			Game.clientSize = clientSize;
-			
-			Sound.Initialize();
-			PerfHistory.items["render"].hasNormalTick = false;
-			PerfHistory.items["batches"].hasNormalTick = false;
-			PerfHistory.items["text"].hasNormalTick = false;
-			PerfHistory.items["cursor"].hasNormalTick = false;
-			Game.controller = controller;
-			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-			
-			ChangeMods();
-
-			if( Settings.Replay != "" )
-				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
-			else
-				JoinLocal();
-			
-			 LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
-		}
-		
 		public static string CurrentHost = "";
 		public static int CurrentPort = 0;
 		internal static void JoinServer(string host, int port)
@@ -493,7 +470,7 @@ namespace OpenRA
 				desktopResolution.Height);
 		}
 
-		public static void PreInit(Settings settings)
+		public static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			while (!Directory.Exists("mods"))
@@ -517,9 +494,24 @@ namespace OpenRA
 			renderer = new Renderer(resolution, windowed);
 			resolution = renderer.Resolution;
 
-			var controller = new Controller();
+			Game.controller = new Controller();
+			Game.clientSize = new int2(resolution);
+			
+			Sound.Initialize();
+			PerfHistory.items["render"].hasNormalTick = false;
+			PerfHistory.items["batches"].hasNormalTick = false;
+			PerfHistory.items["text"].hasNormalTick = false;
+			PerfHistory.items["cursor"].hasNormalTick = false;
+			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
+			
+			ChangeMods();
 
-			Game.Initialize(renderer, new int2(resolution), Game.Settings.Player, controller);
+			if( Settings.Replay != "" )
+				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
+			else
+				JoinLocal();
+			
+			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			Game.ResetTimer();
 		}
