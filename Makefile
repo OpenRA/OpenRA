@@ -92,7 +92,4 @@ seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
 
-dist-osx:
-	packaging/osx/package.sh
-
 .DEFAULT: all

@@ -12,7 +12,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		DA1241101151F194002EFE2B /* OpenRa.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA12410F1151F194002EFE2B /* OpenRa.icns */; };
+		DA1241101151F194002EFE2B /* OpenRA.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA12410F1151F194002EFE2B /* OpenRA.icns */; };
 		DA28A92A117878EC00342835 /* mods.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA28A929117878EC00342835 /* mods.plist */; };
 		DAAB5C7911536D6500DCCB80 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAB5C7811536D6500DCCB80 /* Settings.m */; };
 		DAFD657B11520799001F4C97 /* launcher.ini in Resources */ = {isa = PBXBuildFile; fileRef = DAFD657A11520799001F4C97 /* launcher.ini */; };
@@ -31,7 +31,7 @@
 		8990E7AE1151C0F20089C198 /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* OpenRA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenRA-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA12410F1151F194002EFE2B /* OpenRa.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRa.icns; sourceTree = "<group>"; };
+		DA12410F1151F194002EFE2B /* OpenRA.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRA.icns; sourceTree = "<group>"; };
 		DA28A929117878EC00342835 /* mods.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mods.plist; sourceTree = "<group>"; };
 		DAAB5C7711536D6500DCCB80 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		DAAB5C7811536D6500DCCB80 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 			children = (
 				DAFD657A11520799001F4C97 /* launcher.ini */,
 				8D1107310486CEB800E47090 /* OpenRA-Info.plist */,
-				DA12410F1151F194002EFE2B /* OpenRa.icns */,
+				DA12410F1151F194002EFE2B /* OpenRA.icns */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				DA28A929117878EC00342835 /* mods.plist */,
@@ -176,7 +176,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				DA1241101151F194002EFE2B /* OpenRa.icns in Resources */,
+				DA1241101151F194002EFE2B /* OpenRA.icns in Resources */,
 				DAFD657B11520799001F4C97 /* launcher.ini in Resources */,
 				DA28A92A117878EC00342835 /* mods.plist in Resources */,
 			);
@@ -196,8 +196,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd ../../../\n#make clean\n#make all\n#make dist-osx\ncp -r OpenRA.app ${TARGET_BUILD_DIR}/OpenRA.app/Contents/Resources/";
+			shellPath = /bin/bash;
+			shellScript = "./package.sh\ncp -r build/game/OpenRA.app ${TARGET_BUILD_DIR}/OpenRA.app/Contents/Resources/";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
