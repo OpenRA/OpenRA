@@ -37,7 +37,23 @@
 	[settings setValue:modString forSetting:@"InitialMods"];
 	[settings save];
 	
-	[[NSWorkspace sharedWorkspace] launchApplication:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app"]];
+	// Launch the game
+    NSMutableArray *args = [NSMutableArray arrayWithObjects:@"settings=../../../launcher.ini",nil];
+	NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app/Contents/MacOS/OpenRA"];
+	
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:path];
+    [task setArguments:args];
+    [task launch];
+	
+	// Bring the game to the front
+	ProcessSerialNumber psn;
+	if (noErr == GetProcessForPID([task processIdentifier], &psn)) {
+		SetFrontProcess(&psn);
+	}
+	[task release];
+	
+	// Close the launcher
 	[NSApp terminate: nil];
 }
 
