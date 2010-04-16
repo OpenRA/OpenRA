@@ -157,16 +157,10 @@ namespace OpenRA.Widgets
 			}
 			return null;
 		}
+
 		public T GetWidget<T>(string id) where T : Widget
 		{
 			return (T)GetWidget(id);
-		}
-
-		public Widget GetWindow()
-		{
-			return Chrome.rootWidget.GetWidget(WindowList.Peek());
-			// HACK HACK HACK (this method will vanish soon, so not going to hack the widget yaml itself)
-			//return Children.FirstOrDefault(c => c.Visible && c.Id != "MUSIC_BG" && c.Id != "PERF_BG");
 		}
 		
 		public void CloseWindow()
