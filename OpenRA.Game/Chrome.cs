@@ -103,7 +103,10 @@ namespace OpenRA
 			DrawRadar( world );
 			DrawPower( world );
 			rgbaRenderer.Flush();
-			DrawChat();
+
+			var typingArea = new Rectangle(400, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
+			var chatLogArea = new Rectangle(400, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
+			DrawChat(typingArea, chatLogArea);
 
 			DrawWorldTooltip(world);
 		}
@@ -481,14 +484,6 @@ namespace OpenRA
 			WidgetUtils.DrawPanel(collection, r);
 		}
 
-		void DrawChat()
-		{
-			var typingArea = new Rectangle(400, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
-			var chatLogArea = new Rectangle(400, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
-
-			DrawChat(typingArea, chatLogArea);
-		}
-
 		void DrawChat(Rectangle typingArea, Rectangle chatLogArea)
 		{
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
@@ -556,11 +551,6 @@ namespace OpenRA
 			
 			return rootWidget.HitTest(mousePos)
 				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
-		}
-
-		void DrawRightAligned(string text, int2 pos, Color c)
-		{
-			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X, 0), c);
 		}
 
 		void DrawCentered(string text, int2 pos, Color c)
