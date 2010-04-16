@@ -458,9 +458,13 @@ namespace OpenRA.Widgets
 			var info = Rules.Info[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
 
-			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n"));
+			var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
+			var canBuildThis = Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings);
 
-			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize.Y + 50));
+			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
+			if (!canBuildThis) longDescSize += 8;
+
+			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 50));
 
 			Game.chrome.renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
 
@@ -473,10 +477,9 @@ namespace OpenRA.Widgets
 					world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
 					? Color.White : Color.Red);
 
-			var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
-			p += new int2(5, 5);
-			p += new int2(0, 15);
-			if (!Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings))
+			
+			p += new int2(5, 20);
+			if (!canBuildThis)
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
@@ -484,6 +487,8 @@ namespace OpenRA.Widgets
 					"Requires {0}".F(string.Join(", ", prereqs.ToArray())), 
 					p.ToInt2(),
 					Color.White);
+
+				p += new int2(0, 8);
 			}
 
 			p += new int2(0, 15);
