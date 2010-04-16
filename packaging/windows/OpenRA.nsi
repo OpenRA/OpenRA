@@ -71,8 +71,10 @@ Section "Client" Client
 	
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
-			"$OUTDIR\OpenRA.ico" "" "" "" "OpenRA Client"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "settings=settings-netplay-cnc.ini" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\shaders"
