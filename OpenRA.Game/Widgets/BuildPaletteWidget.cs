@@ -77,23 +77,13 @@ namespace OpenRA.Widgets
 
 		}
 		
-		void CheckDeadTab( World world, string groupName )
-		{
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
-			foreach( var item in queue.AllItems( groupName ) )
-				Game.IssueOrder(Order.CancelProduction(world.LocalPlayer, item.Item));
-		}
-		
 		public override void Tick(World world)
 		{
 			visibleTabs.Clear();
 			foreach (var q in tabImageNames)
 				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
-				{
-					CheckDeadTab(world, q.Key);
 					if (currentTab == q.Key)
 						currentTab = null;
-				}
 				else
 					visibleTabs.Add(q.Key);
 
