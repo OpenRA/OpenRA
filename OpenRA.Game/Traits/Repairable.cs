@@ -19,12 +19,14 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
 	class RepairableInfo : ITraitInfo
 	{
+		public readonly string[] RepairBuildings = { "fix" };
 		public object Create(Actor self) { return new Repairable(self); }
 	}
 
@@ -38,7 +40,7 @@ namespace OpenRA.Traits
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 
-			if (underCursor.Info.Name == "fix"
+			if (self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(underCursor.Info.Name)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor);

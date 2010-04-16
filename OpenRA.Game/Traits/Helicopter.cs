@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
 
@@ -26,6 +27,8 @@ namespace OpenRA.Traits
 {
 	class HelicopterInfo : ITraitInfo
 	{
+		public readonly string[] RepairBuildings = { "fix" };
+		public readonly string[] RearmBuildings = { "hpad" };
 		public object Create(Actor self) { return new Helicopter(self); }
 	}
 
@@ -34,10 +37,10 @@ namespace OpenRA.Traits
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}
 
-		static bool HeliCanEnter(Actor a)
+		static bool HeliCanEnter(Actor self, Actor a)
 		{
-			if (a.Info.Name == "hpad") return true;
-			if (a.Info.Name == "fix") return true;
+			if (self.Info.Traits.Get<HelicopterInfo>().RearmBuildings.Contains(a.Info.Name)) return true;
+			if (self.Info.Traits.Get<HelicopterInfo>().RepairBuildings.Contains(a.Info.Name)) return true;
 			return false;
 		}
 
@@ -51,7 +54,7 @@ namespace OpenRA.Traits
 					return new Order("Move", self, xy);
 			}
 
-			if (HeliCanEnter(underCursor)
+			if (HeliCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor);
@@ -90,7 +93,7 @@ namespace OpenRA.Traits
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
 				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
 				self.QueueActivity(new HeliLand(false));
-				self.QueueActivity(order.TargetActor.Info.Name == "hpad"
+				self.QueueActivity(self.Info.Traits.Get<HelicopterInfo>().RearmBuildings.Contains(order.TargetActor.Info.Name)
 					? (IActivity)new Rearm() : new Repair(true));
 			}
 		}

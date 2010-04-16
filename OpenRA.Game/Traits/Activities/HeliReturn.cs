@@ -29,8 +29,9 @@ namespace OpenRA.Traits.Activities
 
 		static Actor ChooseHelipad(Actor self)
 		{
+			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
 			return self.World.Queries.OwnedBy[self.Owner].FirstOrDefault(
-				a => a.Info.Name == "hpad" &&
+				a => rearmBuildings.Contains(a.Info.Name) &&
 					!Reservable.IsReserved(a));
 		}
 

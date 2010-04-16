@@ -37,7 +37,7 @@ namespace OpenRA.Traits.Activities
 		public static Actor ChooseAirfield(Actor self)
 		{
 			return self.World.Queries.OwnedBy[self.Owner]
-				.Where(a => a.Info.Name == "afld"
+				.Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Info.Name)
 					&& !Reservable.IsReserved(a))
 				.FirstOrDefault();
 		}
