@@ -125,6 +125,9 @@ namespace OpenRA
 
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
+			// don't hit air units with splash from ground explosions, etc
+			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
+
 			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
 			var radius = selectable != null ? selectable.Radius : 0;
 			var distance = Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
