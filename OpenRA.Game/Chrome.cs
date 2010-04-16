@@ -104,8 +104,8 @@ namespace OpenRA
 			DrawPower( world );
 			rgbaRenderer.Flush();
 
-			var typingArea = new Rectangle(400, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
-			var chatLogArea = new Rectangle(400, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
+			var typingArea = new Rectangle(240, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
+			var chatLogArea = new Rectangle(240, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
 			DrawChat(typingArea, chatLogArea);
 
 			DrawWorldTooltip(world);
