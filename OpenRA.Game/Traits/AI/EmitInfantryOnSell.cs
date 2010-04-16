@@ -26,7 +26,6 @@ namespace OpenRA.Traits.AI
 			var hpFraction = Math.Max(info.MinHpFraction, hp / self.GetMaxHP());
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
 			var eligibleLocations = Footprint.Tiles(self).ToList();
-			// todo: fix this for unbuildables in ActorTypes, like civilians.
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))

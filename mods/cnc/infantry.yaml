@@ -55,3 +55,152 @@ E3:
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 5
 	TakeCover:	
+	
+C1:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C2:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C3:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C4:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+		
+C5:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C6:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C7:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+C8:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C9:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
+
+C10:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Technician
+	Unit:
+		HP: 20
+		Sight: 2
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Pistol
