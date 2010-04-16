@@ -82,8 +82,10 @@ namespace OpenRA.Widgets
 			visibleTabs.Clear();
 			foreach (var q in tabImageNames)
 				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, q.Key).Any())
+				{
 					if (currentTab == q.Key)
 						currentTab = null;
+				}
 				else
 					visibleTabs.Add(q.Key);
 

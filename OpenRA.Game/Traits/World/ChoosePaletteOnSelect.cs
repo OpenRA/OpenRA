@@ -19,6 +19,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Widgets;
 
 namespace OpenRA.Traits
 {
@@ -38,7 +39,8 @@ namespace OpenRA.Traits
 			if (produces == null)
 				return;
 
-			//Game.chrome.SetCurrentTab(produces);
+			Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+				.SetCurrentTab(produces);
 		}
 	}
 }
