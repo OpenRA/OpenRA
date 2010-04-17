@@ -102,6 +102,7 @@ E5:
 	-RenderInfantry:
 	RenderInfantry:
 	WithMuzzleFlash:
+	-PoisonedByTiberium:
 
 C1:
 	Inherits: ^Infantry

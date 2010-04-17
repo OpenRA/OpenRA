@@ -479,3 +479,11 @@ HonestJohn:
 		ImpactSound: flamer2
 		SmudgeType: Scorch
 		Damage: 100
+
+Tiberium:
+	ROF: 10
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 4
+		Damage: 5

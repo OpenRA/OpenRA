@@ -25,6 +25,7 @@
 	AutoTarget:
 	Passenger:
 	HiddenUnderFog:
+	PoisonedByTiberium:
 
 ^Ship:
 	Category: Ship

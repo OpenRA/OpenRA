@@ -48,6 +48,7 @@
     <Compile Include="CriticalBuildingState.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />
+    <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TiberiumRefinery.cs" />
