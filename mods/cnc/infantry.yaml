@@ -104,6 +104,30 @@ E5:
 	WithMuzzleFlash:
 	-PoisonedByTiberium:
 
+E6:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 5
+		Owner: gdi,nod
+		Cost: 500
+		Description: Engineer
+		LongDesc: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: e6icnh
+	Selectable:
+		Bounds: 12,17,0,-6
+	Unit:
+		HP: 25
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Chemspray
+		PrimaryOffset: 0,0,0,-5
+		FireDelay: 3
+	TakeCover:
+	Passenger:
+		ColorOfCargoPip: Yellow
+	EngineerCapture:
+	-AutoTarget:
+
 RMBO:
 	Inherits: ^Infantry
 	Buildable:
