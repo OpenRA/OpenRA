@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Drawing;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
@@ -237,7 +238,8 @@ namespace OpenRA.Traits.Activities
 
 			public void TickMove( Actor self, Mobile mobile, Move parent )
 			{
-				moveFraction += (int)Util.GetEffectiveSpeed(self);
+				var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
+				moveFraction += (int)Util.GetEffectiveSpeed(self, umt);
 				if( moveFraction >= moveFractionTotal )
 					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );

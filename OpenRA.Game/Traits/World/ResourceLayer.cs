@@ -88,11 +88,11 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 		}
 		
-		public float GetSpeedMultiplier(UnitMovementType umt, int2 p)
+		public float GetSpeedModifier(int2 p, UnitMovementType umt)
 		{
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
-			return content[p.X,p.Y].type.GetSpeedMultiplier(umt);
+			return content[p.X,p.Y].type.GetSpeedModifier(umt);
 		}
 		
 		public float GetCost(int2 p,UnitMovementType umt)

@@ -85,8 +85,8 @@ namespace OpenRA.Traits
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
 				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
 			}
-
-			if (Util.GetEffectiveSpeed(self) == 0) return null;		/* allow disabling move orders from modifiers */
+			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
+			if (Util.GetEffectiveSpeed(self,umt) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
 			return new Order("Move", self, xy);
 		}

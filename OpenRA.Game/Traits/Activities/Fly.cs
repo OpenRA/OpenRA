@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
@@ -64,7 +65,7 @@ namespace OpenRA.Traits.Activities
 		public static void Fly(Actor self, int desiredAltitude )
 		{
 			var unit = self.traits.Get<Unit>();
-			var speed = .2f * Util.GetEffectiveSpeed(self);
+			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			var angle = unit.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);

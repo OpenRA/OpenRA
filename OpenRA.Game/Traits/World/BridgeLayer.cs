@@ -95,7 +95,13 @@ namespace OpenRA.Traits
 				return customTerrain[p.X,p.Y].GetCost(p,umt);
 			return 1f;
 		}
-
+		public float GetSpeedModifier(int2 p, UnitMovementType umt)
+		{
+			if (customTerrain[p.X, p.Y] != null)
+				return customTerrain[p.X,p.Y].GetSpeedModifier(p,umt);
+			return 1f;
+		}
+		
 		static bool IsBridge(World w, ushort t)
 		{
 			return w.TileSet.walk[t].Bridge != null;

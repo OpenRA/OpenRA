@@ -128,7 +128,12 @@ namespace OpenRA.Traits
 		{
 			return Rules.TerrainTypes[Templates[state].TerrainType[Tiles[p]]].GetCost(umt);
 		}
-
+		
+		public float GetSpeedModifier(int2 p, UnitMovementType umt)
+		{
+			return Rules.TerrainTypes[Templates[state].TerrainType[Tiles[p]]].GetSpeedModifier(umt);
+		}
+		
 		static bool IsIntact(Bridge b)
 		{
 			return b != null && b.self.IsInWorld && b.self.Health > 0;

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -20,6 +20,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
@@ -51,7 +52,7 @@ namespace OpenRA.Traits.Activities
 
 			var landPos = dest.CenterLocation;
 			var unit = self.traits.Get<Unit>();
-			var speed = .2f * Util.GetEffectiveSpeed(self);
+			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			var approachStart = landPos - new float2(unit.Altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<UnitInfo>().ROT) * speed / (float)Math.PI;
 

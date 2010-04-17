@@ -41,7 +41,7 @@ namespace OpenRA.GameRules
 
 		public TerrainCost(MiniYaml y) { FieldLoader.Load(this, y); }
 		
-		public float GetSpeedMultiplier(UnitMovementType umt)
+		public float GetSpeedModifier(UnitMovementType umt)
 		{
 			switch (umt)			/* todo: make this nice */
 			{

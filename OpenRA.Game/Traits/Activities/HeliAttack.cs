@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
@@ -55,7 +56,7 @@ namespace OpenRA.Traits.Activities
 
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 			{
-				var rawSpeed = .2f * Util.GetEffectiveSpeed(self);
+				var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 				self.CenterLocation += (rawSpeed / dist.Length) * dist;
 				self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 			}

@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 			{
 				// HACK: hardcode "ore" terraintype for now
-				movementSpeed[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetSpeedMultiplier(umt) : 1.0f;
+				movementSpeed[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetSpeedModifier(umt) : 1.0f;
 				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) 
 								  : (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
 			}
@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 		
-		public float GetSpeedMultiplier(UnitMovementType umt)
+		public float GetSpeedModifier(UnitMovementType umt)
 		{
 			return movementSpeed[(int)umt];
 		}

@@ -45,7 +45,11 @@ namespace OpenRA.Traits
 	public interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 
-	public interface ICustomTerrain { float GetCost(int2 p, UnitMovementType umt); }
+	public interface ICustomTerrain
+	{
+		float GetCost(int2 p, UnitMovementType umt);
+		float GetSpeedModifier(int2 p, UnitMovementType umt);
+	}
 	
 	public interface IDisable {	bool Disabled { get; set; } }
 	
