@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc
 				var rl = self.World.WorldActor.traits.Get<ResourceLayer>();
 				var r = rl.GetResource(self.Location);
 
-				if (r != null && info.Resources.Contains(r.Name))
+				if (r != null && info.Resources.Contains(r.info.Name))
 					Combat.DoImpacts(new ProjectileArgs
 					{
 						src = self.CenterLocation.ToInt2(),
