@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 			: base(self, baseFacing)
 		{		
 			if( Game.skipMakeAnims || !self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
-				Complete( self );
+				anim.PlayThen( "idle", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
 			else
 				anim.PlayThen( "make", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
 		}
