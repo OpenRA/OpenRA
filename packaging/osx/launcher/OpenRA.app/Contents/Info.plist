@@ -7,6 +7,6 @@
 	<key>CFBundleExecutable</key>
 	<string>OpenRA</string>
 	<key>CFBundleIconFile</key>
-	<string>OpenRa.icns</string>
+	<string>OpenRA.icns</string>
 </dict>
 </plist>
