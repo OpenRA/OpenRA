@@ -5,9 +5,9 @@ using System.Text;
 
 namespace OpenRA.Traits
 {
-	class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
+	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
-	class SpawnMapActors : IGameStarted
+	public class SpawnMapActors : IGameStarted
 	{
 		public Dictionary<string, Actor> MapActors = new Dictionary<string, Actor>();
 
