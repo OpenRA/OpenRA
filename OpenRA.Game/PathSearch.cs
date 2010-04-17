@@ -69,12 +69,9 @@ namespace OpenRA
 		{
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
-
-			var custom2 = world.customTerrain[p.Location.X, p.Location.Y];
-			var thisCost = (custom2 != null) 
-				? custom2.GetCost(p.Location, umt) 
-				: passableCost[(int)umt][p.Location.X, p.Location.Y];
-			thisCost *= resources.GetPathCost(umt, p.Location);
+			
+			var thisCost = passableCost[(int)umt][p.Location.X, p.Location.Y]*
+						   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,umt));
 			
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
@@ -87,9 +84,9 @@ namespace OpenRA
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var custom = world.customTerrain[newHere.X, newHere.Y];
-				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
-				costHere *= resources.GetPathCost(umt, newHere);
+				var costHere = passableCost[(int)umt][newHere.X, newHere.Y]*
+						 	   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,umt));
+			
 				if (costHere == float.PositiveInfinity)
 					continue;
 

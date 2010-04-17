@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 		int growthTicks;
 		int spreadTicks;
 		public ResourceTypeInfo info;
-		float[] movementCost = new float[4];
+		float[] movementSpeed = new float[4];
 		float[] pathCost = new float[4];
 
 		public ResourceType(ResourceTypeInfo info)
@@ -56,19 +56,20 @@ namespace OpenRA.Traits
 			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
 			{
 				// HACK: hardcode "ore" terraintype for now
-				movementCost[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
-				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : movementCost[(int)umt];
+				movementSpeed[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetSpeedMultiplier(umt) : 1.0f;
+				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) 
+								  : (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
 			}
 			
 			this.info = info;
 		}
 		
-		public float GetMovementCost(UnitMovementType umt)
+		public float GetSpeedMultiplier(UnitMovementType umt)
 		{
-			return movementCost[(int)umt];
+			return movementSpeed[(int)umt];
 		}
 		
-		public float GetPathCost(UnitMovementType umt)
+		public float GetCost(UnitMovementType umt)
 		{
 			return pathCost[(int)umt];
 		}

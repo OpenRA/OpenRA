@@ -36,14 +36,13 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Bridge(self); }
 	}
 
-	class Bridge: IRender, ICustomTerrain, INotifyDamage
+	class Bridge: IRender, INotifyDamage
 	{
 		Dictionary<int2, int> Tiles;
 		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
 		List<TileTemplate> Templates = new List<TileTemplate>();
 		Actor self;
 		int state;
-
 		Bridge northNeighbour, southNeighbour;
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
@@ -57,6 +56,25 @@ namespace OpenRA.Traits
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
 		}
 
+		public void FinalizeBridges(World world, Bridge[,] bridges)
+		{
+			// go looking for our neighbors, if this is a long bridge.
+			var info = self.Info.Traits.Get<BridgeInfo>();
+			if (info.NorthOffset != null)
+				northNeighbour = GetNeighbor(world, info.NorthOffset, bridges);
+			if (info.SouthOffset != null)
+				southNeighbour = GetNeighbor(world, info.SouthOffset, bridges);
+		}
+		
+		public Bridge GetNeighbor(World world, int[] offset, Bridge[,] bridges)
+		{
+			if (offset == null) return null;
+			var pos = self.Location + new int2(offset[0], offset[1]);
+			if (!world.Map.IsInMap(pos.X, pos.Y)) return null;
+			return bridges[pos.X, pos.Y];
+		}
+		
+		
 		public int StateFromTemplate(TileTemplate t)
 		{
 			var info = self.Info.Traits.Get<BridgeInfo>();
@@ -83,10 +101,7 @@ namespace OpenRA.Traits
 		{
 			Tiles = replacedTiles;
 			state = StateFromTemplate(template);
-
-			foreach (var t in replacedTiles.Keys)
-				world.customTerrain[t.X, t.Y] = this;
-
+			
 			if (cachedTileset != world.Map.Tileset)
 			{
 				cachedTileset = world.Map.Tileset;
@@ -107,24 +122,6 @@ namespace OpenRA.Traits
 			}
 
 			self.Health = (int)(self.GetMaxHP() * template.HP);
-		}
-
-		Bridge GetNeighbor(World world, int[] offset)
-		{
-			if (offset == null) return null;
-			var pos = self.Location + new int2(offset[0], offset[1]);
-			if (!world.Map.IsInMap(pos.X, pos.Y)) return null;
-			return world.customTerrain[pos.X, pos.Y] as Bridge;
-		}
-
-		public void FinalizeBridges(World world)
-		{
-			// go looking for our neighbors, if this is a long bridge.
-			var info = self.Info.Traits.Get<BridgeInfo>();
-			if (info.NorthOffset != null)
-				northNeighbour = GetNeighbor(world, info.NorthOffset);
-			if (info.SouthOffset != null)
-				southNeighbour = GetNeighbor(world, info.SouthOffset);
 		}
 
 		public float GetCost(int2 p, UnitMovementType umt)

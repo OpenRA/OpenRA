@@ -70,9 +70,6 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 		public GlobalDefaultsInfo Defaults { get {return WorldActor.Info.Traits.Get<GlobalDefaultsInfo>();}}
 
-		// for tricky things like bridges.
-		public readonly ICustomTerrain[,] customTerrain;
-
 		public readonly WorldRenderer WorldRenderer;
 		internal readonly Minimap Minimap;
 		
@@ -80,9 +77,6 @@ namespace OpenRA
 		{
 			Timer.Time( "----World.ctor" );
 			Map = map;
-
-			customTerrain = new ICustomTerrain[Map.MapSize.X, Map.MapSize.Y];
-			Timer.Time( "new Map: {0}" );
 			
 			Rules.LoadRules(manifest,Map);
 			Timer.Time( "load rules: {0}" );

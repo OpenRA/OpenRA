@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ResourceLayer(self); }
 	}
 
-	public class ResourceLayer: IRenderOverlay, ILoadWorldHook
+	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ICustomTerrain
 	{		
 		SpriteRenderer sr;
 		World world;
@@ -88,18 +88,18 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 		}
 		
-		public float GetMovementCost(UnitMovementType umt, int2 p)
+		public float GetSpeedMultiplier(UnitMovementType umt, int2 p)
 		{
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
-			return content[p.X,p.Y].type.GetMovementCost(umt);
+			return content[p.X,p.Y].type.GetSpeedMultiplier(umt);
 		}
 		
-		public float GetPathCost(UnitMovementType umt, int2 p)
+		public float GetCost(int2 p,UnitMovementType umt)
 		{
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
-			return content[p.X,p.Y].type.GetPathCost(umt);
+			return content[p.X,p.Y].type.GetCost(umt);
 		}
 		
 		public Sprite[] ChooseContent(ResourceType t)

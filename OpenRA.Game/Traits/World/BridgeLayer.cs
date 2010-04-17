@@ -20,14 +20,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	class BridgeLoadHookInfo : TraitInfo<BridgeLoadHook> { }
+	class BridgeLayerInfo : TraitInfo<BridgeLayer> { }
 
-	class BridgeLoadHook : ILoadWorldHook
+	class BridgeLayer : ILoadWorldHook, ICustomTerrain
 	{
-		static void MakeBridges(World w)
+		// for tricky things like bridges.
+		Bridge[,] customTerrain;
+
+		void MakeBridges(World w)
 		{
 			var tl = w.Map.TopLeft;
 			var br = w.Map.BottomRight;
@@ -38,10 +42,10 @@ namespace OpenRA.Traits
 						ConvertBridgeToActor(w, i, j);
 
 			foreach (var b in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
-				b.FinalizeBridges(w);
+				b.FinalizeBridges(w, customTerrain);
 		}
 		
-		static void ConvertBridgeToActor(World w, int i, int j)
+		void ConvertBridgeToActor(World w, int i, int j)
 		{
 			Log.Write("Converting bridge at {0} {1}",i,j);
 			
@@ -77,8 +81,19 @@ namespace OpenRA.Traits
 			{
 				var a = w.CreateActor(template.Bridge, new int2(ni, nj), w.NeutralPlayer);
 				var br = a.traits.Get<Bridge>();
+				
+				foreach (var t in replacedTiles.Keys)
+					customTerrain[t.X, t.Y] = br;
+				
 				br.SetTiles(w, template, replacedTiles);
 			}
+		}
+		
+		public float GetCost(int2 p, UnitMovementType umt)
+		{
+			if (customTerrain[p.X, p.Y] != null)
+				return customTerrain[p.X,p.Y].GetCost(p,umt);
+			return 1f;
 		}
 
 		static bool IsBridge(World w, ushort t)
@@ -86,6 +101,10 @@ namespace OpenRA.Traits
 			return w.TileSet.walk[t].Bridge != null;
 		}
 
-		public void WorldLoaded(World w) { MakeBridges(w); }
+		public void WorldLoaded(World w)
+		{
+			customTerrain = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
+			MakeBridges(w);
+		}
 	}
 }

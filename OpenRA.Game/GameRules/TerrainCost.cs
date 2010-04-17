@@ -40,7 +40,21 @@ namespace OpenRA.GameRules
 		public readonly bool AcceptSmudge = true;
 
 		public TerrainCost(MiniYaml y) { FieldLoader.Load(this, y); }
-
+		
+		public float GetSpeedMultiplier(UnitMovementType umt)
+		{
+			switch (umt)			/* todo: make this nice */
+			{
+				case UnitMovementType.Fly: return 1;
+				case UnitMovementType.Foot: return Foot;
+				case UnitMovementType.Wheel: return Wheel;
+				case UnitMovementType.Track: return Track;
+				case UnitMovementType.Float: return Float;
+				default:
+					throw new InvalidOperationException("wtf?");
+			}
+		}
+		
 		public float GetCost(UnitMovementType umt)
 		{
 			switch (umt)			/* todo: make this nice */
