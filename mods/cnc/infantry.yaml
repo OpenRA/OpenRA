@@ -79,6 +79,30 @@ E4:
 	RenderInfantry:
 	WithMuzzleFlash:
 
+E5:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 7
+		Owner: nod
+		Cost: 300
+		Description: Chem Warrior
+		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e5icnh
+		Prerequisites: tmpl
+	Selectable:
+		Bounds: 12,17,0,-6
+	Unit:
+		HP: 90
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Chemspray
+		PrimaryOffset: 0,0,0,-5
+		FireDelay: 3
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantry:
+	WithMuzzleFlash:
+
 C1:
 	Inherits: ^Infantry
 	Selectable:

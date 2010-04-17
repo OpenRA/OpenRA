@@ -174,7 +174,6 @@ Chemspray:
 		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
-		Explosion: 5
 		SmudgeType: Scorch
 		ImpactSound: xplos
 
