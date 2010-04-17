@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Cnc
 	class PoisonedByTiberiumInfo : ITraitInfo
 	{
 		public readonly string Weapon = "Tiberium";
+		public readonly string[] Resources = { "Tiberium" };
 
 		public object Create(Actor self) { return new PoisonedByTiberium(this); }
 	}
@@ -44,7 +46,7 @@ namespace OpenRA.Mods.Cnc
 				var rl = self.World.WorldActor.traits.Get<ResourceLayer>();
 				var r = rl.GetResource(self.Location);
 
-				if (r != null)
+				if (r != null && info.Resources.Contains(r.Name))
 					Combat.DoImpacts(new ProjectileArgs
 					{
 						src = self.CenterLocation.ToInt2(),
