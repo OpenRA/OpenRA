@@ -141,7 +141,6 @@ Flamethrower:
 		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
-		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
 		Damage: 35

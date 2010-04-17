@@ -71,7 +71,8 @@ APC:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,0,0,-4
 		MuzzleFlash: yes
-	RenderUnitMuzzleFlash:
+	RenderUnit:
+	WithMuzzleFlash:
 	AutoTarget:
 	Cargo:
 		PassengerTypes: Foot

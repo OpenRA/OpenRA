@@ -54,8 +54,31 @@ E3:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 5
-	TakeCover:	
-	
+	TakeCover:
+
+E4:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 5
+		Owner: nod
+		Cost: 200
+		Description: Flamethrower
+		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Icon: e4icnh
+	Selectable:
+		Bounds: 12,17,0,-6
+	Unit:
+		HP: 90
+		Speed: 4
+	AttackBase:
+		PrimaryWeapon: Flamethrower
+		PrimaryOffset: 0,0,0,-5
+		FireDelay: 3
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantry:
+	WithMuzzleFlash:
+
 C1:
 	Inherits: ^Infantry
 	Selectable:

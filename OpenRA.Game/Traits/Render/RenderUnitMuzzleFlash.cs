@@ -22,27 +22,37 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	class RenderUnitMuzzleFlashInfo : RenderUnitInfo
+	class WithMuzzleFlashInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
-		public override object Create(Actor self) { return new RenderUnitMuzzleFlash(self); }
+		public object Create(Actor self) { return new WithMuzzleFlash(self); }
 	}
 
-	class RenderUnitMuzzleFlash : RenderUnit
+	class WithMuzzleFlash : INotifyAttack
 	{
-		public RenderUnitMuzzleFlash(Actor self)
-			: base(self)
+		Animation muzzleFlash;
+		bool isShowing;
+
+		public WithMuzzleFlash(Actor self)
 		{
 			var unit = self.traits.Get<Unit>();
 			var attack = self.traits.Get<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
+			var render = self.traits.Get<RenderSimple>();
 
-			var muzzleFlash = new Animation(GetImage(self), ()=>unit.Facing);
-			muzzleFlash.PlayFetchIndex("muzzle",
-				() => (int)(attack.primaryRecoil * 5.9f));
-			anims.Add( "muzzle", new AnimationWithOffset(
+			muzzleFlash = new Animation(render.GetImage(self), () => unit.Facing);
+			muzzleFlash.Play("muzzle");
+			var len = muzzleFlash.CurrentSequence.Length;
+
+			render.anims.Add("muzzle", new RenderSimple.AnimationWithOffset(
 				muzzleFlash,
 				() => attackInfo.PrimaryOffset.AbsOffset(),
-				() => attack.primaryRecoil <= 0 ) );
+				() => !isShowing));
+		}
+
+		public void Attacking(Actor self)
+		{
+			isShowing = true;
+			muzzleFlash.PlayThen("muzzle", () => isShowing = false);
 		}
 	}
 }
