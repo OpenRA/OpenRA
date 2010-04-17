@@ -9,12 +9,14 @@ namespace OpenRA.Traits
 
 	class SpawnMapActors : IGameStarted
 	{
+		public Dictionary<string, Actor> MapActors = new Dictionary<string, Actor>();
+
 		public void GameStarted(World world)
 		{
 			Game.skipMakeAnims = true;		// rude hack
-			// TODO: Keep a dictionary of actor reference -> actor somewhere for scripting purposes
+
 			foreach (var actorReference in world.Map.Actors)
-				world.CreateActor(actorReference.Value.Name, actorReference.Value.Location,
+				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Name, actorReference.Value.Location,
 					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Value.Owner)
 					?? world.NeutralPlayer);
 
