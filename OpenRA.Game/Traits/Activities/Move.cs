@@ -233,7 +233,7 @@ namespace OpenRA.Traits.Activities
 				this.fromFacing = fromFacing;
 				this.toFacing = toFacing;
 				this.moveFraction = startingFraction;
-				this.moveFractionTotal = (int)( to - from ).Length * ( 25 / 6 );
+				this.moveFractionTotal = (int)(( to - from ).Length*3);
 			}
 
 			public void TickMove( Actor self, Mobile mobile, Move parent )
