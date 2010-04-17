@@ -197,7 +197,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "./package.sh\ncp -r build/game/OpenRA.app ${TARGET_BUILD_DIR}/OpenRA.app/Contents/Resources/";
+			shellScript = "#./package.sh\ncp -r build/game/OpenRA.app ${TARGET_BUILD_DIR}/OpenRA.app/Contents/Resources/";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
