@@ -41,9 +41,9 @@ namespace OpenRA.Traits
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				var resourceType = self.World.WorldActor.Info.Traits
-					.WithInterface<ResourceTypeInfo>()
-					.FirstOrDefault(t => t.Name == info.ResourceType);
+				var resourceType = self.World.WorldActor.traits
+					.WithInterface<ResourceType>()
+					.FirstOrDefault(t => t.info.Name == info.ResourceType);
 
 				if (resourceType == null)
 					throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));

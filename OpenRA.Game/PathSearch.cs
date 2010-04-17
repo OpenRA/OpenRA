@@ -30,6 +30,7 @@ namespace OpenRA
 	public class PathSearch
 	{
 		World world;
+		ResourceLayer resources;
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, float> heuristic;
@@ -49,6 +50,7 @@ namespace OpenRA
 
 			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
 			unitInfluence = world.WorldActor.traits.Get<UnitInfluence>();
+			resources = world.WorldActor.traits.Get<ResourceLayer>();
 		}
 
 		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
@@ -72,7 +74,8 @@ namespace OpenRA
 			var thisCost = (custom2 != null) 
 				? custom2.GetCost(p.Location, umt) 
 				: passableCost[(int)umt][p.Location.X, p.Location.Y];
-
+			thisCost *= resources.GetPathCost(umt, p.Location);
+			
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 
@@ -86,7 +89,7 @@ namespace OpenRA
 
 				var custom = world.customTerrain[newHere.X, newHere.Y];
 				var costHere = (custom != null) ? custom.GetCost(newHere, umt) : passableCost[(int)umt][newHere.X, newHere.Y];
-
+				costHere *= resources.GetPathCost(umt, newHere);
 				if (costHere == float.PositiveInfinity)
 					continue;
 

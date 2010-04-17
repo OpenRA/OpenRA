@@ -21,6 +21,7 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -34,7 +35,7 @@ namespace OpenRA.Traits
 		SpriteRenderer sr;
 		World world;
 
-		public ResourceTypeInfo[] resourceTypes;
+		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 
 		public ResourceLayer(Actor self)
@@ -55,7 +56,7 @@ namespace OpenRA.Traits
 					if (c.image != null)
 						sr.DrawSprite(c.image[c.density],
 							Game.CellSize * new int2(x, y),
-							c.type.Palette);
+							c.type.info.Palette);
 				}
 
 			sr.Flush();
@@ -66,9 +67,9 @@ namespace OpenRA.Traits
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
 
-			resourceTypes = w.WorldActor.Info.Traits.WithInterface<ResourceTypeInfo>().ToArray();
+			resourceTypes = w.WorldActor.traits.WithInterface<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
-				rt.Sprites = rt.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();
+				rt.info.Sprites = rt.info.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();
 
 			var map = w.Map;
 
@@ -76,7 +77,7 @@ namespace OpenRA.Traits
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
 					content[x,y].type = resourceTypes.FirstOrDefault(
-						r => r.ResourceType == w.Map.MapResources[x,y].type);
+						r => r.info.ResourceType == w.Map.MapResources[x,y].type);
 					if (content[x, y].type != null)
 						content[x, y].image = ChooseContent(content[x, y].type);
 				}
@@ -87,17 +88,31 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 		}
 		
-		public Sprite[] ChooseContent(ResourceTypeInfo info)
+		public float GetMovementCost(UnitMovementType umt, int2 p)
 		{
-			return info.Sprites[world.SharedRandom.Next(info.Sprites.Length)];
+			if (content[p.X,p.Y].type == null)
+				return 1.0f;
+			return content[p.X,p.Y].type.GetMovementCost(umt);
+		}
+		
+		public float GetPathCost(UnitMovementType umt, int2 p)
+		{
+			if (content[p.X,p.Y].type == null)
+				return 1.0f;
+			return content[p.X,p.Y].type.GetPathCost(umt);
+		}
+		
+		public Sprite[] ChooseContent(ResourceType t)
+		{
+			return t.info.Sprites[world.SharedRandom.Next(t.info.Sprites.Length)];
 		}
 
-		public int GetAdjacentCellsWith(ResourceTypeInfo info, int i, int j)
+		public int GetAdjacentCellsWith(ResourceType t, int i, int j)
 		{
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
-					if (content[i+u, j+v].type == info)
+					if (content[i+u, j+v].type == t)
 						++sum;
 			return sum;
 		}
@@ -108,16 +123,16 @@ namespace OpenRA.Traits
 				(content[x, y].image.Length - 1)) / 9;
 		}
 
-		public void AddResource(ResourceTypeInfo info, int i, int j, int n)
+		public void AddResource(ResourceType t, int i, int j, int n)
 		{
 			if (content[i, j].type == null)
 			{
-				content[i, j].type = info;
-				content[i, j].image = ChooseContent(info);
+				content[i, j].type = t;
+				content[i, j].image = ChooseContent(t);
 				content[i, j].density = -1;
 			}
 
-			if (content[i, j].type != info)
+			if (content[i, j].type != t)
 				return;
 
 			content[i, j].density = Math.Min(
@@ -125,7 +140,7 @@ namespace OpenRA.Traits
 				content[i, j].density + n);
 		}
 
-		public ResourceTypeInfo Harvest(int2 p)
+		public ResourceType Harvest(int2 p)
 		{
 			var type = content[p.X,p.Y].type;
 			if (type == null) return null;
@@ -145,29 +160,29 @@ namespace OpenRA.Traits
 			content[p.X, p.Y].density = 0;
 		}
 
-		public void Grow(ResourceTypeInfo info)
+		public void Grow(ResourceType t)
 		{
 			var map = world.Map;
 			var newDensity = new byte[map.MapSize.X, map.MapSize.Y];
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (content[i, j].type == info)
+					if (content[i, j].type == t)
 						newDensity[i, j] = (byte)GetIdealDensity(i, j);
 
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (content[i, j].type == info && content[i, j].density < newDensity[i, j])
+					if (content[i, j].type == t && content[i, j].density < newDensity[i, j])
 						++content[i, j].density;
 		}
 
-		public void Spread(ResourceTypeInfo info)
+		public void Spread(ResourceType t)
 		{
 			var map = world.Map;
 			var growMask = new bool[map.MapSize.X, map.MapSize.Y];
 			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (content[i,j].type == null
-						&& GetAdjacentCellsWith(info, i,j ) > 0
+						&& GetAdjacentCellsWith(t, i,j ) > 0
 						&& world.IsCellBuildable(new int2(i, j), false))
 						growMask[i, j] = true;
 
@@ -175,18 +190,18 @@ namespace OpenRA.Traits
 				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
 					if (growMask[i, j])
 					{
-						content[i, j].type = info;
-						content[i, j].image = ChooseContent(info);
+						content[i, j].type = t;
+						content[i, j].image = ChooseContent(t);
 						content[i, j].density = 0;
 					}
 			
 		}
 
-		public ResourceTypeInfo GetResource(int2 p) { return content[p.X, p.Y].type; }
+		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
 
 		public struct CellContents
 		{
-			public ResourceTypeInfo type;
+			public ResourceType type;
 			public Sprite[] image;
 			public int density;
 		}

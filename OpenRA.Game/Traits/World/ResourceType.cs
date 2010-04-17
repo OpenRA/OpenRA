@@ -19,6 +19,8 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.GameRules;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -33,33 +35,57 @@ namespace OpenRA.Traits
 
 		public readonly float GrowthInterval = 0;
 		public readonly float SpreadInterval = 0;
+		public readonly string MovementTerrainType = null;
+		public readonly string PathingTerrainType = null;
 
 		public Sprite[][] Sprites;
 		
 		public object Create(Actor self) { return new ResourceType(this); }
 	}
 
-	class ResourceType : ITick
+	public class ResourceType : ITick
 	{
 		int growthTicks;
 		int spreadTicks;
-		ResourceTypeInfo info;
+		public ResourceTypeInfo info;
+		float[] movementCost = new float[4];
+		float[] pathCost = new float[4];
 
-		public ResourceType(ResourceTypeInfo info) { this.info = info; }
+		public ResourceType(ResourceTypeInfo info)
+		{
+			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
+			{
+				// HACK: hardcode "ore" terraintype for now
+				movementCost[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
+				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : movementCost[(int)umt];
+			}
+			
+			this.info = info;
+		}
+		
+		public float GetMovementCost(UnitMovementType umt)
+		{
+			return movementCost[(int)umt];
+		}
+		
+		public float GetPathCost(UnitMovementType umt)
+		{
+			return pathCost[(int)umt];
+		}
 
 		public void Tick(Actor self)
 		{
 			if (info.GrowthInterval != 0 && --growthTicks <= 0)
 			{
 				growthTicks = (int)(info.GrowthInterval * 25 * 60);
-				self.World.WorldActor.traits.Get<ResourceLayer>().Grow(info);
+				self.World.WorldActor.traits.Get<ResourceLayer>().Grow(this);
 				self.World.Minimap.InvalidateOre();
 			}
 
 			if (info.SpreadInterval != 0 && --spreadTicks <= 0)
 			{
 				spreadTicks = (int)(info.SpreadInterval * 25 * 60);
-				self.World.WorldActor.traits.Get<ResourceLayer>().Spread(info);
+				self.World.WorldActor.traits.Get<ResourceLayer>().Spread(this);
 				self.World.Minimap.InvalidateOre();
 			}
 		}

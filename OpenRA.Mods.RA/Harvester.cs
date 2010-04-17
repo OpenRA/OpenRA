@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -48,10 +48,10 @@ namespace OpenRA.Mods.RA
 		public bool IsFull { get { return contents.Values.Sum() == self.Info.Traits.Get<HarvesterInfo>().Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 
-		public void AcceptResource(ResourceTypeInfo type)
+		public void AcceptResource(ResourceType type)
 		{
-			if (!contents.ContainsKey(type)) contents[type] = 1;
-			else contents[type]++;
+			if (!contents.ContainsKey(type.info)) contents[type.info] = 1;
+			else contents[type.info]++;
 		}
 
 		public void Deliver(Actor self, Actor proc)
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
 			var info = self.Info.Traits.Get<HarvesterInfo>();
 
-			if (underCursor == null && res != null && info.Resources.Contains(res.Name))
+			if (underCursor == null && res != null && info.Resources.Contains(res.info.Name))
 				return new Order("Harvest", self, xy);
 
 			return null;

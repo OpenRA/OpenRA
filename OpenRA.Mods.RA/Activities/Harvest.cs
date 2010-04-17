@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Activities
 					var search = new PathSearch(self.World)
 					{
 						heuristic = loc => (res.GetResource(loc) != null 
-							&& harv.Resources.Contains( res.GetResource(loc).Name )) ? 0 : 1,
+							&& harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1,
 						umt = UnitMovementType.Wheel,
 						checkForBlocked = true
 					};
