@@ -56,7 +56,7 @@ IonCannon:
 Sniper: 
 	Report: RAMGUN2
 	ROF: 40
-	Range: 5.5
+	Range: 7
 	Bullet:
 		Speed: 100
 	Warhead: 

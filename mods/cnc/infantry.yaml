@@ -104,6 +104,27 @@ E5:
 	WithMuzzleFlash:
 	-PoisonedByTiberium:
 
+RMBO:
+	Inherits: ^Infantry
+	Buildable:
+		TechLevel: 7
+		Owner: gdi
+		Cost: 1000
+		Prerequisites: @Superweapon
+		Icon: rmboicnh
+		Description: Commando
+		LongDesc: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: CommandoVoice
+	Unit:
+		HP: 200
+		Speed: 5
+		Sight: 5
+	AttackBase:
+		PrimaryWeapon: Sniper
+	TakeCover:
+
 C1:
 	Inherits: ^Infantry
 	Selectable:

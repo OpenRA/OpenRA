@@ -25,7 +25,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc
 {
 	class PoisonedByTiberiumInfo : ITraitInfo
-	{
+	{	
 		public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium" };
 
