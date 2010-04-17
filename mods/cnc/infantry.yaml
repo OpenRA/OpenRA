@@ -124,6 +124,8 @@ RMBO:
 	AttackBase:
 		PrimaryWeapon: Sniper
 	TakeCover:
+	C4Demolition:
+		C4Delay: .03
 
 C1:
 	Inherits: ^Infantry
