@@ -35,7 +35,6 @@ namespace OpenRA.Traits
 		public WithMuzzleFlash(Actor self)
 		{
 			var unit = self.traits.Get<Unit>();
-			var attack = self.traits.Get<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 			var render = self.traits.Get<RenderSimple>();
 
