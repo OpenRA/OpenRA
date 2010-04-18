@@ -22,6 +22,7 @@ using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.GameRules;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
@@ -45,13 +46,17 @@ namespace OpenRA.Traits
 		
 		public void Render()
 		{
-			var map = world.Map;
+			var cliprect = Game.viewport.ShroudBounds().HasValue
+				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
 
-			var tl = world.Map.TopLeft;
-			var br = world.Map.BottomRight;
+			var minx = cliprect.Left;
+			var maxx = cliprect.Right;
 
-			for (int x = tl.X; x < br.X; x++)
-				for (int y = tl.Y; y < br.Y; y++)	
+			var miny = cliprect.Top;
+			var maxy = cliprect.Bottom;
+
+			for (int x = minx; x < maxx; x++)
+				for (int y = miny; y < maxy; y++)
 				{
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(new int2(x, y))) continue;
 
