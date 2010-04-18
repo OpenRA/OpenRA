@@ -35,7 +35,7 @@ namespace OpenRA
 		bool disabled = false;
 		Map map;
 
-		public Rectangle? bounds { get { return shroud.exploredBounds; } }
+		public Rectangle? Bounds { get { return shroud.exploredBounds; } }
 
 		public ShroudRenderer(Player owner, Map map)
 		{
@@ -149,11 +149,12 @@ namespace OpenRA
 						fogSprites[i, j] = ChooseFog(i, j);
 			}
 
-			var miny = bounds.HasValue ? Math.Max(map.YOffset, bounds.Value.Top) : map.YOffset;
-			var maxy = bounds.HasValue ? Math.Min(map.YOffset + map.Height, bounds.Value.Bottom) : map.YOffset + map.Height;
+			var clipRect = Bounds.HasValue ? Rectangle.Intersect(Bounds.Value, map.Bounds) : map.Bounds;
 
-			var minx = bounds.HasValue ? Math.Max(map.XOffset, bounds.Value.Left) : map.XOffset;
-			var maxx = bounds.HasValue ? Math.Min(map.XOffset + map.Width, bounds.Value.Right) : map.XOffset + map.Width;
+			var miny = clipRect.Top;
+			var maxy = clipRect.Bottom;
+			var minx = clipRect.Left;
+			var maxx = clipRect.Right;
 
 			var shroudPalette = "fog";
 

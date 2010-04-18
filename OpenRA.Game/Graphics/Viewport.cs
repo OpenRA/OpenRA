@@ -24,6 +24,7 @@ using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using OpenRA.Support;
+using System.Drawing;
 
 namespace OpenRA.Graphics
 {
@@ -195,6 +196,13 @@ namespace OpenRA.Graphics
 		public void GoToStartLocation( Player player )
 		{
 			Center( player.World.Queries.OwnedBy[ player ].WithTrait<Selectable>().Select( a => a.Actor ) );
+		}
+
+		public Rectangle? ShroudBounds()
+		{
+			var localPlayer = Game.world.LocalPlayer;
+			if (localPlayer == null) return null;
+			return localPlayer.Shroud.Bounds;
 		}
 	}
 }

@@ -90,9 +90,9 @@ namespace OpenRA.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Height) lastRow = map.Height;
 
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
+			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
 			{
-				var r = world.LocalPlayer.Shroud.bounds.Value;
+				var r = world.LocalPlayer.Shroud.Bounds.Value;
 				if (firstRow < r.Top - map.YOffset)
 					firstRow = r.Top - map.YOffset;
 

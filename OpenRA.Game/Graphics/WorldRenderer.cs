@@ -83,9 +83,9 @@ namespace OpenRA.Graphics
 
 		Rectangle GetBoundsRect()
 		{
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.bounds.HasValue)
+			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
 			{
-				var r = world.LocalPlayer.Shroud.bounds.Value;
+				var r = world.LocalPlayer.Shroud.Bounds.Value;
 
 				var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
 				var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
@@ -169,7 +169,7 @@ namespace OpenRA.Graphics
 		{
 			DrawBox(bounds, Color.Red);
 			if (world.LocalPlayer != null)
-				DrawBox(world.LocalPlayer.Shroud.bounds.Value, Color.Blue);
+				DrawBox(world.LocalPlayer.Shroud.Bounds.Value, Color.Blue);
 
 			for (var j = 0; j < world.Map.MapSize.Y;
 				j += world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)

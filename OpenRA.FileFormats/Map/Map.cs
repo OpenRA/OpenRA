@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,6 +57,8 @@ namespace OpenRA.FileFormats
 
 		public int2 TopLeft;
 		public int2 BottomRight;
+
+		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
 
 		public TileReference<ushort, byte>[,] MapTiles;
 		public TileReference<byte, byte>[,] MapResources;
