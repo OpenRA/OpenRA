@@ -82,14 +82,15 @@ namespace OpenRA.Traits
 			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
-					content[x,y].type = resourceTypes.FirstOrDefault(
-						r => r.info.ResourceType == w.Map.MapResources[x,y].type);
+					content[x, y].type = resourceTypes.FirstOrDefault(
+						r => r.info.ResourceType == w.Map.MapResources[x, y].type);
 					if (content[x, y].type != null)
 						content[x, y].image = ChooseContent(content[x, y].type);
 				}
 
-			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
-				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+
+			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 					if (content[x, y].type != null)
 						content[x, y].density = GetIdealDensity(x, y);
 		}
