@@ -87,18 +87,16 @@ namespace OpenRA.Traits
 		{
 			var tl = world.Map.TopLeft;
 			var br = world.Map.BottomRight;
-			
+
 			for (int x = tl.X; x < br.X; x++)
-				for (int y = tl.Y; y < br.Y; y++)
+				for (int y = tl.Y; y < br.Y; y++)	
 				{
 					var t = new int2(x, y);
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
-						
-					spriteRenderer.DrawSprite(bibSprites[tiles[x,y].type- 1][tiles[x,y].image],
+
+					spriteRenderer.DrawSprite(bibSprites[tiles[x, y].type - 1][tiles[x, y].image],
 						Game.CellSize * (float2)t, "terrain");
 				}
-			
-			spriteRenderer.Flush();
 		}
 	}
 	

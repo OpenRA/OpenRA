@@ -47,8 +47,11 @@ namespace OpenRA.Traits
 		{
 			var map = world.Map;
 
-			for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
-				for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
+			var tl = world.Map.TopLeft;
+			var br = world.Map.BottomRight;
+
+			for (int x = tl.X; x < br.X; x++)
+				for (int y = tl.Y; y < br.Y; y++)	
 				{
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(new int2(x, y))) continue;
 
@@ -58,8 +61,6 @@ namespace OpenRA.Traits
 							Game.CellSize * new int2(x, y),
 							c.type.info.Palette);
 				}
-
-			sr.Flush();
 		}
 
 		public void WorldLoaded(World w)
