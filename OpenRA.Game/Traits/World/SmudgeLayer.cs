@@ -93,7 +93,7 @@ namespace OpenRA.Traits
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
 	
 					spriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
-						Game.CellSize * (float2)t, "terrain");
+						Game.CellSize * t, "terrain");
 				}
 		}
 	}
