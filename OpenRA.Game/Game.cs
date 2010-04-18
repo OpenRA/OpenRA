@@ -105,26 +105,17 @@ namespace OpenRA
 		public static Dictionary<string,MapStub> AvailableMaps;
 		
 		// TODO: Do this nicer
-		public static Dictionary<string,MapStub> FindMaps(string[] mods)
+		public static Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
 			Console.WriteLine("Finding maps");
 			foreach (var mod in mods)
 				Console.WriteLine(mod);
-			
-			
-			List<string> paths = new List<string>();	
-			foreach (var mod in mods)
-				paths.AddRange(Directory.GetDirectories("mods/"+mod+"/maps/"));
-			
-			paths.AddRange(Directory.GetDirectories("maps/"));
-			
-			Dictionary<string,MapStub> maps = new Dictionary<string, MapStub>();
-			foreach (var path in paths)
-			{
-				MapStub stub = new MapStub(new Folder(path));
-				maps.Add(stub.Uid,stub);
-			}
-			return maps;
+
+			var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
+				.Where(p => Directory.Exists(p))
+				.SelectMany(p => Directory.GetDirectories(p)).ToList();
+
+			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
 		}
 		
 		public static void ChangeMods()
