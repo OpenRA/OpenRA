@@ -95,8 +95,6 @@ namespace OpenRA.Traits
 					spriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
 						Game.CellSize * (float2)t, "terrain");
 				}
-			
-			spriteRenderer.Flush();
 		}
 	}
 }
