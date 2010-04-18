@@ -63,8 +63,7 @@ namespace OpenRA.Graphics
 			palette.AddPalette(name, pal);
 		}
 		
-		void DrawSpriteList(RectangleF rect,
-			IEnumerable<Renderable> images)
+		void DrawSpriteList(IEnumerable<Renderable> images)
 		{
 			foreach (var image in images)
 				spriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
@@ -122,10 +121,8 @@ namespace OpenRA.Graphics
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
-			DrawSpriteList(bounds, renderables);
-
-			foreach (var e in world.Effects)
-				DrawSpriteList(bounds, e.Render());
+			DrawSpriteList(renderables);
+			DrawSpriteList(world.Effects.SelectMany(e => e.Render()));
 
 			uiOverlay.Draw(world);
 
