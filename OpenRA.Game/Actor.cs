@@ -46,7 +46,7 @@ namespace OpenRA
 		public int Health;
 		IActivity currentActivity;
 
-		public Actor( World world, string name, int2 location, Player owner )
+		public Actor(World world, string name, int2 location, Player owner)
 		{
 			World = world;
 			ActorID = world.NextAID();
@@ -58,13 +58,25 @@ namespace OpenRA
 			{
 				if (!Rules.Info.ContainsKey(name.ToLowerInvariant()))
 					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
-				
+
 				Info = Rules.Info[name.ToLowerInvariant()];
 				Health = this.GetMaxHP();
 
 				foreach (var trait in Info.TraitsInConstructOrder())
 					traits.Add(trait.Create(this));
 			}
+
+			Size = Lazy.New(() =>
+			{
+				var si = Info.Traits.GetOrDefault<SelectableInfo>();
+				if (si != null && si.Bounds != null)
+					return new float2(si.Bounds[0], si.Bounds[1]);
+
+				// auto size from render
+				var firstSprite = traits.WithInterface<IRender>().SelectMany(x => x.Render(this)).FirstOrDefault();
+				if (firstSprite.Sprite == null) return float2.Zero;
+				return firstSprite.Sprite.size;
+			});
 		}
 
 		public void Tick()
@@ -94,19 +106,8 @@ namespace OpenRA
 		}
 
 		public float2 CenterLocation;
-		float2 SelectedSize
-		{
-			get			// todo: inline into GetBounds
-			{
-				var si = Info.Traits.GetOrDefault<SelectableInfo>();
-				if (si != null && si.Bounds != null)
-					return new float2(si.Bounds[0], si.Bounds[1]);
 
-				var firstSprite = Render().FirstOrDefault();
-				if (firstSprite.Sprite == null) return float2.Zero;
-				return firstSprite.Sprite.size;
-			}
-		}
+		Lazy<float2> Size;
 
 		public IEnumerable<Renderable> Render()
 		{
@@ -137,7 +138,7 @@ namespace OpenRA
 		{
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 
-			var size = SelectedSize;
+			var size = Size.Value;
 			var loc = CenterLocation - 0.5f * size;
 			
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
