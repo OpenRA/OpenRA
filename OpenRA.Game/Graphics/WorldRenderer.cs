@@ -103,13 +103,10 @@ namespace OpenRA.Graphics
 				return new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
 		}
 
-		public void Draw()
+		Renderable[] worldSprites = { };
+		public void Tick()
 		{
 			var bounds = GetBoundsRect();
-			renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
-
-			terrainRenderer.Draw(Game.viewport);
-
 			var comparer = new SpriteComparer();
 
 			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
@@ -117,17 +114,25 @@ namespace OpenRA.Graphics
 			var actors = world.FindUnits(
 				new float2(bounds.Left, bounds.Top),
 				new float2(bounds.Right, bounds.Bottom));
-						
+
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
-			DrawSpriteList(renderables);
-			DrawSpriteList(world.Effects.SelectMany(e => e.Render()));
+			var effects = world.Effects.SelectMany(e => e.Render());
 
+			worldSprites = renderables.Concat(effects).ToArray();
+		}
+
+		public void Draw()
+		{
+			var bounds = GetBoundsRect();
+			renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+
+			terrainRenderer.Draw(Game.viewport);
+
+			DrawSpriteList(worldSprites);
 			uiOverlay.Draw(world);
-
 			spriteRenderer.Flush();
-
 			DrawBandBox();
 
 			if (Game.controller.orderGenerator != null)
@@ -141,7 +146,10 @@ namespace OpenRA.Graphics
 			renderer.Device.DisableScissor();
 
 			if (Game.Settings.IndexDebug)
+			{
+				bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
 				DrawBins(bounds);
+			}
 
 			lineRenderer.Flush();
 		}

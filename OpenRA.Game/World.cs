@@ -166,6 +166,8 @@ namespace OpenRA
 			
 			foreach (var player in players.Values)
 				player.Tick();
+
+			WorldRenderer.Tick();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
