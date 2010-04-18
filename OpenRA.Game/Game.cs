@@ -79,12 +79,10 @@ namespace OpenRA
 				.Select(c => Pair.New(typeof(Game).Assembly, c))
 				.ToList();
 
-			// Mod assemblies assumed to contain a single namespace
+			// Namespaces from each mod assembly
 			foreach (var a in m.Assemblies)
 			{
-				var fullpath = Path.GetFullPath(a);
-
-				var asm = Assembly.LoadFile(fullpath);
+				var asm = Assembly.LoadFile(Path.GetFullPath(a));
 				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
 			}
 
