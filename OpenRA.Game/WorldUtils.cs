@@ -81,7 +81,7 @@ namespace OpenRA
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = mouseLocation + Game.viewport.Location;
-			return FindUnits(world, loc, loc);
+			return FindUnits(world, loc, loc).Where(a => a.IsVisible());
 		}
 
 		public static IEnumerable<Actor> FindUnits(this World world, float2 a, float2 b)
@@ -147,15 +147,18 @@ namespace OpenRA
 		public static bool IsVisible(this Actor a)
 		{
 			var shroud = a.World.WorldActor.traits.Get<Shroud>();
-			return a.traits.Contains<Unit>()
-				? Shroud.GetVisOrigins(a).Any(o => shroud.visibleCells[o.X, o.Y] > 0)
-				: Shroud.GetVisOrigins(a).Any(o => shroud.exploredCells[o.X, o.Y]);
+			if (!Shroud.GetVisOrigins(a).Any(o => shroud.exploredCells[o.X, o.Y]))		// covered by shroud
+				return false;
+
+			var huf = a.traits.GetOrDefault<HiddenUnderFog>();							// hidden under fog
+			if (huf != null && !huf.IsVisible(a))
+				return false;
+
+			return true;
 		}
 
 		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
 		{
-			
-			
 			var buildingMaxBounds = bi.Dimensions;
 			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
 				buildingMaxBounds.Y += 1;

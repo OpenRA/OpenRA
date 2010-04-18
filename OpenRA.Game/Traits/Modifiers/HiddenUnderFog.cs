@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace OpenRA.Traits.Render
+namespace OpenRA.Traits
 {
 	class HiddenUnderFogInfo : ITraitInfo
 	{
@@ -36,13 +36,17 @@ namespace OpenRA.Traits.Render
 			shroud = self.World.WorldActor.traits.Get<Shroud>();
 		}
 
+		public bool IsVisible(Actor self)
+		{
+			return self.World.LocalPlayer == null
+				|| self.Owner == self.World.LocalPlayer
+				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
+		}
+
 		static Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (self.World.LocalPlayer == null || self.Owner == self.World.LocalPlayer || shroud.visibleCells[self.Location.X, self.Location.Y] > 0)
-				return r;
-			else
-				return Nothing;
+			return IsVisible(self) ? r : Nothing;
 		}
 	}
 }
