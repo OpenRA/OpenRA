@@ -160,18 +160,33 @@ Container:
 					Height:25
 					Text:Quick'n'dirty Server Browser
 					Align:Center
+				Label@JOINSERVER_PROGRESS_TITLE:
+					Id:JOINSERVER_PROGRESS_TITLE
+					X:0
+					Y:PARENT_BOTTOM / 2 - HEIGHT
+					Width:450
+					Height:25
+					Text:Fetching games...
+					Align:Center
 				Button@JOINSERVER_BUTTON_DIRECTCONNECT:
 					Id:JOINSERVER_BUTTON_DIRECTCONNECT
-					X:PARENT_RIGHT - 360
+					X:PARENT_RIGHT - 140 - 130 - 130
 					Y:PARENT_BOTTOM - 45
-					Width:160
+					Width:120
 					Height:25
 					Text:Direct Connect
+				Button@JOINSERVER_BUTTON_REFRESH:
+					Id:JOINSERVER_BUTTON_REFRESH
+					X:PARENT_RIGHT - 140 - 130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Refresh
 				Button@JOINSERVER_BUTTON_CANCEL:
 					Id:JOINSERVER_BUTTON_CANCEL
-					X:PARENT_RIGHT - 180
+					X:PARENT_RIGHT - 140
 					Y:PARENT_BOTTOM - 45
-					Width:160
+					Width:120
 					Height:25
 					Text:Cancel
 		Background@CONNECTION_FAILED_BG:
