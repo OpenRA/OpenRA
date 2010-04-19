@@ -57,7 +57,7 @@ namespace OpenRA
 				if (typing.Length > 0)
 					typing = typing.Remove(typing.Length - 1);
 			}
-			else
+			else if (!char.IsControl(c))
 				typing += c;
 		}
 
