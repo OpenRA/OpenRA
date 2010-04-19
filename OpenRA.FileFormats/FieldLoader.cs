@@ -39,6 +39,13 @@ namespace OpenRA.FileFormats
 				if (!x.Key.StartsWith("-"))
 					LoadField( self, x.Key, x.Value.Value );
 		}
+
+		public static T Load<T>(MiniYaml y) where T : new()
+		{
+			var t = new T();
+			Load(t, y);
+			return t;
+		}
 		
 		public static void LoadFields( object self, Dictionary<string,MiniYaml> my, IEnumerable<string> fields )
 		{

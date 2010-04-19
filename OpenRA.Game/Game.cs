@@ -34,6 +34,7 @@ using OpenRA.Traits;
 
 using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.Server;
 
 namespace OpenRA
 {
@@ -258,6 +259,8 @@ namespace OpenRA
 			PerfHistory.items["batches"].Tick();
 			PerfHistory.items["text"].Tick();
 			PerfHistory.items["cursor"].Tick();
+
+			MasterServerQuery.Tick();
 		}
 
 		public static void SyncLobbyInfo(string data)

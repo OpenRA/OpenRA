@@ -88,7 +88,6 @@ namespace OpenRA.Traits
 						content[x, y].image = ChooseContent(content[x, y].type);
 				}
 
-
 			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 					if (content[x, y].type != null)

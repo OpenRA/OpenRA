@@ -43,6 +43,7 @@ namespace OpenRA.Widgets
 		// Calculated internally
 		public Rectangle Bounds;
 		public Widget Parent = null;
+
 		static List<string> Delegates = new List<string>();
 		public static Stack<string> WindowList = new Stack<string>();
 		

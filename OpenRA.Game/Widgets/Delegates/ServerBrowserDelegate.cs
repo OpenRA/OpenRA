@@ -22,64 +22,104 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Server;
+using OpenRA.FileFormats;
+using System;
 
 namespace OpenRA.Widgets.Delegates
 {
 	public class ServerBrowserDelegate : IWidgetDelegate
 	{
-		static GameServer[] GameList;
 		static List<Widget> GameButtons = new List<Widget>();
 
 		public ServerBrowserDelegate()
 		{
 			var r = Chrome.rootWidget;
-			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = 
-			mi => {
+
+			MasterServerQuery.OnComplete += games =>
+				{
+					var bg = r.GetWidget("JOINSERVER_BG");
+
+					if (games == null)
+					{
+						r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+						r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Failed to contact master server.";
+						return;
+					}
+
+					if (games.Length == 0)
+					{
+						r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+						r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";
+						return;
+					}
+
+					r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
+
+					int height = 50;
+					int width = 300;
+					int i = 0;
+
+					foreach (var game in games)
+					{
+						var g = game;
+						var b = new ButtonWidget
+						{
+							Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25),
+							Id = "JOIN_GAME_{0}".F(i),
+							Text = "{0} ({1})".F(game.Name, game.Address),
+							Delegate = "ServerBrowserDelegate",
+
+							OnMouseUp = nmi =>
+							{
+								r.GetWidget("JOINSERVER_BG").Visible = false;
+								Game.JoinServer(g.Address.Split(':')[0], int.Parse(g.Address.Split(':')[1]));
+								return true;
+							},
+						};
+
+						bg.AddChild(b);
+						GameButtons.Add(b);
+
+						height += 35;
+					}
+
+				};
+
+			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi =>
+			{
 				var bg = r.OpenWindow("JOINSERVER_BG");
-				int height = 50;
-				int width = 300;
-				int i = 0;
-				GameList = MasterServerQuery.GetGameList(Game.Settings.MasterServer).ToArray();
+
+				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
 
-				foreach (var game in GameList)
-				{
-					var b = new ButtonWidget
-					{
-						Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25),
-						Id = "JOIN_GAME_{0}".F( i ),
-						Text = "{0} ({1})".F( game.Name, game.Address ),
-						Delegate = "ServerBrowserDelegate",
-					
-						OnMouseUp = nmi =>
-						{
-							r.GetWidget("JOINSERVER_BG").Visible = false;
-							Game.JoinServer(GameList[i].Address.Split(':')[0], int.Parse(GameList[i].Address.Split(':')[1]));
-							return true;
-						},
-					};
-					
-					bg.AddChild(b);
-					GameButtons.Add(b);
-
-					height += 35;
-				}
+				MasterServerQuery.Refresh(Game.Settings.MasterServer);
 
 				return true;
 			};
-			
-			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi => {
-				r.CloseWindow();
-				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+
+			r.GetWidget("JOINSERVER_BUTTON_REFRESH").OnMouseUp = mi =>
+			{
+				var bg = r.GetWidget("JOINSERVER_BG");
+
+				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+
+				bg.Children.RemoveAll(a => GameButtons.Contains(a));
+				GameButtons.Clear();
+
+				MasterServerQuery.Refresh(Game.Settings.MasterServer);
+
 				return true;
 			};
-			
-			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi => {
+
+			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi =>
+			{
 				r.CloseWindow();
 				return true;
 			};
 		}
-	}	
+	}
 }
