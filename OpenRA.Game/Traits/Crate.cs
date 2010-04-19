@@ -54,9 +54,6 @@ namespace OpenRA.Traits
 		{
 			this.self = self;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
-
-			if (self.World.GetTerrainType(self.Location) == TerrainType.Water)
-				self.traits.Get<RenderSimple>().anim.PlayRepeating("water");
 		}
 
 		public void OnCrush(Actor crusher)
@@ -85,6 +82,10 @@ namespace OpenRA.Traits
 		{
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
 				self.World.AddFrameEndTask(w =>	w.Remove(self));
+
+			var seq = self.World.GetTerrainType(self.Location) == TerrainType.Water ? "water" : "idle";
+			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
+				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}
 	}
 }
