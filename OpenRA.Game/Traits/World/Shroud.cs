@@ -87,6 +87,8 @@ namespace OpenRA.Traits
 				vis = GetVisOrigins(a).ToArray()
 			};
 
+			if (v.range == 0) return;		// don't bother for things that can't see
+
 			foreach (var p in v.vis)
 			{
 				foreach (var q in FindVisibleTiles(a.World, p, v.range))

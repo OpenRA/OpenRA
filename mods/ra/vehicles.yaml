@@ -560,7 +560,6 @@ MIG:
 		Ammo: 3
 	IronCurtainable:
 	ReturnOnIdle:
-	HasSight:
 
 YAK:
 	Inherits: ^Plane
@@ -590,7 +589,6 @@ YAK:
 		Ammo: 15
 	IronCurtainable:
 	ReturnOnIdle:
-	HasSight:
 
 TRAN:
 	Inherits: ^Plane
@@ -618,7 +616,6 @@ TRAN:
 		PassengerTypes: Foot
 		Passengers: 5
 	IronCurtainable:
-	HasSight:
 
 HELI:
 	Inherits: ^Plane
@@ -650,7 +647,6 @@ HELI:
 	LimitedAmmo:
 		Ammo: 6
 	IronCurtainable:
-	HasSight:
 
 HIND:
 	Inherits: ^Plane
@@ -680,7 +676,6 @@ HIND:
 	LimitedAmmo:
 		Ammo: 12
 	IronCurtainable:
-	HasSight:
 
 U2:
 	Inherits: ^Plane

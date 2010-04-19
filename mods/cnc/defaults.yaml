@@ -11,6 +11,7 @@
 	Passenger: 
 	IronCurtainable: 
 	HiddenUnderFog:
+	RevealsShroud:
 
 ^Infantry:
 	Category: Infantry
@@ -26,6 +27,7 @@
 	Passenger:
 	HiddenUnderFog:
 	PoisonedByTiberium:
+	RevealsShroud:
 
 ^Ship:
 	Category: Ship
@@ -34,12 +36,14 @@
 		MovementType: Float
 	Selectable:
 	HiddenUnderFog:
+	RevealsShroud:
 
 ^Plane:
 	Category: Plane
 	Unit:
 	Selectable:
 	HiddenUnderFog:
+	RevealsShroud:
 
 ^Building:
 	Category: Building

@@ -53,7 +53,6 @@ namespace OpenRA.Traits
 				{
 					self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
 					self.Location = value;
-					self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
 				}
 				self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 			}

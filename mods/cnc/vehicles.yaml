@@ -379,7 +379,7 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 0
+		Sight: 4
 		Speed: 15
 	Helicopter:
 	RenderUnitRotor:
@@ -407,7 +407,7 @@ HELI:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 0
+		Sight: 6
 		Speed: 20
 	AttackHeli:
 		PrimaryWeapon: HighV
@@ -438,7 +438,7 @@ ORCA:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 0
+		Sight: 6
 		Speed: 20
 	AttackHeli:
 		PrimaryWeapon: Rockets

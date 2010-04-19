@@ -82,7 +82,7 @@
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
-    <Compile Include="Traits\HasSight.cs" />
+    <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Player\VictoryConditions.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />

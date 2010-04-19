@@ -20,16 +20,19 @@
 
 namespace OpenRA.Traits
 {
-	class HasSightInfo : TraitInfo<HasSight> { }
+	class RevealsShroudInfo : TraitInfo<RevealsShroud> { }
 
-	// for random non-mobile movers
-
-	class HasSight : ITick
+	class RevealsShroud : ITick
 	{
+		int2 previousLocation;
+
 		public void Tick(Actor self)
 		{
-			if (!self.IsIdle)
+			if (!self.IsIdle && previousLocation != self.Location)
+			{
+				previousLocation = self.Location;
 				self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
+			}
 		}
 	}
 }
