@@ -55,8 +55,8 @@ namespace OpenRA.Widgets.Delegates
 
 					r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
 
+					var margin = 20;
 					int height = 50;
-					int width = 300;
 					int i = 0;
 
 					foreach (var game in games)
@@ -64,7 +64,7 @@ namespace OpenRA.Widgets.Delegates
 						var g = game;
 						var b = new ButtonWidget
 						{
-							Bounds = new Rectangle(bg.Bounds.X + 20, bg.Bounds.Y + height, width, 25),
+							Bounds = new Rectangle(bg.Bounds.X + margin, bg.Bounds.Y + height, bg.Bounds.Width - 2 * margin, 25),
 							Id = "JOIN_GAME_{0}".F(i),
 							Text = "{0} ({1})".F(game.Name, game.Address),
 							Delegate = "ServerBrowserDelegate",
@@ -118,6 +118,13 @@ namespace OpenRA.Widgets.Delegates
 			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi =>
 			{
 				r.CloseWindow();
+				return true;
+			};
+
+			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi =>
+			{			/* rude hack. kill this as soon as we can do a direct connect via the commandline */
+				r.CloseWindow();
+				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				return true;
 			};
 		}
