@@ -548,7 +548,7 @@ MIG:
 		Armor: light
 		InitialFacing: 192
 		ROT: 5
-		Sight: 0
+		Sight: 6
 		Speed: 20
 	AttackPlane:
 		PrimaryWeapon: Maverick
@@ -560,6 +560,7 @@ MIG:
 		Ammo: 3
 	IronCurtainable:
 	ReturnOnIdle:
+	HasSight:
 
 YAK:
 	Inherits: ^Plane
@@ -577,7 +578,7 @@ YAK:
 		Crewed: yes
 		InitialFacing: 192
 		ROT: 5
-		Sight: 0
+		Sight: 4
 		Speed: 16
 	AttackPlane:
 		PrimaryWeapon: ChainGun
@@ -589,6 +590,7 @@ YAK:
 		Ammo: 15
 	IronCurtainable:
 	ReturnOnIdle:
+	HasSight:
 
 TRAN:
 	Inherits: ^Plane
@@ -605,7 +607,7 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 0
+		Sight: 4
 		Speed: 12
 	Helicopter:
 	RenderUnitRotor:
@@ -616,6 +618,7 @@ TRAN:
 		PassengerTypes: Foot
 		Passengers: 5
 	IronCurtainable:
+	HasSight:
 
 HELI:
 	Inherits: ^Plane
@@ -633,7 +636,7 @@ HELI:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 0
+		Sight: 6
 		Speed: 16
 	AttackHeli:
 		PrimaryWeapon: Hellfire
@@ -647,6 +650,7 @@ HELI:
 	LimitedAmmo:
 		Ammo: 6
 	IronCurtainable:
+	HasSight:
 
 HIND:
 	Inherits: ^Plane
@@ -664,7 +668,7 @@ HIND:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 0
+		Sight: 6
 		Speed: 12
 	AttackHeli:
 		PrimaryWeapon: ChainGun
@@ -676,6 +680,7 @@ HIND:
 	LimitedAmmo:
 		Ammo: 12
 	IronCurtainable:
+	HasSight:
 
 U2:
 	Inherits: ^Plane
