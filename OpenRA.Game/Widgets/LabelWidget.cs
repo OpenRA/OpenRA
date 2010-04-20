@@ -29,11 +29,16 @@ namespace OpenRA.Widgets
 		public string Align = "Left";
 		public bool Bold = true;
 		public Func<string> GetText;
+
+		public LabelWidget()
+			: base()
+		{
+			GetText = () => { return Text; };
+		}
 		
 		public override void Initialize()
 		{
 			base.Initialize();
-			GetText = () => {return Text;};
 		}
 
 		public override void Draw(World world)

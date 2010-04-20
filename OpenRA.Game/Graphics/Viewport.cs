@@ -130,9 +130,9 @@ namespace OpenRA.Graphics
 
 			}
 			Game.chrome.DrawWidgets(world);
-			if( Chrome.rootWidget.GetWidget( "SERVER_LOBBY" ).Visible )
+			if (Chrome.rootWidget.GetWidget("SERVER_LOBBY").Visible)
 				Game.chrome.DrawLobby();
-			else if( Chrome.rootWidget.GetWidget( "MAP_CHOOSER" ).Visible )
+			else if (Chrome.rootWidget.GetWidget("MAP_CHOOSER").Visible)
 				Game.chrome.DrawMapChooser();
 
 			Timer.Time( "widgets: {0}" );

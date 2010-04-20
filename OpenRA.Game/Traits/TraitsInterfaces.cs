@@ -44,6 +44,7 @@ namespace OpenRA.Traits
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
 	public interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
+	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
 
 	public interface ICustomTerrain
 	{

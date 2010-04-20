@@ -289,7 +289,6 @@ namespace OpenRA
 				});
 			}
 			
-			
 			var f = renderer.BoldFont;
 			f.DrawText("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
 			f.DrawText("Color", new int2(r.Left + 140, r.Top + 50), Color.White);

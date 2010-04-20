@@ -89,6 +89,7 @@
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
+    <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
     <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
     <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />

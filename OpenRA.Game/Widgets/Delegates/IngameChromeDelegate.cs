@@ -30,6 +30,7 @@ namespace OpenRA.Widgets.Delegates
 			var r = Chrome.rootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
+
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
 				optionsBG.Visible = !optionsBG.Visible;
 				return true;

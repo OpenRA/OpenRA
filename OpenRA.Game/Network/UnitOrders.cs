@@ -48,6 +48,14 @@ namespace OpenRA.Network
 					Game.SyncLobbyInfo(order.TargetString);
 					break;
 				}
+			case "SetStance":
+				{
+					var targetPlayer = order.Player.World.players[order.TargetLocation.X];
+					order.Player.Stances[targetPlayer] = (Stance)order.TargetLocation.Y;
+					Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
+						order.Player.PlayerName, targetPlayer.PlayerName, (Stance)order.TargetLocation.Y));
+					break;
+				}
 			default:
 				{
 					if( !order.IsImmediate )
