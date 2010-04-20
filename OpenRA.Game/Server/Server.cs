@@ -455,7 +455,7 @@ namespace OpenRA.Server
 
 		static void SendChat(Connection asConn, string text)
 		{
-			DispatchOrders(null, 0, new ServerOrder("Chat", text).Serialize());
+			DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
 		}
 
 		static void InterpretServerOrder(Connection conn, ServerOrder so)
