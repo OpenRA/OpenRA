@@ -23,10 +23,7 @@ menuBar:Append(viewMenu, "&View")
 menuBar:Check(ID "view.filetree.show", true)
 menuBar:Check(ID "view.output.show", true)
 
-frame:Connect(ID "view.preferences", wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			print("TODO")
-		end)
+frame:Connect(ID "view.preferences", wx.wxEVT_COMMAND_MENU_SELECTED,preferencesDialog.show)
 
 frame:Connect(ID "view.style.loadconfig", wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)

@@ -219,6 +219,7 @@ dofile "src/editor/gui.lua"
 dofile "src/editor/output.lua"
 dofile "src/editor/debugger.lua"
 dofile "src/editor/filetree.lua"
+dofile "src/editor/preferences.lua"
 
 dofile "src/editor/editor.lua"
 dofile "src/editor/autocomplete.lua"
