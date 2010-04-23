@@ -78,7 +78,6 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
 	VictoryConditions:
-		ShortGameUnits: mcv
 		
 
 World:
