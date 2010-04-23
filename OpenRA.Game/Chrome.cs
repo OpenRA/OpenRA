@@ -229,24 +229,7 @@ namespace OpenRA
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-
-			if (Game.IsHost)
-			{
-				AddUiButton(new int2(r.Right - 100, r.Top + 300), "Change Map",
-				_ =>
-				{
-					currentMap = Game.AvailableMaps[ Game.LobbyInfo.GlobalSettings.Map ];
-					rootWidget.OpenWindow( "MAP_CHOOSER" );
-				});
-			}
-			
 			var f = renderer.BoldFont;
-			f.DrawText("Name", new int2(r.Left + 40, r.Top + 50), Color.White);
-			f.DrawText("Color", new int2(r.Left + 140, r.Top + 50), Color.White);
-			f.DrawText("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
-			f.DrawText("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
-			f.DrawText("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
-			f.DrawText("Team", new int2(r.Left + 470, r.Top + 50), Color.White);
 
 			rgbaRenderer.Flush();
 				
@@ -265,21 +248,21 @@ namespace OpenRA
 					DrawDialogBackground(paletteRect, "dialog3");
 					AddButton(paletteRect, CyclePalette);
 
-					var raceRect = new Rectangle(r.Left + 210, y - 2, 65, 22);
-					DrawDialogBackground(raceRect, "dialog3");
-					AddButton(raceRect, CycleRace);
-
-					var readyRect = new Rectangle(r.Left + 280, y - 2, 95, 22);
-					DrawDialogBackground(readyRect, "dialog3");
-					AddButton(readyRect, CycleReady);
+					var factionRect = new Rectangle(r.Left + 210, y - 2, 90, 22);
+					DrawDialogBackground(factionRect, "dialog3");
+					AddButton(factionRect, CycleRace);
 					
-					var spawnPointRect = new Rectangle(r.Left + 380, y - 2, 70, 22);
+					var spawnPointRect = new Rectangle(r.Left + 305, y - 2, 70, 22);
 					DrawDialogBackground(spawnPointRect, "dialog3");
 					AddButton(spawnPointRect, CycleSpawnPoint);
 					
-					var teamRect = new Rectangle(r.Left + 460, y - 2, 70, 22);
+					var teamRect = new Rectangle(r.Left + 385, y - 2, 70, 22);
 					DrawDialogBackground(teamRect, "dialog3");
 					AddButton(teamRect, CycleTeam);
+					
+					var readyRect = new Rectangle(r.Left + 465, y - 2, 50, 22);
+					DrawDialogBackground(readyRect, "dialog3");
+					AddButton(readyRect, CycleReady);
 				}
 
 				shpRenderer.Flush();
@@ -293,12 +276,13 @@ namespace OpenRA
 													Player.PlayerColors(Game.world)[client.PaletteIndex % Player.PlayerColors(Game.world).Count()].c);
 				lineRenderer.Flush();
 				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
-				f.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
-				f.DrawText((client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
-				f.DrawText((client.Team == 0)? "-" : client.Team.ToString(), new int2(r.Left + 490, y), Color.White);
+				f.DrawText((client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 315 + 20, y), Color.White);
+				f.DrawText((client.Team == 0)? "-" : client.Team.ToString(), new int2(r.Left + 395 + 20, y), Color.White);
+				f.DrawText(client.State.ToString(), new int2(r.Left + 475, y), Color.White);
 				y += 30;
 
 				rgbaRenderer.Flush();
+				
 			}
 
 			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
@@ -308,9 +292,11 @@ namespace OpenRA
 			DrawDialogBackground(chatBox, "dialog3");
 
 			DrawChat(typingBox, chatBox);
-
+			
 			// block clicks `through` the dialog
 			AddButton(r, _ => { });
+			
+			
 		}
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }

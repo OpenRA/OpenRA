@@ -262,6 +262,7 @@ Container:
 					Text:Abort
 		Background@SERVER_LOBBY:
 			Id:SERVER_LOBBY
+			Delegate:LobbyDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:800
@@ -287,6 +288,56 @@ Container:
 							Y:4
 							Width:244
 							Height:244
+				Button@CHANGEMAP_BUTTON:
+					Id:CHANGEMAP_BUTTON
+					Visible:true
+					X:PARENT_RIGHT-140
+					Y:300
+					Width:120
+					Height:25
+					Text:Change Map
+				Label@LABEL_LOBBY_NAME:
+					Id:LABEL_LOBBY_NAME
+					X:40
+					Y:50
+					Width:250
+					Height:25
+					Text:Name
+				Label@LABEL_LOBBY_COLOR:
+					Id:LABEL_LOBBY_COLOR
+					X:140
+					Y:50
+					Width:250
+					Height:25
+					Text:Color
+				Label@LABEL_LOBBY_FACTION
+					Id:LABEL_LOBBY_FACTION
+					X:220
+					Y:50
+					Width:250
+					Height:25
+					Text:Faction
+				Label@LABEL_LOBBY_SPAWN
+					Id:LABEL_LOBBY_SPAWN
+					X:315
+					Y:50
+					Width:250
+					Height:25
+					Text:Spawn
+				Label@LABEL_LOBBY_TEAM
+					Id:LABEL_LOBBY_TEAM
+					X:395
+					Y:50
+					Width:250
+					Height:25
+					Text:Team
+				Label@LABEL_LOBBY_STATUS
+					Id:LABEL_LOBBY_STATUS
+					X:475
+					Y:50
+					Width:250
+					Height:25
+					Text:Status
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2
@@ -463,3 +514,6 @@ Container:
 					Width:25
 					Height:25
 					Text:[]
+
+
+
