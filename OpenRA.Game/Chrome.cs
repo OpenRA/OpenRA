@@ -263,6 +263,17 @@ namespace OpenRA
 				Order.Chat("/spawn " + newIndex));
 			
 		}
+		
+		void CycleTeam(bool left)
+		{
+			var d = left ? +1 : Game.world.Map.PlayerCount;
+
+			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount+1);
+
+			Game.IssueOrder(
+				Order.Chat("/team " + newIndex));
+			
+		}
 
 		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
 		
@@ -295,6 +306,7 @@ namespace OpenRA
 			f.DrawText("Faction", new int2(r.Left + 220, r.Top + 50), Color.White);
 			f.DrawText("Status", new int2(r.Left + 290, r.Top + 50), Color.White);
 			f.DrawText("Spawn", new int2(r.Left + 390, r.Top + 50), Color.White);
+			f.DrawText("Team", new int2(r.Left + 470, r.Top + 50), Color.White);
 
 			rgbaRenderer.Flush();
 				
@@ -324,6 +336,10 @@ namespace OpenRA
 					var spawnPointRect = new Rectangle(r.Left + 380, y - 2, 70, 22);
 					DrawDialogBackground(spawnPointRect, "dialog3");
 					AddButton(spawnPointRect, CycleSpawnPoint);
+					
+					var teamRect = new Rectangle(r.Left + 460, y - 2, 70, 22);
+					DrawDialogBackground(teamRect, "dialog3");
+					AddButton(teamRect, CycleTeam);
 				}
 
 				shpRenderer.Flush();
@@ -339,6 +355,7 @@ namespace OpenRA
 				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
 				f.DrawText(client.State.ToString(), new int2(r.Left + 290, y), Color.White);
 				f.DrawText((client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 410, y), Color.White);
+				f.DrawText((client.Team == 0)? "-" : client.Team.ToString(), new int2(r.Left + 490, y), Color.White);
 				y += 30;
 
 				rgbaRenderer.Flush();
