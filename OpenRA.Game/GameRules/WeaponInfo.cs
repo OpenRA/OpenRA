@@ -83,6 +83,7 @@ namespace OpenRA.GameRules
 		public readonly bool Charges = false;
 		public readonly bool Underwater = false;
 		public readonly string[] ValidTargets = { "Ground" };
+		public readonly int BurstDelay = 5;
 
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();

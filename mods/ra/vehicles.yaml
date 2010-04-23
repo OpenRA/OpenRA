@@ -175,7 +175,6 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 105mm
-		SecondaryWeapon: 105mm
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:

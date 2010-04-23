@@ -245,6 +245,8 @@ Grenade:
 	ROF: 70
 	Range: 4.75
 	Report: CANNON1
+	Burst: 2
+	BurstDelay: 4
 	Bullet:
 		Speed: 40
 		Image: 120MM

@@ -120,7 +120,6 @@ namespace OpenRA.Traits
 			if (info.PrimaryWeapon != null && CheckFire(self, unit, info.PrimaryWeapon, ref primaryFireDelay,
 				info.PrimaryOffset, ref primaryBurst, info.PrimaryLocalOffset))
 			{
-				secondaryFireDelay = Math.Max(4, secondaryFireDelay);
 				primaryRecoil = 1;
 				return;
 			}
@@ -159,7 +158,7 @@ namespace OpenRA.Traits
 				offset.ElementAtOrDefault(3) };
 
 			if (--burst > 0)
-				fireDelay = 5;
+				fireDelay = weapon.BurstDelay;
 			else
 			{
 				fireDelay = weapon.ROF;
