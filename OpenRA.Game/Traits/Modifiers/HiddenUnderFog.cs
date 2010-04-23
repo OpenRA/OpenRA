@@ -40,6 +40,7 @@ namespace OpenRA.Traits
 		{
 			return self.World.LocalPlayer == null
 				|| self.Owner == self.World.LocalPlayer
+				|| self.World.LocalPlayer.Shroud.Disabled
 				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
 		}
 
