@@ -37,8 +37,6 @@ namespace OpenRA.Widgets
 
 		public override void Tick(World world)
 		{
-			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
-
 			if (!radarAnimating)
 				return;
 
@@ -76,6 +74,8 @@ namespace OpenRA.Widgets
 
 		void DrawRadar(World world)
 		{
+			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
+
 			var hasNewRadar = world.Queries.OwnedBy[world.LocalPlayer]
 				.WithTrait<ProvidesRadar>()
 				.Any(a => a.Trait.IsActive);
