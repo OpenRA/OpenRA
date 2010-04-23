@@ -91,6 +91,7 @@
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
     <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
     <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
+    <Compile Include="Widgets\RadarBinWidget.cs" />
     <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />

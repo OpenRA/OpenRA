@@ -39,24 +39,8 @@ namespace OpenRA
 		SpriteRenderer shpRenderer { get { return renderer.WorldSpriteRenderer; } }
 		
 		string chromeCollection;
-		string radarCollection;
 
 		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
-
-		// Radar
-		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
-		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
-		static float2 radarOrigin = radarClosedOrigin;
-		float radarMinimapHeight;
-		const int radarSlideAnimationLength = 15;
-		const int radarActivateAnimationLength = 5;
-		int radarAnimationFrame = 0;
-		bool radarAnimating = false;
-		bool hasRadar = false;
-				
-		// Power bar 
-		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
-		static Size powerSize = new Size(138,5);
 
 		internal MapStub currentMap;
 
@@ -88,22 +72,13 @@ namespace OpenRA
 				++worldTooltipTicks;
 			
 			rootWidget.Tick(world);
-			
-			TickRadarAnimation();
 		}
 				
 		public void Draw( World world )
 		{
-			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
-
 			buttons.Clear();
-
 			renderer.Device.DisableScissor();
 			
-			DrawRadar( world );
-			DrawPower( world );
-			rgbaRenderer.Flush();
-
 			var typingArea = new Rectangle(240, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
 			var chatLogArea = new Rectangle(240, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
 			DrawChat(typingArea, chatLogArea);
@@ -372,128 +347,8 @@ namespace OpenRA
 			// block clicks `through` the dialog
 			AddButton(r, _ => { });
 		}
-
-		public void TickRadarAnimation()
-		{
-			if (!radarAnimating)
-				return;
-
-			// Increment frame
-			if (hasRadar)
-				radarAnimationFrame++;
-			else
-				radarAnimationFrame--;
-
-			// Calculate radar bin position
-			if (radarAnimationFrame <= radarSlideAnimationLength)
-				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
-
-			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-			
-			// Play radar-on sound at the start of the activate anim (open)
-			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-				Sound.Play(eva.RadarUp);
-
-			// Play radar-on sound at the start of the activate anim (close)
-			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
-				Sound.Play(eva.RadarDown);
-
-			// Minimap height
-			if (radarAnimationFrame >= radarSlideAnimationLength)
-				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
-
-			// Animation is complete
-			if ((radarAnimationFrame == 0 && !hasRadar)
-					|| (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && hasRadar))
-			{
-				radarAnimating = false;
-			}
-		}
-		
-		void DrawRadar( World world )
-		{
-			var hasNewRadar = world.Queries.OwnedBy[world.LocalPlayer]
-				.WithTrait<ProvidesRadar>()
-				.Any(a => a.Trait.IsActive);
-			
-			if (hasNewRadar != hasRadar)
-			{
-				radarAnimating = true;
-			}
-			
-			hasRadar = hasNewRadar;
-
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "left"), radarOrigin, "chrome");
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
-			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");	
-
-			if (radarAnimating)
-				rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");	
-			
-			rgbaRenderer.Flush();
-
-			if (radarAnimationFrame >= radarSlideAnimationLength)
-			{
-				RectangleF mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y+(192-radarMinimapHeight)/2, 192, radarMinimapHeight);
-				world.Minimap.Draw(mapRect, false);
-			}
-		}
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
-
-		float? lastPowerProvidedPos;
-		float? lastPowerDrainedPos;
-		
-		void DrawPower( World world )
-		{
-			// Nothing to draw
-			if (world.LocalPlayer.PowerProvided == 0 && world.LocalPlayer.PowerDrained == 0)
-				return;
-			
-			// Draw bar horizontally
-			var barStart = powerOrigin + radarOrigin;
-			var barEnd = barStart + new float2(powerSize.Width, 0);
-
-			float powerScaleBy = 100;
-			var maxPower = Math.Max(world.LocalPlayer.PowerProvided, world.LocalPlayer.PowerDrained);
-			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
-			
-			// Current power supply
-			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (world.LocalPlayer.PowerProvided / powerScaleBy);
-			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
-			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
-
-			var color = Color.LimeGreen;
-			if (world.LocalPlayer.GetPowerState() == PowerState.Low)
-				color = Color.Orange;
-			if (world.LocalPlayer.GetPowerState() == PowerState.Critical)
-				color = Color.Red;
-		
-			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
-			for (int i = 0; i < powerSize.Height; i++)
-			{
-				color = (i-1 < powerSize.Height/2) ? color : colorDark;
-				float2 leftOffset = new float2(0,i);
-				float2 rightOffset = new float2(0,i);
-				// Indent corners
-				if ((i == 0 || i == powerSize.Height - 1) && powerLevel.X - barStart.X > 1)
-				{
-					leftOffset.X += 1;
-					rightOffset.X -= 1;
-				}
-				lineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
-			}
-			lineRenderer.Flush();
-
-			// Power usage indicator
-			var indicator = ChromeProvider.GetImage(renderer, radarCollection, "power-indicator");
-			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (world.LocalPlayer.PowerDrained / powerScaleBy);
-			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
-			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value-indicator.size.X/2, barStart.Y-1);
-		
-			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
-			rgbaRenderer.Flush();
-		}
 
 		void DrawDialogBackground(Rectangle r, string collection)
 		{
