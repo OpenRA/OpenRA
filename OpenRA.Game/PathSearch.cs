@@ -38,6 +38,7 @@ namespace OpenRA
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
+		public bool inReverse;
 
 		BuildingInfluence buildingInfluence;
 		UnitInfluence unitInfluence;
@@ -53,6 +54,12 @@ namespace OpenRA
 			resources = world.WorldActor.traits.Get<ResourceLayer>();
 		}
 
+		public PathSearch InReverse()
+		{
+			inReverse = true;
+			return this;
+		}
+
 		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
 		{
 			this.customBlock = customBlock;
@@ -64,6 +71,8 @@ namespace OpenRA
 			ignoreBuilding = b;
 			return this;
 		}
+
+		const float LaneBias = .5f;
 
 		public int2 Expand( World world, float[][ , ] passableCost )
 		{
@@ -107,10 +116,13 @@ namespace OpenRA
 				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere;
 
 				// directional bonuses for smoother flow!
-				if (((newHere.X & 1) == 0) && d.Y < 0) cellCost -= .1f;
-				else if (((newHere.X & 1) == 1) && d.Y > 0) cellCost -= .1f;
-				if (((newHere.Y & 1) == 0) && d.X < 0) cellCost -= .1f;
-				else if (((newHere.Y & 1) == 1) && d.X > 0) cellCost -= .1f;
+				var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
+				var uy = (newHere.Y + (inReverse ? 1 : 0) & 1);
+
+				if (ux == 0 && d.Y < 0) cellCost += LaneBias;
+				else if (ux == 1 && d.Y > 0) cellCost += LaneBias;
+				if (uy == 0 && d.X < 0) cellCost += LaneBias;
+				else if (uy == 1 && d.X > 0) cellCost += LaneBias;
 
 				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 

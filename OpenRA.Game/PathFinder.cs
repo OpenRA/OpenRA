@@ -60,7 +60,7 @@ namespace OpenRA
 		List<CachedPath> CachedPaths = new List<CachedPath>();
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 
-		public List<int2> FindUnitPath( int2 from, int2 target, UnitMovementType umt )
+		public List<int2> FindUnitPath(int2 from, int2 target, UnitMovementType umt)
 		{
 			using (new PerfSample("find_unit_path"))
 			{
@@ -72,8 +72,11 @@ namespace OpenRA
 				}
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, target, from, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)),
-					PathSearch.FromPoint(world, from, target, umt, false).WithCustomBlocker(AvoidUnitsNear(from, 4)));
+					PathSearch.FromPoint(world, target, from, umt, false)
+						.WithCustomBlocker(AvoidUnitsNear(from, 4)),
+					PathSearch.FromPoint(world, from, target, umt, false)
+						.WithCustomBlocker(AvoidUnitsNear(from, 4))
+						.InReverse());
 
 				CheckSanePath2(pb, from, target);
 
@@ -90,7 +93,9 @@ namespace OpenRA
 				var tilesInRange = world.FindTilesInCircle(target, range)
 					.Where( t => world.IsPathableCell( t, umt ) );
 
-				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false ).WithCustomBlocker(AvoidUnitsNear(src, 4)));
+				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false )
+					.WithCustomBlocker(AvoidUnitsNear(src, 4))
+					.InReverse());
 				path.Reverse();
 				return path;
 			}
