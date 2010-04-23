@@ -386,6 +386,23 @@ Container:
 							Width:160
 							Height:25
 							Text:Quit
+				Background@DIPLOMACY_BG:
+					Id:DIPLOMACY_BG
+					Delegate:DiplomacyDelegate
+					X:(WINDOW_RIGHT - WIDTH)/2
+					Y:(WINDOW_BOTTOM - HEIGHT)/2
+					Width:450
+					Height:400
+					Visible:false
+					Children:
+						Label@LABEL_TITLE:
+							Id:LABEL_TITLE
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:20
+							Width:250
+							Height:25
+							Text:Diplomacy
+							Align:Center
 		Background@PERF_BG:
 			ClickThrough:true
 			Id:PERF_BG
