@@ -55,6 +55,7 @@
 	RenderBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6
+	MustBeDestroyed:
 
 ^Wall:
 	Category: Building

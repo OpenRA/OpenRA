@@ -18,23 +18,23 @@ namespace OpenRA.Traits
 		public bool HasLost { get; private set; }
 		public bool HasWon { get; private set; }
 
-		public VictoryConditions(Actor self)
-		{
-		}
+		public VictoryConditions(Actor self) { }
 
 		public void Tick(Actor self)
 		{
 			var info = self.Info.Traits.Get<VictoryConditionsInfo>();
-			var hasAnyBuildings = self.World.Queries.OwnedBy[self.Owner]
-				.WithTrait<Building>().Any();
-			var hasAnyShortGameUnits = self.World.Queries.OwnedBy[self.Owner]
-				.Any(a => info.ShortGameUnits.Contains(a.Info.Name));
+			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
+				.WithTrait<MustBeDestroyed>().Any();
 
-			var hasLost = !(hasAnyBuildings || hasAnyShortGameUnits);
-			if (hasLost && !HasLost)
+			if (!hasAnything && !HasLost)
 				Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
 
-			HasLost = hasLost;
+			HasLost = !hasAnything;
 		}
 	}
+
+	/* tag trait for things that must be destroyed for a short game to end */
+
+	class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
+	class MustBeDestroyed { }
 }

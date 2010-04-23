@@ -280,6 +280,7 @@ MCV:
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
+	MustBeDestroyed:
 
 JEEP:
 	Inherits: ^Vehicle

@@ -23,6 +23,7 @@ MCV:
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
+	MustBeDestroyed:
 
 HARV:
 	Inherits: ^Vehicle
