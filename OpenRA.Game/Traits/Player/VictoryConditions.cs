@@ -42,10 +42,12 @@ namespace OpenRA.Traits
 			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<MustBeDestroyed>().Any();
 
-			if (!hasAnything && !HasLost)
+			var hasLost = !hasAnything && self.Owner != self.World.NeutralPlayer;
+
+			if (hasLost && !HasLost)
 				Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
 
-			HasLost = !hasAnything;
+			HasLost = hasLost;
 		}
 	}
 
