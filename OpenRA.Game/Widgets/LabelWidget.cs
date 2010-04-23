@@ -35,11 +35,6 @@ namespace OpenRA.Widgets
 		{
 			GetText = () => { return Text; };
 		}
-		
-		public override void Initialize()
-		{
-			base.Initialize();
-		}
 
 		public override void Draw(World world)
 		{		

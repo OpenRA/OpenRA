@@ -238,7 +238,7 @@ namespace OpenRA
 			{
 				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
 				var paletteRect = new Rectangle(r.Left + 130, y - 2, 65, 22);
-
+				/*
 				if (isLocalPlayer)
 				{
 					// todo: name editing
@@ -264,9 +264,9 @@ namespace OpenRA
 					DrawDialogBackground(readyRect, "dialog3");
 					AddButton(readyRect, CycleReady);
 				}
-
+				*/
 				shpRenderer.Flush();
-
+				/*
 				f = renderer.RegularFont;
 				f.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
 				lineRenderer.FillRect(RectangleF.FromLTRB(paletteRect.Left + Game.viewport.Location.X + 5,
@@ -280,7 +280,7 @@ namespace OpenRA
 				f.DrawText((client.Team == 0)? "-" : client.Team.ToString(), new int2(r.Left + 395 + 20, y), Color.White);
 				f.DrawText(client.State.ToString(), new int2(r.Left + 475, y), Color.White);
 				y += 30;
-
+				*/
 				rgbaRenderer.Flush();
 				
 			}

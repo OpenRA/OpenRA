@@ -288,6 +288,55 @@ Container:
 							Y:4
 							Width:244
 							Height:244
+				Container@PLAYERS
+					Id:PLAYERS
+					X:30
+					Y:75
+					Children:
+						Container@TEMPLATE
+							Id:TEMPLATE
+							Visible:false
+							Children:
+								Button@NAME
+									Id:NAME
+									Text:Name
+									Width:95
+									Height:25
+									X:0
+									Y:0
+								Button@COLOR
+									Id:NAME
+									Text:Color
+									Width:65
+									Height:25
+									X:100
+									Y:0
+								Button@FACTION
+									Id:FACTION
+									Text:Faction
+									Width:90
+									Height:25
+									X:180
+									Y:0
+								Button@SPAWN
+									Id:SPAWN
+									Text:Spawn
+									Width:70
+									Height:25
+									X:275
+									Y:0
+								Button@TEAM
+									Id:TEAM
+									Text:Team
+									Width:70
+									Height:25
+									X:355
+									Y:0
+								Button@STATUS
+									Id:STATUS
+									Text:Foo
+									X:430
+									Y:0
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true

@@ -19,6 +19,7 @@
 #endregion
 
 using System.Drawing;
+using System;
 
 namespace OpenRA.Widgets
 {
@@ -27,6 +28,14 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public bool Depressed = false;
 		public int VisualHeight = 1;
+		public Func<string> GetText;
+		
+		public ButtonWidget()
+			: base()
+		{
+			GetText = () => { return Text; };
+		}
+		
 		public override bool HandleInput(MouseInput mi)
 		{
 			if (Chrome.selectedWidget == this)
@@ -79,5 +88,20 @@ namespace OpenRA.Widgets
 
 			base.Draw(world);
 		}
+		
+		public override Widget Clone()
+		{	
+			Log.Write("Foo");
+			var widget = (base.Clone() as ButtonWidget);
+			Log.Write(widget.Id);
+			
+			widget.Text = Text;
+			widget.Depressed = Depressed;
+			widget.VisualHeight = VisualHeight;
+			widget.GetText = GetText;
+			
+			return widget;
+		}
+			
 	}
 }
