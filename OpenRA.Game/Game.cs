@@ -29,12 +29,11 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Traits;
-
 using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
-using OpenRA.Server;
 
 namespace OpenRA
 {
@@ -263,6 +262,8 @@ namespace OpenRA
 			MasterServerQuery.Tick();
 		}
 
+		public static event Action LobbyInfoChanged = () => { };
+
 		public static void SyncLobbyInfo(string data)
 		{
 			var oldLobbyInfo = LobbyInfo;
@@ -312,6 +313,8 @@ namespace OpenRA
 				Debug("Mods list changed, reloading: {0}".F(string.Join(",", LobbyInfo.GlobalSettings.Mods)));
 				packageChangePending = true;
 			}
+
+			LobbyInfoChanged();
 		}
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
