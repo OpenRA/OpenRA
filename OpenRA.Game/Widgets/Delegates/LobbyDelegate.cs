@@ -40,10 +40,10 @@ namespace OpenRA.Widgets.Delegates
 			{
 				Log.Write("Client {0}",client.Name);
 				var template = PlayerTemplate.Clone();
-				template.Id = "PLAYER_{0}".F(client.Name);
-				template.GetWidget<ButtonWidget>("NAME").GetText = () => client.Name;
+				template.Id = "PLAYER_{0}".F(client.Index);
+				template.GetWidget<ButtonWidget>("NAME").GetText = () => {return client.Name; };
 				template.Bounds = new Rectangle(template.Bounds.X, template.Bounds.Y + i, template.Bounds.Width, template.Bounds.Height); 
-				template.Visible = true;
+				template.IsVisible = () => {return true;};
 				Players.AddChild(template);
 				i += 30;
 			}

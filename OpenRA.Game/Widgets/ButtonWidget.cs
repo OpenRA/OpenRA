@@ -36,6 +36,15 @@ namespace OpenRA.Widgets
 			GetText = () => { return Text; };
 		}
 		
+		public ButtonWidget(ButtonWidget widget)
+			:base(widget)
+		{
+			Text = widget.Text;
+			Depressed = widget.Depressed;
+			VisualHeight = widget.VisualHeight;
+			GetText = widget.GetText;
+		}
+		
 		public override bool HandleInput(MouseInput mi)
 		{
 			if (Chrome.selectedWidget == this)
@@ -80,27 +89,18 @@ namespace OpenRA.Widgets
 
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", Bounds);
-
-			Game.chrome.renderer.BoldFont.DrawText(Text,
+			var text = GetText();
+			Game.chrome.renderer.BoldFont.DrawText(text,
 				new int2(Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 2)
-					- new int2(Game.chrome.renderer.BoldFont.Measure(Text).X / 2,
-				Game.chrome.renderer.BoldFont.Measure(Text).Y / 2) + stateOffset, Color.White);
+					- new int2(Game.chrome.renderer.BoldFont.Measure(text).X / 2,
+				Game.chrome.renderer.BoldFont.Measure(text).Y / 2) + stateOffset, Color.White);
 
 			base.Draw(world);
 		}
 		
 		public override Widget Clone()
 		{	
-			Log.Write("Foo");
-			var widget = (base.Clone() as ButtonWidget);
-			Log.Write(widget.Id);
-			
-			widget.Text = Text;
-			widget.Depressed = Depressed;
-			widget.VisualHeight = VisualHeight;
-			widget.GetText = GetText;
-			
-			return widget;
+			return new ButtonWidget(this);
 		}
 			
 	}

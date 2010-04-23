@@ -55,33 +55,34 @@ namespace OpenRA.Widgets
 
 		public Widget() { IsVisible = () => Visible; }
 		
-		public virtual Widget Clone()
+		public Widget(Widget widget)
 		{	
-			Widget widget = new Widget();
+			Id = widget.Id;
+			X = widget.X;
+		 	Y = widget.Y;
+		 	Width = widget.Width;
+			Height = widget.Height;
+		 	Delegate = widget.Delegate;
+		 	ClickThrough = widget.ClickThrough;
+		 	Visible = widget.Visible;
 			
-			widget.Id = Id;
-			widget.X = X;
-		 	widget.Y = Y;
-		 	widget.Width = Width;
-			widget.Height = Height;
-		 	widget.Delegate = Delegate;
-		 	widget.ClickThrough = ClickThrough;
-		 	widget.Visible = Visible;
+			Bounds = widget.Bounds;
+			Parent = widget.Parent;
 			
-			widget.Bounds = Bounds;
-			widget.Parent = Parent;
+			OnMouseDown = widget.OnMouseDown;
+			OnMouseUp = widget.OnMouseUp;
+			OnMouseMove = widget.OnMouseMove;
+			IsVisible = widget.IsVisible;
 			
-			widget.OnMouseDown = OnMouseDown;
-			widget.OnMouseUp = OnMouseUp;
-			widget.OnMouseMove = OnMouseMove;
-			widget.IsVisible = IsVisible;
-			
-			foreach(var child in Children)
-				widget.AddChild(child.Clone());
-				
-			return widget;
+			foreach(var child in widget.Children)
+				AddChild(child.Clone());
 		}
-			
+		
+		public virtual Widget Clone()
+		{
+			return new Widget(this);	
+		}
+		
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
