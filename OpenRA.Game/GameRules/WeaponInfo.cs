@@ -102,6 +102,7 @@ namespace OpenRA.GameRules
 					case "Charges": FieldLoader.LoadField(this, "Charges", content.Nodes["Charges"].Value); break;
 					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.Nodes["ValidTargets"].Value); break;
 					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.Nodes["Underwater"].Value); break;
+					case "BurstDelay": FieldLoader.LoadField(this, "BurstDelay", content.Nodes["BurstDelay"].Value); break;
 
 					case "Warhead":
 						{

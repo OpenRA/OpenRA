@@ -72,9 +72,9 @@ namespace OpenRA
 				}
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, target, from, umt, false)
+					PathSearch.FromPoint(world, target, from, umt, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4)),
-					PathSearch.FromPoint(world, from, target, umt, false)
+					PathSearch.FromPoint(world, from, target, umt, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4))
 						.InReverse());
 
