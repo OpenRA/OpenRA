@@ -90,7 +90,7 @@ namespace OpenRA.Widgets.Delegates
 				var myStance = new ButtonWidget
 				{
 					Bounds = new Rectangle(bg.Bounds.X + margin + 2 * labelWidth + 20, bg.Bounds.Y + y, labelWidth, 25),
-					Id = "DIPLOMACY_PLAYER_LABEL_THEIR_{0}".F(p.Index),
+					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
 					Text = Game.world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
@@ -117,7 +117,8 @@ namespace OpenRA.Widgets.Delegates
 
 		void CycleStance(Player p, ButtonWidget bw)
 		{
-			var nextStance = GetNextStance(Game.world.LocalPlayer.Stances[p]);
+			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
+
 			Game.IssueOrder(new Order("SetStance", Game.world.LocalPlayer.PlayerActor,
 				new int2(p.Index, (int)nextStance)));
 
