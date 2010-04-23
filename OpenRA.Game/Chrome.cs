@@ -68,8 +68,7 @@ namespace OpenRA
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
 
-			if (worldTooltipTicks < worldTooltipDelay)
-				++worldTooltipTicks;
+			++ticksSinceLastMove;
 			
 			rootWidget.Tick(world);
 		}
@@ -82,37 +81,6 @@ namespace OpenRA
 			var typingArea = new Rectangle(240, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
 			var chatLogArea = new Rectangle(240, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
 			DrawChat(typingArea, chatLogArea);
-
-			DrawWorldTooltip(world);
-		}
-
-		void DrawWorldTooltip(World world)
-		{
-			if (worldTooltipTicks < worldTooltipDelay || world == null || world.LocalPlayer == null)
-				return;
-
-			var actor = world.FindUnitsAtMouse(lastMousePos).FirstOrDefault();
-			if (actor == null) return;
-
-			var text = actor.Info.Traits.Contains<ValuedInfo>() ? actor.Info.Traits.Get<ValuedInfo>().Description : actor.Info.Name;
-			var text2 = (actor.Owner == world.LocalPlayer)
-				? "" : (actor.Owner == world.NeutralPlayer ? "{0}" : "{0} ({1})").F(actor.Owner.PlayerName, world.LocalPlayer.Stances[actor.Owner]);
-
-			var sz = renderer.BoldFont.Measure(text);
-			var sz2 = renderer.RegularFont.Measure(text2);
-
-			sz.X = Math.Max(sz.X, sz2.X);
-
-			if (text2 != "") sz.Y += sz2.Y + 2;
-
-			sz.X += 20;
-			sz.Y += 24;
-
-			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
-				lastMousePos.X + 20, lastMousePos.Y + 20, lastMousePos.X + sz.X + 20, lastMousePos.Y + sz.Y + 20));
-
-			renderer.BoldFont.DrawText(text, new float2(lastMousePos.X + 30, lastMousePos.Y + 30), Color.White);
-			renderer.RegularFont.DrawText(text2, new float2(lastMousePos.X + 30, lastMousePos.Y + 50), Color.White);
 		}
 		
 		void AddUiButton(int2 pos, string text, Action<bool> a)
@@ -385,9 +353,7 @@ namespace OpenRA
 			renderer.RegularFont.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
 		}
 
-		const int worldTooltipDelay = 10;		/* ticks */
-
-		public int worldTooltipTicks = 0;
+		public int ticksSinceLastMove = 0;
 		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
@@ -400,7 +366,7 @@ namespace OpenRA
 			if (mi.Event == MouseInputEvent.Move)
 			{
 				lastMousePos = mi.Location;
-				worldTooltipTicks = 0;
+				ticksSinceLastMove = 0;
 			}
 
 			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))

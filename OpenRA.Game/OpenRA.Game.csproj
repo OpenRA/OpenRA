@@ -277,6 +277,7 @@
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
+    <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
     <Compile Include="Traits\Wall.cs" />

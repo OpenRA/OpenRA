@@ -343,10 +343,10 @@ Container:
 					Width:160
 					Height:25
 					Text:Diplomacy
+				WorldTooltip@INGAME_WORLD_TOOLTIP:
+					Id:INGAME_WORLD_TOOLTIP
 				RadarBin@INGAME_RADAR_BIN:
 					Id:INGAME_RADAR_BIN
-					X:WINDOW_RIGHT - WIDTH
-					Y:0
 				MoneyBin@INGAME_MONEY_BIN:
 					Id:INGAME_MONEY_BIN
 					X:WINDOW_RIGHT - WIDTH
