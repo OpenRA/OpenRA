@@ -24,7 +24,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -37,9 +36,7 @@ namespace OpenRA
 
 		SpriteRenderer rgbaRenderer { get { return renderer.RgbaSpriteRenderer; } }
 		SpriteRenderer shpRenderer { get { return renderer.WorldSpriteRenderer; } }
-		
-		string chromeCollection;
-
+	
 		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
 
 		internal MapStub currentMap;
