@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +37,7 @@ namespace OpenRA.Widgets.Delegates
 			var ts = new LabelWidget
 			{
 				Bold = true,
-				Bounds = new Rectangle(bg.Bounds.X + margin + labelWidth + 10, bg.Bounds.Y + y, labelWidth, 25),
+				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
 				Text = "Their Stance",
 				Align = "Left",
 			};
@@ -48,7 +48,7 @@ namespace OpenRA.Widgets.Delegates
 			var ms = new LabelWidget
 			{
 				Bold = true,
-				Bounds = new Rectangle(bg.Bounds.X + margin + 2 * labelWidth + 20, bg.Bounds.Y + y, labelWidth, 25),
+				Bounds = new Rectangle(margin + 2 * labelWidth + 20, y, labelWidth, 25),
 				Text = "My Stance",
 				Align = "Left",
 			};
@@ -63,7 +63,7 @@ namespace OpenRA.Widgets.Delegates
 				var pp = p;
 				var label = new LabelWidget
 				{
-					Bounds = new Rectangle(bg.Bounds.X + margin, bg.Bounds.Y + y, labelWidth, 25),
+					Bounds = new Rectangle(margin, y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = "Left",
@@ -75,7 +75,7 @@ namespace OpenRA.Widgets.Delegates
 
 				var theirStance = new LabelWidget
 				{
-					Bounds = new Rectangle(bg.Bounds.X + margin + labelWidth + 10, bg.Bounds.Y + y, labelWidth, 25),
+					Bounds = new Rectangle( margin + labelWidth + 10, y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_THEIR_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = "Left",
@@ -89,7 +89,7 @@ namespace OpenRA.Widgets.Delegates
 
 				var myStance = new ButtonWidget
 				{
-					Bounds = new Rectangle(bg.Bounds.X + margin + 2 * labelWidth + 20, bg.Bounds.Y + y, labelWidth, 25),
+					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
 					Text = Game.world.LocalPlayer.Stances[ pp ].ToString(),
 				};
