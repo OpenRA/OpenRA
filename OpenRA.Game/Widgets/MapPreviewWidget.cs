@@ -25,7 +25,8 @@ namespace OpenRA.Widgets
 				mapPreviewDirty = true;
 				lastMap = map;
 			}
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var mapRect = map.PreviewBounds( new Rectangle( rect.X, rect.Y, rect.Width, rect.Height ) );
 
 			if( mapPreviewDirty )
@@ -43,7 +44,7 @@ namespace OpenRA.Widgets
 				"chrome",
 				new float2( mapRect.Size ) );
 
-			DrawSpawnPoints( map, Parent.Bounds, world );
+			DrawSpawnPoints( map, new Rectangle(pos.X, pos.Y, Parent.Bounds.Width, Parent.Bounds.Height ), world );
 			base.Draw( world );
 		}
 

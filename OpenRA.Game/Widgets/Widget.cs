@@ -83,9 +83,9 @@ namespace OpenRA.Widgets
 			return new Widget(this);	
 		}
 		
-		public int2 getParentOffset()
+		public int2 DrawPosition()
 		{
-			return (Parent == null) ? int2.Zero : new int2(Parent.Bounds.Location.X, Parent.Bounds.Location.Y)  ;
+			return new int2(Bounds.X, Bounds.Y) + ((Parent == null) ? int2.Zero : Parent.DrawPosition());
 		}
 		
 		public virtual void Initialize()
@@ -127,7 +127,8 @@ namespace OpenRA.Widgets
 		public bool HitTest(int2 xy)
 		{
 			if (!IsVisible()) return false;
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X,  pos.Y, Bounds.Width, Bounds.Height);
 			if (rect.Contains(xy.ToPoint()) && !ClickThrough) return true;
 			
 			return Children.Any(c => c.HitTest(xy));
@@ -135,7 +136,8 @@ namespace OpenRA.Widgets
 		
 		public Rectangle GetEventBounds()
 		{
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			return Children
 				.Where(c => c.Visible)
 				.Select(c => c.GetEventBounds())

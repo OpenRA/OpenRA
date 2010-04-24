@@ -33,7 +33,8 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			float2 origin = Game.viewport.Location + new float2(rect.Right,rect.Bottom);
 			float2 basis = new float2(-rect.Width/100,-rect.Height/100);
 

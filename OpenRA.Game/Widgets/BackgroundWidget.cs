@@ -31,7 +31,8 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			WidgetUtils.DrawPanel(Background, rect);
 			base.Draw(world);
 		}

@@ -295,6 +295,8 @@ Container:
 					Children:
 						Container@TEMPLATE
 							Id:TEMPLATE
+							X:0
+							Y:0
 							Visible:false
 							Children:
 								Button@NAME

@@ -35,9 +35,10 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var pos = DrawPosition();
+			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
-					new Size(Bounds.Height, Bounds.Height)));
+					new Size(Bounds.Height, Bounds.Height))); //HACK!
 
 			Game.chrome.renderer.BoldFont.DrawText(Text,
 				new float2(rect.Left + rect.Height * 2, rect.Top), Color.White);

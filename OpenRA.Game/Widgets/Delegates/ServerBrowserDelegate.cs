@@ -64,7 +64,7 @@ namespace OpenRA.Widgets.Delegates
 						var g = game;
 						var b = new ButtonWidget
 						{
-							Bounds = new Rectangle(bg.Bounds.X + margin, bg.Bounds.Y + height, bg.Bounds.Width - 2 * margin, 25),
+							Bounds = new Rectangle(bg.DrawPosition().X + margin, bg.DrawPosition().Y + height, bg.Bounds.Width - 2 * margin, 25),
 							Id = "JOIN_GAME_{0}".F(i),
 							Text = "{0} ({1})".F(game.Name, game.Address),
 							Delegate = "ServerBrowserDelegate",

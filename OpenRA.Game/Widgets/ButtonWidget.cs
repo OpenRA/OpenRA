@@ -86,13 +86,14 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
+			var pos = DrawPosition();
 
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height ) );
+			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
 			
 			var text = GetText();
 			Game.chrome.renderer.BoldFont.DrawText(text,
-				new int2( ( Bounds.X + getParentOffset().X) + Bounds.Width / 2, ( Bounds.Y + getParentOffset().Y) + Bounds.Height / 2)
+				new int2( pos.X + Bounds.Width / 2, pos.Y + Bounds.Height / 2)
 					- new int2(Game.chrome.renderer.BoldFont.Measure(text).X / 2,
 				Game.chrome.renderer.BoldFont.Measure(text).Y / 2) + stateOffset, Color.White);
 
