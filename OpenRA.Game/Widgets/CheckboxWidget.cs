@@ -59,5 +59,16 @@ namespace OpenRA.Widgets
 
 			base.Draw(world);
 		}
+
+		public CheckboxWidget() : base() { }
+
+		public CheckboxWidget(Widget other)
+			: base(other)
+		{
+			Text = (other as CheckboxWidget).Text;
+			Checked = (other as CheckboxWidget).Checked;
+		}
+
+		public override Widget Clone() { return new CheckboxWidget(this); }
 	}
 }
