@@ -310,13 +310,13 @@ Container:
 									Height:25
 									X:0
 									Y:5
-								Button@COLOR:
+								ColorButton@COLOR:
 									Id:COLOR
-									Text:Color
 									Width:65
 									Height:25
 									X:100
 									Y:0
+									PaletteIndex:0
 								Button@FACTION:
 									Id:FACTION
 									Text:Faction

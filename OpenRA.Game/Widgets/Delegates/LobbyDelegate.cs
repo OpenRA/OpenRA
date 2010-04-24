@@ -48,9 +48,9 @@ namespace OpenRA.Widgets.Delegates
 				if(client.Index == Game.LocalClient.Index)
 				{
 					//TODO: Real Color Button
-					var color = template.GetWidget<ButtonWidget>("COLOR");
+					var color = template.GetWidget<ColorButtonWidget>("COLOR");
 					color.OnMouseUp = CyclePalette;
-					color.GetText = () => c.PaletteIndex.ToString();
+					color.GetPaletteIndex = () => c.PaletteIndex;
 					
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
