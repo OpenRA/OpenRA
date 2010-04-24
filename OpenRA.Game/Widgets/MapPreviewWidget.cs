@@ -14,6 +14,16 @@ namespace OpenRA.Widgets
 		Sprite mapChooserSprite;
 		bool mapPreviewDirty = true;
 		MapStub lastMap;
+		
+		public MapPreviewWidget() : base() { }
+
+		public MapPreviewWidget(Widget other)
+			: base(other)
+		{
+			lastMap = (other as MapPreviewWidget).lastMap;
+		}
+
+		public override Widget Clone() { return new MapPreviewWidget(this); }
 
 		public override void Draw( World world )
 		{

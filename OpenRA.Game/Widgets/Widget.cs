@@ -27,7 +27,7 @@ using OpenRA.Widgets.Delegates;
 
 namespace OpenRA.Widgets
 {
-	public class Widget
+	public abstract class Widget
 	{
 		// Info defined in YAML
 		public string Id = null;
@@ -78,10 +78,7 @@ namespace OpenRA.Widgets
 				AddChild(child.Clone());
 		}
 		
-		public virtual Widget Clone()
-		{
-			return new Widget(this);	
-		}
+		public abstract Widget Clone();
 		
 		public int2 DrawPosition()
 		{
@@ -219,6 +216,12 @@ namespace OpenRA.Widgets
 		}
 	}
 
-	class ContainerWidget : Widget { }
+	class ContainerWidget : Widget {
+		public ContainerWidget() : base() { }
+
+		public ContainerWidget(Widget other) : base(other) { }
+
+		public override Widget Clone() { return new ContainerWidget(this); }
+	}
 	public interface IWidgetDelegate { }
 }

@@ -24,6 +24,7 @@ namespace OpenRA.Widgets
 	class BackgroundWidget : Widget
 	{
 		public readonly string Background = "dialog";
+		
 		public override void Draw(World world)
 		{
 			if (!IsVisible())
@@ -36,5 +37,15 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel(Background, rect);
 			base.Draw(world);
 		}
+		
+		public BackgroundWidget() : base() { }
+
+		public BackgroundWidget(Widget other)
+			: base(other)
+		{
+			Background = (other as BackgroundWidget).Background;
+		}
+
+		public override Widget Clone() { return new BackgroundWidget(this); }
 	}
 }

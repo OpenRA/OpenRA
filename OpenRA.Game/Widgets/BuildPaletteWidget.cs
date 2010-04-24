@@ -50,7 +50,17 @@ namespace OpenRA.Widgets
 		Animation ready;
 		Animation clock;
 		List<string> visibleTabs = new List<string>();
+		
+		public BuildPaletteWidget() : base() { }
 
+		public BuildPaletteWidget(Widget other)
+			: base(other)
+		{
+			throw new NotImplementedException("Why are you Cloning BuildPalette?");
+		}
+
+		public override Widget Clone() { return new BuildPaletteWidget(this); }
+		
 		public override void Initialize()
 		{
 			base.Initialize();

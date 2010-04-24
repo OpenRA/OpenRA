@@ -35,6 +35,18 @@ namespace OpenRA.Widgets
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 		
+		public SpecialPowerBinWidget() : base() { }
+
+		public SpecialPowerBinWidget(Widget other)
+			: base(other)
+		{
+			ready = (other as SpecialPowerBinWidget).ready;
+			clock = (other as SpecialPowerBinWidget).clock;
+			buttons = (other as SpecialPowerBinWidget).buttons;
+		}
+
+		public override Widget Clone() { return new SpecialPowerBinWidget(this); }
+		
 		public override void Initialize()
 		{
 			base.Initialize();

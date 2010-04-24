@@ -26,6 +26,12 @@ namespace OpenRA.Widgets
 {
 	class PerfGraphWidget : Widget
 	{
+		public PerfGraphWidget() : base() { }
+
+		public PerfGraphWidget(Widget other)	: base(other) { }
+
+		public override Widget Clone() { return new PerfGraphWidget(this); }
+		
 		public override void Draw(World world)
 		{
 			if (!IsVisible())

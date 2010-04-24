@@ -35,7 +35,12 @@ namespace OpenRA.Widgets
 		/* legacy crap!!! */
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle, Action<MouseInput>>>();
 		void AddButton(Rectangle r, Action<MouseInput> b) { buttons.Add(Pair.New(r, b)); }
+	
+		public MoneyBinWidget() : base() { }
+		public MoneyBinWidget(Widget other) : base(other) { }
 
+		public override Widget Clone() { return new MoneyBinWidget(this); }
+		
 		public override void Draw(World world)
 		{
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;

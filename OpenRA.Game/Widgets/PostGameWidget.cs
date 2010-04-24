@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,12 @@ namespace OpenRA.Widgets
 {
 	class PostGameWidget : Widget
 	{
+		public PostGameWidget() : base() { }
+
+		public PostGameWidget(Widget other)	: base(other) { }
+
+		public override Widget Clone() { return new PostGameWidget(this); }
+		
 		public override void Draw(World world)
 		{
 			base.Draw(world);
