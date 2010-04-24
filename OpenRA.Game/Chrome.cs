@@ -155,65 +155,7 @@ namespace OpenRA
 
 			AddButton(r, _ => { });
 		}
-		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
-		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 		
-		void CyclePalette(bool left)
-		{
-			var d = left ? +1 : Player.PlayerColors(Game.world).Count() - 1;
-
-			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Player.PlayerColors(Game.world).Count();
-				
-			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.LocalClient.PaletteIndex)
-				newIndex = (newIndex + d) % Player.PlayerColors(Game.world).Count();
-			
-			Game.IssueOrder(
-				Order.Chat("/pal " + newIndex));
-		}
-
-		void CycleRace(bool left)
-		{
-			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Name));
-			var nextCountry = countries
-				.SkipWhile(c => c != Game.LocalClient.Country)
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (nextCountry == null)
-				nextCountry = countries.First();
-
-			Game.IssueOrder(Order.Chat("/race " + nextCountry));
-		}
-
-		void CycleReady(bool left)
-		{
-			Game.IssueOrder(Order.Chat("/ready"));
-		}
-
-		void CycleSpawnPoint(bool left)
-		{
-			var d = left ? +1 : Game.world.Map.SpawnPoints.Count();
-
-			var newIndex = (Game.LocalClient.SpawnPoint + d) % (Game.world.Map.SpawnPoints.Count()+1);
-
-			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.LocalClient.SpawnPoint)
-				newIndex = (newIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
-
-			Game.IssueOrder(
-				Order.Chat("/spawn " + newIndex));
-			
-		}
-		
-		void CycleTeam(bool left)
-		{
-			var d = left ? +1 : Game.world.Map.PlayerCount;
-
-			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount+1);
-
-			Game.IssueOrder(
-				Order.Chat("/team " + newIndex));
-			
-		}
 
 		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
 		

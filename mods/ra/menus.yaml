@@ -292,53 +292,59 @@ Container:
 					Id:PLAYERS
 					X:30
 					Y:75
+					Width:455
+					Height:200
 					Children:
 						Container@TEMPLATE
 							Id:TEMPLATE
 							X:0
 							Y:0
+							Width:455
+							Height:30
 							Visible:false
 							Children:
-								Button@NAME
+								Button@NAME:
 									Id:NAME
 									Text:Name
 									Width:95
 									Height:25
 									X:0
 									Y:0
-								Button@COLOR
-									Id:NAME
+								Button@COLOR:
+									Id:COLOR
 									Text:Color
 									Width:65
 									Height:25
 									X:100
 									Y:0
-								Button@FACTION
+								Button@FACTION:
 									Id:FACTION
 									Text:Faction
 									Width:90
 									Height:25
 									X:180
 									Y:0
-								Button@SPAWN
+								Button@SPAWN:
 									Id:SPAWN
 									Text:Spawn
 									Width:70
 									Height:25
 									X:275
 									Y:0
-								Button@TEAM
+								Button@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
 									X:355
 									Y:0
-								Button@STATUS
+								Checkbox@STATUS:
 									Id:STATUS
-									Text:Foo
 									X:430
 									Y:0
+									Width:300
+									Height:20
+									Text:Show Spatial Index Debug
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true
