@@ -28,21 +28,9 @@ namespace OpenRA.Traits
 						+ info.SpawnOffset, self.Owner);
 					var unitTrait = unit.traits.Get<Unit>();
 					unitTrait.Facing = info.Facing;
-				
-					if (info.InitialActivity != null)
-					{
-						foreach (var mod in Game.ModAssemblies)
-						{
-							var fullTypeName = mod.Second + "." + info.InitialActivity;
-							var activity = (IActivity)mod.First.CreateInstance(fullTypeName);
-							if (activity == null) continue;
 
-							unit.QueueActivity( activity );
-							return;
-						}
-		
-						throw new InvalidOperationException("Cannot locate Activity: `{0}`".F(info.InitialActivity));
-					}
+					if (info.InitialActivity != null)
+						unit.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));
 				});
 		}
 	}
