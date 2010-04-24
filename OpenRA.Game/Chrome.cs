@@ -110,9 +110,7 @@ namespace OpenRA
 					Chrome.rootWidget.CloseWindow();
 				});
 
-			var mapBackground = new Rectangle(r.Right - 284, r.Top + 26, 264, 264);
 			var mapContainer = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-			var mapRect = currentMap.PreviewBounds(new Rectangle(mapContainer.X,mapContainer.Y,mapContainer.Width,mapContainer.Height));
 
 			var y = r.Top + 50;
 					
@@ -171,61 +169,6 @@ namespace OpenRA
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-			var f = renderer.BoldFont;
-
-			rgbaRenderer.Flush();
-				
-			var y = r.Top + 80;
-			foreach (var client in Game.LobbyInfo.Clients)
-			{
-				var isLocalPlayer = client.Index == Game.orderManager.Connection.LocalClientId;
-				var paletteRect = new Rectangle(r.Left + 130, y - 2, 65, 22);
-				/*
-				if (isLocalPlayer)
-				{
-					// todo: name editing
-					var nameRect = new Rectangle(r.Left + 30, y - 2, 95, 22);
-					DrawDialogBackground(nameRect, "dialog3");
-
-					DrawDialogBackground(paletteRect, "dialog3");
-					AddButton(paletteRect, CyclePalette);
-
-					var factionRect = new Rectangle(r.Left + 210, y - 2, 90, 22);
-					DrawDialogBackground(factionRect, "dialog3");
-					AddButton(factionRect, CycleRace);
-					
-					var spawnPointRect = new Rectangle(r.Left + 305, y - 2, 70, 22);
-					DrawDialogBackground(spawnPointRect, "dialog3");
-					AddButton(spawnPointRect, CycleSpawnPoint);
-					
-					var teamRect = new Rectangle(r.Left + 385, y - 2, 70, 22);
-					DrawDialogBackground(teamRect, "dialog3");
-					AddButton(teamRect, CycleTeam);
-					
-					var readyRect = new Rectangle(r.Left + 465, y - 2, 50, 22);
-					DrawDialogBackground(readyRect, "dialog3");
-					AddButton(readyRect, CycleReady);
-				}
-				*/
-				shpRenderer.Flush();
-				/*
-				f = renderer.RegularFont;
-				f.DrawText(client.Name, new int2(r.Left + 40, y), Color.White);
-				lineRenderer.FillRect(RectangleF.FromLTRB(paletteRect.Left + Game.viewport.Location.X + 5,
-															paletteRect.Top + Game.viewport.Location.Y + 5,
-															paletteRect.Right + Game.viewport.Location.X - 5,
-															paletteRect.Bottom+Game.viewport.Location.Y - 5),
-													Player.PlayerColors(Game.world)[client.PaletteIndex % Player.PlayerColors(Game.world).Count()].c);
-				lineRenderer.Flush();
-				f.DrawText(client.Country, new int2(r.Left + 220, y), Color.White);
-				f.DrawText((client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString(), new int2(r.Left + 315 + 20, y), Color.White);
-				f.DrawText((client.Team == 0)? "-" : client.Team.ToString(), new int2(r.Left + 395 + 20, y), Color.White);
-				f.DrawText(client.State.ToString(), new int2(r.Left + 475, y), Color.White);
-				y += 30;
-				*/
-				rgbaRenderer.Flush();
-				
-			}
 
 			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
 			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
@@ -234,11 +177,6 @@ namespace OpenRA
 			DrawDialogBackground(chatBox, "dialog3");
 
 			DrawChat(typingBox, chatBox);
-			
-			// block clicks `through` the dialog
-			AddButton(r, _ => { });
-			
-			
 		}
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }

@@ -9,15 +9,15 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget PlayerTemplate;
-		Widget Players;
+		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
 		
 		public LobbyDelegate ()
 		{
 			var r = Chrome.rootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
 			Players = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
-			PlayerTemplate = Players.GetWidget("TEMPLATE");
+			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
+			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			
 			
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
@@ -26,11 +26,9 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};	
 				
-			mapButton.IsVisible = () => {return (mapButton.Visible && Game.IsHost);};
+			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 			
-			Game.LobbyInfoChanged += () => UpdatePlayerList();
-			
-			UpdatePlayerList();
+			Game.LobbyInfoChanged += UpdatePlayerList;
 		}
 		
 		void UpdatePlayerList()
@@ -41,37 +39,53 @@ namespace OpenRA.Widgets.Delegates
 			foreach(var client in Game.LobbyInfo.Clients)
 			{
 				var c = client;
-				
-				Log.Write("Client {0}",c.Name);
-				var template = PlayerTemplate.Clone();
-				var pos = template.DrawPosition();
+				var template = (client.Index == Game.LocalClient.Index)? LocalPlayerTemplate.Clone() : RemotePlayerTemplate.Clone();
 				
 				template.Id = "PLAYER_{0}".F(c.Index);
-				template.Parent = Players;
+				template.Parent = Players;			
+				template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 				
-				template.GetWidget<ButtonWidget>("NAME").GetText = () => c.Name;
-				
-				//TODO: Real Color Button
-				var color = template.GetWidget<ButtonWidget>("COLOR");
-				color.OnMouseUp = mi => CyclePalette(mi);
-				color.GetText = () => c.PaletteIndex.ToString();
-				
-				var faction = template.GetWidget<ButtonWidget>("FACTION");
-				faction.OnMouseUp = mi => CycleRace(mi);
-				faction.GetText = () => c.Country;
-				
-				var spawn = template.GetWidget<ButtonWidget>("SPAWN");
-				spawn.OnMouseUp = mi => CycleSpawnPoint(mi);
-				spawn.GetText = () => { return (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString(); }; 
-				
-				var team = template.GetWidget<ButtonWidget>("TEAM");
-				team.OnMouseUp = mi => CycleTeam(mi);
-				team.GetText = () => { return (c.Team == 0) ? "-" : c.Team.ToString(); }; 
-
-				//It fails here
-				var status = template.GetWidget<CheckboxWidget>("STATUS");
-				status.Checked = () => { return (c.State == Session.ClientState.Ready) ? true : false; };
-				status.OnMouseDown = mi => CycleReady(mi);
+				if(client.Index == Game.LocalClient.Index)
+				{
+					//TODO: Real Color Button
+					var color = template.GetWidget<ButtonWidget>("COLOR");
+					color.OnMouseUp = CyclePalette;
+					color.GetText = () => c.PaletteIndex.ToString();
+					
+					var faction = template.GetWidget<ButtonWidget>("FACTION");
+					faction.OnMouseUp = CycleRace;
+					faction.GetText = () => c.Country;
+					
+					var spawn = template.GetWidget<ButtonWidget>("SPAWN");
+					spawn.OnMouseUp = CycleSpawnPoint;
+					spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString(); 
+					
+					var team = template.GetWidget<ButtonWidget>("TEAM");
+					team.OnMouseUp = CycleTeam;
+					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString(); 
+	
+					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					status.Checked = () => c.State == Session.ClientState.Ready;
+					status.OnMouseDown = CycleReady;
+				}
+				else 
+				{
+					//TODO: Real Color Label
+					var color = template.GetWidget<LabelWidget>("COLOR");
+					color.GetText = () => c.PaletteIndex.ToString();
+					
+					var faction = template.GetWidget<LabelWidget>("FACTION");
+					faction.GetText = () => c.Country;
+					
+					var spawn = template.GetWidget<LabelWidget>("SPAWN");
+					spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
+					
+					var team = template.GetWidget<LabelWidget>("TEAM");
+					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString(); 
+	
+					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					status.Checked = () => c.State == Session.ClientState.Ready;
+				}
 				
 				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;

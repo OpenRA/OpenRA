@@ -36,6 +36,15 @@ namespace OpenRA.Widgets
 			GetText = () => { return Text; };
 		}
 
+		public LabelWidget(Widget other)
+			: base(other)
+		{
+			Text = (other as LabelWidget).Text;
+			Align = (other as LabelWidget).Align;
+			Bold = (other as LabelWidget).Bold;
+			GetText = (other as LabelWidget).GetText;
+		}
+
 		public override void Draw(World world)
 		{		
 			if (!IsVisible())
@@ -55,6 +64,11 @@ namespace OpenRA.Widgets
 			
 			font.DrawText(text, position, Color.White);
 			base.Draw(world);
+		}
+		
+		public override Widget Clone()
+		{	
+			return new LabelWidget(this);
 		}
 	}
 }

@@ -36,13 +36,13 @@ namespace OpenRA.Widgets
 			GetText = () => { return Text; };
 		}
 		
-		public ButtonWidget(ButtonWidget widget)
+		public ButtonWidget(Widget widget)
 			:base(widget)
 		{
-			Text = widget.Text;
-			Depressed = widget.Depressed;
-			VisualHeight = widget.VisualHeight;
-			GetText = widget.GetText;
+			Text = (widget as ButtonWidget).Text;
+			Depressed = (widget as ButtonWidget).Depressed;
+			VisualHeight = (widget as ButtonWidget).VisualHeight;
+			GetText = (widget as ButtonWidget).GetText;
 		}
 		
 		public override bool HandleInput(MouseInput mi)

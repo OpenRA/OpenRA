@@ -292,18 +292,18 @@ Container:
 					Id:PLAYERS
 					X:30
 					Y:75
-					Width:455
+					Width:500
 					Height:200
 					Children:
-						Container@TEMPLATE
-							Id:TEMPLATE
+						Container@TEMPLATE_LOCAL
+							Id:TEMPLATE_LOCAL
 							X:0
 							Y:0
-							Width:455
+							Width:500
 							Height:30
 							Visible:false
 							Children:
-								Button@NAME:
+								Label@NAME:
 									Id:NAME
 									Text:Name
 									Width:95
@@ -340,11 +340,63 @@ Container:
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:430
+									X:455
 									Y:0
-									Width:300
+									Width:20
 									Height:20
-									Text:Show Spatial Index Debug
+						Container@TEMPLATE_REMOTE
+							Id:TEMPLATE_REMOTE
+							X:0
+							Y:0
+							Width:500
+							Height:30
+							Visible:false
+							Children:
+								Label@NAME:
+									Id:NAME
+									Text:Name
+									Width:95
+									Height:25
+									X:0
+									Y:0
+								Label@COLOR:
+									Id:COLOR
+									Text:Color
+									Width:65
+									Height:25
+									X:100
+									Y:0
+									Align:Center
+								Label@FACTION:
+									Id:FACTION
+									Text:Faction
+									Width:90
+									Height:25
+									X:180
+									Y:0
+									Align:Center
+								Label@SPAWN:
+									Id:SPAWN
+									Text:Spawn
+									Width:70
+									Height:25
+									X:275
+									Y:0
+									Align:Center
+								Label@TEAM:
+									Id:TEAM
+									Text:Team
+									Width:70
+									Height:25
+									X:355
+									Y:0
+									Align:Center
+								Checkbox@STATUS:
+									Id:STATUS
+									X:455
+									Y:0
+									Width:20
+									Height:20
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true
