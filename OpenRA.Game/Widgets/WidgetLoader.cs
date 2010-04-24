@@ -44,17 +44,7 @@ namespace OpenRA
 		static Widget NewWidget(string widgetType)
 		{
 			widgetType = widgetType.Split('@')[0];
-
-			foreach (var mod in Game.ModAssemblies)
-			{
-				var fullTypeName = mod.Second + "." + widgetType + "Widget";
-				var widget = (Widget)mod.First.CreateInstance(fullTypeName);
-				if (widget == null) continue;
-
-				return widget;
-			}
-
-			throw new InvalidOperationException("Cannot locate widget: {0}".F(widgetType));
+			return Game.CreateObject<Widget>(widgetType + "Widget");
 		}
 	}
 }
