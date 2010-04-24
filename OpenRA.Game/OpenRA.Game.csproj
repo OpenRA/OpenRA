@@ -309,7 +309,7 @@
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
-    <Compile Include="Widgets\ColorButtonWidget.cs" />
+    <Compile Include="Widgets\ColorBlockWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

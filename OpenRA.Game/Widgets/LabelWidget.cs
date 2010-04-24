@@ -25,8 +25,15 @@ namespace OpenRA.Widgets
 {
 	class LabelWidget : Widget
 	{
+		public enum TextAlign
+		{
+			Left,
+			Center,
+			Right
+		}
+		
 		public string Text = "";
-		public string Align = "Left";
+		public TextAlign Align = TextAlign.Left;
 		public bool Bold = true;
 		public Func<string> GetText;
 
@@ -58,9 +65,8 @@ namespace OpenRA.Widgets
 			int2 textSize = font.Measure(text);
 			int2 position = DrawPosition();
 			
-			if (Align == "Center")
-				position = new int2(position.X +Bounds.Width/2, position.Y  + Bounds.Height/2) 
-					- new int2(textSize.X / 2, textSize.Y/2);
+			if (Align == TextAlign.Center)
+				position += new int2((Bounds.Width - textSize.X)/2, 0);
 			
 			font.DrawText(text, position, Color.White);
 			base.Draw(world);

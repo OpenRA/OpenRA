@@ -310,13 +310,20 @@ Container:
 									Height:25
 									X:0
 									Y:5
-								ColorButton@COLOR:
+								Button@COLOR:
 									Id:COLOR
 									Width:65
 									Height:25
 									X:100
 									Y:0
-									PaletteIndex:0
+									Children:
+										ColorBlock@COLORBLOCK:
+											Id:COLORBLOCK
+											X:5
+											Y:7
+											Width:PARENT_RIGHT-10
+											Height:PARENT_BOTTOM-12
+											PaletteIndex:0
 								Button@FACTION:
 									Id:FACTION
 									Text:Faction
@@ -341,7 +348,7 @@ Container:
 								Checkbox@STATUS:
 									Id:STATUS
 									X:455
-									Y:0
+									Y:1
 									Width:20
 									Height:20
 						Container@TEMPLATE_REMOTE
@@ -359,14 +366,13 @@ Container:
 									Height:25
 									X:0
 									Y:5
-								Label@COLOR:
+								ColorBlock@COLOR:
 									Id:COLOR
-									Text:Color
-									Width:65
-									Height:25
-									X:100
-									Y:0
-									Align:Center
+									X:105
+									Y:7
+									Width:55
+									Height:13
+									PaletteIndex:0
 								Label@FACTION:
 									Id:FACTION
 									Text:Faction
@@ -394,9 +400,60 @@ Container:
 								Checkbox@STATUS:
 									Id:STATUS
 									X:455
-									Y:0
+									Y:1
 									Width:20
 									Height:20
+				Container@LABEL_CONTAINER:
+					X:30
+					Y:50
+					Children:
+						Label@LABEL_LOBBY_NAME:
+							Id:LABEL_LOBBY_NAME
+							Width:95
+							Height:25
+							X:0
+							Y:0
+							Text:Name
+						Label@LABEL_LOBBY_COLOR:
+							Id:LABEL_LOBBY_COLOR
+							Width:65
+							Height:25
+							X:100
+							Y:0
+							Text:Color
+							Align:Center
+						Label@LABEL_LOBBY_FACTION
+							Id:LABEL_LOBBY_FACTION
+							Width:90
+							Height:25
+							X:180
+							Y:0
+							Text:Faction
+							Align:Center
+						Label@LABEL_LOBBY_SPAWN
+							Id:LABEL_LOBBY_SPAWN
+							Width:70
+							Height:25
+							X:275
+							Y:0
+							Text:Spawn
+							Align:Center
+						Label@LABEL_LOBBY_TEAM
+							Id:LABEL_LOBBY_TEAM
+							Width:70
+							Height:25
+							X:355
+							Y:0
+							Text:Team
+							Align:Center
+						Label@LABEL_LOBBY_STATUS
+							Id:LABEL_LOBBY_STATUS
+							X:455
+							Y:0
+							Width:20
+							Height:20
+							Text:Ready
+							Align:Center
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true
@@ -405,48 +462,6 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
-				Label@LABEL_LOBBY_NAME:
-					Id:LABEL_LOBBY_NAME
-					X:40
-					Y:50
-					Width:250
-					Height:25
-					Text:Name
-				Label@LABEL_LOBBY_COLOR:
-					Id:LABEL_LOBBY_COLOR
-					X:140
-					Y:50
-					Width:250
-					Height:25
-					Text:Color
-				Label@LABEL_LOBBY_FACTION
-					Id:LABEL_LOBBY_FACTION
-					X:220
-					Y:50
-					Width:250
-					Height:25
-					Text:Faction
-				Label@LABEL_LOBBY_SPAWN
-					Id:LABEL_LOBBY_SPAWN
-					X:315
-					Y:50
-					Width:250
-					Height:25
-					Text:Spawn
-				Label@LABEL_LOBBY_TEAM
-					Id:LABEL_LOBBY_TEAM
-					X:395
-					Y:50
-					Width:250
-					Height:25
-					Text:Team
-				Label@LABEL_LOBBY_STATUS
-					Id:LABEL_LOBBY_STATUS
-					X:475
-					Y:50
-					Width:250
-					Height:25
-					Text:Ready
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2

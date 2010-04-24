@@ -39,7 +39,7 @@ namespace OpenRA.Widgets.Delegates
 				Bold = true,
 				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
 				Text = "Their Stance",
-				Align = "Left",
+				Align = LabelWidget.TextAlign.Left,
 			};
 
 			bg.AddChild(ts);
@@ -50,7 +50,7 @@ namespace OpenRA.Widgets.Delegates
 				Bold = true,
 				Bounds = new Rectangle(margin + 2 * labelWidth + 20, y, labelWidth, 25),
 				Text = "My Stance",
-				Align = "Left",
+				Align = LabelWidget.TextAlign.Left,
 			};
 
 			bg.AddChild(ms);
@@ -66,7 +66,7 @@ namespace OpenRA.Widgets.Delegates
 					Bounds = new Rectangle(margin, y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_{0}".F(p.Index),
 					Text = p.PlayerName,
-					Align = "Left",
+					Align = LabelWidget.TextAlign.Left,
 					Bold = true,
 				};
 
@@ -78,7 +78,7 @@ namespace OpenRA.Widgets.Delegates
 					Bounds = new Rectangle( margin + labelWidth + 10, y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_THEIR_{0}".F(p.Index),
 					Text = p.PlayerName,
-					Align = "Left",
+					Align = LabelWidget.TextAlign.Left,
 					Bold = false,
 
 					GetText = () => pp.Stances[ Game.world.LocalPlayer ].ToString(),
