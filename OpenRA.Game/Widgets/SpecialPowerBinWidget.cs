@@ -64,12 +64,7 @@ namespace OpenRA.Widgets
 		
 		public override bool HandleInput(MouseInput mi)
 		{
-			// Are we able to handle this event?
-			if (!IsVisible() || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-				return base.HandleInput(mi);
-			
-			if (base.HandleInput(mi))
-				return true;
+			if (!IsVisible()) return false;
 			
 			if (mi.Event == MouseInputEvent.Down)
 			{
