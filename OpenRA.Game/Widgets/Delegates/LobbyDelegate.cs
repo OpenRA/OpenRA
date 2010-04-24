@@ -49,7 +49,7 @@ namespace OpenRA.Widgets.Delegates
 				template.Id = "PLAYER_{0}".F(c.Index);
 				template.Parent = Players;
 				template.GetWidget<ButtonWidget>("NAME").GetText = () => {return c.Name; };
-				template.Bounds = new Rectangle(pos.X, pos.Y + i, template.Bounds.Width, template.Bounds.Height);
+				template.Bounds = new Rectangle(0, i, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => {return true;};
 				Players.AddChild(template);
 				i += 30;

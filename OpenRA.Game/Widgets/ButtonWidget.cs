@@ -89,7 +89,8 @@ namespace OpenRA.Widgets
 			var pos = DrawPosition();
 
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
+			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", 
+				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
 			
 			var text = GetText();
 			Game.chrome.renderer.BoldFont.DrawText(text,

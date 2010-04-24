@@ -91,7 +91,9 @@ namespace OpenRA.Widgets
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
-			Rectangle parentBounds = (Parent == null) ? new Rectangle(0,0,Game.viewport.Width,Game.viewport.Height) : Parent.Bounds;
+			Rectangle parentBounds = (Parent == null) 
+				? new Rectangle(0,0,Game.viewport.Width,Game.viewport.Height) 
+				: Parent.Bounds;
 			
 			Dictionary<string, int> substitutions = new Dictionary<string, int>();
 				substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
