@@ -17,7 +17,7 @@ mods/*/*.dll
 sheet-*.png
 log.txt
 
-/replay.rep
+*.rep
 
 #binary stuff
 /*.dll

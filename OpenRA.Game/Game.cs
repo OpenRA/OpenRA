@@ -172,11 +172,17 @@ namespace OpenRA
 
 		public static string CurrentHost = "";
 		public static int CurrentPort = 0;
+
 		internal static void JoinServer(string host, int port)
 		{
 			CurrentHost = host;
 			CurrentPort = port;
-			orderManager = new OrderManager(new NetworkConnection( host, port )); // TODO: supplying a replay file prevents osx from joining a game
+			orderManager = new OrderManager(new NetworkConnection( host, port ), ChooseReplayFilename());
+		}
+
+		static string ChooseReplayFilename()
+		{
+			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ.rep");
 		}
 		
 		internal static void JoinLocal()
