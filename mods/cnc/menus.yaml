@@ -309,7 +309,7 @@ Container:
 									Width:95
 									Height:25
 									X:0
-									Y:0
+									Y:5
 								Button@COLOR:
 									Id:COLOR
 									Text:Color
@@ -358,7 +358,7 @@ Container:
 									Width:95
 									Height:25
 									X:0
-									Y:0
+									Y:5
 								Label@COLOR:
 									Id:COLOR
 									Text:Color
@@ -446,7 +446,7 @@ Container:
 					Y:50
 					Width:250
 					Height:25
-					Text:Status
+					Text:Ready
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2
