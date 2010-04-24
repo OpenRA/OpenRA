@@ -1,3 +1,4 @@
+using System.Drawing;
 #region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
@@ -30,8 +31,8 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-
-			WidgetUtils.DrawPanel(Background, Bounds);
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			WidgetUtils.DrawPanel(Background, rect);
 			base.Draw(world);
 		}
 	}

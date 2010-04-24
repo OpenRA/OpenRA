@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,8 +25,8 @@ namespace OpenRA.Widgets
 				mapPreviewDirty = true;
 				lastMap = map;
 			}
-
-			var mapRect = map.PreviewBounds( new Rectangle( Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height ) );
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			var mapRect = map.PreviewBounds( new Rectangle( rect.X, rect.Y, rect.Width, rect.Height ) );
 
 			if( mapPreviewDirty )
 			{

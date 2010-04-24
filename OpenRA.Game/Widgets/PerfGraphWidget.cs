@@ -33,9 +33,9 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-
-			float2 origin = Game.viewport.Location + new float2(Bounds.Right,Bounds.Bottom);
-			float2 basis = new float2(-Bounds.Width/100,-Bounds.Height/100);
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			float2 origin = Game.viewport.Location + new float2(rect.Right,rect.Bottom);
+			float2 basis = new float2(-rect.Width/100,-rect.Height/100);
 
 			Game.chrome.lineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
 			Game.chrome.lineRenderer.DrawLine(origin + new float2(100,0) * basis, origin + new float2(100,100) * basis, Color.White, Color.White);

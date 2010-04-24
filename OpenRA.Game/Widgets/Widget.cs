@@ -83,6 +83,11 @@ namespace OpenRA.Widgets
 			return new Widget(this);	
 		}
 		
+		public int2 getParentOffset()
+		{
+			return (Parent == null) ? int2.Zero : new int2(Parent.Bounds.Location.X, Parent.Bounds.Location.Y)  ;
+		}
+		
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
@@ -99,8 +104,8 @@ namespace OpenRA.Widgets
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 			
-			Bounds = new Rectangle(parentBounds.X + Evaluator.Evaluate(X, substitutions),
-			                       parentBounds.Y + Evaluator.Evaluate(Y, substitutions),
+			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
+			                       Evaluator.Evaluate(Y, substitutions),
 			                       width,
 			                       height);
 			
@@ -122,17 +127,19 @@ namespace OpenRA.Widgets
 		public bool HitTest(int2 xy)
 		{
 			if (!IsVisible()) return false;
-			if (Bounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			if (rect.Contains(xy.ToPoint()) && !ClickThrough) return true;
 			
 			return Children.Any(c => c.HitTest(xy));
 		}
 		
 		public Rectangle GetEventBounds()
 		{
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
 			return Children
 				.Where(c => c.Visible)
 				.Select(c => c.GetEventBounds())
-				.Aggregate(Bounds, Rectangle.Union);
+				.Aggregate(rect, Rectangle.Union);
 		}
 				
 		public virtual bool HandleInput(MouseInput mi)

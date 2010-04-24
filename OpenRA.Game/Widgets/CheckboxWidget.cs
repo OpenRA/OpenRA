@@ -35,12 +35,12 @@ namespace OpenRA.Widgets
 				base.Draw(world);
 				return;
 			}
-
-			WidgetUtils.DrawPanel("dialog3", new Rectangle(Bounds.Location,
+			var rect = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
 					new Size(Bounds.Height, Bounds.Height)));
 
 			Game.chrome.renderer.BoldFont.DrawText(Text,
-				new float2(Bounds.Left + Bounds.Height * 2, Bounds.Top), Color.White);
+				new float2(rect.Left + rect.Height * 2, rect.Top), Color.White);
 
 			if (Checked())
 			{
@@ -48,10 +48,10 @@ namespace OpenRA.Widgets
 
 				Game.chrome.lineRenderer.FillRect(
 					new RectangleF( 
-						Game.viewport.Location.X + Bounds.Left + 4, 
-						Game.viewport.Location.Y + Bounds.Top + 5,
-						Bounds.Height - 9,
-						Bounds.Height - 9), 
+						Game.viewport.Location.X + rect.Left + 4, 
+						Game.viewport.Location.Y + rect.Top + 5,
+						rect.Height - 9,
+						rect.Height - 9), 
 						Color.White);
 				Game.chrome.lineRenderer.Flush();
 			}

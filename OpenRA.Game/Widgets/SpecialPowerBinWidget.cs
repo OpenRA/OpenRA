@@ -85,26 +85,26 @@ namespace OpenRA.Widgets
 			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
 			var numPowers = powers.Count(p => p.IsAvailable);
 			if (numPowers == 0) return;
-			
-			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(Bounds.X,Bounds.Y));
+			var rectBounds = new Rectangle(Bounds.X + getParentOffset().X, Bounds.Y + getParentOffset().Y, Bounds.Width, Bounds.Height);
+			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
-				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(Bounds.X, Bounds.Y + i * 51));
-			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(Bounds.X, Bounds.Y + numPowers * 51));
+				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
+			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			
 			// Hack Hack Hack
-			Bounds.Width = 69;
-			Bounds.Height = 10 + numPowers * 51 + 21;
+			rectBounds.Width = 69;
+			rectBounds.Height = 10 + numPowers * 51 + 21;
 			
-			var y = Bounds.Y + 10;
+			var y = rectBounds.Y + 10;
 			foreach (var sp in powers)
 			{
 				var image = spsprites[sp.Info.Image];
 				if (sp.IsAvailable)
 				{
-					var drawPos = new float2(Bounds.X + 5, y);
-					var rect = new Rectangle(Bounds.X + 5, y, 64, 48);
+					var drawPos = new float2(rectBounds.X + 5, y);
+					var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
 
 					if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
 					{

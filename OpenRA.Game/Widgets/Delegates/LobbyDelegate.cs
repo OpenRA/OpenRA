@@ -38,10 +38,13 @@ namespace OpenRA.Widgets.Delegates
 			int i = 0;
 			foreach(var client in Game.LobbyInfo.Clients)
 			{
-				Log.Write("Client {0}",client.Name);
+				//HACK : "the c# spec is, IMHO, broken here"
+				var c = client;
+				
+				Log.Write("Client {0}",c.Name);
 				var template = PlayerTemplate.Clone();
-				template.Id = "PLAYER_{0}".F(client.Index);
-				template.GetWidget<ButtonWidget>("NAME").GetText = () => {return client.Name; };
+				template.Id = "PLAYER_{0}".F(c.Index);
+				template.GetWidget<ButtonWidget>("NAME").GetText = () => {return c.Name; };
 				template.Bounds = new Rectangle(template.Bounds.X, template.Bounds.Y + i, template.Bounds.Width, template.Bounds.Height); 
 				template.IsVisible = () => {return true;};
 				Players.AddChild(template);
