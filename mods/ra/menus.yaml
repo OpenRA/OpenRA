@@ -288,14 +288,14 @@ Container:
 							Y:4
 							Width:244
 							Height:244
-				Container@PLAYERS
+				Container@PLAYERS:
 					Id:PLAYERS
 					X:30
 					Y:75
 					Width:500
 					Height:200
 					Children:
-						Container@TEMPLATE_LOCAL
+						Container@TEMPLATE_LOCAL:
 							Id:TEMPLATE_LOCAL
 							X:0
 							Y:0
@@ -351,7 +351,7 @@ Container:
 									Y:1
 									Width:20
 									Height:20
-						Container@TEMPLATE_REMOTE
+						Container@TEMPLATE_REMOTE:
 							Id:TEMPLATE_REMOTE
 							X:0
 							Y:0
@@ -422,7 +422,7 @@ Container:
 							Y:0
 							Text:Color
 							Align:Center
-						Label@LABEL_LOBBY_FACTION
+						Label@LABEL_LOBBY_FACTION:
 							Id:LABEL_LOBBY_FACTION
 							Width:90
 							Height:25
@@ -430,7 +430,7 @@ Container:
 							Y:0
 							Text:Faction
 							Align:Center
-						Label@LABEL_LOBBY_SPAWN
+						Label@LABEL_LOBBY_SPAWN:
 							Id:LABEL_LOBBY_SPAWN
 							Width:70
 							Height:25
@@ -438,7 +438,7 @@ Container:
 							Y:0
 							Text:Spawn
 							Align:Center
-						Label@LABEL_LOBBY_TEAM
+						Label@LABEL_LOBBY_TEAM:
 							Id:LABEL_LOBBY_TEAM
 							Width:70
 							Height:25
@@ -446,7 +446,7 @@ Container:
 							Y:0
 							Text:Team
 							Align:Center
-						Label@LABEL_LOBBY_STATUS
+						Label@LABEL_LOBBY_STATUS:
 							Id:LABEL_LOBBY_STATUS
 							X:455
 							Y:0
