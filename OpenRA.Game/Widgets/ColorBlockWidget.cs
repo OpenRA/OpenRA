@@ -25,18 +25,18 @@ namespace OpenRA.Widgets
 {
 	class ColorBlockWidget : Widget 
 	{
-		public Func<int> GetPaletteIndex;
+		public Func<Color> GetColor;
 		
 		public ColorBlockWidget()
 			: base()
 		{
-			GetPaletteIndex = () => 0;
+			GetColor = () => Color.White;
 		}
 		
 		public ColorBlockWidget(Widget widget)
 			:base(widget)
 		{
-			GetPaletteIndex = (widget as ColorBlockWidget).GetPaletteIndex;
+			GetColor = (widget as ColorBlockWidget).GetColor;
 		}
 		
 		public override Widget Clone()
@@ -54,8 +54,7 @@ namespace OpenRA.Widgets
 			
 			var pos = DrawPosition();
 			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X, pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
-			Game.chrome.lineRenderer.FillRect(paletteRect, Player.PlayerColors(Game.world)[GetPaletteIndex() % Player.PlayerColors(Game.world).Count].c);
-			
+			Game.chrome.lineRenderer.FillRect(paletteRect, GetColor());
 			base.Draw(world);
 		}
 	}

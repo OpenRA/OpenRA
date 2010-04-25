@@ -70,7 +70,7 @@ namespace OpenRA.Widgets.Delegates
 					color.OnMouseUp = CyclePalette;
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetPaletteIndex = () => c.PaletteIndex;
+					colorBlock.GetColor = () => Player.PlayerColors(Game.world)[c.PaletteIndex % Player.PlayerColors(Game.world).Count].c;
 					
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
@@ -91,7 +91,7 @@ namespace OpenRA.Widgets.Delegates
 				else 
 				{
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetPaletteIndex = () => c.PaletteIndex;
+					color.GetColor = () => Player.PlayerColors(Game.world)[c.PaletteIndex % Player.PlayerColors(Game.world).Count].c;
 					
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					faction.GetText = () => c.Country;
