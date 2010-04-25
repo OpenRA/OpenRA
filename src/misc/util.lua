@@ -69,6 +69,13 @@ function IsLuaFile(filePath)
 		   (string.lower(string.sub(filePath, -4)) == ".lua")
 end
 
+function GetFileNameExt(filePath)
+	if (not filePath) then return end
+	local wxn = wx.wxFileName(filePath)
+	return (wxn:GetName()..(wxn:HasExt() and ("."..wxn:GetExt()) or ""))
+end
+
+
 function GetPathWithSep(wxfn)
 	return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
 end
