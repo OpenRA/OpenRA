@@ -9,7 +9,18 @@ return {
 	isfncall = function(str)
 					return string.find(str,"([A-Za-z0-9_]+)%s*%(")
 				end,
-		
+	isfndef = function(str)
+					local l
+					local s,e,cap = string.find(str,"function%s*([A-Za-z0-9_%.%:]+%s*%(.+%))")
+					if (not s) then
+						s,e,cap = string.find(str,"function%s*([A-Za-z0-9_%.%:]+)%s*")
+					end
+					if (s) then
+						l = string.find(string.sub(1,s),"local%s+$")
+					end
+					return s,e,cap,l
+				end,
+
 	lexerstyleconvert = {
 		text		= {wxstc.wxSTC_LUA_IDENTIFIER,},
 	

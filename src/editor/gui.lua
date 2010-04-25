@@ -37,6 +37,7 @@ ide.ofontItalic = ofontItalic
 -- wxWindow variables
 local frame            = nil    -- wxFrame the main top level window
 	local toolBar      = nil
+		local funclist = nil
 	local statusBar    = nil
 	local menuBar      = nil
 	
@@ -70,6 +71,8 @@ frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
 	end)
 
 toolBar = frame:CreateToolBar(wx.wxNO_BORDER + wx.wxTB_FLAT + wx.wxTB_DOCKABLE)
+funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(300,16))
+
 -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
 local toolBmpSize = toolBar:GetToolBitmapSize()
 toolBar:AddTool(ID_NEW,     "New",      wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_MENU, toolBmpSize), "Create an empty document")
@@ -88,6 +91,8 @@ toolBar:AddTool(ID_FIND,    "Find",    wx.wxArtProvider.GetBitmap(wx.wxART_FIND,
 toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_MENU, toolBmpSize), "Find and replace text")
 toolBar:AddSeparator()
 toolBar:AddTool(ID "debug.projectdir.fromfile",     "Update",      wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_MENU, toolBmpSize), "Sets projectdir from file")
+toolBar:AddSeparator()
+toolBar:AddControl(funclist)
 toolBar:Realize()
 
 -- ----------------------------------------------------------------------------
@@ -182,6 +187,8 @@ splitter.notebook = notebook
 
 vsplitter.splitter = 	splitter
 vsplitter.sidenotebook = sidenotebook
+
+toolBar.funclist = funclist
 
 frame.vsplitter = vsplitter
 frame.toolBar = 	toolBar

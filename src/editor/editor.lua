@@ -6,6 +6,7 @@ local editorID         = 100    -- window id to create editor pages with, increm
 local openDocuments 	= ide.openDocuments
 local ignoredFilesList 	= ide.ignoredFilesList
 local notebook			= ide.frame.vsplitter.splitter.notebook
+local funclist			= ide.frame.toolBar.funclist
 local edcfg 			= ide.config.editor
 
 -- ----------------------------------------------------------------------------
@@ -28,6 +29,7 @@ function SetEditorSelection(selection)
 	ide.frame:SetTitle(GetFileTitle(editor))
 	
 	if editor then
+		funclist:Clear()
 		editor:SetFocus()
 		editor:SetSTCFocus(true)
 		IsFileAlteredOnDisk(editor)
@@ -513,3 +515,43 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
 	StylesApplyToEditor(styles or ide.config.styles, editor,
 							font or ide.font,fontitalic or ide.fontItalic,lexerstyleconvert)
 end
+
+----------------------------------------------------
+-- function list for current file
+
+
+funclist:Connect(wx.wxEVT_SET_FOCUS, 
+	function (event) 
+		event:Skip()
+		
+		-- parse current file and update list
+		funclist:Clear()
+		local editor = GetEditor()
+		if (not (editor and editor.spec and editor.spec.isfndef)) then return end
+		
+		local lines = 0
+		local linee = editor:GetLineCount()-1
+		
+		for line=lines,linee do
+			local tx = editor:GetLine(line)
+			local s,e,cap,l = editor.spec.isfndef(tx)
+			if (s) then
+				funclist:Append((l and " " or "")..cap,line)
+			end
+		end
+		
+	end)
+
+funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED, 
+	function (event) 
+		-- test if updated
+		-- jump to line
+		event:Skip()
+		local l = event:GetClientData(s)
+		if (l) then
+			local editor = GetEditor()
+			editor:GotoLine(l)
+			editor:SetFocus()
+			editor:SetSTCFocus(true)
+		end
+	end)
