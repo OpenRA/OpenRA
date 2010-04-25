@@ -9,6 +9,8 @@ ide.filetree = {
 	projdirText = "",
 	projdirTextArray = {},
 	
+	showroot = true,
+	
 	dirdata  = {
 		root_id = nil,
 		rootdir = "",
@@ -72,8 +74,7 @@ local function treeGetItemFullName(tree,treedata,item_id,isfile)
 		cur = tree:GetItemText(item_id)
 		str = cur..str
 	end
-	
-	return str
+	return ((not filetree.showroot) and filetree.projdata.rootdir or "").. str
 end
 
 local function treeSetRoot(tree,treedata,rootdir)
@@ -104,7 +105,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 		function( event )
 			local item_id = event:GetItem()
 			local dir = treeGetItemFullName(tree,treedata,item_id)
-			--DisplayOutput(dir.."\n")
+			DisplayOutput(dir.."\n")
 			treeAddDir(tree,item_id,dir)
 			
 			return true
@@ -165,7 +166,9 @@ local projbutton = wx.wxButton(projpanel, ID "debug.projectdir.choose", "...",wx
 
 local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
 						wx.wxDefaultPosition, wx.wxDefaultSize,
-						wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
+						filetree.showroot
+							and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
+							or  (wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT))
 						
 local projTopSizer = wx.wxBoxSizer( wx.wxHORIZONTAL );
 projTopSizer:Add(projcombobox,	1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
