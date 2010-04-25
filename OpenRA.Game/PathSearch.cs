@@ -94,7 +94,8 @@ namespace OpenRA
 					continue;
 
 				var costHere = passableCost[(int)umt][newHere.X, newHere.Y]*
-						 	   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,umt));
+						 	   world.WorldActor.traits.WithInterface<ICustomTerrain>()
+							   .Aggregate(1f, (a, x) => a * x.GetCost(newHere,umt));
 			
 				if (costHere == float.PositiveInfinity)
 					continue;
