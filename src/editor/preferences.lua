@@ -2,6 +2,7 @@
 
 preferencesDialog = {
 	category = {};
+	uifactory = {};
 }
 local cats = preferencesDialog.category
 
@@ -33,12 +34,27 @@ preferencesDialog.addCategory {
 	category = "editor";
 	title = "Editor";
 }
+preferencesDialog.addCategory {
+	category = "project";
+	title = "Project";
+}
 
 preferencesDialog.addPage {
 	title = "Basic preferences";
 	category = "editor";
-	values = {
-		testbox = {type = "checkbox"; title = "Testing";};
+	layout = {
+		{type = 'group',title="Sessions"; minheight = 100; minwidth = 100};
+			{type = "checkbox"; title = "Reopen files";name = 'session_restore'};
+		{type = 'finishgroup'};
+		{type = 'space'; space = 4};
+		{type = 'group',title="Visible menus";  minheight = 100; minwidth = 100};
+			{type = "checkbox"; title = "Tools";name = 'tools'};
+			{type = 'linebreak'; space = 4};
+			{type = "checkbox"; title = "Help";name = 'help'};
+			--{type = 'linebreak'; space = 4};
+			--{type='static'; title = "foo"};
+		{type = 'finishgroup'};
+		
 	};
 	onload = function ()
 		return {testbox = true}
@@ -46,8 +62,94 @@ preferencesDialog.addPage {
 	onsave = function (values)
 	end
 }
+
+preferencesDialog.addPage {
+	title = "Project settings";
+	category = "project";
+	layout = {};
+	onload = function () return {} end;
+	onsave = function (values) end;
+}
+function preferencesDialog.uifactory.space(page,layout,element)
+	layout.currentx = layout.currentx + element.space
+	return layout
+end
+function preferencesDialog.uifactory.group(page,layout,element)
+	local margin = element.margin or 6
+	local nl = {
+		currentx = margin; 
+		currenty = margin+ (element.title and 12 or 8); 
+		maxsizex = 0; 
+		maxsizey = 0;
+		minwidth = element.minwidth or 0;
+		minheight = element.minheight or 0;
+		margin = margin;
+		layout = layout;
+		parent = wx.wxStaticBox(layout.parent,wx.wxID_ANY,element.title or "",
+			wx.wxPoint(layout.currentx,layout.currenty),
+			wx.wxDefaultSize, element.borderstyle and wx["wxBORDER_"..element.borderstyle:upper()] or 0);
+	}
+	return nl
+end
+function preferencesDialog.uifactory.finishgroup(page,layout,element)
+	local l = layout.layout
+	layout.maxsizex = math.max(layout.minwidth,layout.maxsizex + layout.margin)
+	layout.maxsizey = math.max(layout.minheight,layout.maxsizey + layout.margin)
+	l.maxsizey = math.max(l.maxsizey,layout.maxsizey+l.currenty)
+	l.currentx = l.currentx + layout.maxsizex
+	l.maxsizex = math.max(l.maxsizex,l.currentx)
+	layout.parent:SetSize(wx.wxSize(layout.maxsizex,layout.maxsizey))
+	return l
+end
+function preferencesDialog.uifactory.linebreak(page,layout,element)
+	layout.currentx = layout.margin or 0
+	layout.currenty = layout.maxsizey + (element.space or 0)
+	return layout
+end
+function preferencesDialog.uifactory.checkbox (page,layout,element, value)
+	local x,y = layout.currentx,layout.currenty
+	local id = ID("view.preferences.dialog.page."..page.title.."."..element.name)
+	local cbox = wx.wxCheckBox(layout.parent,id,element.title,wx.wxPoint(x,y))
+	local sz = cbox:GetBestFittingSize()
+	cbox:SetSize(sz)
+	layout.maxsizex = math.max(x+sz:GetWidth(),layout.maxsizex)
+	layout.maxsizey = math.max(y+sz:GetHeight(),layout.maxsizey)
+	layout.currentx = layout.maxsizex
+	if value then cbox:SetValue(value) end
+	return layout
+end
+function preferencesDialog.uifactory.static(page,layout,element)
+	local x,y = layout.currentx,layout.currenty
+	local static = wx.wxStaticText(layout.parent,wx.wxID_ANY,element.title,wx.wxPoint(x,y))
+	local sz = static:GetBestFittingSize()
+	static:SetSize(sz)
+	layout.maxsizex = math.max(x+sz:GetWidth(),layout.maxsizex)
+	layout.maxsizey = math.max(y+sz:GetHeight(),layout.maxsizey)
+	layout.currentx = layout.maxsizex
+	
+	return layout
+end
+
+
 local function showpage(panel,page)
 	--TODO: layout the page, load values, etc
+	local data = page.onload()
+	local layout = page.layout
+	local layoutdata = {
+		currentx = 0;
+		currenty = 0;
+		maxsizex = 0;
+		maxsizey = 0;
+		parent = panel;
+	}
+	for i,el in ipairs(layout) do
+		assert(preferencesDialog.uifactory[el.type],"Unknown ui type type")
+		layoutdata = assert(
+			preferencesDialog.uifactory[el.type](page,layoutdata,el,data[el.name])
+		)
+	end
+	panel:SetSize(layoutdata.maxsizex,layoutdata.maxsizey)
+	--print(layoutdata.maxsizex,layoutdata.maxsizey)
 end
 
 function preferencesDialog.show(event)
@@ -77,19 +179,23 @@ function preferencesDialog.show(event)
 	
 	local projtree = wx.wxTreeCtrl(panel, ID "view.preferences.dialog.panel.tree",
 						wx.wxDefaultPosition, wx.wxSize(180,400),
-						wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
+						wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
 	local preferencesPage = wx.wxPanel(panel,ID "view.preferences.dialog.page",
 		wx.wxDefaultPosition, wx.wxSize(500,400))
 	local panelsizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
 	panelsizer:Add(projtree,0,wx.wxALL + wx.wxALIGN_LEFT + wx.wxTOP + wx.wxBOTTOM,0)
+	panelsizer:AddSpacer(5)
 	panelsizer:Add(preferencesPage)
 	panel:SetSizer(panelsizer)
 	
 	local treecats = {}
 	local catdata = {}
 	table.sort(cats,function(a,b) return a.order < b.order end)
+	local rootit = projtree:AddRoot("")
+	
+	catdata[rootit:GetValue()] = {category = "root", children = treecats}
 	for i=1,#cats do
-		local it = projtree:AddRoot(cats[i].title)
+		local it = projtree:AppendItem(rootit,cats[i].title)
 		treecats[i] = it
 		local c = cats[i]
 		local children = {}
@@ -103,6 +209,9 @@ function preferencesDialog.show(event)
 		projtree:Expand(it)
 	end
 	
+	projtree:Expand(rootit)
+	
+	local preferencesContent
 	projtree:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED,
 		function( event )
 			local item_id = event:GetItem():GetValue()
@@ -112,7 +221,12 @@ function preferencesDialog.show(event)
 					projtree:SelectItem(data.children[1])
 				end
 			else
-				showpage(preferencesPage,data.page)
+				if preferencesContent then
+					preferencesPage:RemoveChild(preferencesContent)
+				end
+				preferencesContent = wx.wxPanel(preferencesPage,wx.wxID_ANY)
+				
+				showpage(preferencesContent,data.page)
 			end
 		end )
 	
