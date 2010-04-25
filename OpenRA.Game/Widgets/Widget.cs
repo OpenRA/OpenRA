@@ -82,8 +82,14 @@ namespace OpenRA.Widgets
 		
 		public int2 DrawPosition()
 		{
-			return new int2(Bounds.X, Bounds.Y) + ((Parent == null) ? int2.Zero : Parent.DrawPosition());
+			return new int2(Bounds.X, Bounds.Y) + ParentPosition();
 		}
+		
+		public int2 ParentPosition()
+		{
+			return (Parent == null) ? int2.Zero : Parent.DrawPosition();
+		}
+		
 		
 		public virtual void Initialize()
 		{

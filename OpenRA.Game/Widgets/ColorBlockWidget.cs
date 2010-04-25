@@ -25,19 +25,17 @@ namespace OpenRA.Widgets
 {
 	class ColorBlockWidget : Widget 
 	{
-		public int PaletteIndex = 0;
 		public Func<int> GetPaletteIndex;
 		
 		public ColorBlockWidget()
 			: base()
 		{
-			GetPaletteIndex = () => { return PaletteIndex; };
+			GetPaletteIndex = () => 0;
 		}
 		
 		public ColorBlockWidget(Widget widget)
 			:base(widget)
 		{
-			PaletteIndex = (widget as ColorBlockWidget).PaletteIndex;
 			GetPaletteIndex = (widget as ColorBlockWidget).GetPaletteIndex;
 		}
 		

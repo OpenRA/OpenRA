@@ -323,7 +323,6 @@ Container:
 											Y:7
 											Width:PARENT_RIGHT-10
 											Height:PARENT_BOTTOM-12
-											PaletteIndex:0
 								Button@FACTION:
 									Id:FACTION
 									Text:Faction
@@ -372,7 +371,6 @@ Container:
 									Y:7
 									Width:55
 									Height:13
-									PaletteIndex:0
 								Label@FACTION:
 									Id:FACTION
 									Text:Faction
