@@ -1,0 +1,183 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: Regeneration Basin
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Actors:
+	Actor0: v12 Neutral 75,50
+	Actor1: v13 Neutral 76,51
+	Actor2: v12 Neutral 47,79
+	Actor3: v13 Neutral 48,80
+	Actor4: mine Neutral 33,27
+	Actor5: mine Neutral 36,33
+	Actor6: mine Neutral 35,36
+	Actor7: mine Neutral 32,38
+	Actor8: mine Neutral 28,45
+	Actor9: mine Neutral 82,17
+	Actor10: mine Neutral 87,20
+	Actor11: mine Neutral 85,23
+	Actor12: mine Neutral 88,28
+	Actor13: mine Neutral 88,32
+	Actor14: mine Neutral 106,37
+	Actor15: mine Neutral 19,94
+	Actor16: mine Neutral 23,94
+	Actor17: mine Neutral 30,93
+	Actor18: mine Neutral 42,96
+	Actor19: mine Neutral 46,100
+	Actor20: mine Neutral 51,102
+	Actor21: mine Neutral 44,111
+	Actor22: mine Neutral 93,99
+	Actor23: mine Neutral 90,89
+	Actor24: mine Neutral 100,84
+	Actor25: mine Neutral 104,83
+	Actor26: mine Neutral 109,85
+	Actor27: mine Neutral 18,56
+	Actor28: mine Neutral 21,58
+	Actor29: mine Neutral 24,57
+	Actor30: mine Neutral 17,82
+	Actor31: mine Neutral 20,80
+	Actor32: mine Neutral 28,78
+	Actor33: mine Neutral 29,81
+	Actor34: tc05 Neutral 49,49
+	Actor35: tc04 Neutral 52,49
+	Actor36: tc01 Neutral 53,50
+	Actor37: t17 Neutral 49,50
+	Actor38: t16 Neutral 52,48
+	Actor39: t15 Neutral 49,48
+	Actor40: t13 Neutral 52,47
+	Actor41: t12 Neutral 49,47
+	Actor42: t12 Neutral 76,75
+	Actor43: t11 Neutral 76,76
+	Actor44: t07 Neutral 73,77
+	Actor45: t08 Neutral 65,72
+	Actor46: t08 Neutral 63,73
+	Actor47: t03 Neutral 62,60
+	Actor48: t17 Neutral 65,59
+	Actor49: mine Neutral 21,41
+	Actor50: t15 Neutral 22,46
+	Actor51: t13 Neutral 20,48
+	Actor52: t12 Neutral 18,46
+	Actor53: mine Neutral 22,48
+	Actor54: mine Neutral 34,43
+	Actor55: tc04 Neutral 30,42
+	Actor56: tc05 Neutral 26,60
+	Actor57: mine Neutral 28,88
+	Actor58: mine Neutral 22,89
+	Actor59: tc02 Neutral 24,84
+	Actor60: tc01 Neutral 29,90
+	Actor61: t17 Neutral 21,85
+	Actor62: t15 Neutral 24,87
+	Actor63: t07 Neutral 26,91
+	Actor64: t07 Neutral 24,76
+	Actor65: t05 Neutral 22,77
+	Actor66: t01 Neutral 26,79
+	Actor67: mine Neutral 55,109
+	Actor68: mine Neutral 61,103
+	Actor69: mine Neutral 63,98
+	Actor70: mine Neutral 43,105
+	Actor71: tc04 Neutral 39,101
+	Actor72: tc05 Neutral 37,107
+	Actor73: t15 Neutral 46,105
+	Actor74: mine Neutral 96,109
+	Actor75: mine Neutral 88,98
+	Actor76: mine Neutral 84,88
+	Actor77: mine Neutral 83,110
+	Actor78: mine Neutral 86,106
+	Actor79: mine Neutral 79,99
+	Actor80: mine Neutral 81,105
+	Actor81: mine Neutral 73,90
+	Actor82: tc03 Neutral 77,105
+	Actor83: t08 Neutral 76,106
+	Actor84: t08 Neutral 77,104
+	Actor85: t12 Neutral 77,109
+	Actor86: t13 Neutral 76,107
+	Actor87: t13 Neutral 86,103
+	Actor88: mine Neutral 91,91
+	Actor89: mine Neutral 94,105
+	Actor90: t14 Neutral 97,107
+	Actor91: t16 Neutral 91,101
+	Actor92: mine Neutral 95,87
+	Actor93: tc02 Neutral 52,109
+	Actor94: tc01 Neutral 57,103
+	Actor95: mine Neutral 36,70
+	Actor96: mine Neutral 34,54
+	Actor97: mine Neutral 24,80
+	Actor98: mine Neutral 59,90
+	Actor99: mine Neutral 100,41
+	Actor100: mine Neutral 96,39
+	Actor101: mine Neutral 109,34
+	Actor102: mine Neutral 101,49
+	Actor103: mine Neutral 97,49
+	Actor104: mine Neutral 108,76
+	Actor105: mine Neutral 110,73
+	Actor106: mine Neutral 104,74
+	Actor107: mine Neutral 94,73
+	Actor108: mine Neutral 91,70
+	Actor109: mine Neutral 89,54
+	Actor110: mine Neutral 105,47
+	Actor111: t11 Neutral 107,78
+	Actor112: t13 Neutral 103,75
+	Actor113: tc01 Neutral 99,45
+	Actor114: tc05 Neutral 88,22
+	Actor115: tc04 Neutral 81,20
+	Actor116: tc01 Neutral 89,29
+	Actor117: mine Neutral 32,22
+	Actor118: mine Neutral 31,18
+	Actor119: mine Neutral 47,18
+	Actor120: mine Neutral 44,24
+	Actor121: mine Neutral 48,23
+	Actor122: mine Neutral 50,30
+	Actor123: mine Neutral 55,37
+	Actor124: mine Neutral 69,35
+	Actor125: mine Neutral 73,18
+	Actor126: mine Neutral 72,24
+	Actor127: mine Neutral 76,27
+	Actor128: tc02 Neutral 33,17
+	Actor129: t01 Neutral 36,25
+	Actor130: t02 Neutral 37,23
+	Actor131: t05 Neutral 30,23
+	Actor132: t10 Neutral 49,19
+	Actor133: t13 Neutral 46,24
+	Actor134: t03 Neutral 49,26
+	Actor135: t12 Neutral 48,27
+	Actor136: tc02 Neutral 50,83
+	Actor137: tc04 Neutral 42,69
+	Actor138: tc05 Neutral 46,75
+	Actor139: tc04 Neutral 74,54
+	Actor140: tc01 Neutral 80,52
+	Actor141: t03 Neutral 73,48
+	Actor142: t12 Neutral 75,47
+	Actor143: t17 Neutral 76,48
+	Actor144: mine Neutral 44,43
+	Actor145: mine Neutral 86,77
+	Actor146: mine Neutral 82,82
+	Actor147: mine Neutral 41,53
+	Actor148: mine Neutral 48,44
+
+Waypoints:
+	spawn0: 23,105
+	spawn1: 22,67
+	spawn2: 21,20
+	spawn3: 62,24
+	spawn4: 102,24
+	spawn5: 104,64
+	spawn6: 106,104
+	spawn7: 72,103
+
+Smudges:
+
+Rules:
+

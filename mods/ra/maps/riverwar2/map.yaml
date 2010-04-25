@@ -1,0 +1,130 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: River War 2 By: Captain Mel (64X126)
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 32,1
+
+BottomRight: 96,127
+
+Actors:
+	Actor0: t01 Neutral 79,121
+	Actor1: tc05 Neutral 50,22
+	Actor2: tc05 Neutral 44,21
+	Actor3: tc05 Neutral 39,1
+	Actor4: tc05 Neutral 41,3
+	Actor5: tc05 Neutral 46,42
+	Actor6: tc05 Neutral 36,37
+	Actor7: tc05 Neutral 48,64
+	Actor8: tc05 Neutral 53,74
+	Actor9: tc05 Neutral 46,76
+	Actor10: tc05 Neutral 36,78
+	Actor11: tc05 Neutral 36,69
+	Actor12: tc05 Neutral 40,61
+	Actor13: tc05 Neutral 65,64
+	Actor14: tc05 Neutral 58,62
+	Actor15: tc05 Neutral 56,79
+	Actor16: tc05 Neutral 58,81
+	Actor17: tc05 Neutral 47,81
+	Actor18: tc05 Neutral 51,80
+	Actor19: tc05 Neutral 43,78
+	Actor20: tc05 Neutral 32,118
+	Actor21: tc05 Neutral 35,111
+	Actor22: tc05 Neutral 79,123
+	Actor23: tc05 Neutral 88,107
+	Actor24: tc05 Neutral 88,101
+	Actor25: tc05 Neutral 88,98
+	Actor26: tc05 Neutral 83,98
+	Actor27: tc05 Neutral 86,89
+	Actor28: tc05 Neutral 89,69
+	Actor29: tc05 Neutral 84,61
+	Actor30: tc05 Neutral 70,52
+	Actor31: tc05 Neutral 68,20
+	Actor32: tc05 Neutral 91,17
+	Actor33: tc05 Neutral 81,31
+	Actor34: tc05 Neutral 70,29
+	Actor35: tc05 Neutral 76,30
+	Actor36: tc02 Neutral 76,46
+	Actor37: tc02 Neutral 79,54
+	Actor38: tc02 Neutral 87,67
+	Actor39: tc02 Neutral 82,38
+	Actor40: tc02 Neutral 70,39
+	Actor41: tc02 Neutral 70,47
+	Actor42: tc02 Neutral 72,44
+	Actor43: tc02 Neutral 70,42
+	Actor44: tc02 Neutral 57,38
+	Actor45: tc02 Neutral 53,22
+	Actor46: tc02 Neutral 79,26
+	Actor47: tc02 Neutral 81,26
+	Actor48: tc02 Neutral 80,24
+	Actor49: tc02 Neutral 83,25
+	Actor50: tc02 Neutral 82,24
+	Actor51: tc02 Neutral 47,32
+	Actor52: tc02 Neutral 50,29
+	Actor53: tc02 Neutral 50,26
+	Actor54: tc02 Neutral 40,27
+	Actor55: mine Neutral 69,109
+	Actor56: mine Neutral 62,108
+	Actor57: mine Neutral 61,100
+	Actor58: mine Neutral 51,110
+	Actor59: mine Neutral 36,30
+	Actor60: mine Neutral 62,30
+	Actor61: mine Neutral 66,25
+	Actor62: mine Neutral 83,19
+	Actor63: mine Neutral 89,38
+	Actor64: mine Neutral 89,49
+	Actor65: mine Neutral 78,91
+	Actor66: tc02 Neutral 88,113
+	Actor67: tc02 Neutral 92,112
+	Actor68: tc02 Neutral 90,116
+	Actor69: tc02 Neutral 94,118
+	Actor70: tc02 Neutral 94,125
+	Actor71: tc02 Neutral 63,43
+	Actor72: tc02 Neutral 64,51
+	Actor73: tc02 Neutral 68,33
+	Actor74: tc02 Neutral 32,17
+	Actor75: tc02 Neutral 35,21
+	Actor76: tc02 Neutral 40,24
+	Actor77: tc02 Neutral 43,49
+	Actor78: tc02 Neutral 49,47
+	Actor79: tc02 Neutral 46,52
+	Actor80: tc02 Neutral 52,55
+	Actor81: tc05 Neutral 46,56
+	Actor82: tc05 Neutral 49,48
+	Actor83: tc05 Neutral 52,56
+	Actor84: tc05 Neutral 52,51
+	Actor85: tc05 Neutral 49,59
+	Actor86: tc05 Neutral 38,42
+	Actor87: tc05 Neutral 55,66
+	Actor88: tc05 Neutral 48,70
+	Actor89: tc05 Neutral 43,72
+	Actor90: tc05 Neutral 93,106
+	Actor91: tc05 Neutral 86,79
+	Actor92: tc05 Neutral 80,75
+	Actor93: tc05 Neutral 84,57
+	Actor94: tc05 Neutral 76,50
+	Actor95: tc05 Neutral 82,50
+
+Waypoints:
+	spawn0: 63,121
+	spawn1: 64,121
+	spawn2: 63,9
+	spawn3: 64,9
+	spawn4: 63,10
+	spawn5: 64,10
+	spawn6: 63,120
+	spawn7: 64,120
+
+Smudges:
+
+Rules:
+

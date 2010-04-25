@@ -1,0 +1,88 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: Crossing the River
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 32,32
+
+BottomRight: 96,96
+
+Actors:
+	Actor0: v12 Neutral 90,32
+	Actor1: mine Neutral 41,71
+	Actor2: mine Neutral 36,63
+	Actor3: tc05 Neutral 37,66
+	Actor4: t15 Neutral 41,65
+	Actor5: tc04 Neutral 87,64
+	Actor6: tc01 Neutral 91,66
+	Actor7: t02 Neutral 92,65
+	Actor8: mine Neutral 92,63
+	Actor9: mine Neutral 87,69
+	Actor10: t03 Neutral 38,91
+	Actor11: t10 Neutral 40,93
+	Actor12: mine Neutral 36,83
+	Actor13: mine Neutral 53,78
+	Actor14: mine Neutral 48,88
+	Actor15: t10 Neutral 73,83
+	Actor16: t03 Neutral 72,82
+	Actor17: t13 Neutral 70,83
+	Actor18: mine Neutral 34,34
+	Actor19: mine Neutral 93,93
+	Actor20: tc02 Neutral 77,91
+	Actor21: t01 Neutral 80,92
+	Actor22: t06 Neutral 82,94
+	Actor23: t06 Neutral 83,93
+	Actor24: tc03 Neutral 49,32
+	Actor25: t08 Neutral 51,32
+	Actor26: t08 Neutral 48,33
+	Actor27: t08 Neutral 47,32
+	Actor28: t05 Neutral 46,32
+	Actor29: t02 Neutral 51,34
+	Actor30: t10 Neutral 39,42
+	Actor31: t11 Neutral 37,44
+	Actor32: t12 Neutral 37,42
+	Actor33: t12 Neutral 39,43
+	Actor34: t13 Neutral 43,41
+	Actor35: t15 Neutral 35,43
+	Actor36: t03 Neutral 34,44
+	Actor37: t03 Neutral 42,40
+	Actor38: t13 Neutral 88,34
+	Actor39: mine Neutral 93,45
+	Actor40: mine Neutral 75,46
+	Actor41: mine Neutral 85,55
+	Actor42: t13 Neutral 86,43
+	Actor43: t10 Neutral 87,45
+	Actor44: tc04 Neutral 79,45
+	Actor45: t07 Neutral 81,49
+	Actor46: t08 Neutral 80,51
+	Actor47: t08 Neutral 78,52
+	Actor48: tc02 Neutral 72,51
+	Actor49: tc01 Neutral 48,75
+	Actor50: t17 Neutral 43,77
+	Actor51: t03 Neutral 45,75
+	Actor52: t12 Neutral 45,80
+	Actor53: t12 Neutral 47,81
+
+Waypoints:
+	spawn0: 90,84
+	spawn1: 37,49
+	spawn2: 77,77
+	spawn3: 52,56
+	spawn4: 52,47
+	spawn5: 91,76
+	spawn6: 85,79
+	spawn7: 46,51
+
+Smudges:
+
+Rules:
+
