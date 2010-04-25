@@ -1,7 +1,7 @@
 Colt45:
 	ROF: 5
 	Range: 5.75
-	Report: GUNS
+	Report: GUN5
 	Bullet:
 		Speed: 100
 	Warhead:
