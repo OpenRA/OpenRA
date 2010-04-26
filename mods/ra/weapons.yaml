@@ -151,7 +151,7 @@ Dragon:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
-		RangeLimit: 20
+		RangeLimit: 35
 	Warhead:
 		Spread: 3
 		Wall: true
