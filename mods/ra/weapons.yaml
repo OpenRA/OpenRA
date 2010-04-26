@@ -156,11 +156,11 @@ Dragon:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 10%,75%,75%,100%,30%
+		Verses: 10%,75%,35%,100%,20%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 35
+		Damage: 60
 		
 Hellfire:
 	ROF: 60
