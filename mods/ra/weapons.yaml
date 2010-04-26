@@ -323,17 +323,17 @@ MammothTusk:
 		Damage: 75
 
 155mm:
-	ROF: 65
-	Range: 12
+	ROF: 85
+	Range: 14
 	Report: TANK5
 	Bullet:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccuracy: 40
+		Inaccuracy: 80
 		Image: 120MM
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Wall: true
 		Wood: true
 		Verses: 90%,75%,60%,25%,100%
