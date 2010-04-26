@@ -324,13 +324,13 @@ MammothTusk:
 
 155mm:
 	ROF: 65
-	Range: 6
+	Range: 12
 	Report: TANK5
 	Bullet:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccuracy: 5
+		Inaccuracy: 40
 		Image: 120MM
 	Warhead:
 		Spread: 6
@@ -463,7 +463,7 @@ RedEye:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccuracy: 3
+		Inaccuracy: 60
 		Image: 120MM
 	Warhead:
 		Spread: 6
