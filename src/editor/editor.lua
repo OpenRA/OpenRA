@@ -536,7 +536,7 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
 			local tx = editor:GetLine(line)
 			local s,e,cap,l = editor.spec.isfndef(tx)
 			if (s) then
-				funclist:Append((l and " " or "")..cap,line)
+				funclist:Append((l and "   " or "")..cap,line)
 			end
 		end
 		

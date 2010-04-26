@@ -16,7 +16,7 @@ return {
 						s,e,cap = string.find(str,"function%s*([A-Za-z0-9_]+%s*[%.%:]*%s*[A-Za-z0-9_])*%s*")
 					end
 					if (s) then
-						l = string.find(string.sub(1,s),"local%s+$")
+						l = string.find(string.sub(str,1,s-1),"local%s+$")
 					end
 					return s,e,cap,l
 				end,
