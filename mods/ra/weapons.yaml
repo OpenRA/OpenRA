@@ -131,7 +131,7 @@ M1Carbine:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Verses: 100%,25%,30%,10%,10%
 		Explosion: 2
 		InfDeath: 1
 		Damage: 15
@@ -156,7 +156,7 @@ Dragon:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 30%,75%,75%,100%,50%
+		Verses: 10%,75%,75%,100%,30%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
@@ -201,7 +201,7 @@ Grenade:
 		Spread: 6
 		Wall: true
 		Wood: true
-		Verses: 90%,75%,60%,25%,100%
+		Verses: 90%,40%,30%,10%,100%
 		Explosion: 5
 		InfDeath: 2
 		SmudgeType: Crater
@@ -218,7 +218,7 @@ Grenade:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 30%,75%,75%,100%,50%
+		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
@@ -235,7 +235,7 @@ Grenade:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 30%,75%,75%,100%,50%
+		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
@@ -254,7 +254,7 @@ Grenade:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 30%,75%,75%,100%,50%
+		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
@@ -272,7 +272,7 @@ Grenade:
 		Spread: 3
 		Wall: true
 		Wood: true
-		Verses: 30%,75%,75%,100%,50%
+		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
