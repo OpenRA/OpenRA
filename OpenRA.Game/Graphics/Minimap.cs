@@ -150,14 +150,24 @@ namespace OpenRA.Graphics
 			rgbaRenderer.Flush();
 		}
 
-		int2 TransformCellToMinimapPixel(RectangleF viewRect, int2 p)
+		int2 CellToMinimapPixel(RectangleF viewRect, int2 p)
 		{
 			var fx = (float)(p.X - bounds.X) / bounds.Width;
 			var fy = (float)(p.Y - bounds.Y) / bounds.Height;
 
 			return new int2(
-				(int)(viewRect.Width * fx + viewRect.Left) - 8,
-				(int)(viewRect.Height * fy + viewRect.Top) - 8);
+				(int)(viewRect.Width * fx + viewRect.Left),
+				(int)(viewRect.Height * fy + viewRect.Top));
+		}
+
+		public int2 MinimapPixelToCell(RectangleF viewRect, int2 p)
+		{
+			var fx = (float)(p.X - viewRect.Left) / viewRect.Width;
+			var fy = (float)(p.Y - viewRect.Top) / viewRect.Height;
+
+			return new int2(
+				(int)(bounds.Width * fx + bounds.Left),
+				(int)(bounds.Height * fy + bounds.Top));
 		}
 
 		public void DrawSpawnPoints(RectangleF rect)
@@ -169,7 +179,7 @@ namespace OpenRA.Graphics
 
 			foreach (var p in points)
 			{
-				var pos = TransformCellToMinimapPixel(rect, p.First);
+				var pos = CellToMinimapPixel(rect, p.First) - new int2(8, 8);
 
 				if (p.Second == null)
 					rgbaRenderer.DrawSprite(unownedSpawnPoint, pos, "chrome");
