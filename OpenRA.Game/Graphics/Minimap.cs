@@ -30,10 +30,10 @@ namespace OpenRA.Graphics
 	class Minimap
 	{
 		readonly World world;
-		Sheet sheet, mapOnlySheet;
+		Sheet sheet;
 		SpriteRenderer rgbaRenderer;
 		LineRenderer lineRenderer;
-		Sprite sprite, mapOnlySprite;
+		Sprite sprite;
 		Bitmap terrain, oreLayer;
 		Rectangle bounds;
 
@@ -42,13 +42,10 @@ namespace OpenRA.Graphics
 		
 		const int alpha = 230;
 
-		public void Tick() { }
-
 		public Minimap(World world, Renderer r)
 		{
 			this.world = world;
 			sheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
-			mapOnlySheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
 
 			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = r.RgbaSpriteRenderer;
@@ -59,8 +56,7 @@ namespace OpenRA.Graphics
 			bounds = new Rectangle(world.Map.TopLeft.X - dw, world.Map.TopLeft.Y - dh, size, size);
 
 			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
-			mapOnlySprite = new Sprite(mapOnlySheet, bounds, TextureChannel.Alpha);
-
+		
 			shroudColor = Color.FromArgb(alpha, Color.Black);
 
 			ownedSpawnPoint = ChromeProvider.GetImage(r, "spawnpoints", "owned");
@@ -97,16 +93,6 @@ namespace OpenRA.Graphics
 			return terrain;
 		}
 
-		public static Bitmap RenderTerrainBitmapWithSpawnPoints(Map map, TileSet tileset)
-		{
-			/* todo: do this a bit nicer */
-			var terrain = RenderTerrainBitmap(map, tileset);
-			foreach (var sp in map.SpawnPoints)
-				terrain.SetPixel(sp.X, sp.Y, Color.White);
-
-			return terrain;
-		}
-		
 		public void Update()
 		{
 			if (terrain == null)
@@ -122,8 +108,6 @@ namespace OpenRA.Graphics
 						if (res.GetResource(new int2(x,y)) != null)
 							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Ore)));
 			}
-
-			mapOnlySheet.Texture.SetData(oreLayer);
 
 			if (!world.GameHasStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
@@ -159,9 +143,9 @@ namespace OpenRA.Graphics
 			sheet.Texture.SetData(bitmap);
 		}
 
-		public void Draw(RectangleF rect, bool mapOnly)
+		public void Draw(RectangleF rect)
 		{
-			rgbaRenderer.DrawSprite(mapOnly ? mapOnlySprite : sprite, 
+			rgbaRenderer.DrawSprite(sprite, 
 				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
 			rgbaRenderer.Flush();
 		}

@@ -47,6 +47,29 @@ namespace OpenRA.Widgets
 		float? lastPowerDrainedPos;
 
 		string radarCollection;
+
+		int2 MinimapPixelToCell(RectangleF r, int2 p)
+		{
+			return int2.Zero;
+		}
+
+		public override bool HandleInput(MouseInput mi)
+		{
+			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.
+
+			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2, 
+				192, radarMinimapHeight);
+
+			if (!mapRect.Contains(mi.Location.ToPointF())) 
+				return false;
+
+			var loc = MinimapPixelToCell(mapRect, mi.Location);
+
+			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
+				Game.viewport.Center(loc);
+
+			return true;
+		}
 		
 		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning RadarBin?"); }
 
@@ -89,7 +112,7 @@ namespace OpenRA.Widgets
 				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
 
 			// Animation is complete
-			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength : 0))
+			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength+radarActivateAnimationLength : 0))
 				radarAnimating = false;
 		}
 
@@ -121,7 +144,7 @@ namespace OpenRA.Widgets
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
 				RectangleF mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2, 192, radarMinimapHeight);
-				world.Minimap.Draw(mapRect, false);
+				world.Minimap.Draw(mapRect);
 			}
 		}
 
