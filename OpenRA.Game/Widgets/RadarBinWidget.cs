@@ -48,16 +48,7 @@ namespace OpenRA.Widgets
 
 		string radarCollection;
 		
-		public RadarBinWidget() : base() { }
-
-		public RadarBinWidget(Widget other)
-			: base(other)
-		{
-			throw new NotImplementedException("Why are you Cloning RadarBin?");
-		}
-
-		public override Widget Clone() { return new RadarBinWidget(this); }
-		
+		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning RadarBin?"); }
 
 		public override void Draw(World world)
 		{
