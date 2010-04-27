@@ -67,6 +67,9 @@ namespace OpenRA.Widgets
 
 		public override void Tick(World world)
 		{
+			if (world.LocalPlayer != null)
+				world.Minimap.Update();
+
 			if (!radarAnimating)
 				return;
 
