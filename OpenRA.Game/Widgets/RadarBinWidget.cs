@@ -98,11 +98,8 @@ namespace OpenRA.Widgets
 				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
 
 			// Animation is complete
-			if ((radarAnimationFrame == 0 && !hasRadar)
-					|| (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength && hasRadar))
-			{
+			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength : 0))
 				radarAnimating = false;
-			}
 		}
 
 		void DrawRadar(World world)
@@ -114,9 +111,7 @@ namespace OpenRA.Widgets
 				.Any(a => a.Trait.IsActive);
 
 			if (hasNewRadar != hasRadar)
-			{
 				radarAnimating = true;
-			}
 
 			hasRadar = hasNewRadar;
 
