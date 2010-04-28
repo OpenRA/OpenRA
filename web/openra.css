@@ -1,0 +1,29 @@
+body { background-color: black; margin: 0px; color: White }
+h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
+a { text-decoration: none; color: White }
+a:visited { text-decoration: none; color: White }
+a:hover { text-decoration: none; color: White }
+div#main 
+{	
+	width: 1024px; 
+	height:768px;
+	background-image: url("background.png");
+	background-repeat: no-repeat; 
+	margin: 0px auto;
+	padding: 20px 0px;
+}
+div#header
+{
+	background-image: url("banner.png"); 
+	background-repeat: no-repeat; 
+	height: 66px
+}
+span.links
+{
+	margin: 0px 10px;
+	font-size: 1.2em;
+}
+span.links:hover
+{
+	border-bottom: solid 2px red;
+}
