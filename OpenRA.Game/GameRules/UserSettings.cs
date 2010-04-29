@@ -27,7 +27,7 @@ namespace OpenRA.GameRules
 		public bool PathDebug = false;
 		public bool PerfDebug = true;
 		public bool IndexDebug = false;
-		public bool RecordSyncReports = false;
+		public bool RecordSyncReports = true;
 		
 		// Window settings
 		public readonly int Width = 0;
