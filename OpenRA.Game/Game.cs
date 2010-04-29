@@ -208,7 +208,7 @@ namespace OpenRA
 		static Queue<Pair<int, string>> syncReports = new Queue<Pair<int, string>>();
 		const int numSyncReports = 5;
 
-		static void UpdateSyncReport()
+		public static void UpdateSyncReport()
 		{
 			if (!Settings.RecordSyncReports)
 				return;
@@ -290,9 +290,6 @@ namespace OpenRA
 						controller.selection.Tick(world);
 
 						world.Tick();
-
-						if (isNetTick)
-							UpdateSyncReport();
 
 						PerfHistory.Tick();
 					}

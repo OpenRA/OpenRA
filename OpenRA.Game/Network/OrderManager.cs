@@ -197,6 +197,8 @@ namespace OpenRA.Network
 			Connection.Send( ss );
 			WriteToReplay( frameData, ss );
 
+			Game.UpdateSyncReport();
+
 			CheckSync( ss );
 
 			++FrameNumber;
