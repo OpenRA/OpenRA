@@ -229,13 +229,17 @@ namespace OpenRA
 					Sync.CalculateSyncHash(a)));
 
 			sb.AppendLine("Tick Actors:");
-			foreach (var a in Game.world.Queries.WithTraitMultiple<ITick>())
-				sb.AppendLine("\t {0} {1} {2} {3} ({4})".F(
-					a.Actor.ActorID,
-					a.Actor.Info.Name,
-					(a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
-					a.Trait.GetType().Name,
-					Sync.CalculateSyncHash(a.Trait)));
+			foreach (var a in Game.world.Queries.WithTraitMultiple<object>())
+			{
+				var sync = Sync.CalculateSyncHash(a.Trait);
+				if (sync != 0)
+					sb.AppendLine("\t {0} {1} {2} {3} ({4})".F(
+						a.Actor.ActorID,
+						a.Actor.Info.Name,
+						(a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
+						a.Trait.GetType().Name,
+						sync));
+			}
 
 			return sb.ToString();
 		}
