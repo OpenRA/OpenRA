@@ -148,8 +148,8 @@ namespace OpenRA
 				var t = sw.ElapsedTime();
 				x.Trait.Tick( x.Actor );
 				var dt = sw.ElapsedTime() - t;
-				if( dt > 0.001 )
-					Log.Write( "expensive tick: {0}->{1}", x.Actor.Info.Name, x.Trait.GetType() );
+//				if( dt > 0.001 )
+//					Log.Write( "expensive tick: {0}->{1}", x.Actor.Info.Name, x.Trait.GetType() );
 			} );
 
 			foreach (var e in effects) e.Tick( this );
