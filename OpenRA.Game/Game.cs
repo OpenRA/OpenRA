@@ -34,6 +34,7 @@ using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
+using System.Text;
 
 namespace OpenRA
 {
@@ -204,6 +205,50 @@ namespace OpenRA
 		public static int LocalTick = 0;
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
+		static Queue<Pair<int, string>> syncReports = new Queue<Pair<int, string>>();
+		const int numSyncReports = 5;
+
+		static void UpdateSyncReport()
+		{
+			if (!Settings.RecordSyncReports)
+				return;
+
+			while (syncReports.Count >= numSyncReports) syncReports.Dequeue();
+			syncReports.Enqueue(Pair.New(orderManager.FrameNumber, GenerateSyncReport()));
+		}
+
+		static string GenerateSyncReport()
+		{
+			var sb = new StringBuilder();
+			sb.AppendLine("Actors:");
+			foreach (var a in Game.world.Actors)
+				sb.AppendLine("\t {0} {1} {2} ({3})".F(
+					a.ActorID,
+					a.Info.Name,
+					(a.Owner == null) ? "null" : a.Owner.InternalName,
+					Sync.CalculateSyncHash(a)));
+
+			sb.AppendLine("Tick Actors:");
+			foreach (var a in Game.world.Queries.WithTraitMultiple<ITick>())
+				sb.AppendLine("\t {0} {1} {2} {3} ({4})".F(
+					a.Actor.ActorID,
+					a.Actor.Info.Name,
+					(a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
+					a.Trait.GetType().Name,
+					Sync.CalculateSyncHash(a.Trait)));
+
+			return sb.ToString();
+		}
+
+		public static void DumpSyncReport()
+		{
+			foreach (var f in syncReports)
+			{
+				Log.Write("Sync for net frame {0} -------------", f.First);
+				Log.Write("{0}", f.Second);
+			}
+		}
+
 		public static void Tick()
 		{
 			if (packageChangePending)
@@ -245,6 +290,9 @@ namespace OpenRA
 						controller.selection.Tick(world);
 
 						world.Tick();
+
+						if (isNetTick)
+							UpdateSyncReport();
 
 						PerfHistory.Tick();
 					}

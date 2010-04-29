@@ -14,25 +14,32 @@ namespace OpenRA.Widgets.Delegates
 			// Checkboxes		
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = () => {return Game.Settings.UnitDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
-				Game.Settings.UnitDebug = !Game.Settings.UnitDebug;
+				Game.Settings.UnitDebug ^= true;
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = () => {return Game.Settings.PathDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => {
-				Game.Settings.PathDebug = !Game.Settings.PathDebug;
+				Game.Settings.PathDebug ^= true;
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = () => {return Game.Settings.IndexDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => {
-				Game.Settings.IndexDebug = !Game.Settings.IndexDebug;
+				Game.Settings.IndexDebug ^= true;
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFDEBUG").Checked = () => {return Game.Settings.PerfDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_PERFDEBUG").OnMouseDown = mi => {
-				Game.Settings.PerfDebug = !Game.Settings.PerfDebug;
+				Game.Settings.PerfDebug ^= true;
+				return true;
+			};
+
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SYNCREPORTS").Checked = () => { return Game.Settings.RecordSyncReports; };
+			r.GetWidget("SETTINGS_CHECKBOX_SYNCREPORTS").OnMouseDown = mi =>
+			{
+				Game.Settings.RecordSyncReports ^= true;
 				return true;
 			};
 						

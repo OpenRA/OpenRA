@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using System.Text;
 
 namespace OpenRA.Network
 {
@@ -118,7 +119,7 @@ namespace OpenRA.Network
 			{
 				if( packet.Length != existingSync.Length )
 				{
-					DumpActors();
+					Game.DumpSyncReport();
 					OutOfSync( frame );
 				}
 				else
@@ -127,7 +128,7 @@ namespace OpenRA.Network
 					{
 						if( packet[ i ] != existingSync[ i ] )
 						{
-							DumpActors();
+							Game.DumpSyncReport();
 
 							if ( i < SyncHeaderSize )
 								OutOfSync(frame, "Tick");
@@ -139,17 +140,6 @@ namespace OpenRA.Network
 			}
 			else
 				syncForFrame.Add( frame, packet );
-		}
-
-		static void DumpActors()
-		{
-			Log.Write( "Actors:" );
-			foreach( var a in Game.world.Actors )
-				Log.Write( "\t {0} {1} {2} ({3})", a.ActorID, a.Info.Name, ( a.Owner == null ) ? "null" : a.Owner.InternalName, Sync.CalculateSyncHash( a ) );
-
-			Log.Write( "Tick Actors:" );
-			foreach( var a in Game.world.Queries.WithTraitMultiple<ITick>() )
-				Log.Write( "\t {0} {1} {2} {3} ({4})", a.Actor.ActorID, a.Actor.Info.Name, ( a.Actor.Owner == null ) ? "null" : a.Actor.Owner.InternalName, a.Trait.GetType().Name, Sync.CalculateSyncHash( a.Trait ) );
 		}
 
 		void OutOfSync( int frame , int index)
