@@ -23,8 +23,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
-using System.Text;
 
 namespace OpenRA.Network
 {

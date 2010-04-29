@@ -24,6 +24,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
@@ -34,7 +35,6 @@ using OpenRA.Support;
 using OpenRA.Traits;
 using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
-using System.Text;
 
 namespace OpenRA
 {
