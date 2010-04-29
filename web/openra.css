@@ -1,4 +1,4 @@
-body { background-color: black; margin: 0px; color: White }
+body { background-color: black; margin: 0px; color: White; }
 h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
 a { text-decoration: none; color: White }
 a:visited { text-decoration: none; color: White }
@@ -18,6 +18,40 @@ div#header
 	background-repeat: no-repeat; 
 	height: 66px
 }
+div#content
+{
+	width: 33%;
+	margin: 30px 0 0 20px;
+	text-align: justify;
+}
+div#menu
+{
+	margin-top: 10px; 
+	margin-left: auto; 
+	width: 90%
+}
+
+/* Sidebar */
+div#sidebar
+{
+	margin-top: 30px;
+}
+div#sidebar strong
+{
+	font-size: 2.3em;
+	display: block
+}
+div#sidebar li
+{
+	list-style-type: none;
+	float: left;
+	margin-right: 10px;
+}
+div#sidebar span
+{
+	font-size: 0.8em
+}
+
 span.links
 {
 	margin: 0px 10px;
