@@ -57,9 +57,8 @@ namespace OpenRA
 				var smudgeLayer = world.WorldActor.traits.WithInterface<SmudgeLayer>().FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
 				if (smudgeLayer == null)
 					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
-				
-				if (!isWater)
-					smudgeLayer.AddSmudge(targetTile);
+			
+				smudgeLayer.AddSmudge(targetTile);
 			}
 			
 			if (warhead.Ore)

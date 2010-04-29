@@ -55,17 +55,16 @@ namespace OpenRA.Traits
 			tiles = new TileReference<byte,byte>[w.Map.MapSize.X,w.Map.MapSize.Y];
 			
 			// Add map smudges
-			foreach (var s in w.Map.Smudges)
-			{
-				if (!Info.Types.Contains(s.Type))
-					continue;
+			foreach (var s in w.Map.Smudges.Where( s => Info.Types.Contains(s.Type )))
 				tiles[s.Location.X,s.Location.Y] = new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
 				                                                  (byte)s.Depth);
-			}
 		}
 		
 		public void AddSmudge(int2 loc)
-		{			
+		{
+			if (!Rules.TerrainTypes[world.GetTerrainType(loc)].AcceptSmudge)
+				return;
+
 			// No smudge; create a new one
 			if (tiles[loc.X, loc.Y].type == 0)
 			{
@@ -76,9 +75,8 @@ namespace OpenRA.Traits
 			
 			// Existing smudge; make it deeper
 			int depth = Info.Depths[tiles[loc.X, loc.Y].type-1];
-			if (tiles[loc.X, loc.Y].image >= depth - 1) return; /* Smudge is at maximum depth */
-			
-			tiles[loc.X,loc.Y].image++;
+			if (tiles[loc.X, loc.Y].image < depth - 1)
+				tiles[loc.X,loc.Y].image++;
 		}
 		
 		public void Render()
