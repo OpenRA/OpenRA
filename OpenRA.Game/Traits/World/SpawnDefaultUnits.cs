@@ -52,8 +52,8 @@ namespace OpenRA.Traits
 		{
 			p.World.CreateActor("mcv", sp, p);
 
-			if (p == p.World.LocalPlayer)
-				p.World.WorldActor.traits.Get<Shroud>().Explore( p.World, sp, 
+			if (p == p.World.LocalPlayer || p.Stances[p.World.LocalPlayer] == Stance.Ally)
+				p.World.WorldActor.traits.Get<Shroud>().Explore(p.World, sp,
 					p.World.WorldActor.Info.Traits.Get<SpawnDefaultUnitsInfo>().InitialExploreRange);
 		}
 
