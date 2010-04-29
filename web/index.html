@@ -8,6 +8,13 @@
 		<!--[if IE 7]>
 			<link rel="stylesheet" type="text/css" href="ie7.css">
 		<![endif]-->
+		<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="jquery.cycle.lite.1.0.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#screenshots").cycle();
+			});
+		</script>
 	</head>
 	<body>
 		<div id="main">
@@ -48,6 +55,10 @@
 					OpenRA should run on any modern PC running Windows, OSX or Linux. Requires .NET Framework v3.5 SP1 or 
 					later; or an up-to-date version of Mono.
 				</p>
+			</div>
+			<div id="screenshots" style="width: 60%; margin-left: 30px">
+				<img src="ss1.jpg" alt="Screenshot 1" />
+				<img src="ss2.jpg" alt="Screenshot 2" />
 			</div>
 		</div>
 	</body>
