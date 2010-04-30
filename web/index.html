@@ -19,17 +19,18 @@
 	<body>
 		<div id="main">
 			<div id="header">
-				<h1><img src="soviet-logo.png" alt="Logo" style="vertical-align: middle; margin: -30px 0px" />OpenRA</h1>
+				<h1><img src="soviet-logo.png" alt="Logo" />OpenRA</h1>
 			</div>
 			<div id="menu">
 				<span class="links"><a href="index.html">Home</a></span>
 				<span class="links">Screenshots & Footage</span>
 				<span class="links">Download</span>
+				<span class="links">Mods</span>
 				<span class="links">Stats</span>
 				<span class="links">Get Involved</span>
 				<span class="links"><a href="irc://irc.freenode.net/#openra">IRC</a></span>
 			</div>
-			<div id="sidebar" style="float: right; width: 40%">
+			<div id="sidebar">
 				<ul>
 					<li>
 						<strong>30</strong><span>current players</span>
@@ -41,8 +42,14 @@
 						<strong>&gt;9000</strong><span>downloads</span>
 					</li>
 				</ul>
+				<div style="margin: 100px auto 20px auto; width: 50%; clear: both">
+					<img src="down_win.png" alt="Download OpenRA for Windows" />
+					<img src="down_win.png" alt="Download OpenRA for Windows" />
+					<img src="down_win.png" alt="Download OpenRA for Windows" />
+				</div>
 			</div>
 			<div id="content">
+				<h2>Welcome</h2>
 				<p>
 					OpenRA is an Open Source reimplementation of Command & Conquer: Red Alert.
 				</p>
@@ -52,13 +59,24 @@
 					but we might support a single-player campaign at some point, too.
 				</p>
 				<p>
-					OpenRA should run on any modern PC running Windows, OSX or Linux. Requires .NET Framework v3.5 SP1 or 
+					OpenRA should run on any modern PC running Windows, Mac OS X or Linux. Requires Microsoft .NET Framework v3.5 SP1 or 
 					later; or an up-to-date version of Mono.
 				</p>
 			</div>
-			<div id="screenshots" style="width: 60%; margin-left: 30px">
+			<div id="screenshots" style="">
 				<img src="ss1.jpg" alt="Screenshot 1" />
 				<img src="ss2.jpg" alt="Screenshot 2" />
+			</div>
+			<div id="footer" style="">
+				<a href="#" onclick="$('#trademarks').toggle()">Show legal notices</a>
+				<p id="trademarks" style="display: none">
+					Website design &copy;2010 Matthew Bowra-Dean. <a href="license.txt">Licensed under GPLv3</a><br /><br />
+					Command &amp; Conquer and Command &amp; Conquer Red Alert are trademarks or registered trademarks of Electronic Arts Inc.in the U.S. and/or other countries.<br />
+					Windows is a registered trademark of Microsoft Corporation in the United States and other countries.<br />
+					Mac OS X is a trademark of Apple Inc., registered in the U.S. and other countries.<br />
+					Linux is the registered trademark of Linus Torvalds in the U.S. and other countries.<br />
+					Mono is a registerd trademark of Novell, Inc. in the United States and other countries.
+				</p>
 			</div>
 		</div>
 	</body>

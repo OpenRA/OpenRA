@@ -1,27 +1,37 @@
 body { background-color: black; margin: 0px; color: White; }
 h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
-a { text-decoration: none; color: White }
-a:visited { text-decoration: none; color: White }
-a:hover { text-decoration: none; color: White }
+h2 { font-family: Helvetica, Arial, Sans-Serif }
+
+a { color: White }
+a:visited { color: White }
+
 div#main 
 {	
 	width: 1024px; 
 	height:768px;
 	background-image: url("background.png");
 	background-repeat: no-repeat; 
-	margin: 0px auto;
+	margin: 0 auto;
 	padding: 20px 0px;
 }
+
 div#header
 {
 	background-image: url("banner.png"); 
 	background-repeat: no-repeat; 
 	height: 66px
 }
+
+div#header img
+{
+	vertical-align: middle; 
+	margin: -30px 0px
+}
+
 div#content
 {
-	width: 33%;
-	margin: 30px 0 0 20px;
+	float: left;
+	width: 50%;
 	text-align: justify;
 }
 div#menu
@@ -30,11 +40,15 @@ div#menu
 	margin-left: auto; 
 	width: 90%
 }
+div#menu a { text-decoration: none; color: White }
+div#menu a:visited { text-decoration: none; color: White }
+div#menu a:hover { text-decoration: none; color: White }
 
 /* Sidebar */
 div#sidebar
 {
-	margin-top: 30px;
+	float: right; 
+	width: 40%
 }
 div#sidebar strong
 {
@@ -52,6 +66,23 @@ div#sidebar span
 	font-size: 0.8em
 }
 
+div#screenshots
+{
+	clear: both;
+	width: 640px; 
+	margin: 0 auto; 
+	height: 400px;
+	border: solid 5px gray;
+}
+
+div#footer
+{
+	font-size: 0.6em; 
+	margin-left: 30px;
+	margin-bottom: 10px; 
+	text-align: center
+}
+
 span.links
 {
 	margin: 0px 10px;
@@ -59,5 +90,5 @@ span.links
 }
 span.links:hover
 {
-	border-bottom: solid 2px red;
+	border-bottom: solid 2px #650b03;
 }
