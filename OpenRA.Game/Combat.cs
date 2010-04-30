@@ -54,7 +54,8 @@ namespace OpenRA
 			
 			if (warhead.SmudgeType != null)
 			{
-				var smudgeLayer = world.WorldActor.traits.WithInterface<SmudgeLayer>().FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
+				var smudgeLayer = world.WorldActor.traits.WithInterface<SmudgeLayer>()
+					.FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
 				if (smudgeLayer == null)
 					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
 			
@@ -75,6 +76,9 @@ namespace OpenRA
 					{
 						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
 						var hitActors = world.FindUnitsInCircle(args.dest, maxSpread);
+
+						Log.Write("DoImpact: {0} damage={1} modifier={2} spread={3}",
+							args.dest, warhead.Damage, firepowerModifier, maxSpread);
 
 						foreach (var victim in hitActors)
 							victim.InflictDamage(args.firedBy,
