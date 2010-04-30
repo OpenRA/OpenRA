@@ -50,8 +50,7 @@ namespace OpenRA.Traits
 				foreach(var a in self.World.Queries.OwnedBy[self.Owner])
 					a.InflictDamage(a,a.Health,null);
 				
-				// Hack
-				self.World.SetLocalPlayer(-1);
+				self.Owner.Shroud.Disabled = true;
 			}
 			HasLost = hasLost;
 		}
