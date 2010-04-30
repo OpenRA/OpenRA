@@ -10,6 +10,7 @@
 		<![endif]-->
 		<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
 		<script src="jquery.cycle.lite.1.0.min.js" type="text/javascript"></script>
+
 		<script type="text/javascript">
 			$(function() {
 				$("#screenshots").cycle();
@@ -17,17 +18,19 @@
 		</script>
 	</head>
 	<body>
+		<div id="header">
+			<h1><img src="soviet-logo.png" alt="Logo" />OpenRA</h1>
+		</div>
 		<div id="main">
-			<div id="header">
-				<h1><img src="soviet-logo.png" alt="Logo" />OpenRA</h1>
-			</div>
 			<div id="menu">
+
 				<span class="links"><a href="index.html">Home</a></span>
 				<span class="links">Screenshots & Footage</span>
 				<span class="links">Download</span>
 				<span class="links">Mods</span>
 				<span class="links">Stats</span>
 				<span class="links">Get Involved</span>
+
 				<span class="links"><a href="irc://irc.freenode.net/#openra">IRC</a></span>
 			</div>
 			<div id="sidebar">
@@ -35,6 +38,7 @@
 					<span class="stats">
 						<strong>30</strong><span class="desc">current players</span>
 					</span>
+
 					<span class="stats">
 						<strong>500</strong><span class="desc">total games played</span>
 					</span>
@@ -42,14 +46,17 @@
 						<strong>&gt;9000</strong><span class="desc">downloads</span>
 					</span>
 				</div>
+
 				<div id="download" class="rounded">
 					<img src="arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
 					Download OpenRA for Windows <br />
-					<span class="desc">version: 1.337 size: 9001KB</span>
+					<span class="desc">version: 1.337 size: 9001KB</span><br />
+					<a class="desc" href="">Download for other platforms</a>
 				</div>
 			</div>
+
 			<div id="content">
-				<h2>Welcome</h2>
+				<h2>Welcome Back, Commander</h2>
 				<p>
 					OpenRA is an Open Source reimplementation of Command & Conquer: Red Alert.
 				</p>
@@ -59,25 +66,28 @@
 					but we might support a single-player campaign at some point, too.
 				</p>
 				<p>
+
 					OpenRA should run on any modern PC running Windows, Mac OS X or Linux. Requires Microsoft .NET Framework v3.5 SP1 or 
 					later; or an up-to-date version of Mono.
 				</p>
+				<div id="screenshots">
+					<img width="512" src="ss1.jpg" alt="Screenshot 1" />
+					<img width="512" src="ss2.jpg" alt="Screenshot 2" />
+				</div>
 			</div>
-			<div id="screenshots">
-				<img width="512" src="ss1.jpg" alt="Screenshot 1" />
-				<img width="512" src="ss2.jpg" alt="Screenshot 2" />
-			</div>
+		</div>
 			<div id="footer">
-				<a href="#" onclick="$('#trademarks').toggle()">Show/hide legal notices</a>
-				<p id="trademarks" style="display: none">
-					Website design &copy;2010 Matthew Bowra-Dean. <a href="license.txt">Licensed under GPLv3</a><br /><br />
+
+				<img style="float:left; padding-left:10px; padding-top:5px;" src="gplv3-127x51.png">
+				<p>
 					Command &amp; Conquer and Command &amp; Conquer Red Alert are trademarks or registered trademarks of Electronic Arts Inc.in the U.S. and/or other countries.<br />
 					Windows is a registered trademark of Microsoft Corporation in the United States and other countries.<br />
 					Mac OS X is a trademark of Apple Inc., registered in the U.S. and other countries.<br />
+
 					Linux is the registered trademark of Linus Torvalds in the U.S. and other countries.<br />
-					Mono is a registered trademark of Novell, Inc. in the United States and other countries.
+					Mono is a registerd trademark of Novell, Inc. in the United States and other countries.
 				</p>
 			</div>
-		</div>
 	</body>
 </html>
+

@@ -17,38 +17,37 @@ div#main
 
 div#header
 {
-	/*background-image: url("banner.png"); 
-	background-repeat: no-repeat; */
-	border-top: solid 2px #650b03;
-	border-bottom: solid 2px #650b03;
-	background-color: #272d2c;
-	width: 100%;
+	background-image: url("banner.png"); 
+	background-repeat: repeat-x; 
 	height: 66px
-}
-
-div#header img
-{
-	float: left;
-	margin: -40px 0 0 0;
 }
 
 div#header h1
 {
-	margin-top: 10px;
+	margin-left:auto;
+	margin-right:auto;
+	width:280px;
+}
+
+div#header img
+{
+	vertical-align: middle; 
+	margin: -30px 0px
 }
 
 div#content
 {
-	clear: left;
-	float: left;
-	width: 50%;
 	text-align: justify;
+	width:50%;
+	padding-left:50px;
 }
 div#menu
 {
 	margin-top: 10px; 
-	margin-left: auto; 
-	width: 90%
+	margin-left: auto;
+	margin-right:auto;
+	width:90%;
+	text-align:center;
 }
 div#menu a { text-decoration: none; color: White }
 div#menu a:visited { text-decoration: none; color: White }
@@ -77,6 +76,11 @@ div#sidebar .desc
 	font-size: 0.8em
 }
 
+div#sidebar a.desc
+{
+	font-size: 0.7em
+}
+
 div#download
 {
 	margin: 20px auto; 
@@ -87,7 +91,6 @@ div#download
 
 div#screenshots
 {
-	float: left;
 	width: 512px; 
 	margin: 0 auto; 
 	height: 320px;
@@ -97,11 +100,14 @@ div#screenshots
 
 div#footer
 {
-	clear: both;
-	font-size: 0.6em; 
+	background-image: url("banner.png"); 
+	background-repeat: repeat-x; 
+	height: 66px;
+	font-size: 0.5em; 
 	margin-bottom: 10px;
-	padding-top: 10px;
-	text-align: center
+	padding-top:2px;
+	padding-right:10px;
+	text-align: right;
 }
 
 span.links
@@ -116,7 +122,7 @@ span.links:hover
 
 div.rounded
 {
-	border: solid 2px #650b03;
+	border: solid 3px #650b03;
 	background-color: #272d2c; 
 	border-radius: 10px; 
 	-moz-border-radius: 10px;
