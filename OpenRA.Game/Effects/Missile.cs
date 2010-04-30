@@ -116,7 +116,7 @@ namespace OpenRA.Effects
 			world.AddFrameEndTask(w => w.Remove(this));
 			Args.dest = Pos.ToInt2();
 			if (t > Info.Arm * 40)	/* don't blow up in our launcher's face! */
-				Combat.DoImpacts(Args, Pos.ToInt2());
+				Combat.DoImpacts(Args);
 		}
 
 		public IEnumerable<Renderable> Render()

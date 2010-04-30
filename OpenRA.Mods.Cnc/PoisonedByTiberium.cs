@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc
 						firedBy = self,
 						target = self,
 						weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()]
-					}, self.CenterLocation.ToInt2());
+					});
 
 				poisonTicks = Rules.Weapons[info.Weapon.ToLowerInvariant()].ROF;
 			}	

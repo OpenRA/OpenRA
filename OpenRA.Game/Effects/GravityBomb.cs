@@ -54,7 +54,7 @@ namespace OpenRA.Effects
 			if (--altitude <= Args.destAltitude)
 			{
 				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpacts(Args, Args.dest);
+				Combat.DoImpacts(Args);
 			}
 
 			anim.Tick();

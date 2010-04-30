@@ -45,7 +45,6 @@ namespace OpenRA.Effects
 	{
 		readonly BulletInfo Info;
 		readonly ProjectileArgs Args;
-		readonly int2 VisualDest;
 		
 		int t = 0;
 		Animation anim;
@@ -62,8 +61,6 @@ namespace OpenRA.Effects
 				var factor = ((Args.dest - Args.src).Length / Game.CellSize) / args.weapon.Range;
 				Args.dest += (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 			}
-
-			VisualDest = Args.dest + (10 * Game.CosmeticRandom.Gauss2D(1)).ToInt2();
 
 			if (Info.Image != null)
 			{
@@ -84,11 +81,11 @@ namespace OpenRA.Effects
 			{
 				var at = (float)t / TotalTime();
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src, VisualDest, at)
+				var pos = float2.Lerp(Args.src, Args.dest, at)
 					- 0.5f * anim.Image.size - new float2(0, altitude);
 
 				var highPos = (Info.High || Info.Arcing)
-					? (pos - new float2(0, (VisualDest - Args.src).Length * height * 4 * at * (1 - at)))
+					? (pos - new float2(0, (Args.dest - Args.src).Length * height * 4 * at * (1 - at)))
 					: pos;
 
 				world.AddFrameEndTask(w => w.Add(
@@ -105,7 +102,7 @@ namespace OpenRA.Effects
 				var at = (float)t / TotalTime();
 
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp( Args.src, VisualDest, at)
+				var pos = float2.Lerp( Args.src, Args.dest, at)
 					- 0.5f * anim.Image.size - new float2( 0, altitude );
 
 				if (Info.High || Info.Arcing)
@@ -113,7 +110,7 @@ namespace OpenRA.Effects
 					if (Info.Shadow)
 						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 
-					var highPos = pos - new float2(0, (VisualDest - Args.src).Length * height * 4 * at * (1 - at));
+					var highPos = pos - new float2(0, (Args.dest - Args.src).Length * height * 4 * at * (1 - at));
 
 					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette);
 				}
@@ -126,7 +123,7 @@ namespace OpenRA.Effects
 		void Explode( World world )
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoImpacts(Args, VisualDest - new int2(0, Args.destAltitude));
+			Combat.DoImpacts(Args);
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace OpenRA
 			return null;
 		}
 
-		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args, int2 visualLocation)
+		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args)
 		{
 			var world = args.firedBy.World;
 			var targetTile = ((1f / Game.CellSize) * args.dest.ToFloat2()).ToInt2();
@@ -48,7 +48,7 @@ namespace OpenRA
 
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, visualLocation, warhead.Explosion, isWater)));
+					w => w.Add(new Explosion(w, args.dest, warhead.Explosion, isWater)));
 
 			Sound.Play(GetImpactSound(warhead, isWater));
 			
@@ -92,11 +92,11 @@ namespace OpenRA
 			}
 		}
 
-		public static void DoImpacts(ProjectileArgs args, int2 visualLocation)
+		public static void DoImpacts(ProjectileArgs args)
 		{
 			foreach (var warhead in args.weapon.Warheads)
 			{
-				Action a = () => DoImpact(warhead, args, visualLocation);
+				Action a = () => DoImpact(warhead, args);
 				if (warhead.Delay > 0)
 					args.firedBy.World.AddFrameEndTask(
 						w => w.Add(new DelayedAction(warhead.Delay, a)));
@@ -119,7 +119,7 @@ namespace OpenRA
 				facing = 0
 			};
 
-			DoImpacts(args, location);
+			DoImpacts(args);
 		}
 
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)

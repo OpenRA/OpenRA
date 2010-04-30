@@ -51,7 +51,7 @@ namespace OpenRA.Effects
 
 			if (!doneDamage)
 			{
-				Combat.DoImpacts(Args, Args.dest);
+				Combat.DoImpacts(Args);
 				doneDamage = true;
 			}
 		}
