@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -45,8 +45,14 @@ namespace OpenRA.Traits
 			var hasLost = !hasAnything && self.Owner != self.World.NeutralPlayer;
 
 			if (hasLost && !HasLost)
+			{
 				Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
-
+				foreach(var a in self.World.Queries.OwnedBy[self.Owner])
+					a.InflictDamage(a,a.Health,null);
+				
+				// Hack
+				self.World.SetLocalPlayer(-1);
+			}
 			HasLost = hasLost;
 		}
 	}
