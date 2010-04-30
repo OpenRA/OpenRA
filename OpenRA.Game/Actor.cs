@@ -176,8 +176,10 @@ namespace OpenRA
 			var oldState = GetDamageState();
 
 			/* apply the damage modifiers, if we have any. */
-			damage = (int)traits.WithInterface<IDamageModifier>().Aggregate(
-				(float)damage, (a, t) => t.GetDamageModifier() * a);
+			var modifier = (float)traits.WithInterface<IDamageModifier>()
+				.Select(t => t.GetDamageModifier()).Product();
+
+			damage = (int)(damage * modifier);
 
 			Health -= damage;
 			if (Health <= 0)
@@ -194,8 +196,8 @@ namespace OpenRA
 
 			if (Health > maxHP)	Health = maxHP;
 
-			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6}",
-				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health);
+			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
+				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health, modifier);
 
 			var newState = GetDamageState();
 

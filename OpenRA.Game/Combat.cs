@@ -81,8 +81,10 @@ namespace OpenRA
 							args.dest, warhead.Damage, firepowerModifier, maxSpread);
 
 						foreach (var victim in hitActors)
-							victim.InflictDamage(args.firedBy,
-								(int)GetDamageToInflict(victim, args, warhead, firepowerModifier), warhead);
+						{
+							var damage = (int)GetDamageToInflict(victim, args, warhead, firepowerModifier);
+							victim.InflictDamage(args.firedBy, damage, warhead);
+						}
 					} break;
 
 				case DamageModel.PerCell:
@@ -126,6 +128,20 @@ namespace OpenRA
 			DoImpacts(args);
 		}
 
+		static readonly float[] falloff = 
+		{
+			1f, 0.3678795f, 0.1353353f, 0.04978707f, 
+			0.01831564f, 0.006737947f, 0.002478752f, 0.000911882f
+		};
+
+		static float GetDamageFalloff(float x)
+		{
+			var u = (int)x;
+			if (u >= falloff.Length - 1) return 0;
+			var t = x - u;
+			return (falloff[u] * (1 - t)) + (falloff[u + 1] * t);
+		}
+
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			// don't hit air units with splash from ground explosions, etc
@@ -133,10 +149,15 @@ namespace OpenRA
 
 			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
 			var radius = selectable != null ? selectable.Radius : 0;
-			var distance = Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
-			var rawDamage = warhead.Damage * modifier * (float)Math.Exp(-distance / warhead.Spread);
-			var multiplier = warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
-			return rawDamage * multiplier;
+			var distance = (int)Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
+			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
+			var rawDamage = (float)(warhead.Damage * modifier * falloff);
+			var multiplier = (float)warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
+
+			Log.Write("GetDamageToInflict {0} #{1} r={2} dist={3} falloff={4} raw={5} mul={6}",
+				target.Info.Name, target.ActorID, radius, distance, falloff, rawDamage, multiplier);
+
+			return (float)(rawDamage * multiplier);
 		}
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
