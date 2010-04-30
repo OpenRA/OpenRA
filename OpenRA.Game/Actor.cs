@@ -172,6 +172,7 @@ namespace OpenRA
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
+			var rawDamage = damage;
 			var oldState = GetDamageState();
 
 			/* apply the damage modifiers, if we have any. */
@@ -192,6 +193,9 @@ namespace OpenRA
 			var maxHP = this.GetMaxHP();
 
 			if (Health > maxHP)	Health = maxHP;
+
+			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6}",
+				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health);
 
 			var newState = GetDamageState();
 
