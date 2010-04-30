@@ -47,6 +47,7 @@ div#menu a:hover { text-decoration: none; color: White }
 /* Sidebar */
 div#sidebar
 {
+	margin-top: 19px;
 	float: right; 
 	width: 450px;
 	text-align: center
@@ -66,21 +67,30 @@ div#sidebar .desc
 	font-size: 0.8em
 }
 
+div#download
+{
+	margin: 20px auto; 
+	width: 280px; 
+	height: 40px; 
+	padding: 10px 10px
+}
+
 div#screenshots
 {
 	float: left;
-	width: 640px; 
+	width: 512px; 
 	margin: 0 auto; 
-	height: 400px;
-	border: solid 5px gray;
+	height: 320px;
+	clear: left;
+	/*border: solid 5px gray;*/
 }
 
 div#footer
 {
 	clear: both;
 	font-size: 0.6em; 
-	margin-left: 30px;
-	margin-bottom: 10px; 
+	margin-bottom: 10px;
+	padding-top: 10px;
 	text-align: center
 }
 
@@ -92,4 +102,14 @@ span.links
 span.links:hover
 {
 	border-bottom: solid 2px #650b03;
+}
+
+div.rounded
+{
+	border: solid 2px #650b03;
+	background-color: #272d2c; 
+	border-radius: 10px; 
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
 }
