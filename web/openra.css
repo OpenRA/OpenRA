@@ -7,7 +7,7 @@ a:visited { color: White }
 
 div#main 
 {	
-	width: 80%; 
+	width: 1024px; 
 	height:768px;
 	background-image: url("background.png");
 	background-repeat: no-repeat; 
