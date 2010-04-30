@@ -109,35 +109,35 @@ namespace OpenRA.Network
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
 
-		void CheckSync( byte[] packet )
+		void CheckSync(byte[] packet)
 		{
-			var frame = BitConverter.ToInt32( packet, 0 );
+			var frame = BitConverter.ToInt32(packet, 0);
 			byte[] existingSync;
-			if( syncForFrame.TryGetValue( frame, out existingSync ) )
+			if (syncForFrame.TryGetValue(frame, out existingSync))
 			{
-				if( packet.Length != existingSync.Length )
+				if (packet.Length != existingSync.Length)
 				{
-					Game.DumpSyncReport();
-					OutOfSync( frame );
+					Game.DumpSyncReport(frame);
+					OutOfSync(frame);
 				}
 				else
 				{
-					for( int i = 0 ; i < packet.Length ; i++ )
+					for (int i = 0; i < packet.Length; i++)
 					{
-						if( packet[ i ] != existingSync[ i ] )
+						if (packet[i] != existingSync[i])
 						{
-							Game.DumpSyncReport();
+							Game.DumpSyncReport(frame);
 
-							if ( i < SyncHeaderSize )
+							if (i < SyncHeaderSize)
 								OutOfSync(frame, "Tick");
 							else
-								OutOfSync( frame ,  (i - SyncHeaderSize) / 4);
+								OutOfSync(frame, (i - SyncHeaderSize) / 4);
 						}
 					}
 				}
 			}
 			else
-				syncForFrame.Add( frame, packet );
+				syncForFrame.Add(frame, packet);
 		}
 
 		void OutOfSync( int frame , int index)

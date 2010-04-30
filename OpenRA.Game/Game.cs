@@ -244,13 +244,17 @@ namespace OpenRA
 			return sb.ToString();
 		}
 
-		public static void DumpSyncReport()
+		public static void DumpSyncReport( int frame )
 		{
-			foreach (var f in syncReports)
+			var f = syncReports.FirstOrDefault(a => a.First == frame);
+			if (f == null)
 			{
-				Log.Write("Sync for net frame {0} -------------", f.First);
-				Log.Write("{0}", f.Second);
+				Log.Write("No sync report available!");
+				return;
 			}
+
+			Log.Write("Sync for net frame {0} -------------", f.First);
+			Log.Write("{0}", f.Second);
 		}
 
 		public static void Tick()
