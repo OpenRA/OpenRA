@@ -1,4 +1,4 @@
-body { background-color: black; margin: 0px; color: White; }
+body { background-color: black; margin: 0px; color: White; font-family: Cambria, Georgia, Times New Roman, Serif; font-size: 12pt }
 h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
 h2 { font-family: Helvetica, Arial, Sans-Serif }
 
@@ -17,15 +17,21 @@ div#main
 
 div#header
 {
-	background-image: url("banner.png"); 
-	background-repeat: repeat-x; 
+	margin-top: 30px;
 	height: 66px
+}
+
+div.bar
+{
+	border-top: solid 3px #650b03;
+	border-bottom: solid 3px #650b03;
+	background-color: #272d2c;
+	width: 100%;
 }
 
 div#header h1
 {
-	margin-left:auto;
-	margin-right:auto;
+	margin: 0 auto;
 	width:280px;
 }
 
@@ -81,49 +87,58 @@ div#sidebar a.desc
 	font-size: 0.7em
 }
 
-div#download
+div.download
 {
+	border: solid 3px #650b03;
+	background-color: #272d2c;
 	margin: 20px auto; 
 	width: 280px; 
 	height: 40px; 
 	padding: 10px 10px
 }
 
+div.download:hover
+{
+	border-color: gray;
+	cursor: pointer
+}
+
 div#screenshots
 {
-	width: 512px; 
+	width: 506px; 
 	margin: 0 auto; 
-	height: 320px;
-	clear: left;
-	/*border: solid 5px gray;*/
+	height: 316px;
+	border: solid 3px #650b03;
 }
 
 div#footer
 {
-	background-image: url("banner.png"); 
-	background-repeat: repeat-x; 
-	height: 66px;
-	font-size: 0.5em; 
+	font-size: 0.7em; 
 	margin-bottom: 10px;
-	padding-top:2px;
+	padding-top:9px;
 	padding-right:10px;
-	text-align: right;
+	text-align: center;
+	height: 25px;
+}
+
+p#trademarks
+{
+	padding-right: 10px;
 }
 
 span.links
 {
+	border-bottom: solid 3px #650b03;
 	margin: 0px 10px;
 	font-size: 1.2em;
 }
 span.links:hover
 {
-	border-bottom: solid 2px #650b03;
+	border-bottom-color: gray;
 }
 
 div.rounded
 {
-	border: solid 3px #650b03;
-	background-color: #272d2c; 
 	border-radius: 10px; 
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
