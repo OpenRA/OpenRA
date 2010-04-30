@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 	{		
 		public void WorldLoaded(World w)
 		{
-			Game.MoveViewport(new int2(85,65));
+			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
 			Sound.PlayMusic("hell226m.aud");
 		}
 	}
