@@ -146,6 +146,9 @@ namespace OpenRA
 
 		public static bool IsVisible(this Actor a)
 		{
+			if (a.World.LocalPlayer.Shroud.Disabled)
+				return true;
+
 			var shroud = a.World.WorldActor.traits.Get<Shroud>();
 			if (!Shroud.GetVisOrigins(a).Any(o => shroud.exploredCells[o.X, o.Y]))		// covered by shroud
 				return false;
