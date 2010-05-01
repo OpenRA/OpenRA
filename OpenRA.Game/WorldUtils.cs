@@ -146,7 +146,7 @@ namespace OpenRA
 
 		public static bool IsVisible(this Actor a)
 		{
-			if (a.World.LocalPlayer.Shroud.Disabled)
+			if (a.World.LocalPlayer != null && a.World.LocalPlayer.Shroud.Disabled)
 				return true;
 
 			var shroud = a.World.WorldActor.traits.Get<Shroud>();

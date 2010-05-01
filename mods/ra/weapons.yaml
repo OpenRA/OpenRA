@@ -191,6 +191,7 @@ Hellfire:
 Grenade:
 	ROF: 60
 	Range: 4
+	Report: grenade1
 	Bullet:
 		Speed: 5
 		High: true
@@ -206,6 +207,7 @@ Grenade:
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 50
+		ImpactSound: kaboom12
 
 75mm:
 	ROF: 40
