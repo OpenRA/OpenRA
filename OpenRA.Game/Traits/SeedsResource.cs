@@ -20,14 +20,15 @@
 
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
 	class SeedsResourceInfo : ITraitInfo
 	{
-		public readonly float Chance = .05f;
-		public readonly int Interval = 5;
+		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
+		public readonly int MaxRange = 100;
 
 		public object Create(Actor self) { return new SeedsResource(); }
 	}
@@ -50,13 +51,33 @@ namespace OpenRA.Traits
 
 				var resLayer = self.World.WorldActor.traits.Get<ResourceLayer>();
 
-				for (var j = -1; j < 2; j++)
-					for (var i = -1; i < 2; i++)
-						if (self.World.SharedRandom.NextDouble() < info.Chance)
-							if (self.World.IsCellBuildable(self.Location + new int2(i, j), false))
-								resLayer.AddResource(resourceType, self.Location.X + i, self.Location.Y + j, 1);
+				var cell = RandomWalk(self.Location, self.World.SharedRandom)
+					.Take(info.MaxRange)
+					.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
+					.Cast<int2?>().FirstOrDefault();
+
+				if (cell != null &&
+					(resLayer.GetResource(cell.Value) == resourceType || resLayer.GetResource(cell.Value) == null) &&
+					self.World.IsCellBuildable(cell.Value, false))
+					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
 
 				ticks = info.Interval;
+			}
+		}
+
+		static IEnumerable<int2> RandomWalk(int2 p, Thirdparty.Random r)
+		{
+			for (; ; )
+			{
+				var dx = r.Next(-1, 2);
+				var dy = r.Next(-1, 2);
+
+				if (dx == 0 && dy == 0)
+					continue;
+
+				p.X += dx;
+				p.Y += dy;
+				yield return p;
 			}
 		}
 	}

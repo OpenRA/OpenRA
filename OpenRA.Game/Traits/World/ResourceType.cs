@@ -33,8 +33,6 @@ namespace OpenRA.Traits
 		public readonly int ValuePerUnit = 0;
 		public readonly string Name = null;
 
-		public readonly float GrowthInterval = 0;
-		public readonly float SpreadInterval = 0;
 		public readonly string MovementTerrainType = null;
 		public readonly string PathingTerrainType = null;
 
@@ -43,10 +41,8 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ResourceType(this); }
 	}
 
-	public class ResourceType : ITick
+	public class ResourceType
 	{
-		int growthTicks;
-		int spreadTicks;
 		public ResourceTypeInfo info;
 		float[] movementSpeed = new float[4];
 		float[] pathCost = new float[4];
@@ -72,23 +68,6 @@ namespace OpenRA.Traits
 		public float GetCost(UnitMovementType umt)
 		{
 			return pathCost[(int)umt];
-		}
-
-		public void Tick(Actor self)
-		{
-			if (info.GrowthInterval != 0 && --growthTicks <= 0)
-			{
-				growthTicks = (int)(info.GrowthInterval * 25 * 60);
-				self.World.WorldActor.traits.Get<ResourceLayer>().Grow(this);
-				self.World.Minimap.InvalidateOre();
-			}
-
-			if (info.SpreadInterval != 0 && --spreadTicks <= 0)
-			{
-				spreadTicks = (int)(info.SpreadInterval * 25 * 60);
-				self.World.WorldActor.traits.Get<ResourceLayer>().Spread(this);
-				self.World.Minimap.InvalidateOre();
-			}
 		}
 	}
 }

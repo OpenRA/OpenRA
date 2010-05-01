@@ -236,8 +236,6 @@ World:
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
 		Name: Ore
-		GrowthInterval: 1.2
-		SpreadInterval: 2.0
 	ResourceType@gem:
 		ResourceType: 2
 		MovementTerrainType: Ore

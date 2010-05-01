@@ -108,12 +108,12 @@ namespace OpenRA.Traits
 			return content[p.X,p.Y].type.GetCost(umt);
 		}
 		
-		public Sprite[] ChooseContent(ResourceType t)
+		Sprite[] ChooseContent(ResourceType t)
 		{
 			return t.info.Sprites[world.SharedRandom.Next(t.info.Sprites.Length)];
 		}
 
-		public int GetAdjacentCellsWith(ResourceType t, int i, int j)
+		int GetAdjacentCellsWith(ResourceType t, int i, int j)
 		{
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
@@ -123,7 +123,7 @@ namespace OpenRA.Traits
 			return sum;
 		}
 
-		public int GetIdealDensity(int x, int y)
+		int GetIdealDensity(int x, int y)
 		{
 			return (GetAdjacentCellsWith(content[x, y].type, x, y) *
 				(content[x, y].image.Length - 1)) / 9;
@@ -146,6 +146,8 @@ namespace OpenRA.Traits
 				content[i, j].density + n);
 		}
 
+		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
+
 		public ResourceType Harvest(int2 p)
 		{
 			var type = content[p.X,p.Y].type;
@@ -164,43 +166,6 @@ namespace OpenRA.Traits
 			content[p.X, p.Y].type = null;
 			content[p.X, p.Y].image = null;
 			content[p.X, p.Y].density = 0;
-		}
-
-		public void Grow(ResourceType t)
-		{
-			var map = world.Map;
-			var newDensity = new byte[map.MapSize.X, map.MapSize.Y];
-			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (content[i, j].type == t)
-						newDensity[i, j] = (byte)GetIdealDensity(i, j);
-
-			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (content[i, j].type == t && content[i, j].density < newDensity[i, j])
-						++content[i, j].density;
-		}
-
-		public void Spread(ResourceType t)
-		{
-			var map = world.Map;
-			var growMask = new bool[map.MapSize.X, map.MapSize.Y];
-			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (content[i,j].type == null
-						&& GetAdjacentCellsWith(t, i,j ) > 0
-						&& world.IsCellBuildable(new int2(i, j), false))
-						growMask[i, j] = true;
-
-			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-					if (growMask[i, j])
-					{
-						content[i, j].type = t;
-						content[i, j].image = ChooseContent(t);
-						content[i, j].density = 0;
-					}
-			
 		}
 
 		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
