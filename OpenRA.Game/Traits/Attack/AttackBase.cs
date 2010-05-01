@@ -69,8 +69,9 @@ namespace OpenRA.Traits
 
 		protected virtual bool CanAttack(Actor self)
 		{
-			if( target == null ) return false;
-			if( ( primaryFireDelay > 0 ) && ( secondaryFireDelay > 0 ) ) return false;
+			if (target == null) return false;
+			if ((primaryFireDelay > 0) && (secondaryFireDelay > 0)) return false;
+			if (self.traits.WithInterface<IDisable>().Any(d => d.Disabled)) return false;
 
 			return true;
 		}
