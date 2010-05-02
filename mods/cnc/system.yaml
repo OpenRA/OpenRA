@@ -208,8 +208,6 @@ World:
 		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		ValuePerUnit: 30
 		Name: Tiberium
-		GrowthInterval: 2
-		SpreadInterval: 12
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		Types:sc1,sc2,sc3,sc4,sc5,sc6

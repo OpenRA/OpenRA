@@ -63,6 +63,7 @@ namespace OpenRA.Traits
 				a.InflictDamage(a, a.Health, null);
 
 			self.Owner.Shroud.Disabled = true;
+			HasLost = true;
 		}
 	}
 
