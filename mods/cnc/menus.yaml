@@ -97,7 +97,7 @@ Container:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM- HEIGHT)/2
 			Width: 450
-			Height: 300
+			Height: 350
 			Visible: false
 			Children:
 				Label@SETTINGS_LABEL_TITLE:
@@ -136,6 +136,13 @@ Container:
 					Width:300
 					Height:20
 					Text:Show Performance Information
+				Checkbox@SETTINGS_CHECKBOX_SYNCREPORTS:
+					Id:SETTINGS_CHECKBOX_SYNCREPORTS
+					X:100
+					Y:180
+					Width:300
+					Height:20
+					Text:Collect Sync Reports
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180
@@ -531,7 +538,7 @@ Container:
 					X:(WINDOW_RIGHT - WIDTH)/2
 					Y:(WINDOW_BOTTOM - HEIGHT)/2
 					Width:300
-					Height:220
+					Height:280
 					Visible:false
 					Children:
 						Label@LABEL_TITLE:
@@ -542,24 +549,38 @@ Container:
 							Height:25
 							Text:Options
 							Align:Center
+						Button@BUTTON_RESUME:
+							Id:BUTTON_RESUME
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:60
+							Width:160
+							Height:25
+							Text:Resume
+						Button@BUTTON_SURRENDER:
+							Id:BUTTON_SURRENDER
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:100
+							Width:160
+							Height:25
+							Text:Surrender
 						Button@BUTTON_SETTINGS:
 							Id:BUTTON_SETTINGS
 							X:(PARENT_RIGHT - WIDTH)/2
-							Y:80
+							Y:140
 							Width:160
 							Height:25
 							Text:Settings
 						Button@BUTTON_DISCONNECT:
 							Id:BUTTON_DISCONNECT
 							X:(PARENT_RIGHT - WIDTH)/2
-							Y:120
+							Y:180
 							Width:160
 							Height:25
 							Text:Disconnect
 						Button@BUTTON_QUIT:
 							Id:BUTTON_QUIT
 							X:(PARENT_RIGHT - WIDTH)/2
-							Y:160
+							Y:220
 							Width:160
 							Height:25
 							Text:Quit

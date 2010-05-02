@@ -47,6 +47,18 @@ namespace OpenRA.Widgets.Delegates
 				r.OpenWindow("SETTINGS_BG");
 				return true;
 			};
+
+			optionsBG.GetWidget("BUTTON_RESUME").OnMouseUp = mi =>
+			{
+				optionsBG.Visible = false;
+				return true;
+			};
+
+			optionsBG.GetWidget("BUTTON_SURRENDER").OnMouseUp = mi =>
+			{
+				Game.IssueOrder(new Order("Surrender", Game.world.LocalPlayer.PlayerActor));
+				return true;
+			};
 			
 			optionsBG.GetWidget("BUTTON_QUIT").OnMouseUp = mi => {
 				Game.Exit();
