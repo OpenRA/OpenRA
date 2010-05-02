@@ -185,8 +185,9 @@ namespace OpenRA
 			if (Health <= 0)
 			{
 				Health = 0;
-				if (attacker.Owner != null)
-					attacker.Owner.Kills++;
+
+				attacker.Owner.Kills++;
+				Owner.Deaths++;
 
 				if (RemoveOnDeath)
 					World.AddFrameEndTask(w => w.Remove(this));

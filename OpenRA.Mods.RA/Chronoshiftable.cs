@@ -68,7 +68,8 @@ namespace OpenRA.Mods.RA
 				while (!cargo.IsEmpty(self))
 				{
 					chronosphere.Owner.Kills++;
-					cargo.Unload(self);
+					var a = cargo.Unload(self);
+					a.Owner.Deaths++;
 				}
 			}
 

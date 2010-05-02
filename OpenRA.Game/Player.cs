@@ -33,6 +33,7 @@ namespace OpenRA
 	{
 		public Actor PlayerActor;
 		public int Kills;
+		public int Deaths;
 
 		public readonly string Palette;
 		public readonly Color Color;

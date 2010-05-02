@@ -64,6 +64,7 @@ namespace OpenRA.Mods.Aftermath
 				// Remove from world
 				self.Health = 0;
 				detonatedBy.Owner.Kills++;
+				self.Owner.Deaths++;
 				w.Remove(self);
 			} );
 		}
