@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 
 	interface IVictoryConditions { bool HasLost { get; } bool HasWon { get; } }
 
-	class VictoryConditions : ITick, IVictoryConditions
+	class VictoryConditions : ITick, IVictoryConditions, IResolveOrder
 	{
 		public bool HasLost { get; private set; }
 		public bool HasWon { get; private set; }
@@ -45,14 +45,24 @@ namespace OpenRA.Traits
 			var hasLost = !hasAnything && self.Owner != self.World.NeutralPlayer;
 
 			if (hasLost && !HasLost)
-			{
-				Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
-				foreach(var a in self.World.Queries.OwnedBy[self.Owner])
-					a.InflictDamage(a,a.Health,null);
-				
-				self.Owner.Shroud.Disabled = true;
-			}
+				Surrender(self);
+
 			HasLost = hasLost;
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Surrender")
+				Surrender(self);
+		}
+
+		void Surrender(Actor self)
+		{
+			Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
+			foreach (var a in self.World.Queries.OwnedBy[self.Owner])
+				a.InflictDamage(a, a.Health, null);
+
+			self.Owner.Shroud.Disabled = true;
 		}
 	}
 
