@@ -85,6 +85,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2D
 		mods\cnc\chrome-nod.png = mods\cnc\chrome-nod.png
 		mods\cnc\civilian.yaml = mods\cnc\civilian.yaml
 		mods\cnc\compat.yaml = mods\cnc\compat.yaml
+		mods\cnc\defaults.yaml = mods\cnc\defaults.yaml
 		mods\cnc\dialog.png = mods\cnc\dialog.png
 		mods\cnc\infantry.yaml = mods\cnc\infantry.yaml
 		mods\cnc\mod.yaml = mods\cnc\mod.yaml

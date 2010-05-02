@@ -36,6 +36,7 @@ Player:
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
 		UnitType: a10
+	VictoryConditions:
 	
 World:
 	GlobalDefaults:
