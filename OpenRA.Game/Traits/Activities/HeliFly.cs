@@ -25,7 +25,6 @@ namespace OpenRA.Traits.Activities
 {
 	class HeliFly : IActivity
 	{
-		const int CruiseAltitude = 20;
 		readonly float2 Dest;
 		public HeliFly(float2 dest)
 		{
@@ -41,10 +40,11 @@ namespace OpenRA.Traits.Activities
 				return NextActivity;
 
 			var unit = self.traits.Get<Unit>();
+			var info = self.Info.Traits.Get<HelicopterInfo>();
 
-			if (unit.Altitude != CruiseAltitude)
+			if (unit.Altitude != info.CruiseAltitude)
 			{
-				unit.Altitude += Math.Sign(CruiseAltitude - unit.Altitude);
+				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
 				return this;
 			}
 

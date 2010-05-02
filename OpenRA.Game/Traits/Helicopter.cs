@@ -29,6 +29,8 @@ namespace OpenRA.Traits
 	{
 		public readonly string[] RepairBuildings = { "fix" };
 		public readonly string[] RearmBuildings = { "hpad" };
+		public readonly int CruiseAltitude = 20;
+		public readonly int IdealSeparation = 80;
 		public object Create(Actor self) { return new Helicopter(self); }
 	}
 

@@ -27,8 +27,6 @@ namespace OpenRA.Traits.Activities
 	class HeliAttack : IActivity
 	{
 		Actor target;
-		const int CruiseAltitude = 20;
-		const int AvoidDist = 80;
 		public HeliAttack( Actor target ) { this.target = target; }
 
 		public IActivity NextActivity { get; set; }
@@ -44,9 +42,10 @@ namespace OpenRA.Traits.Activities
 
 			var unit = self.traits.Get<Unit>();
 
-			if (unit.Altitude != CruiseAltitude)
+			var info = self.Info.Traits.Get<HelicopterInfo>();
+			if (unit.Altitude != info.CruiseAltitude)
 			{
-				unit.Altitude += Math.Sign(CruiseAltitude - unit.Altitude);
+				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
 				return this;
 			}
 
@@ -61,7 +60,7 @@ namespace OpenRA.Traits.Activities
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				self.CenterLocation += (rawSpeed / dist.Length) * dist;
 
-			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, AvoidDist)
+			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, info.IdealSeparation)
 				.Where(a => a.traits.Contains<Helicopter>());
 
 			var f = otherHelis
