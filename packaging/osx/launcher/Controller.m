@@ -26,8 +26,10 @@
 	NSURL *settingsFile = [NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"launcher.ini"]];
 	settings = [[Settings alloc] init];
 	[settings loadSettingsFile:settingsFile];
-
+	
 	mods = [[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"mods.plist"]] retain];
+	[modsList selectRow:1 byExtendingSelection:NO];
+
 }
 
 #pragma mark Main window
@@ -90,6 +92,13 @@
 	}
 	
 	return @"";
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView 
+shouldEditTableColumn:(NSTableColumn *)aTableColumn 
+				  row:(NSInteger)rowIndex
+{
+	return NO;
 }
 
 #pragma mark Downloads sheet
