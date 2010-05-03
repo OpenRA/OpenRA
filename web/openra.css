@@ -8,7 +8,6 @@ a:visited { color: White }
 div#main 
 {	
 	width: 1024px; 
-	/*height:768px;*/
 	background-image: url("background.png");
 	background-repeat: no-repeat; 
 	margin: 0 auto;
@@ -116,7 +115,6 @@ div#screenshots
 	width: 506px; 
 	margin: 0 auto; 
 	height: 316px;
-	border: solid 3px #650b03;
 }
 
 div#footer
@@ -165,4 +163,18 @@ div.rounded
 #nav li.activeSlide
 {
 	background-color: #650b03;
+}
+
+#videoPlayer
+{
+	padding-top: 5px; 
+	height:410px; 
+	width: 500px; 
+	margin: 20px auto; 
+	background-color: Black; 
+}
+
+.border
+{
+	border: solid 3px #650b03
 }
