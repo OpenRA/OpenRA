@@ -50,7 +50,7 @@
 				});
 
 				$.get("/master/list.php", function(data) {
-					if (data.length <= 3) return;
+					if (data.length <= 3) $("#stats_players").html("0");
 					var m, sum = 0;
 					var p = /^\s*Players: (\d+)/g;
 					while ((m = p.exec(data)) != null) {
@@ -81,13 +81,13 @@
 			<div id="sidebar">
 				<div style="margin: 0 auto; width: 100%">
 					<span class="stats">
-						<strong id="stats_players">0</strong><span class="desc">current players</span>
+						<strong id="stats_players">--</strong><span class="desc">current players</span>
 					</span>
 					<span class="stats">
-						<strong id="stats_games">500</strong><span class="desc">total games played</span>
+						<strong id="stats_games">--</strong><span class="desc">total games played</span>
 					</span>
 					<span class="stats">
-						<strong id="stats_down">0</strong><span class="desc">downloads</span>
+						<strong id="stats_down">--</strong><span class="desc">downloads</span>
 					</span>
 				</div>
 
