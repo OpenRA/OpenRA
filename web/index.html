@@ -15,13 +15,36 @@
 			$(function() {
 				$("#screenshots").cycle();
 
-				$("#trademarktoggle").toggle(function() {
-					$("#trademarks").show();
-					$("#footer").height(145);
-				},
-				function() {
-					$("#trademarks").hide();
-					$("#footer").height(25);
+				//Work out what to show for downloads
+				var useragent = navigator.userAgent.toLowerCase();
+				if (useragent.indexOf("x11") != -1 || useragent.indexOf("linux") != -1) {
+					$("#down_btn_linux").show();
+					$("#down_link_win").show();
+					$("#down_link_mac").show();
+				}
+				else if (useragent.indexOf("mac") != -1) {
+					$("#down_btn_mac").show();
+					$("#down_link_win").show();
+					$("#down_link_linux").show();
+				}
+				else {
+					$("#down_btn_win").show();
+					$("#down_link_mac").show();
+					$("#down_link_linux").show();
+				}
+
+				$.get("downloads.txt", function(data) {
+					$("#stats_down").html(data);
+				});
+
+				$.get("/master/list.php", function(data) {
+					if (data.length <= 3) return;
+					var m, sum = 0;
+					var p = /^\s*Players: (\d+)/g;
+					while ((m = p.exec(data)) != null) {
+						sum += (Number)(m[1]);
+					}
+					$("#stats_players").html(sum);
 				});
 			});
 
@@ -45,22 +68,42 @@
 			<div id="sidebar">
 				<div style="margin: 0 auto; width: 100%">
 					<span class="stats">
-						<strong>30</strong><span class="desc">current players</span>
+						<strong id="stats_players">0</strong><span class="desc">current players</span>
 					</span>
 
 					<span class="stats">
 						<strong>500</strong><span class="desc">total games played</span>
 					</span>
 					<span class="stats">
-						<strong>&gt;9000</strong><span class="desc">downloads</span>
+						<strong id="stats_down">0</strong><span class="desc">downloads</span>
 					</span>
 				</div>
 
-				<div id="download_win" class="rounded download" onclick="document.location='releases/windows/latest.php'">
+				<div id="down_btn_win" class="rounded download" onclick="document.location='releases/windows/latest.php'">
 					<img src="arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
 					Download OpenRA for Windows<br />
 					<span class="desc">version: 1.337 size: 9001KB</span>
 				</div>
+				<div id="down_btn_linux" class="rounded download" onclick="document.location='releases/linux/latest.php'">
+					<img src="arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
+					Download OpenRA for Linux<br />
+					<span class="desc">version: 1.337 size: 9001KB</span>
+				</div>
+				<div id="down_btn_mac" class="rounded download" onclick="document.location='releases/mac/latest.php'">
+					<img src="arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
+					Download OpenRA for Mac OS X<br />
+					<span class="desc">version: 1.337 size: 9001KB</span>
+				</div>
+				<p id="down_link_win" class="download">
+					<a href="releases/windows/latest.php">Download OpenRA for Windows</a>
+				</p>
+				<p id="down_link_linux" class="download">
+					<a href="releases/linux/latest.php">Download OpenRA for Linux</a>
+				</p>
+				<p id="down_link_mac" class="download">
+					<a href="releases/mac/latest.php">Download OpenRA for Mac OS X</a>
+				</p>
+				<a href="license.html"><img src="gplv3-127x51.png" alt="GPLv3 Logo" style="border: none; margin-top: 5px;"/></a>
 			</div>
 
 			<div id="content">
@@ -85,14 +128,13 @@
 			</div>
 		</div>
 			<div id="footer" class="bar">
-				<a id="trademarktoggle" href="#trademarks">Show/hide legal notices</a>
-				<p id="trademarks" style="display: none; text-align: center; margin-top: 5px">
+				<p id="trademarks">
+					<img src="soviet-logo.png" alt="OpenRA Logo" height="70px" style="float: right; margin-right: 10px" />
 					Command &amp; Conquer and Command &amp; Conquer Red Alert are trademarks or registered trademarks of Electronic Arts Inc.in the U.S. and/or other countries.<br />
 					Windows is a registered trademark of Microsoft Corporation in the United States and other countries.<br />
 					Mac OS X is a trademark of Apple Inc., registered in the U.S. and other countries.<br />
 					Linux is the registered trademark of Linus Torvalds in the U.S. and other countries.<br />
 					Mono is a registered trademark of Novell, Inc. in the United States and other countries.<br />
-					<a href="license.html"><img src="gplv3-127x51.png" alt="GPLv3 Logo" style="margin-top: 5px; border: none"/></a>
 				</p>
 			</div>
 	</body>

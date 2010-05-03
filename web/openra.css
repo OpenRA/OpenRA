@@ -89,18 +89,26 @@ div#sidebar a.desc
 
 div.download
 {
-	border: solid 3px #650b03;
+	border: solid 3px #bd0000;
 	background-color: #272d2c;
 	margin: 20px auto; 
 	width: 280px; 
 	height: 40px; 
-	padding: 10px 10px
+	padding: 12px 10px 10px 10px;
+	display: none;
 }
 
 div.download:hover
 {
-	border-color: gray;
+	border-color: white;
+	background-color: #3f4544;
 	cursor: pointer
+}
+
+p.download
+{
+	display: none;
+	font-size: 0.8em;
 }
 
 div#screenshots
@@ -115,26 +123,23 @@ div#footer
 {
 	font-size: 0.7em; 
 	margin-bottom: 10px;
-	padding-top:9px;
-	padding-right:10px;
 	text-align: center;
-	height: 25px;
 }
 
 p#trademarks
 {
-	padding-right: 10px;
+	margin-top: 10px; margin-bottom: 10px
 }
 
 span.links
 {
-	border-bottom: solid 3px #650b03;
+	border: none;
 	margin: 0px 10px;
 	font-size: 1.2em;
 }
 span.links:hover
 {
-	border-bottom-color: gray;
+	border-bottom: solid 3px #bd0000;
 }
 
 div.rounded
