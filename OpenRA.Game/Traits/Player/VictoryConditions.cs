@@ -71,4 +71,9 @@ namespace OpenRA.Traits
 
 	class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
 	class MustBeDestroyed { }
+
+	/* tag trait for "bases": mcv/fact */
+
+	class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
+	class BaseBuilding { }
 }

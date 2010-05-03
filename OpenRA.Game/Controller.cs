@@ -146,5 +146,23 @@ namespace OpenRA
 
 		public void SetModifiers(Modifiers mods) { modifiers = mods; }
 		public Modifiers GetModifiers() { return modifiers; }
+
+		public void GotoNextBase()
+		{
+			var bases = Game.world.Queries.OwnedBy[Game.world.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
+			if (!bases.Any()) return;
+
+			var next = bases
+				.Select( b => b.Actor )
+				.SkipWhile(b => Game.controller.selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
+
+			if (next == null)
+				next = bases.Select(b => b.Actor).First();
+
+			Game.controller.selection.Combine(Game.world, new Actor[] { next }, false, true);
+			Game.viewport.Center(Game.controller.selection.Actors);
+		}
 	}
 }

@@ -500,6 +500,9 @@ namespace OpenRA
 				if (c >= '0' && c <= '9')
 					Game.controller.selection.DoControlGroup(world,
 						c - '0', modifiers);
+
+				if (c == 'h')
+					Game.controller.GotoNextBase();
 			}
 
 			if( sync != Game.world.SyncHash() )

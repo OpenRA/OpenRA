@@ -415,6 +415,7 @@ FACT:
 		Description: Construction Yard
 	CustomSellValue:
 		Value: 2500
+	BaseBuilding:
 
 PROC:
 	Inherits: ^Building

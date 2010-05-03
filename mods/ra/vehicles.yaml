@@ -280,6 +280,7 @@ MCV:
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 	MustBeDestroyed:
+	BaseBuilding:
 
 JEEP:
 	Inherits: ^Vehicle
