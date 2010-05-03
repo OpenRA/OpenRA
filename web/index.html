@@ -44,6 +44,10 @@
 				$.get("downloads.txt", function(data) {
 					$("#stats_down").html(data);
 				});
+				
+				$.get("/games.txt", function(data) {
+					$("#stats_games").html(data);
+				});
 
 				$.get("/master/list.php", function(data) {
 					if (data.length <= 3) return;
@@ -79,9 +83,8 @@
 					<span class="stats">
 						<strong id="stats_players">0</strong><span class="desc">current players</span>
 					</span>
-
 					<span class="stats">
-						<strong>0</strong><span class="desc">total games played</span>
+						<strong id="stats_games">500</strong><span class="desc">total games played</span>
 					</span>
 					<span class="stats">
 						<strong id="stats_down">0</strong><span class="desc">downloads</span>
