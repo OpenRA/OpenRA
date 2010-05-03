@@ -58,8 +58,17 @@ namespace OpenRA
 					.FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
 				if (smudgeLayer == null)
 					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
-			
-				smudgeLayer.AddSmudge(targetTile);
+
+				if (warhead.Size[0] > 0)
+				{
+					var smudgeCells = world.FindTilesInCircle(targetTile, warhead.Size[0])
+						.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+
+					foreach (var sc in smudgeCells)
+						smudgeLayer.AddSmudge(sc);
+				}
+				else
+					smudgeLayer.AddSmudge(targetTile);
 			}
 			
 			if (warhead.Ore)
