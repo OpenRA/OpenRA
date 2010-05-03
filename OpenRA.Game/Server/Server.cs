@@ -53,9 +53,11 @@ namespace OpenRA.Server
 		static int lastPing = 0;
 		static bool isInternetServer;
 		static string masterServerUrl;
+		static bool isInitialPing;
 
 		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map)
 		{
+			isInitialPing = true;
 			Server.masterServerUrl = masterServerUrl;
 			isInternetServer = internetServer;
 			listener = new TcpListener(IPAddress.Any, port);
@@ -92,7 +94,6 @@ namespace OpenRA.Server
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
 
-					/* msdn lies, -1 doesnt work. this is ~1h instead. */
 					Socket.Select( checkRead, null, null, MasterPingInterval * 1000000 );
 
 					foreach( Socket s in checkRead )
@@ -538,8 +539,15 @@ namespace OpenRA.Server
 		{
 			if (wc.IsBusy || !isInternetServer) return;
 
+			var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
+			if (isInitialPing)
+			{
+				url += "&new=1";
+				isInitialPing = false;
+			}
+
 			wc.DownloadDataAsync(new Uri(
-				masterServerUrl + "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}".F(
+				masterServerUrl + url.F(
 				ExternalPort, Uri.EscapeUriString(Name),
 				GameStarted ? 2 : 1,	// todo: post-game states, etc.
 				lobbyInfo.Clients.Count,
