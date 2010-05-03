@@ -9,11 +9,19 @@
 			<link rel="stylesheet" type="text/css" href="ie7.css">
 		<![endif]-->
 		<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
-		<script src="jquery.cycle.lite.1.0.min.js" type="text/javascript"></script>
+		<script src="jquery.cycle.min.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
 			$(function() {
-				$("#screenshots").cycle();
+				$("#screenshots").cycle({
+					sync: true,
+					pager: '#nav',
+					timeout: 5000,
+					pagerAnchorBuilder: function(idx, slide) {
+						return '#nav li:eq(' + idx + ')';
+					},
+					pagerEvent: 'mouseover'
+				});
 
 				//Work out what to show for downloads
 				var useragent = navigator.userAgent.toLowerCase();
@@ -50,6 +58,7 @@
 
 			
 		</script>
+		
 	</head>
 	<body>
 		<div id="header" class="bar">
@@ -57,9 +66,8 @@
 		</div>
 		<div id="main">
 			<div id="menu">
-
 				<span class="links"><a href="index.html">Home</a></span>
-				<span class="links">Gameplay Footage</span>
+				<span class="links"><a href="footage.html">Gameplay Footage</a></span>
 				<span class="links">Mods</span>
 				<span class="links">Stats</span>
 				<span class="links"><a href="http://github.com/chrisforbes/OpenRA">Get Involved</a></span>
@@ -108,6 +116,14 @@
 
 			<div id="content">
 				<h2>Welcome Back, Commander</h2>
+				<ul id="nav" style="margin: 0; padding: 0">
+					<li></li>
+					<li></li>
+				</ul>
+				<div id="screenshots" style="clear: left">
+					<img width="506" src="ss1.jpg" alt="Screenshot 1" />
+					<img width="506" src="ss2.jpg" alt="Screenshot 2" />
+				</div>
 				<p>
 					OpenRA is an Open Source reimplementation of Command & Conquer: Red Alert.
 				</p>
@@ -121,10 +137,6 @@
 					OpenRA should run on any modern PC running Windows, Mac OS X or Linux. Requires Microsoft .NET Framework v3.5 SP1 or 
 					later; or an up-to-date version of Mono.
 				</p>
-				<div id="screenshots">
-					<img width="506" src="ss1.jpg" alt="Screenshot 1" />
-					<img width="506" src="ss2.jpg" alt="Screenshot 2" />
-				</div>
 			</div>
 		</div>
 			<div id="footer" class="bar">

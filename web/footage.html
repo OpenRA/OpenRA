@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>OpenRA - Gameplay Footage</title>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+	<title>OpenRA</title>
+	<link rel="Stylesheet" type="text/css" href="openra.css" />
+	<!--[if IE 7]>
+			<link rel="stylesheet" type="text/css" href="ie7.css">
+		<![endif]-->
+
+	<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			//Work out what to show for downloads
+			var useragent = navigator.userAgent.toLowerCase();
+			if (useragent.indexOf("x11") != -1 || useragent.indexOf("linux") != -1) {
+				$("#down_btn_linux").show();
+				$("#down_link_win").show();
+				$("#down_link_mac").show();
+			}
+			else if (useragent.indexOf("mac") != -1) {
+				$("#down_btn_mac").show();
+				$("#down_link_win").show();
+				$("#down_link_linux").show();
+			}
+			else {
+				$("#down_btn_win").show();
+				$("#down_link_mac").show();
+				$("#down_link_linux").show();
+			}
+
+			$.get("downloads.txt", function(data) {
+				$("#stats_down").html(data);
+			});
+
+			$.get("/master/list.php", function(data) {
+				if (data.length <= 3) return;
+				var m, sum = 0;
+				var p = /^\s*Players: (\d+)/g;
+				while ((m = p.exec(data)) != null) {
+					sum += (Number)(m[1]);
+				}
+				$("#stats_players").html(sum);
+			});
+		});
+
+			
+	</script>
+
+	<script src="http://www.google.com/uds/api?file=uds.js&v=1.0&source=uds-vbw" type="text/javascript"></script>
+
+	<style type="text/css">
+		@import url("http://www.google.com/uds/css/gsearch.css");
+	</style>
+	<!-- Video Bar Code and Stylesheet -->
+
+	<script type="text/javascript">
+		window._uds_vbw_donotrepair = true;
+	</script>
+
+	<script src="http://www.google.com/uds/solutions/videobar/gsvideobar.js?mode=new"
+		type="text/javascript"></script>
+
+	<style type="text/css">
+		@import url("http://www.google.com/uds/solutions/videobar/gsvideobar.css");
+	</style>
+	<style type="text/css">
+		.playerInnerBox_gsvb .player_gsvb
+		{
+			width: 480px;
+			height: 380px;
+		}
+		
+		.playerBox_gsvb div.alldone_gsvb 
+		{
+			display: none;
+		}
+		
+		.playerBox_gsvb a.title_gsvb
+		{
+			color:White;
+		}
+		
+		.playerBox_gsvb a.title_gsvb:hover
+		{
+			color:White;
+			text-decoration:underline;
+		}
+	</style>
+
+	<script type="text/javascript">
+		function LoadVideoBar() {
+
+			var videoBar;
+			var options = {
+				largeResultSet: !true,
+				horizontal: true,
+				autoExecuteList: {
+					cycleTime: GSvideoBar.CYCLE_TIME_MEDIUM,
+					cycleMode: GSvideoBar.CYCLE_MODE_LINEAR,
+					executeList: ["ytchannel:ijwchrisf"]
+				},
+			}
+
+			videoBar = new GSvideoBar(document.getElementById("videoBar-bar"),
+                              document.getElementById("videoPlayer"),
+                              options);
+                              
+            videoBar.switchToListItem(0);
+		}
+		// arrange for this function to be called during body.onload
+		// event processing
+		GSearch.setOnLoadCallback(LoadVideoBar);
+	</script>
+
+</head>
+<body>
+	<div id="header" class="bar">
+		<h1>
+			<img src="soviet-logo.png" alt="Logo" />OpenRA</h1>
+	</div>
+	<div id="main">
+		<div id="menu">
+			<span class="links"><a href="index.html">Home</a></span> <span class="links"><a href="footage.html">
+				Gameplay Footage</a></span> <span class="links">Mods</span> <span class="links">Stats</span>
+			<span class="links"><a href="http://github.com/chrisforbes/OpenRA">Get Involved</a></span>
+			<span class="links"><a href="irc://irc.freenode.net/#openra">IRC</a></span>
+		</div>
+		<div style="margin-top: 20px">
+			<div id="videoPlayer" style="padding-top: 5px; height:410px; width: 500px; margin: 20px auto; background-color: Black; border: solid 3px #650b03"></div>
+			<div id="videoBar-bar">
+				<span style="color: #676767; font-size: 11px; margin: 10px; padding: 4px;">Loading...</span>
+			</div>
+		</div>
+	</div>
+	<div id="footer" class="bar">
+		<p id="trademarks">
+			<img src="soviet-logo.png" alt="OpenRA Logo" height="70px" style="float: right; margin-right: 10px" />
+			Command &amp; Conquer and Command &amp; Conquer Red Alert are trademarks or registered
+			trademarks of Electronic Arts Inc.in the U.S. and/or other countries.<br />
+			Windows is a registered trademark of Microsoft Corporation in the United States
+			and other countries.<br />
+			Mac OS X is a trademark of Apple Inc., registered in the U.S. and other countries.<br />
+			Linux is the registered trademark of Linus Torvalds in the U.S. and other countries.<br />
+			Mono is a registered trademark of Novell, Inc. in the United States and other countries.<br />
+		</p>
+	</div>
+</body>
+</html>

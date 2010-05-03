@@ -8,7 +8,7 @@ a:visited { color: White }
 div#main 
 {	
 	width: 1024px; 
-	height:768px;
+	/*height:768px;*/
 	background-image: url("background.png");
 	background-repeat: no-repeat; 
 	margin: 0 auto;
@@ -148,4 +148,21 @@ div.rounded
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-khtml-border-radius: 10px;
+}
+
+#nav li
+{
+	list-style-type: none;
+	display: block; 
+	height: 15px; 
+	width: 20px; 
+	background-color: white; 
+	margin-right: 10px; 
+	float: left;
+	cursor: pointer;
+}
+
+#nav li.activeSlide
+{
+	background-color: #650b03;
 }
