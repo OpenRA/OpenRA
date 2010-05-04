@@ -2,6 +2,8 @@ CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
 PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng seqed mapcvtr
+PREFIX = /usr
+INSTALL_DIR = $(PREFIX)/share/openra
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 
@@ -64,6 +66,42 @@ mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 
 # -platform:x86
 
+.SUFFIXES:
+.PHONY: clean all default mods seqed mapcvtr install
+
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
+
+clean: 
+	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
+
+distclean: clean
+
+install: all
+	@-echo "Installing OpenRA to $(INSTALL_DIR)"
+	@-mkdir -p $(INSTALL_DIR)
+	@-cp --parents $(foreach prog,$(PROGRAMS),$($(prog)_TARGET)) $(INSTALL_DIR)
+	@-cp -r mods $(INSTALL_DIR)
+	@-cp -r shaders $(INSTALL_DIR)
+	@-cp *.ttf $(INSTALL_DIR)
+	@-cp *.ini $(INSTALL_DIR)
+	@-gacutil -i thirdparty/Tao/Tao.Cg.dll
+	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll
+	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
+	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
+	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll
+	@-echo "#!/bin/sh" > openra
+	@-echo "cd $(INSTALL_DIR)" >> openra
+	@-echo "mono $(INSTALL_DIR)/$(game_TARGET)" >> openra
+	@-chmod +x openra
+	@-mv openra $(PREFIX)/bin
+
+uninstall:
+	@-rm -r $(INSTALL_DIR)
+	@-rm $(PREFIX)/bin/openra
+
+mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
+seqed: $(seqed_TARGET)
+mapcvtr: $(mapcvtr_TARGET)
 
 define BUILD_ASSEMBLY
 
@@ -76,20 +114,4 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
 		$$($(1)_SRCS)
 endef
 
-
 $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
-
-
-.SUFFIXES:
-.PHONY: clean all default mods seqed mapcvtr
-
-
-clean: 
-	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
-
-mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
-seqed: $(seqed_TARGET)
-mapcvtr: $(mapcvtr_TARGET)
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
-
-.DEFAULT: all
