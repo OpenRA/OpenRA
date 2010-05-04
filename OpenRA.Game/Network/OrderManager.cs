@@ -62,7 +62,10 @@ namespace OpenRA.Network
 		public OrderManager( IConnection conn, string replayFilename )
 			: this( conn )
 		{
-			replaySaveFile = File.Create( replayFilename );
+			string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) 
+				+ Path.DirectorySeparatorChar + ".openra";
+			if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+			replaySaveFile = File.Create( path + Path.DirectorySeparatorChar + replayFilename );
 		}
 
 		public void IssueOrders( Order[] orders )
