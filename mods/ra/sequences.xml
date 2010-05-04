@@ -899,7 +899,8 @@
     <sequence name="die2" start="160" length="8" />
     <sequence name="die3" start="168" length="12" />
     <sequence name="die4" start="180" length="18" />
-    <sequence name="die5" start="0" length="14" src="electro" />
+		<sequence name="die5" start="160" length="8" />
+		<sequence name="die6" start="0" length="14" src="electro" />
     <sequence name="run" start="56" length="6" facings="8" />
   </unit>
   <unit name="c2">
@@ -910,7 +911,8 @@
     <sequence name="die2" start="160" length="8" />
     <sequence name="die3" start="168" length="12" />
     <sequence name="die4" start="180" length="18" />
-    <sequence name="die5" start="0" length="14" src="electro" />
+		<sequence name="die5" start="160" length="8" />
+    <sequence name="die6" start="0" length="14" src="electro" />
     <sequence name="run" start="56" length="6" facings="8" />
   </unit>
   <unit name="parabomb">
