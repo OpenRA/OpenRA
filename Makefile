@@ -2,10 +2,17 @@ CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
 PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng seqed mapcvtr
-PREFIX = /usr
-INSTALL_DIR = $(PREFIX)/share/openra
+prefix = /usr
+datarootdir = $(prefix)/share
+datadir = $(datarootdir)
+bindir = $(prefix)/bin
+INSTALL_DIR = $(DESTDIR)$(datadir)/openra
+INSTALL = install
+INSTALL_PROGRAM = $(INSTALL)
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
+
+CORE = fileformats gl game seqed mapcvtr
 
 fileformats_SRCS	=	$(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	=	OpenRA.FileFormats.dll
@@ -67,7 +74,7 @@ mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all default mods seqed mapcvtr install
+.PHONY: clean all default mods seqed mapcvtr install uninstall
 
 all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
 
@@ -77,27 +84,50 @@ clean:
 distclean: clean
 
 install: all
+	$(NORMAL_INSTALL)
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
-	@-mkdir -p $(INSTALL_DIR)
-	@-cp --parents $(foreach prog,$(PROGRAMS),$($(prog)_TARGET)) $(INSTALL_DIR)
-	@-cp -r mods $(INSTALL_DIR)
-	@-cp -r shaders $(INSTALL_DIR)
-	@-cp *.ttf $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
+	
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/aftermath
+	@$(INSTALL_PROGRAM) $(aftermath_TARGET) $(INSTALL_DIR)/mods/aftermath
+	@-cp $(foreach f,$(shell ls mods/aftermath --hide=*.dll),mods/aftermath/$(f)) $(INSTALL_DIR)/mods/aftermath
+	@cp -r mods/aftermath/packages $(INSTALL_DIR)/mods/aftermath
+	
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
+	@$(INSTALL_PROGRAM) $(cnc_TARGET) $(INSTALL_DIR)/mods/cnc
+	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
+	
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) $(ra_TARGET) $(INSTALL_DIR)/mods/ra
+	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
+	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
+	
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra-ng
+	@$(INSTALL_PROGRAM) $(ra_ng_TARGET) $(INSTALL_DIR)/mods/ra-ng
+	@-cp $(foreach f,$(shell ls mods/ra-ng --hide=*.dll),mods/ra-ng/$(f)) $(INSTALL_DIR)/mods/ra-ng
+	
+	@cp -r shaders $(INSTALL_DIR)
+	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
-	@-gacutil -i thirdparty/Tao/Tao.Cg.dll
-	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll
-	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll
+	@-gacutil -i thirdparty/Tao/Tao.Cg.dll >/dev/null
+	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll >/dev/null
+	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll >/dev/null
+	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll >/dev/null
+	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll >/dev/null
 	@-echo "#!/bin/sh" > openra
 	@-echo "cd $(INSTALL_DIR)" >> openra
 	@-echo "mono $(INSTALL_DIR)/$(game_TARGET)" >> openra
-	@-chmod +x openra
-	@-mv openra $(PREFIX)/bin
+	@$(INSTALL_PROGRAM) -m +rx openra $(DESTDIR)$(bindir)
+
+	@echo "OpenRA is now installed. You will now want to download http://open-ra.org/packages/ra-packages.zip \
+	and http://open-ra.org/packages/cnc-packages.zip and extract their contents to $(INSTALL_DIR)/mods/ra/packages \
+	and $(INSTALL_DIR)/mods/cnc/packages respectively."
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)
-	@-rm $(PREFIX)/bin/openra
+	@-rm $(DESTDIR)$(bindir)/openra
 
 mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
 seqed: $(seqed_TARGET)
