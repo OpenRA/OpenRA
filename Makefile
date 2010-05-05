@@ -111,12 +111,6 @@ install: all
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
 	@cp -r thirdparty $(INSTALL_DIR)
-	@-echo "#!/bin/sh" > openra
-	@-echo "cd $(INSTALL_DIR)" >> openra
-	@-echo "mono $(INSTALL_DIR)/$(game_TARGET)" >> openra
-	@$(INSTALL_PROGRAM) -d $(DESTDIR)$(bindir)/
-	@$(INSTALL_PROGRAM) -m +rx openra $(DESTDIR)$(bindir)/
-
 	@echo "OpenRA is now installed. You will now want to download http://open-ra.org/packages/ra-packages.zip \
 	and http://open-ra.org/packages/cnc-packages.zip and extract their contents to $(INSTALL_DIR)/mods/ra/packages \
 	and $(INSTALL_DIR)/mods/cnc/packages respectively."
