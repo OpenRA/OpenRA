@@ -59,14 +59,18 @@ namespace OpenRA.Widgets.Delegates
 					int height = 50;
 					int i = 0;
 
-					foreach (var game in games)
+					foreach (var game in games.Where( g => g.State == 1 ))	/* only "waiting for players" */
 					{
 						var g = game;
 						var b = new ButtonWidget
 						{
 							Bounds = new Rectangle(margin, height, bg.Bounds.Width - 2 * margin, 25),
 							Id = "JOIN_GAME_{0}".F(i),
-							Text = "{0} ({1})".F(game.Name, game.Address),
+							Text = "{0} ({2}/8, {3}) {1}".F(			/* /8 = hack */
+								game.Name, 
+								game.Address, 
+								game.Players, 
+								string.Join( ",", game.Mods )),
 							Delegate = "ServerBrowserDelegate",
 
 							OnMouseUp = nmi =>
