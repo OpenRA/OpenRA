@@ -75,7 +75,7 @@ namespace OpenRA.Effects
 		{
 			t += 40;
 
-			anim.Tick();
+			if (anim != null) anim.Tick();
 
 			if (t > TotalTime()) Explode( world );
 
