@@ -197,7 +197,7 @@ Grenade:
 		Speed: 5
 		High: true
 		Arcing: true
-		Inaccuracy: 3
+		Inaccuracy: 13
 		Image: BOMB
 	Warhead:
 		Spread: 6
