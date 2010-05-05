@@ -124,17 +124,17 @@ namespace OpenRA
 			Timer.Time( "----ChangeMods" );
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time( "manifest: {0}" );
-			Game.LoadModAssemblies(manifest);
+			LoadModAssemblies(manifest);
 			SheetBuilder.Initialize(renderer);
 			LoadModPackages(manifest);
 			Timer.Time( "load assemblies, packages: {0}" );
-			Game.packageChangePending = false;
+			packageChangePending = false;
 		}
 		
 		public static void ChangeMap(string mapName)
 		{
-			Game.mapName = mapName;
-			Game.mapChangePending = false;
+			mapName = mapName;
+			mapChangePending = false;
 		}
 		
 		public static void LoadMap(string mapName)
@@ -221,7 +221,7 @@ namespace OpenRA
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine("Actors:");
-			foreach (var a in Game.world.Actors)
+			foreach (var a in world.Actors)
 				sb.AppendLine("\t {0} {1} {2} ({3})".F(
 					a.ActorID,
 					a.Info.Name,
@@ -229,7 +229,7 @@ namespace OpenRA
 					Sync.CalculateSyncHash(a)));
 
 			sb.AppendLine("Tick Actors:");
-			foreach (var a in Game.world.Queries.WithTraitMultiple<object>())
+			foreach (var a in world.Queries.WithTraitMultiple<object>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
@@ -353,13 +353,13 @@ namespace OpenRA
 			if (!world.GameHasStarted)
 				world.SharedRandom = new OpenRA.Thirdparty.Random(LobbyInfo.GlobalSettings.RandomSeed);
 
-			if (Game.orderManager.Connection.ConnectionState == ConnectionState.Connected)
-				world.SetLocalPlayer(Game.orderManager.Connection.LocalClientId);
+			if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
+				world.SetLocalPlayer(orderManager.Connection.LocalClientId);
 
-			if (Game.orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
-				&& !Game.orderManager.GameStarted)
+			if (orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
+				&& !orderManager.GameStarted)
 			{
-				Game.orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
+				orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
 				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
 
@@ -412,7 +412,7 @@ namespace OpenRA
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 
-			Game.viewport.GoToStartLocation( world.LocalPlayer );
+			viewport.GoToStartLocation( world.LocalPlayer );
 			orderManager.StartGame();
 		}
 
@@ -436,19 +436,21 @@ namespace OpenRA
 		static int2 lastPos;
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
-			int sync = Game.world.SyncHash();
+			int sync = world.SyncHash();
 
 			if (ev == MouseInputEvent.Down)
 				lastPos = new int2(e.Location);
 
-			if (ev == MouseInputEvent.Move && (e.Button == MouseButtons.Middle || e.Button == (MouseButtons.Left | MouseButtons.Right)))
+			if (ev == MouseInputEvent.Move && 
+				(e.Button == MouseButtons.Middle || 
+				e.Button == (MouseButtons.Left | MouseButtons.Right)))
 			{
 				var p = new int2(e.Location);
 				viewport.Scroll(lastPos - p);
 				lastPos = p;
 			}
 
-			Game.viewport.DispatchMouseInput( world, 
+			viewport.DispatchMouseInput( world, 
 				new MouseInput
 				{
 					Button = (MouseButton)(int)e.Button,
@@ -457,7 +459,7 @@ namespace OpenRA
 					Modifiers = modifierKeys,
 				});
 
-			if( sync != Game.world.SyncHash() )
+			if( sync != world.SyncHash() )
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
@@ -487,12 +489,12 @@ namespace OpenRA
 
 		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
 		{
-			int sync = Game.world.SyncHash();
+			int sync = world.SyncHash();
 			
 			if( e.KeyChar == '\r' )
-				Game.chat.Toggle();
+				chat.Toggle();
 			else if (Game.chat.isChatting)
-				Game.chat.TypeChar(e.KeyChar);
+				chat.TypeChar(e.KeyChar);
 			else
 			{
 				var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
@@ -517,10 +519,10 @@ namespace OpenRA
 		static Size GetResolution(Settings settings)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-			if (Game.Settings.Width > 0 && Game.Settings.Height > 0)
+			if (Settings.Width > 0 && Settings.Height > 0)
 			{
-				desktopResolution.Width = Game.Settings.Width;
-				desktopResolution.Height = Game.Settings.Height;
+				desktopResolution.Width = Settings.Width;
+				desktopResolution.Height = Settings.Height;
 			}
 			return new Size(
 				desktopResolution.Width,
@@ -539,20 +541,20 @@ namespace OpenRA
 			}
 			
 			LoadUserSettings(settings);
-			Game.LobbyInfo.GlobalSettings.Mods = Game.Settings.InitialMods;
+			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			
 			// Load the default mod to access required files
-			Game.LoadModPackages(new Manifest(Game.LobbyInfo.GlobalSettings.Mods));
+			LoadModPackages(new Manifest(LobbyInfo.GlobalSettings.Mods));
 			
-			Renderer.SheetSize = Game.Settings.SheetSize;
+			Renderer.SheetSize = Settings.SheetSize;
 			
 			bool windowed = !Game.Settings.Fullscreen;
 			var resolution = GetResolution(settings);
 			renderer = new Renderer(resolution, windowed);
 			resolution = renderer.Resolution;
 
-			Game.controller = new Controller();
-			Game.clientSize = new int2(resolution);
+			controller = new Controller();
+			clientSize = new int2(resolution);
 			
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -570,16 +572,16 @@ namespace OpenRA
 			
 			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
-			Game.ResetTimer();
+			ResetTimer();
 		}
 
 		static void LoadUserSettings(Settings settings)
 		{
-			Game.Settings = new UserSettings();
+			Settings = new UserSettings();
 			var settingsFile = settings.GetValue("settings", "settings.ini");
 			FileSystem.Mount("./");
 			if (FileSystem.Exists(settingsFile))
-				FieldLoader.Load(Game.Settings,
+				FieldLoader.Load(Settings,
 					new IniFile(FileSystem.Open(settingsFile)).GetSection("Settings"));
 			FileSystem.UnmountAll();
 		}
@@ -589,7 +591,7 @@ namespace OpenRA
 		{
 			while (!quit)
 			{
-				Game.Tick();
+				Tick();
 				Application.DoEvents();
 			}
 		}
@@ -598,6 +600,10 @@ namespace OpenRA
 
 		public static void Debug(string s) { chat.AddLine(Color.White, "Debug", s); }
 
-		public static void Disconnect() { }
+		public static void Disconnect()
+		{
+			JoinLocal();
+			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
+		}
 	}
 }
