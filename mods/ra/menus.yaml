@@ -629,34 +629,48 @@ Container:
 		Background@MUSIC_BG:
 			Id:MUSIC_BG
 			Delegate:MusicPlayerDelegate
-			X:WINDOW_RIGHT - 100
+			X:WINDOW_RIGHT - 175
 			Y:WINDOW_BOTTOM - 65
-			Width: 90
+			Width: 160
 			Height: 55
 			Visible: true
 			Children:
 				Button@BUTTON_PLAY:
 					Id:BUTTON_PLAY
 					Visible:false
-					X:15
+					X:50
 					Y:15
 					Width:25
 					Height:25
 					Text:|>
 				Button@BUTTON_PAUSE:
 					Id:BUTTON_PAUSE
-					X:15
+					X:50
 					Y:15
 					Width:25
 					Height:25
 					Text:||
 				Button@BUTTON_STOP:
 					Id:BUTTON_STOP
-					X:50
+					X:85
 					Y:15
 					Width:25
 					Height:25
 					Text:[]
+				Button@BUTTON_NEXT:
+					Id:BUTTON_NEXT
+					X:120
+					Y:15
+					Width:25
+					Height:25
+					Text:>>
+				Button@BUTTON_PREV:
+					Id:BUTTON_PREV
+					X:15
+					Y:15
+					Width:25
+					Height:25
+					Text:<<
 
 
 

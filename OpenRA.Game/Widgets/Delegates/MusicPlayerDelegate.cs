@@ -42,6 +42,18 @@ namespace OpenRA.Widgets.Delegates
 				bg.Visible = false;
 				return true;
 			};
+			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi => {
+				Sound.MusicPaused = false;
+				bg.GetWidget("BUTTON_PLAY").Visible = false;
+				bg.GetWidget("BUTTON_PAUSE").Visible = true;
+				return true;
+			};
+			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi => {
+				Sound.MusicPaused = false;
+				bg.GetWidget("BUTTON_PLAY").Visible = false;
+				bg.GetWidget("BUTTON_PAUSE").Visible = true;
+				return true;
+			};
 		}
 	}
 }
