@@ -1,0 +1,50 @@
+
+install_ra_packages() {
+    wget http://open-ra.org/packages/ra-packages.zip
+    mkdir -p $pkgdir/usr/share/openra/mods/ra/packages
+    unzip ra-packages.zip -d $pkgdir/usr/share/openra/mods/ra/packages
+}
+
+install_cnc_packages() {
+    wget http://open-ra.org/packages/cnc-packages.zip
+    mkdir -p $pkgdir/usr/share/openra/mods/cnc/packages
+    unzip ra-packages.zip -d $pkgdir/usr/share/openra/mods/cnc/packages
+}
+
+# arg 1:  the new package version
+post_install() {
+    while true 
+    do
+        read -s -n1 -p "Download and install RA packages? [Y/n]"
+        case $REPLY in
+            y|Y|"") 
+                install_ra_packages
+                break;;
+            n|N) break;;
+            *) echo "Please enter y or n.";;
+        esac
+    done
+    
+    while true 
+    do
+        read -s -n1 -p "Download and install C&C packages? [Y/n]"
+        case $REPLY in
+            y|Y|"") 
+                install_cnc_packages
+                break;;
+            n|N) break;;
+            *) echo "Please enter y or n.";;
+        esac
+    done
+    
+    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Cg.dll
+	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
+	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
+	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
+	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
+	
+	echo "#!/bin/sh" > openra
+	echo "cd /usr/share/openra" >> openra
+	echo "mono /usr/share/openra/OpenRA.Game.exe" >> openra
+	install -m +rx openra /usr/bin/
+}

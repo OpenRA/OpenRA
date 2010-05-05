@@ -1,0 +1,52 @@
+# Contributor: Matthew Bowra-Dean <matthew@ijw.co.nz>
+pkgname=openra-git
+pkgver=20100505
+pkgrel=1
+pkgdesc="Open Source rebuild of the Red Alert game engine using Mono/OpenGL."
+arch=(any)
+url="http://open-ra.org"
+license=('GPL3')
+groups=()
+depends=('mono' 'mono-addins' 'openal' 'mesa' 'nvidia-cg-toolkit' 'freetype2')
+makedepends=('git' 'unzip' 'wget')
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=openra.install
+source=()
+noextract=()
+md5sums=()
+
+_gitroot="git://github.com/beedee/OpenRA.git"
+_gitname="OpenRA"
+_gittag="pkgtest-$pkgver"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+  git checkout $_gittag
+
+  #
+  # BUILD HERE
+  #
+
+  make prefix="/usr" || return 1                                                                        
+  make prefix="/usr" DESTDIR="$pkgdir" install
+}
