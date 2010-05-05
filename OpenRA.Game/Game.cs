@@ -170,8 +170,11 @@ namespace OpenRA
 
 		internal static void JoinServer(string host, int port)
 		{
+			if (orderManager != null) orderManager.Dispose();
+
 			CurrentHost = host;
 			CurrentPort = port;
+			
 			orderManager = new OrderManager(new NetworkConnection( host, port ), ChooseReplayFilename());
 		}
 
@@ -182,6 +185,7 @@ namespace OpenRA
 		
 		internal static void JoinLocal()
 		{
+			if (orderManager != null) orderManager.Dispose();
 			orderManager = new OrderManager(new EchoConnection());
 		}
 				

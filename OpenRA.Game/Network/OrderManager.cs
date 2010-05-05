@@ -26,7 +26,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-	class OrderManager
+	class OrderManager : IDisposable
 	{
 		public int FrameNumber { get; private set; }
 
@@ -233,5 +233,19 @@ namespace OpenRA.Network
 				replaySaveFile.Write( i.Second );
 			}
 		}
+
+		bool disposed;
+		public void Dispose()
+		{
+			if (disposed) return;
+
+			if (replaySaveFile != null)
+				replaySaveFile.Dispose();
+
+			disposed = true;
+			GC.SuppressFinalize(this);
+		}
+
+		~OrderManager() { Dispose(); }
 	}
 }
