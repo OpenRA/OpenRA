@@ -1,6 +1,6 @@
 %define name openra
 %define version 20100505
-%define commit fee35e3
+%define commit d87eec7
 Name: %{name}
 Version: %{version}
 Release: 1
