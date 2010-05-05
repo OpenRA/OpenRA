@@ -437,6 +437,7 @@ namespace OpenRA
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
 			int sync = world.SyncHash();
+			var initialWorld = world;
 
 			if (ev == MouseInputEvent.Down)
 				lastPos = new int2(e.Location);
@@ -459,7 +460,7 @@ namespace OpenRA
 					Modifiers = modifierKeys,
 				});
 
-			if( sync != world.SyncHash() )
+			if( sync != world.SyncHash() && world == initialWorld )
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
@@ -602,8 +603,13 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
+			var shellmap = new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid;
+			LobbyInfo = new Session();
 			JoinLocal();
-			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
+			LoadShellMap(shellmap);
+
+			Chrome.rootWidget.CloseWindow();
+			Chrome.rootWidget.OpenWindow("MAINMENU_BG");
 		}
 	}
 }
