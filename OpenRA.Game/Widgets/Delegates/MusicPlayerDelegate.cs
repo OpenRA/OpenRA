@@ -43,17 +43,25 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi => {
+				Sound.PlayMusic(GetNextSong());
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 				return true;
 			};
 			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi => {
+				Sound.PlayMusic(GetNextSong());
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 				return true;
 			};
+		}
+		
+		string GetNextSong()
+		{
+			//goes boom here
+			return Rules.Music["AllMusic"].Pools.Value["Music"].GetNext();	
 		}
 	}
 }

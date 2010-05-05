@@ -49,5 +49,8 @@ Voices:
 	
 Terrain:
 	mods/ra/terrain.yaml
+	
+Music:
+	mods/ra/music.yaml
 
 ShellmapUid:b22b0197b126d6236a7c1e18c3001c83af10156c
