@@ -14,6 +14,8 @@ namespace OpenRA.Widgets
 		public PostGameWidget(Widget other)	: base(other) { }
 
 		public override Widget Clone() { return new PostGameWidget(this); }
+
+		bool AreMutualAllies(Player a, Player b) { return a.Stances[b] == Stance.Ally && b.Stances[a] == Stance.Ally; }
 		
 		public override void Draw(World world)
 		{
@@ -28,7 +30,7 @@ namespace OpenRA.Widgets
 
 				if (conds.Any(c => c.Actor.Owner == world.LocalPlayer && c.Trait.HasLost))
 					DrawText("YOU ARE DEFEATED");
-				else if (conds.All(c => c.Actor.Owner == world.LocalPlayer || c.Trait.HasLost))
+				else if (conds.All(c => AreMutualAllies(c.Actor.Owner, world.LocalPlayer) || c.Trait.HasLost))
 					DrawText("YOU ARE VICTORIOUS");
 			}
 		}
