@@ -125,7 +125,9 @@ namespace OpenRA
 				return null;
 
 			var underCursor = World.FindUnitsAtMouse(mi.Location)
-				.FirstOrDefault(a => a.traits.Contains<Selectable>());
+				.Where(a => a.Info.Traits.Contains<SelectableInfo>())
+				.OrderByDescending(a => a.Info.Traits.Get<SelectableInfo>().Priority)
+				.FirstOrDefault();
 			
 			return traits.WithInterface<IIssueOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
