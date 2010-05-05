@@ -37,9 +37,8 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			optionsBG.GetWidget("BUTTON_DISCONNECT").OnMouseUp = mi => {
-				// Todo: Do this cleanly, so we don't crash
-				//Game.JoinLocal();
-				//Game.LoadShellMap(new Manifest(Game.LobbyInfo.GlobalSettings.Mods).ShellmapUid);
+				optionsBG.Visible = false;
+				Game.Disconnect();
 				return true;
 			};
 			
