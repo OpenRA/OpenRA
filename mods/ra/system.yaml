@@ -127,7 +127,7 @@ World:
 		DisplayName: Orange
 		BasePalette: terrain
 		DisplayColor: 198,97,0
-		Color1: 255,230,149
+		Color1: 255,107,0
 		Color2: 56,0,0
 	PlayerColorPalette@player4:
 		Name: player4
