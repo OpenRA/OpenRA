@@ -78,6 +78,9 @@ namespace OpenRA
 		{
 			if (name == "" || name == null)
 				return;
+
+			if (music != null)
+				soundEngine.StopSound(music);
 			
 			var sound = sounds[name];
 			music = soundEngine.Play2D(sound, true);
