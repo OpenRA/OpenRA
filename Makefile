@@ -84,7 +84,6 @@ clean:
 distclean: clean
 
 install: all
-	$(NORMAL_INSTALL)
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
@@ -111,15 +110,15 @@ install: all
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
-	@-gacutil -i thirdparty/Tao/Tao.Cg.dll >/dev/null
-	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll >/dev/null
-	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll >/dev/null
-	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll >/dev/null
-	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll >/dev/null
+	@-gacutil -i thirdparty/Tao/Tao.Cg.dll
+	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll
+	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
+	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
+	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll
 	@-echo "#!/bin/sh" > openra
 	@-echo "cd $(INSTALL_DIR)" >> openra
 	@-echo "mono $(INSTALL_DIR)/$(game_TARGET)" >> openra
-	@$(INSTALL_PROGRAM) -m +rx openra $(DESTDIR)$(bindir)
+	@$(INSTALL_PROGRAM) -m +rx openra $(DESTDIR)$(bindir)/
 
 	@echo "OpenRA is now installed. You will now want to download http://open-ra.org/packages/ra-packages.zip \
 	and http://open-ra.org/packages/cnc-packages.zip and extract their contents to $(INSTALL_DIR)/mods/ra/packages \
