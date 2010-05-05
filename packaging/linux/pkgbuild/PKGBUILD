@@ -7,7 +7,7 @@ arch=(any)
 url="http://open-ra.org"
 license=('GPL3')
 groups=()
-depends=('mono' 'mono-addins' 'openal' 'mesa' 'nvidia-cg-toolkit' 'freetype2' 'sdl')
+depends=('mono' 'openal' 'mesa' 'nvidia-cg-toolkit' 'freetype2' 'sdl')
 makedepends=('git' 'unzip' 'wget')
 optdepends=()
 provides=()
@@ -20,9 +20,9 @@ source=()
 noextract=()
 md5sums=()
 
-_gitroot="git://github.com/beedee/OpenRA.git"
+_gitroot="git://github.com/chrisforbes/OpenRA.git"
 _gitname="OpenRA"
-_gittag="pkgtest-$pkgver"
+_gittag="playtest-$pkgver"
 
 build() {
   cd "$srcdir"
