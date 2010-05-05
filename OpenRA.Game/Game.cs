@@ -60,7 +60,7 @@ namespace OpenRA
 		internal static Session LobbyInfo = new Session();
 		static bool packageChangePending;
 		static bool mapChangePending;
-		public static Pair<Assembly, string>[] ModAssemblies;
+		static Pair<Assembly, string>[] ModAssemblies;
 
 		static void LoadModPackages(Manifest manifest)
 		{
@@ -106,7 +106,7 @@ namespace OpenRA
 		public static Dictionary<string,MapStub> AvailableMaps;
 		
 		// TODO: Do this nicer
-		public static Dictionary<string, MapStub> FindMaps(string[] mods)
+		static Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
 			Console.WriteLine("Finding maps");
 			foreach (var mod in mods)
@@ -119,7 +119,7 @@ namespace OpenRA
 			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
 		}
 		
-		public static void ChangeMods()
+		static void ChangeMods()
 		{
 			Timer.Time( "----ChangeMods" );
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
@@ -131,13 +131,13 @@ namespace OpenRA
 			packageChangePending = false;
 		}
 		
-		public static void ChangeMap(string newMapName)
+		static void ChangeMap(string newMapName)
 		{
 			mapName = newMapName;
 			mapChangePending = false;
 		}
 		
-		public static void LoadMap(string mapName)
+		static void LoadMap(string mapName)
 		{
 			Timer.Time( "----LoadMap" );
 			SheetBuilder.Initialize(renderer);
