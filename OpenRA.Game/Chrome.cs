@@ -155,7 +155,7 @@ namespace OpenRA
 		}
 		
 
-		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); }
+		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
 		
 		public void DrawLobby()
 		{

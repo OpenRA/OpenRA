@@ -55,7 +55,6 @@ namespace OpenRA.Widgets
 			var pos = DrawPosition();
 			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X, pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
 			Game.chrome.lineRenderer.FillRect(paletteRect, GetColor());
-			Game.chrome.lineRenderer.Flush();
 			base.Draw(world);
 		}
 	}
