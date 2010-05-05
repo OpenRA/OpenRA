@@ -26,10 +26,12 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Chrome.rootWidget;
 			r.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
+				r.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
 				Game.Disconnect();
 				return true;
 			};
 			r.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
+				r.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;
 				Game.Disconnect();
 				return true;
 			};

@@ -215,7 +215,8 @@ namespace OpenRA.Widgets
 
 		public Widget OpenWindow(string id)
 		{
-			Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = false;
+			if (WindowList.Count > 0)
+				Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = false;
 			WindowList.Push(id);
 			var window = Chrome.rootWidget.GetWidget(id);
 			window.Visible = true;
