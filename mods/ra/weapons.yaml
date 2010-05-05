@@ -203,11 +203,11 @@ Grenade:
 		Spread: 6
 		Wall: true
 		Wood: true
-		Verses: 90%,40%,30%,10%,100%
+		Verses: 50%,100%,25%,5%,100%
 		Explosion: 5
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 60
 		ImpactSound: kaboom12
 
 75mm:
