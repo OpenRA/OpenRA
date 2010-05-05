@@ -2,7 +2,7 @@ CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
 PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng seqed mapcvtr
-prefix = /usr
+prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
 bindir = $(prefix)/bin
@@ -111,9 +111,12 @@ install: all
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
 	@cp -r thirdparty $(INSTALL_DIR)
-	@echo "OpenRA is now installed. You will now want to download http://open-ra.org/packages/ra-packages.zip \
-	and http://open-ra.org/packages/cnc-packages.zip and extract their contents to $(INSTALL_DIR)/mods/ra/packages \
-	and $(INSTALL_DIR)/mods/cnc/packages respectively."
+	@echo "OpenRA is now installed. You will now want to download"
+	@echo "http://open-ra.org/packages/ra-packages.zip and"
+	@echo "http://open-ra.org/packages/cnc-packages.zip"
+	@echo "and extract their contents to"
+	@echo "$(INSTALL_DIR)/mods/ra/packages and 
+	@echo "$(INSTALL_DIR)/mods/cnc/packages respectively."
 	@echo "It is also advised to install the contents of $(INSTALL_DIR)/thirdparty to the Mono Global Assembly Cache \
 	with gacutil."
 
