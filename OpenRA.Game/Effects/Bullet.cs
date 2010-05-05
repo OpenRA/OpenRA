@@ -75,6 +75,8 @@ namespace OpenRA.Effects
 		{
 			t += 40;
 
+			anim.Tick();
+
 			if (t > TotalTime()) Explode( world );
 
 			if (Info.Trail != null)

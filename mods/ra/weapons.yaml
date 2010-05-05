@@ -161,6 +161,7 @@ Dragon:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 60
+		ImpactSound: kaboom12
 		
 Hellfire:
 	ROF: 60
