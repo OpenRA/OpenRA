@@ -110,19 +110,18 @@ install: all
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
-	@-gacutil -i thirdparty/Tao/Tao.Cg.dll
-	@-gacutil -i thirdparty/Tao/Tao.FreeType.dll
-	@-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-	@-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-	@-gacutil -i thirdparty/Tao/Tao.Sdl.dll
+	@cp -r thirdparty $(INSTALL_DIR)
 	@-echo "#!/bin/sh" > openra
 	@-echo "cd $(INSTALL_DIR)" >> openra
 	@-echo "mono $(INSTALL_DIR)/$(game_TARGET)" >> openra
+	@$(INSTALL_PROGRAM) -d $(DESTDIR)$(bindir)/
 	@$(INSTALL_PROGRAM) -m +rx openra $(DESTDIR)$(bindir)/
 
 	@echo "OpenRA is now installed. You will now want to download http://open-ra.org/packages/ra-packages.zip \
 	and http://open-ra.org/packages/cnc-packages.zip and extract their contents to $(INSTALL_DIR)/mods/ra/packages \
 	and $(INSTALL_DIR)/mods/cnc/packages respectively."
+	@echo "It is also advised to install the contents of $(INSTALL_DIR)/thirdparty to the Mono Global Assembly Cache \
+	with gacutil."
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)
