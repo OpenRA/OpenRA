@@ -113,7 +113,7 @@ World:
 		DisplayName: Blue
 		BasePalette: terrain
 		DisplayColor: 56, 72, 125
-		Color1: 226,230,246
+		Color1: 30,85,204
 		Color2: 8,20,52
 	PlayerColorPalette@player2:
 		Name: player2
