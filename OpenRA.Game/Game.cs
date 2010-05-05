@@ -131,9 +131,9 @@ namespace OpenRA
 			packageChangePending = false;
 		}
 		
-		public static void ChangeMap(string mapName)
+		public static void ChangeMap(string newMapName)
 		{
-			mapName = mapName;
+			mapName = newMapName;
 			mapChangePending = false;
 		}
 		
