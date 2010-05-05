@@ -131,12 +131,6 @@ namespace OpenRA
 			packageChangePending = false;
 		}
 		
-		static void ChangeMap(string newMapName)
-		{
-			mapName = newMapName;
-			mapChangePending = false;
-		}
-		
 		static void LoadMap(string mapName)
 		{
 			Timer.Time( "----LoadMap" );
@@ -271,7 +265,8 @@ namespace OpenRA
 			
 			if (mapChangePending)
 			{
-				ChangeMap(LobbyInfo.GlobalSettings.Map);
+				mapName = LobbyInfo.GlobalSettings.Map;
+				mapChangePending = false;
 				return;
 			}
 
