@@ -123,12 +123,10 @@ namespace OpenRA
 
 			if (!World.Map.IsInMap(xy.X, xy.Y))
 				return null;
+
+			var underCursor = World.FindUnitsAtMouse(mi.Location)
+				.FirstOrDefault(a => a.traits.Contains<Selectable>());
 			
-			var underCursor = World.FindUnitsAtMouse(mi.Location).FirstOrDefault();
-
-			if (underCursor != null && !underCursor.traits.Contains<Selectable>())
-				underCursor = null;
-
 			return traits.WithInterface<IIssueOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
