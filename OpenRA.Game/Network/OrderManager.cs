@@ -242,6 +242,9 @@ namespace OpenRA.Network
 			if (replaySaveFile != null)
 				replaySaveFile.Dispose();
 
+			var disposableConnection = Connection as IDisposable;
+			if (disposableConnection != null) disposableConnection.Dispose();
+
 			disposed = true;
 			GC.SuppressFinalize(this);
 		}
