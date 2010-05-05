@@ -287,3 +287,14 @@ function SettingsSaveView()
 	
 	settings:SetPath(path)
 end
+
+function SettingsRestoreEditorSettings()
+	local listname = "editor"
+	local path = settings:GetPath()
+	settings:SetPath("/"..listname)
+	
+	--settingsReadSafe
+end
+function SettingsSaveEditorSettings()
+	
+end

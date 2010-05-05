@@ -5,10 +5,11 @@ return {
 				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
 				local code = ([[
 					--require 'lfs'
+					print("OK");
 					xpcall(function() dofile '%s' end,
 						function(err) print(debug.traceback(err)) end)
 				]]):format(filepath:gsub("\\","/"))
-				return '"'..mainpath..'/lualibs/lua" -e "'..code..'"'
+				return '"'..mainpath..'/lualibs/lua.exe" -e "'..code..'"'
 			end,
 		fprojdir = function(fname) 
 				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)

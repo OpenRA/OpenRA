@@ -1,5 +1,7 @@
 -- the preferences dialog
 
+
+
 preferencesDialog = {
 	category = {};
 	uifactory = {};
@@ -30,38 +32,97 @@ function preferencesDialog.addPage(page)
 	page.order = page.order or #c.entry
 end
 
-preferencesDialog.addCategory {
-	category = "editor";
-	title = "Editor";
-}
-preferencesDialog.addCategory {
-	category = "project";
-	title = "Project";
-}
+function preferencesDialog.uifactory.space(page,layout,element)
+	layout.currentx = layout.currentx + element.space
+	return layout
+end
+function preferencesDialog.uifactory.group(page,layout,element)
+	local margin = element.margin or 6
+	local nl = {
+		currentx = margin; 
+		currenty = margin+ (element.title and 12 or 8); 
+		maxsizex = 0; 
+		maxsizey = 0;
+		minwidth = element.minwidth or 0;
+		minheight = element.minheight or 0;
+		margin = margin;
+		layout = layout;
+		parent = wx.wxStaticBox(layout.parent,wx.wxID_ANY,element.title or "",
+			wx.wxPoint(layout.currentx,layout.currenty),
+			wx.wxDefaultSize, element.borderstyle and wx["wxBORDER_"..element.borderstyle:upper()] or 0);
+	}
+	return nl
+end
+function preferencesDialog.uifactory.finishgroup(page,layout,element)
+	local l = layout.layout
+	layout.maxsizex = math.max(layout.minwidth,layout.maxsizex + layout.margin)
+	layout.maxsizey = math.max(layout.minheight,layout.maxsizey + layout.margin)
+	l.maxsizey = math.max(l.maxsizey,layout.maxsizey+l.currenty)
+	l.currentx = l.currentx + layout.maxsizex
+	l.maxsizex = math.max(l.maxsizex,l.currentx)
+	layout.parent:SetSize(wx.wxSize(layout.maxsizex,layout.maxsizey))
+	return l
+end
 
-preferencesDialog.addPage {
-	title = "Basic preferences";
-	category = "editor";
-	layout = {
-		{type = 'group',title="Sessions"; minheight = 100; minwidth = 100};
-			{type = "checkbox"; title = "Reopen files";name = 'session_restore'};
-		{type = 'finishgroup'};
-		{type = 'space'; space = 4};
-		{type = 'group',title="Visible menus";  minheight = 100; minwidth = 100};
-			{type = "checkbox"; title = "Tools";name = 'tools'};
-			{type = 'linebreak'; space = 4};
-			{type = "checkbox"; title = "Help";name = 'help'};
-			--{type = 'linebreak'; space = 4};
-			--{type='static'; title = "foo"};
-		{type = 'finishgroup'};
-		
-	};
-	onload = function ()
-		return {testbox = true}
-	end;
-	onsave = function (values)
+local function pos(layout) return layout.currentx,layout.currenty end
+local function fitin(el,layout)
+	local x,y = pos(layout)
+	local sz = el:GetBestFittingSize()
+	el:SetSize(sz)
+	layout.maxsizex = math.max(x+sz:GetWidth(),layout.maxsizex)
+	layout.maxsizey = math.max(y+sz:GetHeight(),layout.maxsizey)
+	layout.currentx = x+sz:GetWidth()
+	return layout
+end
+
+function preferencesDialog.uifactory.combobox(page,layout,element,value)
+	local x,y = pos(layout)
+	local id = ID("view.preferences.dialog.page."..page.title.."."..element.name)
+	local cbox = wx.wxComboBox(layout.parent,id,"",wx.wxPoint(x,y-4),wx.wxDefaultSize,
+		wx.wxArrayString(),wx.wxCB_READONLY)
+	
+	if value then
+		for i=1,#value do
+			cbox:Append(value[i])
+		end
 	end
-}
+	
+	return fitin(cbox,layout)
+end
+
+function preferencesDialog.uifactory.dirpicker(page,layout,element,value)
+	local x,y = pos(layout)
+	local id = ID("view.preferences.dialog.page."..page.title.."."..element.name)
+	local picker = wx.wxDirPickerCtrl(layout.parent,id,value or "",element.title or "",wx.wxPoint(x,y-4))
+	return fitin(picker,layout)
+end
+
+function preferencesDialog.uifactory.edit (page,layout,element,value)
+	local x,y = pos(layout)
+	local id = ID("view.preferences.dialog.page."..page.title.."."..element.name)
+	local edit = wx.wxTextCtrl(layout.parent,id,value or (""..x..","..y), wx.wxPoint(x,y-4))
+	return fitin(edit,layout)
+end
+
+function preferencesDialog.uifactory.linebreak(page,layout,element)
+	layout.currentx = layout.margin or 0
+	layout.currenty = layout.maxsizey + (element.space or 0)
+	return layout
+end
+function preferencesDialog.uifactory.checkbox (page,layout,element, value)
+	local x,y = pos(layout)
+	local id = ID("view.preferences.dialog.page."..page.title.."."..element.name)
+	local cbox = wx.wxCheckBox(layout.parent,id,element.title,wx.wxPoint(x,y))
+	if value then cbox:SetValue(value) end
+	return fitin(cbox,layout)
+end
+function preferencesDialog.uifactory.static(page,layout,element)
+	local x,y = pos(layout)
+	local static = wx.wxStaticText(layout.parent,wx.wxID_ANY,element.title,wx.wxPoint(x,y))
+	return fitin(static,layout)
+end
+
+
 
 preferencesDialog.addPage {
 	title = "Project settings";

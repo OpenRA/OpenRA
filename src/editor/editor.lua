@@ -412,7 +412,7 @@ function GetSpec(ext,forcespec)
 			end
 		end
 	end
-	
+--print("SPEC:"..ext..":"..tostring(spec))
 	return spec
 end
 
@@ -471,7 +471,7 @@ end
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
 	local lexerstyleconvert = nil
 	local spec = forcespec or GetSpec(ext)
-
+--print(ext..":"..tostring(spec.apitype))
 	-- found a spec setup lexers and keywords
 	if spec then
 		editor:SetLexer(spec.lexer or wxstc.wxSTC_LEX_NULL)
