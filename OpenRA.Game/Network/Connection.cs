@@ -135,10 +135,16 @@ namespace OpenRA.Network
 		{
 			base.Send( packet );
 
-			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( (int)packet.Length ) );
-			ms.Write( packet );
-			ms.WriteTo( socket.GetStream() );
+			try
+			{
+
+				var ms = new MemoryStream();
+				ms.Write(BitConverter.GetBytes((int)packet.Length));
+				ms.Write(packet);
+				ms.WriteTo(socket.GetStream());
+
+			}
+			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
 		}
 	}
 
