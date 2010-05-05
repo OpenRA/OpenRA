@@ -122,15 +122,6 @@ function preferencesDialog.uifactory.static(page,layout,element)
 	return fitin(static,layout)
 end
 
-
-
-preferencesDialog.addPage {
-	title = "Project settings";
-	category = "project";
-	layout = {};
-	onload = function () return {} end;
-	onsave = function (values) end;
-}
 function preferencesDialog.uifactory.space(page,layout,element)
 	layout.currentx = layout.currentx + element.space
 	return layout
