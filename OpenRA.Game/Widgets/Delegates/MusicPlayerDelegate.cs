@@ -26,6 +26,9 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var bg = Chrome.rootWidget.GetWidget("MUSIC_BG");
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi => {
+				if (Sound.MusicStopped)
+					Sound.PlayMusic(GetSong());
+				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
@@ -39,11 +42,13 @@ namespace OpenRA.Widgets.Delegates
 			};
 			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi => {
 				Sound.MusicStopped = true;
-				bg.Visible = false;
+				bg.GetWidget("BUTTON_PAUSE").Visible = false;
+				bg.GetWidget("BUTTON_PLAY").Visible = true;
 				return true;
 			};
 			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi => {
 				Sound.PlayMusic(GetNextSong());
+				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
@@ -51,6 +56,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi => {
 				Sound.PlayMusic(GetPrevSong());
+				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
@@ -60,5 +66,6 @@ namespace OpenRA.Widgets.Delegates
 		
 		string GetNextSong() { return Rules.Music["allmusic"].Pool.GetNext(); }
 		string GetPrevSong() { return Rules.Music["allmusic"].Pool.GetPrev(); }
+		string GetSong() { return Rules.Music["allmusic"].Pool.GetCurrent(); }
 	}
 }

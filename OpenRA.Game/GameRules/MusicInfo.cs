@@ -28,13 +28,17 @@ namespace OpenRA.GameRules
 			this.clips = clips;
 		}
 
-		public string GetNext() { 
+		public string GetNext() 
+		{ 
 			playing = (playing + 1) % clips.Length;
 			return clips[playing]; 
 		}
-		public string GetPrev() { 
+		public string GetPrev() 
+		{ 
 			playing = (playing + clips.Length - 1) % clips.Length;
 			return clips[playing]; 
 		}
+		public string GetCurrent(){ return clips[playing];}
+		
 	}
 }
