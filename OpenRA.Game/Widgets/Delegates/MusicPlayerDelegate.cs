@@ -50,7 +50,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi => {
-				Sound.PlayMusic(GetNextSong());
+				Sound.PlayMusic(GetPrevSong());
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
@@ -58,10 +58,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 		}
 		
-		string GetNextSong()
-		{
-			//goes boom here
-			return Rules.Music["AllMusic"].Pools.Value["Music"].GetNext();	
-		}
+		string GetNextSong() { return Rules.Music["allmusic"].Pool.GetNext(); }
+		string GetPrevSong() { return Rules.Music["allmusic"].Pool.GetPrev(); }
 	}
 }
