@@ -849,6 +849,8 @@ BRIK:
 		Description: Concrete Wall
 		LongDesc: Stop units and blocks enemy fire.
 		BuildPaletteOrder: 100
+		DamagedSound: crmble2.aud
+		DestroyedSound: kaboom30.aud
 	Building:
 		HP: 100
 		Armor: none

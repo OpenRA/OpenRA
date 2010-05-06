@@ -53,6 +53,7 @@ namespace OpenRA.Traits
 		public readonly string[] SellSounds = {"cashturn.aud"};
 		public readonly string DamagedSound = "kaboom1.aud";
 		public readonly string DestroyedSound = "kaboom22.aud";
+
 		public object Create(Actor self) { return new Building(self); }
 	}
 

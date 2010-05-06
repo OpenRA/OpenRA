@@ -66,7 +66,9 @@
 		Capturable: false
 		BaseNormal: no
 		Crewed: no
-		Sight: 0	
+		Sight: 0
+		DamagedSound: sandbag2.aud
+		DestroyedSound: sandbag2.aud	
 	Wall:
 	LineBuild:
 	Selectable:
