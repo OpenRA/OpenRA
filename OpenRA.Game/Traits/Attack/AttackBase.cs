@@ -187,12 +187,15 @@ namespace OpenRA.Traits
 			
 			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
 			{
-				var projectile = args.weapon.Projectile.Create(args);
-				if (projectile != null)
-					self.World.Add(projectile);
+				if (args.weapon.Projectile != null)
+				{
+					var projectile = args.weapon.Projectile.Create(args);
+					if (projectile != null)
+						self.World.Add(projectile);
 
-				if (!string.IsNullOrEmpty(args.weapon.Report))
-					Sound.Play(args.weapon.Report + ".aud");
+					if (!string.IsNullOrEmpty(args.weapon.Report))
+						Sound.Play(args.weapon.Report + ".aud");
+				}
 			});
 
 			foreach (var na in self.traits.WithInterface<INotifyAttack>())

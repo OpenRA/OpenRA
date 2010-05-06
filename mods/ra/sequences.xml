@@ -639,7 +639,7 @@
     <sequence name="die4" start="242" length="9" />
     <sequence name="die5" start="251" length="14" />
     <sequence name="die6" start="0" length="17" src="electdog" />
-    <sequence name="attack" start="0" length="4" facings="8" src="dogbullt" />
+    <sequence name="shoot" start="0" length="4" facings="8" src="dogbullt" />
   </unit>
   <unit name="missile">
     <sequence name="idle" start="0" facings="32" />

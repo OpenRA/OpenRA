@@ -581,13 +581,8 @@ ParaBomb:
 		
 DogJaw:
 	ROF: 10
-	Range: 2.2
+	Range: 5
 	Report: DOGG5P
-	Missile:
-		Image: DOGBULLT
-		Proximity: yes
-		ROT: 20
-		Speed: 20
 	Warhead:
 		Spread: 5
 		Verses: 100%,0%,0%,0%,0%

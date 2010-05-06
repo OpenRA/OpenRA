@@ -17,6 +17,7 @@ DOG:
 		Speed: 4
 	AutoTarget:
 	AttackLeap:
+		PrimaryWeapon: DogJaw
 
 E1:
 	Inherits: ^Infantry

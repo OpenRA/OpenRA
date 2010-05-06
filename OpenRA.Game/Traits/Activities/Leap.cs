@@ -23,8 +23,19 @@ namespace OpenRA.Traits.Activities
 	class Leap : IActivity
 	{
 		Actor target;
+		float2 initialLocation;
+		float t;
 
-		public Leap(Actor target) { this.target = target; }
+		const int delay = 6;
+
+		public Leap(Actor self, Actor target)
+		{
+			this.target = target; 
+			initialLocation = self.CenterLocation;
+
+			self.traits.Get<RenderInfantry>().Attacking(self);
+			Sound.Play("dogg5p.aud");
+		}
 
 		public IActivity NextActivity { get; set; }
 		
@@ -32,6 +43,17 @@ namespace OpenRA.Traits.Activities
 		{
 			if (target == null || !target.IsInWorld)
 				return NextActivity;
+
+			t += (1f / delay);
+
+			self.CenterLocation = float2.Lerp(initialLocation, target.CenterLocation, t);
+
+			if (t >= 1f)
+			{
+				self.traits.Get<Mobile>().TeleportTo(self, target.Location);
+				target.InflictDamage(self, target.Health, null);	// kill it
+				return NextActivity;
+			}
 
 			return this;
 		}

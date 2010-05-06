@@ -37,12 +37,13 @@ namespace OpenRA.Traits
 			base.Tick(self);
 
 			if (target == null || !target.IsInWorld) return;
+			if (self.GetCurrentActivity() is Leap) return;
 
 			var weapon = self.GetPrimaryWeapon();
 			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return;
 
 			self.CancelActivity();
-			self.QueueActivity(new Leap(target));
+			self.QueueActivity(new Leap(self, target));
 		}
 	}
 }
