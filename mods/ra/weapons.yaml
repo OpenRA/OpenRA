@@ -424,6 +424,7 @@ Nike:
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
+		Speed: 35
 	Warhead:
 		Spread: 3
 		Wall: true
@@ -448,6 +449,7 @@ RedEye:
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
+		Speed: 35
 	Warhead:
 		Spread: 3
 		Wall: true
