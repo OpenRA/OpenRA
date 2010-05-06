@@ -14,6 +14,8 @@ namespace OpenRA.Widgets
 
 		bool AreMutualAllies(Player a, Player b) { return a.Stances[b] == Stance.Ally && b.Stances[a] == Stance.Ally; }
 		
+		// todo: all this shit needs to move, probably to Player.
+
 		public override void Draw(World world)
 		{
 			base.Draw(world);

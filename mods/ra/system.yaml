@@ -77,7 +77,7 @@ Player:
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
-	VictoryConditions:
+	ConquestVictoryConditions:
 		
 
 World:
