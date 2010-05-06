@@ -38,7 +38,7 @@ namespace OpenRAUploader
 			fileStream.Close();
 
 			var jsonUri = new UriBuilder(uri.Uri);
-			jsonUri.Path += "_version.json";
+			jsonUri.Path += "version.json";
 
 			string formatString = "{{\n" +
 				"\t\"version\":\"{0}\",\n" +

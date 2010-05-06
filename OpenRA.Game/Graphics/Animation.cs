@@ -68,6 +68,9 @@ namespace OpenRA.Graphics
 
 		public void ReplaceAnim(string sequenceName)
 		{
+			if (!HasSequence(sequenceName))
+				return;
+
 			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
 			frame %= CurrentSequence.Length;
 		}
