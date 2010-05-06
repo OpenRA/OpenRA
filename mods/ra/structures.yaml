@@ -1,4 +1,5 @@
 MSLO:
+	Category: Defense
 	NukeSilo:
 	Inherits: ^Building
 	Buildable:
@@ -19,6 +20,7 @@ MSLO:
 	IronCurtainable:
 
 GAP:
+	Category: Defense
 	RequiresPower:
 	CanPowerDown:
 	GeneratesGap:
@@ -96,6 +98,7 @@ SYRD:
 	-EmitInfantryOnSell:
 
 IRON:
+	Category: Defense
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
@@ -120,6 +123,7 @@ IRON:
 	IronCurtain:
 
 PDOX:
+	Category: Defense
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
@@ -144,6 +148,7 @@ PDOX:
 	IronCurtainable:
 
 TSLA:
+	Category: Defense
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
@@ -172,6 +177,7 @@ TSLA:
 	RenderRangeCircle:
 
 AGUN:
+	Category: Defense
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
@@ -228,6 +234,7 @@ DOME:
 	IronCurtainable:
 
 PBOX:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
@@ -249,6 +256,7 @@ PBOX:
 	RenderRangeCircle:
 
 HBOX:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
@@ -270,6 +278,7 @@ HBOX:
 	RenderRangeCircle:
 
 GUN:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 4
@@ -296,6 +305,7 @@ GUN:
 	RenderRangeCircle:
 
 FTUR:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 2
@@ -318,6 +328,7 @@ FTUR:
 	RenderRangeCircle:
 
 SAM:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 9
@@ -792,6 +803,7 @@ DOMF:
 	Fake:
 
 SBAG:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		TechLevel: 2
@@ -806,6 +818,7 @@ SBAG:
 		Armor: none
 
 FENC:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		TechLevel: 2
@@ -820,6 +833,7 @@ FENC:
 		Armor: none
 
 BRIK:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		TechLevel: 8

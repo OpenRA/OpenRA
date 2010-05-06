@@ -20,24 +20,18 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.RA;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.GameRules;
 
-namespace OpenRA.Mods.RA_NG
+namespace OpenRA.Mods.RA
 {
-	public class CrateDropInfo : ITraitInfo
+	public class CrateDropInfo : TraitInfo<CrateDrop>
 	{
 		public readonly int Minimum = 1; // Minumum number of crates
 		public readonly int Maximum = 255; // Maximum number of crates
 		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
 		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
-
-		public object Create(Actor self)
-		{
-			return new CrateDrop();
-		}
 	}
 
 	public class CrateDrop : ITick

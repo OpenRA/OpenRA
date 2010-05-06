@@ -134,10 +134,6 @@ SectionGroup /e "Mods"
 			Delete aftermath-packages.zip
 		SectionEnd
 	SectionGroupEnd
-	Section "Red Alert: Next Generation" RA_NG
-		SetOutPath "$INSTDIR\mods\ra-ng"
-		File "..\..\mods\ra-ng\*.*"
-	SectionEnd
 SectionGroupEnd
 
 ;***************************
@@ -237,14 +233,12 @@ LangString DESC_Client ${LANG_ENGLISH} "OpenRA client and dependencies"
 LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
 LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
 LangString DESC_Aftermath ${LANG_ENGLISH} "Red Alert: Aftermath expansion mod (depends on base Red Alert mod)"
-LangString DESC_RA_NG ${LANG_ENGLISH} "Next-gen Red Alert mod (depends on base Red Alert mod)"
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${Client} $(DESC_Client)
 	!insertmacro MUI_DESCRIPTION_TEXT ${RA} $(DESC_RA)
 	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${Aftermath} $(DESC_Aftermath)
-	!insertmacro MUI_DESCRIPTION_TEXT ${RA_NG} $(DESC_RA_NG)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;***************************
