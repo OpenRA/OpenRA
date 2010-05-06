@@ -818,6 +818,8 @@ SBAG:
 	Building:
 		HP: 100
 		Armor: none
+	Wall:
+		CrushableBy: Wheel, Track
 
 FENC:
 	Category: Defense
@@ -833,6 +835,8 @@ FENC:
 	Building:
 		HP: 100
 		Armor: none
+	Wall:
+		CrushableBy: Track
 
 BRIK:
 	Category: Defense
@@ -858,14 +862,21 @@ CYCL:
 		Armor: none
 	RenderBuildingWall:
 		DamageStates: 3
+	Wall:
+		CrushableBy: Track
+		
 BARB:
 	Inherits: ^Wall
 	Building:
 		HP: 100
 		Armor: none
+	Wall:
+		CrushableBy: Track
 
 WOOD:
 	Inherits: ^Wall
 	Building:
 		HP: 100
 		Armor: none
+	Wall:
+		CrushableBy: Track

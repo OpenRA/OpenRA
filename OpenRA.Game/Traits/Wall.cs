@@ -18,8 +18,39 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.GameRules;
+
 namespace OpenRA.Traits
 {
-	public class WallInfo : TraitInfo<Wall> {}
-	public class Wall {}
+	public class WallInfo : ITraitInfo
+	{
+		public readonly UnitMovementType[] CrushableBy = { };
+
+		public object Create(Actor self) { return new Wall(self); }
+	}
+
+	public class Wall : ICrushable, IOccupySpace
+	{
+		readonly Actor self;
+		public Wall(Actor self)
+		{
+			this.self = self;
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+		}
+
+		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
+
+		public void OnCrush(Actor crusher) { self.InflictDamage(crusher, self.Health, null); }
+		public bool IsCrushableBy(UnitMovementType umt, Player player)
+		{
+			return self.Info.Traits.Get<WallInfo>().CrushableBy.Contains(umt);
+		}
+
+		public bool IsPathableCrush(UnitMovementType umt, Player player)
+		{
+			return IsCrushableBy(umt, player);
+		}
+	}
 }

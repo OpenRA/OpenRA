@@ -18,18 +18,12 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Effects;
-using OpenRA.GameRules;
-using OpenRA.Traits.Activities;
-
 namespace OpenRA.Traits
 {
 	public class LineBuildInfo : TraitInfo<LineBuild>
 	{
 		public readonly int Range = 5;
 	}
+
 	public class LineBuild {}
 }

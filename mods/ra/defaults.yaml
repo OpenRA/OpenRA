@@ -61,12 +61,12 @@
 	Category: Building
 	Building:
 		Dimensions: 1,1
-		Footprint: x
+		Footprint: y
 		BuildSounds: placbldg.aud
 		Capturable: false
 		BaseNormal: no
 		Crewed: no
-		Sight: 0
+		Sight: 0	
 	Wall:
 	LineBuild:
 	Selectable:
