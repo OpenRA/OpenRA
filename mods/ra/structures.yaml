@@ -49,7 +49,7 @@ SPEN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 650
 		Description: Sub Pen
@@ -75,7 +75,7 @@ SYRD:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 650
 		Description: Shipyard
@@ -432,7 +432,7 @@ PROC:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: allies,soviet
 		Cost: 2000
 		Description: Ore Refinery
@@ -542,6 +542,7 @@ POWR:
 		Description: Power Plant
 		LongDesc: Provides power for other structures
 		BuildPaletteOrder: 0
+		AlternateName: @Power Plant
 	Building:
 		Power: 100
 		Footprint: xx xx
@@ -558,12 +559,13 @@ APWR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 8
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: allies,soviet
 		Cost: 500
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 		BuildPaletteOrder:2
+		AlternateName: @Power Plant
 	Building:
 		Power: 200
 		Footprint: ___ xxx xxx
@@ -602,7 +604,7 @@ BARR:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 300
 		Description: Soviet Barracks
@@ -627,7 +629,7 @@ TENT:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 1
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 300
 		Description: Allied Barracks
@@ -741,7 +743,7 @@ SYRF:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Prerequisites: powr
+		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 50
 		Description: Fake Shipyard
