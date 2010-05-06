@@ -80,8 +80,10 @@
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
+    <Compile Include="Traits\Activities\Leap.cs" />
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
+    <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />

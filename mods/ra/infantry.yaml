@@ -15,7 +15,8 @@ DOG:
 		HP: 12
 		Sight: 5
 		Speed: 4
-	-AutoTarget:
+	AutoTarget:
+	AttackLeap:
 
 E1:
 	Inherits: ^Infantry
