@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath ra_ng seqed mapcvtr
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -53,12 +53,6 @@ aftermath_KIND		=	library
 aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
 aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
 
-ra_ng_SRCS		=	$(shell find OpenRA.Mods.RA-NG/ -iname '*.cs')
-ra_ng_TARGET		=	mods/ra-ng/OpenRA.Mods.RA_NG.dll
-ra_ng_KIND		=	library
-ra_ng_DEPS		= $(ra_TARGET) $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
-ra_ng_LIBS		= $(COMMON_LIBS) $(ra_ng_DEPS)
-
 seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
 seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
@@ -76,7 +70,7 @@ mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 .SUFFIXES:
 .PHONY: clean all default mods seqed mapcvtr install uninstall
 
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
@@ -103,10 +97,6 @@ install: all
 	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
 	
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra-ng
-	@$(INSTALL_PROGRAM) $(ra_ng_TARGET) $(INSTALL_DIR)/mods/ra-ng
-	@-cp $(foreach f,$(shell ls mods/ra-ng --hide=*.dll),mods/ra-ng/$(f)) $(INSTALL_DIR)/mods/ra-ng
-	
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
@@ -124,7 +114,7 @@ uninstall:
 	@-rm -r $(INSTALL_DIR)
 	@-rm $(DESTDIR)$(bindir)/openra
 
-mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(ra_ng_TARGET)
+mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 
