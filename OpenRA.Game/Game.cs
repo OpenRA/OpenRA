@@ -46,7 +46,7 @@ namespace OpenRA
 		internal static Viewport viewport;
 		public static Controller controller;
 		internal static Chrome chrome;
-		public static UserSettings Settings;
+		internal static UserSettings Settings;
 		
 		internal static OrderManager orderManager;
 
