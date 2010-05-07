@@ -14,7 +14,7 @@ DOG:
 	Unit:
 		HP: 12
 		Sight: 5
-		Speed: 4
+		Speed: 7
 	AutoTarget:
 	AttackLeap:
 		PrimaryWeapon: DogJaw

@@ -581,7 +581,7 @@ ParaBomb:
 		
 DogJaw:
 	ROF: 10
-	Range: 5
+	Range: 3
 	Report: DOGG5P
 	Warhead:
 		Spread: 5
