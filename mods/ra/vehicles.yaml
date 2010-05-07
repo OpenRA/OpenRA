@@ -30,7 +30,7 @@ MRJ:
 		Owner: allies
 		Cost: 600
 		Description: Radar Jammer
-		LongDesc: Hides nearby units on the enemy's minimap.\n  Unarmed
+		LongDesc: Prevents nearby enemy Radar Domes \nfrom operating.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Unit:

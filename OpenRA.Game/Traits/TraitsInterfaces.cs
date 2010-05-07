@@ -20,7 +20,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 
@@ -134,4 +133,6 @@ namespace OpenRA.Traits
 
 	public interface IRenderOverlay { void Render(); }
 	public interface INotifyIdle { void Idle(Actor self); }
+
+	public interface IVictoryConditions { bool HasLost { get; } bool HasWon { get; } }
 }

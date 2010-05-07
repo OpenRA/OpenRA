@@ -77,7 +77,7 @@ Player:
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
-	VictoryConditions:
+	ConquestVictoryConditions:
 		
 
 World:
@@ -90,10 +90,10 @@ World:
 	UnitInfluence:
 	ChoosePaletteOnSelect:
 	BridgeLayer:
-	CrateSpawner:
+	CrateDrop:
 		Minimum: 1
 		Maximum: 3
-		SpawnInterval: 30
+		SpawnInterval: 20
 		WaterChance: .2
 	PaletteFromFile@terrain_temperat:
 		Name: terrain

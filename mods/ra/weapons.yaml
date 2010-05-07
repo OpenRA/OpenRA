@@ -424,6 +424,7 @@ Nike:
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
+		Speed: 35
 	Warhead:
 		Spread: 3
 		Wall: true
@@ -448,6 +449,7 @@ RedEye:
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
+		Speed: 35
 	Warhead:
 		Spread: 3
 		Wall: true
@@ -579,13 +581,8 @@ ParaBomb:
 		
 DogJaw:
 	ROF: 10
-	Range: 2.2
+	Range: 3
 	Report: DOGG5P
-	Missile:
-		Image: DOGBULLT
-		Proximity: yes
-		ROT: 20
-		Speed: 20
 	Warhead:
 		Spread: 5
 		Verses: 100%,0%,0%,0%,0%

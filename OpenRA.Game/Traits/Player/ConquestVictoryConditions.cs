@@ -22,23 +22,21 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class VictoryConditionsInfo : ITraitInfo
+	class ConquestVictoryConditionsInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new VictoryConditions( self ); }
+		public object Create(Actor self) { return new ConquestVictoryConditions( self ); }
 	}
 
-	interface IVictoryConditions { bool HasLost { get; } bool HasWon { get; } }
-
-	class VictoryConditions : ITick, IVictoryConditions, IResolveOrder
+	class ConquestVictoryConditions : ITick, IVictoryConditions, IResolveOrder
 	{
 		public bool HasLost { get; private set; }
 		public bool HasWon { get; private set; }
 
-		public VictoryConditions(Actor self) { }
+		public ConquestVictoryConditions(Actor self) { }
 
 		public void Tick(Actor self)
 		{
-			var info = self.Info.Traits.Get<VictoryConditionsInfo>();
+			var info = self.Info.Traits.Get<ConquestVictoryConditionsInfo>();
 			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<MustBeDestroyed>().Any();
 

@@ -139,9 +139,9 @@ namespace OpenRA
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
 			var res = world.WorldActor.traits.Get<ResourceLayer>();
-			return !Footprint.Tiles(name, building, topLeft).Any(
-				t => !world.Map.IsInMap(t.X, t.Y) || res.GetResource(t) != null || !world.IsCellBuildable(t,
-					building.WaterBound, toIgnore));
+			return Footprint.Tiles(name, building, topLeft).All(
+				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&
+					world.IsCellBuildable(t, building.WaterBound, toIgnore));
 		}
 
 		public static bool IsVisible(this Actor a)
@@ -231,8 +231,8 @@ namespace OpenRA
 
 		public static float Gauss1D(this Thirdparty.Random r, int samples)
 		{
-			var xs = Graphics.Util.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1);
-			return xs.Sum() / samples;
+			return Graphics.Util.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1f)
+				.Sum() / samples;
 		}
 
 		// Returns a random offset in the range [-1..1,-1..1] with a separable 

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,12 +18,32 @@
  */
 #endregion
 
+using OpenRA.Traits.Activities;
+
 namespace OpenRA.Traits
 {
-	public class LineBuildInfo : TraitInfo<LineBuild>
+	class AttackLeapInfo : AttackBaseInfo
 	{
-		public readonly int Range = 5;
+		public override object Create(Actor self) { return new AttackLeap(self); }
 	}
 
-	public class LineBuild {}
+	class AttackLeap : AttackBase
+	{
+		public AttackLeap(Actor self)
+			: base(self) {}
+
+		public override void Tick(Actor self)
+		{
+			base.Tick(self);
+
+			if (target == null || !target.IsInWorld) return;
+			if (self.GetCurrentActivity() is Leap) return;
+
+			var weapon = self.GetPrimaryWeapon();
+			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return;
+
+			self.CancelActivity();
+			self.QueueActivity(new Leap(self, target));
+		}
+	}
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -80,10 +80,12 @@
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
+    <Compile Include="Traits\Activities\Leap.cs" />
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
+    <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
-    <Compile Include="Traits\Player\VictoryConditions.cs" />
+    <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
@@ -310,6 +312,7 @@
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
+    <Compile Include="GameRules\MusicInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

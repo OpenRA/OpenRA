@@ -18,10 +18,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;

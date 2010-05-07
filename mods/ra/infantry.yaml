@@ -14,8 +14,10 @@ DOG:
 	Unit:
 		HP: 12
 		Sight: 5
-		Speed: 4
-	-AutoTarget:
+		Speed: 7
+	AutoTarget:
+	AttackLeap:
+		PrimaryWeapon: DogJaw
 
 E1:
 	Inherits: ^Infantry

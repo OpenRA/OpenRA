@@ -50,6 +50,7 @@ namespace OpenRA.FileFormats
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Weapons = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Voices = new Dictionary<string, MiniYaml>();
+		public Dictionary<string, MiniYaml> Music = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Terrain = new Dictionary<string, MiniYaml>();
 		// Binary map data
 		public byte TileFormat = 1;
