@@ -165,8 +165,8 @@ namespace OpenRA
 			viewport.Center(loc);
 		}
 
-		public static string CurrentHost = "";
-		public static int CurrentPort = 0;
+		internal static string CurrentHost = "";
+		internal static int CurrentPort = 0;
 
 		internal static void JoinServer(string host, int port)
 		{
@@ -183,7 +183,7 @@ namespace OpenRA
 			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ.rep");
 		}
 		
-		internal static void JoinLocal()
+		static void JoinLocal()
 		{
 			if (orderManager != null) orderManager.Dispose();
 			orderManager = new OrderManager(new EchoConnection());
@@ -191,22 +191,22 @@ namespace OpenRA
 				
 		static int lastTime = Environment.TickCount;
 
-		public static void ResetTimer()
+		static void ResetTimer()
 		{
 			lastTime = Environment.TickCount;
 		}
 
-		public static int RenderFrame = 0;
+		internal static int RenderFrame = 0;
 
 		internal static Chat chat = new Chat();
 
-		public static int LocalTick = 0;
+		internal static int LocalTick = 0;
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
 		static Queue<Pair<int, string>> syncReports = new Queue<Pair<int, string>>();
 		const int numSyncReports = 5;
 
-		public static void UpdateSyncReport()
+		internal static void UpdateSyncReport()
 		{
 			if (!Settings.RecordSyncReports)
 				return;
@@ -242,7 +242,7 @@ namespace OpenRA
 			return sb.ToString();
 		}
 
-		public static void DumpSyncReport( int frame )
+		internal static void DumpSyncReport( int frame )
 		{
 			var f = syncReports.FirstOrDefault(a => a.First == frame);
 			if (f == null)
@@ -255,7 +255,7 @@ namespace OpenRA
 			Log.Write("{0}", f.Second);
 		}
 
-		public static void Tick()
+		static void Tick()
 		{
 			if (packageChangePending)
 			{
@@ -320,9 +320,9 @@ namespace OpenRA
 			MasterServerQuery.Tick();
 		}
 
-		public static event Action LobbyInfoChanged = () => { };
+		internal static event Action LobbyInfoChanged = () => { };
 
-		public static void SyncLobbyInfo(string data)
+		internal static void SyncLobbyInfo(string data)
 		{
 			var oldLobbyInfo = LobbyInfo;
 
@@ -377,7 +377,7 @@ namespace OpenRA
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
 
-		public static void LoadShellMap(string map)
+		static void LoadShellMap(string map)
 		{
 			LoadMap(map);			
 			world.Queries = new World.AllQueries(world);
@@ -391,7 +391,7 @@ namespace OpenRA
 			orderManager.StartGame();
 		}
 		
-		public static void StartGame()
+		internal static void StartGame()
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
 			if (orderManager.GameStarted) return;
@@ -463,12 +463,12 @@ namespace OpenRA
 				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
 		}
 
-		public static bool IsHost
+		internal static bool IsHost
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
 
-		public static Session.Client LocalClient
+		internal static Session.Client LocalClient
 		{
 			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
 		}
@@ -529,7 +529,7 @@ namespace OpenRA
 				desktopResolution.Height);
 		}
 
-		public static void Initialize(Settings settings)
+		internal static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			while (!Directory.Exists("mods"))
