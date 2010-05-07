@@ -71,7 +71,8 @@ namespace OpenRA.Traits
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			anim.PlayBackwardsThen(GetPrefix(self) + name,
+			var hasSequence = anim.HasSequence(GetPrefix(self) + name);
+			anim.PlayBackwardsThen(hasSequence ? GetPrefix(self) + name : name,
 				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
 		}
 
