@@ -20,10 +20,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA
 {

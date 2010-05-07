@@ -6,16 +6,16 @@ namespace OpenRA.Thirdparty
 
 	public class Random
 	{
-		int[] mt = new int[624];
+		uint[] mt = new uint[624];
 		int index = 0;
 
 		public Random() : this(Environment.TickCount) { }
 		
 		public Random(int seed)
 		{
-			mt[0] = seed;
-			for (var i = 1; i < mt.Length; i++)
-				mt[i] = 1812433253 * (mt[i - 1] ^ (mt[i - 1] >> 30)) + i;
+			mt[0] = (uint)seed;
+			for (var i = 1u; i < mt.Length; i++)
+				mt[i] = 1812433253u * (mt[i - 1] ^ (mt[i - 1] >> 30)) + i;
 		}
 
 		public int Next()
@@ -24,26 +24,29 @@ namespace OpenRA.Thirdparty
 
 			var y = mt[index];
 			y ^= (y >> 11);
-			y ^= (int)((y << 7) & 2636928640);
-			y ^= (int)((y << 15) & 4022730752);
+			y ^= ((y << 7) & 2636928640);
+			y ^= ((y << 15) & 4022730752);
 			y ^= y >> 18;
 
 			index = (index + 1) % 624;
-			return y;
+			return (int)(y % int.MaxValue);
 		}
 
 		public int Next(int low, int high) { return low + Next() % (high - low); }
 		public int Next(int high) { return Next() % high; }
-		public double NextDouble() { return (uint)Next() / (double)uint.MaxValue; }
+		public double NextDouble() { return Math.Abs(Next() / (double)0x7fffffff); }
 
 		void Generate()
 		{
-			for (var i = 0; i < mt.Length; i++)
+			unchecked
 			{
-				var y = (mt[i] & int.MinValue) | (mt[(i + 1) % 624] & int.MaxValue);
-				mt[i] = mt[(i + 397) % 624] ^ (y >> 1);
-				if ((y & 1) == 1)
-					mt[i] = (int)(mt[i] ^ 2567483615);
+				for (var i = 0u; i < mt.Length; i++)
+				{
+					var y = (mt[i] & 0x80000000) | (mt[(i + 1) % 624] & 0x7fffffff);
+					mt[i] = mt[(i + 397u) % 624u] ^ (y >> 1);
+					if ((y & 1) == 1)
+						mt[i] = (mt[i] ^ 2567483615);
+				}
 			}
 		}
 	}

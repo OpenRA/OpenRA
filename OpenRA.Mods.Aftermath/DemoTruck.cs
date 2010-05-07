@@ -18,9 +18,8 @@
  */
 #endregion
 
-using OpenRA.Effects;
-using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Aftermath
 {
