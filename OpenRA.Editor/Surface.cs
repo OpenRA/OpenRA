@@ -63,17 +63,21 @@ namespace OpenRA.Editor
 				for( var u = 0; u < template.Size.X; u++ )
 					for (var v = 0; v < template.Size.Y; v++)
 					{
-						var z = u + v * template.Size.X;
-						if (template.TerrainType.ContainsKey(z))
-							Map.MapTiles[u + pos.X, v + pos.Y] =
-								new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
+						if (Map.IsInMap(new int2(u, v) + pos))
+						{
+							var z = u + v * template.Size.X;
+							if (template.TerrainType.ContainsKey(z))
+								Map.MapTiles[u + pos.X, v + pos.Y] =
+									new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
+
+							var ch = new int2( (pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
+							if (Chunks.ContainsKey(ch))
+							{
+								Chunks[ch].Dispose();
+								Chunks.Remove(ch);
+							}
+						}
 					}
-
-				// invalidate tiles that were involved.
-
-				// todo: do this properly.
-				foreach (var v in Chunks.Values) v.Dispose();
-				Chunks.Clear();
 			}
 
 			Invalidate();
