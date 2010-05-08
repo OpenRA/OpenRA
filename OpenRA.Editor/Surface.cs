@@ -27,7 +27,7 @@ namespace OpenRA.Editor
 			UpdateStyles();
 		}
 
-		static readonly Pen RedPen = new Pen(Color.Red);
+		static readonly Pen CordonPen = new Pen(Color.Red);
 		int2 MousePos;
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -86,9 +86,6 @@ namespace OpenRA.Editor
 			var bitmap = new Bitmap(ChunkSize * 24, ChunkSize * 24);
 			bitmap.SetPixel(0, 0, Color.Green);
 
-			var hx = Math.Min(Map.Width - u * ChunkSize, ChunkSize);
-			var hy = Math.Min(Map.Height - v * ChunkSize, ChunkSize);
-
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
@@ -97,8 +94,8 @@ namespace OpenRA.Editor
 				int* p = (int*)data.Scan0.ToPointer();
 				var stride = data.Stride >> 2;
 
-				for (var i = 0; i < hx; i++)
-					for (var j = 0; j < hy; j++)
+				for (var i = 0; i < ChunkSize; i++)
+					for (var j = 0; j < ChunkSize; j++)
 					{
 						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
 						var tile = TileSet.tiles[tr.type];
@@ -126,13 +123,16 @@ namespace OpenRA.Editor
 			if (Map == null) return;
 			if (TileSet == null) return;
 
-			for( var u = Map.TopLeft.X - Map.TopLeft.X % ChunkSize; u < Map.BottomRight.X; u += ChunkSize )
-				for (var v = Map.TopLeft.Y - Map.TopLeft.Y % ChunkSize; v < Map.BottomRight.Y; v += ChunkSize)
+			for( var u = Map.TopLeft.X - Map.TopLeft.X % ChunkSize; u <= Map.BottomRight.X; u += ChunkSize )
+				for (var v = Map.TopLeft.Y - Map.TopLeft.Y % ChunkSize; v <= Map.BottomRight.Y; v += ChunkSize)
 				{
 					var x = new int2(u/ChunkSize,v/ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);
 					e.Graphics.DrawImage(Chunks[x], (24 * ChunkSize * x + Offset).ToPoint());
 				}
+
+			e.Graphics.DrawRectangle(CordonPen,
+				new Rectangle(Map.XOffset * 24 + Offset.X, Map.YOffset * 24 + Offset.Y, Map.Width * 24, Map.Height * 24));
 
 			if (Brush.Second != null)
 				e.Graphics.DrawImage(Brush.Second,

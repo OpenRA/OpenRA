@@ -86,6 +86,9 @@ namespace OpenRA.FileFormats
 			ShellmapUid = yaml["ShellmapUid"].Value;
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key) { return ys[key].Nodes.Keys.ToArray(); }
+		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key)
+		{
+			return ys.ContainsKey(key) ? ys[key].Nodes.Keys.ToArray() : new string[] { };
+		}
 	}
 }

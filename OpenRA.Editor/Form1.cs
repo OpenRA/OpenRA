@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
+using System.Drawing.Imaging;
 
 namespace OpenRA.Editor
 {
@@ -22,13 +23,13 @@ namespace OpenRA.Editor
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			// load the map
-			var map = new Map(new Folder("mods/ra/maps/mjolnir"));
+			var map = new Map(new Folder("mods/ra/maps/scm01ea"));
 
 			// we're also going to need a tileset...
 			var tsinfo = fileMapping[Pair.New(mods[0], map.Theater)];
 			var tileset = new TileSet("tileset.til", "templates.ini", tsinfo.First);
 
-			var palette = new Palette( FileSystem.Open( map.Theater.ToLowerInvariant() + ".pal" ), true);
+			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
 			surface1.TileSet = tileset;
 			surface1.Map = map;
@@ -36,7 +37,7 @@ namespace OpenRA.Editor
 
 			// construct the palette of tiles
 
-			foreach( var n in tileset.tiles.Keys )
+			foreach (var n in tileset.tiles.Keys)
 			{
 				try
 				{
@@ -94,17 +95,26 @@ namespace OpenRA.Editor
 			var tile = ts.tiles[n];
 
 			var bitmap = new Bitmap(24 * template.Size.X, 24 * template.Size.Y);
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-			for( var u = 0; u < template.Size.X; u++ )
-				for( var v = 0; v < template.Size.Y; v++ )
-					if (template.TerrainType.ContainsKey(u + v * template.Size.X))
-					{
-						var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
-						for (var i = 0; i < 24; i++)
-							for (var j = 0; j < 24; j++)
-								bitmap.SetPixel(u * 24 + i, v * 24 + j, p.GetColor(rawImage[i + 24 * j]));
-					}
+			unsafe
+			{
+				int* q = (int*)data.Scan0.ToPointer();
+				var stride = data.Stride >> 2;
 
+				for (var u = 0; u < template.Size.X; u++)
+					for (var v = 0; v < template.Size.Y; v++)
+						if (template.TerrainType.ContainsKey(u + v * template.Size.X))
+						{
+							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
+							for (var i = 0; i < 24; i++)
+								for (var j = 0; j < 24; j++)
+									q[(v * 24 + j) * stride + u * 24 + i] = p.GetColor(rawImage[i + 24 * j]).ToArgb();
+						}
+			}
+
+			bitmap.UnlockBits(data);
 			return bitmap;
 		}
 	}
