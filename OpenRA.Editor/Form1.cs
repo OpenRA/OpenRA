@@ -15,7 +15,7 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			LocateGameRoot();
 
-			LoadMap("ra", "mjolnir");
+			LoadMap("cnc", "scm01ea");
 		}
 
 		void LoadMap(string mod, string mapname)
