@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using System;
+using System.Drawing.Imaging;
 
 namespace OpenRA.Editor
 {
@@ -53,6 +54,28 @@ namespace OpenRA.Editor
 			if (e.Button == MouseButtons.Right)
 				Brush = Pair.New((ushort)0, null as Bitmap);
 
+			if (e.Button == MouseButtons.Left && Brush.Second != null)
+			{
+				// change the bits in the map
+				var template = TileSet.walk[Brush.First];
+				var pos = GetBrushLocation();
+
+				for( var u = 0; u < template.Size.X; u++ )
+					for (var v = 0; v < template.Size.Y; v++)
+					{
+						var z = u + v * template.Size.X;
+						if (template.TerrainType.ContainsKey(z))
+							Map.MapTiles[u + pos.X, v + pos.Y] =
+								new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
+					}
+
+				// invalidate tiles that were involved.
+
+				// todo: do this properly.
+				foreach (var v in Chunks.Values) v.Dispose();
+				Chunks.Clear();
+			}
+
 			Invalidate();
 		}
 
@@ -66,19 +89,29 @@ namespace OpenRA.Editor
 			var hx = Math.Min(Map.Width - u * ChunkSize, ChunkSize);
 			var hy = Math.Min(Map.Height - v * ChunkSize, ChunkSize);
 
-			for( var i = 0; i < hx; i++ )
-				for (var j = 0; j < hy; j++)
-				{
-					var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
-					var tile = TileSet.tiles[tr.type];
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-					var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : 0;
-					var rawImage = tile.TileBitmapBytes[index];
+			unsafe
+			{
+				int* p = (int*)data.Scan0.ToPointer();
+				var stride = data.Stride >> 2;
+
+				for (var i = 0; i < hx; i++)
+					for (var j = 0; j < hy; j++)
+					{
+						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
+						var tile = TileSet.tiles[tr.type];
+
+						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : 0;
+						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)
 							for (var y = 0; y < 24; y++)
-								bitmap.SetPixel(i * 24 + x, j * 24 + y, Palette.GetColor(rawImage[x + 24 * y]));
-				}
+								p[ (j * 24 + y) * stride + i * 24 + x ] = Palette.GetColor(rawImage[x + 24 * y]).ToArgb();
+					}
+			}
 
+			bitmap.UnlockBits(data);
 			return bitmap;
 		}
 
