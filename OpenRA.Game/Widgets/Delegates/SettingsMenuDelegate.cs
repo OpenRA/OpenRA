@@ -42,6 +42,14 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.RecordSyncReports ^= true;
 				return true;
 			};
+			
+			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_MUSICPLAYER").Checked = () => { return Game.Settings.MusicPlayer; };
+			r.GetWidget("SETTINGS_CHECKBOX_MUSICPLAYER").OnMouseDown = mi =>
+			{
+				Game.Settings.MusicPlayer ^= true;
+				r.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
+				return true;
+			};
 						
 			// Menu Buttons
 			r.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {

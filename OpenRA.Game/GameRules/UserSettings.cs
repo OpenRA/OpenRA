@@ -33,6 +33,7 @@ namespace OpenRA.GameRules
 		public readonly int Width = 0;
 		public readonly int Height = 0;
 		public readonly bool Fullscreen = false;
+		public bool MusicPlayer = true;
 		
 		// Internal game settings
 		public readonly int Timestep = 40;

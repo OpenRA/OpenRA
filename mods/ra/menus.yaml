@@ -143,6 +143,13 @@ Container:
 					Width:300
 					Height:20
 					Text:Collect Sync Reports
+				Checkbox@SETTINGS_CHECKBOX_MUSICPLAYER:
+					Id:SETTINGS_CHECKBOX_MUSICPLAYER
+					X:100
+					Y:210
+					Width:300
+					Height:20
+					Text:Show Music Player
 				Button@SETTINGS_BUTTON_OK:
 					Id:SETTINGS_BUTTON_OK
 					X:PARENT_RIGHT - 180
