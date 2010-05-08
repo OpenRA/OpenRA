@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Gl", "OpenRA.Gl\Open
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapConverter", "MapConverter\MapConverter.csproj", "{BA2B4C61-D5EE-4C3E-9BA1-EB32C531FA36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Editor", "OpenRA.Editor\OpenRA.Editor.csproj", "{00038B75-405B-44F5-8691-BD2546DBE224}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,14 @@ Global
 		{BA2B4C61-D5EE-4C3E-9BA1-EB32C531FA36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA2B4C61-D5EE-4C3E-9BA1-EB32C531FA36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BA2B4C61-D5EE-4C3E-9BA1-EB32C531FA36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
