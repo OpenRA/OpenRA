@@ -32,8 +32,8 @@
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.tilePalette = new System.Windows.Forms.FlowLayoutPanel();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
+			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -80,6 +80,10 @@
 			this.tilePalette.Name = "tilePalette";
 			this.tilePalette.Size = new System.Drawing.Size(198, 680);
 			this.tilePalette.TabIndex = 0;
+			// 
+			// tt
+			// 
+			this.tt.ShowAlways = true;
 			// 
 			// surface1
 			// 

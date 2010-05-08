@@ -12,7 +12,11 @@ namespace OpenRA.Editor
 	{
 		public Map Map { get; set; }
 		public TileSet TileSet { get; set; }
+		public Palette Palette { get; set; }
 		public int2 Offset { get; set; }
+		public Pair<ushort, Bitmap> Brush { get; set; }
+
+		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
 
 		public Surface()
 			: base()
@@ -26,23 +30,48 @@ namespace OpenRA.Editor
 
 		public const int CellSize = 24;
 		static readonly Pen RedPen = new Pen(Color.Red);
+		int2 MousePos;
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+			MousePos = new int2(e.Location);
+			Invalidate();
+		}
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			if (e.Button == MouseButtons.Right)
+				Brush = Pair.New((ushort)0, null as Bitmap);
+
+			Invalidate();
+		}
+
+		const int ChunkSize = 8;		// 8x8 chunks ==> 192x192 bitmaps.
+
+		Bitmap RenderChunk(int u, int v)
+		{
+			var bitmap = new Bitmap(ChunkSize * 24, ChunkSize * 24);
+			return bitmap;
+		}
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (Map == null) return;
 			if (TileSet == null) return;
 
-			var n = (ushort)14;
+			for( var u = Map.TopLeft.X - Map.TopLeft.X % ChunkSize; u < Map.BottomRight.X; u += ChunkSize )
+				for (var v = Map.TopLeft.Y - Map.TopLeft.Y % ChunkSize; v < Map.BottomRight.Y; v += ChunkSize)
+				{
+					var x = new int2(u,v);
+					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u, v);
+					e.Graphics.DrawImage(Chunks[x], u * ChunkSize * 24, v * ChunkSize * 24);
+				}
 
-			var template = TileSet.walk[n];
-			var tile = TileSet.tiles[n];
-
-			for( var u = 0; u < template.Size.X; u++ )
-				for( var v = 0; v < template.Size.Y; v++ )
-					if (template.TerrainType.ContainsKey(u + v * template.Size.X))
-					{
-						e.Graphics.DrawRectangle(RedPen, new Rectangle(CellSize * u, CellSize * v, CellSize, CellSize));
-					}
+			if (Brush.Second != null)
+				e.Graphics.DrawImage(Brush.Second, 
+					(MousePos - new int2(MousePos.X % 24, MousePos.Y % 24)).ToPoint());
 		}
 	}
 }

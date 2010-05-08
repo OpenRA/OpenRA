@@ -36,6 +36,7 @@ namespace OpenRA.Editor
 
 			surface1.TileSet = tileset;
 			surface1.Map = map;
+			surface1.Palette = palette;
 
 			// construct the palette of tiles
 
@@ -44,8 +45,27 @@ namespace OpenRA.Editor
 				try
 				{
 					var bitmap = RenderTemplate(tileset, (ushort)n, palette);
-					var ibox = new PictureBox { Image = bitmap, Width = bitmap.Width, Height = bitmap.Height };
+					var ibox = new PictureBox
+					{
+						Image = bitmap,
+						Width = bitmap.Width / 2,
+						Height = bitmap.Height / 2,
+						SizeMode = PictureBoxSizeMode.StretchImage
+					};
+
+					var p = Pair.New(n, bitmap);
+					ibox.Click += (_, e) => surface1.Brush = p;
+
+					var template = tileset.walk[n];
 					tilePalette.Controls.Add(ibox);
+
+					tt.SetToolTip(ibox,
+						"{1}:{0} ({3}x{4} {2})".F(
+						template.Name,
+						template.Index,
+						template.Bridge,
+						template.Size.X,
+						template.Size.Y));
 				}
 				catch { }
 			}
@@ -77,7 +97,7 @@ namespace OpenRA.Editor
 			var template = ts.walk[n];
 			var tile = ts.tiles[n];
 
-			var bitmap = new Bitmap(Surface.CellSize * template.Size.X, Surface.CellSize * template.Size.Y);
+			var bitmap = new Bitmap(24 * template.Size.X, 24 * template.Size.Y);
 
 			for( var u = 0; u < template.Size.X; u++ )
 				for( var v = 0; v < template.Size.Y; v++ )
