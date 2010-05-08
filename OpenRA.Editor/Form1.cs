@@ -110,7 +110,7 @@ namespace OpenRA.Editor
 
 				for (var u = 0; u < template.Size.X; u++)
 					for (var v = 0; v < template.Size.Y; v++)
-						if (template.TerrainType.ContainsKey(u + v * template.Size.X))
+						if (tile.TileBitmapBytes[u + v * template.Size.X] != null)
 						{
 							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
 							for (var i = 0; i < 24; i++)

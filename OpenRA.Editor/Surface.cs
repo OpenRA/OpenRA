@@ -65,6 +65,7 @@ namespace OpenRA.Editor
 			if (e.Button == MouseButtons.Left && Brush.Second != null)
 			{
 				// change the bits in the map
+				var tile = TileSet.tiles[Brush.First];
 				var template = TileSet.walk[Brush.First];
 				var pos = GetBrushLocation();
 
@@ -74,7 +75,7 @@ namespace OpenRA.Editor
 						if (Map.IsInMap(new int2(u, v) + pos))
 						{
 							var z = u + v * template.Size.X;
-							if (template.TerrainType.ContainsKey(z))
+							if (tile.TileBitmapBytes[z] != null)
 								Map.MapTiles[u + pos.X, v + pos.Y] =
 									new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
 
