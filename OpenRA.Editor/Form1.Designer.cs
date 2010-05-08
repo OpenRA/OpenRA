@@ -95,13 +95,10 @@
 			this.surface1.BackColor = System.Drawing.Color.Black;
 			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.surface1.Location = new System.Drawing.Point(0, 0);
-			this.surface1.Map = null;
 			this.surface1.Name = "surface1";
-			this.surface1.Palette = null;
 			this.surface1.Size = new System.Drawing.Size(783, 680);
 			this.surface1.TabIndex = 2;
 			this.surface1.Text = "surface1";
-			this.surface1.TileSet = null;
 			// 
 			// tt
 			// 

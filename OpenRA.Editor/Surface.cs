@@ -1,19 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
-using System;
-using System.Drawing.Imaging;
 
 namespace OpenRA.Editor
 {
 	class Surface : Control
 	{
-		public Map Map { get; set; }
-		public TileSet TileSet { get; set; }
-		public Palette Palette { get; set; }
-		public int2 Offset { get; set; }
-		public Pair<ushort, Bitmap> Brush { get; set; }
+		Map Map;
+		TileSet TileSet;
+		Palette Palette;
+		int2 Offset;
+		public Pair<ushort, Bitmap> Brush;
+
+		public void Bind(Map m, TileSet ts, Palette p)
+		{
+			Map = m;
+			TileSet = ts;
+			Palette = p;
+			Brush = Pair.New((ushort)0, null as Bitmap);
+			Chunks.Clear();
+		}
 
 		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
 
@@ -127,8 +135,8 @@ namespace OpenRA.Editor
 			if (Map == null) return;
 			if (TileSet == null) return;
 
-			for( var u = Map.TopLeft.X - Map.TopLeft.X % ChunkSize; u <= Map.BottomRight.X; u += ChunkSize )
-				for (var v = Map.TopLeft.Y - Map.TopLeft.Y % ChunkSize; v <= Map.BottomRight.Y; v += ChunkSize)
+			for( var u = 0; u <= Map.BottomRight.X; u += ChunkSize )
+				for (var v = 0; v <= Map.BottomRight.Y; v += ChunkSize)
 				{
 					var x = new int2(u/ChunkSize,v/ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);

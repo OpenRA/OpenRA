@@ -15,7 +15,14 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			LocateGameRoot();
 
-			var mods = new[] { "ra" };
+			LoadMap("ra", "mjolnir");
+		}
+
+		void LoadMap(string mod, string mapname)
+		{
+			tilePalette.Controls.Clear();
+
+			var mods = new[] { mod };
 
 			var manifest = new Manifest(mods);
 
@@ -23,7 +30,7 @@ namespace OpenRA.Editor
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			// load the map
-			var map = new Map(new Folder("mods/ra/maps/scm01ea"));
+			var map = new Map(new Folder("mods/{0}/maps/{1}".F(mod, mapname)));
 
 			// we're also going to need a tileset...
 			var tsinfo = fileMapping[Pair.New(mods[0], map.Theater)];
@@ -31,9 +38,7 @@ namespace OpenRA.Editor
 
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
-			surface1.TileSet = tileset;
-			surface1.Map = map;
-			surface1.Palette = palette;
+			surface1.Bind(map, tileset, palette);
 
 			// construct the palette of tiles
 
