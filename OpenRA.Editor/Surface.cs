@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
-using System.Drawing;
+using System;
 
 namespace OpenRA.Editor
 {
@@ -36,6 +34,7 @@ namespace OpenRA.Editor
 		{
 			base.OnMouseMove(e);
 			MousePos = new int2(e.Location);
+
 			Invalidate();
 		}
 
@@ -53,6 +52,28 @@ namespace OpenRA.Editor
 		Bitmap RenderChunk(int u, int v)
 		{
 			var bitmap = new Bitmap(ChunkSize * 24, ChunkSize * 24);
+
+			var hx = Math.Min(Map.Width - u * ChunkSize, ChunkSize);
+			var hy = Math.Min(Map.Height - v * ChunkSize, ChunkSize);
+
+			for( var i = 0; i < hx; i++ )
+				for (var j = 0; j < hy; j++)
+				{
+					var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
+					var tile = TileSet.tiles[tr.type];
+
+					try
+					{
+						var rawImage = tile.TileBitmapBytes[tr.index % tile.TileBitmapBytes.Count];
+						for (var x = 0; x < 24; x++)
+							for (var y = 0; y < 24; y++)
+								bitmap.SetPixel(i * 24 + x, j * 24 + y, Palette.GetColor(rawImage[x + 24 * y]));
+					}
+					catch
+					{
+					}
+				}
+
 			return bitmap;
 		}
 
@@ -65,7 +86,7 @@ namespace OpenRA.Editor
 				for (var v = Map.TopLeft.Y - Map.TopLeft.Y % ChunkSize; v < Map.BottomRight.Y; v += ChunkSize)
 				{
 					var x = new int2(u,v);
-					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u, v);
+					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);
 					e.Graphics.DrawImage(Chunks[x], u * ChunkSize * 24, v * ChunkSize * 24);
 				}
 
