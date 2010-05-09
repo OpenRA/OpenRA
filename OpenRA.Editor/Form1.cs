@@ -125,5 +125,23 @@ namespace OpenRA.Editor
 			bitmap.UnlockBits(data);
 			return bitmap;
 		}
+
+		void ResizeClicked(object sender, EventArgs e)
+		{
+			using (var rd = new ResizeDialog())
+			{
+				rd.width.Value = surface1.Map.MapSize.X;
+				rd.height.Value = surface1.Map.MapSize.Y;
+				rd.cordonLeft.Value = surface1.Map.TopLeft.X;
+				rd.cordonTop.Value = surface1.Map.TopLeft.Y;
+				rd.cordonRight.Value = surface1.Map.BottomRight.X;
+				rd.cordonBottom.Value = surface1.Map.BottomRight.Y;
+
+				if (DialogResult.OK != rd.ShowDialog())
+					return;
+
+				surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette);	// rebind it to invalidate all caches
+			}
+		}
 	}
 }

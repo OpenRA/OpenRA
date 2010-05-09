@@ -8,9 +8,9 @@ namespace OpenRA.Editor
 {
 	class Surface : Control
 	{
-		Map Map;
-		TileSet TileSet;
-		Palette Palette;
+		public Map Map { get; private set; }
+		public TileSet TileSet { get; private set; }
+		public Palette Palette { get; private set; }
 		int2 Offset;
 		public Pair<ushort, Bitmap> Brush;
 
