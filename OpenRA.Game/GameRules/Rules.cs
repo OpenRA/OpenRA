@@ -35,12 +35,6 @@ namespace OpenRA
 		public static Dictionary<string, VoiceInfo> Voices;
 		public static Dictionary<string, MusicInfo> Music;
 		public static Dictionary<TerrainType, TerrainCost> TerrainTypes;
-
-		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
-		{
-			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
-		}
 		
 		public static void LoadRules(Manifest m, Map map)
 		{
