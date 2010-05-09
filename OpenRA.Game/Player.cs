@@ -53,11 +53,11 @@ namespace OpenRA
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
 
-		public static List<Tuple<string, string, Color>> PlayerColors( World world )
+        public static List<OpenRA.FileFormats.Tuple<string, string, Color>> PlayerColors(World world)
 		{
 			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>()
 				.Where(p => p.Playable)
-				.Select(p => Tuple.New(p.Name, p.DisplayName, p.Color))
+                .Select(p => OpenRA.FileFormats.Tuple.New(p.Name, p.DisplayName, p.Color))
 				.ToList();
 		}
 

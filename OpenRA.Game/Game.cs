@@ -33,6 +33,8 @@ using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Widgets;
+
 using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
 
@@ -47,7 +49,7 @@ namespace OpenRA
 		public static Controller controller;
 		internal static Chrome chrome;
 		internal static UserSettings Settings;
-		
+
 		internal static OrderManager orderManager;
 
 		public static bool skipMakeAnims = true;
@@ -69,12 +71,12 @@ namespace OpenRA
 
 			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
-				
+
 			Timer.Time("mount temporary packages: {0}");
 		}
-		
+
 		public static void LoadModAssemblies(Manifest m)
-		{	
+		{
 			// All the core namespaces
 			var asms = typeof(Game).Assembly.GetNamespaces()
 				.Select(c => Pair.New(typeof(Game).Assembly, c))
@@ -102,9 +104,9 @@ namespace OpenRA
 
 			throw new InvalidOperationException("Cannot locate type: {0}".F(classname));
 		}
-		
-		public static Dictionary<string,MapStub> AvailableMaps;
-		
+
+		public static Dictionary<string, MapStub> AvailableMaps;
+
 		// TODO: Do this nicer
 		static Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
@@ -118,48 +120,48 @@ namespace OpenRA
 
 			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
 		}
-		
+
 		static void ChangeMods()
 		{
-			Timer.Time( "----ChangeMods" );
+			Timer.Time("----ChangeMods");
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
-			Timer.Time( "manifest: {0}" );
+			Timer.Time("manifest: {0}");
 			LoadModAssemblies(manifest);
 			SheetBuilder.Initialize(renderer);
 			LoadModPackages(manifest);
-			Timer.Time( "load assemblies, packages: {0}" );
+			Timer.Time("load assemblies, packages: {0}");
 			packageChangePending = false;
 		}
-		
+
 		static void LoadMap(string mapName)
 		{
-			Timer.Time( "----LoadMap" );
+			Timer.Time("----LoadMap");
 			SheetBuilder.Initialize(renderer);
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
-			Timer.Time( "manifest: {0}" );
-			
+			Timer.Time("manifest: {0}");
+
 			if (!Game.AvailableMaps.ContainsKey(mapName))
 				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapName));
-			
-			var map = new Map( Game.AvailableMaps[mapName].Package );
-			
+
+			var map = new Map(Game.AvailableMaps[mapName].Package);
+
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			ChromeProvider.Initialize(manifest.Chrome);
-			Timer.Time( "viewport, ChromeProvider: {0}" );
-			world = new World(manifest,map);
-			Timer.Time( "world: {0}" );
-			
+			Timer.Time("viewport, ChromeProvider: {0}");
+			world = new World(manifest, map);
+			Timer.Time("world: {0}");
+
 			SequenceProvider.Initialize(manifest.Sequences);
-			Timer.Time( "ChromeProv, SeqProv: {0}" );
+			Timer.Time("ChromeProv, SeqProv: {0}");
 
 			chrome = new Chrome(renderer, manifest);
-			Timer.Time( "chrome: {0}" );
+			Timer.Time("chrome: {0}");
 
-			Timer.Time( "----end LoadMap" );
+			Timer.Time("----end LoadMap");
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
-		
+
 		public static void MoveViewport(int2 loc)
 		{
 			viewport.Center(loc);
@@ -174,21 +176,21 @@ namespace OpenRA
 
 			CurrentHost = host;
 			CurrentPort = port;
-			
-			orderManager = new OrderManager(new NetworkConnection( host, port ), ChooseReplayFilename());
+
+			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
 		}
 
 		static string ChooseReplayFilename()
 		{
 			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ.rep");
 		}
-		
+
 		static void JoinLocal()
 		{
 			if (orderManager != null) orderManager.Dispose();
 			orderManager = new OrderManager(new EchoConnection());
 		}
-				
+
 		static int lastTime = Environment.TickCount;
 
 		static void ResetTimer()
@@ -242,7 +244,7 @@ namespace OpenRA
 			return sb.ToString();
 		}
 
-		internal static void DumpSyncReport( int frame )
+		internal static void DumpSyncReport(int frame)
 		{
 			var f = syncReports.FirstOrDefault(a => a.First == frame);
 			if (f == null)
@@ -262,11 +264,11 @@ namespace OpenRA
 				// TODO: Only do this on mod change
 				Timer.Time("----begin maplist");
 				AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-				Timer.Time( "maplist: {0}" );
+				Timer.Time("maplist: {0}");
 				ChangeMods();
 				return;
 			}
-			
+
 			if (mapChangePending)
 			{
 				mapName = LobbyInfo.GlobalSettings.Map;
@@ -281,9 +283,9 @@ namespace OpenRA
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Timestep;
-					chrome.Tick( world );
+					chrome.Tick(world);
 
-					orderManager.TickImmediate( world );
+					orderManager.TickImmediate(world);
 
 					var isNetTick = LocalTick % NetTickScale == 0;
 
@@ -309,7 +311,7 @@ namespace OpenRA
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions( world );
+				viewport.DrawRegions(world);
 			}
 
 			PerfHistory.items["render"].Tick();
@@ -364,7 +366,7 @@ namespace OpenRA
 
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 				mapChangePending = true;
-			
+
 			if (string.Join(",", oldLobbyInfo.GlobalSettings.Mods)
 				!= string.Join(",", LobbyInfo.GlobalSettings.Mods))
 			{
@@ -379,18 +381,18 @@ namespace OpenRA
 
 		static void LoadShellMap(string map)
 		{
-			LoadMap(map);			
+			LoadMap(map);
 			world.Queries = new World.AllQueries(world);
 
 			foreach (var p in world.players.Values)
 				foreach (var q in world.players.Values)
 					p.Stances[q] = ChooseInitialStance(p, q);
-						
+
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 			orderManager.StartGame();
 		}
-		
+
 		internal static void StartGame()
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
@@ -405,13 +407,13 @@ namespace OpenRA
 			foreach (var p in world.players.Values)
 				foreach (var q in world.players.Values)
 					p.Stances[q] = ChooseInitialStance(p, q);
-			
+
 			world.Queries = new World.AllQueries(world);
 
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 
-			viewport.GoToStartLocation( world.LocalPlayer );
+			viewport.GoToStartLocation(world.LocalPlayer);
 			orderManager.StartGame();
 		}
 
@@ -423,7 +425,7 @@ namespace OpenRA
 			var pc = GetClientForPlayer(p);
 			var qc = GetClientForPlayer(q);
 
-			return pc.Team != 0 && pc.Team == qc.Team 
+			return pc.Team != 0 && pc.Team == qc.Team
 				? Stance.Ally : Stance.Enemy;
 		}
 
@@ -441,8 +443,8 @@ namespace OpenRA
 			if (ev == MouseInputEvent.Down)
 				lastPos = new int2(e.Location);
 
-			if (ev == MouseInputEvent.Move && 
-				(e.Button == MouseButtons.Middle || 
+			if (ev == MouseInputEvent.Move &&
+				(e.Button == MouseButtons.Middle ||
 				e.Button == (MouseButtons.Left | MouseButtons.Right)))
 			{
 				var p = new int2(e.Location);
@@ -450,7 +452,7 @@ namespace OpenRA
 				lastPos = p;
 			}
 
-			viewport.DispatchMouseInput( world, 
+			viewport.DispatchMouseInput(world,
 				new MouseInput
 				{
 					Button = (MouseButton)(int)e.Button,
@@ -459,8 +461,8 @@ namespace OpenRA
 					Modifiers = modifierKeys,
 				});
 
-			if( sync != world.SyncHash() && world == initialWorld )
-				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+			if (sync != world.SyncHash() && world == initialWorld)
+				throw new InvalidOperationException("Desync in DispatchMouseInput");
 		}
 
 		internal static bool IsHost
@@ -487,11 +489,11 @@ namespace OpenRA
 			{ ')', '0' },
 		};
 
-		public static void HandleKeyPress( KeyPressEventArgs e, Modifiers modifiers )
+		public static void HandleKeyPress(KeyPressEventArgs e, Modifiers modifiers)
 		{
 			int sync = world.SyncHash();
-			
-			if( e.KeyChar == '\r' )
+
+			if (e.KeyChar == '\r')
 				chat.Toggle();
 			else if (Game.chat.isChatting)
 				chat.TypeChar(e.KeyChar);
@@ -503,12 +505,17 @@ namespace OpenRA
 					Game.controller.selection.DoControlGroup(world,
 						c - '0', modifiers);
 
-				if (c == 'h')
+				if (c == 08)
 					Game.controller.GotoNextBase();
+
+				if (c == 09)
+					BuildPaletteWidget.TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift ? true : false);
+
+				BuildPaletteWidget.DoBuildingHotkey(c, world);
 			}
 
-			if( sync != Game.world.SyncHash() )
-				throw new InvalidOperationException( "Desync in OnKeyPress" );
+			if (sync != Game.world.SyncHash())
+				throw new InvalidOperationException("Desync in OnKeyPress");
 		}
 
 		public static void HandleModifierKeys(Modifiers mods)
@@ -539,15 +546,15 @@ namespace OpenRA
 					throw new InvalidOperationException("Unable to find game root.");
 				Directory.SetCurrentDirectory("..");
 			}
-			
+
 			LoadUserSettings(settings);
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
-			
+
 			// Load the default mod to access required files
 			LoadModPackages(new Manifest(LobbyInfo.GlobalSettings.Mods));
-			
+
 			Renderer.SheetSize = Settings.SheetSize;
-			
+
 			bool windowed = !Game.Settings.Fullscreen;
 			var resolution = GetResolution(settings);
 			renderer = new Renderer(resolution, windowed);
@@ -555,21 +562,21 @@ namespace OpenRA
 
 			controller = new Controller();
 			clientSize = new int2(resolution);
-			
+
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
 			PerfHistory.items["cursor"].hasNormalTick = false;
 			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-			
+
 			ChangeMods();
 
-			if( Settings.Replay != "" )
-				orderManager = new OrderManager( new ReplayConnection( Settings.Replay ) );
+			if (Settings.Replay != "")
+				orderManager = new OrderManager(new ReplayConnection(Settings.Replay));
 			else
 				JoinLocal();
-			
+
 			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			ResetTimer();

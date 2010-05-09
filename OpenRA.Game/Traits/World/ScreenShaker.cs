@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 	public class ScreenShaker : ITick
 	{
 		int ticks = 0;
-		List<Tuple<int, float2, int>> shakeEffects = new List<Tuple<int, float2, int>>();
+        List<OpenRA.FileFormats.Tuple<int, float2, int>> shakeEffects = new List<OpenRA.FileFormats.Tuple<int, float2, int>>();
 		
 		public void Tick (Actor self)
 		{
@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 		
 		public void AddEffect(int time, float2 position, int intensity)
 		{
-			shakeEffects.Add(Tuple.New(ticks + time, position, intensity));
+            shakeEffects.Add(OpenRA.FileFormats.Tuple.New(ticks + time, position, intensity));
 		}
 		
 		public float2 getScrollOffset()

@@ -107,7 +107,7 @@ namespace OpenRA
 
 		public float2 CenterLocation;
 
-		Lazy<float2> Size;
+        OpenRA.FileFormats.Lazy<float2> Size;
 
 		public IEnumerable<Renderable> Render()
 		{

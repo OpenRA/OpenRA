@@ -9,6 +9,7 @@ MSLO:
 		Cost: 2500
 		Description: Missile Silo
 		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+		Hotkey: m
 	Building:
 		Power: -100
 		Footprint: xx
@@ -33,6 +34,7 @@ GAP:
 		Cost: 500
 		Description: Gap Generator
 		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
+		Hotkey: g
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -54,6 +56,7 @@ SPEN:
 		Cost: 650
 		Description: Sub Pen
 		LongDesc: Produces and repairs submarines and \ntransports
+		Hotkey: s
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -81,6 +84,7 @@ SYRD:
 		Description: Shipyard
 		LongDesc: Produces and repairs ships
 		BuildPaletteOrder: 4
+		Hotkey: s
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -109,6 +113,7 @@ IRON:
 		Cost: 2800
 		Description: Iron Curtain
 		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
+		Hotkey: c
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -134,6 +139,7 @@ PDOX:
 		Cost: 2800
 		Description: Chronosphere
 		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
+		Hotkey: o
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -159,6 +165,7 @@ TSLA:
 		Cost: 1500
 		Description: Tesla Coil
 		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Hotkey: t
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -188,6 +195,7 @@ AGUN:
 		Cost: 600
 		Description: AA Gun
 		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Hotkey: a
 	Building:
 		Power: -50
 		Footprint: _ x
@@ -220,6 +228,7 @@ DOME:
 		Description: Radar Dome
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
 		BuildPaletteOrder: 6
+		Hotkey: r
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -243,6 +252,7 @@ PBOX:
 		Cost: 400
 		Description: Pillbox
 		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Hotkey: x
 	Building:
 		Power: -15
 		HP: 400
@@ -265,6 +275,7 @@ HBOX:
 		Cost: 600
 		Description: Camo Pillbox
 		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Hotkey: c
 	Building:
 		Power: -15
 		HP: 600
@@ -287,6 +298,7 @@ GUN:
 		Cost: 600
 		Description: Turret
 		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Hotkey: t
 	Building:
 		Power: -40
 		HP: 400
@@ -314,6 +326,7 @@ FTUR:
 		Cost: 600
 		Description: Flame Turret
 		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
+		Hotkey: f
 	Building:
 		Power: -20
 		HP: 400
@@ -337,6 +350,7 @@ SAM:
 		Cost: 750
 		Description: SAM Site
 		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Hotkey: s
 	Building:
 		Power: -20
 		Footprint: xx
@@ -366,6 +380,7 @@ ATEK:
 		Description: Allied Tech Center
 		LongDesc: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
 		AlternateName: @Tech Center
+		Hotkey: t
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -389,6 +404,7 @@ WEAP:
 		Description: War Factory
 		LongDesc: Produces tanks & light vehicles.
 		BuildPaletteOrder: 5
+		Hotkey: w
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -438,6 +454,7 @@ PROC:
 		Description: Ore Refinery
 		LongDesc: Converts Ore and Gems into money
 		BuildPaletteOrder: 1
+		Hotkey: e
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -470,6 +487,7 @@ SILO:
 		Cost: 150
 		Description: Silo
 		LongDesc: Stores excess harvested Ore
+		Hotkey: o
 	Building:
 		Power: -10
 		Capturable: true
@@ -492,6 +510,7 @@ HPAD:
 		Cost: 1500
 		Description: Helipad
 		LongDesc: Produces and reloads helicopters
+		Hotkey: i
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -518,6 +537,7 @@ AFLD:
 		Cost: 600
 		Description: Airstrip
 		LongDesc: Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		Hotkey: a
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -543,6 +563,7 @@ POWR:
 		LongDesc: Provides power for other structures
 		BuildPaletteOrder: 0
 		AlternateName: @Power Plant
+		Hotkey: p
 	Building:
 		Power: 100
 		Footprint: xx xx
@@ -565,6 +586,7 @@ APWR:
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 		BuildPaletteOrder:2
+		Hotkey: l
 		AlternateName: @Power Plant
 	Building:
 		Power: 200
@@ -588,6 +610,7 @@ STEK:
 		Description: Soviet Tech Center
 		LongDesc: Provides Soviet advanced technologies
 		AlternateName: @Tech Center
+		Hotkey: t
 	Building:
 		Power: -100
 		Footprint: xxx xxx
@@ -610,6 +633,7 @@ BARR:
 		Description: Soviet Barracks
 		LongDesc: Produces infantry
 		BuildPaletteOrder: 3
+		Hotkey: b
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -635,6 +659,7 @@ TENT:
 		Description: Allied Barracks
 		LongDesc: Produces infantry
 		BuildPaletteOrder: 3
+		Hotkey: b
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -659,6 +684,7 @@ KENN:
 		Cost: 200
 		Description: Kennel
 		LongDesc: Produces attack dogs
+		Hotkey: k
 	Building:
 		Power: -10
 		HP: 400
@@ -677,6 +703,7 @@ FIX:
 		Cost: 1200
 		Description: Service Depot
 		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
+		Hotkey: d
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -700,6 +727,7 @@ FACF:
 		Description: Fake Construction Yard
 		LongDesc: Looks like a Construction Yard.
 		BuildPaletteOrder: 90
+		Hotkey: c
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -724,6 +752,7 @@ WEAF:
 		Description: Fake War Factory
 		LongDesc: Looks like a War Factory.
 		BuildPaletteOrder: 90
+		Hotkey: x
 	Building:
 		Power: -2
 		Footprint: xxx xxx
@@ -749,6 +778,7 @@ SYRF:
 		Description: Fake Shipyard
 		LongDesc: Looks like a Shipyard
 		BuildPaletteOrder: 90
+		Hotkey: z
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -791,6 +821,7 @@ DOMF:
 		Description: Fake Radar Dome
 		LongDesc: Looks like a Radar Dome
 		BuildPaletteOrder: 90
+		Hotkey: v
 	Building:
 		Power: -2
 		Footprint: xx xx
@@ -815,6 +846,7 @@ SBAG:
 		Description: Sandbag Wall
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		BuildPaletteOrder: 100
+		Hotkey: b
 	Building:
 		HP: 100
 		Armor: none
@@ -832,6 +864,7 @@ FENC:
 		Description: Wire Fence
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		BuildPaletteOrder: 100
+		Hotkey: n
 	Building:
 		HP: 100
 		Armor: none
@@ -849,6 +882,7 @@ BRIK:
 		Description: Concrete Wall
 		LongDesc: Stop units and blocks enemy fire.
 		BuildPaletteOrder: 100
+		Hotkey: w
 	Building:
 		HP: 100
 		Armor: none

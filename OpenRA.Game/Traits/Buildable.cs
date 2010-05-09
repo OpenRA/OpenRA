@@ -39,6 +39,7 @@ namespace OpenRA.Traits
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
 		public readonly int BuildPaletteOrder = 50;
+        public readonly string Hotkey = null;
 
 		public override object Create(Actor self) { return new Buildable(); }
 	}

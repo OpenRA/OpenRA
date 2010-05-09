@@ -319,6 +319,15 @@ namespace OpenRA.Widgets
 					HandleBuildPalette(world, name, (mi.Button == MouseButton.Left));
 			};
 		}
+
+        static void Hotkey(World world, String name)
+		{
+			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			Sound.Play(eva.TabClick);
+			
+			if (name != null)
+			    HandleBuildPalette(world, name, true);
+		}
 		
 		Action<MouseInput> HandleTabClick(string button, World world)
 		{
@@ -344,7 +353,7 @@ namespace OpenRA.Widgets
 				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
 		}
 		
-		void HandleBuildPalette( World world, string item, bool isLmb )
+		static void HandleBuildPalette( World world, string item, bool isLmb )
 		{
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
@@ -391,7 +400,7 @@ namespace OpenRA.Widgets
 			}
 		}
 		
-		void StartProduction( World world, string item )
+		static void StartProduction( World world, string item )
 		{
 			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var unit = Rules.Info[item];
@@ -481,6 +490,9 @@ namespace OpenRA.Widgets
 			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
 				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
 
+            if (buildable.Hotkey != null)
+                DrawRightAligned("{0}".F(buildable.Hotkey.ToUpper()), pos + new int2(-5, 35),Color.White);
+
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
@@ -507,5 +519,42 @@ namespace OpenRA.Widgets
 
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
+
+        public static void DoBuildingHotkey(char c, World world)
+        {
+            if (Game.world.LocalPlayer == null) return;
+
+            var buildable = Rules.TechTree.BuildableItems(Game.world.LocalPlayer, Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE").currentTab);
+
+            var toBuild = buildable.FirstOrDefault(b => Rules.Info[b.ToLowerInvariant()].Traits.Get<BuildableInfo>().Hotkey == c.ToString());
+
+            if (toBuild != null) Hotkey(world, toBuild);
+
+        }
+        public static void TabChange(bool shift)
+        {
+            var p = Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE");
+            int size = p.visibleTabs.Count();
+            if (size > 0)
+            {
+                string last = p.visibleTabs.Last();
+                string first = p.visibleTabs.First();
+                int current = p.visibleTabs.IndexOf(p.currentTab);
+                if (!shift)
+                {
+                    if (current + 1 >= size)
+                        p.SetCurrentTab(p.visibleTabs.FirstOrDefault());
+                    else
+                        p.SetCurrentTab(p.visibleTabs[current + 1]);
+                }
+                else
+                {
+                    if (current - 1 < 0)
+                        p.SetCurrentTab(p.visibleTabs.LastOrDefault());
+                    else
+                        p.SetCurrentTab(p.visibleTabs[current - 1]);
+                }
+            }
+        }
 	}
 }
