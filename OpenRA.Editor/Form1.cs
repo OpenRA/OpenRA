@@ -15,9 +15,10 @@ namespace OpenRA.Editor
 		public Form1()
 		{
 			InitializeComponent();
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap("ra", "scm01ea");
+			LoadMap("cnc", "scm02ea");
 		}
 
 		void LoadMap(string mod, string mapname)
@@ -28,6 +29,7 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(mods);
 
+			FileSystem.UnmountAll();
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
