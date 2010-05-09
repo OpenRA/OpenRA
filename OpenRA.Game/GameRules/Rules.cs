@@ -36,21 +36,6 @@ namespace OpenRA
 		public static Dictionary<string, MusicInfo> Music;
 		public static Dictionary<TerrainType, TerrainCost> TerrainTypes;
 
-		public static void LoadRules(Manifest m)
-		{
-			Log.Write("Using rules files: ");
-			foreach (var y in m.Rules)
-				Log.Write(" -- {0}", y);
-
-			Info = LoadYamlRules(m.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
-			Weapons = LoadYamlRules(m.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
-			Voices = LoadYamlRules(m.Voices, (k, _) => new VoiceInfo(k.Value));
-			Music = LoadYamlRules(m.Music, (k, _) => new MusicInfo(k.Value));
-			TerrainTypes = LoadYamlRules(m.Terrain, (k, _) => new TerrainCost(k.Value))
-				.ToDictionary(kv => (TerrainType)Enum.Parse(typeof(TerrainType), kv.Key, true), kv => kv.Value);
-
-			TechTree = new TechTree();
-		}
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
 		{
 			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
