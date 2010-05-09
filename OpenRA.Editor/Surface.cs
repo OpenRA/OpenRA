@@ -51,8 +51,40 @@ namespace OpenRA.Editor
 				Invalidate();
 			}
 			else
+			{
+				if (e.Button == MouseButtons.Left && Brush.Second != null)
+					DrawWithBrush();
+
 				if (Brush.Second != null)
 					Invalidate();
+			}
+		}
+
+		void DrawWithBrush()
+		{
+			// change the bits in the map
+			var tile = TileSet.tiles[Brush.First];
+			var template = TileSet.walk[Brush.First];
+			var pos = GetBrushLocation();
+
+			for (var u = 0; u < template.Size.X; u++)
+				for (var v = 0; v < template.Size.Y; v++)
+				{
+					if (Map.IsInMap(new int2(u, v) + pos))
+					{
+						var z = u + v * template.Size.X;
+						if (tile.TileBitmapBytes[z] != null)
+							Map.MapTiles[u + pos.X, v + pos.Y] =
+								new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
+
+						var ch = new int2((pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
+						if (Chunks.ContainsKey(ch))
+						{
+							Chunks[ch].Dispose();
+							Chunks.Remove(ch);
+						}
+					}
+				}
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -63,31 +95,7 @@ namespace OpenRA.Editor
 				Brush = Pair.New((ushort)0, null as Bitmap);
 
 			if (e.Button == MouseButtons.Left && Brush.Second != null)
-			{
-				// change the bits in the map
-				var tile = TileSet.tiles[Brush.First];
-				var template = TileSet.walk[Brush.First];
-				var pos = GetBrushLocation();
-
-				for( var u = 0; u < template.Size.X; u++ )
-					for (var v = 0; v < template.Size.Y; v++)
-					{
-						if (Map.IsInMap(new int2(u, v) + pos))
-						{
-							var z = u + v * template.Size.X;
-							if (tile.TileBitmapBytes[z] != null)
-								Map.MapTiles[u + pos.X, v + pos.Y] =
-									new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
-
-							var ch = new int2( (pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
-							if (Chunks.ContainsKey(ch))
-							{
-								Chunks[ch].Dispose();
-								Chunks.Remove(ch);
-							}
-						}
-					}
-			}
+				DrawWithBrush();
 
 			Invalidate();
 		}
