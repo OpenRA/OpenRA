@@ -121,7 +121,7 @@ namespace OpenRA.Editor
 						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
 						var tile = TileSet.tiles[tr.type];
 
-						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : 0;
+						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)
 							for (var y = 0; y < 24; y++)
