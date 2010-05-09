@@ -196,6 +196,7 @@
 			this.Controls.Add(this.width);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "ResizeDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Resize Map";
 			((System.ComponentModel.ISupportInitialize)(this.width)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cordonLeft)).EndInit();

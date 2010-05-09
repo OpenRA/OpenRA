@@ -136,8 +136,8 @@ namespace OpenRA.Editor
 			if (Map == null) return;
 			if (TileSet == null) return;
 
-			for( var u = 0; u <= Map.BottomRight.X; u += ChunkSize )
-				for (var v = 0; v <= Map.BottomRight.Y; v += ChunkSize)
+			for( var u = 0; u < Map.MapSize.X; u += ChunkSize )
+				for (var v = 0; v < Map.MapSize.Y; v += ChunkSize)
 				{
 					var x = new int2(u/ChunkSize,v/ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);

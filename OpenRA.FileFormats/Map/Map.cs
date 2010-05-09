@@ -261,5 +261,22 @@ namespace OpenRA.FileFormats
 			foreach (var s in Smudges)
 				Console.WriteLine("\t{0} {1} {2}", s.Type, s.Location, s.Depth);
 		}
+
+		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
+		{
+			var result = new T[width, height];
+			for (var i = 0; i < width; i++)
+				for (var j = 0; j < height; j++)
+					result[i, j] = i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1)
+						? ts[i, j] : t;
+			return result;
+		}
+
+		public void Resize(int width, int height)		// editor magic.
+		{
+			MapTiles = ResizeArray(MapTiles, MapTiles[0, 0], width, height);
+			MapResources = ResizeArray(MapResources, MapResources[0, 0], width, height);
+			MapSize = new int2(width, height);
+		}
 	}
 }
