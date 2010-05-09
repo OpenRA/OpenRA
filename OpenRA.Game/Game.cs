@@ -73,7 +73,7 @@ namespace OpenRA
 			Timer.Time("mount temporary packages: {0}");
 		}
 		
-		static void LoadModAssemblies(Manifest m)
+		public static void LoadModAssemblies(Manifest m)
 		{	
 			// All the core namespaces
 			var asms = typeof(Game).Assembly.GetNamespaces()

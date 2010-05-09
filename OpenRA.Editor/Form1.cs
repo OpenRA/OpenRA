@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
-using System.Drawing.Imaging;
 
 namespace OpenRA.Editor
 {
@@ -15,7 +15,7 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			LocateGameRoot();
 
-			LoadMap("cnc", "scm01ea");
+			LoadMap("ra", "scm01ea");
 		}
 
 		void LoadMap(string mod, string mapname)
@@ -31,6 +31,9 @@ namespace OpenRA.Editor
 
 			// load the map
 			var map = new Map(new Folder("mods/{0}/maps/{1}".F(mod, mapname)));
+
+			Game.LoadModAssemblies(manifest);
+			Rules.LoadRules(manifest, map);
 
 			// we're also going to need a tileset...
 			var tsinfo = fileMapping[Pair.New(mods[0], map.Theater)];
