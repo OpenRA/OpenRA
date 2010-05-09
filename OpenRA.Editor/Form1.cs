@@ -18,7 +18,7 @@ namespace OpenRA.Editor
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap("cnc", "scm02ea");
+			LoadMap("ra", "mjolnir");
 		}
 
 		void LoadMap(string mod, string mapname)
@@ -83,7 +83,8 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var bitmap = RenderActor(Rules.Info[a], tsinfo.First, palette);
+					var info = Rules.Info[a];
+					var bitmap = RenderActor(info, tsinfo.First, palette);
 					var ibox = new PictureBox
 					{
 						Image = bitmap,
@@ -93,6 +94,11 @@ namespace OpenRA.Editor
 					};
 
 					actorPalette.Controls.Add(ibox);
+
+					tt.SetToolTip(ibox,
+						"{0}:{1}".F(
+						info.Name,
+						info.Category));
 				}
 				catch { }
 			}
