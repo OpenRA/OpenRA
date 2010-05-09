@@ -32,24 +32,26 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tilePalette = new System.Windows.Forms.FlowLayoutPanel();
-			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.surface1 = new OpenRA.Editor.Surface();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.tt = new System.Windows.Forms.ToolTip(this.components);
+			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStripContainer1
@@ -87,29 +89,6 @@
 			this.splitContainer1.SplitterDistance = 198;
 			this.splitContainer1.TabIndex = 0;
 			// 
-			// toolStrip1
-			// 
-			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
-			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
-			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(122, 25);
-			this.toolStrip1.TabIndex = 0;
-			// 
-			// toolStripButton1
-			// 
-			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(51, 22);
-			this.toolStripButton1.Text = "Save";
-			// 
-			// tt
-			// 
-			this.tt.ShowAlways = true;
-			// 
 			// tabControl1
 			// 
 			this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Left;
@@ -134,16 +113,6 @@
 			this.tabPage1.Text = "Templates";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
-			// 
-			this.tabPage2.Location = new System.Drawing.Point(23, 4);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(171, 672);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Actors";
-			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
 			// tilePalette
 			// 
 			this.tilePalette.AutoScroll = true;
@@ -153,14 +122,16 @@
 			this.tilePalette.Size = new System.Drawing.Size(165, 666);
 			this.tilePalette.TabIndex = 1;
 			// 
-			// toolStripButton2
+			// tabPage2
 			// 
-			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(59, 22);
-			this.toolStripButton2.Text = "Resize";
-			this.toolStripButton2.Click += new System.EventHandler(this.ResizeClicked);
+			this.tabPage2.Controls.Add(this.actorPalette);
+			this.tabPage2.Location = new System.Drawing.Point(23, 4);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(171, 672);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "Actors";
+			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// surface1
 			// 
@@ -171,6 +142,47 @@
 			this.surface1.Size = new System.Drawing.Size(783, 680);
 			this.surface1.TabIndex = 2;
 			this.surface1.Text = "surface1";
+			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2});
+			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(122, 25);
+			this.toolStrip1.TabIndex = 0;
+			// 
+			// toolStripButton1
+			// 
+			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton1.Name = "toolStripButton1";
+			this.toolStripButton1.Size = new System.Drawing.Size(51, 22);
+			this.toolStripButton1.Text = "Save";
+			// 
+			// toolStripButton2
+			// 
+			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton2.Name = "toolStripButton2";
+			this.toolStripButton2.Size = new System.Drawing.Size(59, 22);
+			this.toolStripButton2.Text = "Resize";
+			this.toolStripButton2.Click += new System.EventHandler(this.ResizeClicked);
+			// 
+			// tt
+			// 
+			this.tt.ShowAlways = true;
+			// 
+			// actorPalette
+			// 
+			this.actorPalette.AutoScroll = true;
+			this.actorPalette.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.actorPalette.Location = new System.Drawing.Point(3, 3);
+			this.actorPalette.Name = "actorPalette";
+			this.actorPalette.Size = new System.Drawing.Size(165, 666);
+			this.actorPalette.TabIndex = 2;
 			// 
 			// Form1
 			// 
@@ -188,10 +200,11 @@
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
-			this.toolStrip1.ResumeLayout(false);
-			this.toolStrip1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -209,6 +222,7 @@
 		private System.Windows.Forms.FlowLayoutPanel tilePalette;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
+		private System.Windows.Forms.FlowLayoutPanel actorPalette;
 
 	}
 }
