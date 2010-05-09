@@ -78,6 +78,24 @@ namespace OpenRA.Editor
 				}
 				catch { }
 			}
+
+			foreach (var a in Rules.Info.Keys)
+			{
+				try
+				{
+					var bitmap = RenderActor(Rules.Info[a], tsinfo.First, palette);
+					var ibox = new PictureBox
+					{
+						Image = bitmap,
+						Width = bitmap.Width / 2,
+						Height = bitmap.Height / 2,
+						SizeMode = PictureBoxSizeMode.StretchImage
+					};
+
+					actorPalette.Controls.Add(ibox);
+				}
+				catch { }
+			}
 		}
 
 		void LocateGameRoot()
@@ -136,10 +154,31 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		static Bitmap RenderActor(ActorInfo info)
+		static Bitmap RenderActor(ActorInfo info, string ext, Palette p)
 		{
 			var image = info.Traits.Get<RenderSimpleInfo>().Image ?? info.Name;
-			return null;
+			using (var s = FileSystem.OpenWithExts(image, "." + ext, ".shp"))
+			{
+				var shp = new ShpReader(s);
+				var frame = shp[0];
+
+				var bitmap = new Bitmap(shp.Width, shp.Height);
+				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+					ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+				unsafe
+				{
+					int* q = (int*)data.Scan0.ToPointer();
+					var stride = data.Stride >> 2;
+
+					for (var i = 0; i < shp.Width; i++)
+						for (var j = 0; j < shp.Height; j++)
+							q[j * stride + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+				}
+
+				bitmap.UnlockBits(data);
+				return bitmap;
+			}
 		}
 
 		void ResizeClicked(object sender, EventArgs e)
