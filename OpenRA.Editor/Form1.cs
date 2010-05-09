@@ -5,6 +5,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
@@ -120,10 +122,22 @@ namespace OpenRA.Editor
 								for (var j = 0; j < 24; j++)
 									q[(v * 24 + j) * stride + u * 24 + i] = p.GetColor(rawImage[i + 24 * j]).ToArgb();
 						}
+						else
+						{
+							for (var i = 0; i < 24; i++)
+								for (var j = 0; j < 24; j++)
+									q[(v * 24 + j) * stride + u * 24 + i] = Color.Transparent.ToArgb();
+						}
 			}
 
 			bitmap.UnlockBits(data);
 			return bitmap;
+		}
+
+		static Bitmap RenderActor(ActorInfo info)
+		{
+			var image = info.Traits.Get<RenderSimpleInfo>().Image ?? info.Name;
+			return null;
 		}
 
 		void ResizeClicked(object sender, EventArgs e)
