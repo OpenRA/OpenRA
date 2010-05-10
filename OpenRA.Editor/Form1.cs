@@ -84,12 +84,12 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
-					var bitmap = RenderActor(info, tsinfo.First, palette);
+					var template = RenderActor(info, tsinfo.First, palette);
 					var ibox = new PictureBox
 					{
-						Image = bitmap,
-						Width = bitmap.Width / 2,
-						Height = bitmap.Height / 2,
+						Image = template.Bitmap,
+						Width = template.Bitmap.Width / 2,
+						Height = template.Bitmap.Height / 2,
 						SizeMode = PictureBoxSizeMode.StretchImage
 					};
 
@@ -160,7 +160,7 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		static Bitmap RenderActor(ActorInfo info, string ext, Palette p)
+		static ActorTemplate RenderActor(ActorInfo info, string ext, Palette p)
 		{
 			var image = info.Traits.Get<RenderSimpleInfo>().Image ?? info.Name;
 			using (var s = FileSystem.OpenWithExts(image, "." + ext, ".shp"))
@@ -183,7 +183,7 @@ namespace OpenRA.Editor
 				}
 
 				bitmap.UnlockBits(data);
-				return bitmap;
+				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<Building>() };
 			}
 		}
 
