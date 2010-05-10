@@ -41,13 +41,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aftermath", "aftermath", "{
 		mods\aftermath\weapons.yaml = mods\aftermath\weapons.yaml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ra-ng", "ra-ng", "{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43}"
-	ProjectSection(SolutionItems) = preProject
-		mods\ra-ng\crate-drop.yaml = mods\ra-ng\crate-drop.yaml
-		mods\ra-ng\defense-queue.yaml = mods\ra-ng\defense-queue.yaml
-		mods\ra-ng\mod.yaml = mods\ra-ng\mod.yaml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shaders", "shaders", "{119A289F-9059-4B0C-8A5C-5A5D77E6E16C}"
 	ProjectSection(SolutionItems) = preProject
 		shaders\chrome-rgba.fx = shaders\chrome-rgba.fx
@@ -96,6 +89,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cnc", "cnc", "{65D8A06F-F2D
 		mods\cnc\structures.yaml = mods\cnc\structures.yaml
 		mods\cnc\system.yaml = mods\cnc\system.yaml
 		mods\cnc\tabs.png = mods\cnc\tabs.png
+		mods\cnc\templates.ini = mods\cnc\templates.ini
+		mods\cnc\tileSet.til = mods\cnc\tileSet.til
 		mods\cnc\trees.yaml = mods\cnc\trees.yaml
 		mods\cnc\vehicles.yaml = mods\cnc\vehicles.yaml
 		mods\cnc\voices.yaml = mods\cnc\voices.yaml
@@ -110,7 +105,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{59F0734D-2F86-4C26-8171-CF45EE01E97A} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{8DA16338-FA8F-4CCD-8731-CBFCF5E31A78} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
-		{8C56DCEF-63A3-4E69-B826-20C5F7EF4C43} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 		{65D8A06F-F2DF-4000-A4F7-AFDB4C282698} = {F0BAF862-166C-402E-AF8E-16CA1A5EB585}
 	EndGlobalSection
 EndGlobal
