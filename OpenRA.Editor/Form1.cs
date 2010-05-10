@@ -36,13 +36,12 @@ namespace OpenRA.Editor
 		string currentMod = "ra";
 		TileSet tileset;
 
-		void LoadMap(string mod, string mapname)
+		void LoadMap(string mapname)
 		{
 			tilePalette.Controls.Clear();
 			actorPalette.Controls.Clear();
 			resourcePalette.Controls.Clear();
 
-			currentMod = mod;
 			loadedMapName = mapname;
 
 			var manifest = new Manifest(new[] { currentMod });
@@ -53,7 +52,7 @@ namespace OpenRA.Editor
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			// load the map
-			var map = new Map(new Folder("mods/{0}/maps/{1}".F(mod, mapname)));
+			var map = new Map(new Folder(mapname));
 
 			PrepareMapResources(manifest, map);
 		}
@@ -373,7 +372,7 @@ namespace OpenRA.Editor
 		{
 			folderBrowser.ShowNewFolderButton = true;
 			if (DialogResult.OK == folderBrowser.ShowDialog())
-				LoadMap(currentMod, Path.GetFileName(folderBrowser.SelectedPath));
+				LoadMap(folderBrowser.SelectedPath);
 		}
 
 		void NewClicked(object sender, EventArgs e)
