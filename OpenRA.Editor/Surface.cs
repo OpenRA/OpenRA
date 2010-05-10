@@ -70,8 +70,7 @@ namespace OpenRA.Editor
 				if (e.Button == MouseButtons.Left && Actor != null)
 					DrawWithActor();
 
-				if (Brush != null || Actor != null)
-					Invalidate();
+				Invalidate();
 			}
 		}
 
@@ -114,6 +113,9 @@ namespace OpenRA.Editor
 			{
 				Actor = null;
 				Brush = null;
+
+				var key = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
+				if (key.Key != null) Map.Actors.Remove(key.Key);
 			}
 
 			if (e.Button == MouseButtons.Left && Brush != null)
@@ -172,6 +174,17 @@ namespace OpenRA.Editor
 					: int2.Zero)).ToPoint()));
 		}
 
+		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
+		{
+			var origin = (24 * p + Offset
+					- (t.Centered
+					? new int2(t.Bitmap.Width / 2 - 12, t.Bitmap.Height / 2 - 12)
+					: int2.Zero)).ToPoint();
+			g.DrawRectangle(CordonPen,
+				origin.X, origin.Y,
+				t.Bitmap.Width, t.Bitmap.Height );
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (Map == null) return;
@@ -197,6 +210,13 @@ namespace OpenRA.Editor
 
 			if (Actor != null)
 				DrawActor(e.Graphics, GetBrushLocation(), Actor);
+
+			if (Brush == null && Actor == null)
+			{
+				var x = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
+				if (x.Key != null)
+					DrawActorBorder(e.Graphics, x.Value.Location, ActorTemplates[x.Value.Name]);
+			}
 		}
 	}
 }
