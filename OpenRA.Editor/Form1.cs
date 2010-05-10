@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -376,6 +376,7 @@ namespace OpenRA.Editor
 				nmd.theater.Items.Clear();
 				nmd.theater.Items.AddRange(Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
 					.Select(a => a.Theater).ToArray());
+				nmd.theater.SelectedIndex = 0;
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
@@ -398,6 +399,10 @@ namespace OpenRA.Editor
 
 					map.Tileset = nmd.theater.SelectedItem as string;
 
+					map.Title = "Name your map here";
+					map.Description = "Describe your map here";
+					map.Author = "Your name here";
+
 					NewMap(map);
 				}
 			}
@@ -405,7 +410,21 @@ namespace OpenRA.Editor
 
 		void PropertiesClicked(object sender, EventArgs e)
 		{
-			//
+			using (var pd = new PropertiesDialog())
+			{
+				pd.title.Text = surface1.Map.Title;
+				pd.desc.Text = surface1.Map.Description;
+				pd.author.Text = surface1.Map.Author;
+				pd.selectable.Checked = surface1.Map.Selectable;
+
+				if (DialogResult.OK != pd.ShowDialog())
+					return;
+
+				surface1.Map.Title = pd.title.Text;
+				surface1.Map.Description = pd.desc.Text;
+				surface1.Map.Author = pd.author.Text;
+				surface1.Map.Selectable = pd.selectable.Checked;
+			}
 		}
 	}
 }

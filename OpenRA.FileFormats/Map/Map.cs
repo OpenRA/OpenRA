@@ -34,7 +34,7 @@ namespace OpenRA.FileFormats
 		public string Uid;
 
 		// Yaml map data
-		public bool Selectable;
+		public bool Selectable = true;
 		public int MapFormat = 1;
 		public string Title;
 		public string Description;
