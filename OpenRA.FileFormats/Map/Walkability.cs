@@ -59,17 +59,22 @@ namespace OpenRA.FileFormats
 
 			foreach (var section in file.Sections)
 			{
+				var name = section.GetValue("Name", null).ToLowerInvariant();
+				if (!section.Contains("width") || !section.Contains("height"))
+					throw new InvalidOperationException("no width/height for template `{0}`".F(name));
+
 				var tile = new TileTemplate
 				{
+					Name = name,
 					Size = new int2(
-						int.Parse(section.GetValue("width", "0")),
-						int.Parse(section.GetValue("height", "0"))),
+						int.Parse(section.GetValue("width", "--")),
+						int.Parse(section.GetValue("height", "--"))),
 					TerrainType = section
 						.Where(p => p.Key.StartsWith("tiletype"))
 						.ToDictionary(
 							p => int.Parse(p.Key.Substring(8)),
 							p => (TerrainType)Enum.Parse(typeof(TerrainType),p.Value)),
-					Name = section.GetValue("Name", null).ToLowerInvariant(),
+					
 					Bridge = section.GetValue("bridge", null),
 					HP = float.Parse(section.GetValue("hp", "0"))
 				};
