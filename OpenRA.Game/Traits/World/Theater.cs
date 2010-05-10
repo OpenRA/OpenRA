@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits
 {
-	class TheaterInfo : TraitInfo<Theater> 
+	public class TheaterInfo : TraitInfo<Theater> 
 	{
 		public readonly string Name = null;
 		public readonly string Theater = null;
@@ -29,5 +29,6 @@ namespace OpenRA.Traits
 		public readonly string Templates = null;
 		public readonly string MapColors = null;
 	}
-	class Theater {}
+
+	public class Theater {}
 }

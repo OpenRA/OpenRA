@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -18,11 +19,12 @@ namespace OpenRA.Editor
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap("ra", "mjolnir");
+			LoadMap(currentMod, "mjolnir");
 		}
 
 		string loadedMapName;
 		string colors;
+		string currentMod = "ra";
 		TileSet tileset;
 
 		void LoadMap(string mod, string mapname)
@@ -30,6 +32,8 @@ namespace OpenRA.Editor
 			tilePalette.Controls.Clear();
 			actorPalette.Controls.Clear();
 			resourcePalette.Controls.Clear();
+
+			currentMod = mod;
 
 			var mods = new[] { mod };
 
@@ -326,11 +330,39 @@ namespace OpenRA.Editor
 
 		void SaveAsClicked(object sender, EventArgs e)
 		{
+			folderBrowser.ShowNewFolderButton = true;
 			if (DialogResult.OK == folderBrowser.ShowDialog())
 			{
+				
 				loadedMapName = folderBrowser.SelectedPath;
 				SaveClicked(sender, e);
 			}
+		}
+
+		void OpenClicked(object sender, EventArgs e)
+		{
+			folderBrowser.ShowNewFolderButton = true;
+			if (DialogResult.OK == folderBrowser.ShowDialog())
+				LoadMap(currentMod, Path.GetFileName(folderBrowser.SelectedPath));
+		}
+
+		void NewClicked(object sender, EventArgs e)
+		{
+			using (var nmd = new NewMapDialog())
+			{
+				nmd.theater.Items.Clear();
+				nmd.theater.Items.AddRange(Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
+					.Select(a => a.Theater).ToArray());
+
+				if (DialogResult.OK != nmd.ShowDialog())
+				{
+				}
+			}
+		}
+
+		void PropertiesClicked(object sender, EventArgs e)
+		{
+			//
 		}
 	}
 }

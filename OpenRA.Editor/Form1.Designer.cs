@@ -45,6 +45,7 @@
 			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
@@ -187,10 +188,11 @@
             this.toolStripButton5,
             this.toolStripButton4,
             this.toolStripButton1,
+            this.toolStripButton6,
             this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(305, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(416, 25);
 			this.toolStrip1.TabIndex = 0;
 			// 
 			// toolStripButton3
@@ -200,6 +202,7 @@
 			this.toolStripButton3.Name = "toolStripButton3";
 			this.toolStripButton3.Size = new System.Drawing.Size(51, 22);
 			this.toolStripButton3.Text = "New";
+			this.toolStripButton3.Click += new System.EventHandler(this.NewClicked);
 			// 
 			// toolStripButton5
 			// 
@@ -208,6 +211,7 @@
 			this.toolStripButton5.Name = "toolStripButton5";
 			this.toolStripButton5.Size = new System.Drawing.Size(56, 22);
 			this.toolStripButton5.Text = "Open";
+			this.toolStripButton5.Click += new System.EventHandler(this.OpenClicked);
 			// 
 			// toolStripButton4
 			// 
@@ -227,14 +231,23 @@
 			this.toolStripButton1.Text = "Save As...";
 			this.toolStripButton1.Click += new System.EventHandler(this.SaveAsClicked);
 			// 
+			// toolStripButton6
+			// 
+			this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
+			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton6.Name = "toolStripButton6";
+			this.toolStripButton6.Size = new System.Drawing.Size(59, 22);
+			this.toolStripButton6.Text = "Resize";
+			this.toolStripButton6.Click += new System.EventHandler(this.ResizeClicked);
+			// 
 			// toolStripButton2
 			// 
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(59, 22);
-			this.toolStripButton2.Text = "Resize";
-			this.toolStripButton2.Click += new System.EventHandler(this.ResizeClicked);
+			this.toolStripButton2.Size = new System.Drawing.Size(80, 22);
+			this.toolStripButton2.Text = "Properties";
+			this.toolStripButton2.Click += new System.EventHandler(this.PropertiesClicked);
 			// 
 			// tt
 			// 
@@ -286,6 +299,7 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton5;
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+		private System.Windows.Forms.ToolStripButton toolStripButton6;
 
 	}
 }
