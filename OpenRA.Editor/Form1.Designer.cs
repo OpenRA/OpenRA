@@ -36,12 +36,14 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tilePalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
+			this.surface1 = new OpenRA.Editor.Surface();
+			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -52,6 +54,7 @@
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			this.tabPage3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStripContainer1
@@ -94,6 +97,7 @@
 			this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Left;
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Multiline = true;
@@ -132,16 +136,6 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Actors";
 			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// surface1
-			// 
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.surface1.Location = new System.Drawing.Point(0, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(783, 680);
-			this.surface1.TabIndex = 2;
-			this.surface1.Text = "surface1";
 			// 
 			// toolStrip1
 			// 
@@ -184,6 +178,35 @@
 			this.actorPalette.Size = new System.Drawing.Size(165, 666);
 			this.actorPalette.TabIndex = 2;
 			// 
+			// surface1
+			// 
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.surface1.Location = new System.Drawing.Point(0, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(783, 680);
+			this.surface1.TabIndex = 2;
+			this.surface1.Text = "surface1";
+			// 
+			// tabPage3
+			// 
+			this.tabPage3.Controls.Add(this.resourcePalette);
+			this.tabPage3.Location = new System.Drawing.Point(23, 4);
+			this.tabPage3.Name = "tabPage3";
+			this.tabPage3.Size = new System.Drawing.Size(171, 672);
+			this.tabPage3.TabIndex = 2;
+			this.tabPage3.Text = "Resources";
+			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// resourcePalette
+			// 
+			this.resourcePalette.AutoScroll = true;
+			this.resourcePalette.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.resourcePalette.Location = new System.Drawing.Point(0, 0);
+			this.resourcePalette.Name = "resourcePalette";
+			this.resourcePalette.Size = new System.Drawing.Size(171, 672);
+			this.resourcePalette.TabIndex = 3;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,6 +228,7 @@
 			this.tabPage2.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			this.tabPage3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -223,6 +247,8 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
 		private System.Windows.Forms.FlowLayoutPanel actorPalette;
+		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.FlowLayoutPanel resourcePalette;
 
 	}
 }

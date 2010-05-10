@@ -18,12 +18,14 @@ namespace OpenRA.Editor
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap("cnc", "scm02ea");
+			LoadMap("ra", "mjolnir");
 		}
 
 		void LoadMap(string mod, string mapname)
 		{
 			tilePalette.Controls.Clear();
+			actorPalette.Controls.Clear();
+			resourcePalette.Controls.Clear();
 
 			var mods = new[] { mod };
 
@@ -110,6 +112,37 @@ namespace OpenRA.Editor
 			}
 
 			surface1.BindActorTemplates(actorTemplates);
+
+			var resourceTemplates = new List<ResourceTemplate>();
+
+			foreach (var a in Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>())
+			{
+				try
+				{
+					var template = RenderResourceType(a, tsinfo.First, palette);
+					var ibox = new PictureBox
+					{
+						Image = template.Bitmap,
+						Width = template.Bitmap.Width,
+						Height = template.Bitmap.Height,
+						SizeMode = PictureBoxSizeMode.StretchImage
+					};
+
+					ibox.Click += (_, e) => surface1.SetResource(template);
+
+					resourcePalette.Controls.Add(ibox);
+
+					tt.SetToolTip(ibox,
+						"{0}:{1}cr".F(
+						template.Info.Name,
+						template.Info.ValuePerUnit));
+
+					resourceTemplates.Add(template);
+				}
+				catch { }
+			}
+
+			surface1.BindResourceTemplates(resourceTemplates);
 		}
 
 		void LocateGameRoot()
@@ -192,6 +225,33 @@ namespace OpenRA.Editor
 
 				bitmap.UnlockBits(data);
 				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<BuildingInfo>() };
+			}
+		}
+
+		static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string ext, Palette p)
+		{
+			var image = info.SpriteNames[0];
+			using (var s = FileSystem.OpenWithExts(image, "." + ext, ".shp"))
+			{
+				var shp = new ShpReader(s);
+				var frame = shp[shp.ImageCount - 1];
+
+				var bitmap = new Bitmap(shp.Width, shp.Height);
+				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+					ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+				unsafe
+				{
+					int* q = (int*)data.Scan0.ToPointer();
+					var stride = data.Stride >> 2;
+
+					for (var i = 0; i < shp.Width; i++)
+						for (var j = 0; j < shp.Height; j++)
+							q[j * stride + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+				}
+
+				bitmap.UnlockBits(data);
+				return new ResourceTemplate { Bitmap = bitmap, Info = info };
 			}
 		}
 

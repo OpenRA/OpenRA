@@ -18,6 +18,7 @@ namespace OpenRA.Editor
 		public ActorTemplate Actor;
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
+		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
 
 		public void Bind(Map m, TileSet ts, Palette p)
 		{
@@ -30,10 +31,16 @@ namespace OpenRA.Editor
 
 		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; }
 		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; }
+		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; /* todo */ }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
 			ActorTemplates = templates.ToDictionary(a => a.Info.Name.ToLowerInvariant());
+		}
+
+		public void BindResourceTemplates(IEnumerable<ResourceTemplate> templates)
+		{
+			/* todo */
 		}
 
 		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();

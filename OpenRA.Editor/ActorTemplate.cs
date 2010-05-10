@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using OpenRA.GameRules;
-using System.Windows.Forms;
+using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
@@ -19,5 +15,11 @@ namespace OpenRA.Editor
 	{
 		public Bitmap Bitmap;
 		public ushort N;
+	}
+
+	class ResourceTemplate
+	{
+		public Bitmap Bitmap;
+		public ResourceTypeInfo Info;
 	}
 }
