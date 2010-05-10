@@ -18,7 +18,7 @@ namespace OpenRA.Editor
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap("ra", "mjolnir");
+			LoadMap("cnc", "scm02ea");
 		}
 
 		void LoadMap(string mod, string mapname)

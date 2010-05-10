@@ -101,8 +101,23 @@ namespace OpenRA.Editor
 				}
 		}
 
+		int id;
+		string NextActorName()
+		{
+			for (; ; )
+			{
+				var possible = "Actor{0}".F(id++);
+				if (!Map.Actors.ContainsKey(possible)) return possible;
+			}
+		}
+
 		void DrawWithActor()
 		{
+			if (Map.Actors.Any(a => a.Value.Location == GetBrushLocation()))
+				return;
+
+			var owner = "Neutral";
+			Map.Actors[NextActorName()] = new ActorReference(Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
