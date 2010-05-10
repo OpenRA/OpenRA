@@ -392,7 +392,7 @@ namespace OpenRA.Editor
 					map.MapResources = new TileReference<byte, byte>[1, 1];
 					map.MapTiles = new TileReference<ushort, byte>[1, 1] 
 						{ { new TileReference<ushort, byte> { 
-							type = (ushort)0xffffu, 
+							type = currentMod == "cnc" ? (ushort)0xffu : (ushort)0xffffu, 
 							image = (byte)0xffu, 
 							index = (byte)0xffu } } };
 
