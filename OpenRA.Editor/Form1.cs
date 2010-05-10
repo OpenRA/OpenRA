@@ -351,6 +351,7 @@ namespace OpenRA.Editor
 				SaveAsClicked(sender, e);
 			else
 			{
+				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
 				surface1.Map.Package = new Folder(loadedMapName);
 				SavePreviewImage(Path.Combine(loadedMapName, "preview.png"));
 				surface1.Map.Save(loadedMapName);
