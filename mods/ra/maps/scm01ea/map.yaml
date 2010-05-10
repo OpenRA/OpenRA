@@ -2,7 +2,9 @@ Selectable: True
 
 MapFormat: 1
 
-Title: Coastal Influence (4-6)
+Title: Coastal Influence
+
+Description:
 
 Author: Westwood Studios
 
@@ -17,83 +19,83 @@ TopLeft: 13,18
 BottomRight: 107,112
 
 Actors:
-	Actor0: t08 Neutral 105,86
-	Actor1: t17 Neutral 106,85
-	Actor2: t12 Neutral 94,82
-	Actor3: tc03 Neutral 87,87
-	Actor4: tc04 Neutral 91,82
-	Actor5: tc05 Neutral 93,83
-	Actor6: tc05 Neutral 93,97
-	Actor7: tc03 Neutral 32,66
-	Actor8: t01 Neutral 14,30
-	Actor9: tc05 Neutral 33,31
-	Actor10: tc02 Neutral 90,30
-	Actor11: tc01 Neutral 91,28
-	Actor12: tc04 Neutral 38,69
-	Actor13: t02 Neutral 32,84
-	Actor14: t01 Neutral 28,89
-	Actor15: tc04 Neutral 13,40
-	Actor16: tc01 Neutral 18,40
-	Actor17: tc03 Neutral 30,45
-	Actor18: tc05 Neutral 26,53
-	Actor19: t03 Neutral 26,72
-	Actor20: t12 Neutral 34,77
-	Actor21: tc04 Neutral 45,75
-	Actor22: tc03 Neutral 15,20
-	Actor23: tc02 Neutral 22,18
-	Actor24: t07 Neutral 93,28
-	Actor25: t10 Neutral 68,37
-	Actor26: tc03 Neutral 97,46
-	Actor27: t01 Neutral 47,98
-	Actor28: tc03 Neutral 28,99
-	Actor29: tc04 Neutral 28,94
-	Actor30: tc02 Neutral 18,106
-	Actor31: tc01 Neutral 81,107
-	Actor32: t16 Neutral 105,109
-	Actor33: tc02 Neutral 105,110
-	Actor34: tc04 Neutral 13,96
-	Actor35: tc04 Neutral 15,73
-	Actor36: tc01 Neutral 16,74
-	Actor37: t16 Neutral 16,72
-	Actor38: t16 Neutral 61,54
-	Actor39: tc02 Neutral 84,54
-	Actor40: tc04 Neutral 104,53
-	Actor41: tc04 Neutral 14,86
-	Actor42: tc01 Neutral 13,88
-	Actor43: tc04 Neutral 15,34
-	Actor44: tc05 Neutral 84,40
-	Actor45: tc04 Neutral 80,48
-	Actor46: tc03 Neutral 87,45
-	Actor47: tc02 Neutral 78,42
-	Actor48: tc04 Neutral 25,46
-	Actor49: tc05 Neutral 33,46
-	Actor50: tc04 Neutral 43,62
-	Actor51: tc05 Neutral 44,63
-	Actor52: tc03 Neutral 41,64
-	Actor53: tc05 Neutral 104,71
-	Actor54: t01 Neutral 106,73
-	Actor55: t03 Neutral 104,72
-	Actor56: t12 Neutral 50,78
-	Actor57: tc02 Neutral 48,79
-	Actor58: tc02 Neutral 103,25
-	Actor59: tc01 Neutral 96,17
-	Actor60: tc03 Neutral 85,95
-	Actor61: tc04 Neutral 87,73
-	Actor62: t01 Neutral 78,64
-	Actor63: t15 Neutral 73,66
-	Actor64: tc01 Neutral 67,61
-	Actor65: t01 Neutral 21,45
-	Actor66: mine Neutral 50,94
-	Actor67: mine Neutral 102,57
-	Actor68: mine Neutral 97,107
-	Actor69: mine Neutral 100,21
-	Actor70: mine Neutral 37,22
-	Actor71: mine Neutral 21,70
-	Actor72: mine Neutral 19,90
-	Actor73: mine Neutral 53,55
-	Actor74: t01 Neutral 54,24
-	Actor75: t03 Neutral 78,21
-	Actor76: tc01 Neutral 55,35
+	Actor0: t08 105,86 105,86
+	Actor1: t17 106,85 106,85
+	Actor2: t12 94,82 94,82
+	Actor3: tc03 87,87 87,87
+	Actor4: tc04 91,82 91,82
+	Actor5: tc05 93,83 93,83
+	Actor6: tc05 93,97 93,97
+	Actor7: tc03 32,66 32,66
+	Actor8: t01 14,30 14,30
+	Actor9: tc05 33,31 33,31
+	Actor10: tc02 90,30 90,30
+	Actor11: tc01 91,28 91,28
+	Actor12: tc04 38,69 38,69
+	Actor13: t02 32,84 32,84
+	Actor14: t01 28,89 28,89
+	Actor15: tc04 13,40 13,40
+	Actor16: tc01 18,40 18,40
+	Actor17: tc03 30,45 30,45
+	Actor18: tc05 26,53 26,53
+	Actor19: t03 26,72 26,72
+	Actor20: t12 34,77 34,77
+	Actor21: tc04 45,75 45,75
+	Actor22: tc03 15,20 15,20
+	Actor23: tc02 22,18 22,18
+	Actor24: t07 93,28 93,28
+	Actor25: t10 68,37 68,37
+	Actor26: tc03 97,46 97,46
+	Actor27: t01 47,98 47,98
+	Actor28: tc03 28,99 28,99
+	Actor29: tc04 28,94 28,94
+	Actor30: tc02 18,106 18,106
+	Actor31: tc01 81,107 81,107
+	Actor32: t16 105,109 105,109
+	Actor33: tc02 105,110 105,110
+	Actor34: tc04 13,96 13,96
+	Actor35: tc04 15,73 15,73
+	Actor36: tc01 16,74 16,74
+	Actor37: t16 16,72 16,72
+	Actor38: t16 61,54 61,54
+	Actor39: tc02 84,54 84,54
+	Actor40: tc04 104,53 104,53
+	Actor41: tc04 14,86 14,86
+	Actor42: tc01 13,88 13,88
+	Actor43: tc04 15,34 15,34
+	Actor44: tc05 84,40 84,40
+	Actor45: tc04 80,48 80,48
+	Actor46: tc03 87,45 87,45
+	Actor47: tc02 78,42 78,42
+	Actor48: tc04 25,46 25,46
+	Actor49: tc05 33,46 33,46
+	Actor50: tc04 43,62 43,62
+	Actor51: tc05 44,63 44,63
+	Actor52: tc03 41,64 41,64
+	Actor53: tc05 104,71 104,71
+	Actor54: t01 106,73 106,73
+	Actor55: t03 104,72 104,72
+	Actor56: t12 50,78 50,78
+	Actor57: tc02 48,79 48,79
+	Actor58: tc02 103,25 103,25
+	Actor59: tc01 96,17 96,17
+	Actor60: tc03 85,95 85,95
+	Actor61: tc04 87,73 87,73
+	Actor62: t01 78,64 78,64
+	Actor63: t15 73,66 73,66
+	Actor64: tc01 67,61 67,61
+	Actor65: t01 21,45 21,45
+	Actor66: mine 50,94 50,94
+	Actor67: mine 102,57 102,57
+	Actor68: mine 97,107 97,107
+	Actor69: mine 100,21 100,21
+	Actor70: mine 37,22 37,22
+	Actor71: mine 21,70 21,70
+	Actor72: mine 19,90 19,90
+	Actor73: mine 53,55 53,55
+	Actor74: t01 54,24 54,24
+	Actor75: t03 78,21 78,21
+	Actor76: tc01 55,35 55,35
 
 Waypoints:
 	spawn0: 24,26

@@ -6,7 +6,7 @@ Title: Crossing the River
 
 Author: Westwood Studios
 
-PlayerCount: 8
+PlayerCount: 6
 
 Tileset: TEMPERAT
 
@@ -17,70 +17,68 @@ TopLeft: 32,32
 BottomRight: 96,96
 
 Actors:
-	Actor0: v12 Neutral 90,32
-	Actor1: mine Neutral 41,71
-	Actor2: mine Neutral 36,63
-	Actor3: tc05 Neutral 37,66
-	Actor4: t15 Neutral 41,65
-	Actor5: tc04 Neutral 87,64
-	Actor6: tc01 Neutral 91,66
-	Actor7: t02 Neutral 92,65
-	Actor8: mine Neutral 92,63
-	Actor9: mine Neutral 87,69
-	Actor10: t03 Neutral 38,91
-	Actor11: t10 Neutral 40,93
-	Actor12: mine Neutral 36,83
-	Actor13: mine Neutral 53,78
-	Actor14: mine Neutral 48,88
-	Actor15: t10 Neutral 73,83
-	Actor16: t03 Neutral 72,82
-	Actor17: t13 Neutral 70,83
-	Actor18: mine Neutral 34,34
-	Actor19: mine Neutral 93,93
-	Actor20: tc02 Neutral 77,91
-	Actor21: t01 Neutral 80,92
-	Actor22: t06 Neutral 82,94
-	Actor23: t06 Neutral 83,93
-	Actor24: tc03 Neutral 49,32
-	Actor25: t08 Neutral 51,32
-	Actor26: t08 Neutral 48,33
-	Actor27: t08 Neutral 47,32
-	Actor28: t05 Neutral 46,32
-	Actor29: t02 Neutral 51,34
-	Actor30: t10 Neutral 39,42
-	Actor31: t11 Neutral 37,44
-	Actor32: t12 Neutral 37,42
-	Actor33: t12 Neutral 39,43
-	Actor34: t13 Neutral 43,41
-	Actor35: t15 Neutral 35,43
-	Actor36: t03 Neutral 34,44
-	Actor37: t03 Neutral 42,40
-	Actor38: t13 Neutral 88,34
-	Actor39: mine Neutral 93,45
-	Actor40: mine Neutral 75,46
-	Actor41: mine Neutral 85,55
-	Actor42: t13 Neutral 86,43
-	Actor43: t10 Neutral 87,45
-	Actor44: tc04 Neutral 79,45
-	Actor45: t07 Neutral 81,49
-	Actor46: t08 Neutral 80,51
-	Actor47: t08 Neutral 78,52
-	Actor48: tc02 Neutral 72,51
-	Actor49: tc01 Neutral 48,75
-	Actor50: t17 Neutral 43,77
-	Actor51: t03 Neutral 45,75
-	Actor52: t12 Neutral 45,80
-	Actor53: t12 Neutral 47,81
+	Actor0: v12 90,32 90,32
+	Actor1: mine 41,71 41,71
+	Actor2: mine 36,63 36,63
+	Actor3: tc05 37,66 37,66
+	Actor4: t15 41,65 41,65
+	Actor5: tc04 87,64 87,64
+	Actor6: tc01 91,66 91,66
+	Actor7: t02 92,65 92,65
+	Actor8: mine 92,63 92,63
+	Actor9: mine 87,69 87,69
+	Actor10: t03 38,91 38,91
+	Actor11: t10 40,93 40,93
+	Actor12: mine 36,83 36,83
+	Actor13: mine 53,78 53,78
+	Actor14: mine 48,88 48,88
+	Actor15: t10 73,83 73,83
+	Actor16: t03 72,82 72,82
+	Actor17: t13 70,83 70,83
+	Actor18: mine 34,34 34,34
+	Actor19: mine 93,93 93,93
+	Actor20: tc02 77,91 77,91
+	Actor21: t01 80,92 80,92
+	Actor22: t06 82,94 82,94
+	Actor23: t06 83,93 83,93
+	Actor24: tc03 49,32 49,32
+	Actor25: t08 51,32 51,32
+	Actor26: t08 48,33 48,33
+	Actor27: t08 47,32 47,32
+	Actor28: t05 46,32 46,32
+	Actor29: t02 51,34 51,34
+	Actor30: t10 39,42 39,42
+	Actor31: t11 37,44 37,44
+	Actor32: t12 37,42 37,42
+	Actor33: t12 39,43 39,43
+	Actor34: t13 43,41 43,41
+	Actor35: t15 35,43 35,43
+	Actor36: t03 34,44 34,44
+	Actor37: t03 42,40 42,40
+	Actor38: t13 88,34 88,34
+	Actor39: mine 93,45 93,45
+	Actor40: mine 75,46 75,46
+	Actor41: mine 85,55 85,55
+	Actor42: t13 86,43 86,43
+	Actor43: t10 87,45 87,45
+	Actor44: tc04 79,45 79,45
+	Actor45: t07 81,49 81,49
+	Actor46: t08 80,51 80,51
+	Actor47: t08 78,52 78,52
+	Actor48: tc02 72,51 72,51
+	Actor49: tc01 48,75 48,75
+	Actor50: t17 43,77 43,77
+	Actor51: t03 45,75 45,75
+	Actor52: t12 45,80 45,80
+	Actor53: t12 47,81 47,81
 
 Waypoints:
 	spawn0: 90,84
 	spawn1: 37,49
-	spawn2: 77,77
-	spawn3: 52,56
-	spawn4: 52,47
+	wp0: 44,55
 	spawn5: 91,76
 	spawn6: 85,79
-	spawn7: 46,51
+	wp1: 46,48
 
 Smudges:
 
