@@ -62,8 +62,8 @@ namespace OpenRA.Editor
 						SizeMode = PictureBoxSizeMode.StretchImage
 					};
 
-					var p = Pair.New(n, bitmap);
-					ibox.Click += (_, e) => surface1.Brush = p;
+					var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = n };
+					ibox.Click += (_, e) => surface1.SetBrush(brushTemplate);
 
 					var template = tileset.walk[n];
 					tilePalette.Controls.Add(ibox);
@@ -79,6 +79,8 @@ namespace OpenRA.Editor
 				catch { }
 			}
 
+			var actorTemplates = new List<ActorTemplate>();
+
 			foreach (var a in Rules.Info.Keys)
 			{
 				try
@@ -93,15 +95,21 @@ namespace OpenRA.Editor
 						SizeMode = PictureBoxSizeMode.StretchImage
 					};
 
+					ibox.Click += (_, e) => surface1.SetActor(template);
+
 					actorPalette.Controls.Add(ibox);
 
 					tt.SetToolTip(ibox,
 						"{0}:{1}".F(
 						info.Name,
 						info.Category));
+
+					actorTemplates.Add( template);
 				}
 				catch { }
 			}
+
+			surface1.BindActorTemplates(actorTemplates);
 		}
 
 		void LocateGameRoot()
@@ -183,7 +191,7 @@ namespace OpenRA.Editor
 				}
 
 				bitmap.UnlockBits(data);
-				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<Building>() };
+				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<BuildingInfo>() };
 			}
 		}
 

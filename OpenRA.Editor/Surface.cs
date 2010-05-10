@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Editor
@@ -12,15 +13,27 @@ namespace OpenRA.Editor
 		public TileSet TileSet { get; private set; }
 		public Palette Palette { get; private set; }
 		int2 Offset;
-		public Pair<ushort, Bitmap> Brush;
+
+		public BrushTemplate Brush;
+		public ActorTemplate Actor;
+
+		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 
 		public void Bind(Map m, TileSet ts, Palette p)
 		{
 			Map = m;
 			TileSet = ts;
 			Palette = p;
-			Brush = Pair.New((ushort)0, null as Bitmap);
+			Brush = null;
 			Chunks.Clear();
+		}
+
+		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; }
+		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; }
+
+		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
+		{
+			ActorTemplates = templates.ToDictionary(a => a.Info.Name.ToLowerInvariant());
 		}
 
 		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
@@ -52,10 +65,12 @@ namespace OpenRA.Editor
 			}
 			else
 			{
-				if (e.Button == MouseButtons.Left && Brush.Second != null)
+				if (e.Button == MouseButtons.Left && Brush != null)
 					DrawWithBrush();
+				if (e.Button == MouseButtons.Left && Actor != null)
+					DrawWithActor();
 
-				if (Brush.Second != null)
+				if (Brush != null || Actor != null)
 					Invalidate();
 			}
 		}
@@ -63,8 +78,8 @@ namespace OpenRA.Editor
 		void DrawWithBrush()
 		{
 			// change the bits in the map
-			var tile = TileSet.tiles[Brush.First];
-			var template = TileSet.walk[Brush.First];
+			var tile = TileSet.tiles[Brush.N];
+			var template = TileSet.walk[Brush.N];
 			var pos = GetBrushLocation();
 
 			for (var u = 0; u < template.Size.X; u++)
@@ -75,7 +90,7 @@ namespace OpenRA.Editor
 						var z = u + v * template.Size.X;
 						if (tile.TileBitmapBytes[z] != null)
 							Map.MapTiles[u + pos.X, v + pos.Y] =
-								new TileReference<ushort, byte> { type = Brush.First, image = (byte)z, index = (byte)z };
+								new TileReference<ushort, byte> { type = Brush.N, image = (byte)z, index = (byte)z };
 
 						var ch = new int2((pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
 						if (Chunks.ContainsKey(ch))
@@ -87,15 +102,24 @@ namespace OpenRA.Editor
 				}
 		}
 
+		void DrawWithActor()
+		{
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
 
 			if (e.Button == MouseButtons.Right)
-				Brush = Pair.New((ushort)0, null as Bitmap);
+			{
+				Actor = null;
+				Brush = null;
+			}
 
-			if (e.Button == MouseButtons.Left && Brush.Second != null)
+			if (e.Button == MouseButtons.Left && Brush != null)
 				DrawWithBrush();
+			if (e.Button == MouseButtons.Left && Actor != null)
+				DrawWithActor();
 
 			Invalidate();
 		}
@@ -139,6 +163,15 @@ namespace OpenRA.Editor
 			return new int2(v.X / 24, v.Y / 24);
 		}
 
+		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t)
+		{
+			g.DrawImage(t.Bitmap,
+					((24 * p + Offset
+					- (t.Centered
+					? new int2(t.Bitmap.Width / 2 - 12, t.Bitmap.Height / 2 - 12)
+					: int2.Zero)).ToPoint()));
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (Map == null) return;
@@ -155,9 +188,15 @@ namespace OpenRA.Editor
 			e.Graphics.DrawRectangle(CordonPen,
 				new Rectangle(Map.XOffset * 24 + Offset.X, Map.YOffset * 24 + Offset.Y, Map.Width * 24, Map.Height * 24));
 
-			if (Brush.Second != null)
-				e.Graphics.DrawImage(Brush.Second,
+			foreach (var ar in Map.Actors)
+				DrawActor(e.Graphics, ar.Value.Location, ActorTemplates[ar.Value.Name]);
+
+			if (Brush != null)
+				e.Graphics.DrawImage(Brush.Bitmap,
 					(24 * GetBrushLocation() + Offset).ToPoint());
+
+			if (Actor != null)
+				DrawActor(e.Graphics, GetBrushLocation(), Actor);
 		}
 	}
 }
