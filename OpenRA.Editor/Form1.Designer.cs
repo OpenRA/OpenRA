@@ -41,9 +41,12 @@
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
+			this.surface1 = new OpenRA.Editor.Surface();
+			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -141,11 +144,14 @@
 			// 
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton3,
+            this.toolStripButton5,
+            this.toolStripButton4,
             this.toolStripButton1,
             this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(122, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(336, 25);
 			this.toolStrip1.TabIndex = 0;
 			// 
 			// toolStripButton1
@@ -153,8 +159,8 @@
 			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
 			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(51, 22);
-			this.toolStripButton1.Text = "Save";
+			this.toolStripButton1.Size = new System.Drawing.Size(76, 22);
+			this.toolStripButton1.Text = "Save As...";
 			// 
 			// toolStripButton2
 			// 
@@ -178,16 +184,6 @@
 			this.actorPalette.Size = new System.Drawing.Size(165, 666);
 			this.actorPalette.TabIndex = 2;
 			// 
-			// surface1
-			// 
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.surface1.Location = new System.Drawing.Point(0, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(783, 680);
-			this.surface1.TabIndex = 2;
-			this.surface1.Text = "surface1";
-			// 
 			// tabPage3
 			// 
 			this.tabPage3.Controls.Add(this.resourcePalette);
@@ -206,6 +202,40 @@
 			this.resourcePalette.Name = "resourcePalette";
 			this.resourcePalette.Size = new System.Drawing.Size(171, 672);
 			this.resourcePalette.TabIndex = 3;
+			// 
+			// surface1
+			// 
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.surface1.Location = new System.Drawing.Point(0, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(783, 680);
+			this.surface1.TabIndex = 2;
+			this.surface1.Text = "surface1";
+			// 
+			// toolStripButton3
+			// 
+			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton3.Name = "toolStripButton3";
+			this.toolStripButton3.Size = new System.Drawing.Size(51, 22);
+			this.toolStripButton3.Text = "New";
+			// 
+			// toolStripButton4
+			// 
+			this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton4.Name = "toolStripButton4";
+			this.toolStripButton4.Size = new System.Drawing.Size(51, 22);
+			this.toolStripButton4.Text = "Save";
+			// 
+			// toolStripButton5
+			// 
+			this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton5.Name = "toolStripButton5";
+			this.toolStripButton5.Size = new System.Drawing.Size(56, 22);
+			this.toolStripButton5.Text = "Open";
 			// 
 			// Form1
 			// 
@@ -249,6 +279,9 @@
 		private System.Windows.Forms.FlowLayoutPanel actorPalette;
 		private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.FlowLayoutPanel resourcePalette;
+		private System.Windows.Forms.ToolStripButton toolStripButton3;
+		private System.Windows.Forms.ToolStripButton toolStripButton5;
+		private System.Windows.Forms.ToolStripButton toolStripButton4;
 
 	}
 }
