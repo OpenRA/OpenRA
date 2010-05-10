@@ -34,10 +34,12 @@ namespace OpenRA.Editor
 			resourcePalette.Controls.Clear();
 
 			currentMod = mod;
+			loadedMapName = mapname;
 
 			var mods = new[] { mod };
 
 			var manifest = new Manifest(mods);
+			Game.LoadModAssemblies(manifest);
 
 			FileSystem.UnmountAll();
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
@@ -46,11 +48,33 @@ namespace OpenRA.Editor
 			// load the map
 			var map = new Map(new Folder("mods/{0}/maps/{1}".F(mod, mapname)));
 
+			PrepareMapResources(manifest, map);
+		}
+
+		void NewMap(Map map)
+		{
+			tilePalette.Controls.Clear();
+			actorPalette.Controls.Clear();
+			resourcePalette.Controls.Clear();
+
+			loadedMapName = null;
+
+			var manifest = new Manifest(new[] { currentMod });
 			Game.LoadModAssemblies(manifest);
+
+			FileSystem.UnmountAll();
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+
+			PrepareMapResources(manifest, map);
+		}
+
+		void PrepareMapResources(Manifest manifest, Map map)
+		{
 			Rules.LoadRules(manifest, map);
 
 			// we're also going to need a tileset...
-			var tsinfo = fileMapping[Pair.New(mods[0], map.Theater)];
+			var tsinfo = fileMapping[Pair.New(currentMod, map.Theater)];
 			tileset = new TileSet("tileset.til", "templates.ini", tsinfo.First);
 
 			colors = tsinfo.Second;
@@ -153,7 +177,6 @@ namespace OpenRA.Editor
 			}
 
 			surface1.BindResourceTemplates(resourceTemplates);
-			loadedMapName = mapname;
 		}
 
 		void LocateGameRoot()
@@ -354,8 +377,28 @@ namespace OpenRA.Editor
 				nmd.theater.Items.AddRange(Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
 					.Select(a => a.Theater).ToArray());
 
-				if (DialogResult.OK != nmd.ShowDialog())
+				if (DialogResult.OK == nmd.ShowDialog())
 				{
+					var map = new Map();
+
+					map.MapSize = new int2(1, 1);
+					map.MapResources = new TileReference<byte, byte>[1, 1];
+					map.MapTiles = new TileReference<ushort, byte>[1, 1] 
+						{ { new TileReference<ushort, byte> { 
+							type = (ushort)0xffffu, 
+							image = (byte)0xffu, 
+							index = (byte)0xffu } } };
+
+					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
+
+					map.PlayerCount = 8;
+
+					map.TopLeft = new int2((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value);
+					map.BottomRight = new int2((int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
+
+					map.Tileset = nmd.theater.SelectedItem as string;
+
+					NewMap(map);
 				}
 			}
 		}
