@@ -21,6 +21,10 @@ namespace OpenRA.Editor
 			LoadMap("ra", "mjolnir");
 		}
 
+		string loadedMapName;
+		string colors;
+		TileSet tileset;
+
 		void LoadMap(string mod, string mapname)
 		{
 			tilePalette.Controls.Clear();
@@ -43,7 +47,9 @@ namespace OpenRA.Editor
 
 			// we're also going to need a tileset...
 			var tsinfo = fileMapping[Pair.New(mods[0], map.Theater)];
-			var tileset = new TileSet("tileset.til", "templates.ini", tsinfo.First);
+			tileset = new TileSet("tileset.til", "templates.ini", tsinfo.First);
+
+			colors = tsinfo.Second;
 
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
@@ -143,6 +149,7 @@ namespace OpenRA.Editor
 			}
 
 			surface1.BindResourceTemplates(resourceTemplates);
+			loadedMapName = mapname;
 		}
 
 		void LocateGameRoot()
@@ -279,6 +286,50 @@ namespace OpenRA.Editor
 				}
 
 				surface1.Invalidate();
+			}
+		}
+
+		void SavePreviewImage(string filepath)
+		{
+			var Map = surface1.Map;
+			
+			var xs = Map.TopLeft.X;
+			var ys = Map.TopLeft.Y;
+
+			var terrainTypeColors = new TerrainColorSet(colors);
+
+			var bitmap = new Bitmap(Map.Width, Map.Height);
+			for (var x = 0; x < Map.Width; x++)
+				for (var y = 0; y < Map.Height; y++)
+					bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(
+						tileset.GetTerrainType(Map.MapTiles[x + xs, y + ys])));
+
+			for (var x = 0; x < Map.Width; x++)
+				for (var y = 0; y < Map.Height; y++)
+					if (Map.MapResources[x + xs, y + ys].type > 0)
+						bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(TerrainType.Ore));
+
+			bitmap.Save(filepath, ImageFormat.Png);
+		}
+
+		void SaveClicked(object sender, EventArgs e)
+		{
+			if (loadedMapName == null)
+				SaveAsClicked(sender, e);
+			else
+			{
+				surface1.Map.Package = new Folder(loadedMapName);
+				SavePreviewImage(Path.Combine(loadedMapName, "preview.png"));
+				surface1.Map.Save(loadedMapName);
+			}
+		}
+
+		void SaveAsClicked(object sender, EventArgs e)
+		{
+			if (DialogResult.OK == folderBrowser.ShowDialog())
+			{
+				loadedMapName = folderBrowser.SelectedPath;
+				SaveClicked(sender, e);
 			}
 		}
 	}

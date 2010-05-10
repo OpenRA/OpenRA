@@ -81,6 +81,8 @@ namespace OpenRA.Editor
 					DrawWithBrush();
 				if (e.Button == MouseButtons.Left && Actor != null)
 					DrawWithActor();
+				if (e.Button == MouseButtons.Left && Resource != null)
+					DrawWithResource();
 
 				Invalidate();
 			}
@@ -183,6 +185,8 @@ namespace OpenRA.Editor
 				DrawWithBrush();
 			if (e.Button == MouseButtons.Left && Actor != null)
 				DrawWithActor();
+			if (e.Button == MouseButtons.Left && Resource != null)
+				DrawWithResource();
 
 			Invalidate();
 		}
