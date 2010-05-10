@@ -1,0 +1,63 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: Snowy Ridge (2-3)
+
+Description: Free-for-all deathmatch in the snow
+
+Author: Chris Forbes
+
+PlayerCount: 8
+
+Tileset: SNOW
+
+MapSize: 72,72
+
+TopLeft: 14,19
+
+BottomRight: 60,60
+
+Actors:
+	Actor0: tc02 Neutral 25,39
+	Actor1: tc01 Neutral 26,40
+	Actor2: tc01 Neutral 27,39
+	Actor3: tc05 Neutral 30,40
+	Actor4: tc04 Neutral 37,39
+	Actor5: tc04 Neutral 39,37
+	Actor6: tc04 Neutral 41,35
+	Actor7: t01 Neutral 42,33
+	Actor8: t01 Neutral 50,24
+	Actor9: t05 Neutral 49,25
+	Actor10: t08 Neutral 45,29
+	Actor11: tc04 Neutral 43,49
+	Actor12: tc01 Neutral 45,51
+	Actor13: tc01 Neutral 48,52
+	Actor14: t03 Neutral 40,42
+	Actor15: t03 Neutral 35,40
+	Actor16: tc04 Neutral 57,57
+	Actor17: tc02 Neutral 58,19
+	Actor18: tc01 Neutral 21,19
+	Actor19: tc02 Neutral 19,20
+	Actor20: t08 Neutral 16,22
+	Actor21: v12 Neutral 18,22
+	Actor22: t05 Neutral 18,55
+	Actor23: tc02 Neutral 16,54
+	Actor24: t16 Neutral 29,39
+	Actor25: t16 Neutral 21,56
+	Actor26: mine Neutral 33,45
+	Actor27: mine Neutral 36,45
+	Actor28: mine Neutral 44,43
+	Actor29: mine Neutral 45,40
+	Actor30: mine Neutral 37,34
+	Actor31: mine Neutral 35,37
+
+Waypoints:
+	wp0: 29,24
+	wp1: 56,41
+	wp2: 26,54
+
+Smudges:
+
+Rules:
+
