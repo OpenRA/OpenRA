@@ -23,4 +23,8 @@ namespace OpenRA.Editor
 		public ResourceTypeInfo Info;
 		public int Value;
 	}
+
+	class WaypointTemplate
+	{
+	}
 }

@@ -432,5 +432,10 @@ namespace OpenRA.Editor
 				surface1.Map.Selectable = pd.selectable.Checked;
 			}
 		}
+
+		void SpawnPointsClicked(object sender, EventArgs e)
+		{
+			surface1.SetWaypoint(new WaypointTemplate());	// hack
+		}
 	}
 }

@@ -39,16 +39,17 @@
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
+			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -173,6 +174,16 @@
 			this.resourcePalette.Size = new System.Drawing.Size(171, 672);
 			this.resourcePalette.TabIndex = 3;
 			// 
+			// surface1
+			// 
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.surface1.Location = new System.Drawing.Point(0, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(783, 680);
+			this.surface1.TabIndex = 2;
+			this.surface1.Text = "surface1";
+			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
@@ -182,10 +193,11 @@
             this.toolStripButton4,
             this.toolStripButton1,
             this.toolStripButton6,
+            this.toolStripButton7,
             this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(385, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(511, 25);
 			this.toolStrip1.TabIndex = 0;
 			// 
 			// toolStripButton3
@@ -233,28 +245,27 @@
 			this.toolStripButton6.Text = "Resize";
 			this.toolStripButton6.Click += new System.EventHandler(this.ResizeClicked);
 			// 
+			// toolStripButton7
+			// 
+			this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
+			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton7.Name = "toolStripButton7";
+			this.toolStripButton7.Size = new System.Drawing.Size(80, 22);
+			this.toolStripButton7.Text = "Properties";
+			this.toolStripButton7.Click += new System.EventHandler(this.PropertiesClicked);
+			// 
 			// toolStripButton2
 			// 
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(80, 22);
-			this.toolStripButton2.Text = "Properties";
-			this.toolStripButton2.Click += new System.EventHandler(this.PropertiesClicked);
+			this.toolStripButton2.Size = new System.Drawing.Size(95, 22);
+			this.toolStripButton2.Text = "Spawnpoints";
+			this.toolStripButton2.Click += new System.EventHandler(this.SpawnPointsClicked);
 			// 
 			// tt
 			// 
 			this.tt.ShowAlways = true;
-			// 
-			// surface1
-			// 
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.surface1.Location = new System.Drawing.Point(0, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(783, 680);
-			this.surface1.TabIndex = 2;
-			this.surface1.Text = "surface1";
 			// 
 			// Form1
 			// 
@@ -303,6 +314,7 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowser;
 		private System.Windows.Forms.ToolStripButton toolStripButton6;
+		private System.Windows.Forms.ToolStripButton toolStripButton7;
 
 	}
 }

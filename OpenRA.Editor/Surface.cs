@@ -18,6 +18,7 @@ namespace OpenRA.Editor
 		public BrushTemplate Brush;
 		public ActorTemplate Actor;
 		public ResourceTemplate Resource;
+		public WaypointTemplate Waypoint;
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
@@ -31,9 +32,10 @@ namespace OpenRA.Editor
 			Chunks.Clear();
 		}
 
-		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; Resource = null; }
-		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; Resource = null; }
-		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; Resource = resource; }
+		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; Resource = null; Waypoint = null; }
+		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; Resource = null; Waypoint = null; }
+		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; Resource = resource; Waypoint = null; }
+		public void SetWaypoint(WaypointTemplate waypoint) { Brush = null; Actor = null; Resource = null; Waypoint = waypoint; }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
@@ -77,12 +79,8 @@ namespace OpenRA.Editor
 				if (e.Button == MouseButtons.Right)
 					Erase();
 
-				if (e.Button == MouseButtons.Left && Brush != null)
-					DrawWithBrush();
-				if (e.Button == MouseButtons.Left && Actor != null)
-					DrawWithActor();
-				if (e.Button == MouseButtons.Left && Resource != null)
-					DrawWithResource();
+				if (e.Button == MouseButtons.Left)
+				Draw();
 
 				Invalidate();
 			}
@@ -115,11 +113,31 @@ namespace OpenRA.Editor
 				}
 		}
 
+		int wpid;
+		string NextWpid()
+		{
+			for (; ; )
+			{
+				var a = "wp{0}".F(wpid++);
+				if (!Map.Waypoints.ContainsKey(a))
+					return a;
+			}
+		}
+
+		void DrawWithWaypoint()
+		{
+			var k = Map.Waypoints.FirstOrDefault(a => a.Value == GetBrushLocation());
+			if (k.Key != null) Map.Waypoints.Remove(k.Key);
+
+			Map.Waypoints.Add(NextWpid(), GetBrushLocation());
+		}
+
 		void Erase()
 		{
 			Actor = null;
 			Brush = null;
 			Resource = null;
+			Waypoint = null;
 
 			var key = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
 			if (key.Key != null) Map.Actors.Remove(key.Key);
@@ -134,6 +152,17 @@ namespace OpenRA.Editor
 					Chunks.Remove(ch);
 				}
 			}
+
+			var k = Map.Waypoints.FirstOrDefault(a => a.Value == GetBrushLocation());
+			if (k.Key != null) Map.Waypoints.Remove(k.Key);
+		}
+
+		void Draw()
+		{
+			if (Brush != null) DrawWithBrush();
+			if (Actor != null) DrawWithActor();
+			if (Resource != null) DrawWithResource();
+			if (Waypoint != null) DrawWithWaypoint();
 		}
 
 		int id;
@@ -178,15 +207,8 @@ namespace OpenRA.Editor
 		{
 			base.OnMouseDown(e);
 
-			if (e.Button == MouseButtons.Right)
-				Erase();
-
-			if (e.Button == MouseButtons.Left && Brush != null)
-				DrawWithBrush();
-			if (e.Button == MouseButtons.Left && Actor != null)
-				DrawWithActor();
-			if (e.Button == MouseButtons.Left && Resource != null)
-				DrawWithResource();
+			if (e.Button == MouseButtons.Right) Erase();
+			if (e.Button == MouseButtons.Left) Draw();
 
 			Invalidate();
 		}
@@ -289,6 +311,12 @@ namespace OpenRA.Editor
 			foreach (var ar in Map.Actors)
 				DrawActor(e.Graphics, ar.Value.Location, ActorTemplates[ar.Value.Name]);
 
+			foreach (var wp in Map.Waypoints)
+				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(
+					24 * wp.Value.X + Offset.X + 4,
+					24 * wp.Value.Y + Offset.Y + 4,
+					16, 16));
+
 			if (Brush != null)
 				e.Graphics.DrawImage(Brush.Bitmap,
 					(24 * GetBrushLocation() + Offset).ToPoint());
@@ -299,6 +327,12 @@ namespace OpenRA.Editor
 			if (Resource != null)
 				e.Graphics.DrawImage(Resource.Bitmap,
 					(24 * GetBrushLocation() + Offset).ToPoint());
+
+			if (Waypoint != null)
+				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(
+					24 * GetBrushLocation().X + Offset.X + 4,
+					24 * GetBrushLocation().Y + Offset.Y + 4,
+					16, 16));
 
 			if (Brush == null && Actor == null && Resource == null)
 			{
