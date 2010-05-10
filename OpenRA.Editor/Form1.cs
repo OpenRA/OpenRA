@@ -13,13 +13,22 @@ namespace OpenRA.Editor
 {
 	public partial class Form1 : Form
 	{
-		public Form1()
+		public Form1(string[] mods)
 		{
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			LocateGameRoot();
 
-			LoadMap(currentMod, "mjolnir");
+			currentMod = mods.FirstOrDefault() ?? "ra";
+
+			var manifest = new Manifest(new[] { currentMod });
+			Game.LoadModAssemblies(manifest);
+
+			FileSystem.UnmountAll();
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+
+			Rules.LoadRules(manifest, new Map());
 		}
 
 		string loadedMapName;
@@ -36,9 +45,7 @@ namespace OpenRA.Editor
 			currentMod = mod;
 			loadedMapName = mapname;
 
-			var mods = new[] { mod };
-
-			var manifest = new Manifest(mods);
+			var manifest = new Manifest(new[] { currentMod });
 			Game.LoadModAssemblies(manifest);
 
 			FileSystem.UnmountAll();
