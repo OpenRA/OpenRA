@@ -251,7 +251,7 @@ namespace OpenRA.Editor
 				}
 
 				bitmap.UnlockBits(data);
-				return new ResourceTemplate { Bitmap = bitmap, Info = info };
+				return new ResourceTemplate { Bitmap = bitmap, Info = info, Value = shp.ImageCount - 1 };
 			}
 		}
 

@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Thirdparty;
 
 namespace OpenRA.Editor
 {
@@ -16,6 +17,7 @@ namespace OpenRA.Editor
 
 		public BrushTemplate Brush;
 		public ActorTemplate Actor;
+		public ResourceTemplate Resource;
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
@@ -29,9 +31,9 @@ namespace OpenRA.Editor
 			Chunks.Clear();
 		}
 
-		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; }
-		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; }
-		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; /* todo */ }
+		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; Resource = null; }
+		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; Resource = null; }
+		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; Resource = resource; }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
@@ -40,7 +42,7 @@ namespace OpenRA.Editor
 
 		public void BindResourceTemplates(IEnumerable<ResourceTemplate> templates)
 		{
-			/* todo */
+			ResourceTemplates = templates.ToDictionary(a => a.Info.ResourceType);
 		}
 
 		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
@@ -72,6 +74,9 @@ namespace OpenRA.Editor
 			}
 			else
 			{
+				if (e.Button == MouseButtons.Right)
+					Erase();
+
 				if (e.Button == MouseButtons.Left && Brush != null)
 					DrawWithBrush();
 				if (e.Button == MouseButtons.Left && Actor != null)
@@ -108,6 +113,27 @@ namespace OpenRA.Editor
 				}
 		}
 
+		void Erase()
+		{
+			Actor = null;
+			Brush = null;
+			Resource = null;
+
+			var key = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
+			if (key.Key != null) Map.Actors.Remove(key.Key);
+
+			if (Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y].type != 0)
+			{
+				Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y] = new TileReference<byte, byte>();
+				var ch = new int2((GetBrushLocation().X) / ChunkSize, (GetBrushLocation().Y) / ChunkSize);
+				if (Chunks.ContainsKey(ch))
+				{
+					Chunks[ch].Dispose();
+					Chunks.Remove(ch);
+				}
+			}
+		}
+
 		int id;
 		string NextActorName()
 		{
@@ -127,18 +153,31 @@ namespace OpenRA.Editor
 			Map.Actors[NextActorName()] = new ActorReference(Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
 		}
 
+		Random r = new Random();
+		void DrawWithResource()
+		{
+			Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y]
+				= new TileReference<byte, byte>
+				{
+					type = (byte)Resource.Info.ResourceType,
+					index = (byte)r.Next(Resource.Info.SpriteNames.Length),
+					image = (byte)Resource.Value
+				};
+
+			var ch = new int2((GetBrushLocation().X) / ChunkSize, (GetBrushLocation().Y) / ChunkSize);
+			if (Chunks.ContainsKey(ch))
+			{
+				Chunks[ch].Dispose();
+				Chunks.Remove(ch);
+			}
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
 
 			if (e.Button == MouseButtons.Right)
-			{
-				Actor = null;
-				Brush = null;
-
-				var key = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
-				if (key.Key != null) Map.Actors.Remove(key.Key);
-			}
+				Erase();
 
 			if (e.Button == MouseButtons.Left && Brush != null)
 				DrawWithBrush();
@@ -174,6 +213,26 @@ namespace OpenRA.Editor
 						for (var x = 0; x < 24; x++)
 							for (var y = 0; y < 24; y++)
 								p[ (j * 24 + y) * stride + i * 24 + x ] = Palette.GetColor(rawImage[x + 24 * y]).ToArgb();
+
+						if (Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type != 0)
+						{
+							var resourceImage = ResourceTemplates[Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type].Bitmap;
+							var srcdata = resourceImage.LockBits(new Rectangle(0, 0, resourceImage.Width, resourceImage.Height),
+								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+							int* q = (int*)srcdata.Scan0.ToPointer();
+							var srcstride = srcdata.Stride >> 2;
+
+							for (var x = 0; x < 24; x++)
+								for (var y = 0; y < 24; y++)
+								{
+									var c = q[y * srcstride + x];
+									if ((c & 0xff000000) != 0)	/* quick & dirty, i cbf doing real alpha */
+										p[(j * 24 + y) * stride + i * 24 + x] = c;
+								}
+
+							resourceImage.UnlockBits(srcdata);
+						}
 					}
 			}
 
@@ -233,7 +292,11 @@ namespace OpenRA.Editor
 			if (Actor != null)
 				DrawActor(e.Graphics, GetBrushLocation(), Actor);
 
-			if (Brush == null && Actor == null)
+			if (Resource != null)
+				e.Graphics.DrawImage(Resource.Bitmap,
+					(24 * GetBrushLocation() + Offset).ToPoint());
+
+			if (Brush == null && Actor == null && Resource == null)
 			{
 				var x = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
 				if (x.Key != null)

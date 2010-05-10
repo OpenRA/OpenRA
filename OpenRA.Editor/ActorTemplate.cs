@@ -21,5 +21,6 @@ namespace OpenRA.Editor
 	{
 		public Bitmap Bitmap;
 		public ResourceTypeInfo Info;
+		public int Value;
 	}
 }
