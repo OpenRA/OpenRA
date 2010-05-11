@@ -83,6 +83,19 @@ Section "Client" Client
 	File "..\..\maps\README"
 SectionEnd
 
+Section "Editor" Editor
+	SetOutPath "$INSTDIR"
+	File "..\..\OpenRA.Editor\bin\Debug\OpenRA.Editor.exe"
+	
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor (RA).lnk" $OUTDIR\OpenRA.Editor.exe "ra" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor (CNC).lnk" $OUTDIR\OpenRA.Editor.exe "cnc" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
+	!insertmacro MUI_STARTMENU_WRITE_END
+SectionEnd
+
 SectionGroup /e "Mods"
 	SectionGroup "Red Alert" RA
 		Section "-RA_Core"
