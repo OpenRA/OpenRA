@@ -119,21 +119,17 @@ namespace OpenRA.TilesetBuilder
 			File.WriteAllLines(Path.Combine(dir, "tileset.til"), tileset);
 
 			// todo: write out a templates ini
+			var templates = surface1.Templates.SelectMany((t, i) => new[] { "[t{0:00}]".F(i), "Name=t{0:00}".F(i), "width={0}".F(42), "height={0}".F(42) }
+				.Concat( t.Cells.Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
+					.Select( c => "tiletype{0}={1}".F( (c.Key.X - t.Left) + t.Width * (c.Key.Y - t.Top), surface1.TerrainTypes[c.Key.X, c.Key.Y] )))
+				.Concat(new[] { "" })).ToArray();
+			File.WriteAllLines(Path.Combine(dir, "templates.ini"), templates);
 		}
 
 		void ExportTemplate(Template t, int n, string dir)
 		{
 			var filename = Path.Combine(dir, "t{0:00}.arr".F(n));
-
-			var au = t.Cells.Keys.Min(c => c.X);
-			var av = t.Cells.Keys.Min(c => c.Y);
-
-			var bu = t.Cells.Keys.Max(c => c.X);
-			var bv = t.Cells.Keys.Max(c => c.Y);
-
-			var width = bu - au + 1;
-			var height = bv - av + 1;
-			var totalTiles = width * height;
+			var totalTiles = t.Width * t.Height;
 
 			var ms = new MemoryStream();
 			using (var bw = new BinaryWriter(ms))
@@ -141,8 +137,8 @@ namespace OpenRA.TilesetBuilder
 				bw.Write((ushort)24);
 				bw.Write((ushort)24);
 				bw.Write((uint)totalTiles);
-				bw.Write((ushort)width);
-				bw.Write((ushort)height);
+				bw.Write((ushort)t.Width);
+				bw.Write((ushort)t.Height);
 				bw.Write((uint)0);				// filesize placeholder
 				bw.Flush();
 				bw.Write((uint)ms.Position + 24);		// image start
@@ -161,12 +157,12 @@ namespace OpenRA.TilesetBuilder
 				{
 					byte* p = (byte*)data.Scan0;
 
-					for (var v = 0; v < height; v++)
-						for (var u = 0; u < width; u++)
+					for (var v = 0; v < t.Height; v++)
+						for (var u = 0; u < t.Width; u++)
 						{
-							if (t.Cells.ContainsKey(new int2(u + au, v + av)))
+							if (t.Cells.ContainsKey(new int2(u + t.Left, v + t.Top)))
 							{
-								byte* q = p + data.Stride * 24 * (v + av) + 24 * (u + au);
+								byte* q = p + data.Stride * 24 * (v + t.Top) + 24 * (u + t.Left);
 								for (var j = 0; j < 24; j++)
 									for (var i = 0; i < 24; i++)
 										bw.Write(q[i + j * data.Stride]);
@@ -181,10 +177,10 @@ namespace OpenRA.TilesetBuilder
 
 				bw.Flush();
 				var indexStart = ms.Position;
-				for (var v = 0; v < height; v++)
-					for (var u = 0; u < width; u++)
-						bw.Write(t.Cells.ContainsKey(new int2(u + au, v + av))
-							? (byte)(u + width * v)
+				for (var v = 0; v < t.Height; v++)
+					for (var u = 0; u < t.Width; u++)
+						bw.Write(t.Cells.ContainsKey(new int2(u + t.Left, v + t.Top))
+							? (byte)(u + t.Width * v)
 							: (byte)0xff);
 
 				bw.Flush();
@@ -213,6 +209,15 @@ namespace OpenRA.TilesetBuilder
 	class Template
 	{
 		public Dictionary<int2, bool> Cells = new Dictionary<int2, bool>();
+
+		public int Left { get { return Cells.Keys.Min(c => c.X); } }
+		public int Top { get { return Cells.Keys.Min(c => c.Y); } }
+
+		public int Right { get { return Cells.Keys.Max(c => c.X) + 1; } }
+		public int Bottom { get { return Cells.Keys.Max(c => c.Y) + 1; } }
+
+		public int Width { get { return Right - Left; } }
+		public int Height { get { return Bottom - Top; } }
 	}
 
 	class Surface : Control
