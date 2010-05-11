@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using System.Drawing.Imaging;
 
 namespace OpenRA.TilesetBuilder
 {
@@ -110,8 +111,99 @@ namespace OpenRA.TilesetBuilder
 			File.WriteAllBytes(Path.Combine(dir, "terrain.pal"), paletteData);
 
 			// todo: write out a TMP for each template
+			foreach (var t in surface1.Templates)
+				ExportTemplate(t, surface1.Templates.IndexOf(t), dir);
+
 			// todo: write out a tileset definition
 			// todo: write out a templates ini
+		}
+
+		void ExportTemplate(Template t, int n, string dir)
+		{
+			var filename = Path.Combine(dir, "t{0:00}.arr".F(n));
+
+			var au = t.Cells.Keys.Min(c => c.X);
+			var av = t.Cells.Keys.Min(c => c.Y);
+
+			var bu = t.Cells.Keys.Max(c => c.X);
+			var bv = t.Cells.Keys.Max(c => c.Y);
+
+			var width = bu - au + 1;
+			var height = bv - av + 1;
+			var totalTiles = width * height;
+
+			var ms = new MemoryStream();
+			using (var bw = new BinaryWriter(ms))
+			{
+				bw.Write((ushort)24);
+				bw.Write((ushort)24);
+				bw.Write((uint)totalTiles);
+				bw.Write((ushort)width);
+				bw.Write((ushort)height);
+				bw.Write((uint)0);				// filesize placeholder
+				bw.Flush();
+				bw.Write((uint)ms.Position + 24);		// image start
+				bw.Write((uint)0);				// 0 (32bits)		
+				bw.Write((uint)0x2c730f8a);		// magic?
+				bw.Write((uint)0);				// flags start
+				bw.Write((uint)0);				// walk start
+				bw.Write((uint)0);				// index start
+
+				var src = surface1.Image;
+
+				var data = src.LockBits(new Rectangle(0, 0, src.Width, src.Height),
+					ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+
+				unsafe
+				{
+					byte* p = (byte*)data.Scan0;
+
+					for (var v = 0; v < height; v++)
+						for (var u = 0; u < width; u++)
+						{
+							if (t.Cells.ContainsKey(new int2(u + au, v + av)))
+							{
+								byte* q = p + data.Stride * 24 * (v + av) + 24 * (u + au);
+								for (var j = 0; j < 24; j++)
+									for (var i = 0; i < 24; i++)
+										bw.Write(q[i + j * data.Stride]);
+							}
+							else
+								for (var x = 0; x < 24 * 24; x++)
+									bw.Write((byte)0);					/* todo: don't fill with air */
+						}
+				}
+
+				src.UnlockBits(data);
+
+				bw.Flush();
+				var indexStart = ms.Position;
+				for (var v = 0; v < height; v++)
+					for (var u = 0; u < width; u++)
+						bw.Write(t.Cells.ContainsKey(new int2(u + au, v + av))
+							? (byte)(u + width * v)
+							: (byte)0xff);
+
+				bw.Flush();
+
+				var flagsStart = ms.Position;
+				for (var x = 0; x < totalTiles; x++ )
+					bw.Write((byte)0);
+
+				bw.Flush();
+
+				var walkStart = ms.Position;
+				for (var x = 0; x < totalTiles; x++)
+					bw.Write((byte)0x8);
+
+				var bytes = ms.ToArray();
+				Array.Copy(BitConverter.GetBytes((uint)bytes.Length), 0, bytes, 12, 4);
+				Array.Copy(BitConverter.GetBytes(flagsStart), 0, bytes, 28, 4);
+				Array.Copy(BitConverter.GetBytes(walkStart), 0, bytes, 32, 4);
+				Array.Copy(BitConverter.GetBytes(indexStart), 0, bytes, 36, 4);
+
+				File.WriteAllBytes(filename, bytes);
+			}
 		}
 	}
 
