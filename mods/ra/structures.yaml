@@ -72,6 +72,7 @@ SPEN:
 		Produces: Ship
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	RepairsUnits:
 
 SYRD:
 	InfiltrateForSonarPulse:
@@ -100,6 +101,7 @@ SYRD:
 		Produces: Ship
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	RepairsUnits:
 
 IRON:
 	Category: Defense
