@@ -115,6 +115,9 @@ namespace OpenRA.TilesetBuilder
 				ExportTemplate(t, surface1.Templates.IndexOf(t), dir);
 
 			// todo: write out a tileset definition
+			var tileset = surface1.Templates.SelectMany((t, i) => new[] { ";", "A", "1", i.ToString("x4"), "t{0:00}".F(i), "" }).ToArray();
+			File.WriteAllLines(Path.Combine(dir, "tileset.til"), tileset);
+
 			// todo: write out a templates ini
 		}
 
