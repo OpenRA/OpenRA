@@ -119,7 +119,7 @@ namespace OpenRA.TilesetBuilder
 			File.WriteAllLines(Path.Combine(dir, "tileset.til"), tileset);
 
 			// todo: write out a templates ini
-			var templates = surface1.Templates.SelectMany((t, i) => new[] { "[t{0:00}]".F(i), "Name=t{0:00}".F(i), "width={0}".F(42), "height={0}".F(42) }
+			var templates = surface1.Templates.SelectMany((t, i) => new[] { "[t{0:00}]".F(i), "Name=t{0:00}".F(i), "width={0}".F(t.Width), "height={0}".F(t.Height) }
 				.Concat( t.Cells.Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
 					.Select( c => "tiletype{0}={1}".F( (c.Key.X - t.Left) + t.Width * (c.Key.Y - t.Top), surface1.TerrainTypes[c.Key.X, c.Key.Y] )))
 				.Concat(new[] { "" })).ToArray();
