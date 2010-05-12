@@ -19,6 +19,32 @@ MSLO:
 		Crewed: yes
 		Sight: 5
 	IronCurtainable:
+	
+GAP:
+	Category: Defense
+	RequiresPower:
+	CanPowerDown:
+	GeneratesGap:
+		Range: 10
+	Inherits: ^Building
+#	Buildable:
+#		TechLevel: 10
+#		Prerequisites: atek
+#		Owner: allies
+#		Cost: 500
+#		Description: Gap Generator
+#		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
+#		Hotkey: g
+	Building:
+		Power: -60
+		Footprint: _ x
+		Dimensions: 1,2
+		Capturable: true
+		HP: 1000
+		Armor: wood
+		Crewed: yes
+		Sight: 10
+	IronCurtainable:
 
 SPEN:
 	InfiltrateForSonarPulse:
