@@ -86,9 +86,6 @@ namespace OpenRA
 						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
 						var hitActors = world.FindUnitsInCircle(args.dest, maxSpread);
 
-						Log.Write("DoImpact: {0} damage={1} modifier={2} spread={3}",
-							args.dest, warhead.Damage, firepowerModifier, maxSpread);
-
 						foreach (var victim in hitActors)
 						{
 							var damage = (int)GetDamageToInflict(victim, args, warhead, firepowerModifier);
@@ -162,9 +159,6 @@ namespace OpenRA
 			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 			var rawDamage = (float)(warhead.Damage * modifier * falloff);
 			var multiplier = (float)warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
-
-			Log.Write("GetDamageToInflict {0} #{1} r={2} dist={3} falloff={4} raw={5} mul={6}",
-				target.Info.Name, target.ActorID, radius, distance, falloff, rawDamage, multiplier);
 
 			return (float)(rawDamage * multiplier);
 		}
