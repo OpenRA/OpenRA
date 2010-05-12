@@ -461,14 +461,14 @@ RedEye:
 		Damage: 50
 
 8Inch:
-	ROF: 160
+	ROF: 200
 	Range: 22
 	Report: TURRET1
 	Bullet:
 		Speed: 12
 		High: true
 		Arcing: true
-		Inaccuracy: 60
+		Inaccuracy: 120
 		Image: 120MM
 	Warhead:
 		Spread: 6

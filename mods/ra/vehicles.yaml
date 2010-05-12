@@ -250,8 +250,8 @@ JEEP:
 		Armor: light
 		Crewed: yes
 		ROT: 10
-		Sight: 6
-		Speed: 10
+		Sight: 8
+		Speed: 12
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -503,7 +503,7 @@ MIG:
 		Armor: light
 		InitialFacing: 192
 		ROT: 5
-		Sight: 6
+		Sight: 12
 		Speed: 20
 	AttackPlane:
 		PrimaryWeapon: Maverick
@@ -532,7 +532,7 @@ YAK:
 		Crewed: yes
 		InitialFacing: 192
 		ROT: 5
-		Sight: 4
+		Sight: 10
 		Speed: 16
 	AttackPlane:
 		PrimaryWeapon: ChainGun
@@ -560,7 +560,7 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 4
+		Sight: 12
 		Speed: 12
 	Helicopter:
 	RenderUnitRotor:
@@ -588,7 +588,7 @@ HELI:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 6
+		Sight: 12
 		Speed: 16
 	AttackHeli:
 		PrimaryWeapon: Hellfire
@@ -619,7 +619,7 @@ HIND:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 6
+		Sight: 12
 		Speed: 12
 	AttackHeli:
 		PrimaryWeapon: ChainGun
