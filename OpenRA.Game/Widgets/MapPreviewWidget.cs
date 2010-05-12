@@ -78,7 +78,7 @@ namespace OpenRA.Widgets
 					Game.chrome.lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), playerColors[p.Second.PaletteIndex % playerColors.Count()].c);
+						12, 12), playerColors[p.Second.PaletteIndex % playerColors.Count()].Color);
 
 					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
 						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "owned"), pos, "chrome");

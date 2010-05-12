@@ -23,7 +23,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class PlayerColorPaletteInfo : ITraitInfo
+	public class PlayerColorPaletteInfo : ITraitInfo
 	{
 		public readonly string Name = null;
 		public readonly string DisplayName = null;
@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		public Color Color { get { return Util.ArrayToColor(DisplayColor); } }
 	}
 
-	class PlayerColorPalette
+	public class PlayerColorPalette
 	{
 		public PlayerColorPalette(Actor self, PlayerColorPaletteInfo info)
 		{
