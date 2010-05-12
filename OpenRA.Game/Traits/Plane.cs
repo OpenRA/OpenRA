@@ -89,7 +89,7 @@ namespace OpenRA.Traits
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(
 					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
-						? (IActivity)new Rearm() : new Repair(true));
+						? (IActivity)new Rearm() : new Repair());
 			}
 		}
 

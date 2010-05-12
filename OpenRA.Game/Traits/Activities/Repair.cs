@@ -29,8 +29,6 @@ namespace OpenRA.Traits.Activities
 		bool isCanceled;
 		int remainingTicks;
 
-		public Repair(bool playHostAnim) {}
-
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
@@ -54,8 +52,6 @@ namespace OpenRA.Traits.Activities
 				self.InflictDamage(self, -hpToRepair, null);
 				if (self.Health == hp)
 					return NextActivity;
-
-
 
 				if (hostBuilding != null)
 					hostBuilding.traits.Get<RenderBuilding>()

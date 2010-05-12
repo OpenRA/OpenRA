@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(self.Info.Traits.Get<HelicopterInfo>().RearmBuildings.Contains(order.TargetActor.Info.Name)
-					? (IActivity)new Rearm() : new Repair(true));
+					? (IActivity)new Rearm() : new Repair());
 			}
 		}
 

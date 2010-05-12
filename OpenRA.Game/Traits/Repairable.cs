@@ -67,7 +67,7 @@ namespace OpenRA.Traits
 				self.CancelActivity();
 				self.QueueActivity(new Move(((1 / 24f) * order.TargetActor.CenterLocation).ToInt2(), order.TargetActor));
 				self.QueueActivity(new Rearm());
-				self.QueueActivity(new Repair(true));
+				self.QueueActivity(new Repair());
 			}
 		}
 	}
