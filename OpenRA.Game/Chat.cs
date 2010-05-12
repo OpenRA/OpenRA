@@ -29,7 +29,7 @@ namespace OpenRA
 	{
 		const int logLength = 10;
 
-		public List<Tuple<Color, string, string>> recentLines = new List<Tuple<Color, string, string>>();
+		public List<ChatLine> recentLines = new List<ChatLine>();
 		public string typing = "";
 		public bool isChatting = true;
 
@@ -68,10 +68,12 @@ namespace OpenRA
 
 		public void AddLine(Color c, string from, string text)
 		{
-			recentLines.Add(Tuple.New(c, from, text));
+			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
 			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.ChatBeep);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}
+
+	class ChatLine { public Color Color = Color.White; public string Owner, Text; }
 }

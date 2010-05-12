@@ -192,7 +192,7 @@ namespace OpenRA
 
 			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
 			if (Game.chat.isChatting)
-				RenderChatLine(Tuple.New(Color.White, "Chat:", Game.chat.typing), 
+				RenderChatLine(new ChatLine { Owner = "Chat:", Text = Game.chat.typing },
 					new int2(typingArea.X + 10, typingArea.Y + 6));
 
 			rgbaRenderer.Flush();
@@ -209,11 +209,11 @@ namespace OpenRA
 			renderer.Device.DisableScissor();
 		}
 
-		void RenderChatLine(Tuple<Color, string, string> line, int2 p)
+		void RenderChatLine(ChatLine line, int2 p)
 		{
-			var size = renderer.RegularFont.Measure(line.b);
-			renderer.RegularFont.DrawText(line.b, p, line.a);
-			renderer.RegularFont.DrawText(line.c, p + new int2(size.X + 10, 0), Color.White);
+			var size = renderer.RegularFont.Measure(line.Owner);
+			renderer.RegularFont.DrawText(line.Owner, p, line.Color);
+			renderer.RegularFont.DrawText(line.Text, p + new int2(size.X + 10, 0), Color.White);
 		}
 
 		public int ticksSinceLastMove = 0;
