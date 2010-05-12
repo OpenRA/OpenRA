@@ -138,28 +138,6 @@ SPY:
 	-RenderInfantry:
 	-AutoTarget:
 
-THF:
-	Inherits: ^Infantry
-	Buildable:
-		TechLevel: 11
-		Prerequisites: atek
-		Owner: allies
-		Cost: 500
-		Description: Thief
-		LongDesc: Infiltrates enemy refineries & \nsilos, and steals money stored there.\n  Unarmed
-	Selectable:
-		Voice: ThiefVoice
-		Bounds: 12,17,0,-9
-	Unit:
-		HP: 25
-		Sight: 5
-		Speed: 4
-	Passenger:
-		ColorOfCargoPip: Yellow
-	TakeCover:
-	Thief:
-	-AutoTarget:
-
 E7:
 	Inherits: ^Infantry
 	Buildable:
