@@ -70,7 +70,7 @@ namespace OpenRA.Widgets.Delegates
 					color.OnMouseUp = CyclePalette;
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => Player.PlayerColors(Game.world)[c.PaletteIndex % Player.PlayerColors(Game.world).Count].Color;
+					colorBlock.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
 					
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
@@ -91,7 +91,7 @@ namespace OpenRA.Widgets.Delegates
 				else 
 				{
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => Player.PlayerColors(Game.world)[c.PaletteIndex % Player.PlayerColors(Game.world).Count].Color;
+					color.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
 					
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					faction.GetText = () => c.Country;
@@ -119,12 +119,12 @@ namespace OpenRA.Widgets.Delegates
 		
 		bool CyclePalette(MouseInput mi)
 		{
-			var d = (mi.Button == MouseButton.Left) ? +1 : Player.PlayerColors(Game.world).Count() - 1;
+			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.PlayerColors().Count() - 1;
 
-			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Player.PlayerColors(Game.world).Count();
+			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Game.world.PlayerColors().Count();
 				
 			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.LocalClient.PaletteIndex)
-				newIndex = (newIndex + d) % Player.PlayerColors(Game.world).Count();
+				newIndex = (newIndex + d) % Game.world.PlayerColors().Count();
 			
 			Game.IssueOrder(
 				Order.Chat("/pal " + newIndex));

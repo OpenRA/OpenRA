@@ -108,7 +108,7 @@ namespace OpenRA.Traits
 				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Country.Race));
 
 			if (Info.Prerequisites.Count() == 0) 
-				return Owner.GetPowerState() == PowerState.Normal;
+				return Owner.PlayerActor.traits.Get<PlayerResources>().GetPowerState() == PowerState.Normal;
 			
 			return effectivePrereq.Any() && 
 				effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));

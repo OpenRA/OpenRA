@@ -74,7 +74,7 @@ namespace OpenRA.Widgets
 						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "unowned"), pos, "chrome");
 				else
 				{
-					var playerColors = Player.PlayerColors(world);
+					var playerColors = Game.world.PlayerColors();
 					Game.chrome.lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,

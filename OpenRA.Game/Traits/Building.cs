@@ -129,7 +129,7 @@ namespace OpenRA.Traits
 				var costPerHp = (self.World.Defaults.RepairPercent * buildingValue) / maxHP;
 				var hpToRepair = Math.Min(self.World.Defaults.RepairStep, maxHP - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
-				if (!self.Owner.TakeCash(cost))
+				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
 					return;

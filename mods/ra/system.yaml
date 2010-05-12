@@ -78,6 +78,7 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
 	ConquestVictoryConditions:
+	PlayerResources:
 		
 
 World:

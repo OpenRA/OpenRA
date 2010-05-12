@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 		public void Deliver(Actor self, Actor proc)
 		{
-			proc.Owner.GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
+			proc.Owner.PlayerActor.traits.Get<PlayerResources>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
 			contents.Clear();
 		}
 

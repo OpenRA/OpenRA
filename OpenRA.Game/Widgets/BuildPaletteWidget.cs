@@ -487,17 +487,14 @@ namespace OpenRA.Widgets
 
 			Game.chrome.renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
 
-			DrawRightAligned( "${0}".F(buildable.Cost), pos + new int2(-5,5), 
-				world.LocalPlayer.Cash + world.LocalPlayer.Ore >= buildable.Cost ? Color.White : Color.Red);
+			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5), Color.White);
 
             if (buildable.Hotkey != null)
                 DrawRightAligned("{0}".F(buildable.Hotkey.ToUpper()), pos + new int2(-5, 35),Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
-				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
-					world.LocalPlayer.PowerProvided - world.LocalPlayer.PowerDrained + bi.Power >= 0
-					? Color.White : Color.Red);
+				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20), Color.White);
 
 			
 			p += new int2(5, 20);

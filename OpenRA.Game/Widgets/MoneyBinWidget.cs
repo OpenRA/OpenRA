@@ -43,6 +43,8 @@ namespace OpenRA.Widgets
 		
 		public override void Draw(World world)
 		{
+			var playerResources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
+
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
@@ -50,7 +52,7 @@ namespace OpenRA.Widgets
 				ChromeProvider.GetImage(Game.chrome.renderer, chromeCollection, "moneybin"),
 				new float2(Bounds.Left, 0), "chrome");
 
-			var moneyDigits = world.LocalPlayer.DisplayCash.ToString();
+			var moneyDigits = playerResources.DisplayCash.ToString();
 			var x = Bounds.Right - 65;
 
 			foreach (var d in moneyDigits.Reverse())

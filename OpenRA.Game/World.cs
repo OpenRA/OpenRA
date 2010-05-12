@@ -158,9 +158,6 @@ namespace OpenRA
 			var acts = frameEndActions;
 			frameEndActions = new List<Action<World>>();
 			foreach (var a in acts) a(this);
-			
-			foreach (var player in players.Values)
-				player.Tick();
 
 			WorldRenderer.Tick();
 		}

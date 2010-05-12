@@ -37,6 +37,7 @@ Player:
 		SelectTargetSound: select1.aud
 		UnitType: a10
 	ConquestVictoryConditions:
+	PlayerResources:
 	
 World:
 	GlobalDefaults:

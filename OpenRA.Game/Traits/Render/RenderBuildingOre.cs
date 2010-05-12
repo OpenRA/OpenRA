@@ -34,7 +34,8 @@ namespace OpenRA.Traits
 
 		public void BuildingComplete( Actor self )
 		{
-			anim.PlayFetchIndex( "idle", () => (int)( 4.9 * self.Owner.GetSiloFullness() ) );
+			anim.PlayFetchIndex( "idle", 
+				() => (int)( 4.9 * self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() ) );
 		}
 	}
 }

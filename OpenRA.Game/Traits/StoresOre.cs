@@ -34,8 +34,8 @@ namespace OpenRA.Traits
 		{
 			// Steal half the ore the building holds
 			var toSteal = self.Info.Traits.Get<StoresOreInfo>().Capacity / 2;
-			self.Owner.TakeCash(toSteal);
-			thief.Owner.GiveCash(toSteal);
+			self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(toSteal);
+			thief.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(toSteal);
 			
 			var eva = thief.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			Sound.PlayToPlayer(thief.Owner, eva.CreditsStolen);
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
 
 			return Graphics.Util.MakeArray( numPips, 
-				i => (self.World.LocalPlayer.GetSiloFullness() > i * 1.0f / numPips) 
+				i => (self.World.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() > i * 1.0f / numPips) 
 					? PipType.Yellow : PipType.Transparent );
 		}
 	}

@@ -35,7 +35,7 @@ namespace OpenRA.Traits.Activities
 			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 			var refund = self.World.Defaults.RefundPercent * self.Health * cost / hp;
 
-			self.Owner.GiveCash((int)refund);
+			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)refund);
 			self.Health = 0;
 			foreach (var ns in self.traits.WithInterface<INotifySold>())
 				ns.Sold(self);

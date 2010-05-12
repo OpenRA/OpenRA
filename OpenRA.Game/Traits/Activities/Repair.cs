@@ -43,7 +43,7 @@ namespace OpenRA.Traits.Activities
 				var costPerHp = (hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
 				var hpToRepair = Math.Min(hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
-				if (!self.Owner.TakeCash(cost))
+				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
 					return this;
