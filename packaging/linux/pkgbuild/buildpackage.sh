@@ -18,12 +18,6 @@ size=`stat -c "%s" $PACKAGEFILE`
 
 echo "$5,$size,$PACKAGEFILE" > archlatest.txt
 
-ftp -n -v $1 << cmd
-user "$3" "$4"
-cd $2
-put $PACKAGEFILE
-put archlatest.txt
-cmd
-
-
+wput $PACKAGEFILE "ftp://$3:$4@$1/$2"
+wput archlatest.txt "ftp://$3:$4@$1/$2"
 
