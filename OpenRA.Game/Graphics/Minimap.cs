@@ -120,7 +120,7 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				foreach (var a in world.Queries.WithTrait<Unit>().Where( a => a.Actor.Owner != null ))
+				foreach (var a in world.Queries.WithTrait<Unit>().Where(a => a.Actor.Owner != null && a.Actor.IsVisible()))
 					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
 						Color.FromArgb(alpha, a.Actor.Owner.Color).ToArgb();
 
