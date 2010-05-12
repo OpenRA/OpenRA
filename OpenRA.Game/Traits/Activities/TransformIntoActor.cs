@@ -54,7 +54,7 @@ namespace OpenRA.Traits.Activities
 				self.Health = 0;
 				self.World.Remove( self );
 				foreach (var s in sounds)
-					Sound.PlayToPlayer(self.Owner, s);
+					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
 				var a = self.World.CreateActor( actor, self.Location + offset, self.Owner );
 				a.Health = newHealth;

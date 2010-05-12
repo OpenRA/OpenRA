@@ -102,7 +102,7 @@ namespace OpenRA.Traits
 				anim.PlayBackwardsThen( "make", null );
 			
 			foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-					Sound.PlayToPlayer(self.Owner, s);
+					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 		}
 
 		public void Sold(Actor self) {}

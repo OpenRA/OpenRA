@@ -45,7 +45,7 @@ namespace OpenRA.Traits.Activities
 					() => self.World.AddFrameEndTask(w => DoUndeploy(w,self)));
 				
 				foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-					Sound.PlayToPlayer(self.Owner, s);
+					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 				
 				started = true;
 			}
