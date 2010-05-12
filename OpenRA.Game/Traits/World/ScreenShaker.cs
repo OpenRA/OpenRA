@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -33,18 +32,18 @@ namespace OpenRA.Traits
 	public class ScreenShaker : ITick
 	{
 		int ticks = 0;
-        List<OpenRA.FileFormats.Tuple<int, float2, int>> shakeEffects = new List<OpenRA.FileFormats.Tuple<int, float2, int>>();
+        List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
 		
 		public void Tick (Actor self)
 		{
 			Game.viewport.Scroll(getScrollOffset());
-			shakeEffects.RemoveAll(t => t.a == ticks);
+			shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
 			ticks++;
 		}
 		
 		public void AddEffect(int time, float2 position, int intensity)
 		{
-            shakeEffects.Add(OpenRA.FileFormats.Tuple.New(ticks + time, position, intensity));
+			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity });
 		}
 		
 		public float2 getScrollOffset()
@@ -63,10 +62,11 @@ namespace OpenRA.Traits
 				+ .5f * new float2(Game.viewport.Width, Game.viewport.Height);
 
 			var intensity = 24 * 24 * 100 * shakeEffects.Sum(
-				e => e.c / (e.b - cp).LengthSquared);
+				e => e.Intensity / (e.Position - cp).LengthSquared);
 
 			return Math.Min(intensity, 10);	
 		}
-		
 	}
+
+	class ShakeEffect { public int ExpiryTime; public float2 Position; public int Intensity; }
 }
