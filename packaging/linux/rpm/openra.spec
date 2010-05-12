@@ -1,6 +1,6 @@
 %define name openra
-%define version 20100507
-%define commit 51b83e0
+%define version 20100511
+%define folder chrisforbes-openra-51b83e0
 Name: %{name}
 Version: %{version}
 Release: 1
@@ -20,7 +20,7 @@ engine in .NET/Mono, OpenGL, OpenAL and SDL. Has extensive modding support
 and includes Command & Conquer as an official mod.
 
 %prep
-%setup -n chrisforbes-OpenRA-%{commit}
+%setup -n %{folder}
 
 %build
 make prefix="$RPM_BUILD_ROOT/usr"
