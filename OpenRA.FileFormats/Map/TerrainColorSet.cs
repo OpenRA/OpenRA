@@ -18,52 +18,34 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.IO;
-using System.Drawing;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+
 namespace OpenRA.FileFormats
 {
 	public class TerrainColorSet
 	{
-		public readonly Dictionary<TerrainType, Color> colors = new Dictionary<TerrainType, Color>();
+		readonly Dictionary<TerrainType, Color> colors;
 
-		string NextLine( StreamReader reader )
+		public TerrainColorSet(string colorFile)
 		{
-			string ret;
-			do
-			{
-				ret = reader.ReadLine();
-				if( ret == null )
-					return null;
-				ret = ret.Trim();
-			}
-			while( ret.Length == 0 || ret[ 0 ] == ';' );
-			return ret;
+			var lines = FileSystem.Open(colorFile).ReadAllLines()
+				.Select(l => l.Trim())
+				.Where(l => !l.StartsWith(";") && l.Length > 0);
+
+			colors = lines.Select(l => l.Split('=')).ToDictionary(
+				kv => (TerrainType)Enum.Parse(typeof(TerrainType), kv[0]),
+				kv => ColorFromRgbString(kv[1]));
 		}
 
-		public TerrainColorSet( string colorFile )
+		static Color ColorFromRgbString(string s)
 		{
-			StreamReader file = new StreamReader( FileSystem.Open(colorFile) );
-
-			while( true )
-			{
-				string line = NextLine( file );
-				if( line == null )
-					break;
-				string[] kv = line.Split('=');
-				TerrainType key = (TerrainType)Enum.Parse(typeof(TerrainType),kv[0]);
-				string[] entries = kv[1].Split(',');
-				Color val = Color.FromArgb(int.Parse(entries[0]),int.Parse(entries[1]),int.Parse(entries[2]));
-				colors.Add(key,val);
-			}
-
-			file.Close();
+			var parts = s.Split(',');
+			return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
 		}
-		
-		public Color ColorForTerrainType(TerrainType type)
-		{
-			return colors[type];	
-		}
+
+		public Color ColorForTerrainType(TerrainType type) { return colors[type]; }
 	}
 }

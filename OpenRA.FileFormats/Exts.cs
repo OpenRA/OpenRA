@@ -60,5 +60,18 @@ namespace OpenRA
 				return data;
 			}
 		}
+
+		public static IEnumerable<string> ReadAllLines(this Stream s)
+		{
+			using (var sr = new StreamReader(s))
+				for (; ; )
+				{
+					var line = sr.ReadLine();
+					if (line == null)
+						yield break;
+					else
+						yield return line;
+				}
+		}
 	}
 }
