@@ -18,12 +18,16 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableNearInfo : TraitInfo<RepairableNear> { }
+	class RepairableNearInfo : TraitInfo<RepairableNear>
+	{
+		public readonly string[] Buildings = { "spen", "syrd" };
+	}
 
 	class RepairableNear : IIssueOrder, IResolveOrder
 	{
@@ -33,7 +37,7 @@ namespace OpenRA.Mods.RA
 			if (underCursor == null) return null;
 
 			if (underCursor.Owner == self.Owner &&
-				(underCursor.Info.Name == "spen" || underCursor.Info.Name == "syrd") &&
+				self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( underCursor.Info.Name ) &&
 				self.Health < self.GetMaxHP())
 				return new Order("Enter", self, underCursor);
 
