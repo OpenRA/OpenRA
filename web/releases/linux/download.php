@@ -25,21 +25,33 @@
 			<span class="links"><a href="http://twitter.com/openRA">Twitter</a></span>
 		</div>
 		<div>
-		    <div class="rounded download" style="display: block; text-align: center" onclick="document.location='openra-git-20100507-1-any.tar.xz'">
-					<img src="/arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
-					Download for Arch Linux<br />
-					<span class="desc">version: 20100507 size: 1.3MB</span>
-			</div>
-			<div class="rounded download" style="display: block; text-align: center" onclick="document.location='openra-20100507-1-noarch.rpm'">
-					<img src="/arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
-					Download for RPM based systems<br />
-					<span class="desc">version: 20100507 size: 1.5MB</span>
-			</div>
-			<div class="rounded download" style="display: block; text-align: center" onclick="document.location='http://github.com/chrisforbes/OpenRA/tarball/playtest-20100507'">
-					<img src="/arrow.png" alt="Download Arrow" style="float: left; margin-top: 3px" />
-					Download for other systems<br />
-					<span class="desc">(source package)</span>
-			</div>
+		    <?php
+		        function generateDownloadButton($target, $text, $desc)
+		        {
+		            echo "<div class=\"rounded download\" style=\"display: block; text-align: center\" onclick=\"document.location='".$target."'\">\n";
+		            echo "\t<img src=\"/arrow.png\" alt=\"Download Arrow\" style=\"float: left; margin-top: 3px\" />\n";
+		            echo "\t". $text ."<br />\n";
+		            echo "\t<span class=\"desc\">". $desc ."</span>\n";
+		            echo "</div>";
+		        }
+		        
+		        $archTarget = file_get_contents("archlatest.txt");
+		        list($version,$size,$target) = explode(",", $archTarget);
+		        $desc = sprintf("version: %s size: %.2fMB", $version, $size/1048576);
+		        
+		        generateDownloadButton(trim($target), "Download for Arch Linux", $desc);
+		        
+		        $rpmTarget = file_get_contents("rpmlatest.txt");
+		        list($version,$size,$target) = explode(",", $rpmTarget);
+		        $desc = sprintf("version: %s size: %.2fMB", $version, $size/1048576);
+		        
+		        generateDownloadButton(trim($target), "Download for RPM based systems", $desc);
+		        
+		        $version = file_get_contents("srclatest.txt");
+		        $target = "http://github.com/chrisforbes/OpenRA/tarball/playtest-".trim($version);
+		        
+		        generateDownloadButton($target, "Download for other systems", "(source package)");
+		    ?>
 		</div>
 	</div>
 	<div id="footer" class="bar">
