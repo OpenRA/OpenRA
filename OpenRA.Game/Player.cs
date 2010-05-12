@@ -111,25 +111,14 @@ namespace OpenRA
 				if (PowerProvided - PowerDrained  != oldBalance)
 					GiveAdvice(World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().LowPower);
 		}
-				
-		public float GetSiloFullness()
-		{
-			return (float)Ore / OreCapacity;
-		}
+
+		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
 
 		public PowerState GetPowerState()
 		{
 			if (PowerProvided >= PowerDrained) return PowerState.Normal;
 			if (PowerProvided > PowerDrained / 2) return PowerState.Low;
 			return PowerState.Critical;
-		}
-
-		void UpdateOreCapacity()
-		{
-			OreCapacity = World.Queries.OwnedBy[this]
-				.Where(a => a.traits.Contains<StoresOre>())
-				.Select(a => a.Info.Traits.Get<StoresOreInfo>())
-				.Sum(b => b.Capacity);
 		}
 
 		void GiveAdvice(string advice)
@@ -172,7 +161,9 @@ namespace OpenRA
 		public void Tick()
 		{
 			UpdatePower();
-			UpdateOreCapacity();
+
+			OreCapacity = World.Queries.OwnedBy[this].WithTrait<StoresOre>()
+				.Sum(a => a.Actor.Info.Traits.Get<StoresOreInfo>().Capacity);
 
 			var totalMoney = Cash + Ore;
 			var diff = Math.Abs(totalMoney - DisplayCash);
