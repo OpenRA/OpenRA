@@ -191,13 +191,13 @@ HARV:
 		TechLevel: 1
 		Prerequisites: weap,proc
 		Owner: allies,soviet
-		Cost: 1400
+		Cost: 1100
 		Description: Ore Truck
 		LongDesc: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	Harvester:
-		Capacity: 28
+		Capacity: 20
 		Resources: Ore,Gems
 	Unit:
 		HP: 600
@@ -215,7 +215,7 @@ MCV:
 		TechLevel: 11
 		Prerequisites: weap,fix
 		Owner: allies,soviet
-		Cost: 2500
+		Cost: 2000
 		Description: Mobile Construction Vehicle
 		LongDesc: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:

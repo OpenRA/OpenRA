@@ -452,7 +452,7 @@ PROC:
 		TechLevel: 1
 		Prerequisites: @Power Plant
 		Owner: allies,soviet
-		Cost: 2000
+		Cost: 1400
 		Description: Ore Refinery
 		LongDesc: Converts Ore and Gems into money
 		BuildPaletteOrder: 1
@@ -702,7 +702,7 @@ FIX:
 		TechLevel: 3
 		Prerequisites: weap
 		Owner: allies,soviet
-		Cost: 1200
+		Cost: 1000
 		Description: Service Depot
 		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 		Hotkey: d
