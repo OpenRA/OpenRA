@@ -10,18 +10,19 @@ namespace OpenRA.Traits
 		public readonly int InitialCash = 10000;
 		public readonly int InitialOre = 0;
 
-		public object Create(Actor self) { return new PlayerResources(self.Owner); }
+		public object Create(Actor self) { return new PlayerResources(self); }
 	}
 
 	public class PlayerResources : ITick
 	{
 		Player Owner;
 
-		public PlayerResources(Player p)
+		public PlayerResources(Actor self)
 		{
+			var p = self.Owner;
 			Owner = p;
-			Cash = p.PlayerActor.Info.Traits.Get<PlayerResourcesInfo>().InitialCash;
-			Ore = p.PlayerActor.Info.Traits.Get<PlayerResourcesInfo>().InitialOre;
+			Cash = self.Info.Traits.Get<PlayerResourcesInfo>().InitialCash;
+			Ore = self.Info.Traits.Get<PlayerResourcesInfo>().InitialOre;
 		}
 
 		[Sync]
