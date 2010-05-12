@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 							var building = w.CreateActor( order.TargetString, t, order.Player );
 							if( playSounds )
 								foreach( var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds )
-									Sound.PlayToPlayer( order.Player, s, self.CenterLocation );
+									Sound.PlayToPlayer( order.Player, s, building.CenterLocation );
 							playSounds = false;
 						}
 					}
@@ -59,7 +59,7 @@ namespace OpenRA.Traits
 					{
 						var building = w.CreateActor( order.TargetString, order.TargetLocation, order.Player );
 						foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
-							Sound.PlayToPlayer(order.Player, s, self.CenterLocation);
+							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 					}
 
 					var facts = w.Queries.OwnedBy[self.Owner]
