@@ -8,7 +8,7 @@ then
     exit $E_BADARGS
 fi
 
-sed -i s/pkgver=[0-9]+/pkgver=$5/ PKGBUILD
+sed -i "s/pkgver=[0-9]\+/pkgver=$5/" PKGBUILD
 
 makepkg --holdver
 
@@ -18,6 +18,6 @@ size=`stat -c "%s" $PACKAGEFILE`
 
 echo "$5,$size,$PACKAGEFILE" > archlatest.txt
 
-wput $PACKAGEFILE "ftp://$3:$4@$1/$2"
-wput archlatest.txt "ftp://$3:$4@$1/$2"
+wput $PACKAGEFILE "ftp://$3:$4@$1/$2/"
+wput -u archlatest.txt "ftp://$3:$4@$1/$2/"
 

@@ -26,6 +26,6 @@ size=`stat -c "%s" $PACKAGEFILE`
 
 echo "$5,$size,$PACKAGEFILE" > /tmp/rpmlatest.txt
 
-wput $PACKAGEFILE "ftp://$3:$4@$1/$2"
+wput $PACKAGEFILE "ftp://$3:$4@$1/$2/"
 cd /tmp
-wput rpmlatest.txt "ftp://$3:$4@$1/$2"
+wput -u rpmlatest.txt "ftp://$3:$4@$1/$2/"
