@@ -34,7 +34,7 @@ namespace OpenRA.Traits.Activities
 			initialLocation = self.CenterLocation;
 
 			self.traits.Get<RenderInfantry>().Attacking(self);
-			Sound.Play("dogg5p.aud");
+			Sound.Play("dogg5p.aud", self.CenterLocation);
 		}
 
 		public IActivity NextActivity { get; set; }

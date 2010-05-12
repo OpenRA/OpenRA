@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Aftermath
 				Combat.DoExplosion(self, info.PrimaryWeapon, detonateLocation, altitude);
 				var report = self.GetPrimaryWeapon().Report;
 				if (report != null)
-					Sound.Play(report + ".aud");
+					Sound.Play(report + ".aud", self.CenterLocation);
 				
 				// Remove from world
 				self.Health = 0;

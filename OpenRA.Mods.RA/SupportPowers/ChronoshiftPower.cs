@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.SupportPowers
 					
 				if (success)
 				{
-					Sound.Play("chrono2.aud");
+					Sound.Play("chrono2.aud", chronosphere.CenterLocation);
 					
 					// Trigger screen desaturate effect
 					foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())

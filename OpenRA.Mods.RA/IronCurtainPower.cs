@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 				if (curtain != null)
 					curtain.traits.Get<RenderBuilding>().PlayCustomAnim(curtain, "active");
 
-				Sound.Play("ironcur9.aud");
+				Sound.Play("ironcur9.aud", order.TargetActor.CenterLocation);
 				
 				order.TargetActor.traits.Get<IronCurtainable>().Activate(order.TargetActor,
 					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));

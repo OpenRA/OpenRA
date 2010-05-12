@@ -88,7 +88,7 @@ namespace OpenRA.Traits
 					break;
 				case DamageState.Half:
 					anim.ReplaceAnim("damaged-idle");
-					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
+					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
 				case DamageState.Dead:
 					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), 7, false)));

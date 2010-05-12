@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 
 		public void PlayCharge(Actor self)
 		{
-			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio);
+			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio, self.CenterLocation);
 			anim.PlayThen(GetPrefix(self) + "active", 
 				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}

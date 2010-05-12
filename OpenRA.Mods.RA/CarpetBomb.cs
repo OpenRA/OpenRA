@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 				self.World.Add(args.weapon.Projectile.Create(args));
 
 				if (!string.IsNullOrEmpty(args.weapon.Report))
-					Sound.Play(args.weapon.Report + ".aud");
+					Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
 			}
 		}
 	}

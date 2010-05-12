@@ -312,6 +312,7 @@ namespace OpenRA
 			{
 				++RenderFrame;
 				viewport.DrawRegions(world);
+				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
 			}
 
 			PerfHistory.items["render"].Tick();

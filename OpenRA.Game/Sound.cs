@@ -58,20 +58,36 @@ namespace OpenRA
 			stopped = false;
 		}
 
+		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
+
 		public static void Play(string name)
+		{
+			if (name == "" || name == null)
+				return;
+
+			var sound = sounds[name];
+			soundEngine.Play2D(sound, false, true, float2.Zero);
+		}
+
+		public static void Play(string name, float2 pos)
 		{
 			if (name == "" || name == null)
 				return;
 			
 			var sound = sounds[name];
-			// todo: positioning
-			soundEngine.Play2D(sound, false);
+			soundEngine.Play2D(sound, false, false, pos);
 		}
 
 		public static void PlayToPlayer(Player player, string name)
 		{
 			if( player == player.World.LocalPlayer )
 				Play( name );
+		}
+
+		public static void PlayToPlayer(Player player, string name, float2 pos)
+		{
+			if (player == player.World.LocalPlayer)
+				Play(name, pos);
 		}
 
 		public static void PlayMusic(string name)
@@ -83,7 +99,7 @@ namespace OpenRA
 				soundEngine.StopSound(music);
 			
 			var sound = sounds[name];
-			music = soundEngine.Play2D(sound, true);
+			music = soundEngine.Play2D(sound, true, true, float2.Zero);
 			music.Volume = musicVolume;
 		}
 
@@ -160,12 +176,13 @@ namespace OpenRA
 	interface ISoundEngine
 	{
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
-		ISound Play2D(ISoundSource sound, bool loop);
+		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos);
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);
 		void SetAllSoundsPaused(bool paused);
 		void StopAllSounds();
+		void SetListenerPosition(float2 position);
 	}
 
 	interface ISoundSource {}
@@ -241,10 +258,10 @@ namespace OpenRA
 			return new OpenAlSoundSource(data, channels, sampleBits, sampleRate);
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop)
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos)
 		{
 			int source = GetSourceFromPool();
-			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop);
+			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos);
 		}
 
 		public float Volume
@@ -297,7 +314,15 @@ namespace OpenRA
 					Al.alSourceStop(key);
 			}
 		}
-		
+
+		public void SetListenerPosition(float2 position)
+		{
+			var orientation = new [] { 0f, 0f, 1f, 0f, -1f, 0f };
+
+			Al.alListener3f(Al.AL_POSITION, position.X, position.Y, 50);
+			Al.alListenerfv(Al.AL_ORIENTATION, ref orientation[0]);
+			Al.alListenerf(Al.AL_METERS_PER_UNIT, .01f);
+		}
 	}
 
 	class OpenAlSoundSource : ISoundSource
@@ -324,16 +349,20 @@ namespace OpenRA
 		public readonly int source = -1;
 		float volume = 1f;
 
-		public OpenAlSound(int source, int buffer, bool looping)
+		public OpenAlSound(int source, int buffer, bool looping, bool relative, float2 pos)
 		{
 			if (source == -1) return;
 			this.source = source;
 			Al.alSourcef(source, Al.AL_PITCH, 1f);
 			Al.alSourcef(source, Al.AL_GAIN, 1f);
-			Al.alSource3f(source, Al.AL_POSITION, 0f, 0f, 0f);
+			Al.alSource3f(source, Al.AL_POSITION, pos.X, pos.Y, 0f);
 			Al.alSource3f(source, Al.AL_VELOCITY, 0f, 0f, 0f);
 			Al.alSourcei(source, Al.AL_BUFFER, buffer);
 			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
+			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
+			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 200);
+			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 1500);
+
 			Al.alSourcePlay(source);
 		}
 

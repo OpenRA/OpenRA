@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 					break;
 				case DamageState.Half:
 					anim.Play( "damaged-idle" );
-					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound);
+					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
 			}
 		}

@@ -73,7 +73,8 @@ namespace OpenRA.Mods.Aftermath
 				Game.controller.CancelInputMode();
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
-				Sound.Play("chrotnk1.aud");
+				Sound.Play("chrotnk1.aud", self.CenterLocation);
+				Sound.Play("chrotnk1.aud", Game.CellSize * order.TargetLocation.ToFloat2());
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
 
 				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())

@@ -194,7 +194,7 @@ namespace OpenRA.Traits
 						self.World.Add(projectile);
 
 					if (!string.IsNullOrEmpty(args.weapon.Report))
-						Sound.Play(args.weapon.Report + ".aud");
+						Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
 				}
 			});
 

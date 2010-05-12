@@ -74,12 +74,12 @@ namespace OpenRA.Traits
 
 		void OnSurface()
 		{
-			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SurfaceSound);
+			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SurfaceSound, self.CenterLocation);
 		}
 
 		void OnDive()
 		{
-			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SubmergeSound);
+			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SubmergeSound, self.CenterLocation);
 		}
 	}
 }

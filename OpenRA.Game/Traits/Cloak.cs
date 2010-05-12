@@ -71,12 +71,12 @@ namespace OpenRA.Traits
 
 		void OnCloak()
 		{
-			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound);
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound, self.CenterLocation);
 		}
 
 		void OnUncloak()
 		{
-			Sound.Play(self.Info.Traits.Get<CloakInfo>().UncloakSound);
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().UncloakSound, self.CenterLocation);
 		}
 	}
 }

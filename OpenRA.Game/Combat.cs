@@ -50,7 +50,7 @@ namespace OpenRA
 				world.AddFrameEndTask(
 					w => w.Add(new Explosion(w, args.dest, warhead.Explosion, isWater)));
 
-			Sound.Play(GetImpactSound(warhead, isWater));
+			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 			
 			if (warhead.SmudgeType != null)
 			{

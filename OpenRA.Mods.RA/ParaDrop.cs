@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 							Util.CenterOfCell((1 / 24f * self.CenterLocation).ToInt2()),
 							self.traits.Get<Unit>().Altitude, a)));
 
-					Sound.Play("chute1.aud");
+					Sound.Play("chute1.aud", self.CenterLocation);
 				}
 			}
 		}
