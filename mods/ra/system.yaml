@@ -211,19 +211,10 @@ World:
 		IsFog: yes
 		Name: fog
 	Country@0:
-		Name: England
+		Name: Allies
 		Race: allies
 	Country@1:
-		Name: Germany
-		Race: allies
-	Country@2:
-		Name: France
-		Race: allies
-	Country@3:
-		Name: Ukraine
-		Race: soviet
-	Country@4:
-		Name: Russia
+		Name: Soviet
 		Race: soviet
 	SellButton:
 	RepairButton:
