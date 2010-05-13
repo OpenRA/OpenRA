@@ -663,6 +663,7 @@ TENT:
 		LongDesc: Produces infantry
 		BuildPaletteOrder: 3
 		Hotkey: b
+		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
