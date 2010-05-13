@@ -22,7 +22,7 @@ using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
-	class ExplodesInfo : TraitInfo<Explodes> { }
+	class ExplodesInfo : TraitInfo<Explodes> { public readonly string Weapon = "UnitExplode"; }
 
 	class Explodes : INotifyDamage
 	{
@@ -32,7 +32,9 @@ namespace OpenRA.Traits
 			{
 				var unit = self.traits.GetOrDefault<Unit>();
 				var altitude = unit != null ? unit.Altitude : 0;
-				Combat.DoExplosion(e.Attacker, "UnitExplode", self.CenterLocation.ToInt2(), altitude);
+				Combat.DoExplosion(e.Attacker, 
+					self.Info.Traits.Get<ExplodesInfo>().Weapon, 
+					self.CenterLocation.ToInt2(), altitude);
 			}
 		}
 	}
