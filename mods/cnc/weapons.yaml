@@ -14,8 +14,6 @@ Atomic:
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 6
@@ -25,8 +23,6 @@ Atomic:
 		Damage: 250
 		SmudgeType: Scorch
 		Size: 5,4
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
 		Delay: 3
@@ -36,8 +32,6 @@ IonCannon:
 	Warhead@impact:
 		Damage: 500
 		Spread: 6
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 4
@@ -46,8 +40,6 @@ IonCannon:
 		Damage: 200
 		SmudgeType: Scorch
 		Size: 2,1
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 100%,100%,100%,100%,100%
 		Delay: 3
@@ -121,8 +113,6 @@ Rockets:
 		Speed: 25
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -138,7 +128,6 @@ Flamethrower:
 		Speed: 100
 	Warhead:
 		Spread: 8
-		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
 		ImpactSound: flamer2
@@ -153,7 +142,6 @@ BigFlamer:
 		Speed: 100
 	Warhead:
 		Spread: 8
-		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
 		Explosion: 3
@@ -170,8 +158,6 @@ Chemspray:
 	Warhead:
 		Damage: 80
 		Spread: 6
-		Wall: yes
-		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		SmudgeType: Scorch
@@ -188,8 +174,6 @@ Grenade:
 		Image: BOMB
 	Warhead:
 		Spread: 6
-		Wall: yes
-		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
@@ -206,8 +190,6 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -224,8 +206,6 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -242,8 +222,6 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -260,8 +238,6 @@ TurretGun:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -286,8 +262,6 @@ MissilePack:
 		Speed: 25
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -312,8 +286,6 @@ MissilePack:
 		Speed: 20
 	Warhead:
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -334,8 +306,6 @@ Ballistic:
 	Warhead:
 		Damage: 150
 		Spread: 6
-		Wall: yes
-		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
@@ -371,8 +341,6 @@ BoatMissile:
 		Speed: 20
 	Warhead:
 		Spread: 6
-		Wall: yes
-		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
@@ -396,8 +364,6 @@ Tomahawk:
 		Speed: 25
 	Warhead:
 		Spread: 6
-		Wall: yes
-		Wood: yes
 		Verses: 90%,75%,60%,25%,100%
 		InfDeath: 2
 		Explosion: 5
@@ -411,7 +377,6 @@ Napalm:
 		Image: BOMBLET
 	Warhead:
 		Spread: 8
-		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
 		Explosion: 3
@@ -449,8 +414,6 @@ Nike:
 		Speed: 40
 	Warhead: AP
 		Spread: 3
-		Wall: yes
-		Wood: yes
 		Verses: 30%,75%,75%,100%,50%
 		InfDeath: 3
 		Explosion: 4
@@ -472,7 +435,6 @@ HonestJohn:
 		Speed: 15
 	Warhead:
 		Spread: 8
-		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
 		Explosion: 3

@@ -90,8 +90,6 @@ Maverick:
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -107,7 +105,6 @@ FireballLauncher:
 		Image: FB1
 	Warhead:
 		Spread: 4
-		Wood: true
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 3
 		InfDeath: 4
@@ -124,7 +121,6 @@ Flamer:
 		Image: FB1
 	Warhead:
 		Spread: 4
-		Wood: true
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 3
 		InfDeath: 4
@@ -189,8 +185,6 @@ Dragon:
 		RangeLimit: 35
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 10%,75%,35%,100%,20%
 		Explosion: 4
 		InfDeath: 3
@@ -216,8 +210,6 @@ Hellfire:
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -236,8 +228,6 @@ Grenade:
 		Image: BOMB
 	Warhead:
 		Spread: 6
-		Wall: true
-		Wood: true
 		Verses: 50%,100%,25%,5%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -254,8 +244,6 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -271,8 +259,6 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -290,8 +276,6 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -308,8 +292,6 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 20%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -325,8 +307,6 @@ TurretGun:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -352,8 +332,6 @@ MammothTusk:
 		RangeLimit: 20
 	Warhead:
 		Spread: 6
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -372,8 +350,6 @@ MammothTusk:
 		Image: 120MM
 	Warhead:
 		Spread: 8
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -404,7 +380,6 @@ Napalm:
 		Arm: 24
 	Warhead:
 		Spread: 4
-		Wood: true
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 3
 		InfDeath: 4
@@ -415,7 +390,6 @@ Napalm:
 CrateNapalm:
 	Warhead:
 		Spread: 4
-		Wood: yes
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 3
 		InfDeath: 4
@@ -462,8 +436,6 @@ Nike:
 		Speed: 35
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -487,8 +459,6 @@ RedEye:
 		Speed: 35
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -507,8 +477,6 @@ RedEye:
 		Image: 120MM
 	Warhead:
 		Spread: 6
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -533,8 +501,6 @@ Stinger:
 		Speed: 20
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -552,8 +518,6 @@ TorpTube:
 		Speed: 15
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -569,8 +533,6 @@ TorpTube:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -589,8 +551,6 @@ DepthCharge:
 		Inaccuracy: 3
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 4
 		InfDeath: 3
@@ -605,8 +565,6 @@ ParaBomb:
 		Image: PARABOMB
 	Warhead:
 		Spread: 3
-		Wall: true
-		Wood: true
 		Verses: 30%,75%,75%,100%,50%
 		Explosion: 8
 		InfDeath: 3
@@ -651,8 +609,6 @@ SCUD:
 		Image: V2
 	Warhead:
 		Spread: 6
-		Wall: true
-		Wood: true
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
@@ -665,8 +621,6 @@ Atomic:
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: 6
@@ -676,8 +630,6 @@ Atomic:
 		Damage: 250
 		SmudgeType: Scorch
 		Size: 5,4
-		Wall: true
-		Wood: true
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
 		Delay: 3

@@ -29,8 +29,6 @@ namespace OpenRA.GameRules
 	{
 		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
 		public readonly float[] Verses = { 1, 1, 1, 1, 1 };				// damage vs each armortype
-		public readonly bool Wall = false;								// can this damage walls?
-		public readonly bool Wood = false;								// can this damage wood?
 		public readonly bool Ore = false;								// can this damage ore?
 		public readonly int Explosion = 0;								// explosion effect to use
 		public readonly string SmudgeType = null;						// type of smudge to apply
