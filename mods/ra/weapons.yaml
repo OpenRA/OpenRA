@@ -175,7 +175,7 @@ Dragon:
 	ROF: 50
 	Range: 5
 	Report: MISSILE6
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
 	Missile:
 		Speed: 25
 		Arm: 2
