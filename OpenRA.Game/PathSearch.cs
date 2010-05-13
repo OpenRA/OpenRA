@@ -30,7 +30,7 @@ namespace OpenRA
 	public class PathSearch
 	{
 		World world;
-		ResourceLayer resources;
+		//ResourceLayer resources;
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, float> heuristic;
@@ -51,7 +51,7 @@ namespace OpenRA
 
 			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
 			unitInfluence = world.WorldActor.traits.Get<UnitInfluence>();
-			resources = world.WorldActor.traits.Get<ResourceLayer>();
+			//resources = world.WorldActor.traits.Get<ResourceLayer>();
 		}
 
 		public PathSearch InReverse()

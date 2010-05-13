@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			var info = self.Info.Traits.Get<ConquestVictoryConditionsInfo>();
+			//var info = self.Info.Traits.Get<ConquestVictoryConditionsInfo>();
 			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<MustBeDestroyed>().Any();
 

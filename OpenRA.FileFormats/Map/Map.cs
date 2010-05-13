@@ -157,8 +157,9 @@ namespace OpenRA.FileFormats
 		{
 			using (var dataStream = Package.GetContent("map.bin"))
 			{
+				//byte version = 
+				ReadByte(dataStream);
 				// Load header info
-				byte version = ReadByte(dataStream);
 				var width = ReadWord(dataStream);
 				var height = ReadWord(dataStream);
 

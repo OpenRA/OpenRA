@@ -33,14 +33,14 @@ namespace OpenRA.Traits
 	{
 		string seqName;
 		int damageStates;
-		Actor self;
+		//Actor self;
 		int adjacentWalls = 0;
 		
 		public RenderBuildingWall(Actor self)
 			: base(self)
 		{
 			seqName = "idle";
-			this.self = self;
+			//this.self = self;
 			this.damageStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
 
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);
