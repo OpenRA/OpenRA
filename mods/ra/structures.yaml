@@ -111,7 +111,7 @@ IRON:
 		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
-		Cost: 2800
+		Cost: 1500
 		Description: Iron Curtain
 		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
 		Hotkey: c
@@ -137,7 +137,7 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
-		Cost: 2800
+		Cost: 1500
 		Description: Chronosphere
 		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
 		Hotkey: o
