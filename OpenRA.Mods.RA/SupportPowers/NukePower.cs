@@ -43,6 +43,8 @@ namespace OpenRA.Mods.RA.SupportPowers
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!IsAvailable) return;
+
 			if (order.OrderString == "NuclearMissile")
 			{
 				var silo = self.World.Queries.OwnedBy[self.Owner]

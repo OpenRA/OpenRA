@@ -22,6 +22,9 @@ Player:
 		TechLevel: 12
 		Duration: 3
 		KillCargo: yes
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
 	IronCurtainPower:
 		Image: infxicon
 		ChargeTime: 11

@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!IsAvailable) return;
+
 			if (order.OrderString == "ParatroopersActivate")
 			{
 				if (self.Owner == self.World.LocalPlayer)

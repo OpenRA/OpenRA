@@ -35,16 +35,12 @@ namespace OpenRA.Mods.RA.SupportPowers
 	class ChronoshiftPower : SupportPower, IResolveOrder
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, "chrochr1.aud"); }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "chrordy1.aud"); }
-		protected override void OnActivate()
-		{
-			Game.controller.orderGenerator = new SelectTarget();
-			Sound.Play("slcttgt1.aud");
-		}
+		protected override void OnActivate() { Game.controller.orderGenerator = new SelectTarget(); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!IsAvailable) return;
+
 			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
 			{
 				Game.controller.orderGenerator = new SelectDestination(order.TargetActor);
@@ -67,7 +63,7 @@ namespace OpenRA.Mods.RA.SupportPowers
 				var chronosphere = self.World.Queries
 					.OwnedBy[self.Owner]
 					.WithTrait<Chronosphere>()
-					.Select(x=>x.Actor).FirstOrDefault();
+					.Select(x => x.Actor).FirstOrDefault();
 				
 				bool success = order.TargetActor.traits.Get<Chronoshiftable>().Activate(order.TargetActor,
 					order.TargetLocation,

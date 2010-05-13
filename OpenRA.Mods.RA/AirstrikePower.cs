@@ -42,6 +42,8 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!IsAvailable) return;
+
 			if (order.OrderString == "Airstrike")
 			{
 				var startPos = Owner.World.ChooseRandomEdgeCell();

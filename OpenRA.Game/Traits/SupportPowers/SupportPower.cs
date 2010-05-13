@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 		public int TotalTime { get { return (int)(Info.ChargeTime * 60 * 25); } }
 		public bool IsUsed;
 		public bool IsAvailable;
-		public bool IsReady { get { return RemainingTime == 0; } }
+		public bool IsReady { get { return IsAvailable && RemainingTime == 0; } }
 		public readonly Player Owner;
 
 		bool notifiedCharging;
