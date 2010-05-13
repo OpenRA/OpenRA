@@ -21,9 +21,9 @@
 using System.Collections.Generic;
 using OpenRA.Mods.Aftermath.Orders;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.SupportPowers;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Aftermath
 {

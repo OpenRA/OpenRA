@@ -21,7 +21,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.SupportPowers
+namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPaletteEffectInfo : TraitInfo<ChronoshiftPaletteEffect> { }
 

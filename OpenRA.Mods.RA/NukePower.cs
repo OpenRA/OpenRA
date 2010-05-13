@@ -23,7 +23,7 @@ using OpenRA.Mods.RA.Effects;
 using OpenRA.Orders;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.SupportPowers
+namespace OpenRA.Mods.RA
 {
 	class NukePowerInfo : SupportPowerInfo
 	{

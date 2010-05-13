@@ -63,8 +63,8 @@
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="OreRefinery.cs" />
-    <Compile Include="SupportPowers\ChronoshiftPaletteEffect.cs" />
-    <Compile Include="SupportPowers\ChronoshiftPower.cs" />
+    <Compile Include="ChronoshiftPaletteEffect.cs" />
+    <Compile Include="ChronoshiftPower.cs" />
     <Compile Include="Crates\ArmorUpgradeCrateAction.cs" />
     <Compile Include="Crates\ExplodeCrateAction.cs" />
     <Compile Include="Crates\FirepowerUpgradeCrateAction.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="SonarPulsePower.cs" />
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
-    <Compile Include="SupportPowers\NukePower.cs" />
+    <Compile Include="NukePower.cs" />
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Thief.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
