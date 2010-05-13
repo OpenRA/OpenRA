@@ -138,18 +138,9 @@ namespace OpenRA
 		
 		public void Tick()
 		{
-			//var sw = new Stopwatch();
-
 			foreach (var a in actors) a.Tick();
 
-			Queries.WithTraitMultiple<ITick>().Do( x =>
-			{
-				//var t = sw.ElapsedTime();
-				x.Trait.Tick( x.Actor );
-				//var dt = sw.ElapsedTime() - t;
-//				if( dt > 0.001 )
-//					Log.Write( "expensive tick: {0}->{1}", x.Actor.Info.Name, x.Trait.GetType() );
-			} );
+			Queries.WithTraitMultiple<ITick>().Do(x => x.Trait.Tick(x.Actor));
 
 			foreach (var e in effects) e.Tick( this );
 
@@ -173,14 +164,11 @@ namespace OpenRA
 
 		public int SyncHash()
 		{
-			//using (new PerfSample("synchash"))
-			{
-				int ret = 0;
-				foreach (var a in Actors)
-					ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
+			int ret = 0;
+			foreach (var a in Actors)
+				ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
 
-				return ret;
-			}
+			return ret;
 		}
 
 		public class AllQueries

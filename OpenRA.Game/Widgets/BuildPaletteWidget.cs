@@ -222,7 +222,6 @@ namespace OpenRA.Widgets
 
 			// Icons
 			string tooltipItem = null;
-			//float2 tooltipPos = float2.Zero;
 			foreach (var item in allBuildables)
 			{
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
@@ -233,10 +232,7 @@ namespace OpenRA.Widgets
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
 				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
-				{
 					tooltipItem = item.Name;
-					//tooltipPos = drawPos;
-				}
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
 
@@ -470,7 +466,6 @@ namespace OpenRA.Widgets
 		void DrawProductionTooltip(World world, string unit, int2 pos)
 		{
 			pos.Y += 15;
-			//var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
 			var p = pos.ToFloat2() - new float2(297, -3);
 
@@ -534,8 +529,6 @@ namespace OpenRA.Widgets
             int size = p.visibleTabs.Count();
             if (size > 0)
             {
-                //string last = p.visibleTabs.Last();
-                //string first = p.visibleTabs.First();
                 int current = p.visibleTabs.IndexOf(p.currentTab);
                 if (!shift)
                 {

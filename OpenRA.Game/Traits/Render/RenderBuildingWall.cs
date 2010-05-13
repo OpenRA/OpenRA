@@ -32,17 +32,12 @@ namespace OpenRA.Traits
 	class RenderBuildingWall : RenderBuilding
 	{
 		string seqName;
-		int damageStates;
-		//Actor self;
 		int adjacentWalls = 0;
 		
 		public RenderBuildingWall(Actor self)
 			: base(self)
 		{
 			seqName = "idle";
-			//this.self = self;
-			this.damageStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
-
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}
 
@@ -72,6 +67,8 @@ namespace OpenRA.Traits
 			var oldState = GetExtendedState(self, e.Damage);
 			var newState = GetExtendedState(self, 0);
 
+			var numStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
+
 			if (oldState == newState) return;
 
 			switch (newState)
@@ -80,7 +77,7 @@ namespace OpenRA.Traits
 					seqName = "idle";
 					break;
 				case ExtendedDamageState.ThreeQuarter:
-					if (damageStates >= 4)
+					if (numStates >= 4)
 						seqName = "minor-damaged-idle";
 					break;
 				case ExtendedDamageState.Half:
@@ -88,7 +85,7 @@ namespace OpenRA.Traits
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
 				case ExtendedDamageState.Quarter:
-					if (damageStates >= 3)
+					if (numStates >= 3)
 					{
 						seqName = "critical-idle";
 						Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);

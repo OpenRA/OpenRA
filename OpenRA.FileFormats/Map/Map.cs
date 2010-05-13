@@ -157,8 +157,9 @@ namespace OpenRA.FileFormats
 		{
 			using (var dataStream = Package.GetContent("map.bin"))
 			{
-				//byte version = 
-				ReadByte(dataStream);
+				if (ReadByte(dataStream) != 1)
+					throw new InvalidDataException("Unknown binary map format");
+
 				// Load header info
 				var width = ReadWord(dataStream);
 				var height = ReadWord(dataStream);

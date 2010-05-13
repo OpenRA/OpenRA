@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -44,7 +44,6 @@ namespace OpenRA.Traits
 
 			if (order.OrderString == "Enter")
 			{
-				//var res = order.TargetActor.traits.GetOrDefault<Reservable>();
                 var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
 
 				self.CancelActivity();

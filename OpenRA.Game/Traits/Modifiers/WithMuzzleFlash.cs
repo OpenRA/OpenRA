@@ -40,7 +40,6 @@ namespace OpenRA.Traits
 
 			muzzleFlash = new Animation(render.GetImage(self), () => unit.Facing);
 			muzzleFlash.Play("muzzle");
-			//var len = muzzleFlash.CurrentSequence.Length;
 
 			render.anims.Add("muzzle", new RenderSimple.AnimationWithOffset(
 				muzzleFlash,
