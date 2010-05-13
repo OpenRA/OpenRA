@@ -718,13 +718,13 @@ FIX:
 
 FACF:
 	Inherits: ^Building
-	Buildable:
-		BuildPaletteOrder: 900
-		Owner: allies
-		Cost: 50
-		Description: Fake Construction Yard
-		LongDesc: Looks like a Construction Yard.
-		Hotkey: c
+#	Buildable:
+#		BuildPaletteOrder: 900
+#		Owner: allies
+#		Cost: 50
+#		Description: Fake Construction Yard
+#		LongDesc: Looks like a Construction Yard.
+#		Hotkey: c
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -741,14 +741,14 @@ FACF:
 
 WEAF:
 	Inherits: ^Building
-	Buildable:
-		BuildPaletteOrder: 900
-		Prerequisites: proc
-		Owner: allies
-		Cost: 50
-		Description: Fake War Factory
-		LongDesc: Looks like a War Factory.
-		Hotkey: x
+#	Buildable:
+#		BuildPaletteOrder: 900
+#		Prerequisites: proc
+#		Owner: allies
+#		Cost: 50
+#		Description: Fake War Factory
+#		LongDesc: Looks like a War Factory.
+#		Hotkey: x
 	Building:
 		Power: -2
 		Footprint: xxx xxx
@@ -766,14 +766,14 @@ WEAF:
 
 SYRF:
 	Inherits: ^Building
-	Buildable:
-		BuildPaletteOrder: 900
-		Prerequisites: @Power Plant
-		Owner: allies
-		Cost: 50
-		Description: Fake Shipyard
-		LongDesc: Looks like a Shipyard
-		Hotkey: z
+#	Buildable:
+#		BuildPaletteOrder: 900
+#		Prerequisites: @Power Plant
+#		Owner: allies
+#		Cost: 50
+#		Description: Fake Shipyard
+#		LongDesc: Looks like a Shipyard
+#		Hotkey: z
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -808,14 +808,14 @@ SPEF:
 
 DOMF:
 	Inherits: ^Building
-	Buildable:
-		BuildPaletteOrder: 900
-		Prerequisites: proc
-		Owner: allies
-		Cost: 50
-		Description: Fake Radar Dome
-		LongDesc: Looks like a Radar Dome
-		Hotkey: v
+#	Buildable:
+#		BuildPaletteOrder: 900
+#		Prerequisites: proc
+#		Owner: allies
+#		Cost: 50
+#		Description: Fake Radar Dome
+#		LongDesc: Looks like a Radar Dome
+#		Hotkey: v
 	Building:
 		Power: -2
 		Footprint: xx xx
