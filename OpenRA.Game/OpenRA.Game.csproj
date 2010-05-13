@@ -236,7 +236,7 @@
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
-    <Compile Include="Traits\SupportPowers\SupportPower.cs" />
+    <Compile Include="Traits\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
