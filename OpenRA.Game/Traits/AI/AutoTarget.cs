@@ -50,9 +50,9 @@ namespace OpenRA.Traits
 				var attack = self.traits.Get<AttackBase>();
 				var range = Util.GetMaximumRange(self);
 
-				if( attack.target == null ||
-					( attack.target.Location - self.Location ).LengthSquared > range * range )
-					attack.target = ChooseTarget( self, range );
+				if (attack.target == null ||
+					(attack.target.Location - self.Location).LengthSquared > range * range)
+					AttackTarget(self, ChooseTarget(self, range));
 
 				var info = self.Info.Traits.Get<AutoTargetInfo>();
 				nextScanTime = (int)(25 * (info.ScanTimeAverage + 
@@ -75,12 +75,6 @@ namespace OpenRA.Traits
 		{
 			if (!self.IsIdle) return;
 
-			var attack = self.traits.Get<AttackBase>();
-			var range = Util.GetMaximumRange(self);
-
-			if( attack.target != null && ( attack.target.Location - self.Location ).LengthSquared <= range * range )
-				return;
-
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			if (!Combat.HasAnyValidWeapons(self, e.Attacker)) return;
 
@@ -89,7 +83,7 @@ namespace OpenRA.Traits
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
-			attack.target = e.Attacker;
+			AttackTarget(self, e.Attacker);
 		}
 	}
 }
