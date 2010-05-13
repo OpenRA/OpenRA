@@ -32,7 +32,6 @@ namespace OpenRA.Traits
 
 	class Repairable : IIssueOrder, IResolveOrder
 	{
-		IDisposable reservation;
 		public Repairable(Actor self) { }
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -41,8 +40,7 @@ namespace OpenRA.Traits
 			if (underCursor == null) return null;
 
 			if (self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(underCursor.Info.Name)
-				&& underCursor.Owner == self.Owner
-				&& !Reservable.IsReserved(underCursor))
+				&& underCursor.Owner == self.Owner)
 				return new Order("Enter", self, underCursor);
 
 			return null;
@@ -50,24 +48,21 @@ namespace OpenRA.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (reservation != null)
-			{
-				reservation.Dispose();
-				reservation = null;
-			}
 
 			if (order.OrderString == "Enter")
 			{
-				if (Reservable.IsReserved(order.TargetActor))
-					return;
 
 				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
-				if (res != null) reservation = res.Reserve(self);
+                var wp = order.TargetActor.traits.GetOrDefault<RallyPoint>().rallyPoint;
 
 				self.CancelActivity();
 				self.QueueActivity(new Move(((1 / 24f) * order.TargetActor.CenterLocation).ToInt2(), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair());
+                if (order.TargetActor.traits.Contains<RallyPoint>())
+                    self.QueueActivity(new CallFunc(
+                    () => self.QueueActivity(new Move(order.TargetActor.traits.Get<RallyPoint>().rallyPoint,
+                    order.TargetActor))));
 			}
 		}
 	}

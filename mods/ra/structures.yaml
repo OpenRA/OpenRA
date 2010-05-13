@@ -717,6 +717,7 @@ FIX:
 		Sight: 5
 	BelowUnits:
 	Reservable:
+	RallyPoint:
 	IronCurtainable:
 	RepairsUnits:
 
