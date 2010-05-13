@@ -25,7 +25,7 @@ ZSU-23:
 		Damage: 25
 		
 Vulcan:
-	ROF: 20
+	ROF: 30
 	Range: 6
 	Report: GUN13
 	Bullet:
@@ -35,14 +35,42 @@ Vulcan:
 		Verses: 100%,50%,60%,25%,25%
 		Explosion: 2
 		InfDeath: 1
-		Damage: 25
+		Damage: 7
 	Warhead@2:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
 		Explosion: 2
 		InfDeath: 1
-		Damage: 20
-		Delay: 5
+		Damage: 5
+		Delay: 7
+	Warhead@3:
+		Spread: 3
+		Verses: 100%,50%,60%,25%,25%
+		Explosion: 2
+		InfDeath: 1
+		Damage: 7
+		Delay: 4
+	Warhead@4:
+		Spread: 3
+		Verses: 100%,50%,60%,25%,25%
+		Explosion: 2
+		InfDeath: 1
+		Damage: 7
+		Delay: 6
+	Warhead@5:
+		Spread: 3
+		Verses: 100%,50%,60%,25%,25%
+		Explosion: 2
+		InfDeath: 1
+		Damage: 7
+		Delay: 8
+	Warhead@6:
+		Spread: 3
+		Verses: 100%,50%,60%,25%,25%
+		Explosion: 2
+		InfDeath: 1
+		Damage: 7
+		Delay: 10
 		
 Maverick:
 	ROF: 3
