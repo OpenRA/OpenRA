@@ -3,6 +3,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	class TeslaInstantKillsInfo : TraitInfo<TeslaInstantKills> { }
+
 	class TeslaInstantKills : IDamageModifier
 	{
 		public float GetDamageModifier( WarheadInfo warhead )
