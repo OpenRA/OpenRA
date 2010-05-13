@@ -68,7 +68,8 @@
 		Crewed: no
 		Sight: 0
 		DamagedSound: sandbag2.aud
-		DestroyedSound: sandbag2.aud	
+		DestroyedSound: sandbag2.aud
+		Adjacent: 4
 	Wall:
 	LineBuild:
 	Selectable:
