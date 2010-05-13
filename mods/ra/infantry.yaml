@@ -1,7 +1,7 @@
 DOG:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: kenn
 		BuiltAt: KENN
 		Owner: soviet
@@ -22,7 +22,7 @@ DOG:
 E1:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Prerequisites: @Barracks
 		Owner: allies,soviet
 		Cost: 100
@@ -41,7 +41,7 @@ E1:
 E2:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Owner: soviet
 		Cost: 160
 		Description: Grenadier
@@ -62,7 +62,7 @@ E2:
 E3:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Owner: allies,soviet
 		Cost: 300
 		Description: Rocket Soldier
@@ -83,7 +83,7 @@ E3:
 E4:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: stek, @Barracks
 		Owner: soviet
 		Cost: 300
@@ -104,7 +104,7 @@ E4:
 E6:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Owner: soviet,allies
 		Cost: 500
 		Description: Engineer
@@ -126,7 +126,7 @@ E6:
 SPY:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: dome, tent
 		Owner: allies
 		Cost: 500
@@ -151,7 +151,7 @@ SPY:
 E7:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 11
+		BuildPaletteOrder: 110
 		Prerequisites: @Tech Center, @Barracks
 		Owner: allies,soviet
 		Cost: 1200
@@ -175,7 +175,7 @@ E7:
 MEDI:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Owner: allies
 		Cost: 800
 		Description: Medic

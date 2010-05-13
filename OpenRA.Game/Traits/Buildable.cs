@@ -31,14 +31,13 @@ namespace OpenRA.Traits
 
 	class BuildableInfo : ValuedInfo
 	{
-		public readonly int TechLevel = -1;
 		public readonly string[] Prerequisites = { };
 		public readonly string[] BuiltAt = { };
 		public readonly string[] Owner = { };
 		
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
-		public readonly int BuildPaletteOrder = 50;
+		public readonly int BuildPaletteOrder = 9999;
         public readonly string Hotkey = null;
 
 		public override object Create(Actor self) { return new Buildable(); }

@@ -3,7 +3,7 @@ MSLO:
 	NukeSilo:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 13
+		BuildPaletteOrder: 130
 		Prerequisites: @Tech Center
 		Owner: soviet,allies
 		Cost: 2500
@@ -28,7 +28,7 @@ GAP:
 		Range: 10
 	Inherits: ^Building
 #	Buildable:
-#		TechLevel: 10
+#		BuildPaletteOrder: 100
 #		Prerequisites: atek
 #		Owner: allies
 #		Cost: 500
@@ -50,7 +50,7 @@ SPEN:
 	InfiltrateForSonarPulse:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 650
@@ -78,13 +78,12 @@ SYRD:
 	InfiltrateForSonarPulse:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 40
 		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 650
 		Description: Shipyard
 		LongDesc: Produces and repairs ships
-		BuildPaletteOrder: 4
 		Hotkey: s
 	Building:
 		Power: -30
@@ -109,7 +108,7 @@ IRON:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 12
+		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
 		Cost: 2800
@@ -135,7 +134,7 @@ PDOX:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 12
+		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
 		Cost: 2800
@@ -161,7 +160,7 @@ TSLA:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 1500
@@ -191,7 +190,7 @@ AGUN:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: allies
 		Cost: 600
@@ -223,13 +222,12 @@ DOME:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 1000
 		Description: Radar Dome
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
-		BuildPaletteOrder: 6
 		Hotkey: r
 	Building:
 		Power: -40
@@ -248,7 +246,7 @@ PBOX:
 	Category: Defense
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
 		Cost: 400
@@ -271,7 +269,7 @@ HBOX:
 	Category: Defense
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
@@ -294,7 +292,7 @@ GUN:
 	Category: Defense
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: tent
 		Owner: allies
 		Cost: 600
@@ -322,7 +320,7 @@ FTUR:
 	Category: Defense
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: barr
 		Owner: soviet
 		Cost: 600
@@ -346,7 +344,7 @@ SAM:
 	Category: Defense
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 9
+		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
@@ -375,7 +373,7 @@ SAM:
 ATEK:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 10
+		BuildPaletteOrder: 100
 		Prerequisites: weap,dome
 		Owner: allies
 		Cost: 1500
@@ -399,13 +397,12 @@ ATEK:
 WEAP:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: soviet,allies
 		Cost: 2000
 		Description: War Factory
 		LongDesc: Produces tanks & light vehicles.
-		BuildPaletteOrder: 5
 		Hotkey: w
 	Building:
 		Power: -30
@@ -449,13 +446,12 @@ FACT:
 PROC:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Prerequisites: @Power Plant
 		Owner: allies,soviet
 		Cost: 1400
 		Description: Ore Refinery
 		LongDesc: Converts Ore and Gems into money
-		BuildPaletteOrder: 1
 		Hotkey: e
 	Building:
 		Power: -30
@@ -483,7 +479,7 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Owner: allies,soviet
 		Cost: 150
@@ -506,7 +502,7 @@ SILO:
 HPAD:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 9
+		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: allies
 		Cost: 1500
@@ -533,7 +529,7 @@ HPAD:
 AFLD:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: soviet
 		Cost: 600
@@ -558,12 +554,11 @@ AFLD:
 POWR:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 0
 		Owner: allies,soviet
 		Cost: 300
 		Description: Power Plant
 		LongDesc: Provides power for other structures
-		BuildPaletteOrder: 0
 		AlternateName: @Power Plant
 		Hotkey: p
 	Building:
@@ -581,13 +576,12 @@ POWR:
 APWR:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 8
+		BuildPaletteOrder: 20
 		Prerequisites: @Power Plant
 		Owner: allies,soviet
 		Cost: 500
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
-		BuildPaletteOrder:2
 		Hotkey: l
 		AlternateName: @Power Plant
 	Building:
@@ -605,7 +599,7 @@ APWR:
 STEK:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 1500
@@ -628,13 +622,12 @@ STEK:
 BARR:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 300
 		Description: Soviet Barracks
 		LongDesc: Produces infantry
-		BuildPaletteOrder: 3
 		Hotkey: b
 		AlternateName: @Barracks
 	Building:
@@ -655,13 +648,12 @@ BARR:
 TENT:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 300
 		Description: Allied Barracks
 		LongDesc: Produces infantry
-		BuildPaletteOrder: 3
 		Hotkey: b
 		AlternateName: @Barracks
 	Building:
@@ -682,7 +674,7 @@ TENT:
 KENN:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 200
@@ -702,7 +694,7 @@ KENN:
 FIX:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
 		Cost: 700
@@ -727,12 +719,11 @@ FIX:
 FACF:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 900
 		Owner: allies
 		Cost: 50
 		Description: Fake Construction Yard
 		LongDesc: Looks like a Construction Yard.
-		BuildPaletteOrder: 90
 		Hotkey: c
 	Building:
 		Power: -2
@@ -751,13 +742,12 @@ FACF:
 WEAF:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 900
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
 		Description: Fake War Factory
 		LongDesc: Looks like a War Factory.
-		BuildPaletteOrder: 90
 		Hotkey: x
 	Building:
 		Power: -2
@@ -777,13 +767,12 @@ WEAF:
 SYRF:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 900
 		Prerequisites: @Power Plant
 		Owner: allies
 		Cost: 50
 		Description: Fake Shipyard
 		LongDesc: Looks like a Shipyard
-		BuildPaletteOrder: 90
 		Hotkey: z
 	Building:
 		Power: -2
@@ -820,13 +809,12 @@ SPEF:
 DOMF:
 	Inherits: ^Building
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 900
 		Prerequisites: proc
 		Owner: allies
 		Cost: 50
 		Description: Fake Radar Dome
 		LongDesc: Looks like a Radar Dome
-		BuildPaletteOrder: 90
 		Hotkey: v
 	Building:
 		Power: -2
@@ -845,13 +833,12 @@ SBAG:
 	Category: Defense
 	Inherits: ^Wall
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies
 		Cost: 25
 		Description: Sandbag Wall
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-		BuildPaletteOrder: 100
 		Hotkey: b
 	Building:
 		HP: 100
@@ -863,13 +850,12 @@ FENC:
 	Category: Defense
 	Inherits: ^Wall
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: soviet
 		Cost: 25
 		Description: Wire Fence
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-		BuildPaletteOrder: 100
 		Hotkey: n
 	Building:
 		HP: 100
@@ -881,13 +867,12 @@ BRIK:
 	Category: Defense
 	Inherits: ^Wall
 	Buildable:
-		TechLevel: 8
+		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies,soviet
 		Cost: 100
 		Description: Concrete Wall
 		LongDesc: Stop units and blocks enemy fire.
-		BuildPaletteOrder: 100
 		Hotkey: w
 	Building:
 		HP: 100

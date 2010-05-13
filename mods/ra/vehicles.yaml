@@ -39,7 +39,7 @@ BADR.bomber:
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 700
@@ -61,7 +61,7 @@ V2RL:
 1TNK:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: allies
 		Cost: 700
@@ -86,7 +86,7 @@ V2RL:
 2TNK:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: weap
 		Owner: allies
 		Cost: 800
@@ -111,7 +111,7 @@ V2RL:
 3TNK:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: soviet
 		Cost: 950
@@ -136,7 +136,7 @@ V2RL:
 4TNK:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 10
+		BuildPaletteOrder: 100
 		Prerequisites: weap,stek
 		Owner: soviet
 		Cost: 1700
@@ -164,7 +164,7 @@ V2RL:
 ARTY:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 8
+		BuildPaletteOrder: 80
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
@@ -188,7 +188,7 @@ ARTY:
 HARV:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Prerequisites: weap,proc
 		Owner: allies,soviet
 		Cost: 1100
@@ -212,7 +212,7 @@ HARV:
 MCV:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 11
+		BuildPaletteOrder: 110
 		Prerequisites: weap,fix
 		Owner: allies,soviet
 		Cost: 2000
@@ -239,7 +239,7 @@ MCV:
 JEEP:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies
 		Cost: 600
@@ -264,7 +264,7 @@ JEEP:
 APC:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: weap,tent
 		Owner: allies
 		Cost: 800
@@ -292,7 +292,7 @@ APC:
 MNLY.AP:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
 		Owner: soviet
 		Cost: 800
@@ -318,7 +318,7 @@ MNLY.AP:
 MNLY.AT:
 	Inherits: ^Vehicle
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
 		Owner: allies
 		Cost: 800
@@ -353,7 +353,7 @@ TRUK:
 SS:
 	Inherits: ^Ship
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
@@ -380,7 +380,7 @@ SS:
 DD:
 	Inherits: ^Ship
 	Buildable:
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
@@ -409,7 +409,7 @@ DD:
 CA:
 	Inherits: ^Ship
 	Buildable:
-		TechLevel: 10
+		BuildPaletteOrder: 100
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
@@ -440,7 +440,7 @@ CA:
 LST:
 	Inherits: ^Ship
 	Buildable:
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Owner: allies,soviet
 		Cost: 700
 		Description: Transport
@@ -462,7 +462,7 @@ LST:
 PT:
 	Inherits: ^Ship
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
@@ -491,7 +491,7 @@ PT:
 MIG:
 	Inherits: ^Plane
 	Buildable:
-		TechLevel: 10
+		BuildPaletteOrder: 100
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
@@ -519,7 +519,7 @@ MIG:
 YAK:
 	Inherits: ^Plane
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
@@ -548,7 +548,7 @@ YAK:
 TRAN:
 	Inherits: ^Plane
 	Buildable:
-		TechLevel: 11
+		BuildPaletteOrder: 110
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
@@ -575,7 +575,7 @@ TRAN:
 HELI:
 	Inherits: ^Plane
 	Buildable:
-		TechLevel: 9
+		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
@@ -606,7 +606,7 @@ HELI:
 HIND:
 	Inherits: ^Plane
 	Buildable:
-		TechLevel: 9
+		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies

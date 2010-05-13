@@ -201,7 +201,7 @@ namespace OpenRA.Widgets
 			var allBuildables = Rules.TechTree.AllBuildables(queueName)
 				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(world.LocalPlayer.Country.Race))
 				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder)
-				.ThenBy(a => a.Traits.Get<BuildableInfo>().TechLevel).ToArray();
+				.ToArray();
 
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
 
