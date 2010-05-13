@@ -260,7 +260,7 @@ PBOX:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 5
+		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -283,7 +283,7 @@ HBOX:
 		HP: 600
 		Armor: wood
 		Crewed: yes
-		Sight: 5
+		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -306,7 +306,7 @@ GUN:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-		Sight: 6
+		Sight: 7
 	Turreted:
 		ROT: 12
 		InitialFacing: 50

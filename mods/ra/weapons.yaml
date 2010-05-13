@@ -25,17 +25,24 @@ ZSU-23:
 		Damage: 25
 		
 Vulcan:
-	ROF: 40
-	Range: 5
+	ROF: 20
+	Range: 6
 	Report: GUN13
 	Bullet:
 		Speed: 100
-	Warhead:
+	Warhead@1:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
 		Explosion: 2
 		InfDeath: 1
-		Damage: 40
+		Damage: 25
+	Warhead@2:
+		Spread: 3
+		Verses: 100%,50%,60%,25%,25%
+		Explosion: 2
+		InfDeath: 1
+		Damage: 20
+		Delay: 5
 		
 Maverick:
 	ROF: 3
@@ -282,8 +289,8 @@ Grenade:
 		Damage: 40
 
 TurretGun:
-	ROF: 50
-	Range: 6
+	ROF: 30
+	Range: 7
 	Report: TURRET1
 	Bullet:
 		Speed: 40
