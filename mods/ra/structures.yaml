@@ -702,7 +702,7 @@ FIX:
 		TechLevel: 3
 		Prerequisites: weap
 		Owner: allies,soviet
-		Cost: 1000
+		Cost: 700
 		Description: Service Depot
 		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 		Hotkey: d
