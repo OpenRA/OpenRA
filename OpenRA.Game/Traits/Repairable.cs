@@ -18,22 +18,15 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class RepairableInfo : ITraitInfo
-	{
-		public readonly string[] RepairBuildings = { "fix" };
-		public object Create(Actor self) { return new Repairable(self); }
-	}
+	class RepairableInfo : TraitInfo<Repairable> { public readonly string[] RepairBuildings = { "fix" }; }
 
 	class Repairable : IIssueOrder, IResolveOrder
 	{
-		public Repairable(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
