@@ -1,6 +1,6 @@
 body { background-color: black; margin: 0px; color: White; font-family: Cambria, Georgia, Times New Roman, Serif; font-size: 12pt }
 h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
-h2 { font-family: Helvetica, Arial, Sans-Serif }
+h2, h3 { font-family: Helvetica, Arial, Sans-Serif }
 
 a { color: White }
 a:visited { color: White }
