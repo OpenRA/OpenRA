@@ -1,0 +1,66 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: East vs West
+
+Description: 2v2 Teamplay Map
+
+Author: Chris Forbes
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 96,56
+
+TopLeft: 8,8
+
+BottomRight: 88,48
+
+Actors:
+	Actor0: tc01 Neutral 26,25
+	Actor1: tc04 Neutral 25,27
+	Actor2: t07 Neutral 26,23
+	Actor3: t06 Neutral 26,22
+	Actor4: t03 Neutral 26,30
+	Actor5: t01 Neutral 27,30
+	Actor6: t13 Neutral 29,12
+	Actor9: tc01 Neutral 31,40
+	Actor10: tc04 Neutral 67,26
+	Actor11: tc02 Neutral 67,24
+	Actor12: t14 Neutral 68,22
+	Actor13: t05 Neutral 68,29
+	Actor14: t08 Neutral 67,21
+	Actor15: tc01 Neutral 64,12
+	Actor16: tc02 Neutral 64,40
+	Actor17: mine Neutral 13,12
+	Actor18: mine Neutral 19,12
+	Actor19: mine Neutral 13,43
+	Actor20: mine Neutral 19,43
+	Actor21: mine Neutral 82,43
+	Actor22: mine Neutral 76,43
+	Actor23: mine Neutral 82,12
+	Actor24: mine Neutral 76,12
+	Actor25: mine Neutral 47,20
+	Actor26: mine Neutral 48,20
+	Actor27: mine Neutral 47,35
+	Actor28: mine Neutral 48,35
+	Actor29: tc04 Neutral 45,9
+	Actor30: tc04 Neutral 48,42
+	Actor31: tc05 Neutral 45,42
+	Actor32: tc02 Neutral 48,10
+	Actor33: tc05 Neutral 46,11
+	Actor34: tc02 Neutral 48,44
+	Actor35: t12 Neutral 50,44
+
+Waypoints:
+	wp0: 16,24
+	wp1: 16,29
+	wp2: 79,23
+	wp3: 79,28
+
+Smudges:
+
+Rules:
+
