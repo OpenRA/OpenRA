@@ -51,18 +51,17 @@ namespace OpenRA.Traits
 
 			if (order.OrderString == "Enter")
 			{
-
 				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
-                var wp = order.TargetActor.traits.GetOrDefault<RallyPoint>().rallyPoint;
+                var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
 
 				self.CancelActivity();
 				self.QueueActivity(new Move(((1 / 24f) * order.TargetActor.CenterLocation).ToInt2(), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair());
-                if (order.TargetActor.traits.Contains<RallyPoint>())
-                    self.QueueActivity(new CallFunc(
-                    () => self.QueueActivity(new Move(order.TargetActor.traits.Get<RallyPoint>().rallyPoint,
-                    order.TargetActor))));
+
+				if (rp != null)
+					self.QueueActivity(new CallFunc(
+						() => self.QueueActivity(new Move(rp.rallyPoint, order.TargetActor))));
 			}
 		}
 	}
