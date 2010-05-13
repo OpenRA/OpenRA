@@ -19,6 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -83,8 +84,7 @@ namespace OpenRA.Effects
 			{
 				var at = (float)t / TotalTime();
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src, Args.dest, at)
-					- 0.5f * anim.Image.size - new float2(0, altitude);
+				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
 				var highPos = (Info.High || Info.Arcing)
 					? (pos - new float2(0, (Args.dest - Args.src).Length * height * 4 * at * (1 - at)))
@@ -92,6 +92,20 @@ namespace OpenRA.Effects
 
 				world.AddFrameEndTask(w => w.Add(
 					new Smoke(w, highPos.ToInt2(), Info.Trail)));
+			}
+
+			if (!Info.High)		// check for hitting a wall
+			{
+				var at = (float)t / TotalTime();
+				var pos = float2.Lerp(Args.src, Args.dest, at);
+				var cell = ((1f/Game.CellSize) * pos).ToInt2();
+
+				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
+					a => a.traits.Contains<Wall>()))
+				{
+					Args.dest = pos.ToInt2();
+					Explode(world);
+				}
 			}
 		}
 
@@ -104,8 +118,7 @@ namespace OpenRA.Effects
 				var at = (float)t / TotalTime();
 
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp( Args.src, Args.dest, at)
-					- 0.5f * anim.Image.size - new float2( 0, altitude );
+				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
 				if (Info.High || Info.Arcing)
 				{

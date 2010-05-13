@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -109,6 +110,15 @@ namespace OpenRA.Effects
 
 			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
 				Explode(world);
+
+			if (!Info.High)		// check for hitting a wall
+			{
+				var cell = ((1f / Game.CellSize) * Pos).ToInt2();
+
+				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
+					a => a.traits.Contains<Wall>()))
+					Explode(world);
+			}
 		}
 
 		void Explode(World world)
