@@ -636,6 +636,7 @@ BARR:
 		LongDesc: Produces infantry
 		BuildPaletteOrder: 3
 		Hotkey: b
+		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -681,7 +682,7 @@ KENN:
 	Inherits: ^Building
 	Buildable:
 		TechLevel: 3
-		Prerequisites: barr
+		Prerequisites: @Power Plant
 		Owner: soviet
 		Cost: 200
 		Description: Kennel
@@ -694,6 +695,7 @@ KENN:
 		Sight: 4
 	RallyPoint:
 	Production:
+		Produces: Infantry
 	IronCurtainable:
 
 FIX:
