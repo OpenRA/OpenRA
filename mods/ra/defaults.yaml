@@ -27,6 +27,7 @@
 	Passenger:
 	HiddenUnderFog:
 	RevealsShroud:
+	TeslaInstantKills:
 
 ^Ship:
 	Category: Ship

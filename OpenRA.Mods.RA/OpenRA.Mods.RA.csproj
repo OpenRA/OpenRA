@@ -91,6 +91,7 @@
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
+    <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Thief.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
     <Compile Include="TraitsInterfaces.cs" />
