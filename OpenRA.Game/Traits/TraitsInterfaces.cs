@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	public interface INotifyAttack { void Attacking(Actor self); }
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
-	public interface IDamageModifier { float GetDamageModifier(); }
+	public interface IDamageModifier { float GetDamageModifier( WarheadInfo warhead ); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }
 	public interface IPowerModifier { float GetPowerModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -49,6 +50,6 @@ namespace OpenRA.Mods.RA
 	{
 		float multiplier;
 		public ArmorUpgrade(float multiplier) { this.multiplier = 1/multiplier; }
-		public float GetDamageModifier() { return multiplier; }
+		public float GetDamageModifier( WarheadInfo warhead ) { return multiplier; }
 	}
 }

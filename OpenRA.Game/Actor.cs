@@ -177,7 +177,7 @@ namespace OpenRA
 
 			/* apply the damage modifiers, if we have any. */
 			var modifier = (float)traits.WithInterface<IDamageModifier>()
-				.Select(t => t.GetDamageModifier()).Product();
+				.Select(t => t.GetDamageModifier(warhead)).Product();
 
 			damage = (int)(damage * modifier);
 

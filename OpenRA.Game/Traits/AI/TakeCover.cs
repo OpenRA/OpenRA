@@ -18,6 +18,8 @@
  */
 #endregion
 
+using OpenRA.GameRules;
+
 namespace OpenRA.Traits
 {
 	class TakeCoverInfo : ITraitInfo
@@ -51,7 +53,7 @@ namespace OpenRA.Traits
 				--remainingProneTime;
 		}
 
-		public float GetDamageModifier()
+		public float GetDamageModifier( WarheadInfo warhead )
 		{
 			return IsProne ? proneDamage : 1f;
 		}

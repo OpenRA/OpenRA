@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.RA
 				RemainingTicks--;
 		}
 
-		public float GetDamageModifier()
+		public float GetDamageModifier( WarheadInfo warhead )
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
 		}

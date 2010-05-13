@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class TeslaInstantKills : INotifyDamage
+	class TeslaInstantKills : IDamageModifier
 	{
-		public void Damaged( Actor self, AttackInfo e )
+		public float GetDamageModifier( WarheadInfo warhead )
 		{
-			if( e.Warhead.InfDeath == 5 )
-				self.Health = 0;
+			if( warhead.InfDeath == 5 )
+				return 1000f;
+			return 1f;
 		}
 	}
 }
