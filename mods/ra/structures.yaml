@@ -224,7 +224,7 @@ DOME:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
-		Owner: allies,soviet
+		Owner: allies
 		Cost: 1000
 		Description: Radar Dome
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -345,7 +345,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 90
-		Prerequisites: dome
+		Prerequisites: afld
 		Owner: soviet
 		Cost: 750
 		Description: SAM Site
@@ -530,14 +530,14 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: dome
+		Prerequisites: proc
 		Owner: soviet
 		Cost: 600
 		Description: Airstrip
 		LongDesc: Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 		Hotkey: a
 	Building:
-		Power: -30
+		Power: -50
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
@@ -549,6 +549,7 @@ AFLD:
 		Produces: Plane
 	BelowUnits:
 	Reservable:
+	ProvidesRadar:
 	IronCurtainable:
 
 POWR:
@@ -600,7 +601,7 @@ STEK:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: weap,dome
+		Prerequisites: weap,afld
 		Owner: soviet
 		Cost: 1500
 		Description: Soviet Tech Center
