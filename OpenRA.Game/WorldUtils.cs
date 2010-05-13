@@ -176,7 +176,7 @@ namespace OpenRA
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
 					var at = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
-					if( at != null && at.Owner == p && at.Info.Traits.Get<BuildingInfo>().BaseNormal)
+					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
 						nearnessCandidates.Add( new int2( x, y ) );
 				}
 			}
