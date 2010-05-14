@@ -62,6 +62,18 @@ namespace OpenRA.Editor
 		static readonly Pen CordonPen = new Pen(Color.Red);
 		int2 MousePos;
 
+		public void Scroll(int2 dx)
+		{
+			Offset -= dx;
+			Invalidate();
+		}
+		
+		public void ValidateOffset(int width, int height)
+		{
+			Offset.X = System.Math.Max(Offset.X, width - Map.MapSize.X * 24);
+			Offset.Y = System.Math.Max(Offset.Y, height - Map.MapSize.Y * 24);
+		}
+		
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
@@ -70,10 +82,7 @@ namespace OpenRA.Editor
 			MousePos = new int2(e.Location);
 
 			if (e.Button == MouseButtons.Middle)
-			{
-				Offset += MousePos - oldMousePos;
-				Invalidate();
-			}
+				Scroll(MousePos - oldMousePos);
 			else
 			{
 				if (e.Button == MouseButtons.Right)
@@ -233,7 +242,6 @@ namespace OpenRA.Editor
 					{
 						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
 						var tile = TileSet.tiles[tr.type];
-
 						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)
