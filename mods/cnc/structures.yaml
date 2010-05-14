@@ -20,7 +20,7 @@ NUKE:
 	Inherits: ^Building
 	Buildable:
 		Icon: nukeicnh
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Owner: gdi,nod
 		Cost: 300
 		Description: Power Plant
@@ -40,7 +40,7 @@ PROC:
 	Inherits: ^Building
 	Buildable:
 		Icon: procicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: nuke
 		Owner: gdi,nod
 		Cost: 2000
@@ -72,7 +72,7 @@ SILO:
 	Inherits: ^Building
 	Buildable:
 		Icon: siloicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 150
@@ -96,7 +96,7 @@ PYLE:
 	Inherits: ^Building
 	Buildable:
 		Icon: pyleicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: nuke
 		Owner: gdi
 		Cost: 300
@@ -121,7 +121,7 @@ HAND:
 	Inherits: ^Building
 	Buildable:
 		Icon: handicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: nuke
 		Owner: nod
 		Cost: 300
@@ -146,7 +146,7 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		Icon: afldicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: nod
 		Cost: 2000
@@ -171,7 +171,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Icon: weapicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: gdi
 		Cost: 2000
@@ -198,7 +198,7 @@ HQ:
 	Inherits: ^Building
 	Buildable:
 		Icon: hqicnh
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 1000
@@ -220,7 +220,7 @@ NUK2:
 	Inherits: ^Building
 	Buildable:
 		Icon:nuk2icnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: nuke
 		Owner: gdi,nod
 		Cost: 700
@@ -241,7 +241,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Icon: fixicnh
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: nuke
 		Owner: gdi,nod
 		Cost: 1200
@@ -264,7 +264,7 @@ HPAD:
 	Inherits: ^Building
 	Buildable:
 		Icon:hpadicnh
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: @Barracks
 		Owner: gdi,nod
 		Cost: 1500
@@ -292,7 +292,7 @@ EYE:
 	Inherits: ^Building
 	Buildable:
 		Icon: eyeicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: hq
 		Owner: gdi
 		Cost: 2800
@@ -318,7 +318,7 @@ TMPL:
 	Inherits: ^Building
 	Buildable:
 		Icon: tmplicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: hq
 		Owner: nod
 		Cost: 3000
@@ -342,7 +342,7 @@ OBLI:
 	Inherits: ^Building
 	Buildable:
 		Icon:obliicnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: nod
 		Cost: 1500
@@ -381,7 +381,7 @@ CYCL:
 	Inherits: ^Wall
 	Buildable:
 		Icon:cyclicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 75
@@ -397,7 +397,7 @@ SBAG:
 	Inherits: ^Wall
 	Buildable:
 		Icon:sbagicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 50
@@ -411,7 +411,7 @@ BRIK:
 	Inherits: ^Wall
 	Buildable:
 		Icon:brikicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 100
@@ -427,7 +427,7 @@ GUN:
 	Inherits: ^Building
 	Buildable:
 		Icon: gunicnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: hand
 		Owner: nod
 		Cost: 600
@@ -452,7 +452,7 @@ GTWR:
 	Inherits: ^Building
 	Buildable:
 		Icon: gtwricnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: pyle
 		Owner: gdi
 		Cost: 500
@@ -472,7 +472,7 @@ ATWR:
 	Inherits: ^Building
 	Buildable:
 		Icon: atwricnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: gdi
 		Cost: 1000

@@ -1,7 +1,7 @@
 E1:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Owner: gdi, nod
 		Cost: 100
 		Description: Minigunner
@@ -19,7 +19,7 @@ E1:
 E2:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 1
+		BuildPaletteOrder: 10
 		Owner: gdi
 		Cost: 160
 		Description: Grenadier
@@ -39,7 +39,7 @@ E2:
 E3:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Owner: nod
 		Cost: 300
 		Description: Rocket Soldier
@@ -59,7 +59,7 @@ E3:
 E4:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Owner: nod
 		Cost: 200
 		Description: Flamethrower
@@ -82,7 +82,7 @@ E4:
 E5:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Owner: nod
 		Cost: 300
 		Description: Chem Warrior
@@ -107,7 +107,7 @@ E5:
 E6:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Owner: gdi,nod
 		Cost: 500
 		Description: Engineer
@@ -131,7 +131,7 @@ E6:
 RMBO:
 	Inherits: ^Infantry
 	Buildable:
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Owner: gdi
 		Cost: 1000
 		Prerequisites: @Superweapon

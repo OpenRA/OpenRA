@@ -2,7 +2,7 @@ MCV:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: mcvicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: weap, @Superweapon
 		Owner: gdi,nod
 		Cost: 5000
@@ -29,7 +29,7 @@ HARV:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: harvicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 1400
@@ -54,7 +54,7 @@ APC:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: apcicnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: pyle
 		Owner: gdi
 		Cost: 700
@@ -84,7 +84,7 @@ ARTY:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon:artyicnh
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: afld
 		Owner: nod
 		Cost: 600
@@ -109,7 +109,7 @@ FTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: ftnkicnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: nod
 		Cost: 800
@@ -133,7 +133,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: bggyicnh
-		TechLevel: 4
+		BuildPaletteOrder: 40
 		Prerequisites: afld
 		Owner: nod
 		Cost: 600
@@ -159,7 +159,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: bikeicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Owner: nod
 		Cost: 500
@@ -186,7 +186,7 @@ JEEP:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: jeepicnh
-		TechLevel: 2
+		BuildPaletteOrder: 20
 		Prerequisites: weap
 		Owner: gdi
 		Cost: 400
@@ -212,7 +212,7 @@ LTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: ltnkicnh
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Owner: nod
 		Cost: 600
@@ -238,7 +238,7 @@ MTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: mtnkicnh
-		TechLevel: 3
+		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: gdi
 		Cost: 800
@@ -264,7 +264,7 @@ HTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: htnkicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: weap, fix
 		Owner: gdi
 		Cost: 1500
@@ -291,7 +291,7 @@ MSAM:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: msamicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 		Prerequisites: weap, eye
 		Owner: gdi
 		Cost: 800
@@ -318,7 +318,7 @@ MLRS:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: mlrsicnh
-		TechLevel: 7
+		BuildPaletteOrder: 70
 #		Prerequisites: afld, atwr
 		Owner: nod
 		Cost: 750
@@ -344,7 +344,7 @@ STNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: stnkicnh
-		TechLevel: 5
+		BuildPaletteOrder: 50
 		Prerequisites: afld, hq
 		Owner: nod
 		Cost: 900
@@ -368,7 +368,7 @@ TRAN:
 	Inherits: ^Plane
 	Buildable:
 		Icon:tranicnh
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: gdi,nod
@@ -395,7 +395,7 @@ HELI:
 	Inherits: ^Plane
 	Buildable:
 		Icon: heliicnh
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: nod
@@ -426,7 +426,7 @@ ORCA:
 	Inherits: ^Plane
 	Buildable:
 		Icon: orcaicnh
-		TechLevel: 6
+		BuildPaletteOrder: 60
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: gdi
