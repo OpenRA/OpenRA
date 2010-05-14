@@ -281,11 +281,14 @@ HTNK:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
-		PrimaryWeapon: 120mm
+		PrimaryWeapon: 120mmDual
 		SecondaryWeapon: MissilePack
-		Recoil: 3
+		PrimaryLocalOffset: -4,-5,0,4,-5,0
+		SecondaryLocalOffset: -7,2,25,7,2,-25
+		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
+	SelfHealing:
 
 MSAM:
 	Inherits: ^Vehicle
@@ -319,7 +322,7 @@ MLRS:
 	Buildable:
 		Icon: mlrsicnh
 		BuildPaletteOrder: 70
-#		Prerequisites: afld, atwr
+		Prerequisites: afld, fix
 		Owner: nod
 		Cost: 750
 		Description: SSM Launcher

@@ -229,6 +229,23 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 40
 
+120mmDual: 
+	ROF: 80
+	Range: 4.75
+	Report: TNKFIRE6
+	Burst: 2
+	Bullet:
+		Image: 120MM
+		Speed: 40
+	Warhead:
+		Spread: 3
+		Verses: 30%,75%,75%,100%,50%
+		InfDeath: 3
+		Explosion: 4
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 40
+
 TurretGun: 
 	ROF: 50
 	Range: 6
@@ -250,6 +267,7 @@ MissilePack:
 	Range: 5
 	Report: ROCKET1
 	ValidTargets: Ground, Air
+	Burst: 2
 	Missile:
 		Arm: 5
 		High: yes
