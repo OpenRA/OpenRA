@@ -275,7 +275,7 @@ HTNK:
 		Armor: heavy
 		Crewed: yes
 		Sight: 4
-		Speed: 6
+		Speed: 4
 	Mobile:
 		MovementType: Track
 	Turreted:
