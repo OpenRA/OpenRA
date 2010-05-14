@@ -62,6 +62,7 @@
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="Harvester.cs" />
+    <Compile Include="LeavesHusk.cs" />
     <Compile Include="OreRefinery.cs" />
     <Compile Include="ChronoshiftPaletteEffect.cs" />
     <Compile Include="ChronoshiftPower.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Thief.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
+    <Compile Include="ThrowsParticles.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="DefaultShellmapScript.cs" />
   </ItemGroup>

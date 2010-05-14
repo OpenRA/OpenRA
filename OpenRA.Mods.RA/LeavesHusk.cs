@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,32 +18,25 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA
 {
-	public class UnitInfo : OwnedActorInfo, ITraitInfo
+	class LeavesHuskInfo : TraitInfo<LeavesHusk> { public readonly string HuskActor = null;	}
+
+	class LeavesHusk : INotifyDamage
 	{
-		public readonly int InitialFacing = 128;
-		public readonly int ROT = 255;
-		public readonly int Speed = 1;
-
-		public object Create( Actor self ) { return new Unit( self ); }
-	}
-
-	public class Unit : INotifyDamage
-	{
-		[Sync]
-		public int Facing;
-		[Sync]
-		public int Altitude;
-
-		public Unit(Actor self) { }
-
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
-					Sound.PlayToPlayer(self.Owner,
-						self.Info.Traits.Get<OwnedActorInfo>().WaterBound ? eva.NavalUnitLost : eva.UnitLost);
+				self.World.AddFrameEndTask(w =>
+					{
+						var info = self.Info.Traits.Get<LeavesHuskInfo>();
+						var husk = w.CreateActor(info.HuskActor, self.Location, self.Owner);
+						husk.CenterLocation = self.CenterLocation;
+						husk.traits.Get<Unit>().Altitude = self.traits.Get<Unit>().Altitude;
+						husk.traits.Get<Unit>().Facing = self.traits.Get<Unit>().Facing;
+					});
 		}
 	}
 }

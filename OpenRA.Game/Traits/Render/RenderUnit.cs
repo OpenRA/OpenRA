@@ -23,7 +23,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	class RenderUnitInfo : RenderSimpleInfo
+	public class RenderUnitInfo : RenderSimpleInfo
 	{
 		public override object Create(Actor self) { return new RenderUnit(self); }
 	}
