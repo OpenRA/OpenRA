@@ -82,7 +82,7 @@ namespace OpenRA.Editor
 			MousePos = new int2(e.Location);
 
 			if (e.Button == MouseButtons.Middle)
-				Scroll(MousePos - oldMousePos);
+				Scroll(oldMousePos - MousePos);
 			else
 			{
 				if (e.Button == MouseButtons.Right)
