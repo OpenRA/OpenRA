@@ -39,6 +39,7 @@
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
+			this.surface1 = new OpenRA.Editor.Surface();
 			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -51,7 +52,6 @@
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -179,13 +179,28 @@
 			this.resourcePalette.Size = new System.Drawing.Size(171, 672);
 			this.resourcePalette.TabIndex = 3;
 			// 
+			// surface1
+			// 
+			this.surface1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Location = new System.Drawing.Point(2, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(763, 662);
+			this.surface1.TabIndex = 5;
+			this.surface1.Text = "surface1";
+			this.surface1.Resize += new System.EventHandler(this.surface1_Resize);
+			// 
 			// vScrollBar1
 			// 
 			this.vScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.vScrollBar1.LargeChange = 24;
 			this.vScrollBar1.Location = new System.Drawing.Point(766, 0);
 			this.vScrollBar1.Name = "vScrollBar1";
 			this.vScrollBar1.Size = new System.Drawing.Size(16, 662);
+			this.vScrollBar1.SmallChange = 24;
 			this.vScrollBar1.TabIndex = 4;
 			this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
 			// 
@@ -193,9 +208,11 @@
 			// 
 			this.hScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+			this.hScrollBar1.LargeChange = 24;
 			this.hScrollBar1.Location = new System.Drawing.Point(0, 663);
 			this.hScrollBar1.Name = "hScrollBar1";
 			this.hScrollBar1.Size = new System.Drawing.Size(765, 16);
+			this.hScrollBar1.SmallChange = 24;
 			this.hScrollBar1.TabIndex = 3;
 			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
 			// 
@@ -212,7 +229,7 @@
             this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(462, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(480, 25);
 			this.toolStrip1.TabIndex = 0;
 			// 
 			// toolStripButton3
@@ -220,7 +237,7 @@
 			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
 			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton3.Name = "toolStripButton3";
-			this.toolStripButton3.Size = new System.Drawing.Size(48, 22);
+			this.toolStripButton3.Size = new System.Drawing.Size(51, 22);
 			this.toolStripButton3.Text = "New";
 			this.toolStripButton3.Click += new System.EventHandler(this.NewClicked);
 			// 
@@ -229,7 +246,7 @@
 			this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
 			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton5.Name = "toolStripButton5";
-			this.toolStripButton5.Size = new System.Drawing.Size(53, 22);
+			this.toolStripButton5.Size = new System.Drawing.Size(56, 22);
 			this.toolStripButton5.Text = "Open";
 			this.toolStripButton5.Click += new System.EventHandler(this.OpenClicked);
 			// 
@@ -247,7 +264,7 @@
 			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
 			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(78, 22);
+			this.toolStripButton1.Size = new System.Drawing.Size(76, 22);
 			this.toolStripButton1.Text = "Save As...";
 			this.toolStripButton1.Click += new System.EventHandler(this.SaveAsClicked);
 			// 
@@ -256,7 +273,7 @@
 			this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
 			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton6.Name = "toolStripButton6";
-			this.toolStripButton6.Size = new System.Drawing.Size(58, 22);
+			this.toolStripButton6.Size = new System.Drawing.Size(59, 22);
 			this.toolStripButton6.Text = "Resize";
 			this.toolStripButton6.Click += new System.EventHandler(this.ResizeClicked);
 			// 
@@ -265,7 +282,7 @@
 			this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
 			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton7.Name = "toolStripButton7";
-			this.toolStripButton7.Size = new System.Drawing.Size(76, 22);
+			this.toolStripButton7.Size = new System.Drawing.Size(80, 22);
 			this.toolStripButton7.Text = "Properties";
 			this.toolStripButton7.Click += new System.EventHandler(this.PropertiesClicked);
 			// 
@@ -274,26 +291,13 @@
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(88, 22);
+			this.toolStripButton2.Size = new System.Drawing.Size(95, 22);
 			this.toolStripButton2.Text = "Spawnpoints";
 			this.toolStripButton2.Click += new System.EventHandler(this.SpawnPointsClicked);
 			// 
 			// tt
 			// 
 			this.tt.ShowAlways = true;
-			// 
-			// surface1
-			// 
-			this.surface1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Location = new System.Drawing.Point(2, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(763, 662);
-			this.surface1.TabIndex = 5;
-			this.surface1.Text = "surface1";
-			this.surface1.Resize += new System.EventHandler(this.surface1_Resize);
 			// 
 			// Form1
 			// 
