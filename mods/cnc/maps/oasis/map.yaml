@@ -1,0 +1,62 @@
+Selectable: True
+
+MapFormat: 1
+
+Title: Tiberium Oasis
+
+Description: Large map for 6p FFA, 2v2v2 or 3v3
+
+Author: Chris Forbes
+
+PlayerCount: 6
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Actors:
+	Actor0: rock7 50,64 50,64
+	Actor1: rock7 73,64 73,64
+	Actor2: rock6 56,70 56,70
+	Actor3: rock6 69,70 69,70
+	Actor4: rock2 54,72 54,72
+	Actor5: rock1 71,71 71,71
+	Actor6: rock2 57,56 57,56
+	Actor7: rock3 56,54 56,54
+	Actor8: rock1 69,56 69,56
+	Actor9: rock6 71,55 71,55
+	Actor10: split3 48,68 48,68
+	Actor11: split3 63,75 63,75
+	Actor12: split3 76,68 76,68
+	Actor13: split3 77,57 77,57
+	Actor14: split3 62,50 62,50
+	Actor15: split3 49,57 49,57
+	Actor16: split3 32,38 32,38
+	Actor17: split3 28,47 28,47
+	Actor18: split3 58,24 58,24
+	Actor19: split3 68,24 68,24
+	Actor20: split3 95,39 95,39
+	Actor21: split3 99,49 99,49
+	Actor22: split3 99,79 99,79
+	Actor23: split3 97,89 97,89
+	Actor24: split3 69,102 69,102
+	Actor25: split3 58,102 58,102
+	Actor26: split3 29,87 29,87
+	Actor27: split3 26,77 26,77
+
+Waypoints:
+	wp0: 100,64
+	wp1: 83,97
+	wp2: 42,97
+	wp3: 25,64
+	wp4: 82,32
+	wp5: 45,31
+
+Smudges:
+
+Rules:
+
