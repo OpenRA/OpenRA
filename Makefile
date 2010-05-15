@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -58,6 +58,14 @@ seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
 seqed_DEPS			= $(fileformats_TARGET)
 seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
+
+editor_SRCS			= $(shell find OpenRA.Editor/ -iname '*.cs')
+
+editor_TARGET		= OpenRA.Editor.exe
+editor_KIND			= winexe
+editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
+editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources
 
 mapcvtr_SRCS		= $(shell find MapConverter/ -iname '*.cs')
 mapcvtr_TARGET		= MapConverter.exe
@@ -117,6 +125,7 @@ uninstall:
 mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
+editor: $(editor_TARGET)
 
 define BUILD_ASSEMBLY
 
@@ -126,6 +135,7 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
 		-out:$$(@) $(CSFLAGS) $$($(1)_FLAGS) \
 		-define:"$(DEFINE)" \
 		-t:"$$($(1)_KIND)" \
+		$$($(1)_EXTRA) \
 		$$($(1)_SRCS)
 endef
 
