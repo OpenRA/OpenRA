@@ -84,6 +84,7 @@
     <Compile Include="Traits\AI\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\AI\ReturnOnIdle.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
+    <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />

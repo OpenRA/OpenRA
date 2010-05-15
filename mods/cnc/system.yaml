@@ -38,6 +38,7 @@ Player:
 		UnitType: a10
 	ConquestVictoryConditions:
 	PlayerResources:
+	ActorGroupProxy:
 	
 World:
 	GlobalDefaults:

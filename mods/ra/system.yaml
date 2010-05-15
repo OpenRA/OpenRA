@@ -82,6 +82,7 @@ Player:
 		FlareType: flare
 	ConquestVictoryConditions:
 	PlayerResources:
+	ActorGroupProxy:
 		
 
 World:
