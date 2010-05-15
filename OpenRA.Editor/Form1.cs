@@ -88,9 +88,7 @@ namespace OpenRA.Editor
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
 			surface1.Bind(map, tileset, palette);
-			vScrollBar1.Maximum = map.MapSize.Y*24 - surface1.Height;
-			hScrollBar1.Maximum = map.MapSize.X*24 - surface1.Width;
-			
+
 			// construct the palette of tiles
 
 			foreach (var n in tileset.tiles.Keys)
@@ -148,7 +146,7 @@ namespace OpenRA.Editor
 						info.Name,
 						info.Category));
 
-					actorTemplates.Add( template);
+					actorTemplates.Add(template);
 				}
 				catch { }
 			}
@@ -318,8 +316,6 @@ namespace OpenRA.Editor
 				{
 					surface1.Map.Resize((int)rd.width.Value, (int)rd.height.Value);
 					surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette);	// rebind it to invalidate all caches
-					vScrollBar1.Maximum = surface1.Map.MapSize.Y * 24 - surface1.Height;
-					hScrollBar1.Maximum = surface1.Map.MapSize.X * 24 - surface1.Width;
 				}
 
 				surface1.Invalidate();
@@ -329,7 +325,7 @@ namespace OpenRA.Editor
 		void SavePreviewImage(string filepath)
 		{
 			var Map = surface1.Map;
-			
+
 			var xs = Map.TopLeft.X;
 			var ys = Map.TopLeft.Y;
 
@@ -367,7 +363,7 @@ namespace OpenRA.Editor
 			folderBrowser.ShowNewFolderButton = true;
 			if (DialogResult.OK == folderBrowser.ShowDialog())
 			{
-				
+
 				loadedMapName = folderBrowser.SelectedPath;
 				SaveClicked(sender, e);
 			}
@@ -438,30 +434,8 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void SpawnPointsClicked(object sender, EventArgs e)
-		{
-			surface1.SetWaypoint(new WaypointTemplate());	// hack
-		}
-
-		private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-		{
-			surface1.Scroll(new int2(0,e.NewValue-e.OldValue));
-		}
-
-		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
-		{
-			surface1.Scroll(new int2(e.NewValue - e.OldValue,0));
-		}
-
-		private void surface1_Resize(object sender, EventArgs e)
-		{
-			if (surface1.Map == null)
-				return;
-			
-			vScrollBar1.Maximum = surface1.Map.MapSize.Y * 24 - surface1.Height;
-			hScrollBar1.Maximum = surface1.Map.MapSize.X * 24 - surface1.Width;
-			
-			surface1.ValidateOffset(surface1.Width,surface1.Height);
-		}
+		void SpawnPointsClicked(object sender, EventArgs e) { surface1.SetWaypoint(new WaypointTemplate()); }
+		void Form1_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = true; }
+		void Form1_KeyUp(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = false; }
 	}
 }

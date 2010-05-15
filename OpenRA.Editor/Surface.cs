@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Thirdparty;
 
@@ -15,10 +15,12 @@ namespace OpenRA.Editor
 		public Palette Palette { get; private set; }
 		int2 Offset;
 
-		public BrushTemplate Brush;
-		public ActorTemplate Actor;
-		public ResourceTemplate Resource;
-		public WaypointTemplate Waypoint;
+		BrushTemplate Brush;
+		ActorTemplate Actor;
+		ResourceTemplate Resource;
+		WaypointTemplate Waypoint;
+
+		public bool IsPanning;
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
@@ -68,12 +70,6 @@ namespace OpenRA.Editor
 			Invalidate();
 		}
 		
-		public void ValidateOffset(int width, int height)
-		{
-			Offset.X = System.Math.Max(Offset.X, width - Map.MapSize.X * 24);
-			Offset.Y = System.Math.Max(Offset.Y, height - Map.MapSize.Y * 24);
-		}
-		
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
@@ -81,7 +77,7 @@ namespace OpenRA.Editor
 			var oldMousePos = MousePos;
 			MousePos = new int2(e.Location);
 
-			if (e.Button == MouseButtons.Middle)
+			if (e.Button == MouseButtons.Middle || (e.Button != MouseButtons.None && IsPanning))
 				Scroll(oldMousePos - MousePos);
 			else
 			{
@@ -216,8 +212,11 @@ namespace OpenRA.Editor
 		{
 			base.OnMouseDown(e);
 
-			if (e.Button == MouseButtons.Right) Erase();
-			if (e.Button == MouseButtons.Left) Draw();
+			if (!IsPanning)
+			{
+				if (e.Button == MouseButtons.Right) Erase();
+				if (e.Button == MouseButtons.Left) Draw();
+			}
 
 			Invalidate();
 		}

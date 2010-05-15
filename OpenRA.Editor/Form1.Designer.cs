@@ -39,9 +39,6 @@
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
-			this.surface1 = new OpenRA.Editor.Surface();
-			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
@@ -52,6 +49,7 @@
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -96,8 +94,6 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.surface1);
-			this.splitContainer1.Panel2.Controls.Add(this.vScrollBar1);
-			this.splitContainer1.Panel2.Controls.Add(this.hScrollBar1);
 			this.splitContainer1.Size = new System.Drawing.Size(985, 680);
 			this.splitContainer1.SplitterDistance = 198;
 			this.splitContainer1.TabIndex = 0;
@@ -115,7 +111,6 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(198, 680);
 			this.tabControl1.TabIndex = 0;
-			this.tabControl1.Resize += new System.EventHandler(this.surface1_Resize);
 			// 
 			// tabPage1
 			// 
@@ -178,43 +173,6 @@
 			this.resourcePalette.Name = "resourcePalette";
 			this.resourcePalette.Size = new System.Drawing.Size(171, 672);
 			this.resourcePalette.TabIndex = 3;
-			// 
-			// surface1
-			// 
-			this.surface1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Location = new System.Drawing.Point(2, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(763, 662);
-			this.surface1.TabIndex = 5;
-			this.surface1.Text = "surface1";
-			this.surface1.Resize += new System.EventHandler(this.surface1_Resize);
-			// 
-			// vScrollBar1
-			// 
-			this.vScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.vScrollBar1.LargeChange = 24;
-			this.vScrollBar1.Location = new System.Drawing.Point(766, 0);
-			this.vScrollBar1.Name = "vScrollBar1";
-			this.vScrollBar1.Size = new System.Drawing.Size(16, 662);
-			this.vScrollBar1.SmallChange = 24;
-			this.vScrollBar1.TabIndex = 4;
-			this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
-			// 
-			// hScrollBar1
-			// 
-			this.hScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.hScrollBar1.LargeChange = 24;
-			this.hScrollBar1.Location = new System.Drawing.Point(0, 663);
-			this.hScrollBar1.Name = "hScrollBar1";
-			this.hScrollBar1.Size = new System.Drawing.Size(765, 16);
-			this.hScrollBar1.SmallChange = 24;
-			this.hScrollBar1.TabIndex = 3;
-			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
 			// 
 			// toolStrip1
 			// 
@@ -299,14 +257,27 @@
 			// 
 			this.tt.ShowAlways = true;
 			// 
+			// surface1
+			// 
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.surface1.Location = new System.Drawing.Point(0, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(783, 680);
+			this.surface1.TabIndex = 5;
+			this.surface1.Text = "surface1";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(985, 705);
 			this.Controls.Add(this.toolStripContainer1);
+			this.KeyPreview = true;
 			this.Name = "Form1";
 			this.Text = "OpenRA Editor";
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -346,8 +317,6 @@
 		private System.Windows.Forms.FolderBrowserDialog folderBrowser;
 		private System.Windows.Forms.ToolStripButton toolStripButton6;
 		private System.Windows.Forms.ToolStripButton toolStripButton7;
-		private System.Windows.Forms.VScrollBar vScrollBar1;
-		private System.Windows.Forms.HScrollBar hScrollBar1;
 		private Surface surface1;
 
 	}
