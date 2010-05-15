@@ -30,12 +30,18 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
-			foreach( var unit in Game.controller.selection.Actors )
-			{
-				var ret = unit.Order( xy, mi );
-				if( ret != null )
-					yield return ret;
-			}
+			var orders = Game.controller.selection.Actors
+				.Select(a => a.Order(xy, mi))
+				.Where(o => o != null)
+				.ToArray();
+
+			var actorsInvolved = orders.Select(o => o.TargetActor).Distinct();
+			if (actorsInvolved.Any())
+				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
+					string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()));
+
+			foreach (var o in orders)
+				yield return o;
 		}
 
 		public void Tick( World world ) {}
