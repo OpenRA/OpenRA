@@ -32,11 +32,12 @@ namespace OpenRA
 		public List<ChatLine> recentLines = new List<ChatLine>();
 		public string typing = "";
 		public bool isChatting = true;
+		public bool isTeamChat = false;
 
 		public void Toggle()
 		{
 			if( isChatting && typing.Length > 0 )
-				Game.IssueOrder( Order.Chat( typing ) );
+				Game.IssueOrder( isTeamChat ? Order.TeamChat( typing ) : Order.Chat( typing ) );
 
 			typing = "";
 			if( Game.orderManager.GameStarted )

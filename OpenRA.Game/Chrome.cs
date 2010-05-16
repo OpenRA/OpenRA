@@ -192,7 +192,7 @@ namespace OpenRA
 
 			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
 			if (Game.chat.isChatting)
-				RenderChatLine(new ChatLine { Owner = "Chat:", Text = Game.chat.typing },
+				RenderChatLine(new ChatLine { Owner = Game.chat.isTeamChat ? "TeamChat:" : "Chat:", Text = Game.chat.typing },
 					new int2(typingArea.X + 10, typingArea.Y + 6));
 
 			rgbaRenderer.Flush();

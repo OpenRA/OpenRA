@@ -495,7 +495,10 @@ namespace OpenRA
 			int sync = world.SyncHash();
 
 			if (e.KeyChar == '\r')
+			{
 				chat.Toggle();
+				chat.isTeamChat = modifiers.HasModifier(Modifiers.Shift);
+			}
 			else if (Game.chat.isChatting)
 				chat.TypeChar(e.KeyChar);
 			else

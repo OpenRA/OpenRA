@@ -37,6 +37,20 @@ namespace OpenRA.Network
 						Game.chat.AddLine(client, order.TargetString);
 					break;
 				}
+			case "TeamChat":
+				{
+					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
+					if (client != null)
+					{
+						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
+						var isAlly = player != null && Game.world.LocalPlayer != null
+							&& player.Stances[Game.world.LocalPlayer] == Stance.Ally;
+
+						if (isAlly)
+							Game.chat.AddLine(client, "(Team) " + order.TargetString);
+					}
+					break;
+				}
 			case "StartGame":
 				{
 					Game.chat.AddLine(Color.White, "Server", "The game has started.");
