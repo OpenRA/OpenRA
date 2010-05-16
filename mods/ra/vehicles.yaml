@@ -56,7 +56,7 @@ V2RL:
 	AttackBase:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
-	AutoTarget:
+#	AutoTarget:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon:
