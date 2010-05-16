@@ -66,11 +66,15 @@ namespace OpenRA.Mods.RA
 				info = null;
 			}
 
-			pos += v;
-			v = .9f * v;
 			va -= gravity;
 			alt += va;
+
 			if (alt < 0) alt = 0;
+			else
+			{
+				pos += v;
+				v = .9f * v;
+			}
 		}
 	}
 }

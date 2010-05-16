@@ -101,9 +101,7 @@ namespace OpenRA.Traits
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
-			var quantizedFacing = QuantizeFacing(facing, rut.anim.CurrentSequence.Facings) * (256 / rut.anim.CurrentSequence.Length);
-
-			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), quantizedFacing, .7f);
+			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), facing, .7f);
 		}
 
 		public static float2 CenterOfCell(int2 loc)
