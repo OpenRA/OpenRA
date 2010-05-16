@@ -285,16 +285,16 @@ HTNK:
 		Armor: heavy
 		Crewed: yes
 		Sight: 4
-		Speed: 4
+		Speed: 3
 	Mobile:
 		MovementType: Track
 	Turreted:
-		ROT: 5
+		ROT: 2
 	AttackTurreted:
 		PrimaryWeapon: 120mmDual
 		SecondaryWeapon: MissilePack
 		PrimaryLocalOffset: -4,-5,0,4,-5,0
-		SecondaryLocalOffset: -7,2,25,7,2,-25
+		SecondaryLocalOffset: -9,2,25,9,2,-25
 		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
