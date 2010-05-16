@@ -28,7 +28,9 @@ namespace OpenRA.Support
 		public static void Time( string message )
 		{
 			var time = sw.ElapsedTime();
-			Log.Write( message, time - lastTime );
+			var dt = time - lastTime;
+			if( dt > 0.0001 )
+				Log.Write( message, dt );
 			lastTime = time;
 		}
 	}

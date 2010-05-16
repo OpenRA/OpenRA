@@ -135,22 +135,34 @@ namespace OpenRA
 
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
-		
+
 		public void Tick()
 		{
-			foreach (var a in actors) a.Tick();
+			Timer.Time("----World Tick");
 
-			Queries.WithTraitMultiple<ITick>().Do(x => x.Trait.Tick(x.Actor));
+			actors.DoTimed( x => x.Tick(), "expensive actor tick: {0} ({1:0.000})", 0.001 );
+			Timer.Time("		actors: {0:0.000}");
 
-			foreach (var e in effects) e.Tick( this );
+			Queries.WithTraitMultiple<ITick>().DoTimed( x =>
+			{
+				x.Trait.Tick( x.Actor );
+				Timer.Time( "trait tick \"{0}\": {{0}}".F( x.Trait.GetType().Name ) );
+			}, "expensive trait tick: {0} ({1:0.000})", 0.001 );
+			Timer.Time("		traits: {0:0.000}");
+
+			effects.DoTimed( e => e.Tick( this ), "expensive effect tick: {0} ({1:0.000})", 0.001 );
+			Timer.Time("		effects: {0:0.000}");
 
 			Game.viewport.Tick();
+			Timer.Time("		viewport: {0:0.000}");
 
 			var acts = frameEndActions;
 			frameEndActions = new List<Action<World>>();
 			foreach (var a in acts) a(this);
+			Timer.Time("		frameEndActions: {0:0.000}");
 
 			WorldRenderer.Tick();
+			Timer.Time("		worldrenderer: {0:0.000}");
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
@@ -164,11 +176,14 @@ namespace OpenRA
 
 		public int SyncHash()
 		{
-			int ret = 0;
-			foreach (var a in Actors)
-				ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
+			//using (new PerfSample("synchash"))
+			{
+				int ret = 0;
+				foreach (var a in Actors)
+					ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
 
-			return ret;
+				return ret;
+			}
 		}
 
 		public class AllQueries
@@ -219,6 +234,11 @@ namespace OpenRA
 			{
 				public Actor Actor;
 				public T Trait;
+
+				public override string ToString()
+				{
+					return "{0}->{1}".F( Actor.Info.Name, Trait.GetType().Name );
+				}
 			}
 
 			public class OwnedByCachedView : CachedView<Actor, Actor>

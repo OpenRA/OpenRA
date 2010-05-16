@@ -3,6 +3,7 @@ Player:
 		BuildSpeed: .04
 		LowPowerSlowdown: 3
 	PlaceBuilding:
+	TechTreeCache:
 	GpsPower:
 		Image: gpssicon
 		OneShot: yes

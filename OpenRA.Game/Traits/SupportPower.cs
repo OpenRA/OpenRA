@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public abstract class SupportPowerInfo : ITraitInfo
+	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeCacheInfo>
 	{
 		public readonly bool RequiresPower = true;
 		public readonly bool OneShot = false;
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower : ITick
+	public class SupportPower : ITick, ITechTreeElement
 	{
 		public readonly SupportPowerInfo Info;
 		public int RemainingTime { get; private set; }
@@ -64,6 +64,8 @@ namespace OpenRA.Traits
 			Info = info;
 			RemainingTime = TotalTime;
 			Owner = self.Owner;
+
+			self.traits.Get<TechTreeCache>().Add( Info.Prerequisites.Select( a => Rules.Info[ a.ToLowerInvariant() ] ).ToList(), this );
 		}
 
 		public void Tick(Actor self)
@@ -71,17 +73,8 @@ namespace OpenRA.Traits
 			if (Info.OneShot && IsUsed)
 				return;
 
-			var buildings = Rules.TechTree.GatherBuildings(self.Owner);
-			var effectivePrereq = Info.Prerequisites
-				.Select(a => a.ToLowerInvariant())
-				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Country.Race));
-			
 			if (Info.GivenAuto)
-			{
-				IsAvailable = Info.TechLevel > -1
-					&& effectivePrereq.Any()
-					&& effectivePrereq.All(a => buildings[a].Count > 0);
-			}
+				IsAvailable = Info.TechLevel > -1 && hasPrerequisites;
 			
 			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
 			{
@@ -156,6 +149,18 @@ namespace OpenRA.Traits
 
 			Sound.PlayToPlayer(Owner, Info.SelectTargetSound);
 			OnActivate();
+		}
+
+		bool hasPrerequisites;
+
+		public void Available()
+		{
+			hasPrerequisites = true;
+		}
+
+		public void Unavailable()
+		{
+			hasPrerequisites = false;
 		}
 	}
 }

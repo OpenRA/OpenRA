@@ -87,7 +87,7 @@ namespace OpenRA.GameRules
 					throw new InvalidOperationException( "Trait prerequisites not satisfied (or prerequisite loop)" );
 
 				var prereqs = PrerequisitesOf( t[ index ] );
-				if( prereqs.Count == 0 || prereqs.All( n => ret.Any( x => x.GetType().IsSubclassOf( n ) ) ) )
+				if( prereqs.Count == 0 || prereqs.All( n => ret.Any( x => x.GetType() == n || x.GetType().IsSubclassOf( n ) ) ) )
 				{
 					ret.Add( t[ index ] );
 					t.RemoveAt( index );

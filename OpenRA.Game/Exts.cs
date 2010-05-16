@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -91,6 +92,20 @@ namespace OpenRA
 		{
 			var xs = ts.ToArray();
 			return xs[r.Next(xs.Length)];
+		}
+
+		public static void DoTimed<T>( this IEnumerable<T> e, Action<T> a, string text, double time )
+		{
+			var sw = new Stopwatch();
+
+			e.Do( x =>
+			{
+				var t = sw.ElapsedTime();
+				a( x );
+				var dt = sw.ElapsedTime() - t;
+				if( dt > time )
+					Log.Write( text, x, dt*1000 );
+			} );
 		}
 	}
 }
