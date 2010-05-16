@@ -206,4 +206,8 @@
     <sequence name="die2" start="326" length="8" />
     <sequence name="die1" start="317" length="9" />
   </unit>
+  <unit name="fire">
+    <sequence name="1" start="0" length="15" src="fire1" />
+    <sequence name="2" start="0" length="15" src="fire2" />
+  </unit>
 </sequences>
