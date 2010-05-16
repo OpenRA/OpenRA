@@ -37,14 +37,14 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, "Airstrike", "ability");
+			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (!IsAvailable) return;
 
-			if (order.OrderString == "Airstrike")
+			if (order.OrderString == Info.OrderName)
 			{
 				var startPos = Owner.World.ChooseRandomEdgeCell();
 

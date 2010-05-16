@@ -33,14 +33,17 @@ namespace OpenRA.Traits
 		public readonly string[] Prerequisites = { };
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
+
+		public readonly string OrderName;
 		
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;
 		public readonly string SelectTargetSound = null;
 		public readonly string LaunchSound = null;
-		
 
 		public abstract object Create(Actor self);
+
+		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
 	public class SupportPower : ITick
