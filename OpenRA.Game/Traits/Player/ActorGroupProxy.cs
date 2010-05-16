@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 						.Where(a => a != null);
 
 				var g = new Group(actors);
-				g.Dump();
+			//	g.Dump();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 Player:
 	ProductionQueue:
-		BuildSpeed: .04
+		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
 	GpsPower:
