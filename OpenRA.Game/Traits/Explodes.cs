@@ -22,7 +22,11 @@ using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
-	class ExplodesInfo : TraitInfo<Explodes> { public readonly string Weapon = "UnitExplode"; }
+	class ExplodesInfo : TraitInfo<Explodes>
+	{
+		public readonly string Weapon = "UnitExplode";
+		public readonly string EmptyWeapon = "UnitExplode";
+	}
 
 	class Explodes : INotifyDamage
 	{
@@ -30,12 +34,26 @@ namespace OpenRA.Traits
 		{
 			if (self.IsDead)
 			{
-				var unit = self.traits.GetOrDefault<Unit>();
-				var altitude = unit != null ? unit.Altitude : 0;
-				Combat.DoExplosion(e.Attacker, 
-					self.Info.Traits.Get<ExplodesInfo>().Weapon, 
-					self.CenterLocation.ToInt2(), altitude);
+				var weapon = ChooseWeaponForExplosion(self);
+				if (weapon != null)
+				{
+					var unit = self.traits.GetOrDefault<Unit>();
+					var altitude = unit != null ? unit.Altitude : 0;
+					Combat.DoExplosion(e.Attacker,
+						self.Info.Traits.Get<ExplodesInfo>().Weapon,
+						self.CenterLocation.ToInt2(), altitude);
+				}
 			}
+		}
+
+		string ChooseWeaponForExplosion(Actor self)
+		{
+			var info = self.Info.Traits.Get<ExplodesInfo>();
+			var attack = self.traits.GetOrDefault<AttackBase>();
+
+			if (attack == null) return info.Weapon;
+
+			return attack.IsReloading() ? info.EmptyWeapon : info.Weapon;
 		}
 	}
 }
