@@ -98,10 +98,6 @@
 	Husk:
 	Selectable: 
 		Priority: -1
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
-	IronCurtainable: 
 	HiddenUnderFog:
 	RevealsShroud:
 	Burns:

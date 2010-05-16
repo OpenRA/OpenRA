@@ -233,6 +233,11 @@ LTNK:
 		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
+	LeavesHusk: 
+		HuskActor: LTNK.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	
 MTNK:
 	Inherits: ^Vehicle
@@ -259,6 +264,11 @@ MTNK:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
+	LeavesHusk: 
+		HuskActor: MTNK.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 HTNK:
 	Inherits: ^Vehicle
@@ -289,6 +299,11 @@ HTNK:
 	RenderUnitTurreted:
 	AutoTarget:
 	SelfHealing:
+	LeavesHusk: 
+		HuskActor: HTNK.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MSAM:
 	Inherits: ^Vehicle
@@ -488,3 +503,39 @@ A10:
 	CarpetBomb:
 		Weapon: Napalm
 		Range: 3
+
+LTNK.Husk:
+	Inherits: ^Husk
+	Valued:
+		Description: Husk (Light Tank)
+	RenderUnit:
+		Image: ltnk
+	ThrowsParticle@turret:
+		Anim: turret
+		Spread: 3,3
+		Speed: 6
+		AnimKey: turret
+
+MTNK.Husk:
+	Inherits: ^Husk
+	Valued:
+		Description: Husk (Medium Tank)
+	RenderUnit:
+		Image: mtnk
+	ThrowsParticle@turret:
+		Anim: turret
+		Spread: 3,3
+		Speed: 6
+		AnimKey: turret
+
+HTNK.Husk:
+	Inherits: ^Husk
+	Valued:
+		Description: Husk (Mammoth Tank)
+	RenderUnit:
+		Image: ltnk
+	ThrowsParticle@turret:
+		Anim: turret
+		Spread: 3,3
+		Speed: 6
+		AnimKey: turret
