@@ -35,7 +35,7 @@ namespace OpenRA.Orders
 				.Where(o => o != null)
 				.ToArray();
 
-			var actorsInvolved = orders.Select(o => o.TargetActor).Distinct();
+			var actorsInvolved = orders.Select(o => o.Subject).Distinct();
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
 					string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()));

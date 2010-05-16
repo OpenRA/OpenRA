@@ -60,7 +60,7 @@ namespace OpenRA
 		List<CachedPath> CachedPaths = new List<CachedPath>();
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 
-		public List<int2> FindUnitPath(int2 from, int2 target, UnitMovementType umt)
+		public List<int2> FindUnitPath(int2 from, int2 target, UnitMovementType umt, Actor self)
 		{
 			using (new PerfSample("find_unit_path"))
 			{
@@ -73,9 +73,9 @@ namespace OpenRA
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, target, from, umt, true)
-						.WithCustomBlocker(AvoidUnitsNear(from, 4)),
+						.WithCustomBlocker(AvoidUnitsNear(from, 4, self)),
 					PathSearch.FromPoint(world, from, target, umt, true)
-						.WithCustomBlocker(AvoidUnitsNear(from, 4))
+						.WithCustomBlocker(AvoidUnitsNear(from, 4, self))
 						.InReverse());
 
 				CheckSanePath2(pb, from, target);
@@ -86,7 +86,7 @@ namespace OpenRA
 			}
 		}
 
-		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range )
+		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range, Actor self )
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
@@ -94,19 +94,19 @@ namespace OpenRA
 					.Where( t => world.IsPathableCell( t, umt ) );
 
 				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false )
-					.WithCustomBlocker(AvoidUnitsNear(src, 4))
+					.WithCustomBlocker(AvoidUnitsNear(src, 4, self))
 					.InReverse());
 				path.Reverse();
 				return path;
 			}
 		}
 		
-		public Func<int2, bool> AvoidUnitsNear(int2 p, int dist)
+		public Func<int2, bool> AvoidUnitsNear(int2 p, int dist, Actor self)
 		{
 			return q =>
 				p != q &&
 				((p - q).LengthSquared < dist * dist) &&
-				(world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(q).Any());
+				(world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(q).Any(a => a.Group != self.Group));
 		}
 
 		public List<int2> FindPath( PathSearch search )
