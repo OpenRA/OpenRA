@@ -670,77 +670,49 @@ U2:
 	-Selectable:
 
 1TNK.Husk:
-	Inherits: ^Vehicle
+	Inherits: ^Husk
 	Valued:
 		Description: Husk (Light Tank)
-	Unit:
-		HP: 140
-		Armor: heavy
-		ROT: 0
 	RenderUnit:
 		Image: 1tnk
-	Selectable:
-		Priority: -1
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
-	Burns:
 
 2TNK.Husk:
-	Inherits: ^Vehicle
+	Inherits: ^Husk
 	Valued:
 		Description: Husk (Medium Tank)
-	Unit:
-		HP: 140
-		Armor: heavy
-		ROT: 0
 	RenderUnit:
 		Image: 2tnk
-	Selectable:
-		Priority: -1
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
-	Burns:
 
 3TNK.Husk:
-	Inherits: ^Vehicle
+	Inherits: ^Husk
 	Valued:
 		Description: Husk (Heavy Tank)
-	Unit:
-		HP: 140
-		Armor: heavy
-		ROT: 0
 	RenderUnit:
 		Image: 3tnk
-	Selectable:
-		Priority: -1
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
-	Burns:
 
 4TNK.Husk:
-	Inherits: ^Vehicle
+	Inherits: ^Husk
 	Valued:
 		Description: Husk (Mammoth Tank)
-	Unit:
-		HP: 140
-		Armor: heavy
-		ROT: 0
 	RenderUnit:
 		Image: 4tnk
-	Selectable:
-		Priority: -1
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
-	Burns:

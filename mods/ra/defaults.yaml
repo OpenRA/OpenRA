@@ -87,3 +87,21 @@
 	Building:
 		Footprint: x
 		Dimensions: 1,1
+
+^Husk:
+	Category: Vehicle
+	Unit:
+		ROT: 0
+		Speed: 0
+		HP: 140
+		Armor: Heavy
+	Husk:
+	Selectable: 
+		Priority: -1
+	Repairable: 
+	Chronoshiftable: 
+	Passenger: 
+	IronCurtainable: 
+	HiddenUnderFog:
+	RevealsShroud:
+	Burns:
