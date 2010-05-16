@@ -924,4 +924,10 @@
     <sequence name="open" start="0" length="60" tick="120" src="playersmoke" />
     <sequence name="idle" start="60" length="32" tick="120" src="playersmoke" />
   </unit>
+  <unit name="fire">
+    <sequence name="1" start="0" length="15" src="fire1" />
+    <sequence name="2" start="0" length="15" src="fire2" />
+    <sequence name="3" start="0" length="15" src="fire3" />
+    <sequence name="4" start="0" length="15" src="fire4" />
+  </unit>
 </sequences>

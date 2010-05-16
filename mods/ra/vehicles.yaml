@@ -679,6 +679,7 @@ U2:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	Burns:
 
 2TNK.Husk:
 	Inherits: ^Vehicle
@@ -697,6 +698,7 @@ U2:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	Burns:
 
 3TNK.Husk:
 	Inherits: ^Vehicle
@@ -715,6 +717,7 @@ U2:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	Burns:
 
 4TNK.Husk:
 	Inherits: ^Vehicle
@@ -733,3 +736,4 @@ U2:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	Burns:
