@@ -14,7 +14,13 @@ namespace OpenRA.Traits
 			if (order.OrderString == "CreateGroup")
 			{
 				/* create a group */
+				var actors = order.TargetString.Split(',')
+					.Select(id => uint.Parse(id))
+					.Select(id => self.World.Actors.FirstOrDefault(a => a.ActorID == id))
+						.Where(a => a != null);
 
+				var g = new Group(actors);
+				g.Dump();
 			}
 		}
 	}

@@ -44,7 +44,9 @@ namespace OpenRA
 		public Player Owner;
 		[Sync]
 		public int Health;
+
 		IActivity currentActivity;
+		public Group Group;
 
 		public Actor(World world, string name, int2 location, Player owner)
 		{
