@@ -82,6 +82,8 @@ V2RL:
 		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 1TNK.Husk
 
@@ -109,6 +111,8 @@ V2RL:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 2TNK.Husk
 
@@ -136,6 +140,8 @@ V2RL:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 3TNK.Husk
 
@@ -166,6 +172,8 @@ V2RL:
 		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 4TNK.Husk
 
@@ -659,7 +667,7 @@ U2:
 	Valued:
 		Description: Husk (Light Tank)
 	Unit:
-		HP: 80
+		HP: 140
 		Armor: heavy
 		ROT: 0
 	RenderUnit:
@@ -677,7 +685,7 @@ U2:
 	Valued:
 		Description: Husk (Medium Tank)
 	Unit:
-		HP: 80
+		HP: 140
 		Armor: heavy
 		ROT: 0
 	RenderUnit:
@@ -695,7 +703,7 @@ U2:
 	Valued:
 		Description: Husk (Heavy Tank)
 	Unit:
-		HP: 80
+		HP: 140
 		Armor: heavy
 		ROT: 0
 	RenderUnit:
@@ -713,7 +721,7 @@ U2:
 	Valued:
 		Description: Husk (Mammoth Tank)
 	Unit:
-		HP: 80
+		HP: 140
 		Armor: heavy
 		ROT: 0
 	RenderUnit:

@@ -642,6 +642,15 @@ UnitExplode:
 		Verses: 90%,75%,60%,25%,100%
 		Explosion: 8
 		InfDeath: 3
+		ImpactSound: kaboom22
+
+UnitExplodeSmall:
+	Warhead:
+		Damage: 40
+		Spread: 10
+		Verses: 90%,75%,60%,25%,100%
+		Explosion: 8
+		InfDeath: 3
 		ImpactSound: kaboom15
 
 Crush:
