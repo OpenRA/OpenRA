@@ -3,6 +3,7 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
+	TechTreeCache:
 	NukePower:
 		Image: atomicnh
 		ChargeTime: 13
