@@ -311,7 +311,7 @@ TurretGun:
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 60
 
 MammothTusk:
 	ROF: 80
