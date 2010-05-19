@@ -467,6 +467,8 @@ GTWR:
 	AttackOmni:
 		PrimaryWeapon: HighV
 	AutoTarget:
+	DetectCloaked:
+		Range: 3
 	
 ATWR:
 	Inherits: ^Building
@@ -488,3 +490,5 @@ ATWR:
 		PrimaryWeapon: Tomahawk
 		SecondaryWeapon: Tomahawk
 	AutoTarget:
+	DetectCloaked:
+		Range: 6
