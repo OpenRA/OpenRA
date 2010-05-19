@@ -364,6 +364,7 @@ OBLI:
 		FireDelay: 8
 	AutoTarget:
 	-RenderBuilding:
+	RenderRangeCircle:
 
 BARB:
 	Inherits: ^Wall
@@ -447,6 +448,7 @@ GUN:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
 	-RenderBuilding:
+	RenderRangeCircle:
 	
 GTWR:
 	Inherits: ^Building
@@ -469,6 +471,7 @@ GTWR:
 	AutoTarget:
 	DetectCloaked:
 		Range: 3
+	RenderRangeCircle:
 	
 ATWR:
 	Inherits: ^Building
@@ -492,3 +495,4 @@ ATWR:
 	AutoTarget:
 	DetectCloaked:
 		Range: 6
+	RenderRangeCircle:
