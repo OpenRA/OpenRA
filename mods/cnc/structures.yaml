@@ -215,6 +215,8 @@ HQ:
 		Sight: 10
 	Bib:
 	ProvidesRadar:
+	DetectCloaked:
+		Range: 8
 
 NUK2:
 	Inherits: ^Building
