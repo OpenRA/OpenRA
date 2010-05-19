@@ -390,7 +390,6 @@ SS:
 		Sight: 6
 		Speed: 6
 		WaterBound: yes
-		TargetType: Sub
 	RenderUnit:
 	Cloak:
 		InitialDelay: .4

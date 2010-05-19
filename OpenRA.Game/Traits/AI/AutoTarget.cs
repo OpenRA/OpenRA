@@ -67,6 +67,7 @@ namespace OpenRA.Traits
 			return inRange
 				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
 				.Where(a => Combat.HasAnyValidWeapons(self, a))
+				.Where(a => !a.traits.Contains<Cloak>() || !a.traits.Get<Cloak>().Cloaked)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
