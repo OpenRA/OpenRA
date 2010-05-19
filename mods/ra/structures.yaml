@@ -532,9 +532,9 @@ AFLD:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: soviet
-		Cost: 600
+		Cost: 1100
 		Description: Airstrip
-		LongDesc: Produces and reloads planes\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		LongDesc: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 		Hotkey: a
 	Building:
 		Power: -50
