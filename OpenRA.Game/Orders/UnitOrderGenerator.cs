@@ -51,8 +51,16 @@ namespace OpenRA.Orders
 			foreach (var a in Game.controller.selection.Actors)
 			{
 				world.WorldRenderer.DrawSelectionBox(a, Color.White, true);
-				if (a.traits.Contains<RenderRangeCircle>())
-					world.WorldRenderer.DrawRangeCircle(a);
+				if (a.Owner == world.LocalPlayer)
+				{
+					if (a.traits.Contains<RenderRangeCircle>())
+						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.Yellow),
+							a.Location, (int)a.GetPrimaryWeapon().Range);
+
+					if (a.traits.Contains<DetectCloaked>())
+						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.LimeGreen),
+							a.Location, a.Info.Traits.Get<DetectCloakedInfo>().Range);
+				}
 			}
 		}
 

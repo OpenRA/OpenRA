@@ -86,5 +86,11 @@ namespace OpenRA.Traits
 		}
 
 		public bool Cloaked { get { return remainingTime > 0; } }
+
+		public void Decloak(int time)
+		{
+			DoSurface();
+			remainingTime = Math.Max(remainingTime, time);
+		}
 	}
 }
