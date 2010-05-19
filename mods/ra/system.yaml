@@ -283,6 +283,7 @@ MINP:
 		AvoidFriendly: yes
 	Unit:
 		HP: 1
+		TargetType: special
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
@@ -295,6 +296,7 @@ MINV:
 		AvoidFriendly: yes
 	Unit:
 		HP: 1
+		TargetType: special
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
@@ -347,11 +349,13 @@ CAMERA:
 	Unit:
 		HP:1000
 		Sight: 10
+		TargetType: special
 
 FLARE:
 	Unit:
 		HP:1000
 		Sight: 3
+		TargetType: special
 	RenderFlare:
 		Image: smokland
 	HiddenUnderFog:
