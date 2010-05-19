@@ -292,7 +292,6 @@
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\LineBuild.cs" />
     <Compile Include="Traits\World\Theater.cs" />
-    <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Widgets\WidgetLoader.cs" />
     <Compile Include="Widgets\ButtonWidget.cs" />
     <Compile Include="Widgets\Widget.cs" />

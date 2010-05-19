@@ -392,7 +392,11 @@ SS:
 		WaterBound: yes
 		TargetType: Sub
 	RenderUnit:
-	Submarine:
+	Cloak:
+		InitialDelay: .4
+		CloakDelay: 2.0
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
 	AttackBase:
 		PrimaryWeapon: TorpTube
 		FireDelay: 2

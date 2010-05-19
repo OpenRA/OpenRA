@@ -114,7 +114,11 @@ MSUB:
 		PrimaryWeapon: SubSCUD
 		FireDelay: 2
 	RenderUnit:
-	Submarine:
+	Cloak:
+		InitialDelay: .4
+		CloakDelay: 2.0
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
 	Chronoshiftable:
 
 SHOK:

@@ -375,6 +375,10 @@ STNK:
 		Sight: 4
 		Speed: 15
 	Cloak:
+		InitialDelay: .4
+		CloakDelay: 2.0
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
 	Mobile:
 		MovementType: Track
 	AttackBase:

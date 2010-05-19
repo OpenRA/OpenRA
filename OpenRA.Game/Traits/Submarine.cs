@@ -23,31 +23,33 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class SubmarineInfo : ITraitInfo
+	class CloakInfo : ITraitInfo
 	{
-		public readonly float SubmergeDelay = 1.2f; // Seconds
-		public readonly string SubmergeSound = "subshow1.aud";
-		public readonly string SurfaceSound = "subshow1.aud";
-		public object Create(Actor self) { return new Submarine(self); }
+		public readonly float InitialDelay = .4f;	// seconds
+		public readonly float CloakDelay = 1.2f; // Seconds
+		public readonly string CloakSound = "subshow1.aud";
+		public readonly string UncloakSound = "subshow1.aud";
+		public object Create(Actor self) { return new Cloak(self); }
 	}
 
-	class Submarine : IRenderModifier, INotifyAttack, ITick, INotifyDamage
+	class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage
 	{
 		[Sync]
-		int remainingSurfaceTime = 2;		/* setup for initial dive */
+		int remainingTime;
 		
 		Actor self;
-		public Submarine(Actor self)
+		public Cloak(Actor self)
 		{
+			remainingTime = (int)(self.Info.Traits.Get<CloakInfo>().InitialDelay * 25);
 			this.self = self;
 		}
 
 		void DoSurface()
 		{
-			if (remainingSurfaceTime <= 0)
+			if (remainingTime <= 0)
 				OnSurface();
 
-			remainingSurfaceTime = (int)(self.Info.Traits.Get<SubmarineInfo>().SubmergeDelay * 25);
+			remainingTime = (int)(self.Info.Traits.Get<CloakInfo>().CloakDelay * 25);
 		}
 
 		public void Attacking(Actor self) { DoSurface(); }
@@ -56,7 +58,7 @@ namespace OpenRA.Traits
 		public IEnumerable<Renderable>
 			ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
-			if (remainingSurfaceTime > 0)
+			if (remainingTime > 0)
 				return rs;
 
 			if (self.Owner == self.World.LocalPlayer)
@@ -67,19 +69,21 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			if (remainingSurfaceTime > 0)
-				if (--remainingSurfaceTime <= 0)
+			if (remainingTime > 0)
+				if (--remainingTime <= 0)
 					OnDive();
 		}
 
 		void OnSurface()
 		{
-			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SurfaceSound, self.CenterLocation);
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().UncloakSound, self.CenterLocation);
 		}
 
 		void OnDive()
 		{
-			Sound.Play(self.Info.Traits.Get<SubmarineInfo>().SubmergeSound, self.CenterLocation);
+			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound, self.CenterLocation);
 		}
+
+		public bool Cloaked { get { return remainingTime > 0; } }
 	}
 }
