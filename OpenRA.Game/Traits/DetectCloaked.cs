@@ -27,6 +27,7 @@ namespace OpenRA.Traits
 		public readonly int Interval = 12;		// ~.5s
 		public readonly float DecloakTime = 2f;	// 2s
 		public readonly int Range = 5;
+		public readonly bool AffectOwnUnits = true;
 	}
 
 	class DetectCloaked : ITick
@@ -41,8 +42,10 @@ namespace OpenRA.Traits
 				ticks = info.Interval;
 
 				var toDecloak = self.World.FindUnitsInCircle(self.CenterLocation, info.Range * Game.CellSize)
-					.Where(a => a.traits.Contains<Cloak>())
-					.Where(a => self.Owner.Stances[a.Owner] != Stance.Ally);
+					.Where(a => a.traits.Contains<Cloak>());
+
+				if (!info.AffectOwnUnits)
+					toDecloak = toDecloak.Where(a => self.Owner.Stances[a.Owner] != Stance.Ally);
 
 				foreach (var a in toDecloak)
 					a.traits.Get<Cloak>().Decloak((int)(25 * info.DecloakTime));
