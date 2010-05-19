@@ -25,6 +25,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -93,16 +94,19 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, float2 a, float r)
 		{
-			var min = a - new float2(r, r);
-			var max = a + new float2(r, r);
+			using (new PerfSample("FindUnitsInCircle"))
+			{
+				var min = a - new float2(r, r);
+				var max = a + new float2(r, r);
 
-			var actors = world.FindUnits( min, max );
+				var actors = world.FindUnits(min, max);
 
-			var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+				var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
-			var inBox = actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
+				var inBox = actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
 
-			return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+			}
 		}
 
 		public static IEnumerable<int2> FindTilesInCircle(this World world, int2 a, int r)
