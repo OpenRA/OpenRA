@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace OpenRA.Traits
 {
@@ -49,7 +50,7 @@ namespace OpenRA.Traits
 			if (remainingTime <= 0)
 				OnSurface();
 
-			remainingTime = (int)(self.Info.Traits.Get<CloakInfo>().CloakDelay * 25);
+			remainingTime = Math.Max(remainingTime, (int)(self.Info.Traits.Get<CloakInfo>().CloakDelay * 25));
 		}
 
 		public void Attacking(Actor self) { DoSurface(); }
