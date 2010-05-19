@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 
 				var toDecloak = self.World.FindUnitsInCircle(self.CenterLocation, info.Range * Game.CellSize)
 					.Where(a => a.traits.Contains<Cloak>())
-					.Where(a => a.Owner.Stances[self.Owner] != Stance.Ally);
+					.Where(a => self.Owner.Stances[a.Owner] != Stance.Ally);
 
 				foreach (var a in toDecloak)
 					a.traits.Get<Cloak>().Decloak((int)(25 * info.DecloakTime));
