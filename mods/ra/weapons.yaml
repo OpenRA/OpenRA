@@ -511,7 +511,7 @@ TorpTube:
 	ROF: 60
 	Range: 9
 	Report: TORPEDO1
-	ValidTargets: Ground, Sub
+	ValidTargets: Ground
 	Underwater: yes
 	Bullet:
 		Image: MISSILE
@@ -542,7 +542,7 @@ TorpTube:
 DepthCharge:
 	ROF: 60
 	Range: 5
-	ValidTargets: Sub
+	ValidTargets: Ground
 	Bullet:
 		Speed: 5
 		Image: BOMB
