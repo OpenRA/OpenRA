@@ -144,7 +144,7 @@ namespace OpenRA
 					world.IsCellBuildable(t, building.WaterBound, toIgnore));
 		}
 
-		public static bool IsVisible(this Actor a)
+		public static bool IsVisible(this Actor a)			/* must never be relied on in synced code! */
 		{
 			if (a.World.LocalPlayer != null && a.World.LocalPlayer.Shroud.Disabled)
 				return true;
@@ -155,6 +155,10 @@ namespace OpenRA
 
 			var huf = a.traits.GetOrDefault<HiddenUnderFog>();							// hidden under fog
 			if (huf != null && !huf.IsVisible(a))
+				return false;
+
+			var cloak = a.traits.GetOrDefault<Cloak>();
+			if (cloak != null && cloak.Cloaked && a.Owner != a.World.LocalPlayer)
 				return false;
 
 			return true;
@@ -189,20 +193,7 @@ namespace OpenRA
 
 		static int2 ClampToWorld( this World world, int2 xy )
 		{
-			var mapStart = world.Map.TopLeft;
-			// TODO: Revist this and fix properly
-			var mapEnd = world.Map.BottomRight;
-			if( xy.X < mapStart.X )
-				xy.X = mapStart.X;
-			if( xy.X > mapEnd.X )
-				xy.X = mapEnd.X;
-
-			if( xy.Y < mapStart.Y )
-				xy.Y = mapStart.Y;
-			if( xy.Y > mapEnd.Y )
-				xy.Y = mapEnd.Y;
-
-			return xy;
+			return int2.Min(world.Map.BottomRight, int2.Max(world.Map.TopLeft, xy));
 		}
 
 		public static int2 ChooseRandomEdgeCell(this World w)
