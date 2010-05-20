@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Orders
+namespace OpenRA.Mods.RA.Orders
 {
 	class PowerDownOrderGenerator : IOrderGenerator
 	{
@@ -48,8 +48,8 @@ namespace OpenRA.Orders
 			}
 		}
 
-		public void Tick( World world ) { }
-		public void Render( World world ) { }
+		public void Tick(World world) { }
+		public void Render(World world) { }
 
 		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{

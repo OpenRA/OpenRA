@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using OpenRA.Orders;
+﻿using System.Linq;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class PowerDownButtonInfo : TraitInfo<PowerDownButton> { }
 
@@ -65,4 +65,6 @@ namespace OpenRA.Traits
 			}
 		}
 	}
+
+	
 }

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Orders
+namespace OpenRA.Mods.RA.Orders
 {
 	class SellOrderGenerator : IOrderGenerator
 	{
