@@ -222,7 +222,6 @@
     <Compile Include="Traits\Crate.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\Fake.cs" />
-    <Compile Include="Traits\GeneratesGap.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />

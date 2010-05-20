@@ -24,7 +24,6 @@ GAP:
 	Category: Defense
 	RequiresPower:
 	CanPowerDown:
-	GeneratesGap:
 		Range: 10
 	Inherits: ^Building
 #	Buildable:
