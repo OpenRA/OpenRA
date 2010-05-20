@@ -201,7 +201,6 @@
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
-    <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\TransformsOnDeploy.cs" />

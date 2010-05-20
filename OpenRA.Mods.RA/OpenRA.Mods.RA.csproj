@@ -146,6 +146,7 @@
     <Compile Include="RenderSpy.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
+    <Compile Include="Reservable.cs" />
     <Compile Include="ReturnOnIdle.cs" />
     <Compile Include="RevealsShroud.cs" />
     <Compile Include="SeedsResource.cs" />
