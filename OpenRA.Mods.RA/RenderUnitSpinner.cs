@@ -18,28 +18,31 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Graphics;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA
 {
-	class RenderUnitReloadInfo : RenderUnitInfo
+	class RenderUnitSpinnerInfo : RenderUnitInfo
 	{
-		public override object Create(Actor self) { return new RenderUnitReload(self); }
+		public readonly int[] Offset = { 0, 0 };
+		public override object Create(Actor self) { return new RenderUnitSpinner(self); }
 	}
 
-	class RenderUnitReload : RenderUnit
+	class RenderUnitSpinner : RenderUnit
 	{
-		public RenderUnitReload(Actor self)
-			: base(self) { }
-
-		public override void Tick(Actor self)
+		public RenderUnitSpinner( Actor self )
+			: base(self)
 		{
-			var isAttacking = self.GetCurrentActivity() is Activities.Attack;
+			var unit = self.traits.Get<Unit>();
+			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
-			var attack = self.traits.GetOrDefault<AttackBase>();
-
-			if (attack != null)
-				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
-					+ (isAttacking ? "aim" : "idle"));
-			base.Tick(self);
+			var spinnerAnim = new Animation( GetImage(self) );
+			spinnerAnim.PlayRepeating( "spinner" );
+			anims.Add( "spinner", new AnimationWithOffset(
+				spinnerAnim,
+				() => Util.GetTurretPosition( self, unit, info.Offset, 0 ),
+				null ) { ZOffset = 1 } );
 		}
 	}
 }

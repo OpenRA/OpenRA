@@ -48,7 +48,9 @@ namespace OpenRA.Traits.Activities
 		{
 			if( !started )
 			{
-				framesRemaining = (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation) ? self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
+				framesRemaining = self.traits.Get<RenderSimple>().anim.HasSequence("make") 
+					? self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
+
 				foreach( var ns in self.traits.WithInterface<INotifySold>() )
 					ns.Selling( self );
 

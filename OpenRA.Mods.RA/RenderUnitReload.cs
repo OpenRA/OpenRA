@@ -18,27 +18,31 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
+
+namespace OpenRA.Mods.RA
 {
-	class RenderBuildingChargeInfo : RenderBuildingInfo
+	class RenderUnitReloadInfo : RenderUnitInfo
 	{
-		public readonly string ChargeAudio = "tslachg2.aud";
-		public override object Create(Actor self) { return new RenderBuildingCharge(self); }
+		public override object Create(Actor self) { return new RenderUnitReload(self); }
 	}
 
-	/* used for tesla */
-	public class RenderBuildingCharge : RenderBuilding
+	class RenderUnitReload : RenderUnit
 	{
-		public RenderBuildingCharge(Actor self)
-			: base(self)
-		{
-		}
+		public RenderUnitReload(Actor self)
+			: base(self) { }
 
-		public void PlayCharge(Actor self)
+		public override void Tick(Actor self)
 		{
-			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio, self.CenterLocation);
-			anim.PlayThen(GetPrefix(self) + "active", 
-				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+			var isAttacking = self.GetCurrentActivity() is Attack;
+
+			var attack = self.traits.GetOrDefault<AttackBase>();
+
+			if (attack != null)
+				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
+					+ (isAttacking ? "aim" : "idle"));
+			base.Tick(self);
 		}
 	}
 }

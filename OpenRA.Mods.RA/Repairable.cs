@@ -19,9 +19,11 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class RepairableInfo : TraitInfo<Repairable> { public readonly string[] RepairBuildings = { "fix" }; }
 

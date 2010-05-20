@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,30 +18,15 @@
  */
 #endregion
 
-using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class RenderUnitSpinnerInfo : RenderUnitInfo
+	public class RepairsUnitsInfo : TraitInfo<RepairsUnits>
 	{
-		public readonly int[] Offset = { 0, 0 };
-		public override object Create(Actor self) { return new RenderUnitSpinner(self); }
+		public readonly float URepairPercent = 0.2f;
+		public readonly int URepairStep = 10;
 	}
 
-	class RenderUnitSpinner : RenderUnit
-	{
-		public RenderUnitSpinner( Actor self )
-			: base(self)
-		{
-			var unit = self.traits.Get<Unit>();
-			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
-
-			var spinnerAnim = new Animation( GetImage(self) );
-			spinnerAnim.PlayRepeating( "spinner" );
-			anims.Add( "spinner", new AnimationWithOffset(
-				spinnerAnim,
-				() => Util.GetTurretPosition( self, unit, info.Offset, 0 ),
-				null ) { ZOffset = 1 } );
-		}
-	}
+	public class RepairsUnits { }
 }

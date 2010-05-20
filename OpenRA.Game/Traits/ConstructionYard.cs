@@ -18,8 +18,8 @@
  */
 #endregion
 
-using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {

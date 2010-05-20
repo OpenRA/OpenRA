@@ -19,8 +19,9 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class RenderUnitRotorInfo : RenderUnitInfo
 	{

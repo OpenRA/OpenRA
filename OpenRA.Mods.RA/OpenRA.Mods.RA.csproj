@@ -61,6 +61,8 @@
     <Compile Include="Activities\Land.cs" />
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Leap.cs" />
+    <Compile Include="Activities\Rearm.cs" />
+    <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="Activities\Teleport.cs" />
@@ -123,8 +125,17 @@
     <Compile Include="Passenger.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="ProductionSurround.cs" />
+    <Compile Include="RenderBuildingCharge.cs" />
+    <Compile Include="RenderBuildingOre.cs" />
+    <Compile Include="RenderBuildingWall.cs" />
+    <Compile Include="RenderBuildingWarFactory.cs" />
     <Compile Include="RenderFlare.cs" />
     <Compile Include="RenderInfantry.cs" />
+    <Compile Include="RenderUnitReload.cs" />
+    <Compile Include="RenderUnitRotor.cs" />
+    <Compile Include="RenderUnitSpinner.cs" />
+    <Compile Include="Repairable.cs" />
+    <Compile Include="RepairsUnits.cs" />
     <Compile Include="RequiresPower.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,49 +18,37 @@
  */
 #endregion
 
-using System;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	public class Repair : IActivity
+	public class Rearm : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
-		int remainingTicks;
+		int remainingTicks = ticksPerPip;
+
+		const int ticksPerPip = 25 * 2;
 
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			if (remainingTicks == 0)
+			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			if (limitedAmmo == null) return NextActivity;
+
+			if (--remainingTicks == 0)
 			{
+				if (!limitedAmmo.GiveAmmo()) return NextActivity;
+
 				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
 					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
-				
-				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
-				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
-
-				var costPerHp = (hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
-				var hpToRepair = Math.Min(hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
-				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
-				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
-				{
-					remainingTicks = 1;
-					return this;
-				}
-
-				self.InflictDamage(self, -hpToRepair, null);
-				if (self.Health == hp)
-					return NextActivity;
 
 				if (hostBuilding != null)
-					hostBuilding.traits.Get<RenderBuilding>()
-						.PlayCustomAnim(hostBuilding, "active");
+					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
 
-				remainingTicks = (int)(self.World.Defaults.RepairRate * 60 * 25);
+				remainingTicks = ticksPerPip;
 			}
-			else
-				--remainingTicks;
 
 			return this;
 		}

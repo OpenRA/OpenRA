@@ -62,6 +62,8 @@ namespace OpenRA.Traits
 							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 					}
 
+					/* todo: reimpl this properly */
+
 					var facts = w.Queries.OwnedBy[self.Owner]
 						.WithTrait<ConstructionYard>().Select(x => x.Actor);
 

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,13 +18,29 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA
 {
-	public class RepairsUnitsInfo : TraitInfo<RepairsUnits>
+	class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
-		public readonly float URepairPercent = 0.2f;
-		public readonly int URepairStep = 10;
+		public readonly string ChargeAudio = "tslachg2.aud";
+		public override object Create(Actor self) { return new RenderBuildingCharge(self); }
 	}
 
-	public class RepairsUnits { }
+	/* used for tesla */
+	public class RenderBuildingCharge : RenderBuilding
+	{
+		public RenderBuildingCharge(Actor self)
+			: base(self)
+		{
+		}
+
+		public void PlayCharge(Actor self)
+		{
+			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio, self.CenterLocation);
+			anim.PlayThen(GetPrefix(self) + "active", 
+				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+		}
+	}
 }
