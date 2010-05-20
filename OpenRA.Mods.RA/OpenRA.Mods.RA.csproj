@@ -66,6 +66,7 @@
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
     <Compile Include="CrateDrop.cs" />
+    <Compile Include="CrateSpawner.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
