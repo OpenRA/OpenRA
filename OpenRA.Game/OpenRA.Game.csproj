@@ -184,7 +184,6 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
-    <Compile Include="Traits\CanPowerDown.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
