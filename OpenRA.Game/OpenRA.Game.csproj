@@ -185,12 +185,10 @@
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\AttackBase.cs" />
-    <Compile Include="Traits\Modifiers\BelowUnits.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\CanPowerDown.cs" />
-    <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
@@ -207,14 +205,12 @@
     <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderUnit.cs" />
-    <Compile Include="Traits\Modifiers\WithMuzzleFlash.cs" />
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
-    <Compile Include="Traits\Modifiers\WithShadow.cs" />
     <Compile Include="Network\UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />
     <Compile Include="UiOverlay.cs" />
