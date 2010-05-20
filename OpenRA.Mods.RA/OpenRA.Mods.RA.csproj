@@ -56,6 +56,8 @@
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="AirstrikePower.cs" />
+    <Compile Include="Bridge.cs" />
+    <Compile Include="BridgeLayer.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Cargo.cs" />

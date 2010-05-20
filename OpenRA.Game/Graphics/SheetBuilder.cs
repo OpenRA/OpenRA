@@ -22,15 +22,15 @@ using System.Drawing;
 
 namespace OpenRA.Graphics
 {
-	class SheetBuilder
+	public class SheetBuilder
 	{
 		public static SheetBuilder SharedInstance;
-		public static void Initialize(Renderer r)
+		internal static void Initialize(Renderer r)
 		{
 			SharedInstance = new SheetBuilder(r, TextureChannel.Red);
 		}
 
-		public SheetBuilder(Renderer r, TextureChannel ch)
+		internal SheetBuilder(Renderer r, TextureChannel ch)
 		{
 			renderer = r;
 			current = null;

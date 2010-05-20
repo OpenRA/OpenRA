@@ -214,7 +214,6 @@
     <Compile Include="Traits\AI\AutoHeal.cs" />
     <Compile Include="Traits\AI\AutoTarget.cs" />
     <Compile Include="Traits\Modifiers\BelowUnits.cs" />
-    <Compile Include="Traits\Bridge.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
@@ -298,7 +297,6 @@
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
-    <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
