@@ -66,6 +66,7 @@
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="Harvester.cs" />
+    <Compile Include="HasUnitOnBuild.cs" />
     <Compile Include="Husk.cs" />
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="OreRefinery.cs" />

@@ -294,7 +294,6 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
-    <Compile Include="Traits\HasUnitOnBuild.cs" />
     <Compile Include="Traits\Activities\Wait.cs" />
     <Compile Include="Traits\CrateAction.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
