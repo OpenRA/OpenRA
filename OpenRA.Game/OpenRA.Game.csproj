@@ -85,7 +85,6 @@
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Player\TechTreeCache.cs" />
-    <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
@@ -139,7 +138,6 @@
     <Compile Include="Traits\Chrome\PowerDownButton.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\World\SpatialBins.cs" />
-    <Compile Include="Traits\World\SpawnDefaultUnits.cs" />
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
@@ -204,18 +202,14 @@
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\CanPowerDown.cs" />
-    <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
-    <Compile Include="Traits\World\PaletteFromFile.cs" />
-    <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
-    <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="Traits\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Repairable.cs" />
@@ -223,7 +217,6 @@
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
-    <Compile Include="Traits\ProductionSurround.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\TransformsOnDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />
@@ -240,13 +233,11 @@
     <Compile Include="Traits\Render\RenderUnitRotor.cs" />
     <Compile Include="Traits\Render\RenderUnitSpinner.cs" />
     <Compile Include="Traits\Render\RenderUnitTurreted.cs" />
-    <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
-    <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
     <Compile Include="Traits\Modifiers\WithShadow.cs" />
     <Compile Include="Network\UnitOrders.cs" />

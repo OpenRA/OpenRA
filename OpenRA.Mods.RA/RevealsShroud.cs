@@ -18,28 +18,22 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class PaletteFromFileInfo : ITraitInfo
-	{
-		public readonly string Name = null;
-		public readonly string Theater = null;
-		public readonly string Filename = null;
-		public readonly bool Transparent = true;
-		public object Create(Actor self) { return new PaletteFromFile(self, this); }
-	}
+	class RevealsShroudInfo : TraitInfo<RevealsShroud> { }
 
-	class PaletteFromFile
+	class RevealsShroud : ITick
 	{
-		public PaletteFromFile(Actor self, PaletteFromFileInfo info)
+		int2 previousLocation;
+
+		public void Tick(Actor self)
 		{
-			if (info.Theater == null || 
-				info.Theater.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
+			if (!self.IsIdle && previousLocation != self.Location)
 			{
-				self.World.WorldRenderer.AddPalette(info.Name, 
-					new Palette(FileSystem.Open(info.Filename), info.Transparent));
+				previousLocation = self.Location;
+				self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
 			}
 		}
 	}

@@ -59,7 +59,7 @@ namespace OpenRA
 		internal static Renderer renderer;
 		static int2 clientSize;
 		static string mapName;
-		internal static Session LobbyInfo = new Session();
+		public static Session LobbyInfo = new Session();
 		static bool packageChangePending;
 		static bool mapChangePending;
 		static Pair<Assembly, string>[] ModAssemblies;

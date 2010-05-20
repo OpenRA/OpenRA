@@ -84,6 +84,7 @@
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Explodes.cs" />
+    <Compile Include="Fake.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HasUnitOnBuild.cs" />
     <Compile Include="Husk.cs" />
@@ -105,9 +106,12 @@
     <Compile Include="InfiltrateForSonarPulse.cs" />
     <Compile Include="IronCurtainable.cs" />
     <Compile Include="IronCurtainPower.cs" />
+    <Compile Include="PaletteFromFile.cs" />
+    <Compile Include="PaletteFromRGBA.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="ParatroopersPower.cs" />
     <Compile Include="Passenger.cs" />
+    <Compile Include="ProductionSurround.cs" />
     <Compile Include="RenderFlare.cs" />
     <Compile Include="RenderInfantry.cs" />
     <Compile Include="RequiresPower.cs" />
@@ -118,8 +122,13 @@
     <Compile Include="RepairableNear.cs" />
     <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
     <Compile Include="ReturnOnIdle.cs" />
+    <Compile Include="RevealsShroud.cs" />
+    <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
+    <Compile Include="ShroudPalette.cs" />
     <Compile Include="SonarPulsePower.cs" />
+    <Compile Include="SpawnDefaultUnits.cs" />
+    <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
     <Compile Include="NukePower.cs" />

@@ -20,8 +20,9 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class ProductionSurroundInfo : ProductionInfo
 	{

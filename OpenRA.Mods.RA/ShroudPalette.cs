@@ -19,8 +19,9 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class ShroudPaletteInfo : ITraitInfo
 	{

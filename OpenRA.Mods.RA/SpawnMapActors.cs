@@ -18,34 +18,28 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA.FileFormats;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class PaletteFromRGBAInfo : ITraitInfo
-	{
-		public readonly string Name = null;
-		public readonly string Theatre = null;
-		public readonly int R = 0;
-		public readonly int G = 0;
-		public readonly int B = 0;
-		public readonly int A = 255;
-		public object Create(Actor self) { return new PaletteFromRGBA(self, this); }
-	}
+	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
-	class PaletteFromRGBA
+	public class SpawnMapActors : IGameStarted
 	{
-		public PaletteFromRGBA(Actor self, PaletteFromRGBAInfo info)
+		public Dictionary<string, Actor> MapActors = new Dictionary<string, Actor>();
+
+		public void GameStarted(World world)
 		{
-			if (info.Theatre == null ||
-				info.Theatre.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
-			{
-				// TODO: This shouldn't rely on a base palette
-				var wr = self.World.WorldRenderer;
-				var pal = wr.GetPalette("player0");
-				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))));
-			}
+			Game.skipMakeAnims = true;		// rude hack
+
+			foreach (var actorReference in world.Map.Actors)
+				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Name, actorReference.Value.Location,
+					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Value.Owner)
+					?? world.NeutralPlayer);
+
+			Game.skipMakeAnims = false;
 		}
 	}
 }
