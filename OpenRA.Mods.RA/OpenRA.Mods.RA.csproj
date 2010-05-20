@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\CaptureBuilding.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
+    <Compile Include="Activities\Wait.cs" />
     <Compile Include="AirstrikePower.cs" />
     <Compile Include="AttackFrontal.cs" />
     <Compile Include="AttackHeli.cs" />

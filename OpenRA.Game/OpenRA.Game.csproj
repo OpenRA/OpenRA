@@ -145,7 +145,6 @@
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Traits\Activities\Attack.cs" />
-    <Compile Include="Traits\Activities\CallFunc.cs" />
     <Compile Include="Traits\Activities\TransformIntoActor.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Effects\Bullet.cs" />
@@ -239,7 +238,6 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
-    <Compile Include="Traits\Activities\Wait.cs" />
     <Compile Include="Traits\World\GlobalDefaults.cs" />
     <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
@@ -278,9 +276,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Traits\AI\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
