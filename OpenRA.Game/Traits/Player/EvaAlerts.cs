@@ -21,7 +21,7 @@
 
 namespace OpenRA.Traits
 {
-	class EvaAlertsInfo : TraitInfo<EvaAlerts>
+	public class EvaAlertsInfo : TraitInfo<EvaAlerts>
 	{
 		// Sound effects
 		public readonly string TabClick = "ramenu1.aud";
@@ -59,5 +59,5 @@ namespace OpenRA.Traits
 		public readonly string CreditsStolen = "credit1.aud";
 	}
 
-	class EvaAlerts {}
+	public class EvaAlerts {}
 }

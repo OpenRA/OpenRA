@@ -85,8 +85,13 @@
     <Compile Include="BridgeLayer.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
+    <Compile Include="CanPowerDown.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
+    <Compile Include="Chrome\PowerDownButton.cs" />
+    <Compile Include="Orders\PowerDownOrderGenerator.cs" />
+    <Compile Include="Orders\RepairOrderGenerator.cs" />
+    <Compile Include="Orders\SellOrderGenerator.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="ConquestVictoryConditions.cs" />
     <Compile Include="Crate.cs" />

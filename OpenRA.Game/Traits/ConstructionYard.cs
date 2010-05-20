@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new ConstructionYard(self); }
 	}
 
-	class ConstructionYard : IIssueOrder, IResolveOrder, IMovement
+	public class ConstructionYard : IIssueOrder, IResolveOrder, IMovement
 	{
 		readonly Actor self;
 
