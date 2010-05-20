@@ -18,9 +18,10 @@
  */
 #endregion
 
-using OpenRA.Effects;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class CrateActionInfo : ITraitInfo
 	{

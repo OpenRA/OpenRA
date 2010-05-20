@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
 /*
  * Crates left to implement:
@@ -36,7 +37,7 @@ Invulnerability=3,INVULBOX,1.0  ; invulnerability (duration in minutes)
 TimeQuake=3,TQUAKE              ; time quake
 */
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{

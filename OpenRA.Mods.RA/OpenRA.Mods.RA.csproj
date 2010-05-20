@@ -61,8 +61,11 @@
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
     <Compile Include="Chronoshiftable.cs" />
+    <Compile Include="Crate.cs" />
+    <Compile Include="CrateAction.cs" />
     <Compile Include="CrateDrop.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
+    <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />

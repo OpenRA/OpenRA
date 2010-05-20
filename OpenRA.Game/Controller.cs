@@ -79,8 +79,7 @@ namespace OpenRA
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (!(orderGenerator is PlaceBuildingOrderGenerator))
-					dragStart = dragEnd = xy;
+				dragStart = dragEnd = xy;
 				ApplyOrders(world, xy, mi);
 			}
 

@@ -219,7 +219,6 @@
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\CanPowerDown.cs" />
-    <Compile Include="Traits\Crate.cs" />
     <Compile Include="Traits\Fake.cs" />
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
@@ -291,8 +290,6 @@
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
     <Compile Include="Traits\Activities\Wait.cs" />
-    <Compile Include="Traits\CrateAction.cs" />
-    <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Traits\World\GlobalDefaults.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
     <Compile Include="Traits\World\BibLayer.cs" />
