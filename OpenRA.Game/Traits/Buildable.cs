@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits
 {
-	class ValuedInfo : ITraitInfo
+	public class ValuedInfo : ITraitInfo
 	{
 		public readonly int Cost = 0;
 		public readonly string Description = "";

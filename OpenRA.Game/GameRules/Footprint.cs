@@ -25,7 +25,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.GameRules
 {
-	static class Footprint
+	public static class Footprint
 	{
 		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 topLeft )
 		{
