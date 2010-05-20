@@ -88,7 +88,6 @@
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
-    <Compile Include="Traits\Render\RenderFlare.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="Widgets\PostGameWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Combat.cs" />
-    <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\LaserZap.cs" />
@@ -227,7 +225,6 @@
     <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\ProductionSurround.cs" />
     <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
-    <Compile Include="Traits\Render\RenderInfantry.cs" />
     <Compile Include="Traits\TransformsOnDeploy.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Production.cs" />
@@ -246,7 +243,6 @@
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresOre.cs" />
     <Compile Include="Traits\Cloak.cs" />
-    <Compile Include="Traits\AI\TakeCover.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
@@ -314,6 +310,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Traits\AI\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

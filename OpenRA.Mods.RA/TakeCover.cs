@@ -19,8 +19,9 @@
 #endregion
 
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class TakeCoverInfo : ITraitInfo
 	{

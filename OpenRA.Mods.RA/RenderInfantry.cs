@@ -18,9 +18,11 @@
  */
 #endregion
 
-using OpenRA.Effects;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Effects;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class RenderInfantryInfo : RenderSimpleInfo
 	{
@@ -37,7 +39,7 @@ namespace OpenRA.Traits
 
 		bool ChooseMoveAnim(Actor self)
 		{
-			if (!(self.GetCurrentActivity() is Activities.Move))
+			if (!(self.GetCurrentActivity() is Move))
 				return false;
 
 			var mobile = self.traits.Get<Mobile>();

@@ -78,6 +78,7 @@
     <Compile Include="CrateDrop.cs" />
     <Compile Include="CrateSpawner.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
+    <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
@@ -107,6 +108,8 @@
     <Compile Include="ParaDrop.cs" />
     <Compile Include="ParatroopersPower.cs" />
     <Compile Include="Passenger.cs" />
+    <Compile Include="RenderFlare.cs" />
+    <Compile Include="RenderInfantry.cs" />
     <Compile Include="RequiresPower.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Spy.cs" />
     <Compile Include="SpyPlanePower.cs" />
     <Compile Include="NukePower.cs" />
+    <Compile Include="TakeCover.cs" />
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Thief.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
