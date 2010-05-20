@@ -137,7 +137,6 @@ SHOK:
 	AttackBase:
 		PrimaryWeapon: PortaTesla
 	TakeCover:
-	-SquishByTank:
 
 MECH:
 	Inherits: ^Infantry
@@ -178,7 +177,6 @@ ANT1:
 		PrimaryWeapon: Mandible
 	RenderInfantry:
 		Image: ANT1
-	-SquishByTank:
 	-Passenger:
  
 ANT2:
@@ -198,7 +196,6 @@ ANT2:
 		PrimaryWeapon: FireballLauncher
 	RenderInfantry:
 		Image: ANT2
-	-SquishByTank:
 	-Passenger:
  
 ANT3:
@@ -218,5 +215,4 @@ ANT3:
 		PrimaryWeapon: TeslaZap
 	RenderInfantry:
 		Image: ANT3
-	-SquishByTank:
 	-Passenger:
