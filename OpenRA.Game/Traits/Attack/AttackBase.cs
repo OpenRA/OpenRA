@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 		public virtual object Create(Actor self) { return new AttackBase(self); }
 	}
 
-	class AttackBase : IIssueOrder, IResolveOrder, ITick
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync] public Actor target;
 

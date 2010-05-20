@@ -66,6 +66,7 @@
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Activities\Harvest.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
+    <Compile Include="Explodes.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HasUnitOnBuild.cs" />
     <Compile Include="Husk.cs" />

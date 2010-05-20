@@ -18,9 +18,9 @@
  */
 #endregion
 
-using OpenRA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class ExplodesInfo : TraitInfo<Explodes>
 	{
