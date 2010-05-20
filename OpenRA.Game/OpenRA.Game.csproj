@@ -82,7 +82,6 @@
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Traits\Activities\Leap.cs" />
-    <Compile Include="Traits\AI\ReturnOnIdle.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />

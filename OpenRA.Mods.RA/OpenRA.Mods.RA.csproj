@@ -103,6 +103,7 @@
     <Compile Include="RenderSpy.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
+    <Compile Include="ReturnOnIdle.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="SonarPulsePower.cs" />
     <Compile Include="Spy.cs" />

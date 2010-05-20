@@ -21,8 +21,9 @@
 using System;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.AI
+namespace OpenRA.Mods.RA
 {
 	class ReturnOnIdleInfo : TraitInfo<ReturnOnIdle> { }
 

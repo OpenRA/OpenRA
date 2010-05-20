@@ -24,7 +24,7 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
-	class ReturnToBase : IActivity
+	public class ReturnToBase : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 
