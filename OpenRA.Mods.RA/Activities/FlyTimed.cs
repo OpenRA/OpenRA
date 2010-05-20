@@ -18,52 +18,51 @@
  */
 #endregion
 
-namespace OpenRA.Traits.Activities
+using System;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA.Activities
 {
-	public class FlyAttack : IActivity
+	public class FlyTimed : IActivity
 	{
 		public IActivity NextActivity { get; set; }
-		Actor Target;
+		int remainingTicks;
 
-		public FlyAttack(Actor target) { Target = target; }
+		public FlyTimed(int ticks) { remainingTicks = ticks; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (Target == null || Target.IsDead) 
-				return NextActivity;
-
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-				return NextActivity;
-
-			return Util.SequenceActivities(
-				new Fly(Target.CenterLocation),
-				new FlyTimed(50),
-				this);
+			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+			if (remainingTicks-- == 0) return NextActivity;
+			FlyUtil.Fly(self, targetAltitude);
+			return this;
 		}
 
-		public void Cancel(Actor self) { Target = null; NextActivity = null; }
+		public void Cancel(Actor self) { remainingTicks = 0; NextActivity = null; }
 	}
 
-	public class FlyCircle : IActivity
+	public class FlyOffMap : IActivity
 	{
 		public IActivity NextActivity { get; set; }
-		int2 Target;
 		bool isCanceled;
-
-		public FlyCircle(int2 target) { Target = target; }
+		public bool Interruptible = true;
 
 		public IActivity Tick(Actor self)
 		{
-			if (isCanceled)
-				return NextActivity;
-
-			return Util.SequenceActivities(
-				new Fly(Util.CenterOfCell(Target)),
-				new FlyTimed(50),
-				this);
+			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+			if (isCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
+			FlyUtil.Fly(self, targetAltitude);
+			return this;
 		}
 
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
+		public void Cancel(Actor self)
+		{
+			if (Interruptible)
+			{
+				isCanceled = true; 
+				NextActivity = null;
+			}
+		}
 	}
+
 }

@@ -20,23 +20,29 @@
 
 using System;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	public class Fly : IActivity
+	public class Land : IActivity
 	{
 		readonly float2 Pos;
 		bool isCanceled;
-
-		public Fly(float2 pos) { Pos = pos; }
-		public Fly(int2 pos) { Pos = Util.CenterOfCell(pos); }
+		Actor Structure;
+		
+		public Land(float2 pos) { Pos = pos; }
+		public Land(Actor structure) { Structure = structure; Pos = Structure.CenterLocation; }
 		
 		public IActivity NextActivity { get; set; }
-		
+
 		public IActivity Tick(Actor self)
 		{
-			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-
+			if (Structure != null && Structure.IsDead)
+			{
+				Structure = null;
+				isCanceled = true;
+			}
+			
 			if (isCanceled) return NextActivity;
 
 			var d = Pos - self.CenterLocation;
@@ -45,33 +51,20 @@ namespace OpenRA.Traits.Activities
 
 			var unit = self.traits.Get<Unit>();
 
+			if (unit.Altitude > 0)
+				--unit.Altitude;
+
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			if (unit.Altitude == cruiseAltitude)
-				Util.TickFacing(ref unit.Facing, desiredFacing, 
-					self.Info.Traits.Get<UnitInfo>().ROT);
-
-			if (unit.Altitude < cruiseAltitude)
-				++unit.Altitude;
-
-			FlyUtil.Fly(self, cruiseAltitude);
-			return this;
-		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
-	}
-
-	public static class FlyUtil
-	{
-		public static void Fly(Actor self, int desiredAltitude )
-		{
-			var unit = self.traits.Get<Unit>();
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
 			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			var angle = unit.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
-			unit.Altitude += Math.Sign(desiredAltitude - unit.Altitude);
+			return this;
 		}
+
+		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

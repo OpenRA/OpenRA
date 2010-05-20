@@ -20,45 +20,49 @@
 
 using System;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	public class Land : IActivity
+	class HeliFly : IActivity
 	{
-		readonly float2 Pos;
-		bool isCanceled;
-		Actor Structure;
-		
-		public Land(float2 pos) { Pos = pos; }
-		public Land(Actor structure) { Structure = structure; Pos = Structure.CenterLocation; }
-		
-		public IActivity NextActivity { get; set; }
+		readonly float2 Dest;
+		public HeliFly(float2 dest)
+		{
+			Dest = dest;
+		}
 
+		public IActivity NextActivity { get; set; }
+		bool isCanceled;
+		
 		public IActivity Tick(Actor self)
 		{
-			if (Structure != null && Structure.IsDead)
-			{
-				Structure = null;
-				isCanceled = true;
-			}
-			
-			if (isCanceled) return NextActivity;
-
-			var d = Pos - self.CenterLocation;
-			if (d.LengthSquared < 50)		/* close enough */
+			if (isCanceled)
 				return NextActivity;
 
 			var unit = self.traits.Get<Unit>();
+			var info = self.Info.Traits.Get<HelicopterInfo>();
 
-			if (unit.Altitude > 0)
-				--unit.Altitude;
+			if (unit.Altitude != info.CruiseAltitude)
+			{
+				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
+				return this;
+			}
 
-			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
-			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
-			var angle = unit.Facing / 128f * Math.PI;
+			var dist = Dest - self.CenterLocation;
+			if (float2.WithinEpsilon(float2.Zero, dist, 2))
+			{
+				self.CenterLocation = Dest;
+				self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+				return NextActivity;
+			}
 
-			self.CenterLocation += speed * -float2.FromAngle((float)angle);
+			var desiredFacing = Util.GetFacing(dist, unit.Facing);
+			Util.TickFacing(ref unit.Facing, desiredFacing, 
+				self.Info.Traits.Get<UnitInfo>().ROT);
+
+			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			self.CenterLocation += (rawSpeed / dist.Length) * dist;
 			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
 			return this;

@@ -21,8 +21,9 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	public class HeliAttack : IActivity
 	{

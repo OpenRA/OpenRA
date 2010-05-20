@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Reservable(self); }
 	}
 
-	class Reservable : ITick
+	public class Reservable : ITick
 	{
 		public Reservable(Actor self) { }
 		Actor reservedFor;

@@ -50,9 +50,18 @@
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="Activities\Fly.cs" />
+    <Compile Include="Activities\FlyAttack.cs" />
+    <Compile Include="Activities\FlyTimed.cs" />
+    <Compile Include="Activities\HeliAttack.cs" />
+    <Compile Include="Activities\HeliFly.cs" />
+    <Compile Include="Activities\HeliLand.cs" />
+    <Compile Include="Activities\HeliReturn.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
+    <Compile Include="Activities\Land.cs" />
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Leap.cs" />
+    <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="Activities\Teleport.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
@@ -87,6 +96,7 @@
     <Compile Include="Fake.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HasUnitOnBuild.cs" />
+    <Compile Include="Helicopter.cs" />
     <Compile Include="Husk.cs" />
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="LightPaletteRotator.cs" />
@@ -111,6 +121,7 @@
     <Compile Include="ParaDrop.cs" />
     <Compile Include="ParatroopersPower.cs" />
     <Compile Include="Passenger.cs" />
+    <Compile Include="Plane.cs" />
     <Compile Include="ProductionSurround.cs" />
     <Compile Include="RenderFlare.cs" />
     <Compile Include="RenderInfantry.cs" />

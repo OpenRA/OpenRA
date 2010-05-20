@@ -22,6 +22,7 @@ using System;
 using OpenRA.Traits.Activities;
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {

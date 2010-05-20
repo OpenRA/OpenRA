@@ -19,8 +19,10 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	public class HeliReturn : IActivity
 	{

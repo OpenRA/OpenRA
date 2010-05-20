@@ -18,52 +18,30 @@
  */
 #endregion
 
-using System;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
-	class HeliFly : IActivity
+	class HeliLand : IActivity
 	{
-		readonly float2 Dest;
-		public HeliFly(float2 dest)
-		{
-			Dest = dest;
-		}
+		public HeliLand(bool requireSpace) { this.requireSpace = requireSpace; }
 
-		public IActivity NextActivity { get; set; }
+		bool requireSpace;
 		bool isCanceled;
-		
+		public IActivity NextActivity { get; set; }
+
 		public IActivity Tick(Actor self)
 		{
-			if (isCanceled)
-				return NextActivity;
-
+			if (isCanceled) return NextActivity;
 			var unit = self.traits.Get<Unit>();
-			var info = self.Info.Traits.Get<HelicopterInfo>();
-
-			if (unit.Altitude != info.CruiseAltitude)
-			{
-				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
-				return this;
-			}
-
-			var dist = Dest - self.CenterLocation;
-			if (float2.WithinEpsilon(float2.Zero, dist, 2))
-			{
-				self.CenterLocation = Dest;
-				self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			if (unit.Altitude == 0)
 				return NextActivity;
-			}
 
-			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, 
-				self.Info.Traits.Get<UnitInfo>().ROT);
+			if (requireSpace && !self.World.IsPathableCell(self.Location, UnitMovementType.Foot))
+				return this;	// fail to land if no space
 
-			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
-			self.CenterLocation += (rawSpeed / dist.Length) * dist;
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
-
+			--unit.Altitude;
 			return this;
 		}
 

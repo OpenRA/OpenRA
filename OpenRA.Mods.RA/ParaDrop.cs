@@ -24,6 +24,7 @@ using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {

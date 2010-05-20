@@ -22,8 +22,10 @@ using System;
 using System.Linq;
 using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
+using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class PlaneInfo : ITraitInfo
 	{

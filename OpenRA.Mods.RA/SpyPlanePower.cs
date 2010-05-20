@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Orders;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
