@@ -55,7 +55,6 @@ namespace OpenRA.FileFormats
 				FieldLoader.LoadField(self,field,my[field].Value);
 			}
 		}
-		
 
 		public static void LoadField( object self, string key, string value )
 		{

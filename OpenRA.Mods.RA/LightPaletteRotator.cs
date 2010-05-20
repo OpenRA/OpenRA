@@ -19,26 +19,28 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> { }
-
-	class WaterPaletteRotation : ITick, IPaletteModifier
+	class LightPaletteRotatorInfo : TraitInfo<LightPaletteRotator> { }
+	class LightPaletteRotator : ITick, IPaletteModifier
 	{
 		float t = 0;
 		public void Tick(Actor self)
 		{
-			t += .25f;
+			t += .5f;
 		}
 
 		public void AdjustPalette(Bitmap b)
 		{
-			var rotate = (int)t % 7;
+			var rotate = (int)t % 18;
+			if (rotate > 9)
+				rotate = 18 - rotate;
+			
 			using (var bitmapCopy = new Bitmap(b))
-				for (int j = 0; j < 16; j++)
-					for (int i = 0; i < 7; i++)
-						b.SetPixel(0x60 + (rotate + i) % 7, j, bitmapCopy.GetPixel(0x60 + i, j));
+				for (int j = 0; j < b.Height; j++)
+					b.SetPixel(0x67, j, b.GetPixel(230+rotate, j));
 		}
 	}
 }

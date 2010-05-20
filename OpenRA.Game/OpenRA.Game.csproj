@@ -223,7 +223,6 @@
     <Compile Include="Traits\Helicopter.cs" />
     <Compile Include="Traits\Modifiers\InvisibleToOthers.cs" />
     <Compile Include="Traits\ConstructionYard.cs" />
-    <Compile Include="Traits\World\LightPaletteRotator.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
@@ -266,7 +265,6 @@
     <Compile Include="Traits\Unit.cs" />
     <Compile Include="Traits\World\SpawnMapActors.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
-    <Compile Include="Traits\World\WaterPaletteRotation.cs" />
     <Compile Include="Traits\Modifiers\WithShadow.cs" />
     <Compile Include="Network\UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />
