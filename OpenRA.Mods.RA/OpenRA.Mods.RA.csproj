@@ -49,13 +49,16 @@
     <Compile Include="Activities\CaptureBuilding.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\LayMine.cs" />
     <Compile Include="Activities\Steal.cs" />
     <Compile Include="Activities\Teleport.cs" />
+    <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="AirstrikePower.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
+    <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="CrateDrop.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="IronCurtainPower.cs" />
     <Compile Include="ParaDrop.cs" />
     <Compile Include="ParatroopersPower.cs" />
+    <Compile Include="Passenger.cs" />
     <Compile Include="RequiresPower.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />

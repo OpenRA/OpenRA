@@ -20,8 +20,10 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	public class UnloadCargo : IActivity
 	{

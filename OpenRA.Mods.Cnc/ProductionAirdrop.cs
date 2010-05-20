@@ -21,6 +21,7 @@
 using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc
 {

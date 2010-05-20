@@ -19,10 +19,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class CargoInfo : ITraitInfo
 	{
