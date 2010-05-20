@@ -18,7 +18,10 @@
  */
 #endregion
 
-namespace OpenRA.Traits.Activities
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
+
+namespace OpenRA.Mods.RA.Activities
 {
 	public class Follow : IActivity
 	{

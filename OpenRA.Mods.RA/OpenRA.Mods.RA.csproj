@@ -53,6 +53,7 @@
     <Compile Include="Activities\Fly.cs" />
     <Compile Include="Activities\FlyAttack.cs" />
     <Compile Include="Activities\FlyTimed.cs" />
+    <Compile Include="Activities\Follow.cs" />
     <Compile Include="Activities\HeliAttack.cs" />
     <Compile Include="Activities\HeliFly.cs" />
     <Compile Include="Activities\HeliLand.cs" />

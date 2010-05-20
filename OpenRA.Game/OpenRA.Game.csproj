@@ -185,7 +185,6 @@
     <Compile Include="GameRules\TerrainCost.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
-    <Compile Include="Traits\Activities\Follow.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Attack\AttackBase.cs" />
     <Compile Include="Traits\Attack\AttackInfo.cs" />
