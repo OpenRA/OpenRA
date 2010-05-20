@@ -92,4 +92,9 @@ namespace OpenRA.Traits
 				.GetCost(GetMovementType()) < float.PositiveInfinity;
 		}
 	}
+
+	/* tag trait for "bases": mcv/fact */
+
+	class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
+	class BaseBuilding { }
 }

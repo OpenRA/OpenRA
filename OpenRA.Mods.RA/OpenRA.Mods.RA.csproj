@@ -87,6 +87,7 @@
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
     <Compile Include="Chronoshiftable.cs" />
+    <Compile Include="ConquestVictoryConditions.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
     <Compile Include="CrateDrop.cs" />
