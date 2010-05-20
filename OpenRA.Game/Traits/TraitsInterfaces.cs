@@ -50,8 +50,8 @@ namespace OpenRA.Traits
 		float GetCost(int2 p, UnitMovementType umt);
 		float GetSpeedModifier(int2 p, UnitMovementType umt);
 	}
-	
-	public interface IDisable {	bool Disabled { get; set; } }
+
+	public interface IDisable { bool Disabled { get; } }
 	
 	interface IProducer
 	{
