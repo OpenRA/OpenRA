@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace OpenRA.Traits.Activities
 {
-	class HeliReturn : IActivity
+	public class HeliReturn : IActivity
 	{
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;

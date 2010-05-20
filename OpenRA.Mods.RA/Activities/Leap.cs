@@ -18,7 +18,8 @@
  */
 #endregion
 
-namespace OpenRA.Traits.Activities
+using OpenRA.Traits;
+namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : IActivity
 	{

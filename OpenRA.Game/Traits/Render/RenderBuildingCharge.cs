@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 	}
 
 	/* used for tesla */
-	class RenderBuildingCharge : RenderBuilding
+	public class RenderBuildingCharge : RenderBuilding
 	{
 		public RenderBuildingCharge(Actor self)
 			: base(self)

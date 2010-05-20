@@ -18,24 +18,33 @@
  */
 #endregion
 
-using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class AttackHeliInfo : AttackBaseInfo
+	class AttackLeapInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackHeli(self); }
+		public override object Create(Actor self) { return new AttackLeap(self); }
 	}
 
-	class AttackHeli : AttackFrontal
+	class AttackLeap : AttackBase
 	{
-		public AttackHeli(Actor self) : base(self, 20) { }
+		public AttackLeap(Actor self)
+			: base(self) {}
 
-		protected override void QueueAttack(Actor self, Order order)
+		public override void Tick(Actor self)
 		{
-			target = order.TargetActor;
-			self.QueueActivity(new HeliAttack(order.TargetActor));
-			self.QueueActivity(new HeliReturn());
+			base.Tick(self);
+
+			if (target == null || !target.IsInWorld) return;
+			if (self.GetCurrentActivity() is Leap) return;
+
+			var weapon = self.GetPrimaryWeapon();
+			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return;
+
+			self.CancelActivity();
+			self.QueueActivity(new Leap(self, target));
 		}
 	}
 }

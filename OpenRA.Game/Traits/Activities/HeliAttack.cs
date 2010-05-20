@@ -24,7 +24,7 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits.Activities
 {
-	class HeliAttack : IActivity
+	public class HeliAttack : IActivity
 	{
 		Actor target;
 		public HeliAttack( Actor target ) { this.target = target; }

@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Turreted(self); }
 	}
 
-	class Turreted : ITick
+	public class Turreted : ITick
 	{
 		[Sync]
 		public int turretFacing = 0;

@@ -20,7 +20,7 @@
 
 namespace OpenRA.Traits.Activities
 {
-	class Follow : IActivity
+	public class Follow : IActivity
 	{
 		Actor Target;
 		int Range;

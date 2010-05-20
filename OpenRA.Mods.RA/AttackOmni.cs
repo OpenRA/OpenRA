@@ -18,28 +18,37 @@
  */
 #endregion
 
-using System;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	abstract class AttackFrontal : AttackBase
+	class AttackOmniInfo : AttackBaseInfo
 	{
-		public AttackFrontal(Actor self, int facingTolerance)
-			: base(self) { FacingTolerance = facingTolerance; }
+		public override object Create(Actor self) { return new AttackOmni(self); }
+	}
 
-		readonly int FacingTolerance;
+	class AttackOmni : AttackBase, INotifyBuildComplete
+	{
+		bool buildComplete = false;
+		public void BuildingComplete(Actor self) { buildComplete = true; }
+
+		public AttackOmni(Actor self) : base(self) { }
+
+		protected override bool CanAttack( Actor self )
+		{
+			var isBuilding = ( self.traits.Contains<Building>() && !buildComplete );
+			return base.CanAttack( self ) && !isBuilding;
+		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
+			DoAttack(self);
+		}
 
-			if (target == null) return;
-
-			var unit = self.traits.Get<Unit>();
-			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, unit.Facing);
-
-			if (Math.Abs(facingToTarget - unit.Facing) % 256 < FacingTolerance)
-				DoAttack(self);
+		protected override void QueueAttack(Actor self, Order order)
+		{
+			target = order.TargetActor;
 		}
 	}
 }

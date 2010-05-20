@@ -18,32 +18,29 @@
  */
 #endregion
 
-using OpenRA.Traits.Activities;
+using System;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class AttackLeapInfo : AttackBaseInfo
+	abstract class AttackFrontal : AttackBase
 	{
-		public override object Create(Actor self) { return new AttackLeap(self); }
-	}
+		public AttackFrontal(Actor self, int facingTolerance)
+			: base(self) { FacingTolerance = facingTolerance; }
 
-	class AttackLeap : AttackBase
-	{
-		public AttackLeap(Actor self)
-			: base(self) {}
+		readonly int FacingTolerance;
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
 
-			if (target == null || !target.IsInWorld) return;
-			if (self.GetCurrentActivity() is Leap) return;
+			if (target == null) return;
 
-			var weapon = self.GetPrimaryWeapon();
-			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return;
+			var unit = self.traits.Get<Unit>();
+			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, unit.Facing);
 
-			self.CancelActivity();
-			self.QueueActivity(new Leap(self, target));
+			if (Math.Abs(facingToTarget - unit.Facing) % 256 < FacingTolerance)
+				DoAttack(self);
 		}
 	}
 }

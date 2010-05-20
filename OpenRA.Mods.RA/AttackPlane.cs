@@ -18,35 +18,24 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
+
+namespace OpenRA.Mods.RA
 {
-	class AttackOmniInfo : AttackBaseInfo
+	class AttackPlaneInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackOmni(self); }
+		public override object Create(Actor self) { return new AttackPlane(self); }
 	}
 
-	class AttackOmni : AttackBase, INotifyBuildComplete
+	class AttackPlane : AttackFrontal
 	{
-		bool buildComplete = false;
-		public void BuildingComplete(Actor self) { buildComplete = true; }
-
-		public AttackOmni(Actor self) : base(self) { }
-
-		protected override bool CanAttack( Actor self )
-		{
-			var isBuilding = ( self.traits.Contains<Building>() && !buildComplete );
-			return base.CanAttack( self ) && !isBuilding;
-		}
-
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-			DoAttack(self);
-		}
+		public AttackPlane(Actor self) : base(self, 20) { }
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
 			target = order.TargetActor;
+			self.QueueActivity(new FlyAttack(order.TargetActor));
 		}
 	}
 }

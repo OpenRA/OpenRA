@@ -18,23 +18,25 @@
  */
 #endregion
 
+using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class AttackPlaneInfo : AttackBaseInfo
+	class AttackHeliInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackPlane(self); }
+		public override object Create(Actor self) { return new AttackHeli(self); }
 	}
 
-	class AttackPlane : AttackFrontal
+	class AttackHeli : AttackFrontal
 	{
-		public AttackPlane(Actor self) : base(self, 20) { }
+		public AttackHeli(Actor self) : base(self, 20) { }
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
 			target = order.TargetActor;
-			self.QueueActivity(new FlyAttack(order.TargetActor));
+			self.QueueActivity(new HeliAttack(order.TargetActor));
+			self.QueueActivity(new HeliReturn());
 		}
 	}
 }

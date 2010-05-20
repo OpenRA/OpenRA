@@ -81,8 +81,6 @@
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
-    <Compile Include="Traits\Activities\Leap.cs" />
-    <Compile Include="Traits\Attack\AttackLeap.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
@@ -140,8 +138,6 @@
     <Compile Include="Sound.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
-    <Compile Include="Traits\Attack\AttackOmni.cs" />
-    <Compile Include="Traits\Attack\AttackTesla.cs" />
     <Compile Include="Traits\Chrome\PowerDownButton.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\World\SpatialBins.cs" />
@@ -204,11 +200,7 @@
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Activities\UndeployMcv.cs" />
     <Compile Include="Traits\Attack\AttackBase.cs" />
-    <Compile Include="Traits\Attack\AttackFrontal.cs" />
-    <Compile Include="Traits\Attack\AttackHeli.cs" />
     <Compile Include="Traits\Attack\AttackInfo.cs" />
-    <Compile Include="Traits\Attack\AttackPlane.cs" />
-    <Compile Include="Traits\Attack\AttackTurreted.cs" />
     <Compile Include="Traits\Modifiers\BelowUnits.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />

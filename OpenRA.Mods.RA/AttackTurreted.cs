@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
@@ -61,7 +62,7 @@ namespace OpenRA.Traits
 			var weapon = order.Subject.GetPrimaryWeapon() ?? order.Subject.GetSecondaryWeapon();
 
 			if (self.traits.Contains<Mobile>())
-				self.QueueActivity( new Traits.Activities.Follow( order.TargetActor,
+				self.QueueActivity( new Follow( order.TargetActor,
 					Math.Max( 0, (int)weapon.Range - RangeTolerance ) ) );
 
 			target = order.TargetActor;

@@ -19,17 +19,14 @@
 #endregion
 
 using System;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class AttackTeslaInfo : AttackOmniInfo
 	{
 		public readonly int MaxCharges = 3;
-
-		public override object Create( Actor self )
-		{
-			return new AttackTesla( self );
-		}
+		public override object Create(Actor self) { return new AttackTesla(self); }
 	}
 
 	class AttackTesla : AttackOmni, ITick
