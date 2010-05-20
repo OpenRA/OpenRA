@@ -241,7 +241,6 @@
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\Reservable.cs" />
     <Compile Include="Traits\Selectable.cs" />
-    <Compile Include="Traits\AI\SelfHealing.cs" />
     <Compile Include="Traits\SquishByTank.cs" />
     <Compile Include="Traits\Plane.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
