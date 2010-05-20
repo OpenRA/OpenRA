@@ -19,9 +19,9 @@
 #endregion
 
 using System.Linq;
-using System.Drawing;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class AutoTargetInfo : TraitInfo<AutoTarget>
 	{

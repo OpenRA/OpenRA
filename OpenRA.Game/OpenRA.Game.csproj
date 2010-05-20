@@ -209,8 +209,6 @@
     <Compile Include="Traits\Attack\AttackInfo.cs" />
     <Compile Include="Traits\Attack\AttackPlane.cs" />
     <Compile Include="Traits\Attack\AttackTurreted.cs" />
-    <Compile Include="Traits\AI\AutoHeal.cs" />
-    <Compile Include="Traits\AI\AutoTarget.cs" />
     <Compile Include="Traits\Modifiers\BelowUnits.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />

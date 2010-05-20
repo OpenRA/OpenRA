@@ -21,7 +21,7 @@
 namespace OpenRA.Traits.Activities
 {
 	/* non-turreted attack */
-	class Attack : IActivity
+	public class Attack : IActivity
 	{
 		Actor Target;
 		int Range;

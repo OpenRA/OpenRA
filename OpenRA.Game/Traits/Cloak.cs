@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Cloak(self); }
 	}
 
-	class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage
+	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage
 	{
 		[Sync]
 		int remainingTime;
