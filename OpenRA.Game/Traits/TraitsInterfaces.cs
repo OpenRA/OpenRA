@@ -32,6 +32,15 @@ namespace OpenRA.Traits
 	public enum TagType { None, Fake, Primary };
 	public enum Stance { Enemy, Neutral, Ally };
 
+	public class AttackInfo
+	{
+		public Actor Attacker;
+		public WarheadInfo Warhead;
+		public int Damage;
+		public DamageState DamageState;
+		public bool DamageStateChanged;
+	}
+
 	public interface ITick { void Tick(Actor self); }
 	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
 	public interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }

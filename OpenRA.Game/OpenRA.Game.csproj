@@ -185,8 +185,7 @@
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
-    <Compile Include="Traits\Attack\AttackBase.cs" />
-    <Compile Include="Traits\Attack\AttackInfo.cs" />
+    <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\Modifiers\BelowUnits.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
