@@ -20,19 +20,20 @@
 
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
 	static class SpriteSheetBuilder
 	{
+		static TheaterInfo GetTheater(Map map)
+		{	// todo: move this somewhere else
+			return Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == map.Theater);
+		}
+
 		public static void Initialize( Map map )
 		{
-			exts = new[] {
-				"." + map.Theater.Substring( 0, 3 ).ToLowerInvariant(),
-				".shp",
-				".tem",
-				".sno",
-				".int" };
+			exts = new[] { "." + GetTheater(map).Suffix, ".shp" };
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
