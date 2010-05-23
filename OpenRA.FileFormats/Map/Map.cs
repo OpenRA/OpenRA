@@ -128,9 +128,9 @@ namespace OpenRA.FileFormats
 				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
 			}
 
-			root.Add("Actors", MiniYaml.FromDictionary<string, ActorReference>(Actors));
-			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));
-			root.Add("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges));
+			root.Add("Actors", MiniYaml.FromDictionary(Actors));
+			root.Add("Waypoints", MiniYaml.FromDictionary(Waypoints));
+			root.Add("Smudges", MiniYaml.FromList(Smudges));
 			root.Add("Rules", new MiniYaml(null, Rules));
 			SaveBinaryData(Path.Combine(filepath, "map.bin"));
 			root.WriteToFile(Path.Combine(filepath, "map.yaml"));
