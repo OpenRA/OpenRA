@@ -22,6 +22,7 @@ using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using System.Collections.Generic;
+using System;
 
 namespace OpenRA.Mods.RA
 {
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Mine = "minv";
 		public readonly int MinefieldDepth = 2;
+		public readonly string[] RearmBuildings = { "fix" };
 	}
 
 	class Minelayer : IIssueOrder, IResolveOrder
@@ -57,6 +59,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
+
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth).ToArray();
 
@@ -64,9 +67,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, int depth)
+		static IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, int depth)
 		{
-			yield break;		/* todo: cells in locus */
+			var mins = int2.Min(start, end);
+			var maxs = int2.Max(start, end);
+
+			/* todo: proper endcaps, if anyone cares (which won't happen unless depth is large) */
+
+			var p = end - start;
+			var q = new float2(p.Y, -p.X);
+			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
+			var c = -float2.Dot(q, start);
+
+			/* return all points such that |ax + by + c| < depth */
+
+			for (var i = mins.X; i <= maxs.X; i++)
+				for (var j = mins.Y; j <= maxs.Y; j++)
+					if (Math.Abs(q.X * i + q.Y * j + c) < depth)
+						yield return new int2(i, j);
 		}
 
 		class MinefieldOrderGenerator : IOrderGenerator
