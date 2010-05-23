@@ -29,6 +29,8 @@ namespace OpenRA.Editor
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			Rules.LoadRules(manifest, new Map());
+
+			folderBrowser.SelectedPath = Environment.CurrentDirectory + "mods\\" + currentMod + "\\maps";
 		}
 
 		string loadedMapName;
@@ -80,10 +82,11 @@ namespace OpenRA.Editor
 			Rules.LoadRules(manifest, map);
 
 			// we're also going to need a tileset...
-			var tsinfo = fileMapping[Pair.New(currentMod, map.Theater)];
-			tileset = new TileSet("tileset.til", "templates.ini", tsinfo.First);
+			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
+				.FirstOrDefault(t => t.Theater == map.Theater);
 
-			colors = tsinfo.Second;
+			tileset = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
+			colors = theaterInfo.MapColors;
 
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
@@ -128,7 +131,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
-					var template = RenderActor(info, tsinfo.First, palette);
+					var template = RenderActor(info, theaterInfo.Suffix, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -159,7 +162,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderResourceType(a, tsinfo.First, palette);
+					var template = RenderResourceType(a, theaterInfo.Suffix, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -195,16 +198,6 @@ namespace OpenRA.Editor
 				Directory.SetCurrentDirectory("..");
 			}
 		}
-
-		static Dictionary<Pair<string, string>, Pair<string, string>> fileMapping = new Dictionary<Pair<string, string>, Pair<string, string>>()
-		{
-			{Pair.New("ra","TEMPERAT"),Pair.New("tem","temperat.col")},
-			{Pair.New("ra","SNOW"),Pair.New("sno","snow.col")},
-			{Pair.New("ra","INTERIOR"),Pair.New("int","temperat.col")},
-			{Pair.New("cnc","DESERT"),Pair.New("des","desert.col")},
-			{Pair.New("cnc","TEMPERAT"),Pair.New("tem","temperat.col")},
-			{Pair.New("cnc","WINTER"),Pair.New("win","winter.col")},
-		};
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
