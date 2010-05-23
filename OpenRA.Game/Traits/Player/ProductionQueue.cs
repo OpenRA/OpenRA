@@ -193,7 +193,7 @@ namespace OpenRA.Traits
 				return;
 			}
 
-			if( producer.traits.WithInterface<IProducer>().Any( p => p.Produce( producer, newUnitType ) ) )
+			if( producer.traits.WithInterface<Production>().Any( p => p.Produce( producer, newUnitType ) ) )
 				FinishProduction( newUnitType.Category );
 		}
 	}

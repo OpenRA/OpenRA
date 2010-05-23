@@ -21,8 +21,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class WallInfo : ITraitInfo
 	{
@@ -31,7 +32,7 @@ namespace OpenRA.Traits
 		public object Create(Actor self) { return new Wall(self); }
 	}
 
-	public class Wall : ICrushable, IOccupySpace
+	public class Wall : ICrushable, IOccupySpace, IBlocksBullets
 	{
 		readonly Actor self;
 		public Wall(Actor self)

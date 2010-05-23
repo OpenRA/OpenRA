@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		public virtual object Create(Actor self) { return new Production(self); }
 	}
 
-	public class Production : IIssueOrder, IResolveOrder, IProducer, ITags
+	public class Production : IIssueOrder, IResolveOrder, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }

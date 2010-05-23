@@ -173,6 +173,7 @@
     <Compile Include="ThrowsParticles.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="DefaultShellmapScript.cs" />
+    <Compile Include="Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />

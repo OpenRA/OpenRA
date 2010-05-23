@@ -62,11 +62,6 @@ namespace OpenRA.Traits
 
 	public interface IDisable { bool Disabled { get; } }
 	
-	interface IProducer
-	{
-		bool Produce( Actor self, ActorInfo producee );
-		void SetPrimaryProducer(Actor self, bool isPrimary);
-	}
 	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
 	public interface INotifyAttack { void Attacking(Actor self); }
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
@@ -144,4 +139,5 @@ namespace OpenRA.Traits
 	public interface INotifyIdle { void Idle(Actor self); }
 
 	public interface IVictoryConditions { bool HasLost { get; } bool HasWon { get; } }
+	public interface IBlocksBullets { }
 }

@@ -101,7 +101,7 @@ namespace OpenRA.Effects
 				var cell = ((1f/Game.CellSize) * pos).ToInt2();
 
 				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
-					a => a.traits.Contains<Wall>()))
+					a => a.traits.Contains<IBlocksBullets>()))
 				{
 					Args.dest = pos.ToInt2();
 					Explode(world);

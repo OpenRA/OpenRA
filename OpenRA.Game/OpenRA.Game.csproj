@@ -215,7 +215,6 @@
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
-    <Compile Include="Traits\Wall.cs" />
     <Compile Include="Traits\Player\EvaAlerts.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\LineBuild.cs" />
