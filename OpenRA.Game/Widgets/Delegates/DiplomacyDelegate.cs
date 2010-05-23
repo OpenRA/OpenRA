@@ -57,7 +57,7 @@ namespace OpenRA.Widgets.Delegates
 
 			y += 35;
 
-			foreach (var p in Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.isSpecial))
+			foreach (var p in Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.IsSpecial))
 			{
 				var pp = p;
 				var label = new LabelWidget

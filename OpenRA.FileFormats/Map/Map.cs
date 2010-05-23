@@ -136,10 +136,16 @@ namespace OpenRA.FileFormats
 				if (f.GetValue(this) == null) continue;
 				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
 			}
-
-			root.Add("Actors", MiniYaml.FromDictionary(Actors));
-			root.Add("Waypoints", MiniYaml.FromDictionary(Waypoints));
-			root.Add("Smudges", MiniYaml.FromList(Smudges));
+			
+			Dictionary<string, MiniYaml> playerYaml = new Dictionary<string, MiniYaml>();
+			
+			foreach(var p in Players)
+				playerYaml.Add("PlayerReference@{0}".F(p.Key), FieldSaver.Save(p.Value));
+			root.Add("Players",new MiniYaml(null, playerYaml));
+			
+			root.Add("Actors", MiniYaml.FromDictionary<string, ActorReference>(Actors));
+			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));
+			root.Add("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges));
 			root.Add("Rules", new MiniYaml(null, Rules));
 			SaveBinaryData(Path.Combine(filepath, "map.bin"));
 			root.WriteToFile(Path.Combine(filepath, "map.yaml"));

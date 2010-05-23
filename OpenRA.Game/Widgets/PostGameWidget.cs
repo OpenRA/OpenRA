@@ -45,7 +45,7 @@ namespace OpenRA.Widgets
 			if (world.players.Count > 2)	/* more than just us + neutral */
 			{
 				var conds = world.Queries.WithTrait<IVictoryConditions>()
-					.Where(c => !c.Actor.Owner.isSpecial);
+					.Where(c => !c.Actor.Owner.IsSpecial);
 
 				if (conds.Any(c => c.Actor.Owner == world.LocalPlayer && c.Trait.HasLost))
 					DrawText("YOU ARE DEFEATED");

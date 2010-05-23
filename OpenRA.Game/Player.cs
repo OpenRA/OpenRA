@@ -41,7 +41,7 @@ namespace OpenRA
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
 		public readonly int Index;
-		public readonly bool isSpecial = false;
+		public readonly bool IsSpecial = false;
 		
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
@@ -57,7 +57,7 @@ namespace OpenRA
 			Palette = pr.Palette;
 			Color = world.PlayerColors().Where(c => c.Name == pr.Palette).FirstOrDefault().Color;
 			PlayerName = InternalName = pr.Name;
-			isSpecial = pr.isSpecial;
+			IsSpecial = pr.IsSpecial;
 			Country = world.GetCountries()
 				.FirstOrDefault(c => pr.Race == c.Race);
 		}
