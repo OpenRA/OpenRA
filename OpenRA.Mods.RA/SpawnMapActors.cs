@@ -36,8 +36,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var actorReference in world.Map.Actors)
 				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Name, actorReference.Value.Location,
-					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Value.Owner)
-					?? world.NeutralPlayer);
+					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Value.Owner));
 
 			Game.skipMakeAnims = false;
 		}

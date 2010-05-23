@@ -41,7 +41,8 @@ namespace OpenRA
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
 		public readonly int Index;
-
+		public readonly bool isSpecial = false;
+		
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
 

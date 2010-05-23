@@ -52,8 +52,6 @@ namespace OpenRA
 			get { return players.ContainsKey(localPlayerIndex) ? players[localPlayerIndex] : null; }
 		}
 
-		public Player NeutralPlayer { get; private set; }
-
 		public void SetLocalPlayer(int index)
 		{
 			localPlayerIndex = index;
@@ -103,6 +101,7 @@ namespace OpenRA
 				player.GetType().GetField("Palette").SetValue( player, kv.Value.Palette );// Todo: set Player.Color as well
 				player.GetType().GetField("PlayerName").SetValue( player, kv.Value.Name );
 				player.GetType().GetField("InternalName").SetValue( player, kv.Value.Name );
+				player.GetType().GetField("isSpecial").SetValue( player, kv.Value.isSpecial );
 				
 				var country = WorldActor.Info.Traits.WithInterface<CountryInfo>().FirstOrDefault(c => kv.Value.Race == c.Race);
 				if (country == null)
@@ -111,9 +110,8 @@ namespace OpenRA
 				
 				AddPlayer(player);
 				
-				// Todo: Obsolete usage of "World.NeutralPlayer"
-				if (kv.Value.Name == "Neutral")
-					NeutralPlayer = player;
+				if (kv.Value.OwnsWorld)
+					WorldActor.Owner = player;
 			}
 
 			Timer.Time( "worldActor: {0}" );

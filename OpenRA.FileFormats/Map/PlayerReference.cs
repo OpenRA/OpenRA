@@ -25,6 +25,8 @@ namespace OpenRA.FileFormats
 		public readonly string Name;
 		public readonly string Palette;
 		public readonly string Race;
+		public readonly bool OwnsWorld = false;
+		public readonly bool isSpecial = false;
 		
 		public PlayerReference(MiniYaml my)
 		{

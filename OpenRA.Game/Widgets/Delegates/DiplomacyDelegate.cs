@@ -29,7 +29,6 @@ namespace OpenRA.Widgets.Delegates
 			bg.Children.RemoveAll(w => controls.Contains(w));
 			controls.Clear();
 
-			var unwantedPlayers = new[] { Game.world.NeutralPlayer, Game.world.LocalPlayer };
 			var y = 50;
 			var margin = 20;
 			var labelWidth = (bg.Bounds.Width - 3 * margin) / 3;
@@ -58,7 +57,7 @@ namespace OpenRA.Widgets.Delegates
 
 			y += 35;
 
-			foreach (var p in Game.world.players.Values.Except(unwantedPlayers))
+			foreach (var p in Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.isSpecial))
 			{
 				var pp = p;
 				var label = new LabelWidget

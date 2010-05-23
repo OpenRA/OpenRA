@@ -69,12 +69,12 @@ namespace OpenRA.Mods.RA
 				{
 					self.World.AddFrameEndTask(w =>
 						{
-							var crate = new Actor(w, "crate", new int2(0, 0), w.NeutralPlayer);
+							var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
 							crates.Add(crate);
 							self.World.WorldActor.traits.Get<UnitInfluence>().Remove(crate, crate.traits.Get<IOccupySpace>());
 
 							var startPos = w.ChooseRandomEdgeCell();
-							var plane = w.CreateActor("BADR", startPos, w.NeutralPlayer);
+							var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
 							plane.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
 							plane.CancelActivity();
 							plane.QueueActivity(new FlyCircle(p));

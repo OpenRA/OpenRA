@@ -21,6 +21,8 @@ Players:
 		Name: Neutral
 		Palette: neutral
 		Race: allies
+		OwnsWorld:true
+		isSpecial:true
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Palette: player1

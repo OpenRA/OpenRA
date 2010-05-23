@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 				if (self.World.IsCellBuildable(p, inWater))
 				{
 					self.World.AddFrameEndTask(
-						w => crates.Add(w.CreateActor("crate", p, self.World.NeutralPlayer)));
+						w => crates.Add(w.CreateActor("crate", p, self.World.WorldActor.Owner)));
 					break;
 				}
 			}

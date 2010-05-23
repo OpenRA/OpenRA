@@ -23,6 +23,8 @@ Players:
 		Name: Neutral
 		Palette: neutral
 		Race: allies
+		OwnsWorld:true
+		isSpecial:true
 
 Actors:
 	Actor0: tc02 Neutral 25,39

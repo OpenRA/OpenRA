@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<MustBeDestroyed>().Any();
 
-			var hasLost = !hasAnything && self.Owner != self.World.NeutralPlayer;
+			var hasLost = !hasAnything && !self.Owner.isSpecial;
 
 			if (hasLost && !HasLost)
 				Surrender(self);
