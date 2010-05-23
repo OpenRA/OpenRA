@@ -115,6 +115,7 @@ namespace OpenRA.Orders
 				case "Capture": return "capture";
 				case "Harvest": return "attackmove";
 				case "Steal" : return "enter";
+				case "BeginMinefield": return "ability";
 				default:
 					return null;
 			}

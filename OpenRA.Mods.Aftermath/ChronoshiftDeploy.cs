@@ -59,7 +59,8 @@ namespace OpenRA.Mods.Aftermath
 		{
 			if (order.OrderString == "Deploy")
 			{
-				Game.controller.orderGenerator = new SetChronoTankDestination(self);
+				if (self.Owner == self.World.LocalPlayer)
+					Game.controller.orderGenerator = new SetChronoTankDestination(self);
 				return;
 			}
 
@@ -70,7 +71,9 @@ namespace OpenRA.Mods.Aftermath
 				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 
-				Game.controller.CancelInputMode();
+				if (self.Owner == self.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud", self.CenterLocation);

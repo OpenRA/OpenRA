@@ -21,42 +21,80 @@
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
 	class MinelayerInfo : TraitInfo<Minelayer>
 	{
 		public readonly string Mine = "minv";
+		public readonly int MinefieldDepth = 2;
 	}
 
 	class Minelayer : IIssueOrder, IResolveOrder
 	{
+		int2[] minefield = null;
+		int2 minefieldStart;		/* nosync! */
+
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-				return null;
-
-			// Ensure that the cell is empty except for the minelayer
-			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(xy).Any(a => a != self))
-				return null;
-
-			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("Deploy", self);
+			if (mi.Button == MouseButton.Right && underCursor == null)
+				return new Order("BeginMinefield", self, xy);
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy")
-			{
-				var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
-				if (limitedAmmo != null)
-					limitedAmmo.Attacking(self);
+			if (order.OrderString == "BeginMinefield")
+				if (self.Owner == self.World.LocalPlayer)
+				{
+					minefieldStart = order.TargetLocation;
+					Game.controller.orderGenerator = new MinefieldOrderGenerator(self);
+				}
 
-				self.QueueActivity( new LayMine() );
+			if (order.OrderString == "PlaceMinefield")
+			{
+				if (self.Owner == self.World.LocalPlayer)
+					Game.controller.CancelInputMode();
+				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
+					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth).ToArray();
+
+				/* todo: start the mnly actually laying mines there */
 			}
+		}
+
+		IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, int depth)
+		{
+			yield break;		/* todo: cells in locus */
+		}
+
+		class MinefieldOrderGenerator : IOrderGenerator
+		{
+			Actor minelayer;
+
+			public MinefieldOrderGenerator(Actor self) { minelayer = self; }
+
+			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			{
+				var underCursor = world.FindUnitsAtMouse(mi.Location)
+					.Where(a => a.Info.Traits.Contains<SelectableInfo>())
+					.OrderByDescending(a => a.Info.Traits.Get<SelectableInfo>().Priority)
+					.FirstOrDefault();
+
+				if (mi.Button == MouseButton.Right && underCursor == null)
+					yield return new Order("PlaceMinefield", minelayer, xy);
+			}
+
+			public void Tick(World world)
+			{
+				if (minelayer.IsDead || !minelayer.IsInWorld)
+					Game.controller.CancelInputMode();
+			}
+
+			public void Render(World world) { }
+
+			public string GetCursor(World world, int2 xy, MouseInput mi) { return "ability"; }	/* todo */
 		}
 	}
 }
