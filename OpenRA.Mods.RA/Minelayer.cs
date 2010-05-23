@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 	class Minelayer : IIssueOrder, IResolveOrder
 	{
-		int2[] minefield = null;
+		public int2[] minefield = null;
 		int2 minefieldStart;		/* nosync! */
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -60,8 +60,11 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
+				var movement = self.traits.Get<IMovement>();
+
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
-					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth).ToArray();
+					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
+					.Where(p => movement.CanEnterCell(p)).ToArray();
 
 				/* todo: start the mnly actually laying mines there */
 			}

@@ -114,26 +114,16 @@ namespace OpenRA.Traits
 			return self.Info.Traits.Get<MobileInfo>().MovementType;			
 		}
 		
-		public bool CanEnterCell(int2 a)
+		public bool CanEnterCell(int2 p)
 		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(a)) return false;
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p)) return false;
 
-			var crushable = true;
-			foreach (Actor actor in self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a))
-			{
-				if (actor == self) continue;
-				
-				if (!self.World.IsActorCrushableByActor(actor, self))
-				{
-					crushable = false;
-					break;
-				}
-			}
+			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any(
+				a => a != self && !self.World.IsActorCrushableByActor(a, self)))
+				return false;
 			
-			if (!crushable) return false;
-
-			return self.World.Map.IsInMap(a.X, a.Y) &&
-				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[a.X, a.Y])]
+			return self.World.Map.IsInMap(p.X, p.Y) &&
+				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]
 				.GetCost(GetMovementType()) < float.PositiveInfinity;
 		}
 
