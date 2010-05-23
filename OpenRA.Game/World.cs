@@ -91,7 +91,27 @@ namespace OpenRA
 			Timer.Time("renderer: {0}");
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
-			AddPlayer(NeutralPlayer = new Player(this, null));		// add the neutral player
+			
+			// Add Map Players
+			int mapPlayerIndex = -1;
+			foreach (var kv in Map.Players)
+			{
+				var player = new Player(this, null);
+				Console.WriteLine("Creating Player {0}", kv.Key);
+				
+				// Lets just pretend that i didn't do this.... Will fix later
+				player.GetType().GetField("Index").SetValue( player, mapPlayerIndex-- );
+				player.GetType().GetField("Palette").SetValue( player, kv.Value.Palette );// Todo: set Player.Color as well
+				player.GetType().GetField("PlayerName").SetValue( player, kv.Value.Name );
+				player.GetType().GetField("InternalName").SetValue( player, kv.Value.Name );
+				player.GetType().GetField("Country").SetValue( player, this.GetCountries().FirstOrDefault(c => kv.Value.Race == c.Name) );
+
+				AddPlayer(player);
+				
+				// Todo: Obsolete usage of "World.NeutralPlayer"
+				if (kv.Value.Name == "Neutral")
+					NeutralPlayer = player;
+			}
 
 			Timer.Time( "worldActor: {0}" );
 

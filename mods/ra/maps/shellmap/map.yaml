@@ -16,6 +16,20 @@ TopLeft: 26,36
 
 BottomRight: 118,93
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: allies
+	PlayerReference@GoodGuy:
+		Name: GoodGuy
+		Palette: player1
+		Race: allies
+	PlayerReference@Greece:
+		Name: Greece
+		Palette: player4
+		Race: soviet
+
 Actors:
 	Actor0: brik Neutral 32,43
 	Actor1: brik Neutral 33,43

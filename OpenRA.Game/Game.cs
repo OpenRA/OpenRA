@@ -420,6 +420,9 @@ namespace OpenRA
 
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
+			// HACK
+			return Stance.Enemy;
+			
 			if (p == q) return Stance.Ally;
 			if (p == world.NeutralPlayer || q == world.NeutralPlayer) return Stance.Neutral;
 

@@ -42,16 +42,18 @@ namespace OpenRA.FileFormats
 		public int PlayerCount;
 		public string Tileset;
 
+		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
-		
+
 		// Rules overrides
 		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Weapons = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Voices = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Music = new Dictionary<string, MiniYaml>();
 		public Dictionary<string, MiniYaml> Terrain = new Dictionary<string, MiniYaml>();
+		
 		// Binary map data
 		public byte TileFormat = 1;
 		public int2 MapSize;
@@ -93,13 +95,20 @@ namespace OpenRA.FileFormats
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
 			}
-
+			
+			// Players
+			foreach (var kv in yaml["Players"].Nodes)
+			{
+				var player = new PlayerReference(kv.Value);
+				Players.Add(player.Name, player);
+			}
+			
 			// Actors
 			foreach (var kv in yaml["Actors"].Nodes)
 			{
 				string[] vals = kv.Value.Value.Split(' ');
 				string[] loc = vals[2].Split(',');
-				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[2]);
+				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
 				Actors.Add(kv.Key, a);
 			}
 

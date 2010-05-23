@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +26,9 @@ namespace OpenRA.Traits
 
 			public void Tick( Player owner, Cache<string, List<Actor>> buildings )
 			{
+				// HACK
+				return;
+				
 				var effectivePrereq = prerequisites.Where( a => a.Traits.Get<BuildableInfo>().Owner.Contains( owner.Country.Race ) );
 				var nowHasPrerequisites = effectivePrereq.Any() &&
 					effectivePrereq.All( a => buildings[ a.Name ].Any( b => !b.traits.Get<Building>().Disabled ) );
