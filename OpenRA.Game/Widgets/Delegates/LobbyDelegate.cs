@@ -114,7 +114,7 @@ namespace OpenRA.Widgets.Delegates
 			}
 		}
 		
-		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index); }
+		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index) && Game.world.PlayerColors()[index % Game.world.PlayerColors().Count].Playable; }
 		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 		
 		bool CyclePalette(MouseInput mi)

@@ -46,29 +46,34 @@ namespace OpenRA
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
 
-		public Player( World world, Session.Client client )
+		public Player( World world, PlayerReference pr, int index )
 		{
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
 
 			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 
-			if (client != null)
-			{
-				Index = client.Index;
-				Palette = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Name;
-				Color = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Color;
-				PlayerName = client.Name;
-				InternalName = "Multi{0}".F(client.Index);
-			}
-			else
-			{
-				Index = -1;
-				PlayerName = InternalName = "Neutral";
-				Palette = "neutral";
-				Color = Color.Gray;	// HACK HACK
-			}
+			Index = index;
+			Palette = pr.Palette;
+			Color = world.PlayerColors().Where(c => c.Name == pr.Palette).FirstOrDefault().Color;
+			PlayerName = InternalName = pr.Name;
+			isSpecial = pr.isSpecial;
+			Country = world.GetCountries()
+				.FirstOrDefault(c => pr.Race == c.Race);
+		}
+		
+		public Player( World world, Session.Client client )
+		{
+			World = world;
+			Shroud = new ShroudRenderer(this, world.Map);
 
+			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
+			
+			Index = client.Index;
+			Palette = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Name;
+			Color = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Color;
+			PlayerName = client.Name;
+			InternalName = "Multi{0}".F(client.Index);
 			Country = world.GetCountries()
 				.FirstOrDefault(c => client != null && client.Country == c.Name)
 				?? world.GetCountries().Random(world.SharedRandom);

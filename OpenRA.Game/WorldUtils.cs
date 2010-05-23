@@ -239,9 +239,7 @@ namespace OpenRA
 
 		public static List<PlayerColorPaletteInfo> PlayerColors(this World world)
 		{
-			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>()
-				.Where(p => p.Playable)
-				.ToList();
+			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>().ToList();
 		}
 	}
 }
