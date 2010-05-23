@@ -22,10 +22,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class ProvidesRadarInfo : ITraitInfo
-	{
-		public object Create( Actor self ) { return new ProvidesRadar(); }
-	}
+	class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
 
 	class ProvidesRadar : ITick
 	{
@@ -46,10 +43,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	class JamsRadarInfo : TraitInfo<JamsRadar>
-	{
-		public readonly int Range = 0;
-	}
+	class JamsRadarInfo : TraitInfo<JamsRadar> { public readonly int Range = 0;	}
 
 	class JamsRadar { }
 }
