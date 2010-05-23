@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				// rearm & repair at fix, then back out here to refill the minefield some more
 				var buildings = self.Info.Traits.Get<MinelayerInfo>().RearmBuildings;
-				var rearmTarget = self.World.Actors.FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally
+				var rearmTarget = self.World.Actors.FirstOrDefault(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Ally
 					&& buildings.Contains(a.Info.Name));
 
 				if (rearmTarget == null)
