@@ -38,8 +38,16 @@ namespace OpenRA.Mods.RA.Activities
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
 			{
-				// todo: rearm at fix, then back out here to refill the minefield some more
-				return NextActivity;
+				// rearm & repair at fix, then back out here to refill the minefield some more
+				var buildings = self.Info.Traits.Get<MinelayerInfo>().RearmBuildings;
+				var rearmTarget = self.World.Actors.FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally
+					&& buildings.Contains(a.Info.Name));
+
+				if (rearmTarget == null)
+					return new Wait(20);
+
+				return new Move(((1 / 24f) * rearmTarget.CenterLocation).ToInt2(), rearmTarget)
+					{ NextActivity = new Rearm() { NextActivity = new Repair() { NextActivity = this } } };
 			}
 
 			var ml = self.traits.Get<Minelayer>();
@@ -56,6 +64,8 @@ namespace OpenRA.Mods.RA.Activities
 				if (ShouldLayMine(self, p))
 					return new Move(p, 0) { NextActivity = this };
 			}
+
+			// todo: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
 
 			return new Wait(20);	// nothing to do here
 		}
