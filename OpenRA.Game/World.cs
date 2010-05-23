@@ -97,15 +97,18 @@ namespace OpenRA
 			foreach (var kv in Map.Players)
 			{
 				var player = new Player(this, null);
-				Console.WriteLine("Creating Player {0}", kv.Key);
 				
 				// Lets just pretend that i didn't do this.... Will fix later
 				player.GetType().GetField("Index").SetValue( player, mapPlayerIndex-- );
 				player.GetType().GetField("Palette").SetValue( player, kv.Value.Palette );// Todo: set Player.Color as well
 				player.GetType().GetField("PlayerName").SetValue( player, kv.Value.Name );
 				player.GetType().GetField("InternalName").SetValue( player, kv.Value.Name );
-				player.GetType().GetField("Country").SetValue( player, this.GetCountries().FirstOrDefault(c => kv.Value.Race == c.Name) );
-
+				
+				var country = WorldActor.Info.Traits.WithInterface<CountryInfo>().FirstOrDefault(c => kv.Value.Race == c.Race);
+				if (country == null)
+					throw new NotImplementedException("Invalid country: {0}".F(kv.Value.Race));
+				player.GetType().GetField("Country").SetValue( player, country);
+				
 				AddPlayer(player);
 				
 				// Todo: Obsolete usage of "World.NeutralPlayer"
