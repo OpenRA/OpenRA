@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Right && underCursor == null)
+			if (mi.Button == MouseButton.Right && underCursor == null && mi.Modifiers.HasModifier(Modifiers.Ctrl))
 				return new Order("BeginMinefield", self, xy);
 
 			return null;
@@ -67,6 +67,8 @@ namespace OpenRA.Mods.RA
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
 				/* todo: start the mnly actually laying mines there */
+				self.CancelActivity();
+				self.QueueActivity(new LayMines());
 			}
 		}
 

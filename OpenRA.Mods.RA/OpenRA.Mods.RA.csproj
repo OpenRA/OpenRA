@@ -61,7 +61,7 @@
     <Compile Include="Activities\HeliReturn.cs" />
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\Land.cs" />
-    <Compile Include="Activities\LayMine.cs" />
+    <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\Repair.cs" />
