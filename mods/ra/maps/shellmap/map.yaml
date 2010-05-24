@@ -1,6 +1,6 @@
 Selectable: False
 
-MapFormat: 1
+MapFormat: 2
 
 Title: <none>
 
@@ -22,7 +22,7 @@ Players:
 		Palette: neutral
 		Race: allies
 		OwnsWorld:true
-		IsSpecial:true
+		NonCombatant:true
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Palette: player1
