@@ -23,42 +23,170 @@ Players:
 		Name: Neutral
 		Palette: neutral
 		Race: allies
-		OwnsWorld:true
-		NonCombatant:true
+		OwnsWorld: True
+		NonCombatant: True
 
 Actors:
-	Actor0: tc02 Neutral 25,39
-	Actor1: tc01 Neutral 26,40
-	Actor2: tc01 Neutral 27,39
-	Actor3: tc05 Neutral 30,40
-	Actor4: tc04 Neutral 37,39
-	Actor5: tc04 Neutral 39,37
-	Actor6: tc04 Neutral 41,35
-	Actor7: t01 Neutral 42,33
-	Actor8: t01 Neutral 50,24
-	Actor9: t05 Neutral 49,25
-	Actor10: t08 Neutral 45,29
-	Actor11: tc04 Neutral 43,49
-	Actor12: tc01 Neutral 45,51
-	Actor13: tc01 Neutral 48,52
-	Actor14: t03 Neutral 40,42
-	Actor15: t03 Neutral 35,40
-	Actor16: tc04 Neutral 57,57
-	Actor17: tc02 Neutral 58,19
-	Actor18: tc01 Neutral 21,19
-	Actor19: tc02 Neutral 19,20
-	Actor20: t08 Neutral 16,22
-	Actor21: v12 Neutral 18,22
-	Actor22: t05 Neutral 18,55
-	Actor23: tc02 Neutral 16,54
-	Actor24: t16 Neutral 29,39
-	Actor25: t16 Neutral 21,56
-	Actor26: mine Neutral 33,45
-	Actor27: mine Neutral 36,45
-	Actor28: mine Neutral 44,43
-	Actor29: mine Neutral 45,40
-	Actor30: mine Neutral 37,34
-	Actor31: mine Neutral 35,37
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: tc02
+		Location: 25,39
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: tc01
+		Location: 26,40
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: tc01
+		Location: 27,39
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: tc05
+		Location: 30,40
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: tc04
+		Location: 37,39
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: tc04
+		Location: 39,37
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: tc04
+		Location: 41,35
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: t01
+		Location: 42,33
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: t01
+		Location: 50,24
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: t05
+		Location: 49,25
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: t08
+		Location: 45,29
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: tc04
+		Location: 43,49
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: tc01
+		Location: 45,51
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: tc01
+		Location: 48,52
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: t03
+		Location: 40,42
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: t03
+		Location: 35,40
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: tc04
+		Location: 57,57
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: tc02
+		Location: 58,19
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: tc01
+		Location: 21,19
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: tc02
+		Location: 19,20
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: t08
+		Location: 16,22
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: v12
+		Location: 18,22
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: t05
+		Location: 18,55
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: tc02
+		Location: 16,54
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: t16
+		Location: 29,39
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: t16
+		Location: 21,56
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: mine
+		Location: 33,45
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: mine
+		Location: 36,45
+		Owner: Neutral
+	ActorReference@Actor28:
+		Id: Actor28
+		Type: mine
+		Location: 44,43
+		Owner: Neutral
+	ActorReference@Actor29:
+		Id: Actor29
+		Type: mine
+		Location: 45,40
+		Owner: Neutral
+	ActorReference@Actor30:
+		Id: Actor30
+		Type: mine
+		Location: 37,34
+		Owner: Neutral
+	ActorReference@Actor31:
+		Id: Actor31
+		Type: mine
+		Location: 35,37
+		Owner: Neutral
 
 Waypoints:
 	wp0: 29,24

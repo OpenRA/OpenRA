@@ -35,7 +35,7 @@ namespace OpenRA.FileFormats
 
 		// Yaml map data
 		public bool Selectable = true;
-		public int MapFormat = 1;
+		public int MapFormat;
 		public string Title;
 		public string Description;
 		public string Author;
@@ -117,7 +117,7 @@ namespace OpenRA.FileFormats
 			}
 			
 			// Players
-			if (MapFormat < 2)
+			if (MapFormat == 1)
 			{
 				Players.Add("Neutral", new PlayerReference("Neutral", "neutral", "allies", true, true));
 			}
@@ -131,7 +131,7 @@ namespace OpenRA.FileFormats
 			}
 			
 			// Actors
-			if (MapFormat == 1 )
+			if (MapFormat == 1)
 			{
 				int actors = 0;
 				foreach (var kv in yaml["Actors"].Nodes)
@@ -142,23 +142,12 @@ namespace OpenRA.FileFormats
 					Actors.Add(a.Id, a);
 				}
 			}
-			else if (MapFormat == 2)
-			{
-				int actors = 0;
-				foreach (var kv in yaml["Actors"].Nodes)
-				{
-					string[] vals = kv.Value.Value.Split(' ');
-					string[] loc = vals[2].Split(',');
-					var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
-					Actors.Add(kv.Key, a);
-				}
-			}
 			else
 			{
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
-					var player = new ActorReference(kv.Value);
-					Actors.Add(player.Id, player);
+					var a = new ActorReference(kv.Value);
+					Actors.Add(a.Id, a);
 				}
 			}
 
@@ -179,7 +168,7 @@ namespace OpenRA.FileFormats
 
 		public void Save(string filepath)
 		{
-			MapFormat = 3;
+			MapFormat = 2;
 			
 			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
 			foreach (var field in SimpleFields)
