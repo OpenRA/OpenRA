@@ -314,7 +314,7 @@ CRATE:
 		Notification: unitspd1.aud
 		Effect: speed
 	GiveCashCrateAction:
-		Amount: 2000
+		Amount: 1000
 		SelectionShares: 50
 		Effect: dollar
 	FirepowerUpgradeCrateAction:
