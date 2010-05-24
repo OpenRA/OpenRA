@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -387,26 +387,12 @@ namespace OpenRA.Editor
 				{
 					var map = new Map();
 
-					map.MapSize = new int2(1, 1);
-					map.MapResources = new TileReference<byte, byte>[1, 1];
-					map.MapTiles = new TileReference<ushort, byte>[1, 1] 
-						{ { new TileReference<ushort, byte> { 
-							type = currentMod == "cnc" ? (ushort)0xffu : (ushort)0xffffu, 
-							image = (byte)0xffu, 
-							index = (byte)0xffu } } };
-
 					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
-
-					map.PlayerCount = 8;
 
 					map.TopLeft = new int2((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value);
 					map.BottomRight = new int2((int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
-
 					map.Tileset = nmd.theater.SelectedItem as string;
 
-					map.Title = "Name your map here";
-					map.Description = "Describe your map here";
-					map.Author = "Your name here";
 
 					NewMap(map);
 				}

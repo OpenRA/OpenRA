@@ -1,7 +1,13 @@
 ; clear ground
 DTW
 1
-ff
+00ff
+clear1
+
+; clear ground
+DTW
+1
+ffff
 clear1
 
 ; clear ground

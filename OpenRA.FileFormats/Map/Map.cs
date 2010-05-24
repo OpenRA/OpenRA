@@ -79,7 +79,27 @@ namespace OpenRA.FileFormats
 			"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
 		};
 
-		public Map() { }
+		public Map()
+		{
+			MapSize = new int2(1, 1);
+			MapResources = new TileReference<byte, byte>[1, 1];
+			MapTiles = new TileReference<ushort, byte>[1, 1] 
+				{ { new TileReference<ushort, byte> { 
+					type =  (ushort)0xffffu, 
+					image = (byte)0xffu, 
+					index = (byte)0xffu } } };
+
+			PlayerCount = 0;
+			TopLeft = new int2(0,0);
+			BottomRight = new int2(0,0);
+
+			Tileset = "TEMPERAT";
+			Players.Add("Neutral", new PlayerReference("Neutral", "neutral", "allies", true, true));
+
+			Title = "Name your map here";
+			Description = "Describe your map here";
+			Author = "Your name here";
+		}
 
 		public Map(IFolder package)
 		{
@@ -97,19 +117,39 @@ namespace OpenRA.FileFormats
 			}
 			
 			// Players
-			foreach (var kv in yaml["Players"].Nodes)
+			if (MapFormat < 2)
 			{
-				var player = new PlayerReference(kv.Value);
-				Players.Add(player.Name, player);
+				Players.Add("Neutral", new PlayerReference("Neutral", "neutral", "allies", true, true));
+			}
+			else
+			{
+				foreach (var kv in yaml["Players"].Nodes)
+				{
+					var player = new PlayerReference(kv.Value);
+					Players.Add(player.Name, player);
+				}
 			}
 			
 			// Actors
-			foreach (var kv in yaml["Actors"].Nodes)
+			if (MapFormat == 1 )
 			{
-				string[] vals = kv.Value.Value.Split(' ');
-				string[] loc = vals[2].Split(',');
-				var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
-				Actors.Add(kv.Key, a);
+				foreach (var kv in yaml["Actors"].Nodes)
+				{
+					string[] vals = kv.Value.Value.Split(' ');
+					string[] loc = vals[2].Split(',');
+					var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
+					Actors.Add(kv.Key, a);
+				}
+			}
+			else
+			{
+				foreach (var kv in yaml["Actors"].Nodes)
+				{
+					string[] vals = kv.Value.Value.Split(' ');
+					string[] loc = vals[2].Split(',');
+					var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
+					Actors.Add(kv.Key, a);
+				}
 			}
 
 			// Smudges
@@ -129,6 +169,8 @@ namespace OpenRA.FileFormats
 
 		public void Save(string filepath)
 		{
+			MapFormat = 2;
+			
 			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
 			foreach (var field in SimpleFields)
 			{
