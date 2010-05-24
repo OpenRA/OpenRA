@@ -94,6 +94,9 @@ namespace OpenRA.Editor
 
 			// construct the palette of tiles
 
+			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
+			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
+
 			foreach (var n in tileset.tiles.Keys)
 			{
 				try
@@ -186,6 +189,8 @@ namespace OpenRA.Editor
 			}
 
 			surface1.BindResourceTemplates(resourceTemplates);
+
+			foreach (var p in palettes) { p.Visible = true; p.ResumeLayout(); }
 		}
 
 		void LocateGameRoot()
