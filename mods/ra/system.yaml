@@ -334,7 +334,7 @@ CRATE:
 		Weapon: CrateExplosion
 		SelectionShares: 5
 	HideMapCrateAction:
-		SelectionShares: 10
+		SelectionShares: 5
 		Effect: hide-map
 	SupportPowerCrateAction@parabombs:
 		Power: AirstrikePower
