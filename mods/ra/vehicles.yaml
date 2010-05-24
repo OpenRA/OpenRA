@@ -525,7 +525,7 @@ MIG:
 		Description: Mig Attack Plane
 		LongDesc: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Unit:
-		HP: 50
+		HP: 70
 		Armor: light
 		InitialFacing: 192
 		ROT: 5
