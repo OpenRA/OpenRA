@@ -33,7 +33,8 @@ namespace OpenRA.Graphics
 
 		public static void Initialize( Map map )
 		{
-			exts = new[] { "." + GetTheater(map).Suffix, ".shp" };
+			/* .tem: hack to allow incomplete theaters (interior) to work, falling back to temperate for the missing art */
+			exts = new[] { "." + GetTheater(map).Suffix, ".shp", ".tem" };
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
