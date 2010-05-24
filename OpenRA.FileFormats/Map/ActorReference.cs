@@ -20,22 +20,25 @@
 
 namespace OpenRA.FileFormats
 {
-	public struct ActorReference
+	public class ActorReference
 	{
+		public readonly string Id;
+		public readonly string Type;
 		public readonly int2 Location;
-		public readonly string Name;
 		public readonly string Owner;
-		public ActorReference( string name, int2 location, string owner )
+		
+		public ActorReference(MiniYaml my)
 		{
-			Name = name;
+			FieldLoader.Load(this, my);
+		}
+		
+		// Legacy construtor for old format maps
+		public ActorReference(string id, string type, int2 location, string owner )
+		{
+			Id = id;
+			Type = type;
 			Location = location;
 			Owner = owner;
 		}
-		
-		public override string ToString ()
-		{
-			return string.Format("{0} {1} {2},{3}", Name, Owner, Location.X,Location.Y);
-		}
-
 	}
 }

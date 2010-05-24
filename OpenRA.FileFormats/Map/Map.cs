@@ -133,11 +133,23 @@ namespace OpenRA.FileFormats
 			// Actors
 			if (MapFormat == 1 )
 			{
+				int actors = 0;
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
 					string[] vals = kv.Value.Value.Split(' ');
 					string[] loc = vals[2].Split(',');
-					var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
+					var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
+					Actors.Add(a.Id, a);
+				}
+			}
+			else if (MapFormat == 2)
+			{
+				int actors = 0;
+				foreach (var kv in yaml["Actors"].Nodes)
+				{
+					string[] vals = kv.Value.Value.Split(' ');
+					string[] loc = vals[2].Split(',');
+					var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
 					Actors.Add(kv.Key, a);
 				}
 			}
@@ -145,10 +157,8 @@ namespace OpenRA.FileFormats
 			{
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
-					string[] vals = kv.Value.Value.Split(' ');
-					string[] loc = vals[2].Split(',');
-					var a = new ActorReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), vals[1]);
-					Actors.Add(kv.Key, a);
+					var player = new ActorReference(kv.Value);
+					Actors.Add(player.Id, player);
 				}
 			}
 
@@ -169,7 +179,7 @@ namespace OpenRA.FileFormats
 
 		public void Save(string filepath)
 		{
-			MapFormat = 2;
+			MapFormat = 3;
 			
 			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
 			foreach (var field in SimpleFields)
@@ -180,12 +190,15 @@ namespace OpenRA.FileFormats
 			}
 			
 			Dictionary<string, MiniYaml> playerYaml = new Dictionary<string, MiniYaml>();
-			
 			foreach(var p in Players)
 				playerYaml.Add("PlayerReference@{0}".F(p.Key), FieldSaver.Save(p.Value));
 			root.Add("Players",new MiniYaml(null, playerYaml));
 			
-			root.Add("Actors", MiniYaml.FromDictionary<string, ActorReference>(Actors));
+			Dictionary<string, MiniYaml> actorYaml = new Dictionary<string, MiniYaml>();
+			foreach(var p in Actors)
+				actorYaml.Add("ActorReference@{0}".F(p.Key), FieldSaver.Save(p.Value));
+			root.Add("Actors",new MiniYaml(null, actorYaml));
+			
 			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));
 			root.Add("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges));
 			root.Add("Rules", new MiniYaml(null, Rules));
@@ -301,24 +314,6 @@ namespace OpenRA.FileFormats
 		public bool IsInMap(int x, int y)
 		{
 			return (x >= TopLeft.X && y >= TopLeft.Y && x < BottomRight.X && y < BottomRight.Y);
-		}
-
-		public void DebugContents()
-		{
-			foreach (var field in SimpleFields)
-				Console.WriteLine("Loaded {0}: {1}", field, this.GetType().GetField(field).GetValue(this));
-
-			Console.WriteLine("Loaded Waypoints:");
-			foreach (var wp in Waypoints)
-				Console.WriteLine("\t{0} => {1}", wp.Key, wp.Value);
-
-			Console.WriteLine("Loaded Actors:");
-			foreach (var wp in Actors)
-				Console.WriteLine("\t{0} => {1} {2} {3}", wp.Key, wp.Value.Name, wp.Value.Owner, wp.Value.Location);
-
-			Console.WriteLine("Loaded Smudges:");
-			foreach (var s in Smudges)
-				Console.WriteLine("\t{0} {1} {2}", s.Type, s.Location, s.Depth);
 		}
 
 		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -186,7 +186,8 @@ namespace OpenRA.Editor
 				return;
 
 			var owner = "Neutral";
-			Map.Actors[NextActorName()] = new ActorReference(Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
+			var id = NextActorName();
+			Map.Actors[id] = new ActorReference(id,Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
 		}
 
 		Random r = new Random();
@@ -316,7 +317,7 @@ namespace OpenRA.Editor
 				new Rectangle(Map.XOffset * 24 + Offset.X, Map.YOffset * 24 + Offset.Y, Map.Width * 24, Map.Height * 24));
 
 			foreach (var ar in Map.Actors)
-				DrawActor(e.Graphics, ar.Value.Location, ActorTemplates[ar.Value.Name]);
+				DrawActor(e.Graphics, ar.Value.Location, ActorTemplates[ar.Value.Type]);
 
 			foreach (var wp in Map.Waypoints)
 				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(
@@ -345,7 +346,7 @@ namespace OpenRA.Editor
 			{
 				var x = Map.Actors.FirstOrDefault(a => a.Value.Location == GetBrushLocation());
 				if (x.Key != null)
-					DrawActorBorder(e.Graphics, x.Value.Location, ActorTemplates[x.Value.Name]);
+					DrawActorBorder(e.Graphics, x.Value.Location, ActorTemplates[x.Value.Type]);
 			}
 		}
 	}
