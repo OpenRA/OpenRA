@@ -99,7 +99,7 @@ World:
 	CrateDrop:
 		Minimum: 1
 		Maximum: 3
-		SpawnInterval: 20
+		SpawnInterval: 120
 		WaterChance: .2
 	PaletteFromFile@terrain_temperat:
 		Name: terrain
