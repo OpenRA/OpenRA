@@ -166,12 +166,17 @@ namespace OpenRA.Widgets
 
 			throw new InvalidOperationException("Impossible");
 		}
+
+		public abstract void DrawInner( World world );
 		
-		public virtual void Draw(World world)
+		public void Draw(World world)
 		{
 			if (IsVisible())
+			{
+				DrawInner( world );
 				foreach (var child in Children)
 					child.Draw(world);
+			}
 		}
 		
 		public virtual void Tick(World world)
@@ -228,6 +233,8 @@ namespace OpenRA.Widgets
 		public ContainerWidget() : base() { }
 
 		public ContainerWidget(Widget other) : base(other) { }
+
+		public override void DrawInner( World world ) { }
 
 		public override Widget Clone() { return new ContainerWidget(this); }
 	}

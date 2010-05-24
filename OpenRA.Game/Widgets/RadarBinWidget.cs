@@ -86,7 +86,7 @@ namespace OpenRA.Widgets
 		
 		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning RadarBin?"); }
 
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
 			DrawRadar(world);
 			DrawPower(world);

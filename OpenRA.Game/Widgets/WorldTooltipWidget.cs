@@ -36,7 +36,7 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new WorldTooltipWidget(this); }
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
 			if (Game.chrome.ticksSinceLastMove < worldTooltipDelay || world == null || world.LocalPlayer == null)
 				return;

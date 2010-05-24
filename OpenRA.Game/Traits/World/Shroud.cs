@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 {
 	public class ShroudInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new Shroud(self, this); }
+		public object Create(Actor self) { return new Shroud(self); }
 	}
 
 	public class Shroud
@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		public Rectangle? exploredBounds;
 		public event Action Dirty = () => { };
 
-		public Shroud(Actor self, ShroudInfo info)
+		public Shroud(Actor self)
 		{
 			map = self.World.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];

@@ -80,13 +80,8 @@ namespace OpenRA.Widgets
 			return false;
 		}		
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{		
-			if (!Visible)
-			{
-				base.Draw(world);
-				return;
-			}
 			buttons.Clear();
 			
 			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
@@ -170,7 +165,6 @@ namespace OpenRA.Widgets
 				}
 			}
 			Game.chrome.renderer.WorldSpriteRenderer.Flush();
-			base.Draw(world);
 		}
 		
 		Action<MouseInput> HandleSupportPower(SupportPower sp)

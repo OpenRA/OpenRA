@@ -79,13 +79,8 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
 			var pos = DrawPosition();
 
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
@@ -97,8 +92,6 @@ namespace OpenRA.Widgets
 				new int2( pos.X + Bounds.Width / 2, pos.Y + Bounds.Height / 2)
 					- new int2(Game.chrome.renderer.BoldFont.Measure(text).X / 2,
 				Game.chrome.renderer.BoldFont.Measure(text).Y / 2) + stateOffset, Color.White);
-
-			base.Draw(world);
 		}
 		
 		public override Widget Clone()

@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 		bool gameWasStarted = false;
 		public void DrawRegions( World world )
 		{
-//			Timer.Time( "DrawRegions start" );
+			Timer.Time( "DrawRegions start" );
 
 			world.WorldRenderer.palette.Update(
 				world.WorldActor.traits.WithInterface<IPaletteModifier>());
@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 
 			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
 			world.WorldRenderer.Draw();
-//			Timer.Time( "worldRenderer: {0}" );
+			Timer.Time( "worldRenderer: {0}" );
 			if( Game.orderManager.GameStarted && world.LocalPlayer != null)
 			{
 				if (!gameWasStarted)
@@ -88,6 +88,7 @@ namespace OpenRA.Graphics
 				}
 				
 				Game.chrome.Draw( world );	
+				Timer.Time( "chromedraw: {0}" );
 			}
 			else
 			{
@@ -128,6 +129,7 @@ namespace OpenRA.Graphics
 				
 				lastConnectionState = state;
 
+				Timer.Time( "connectionState: {0}" );
 			}
 			Game.chrome.DrawWidgets(world);
 			if (Chrome.rootWidget.GetWidget("SERVER_LOBBY").Visible)
@@ -135,19 +137,19 @@ namespace OpenRA.Graphics
 			else if (Chrome.rootWidget.GetWidget("MAP_CHOOSER").Visible)
 				Game.chrome.DrawMapChooser();
 
-//			Timer.Time( "widgets: {0}" );
+			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
-//			Timer.Time( "cursors: {0}" );
+			Timer.Time( "cursors: {0}" );
 
 			renderer.RgbaSpriteRenderer.Flush();
 			renderer.SpriteRenderer.Flush();
 			renderer.WorldSpriteRenderer.Flush();
 
 			renderer.EndFrame();
-//			Timer.Time( "endFrame: {0}" );
+			Timer.Time( "endFrame: {0}" );
 		}
 
 		public void Tick()

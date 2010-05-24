@@ -25,17 +25,11 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Background = "dialog";
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
 			var pos = DrawPosition();
 			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			WidgetUtils.DrawPanel(Background, rect);
-			base.Draw(world);
 		}
 		
 		public BackgroundWidget() : base() { }

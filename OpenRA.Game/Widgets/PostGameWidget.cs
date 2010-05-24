@@ -36,10 +36,8 @@ namespace OpenRA.Widgets
 		
 		// todo: all this shit needs to move, probably to Player.
 
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			base.Draw(world);
-
 			if (world.LocalPlayer == null) return;
 
 			if (world.players.Count > 2)	/* more than just us + neutral */

@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
-		public override void Draw( World world )
+		public override void DrawInner( World world )
 		{
 			var map = Game.chrome.currentMap;
 			if( map == null ) return;
@@ -55,7 +55,6 @@ namespace OpenRA.Widgets
 				new float2( mapRect.Size ) );
 
 			DrawSpawnPoints( map, new Rectangle(pos.X, pos.Y, Parent.Bounds.Width, Parent.Bounds.Height ), world );
-			base.Draw( world );
 		}
 
 		void DrawSpawnPoints(MapStub map, Rectangle container, World world)

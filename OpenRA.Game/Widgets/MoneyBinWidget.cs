@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new MoneyBinWidget(this); }
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
 			var playerResources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
 

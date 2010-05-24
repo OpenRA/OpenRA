@@ -44,18 +44,11 @@ namespace OpenRA.Widgets
 			return new ColorBlockWidget(this);
 		}
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
-			
 			var pos = DrawPosition();
 			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X, pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
 			Game.chrome.lineRenderer.FillRect(paletteRect, GetColor());
-			base.Draw(world);
 		}
 	}
 }

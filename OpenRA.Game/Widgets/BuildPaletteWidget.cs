@@ -171,7 +171,7 @@ namespace OpenRA.Widgets
 			return false;
 		}	
 		
-		public override void Draw (World world)
+		public override void DrawInner(World world)
 		{	
 			int paletteHeight = DrawPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
@@ -181,11 +181,6 @@ namespace OpenRA.Widgets
 		{
 			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
 
-			if (!Visible)
-			{
-				base.Draw(world);
-				return 0;
-			}
 			buttons.Clear();
 
 

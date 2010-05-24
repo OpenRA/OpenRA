@@ -28,13 +28,8 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public Func<bool> Checked = () => {return false;};
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
 			var pos = DrawPosition();
 			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
@@ -56,8 +51,6 @@ namespace OpenRA.Widgets
 						Color.White);
 				Game.chrome.lineRenderer.Flush();
 			}
-
-			base.Draw(world);
 		}
 
 		public CheckboxWidget() : base() { }

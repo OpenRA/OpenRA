@@ -32,13 +32,8 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new PerfGraphWidget(this); }
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
 			var pos = DrawPosition();
 			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			float2 origin = Game.viewport.Location + new float2(rect.Right,rect.Bottom);
@@ -62,8 +57,6 @@ namespace OpenRA.Widgets
 			}
 
 			Game.chrome.lineRenderer.Flush();
-			
-			base.Draw(world);
 		}
 	}
 }

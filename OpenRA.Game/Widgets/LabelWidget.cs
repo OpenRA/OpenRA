@@ -52,14 +52,8 @@ namespace OpenRA.Widgets
 			GetText = (other as LabelWidget).GetText;
 		}
 
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{		
-			if (!IsVisible())
-			{
-				base.Draw(world);
-				return;
-			}
-			
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var text = GetText();
 			int2 textSize = font.Measure(text);
@@ -69,7 +63,6 @@ namespace OpenRA.Widgets
 				position += new int2((Bounds.Width - textSize.X)/2, 0);
 			
 			font.DrawText(text, position, Color.White);
-			base.Draw(world);
 		}
 		
 		public override Widget Clone()
