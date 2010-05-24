@@ -609,8 +609,8 @@ HELI:
 		Description: Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
-		HP: 225
-		Armor: heavy
+		HP: 120
+		Armor: light
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
@@ -640,8 +640,8 @@ HIND:
 		Description: Hind
 		LongDesc: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Unit:
-		HP: 225
-		Armor: heavy
+		HP: 120
+		Armor: light
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
