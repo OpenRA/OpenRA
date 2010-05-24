@@ -481,7 +481,7 @@ RedEye:
 		Explosion: 5
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 500
+		Damage: 400
 
 Stinger:
 	ROF: 60
