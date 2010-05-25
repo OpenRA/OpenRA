@@ -19,9 +19,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.GameRules;
 
 namespace OpenRA.Effects
 {
@@ -33,14 +34,21 @@ namespace OpenRA.Effects
 	class TeslaZap : IEffect
 	{
 		readonly ProjectileArgs Args;
-		readonly Sequence tesla;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
+
+		const int numZaps = 3;
+
+		readonly List<Renderable> renderables = new List<Renderable>();
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
 			Args = args;
-			tesla = SequenceProvider.GetSequence("litning", "bright");
+			var bright = SequenceProvider.GetSequence("litning", "bright");
+			var dim = SequenceProvider.GetSequence("litning", "dim");
+
+			for (var n = 0; n < numZaps; n++)
+				renderables.AddRange(DrawZapWandering(args.src, args.dest, n == numZaps - 1 ? bright : dim));
 		}
 
 		public void Tick( World world )
@@ -56,20 +64,45 @@ namespace OpenRA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render()
-		{
-			var from = Args.src;
-			var to = Args.dest;
+		public IEnumerable<Renderable> Render() { return renderables; }
 
-			if( from.X < to.X )
-				return DrawZap( from, to, tesla );
-			else if( from.X > to.X || from.Y > to.Y )
-				return DrawZap( to, from, tesla );
+		static IEnumerable<Renderable> DrawZapWandering(int2 from, int2 to, Sequence s)
+		{
+			var dist = to - from;
+			var norm = (1f / dist.Length) * new float2(-dist.Y, dist.X);
+
+			var renderables = new List<Renderable>();
+			if (Game.CosmeticRandom.Next(2) != 0)
+			{
+				var p1 = from + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p2 = from + (2 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+
+				renderables.AddRange(DrawZap(from, p1.ToInt2(), s));
+				renderables.AddRange(DrawZap(p1.ToInt2(), p2.ToInt2(), s));
+				renderables.AddRange(DrawZap(p2.ToInt2(), to, s));
+			}
 			else
-				return DrawZap( from, to, tesla );
+			{
+				var p1 = from + (1 / 2f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+
+				renderables.AddRange(DrawZap(from, p1.ToInt2(), s));
+				renderables.AddRange(DrawZap(p1.ToInt2(), to, s));
+			}
+
+			return renderables;
 		}
 
-		static IEnumerable<Renderable> DrawZap( int2 from, int2 to, Sequence tesla )
+		static IEnumerable<Renderable> DrawZap(int2 from, int2 to, Sequence s)
+		{
+			if (from.X < to.X)
+				return DrawZapInner(from, to, s);
+			else if (from.X > to.X || from.Y > to.Y)
+				return DrawZapInner(to, from, s);
+			else
+				return DrawZapInner(from, to, s);
+		}
+
+		static IEnumerable<Renderable> DrawZapInner( int2 from, int2 to, Sequence s )
 		{
 			int2 d = to - from;
 			if( d.X < 8 )
@@ -78,7 +111,7 @@ namespace OpenRA.Effects
 				var y = d.Y;
 				while( y >= prev.Y + 8 )
 				{
-					yield return new Renderable( tesla.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), "effect");
+					yield return new Renderable( s.GetSprite( 2 ), (float2)( from + prev - new int2( 0, 8 ) ), "effect");
 					prev.Y += 8;
 				}
 			}
@@ -90,26 +123,26 @@ namespace OpenRA.Effects
 					var y = i * d.Y / d.X;
 					if( y <= prev.Y - 8 )
 					{
-						yield return new Renderable(tesla.GetSprite(3), (float2)(from + prev - new int2(8, 16)), "effect");
+						yield return new Renderable(s.GetSprite(3), (float2)(from + prev - new int2(8, 16)), "effect");
 						prev.Y -= 8;
 						while( y <= prev.Y - 8 )
 						{
-							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 16)), "effect");
+							yield return new Renderable(s.GetSprite(2), (float2)(from + prev - new int2(0, 16)), "effect");
 							prev.Y -= 8;
 						}
 					}
 					else if( y >= prev.Y + 8 )
 					{
-						yield return new Renderable(tesla.GetSprite(0), (float2)(from + prev - new int2(8, 8)), "effect");
+						yield return new Renderable(s.GetSprite(0), (float2)(from + prev - new int2(8, 8)), "effect");
 						prev.Y += 8;
 						while( y >= prev.Y + 8 )
 						{
-							yield return new Renderable(tesla.GetSprite(2), (float2)(from + prev - new int2(0, 8)), "effect");
+							yield return new Renderable(s.GetSprite(2), (float2)(from + prev - new int2(0, 8)), "effect");
 							prev.Y += 8;
 						}
 					}
 					else
-						yield return new Renderable(tesla.GetSprite(1), (float2)(from + prev - new int2(8, 8)), "effect");
+						yield return new Renderable(s.GetSprite(1), (float2)(from + prev - new int2(8, 8)), "effect");
 
 					prev.X += 8;
 				}
