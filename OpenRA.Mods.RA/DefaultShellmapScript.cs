@@ -21,6 +21,7 @@
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 using OpenRA;
+using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
@@ -34,7 +35,12 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World w)
 		{
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
-			Sound.PlayMusic("hell226m.aud");
+			// Sound.PlayMusic("hell226m.aud");
+			var goodguy = w.players.Values.Where(x => x.InternalName == "GoodGuy").FirstOrDefault();
+			var greece = w.players.Values.Where(x => x.InternalName == "Greece").FirstOrDefault();	
+			goodguy.Stances[greece] = Stance.Enemy;
+			greece.Stances[goodguy] = Stance.Enemy;
+
 		}
 	}
 }

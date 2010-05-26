@@ -100,6 +100,16 @@ namespace OpenRA
 				if (kv.Value.OwnsWorld)
 					WorldActor.Owner = player;
 			}
+			
+			// Add real players
+			SetLocalPlayer(Game.orderManager.Connection.LocalClientId);
+
+			foreach (var c in Game.LobbyInfo.Clients)
+				AddPlayer(new Player(this, c));
+
+			foreach (var p in players.Values)
+				foreach (var q in players.Values)
+					p.Stances[q] = Game.ChooseInitialStance(p, q);
 
 			Timer.Time( "worldActor: {0}" );
 

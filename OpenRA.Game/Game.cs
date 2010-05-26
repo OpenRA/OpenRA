@@ -385,10 +385,6 @@ namespace OpenRA
 			LoadMap(map);
 			world.Queries = new World.AllQueries(world);
 
-			foreach (var p in world.players.Values)
-				foreach (var q in world.players.Values)
-					p.Stances[q] = ChooseInitialStance(p, q);
-
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
 				gs.GameStarted(world);
 			orderManager.StartGame();
@@ -400,15 +396,6 @@ namespace OpenRA
 			if (orderManager.GameStarted) return;
 			chat.Reset();
 
-			world.SetLocalPlayer(orderManager.Connection.LocalClientId);
-
-			foreach (var c in LobbyInfo.Clients)
-				world.AddPlayer(new Player(world, c));
-
-			foreach (var p in world.players.Values)
-				foreach (var q in world.players.Values)
-					p.Stances[q] = ChooseInitialStance(p, q);
-
 			world.Queries = new World.AllQueries(world);
 
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
@@ -418,7 +405,7 @@ namespace OpenRA
 			orderManager.StartGame();
 		}
 
-		static Stance ChooseInitialStance(Player p, Player q)
+		public static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q) return Stance.Ally;
 			
