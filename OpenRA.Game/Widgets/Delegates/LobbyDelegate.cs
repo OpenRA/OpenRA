@@ -44,9 +44,14 @@ namespace OpenRA.Widgets.Delegates
 				r.OpenWindow("MAP_CHOOSER");
 				return true;
 			};	
-				
+			
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 			
+			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
+			disconnectButton.OnMouseUp = mi => {
+				Game.Disconnect();
+				return true;
+			};
 			Game.LobbyInfoChanged += UpdatePlayerList;
 		}
 		

@@ -170,8 +170,8 @@ namespace OpenRA
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
 
-			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 47, r.Width - 40, 27);
-			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 220);
+			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 77, r.Width - 40, 27);
+			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 190);
 
 			DrawDialogBackground(typingBox, "dialog2");
 			DrawDialogBackground(chatBox, "dialog3");

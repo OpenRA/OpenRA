@@ -474,6 +474,14 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+				Button@DISCONNECT_BUTTON:
+					Id:DISCONNECT_BUTTON
+					Visible:true
+					X:PARENT_RIGHT-140
+					Y:PARENT_BOTTOM-43
+					Width:120
+					Height:25
+					Text:Disconnect
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2
