@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -48,9 +48,24 @@ namespace OpenRA.Mods.RA.Effects
 			this.targetLocation = targetLocation;
 			anim = new Animation("nuke");
 			anim.PlayRepeating("up");
-			pos = silo.CenterLocation;
+			
+			if (silo == null)
+			{
+				altitude = Game.world.Map.Height*Game.CellSize;
+				StartDescent(Game.world);
+			}
+			else
+				pos = silo.CenterLocation;
 		}
 
+		void StartDescent(World world)
+		{
+			pos = OpenRA.Traits.Util.CenterOfCell(targetLocation);
+			anim = new Animation("nuke");
+			anim.PlayRepeating("down");
+			goingUp = false;
+		}
+		
 		public void Tick(World world)
 		{
 			anim.Tick();
@@ -58,13 +73,8 @@ namespace OpenRA.Mods.RA.Effects
 			if (goingUp)
 			{
 				altitude += 10;
-				if (altitude >= targetAltitude)
-				{
-					pos = OpenRA.Traits.Util.CenterOfCell(targetLocation);
-					anim = new Animation("nuke");
-					anim.PlayRepeating("down");
-					goingUp = false;
-				}
+				if (altitude >= world.Map.Height*Game.CellSize)
+					StartDescent(world);
 			}
 			else
 			{

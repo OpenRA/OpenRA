@@ -1,6 +1,7 @@
 MSLO:
 	Category: Defense
 	NukeSilo:
+		MissileWeapon: atomic
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 130
@@ -25,6 +26,9 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
+	Valued:
+		Cost: 500
+		Description: Gap Generator
 #	Buildable:
 #		BuildPaletteOrder: 100
 #		Prerequisites: atek

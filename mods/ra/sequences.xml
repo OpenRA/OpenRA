@@ -221,7 +221,7 @@
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="8" length="1" />
     <sequence name="make" start="0" length="15" src="mslomake" />
-    <sequence name="active" start="1" length="7" />
+    <sequence name="active" start="1" length="7" tick="80" />
     <sequence name="damaged-active" start="9" length="7" />
   </unit>
   <!-- mcv -->

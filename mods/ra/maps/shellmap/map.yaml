@@ -1203,7 +1203,7 @@ Actors:
 		Location: 92,46
 		Owner: GoodGuy
 	ActorReference@Actor233:
-		Id: Actor233
+		Id: pdox
 		Type: pdox
 		Location: 94,52
 		Owner: GoodGuy
@@ -1958,10 +1958,30 @@ Actors:
 		Location: 84,56
 		Owner: GoodGuy
 	ActorReference@Actor384:
-		Id: Actor384
-		Type: miss
-		Location: 95,78
-		Owner: Neutral
+		Id: mslo1
+		Type: mslo
+		Location: 89,84
+		Owner: Greece
+	ActorReference@Actor385:
+		Id: Actor385
+		Type: ca
+		Location: 119,66
+		Owner: GoodGuy
+	ActorReference@Actor386:
+		Id: Actor386
+		Type: ca
+		Location: 120,66
+		Owner: GoodGuy
+	ActorReference@Actor387:
+		Id: mslo2
+		Type: mslo
+		Location: 89,83
+		Owner: Greece
+	ActorReference@Actor388:
+		Id: mslo3
+		Type: mslo
+		Location: 89,82
+		Owner: Greece
 
 Waypoints:
 	spawn0: 36,36

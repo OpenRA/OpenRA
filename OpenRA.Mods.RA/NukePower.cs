@@ -27,7 +27,6 @@ namespace OpenRA.Mods.RA
 {
 	class NukePowerInfo : SupportPowerInfo
 	{
-		public readonly string MissileWeapon = "";
 		public override object Create(Actor self) { return new NukePower(self, this); }
 	}
 	
@@ -53,15 +52,11 @@ namespace OpenRA.Mods.RA
 				if (silo != null)
 					silo.traits.Get<RenderBuilding>().PlayCustomAnim(silo, "active");
 				
-				Owner.World.AddFrameEndTask(w =>
-				{
-					// Play to everyone but the current player
-					if (Owner != Owner.World.LocalPlayer)
-						Sound.Play(Info.LaunchSound);
-
-					//FIRE ZE MISSILES
-					w.Add(new NukeLaunch(silo, (Info as NukePowerInfo).MissileWeapon, order.TargetLocation));
-				});
+				// Play to everyone but the current player
+				if (Owner != Owner.World.LocalPlayer)
+					Sound.Play(Info.LaunchSound);
+				
+				silo.traits.Get<NukeSilo>().Attack(order.TargetLocation);
 				
 				Game.controller.CancelInputMode();
 				FinishActivate();
@@ -70,6 +65,29 @@ namespace OpenRA.Mods.RA
 	}
 
 	// tag trait for the building
-	class NukeSiloInfo : TraitInfo<NukeSilo> { }
-	class NukeSilo { }
+	class NukeSiloInfo : ITraitInfo
+	{
+		public readonly string MissileWeapon = "";
+		public object Create(Actor self) { return new NukeSilo(self); }
+	}
+	
+	class NukeSilo
+	{
+		Actor self;
+		public NukeSilo(Actor self)
+		{
+			this.self = self;
+		}
+		
+		public void Attack(int2 targetLocation)
+		{
+			self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+			
+			self.World.AddFrameEndTask(w =>
+			{
+				//FIRE ZE MISSILES
+				w.Add(new NukeLaunch(self, self.Info.Traits.Get<NukeSiloInfo>().MissileWeapon, targetLocation));
+			});
+		}
+	}
 }

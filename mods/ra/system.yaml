@@ -57,7 +57,6 @@ Player:
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: MSLO
 		TechLevel: 12
-		MissileWeapon: atomic
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
