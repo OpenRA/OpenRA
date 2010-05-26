@@ -1,38 +1,40 @@
 ﻿<?php
+    header( 'Content-type: text/plain' );
+    try 
+    {
+        $db = new PDO('sqlite:openra.db');
+        $addr = $_SERVER['REMOTE_ADDR'] . ':' . $_REQUEST['port'];
+        
+        $insert = $db->prepare('INSERT OR REPLACE INTO servers 
+            (name, address, players, state, ts, map, mods) 
+            VALUES (:name, :addr, :players, :state, :time, :map, :mods)');
+        $insert->bindValue(':name', $_REQUEST['name'], PDO::PARAM_STR);
+        $insert->bindValue(':addr', $addr, PDO::PARAM_STR);
+        $insert->bindValue(':players', $_REQUEST['players'], PDO::PARAM_INT);
+        $insert->bindValue(':state', $_REQUEST['state'], PDO::PARAM_INT);
+        $insert->bindValue(':time', time(), PDO::PARAM_INT);
+        $insert->bindValue(':map', $_REQUEST['map'], PDO::PARAM_STR);
+        $insert->bindValue(':mods', $_REQUEST['mods'], PDO::PARAM_STR);
+        
+        $insert->execute();
 
-	if (!($db = sqlite_open( 'openra.db', 0666, $e )))
-	{
-		echo 'Database error: ', $e;
-		return;
-	}
-	
-	$addr = $_SERVER['REMOTE_ADDR'] . ':' . $_REQUEST['port'];
-	$prune = 'DELETE FROM servers WHERE address = \'' . sqlite_escape_string( $addr ) . '\'';
-	echo $prune . "\n\n";
-	
-	sqlite_exec( $db, $prune );
+        if (isset( $_REQUEST['new']))
+        {
+            $select = $db->prepare('SELECT id FROM servers WHERE address = :addr');
+            $select->bindValue(':addr', $addr, PDO::PARAM_STR);
 
-	$q =  'INSERT INTO servers VALUES ('.
-		'\'' . sqlite_escape_string( $_REQUEST['name'] ) . '\', '.
-		'\'' . sqlite_escape_string( $addr ) . '\', '.
-		sqlite_escape_string( $_REQUEST['players'] ) . ', '.
-		sqlite_escape_string( $_REQUEST['state'] ) . ', '.
-		time() . ', '.
-		'\'' . sqlite_escape_string( $_REQUEST['map'] ) . '\', '.
-		'\'' . sqlite_escape_string( $_REQUEST['mods'] ) . '\')';
-		
-	echo $q;	
-	
-	if (!sqlite_exec( $db, $q ))
-	{
-		echo 'Error in query:' . sqlite_error_string( sqlite_last_error() );
-	}
-	
-	sqlite_close( $db );
-	
-	if (isset( $_REQUEST['new']))
-	{
-		$games = file_get_contents("../games.txt");
-		file_put_contents("../games.txt", $games + 1);
-	}
+            $select->execute();
+
+            echo (int)$select->fetchColumn();
+    
+            $games = file_get_contents("../games.txt");
+            file_put_contents("../games.txt", $games + 1);
+        }
+
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo $e->getMessage();
+    }
 ?>

@@ -1,28 +1,26 @@
 ﻿<?php
-	header( 'Content-type: text/plain' );
+    header( 'Content-type: text/plain' );
 
-	if (!($db = sqlite_open( 'openra.db', 0666, $e )))
-	{
-		echo 'Database error: ', $e;
-		return;
-	}
-	
-	$stale = 60 * 5;
-	$result = sqlite_query( $db, 'SELECT * FROM servers WHERE (' . time() . ' - ts < ' . $stale . ')' );
-	
-	$rows = sqlite_fetch_all( $result, SQLITE_ASSOC );
-	
-	$n = 0;
-	foreach( $rows as $a ) {
-		echo "Game@" . $n++ . ":\n";
-		echo "\tName: " . $a['name'] . "\n";
-		echo "\tAddress: " . $a['address'] . "\n";
-		echo "\tState: " . $a['state'] . "\n";
-		echo "\tPlayers: " . $a['players'] . "\n";
-		echo "\tMap: " . $a['map'] . "\n";
-		echo "\tMods: " . $a['mods'] . "\n";
-		echo "\tTTL: " . ($stale - (time() - $a['ts'])) . "\n";
-	}
-	
-	sqlite_close( $db );
+    try
+    {
+        $db = new PDO('sqlite:openra.db');
+        $stale = 60 * 5;
+        $result = $db->query('SELECT * FROM servers WHERE (' . time() . ' - ts < ' . $stale . ')');
+        foreach ( $result as $row )
+        {
+            echo "Game@" . $row['id'] . ":\n";
+            echo "\tName: " . $row['name'] . "\n";
+            echo "\tAddress: " . $row['address'] . "\n";
+            echo "\tState: " . $row['state'] . "\n";
+            echo "\tPlayers: " . $row['players'] . "\n";
+            echo "\tMap: " . $row['map'] . "\n";
+            echo "\tMods: " . $row['mods'] . "\n";
+            echo "\tTTL: " . ($stale - (time() - $row['ts'])) . "\n";
+        }
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo $e->getMessage();
+    }
 ?>
