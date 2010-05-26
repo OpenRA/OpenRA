@@ -149,12 +149,12 @@ namespace OpenRA.Traits
 			queue.RemoveAt(0);
 		}
 
-		public void BeginProduction( string group, ProductionItem item )
+		void BeginProduction( string group, ProductionItem item )
 		{
 			production[group].Add(item);
 		}
 
-		public void BuildUnit( string name )
+		void BuildUnit( string name )
 		{
 			var newUnitType = Rules.Info[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );

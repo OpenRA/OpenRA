@@ -41,7 +41,8 @@ namespace OpenRA.Mods.Aftermath.Orders
 				yield break;
 			}
 
-			yield return new Order("ChronoshiftSelf", self, xy);
+			if (world.LocalPlayer.Shroud.IsExplored(xy))
+				yield return new Order("ChronoshiftSelf", self, xy);
 		}
 
 		public void Tick( World world ) { }

@@ -50,10 +50,6 @@ namespace OpenRA.Mods.RA
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
-
-				// Cannot chronoshift into unexplored location
-				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
-					return;
 				
 				// Ensure the target cell is valid for the unit
 				var movement = order.TargetActor.traits.GetOrDefault<IMovement>();
@@ -147,7 +143,9 @@ namespace OpenRA.Mods.RA
 					yield break;
 				}
 
-				yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy);
+				// Cannot chronoshift into unexplored location
+				if (world.LocalPlayer.Shroud.IsExplored(xy))
+					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy);
 			}
 
 			public void Tick(World world)

@@ -67,10 +67,6 @@ namespace OpenRA.Mods.Aftermath
 			var movement = self.traits.GetOrDefault<IMovement>();
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
-				// Cannot chronoshift into unexplored location
-				if (!self.Owner.Shroud.IsExplored(order.TargetLocation))
-					return;
-
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.CancelInputMode();
 
