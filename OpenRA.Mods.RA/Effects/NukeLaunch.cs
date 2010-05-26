@@ -80,7 +80,13 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				altitude -= 10;
 				if (altitude <= 0)
+				{
+					// Trigger screen desaturate effect
+					foreach (var a in Game.world.Queries.WithTrait<NukePaletteEffect>())
+						a.Trait.Enable();
+					
 					Explode(world);
+				}
 			}
 		}
 

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		const int chronoEffectLength = 20;
 		int remainingFrames;
 
-		public void DoChronoshift()
+		public void Enable()
 		{
 			remainingFrames = chronoEffectLength;
 		}

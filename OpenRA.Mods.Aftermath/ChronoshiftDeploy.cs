@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Aftermath
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
 
 				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.DoChronoshift();
+					a.Trait.Enable();
 			}
 		}
 

@@ -183,9 +183,10 @@ namespace OpenRA.Mods.RA
 			{
 				Sound.Play("chrono2.aud", self.CenterLocation);
 				Sound.Play("chrono2.aud", targetActor.CenterLocation);
+				
 				// Trigger screen desaturate effect
 				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.DoChronoshift();
+					a.Trait.Enable();
 
 				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
 			}
