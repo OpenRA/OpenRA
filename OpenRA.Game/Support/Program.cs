@@ -22,6 +22,9 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Net;
+using System.IO.Compression;
+using System.IO;
 
 namespace OpenRA
 {
@@ -46,8 +49,33 @@ namespace OpenRA
 			catch( Exception e )
 			{
 				Log.Write( "{0}", e.ToString() );
+				UploadLog();
 				throw;
 			}
+		}
+
+		static void UploadLog()
+		{
+			Log.Close();
+			var logfile = File.OpenRead(Log.Filename);
+			byte[] fileContents = logfile.ReadAllBytes();
+			var ms = new MemoryStream();
+			
+			using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
+				gzip.Write(fileContents, 0, fileContents.Length);
+	
+			ms.Position = 0;
+			byte[] buffer = ms.ReadAllBytes();
+
+			WebRequest request = WebRequest.Create("http://open-ra.org/logs/upload.php");
+			request.ContentType = "application/x-gzip";
+			request.ContentLength = buffer.Length;
+			request.Method = "POST";
+	
+			using (var requestStream = request.GetRequestStream())
+				requestStream.Write(buffer, 0, buffer.Length);
+
+			var response = (HttpWebResponse)request.GetResponse();
 		}
 
 		static void Run( string[] args )

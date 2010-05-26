@@ -25,7 +25,9 @@ namespace OpenRA
 {
 	public static class Log
 	{
-		static StreamWriter writer = File.CreateText(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + "openra.log.txt");
+		public static string Filename = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + "openra.log.txt";
+
+		static StreamWriter writer = File.CreateText(Filename);
 
 		static Log()
 		{
@@ -35,6 +37,11 @@ namespace OpenRA
 		public static void Write(string format, params object[] args)
 		{
 			writer.WriteLine(format, args);
+		}
+
+		public static void Close()
+		{
+			writer.Close();
 		}
 	}
 }
