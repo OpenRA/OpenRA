@@ -1963,12 +1963,12 @@ Actors:
 		Location: 89,84
 		Owner: Greece
 	ActorReference@Actor385:
-		Id: Actor385
+		Id: ca1
 		Type: ca
 		Location: 119,66
 		Owner: GoodGuy
 	ActorReference@Actor386:
-		Id: Actor386
+		Id: ca2
 		Type: ca
 		Location: 120,66
 		Owner: GoodGuy

@@ -27,7 +27,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	static class Util
+	public static class Util
 	{
 		public static string[] ReadAllLines(Stream s)
 		{

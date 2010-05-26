@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
-				() => Util.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
+				() => Traits.Util.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
 				null ) { ZOffset = 1 } );
 
 			if (info.SecondaryOffset == null) return;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			secondRotorAnim.PlayRepeating( "rotor2" );
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
-				() => Util.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
+				() => Traits.Util.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
 				null) { ZOffset = 1 });
 		}
 

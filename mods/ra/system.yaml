@@ -21,8 +21,6 @@ Player:
 		LongDesc: Temporarily teleports a vehicle across \nthe map.
 		Prerequisites: PDOX
 		TechLevel: 12
-		Duration: 3
-		KillCargo: yes
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud

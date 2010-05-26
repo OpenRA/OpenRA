@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -20,6 +20,7 @@
 
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
@@ -45,17 +46,18 @@ namespace OpenRA.Mods.RA
 		{
 			if (remainingFrames == 0)
 				return;
-			/* TODO: FIX ME
+			
 			var frac = (float)remainingFrames / chronoEffectLength;
-			for( var y = 0; y < (int)PaletteType.Chrome; y++ )
+
+			// TODO: Fix me to only affect "world" palettes
+			for( var y = 0; y < b.Height; y++ )
 				for (var x = 0; x < 256; x++)
 				{
 					var orig = b.GetPixel(x, y);
 					var lum = (int)(255 * orig.GetBrightness());
 					var desat = Color.FromArgb(orig.A, lum, lum, lum);
-					b.SetPixel(x, y, Graphics.Util.Lerp(frac, orig, desat));
+					b.SetPixel(x, y, OpenRA.Graphics.Util.Lerp(frac, orig, desat));
 				}
-			*/
 		}
 	}
 }

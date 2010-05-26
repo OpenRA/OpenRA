@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image,
-				Util.CenterOfCell(Target) - new float2(.5f * anim.Image.size.X, anim.Image.size.Y - Game.CellSize),
+				Traits.Util.CenterOfCell(Target) - new float2(.5f * anim.Image.size.X, anim.Image.size.Y - Game.CellSize),
 				"effect");
 		}
 

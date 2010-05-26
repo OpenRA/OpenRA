@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			if (info != null)
 			{
 				alt = 0;
-				pos = Util.GetTurretPosition(self, self.traits.Get<Unit>(), info.Offset, 0);
+				pos = Traits.Util.GetTurretPosition(self, self.traits.Get<Unit>(), info.Offset, 0);
 				var ru = self.traits.Get<RenderUnit>();
 
 				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();

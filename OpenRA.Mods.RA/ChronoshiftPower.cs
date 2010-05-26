@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -27,8 +27,6 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		public readonly float Duration = 0f;
-		public readonly bool KillCargo = true;
 		public override object Create(Actor self) { return new ChronoshiftPower(self,this); }
 	}
 
@@ -61,23 +59,7 @@ namespace OpenRA.Mods.RA
 					.WithTrait<Chronosphere>()
 					.Select(x => x.Actor).FirstOrDefault();
 				
-				bool success = order.TargetActor.traits.Get<Chronoshiftable>().Activate(order.TargetActor,
-					order.TargetLocation,
-					(int)((Info as ChronoshiftPowerInfo).Duration * 25 * 60),
-					(Info as ChronoshiftPowerInfo).KillCargo,
-					chronosphere);
-					
-				if (success)
-				{
-					Sound.Play("chrono2.aud", chronosphere.CenterLocation);
-					
-					// Trigger screen desaturate effect
-					foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
-						a.Trait.DoChronoshift();
-
-					if (chronosphere != null)
-						chronosphere.traits.Get<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
-				}
+				chronosphere.traits.Get<Chronosphere>().Teleport(order.TargetActor, order.TargetLocation);
 
 				FinishActivate();
 			}
@@ -176,7 +158,37 @@ namespace OpenRA.Mods.RA
 		}
 	}
 	
-	// tag trait to identify the building
-	class ChronosphereInfo : TraitInfo<Chronosphere> { }
-	public class Chronosphere { }
+	// tag trait for the building
+	class ChronosphereInfo : ITraitInfo
+	{
+		public readonly int Duration = 30;
+		public readonly bool KillCargo = true;
+		public object Create(Actor self) { return new Chronosphere(self); }
+	}
+	
+	class Chronosphere
+	{
+		Actor self;
+		public Chronosphere(Actor self)
+		{
+			this.self = self;
+		}
+		
+		public void Teleport(Actor targetActor, int2 targetLocation)
+		{
+			var info = self.Info.Traits.Get<ChronosphereInfo>();
+			bool success = targetActor.traits.Get<Chronoshiftable>().Activate(targetActor, targetLocation, info.Duration * 25, info.KillCargo, self);
+			
+			if (success)
+			{
+				Sound.Play("chrono2.aud", self.CenterLocation);
+				Sound.Play("chrono2.aud", targetActor.CenterLocation);
+				// Trigger screen desaturate effect
+				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
+					a.Trait.DoChronoshift();
+
+				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+			}
+		}
+	}
 }
