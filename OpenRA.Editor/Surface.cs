@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Thirdparty;
+using System.Collections;
 
 namespace OpenRA.Editor
 {
@@ -91,12 +92,59 @@ namespace OpenRA.Editor
 			}
 		}
 
+		void FloodFillWithBrush(int2 pos)
+		{
+			var queue = new Queue<int2>();
+			var replace = Map.MapTiles[pos.X, pos.Y];
+
+			queue.Enqueue(pos);
+			while (queue.Count > 0)
+			{
+				var p = queue.Dequeue();
+				if (!Map.MapTiles[p.X, p.Y].Equals(replace))
+					continue;
+
+				var a = FindEdge(p, new int2(-1, 0), replace);
+				var b = FindEdge(p, new int2(1, 0), replace);
+
+				for (var x = a.X; x <= b.X; x++)
+				{
+					Map.MapTiles[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, image = (byte)0, index = (byte)0 };
+					if (Map.MapTiles[x, p.Y - 1].Equals(replace) && Map.IsInMap(x, p.Y - 1))
+						queue.Enqueue(new int2(x, p.Y - 1));
+					if (Map.MapTiles[x, p.Y + 1].Equals(replace) && Map.IsInMap(x, p.Y + 1))
+						queue.Enqueue(new int2(x, p.Y + 1));
+				}
+			}
+
+			/* todo: optimize */
+			foreach (var ch in Chunks.Values) ch.Dispose();
+			Chunks.Clear();
+		}
+
+		int2 FindEdge(int2 p, int2 d, TileReference<ushort, byte> replace)
+		{
+			for (; ; )
+			{
+				var q = p+d;
+				if (!Map.IsInMap(q)) return p;
+				if (!Map.MapTiles[q.X, q.Y].Equals(replace)) return p;
+				p = q;
+			}
+		}
+
 		void DrawWithBrush()
 		{
 			// change the bits in the map
 			var tile = TileSet.tiles[Brush.N];
 			var template = TileSet.walk[Brush.N];
 			var pos = GetBrushLocation();
+
+			if (ModifierKeys == Keys.Shift)
+			{
+				FloodFillWithBrush(pos);
+				return;
+			}
 
 			for (var u = 0; u < template.Size.X; u++)
 				for (var v = 0; v < template.Size.Y; v++)
