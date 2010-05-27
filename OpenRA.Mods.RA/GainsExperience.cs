@@ -18,28 +18,35 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Traits;
 using System.Linq;
 using System.Collections.Generic;
+using OpenRA.Mods.RA.Effects;
 namespace OpenRA.Mods.RA
 {
 	public class GainsExperienceInfo : ITraitInfo
 	{
-		//public readonly float[] LevelThresholds = {2,4,8};
-		public readonly float[] LevelThresholds = {1, 1.5f, 2};
-		public object Create(Actor self) { return new GainsExperience(self); }
+		//public readonly float[] CostThreshold = {2,4,8};
+		public readonly float[] CostThreshold = {1, 1.5f, 2};
+		public readonly float[] FirepowerModifier = {1.2f, 1.5f, 2};
+		public readonly float[] ArmorModifier = {1.2f, 1.5f, 2};
+		public readonly float[] SpeedModifier = {1.2f, 1.5f, 2};
+		public object Create(Actor self) { return new GainsExperience(self, this); }
 	}
 
-	public class GainsExperience
+	public class GainsExperience: IFirepowerModifier, ISpeedModifier, IDamageModifier
 	{
 		readonly Actor self;
 		readonly List<float> Levels;
-		public GainsExperience(Actor self)
+		readonly GainsExperienceInfo Info;
+		public GainsExperience(Actor self, GainsExperienceInfo info)
 		{
 			this.self = self;
+			this.Info = info;
 			System.Console.WriteLine(self.Info.Name);
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
-			Levels = self.Info.Traits.Get<GainsExperienceInfo>().LevelThresholds.Select(t => t*cost).ToList();
+			Levels = Info.CostThreshold.Select(t => t*cost).ToList();
 		}
 		
 		[Sync]
@@ -61,7 +68,34 @@ namespace OpenRA.Mods.RA
 				
 				// TODO: Show an effect or play a sound or something
 				System.Console.WriteLine("{0} became Level {1}",self.Info.Name, Level);
+				
+				self.World.AddFrameEndTask(w => 
+				{
+					w.Add(new CrateEffect(self, "speed"));
+				});
 			}
+		}
+		
+		public float GetDamageModifier( WarheadInfo warhead )
+		{
+			if (Level == 0)
+				return 1.0f;
+			
+			return 1/Info.ArmorModifier[Level - 1];
+		}
+		public float GetFirepowerModifier()
+		{
+			if (Level == 0)
+				return 1.0f;
+			
+			return Info.FirepowerModifier[Level - 1]	;
+		}
+		public float GetSpeedModifier()
+		{
+			if (Level == 0)
+				return 1.0f;
+			
+			return Info.SpeedModifier[Level - 1]	;
 		}
 	}
 }
