@@ -931,4 +931,7 @@
     <sequence name="3" start="0" length="15" src="fire3" />
     <sequence name="4" start="0" length="15" src="fire4" />
   </unit>
+  <unit name="rank">
+    <sequence name="rank" start="0" length="4" />
+  </unit>
 </sequences>

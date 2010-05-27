@@ -23,23 +23,25 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
 	public class GainsExperienceInfo : ITraitInfo, ITraitPrerequisite<ValuedInfo>
 	{
-		public readonly float[] CostThreshold = { 2, 4, 8 };
-		public readonly float[] FirepowerModifier = { 1.2f, 1.5f, 2 };
-		public readonly float[] ArmorModifier = { 1.2f, 1.5f, 2 };
-		public readonly float[] SpeedModifier = { 1.2f, 1.5f, 2 };
+		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
+		public readonly float[] FirepowerModifier = { 1.1f, 1.2f, 1.3f, 2f };
+		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 2f };
+		public readonly float[] SpeedModifier = { 1.1f, 1.2f, 1.3f, 2f };
 		public object Create(Actor self) { return new GainsExperience(self, this); }
 	}
 
-	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier
+	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, IRenderModifier
 	{
 		readonly Actor self;
 		readonly int[] Levels;
 		readonly GainsExperienceInfo Info;
+		readonly Animation RankAnim;
 
 		public GainsExperience(Actor self, GainsExperienceInfo info)
 		{
@@ -47,6 +49,8 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
 			Levels = Info.CostThreshold.Select(t => (int)(t * cost)).ToArray();
+			RankAnim = new Animation("rank");
+			RankAnim.PlayFetchIndex("rank", () => Level - 1);
 		}
 
 		[Sync]
@@ -58,7 +62,7 @@ namespace OpenRA.Mods.RA
 		{
 			Experience += amount;
 
-			while (Level < Levels.Count() - 1 && Experience >= Levels[Level])
+			while (Level < Levels.Count() && Experience >= Levels[Level])
 			{
 				Level++;
 
@@ -82,6 +86,20 @@ namespace OpenRA.Mods.RA
 		public float GetSpeedModifier()
 		{
 			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1;
+		}
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
+		{
+			foreach (var r in rs)
+				yield return r;
+
+			if (self.Owner == Game.world.LocalPlayer && Level > 0)
+			{
+				RankAnim.Tick();	// hack
+				var bounds = self.GetBounds(true);
+				yield return new Renderable(RankAnim.Image, 
+					new float2(bounds.Right - 6, bounds.Bottom - 8), "effect");
+			}
 		}
 	}
 }
