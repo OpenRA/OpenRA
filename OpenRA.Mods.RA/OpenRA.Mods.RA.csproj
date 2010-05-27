@@ -178,6 +178,8 @@
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />
     <Compile Include="NukePaletteEffect.cs" />
+    <Compile Include="GainsExperience.cs" />
+    <Compile Include="GivesExperience.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -12,6 +12,8 @@
 	IronCurtainable: 
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Infantry:
 	Category: Infantry
@@ -27,6 +29,8 @@
 	HiddenUnderFog:
 	RevealsShroud:
 	TeslaInstantKills:
+	GainsExperience:
+	GivesExperience:
 
 ^Ship:
 	Category: Ship
@@ -36,6 +40,8 @@
 	Selectable:
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Plane:
 	Category: Plane
@@ -44,6 +50,8 @@
 	Selectable:
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Building:
 	Category: Building
@@ -56,6 +64,7 @@
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6
 	MustBeDestroyed:
+	GivesExperience:
 
 ^Wall:
 	Category: Building
@@ -78,6 +87,7 @@
 		HasMakeAnimation: false
 		Palette: terrain
 		DamageStates: 2
+	GivesExperience:
 
 ^Tree:
 	Category: Building

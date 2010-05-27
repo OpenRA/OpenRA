@@ -15,7 +15,8 @@ BADR:
 	Cargo:
 		Passengers: 10
 	-Selectable:
-	
+	-GainsExperience:
+
 BADR.bomber:
 	CarpetBomb:
 		Range: 3
@@ -35,6 +36,7 @@ BADR.bomber:
 	WithShadow:
 	IronCurtainable:	
 	-Selectable:
+	-GainsExperience:
 
 V2RL:
 	Inherits: ^Vehicle

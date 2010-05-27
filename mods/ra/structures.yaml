@@ -771,6 +771,9 @@ WEAF:
 
 SYRF:
 	Inherits: ^Building
+	Valued:
+		Cost: 50
+		Description: Fake Shipyard
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: @Power Plant
@@ -813,6 +816,9 @@ SPEF:
 
 DOMF:
 	Inherits: ^Building
+	Valued:
+		Cost: 50
+		Description: Fake Radar Dome
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: proc
