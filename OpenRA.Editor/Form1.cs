@@ -37,7 +37,6 @@ namespace OpenRA.Editor
 		{
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			LocateGameRoot();
 
 			currentMod = mods.FirstOrDefault() ?? "ra";
 
@@ -211,17 +210,6 @@ namespace OpenRA.Editor
 			surface1.BindResourceTemplates(resourceTemplates);
 
 			foreach (var p in palettes) { p.Visible = true; p.ResumeLayout(); }
-		}
-
-		void LocateGameRoot()
-		{
-			while (!Directory.Exists("mods"))
-			{
-				var current = Directory.GetCurrentDirectory();
-				if (Directory.GetDirectoryRoot(current) == current)
-					throw new InvalidOperationException("Unable to find game root.");
-				Directory.SetCurrentDirectory("..");
-			}
 		}
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)

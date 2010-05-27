@@ -55,7 +55,10 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
 			if (ticks == 250)
-				MapActors["pdox"].traits.Get<Chronosphere>().Teleport(MapActors["ca1"], new int2(90,70));
+			{
+				MapActors["pdox"].traits.Get<Chronosphere>().Teleport(MapActors["ca1"], new int2(90, 70));
+				MapActors["pdox"].traits.Get<Chronosphere>().Teleport(MapActors["ca2"], new int2(92, 71));
+			}
 			if (ticks == 100)
 				MapActors["mslo1"].traits.Get<NukeSilo>().Attack(new int2(96,53));
 			if (ticks == 110)

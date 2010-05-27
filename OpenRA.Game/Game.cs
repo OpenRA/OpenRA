@@ -532,13 +532,6 @@ namespace OpenRA
 		internal static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			while (!Directory.Exists("mods"))
-			{
-				var current = Directory.GetCurrentDirectory();
-				if (Directory.GetDirectoryRoot(current) == current)
-					throw new InvalidOperationException("Unable to find game root.");
-				Directory.SetCurrentDirectory("..");
-			}
 
 			LoadUserSettings(settings);
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
