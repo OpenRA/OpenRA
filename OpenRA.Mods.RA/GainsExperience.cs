@@ -26,7 +26,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class GainsExperienceInfo : ITraitInfo
+	public class GainsExperienceInfo : ITraitInfo, ITraitPrerequisite<ValuedInfo>
 	{
 		//public readonly float[] CostThreshold = {2,4,8};
 		public readonly float[] CostThreshold = { 1, 1.5f, 2 };
@@ -39,14 +39,15 @@ namespace OpenRA.Mods.RA
 	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier
 	{
 		readonly Actor self;
-		readonly List<float> Levels;
+		readonly int[] Levels;
 		readonly GainsExperienceInfo Info;
+
 		public GainsExperience(Actor self, GainsExperienceInfo info)
 		{
 			this.self = self;
 			this.Info = info;
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
-			Levels = Info.CostThreshold.Select(t => t * cost).ToList();
+			Levels = Info.CostThreshold.Select(t => (int)(t * cost)).ToArray();
 		}
 
 		[Sync]
