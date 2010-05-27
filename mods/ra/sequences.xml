@@ -844,6 +844,7 @@
     <sequence name="armor" start="0" length="23" src="armor" />
     <sequence name="chrono" start="0" length="25" src="chronbox" />
     <sequence name="airstrike" start="0" length="9" src="deviator" />
+    <sequence name="levelup" start="0" length="5" src="levelup" tick="200" />
   </unit>
   <unit name="parach">
     <sequence name="open" start="0" length="5" />

@@ -58,17 +58,14 @@ namespace OpenRA.Mods.RA
 		{
 			Experience += amount;
 
-			while (Level < Levels.Count() - 1 && Experience > Levels[Level])
+			while (Level < Levels.Count() - 1 && Experience >= Levels[Level])
 			{
 				Level++;
 
-				// TODO: Show an effect or play a sound or something
-				Log.Write("{0} became Level {1}".F(self.Info.Name, Level));
+//				Game.Debug("{0} became Level {1}".F(self.Info.Name, Level));
 
-				self.World.AddFrameEndTask(w =>
-				{
-					w.Add(new CrateEffect(self, "speed"));
-				});
+				Sound.PlayToPlayer(self.Owner, "hydrod1.aud", self.CenterLocation);
+				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", new int2(0,-24))));
 			}
 		}
 

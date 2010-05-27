@@ -29,7 +29,13 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor a;
 		Animation anim = new Animation("crate-effects");
-		float2 doorOffset = new float2(-4,0);
+		float2 offset = new float2(-4,0);
+
+		public CrateEffect(Actor a, string seq, int2 offset)
+			: this(a, seq)
+		{
+			this.offset = offset;
+		}
 
 		public CrateEffect(Actor a, string seq)
 		{
@@ -46,7 +52,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image,
-				a.CenterLocation - .5f * anim.Image.size + doorOffset, "effect");
+				a.CenterLocation - .5f * anim.Image.size + offset, "effect");
 		}
 	}
 }
