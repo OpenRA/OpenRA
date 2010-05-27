@@ -52,8 +52,8 @@ Var StartMenuFolder
 ;***************************
 Section "Client" Client
 	SetOutPath "$INSTDIR"
-	File "..\..\OpenRA.Game\bin\Debug\OpenRA.Game.exe"
-	File "..\..\OpenRA.Game\bin\Debug\OpenRA.FileFormats.dll"
+	File "..\..\OpenRA.Game.exe"
+	File "..\..\OpenRA.FileFormats.dll"
 	File "..\..\OpenRA.Gl.dll"
 	File "..\..\COPYING"
 	File "..\..\HACKING"
@@ -85,7 +85,7 @@ SectionEnd
 
 Section "Editor" Editor
 	SetOutPath "$INSTDIR"
-	File "..\..\OpenRA.Editor\bin\Debug\OpenRA.Editor.exe"
+	File "..\..\OpenRA.Editor.exe"
 	
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"

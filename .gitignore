@@ -21,6 +21,7 @@ log.txt
 
 #binary stuff
 /*.dll
+*.pdb
 *.mdb
 /*.exe
 OpenRA
