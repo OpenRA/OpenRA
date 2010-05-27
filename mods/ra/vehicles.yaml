@@ -452,13 +452,15 @@ CA:
 		Speed: 4
 		WaterBound: yes
 	Turreted:
-		ROT: 5
+		ROT: 3
 	AttackTurreted:
 		PrimaryWeapon: 8Inch
 		SecondaryWeapon: 8Inch
 		PrimaryOffset: 0,17,0,-2
 		SecondaryOffset: 0,-17,0,-2
-		Recoil: 3
+		PrimaryLocalOffset: -4,-5,0,4,-5,0
+		SecondaryLocalOffset: -4,-5,0,4,-5,0
+		Recoil: 5
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
