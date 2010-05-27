@@ -28,8 +28,7 @@ namespace OpenRA.Mods.RA
 {
 	public class GainsExperienceInfo : ITraitInfo, ITraitPrerequisite<ValuedInfo>
 	{
-		//public readonly float[] CostThreshold = {2,4,8};
-		public readonly float[] CostThreshold = { 1, 1.5f, 2 };
+		public readonly float[] CostThreshold = { 2, 4, 8 };
 		public readonly float[] FirepowerModifier = { 1.2f, 1.5f, 2 };
 		public readonly float[] ArmorModifier = { 1.2f, 1.5f, 2 };
 		public readonly float[] SpeedModifier = { 1.2f, 1.5f, 2 };
