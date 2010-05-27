@@ -675,6 +675,7 @@ U2:
 	WithShadow:
 	IronCurtainable:
 	-Selectable:
+	-GainsExperience:
 
 1TNK.Husk:
 	Inherits: ^Husk
