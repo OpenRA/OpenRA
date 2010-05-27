@@ -18,24 +18,25 @@
  */
 #endregion
 
-using OpenRA.GameRules;
-using OpenRA.Traits;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.RA
 {
 	public class GainsExperienceInfo : ITraitInfo
 	{
 		//public readonly float[] CostThreshold = {2,4,8};
-		public readonly float[] CostThreshold = {1, 1.5f, 2};
-		public readonly float[] FirepowerModifier = {1.2f, 1.5f, 2};
-		public readonly float[] ArmorModifier = {1.2f, 1.5f, 2};
-		public readonly float[] SpeedModifier = {1.2f, 1.5f, 2};
+		public readonly float[] CostThreshold = { 1, 1.5f, 2 };
+		public readonly float[] FirepowerModifier = { 1.2f, 1.5f, 2 };
+		public readonly float[] ArmorModifier = { 1.2f, 1.5f, 2 };
+		public readonly float[] SpeedModifier = { 1.2f, 1.5f, 2 };
 		public object Create(Actor self) { return new GainsExperience(self, this); }
 	}
 
-	public class GainsExperience: IFirepowerModifier, ISpeedModifier, IDamageModifier
+	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier
 	{
 		readonly Actor self;
 		readonly List<float> Levels;
@@ -44,58 +45,46 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			this.Info = info;
-			System.Console.WriteLine(self.Info.Name);
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
-			Levels = Info.CostThreshold.Select(t => t*cost).ToList();
+			Levels = Info.CostThreshold.Select(t => t * cost).ToList();
 		}
-		
+
 		[Sync]
 		int Experience = 0;
 		[Sync]
 		int Level = 0;
-		
+
 		public void GiveExperience(int amount)
 		{
-			// Already at max level
-			if (Level == Levels.Count() - 1)
-				return;
-			
 			Experience += amount;
-			
-			if (Experience > Levels[Level])
+
+			while (Level < Levels.Count() - 1 && Experience > Levels[Level])
 			{
 				Level++;
-				
+
 				// TODO: Show an effect or play a sound or something
-				System.Console.WriteLine("{0} became Level {1}",self.Info.Name, Level);
-				
-				self.World.AddFrameEndTask(w => 
+				Log.Write("{0} became Level {1}".F(self.Info.Name, Level));
+
+				self.World.AddFrameEndTask(w =>
 				{
 					w.Add(new CrateEffect(self, "speed"));
 				});
 			}
 		}
-		
-		public float GetDamageModifier( WarheadInfo warhead )
+
+		public float GetDamageModifier(WarheadInfo warhead)
 		{
-			if (Level == 0)
-				return 1.0f;
-			
-			return 1/Info.ArmorModifier[Level - 1];
+			return Level > 0 ? 1 / Info.ArmorModifier[Level - 1] : 1;
 		}
+
 		public float GetFirepowerModifier()
 		{
-			if (Level == 0)
-				return 1.0f;
-			
-			return Info.FirepowerModifier[Level - 1]	;
+			return Level > 0 ? Info.FirepowerModifier[Level - 1] : 1;
 		}
+
 		public float GetSpeedModifier()
 		{
-			if (Level == 0)
-				return 1.0f;
-			
-			return Info.SpeedModifier[Level - 1]	;
+			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1;
 		}
 	}
 }

@@ -19,7 +19,6 @@
 #endregion
 
 using OpenRA.Traits;
-using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
@@ -32,16 +31,17 @@ namespace OpenRA.Mods.RA
 			if (e.DamageState == DamageState.Dead)
 			{	
 				// Prevent TK from giving exp
-				//if (self.Owner == e.Attacker.Owner)
+				//if (e.Attacker == null || e.Attacker.Owner.Stances[ self.Owner ] == Stance.Ally )
 				//	return;
-				
-				var exp = 0;
-				if (self.Info.Traits.Get<ValuedInfo>() != null)
-					exp = self.Info.Traits.Get<ValuedInfo>().Cost;
-				if (self.Info.Traits.Get<GivesExperienceInfo>().Experience >= 0)
-					exp = self.Info.Traits.Get<GivesExperienceInfo>().Experience;
 
-				var killer = e.Attacker.traits.WithInterface<GainsExperience>().FirstOrDefault();
+				var info = self.Info.Traits.Get<GivesExperienceInfo>();
+				var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
+
+				var exp = info.Experience >= 0
+					? info.Experience
+					: valued != null ? valued.Cost : 0;
+
+				var killer = e.Attacker.traits.GetOrDefault<GainsExperience>();
 				if (killer != null)
 					killer.GiveExperience(exp);
 			}
