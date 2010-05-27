@@ -460,7 +460,7 @@ CA:
 		SecondaryOffset: 0,-17,0,-2
 		PrimaryLocalOffset: -4,-5,0,4,-5,0
 		SecondaryLocalOffset: -4,-5,0,4,-5,0
-		Recoil: 5
+		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
