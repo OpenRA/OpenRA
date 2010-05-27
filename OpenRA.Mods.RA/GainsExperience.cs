@@ -30,9 +30,9 @@ namespace OpenRA.Mods.RA
 	public class GainsExperienceInfo : ITraitInfo, ITraitPrerequisite<ValuedInfo>
 	{
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
-		public readonly float[] FirepowerModifier = { 1.1f, 1.2f, 1.3f, 2f };
-		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 2f };
-		public readonly float[] SpeedModifier = { 1.1f, 1.2f, 1.3f, 2f };
+		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
+		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
+		public readonly float[] SpeedModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public object Create(Actor self) { return new GainsExperience(self, this); }
 	}
 
