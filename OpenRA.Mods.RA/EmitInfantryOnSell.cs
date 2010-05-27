@@ -40,7 +40,8 @@ namespace OpenRA.Mods.RA
 		{
 			var info = self.Info.Traits.Get<EmitInfantryOnSellInfo>();
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
+			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
+			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 			var hpFraction = Math.Max(info.MinHpFraction, hp / self.GetMaxHP());
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
