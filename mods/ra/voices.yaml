@@ -49,11 +49,14 @@ ThiefVoice:
 CivilianMaleVoice:
 	Select: guyyeah1
 	Move: guyokay1
+	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 CivilianFemaleVoice:
 	Select: girlyeah
 	Move: girlokay
+	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 EinsteinVoice:
 	Select: einah1,einok1,einyes1
 	Move: einah1,einok1,einyes1
+	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
