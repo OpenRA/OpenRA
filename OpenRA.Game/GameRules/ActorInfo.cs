@@ -84,7 +84,8 @@ namespace OpenRA.GameRules
 			while( t.Count != 0 )
 			{
 				if( index >= t.Count )
-					throw new InvalidOperationException( "Trait prerequisites not satisfied (or prerequisite loop)" );
+					throw new InvalidOperationException( "Trait prerequisites not satisfied (or prerequisite loop) Actor={0} Unresolved={1}".F(
+						Name, string.Join( ",", t.Select( x => x.GetType().Name ).ToArray())));
 
 				var prereqs = PrerequisitesOf( t[ index ] );
 				if( prereqs.Count == 0 || prereqs.All( n => ret.Any( x => x.GetType() == n || x.GetType().IsSubclassOf( n ) ) ) )
