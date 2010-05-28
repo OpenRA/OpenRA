@@ -19,12 +19,11 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.GameRules;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
-using OpenRA.GameRules;
-using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
