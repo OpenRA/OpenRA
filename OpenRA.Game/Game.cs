@@ -64,6 +64,11 @@ namespace OpenRA
 		static bool mapChangePending;
 		static Pair<Assembly, string>[] ModAssemblies;
 
+		static internal bool scrollUp = false;
+		static internal bool scrollDown = false;
+		static internal bool scrollLeft = false;
+		static internal bool scrollRight = false;
+
 		static void LoadModPackages(Manifest manifest)
 		{
 			FileSystem.UnmountAll();
@@ -308,6 +313,15 @@ namespace OpenRA
 				}
 			}
 
+			if (scrollUp == true)
+				viewport.Scroll(new float2(0, -10));
+			if (scrollRight == true)
+				viewport.Scroll(new float2(10, 0));
+			if (scrollDown == true)
+				viewport.Scroll(new float2(0, 10));
+			if (scrollLeft == true)
+				viewport.Scroll(new float2(-10, 0));
+
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
@@ -408,7 +422,7 @@ namespace OpenRA
 		public static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q) return Stance.Ally;
-			
+
 			// Hack: All map players are neutral wrt everyone else
 			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;
 
@@ -509,6 +523,26 @@ namespace OpenRA
 
 			if (sync != Game.world.SyncHash())
 				throw new InvalidOperationException("Desync in OnKeyPress");
+		}
+
+		public static void HandleArrowKeyScroll(String k, Boolean pressed)
+		{
+			if (k == "up")
+			{
+				scrollUp = pressed;
+			}
+			if (k == "left")
+			{
+				scrollLeft = pressed;
+			}
+			if (k == "down")
+			{
+				scrollDown = pressed;
+			}
+			if (k == "right")
+			{
+				scrollRight = pressed;
+			}
 		}
 
 		public static void HandleModifierKeys(Modifiers mods)
