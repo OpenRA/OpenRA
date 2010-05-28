@@ -9,7 +9,7 @@ namespace OpenRA.Mods.RA
 	{
 		public float GetDamageModifier( WarheadInfo warhead )
 		{
-			if( warhead.InfDeath == 5 )
+			if( warhead != null && warhead.InfDeath == 5 )
 				return 1000f;
 			return 1f;
 		}
