@@ -1,6 +1,6 @@
 <?php 
-$post_file = fopen("php://input", "rb");
-$log_file = fopen("log.".time().".gz", "wb");
+$post_file = fopen('php://input', 'rb');
+$log_file = fopen('log.'.time().'.gz', 'wb');
 $post_data = '';
 
 while (!feof($post_file)) {
@@ -11,4 +11,9 @@ fwrite($log_file, $post_data);
 
 fclose($post_file);
 fclose($log_file);
+
+foreach ($_SERVER as $key=>$value)
+{
+    echo $key.': '.$value.'\n';
+}
 ?>

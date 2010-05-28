@@ -49,12 +49,12 @@ namespace OpenRA
 			catch( Exception e )
 			{
 				Log.Write( "{0}", e.ToString() );
-				UploadLog();
+				UploadLog(Game.MasterGameID);
 				throw;
 			}
 		}
 
-		static void UploadLog()
+		static void UploadLog(int gameId)
 		{
 			Log.Close();
 			var logfile = File.OpenRead(Log.Filename);
@@ -71,11 +71,13 @@ namespace OpenRA
 			request.ContentType = "application/x-gzip";
 			request.ContentLength = buffer.Length;
 			request.Method = "POST";
+			request.Headers.Add("Game-ID", gameId.ToString());
 	
 			using (var requestStream = request.GetRequestStream())
 				requestStream.Write(buffer, 0, buffer.Length);
 
 			var response = (HttpWebResponse)request.GetResponse();
+			MessageBox.Show(response.GetResponseStream().ReadAllText());
 		}
 
 		static void Run( string[] args )

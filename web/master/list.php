@@ -6,9 +6,11 @@
         $db = new PDO('sqlite:openra.db');
         $stale = 60 * 5;
         $result = $db->query('SELECT * FROM servers WHERE (' . time() . ' - ts < ' . $stale . ')');
+	$n = 0;
         foreach ( $result as $row )
         {
-            echo "Game@" . $row['id'] . ":\n";
+            echo "Game@" . $n++ . ":\n";
+            echo "\tId: " . $row['id'] . "\n";
             echo "\tName: " . $row['name'] . "\n";
             echo "\tAddress: " . $row['address'] . "\n";
             echo "\tState: " . $row['state'] . "\n";

@@ -28,6 +28,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using OpenRA.FileFormats;
+using System.Text;
 
 namespace OpenRA.Server
 {
@@ -540,11 +541,14 @@ namespace OpenRA.Server
 			if (wc.IsBusy || !isInternetServer) return;
 
 			var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
+			wc.DownloadDataCompleted += PingMasterServerResponse;
 			if (isInitialPing)
 			{
 				url += "&new=1";
 				isInitialPing = false;
 			}
+			else
+				wc.DownloadDataCompleted -= PingMasterServerResponse;
 
 			wc.DownloadDataAsync(new Uri(
 				masterServerUrl + url.F(
@@ -555,6 +559,12 @@ namespace OpenRA.Server
 				lobbyInfo.GlobalSettings.Map)));
 
 			lastPing = Environment.TickCount;
+		}
+
+		static void PingMasterServerResponse(object sender, DownloadDataCompletedEventArgs e)
+		{
+			string s = Encoding.UTF8.GetString(e.Result);
+			int.TryParse(s.Trim(), out Game.MasterGameID);
 		}
 	}
 }

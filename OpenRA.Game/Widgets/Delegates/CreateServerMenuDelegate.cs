@@ -58,7 +58,7 @@ namespace OpenRA.Widgets.Delegates
 										Game.Settings.ExternalPort, mods, map);
 
 				Log.Write("Joining server");
-				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
+				Game.JoinServer(0, IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
 			};
 			

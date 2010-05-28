@@ -48,6 +48,7 @@ namespace OpenRA.Server
 
 	class GameServer
 	{
+		public readonly int Id = 0;
 		public readonly string Name = null;
 		public readonly string Address = null;
 		public readonly int State = 0;

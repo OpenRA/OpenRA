@@ -175,12 +175,13 @@ namespace OpenRA
 		internal static string CurrentHost = "";
 		internal static int CurrentPort = 0;
 
-		internal static void JoinServer(string host, int port)
+		internal static void JoinServer(int id, string host, int port)
 		{
 			if (orderManager != null) orderManager.Dispose();
 
 			CurrentHost = host;
 			CurrentPort = port;
+			MasterGameID = id;
 
 			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
 		}
