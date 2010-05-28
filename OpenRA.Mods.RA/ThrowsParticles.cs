@@ -30,6 +30,8 @@ namespace OpenRA.Mods.RA
 		public readonly int[] Spread = new[] { 0, 0 };
 		public readonly float Speed = 20;
 		public readonly string AnimKey = null;
+		public readonly bool UseTurretFacing = true;
+		public readonly float ROT = 15;
 		public object Create(Actor self) { return new ThrowsParticle(self, this); }
 	}
 
@@ -41,10 +43,13 @@ namespace OpenRA.Mods.RA
 
 		float2 v;
 		float va;
+		float facing;
+		float dfacing;
 
 		const float gravity = 1.3f;
 
 		public ThrowsParticle(Actor self, ThrowsParticleInfo info) { this.info = info; }
+		public float? InitialFacing = null;
 	
 		public void Tick(Actor self)
 		{
@@ -55,9 +60,13 @@ namespace OpenRA.Mods.RA
 				var ru = self.traits.Get<RenderUnit>();
 
 				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
+				dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
 				va = info.Speed;
 
-				var anim = new Animation(ru.GetImage(self), () => self.traits.Get<Unit>().Facing);
+				if (!info.UseTurretFacing) InitialFacing = null;
+				facing = InitialFacing ?? self.traits.Get<Unit>().Facing;
+
+				var anim = new Animation(ru.GetImage(self), () => (int)facing);
 				anim.PlayRepeating(info.Anim);
 
 				ru.anims.Add(info.AnimKey, new RenderSimple.AnimationWithOffset(
@@ -74,6 +83,9 @@ namespace OpenRA.Mods.RA
 			{
 				pos += v;
 				v = .9f * v;
+
+				facing += dfacing;
+				dfacing *= .9f;
 			}
 		}
 	}

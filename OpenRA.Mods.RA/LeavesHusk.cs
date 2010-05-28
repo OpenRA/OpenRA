@@ -36,6 +36,11 @@ namespace OpenRA.Mods.RA
 						husk.CenterLocation = self.CenterLocation;
 						husk.traits.Get<Unit>().Altitude = self.traits.Get<Unit>().Altitude;
 						husk.traits.Get<Unit>().Facing = self.traits.Get<Unit>().Facing;
+
+						var turreted = self.traits.GetOrDefault<Turreted>();
+						if (turreted != null)
+							foreach (var p in husk.traits.WithInterface<ThrowsParticle>())
+								p.InitialFacing = turreted.turretFacing;
 					});
 		}
 	}
