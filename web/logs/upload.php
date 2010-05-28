@@ -1,19 +1,19 @@
 <?php 
-$post_file = fopen('php://input', 'rb');
-$log_file = fopen('log.'.time().'.gz', 'wb');
+$post_file = fopen('compress.zlib://php://input', 'rb');
+
+$game_id = $_SERVER['HTTP_GAME_ID'];
+
+$log_zip = new ZipArchive();
+$log_zip->open($game_id.'.zip', ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+
 $post_data = '';
 
-while (!feof($post_file)) {
-$post_data .= fread($post_file, 8192);
-}
+while (!feof($post_file))
+    $post_data .= fread($post_file, 8192);
 
-fwrite($log_file, $post_data);
+
+$log_zip->addFromString(md5($_SERVER['REMOTE_ADDR']).'.log',$post_data);
 
 fclose($post_file);
-fclose($log_file);
-
-foreach ($_SERVER as $key=>$value)
-{
-    echo $key.': '.$value.'\n';
-}
+$log_zip->close();
 ?>

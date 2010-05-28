@@ -213,6 +213,8 @@ namespace OpenRA.GlRenderer
 									Game.HandleKeyPress(new KeyPressEventArgs(keyName[0]), mods);
 								else if (keyName == "f4" && ((mods & Modifiers.Alt) != 0))
 									OpenRA.Game.Exit();
+								else if (keyName == "f5")
+									throw new Exception("F5 Pressed.");
 							}
 						} break;
 
