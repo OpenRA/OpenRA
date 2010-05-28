@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(silo, "Atomic", pos.ToInt2(), 0);
+			Combat.DoExplosion(silo.Owner.PlayerActor, "Atomic", pos.ToInt2(), 0);
 			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 

@@ -76,6 +76,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (!self.IsIdle) return;
 
+			if (!e.Attacker.Info.Traits.Contains<OwnedActorInfo>()) return;
+
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			if (!Combat.HasAnyValidWeapons(self, e.Attacker)) return;
 
