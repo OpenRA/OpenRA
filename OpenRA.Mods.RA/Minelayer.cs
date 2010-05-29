@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA
 
 	class Minelayer : IIssueOrder, IResolveOrder
 	{
-		public int2[] minefield = null;
-		int2 minefieldStart;		/* nosync! */
+		/* [Sync] when sync can cope with arrays! */ public int2[] minefield = null;
+		[Sync] int2 minefieldStart;
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -49,11 +49,11 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "BeginMinefield")
+			{
+				minefieldStart = order.TargetLocation;
 				if (self.Owner == self.World.LocalPlayer)
-				{
-					minefieldStart = order.TargetLocation;
 					Game.controller.orderGenerator = new MinefieldOrderGenerator(self);
-				}
+			}
 
 			if (order.OrderString == "PlaceMinefield")
 			{
