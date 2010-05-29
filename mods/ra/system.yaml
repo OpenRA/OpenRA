@@ -80,6 +80,7 @@ Player:
 		FlareType: flare
 	ConquestVictoryConditions:
 	PlayerResources:
+		InitialCash: 5000
 	ActorGroupProxy:
 		
 
