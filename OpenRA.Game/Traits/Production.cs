@@ -35,10 +35,7 @@ namespace OpenRA.Traits
 	}
 
 	public class Production : IIssueOrder, IResolveOrder, ITags
-	{
-		bool isPrimary = false;
-		public bool IsPrimary { get { return isPrimary; } }
-		
+	{	
 		public Production( Actor self ) { }
 
 		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
@@ -96,8 +93,15 @@ namespace OpenRA.Traits
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
 				t.UnitProduced(self, newUnit);
 
+			Log.Write("{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
+
 			return true;
 		}
+
+		// "primary building" crap - perhaps this should be split?
+
+		bool isPrimary = false;
+		public bool IsPrimary { get { return isPrimary; } }
 
 		public IEnumerable<TagType> GetTags()
 		{

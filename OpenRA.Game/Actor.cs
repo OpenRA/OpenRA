@@ -193,14 +193,16 @@ namespace OpenRA
 
 				if (RemoveOnDeath)
 					World.AddFrameEndTask(w => w.Remove(this));
+
+				Log.Write("{0} #{1} killed by {2} #{3}", Info.Name, ActorID, attacker.Info.Name, attacker.ActorID);
 			}
 
 			var maxHP = this.GetMaxHP();
 
 			if (Health > maxHP)	Health = maxHP;
 
-			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
-				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health, modifier);
+//			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
+//				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health, modifier);
 
 			var newState = GetDamageState();
 
