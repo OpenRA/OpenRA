@@ -630,7 +630,7 @@ BARR:
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Cost: 300
+		Cost: 500
 		Description: Soviet Barracks
 		LongDesc: Produces infantry
 		Hotkey: b
@@ -656,7 +656,7 @@ TENT:
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: allies
-		Cost: 300
+		Cost: 500
 		Description: Allied Barracks
 		LongDesc: Produces infantry
 		Hotkey: b
