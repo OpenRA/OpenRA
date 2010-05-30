@@ -1,4 +1,4 @@
-﻿<chrome>
+<chrome>
 	<collection name="chrome-allies" src="chrome-allies.png">
 		<image name="specialbin-top" x="0" y="0" width="30" height="51" />
 		<image name="specialbin-middle" x="0" y="51" width="30" height="51" />
@@ -11,8 +11,10 @@
 		<image name="right" x="498" y="31" width="9" height="192" />
 		<image name="bottom" x="297" y="223" width="210" height="30" />
 		<image name="bg" x="306" y="31" width="192" height="192" />
-		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
+    <collection name="power-allies" src="chrome-allies.png">
+        <image name="power-indicator" x="187" y="4" width="4" height="7" />
+    </collection>
 	<collection name="palette-allies" src="chrome-allies.png">
 		<image name="top" x="297" y="288" width="201" height="9" />
 		<image name="dock-top" x="498" y="274" width="14" height="23" />
@@ -51,6 +53,9 @@
 		<image name="right" x="498" y="31" width="9" height="192" />
 		<image name="bottom" x="297" y="223" width="210" height="30" />
 		<image name="bg" x="306" y="31" width="192" height="192" />
+		<image name="power-indicator" x="187" y="4" width="4" height="7" />
+	</collection>
+    	<collection name="power-soviet" src="chrome-soviet.png">
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
 	<collection name="palette-soviet" src="chrome-soviet.png">
