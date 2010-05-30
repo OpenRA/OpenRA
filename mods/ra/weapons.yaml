@@ -283,7 +283,7 @@ Grenade:
 		Damage: 30
 
 120mm:
-	ROF: 80
+	ROF: 90
 	Range: 4.75
 	Report: CANNON1
 	Burst: 2
@@ -296,7 +296,7 @@ Grenade:
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 50
 
 TurretGun:
 	ROF: 30

@@ -159,19 +159,19 @@ V2RL:
 		BuildPaletteOrder: 100
 		Prerequisites: weap,stek
 		Owner: soviet
-		Cost: 1700
+		Cost: 1800
 		Description: Mammoth Tank
 		LongDesc: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Unit:
-		HP: 600
+		HP: 750
 		Armor: heavy
 		Crewed: yes
 		Sight: 6
-		Speed: 4
+		Speed: 3
 	Mobile:
 		MovementType: Track
 	Turreted:
-		ROT: 5
+		ROT: 2
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		SecondaryWeapon: MammothTusk
@@ -185,6 +185,10 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 4TNK.Husk
+	SelfHealing:
+		Step: 1
+		Ticks: 5
+		HealIfBelow: 50%
 
 ARTY:
 	Inherits: ^Vehicle
