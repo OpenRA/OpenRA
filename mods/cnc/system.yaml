@@ -11,7 +11,6 @@ Player:
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: TMPL
 		TechLevel: 12
-#		MissileWeapon: atomic
 		BeginChargeSound: 
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud

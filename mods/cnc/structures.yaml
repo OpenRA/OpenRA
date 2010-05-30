@@ -338,6 +338,7 @@ TMPL:
 		Sight: 4
 	Bib:
 	NukeSilo:
+		MissileWeapon: atomic
 
 OBLI:
 	RequiresPower:
