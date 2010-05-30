@@ -159,8 +159,10 @@
   <!-- AA gun -->
   <unit name="agun">
     <sequence name="idle" start="0" facings="32" />
-    <sequence name="damaged-idle" start="32" facings="32" />
-    <sequence name="make" start="0" length="*" src="agunmake" />
+    <sequence name="recoil" start="32" facings="32" />
+    <sequence name="make" start="0" length="10" src="agunmake" />
+    <sequence name="damaged-idle" start="64" facings="32" />
+    <sequence name="damaged-recoil" start="96" facings="32" />
   </unit>
   <!-- sam site -->
   <unit name="sam">
