@@ -39,7 +39,7 @@ namespace OpenRA.Widgets
 		
 		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning PowerBin?"); }
 		
-		public override void Draw(World world)
+		public override void DrawInner(World world)
 		{
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 			
