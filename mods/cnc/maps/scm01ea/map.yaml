@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 1
+MapFormat: 2
 
 Title: GREEN ACRES
 
@@ -16,69 +16,325 @@ TopLeft: 3,11
 
 BottomRight: 61,60
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+
 Actors:
-	Actor0: tc04 Neutral 44,15
-	Actor1: tc03 Neutral 42,15
-	Actor2: tc03 Neutral 34,35
-	Actor3: tc04 Neutral 33,33
-	Actor4: tc04 Neutral 53,42
-	Actor5: tc02 Neutral 55,41
-	Actor6: t02 Neutral 25,39
-	Actor7: t01 Neutral 28,40
-	Actor8: split2 Neutral 13,26
-	Actor9: split3 Neutral 20,45
-	Actor10: split3 Neutral 42,54
-	Actor11: split3 Neutral 29,35
-	Actor12: split2 Neutral 54,22
-	Actor13: split3 Neutral 34,11
-	Actor14: tc01 Neutral 15,30
-	Actor15: t17 Neutral 13,31
-	Actor16: tc05 Neutral 4,27
-	Actor17: tc04 Neutral 10,32
-	Actor18: tc04 Neutral 18,18
-	Actor19: tc02 Neutral 16,31
-	Actor20: t07 Neutral 18,29
-	Actor21: t06 Neutral 29,37
-	Actor22: t07 Neutral 36,28
-	Actor23: t06 Neutral 35,22
-	Actor24: t07 Neutral 34,24
-	Actor25: t07 Neutral 42,27
-	Actor26: t07 Neutral 31,44
-	Actor27: t16 Neutral 33,46
-	Actor28: t17 Neutral 30,45
-	Actor29: tc02 Neutral 31,45
-	Actor30: tc04 Neutral 41,25
-	Actor31: tc04 Neutral 41,41
-	Actor32: tc04 Neutral 16,41
-	Actor33: t02 Neutral 51,11
-	Actor34: t02 Neutral 12,12
-	Actor35: t03 Neutral 11,12
-	Actor36: t16 Neutral 12,43
-	Actor37: tc02 Neutral 19,56
-	Actor38: t16 Neutral 36,17
-	Actor39: t17 Neutral 38,12
-	Actor40: tc01 Neutral 38,13
-	Actor41: tc02 Neutral 46,12
-	Actor42: t07 Neutral 21,52
-	Actor43: tc04 Neutral 22,51
-	Actor44: tc04 Neutral 32,15
-	Actor45: tc02 Neutral 31,19
-	Actor46: tc01 Neutral 21,15
-	Actor47: t01 Neutral 17,18
-	Actor48: tc04 Neutral 47,32
-	Actor49: tc01 Neutral 47,31
-	Actor50: split2 Neutral 13,42
-	Actor51: split2 Neutral 38,21
-	Actor52: split3 Neutral 46,43
-	Actor53: t01 Neutral 60,53
-	Actor54: tc05 Neutral 58,25
-	Actor55: tc04 Neutral 56,26
-	Actor56: tc03 Neutral 54,26
-	Actor57: tc02 Neutral 52,26
-	Actor58: tc01 Neutral 51,27
-	Actor59: tc02 Neutral 49,35
-	Actor60: tc04 Neutral 45,34
-	Actor61: tc03 Neutral 47,36
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: tc04
+		Location: 44,15
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: tc03
+		Location: 42,15
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: tc03
+		Location: 34,35
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: tc04
+		Location: 33,33
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: tc04
+		Location: 53,42
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: tc02
+		Location: 55,41
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: t02
+		Location: 25,39
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: t01
+		Location: 28,40
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: split2
+		Location: 13,26
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: split3
+		Location: 20,45
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: split3
+		Location: 42,54
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: split3
+		Location: 29,35
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: split2
+		Location: 54,22
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: split3
+		Location: 34,11
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: tc01
+		Location: 15,30
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: t17
+		Location: 13,31
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: tc05
+		Location: 4,27
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: tc04
+		Location: 10,32
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: tc04
+		Location: 18,18
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: tc02
+		Location: 16,31
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: t07
+		Location: 18,29
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: t06
+		Location: 29,37
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: t07
+		Location: 36,28
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: t06
+		Location: 35,22
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: t07
+		Location: 34,24
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: t07
+		Location: 42,27
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: t07
+		Location: 31,44
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: t16
+		Location: 33,46
+		Owner: Neutral
+	ActorReference@Actor28:
+		Id: Actor28
+		Type: t17
+		Location: 30,45
+		Owner: Neutral
+	ActorReference@Actor29:
+		Id: Actor29
+		Type: tc02
+		Location: 31,45
+		Owner: Neutral
+	ActorReference@Actor30:
+		Id: Actor30
+		Type: tc04
+		Location: 41,25
+		Owner: Neutral
+	ActorReference@Actor31:
+		Id: Actor31
+		Type: tc04
+		Location: 41,41
+		Owner: Neutral
+	ActorReference@Actor32:
+		Id: Actor32
+		Type: tc04
+		Location: 16,41
+		Owner: Neutral
+	ActorReference@Actor33:
+		Id: Actor33
+		Type: t02
+		Location: 51,11
+		Owner: Neutral
+	ActorReference@Actor34:
+		Id: Actor34
+		Type: t02
+		Location: 12,12
+		Owner: Neutral
+	ActorReference@Actor35:
+		Id: Actor35
+		Type: t03
+		Location: 11,12
+		Owner: Neutral
+	ActorReference@Actor36:
+		Id: Actor36
+		Type: t16
+		Location: 12,43
+		Owner: Neutral
+	ActorReference@Actor37:
+		Id: Actor37
+		Type: tc02
+		Location: 19,56
+		Owner: Neutral
+	ActorReference@Actor38:
+		Id: Actor38
+		Type: t16
+		Location: 36,17
+		Owner: Neutral
+	ActorReference@Actor39:
+		Id: Actor39
+		Type: t17
+		Location: 38,12
+		Owner: Neutral
+	ActorReference@Actor40:
+		Id: Actor40
+		Type: tc01
+		Location: 38,13
+		Owner: Neutral
+	ActorReference@Actor41:
+		Id: Actor41
+		Type: tc02
+		Location: 46,12
+		Owner: Neutral
+	ActorReference@Actor42:
+		Id: Actor42
+		Type: t07
+		Location: 21,52
+		Owner: Neutral
+	ActorReference@Actor43:
+		Id: Actor43
+		Type: tc04
+		Location: 22,51
+		Owner: Neutral
+	ActorReference@Actor44:
+		Id: Actor44
+		Type: tc04
+		Location: 32,15
+		Owner: Neutral
+	ActorReference@Actor45:
+		Id: Actor45
+		Type: tc02
+		Location: 31,19
+		Owner: Neutral
+	ActorReference@Actor46:
+		Id: Actor46
+		Type: tc01
+		Location: 21,15
+		Owner: Neutral
+	ActorReference@Actor47:
+		Id: Actor47
+		Type: t01
+		Location: 17,18
+		Owner: Neutral
+	ActorReference@Actor48:
+		Id: Actor48
+		Type: tc04
+		Location: 47,32
+		Owner: Neutral
+	ActorReference@Actor49:
+		Id: Actor49
+		Type: tc01
+		Location: 47,31
+		Owner: Neutral
+	ActorReference@Actor50:
+		Id: Actor50
+		Type: split2
+		Location: 13,42
+		Owner: Neutral
+	ActorReference@Actor51:
+		Id: Actor51
+		Type: split2
+		Location: 38,21
+		Owner: Neutral
+	ActorReference@Actor52:
+		Id: Actor52
+		Type: split3
+		Location: 46,43
+		Owner: Neutral
+	ActorReference@Actor53:
+		Id: Actor53
+		Type: t01
+		Location: 60,53
+		Owner: Neutral
+	ActorReference@Actor54:
+		Id: Actor54
+		Type: tc05
+		Location: 58,25
+		Owner: Neutral
+	ActorReference@Actor55:
+		Id: Actor55
+		Type: tc04
+		Location: 56,26
+		Owner: Neutral
+	ActorReference@Actor56:
+		Id: Actor56
+		Type: tc03
+		Location: 54,26
+		Owner: Neutral
+	ActorReference@Actor57:
+		Id: Actor57
+		Type: tc02
+		Location: 52,26
+		Owner: Neutral
+	ActorReference@Actor58:
+		Id: Actor58
+		Type: tc01
+		Location: 51,27
+		Owner: Neutral
+	ActorReference@Actor59:
+		Id: Actor59
+		Type: tc02
+		Location: 49,35
+		Owner: Neutral
+	ActorReference@Actor60:
+		Id: Actor60
+		Type: tc04
+		Location: 45,34
+		Owner: Neutral
+	ActorReference@Actor61:
+		Id: Actor61
+		Type: tc03
+		Location: 47,36
+		Owner: Neutral
 
 Waypoints:
 	spawn7: 8,54

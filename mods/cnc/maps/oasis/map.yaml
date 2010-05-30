@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 1
+MapFormat: 2
 
 Title: Tiberium Oasis
 
@@ -18,35 +18,155 @@ TopLeft: 16,16
 
 BottomRight: 112,112
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+
 Actors:
-	Actor0: rock7 50,64 50,64
-	Actor1: rock7 73,64 73,64
-	Actor2: rock6 56,70 56,70
-	Actor3: rock6 69,70 69,70
-	Actor4: rock2 54,72 54,72
-	Actor5: rock1 71,71 71,71
-	Actor6: rock2 57,56 57,56
-	Actor7: rock3 56,54 56,54
-	Actor8: rock1 69,56 69,56
-	Actor9: rock6 71,55 71,55
-	Actor10: split3 48,68 48,68
-	Actor11: split3 63,75 63,75
-	Actor12: split3 76,68 76,68
-	Actor13: split3 77,57 77,57
-	Actor14: split3 62,50 62,50
-	Actor15: split3 49,57 49,57
-	Actor16: split3 32,38 32,38
-	Actor17: split3 28,47 28,47
-	Actor18: split3 58,24 58,24
-	Actor19: split3 68,24 68,24
-	Actor20: split3 95,39 95,39
-	Actor21: split3 99,49 99,49
-	Actor22: split3 99,79 99,79
-	Actor23: split3 97,89 97,89
-	Actor24: split3 69,102 69,102
-	Actor25: split3 58,102 58,102
-	Actor26: split3 29,87 29,87
-	Actor27: split3 26,77 26,77
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: rock7
+		Location: 50,64
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: rock7
+		Location: 73,64
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: rock6
+		Location: 56,70
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: rock6
+		Location: 69,70
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: rock2
+		Location: 54,72
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: rock1
+		Location: 71,71
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: rock2
+		Location: 57,56
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: rock3
+		Location: 56,54
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: rock1
+		Location: 69,56
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: rock6
+		Location: 71,55
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: split3
+		Location: 48,68
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: split3
+		Location: 63,75
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: split3
+		Location: 76,68
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: split3
+		Location: 77,57
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: split3
+		Location: 62,50
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: split3
+		Location: 49,57
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: split3
+		Location: 32,38
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: split3
+		Location: 28,47
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: split3
+		Location: 58,24
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: split3
+		Location: 68,24
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: split3
+		Location: 95,39
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: split3
+		Location: 99,49
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: split3
+		Location: 99,79
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: split3
+		Location: 97,89
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: split3
+		Location: 69,102
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: split3
+		Location: 58,102
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: split3
+		Location: 29,87
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: split3
+		Location: 26,77
+		Owner: Neutral
 
 Waypoints:
 	wp0: 100,64

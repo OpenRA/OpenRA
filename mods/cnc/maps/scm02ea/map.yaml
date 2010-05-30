@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 1
+MapFormat: 2
 
 Title: Sand Trap
 
@@ -16,35 +16,155 @@ TopLeft: 3,3
 
 BottomRight: 60,61
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+
 Actors:
-	Actor0: split3 Neutral 21,55
-	Actor1: split3 Neutral 19,19
-	Actor2: split3 Neutral 8,4
-	Actor3: t18 Neutral 3,31
-	Actor4: t18 Neutral 22,34
-	Actor5: t18 Neutral 26,37
-	Actor6: t08 Neutral 4,37
-	Actor7: t08 Neutral 7,38
-	Actor8: t08 Neutral 5,37
-	Actor9: rock1 Neutral 29,14
-	Actor10: rock1 Neutral 3,5
-	Actor11: rock6 Neutral 44,5
-	Actor12: t08 Neutral 53,42
-	Actor13: t08 Neutral 54,17
-	Actor14: t08 Neutral 53,55
-	Actor15: t08 Neutral 37,32
-	Actor16: t08 Neutral 39,33
-	Actor17: t08 Neutral 38,32
-	Actor18: t08 Neutral 46,31
-	Actor19: rock1 Neutral 3,12
-	Actor20: rock1 Neutral 38,30
-	Actor21: t08 Neutral 27,35
-	Actor22: split3 Neutral 7,43
-	Actor23: split3 Neutral 19,39
-	Actor24: split3 Neutral 44,53
-	Actor25: split3 Neutral 44,13
-	Actor26: split3 Neutral 41,33
-	Actor27: split3 Neutral 41,3
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: split3
+		Location: 21,55
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: split3
+		Location: 19,19
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: split3
+		Location: 8,4
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: t18
+		Location: 3,31
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: t18
+		Location: 22,34
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: t18
+		Location: 26,37
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: t08
+		Location: 4,37
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: t08
+		Location: 7,38
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: t08
+		Location: 5,37
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: rock1
+		Location: 29,14
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: rock1
+		Location: 3,5
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: rock6
+		Location: 44,5
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: t08
+		Location: 53,42
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: t08
+		Location: 54,17
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: t08
+		Location: 53,55
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: t08
+		Location: 37,32
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: t08
+		Location: 39,33
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: t08
+		Location: 38,32
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: t08
+		Location: 46,31
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: rock1
+		Location: 3,12
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: rock1
+		Location: 38,30
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: t08
+		Location: 27,35
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: split3
+		Location: 7,43
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: split3
+		Location: 19,39
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: split3
+		Location: 44,53
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: split3
+		Location: 44,13
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: split3
+		Location: 41,33
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: split3
+		Location: 41,3
+		Owner: Neutral
 
 Waypoints:
 	spawn7: 20,5
