@@ -531,6 +531,8 @@ HPAD:
 	IronCurtainable:
 
 AFLD:
+	RequiresPower:
+	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 50
