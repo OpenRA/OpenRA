@@ -87,7 +87,7 @@ namespace OpenRA.Traits
 			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
 			if (Util.GetEffectiveSpeed(self,umt) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
-			return new Order("Move", self, xy);
+			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 			{
 				if (self.traits.GetOrDefault<IMovement>().CanEnterCell(order.TargetLocation))
 				{
-					self.CancelActivity();
+					if( !order.Queued ) self.CancelActivity();
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
 				}
 			}
