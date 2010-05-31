@@ -31,34 +31,36 @@ namespace OpenRA
 		public readonly Actor TargetActor;
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
+		public readonly bool Queued;
 		public bool IsImmediate;
 		
 		public Player Player { get { return Subject.Owner; } }
 
 		public Order(string orderString, Actor subject, 
-			Actor targetActor, int2 targetLocation, string targetString)
+			Actor targetActor, int2 targetLocation, string targetString, bool queued)
 		{
 			this.OrderString = orderString;
 			this.Subject = subject;
 			this.TargetActor = targetActor;
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
+			this.Queued = queued;
 		}
 
 		public Order(string orderString, Actor subject) 
-			: this(orderString, subject, null, int2.Zero, null) { }
+			: this(orderString, subject, null, int2.Zero, null, false) { }
 		public Order(string orderString, Actor subject, Actor targetActor)
-			: this(orderString, subject, targetActor, int2.Zero, null) { }
+			: this(orderString, subject, targetActor, int2.Zero, null, false) { }
 		public Order(string orderString, Actor subject, int2 targetLocation)
-			: this(orderString, subject, null, targetLocation, null) { }
+			: this(orderString, subject, null, targetLocation, null, false) { }
 		public Order(string orderString, Actor subject, string targetString)
-			: this(orderString, subject, null, int2.Zero, targetString) { }
+			: this(orderString, subject, null, int2.Zero, targetString, false) { }
 		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation)
-			: this(orderString, subject, targetActor, targetLocation, null) { }
+			: this(orderString, subject, targetActor, targetLocation, null, false) { }
 		public Order(string orderString, Actor subject, Actor targetActor, string targetString)
-			: this(orderString, subject, targetActor, int2.Zero, targetString) { }
+			: this(orderString, subject, targetActor, int2.Zero, targetString, false) { }
 		public Order(string orderString, Actor subject, int2 targetLocation, string targetString)
-			: this(orderString, subject, null, targetLocation, targetString) { }
+			: this(orderString, subject, null, targetLocation, targetString, false) { }
 
 		public byte[] Serialize()
 		{
@@ -92,6 +94,7 @@ namespace OpenRA
 						w.Write(TargetString != null);
 						if (TargetString != null)
 							w.Write(TargetString);
+						w.Write(Queued);
 						return ret.ToArray();
 					}
 			}
@@ -111,12 +114,13 @@ namespace OpenRA
 						var targetString = null as string;
 						if (r.ReadBoolean())
 							targetString = r.ReadString();
+						var queued = r.ReadBoolean();
 
 						Actor subject, targetActor;
 						if( !TryGetActorFromUInt( world, subjectId, out subject ) || !TryGetActorFromUInt( world, targetActorId, out targetActor ) )
 							return null;
 
-						return new Order( order, subject, targetActor, targetLocation, targetString);
+						return new Order( order, subject, targetActor, targetLocation, targetString, queued);
 					}
 
 				case 0xfe:
