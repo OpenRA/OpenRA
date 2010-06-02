@@ -55,10 +55,14 @@ namespace OpenRA
 		public void Draw( World world )
 		{
 			if (Game.Settings.UnitDebug)
-				for (var i = 0; i < world.Map.MapSize.X; i++)
-					for (var j = 0; j < world.Map.MapSize.Y; j++)
-						if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(new int2(i, j)).Any())
+			{
+				var uim = world.WorldActor.traits.Get<UnitInfluence>();
+				
+				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
+					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
+						if (uim.GetUnitsAt(new int2(i, j)).Any())
 							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
+			}
 		}
 
 		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
