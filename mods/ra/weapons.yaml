@@ -619,8 +619,6 @@ SCUD:
 		Damage: 600
 
 Atomic:
-	Nuke:
-		Image: Nuke
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6

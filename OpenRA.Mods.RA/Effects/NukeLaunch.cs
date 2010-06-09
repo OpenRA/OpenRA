@@ -26,27 +26,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class NukeInfo : IProjectileInfo
-	{
-		public readonly string Image = null;
-		public IEffect Create(ProjectileArgs args) { return null; }
-	}
-
 	class NukeLaunch : IEffect
 	{
 		readonly Actor silo;
 		Animation anim;
 		float2 pos;
 		int2 targetLocation;
-		readonly int targetAltitude = 400;
 		int altitude;
 		bool goingUp = true;
+		string weapon;
 
 		public NukeLaunch(Actor silo, string weapon, int2 targetLocation)
 		{
 			this.silo = silo;
 			this.targetLocation = targetLocation;
-			anim = new Animation("nuke");
+			this.weapon = weapon;
+			anim = new Animation(weapon);
 			anim.PlayRepeating("up");
 			
 			if (silo == null)
@@ -61,7 +56,6 @@ namespace OpenRA.Mods.RA.Effects
 		void StartDescent(World world)
 		{
 			pos = OpenRA.Traits.Util.CenterOfCell(targetLocation);
-			anim = new Animation("nuke");
 			anim.PlayRepeating("down");
 			goingUp = false;
 		}
@@ -93,7 +87,7 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(silo.Owner.PlayerActor, "Atomic", pos.ToInt2(), 0);
+			Combat.DoExplosion(silo.Owner.PlayerActor, weapon, pos.ToInt2(), 0);
 			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 

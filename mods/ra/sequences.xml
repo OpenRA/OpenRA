@@ -936,4 +936,8 @@
   <unit name="rank">
     <sequence name="rank" start="0" length="4" />
   </unit>
+  <unit name="atomic">
+    <sequence name="up" start="0" length="4" src="atomicup" />
+    <sequence name="down" start="0" length="4" src="atomicdn" />
+  </unit>
 </sequences>
