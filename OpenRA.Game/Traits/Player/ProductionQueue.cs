@@ -123,7 +123,7 @@ namespace OpenRA.Traits
 			return production[category];
 		}
 
-		public void CancelProduction( string itemName )
+		void CancelProduction( string itemName )
 		{
 			var category = Rules.Info[itemName].Category;
 			var queue = production[ category ];
@@ -214,12 +214,13 @@ namespace OpenRA.Traits
 
 		public ProductionItem(string item, int time, int cost, Action onComplete)
 		{
-			if (time <= 0)
-				time = 1;
+			if (time <= 0) time = 1;
 			Item = item;
 			RemainingTime = TotalTime = time;
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
+
+			Log.Write("new ProductionItem: {0} time={1} cost={2}", item, time, cost);
 		}
 
 		public void Tick(Player player)
