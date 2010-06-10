@@ -36,9 +36,9 @@ namespace OpenRA
 			// brutal hack
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 
-			if( Debugger.IsAttached )
+			if (Debugger.IsAttached)
 			{
-				Run( args );
+				Run(args);
 				return;
 			}
 
@@ -48,36 +48,11 @@ namespace OpenRA
 			}
 			catch( Exception e )
 			{
-				Log.Write( "{0}", e.ToString() );
-				UploadLog();
+				Log.AddChannel("exception", "openra.exception.txt", true, false);
+				Log.Write("exception", "{0}", e.ToString());
+				Log.Upload(Game.GetGameId());
 				throw;
 			}
-		}
-
-		static void UploadLog()
-		{
-			Log.Close();
-			var logfile = File.OpenRead(Log.Filename);
-			byte[] fileContents = logfile.ReadAllBytes();
-			var ms = new MemoryStream();
-			
-			using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
-				gzip.Write(fileContents, 0, fileContents.Length);
-	
-			ms.Position = 0;
-			byte[] buffer = ms.ReadAllBytes();
-
-			WebRequest request = WebRequest.Create("http://open-ra.org/logs/upload.php");
-			request.ContentType = "application/x-gzip";
-			request.ContentLength = buffer.Length;
-			request.Method = "POST";
-			request.Headers.Add("Game-ID", Game.MasterGameID.ToString());
-	
-			using (var requestStream = request.GetRequestStream())
-				requestStream.Write(buffer, 0, buffer.Length);
-
-			var response = (HttpWebResponse)request.GetResponse();
-			MessageBox.Show("{0} {1}:{2}".F(Game.MasterGameID, Game.CurrentHost, Game.CurrentPort));
 		}
 
 		static void Run( string[] args )

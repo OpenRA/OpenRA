@@ -201,7 +201,7 @@ namespace OpenRA
 
 			if (Health > maxHP)	Health = maxHP;
 
-//			Log.Write("InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
+//			Log.Write("debug", "InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
 //				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health, modifier);
 
 			var newState = GetDamageState();

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 		
 		void ConvertBridgeToActor(World w, int i, int j)
 		{
-			Log.Write("Converting bridge at {0} {1}",i,j);
+			Log.Write("debug", "Converting bridge at {0} {1}", i, j);
 			
 			var tile = w.Map.MapTiles[i, j].type;
 			var image = w.Map.MapTiles[i, j].image;

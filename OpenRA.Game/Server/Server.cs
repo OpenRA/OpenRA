@@ -564,7 +564,10 @@ namespace OpenRA.Server
 		static void PingMasterServerResponse(object sender, DownloadDataCompletedEventArgs e)
 		{
 			string s = Encoding.UTF8.GetString(e.Result);
-			int.TryParse(s.Trim(), out Game.MasterGameID);
+			int gameId;
+			if (int.TryParse(s.Trim(), out gameId))
+				Game.SetGameId(gameId);
+			Log.Write("debug", "Game ID: {0}", gameId);
 		}
 	}
 }

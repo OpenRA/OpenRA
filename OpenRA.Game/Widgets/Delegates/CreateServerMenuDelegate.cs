@@ -42,7 +42,7 @@ namespace OpenRA.Widgets.Delegates
 			
 			r.GetWidget("CREATESERVER_BUTTON_START").OnMouseUp = mi => {
 				r.OpenWindow("SERVER_LOBBY");
-				Log.Write("Creating server");
+				Log.Write("debug", "Creating server");
 				
 				// TODO: Get this from a map chooser
 				string map = Game.AvailableMaps.Keys.FirstOrDefault();
@@ -57,8 +57,8 @@ namespace OpenRA.Widgets.Delegates
 										gameName, Game.Settings.ListenPort,
 										Game.Settings.ExternalPort, mods, map);
 
-				Log.Write("Joining server");
-				Game.JoinServer(0, IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
+				Log.Write("debug", "Joining server");
+				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
 			};
 			

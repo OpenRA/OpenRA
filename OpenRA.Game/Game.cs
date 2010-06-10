@@ -175,13 +175,12 @@ namespace OpenRA
 		internal static string CurrentHost = "";
 		internal static int CurrentPort = 0;
 
-		internal static void JoinServer(int id, string host, int port)
+		internal static void JoinServer(string host, int port)
 		{
 			if (orderManager != null) orderManager.Dispose();
 
 			CurrentHost = host;
 			CurrentPort = port;
-			MasterGameID = id;
 
 			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
 		}
@@ -255,12 +254,12 @@ namespace OpenRA
 			var f = syncReports.FirstOrDefault(a => a.First == frame);
 			if (f == null)
 			{
-				Log.Write("No sync report available!");
+				Log.Write("sync", "No sync report available!");
 				return;
 			}
 
-			Log.Write("Sync for net frame {0} -------------", f.First);
-			Log.Write("{0}", f.Second);
+			Log.Write("sync", "Sync for net frame {0} -------------", f.First);
+			Log.Write("sync", "{0}", f.Second);
 		}
 
 		static void Tick()
@@ -601,6 +600,8 @@ namespace OpenRA
 			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
 
 			ResetTimer();
+
+			Log.AddChannel("sync", "openra.syncreport.txt", true, true);
 		}
 
 		static void LoadUserSettings(Settings settings)
@@ -637,6 +638,27 @@ namespace OpenRA
 
 			Chrome.rootWidget.CloseWindow();
 			Chrome.rootWidget.OpenWindow("MAINMENU_BG");
+		}
+
+		internal static int GetGameId()
+		{
+			try
+			{
+				string s = File.ReadAllText(Log.LogPathPrefix + "openra.gameid");
+				return int.Parse(s);
+			}
+			catch (Exception)
+			{
+				return 0;
+			}
+		}
+
+		internal static void SetGameId(int id)
+		{
+			var file = File.CreateText(Log.LogPathPrefix + "openra.gameid");
+			file.Write(id);
+			file.Flush();
+			file.Close();
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			r.GetWidget("CONNECTION_BUTTON_RETRY").OnMouseUp = mi => {
-				Game.JoinServer(Game.MasterGameID, Game.CurrentHost, Game.CurrentPort);
+				Game.JoinServer(Game.CurrentHost, Game.CurrentPort);
 				return true;
 			};
 

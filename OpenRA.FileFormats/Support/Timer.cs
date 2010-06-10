@@ -30,7 +30,7 @@ namespace OpenRA.Support
 			var time = sw.ElapsedTime();
 			var dt = time - lastTime;
 			if( dt > 0.0001 )
-				Log.Write( message, dt );
+				Log.Write("debug", message, dt );
 			lastTime = time;
 		}
 	}

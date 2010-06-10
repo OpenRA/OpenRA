@@ -76,7 +76,8 @@ namespace OpenRA.Widgets.Delegates
 							OnMouseUp = nmi =>
 							{
 								r.GetWidget("JOINSERVER_BG").Visible = false;
-								Game.JoinServer(g.Id, g.Address.Split(':')[0], int.Parse(g.Address.Split(':')[1]));
+								Game.JoinServer(g.Address.Split(':')[0], int.Parse(g.Address.Split(':')[1]));
+								Game.SetGameId(g.Id);
 								return true;
 							},
 						};
@@ -128,7 +129,7 @@ namespace OpenRA.Widgets.Delegates
 			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi =>
 			{			/* rude hack. kill this as soon as we can do a direct connect via the commandline */
 				r.CloseWindow();
-				Game.JoinServer(0, Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				return true;
 			};
 		}

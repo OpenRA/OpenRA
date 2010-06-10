@@ -214,7 +214,7 @@ namespace OpenRA
 				Al.alGenSources(1, out source);
 				if (0 != Al.alGetError())
 				{
-					Log.Write("Failed generating OpenAL source {0}", i);
+					Log.Write("debug", "Failed generating OpenAL source {0}", i);
 					return;
 				}
 					

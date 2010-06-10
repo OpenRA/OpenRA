@@ -69,7 +69,7 @@ namespace OpenRA.Traits
 			int bib = Array.IndexOf(info.BibWidths,size);
 			if (bib < 0)
 			{
-				Log.Write("Cannot bib {0}-wide building {1}",size,b.Info.Name);
+				Log.Write("debug", "Cannot bib {0}-wide building {1}", size, b.Info.Name);
 				return;
 			}
 			

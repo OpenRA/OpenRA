@@ -38,11 +38,11 @@ namespace OpenRA
 		
 		public static void LoadRules(Manifest m, Map map)
 		{
-			Log.Write("Using rules files: ");
+			Log.Write("debug", "Using rules files: ");
 			foreach (var y in m.Rules)
-				Log.Write(" -- {0}", y);
+				Log.Write("debug", " -- {0}", y);
 			
-			Log.Write("Using Map: {0}",map.Uid);
+			Log.Write("debug", "Using Map: {0}",map.Uid);
 
 			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
