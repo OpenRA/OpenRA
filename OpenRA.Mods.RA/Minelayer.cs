@@ -23,13 +23,14 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using System.Collections.Generic;
 using System;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
 	class MinelayerInfo : TraitInfo<Minelayer>
 	{
 		public readonly string Mine = "minv";
-		public readonly int MinefieldDepth = 2;
+		public readonly float MinefieldDepth = 1.5f;
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		static IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, int depth)
+		static IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, float depth)
 		{
 			var mins = int2.Min(start, end);
 			var maxs = int2.Max(start, end);
@@ -100,6 +101,12 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
+				if (mi.Button == MouseButton.Left)
+				{
+					Game.controller.CancelInputMode();
+					yield break;
+				}
+
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Info.Traits.Contains<SelectableInfo>())
 					.OrderByDescending(a => a.Info.Traits.Get<SelectableInfo>().Priority)
@@ -115,9 +122,18 @@ namespace OpenRA.Mods.RA
 					Game.controller.CancelInputMode();
 			}
 
-			public void Render(World world) { }
+			int2 lastMousePos;
+			public void Render(World world)
+			{
+				var ml = minelayer.traits.Get<Minelayer>();
+				var movement = minelayer.traits.Get<IMovement>();
+				var minefield = GetMinefieldCells(ml.minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
+					.Where(p => movement.CanEnterCell(p)).ToArray();
 
-			public string GetCursor(World world, int2 xy, MouseInput mi) { return "ability"; }	/* todo */
+				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+			}
+
+			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
 		}
 	}
 }

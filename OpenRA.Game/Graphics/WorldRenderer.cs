@@ -341,25 +341,28 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawRangeCircle(Color c, int2 location, int range)
+		public void DrawLocus(Color c, int2[] cells)
 		{
-			var r2 = range * range;
-
-			foreach (var t in world.FindTilesInCircle(location, range))
+			foreach (var t in cells)
 			{
-				if ((location - t - new int2(-1, 0)).LengthSquared > r2)
+				if (!cells.Contains(t + new int2(-1, 0)))
 					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
 						c, c);
-				if ((location - t - new int2(1, 0)).LengthSquared > r2)
+				if (!cells.Contains(t + new int2(1, 0)))
 					lineRenderer.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
-				if ((location - t - new int2(0, -1)).LengthSquared > r2)
+				if (!cells.Contains(t + new int2(0, -1)))
 					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
 						c, c);
-				if ((location - t - new int2(0, 1)).LengthSquared > r2)
+				if (!cells.Contains(t + new int2(0, 1)))
 					lineRenderer.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 			}
+		}
+
+		public void DrawRangeCircle(Color c, int2 location, int range)
+		{
+			DrawLocus(c, world.FindTilesInCircle(location, range).ToArray());
 		}
 
 		public void DrawRangeCircle(Actor selectedUnit)
