@@ -18,8 +18,6 @@ UnitExplodeSmall:
 		ImpactSound: xplos
 
 Atomic:
-	Nuke:
-		Image: atomic
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6

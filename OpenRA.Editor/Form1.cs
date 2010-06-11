@@ -40,6 +40,8 @@ namespace OpenRA.Editor
 
 			currentMod = mods.FirstOrDefault() ?? "ra";
 
+			Text = "OpenRA Editor (mod:{0})".F(currentMod);
+
 			var manifest = new Manifest(new[] { currentMod });
 			Game.LoadModAssemblies(manifest);
 
