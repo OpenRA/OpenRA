@@ -220,7 +220,7 @@ namespace OpenRA.Traits
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
 
-			Log.Write("new ProductionItem: {0} time={1} cost={2}", item, time, cost);
+			Log.Write("debug", "new ProductionItem: {0} time={1} cost={2}", item, time, cost);
 		}
 
 		public void Tick(Player player)

@@ -194,7 +194,7 @@ namespace OpenRA
 				if (RemoveOnDeath)
 					World.AddFrameEndTask(w => w.Remove(this));
 
-				Log.Write("{0} #{1} killed by {2} #{3}", Info.Name, ActorID, attacker.Info.Name, attacker.ActorID);
+				Log.Write("debug", "{0} #{1} killed by {2} #{3}", Info.Name, ActorID, attacker.Info.Name, attacker.ActorID);
 			}
 
 			var maxHP = this.GetMaxHP();
