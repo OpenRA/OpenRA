@@ -201,6 +201,11 @@ namespace OpenRA.GlRenderer
 								case Sdl.SDLK_LEFT: Game.HandleArrowKeyScroll("left", true); break;
 								case Sdl.SDLK_DOWN: Game.HandleArrowKeyScroll("down", true); break;
 								case Sdl.SDLK_RIGHT: Game.HandleArrowKeyScroll("right", true); break;
+						
+								case Sdl.SDLK_F13:
+										string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ")+".bmp";
+										Sdl.SDL_SaveBMP(surf,path);
+						                break;
 							}
 
 							if (e.key.keysym.unicode != 0)
