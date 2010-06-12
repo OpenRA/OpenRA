@@ -44,6 +44,10 @@ namespace OpenRA
 		{
 			var world = args.firedBy.World;
 			var targetTile = ((1f / Game.CellSize) * args.dest.ToFloat2()).ToInt2();
+
+			if (!world.Map.IsInMap(targetTile))
+				return;
+
 			var isWater = world.GetTerrainType(targetTile) == TerrainType.Water;
 
 			if (warhead.Explosion != 0)
