@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "hpad" };
 		public readonly int CruiseAltitude = 20;
 		public readonly int IdealSeparation = 80;
+		public readonly bool LandWhenIdle = true;
 		public object Create(Actor self) { return new Helicopter(self); }
 	}
 
@@ -78,8 +79,12 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
-				self.QueueActivity(new HeliLand(true));	
+				
+				if (self.Info.Traits.Get<HelicopterInfo>().LandWhenIdle)
+				{
+					self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
+					self.QueueActivity(new HeliLand(true));
+				}
 			}
 
 			if (order.OrderString == "Enter")

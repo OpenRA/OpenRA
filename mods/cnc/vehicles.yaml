@@ -418,7 +418,7 @@ HELI:
 	Buildable:
 		Icon: heliicnh
 		BuildPaletteOrder: 60
-		Prerequisites: hpad
+		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: nod
 		Cost: 1200
@@ -438,6 +438,7 @@ HELI:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		LandWhenIdle: no
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -449,7 +450,7 @@ ORCA:
 	Buildable:
 		Icon: orcaicnh
 		BuildPaletteOrder: 60
-		Prerequisites: hpad
+		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: gdi
 		Cost: 1200
@@ -469,6 +470,7 @@ ORCA:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		LandWhenIdle: no
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:

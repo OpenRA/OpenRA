@@ -39,8 +39,10 @@ namespace OpenRA.Mods.RA.Activities
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+			{	
+				self.QueueActivity(new HeliReturn());
 				return NextActivity;
-
+			}
 			var unit = self.traits.Get<Unit>();
 
 			var info = self.Info.Traits.Get<HelicopterInfo>();
