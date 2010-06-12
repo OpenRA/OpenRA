@@ -154,7 +154,7 @@ namespace OpenRA
 				return true;
 
 			var shroud = a.World.WorldActor.traits.Get<Shroud>();
-			if (!Shroud.GetVisOrigins(a).Any(o => shroud.exploredCells[o.X, o.Y]))		// covered by shroud
+			if (!Shroud.GetVisOrigins(a).Any(o => a.World.Map.IsInMap(o) && shroud.exploredCells[o.X, o.Y]))		// covered by shroud
 				return false;
 
 			var huf = a.traits.GetOrDefault<HiddenUnderFog>();							// hidden under fog
