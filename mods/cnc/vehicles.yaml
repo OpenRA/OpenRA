@@ -539,7 +539,7 @@ HTNK.Husk:
 	Valued:
 		Description: Husk (Mammoth Tank)
 	RenderUnit:
-		Image: ltnk
+		Image: htnk
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
