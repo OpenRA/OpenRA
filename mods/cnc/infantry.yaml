@@ -40,7 +40,7 @@ E3:
 	Inherits: ^Infantry
 	Buildable:
 		BuildPaletteOrder: 20
-		Owner: nod
+		Owner: nod, gdi
 		Cost: 300
 		Description: Rocket Soldier
 		LongDesc: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
@@ -134,7 +134,7 @@ RMBO:
 		BuildPaletteOrder: 70
 		Owner: gdi
 		Cost: 1000
-		Prerequisites: @Superweapon
+		Prerequisites: eye
 		Icon: rmboicnh
 		Description: Commando
 		LongDesc: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles

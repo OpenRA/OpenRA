@@ -8,7 +8,7 @@ FACT:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -33,7 +33,7 @@ NUKE:
 		HP: 200
 		Armor: wood
 		Crewed: yes
-		Sight: 2
+		Sight: 4
 	Bib:
 
 PROC:
@@ -54,7 +54,7 @@ PROC:
 		HP: 450
 		Armor: wood
 		Crewed: yes
-		Sight: 4
+		Sight: 6
 	Bib:
 	TiberiumRefinery:
 	StoresOre:
@@ -85,7 +85,7 @@ SILO:
 		Capturable: true
 		HP: 150
 		Armor: wood
-		Sight: 2
+		Sight: 4
 	RenderBuildingOre:
 	StoresOre:
 		Pips: 5
@@ -111,7 +111,7 @@ PYLE:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 	Bib:
 	RallyPoint:
 	Production:
@@ -136,7 +136,7 @@ HAND:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 	Bib:
 	RallyPoint:
 	Production:
@@ -160,7 +160,7 @@ AFLD:
 		HP: 500
 		Armor: heavy
 		Crewed: yes
-		Sight: 5
+		Sight: 7
 	Bib:
 	RallyPoint:
 	BelowUnits:
@@ -185,7 +185,7 @@ WEAP:
 		HP: 200
 		Armor: light
 		Crewed: yes
-		Sight: 3
+		Sight: 4
 	Bib:
 	RenderWarFactory:
 	RallyPoint:
@@ -236,7 +236,7 @@ NUK2:
 		HP: 700
 		Armor: wood
 		Crewed: yes
-		Sight: 2
+		Sight: 4
 	Bib:
 		
 FIX:
@@ -257,7 +257,7 @@ FIX:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
@@ -280,7 +280,7 @@ HPAD:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 	Bib:
 	Production:
 		SpawnOffset: 0,-4
@@ -335,7 +335,7 @@ TMPL:
 		HP: 1000
 		Armor: light
 		Crewed: yes
-		Sight: 4
+		Sight: 6
 	Bib:
 	NukeSilo:
 		MissileWeapon: atomic
@@ -358,7 +358,7 @@ OBLI:
 		HP: 200
 		Armor: light
 		Crewed: no
-		Sight: 5
+		Sight: 8
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	AttackOmni:
@@ -442,7 +442,7 @@ GUN:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-		Sight: 6
+		Sight: 7
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -468,7 +468,7 @@ GTWR:
 		HP: 400
 		Armor: wood
 		Crewed: yes
-		Sight: 3
+		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: HighV
 	AutoTarget:
@@ -491,7 +491,7 @@ ATWR:
 		HP: 600
 		Armor: light
 		Crewed: yes
-		Sight: 4
+		Sight: 8
 	AttackOmni:
 		PrimaryWeapon: Tomahawk
 		SecondaryWeapon: Tomahawk

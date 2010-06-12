@@ -38,6 +38,7 @@ Player:
 		UnitType: a10
 	ConquestVictoryConditions:
 	PlayerResources:
+		InitialCash: 5000
 	ActorGroupProxy:
 	
 World:
