@@ -83,7 +83,7 @@ namespace OpenRA
 				request.Method = "POST";
 				request.Headers.Add("Game-ID", gameId.ToString());
 				request.Headers.Add("Channel", kvp.Key);
-				request.Headers.Add("Diff", kvp.Value.Diff ? "1" : "0");
+			//	request.Headers.Add("Diff", kvp.Value.Diff ? "1" : "0");
 
 				using (var requestStream = request.GetRequestStream())
 					requestStream.Write(buffer, 0, buffer.Length);

@@ -22,9 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
-using System.Net;
-using System.IO.Compression;
-using System.IO;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -37,7 +35,7 @@ namespace OpenRA
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Log.AddChannel("perf", "openra.perf.txt", false, false);
 
-			if (Debugger.IsAttached)
+			if (Debugger.IsAttached || args.Contains("--just-die"))
 			{
 				Run(args);
 				return;
