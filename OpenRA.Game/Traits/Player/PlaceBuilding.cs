@@ -27,38 +27,39 @@ namespace OpenRA.Traits
 
 	class PlaceBuilding : IResolveOrder
 	{
-		public void ResolveOrder( Actor self, Order order )
+		public void ResolveOrder(Actor self, Order order)
 		{
-			if( order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild" )
+			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild")
 			{
-				self.World.AddFrameEndTask( w =>
+				self.World.AddFrameEndTask(w =>
 				{
 					var prevItems = GetNumBuildables(self.Owner);
 
 					var queue = self.traits.Get<ProductionQueue>();
-					var unit = Rules.Info[ order.TargetString ];
+					var unit = Rules.Info[order.TargetString];
 					var producing = queue.CurrentItem(unit.Category);
 
-					if( producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0 )
+					if (producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0)
 						return;
 
-					if( order.OrderString == "LineBuild" )
+					var buildingInfo = unit.Traits.Get<BuildingInfo>();
+
+					if (order.OrderString == "LineBuild")
 					{
 						bool playSounds = true;
-						var buildingInfo = unit.Traits.Get<BuildingInfo>();
-						foreach( var t in LineBuildUtils.GetLineBuildCells( w, order.TargetLocation, order.TargetString, buildingInfo ) )
+						foreach (var t in LineBuildUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
-							var building = w.CreateActor( order.TargetString, t, order.Player );
-							if( playSounds )
-								foreach( var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds )
-									Sound.PlayToPlayer( order.Player, s, building.CenterLocation );
+							var building = w.CreateActor(order.TargetString, t, order.Player);
+							if (playSounds)
+								foreach (var s in buildingInfo.BuildSounds)
+									Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 							playSounds = false;
 						}
 					}
 					else
 					{
-						var building = w.CreateActor( order.TargetString, order.TargetLocation, order.Player );
-						foreach (var s in building.Info.Traits.Get<BuildingInfo>().BuildSounds)
+						var building = w.CreateActor(order.TargetString, order.TargetLocation, order.Player);
+						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 					}
 
@@ -79,7 +80,7 @@ namespace OpenRA.Traits
 						w.Add(new DelayedAction(10,
 							() => Sound.PlayToPlayer(order.Player,
 								w.WorldActor.Info.Traits.Get<EvaAlertsInfo>().NewOptions)));
-				} );
+				});
 			}
 		}
 
