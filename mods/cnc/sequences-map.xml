@@ -2,10 +2,12 @@
 <sequences>
   <!-- Blossom Trees -->
   <unit name="split2">
-    <sequence name="idle" start="0" length="1" />
+    <sequence name="make" start="0" length="54" />
+    <sequence name="idle" start="54" length="1" />
   </unit>
   <unit name="split3">
-    <sequence name="idle" start="0" length="1" />
+    <sequence name="make" start="0" length="54" />
+    <sequence name="idle" start="54" length="1" />
   </unit>
 
   <!-- Rocks -->
