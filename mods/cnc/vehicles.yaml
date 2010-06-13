@@ -367,7 +367,7 @@ STNK:
 		Owner: nod
 		Cost: 900
 		Description: Stealth Tank
-		LongDesc: TODO
+		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Aircraft, Buildings\n  Weak vs Tanks
 	Unit:
 		HP: 110
 		Armor: light
