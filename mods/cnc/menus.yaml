@@ -339,7 +339,7 @@ Container:
 											Height:PARENT_BOTTOM-12
 								Button@FACTION:
 									Id:FACTION
-									Width:100
+									Width:105
 									Height:25
 									X:180
 									Y:0
@@ -348,25 +348,25 @@ Container:
 											Id:FACTIONFLAG
 											Width:30
 											Height:15
-											X:1
+											X:5
 											Y:5
 										Label@FACTIONNAME:
 											Id:FACTIONNAME
 											Text:Faction
 											Width:60
 											Height:25
-											X:35
+											X:40
 											Y:5
 								Button@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:295
+									X:300
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:380
+									X:385
 									Y:1
 									Width:20
 									Height:20
@@ -393,7 +393,7 @@ Container:
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Width:100
+									Width:105
 									Height:25
 									X:180
 									Y:0
@@ -402,26 +402,26 @@ Container:
 											Id:FACTIONFLAG
 											Width:30
 											Height:15
-											X:1
+											X:5
 											Y:5
 										Label@FACTIONNAME:
 											Id:FACTIONNAME
 											Text:Faction
 											Width:60
 											Height:25
-											X:35
+											X:40
 											Y:5
 								Label@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:295
+									X:300
 									Y:0
 									Align:Center
 								Checkbox@STATUS:
 									Id:STATUS
-									X:380
+									X:385
 									Y:1
 									Width:20
 									Height:20
@@ -661,35 +661,74 @@ Container:
 					Y:15
 					Width:25
 					Height:25
-					Text:|>
+					Children:
+						Image@IMAGE_PLAY:
+							Id:IMAGE_PLAY
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:play
 				Button@BUTTON_PAUSE:
 					Id:BUTTON_PAUSE
 					X:50
 					Y:15
 					Width:25
 					Height:25
-					Text:||
+					Children:
+						Image@IMAGE_PAUSE:
+							Id:IMAGE_PAUSE
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:pause
 				Button@BUTTON_STOP:
 					Id:BUTTON_STOP
 					X:85
 					Y:15
 					Width:25
 					Height:25
-					Text:[]
+					Children:
+						Image@IMAGE_STOP:
+							Id:IMAGE_STOP
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:stop
 				Button@BUTTON_NEXT:
 					Id:BUTTON_NEXT
 					X:120
 					Y:15
 					Width:25
 					Height:25
-					Text:>>
+					Children:
+						Image@IMAGE_NEXT:
+							Id:IMAGE_NEXT
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:next
 				Button@BUTTON_PREV:
 					Id:BUTTON_PREV
 					X:15
 					Y:15
 					Width:25
 					Height:25
-					Text:<<
-
+					Children:
+						Image@IMAGE_PREV:
+							Id:IMAGE_PREV
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:prev
 
 

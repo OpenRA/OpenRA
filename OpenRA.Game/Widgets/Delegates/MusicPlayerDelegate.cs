@@ -25,6 +25,8 @@ namespace OpenRA.Widgets.Delegates
 		public MusicPlayerDelegate()
 		{
 			var bg = Chrome.rootWidget.GetWidget("MUSIC_BG");
+			bg.Visible = Game.Settings.MusicPlayer;
+			
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi => {
 				if (Sound.MusicStopped)
 					Sound.PlayMusic(GetSong());

@@ -201,4 +201,11 @@
 		<image name="Nod" x="0" y="56" width="30" height="15" />
 		<image name="Random" x="0" y="56" width="30" height="15" />
 	</collection>
+    <collection name="music" src="musicplayer.png">
+        <image name="pause" x="0" y="0" width="25" height="25" />
+        <image name="stop" x="28" y="0" width="25" height="25" />
+        <image name="play" x="56" y="0" width="25" height="25" />
+        <image name="next" x="84" y="0" width="25" height="25" />
+        <image name="prev" x="112" y="0" width="25" height="25" />
+    </collection>
 </chrome>
