@@ -118,6 +118,7 @@ Rockets:
 		ROT: 5
 		Trail: smokey
 		Speed: 25
+		RangeLimit: 20
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
@@ -285,6 +286,7 @@ MissilePack:
 		ROT: 5
 		Trail: smokey
 		Speed: 25
+		RangeLimit: 35
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
@@ -309,6 +311,7 @@ MissilePack:
 		ROT: 5
 		Trail: smokey
 		Speed: 20
+		RangeLimit: 35
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
@@ -364,6 +367,7 @@ BoatMissile:
 		ROT: 5
 		Trail: smokey
 		Speed: 20
+		RangeLimit: 60
 	Warhead:
 		Spread: 6
 		Verses: 90%,75%,60%,25%,100%
@@ -387,6 +391,7 @@ Tomahawk:
 		ROT: 5
 		Trail: smokey
 		Speed: 25
+		RangeLimit: 40
 	Warhead:
 		Spread: 6
 		Verses: 90%,75%,60%,25%,100%
@@ -437,6 +442,7 @@ Nike:
 		Image: MISSILE
 		ROT: 20
 		Speed: 40
+		RangeLimit: 50
 	Warhead: AP
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
