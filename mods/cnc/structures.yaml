@@ -344,6 +344,7 @@ TMPL:
 		MissileWeapon: atomic
 
 OBLI:
+	Category: Defense
 	RequiresPower:
 	Inherits: ^Building
 	Buildable:
@@ -385,6 +386,7 @@ WOOD:
 		Armor: none
 
 CYCL:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		Icon:cyclicnh
@@ -401,6 +403,7 @@ CYCL:
 		DamageStates: 3
 
 SBAG:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		Icon:sbagicnh
@@ -415,6 +418,7 @@ SBAG:
 		Armor: none
 
 BRIK:
+	Category: Defense
 	Inherits: ^Wall
 	Buildable:
 		Icon:brikicnh
@@ -431,6 +435,7 @@ BRIK:
 		DamageStates: 4
 		
 GUN:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		Icon: gunicnh
@@ -457,6 +462,7 @@ GUN:
 	RenderRangeCircle:
 	
 GTWR:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		Icon: gtwricnh
@@ -480,6 +486,7 @@ GTWR:
 	RenderRangeCircle:
 	
 ATWR:
+	Category: Defense
 	Inherits: ^Building
 	Buildable:
 		Icon: atwricnh
