@@ -22,6 +22,30 @@ namespace OpenRA.Widgets
 		{
 			lastMap = (other as MapPreviewWidget).lastMap;
 		}
+		
+		public override bool HandleInput(MouseInput mi)
+		{
+			var points = Game.chrome.currentMap.Waypoints
+				.Select((sp, i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault(
+					c => c.SpawnPoint == i + 1)))
+				.ToList();
+			
+			var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height );
+			
+			foreach(var p in points)
+			{
+				var pos = Game.chrome.currentMap.ConvertToPreview(p.First.Value, container);
+				
+				//todo: check within bounds
+				if (mi.Location.Equals(pos) && p.Second == null)
+				{
+					Game.LobbyInfo.Clients[Game.LocalClient.Index].SpawnPoint = 
+						Game.chrome.currentMap.Waypoints.Keys.ToList().IndexOf(p.First.Value) + 1;
+					return true;
+				}
+			}
+			return false;
+		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
