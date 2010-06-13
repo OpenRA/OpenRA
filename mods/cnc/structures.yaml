@@ -1,5 +1,8 @@
 FACT:
 	Inherits: ^Building
+	Valued:
+		Cost: 5000
+		Description: Construction Yard
 	Building:
 		Power: 15
 		Footprint: xxx xxx xxx
@@ -13,8 +16,6 @@ FACT:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:
-	CustomSellValue:
-		Value: 5000
 
 NUKE:
 	Inherits: ^Building
