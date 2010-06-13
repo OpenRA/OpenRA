@@ -474,19 +474,20 @@ namespace OpenRA.Widgets
 			if (!canBuildThis) longDescSize += 8;
 
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 50));
-
-			Game.chrome.renderer.BoldFont.DrawText(buildable.Description, p.ToInt2() + new int2(5, 5), Color.White);
-
-			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5), Color.White);
-
-            if (buildable.Hotkey != null)
-                DrawRightAligned("{0}".F(buildable.Hotkey.ToUpper()), pos + new int2(-5, 35),Color.White);
+			
+			Game.chrome.renderer.BoldFont.DrawText(
+				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
+			                                       p.ToInt2() + new int2(5, 5), Color.White);
+			
+			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5),
+			                 (world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().DisplayCash >= buildable.Cost)? Color.White: Color.Red);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
+			var playerres = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
 			if (bi != null)
-				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20), Color.White);
-
-			
+				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
+				                 ((playerres.PowerProvided - playerres.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
+		
 			p += new int2(5, 20);
 			if (!canBuildThis)
 			{

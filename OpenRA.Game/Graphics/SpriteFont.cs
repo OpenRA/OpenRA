@@ -21,14 +21,14 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException("FT_New_Face failed");
 
 			FT.FT_Set_Pixel_Sizes(face, 0, (uint)size);
-			glyphs = new Cache<char, GlyphInfo>(CreateGlyph);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph);
 
 			// setup a 1-channel SheetBuilder for our private use
 			if (builder == null) builder = new SheetBuilder(r, TextureChannel.Alpha);
 
 			// precache glyphs for U+0020 - U+007f
 			for (var n = (char)0x20; n < (char)0x7f; n++)
-				if (glyphs[n] == null)
+				if (glyphs[Pair.New(n, Color.White)] == null)
 					throw new InvalidOperationException();
 		}
 
@@ -45,8 +45,8 @@ namespace OpenRA.Graphics
 					p = location;
 					continue;
 				}
-
-				var g = glyphs[s];
+				
+				var g = glyphs[Pair.New(s, c)];
 				renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
 					new float2(
 						(int)Math.Round(p.X + g.Offset.X, 0),
@@ -60,15 +60,15 @@ namespace OpenRA.Graphics
 
 		public int2 Measure(string text)
 		{
-			return new int2((int)text.Split( '\n' ).Max( s => s.Sum(a => glyphs[a].Advance)), text.Split('\n').Count()*size);
+			return new int2((int)text.Split( '\n' ).Max( s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance)), text.Split('\n').Count()*size);
 		}
 
-		Cache<char, GlyphInfo> glyphs;
+		Cache<Pair<char,Color>, GlyphInfo> glyphs;
 		IntPtr face;
 
-		GlyphInfo CreateGlyph(char c)
+		GlyphInfo CreateGlyph(Pair<char,Color> c)
 		{
-			var index = FT.FT_Get_Char_Index(face, (uint)c);
+			var index = FT.FT_Get_Char_Index(face, (uint)c.First);
 			FT.FT_Load_Glyph(face, index, FT.FT_LOAD_RENDER);
 
 			var _face = (FT_FaceRec)Marshal.PtrToStructure(face, typeof(FT_FaceRec));
@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 					for (var i = 0; i < s.size.X; i++)
 						if (p[i] != 0)
 							s.sheet.Bitmap.SetPixel(i + s.bounds.Left, j + s.bounds.Top,
-								Color.FromArgb(p[i], 0xff, 0xff, 0xff));
+								Color.FromArgb(p[i], c.Second.R, c.Second.G, c.Second.B));
 
 					p += _glyph.bitmap.pitch;
 				}
