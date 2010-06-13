@@ -14,7 +14,7 @@ MCV:
 		HP: 600
 		Armor: light
 		Crewed: yes
-		Sight: 2
+		Sight: 4
 		Speed: 6
 	TransformsOnDeploy:
 		TransformsInto: fact
@@ -64,7 +64,7 @@ APC:
 		HP: 200
 		Armor: heavy
 		ROT: 5
-		Sight: 4
+		Sight: 5
 		Speed: 15
 	Mobile:
 		MovementType: Track
@@ -95,7 +95,7 @@ ARTY:
 		Armor: light
 		Crewed: yes
 		ROT: 2
-		Sight: 5
+		Sight: 6
 		Speed: 6
 	Mobile:
 		MovementType: Track
@@ -144,7 +144,7 @@ BGGY:
 		Armor: light
 		Crewed: yes
 		ROT: 10
-		Sight: 2
+		Sight: 5
 		Speed: 15
 	Turreted:
 		ROT: 10
@@ -170,7 +170,7 @@ BIKE:
 		Armor: none
 		ROT: 10
 		Crewed: yes
-		Sight: 2
+		Sight: 7
 		Speed: 20
 	AttackBase:
 		PrimaryWeapon: Rockets
@@ -197,7 +197,7 @@ JEEP:
 		Armor: light
 		Crewed: yes
 		ROT: 10
-		Sight: 2
+		Sight: 7
 		Speed: 15
 	Turreted:
 		ROT: 10
@@ -222,7 +222,7 @@ LTNK:
 		HP: 300
 		Armor: Heavy
 		Crewed: yes
-		Sight: 3
+		Sight: 4
 		Speed: 9
 	Mobile:
 		MovementType: Track
@@ -253,7 +253,7 @@ MTNK:
 		HP: 400
 		Armor: heavy
 		Crewed: yes
-		Sight: 3
+		Sight: 5
 		Speed: 9
 	Mobile:
 		MovementType: Track
@@ -284,7 +284,7 @@ HTNK:
 		HP: 600
 		Armor: heavy
 		Crewed: yes
-		Sight: 4
+		Sight: 6
 		Speed: 3
 	Mobile:
 		MovementType: Track
@@ -319,7 +319,7 @@ MSAM:
 		HP: 100
 		Armor: light
 		Crewed: yes
-		Sight: 4
+		Sight: 6
 		Speed: 6
 	Mobile:
 		MovementType: Track
@@ -346,7 +346,7 @@ MLRS:
 		HP: 120
 		Armor: light
 		Crewed: yes
-		Sight: 4
+		Sight: 10
 		Speed: 6
 	Mobile:
 		MovementType: Track
@@ -402,7 +402,7 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 4
+		Sight: 8
 		Speed: 15
 	Helicopter:
 	RenderUnitRotor:
@@ -430,7 +430,7 @@ HELI:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 6
+		Sight: 8
 		Speed: 20
 	AttackHeli:
 		PrimaryWeapon: HighV
@@ -462,7 +462,7 @@ ORCA:
 		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
-		Sight: 6
+		Sight: 8
 		Speed: 20
 	AttackHeli:
 		PrimaryWeapon: Rockets
@@ -492,6 +492,7 @@ C17:
 	Cargo:
 		Passengers: 10
 	-Selectable:
+	-GainsExperience:
 
 A10:
 	Inherits: ^Plane
@@ -509,6 +510,7 @@ A10:
 	CarpetBomb:
 		Weapon: Napalm
 		Range: 3
+	-GainsExperience:
 
 LTNK.Husk:
 	Inherits: ^Husk
