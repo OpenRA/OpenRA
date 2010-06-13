@@ -8,7 +8,7 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Capturable: true
-		HP: 400
+		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
@@ -31,7 +31,7 @@ NUKE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 200
+		HP: 400
 		Armor: wood
 		Crewed: yes
 		Sight: 4
@@ -52,7 +52,7 @@ PROC:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
-		HP: 450
+		HP: 900
 		Armor: wood
 		Crewed: yes
 		Sight: 6
@@ -84,7 +84,7 @@ SILO:
 		Footprint: xx
 		Dimensions: 2,1
 		Capturable: true
-		HP: 150
+		HP: 300
 		Armor: wood
 		Sight: 4
 	RenderBuildingOre:
@@ -109,7 +109,7 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 400
+		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
@@ -134,7 +134,7 @@ HAND:
 		Footprint: __ xx xx
 		Dimensions: 2,3
 		Capturable: true
-		HP: 400
+		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
@@ -159,7 +159,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 		Capturable: true
-		HP: 500
+		HP: 1000
 		Armor: heavy
 		Crewed: yes
 		Sight: 7
@@ -185,7 +185,7 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
-		HP: 200
+		HP: 400
 		Armor: light
 		Crewed: yes
 		Sight: 4
@@ -212,7 +212,7 @@ HQ:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 500
+		HP: 1000
 		Armor: wood
 		Crewed: yes
 		Sight: 10
@@ -236,7 +236,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 700
+		HP: 600
 		Armor: wood
 		Crewed: yes
 		Sight: 4
@@ -257,7 +257,7 @@ FIX:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 		Capturable: true
-		HP: 400
+		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
@@ -280,7 +280,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 400
+		HP: 800
 		Armor: wood
 		Crewed: yes
 		Sight: 5
@@ -309,7 +309,7 @@ EYE:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
-		HP: 500
+		HP: 1000
 		Armor: wood
 		Crewed: yes
 		Sight: 10
@@ -335,7 +335,7 @@ TMPL:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 		Capturable: false
-		HP: 1000
+		HP: 2000
 		Armor: light
 		Crewed: yes
 		Sight: 6
@@ -359,7 +359,7 @@ OBLI:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
-		HP: 200
+		HP: 400
 		Armor: light
 		Crewed: no
 		Sight: 8
