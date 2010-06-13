@@ -8,6 +8,7 @@ namespace OpenRA.Traits
 	class PlayerResourcesInfo : ITraitInfo
 	{
 		public readonly int InitialCash = 10000;
+		public readonly int InitialOre = 0;
 		public readonly int AdviceInterval = 250;
 		public object Create(Actor self) { return new PlayerResources(self); }
 	}
@@ -23,15 +24,22 @@ namespace OpenRA.Traits
 			var p = self.Owner;
 			Owner = p;
 			Cash = self.Info.Traits.Get<PlayerResourcesInfo>().InitialCash;
+			Ore = self.Info.Traits.Get<PlayerResourcesInfo>().InitialOre;
 			AdviceInterval = self.Info.Traits.Get<PlayerResourcesInfo>().AdviceInterval;
 		}
 
 		[Sync]
 		public int Cash;
 		[Sync]
-		public int CashCapacity;
-		[Sync]
 		public int DisplayCash;
+		
+		[Sync]
+		public int Ore;
+		[Sync]
+		public int OreCapacity;
+		[Sync]
+		public int DisplayOre;
+		
 		[Sync]
 		public int PowerProvided;
 		[Sync]
@@ -67,23 +75,36 @@ namespace OpenRA.Traits
 			return PowerState.Critical;
 		}
 
-		public float GetSiloFullness() { return (float)Cash / CashCapacity; }
+		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
 
+		public void GiveOre(int num)
+		{
+			Ore += num;
+			
+			if (Ore > OreCapacity)
+			{
+				nextSiloAdviceTime = 0;
+				Ore = OreCapacity;
+			}
+		}
+		
 		public void GiveCash(int num)
 		{
 			Cash += num;
-			
-			if (Cash > CashCapacity)
-			{
-				nextSiloAdviceTime = 0;
-				Cash = CashCapacity;
-			}
 		}
 		
 		public bool TakeCash(int num)
 		{			
-			if (Cash < num) return false;
+			if (Cash + Ore < num) return false;
+			
+			// Spend cash before spending ore
 			Cash -= num;
+			if (Cash < 0)
+			{
+				Ore += Cash;
+				Cash = 0;	
+			}
+			
 			return true;
 		}
 
@@ -102,12 +123,12 @@ namespace OpenRA.Traits
 				nextPowerAdviceTime = AdviceInterval;
 			}
 			
-			CashCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresCash>()
-				.Sum(a => a.Actor.Info.Traits.Get<StoresCashInfo>().Capacity);
+			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresOre>()
+				.Sum(a => a.Actor.Info.Traits.Get<StoresOreInfo>().Capacity);
 
 			if (--nextSiloAdviceTime <= 0)
 			{
-				if (Cash > 0.8*CashCapacity)
+				if (Ore > 0.8*OreCapacity)
 					Owner.GiveAdvice(Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);
 				
 				nextSiloAdviceTime = AdviceInterval;
@@ -121,12 +142,27 @@ namespace OpenRA.Traits
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
-				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				//Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
 			}
 			else if (DisplayCash > Cash)
 			{
 				DisplayCash -= move;
-				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				//Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+			}
+			
+			diff = Math.Abs(Ore - DisplayOre);
+			move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
+					displayCashDeltaPerFrame), diff);
+
+			if (DisplayOre < Ore)
+			{
+				DisplayOre += move;
+				//Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+			}
+			else if (DisplayOre > Ore)
+			{
+				DisplayOre -= move;
+				//Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
 		}
 	}

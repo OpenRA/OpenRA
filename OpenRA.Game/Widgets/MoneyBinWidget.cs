@@ -52,10 +52,22 @@ namespace OpenRA.Widgets
 				ChromeProvider.GetImage(Game.chrome.renderer, chromeCollection, "moneybin"),
 				new float2(Bounds.Left, 0), "chrome");
 
-			var moneyDigits = playerResources.DisplayCash.ToString();
+			// Cash
+			var cashDigits = playerResources.DisplayCash.ToString();
 			var x = Bounds.Right - 65;
 
-			foreach (var d in moneyDigits.Reverse())
+			foreach (var d in cashDigits.Reverse())
+			{
+				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
+					ChromeProvider.GetImage(Game.chrome.renderer, digitCollection, (d - '0').ToString()),
+					new float2(x, 6), "chrome");
+				x -= 14;
+			}
+			x -= 14;
+			// Ore
+			var oreDigits = playerResources.DisplayOre.ToString();
+
+			foreach (var d in oreDigits.Reverse())
 			{
 				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
 					ChromeProvider.GetImage(Game.chrome.renderer, digitCollection, (d - '0').ToString()),

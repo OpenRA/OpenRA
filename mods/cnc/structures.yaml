@@ -89,7 +89,7 @@ SILO:
 		Armor: wood
 		Sight: 4
 	RenderBuildingOre:
-	StoresCash:
+	StoresOre:
 		Pips: 5
 		Capacity: 5000
 	-RenderBuilding:

@@ -22,18 +22,18 @@ using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
-	class StoresCashInfo : TraitInfo<StoresCash>
+	class StoresOreInfo : TraitInfo<StoresOre>
 	{
 		public readonly int Pips = 0;
 		public readonly int Capacity = 0;
 	}
 
-	class StoresCash : IPips, IAcceptThief
+	class StoresOre : IPips, IAcceptThief
 	{
 		public void OnSteal(Actor self, Actor thief)
 		{
 			// Steal half the cash the building holds
-			var toSteal = self.Info.Traits.Get<StoresCashInfo>().Capacity / 2;
+			var toSteal = self.Info.Traits.Get<StoresOreInfo>().Capacity / 2;
 			self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(toSteal);
 			thief.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(toSteal);
 			
@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = self.Info.Traits.Get<StoresCashInfo>().Pips;
+			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
 
 			return Graphics.Util.MakeArray( numPips, 
 				i => (self.World.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() > i * 1.0f / numPips) 

@@ -67,11 +67,11 @@ namespace OpenRA.Mods.Cnc
 				// Convert resources to cash
 				var pr = self.Owner.PlayerActor.traits.Get<PlayerResources>();
 				int amount = Math.Min(Tiberium, Info.ProcessAmount);
-					amount = Math.Min(amount, pr.CashCapacity - pr.Cash);
+					amount = Math.Min(amount, pr.OreCapacity - pr.Ore);
 				if (amount > 0)
 				{
 					Tiberium -=amount;
-					pr.GiveCash(amount);
+					pr.GiveOre(amount);
 				}
 				nextProcessTime = Info.ProcessTick;
 			}
