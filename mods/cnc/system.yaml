@@ -6,7 +6,7 @@ Player:
 	TechTreeCache:
 	NukePower:
 		Image: atomicnh
-		ChargeTime: 13
+		ChargeTime: 5
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: TMPL
@@ -27,8 +27,8 @@ Player:
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
 	AirstrikePower:
-		Image: a10icnh
-		ChargeTime: 8
+		Image: bombicnh
+		ChargeTime: 4
 		Description: Airstrike
 		LongDesc: Delivers a load of napalm on your target.
 		Prerequisites: hq
@@ -243,6 +243,7 @@ World:
 		UnitLost: unitlost.aud
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
+		AbilityInsufficientPower: nopower1.aud
 	SpatialBins:
 		BinSize: 4
 	Shroud:

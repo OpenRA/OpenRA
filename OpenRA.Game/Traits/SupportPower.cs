@@ -136,14 +136,12 @@ namespace OpenRA.Traits
 		public void Activate()
 		{
 			if (!IsAvailable || !IsReady)
-			{
-				Sound.Play("briefing.aud");
 				return;
-			}
 
 			if (Info.RequiresPower && !IsPowered())
 			{
-				Sound.Play("nopowr1.aud");
+				var eva = Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+				Sound.Play(eva.AbilityInsufficientPower);
 				return;
 			}
 

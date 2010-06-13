@@ -43,7 +43,6 @@ namespace OpenRA.Traits
 		public readonly string UnitReadyAudio = "unitrdy1.aud";
 		public readonly string OnHoldAudio = "onhold1.aud";
 		public readonly string CancelledAudio = "cancld1.aud";
-		public readonly string ClickAudio = "ramenu1.aud";
 		public readonly string NewOptions = "newopt1.aud";
 		
 		// For manual powerup/down in ra-ng
@@ -57,6 +56,9 @@ namespace OpenRA.Traits
 		public readonly string NavalUnitLost = "navylst1.aud";
 		public readonly string PrimaryBuildingSelected = "pribldg1.aud";
 		public readonly string CreditsStolen = "credit1.aud";
+		
+		// Special powers
+		public readonly string AbilityInsufficientPower = "nopowr1.aud";
 	}
 
 	public class EvaAlerts {}
