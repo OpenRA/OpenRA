@@ -339,7 +339,7 @@ Container:
 											Height:PARENT_BOTTOM-12
 								Button@FACTION:
 									Id:FACTION
-									Width:100
+									Width:105
 									Height:25
 									X:180
 									Y:0
@@ -348,25 +348,25 @@ Container:
 											Id:FACTIONFLAG
 											Width:30
 											Height:15
-											X:1
+											X:5
 											Y:5
 										Label@FACTIONNAME:
 											Id:FACTIONNAME
 											Text:Faction
 											Width:60
 											Height:25
-											X:35
+											X:40
 											Y:5
 								Button@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:295
+									X:300
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:380
+									X:385
 									Y:1
 									Width:20
 									Height:20
@@ -393,7 +393,7 @@ Container:
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Width:100
+									Width:105
 									Height:25
 									X:180
 									Y:0
@@ -402,26 +402,26 @@ Container:
 											Id:FACTIONFLAG
 											Width:30
 											Height:15
-											X:1
+											X:5
 											Y:5
 										Label@FACTIONNAME:
 											Id:FACTIONNAME
 											Text:Faction
 											Width:60
 											Height:25
-											X:35
+											X:40
 											Y:5
 								Label@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:295
+									X:300
 									Y:0
 									Align:Center
 								Checkbox@STATUS:
 									Id:STATUS
-									X:380
+									X:385
 									Y:1
 									Width:20
 									Height:20
