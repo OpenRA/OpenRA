@@ -41,7 +41,7 @@ PROC:
 	Inherits: ^Building
 	Buildable:
 		Icon: procicnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: nuke
 		Owner: gdi,nod
 		Cost: 2000
@@ -97,7 +97,7 @@ PYLE:
 	Inherits: ^Building
 	Buildable:
 		Icon: pyleicnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: nuke
 		Owner: gdi
 		Cost: 300
@@ -122,7 +122,7 @@ HAND:
 	Inherits: ^Building
 	Buildable:
 		Icon: handicnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: nuke
 		Owner: nod
 		Cost: 300
@@ -201,7 +201,7 @@ HQ:
 	Inherits: ^Building
 	Buildable:
 		Icon: hqicnh
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 1000
@@ -225,7 +225,7 @@ NUK2:
 	Inherits: ^Building
 	Buildable:
 		Icon:nuk2icnh
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 		Prerequisites: hq
 		Owner: gdi,nod
 		Cost: 700
@@ -246,7 +246,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Icon: fixicnh
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 70
 		Prerequisites: @Vehicle Production
 		Owner: gdi,nod
 		Cost: 1200
@@ -297,7 +297,7 @@ EYE:
 	Inherits: ^Building
 	Buildable:
 		Icon: eyeicnh
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: gdi
 		Cost: 2800
@@ -323,7 +323,7 @@ TMPL:
 	Inherits: ^Building
 	Buildable:
 		Icon: tmplicnh
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: nod
 		Cost: 3000
@@ -349,7 +349,7 @@ OBLI:
 	Inherits: ^Building
 	Buildable:
 		Icon:obliicnh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: nod
 		Cost: 1500
@@ -390,7 +390,7 @@ CYCL:
 	Inherits: ^Wall
 	Buildable:
 		Icon:cyclicnh
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 75
@@ -407,7 +407,7 @@ SBAG:
 	Inherits: ^Wall
 	Buildable:
 		Icon:sbagicnh
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 50
@@ -422,7 +422,7 @@ BRIK:
 	Inherits: ^Wall
 	Buildable:
 		Icon:brikicnh
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 30
 		Prerequisites: fact
 		Owner: gdi,nod
 		Cost: 100
@@ -466,7 +466,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		Icon: samicnh
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Owner: nod
 		Cost: 750
@@ -495,7 +495,7 @@ GTWR:
 	Inherits: ^Building
 	Buildable:
 		Icon: gtwricnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 50
 		Prerequisites: pyle
 		Owner: gdi
 		Cost: 500
@@ -519,7 +519,7 @@ ATWR:
 	Inherits: ^Building
 	Buildable:
 		Icon: atwricnh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: gdi
 		Cost: 1000
