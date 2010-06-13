@@ -301,16 +301,15 @@ namespace OpenRA.Graphics
 			{
 				foreach (var pip in pips.GetPips(selectedUnit))
 				{
-					var pipImages = new Animation("pips");
-					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
-					pipxyOffset += new float2(4, 0);
-					
 					if (pipxyOffset.X+5 > selectedUnit.GetBounds(false).Width)
 					{
 						pipxyOffset.X = 0;
 						pipxyOffset.Y -= 4;
 					}
+					var pipImages = new Animation("pips");
+					pipImages.PlayRepeating(pipStrings[(int)pip]);
+					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
+					pipxyOffset += new float2(4, 0);
 				}
 				// Increment row
 				pipxyOffset.X = 0;

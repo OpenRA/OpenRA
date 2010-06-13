@@ -18,6 +18,9 @@
  */
 #endregion
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -26,21 +29,59 @@ namespace OpenRA.Mods.RA
 {
 	class OreRefineryInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new OreRefinery(self); }
+		public readonly int Pips = 0;
+		public readonly int Capacity = 0;
+		public readonly int ProcessTick = 25;
+		public readonly int ProcessAmount = 50;
+		public object Create(Actor self) { return new OreRefinery(self, this); }
 	}
 
-	class OreRefinery : IAcceptOre
+	class OreRefinery : ITick, IAcceptOre, IPips
 	{
 		Actor self;
-		public OreRefinery(Actor self)
+		OreRefineryInfo Info;
+
+		[Sync]
+		int nextProcessTime = 0;
+		[Sync]
+		public int Ore = 0;
+		public OreRefinery(Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
+			Info = info;
 		}
 		
 		public void GiveOre(int amount)
 		{
-			// TODO: Unbreak this	
+			Ore += amount;
+			if (Ore > Info.Capacity)
+				Ore = Info.Capacity;
 		}
+		
+		public void Tick(Actor self)
+		{
+			if (--nextProcessTime <= 0)
+			{
+				// Convert resources to cash
+				var pr = self.Owner.PlayerActor.traits.Get<PlayerResources>();
+				int amount = Math.Min(Ore, Info.ProcessAmount);
+					amount = Math.Min(amount, pr.OreCapacity - pr.Ore);
+				if (amount > 0)
+				{
+					Ore -=amount;
+					pr.GiveOre(amount);
+				}
+				nextProcessTime = Info.ProcessTick;
+			}
+		}
+		
+		public IEnumerable<PipType> GetPips(Actor self)
+		{
+			return Graphics.Util.MakeArray( Info.Pips, 
+				i => (Ore * 1.0f / Info.Capacity > i * 1.0f / Info.Pips) 
+					? PipType.Red : PipType.Transparent );
+		}
+		
 		public int2 DeliverOffset {	get { return new int2(1, 2); } }
 		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{

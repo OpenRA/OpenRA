@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
-		public object Create(Actor self) { return new TiberiumRefinery(self); }
+		public object Create(Actor self) { return new TiberiumRefinery(self, this); }
 	}
 
 	class TiberiumRefinery : ITick, IAcceptOre, IPips
@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Cnc
 		[Sync]
 		public int Tiberium = 0;
 		
-		public TiberiumRefinery(Actor self)
+		public TiberiumRefinery(Actor self, TiberiumRefineryInfo info)
 		{
 			this.self = self;
-			Info = self.Info.Traits.Get<TiberiumRefineryInfo>();
+			Info = info;
 		}
 		
 		public void GiveOre(int amount)
