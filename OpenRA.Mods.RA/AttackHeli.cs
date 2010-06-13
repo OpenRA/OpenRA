@@ -37,7 +37,6 @@ namespace OpenRA.Mods.RA
 		{
 			target = order.TargetActor;
 			self.QueueActivity(new HeliAttack(order.TargetActor));
-			//self.QueueActivity(new HeliReturn());
 		}
 	}
 }

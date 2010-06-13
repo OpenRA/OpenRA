@@ -444,7 +444,7 @@ HELI:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 15
-		
+		PipCount: 5
 ORCA:
 	Inherits: ^Plane
 	Buildable:

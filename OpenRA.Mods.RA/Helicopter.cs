@@ -32,12 +32,12 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RepairBuildings = { "fix" };
 		public readonly string[] RearmBuildings = { "hpad" };
 		public readonly int CruiseAltitude = 20;
-		public readonly int IdealSeparation = 80;
+		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
 		public object Create(Actor self) { return new Helicopter(self); }
 	}
 
-	class Helicopter : IIssueOrder, IResolveOrder, IMovement
+	class Helicopter : ITick, IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
 		public Helicopter(Actor self) {}
@@ -106,7 +106,36 @@ namespace OpenRA.Mods.RA
 					? (IActivity)new Rearm() : new Repair());
 			}
 		}
+		
+		public void Tick(Actor self)
+		{
+			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, self.Info.Traits.Get<HelicopterInfo>().IdealSeparation)
+				.Where(a => a.traits.Contains<Helicopter>());
 
+			var f = otherHelis
+				.Select(h => self.traits.Get<Helicopter>().GetRepulseForce(self, h))
+				.Aggregate(float2.Zero, (a, b) => a + b);
+
+			self.CenterLocation += rawSpeed * f;
+			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+		}
+			
+		const float Epsilon = .5f;
+		public float2 GetRepulseForce(Actor self, Actor h)
+		{
+			if (self == h)
+				return float2.Zero;
+			var d = self.CenterLocation - h.CenterLocation;
+			
+			if (d.Length > self.Info.Traits.Get<HelicopterInfo>().IdealSeparation)
+				return float2.Zero;
+
+			if (d.LengthSquared < Epsilon)
+				return float2.FromAngle((float)self.World.SharedRandom.NextDouble() * 3.14f);
+			return (5 / d.LengthSquared) * d;
+		}
+		
 		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
 		public bool CanEnterCell(int2 location) { return true; }
 	}

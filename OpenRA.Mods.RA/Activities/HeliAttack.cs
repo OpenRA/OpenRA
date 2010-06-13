@@ -63,30 +63,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				self.CenterLocation += (rawSpeed / dist.Length) * dist;
 
-			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, info.IdealSeparation)
-				.Where(a => a.traits.Contains<Helicopter>());
-
-			var f = otherHelis
-				.Select(h => GetRepulseForce(self, h))
-				.Aggregate(float2.Zero, (a, b) => a + b);
-
-			self.CenterLocation += rawSpeed * f;
-
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
-
 			return this;
-		}
-
-		const float Epsilon = .5f;
-		float2 GetRepulseForce(Actor self, Actor h)
-		{
-			if (self == h)
-				return float2.Zero;
-			var d = self.CenterLocation - h.CenterLocation;
-			if (d.LengthSquared < Epsilon)
-				return float2.FromAngle((float)self.World.SharedRandom.NextDouble() * 3.14f);
-
-			return (2 / d.LengthSquared) * d;
 		}
 
 		public void Cancel(Actor self) { target = null; NextActivity = null; }
