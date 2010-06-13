@@ -134,8 +134,8 @@ namespace OpenRA.Widgets
 						Game.chrome.renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
 						
 						pos += new int2(0,20);
-						Game.chrome.renderer.BoldFont.DrawText(FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.chrome.renderer.BoldFont.DrawText("/ {0}".F(FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						Game.chrome.renderer.BoldFont.DrawText(WorldUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.chrome.renderer.BoldFont.DrawText("/ {0}".F(WorldUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
 						
 						if (sp.Info.LongDesc != null)
 						{
@@ -170,14 +170,6 @@ namespace OpenRA.Widgets
 		Action<MouseInput> HandleSupportPower(SupportPower sp)
 		{
 			return mi => { if (mi.Button == MouseButton.Left) sp.Activate(); };
-		}
-				
-		string FormatTime(int ticks)
-		{
-			var seconds = ticks / 25;
-			var minutes = seconds / 60;
-
-			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
 	}
 }

@@ -241,5 +241,13 @@ namespace OpenRA
 		{
 			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>().ToList();
 		}
+		
+		public static string FormatTime(int ticks)
+		{
+			var seconds = ticks / 25;
+			var minutes = seconds / 60;
+
+			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
+		}
 	}
 }

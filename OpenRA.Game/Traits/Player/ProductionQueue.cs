@@ -65,10 +65,7 @@ namespace OpenRA.Traits
 					{
 						var unit = Rules.Info[order.TargetString];
 						var ui = unit.Traits.Get<BuildableInfo>();
-						var time = ui.Cost
-							* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
-							 * (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
-							 / 1000;
+						var time = GetBuildTime(self, order.TargetString);
 
 						if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
 							return;	/* you can't build that!! */
@@ -106,6 +103,20 @@ namespace OpenRA.Traits
 					break;
 				}
 			}
+		}
+		
+		public static int GetBuildTime(Actor self, String unitString)
+		{
+			var unit = Rules.Info[unitString];
+			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
+				return 0;
+			
+			var ui = unit.Traits.Get<BuildableInfo>();
+			var time = ui.Cost
+				* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
+				* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+				 / 1000;
+			return (int) time;
 		}
 
 		// Key: Production category.

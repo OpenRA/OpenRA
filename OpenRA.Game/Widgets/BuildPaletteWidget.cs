@@ -473,7 +473,7 @@ namespace OpenRA.Widgets
 			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
-			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 50));
+			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
 			
 			Game.chrome.renderer.BoldFont.DrawText(
 				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
@@ -481,6 +481,11 @@ namespace OpenRA.Widgets
 			
 			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5),
 			                 (world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().DisplayCash >= buildable.Cost)? Color.White: Color.Red);
+			
+			var lowpower = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GetPowerState() != PowerState.Normal;
+			var time = ProductionQueue.GetBuildTime(world.LocalPlayer.PlayerActor, info.Name) 
+				* ((lowpower)? world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown : 1);
+			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), (lowpower)? Color.Red: Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			var playerres = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
@@ -488,7 +493,7 @@ namespace OpenRA.Widgets
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
 				                 ((playerres.PowerProvided - playerres.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
 		
-			p += new int2(5, 20);
+			p += new int2(5, 35);
 			if (!canBuildThis)
 			{
 				var prereqs = buildable.Prerequisites
