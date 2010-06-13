@@ -3,7 +3,7 @@ MCV:
 	Buildable:
 		Icon: mcvicnh
 		BuildPaletteOrder: 70
-		Prerequisites: weap, @Superweapon
+		Prerequisites: fix
 		Owner: gdi,nod
 		Cost: 5000
 		Description: Mobile Construction Vehicle
@@ -29,7 +29,7 @@ HARV:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: harvicnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 1400
@@ -54,7 +54,7 @@ APC:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: apcicnh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Owner: gdi
 		Cost: 700
@@ -84,8 +84,8 @@ ARTY:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon:artyicnh
-		BuildPaletteOrder: 60
-		Prerequisites: afld
+		BuildPaletteOrder: 40
+		Prerequisites: hq
 		Owner: nod
 		Cost: 600
 		Description: Artillery
@@ -109,7 +109,7 @@ FTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: ftnkicnh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: hq
 		Owner: nod
 		Cost: 800
@@ -133,7 +133,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: bggyicnh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Owner: nod
 		Cost: 600
@@ -159,7 +159,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: bikeicnh
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Owner: nod
 		Cost: 500
@@ -274,8 +274,8 @@ HTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: htnkicnh
-		BuildPaletteOrder: 50
-		Prerequisites: weap, fix
+		BuildPaletteOrder: 60
+		Prerequisites: eye
 		Owner: gdi
 		Cost: 1500
 		Description: Mammoth Tank
@@ -309,8 +309,8 @@ MSAM:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: msamicnh
-		BuildPaletteOrder: 70
-		Prerequisites: weap, eye
+		BuildPaletteOrder: 50
+		Prerequisites: hq
 		Owner: gdi
 		Cost: 800
 		Description: Rocket Launcher
@@ -336,8 +336,8 @@ MLRS:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: mlrsicnh
-		BuildPaletteOrder: 70
-		Prerequisites: afld, fix
+		BuildPaletteOrder: 60
+		Prerequisites: hq
 		Owner: nod
 		Cost: 750
 		Description: SSM Launcher
@@ -362,8 +362,8 @@ STNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Icon: stnkicnh
-		BuildPaletteOrder: 50
-		Prerequisites: afld, hq
+		BuildPaletteOrder: 90
+		Prerequisites: tmpl
 		Owner: nod
 		Cost: 900
 		Description: Stealth Tank
@@ -390,7 +390,7 @@ TRAN:
 	Inherits: ^Plane
 	Buildable:
 		Icon:tranicnh
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: gdi,nod
@@ -417,7 +417,7 @@ HELI:
 	Inherits: ^Plane
 	Buildable:
 		Icon: heliicnh
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 20
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: nod
@@ -449,7 +449,7 @@ ORCA:
 	Inherits: ^Plane
 	Buildable:
 		Icon: orcaicnh
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 20
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: gdi

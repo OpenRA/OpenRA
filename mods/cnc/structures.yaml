@@ -148,7 +148,7 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		Icon: afldicnh
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: nod
 		Cost: 2000
@@ -174,7 +174,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Icon: weapicnh
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: gdi
 		Cost: 2000
@@ -270,7 +270,7 @@ HPAD:
 	Inherits: ^Building
 	Buildable:
 		Icon:hpadicnh
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: @Barracks
 		Owner: gdi,nod
 		Cost: 1500
@@ -301,7 +301,7 @@ EYE:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 2800
+		Cost: 1800
 		Description: Advanced Communications Center
 		LongDesc: Provides access to the Ion Cannon.\n  Requires power to operate.
 		AlternateName: @Superweapon
@@ -327,7 +327,7 @@ TMPL:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: nod
-		Cost: 3000
+		Cost: 2000
 		Description: Temple of Nod
 		LongDesc: Place of worship and secret missile silo.\nRequires power to operate.
 		AlternateName: @Superweapon
@@ -351,7 +351,7 @@ OBLI:
 	Buildable:
 		Icon:obliicnh
 		BuildPaletteOrder: 60
-		Prerequisites: hq
+		Prerequisites: tmpl
 		Owner: nod
 		Cost: 1500
 		Description: Obelisk of Light

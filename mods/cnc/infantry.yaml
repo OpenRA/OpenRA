@@ -19,7 +19,8 @@ E1:
 E2:
 	Inherits: ^Infantry
 	Buildable:
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 40
+		Prerequisites: hq
 		Owner: gdi
 		Cost: 160
 		Description: Grenadier
@@ -59,8 +60,9 @@ E3:
 E4:
 	Inherits: ^Infantry
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Owner: nod
+		Prerequisites: hq
 		Cost: 200
 		Description: Flamethrower
 		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
@@ -82,7 +84,7 @@ E4:
 E5:
 	Inherits: ^Infantry
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 50
 		Owner: nod
 		Cost: 300
 		Description: Chem Warrior
@@ -107,7 +109,7 @@ E5:
 E6:
 	Inherits: ^Infantry
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 30
 		Owner: gdi,nod
 		Cost: 500
 		Description: Engineer
@@ -131,7 +133,7 @@ E6:
 RMBO:
 	Inherits: ^Infantry
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 50
 		Owner: gdi
 		Cost: 1000
 		Prerequisites: eye
