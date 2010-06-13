@@ -36,6 +36,11 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 		}
+		
+		public void GiveOre(int amount)
+		{
+			// TODO: Unbreak this	
+		}
 		public int2 DeliverOffset {	get { return new int2(1, 2); } }
 		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{

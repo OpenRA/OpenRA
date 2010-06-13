@@ -42,7 +42,7 @@ PROC:
 	Buildable:
 		Icon: procicnh
 		BuildPaletteOrder: 30
-		Prerequisites: nuke
+		Prerequisites: silo
 		Owner: gdi,nod
 		Cost: 2000
 		Description: Tiberium Refinery
@@ -58,9 +58,10 @@ PROC:
 		Sight: 6
 	Bib:
 	TiberiumRefinery:
-	StoresOre:
-		Pips: 17
+		Pips: 10
 		Capacity: 1000
+		ProcessTick: 25
+		ProcessAmount: 50
 	CustomSellValue:
 		Value: 600
 	HasUnitOnBuild:
@@ -74,11 +75,11 @@ SILO:
 	Buildable:
 		Icon: siloicnh
 		BuildPaletteOrder: 20
-		Prerequisites: proc
+		Prerequisites: nuke
 		Owner: gdi,nod
 		Cost: 150
 		Description: Tiberium Silo
-		LongDesc: Stores excess Tiberium until it can be processed
+		LongDesc: Stores processed Tiberium
 	Building:
 		Power: -10
 		Footprint: xx
@@ -88,9 +89,9 @@ SILO:
 		Armor: wood
 		Sight: 4
 	RenderBuildingOre:
-	StoresOre:
+	StoresCash:
 		Pips: 5
-		Capacity: 1500
+		Capacity: 5000
 	-RenderBuilding:
 
 PYLE:

@@ -18,6 +18,9 @@
  */
 #endregion
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
@@ -27,17 +30,53 @@ namespace OpenRA.Mods.Cnc
 {
 	class TiberiumRefineryInfo : ITraitInfo
 	{
+		public readonly int Pips = 0;
+		public readonly int Capacity = 0;
+		public readonly int ProcessTick = 25;
+		public readonly int ProcessAmount = 50;
 		public object Create(Actor self) { return new TiberiumRefinery(self); }
 	}
 
-	class TiberiumRefinery : IAcceptOre
+	class TiberiumRefinery : ITick, IAcceptOre, IPips
 	{
 		Actor self;
+		TiberiumRefineryInfo Info;
+
+		[Sync]
+		int nextProcessTime = 0;
+		[Sync]
+		public int Tiberium = 0;
+		
 		public TiberiumRefinery(Actor self)
 		{
 			this.self = self;
+			Info = self.Info.Traits.Get<TiberiumRefineryInfo>();
 		}
-
+		
+		public void GiveOre(int amount)
+		{
+			Tiberium += amount;
+			if (Tiberium > Info.Capacity)
+				Tiberium = Info.Capacity;
+		}
+		
+		public void Tick(Actor self)
+		{
+			if (--nextProcessTime <= 0)
+			{
+				// Convert resources to cash
+				var pr = self.Owner.PlayerActor.traits.Get<PlayerResources>();
+				int amount = Math.Min(Tiberium, Info.ProcessAmount);
+					amount = Math.Min(amount, pr.CashCapacity - pr.Cash);
+				if (amount > 0)
+				{
+					Tiberium -=amount;
+					pr.GiveCash(amount);
+				}
+				nextProcessTime = Info.ProcessTick;
+			}
+		}
+		
 		public int2 DeliverOffset {	get { return new int2(0, 2); } }
 		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{
@@ -50,6 +89,13 @@ namespace OpenRA.Mods.Cnc
 					harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
 					harv.QueueActivity(new Harvest());
 			})));
+		}
+		
+		public IEnumerable<PipType> GetPips(Actor self)
+		{
+			return Graphics.Util.MakeArray( Info.Pips, 
+				i => (Tiberium * 1.0f / Info.Capacity > i * 1.0f / Info.Pips) 
+					? PipType.Green : PipType.Transparent );
 		}
 	}
 }

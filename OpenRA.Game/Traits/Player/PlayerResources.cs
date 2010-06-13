@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +8,28 @@ namespace OpenRA.Traits
 	class PlayerResourcesInfo : ITraitInfo
 	{
 		public readonly int InitialCash = 10000;
-		public readonly int InitialOre = 0;
-
+		public readonly int AdviceInterval = 250;
 		public object Create(Actor self) { return new PlayerResources(self); }
 	}
 
 	public class PlayerResources : ITick
 	{
 		Player Owner;
-
+		int AdviceInterval;
+		int nextSiloAdviceTime = 0;
+		int nextPowerAdviceTime = 0;
 		public PlayerResources(Actor self)
 		{
 			var p = self.Owner;
 			Owner = p;
 			Cash = self.Info.Traits.Get<PlayerResourcesInfo>().InitialCash;
-			Ore = self.Info.Traits.Get<PlayerResourcesInfo>().InitialOre;
+			AdviceInterval = self.Info.Traits.Get<PlayerResourcesInfo>().AdviceInterval;
 		}
 
 		[Sync]
 		public int Cash;
 		[Sync]
-		public int Ore;
-		[Sync]
-		public int OreCapacity;
+		public int CashCapacity;
 		[Sync]
 		public int DisplayCash;
 		[Sync]
@@ -58,7 +57,7 @@ namespace OpenRA.Traits
 
 			if (PowerProvided - PowerDrained < 0)
 				if (PowerProvided - PowerDrained != oldBalance)
-					Owner.GiveAdvice(Rules.Info["world"].Traits.Get<EvaAlertsInfo>().LowPower);
+					nextPowerAdviceTime = 0;
 		}
 
 		public PowerState GetPowerState()
@@ -68,32 +67,23 @@ namespace OpenRA.Traits
 			return PowerState.Critical;
 		}
 
-		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
+		public float GetSiloFullness() { return (float)Cash / CashCapacity; }
 
-		public void GiveCash(int num) { Cash += num; }
-		public void GiveOre(int num)
+		public void GiveCash(int num)
 		{
-			Ore += num;
-
-			if (Ore > OreCapacity)
-				Ore = OreCapacity;		// trim off the overflow.
-
-			if (Ore > .8 * OreCapacity)
-				Owner.GiveAdvice(Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);
-		}
-
-		public bool TakeCash(int num)
-		{
-			if (Cash + Ore < num) return false;
-			if (Ore <= num)
+			Cash += num;
+			
+			if (Cash > CashCapacity)
 			{
-				num -= Ore;
-				Ore = 0;
-				Cash -= num;
+				nextSiloAdviceTime = 0;
+				Cash = CashCapacity;
 			}
-			else
-				Ore -= num;
-
+		}
+		
+		public bool TakeCash(int num)
+		{			
+			if (Cash < num) return false;
+			Cash -= num;
 			return true;
 		}
 
@@ -104,21 +94,36 @@ namespace OpenRA.Traits
 		{
 			UpdatePower();
 
-			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresOre>()
-				.Sum(a => a.Actor.Info.Traits.Get<StoresOreInfo>().Capacity);
+			if (--nextPowerAdviceTime <= 0)
+			{
+				if (PowerProvided - PowerDrained < 0)
+					Owner.GiveAdvice(Rules.Info["world"].Traits.Get<EvaAlertsInfo>().LowPower);
+				
+				nextPowerAdviceTime = AdviceInterval;
+			}
+			
+			CashCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresCash>()
+				.Sum(a => a.Actor.Info.Traits.Get<StoresCashInfo>().Capacity);
 
-			var totalMoney = Cash + Ore;
-			var diff = Math.Abs(totalMoney - DisplayCash);
+			if (--nextSiloAdviceTime <= 0)
+			{
+				if (Cash > 0.8*CashCapacity)
+					Owner.GiveAdvice(Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);
+				
+				nextSiloAdviceTime = AdviceInterval;
+			}
+			
+			var diff = Math.Abs(Cash - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
 
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			if (DisplayCash < totalMoney)
+			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
 				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
 			}
-			else if (DisplayCash > totalMoney)
+			else if (DisplayCash > Cash)
 			{
 				DisplayCash -= move;
 				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
