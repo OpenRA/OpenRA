@@ -64,8 +64,20 @@ namespace OpenRA.Widgets.Delegates
 			};
 		}
 		
-		string GetNextSong() { return Rules.Music["allmusic"].Pool.GetNext(); }
-		string GetPrevSong() { return Rules.Music["allmusic"].Pool.GetPrev(); }
-		string GetSong() { return Rules.Music["allmusic"].Pool.GetCurrent(); }
+		string GetNextSong() 
+		{
+			if (!Rules.Music.ContainsKey("allmusic")) return null;
+			return Rules.Music["allmusic"].Pool.GetNext(); 
+		}
+		string GetPrevSong() 
+		{ 
+			if (!Rules.Music.ContainsKey("allmusic")) return null;
+			return Rules.Music["allmusic"].Pool.GetPrev(); 
+		}
+		string GetSong() 
+		{ 
+			if (!Rules.Music.ContainsKey("allmusic")) return null;
+			return Rules.Music["allmusic"].Pool.GetCurrent(); 
+		}
 	}
 }
