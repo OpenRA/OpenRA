@@ -22,28 +22,31 @@ namespace OpenRA.Widgets
 		{
 			lastMap = (other as MapPreviewWidget).lastMap;
 		}
+
+		Session.Client ClientForSpawnpoint(int i)
+		{
+			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i + 1);
+		}
+
+		const int closeEnough = 50;
 		
 		public override bool HandleInput(MouseInput mi)
 		{
-			var points = Game.chrome.currentMap.Waypoints
-				.Select((sp, i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault(
-					c => c.SpawnPoint == i + 1)))
-				.ToList();
-			
-			var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height );
-			
-			foreach(var p in points)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{
-				var pos = Game.chrome.currentMap.ConvertToPreview(p.First.Value, container);
-				
-				//todo: check within bounds
-				if (mi.Location.Equals(pos) && p.Second == null)
-				{
-					Game.LobbyInfo.Clients[Game.LocalClient.Index].SpawnPoint = 
-						Game.chrome.currentMap.Waypoints.Keys.ToList().IndexOf(p.First.Value) + 1;
-					return true;
-				}
+				var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height);
+
+				var points = Game.chrome.currentMap.Waypoints
+					.Select((sp, i) => Pair.New(Game.chrome.currentMap.ConvertToPreview(sp.Value, container), i))
+					.Where(a => ClientForSpawnpoint(a.Second) == null && (a.First - mi.Location).LengthSquared < closeEnough)
+					.ToArray();
+
+				if (points.Length > 0)
+					Game.IssueOrder(Order.Chat("/spawn {0}".F(points[0].Second + 1)));
+
+				return points.Length > 0;
 			}
+
 			return false;
 		}
 
@@ -90,7 +93,7 @@ namespace OpenRA.Widgets
 
 			foreach (var p in points)
 			{
-				var pos = map.ConvertToPreview(p.First.Value, container);
+				var pos = map.ConvertToPreview(p.First.Value, container) - new int2(8, 8);
 
 				if (p.Second == null)
 					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
