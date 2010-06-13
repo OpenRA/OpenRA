@@ -460,6 +460,35 @@ GUN:
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
+
+SAM:
+	Category: Defense
+	Inherits: ^Building
+	Buildable:
+		Icon: samicnh
+		BuildPaletteOrder: 90
+		Prerequisites: hand
+		Owner: nod
+		Cost: 750
+		Description: SAM Site
+		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Building:
+		Power: -20
+		Footprint: xx
+		Dimensions: 2,1
+		HP: 400
+		Armor: heavy
+		Crewed: yes
+		Sight: 5
+	Turreted:
+		ROT: 30
+		InitialFacing: 0
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: Nike
+	AutoTarget:
+	-RenderBuilding:
+	RenderRangeCircle:
 	
 GTWR:
 	Category: Defense

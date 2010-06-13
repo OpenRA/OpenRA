@@ -82,7 +82,7 @@
     <sequence name="critical-idle" start="8" length="1" />
     <sequence name="make" start="0" length="*" src="nuk2make" />
   </unit>
-  <!-- helipad -->
+  <!-- Helipad -->
   <unit name="hpad">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="7" length="1" />
@@ -157,6 +157,7 @@
     <sequence name="idle" start="0" length="16" />
     <sequence name="damaged-idle" start="16" length="16" />
   </unit>
+  <!-- Turret -->
   <unit name="gun">
     <sequence name="idle" start="0" facings="32" />
     <sequence name="recoil" start="32" facings="32" />
@@ -164,12 +165,20 @@
     <sequence name="damaged-recoil" start="96" facings="32" />
     <sequence name="make" start="0" length="20" src="gunmake" />
   </unit>
+  <!-- SAM Site -->
+  <unit name="sam">
+    <sequence name="idle" start="17" facings="32" />
+    <sequence name="damaged-idle" start="81" facings="32" />
+    <sequence name="make" start="0" length="20" src="sammake" />
+  </unit>
+  <!-- Guard Tower -->
   <unit name="gtwr">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
     <sequence name="critical-idle" start="2" length="1" />
     <sequence name="make" start="0" length="20" src="gtwrmake" />
   </unit>
+  <!-- Advanced Guard Tower -->
   <unit name="atwr">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />

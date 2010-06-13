@@ -5,7 +5,7 @@ E1:
 		Owner: gdi, nod
 		Cost: 100
 		Description: Minigunner
-		LongDesc: General-purpose infantry. Strong vs Infantry\n  Weak vs Vehicles
+		LongDesc: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 		Icon: e1icnh
 	Selectable:
 		Bounds: 12,17,0,-6
