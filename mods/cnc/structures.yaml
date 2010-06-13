@@ -327,12 +327,12 @@ TMPL:
 		Owner: nod
 		Cost: 3000
 		Description: Temple of Nod
-		LongDesc: Place of worship and secret missile silo.\n  Requires power to operate.
+		LongDesc: Place of worship and secret missile silo.\nRequires power to operate.
 		AlternateName: @Superweapon
 	Building:
 		Power: -150
-		Footprint: __ xx
-		Dimensions: 2,2
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
 		Capturable: false
 		HP: 1000
 		Armor: light
