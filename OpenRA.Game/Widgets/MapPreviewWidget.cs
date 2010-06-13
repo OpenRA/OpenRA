@@ -32,6 +32,8 @@ namespace OpenRA.Widgets
 		
 		public override bool HandleInput(MouseInput mi)
 		{
+			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
+			
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{
 				var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height);

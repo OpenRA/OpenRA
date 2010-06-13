@@ -125,6 +125,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		bool CyclePalette(MouseInput mi)
 		{
+			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
+			
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.PlayerColors().Count() - 1;
 
 			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Game.world.PlayerColors().Count();
@@ -140,6 +142,8 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleRace(MouseInput mi)
 		{	
+			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
+			
 			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Name));
 			
 			if (mi.Button == MouseButton.Right)
@@ -166,6 +170,8 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleSpawnPoint(MouseInput mi)
 		{
+			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
+			
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.SpawnPoints.Count();
 
 			var newIndex = (Game.LocalClient.SpawnPoint + d) % (Game.world.Map.SpawnPoints.Count()+1);
@@ -180,6 +186,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		bool CycleTeam(MouseInput mi)
 		{
+			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
+			
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.PlayerCount;
 
 			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount+1);

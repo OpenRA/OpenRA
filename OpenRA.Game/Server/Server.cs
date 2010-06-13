@@ -265,6 +265,12 @@ namespace OpenRA.Server
 				{ "name", 
 					s => 
 					{
+						if (GetClient(conn).State == Session.ClientState.Ready)
+						{
+							SendChatTo( conn, "You can't change your name once you are marked as ready" );
+							return true;
+						}
+						    
 						if (GameStarted)
 						{
 							SendChatTo( conn, "You can't change your name after the game has started" );
@@ -297,6 +303,12 @@ namespace OpenRA.Server
 				{ "race",
 					s => 
 					{
+						if (GetClient(conn).State == Session.ClientState.Ready)
+						{
+							SendChatTo( conn, "You can't change your race once you are marked as ready" );
+							return true;
+						}
+						
 						if (GameStarted) 
 						{
 							SendChatTo( conn, "You can't change your race after the game has started" );
@@ -310,6 +322,12 @@ namespace OpenRA.Server
 				{ "team",
 					s => 
 					{
+						if (GetClient(conn).State == Session.ClientState.Ready)
+						{
+							SendChatTo( conn, "You can't change your team once you are marked as ready" );
+							return true;
+						}
+						
 						if (GameStarted) 
 						{
 							SendChatTo( conn, "You can't change your team after the game has started" );
@@ -326,6 +344,12 @@ namespace OpenRA.Server
 				{ "spawn",
 					s => 
 					{
+						if (GetClient(conn).State == Session.ClientState.Ready)
+						{
+							SendChatTo( conn, "You can't change your spawn point once you are marked as ready" );
+							return true;
+						}
+						
 						if (GameStarted) 
 						{
 							SendChatTo( conn, "You can't change your spawn point after the game has started" );
@@ -352,6 +376,12 @@ namespace OpenRA.Server
 				{ "pal",
 					s =>
 					{
+						if (GetClient(conn).State == Session.ClientState.Ready)
+						{
+							SendChatTo( conn, "You can't change your color once you are marked as ready" );
+							return true;
+						}
+						
 						if (GameStarted) 
 						{
 							SendChatTo( conn, "You can't change your color after the game has started" );
