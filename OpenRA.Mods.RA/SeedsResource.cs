@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
 		public readonly int MaxRange = 100;
+		public readonly int AnimationInterval = 750;
 
 		public object Create(Actor self) { return new SeedsResource(); }
 	}
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.RA
 	class SeedsResource : ITick
 	{
 		int ticks;
+		int animationTicks;
 
 		public void Tick(Actor self)
 		{
@@ -63,6 +65,13 @@ namespace OpenRA.Mods.RA
 					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
 
 				ticks = info.Interval;
+			}
+
+			if (--animationTicks <= 0)
+			{
+				var info = self.Info.Traits.Get<SeedsResourceInfo>();
+				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+				animationTicks = info.AnimationInterval;
 			}
 		}
 

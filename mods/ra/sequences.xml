@@ -608,6 +608,7 @@
   </unit>
   <unit name="mine">
     <sequence name="idle" start="0" length="1" />
+    <sequence name="active" start="0" length="1" />
   </unit>
   <unit name="dragon">
     <sequence name="idle" start="0" facings="32" />
