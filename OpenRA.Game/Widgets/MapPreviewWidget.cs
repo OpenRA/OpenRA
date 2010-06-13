@@ -36,15 +36,14 @@ namespace OpenRA.Widgets
 			{
 				var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height);
 
-				var points = Game.chrome.currentMap.Waypoints
+				var p = Game.chrome.currentMap.Waypoints
 					.Select((sp, i) => Pair.New(Game.chrome.currentMap.ConvertToPreview(sp.Value, container), i))
 					.Where(a => ClientForSpawnpoint(a.Second) == null && (a.First - mi.Location).LengthSquared < closeEnough)
-					.ToArray();
+					.Select(a => a.Second + 1)
+					.FirstOrDefault();
 
-				if (points.Length > 0)
-					Game.IssueOrder(Order.Chat("/spawn {0}".F(points[0].Second + 1)));
-
-				return points.Length > 0;
+				Game.IssueOrder(Order.Chat("/spawn {0}".F(p)));
+				return true;
 			}
 
 			return false;
