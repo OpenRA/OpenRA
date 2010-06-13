@@ -238,6 +238,7 @@
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="Widgets\PowerBinWidget.cs" />
+    <Compile Include="Widgets\ImageWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

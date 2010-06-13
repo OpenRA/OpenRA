@@ -13,8 +13,11 @@
 		<image name="bg" x="306" y="31" width="192" height="192" />
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
-    	<collection name="power-gdi" src="chrome-gdi.png">
+    	
+	<collection name="power-gdi" src="chrome-gdi.png">
+		
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
+	
 	</collection>
 	<collection name="palette-gdi" src="chrome-gdi.png">
 		<image name="top" x="297" y="288" width="201" height="9" />
@@ -56,8 +59,11 @@
 		<image name="bg" x="306" y="31" width="192" height="192" />
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
-    <collection name="power-nod" src="chrome-nod.png">
+    
+	<collection name="power-nod" src="chrome-nod.png">
+		
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
+	
 	</collection>
 	<collection name="palette-nod" src="chrome-nod.png">
 		<image name="top" x="297" y="288" width="201" height="9" />
@@ -189,5 +195,10 @@
 		<image name="normal" x="0" y="56" width="34" height="28" />
 		<image name="pressed" x="34" y="56" width="34" height="28" />
 		<image name="disabled" x="68" y="56" width="34" height="28" />
+	</collection>
+	<collection name="flags" src="buttons.png">
+		<image name="GDI" x="0" y="56" width="30" height="25" />
+		<image name="Nod" x="0" y="56" width="30" height="25" />
+		<image name="Random" x="0" y="56" width="30" height="25" />
 	</collection>
 </chrome>

@@ -340,9 +340,15 @@ Container:
 								Button@FACTION:
 									Id:FACTION
 									Text:Faction
-									Width:90
+									Width:60
 									Height:25
 									X:180
+									Y:0
+								Image@FACTIONFLAG:
+									Id:FACTIONFLAG
+									Width:30
+									Height:25
+									X:235
 									Y:0
 								Button@SPAWN:
 									Id:SPAWN
@@ -388,11 +394,17 @@ Container:
 								Label@FACTION:
 									Id:FACTION
 									Text:Faction
-									Width:90
+									Width:60
 									Height:25
 									X:180
 									Y:0
 									Align:Center
+								Image@FACTIONFLAG:
+									Id:FACTIONFLAG
+									Width:30
+									Height:25
+									X:235
+									Y:0
 								Label@SPAWN:
 									Id:SPAWN
 									Text:Spawn

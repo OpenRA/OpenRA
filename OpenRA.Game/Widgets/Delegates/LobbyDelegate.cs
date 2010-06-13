@@ -81,6 +81,11 @@ namespace OpenRA.Widgets.Delegates
 					faction.OnMouseUp = CycleRace;
 					faction.GetText = () => c.Country;
 					
+					//TODO: make part of button?
+					var factionflag = template.GetWidget<ImageWidget>("FACTIONFLAG");
+					factionflag.GetImageName = () => c.Country;
+					factionflag.GetImageCollection = () => "flags";
+					
 					var spawn = template.GetWidget<ButtonWidget>("SPAWN");
 					spawn.OnMouseUp = CycleSpawnPoint;
 					spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString(); 
@@ -100,6 +105,10 @@ namespace OpenRA.Widgets.Delegates
 					
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					faction.GetText = () => c.Country;
+					
+					var factionflag = template.GetWidget<ImageWidget>("FACTIONFLAG");
+					factionflag.GetImageName = () => c.Country;
+					factionflag.GetImageCollection = () => "flags";
 					
 					var spawn = template.GetWidget<LabelWidget>("SPAWN");
 					spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
