@@ -26,9 +26,15 @@ namespace OpenRA.Graphics
 			// setup a 1-channel SheetBuilder for our private use
 			if (builder == null) builder = new SheetBuilder(r, TextureChannel.Alpha);
 
+			PrecacheColor(Color.White);
+			PrecacheColor(Color.Red);
+		}
+
+		void PrecacheColor(Color c)
+		{
 			// precache glyphs for U+0020 - U+007f
 			for (var n = (char)0x20; n < (char)0x7f; n++)
-				if (glyphs[Pair.New(n, Color.White)] == null)
+				if (glyphs[Pair.New(n, c)] == null)
 					throw new InvalidOperationException();
 		}
 
