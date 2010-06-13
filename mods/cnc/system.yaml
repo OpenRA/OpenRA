@@ -244,6 +244,7 @@ World:
 		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
 		AbilityInsufficientPower: nopower1.aud
+		LevelUp: text2.aud
 	SpatialBins:
 		BinSize: 4
 	Shroud:

@@ -12,6 +12,8 @@
 	IronCurtainable: 
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Infantry:
 	Category: Infantry
@@ -27,6 +29,8 @@
 	HiddenUnderFog:
 	PoisonedByTiberium:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Ship:
 	Category: Ship
@@ -36,13 +40,18 @@
 	Selectable:
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Plane:
 	Category: Plane
 	Unit:
+		TargetType: Air
 	Selectable:
 	HiddenUnderFog:
 	RevealsShroud:
+	GainsExperience:
+	GivesExperience:
 
 ^Building:
 	Category: Building
@@ -60,14 +69,7 @@
 	EmitInfantryOnSell:
 		ActorTypes: c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e1,e1,e1,e1,e1,e1,e1
 	MustBeDestroyed:
-
-^Tree:
-	Category: Building
-	RenderBuilding:
-		Palette: terrain
-	Building:
-		Footprint: __ x_
-		Dimensions: 2,2
+	GivesExperience:
 
 ^Wall:
 	Category: Building
@@ -90,6 +92,15 @@
 		HasMakeAnimation: false
 		Palette: terrain
 		DamageStates: 2
+	GivesExperience:
+
+^Tree:
+	Category: Building
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
 
 ^Husk:
 	Category: Vehicle

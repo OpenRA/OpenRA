@@ -67,8 +67,8 @@ namespace OpenRA.Mods.RA
 				Level++;
 
 //				Game.Debug("{0} became Level {1}".F(self.Info.Name, Level));
-
-				Sound.PlayToPlayer(self.Owner, "hydrod1.aud", self.CenterLocation);
+				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+				Sound.PlayToPlayer(self.Owner, eva.LevelUp, self.CenterLocation);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", new int2(0,-24))));
 			}
 		}

@@ -59,6 +59,8 @@ namespace OpenRA.Traits
 		
 		// Special powers
 		public readonly string AbilityInsufficientPower = "nopowr1.aud";
+		
+		public readonly string LevelUp = "hydrod1.aud";
 	}
 
 	public class EvaAlerts {}
