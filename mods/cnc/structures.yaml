@@ -151,6 +151,7 @@ AFLD:
 		Owner: nod
 		Cost: 2000
 		Description: Airstrip
+		AlternateName: @Vehicle Production
 		LongDesc: Provides a dropzone for vehicle reinforcements
 	Building:
 		Power: -30
@@ -176,6 +177,7 @@ WEAP:
 		Owner: gdi
 		Cost: 2000
 		Description: Weapons Factory
+		AlternateName: @Vehicle Production
 		LongDesc: Assembly point for vehicle reinforcements
 	Building:
 		Power: -30
@@ -223,7 +225,7 @@ NUK2:
 	Buildable:
 		Icon:nuk2icnh
 		BuildPaletteOrder: 50
-		Prerequisites: nuke
+		Prerequisites: hq
 		Owner: gdi,nod
 		Cost: 700
 		Description: Advanced Power Plant
@@ -244,7 +246,7 @@ FIX:
 	Buildable:
 		Icon: fixicnh
 		BuildPaletteOrder: 30
-		Prerequisites: nuke
+		Prerequisites: @Vehicle Production
 		Owner: gdi,nod
 		Cost: 1200
 		Description: Repair Facility
