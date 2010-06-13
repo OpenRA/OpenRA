@@ -339,34 +339,34 @@ Container:
 											Height:PARENT_BOTTOM-12
 								Button@FACTION:
 									Id:FACTION
-									Text:Faction
-									Width:60
+									Width:100
 									Height:25
 									X:180
 									Y:0
-								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
-									Width:30
-									Height:25
-									X:235
-									Y:0
-								Button@SPAWN:
-									Id:SPAWN
-									Text:Spawn
-									Width:70
-									Height:25
-									X:275
-									Y:0
+									Children:
+										Image@FACTIONFLAG:
+											Id:FACTIONFLAG
+											Width:30
+											Height:15
+											X:1
+											Y:5
+										Label@FACTIONNAME:
+											Id:FACTIONNAME
+											Text:Faction
+											Width:60
+											Height:25
+											X:35
+											Y:5
 								Button@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:355
+									X:295
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:455
+									X:380
 									Y:1
 									Width:20
 									Height:20
@@ -393,37 +393,35 @@ Container:
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Text:Faction
-									Width:60
+									Width:100
 									Height:25
 									X:180
 									Y:0
-									Align:Center
-								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
-									Width:30
-									Height:25
-									X:235
-									Y:0
-								Label@SPAWN:
-									Id:SPAWN
-									Text:Spawn
-									Width:70
-									Height:25
-									X:275
-									Y:0
-									Align:Center
+									Children:
+										Image@FACTIONFLAG:
+											Id:FACTIONFLAG
+											Width:30
+											Height:15
+											X:1
+											Y:5
+										Label@FACTIONNAME:
+											Id:FACTIONNAME
+											Text:Faction
+											Width:60
+											Height:25
+											X:35
+											Y:5
 								Label@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:70
 									Height:25
-									X:355
+									X:295
 									Y:0
 									Align:Center
 								Checkbox@STATUS:
 									Id:STATUS
-									X:455
+									X:380
 									Y:1
 									Width:20
 									Height:20
@@ -454,25 +452,17 @@ Container:
 							Y:0
 							Text:Faction
 							Align:Center
-						Label@LABEL_LOBBY_SPAWN:
-							Id:LABEL_LOBBY_SPAWN
-							Width:70
-							Height:25
-							X:275
-							Y:0
-							Text:Spawn
-							Align:Center
 						Label@LABEL_LOBBY_TEAM:
 							Id:LABEL_LOBBY_TEAM
 							Width:70
 							Height:25
-							X:355
+							X:295
 							Y:0
 							Text:Team
 							Align:Center
 						Label@LABEL_LOBBY_STATUS:
 							Id:LABEL_LOBBY_STATUS
-							X:455
+							X:380
 							Y:0
 							Width:20
 							Height:20
