@@ -493,6 +493,7 @@ C17:
 	WithShadow:
 	Cargo:
 		Passengers: 10
+	Invulnerable:
 	-Selectable:
 	-GainsExperience:
 

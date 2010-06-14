@@ -178,6 +178,7 @@
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="GivesExperience.cs" />
+    <Compile Include="Invulnerable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
