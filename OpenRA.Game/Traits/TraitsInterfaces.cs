@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other); }
-	public interface IAcceptThief { void OnSteal(Actor self, Actor thief); }
+	public interface INotifyCapture { void OnCapture(Actor self, Actor captor); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
 

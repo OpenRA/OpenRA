@@ -146,6 +146,14 @@ namespace OpenRA.Traits
 			}
 		}
 		
+		public bool TakeOre(int num)
+		{
+			if (Ore < num) return false;
+			Ore -= num;
+			
+			return true;
+		}
+		
 		public void GiveCash(int num)
 		{
 			Cash += num;

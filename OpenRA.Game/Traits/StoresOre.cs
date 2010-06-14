@@ -19,7 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
-
+ 
 namespace OpenRA.Traits
 {
 	class StoresOreInfo : TraitInfo<StoresOre>
@@ -28,17 +28,20 @@ namespace OpenRA.Traits
 		public readonly int Capacity = 0;
 	}
 
-	class StoresOre : IPips, IAcceptThief
-	{
-		public void OnSteal(Actor self, Actor thief)
+	class StoresOre : IPips, INotifyCapture
+	{		
+		public void OnCapture(Actor self, Actor captor)
 		{
-			// Steal half the cash the building holds
-			var toSteal = self.Info.Traits.Get<StoresOreInfo>().Capacity / 2;
-			self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(toSteal);
-			thief.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(toSteal);
-			
-			var eva = thief.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			Sound.PlayToPlayer(thief.Owner, eva.CreditsStolen);
+			var ore = Stored(self);
+			self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeOre(ore);
+			captor.Owner.PlayerActor.traits.Get<PlayerResources>().GiveOre(ore);
+		}
+		
+		int Stored(Actor self)
+		{
+			var use = self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness();
+			var capacity = self.Info.Traits.Get<StoresOreInfo>().Capacity;
+			return (int)use*capacity;
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -46,7 +49,7 @@ namespace OpenRA.Traits
 			var numPips = self.Info.Traits.Get<StoresOreInfo>().Pips;
 
 			return Graphics.Util.MakeArray( numPips, 
-				i => (self.World.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() > i * 1.0f / numPips) 
+				i => (self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() > i * 1.0f / numPips) 
 					? PipType.Yellow : PipType.Transparent );
 		}
 	}
