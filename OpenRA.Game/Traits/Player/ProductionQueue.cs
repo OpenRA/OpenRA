@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 
 		public void Tick( Actor self )
 		{
-			foreach( var p in production )
+			foreach( var p in production.OrderBy( p => p.Key ) )
 			{
 				while( p.Value.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, p.Key ).Contains( p.Value[ 0 ].Item ) )
 				{
