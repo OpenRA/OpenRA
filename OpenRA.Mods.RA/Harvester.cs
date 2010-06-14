@@ -26,26 +26,28 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class HarvesterInfo : ITraitInfo
+	public class HarvesterInfo : ITraitInfo
 	{
 		public readonly int Capacity = 28;
 		public readonly int PipCount = 7;
+		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
+		public readonly string DeathWeapon = null;
 
-		public object Create(Actor self) { return new Harvester(self); }
+		public object Create(Actor self) { return new Harvester(self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
-		Actor self;
-		public Harvester(Actor self)
+		readonly HarvesterInfo Info;
+		public Harvester(Actor self, HarvesterInfo info)
 		{
-			this.self = self;
+			Info = info;
 		}
 
-		public bool IsFull { get { return contents.Values.Sum() == self.Info.Traits.Get<HarvesterInfo>().Capacity; } }
+		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 
 		public void AcceptResource(ResourceType type)
@@ -93,16 +95,27 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (self.IsDead && contents.Count > 0)
+			{
+				if (Info.DeathWeapon != null)
+				{
+					Combat.DoExplosion(e.Attacker, Info.DeathWeapon,
+									  self.CenterLocation.ToInt2(), 0);
+				}
+			}
+		}
+		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			int numPips = self.Info.Traits.Get<HarvesterInfo>().PipCount;
+			int numPips = Info.PipCount;
 			int n = contents.Values.Sum();
 
 			for (int i = 0; i < numPips; i++)
 			{
-				// todo: pip colors based on ResourceTypeInfo
-				if (n * 1.0f / self.Info.Traits.Get<HarvesterInfo>().Capacity > i * 1.0f / numPips)
-					yield return PipType.Yellow;
+				if (n * 1.0f / Info.Capacity > i * 1.0f / numPips)
+					yield return Info.PipColor;
 				else
 					yield return PipType.Transparent;
 			}

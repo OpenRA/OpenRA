@@ -58,7 +58,8 @@ PROC:
 		Sight: 6
 	Bib:
 	TiberiumRefinery:
-		Pips: 15
+		PipCount: 15
+		PipColor: Red
 		Capacity: 1000
 		ProcessTick: 25
 		ProcessAmount: 50
@@ -90,7 +91,8 @@ SILO:
 		Sight: 4
 	RenderBuildingOre:
 	StoresOre:
-		Pips: 5
+		PipCount: 5
+		PipColor: Green
 		Capacity: 1000
 	-RenderBuilding:
 

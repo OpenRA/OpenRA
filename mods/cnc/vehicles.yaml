@@ -39,6 +39,8 @@ HARV:
 		Priority: 7
 	Harvester:
 		Resources: Tiberium
+		PipCount: 5
+		PipColor: Green
 		Capacity: 28
 	Unit:
 		HP: 600

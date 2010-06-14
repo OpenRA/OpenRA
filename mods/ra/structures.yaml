@@ -468,12 +468,12 @@ PROC:
 		Sight: 6
 	Bib:
 	OreRefinery:
-		Pips: 17
+		PipCount: 17
 		Capacity: 1000
 		ProcessTick: 25
 		ProcessAmount: 50
 	StoresOre:
-		Pips: 17
+		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
 	CustomSellValue:
@@ -502,7 +502,7 @@ SILO:
 		Sight: 4
 	RenderBuildingOre:
 	StoresOre:
-		Pips: 5
+		PipCount: 5
 		Capacity: 1500
 	IronCurtainable:
 	-RenderBuilding:

@@ -29,7 +29,8 @@ namespace OpenRA.Mods.RA
 {
 	class OreRefineryInfo : ITraitInfo
 	{
-		public readonly int Pips = 0;
+		public readonly int PipCount = 0;
+		public readonly PipType PipColor = PipType.Red;
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
@@ -77,9 +78,9 @@ namespace OpenRA.Mods.RA
 		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Graphics.Util.MakeArray( Info.Pips, 
-				i => (Ore * 1.0f / Info.Capacity > i * 1.0f / Info.Pips) 
-					? PipType.Red : PipType.Transparent );
+			return Graphics.Util.MakeArray( Info.PipCount, 
+				i => (Ore * 1.0f / Info.Capacity > i * 1.0f / Info.PipCount) 
+					? Info.PipColor : PipType.Transparent );
 		}
 		
 		public int2 DeliverOffset {	get { return new int2(1, 2); } }
