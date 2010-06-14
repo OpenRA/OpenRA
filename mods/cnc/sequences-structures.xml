@@ -18,6 +18,9 @@
     <sequence name="make" start="0" length="*" src="nukemake" />
   </unit>
   <!-- Tiberium Refinary -->
+  <unit name="proc.proxy">
+    <sequence name="make" start="0" length="*" src="procmake" />
+  </unit>
   <unit name="proc">
     <sequence name="idle" start="0" />
     <sequence name="active" start="0" length="30" />

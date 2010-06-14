@@ -36,14 +36,31 @@ NUKE:
 		Crewed: yes
 		Sight: 4
 	Bib:
-
-PROC:
+PROC.proxy:
 	Inherits: ^Building
 	Buildable:
 		Icon: procicnh
 		BuildPaletteOrder: 30
-		Prerequisites: silo
+		Prerequisites: nuke
 		Owner: gdi,nod
+		Cost: 2300
+		Description: Tiberium Refinery
+		LongDesc: Processes Tiberium into useable resources
+	Building:
+		Power: -50
+		Footprint: ___xx xxxxx xxx__ xxx__
+		Dimensions: 5,4
+		Capturable: true
+		HP: 900
+		Armor: wood
+		Crewed: yes
+		Sight: 6
+	ReplaceWithActor:
+		Actor: proc
+
+PROC:
+	Inherits: ^Building
+	Valued:
 		Cost: 2000
 		Description: Tiberium Refinery
 		LongDesc: Processes Tiberium into useable resources
@@ -65,18 +82,23 @@ PROC:
 		ProcessAmount: 50
 	CustomSellValue:
 		Value: 600
-	HasUnitOnBuild:
-		Unit: HARV
+	FreeActor:
+		Actor: HARV
 		InitialActivity: Harvest
 		SpawnOffset: 1,2
 		Facing: 64
-		
+	FreeActor@silo1:
+		Actor: silo
+		SpawnOffset: 3,0
+	FreeActor@silo2:
+		Actor: silo
+		SpawnOffset: 3,1
 SILO:
 	Inherits: ^Building
 	Buildable:
 		Icon: siloicnh
 		BuildPaletteOrder: 20
-		Prerequisites: nuke
+		Prerequisites: proc
 		Owner: gdi,nod
 		Cost: 150
 		Description: Tiberium Silo

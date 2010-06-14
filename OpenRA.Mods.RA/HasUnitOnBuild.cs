@@ -19,36 +19,35 @@
 #endregion
 
 using OpenRA.Traits;
-
+using System.Linq;
 namespace OpenRA.Mods.RA
 {
-	class HasUnitOnBuildInfo : ITraitInfo
+	public class FreeActorInfo : ITraitInfo
 	{
-		public readonly string Unit = null;
+		public readonly string Actor = null;
 		public readonly string InitialActivity = null;
 		public readonly int2 SpawnOffset = int2.Zero;
 		public readonly int Facing = 0;
 		
-		public object Create( Actor self ) { return new HasUnitOnBuild(self); }
+		public object Create( Actor self ) { return new FreeActor(self, this); }
 	}
 
-	public class HasUnitOnBuild
+	public class FreeActor
 	{
-		
-		public HasUnitOnBuild(Actor self)
-		{
-			var info = self.Info.Traits.Get<HasUnitOnBuildInfo>();
-			
+		public FreeActor(Actor self, FreeActorInfo info)
+		{			
 			self.World.AddFrameEndTask(
 				w =>
 				{
-					var unit = w.CreateActor(info.Unit, self.Location 
+					var a = w.CreateActor(info.Actor, self.Location 
 						+ info.SpawnOffset, self.Owner);
-					var unitTrait = unit.traits.Get<Unit>();
-					unitTrait.Facing = info.Facing;
+					var unit = a.traits.WithInterface<Unit>().FirstOrDefault();
+					
+					if (unit != null)
+						unit.Facing = info.Facing;
 
 					if (info.InitialActivity != null)
-						unit.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));
+						a.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));
 				});
 		}
 	}
