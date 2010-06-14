@@ -17,8 +17,6 @@ namespace OpenRA.Traits
 	{
 		Player Owner;
 		int AdviceInterval;
-		int nextSiloAdviceTime = 0;
-		int nextPowerAdviceTime = 0;
 		public PlayerResources(Actor self)
 		{
 			var p = self.Owner;
@@ -44,88 +42,18 @@ namespace OpenRA.Traits
 		public int PowerProvided;
 		[Sync]
 		public int PowerDrained;
-
-		void UpdatePower()
-		{
-			var oldBalance = PowerProvided - PowerDrained;
-
-			PowerProvided = 0;
-			PowerDrained = 0;
-
-			var myBuildings = Owner.World.Queries.OwnedBy[Owner].WithTrait<Building>();
-
-			foreach (var a in myBuildings)
-			{
-				var q = a.Trait.GetPowerUsage();
-				if (q > 0)
-					PowerProvided += q;
-				else
-					PowerDrained -= q;
-			}
-
-			if (PowerProvided - PowerDrained < 0)
-				if (PowerProvided - PowerDrained != oldBalance)
-					nextPowerAdviceTime = 0;
-		}
-
-		public PowerState GetPowerState()
-		{
-			if (PowerProvided >= PowerDrained) return PowerState.Normal;
-			if (PowerProvided > PowerDrained / 2) return PowerState.Low;
-			return PowerState.Critical;
-		}
-
-		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
-
-		public void GiveOre(int num)
-		{
-			Ore += num;
-			
-			if (Ore > OreCapacity)
-			{
-				nextSiloAdviceTime = 0;
-				Ore = OreCapacity;
-			}
-		}
 		
-		public void GiveCash(int num)
-		{
-			Cash += num;
-		}
-		
-		public bool TakeCash(int num)
-		{			
-			if (Cash + Ore < num) return false;
-			
-			// Spend cash before spending ore
-			Cash -= num;
-			if (Cash < 0)
-			{
-				Ore += Cash;
-				Cash = 0;	
-			}
-			
-			return true;
-		}
-
 		const float displayCashFracPerFrame = .07f;
 		const int displayCashDeltaPerFrame = 37;
-
-		public void Tick(Actor self)
+		int nextSiloAdviceTime = 0;
+		void TickOre(Actor self)
 		{
-			UpdatePower();
-
-			if (--nextPowerAdviceTime <= 0)
-			{
-				if (PowerProvided - PowerDrained < 0)
-					Owner.GiveAdvice(Rules.Info["world"].Traits.Get<EvaAlertsInfo>().LowPower);
-				
-				nextPowerAdviceTime = AdviceInterval;
-			}
-			
 			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresOre>()
 				.Sum(a => a.Actor.Info.Traits.Get<StoresOreInfo>().Capacity);
-
+			
+			if (Ore > OreCapacity)
+				Ore = OreCapacity;
+			
 			if (--nextSiloAdviceTime <= 0)
 			{
 				if (Ore > 0.8*OreCapacity)
@@ -164,6 +92,84 @@ namespace OpenRA.Traits
 				DisplayOre -= move;
 				//Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
+		}
+		
+		int nextPowerAdviceTime = 0;
+		void TickPower()
+		{
+			var oldBalance = PowerProvided - PowerDrained;
+
+			PowerProvided = 0;
+			PowerDrained = 0;
+
+			var myBuildings = Owner.World.Queries.OwnedBy[Owner].WithTrait<Building>();
+
+			foreach (var a in myBuildings)
+			{
+				var q = a.Trait.GetPowerUsage();
+				if (q > 0)
+					PowerProvided += q;
+				else
+					PowerDrained -= q;
+			}
+
+			if (PowerProvided - PowerDrained < 0)
+				if (PowerProvided - PowerDrained != oldBalance)
+					nextPowerAdviceTime = 0;
+			
+			if (--nextPowerAdviceTime <= 0)
+			{
+				if (PowerProvided - PowerDrained < 0)
+					Owner.GiveAdvice(Rules.Info["world"].Traits.Get<EvaAlertsInfo>().LowPower);
+				
+				nextPowerAdviceTime = AdviceInterval;
+			}
+		}
+
+		public PowerState GetPowerState()
+		{
+			if (PowerProvided >= PowerDrained) return PowerState.Normal;
+			if (PowerProvided > PowerDrained / 2) return PowerState.Low;
+			return PowerState.Critical;
+		}
+
+		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
+
+		public void GiveOre(int num)
+		{
+			Ore += num;
+			
+			if (Ore > OreCapacity)
+			{
+				nextSiloAdviceTime = 0;
+				Ore = OreCapacity;
+			}
+		}
+		
+		public void GiveCash(int num)
+		{
+			Cash += num;
+		}
+		
+		public bool TakeCash(int num)
+		{			
+			if (Cash + Ore < num) return false;
+			
+			// Spend ore before cash
+			Ore -= num;
+			if (Ore < 0)
+			{
+				Cash += Ore;
+				Ore = 0;	
+			}
+			
+			return true;
+		}
+
+		public void Tick(Actor self)
+		{
+			TickPower();
+			TickOre(self);
 		}
 	}
 }
