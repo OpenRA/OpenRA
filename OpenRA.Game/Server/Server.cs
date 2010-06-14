@@ -264,19 +264,7 @@ namespace OpenRA.Server
 					}},
 				{ "name", 
 					s => 
-					{
-						if (GetClient(conn).State == Session.ClientState.Ready)
-						{
-							SendChatTo( conn, "You can't change your name once you are marked as ready" );
-							return true;
-						}
-						    
-						if (GameStarted)
-						{
-							SendChatTo( conn, "You can't change your name after the game has started" );
-							return true;
-						}
-
+					{	    
 						if (s.Trim() == "")
 						{
 							SendChatTo( conn, "Blank names are not permitted." );
@@ -302,19 +290,7 @@ namespace OpenRA.Server
 					}},
 				{ "race",
 					s => 
-					{
-						if (GetClient(conn).State == Session.ClientState.Ready)
-						{
-							SendChatTo( conn, "You can't change your race once you are marked as ready" );
-							return true;
-						}
-						
-						if (GameStarted) 
-						{
-							SendChatTo( conn, "You can't change your race after the game has started" );
-							return true;
-						}
-
+					{					
 						GetClient(conn).Country = s;
 						SyncLobbyInfo();
 						return true;
@@ -322,18 +298,6 @@ namespace OpenRA.Server
 				{ "team",
 					s => 
 					{
-						if (GetClient(conn).State == Session.ClientState.Ready)
-						{
-							SendChatTo( conn, "You can't change your team once you are marked as ready" );
-							return true;
-						}
-						
-						if (GameStarted) 
-						{
-							SendChatTo( conn, "You can't change your team after the game has started" );
-							return true;
-						}
-
 						int team;
 						if (!int.TryParse(s, out team)) { Console.WriteLine("Invalid team: {0}", s ); return false; }
 
@@ -344,18 +308,6 @@ namespace OpenRA.Server
 				{ "spawn",
 					s => 
 					{
-						if (GetClient(conn).State == Session.ClientState.Ready)
-						{
-							SendChatTo( conn, "You can't change your spawn point once you are marked as ready" );
-							return true;
-						}
-						
-						if (GameStarted) 
-						{
-							SendChatTo( conn, "You can't change your spawn point after the game has started" );
-							return true;
-						}
-
 						int spawnPoint;
 						if (!int.TryParse(s, out spawnPoint) || spawnPoint < 0 || spawnPoint > 8) //TODO: SET properly!
 						{
@@ -376,17 +328,6 @@ namespace OpenRA.Server
 				{ "pal",
 					s =>
 					{
-						if (GetClient(conn).State == Session.ClientState.Ready)
-						{
-							SendChatTo( conn, "You can't change your color once you are marked as ready" );
-							return true;
-						}
-						
-						if (GameStarted) 
-						{
-							SendChatTo( conn, "You can't change your color after the game has started" );
-							return true;
-						}
 						int pali;
 						
 						if (!int.TryParse(s, out pali))
@@ -413,16 +354,12 @@ namespace OpenRA.Server
 							SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
-
-						if (GameStarted)
-						{
-							SendChatTo( conn, "You can't change the map after the game has started" );
-							return true;
-						}
-
 						lobbyInfo.GlobalSettings.Map = s;			
 						foreach(var client in lobbyInfo.Clients)
+						{
 							client.SpawnPoint = 0;
+							client.State = Session.ClientState.NotReady;
+						}
 						
 						SyncLobbyInfo();
 						return true;
@@ -430,12 +367,6 @@ namespace OpenRA.Server
 				{ "addpkg",
 					s => 
 					{
-						if (GameStarted)
-						{
-							SendChatTo( conn, "You can't change packages after the game has started" );
-							return true;
-						}
-
 						Console.WriteLine("** Added package: `{0}`", s);
 						try
 						{
@@ -455,11 +386,6 @@ namespace OpenRA.Server
 				{ "mods",
 					s =>
 					{
-						if (GameStarted)
-						{
-							SendChatTo( conn, "You can't change mods after the game has started" );
-							return true;
-						}
 						var args = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 						lobbyInfo.GlobalSettings.Mods = args.GetRange(0,args.Count - 1).ToArray();
 						lobbyInfo.GlobalSettings.Map = args.Last();
@@ -495,19 +421,34 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Chat":
-					if (so.Data.StartsWith("/"))
-					{
-						if (!InterpretCommand(conn, so.Data.Substring(1)))
-						{
-							Console.WriteLine("Bad server command: {0}", so.Data.Substring(1));
-							SendChatTo(conn, "Bad server command.");
-						}
-					}
-					else
+					if (!HandleAsCommand(conn, so))
+						foreach (var c in conns.Except(conn).ToArray())
+							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
+					break;
+				//TODO: send to those with the same team
+				case "TeamChat":
+					if (!HandleAsCommand(conn, so))
 						foreach (var c in conns.Except(conn).ToArray())
 							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
 					break;
 			}
+		}
+		
+		static bool HandleAsCommand(Connection conn, ServerOrder so)
+		{
+			if (!so.Data.StartsWith("/")) return false;
+			
+			var cmd = so.Data.Substring(1);
+			if(GameStarted)
+				   SendChatTo(conn, "Cannot change state when game started.");
+			else if (GetClient(conn).State == Session.ClientState.Ready && cmd != "ready")
+				   SendChatTo(conn, "Cannot change state when marked as ready.");
+			else if (!InterpretCommand(conn, cmd))
+			{
+				Console.WriteLine("Bad server command: {0}", cmd);
+				SendChatTo(conn, "Bad server command.");
+			}
+			return true;
 		}
 
 		static Session.Client GetClient(Connection conn)

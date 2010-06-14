@@ -63,14 +63,12 @@ namespace OpenRA.Widgets.Delegates
 			foreach(var client in Game.LobbyInfo.Clients)
 			{
 				var c = client;
-				var template = (client.Index == Game.LocalClient.Index)? LocalPlayerTemplate.Clone() : RemotePlayerTemplate.Clone();
+				Widget template;
 				
-				template.Id = "PLAYER_{0}".F(c.Index);
-				template.Parent = Players;			
-				template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
-				
-				if(client.Index == Game.LocalClient.Index)
+				if(client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
+					template = LocalPlayerTemplate.Clone();
+					
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = CyclePalette;
 
@@ -95,6 +93,8 @@ namespace OpenRA.Widgets.Delegates
 				}
 				else 
 				{
+					template = RemotePlayerTemplate.Clone();
+					
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
 					
@@ -110,7 +110,12 @@ namespace OpenRA.Widgets.Delegates
 	
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.Checked = () => c.State == Session.ClientState.Ready;
+					if (client.Index == Game.LocalClient.Index) status.OnMouseDown = CycleReady;
 				}
+				
+				template.Id = "PLAYER_{0}".F(c.Index);
+				template.Parent = Players;			
+				template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 				
 				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
@@ -125,8 +130,6 @@ namespace OpenRA.Widgets.Delegates
 		
 		bool CyclePalette(MouseInput mi)
 		{
-			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
-			
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.PlayerColors().Count() - 1;
 
 			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Game.world.PlayerColors().Count();
@@ -141,9 +144,7 @@ namespace OpenRA.Widgets.Delegates
 		}
 
 		bool CycleRace(MouseInput mi)
-		{	
-			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
-			
+		{			
 			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Name));
 			
 			if (mi.Button == MouseButton.Right)
@@ -164,14 +165,15 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleReady(MouseInput mi)
 		{
+			//HACK: Can't set this as part of the fuction as LocalClient/State not initalised yet
+			Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible 
+				= (Game.IsHost && Game.LocalClient.State == Session.ClientState.Ready);
 			Game.IssueOrder(Order.Chat("/ready"));
 			return true;
 		}
 
 		bool CycleSpawnPoint(MouseInput mi)
-		{
-			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
-			
+		{		
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.SpawnPoints.Count();
 
 			var newIndex = (Game.LocalClient.SpawnPoint + d) % (Game.world.Map.SpawnPoints.Count()+1);
@@ -185,9 +187,7 @@ namespace OpenRA.Widgets.Delegates
 		}
 		
 		bool CycleTeam(MouseInput mi)
-		{
-			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
-			
+		{		
 			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.PlayerCount;
 
 			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount+1);
