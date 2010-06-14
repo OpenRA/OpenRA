@@ -37,62 +37,80 @@ namespace OpenRA
 			return hashFuncCache[ obj.GetType() ]( obj );
 		}
 
-		public static Func<object,int> GenerateHashFunc( Type t )
+		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
-			var d = new DynamicMethod( "hash_{0}".F( t.Name ), typeof( int ), new Type[] { typeof( object ) }, t );
+			if (type == typeof(int))
+			{
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(bool))
+			{
+				var l = il.DefineLabel();
+				il.Emit(OpCodes.Ldc_I4, 0xaaa);
+				il.Emit(OpCodes.Brtrue, l);
+				il.Emit(OpCodes.Pop);
+				il.Emit(OpCodes.Ldc_I4, 0x555);
+				il.MarkLabel(l);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(int2))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<int2, int>)hash_int2).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(TypeDictionary))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<TypeDictionary, int>)hash_tdict).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(Actor))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<Actor, int>)hash_actor).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(Player))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<Player, int>)hash_player).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type.HasAttribute<SyncAttribute>())
+			{
+				il.EmitCall(OpCodes.Call, ((Func<object, int>)CalculateSyncHash).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else
+				throw new NotImplementedException("SyncAttribute on member of unhashable type: {0}".F(type.FullName));
+		}
+
+		public static Func<object, int> GenerateHashFunc(Type t)
+		{
+			var d = new DynamicMethod("hash_{0}".F(t.Name), typeof(int), new Type[] { typeof(object) }, t);
 			var il = d.GetILGenerator();
-			var this_ = il.DeclareLocal( t ).LocalIndex;
-			il.Emit( OpCodes.Ldarg_0 );
-			il.Emit( OpCodes.Castclass, t );
-			il.Emit( OpCodes.Stloc, this_ );
-			il.Emit( OpCodes.Ldc_I4_0 );
+			var this_ = il.DeclareLocal(t).LocalIndex;
+			il.Emit(OpCodes.Ldarg_0);
+			il.Emit(OpCodes.Castclass, t);
+			il.Emit(OpCodes.Stloc, this_);
+			il.Emit(OpCodes.Ldc_I4_0);
 
 			const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-			foreach( var field in t.GetFields( bf ).Where( x => x.GetCustomAttributes( typeof( SyncAttribute ), true ).Length != 0 ) )
+			foreach (var field in t.GetFields(bf).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
-				il.Emit( OpCodes.Ldloc, this_ );
-				il.Emit( OpCodes.Ldfld, field );
+				il.Emit(OpCodes.Ldloc, this_);
+				il.Emit(OpCodes.Ldfld, field);
 
-				if( field.FieldType == typeof( int ) )
-				{
-					il.Emit( OpCodes.Xor );
-				}
-				else if( field.FieldType == typeof( bool ) )
-				{
-					var l = il.DefineLabel();
-					il.Emit( OpCodes.Ldc_I4, 0xaaa );
-					il.Emit( OpCodes.Brtrue, l );
-					il.Emit( OpCodes.Pop );
-					il.Emit( OpCodes.Ldc_I4, 0x555 );
-					il.MarkLabel( l );
-					il.Emit( OpCodes.Xor );
-				}
-				else if( field.FieldType == typeof( int2 ) )
-				{
-					il.EmitCall( OpCodes.Call, ( (Func<int2, int>)hash_int2 ).Method, null );
-					il.Emit( OpCodes.Xor );
-				}
-				else if( field.FieldType == typeof( TypeDictionary ) )
-				{
-					il.EmitCall( OpCodes.Call, ( (Func<TypeDictionary, int>)hash_tdict ).Method, null );
-					il.Emit( OpCodes.Xor );
-				}
-				else if( field.FieldType == typeof( Actor ) )
-				{
-					il.EmitCall( OpCodes.Call, ( (Func<Actor, int>)hash_actor ).Method, null );
-					il.Emit( OpCodes.Xor );
-				}
-				else if( field.FieldType == typeof( Player ) )
-				{
-					il.EmitCall( OpCodes.Call, ( (Func<Player, int>)hash_player ).Method, null );
-					il.Emit( OpCodes.Xor );
-				}
-				else
-					throw new NotImplementedException( "SyncAttribute on unhashable field" );
+				EmitSyncOpcodes(field.FieldType, il);
 			}
 
-			il.Emit( OpCodes.Ret );
-			return (Func<object,int>)d.CreateDelegate( typeof( Func<object,int> ) );
+			foreach (var prop in t.GetProperties(bf).Where(x => x.HasAttribute<SyncAttribute>()))
+			{
+				il.Emit(OpCodes.Ldloc, this_);
+				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
+
+				EmitSyncOpcodes(prop.PropertyType, il);
+			}
+
+			il.Emit(OpCodes.Ret);
+			return (Func<object, int>)d.CreateDelegate(typeof(Func<object, int>));
 		}
 
 		public static int hash_int2( int2 i2 )
@@ -120,6 +138,11 @@ namespace OpenRA
 			if( p != null )
 				return p.Index * 0x567;
 			return 0;
+		}
+
+		static bool HasAttribute<T>( this MemberInfo mi )
+		{
+			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
 		}
 	}
 }
