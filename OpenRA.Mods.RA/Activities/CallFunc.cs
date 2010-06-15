@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -26,8 +26,14 @@ namespace OpenRA.Mods.RA.Activities
 	public class CallFunc : IActivity
 	{
 		public CallFunc(Action a) { this.a = a; }
-
+		public CallFunc(Action a, bool interruptable)
+		{
+			this.a = a;
+			this.interruptable = interruptable;
+		}
+		
 		Action a;
+		bool interruptable;
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
@@ -36,6 +42,13 @@ namespace OpenRA.Mods.RA.Activities
 			return NextActivity;
 		}
 
-		public void Cancel(Actor self) { a = null; NextActivity = null; }
+		public void Cancel(Actor self)
+		{
+			if (!interruptable)
+				return;
+			
+			a = null;
+			NextActivity = null;
+		}
 	}
 }

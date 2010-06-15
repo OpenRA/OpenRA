@@ -25,16 +25,29 @@ namespace OpenRA.Mods.RA.Activities
 	public class Wait : IActivity
 	{
 		int remainingTicks;
-
+		bool interruptable = true;
+		
 		public Wait(int period) { remainingTicks = period; }
-
+		public Wait(int period, bool interruptable)
+		{
+			remainingTicks = period;
+			this.interruptable = interruptable;
+		}
+		
 		public IActivity Tick(Actor self)
 		{
 			if (remainingTicks-- == 0) return NextActivity;
 			return this;
 		}
 
-		public void Cancel(Actor self) { remainingTicks = 0; NextActivity = null; }
+		public void Cancel(Actor self)
+		{
+			if (!interruptable)
+				return;
+			
+			remainingTicks = 0;
+			NextActivity = null;
+		}
 		public IActivity NextActivity { get; set; }
 	}
 }

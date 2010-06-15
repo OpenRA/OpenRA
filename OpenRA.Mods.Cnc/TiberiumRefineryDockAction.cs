@@ -44,21 +44,22 @@ namespace OpenRA.Mods.Cnc
 			{
 				dockedHarv = harv;
 				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
-			}) );
-			harv.QueueActivity( new Drag(startDock, endDock, 11) );
-			harv.QueueActivity( new CallFunc( () =>
-			{
-				self.World.AddFrameEndTask( w1 =>
+				
+				harv.QueueActivity( new Drag(startDock, endDock, 12) );
+				harv.QueueActivity( new CallFunc( () =>
 				{
-					harvester.Visible = false;
-					harvester.Deliver(harv, self);
-				});
+					self.World.AddFrameEndTask( w1 =>
+					{
+						harvester.Visible = false;
+						harvester.Deliver(harv, self);
+					});
+				}, false ) );
+				harv.QueueActivity( new Wait(18, false ) );
+				harv.QueueActivity( new CallFunc( () => harvester.Visible = true, false ) );
+				harv.QueueActivity( new Drag(endDock, startDock, 12) );
+				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
+				harv.QueueActivity( new Harvest() );	
 			}) );
-			harv.QueueActivity( new Wait(18) );
-			harv.QueueActivity( new CallFunc( () => harvester.Visible = true) );
-			harv.QueueActivity( new Drag(endDock, startDock, 11) );
-			harv.QueueActivity( new CallFunc( () => dockedHarv = null) );
-			harv.QueueActivity( new Harvest() );
 		}
 		
 	}
