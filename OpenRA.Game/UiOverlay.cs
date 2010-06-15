@@ -36,9 +36,9 @@ namespace OpenRA
 		{
 			this.spriteRenderer = spriteRenderer;
 
-			buildOk = SynthesizeTile(0x80);
-			buildBlocked = SynthesizeTile(0xe6);
-			unitDebug = SynthesizeTile(0x7c);
+			buildOk = SynthesizeTile(0x0f);
+			buildBlocked = SynthesizeTile(0x08);
+			unitDebug = SynthesizeTile(0x04);
 		}
 
 		static Sprite SynthesizeTile(byte paletteIndex)
