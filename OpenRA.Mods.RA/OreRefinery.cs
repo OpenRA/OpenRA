@@ -31,6 +31,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Red;
+		public readonly int2 DockOffset = new int2 (1, 2);
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips
+	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, ITraitPrerequisite<IAcceptOreDockAction>
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
@@ -102,42 +103,31 @@ namespace OpenRA.Mods.RA
 				}
 				
 				foreach (var harv in LinkedHarv)
-					harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+					harv.traits.Get<Harvester> ().UnlinkProc(harv, self);
 			}
 		}
 
-		public int2 DeliverOffset {get{ return new int2 (1, 2); }}
+		public int2 DeliverOffset {get{ return Info.DockOffset; }}
 		public void OnDock (Actor harv, DeliverResources dockOrder)
 		{
-			var unit = harv.traits.Get<Unit> ();
-			if (unit.Facing != 64)
-				harv.QueueActivity (new Turn (64));
-			
-			harv.QueueActivity (new CallFunc (() =>
-			{
-				var renderUnit = harv.traits.Get<RenderUnit> ();
-				if (renderUnit.anim.CurrentSequence.Name != "empty")
-					renderUnit.PlayCustomAnimation (harv, "empty", () =>
-					{
-						harv.traits.Get<Harvester> ().Deliver (harv, self);
-						harv.QueueActivity (new Harvest ());
-					});
-			}));
+			self.traits.Get<IAcceptOreDockAction>().OnDock(self, harv, dockOrder);
 		}
+		
 		public void OnCapture (Actor self, Actor captor)
-		{
-			// Todo: Do the right thing if a harv is docked
-			
-			// Unlink any other harvs
+		{		
+			// Unlink any non-docked harvs
 			foreach (var harv in LinkedHarv)
-				harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+			{
+				if (harv.Owner == self.Owner)
+					harv.traits.Get<Harvester>().UnlinkProc (harv, self);
+			}
 		}
 
 		public void Selling (Actor self) {}
 		public void Sold (Actor self)
 		{
 			foreach (var harv in LinkedHarv)
-				harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+				harv.traits.Get<Harvester>().UnlinkProc (harv, self);
 		}
 
 		public IEnumerable<PipType> GetPips (Actor self)

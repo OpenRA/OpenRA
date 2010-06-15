@@ -30,4 +30,9 @@ namespace OpenRA.Mods.RA
 		void UnlinkHarvester(Actor self, Actor harv);
 		int2 DeliverOffset { get; }
 	}
+	
+	public interface IAcceptOreDockAction
+	{
+		void OnDock(Actor self, Actor harv, DeliverResources dockOrder);
+	}
 }

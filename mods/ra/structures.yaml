@@ -472,6 +472,7 @@ PROC:
 		Capacity: 1000
 		ProcessTick: 25
 		ProcessAmount: 50
+	OreRefineryDockAction:
 	StoresOre:
 		PipCount: 17
 		Capacity: 2000

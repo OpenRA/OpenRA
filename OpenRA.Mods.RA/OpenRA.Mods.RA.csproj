@@ -180,6 +180,8 @@
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="ReplaceWithActor.cs" />
+    <Compile Include="OreRefineryDockAction.cs" />
+    <Compile Include="Activities\Drag.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

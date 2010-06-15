@@ -37,9 +37,14 @@ namespace OpenRA.Mods.RA
 		public object Create(Actor self) { return new Harvester(self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		
+		[Sync]
+		public bool Visible = true;
+		
+		[Sync]
 		public Actor LinkedProc = null;
 		
 		readonly HarvesterInfo Info;
@@ -179,6 +184,11 @@ namespace OpenRA.Mods.RA
 				else
 					yield return PipType.Transparent;
 			}
+		}
+				
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			return Visible ? r : new Renderable[] { };
 		}
 	}
 }

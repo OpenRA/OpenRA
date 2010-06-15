@@ -36,6 +36,7 @@ NUKE:
 		Crewed: yes
 		Sight: 4
 	Bib:
+
 PROC.proxy:
 	Inherits: ^Building
 	Buildable:
@@ -74,12 +75,14 @@ PROC:
 		Crewed: yes
 		Sight: 6
 	Bib:
-	TiberiumRefinery:
+	OreRefinery:
 		PipCount: 15
 		PipColor: Red
+		DockOffset: 0,2
 		Capacity: 1000
 		ProcessTick: 25
 		ProcessAmount: 50
+	TiberiumRefineryDockAction:
 	CustomSellValue:
 		Value: 600
 	FreeActor:
