@@ -341,7 +341,7 @@ namespace OpenRA.Widgets
 			if( a[ 0 ] == '@' )
 				return "any " + a.Substring( 1 );
 			else
-				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<BuildableInfo>().Description;
+				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<ValuedInfo>().Description;
 		}
 		
 		static void HandleBuildPalette( World world, string item, bool isLmb )
