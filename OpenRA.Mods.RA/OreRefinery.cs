@@ -34,72 +34,115 @@ namespace OpenRA.Mods.RA
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
-		public object Create(Actor self) { return new OreRefinery(self, this); }
+		public readonly string DeathWeapon = null;
+		public object Create (Actor self)
+		{
+			return new OreRefinery (self, this);
+		}
 	}
 
-	class OreRefinery : ITick, IAcceptOre, IPips
+	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips
 	{
-		Actor self;
-		OreRefineryInfo Info;
+		readonly Actor self;
+		readonly OreRefineryInfo Info;
+		readonly PlayerResources Player;
+		List<Actor> LinkedHarv;
 
 		[Sync]
 		int nextProcessTime = 0;
 		[Sync]
 		public int Ore = 0;
-		public OreRefinery(Actor self, OreRefineryInfo info)
+
+		public OreRefinery (Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
 			Info = info;
+			Player = self.Owner.PlayerActor.traits.Get<PlayerResources> ();
+			LinkedHarv = new List<Actor> ();
 		}
-		
-		public void GiveOre(int amount)
+
+		public void LinkHarvester (Actor self, Actor harv)
+		{
+			LinkedHarv.Add (harv);
+		}
+
+		public void UnlinkHarvester (Actor self, Actor harv)
+		{
+			if (LinkedHarv.Contains (harv))
+				LinkedHarv.Remove (harv);
+		}
+
+		public void GiveOre (int amount)
 		{
 			Ore += amount;
 			if (Ore > Info.Capacity)
 				Ore = Info.Capacity;
 		}
-		
-		public void Tick(Actor self)
+
+		public void Tick (Actor self)
 		{
-			if (--nextProcessTime <= 0)
-			{
+			if (--nextProcessTime <= 0) {
 				// Convert resources to cash
-				var pr = self.Owner.PlayerActor.traits.Get<PlayerResources>();
-				int amount = Math.Min(Ore, Info.ProcessAmount);
-					amount = Math.Min(amount, pr.OreCapacity - pr.Ore);
-				if (amount > 0)
-				{
-					Ore -=amount;
-					pr.GiveOre(amount);
+				int amount = Math.Min (Ore, Info.ProcessAmount);
+				amount = Math.Min (amount, Player.OreCapacity - Player.Ore);
+				
+				if (amount > 0) {
+					Ore -= amount;
+					Player.GiveOre (amount);
 				}
 				nextProcessTime = Info.ProcessTick;
 			}
 		}
-		
-		public IEnumerable<PipType> GetPips(Actor self)
+
+		public void Damaged (Actor self, AttackInfo e)
 		{
-			return Graphics.Util.MakeArray( Info.PipCount, 
-				i => (Ore * 1.0f / Info.Capacity > i * 1.0f / Info.PipCount) 
-					? Info.PipColor : PipType.Transparent );
-		}
-		
-		public int2 DeliverOffset {	get { return new int2(1, 2); } }
-		public void OnDock(Actor harv, DeliverResources dockOrder)
-		{
-			var unit = harv.traits.Get<Unit>();
-			if (unit.Facing != 64)
-				harv.QueueActivity(new Turn(64));
-				
-			harv.QueueActivity( new CallFunc( () => {
-				var renderUnit = harv.traits.Get<RenderUnit>();
-				if (renderUnit.anim.CurrentSequence.Name != "empty")
-					renderUnit.PlayCustomAnimation(harv, "empty", () =>
-					{
-						harv.traits.Get<Harvester>().Deliver(harv, self);
-						harv.QueueActivity(new Harvest());
-					});
+			if (self.IsDead) {
+				if (Info.DeathWeapon != null && Ore > 0) {
+					Combat.DoExplosion (e.Attacker, Info.DeathWeapon, self.CenterLocation.ToInt2 (), 0);
 				}
-			));
+				
+				foreach (var harv in LinkedHarv)
+					harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+			}
+		}
+
+		public int2 DeliverOffset {get{ return new int2 (1, 2); }}
+		public void OnDock (Actor harv, DeliverResources dockOrder)
+		{
+			var unit = harv.traits.Get<Unit> ();
+			if (unit.Facing != 64)
+				harv.QueueActivity (new Turn (64));
+			
+			harv.QueueActivity (new CallFunc (() =>
+			{
+				var renderUnit = harv.traits.Get<RenderUnit> ();
+				if (renderUnit.anim.CurrentSequence.Name != "empty")
+					renderUnit.PlayCustomAnimation (harv, "empty", () =>
+					{
+						harv.traits.Get<Harvester> ().Deliver (harv, self);
+						harv.QueueActivity (new Harvest ());
+					});
+			}));
+		}
+		public void OnCapture (Actor self, Actor captor)
+		{
+			// Todo: Do the right thing if a harv is docked
+			
+			// Unlink any other harvs
+			foreach (var harv in LinkedHarv)
+				harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+		}
+
+		public void Selling (Actor self) {}
+		public void Sold (Actor self)
+		{
+			foreach (var harv in LinkedHarv)
+				harv.traits.Get<Harvester> ().UnlinkProc (harv, self);
+		}
+
+		public IEnumerable<PipType> GetPips (Actor self)
+		{
+			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * 1f / Info.Capacity > i * 1f / Info.PipCount) ? Info.PipColor : PipType.Transparent);
 		}
 	}
 }

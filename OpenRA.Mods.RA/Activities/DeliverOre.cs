@@ -29,64 +29,28 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity NextActivity { get; set; }
 
 		bool isDocking;
-		Actor refinery;
 
 		public DeliverResources() { }
-
-		public DeliverResources( Actor refinery )
-		{
-			this.refinery = refinery;
-		}
-
-		Actor ChooseRefinery(Actor self)
-		{
-			var mobile = self.traits.Get<Mobile>();
-
-			var search = new PathSearch(self.World)
-			{
-				heuristic = PathSearch.DefaultEstimator(self.Location),
-				umt = mobile.GetMovementType(),
-				checkForBlocked = false,
-			};
-			var refineries = self.World.Queries.OwnedBy[self.Owner]
-				.Where(x => x.traits.Contains<IAcceptOre>())
-				.ToList();
-			if (refinery != null)
-				search.AddInitialCell(self.World, refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset);
-			else
-				foreach (var r in refineries)
-					search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
-
-			var path = self.World.PathFinder.FindPath(search);
-			path.Reverse();
-			if (path.Count != 0)
-				return refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
-			else
-				return null;
-		}
 
 		public IActivity Tick( Actor self )
 		{
 			if( NextActivity != null )
 				return NextActivity;
-
-			if( refinery != null && refinery.IsDead )
-				refinery = null;
-
-			if( refinery == null || self.Location != refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset )
+			
+			var proc = self.traits.Get<Harvester>().LinkedProc;
+			
+			if (proc == null)
+				return new Wait(10) { NextActivity = this };
+			
+			if( self.Location != proc.Location + proc.traits.Get<IAcceptOre>().DeliverOffset )
 			{
-				refinery = ChooseRefinery(self);
-				if (refinery == null)
-					return new Wait(10) { NextActivity = this };
-
-				return new Move(refinery.Location + refinery.traits.Get<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
+				return new Move(proc.Location + proc.traits.Get<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
 			}
 			else if (!isDocking)
 			{
 				isDocking = true;
-				refinery.traits.Get<IAcceptOre>().OnDock(self, this);
+				proc.traits.Get<IAcceptOre>().OnDock(self, this);
 			}
-			
 			return new Wait(10) { NextActivity = this };
 		}
 

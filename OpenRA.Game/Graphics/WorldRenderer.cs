@@ -48,6 +48,11 @@ namespace OpenRA.Graphics
 			palette = new HardwarePalette(renderer, world.Map);
 		}
 		
+		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
+		{
+			lineRenderer.DrawLine(start,end,startColor,endColor);
+		}
+		
 		public int GetPaletteIndex(string name)
 		{
 			return palette.GetPaletteIndex(name);

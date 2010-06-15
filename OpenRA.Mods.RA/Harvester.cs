@@ -40,16 +40,50 @@ namespace OpenRA.Mods.RA
 	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		public Actor LinkedProc = null;
 		
 		readonly HarvesterInfo Info;
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
+			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
+		}
+		
+		void ChooseNewProc(Actor self, Actor ignore)
+		{
+			LinkedProc = ClosestProc(self, ignore);
+			if (LinkedProc != null)
+				LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
+		}
+		
+		Actor ClosestProc(Actor self, Actor ignore)
+		{
+			var mobile = self.traits.Get<Mobile>();
+
+			var search = new PathSearch(self.World)
+			{
+				heuristic = PathSearch.DefaultEstimator(self.Location),
+				umt = mobile.GetMovementType(),
+				checkForBlocked = false,
+			};
+			var refineries = self.World.Queries.OwnedBy[self.Owner]
+				.Where(x => x != ignore && x.traits.Contains<IAcceptOre>())
+				.ToList();
+
+			foreach (var r in refineries)
+				search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
+
+			var path = self.World.PathFinder.FindPath(search);
+			path.Reverse();
+			if (path.Count != 0)
+				return refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
+			else
+				return null;
 		}
 
 		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-
+		
 		public void AcceptResource(ResourceType type)
 		{
 			if (!contents.ContainsKey(type.info)) contents[type.info] = 1;
@@ -69,8 +103,9 @@ namespace OpenRA.Mods.RA
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
 				&& underCursor.traits.Contains<IAcceptOre>() && !IsEmpty)
+			{	
 				return new Order("Deliver", self, underCursor);
-
+			}
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
 			var info = self.Info.Traits.Get<HarvesterInfo>();
 
@@ -91,20 +126,45 @@ namespace OpenRA.Mods.RA
 			else if (order.OrderString == "Deliver")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new DeliverResources(order.TargetActor));
+
+				if (order.TargetActor != LinkedProc)
+				{
+					if (LinkedProc != null)
+						LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
+					LinkedProc = order.TargetActor;
+					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
+				}
+				
+				self.QueueActivity(new DeliverResources());
 			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.IsDead && contents.Count > 0)
+			if (self.IsDead)
 			{
-				if (Info.DeathWeapon != null)
+				if (Info.DeathWeapon != null && contents.Count > 0)
 				{
 					Combat.DoExplosion(e.Attacker, Info.DeathWeapon,
 									  self.CenterLocation.ToInt2(), 0);
 				}
+				
+				if (LinkedProc != null)
+					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 			}
+		}
+		
+		public void LinkProc(Actor self, Actor proc)
+		{
+			LinkedProc = proc;
+		}
+		
+		public void UnlinkProc(Actor self, Actor proc)
+		{
+			if (LinkedProc != proc)
+				return;
+
+			ChooseNewProc(self, proc);
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)

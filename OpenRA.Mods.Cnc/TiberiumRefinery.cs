@@ -25,6 +25,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -39,11 +40,12 @@ namespace OpenRA.Mods.Cnc
 		public object Create(Actor self) { return new TiberiumRefinery(self, this); }
 	}
 
-	class TiberiumRefinery : ITick, IAcceptOre, INotifyDamage, IPips
+	class TiberiumRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips
 	{
 		readonly Actor self;
 		readonly TiberiumRefineryInfo Info;
 		readonly PlayerResources Player;
+		List<Actor> LinkedHarv;
 
 		[Sync]
 		int nextProcessTime = 0;
@@ -55,7 +57,18 @@ namespace OpenRA.Mods.Cnc
 			this.self = self;
 			Info = info;
 			Player = self.Owner.PlayerActor.traits.Get<PlayerResources>();
-
+			LinkedHarv = new List<Actor>();
+		}
+		
+		public void LinkHarvester(Actor self, Actor harv)
+		{
+			LinkedHarv.Add(harv);
+		}
+		
+		public void UnlinkHarvester(Actor self, Actor harv)
+		{
+			if (LinkedHarv.Contains(harv))
+				LinkedHarv.Remove(harv);
 		}
 		
 		public void GiveOre(int amount)
@@ -84,13 +97,16 @@ namespace OpenRA.Mods.Cnc
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.IsDead && Tiberium > 0)
+			if (self.IsDead)
 			{
-				if (Info.DeathWeapon != null)
+				if (Info.DeathWeapon != null && Tiberium > 0)
 				{
 					Combat.DoExplosion(e.Attacker, Info.DeathWeapon,
 									  self.CenterLocation.ToInt2(), 0);
 				}
+				
+				foreach (var harv in LinkedHarv)
+					harv.traits.Get<Harvester>().UnlinkProc(harv, self);
 			}
 		}
 		
@@ -106,6 +122,23 @@ namespace OpenRA.Mods.Cnc
 					harv.QueueActivity(new Move(self.Location + DeliverOffset, self));
 					harv.QueueActivity(new Harvest());
 			})));
+		}
+		
+		public void OnCapture(Actor self, Actor captor)
+		{
+			// Todo: Do the right thing if a harv is docked
+			
+			// Unlink any other harvs
+			foreach (var harv in LinkedHarv)
+				harv.traits.Get<Harvester>().UnlinkProc(harv, self);
+			
+		}
+		
+		public void Selling(Actor self)	{}
+		public void Sold(Actor self)
+		{	
+			foreach (var harv in LinkedHarv)
+				harv.traits.Get<Harvester>().UnlinkProc(harv, self);
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
