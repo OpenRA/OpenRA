@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc
 {
 	class TiberiumRefineryDockActionInfo : TraitInfo<TiberiumRefineryDockAction> {}
 
-	class TiberiumRefineryDockAction : IAcceptOreDockAction, ITraitPrerequisite<IAcceptOre>
+	class TiberiumRefineryDockAction : IAcceptOreDockAction, INotifyDamage, INotifySold, INotifyCapture, ITraitPrerequisite<IAcceptOre>
 	{
 		Actor dockedHarv = null;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
@@ -64,5 +64,32 @@ namespace OpenRA.Mods.Cnc
 			}) );
 		}
 		
+		void CancelDock(Actor self, Actor harv)
+		{
+			// Todo: Cancel the above activities that are non-cancelable
+		}
+		
+		public void Selling (Actor self) { CancelDock(self, dockedHarv); }
+		public void Sold (Actor self) {}
+		
+		public void Damaged (Actor self, AttackInfo e)
+		{
+			if (self.IsDead)
+				 CancelDock(self, dockedHarv);
+		}
+		
+		public void OnCapture (Actor self, Actor captor)
+		{
+			if (dockedHarv == null)
+				return;
+			
+			dockedHarv.World.AddFrameEndTask(w =>
+			{
+				// momentarily remove from world so the ownership queries don't get confused
+				w.Remove(dockedHarv);
+				dockedHarv.Owner = captor.Owner;
+				w.Add(dockedHarv);
+			});
+		}
 	}
 }

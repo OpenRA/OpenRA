@@ -29,8 +29,10 @@ namespace OpenRA.Mods.RA
 {
 	class OreRefineryDockActionInfo : TraitInfo<OreRefineryDockAction> {}
 
-	class OreRefineryDockAction : IAcceptOreDockAction
+	class OreRefineryDockAction : IAcceptOreDockAction, INotifyCapture
 	{
+	
+		Actor dockedHarv = null;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
 			var unit = harv.traits.Get<Unit>();
@@ -41,17 +43,33 @@ namespace OpenRA.Mods.RA
 			
 			harv.QueueActivity (new CallFunc (() =>
 			{
+				dockedHarv = harv;
 				var renderUnit = harv.traits.Get<RenderUnit> ();
 				if (renderUnit.anim.CurrentSequence.Name != "empty")
 					renderUnit.PlayCustomAnimation (harv, "empty", () =>
 					{
 						harvester.Deliver(harv, self);
+						harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
+
 						if (harvester.LastHarvestedCell != int2.Zero)
 							harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
-						
 						harv.QueueActivity( new Harvest() );
 					});
 			}));
+		}
+		
+		public void OnCapture (Actor self, Actor captor)
+		{		
+			if (dockedHarv == null)
+				return;
+			
+			dockedHarv.World.AddFrameEndTask(w =>
+			{
+				// momentarily remove from world so the ownership queries don't get confused
+				w.Remove(dockedHarv);
+				dockedHarv.Owner = captor.Owner;
+				w.Add(dockedHarv);
+			});
 		}
 	}
 }
