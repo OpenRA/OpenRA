@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA
 {
 	class OreRefineryInfo : ITraitInfo
 	{
+		public readonly bool LocalStorage = false;
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Red;
 		public readonly int2 DockOffset = new int2 (1, 2);
@@ -75,19 +76,28 @@ namespace OpenRA.Mods.RA
 
 		public void GiveOre (int amount)
 		{
-			Ore += amount;
-			if (Ore > Info.Capacity)
-				Ore = Info.Capacity;
+			if (!Info.LocalStorage)
+				Player.GiveOre(amount);
+			else
+			{
+				Ore += amount;
+				if (Ore > Info.Capacity)
+					Ore = Info.Capacity;
+			}
 		}
 
 		public void Tick (Actor self)
 		{
+			if (!Info.LocalStorage)
+				return;
+			
 			if (--nextProcessTime <= 0) {
 				// Convert resources to cash
 				int amount = Math.Min (Ore, Info.ProcessAmount);
 				amount = Math.Min (amount, Player.OreCapacity - Player.Ore);
 				
-				if (amount > 0) {
+				if (amount > 0)
+				{
 					Ore -= amount;
 					Player.GiveOre (amount);
 				}
@@ -132,6 +142,9 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips (Actor self)
 		{
+			if (!Info.LocalStorage)
+				return new PipType[] { };
+			
 			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * 1f / Info.Capacity > i * 1f / Info.PipCount) ? Info.PipColor : PipType.Transparent);
 		}
 	}

@@ -468,10 +468,6 @@ PROC:
 		Sight: 6
 	Bib:
 	OreRefinery:
-		PipCount: 17
-		Capacity: 1000
-		ProcessTick: 25
-		ProcessAmount: 50
 	OreRefineryDockAction:
 	StoresOre:
 		PipCount: 17

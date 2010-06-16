@@ -46,7 +46,7 @@ PROC.proxy:
 		Owner: gdi,nod
 		Cost: 2300
 		Description: Tiberium Refinery
-		LongDesc: Processes Tiberium into useable resources
+		LongDesc: Processes raw Tiberium into useable resources
 	Building:
 		Power: -50
 		Footprint: ___xx xxxxx xxx__ xxx__
@@ -64,7 +64,7 @@ PROC:
 	Valued:
 		Cost: 2000
 		Description: Tiberium Refinery
-		LongDesc: Processes Tiberium into useable resources
+		LongDesc: Processes raw Tiberium into useable resources
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -76,6 +76,7 @@ PROC:
 		Sight: 6
 	Bib:
 	OreRefinery:
+		LocalStorage: yes
 		PipCount: 15
 		PipColor: Red
 		DockOffset: 0,2
