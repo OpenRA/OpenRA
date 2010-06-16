@@ -33,16 +33,16 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-
+			var damage = -self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage;
 			if (self.Owner.Stances[ target.Owner ] == Stance.Ally)
 			{
 				if (target.Health == target.Info.Traits.Get<OwnedActorInfo>().HP)
 					return NextActivity;
-				target.InflictDamage(self, -EngineerCapture.EngineerDamage, null);
+				target.InflictDamage(self, damage, null);
 			}
 			else
 			{
-				if (target.Health - EngineerCapture.EngineerDamage <= 0)
+				if (target.Health - damage <= 0)
 				{
 					target.World.AddFrameEndTask(w =>
 						{		// momentarily remove from world so the ownership queries don't get confused
@@ -54,10 +54,10 @@ namespace OpenRA.Mods.RA.Activities
 								t.OnCapture(target, self);
 						});
 
-					target.InflictDamage(self, target.Health - EngineerCapture.EngineerDamage, null);
+					target.InflictDamage(self, target.Health - damage, null);
 				}
 				else
-					target.InflictDamage(self, EngineerCapture.EngineerDamage, null);
+					target.InflictDamage(self, damage, null);
 			}
 
 			// the engineer is sacrificed.

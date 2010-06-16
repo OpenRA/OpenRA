@@ -120,14 +120,11 @@ E6:
 	Unit:
 		HP: 25
 		Speed: 4
-	AttackBase:
-		PrimaryWeapon: Chemspray
-		PrimaryOffset: 0,0,0,-5
-		FireDelay: 3
 	TakeCover:
 	Passenger:
 		ColorOfCargoPip: Yellow
 	EngineerCapture:
+		EngineerDamage: 9999999
 	-AutoTarget:
 
 RMBO:

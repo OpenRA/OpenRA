@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -24,11 +24,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerCaptureInfo : TraitInfo<EngineerCapture> { }
+	class EngineerCaptureInfo : TraitInfo<EngineerCapture>
+	{
+		public readonly int EngineerDamage = 300;
+	}
 
 	class EngineerCapture : IIssueOrder, IResolveOrder
 	{
-		public const int EngineerDamage = 300;	// todo: push into rules, as a weapon
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.RA
 			// todo: other bits
 			if (underCursor.Owner == null) return null;	// don't allow capturing of bridges, etc.
 
-			var isCapture = underCursor.Health <= EngineerDamage &&
+			var isCapture = underCursor.Health <= self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage &&
 				self.Owner.Stances[underCursor.Owner] != Stance.Ally;
 
 			return new Order(isCapture ? "Capture" : "Infiltrate",
