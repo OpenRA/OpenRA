@@ -70,12 +70,12 @@ namespace OpenRA.Traits
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
-				//Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
 			}
 			else if (DisplayCash > Cash)
 			{
 				DisplayCash -= move;
-				//Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
 			
 			diff = Math.Abs(Ore - DisplayOre);
@@ -85,12 +85,12 @@ namespace OpenRA.Traits
 			if (DisplayOre < Ore)
 			{
 				DisplayOre += move;
-				//Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
 			}
 			else if (DisplayOre > Ore)
 			{
 				DisplayOre -= move;
-				//Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
 		}
 		

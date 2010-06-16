@@ -31,6 +31,7 @@ namespace OpenRA.Widgets
 	class MoneyBinWidget : Widget
 	{
 		const int chromeButtonGap = 2;
+		public bool SplitOreAndCash = false;
 
 		/* legacy crap!!! */
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle, Action<MouseInput>>>();
@@ -53,7 +54,8 @@ namespace OpenRA.Widgets
 				new float2(Bounds.Left, 0), "chrome");
 
 			// Cash
-			var cashDigits = playerResources.DisplayCash.ToString();
+			var cashDigits = (SplitOreAndCash ? playerResources.DisplayCash 
+				: (playerResources.DisplayCash + playerResources.DisplayOre)).ToString();
 			var x = Bounds.Right - 65;
 
 			foreach (var d in cashDigits.Reverse())
@@ -63,16 +65,20 @@ namespace OpenRA.Widgets
 					new float2(x, 6), "chrome");
 				x -= 14;
 			}
-			x -= 14;
-			// Ore
-			var oreDigits = playerResources.DisplayOre.ToString();
 
-			foreach (var d in oreDigits.Reverse())
+			if (SplitOreAndCash)
 			{
-				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
-					ChromeProvider.GetImage(Game.chrome.renderer, digitCollection, (d - '0').ToString()),
-					new float2(x, 6), "chrome");
 				x -= 14;
+				// Ore
+				var oreDigits = playerResources.DisplayOre.ToString();
+
+				foreach (var d in oreDigits.Reverse())
+				{
+					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
+						ChromeProvider.GetImage(Game.chrome.renderer, digitCollection, (d - '0').ToString()),
+						new float2(x, 6), "chrome");
+					x -= 14;
+				}
 			}
 
 			var origin = new int2(Game.viewport.Width - 200, 2);

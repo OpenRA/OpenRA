@@ -236,8 +236,8 @@ World:
 		UnitReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
-		CashTickUp: tone15.aud
-		CashTickDown: 
+		CashTickUp:
+		CashTickDown:
 		LowPower: lopower1.aud
 		SilosNeeded: silos1.aud
 		UnitLost: unitlost.aud

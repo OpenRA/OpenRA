@@ -552,6 +552,7 @@ Container:
 					Y:0
 					Width:320
 					Height: 32
+					SplitOreAndCash: yes
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2
