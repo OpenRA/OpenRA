@@ -47,6 +47,9 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public Actor LinkedProc = null;
 		
+		[Sync]
+		public int2 LastHarvestedCell = int2.Zero;
+		
 		readonly HarvesterInfo Info;
 		public Harvester(Actor self, HarvesterInfo info)
 		{

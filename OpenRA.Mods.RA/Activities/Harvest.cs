@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( NextActivity != null ) return NextActivity;
 
 			var harv = self.traits.Get<Harvester>();
+			harv.LastHarvestedCell = self.Location;
 
 			if( harv.IsFull )
 				return new DeliverResources { NextActivity = NextActivity };

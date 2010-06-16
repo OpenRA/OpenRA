@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Cnc
 				harv.QueueActivity( new CallFunc( () => harvester.Visible = true, false ) );
 				harv.QueueActivity( new Drag(endDock, startDock, 12) );
 				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
+				if (harvester.LastHarvestedCell != int2.Zero)
+					harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
 				harv.QueueActivity( new Harvest() );	
 			}) );
 		}

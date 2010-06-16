@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
 			var unit = harv.traits.Get<Unit>();
+			var harvester = harv.traits.Get<Harvester>();
+
 			if (unit.Facing != 64)
 				harv.QueueActivity (new Turn (64));
 			
@@ -43,8 +45,11 @@ namespace OpenRA.Mods.RA
 				if (renderUnit.anim.CurrentSequence.Name != "empty")
 					renderUnit.PlayCustomAnimation (harv, "empty", () =>
 					{
-						harv.traits.Get<Harvester>().Deliver(harv, self);
-						harv.QueueActivity (new Harvest ());
+						harvester.Deliver(harv, self);
+						if (harvester.LastHarvestedCell != int2.Zero)
+							harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+						
+						harv.QueueActivity( new Harvest() );
 					});
 			}));
 		}
