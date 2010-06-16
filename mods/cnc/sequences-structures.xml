@@ -165,6 +165,7 @@
     <sequence name="idle" start="0" facings="32" />
     <sequence name="recoil" start="32" facings="32" />
     <sequence name="damaged-idle" start="64" facings="32" />
+	<sequence name="critical-idle" start="64" facings="32" />
     <sequence name="damaged-recoil" start="96" facings="32" />
     <sequence name="make" start="0" length="20" src="gunmake" />
   </unit>
@@ -172,6 +173,7 @@
   <unit name="sam">
     <sequence name="idle" start="17" facings="32" />
     <sequence name="damaged-idle" start="81" facings="32" />
+	<sequence name="critical-idle" start="81" facings="32" />
     <sequence name="make" start="0" length="20" src="sammake" />
   </unit>
   <!-- Guard Tower -->
