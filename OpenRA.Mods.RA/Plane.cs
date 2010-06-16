@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(
 					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
-						? (IActivity)new Rearm() : new Repair());
+						? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
 		}
 

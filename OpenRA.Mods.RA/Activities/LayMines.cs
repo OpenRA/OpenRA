@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Activities
 					return new Wait(20);
 
 				return new Move(((1 / 24f) * rearmTarget.CenterLocation).ToInt2(), rearmTarget)
-					{ NextActivity = new Rearm() { NextActivity = new Repair() { NextActivity = this } } };
+					{ NextActivity = new Rearm() { NextActivity = new Repair(rearmTarget) { NextActivity = this } } };
 			}
 
 			var ml = self.traits.Get<Minelayer>();

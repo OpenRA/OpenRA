@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));
-				self.QueueActivity(new Repair());
+				self.QueueActivity(new Repair(order.TargetActor));
 			}
 		}
 	}

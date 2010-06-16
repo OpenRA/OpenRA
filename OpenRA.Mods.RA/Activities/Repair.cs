@@ -29,20 +29,20 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
 		int remainingTicks;
+		Actor host;
+
+		public Repair(Actor host) { this.host = host; }
 
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
 			if (remainingTicks == 0)
 			{
-				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
-				
 				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
-				var costPerHp = (hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
-				var hpToRepair = Math.Min(hostBuilding.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
+				var costPerHp = (host.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
+				var hpToRepair = Math.Min(host.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
 				{
@@ -54,9 +54,9 @@ namespace OpenRA.Mods.RA.Activities
 				if (self.Health == hp)
 					return NextActivity;
 
-				if (hostBuilding != null)
-					hostBuilding.traits.Get<RenderBuilding>()
-						.PlayCustomAnim(hostBuilding, "active");
+				if (host != null)
+					host.traits.Get<RenderBuilding>()
+						.PlayCustomAnim(host, "active");
 
 				remainingTicks = (int)(self.World.Defaults.RepairRate * 60 * 25);
 			}
