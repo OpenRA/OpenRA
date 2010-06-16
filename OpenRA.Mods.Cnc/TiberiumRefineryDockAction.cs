@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Cnc
 	class TiberiumRefineryDockAction : IAcceptOreDockAction, INotifyDamage, INotifySold, INotifyCapture, ITraitPrerequisite<IAcceptOre>
 	{
 		Actor dockedHarv = null;
+		bool preventDock = false;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
 			float2 startDock = harv.CenterLocation;
@@ -42,31 +43,40 @@ namespace OpenRA.Mods.Cnc
 			harv.QueueActivity( new Turn(112) );
 			harv.QueueActivity( new CallFunc( () =>
 			{
-				dockedHarv = harv;
-				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
-				
-				harv.QueueActivity( new Drag(startDock, endDock, 12) );
-				harv.QueueActivity( new CallFunc( () =>
+				if (!preventDock)
 				{
-					self.World.AddFrameEndTask( w1 =>
+					dockedHarv = harv;
+					self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+					
+					harv.QueueActivity( new Drag(startDock, endDock, 12) );
+					harv.QueueActivity( new CallFunc( () =>
 					{
-						harvester.Visible = false;
-						harvester.Deliver(harv, self);
-					});
-				}, false ) );
-				harv.QueueActivity( new Wait(18, false ) );
-				harv.QueueActivity( new CallFunc( () => harvester.Visible = true, false ) );
-				harv.QueueActivity( new Drag(endDock, startDock, 12) );
-				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
-				if (harvester.LastHarvestedCell != int2.Zero)
-					harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+						self.World.AddFrameEndTask( w1 =>
+						{
+							if (!preventDock)
+								harvester.Visible = false;
+							harvester.Deliver(harv, self);
+						});
+					}, false ) );
+					harv.QueueActivity( new Wait(18, false ) );
+					harv.QueueActivity( new CallFunc( () => harvester.Visible = true, false ) );
+					harv.QueueActivity( new Drag(endDock, startDock, 12) );
+					harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
+					if (harvester.LastHarvestedCell != int2.Zero)
+						harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+				}
 				harv.QueueActivity( new Harvest() );	
 			}) );
 		}
 		
 		void CancelDock(Actor self, Actor harv)
 		{
-			// Todo: Cancel the above activities that are non-cancelable
+			preventDock = true;
+			if (dockedHarv == null)
+				return;
+			
+			// invisible harvester makes ceiling cat cry
+			harv.traits.Get<Harvester>().Visible = true;
 		}
 		
 		public void Selling (Actor self) { CancelDock(self, dockedHarv); }
