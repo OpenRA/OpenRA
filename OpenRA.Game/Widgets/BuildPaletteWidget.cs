@@ -462,13 +462,14 @@ namespace OpenRA.Widgets
 		{
 			pos.Y += 15;
 
+			var pl = world.LocalPlayer;
 			var p = pos.ToFloat2() - new float2(297, -3);
 
 			var info = Rules.Info[unit];
 			var buildable = info.Traits.Get<BuildableInfo>();
 
-			var buildings = Rules.TechTree.GatherBuildings( world.LocalPlayer );
-			var canBuildThis = Rules.TechTree.CanBuild(info, world.LocalPlayer, buildings);
+			var buildings = Rules.TechTree.GatherBuildings( pl );
+			var canBuildThis = Rules.TechTree.CanBuild(info, pl, buildings);
 
 			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
@@ -478,20 +479,21 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.BoldFont.DrawText(
 				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
-			
+
+			var resources = pl.PlayerActor.traits.Get<PlayerResources>();
+
 			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5),
-			                 (world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().DisplayCash >= buildable.Cost)? Color.White: Color.Red);
+				(resources.DisplayCash + resources.DisplayOre >= buildable.Cost ? Color.White : Color.Red ));
 			
-			var lowpower = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GetPowerState() != PowerState.Normal;
-			var time = ProductionQueue.GetBuildTime(world.LocalPlayer.PlayerActor, info.Name) 
-				* ((lowpower)? world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown : 1);
-			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), (lowpower)? Color.Red: Color.White);
+			var lowpower = resources.GetPowerState() != PowerState.Normal;
+			var time = ProductionQueue.GetBuildTime(pl.PlayerActor, info.Name) 
+				* ((lowpower)? pl.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown : 1);
+			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
-			var playerres = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
 			if (bi != null)
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
-				                 ((playerres.PowerProvided - playerres.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
+				                 ((resources.PowerProvided - resources.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
 		
 			p += new int2(5, 35);
 			if (!canBuildThis)
