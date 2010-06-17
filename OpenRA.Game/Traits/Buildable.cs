@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -25,6 +25,7 @@ namespace OpenRA.Traits
 		public readonly int Cost = 0;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
+		public readonly string[] Owner = { };
 
 		public virtual object Create(Actor self) { return new Valued(); }
 	}
@@ -33,7 +34,6 @@ namespace OpenRA.Traits
 	{
 		public readonly string[] Prerequisites = { };
 		public readonly string[] BuiltAt = { };
-		public readonly string[] Owner = { };
 		
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };

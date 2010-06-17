@@ -124,7 +124,7 @@ namespace OpenRA.Traits
 			if (remainingTicks == 0)
 			{
 				var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-				var buildingValue = csv != null ? csv.Value : self.Info.Traits.Get<BuildableInfo>().Cost;
+				var buildingValue = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
 				var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
 				var costPerHp = (self.World.Defaults.RepairPercent * buildingValue) / maxHP;
 				var hpToRepair = Math.Min(self.World.Defaults.RepairStep, maxHP - self.Health);
