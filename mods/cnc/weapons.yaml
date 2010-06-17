@@ -65,13 +65,13 @@ Sniper:
 		InfDeath: 1
 
 HighV: 
-	ROF: 50
+	ROF: 40
 	Range: 4
 	Report: GUN8
 	Bullet:
 		Speed: 100
 	Warhead:
-		Damage: 25
+		Damage: 20
 		Spread: 3
 		Verses: 100%,50%,50%,25%,25%
 		InfDeath: 1
@@ -127,6 +127,32 @@ Rockets:
 		ImpactSound: xplos
 		SmudgeType: Crater
 		Damage: 30
+		
+Rockets.Orca: 
+	ROF: 200
+	Range: 6
+	Burst: 3
+	Report: BAZOOK1
+	ValidTargets: Ground, Air
+	Missile:
+		Arm: 5
+		High: yes
+		Shadow: no
+		Proximity: yes
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 25
+		RangeLimit: 20
+	Warhead:
+		Spread: 3
+		Verses: 30%,75%,75%,100%,50%
+		InfDeath: 3
+		Explosion: 4
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 20
 
 Flamethrower: 
 	ROF: 50

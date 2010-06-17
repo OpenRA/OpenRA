@@ -444,9 +444,7 @@ HELI:
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
-	LimitedAmmo:
-		Ammo: 15
-		PipCount: 5
+
 ORCA:
 	Inherits: ^Plane
 	Buildable:
@@ -467,16 +465,14 @@ ORCA:
 		Sight: 8
 		Speed: 20
 	AttackHeli:
-		PrimaryWeapon: Rockets
-		SecondaryWeapon: Rockets
+		PrimaryWeapon: Rockets.Orca
+		SecondaryWeapon: Rockets.Orca
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		LandWhenIdle: no
 	RenderUnit:
 	WithShadow:
-	LimitedAmmo:
-		Ammo: 6
 
 C17:
 	ParaDrop:
