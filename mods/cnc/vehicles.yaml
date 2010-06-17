@@ -88,7 +88,7 @@ ARTY:
 		Icon:artyicnh
 		BuildPaletteOrder: 40
 		Prerequisites: hq
-		Owner: nod
+		Owner: gdi
 		Cost: 600
 		Description: Artillery
 		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
@@ -147,7 +147,7 @@ BGGY:
 		Crewed: yes
 		ROT: 10
 		Sight: 5
-		Speed: 15
+		Speed: 18
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -215,7 +215,7 @@ LTNK:
 	Buildable:
 		Icon: ltnkicnh
 		BuildPaletteOrder: 30
-		Prerequisites: afld
+		Prerequisites: hq
 		Owner: nod
 		Cost: 600
 		Description: Light Tank
@@ -246,7 +246,7 @@ MTNK:
 	Buildable:
 		Icon: mtnkicnh
 		BuildPaletteOrder: 30
-		Prerequisites: weap
+		Prerequisites: hq
 		Owner: gdi
 		Cost: 800
 		Description: Medium Tank
@@ -343,7 +343,7 @@ MLRS:
 		Owner: nod
 		Cost: 750
 		Description: SSM Launcher
-		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		LongDesc: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 	Unit:
 		HP: 120
 		Armor: light
@@ -369,7 +369,7 @@ STNK:
 		Owner: nod
 		Cost: 900
 		Description: Stealth Tank
-		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Aircraft, Buildings\n  Weak vs Tanks
+		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Unit:
 		HP: 110
 		Armor: light
@@ -384,7 +384,7 @@ STNK:
 	Mobile:
 		MovementType: Track
 	AttackBase:
-		PrimaryWeapon: Rockets
+		PrimaryWeapon: 227mm
 	RenderUnit:
 	AutoTarget:
 

@@ -465,12 +465,12 @@ HonestJohn:
 		Image: MISSILE
 		Speed: 15
 	Warhead:
-		Spread: 8
-		Verses: 90%,100%,60%,25%,50%
-		InfDeath: 4
-		Explosion: 3
-		ImpactSound: flamer2
-		SmudgeType: Scorch
+		Spread: 6
+		Verses: 90%,75%,60%,25%,100%
+		InfDeath: 2
+		Explosion: 5
+		ImpactSound: xplos
+		SmudgeType: Crater
 		Damage: 100
 
 Tiberium:
