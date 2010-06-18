@@ -51,7 +51,7 @@ namespace OpenRA.Editor
 
 			Rules.LoadRules(manifest, new Map());
 
-			folderBrowser.SelectedPath = Environment.CurrentDirectory + "mods\\" + currentMod + "\\maps";
+			folderBrowser.SelectedPath = Path.Combine(Environment.CurrentDirectory,"mods\\" + currentMod + "\\maps");
 		}
 
 		string loadedMapName;
@@ -369,6 +369,7 @@ namespace OpenRA.Editor
 		void SaveAsClicked(object sender, EventArgs e)
 		{
 			folderBrowser.ShowNewFolderButton = true;
+
 			if (DialogResult.OK == folderBrowser.ShowDialog())
 			{
 
@@ -380,6 +381,7 @@ namespace OpenRA.Editor
 		void OpenClicked(object sender, EventArgs e)
 		{
 			folderBrowser.ShowNewFolderButton = true;
+
 			if (DialogResult.OK == folderBrowser.ShowDialog())
 				LoadMap(folderBrowser.SelectedPath);
 		}
