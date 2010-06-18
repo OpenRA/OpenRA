@@ -1,0 +1,132 @@
+Selectable: True
+
+MapFormat: 2
+
+Title: East vs West 2 (WIP)
+
+Description: 2v2 Team Map
+
+Author: Paul Chote
+
+PlayerCount: 1
+
+Tileset: WINTER
+
+MapSize: 96,56
+
+TopLeft: 8,8
+
+BottomRight: 88,48
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+
+Actors:
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: split3
+		Location: 13,11
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: split3
+		Location: 19,11
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: tc05
+		Location: 41,9
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: tc04
+		Location: 47,9
+		Owner: Neutral
+	ActorReference@Actor31:
+		Id: Actor31
+		Type: t07
+		Location: 42,24
+		Owner: Neutral
+	ActorReference@Actor41:
+		Id: Actor41
+		Type: wood
+		Location: 32,23
+		Owner: Neutral
+	ActorReference@Actor40:
+		Id: Actor40
+		Type: t15
+		Location: 27,20
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: v01
+		Location: 40,30
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: v05
+		Location: 34,25
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: v04
+		Location: 33,29
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: wood
+		Location: 39,29
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: wood
+		Location: 38,29
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: wood
+		Location: 38,28
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: wood
+		Location: 38,27
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: wood
+		Location: 38,26
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: wood
+		Location: 36,29
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: wood
+		Location: 36,30
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: wood
+		Location: 36,31
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: wood
+		Location: 36,32
+		Owner: Neutral
+
+Waypoints:
+	wp0: 23,28
+
+Smudges:
+
+Rules:
+
