@@ -314,8 +314,8 @@ TurretGun:
 		Damage: 60
 
 MammothTusk:
-	ROF: 80
-	Range: 5
+	ROF: 60
+	Range: 13
 	Report: MISSILE6
 	Burst: 2
 	ValidTargets: Ground, Air
@@ -336,7 +336,7 @@ MammothTusk:
 		Explosion: 5
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 75
+		Damage: 45
 
 155mm:
 	ROF: 85
@@ -599,7 +599,7 @@ Heal:
 		Damage: -50
 		
 SCUD:
-	ROF: 400
+	ROF: 300
 	Range: 10
 	Report: MISSILE1
 	Bullet:
