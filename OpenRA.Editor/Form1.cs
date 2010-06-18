@@ -51,7 +51,8 @@ namespace OpenRA.Editor
 
 			Rules.LoadRules(manifest, new Map());
 
-			folderBrowser.SelectedPath = Path.Combine(Environment.CurrentDirectory,"mods\\" + currentMod + "\\maps");
+			folderBrowser.SelectedPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+				.Aggregate(Path.Combine);
 		}
 
 		string loadedMapName;
