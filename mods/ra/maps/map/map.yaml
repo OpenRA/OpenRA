@@ -1,0 +1,120 @@
+Selectable: True
+
+MapFormat: 2
+
+Title: Test
+
+Description: Describe your map here
+
+Author: Your name here
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 256,256
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+
+Actors:
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: mine
+		Location: 23,107
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: mine
+		Location: 20,105
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: mine
+		Location: 23,20
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: mine
+		Location: 20,23
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: mine
+		Location: 104,19
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: mine
+		Location: 108,22
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: mine
+		Location: 105,108
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: mine
+		Location: 108,105
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: mine
+		Location: 71,109
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: mine
+		Location: 75,109
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: mine
+		Location: 109,47
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: mine
+		Location: 109,44
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: mine
+		Location: 53,18
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: mine
+		Location: 49,18
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: mine
+		Location: 18,80
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: mine
+		Location: 18,75
+		Owner: Neutral
+
+Waypoints:
+	wp0: 31,28
+	wp5: 99,28
+	wp2: 100,99
+	wp3: 28,99
+
+Smudges:
+
+Rules:
+
