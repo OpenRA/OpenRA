@@ -223,6 +223,7 @@ namespace OpenRA.Server
 				}
 			}
 			catch (EndOfStreamException) { }
+			catch (NotImplementedException) { }
 		}
 
 		static bool InterpretCommand(Connection conn, string cmd)
