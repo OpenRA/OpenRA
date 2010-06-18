@@ -47,9 +47,20 @@ namespace OpenRA
 
 		public static void AddChannel(string channelName, string filename, bool upload, bool diff)
 		{
-			StreamWriter writer = File.CreateText(LogPathPrefix + filename);
+			if (channels.ContainsKey(channelName)) return;
+			
+			/* HACK: avoid sharing violations if running multiple instances */
+			StreamWriter writer = null;
+			while (writer == null)
+			{
+				try 
+				{
+					writer = File.CreateText(LogPathPrefix + filename);
+				}
+				catch(IOException e){ filename = new Random().Next().ToString() + filename; }
+			}
+			
 			writer.AutoFlush = true;
-
 			channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = writer, Diff = diff });
 		}
 
