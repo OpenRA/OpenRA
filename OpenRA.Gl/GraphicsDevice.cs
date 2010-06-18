@@ -74,7 +74,7 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE(1);
-			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_INTERVAL, Sdl.SDL_DEFAULT_REPEAT_DELAY/10);
+			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL);
 
 			CheckGlError();
 
