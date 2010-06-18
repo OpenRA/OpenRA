@@ -74,7 +74,7 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE(1);
-			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_INTERVAL, Sdl.SDL_DEFAULT_REPEAT_DELAY);
+			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_INTERVAL, Sdl.SDL_DEFAULT_REPEAT_DELAY/10);
 
 			CheckGlError();
 
@@ -195,6 +195,7 @@ namespace OpenRA.GlRenderer
 
 					case Sdl.SDL_KEYDOWN:
 						{
+							bool handled = true;
 							switch (e.key.keysym.sym)
 							{
 								case Sdl.SDLK_UP: Game.HandleArrowKeyScroll("up", true); break;
@@ -206,9 +207,12 @@ namespace OpenRA.GlRenderer
 										string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ")+".bmp";
 										Sdl.SDL_SaveBMP(surf,path);
 						                break;
+								default:
+									handled = false;
+									break;
 							}
 
-							if (e.key.keysym.unicode != 0)
+							if (e.key.keysym.unicode != 0 && !handled)
 								Game.HandleKeyPress(new KeyPressEventArgs((char)e.key.keysym.unicode), mods);
 
 							else if (mods != 0)
