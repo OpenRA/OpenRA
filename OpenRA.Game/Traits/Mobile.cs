@@ -105,8 +105,10 @@ namespace OpenRA.Traits
 		public IEnumerable<int2> OccupiedCells()
 		{
 			return (fromCell == toCell)
-				? new[] { fromCell } 
-				: new[] { fromCell, toCell };
+				? new[] { fromCell }
+				: CanEnterCell(toCell)
+					? new[] { toCell }
+					: new[] { fromCell, toCell };
 		}
 
 		public UnitMovementType GetMovementType()
