@@ -633,6 +633,7 @@ namespace OpenRA
 		{
 			var shellmap = new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid;
 			LobbyInfo = new Session();
+			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			JoinLocal();
 			LoadShellMap(shellmap);
 
