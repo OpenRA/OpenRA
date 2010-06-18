@@ -59,8 +59,9 @@ namespace OpenRA.Traits
 
 		public void PlayCustomAnim(Actor self, string name)
 		{
-			anim.PlayThen(GetPrefix(self) + name, 
-				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+			if (anim.HasSequence(name))
+				anim.PlayThen(GetPrefix(self) + name,
+					() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
