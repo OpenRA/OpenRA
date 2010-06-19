@@ -478,8 +478,8 @@ RedEye:
 		Inaccuracy: 120
 		Image: 120MM
 	Warhead:
-		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Spread: 3
+		Verses: 60%,75%,60%,25%,100%
 		Explosion: 5
 		InfDeath: 2
 		SmudgeType: Crater
