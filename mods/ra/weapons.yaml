@@ -248,7 +248,7 @@ Grenade:
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 25
+		Damage: 20
 
 90mm:
 	ROF: 50
@@ -280,7 +280,7 @@ Grenade:
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 40
 
 120mm:
 	ROF: 90
