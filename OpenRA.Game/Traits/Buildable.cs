@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public readonly string LongDesc = "";
 		public readonly string[] Owner = { };
 
-		public virtual object Create(Actor self) { return new Valued(); }
+		public virtual object Create(ActorInitializer init) { return new Valued(); }
 	}
 
 	class BuildableInfo : ValuedInfo
@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 		public readonly int BuildPaletteOrder = 9999;
         public readonly string Hotkey = null;
 
-		public override object Create(Actor self) { return new Buildable(); }
+		public override object Create(ActorInitializer init) { return new Buildable(); }
 	}
 
 	class Valued { }		/* halfway to buildable */

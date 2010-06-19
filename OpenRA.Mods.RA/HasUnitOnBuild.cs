@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public readonly int2 SpawnOffset = int2.Zero;
 		public readonly int Facing = 0;
 		
-		public object Create( Actor self ) { return new FreeActor(self, this); }
+		public object Create( ActorInitializer init ) { return new FreeActor(init.self, this); }
 	}
 
 	public class FreeActor

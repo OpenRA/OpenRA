@@ -22,13 +22,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SelfHealingInfo : ITraitInfo
+	class SelfHealingInfo : TraitInfo<SelfHealing>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
 		public readonly float HealIfBelow = .5f;
-
-		public object Create(Actor self) { return new SelfHealing(); }
 	}
 
 	class SelfHealing : ITick

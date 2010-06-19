@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackHeliInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackHeli(self); }
+		public override object Create(ActorInitializer init) { return new AttackHeli(init.self); }
 	}
 
 	class AttackHeli : AttackFrontal

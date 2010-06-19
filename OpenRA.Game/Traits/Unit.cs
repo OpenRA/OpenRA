@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 
-		public object Create( Actor self ) { return new Unit( self ); }
+		public object Create( ActorInitializer init ) { return new Unit( init.self ); }
 	}
 
 	public class Unit : INotifyDamage

@@ -25,14 +25,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SeedsResourceInfo : ITraitInfo
+	class SeedsResourceInfo : TraitInfo<SeedsResource>
 	{
 		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
 		public readonly int MaxRange = 100;
 		public readonly int AnimationInterval = 750;
-
-		public object Create(Actor self) { return new SeedsResource(); }
 	}
 
 	class SeedsResource : ITick

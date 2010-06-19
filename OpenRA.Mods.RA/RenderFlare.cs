@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	class RenderFlareInfo : RenderSimpleInfo
 	{
-		public override object Create(Actor self) { return new RenderFlare(self); }
+		public override object Create(ActorInitializer init) { return new RenderFlare(init.self); }
 	}
 
 	class RenderFlare : RenderSimple

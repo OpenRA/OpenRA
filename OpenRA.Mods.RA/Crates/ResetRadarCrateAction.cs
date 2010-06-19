@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	class HideMapCrateActionInfo : CrateActionInfo
 	{
-		public override object Create(Actor self) { return new HideMapCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new HideMapCrateAction(init.self, this); }
 	}
 
 	class HideMapCrateAction : CrateAction

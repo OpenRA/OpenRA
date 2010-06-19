@@ -24,10 +24,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class ScreenShakerInfo : ITraitInfo
-	{
-		public object Create( Actor self ) { return new ScreenShaker(); }
-	}
+	class ScreenShakerInfo : TraitInfo<ScreenShaker> {}
 	
 	public class ScreenShaker : ITick
 	{

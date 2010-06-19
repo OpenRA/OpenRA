@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 		public readonly string Type = "Scorch";
 		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
 		public readonly int[] Depths = {1,1,1,1,1,1};
-		public object Create(Actor self) { return new SmudgeLayer(self, this); }
+		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
 	class SmudgeLayer: IRenderOverlay, ILoadWorldHook
@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 		Sprite[][] smudgeSprites;
 		World world;
 
-		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
+		public SmudgeLayer(SmudgeLayerInfo info)
 		{
 			spriteRenderer = Game.renderer.SpriteRenderer;
 			this.Info = info;

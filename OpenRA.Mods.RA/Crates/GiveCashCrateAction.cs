@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	class GiveCashCrateActionInfo : CrateActionInfo
 	{
 		public int Amount = 2000;
-		public override object Create(Actor self) { return new GiveCashCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.self, this); }
 	}
 
 	class GiveCashCrateAction : CrateAction

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
 		public readonly float[] SpeedModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
-		public object Create(Actor self) { return new GainsExperience(self, this); }
+		public object Create(ActorInitializer init) { return new GainsExperience(init.self, this); }
 	}
 
 	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, IRenderModifier

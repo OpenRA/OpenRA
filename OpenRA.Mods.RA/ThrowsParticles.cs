@@ -32,7 +32,8 @@ namespace OpenRA.Mods.RA
 		public readonly string AnimKey = null;
 		public readonly bool UseTurretFacing = true;
 		public readonly float ROT = 15;
-		public object Create(Actor self) { return new ThrowsParticle(self, this); }
+
+		public object Create(ActorInitializer init) { return new ThrowsParticle(this); }
 	}
 
 	class ThrowsParticle : ITick
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.RA
 
 		const float gravity = 1.3f;
 
-		public ThrowsParticle(Actor self, ThrowsParticleInfo info) { this.info = info; }
+		public ThrowsParticle(ThrowsParticleInfo info) { this.info = info; }
 		public float? InitialFacing = null;
 	
 		public void Tick(Actor self)

@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{
 		public readonly bool HasMakeAnimation = true;
-		public override object Create(Actor self) { return new RenderBuilding(self);}
+		public override object Create(ActorInitializer init) { return new RenderBuilding(init.self);}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold

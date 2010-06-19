@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 	class IronCurtainPowerInfo : SupportPowerInfo
 	{
 		public readonly float Duration = 0f;
-		public override object Create(Actor self) { return new IronCurtainPower(self, this); }
+		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
 	}
 
 	class IronCurtainPower : SupportPower, IResolveOrder

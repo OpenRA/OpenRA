@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc
 {
 	class IonCannonPowerInfo : SupportPowerInfo
 	{
-		public override object Create(Actor self) { return new IonCannonPower(self, this); }
+		public override object Create(ActorInitializer init) { return new IonCannonPower(init.self, this); }
 	}
 
 	class IonCannonPower : SupportPower, IResolveOrder

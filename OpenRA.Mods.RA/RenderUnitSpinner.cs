@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 	class RenderUnitSpinnerInfo : RenderUnitInfo
 	{
 		public readonly int[] Offset = { 0, 0 };
-		public override object Create(Actor self) { return new RenderUnitSpinner(self); }
+		public override object Create(ActorInitializer init) { return new RenderUnitSpinner(init.self); }
 	}
 
 	class RenderUnitSpinner : RenderUnit

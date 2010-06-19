@@ -34,7 +34,8 @@ namespace OpenRA.Mods.RA
 		public readonly int CruiseAltitude = 20;
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
-		public object Create(Actor self) { return new Helicopter(self); }
+
+		public object Create(ActorInitializer init) { return new Helicopter(init.self); }
 	}
 
 	class Helicopter : ITick, IIssueOrder, IResolveOrder, IMovement

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Resources = { };
 		public readonly string DeathWeapon = null;
 
-		public object Create(Actor self) { return new Harvester(self, this); }
+		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier

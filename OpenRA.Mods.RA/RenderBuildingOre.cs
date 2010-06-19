@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	class RenderBuildingOreInfo : RenderBuildingInfo
 	{
-		public override object Create(Actor self) { return new RenderBuildingOre(self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init.self); }
 	}
 
 	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete

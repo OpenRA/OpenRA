@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 
-		public object Create(Actor self) { return new Mine(self); }
+		public object Create(ActorInitializer init) { return new Mine(init.self); }
 	}
 
 	class Mine : ICrushable, IOccupySpace

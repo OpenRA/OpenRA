@@ -36,16 +36,16 @@ namespace OpenRA.Traits
 		public readonly int[] DisplayColor = null;
 		public readonly bool Playable = true;
 
-		public object Create(Actor self) { return new PlayerColorPalette(self, this); }
+		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.world, this); }
 
 		public Color Color { get { return Util.ArrayToColor(DisplayColor); } }
 	}
 
 	public class PlayerColorPalette
 	{
-		public PlayerColorPalette(Actor self, PlayerColorPaletteInfo info)
+		public PlayerColorPalette(World world, PlayerColorPaletteInfo info)
 		{
-			var wr = self.World.WorldRenderer;
+			var wr = world.WorldRenderer;
 			var pal = wr.GetPalette(info.BasePalette);
 			var newpal = new Palette(pal, new PlayerColorRemap(
 						Util.ArrayToColor(info.Color1),

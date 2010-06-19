@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class RenderWarFactoryInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
-		public object Create(Actor self) { return new RenderWarFactory(self); }
+		public object Create(ActorInitializer init) { return new RenderWarFactory(init.self); }
 	}
 
 	class RenderWarFactory : INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold

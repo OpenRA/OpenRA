@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 	class RepairButtonInfo : ITraitInfo
 	{
 		public readonly bool RequiresConstructionYard = true;
-		public object Create(Actor self) { return new RepairButton(this); }
+		public object Create(ActorInitializer init) { return new RepairButton(this); }
 	}
 
 	class RepairButton : IChromeButton

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackPlaneInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackPlane(self); }
+		public override object Create(ActorInitializer init) { return new AttackPlane(init.self); }
 	}
 
 	class AttackPlane : AttackFrontal

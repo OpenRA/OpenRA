@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 {
 	class WithMuzzleFlashInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
-		public object Create(Actor self) { return new WithMuzzleFlash(self); }
+		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}
 
 	class WithMuzzleFlash : INotifyAttack

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackTurretedInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackTurreted( self ); }
+		public override object Create(ActorInitializer init) { return new AttackTurreted( init.self ); }
 	}
 
 	class AttackTurreted : AttackBase, INotifyBuildComplete

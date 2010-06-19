@@ -108,9 +108,9 @@ namespace OpenRA.Traits
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
 	}
 
-	public interface ITraitInfo { object Create(Actor self); }
+	public interface ITraitInfo { object Create(ActorInitializer init); }
 
-	public class TraitInfo<T> : ITraitInfo where T : new() { public object Create(Actor self) { return new T(); } }
+	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
 	public interface ITraitPrerequisite<T> { }
 

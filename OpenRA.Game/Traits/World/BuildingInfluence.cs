@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 {
 	public class BuildingInfluenceInfo : ITraitInfo
 	{
-		public object Create( Actor self ) { return new BuildingInfluence( self ); }
+		public object Create( ActorInitializer init ) { return new BuildingInfluence( init.world ); }
 	}
 
 	public class BuildingInfluence
@@ -34,17 +34,17 @@ namespace OpenRA.Traits
 		Actor[,] influence;
 		Map map;
 
-		public BuildingInfluence( Actor self )
+		public BuildingInfluence( World world )
 		{
-			map = self.World.Map;
+			map = world.Map;
 			
 			blocked = new bool[map.MapSize.X, map.MapSize.Y];
 			influence = new Actor[map.MapSize.X, map.MapSize.Y];
 			
-			self.World.ActorAdded +=
+			world.ActorAdded +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), true); };
-			self.World.ActorRemoved +=
+			world.ActorRemoved +=
 				a => { if (a.traits.Contains<Building>()) 
 					ChangeInfluence(a, a.traits.Get<Building>(), false); };
 		}

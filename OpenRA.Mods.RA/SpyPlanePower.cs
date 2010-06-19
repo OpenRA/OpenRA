@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 	class SpyPlanePowerInfo : SupportPowerInfo
 	{
 		public readonly float RevealTime = .1f;	// minutes
-		public override object Create(Actor self) { return new SpyPlanePower(self,this); }
+		public override object Create(ActorInitializer init) { return new SpyPlanePower(init.self,this); }
 	}
 
 	class SpyPlanePower : SupportPower, IResolveOrder

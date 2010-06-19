@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int RevealDelay = 0;
 
-		public override object Create(Actor self) { return new GpsPower(self, this); }
+		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
 	class GpsPower : SupportPower

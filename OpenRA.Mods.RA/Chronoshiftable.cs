@@ -23,10 +23,7 @@ using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class ChronoshiftableInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new Chronoshiftable(self); }
-	}
+	class ChronoshiftableInfo : TraitInfo<Chronoshiftable> { }
 
 	public class Chronoshiftable : ITick
 	{
@@ -35,8 +32,6 @@ namespace OpenRA.Mods.RA
 		int2 chronoshiftOrigin;
 		[Sync]
 		int chronoshiftReturnTicks = 0;
-
-		public Chronoshiftable(Actor self) { }
 
 		public void Tick(Actor self)
 		{

@@ -34,7 +34,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool UseAlternateNames = false;
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
-		public object Create(Actor self) { return new Bridge(self); }
+
+		public object Create(ActorInitializer init) { return new Bridge(init.self); }
 	}
 
 	class Bridge: IRender, INotifyDamage

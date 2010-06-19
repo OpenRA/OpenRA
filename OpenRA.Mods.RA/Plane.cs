@@ -27,20 +27,16 @@ using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	public class PlaneInfo : ITraitInfo
+	public class PlaneInfo : TraitInfo<Plane>
 	{
 		public readonly int CruiseAltitude = 20;
 		public readonly string[] RearmBuildings = { "afld" };
 		public readonly string[] RepairBuildings = { "fix" };
-
-		public object Create(Actor self) { return new Plane(self); }
 	}
 
 	public class Plane : IIssueOrder, IResolveOrder, IMovement
 	{
 		public IDisposable reservation;
-
-		public Plane(Actor self) {}
 
 		static bool PlaneCanEnter(Actor self, Actor a)
 		{

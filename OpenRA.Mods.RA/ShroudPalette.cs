@@ -27,15 +27,15 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Name = "shroud";
 		public readonly bool IsFog = false;
-		public object Create(Actor self) { return new ShroudPalette(self, this); }
+		public object Create(ActorInitializer init) { return new ShroudPalette(init.world, this); }
 	}
 
 	class ShroudPalette
 	{
-		public ShroudPalette(Actor self, ShroudPaletteInfo info)
+		public ShroudPalette(World world, ShroudPaletteInfo info)
 		{
 				// TODO: This shouldn't rely on a base palette
-				var wr = self.World.WorldRenderer;
+				var wr = world.WorldRenderer;
 				var pal = wr.GetPalette("terrain");
 				wr.AddPalette(info.Name, new Palette(pal, new ShroudPaletteRemap(info.IsFog)));
 		}

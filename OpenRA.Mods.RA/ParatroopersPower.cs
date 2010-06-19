@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		public string UnitType = "badr";
 		public string FlareType = "flare";
 
-		public override object Create(Actor self) { return new ParatroopersPower(self,this); }
+		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
 
 	class ParatroopersPower : SupportPower, IResolveOrder

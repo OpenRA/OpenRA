@@ -23,20 +23,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CarpetBombInfo : ITraitInfo
+	class CarpetBombInfo : TraitInfo<CarpetBomb>
 	{
 		public readonly string Weapon = null;
 		public readonly int Range = 0;
-
-		public object Create(Actor self) { return new CarpetBomb(self); }
 	}
 
 	class CarpetBomb : ITick			// todo: maybe integrate this better with the normal weapons system?
 	{
 		int2 Target;
 		int dropDelay;
-
-		public CarpetBomb(Actor self) { }
 
 		public void SetTarget(int2 targetCell) { Target = targetCell; }
 

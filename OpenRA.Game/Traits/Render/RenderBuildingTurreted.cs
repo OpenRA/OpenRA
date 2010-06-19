@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 {
 	class RenderBuildingTurretedInfo : RenderBuildingInfo
 	{
-		public override object Create(Actor self) { return new RenderBuildingTurreted(self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init.self); }
 	}
 
 	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete

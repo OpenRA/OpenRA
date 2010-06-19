@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc
 		public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium" };
 
-		public object Create(Actor self) { return new PoisonedByTiberium(this); }
+		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
 
 	class PoisonedByTiberium : ITick

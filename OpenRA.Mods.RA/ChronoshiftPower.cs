@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		public override object Create(Actor self) { return new ChronoshiftPower(self,this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
 	}
 
 	class ChronoshiftPower : SupportPower, IResolveOrder
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int Duration = 30;
 		public readonly bool KillCargo = true;
-		public object Create(Actor self) { return new Chronosphere(self); }
+		public object Create(ActorInitializer init) { return new Chronosphere(init.self); }
 	}
 	
 	class Chronosphere

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
 		public readonly int DamageStates = 2;
-		public override object Create(Actor self) { return new RenderBuildingWall(self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init.self); }
 	}
 
 	class RenderBuildingWall : RenderBuilding

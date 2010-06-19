@@ -37,10 +37,8 @@ namespace OpenRA.Mods.RA
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
 		public readonly string DeathWeapon = null;
-		public object Create (Actor self)
-		{
-			return new OreRefinery (self, this);
-		}
+
+		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
 	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, ITraitPrerequisite<IAcceptOreDockAction>

@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly int Capacity = 0;
 		public readonly string DeathWeapon = null;
-		public object Create(Actor self) { return new StoresOre(self, this); }
+		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 
 	class StoresOre : IPips, INotifyCapture, INotifyDamage

@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 		public readonly string DamagedSound = "kaboom1.aud";
 		public readonly string DestroyedSound = "kaboom22.aud";
 
-		public object Create(Actor self) { return new Building(self); }
+		public object Create(ActorInitializer init) { return new Building(init.self); }
 	}
 
 	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier

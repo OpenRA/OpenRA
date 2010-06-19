@@ -25,20 +25,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class CargoInfo : ITraitInfo
+	public class CargoInfo : TraitInfo<Cargo>
 	{
 		public readonly int Passengers = 0;
 		public readonly UnitMovementType[] PassengerTypes = { };
 		public readonly int UnloadFacing = 0;
-
-		public object Create(Actor self) { return new Cargo(self); }
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder
 	{
 		List<Actor> cargo = new List<Actor>();
-
-		public Cargo(Actor self) {}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

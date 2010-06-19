@@ -56,6 +56,8 @@ namespace OpenRA
 			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
+			var init = new ActorInitializer( this );
+
 			if (name != null)
 			{
 				if (!Rules.Info.ContainsKey(name.ToLowerInvariant()))
@@ -65,7 +67,7 @@ namespace OpenRA
 				Health = this.GetMaxHP();
 
 				foreach (var trait in Info.TraitsInConstructOrder())
-					traits.Add(trait.Create(this));
+					traits.Add(trait.Create(init));
 			}
 
 			Size = Lazy.New(() =>
@@ -253,6 +255,17 @@ namespace OpenRA
 		{
 			var o = obj as Actor;
 			return ( o != null && o.ActorID == ActorID );
+		}
+	}
+
+	public class ActorInitializer
+	{
+		public readonly Actor self;
+		public World world { get { return self.World; } }
+
+		public ActorInitializer( Actor actor )
+		{
+			this.self = actor;
 		}
 	}
 }

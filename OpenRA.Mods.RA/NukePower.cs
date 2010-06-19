@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 {
 	class NukePowerInfo : SupportPowerInfo
 	{
-		public override object Create(Actor self) { return new NukePower(self, this); }
+		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
 	}
 	
 	class NukePower : SupportPower, IResolveOrder
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 	class NukeSiloInfo : ITraitInfo
 	{
 		public readonly string MissileWeapon = "";
-		public object Create(Actor self) { return new NukeSilo(self); }
+		public object Create(ActorInitializer init) { return new NukeSilo(init.self); }
 	}
 	
 	class NukeSilo

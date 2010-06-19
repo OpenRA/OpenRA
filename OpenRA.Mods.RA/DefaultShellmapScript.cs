@@ -27,10 +27,7 @@ using System;
 
 namespace OpenRA.Mods.RA
 {
-	class DefaultShellmapScriptInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new DefaultShellmapScript(); }
-	}
+	class DefaultShellmapScriptInfo : TraitInfo<DefaultShellmapScript> { }
 
 	class DefaultShellmapScript: ILoadWorldHook, ITick
 	{		

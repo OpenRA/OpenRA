@@ -24,20 +24,16 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	public class ProductionInfo : ITraitInfo
+	public class ProductionInfo : TraitInfo<Production>
 	{
 		public readonly int[] SpawnOffset = null;
 		public readonly int[] ProductionOffset = null;
 		public readonly int[] ExitOffset = null;
 		public readonly string[] Produces = { };
-
-		public virtual object Create(Actor self) { return new Production(self); }
 	}
 
 	public class Production : IIssueOrder, IResolveOrder, ITags
 	{	
-		public Production( Actor self ) { }
-
 		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
 		{
 			var pos = (1 / 24f * self.CenterLocation).ToInt2();

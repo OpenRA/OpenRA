@@ -10,7 +10,7 @@ namespace OpenRA.Mods.Cnc
 	class CriticalBuildingStateInfo : ITraitInfo
 	{
 		public readonly int LingerTime = 20;
-		public object Create(Actor self) { return new CriticalBuildingState(self, this); }
+		public object Create(ActorInitializer init) { return new CriticalBuildingState(init.self, this); }
 	}
 
 	class CriticalBuildingState : INotifyDamage

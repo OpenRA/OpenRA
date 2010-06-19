@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 {
 	class RenderUnitReloadInfo : RenderUnitInfo
 	{
-		public override object Create(Actor self) { return new RenderUnitReload(self); }
+		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.self); }
 	}
 
 	class RenderUnitReload : RenderUnit

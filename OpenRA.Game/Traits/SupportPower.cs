@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		public readonly string SelectTargetSound = null;
 		public readonly string LaunchSound = null;
 
-		public abstract object Create(Actor self);
+		public abstract object Create(ActorInitializer init);
 
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}

@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 {
 	public class UnitInfluenceInfo : ITraitInfo
 	{
-		public object Create( Actor self ) { return new UnitInfluence( self ); }
+		public object Create( ActorInitializer init ) { return new UnitInfluence( init.world ); }
 	}
 
 	public class UnitInfluence : ITick
@@ -36,15 +36,15 @@ namespace OpenRA.Traits
 		List<Actor>[,] influence;
 		Map map;
 
-		public UnitInfluence( Actor self )
+		public UnitInfluence( World world )
 		{
-			map = self.World.Map;
-			influence = new List<Actor>[self.World.Map.MapSize.X, self.World.Map.MapSize.Y];
-			for (int i = 0; i < self.World.Map.MapSize.X; i++)
-				for (int j = 0; j < self.World.Map.MapSize.Y; j++)
+			map = world.Map;
+			influence = new List<Actor>[world.Map.MapSize.X, world.Map.MapSize.Y];
+			for (int i = 0; i < world.Map.MapSize.X; i++)
+				for (int j = 0; j < world.Map.MapSize.Y; j++)
 					influence[ i, j ] = new List<Actor>();
 
-			self.World.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
+			world.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
 		}
 
 		public void Tick( Actor self )

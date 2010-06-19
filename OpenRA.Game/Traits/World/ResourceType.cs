@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 
 		public Sprite[][] Sprites;
 		
-		public object Create(Actor self) { return new ResourceType(this); }
+		public object Create(ActorInitializer init) { return new ResourceType(this); }
 	}
 
 	public class ResourceType

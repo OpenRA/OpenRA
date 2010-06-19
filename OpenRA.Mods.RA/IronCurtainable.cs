@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class IronCurtainableInfo : TraitInfo<IronCurtainable> {}
+	class IronCurtainableInfo : TraitInfo<IronCurtainable> { }
 
 	class IronCurtainable : IDamageModifier, ITick
 	{

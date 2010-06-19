@@ -27,10 +27,9 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	public class ParaDropInfo : ITraitInfo
+	public class ParaDropInfo : TraitInfo<ParaDrop>
 	{
 		public readonly int LZRange = 4;
-		public object Create(Actor self) { return new ParaDrop(); }
 	}
 
 	public class ParaDrop : ITick

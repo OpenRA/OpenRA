@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 	class ArmorUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 2.0f;
-		public override object Create(Actor self) { return new ArmorUpgradeCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new ArmorUpgradeCrateAction(init.self, this); }
 	}
 
 	class ArmorUpgradeCrateAction : CrateAction

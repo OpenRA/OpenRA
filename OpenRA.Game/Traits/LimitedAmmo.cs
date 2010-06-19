@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public readonly int Ammo = 0;
 		public readonly int PipCount = 0;
 
-		public object Create(Actor self) { return new LimitedAmmo(self); }
+		public object Create(ActorInitializer init) { return new LimitedAmmo(init.self); }
 	}
 
 	public class LimitedAmmo : INotifyAttack, IPips

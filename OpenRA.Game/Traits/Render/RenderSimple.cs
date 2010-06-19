@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string Image = null;
 		public readonly string Palette = null;
-		public abstract object Create(Actor self);
+		public abstract object Create(ActorInitializer init);
 	}
 
 	public abstract class RenderSimple : IRender, ITick

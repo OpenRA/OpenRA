@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 	class SpatialBinsInfo : ITraitInfo
 	{
 		public readonly int BinSize = 8;
-		public object Create(Actor self) { return new SpatialBins( self, this ); }
+		public object Create(ActorInitializer init) { return new SpatialBins( init.self, this ); }
 	}
 
 	class SpatialBins : ITick

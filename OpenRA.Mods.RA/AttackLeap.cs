@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackLeapInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackLeap(self); }
+		public override object Create(ActorInitializer init) { return new AttackLeap(init.self); }
 	}
 
 	class AttackLeap : AttackBase

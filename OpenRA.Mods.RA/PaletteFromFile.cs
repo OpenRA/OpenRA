@@ -29,17 +29,18 @@ namespace OpenRA.Mods.RA
 		public readonly string Theater = null;
 		public readonly string Filename = null;
 		public readonly bool Transparent = true;
-		public object Create(Actor self) { return new PaletteFromFile(self, this); }
+
+		public object Create(ActorInitializer init) { return new PaletteFromFile(init.world, this); }
 	}
 
 	class PaletteFromFile
 	{
-		public PaletteFromFile(Actor self, PaletteFromFileInfo info)
+		public PaletteFromFile(World world, PaletteFromFileInfo info)
 		{
 			if (info.Theater == null || 
-				info.Theater.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
+				info.Theater.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
 			{
-				self.World.WorldRenderer.AddPalette(info.Name, 
+				world.WorldRenderer.AddPalette(info.Name, 
 					new Palette(FileSystem.Open(info.Filename), info.Transparent));
 			}
 		}

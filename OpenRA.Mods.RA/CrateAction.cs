@@ -28,7 +28,8 @@ namespace OpenRA.Mods.RA
 		public int SelectionShares = 10;
 		public string Effect = null;
 		public string Notification = null;
-		public virtual object Create(Actor self) { return new CrateAction(self, this); }
+
+		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
 
 	public class CrateAction

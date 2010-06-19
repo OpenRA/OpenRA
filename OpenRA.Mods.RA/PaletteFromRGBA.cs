@@ -32,18 +32,19 @@ namespace OpenRA.Mods.RA
 		public readonly int G = 0;
 		public readonly int B = 0;
 		public readonly int A = 255;
-		public object Create(Actor self) { return new PaletteFromRGBA(self, this); }
+
+		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.world, this); }
 	}
 
 	class PaletteFromRGBA
 	{
-		public PaletteFromRGBA(Actor self, PaletteFromRGBAInfo info)
+		public PaletteFromRGBA(World world, PaletteFromRGBAInfo info)
 		{
 			if (info.Theatre == null ||
-				info.Theatre.ToLowerInvariant() == self.World.Map.Theater.ToLowerInvariant())
+				info.Theatre.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
 			{
 				// TODO: This shouldn't rely on a base palette
-				var wr = self.World.WorldRenderer;
+				var wr = world.WorldRenderer;
 				var pal = wr.GetPalette("player0");
 				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))));
 			}

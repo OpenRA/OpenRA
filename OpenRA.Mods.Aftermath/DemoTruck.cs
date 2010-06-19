@@ -23,15 +23,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Aftermath
 {
-	class DemoTruckInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new DemoTruck(self); }
-	}
+	class DemoTruckInfo : TraitInfo<DemoTruck> { }
 
 	class DemoTruck : Chronoshiftable, INotifyDamage
 	{
-		public DemoTruck(Actor self) : base(self) { }
-
 		// Explode on chronoshift
 		public override bool Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{

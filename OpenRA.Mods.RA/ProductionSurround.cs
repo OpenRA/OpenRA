@@ -26,13 +26,11 @@ namespace OpenRA.Mods.RA
 {
 	class ProductionSurroundInfo : ProductionInfo
 	{
-		public override object Create(Actor self) { return new ProductionSurround(self); }
+		public override object Create(ActorInitializer init) { return new ProductionSurround(); }
 	}
 
 	class ProductionSurround : Production
 	{
-		public ProductionSurround(Actor self) : base(self) { }
-
 		static int2? FindAdjacentTile(Actor self, bool waterBound)
 		{
 			var tiles = Footprint.Tiles(self);

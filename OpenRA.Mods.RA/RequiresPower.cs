@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	class RequiresPowerInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new RequiresPower(self); }
+		public object Create(ActorInitializer init) { return new RequiresPower(init.self); }
 	}
 
 	class RequiresPower : IDisable

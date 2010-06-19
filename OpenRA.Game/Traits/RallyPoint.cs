@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int[] RallyPoint = { 1, 3 };
 
-		public object Create(Actor self) { return new RallyPoint(self); }
+		public object Create(ActorInitializer init) { return new RallyPoint(init.self); }
 	}
 
 	public class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick

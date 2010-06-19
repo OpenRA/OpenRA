@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 {
 	class RenderUnitTurretedInfo : RenderUnitInfo
 	{
-		public override object Create(Actor self) { return new RenderUnitTurreted(self); }
+		public override object Create(ActorInitializer init) { return new RenderUnitTurreted(init.self); }
 	}
 
 	class RenderUnitTurreted : RenderUnit

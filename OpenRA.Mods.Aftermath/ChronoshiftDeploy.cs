@@ -27,10 +27,9 @@ using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Aftermath
 {
-	class ChronoshiftDeployInfo : ITraitInfo
+	class ChronoshiftDeployInfo : TraitInfo<ChronoshiftDeploy>
 	{
 		public readonly int ChargeTime = 120; // Seconds
-		public object Create(Actor self) { return new ChronoshiftDeploy(self); }
 	}
 
 	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips
@@ -38,8 +37,6 @@ namespace OpenRA.Mods.Aftermath
 		// Recharge logic
 		[Sync]
 		int chargeTick = 0; // How long until we can chronoshift again?
-
-		public ChronoshiftDeploy(Actor self) { }
 
 		public void Tick(Actor self)
 		{

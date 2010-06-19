@@ -23,14 +23,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ReservableInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new Reservable(self); }
-	}
+	class ReservableInfo : TraitInfo<Reservable> { }
 
 	public class Reservable : ITick
 	{
-		public Reservable(Actor self) { }
 		Actor reservedFor;
 
 		public void Tick(Actor self)

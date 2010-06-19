@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	class RenderSpyInfo : RenderInfantryInfo
 	{
-		public override object Create(Actor self) { return new RenderSpy(self); }
+		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
 	}
 
 	class RenderSpy : RenderInfantry, IRenderModifier

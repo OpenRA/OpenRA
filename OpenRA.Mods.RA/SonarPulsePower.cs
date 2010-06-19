@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	public class SonarPulsePowerInfo : SupportPowerInfo
 	{
-		public override object Create(Actor self) { return new SonarPulsePower(self, this); }
+		public override object Create(ActorInitializer init) { return new SonarPulsePower(init.self, this); }
 	}
 
 	public class SonarPulsePower : SupportPower, IResolveOrder

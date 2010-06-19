@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string[] BibTypes = {"bib3", "bib2", "bib1"};
 		public readonly int[] BibWidths = {2,3,4};
-		public object Create(Actor self) { return new BibLayer(self, this); }
+		public object Create(ActorInitializer init) { return new BibLayer(init.self, this); }
 	}
 
 	class BibLayer: IRenderOverlay, ILoadWorldHook

@@ -24,16 +24,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class C4DemolitionInfo : ITraitInfo
+	class C4DemolitionInfo : TraitInfo<C4Demolition>
 	{
 		public readonly float C4Delay = 0;
-		public object Create(Actor self) { return new C4Demolition(self); }
 	}
 
 	class C4Demolition : IIssueOrder, IResolveOrder
 	{
-		public C4Demolition(Actor self)	{}
-		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;

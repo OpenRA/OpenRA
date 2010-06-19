@@ -23,10 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class TakeCoverInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new TakeCover(self); }
-	}
+	class TakeCoverInfo : TraitInfo<TakeCover> { }
 
 	// infantry prone behavior
 	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
@@ -39,8 +36,6 @@ namespace OpenRA.Mods.RA
 		int remainingProneTime = 0;
 
 		public bool IsProne { get { return remainingProneTime > 0; } }
-
-		public TakeCover(Actor self) {}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{

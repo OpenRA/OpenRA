@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 
-		public object Create(Actor self) { return new Turreted(self); }
+		public object Create(ActorInitializer init) { return new Turreted(init.self); }
 	}
 
 	public class Turreted : ITick

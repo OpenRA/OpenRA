@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
 		public readonly string ChargeAudio = "tslachg2.aud";
-		public override object Create(Actor self) { return new RenderBuildingCharge(self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init.self); }
 	}
 
 	/* used for tesla */

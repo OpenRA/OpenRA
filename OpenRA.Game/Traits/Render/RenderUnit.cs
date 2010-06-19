@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 {
 	public class RenderUnitInfo : RenderSimpleInfo
 	{
-		public override object Create(Actor self) { return new RenderUnit(self); }
+		public override object Create(ActorInitializer init) { return new RenderUnit(init.self); }
 	}
 
 	public class RenderUnit : RenderSimple, INotifyDamage

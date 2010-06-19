@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 		public readonly bool MuzzleFlash = false;
 		public readonly int FireDelay = 0;
 
-		public virtual object Create(Actor self) { return new AttackBase(self); }
+		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick

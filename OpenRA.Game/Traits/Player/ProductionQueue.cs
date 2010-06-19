@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 	{
 		public readonly float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
-		public object Create(Actor self) { return new ProductionQueue(self); }
+		public object Create(ActorInitializer init) { return new ProductionQueue(init.self); }
 	}
 
 	class ProductionQueue : IResolveOrder, ITick

@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 {
 	class HiddenUnderFogInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new HiddenUnderFog(self); }
+		public object Create(ActorInitializer init) { return new HiddenUnderFog(init.self); }
 	}
 
 	class HiddenUnderFog : IRenderModifier

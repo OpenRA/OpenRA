@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackOmniInfo : AttackBaseInfo
 	{
-		public override object Create(Actor self) { return new AttackOmni(self); }
+		public override object Create(ActorInitializer init) { return new AttackOmni(init.self); }
 	}
 
 	class AttackOmni : AttackBase, INotifyBuildComplete

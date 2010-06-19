@@ -24,14 +24,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CrateSpawnerInfo : ITraitInfo
+	class CrateSpawnerInfo : TraitInfo<CrateSpawner>
 	{
 		public readonly int Minimum = 1; // Minumum number of crates
 		public readonly int Maximum = 255; // Maximum number of crates
 		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
 		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
-
-		public object Create(Actor self) { return new CrateSpawner(); }
 	}
 	
 	// assumption: there is always at least one free water cell, and one free land cell.

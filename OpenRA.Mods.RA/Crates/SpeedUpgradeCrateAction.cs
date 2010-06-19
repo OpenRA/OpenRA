@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	class SpeedUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 1.7f;
-		public override object Create(Actor self) { return new SpeedUpgradeCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new SpeedUpgradeCrateAction(init.self, this); }
 	}
 
 	class SpeedUpgradeCrateAction : CrateAction

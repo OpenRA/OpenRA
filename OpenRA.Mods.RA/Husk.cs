@@ -6,7 +6,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class HuskInfo : ITraitInfo { public object Create(Actor self) { return new Husk(self); } }
+	class HuskInfo : ITraitInfo
+	{
+		public object Create( ActorInitializer init ) { return new Husk( init.self ); }
+	}
 
 	class Husk : IOccupySpace
 	{

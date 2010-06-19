@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 	class ReplaceWithActorInfo : ITraitInfo
 	{
 		public readonly string Actor = null;
-		public object Create(Actor self) { return new ReplaceWithActor(self, this); } 
+		public object Create(ActorInitializer init) { return new ReplaceWithActor(init.self, this); } 
 	}
 
 	class ReplaceWithActor

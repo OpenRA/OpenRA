@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 {
 	public class RenderInfantryInfo : RenderSimpleInfo
 	{
-		public override object Create(Actor self) { return new RenderInfantry(self); }
+		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self); }
 	}
 
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage

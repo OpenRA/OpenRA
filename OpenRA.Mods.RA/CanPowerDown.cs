@@ -21,10 +21,7 @@
 using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
-	public class CanPowerDownInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new CanPowerDown(); }
-	}
+	public class CanPowerDownInfo : TraitInfo<CanPowerDown> { }
 
 	public class CanPowerDown : IDisable, IPowerModifier, IResolveOrder
 	{

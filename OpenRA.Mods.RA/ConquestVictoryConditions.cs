@@ -23,17 +23,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ConquestVictoryConditionsInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new ConquestVictoryConditions( self ); }
-	}
+	class ConquestVictoryConditionsInfo : TraitInfo<ConquestVictoryConditions> { }
 
 	class ConquestVictoryConditions : ITick, IVictoryConditions, IResolveOrder
 	{
 		public bool HasLost { get; private set; }
 		public bool HasWon { get; private set; }
-
-		public ConquestVictoryConditions(Actor self) { }
 
 		public void Tick(Actor self)
 		{

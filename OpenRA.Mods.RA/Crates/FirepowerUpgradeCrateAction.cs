@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	class FirepowerUpgradeCrateActionInfo : CrateActionInfo
 	{
 		public float Multiplier = 2.0f;
-		public override object Create(Actor self) { return new FirepowerUpgradeCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new FirepowerUpgradeCrateAction(init.self, this); }
 	}
 
 	class FirepowerUpgradeCrateAction : CrateAction

@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
-		public object Create(Actor self) { return new Crate(self); }
+		public object Create(ActorInitializer init) { return new Crate(init.self); }
 	}
 
 	class Crate : ICrushable, IOccupySpace, ITick

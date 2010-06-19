@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 {
 	public class ShroudInfo : ITraitInfo
 	{
-		public object Create(Actor self) { return new Shroud(self); }
+		public object Create(ActorInitializer init) { return new Shroud(init.world); }
 	}
 
 	public class Shroud
@@ -41,14 +41,14 @@ namespace OpenRA.Traits
 		public Rectangle? exploredBounds;
 		public event Action Dirty = () => { };
 
-		public Shroud(Actor self)
+		public Shroud(World world)
 		{
-			map = self.World.Map;
+			map = world.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
 
-			self.World.ActorAdded += AddActor;
-			self.World.ActorRemoved += RemoveActor;
+			world.ActorAdded += AddActor;
+			world.ActorRemoved += RemoveActor;
 		}
 
 		// cache of positions that were added, so no matter what crazy trait code does, it

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly UnitMovementType[] CrushableBy = { };
 
-		public object Create(Actor self) { return new Wall(self); }
+		public object Create(ActorInitializer init) { return new Wall(init.self); }
 	}
 
 	public class Wall : ICrushable, IOccupySpace, IBlocksBullets

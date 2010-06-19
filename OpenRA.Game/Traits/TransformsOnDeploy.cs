@@ -22,7 +22,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	class TransformsOnDeployInfo : ITraitInfo
+	class TransformsOnDeployInfo : TraitInfo<TransformsOnDeploy>
 	{
 		public readonly string TransformsInto = null;
 		public readonly int[] Offset = null;
@@ -30,14 +30,10 @@ namespace OpenRA.Traits
 		public readonly bool TransferHealthPercentage = true; // Set to false to transfer the absolute health
 		public readonly string[] TransformSounds = null;
 		public readonly string[] NoTransformSounds = null;
-		
-		public object Create(Actor self) { return new TransformsOnDeploy(self); }
 	}
 
 	class TransformsOnDeploy : IIssueOrder, IResolveOrder
 	{
-		public TransformsOnDeploy(Actor self) { }
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && self == underCursor)

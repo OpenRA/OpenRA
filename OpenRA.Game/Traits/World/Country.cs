@@ -20,15 +20,13 @@
 
 namespace OpenRA.Traits
 {
-	public class CountryInfo : ITraitInfo
+	public class CountryInfo : TraitInfo<Country>
 	{
 		public readonly string Name = null;
 		public readonly string Race = null;
 
 		/* todo: icon,... */
-
-		public object Create(Actor self) { return new CountryInfo(); }
 	}
 
-	class Country { /* we're only interested in the Info */ }
+	public class Country { /* we're only interested in the Info */ }
 }

@@ -30,7 +30,8 @@ namespace OpenRA.Traits
 		public readonly float CloakDelay = 1.2f; // Seconds
 		public readonly string CloakSound = "subshow1.aud";
 		public readonly string UncloakSound = "subshow1.aud";
-		public object Create(Actor self) { return new Cloak(self); }
+
+		public object Create(ActorInitializer init) { return new Cloak(init.self); }
 	}
 
 	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage

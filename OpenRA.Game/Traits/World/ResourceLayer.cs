@@ -26,10 +26,7 @@ using System.Drawing;
 
 namespace OpenRA.Traits
 {
-	public class ResourceLayerInfo : ITraitInfo
-	{
-		public object Create(Actor self) { return new ResourceLayer(self); }
-	}
+	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
 	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ICustomTerrain
 	{		
@@ -39,7 +36,7 @@ namespace OpenRA.Traits
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 
-		public ResourceLayer(Actor self)
+		public ResourceLayer()
 		{
 			sr = Game.renderer.SpriteRenderer;
 		}

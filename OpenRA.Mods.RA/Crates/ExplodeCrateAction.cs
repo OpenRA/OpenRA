@@ -10,7 +10,7 @@ namespace OpenRA.Mods.RA
 	class ExplodeCrateActionInfo : CrateActionInfo
 	{
 		public string Weapon = null;
-		public override object Create(Actor self) { return new ExplodeCrateAction(self, this); }
+		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.self, this); }
 	}
 
 	class ExplodeCrateAction : CrateAction

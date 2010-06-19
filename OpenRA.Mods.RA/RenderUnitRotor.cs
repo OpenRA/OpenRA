@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public readonly int[] PrimaryOffset = { 0, 0 };
 		public readonly int[] SecondaryOffset = null;
 
-		public override object Create(Actor self) { return new RenderUnitRotor(self); }
+		public override object Create(ActorInitializer init) { return new RenderUnitRotor(init.self); }
 	}
 
 	class RenderUnitRotor : RenderUnit
