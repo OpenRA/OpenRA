@@ -127,7 +127,7 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: weap
+		Prerequisites: weap,atek
 		Owner: allies
 		Cost: 1300
 		Description: Heavy Tank
