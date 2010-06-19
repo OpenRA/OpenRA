@@ -183,6 +183,7 @@
     <Compile Include="ReplaceWithActor.cs" />
     <Compile Include="OreRefineryDockAction.cs" />
     <Compile Include="Activities\Drag.cs" />
+    <Compile Include="ProducesHelicopters.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

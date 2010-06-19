@@ -440,6 +440,8 @@ HELI:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		RearmBuildings:
+		RepairBuildings: hpad
 		LandWhenIdle: no
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
@@ -470,6 +472,8 @@ ORCA:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		RearmBuildings:
+		RepairBuildings: hpad
 		LandWhenIdle: no
 	RenderUnit:
 	WithShadow:

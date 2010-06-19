@@ -29,6 +29,8 @@ namespace OpenRA.Mods.RA
 {
 	class HelicopterInfo : AircraftInfo
 	{
+		public readonly float InstabilityMagnitude = 2.0f;
+		public readonly int InstabilityTicks = 5;	
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
 
@@ -99,10 +101,16 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
+		int offsetTicks = 0;
 		public void Tick(Actor self)
 		{
+			var unit = self.traits.Get<Unit>();
+			if (unit.Altitude <= 0)
+				return;
+			
+			var Info = self.Info.Traits.Get<HelicopterInfo>();
 			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
-			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, self.Info.Traits.Get<HelicopterInfo>().IdealSeparation)
+			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.traits.Contains<Helicopter>());
 
 			var f = otherHelis
@@ -110,6 +118,14 @@ namespace OpenRA.Mods.RA
 				.Aggregate(float2.Zero, (a, b) => a + b);
 
 			self.CenterLocation += rawSpeed * f;
+
+			if (--offsetTicks <= 0)
+			{
+				self.CenterLocation += Info.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
+				unit.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
+				offsetTicks = Info.InstabilityTicks;
+			}
+
 			Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 		}
 			

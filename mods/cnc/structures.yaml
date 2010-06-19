@@ -293,6 +293,7 @@ FIX:
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
+	RallyPoint:
 
 HPAD:
 	Inherits: ^Building
@@ -314,11 +315,13 @@ HPAD:
 		Crewed: yes
 		Sight: 5
 	Bib:
-	Production:
+	ProducesHelicopters:
 		SpawnOffset: 0,-4
 		Produces: Plane
 	BelowUnits:
 	Reservable:
+	RepairsUnits:
+	RallyPoint:
 
 EYE:
 	RequiresPower:
