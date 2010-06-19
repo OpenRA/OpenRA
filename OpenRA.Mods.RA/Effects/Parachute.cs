@@ -71,7 +71,6 @@ namespace OpenRA.Mods.RA.Effects
 							cargo.traits.Get<Mobile>().TeleportTo(cargo, loc);
 						else
 						{
-							cargo.Location = loc;
 							cargo.CenterLocation = Traits.Util.CenterOfCell(loc);
 
 							if (cargo.traits.Contains<IOccupySpace>())

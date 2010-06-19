@@ -32,15 +32,19 @@ namespace OpenRA.Mods.RA
 		public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 
-		public object Create(ActorInitializer init) { return new Mine(init.self); }
+		public object Create(ActorInitializer init) { return new Mine(init); }
 	}
 
 	class Mine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;
-		public Mine(Actor self)
+		[Sync]
+		readonly int2 location;
+
+		public Mine(ActorInitializer init)
 		{
-			this.self = self;
+			this.self = init.self;
+			this.location = init.location;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
@@ -64,7 +68,9 @@ namespace OpenRA.Mods.RA
 			return self.Info.Traits.Get<MineInfo>().TriggeredBy.Contains(umt);
 		}
 
-		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
+		public int2 TopLeft { get { return location; } }
+
+		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

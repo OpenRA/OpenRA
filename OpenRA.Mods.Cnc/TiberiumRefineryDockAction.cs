@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc
 {
 	class TiberiumRefineryDockActionInfo : TraitInfo<TiberiumRefineryDockAction> {}
 
-	class TiberiumRefineryDockAction : IAcceptOreDockAction, INotifyDamage, INotifySold, INotifyCapture, ITraitPrerequisite<IAcceptOre>
+	class TiberiumRefineryDockAction : IAcceptOreDockAction, INotifyDamage, INotifySold, INotifyCapture
 	{
 		Actor dockedHarv = null;
 		bool preventDock = false;

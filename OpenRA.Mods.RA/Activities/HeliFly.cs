@@ -43,6 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var unit = self.traits.Get<Unit>();
 			var info = self.Info.Traits.Get<HelicopterInfo>();
+			var aircraft = self.traits.Get<Aircraft>();
 
 			if (unit.Altitude != info.CruiseAltitude)
 			{
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (float2.WithinEpsilon(float2.Zero, dist, 2))
 			{
 				self.CenterLocation = Dest;
-				self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+				aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 				return NextActivity;
 			}
 
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			self.CenterLocation += (rawSpeed / dist.Length) * dist;
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
 			return this;
 		}

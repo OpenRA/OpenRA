@@ -8,18 +8,24 @@ namespace OpenRA.Mods.RA
 {
 	class HuskInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new Husk( init.self ); }
+		public object Create( ActorInitializer init ) { return new Husk( init ); }
 	}
 
 	class Husk : IOccupySpace
 	{
 		Actor self;
-		public Husk(Actor self) 
+		[Sync]
+		int2 location;
+
+		public Husk(ActorInitializer init)
 		{
-			this.self = self;
+			this.self = init.self;
+			this.location = init.location;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
-		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
+		public int2 TopLeft { get { return location; } }
+
+		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
 	}
 }

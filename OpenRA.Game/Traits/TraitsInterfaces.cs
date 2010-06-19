@@ -61,8 +61,32 @@ namespace OpenRA.Traits
 	}
 
 	public interface IDisable { bool Disabled { get; } }
-	
-	public interface IOccupySpace { IEnumerable<int2> OccupiedCells(); }
+
+	public interface IOccupySpace
+	{
+		int2 TopLeft { get; }
+		IEnumerable<int2> OccupiedCells();
+	}
+
+	public static class IOccupySpaceExts
+	{
+		public static int2 NearestCellTo( this IOccupySpace ios, int2 other )
+		{
+			var nearest = ios.TopLeft;
+			var nearestDistance = int.MaxValue;
+			foreach( var cell in ios.OccupiedCells() )
+			{
+				var dist = ( other - cell ).LengthSquared;
+				if( dist < nearestDistance )
+				{
+					nearest = cell;
+					nearestDistance = dist;
+				}
+			}
+			return nearest;
+		}
+	}
+
 	public interface INotifyAttack { void Attacking(Actor self); }
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	public interface IDamageModifier { float GetDamageModifier( WarheadInfo warhead ); }
@@ -112,7 +136,7 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
-	public interface ITraitPrerequisite<T> { }
+	public interface ITraitPrerequisite<T> where T : ITraitInfo { }
 
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface ILoadWorldHook { void WorldLoaded(World w); }

@@ -68,9 +68,10 @@ namespace OpenRA.Mods.RA.Activities
 			var unit = self.traits.Get<Unit>();
 			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			var angle = unit.Facing / 128f * Math.PI;
+			var aircraft = self.traits.Get<Aircraft>();
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
 			unit.Altitude += Math.Sign(desiredAltitude - unit.Altitude);
 		}

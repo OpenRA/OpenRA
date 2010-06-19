@@ -24,13 +24,13 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	public class MobileInfo : ITraitInfo, ITraitPrerequisite<Unit>
+	public class MobileInfo : ITraitInfo, ITraitPrerequisite<UnitInfo>
 	{
 		public readonly UnitMovementType MovementType = UnitMovementType.Wheel;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
 
-		public object Create(ActorInitializer init) { return new Mobile(init.self); }
+		public object Create(ActorInitializer init) { return new Mobile(init); }
 	}
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
@@ -38,36 +38,37 @@ namespace OpenRA.Traits
 		readonly Actor self;
 
 		[Sync]
-		int2 __fromCell;
+		int2 __fromCell, __toCell;
 		public int2 fromCell
 		{
 			get { return __fromCell; }
-			set { self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this); __fromCell = value; self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this); }
+			set { SetLocation( value, __toCell ); }
 		}
+		[Sync]
 		public int2 toCell
 		{
-			get { return self.Location; }
-			set
-			{
-				if (self.Location != value)
-				{
-					self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
-					self.Location = value;
-				}
-				self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
-			}
+			get { return __toCell; }
+			set { SetLocation( __fromCell, value ); }
+		}
+		void SetLocation( int2 from, int2 to )
+		{
+			if( fromCell == from && toCell == to ) return;
+			self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
+			__fromCell = from;
+			__toCell = to;
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
-		public Mobile(Actor self)
+		public Mobile(ActorInitializer init)
 		{
-			this.self = self;
-			__fromCell = toCell;
+			this.self = init.self;
+			this.__fromCell = this.__toCell = init.location;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
 		public void TeleportTo(Actor self, int2 xy)
 		{
-			fromCell = toCell = xy;
+			SetLocation( xy, xy );
 			self.CenterLocation = Util.CenterOfCell(fromCell);
 		}
 
@@ -101,6 +102,8 @@ namespace OpenRA.Traits
 				}
 			}
 		}
+
+		public int2 TopLeft { get { return toCell; } }
 
 		public IEnumerable<int2> OccupiedCells()
 		{

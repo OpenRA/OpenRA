@@ -54,13 +54,15 @@ namespace OpenRA.Traits
 		public readonly string DamagedSound = "kaboom1.aud";
 		public readonly string DestroyedSound = "kaboom22.aud";
 
-		public object Create(ActorInitializer init) { return new Building(init.self); }
+		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier
+	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
+		[Sync]
+		readonly int2 topLeft;
 		[Sync]
 		bool isRepairing = false;
 
@@ -69,12 +71,13 @@ namespace OpenRA.Traits
 			get	{ return self.traits.WithInterface<IDisable>().Any(t => t.Disabled); }
 		}
 
-		public Building(Actor self)
+		public Building(ActorInitializer init)
 		{
-			this.self = self;
+			this.self = init.self;
+			this.topLeft = init.location;
 			Info = self.Info.Traits.Get<BuildingInfo>();
 			self.CenterLocation = Game.CellSize 
-				* ((float2)self.Location + .5f * (float2)Info.Dimensions);
+				* ((float2)topLeft + .5f * (float2)Info.Dimensions);
 		}
 		
 		public int GetPowerUsage()
@@ -156,6 +159,16 @@ namespace OpenRA.Traits
 				if (Disabled)
 					yield return a.WithPalette("disabled");
 			}
+		}
+
+		public int2 TopLeft
+		{
+			get { return topLeft; }
+		}
+
+		public IEnumerable<int2> OccupiedCells()
+		{
+			return Footprint.UnpathableTiles( self.Info.Name, Info, TopLeft );
 		}
 	}
 }

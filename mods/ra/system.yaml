@@ -345,6 +345,7 @@ CRATE:
 	BelowUnits:
 
 CAMERA:
+	Aircraft:
 	Unit:
 		HP:1000
 		Sight: 10

@@ -27,23 +27,16 @@ using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	public class PlaneInfo : TraitInfo<Plane>
+	public class PlaneInfo : AircraftInfo
 	{
-		public readonly int CruiseAltitude = 20;
-		public readonly string[] RearmBuildings = { "afld" };
-		public readonly string[] RepairBuildings = { "fix" };
+		public override object Create( ActorInitializer init ) { return new Plane( init ); }
 	}
 
-	public class Plane : IIssueOrder, IResolveOrder, IMovement
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder
 	{
 		public IDisposable reservation;
 
-		static bool PlaneCanEnter(Actor self, Actor a)
-		{
-			var plane = self.Info.Traits.Get<PlaneInfo>();
-			return plane.RearmBuildings.Contains(a.Info.Name) 
-				|| plane.RepairBuildings.Contains(a.Info.Name);
-		}
+		public Plane( ActorInitializer init ) : base( init ) { }
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -52,7 +45,7 @@ namespace OpenRA.Mods.RA
 			if (underCursor == null)
 				return new Order("Move", self, xy);
 
-			if (PlaneCanEnter(self, underCursor)
+			if (AircraftCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor);
@@ -90,8 +83,5 @@ namespace OpenRA.Mods.RA
 						? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
 		}
-
-		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
-		public bool CanEnterCell(int2 location) { return true; }
 	}
 }

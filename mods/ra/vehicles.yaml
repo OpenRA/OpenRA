@@ -543,6 +543,7 @@ MIG:
 		PrimaryWeapon: Maverick
 		SecondaryWeapon: Maverick
 	Plane:
+		RearmBuildings: afld
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -572,6 +573,7 @@ YAK:
 		PrimaryWeapon: ChainGun
 		SecondaryWeapon: ChainGun
 	Plane:
+		RearmBuildings: afld
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -597,6 +599,7 @@ TRAN:
 		Sight: 12
 		Speed: 12
 	Helicopter:
+		RearmBuildings: hpad
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -630,6 +633,7 @@ HELI:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		RearmBuildings: hpad
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -660,6 +664,7 @@ HIND:
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
+		RearmBuildings: hpad
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:

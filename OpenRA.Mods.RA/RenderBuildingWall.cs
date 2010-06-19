@@ -110,19 +110,19 @@ namespace OpenRA.Mods.RA
 
 				foreach (var w in adjWalls)
 				{
-					w.traits.Get<RenderBuildingWall>().AddAdjacentWall(w, self);
-					AddAdjacentWall(self, w);
+					w.traits.Get<RenderBuildingWall>().AddAdjacentWall(w.Location, self.Location);
+					AddAdjacentWall(self.Location, w.Location);
 				}
 				hasTicked = true;
 			}
 		}
 
-		void AddAdjacentWall(Actor self, Actor other)
+		void AddAdjacentWall(int2 location, int2 otherLocation)
 		{
-			if (other.Location == self.Location + new int2(0, -1)) adjacentWalls |= 1;
-			if (other.Location == self.Location + new int2(+1, 0)) adjacentWalls |= 2;
-			if (other.Location == self.Location + new int2(0, +1)) adjacentWalls |= 4;
-			if (other.Location == self.Location + new int2(-1, 0)) adjacentWalls |= 8;
+			if (otherLocation == location + new int2(0, -1)) adjacentWalls |= 1;
+			if (otherLocation == location + new int2(+1, 0)) adjacentWalls |= 2;
+			if (otherLocation == location + new int2(0, +1)) adjacentWalls |= 4;
+			if (otherLocation == location + new int2(-1, 0)) adjacentWalls |= 8;
 		}
 	}
 }

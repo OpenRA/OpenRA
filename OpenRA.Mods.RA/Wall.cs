@@ -32,16 +32,15 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Wall(init.self); }
 	}
 
-	public class Wall : ICrushable, IOccupySpace, IBlocksBullets
+	public class Wall : ICrushable, IBlocksBullets
 	{
 		readonly Actor self;
+
 		public Wall(Actor self)
 		{
 			this.self = self;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, self.traits.Get<Building>());
 		}
-
-		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
 
 		public void OnCrush(Actor crusher) { self.InflictDamage(crusher, self.Health, null); }
 		public bool IsCrushableBy(UnitMovementType umt, Player player)

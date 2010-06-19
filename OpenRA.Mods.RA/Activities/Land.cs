@@ -50,6 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			var unit = self.traits.Get<Unit>();
+			var aircraft = self.traits.Get<Aircraft>();
 
 			if (unit.Altitude > 0)
 				--unit.Altitude;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.RA.Activities
 			var angle = unit.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 
 			return this;
 		}

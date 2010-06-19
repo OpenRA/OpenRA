@@ -27,28 +27,19 @@ using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class HelicopterInfo : ITraitInfo
+	class HelicopterInfo : AircraftInfo
 	{
-		public readonly string[] RepairBuildings = { "fix" };
-		public readonly string[] RearmBuildings = { "hpad" };
-		public readonly int CruiseAltitude = 20;
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
 
-		public object Create(ActorInitializer init) { return new Helicopter(init.self); }
+		public override object Create( ActorInitializer init ) { return new Helicopter( init ); }
 	}
 
-	class Helicopter : ITick, IIssueOrder, IResolveOrder, IMovement
+	class Helicopter : Aircraft, IIssueOrder, IResolveOrder
 	{
 		public IDisposable reservation;
-		public Helicopter(Actor self) {}
 
-		static bool HeliCanEnter(Actor self, Actor a)
-		{
-			if (self.Info.Traits.Get<HelicopterInfo>().RearmBuildings.Contains(a.Info.Name)) return true;
-			if (self.Info.Traits.Get<HelicopterInfo>().RepairBuildings.Contains(a.Info.Name)) return true;
-			return false;
-		}
+		public Helicopter( ActorInitializer init ) : base( init ) { }
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -60,7 +51,7 @@ namespace OpenRA.Mods.RA
 					return new Order("Move", self, xy);
 			}
 
-			if (HeliCanEnter(self, underCursor)
+			if (AircraftCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner
 				&& !Reservable.IsReserved(underCursor))
 				return new Order("Enter", self, underCursor);
@@ -119,7 +110,7 @@ namespace OpenRA.Mods.RA
 				.Aggregate(float2.Zero, (a, b) => a + b);
 
 			self.CenterLocation += rawSpeed * f;
-			self.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			Location = ((1 / 24f) * self.CenterLocation).ToInt2();
 		}
 			
 		const float Epsilon = .5f;
@@ -136,8 +127,5 @@ namespace OpenRA.Mods.RA
 				return float2.FromAngle((float)self.World.SharedRandom.NextDouble() * 3.14f);
 			return (5 / d.LengthSquared) * d;
 		}
-		
-		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
-		public bool CanEnterCell(int2 location) { return true; }
 	}
 }

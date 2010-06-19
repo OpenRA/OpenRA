@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, ITraitPrerequisite<IAcceptOreDockAction>
+	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;

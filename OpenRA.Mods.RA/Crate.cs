@@ -42,16 +42,21 @@ namespace OpenRA.Mods.RA
 	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
-		public object Create(ActorInitializer init) { return new Crate(init.self); }
+		public object Create(ActorInitializer init) { return new Crate(init); }
 	}
 
 	class Crate : ICrushable, IOccupySpace, ITick
 	{
 		readonly Actor self;
+		[Sync]
+		readonly int2 location;
+		[Sync]
 		int ticks;
-		public Crate(Actor self)
+
+		public Crate(ActorInitializer init)
 		{
-			this.self = self;
+			this.self = init.self;
+			this.location = init.location;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
@@ -75,7 +80,9 @@ namespace OpenRA.Mods.RA
 		public bool IsPathableCrush(UnitMovementType umt, Player player) { return true; }
 		public bool IsCrushableBy(UnitMovementType umt, Player player) { return true; }
 
-		public IEnumerable<int2> OccupiedCells() { yield return self.Location; }
+		public int2 TopLeft { get { return location; } }
+
+		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
 		
 		public void Tick(Actor self)
 		{

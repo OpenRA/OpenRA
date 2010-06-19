@@ -38,8 +38,7 @@ namespace OpenRA
 		public readonly World World;
 		public readonly uint ActorID;
 
-		[Sync]
-		public int2 Location;
+		public int2 Location { get { return traits.Get<IOccupySpace>().TopLeft; } }
 		[Sync]
 		public Player Owner;
 		[Sync]
@@ -52,11 +51,9 @@ namespace OpenRA
 		{
 			World = world;
 			ActorID = world.NextAID();
-			Location = location;
-			CenterLocation = Traits.Util.CenterOfCell(Location);
 			Owner = owner;
 
-			var init = new ActorInitializer( this );
+			var init = new ActorInitializer( this, location );
 
 			if (name != null)
 			{
@@ -69,6 +66,9 @@ namespace OpenRA
 				foreach (var trait in Info.TraitsInConstructOrder())
 					traits.Add(trait.Create(init));
 			}
+
+			if( CenterLocation == float2.Zero && traits.Contains<IOccupySpace>() )
+				CenterLocation = Traits.Util.CenterOfCell(Location);
 
 			Size = Lazy.New(() =>
 			{
@@ -262,10 +262,12 @@ namespace OpenRA
 	{
 		public readonly Actor self;
 		public World world { get { return self.World; } }
+		public readonly int2 location;
 
-		public ActorInitializer( Actor actor )
+		public ActorInitializer( Actor actor, int2 location )
 		{
 			this.self = actor;
+			this.location = location;
 		}
 	}
 }
