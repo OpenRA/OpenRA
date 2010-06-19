@@ -270,8 +270,8 @@ JEEP:
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: weap
-		Owner: allies
-		Cost: 600
+		Owner: allies,soviet
+		Cost: 500
 		Description: Ranger
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:

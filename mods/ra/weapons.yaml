@@ -500,7 +500,7 @@ Stinger:
 		Trail: smokey
 		Image: DRAGON
 		ROT: 20
-		RangeLimit: 20
+		RangeLimit: 50
 		TurboBoost: true
 		Speed: 20
 	Warhead:
