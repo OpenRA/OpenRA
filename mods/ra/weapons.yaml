@@ -360,11 +360,12 @@ M60mg:
 	ROF: 20
 	Range: 4
 	Report: PILLBOX1
+	Burst: 3
 	Bullet:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Verses: 100%,10%,30%,10%,10%
 		Explosion: 2
 		InfDeath: 1
 		Damage: 15
