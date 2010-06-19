@@ -228,7 +228,7 @@ DOME:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
-		Owner: allies
+		Owner: allies,soviet
 		Cost: 1000
 		Description: Radar Dome
 		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -349,7 +349,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 90
-		Prerequisites: afld
+		Prerequisites: dome
 		Owner: soviet
 		Cost: 750
 		Description: SAM Site
@@ -532,12 +532,10 @@ HPAD:
 	IronCurtainable:
 
 AFLD:
-	RequiresPower:
-	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: proc
+		Prerequisites: dome
 		Owner: soviet
 		Cost: 1100
 		Description: Airstrip
@@ -556,7 +554,6 @@ AFLD:
 		Produces: Plane
 	BelowUnits:
 	Reservable:
-	ProvidesRadar:
 	IronCurtainable:
 
 POWR:
@@ -585,7 +582,7 @@ APWR:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: @Power Plant
+		Prerequisites: dome
 		Owner: allies,soviet
 		Cost: 500
 		Description: Advanced Power Plant
@@ -608,7 +605,7 @@ STEK:
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: weap,afld
+		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 1500
 		Description: Soviet Tech Center
@@ -633,7 +630,7 @@ BARR:
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Cost: 500
+		Cost: 400
 		Description: Soviet Barracks
 		LongDesc: Produces infantry
 		Hotkey: b
@@ -659,7 +656,7 @@ TENT:
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: allies
-		Cost: 500
+		Cost: 400
 		Description: Allied Barracks
 		LongDesc: Produces infantry
 		Hotkey: b

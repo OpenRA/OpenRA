@@ -42,7 +42,7 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: weap,afld
+		Prerequisites: weap,dome
 		Owner: soviet
 		Cost: 700
 		Description: V2 Rocket
