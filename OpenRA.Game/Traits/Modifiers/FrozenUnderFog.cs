@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 			if (IsVisible(self))
 				cache = r.ToArray();
 
-			return r;
+			return cache;
 		}
 	}
 }
