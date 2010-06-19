@@ -133,7 +133,7 @@ V2RL:
 		Description: Heavy Tank
 		LongDesc: Allied Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
-		HP: 400
+		HP: 550
 		Armor: heavy
 		Crewed: yes
 		Sight: 5
