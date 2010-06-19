@@ -357,10 +357,10 @@ MammothTusk:
 		Damage: 150
 
 M60mg:
-	ROF: 20
+	ROF: 30
 	Range: 4
 	Report: PILLBOX1
-	Burst: 3
+	Burst: 5
 	Bullet:
 		Speed: 100
 	Warhead:
