@@ -204,6 +204,7 @@ namespace OpenRA.Graphics
 		{
 			var localPlayer = Game.world.LocalPlayer;
 			if (localPlayer == null) return null;
+			if (localPlayer.Shroud.Disabled) return null;
 			return localPlayer.Shroud.Bounds;
 		}
 	}

@@ -56,8 +56,7 @@ namespace OpenRA.Traits
 				for (int y = miny; y < maxy; y++)
 				{
 					if (world.LocalPlayer != null &&
-				    		!world.LocalPlayer.Shroud.IsExplored(new int2(x, y)) &&
-				    		!world.LocalPlayer.Shroud.Disabled)
+				    		!world.LocalPlayer.Shroud.IsExplored(new int2(x, y)))
 							continue;
 
 					var c = content[x, y];
