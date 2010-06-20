@@ -315,7 +315,7 @@ TurretGun:
 
 MammothTusk:
 	ROF: 60
-	Range: 13
+	Range: 8
 	Report: MISSILE6
 	Burst: 2
 	ValidTargets: Ground, Air
@@ -329,7 +329,7 @@ MammothTusk:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
-		RangeLimit: 20
+		RangeLimit: 40
 	Warhead:
 		Spread: 6
 		Verses: 90%,75%,60%,25%,100%
@@ -599,8 +599,8 @@ Heal:
 		Damage: -50
 		
 SCUD:
-	ROF: 300
-	Range: 10
+	ROF: 250
+	Range: 13
 	Report: MISSILE1
 	Bullet:
 		Speed: 25
