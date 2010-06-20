@@ -51,3 +51,5 @@ packaging/osx/launcher/OpenRA.xcodeproj/*.mode1v3
 temp.c
 temp.o
 temp.s
+
+*.config

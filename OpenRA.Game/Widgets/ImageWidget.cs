@@ -23,6 +23,8 @@ namespace OpenRA.Widgets
 		{
 			ImageName = (other as ImageWidget).ImageName;
 			GetImageName = (other as ImageWidget).GetImageName;
+			ImageCollection = (other as ImageWidget).ImageCollection;
+			GetImageCollection = (other as ImageWidget).GetImageCollection;
 		}
 		
 		public override Widget Clone()
