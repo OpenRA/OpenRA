@@ -45,22 +45,18 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Crate(init); }
 	}
 
-	class Crate : ICrushable, IOccupySpace, ITick
+	class Crate : ITick
 	{
 		readonly Actor self;
-		[Sync]
-		readonly int2 location;
 		[Sync]
 		int ticks;
 
 		public Crate(ActorInitializer init)
 		{
 			this.self = init.self;
-			this.location = init.location;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
-		public void OnCrush(Actor crusher)
+		public void OnCollected(Actor crusher)
 		{
 			var shares = self.traits.WithInterface<CrateAction>().Select(a => Pair.New(a, a.GetSelectionShares(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
@@ -77,19 +73,20 @@ namespace OpenRA.Mods.RA
 					n -= s.Second;
 		}
 
-		public bool IsPathableCrush(UnitMovementType umt, Player player) { return true; }
-		public bool IsCrushableBy(UnitMovementType umt, Player player) { return true; }
-
-		public int2 TopLeft { get { return location; } }
-
-		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
-		
 		public void Tick(Actor self)
 		{
+			var cell = ((1/24f) * self.CenterLocation).ToInt2();
+			var collector = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).FirstOrDefault();
+			if (collector != null)
+			{
+				OnCollected(collector);
+				return;
+			}
+
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
 				self.World.AddFrameEndTask(w =>	w.Remove(self));
 
-			var seq = self.World.GetTerrainType(self.Location) == TerrainType.Water ? "water" : "idle";
+			var seq = self.World.GetTerrainType(cell) == TerrainType.Water ? "water" : "idle";
 			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}

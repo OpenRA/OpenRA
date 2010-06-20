@@ -71,7 +71,6 @@ namespace OpenRA.Mods.RA
 						{
 							var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
 							crates.Add(crate);
-							self.World.WorldActor.traits.Get<UnitInfluence>().Remove(crate, crate.traits.Get<IOccupySpace>());
 
 							var startPos = w.ChooseRandomEdgeCell();
 							var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
