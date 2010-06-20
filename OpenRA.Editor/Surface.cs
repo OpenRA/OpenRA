@@ -154,7 +154,12 @@ namespace OpenRA.Editor
 						var z = u + v * template.Size.X;
 						if (tile.TileBitmapBytes[z] != null)
 							Map.MapTiles[u + pos.X, v + pos.Y] =
-								new TileReference<ushort, byte> { type = Brush.N, image = (byte)z, index = (byte)z };
+								new TileReference<ushort, byte>
+								{
+									type = Brush.N,
+									index = template.PickAny ? byte.MaxValue : (byte)z,
+									image = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4)*4) : (byte)z,
+								};
 
 						var ch = new int2((pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
 						if (Chunks.ContainsKey(ch))
@@ -290,7 +295,7 @@ namespace OpenRA.Editor
 					{
 						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
 						var tile = TileSet.tiles[tr.type];
-						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
+						var index = (tr.image < tile.TileBitmapBytes.Count) ? tr.image : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)
 							for (var y = 0; y < 24; y++)

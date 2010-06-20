@@ -98,11 +98,11 @@ namespace OpenRA.FileFormats
 			return missingTile;
 		}
 
-		public TerrainType GetTerrainType( TileReference<ushort, byte> r )
+		public TerrainType GetTerrainType(TileReference<ushort, byte> r)
 		{
-			var tt = walk[ r.type ].TerrainType;
+			var tt = walk[r.type].TerrainType;
 			TerrainType ret;
-				if( !tt.TryGetValue( r.image, out ret ) )
+			if (!tt.TryGetValue(r.image, out ret))
 				return 0;// Default zero (walkable)
 			return ret;
 		}
