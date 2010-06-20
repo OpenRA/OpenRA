@@ -46,6 +46,7 @@ namespace OpenRA.FileFormats
 		public int2 Size;
 		public string Bridge;
 		public float HP;
+		public bool PickAny;
 		public Dictionary<int, TerrainType> TerrainType = new Dictionary<int, TerrainType>();
 	}
 	
@@ -77,7 +78,8 @@ namespace OpenRA.FileFormats
 							p => (TerrainType)Enum.Parse(typeof(TerrainType),p.Value)),
 					
 					Bridge = section.GetValue("bridge", null),
-					HP = float.Parse(section.GetValue("hp", "0"))
+					HP = float.Parse(section.GetValue("hp", "0")),
+					PickAny = (bool)FieldLoader.GetValue(typeof(bool), section.GetValue("pickany", "no")),
 				};
 								
 				tile.Index = -1;
