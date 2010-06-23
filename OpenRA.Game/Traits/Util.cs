@@ -173,6 +173,6 @@ namespace OpenRA.Traits
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
 
-		public static int2 CellContaining(float2 pos) { return (1 / 24f * pos).ToInt2(); }
+		public static int2 CellContaining(float2 pos) { return (1f / Game.CellSize * pos).ToInt2(); }
 	}
 }
