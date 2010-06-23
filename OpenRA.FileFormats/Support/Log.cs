@@ -99,7 +99,7 @@ namespace OpenRA
 				using (var requestStream = request.GetRequestStream())
 					requestStream.Write(buffer, 0, buffer.Length);
 
-				var response = (HttpWebResponse)request.GetResponse();
+				//var response = (HttpWebResponse)request.GetResponse();
 			}
 		}
 	}
