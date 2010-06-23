@@ -235,18 +235,27 @@ namespace OpenRA.Graphics
 			}	
 
 			if (Game.Settings.PathDebug)
-			{
-				var mobile = selectedUnit.traits.WithInterface<IMove>().FirstOrDefault();
-				if (mobile != null)
-				{
-					var path = mobile.GetCurrentPath(selectedUnit);
-					var start = selectedUnit.CenterLocation;
+				DrawUnitPath(selectedUnit);
+		}
 
-					foreach (var step in path)
-					{
-						lineRenderer.DrawLine(start, step, Color.Red, Color.Red);
-						start = step;
-					}
+		void DrawUnitPath(Actor selectedUnit)
+		{
+			var mobile = selectedUnit.traits.WithInterface<IMove>().FirstOrDefault();
+			if (mobile != null)
+			{
+				var path = mobile.GetCurrentPath(selectedUnit);
+				var start = selectedUnit.CenterLocation;
+
+				var c = Color.Green;
+
+				foreach (var step in path)
+				{
+					lineRenderer.DrawLine(step + new float2(-1, -1), step + new float2(-1, 1), c, c);
+					lineRenderer.DrawLine(step + new float2(-1, 1), step + new float2(1, 1), c, c);
+					lineRenderer.DrawLine(step + new float2(1, 1), step + new float2(1, -1), c, c);
+					lineRenderer.DrawLine(step + new float2(1, -1), step + new float2(-1, -1), c, c);
+					lineRenderer.DrawLine(start, step, c, c);
+					start = step;
 				}
 			}
 		}
