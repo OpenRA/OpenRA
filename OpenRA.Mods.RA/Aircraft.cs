@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init ); }
 	}
 
-	public class Aircraft : IMove
+	public class Aircraft : IMove, IOccupySpace
 	{
 		[Sync]
 		public int2 Location;
@@ -67,5 +67,8 @@ namespace OpenRA.Mods.RA
 		
 		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
 		public bool CanEnterCell(int2 location) { return true; }
+
+		int2[] noCells = new int2[] { };
+		public IEnumerable<int2> OccupiedCells() { return noCells; }
 	}
 }
