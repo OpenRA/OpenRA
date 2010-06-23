@@ -22,8 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class AircraftInfo : ITraitInfo
 	{
@@ -34,7 +35,7 @@ namespace OpenRA.Traits
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init ); }
 	}
 
-	public class Aircraft : IOccupySpace, IMovement
+	public class Aircraft : IMove
 	{
 		[Sync]
 		public int2 Location;
@@ -49,12 +50,6 @@ namespace OpenRA.Traits
 			get { return Location; }
 		}
 
-		public IEnumerable<int2> OccupiedCells()
-		{
-			// TODO: make helis on the ground occupy a space.
-			yield break;
-		}
-
 		public bool AircraftCanEnter(Actor self, Actor a)
 		{
 			var aircraft = self.Info.Traits.Get<AircraftInfo>();
@@ -62,6 +57,14 @@ namespace OpenRA.Traits
 				|| aircraft.RepairBuildings.Contains( a.Info.Name );
 		}
 
+		public virtual IEnumerable<float2> GetCurrentPath(Actor self)
+		{
+			var move = self.GetCurrentActivity() as Activities.Fly;
+			if (move == null) return new float2[] { };
+			
+			return new float2[] { move.Pos };
+		}
+		
 		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
 		public bool CanEnterCell(int2 location) { return true; }
 	}

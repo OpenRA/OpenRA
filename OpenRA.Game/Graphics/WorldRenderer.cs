@@ -236,18 +236,15 @@ namespace OpenRA.Graphics
 
 			if (Game.Settings.PathDebug)
 			{
-				var mobile = selectedUnit.traits.GetOrDefault<Mobile>();
+				var mobile = selectedUnit.traits.WithInterface<IMove>().FirstOrDefault();
 				if (mobile != null)
 				{
-					var path = mobile.GetCurrentPath();
-					var start = selectedUnit.Location;
+					var path = mobile.GetCurrentPath(selectedUnit);
+					var start = selectedUnit.CenterLocation;
 
 					foreach (var step in path)
 					{
-						lineRenderer.DrawLine(
-							Game.CellSize * start + new float2(12, 12),
-							Game.CellSize * step + new float2(12, 12),
-							Color.Red, Color.Red);
+						lineRenderer.DrawLine(start, step, Color.Red, Color.Red);
 						start = step;
 					}
 				}

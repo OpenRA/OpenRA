@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class HeliFly : IActivity
 	{
-		readonly float2 Dest;
+		public readonly float2 Dest;
 		public HeliFly(float2 dest)
 		{
 			Dest = dest;

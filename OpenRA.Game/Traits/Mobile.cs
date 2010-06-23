@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Mobile(init); }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMovement
+	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove
 	{
 		readonly Actor self;
 
@@ -95,7 +95,7 @@ namespace OpenRA.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				if (self.traits.GetOrDefault<IMovement>().CanEnterCell(order.TargetLocation))
+				if (self.traits.GetOrDefault<IMove>().CanEnterCell(order.TargetLocation))
 				{
 					if( !order.Queued ) self.CancelActivity();
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
@@ -132,11 +132,12 @@ namespace OpenRA.Traits
 				.GetCost(GetMovementType()) < float.PositiveInfinity;
 		}
 
-		public IEnumerable<int2> GetCurrentPath()
+		public IEnumerable<float2> GetCurrentPath(Actor self)
 		{
 			var move = self.GetCurrentActivity() as Activities.Move;
-			if (move == null || move.path == null) return new int2[] { };
-			return Enumerable.Reverse(move.path);
+			if (move == null || move.path == null) return new float2[] { };
+			
+			return Enumerable.Reverse(move.path).Select( c => Game.CellSize * c + new float2(12,12) );
 		}
 	}
 }

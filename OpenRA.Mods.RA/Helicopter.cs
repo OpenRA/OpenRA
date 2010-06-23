@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Helicopter( init ); }
 	}
 
-	class Helicopter : Aircraft, IIssueOrder, IResolveOrder
+	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder
 	{
 		public IDisposable reservation;
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.RA
 
 			if (underCursor == null)
 			{
-				if (self.traits.GetOrDefault<IMovement>().CanEnterCell(xy))
+				if (self.traits.GetOrDefault<IMove>().CanEnterCell(xy))
 					return new Order("Move", self, xy);
 			}
 
@@ -142,6 +143,14 @@ namespace OpenRA.Mods.RA
 			if (d.LengthSquared < Epsilon)
 				return float2.FromAngle((float)self.World.SharedRandom.NextDouble() * 3.14f);
 			return (5 / d.LengthSquared) * d;
+		}
+		
+		public override IEnumerable<float2> GetCurrentPath(Actor self)
+		{
+			var move = self.GetCurrentActivity() as Activities.HeliFly;
+			if (move == null) return new float2[] { };
+			
+			return new float2[] { move.Dest };
 		}
 	}
 }

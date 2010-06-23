@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 					Game.controller.CancelInputMode();
 				
 				// Ensure the target cell is valid for the unit
-				var movement = order.TargetActor.traits.GetOrDefault<IMovement>();
+				var movement = order.TargetActor.traits.GetOrDefault<IMove>();
 				if (!movement.CanEnterCell(order.TargetLocation))
 					return;
 
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA
 				if (!world.LocalPlayer.Shroud.IsExplored(xy))
 					return "move-blocked";
 				
-				var movement = self.traits.GetOrDefault<IMovement>();
+				var movement = self.traits.GetOrDefault<IMove>();
 				return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
 			}
 		}

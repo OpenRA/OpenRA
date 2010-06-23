@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Fly : IActivity
 	{
-		readonly float2 Pos;
+		public readonly float2 Pos;
 		bool isCanceled;
 
 		public Fly(float2 pos) { Pos = pos; }

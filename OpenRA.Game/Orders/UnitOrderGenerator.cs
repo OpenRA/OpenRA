@@ -92,7 +92,7 @@ namespace OpenRA.Orders
 				case "Heal": return "heal";
 				case "C4": return "c4";
 				case "Move": 
-					if (a.traits.GetOrDefault<IMovement>().CanEnterCell(location))
+					if (a.traits.GetOrDefault<IMove>().CanEnterCell(location))
 						return "move";
 					else
 						return "move-blocked";

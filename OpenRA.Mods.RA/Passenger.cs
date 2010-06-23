@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			if (cargo == null || cargo.IsFull(underCursor))
 				return null;
 
-			var umt = self.traits.Get<IMovement>().GetMovementType();
+			var umt = self.traits.Get<IMove>().GetMovementType();
 			if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
 				return null;
 

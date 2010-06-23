@@ -64,7 +64,7 @@ namespace OpenRA
 			if (voicedActor != null)
 			{
 				
-				if(voicedActor.traits.GetOrDefault<IMovement>().CanEnterCell(xy.ToInt2()))
+				if(voicedActor.traits.GetOrDefault<IMove>().CanEnterCell(xy.ToInt2()))
 					Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
 
 				if (isMove)
