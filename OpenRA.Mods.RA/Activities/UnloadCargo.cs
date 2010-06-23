@@ -30,17 +30,18 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity NextActivity { get; set; }
 		bool isCanceled;
 
-		int2? ChooseExitTile(Actor self)
+		int2? ChooseExitTile(Actor self, Actor cargo)
 		{
 			// is anyone still hogging this tile?
 			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(self.Location).Count() > 1)
 				return null;
+			
+			var mobile = cargo.traits.Get<Mobile>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 					if ((i != 0 || j != 0) && 
-						self.World.IsPathableCell(self.Location + new int2(i, j), 
-							UnitMovementType.Foot))
+						mobile.CanEnterCell(self.Location + new int2(i, j)))
 						return self.Location + new int2(i, j);
 
 			return null;
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (ru != null)
 				ru.PlayCustomAnimation(self, "unload", null);
 
-			var exitTile = ChooseExitTile(self);
+			var exitTile = ChooseExitTile(self, cargo.Peek(self));
 			if (exitTile == null) 
 				return this;
 

@@ -62,7 +62,7 @@ namespace OpenRA.Traits.Activities
 		{
 			this.getPath = (self, mobile) => 
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self.World, self.Location, destination, mobile.GetMovementType(), false )
+					PathSearch.FromPoint( self, self.Location, destination, mobile.GetMovementType(), false )
 					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( self.Location, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 
@@ -87,17 +87,6 @@ namespace OpenRA.Traits.Activities
 			this.getPath = (_, _2) => getPath();
 			this.destination = null;
 			this.nearEnough = 0;
-		}
-
-		bool CanEnterCell( int2 c, Actor self )
-		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(c)
-				&& self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(c) != ignoreBuilding) 
-				return false;
-			
-			// Cannot enter a cell if any unit inside is uncrushable
-			// This will need to be updated for multiple-infantry-in-a-cell
-			return (!self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(c).Any(a => a != self && !self.World.IsActorCrushableByActor(a, self)));
 		}
 
 		public IActivity Tick( Actor self )
@@ -179,7 +168,7 @@ namespace OpenRA.Traits.Activities
 		{
 			if( path.Count == 0 ) return null;
 			var nextCell = path[ path.Count - 1 ];
-			if( !CanEnterCell( nextCell, self ) )
+			if( !mobile.CanEnterCell( nextCell ) )
 			{
 				if( ( mobile.toCell - destination.Value ).LengthSquared <= nearEnough )
 				{
@@ -255,6 +244,8 @@ namespace OpenRA.Traits.Activities
 				var frac = (float)moveFraction / moveFractionTotal;
 
 				self.CenterLocation = float2.Lerp( from, to, frac );
+				//	+ self.traits.WithInterface<IOffsetCenterLocation>().Aggregate(float2.Zero, (a, x) => a + x.CenterOffset);
+
 				if( moveFraction >= moveFractionTotal )
 					unit.Facing = toFacing & 0xFF;
 				else

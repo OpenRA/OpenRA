@@ -37,14 +37,16 @@ namespace OpenRA
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
+		Actor self;
 		public bool inReverse;
 
 		BuildingInfluence buildingInfluence;
 		UnitInfluence unitInfluence;
 
-		public PathSearch(World world)
+		public PathSearch(Actor self)
 		{
-			this.world = world;
+			this.self = self;
+			world = self.World;
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
 
@@ -70,6 +72,18 @@ namespace OpenRA
 			return this;
 		}
 
+		public PathSearch WithHeuristic(Func<int2, float> h)
+		{
+			heuristic = h;
+			return this;
+		}
+		
+		public PathSearch FromPoint(int2 from)
+		{
+			AddInitialCell( self.World, from );
+			return this;
+		}
+		
 		const float LaneBias = .5f;
 
 		public int2 Expand( World world, float[][ , ] passableCost )
@@ -101,8 +115,8 @@ namespace OpenRA
 				if (!buildingInfluence.CanMoveHere(newHere, ignoreBuilding))
 					continue;
 
-				// Replicate real-ra behavior of not being able to enter a cell if there is a mixture of crushable and uncrushable units
-				if (checkForBlocked && (unitInfluence.GetUnitsAt(newHere).Any(a => !world.IsActorPathableToCrush(a, umt))))
+				var mobile = self.traits.Get<Mobile>();
+				if (checkForBlocked && !mobile.CanEnterCell(newHere))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
@@ -157,21 +171,29 @@ namespace OpenRA
 			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
-
-		public static PathSearch FromPoint( World world, int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
+		
+		public static PathSearch Search( Actor self, UnitMovementType umt, bool checkForBlocked )
 		{
-			var search = new PathSearch(world) {
+			var search = new PathSearch(self) {
+				umt = umt,
+				checkForBlocked = checkForBlocked };
+			return search;
+		}
+		
+		public static PathSearch FromPoint( Actor self, int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
+		{
+			var search = new PathSearch(self) {
 				heuristic = DefaultEstimator( target ),
 				umt = umt,
 				checkForBlocked = checkForBlocked };
 
-			search.AddInitialCell( world, from );
+			search.AddInitialCell( self.World, from );
 			return search;
 		}
 
-		public static PathSearch FromPoints(World world, IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
+		public static PathSearch FromPoints(Actor self, IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
 		{
-			var search = new PathSearch(world)
+			var search = new PathSearch(self)
 			{
 				heuristic = DefaultEstimator(target),
 				umt = umt,
@@ -179,7 +201,7 @@ namespace OpenRA
 			};
 
 			foreach (var sl in froms)
-				search.AddInitialCell(world, sl);
+				search.AddInitialCell(self.World, sl);
 
 			return search;
 		}

@@ -76,15 +76,9 @@ namespace OpenRA.Mods.RA.Activities
 			self.QueueActivity(new Move(
 				() =>
 				{
-					var search = new PathSearch(self.World)
-					{
-						heuristic = loc => (res.GetResource(loc) != null 
-							&& harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1,
-						umt = UnitMovementType.Wheel,
-						checkForBlocked = true
-					};
-					search.AddInitialCell(self.World, self.Location);
-					return self.World.PathFinder.FindPath(search);
+					return self.World.PathFinder.FindPath(PathSearch.Search(self, UnitMovementType.Wheel, true)
+						.WithHeuristic(loc => (res.GetResource(loc) != null && harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
+				        .FromPoint(self.Location));
 				}));
 			self.QueueActivity(new Harvest());
 		}

@@ -72,9 +72,9 @@ namespace OpenRA
 				}
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, target, from, umt, true)
+					PathSearch.FromPoint(self, target, from, umt, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self)),
-					PathSearch.FromPoint(world, from, target, umt, true)
+					PathSearch.FromPoint(self, from, target, umt, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self))
 						.InReverse());
 
@@ -90,10 +90,11 @@ namespace OpenRA
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
+				var mobile = self.traits.Get<Mobile>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => world.IsPathableCell( t, umt ) );
+					.Where( t => mobile.CanEnterCell(t));
 
-				var path = FindPath( PathSearch.FromPoints( world, tilesInRange, src, umt, false )
+				var path = FindPath( PathSearch.FromPoints( self, tilesInRange, src, umt, false )
 					.WithCustomBlocker(AvoidUnitsNear(src, 4, self))
 					.InReverse());
 				path.Reverse();

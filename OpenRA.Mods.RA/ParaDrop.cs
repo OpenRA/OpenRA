@@ -37,13 +37,11 @@ namespace OpenRA.Mods.RA
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;
 		Actor flare;
-		bool waterDrop;
 
-		public void SetLZ( int2 lz, Actor flare, bool waterDrop )
+		public void SetLZ( int2 lz, Actor flare )
 		{
 			this.lz = lz;
 			this.flare = flare;
-			this.waterDrop = waterDrop;
 			droppedAt.Clear();
 		}
 
@@ -79,7 +77,7 @@ namespace OpenRA.Mods.RA
 
 		bool IsSuitableCell(Actor self, int2 p)
 		{
-			return self.World.IsPathableCell(p, waterDrop ? UnitMovementType.Float : UnitMovementType.Wheel);
+			return self.traits.Get<Mobile>().CanEnterCell(p);
 		}
 
 		void FinishedDropping(Actor self)

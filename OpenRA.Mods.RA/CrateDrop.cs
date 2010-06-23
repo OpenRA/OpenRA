@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -65,23 +66,30 @@ namespace OpenRA.Mods.RA
 			for (var n = 0; n < threshold; n++ )
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
-				if (self.World.IsPathableCell(p, inWater ? UnitMovementType.Float : UnitMovementType.Wheel))
-				{
-					self.World.AddFrameEndTask(w =>
-						{
-							var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
-							crates.Add(crate);
+				
+				// Don't drop on any actors
+				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;
+				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
-							var startPos = w.ChooseRandomEdgeCell();
-							var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
-							plane.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
-							plane.CancelActivity();
-							plane.QueueActivity(new FlyCircle(p));
-							plane.traits.Get<ParaDrop>().SetLZ(p, null, inWater);
-							plane.traits.Get<Cargo>().Load(plane, crate);
-						});
-					return;
-				}
+				// Don't drop on unpathable cells
+				if (!(self.World.Map.IsInMap(p.X, p.Y) &&
+					Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]
+					.GetCost(inWater ? UnitMovementType.Float : UnitMovementType.Wheel) < float.PositiveInfinity)) continue;
+				
+				self.World.AddFrameEndTask(w =>
+					{
+						var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
+						crates.Add(crate);
+
+						var startPos = w.ChooseRandomEdgeCell();
+						var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
+						plane.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
+						plane.CancelActivity();
+						plane.QueueActivity(new FlyCircle(p));
+						plane.traits.Get<ParaDrop>().SetLZ(p, null);
+						plane.traits.Get<Cargo>().Load(plane, crate);
+					});
+				return;
 			}
 		}
 	}

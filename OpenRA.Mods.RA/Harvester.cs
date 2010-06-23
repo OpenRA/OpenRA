@@ -68,23 +68,18 @@ namespace OpenRA.Mods.RA
 		{
 			var mobile = self.traits.Get<Mobile>();
 
-			var search = new PathSearch(self.World)
-			{
-				heuristic = PathSearch.DefaultEstimator(self.Location),
-				umt = mobile.GetMovementType(),
-				checkForBlocked = false,
-			};
-			var refineries = self.World.Queries.OwnedBy[self.Owner]
+			var refs = self.World.Queries.OwnedBy[self.Owner]
 				.Where(x => x != ignore && x.traits.Contains<IAcceptOre>())
 				.ToList();
-
-			foreach (var r in refineries)
-				search.AddInitialCell(self.World, r.Location + r.traits.Get<IAcceptOre>().DeliverOffset);
-
-			var path = self.World.PathFinder.FindPath(search);
+			
+			var path = self.World.PathFinder.FindPath(PathSearch.FromPoints(self,
+			                                                                refs.Select(r => r.Location + r.traits.Get<IAcceptOre>().DeliverOffset),
+			                                                                self.Location,
+			                                                                mobile.GetMovementType(),
+			                                                                false));
 			path.Reverse();
 			if (path.Count != 0)
-				return refineries.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
+				return refs.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
 			else
 				return null;
 		}

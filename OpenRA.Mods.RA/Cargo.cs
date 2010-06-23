@@ -70,6 +70,11 @@ namespace OpenRA.Mods.RA
 			return cargo.Count == 0;
 		}
 
+		public Actor Peek(Actor self)
+		{
+			return cargo[0];
+		}
+		
 		public Actor Unload(Actor self)
 		{
 			var a = cargo[0];

@@ -31,16 +31,6 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static bool IsPathableCell(this World world, int2 a, UnitMovementType umt)
-		{
-			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
-			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any()) return false;
-
-			return world.Map.IsInMap(a.X, a.Y) &&
-				Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y])]
-				.GetCost(umt) < float.PositiveInfinity;
-		}
-		
 		public static bool IsCellBuildable(this World world, int2 a, bool waterBound)
 		{
 			return world.IsCellBuildable(a, waterBound, null);	
