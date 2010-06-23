@@ -103,6 +103,7 @@ namespace OpenRA.Traits
 		IEnumerable<float2> GetCurrentPath(Actor self);
 	}
 	
+	public interface IOffsetCenterLocation { float2 CenterOffset { get; } }
 	public interface ICrushable
 	{
 		void OnCrush(Actor crusher);

@@ -121,11 +121,27 @@ namespace OpenRA.Traits
 		
 		public bool CanEnterCell(int2 p)
 		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p)) return false;
+			return CanEnterCell(p, null);
+		}
+		
+		public bool CanEnterCell(int2 p, Actor ignoreBuilding)
+		{
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p, ignoreBuilding)) return false;
 
-			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any(
-				a => a != self && !self.World.IsActorCrushableByActor(a, self)))
+			var canShare = self.traits.Contains<SharesCell>();
+			var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p);
+			var nonshareable = actors.Where(a => a != self && !(canShare && a.traits.Contains<SharesCell>()));
+			var shareable = actors.Where(a => a != self && canShare && a.traits.Contains<SharesCell>());
+			
+			// only allow 5 in a cell
+			if (shareable.Count() >= 5)
 				return false;
+			
+			// We can enter a cell with nonshareable units if we can crush all of them
+			if (nonshareable.Any(
+				a => !self.World.IsActorCrushableByActor(a, self)))
+				return false;
+			
 			
 			return self.World.Map.IsInMap(p.X, p.Y) &&
 				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]

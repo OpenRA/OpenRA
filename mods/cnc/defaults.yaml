@@ -31,6 +31,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	SharesCell:
 
 ^Ship:
 	Category: Ship

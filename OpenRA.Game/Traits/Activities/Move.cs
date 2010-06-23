@@ -168,7 +168,7 @@ namespace OpenRA.Traits.Activities
 		{
 			if( path.Count == 0 ) return null;
 			var nextCell = path[ path.Count - 1 ];
-			if( !mobile.CanEnterCell( nextCell ) )
+			if( !mobile.CanEnterCell( nextCell, ignoreBuilding ) )
 			{
 				if( ( mobile.toCell - destination.Value ).LengthSquared <= nearEnough )
 				{
@@ -244,7 +244,6 @@ namespace OpenRA.Traits.Activities
 				var frac = (float)moveFraction / moveFractionTotal;
 
 				self.CenterLocation = float2.Lerp( from, to, frac );
-				//	+ self.traits.WithInterface<IOffsetCenterLocation>().Aggregate(float2.Zero, (a, x) => a + x.CenterOffset);
 
 				if( moveFraction >= moveFractionTotal )
 					unit.Facing = toFacing & 0xFF;

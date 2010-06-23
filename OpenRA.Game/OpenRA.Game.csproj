@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -240,6 +240,7 @@
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
+    <Compile Include="Traits\SharesCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -275,4 +276,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Traits\" />
+  </ItemGroup>
 </Project>

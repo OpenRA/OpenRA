@@ -116,7 +116,7 @@ namespace OpenRA
 					continue;
 
 				var mobile = self.traits.Get<Mobile>();
-				if (checkForBlocked && !mobile.CanEnterCell(newHere))
+				if (checkForBlocked && !mobile.CanEnterCell(newHere, ignoreBuilding))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
