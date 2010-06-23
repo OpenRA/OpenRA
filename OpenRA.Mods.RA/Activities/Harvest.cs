@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.QueueActivity(new Move(
 				() =>
 				{
-					return self.World.PathFinder.FindPath(PathSearch.Search(self, UnitMovementType.Wheel, true)
+					return self.World.PathFinder.FindPath(PathSearch.Search(self, true)
 						.WithHeuristic(loc => (res.GetResource(loc) != null && harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
 				        .FromPoint(self.Location));
 				}));

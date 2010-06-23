@@ -60,8 +60,9 @@ namespace OpenRA
 		List<CachedPath> CachedPaths = new List<CachedPath>();
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 
-		public List<int2> FindUnitPath(int2 from, int2 target, UnitMovementType umt, Actor self)
+		public List<int2> FindUnitPath(int2 from, int2 target, Actor self)
 		{
+			var umt = self.traits.Get<Mobile>().GetMovementType();
 			using (new PerfSample("find_unit_path"))
 			{
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.umt == umt);
@@ -72,9 +73,9 @@ namespace OpenRA
 				}
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(self, target, from, umt, true)
+					PathSearch.FromPoint(self, target, from, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self)),
-					PathSearch.FromPoint(self, from, target, umt, true)
+					PathSearch.FromPoint(self, from, target, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self))
 						.InReverse());
 
@@ -86,7 +87,7 @@ namespace OpenRA
 			}
 		}
 
-		public List<int2> FindUnitPathToRange( int2 src, int2 target, UnitMovementType umt, int range, Actor self )
+		public List<int2> FindUnitPathToRange( int2 src, int2 target, int range, Actor self )
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
@@ -94,7 +95,7 @@ namespace OpenRA
 				var tilesInRange = world.FindTilesInCircle(target, range)
 					.Where( t => mobile.CanEnterCell(t));
 
-				var path = FindPath( PathSearch.FromPoints( self, tilesInRange, src, umt, false )
+				var path = FindPath( PathSearch.FromPoints( self, tilesInRange, src, false )
 					.WithCustomBlocker(AvoidUnitsNear(src, 4, self))
 					.InReverse());
 				path.Reverse();

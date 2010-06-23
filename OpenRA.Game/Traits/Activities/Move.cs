@@ -32,7 +32,7 @@ namespace OpenRA.Traits.Activities
 		int2? destination;
 		int nearEnough;
 		public List<int2> path;
-		Func<Actor, Mobile, List<int2>> getPath;
+		Func<Actor, List<int2>> getPath;
 		public Actor ignoreBuilding;
 
 		MovePart move;
@@ -50,9 +50,8 @@ namespace OpenRA.Traits.Activities
 		public Move( int2 destination, int nearEnough ) 
 			: this()
 		{
-			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPath(
-				self.Location, destination,
-				mobile.GetMovementType(), self );
+			this.getPath = self => self.World.PathFinder.FindUnitPath(
+				self.Location, destination, self );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -60,9 +59,9 @@ namespace OpenRA.Traits.Activities
 		public Move(int2 destination, Actor ignoreBuilding)
 			: this()
 		{
-			this.getPath = (self, mobile) => 
+			this.getPath = self => 
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self, self.Location, destination, mobile.GetMovementType(), false )
+					PathSearch.FromPoint( self, self.Location, destination, false )
 					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( self.Location, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 
@@ -74,9 +73,9 @@ namespace OpenRA.Traits.Activities
 		public Move( Actor target, int range )
 			: this()
 		{
-			this.getPath = ( self, mobile ) => self.World.PathFinder.FindUnitPathToRange(
+			this.getPath = self => self.World.PathFinder.FindUnitPathToRange(
 				self.Location, target.Location,
-				mobile.GetMovementType(), range, self );
+				range, self );
 			this.destination = null;
 			this.nearEnough = range;
 		}
@@ -84,7 +83,7 @@ namespace OpenRA.Traits.Activities
 		public Move(Func<List<int2>> getPath)
 			: this()
 		{
-			this.getPath = (_, _2) => getPath();
+			this.getPath = _ => getPath();
 			this.destination = null;
 			this.nearEnough = 0;
 		}
@@ -111,7 +110,7 @@ namespace OpenRA.Traits.Activities
 					return this;
 				}
 
-				path = getPath( self, mobile ).TakeWhile( a => a != self.Location ).ToList();
+				path = getPath( self ).TakeWhile( a => a != self.Location ).ToList();
 				SanityCheckPath( mobile );
 			}
 			
@@ -187,7 +186,7 @@ namespace OpenRA.Traits.Activities
 					return null;
 
 				self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
-				var newPath = getPath(self, mobile).TakeWhile(a => a != self.Location).ToList();
+				var newPath = getPath(self).TakeWhile(a => a != self.Location).ToList();
 
 				self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, mobile );
 				if (newPath.Count != 0)

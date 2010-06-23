@@ -66,8 +66,6 @@ namespace OpenRA.Mods.RA
 		
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
-			var mobile = self.traits.Get<Mobile>();
-
 			var refs = self.World.Queries.OwnedBy[self.Owner]
 				.Where(x => x != ignore && x.traits.Contains<IAcceptOre>())
 				.ToList();
@@ -75,7 +73,6 @@ namespace OpenRA.Mods.RA
 			var path = self.World.PathFinder.FindPath(PathSearch.FromPoints(self,
 			                                                                refs.Select(r => r.Location + r.traits.Get<IAcceptOre>().DeliverOffset),
 			                                                                self.Location,
-			                                                                mobile.GetMovementType(),
 			                                                                false));
 			path.Reverse();
 			if (path.Count != 0)

@@ -49,6 +49,8 @@ namespace OpenRA
 			world = self.World;
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
+			
+			umt = self.traits.Get<Mobile>().GetMovementType();
 
 			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
 			unitInfluence = world.WorldActor.traits.Get<UnitInfluence>();
@@ -172,31 +174,28 @@ namespace OpenRA
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
 		
-		public static PathSearch Search( Actor self, UnitMovementType umt, bool checkForBlocked )
+		public static PathSearch Search( Actor self, bool checkForBlocked )
 		{
 			var search = new PathSearch(self) {
-				umt = umt,
 				checkForBlocked = checkForBlocked };
 			return search;
 		}
 		
-		public static PathSearch FromPoint( Actor self, int2 from, int2 target, UnitMovementType umt, bool checkForBlocked )
+		public static PathSearch FromPoint( Actor self, int2 from, int2 target, bool checkForBlocked )
 		{
 			var search = new PathSearch(self) {
 				heuristic = DefaultEstimator( target ),
-				umt = umt,
 				checkForBlocked = checkForBlocked };
 
 			search.AddInitialCell( self.World, from );
 			return search;
 		}
 
-		public static PathSearch FromPoints(Actor self, IEnumerable<int2> froms, int2 target, UnitMovementType umt, bool checkForBlocked)
+		public static PathSearch FromPoints(Actor self, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
 		{
 			var search = new PathSearch(self)
 			{
 				heuristic = DefaultEstimator(target),
-				umt = umt,
 				checkForBlocked = checkForBlocked
 			};
 
