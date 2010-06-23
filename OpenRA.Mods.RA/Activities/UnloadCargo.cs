@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.World.AddFrameEndTask(w =>
 			{
 				w.Add(actor);
-				actor.traits.Get<Mobile>().TeleportTo(actor, self.Location);
+				actor.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
 				actor.CancelActivity();
 				actor.QueueActivity(new Move(exitTile.Value, 0));
 			});

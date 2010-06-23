@@ -19,6 +19,7 @@
 #endregion
 
 using OpenRA.Traits;
+using System.Linq;
 namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : IActivity
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (t >= 1f)
 			{
-				self.traits.Get<Mobile>().TeleportTo(self, target.Location);
+				self.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(self, target.Location);
 				target.InflictDamage(self, target.Health, null);	// kill it
 				return NextActivity;
 			}

@@ -101,6 +101,7 @@ namespace OpenRA.Traits
 		UnitMovementType GetMovementType();
 		bool CanEnterCell(int2 location);
 		IEnumerable<float2> GetCurrentPath(Actor self);
+		void SetPosition(Actor self, int2 cell);
 	}
 	
 	public interface IOffsetCenterLocation { float2 CenterOffset { get; } }

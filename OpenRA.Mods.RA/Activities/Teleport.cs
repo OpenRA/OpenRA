@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -35,8 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			var mobile = self.traits.Get<Mobile>();
-			mobile.TeleportTo(self, destination);
+			self.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(self, destination);
 			return NextActivity;
 		}
 

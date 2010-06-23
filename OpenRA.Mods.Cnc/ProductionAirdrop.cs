@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Cnc
 					self.World.AddFrameEndTask(ww =>
 					{
 						ww.Add(actor);
-						actor.traits.Get<Mobile>().TeleportTo(actor, self.Location + unloadOffset);
+						actor.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(actor, self.Location + unloadOffset);
 						newUnit.traits.Get<Unit>().Facing = 192;
 						actor.CancelActivity();
 						actor.QueueActivity(new Move(self.Location + exitOffset, self));

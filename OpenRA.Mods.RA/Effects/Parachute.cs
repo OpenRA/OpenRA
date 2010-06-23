@@ -19,6 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -67,8 +68,11 @@ namespace OpenRA.Mods.RA.Effects
 						w.Remove(this);
 						var loc = Traits.Util.CellContaining(location);
 						cargo.CancelActivity();
-						if (cargo.traits.Contains<Mobile>())
-							cargo.traits.Get<Mobile>().TeleportTo(cargo, loc);
+						
+						var mobile = cargo.traits.WithInterface<IMove>().FirstOrDefault();
+
+						if (mobile != null)
+							mobile.SetPosition(cargo, loc);
 						else
 						{
 							cargo.CenterLocation = Traits.Util.CenterOfCell(loc);

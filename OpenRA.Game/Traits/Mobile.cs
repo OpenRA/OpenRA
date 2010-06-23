@@ -66,9 +66,9 @@ namespace OpenRA.Traits
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
-		public void TeleportTo(Actor self, int2 xy)
+		public void SetPosition(Actor self, int2 cell)
 		{
-			SetLocation( xy, xy );
+			SetLocation( cell, cell );
 			self.CenterLocation = Util.CenterOfCell(fromCell);
 		}
 

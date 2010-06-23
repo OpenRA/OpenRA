@@ -49,6 +49,12 @@ namespace OpenRA.Mods.RA
 			get { return Location; }
 		}
 
+		public void SetPosition(Actor self, int2 cell)
+		{
+			Location = cell;
+			self.CenterLocation = Util.CenterOfCell(cell);
+		}
+		
 		public bool AircraftCanEnter(Actor self, Actor a)
 		{
 			var aircraft = self.Info.Traits.Get<AircraftInfo>();
