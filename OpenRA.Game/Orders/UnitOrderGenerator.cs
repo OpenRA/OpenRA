@@ -54,11 +54,11 @@ namespace OpenRA.Orders
 				{
 					if (a.traits.Contains<RenderRangeCircle>())
 						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.Yellow),
-							a.Location, (int)a.GetPrimaryWeapon().Range);
+							a.CenterLocation, (int)a.GetPrimaryWeapon().Range);
 
 					if (a.traits.Contains<DetectCloaked>())
 						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.LimeGreen),
-							a.Location, a.Info.Traits.Get<DetectCloakedInfo>().Range);
+							a.CenterLocation, a.Info.Traits.Get<DetectCloakedInfo>().Range);
 				}
 			}
 		}

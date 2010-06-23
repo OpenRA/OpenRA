@@ -353,34 +353,33 @@ namespace OpenRA.Graphics
 
 		public void DrawLocus(Color c, int2[] cells)
 		{
-			foreach (var t in cells)
+			var dict = cells.ToDictionary(a => a, a => 0);
+			foreach (var t in dict.Keys)
 			{
-				if (!cells.Contains(t + new int2(-1, 0)))
+				if (!dict.ContainsKey(t + new int2(-1, 0)))
 					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
 						c, c);
-				if (!cells.Contains(t + new int2(1, 0)))
+				if (!dict.ContainsKey(t + new int2(1, 0)))
 					lineRenderer.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
-				if (!cells.Contains(t + new int2(0, -1)))
+				if (!dict.ContainsKey(t + new int2(0, -1)))
 					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
 						c, c);
-				if (!cells.Contains(t + new int2(0, 1)))
+				if (!dict.ContainsKey(t + new int2(0, 1)))
 					lineRenderer.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 			}
 		}
 
-		public void DrawRangeCircle(Color c, int2 location, int range)
+		public void DrawRangeCircle(Color c, float2 location, int range)
 		{
-			DrawLocus(c, world.FindTilesInCircle(location, range).ToArray());
-		}
-
-		public void DrawRangeCircle(Actor selectedUnit)
-		{
-			if (selectedUnit.Owner == world.LocalPlayer)
-				DrawRangeCircle(Color.FromArgb(128, Color.Yellow), 
-					selectedUnit.Location, 
-					(int)selectedUnit.GetPrimaryWeapon().Range);
+			var prev = location + Game.CellSize * range * float2.FromAngle(0);
+			for (var i = 1; i <= 32; i++)
+			{
+				var pos = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 8);
+				lineRenderer.DrawLine(prev, pos, c, c);
+				prev = pos;
+			}
 		}
 	}
 }
