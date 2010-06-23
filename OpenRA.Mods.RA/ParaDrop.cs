@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 					self.World.AddFrameEndTask(w => w.Add(
 						new Parachute(self.Owner, rs.anim.Name,
-							Util.CenterOfCell((1 / 24f * self.CenterLocation).ToInt2()),
+							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
 							self.traits.Get<Unit>().Altitude, a)));
 
 					Sound.Play("chute1.aud", self.CenterLocation);

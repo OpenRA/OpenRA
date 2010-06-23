@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA
 				offsetTicks = Info.InstabilityTicks;
 			}
 
-			Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			Location = Util.CellContaining(self.CenterLocation);
 		}
 			
 		const float Epsilon = .5f;

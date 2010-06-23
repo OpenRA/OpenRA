@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w =>
 					{
 						w.Remove(this);
-						int2 loc = ((1 / 24f) * location).ToInt2();
+						var loc = Traits.Util.CellContaining(location);
 						cargo.CancelActivity();
 						if (cargo.traits.Contains<Mobile>())
 							cargo.traits.Get<Mobile>().TeleportTo(cargo, loc);

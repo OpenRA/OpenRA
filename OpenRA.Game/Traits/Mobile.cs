@@ -137,7 +137,7 @@ namespace OpenRA.Traits
 			var move = self.GetCurrentActivity() as Activities.Move;
 			if (move == null || move.path == null) return new float2[] { };
 			
-			return Enumerable.Reverse(move.path).Select( c => Game.CellSize * c + new float2(12,12) );
+			return Enumerable.Reverse(move.path).Select( c => Util.CenterOfCell(c) );
 		}
 	}
 }

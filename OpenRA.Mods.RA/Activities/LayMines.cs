@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				return new Move(((1 / 24f) * rearmTarget.CenterLocation).ToInt2(), rearmTarget)
+				return new Move(Util.CellContaining(rearmTarget.CenterLocation), rearmTarget)
 					{ NextActivity = new Rearm() { NextActivity = new Repair(rearmTarget) { NextActivity = this } } };
 			}
 

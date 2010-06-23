@@ -98,7 +98,7 @@ namespace OpenRA.Effects
 			{
 				var at = (float)t / TotalTime();
 				var pos = float2.Lerp(Args.src, Args.dest, at);
-				var cell = ((1f/Game.CellSize) * pos).ToInt2();
+				var cell = Traits.Util.CellContaining(pos);
 
 				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
 					a => a.traits.Contains<IBlocksBullets>()))

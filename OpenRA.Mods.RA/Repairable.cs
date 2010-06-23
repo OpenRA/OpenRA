@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
                 var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
 
 				self.CancelActivity();
-				self.QueueActivity(new Move(((1 / 24f) * order.TargetActor.CenterLocation).ToInt2(), order.TargetActor));
+				self.QueueActivity(new Move(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair(order.TargetActor));
 

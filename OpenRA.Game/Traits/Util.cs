@@ -127,6 +127,7 @@ namespace OpenRA.Traits
 				+ offset.AbsOffset();
 		}
 
+		public static int2 AsInt2(this int[] xs) { return new int2(xs[0], xs[1]); }
 		public static float2 RelOffset(this int[] offset) { return new float2(offset[0], offset[1]); }
 		public static float2 AbsOffset(this int[] offset) { return new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3)); }
 
@@ -171,5 +172,7 @@ namespace OpenRA.Traits
 		}
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
+
+		public static int2 CellContaining(float2 pos) { return (1 / 24f * pos).ToInt2(); }
 	}
 }

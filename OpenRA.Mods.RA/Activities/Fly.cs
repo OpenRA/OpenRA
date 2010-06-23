@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Activities
 			var aircraft = self.traits.Get<Aircraft>();
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
-			aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			aircraft.Location = Util.CellContaining(self.CenterLocation);
 
 			unit.Altitude += Math.Sign(desiredAltitude - unit.Altitude);
 		}

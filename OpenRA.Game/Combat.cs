@@ -43,7 +43,7 @@ namespace OpenRA
 		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args)
 		{
 			var world = args.firedBy.World;
-			var targetTile = ((1f / Game.CellSize) * args.dest.ToFloat2()).ToInt2();
+			var targetTile = Util.CellContaining(args.dest);
 
 			if (!world.Map.IsInMap(targetTile))
 				return;

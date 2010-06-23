@@ -113,7 +113,7 @@ namespace OpenRA.Effects
 
 			if (!Info.High)		// check for hitting a wall
 			{
-				var cell = ((1f / Game.CellSize) * Pos).ToInt2();
+				var cell = Traits.Util.CellContaining(Pos);
 
 				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
 					a => a.traits.Contains<IBlocksBullets>()))

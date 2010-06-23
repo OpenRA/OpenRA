@@ -36,19 +36,19 @@ namespace OpenRA.Traits
 	{	
 		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
 		{
-			var pos = (1 / 24f * self.CenterLocation).ToInt2();
+			var pos = Util.CellContaining(self.CenterLocation);
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			if (pi.ProductionOffset != null)
-				pos += new int2(pi.ProductionOffset[0], pi.ProductionOffset[1]);
+				pos += pi.ProductionOffset.AsInt2();
 			return pos;
 		}
 
 		public virtual int2? ExitLocation(Actor self, ActorInfo producee)
 		{
-			var pos = (1 / 24f * self.CenterLocation).ToInt2();
+			var pos = Util.CellContaining(self.CenterLocation);
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			if (pi.ExitOffset != null)
-				pos += new int2(pi.ExitOffset[0], pi.ExitOffset[1]);
+				pos += pi.ExitOffset.AsInt2();
 			return pos;
 		}
 		
@@ -68,23 +68,21 @@ namespace OpenRA.Traits
 
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();
-			if( rp != null || pi.ExitOffset != null)
+			if (rp != null || pi.ExitOffset != null)
 			{
 				var mobile = newUnit.traits.GetOrDefault<Mobile>();
-				if( mobile != null )
+				if (mobile != null)
 				{
 					if (pi.ExitOffset != null)
-						newUnit.QueueActivity(new Activities.Move(ExitLocation( self, producee).Value, 1));
-						
+						newUnit.QueueActivity(new Activities.Move(ExitLocation(self, producee).Value, 1));
+
 					if (rp != null)
-						newUnit.QueueActivity( new Activities.Move( rp.rallyPoint, 1 ) );
+						newUnit.QueueActivity(new Activities.Move(rp.rallyPoint, 1));
 				}
 			}
 
-			
 			if (pi != null && pi.SpawnOffset != null)
-				newUnit.CenterLocation = self.CenterLocation 
-					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
+				newUnit.CenterLocation = self.CenterLocation + pi.SpawnOffset.AsInt2();
 
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
 				t.UnitProduced(self, newUnit);

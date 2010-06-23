@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (float2.WithinEpsilon(float2.Zero, dist, 2))
 			{
 				self.CenterLocation = Dest;
-				aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+				aircraft.Location = Util.CellContaining(self.CenterLocation);
 				return NextActivity;
 			}
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
 			self.CenterLocation += (rawSpeed / dist.Length) * dist;
-			aircraft.Location = ((1 / 24f) * self.CenterLocation).ToInt2();
+			aircraft.Location = Util.CellContaining(self.CenterLocation);
 
 			return this;
 		}
