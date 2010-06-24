@@ -30,12 +30,12 @@ namespace OpenRA.Traits
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
 
-		public object Create(ActorInitializer init) { return new Mobile(init); }
+		public virtual object Create(ActorInitializer init) { return new Mobile(init); }
 	}
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove
 	{
-		readonly Actor self;
+		public readonly Actor self;
 
 		[Sync]
 		int2 __fromCell, __toCell;
@@ -53,17 +53,17 @@ namespace OpenRA.Traits
 		void SetLocation( int2 from, int2 to )
 		{
 			if( fromCell == from && toCell == to ) return;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Remove(self, this);
+			RemoveInfluence();
 			__fromCell = from;
 			__toCell = to;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			AddInfluence();
 		}
 
 		public Mobile(ActorInitializer init)
 		{
 			this.self = init.self;
 			this.__fromCell = this.__toCell = init.location;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			AddInfluence();
 		}
 
 		public void SetPosition(Actor self, int2 cell)
@@ -83,7 +83,7 @@ namespace OpenRA.Traits
 			{
 				// force-move
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
-				if (!self.World.IsActorCrushableByActor(underCursor, self)) return null;
+				if (!CanEnterCell(underCursor.Location, null, true)) return null;
 			}
 			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
 			if (Util.GetEffectiveSpeed(self,umt) == 0) return null;		/* allow disabling move orders from modifiers */
@@ -105,7 +105,7 @@ namespace OpenRA.Traits
 
 		public int2 TopLeft { get { return toCell; } }
 
-		public IEnumerable<int2> OccupiedCells()
+		public virtual IEnumerable<int2> OccupiedCells()
 		{
 			return (fromCell == toCell)
 				? new[] { fromCell }
@@ -121,27 +121,30 @@ namespace OpenRA.Traits
 		
 		public bool CanEnterCell(int2 p)
 		{
-			return CanEnterCell(p, null);
+			return CanEnterCell(p, null, true);
 		}
 		
-		public bool CanEnterCell(int2 p, Actor ignoreBuilding)
+		public virtual bool CanEnterCell(int2 p, Actor ignoreActor, bool checkTransientActors)
 		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p, ignoreBuilding)) return false;
-
-			var canShare = self.traits.Contains<SharesCell>();
-			var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p);
-			var nonshareable = actors.Where(a => a != self && !(canShare && a.traits.Contains<SharesCell>()));
-			var shareable = actors.Where(a => a != self && canShare && a.traits.Contains<SharesCell>());
-			
-			// only allow 5 in a cell
-			if (shareable.Count() >= 5)
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p, ignoreActor))
 				return false;
 			
-			// We can enter a cell with nonshareable units if we can crush all of them
-			if (nonshareable.Any(
-				a => !self.World.IsActorCrushableByActor(a, self)))
-				return false;
-			
+			if (checkTransientActors)
+			{
+				var canShare = self.traits.Contains<SharesCell>();
+				var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Where(a => a != self && a != ignoreActor);
+				var nonshareable = actors.Where(a => !(canShare && a.traits.Contains<SharesCell>()));
+				var shareable = actors.Where(a => canShare && a.traits.Contains<SharesCell>());
+				
+				// only allow 5 in a cell
+				if (shareable.Count() >= 5)
+					return false;
+				
+				// We can enter a cell with nonshareable units if we can crush all of them
+				if (nonshareable.Any(
+					a => !self.World.IsActorCrushableByActor(a, self)))
+					return false;
+			}
 			
 			return self.World.Map.IsInMap(p.X, p.Y) &&
 				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]
@@ -154,6 +157,16 @@ namespace OpenRA.Traits
 			if (move == null || move.path == null) return new float2[] { };
 			
 			return Enumerable.Reverse(move.path).Select( c => Util.CenterOfCell(c) );
+		}
+		
+		public virtual void AddInfluence()
+		{
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, this );
+		}
+		
+		public virtual void RemoveInfluence()
+		{
+			self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, this );
 		}
 	}
 }

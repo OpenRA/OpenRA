@@ -44,8 +44,8 @@ namespace OpenRA.Traits
 	public class ResourceType
 	{
 		public ResourceTypeInfo info;
-		float[] movementSpeed = new float[4];
-		float[] pathCost = new float[4];
+		float[] movementSpeed = new float[5];
+		float[] pathCost = new float[5];
 
 		public ResourceType(ResourceTypeInfo info)
 		{
@@ -56,6 +56,8 @@ namespace OpenRA.Traits
 				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) 
 								  : (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
 			}
+			movementSpeed[(int)UnitMovementType.Fly] = 1.0f;
+			pathCost[(int)UnitMovementType.Fly] = 1.0f;
 			
 			this.info = info;
 		}

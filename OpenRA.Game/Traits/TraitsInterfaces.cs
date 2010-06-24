@@ -67,6 +67,12 @@ namespace OpenRA.Traits
 		int2 TopLeft { get; }
 		IEnumerable<int2> OccupiedCells();
 	}
+	
+	public interface IOccupyAir
+	{
+		int2 TopLeft { get; }
+		IEnumerable<int2> OccupiedAirCells();
+	}
 
 	public static class IOccupySpaceExts
 	{

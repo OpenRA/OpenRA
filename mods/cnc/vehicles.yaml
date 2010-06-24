@@ -406,7 +406,9 @@ TRAN:
 		ROT: 5
 		Sight: 8
 		Speed: 15
-	Helicopter:
+#	Helicopter:
+	MobileAir:
+		MovementType: Fly
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -434,15 +436,14 @@ HELI:
 		ROT: 4
 		Sight: 8
 		Speed: 20
-	AttackHeli:
+	AttackBase:
 		PrimaryWeapon: HighV
 		SecondaryWeapon: HighV
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
-	Helicopter:
-		RearmBuildings:
-		RepairBuildings: hpad
-		LandWhenIdle: no
+#	Helicopter:
+	MobileAir:
+		MovementType: Fly
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -466,15 +467,14 @@ ORCA:
 		ROT: 4
 		Sight: 8
 		Speed: 20
-	AttackHeli:
+	AttackBase:
 		PrimaryWeapon: Rockets.Orca
 		SecondaryWeapon: Rockets.Orca
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
-	Helicopter:
-		RearmBuildings:
-		RepairBuildings: hpad
-		LandWhenIdle: no
+#	Helicopter:
+	MobileAir:
+		MovementType: Fly
 	RenderUnit:
 	WithShadow:
 

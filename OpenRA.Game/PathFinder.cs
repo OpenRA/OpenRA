@@ -31,18 +31,18 @@ namespace OpenRA
 	public class PathFinder
 	{
 		readonly World world;
-		float[][,] passableCost = new float[4][,];
+		float[][,] passableCost = new float[5][,];
 		
 		public PathFinder( World world )
 		{
 			this.world = world;
 			var map = world.Map;
-			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++)
+			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Fly; umt++)
 				passableCost[(int)umt] = new float[map.MapSize.X, map.MapSize.Y];
 			for( int x = 0 ; x < map.MapSize.X ; x++ )
 				for( int y = 0 ; y < map.MapSize.Y ; y++ )
-					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
-						passableCost[(int)umt][ x, y ] = ( world.Map.IsInMap( x, y ) )
+					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Fly; umt++ )
+						passableCost[(int)umt][ x, y ] = (umt == UnitMovementType.Fly) ? 0f : ( world.Map.IsInMap( x, y ) )
 							? (float)Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[x, y])]
 								.GetCost(umt)
 							: float.PositiveInfinity;

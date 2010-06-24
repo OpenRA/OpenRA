@@ -315,7 +315,7 @@ HPAD:
 		Crewed: yes
 		Sight: 5
 	Bib:
-	ProducesHelicopters:
+	Production:
 		SpawnOffset: 0,-4
 		Produces: Plane
 	BelowUnits:

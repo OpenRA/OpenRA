@@ -241,6 +241,7 @@
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Traits\SharesCell.cs" />
+    <Compile Include="Traits\World\AircraftInfluence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

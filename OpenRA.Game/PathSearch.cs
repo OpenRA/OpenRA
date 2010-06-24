@@ -41,7 +41,6 @@ namespace OpenRA
 		public bool inReverse;
 
 		BuildingInfluence buildingInfluence;
-		UnitInfluence unitInfluence;
 
 		public PathSearch(Actor self)
 		{
@@ -53,7 +52,6 @@ namespace OpenRA
 			umt = self.traits.Get<Mobile>().GetMovementType();
 
 			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
-			unitInfluence = world.WorldActor.traits.Get<UnitInfluence>();
 		}
 
 		public PathSearch InReverse()
@@ -114,11 +112,8 @@ namespace OpenRA
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!buildingInfluence.CanMoveHere(newHere, ignoreBuilding))
-					continue;
-
 				var mobile = self.traits.Get<Mobile>();
-				if (checkForBlocked && !mobile.CanEnterCell(newHere, ignoreBuilding))
+				if (checkForBlocked && !mobile.CanEnterCell(newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))

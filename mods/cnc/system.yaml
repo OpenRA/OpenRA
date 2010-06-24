@@ -1,6 +1,6 @@
 Player:
 	ProductionQueue:
-		BuildSpeed: .4
+		BuildSpeed: .004
 		LowPowerSlowdown: 3
 	PlaceBuilding:
 	TechTreeCache:
@@ -38,7 +38,7 @@ Player:
 		UnitType: a10
 	ConquestVictoryConditions:
 	PlayerResources:
-		InitialCash: 5000
+		InitialCash: 500000
 	ActorGroupProxy:
 	
 World:
@@ -47,6 +47,7 @@ World:
 #	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
+	AircraftInfluence:
 #	BridgeLoadHook:
 	Theater@DESERT:
 		Name:Desert

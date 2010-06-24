@@ -167,7 +167,7 @@ namespace OpenRA.Traits.Activities
 		{
 			if( path.Count == 0 ) return null;
 			var nextCell = path[ path.Count - 1 ];
-			if( !mobile.CanEnterCell( nextCell, ignoreBuilding ) )
+			if( !mobile.CanEnterCell( nextCell, ignoreBuilding, true ) )
 			{
 				if( ( mobile.toCell - destination.Value ).LengthSquared <= nearEnough )
 				{
@@ -185,10 +185,13 @@ namespace OpenRA.Traits.Activities
 				if (--waitTicksRemaining >= 0)
 					return null;
 
-				self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
+				
+				//self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
+				mobile.RemoveInfluence();
 				var newPath = getPath(self).TakeWhile(a => a != self.Location).ToList();
 
-				self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, mobile );
+				//self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, mobile );
+				mobile.AddInfluence();
 				if (newPath.Count != 0)
 					path = newPath;
 
