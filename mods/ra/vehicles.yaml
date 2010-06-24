@@ -94,7 +94,7 @@ V2RL:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: weap
-		Owner: soviet
+		Owner: allies
 		Cost: 800
 		Description: Medium Tank
 		LongDesc: Soviet Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
@@ -121,9 +121,9 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: weap,atek
-		Owner: allies
-		Cost: 1300
+		Prerequisites: weap
+		Owner: soviet
+		Cost: 1200
 		Description: Heavy Tank
 		LongDesc: Allied Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:

@@ -235,16 +235,17 @@ Grenade:
 		Damage: 60
 		ImpactSound: kaboom12
 
+# for 1tnk; this is far more like a 25mm-40mm cannon.
 75mm:
-	ROF: 40
+	ROF: 12
 	Range: 4
 	Report: CANNON2
 	Bullet:
-		Speed: 40
+		Speed: 50
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 20%,75%,75%,100%,50%
+		Verses: 20%,60%,100%,60%,50%
 		Explosion: 4
 		InfDeath: 3
 		SmudgeType: Crater
