@@ -53,8 +53,6 @@ V2RL:
 		Crewed: yes
 		Sight: 5
 		Speed: 7
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
@@ -64,7 +62,7 @@ V2RL:
 		EmptyWeapon:
 
 1TNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: weap
@@ -78,8 +76,6 @@ V2RL:
 		Crewed: yes
 		Sight: 4
 		Speed: 9
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -94,7 +90,7 @@ V2RL:
 		HuskActor: 1TNK.Husk
 
 2TNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: weap
@@ -108,8 +104,6 @@ V2RL:
 		Crewed: yes
 		Sight: 5
 		Speed: 8
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -124,7 +118,7 @@ V2RL:
 		HuskActor: 2TNK.Husk
 
 3TNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: weap,atek
@@ -138,8 +132,6 @@ V2RL:
 		Crewed: yes
 		Sight: 5
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -154,7 +146,7 @@ V2RL:
 		HuskActor: 3TNK.Husk
 
 4TNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: weap,stek
@@ -168,8 +160,6 @@ V2RL:
 		Crewed: yes
 		Sight: 6
 		Speed: 3
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 2
 	AttackTurreted:
@@ -191,7 +181,7 @@ V2RL:
 		HealIfBelow: 50%
 
 ARTY:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: weap
@@ -206,8 +196,6 @@ ARTY:
 		ROT: 2
 		Sight: 5
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: 155mm
 	RenderUnit:
@@ -234,8 +222,6 @@ HARV:
 		Crewed: yes
 		Sight: 4
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	RenderUnit:
 
 MCV:
@@ -291,7 +277,7 @@ JEEP:
 	AutoTarget:
 
 APC:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: weap,tent
@@ -304,8 +290,6 @@ APC:
 		Armor: heavy
 		Sight: 5
 		Speed: 10
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
@@ -319,7 +303,7 @@ APC:
 		UnloadFacing: 220
 
 MNLY.AP:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
@@ -334,8 +318,6 @@ MNLY.AP:
 		Crewed: yes
 		Sight: 5
 		Speed: 9
-	Mobile:
-		MovementType: Track
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
@@ -345,7 +327,7 @@ MNLY.AP:
 		Ammo: 5
 
 MNLY.AT:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
@@ -360,8 +342,6 @@ MNLY.AT:
 		Crewed: yes
 		Sight: 5
 		Speed: 9
-	Mobile:
-		MovementType: Track
 	RenderUnit:
 		Image: MNLY
 	Minelayer:

@@ -19,6 +19,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
@@ -30,6 +31,7 @@ namespace OpenRA.Mods.RA
 	public class ParaDropInfo : TraitInfo<ParaDrop>
 	{
 		public readonly int LZRange = 4;
+		public readonly string ChuteSound = "chute1.aud";
 	}
 
 	public class ParaDrop : ITick
@@ -47,7 +49,8 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			var r = self.Info.Traits.Get<ParaDropInfo>().LZRange;
+			var info = self.Info.Traits.Get<ParaDropInfo>();
+			var r = info.LZRange;
 
 			if ((self.Location - lz).LengthSquared <= r * r && !droppedAt.Contains(self.Location))
 			{
@@ -70,14 +73,14 @@ namespace OpenRA.Mods.RA
 							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
 							self.traits.Get<Unit>().Altitude, a)));
 
-					Sound.Play("chute1.aud", self.CenterLocation);
+					Sound.Play(info.ChuteSound, self.CenterLocation);
 				}
 			}
 		}
 
 		bool IsSuitableCell(Actor self, int2 p)
 		{
-			return self.traits.Get<Mobile>().CanEnterCell(p);
+			return self.traits.WithInterface<IMove>().FirstOrDefault().CanEnterCell(p);
 		}
 
 		void FinishedDropping(Actor self)

@@ -227,14 +227,12 @@ World:
 	ResourceLayer:
 	ResourceType@ore:
 		ResourceType: 1
-		MovementTerrainType: Ore
 		Palette: terrain
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
 		Name: Ore
 	ResourceType@gem:
 		ResourceType: 2
-		MovementTerrainType: Ore
 		Palette: terrain
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
@@ -278,7 +276,7 @@ World:
 MINP:
 	Mine:
 		Weapon: APMine
-		TriggeredBy: Foot, Wheel, Track
+		CrushClasses: apmine
 		AvoidFriendly: yes
 	Unit:
 		HP: 1
@@ -291,7 +289,7 @@ MINP:
 MINV:
 	Mine:
 		Weapon: ATMine
-		TriggeredBy: Wheel, Track
+		CrushClasses: atmine
 		AvoidFriendly: yes
 	Unit:
 		HP: 1

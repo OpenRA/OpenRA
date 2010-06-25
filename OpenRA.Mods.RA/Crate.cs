@@ -45,7 +45,8 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Crate(init); }
 	}
 
-	class Crate : ITick, IOccupySpace
+	// IMove is required for paradrop
+	class Crate : ITick, IOccupySpace, IMove
 	{
 		readonly Actor self;
 		[Sync]
@@ -98,5 +99,15 @@ namespace OpenRA.Mods.RA
 		public int2 TopLeft	{get { return Location; }}
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
+		
+		public bool CanEnterCell(int2 location) { return true; }
+		public float MovementCostForCell(Actor self, int2 cell) { return 0; }
+		public float MovementSpeedForCell(Actor self, int2 cell) { return 1; }
+		public IEnumerable<float2> GetCurrentPath(Actor self) { return new float2[] {}; }
+		public void SetPosition(Actor self, int2 cell)
+		{
+			Location = cell;
+			self.CenterLocation = Util.CenterOfCell(cell);
+		}
 	}
 }
