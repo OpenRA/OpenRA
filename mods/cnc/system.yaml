@@ -48,6 +48,7 @@ World:
 	BuildingInfluence:
 	UnitInfluence:
 	AircraftInfluence:
+	HazardLayer:
 #	BridgeLoadHook:
 	Theater@DESERT:
 		Name:Desert

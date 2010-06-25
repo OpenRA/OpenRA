@@ -242,6 +242,8 @@
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Traits\SharesCell.cs" />
     <Compile Include="Traits\World\AircraftInfluence.cs" />
+    <Compile Include="Traits\World\HazardLayer.cs" />
+    <Compile Include="Traits\Hazardous.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -149,7 +149,7 @@ namespace OpenRA.Traits
 				var tt = self.World.GetTerrainType(self.Location);
 				terrain = Rules.TerrainTypes[tt].GetSpeedModifier(umt)*self.World.WorldActor.traits
 					.WithInterface<ICustomTerrain>()
-					.Select(t => t.GetSpeedModifier(self.Location, umt))
+					.Select(t => t.GetSpeedModifier(self.Location, self))
 					.Product();
 			}
 			var modifier = self.traits

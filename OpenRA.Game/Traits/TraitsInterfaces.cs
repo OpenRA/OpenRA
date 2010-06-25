@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Traits
 {
@@ -53,11 +54,13 @@ namespace OpenRA.Traits
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
+	public interface IProvideHazard { IEnumerable<HazardLayer.Hazard> HazardCells(Actor self); }
+	public interface IAvoidHazard { string Type { get; } }
 
 	public interface ICustomTerrain
 	{
-		float GetCost(int2 p, UnitMovementType umt);
-		float GetSpeedModifier(int2 p, UnitMovementType umt);
+		float GetCost(int2 p, Actor forActor);
+		float GetSpeedModifier(int2 p, Actor forActor);
 	}
 
 	public interface IDisable { bool Disabled { get; } }

@@ -42,7 +42,7 @@ namespace OpenRA
 			for( int x = 0 ; x < map.MapSize.X ; x++ )
 				for( int y = 0 ; y < map.MapSize.Y ; y++ )
 					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Fly; umt++ )
-						passableCost[(int)umt][ x, y ] = (umt == UnitMovementType.Fly) ? 0f : ( world.Map.IsInMap( x, y ) )
+						passableCost[(int)umt][ x, y ] = (umt == UnitMovementType.Fly) ? 1f : ( world.Map.IsInMap( x, y ) )
 							? (float)Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[x, y])]
 								.GetCost(umt)
 							: float.PositiveInfinity;

@@ -90,14 +90,17 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public float GetCost(int2 p, UnitMovementType umt)
+		public float GetCost(int2 p, Actor forActor)
 		{
+			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
 			if (customTerrain[p.X, p.Y] != null)
 				return customTerrain[p.X,p.Y].GetCost(p,umt);
 			return 1f;
 		}
-		public float GetSpeedModifier(int2 p, UnitMovementType umt)
+		
+		public float GetSpeedModifier(int2 p, Actor forActor)
 		{
+			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
 			if (customTerrain[p.X, p.Y] != null)
 				return customTerrain[p.X,p.Y].GetSpeedModifier(p,umt);
 			return 1f;

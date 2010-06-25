@@ -33,7 +33,6 @@ namespace OpenRA
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, float> heuristic;
-		public UnitMovementType umt;
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
@@ -48,9 +47,6 @@ namespace OpenRA
 			world = self.World;
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
-			
-			umt = self.traits.Get<Mobile>().GetMovementType();
-
 			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
 		}
 
@@ -88,11 +84,13 @@ namespace OpenRA
 
 		public int2 Expand( World world, float[][ , ] passableCost )
 		{
+			var	umt = self.traits.Get<Mobile>().GetMovementType();
+
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 			
 			var thisCost = passableCost[(int)umt][p.Location.X, p.Location.Y]*
-						   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,umt));
+						   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,self));
 			
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
@@ -107,7 +105,7 @@ namespace OpenRA
 
 				var costHere = passableCost[(int)umt][newHere.X, newHere.Y]*
 						 	   world.WorldActor.traits.WithInterface<ICustomTerrain>()
-							   .Aggregate(1f, (a, x) => a * x.GetCost(newHere,umt));
+							   .Aggregate(1f, (a, x) => a * x.GetCost(newHere,self));
 			
 				if (costHere == float.PositiveInfinity)
 					continue;

@@ -407,6 +407,7 @@ TRAN:
 		Sight: 8
 		Speed: 15
 #	Helicopter:
+	AvoidsAA:
 	MobileAir:
 		MovementType: Fly
 	RenderUnitRotor:

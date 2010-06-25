@@ -93,17 +93,21 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 		}
 		
-		public float GetSpeedModifier(int2 p, UnitMovementType umt)
+		public float GetSpeedModifier(int2 p, Actor forActor)
 		{
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
+			
+			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
 			return content[p.X,p.Y].type.GetSpeedModifier(umt);
 		}
 		
-		public float GetCost(int2 p,UnitMovementType umt)
+		public float GetCost(int2 p, Actor forActor)
 		{
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
+			
+			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
 			return content[p.X,p.Y].type.GetCost(umt);
 		}
 		
