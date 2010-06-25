@@ -24,49 +24,11 @@ using OpenRA.Graphics;
 
 namespace OpenRA.GameRules
 {
-	public enum UnitMovementType : byte
-	{
-		Foot = 0,
-		Track = 1,
-		Wheel = 2,
-		Float = 3,
-		Fly = 4,
-	}
-
 	public class TerrainCost
 	{
 		public readonly bool Buildable = true;
-		public readonly float Foot = 0, Track = 0, Wheel = 0, Float = 0;
 		public readonly bool AcceptSmudge = true;
 
 		public TerrainCost(MiniYaml y) { FieldLoader.Load(this, y); }
-		
-		public float GetSpeedModifier(UnitMovementType umt)
-		{
-			switch (umt)			/* todo: make this nice */
-			{
-				case UnitMovementType.Fly: return 1;
-				case UnitMovementType.Foot: return Foot;
-				case UnitMovementType.Wheel: return Wheel;
-				case UnitMovementType.Track: return Track;
-				case UnitMovementType.Float: return Float;
-				default:
-					throw new InvalidOperationException("wtf?");
-			}
-		}
-		
-		public float GetCost(UnitMovementType umt)
-		{
-			switch (umt)			/* todo: make this nice */
-			{
-				case UnitMovementType.Fly: return 1;
-				case UnitMovementType.Foot: return 1 / Foot;
-				case UnitMovementType.Wheel: return 1 / Wheel;
-				case UnitMovementType.Track: return 1 / Track;
-				case UnitMovementType.Float: return 1 / Float;
-				default:
-					throw new InvalidOperationException("wtf?");
-			}
-		}
 	}
 }

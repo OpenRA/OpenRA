@@ -249,3 +249,26 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 300
+		SpawnInterval: 12
+		WaterChance: 0
+
+CRATE:
+	Valued:
+		Cost: 0
+		Description: Crate
+	Crate:
+		Lifetime: 120
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		Effect: dollar
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	Unit:
+		HP: 1
+	RenderUnit:
+	BelowUnits:

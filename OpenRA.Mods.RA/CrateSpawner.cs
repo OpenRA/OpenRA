@@ -20,21 +20,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Traits;
-
+using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.FileFormats;
 namespace OpenRA.Mods.RA
 {
-	class CrateSpawnerInfo : TraitInfo<CrateSpawner>
+	public class CrateSpawnerInfo : TraitInfo<CrateSpawner>
 	{
 		public readonly int Minimum = 1; // Minumum number of crates
 		public readonly int Maximum = 255; // Maximum number of crates
+		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"}; // Which terrain types can we drop on?
+		public readonly string[] ValidWater = {"Water"};
 		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
 		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
 	}
-	
-	// assumption: there is always at least one free water cell, and one free land cell.
 
-	class CrateSpawner : ITick
+	public class CrateSpawner : ITick
 	{
 		List<Actor> crates = new List<Actor>();
 		int ticks = 0;
@@ -45,9 +49,9 @@ namespace OpenRA.Mods.RA
 			{
 				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
 				ticks = info.SpawnInterval * 25;		// todo: randomize
-			
-				crates.RemoveAll(c => !c.IsInWorld);
 
+				crates.RemoveAll(x => !x.IsInWorld);
+				
 				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
 					+ (crates.Count < info.Maximum ? 1 : 0);
 
@@ -55,23 +59,31 @@ namespace OpenRA.Mods.RA
 					SpawnCrate(self, info);
 			}
 		}
-
-		const int ChooseCrateLocationAttempts = 100;
-
+		
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
+			var threshold = 100;
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 
-			for (var n = 0; n < ChooseCrateLocationAttempts; n++)
+			for (var n = 0; n < threshold; n++ )
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
+				
+				// Is this valid terrain?
+				// Ugly hack until terraintypes are converted from enums
+				var terrainType = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y]);
+				var terrain = Enum.GetName( typeof(TerrainType), terrainType); 
+				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrain)) continue;
+				
+				// Don't spawn on any actors
+				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;
+				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
-				if (self.World.IsCellBuildable(p, inWater))
-				{
-					self.World.AddFrameEndTask(
+				System.Console.WriteLine("Spawning crate at {0}", p);
+
+				self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", p, self.World.WorldActor.Owner)));
-					break;
-				}
+				return;
 			}
 		}
 	}

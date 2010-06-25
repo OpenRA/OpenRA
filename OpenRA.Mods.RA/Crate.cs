@@ -45,15 +45,19 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Crate(init); }
 	}
 
-	class Crate : ITick
+	class Crate : ITick, IOccupySpace
 	{
 		readonly Actor self;
 		[Sync]
 		int ticks;
 
+		[Sync]
+		public int2 Location;
+
 		public Crate(ActorInitializer init)
 		{
 			this.self = init.self;
+			this.Location = init.location;
 		}
 
 		public void OnCollected(Actor crusher)
@@ -90,5 +94,9 @@ namespace OpenRA.Mods.RA
 			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}
+		
+		public int2 TopLeft	{get { return Location; }}
+		int2[] noCells = new int2[] { };
+		public IEnumerable<int2> OccupiedCells() { return noCells; }
 	}
 }

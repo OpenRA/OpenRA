@@ -41,7 +41,6 @@ namespace OpenRA
 		{
 			public int2 from;
 			public int2 to;
-			public UnitMovementType umt;
 			public List<int2> result;
 			public int tick;
 		}

@@ -25,13 +25,15 @@ using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Activities;
-
+using OpenRA.FileFormats;
 namespace OpenRA.Mods.RA
 {
 	public class CrateDropInfo : TraitInfo<CrateDrop>
 	{
 		public readonly int Minimum = 1; // Minumum number of crates
 		public readonly int Maximum = 255; // Maximum number of crates
+		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"}; // Which terrain types can we drop on?
+		public readonly string[] ValidWater = {"Water"};
 		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
 		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
 	}
@@ -67,15 +69,16 @@ namespace OpenRA.Mods.RA
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 				
+				// Is this valid terrain?
+				// Ugly hack until terraintypes are converted from enums
+				var terrainType = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y]);
+				var terrain = Enum.GetName( typeof(TerrainType), terrainType); 
+				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrain)) continue;
+				
 				// Don't drop on any actors
 				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;
 				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
-				// Don't drop on unpathable cells
-				if (!(self.World.Map.IsInMap(p.X, p.Y) &&
-					Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]
-					.GetCost(inWater ? UnitMovementType.Float : UnitMovementType.Wheel) < float.PositiveInfinity)) continue;
-				
 				self.World.AddFrameEndTask(w =>
 					{
 						var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
