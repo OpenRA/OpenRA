@@ -27,7 +27,7 @@ namespace OpenRA.Widgets.Delegates
 			Chrome.rootWidget.GetWidget("INGAME_DIPLOMACY_BUTTON").OnMouseUp = mi =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
-				if (diplomacyBG.Visible)
+				if (diplomacyBG.IsVisible())
 					LayoutDialog(diplomacyBG);
 				return true;
 			};

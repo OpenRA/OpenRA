@@ -140,7 +140,7 @@ namespace OpenRA.Widgets
 		public Rectangle GetEventBounds()
 		{
 			return Children
-				.Where(c => c.Visible)
+				.Where(c => c.IsVisible())
 				.Select(c => c.GetEventBounds())
 				.Aggregate(RenderBounds, Rectangle.Union);
 		}

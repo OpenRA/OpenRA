@@ -26,6 +26,7 @@ namespace OpenRA.GameRules
 		public bool IndexDebug = false;
 		public bool RecordSyncReports = true;
 		public bool ShowGameTimer = true;
+		public bool DeveloperMode = false;
 		
 		// Window settings
 		public WindowMode WindowMode = WindowMode.PseudoFullscreen;

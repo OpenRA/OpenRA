@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 {
 	class ProductionQueueInfo : ITraitInfo
 	{
-		public readonly float BuildSpeed = 0.4f;
+		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
 		public object Create(ActorInitializer init) { return new ProductionQueue(init.self); }
 	}

@@ -24,7 +24,7 @@ namespace OpenRA
 			// brutal hack
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 
-			if (Debugger.IsAttached || args.Contains("--just-die"))
+			if (Debugger.IsAttached)
 			{
 				Run(args);
 				return;
@@ -38,7 +38,8 @@ namespace OpenRA
 			{
 				Log.AddChannel("exception", "openra.exception.txt", true, false);
 				Log.Write("exception", "{0}", e.ToString());
-				Log.Upload(Game.GetGameId());
+				if (!Game.Settings.DeveloperMode || ( Game.Settings.DeveloperMode && Game.GetGameId() != 0) )
+					Log.Upload(Game.GetGameId());
 				throw;
 			}
 		}

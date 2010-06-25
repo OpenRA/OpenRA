@@ -233,4 +233,9 @@ copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"
 ralint ra</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Widgets\" />
+    <Folder Include="Widgets\Delegates\" />
+    <Folder Include="Widgets\Delegates\" />
+  </ItemGroup>
 </Project>

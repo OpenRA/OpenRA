@@ -236,7 +236,8 @@
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
-  </ItemGroup>
+    <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
+ </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
