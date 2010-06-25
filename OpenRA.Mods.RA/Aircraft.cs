@@ -72,7 +72,9 @@ namespace OpenRA.Mods.RA
 		
 		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
 		public bool CanEnterCell(int2 location) { return true; }
-
+		
+		public float MovementCostForCell(Actor self, int2 cell) { return 1f; }
+		
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
 	}

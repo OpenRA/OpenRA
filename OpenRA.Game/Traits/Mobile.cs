@@ -124,15 +124,15 @@ namespace OpenRA.Traits
 			return CanEnterCell(p, null, true);
 		}
 		
-		public virtual bool CanEnterCell(int2 p, Actor ignoreActor, bool checkTransientActors)
+		public virtual bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(p, ignoreActor))
+			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(cell, ignoreActor))
 				return false;
 			
 			if (checkTransientActors)
 			{
 				var canShare = self.traits.Contains<SharesCell>();
-				var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Where(a => a != self && a != ignoreActor);
+				var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Where(a => a != self && a != ignoreActor);
 				var nonshareable = actors.Where(a => !(canShare && a.traits.Contains<SharesCell>()));
 				var shareable = actors.Where(a => canShare && a.traits.Contains<SharesCell>());
 				
@@ -146,9 +146,20 @@ namespace OpenRA.Traits
 					return false;
 			}
 			
-			return self.World.Map.IsInMap(p.X, p.Y) &&
-				Rules.TerrainTypes[self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y])]
-				.GetCost(GetMovementType()) < float.PositiveInfinity;
+			return MovementCostForCell(self, cell) < float.PositiveInfinity;
+		}
+		
+		public float MovementCostForCell(Actor self, int2 cell)
+		{
+			if (!self.World.Map.IsInMap(cell.X,cell.Y))
+				return float.PositiveInfinity;
+			
+			var type = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
+
+			// Todo: Cache cost for each terraintype
+			return (float)Rules.TerrainTypes[type].GetCost(umt)*
+				self.World.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(cell,self));
 		}
 
 		public IEnumerable<float2> GetCurrentPath(Actor self)

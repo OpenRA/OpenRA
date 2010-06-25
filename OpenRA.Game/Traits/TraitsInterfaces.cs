@@ -109,6 +109,7 @@ namespace OpenRA.Traits
 	{
 		UnitMovementType GetMovementType();
 		bool CanEnterCell(int2 location);
+		float MovementCostForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
 		void SetPosition(Actor self, int2 cell);
 	}

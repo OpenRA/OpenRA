@@ -39,15 +39,12 @@ namespace OpenRA
 		Actor self;
 		public bool inReverse;
 
-		BuildingInfluence buildingInfluence;
-
 		public PathSearch(Actor self)
 		{
 			this.self = self;
 			world = self.World;
 			cellInfo = InitCellInfo();
 			queue = new PriorityQueue<PathDistance>();
-			buildingInfluence = world.WorldActor.traits.Get<BuildingInfluence>();
 		}
 
 		public PathSearch InReverse()
@@ -82,16 +79,16 @@ namespace OpenRA
 		
 		const float LaneBias = .5f;
 
-		public int2 Expand( World world, float[][ , ] passableCost )
+		public int2 Expand( World world )
 		{
 			var	umt = self.traits.Get<Mobile>().GetMovementType();
 
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 			
-			var thisCost = passableCost[(int)umt][p.Location.X, p.Location.Y]*
-						   world.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(p.Location,self));
-			
+			var mobile = self.traits.Get<Mobile>();
+			var thisCost = mobile.MovementCostForCell(self, p.Location);
+
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
 
@@ -103,14 +100,11 @@ namespace OpenRA
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var costHere = passableCost[(int)umt][newHere.X, newHere.Y]*
-						 	   world.WorldActor.traits.WithInterface<ICustomTerrain>()
-							   .Aggregate(1f, (a, x) => a * x.GetCost(newHere,self));
-			
+				var costHere = mobile.MovementCostForCell(self, newHere);
+				
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				var mobile = self.traits.Get<Mobile>();
 				if (checkForBlocked && !mobile.CanEnterCell(newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				

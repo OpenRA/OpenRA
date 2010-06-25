@@ -61,6 +61,14 @@ namespace OpenRA.Traits
 			
 			return self.World.WorldActor.traits.Get<AircraftInfluence>().GetUnitsAt(p).Count() == 0;
 		}
+		
+		public float MovementCostForCell(Actor self, int2 cell)
+		{
+			if (!self.World.Map.IsInMap(cell.X,cell.Y))
+				return float.PositiveInfinity;
+			
+			return self.World.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(cell,self));
+		}
 				
 		public override IEnumerable<int2> OccupiedCells()
 		{

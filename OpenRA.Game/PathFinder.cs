@@ -31,21 +31,11 @@ namespace OpenRA
 	public class PathFinder
 	{
 		readonly World world;
-		float[][,] passableCost = new float[5][,];
 		
 		public PathFinder( World world )
 		{
 			this.world = world;
 			var map = world.Map;
-			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Fly; umt++)
-				passableCost[(int)umt] = new float[map.MapSize.X, map.MapSize.Y];
-			for( int x = 0 ; x < map.MapSize.X ; x++ )
-				for( int y = 0 ; y < map.MapSize.Y ; y++ )
-					for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Fly; umt++ )
-						passableCost[(int)umt][ x, y ] = (umt == UnitMovementType.Fly) ? 1f : ( world.Map.IsInMap( x, y ) )
-							? (float)Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[x, y])]
-								.GetCost(umt)
-							: float.PositiveInfinity;
 		}
 
 		class CachedPath
@@ -117,7 +107,7 @@ namespace OpenRA
 			{
 				while (!search.queue.Empty)
 				{
-					var p = search.Expand( world, passableCost );
+					var p = search.Expand( world );
 					PerfHistory.Increment("nodes_expanded", .01);
 
 					if (search.heuristic(p) == 0)
@@ -154,13 +144,13 @@ namespace OpenRA
 			while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
 			{
 				/* make some progress on the first search */
-				var p = fromSrc.Expand( world, passableCost );
+				var p = fromSrc.Expand( world );
 
 				if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
 					return MakeBidiPath(fromSrc, fromDest, p);
 
 				/* make some progress on the second search */
-				var q = fromDest.Expand( world, passableCost );
+				var q = fromDest.Expand( world );
 
 				if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
 					return MakeBidiPath(fromSrc, fromDest, q);
