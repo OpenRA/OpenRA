@@ -57,11 +57,8 @@ namespace OpenRA.Traits
 	public interface IProvideHazard { IEnumerable<HazardLayer.Hazard> HazardCells(Actor self); }
 	public interface IAvoidHazard { string Type { get; } }
 
-	public interface ICustomTerrain
-	{
-		float GetCost(int2 p, Actor forActor);
-		float GetSpeedModifier(int2 p, Actor forActor);
-	}
+	public interface ITerrainTypeModifier { string GetTerrainType(int2 cell); }
+	public interface ITerrainCost { float GetTerrainCost(int2 cell, Actor forActor); }
 
 	public interface IDisable { bool Disabled { get; } }
 

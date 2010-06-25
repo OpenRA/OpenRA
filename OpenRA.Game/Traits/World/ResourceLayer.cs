@@ -23,12 +23,13 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.GameRules;
 using System.Drawing;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ICustomTerrain
+	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ITerrainTypeModifier
 	{		
 		SpriteRenderer sr;
 		World world;
@@ -93,28 +94,14 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 		}
 		
-		public float GetSpeedModifier(int2 p, Actor forActor)
+		public string GetTerrainType(int2 cell)
 		{
-			if (content[p.X,p.Y].type == null)
-				return 1.0f;
+			if (content[cell.X,cell.Y].type == null)
+				return null;
 			
-			// Todo: Reenable based off something that isn't umt
-			return 1f;
-			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			//return content[p.X,p.Y].type.GetSpeedModifier(umt);
+			return content[cell.X,cell.Y].type.info.TerrainType;
 		}
-		
-		public float GetCost(int2 p, Actor forActor)
-		{
-			if (content[p.X,p.Y].type == null)
-				return 1.0f;
-			
-			// Todo: Reenable based off something that isn't umt
-			return 1f;
-			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			//return content[p.X,p.Y].type.GetCost(umt);
-		}
-		
+				
 		Sprite[] ChooseContent(ResourceType t)
 		{
 			return t.info.Sprites[world.SharedRandom.Next(t.info.Sprites.Length)];

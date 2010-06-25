@@ -32,9 +32,7 @@ namespace OpenRA.Traits
 
 		public readonly int ValuePerUnit = 0;
 		public readonly string Name = null;
-
-		public readonly string MovementTerrainType = null;
-		public readonly string PathingTerrainType = null;
+		public readonly string TerrainType = null;
 
 		public Sprite[][] Sprites;
 		
@@ -44,32 +42,9 @@ namespace OpenRA.Traits
 	public class ResourceType
 	{
 		public ResourceTypeInfo info;
-		float[] movementSpeed = new float[5];
-		float[] pathCost = new float[5];
-
 		public ResourceType(ResourceTypeInfo info)
 		{
-			for (var umt = UnitMovementType.Foot; umt <= UnitMovementType.Float; umt++ )
-			{
-				// HACK: hardcode "ore" terraintype for now
-				movementSpeed[(int)umt] = (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetSpeedModifier(umt) : 1.0f;
-				pathCost[(int)umt] = (info.PathingTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) 
-								  : (info.MovementTerrainType != null) ? (float)Rules.TerrainTypes[TerrainType.Ore].GetCost(umt) : 1.0f;
-			}
-			movementSpeed[(int)UnitMovementType.Fly] = 1.0f;
-			pathCost[(int)UnitMovementType.Fly] = 1.0f;
-			
 			this.info = info;
-		}
-		
-		public float GetSpeedModifier(UnitMovementType umt)
-		{
-			return movementSpeed[(int)umt];
-		}
-		
-		public float GetCost(UnitMovementType umt)
-		{
-			return pathCost[(int)umt];
 		}
 	}
 }

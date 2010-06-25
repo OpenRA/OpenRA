@@ -27,10 +27,10 @@ namespace OpenRA.Mods.RA
 {
 	class BridgeLayerInfo : TraitInfo<BridgeLayer> { }
 
-	class BridgeLayer : ILoadWorldHook, ICustomTerrain
+	class BridgeLayer : ILoadWorldHook, ITerrainTypeModifier
 	{
 		// for tricky things like bridges.
-		Bridge[,] customTerrain;
+		Bridge[,] bridges;
 
 		void MakeBridges(World w)
 		{
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 						ConvertBridgeToActor(w, i, j);
 
 			foreach (var b in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
-				b.FinalizeBridges(w, customTerrain);
+				b.FinalizeBridges(w, bridges);
 		}
 		
 		void ConvertBridgeToActor(World w, int i, int j)
@@ -84,30 +84,19 @@ namespace OpenRA.Mods.RA
 				var br = a.traits.Get<Bridge>();
 				
 				foreach (var t in replacedTiles.Keys)
-					customTerrain[t.X, t.Y] = br;
+					bridges[t.X, t.Y] = br;
 				
 				br.SetTiles(w, template, replacedTiles);
 			}
 		}
 		
-		public float GetCost(int2 p, Actor forActor)
+		public string GetTerrainType(int2 cell)
 		{
-			// Todo: Do we even need to reenable this since cost = 100% for everything?
-			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			//if (customTerrain[p.X, p.Y] != null)
-			//	return customTerrain[p.X,p.Y].GetCost(p,umt);
-			return 1f;
+			if (bridges[ cell.X, cell.Y ] != null)
+				return bridges[ cell.X, cell.Y ].GetTerrainType(cell);
+			return null;
 		}
-		
-		public float GetSpeedModifier(int2 p, Actor forActor)
-		{
-			// Todo: Do we even need to reenable this since cost = 100% for everything?
-			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			//if (customTerrain[p.X, p.Y] != null)
-			//	return customTerrain[p.X,p.Y].GetSpeedModifier(p,umt);
-			return 1f;
-		}
-		
+				
 		static bool IsBridge(World w, ushort t)
 		{
 			return w.TileSet.walk[t].Bridge != null;
@@ -115,7 +104,7 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World w)
 		{
-			customTerrain = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
+			bridges = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
 			MakeBridges(w);
 		}
 	}

@@ -62,18 +62,21 @@ namespace OpenRA.Traits
 			return self.World.WorldActor.traits.Get<AircraftInfluence>().GetUnitsAt(p).Count() == 0;
 		}
 		
-		public override float MovementCostForCell(Actor self, int2 cell)
+		public virtual float MovementCostForCell(Actor self, int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
 			
-			return self.World.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(cell,self));
+			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
+				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
+			
+			return additionalCost;
 		}
-		
-		public override float MovementSpeedForCell(Actor self, int2 cell)
+
+		public virtual float MovementSpeedForCell(Actor self, int2 cell)
 		{		
 			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
-			if( unitInfo == null || !self.World.Map.IsInMap(cell.X,cell.Y))
+			if( unitInfo == null )
 			   return 0f;
 			
 			var modifier = self.traits
@@ -82,7 +85,7 @@ namespace OpenRA.Traits
 				.Product();
 			return unitInfo.Speed * modifier;
 		}
-				
+		
 		public override IEnumerable<int2> OccupiedCells()
 		{
 			// Todo: do the right thing when landed

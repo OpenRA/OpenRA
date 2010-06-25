@@ -31,14 +31,13 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new HazardLayer( init.world ); }
 	}
 
-	public class HazardLayer : ICustomTerrain
+	public class HazardLayer : ITerrainCost
 	{
 		List<Pair<Actor, Hazard>>[,] hazards;
 		Map map;
 
 		public HazardLayer( World world )
 		{
-			//System.Console.WriteLine("Created HazardLayer");
 			map = world.Map;
 			hazards = new List<Pair<Actor, Hazard>>[world.Map.MapSize.X, world.Map.MapSize.Y];
 			for (int i = 0; i < world.Map.MapSize.X; i++)
@@ -48,30 +47,21 @@ namespace OpenRA.Traits
 			world.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IProvideHazard>() );
 		}
 
-		
-		public float GetSpeedModifier(int2 p, Actor forActor)
+		public float GetTerrainCost(int2 p, Actor forActor)
 		{
-			return 1f;
-		}
-		
-		public float GetCost(int2 p, Actor forActor)
-		{
-			//System.Console.WriteLine("GetCost for {0}", forActor.Info.Name);
-
 			var avoid = forActor.traits.WithInterface<IAvoidHazard>().Select(h => h.Type).ToList();
-			var intensity = hazards[p.X,p.Y].Aggregate(1f,(a,b) => a + (avoid.Contains(b.Second.type) ? b.Second.intensity : 0f));			
-			//System.Console.WriteLine("Avoid {0} cost {1}", avoid.Aggregate("",(a,b) => a+","+b), intensity);
+			
+			var intensity = hazards[p.X,p.Y].Where(a => avoid.Contains(a.Second.type))
+											.Select(b => b.Second.intensity)
+											.Sum();			
 
 			return intensity;
 		}
 		
 		public void Add( Actor self, IProvideHazard hazard )
 		{
-			//System.Console.WriteLine("Adding hazard {0}", self.Info.Name);
-
 			foreach( var h in hazard.HazardCells(self) )
 			{
-			//	System.Console.WriteLine("\t{0} {1} {2}", h.location, h.type, h.intensity);
 				hazards[h.location.X, h.location.Y].Add(Pair.New(self, h));
 			}
 		}

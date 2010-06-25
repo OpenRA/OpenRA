@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -126,14 +127,10 @@ namespace OpenRA.Mods.RA
 			self.Health = (int)(self.GetMaxHP() * template.HP);
 		}
 
-		public float GetCost(int2 p, UnitMovementType umt)
+		public string GetTerrainType(int2 cell)
 		{
-			return Rules.TerrainTypes[Templates[state].TerrainType[Tiles[p]]].GetCost(umt);
-		}
-		
-		public float GetSpeedModifier(int2 p, UnitMovementType umt)
-		{
-			return Rules.TerrainTypes[Templates[state].TerrainType[Tiles[p]]].GetSpeedModifier(umt);
+			// Ugly hack until terraintypes are converted from enums
+			return Enum.GetName( typeof(TerrainType), Templates[state].TerrainType[Tiles[cell]]); 
 		}
 		
 		static bool IsIntact(Bridge b)

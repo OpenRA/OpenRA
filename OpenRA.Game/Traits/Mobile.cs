@@ -165,30 +165,40 @@ namespace OpenRA.Traits
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
 			
-			var type = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
-			return (float)TerrainCost[type]*
-				self.World.WorldActor.traits.WithInterface<ICustomTerrain>()
-					.Select(t => t.GetCost(cell, self))
-					.Product();
+			// Custom terrain types don't stack: pick one
+			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
+				.Where( t => t.GetTerrainType(cell) != null )
+				.Select( t => t.GetTerrainType(cell) )
+				.FirstOrDefault();
+			
+			// Todo: Hack this until i finish migrating TerrainType to a string
+			var type = (customTerrain != null) ? (TerrainType)Enum.Parse(typeof(TerrainType), customTerrain) : self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
+				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
+			
+			return TerrainCost[type] + additionalCost;
 		}
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)
 		{		
 			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
-			if( unitInfo == null || !self.World.Map.IsInMap(cell.X,cell.Y))
+			if( unitInfo == null )
 			   return 0f;
 			
-			var type = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
-			var	terrain = TerrainSpeed[type]*self.World.WorldActor.traits
-					.WithInterface<ICustomTerrain>()
-					.Select(t => t.GetSpeedModifier(self.Location, self))
-					.Product();
+			// Custom terrain types don't stack: pick one
+			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
+				.Where( t => t.GetTerrainType(cell) != null )
+				.Select( t => t.GetTerrainType(cell) )
+				.FirstOrDefault();
 			
+			// Todo: Hack this until i finish migrating TerrainType to a string
+			var type = (customTerrain != null) ? (TerrainType)Enum.Parse(typeof(TerrainType), customTerrain) : self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return unitInfo.Speed * terrain * modifier;
+			return unitInfo.Speed * TerrainSpeed[type] * modifier;
 		}
 		
 		public IEnumerable<float2> GetCurrentPath(Actor self)
