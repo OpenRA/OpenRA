@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
 				self.World.AddFrameEndTask(w =>	w.Remove(self));
 
-			var seq = self.World.GetTerrainType(cell) == TerrainType.Water ? "water" : "idle";
+			var seq = self.World.GetTerrainType(cell) == "Water" ? "water" : "idle";
 			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}

@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 		
 		public void AddSmudge(int2 loc)
 		{
-			if (!Rules.TerrainTypes[world.GetTerrainType(loc)].AcceptSmudge)
+			if (!world.GetTerrainInfo(loc).AcceptSmudge)
 				return;
 
 			// No smudge; create a new one

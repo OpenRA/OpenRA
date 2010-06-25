@@ -126,7 +126,6 @@ namespace MapConverter
 			{Pair.New("cnc","WINTER"),Pair.New("win","winter.col")},
 		};
 		
-		TerrainColorSet terrainTypeColors;
 		TileSet tileset;
 		public void ConvertIniMap(string iniFile)
 		{
@@ -154,16 +153,17 @@ namespace MapConverter
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
 				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 				ReadRATrees(file);
-				terrainTypeColors = new TerrainColorSet(fileMapping[Pair.New("ra",Map.Tileset)].Second);
-				tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("ra",Map.Tileset)].First);
+				// TODO: Fixme
+				//tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("ra",Map.Tileset)].First);
 			}
 			else // CNC
 			{
 				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0,iniFile.Length-4)+".bin"));
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
-				terrainTypeColors = new TerrainColorSet(fileMapping[Pair.New("cnc",Map.Tileset)].Second);
-				tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("cnc",Map.Tileset)].First);
+				
+				// TODO: Fixme
+				//tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("cnc",Map.Tileset)].First);
 			}
 			
 			LoadActors(file, "STRUCTURES");
@@ -373,31 +373,12 @@ namespace MapConverter
 		{
 			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
 		}
-		
-		public void SavePreviewImage(string filepath)
-		{
-			var xs = Map.TopLeft.X;
-			var ys = Map.TopLeft.Y;
-			
-			var bitmap = new Bitmap(Map.Width, Map.Height);
-			for (var x = 0; x < Map.Width; x++)
-				for (var y = 0; y < Map.Height; y++)
-					bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(tileset.GetTerrainType(Map.MapTiles[x+xs, y+ys])));
-		
-			for (var x = 0; x < Map.Width; x++)
-				for (var y = 0; y < Map.Height; y++)
-					if (Map.MapResources[x+xs, y+ys].type > 0)
-						bitmap.SetPixel(x, y, terrainTypeColors.ColorForTerrainType(TerrainType.Ore));
 				
-			bitmap.Save(filepath,ImageFormat.Png);
-		}
-		
 		public void Save(string filepath)
 		{
 			Directory.CreateDirectory(filepath);
 			
 			Map.Package = new Folder(filepath);
-			SavePreviewImage(Path.Combine(filepath,"preview.png"));
 			Map.Save(filepath);
 		}
 	}

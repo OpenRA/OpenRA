@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -80,12 +80,10 @@
     <Compile Include="Map\ActorReference.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\TileReference.cs" />
-    <Compile Include="Map\Walkability.cs" />
     <Compile Include="Map\Terrain.cs" />
     <Compile Include="Primitives\Cache.cs" />
     <Compile Include="Primitives\float2.cs" />
     <Compile Include="Primitives\Pair.cs" />
-    <Compile Include="Map\TerrainColorSet.cs" />
     <Compile Include="Map\TileSet.cs" />
     <Compile Include="Primitives\PriorityQueue.cs" />
     <Compile Include="Primitives\Lazy.cs" />

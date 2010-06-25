@@ -41,12 +41,11 @@ namespace OpenRA
 			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 			
+			// Todo: Unhardcode "Water" terraintype reference
 			if (waterBound)
-				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == TerrainType.Water;
+				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == "Water";
 
-			return world.Map.IsInMap(a.X, a.Y) &&
-				Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y])]
-				.Buildable;
+			return world.Map.IsInMap(a.X, a.Y) && world.GetTerrainInfo(a).Buildable;
 		}
 		
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
@@ -105,9 +104,14 @@ namespace OpenRA
 				.FirstOrDefault();
 		}
 		
-		public static TerrainType GetTerrainType(this World world, int2 cell)
+		public static string GetTerrainType(this World world, int2 cell)
 		{
-			return (TerrainType)world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
+			return world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
+		}
+		
+		public static TerrainTypeInfo GetTerrainInfo(this World world, int2 cell)
+		{
+			return world.TileSet.Terrain[world.GetTerrainType(cell)];
 		}
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)

@@ -69,13 +69,22 @@ namespace OpenRA.FileFormats
 			if (x != null) x = x.Trim();
 			if( fieldType == typeof( int ) )
 				return int.Parse( x );
+			
+			else if( fieldType == typeof( ushort ) )
+				return ushort.Parse( x );
 
 			else if (fieldType == typeof(float))
 				return float.Parse(x.Replace("%","")) * (x.Contains( '%' ) ? 0.01f : 1f);
 
 			else if (fieldType == typeof(string))
 				return x;
-
+			
+			else if (fieldType == typeof(System.Drawing.Color))
+			{
+				var parts = x.Split(',');
+				return System.Drawing.Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+			}
+			
 			else if (fieldType.IsEnum)
 				return Enum.Parse(fieldType, x, true);
 

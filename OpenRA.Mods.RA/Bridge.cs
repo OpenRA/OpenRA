@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Bridge(init.self); }
 	}
 
-	class Bridge: IRender, INotifyDamage
+	class Bridge //: IRender, INotifyDamage
 	{
 		Dictionary<int2, int> Tiles;
 		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 		Bridge northNeighbour, southNeighbour;
 
 		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
-		
+
 		static string cachedTileset;
 		static Cache<TileReference<ushort,byte>, Sprite> sprites;
 
@@ -80,6 +80,7 @@ namespace OpenRA.Mods.RA
 		
 		public int StateFromTemplate(TileTemplate t)
 		{
+			/*
 			var info = self.Info.Traits.Get<BridgeInfo>();
 			if (info.UseAlternateNames)
 			{
@@ -89,19 +90,23 @@ namespace OpenRA.Mods.RA
 			}
 			else
 				return t.Name[t.Name.Length - 1] - 'a';
+			*/
+			return 0;
 		}
 
 		public string NameFromState(TileTemplate t, int state)
 		{
-			var info = self.Info.Traits.Get<BridgeInfo>();
+			/*var info = self.Info.Traits.Get<BridgeInfo>();
 			if (info.UseAlternateNames)
 				return t.Bridge + new[] { "", "h", "d" }[state];
 			else
-				return t.Bridge + (char)(state + 'a');
+				return t.Bridge + (char)(state + 'a');*/
+			return "";
 		}
 
 		public void SetTiles(World world, TileTemplate template, Dictionary<int2, int> replacedTiles)
 		{
+			/*
 			Tiles = replacedTiles;
 			state = StateFromTemplate(template);
 			
@@ -125,12 +130,14 @@ namespace OpenRA.Mods.RA
 			}
 
 			self.Health = (int)(self.GetMaxHP() * template.HP);
+			*/
 		}
 
 		public string GetTerrainType(int2 cell)
 		{
+			return "";
 			// Ugly hack until terraintypes are converted from enums
-			return Enum.GetName( typeof(TerrainType), Templates[state].TerrainType[Tiles[cell]]); 
+			//return Enum.GetName( typeof(TerrainType), Templates[state].TerrainType[Tiles[cell]]); 
 		}
 		
 		static bool IsIntact(Bridge b)

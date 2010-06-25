@@ -21,73 +21,78 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Drawing;
 
 namespace OpenRA.FileFormats
 {
+	public class TerrainTypeInfo
+	{
+		public string Type;
+		public bool Buildable = true;
+		public bool AcceptSmudge = true;
+		public Color Color;
+		
+		public TerrainTypeInfo(MiniYaml my)
+		{
+			FieldLoader.Load(this, my);
+		}
+	}
+	
+	public class TileTemplate
+	{
+		public ushort Id;
+		public string Image;
+		public int2 Size;
+		public string Bridge;
+		public float HP;
+		public bool PickAny;
+		public Dictionary<int, string> Tiles = new Dictionary<int, string>();
+		
+		static List<string> fields = new List<string>() {"Id", "Image", "Size", "Bridge", "HP", "PickAny"};
+
+		public TileTemplate(Dictionary<string,MiniYaml> my)
+		{
+			FieldLoader.LoadFields(this, my, fields);
+		}
+	}
+	
 	public class TileSet
 	{
-		public readonly Dictionary<ushort, Terrain> tiles = new Dictionary<ushort, Terrain>();
-
-		public readonly Walkability Walkability;
-		public readonly Dictionary<ushort, TileTemplate> walk 
-			= new Dictionary<ushort, TileTemplate>();
-
-		string NextLine( StreamReader reader )
+		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
+		public readonly Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
+		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		
+		public TileSet( string tilesetFile, string suffix )
 		{
-			string ret;
-			do
+			var yaml = MiniYaml.FromFile(tilesetFile);
+			
+			// TerrainTypes
+			foreach (var tt in yaml["Terrain"].Nodes)
 			{
-				ret = reader.ReadLine();
-				if( ret == null )
-					return null;
-				ret = ret.Trim();
+				var t = new TerrainTypeInfo(tt.Value);
+				Terrain.Add(t.Type, t);
 			}
-			while( ret.Length == 0 || ret[ 0 ] == ';' );
-			return ret;
-		}
-
-		public TileSet( string tilesetFile, string templatesFile, string suffix )
-		{
-			Walkability = new Walkability(templatesFile);
-			char tileSetChar = char.ToUpperInvariant( suffix[ 0 ] );
-			StreamReader tileIdFile = new StreamReader( FileSystem.Open(tilesetFile) );
-
-			while( true )
+			
+			// Templates
+			foreach (var tt in yaml["Templates"].Nodes)
 			{
-				string tileSetStr = NextLine( tileIdFile );
-				string countStr = NextLine( tileIdFile );
-				string startStr = NextLine( tileIdFile );
-				string pattern = NextLine( tileIdFile );
-				if( tileSetStr == null || countStr == null || startStr == null || pattern == null )
-					break;
-
-				if( tileSetStr.IndexOf( tileSetChar.ToString() ) == -1 )
-					continue;
-
-				int count = int.Parse( countStr );
-				int start = int.Parse( startStr, NumberStyles.HexNumber );
-				for( int i = 0 ; i < count ; i++ )
+				// Info
+				var t = new TileTemplate(tt.Value.Nodes);
+				Templates.Add(t.Id, t);
+				
+				// Artwork
+				using( Stream s = FileSystem.Open( t.Image + "." + suffix ) )
 				{
-					string tilename = string.Format(pattern, i + 1);
-
-					if (!walk.ContainsKey((ushort)(start + i)))
-						walk.Add((ushort)(start + i), Walkability.GetTileTemplate(tilename));
-
-					using( Stream s = FileSystem.Open( tilename + "." + suffix ) )
-					{
-						if( !tiles.ContainsKey( (ushort)( start + i ) ) )
-							tiles.Add( (ushort)( start + i ), new Terrain( s ) );
-					}
+					if( !Tiles.ContainsKey( t.Id ) )
+						Tiles.Add( t.Id, new Terrain( s ) );
 				}
 			}
-
-			tileIdFile.Close();
 		}
-		
+				
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{
 			Terrain tile;
-			if( tiles.TryGetValue( r.type, out tile ) )
+			if( Tiles.TryGetValue( r.type, out tile ) )
 				return tile.TileBitmapBytes[ r.image ];
 			
 			byte[] missingTile = new byte[ 24 * 24 ];
@@ -97,12 +102,13 @@ namespace OpenRA.FileFormats
 			return missingTile;
 		}
 
-		public TerrainType GetTerrainType(TileReference<ushort, byte> r)
+		public string GetTerrainType(TileReference<ushort, byte> r)
 		{
-			var tt = walk[r.type].TerrainType;
-			TerrainType ret;
+			var tt = Templates[r.type].Tiles;
+			string ret;
 			if (!tt.TryGetValue(r.image, out ret))
-				return 0;// Default zero (walkable)
+				return "Clear";// Default zero (walkable)
+			
 			return ret;
 		}
 	}

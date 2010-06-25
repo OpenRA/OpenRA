@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 {
 	public class MobileInfo : ITraitInfo, ITraitPrerequisite<UnitInfo>
 	{
-		public readonly TerrainType[] TerrainTypes;
+		public readonly string[] TerrainTypes;
 		public readonly float[] TerrainSpeeds;
 		public readonly string[] Crushes;
 		public readonly int WaitAverage = 60;
@@ -41,8 +41,8 @@ namespace OpenRA.Traits
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
-		public readonly Dictionary<TerrainType,float> TerrainCost;
-		public readonly Dictionary<TerrainType,float> TerrainSpeed;
+		public readonly Dictionary<string,float> TerrainCost;
+		public readonly Dictionary<string,float> TerrainSpeed;
 
 		[Sync]
 		int2 __fromCell, __toCell;
@@ -73,8 +73,8 @@ namespace OpenRA.Traits
 			this.__fromCell = this.__toCell = init.location;
 			AddInfluence();
 			
-			TerrainCost = new Dictionary<TerrainType, float>();
-			TerrainSpeed = new Dictionary<TerrainType, float>();
+			TerrainCost = new Dictionary<string, float>();
+			TerrainSpeed = new Dictionary<string, float>();
 			
 			if (info.TerrainTypes.Count() != info.TerrainSpeeds.Count())
 				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length missmatch");
@@ -196,7 +196,7 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 			
 			// Todo: Hack this until i finish migrating TerrainType to a string
-			var type = (customTerrain != null) ? (TerrainType)Enum.Parse(typeof(TerrainType), customTerrain) : self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
 			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
 				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
 			
@@ -216,7 +216,7 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 			
 			// Todo: Hack this until i finish migrating TerrainType to a string
-			var type = (customTerrain != null) ? (TerrainType)Enum.Parse(typeof(TerrainType), customTerrain) : self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
 
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()

@@ -70,10 +70,8 @@ namespace OpenRA.Mods.RA
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 				
 				// Is this valid terrain?
-				// Ugly hack until terraintypes are converted from enums
 				var terrainType = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[p.X, p.Y]);
-				var terrain = Enum.GetName( typeof(TerrainType), terrainType); 
-				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrain)) continue;
+				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
 				
 				// Don't spawn on any actors
 				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;

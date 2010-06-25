@@ -54,23 +54,17 @@ World:
 		Name:Desert
 		Theater:DESERT
 		Suffix:des
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:desert.col
+		Tileset:mods/cnc/tileset-des.yaml
 	Theater@WINTER:
 		Name:Winter
 		Theater:WINTER
 		Suffix:win
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:winter.col
+		Tileset:mods/cnc/tileset-win.yaml
 	Theater@TEMPERAT:
 		Name:Temperate
 		Theater:TEMPERAT
 		Suffix:tem
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:temperat.col
+		Tileset:mods/cnc/tileset-tem.yaml
 	PaletteFromFile@terrain_desert:
 		Name: terrain
 		Theater: desert

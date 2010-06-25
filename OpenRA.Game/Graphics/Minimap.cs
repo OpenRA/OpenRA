@@ -72,12 +72,6 @@ namespace OpenRA.Graphics
 			return new Rectangle(m.TopLeft.X - dw, m.TopLeft.Y - dh, size, size);
 		}
 		
-		static Cache<string, TerrainColorSet> terrainTypeColors = new Cache<string, TerrainColorSet>(
-			theater =>
-			{
-				return new TerrainColorSet(Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == theater).MapColors);
-			});
-		
 		static Color shroudColor;
 
 		public void InvalidateOre() { oreLayer = null; }
@@ -85,11 +79,15 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
 			var terrain = new Bitmap(map.MapSize.X, map.MapSize.Y);
+			
 			for (var x = 0; x < map.MapSize.X; x++)
 				for (var y = 0; y < map.MapSize.Y; y++)
+				{
+					var type = tileset.GetTerrainType(map.MapTiles[x, y]);
 					terrain.SetPixel(x, y, map.IsInMap(x, y)
-						? Color.FromArgb(alpha, terrainTypeColors[map.Theater].ColorForTerrainType(tileset.GetTerrainType(map.MapTiles[x, y])))
+						? Color.FromArgb(alpha, tileset.Terrain[type].Color)
 						: shroudColor);
+				}
 			return terrain;
 		}
 
@@ -102,11 +100,14 @@ namespace OpenRA.Graphics
 			{
 				var res = world.WorldActor.traits.Get<ResourceLayer>();
 				
+				// This is an ugly hack
+				Color oreColor = world.TileSet.Terrain["Ore"].Color;
+				
 				oreLayer = new Bitmap(terrain);
 				for (var x = world.Map.TopLeft.X; x < world.Map.BottomRight.X; x++)
 					for (var y = world.Map.TopLeft.Y; y < world.Map.BottomRight.Y; y++)
 						if (res.GetResource(new int2(x,y)) != null)
-							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Ore)));
+							oreLayer.SetPixel(x, y, Color.FromArgb(alpha, oreColor));
 			}
 
 			if (!world.GameHasStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
@@ -133,9 +134,12 @@ namespace OpenRA.Graphics
 							continue;
 						}
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
+						
+						// This is an even worse hack than the ore!
+						var treeColor = world.TileSet.Terrain["tree"].Color;
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) =
-								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : Color.FromArgb(alpha, terrainTypeColors[world.Map.Theater].ColorForTerrainType(TerrainType.Tree))).ToArgb();
+								(b.Owner != null ? Color.FromArgb(alpha, b.Owner.Color) : Color.FromArgb(alpha, treeColor)).ToArgb();
 					}
 			}
 
