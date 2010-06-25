@@ -138,27 +138,6 @@ namespace OpenRA.Traits
 			return new Renderable(s, loc.Round(), pal);
 		}
 
-		public static float GetEffectiveSpeed(Actor self, UnitMovementType umt)
-		{		
-			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
-			if( unitInfo == null ) return 0f;
-			
-			var terrain = 1f;
-			if (umt != UnitMovementType.Fly)
-			{
-				var tt = self.World.GetTerrainType(self.Location);
-				terrain = Rules.TerrainTypes[tt].GetSpeedModifier(umt)*self.World.WorldActor.traits
-					.WithInterface<ICustomTerrain>()
-					.Select(t => t.GetSpeedModifier(self.Location, self))
-					.Product();
-			}
-			var modifier = self.traits
-				.WithInterface<ISpeedModifier>()
-				.Select(t => t.GetSpeedModifier())
-				.Product();
-			return unitInfo.Speed * terrain * modifier;
-		}
-
 		public static IActivity SequenceActivities(params IActivity[] acts)
 		{
 			return acts.Reverse().Aggregate(

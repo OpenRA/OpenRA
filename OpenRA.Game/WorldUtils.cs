@@ -48,13 +48,16 @@ namespace OpenRA
 				Rules.TerrainTypes[world.TileSet.GetTerrainType(world.Map.MapTiles[a.X, a.Y])]
 				.Buildable;
 		}
-
+		
 		public static bool IsActorCrushableByActor(this World world, Actor a, Actor b)
 		{
-			var movement = b.traits.GetOrDefault<IMove>();
-			return movement != null && world.IsActorCrushableByMovementType(a, movement.GetMovementType());
+			return false;
+			//var movement = b.traits.GetOrDefault<IMove>();
+			//return movement != null && world.IsActorCrushableByMovementType(a, movement.GetMovementType());
 		}
 		
+		// Todo: Reenable crushing based on actor, not umt
+		/*
 		public static bool IsActorPathableToCrush(this World world, Actor a, UnitMovementType umt)
 		{
 			return a != null &&
@@ -68,7 +71,7 @@ namespace OpenRA
 				a.traits.WithInterface<ICrushable>()
 				.Any(c => c.IsCrushableBy(umt, a.Owner));
 		}
-
+		*/
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = mouseLocation + Game.viewport.Location;

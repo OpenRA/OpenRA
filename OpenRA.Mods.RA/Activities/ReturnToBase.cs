@@ -53,7 +53,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			var landPos = dest.CenterLocation;
 			var unit = self.traits.Get<Unit>();
-			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
+			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
+			
 			var approachStart = landPos - new float2(unit.Altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<UnitInfo>().ROT) * speed / (float)Math.PI;
 

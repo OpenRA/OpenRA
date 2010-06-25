@@ -227,8 +227,7 @@ namespace OpenRA.Traits.Activities
 
 			public void TickMove( Actor self, Mobile mobile, Move parent )
 			{
-				var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
-				moveFraction += (int)Util.GetEffectiveSpeed(self, umt);
+				moveFraction += (int)mobile.MovementSpeedForCell(self, self.Location);
 				if( moveFraction >= moveFractionTotal )
 					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );

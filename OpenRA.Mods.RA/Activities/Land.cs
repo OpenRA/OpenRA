@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -57,7 +58,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
 			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
-			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
+			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			var angle = unit.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);

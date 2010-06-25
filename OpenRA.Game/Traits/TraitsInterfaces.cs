@@ -107,9 +107,9 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface IMove
 	{
-		UnitMovementType GetMovementType();
 		bool CanEnterCell(int2 location);
 		float MovementCostForCell(Actor self, int2 cell);
+		float MovementSpeedForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
 		void SetPosition(Actor self, int2 cell);
 	}

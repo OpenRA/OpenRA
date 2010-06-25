@@ -110,7 +110,8 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var Info = self.Info.Traits.Get<HelicopterInfo>();
-			var rawSpeed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
+			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.traits.Contains<Helicopter>());
 

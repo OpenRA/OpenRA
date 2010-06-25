@@ -81,8 +81,6 @@ namespace OpenRA
 
 		public int2 Expand( World world )
 		{
-			var	umt = self.traits.Get<Mobile>().GetMovementType();
-
 			var p = queue.Pop();
 			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
 			

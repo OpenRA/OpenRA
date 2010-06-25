@@ -20,22 +20,27 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using OpenRA.GameRules;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	public class MobileInfo : ITraitInfo, ITraitPrerequisite<UnitInfo>
 	{
-		public readonly UnitMovementType MovementType = UnitMovementType.Wheel;
+		public readonly TerrainType[] TerrainTypes;
+		public readonly float[] TerrainSpeeds;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
 
-		public virtual object Create(ActorInitializer init) { return new Mobile(init); }
+		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove
 	{
 		public readonly Actor self;
+		public readonly Dictionary<TerrainType,float> TerrainCost;
+		public readonly Dictionary<TerrainType,float> TerrainSpeed;
 
 		[Sync]
 		int2 __fromCell, __toCell;
@@ -59,11 +64,23 @@ namespace OpenRA.Traits
 			AddInfluence();
 		}
 
-		public Mobile(ActorInitializer init)
+		public Mobile(ActorInitializer init, MobileInfo info)
 		{
 			this.self = init.self;
 			this.__fromCell = this.__toCell = init.location;
 			AddInfluence();
+			
+			TerrainCost = new Dictionary<TerrainType, float>();
+			TerrainSpeed = new Dictionary<TerrainType, float>();
+			
+			if (info.TerrainTypes.Count() != info.TerrainSpeeds.Count())
+				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length missmatch");
+			
+			for (int i = 0; i < info.TerrainTypes.Count(); i++)
+			{
+				TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
+				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
+			}
 		}
 
 		public void SetPosition(Actor self, int2 cell)
@@ -85,8 +102,7 @@ namespace OpenRA.Traits
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
 				if (!CanEnterCell(underCursor.Location, null, true)) return null;
 			}
-			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
-			if (Util.GetEffectiveSpeed(self,umt) == 0) return null;		/* allow disabling move orders from modifiers */
+			if (MovementSpeedForCell(self, self.Location) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
 			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
@@ -114,11 +130,6 @@ namespace OpenRA.Traits
 					: new[] { fromCell, toCell };
 		}
 
-		public UnitMovementType GetMovementType()
-		{
-			return self.Info.Traits.Get<MobileInfo>().MovementType;			
-		}
-		
 		public bool CanEnterCell(int2 p)
 		{
 			return CanEnterCell(p, null, true);
@@ -149,19 +160,37 @@ namespace OpenRA.Traits
 			return MovementCostForCell(self, cell) < float.PositiveInfinity;
 		}
 		
-		public float MovementCostForCell(Actor self, int2 cell)
+		public virtual float MovementCostForCell(Actor self, int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
 			
 			var type = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
-			var umt = self.Info.Traits.Get<MobileInfo>().MovementType;
-
-			// Todo: Cache cost for each terraintype
-			return (float)Rules.TerrainTypes[type].GetCost(umt)*
-				self.World.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(cell,self));
+			return (float)TerrainCost[type]*
+				self.World.WorldActor.traits.WithInterface<ICustomTerrain>()
+					.Select(t => t.GetCost(cell, self))
+					.Product();
 		}
 
+		public virtual float MovementSpeedForCell(Actor self, int2 cell)
+		{		
+			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
+			if( unitInfo == null || !self.World.Map.IsInMap(cell.X,cell.Y))
+			   return 0f;
+			
+			var type = self.World.TileSet.GetTerrainType(self.World.Map.MapTiles[cell.X, cell.Y]);
+			var	terrain = TerrainSpeed[type]*self.World.WorldActor.traits
+					.WithInterface<ICustomTerrain>()
+					.Select(t => t.GetSpeedModifier(self.Location, self))
+					.Product();
+			
+			var modifier = self.traits
+				.WithInterface<ISpeedModifier>()
+				.Select(t => t.GetSpeedModifier())
+				.Product();
+			return unitInfo.Speed * terrain * modifier;
+		}
+		
 		public IEnumerable<float2> GetCurrentPath(Actor self)
 		{
 			var move = self.GetCurrentActivity() as Activities.Move;

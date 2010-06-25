@@ -52,15 +52,16 @@ namespace OpenRA
 
 		public List<int2> FindUnitPath(int2 from, int2 target, Actor self)
 		{
-			var umt = self.traits.Get<Mobile>().GetMovementType();
+			// Todo: Reenable cache on something that isn't umt
+			//var umt = self.traits.Get<Mobile>().GetMovementType();
 			using (new PerfSample("find_unit_path"))
 			{
-				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.umt == umt);
-				if (cached != null)
-				{
-					cached.tick = Game.LocalTick;
-					return new List<int2>(cached.result);
-				}
+				//var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.umt == umt);
+				//if (cached != null)
+				//{
+				//	cached.tick = Game.LocalTick;
+				//	return new List<int2>(cached.result);
+				//}
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(self, target, from, true)
@@ -71,8 +72,8 @@ namespace OpenRA
 
 				CheckSanePath2(pb, from, target);
 
-				CachedPaths.RemoveAll(p => Game.LocalTick - p.tick > MaxPathAge);
-				CachedPaths.Add(new CachedPath { from = from, to = target, umt = umt, result = pb, tick = Game.LocalTick });
+				//CachedPaths.RemoveAll(p => Game.LocalTick - p.tick > MaxPathAge);
+				//CachedPaths.Add(new CachedPath { from = from, to = target, umt = umt, result = pb, tick = Game.LocalTick });
 				return new List<int2>(pb);
 			}
 		}

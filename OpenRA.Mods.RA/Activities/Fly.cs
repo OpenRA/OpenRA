@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -66,7 +67,8 @@ namespace OpenRA.Mods.RA.Activities
 		public static void Fly(Actor self, int desiredAltitude )
 		{
 			var unit = self.traits.Get<Unit>();
-			var speed = .2f * Util.GetEffectiveSpeed(self, UnitMovementType.Fly);
+			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
+			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			var angle = unit.Facing / 128f * Math.PI;
 			var aircraft = self.traits.Get<Aircraft>();
 

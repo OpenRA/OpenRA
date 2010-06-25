@@ -44,8 +44,9 @@ namespace OpenRA.Mods.RA
 			if (cargo == null || cargo.IsFull(underCursor))
 				return null;
 
-			var umt = self.traits.Get<IMove>().GetMovementType();
-			if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
+			// Todo: Use something better for cargo management
+			//var umt = self.traits.Get<IMove>().GetMovementType();
+			//if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
 				return null;
 
 			return new Order("EnterTransport", self, underCursor);

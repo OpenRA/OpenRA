@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 	{
 		MobileAirInfo Info;
 		public MobileAir (ActorInitializer init, MobileAirInfo info)
-			: base(init)
+			: base(init, info)
 		{
 			Info = info;
 		}
@@ -62,12 +62,25 @@ namespace OpenRA.Traits
 			return self.World.WorldActor.traits.Get<AircraftInfluence>().GetUnitsAt(p).Count() == 0;
 		}
 		
-		public float MovementCostForCell(Actor self, int2 cell)
+		public override float MovementCostForCell(Actor self, int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
 			
 			return self.World.WorldActor.traits.WithInterface<ICustomTerrain>().Aggregate(1f, (a, x) => a * x.GetCost(cell,self));
+		}
+		
+		public override float MovementSpeedForCell(Actor self, int2 cell)
+		{		
+			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
+			if( unitInfo == null || !self.World.Map.IsInMap(cell.X,cell.Y))
+			   return 0f;
+			
+			var modifier = self.traits
+				.WithInterface<ISpeedModifier>()
+				.Select(t => t.GetSpeedModifier())
+				.Product();
+			return unitInfo.Speed * modifier;
 		}
 				
 		public override IEnumerable<int2> OccupiedCells()
@@ -76,8 +89,6 @@ namespace OpenRA.Traits
 			return new int2[] {};
 		}
 		
-		public int2 TopLeft { get { return toCell; } }
-
 		public IEnumerable<int2> OccupiedAirCells()
 		{
 			return (fromCell == toCell)

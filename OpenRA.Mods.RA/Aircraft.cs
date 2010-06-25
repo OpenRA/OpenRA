@@ -70,10 +70,22 @@ namespace OpenRA.Mods.RA
 			return new float2[] { move.Pos };
 		}
 		
-		public UnitMovementType GetMovementType() { return UnitMovementType.Fly; }
 		public bool CanEnterCell(int2 location) { return true; }
 		
 		public float MovementCostForCell(Actor self, int2 cell) { return 1f; }
+		
+		public float MovementSpeedForCell(Actor self, int2 cell)
+		{		
+			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
+			if( unitInfo == null)
+			   return 0f;
+			
+			var modifier = self.traits
+				.WithInterface<ISpeedModifier>()
+				.Select(t => t.GetSpeedModifier())
+				.Product();
+			return unitInfo.Speed * modifier;
+		}
 		
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }

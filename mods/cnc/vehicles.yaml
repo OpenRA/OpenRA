@@ -26,7 +26,7 @@ MCV:
 	MustBeDestroyed:
 
 HARV:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: harvicnh
 		BuildPaletteOrder: 10
@@ -48,12 +48,10 @@ HARV:
 		Crewed: yes
 		Sight: 4
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	RenderUnit:
 
 APC:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: apcicnh
 		BuildPaletteOrder: 30
@@ -68,8 +66,6 @@ APC:
 		ROT: 5
 		Sight: 5
 		Speed: 15
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,0,0,-4
@@ -83,7 +79,7 @@ APC:
 		UnloadFacing: 220
 
 ARTY:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon:artyicnh
 		BuildPaletteOrder: 40
@@ -99,8 +95,6 @@ ARTY:
 		ROT: 2
 		Sight: 6
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: Ballistic
 	RenderUnit:
@@ -108,7 +102,7 @@ ARTY:
 	AutoTarget:
 
 FTNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: ftnkicnh
 		BuildPaletteOrder: 50
@@ -211,7 +205,7 @@ JEEP:
 	AutoTarget:
 	
 LTNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: ltnkicnh
 		BuildPaletteOrder: 30
@@ -226,8 +220,6 @@ LTNK:
 		Crewed: yes
 		Sight: 4
 		Speed: 9
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -242,7 +234,7 @@ LTNK:
 		EmptyWeapon: UnitExplodeSmall
 	
 MTNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: mtnkicnh
 		BuildPaletteOrder: 30
@@ -257,8 +249,6 @@ MTNK:
 		Crewed: yes
 		Sight: 5
 		Speed: 9
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -273,7 +263,7 @@ MTNK:
 		EmptyWeapon: UnitExplodeSmall
 
 HTNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: htnkicnh
 		BuildPaletteOrder: 60
@@ -288,8 +278,6 @@ HTNK:
 		Crewed: yes
 		Sight: 6
 		Speed: 3
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 2
 	AttackTurreted:
@@ -308,7 +296,7 @@ HTNK:
 		EmptyWeapon: UnitExplodeSmall
 
 MSAM:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: msamicnh
 		BuildPaletteOrder: 50
@@ -323,8 +311,6 @@ MSAM:
 		Crewed: yes
 		Sight: 6
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -335,7 +321,7 @@ MSAM:
 	AutoTarget:
 
 MLRS:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Icon: mlrsicnh
 		BuildPaletteOrder: 60
@@ -350,8 +336,6 @@ MLRS:
 		Crewed: yes
 		Sight: 10
 		Speed: 6
-	Mobile:
-		MovementType: Track
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -381,15 +365,13 @@ STNK:
 		CloakDelay: 2.0
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
-	Mobile:
-		MovementType: Track
 	AttackBase:
 		PrimaryWeapon: 227mm
 	RenderUnit:
 	AutoTarget:
 
 TRAN:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Icon:tranicnh
 		BuildPaletteOrder: 10
@@ -406,10 +388,6 @@ TRAN:
 		ROT: 5
 		Sight: 8
 		Speed: 15
-#	Helicopter:
-	AvoidsAA:
-	MobileAir:
-		MovementType: Fly
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -419,7 +397,7 @@ TRAN:
 		Passengers: 5
 
 HELI:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Icon: heliicnh
 		BuildPaletteOrder: 20
@@ -442,15 +420,12 @@ HELI:
 		SecondaryWeapon: HighV
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
-#	Helicopter:
-	MobileAir:
-		MovementType: Fly
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
 
 ORCA:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Icon: orcaicnh
 		BuildPaletteOrder: 20
@@ -473,9 +448,6 @@ ORCA:
 		SecondaryWeapon: Rockets.Orca
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
-#	Helicopter:
-	MobileAir:
-		MovementType: Fly
 	RenderUnit:
 	WithShadow:
 

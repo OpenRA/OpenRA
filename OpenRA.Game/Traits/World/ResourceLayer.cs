@@ -98,8 +98,10 @@ namespace OpenRA.Traits
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
 			
-			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			return content[p.X,p.Y].type.GetSpeedModifier(umt);
+			// Todo: Reenable based off something that isn't umt
+			return 1f;
+			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
+			//return content[p.X,p.Y].type.GetSpeedModifier(umt);
 		}
 		
 		public float GetCost(int2 p, Actor forActor)
@@ -107,8 +109,10 @@ namespace OpenRA.Traits
 			if (content[p.X,p.Y].type == null)
 				return 1.0f;
 			
-			var	umt = forActor.traits.Get<Mobile>().GetMovementType();
-			return content[p.X,p.Y].type.GetCost(umt);
+			// Todo: Reenable based off something that isn't umt
+			return 1f;
+			//var	umt = forActor.traits.Get<Mobile>().GetMovementType();
+			//return content[p.X,p.Y].type.GetCost(umt);
 		}
 		
 		Sprite[] ChooseContent(ResourceType t)
