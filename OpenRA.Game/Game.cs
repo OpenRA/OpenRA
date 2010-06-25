@@ -661,5 +661,64 @@ namespace OpenRA
 			file.Flush();
 			file.Close();
 		}
+		
+		public static void ConvertTileset(OpenRA.FileFormats.TileSet Tileset, OpenRA.Traits.TheaterInfo Info, string outFile)
+		{
+			List<string> SimpleFields = new List<string>() {
+				"Name", "Size", "PickAny", "Bridge", "HP"
+			};
+			OpenRA.FileFormats.TerrainColorSet colors = new TerrainColorSet(Info.MapColors);
+			
+			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
+			Dictionary<string, MiniYaml> terrainYaml = new Dictionary<string, MiniYaml>();
+			
+			for (TerrainType t = TerrainType.Clear; t <= TerrainType.Special; t++)
+			{
+				Dictionary<string, MiniYaml> nodeYaml = new Dictionary<string, MiniYaml>();
+				string type = Enum.GetName( typeof(TerrainType), t);
+				nodeYaml.Add("Type", new MiniYaml(type, null));
+				nodeYaml.Add("Buildable", new MiniYaml(Rules.TerrainTypes[t].Buildable.ToString(), null));
+				nodeYaml.Add("AcceptSmudge", new MiniYaml(Rules.TerrainTypes[t].AcceptSmudge.ToString(), null));
+				
+				var color = colors.ColorForTerrainType(t);
+				nodeYaml.Add("Color", new MiniYaml("{0}, {1}, {2}".F(color.R, color.G, color.B), null));	
+				terrainYaml.Add("TerrainType@{0}".F(type), new MiniYaml(null, nodeYaml));
+			}
+			
+			root.Add("Terrain", new MiniYaml(null, terrainYaml));
+			
+			Dictionary<string, MiniYaml> templateYaml = new Dictionary<string, MiniYaml>();
+			foreach(var w in Tileset.walk)
+			{
+				Dictionary<string, MiniYaml> nodeYaml = new Dictionary<string, MiniYaml>();
+				nodeYaml.Add("Id", new MiniYaml(w.Key.ToString(), null));
+
+				foreach (var field in SimpleFields)
+				{
+					var save = field;
+					System.Reflection.FieldInfo f = w.Value.GetType().GetField(field);
+					if (f.GetValue(w.Value) == null) continue;
+					
+					if (field == "Name")
+						save = "Image";
+					
+					if (field == "HP" && w.Value.HP == 0)
+						continue;
+					
+					if (field == "HP")
+						save = "Strength";
+					
+					if (field == "PickAny" && !w.Value.PickAny)
+						continue;
+					
+					nodeYaml.Add(save, new MiniYaml(FieldSaver.FormatValue(w.Value, f), null));
+				}
+				
+				nodeYaml.Add("Tiles", MiniYaml.FromDictionary<int, TerrainType>(w.Value.TerrainType));						
+				templateYaml.Add("Template@{0}".F(w.Key), new MiniYaml(null, nodeYaml));
+			}
+			root.Add("Templates", new MiniYaml(null, templateYaml));
+			root.WriteToFile(outFile);
+		}
 	}
 }

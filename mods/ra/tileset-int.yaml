@@ -1,924 +1,868 @@
-TileTemplate@255:
-	Id: 255
-	Image: clear1
-	Size: 1,1
-	Tiles:
-		0: Clear
-		1: Clear
-		2: Clear
-		3: Clear
-		4: Clear
-		5: Clear
-		6: Clear
-		7: Clear
-		8: Clear
-		9: Clear
-		10: Clear
-		11: Clear
-		12: Clear
-		13: Clear
-		14: Clear
-		15: Clear
-
-TileTemplate@65535:
-	Id: 65535
-	Image: clear1
-	Size: 1,1
-	Tiles:
-		0: Clear
-		1: Clear
-		2: Clear
-		3: Clear
-		4: Clear
-		5: Clear
-		6: Clear
-		7: Clear
-		8: Clear
-		9: Clear
-		10: Clear
-		11: Clear
-		12: Clear
-		13: Clear
-		14: Clear
-		15: Clear
-
-TileTemplate@329:
-	Id: 329
-	Image: wall0001
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@330:
-	Id: 330
-	Image: wall0002
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@331:
-	Id: 331
-	Image: wall0003
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@332:
-	Id: 332
-	Image: wall0004
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@333:
-	Id: 333
-	Image: wall0005
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@334:
-	Id: 334
-	Image: wall0006
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@335:
-	Id: 335
-	Image: wall0007
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@336:
-	Id: 336
-	Image: wall0008
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@337:
-	Id: 337
-	Image: wall0009
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@338:
-	Id: 338
-	Image: wall0010
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@339:
-	Id: 339
-	Image: wall0011
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@340:
-	Id: 340
-	Image: wall0012
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@341:
-	Id: 341
-	Image: wall0013
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@342:
-	Id: 342
-	Image: wall0014
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@343:
-	Id: 343
-	Image: wall0015
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@344:
-	Id: 344
-	Image: wall0016
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@345:
-	Id: 345
-	Image: wall0017
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@346:
-	Id: 346
-	Image: wall0018
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@347:
-	Id: 347
-	Image: wall0019
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@348:
-	Id: 348
-	Image: wall0020
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@349:
-	Id: 349
-	Image: wall0021
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@350:
-	Id: 350
-	Image: wall0022
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@351:
-	Id: 351
-	Image: wall0023
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-
-TileTemplate@352:
-	Id: 352
-	Image: wall0024
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-
-TileTemplate@353:
-	Id: 353
-	Image: wall0025
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-
-TileTemplate@354:
-	Id: 354
-	Image: wall0026
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-
-TileTemplate@355:
-	Id: 355
-	Image: wall0027
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		3: Wall
-
-TileTemplate@356:
-	Id: 356
-	Image: wall0028
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		3: Wall
-
-TileTemplate@357:
-	Id: 357
-	Image: wall0029
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		3: Wall
-
-TileTemplate@358:
-	Id: 358
-	Image: wall0030
-	Size: 2,2
-	Tiles:
-		0: Wall
-		1: Wall
-		3: Wall
-
-TileTemplate@359:
-	Id: 359
-	Image: wall0031
-	Size: 2,2
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@360:
-	Id: 360
-	Image: wall0032
-	Size: 2,2
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@361:
-	Id: 361
-	Image: wall0033
-	Size: 2,2
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@362:
-	Id: 362
-	Image: wall0034
-	Size: 2,2
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@363:
-	Id: 363
-	Image: wall0035
-	Size: 2,2
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@364:
-	Id: 364
-	Image: wall0036
-	Size: 2,2
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@365:
-	Id: 365
-	Image: wall0037
-	Size: 2,2
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@366:
-	Id: 366
-	Image: wall0038
-	Size: 2,2
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-
-TileTemplate@367:
-	Id: 367
-	Image: wall0039
-	Size: 2,3
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-		4: Wall
-
-TileTemplate@368:
-	Id: 368
-	Image: wall0040
-	Size: 2,3
-	Tiles:
-		0: Wall
-		2: Wall
-		3: Wall
-		4: Wall
-
-TileTemplate@369:
-	Id: 369
-	Image: wall0041
-	Size: 2,3
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-		5: Wall
-
-TileTemplate@370:
-	Id: 370
-	Image: wall0042
-	Size: 2,3
-	Tiles:
-		1: Wall
-		2: Wall
-		3: Wall
-		5: Wall
-
-TileTemplate@371:
-	Id: 371
-	Image: wall0043
-	Size: 3,2
-	Tiles:
-		1: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-
-TileTemplate@372:
-	Id: 372
-	Image: wall0044
-	Size: 3,2
-	Tiles:
-		1: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-
-TileTemplate@373:
-	Id: 373
-	Image: wall0045
-	Size: 3,2
-	Tiles:
-		1: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-
-TileTemplate@374:
-	Id: 374
-	Image: wall0046
-	Size: 3,2
-	Tiles:
-		1: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-
-TileTemplate@375:
-	Id: 375
-	Image: wall0047
-	Size: 3,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-		4: Wall
-
-TileTemplate@376:
-	Id: 376
-	Image: wall0048
-	Size: 3,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-		4: Wall
-
-TileTemplate@377:
-	Id: 377
-	Image: wall0049
-	Size: 3,3
-	Tiles:
-		1: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-		7: Wall
-
-TileTemplate@268:
-	Id: 268
-	Image: flor0001
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@269:
-	Id: 269
-	Image: flor0002
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@270:
-	Id: 270
-	Image: flor0003
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@271:
-	Id: 271
-	Image: flor0004
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@272:
-	Id: 272
-	Image: flor0005
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@273:
-	Id: 273
-	Image: flor0006
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@274:
-	Id: 274
-	Image: flor0007
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@384:
-	Id: 384
-	Image: xtra0001
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@385:
-	Id: 385
-	Image: xtra0002
-	Size: 2,1
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@386:
-	Id: 386
-	Image: xtra0003
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@387:
-	Id: 387
-	Image: xtra0004
-	Size: 1,2
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@388:
-	Id: 388
-	Image: xtra0005
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@389:
-	Id: 389
-	Image: xtra0006
-	Size: 2,1
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@390:
-	Id: 390
-	Image: xtra0007
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@391:
-	Id: 391
-	Image: xtra0008
-	Size: 1,2
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@392:
-	Id: 392
-	Image: xtra0009
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@393:
-	Id: 393
-	Image: xtra0010
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@394:
-	Id: 394
-	Image: xtra0011
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@395:
-	Id: 395
-	Image: xtra0012
-	Size: 1,2
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@396:
-	Id: 396
-	Image: xtra0013
-	Size: 1,2
-	Tiles:
-		0: Wall
-		1: Clear
-
-TileTemplate@397:
-	Id: 397
-	Image: xtra0014
-	Size: 3,2
-	Tiles:
-		0: Clear
-		1: Wall
-		2: Clear
-		3: Clear
-		4: Clear
-		5: Clear
-
-TileTemplate@398:
-	Id: 398
-	Image: xtra0015
-	Size: 3,2
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-
-TileTemplate@399:
-	Id: 399
-	Image: xtra0016
-	Size: 2,4
-	Tiles:
-		0: Wall
-		1: Wall
-		2: Wall
-		3: Wall
-		4: Wall
-		5: Wall
-		6: Wall
-		7: Wall
-
-TileTemplate@318:
-	Id: 318
-	Image: strp0001
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@319:
-	Id: 319
-	Image: strp0002
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@320:
-	Id: 320
-	Image: strp0003
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@321:
-	Id: 321
-	Image: strp0004
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@322:
-	Id: 322
-	Image: strp0005
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@323:
-	Id: 323
-	Image: strp0006
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@324:
-	Id: 324
-	Image: strp0007
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@325:
-	Id: 325
-	Image: strp0008
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@326:
-	Id: 326
-	Image: strp0009
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@327:
-	Id: 327
-	Image: strp0010
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@328:
-	Id: 328
-	Image: strp0011
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@253:
-	Id: 253
-	Image: arro0001
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@254:
-	Id: 254
-	Image: arro0002
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@256:
-	Id: 256
-	Image: arro0004
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@257:
-	Id: 257
-	Image: arro0005
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@258:
-	Id: 258
-	Image: arro0006
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@259:
-	Id: 259
-	Image: arro0007
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@260:
-	Id: 260
-	Image: arro0008
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@261:
-	Id: 261
-	Image: arro0009
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@262:
-	Id: 262
-	Image: arro0010
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@263:
-	Id: 263
-	Image: arro0011
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@264:
-	Id: 264
-	Image: arro0012
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@265:
-	Id: 265
-	Image: arro0013
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@266:
-	Id: 266
-	Image: arro0014
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@267:
-	Id: 267
-	Image: arro0015
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@275:
-	Id: 275
-	Image: gflr0001
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@276:
-	Id: 276
-	Image: gflr0002
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@277:
-	Id: 277
-	Image: gflr0003
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@278:
-	Id: 278
-	Image: gflr0004
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@279:
-	Id: 279
-	Image: gflr0005
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@280:
-	Id: 280
-	Image: gstr0001
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@281:
-	Id: 281
-	Image: gstr0002
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@282:
-	Id: 282
-	Image: gstr0003
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@283:
-	Id: 283
-	Image: gstr0004
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@284:
-	Id: 284
-	Image: gstr0005
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@285:
-	Id: 285
-	Image: gstr0006
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@286:
-	Id: 286
-	Image: gstr0007
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@287:
-	Id: 287
-	Image: gstr0008
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@288:
-	Id: 288
-	Image: gstr0009
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@289:
-	Id: 289
-	Image: gstr0010
-	Size: 1,1
-	Tiles:
-		0: Clear
-
-TileTemplate@290:
-	Id: 290
-	Image: gstr0011
-	Size: 1,1
-	Tiles:
-		0: Clear
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		Buildable: True
+		AcceptSmudge: True
+		Color: 40, 68, 40
+	TerrainType@Water:
+		Type: Water
+		Buildable: False
+		AcceptSmudge: False
+		Color: 92, 116, 164
+	TerrainType@Road:
+		Type: Road
+		Buildable: True
+		AcceptSmudge: True
+		Color: 88, 116, 116
+	TerrainType@Rock:
+		Type: Rock
+		Buildable: False
+		AcceptSmudge: False
+		Color: 68, 68, 60
+	TerrainType@Tree:
+		Type: Tree
+		Buildable: False
+		AcceptSmudge: False
+		Color: 28, 32, 36
+	TerrainType@River:
+		Type: River
+		Buildable: False
+		AcceptSmudge: False
+		Color: 92, 140, 180
+	TerrainType@Rough:
+		Type: Rough
+		Buildable: False
+		AcceptSmudge: True
+		Color: 68, 68, 60
+	TerrainType@Wall:
+		Type: Wall
+		Buildable: False
+		AcceptSmudge: True
+		Color: 208, 192, 160
+	TerrainType@Beach:
+		Type: Beach
+		Buildable: False
+		AcceptSmudge: False
+		Color: 176, 156, 120
+	TerrainType@Ore:
+		Type: Ore
+		Buildable: False
+		AcceptSmudge: True
+		Color: 148, 128, 96
+	TerrainType@Special:
+		Type: Special
+		Buildable: False
+		AcceptSmudge: False
+		Color: 124, 124, 124
+
+Templates:
+	Template@255:
+		Id: 255
+		Image: clear1
+		Size: 1,1
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+	Template@65535:
+		Id: 65535
+		Image: clear1
+		Size: 1,1
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+	Template@329:
+		Id: 329
+		Image: wall0001
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@330:
+		Id: 330
+		Image: wall0002
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@331:
+		Id: 331
+		Image: wall0003
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@332:
+		Id: 332
+		Image: wall0004
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@333:
+		Id: 333
+		Image: wall0005
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@334:
+		Id: 334
+		Image: wall0006
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@335:
+		Id: 335
+		Image: wall0007
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@336:
+		Id: 336
+		Image: wall0008
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@337:
+		Id: 337
+		Image: wall0009
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@338:
+		Id: 338
+		Image: wall0010
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@339:
+		Id: 339
+		Image: wall0011
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@340:
+		Id: 340
+		Image: wall0012
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@341:
+		Id: 341
+		Image: wall0013
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@342:
+		Id: 342
+		Image: wall0014
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@343:
+		Id: 343
+		Image: wall0015
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@344:
+		Id: 344
+		Image: wall0016
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@345:
+		Id: 345
+		Image: wall0017
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@346:
+		Id: 346
+		Image: wall0018
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@347:
+		Id: 347
+		Image: wall0019
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@348:
+		Id: 348
+		Image: wall0020
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@349:
+		Id: 349
+		Image: wall0021
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@350:
+		Id: 350
+		Image: wall0022
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@351:
+		Id: 351
+		Image: wall0023
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+	Template@352:
+		Id: 352
+		Image: wall0024
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+	Template@353:
+		Id: 353
+		Image: wall0025
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+	Template@354:
+		Id: 354
+		Image: wall0026
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+	Template@355:
+		Id: 355
+		Image: wall0027
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			3: Wall
+	Template@356:
+		Id: 356
+		Image: wall0028
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			3: Wall
+	Template@357:
+		Id: 357
+		Image: wall0029
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			3: Wall
+	Template@358:
+		Id: 358
+		Image: wall0030
+		Size: 2,2
+		Tiles:
+			0: Wall
+			1: Wall
+			3: Wall
+	Template@359:
+		Id: 359
+		Image: wall0031
+		Size: 2,2
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+	Template@360:
+		Id: 360
+		Image: wall0032
+		Size: 2,2
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+	Template@361:
+		Id: 361
+		Image: wall0033
+		Size: 2,2
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+	Template@362:
+		Id: 362
+		Image: wall0034
+		Size: 2,2
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+	Template@363:
+		Id: 363
+		Image: wall0035
+		Size: 2,2
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@364:
+		Id: 364
+		Image: wall0036
+		Size: 2,2
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@365:
+		Id: 365
+		Image: wall0037
+		Size: 2,2
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@366:
+		Id: 366
+		Image: wall0038
+		Size: 2,2
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@367:
+		Id: 367
+		Image: wall0039
+		Size: 2,3
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+			4: Wall
+	Template@368:
+		Id: 368
+		Image: wall0040
+		Size: 2,3
+		Tiles:
+			0: Wall
+			2: Wall
+			3: Wall
+			4: Wall
+	Template@369:
+		Id: 369
+		Image: wall0041
+		Size: 2,3
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+			5: Wall
+	Template@370:
+		Id: 370
+		Image: wall0042
+		Size: 2,3
+		Tiles:
+			1: Wall
+			2: Wall
+			3: Wall
+			5: Wall
+	Template@371:
+		Id: 371
+		Image: wall0043
+		Size: 3,2
+		Tiles:
+			1: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@372:
+		Id: 372
+		Image: wall0044
+		Size: 3,2
+		Tiles:
+			1: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@373:
+		Id: 373
+		Image: wall0045
+		Size: 3,2
+		Tiles:
+			1: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@374:
+		Id: 374
+		Image: wall0046
+		Size: 3,2
+		Tiles:
+			1: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@375:
+		Id: 375
+		Image: wall0047
+		Size: 3,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			4: Wall
+	Template@376:
+		Id: 376
+		Image: wall0048
+		Size: 3,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			4: Wall
+	Template@377:
+		Id: 377
+		Image: wall0049
+		Size: 3,3
+		Tiles:
+			1: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+			7: Wall
+	Template@268:
+		Id: 268
+		Image: flor0001
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@269:
+		Id: 269
+		Image: flor0002
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@270:
+		Id: 270
+		Image: flor0003
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@271:
+		Id: 271
+		Image: flor0004
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@272:
+		Id: 272
+		Image: flor0005
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@273:
+		Id: 273
+		Image: flor0006
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@274:
+		Id: 274
+		Image: flor0007
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@384:
+		Id: 384
+		Image: xtra0001
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@385:
+		Id: 385
+		Image: xtra0002
+		Size: 2,1
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@386:
+		Id: 386
+		Image: xtra0003
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@387:
+		Id: 387
+		Image: xtra0004
+		Size: 1,2
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@388:
+		Id: 388
+		Image: xtra0005
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@389:
+		Id: 389
+		Image: xtra0006
+		Size: 2,1
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@390:
+		Id: 390
+		Image: xtra0007
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@391:
+		Id: 391
+		Image: xtra0008
+		Size: 1,2
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@392:
+		Id: 392
+		Image: xtra0009
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@393:
+		Id: 393
+		Image: xtra0010
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@394:
+		Id: 394
+		Image: xtra0011
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@395:
+		Id: 395
+		Image: xtra0012
+		Size: 1,2
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@396:
+		Id: 396
+		Image: xtra0013
+		Size: 1,2
+		Tiles:
+			0: Wall
+			1: Clear
+	Template@397:
+		Id: 397
+		Image: xtra0014
+		Size: 3,2
+		Tiles:
+			0: Clear
+			1: Wall
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+	Template@398:
+		Id: 398
+		Image: xtra0015
+		Size: 3,2
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@399:
+		Id: 399
+		Image: xtra0016
+		Size: 2,4
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+			6: Wall
+			7: Wall
+	Template@318:
+		Id: 318
+		Image: strp0001
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@319:
+		Id: 319
+		Image: strp0002
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@320:
+		Id: 320
+		Image: strp0003
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@321:
+		Id: 321
+		Image: strp0004
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@322:
+		Id: 322
+		Image: strp0005
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@323:
+		Id: 323
+		Image: strp0006
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@324:
+		Id: 324
+		Image: strp0007
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@325:
+		Id: 325
+		Image: strp0008
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@326:
+		Id: 326
+		Image: strp0009
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@327:
+		Id: 327
+		Image: strp0010
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@328:
+		Id: 328
+		Image: strp0011
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@253:
+		Id: 253
+		Image: arro0001
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@254:
+		Id: 254
+		Image: arro0002
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@256:
+		Id: 256
+		Image: arro0004
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@257:
+		Id: 257
+		Image: arro0005
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@258:
+		Id: 258
+		Image: arro0006
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@259:
+		Id: 259
+		Image: arro0007
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@260:
+		Id: 260
+		Image: arro0008
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@261:
+		Id: 261
+		Image: arro0009
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@262:
+		Id: 262
+		Image: arro0010
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@263:
+		Id: 263
+		Image: arro0011
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@264:
+		Id: 264
+		Image: arro0012
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@265:
+		Id: 265
+		Image: arro0013
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@266:
+		Id: 266
+		Image: arro0014
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@267:
+		Id: 267
+		Image: arro0015
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@275:
+		Id: 275
+		Image: gflr0001
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@276:
+		Id: 276
+		Image: gflr0002
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@277:
+		Id: 277
+		Image: gflr0003
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@278:
+		Id: 278
+		Image: gflr0004
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@279:
+		Id: 279
+		Image: gflr0005
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@280:
+		Id: 280
+		Image: gstr0001
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@281:
+		Id: 281
+		Image: gstr0002
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@282:
+		Id: 282
+		Image: gstr0003
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@283:
+		Id: 283
+		Image: gstr0004
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@284:
+		Id: 284
+		Image: gstr0005
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@285:
+		Id: 285
+		Image: gstr0006
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@286:
+		Id: 286
+		Image: gstr0007
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@287:
+		Id: 287
+		Image: gstr0008
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@288:
+		Id: 288
+		Image: gstr0009
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@289:
+		Id: 289
+		Image: gstr0010
+		Size: 1,1
+		Tiles:
+			0: Clear
+	Template@290:
+		Id: 290
+		Image: gstr0011
+		Size: 1,1
+		Tiles:
+			0: Clear
 

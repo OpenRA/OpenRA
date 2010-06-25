@@ -82,6 +82,7 @@ namespace OpenRA
 				.FirstOrDefault(t => t.Theater == Map.Theater);
 			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
 			
+			Game.ConvertTileset(TileSet, theaterInfo, "tileset-"+theaterInfo.Suffix+".yaml");
 			SpriteSheetBuilder.Initialize( Map );
 			Timer.Time( "Tileset: {0}" );
 

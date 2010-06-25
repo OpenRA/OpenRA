@@ -82,50 +82,6 @@ namespace OpenRA.FileFormats
 			}
 
 			tileIdFile.Close();
-			Convert("tileset-"+suffix+".yaml");
-
-		}
-
-		static List<string> SimpleFields = new List<string>() {
-			"Name", "Size", "PickAny", "Bridge", "HP"
-		};
-		
-		public void Convert(string outFile)
-		{
-			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
-			
-			foreach(var w in walk)
-			{
-				Dictionary<string, MiniYaml> nodeYaml = new Dictionary<string, MiniYaml>();
-				nodeYaml.Add("Id", new MiniYaml(w.Key.ToString(), null));
-
-				foreach (var field in SimpleFields)
-				{
-					var save = field;
-					System.Reflection.FieldInfo f = w.Value.GetType().GetField(field);
-					if (f.GetValue(w.Value) == null) continue;
-					
-					if (field == "Name")
-						save = "Image";
-					
-					if (field == "HP" && w.Value.HP == 0)
-						continue;
-					
-					if (field == "HP")
-						save = "Strength";
-					
-					if (field == "PickAny" && !w.Value.PickAny)
-						continue;
-					
-					nodeYaml.Add(save, new MiniYaml(FieldSaver.FormatValue(w.Value, f), null));
-				}
-				
-				nodeYaml.Add("Tiles", MiniYaml.FromDictionary<int, TerrainType>(w.Value.TerrainType));
-
-								
-				root.Add("TileTemplate@{0}".F(w.Key), new MiniYaml(null, nodeYaml));
-			}
-			root.WriteToFile(outFile);
 		}
 		
 		public byte[] GetBytes(TileReference<ushort,byte> r)

@@ -1,1759 +1,1648 @@
-TileTemplate@255:
-	Id: 255
-	Image: clear1
-	Size: 1,1
-	PickAny: True
-	Tiles:
-		0: Clear
-
-TileTemplate@65535:
-	Id: 65535
-	Image: clear1
-	Size: 1,1
-	PickAny: True
-	Tiles:
-		0: Clear
-
-TileTemplate@0:
-	Id: 0
-	Image: clear1
-	Size: 1,1
-	PickAny: True
-	Tiles:
-		0: Clear
-
-TileTemplate@1:
-	Id: 1
-	Image: w1
-	Size: 1,1
-	Tiles:
-		0: Water
-
-TileTemplate@13:
-	Id: 13
-	Image: s01
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		3: Rock
-
-TileTemplate@14:
-	Id: 14
-	Image: s02
-	Size: 2,3
-	Tiles:
-		0: Rock
-		2: Rock
-		3: Rock
-		5: Rock
-
-TileTemplate@15:
-	Id: 15
-	Image: s03
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@16:
-	Id: 16
-	Image: s04
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@17:
-	Id: 17
-	Image: s05
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@18:
-	Id: 18
-	Image: s06
-	Size: 2,3
-	Tiles:
-		1: Rock
-		2: Rock
-		3: Rock
-		4: Rock
-
-TileTemplate@19:
-	Id: 19
-	Image: s07
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@20:
-	Id: 20
-	Image: s08
-	Size: 2,2
-	Tiles:
-		0: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@21:
-	Id: 21
-	Image: s09
-	Size: 3,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		4: Rock
-		5: Rock
-
-TileTemplate@22:
-	Id: 22
-	Image: s10
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@23:
-	Id: 23
-	Image: s11
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@24:
-	Id: 24
-	Image: s12
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@25:
-	Id: 25
-	Image: s13
-	Size: 3,2
-	Tiles:
-		1: Rock
-		3: Rock
-		4: Rock
-
-TileTemplate@26:
-	Id: 26
-	Image: s14
-	Size: 2,2
-	Tiles:
-		0: Rock
-
-TileTemplate@27:
-	Id: 27
-	Image: s15
-	Size: 2,2
-	Tiles:
-		0: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@28:
-	Id: 28
-	Image: s16
-	Size: 2,3
-	Tiles:
-		2: Rock
-		3: Rock
-		5: Rock
-
-TileTemplate@29:
-	Id: 29
-	Image: s17
-	Size: 2,2
-	Tiles:
-		2: Rock
-		3: Rock
-
-TileTemplate@30:
-	Id: 30
-	Image: s18
-	Size: 2,2
-	Tiles:
-		2: Rock
-		3: Rock
-
-TileTemplate@31:
-	Id: 31
-	Image: s19
-	Size: 2,2
-	Tiles:
-		2: Rock
-		3: Rock
-
-TileTemplate@32:
-	Id: 32
-	Image: s20
-	Size: 2,3
-	Tiles:
-		2: Rock
-		3: Rock
-		4: Rock
-
-TileTemplate@33:
-	Id: 33
-	Image: s21
-	Size: 1,2
-	Tiles:
-		0: Rock
-		1: Rock
-
-TileTemplate@34:
-	Id: 34
-	Image: s22
-	Size: 2,1
-	Tiles:
-		0: Rock
-		1: Rock
-
-TileTemplate@35:
-	Id: 35
-	Image: s23
-	Size: 3,2
-	Tiles:
-		0: Rock
-		1: Rock
-		3: Rock
-		4: Rock
-
-TileTemplate@36:
-	Id: 36
-	Image: s24
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@37:
-	Id: 37
-	Image: s25
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@38:
-	Id: 38
-	Image: s26
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@39:
-	Id: 39
-	Image: s27
-	Size: 3,2
-	Tiles:
-		0: Rock
-		1: Rock
-		4: Rock
-		5: Rock
-
-TileTemplate@40:
-	Id: 40
-	Image: s28
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		3: Rock
-
-TileTemplate@41:
-	Id: 41
-	Image: s29
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@42:
-	Id: 42
-	Image: s30
-	Size: 2,2
-	Tiles:
-		0: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@43:
-	Id: 43
-	Image: s31
-	Size: 2,2
-	Tiles:
-		2: Rock
-		3: Rock
-
-TileTemplate@44:
-	Id: 44
-	Image: s32
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-
-TileTemplate@45:
-	Id: 45
-	Image: s33
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@46:
-	Id: 46
-	Image: s34
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@47:
-	Id: 47
-	Image: s35
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@48:
-	Id: 48
-	Image: s36
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@49:
-	Id: 49
-	Image: s37
-	Size: 2,2
-	Tiles:
-		0: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@50:
-	Id: 50
-	Image: s38
-	Size: 2,2
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-
-TileTemplate@53:
-	Id: 53
-	Image: sh20
-	Size: 4,1
-	Tiles:
-		0: River
-		1: Rock
-		2: Rock
-		3: River
-
-TileTemplate@54:
-	Id: 54
-	Image: sh21
-	Size: 3,1
-	Tiles:
-		0: Rock
-		2: River
-
-TileTemplate@55:
-	Id: 55
-	Image: sh22
-	Size: 6,2
-	Tiles:
-		1: Rock
-		2: Rock
-		6: River
-		7: Water
-		8: Water
-		9: Rock
-		10: River
-		11: River
-
-TileTemplate@56:
-	Id: 56
-	Image: sh23
-	Size: 2,2
-	Tiles:
-		2: River
-		3: River
-
-TileTemplate@57:
-	Id: 57
-	Image: br1
-	Size: 1,1
-	Tiles:
-		0: Tree
-
-TileTemplate@58:
-	Id: 58
-	Image: br2
-	Size: 1,1
-	Tiles:
-		0: Tree
-
-TileTemplate@59:
-	Id: 59
-	Image: br3
-	Size: 1,1
-	Tiles:
-		0: Tree
-
-TileTemplate@60:
-	Id: 60
-	Image: br4
-	Size: 1,1
-	Tiles:
-		0: Tree
-
-TileTemplate@61:
-	Id: 61
-	Image: br5
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@62:
-	Id: 62
-	Image: br6
-	Size: 2,2
-	Tiles:
-		0: Tree
-		1: Tree
-		2: Tree
-
-TileTemplate@63:
-	Id: 63
-	Image: br7
-	Size: 2,2
-	Tiles:
-		0: Tree
-		1: Tree
-		3: Tree
-
-TileTemplate@64:
-	Id: 64
-	Image: br8
-	Size: 3,2
-	Tiles:
-		0: Tree
-		1: Tree
-		4: Tree
-		5: Tree
-
-TileTemplate@65:
-	Id: 65
-	Image: br9
-	Size: 3,2
-	Tiles:
-		0: Tree
-		1: Tree
-		2: Tree
-		3: Tree
-		4: Tree
-		5: Tree
-
-TileTemplate@66:
-	Id: 66
-	Image: br10
-	Size: 2,1
-	Tiles:
-		0: Wall
-		1: Wall
-
-TileTemplate@67:
-	Id: 67
-	Image: p01
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@68:
-	Id: 68
-	Image: p02
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@69:
-	Id: 69
-	Image: p03
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@70:
-	Id: 70
-	Image: p04
-	Size: 1,1
-	Tiles:
-		0: Wall
-
-TileTemplate@71:
-	Id: 71
-	Image: p05
-	Size: 2,2
-	Tiles:
-
-TileTemplate@72:
-	Id: 72
-	Image: p06
-	Size: 6,4
-	Tiles:
-
-TileTemplate@73:
-	Id: 73
-	Image: p07
-	Size: 4,2
-	Tiles:
-
-TileTemplate@76:
-	Id: 76
-	Image: sh17
-	Size: 2,2
-	Tiles:
-		0: Water
-		1: Water
-		2: Water
-		3: Water
-
-TileTemplate@77:
-	Id: 77
-	Image: sh18
-	Size: 2,2
-	Tiles:
-		0: Water
-		1: Water
-		2: Water
-		3: Water
-
-TileTemplate@78:
-	Id: 78
-	Image: sh19
-	Size: 3,2
-	Tiles:
-		1: Rock
-		3: River
-		4: Rock
-		5: River
-
-TileTemplate@82:
-	Id: 82
-	Image: b1
-	Size: 1,1
-	Tiles:
-		0: Rock
-
-TileTemplate@83:
-	Id: 83
-	Image: b2
-	Size: 2,1
-	Tiles:
-		0: Rock
-		1: Rock
-
-TileTemplate@85:
-	Id: 85
-	Image: b4
-	Size: 1,1
-	Tiles:
-		0: Rock
-
-TileTemplate@86:
-	Id: 86
-	Image: b5
-	Size: 1,1
-	Tiles:
-		0: Rock
-
-TileTemplate@87:
-	Id: 87
-	Image: b6
-	Size: 1,1
-	Tiles:
-		0: Rock
-
-TileTemplate@93:
-	Id: 93
-	Image: d01
-	Size: 2,2
-	Tiles:
-		1: Road
-
-TileTemplate@94:
-	Id: 94
-	Image: d02
-	Size: 2,2
-	Tiles:
-		1: Road
-
-TileTemplate@95:
-	Id: 95
-	Image: d03
-	Size: 1,2
-	Tiles:
-
-TileTemplate@96:
-	Id: 96
-	Image: d04
-	Size: 2,2
-	Tiles:
-		2: Road
-
-TileTemplate@97:
-	Id: 97
-	Image: d05
-	Size: 3,4
-	Tiles:
-		1: Road
-		3: Road
-		4: Road
-		6: Road
-		7: Road
-		10: Road
-
-TileTemplate@98:
-	Id: 98
-	Image: d06
-	Size: 2,3
-	Tiles:
-		0: Road
-		2: Road
-		3: Road
-		4: Road
-
-TileTemplate@99:
-	Id: 99
-	Image: d07
-	Size: 3,2
-	Tiles:
-		1: Road
-		4: Road
-
-TileTemplate@100:
-	Id: 100
-	Image: d08
-	Size: 3,2
-	Tiles:
-		1: Road
-		4: Road
-
-TileTemplate@101:
-	Id: 101
-	Image: d09
-	Size: 4,3
-	Tiles:
-		4: Road
-		5: Road
-		6: Road
-		7: Road
-
-TileTemplate@102:
-	Id: 102
-	Image: d10
-	Size: 4,2
-	Tiles:
-		1: Rock
-		4: Road
-		5: Road
-		6: Road
-		7: Road
-
-TileTemplate@103:
-	Id: 103
-	Image: d11
-	Size: 2,3
-	Tiles:
-		2: Road
-		3: Road
-
-TileTemplate@104:
-	Id: 104
-	Image: d12
-	Size: 2,2
-	Tiles:
-		2: Road
-		3: Road
-
-TileTemplate@105:
-	Id: 105
-	Image: d13
-	Size: 4,3
-	Tiles:
-		0: Road
-		1: Road
-		5: Road
-		6: Road
-		10: Wall
-		11: Road
-
-TileTemplate@106:
-	Id: 106
-	Image: d14
-	Size: 3,3
-	Tiles:
-		2: Road
-		4: Wall
-		5: Road
-		6: Road
-		7: Road
-		8: Road
-
-TileTemplate@107:
-	Id: 107
-	Image: d15
-	Size: 3,3
-	Tiles:
-		0: Road
-		1: Road
-		2: Road
-		3: Road
-		4: Road
-		6: Road
-
-TileTemplate@108:
-	Id: 108
-	Image: d16
-	Size: 3,3
-	Tiles:
-		1: Road
-		4: Road
-		5: Road
-		6: Road
-		8: Wall
-
-TileTemplate@109:
-	Id: 109
-	Image: d17
-	Size: 3,2
-	Tiles:
-		0: Road
-		1: Road
-		2: Road
-		4: Road
-
-TileTemplate@110:
-	Id: 110
-	Image: d18
-	Size: 3,3
-	Tiles:
-		1: Road
-		3: Road
-		4: Road
-		7: Road
-		8: Wall
-
-TileTemplate@111:
-	Id: 111
-	Image: d19
-	Size: 3,3
-	Tiles:
-		1: Road
-		3: Road
-		4: Road
-		5: Road
-		7: Road
-
-TileTemplate@112:
-	Id: 112
-	Image: d20
-	Size: 3,3
-	Tiles:
-		0: Road
-		3: Road
-		4: Road
-		7: Road
-		8: Road
-
-TileTemplate@113:
-	Id: 113
-	Image: d21
-	Size: 3,2
-	Tiles:
-		0: Rock
-		1: Road
-		2: Road
-		4: Road
-
-TileTemplate@114:
-	Id: 114
-	Image: d22
-	Size: 3,3
-	Tiles:
-		3: Road
-		4: Road
-		7: Road
-
-TileTemplate@115:
-	Id: 115
-	Image: d23
-	Size: 3,3
-	Tiles:
-		1: Road
-		4: Road
-		6: Road
-
-TileTemplate@116:
-	Id: 116
-	Image: d24
-	Size: 3,3
-	Tiles:
-		0: Road
-		4: Road
-		8: Road
-
-TileTemplate@117:
-	Id: 117
-	Image: d25
-	Size: 3,3
-	Tiles:
-		0: Road
-		4: Road
-		8: Road
-
-TileTemplate@118:
-	Id: 118
-	Image: d26
-	Size: 2,2
-	Tiles:
-
-TileTemplate@119:
-	Id: 119
-	Image: d27
-	Size: 2,2
-	Tiles:
-
-TileTemplate@120:
-	Id: 120
-	Image: d28
-	Size: 2,2
-	Tiles:
-		0: Road
-
-TileTemplate@121:
-	Id: 121
-	Image: d29
-	Size: 2,2
-	Tiles:
-		0: Road
-
-TileTemplate@122:
-	Id: 122
-	Image: d30
-	Size: 2,2
-	Tiles:
-		0: Road
-		2: Road
-
-TileTemplate@123:
-	Id: 123
-	Image: d31
-	Size: 2,2
-	Tiles:
-		3: Road
-
-TileTemplate@124:
-	Id: 124
-	Image: d32
-	Size: 2,2
-	Tiles:
-		2: Road
-
-TileTemplate@125:
-	Id: 125
-	Image: d33
-	Size: 2,2
-	Tiles:
-		2: Road
-		3: Road
-
-TileTemplate@126:
-	Id: 126
-	Image: d34
-	Size: 3,3
-	Tiles:
-		2: Road
-		4: Road
-		5: Road
-		6: Road
-		7: Road
-
-TileTemplate@127:
-	Id: 127
-	Image: d35
-	Size: 3,3
-	Tiles:
-		2: Road
-		4: Road
-		6: Road
-
-TileTemplate@128:
-	Id: 128
-	Image: d36
-	Size: 2,2
-	Tiles:
-
-TileTemplate@129:
-	Id: 129
-	Image: d37
-	Size: 2,2
-	Tiles:
-
-TileTemplate@130:
-	Id: 130
-	Image: d38
-	Size: 2,2
-	Tiles:
-		1: Road
-
-TileTemplate@131:
-	Id: 131
-	Image: d39
-	Size: 2,2
-	Tiles:
-		1: Road
-
-TileTemplate@132:
-	Id: 132
-	Image: d40
-	Size: 2,2
-	Tiles:
-		0: Road
-		1: Road
-
-TileTemplate@133:
-	Id: 133
-	Image: d41
-	Size: 2,2
-	Tiles:
-		0: Wall
-		2: Road
-
-TileTemplate@134:
-	Id: 134
-	Image: d42
-	Size: 2,2
-	Tiles:
-		2: Road
-
-TileTemplate@135:
-	Id: 135
-	Image: d43
-	Size: 2,2
-	Tiles:
-		2: Road
-		3: Road
-
-TileTemplate@149:
-	Id: 149
-	Image: rv14
-	Size: 4,3
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-		4: Rock
-		5: Rock
-		6: Rock
-		7: River
-		8: Rock
-		9: Rock
-		10: Tree
-		11: Rock
-
-TileTemplate@150:
-	Id: 150
-	Image: rv15
-	Size: 4,3
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		4: River
-		5: River
-		6: Rock
-		7: River
-		9: Rock
-		10: Rock
-
-TileTemplate@151:
-	Id: 151
-	Image: rv16
-	Size: 6,4
-	Tiles:
-		2: Rock
-		3: Rock
-		4: Rock
-		5: Rock
-		7: Rock
-		8: Rock
-		9: River
-		10: River
-		11: River
-		12: Rock
-		13: Rock
-		14: River
-		15: Rock
-		16: Tree
-		17: Rock
-		18: River
-		19: River
-		20: Rock
-		21: Tree
-
-TileTemplate@152:
-	Id: 152
-	Image: rv17
-	Size: 6,5
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: Rock
-		6: River
-		7: Rock
-		8: Rock
-		9: Rock
-		10: Tree
-		12: Rock
-		13: Rock
-		14: River
-		15: River
-		16: River
-		17: Rock
-		19: Rock
-		20: Rock
-		21: Rock
-		22: River
-		23: River
-		28: Rock
-		29: River
-
-TileTemplate@153:
-	Id: 153
-	Image: rv18
-	Size: 4,4
-	Tiles:
-		0: Rock
-		1: River
-		2: Tree
-		3: Rock
-		4: Rock
-		5: Rock
-		6: Rock
-		8: Rock
-		9: River
-		10: Tree
-		12: Rock
-		13: River
-		14: Rock
-
-TileTemplate@154:
-	Id: 154
-	Image: rv19
-	Size: 4,4
-	Tiles:
-		1: Rock
-		2: River
-		5: Rock
-		6: River
-		7: Tree
-		8: Rock
-		9: Rock
-		10: River
-		11: Rock
-		13: Rock
-		14: River
-		15: Tree
-
-TileTemplate@155:
-	Id: 155
-	Image: rv20
-	Size: 6,8
-	Tiles:
-		3: Rock
-		4: River
-		8: Rock
-		9: River
-		10: Rock
-		13: Rock
-		14: Rock
-		15: River
-		16: Rock
-		18: Rock
-		19: Rock
-		20: River
-		21: Rock
-		24: Rock
-		25: Rock
-		26: River
-		27: Rock
-		28: Rock
-		30: Rock
-		31: Rock
-		32: River
-		33: Rock
-		37: River
-		38: River
-		39: Rock
-		43: River
-		44: Rock
-		45: Rock
-
-TileTemplate@156:
-	Id: 156
-	Image: rv21
-	Size: 5,8
-	Tiles:
-		0: Rock
-		1: Rock
-		6: River
-		7: River
-		8: Rock
-		11: Rock
-		12: River
-		13: Rock
-		16: Rock
-		17: River
-		18: Rock
-		19: Rock
-		21: Rock
-		22: River
-		23: River
-		24: Rock
-		27: Rock
-		28: River
-		29: Rock
-		32: Rock
-		33: River
-		34: River
-		39: River
-
-TileTemplate@157:
-	Id: 157
-	Image: rv22
-	Size: 3,3
-	Tiles:
-		3: Rock
-		4: Rock
-		5: River
-		6: Rock
-		7: River
-		8: Rock
-
-TileTemplate@158:
-	Id: 158
-	Image: rv23
-	Size: 3,3
-	Tiles:
-		0: Rock
-		1: Rock
-		2: Rock
-		3: River
-		4: River
-		5: Rock
-		6: Rock
-		7: River
-		8: Rock
-
-TileTemplate@159:
-	Id: 159
-	Image: rv24
-	Size: 3,3
-	Tiles:
-		0: Rock
-		1: River
-		2: Rock
-		3: Rock
-		4: River
-		5: River
-		7: Tree
-
-TileTemplate@160:
-	Id: 160
-	Image: rv25
-	Size: 3,3
-	Tiles:
-		0: Tree
-		1: River
-		2: Rock
-		3: River
-		4: Rock
-		5: Rock
-		6: Rock
-		7: Rock
-
-TileTemplate@161:
-	Id: 161
-	Image: ford1
-	Size: 3,3
-	Tiles:
-		1: River
-		3: Road
-		4: Road
-		5: Road
-		7: River
-		8: River
-
-TileTemplate@162:
-	Id: 162
-	Image: ford2
-	Size: 3,3
-	Tiles:
-		1: Road
-		2: River
-		3: River
-		4: Road
-		5: River
-		7: Road
-
-TileTemplate@163:
-	Id: 163
-	Image: falls1
-	Size: 3,3
-	Tiles:
-		1: Rock
-		2: River
-		3: River
-		4: River
-		5: River
-		7: Rock
-		8: Rock
-
-TileTemplate@164:
-	Id: 164
-	Image: falls2
-	Size: 3,2
-	Tiles:
-		0: Rock
-		1: River
-		2: River
-		3: Rock
-		4: River
-		5: River
-
-TileTemplate@169:
-	Id: 169
-	Image: bridge3
-	Size: 6,5
-	Bridge: bridge3
-	Tiles:
-		4: Road
-		7: Rock
-		8: Wall
-		9: Road
-		10: Wall
-		12: River
-		13: River
-		14: Road
-		15: Wall
-		16: Rock
-		17: Rock
-		18: Rock
-		19: Road
-		21: Rock
-		22: River
-		23: River
-		24: Road
-
-TileTemplate@170:
-	Id: 170
-	Image: bridge3d
-	Size: 6,5
-	Bridge: bridge3
-	Tiles:
-		4: Road
-		7: Rock
-		8: Rock
-		9: Wall
-		10: Wall
-		12: River
-		13: River
-		14: River
-		15: River
-		16: Rock
-		17: Rock
-		18: Rock
-		19: Road
-		21: River
-		22: River
-		23: River
-		24: Road
-
-TileTemplate@171:
-	Id: 171
-	Image: bridge4
-	Size: 6,4
-	Bridge: bridge4
-	Tiles:
-		1: Road
-		3: Tree
-		4: Rock
-		7: Wall
-		8: Road
-		9: Wall
-		10: River
-		11: River
-		12: Rock
-		13: River
-		14: Wall
-		15: Road
-		16: Wall
-		17: Rock
-		18: River
-		19: River
-		20: Rock
-		22: Road
-
-TileTemplate@172:
-	Id: 172
-	Image: bridge4d
-	Size: 6,4
-	Bridge: bridge4
-	Tiles:
-		1: Road
-		3: Tree
-		4: Rock
-		7: Wall
-		8: Wall
-		9: River
-		10: River
-		11: River
-		12: Rock
-		13: River
-		14: River
-		15: River
-		16: Wall
-		17: Rock
-		18: River
-		19: River
-		20: Rock
-		22: Road
-
-TileTemplate@173:
-	Id: 173
-	Image: sh24
-	Size: 3,3
-	Tiles:
-		0: Rock
-		1: River
-		2: Rock
-		3: River
-		4: River
-		6: River
-		7: Water
-		8: River
-
-TileTemplate@174:
-	Id: 174
-	Image: sh25
-	Size: 3,2
-	Tiles:
-		0: River
-		1: River
-		2: River
-		5: Rock
-
-TileTemplate@175:
-	Id: 175
-	Image: sh26
-	Size: 3,2
-	Tiles:
-		0: River
-		1: Rock
-		2: River
-		4: Rock
-
-TileTemplate@176:
-	Id: 176
-	Image: sh27
-	Size: 4,1
-	Tiles:
-		0: River
-		1: River
-		2: River
-		3: Rock
-
-TileTemplate@177:
-	Id: 177
-	Image: sh28
-	Size: 3,1
-	Tiles:
-		0: River
-		1: River
-		2: River
-
-TileTemplate@178:
-	Id: 178
-	Image: sh29
-	Size: 6,2
-	Tiles:
-		0: River
-		1: River
-		2: Rock
-		3: River
-		4: River
-		5: River
-
-TileTemplate@179:
-	Id: 179
-	Image: sh30
-	Size: 2,2
-	Tiles:
-		0: River
-		1: River
-		2: Rock
-
-TileTemplate@180:
-	Id: 180
-	Image: sh31
-	Size: 3,3
-	Tiles:
-		0: River
-		1: River
-		2: River
-		3: Rock
-		4: River
-		5: Rock
-		7: River
-		8: Rock
-
-TileTemplate@188:
-	Id: 188
-	Image: sh36
-	Size: 1,1
-	Tiles:
-
-TileTemplate@189:
-	Id: 189
-	Image: sh37
-	Size: 1,1
-	Tiles:
-
-TileTemplate@190:
-	Id: 190
-	Image: sh38
-	Size: 1,1
-	Tiles:
-
-TileTemplate@191:
-	Id: 191
-	Image: sh39
-	Size: 1,1
-	Tiles:
-
-TileTemplate@192:
-	Id: 192
-	Image: sh40
-	Size: 3,3
-	Tiles:
-		1: River
-		2: River
-		4: Water
-		5: River
-		6: River
-		7: Water
-		8: Water
-
-TileTemplate@193:
-	Id: 193
-	Image: sh41
-	Size: 3,3
-	Tiles:
-		0: Water
-		1: Water
-		2: River
-		3: Water
-		4: River
-		6: River
-		7: Rock
-
-TileTemplate@194:
-	Id: 194
-	Image: sh42
-	Size: 1,2
-	Tiles:
-		0: River
-		1: River
-
-TileTemplate@195:
-	Id: 195
-	Image: sh43
-	Size: 1,3
-	Tiles:
-		0: River
-		2: River
-
-TileTemplate@196:
-	Id: 196
-	Image: sh44
-	Size: 1,3
-	Tiles:
-		0: River
-		2: River
-
-TileTemplate@197:
-	Id: 197
-	Image: sh45
-	Size: 1,2
-	Tiles:
-		0: River
-		1: River
-
-TileTemplate@198:
-	Id: 198
-	Image: sh46
-	Size: 3,3
-	Tiles:
-		2: River
-		4: River
-		5: Water
-		6: River
-		7: River
-		8: Water
-
-TileTemplate@199:
-	Id: 199
-	Image: sh47
-	Size: 3,3
-	Tiles:
-		0: River
-		1: Rock
-		3: River
-		6: Water
-		7: River
-		8: River
-
-TileTemplate@200:
-	Id: 200
-	Image: sh48
-	Size: 3,3
-	Tiles:
-		0: River
-		3: River
-		6: River
-		7: River
-		8: River
-
-TileTemplate@201:
-	Id: 201
-	Image: sh49
-	Size: 3,3
-	Tiles:
-		1: Water
-		2: River
-		3: River
-		4: Rock
-		5: Rock
-		7: Rock
-		8: Rock
-
-TileTemplate@202:
-	Id: 202
-	Image: sh50
-	Size: 4,3
-	Tiles:
-		1: Water
-		2: River
-		3: River
-		4: River
-		5: Rock
-		6: Rock
-		8: River
-
-TileTemplate@203:
-	Id: 203
-	Image: sh51
-	Size: 4,3
-	Tiles:
-		0: River
-		1: Water
-		5: River
-		6: Water
-		8: Rock
-		9: Rock
-		10: River
-		11: River
-
-TileTemplate@204:
-	Id: 204
-	Image: sh52
-	Size: 4,3
-	Tiles:
-		0: River
-		1: River
-		2: River
-		3: Rock
-		6: River
-		7: Rock
-		10: River
-		11: River
-
-TileTemplate@205:
-	Id: 205
-	Image: sh53
-	Size: 4,3
-	Tiles:
-		3: River
-		5: River
-		6: Water
-		7: Water
-		8: River
-		9: Water
-		10: River
-		11: River
-
-TileTemplate@206:
-	Id: 206
-	Image: sh54
-	Size: 3,2
-	Tiles:
-		1: Tree
-		2: River
-		3: River
-		4: Water
-		5: River
-
-TileTemplate@207:
-	Id: 207
-	Image: sh55
-	Size: 3,2
-	Tiles:
-		0: River
-		1: Rock
-		3: Water
-		4: River
-		5: River
-
-TileTemplate@208:
-	Id: 208
-	Image: sh56
-	Size: 3,2
-	Tiles:
-		1: Water
-		2: River
-		3: River
-		4: Rock
-		5: Rock
-
-TileTemplate@209:
-	Id: 209
-	Image: sh57
-	Size: 3,2
-	Tiles:
-		0: River
-		3: River
-		4: River
-		5: River
-
-TileTemplate@210:
-	Id: 210
-	Image: sh58
-	Size: 2,3
-	Tiles:
-		0: River
-		2: River
-		3: Water
-		5: River
-
-TileTemplate@211:
-	Id: 211
-	Image: sh59
-	Size: 2,3
-	Tiles:
-		1: River
-		2: River
-		3: River
-		4: River
-		5: River
-
-TileTemplate@212:
-	Id: 212
-	Image: sh60
-	Size: 2,3
-	Tiles:
-		0: Water
-		1: River
-		2: River
-		4: River
-
-TileTemplate@213:
-	Id: 213
-	Image: sh61
-	Size: 2,3
-	Tiles:
-		0: River
-		2: Water
-		3: River
-		5: River
-
-TileTemplate@214:
-	Id: 214
-	Image: sh62
-	Size: 6,1
-	Tiles:
-		0: River
-		1: River
-		2: River
-		3: River
-		4: River
-		5: River
-
-TileTemplate@215:
-	Id: 215
-	Image: sh63
-	Size: 4,1
-	Tiles:
-		0: River
-		1: River
-		2: River
-		3: River
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		Buildable: True
+		AcceptSmudge: True
+		Color: 134, 95, 69
+	TerrainType@Water:
+		Type: Water
+		Buildable: False
+		AcceptSmudge: False
+		Color: 93, 165, 206
+	TerrainType@Road:
+		Type: Road
+		Buildable: True
+		AcceptSmudge: True
+		Color: 168, 123, 83
+	TerrainType@Rock:
+		Type: Rock
+		Buildable: False
+		AcceptSmudge: False
+		Color: 116, 90, 63
+	TerrainType@Tree:
+		Type: Tree
+		Buildable: False
+		AcceptSmudge: False
+		Color: 28, 32, 36
+	TerrainType@River:
+		Type: River
+		Buildable: False
+		AcceptSmudge: False
+		Color: 111, 132, 139
+	TerrainType@Rough:
+		Type: Rough
+		Buildable: False
+		AcceptSmudge: True
+		Color: 68, 68, 60
+	TerrainType@Wall:
+		Type: Wall
+		Buildable: False
+		AcceptSmudge: True
+		Color: 208, 192, 160
+	TerrainType@Beach:
+		Type: Beach
+		Buildable: False
+		AcceptSmudge: False
+		Color: 176, 156, 120
+	TerrainType@Ore:
+		Type: Ore
+		Buildable: False
+		AcceptSmudge: True
+		Color: 161, 226, 28
+	TerrainType@Special:
+		Type: Special
+		Buildable: False
+		AcceptSmudge: False
+		Color: 124, 124, 124
+
+Templates:
+	Template@255:
+		Id: 255
+		Image: clear1
+		Size: 1,1
+		PickAny: True
+		Tiles:
+			0: Clear
+	Template@65535:
+		Id: 65535
+		Image: clear1
+		Size: 1,1
+		PickAny: True
+		Tiles:
+			0: Clear
+	Template@0:
+		Id: 0
+		Image: clear1
+		Size: 1,1
+		PickAny: True
+		Tiles:
+			0: Clear
+	Template@1:
+		Id: 1
+		Image: w1
+		Size: 1,1
+		Tiles:
+			0: Water
+	Template@13:
+		Id: 13
+		Image: s01
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+	Template@14:
+		Id: 14
+		Image: s02
+		Size: 2,3
+		Tiles:
+			0: Rock
+			2: Rock
+			3: Rock
+			5: Rock
+	Template@15:
+		Id: 15
+		Image: s03
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@16:
+		Id: 16
+		Image: s04
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@17:
+		Id: 17
+		Image: s05
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@18:
+		Id: 18
+		Image: s06
+		Size: 2,3
+		Tiles:
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+	Template@19:
+		Id: 19
+		Image: s07
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@20:
+		Id: 20
+		Image: s08
+		Size: 2,2
+		Tiles:
+			0: Rock
+			2: Rock
+			3: Rock
+	Template@21:
+		Id: 21
+		Image: s09
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			4: Rock
+			5: Rock
+	Template@22:
+		Id: 22
+		Image: s10
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@23:
+		Id: 23
+		Image: s11
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@24:
+		Id: 24
+		Image: s12
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@25:
+		Id: 25
+		Image: s13
+		Size: 3,2
+		Tiles:
+			1: Rock
+			3: Rock
+			4: Rock
+	Template@26:
+		Id: 26
+		Image: s14
+		Size: 2,2
+		Tiles:
+			0: Rock
+	Template@27:
+		Id: 27
+		Image: s15
+		Size: 2,2
+		Tiles:
+			0: Rock
+			2: Rock
+			3: Rock
+	Template@28:
+		Id: 28
+		Image: s16
+		Size: 2,3
+		Tiles:
+			2: Rock
+			3: Rock
+			5: Rock
+	Template@29:
+		Id: 29
+		Image: s17
+		Size: 2,2
+		Tiles:
+			2: Rock
+			3: Rock
+	Template@30:
+		Id: 30
+		Image: s18
+		Size: 2,2
+		Tiles:
+			2: Rock
+			3: Rock
+	Template@31:
+		Id: 31
+		Image: s19
+		Size: 2,2
+		Tiles:
+			2: Rock
+			3: Rock
+	Template@32:
+		Id: 32
+		Image: s20
+		Size: 2,3
+		Tiles:
+			2: Rock
+			3: Rock
+			4: Rock
+	Template@33:
+		Id: 33
+		Image: s21
+		Size: 1,2
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@34:
+		Id: 34
+		Image: s22
+		Size: 2,1
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@35:
+		Id: 35
+		Image: s23
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+			4: Rock
+	Template@36:
+		Id: 36
+		Image: s24
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@37:
+		Id: 37
+		Image: s25
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@38:
+		Id: 38
+		Image: s26
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@39:
+		Id: 39
+		Image: s27
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			4: Rock
+			5: Rock
+	Template@40:
+		Id: 40
+		Image: s28
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+	Template@41:
+		Id: 41
+		Image: s29
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@42:
+		Id: 42
+		Image: s30
+		Size: 2,2
+		Tiles:
+			0: Rock
+			2: Rock
+			3: Rock
+	Template@43:
+		Id: 43
+		Image: s31
+		Size: 2,2
+		Tiles:
+			2: Rock
+			3: Rock
+	Template@44:
+		Id: 44
+		Image: s32
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+	Template@45:
+		Id: 45
+		Image: s33
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@46:
+		Id: 46
+		Image: s34
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@47:
+		Id: 47
+		Image: s35
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@48:
+		Id: 48
+		Image: s36
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@49:
+		Id: 49
+		Image: s37
+		Size: 2,2
+		Tiles:
+			0: Rock
+			2: Rock
+			3: Rock
+	Template@50:
+		Id: 50
+		Image: s38
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@53:
+		Id: 53
+		Image: sh20
+		Size: 4,1
+		Tiles:
+			0: River
+			1: Rock
+			2: Rock
+			3: River
+	Template@54:
+		Id: 54
+		Image: sh21
+		Size: 3,1
+		Tiles:
+			0: Rock
+			2: River
+	Template@55:
+		Id: 55
+		Image: sh22
+		Size: 6,2
+		Tiles:
+			1: Rock
+			2: Rock
+			6: River
+			7: Water
+			8: Water
+			9: Rock
+			10: River
+			11: River
+	Template@56:
+		Id: 56
+		Image: sh23
+		Size: 2,2
+		Tiles:
+			2: River
+			3: River
+	Template@57:
+		Id: 57
+		Image: br1
+		Size: 1,1
+		Tiles:
+			0: Tree
+	Template@58:
+		Id: 58
+		Image: br2
+		Size: 1,1
+		Tiles:
+			0: Tree
+	Template@59:
+		Id: 59
+		Image: br3
+		Size: 1,1
+		Tiles:
+			0: Tree
+	Template@60:
+		Id: 60
+		Image: br4
+		Size: 1,1
+		Tiles:
+			0: Tree
+	Template@61:
+		Id: 61
+		Image: br5
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@62:
+		Id: 62
+		Image: br6
+		Size: 2,2
+		Tiles:
+			0: Tree
+			1: Tree
+			2: Tree
+	Template@63:
+		Id: 63
+		Image: br7
+		Size: 2,2
+		Tiles:
+			0: Tree
+			1: Tree
+			3: Tree
+	Template@64:
+		Id: 64
+		Image: br8
+		Size: 3,2
+		Tiles:
+			0: Tree
+			1: Tree
+			4: Tree
+			5: Tree
+	Template@65:
+		Id: 65
+		Image: br9
+		Size: 3,2
+		Tiles:
+			0: Tree
+			1: Tree
+			2: Tree
+			3: Tree
+			4: Tree
+			5: Tree
+	Template@66:
+		Id: 66
+		Image: br10
+		Size: 2,1
+		Tiles:
+			0: Wall
+			1: Wall
+	Template@67:
+		Id: 67
+		Image: p01
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@68:
+		Id: 68
+		Image: p02
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@69:
+		Id: 69
+		Image: p03
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@70:
+		Id: 70
+		Image: p04
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@71:
+		Id: 71
+		Image: p05
+		Size: 2,2
+		Tiles:
+	Template@72:
+		Id: 72
+		Image: p06
+		Size: 6,4
+		Tiles:
+	Template@73:
+		Id: 73
+		Image: p07
+		Size: 4,2
+		Tiles:
+	Template@76:
+		Id: 76
+		Image: sh17
+		Size: 2,2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@77:
+		Id: 77
+		Image: sh18
+		Size: 2,2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@78:
+		Id: 78
+		Image: sh19
+		Size: 3,2
+		Tiles:
+			1: Rock
+			3: River
+			4: Rock
+			5: River
+	Template@82:
+		Id: 82
+		Image: b1
+		Size: 1,1
+		Tiles:
+			0: Rock
+	Template@83:
+		Id: 83
+		Image: b2
+		Size: 2,1
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@85:
+		Id: 85
+		Image: b4
+		Size: 1,1
+		Tiles:
+			0: Rock
+	Template@86:
+		Id: 86
+		Image: b5
+		Size: 1,1
+		Tiles:
+			0: Rock
+	Template@87:
+		Id: 87
+		Image: b6
+		Size: 1,1
+		Tiles:
+			0: Rock
+	Template@93:
+		Id: 93
+		Image: d01
+		Size: 2,2
+		Tiles:
+			1: Road
+	Template@94:
+		Id: 94
+		Image: d02
+		Size: 2,2
+		Tiles:
+			1: Road
+	Template@95:
+		Id: 95
+		Image: d03
+		Size: 1,2
+		Tiles:
+	Template@96:
+		Id: 96
+		Image: d04
+		Size: 2,2
+		Tiles:
+			2: Road
+	Template@97:
+		Id: 97
+		Image: d05
+		Size: 3,4
+		Tiles:
+			1: Road
+			3: Road
+			4: Road
+			6: Road
+			7: Road
+			10: Road
+	Template@98:
+		Id: 98
+		Image: d06
+		Size: 2,3
+		Tiles:
+			0: Road
+			2: Road
+			3: Road
+			4: Road
+	Template@99:
+		Id: 99
+		Image: d07
+		Size: 3,2
+		Tiles:
+			1: Road
+			4: Road
+	Template@100:
+		Id: 100
+		Image: d08
+		Size: 3,2
+		Tiles:
+			1: Road
+			4: Road
+	Template@101:
+		Id: 101
+		Image: d09
+		Size: 4,3
+		Tiles:
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@102:
+		Id: 102
+		Image: d10
+		Size: 4,2
+		Tiles:
+			1: Rock
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@103:
+		Id: 103
+		Image: d11
+		Size: 2,3
+		Tiles:
+			2: Road
+			3: Road
+	Template@104:
+		Id: 104
+		Image: d12
+		Size: 2,2
+		Tiles:
+			2: Road
+			3: Road
+	Template@105:
+		Id: 105
+		Image: d13
+		Size: 4,3
+		Tiles:
+			0: Road
+			1: Road
+			5: Road
+			6: Road
+			10: Wall
+			11: Road
+	Template@106:
+		Id: 106
+		Image: d14
+		Size: 3,3
+		Tiles:
+			2: Road
+			4: Wall
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@107:
+		Id: 107
+		Image: d15
+		Size: 3,3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			6: Road
+	Template@108:
+		Id: 108
+		Image: d16
+		Size: 3,3
+		Tiles:
+			1: Road
+			4: Road
+			5: Road
+			6: Road
+			8: Wall
+	Template@109:
+		Id: 109
+		Image: d17
+		Size: 3,2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			4: Road
+	Template@110:
+		Id: 110
+		Image: d18
+		Size: 3,3
+		Tiles:
+			1: Road
+			3: Road
+			4: Road
+			7: Road
+			8: Wall
+	Template@111:
+		Id: 111
+		Image: d19
+		Size: 3,3
+		Tiles:
+			1: Road
+			3: Road
+			4: Road
+			5: Road
+			7: Road
+	Template@112:
+		Id: 112
+		Image: d20
+		Size: 3,3
+		Tiles:
+			0: Road
+			3: Road
+			4: Road
+			7: Road
+			8: Road
+	Template@113:
+		Id: 113
+		Image: d21
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Road
+			2: Road
+			4: Road
+	Template@114:
+		Id: 114
+		Image: d22
+		Size: 3,3
+		Tiles:
+			3: Road
+			4: Road
+			7: Road
+	Template@115:
+		Id: 115
+		Image: d23
+		Size: 3,3
+		Tiles:
+			1: Road
+			4: Road
+			6: Road
+	Template@116:
+		Id: 116
+		Image: d24
+		Size: 3,3
+		Tiles:
+			0: Road
+			4: Road
+			8: Road
+	Template@117:
+		Id: 117
+		Image: d25
+		Size: 3,3
+		Tiles:
+			0: Road
+			4: Road
+			8: Road
+	Template@118:
+		Id: 118
+		Image: d26
+		Size: 2,2
+		Tiles:
+	Template@119:
+		Id: 119
+		Image: d27
+		Size: 2,2
+		Tiles:
+	Template@120:
+		Id: 120
+		Image: d28
+		Size: 2,2
+		Tiles:
+			0: Road
+	Template@121:
+		Id: 121
+		Image: d29
+		Size: 2,2
+		Tiles:
+			0: Road
+	Template@122:
+		Id: 122
+		Image: d30
+		Size: 2,2
+		Tiles:
+			0: Road
+			2: Road
+	Template@123:
+		Id: 123
+		Image: d31
+		Size: 2,2
+		Tiles:
+			3: Road
+	Template@124:
+		Id: 124
+		Image: d32
+		Size: 2,2
+		Tiles:
+			2: Road
+	Template@125:
+		Id: 125
+		Image: d33
+		Size: 2,2
+		Tiles:
+			2: Road
+			3: Road
+	Template@126:
+		Id: 126
+		Image: d34
+		Size: 3,3
+		Tiles:
+			2: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@127:
+		Id: 127
+		Image: d35
+		Size: 3,3
+		Tiles:
+			2: Road
+			4: Road
+			6: Road
+	Template@128:
+		Id: 128
+		Image: d36
+		Size: 2,2
+		Tiles:
+	Template@129:
+		Id: 129
+		Image: d37
+		Size: 2,2
+		Tiles:
+	Template@130:
+		Id: 130
+		Image: d38
+		Size: 2,2
+		Tiles:
+			1: Road
+	Template@131:
+		Id: 131
+		Image: d39
+		Size: 2,2
+		Tiles:
+			1: Road
+	Template@132:
+		Id: 132
+		Image: d40
+		Size: 2,2
+		Tiles:
+			0: Road
+			1: Road
+	Template@133:
+		Id: 133
+		Image: d41
+		Size: 2,2
+		Tiles:
+			0: Wall
+			2: Road
+	Template@134:
+		Id: 134
+		Image: d42
+		Size: 2,2
+		Tiles:
+			2: Road
+	Template@135:
+		Id: 135
+		Image: d43
+		Size: 2,2
+		Tiles:
+			2: Road
+			3: Road
+	Template@149:
+		Id: 149
+		Image: rv14
+		Size: 4,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: River
+			8: Rock
+			9: Rock
+			10: Tree
+			11: Rock
+	Template@150:
+		Id: 150
+		Image: rv15
+		Size: 4,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			4: River
+			5: River
+			6: Rock
+			7: River
+			9: Rock
+			10: Rock
+	Template@151:
+		Id: 151
+		Image: rv16
+		Size: 6,4
+		Tiles:
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			7: Rock
+			8: Rock
+			9: River
+			10: River
+			11: River
+			12: Rock
+			13: Rock
+			14: River
+			15: Rock
+			16: Tree
+			17: Rock
+			18: River
+			19: River
+			20: Rock
+			21: Tree
+	Template@152:
+		Id: 152
+		Image: rv17
+		Size: 6,5
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			6: River
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Tree
+			12: Rock
+			13: Rock
+			14: River
+			15: River
+			16: River
+			17: Rock
+			19: Rock
+			20: Rock
+			21: Rock
+			22: River
+			23: River
+			28: Rock
+			29: River
+	Template@153:
+		Id: 153
+		Image: rv18
+		Size: 4,4
+		Tiles:
+			0: Rock
+			1: River
+			2: Tree
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			8: Rock
+			9: River
+			10: Tree
+			12: Rock
+			13: River
+			14: Rock
+	Template@154:
+		Id: 154
+		Image: rv19
+		Size: 4,4
+		Tiles:
+			1: Rock
+			2: River
+			5: Rock
+			6: River
+			7: Tree
+			8: Rock
+			9: Rock
+			10: River
+			11: Rock
+			13: Rock
+			14: River
+			15: Tree
+	Template@155:
+		Id: 155
+		Image: rv20
+		Size: 6,8
+		Tiles:
+			3: Rock
+			4: River
+			8: Rock
+			9: River
+			10: Rock
+			13: Rock
+			14: Rock
+			15: River
+			16: Rock
+			18: Rock
+			19: Rock
+			20: River
+			21: Rock
+			24: Rock
+			25: Rock
+			26: River
+			27: Rock
+			28: Rock
+			30: Rock
+			31: Rock
+			32: River
+			33: Rock
+			37: River
+			38: River
+			39: Rock
+			43: River
+			44: Rock
+			45: Rock
+	Template@156:
+		Id: 156
+		Image: rv21
+		Size: 5,8
+		Tiles:
+			0: Rock
+			1: Rock
+			6: River
+			7: River
+			8: Rock
+			11: Rock
+			12: River
+			13: Rock
+			16: Rock
+			17: River
+			18: Rock
+			19: Rock
+			21: Rock
+			22: River
+			23: River
+			24: Rock
+			27: Rock
+			28: River
+			29: Rock
+			32: Rock
+			33: River
+			34: River
+			39: River
+	Template@157:
+		Id: 157
+		Image: rv22
+		Size: 3,3
+		Tiles:
+			3: Rock
+			4: Rock
+			5: River
+			6: Rock
+			7: River
+			8: Rock
+	Template@158:
+		Id: 158
+		Image: rv23
+		Size: 3,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: River
+			4: River
+			5: Rock
+			6: Rock
+			7: River
+			8: Rock
+	Template@159:
+		Id: 159
+		Image: rv24
+		Size: 3,3
+		Tiles:
+			0: Rock
+			1: River
+			2: Rock
+			3: Rock
+			4: River
+			5: River
+			7: Tree
+	Template@160:
+		Id: 160
+		Image: rv25
+		Size: 3,3
+		Tiles:
+			0: Tree
+			1: River
+			2: Rock
+			3: River
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+	Template@161:
+		Id: 161
+		Image: ford1
+		Size: 3,3
+		Tiles:
+			1: River
+			3: Road
+			4: Road
+			5: Road
+			7: River
+			8: River
+	Template@162:
+		Id: 162
+		Image: ford2
+		Size: 3,3
+		Tiles:
+			1: Road
+			2: River
+			3: River
+			4: Road
+			5: River
+			7: Road
+	Template@163:
+		Id: 163
+		Image: falls1
+		Size: 3,3
+		Tiles:
+			1: Rock
+			2: River
+			3: River
+			4: River
+			5: River
+			7: Rock
+			8: Rock
+	Template@164:
+		Id: 164
+		Image: falls2
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: River
+			2: River
+			3: Rock
+			4: River
+			5: River
+	Template@169:
+		Id: 169
+		Image: bridge3
+		Size: 6,5
+		Bridge: bridge3
+		Tiles:
+			4: Road
+			7: Rock
+			8: Wall
+			9: Road
+			10: Wall
+			12: River
+			13: River
+			14: Road
+			15: Wall
+			16: Rock
+			17: Rock
+			18: Rock
+			19: Road
+			21: Rock
+			22: River
+			23: River
+			24: Road
+	Template@170:
+		Id: 170
+		Image: bridge3d
+		Size: 6,5
+		Bridge: bridge3
+		Tiles:
+			4: Road
+			7: Rock
+			8: Rock
+			9: Wall
+			10: Wall
+			12: River
+			13: River
+			14: River
+			15: River
+			16: Rock
+			17: Rock
+			18: Rock
+			19: Road
+			21: River
+			22: River
+			23: River
+			24: Road
+	Template@171:
+		Id: 171
+		Image: bridge4
+		Size: 6,4
+		Bridge: bridge4
+		Tiles:
+			1: Road
+			3: Tree
+			4: Rock
+			7: Wall
+			8: Road
+			9: Wall
+			10: River
+			11: River
+			12: Rock
+			13: River
+			14: Wall
+			15: Road
+			16: Wall
+			17: Rock
+			18: River
+			19: River
+			20: Rock
+			22: Road
+	Template@172:
+		Id: 172
+		Image: bridge4d
+		Size: 6,4
+		Bridge: bridge4
+		Tiles:
+			1: Road
+			3: Tree
+			4: Rock
+			7: Wall
+			8: Wall
+			9: River
+			10: River
+			11: River
+			12: Rock
+			13: River
+			14: River
+			15: River
+			16: Wall
+			17: Rock
+			18: River
+			19: River
+			20: Rock
+			22: Road
+	Template@173:
+		Id: 173
+		Image: sh24
+		Size: 3,3
+		Tiles:
+			0: Rock
+			1: River
+			2: Rock
+			3: River
+			4: River
+			6: River
+			7: Water
+			8: River
+	Template@174:
+		Id: 174
+		Image: sh25
+		Size: 3,2
+		Tiles:
+			0: River
+			1: River
+			2: River
+			5: Rock
+	Template@175:
+		Id: 175
+		Image: sh26
+		Size: 3,2
+		Tiles:
+			0: River
+			1: Rock
+			2: River
+			4: Rock
+	Template@176:
+		Id: 176
+		Image: sh27
+		Size: 4,1
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: Rock
+	Template@177:
+		Id: 177
+		Image: sh28
+		Size: 3,1
+		Tiles:
+			0: River
+			1: River
+			2: River
+	Template@178:
+		Id: 178
+		Image: sh29
+		Size: 6,2
+		Tiles:
+			0: River
+			1: River
+			2: Rock
+			3: River
+			4: River
+			5: River
+	Template@179:
+		Id: 179
+		Image: sh30
+		Size: 2,2
+		Tiles:
+			0: River
+			1: River
+			2: Rock
+	Template@180:
+		Id: 180
+		Image: sh31
+		Size: 3,3
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: Rock
+			4: River
+			5: Rock
+			7: River
+			8: Rock
+	Template@188:
+		Id: 188
+		Image: sh36
+		Size: 1,1
+		Tiles:
+	Template@189:
+		Id: 189
+		Image: sh37
+		Size: 1,1
+		Tiles:
+	Template@190:
+		Id: 190
+		Image: sh38
+		Size: 1,1
+		Tiles:
+	Template@191:
+		Id: 191
+		Image: sh39
+		Size: 1,1
+		Tiles:
+	Template@192:
+		Id: 192
+		Image: sh40
+		Size: 3,3
+		Tiles:
+			1: River
+			2: River
+			4: Water
+			5: River
+			6: River
+			7: Water
+			8: Water
+	Template@193:
+		Id: 193
+		Image: sh41
+		Size: 3,3
+		Tiles:
+			0: Water
+			1: Water
+			2: River
+			3: Water
+			4: River
+			6: River
+			7: Rock
+	Template@194:
+		Id: 194
+		Image: sh42
+		Size: 1,2
+		Tiles:
+			0: River
+			1: River
+	Template@195:
+		Id: 195
+		Image: sh43
+		Size: 1,3
+		Tiles:
+			0: River
+			2: River
+	Template@196:
+		Id: 196
+		Image: sh44
+		Size: 1,3
+		Tiles:
+			0: River
+			2: River
+	Template@197:
+		Id: 197
+		Image: sh45
+		Size: 1,2
+		Tiles:
+			0: River
+			1: River
+	Template@198:
+		Id: 198
+		Image: sh46
+		Size: 3,3
+		Tiles:
+			2: River
+			4: River
+			5: Water
+			6: River
+			7: River
+			8: Water
+	Template@199:
+		Id: 199
+		Image: sh47
+		Size: 3,3
+		Tiles:
+			0: River
+			1: Rock
+			3: River
+			6: Water
+			7: River
+			8: River
+	Template@200:
+		Id: 200
+		Image: sh48
+		Size: 3,3
+		Tiles:
+			0: River
+			3: River
+			6: River
+			7: River
+			8: River
+	Template@201:
+		Id: 201
+		Image: sh49
+		Size: 3,3
+		Tiles:
+			1: Water
+			2: River
+			3: River
+			4: Rock
+			5: Rock
+			7: Rock
+			8: Rock
+	Template@202:
+		Id: 202
+		Image: sh50
+		Size: 4,3
+		Tiles:
+			1: Water
+			2: River
+			3: River
+			4: River
+			5: Rock
+			6: Rock
+			8: River
+	Template@203:
+		Id: 203
+		Image: sh51
+		Size: 4,3
+		Tiles:
+			0: River
+			1: Water
+			5: River
+			6: Water
+			8: Rock
+			9: Rock
+			10: River
+			11: River
+	Template@204:
+		Id: 204
+		Image: sh52
+		Size: 4,3
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: Rock
+			6: River
+			7: Rock
+			10: River
+			11: River
+	Template@205:
+		Id: 205
+		Image: sh53
+		Size: 4,3
+		Tiles:
+			3: River
+			5: River
+			6: Water
+			7: Water
+			8: River
+			9: Water
+			10: River
+			11: River
+	Template@206:
+		Id: 206
+		Image: sh54
+		Size: 3,2
+		Tiles:
+			1: Tree
+			2: River
+			3: River
+			4: Water
+			5: River
+	Template@207:
+		Id: 207
+		Image: sh55
+		Size: 3,2
+		Tiles:
+			0: River
+			1: Rock
+			3: Water
+			4: River
+			5: River
+	Template@208:
+		Id: 208
+		Image: sh56
+		Size: 3,2
+		Tiles:
+			1: Water
+			2: River
+			3: River
+			4: Rock
+			5: Rock
+	Template@209:
+		Id: 209
+		Image: sh57
+		Size: 3,2
+		Tiles:
+			0: River
+			3: River
+			4: River
+			5: River
+	Template@210:
+		Id: 210
+		Image: sh58
+		Size: 2,3
+		Tiles:
+			0: River
+			2: River
+			3: Water
+			5: River
+	Template@211:
+		Id: 211
+		Image: sh59
+		Size: 2,3
+		Tiles:
+			1: River
+			2: River
+			3: River
+			4: River
+			5: River
+	Template@212:
+		Id: 212
+		Image: sh60
+		Size: 2,3
+		Tiles:
+			0: Water
+			1: River
+			2: River
+			4: River
+	Template@213:
+		Id: 213
+		Image: sh61
+		Size: 2,3
+		Tiles:
+			0: River
+			2: Water
+			3: River
+			5: River
+	Template@214:
+		Id: 214
+		Image: sh62
+		Size: 6,1
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: River
+			4: River
+			5: River
+	Template@215:
+		Id: 215
+		Image: sh63
+		Size: 4,1
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: River
 
