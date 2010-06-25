@@ -65,6 +65,12 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(cell)) return null;
 			return influence[cell.X, cell.Y];
 		}
+		
+		public Actor GetBuildingBlocking(int2 cell)
+		{
+			if (!map.IsInMap(cell) || !blocked[cell.X, cell.Y]) return null;
+			return influence[cell.X, cell.Y];
+		}
 
 		public bool CanMoveHere(int2 cell)
 		{

@@ -1,5 +1,3 @@
-
-### Todo: Need a ^Tank default for MovementType: Track
 ^Vehicle:
 	Category: Vehicle
 	Unit:
@@ -23,6 +21,7 @@
 	Unit:
 		ROT: 5
 	Mobile:
+		Crushes: wall
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River, Special
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 70%, 70%, 0%, 100%
 	Selectable: 
@@ -112,6 +111,7 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	Wall:
+		CrushClasses: wall
 	LineBuild:
 	Selectable:
 		Priority: 1

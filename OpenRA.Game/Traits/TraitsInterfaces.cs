@@ -115,8 +115,7 @@ namespace OpenRA.Traits
 	public interface ICrushable
 	{
 		void OnCrush(Actor crusher);
-		bool IsCrushableBy(UnitMovementType umt, Player player);
-		bool IsPathableCrush(UnitMovementType umt, Player player);
+		IEnumerable<string> CrushClasses { get; }
 	}
 		
 	public struct Renderable

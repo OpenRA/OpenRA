@@ -27,30 +27,24 @@ namespace OpenRA.Mods.RA
 {
 	public class WallInfo : ITraitInfo
 	{
-		public readonly UnitMovementType[] CrushableBy = { };
+		public readonly string[] CrushClasses = { };
 
-		public object Create(ActorInitializer init) { return new Wall(init.self); }
+		public object Create(ActorInitializer init) { return new Wall(init.self, this); }
 	}
 
 	public class Wall : ICrushable, IBlocksBullets
 	{
 		readonly Actor self;
-
-		public Wall(Actor self)
+		readonly WallInfo info;
+		
+		public Wall(Actor self, WallInfo info)
 		{
 			this.self = self;
+			this.info = info;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, self.traits.Get<Building>());
 		}
-
+		
+		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
 		public void OnCrush(Actor crusher) { self.InflictDamage(crusher, self.Health, null); }
-		public bool IsCrushableBy(UnitMovementType umt, Player player)
-		{
-			return self.Info.Traits.Get<WallInfo>().CrushableBy.Contains(umt);
-		}
-
-		public bool IsPathableCrush(UnitMovementType umt, Player player)
-		{
-			return IsCrushableBy(umt, player);
-		}
 	}
 }

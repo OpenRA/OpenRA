@@ -28,22 +28,24 @@ namespace OpenRA.Mods.RA
 {
 	class MineInfo : ITraitInfo
 	{
-		public readonly UnitMovementType[] TriggeredBy = { };
+		public readonly string[] CrushClasses = { };
 		public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 
-		public object Create(ActorInitializer init) { return new Mine(init); }
+		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
 
 	class Mine : ICrushable, IOccupySpace
 	{
 		readonly Actor self;
+		readonly MineInfo info;
 		[Sync]
 		readonly int2 location;
 
-		public Mine(ActorInitializer init)
+		public Mine(ActorInitializer init, MineInfo info)
 		{
 			this.self = init.self;
+			this.info = info;
 			this.location = init.location;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
@@ -57,17 +59,10 @@ namespace OpenRA.Mods.RA
 			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation.ToInt2(), 0);
 			self.QueueActivity(new RemoveSelf());
 		}
-
-		public bool IsPathableCrush(UnitMovementType umt, Player player)
-		{
-			return !self.Info.Traits.Get<MineInfo>().AvoidFriendly || (player != self.Owner);
-		}
-
-		public bool IsCrushableBy(UnitMovementType umt, Player player)
-		{
-			return self.Info.Traits.Get<MineInfo>().TriggeredBy.Contains(umt);
-		}
-
+		
+		// TODO: Re-implement friendly-mine avoidance using a Hazard
+		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
+		
 		public int2 TopLeft { get { return location; } }
 
 		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }

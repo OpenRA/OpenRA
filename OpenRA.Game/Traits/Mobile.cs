@@ -30,6 +30,7 @@ namespace OpenRA.Traits
 	{
 		public readonly TerrainType[] TerrainTypes;
 		public readonly float[] TerrainSpeeds;
+		public readonly string[] Crushes;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
 
@@ -39,6 +40,7 @@ namespace OpenRA.Traits
 	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove
 	{
 		public readonly Actor self;
+		public readonly MobileInfo Info;
 		public readonly Dictionary<TerrainType,float> TerrainCost;
 		public readonly Dictionary<TerrainType,float> TerrainSpeed;
 
@@ -67,6 +69,7 @@ namespace OpenRA.Traits
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
 			this.self = init.self;
+			this.Info = info;
 			this.__fromCell = this.__toCell = init.location;
 			AddInfluence();
 			
@@ -137,9 +140,19 @@ namespace OpenRA.Traits
 		
 		public virtual bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			if (!self.World.WorldActor.traits.Get<BuildingInfluence>().CanMoveHere(cell, ignoreActor))
-				return false;
+			// Check for buildings
+			var building = self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingBlocking(cell);
+			if (building != null && building != ignoreActor)
+			{
+				var crushable = building.traits.WithInterface<ICrushable>();
+				if (crushable.Count() == 0)
+					return false;
+				
+				if (!crushable.Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))
+					return false;
+			}
 			
+			// Check mobile actors
 			if (checkTransientActors)
 			{
 				var canShare = self.traits.Contains<SharesCell>();
@@ -150,14 +163,25 @@ namespace OpenRA.Traits
 				// only allow 5 in a cell
 				if (shareable.Count() >= 5)
 					return false;
-				
+
 				// We can enter a cell with nonshareable units if we can crush all of them
-				if (nonshareable.Any(
-					a => !self.World.IsActorCrushableByActor(a, self)))
+				if (nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
+						                     a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
 					return false;
 			}
 			
 			return MovementCostForCell(self, cell) < float.PositiveInfinity;
+		}
+		
+		public virtual void FinishedMoving(Actor self)
+		{
+			var crushable = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(self.Location).Where(a => a != self && a.traits.Contains<ICrushable>());
+			foreach (var a in crushable)
+			{
+				var crushActions = a.traits.WithInterface<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
+				foreach (var b in crushActions)
+					b.OnCrush(self);
+			}
 		}
 		
 		public virtual float MovementCostForCell(Actor self, int2 cell)

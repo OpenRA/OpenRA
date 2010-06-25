@@ -38,7 +38,6 @@ namespace OpenRA.Traits
 
 		public HazardLayer( World world )
 		{
-			map = world.Map;
 			hazards = new List<Pair<Actor, Hazard>>[world.Map.MapSize.X, world.Map.MapSize.Y];
 			for (int i = 0; i < world.Map.MapSize.X; i++)
 				for (int j = 0; j < world.Map.MapSize.Y; j++)

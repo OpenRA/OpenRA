@@ -49,27 +49,6 @@ namespace OpenRA.Traits
 
 		public void Tick( Actor self )
 		{
-			// Does this belong here? NO, but it's your mess.
-			
-			// Get the crushable actors
-			foreach (var aa in self.World.Queries.WithTrait<ICrushable>())
-			{
-				var a = aa.Actor;
-				// Are there any units in the same cell that can crush this?
-				foreach( var ios in a.traits.WithInterface<IOccupySpace>() )
-					foreach( var cell in ios.OccupiedCells() )
-					{
-						// There should only be one (counterexample: An infantry and a tank try to pick up a crate at the same time.)
-						// If there is more than one, do action on the first crusher
-						var crusher = GetUnitsAt(cell).Where(b => a != b && self.World.IsActorCrushableByActor(a, b)).FirstOrDefault();
-						if (crusher != null)
-						{
-							// Apply the crush action
-							foreach (var crush in a.traits.WithInterface<ICrushable>())
-								crush.OnCrush(crusher);
-						}
-					}
-			}
 			SanityCheck( self );
 		}
 

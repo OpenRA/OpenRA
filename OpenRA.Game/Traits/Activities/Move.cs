@@ -306,6 +306,7 @@ namespace OpenRA.Traits.Activities
 			{
 				self.CenterLocation = Util.CenterOfCell( mobile.toCell );
 				mobile.fromCell = mobile.toCell;
+				mobile.FinishedMoving(self);
 				return null;
 			}
 		}

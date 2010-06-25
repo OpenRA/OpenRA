@@ -44,8 +44,6 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 			}
 			var unit = self.traits.Get<Unit>();
-			var aircraft = self.traits.Get<Aircraft>();
-
 			var info = self.Info.Traits.Get<HelicopterInfo>();
 			if (unit.Altitude != info.CruiseAltitude)
 			{

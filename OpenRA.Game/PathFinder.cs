@@ -35,7 +35,6 @@ namespace OpenRA
 		public PathFinder( World world )
 		{
 			this.world = world;
-			var map = world.Map;
 		}
 
 		class CachedPath

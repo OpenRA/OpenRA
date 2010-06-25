@@ -294,6 +294,8 @@ HTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	Mobile:
+		Crushes: wall, heavywall
 
 MSAM:
 	Inherits: ^Tank

@@ -37,11 +37,11 @@ namespace OpenRA.Traits
 	
 	public class MobileAir : Mobile, ITick, IOccupyAir
 	{
-		MobileAirInfo Info;
+		MobileAirInfo AirInfo;
 		public MobileAir (ActorInitializer init, MobileAirInfo info)
 			: base(init, info)
 		{
-			Info = info;
+			AirInfo = info;
 		}
 
 		public override void AddInfluence()
@@ -62,7 +62,9 @@ namespace OpenRA.Traits
 			return self.World.WorldActor.traits.Get<AircraftInfluence>().GetUnitsAt(p).Count() == 0;
 		}
 		
-		public virtual float MovementCostForCell(Actor self, int2 cell)
+		public override void FinishedMoving(Actor self) {}
+		
+		public override float MovementCostForCell(Actor self, int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
@@ -73,7 +75,7 @@ namespace OpenRA.Traits
 			return additionalCost;
 		}
 
-		public virtual float MovementSpeedForCell(Actor self, int2 cell)
+		public override float MovementSpeedForCell(Actor self, int2 cell)
 		{		
 			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
 			if( unitInfo == null )
@@ -108,14 +110,14 @@ namespace OpenRA.Traits
 			//if (unit.Altitude <= 0)
 			//	return;
 			
-			if (unit.Altitude < Info.CruiseAltitude)
+			if (unit.Altitude < AirInfo.CruiseAltitude)
 				unit.Altitude++;
 			
 			if (--offsetTicks <= 0)
 			{
-				self.CenterLocation += Info.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
-				unit.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
-				offsetTicks = Info.InstabilityTicks;
+				self.CenterLocation += AirInfo.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
+				unit.Altitude += (int)(AirInfo.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
+				offsetTicks = AirInfo.InstabilityTicks;
 			}
 		}
 	}

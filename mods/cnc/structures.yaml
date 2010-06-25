@@ -465,6 +465,8 @@ BRIK:
 		Armor: none
 	RenderBuildingWall:
 		DamageStates: 4
+	Wall:
+		CrushClasses: heavywall
 		
 GUN:
 	Category: Defense
