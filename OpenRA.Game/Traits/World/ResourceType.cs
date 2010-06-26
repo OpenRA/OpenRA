@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 
 		public readonly int ValuePerUnit = 0;
 		public readonly string Name = null;
-		public readonly string TerrainType = null;
+		public readonly string TerrainType = "Ore";
 
 		public Sprite[][] Sprites;
 		

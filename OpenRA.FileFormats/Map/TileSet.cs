@@ -30,6 +30,7 @@ namespace OpenRA.FileFormats
 		public string Type;
 		public bool Buildable = true;
 		public bool AcceptSmudge = true;
+		public bool IsWater = false;
 		public Color Color;
 		
 		public TerrainTypeInfo(MiniYaml my)
@@ -46,13 +47,15 @@ namespace OpenRA.FileFormats
 		public string Bridge;
 		public float HP;
 		public bool PickAny;
-		public Dictionary<int, string> Tiles = new Dictionary<int, string>();
+		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 		
 		static List<string> fields = new List<string>() {"Id", "Image", "Size", "Bridge", "HP", "PickAny"};
 
 		public TileTemplate(Dictionary<string,MiniYaml> my)
 		{
 			FieldLoader.LoadFields(this, my, fields);
+			foreach (var tt in my["Tiles"].Nodes)
+				Tiles.Add(byte.Parse(tt.Key), tt.Value.Value);
 		}
 	}
 	
@@ -107,8 +110,7 @@ namespace OpenRA.FileFormats
 			var tt = Templates[r.type].Tiles;
 			string ret;
 			if (!tt.TryGetValue(r.image, out ret))
-				return "Clear";// Default zero (walkable)
-			
+				return "Clear"; // Default walkable
 			return ret;
 		}
 	}

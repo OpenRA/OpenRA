@@ -48,8 +48,7 @@ namespace OpenRA
 			if (!world.Map.IsInMap(targetTile))
 				return;
 
-			// Todo: Unhardcode "Water" terraintype reference
-			var isWater = world.GetTerrainType(targetTile) == "Water";
+			var isWater = world.GetTerrainInfo(targetTile).IsWater;
 
 			if (warhead.Explosion != 0)
 				world.AddFrameEndTask(

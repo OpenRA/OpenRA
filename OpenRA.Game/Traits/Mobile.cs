@@ -144,6 +144,9 @@ namespace OpenRA.Traits
 			var building = self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
 			{
+				if (Info.Crushes == null)
+					return false;
+				
 				var crushable = building.traits.WithInterface<ICrushable>();
 				if (crushable.Count() == 0)
 					return false;
@@ -164,7 +167,10 @@ namespace OpenRA.Traits
 				if (shareable.Count() >= 5)
 					return false;
 
-				// We can enter a cell with nonshareable units if we can crush all of them
+				// We can enter a cell with nonshareable units only if we can crush all of them
+				if (Info.Crushes == null && nonshareable.Count() > 0)
+					return false;
+
 				if (nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
 						                     a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
 					return false;
@@ -191,11 +197,9 @@ namespace OpenRA.Traits
 			
 			// Custom terrain types don't stack: pick one
 			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-				.Where( t => t.GetTerrainType(cell) != null )
 				.Select( t => t.GetTerrainType(cell) )
-				.FirstOrDefault();
+				.FirstOrDefault( t => t != null );
 			
-			// Todo: Hack this until i finish migrating TerrainType to a string
 			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
 			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
 				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
@@ -211,11 +215,9 @@ namespace OpenRA.Traits
 			
 			// Custom terrain types don't stack: pick one
 			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-				.Where( t => t.GetTerrainType(cell) != null )
 				.Select( t => t.GetTerrainType(cell) )
-				.FirstOrDefault();
+				.FirstOrDefault( t => t != null );
 			
-			// Todo: Hack this until i finish migrating TerrainType to a string
 			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
 
 			var modifier = self.traits

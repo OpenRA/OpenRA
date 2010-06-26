@@ -41,9 +41,8 @@ namespace OpenRA
 			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 			
-			// Todo: Unhardcode "Water" terraintype reference
 			if (waterBound)
-				return world.Map.IsInMap(a.X,a.Y) && GetTerrainType(world,a) == "Water";
+				return world.Map.IsInMap(a.X,a.Y) && GetTerrainInfo(world,a).IsWater;
 
 			return world.Map.IsInMap(a.X, a.Y) && world.GetTerrainInfo(a).Buildable;
 		}

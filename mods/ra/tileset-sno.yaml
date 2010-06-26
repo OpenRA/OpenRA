@@ -6,6 +6,7 @@ Terrain:
 		Color: 196, 196, 196
 	TerrainType@Water:
 		Type: Water
+		IsWater: true
 		Buildable: False
 		AcceptSmudge: False
 		Color: 92, 116, 164
