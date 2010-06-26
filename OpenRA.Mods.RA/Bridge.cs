@@ -32,6 +32,16 @@ namespace OpenRA.Mods.RA
 	class BridgeInfo : ITraitInfo
 	{
 		public readonly bool Long = false;
+		
+		public readonly string Template = null;
+		public readonly string DamagedTemplate = null;
+		public readonly string DestroyedTemplate = null;
+		
+		// For long bridges
+		public readonly string DestroyedPlusNorthTemplate = null;
+		public readonly string DestroyedPlusSouthTemplate = null;
+		public readonly string DestroyedPlusBothTemplate = null;
+
 		public readonly bool UseAlternateNames = false;
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;

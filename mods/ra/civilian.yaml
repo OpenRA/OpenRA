@@ -393,6 +393,9 @@ MISS:
 
 BR1:
 	Bridge:
+		Template: 235
+		DamagedTemplate: 236
+		DestroyedTemplate: 237
 		SouthOffset: 0,2
 	Category: Building
 	Selectable:
@@ -404,6 +407,9 @@ BR1:
 
 BR2:
 	Bridge:
+		Template: 238
+		DamagedTemplate: 239
+		DestroyedTemplate: 240
 		NorthOffset: 3,0
 	Category: Building
 	Selectable:
@@ -416,6 +422,12 @@ BR2:
 BR3:
 	Bridge:
 		Long: yes
+		Template: 241
+		DamagedTemplate: 242
+		DestroyedTemplate: 243
+		DestroyedPlusNorthTemplate: 245
+		DestroyedPlusSouthTemplate: 244
+		DestroyedPlusBothTemplate: 246
 		NorthOffset: 2,0
 		SouthOffset: 0,1
 	Category: Building
@@ -428,6 +440,9 @@ BR3:
 
 BRIDGE1:
 	Bridge:
+		Template: 131
+		DamagedTemplate: 378
+		DestroyedTemplate: 132
 		UseAlternateNames: yes
 	Category: Building
 	Selectable:
@@ -439,6 +454,9 @@ BRIDGE1:
 
 BRIDGE2:
 	Bridge:
+		Template: 133
+		DamagedTemplate: 379
+		DestroyedTemplate: 134
 		UseAlternateNames: yes
 	Category: Building
 	Selectable:

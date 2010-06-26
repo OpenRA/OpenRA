@@ -2293,8 +2293,6 @@ Templates:
 		Id: 235
 		Image: br1a
 		Size: 4,3
-		Bridge: br1
-		Strength: 1
 		Tiles:
 			1: Rock
 			2: Road
@@ -2309,8 +2307,6 @@ Templates:
 		Id: 236
 		Image: br1b
 		Size: 4,3
-		Bridge: br1
-		Strength: 0.5
 		Tiles:
 			1: Rock
 			2: Rough
@@ -2325,7 +2321,6 @@ Templates:
 		Id: 237
 		Image: br1c
 		Size: 4,3
-		Bridge: br1
 		Tiles:
 			1: Rock
 			2: Rock
@@ -2340,8 +2335,6 @@ Templates:
 		Id: 238
 		Image: br2a
 		Size: 5,3
-		Bridge: br2
-		Strength: 1
 		Tiles:
 			1: Rock
 			2: Road
@@ -2357,8 +2350,6 @@ Templates:
 		Id: 239
 		Image: br2b
 		Size: 5,3
-		Bridge: br2
-		Strength: 0.5
 		Tiles:
 			1: Rock
 			2: Rough
@@ -2374,7 +2365,6 @@ Templates:
 		Id: 240
 		Image: br2c
 		Size: 5,3
-		Bridge: br2
 		Tiles:
 			1: Water
 			2: Water
@@ -2390,8 +2380,6 @@ Templates:
 		Id: 241
 		Image: br3a
 		Size: 4,2
-		Bridge: br3
-		Strength: 1
 		Tiles:
 			0: Rock
 			1: Road
@@ -2402,8 +2390,6 @@ Templates:
 		Id: 242
 		Image: br3b
 		Size: 4,2
-		Bridge: br3
-		Strength: 0.5
 		Tiles:
 			0: Rock
 			1: Road
@@ -2414,7 +2400,6 @@ Templates:
 		Id: 243
 		Image: br3c
 		Size: 4,2
-		Bridge: br3
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2425,7 +2410,6 @@ Templates:
 		Id: 244
 		Image: br3d
 		Size: 4,2
-		Bridge: br3
 		Tiles:
 			0: River
 			1: Rock
@@ -2436,7 +2420,6 @@ Templates:
 		Id: 245
 		Image: br3e
 		Size: 4,2
-		Bridge: br3
 		Tiles:
 			0: Water
 			1: Water
@@ -2447,7 +2430,6 @@ Templates:
 		Id: 246
 		Image: br3f
 		Size: 4,2
-		Bridge: br3
 		Tiles:
 			0: Water
 			1: Water
@@ -2475,8 +2457,6 @@ Templates:
 		Id: 131
 		Image: bridge1
 		Size: 5,3
-		Bridge: bridge1
-		Strength: 1
 		Tiles:
 			1: Rock
 			2: Road
@@ -2492,7 +2472,6 @@ Templates:
 		Id: 132
 		Image: bridge1d
 		Size: 5,3
-		Bridge: bridge1
 		Tiles:
 			1: Rock
 			2: Rock
@@ -2508,8 +2487,6 @@ Templates:
 		Id: 378
 		Image: bridge1h
 		Size: 5,3
-		Bridge: bridge1
-		Strength: 0.5
 		Tiles:
 			1: Rock
 			2: Rough
@@ -2538,8 +2515,6 @@ Templates:
 		Id: 133
 		Image: bridge2
 		Size: 5,2
-		Bridge: bridge2
-		Strength: 1
 		Tiles:
 			0: Rock
 			1: Road
@@ -2554,7 +2529,6 @@ Templates:
 		Id: 134
 		Image: bridge2d
 		Size: 5,2
-		Bridge: bridge2
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2569,8 +2543,6 @@ Templates:
 		Id: 379
 		Image: bridge2h
 		Size: 5,2
-		Bridge: bridge2
-		Strength: 0.5
 		Tiles:
 			0: Rock
 			1: Rough

@@ -44,12 +44,10 @@ namespace OpenRA.FileFormats
 		public ushort Id;
 		public string Image;
 		public int2 Size;
-		public string Bridge;
-		public float HP;
 		public bool PickAny;
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 		
-		static List<string> fields = new List<string>() {"Id", "Image", "Size", "Bridge", "HP", "PickAny"};
+		static List<string> fields = new List<string>() {"Id", "Image", "Size", "PickAny"};
 
 		public TileTemplate(Dictionary<string,MiniYaml> my)
 		{
