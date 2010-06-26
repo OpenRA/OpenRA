@@ -136,8 +136,8 @@ namespace OpenRA.Editor
 		void DrawWithBrush()
 		{
 			// change the bits in the map
-			var tile = TileSet.tiles[Brush.N];
-			var template = TileSet.walk[Brush.N];
+			var tile = TileSet.Tiles[Brush.N];
+			var template = TileSet.Templates[Brush.N];
 			var pos = GetBrushLocation();
 
 			if (ModifierKeys == Keys.Shift)
@@ -294,7 +294,7 @@ namespace OpenRA.Editor
 					for (var j = 0; j < ChunkSize; j++)
 					{
 						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
-						var tile = TileSet.tiles[tr.type];
+						var tile = TileSet.Tiles[tr.type];
 						var index = (tr.image < tile.TileBitmapBytes.Count) ? tr.image : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)

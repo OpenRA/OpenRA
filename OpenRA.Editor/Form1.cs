@@ -101,29 +101,21 @@ namespace OpenRA.Editor
 
 		void PrepareMapResources(Manifest manifest, Map map)
 		{
-			Rules.LoadRules(manifest, map);
-
-			// we're also going to need a tileset...
-			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
-				.FirstOrDefault(t => t.Theater == map.Theater);
-
-			tileset = new TileSet(theaterInfo.Tileset, theaterInfo.Templates, theaterInfo.Suffix);
-			colors = theaterInfo.MapColors;
-
+			Rules.LoadRules(manifest, map);			
+			tileset = Rules.TileSets[map.Theater];
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
 			surface1.Bind(map, tileset, palette);
 
 			// construct the palette of tiles
-
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
 
-			foreach (var n in tileset.tiles.Keys)
+			foreach (var t in tileset.Templates)
 			{
 				try
 				{
-					var bitmap = RenderTemplate(tileset, (ushort)n, palette);
+					var bitmap = RenderTemplate(tileset, (ushort)t.Key, palette);
 					var ibox = new PictureBox
 					{
 						Image = bitmap,
@@ -132,16 +124,16 @@ namespace OpenRA.Editor
 						SizeMode = PictureBoxSizeMode.StretchImage
 					};
 
-					var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = n };
+					var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = t.Key };
 					ibox.Click += (_, e) => surface1.SetBrush(brushTemplate);
 
-					var template = tileset.walk[n];
+					var template = t.Value;
 					tilePalette.Controls.Add(ibox);
 
 					tt.SetToolTip(ibox,
 						"{1}:{0} ({3}x{4} {2})".F(
-						template.Name,
-						template.Index,
+						template.Image,
+						template.Id,
 						template.Bridge,
 						template.Size.X,
 						template.Size.Y));
@@ -156,7 +148,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
-					var template = RenderActor(info, theaterInfo.Suffix, palette);
+					var template = RenderActor(info, tileset.TileSuffix, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -187,7 +179,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderResourceType(a, theaterInfo.Suffix, palette);
+					var template = RenderResourceType(a, tileset.TileSuffix, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -217,8 +209,8 @@ namespace OpenRA.Editor
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
-			var template = ts.walk[n];
-			var tile = ts.tiles[n];
+			var template = ts.Templates[n];
+			var tile = ts.Tiles[n];
 
 			var bitmap = new Bitmap(24 * template.Size.X, 24 * template.Size.Y);
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -388,8 +380,7 @@ namespace OpenRA.Editor
 			using (var nmd = new NewMapDialog())
 			{
 				nmd.theater.Items.Clear();
-				nmd.theater.Items.AddRange(Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
-					.Select(a => a.Theater).ToArray());
+				nmd.theater.Items.AddRange(Rules.TileSets.Select(a => a.Value.Name).ToArray());
 				nmd.theater.SelectedIndex = 0;
 
 				if (DialogResult.OK == nmd.ShowDialog())
