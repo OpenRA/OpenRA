@@ -49,4 +49,9 @@ Weapons:
 Voices:
 	mods/cnc/voices.yaml:
 
+TileSets:
+	mods/cnc/tileset-des.yaml: Desert
+	mods/cnc/tileset-win.yaml: Winter
+	mods/cnc/tileset-tem.yaml: Temperate
+
 ShellmapUid:a0e5a8a3cb4e7fb82a08e8d768c32d480f0ec152

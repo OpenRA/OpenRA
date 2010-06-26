@@ -1,3 +1,8 @@
+General:
+	Name: Winter
+	Id: WINTER
+	TileSuffix: win
+
 Terrain:
 	TerrainType@Clear:
 		Type: Clear

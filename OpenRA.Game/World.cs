@@ -75,14 +75,13 @@ namespace OpenRA
 			Timer.Time( "----World.ctor" );
 			Map = map;
 			
+
 			Rules.LoadRules(manifest,Map);
 			Timer.Time( "load rules: {0}" );
-				
-			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>()
-				.FirstOrDefault(t => t.Theater == Map.Theater);
-			TileSet = new TileSet(theaterInfo.Tileset, theaterInfo.Suffix);
-			
-			SpriteSheetBuilder.Initialize( Map );
+
+			TileSet = Rules.TileSets[Map.Tileset];
+			SpriteSheetBuilder.Initialize( TileSet );
+			TileSet.LoadTiles();
 			Timer.Time( "Tileset: {0}" );
 
 			WorldRenderer = new WorldRenderer(this, Game.renderer);
@@ -124,7 +123,7 @@ namespace OpenRA
 
 			Timer.Time( "----end World.ctor" );
 		}
-
+		
 		public Actor CreateActor( string name, int2 location, Player owner )
 		{
 			var a = new Actor( this, name, location, owner );

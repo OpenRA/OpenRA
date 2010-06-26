@@ -1,3 +1,8 @@
+General:
+	Name: Temperate
+	Id: TEMPERAT
+	TileSuffix: tem
+
 Terrain:
 	TerrainType@Clear:
 		Type: Clear

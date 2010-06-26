@@ -144,8 +144,7 @@ namespace OpenRA
 				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 
-			var theaterInfo = Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == currentMap.Tileset);
-			DrawCentered("Theater: {0}".F(theaterInfo.Name),
+			DrawCentered("Theater: {0}".F(Rules.TileSets[currentMap.Tileset].Name),
 				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
 			y += 20;
 			DrawCentered("Spawnpoints: {0}".F(currentMap.PlayerCount),

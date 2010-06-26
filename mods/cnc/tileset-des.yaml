@@ -1,3 +1,8 @@
+General:
+	Name: Desert
+	Id: DESERT
+	TileSuffix: des
+
 Terrain:
 	TerrainType@Clear:
 		Type: Clear

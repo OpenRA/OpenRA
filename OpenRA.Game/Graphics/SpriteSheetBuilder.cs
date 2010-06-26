@@ -26,15 +26,10 @@ namespace OpenRA.Graphics
 {
 	static class SpriteSheetBuilder
 	{
-		static TheaterInfo GetTheater(Map map)
-		{	// todo: move this somewhere else
-			return Rules.Info["world"].Traits.WithInterface<TheaterInfo>().FirstOrDefault(t => t.Theater == map.Theater);
-		}
-
-		public static void Initialize( Map map )
+		public static void Initialize( TileSet tileset )
 		{
 			/* .tem: hack to allow incomplete theaters (interior) to work, falling back to temperate for the missing art */
-			exts = new[] { "." + GetTheater(map).Suffix, ".shp", ".tem" };
+			exts = new[] { "." + tileset.TileSuffix, ".shp", ".tem" };
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 

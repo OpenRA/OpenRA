@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 		public readonly string[] 
 			Folders, Packages, Rules, 
 			Sequences, Chrome, Assemblies, ChromeLayout, 
-			Weapons, Voices, Music, Terrain;
+			Weapons, Voices, Music, TileSets;
 		
 		public readonly string ShellmapUid;
 
@@ -81,8 +81,8 @@ namespace OpenRA.FileFormats
 			Weapons = YamlList(yaml, "Weapons");
 			Voices = YamlList(yaml, "Voices");
 			Music = YamlList(yaml, "Music");
-			Terrain = YamlList(yaml, "Terrain");
-			
+			TileSets = YamlList(yaml, "TileSets");
+						
 			ShellmapUid = yaml["ShellmapUid"].Value;
 		}
 

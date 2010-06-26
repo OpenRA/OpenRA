@@ -50,21 +50,6 @@ World:
 	AircraftInfluence:
 	HazardLayer:
 #	BridgeLoadHook:
-	Theater@DESERT:
-		Name:Desert
-		Theater:DESERT
-		Suffix:des
-		Tileset:mods/cnc/tileset-des.yaml
-	Theater@WINTER:
-		Name:Winter
-		Theater:WINTER
-		Suffix:win
-		Tileset:mods/cnc/tileset-win.yaml
-	Theater@TEMPERAT:
-		Name:Temperate
-		Theater:TEMPERAT
-		Suffix:tem
-		Tileset:mods/cnc/tileset-tem.yaml
 	PaletteFromFile@terrain_desert:
 		Name: terrain
 		Theater: desert

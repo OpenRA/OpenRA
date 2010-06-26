@@ -61,14 +61,20 @@ namespace OpenRA.FileFormats
 	
 	public class TileSet
 	{
+		public readonly string Name;
+		public readonly string Id;
+		public readonly string TileSuffix;
 		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public readonly Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
 		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		
-		public TileSet( string tilesetFile, string suffix )
+		public TileSet( string filepath )
 		{
-			var yaml = MiniYaml.FromFile(tilesetFile);
+			var yaml = MiniYaml.FromFile(filepath);
 			
+			// General info
+			FieldLoader.Load(this, yaml["General"]);
+
 			// TerrainTypes
 			foreach (var tt in yaml["Terrain"].Nodes)
 			{
@@ -84,10 +90,24 @@ namespace OpenRA.FileFormats
 				Templates.Add(t.Id, t);
 				
 				// Artwork
-				using( Stream s = FileSystem.Open( t.Image + "." + suffix ) )
+				using( Stream s = FileSystem.Open( t.Image + "." + TileSuffix ) )
 				{
 					if( !Tiles.ContainsKey( t.Id ) )
 						Tiles.Add( t.Id, new Terrain( s ) );
+				}
+			}
+		}
+		
+		public void LoadTiles()
+		{
+			// Templates
+			foreach (var t in Templates)
+			{
+				// Artwork
+				using( Stream s = FileSystem.Open( t.Value.Image + "." + TileSuffix ) )
+				{
+					if( !Tiles.ContainsKey( t.Key ) )
+						Tiles.Add( t.Key, new Terrain( s ) );
 				}
 			}
 		}
