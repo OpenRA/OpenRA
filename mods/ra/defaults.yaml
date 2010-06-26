@@ -117,6 +117,8 @@
 
 ^Tree:
 	Category: Building
+	Valued:
+		Description: Tree
 	RenderBuilding:
 		Palette: terrain
 	Building:
