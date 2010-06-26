@@ -25,89 +25,108 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class BridgeLayerInfo : TraitInfo<BridgeLayer> { }
+	class BridgeLayerInfo : ITraitInfo
+	{
+		public readonly string[] Bridges = {"br1", "br2", "br3", "bridge1", "bridge2"};
+		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
+	}
 
 	class BridgeLayer : ILoadWorldHook, ITerrainTypeModifier
 	{
 		// for tricky things like bridges.
-		Bridge[,] bridges;
-
-		void MakeBridges(World w)
+		Bridge[,] Bridges;
+		
+		readonly BridgeLayerInfo Info;
+		readonly World world;
+		public BridgeLayer(Actor self, BridgeLayerInfo Info)
 		{
+			this.Info = Info;
+			this.world = self.World;
+		}
+		
+		static Dictionary<ushort, string> BridgeTypes;
+
+		public void WorldLoaded(World w)
+		{
+			Bridges = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
+			BridgeTypes = new Dictionary<ushort, string>();
+			
+			// Build a list of templates that should be overlayed with bridges
+			foreach(var bridge in Info.Bridges)
+			{
+				var bi = Rules.Info[bridge].Traits.Get<BridgeInfo>();
+				foreach (var template in bi.Templates)
+				{
+					BridgeTypes.Add(template, bridge);
+					Log.Write("debug", "Adding template {0} for bridge {1}", template, bridge);
+				}
+			}
+			
+			// Loop through the map looking for templates to overlay
 			var tl = w.Map.TopLeft;
 			var br = w.Map.BottomRight;
 			
 			for (int i = tl.X; i < br.X; i++)
 				for (int j = tl.Y; j < br.Y; j++)
-					if (IsBridge(w, w.Map.MapTiles[i, j].type))
-						ConvertBridgeToActor(w, i, j);
-
+					if (BridgeTypes.Keys.Contains(w.Map.MapTiles[i, j].type))
+							ConvertBridgeToActor(w, i, j);
+			
+			// Link adjacent (long)-bridges so that artwork is updated correctly
 			foreach (var b in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
-				b.FinalizeBridges(w, bridges);
+				b.LinkNeighbouringBridges(w,this);
 		}
 		
 		void ConvertBridgeToActor(World w, int i, int j)
 		{
 			Log.Write("debug", "Converting bridge at {0} {1}", i, j);
-			/*
+			
+			// This cell already has a bridge overlaying it from a previous iteration
+			if (Bridges[i,j] != null)
+				return;
+			
+			// Correlate the tile "image" aka subtile with its position to find the template origin
 			var tile = w.Map.MapTiles[i, j].type;
 			var image = w.Map.MapTiles[i, j].image;
-			var template = w.TileSet.walk[tile];
-
-			// base position of the tile
+			var template = w.TileSet.Templates[tile];
 			var ni = i - image % template.Size.X;
 			var nj = j - image / template.Size.X;
-
-			var replacedTiles = new Dictionary<int2, int>();
+			
+			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
+			var bridge = w.CreateActor(BridgeTypes[tile], new int2(ni, nj), w.WorldActor.Owner).traits.Get<Bridge>();
+			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();
+			
+			// Loop through the cells on the bridge template; mark each cell that is part
+			// of the bridge and add to the bridges array
 			for (var x = ni; x < ni + template.Size.X; x++)
 				for (var y = nj; y < nj + template.Size.Y; y++)
 				{
-					var n = (x - ni) + template.Size.X * (y - nj);
-					if (!template.TerrainType.ContainsKey(n)) continue;
-
-					if (w.Map.IsInMap(x, y))
-						if (w.Map.MapTiles[x, y].type == tile
-							&& w.Map.MapTiles[x, y].index == n)
-						{
-							// stash it
-							replacedTiles[new int2(x, y)] = w.Map.MapTiles[x, y].index;
-							// remove the tile from the actual map
-							w.Map.MapTiles[x, y].type = 0xfffe;
-							w.Map.MapTiles[x, y].index = 0;
-							w.Map.MapTiles[x, y].image = 0;
-						}
+					// This isn't the bridge we're looking for
+					if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].type != tile)
+						continue;
+					
+					Log.Write("debug", "Adding tile {0} {1} for type {2}", x,y,tile);
+					
+					subTiles.Add(new int2(x,y),w.Map.MapTiles[x, y].image);
+					Bridges[x,y] = bridge;
 				}
-
-			if (replacedTiles.Any())
-			{
-				var a = w.CreateActor(template.Bridge, new int2(ni, nj), w.WorldActor.Owner);
-				var br = a.traits.Get<Bridge>();
-				
-				foreach (var t in replacedTiles.Keys)
-					bridges[t.X, t.Y] = br;
-				
-				br.SetTiles(w, template, replacedTiles);
-			}
-			*/
+			
+			bridge.Create(tile, subTiles);
 		}
 		
 		public string GetTerrainType(int2 cell)
 		{
-			/*if (bridges[ cell.X, cell.Y ] != null)
-				return bridges[ cell.X, cell.Y ].GetTerrainType(cell);*/
+			if (Bridges[ cell.X, cell.Y ] != null)
+				return Bridges[ cell.X, cell.Y ].GetTerrainType(cell);
 			return null;
 		}
-				
-		static bool IsBridge(World w, ushort t)
+		
+		// Used to check for neighbouring bridges
+		public Bridge GetBridge(int2 cell)
 		{
-			return false;
-			//return w.TileSet.walk[t].Bridge != null;
-		}
-
-		public void WorldLoaded(World w)
-		{
-			bridges = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
-			MakeBridges(w);
+			if (!world.Map.IsInMap(cell.X, cell.Y))
+				return null;
+			
+			return Bridges[ cell.X, cell.Y ];
 		}
 	}
 }

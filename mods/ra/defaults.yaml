@@ -137,3 +137,15 @@
 	HiddenUnderFog:
 	RevealsShroud:
 	Burns:
+
+^Bridge:
+	Category: Building
+	Valued:
+		Description: Bridge
+	Selectable:
+		Bounds: 96,48
+	BelowUnits:
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+		HP: 1000

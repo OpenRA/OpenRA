@@ -33,121 +33,119 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool Long = false;
 		
-		public readonly string Template = null;
-		public readonly string DamagedTemplate = null;
-		public readonly string DestroyedTemplate = null;
+		public readonly ushort Template;
+		public readonly float DamagedThreshold = 0.5f;
+		public readonly ushort DamagedTemplate;
+		public readonly ushort DestroyedTemplate;
 		
 		// For long bridges
-		public readonly string DestroyedPlusNorthTemplate = null;
-		public readonly string DestroyedPlusSouthTemplate = null;
-		public readonly string DestroyedPlusBothTemplate = null;
+		public readonly ushort DestroyedPlusNorthTemplate;
+		public readonly ushort DestroyedPlusSouthTemplate;
+		public readonly ushort DestroyedPlusBothTemplate;
 
 		public readonly bool UseAlternateNames = false;
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
 
-		public object Create(ActorInitializer init) { return new Bridge(init.self); }
+		public object Create(ActorInitializer init) { return new Bridge(init.self, this); }
+		
+		public IEnumerable<ushort> Templates
+		{ get {
+		
+			if (Template != 0)
+				yield return Template;
+			
+			if (DamagedTemplate != 0)
+				yield return DamagedTemplate;
+			
+			if (DestroyedTemplate != 0)
+				yield return DestroyedTemplate;
+						
+			if (DestroyedPlusNorthTemplate != 0)
+				yield return DestroyedPlusNorthTemplate;
+			
+			if (DestroyedPlusSouthTemplate != 0)
+				yield return DestroyedPlusSouthTemplate;
+			
+			if (DestroyedPlusBothTemplate != 0)
+				yield return DestroyedPlusBothTemplate;
+		} }
 	}
 
-	class Bridge //: IRender, INotifyDamage
+	class Bridge: IRender, INotifyDamage
 	{
-		Dictionary<int2, int> Tiles;
-		List<Dictionary<int2, Sprite>> TileSprites = new List<Dictionary<int2,Sprite>>();
-		List<TileTemplate> Templates = new List<TileTemplate>();
-		Actor self;
-		int state;
-		Bridge northNeighbour, southNeighbour;
-
-		public Bridge(Actor self) { this.self = self; self.RemoveOnDeath = false; }
-
 		static string cachedTileset;
 		static Cache<TileReference<ushort,byte>, Sprite> sprites;
 
-		public IEnumerable<Renderable> Render(Actor self)
+		Dictionary<ushort, Dictionary<int2, Sprite>> TileSprites = new Dictionary<ushort, Dictionary<int2, Sprite>>();
+		Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		ushort currentTemplate;
+		
+		Actor self;
+		BridgeInfo info;
+		Bridge northNeighbour, southNeighbour;
+		
+		public Bridge(Actor self, BridgeInfo info)
 		{
-			foreach (var t in TileSprites[state])
-				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
+			this.self = self;
+			self.RemoveOnDeath = false;
+			this.info = info;
 		}
 
-		public void FinalizeBridges(World world, Bridge[,] bridges)
+		public void Create(ushort template, Dictionary<int2, byte> subtiles)
 		{
-			// go looking for our neighbors, if this is a long bridge.
-			var info = self.Info.Traits.Get<BridgeInfo>();
-			if (info.NorthOffset != null)
-				northNeighbour = GetNeighbor(world, info.NorthOffset, bridges);
-			if (info.SouthOffset != null)
-				southNeighbour = GetNeighbor(world, info.SouthOffset, bridges);
-		}
-		
-		public Bridge GetNeighbor(World world, int[] offset, Bridge[,] bridges)
-		{
-			if (offset == null) return null;
-			var pos = self.Location + new int2(offset[0], offset[1]);
-			if (!world.Map.IsInMap(pos.X, pos.Y)) return null;
-			return bridges[pos.X, pos.Y];
-		}
-		
-		
-		public int StateFromTemplate(TileTemplate t)
-		{
-			/*
-			var info = self.Info.Traits.Get<BridgeInfo>();
-			if (info.UseAlternateNames)
+			currentTemplate = template;
+			if (template == info.DamagedTemplate)
+				self.Health = (int)(info.DamagedThreshold*self.GetMaxHP());
+			else if (template != info.Template)
+				self.Health = 0;
+						
+			// Create a new cache to store the tile data
+			if (cachedTileset != self.World.Map.Tileset)
 			{
-				if (t.Name.EndsWith("d")) return 2;
-				if (t.Name.EndsWith("h")) return 1;
-				return 0;
-			}
-			else
-				return t.Name[t.Name.Length - 1] - 'a';
-			*/
-			return 0;
-		}
-
-		public string NameFromState(TileTemplate t, int state)
-		{
-			/*var info = self.Info.Traits.Get<BridgeInfo>();
-			if (info.UseAlternateNames)
-				return t.Bridge + new[] { "", "h", "d" }[state];
-			else
-				return t.Bridge + (char)(state + 'a');*/
-			return "";
-		}
-
-		public void SetTiles(World world, TileTemplate template, Dictionary<int2, int> replacedTiles)
-		{
-			/*
-			Tiles = replacedTiles;
-			state = StateFromTemplate(template);
-			
-			if (cachedTileset != world.Map.Tileset)
-			{
-				cachedTileset = world.Map.Tileset;
+				cachedTileset = self.World.Map.Tileset;
 				sprites = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => SheetBuilder.SharedInstance.Add(world.TileSet.GetBytes(x),
+				x => SheetBuilder.SharedInstance.Add(self.World.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));
 			}
-
-			var numStates = self.Info.Traits.Get<BridgeInfo>().Long ? 6 : 3;
-			for (var n = 0; n < numStates; n++)
+			
+			// Cache templates and tiles for the different states
+			foreach (var t in info.Templates)
 			{
-				var stateTemplate = world.TileSet.Walkability.GetTileTemplate(NameFromState(template, n));
-				Templates.Add( stateTemplate );
-
-				TileSprites.Add(replacedTiles.ToDictionary(
+				Templates.Add(t,self.World.TileSet.Templates[t]);
+				TileSprites.Add(t,subtiles.ToDictionary(
 					a => a.Key,
-					a => sprites[new TileReference<ushort,byte>((ushort)stateTemplate.Index, (byte)a.Value)]));
+					a => sprites[new TileReference<ushort,byte>(t, (byte)a.Value)]));
 			}
-
-			self.Health = (int)(self.GetMaxHP() * template.HP);
-			*/
 		}
-
+		
 		public string GetTerrainType(int2 cell)
 		{
-			return "";
-			// Ugly hack until terraintypes are converted from enums
-			//return Enum.GetName( typeof(TerrainType), Templates[state].TerrainType[Tiles[cell]]); 
+			var dx = cell - self.Location;
+			var index = dx.X + Templates[currentTemplate].Size.X*dx.Y;
+			return self.World.TileSet.GetTerrainType(new TileReference<ushort, byte>(currentTemplate,(byte)index));
+		}
+		
+		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)
+		{
+			// go looking for our neighbors if this is a long bridge.
+			var info = self.Info.Traits.Get<BridgeInfo>();
+			if (info.NorthOffset != null)
+				northNeighbour = GetNeighbor(info.NorthOffset, bridges);
+			if (info.SouthOffset != null)
+				southNeighbour = GetNeighbor(info.SouthOffset, bridges);
+		}
+		
+		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
+		{
+			if (offset == null) return null;
+			return bridges.GetBridge(self.Location + new int2(offset[0], offset[1]));
+		}
+
+		public IEnumerable<Renderable> Render(Actor self)
+		{
+			foreach (var t in TileSprites[currentTemplate])
+				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
 		}
 		
 		static bool IsIntact(Bridge b)
@@ -162,7 +160,7 @@ namespace OpenRA.Mods.RA
 
 		void UpdateState()
 		{
-			var ds = self.GetDamageState();
+			/*var ds = self.GetDamageState();
 			if (!self.Info.Traits.Get<BridgeInfo>().Long)
 			{
 				state = (int)ds; 
@@ -176,16 +174,17 @@ namespace OpenRA.Mods.RA
 			if (waterToNorth) { state = 4; return; }
 			if (waterToSouth) { state = 3; return; }
 			state = (int)ds;
+			*/
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged)
+			/*if (e.DamageStateChanged)
 			{
 				UpdateState();
 				if (northNeighbour != null) northNeighbour.UpdateState();
 				if (southNeighbour != null) southNeighbour.UpdateState();
-			}
+			}*/
 		}
 	}
 }
