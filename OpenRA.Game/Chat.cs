@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using System.Text;
 
 namespace OpenRA
 {
@@ -69,12 +70,34 @@ namespace OpenRA
 
 		public void AddLine(Color c, string from, string text)
 		{
-			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
+			var sizeOwner = Game.chrome.renderer.RegularFont.Measure(from);
+			var sizeText = Game.chrome.renderer.RegularFont.Measure(text);
+			
+			if (sizeOwner.X + sizeText.X + 10 <= Chrome.ChatWidth)
+				recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
+			else
+			{
+				StringBuilder sb = new StringBuilder();
+				foreach (var w in text.Split(' '))
+				{
+					if ( Game.chrome.renderer.RegularFont.Measure(sb.ToString() + ' ' + w).X > Chrome.ChatWidth )
+					{
+						recentLines.Add(new ChatLine { Color = c, Owner = from, Text = sb.ToString() } );
+						sb = new StringBuilder();
+						sb.Append(w);
+					}
+					else 
+						sb.Append( ' '  + w);
+				}
+				if (sb.Length != 0)	
+					recentLines.Add(new ChatLine { Color = c, Owner = from, Text = sb.ToString() } );
+			}
+			
 			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
 			Sound.Play(eva.ChatBeep);
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
 	}
 
-	class ChatLine { public Color Color = Color.White; public string Owner, Text; }
+	class ChatLine { public Color Color = Color.White; public string Owner, Text; public bool wrapped = false; }
 }

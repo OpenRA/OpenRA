@@ -31,6 +31,9 @@ namespace OpenRA
 {
 	class Chrome : IHandleInput
 	{
+		//todo: remove when have a real chat widget
+		public static int ChatWidth = 760;
+		
 		public readonly Renderer renderer;
 		public readonly LineRenderer lineRenderer;
 
@@ -187,8 +190,10 @@ namespace OpenRA
 
 		void DrawChat(Rectangle typingArea, Rectangle chatLogArea)
 		{
+			
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
-
+			ChatWidth = chatLogArea.Width - 10;
+			
 			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
 			if (Game.chat.isChatting)
 				RenderChatLine(new ChatLine { Owner = Game.chat.isTeamChat ? "TeamChat:" : "Chat:", Text = Game.chat.typing },
