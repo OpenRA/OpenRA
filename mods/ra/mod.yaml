@@ -47,9 +47,11 @@ Weapons:
 Voices:
 	mods/ra/voices.yaml
 	
-Terrain:
-	mods/ra/terrain.yaml
-	
+TileSets:
+	mods/ra/tileset-sno.yaml: Snow
+	mods/ra/tileset-int.yaml: Interior
+	mods/ra/tileset-tem.yaml: Temperate
+
 Music:
 	mods/ra/music.yaml
 

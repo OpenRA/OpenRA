@@ -237,27 +237,6 @@ World:
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
 		Name: Gems
-	Theater@SNOW:
-		Name:Snow
-		Theater:SNOW
-		Suffix:sno
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:snow.col
-	Theater@TEMPERAT:
-		Name:Temperate
-		Theater:TEMPERAT
-		Suffix:tem
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:temperat.col
-	Theater@INTERIOR:
-		Name:Interior
-		Theater:INTERIOR
-		Suffix:int
-		Templates:templates.ini
-		Tileset:tileSet.til
-		MapColors:temperat.col
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		Types:sc1,sc2,sc3,sc4,sc5,sc6
