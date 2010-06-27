@@ -379,7 +379,7 @@ namespace OpenRA.Editor
 			using (var nmd = new NewMapDialog())
 			{
 				nmd.theater.Items.Clear();
-				nmd.theater.Items.AddRange(Rules.TileSets.Select(a => a.Value.Name).ToArray());
+				nmd.theater.Items.AddRange(Rules.TileSets.Select(a => a.Value.Id).ToArray());
 				nmd.theater.SelectedIndex = 0;
 
 				if (DialogResult.OK == nmd.ShowDialog())
