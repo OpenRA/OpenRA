@@ -144,3 +144,17 @@
 	HiddenUnderFog:
 	RevealsShroud:
 	Burns:
+
+^Bridge:
+	Category: Building
+	Valued:
+		Description: Bridge
+	Selectable:
+		Bounds: 96,96
+	BelowUnits:
+	Building:
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
+		HP: 1000

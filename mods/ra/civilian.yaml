@@ -427,7 +427,6 @@ BRIDGE1:
 		Template: 131
 		DamagedTemplate: 378
 		DestroyedTemplate: 132
-		UseAlternateNames: yes
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
@@ -439,7 +438,6 @@ BRIDGE2:
 		Template: 133
 		DamagedTemplate: 379
 		DestroyedTemplate: 134
-		UseAlternateNames: yes
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2

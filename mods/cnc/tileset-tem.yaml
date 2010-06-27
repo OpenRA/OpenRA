@@ -1203,7 +1203,6 @@ Templates:
 		Id: 165
 		Image: bridge1
 		Size: 4,4
-		Bridge: bridge1
 		Tiles:
 			3: Road
 			4: River
@@ -1220,7 +1219,6 @@ Templates:
 		Id: 166
 		Image: bridge1d
 		Size: 4,4
-		Bridge: bridge1
 		Tiles:
 			3: Road
 			4: River
@@ -1237,7 +1235,6 @@ Templates:
 		Id: 167
 		Image: bridge2
 		Size: 5,5
-		Bridge: bridge2
 		Tiles:
 			0: Road
 			5: Wall
@@ -1256,7 +1253,6 @@ Templates:
 		Id: 168
 		Image: bridge2d
 		Size: 5,5
-		Bridge: bridge2
 		Tiles:
 			0: Road
 			5: Wall

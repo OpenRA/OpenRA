@@ -42,8 +42,6 @@ namespace OpenRA.Mods.RA
 		public readonly ushort DestroyedPlusSouthTemplate;
 		public readonly ushort DestroyedPlusBothTemplate;
 		public readonly string[] ShorePieces = {"br1", "br2"};
-
-		public readonly bool UseAlternateNames = false;
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
 
@@ -82,25 +80,24 @@ namespace OpenRA.Mods.RA
 		ushort currentTemplate;
 		
 		Actor self;
-		BridgeInfo info;
-		Bridge northNeighbour, southNeighbour;
-		
+		BridgeInfo Info;
 		public string Type;
-		
+		Bridge northNeighbour, southNeighbour;
+
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
 			self.RemoveOnDeath = false;
-			this.info = info;
+			this.Info = info;
 			this.Type = self.Info.Name;
 		}
 
 		public void Create(ushort template, Dictionary<int2, byte> subtiles)
 		{
 			currentTemplate = template;
-			if (template == info.DamagedTemplate)
+			if (template == Info.DamagedTemplate)
 				self.Health = (int)(self.World.Defaults.ConditionYellow*self.GetMaxHP());
-			else if (template != info.Template)
+			else if (template != Info.Template)
 				self.Health = 0;
 				
 			// Create a new cache to store the tile data
@@ -113,7 +110,7 @@ namespace OpenRA.Mods.RA
 			}
 			
 			// Cache templates and tiles for the different states
-			foreach (var t in info.Templates)
+			foreach (var t in Info.Templates)
 			{
 				Templates.Add(t,self.World.TileSet.Templates[t]);
 				TileSprites.Add(t,subtiles.ToDictionary(
@@ -132,11 +129,10 @@ namespace OpenRA.Mods.RA
 		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)
 		{
 			// go looking for our neighbors if this is a long bridge.
-			var info = self.Info.Traits.Get<BridgeInfo>();
-			if (info.NorthOffset != null)
-				northNeighbour = GetNeighbor(info.NorthOffset, bridges);
-			if (info.SouthOffset != null)
-				southNeighbour = GetNeighbor(info.SouthOffset, bridges);
+			if (Info.NorthOffset != null)
+				northNeighbour = GetNeighbor(Info.NorthOffset, bridges);
+			if (Info.SouthOffset != null)
+				southNeighbour = GetNeighbor(Info.SouthOffset, bridges);
 		}
 		
 		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
@@ -156,28 +152,23 @@ namespace OpenRA.Mods.RA
 			return b != null && b.self.IsInWorld && b.self.Health > 0;
 		}
 
-		static bool IsLong(Bridge b)
-		{
-			return b != null && b.self.IsInWorld && b.self.Info.Traits.Get<BridgeInfo>().Long;
-		}
-
 		void UpdateState()
 		{			
 			var ds = self.GetDamageState();
 			
 			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
-			if (info.Long && ds != DamageState.Dead &&
-			    ((southNeighbour != null && info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
-				(northNeighbour != null && info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
+			if (Info.Long && ds != DamageState.Dead &&
+			    ((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
+				(northNeighbour != null && Info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
 			{
 				self.Health = 0;
 				ds = DamageState.Dead;
 			}
 			
-			currentTemplate = (ds == DamageState.Half && info.DamagedTemplate > 0) ? info.DamagedTemplate : 
-							  (ds == DamageState.Dead && info.DestroyedTemplate > 0) ? info.DestroyedTemplate : info.Template;
+			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : 
+							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
 
-			if (!(info.Long && ds == DamageState.Dead))
+			if (!(Info.Long && ds == DamageState.Dead))
 				return;
 			
 			// Long bridges have custom art for multiple segments being destroyed
@@ -185,11 +176,11 @@ namespace OpenRA.Mods.RA
 			bool waterToNorth = !IsIntact(northNeighbour);
 						
 			if (waterToSouth && waterToNorth)
-				currentTemplate = info.DestroyedPlusBothTemplate;
+				currentTemplate = Info.DestroyedPlusBothTemplate;
 			else if (waterToNorth)
-				currentTemplate = info.DestroyedPlusNorthTemplate;
+				currentTemplate = Info.DestroyedPlusNorthTemplate;
 			else if (waterToSouth)
-				currentTemplate = info.DestroyedPlusSouthTemplate;		
+				currentTemplate = Info.DestroyedPlusSouthTemplate;		
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

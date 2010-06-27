@@ -140,44 +140,44 @@ V18:
 		Armor: wood
 
 BRIDGE1:
+	Inherits: ^Bridge
 	Bridge:
-		UseAlternateNames: yes
-	Category: Building
-	Selectable:
-	BelowUnits:
+		Template: 165
+		DestroyedTemplate: 166
 	Building:
-		Footprint: _____ _____ _____
-		Dimensions: 5,3
-		HP: 1000
+		Footprint: ____ ____ ____ ____
+		Dimensions: 4,4
+	Selectable:
+		Bounds: 96,96
 
 BRIDGE2:
+	Inherits: ^Bridge
 	Bridge:
-		UseAlternateNames: yes
-	Category: Building
-	Selectable:
-	BelowUnits:
+		Template: 167
+		DestroyedTemplate: 168
 	Building:
-		Footprint: _____ _____
-		Dimensions: 5,2
-		HP: 1000
+		Footprint: _____ _____ _____ _____ _____
+		Dimensions: 5,5
+	Selectable:
+		Bounds: 120,120
 BRIDGE3:
+	Inherits: ^Bridge
 	Bridge:
-		UseAlternateNames: yes
-	Category: Building
-	Selectable:
-	BelowUnits:
+		Template: 169
+		DestroyedTemplate: 170
 	Building:
-		Footprint: _____ _____ _____
-		Dimensions: 5,3
-		HP: 1000
+		Footprint: ______ ______ ______ ______ ______
+		Dimensions: 6,5
+	Selectable:
+		Bounds: 144,120
 
 BRIDGE4:
+	Inherits: ^Bridge
 	Bridge:
-		UseAlternateNames: yes
-	Category: Building
-	Selectable:
-	BelowUnits:
+		Template: 171
+		DestroyedTemplate: 172
 	Building:
-		Footprint: _____ _____
-		Dimensions: 5,2
-		HP: 1000
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
+	Selectable:
+		Bounds: 144,96

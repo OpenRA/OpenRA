@@ -33,23 +33,20 @@ namespace OpenRA.Mods.RA
 
 	class BridgeLayer : ILoadWorldHook, ITerrainTypeModifier
 	{
-		// for tricky things like bridges.
-		Bridge[,] Bridges;
-		
 		readonly BridgeLayerInfo Info;
 		readonly World world;
+		Dictionary<ushort, string> BridgeTypes = new Dictionary<ushort, string>();
+		Bridge[,] Bridges;
+		
 		public BridgeLayer(Actor self, BridgeLayerInfo Info)
 		{
 			this.Info = Info;
 			this.world = self.World;
 		}
-		
-		static Dictionary<ushort, string> BridgeTypes;
 
 		public void WorldLoaded(World w)
 		{
 			Bridges = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
-			BridgeTypes = new Dictionary<ushort, string>();
 			
 			// Build a list of templates that should be overlayed with bridges
 			foreach(var bridge in Info.Bridges)

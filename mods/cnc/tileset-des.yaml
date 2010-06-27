@@ -1218,7 +1218,6 @@ Templates:
 		Id: 169
 		Image: bridge3
 		Size: 6,5
-		Bridge: bridge3
 		Tiles:
 			4: Road
 			7: Rock
@@ -1241,7 +1240,6 @@ Templates:
 		Id: 170
 		Image: bridge3d
 		Size: 6,5
-		Bridge: bridge3
 		Tiles:
 			4: Road
 			7: Rock
@@ -1264,7 +1262,6 @@ Templates:
 		Id: 171
 		Image: bridge4
 		Size: 6,4
-		Bridge: bridge4
 		Tiles:
 			1: Road
 			3: Tree
@@ -1288,7 +1285,6 @@ Templates:
 		Id: 172
 		Image: bridge4d
 		Size: 6,4
-		Bridge: bridge4
 		Tiles:
 			1: Road
 			3: Tree
