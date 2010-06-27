@@ -55,11 +55,6 @@ Terrain:
 		Buildable: False
 		AcceptSmudge: True
 		Color: 161, 226, 28
-	TerrainType@Special:
-		Type: Special
-		Buildable: False
-		AcceptSmudge: False
-		Color: 124, 124, 124
 
 Templates:
 	Template@255:

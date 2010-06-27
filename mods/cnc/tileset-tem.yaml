@@ -55,11 +55,6 @@ Terrain:
 		Buildable: False
 		AcceptSmudge: True
 		Color: 161, 226, 28
-	TerrainType@Special:
-		Type: Special
-		Buildable: False
-		AcceptSmudge: False
-		Color: 124, 124, 124
 
 Templates:
 	Template@255:
@@ -1285,10 +1280,3 @@ Templates:
 			3: Water
 			4: River
 			6: Water
-	Template@65534:
-		Id: 65534
-		Image: bogus
-		Size: 1,1
-		Tiles:
-			0: Special
-

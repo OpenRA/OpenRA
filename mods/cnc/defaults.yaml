@@ -3,8 +3,8 @@
 	Unit:
 		ROT: 5
 	Mobile:
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River, Special
-		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 50%, 40%, 0%, 100%
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 50%, 40%, 0%
 	Selectable: 
 		Voice: VehicleVoice
 	Repairable: 
@@ -22,8 +22,8 @@
 		ROT: 5
 	Mobile:
 		Crushes: wall
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River, Special
-		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 70%, 70%, 0%, 100%
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 70%, 70%, 0%
 	Selectable: 
 		Voice: VehicleVoice
 	Repairable: 
@@ -46,8 +46,8 @@
 	GainsExperience:
 	GivesExperience:
 	MobileAir:
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River, Special
-		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
 	AvoidsAA:
 
 ^Infantry:
@@ -56,8 +56,8 @@
 		Armor: none
 		Sight: 4
 	Mobile:
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River, Special
-		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 90%, 80%, 0%, 100%
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 90%, 80%, 0%
 	Selectable:
 	RenderInfantry:
 	AutoTarget:

@@ -55,11 +55,6 @@ Terrain:
 		Buildable: False
 		AcceptSmudge: True
 		Color: 148, 128, 96
-	TerrainType@Special:
-		Type: Special
-		Buildable: False
-		AcceptSmudge: False
-		Color: 124, 124, 124
 
 Templates:
 	Template@255:
@@ -2890,10 +2885,4 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
-	Template@65534:
-		Id: 65534
-		Image: bogus
-		Size: 1,1
-		Tiles:
-			0: Special
 
