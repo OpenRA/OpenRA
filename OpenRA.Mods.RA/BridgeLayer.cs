@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 {
 	class BridgeLayerInfo : ITraitInfo
 	{
-		public readonly string[] Bridges = {"br1", "br2", "br3", "bridge1", "bridge2"};
+		public readonly string[] Bridges = {"bridge1", "bridge2"};
 		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
 	}
 
@@ -95,21 +95,26 @@ namespace OpenRA.Mods.RA
 			var bridge = w.CreateActor(BridgeTypes[tile], new int2(ni, nj), w.WorldActor.Owner).traits.Get<Bridge>();
 			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();
 			
-			// Loop through the cells on the bridge template; mark each cell that is part
-			// of the bridge and add to the bridges array
-			for (var x = ni; x < ni + template.Size.X; x++)
-				for (var y = nj; y < nj + template.Size.Y; y++)
-				{
-					// This isn't the bridge we're looking for
-					if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].type != tile)
-						continue;
-					
-					Log.Write("debug", "Adding tile {0} {1} for type {2}", x,y,tile);
-					
-					subTiles.Add(new int2(x,y),w.Map.MapTiles[x, y].image);
-					Bridges[x,y] = bridge;
-				}
-			
+			// For each subtile in the template
+			for (byte ind = 0; ind < template.Size.X*template.Size.Y; ind++)
+			{
+				// Is this tile actually included in the bridge template?
+				if (!template.Tiles.Keys.Contains(ind))
+					continue;
+				
+				// Where do we expect to find the subtile 
+				var x = ni + ind % template.Size.X;
+				var y = nj + ind / template.Size.X;
+				
+				// This isn't the bridge you're looking for
+				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].image != ind)
+					continue;
+				
+				Log.Write("debug", "Adding tile {0} {1} for type {2}", x,y,tile);
+				
+				subTiles.Add(new int2(x,y),ind);
+				Bridges[x,y] = bridge;
+			}
 			bridge.Create(tile, subTiles);
 		}
 		

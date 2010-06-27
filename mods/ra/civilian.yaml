@@ -411,6 +411,7 @@ BR3:
 	Inherits: ^Bridge
 	Bridge:
 		Long: yes
+		ShorePieces: br1,br2
 		Template: 241
 		DamagedTemplate: 242
 		DestroyedTemplate: 243

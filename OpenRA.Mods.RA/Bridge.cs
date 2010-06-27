@@ -34,7 +34,6 @@ namespace OpenRA.Mods.RA
 		public readonly bool Long = false;
 		
 		public readonly ushort Template;
-		public readonly float DamagedThreshold = 0.5f;
 		public readonly ushort DamagedTemplate;
 		public readonly ushort DestroyedTemplate;
 		
@@ -42,6 +41,7 @@ namespace OpenRA.Mods.RA
 		public readonly ushort DestroyedPlusNorthTemplate;
 		public readonly ushort DestroyedPlusSouthTemplate;
 		public readonly ushort DestroyedPlusBothTemplate;
+		public readonly string[] ShorePieces = {"br1", "br2"};
 
 		public readonly bool UseAlternateNames = false;
 		public readonly int[] NorthOffset = null;
@@ -85,21 +85,24 @@ namespace OpenRA.Mods.RA
 		BridgeInfo info;
 		Bridge northNeighbour, southNeighbour;
 		
+		public string Type;
+		
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
 			self.RemoveOnDeath = false;
 			this.info = info;
+			this.Type = self.Info.Name;
 		}
 
 		public void Create(ushort template, Dictionary<int2, byte> subtiles)
 		{
 			currentTemplate = template;
 			if (template == info.DamagedTemplate)
-				self.Health = (int)(info.DamagedThreshold*self.GetMaxHP());
+				self.Health = (int)(self.World.Defaults.ConditionYellow*self.GetMaxHP());
 			else if (template != info.Template)
 				self.Health = 0;
-						
+				
 			// Create a new cache to store the tile data
 			if (cachedTileset != self.World.Map.Tileset)
 			{
@@ -148,7 +151,7 @@ namespace OpenRA.Mods.RA
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
 		}
 		
-		static bool IsIntact(Bridge b)
+		bool IsIntact(Bridge b)
 		{
 			return b != null && b.self.IsInWorld && b.self.Health > 0;
 		}
@@ -159,32 +162,44 @@ namespace OpenRA.Mods.RA
 		}
 
 		void UpdateState()
-		{
-			/*var ds = self.GetDamageState();
-			if (!self.Info.Traits.Get<BridgeInfo>().Long)
+		{			
+			var ds = self.GetDamageState();
+			
+			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
+			if (info.Long && ds != DamageState.Dead &&
+			    ((southNeighbour != null && info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
+				(northNeighbour != null && info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
 			{
-				state = (int)ds; 
-				return;
+				self.Health = 0;
+				ds = DamageState.Dead;
 			}
+			
+			currentTemplate = (ds == DamageState.Half && info.DamagedTemplate > 0) ? info.DamagedTemplate : 
+							  (ds == DamageState.Dead && info.DestroyedTemplate > 0) ? info.DestroyedTemplate : info.Template;
 
-			bool waterToSouth = !IsIntact(southNeighbour) && (!IsLong(southNeighbour) || !IsIntact(this));
-			bool waterToNorth = !IsIntact(northNeighbour) && (!IsLong(northNeighbour) || !IsIntact(this));
-
-			if (waterToSouth && waterToNorth) { state = 5; return; }
-			if (waterToNorth) { state = 4; return; }
-			if (waterToSouth) { state = 3; return; }
-			state = (int)ds;
-			*/
+			if (!(info.Long && ds == DamageState.Dead))
+				return;
+			
+			// Long bridges have custom art for multiple segments being destroyed
+			bool waterToSouth = !IsIntact(southNeighbour);
+			bool waterToNorth = !IsIntact(northNeighbour);
+						
+			if (waterToSouth && waterToNorth)
+				currentTemplate = info.DestroyedPlusBothTemplate;
+			else if (waterToNorth)
+				currentTemplate = info.DestroyedPlusNorthTemplate;
+			else if (waterToSouth)
+				currentTemplate = info.DestroyedPlusSouthTemplate;		
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			/*if (e.DamageStateChanged)
+			if (e.DamageStateChanged)
 			{
 				UpdateState();
 				if (northNeighbour != null) northNeighbour.UpdateState();
 				if (southNeighbour != null) southNeighbour.UpdateState();
-			}*/
+			}
 		}
 	}
 }
