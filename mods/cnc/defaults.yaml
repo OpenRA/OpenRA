@@ -97,6 +97,15 @@
 	MustBeDestroyed:
 	GivesExperience:
 
+^CivBuilding:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	Valued:
+		Description: Civilian Building
+
 ^Wall:
 	Category: Building
 	Building:
@@ -131,6 +140,15 @@
 		Footprint: __ x_
 		Dimensions: 2,2
 
+^Rock:
+	Category: Building
+	Valued:
+		Description: Rock
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
 ^Husk:
 	Category: Vehicle
 	Unit:

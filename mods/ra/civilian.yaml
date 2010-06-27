@@ -1,5 +1,5 @@
 FCOM:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -12,350 +12,90 @@ FCOM:
 	Bib:
 
 V01:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
-		Repairable: false
-		HP: 400
-		Armor: wood
-
+	Valued:
+		Description: Church
 V02:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V03:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V04:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V05:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V06:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V07:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V08:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V09:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V10:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V11:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V12:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V13:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V14:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V15:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V16:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V17:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V18:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-
-V19:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-
-V20:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V21:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V22:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V23:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V24:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V25:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V26:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V27:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V28:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V29:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V30:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V31:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V32:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V33:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V34:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V35:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V36:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
-
-V37:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
-		-Dimensions:
-		-Footprint:
-	RenderBuilding:
-		Image: FCOM
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 BARL:
 	Inherits: ^Building
@@ -367,6 +107,8 @@ BARL:
 		Adjacent: 0
 		HP: 10
 	Explodes:
+	Valued:
+		Description: Explosive Barrel
 
 BRL3:
 	Inherits: ^Building
@@ -378,9 +120,11 @@ BRL3:
 		Adjacent: 0
 		HP: 10
 	Explodes:
+	Valued:
+		Description: Explosive Barrel
 
 MISS:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Selectable:
 		Priority: 0
 	Building:
@@ -430,8 +174,8 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
-	Selectable:
-		Bounds: 120,48
+#	Selectable:
+#		Bounds: 120,48
 BRIDGE2:
 	Inherits: ^Bridge
 	Bridge:
@@ -441,5 +185,5 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
-	Selectable:
-		Bounds: 120,48
+#	Selectable:
+#		Bounds: 120,48

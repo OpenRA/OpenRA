@@ -1,143 +1,106 @@
 V01:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Valued:
+		Description: Church
 
 V02:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V03:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V04:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V05:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V06:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V07:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-		Repairable: false
-		HP: 400
-		Armor: wood
 
 V08:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V09:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V10:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V11:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V12:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V13:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
 
 V14:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V15:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V16:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V17:
-	Inherits: ^Building
-	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
 
 V18:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
+	Valued:
+		Description: Field
+
+# TODO: Remap v20 -> v37 down to v1 -> v18 for desert theater
+
+BARB:
+	Inherits: ^Wall
 	Building:
-		Repairable: false
-		HP: 400
-		Armor: wood
+		HP: 100
+		Armor: none
+	Valued:
+		Description: Wire Fence
+WOOD:
+	Inherits: ^Wall
+	Building:
+		HP: 100
+		Armor: none
+	Valued:
+		Description: Wooden Fence
 
 BRIDGE1:
 	Inherits: ^Bridge
@@ -147,8 +110,8 @@ BRIDGE1:
 	Building:
 		Footprint: ____ ____ ____ ____
 		Dimensions: 4,4
-	Selectable:
-		Bounds: 96,96
+#	Selectable:
+#		Bounds: 96,96
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -158,8 +121,9 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____ _____ _____ _____
 		Dimensions: 5,5
-	Selectable:
-		Bounds: 120,120
+#	Selectable:
+#		Bounds: 120,120
+
 BRIDGE3:
 	Inherits: ^Bridge
 	Bridge:
@@ -168,8 +132,8 @@ BRIDGE3:
 	Building:
 		Footprint: ______ ______ ______ ______ ______
 		Dimensions: 6,5
-	Selectable:
-		Bounds: 144,120
+#	Selectable:
+#		Bounds: 144,120
 
 BRIDGE4:
 	Inherits: ^Bridge
@@ -179,5 +143,5 @@ BRIDGE4:
 	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
-	Selectable:
-		Bounds: 144,96
+#	Selectable:
+#		Bounds: 144,96

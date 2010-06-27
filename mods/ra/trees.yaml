@@ -122,6 +122,8 @@ TC05:
 
 MINE:
 	Inherits: ^Tree
+	Valued:
+		Description: Ore Mine
 	SeedsResource:
 
 BOXES01:

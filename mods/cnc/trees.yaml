@@ -4,28 +4,34 @@ SPLIT2:
 		Palette: terrain
 	SeedsResource:
 		ResourceType:Tiberium
+	Valued:
+		Description: Blossom Tree
 	-Selectable:
+
 SPLIT3:
 	Inherits: ^Building
 	RenderBuilding:
 		Palette: terrain
 	SeedsResource:
 		ResourceType:Tiberium
+	Valued:
+		Description: Blossom Tree
 	-Selectable:
+
 ROCK1:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK2:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK3:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK4:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK5:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK6:
-	Inherits: ^Tree
+	Inherits: ^Rock
 ROCK7:
-	Inherits: ^Tree
+	Inherits: ^Rock
 
 T01:
 	Inherits: ^Tree

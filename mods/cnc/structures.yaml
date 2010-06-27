@@ -405,18 +405,6 @@ OBLI:
 	-RenderBuilding:
 	RenderRangeCircle:
 
-BARB:
-	Inherits: ^Wall
-	Building:
-		HP: 100
-		Armor: none
-
-WOOD:
-	Inherits: ^Wall
-	Building:
-		HP: 100
-		Armor: none
-
 CYCL:
 	Category: Defense
 	Inherits: ^Wall

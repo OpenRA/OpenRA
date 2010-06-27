@@ -115,6 +115,15 @@
 		DamageStates: 2
 	GivesExperience:
 
+^CivBuilding:
+	Inherits: ^Building
+	Building:
+		Repairable: false
+		HP: 400
+		Armor: wood
+	Valued:
+		Description: Civilian Building
+
 ^Tree:
 	Category: Building
 	Valued:
@@ -144,8 +153,8 @@
 	Category: Building
 	Valued:
 		Description: Bridge
-	Selectable:
-		Bounds: 96,48
+#	Selectable:
+#		Bounds: 96,48
 	BelowUnits:
 	Building:
 		Footprint: ____ ____
