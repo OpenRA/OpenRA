@@ -157,7 +157,7 @@ namespace OpenRA
 			world = new World(manifest, map);
 			Timer.Time("world: {0}");
 
-			SequenceProvider.Initialize(manifest.Sequences);
+			SequenceProvider.Initialize(manifest.Sequences, map.Theater);
 			Timer.Time("ChromeProv, SeqProv: {0}");
 
 			chrome = new Chrome(renderer, manifest);

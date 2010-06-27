@@ -31,12 +31,14 @@ namespace OpenRA.Graphics
 	{
 		static Dictionary<string, Dictionary<string, Sequence>> units;
 		static Dictionary<string, CursorSequence> cursors;
+		static string currentTheater;
 
-		public static void Initialize(params string[] sequenceFiles)
+		public static void Initialize(string[] sequenceFiles, string theater)
 		{
 			units = new Dictionary<string, Dictionary<string, Sequence>>();
 			cursors = new Dictionary<string, CursorSequence>();
-
+			currentTheater = theater;
+			
 			foreach (var f in sequenceFiles)
 				LoadSequenceSource(f);
 		}
@@ -76,16 +78,23 @@ namespace OpenRA.Graphics
 
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
-			try { return units[unitName][sequenceName]; }
+			try { return units[unitName+"@"+currentTheater][sequenceName]; }
 			catch (KeyNotFoundException)
 			{
-				throw new InvalidOperationException(
-					"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
+				try { return units[unitName][sequenceName]; }
+				catch (KeyNotFoundException)
+				{
+					throw new InvalidOperationException(
+						"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
+				}
 			}
 		}
 
 		public static bool HasSequence(string unit, string seq)
 		{
+			if (units.ContainsKey(unit+"@"+currentTheater))
+				return units[unit+"@"+currentTheater].ContainsKey(seq);
+			
 			return units[unit].ContainsKey(seq);
 		}
 

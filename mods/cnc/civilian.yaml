@@ -85,7 +85,12 @@ V18:
 	Valued:
 		Description: Field
 
-# TODO: Remap v20 -> v37 down to v1 -> v18 for desert theater
+V31:
+	Inherits: ^CivBuilding
+V32:
+	Inherits: ^CivBuilding
+V33:
+	Inherits: ^CivBuilding
 
 BARB:
 	Inherits: ^Wall

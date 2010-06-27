@@ -133,79 +133,230 @@
   <unit name="v01">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v01@DESERT">
+    <sequence name="idle" start="0" length="1" src="v25" />
+    <sequence name="damaged-idle" start="1" length="1" src="v25" />
+    <sequence name="critical-idle" start="2" length="1" src="v25" />
   </unit>
   <unit name="v02">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v02@DESERT">
+    <sequence name="idle" start="0" length="1" src="v20" />
+    <sequence name="damaged-idle" start="1" length="1" src="v20" />
+    <sequence name="critical-idle" start="2" length="1" src="v20" />
   </unit>
   <unit name="v03">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v03@DESERT">
+    <sequence name="idle" start="0" length="3" src="v21" />
+    <sequence name="damaged-idle" start="3" length="3" src="v21" />
+    <sequence name="critical-idle" start="6" length="1" src="v21" />
   </unit>
   <unit name="v04">
     <sequence name="idle" start="0" length="1" />
-    <sequence name="damaged-idle" start="2" length="1" />
-    <sequence name="active" start="1" length="1" />
-    <sequence name="damaged-active" start="3" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v04@DESERT">
+    <sequence name="idle" start="0" length="1" src="v24" />
+    <sequence name="damaged-idle" start="1" length="1" src="v24" />
+    <sequence name="critical-idle" start="2" length="1" src="v24" />
   </unit>
   <unit name="v05">
     <sequence name="idle" start="0" length="1" />
-    <sequence name="damaged-idle" start="2" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v05@DESERT">
+    <sequence name="idle" start="0" length="3" src="v22" />
+    <sequence name="damaged-idle" start="3" length="3" src="v22" />
+    <sequence name="critical-idle" start="6" length="1" src="v22" />
   </unit>
   <unit name="v06">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v06@DESERT">
+    <sequence name="idle" start="0" length="1" src="v26" />
+    <sequence name="damaged-idle" start="1" length="1" src="v26" />
+    <sequence name="critical-idle" start="2" length="1" src="v26" />
   </unit>
   <unit name="v07">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="2" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v07@DESERT">
+    <sequence name="idle" start="0" length="1" src="v30" />
+    <sequence name="damaged-idle" start="2" length="1" src="v30" />
+    <sequence name="critical-idle" start="2" length="1" src="v30" />
   </unit>
   <unit name="v08">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v08@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
   </unit>
   <unit name="v09">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v09@DESERT">
+    <sequence name="idle" start="0" length="1" src="v27" />
+    <sequence name="damaged-idle" start="1" length="1" src="v27" />
+    <sequence name="critical-idle" start="2" length="1" src="v27" />
   </unit>
   <unit name="v10">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v10@DESERT">
+    <sequence name="idle" start="0" length="1" src="v28" />
+    <sequence name="damaged-idle" start="1" length="1" src="v28" />
+    <sequence name="critical-idle" start="2" length="1" src="v28" />
   </unit>
   <unit name="v11">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v11@DESERT">
+    <sequence name="idle" start="0" length="1" src="v29" />
+    <sequence name="damaged-idle" start="1" length="1" src="v29" />
+    <sequence name="critical-idle" start="2" length="1" src="v29" />
   </unit>
   <unit name="v12">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v12@DESERT">
+    <sequence name="idle" start="0" length="1" src="v34" />
+    <sequence name="damaged-idle" start="1" length="1" src="v34" />
+    <sequence name="critical-idle" start="2" length="1" src="v34" />
   </unit>
   <unit name="v13">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
+  <unit name="v13@DESERT">
+    <sequence name="idle" start="0" length="1" src="v35" />
+    <sequence name="damaged-idle" start="1" length="1" src="v35" />
+    <sequence name="critical-idle" start="2" length="1" src="v35" />
+  </unit>
+
+<!-- Buildings that can't be mapped from tem into desert (Fields) -->
   <unit name="v14">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
   <unit name="v15">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
   <unit name="v16">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
   <unit name="v17">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
   <unit name="v18">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
   </unit>
-  <unit name="v19">
-    <sequence name="idle" start="0" length="14" />
-    <sequence name="damaged-idle" start="14" length="15" />
+  <unit name="v14@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
+  </unit>
+  <unit name="v15@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
+  </unit>
+  <unit name="v16@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
+  </unit>
+  <unit name="v17@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
+  </unit>
+  <unit name="v18@DESERT">
+    <sequence name="idle" start="0" length="1" src="v23" />
+    <sequence name="damaged-idle" start="1" length="1" src="v23" />
+    <sequence name="critical-idle" start="2" length="1" src="v23" />
+  </unit>
+
+<!-- Buildings that can't be mapped from desert into tem -->
+   <unit name="v31">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v32">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+  <unit name="v33">
+    <sequence name="idle" start="0" length="1" />
+    <sequence name="damaged-idle" start="1" length="1" />
+    <sequence name="critical-idle" start="2" length="1" />
+  </unit>
+ <unit name="v31@TEMPERAT">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
+  </unit>
+  <unit name="v32@TEMPERAT">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
+  </unit>
+  <unit name="v33@TEMPERAT">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
+  </unit>
+ <unit name="v31@WINTER">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
+  </unit>
+  <unit name="v32@WINTER">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
+  </unit>
+  <unit name="v33@WINTER">
+    <sequence name="idle" start="0" length="1" src="v05" />
+    <sequence name="damaged-idle" start="1" length="1" src="v05" />
+    <sequence name="critical-idle" start="2" length="1" src="v05" />
   </unit>
 </sequences>
