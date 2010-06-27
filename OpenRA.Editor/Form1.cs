@@ -131,10 +131,9 @@ namespace OpenRA.Editor
 					tilePalette.Controls.Add(ibox);
 
 					tt.SetToolTip(ibox,
-						"{1}:{0} ({3}x{4} {2})".F(
+						"{1}:{0} ({2}x{3})".F(
 						template.Image,
 						template.Id,
-						template.Bridge,
 						template.Size.X,
 						template.Size.Y));
 				}
