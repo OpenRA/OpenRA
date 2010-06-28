@@ -73,29 +73,19 @@ V13:
 	Inherits: ^CivBuilding
 
 V14:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V15:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V16:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V17:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V18:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 BARL:
 	Inherits: ^Building

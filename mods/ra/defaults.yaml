@@ -124,6 +124,12 @@
 	Valued:
 		Description: Civilian Building
 
+^CivField:
+	Inherits: ^CivBuilding
+	-Selectable:
+	Valued:
+		Description: Field
+
 ^Tree:
 	Category: Building
 	Valued:
