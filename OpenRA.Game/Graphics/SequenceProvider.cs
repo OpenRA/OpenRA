@@ -78,23 +78,16 @@ namespace OpenRA.Graphics
 
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
-			try { return units[unitName+"@"+currentTheater][sequenceName]; }
+			try { return units[unitName][sequenceName]; }
 			catch (KeyNotFoundException)
 			{
-				try { return units[unitName][sequenceName]; }
-				catch (KeyNotFoundException)
-				{
-					throw new InvalidOperationException(
-						"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
-				}
+				throw new InvalidOperationException(
+					"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
 			}
 		}
 
 		public static bool HasSequence(string unit, string seq)
 		{
-			if (units.ContainsKey(unit+"@"+currentTheater))
-				return units[unit+"@"+currentTheater].ContainsKey(seq);
-			
 			return units[unit].ContainsKey(seq);
 		}
 

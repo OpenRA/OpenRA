@@ -1,5 +1,8 @@
 V01:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v25
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -8,6 +11,9 @@ V01:
 
 V02:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v20
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -17,80 +23,124 @@ V03:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v21
 
 V04:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v24
 
 V05:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v22
 
 V06:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v26
 
 V07:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v30
 
 V08:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v23
 
 V09:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v27
 
 V10:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v28
 
 V11:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v29
 
 V12:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v34
 
 V13:
 	Inherits: ^CivBuilding
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v35
 
 V14:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V15:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V16:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V17:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V18:
-	Inherits: ^CivBuilding
-	Valued:
-		Description: Field
+	Inherits: ^CivField
 
 V31:
 	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+		Image: v05
+		OverrideTheater: DESERT
+		OverrideImage: v31
 V32:
 	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+		Image: v05
+		OverrideTheater: DESERT
+		OverrideImage: v32
 V33:
 	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+		Image: v05
+		OverrideTheater: DESERT
+		OverrideImage: v33
 
 BARB:
 	Inherits: ^Wall

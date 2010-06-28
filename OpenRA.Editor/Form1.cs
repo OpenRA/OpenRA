@@ -147,7 +147,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
-					var template = RenderActor(info, tileset.TileSuffix, palette);
+					var template = RenderActor(info, tileset, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -241,10 +241,17 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		static ActorTemplate RenderActor(ActorInfo info, string ext, Palette p)
+		static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
 		{
-			var image = info.Traits.Get<RenderSimpleInfo>().Image ?? info.Name;
-			using (var s = FileSystem.OpenWithExts(image, "." + ext, ".shp"))
+			var ri = info.Traits.Get<RenderSimpleInfo>();
+			string image = null;
+			if (ri.OverrideTheater != null)
+				for (int i = 0; i < ri.OverrideTheater.Length; i++)
+					if (ri.OverrideTheater[i] == tileset.Id)
+						image = ri.OverrideImage[i];
+			
+			image = image ?? ri.Image ?? info.Name;
+			using (var s = FileSystem.OpenWithExts(image, "." + tileset.TileSuffix, ".shp"))
 			{
 				var shp = new ShpReader(s);
 				var frame = shp[0];

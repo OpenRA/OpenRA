@@ -106,6 +106,15 @@
 	Valued:
 		Description: Civilian Building
 
+^CivField:
+	Inherits: ^CivBuilding
+	-Selectable:
+	Valued:
+		Description: Field
+	RenderBuilding:
+		OverrideTheater: DESERT
+		OverrideImage: v23
+
 ^Wall:
 	Category: Building
 	Building:

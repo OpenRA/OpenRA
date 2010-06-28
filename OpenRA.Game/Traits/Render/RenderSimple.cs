@@ -27,6 +27,8 @@ namespace OpenRA.Traits
 	public abstract class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
+		public readonly string[] OverrideTheater = null;
+		public readonly string[] OverrideImage = null;
 		public readonly string Palette = null;
 		public abstract object Create(ActorInitializer init);
 	}
@@ -36,9 +38,19 @@ namespace OpenRA.Traits
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = value; } }
 
+		string cachedImage = null;
 		public string GetImage(Actor self)
 		{
-			return self.Info.Traits.Get<RenderSimpleInfo>().Image ?? self.Info.Name;
+			if (cachedImage != null)
+				return cachedImage;
+			
+			var Info = self.Info.Traits.Get<RenderSimpleInfo>();
+			if (Info.OverrideTheater != null)
+				for (int i = 0; i < Info.OverrideTheater.Length; i++)
+					if (Info.OverrideTheater[i] == self.World.Map.Theater)
+						return cachedImage = Info.OverrideImage[i];
+			
+			return cachedImage = Info.Image ?? self.Info.Name;
 		}
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
