@@ -152,6 +152,8 @@ namespace OpenRA.Mods.RA
 			return b != null && b.self.IsInWorld && b.self.Health > 0;
 		}
 
+		
+		bool dead = false;
 		void UpdateState()
 		{			
 			var ds = self.GetDamageState();
@@ -163,6 +165,15 @@ namespace OpenRA.Mods.RA
 			{
 				self.Health = 0;
 				ds = DamageState.Dead;
+			}
+			
+			if (ds == DamageState.Dead && !dead)
+			{
+				dead = true;
+				
+				// Kill any units on the bridge
+				foreach (var c in TileSprites[currentTemplate].Keys)
+					self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(c).Do(a => a.InflictDamage(self, a.Health, null));
 			}
 			
 			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : 
