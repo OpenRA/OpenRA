@@ -42,6 +42,7 @@ do
             wget http://open-ra.org/packages/ra-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
             unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
+            rm ra-packages.zip
             break;;
         n|N) break;;
         *) echo "Please enter y or n.";;
@@ -56,6 +57,7 @@ do
             wget http://open-ra.org/packages/cnc-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
             unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
+            rm ra-packages.zip
             break;;
         n|N) break;;
         *) echo "Please enter y or n.";;
@@ -68,12 +70,8 @@ gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
 gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
 gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
 
-echo "#!/bin/sh" > openra
-echo "cd $RPM_BUILD_ROOT/usr/share/openra" >> openra
-echo "mono $RPM_BUILD_ROOT/usr/share/openra/OpenRA.Game.exe" >> openra
-install -m +rx openra $RPM_BUILD_ROOT/usr/bin/
-
 %files
+/usr/bin/openra
 /usr/share/openra/*.exe
 /usr/share/openra/*.ttf
 /usr/share/openra/*.dll
@@ -81,6 +79,3 @@ install -m +rx openra $RPM_BUILD_ROOT/usr/bin/
 /usr/share/openra/shaders/
 /usr/share/openra/mods/
 /usr/share/openra/thirdparty/
-
-%postun
-rm $(RPM_BUILD_ROOT)/usr/bin/openra
