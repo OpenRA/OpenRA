@@ -6,6 +6,7 @@ prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
 bindir = $(prefix)/bin
+BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
@@ -118,7 +119,7 @@ install: all
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(INSTALL_DIR) >> openra
 	@echo "mono "$(INSTALL_DIR)"/OpenRA.Game.exe" >> openra
-	@$(INSTALL_PROGRAM) -m +rx openra $(bindir)
+	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
 	@echo "OpenRA is now installed. You will now want to download"
 	@echo "http://open-ra.org/packages/ra-packages.zip and"
