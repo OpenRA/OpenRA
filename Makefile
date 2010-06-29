@@ -117,8 +117,8 @@ install: all
 	@cp -r thirdparty $(INSTALL_DIR)
 	
 	@echo "#!/bin/sh" > openra
-	@echo "cd "$(INSTALL_DIR) >> openra
-	@echo "mono "$(INSTALL_DIR)"/OpenRA.Game.exe" >> openra
+	@echo "cd "$(datadir)"/openra" >> openra
+	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe" >> openra
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
