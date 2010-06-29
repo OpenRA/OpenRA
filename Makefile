@@ -114,6 +114,12 @@ install: all
 	@cp *.ttf $(INSTALL_DIR)
 	@-cp *.ini $(INSTALL_DIR)
 	@cp -r thirdparty $(INSTALL_DIR)
+	
+	@echo "#!/bin/sh" > openra
+	@echo "cd "$(INSTALL_DIR) >> openra
+	@echo "mono "$(INSTALL_DIR)"/OpenRA.Game.exe" >> openra
+	@$(INSTALL_PROGRAM) -m +rx openra $(bindir)
+		
 	@echo "OpenRA is now installed. You will now want to download"
 	@echo "http://open-ra.org/packages/ra-packages.zip and"
 	@echo "http://open-ra.org/packages/cnc-packages.zip"
