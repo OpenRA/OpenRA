@@ -23,6 +23,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -47,15 +48,17 @@ namespace OpenRA.Widgets
 			var text = actor.Info.Traits.Contains<ValuedInfo>()
 				? actor.Info.Traits.Get<ValuedInfo>().Description
 				: actor.Info.Name;
-			var text2 = (actor.Owner == world.LocalPlayer)
-				? "" : (actor.Owner.NonCombatant ? "{0}" : "{0} ({1})").F(actor.Owner.PlayerName, world.LocalPlayer.Stances[actor.Owner]);
-
+			var text2 = (actor.Owner.NonCombatant)
+				? "" : "{0}".F(actor.Owner.PlayerName);
+			var text3 = (actor.Owner == world.LocalPlayer || actor.Owner.NonCombatant)
+				? "" : " ({0})".F(world.LocalPlayer.Stances[actor.Owner]);
 			var renderer = Game.chrome.renderer;
 
 			var sz = renderer.BoldFont.Measure(text);
 			var sz2 = renderer.RegularFont.Measure(text2);
-
-			sz.X = Math.Max(sz.X, sz2.X);
+			var sz3 = renderer.RegularFont.Measure(text3);
+						
+			sz.X = Math.Max(sz.X, sz2.X + sz3.X + 35);
 
 			if (text2 != "") sz.Y += sz2.Y + 2;
 
@@ -68,9 +71,18 @@ namespace OpenRA.Widgets
 
 			renderer.BoldFont.DrawText(text,
 				new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 30), Color.White);
-			renderer.RegularFont.DrawText(text2,
-				new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 50), Color.White);
+			
+			if (text2 != "")
+			{
+				renderer.RegularFont.DrawText(text2,
+					new float2(Game.chrome.lastMousePos.X + 65, Game.chrome.lastMousePos.Y + 50), actor.Owner.Color);
+				
+				renderer.RegularFont.DrawText(text3,
+					new float2(Game.chrome.lastMousePos.X + 65 + sz2.X, Game.chrome.lastMousePos.Y + 50), Color.White);
 
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, "flags", actor.Owner.Country.Race), new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 50));
+			}
+			
 			renderer.RgbaSpriteRenderer.Flush();
 		}
 	}

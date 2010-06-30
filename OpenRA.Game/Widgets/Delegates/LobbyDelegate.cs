@@ -145,7 +145,7 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleRace(MouseInput mi)
 		{			
-			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Name));
+			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Race));
 			
 			if (mi.Button == MouseButton.Right)
 				countries = countries.Reverse();
