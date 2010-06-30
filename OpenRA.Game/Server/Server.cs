@@ -150,7 +150,7 @@ namespace OpenRA.Server
 						Index = newConn.PlayerIndex,
 						PaletteIndex = ChooseFreePalette(),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
-						Country = "Random",
+						Country = "random",
 						State = Session.ClientState.NotReady,
 						SpawnPoint = 0,
 						Team = 0,

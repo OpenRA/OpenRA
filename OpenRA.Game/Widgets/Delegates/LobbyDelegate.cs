@@ -30,6 +30,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
 		
+		Dictionary<string,string> CountryNames;
 		public LobbyDelegate ()
 		{
 			var r = Chrome.rootWidget;
@@ -38,6 +39,8 @@ namespace OpenRA.Widgets.Delegates
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			
+			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
+			CountryNames.Add("random", "Random");
 			
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi => {
@@ -78,7 +81,7 @@ namespace OpenRA.Widgets.Delegates
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
-					factionname.GetText = () => c.Country;
+					factionname.GetText = () => CountryNames[c.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
 					factionflag.GetImageName = () => c.Country;
 					factionflag.GetImageCollection = () => "flags";
@@ -100,7 +103,7 @@ namespace OpenRA.Widgets.Delegates
 					
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
-					factionname.GetText = () => c.Country;
+					factionname.GetText = () => CountryNames[c.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
 					factionflag.GetImageName = () => c.Country;
 					factionflag.GetImageCollection = () => "flags";
@@ -142,10 +145,10 @@ namespace OpenRA.Widgets.Delegates
 			
 			return true;
 		}
-
+		
 		bool CycleRace(MouseInput mi)
 		{			
-			var countries = new[] { "Random" }.Concat(Game.world.GetCountries().Select(c => c.Race));
+			var countries = CountryNames.Select(a => a.Key);
 			
 			if (mi.Button == MouseButton.Right)
 				countries = countries.Reverse();

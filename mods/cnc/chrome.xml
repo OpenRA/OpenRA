@@ -199,7 +199,7 @@
 	<collection name="flags" src="buttons.png">
 		<image name="gdi" x="30" y="84" width="30" height="15" />
 		<image name="nod" x="0" y="84" width="30" height="15" />
-		<image name="Random" x="60" y="84" width="30" height="15" />
+		<image name="random" x="60" y="84" width="30" height="15" />
 	</collection>
     <collection name="music" src="musicplayer.png">
         <image name="pause" x="0" y="0" width="25" height="25" />
