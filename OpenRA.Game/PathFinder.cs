@@ -56,6 +56,7 @@ namespace OpenRA
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
+					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, Game.LocalTick - cached.tick);
 					cached.tick = Game.LocalTick;
 					return new List<int2>(cached.result);
 				}
