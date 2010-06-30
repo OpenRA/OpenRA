@@ -58,6 +58,12 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		int Level = 0;
 
+		public void GiveOneLevel()
+		{
+			if (Level < Levels.Count())
+				GiveExperience(Levels[Level] - Experience);
+		}
+
 		public void GiveExperience(int amount)
 		{
 			Experience += amount;
