@@ -1,7 +1,7 @@
 General:
 	Name: Desert
 	Id: DESERT
-	TileSuffix: des
+	Extensions: .des, .shp, .tem
 
 Terrain:
 	TerrainType@Clear:

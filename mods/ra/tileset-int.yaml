@@ -1,7 +1,7 @@
 General:
 	Name: Interior
 	Id: INTERIOR
-	TileSuffix: int
+	Extensions: .int, .shp, .tem
 
 Terrain:
 	TerrainType@Clear:

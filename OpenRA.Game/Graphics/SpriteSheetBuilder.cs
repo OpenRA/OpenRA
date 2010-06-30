@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		public static void Initialize( TileSet tileset )
 		{
 			/* .tem: hack to allow incomplete theaters (interior) to work, falling back to temperate for the missing art */
-			exts = new[] { "." + tileset.TileSuffix, ".shp", ".tem" };
+			exts = tileset.Extensions;
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 

@@ -103,6 +103,7 @@ namespace OpenRA.Editor
 		{
 			Rules.LoadRules(manifest, map);			
 			tileset = Rules.TileSets[map.Theater];
+			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
 
 			surface1.Bind(map, tileset, palette);
@@ -178,7 +179,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderResourceType(a, tileset.TileSuffix, palette);
+					var template = RenderResourceType(a, tileset.Extensions, palette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -251,7 +252,7 @@ namespace OpenRA.Editor
 						image = ri.OverrideImage[i];
 			
 			image = image ?? ri.Image ?? info.Name;
-			using (var s = FileSystem.OpenWithExts(image, "." + tileset.TileSuffix, ".shp"))
+			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);
 				var frame = shp[0];
@@ -275,10 +276,10 @@ namespace OpenRA.Editor
 			}
 		}
 
-		static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string ext, Palette p)
+		static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, Palette p)
 		{
 			var image = info.SpriteNames[0];
-			using (var s = FileSystem.OpenWithExts(image, "." + ext, ".shp"))
+			using (var s = FileSystem.OpenWithExts(image, exts))
 			{
 				var shp = new ShpReader(s);
 				var frame = shp[shp.ImageCount - 1];

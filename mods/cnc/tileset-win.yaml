@@ -1,7 +1,7 @@
 General:
 	Name: Winter
 	Id: WINTER
-	TileSuffix: win
+	Extensions: .win, .shp, .tem
 
 Terrain:
 	TerrainType@Clear:

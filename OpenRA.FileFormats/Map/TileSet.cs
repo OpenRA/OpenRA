@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly string Name;
 		public readonly string Id;
-		public readonly string TileSuffix;
+		public readonly string[] Extensions;
 		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public readonly Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
 		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
@@ -83,31 +83,19 @@ namespace OpenRA.FileFormats
 			// Templates
 			foreach (var tt in yaml["Templates"].Nodes)
 			{
-				// Info
 				var t = new TileTemplate(tt.Value.Nodes);
 				Templates.Add(t.Id, t);
-				
-				// Artwork
-				using( Stream s = FileSystem.Open( t.Image + "." + TileSuffix ) )
-				{
-					if( !Tiles.ContainsKey( t.Id ) )
-						Tiles.Add( t.Id, new Terrain( s ) );
-				}
 			}
 		}
 		
 		public void LoadTiles()
 		{
-			// Templates
 			foreach (var t in Templates)
-			{
-				// Artwork
-				using( Stream s = FileSystem.Open( t.Value.Image + "." + TileSuffix ) )
+				using( Stream s = FileSystem.OpenWithExts(t.Value.Image, Extensions) )
 				{
 					if( !Tiles.ContainsKey( t.Key ) )
 						Tiles.Add( t.Key, new Terrain( s ) );
 				}
-			}
 		}
 				
 		public byte[] GetBytes(TileReference<ushort,byte> r)
