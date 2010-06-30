@@ -46,28 +46,30 @@ namespace OpenRA.Mods.RA
 		public readonly int[] SouthOffset = null;
 
 		public object Create(ActorInitializer init) { return new Bridge(init.self, this); }
-		
+
 		public IEnumerable<ushort> Templates
-		{ get {
-		
-			if (Template != 0)
-				yield return Template;
-			
-			if (DamagedTemplate != 0)
-				yield return DamagedTemplate;
-			
-			if (DestroyedTemplate != 0)
-				yield return DestroyedTemplate;
-						
-			if (DestroyedPlusNorthTemplate != 0)
-				yield return DestroyedPlusNorthTemplate;
-			
-			if (DestroyedPlusSouthTemplate != 0)
-				yield return DestroyedPlusSouthTemplate;
-			
-			if (DestroyedPlusBothTemplate != 0)
-				yield return DestroyedPlusBothTemplate;
-		} }
+		{
+			get
+			{
+				if (Template != 0)
+					yield return Template;
+
+				if (DamagedTemplate != 0)
+					yield return DamagedTemplate;
+
+				if (DestroyedTemplate != 0)
+					yield return DestroyedTemplate;
+
+				if (DestroyedPlusNorthTemplate != 0)
+					yield return DestroyedPlusNorthTemplate;
+
+				if (DestroyedPlusSouthTemplate != 0)
+					yield return DestroyedPlusSouthTemplate;
+
+				if (DestroyedPlusBothTemplate != 0)
+					yield return DestroyedPlusBothTemplate;
+			}
+		}
 	}
 
 	class Bridge: IRender, INotifyDamage
@@ -152,6 +154,15 @@ namespace OpenRA.Mods.RA
 			return b != null && b.self.IsInWorld && b.self.Health > 0;
 		}
 
+		void KillUnitsOnBridge()
+		{
+			var uim = self.World.WorldActor.traits.Get<UnitInfluence>();
+
+			foreach (var c in TileSprites[currentTemplate].Keys)
+				foreach (var a in uim.GetUnitsAt(c))
+					if (!a.traits.Get<IMove>().CanEnterCell(c))
+						a.InflictDamage(self, a.Health, null);
+		}
 		
 		bool dead = false;
 		void UpdateState()
@@ -166,32 +177,29 @@ namespace OpenRA.Mods.RA
 				self.Health = 0;
 				ds = DamageState.Dead;
 			}
-			
+
+			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
+							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
+
+			if (Info.Long && ds == DamageState.Dead)
+			{
+				// Long bridges have custom art for multiple segments being destroyed
+				bool waterToSouth = !IsIntact(southNeighbour);
+				bool waterToNorth = !IsIntact(northNeighbour);
+
+				if (waterToSouth && waterToNorth)
+					currentTemplate = Info.DestroyedPlusBothTemplate;
+				else if (waterToNorth)
+					currentTemplate = Info.DestroyedPlusNorthTemplate;
+				else if (waterToSouth)
+					currentTemplate = Info.DestroyedPlusSouthTemplate;
+			}
+
 			if (ds == DamageState.Dead && !dead)
 			{
 				dead = true;
-				
-				// Kill any units on the bridge
-				foreach (var c in TileSprites[currentTemplate].Keys)
-					self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(c).Do(a => a.InflictDamage(self, a.Health, null));
+				KillUnitsOnBridge();
 			}
-			
-			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : 
-							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
-
-			if (!(Info.Long && ds == DamageState.Dead))
-				return;
-			
-			// Long bridges have custom art for multiple segments being destroyed
-			bool waterToSouth = !IsIntact(southNeighbour);
-			bool waterToNorth = !IsIntact(northNeighbour);
-						
-			if (waterToSouth && waterToNorth)
-				currentTemplate = Info.DestroyedPlusBothTemplate;
-			else if (waterToNorth)
-				currentTemplate = Info.DestroyedPlusNorthTemplate;
-			else if (waterToSouth)
-				currentTemplate = Info.DestroyedPlusSouthTemplate;		
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
