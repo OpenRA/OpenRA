@@ -8,10 +8,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceEditor", "SequenceEditor\SequenceEditor.csproj", "{230F65CE-A6DE-4235-8B38-13A3D606C7F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.RA", "OpenRA.Mods.RA\OpenRA.Mods.RA.csproj", "{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124} = {F9FA4D9F-2302-470A-8A07-6E37F488C124}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Aftermath", "OpenRA.Mods.Aftermath\OpenRA.Mods.Aftermath.csproj", "{2E1F8D8B-AEF5-4BCE-A95C-50223A0C7331}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Cnc", "OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124} = {F9FA4D9F-2302-470A-8A07-6E37F488C124}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Gl", "OpenRA.Gl\OpenRA.Gl.csproj", "{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}"
 EndProject

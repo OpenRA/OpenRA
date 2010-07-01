@@ -80,8 +80,6 @@ namespace OpenRA.FileFormats
 			ushort numFiles = reader2.ReadUInt16();
 			uint datasize = reader2.ReadUInt32();
 
-			Console.WriteLine("{0} files, {1} kb", numFiles, datasize >> 10);
-
 			s.Position = headerStart;
 			reader = new BinaryReader(s);
 

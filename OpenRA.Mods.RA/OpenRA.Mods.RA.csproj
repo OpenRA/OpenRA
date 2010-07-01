@@ -206,6 +206,8 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
-copy "$(TargetPath)" "$(SolutionDir)mods/ra/"</PostBuildEvent>
+copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
+cd "$(SolutionDir)"
+ralint ra</PostBuildEvent>
   </PropertyGroup>
 </Project>

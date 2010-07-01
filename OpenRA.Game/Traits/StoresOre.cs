@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly int Capacity = 0;
-		public readonly string DeathWeapon = null;
+		[WeaponReference] public readonly string DeathWeapon = null;
 		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 

@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 	class BuildableInfo : ValuedInfo
 	{
 		public readonly string[] Prerequisites = { };
-		public readonly string[] BuiltAt = { };
+		[ActorReference] public readonly string[] BuiltAt = { };
 		
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
