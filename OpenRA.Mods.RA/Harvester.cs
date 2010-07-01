@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
+		[WeaponReference]
 		public readonly string DeathWeapon = null;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }

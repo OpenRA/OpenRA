@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA
 	class MineInfo : ITraitInfo
 	{
 		public readonly string[] CrushClasses = { };
+		[WeaponReference]
 		public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 

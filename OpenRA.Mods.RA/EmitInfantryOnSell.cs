@@ -29,6 +29,8 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly float ValueFraction = .4f;
 		public readonly float MinHpFraction = .3f;
+
+		[ActorReference]
 		public readonly string[] ActorTypes = { "e1" };
 	}
 

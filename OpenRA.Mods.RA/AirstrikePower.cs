@@ -27,7 +27,9 @@ namespace OpenRA.Mods.RA
 {
 	class AirstrikePowerInfo : SupportPowerInfo
 	{
+		[ActorReference]
 		public readonly string UnitType = "badr.bomber";
+		[ActorReference]
 		public readonly string FlareType = null;
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }

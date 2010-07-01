@@ -19,10 +19,10 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Drawing;
-using OpenRA.Graphics;
+using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {

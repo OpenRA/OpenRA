@@ -18,14 +18,15 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class ReplaceWithActorInfo : ITraitInfo
 	{
+		[ActorReference]
 		public readonly string Actor = null;
+
 		public object Create(ActorInitializer init) { return new ReplaceWithActor(init.self, this); } 
 	}
 

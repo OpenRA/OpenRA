@@ -22,7 +22,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class LeavesHuskInfo : TraitInfo<LeavesHusk> { public readonly string HuskActor = null;	}
+	class LeavesHuskInfo : TraitInfo<LeavesHusk>
+	{
+		[ActorReference]
+		public readonly string HuskActor = null;
+	}
 
 	class LeavesHusk : INotifyDamage
 	{

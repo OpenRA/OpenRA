@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA
 {
 	class RepairableNearInfo : TraitInfo<RepairableNear>
 	{
+		[ActorReference]
 		public readonly string[] Buildings = { "spen", "syrd" };
 	}
 

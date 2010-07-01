@@ -29,8 +29,10 @@ namespace OpenRA.Mods.RA
 {
 	class MinelayerInfo : TraitInfo<Minelayer>
 	{
+		[ActorReference]
 		public readonly string Mine = "minv";
 		public readonly float MinefieldDepth = 1.5f;
+		[ActorReference]
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 

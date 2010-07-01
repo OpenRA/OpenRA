@@ -19,8 +19,8 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

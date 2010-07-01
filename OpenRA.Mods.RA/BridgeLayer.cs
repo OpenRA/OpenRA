@@ -20,14 +20,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class BridgeLayerInfo : ITraitInfo
 	{
+		[ActorReference]
 		public readonly string[] Bridges = {"bridge1", "bridge2"};
+
 		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
 	}
 

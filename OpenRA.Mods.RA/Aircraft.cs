@@ -28,7 +28,9 @@ namespace OpenRA.Mods.RA
 	public class AircraftInfo : ITraitInfo
 	{
 		public readonly int CruiseAltitude = 20;
+		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
+		[ActorReference]
 		public readonly string[] RearmBuildings = { "hpad", "afld" };
 
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init ); }

@@ -63,9 +63,9 @@ namespace OpenRA.Traits
 					
 				}
 				self.CancelActivity();
-				
-				// Pick the closed deploy direction to turn to
-				if (self.traits.Contains<Unit>())
+
+
+				if (self.traits.Contains<Unit>())	// Pick the closest deploy direction to turn to
 				{
 					// TODO: Pick the closest deploy direction
 					var bestDir = info.DeployDirections[0];

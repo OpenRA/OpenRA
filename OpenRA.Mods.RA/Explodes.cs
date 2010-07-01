@@ -24,7 +24,9 @@ namespace OpenRA.Mods.RA
 {
 	class ExplodesInfo : TraitInfo<Explodes>
 	{
+		[WeaponReference]
 		public readonly string Weapon = "UnitExplode";
+		[WeaponReference]
 		public readonly string EmptyWeapon = "UnitExplode";
 	}
 

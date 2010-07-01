@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA
 {
 	class CarpetBombInfo : TraitInfo<CarpetBomb>
 	{
+		[WeaponReference]
 		public readonly string Weapon = null;
 		public readonly int Range = 0;
 	}

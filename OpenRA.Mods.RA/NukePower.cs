@@ -67,6 +67,7 @@ namespace OpenRA.Mods.RA
 	// tag trait for the building
 	class NukeSiloInfo : ITraitInfo
 	{
+		[WeaponReference]
 		public readonly string MissileWeapon = "";
 		public object Create(ActorInitializer init) { return new NukeSilo(init.self); }
 	}

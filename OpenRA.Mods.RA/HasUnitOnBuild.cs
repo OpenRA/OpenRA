@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 {
 	public class FreeActorInfo : ITraitInfo
 	{
+		[ActorReference]
 		public readonly string Actor = null;
 		public readonly string InitialActivity = null;
 		public readonly int2 SpawnOffset = int2.Zero;

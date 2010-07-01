@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
+		[WeaponReference]
 		public readonly string DeathWeapon = null;
 
 		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }

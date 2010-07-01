@@ -27,8 +27,11 @@ namespace OpenRA.Mods.RA
 {
 	class ParatroopersPowerInfo : SupportPowerInfo
 	{
+		[ActorReference]
 		public string[] DropItems = { };
+		[ActorReference]
 		public string UnitType = "badr";
+		[ActorReference]
 		public string FlareType = "flare";
 
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
