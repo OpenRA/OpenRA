@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # Where is the game we are trying to load?
-GAME_DIR="/Users/paul/src/OpenRA/"
+GAME_PATH="/Users/paul/src/OpenRA/"
 
 # Find where we are and what we want to run
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
-EXE_DIR="$APP_PATH/Contents/MacOS/"
+EXE_PATH="$APP_PATH/Contents/MacOS/"
 
-# Override paths so mono can find itself and the libraries it depends on
-export MONO_PATH="$APP_PATH/Contents/Frameworks/Mono.framework/Versions/2.6.3/lib/"
-export LD_LIBRARY_PATH="$MONO":"$MONO_PATH"
-export MONO_LOG_LEVEL=debug
+# Override paths within mono to avoid string-hacking the executable
+export LD_LIBRARY_PATH="$EXE_PATH/lib"
+export MONO_PATH="$EXE_PATH/lib"
+#export MONO_LOG_LEVEL=debug
+
 # Run the game
-cd $GAME_DIR
-${EXE_DIR}mono OpenRA.Game.exe
+cd $GAME_PATH
+${EXE_PATH}mono OpenRA.Game.exe
