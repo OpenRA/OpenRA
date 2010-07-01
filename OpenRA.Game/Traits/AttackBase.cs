@@ -29,7 +29,9 @@ namespace OpenRA.Traits
 {
 	public class AttackBaseInfo : ITraitInfo
 	{
+		[WeaponReference]
 		public readonly string PrimaryWeapon = null;
+		[WeaponReference]
 		public readonly string SecondaryWeapon = null;
 		public readonly int Recoil = 0;
 		public readonly int[] PrimaryLocalOffset = { };
