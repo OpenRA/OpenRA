@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRA.FileFormats;
+using System.Reflection;
 using OpenRA;
+using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using System.Reflection;
 
 namespace RALint
 {
@@ -30,7 +28,7 @@ namespace RALint
 
 		static void EmitError(string e)
 		{
-			Console.WriteLine(e);
+			Console.WriteLine("RALint(1,1): Error: {0}", e);
 			++errors;
 		}
 
