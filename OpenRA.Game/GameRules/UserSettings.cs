@@ -23,7 +23,7 @@ namespace OpenRA.GameRules
 	public class UserSettings
 	{
 		// Debug settings
-		public bool UnitDebug = true;
+		public bool UnitDebug = false;
 		public bool PathDebug = true;
 		public bool PerfDebug = true;
 		public bool IndexDebug = false;
