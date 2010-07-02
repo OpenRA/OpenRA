@@ -168,19 +168,25 @@ SectionEnd
 
 Section "-Sdl" SDL
 	AddSize 317
-	SetOutPath "$TEMP"
-	NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
-	!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
+	IfFileExists $INSTDIR\SDL.dll done installsdl
+	installsdl:
+		SetOutPath "$TEMP"
+		NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
+		!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
+	done:
 SectionEnd
 
 Section "-Freetype" Freetype
 	AddSize 583
 	SetOutPath "$TEMP"
-	NSISdl::download http://www.open-ra.org/releases/windows/freetype-zlib.zip freetype-zlib.zip
-	Pop $R0
-	StrCmp $R0 "success" +2
-		Abort
-	ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
+	IfFileExists $INSTDIR\zlib1.dll done installfreetype
+	installfreetype:
+		NSISdl::download http://www.open-ra.org/releases/windows/freetype-zlib.zip freetype-zlib.zip
+		Pop $R0
+		StrCmp $R0 "success" +2
+			Abort
+		ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
+	done:
 SectionEnd
 
 ;***************************
