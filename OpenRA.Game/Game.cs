@@ -613,6 +613,8 @@ namespace OpenRA
 				FieldLoader.Load(Settings,
 					new IniFile(FileSystem.Open(settingsFile)).GetSection("Settings"));
 			FileSystem.UnmountAll();
+			
+			Settings.AddSettings(settings);
 		}
 
 		static bool quit;

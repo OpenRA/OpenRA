@@ -52,5 +52,12 @@ namespace OpenRA.GameRules
 		public readonly int ExternalPort = 1234;
 		public readonly bool InternetServer = true;
 		public readonly string MasterServer = "http://open-ra.org/master/";
+		
+		public void AddSettings(Settings settings)
+		{
+			foreach (var f in this.GetType().GetFields())
+				if (settings.Contains(f.Name))
+					OpenRA.FileFormats.FieldLoader.LoadField( this, f.Name, settings.GetValue(f.Name, "") );
+		}
 	}
 }
