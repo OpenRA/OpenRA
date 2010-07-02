@@ -11,7 +11,7 @@
 
 # A list of the binaries that we want to be able to run
 DEPS_LOCAL="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll"
-PACKAGING_DIR="osxbuild"
+PACKAGING_DIR="osxbuild/launcher"
 SYSTEM_MONO="/Library/Frameworks/Mono.framework/Versions/2.6.3"
 
 # dylibs referred to by dlls in the gac; won't show up to otool

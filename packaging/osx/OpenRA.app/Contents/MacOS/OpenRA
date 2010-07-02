@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Where is the game we are trying to load?
-GAME_PATH="/Users/paul/src/OpenRA/"
 
 # Find where we are and what we want to run
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 EXE_PATH="$APP_PATH/Contents/MacOS/"
+
+# Where is the game we are trying to load?
+GAME_PATH="$EXE_PATH../Resources/"
 
 # Override paths within mono to avoid string-hacking the executable
 export LD_LIBRARY_PATH="$EXE_PATH/lib"
