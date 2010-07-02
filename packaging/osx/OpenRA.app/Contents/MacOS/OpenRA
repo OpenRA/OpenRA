@@ -9,10 +9,25 @@ EXE_PATH="$APP_PATH/Contents/MacOS/"
 GAME_PATH="$EXE_PATH../Resources/"
 
 # Override paths within mono to avoid string-hacking the executable
-export LD_LIBRARY_PATH="$EXE_PATH/lib"
+export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
 export MONO_PATH="$EXE_PATH/lib"
 #export MONO_LOG_LEVEL=debug
 
+MODBUTTON=`/usr/bin/osascript << EOT
+tell application "Finder"
+	display dialog "Choose a mod" buttons {"Red Alert", "C&C"} \
+		default button "Red Alert"
+	set result to button returned of result
+end tell
+EOT`
+
+MOD="ra"
+if [ "$MODBUTTON" == "C&C" ]; then
+	MOD="cnc"
+fi
+echo "$MOD" 
+
+
 # Run the game
 cd $GAME_PATH
-${EXE_PATH}mono OpenRA.Game.exe
+${EXE_PATH}mono OpenRA.Game.exe InitialMods=$MOD
