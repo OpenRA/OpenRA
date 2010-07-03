@@ -102,6 +102,8 @@ namespace OpenRA.Widgets
 				substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
 				substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
 				substitutions.Add("PARENT_RIGHT", parentBounds.Width);
+				substitutions.Add("PARENT_LEFT", parentBounds.Left);
+				substitutions.Add("PARENT_TOP", parentBounds.Top);
 				substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
 			int width = Evaluator.Evaluate(Width, substitutions);
 			int height = Evaluator.Evaluate(Height, substitutions);

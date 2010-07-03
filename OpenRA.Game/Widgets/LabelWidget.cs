@@ -56,12 +56,18 @@ namespace OpenRA.Widgets
 		{		
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var text = GetText();
+			if (text == null)
+				return;
+			
 			int2 textSize = font.Measure(text);
 			int2 position = DrawPosition();
 			
 			if (Align == TextAlign.Center)
 				position += new int2((Bounds.Width - textSize.X)/2, 0);
-			
+
+			if (Align == TextAlign.Right)
+				position += new int2(Bounds.Width - textSize.X,0); 
+
 			font.DrawText(text, position, Color.White);
 		}
 		

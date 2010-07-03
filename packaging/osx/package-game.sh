@@ -25,7 +25,7 @@ cd $PAYLOAD
 for i in $EXCLUDE; do
 	find . -path "$i" -delete
 done
-date "+%Y%m%d%H" >> "VERSION"
+date "+%Y%m%d%H" > "VERSION"
 zip payload -r -9 *
 cd $PACKAGING_PATH
 

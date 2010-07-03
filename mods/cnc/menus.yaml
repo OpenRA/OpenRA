@@ -53,6 +53,14 @@ Container:
 					Width:160
 					Height:25
 					Text:Quit
+				Label@VERSION_STRING:
+					Id:VERSION_STRING
+					X:WINDOW_RIGHT - PARENT_LEFT - WIDTH - 15
+					Y:WINDOW_BOTTOM - PARENT_TOP - 25
+					Width:400
+					Height:35
+					Text:
+					Align:Right
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
 			Delegate:CreateServerMenuDelegate
@@ -650,7 +658,7 @@ Container:
 			Id:MUSIC_BG
 			Delegate:MusicPlayerDelegate
 			X:WINDOW_RIGHT - 175
-			Y:WINDOW_BOTTOM - 65
+			Y:WINDOW_BOTTOM - 95
 			Width: 160
 			Height: 55
 			Visible: true
