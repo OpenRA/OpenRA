@@ -27,6 +27,7 @@ CNC_MIXEN="http://open-ra.org/packages/cnc-packages.zip"
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 EXE_PATH="$APP_PATH/Contents/MacOS/"
 PAYLOAD="$APP_PATH/Contents/Resources/payload.zip"
+VERSION=`cat "$APP_PATH/Contents/Resources/VERSION"`
 export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
 export MONO_PATH="$EXE_PATH/lib"
 
@@ -98,6 +99,13 @@ if [ ! -e "$GAME_PATH/OpenRA.Game.exe" ]; then
 	if [ ! -e "$GAME_PATH/OpenRA.Game.exe" ]; then
 	    display_error "Installation error" "Game setup failed"
 	fi
+fi
+
+# Is the installed version older than the current version?
+INSTVER=`cat "$GAME_PATH/VERSION"`
+if [ $INSTVER -lt $VERSION ]; then
+	echo "Updating installed version $INSTVER to $VERSION"
+	unzip -o "$PAYLOAD" -d "$GAME_PATH"
 fi
 
 # Prompt for the mod to run
