@@ -25,8 +25,9 @@ CNC_MIXEN="http://open-ra.org/packages/cnc-packages.zip"
 
 # Internal options
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
-EXE_PATH="$APP_PATH/Contents/MacOS/"
-PAYLOAD="$APP_PATH/Contents/Resources/payload.zip"
+EXE_PATH=$APP_PATH/Contents/MacOS/
+RESOURCES_PATH=$APP_PATH/Contents/Resources
+PAYLOAD=$RESOURCES_PATH/payload.zip
 VERSION=`cat "$APP_PATH/Contents/Resources/VERSION"`
 export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
 export MONO_PATH="$EXE_PATH/lib"
@@ -39,7 +40,12 @@ function display_error
 {
 `/usr/bin/osascript << EOT
 	tell application "Finder" 
-		display dialog "${2}\n\nSupport is available in our irc channel irc.freenode.net #openra." buttons "Exit" default button 1 with title "${1}" with icon stop
+		display dialog "${2}\n\nSupport is available in our irc channel irc.freenode.net #openra." \
+		buttons "Exit" \
+		default button 1 \
+		with title "${1}" \
+		with icon stop \
+		with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns")
 		activate
 		end tell
 EOT`
@@ -62,8 +68,10 @@ function download_package
 
 CONTINUE=`/usr/bin/osascript << EOT
 	tell application "Finder"
-		display dialog "OpenRA needs to download the ${4} game data. Download size: ${3}" buttons {"Download", "Quit"} \
-			default button "Download"
+		display dialog "OpenRA needs to download the ${4} game data.\nDownload size: ${3}" \
+			buttons {"Download", "Quit"} \
+			default button "Download" \
+			with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns")
 		set result to button returned of result
 	end tell
 EOT`
@@ -109,12 +117,19 @@ if [ $INSTVER -lt $VERSION ]; then
 fi
 
 # Prompt for the mod to run
-MODBUTTON=`osascript -e  'tell application "Finder"
-	display dialog "Choose a mod" buttons {"Red Alert", "C&C"} \
-		default button "Red Alert"
+MODBUTTON=`/usr/bin/osascript << EOT
+	tell application "Finder"
+	display dialog "Choose a mod" buttons {"Red Alert", "C&C", "Quit"} \
+		default button "Red Alert" \
+		with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns") \
+		with title "OpenRA Mod Selector"
 	set result to button returned of result
-end tell'`
+end tell
+EOT`
 
+if [ "$MODBUTTON" == "Quit" ]; then
+	exit 0
+fi
 MOD="ra"
 if [ "$MODBUTTON" == "C&C" ]; then
 	MOD="cnc"
