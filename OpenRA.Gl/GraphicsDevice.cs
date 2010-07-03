@@ -93,8 +93,8 @@ namespace OpenRA.GlRenderer
 			vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
 			fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
 
-			Console.WriteLine("VP Profile: " + vertexProfile);
-			Console.WriteLine("FP Profile: " + fragmentProfile);
+			//Console.WriteLine("VP Profile: " + vertexProfile);
+			//Console.WriteLine("FP Profile: " + fragmentProfile);
 
 			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
 			CheckGlError();

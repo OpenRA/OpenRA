@@ -115,10 +115,6 @@ namespace OpenRA
 		// TODO: Do this nicer
 		static Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
-			Console.WriteLine("Finding maps");
-			foreach (var mod in mods)
-				Console.WriteLine(mod);
-
 			var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
 				.Where(p => Directory.Exists(p))
 				.SelectMany(p => Directory.GetDirectories(p)).ToList();
