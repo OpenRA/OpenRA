@@ -65,10 +65,7 @@ Section "Client" Client
 	File "..\..\OpenRA.Game\OpenRA.ico"
 	
 	File "..\..\thirdparty\Tao\*.dll"
-	
-	File "cg.dll"
-	File "cgGL.dll"
-	
+		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "" \
@@ -105,13 +102,16 @@ SectionGroup /e "Mods"
 		SectionEnd
 		Section "Download content" RA_Content
 			AddSize 10137
-			SetOutPath "$OUTDIR\packages"
-			NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
-			Pop $R0
-			StrCmp $R0 "success" +2
-				Abort
-			ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
-			Delete ra-packages.zip
+			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
+			dlcontent:
+				SetOutPath "$OUTDIR\packages"
+				NSISdl::download http://open-ra.org/packages/ra-packages.zip ra-packages.zip
+				Pop $R0
+				StrCmp $R0 "success" +2
+					Abort
+				ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
+				Delete ra-packages.zip
+			done:
 		SectionEnd
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
@@ -122,13 +122,16 @@ SectionGroup /e "Mods"
 		SectionEnd
 		Section "Download content" CNC_Content
 			AddSize 9431
-			SetOutPath "$OUTDIR\packages"
-			NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
-			Pop $R0
-			StrCmp $R0 "success" +2
-				Abort
-			ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
-			Delete cnc-packages.zip
+			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
+			dlcontent:
+				SetOutPath "$OUTDIR\packages"
+				NSISdl::download http://open-ra.org/packages/cnc-packages.zip cnc-packages.zip
+				Pop $R0
+				StrCmp $R0 "success" +2
+					Abort
+				ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
+				Delete cnc-packages.zip
+			done:
 		SectionEnd
 	SectionGroupEnd
 	SectionGroup "Red Alert: Aftermath" Aftermath
@@ -138,13 +141,16 @@ SectionGroup /e "Mods"
 		SectionEnd
 		Section "Download content" AM_Content
 			AddSize 5941
-			SetOutPath "$OUTDIR\packages"
-			NSISdl::download http://open-ra.org/packages/aftermath-packages.zip aftermath-packages.zip
-			Pop $R0
-			StrCmp $R0 "success" +2
-				Abort
-			ZipDLL::extractall "aftermath-packages.zip" "$OUTDIR"
-			Delete aftermath-packages.zip
+			IfFileExists "$INSTDIR\mods\aftermath\packages\hires1.mix" done dlcontent
+			dlcontent:
+				SetOutPath "$OUTDIR\packages"
+				NSISdl::download http://open-ra.org/packages/aftermath-packages.zip aftermath-packages.zip
+				Pop $R0
+				StrCmp $R0 "success" +2
+					Abort
+				ZipDLL::extractall "aftermath-packages.zip" "$OUTDIR"
+				Delete aftermath-packages.zip
+			done:
 		SectionEnd
 	SectionGroupEnd
 SectionGroupEnd
@@ -186,6 +192,19 @@ Section "-Freetype" Freetype
 		StrCmp $R0 "success" +2
 			Abort
 		ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
+	done:
+SectionEnd
+
+Section "-Cg" Cg
+	AddSize 1500
+	SetOutPath "$TEMP"
+	IfFileExists $INSTDIR\cg.dll done installcg
+	installcg:
+		NSISdl::download http://www.open-ra.org/releases/windows/cg-win32.zip cg-win32.zip
+		Pop $R0
+		StrCmp $R0 "success" +2
+			Abort
+		ZipDLL::extractall "cg-win32.zip" "$INSTDIR"
 	done:
 SectionEnd
 
