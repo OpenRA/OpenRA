@@ -25,11 +25,13 @@ cd $PAYLOAD
 for i in $EXCLUDE; do
 	find . -path "$i" -delete
 done
+zip payload -r -9 *
+
 cd $PACKAGING_PATH
 
 # Move everything into the app bundle
 cp -r "$LAUNCHER_PATH" .
-cp -r "$PAYLOAD/" "OpenRA.app/Contents/Resources/"
+cp  "$PAYLOAD/payload.zip" "OpenRA.app/Contents/Resources/"
 rm -rf $PAYLOAD
 zip OpenRA -r -9 OpenRA.app 
 echo "Done!"
