@@ -1,4 +1,21 @@
 #!/bin/bash
+# Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
+# This file is part of OpenRA.
+# 
+#  OpenRA is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+# 
+#  OpenRA is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+# 
+#  You should have received a copy of the GNU General Public License
+#  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 
 # Tweakable options
 #export MONO_LOG_LEVEL=debug
@@ -6,13 +23,10 @@ GAME_PATH=~/Library/"Application Support"/OpenRA
 RA_MIXEN="http://open-ra.org/packages/ra-packages.zip"
 CNC_MIXEN="http://open-ra.org/packages/cnc-packages.zip"
 
-# Everything else
+# Internal options
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 EXE_PATH="$APP_PATH/Contents/MacOS/"
 PAYLOAD="$APP_PATH/Contents/Resources/payload.zip"
-WGET="/sw/bin/wget"
-
-# Override paths within mono to avoid string-hacking the executable
 export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
 export MONO_PATH="$EXE_PATH/lib"
 
@@ -55,21 +69,20 @@ EOT`
 		if [ "$CONTINUE" != "Download" ]; then
 			exit 1
 		fi
-		mkdir -p "downloads";
 		mkdir -p "${2}"
 
-`/usr/bin/osascript << EOT
+/usr/bin/osascript << EOT
 	tell application "Terminal"
 		activate
-		do script "cd \"$GAME_PATH/downloads\"; ${WGET} ${5}; touch done exit;"
+		do script "cd \"${GAME_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; touch \"downloads/done\"; exit;"
 	end tell
-EOT`
+EOT
 		# Hack around osascript returning before the download finishes
 		while [ ! -e "downloads/done" ]; do
 			sleep 1
 		done
 		rm "downloads/done"
-		
+
 		if [ ! -e "downloads/${1}" ]; then
 		    display_error "Download failed" "Package download failed."
 		fi
