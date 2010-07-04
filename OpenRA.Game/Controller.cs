@@ -48,6 +48,11 @@ namespace OpenRA
 			}
 		}
 
+		static bool HasVoice(Actor a)
+		{
+			return a.Info.Traits.Contains<SelectableInfo>() && a.Info.Traits.Get<SelectableInfo>().Voice != null;
+		}
+
 		void ApplyOrders(World world, float2 xy, MouseInput mi)
 		{
 			if (orderGenerator == null) return;
@@ -56,14 +61,13 @@ namespace OpenRA
 			Game.orderManager.IssueOrders( orders );
 
 			var voicedActor = orders.Select(o => o.Subject)
-				.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.traits.Contains<Unit>());
+				.FirstOrDefault(a => a.Owner == world.LocalPlayer && HasVoice(a));
 
 			var isMove = orders.Any(o => o.OrderString == "Move");
 			var isAttack = orders.Any( o => o.OrderString == "Attack" );
 
 			if (voicedActor != null)
 			{
-				
 				if(voicedActor.traits.GetOrDefault<IMove>().CanEnterCell(xy.ToInt2()))
 					Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
 
