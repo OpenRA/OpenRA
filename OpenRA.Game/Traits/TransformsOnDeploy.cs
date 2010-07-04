@@ -24,6 +24,7 @@ namespace OpenRA.Traits
 {
 	class TransformsOnDeployInfo : TraitInfo<TransformsOnDeploy>
 	{
+		[ActorReference]
 		public readonly string TransformsInto = null;
 		public readonly int[] Offset = null;
 		public readonly int[] DeployDirections = new int[] {96};

@@ -18,9 +18,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using OpenRA.FileFormats;
 
@@ -34,7 +32,6 @@ namespace OpenRA.Traits
 	public class HazardLayer : ITerrainCost
 	{
 		List<Pair<Actor, Hazard>>[,] hazards;
-		Map map;
 
 		public HazardLayer( World world )
 		{

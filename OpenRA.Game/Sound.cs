@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
-using OpenRA.Support;
 using OpenRA.Traits;
 using Tao.OpenAl;
 

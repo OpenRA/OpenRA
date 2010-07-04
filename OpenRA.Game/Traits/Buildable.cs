@@ -30,9 +30,9 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Valued(); }
 	}
 
-	class BuildableInfo : ValuedInfo
+	public class BuildableInfo : ValuedInfo
 	{
-		public readonly string[] Prerequisites = { };
+		[ActorReference]public readonly string[] Prerequisites = { };
 		[ActorReference] public readonly string[] BuiltAt = { };
 		
 		public readonly string Icon = null;

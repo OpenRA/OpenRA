@@ -24,6 +24,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
+		[VoiceReference]
 		public readonly string Voice = null;
 		public readonly float Radius = 10;
 	}

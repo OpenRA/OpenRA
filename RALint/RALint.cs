@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
@@ -8,7 +9,7 @@ using OpenRA.Traits;
 
 namespace RALint
 {
-	static class Program
+	static class RALint
 	{
 		/* todo: move this into the engine? dpstool, seqed, editor, etc all need it (or something similar) */
 		static void InitializeEngineWithMods(string[] mods)
@@ -32,9 +33,17 @@ namespace RALint
 			++errors;
 		}
 
+		static Dictionary<string, int> ValidPrereqs;
+
 		static int Main(string[] args)
 		{
 			InitializeEngineWithMods(args);
+
+			// all the @something names which actually EXIST.
+			var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
+				.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
+
+			ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
 
 			foreach (var actorInfo in Rules.Info)
 				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
@@ -55,9 +64,11 @@ namespace RALint
 			foreach (var field in actualType.GetFields())
 			{
 				if (field.HasAttribute<ActorReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, Rules.Info, "actor");
+					CheckReference(actorInfo, traitInfo, field, ValidPrereqs, "actor");
 				if (field.HasAttribute<WeaponReferenceAttribute>())
 					CheckReference(actorInfo, traitInfo, field, Rules.Weapons, "weapon");
+				if (field.HasAttribute<VoiceReferenceAttribute>())
+					CheckReference(actorInfo, traitInfo, field, Rules.Voices, "voice");
 			}
 		}
 

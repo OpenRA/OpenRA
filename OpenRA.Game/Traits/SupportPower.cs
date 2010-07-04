@@ -30,6 +30,7 @@ namespace OpenRA.Traits
 		public readonly string Image = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
+		[ActorReference]
 		public readonly string[] Prerequisites = { };
 		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
