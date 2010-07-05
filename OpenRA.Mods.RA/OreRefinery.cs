@@ -36,13 +36,11 @@ namespace OpenRA.Mods.RA
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
-		[WeaponReference]
-		public readonly string DeathWeapon = null;
 
 		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips
+	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
@@ -106,14 +104,9 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged (Actor self, AttackInfo e)
 		{
-			if (self.IsDead) {
-				if (Info.DeathWeapon != null && Ore > 0) {
-					Combat.DoExplosion (e.Attacker, Info.DeathWeapon, self.CenterLocation.ToInt2 (), 0);
-				}
-				
+			if (self.IsDead)
 				foreach (var harv in LinkedHarv)
 					harv.traits.Get<Harvester> ().UnlinkProc(harv, self);
-			}
 		}
 
 		public int2 DeliverOffset {get{ return Info.DockOffset; }}
@@ -146,5 +139,7 @@ namespace OpenRA.Mods.RA
 			
 			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * 1f / Info.Capacity > i * 1f / Info.PipCount) ? Info.PipColor : PipType.Transparent);
 		}
+
+		public bool ShouldExplode(Actor self) { return Ore > 0; }
 	}
 }

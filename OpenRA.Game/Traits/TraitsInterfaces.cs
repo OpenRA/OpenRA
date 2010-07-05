@@ -61,6 +61,7 @@ namespace OpenRA.Traits
 	public interface ITerrainCost { float GetTerrainCost(int2 cell, Actor forActor); }
 
 	public interface IDisable { bool Disabled { get; } }
+	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 
 	public interface IOccupySpace
 	{

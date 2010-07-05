@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier
 	{
 		[Sync] public Actor target;
 
@@ -76,6 +76,8 @@ namespace OpenRA.Traits
 
 			return true;
 		}
+
+		public bool ShouldExplode(Actor self) { return !IsReloading(); }
 
 		public bool IsReloading()
 		{

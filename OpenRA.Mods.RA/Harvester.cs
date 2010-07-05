@@ -32,13 +32,11 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
-		[WeaponReference]
-		public readonly string DeathWeapon = null;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
@@ -143,16 +141,8 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (self.IsDead)
-			{
-				if (Info.DeathWeapon != null && contents.Count > 0)
-				{
-					Combat.DoExplosion(e.Attacker, Info.DeathWeapon,
-									  self.CenterLocation.ToInt2(), 0);
-				}
-				
 				if (LinkedProc != null)
 					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
-			}
 		}
 		
 		public void LinkProc(Actor self, Actor proc)
@@ -186,5 +176,7 @@ namespace OpenRA.Mods.RA
 		{
 			return Visible ? r : new Renderable[] { };
 		}
+
+		public bool ShouldExplode(Actor self) { return !IsEmpty; }
 	}
 }

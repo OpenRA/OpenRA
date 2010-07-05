@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -49,12 +50,10 @@ namespace OpenRA.Mods.RA
 
 		string ChooseWeaponForExplosion(Actor self)
 		{
+			var shouldExplode = self.traits.WithInterface<IExplodeModifier>().All(a => a.ShouldExplode(self));
+
 			var info = self.Info.Traits.Get<ExplodesInfo>();
-			var attack = self.traits.GetOrDefault<AttackBase>();
-
-			if (attack == null) return info.Weapon;
-
-			return attack.IsReloading() ? info.EmptyWeapon : info.Weapon;
+			return shouldExplode ? info.Weapon : info.EmptyWeapon;
 		}
 	}
 }

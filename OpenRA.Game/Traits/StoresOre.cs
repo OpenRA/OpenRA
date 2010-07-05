@@ -27,11 +27,10 @@ namespace OpenRA.Traits
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly int Capacity = 0;
-		[WeaponReference] public readonly string DeathWeapon = null;
 		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 
-	class StoresOre : IPips, INotifyCapture, INotifyDamage
+	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier
 	{		
 		readonly PlayerResources Player;
 		readonly StoresOreInfo Info;
@@ -57,16 +56,7 @@ namespace OpenRA.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (self.IsDead && Player.GetSiloFullness() > 0)
-			{
-				if (Info.DeathWeapon != null)
-				{
-					Combat.DoExplosion(e.Attacker, Info.DeathWeapon,
-						self.CenterLocation.ToInt2(), 0);
-				}
-				
-				// Lose the stored ore
-				Player.TakeOre(Stored(self));
-			}
+				Player.TakeOre(Stored(self));		// Lose the stored ore
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -75,5 +65,7 @@ namespace OpenRA.Traits
 				i => (Player.GetSiloFullness() > i * 1.0f / Info.PipCount) 
 					? Info.PipColor : PipType.Transparent );
 		}
+
+		public bool ShouldExplode(Actor self) { return Player.GetSiloFullness() > 0; }
 	}
 }
