@@ -156,4 +156,19 @@ namespace OpenRA.Traits
 
 	public interface IVictoryConditions { }
 	public interface IBlocksBullets { }
+
+	public struct Target		// a target: either an actor, or a fixed location.
+	{
+		Actor actor;
+		float2 pos;
+
+		public static Target FromActor(Actor a) { return new Target { actor = a }; }
+		public static Target FromPos(float2 p) { return new Target { pos = p }; }
+
+		public bool IsValid { get { return actor == null || actor.IsInWorld; } }
+		public float2 Location { get { return actor != null ? actor.CenterLocation : pos; } }
+
+		public Actor Actor { get { return actor; } }
+		public bool IsActor { get { return actor != null; } }
+	}
 }
