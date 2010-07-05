@@ -161,12 +161,13 @@ namespace OpenRA.Traits
 	{
 		Actor actor;
 		float2 pos;
+		bool valid;
 
-		public static Target FromActor(Actor a) { return new Target { actor = a }; }
-		public static Target FromPos(float2 p) { return new Target { pos = p }; }
+		public static Target FromActor(Actor a) { return new Target { actor = a, valid = true }; }
+		public static Target FromPos(float2 p) { return new Target { pos = p, valid = true }; }
 
-		public bool IsValid { get { return actor == null || actor.IsInWorld; } }
-		public float2 Location { get { return actor != null ? actor.CenterLocation : pos; } }
+		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
+		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : pos; } }
 
 		public Actor Actor { get { return actor; } }
 		public bool IsActor { get { return actor != null; } }

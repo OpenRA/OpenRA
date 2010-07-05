@@ -17,10 +17,10 @@ namespace OpenRA.Mods.RA.Activities
 	/* non-turreted attack */
 	public class Attack : IActivity
 	{
-		Actor Target;
+		Target Target;
 		int Range;
 
-		public Attack(Actor target, int range)
+		public Attack(Target target, int range)
 		{
 			Target = target;
 			Range = range;
@@ -32,13 +32,15 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			var unit = self.traits.Get<Unit>();
 
-			if (Target == null || Target.IsDead)
+			if (!Target.IsValid)
 				return NextActivity;
 
-			if ((Target.Location - self.Location).LengthSquared >= Range * Range)
-				return new Move( Target, Range ) { NextActivity = this };
+			var targetCell = Util.CellContaining(Target.CenterLocation);
 
-			var desiredFacing = Util.GetFacing((Target.Location - self.Location).ToFloat2(), 0);
+			if ((targetCell - self.Location).LengthSquared >= Range * Range)
+				return new Move( targetCell, Range ) { NextActivity = this };
+
+			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);
 			var renderUnit = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (renderUnit != null)
 				? renderUnit.anim.CurrentSequence.Facings : 8;
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public void Cancel(Actor self)
 		{
-			Target = null;
+			Target = new Target();
 		}
 	}
 }

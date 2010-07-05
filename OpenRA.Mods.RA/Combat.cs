@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			// don't hit air units with splash from ground explosions, etc
-			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
+			if (!WeaponValidForTarget(args.weapon, Target.FromActor(target))) return 0f;
 
 			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
 			var radius = selectable != null ? selectable.Radius : 0;
@@ -159,9 +159,12 @@ namespace OpenRA.Mods.RA
 			return (float)(rawDamage * multiplier);
 		}
 
-		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
+		public static bool WeaponValidForTarget(WeaponInfo weapon, Target target)
 		{
-			var ownedInfo = target.Info.Traits.GetOrDefault<OwnedActorInfo>();
+			// todo: fix this properly.
+			if (!target.IsValid || !target.IsActor) return false;
+
+			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
 
 			if (!weapon.ValidTargets.Contains(ownedInfo.TargetType))
 				return false;
@@ -175,7 +178,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public static bool HasAnyValidWeapons(Actor self, Actor target)
+		public static bool HasAnyValidWeapons(Actor self, Target target)
 		{
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			if (info.PrimaryWeapon != null &&

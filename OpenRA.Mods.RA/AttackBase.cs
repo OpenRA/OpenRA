@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IProvideCursor
 	{
-		[Sync] public Actor target;
+		public Target target;
 
 		// time (in frames) until each weapon can fire again.
 		[Sync]
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 
 		protected virtual bool CanAttack(Actor self)
 		{
-			if (target == null) return false;
+			if (!target.IsValid) return false;
 			if ((primaryFireDelay > 0) && (secondaryFireDelay > 0)) return false;
 			if (self.traits.WithInterface<IDisable>().Any(d => d.Disabled)) return false;
 
@@ -84,8 +84,6 @@ namespace OpenRA.Mods.RA
 
 			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
 			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
-
-			if (target != null && target.IsDead) target = null;		/* he's dead, jim. */
 
 			for (var i = 0; i < delayedActions.Count; i++)
 			{
@@ -137,7 +135,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var weapon = Rules.Weapons[weaponName.ToLowerInvariant()];
-			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return false;
+			if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return false;
 
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
@@ -160,14 +158,14 @@ namespace OpenRA.Mods.RA
 				burst = weapon.Burst;
 			}
 
-			var destUnit = target.traits.GetOrDefault<Unit>();
+			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
 
 			var args = new ProjectileArgs
 			{
 				weapon = Rules.Weapons[weaponName.ToLowerInvariant()],
 
 				firedBy = self,
-				target = target,
+				target = target.Actor,
 
 				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
 				srcAltitude = unit != null ? unit.Altitude : 0,
@@ -224,7 +222,7 @@ namespace OpenRA.Mods.RA
 				if ((self.Owner.Stances[ underCursor.Owner ] != Stance.Enemy) && !forceFire)
 					return null;
 			
-			if (!Combat.HasAnyValidWeapons(self, underCursor)) return null;
+			if (!Combat.HasAnyValidWeapons(self, Target.FromActor(underCursor))) return null;
 
 			return new Order(isHeal ? "Heal" : "Attack", self, underCursor);
 		}
@@ -240,7 +238,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
 			}
 			else
-				target = null;
+				target = new Target();
 		}
 
 		public string CursorForOrderString(string s, Actor a, int2 location)
@@ -258,7 +256,7 @@ namespace OpenRA.Mods.RA
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
 
-			self.QueueActivity(new Activities.Attack(order.TargetActor,
+			self.QueueActivity(new Activities.Attack(Target.FromActor(order.TargetActor),
 					Math.Max(0, (int)weapon.Range)));
 		}
 	}

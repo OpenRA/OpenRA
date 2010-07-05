@@ -56,9 +56,9 @@ namespace OpenRA.Mods.RA
 			timeToRecharge = self.GetPrimaryWeapon().ROF;
 			--charges;
 
-			if( target != sameTarget )
+			if( target.Actor != sameTarget )
 			{
-				sameTarget = target;
+				sameTarget = target.Actor;
 				self.traits.Get<RenderBuildingCharge>().PlayCharge( self );
 				return base.FireDelay( self, info );
 			}

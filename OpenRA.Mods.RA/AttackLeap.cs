@@ -26,11 +26,11 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 
-			if (target == null || !target.IsInWorld) return;
+			if (!target.IsValid) return;
 			if (self.GetCurrentActivity() is Leap) return;
 
 			var weapon = self.GetPrimaryWeapon();
-			if (weapon.Range * weapon.Range < (target.Location - self.Location).LengthSquared) return;
+			if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return;
 
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));

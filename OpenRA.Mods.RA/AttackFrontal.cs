@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 
-			if (target == null) return;
+			if (!target.IsValid) return;
 
 			var unit = self.traits.Get<Unit>();
 			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, unit.Facing);

@@ -33,11 +33,12 @@ namespace OpenRA.Mods.RA
 			var attack = self.traits.Get<AttackBase>();
 			var range = Combat.GetMaximumRange(self);
 
-			if (attack.target == null)
+			if (!attack.target.IsValid)
 				return true;	// he's dead.
-			if ((attack.target.Location - self.Location).LengthSquared > range * range + 2)
+			if ((attack.target.CenterLocation - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.Health == attack.target.Info.Traits.Get<OwnedActorInfo>().HP)
+			if (attack.target.IsActor && attack.target.Actor.Health 
+				== attack.target.Actor.Info.Traits.Get<OwnedActorInfo>().HP)
 				return true;	// fully healed
 
 			return false;
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.RA
 
 			return inRange
 				.Where(a => a != self && self.Owner.Stances[ a.Owner ] == Stance.Ally)
-				.Where(a => Combat.HasAnyValidWeapons(self, a))
+				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
 				.Where(a => a.Health < a.Info.Traits.Get<OwnedActorInfo>().HP)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();

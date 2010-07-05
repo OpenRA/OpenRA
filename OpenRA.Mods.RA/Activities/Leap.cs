@@ -16,13 +16,13 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : IActivity
 	{
-		Actor target;
+		Target target;
 		float2 initialLocation;
 		float t;
 
 		const int delay = 6;
 
-		public Leap(Actor self, Actor target)
+		public Leap(Actor self, Target target)
 		{
 			this.target = target; 
 			initialLocation = self.CenterLocation;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Activities
 		
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || !target.IsInWorld)
+			if (!target.IsValid)
 				return NextActivity;
 
 			t += (1f / delay);
@@ -44,14 +44,17 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (t >= 1f)
 			{
-				self.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(self, target.Location);
-				target.InflictDamage(self, target.Health, null);	// kill it
+				self.traits.WithInterface<IMove>().FirstOrDefault()
+					.SetPosition(self, Util.CellContaining(target.CenterLocation));
+
+				if (target.IsActor)
+					target.Actor.InflictDamage(self, target.Actor.Health, null);	// kill it
 				return NextActivity;
 			}
 
 			return this;
 		}
 
-		public void Cancel(Actor self) { target = null; NextActivity = null; }
+		public void Cancel(Actor self) { target = new Target(); NextActivity = null; }
 	}
 }

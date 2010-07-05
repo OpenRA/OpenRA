@@ -40,8 +40,8 @@ namespace OpenRA.Mods.RA
 				var attack = self.traits.Get<AttackBase>();
 				var range = Combat.GetMaximumRange(self);
 
-				if (attack.target == null ||
-					(attack.target.Location - self.Location).LengthSquared > range * range)
+				if (!attack.target.IsValid ||
+					(Util.CellContaining(attack.target.CenterLocation) - self.Location).LengthSquared > range * range)
 					AttackTarget(self, ChooseTarget(self, range));
 
 				var info = self.Info.Traits.Get<AutoTargetInfo>();
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 			return inRange
 				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
-				.Where(a => Combat.HasAnyValidWeapons(self, a))
+				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
 				.Where(a => !a.traits.Contains<Cloak>() || !a.traits.Get<Cloak>().Cloaked)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 			if (!e.Attacker.Info.Traits.Contains<OwnedActorInfo>()) return;
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (!Combat.HasAnyValidWeapons(self, e.Attacker)) return;
+			if (!Combat.HasAnyValidWeapons(self, Target.FromActor(e.Attacker))) return;
 
 			// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
 			if (self.Owner.Stances[e.Attacker.Owner] == Stance.Ally) return;
