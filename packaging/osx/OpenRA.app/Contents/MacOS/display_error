@@ -26,6 +26,7 @@ RESOURCES_PATH=`pwd`/../Resources
 
 `/usr/bin/osascript << EOT
 	tell application "Finder" 
+		activate
 		display dialog "${2}\n\nSupport is available in our irc channel irc.freenode.net #openra." \
 		buttons "Quit" \
 		default button 1 \

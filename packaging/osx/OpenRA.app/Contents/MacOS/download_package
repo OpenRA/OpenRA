@@ -34,13 +34,24 @@ if [ ! -d "$SUPPORT_PATH" ]; then
 fi
 
 cd "$SUPPORT_PATH"
+mkdir -p "${2}"
 
 if [ -e "downloads/${1}" ]; then
-	mkdir -p "${2}"
-	unzip -o "downloads/${1}" -d "${2}"
+/usr/bin/osascript << EOT
+	tell application "Terminal"
+		activate
+		do script "cd \"${SUPPORT_PATH}\"; unzip -o \"downloads/${1}\" -d \"${2}\"; touch done; exit;"
+	end tell
+EOT
+	# Hack around osascript returning before the download finishes
+	while [ ! -e "done" ]; do
+		sleep 1
+	done
+	rm "done"	
 else
 CONTINUE=`/usr/bin/osascript << EOT
 	tell application "Finder"
+		activate
 		display dialog "OpenRA needs to download ${4}.\n\nDownload size: ${3}" \
 			buttons {"Download", "Quit"} \
 			default button "Download" \
@@ -52,19 +63,15 @@ EOT`
 			exit 1
 		fi
 		
-		mkdir -p "${2}"
-
 /usr/bin/osascript << EOT
 	tell application "Terminal"
 		activate
-		do script "cd \"${SUPPORT_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; touch \"downloads/done\"; exit;"
+		do script "cd \"${SUPPORT_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; unzip -o \"downloads/${1}\" -d \"${2}\"; touch done; exit;"
 	end tell
 EOT
-
 	# Hack around osascript returning before the download finishes
-	while [ ! -e "downloads/done" ]; do
+	while [ ! -e "done" ]; do
 		sleep 1
 	done
-	rm "downloads/done"
-	unzip -o "downloads/${1}" -d "${2}"
+	rm "done"
 fi

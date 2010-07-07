@@ -54,6 +54,7 @@ fi
 # Prompt for the mod to run
 MODBUTTON=`/usr/bin/osascript << EOT
 	tell application "Finder"
+	activate
 	display dialog "Choose a mod" buttons {"Red Alert", "C&C", "Quit"} \
 		default button "Red Alert" \
 		with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns") \
