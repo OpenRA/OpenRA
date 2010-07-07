@@ -231,8 +231,8 @@ World:
 	Shroud:
 	CrateSpawner:
 		Minimum: 1
-		Maximum: 300
-		SpawnInterval: 12
+		Maximum: 3
+		SpawnInterval: 120
 		WaterChance: 0
 
 CRATE:
