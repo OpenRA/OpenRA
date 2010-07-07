@@ -52,12 +52,11 @@ namespace OpenRA.Mods.RA
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = order.Subject.GetPrimaryWeapon() ?? order.Subject.GetSecondaryWeapon();
 
-			if (self.traits.Contains<Mobile>())
-				self.QueueActivity( new Follow( order.TargetActor,
-					Math.Max( 0, (int)weapon.Range - RangeTolerance ) ) );
+			target = Target.FromOrder(order);
 
-			target = Target.FromActor(order.TargetActor);
-			
+			if (self.traits.Contains<Mobile>())
+				self.QueueActivity( new Follow( target,
+					Math.Max( 0, (int)weapon.Range - RangeTolerance ) ) );
 		}
 
 		bool buildComplete = false;

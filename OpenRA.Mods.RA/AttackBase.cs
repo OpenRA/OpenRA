@@ -203,26 +203,36 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Left || underCursor == null || underCursor.Owner == null) return null;
+			if (mi.Button == MouseButton.Left) return null;
 			if (self == underCursor) return null;
+
+			var target = underCursor == null ? Target.FromPos(Util.CenterOfCell(xy)) : Target.FromActor(underCursor);
 
 			var isHeal = self.GetPrimaryWeapon().Warheads.First().Damage < 0;
 			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 
 			if (isHeal)
 			{
-				if (underCursor.Owner == null)
-					return null;
-				if (self.Owner.Stances[ underCursor.Owner ] != Stance.Ally && !forceFire)
-					return null;
-				if (underCursor.Health >= underCursor.GetMaxHP())
-					return null;	// don't allow healing of fully-healed stuff!
+				// we can never "heal ground"; that makes no sense.
+				if (!target.IsActor) return null;
+				// unless forced, only heal allies.
+				if (self.Owner.Stances[underCursor.Owner] != Stance.Ally && !forceFire) return null;
+				// don't allow healing of fully-healed stuff!
+				if (underCursor.Health >= underCursor.GetMaxHP()) return null;
 			}
 			else
-				if ((self.Owner.Stances[ underCursor.Owner ] != Stance.Enemy) && !forceFire)
+			{
+				if (!target.IsActor)
+				{
+					if (!forceFire) return null;
+					return new Order("Attack", self, xy);
+				}
+
+				if ((self.Owner.Stances[underCursor.Owner] != Stance.Enemy) && !forceFire)
 					return null;
+			}
 			
-			if (!Combat.HasAnyValidWeapons(self, Target.FromActor(underCursor))) return null;
+			if (!Combat.HasAnyValidWeapons(self, target)) return null;
 
 			return new Order(isHeal ? "Heal" : "Attack", self, underCursor);
 		}
@@ -234,11 +244,11 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				QueueAttack(self, order);
 
-				if (self.Owner == self.World.LocalPlayer)
+				if (self.Owner == self.World.LocalPlayer && order.TargetActor != null)
 					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
 			}
 			else
-				target = new Target();
+				target = Target.None;
 		}
 
 		public string CursorForOrderString(string s, Actor a, int2 location)
@@ -255,8 +265,9 @@ namespace OpenRA.Mods.RA
 		{
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
-
-			self.QueueActivity(new Activities.Attack(Target.FromActor(order.TargetActor),
+			self.QueueActivity(
+				new Activities.Attack(
+					Target.FromOrder(order), 
 					Math.Max(0, (int)weapon.Range)));
 		}
 	}

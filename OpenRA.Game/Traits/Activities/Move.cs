@@ -70,6 +70,16 @@ namespace OpenRA.Traits.Activities
 			this.nearEnough = range;
 		}
 
+		public Move(Target target, int range)
+			: this()
+		{
+			this.getPath = self => self.World.PathFinder.FindUnitPathToRange(
+				self.Location, Util.CellContaining(target.CenterLocation),
+				range, self);
+			this.destination = null;
+			this.nearEnough = range;
+		}
+
 		public Move(Func<List<int2>> getPath)
 			: this()
 		{

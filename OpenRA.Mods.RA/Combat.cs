@@ -162,7 +162,8 @@ namespace OpenRA.Mods.RA
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Target target)
 		{
 			// todo: fix this properly.
-			if (!target.IsValid || !target.IsActor) return false;
+			if (!target.IsValid) return false;
+			if (!target.IsActor) return weapon.ValidTargets.Contains("Ground");		// hack!
 
 			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
 

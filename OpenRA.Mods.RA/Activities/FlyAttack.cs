@@ -15,13 +15,13 @@ namespace OpenRA.Mods.RA.Activities
 	public class FlyAttack : IActivity
 	{
 		public IActivity NextActivity { get; set; }
-		Actor Target;
+		Target Target;
 
-		public FlyAttack(Actor target) { Target = target; }
+		public FlyAttack(Target target) { Target = target; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (Target == null || Target.IsDead) 
+			if (!Target.IsValid)
 				return NextActivity;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 				this);
 		}
 
-		public void Cancel(Actor self) { Target = null; NextActivity = null; }
+		public void Cancel(Actor self) { Target = Target.None; NextActivity = null; }
 	}
 
 	public class FlyCircle : IActivity

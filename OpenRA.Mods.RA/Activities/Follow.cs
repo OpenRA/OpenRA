@@ -15,10 +15,10 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Follow : IActivity
 	{
-		Actor Target;
+		Target Target;
 		int Range;
 
-		public Follow(Actor target, int range)
+		public Follow(Target target, int range)
 		{
 			Target = target;
 			Range = range;
@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			if (Target == null || Target.IsDead)
+			if (!Target.IsValid)
 				return NextActivity;
 
-			var inRange = ( Target.Location - self.Location ).LengthSquared < Range * Range;
+			var inRange = ( Util.CellContaining( Target.CenterLocation ) - self.Location ).LengthSquared < Range * Range;
 
 			if( !inRange )
 				return new Move( Target, Range ) { NextActivity = this };
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public void Cancel(Actor self)
 		{
-			Target = null;
+			Target = Target.None;
 		}
 	}
 }

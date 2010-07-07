@@ -16,14 +16,14 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class HeliAttack : IActivity
 	{
-		Actor target;
-		public HeliAttack( Actor target ) { this.target = target; }
+		Target target;
+		public HeliAttack( Target target ) { this.target = target; }
 
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || target.IsDead)
+			if (!target.IsValid)
 				return NextActivity;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
@@ -55,6 +55,6 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		public void Cancel(Actor self) { target = null; NextActivity = null; }
+		public void Cancel(Actor self) { target = Target.None; NextActivity = null; }
 	}
 }

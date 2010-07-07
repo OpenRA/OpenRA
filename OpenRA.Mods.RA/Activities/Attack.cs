@@ -57,9 +57,6 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		public void Cancel(Actor self)
-		{
-			Target = new Target();
-		}
+		public void Cancel(Actor self) { Target = Target.None; }
 	}
 }

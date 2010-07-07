@@ -165,6 +165,9 @@ namespace OpenRA.Traits
 
 		public static Target FromActor(Actor a) { return new Target { actor = a, valid = true }; }
 		public static Target FromPos(float2 p) { return new Target { pos = p, valid = true }; }
+		public static Target FromOrder(Order o) { return o.TargetActor != null ? Target.FromActor(o.TargetActor) : Target.FromPos(o.TargetLocation); }
+
+		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
 		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : pos; } }

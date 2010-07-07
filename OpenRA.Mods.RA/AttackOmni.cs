@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
-			target = Target.FromActor(order.TargetActor);
+			target = Target.FromOrder(order);
 		}
 	}
 }

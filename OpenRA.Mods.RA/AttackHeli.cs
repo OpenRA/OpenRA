@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
-			target = Target.FromActor(order.TargetActor);
-			self.QueueActivity(new HeliAttack(order.TargetActor));
+			target = Target.FromOrder(order);
+			self.QueueActivity(new HeliAttack(target));
 		}
 	}
 }
