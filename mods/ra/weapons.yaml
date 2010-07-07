@@ -603,7 +603,7 @@ SCUD:
 	Range: 13
 	Report: MISSILE1
 	Bullet:
-		Speed: 25
+		Speed: 10
 		Arm: 10
 		High: true
 		Shadow: false
@@ -612,12 +612,14 @@ SCUD:
 		Inaccuracy: 5
 		Image: V2
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 5
+		Explosion: 3
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 600
+		Damage: 700
+		ImpactSound: firebl3
+		WaterImpactSound: splash9
 
 Atomic:
 	Warhead@impact:
