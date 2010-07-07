@@ -29,5 +29,5 @@ done
 
 git describe --tags > "VERSION"
 cd $PACKAGING_PATH
-#zip OpenRA -r -9 OpenRA.app 
+zip OpenRA -r -9 OpenRA.app 
 echo "Done!"
