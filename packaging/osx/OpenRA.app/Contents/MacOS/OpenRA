@@ -30,15 +30,11 @@ SUPPORT_PATH=~/Library/"Application Support"/OpenRA
 
 # Downloadable content
 DEPS_PACKAGE="osx-deps-v1.zip"
-#DEPS_URL="http://open-ra.org/packages/osx-deps-v1.zip"
-DEPS_URL="http://localhost/~paul/osx-deps-v1.zip"
+DEPS_URL="http://open-ra.org/packages/osx-deps-v1.zip"
 RA_PACKAGE="ra-packages.zip"
-#RA_URL="http://open-ra.org/packages/ra-packages.zip"
-RA_URL="http://localhost/~paul/ra-packages.zip"
+RA_URL="http://open-ra.org/packages/ra-packages.zip"
 CNC_PACKAGE="cnc-packages.zip"
-#CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
-CNC_URL="http://localhost/~paul/cnc-packages.zip"
-
+CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
 
 cd $EXE_PATH
 
