@@ -32,7 +32,7 @@ namespace OpenRA.Widgets.Delegates
 			if (FileSystem.Exists("VERSION"))
 			{
 				var s = FileSystem.Open("VERSION");
-				version.Text = "Version: "+s.ReadAllText();
+				version.Text = s.ReadAllText();
 				s.Close();
 			}
 		}
