@@ -18,6 +18,8 @@
  */
 #endregion
 
+using OpenRA.FileFormats.Graphics;
+
 namespace OpenRA.GameRules
 {
 	public class UserSettings
@@ -32,7 +34,7 @@ namespace OpenRA.GameRules
 		// Window settings
 		public readonly int Width = 0;
 		public readonly int Height = 0;
-		public readonly bool Fullscreen = false;
+		public readonly WindowMode WindowMode = WindowMode.PseudoFullscreen;
 		public bool MusicPlayer = true;
 		
 		// Internal game settings

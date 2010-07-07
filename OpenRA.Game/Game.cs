@@ -575,9 +575,8 @@ namespace OpenRA
 
 			Renderer.SheetSize = Settings.SheetSize;
 
-			bool windowed = !Game.Settings.Fullscreen;
 			var resolution = GetResolution(settings);
-			renderer = new Renderer(resolution, windowed);
+			renderer = new Renderer(resolution, Game.Settings.WindowMode);
 			resolution = renderer.Resolution;
 
 			controller = new Controller();

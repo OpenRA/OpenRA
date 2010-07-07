@@ -50,7 +50,7 @@ namespace OpenRA.GlRenderer
 				throw new InvalidOperationException("GL Error");
 		}
 
-		public GraphicsDevice(int width, int height, bool windowed, bool vsync)
+		public GraphicsDevice(int width, int height, WindowMode window, bool vsync)
 		{
 			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
@@ -58,19 +58,23 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 0);
-
-			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+			
+			int windowFlags = 0;
+			switch (window)
 			{
-				// pseudo-fullscreen, for sane debugging.
-				Environment.SetEnvironmentVariable("SDL_VIDEO_WINDOW_POS", "0,0");
-				surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_NOFRAME | Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
+				case WindowMode.Fullscreen:
+					windowFlags |= Sdl.SDL_FULLSCREEN;
+				break;
+				case WindowMode.PseudoFullscreen:
+					// pseudo-fullscreen only reliably works on windows; fall back to fullscreen for everyone else
+					windowFlags |= (Environment.OSVersion.Platform == PlatformID.Win32NT) ? Sdl.SDL_NOFRAME : Sdl.SDL_FULLSCREEN;
+				break;
+				default:
+				break;	
 			}
-			else
-			{
-				// OSX doesn't like this, due to quirks of their WM.
-				surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | (windowed ? 0 : Sdl.SDL_FULLSCREEN));
-			}
-
+			
+			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | windowFlags);
+			
 			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE(1);

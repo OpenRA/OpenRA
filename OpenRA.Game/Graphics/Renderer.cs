@@ -51,9 +51,9 @@ namespace OpenRA.Graphics
 
 		public Size Resolution { get { return device.WindowSize; } }
 
-		public Renderer(Size resolution, bool windowed)
+		public Renderer(Size resolution, OpenRA.FileFormats.Graphics.WindowMode windowMode)
 		{
-			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowed, false );
+			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowMode, false );
 
 			SpriteShader = device.CreateShader(FileSystem.Open("shaders/world-shp.fx"));
 			LineShader = device.CreateShader(FileSystem.Open("shaders/line.fx"));
@@ -69,12 +69,12 @@ namespace OpenRA.Graphics
 			TitleFont = new SpriteFont(this, "titles.ttf", 48);
 		}
 
-		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, bool windowed, bool vsync )
+		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
 		{
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
 			{
-				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( bool ), typeof( bool ) } )
-					.Invoke( new object[] { width, height, windowed, vsync } );
+				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) } )
+					.Invoke( new object[] { width, height, window, vsync } );
 			}
 			throw new NotImplementedException();
 		}

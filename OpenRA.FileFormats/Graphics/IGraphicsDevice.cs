@@ -102,4 +102,11 @@ namespace OpenRA.FileFormats.Graphics
 		public readonly T Start, End;
 		public Range( T start, T end ) { Start = start; End = end; }
 	}
+	
+	public enum WindowMode
+	{
+		Windowed,
+		Fullscreen,
+		PseudoFullscreen,
+	}
 }
