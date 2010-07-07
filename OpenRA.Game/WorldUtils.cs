@@ -222,5 +222,10 @@ namespace OpenRA
 
 			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
+
+		public static bool HasVoice(this Actor a)
+		{
+			return a.Info.Traits.Contains<SelectableInfo>() && a.Info.Traits.Get<SelectableInfo>().Voice != null;
+		}
 	}
 }
