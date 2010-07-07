@@ -79,7 +79,7 @@ V2RL:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
-		PrimaryWeapon: 75mm
+		PrimaryWeapon: 25mm
 		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
@@ -97,7 +97,7 @@ V2RL:
 		Owner: allies
 		Cost: 800
 		Description: Medium Tank
-		LongDesc: Soviet Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		LongDesc: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
 		HP: 400
 		Armor: heavy
@@ -125,7 +125,7 @@ V2RL:
 		Owner: soviet
 		Cost: 1200
 		Description: Heavy Tank
-		LongDesc: Allied Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		LongDesc: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
 		HP: 550
 		Armor: heavy
