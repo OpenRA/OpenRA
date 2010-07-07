@@ -16,17 +16,21 @@
 #  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
 # Tweakable options
 #export MONO_LOG_LEVEL=debug
-GAME_PATH=~/Library/"Application Support"/OpenRA
-RA_MIXEN="http://open-ra.org/packages/ra-packages.zip"
-CNC_MIXEN="http://open-ra.org/packages/cnc-packages.zip"
+SUPPORT_PATH=~/Library/"Application Support"/OpenRA
+DEPS_PACKAGE="osx-deps-v1.zip"
+DEPS_URL="http://localhost/~paul/osx-deps-v1.zip"
+#RA_URL="http://open-ra.org/packages/ra-packages.zip"
+#CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
+RA_URL="http://localhost/~paul/ra-packages.zip"
+CNC_URL="http://localhost/~paul/cnc-packages.zip"
 
 # Internal options
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 EXE_PATH=$APP_PATH/Contents/MacOS/
 RESOURCES_PATH=$APP_PATH/Contents/Resources
+GAME_PATH=$RESOURCES_PATH
 PAYLOAD=$RESOURCES_PATH/payload.zip
 VERSION=`cat "$APP_PATH/Contents/Resources/VERSION"`
 export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
@@ -61,11 +65,18 @@ EOT`
 #    $5: download url
 function download_package
 {
+	PWD=`pwd`
+	if [ ! -d "$SUPPORT_PATH" ]; then
+		mkdir -p "$SUPPORT_PATH"
+	fi
+	
+	cd "$SUPPORT_PATH"
+	
 	if [ -e "downloads/${1}" ]; then
 		mkdir -p "${2}"
 		unzip -o "downloads/${1}" -d "${2}"
 	else
-
+	pwd
 CONTINUE=`/usr/bin/osascript << EOT
 	tell application "Finder"
 		display dialog "OpenRA needs to download the ${4} game data.\nDownload size: ${3}" \
@@ -78,14 +89,16 @@ EOT`
 		if [ "$CONTINUE" != "Download" ]; then
 			exit 1
 		fi
+		
 		mkdir -p "${2}"
 
 /usr/bin/osascript << EOT
 	tell application "Terminal"
 		activate
-		do script "cd \"${GAME_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; touch \"downloads/done\"; exit;"
+		do script "cd \"${SUPPORT_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; touch \"downloads/done\"; exit;"
 	end tell
 EOT
+
 		# Hack around osascript returning before the download finishes
 		while [ ! -e "downloads/done" ]; do
 			sleep 1
@@ -97,23 +110,12 @@ EOT
 		fi
 		unzip -o "downloads/${1}" -d "${2}"
 	fi
+	cd "$PWD"
 }
 
-# Install the game in the users Application Support directory if it doesn't exist
-if [ ! -e "$GAME_PATH/OpenRA.Game.exe" ]; then
-	mkdir -p ~/Library/Application\ Support/OpenRA
-	unzip "$PAYLOAD" -d "$GAME_PATH"
-	
-	if [ ! -e "$GAME_PATH/OpenRA.Game.exe" ]; then
-	    display_error "Installation error" "Game setup failed"
-	fi
-fi
-
-# Is the installed version older than the current version?
-INSTVER=`cat "$GAME_PATH/VERSION"`
-if [ $INSTVER -lt $VERSION ]; then
-	echo "Updating installed version $INSTVER to $VERSION"
-	unzip -o "$PAYLOAD" -d "$GAME_PATH"
+# Download and install game dependencies if needed
+if [[ ! -e "$EXE_PATH/mono" ]]; then
+	download_package "$DEPS_PACKAGE" "$EXE_PATH" "17.2 Mb" "Game Dependencies" $DEPS_URL
 fi
 
 # Prompt for the mod to run
@@ -134,19 +136,20 @@ MOD="ra"
 if [ "$MODBUTTON" == "C&C" ]; then
 	MOD="cnc"
 fi
-cd "$GAME_PATH"
+
 
 # Check that the game data is installed
-if [[ $MOD == "ra" && ! -e "mods/ra/packages/redalert.mix" ]]; then
-	download_package "ra-packages.zip" "mods/ra/packages/" "10 Mb" "Red Alert" $RA_MIXEN
+if [[ $MOD == "ra" && ! -e "$GAME_PATH/mods/ra/packages/redalert.mix" ]]; then
+	download_package "ra-packages.zip" "$GAME_PATH/mods/ra/packages/" "10 Mb" "Red Alert" $RA_URL
 fi
 
-if [[ $MOD == "cnc" && ! -e "mods/cnc/packages/conquer.mix" ]]; then
-	download_package "cnc-packages.zip" "mods/cnc/packages/" "5.9 Mb" "C&C" $CNC_MIXEN
+if [[ $MOD == "cnc" && ! -e "$GAME_PATH/mods/cnc/packages/conquer.mix" ]]; then
+	download_package "cnc-packages.zip" "$GAME_PATH/mods/cnc/packages/" "5.9 Mb" "C&C" $CNC_URL
 fi
 
 # Run the game
-${EXE_PATH}mono OpenRA.Game.exe InitialMods=$MOD
+cd "${GAME_PATH}"
+${EXE_PATH}mono "OpenRA.Game.exe" InitialMods=$MOD
 
 # Did we crash?
 STATUS=$?
