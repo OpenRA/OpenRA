@@ -16,106 +16,35 @@
 #  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Tweakable options
-#export MONO_LOG_LEVEL=debug
-SUPPORT_PATH=~/Library/"Application Support"/OpenRA
-DEPS_PACKAGE="osx-deps-v1.zip"
-DEPS_URL="http://localhost/~paul/osx-deps-v1.zip"
-#RA_URL="http://open-ra.org/packages/ra-packages.zip"
-#CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
-RA_URL="http://localhost/~paul/ra-packages.zip"
-CNC_URL="http://localhost/~paul/cnc-packages.zip"
-
 # Internal options
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
 EXE_PATH=$APP_PATH/Contents/MacOS/
-RESOURCES_PATH=$APP_PATH/Contents/Resources
-GAME_PATH=$RESOURCES_PATH
-PAYLOAD=$RESOURCES_PATH/payload.zip
-VERSION=`cat "$APP_PATH/Contents/Resources/VERSION"`
 export LD_LIBRARY_PATH="$EXE_PATH/lib":$LD_LIBRARY_PATH
 export MONO_PATH="$EXE_PATH/lib"
+RESOURCES_PATH=$APP_PATH/Contents/Resources
 
-# Display an error to the user and exit
-# args:
-#    $1: title
-#    $2: message
-function display_error
-{
-`/usr/bin/osascript << EOT
-	tell application "Finder" 
-		display dialog "${2}\n\nSupport is available in our irc channel irc.freenode.net #openra." \
-		buttons "Exit" \
-		default button 1 \
-		with title "${1}" \
-		with icon stop \
-		with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns")
-		activate
-		end tell
-EOT`
-	exit 1
-}
+# Tweakable options
+#export MONO_LOG_LEVEL=debug
+GAME_PATH=$RESOURCES_PATH
+SUPPORT_PATH=~/Library/"Application Support"/OpenRA
 
-# Download and install game mix files from the internet
-# args:
-#    $1: package file
-#    $2: location to unpack package
-#    $3: package size
-#    $4: mod name
-#    $5: download url
-function download_package
-{
-	PWD=`pwd`
-	if [ ! -d "$SUPPORT_PATH" ]; then
-		mkdir -p "$SUPPORT_PATH"
-	fi
-	
-	cd "$SUPPORT_PATH"
-	
-	if [ -e "downloads/${1}" ]; then
-		mkdir -p "${2}"
-		unzip -o "downloads/${1}" -d "${2}"
-	else
-	pwd
-CONTINUE=`/usr/bin/osascript << EOT
-	tell application "Finder"
-		display dialog "OpenRA needs to download the ${4} game data.\nDownload size: ${3}" \
-			buttons {"Download", "Quit"} \
-			default button "Download" \
-			with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns")
-		set result to button returned of result
-	end tell
-EOT`
-		if [ "$CONTINUE" != "Download" ]; then
-			exit 1
-		fi
-		
-		mkdir -p "${2}"
+# Downloadable content
+DEPS_PACKAGE="osx-deps-v1.zip"
+#DEPS_URL="http://open-ra.org/packages/osx-deps-v1.zip"
+DEPS_URL="http://localhost/~paul/osx-deps-v1.zip"
+RA_PACKAGE="ra-packages.zip"
+#RA_URL="http://open-ra.org/packages/ra-packages.zip"
+RA_URL="http://localhost/~paul/ra-packages.zip"
+CNC_PACKAGE="cnc-packages.zip"
+#CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
+CNC_URL="http://localhost/~paul/cnc-packages.zip"
 
-/usr/bin/osascript << EOT
-	tell application "Terminal"
-		activate
-		do script "cd \"${SUPPORT_PATH}\"; curl --create-dirs -o \"./downloads/${1}\" \"${5}\"; touch \"downloads/done\"; exit;"
-	end tell
-EOT
 
-		# Hack around osascript returning before the download finishes
-		while [ ! -e "downloads/done" ]; do
-			sleep 1
-		done
-		rm "downloads/done"
-
-		if [ ! -e "downloads/${1}" ]; then
-		    display_error "Download failed" "Package download failed."
-		fi
-		unzip -o "downloads/${1}" -d "${2}"
-	fi
-	cd "$PWD"
-}
+cd $EXE_PATH
 
 # Download and install game dependencies if needed
-if [[ ! -e "$EXE_PATH/mono" ]]; then
-	download_package "$DEPS_PACKAGE" "$EXE_PATH" "17.2 Mb" "Game Dependencies" $DEPS_URL
+if [[ ! -e "mono" ]]; then
+	./download_package "$DEPS_PACKAGE" "$EXE_PATH" "17.2 Mb" "Game Dependencies" $DEPS_URL
 fi
 
 # Prompt for the mod to run
@@ -137,14 +66,19 @@ if [ "$MODBUTTON" == "C&C" ]; then
 	MOD="cnc"
 fi
 
-
 # Check that the game data is installed
 if [[ $MOD == "ra" && ! -e "$GAME_PATH/mods/ra/packages/redalert.mix" ]]; then
-	download_package "ra-packages.zip" "$GAME_PATH/mods/ra/packages/" "10 Mb" "Red Alert" $RA_URL
+	./download_package "ra-packages.zip" "$GAME_PATH/mods/ra/packages/" "10 Mb" "Red Alert" $RA_URL
+	if [[ ! -e "$GAME_PATH/mods/ra/packages/redalert.mix" ]]; then
+		./display_error "Installation failed" "Package install failed."
+	fi
 fi
 
 if [[ $MOD == "cnc" && ! -e "$GAME_PATH/mods/cnc/packages/conquer.mix" ]]; then
-	download_package "cnc-packages.zip" "$GAME_PATH/mods/cnc/packages/" "5.9 Mb" "C&C" $CNC_URL
+	./download_package "cnc-packages.zip" "$GAME_PATH/mods/cnc/packages/" "5.9 Mb" "C&C" $CNC_URL
+	if [[ ! -e "$GAME_PATH/mods/cnc/packages/conquer.mix" ]]; then
+		./display_error "Installation failed" "Package install failed."
+	fi
 fi
 
 # Run the game
@@ -154,5 +88,5 @@ ${EXE_PATH}mono "OpenRA.Game.exe" InitialMods=$MOD
 # Did we crash?
 STATUS=$?
 if [ "$STATUS" != "0" ]; then
-	display_error "OpenRA Crashed" "Sorry about that!\nA crash log has been saved to your home folder and sent to our server."
+	$EXE_PATH/display_error "OpenRA Crashed" "Sorry about that!\nA crash log has been saved to your home folder and sent to our server."
 fi
