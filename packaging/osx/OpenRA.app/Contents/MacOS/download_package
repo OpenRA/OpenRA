@@ -41,7 +41,7 @@ if [ -e "downloads/${1}" ]; then
 else
 CONTINUE=`/usr/bin/osascript << EOT
 	tell application "Finder"
-		display dialog "OpenRA needs to download the ${4} game data.\nDownload size: ${3}" \
+		display dialog "OpenRA needs to download ${4}.\n\nDownload size: ${3}" \
 			buttons {"Download", "Quit"} \
 			default button "Download" \
 			with icon alias (POSIX file "$RESOURCES_PATH/OpenRA.icns")
