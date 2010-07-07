@@ -428,22 +428,18 @@
     <sequence name="crawl" start="130" length="4" facings="8" />
   </unit>
   <unit name="explosion">
-    <sequence name="1" start="0" length="4" src="piff" />
-    <sequence name="2" start="0" length="8" src="piffpiff" />
-    <sequence name="3" start="0" length="14" src="napalm2" />
-    <sequence name="4" start="0" length="14" src="veh-hit3" />
-    <sequence name="5" start="0" length="22" src="veh-hit2" />
-    <sequence name="6w" start="0" length="27" src="atomsfx" />
-    <sequence name="1w" start="0" length="10" src="h2o_exp3" />
-    <sequence name="5w" start="0" length="10" src="h2o_exp1" />
-    <sequence name="3w" start="0" length="14" src="napalm2" />
-    <sequence name="6" start="0" length="27" src="atomsfx" />
-    <sequence name="4w" start="0" length="10" src="h2o_exp2" />
-    <sequence name="2w" start="0" length="10" src="h2o_exp3" />
-    <sequence name="7" start="0" length="18" src="fball1" />
-    <sequence name="8" start="0" length="22" src="art-exp1" />
-    <sequence name="7w" start="0" length="18" src="fball1" />
-    <sequence name="8w" start="0" length="10" src="h2o_exp3" />
+    <sequence name="piff" start="0" length="4" src="piff" />
+    <sequence name="piffs" start="0" length="8" src="piffpiff" />
+    <sequence name="small_explosion" start="0" length="14" src="veh-hit3" />
+    <sequence name="med_explosion" start="0" length="22" src="veh-hit2" />
+    <sequence name="large_splash" start="0" length="10" src="h2o_exp1" />
+    <sequence name="napalm" start="0" length="14" src="napalm2" />
+    <sequence name="nuke" start="0" length="27" src="atomsfx" />
+    <sequence name="med_splash" start="0" length="10" src="h2o_exp2" />
+    <sequence name="self_destruct" start="0" length="22" src="art-exp1" />
+    <sequence name="building" start="0" length="18" src="fball1" />
+    <sequence name="small_splash" start="0" length="10" src="h2o_exp3" />
+    <sequence name="large_explosion" start="0" length="14" src="frag1" />
   </unit>
   <unit name="lst">
     <sequence name="idle" start="0" length="1" />

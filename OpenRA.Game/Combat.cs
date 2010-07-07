@@ -49,10 +49,11 @@ namespace OpenRA
 				return;
 
 			var isWater = world.GetTerrainInfo(targetTile).IsWater;
+			var explosionType = isWater ? warhead.WaterExplosion : warhead.Explosion;
 
-			if (warhead.Explosion != 0)
+			if (explosionType != null)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, args.dest, warhead.Explosion, isWater)));
+					w => w.Add(new Explosion(w, args.dest, explosionType, isWater)));
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 			

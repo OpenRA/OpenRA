@@ -29,12 +29,11 @@ namespace OpenRA.Effects
 		Animation anim;
 		int2 pos;
 
-		public Explosion(World world, int2 pixelPos, int style, bool isWater)
+		public Explosion(World world, int2 pixelPos, string style, bool isWater)
 		{
 			this.pos = pixelPos;
-			var variantSuffix = isWater ? "w" : "";
 			anim = new Animation("explosion");
-			anim.PlayThen(style.ToString() + variantSuffix,
+			anim.PlayThen(style,
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 

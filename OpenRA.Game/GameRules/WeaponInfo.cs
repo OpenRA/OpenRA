@@ -30,7 +30,8 @@ namespace OpenRA.GameRules
 		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
 		public readonly float[] Verses = { 1, 1, 1, 1, 1 };				// damage vs each armortype
 		public readonly bool Ore = false;								// can this damage ore?
-		public readonly int Explosion = 0;								// explosion effect to use
+		public readonly string Explosion = null;						// explosion effect to use
+		public readonly string WaterExplosion = null;					// explosion effect on hitting water (usually a splash)
 		public readonly string SmudgeType = null;						// type of smudge to apply
 		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
 		public readonly int InfDeath = 0;								// infantry death animation to use

@@ -7,7 +7,7 @@ Colt45:
 	Warhead:
 		Spread: 1
 		Verses: 100%,5%,5%,5%,5%
-		Explosion: 1
+		Explosion: piff
 		InfDeath: 1
 		Damage: 50
 		
@@ -21,7 +21,7 @@ ZSU-23:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: med_explosion
 		Damage: 25
 		
 Vulcan:
@@ -33,41 +33,41 @@ Vulcan:
 	Warhead@1:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 	Warhead@2:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 5
 		Delay: 7
 	Warhead@3:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 4
 	Warhead@4:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 6
 	Warhead@5:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 8
 	Warhead@6:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 10
@@ -91,7 +91,8 @@ Maverick:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: med_explosion
+		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 50
@@ -106,7 +107,8 @@ FireballLauncher:
 	Warhead:
 		Spread: 4
 		Verses: 90%,100%,60%,25%,50%
-		Explosion: 3
+		Explosion: napalm
+		WaterExplosion: napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
@@ -122,7 +124,8 @@ Flamer:
 	Warhead:
 		Spread: 4
 		Verses: 90%,100%,60%,25%,50%
-		Explosion: 3
+		Explosion: napalm
+		WaterExplosion: napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
@@ -137,7 +140,8 @@ ChainGun:
 	Warhead:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
+		WaterExplosion: small_splash
 		InfDeath: 1
 		Damage: 40
 		
@@ -150,7 +154,7 @@ Pistol:
 	Warhead:
 		Spread: 3
 		Verses: 100%,50%,60%,25%,25%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 1
 		
@@ -163,7 +167,7 @@ M1Carbine:
 	Warhead:
 		Spread: 3
 		Verses: 100%,25%,30%,10%,10%
-		Explosion: 2
+		Explosion: piffs
 		InfDeath: 1
 		Damage: 15
 
@@ -186,7 +190,8 @@ Dragon:
 	Warhead:
 		Spread: 3
 		Verses: 10%,75%,35%,100%,20%
-		Explosion: 4
+		Explosion: med_explosion
+		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 60
@@ -211,7 +216,8 @@ Hellfire:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: med_explosion
+		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 40
@@ -229,7 +235,8 @@ Grenade:
 	Warhead:
 		Spread: 6
 		Verses: 50%,100%,25%,5%,100%
-		Explosion: 5
+		Explosion: med_explosion
+		WaterExplosion: small_splash
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 60
@@ -245,7 +252,8 @@ Grenade:
 	Warhead:
 		Spread: 3
 		Verses: 30%,40%,100%,40%,30%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 18
@@ -260,7 +268,8 @@ Grenade:
 	Warhead:
 		Spread: 3
 		Verses: 20%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 30
@@ -277,7 +286,8 @@ Grenade:
 	Warhead:
 		Spread: 3
 		Verses: 20%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 40
@@ -293,7 +303,8 @@ Grenade:
 	Warhead:
 		Spread: 3
 		Verses: 20%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 50
@@ -308,7 +319,8 @@ TurretGun:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 60
@@ -333,7 +345,8 @@ MammothTusk:
 	Warhead:
 		Spread: 6
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 5
+		Explosion: med_explosion
+		WaterExplosion: med_splash
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 45
@@ -351,7 +364,8 @@ MammothTusk:
 	Warhead:
 		Spread: 8
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 5
+		Explosion: large_explosion
+		WaterExplosion: med_splash
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 150
@@ -366,7 +380,8 @@ M60mg:
 	Warhead:
 		Spread: 3
 		Verses: 100%,10%,30%,10%,10%
-		Explosion: 2
+		Explosion: piffs
+		WaterExplosion: small_splash
 		InfDeath: 1
 		Damage: 15
 		
@@ -382,7 +397,8 @@ Napalm:
 	Warhead:
 		Spread: 4
 		Verses: 90%,100%,60%,25%,50%
-		Explosion: 3
+		Explosion: napalm
+		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
@@ -392,7 +408,8 @@ CrateNapalm:
 	Warhead:
 		Spread: 4
 		Verses: 90%,100%,60%,25%,50%
-		Explosion: 3
+		Explosion: napalm
+		WaterExplosion: napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
@@ -403,7 +420,8 @@ CrateExplosion:
 		Damage: 500
 		Spread: 10
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 8
+		Explosion: self_destruct
+		WaterExplosion: self_destruct
 		InfDeath: 3
 		ImpactSound: kaboom15
 		
@@ -438,7 +456,7 @@ Nike:
 	Warhead:
 		Spread: 3
 		Verses: 90%,0%,90%,50%,0%
-		Explosion: 5
+		Explosion: med_explosion
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 100
@@ -461,7 +479,7 @@ RedEye:
 	Warhead:
 		Spread: 3
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 5
+		Explosion: med_explosion
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 50
@@ -480,7 +498,8 @@ RedEye:
 	Warhead:
 		Spread: 3
 		Verses: 60%,75%,60%,25%,100%
-		Explosion: 5
+		Explosion: large_explosion
+		WaterExplosion: large_splash
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 250
@@ -506,7 +525,8 @@ Stinger:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: med_explosion
+		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 30
@@ -523,7 +543,7 @@ TorpTube:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 90
@@ -538,7 +558,8 @@ TorpTube:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		Explosion: small_explosion
+		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 25
@@ -556,7 +577,7 @@ DepthCharge:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 4
+		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 80
@@ -570,7 +591,8 @@ ParaBomb:
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
-		Explosion: 8
+		Explosion: self_destruct
+		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 500
@@ -614,7 +636,8 @@ SCUD:
 	Warhead:
 		Spread: 8
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 3
+		Explosion: napalm
+		WaterExplosion: large_splash
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 700
@@ -627,7 +650,8 @@ Atomic:
 		Spread: 6
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
-		Explosion: 6
+		Explosion: nuke
+		WaterExplosion: nuke
 		InfDeath: 4
 	Warhead@areanuke:
 		DamageModel: PerCell
@@ -644,7 +668,7 @@ UnitExplode:
 		Damage: 500
 		Spread: 10
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 8
+		Explosion: self_destruct
 		InfDeath: 3
 		ImpactSound: kaboom22
 
@@ -653,7 +677,7 @@ UnitExplodeSmall:
 		Damage: 40
 		Spread: 10
 		Verses: 90%,75%,60%,25%,100%
-		Explosion: 8
+		Explosion: large_explosion
 		InfDeath: 3
 		ImpactSound: kaboom15
 
@@ -668,7 +692,7 @@ ATMine:
 		Damage: 500
 		Verses: 0%,0%,100%,100%,0%
 		ImpactSound: mineblo1
-		Explosion: 5
+		Explosion: large_explosion
 
 APMine:
 	Warhead:
@@ -676,10 +700,10 @@ APMine:
 		Verses: 100%,0%,0%,0%,0%
 		ImpactSound: mine1
 		InfDeath: 2
-		Explosion: 3
+		Explosion: napalm
 		
 Demolish:
 	Warhead:
 		Verses: 100%,100%,100%,100%,100%
 		ImpactSound: kaboom25
-		Explosion: 7
+		Explosion: building

@@ -68,7 +68,7 @@
     <sequence name="4w" start="0" length="14" src="veh-hit3" />
     <sequence name="5w" start="0" length="22" src="veh-hit2" />
     <sequence name="8" start="0" length="22" src="art-exp1" />
-    <sequence name="7" start="0" length="18" src="fball1" />
+    <sequence name="building" start="0" length="18" src="fball1" />
   </unit>
   <unit name="pips">
     <sequence name="ready" start="3" length="1" src="hpips" />
