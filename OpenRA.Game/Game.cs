@@ -652,7 +652,7 @@ namespace OpenRA
 					return Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Support" + Path.DirectorySeparatorChar;
 				
 				// Custom paths are relative to the home directory (My Documents under windows)
-				return Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + Settings.SupportDir;
+				return Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + Settings.SupportDir + Path.DirectorySeparatorChar;
 			}
 		}
 
