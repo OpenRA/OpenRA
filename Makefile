@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint uploader
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -79,6 +79,12 @@ ralint_KIND		= winexe
 ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 
+uploader_SRCS		= $(shell find OpenRAUploader/ -iname '*.cs')
+uploader_TARGET		= uploader.exe
+uploader_KIND		= winexe
+uploader_LIBS		= $(COMMON_LIBS)
+
+
 # -platform:x86
 
 .SUFFIXES:
@@ -140,6 +146,7 @@ seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 editor: $(editor_TARGET)
 ralint: $(ralint_TARGET)
+uploader: $(uploader_TARGET)
 
 define BUILD_ASSEMBLY
 
