@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace OpenRA.Graphics
 {
-	class CursorSequence
+	public class CursorSequence
 	{
 		readonly int start, length;
 

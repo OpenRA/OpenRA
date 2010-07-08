@@ -71,6 +71,11 @@
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="ConstructionYard.cs" />
+    <Compile Include="Effects\Bullet.cs" />
+    <Compile Include="Effects\GravityBomb.cs" />
+    <Compile Include="Effects\LaserZap.cs" />
+    <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />

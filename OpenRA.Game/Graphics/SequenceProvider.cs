@@ -27,7 +27,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	static class SequenceProvider
+	public static class SequenceProvider
 	{
 		static Dictionary<string, Dictionary<string, Sequence>> units;
 		static Dictionary<string, CursorSequence> cursors;

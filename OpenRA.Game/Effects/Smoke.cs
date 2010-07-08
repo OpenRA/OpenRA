@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
-	class Smoke : IEffect
+	public class Smoke : IEffect
 	{
 		readonly int2 pos;
 		readonly Animation anim;

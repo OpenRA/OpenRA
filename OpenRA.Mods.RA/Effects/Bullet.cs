@@ -20,11 +20,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Effects
+namespace OpenRA.Mods.RA.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
