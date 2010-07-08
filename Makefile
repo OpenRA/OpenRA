@@ -82,11 +82,9 @@ ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all default mods seqed mapcvtr install uninstall
+.PHONY: clean all default mods install uninstall
 
 all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET) $(editor_TARGET) $(ralint_TARGET)
-	mono ralint.exe ra
-	mono ralint.exe cnc
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
@@ -130,7 +128,14 @@ uninstall:
 	@-rm -r $(INSTALL_DIR)
 	@-rm $(DESTDIR)$(bindir)/openra
 
-mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
+mod_ra: $(ra_TARGET) $(ralint_TARGET)
+	mono ralint.exe ra
+mod_aftermath: $(aftermath_TARGET) $(ralint_TARGET)
+	mono ralint.exe ra aftermath
+mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
+	mono ralint.exe cnc
+
+mods: mod_ra mod_cnc
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 editor: $(editor_TARGET)
