@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -73,12 +73,20 @@ mapcvtr_KIND		= winexe
 mapcvtr_DEPS		= $(fileformats_TARGET)
 mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 
+ralint_SRCS		= $(shell find RALint/ -iname '*.cs')
+ralint_TARGET	= ralint.exe
+ralint_KIND		= winexe
+ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
+
 # -platform:x86
 
 .SUFFIXES:
 .PHONY: clean all default mods seqed mapcvtr install uninstall
 
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET)
+all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET) $(editor_TARGET) $(ralint_TARGET)
+	mono ralint.exe ra
+	mono ralint.exe cnc
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
@@ -126,6 +134,7 @@ mods: $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 editor: $(editor_TARGET)
+ralint: $(ralint_TARGET)
 
 define BUILD_ASSEMBLY
 
