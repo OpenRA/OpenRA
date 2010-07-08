@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 			w.Remove(self);
 			
 			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
+			mcv.Health = TransformIntoActor.GetHealthToTransfer(self, mcv, true);
 			mcv.traits.Get<Unit>().Facing = 96;
 		}
 

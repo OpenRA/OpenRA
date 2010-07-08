@@ -45,24 +45,28 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick( Actor self )
 		{
 			if (isCanceled) return NextActivity;
-			
-			self.World.AddFrameEndTask( _ =>
+
+			self.World.AddFrameEndTask(_ =>
 			{
-				var oldHP = self.GetMaxHP();
-				var newHP = Rules.Info[actor].Traits.Get<OwnedActorInfo>().HP;
-				var newHealth = (transferPercentage) ? (int)((float)self.Health/oldHP*newHP) : Math.Min(self.Health, newHP);
-				
-				self.Health = 0;
-				self.World.Remove( self );
+				self.World.Remove(self);
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
-				var a = self.World.CreateActor( actor, self.Location + offset, self.Owner );
-				a.Health = newHealth;
-			} );
+				var a = self.World.CreateActor(actor, self.Location + offset, self.Owner);
+				a.Health = GetHealthToTransfer(self, a, transferPercentage);
+			});
 			return this;
 		}
 		
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
+
+		public static int GetHealthToTransfer(Actor from, Actor to, bool transferPercentage)
+		{
+			var oldHP = from.GetMaxHP();
+			var newHP = to.GetMaxHP();
+			return (transferPercentage) 
+				? (int)((float)from.Health / oldHP * newHP) 
+				: Math.Min(from.Health, newHP);
+		}
 	}
 }
