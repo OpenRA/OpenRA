@@ -18,38 +18,32 @@
  */
 #endregion
 
-namespace OpenRA.Traits.Activities
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA
 {
-	class UndeployMcv : IActivity
+	class ConstructionYardInfo : TraitInfo<ConstructionYard> { }
+
+	public class ConstructionYard : IIssueOrder, IResolveOrder
 	{
-		public IActivity NextActivity { get; set; }
-		bool started;
-
-		void DoUndeploy(World w,Actor self)
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			w.Remove(self);
-			
-			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
-			mcv.traits.Get<Unit>().Facing = 96;
+			if (mi.Button == MouseButton.Left) return null;
+
+			if (underCursor == self)
+				return new Order("Deploy", self);
+
+			return null;
 		}
 
-		public IActivity Tick(Actor self)
+		public void ResolveOrder(Actor self, Order order)
 		{
-			if (!started)
+			if (order.OrderString == "Deploy")
 			{
-				var rb = self.traits.Get<RenderBuilding>();
-				rb.PlayCustomAnimBackwards(self, "make",
-					() => self.World.AddFrameEndTask(w => DoUndeploy(w,self)));
-				
-				foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-				
-				started = true;
+				self.CancelActivity();
+				self.QueueActivity(new UndeployMcv());
 			}
-
-			return this;
 		}
-
-		public void Cancel(Actor self) {}
 	}
 }

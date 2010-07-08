@@ -46,9 +46,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				return !info.RequiresConstructionYard ||
-					Game.world.Queries.OwnedBy[Game.world.LocalPlayer]
-						.WithTrait<ConstructionYard>().Any();
+				// WTF: why are these buttons even traits?
+				return RepairOrderGenerator.PlayerIsAllowedToRepair( Game.world );
 			}
 		}
 

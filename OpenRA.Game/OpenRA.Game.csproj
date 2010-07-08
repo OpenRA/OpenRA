@@ -81,7 +81,7 @@
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
-    <Compile Include="Traits\Activities\UndeployMcv.cs" />
+    <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
-    <Compile Include="Traits\ConstructionYard.cs" />
     <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />

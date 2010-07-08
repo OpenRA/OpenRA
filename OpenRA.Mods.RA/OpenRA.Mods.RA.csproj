@@ -67,8 +67,10 @@
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Teleport.cs" />
+    <Compile Include="Activities\UndeployMcv.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="ConstructionYard.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />

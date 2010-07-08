@@ -52,12 +52,18 @@ namespace OpenRA.Mods.RA.Orders
 
 		public void Tick( World world )
 		{
-			var hasFact = world.Queries.OwnedBy[world.LocalPlayer]
-				.WithTrait<ConstructionYard>()
-				.Any();
-				
-			if (!hasFact)
+			if( PlayerIsAllowedToRepair( world ) )
 				Game.controller.CancelInputMode();
+		}
+
+		public static bool PlayerIsAllowedToRepair( World world )
+		{
+			if( !world.WorldActor.Info.Traits.Get<RepairButtonInfo>().RequiresConstructionYard )
+				return true;
+
+			return Game.world.Queries.OwnedBy[ Game.world.LocalPlayer ]
+				.WithTrait<Production>().Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( "Building" ) )
+				.Any();
 		}
 
 		public void Render( World world ) {}

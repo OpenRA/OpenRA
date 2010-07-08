@@ -20,6 +20,7 @@
 
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -63,16 +64,7 @@ namespace OpenRA.Traits
 							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 					}
 
-					/* todo: reimpl this properly */
-
-					var facts = w.Queries.OwnedBy[self.Owner]
-						.WithTrait<ConstructionYard>().Select(x => x.Actor);
-
-					var primaryFact = facts.Where(y => y.traits.Get<Production>().IsPrimary);
-					var fact = (primaryFact.Count() > 0) ? primaryFact.FirstOrDefault() : facts.FirstOrDefault();
-
-					if (fact != null)
-						fact.traits.Get<RenderBuilding>().PlayCustomAnim(fact, "build");
+					PlayBuildAnim( self, unit );
 
 					queue.FinishProduction(unit.Category);
 
@@ -82,6 +74,20 @@ namespace OpenRA.Traits
 								w.WorldActor.Info.Traits.Get<EvaAlertsInfo>().NewOptions)));
 				});
 			}
+		}
+
+		// finds a construction yard (or equivalent) and runs its "build" animation.
+		static void PlayBuildAnim( Actor self, ActorInfo unit )
+		{
+			var producers = self.World.Queries.OwnedBy[ self.Owner ].WithTrait<Production>()
+							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( unit.Category ) )
+							   .ToList();
+			var producer = producers.Where( x => x.Trait.IsPrimary ).Concat( producers )
+				.Select( x => x.Actor )
+				.FirstOrDefault();
+
+			if( producer != null )
+				producer.traits.Get<RenderBuilding>().PlayCustomAnim( producer, "build" );
 		}
 
 		static int GetNumBuildables(Player p)
