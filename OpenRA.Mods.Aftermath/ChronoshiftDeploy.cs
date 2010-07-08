@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Aftermath
 		public readonly int ChargeTime = 120; // Seconds
 	}
 
-	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IProvideCursor
 	{
 		// Recharge logic
 		[Sync]
@@ -78,6 +78,11 @@ namespace OpenRA.Mods.Aftermath
 			}
 		}
 
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Deploy") ? "deploy" : null;
+		}
+		
 		// Display 5 pips indicating the current charge status
 		public IEnumerable<PipType> GetPips(Actor self)
 		{

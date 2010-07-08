@@ -202,6 +202,8 @@
     <Compile Include="Activities\Drag.cs" />
     <Compile Include="ProducesHelicopters.cs" />
     <Compile Include="StoresOre.cs" />
+    <Compile Include="TransformsOnDeploy.cs" />
+    <Compile Include="Activities\TransformIntoActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

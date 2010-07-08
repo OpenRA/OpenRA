@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Helicopter( init ); }
 	}
 
-	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder
+	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		public IDisposable reservation;
 
@@ -60,6 +60,11 @@ namespace OpenRA.Mods.RA
 				return new Order("Enter", self, underCursor);
 
 			return null;
+		}
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Enter") ? "enter" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

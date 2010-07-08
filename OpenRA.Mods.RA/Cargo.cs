@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		public readonly int UnloadFacing = 0;
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		List<Actor> cargo = new List<Actor>();
 
@@ -58,6 +58,11 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo());
 			}
+		}
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Deploy") ? "deploy" : null;
 		}
 
 		public bool IsFull(Actor self)

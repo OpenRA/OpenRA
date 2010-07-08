@@ -46,6 +46,7 @@ namespace OpenRA.Traits
 	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
 	public interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
+	public interface IProvideCursor { string CursorForOrderString(string s, Actor a, int2 location); }
 
 	public interface INotifySold { void Selling( Actor self );  void Sold( Actor self ); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }

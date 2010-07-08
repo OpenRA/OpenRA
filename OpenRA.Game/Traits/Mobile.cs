@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove
+	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove, IProvideCursor
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -120,6 +120,14 @@ namespace OpenRA.Traits
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
 				}
 			}
+		}
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			if (s != "Move")
+				return null;
+			
+			return (CanEnterCell(location)) ? "move" : "move-blocked";
 		}
 
 		public int2 TopLeft { get { return toCell; } }

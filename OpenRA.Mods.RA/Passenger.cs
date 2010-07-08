@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public readonly PipType ColorOfCargoPip = PipType.Green;
 	}
 
-	class Passenger : IIssueOrder, IResolveOrder
+	class Passenger : IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -50,6 +50,11 @@ namespace OpenRA.Mods.RA
 				return null;
 
 			return new Order("EnterTransport", self, underCursor);
+		}
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "EnterTransport") ? "enter" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

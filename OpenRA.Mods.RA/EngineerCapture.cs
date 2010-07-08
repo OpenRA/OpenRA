@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public readonly int EngineerDamage = 300;
 	}
 
-	class EngineerCapture : IIssueOrder, IResolveOrder
+	class EngineerCapture : IIssueOrder, IResolveOrder, IProvideCursor
 	{
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -48,6 +48,12 @@ namespace OpenRA.Mods.RA
 				self, underCursor);
 		}
 
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Infiltrate") ? "enter" : 
+				   (s == "Capture")    ? "capture" : null;
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture")

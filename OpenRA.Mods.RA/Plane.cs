@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Plane( init ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		public IDisposable reservation;
 
@@ -50,7 +50,12 @@ namespace OpenRA.Mods.RA
 
 			return null;
 		}
-
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Enter") ? "enter" : null;
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (reservation != null)

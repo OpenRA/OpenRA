@@ -18,9 +18,11 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class TransformsOnDeployInfo : TraitInfo<TransformsOnDeploy>
 	{
@@ -33,7 +35,7 @@ namespace OpenRA.Traits
 		public readonly string[] NoTransformSounds = null;
 	}
 
-	class TransformsOnDeploy : IIssueOrder, IResolveOrder
+	class TransformsOnDeploy : IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -76,6 +78,22 @@ namespace OpenRA.Traits
 				
 				self.QueueActivity(new TransformIntoActor(info.TransformsInto, new int2(info.Offset[0], info.Offset[1]), info.TransferHealthPercentage, info.TransformSounds));
 			}
+		}
+		
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			if (s != "DeployTransform")
+				return null;
+
+			var depInfo = a.Info.Traits.Get<TransformsOnDeployInfo>();
+			var transInfo = Rules.Info[depInfo.TransformsInto];
+			if (transInfo.Traits.Contains<BuildingInfo>())
+			{
+				var bi = transInfo.Traits.Get<BuildingInfo>();
+				if (!a.World.CanPlaceBuilding(depInfo.TransformsInto, bi, a.Location + new int2(depInfo.Offset[0], depInfo.Offset[1]), a))
+					return "deploy-blocked";
+			}
+			return "deploy";
 		}
 	}
 }

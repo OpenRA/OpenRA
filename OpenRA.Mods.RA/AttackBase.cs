@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IProvideCursor
 	{
 		[Sync] public Actor target;
 
@@ -253,6 +253,16 @@ namespace OpenRA.Mods.RA
 				target = null;
 		}
 
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			switch (s)
+			{
+				case "Attack": return "attack";
+				case "Heal": return "heal";
+				default: return null;
+			}
+		}
+		
 		protected virtual void QueueAttack(Actor self, Order order)
 		{
 			/* todo: choose the appropriate weapon, when only one works against this target */

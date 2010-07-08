@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Buildings = { "spen", "syrd" };
 	}
 
-	class RepairableNear : IIssueOrder, IResolveOrder
+	class RepairableNear : IIssueOrder, IResolveOrder, IProvideCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -46,6 +46,11 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
+		public string CursorForOrderString(string s, Actor a, int2 location)
+		{
+			return (s == "Enter") ? "enter" : null;
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Enter")
