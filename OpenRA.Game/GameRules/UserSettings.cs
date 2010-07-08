@@ -19,13 +19,14 @@
 #endregion
 
 using OpenRA.FileFormats.Graphics;
-
+using System;
+using System.IO;
 namespace OpenRA.GameRules
 {
 	public class UserSettings
 	{
-		public readonly string SupportDir = null;
-		
+		public readonly string SupportDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+												+ Path.DirectorySeparatorChar + "OpenRA" + Path.DirectorySeparatorChar;
 		// Debug settings
 		public bool UnitDebug = false;
 		public bool PathDebug = true;

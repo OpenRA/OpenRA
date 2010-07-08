@@ -647,12 +647,12 @@ namespace OpenRA
 		public static string SupportDir
 		{
 			get {
-				// Unless the user has specified otherwise, put support files in a subdirectory of the game install
-				if (Settings.SupportDir == null)
-					return Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Support" + Path.DirectorySeparatorChar;
+				var dir = Settings.SupportDir;
 				
-				// Custom paths are relative to the home directory (My Documents under windows)
-				return Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + Settings.SupportDir + Path.DirectorySeparatorChar;
+				// Expand paths relative to the personal directory
+				if (dir.ElementAt(0) == '~')
+					dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + dir.Substring(1);
+				return dir + Path.DirectorySeparatorChar;
 			}
 		}
 
