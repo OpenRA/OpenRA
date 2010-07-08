@@ -60,17 +60,18 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 0);
 			
 			int windowFlags = 0;
-			switch (window)
+			switch( window )
 			{
-				case WindowMode.Fullscreen:
-					windowFlags |= Sdl.SDL_FULLSCREEN;
+			case WindowMode.Fullscreen:
+				windowFlags |= Sdl.SDL_FULLSCREEN;
 				break;
-				case WindowMode.PseudoFullscreen:
-					// pseudo-fullscreen only reliably works on windows; fall back to fullscreen for everyone else
-					windowFlags |= (Environment.OSVersion.Platform == PlatformID.Win32NT) ? Sdl.SDL_NOFRAME : Sdl.SDL_FULLSCREEN;
+			case WindowMode.PseudoFullscreen:
+				// pseudo-fullscreen only reliably works on windows; fall back to fullscreen for everyone else
+				windowFlags |= ( Environment.OSVersion.Platform == PlatformID.Win32NT ) ? Sdl.SDL_NOFRAME : Sdl.SDL_FULLSCREEN;
+				Environment.SetEnvironmentVariable( "SDL_VIDEO_WINDOW_POS", "0,0" );
 				break;
-				default:
-				break;	
+			default:
+				break;
 			}
 			
 			surf = Sdl.SDL_SetVideoMode(width, height, 0, Sdl.SDL_OPENGL | windowFlags);
