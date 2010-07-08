@@ -26,7 +26,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class SmudgeLayerInfo : ITraitInfo
+	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
 		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
-	class SmudgeLayer: IRenderOverlay, ILoadWorldHook
+	public class SmudgeLayer: IRenderOverlay, ILoadWorldHook
 	{		
 		public SmudgeLayerInfo Info;
 		SpriteRenderer spriteRenderer;

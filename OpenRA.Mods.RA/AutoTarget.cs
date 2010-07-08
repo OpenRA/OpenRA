@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			if (--nextScanTime <= 0)
 			{
 				var attack = self.traits.Get<AttackBase>();
-				var range = Util.GetMaximumRange(self);
+				var range = Combat.GetMaximumRange(self);
 
 				if (attack.target == null ||
 					(attack.target.Location - self.Location).LengthSquared > range * range)

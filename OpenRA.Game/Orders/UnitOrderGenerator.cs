@@ -52,9 +52,9 @@ namespace OpenRA.Orders
 				world.WorldRenderer.DrawSelectionBox(a, Color.White, true);
 				if (a.Owner == world.LocalPlayer)
 				{
-					if (a.traits.Contains<RenderRangeCircle>())
-						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.Yellow),
-							a.CenterLocation, (int)a.GetPrimaryWeapon().Range);
+					//if (a.traits.Contains<RenderRangeCircle>())
+					//    world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.Yellow),
+					//        a.CenterLocation, (int)a.GetPrimaryWeapon().Range);
 
 					if (a.traits.Contains<DetectCloaked>())
 						world.WorldRenderer.DrawRangeCircle(Color.FromArgb(128, Color.LimeGreen),

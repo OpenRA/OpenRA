@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add( "rotor_1", new AnimationWithOffset(
 				rotorAnim,
-				() => Traits.Util.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
+				() => Combat.GetTurretPosition( self, unit, info.PrimaryOffset, 0 ),
 				null ) { ZOffset = 1 } );
 
 			if (info.SecondaryOffset == null) return;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			secondRotorAnim.PlayRepeating( "rotor2" );
 			anims.Add( "rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
-				() => Traits.Util.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
+				() => Combat.GetTurretPosition(self, unit, info.SecondaryOffset, 0),
 				null) { ZOffset = 1 });
 		}
 

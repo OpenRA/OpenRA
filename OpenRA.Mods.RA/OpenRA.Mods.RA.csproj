@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\CaptureBuilding.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
@@ -70,14 +71,18 @@
     <Compile Include="Activities\UndeployMcv.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="AttackBase.cs" />
+    <Compile Include="Combat.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
+    <Compile Include="Hazardous.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
+    <Compile Include="RenderUnitTurreted.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="AttackFrontal.cs" />
     <Compile Include="AttackHeli.cs" />

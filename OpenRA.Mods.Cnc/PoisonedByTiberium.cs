@@ -20,6 +20,7 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc

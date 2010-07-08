@@ -18,10 +18,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects

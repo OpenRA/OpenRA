@@ -21,7 +21,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -82,7 +81,7 @@ namespace OpenRA.Traits
 			return a / step;
 		}
 
-		static float2 RotateVectorByFacing(float2 v, int facing, float ecc)
+		public static float2 RotateVectorByFacing(float2 v, int facing, float ecc)
 		{
 			var angle = (facing / 256f) * (2 * (float)Math.PI);
 			var sinAngle = (float)Math.Sin(angle);
@@ -93,17 +92,6 @@ namespace OpenRA.Traits
 				ecc * (cosAngle * v.Y - sinAngle * v.X));
 		}
 
-		static float2 GetRecoil(Actor self, float recoil)
-		{
-			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
-			if (abInfo == null || abInfo.Recoil == 0) return float2.Zero;
-			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
-			if (rut == null) return float2.Zero;
-
-			var facing = self.traits.Get<Turreted>().turretFacing;
-			return RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), facing, .7f);
-		}
-
 		public static float2 CenterOfCell(int2 loc)
 		{
 			return new float2(12, 12) + Game.CellSize * (float2)loc;
@@ -112,19 +100,6 @@ namespace OpenRA.Traits
 		public static float2 BetweenCells(int2 from, int2 to)
 		{
 			return 0.5f * (CenterOfCell(from) + CenterOfCell(to));
-		}
-
-		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)
-		{
-			if( unit == null ) return offset.AbsOffset();	/* things that don't have a rotating base don't need the turrets repositioned */
-
-			var ru = self.traits.GetOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var bodyFacing = unit.Facing;
-			var quantizedFacing = QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
-
-			return (RotateVectorByFacing(offset.RelOffset(), quantizedFacing, .7f) + GetRecoil(self, recoil))
-				+ offset.AbsOffset();
 		}
 
 		public static int2 AsInt2(this int[] xs) { return new int2(xs[0], xs[1]); }
@@ -142,12 +117,6 @@ namespace OpenRA.Traits
 		{
 			return acts.Reverse().Aggregate(
 				(next, a) => { a.NextActivity = next; return a; });
-		}
-
-		public static float GetMaximumRange(Actor self)
-		{
-			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
-				.Where(w => w != null).Max(w => w.Range);
 		}
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }

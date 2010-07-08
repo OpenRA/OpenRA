@@ -19,8 +19,9 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class RenderUnitTurretedInfo : RenderUnitInfo
 	{
@@ -43,13 +44,13 @@ namespace OpenRA.Traits
 			if( attackInfo.PrimaryOffset != null )
 				anims.Add("turret_1", new AnimationWithOffset(
 					turretAnim,
-					() => Util.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
+					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
 					null) { ZOffset = 1 });
 
 			if (attackInfo.SecondaryOffset != null)
 				anims.Add("turret_2", new AnimationWithOffset(
 					turretAnim,
-					() => Util.GetTurretPosition(self, unit, attackInfo.SecondaryOffset, attack.secondaryRecoil),
+					() => Combat.GetTurretPosition(self, unit, attackInfo.SecondaryOffset, attack.secondaryRecoil),
 					null) { ZOffset = 1 });
 
 			if( attackInfo.MuzzleFlash )
@@ -59,7 +60,7 @@ namespace OpenRA.Traits
 					() => (int)( attack.primaryRecoil * 5.9f ) ); /* hack: recoil can be 1.0f, but don't overflow into next anim */
 				anims.Add( "muzzle_flash", new AnimationWithOffset(
 					muzzleFlash,
-					() => Util.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
+					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
 					() => attack.primaryRecoil <= 0 ) );
 			}
 		}

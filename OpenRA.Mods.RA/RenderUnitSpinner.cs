@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			spinnerAnim.PlayRepeating( "spinner" );
 			anims.Add( "spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Traits.Util.GetTurretPosition( self, unit, info.Offset, 0 ),
+				() => Combat.GetTurretPosition( self, unit, info.Offset, 0 ),
 				null ) { ZOffset = 1 } );
 		}
 	}

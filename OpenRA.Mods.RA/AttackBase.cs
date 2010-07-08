@@ -24,8 +24,9 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class AttackBaseInfo : ITraitInfo
 	{
@@ -178,7 +179,7 @@ namespace OpenRA.Traits
 				firedBy = self,
 				target = target,
 
-				src = self.CenterLocation.ToInt2() + Util.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
+				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
 				srcAltitude = unit != null ? unit.Altitude : 0,
 				dest = target.CenterLocation.ToInt2(),
 				destAltitude = destUnit != null ? destUnit.Altitude : 0,

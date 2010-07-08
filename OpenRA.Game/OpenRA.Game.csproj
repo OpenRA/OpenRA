@@ -89,7 +89,6 @@
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
-    <Compile Include="Traits\Render\RenderUnitTurreted.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="Widgets\MapPreviewWidget.cs" />
     <Compile Include="Widgets\PostGameWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
-    <Compile Include="Combat.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
@@ -136,7 +134,6 @@
     <Compile Include="Traits\World\SpatialBins.cs" />
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
-    <Compile Include="Traits\Activities\Attack.cs" />
     <Compile Include="Traits\Activities\TransformIntoActor.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Controller.cs" />
@@ -175,7 +172,6 @@
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
-    <Compile Include="Traits\AttackBase.cs" />
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
@@ -235,7 +231,6 @@
     <Compile Include="Traits\SharesCell.cs" />
     <Compile Include="Traits\World\AircraftInfluence.cs" />
     <Compile Include="Traits\World\HazardLayer.cs" />
-    <Compile Include="Traits\Hazardous.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

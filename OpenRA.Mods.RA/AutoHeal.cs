@@ -19,8 +19,8 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 		bool NeedsNewTarget(Actor self)
 		{
 			var attack = self.traits.Get<AttackBase>();
-			var range = Util.GetMaximumRange(self);
+			var range = Combat.GetMaximumRange(self);
 
 			if (attack.target == null)
 				return true;	// he's dead.
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			var range = Util.GetMaximumRange(self);
+			var range = Combat.GetMaximumRange(self);
 
 			if (NeedsNewTarget(self))
 				AttackTarget(self, ChooseTarget(self, range));

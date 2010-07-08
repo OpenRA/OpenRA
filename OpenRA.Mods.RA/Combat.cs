@@ -23,9 +23,8 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
-namespace OpenRA
+namespace OpenRA.Mods.RA
 {
 	public static class Combat			/* some utility bits that are shared between various things */
 	{
@@ -193,6 +192,58 @@ namespace OpenRA
 				WeaponValidForTarget(self.GetSecondaryWeapon(), target)) return true;
 
 			return false;
+		}
+
+		public static float GetMaximumRange(Actor self)
+		{
+			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
+				.Where(w => w != null).Max(w => w.Range);
+		}
+
+		public static WeaponInfo GetPrimaryWeapon(this Actor self)
+		{
+			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
+			if (info == null) return null;
+			
+			var weapon = info.PrimaryWeapon;
+			if (weapon == null) return null;
+
+			return Rules.Weapons[weapon.ToLowerInvariant()];
+		}
+
+		public static WeaponInfo GetSecondaryWeapon(this Actor self)
+		{
+			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
+			if (info == null) return null;
+
+			var weapon = info.SecondaryWeapon;
+			if (weapon == null) return null;
+
+			return Rules.Weapons[weapon.ToLowerInvariant()];
+		}
+
+		static float2 GetRecoil(Actor self, float recoil)
+		{
+			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
+			if (abInfo == null || abInfo.Recoil == 0) return float2.Zero;
+			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
+			if (rut == null) return float2.Zero;
+
+			var facing = self.traits.Get<Turreted>().turretFacing;
+			return Util.RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), facing, .7f);
+		}
+
+		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)
+		{
+			if( unit == null ) return offset.AbsOffset();	/* things that don't have a rotating base don't need the turrets repositioned */
+
+			var ru = self.traits.GetOrDefault<RenderUnit>();
+			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
+			var bodyFacing = unit.Facing;
+			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
+
+			return (Util.RotateVectorByFacing(offset.RelOffset(), quantizedFacing, .7f) + GetRecoil(self, recoil))
+				+ offset.AbsOffset();
 		}
 	}
 }

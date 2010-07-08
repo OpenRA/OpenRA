@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
-	class FlashTarget : IEffect
+	public class FlashTarget : IEffect
 	{
 		Actor target;
 		int remainingTicks = 4;
