@@ -19,8 +19,9 @@
 #endregion
 
 using System.Collections.Generic;
- 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA
 {
 	class StoresOreInfo : ITraitInfo
 	{
@@ -30,7 +31,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 
-	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier
+	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier, IStoreOre
 	{		
 		readonly PlayerResources Player;
 		readonly StoresOreInfo Info;
@@ -40,6 +41,8 @@ namespace OpenRA.Traits
 			Player = self.Owner.PlayerActor.traits.Get<PlayerResources>();
 			Info = info;
 		}
+		
+		public int Capacity { get { return Info.Capacity; } }
 		
 		public void OnCapture(Actor self, Actor captor)
 		{

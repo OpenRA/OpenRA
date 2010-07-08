@@ -48,8 +48,8 @@ namespace OpenRA.Traits
 		int nextSiloAdviceTime = 0;
 		void TickOre(Actor self)
 		{
-			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<StoresOre>()
-				.Sum(a => a.Actor.Info.Traits.Get<StoresOreInfo>().Capacity);
+			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<IStoreOre>()
+				.Sum(a => a.Actor.traits.WithInterface<IStoreOre>().Sum(b => b.Capacity));
 			
 			if (Ore > OreCapacity)
 				Ore = OreCapacity;

@@ -56,6 +56,7 @@ namespace OpenRA.Traits
 	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
 	public interface IProvideHazard { IEnumerable<HazardLayer.Hazard> HazardCells(Actor self); }
 	public interface IAvoidHazard { string Type { get; } }
+	public interface IStoreOre { int Capacity { get; }}
 
 	public interface ITerrainTypeModifier { string GetTerrainType(int2 cell); }
 	public interface ITerrainCost { float GetTerrainCost(int2 cell, Actor forActor); }
