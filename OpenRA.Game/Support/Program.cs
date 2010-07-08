@@ -33,7 +33,6 @@ namespace OpenRA
 		{
 			// brutal hack
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
-			Log.AddChannel("perf", "openra.perf.txt", false, false);
 
 			if (Debugger.IsAttached || args.Contains("--just-die"))
 			{

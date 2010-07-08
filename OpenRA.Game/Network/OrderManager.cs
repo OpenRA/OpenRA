@@ -62,10 +62,9 @@ namespace OpenRA.Network
 		public OrderManager( IConnection conn, string replayFilename )
 			: this( conn )
 		{
-			string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) 
-				+ Path.DirectorySeparatorChar + ".openra";
+			string path = Game.SupportDir + "Replays" + Path.DirectorySeparatorChar;
 			if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-			replaySaveFile = File.Create( path + Path.DirectorySeparatorChar + replayFilename );
+			replaySaveFile = File.Create( path + replayFilename );
 		}
 
 		public void IssueOrders( Order[] orders )

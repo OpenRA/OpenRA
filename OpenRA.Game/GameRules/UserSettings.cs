@@ -24,6 +24,8 @@ namespace OpenRA.GameRules
 {
 	public class UserSettings
 	{
+		public readonly string SupportDir = null;
+		
 		// Debug settings
 		public bool UnitDebug = false;
 		public bool PathDebug = true;

@@ -564,6 +564,13 @@ namespace OpenRA
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
 			LoadUserSettings(settings);
+			
+			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.AddChannel("perf", "perf.log", false, false);
+			Log.AddChannel("debug", "debug.log", false, false);
+			Log.AddChannel("sync", "syncreport.log", true, true);
+
+			
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 
 			// Load the default mod to access required files
@@ -596,7 +603,6 @@ namespace OpenRA
 
 			ResetTimer();
 
-			Log.AddChannel("sync", "openra.syncreport.txt", true, true);
 		}
 
 		static void LoadUserSettings(Settings settings)
@@ -637,12 +643,25 @@ namespace OpenRA
 			Chrome.rootWidget.CloseWindow();
 			Chrome.rootWidget.OpenWindow("MAINMENU_BG");
 		}
+		
+		public static string SupportDir
+		{
+			get {
+				// Unless the user has specified otherwise, put support files in a subdirectory of the game install
+				if (Settings.SupportDir == null)
+					return Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Support" + Path.DirectorySeparatorChar;
+				
+				// Custom paths are relative to the home directory (My Documents under windows)
+				return Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + Settings.SupportDir;
+			}
+		}
+
 
 		internal static int GetGameId()
 		{
 			try
 			{
-				string s = File.ReadAllText(Log.LogPathPrefix + "openra.gameid");
+				string s = File.ReadAllText(SupportDir + "currentgameid");
 				return int.Parse(s);
 			}
 			catch (Exception)
@@ -653,7 +672,7 @@ namespace OpenRA
 
 		internal static void SetGameId(int id)
 		{
-			var file = File.CreateText(Log.LogPathPrefix + "openra.gameid");
+			var file = File.CreateText(SupportDir + "currentgameid");
 			file.Write(id);
 			file.Flush();
 			file.Close();

@@ -37,14 +37,20 @@ namespace OpenRA
 
 	public static class Log
 	{
-		public static string LogPathPrefix = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar;
+		static string LogPathPrefix = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar;
 		static Dictionary<string, ChannelInfo> channels = new Dictionary<string,ChannelInfo>();
 
-		static Log()
+		public static string LogPath
 		{
-			AddChannel("debug", "openra.log.txt", false, false);
+			get { return LogPathPrefix; }
+			set
+			{
+				LogPathPrefix = value;				
+				if (!Directory.Exists(LogPathPrefix))
+					Directory.CreateDirectory(LogPathPrefix);
+			}
 		}
-
+		
 		public static void AddChannel(string channelName, string filename, bool upload, bool diff)
 		{
 			if (channels.ContainsKey(channelName)) return;
@@ -57,7 +63,7 @@ namespace OpenRA
 				{
 					writer = File.CreateText(LogPathPrefix + filename);
 				}
-				catch(IOException e){ filename = new Random().Next().ToString() + filename; }
+				catch(IOException){ filename = new Random().Next().ToString() + filename; }
 			}
 			
 			writer.AutoFlush = true;
