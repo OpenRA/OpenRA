@@ -19,10 +19,9 @@
 #endregion
 
 using System.Linq;
-using System;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{

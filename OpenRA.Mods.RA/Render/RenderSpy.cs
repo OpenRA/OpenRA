@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,39 +18,33 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderBuildingTurretedInfo : RenderBuildingInfo
+	class RenderSpyInfo : RenderInfantryInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
 	}
 
-	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
+	class RenderSpy : RenderInfantry, IRenderModifier
 	{
-		public RenderBuildingTurreted(Actor self)
-			: base(self, () => self.traits.Get<Turreted>().turretFacing)
+		public RenderSpy(Actor self) : base(self) { }
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
+			if (self.Owner == self.World.LocalPlayer)
+				return r;
+
+			return r.Select(a => a.WithPalette(self.World.LocalPlayer.Palette));
 		}
 
-		public void BuildingComplete( Actor self )
+		public override void Tick(Actor self)
 		{
-			anim.Play( "idle" );
-		}
-
-		public override void Damaged(Actor self, AttackInfo e)
-		{
-			if (!e.DamageStateChanged) return;
-
-			switch (e.DamageState)
-			{
-				case DamageState.Normal:
-					anim.Play( "idle" );
-					break;
-				case DamageState.Half:
-					anim.Play( "damaged-idle" );
-					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
-					break;
-			}
+			anim.ChangeImage(self.Owner == self.World.LocalPlayer ? GetImage(self) : "e1");
+			base.Tick(self);
 		}
 	}
 }

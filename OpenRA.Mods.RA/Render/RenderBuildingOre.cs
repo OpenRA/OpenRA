@@ -20,19 +20,24 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderFlareInfo : RenderSimpleInfo
+	class RenderBuildingOreInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderFlare(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init.self); }
 	}
 
-	class RenderFlare : RenderSimple
+	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete
 	{
-		public RenderFlare(Actor self)
-			: base(self, () => 0)
+		public RenderBuildingOre(Actor self)
+			: base(self)
 		{
-			anim.PlayThen("open", () => anim.PlayRepeating("idle"));
+		}
+
+		public void BuildingComplete( Actor self )
+		{
+			anim.PlayFetchIndex( "idle", 
+				() => (int)( 4.9 * self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() ) );
 		}
 	}
 }

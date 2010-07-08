@@ -22,6 +22,7 @@ using System;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

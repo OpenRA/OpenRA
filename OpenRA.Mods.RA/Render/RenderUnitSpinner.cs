@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
  * This file is part of OpenRA.
@@ -18,33 +18,31 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderSpyInfo : RenderInfantryInfo
+	class RenderUnitSpinnerInfo : RenderUnitInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
+		public readonly int[] Offset = { 0, 0 };
+		public override object Create(ActorInitializer init) { return new RenderUnitSpinner(init.self); }
 	}
 
-	class RenderSpy : RenderInfantry, IRenderModifier
+	class RenderUnitSpinner : RenderUnit
 	{
-		public RenderSpy(Actor self) : base(self) { }
-
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public RenderUnitSpinner( Actor self )
+			: base(self)
 		{
-			if (self.Owner == self.World.LocalPlayer)
-				return r;
+			var unit = self.traits.Get<Unit>();
+			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
-			return r.Select(a => a.WithPalette(self.World.LocalPlayer.Palette));
-		}
-
-		public override void Tick(Actor self)
-		{
-			anim.ChangeImage(self.Owner == self.World.LocalPlayer ? GetImage(self) : "e1");
-			base.Tick(self);
+			var spinnerAnim = new Animation( GetImage(self) );
+			spinnerAnim.PlayRepeating( "spinner" );
+			anims.Add( "spinner", new AnimationWithOffset(
+				spinnerAnim,
+				() => Combat.GetTurretPosition( self, unit, info.Offset, 0 ),
+				null ) { ZOffset = 1 } );
 		}
 	}
 }

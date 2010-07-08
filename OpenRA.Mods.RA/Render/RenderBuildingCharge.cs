@@ -18,9 +18,7 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingChargeInfo : RenderBuildingInfo
 	{

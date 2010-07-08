@@ -18,31 +18,21 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderUnitReloadInfo : RenderUnitInfo
+	class RenderFlareInfo : RenderSimpleInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderFlare(init.self); }
 	}
 
-	class RenderUnitReload : RenderUnit
+	class RenderFlare : RenderSimple
 	{
-		public RenderUnitReload(Actor self)
-			: base(self) { }
-
-		public override void Tick(Actor self)
+		public RenderFlare(Actor self)
+			: base(self, () => 0)
 		{
-			var isAttacking = self.GetCurrentActivity() is Attack;
-
-			var attack = self.traits.GetOrDefault<AttackBase>();
-
-			if (attack != null)
-				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
-					+ (isAttacking ? "aim" : "idle"));
-			base.Tick(self);
+			anim.PlayThen("open", () => anim.PlayRepeating("idle"));
 		}
 	}
 }

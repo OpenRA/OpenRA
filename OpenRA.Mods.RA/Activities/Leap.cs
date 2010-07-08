@@ -18,8 +18,10 @@
  */
 #endregion
 
-using OpenRA.Traits;
 using System.Linq;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : IActivity

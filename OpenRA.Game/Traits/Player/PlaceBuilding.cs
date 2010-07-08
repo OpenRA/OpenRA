@@ -83,11 +83,10 @@ namespace OpenRA.Traits
 							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( unit.Category ) )
 							   .ToList();
 			var producer = producers.Where( x => x.Trait.IsPrimary ).Concat( producers )
-				.Select( x => x.Actor )
 				.FirstOrDefault();
 
-			if( producer != null )
-				producer.traits.Get<RenderBuilding>().PlayCustomAnim( producer, "build" );
+			if( producer.Actor != null )
+				producer.Actor.traits.WithInterface<RenderSimple>().First().PlayCustomAnim( producer.Actor, "build" );
 		}
 
 		static int GetNumBuildables(Player p)

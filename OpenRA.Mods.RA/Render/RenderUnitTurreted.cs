@@ -21,7 +21,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
 	class RenderUnitTurretedInfo : RenderUnitInfo
 	{

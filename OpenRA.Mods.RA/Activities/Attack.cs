@@ -18,6 +18,7 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 

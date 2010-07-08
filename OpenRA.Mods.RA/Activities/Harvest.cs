@@ -19,7 +19,7 @@
 #endregion
 
 using System.Linq;
-using OpenRA.GameRules;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 

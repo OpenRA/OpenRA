@@ -18,11 +18,9 @@
  */
 #endregion
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 

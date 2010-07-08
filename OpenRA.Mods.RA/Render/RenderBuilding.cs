@@ -20,8 +20,9 @@
 
 using System;
 using OpenRA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Render
 {
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{
@@ -50,18 +51,6 @@ namespace OpenRA.Traits
 			anim.PlayRepeating( GetPrefix(self) + "idle" );
 			foreach( var x in self.traits.WithInterface<INotifyBuildComplete>() )
 				x.BuildingComplete( self );
-		}
-
-		protected string GetPrefix(Actor self)
-		{
-			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
-		}
-
-		public void PlayCustomAnim(Actor self, string name)
-		{
-			if (anim.HasSequence(name))
-				anim.PlayThen(GetPrefix(self) + name,
-					() => anim.PlayRepeating(GetPrefix(self) + "idle"));
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)

@@ -72,6 +72,18 @@ namespace OpenRA.Traits
 				a.Animation.Tick();
 		}
 
+		protected virtual string GetPrefix(Actor self)
+		{
+			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
+		}
+
+		public void PlayCustomAnim(Actor self, string name)
+		{
+			if (anim.HasSequence(name))
+				anim.PlayThen(GetPrefix(self) + name,
+					() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+		}
+
 		public class AnimationWithOffset
 		{
 			public Animation Animation;

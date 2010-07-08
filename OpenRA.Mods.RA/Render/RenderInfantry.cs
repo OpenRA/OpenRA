@@ -22,7 +22,7 @@ using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Effects;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
 	public class RenderInfantryInfo : RenderSimpleInfo
 	{

@@ -18,31 +18,41 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderUnitSpinnerInfo : RenderUnitInfo
+	class RenderBuildingTurretedInfo : RenderBuildingInfo
 	{
-		public readonly int[] Offset = { 0, 0 };
-		public override object Create(ActorInitializer init) { return new RenderUnitSpinner(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init.self); }
 	}
 
-	class RenderUnitSpinner : RenderUnit
+	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
-		public RenderUnitSpinner( Actor self )
-			: base(self)
+		public RenderBuildingTurreted(Actor self)
+			: base(self, () => self.traits.Get<Turreted>().turretFacing)
 		{
-			var unit = self.traits.Get<Unit>();
-			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
+		}
 
-			var spinnerAnim = new Animation( GetImage(self) );
-			spinnerAnim.PlayRepeating( "spinner" );
-			anims.Add( "spinner", new AnimationWithOffset(
-				spinnerAnim,
-				() => Combat.GetTurretPosition( self, unit, info.Offset, 0 ),
-				null ) { ZOffset = 1 } );
+		public void BuildingComplete( Actor self )
+		{
+			anim.Play( "idle" );
+		}
+
+		public override void Damaged(Actor self, AttackInfo e)
+		{
+			if (!e.DamageStateChanged) return;
+
+			switch (e.DamageState)
+			{
+				case DamageState.Normal:
+					anim.Play( "idle" );
+					break;
+				case DamageState.Half:
+					anim.Play( "damaged-idle" );
+					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
+					break;
+			}
 		}
 	}
 }

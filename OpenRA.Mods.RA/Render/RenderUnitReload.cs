@@ -18,26 +18,31 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
-	class RenderBuildingOreInfo : RenderBuildingInfo
+	class RenderUnitReloadInfo : RenderUnitInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.self); }
 	}
 
-	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete
+	class RenderUnitReload : RenderUnit
 	{
-		public RenderBuildingOre(Actor self)
-			: base(self)
-		{
-		}
+		public RenderUnitReload(Actor self)
+			: base(self) { }
 
-		public void BuildingComplete( Actor self )
+		public override void Tick(Actor self)
 		{
-			anim.PlayFetchIndex( "idle", 
-				() => (int)( 4.9 * self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() ) );
+			var isAttacking = self.GetCurrentActivity() is Attack;
+
+			var attack = self.traits.GetOrDefault<AttackBase>();
+
+			if (attack != null)
+				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
+					+ (isAttacking ? "aim" : "idle"));
+			base.Tick(self);
 		}
 	}
 }

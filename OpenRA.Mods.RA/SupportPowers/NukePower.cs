@@ -20,6 +20,7 @@
 
 using System.Linq;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Orders;
 using OpenRA.Traits;
 
