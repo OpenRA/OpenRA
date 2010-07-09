@@ -66,12 +66,32 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.Image != null)
 			{
-				anim = new Animation(Info.Image, () => Traits.Util.GetFacing(Args.dest - Args.src, 0));
+				anim = new Animation(Info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
 			}
 		}
 
 		int TotalTime() { return (Args.dest - Args.src).Length * BaseBulletSpeed / Info.Speed; }
+
+		float GetAltitude()
+		{
+			var at = (float)t / TotalTime();
+			return (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at);
+		}
+
+		int GetEffectiveFacing()
+		{
+			var at = (float)t / TotalTime();
+			var attitude = Info.Angle * (1 - 2 * at);
+
+			var rawFacing = Traits.Util.GetFacing(Args.dest - Args.src, 0);
+			var u = (rawFacing % 128) / 128f;
+			var scale = 512 * u * (1 - u);
+
+			return (int)(rawFacing < 128 
+				? rawFacing - scale * attitude 
+				: rawFacing + scale * attitude);
+		}
 
 		public void Tick( World world )
 		{
@@ -88,7 +108,7 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
 				var highPos = (Info.High || Info.Angle > 0)
-					? (pos - new float2(0, (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at)))
+					? (pos - new float2(0, GetAltitude()))
 					: pos;
 
 				world.AddFrameEndTask(w => w.Add(
@@ -126,7 +146,7 @@ namespace OpenRA.Mods.RA.Effects
 					if (Info.Shadow)
 						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 
-					var highPos = pos - new float2(0, (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at));
+					var highPos = pos - new float2(0, GetAltitude());
 
 					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette);
 				}

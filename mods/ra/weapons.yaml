@@ -633,6 +633,7 @@ SCUD:
 		Trail: smokey
 		Inaccuracy: 5
 		Image: V2
+		Angle: .1
 	Warhead:
 		Spread: 8
 		Verses: 90%,75%,60%,25%,100%
