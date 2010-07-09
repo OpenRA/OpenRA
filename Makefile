@@ -60,7 +60,6 @@ seqed_DEPS			= $(fileformats_TARGET)
 seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
 
 editor_SRCS			= $(shell find OpenRA.Editor/ -iname '*.cs')
-
 editor_TARGET		= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
@@ -74,13 +73,13 @@ mapcvtr_DEPS		= $(fileformats_TARGET)
 mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 
 ralint_SRCS		= $(shell find RALint/ -iname '*.cs')
-ralint_TARGET	= ralint.exe
+ralint_TARGET	= RALint.exe
 ralint_KIND		= winexe
 ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 
 uploader_SRCS		= $(shell find OpenRAUploader/ -iname '*.cs')
-uploader_TARGET		= uploader.exe
+uploader_TARGET		= RAUploader.exe
 uploader_KIND		= winexe
 uploader_LIBS		= $(COMMON_LIBS)
 
@@ -88,12 +87,12 @@ uploader_LIBS		= $(COMMON_LIBS)
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all default mods install uninstall
+.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint uploader seqed mapcvtr
 
-all: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET) $(seqed_TARGET) $(mapcvtr_TARGET) $(editor_TARGET) $(ralint_TARGET)
+game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 
 clean: 
-	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb
+	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 
 distclean: clean
 
@@ -135,18 +134,23 @@ uninstall:
 	@-rm $(DESTDIR)$(bindir)/openra
 
 mod_ra: $(ra_TARGET) $(ralint_TARGET)
-	mono ralint.exe ra
+	mono RALint.exe ra
 mod_aftermath: $(aftermath_TARGET) $(ralint_TARGET)
-	mono ralint.exe ra aftermath
+	mono RALint.exe ra aftermath
 mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
-	mono ralint.exe cnc
-
+	mono RALint.exe cnc
 mods: mod_ra mod_cnc
-seqed: $(seqed_TARGET)
-mapcvtr: $(mapcvtr_TARGET)
-editor: $(editor_TARGET)
+
+editor_res:
+	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources
+editor: editor_res $(editor_TARGET)
 ralint: $(ralint_TARGET)
 uploader: $(uploader_TARGET)
+seqed: $(seqed_TARGET)
+mapcvtr: $(mapcvtr_TARGET)
+
+tools: editor ralint uploader seqed mapcvtr
+all: game tools
 
 define BUILD_ASSEMBLY
 
