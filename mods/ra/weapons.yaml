@@ -229,7 +229,7 @@ Grenade:
 	Bullet:
 		Speed: 5
 		High: true
-		Arcing: true
+		Angle: .1
 		Inaccuracy: 13
 		Image: BOMB
 	Warhead:
@@ -358,7 +358,7 @@ MammothTusk:
 	Bullet:
 		Speed: 12
 		High: true
-		Arcing: true
+		Angle: .1
 		Inaccuracy: 80
 		Image: 120MM
 	Warhead:
@@ -492,7 +492,7 @@ RedEye:
 	Bullet:
 		Speed: 12
 		High: true
-		Arcing: true
+		Angle: .1
 		Inaccuracy: 120
 		Image: 120MM
 	Warhead:
@@ -571,7 +571,7 @@ DepthCharge:
 	Bullet:
 		Speed: 5
 		Image: BOMB
-		Arcing: true
+		Angle: .1
 		High: true
 		Inaccuracy: 3
 	Warhead:

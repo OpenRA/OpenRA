@@ -34,11 +34,11 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly float Inaccuracy = 0;			// pixels at maximum range
 		public readonly string Image = null;
 		public readonly bool High = false;
-		public readonly bool Arcing = false;
 		public readonly int RangeLimit = 0;
 		public readonly int Arm = 0;
 		public readonly bool Shadow = false;
 		public readonly bool Proximity = false;
+		public readonly float Angle = 0;
 
 		public IEffect Create(ProjectileArgs args) { return new Bullet( this, args ); }
 	}
@@ -87,8 +87,8 @@ namespace OpenRA.Mods.RA.Effects
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
 				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
-				var highPos = (Info.High || Info.Arcing)
-					? (pos - new float2(0, (Args.dest - Args.src).Length * height * 4 * at * (1 - at)))
+				var highPos = (Info.High || Info.Angle > 0)
+					? (pos - new float2(0, (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at)))
 					: pos;
 
 				world.AddFrameEndTask(w => w.Add(
@@ -121,12 +121,12 @@ namespace OpenRA.Mods.RA.Effects
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
 				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
-				if (Info.High || Info.Arcing)
+				if (Info.High || Info.Angle > 0)
 				{
 					if (Info.Shadow)
 						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
 
-					var highPos = pos - new float2(0, (Args.dest - Args.src).Length * height * 4 * at * (1 - at));
+					var highPos = pos - new float2(0, (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at));
 
 					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette);
 				}

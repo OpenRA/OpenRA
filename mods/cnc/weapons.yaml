@@ -203,7 +203,7 @@ Grenade:
 	Bullet:
 		Speed: 5
 		High: yes
-		Arcing: yes
+		Angle: .1
 		Inaccuracy: 5
 		Image: BOMB
 	Warhead:
@@ -354,7 +354,7 @@ Ballistic:
 	Bullet:
 		Speed: 12
 		High: yes
-		Arcing: yes
+		Angle: .1
 		Inaccuracy: 5
 		Image: 120MM
 	Warhead:
