@@ -26,7 +26,8 @@ namespace OpenRA.Widgets
 	class TextFieldWidget : Widget
 	{
 		string TextBuffer = "zomg text";
-		
+		public int VisualHeight = 1;
+
 		public TextFieldWidget()
 			: base()
 		{
@@ -99,16 +100,34 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
+			int margin = 5;
+			var font = Game.chrome.renderer.BoldFont;
+
+
+			var text = TextBuffer + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
+			var textSize = font.Measure(TextBuffer);
 			var pos = DrawPosition();
-			int margin = 10;
+			
 			WidgetUtils.DrawPanel("dialog3", 
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
 			
-			var text = TextBuffer + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
-			Game.chrome.renderer.BoldFont.DrawText(text,
-				new int2( pos.X + margin, pos.Y + Bounds.Height / 2)
-					- new int2(0, Game.chrome.renderer.BoldFont.Measure(text).Y / 2),
-			    Color.White);
+			// Inset text by the margin and center vertically
+			var textPos = pos + new int2( margin, (Bounds.Height - textSize.Y)/2 - VisualHeight);
+		
+			// Right align and scissor when the text overflows
+			if (textSize.X > Bounds.Width - 2*margin)
+			{
+				textPos += new int2(Bounds.Width - 2*margin - textSize.X,0); 
+				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2*margin, Bounds.Bottom);
+			}
+			
+			font.DrawText(text, textPos, Color.White);
+			
+			if (textSize.X > Bounds.Width - 2*margin)
+			{
+				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+				Game.chrome.renderer.Device.DisableScissor();
+			}
 		}
 		
 		public override Widget Clone()
