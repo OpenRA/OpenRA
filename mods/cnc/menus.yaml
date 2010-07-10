@@ -499,6 +499,14 @@ Container:
 					Width:120
 					Height:25
 					Text:Disconnect
+				Checkbox@LOCKTEAMS_CHECKBOX:
+					Id:LOCKTEAMS_CHECKBOX
+					Visible: true
+					X: PARENT_RIGHT-300
+					Y: PARENT_BOTTOM-38
+					Width: 80
+					Height: 20
+					Text: Lock Teams
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2
