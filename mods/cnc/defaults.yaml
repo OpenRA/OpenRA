@@ -68,7 +68,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
-	SharesCell:
+#	SharesCell:
 
 ^Plane:
 	Category: Plane

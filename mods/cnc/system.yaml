@@ -48,7 +48,7 @@ World:
 	BuildingInfluence:
 	UnitInfluence:
 	AircraftInfluence:
-	HazardLayer:
+#	HazardLayer:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	PaletteFromFile@terrain_desert:
