@@ -34,7 +34,7 @@ namespace OpenRA.Network
 				{
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
 					if (client != null && Chrome.chatWidget != null)
-						Chrome.chatWidget.AddLine(client, order.TargetString);
+						Chrome.chatWidget.AddLine(Game.world.PlayerColors()[client.PaletteIndex].Color, client.Name, order.TargetString);
 					break;
 				}
 			case "TeamChat":
@@ -45,10 +45,10 @@ namespace OpenRA.Network
 						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
 						var isAlly = (world.GameHasStarted) ? 
 							player != null && Game.world.LocalPlayer != null && player.Stances[Game.world.LocalPlayer] == Stance.Ally :
-							client.Team == Game.LocalClient.Team;
-						
+							client.Team == Game.LocalClient.Team && client.Team != 0;
+
 						if (isAlly)
-							Chrome.chatWidget.AddLine(client, "(Team) " + order.TargetString);
+							Chrome.chatWidget.AddLine(Game.world.PlayerColors()[client.PaletteIndex].Color, client.Name + " (Team)", order.TargetString);
 					}
 					break;
 				}
