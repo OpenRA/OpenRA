@@ -458,6 +458,7 @@ C17:
 		LZRange: 1
 	Inherits: ^Plane
 	Unit:
+		TargetType: Special
 		HP: 25
 		Armor: light
 		ROT: 5
