@@ -25,11 +25,13 @@ namespace OpenRA.Widgets
 {
 	class TextFieldWidget : Widget
 	{
-		public string TextBuffer = "";
+		public string Text = "";
+		public bool Bold = true;
 		public int VisualHeight = 1;
-		public Action<string> OnEnterKey = text => {};
-		public Action<string> OnTabKey = text => {};
-		
+		public Func<bool> OnEnterKey = () => {return false;};
+		public Func<bool> OnTabKey = () => {return false;};
+		public Action OnLoseFocus = () => {};
+
 		public TextFieldWidget()
 			: base()
 		{
@@ -38,7 +40,7 @@ namespace OpenRA.Widgets
 		public TextFieldWidget(Widget widget)
 			:base(widget)
 		{
-			TextBuffer = (widget as TextFieldWidget).TextBuffer;
+			Text = (widget as TextFieldWidget).Text;
 		}
 
 		public override bool HandleInput(MouseInput mi)
@@ -46,6 +48,7 @@ namespace OpenRA.Widgets
 			// We get this first if we are focussed; if the click was somewhere else remove focus
 			if (Chrome.selectedWidget == this && mi.Event == MouseInputEvent.Down && !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
 			{
+				OnLoseFocus();
 				Chrome.selectedWidget = null;
 				return false;
 			}
@@ -82,15 +85,11 @@ namespace OpenRA.Widgets
 			if (Chrome.selectedWidget != this)
 				return false;
 			
-			if (e.KeyChar == '\r')
-			{
-				if (TextBuffer.Length > 0)
-					OnEnterKey(TextBuffer);
-				TextBuffer = "";
-			}
+			if (e.KeyChar == '\r' && OnEnterKey())
+				return true;
 			
-			if (e.KeyChar == '\t')
-				OnTabKey(TextBuffer);
+			if (e.KeyChar == '\t' && OnTabKey())
+				return true;
 			
 			TypeChar(e.KeyChar);
 			return true;
@@ -100,11 +99,11 @@ namespace OpenRA.Widgets
 		{
 			if (c == '\b' || c == 0x7f)
 			{
-				if (TextBuffer.Length > 0)
-					TextBuffer = TextBuffer.Remove(TextBuffer.Length - 1);
+				if (Text.Length > 0)
+					Text = Text.Remove(Text.Length - 1);
 			}
 			else if (!char.IsControl(c))
-				TextBuffer += c;
+				Text += c;
 		}
 		
 		int blinkCycle = 10;
@@ -122,10 +121,10 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			int margin = 5;
-			var font = Game.chrome.renderer.RegularFont;
+			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 
-			var text = TextBuffer + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
-			var textSize = font.Measure(TextBuffer);
+			var text = Text + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
+			var textSize = font.Measure(Text);
 			var pos = DrawPosition();
 			
 			WidgetUtils.DrawPanel("dialog3", 

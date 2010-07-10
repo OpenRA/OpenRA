@@ -56,7 +56,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
-			var lockTeamsCheckbox = lobby.GetWidget("LOCKTEAMS_CHECKBOX") as CheckboxWidget;
+			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsVisible = () => true;
 			lockTeamsCheckbox.Checked = () => Game.LobbyInfo.GlobalSettings.LockTeams;
 			lockTeamsCheckbox.OnMouseDown = mi =>
@@ -68,22 +68,28 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
-			Chrome.chatWidget = lobby.GetWidget("CHAT_DISPLAY") as ChatDisplayWidget;
+			Chrome.chatWidget = lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY");
 			
 			
 			bool teamChat = false;
-			var chatLabel = lobby.GetWidget("LABEL_CHATTYPE") as LabelWidget;
-			var chatTextField = lobby.GetWidget("CHAT_TEXTFIELD") as TextFieldWidget;
-			chatTextField.OnEnterKey = text =>
+			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
+			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatTextField.OnEnterKey = () =>
 			{
-				var order = (teamChat) ? Order.TeamChat( text ) : Order.Chat( text );
+				if (chatTextField.Text.Length == 0)
+					return true;
+				
+				var order = (teamChat) ? Order.TeamChat( chatTextField.Text ) : Order.Chat( chatTextField.Text );
 				Game.IssueOrder( order );
+				chatTextField.Text = "";
+				return true;
 			};
 			
-			chatTextField.OnTabKey = text =>
+			chatTextField.OnTabKey = () =>
 			{
 				teamChat ^= true;
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
+				return true;
 			};
 			
 		}
@@ -101,6 +107,23 @@ namespace OpenRA.Widgets.Delegates
 				if(client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
+					var name = template.GetWidget<TextFieldWidget>("NAME");
+					name.Text = c.Name;
+					name.OnLoseFocus = () => name.Text = c.Name;
+					name.OnEnterKey = () =>
+					{
+						name.Text = name.Text.Trim();
+						if (name.Text.Length == 0)
+							name.Text = c.Name;
+						
+						if (name.Text == c.Name)
+							return true;
+						
+						Game.IssueOrder(Order.Chat( "/name "+name.Text ));
+						Game.Settings.PlayerName = name.Text;
+						Game.Settings.Save();
+						return true;
+					};
 					
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = CyclePalette;
@@ -127,7 +150,7 @@ namespace OpenRA.Widgets.Delegates
 				else 
 				{
 					template = RemotePlayerTemplate.Clone();
-					
+					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
 					
@@ -148,7 +171,6 @@ namespace OpenRA.Widgets.Delegates
 				
 				template.Id = "PLAYER_{0}".F(c.Index);
 				template.Parent = Players;			
-				template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 				
 				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;

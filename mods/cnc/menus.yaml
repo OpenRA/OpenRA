@@ -332,13 +332,14 @@ Container:
 							Height:30
 							Visible:false
 							Children:
-								Label@NAME:
+								TextField@NAME:
 									Id:NAME
 									Text:Name
 									Width:95
 									Height:25
 									X:0
 									Y:0
+									Bold: true
 								Button@COLOR:
 									Id:COLOR
 									Width:65

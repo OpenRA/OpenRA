@@ -265,18 +265,7 @@ namespace OpenRA.Server
 					}},
 				{ "name", 
 					s => 
-					{	    
-						if (s.Trim() == "")
-						{
-							SendChatTo( conn, "Blank names are not permitted." );
-							return true;
-						}
-						
-						if (s.Length > 10)
-						{
-							s = s.Substring(0,10);
-						}
-
+					{
 						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 						GetClient(conn).Name = s;
 						SyncLobbyInfo();
