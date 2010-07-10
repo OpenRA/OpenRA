@@ -132,6 +132,19 @@ namespace OpenRA.FileFormats
 					f => f.Name,
 					f => new MiniYaml(FormatValue(o, f))));
 		}
+		
+		public static MiniYaml SaveDifferences(object o, object from)
+		{
+			if (o.GetType() != from.GetType())
+				throw new InvalidOperationException("FieldLoader: can't diff objects of different types");
+
+			var fields = o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
+				.Where(f => FormatValue(o,f) != FormatValue(from,f));
+			
+			return new MiniYaml(null, fields.ToDictionary(
+					f => f.Name,
+					f => new MiniYaml(FormatValue(o, f))));
+		}
 
 		public static string FormatValue(object o, FieldInfo f)
 		{

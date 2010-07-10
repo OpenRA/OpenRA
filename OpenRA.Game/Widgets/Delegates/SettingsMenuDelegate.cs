@@ -15,24 +15,28 @@ namespace OpenRA.Widgets.Delegates
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = () => {return Game.Settings.UnitDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
 				Game.Settings.UnitDebug ^= true;
+				Game.Settings.Save();
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = () => {return Game.Settings.PathDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => {
 				Game.Settings.PathDebug ^= true;
+				Game.Settings.Save();
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = () => {return Game.Settings.IndexDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => {
 				Game.Settings.IndexDebug ^= true;
+				Game.Settings.Save();
 				return true;
 			};
 			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PERFDEBUG").Checked = () => {return Game.Settings.PerfDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_PERFDEBUG").OnMouseDown = mi => {
 				Game.Settings.PerfDebug ^= true;
+				Game.Settings.Save();
 				return true;
 			};
 
@@ -40,6 +44,7 @@ namespace OpenRA.Widgets.Delegates
 			r.GetWidget("SETTINGS_CHECKBOX_SYNCREPORTS").OnMouseDown = mi =>
 			{
 				Game.Settings.RecordSyncReports ^= true;
+				Game.Settings.Save();
 				return true;
 			};
 			
@@ -48,6 +53,7 @@ namespace OpenRA.Widgets.Delegates
 			{
 				Game.Settings.MusicPlayer ^= true;
 				r.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
+				Game.Settings.Save();
 				return true;
 			};
 						

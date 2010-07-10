@@ -562,15 +562,18 @@ namespace OpenRA
 		internal static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-
-			LoadUserSettings(settings);
+			
+			var defaultSupport = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+												+ Path.DirectorySeparatorChar + "OpenRA";
+			
+			SupportDir = settings.GetValue("SupportDir", defaultSupport);
+			Settings = new UserSettings(settings);
 			
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log", false, false);
 			Log.AddChannel("debug", "debug.log", false, false);
 			Log.AddChannel("sync", "syncreport.log", true, true);
 
-			
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 
 			// Load the default mod to access required files
@@ -605,19 +608,6 @@ namespace OpenRA
 
 		}
 
-		static void LoadUserSettings(Settings settings)
-		{
-			Settings = new UserSettings();
-			var settingsFile = settings.GetValue("settings", "settings.ini");
-			FileSystem.Mount("./");
-			if (FileSystem.Exists(settingsFile))
-				FieldLoader.Load(Settings,
-					new IniFile(FileSystem.Open(settingsFile)).GetSection("Settings"));
-			FileSystem.UnmountAll();
-			
-			Settings.AddSettings(settings);
-		}
-
 		static bool quit;
 		internal static void Run()
 		{
@@ -644,16 +634,22 @@ namespace OpenRA
 			Chrome.rootWidget.OpenWindow("MAINMENU_BG");
 		}
 		
+		static string baseSupportDir = null;
 		public static string SupportDir
 		{
-			get {
-				var dir = Settings.SupportDir;
+			set {
+				var dir = value;
 				
 				// Expand paths relative to the personal directory
 				if (dir.ElementAt(0) == '~')
 					dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + dir.Substring(1);
-				return dir + Path.DirectorySeparatorChar;
+				
+				if (!Directory.Exists(dir))
+					Directory.CreateDirectory(dir);
+				
+				baseSupportDir = dir + Path.DirectorySeparatorChar;
 			}
+			get {return baseSupportDir;}
 		}
 
 

@@ -18,15 +18,15 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
-using System;
 using System.IO;
+using System.Collections.Generic;
+
 namespace OpenRA.GameRules
 {
 	public class UserSettings
 	{
-		public readonly string SupportDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-												+ Path.DirectorySeparatorChar + "OpenRA" + Path.DirectorySeparatorChar;
 		// Debug settings
 		public bool UnitDebug = false;
 		public bool PathDebug = true;
@@ -58,11 +58,32 @@ namespace OpenRA.GameRules
 		public readonly bool InternetServer = true;
 		public readonly string MasterServer = "http://open-ra.org/master/";
 		
-		public void AddSettings(Settings settings)
-		{
+		string SettingsFile;
+		UserSettings defaults;
+		
+		public UserSettings() {}
+		public UserSettings(Settings args)
+		{			
+			defaults = new UserSettings();
+			SettingsFile = Game.SupportDir + "settings.yaml";
+
+			if (File.Exists(SettingsFile))
+			{
+				System.Console.WriteLine("Loading settings file {0}",SettingsFile);
+				var yaml = MiniYaml.FromFile(SettingsFile);
+				FieldLoader.Load(this, yaml["Settings"]);
+			}
+			
 			foreach (var f in this.GetType().GetFields())
-				if (settings.Contains(f.Name))
-					OpenRA.FileFormats.FieldLoader.LoadField( this, f.Name, settings.GetValue(f.Name, "") );
+				if (args.Contains(f.Name))
+					OpenRA.FileFormats.FieldLoader.LoadField( this, f.Name, args.GetValue(f.Name, "") );
+		}
+		
+		public void Save()
+		{
+			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
+			root.Add("Settings", FieldSaver.SaveDifferences(this, defaults));
+			root.WriteToFile(SettingsFile);
 		}
 	}
 }
