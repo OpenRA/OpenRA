@@ -491,6 +491,14 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+				Checkbox@LOCKTEAMS_CHECKBOX:
+					Id:LOCKTEAMS_CHECKBOX
+					Visible: true
+					X: PARENT_RIGHT-300
+					Y: PARENT_BOTTOM-38
+					Width: 100
+					Height: 20
+					Text: Lock Teams
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
 					Visible:true
