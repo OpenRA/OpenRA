@@ -33,12 +33,12 @@ namespace OpenRA.Widgets.Delegates
 
 		public ServerBrowserDelegate()
 		{
-			var r = Chrome.rootWidget;
-
+			var r = Chrome.rootWidget;	
+			var bg = r.GetWidget("JOINSERVER_BG");
+			var dc = r.GetWidget("DIRECTCONNECT_BG");
+			
 			MasterServerQuery.OnComplete += games =>
 				{
-					var bg = r.GetWidget("JOINSERVER_BG");
-
 					if (games == null)
 					{
 						r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
@@ -76,6 +76,10 @@ namespace OpenRA.Widgets.Delegates
 							OnMouseUp = nmi =>
 							{
 								r.GetWidget("JOINSERVER_BG").Visible = false;
+							
+								Game.Settings.LastServer = g.Address;
+								Game.Settings.Save();
+							
 								Game.JoinServer(g.Address.Split(':')[0], int.Parse(g.Address.Split(':')[1]));
 								Game.SetGameId(g.Id);
 								return true;
@@ -92,7 +96,7 @@ namespace OpenRA.Widgets.Delegates
 
 			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi =>
 			{
-				var bg = r.OpenWindow("JOINSERVER_BG");
+				r.OpenWindow("JOINSERVER_BG");
 
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
@@ -105,10 +109,8 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
-			r.GetWidget("JOINSERVER_BUTTON_REFRESH").OnMouseUp = mi =>
+			bg.GetWidget("JOINSERVER_BUTTON_REFRESH").OnMouseUp = mi =>
 			{
-				var bg = r.GetWidget("JOINSERVER_BG");
-
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
@@ -120,19 +122,38 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
-			r.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi =>
+			bg.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi =>
 			{
 				r.CloseWindow();
 				return true;
 			};
 
-			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi =>
-			{			/* rude hack. Should prompt the user once we have textfield widgets */
+			bg.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi => {
 				r.CloseWindow();
-				if (Game.Settings.NetworkHost != null)
-					Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
 				
+				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.LastServer;
+				r.OpenWindow("DIRECTCONNECT_BG");
 				return true;
+			};
+			
+			dc.GetWidget("BUTTON_START").OnMouseUp = mi => {
+				
+				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
+				var cpts = address.Split(':').ToArray();
+				if (cpts.Length != 2)
+					return true;
+				
+				Game.Settings.LastServer = address;
+				Game.Settings.Save();
+				
+				r.CloseWindow();
+				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
+				return true;
+			};
+			
+			r.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
+				r.CloseWindow();
+				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};
 		}
 	}

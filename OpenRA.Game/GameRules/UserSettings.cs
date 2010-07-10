@@ -44,20 +44,20 @@ namespace OpenRA.GameRules
 		public bool MusicPlayer = true;
 		
 		// Internal game settings
-		public readonly int Timestep = 40;
-		public readonly int SheetSize = 2048;
+		public int Timestep = 40;
+		public int SheetSize = 2048;
 		
 		// External game settings
-		public readonly string NetworkHost = null;
-		public readonly int NetworkPort = 0;
-		public readonly string Replay = null;
+		public string LastServer = "localhost:1234";
+		public string Replay = null;
 		public string PlayerName = null;
-		public readonly string[] InitialMods = { "ra" };
+		public string[] InitialMods = { "ra" };
 
-		public readonly int ListenPort = 1234;
-		public readonly int ExternalPort = 1234;
-		public readonly bool InternetServer = true;
-		public readonly string MasterServer = "http://open-ra.org/master/";
+		// Server settings
+		public int ListenPort = 1234;
+		public int ExternalPort = 1234;
+		public bool InternetServer = true;
+		public string MasterServer = "http://open-ra.org/master/";
 		
 		string SettingsFile;
 		UserSettings defaults;

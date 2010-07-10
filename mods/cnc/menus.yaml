@@ -249,6 +249,55 @@ Container:
 					Height:25
 					Text:Cancel
 					Bold:True
+		Background@DIRECTCONNECT_BG:
+			Id:DIRECTCONNECT_BG
+			Delegate:ServerBrowserDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:400
+			Height:155
+			Visible:false
+			Children:
+				Label@DIRECTCONNECT_LABEL_TITLE:
+					Id:DIRECTCONNECT_LABEL_TITLE
+					X:0
+					Y:20
+					Width:400
+					Height:25
+					Text:Direct Connect
+					Align:Center
+					Bold:True
+				Label@ADDRESS_LABEL:
+					Id:ADDRESS_LABEL
+					X:50
+					Y:59
+					Width:95
+					Height:25
+					Align:Right
+					Text:Server Address:
+				TextField@SERVER_ADDRESS:
+					Id:SERVER_ADDRESS
+					X:150
+					Y:60
+					Width:200
+					MaxLength:50
+					Height:25
+				Button@BUTTON_START:
+					Id:BUTTON_START
+					X:130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Join
+					Bold:True
+				Button@BUTTON_CANCEL:
+					Id:BUTTON_CANCEL
+					X:260
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Cancel
+					Bold:True
 		Background@CONNECTION_FAILED_BG:
 			Id:CONNECTION_FAILED_BG
 			Delegate:ConnectionDialogsDelegate

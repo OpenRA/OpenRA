@@ -108,7 +108,6 @@ namespace OpenRA.Widgets
 			}
 			else if (!char.IsControl(c))
 			{
-				Console.WriteLine("{0} {1}",MaxLength, Text.Length);
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
 				
