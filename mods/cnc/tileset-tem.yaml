@@ -2,6 +2,7 @@ General:
 	Name: Temperate
 	Id: TEMPERAT
 	Extensions: .tem, .shp
+	Palette: temperat.pal
 
 Terrain:
 	TerrainType@Clear:

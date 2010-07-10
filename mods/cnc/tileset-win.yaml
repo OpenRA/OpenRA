@@ -2,6 +2,7 @@ General:
 	Name: Winter
 	Id: WINTER
 	Extensions: .win, .shp, .tem
+	Palette: winter.pal	
 
 Terrain:
 	TerrainType@Clear:

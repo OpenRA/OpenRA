@@ -101,12 +101,8 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: .2
-	PaletteFromFile@terrain_temperat:
+	PaletteFromCurrentTheatre:
 		Name: terrain
-		Filename: temperat.pal
-	PaletteFromFile@terrain_snow:
-		Name: snow
-		Filename: snow.pal
 	PlayerColorPalette@player0:
 		Name: player0
 		DisplayName: Gold

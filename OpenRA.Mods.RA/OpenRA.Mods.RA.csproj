@@ -204,6 +204,7 @@
     <Compile Include="StoresOre.cs" />
     <Compile Include="TransformsOnDeploy.cs" />
     <Compile Include="Activities\TransformIntoActor.cs" />
+    <Compile Include="PaletteFromCurrentTheatre.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

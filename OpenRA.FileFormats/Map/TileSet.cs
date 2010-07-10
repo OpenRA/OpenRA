@@ -61,6 +61,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly string Name;
 		public readonly string Id;
+		public readonly string Palette;
 		public readonly string[] Extensions;
 		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public readonly Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();

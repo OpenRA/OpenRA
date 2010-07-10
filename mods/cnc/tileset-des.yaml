@@ -2,6 +2,7 @@ General:
 	Name: Desert
 	Id: DESERT
 	Extensions: .des, .shp, .tem
+	Palette: desert.pal	
 
 Terrain:
 	TerrainType@Clear:

@@ -103,7 +103,7 @@ namespace OpenRA.Editor
 			Rules.LoadRules(manifest, map);			
 			tileset = Rules.TileSets[map.Theater];
 			tileset.LoadTiles();
-			var palette = new Palette(FileSystem.Open(map.Theater.ToLowerInvariant() + ".pal"), true);
+			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
 
 			surface1.Bind(map, tileset, palette);
 

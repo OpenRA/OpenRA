@@ -2,6 +2,7 @@ General:
 	Name: Interior
 	Id: INTERIOR
 	Extensions: .int, .shp, .tem
+	Palette: interior.pal
 
 Terrain:
 	TerrainType@Clear:

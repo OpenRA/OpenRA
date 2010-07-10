@@ -51,18 +51,8 @@ World:
 #	HazardLayer:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
-	PaletteFromFile@terrain_desert:
+	PaletteFromCurrentTheatre:
 		Name: terrain
-		Theater: desert
-		Filename: desert.pal
-	PaletteFromFile@terrain_temperate:
-		Name: terrain
-		Theater: temperat
-		Filename: temperat.pal
-	PaletteFromFile@terrain_winter:
-		Name: terrain
-		Theater: winter
-		Filename: winter.pal
 	PlayerColorPalette@player0:
 		Name: player0
 		DisplayName: Gold
