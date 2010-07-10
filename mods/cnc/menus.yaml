@@ -356,11 +356,11 @@ Container:
 								TextField@NAME:
 									Id:NAME
 									Text:Name
-									Width:127
+									Width:139
 									Height:25
 									X:0
 									Y:0
-									Bold: true
+									MaxLength:16
 								Button@COLOR:
 									Id:COLOR
 									Width:65
@@ -378,7 +378,7 @@ Container:
 									Id:FACTION
 									Width:110
 									Height:25
-									X:256
+									X:244
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -399,7 +399,7 @@ Container:
 									Text:Team
 									Width:25
 									Height:25
-									X:398
+									X:374
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
@@ -417,7 +417,7 @@ Container:
 								Label@NAME:
 									Id:NAME
 									Text:Name
-									Width:127
+									Width:139
 									Height:25
 									X:0
 									Y:0
@@ -431,7 +431,7 @@ Container:
 									Id:FACTION
 									Width:110
 									Height:25
-									X:256
+									X:244
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -452,7 +452,7 @@ Container:
 									Text:Team
 									Width:70
 									Height:25
-									X:375
+									X:351
 									Y:0
 									Align:Center
 									Bold: false
@@ -467,7 +467,7 @@ Container:
 					Children:
 						Label@LABEL_LOBBY_NAME:
 							Id:LABEL_LOBBY_NAME
-							Width:127
+							Width:139
 							Height:25
 							X:0
 							Y:0
@@ -487,7 +487,7 @@ Container:
 							Id:LABEL_LOBBY_FACTION
 							Width:110
 							Height:25
-							X:256
+							X:244
 							Y:0
 							Text:Faction
 							Align:Center
@@ -496,7 +496,7 @@ Container:
 							Id:LABEL_LOBBY_TEAM
 							Width:70
 							Height:25
-							X:375
+							X:351
 							Y:0
 							Text:Team
 							Align:Center
@@ -530,7 +530,7 @@ Container:
 #rabeep1.aud for ra
 				Label@LABEL_CHATTYPE:
 					Id:LABEL_CHATTYPE
-					Width:70
+					Width:65
 					Height:25
 					X:0
 					Y:PARENT_BOTTOM - 75
@@ -539,9 +539,9 @@ Container:
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					Visible:true
-					X:75
+					X:70
 					Y:PARENT_BOTTOM - 74
-					Width:705
+					Width:710
 					Height:25
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
