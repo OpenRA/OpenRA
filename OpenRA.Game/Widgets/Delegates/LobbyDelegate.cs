@@ -116,12 +116,14 @@ namespace OpenRA.Widgets.Delegates
 						if (name.Text.Length == 0)
 							name.Text = c.Name;
 						
+						Chrome.selectedWidget = null;
 						if (name.Text == c.Name)
 							return true;
 						
 						Game.IssueOrder(Order.Chat( "/name "+name.Text ));
 						Game.Settings.PlayerName = name.Text;
 						Game.Settings.Save();
+						Chrome.selectedWidget = null;
 						return true;
 					};
 					
