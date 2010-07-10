@@ -1,0 +1,9 @@
+World:
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+	SpatialBins:
+	UnitInfluence:

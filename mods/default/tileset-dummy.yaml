@@ -1,0 +1,15 @@
+General:
+	Name: Dummy
+	Id: DUMMY
+	Extensions: .shp, .tem
+	Palette: temperat.pal
+Terrain:
+	TerrainType@Blank:
+		Type: Blank
+Templates:
+	Template@255:
+		Id: 255
+		Image: bogus
+		Size: 1,1
+		Tiles:
+			0: Blank

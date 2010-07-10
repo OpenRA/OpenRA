@@ -1,0 +1,31 @@
+# Default Game Mod
+
+Folders:
+	./mods/default
+	./
+
+Packages:
+
+Rules:
+	mods/default/system.yaml
+
+Sequences:
+	mods/default/sequences.xml
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+Weapons:
+
+Voices:
+
+Music:
+
+TileSets:
+	mods/default/tileset-dummy.yaml
+
+Chrome:
+	mods/default/chrome.xml:
+
+ChromeLayout:
+	mods/default/menus.yaml:
+
+ShellmapUid: 95c34889e85a903d7dbb41f13d6c373b44a8b62e

@@ -1,0 +1,15 @@
+Selectable: False
+MapFormat: 2
+Title: Default Shellmap 
+Description: A default empty map to use when no custom shellmap is wanted
+Author: alzeih
+PlayerCount: 0
+Tileset: DUMMY
+MapSize: 128,128
+TopLeft: 16,16
+BottomRight: 112,112
+Players:
+Actors:
+Waypoints:
+Smudges:
+Rules:

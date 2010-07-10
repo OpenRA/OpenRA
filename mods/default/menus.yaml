@@ -1,0 +1,18 @@
+Container:
+	ClickThrough:true
+	Children:
+		Background@MAINMENU_BG:
+			Id:MAINMENU_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:250
+			Height:65
+			Delegate:MainMenuButtonsDelegate
+			Children:
+				Button@MAINMENU_BUTTON_QUIT:
+					Id:MAINMENU_BUTTON_QUIT
+					X:45
+					Y:20
+					Width:160
+					Height:25
+					Text:Quit

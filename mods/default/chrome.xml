@@ -1,0 +1,35 @@
+<chrome>
+	<collection name="dialog2" src="dialog.png">
+		<image name="background" x="513" y="1" width="126" height="126" />
+		<image name="border-r" x="639" y="1" width="1" height="126" />
+		<image name="border-l" x="512" y="1" width="1" height="126" />
+		<image name="border-b" x="513" y="127" width="126" height="1" />
+		<image name="border-t" x="513" y="0" width="126" height="1" />
+		<image name="corner-tl" x="512" y="0" width="1" height="1" />
+		<image name="corner-tr" x="594" y="0" width="1" height="1" />
+		<image name="corner-bl" x="512" y="82" width="1" height="1" />
+		<image name="corner-br" x="594" y="82" width="1" height="1" />
+	</collection>
+	<collection name="dialog3" src="dialog.png">
+		<image name="background" x="641" y="1" width="126" height="126" />
+		<image name="border-r" x="767" y="1" width="1" height="126" />
+		<image name="border-l" x="640" y="1" width="1" height="126" />
+		<image name="border-b" x="641" y="127" width="126" height="1" />
+		<image name="border-t" x="641" y="0" width="126" height="1" />
+		<image name="corner-tl" x="640" y="0" width="1" height="1" />
+		<image name="corner-tr" x="722" y="0" width="1" height="1" />
+		<image name="corner-bl" x="640" y="82" width="1" height="1" />
+		<image name="corner-br" x="722" y="82" width="1" height="1" />
+	</collection>
+	<collection name="dialog" src="dialog.png">
+		<image name="background" x="0" y="0" width="480" height="480" />
+		<image name="border-r" x="489" y="0" width="9" height="192" />
+		<image name="border-l" x="480" y="0" width="9" height="192" />
+		<image name="border-b" x="0" y="489" width="191" height="9" />
+		<image name="border-t" x="0" y="480" width="191" height="9" />
+		<image name="corner-tl" x="191" y="480" width="9" height="9" />
+		<image name="corner-tr" x="200" y="480" width="9" height="9" />
+		<image name="corner-bl" x="191" y="489" width="9" height="9" />
+		<image name="corner-br" x="200" y="489" width="9" height="9" />
+	</collection>
+</chrome>
