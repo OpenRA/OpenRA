@@ -116,6 +116,9 @@ namespace OpenRA.Widgets.Delegates
 
 		void CycleStance(Player p, ButtonWidget bw)
 		{
+			if (Game.LobbyInfo.GlobalSettings.LockTeams)
+				return;	// team changes are banned
+
 			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
 
 			Game.IssueOrder(new Order("SetStance", Game.world.LocalPlayer.PlayerActor,
