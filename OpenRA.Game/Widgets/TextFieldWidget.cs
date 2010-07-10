@@ -40,16 +40,24 @@ namespace OpenRA.Widgets
 
 		public override bool HandleInput(MouseInput mi)
 		{
+			// We get this first if we are focussed; if the click was somewhere else remove focus
+			if (Chrome.selectedWidget == this && mi.Event == MouseInputEvent.Down && !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
+			{
+				Chrome.selectedWidget = null;
+				return false;
+			}
+				
 			// Are we able to handle this event?
 			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
 				return base.HandleInput(mi);
+			
 			
 			if (base.HandleInput(mi))
 				return true;
 			
 			if (mi.Event == MouseInputEvent.Down)
 			{
-				Chrome.keyboardFocusWidget = this;
+				Chrome.selectedWidget = this;
 				return true;
 			}
 			
@@ -76,6 +84,19 @@ namespace OpenRA.Widgets
 				TextBuffer += c;
 		}
 		
+		
+		int blinkCycle = 10;
+		bool showCursor = true;
+		public override void Tick(World world)
+		{
+			if (--blinkCycle <= 0)
+			{
+				blinkCycle = 20;
+				showCursor ^= true;
+			}
+			base.Tick(world);
+		}
+		
 		public override void DrawInner(World world)
 		{
 			var pos = DrawPosition();
@@ -83,7 +104,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel("dialog3", 
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
 			
-			var text = TextBuffer;
+			var text = TextBuffer + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
 			Game.chrome.renderer.BoldFont.DrawText(text,
 				new int2( pos.X + margin, pos.Y + Bounds.Height / 2)
 					- new int2(0, Game.chrome.renderer.BoldFont.Measure(text).Y / 2),

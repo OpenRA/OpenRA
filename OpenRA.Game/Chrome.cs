@@ -61,16 +61,14 @@ namespace OpenRA
 
 		public static Widget rootWidget = null;
 		public static Widget selectedWidget;
-		public static Widget keyboardFocusWidget;
 
 		public void Tick(World world)
 		{
+			rootWidget.Tick(world);
+			
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
-
 			++ticksSinceLastMove;
-			
-			rootWidget.Tick(world);
 		}
 				
 		public void Draw( World world )
@@ -251,8 +249,8 @@ namespace OpenRA
 		
 		public bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
 		{
-			if (keyboardFocusWidget != null)
-				return keyboardFocusWidget.HandleKeyPress(e, modifiers);
+			if (selectedWidget != null)
+				return selectedWidget.HandleKeyPress(e, modifiers);
 			
 			if (rootWidget.HandleKeyPress(e, modifiers))
 				return true;
