@@ -127,9 +127,11 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			r.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi =>
-			{			/* rude hack. kill this as soon as we can do a direct connect via the commandline */
+			{			/* rude hack. Should prompt the user once we have textfield widgets */
 				r.CloseWindow();
-				Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+				if (Game.Settings.NetworkHost != null)
+					Game.JoinServer(Game.Settings.NetworkHost, Game.Settings.NetworkPort);
+				
 				return true;
 			};
 		}

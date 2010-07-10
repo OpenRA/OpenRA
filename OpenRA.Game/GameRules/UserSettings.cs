@@ -45,11 +45,10 @@ namespace OpenRA.GameRules
 		public readonly int SheetSize = 2048;
 		
 		// External game settings
-		public readonly string NetworkHost = "";
+		public readonly string NetworkHost = null;
 		public readonly int NetworkPort = 0;
-		public readonly int Player = 1;
-		public readonly string Replay = "";
-		public readonly string PlayerName = "";
+		public readonly string Replay = null;
+		public readonly string PlayerName = null;
 		public readonly string[] InitialMods = { "ra" };
 
 		public readonly string GameName = "OpenRA Game";

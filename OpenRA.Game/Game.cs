@@ -597,7 +597,7 @@ namespace OpenRA
 
 			ChangeMods();
 
-			if (Settings.Replay != "")
+			if (Settings.Replay != null)
 				orderManager = new OrderManager(new ReplayConnection(Settings.Replay));
 			else
 				JoinLocal();
