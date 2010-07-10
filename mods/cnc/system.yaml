@@ -205,7 +205,6 @@ World:
 	SpawnDefaultUnits:
 	EvaAlerts:
 		TabClick: button.aud
-		ChatBeep: beepy2.aud
 		RadarUp: comcntr1.aud
 		RadarDown: powrdn1.aud
 		BuildPaletteOpen: appear1.aud 

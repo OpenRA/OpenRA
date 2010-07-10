@@ -491,6 +491,15 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+				ChatDisplay@CHAT_DISPLAY:
+					Id:CHAT_DISPLAY
+					Visible:true
+					X:20
+					Y:PARENT_BOTTOM - 269
+					Width:PARENT_RIGHT - 40
+					Height:190
+					Notification: beepy2.aud
+#rabeep1.aud for ra
 				Label@LABEL_LOBBY_TEAM:
 					Id:LABEL_LOBBY_TEAM
 					Width:70

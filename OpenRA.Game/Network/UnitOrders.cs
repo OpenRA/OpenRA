@@ -33,27 +33,29 @@ namespace OpenRA.Network
 			case "Chat":
 				{
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
-					if (client != null)
-						Game.chat.AddLine(client, order.TargetString);
+					if (client != null && Chrome.chatWidget != null)
+						Chrome.chatWidget.AddLine(client, order.TargetString);
 					break;
 				}
 			case "TeamChat":
 				{
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
-					if (client != null)
+					if (client != null && Chrome.chatWidget != null)
 					{
 						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
 						var isAlly = player != null && Game.world.LocalPlayer != null
 							&& player.Stances[Game.world.LocalPlayer] == Stance.Ally;
 
 						if (isAlly)
-							Game.chat.AddLine(client, "(Team) " + order.TargetString);
+							Chrome.chatWidget.AddLine(client, "(Team) " + order.TargetString);
 					}
 					break;
 				}
 			case "StartGame":
 				{
-					Game.chat.AddLine(Color.White, "Server", "The game has started.");
+					if (Chrome.chatWidget != null)
+						Chrome.chatWidget.AddLine(Color.White, "Server", "The game has started.");
+				
 					Game.StartGame();
 					break;
 				}

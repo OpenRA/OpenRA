@@ -25,8 +25,6 @@ namespace OpenRA.Traits
 	{
 		// Sound effects
 		public readonly string TabClick = "ramenu1.aud";
-		
-		public readonly string ChatBeep = "rabeep1.aud";
 		public readonly string RadarUp = "radaron2.aud";
 		public readonly string RadarDown = "radardn1.aud";
 

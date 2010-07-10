@@ -68,6 +68,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
+			Chrome.chatWidget = lobby.GetWidget("CHAT_DISPLAY") as ChatDisplayWidget;
 		}
 		
 		void UpdatePlayerList()

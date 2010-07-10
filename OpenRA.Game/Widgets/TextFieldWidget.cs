@@ -102,7 +102,6 @@ namespace OpenRA.Widgets
 				TextBuffer += c;
 		}
 		
-		
 		int blinkCycle = 10;
 		bool showCursor = true;
 		public override void Tick(World world)
@@ -133,7 +132,7 @@ namespace OpenRA.Widgets
 			// Right align and scissor when the text overflows
 			if (textSize.X > Bounds.Width - 2*margin)
 			{
-				textPos += new int2(Bounds.Width - 2*margin - textSize.X,0); 
+				textPos += new int2(Bounds.Width - 2*margin - textSize.X,0);
 				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2*margin, Bounds.Bottom);
 			}
 			

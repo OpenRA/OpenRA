@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat.cs" />
     <Compile Include="Chrome.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />
@@ -226,6 +225,7 @@
     <Compile Include="Traits\World\AircraftInfluence.cs" />
     <Compile Include="Traits\World\HazardLayer.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
+    <Compile Include="Widgets\ChatDisplayWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

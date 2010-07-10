@@ -201,9 +201,6 @@ namespace OpenRA
 		}
 
 		internal static int RenderFrame = 0;
-
-		internal static Chat chat = new Chat();
-
 		internal static int LocalTick = 0;
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
@@ -618,7 +615,7 @@ namespace OpenRA
 
 		public static void Exit() { quit = true; }
 
-		public static void Debug(string s) { chat.AddLine(Color.White, "Debug", s); }
+		public static void Debug(string s) { Chrome.chatWidget.AddLine(Color.White, "Debug", s); }
 
 		public static void Disconnect()
 		{

@@ -61,6 +61,7 @@ namespace OpenRA
 
 		public static Widget rootWidget = null;
 		public static Widget selectedWidget;
+		public static ChatDisplayWidget chatWidget;
 
 		public void Tick(World world)
 		{
@@ -75,10 +76,6 @@ namespace OpenRA
 		{
 			buttons.Clear();
 			renderer.Device.DisableScissor();
-			
-			var typingArea = new Rectangle(240, Game.viewport.Height - 30, Game.viewport.Width - 420, 30);
-			var chatLogArea = new Rectangle(240, Game.viewport.Height - 500, Game.viewport.Width - 420, 500 - 40);
-			DrawChat(typingArea, chatLogArea);
 		}
 		
 		void AddUiButton(int2 pos, string text, Action<bool> a)
@@ -165,17 +162,6 @@ namespace OpenRA
 				currentMap = null;
 			else
 				currentMap = Game.AvailableMaps[ Game.LobbyInfo.GlobalSettings.Map ];
-			
-			var w = 800;
-			var h = 600;
-			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-
-			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 77, r.Width - 40, 27);
-			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 190);
-
-			DrawDialogBackground(chatBox, "dialog3");
-
-			DrawChat(typingBox, chatBox);
 		}
 		
 		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
@@ -183,30 +169,6 @@ namespace OpenRA
 		void DrawDialogBackground(Rectangle r, string collection)
 		{
 			WidgetUtils.DrawPanel(collection, r);
-		}
-
-		void DrawChat(Rectangle typingArea, Rectangle chatLogArea)
-		{
-			
-			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
-			ChatWidth = chatLogArea.Width - 10;
-			
-			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
-			foreach (var line in Game.chat.recentLines.AsEnumerable().Reverse())
-			{
-				chatpos.Y -= 20;
-				RenderChatLine(line, chatpos);
-			}
-
-			rgbaRenderer.Flush();
-			renderer.Device.DisableScissor();
-		}
-
-		void RenderChatLine(ChatLine line, int2 p)
-		{
-			var size = renderer.RegularFont.Measure(line.Owner);
-			renderer.RegularFont.DrawText(line.Owner, p, line.Color);
-			renderer.RegularFont.DrawText(line.Text, p + new int2(size.X + 10, 0), Color.White);
 		}
 
 		public int ticksSinceLastMove = 0;
