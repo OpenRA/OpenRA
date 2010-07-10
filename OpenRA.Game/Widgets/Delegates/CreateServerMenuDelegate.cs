@@ -50,8 +50,7 @@ namespace OpenRA.Widgets.Delegates
 				// TODO: Get this from a mod chooser
 				var mods = Game.Settings.InitialMods;
 				
-				// TODO: Get this from a textbox
-				var gameName = Game.Settings.GameName;
+				var gameName = r.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 
 				Server.Server.ServerMain(AdvertiseServerOnline, Game.Settings.MasterServer,
 										gameName, Game.Settings.ListenPort,
