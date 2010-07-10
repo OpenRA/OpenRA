@@ -493,6 +493,9 @@ namespace OpenRA
 		public static void HandleKeyPress(KeyPressEventArgs e, Modifiers modifiers)
 		{
 			int sync = world.SyncHash();
+			
+			if (chrome.HandleKeyPress(e, modifiers))
+				return;
 
 			if (e.KeyChar == '\r')
 			{

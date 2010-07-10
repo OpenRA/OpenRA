@@ -51,6 +51,8 @@ namespace OpenRA.Widgets
 		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
+		public Func<System.Windows.Forms.KeyPressEventArgs, Modifiers,bool> OnKeyPress = (e,modifiers) => {return false;};
+
 		public Func<bool> IsVisible;
 
 		public Widget() { IsVisible = () => Visible; }
@@ -72,6 +74,8 @@ namespace OpenRA.Widgets
 			OnMouseDown = widget.OnMouseDown;
 			OnMouseUp = widget.OnMouseUp;
 			OnMouseMove = widget.OnMouseMove;
+			OnKeyPress = widget.OnKeyPress;
+
 			IsVisible = widget.IsVisible;
 			
 			foreach(var child in widget.Children)
@@ -169,6 +173,17 @@ namespace OpenRA.Widgets
 			throw new InvalidOperationException("Impossible");
 		}
 
+		public virtual bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		{			
+			// Can any of our children handle this?
+			foreach (var child in Children)
+				if (child.HandleKeyPress(e, modifiers))
+					return true;
+
+			// Have we been assigned an action?
+			return OnKeyPress(e,modifiers);
+		}
+		
 		public abstract void DrawInner( World world );
 		
 		public void Draw(World world)

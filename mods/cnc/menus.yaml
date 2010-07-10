@@ -491,6 +491,20 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+				TextField@CHAT_TEXTFIELD:
+					Id:CHAT_TEXTFIELD
+					Visible:true
+					X:PARENT_RIGHT-550
+					Y:300
+					Width:300
+					Height:25
+				TextField@CHAT_TEXTFIELD2:
+					Id:CHAT_TEXTFIELD2
+					Visible:true
+					X:PARENT_RIGHT-550
+					Y:250
+					Width:300
+					Height:25
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
 					Visible:true
