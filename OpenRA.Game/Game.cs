@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -546,13 +547,15 @@ namespace OpenRA
 			controller.SetModifiers(mods);
 		}
 
-		static Size GetResolution(Settings settings)
+		static Size GetResolution(Settings settings, WindowMode windowmode)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-			if (Settings.Width > 0 && Settings.Height > 0)
+			var customSize = (windowmode == WindowMode.Windowed) ? Settings.WindowedSize : Settings.FullscreenSize;
+			
+			if (customSize.X > 0 && customSize.Y > 0)
 			{
-				desktopResolution.Width = Settings.Width;
-				desktopResolution.Height = Settings.Height;
+				desktopResolution.Width = customSize.X;
+				desktopResolution.Height = customSize.Y;
 			}
 			return new Size(
 				desktopResolution.Width,
@@ -581,7 +584,7 @@ namespace OpenRA
 
 			Renderer.SheetSize = Settings.SheetSize;
 
-			var resolution = GetResolution(settings);
+			var resolution = GetResolution(settings, Game.Settings.WindowMode);
 			renderer = new Renderer(resolution, Game.Settings.WindowMode);
 			resolution = renderer.Resolution;
 

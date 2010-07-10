@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -11,7 +12,16 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Chrome.rootWidget;
 			
-			// Checkboxes		
+			// Checkboxes
+			
+			// Should actually be a listbox; hack with a checkbox for now
+			r.GetWidget<CheckboxWidget>("CHECKBOX_FULLSCREEN").Checked = () => {return Game.Settings.WindowMode != WindowMode.Windowed;};
+			r.GetWidget("CHECKBOX_FULLSCREEN").OnMouseDown = mi => {
+				Game.Settings.WindowMode = (Game.Settings.WindowMode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+				Game.Settings.Save();
+				return true;
+			};
+			
 			r.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = () => {return Game.Settings.UnitDebug;};
 			r.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
 				Game.Settings.UnitDebug ^= true;

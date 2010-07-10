@@ -149,6 +149,9 @@ namespace OpenRA.FileFormats
 		public static string FormatValue(object o, FieldInfo f)
 		{
 			var v = f.GetValue(o);
+			if (v == null)
+				return "";
+
 			return f.FieldType.IsArray
 				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
 				: v.ToString();

@@ -22,6 +22,7 @@ using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using System.IO;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace OpenRA.GameRules
 {
@@ -35,9 +36,11 @@ namespace OpenRA.GameRules
 		public bool RecordSyncReports = true;
 		
 		// Window settings
-		public readonly int Width = 0;
-		public readonly int Height = 0;
-		public readonly WindowMode WindowMode = WindowMode.PseudoFullscreen;
+		public WindowMode WindowMode = WindowMode.PseudoFullscreen;
+		public int2 FullscreenSize = new int2(0,0);
+		public int2 WindowedSize = new int2(1024,768);
+		
+		
 		public bool MusicPlayer = true;
 		
 		// Internal game settings
@@ -48,7 +51,7 @@ namespace OpenRA.GameRules
 		public readonly string NetworkHost = null;
 		public readonly int NetworkPort = 0;
 		public readonly string Replay = null;
-		public readonly string PlayerName = null;
+		public string PlayerName = null;
 		public readonly string[] InitialMods = { "ra" };
 
 		public readonly string GameName = "OpenRA Game";
