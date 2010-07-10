@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint uploader
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -78,16 +78,10 @@ ralint_KIND		= winexe
 ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 
-uploader_SRCS		= $(shell find OpenRAUploader/ -iname '*.cs')
-uploader_TARGET		= RAUploader.exe
-uploader_KIND		= winexe
-uploader_LIBS		= $(COMMON_LIBS)
-
-
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint uploader seqed mapcvtr
+.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint seqed mapcvtr
 
 game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 
@@ -145,11 +139,10 @@ editor_res:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources
 editor: editor_res $(editor_TARGET)
 ralint: $(ralint_TARGET)
-uploader: $(uploader_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 
-tools: editor ralint uploader seqed mapcvtr
+tools: editor ralint seqed mapcvtr
 all: game tools
 
 define BUILD_ASSEMBLY
