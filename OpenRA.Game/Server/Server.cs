@@ -398,6 +398,19 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
+				{ "lockteams",
+					s =>
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							SendChatTo( conn, "Only the host can set that option" );
+							return true;
+						}
+						
+						bool.TryParse(s, out lobbyInfo.GlobalSettings.LockTeams);
+						SyncLobbyInfo();
+						return true;
+					}},
 			};
 
 			var cmdName = cmd.Split(' ').First();

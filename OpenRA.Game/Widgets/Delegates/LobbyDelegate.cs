@@ -20,8 +20,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets.Delegates
@@ -55,6 +55,18 @@ namespace OpenRA.Widgets.Delegates
 				Game.Disconnect();
 				return true;
 			};
+
+			var lockTeamsCheckbox = lobby.GetWidget("LOCKTEAMS_CHECKBOX") as CheckboxWidget;
+			lockTeamsCheckbox.IsVisible = () => true;
+			lockTeamsCheckbox.Checked = () => Game.LobbyInfo.GlobalSettings.LockTeams;
+			lockTeamsCheckbox.OnMouseDown = mi =>
+			{
+				if (Game.IsHost)
+					Game.IssueOrder(Order.Chat(
+						"/lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
+				return true;
+			};
+
 			Game.LobbyInfoChanged += UpdatePlayerList;
 		}
 		

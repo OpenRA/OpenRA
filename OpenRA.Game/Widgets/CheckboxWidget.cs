@@ -18,8 +18,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OpenRA.Widgets
 {

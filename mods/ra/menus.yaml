@@ -496,7 +496,7 @@ Container:
 					Visible: true
 					X: PARENT_RIGHT-300
 					Y: PARENT_BOTTOM-38
-					Width: 100
+					Width: 80
 					Height: 20
 					Text: Lock Teams
 				Button@DISCONNECT_BUTTON:
