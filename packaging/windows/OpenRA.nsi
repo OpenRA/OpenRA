@@ -70,7 +70,7 @@ Section "Client" Client
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "settings=settings-netplay-cnc.ini" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "InitialMods=cnc" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
