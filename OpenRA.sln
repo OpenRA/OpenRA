@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.TilesetBuilder", "Op
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RALint", "RALint\RALint.csproj", "{F9FA4D9F-2302-470A-8A07-6E37F488C124}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtractor", "FileExtractor\FileExtractor.csproj", "{210645C7-E99E-46B6-863E-E211AE6C7D70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,14 @@ Global
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Any CPU.ActiveCfg = Release|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.Build.0 = Release|x86
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{210645C7-E99E-46B6-863E-E211AE6C7D70}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{230F65CE-A6DE-4235-8B38-13A3D606C7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{230F65CE-A6DE-4235-8B38-13A3D606C7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{230F65CE-A6DE-4235-8B38-13A3D606C7F7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

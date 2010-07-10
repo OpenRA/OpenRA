@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint filex
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -12,8 +12,6 @@ INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
 
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
-
-CORE = fileformats gl game seqed mapcvtr
 
 fileformats_SRCS	=	$(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	=	OpenRA.FileFormats.dll
@@ -79,10 +77,16 @@ ralint_KIND		= winexe
 ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 
+filex_SRCS		= $(shell find FileExtractor/ -iname '*.cs')
+filex_TARGET	= FileExtractor.exe
+filex_KIND		= winexe
+filex_DEPS		= $(fileformats_TARGET)
+filex_LIBS		= $(COMMON_LIBS) $(filex_DEPS)
+
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint seqed mapcvtr
+.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint seqed mapcvtr filex
 
 game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 
@@ -90,6 +94,8 @@ clean:
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 
 distclean: clean
+
+CORE = fileformats gl game seqed mapcvtr
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -149,8 +155,9 @@ editor: editor_res $(editor_TARGET)
 ralint: $(ralint_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
+filex: $(filex_TARGET)
 
-tools: editor ralint seqed mapcvtr
+tools: editor ralint seqed mapcvtr filex
 all: game tools
 
 define BUILD_ASSEMBLY
