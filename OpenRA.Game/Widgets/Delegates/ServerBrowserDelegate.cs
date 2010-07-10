@@ -151,7 +151,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			r.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
+			dc.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
 				r.CloseWindow();
 				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};

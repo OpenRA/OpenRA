@@ -73,11 +73,11 @@ Container:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:400
-			Height:180
+			Height:210
 			Visible:false
 			Children:
-				Label@CREATESERVER_LABEL_TITLE:
-					Id:CREATESERVER_LABEL_TITLE
+				Label@LABEL_TITLE:
+					Id:LABEL_TITLE
 					X:0
 					Y:20
 					Width:400
@@ -85,7 +85,7 @@ Container:
 					Text:Create Server
 					Align:Center
 					Bold:True
-				Label@GAME_TITLE:
+				Label@GAME_TITLE_LABEL:
 					Id:GAME_TITLE_LABEL
 					X:50
 					Y:59
@@ -97,27 +97,58 @@ Container:
 					Id:GAME_TITLE
 					X:150
 					Y:60
-					Width:200
+					Width:210
 					MaxLength:50
 					Height:25
 					Text:OpenRA Game
-				Checkbox@CREATESERVER_CHECKBOX_ONLINE:
-					Id:CREATESERVER_CHECKBOX_ONLINE
+				Label@EXTERNAL_PORT_LABEL:
+					Id:EXTERNAL_PORT_LABEL
+					X:50
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:External Port:
+				TextField@EXTERNAL_PORT:
+					Id:EXTERNAL_PORT
 					X:150
-					Y:100
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+					Text:OpenRA Game
+				Label@LISTEN_PORT_LABEL:
+					Id:LISTEN_PORT_LABEL
+					X:210
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:Listen Port:
+				TextField@LISTEN_PORT:
+					Id:LISTEN_PORT
+					X:310
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+				Checkbox@CHECKBOX_ONLINE:
+					Id:CHECKBOX_ONLINE
+					X:165
+					Y:130
 					Width:300
 					Height:20
 					Text:Advertise game Online
-				Button@CREATESERVER_BUTTON_START:
-					Id:CREATESERVER_BUTTON_START
+				Button@BUTTON_START:
+					Id:BUTTON_START
 					X:130
 					Y:PARENT_BOTTOM - 45
 					Width:120
 					Height:25
 					Text:Create
 					Bold:True
-				Button@CREATESERVER_BUTTON_CANCEL:
-					Id:CREATESERVER_BUTTON_CANCEL
+				Button@BUTTON_CANCEL:
+					Id:BUTTON_CANCEL
 					X:260
 					Y:PARENT_BOTTOM - 45
 					Width:120

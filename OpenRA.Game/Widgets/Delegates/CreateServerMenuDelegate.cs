@@ -30,17 +30,18 @@ namespace OpenRA.Widgets.Delegates
 		public CreateServerMenuDelegate()
 		{
 			var r = Chrome.rootWidget;
+			var cs = Chrome.rootWidget.GetWidget("CREATESERVER_BG");
 			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
 				r.OpenWindow("CREATESERVER_BG");
 				return true;
 			};
 			
-			r.GetWidget("CREATESERVER_BUTTON_CANCEL").OnMouseUp = mi => {
+			cs.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
 				r.CloseWindow();
 				return true;
 			};
 			
-			r.GetWidget("CREATESERVER_BUTTON_START").OnMouseUp = mi => {
+			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
 				r.OpenWindow("SERVER_LOBBY");
 				Log.Write("debug", "Creating server");
 				
@@ -50,19 +51,23 @@ namespace OpenRA.Widgets.Delegates
 				// TODO: Get this from a mod chooser
 				var mods = Game.Settings.InitialMods;
 				
-				var gameName = r.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+				var gameName = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 
+				int listenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
+				int extPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
+				
 				Server.Server.ServerMain(AdvertiseServerOnline, Game.Settings.MasterServer,
-										gameName, Game.Settings.ListenPort,
-										Game.Settings.ExternalPort, mods, map);
+										gameName, listenPort, extPort, mods, map);
 
 				Log.Write("debug", "Joining server");
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
 			};
 			
-			r.GetWidget<CheckboxWidget>("CREATESERVER_CHECKBOX_ONLINE").Checked = () => {return AdvertiseServerOnline;};
-			r.GetWidget("CREATESERVER_CHECKBOX_ONLINE").OnMouseDown = mi => {
+			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = Game.Settings.ListenPort.ToString();
+			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = Game.Settings.ExternalPort.ToString();
+			r.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => {return AdvertiseServerOnline;};
+			r.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
 				AdvertiseServerOnline = !AdvertiseServerOnline;
 				return true;	
 			};
