@@ -25,9 +25,11 @@ namespace OpenRA.Widgets
 {
 	class TextFieldWidget : Widget
 	{
-		string TextBuffer = "";
+		public string TextBuffer = "";
 		public int VisualHeight = 1;
-
+		public Action<string> OnEnterKey = text => {};
+		public Action<string> OnTabKey = text => {};
+		
 		public TextFieldWidget()
 			: base()
 		{
@@ -83,9 +85,12 @@ namespace OpenRA.Widgets
 			if (e.KeyChar == '\r')
 			{
 				if (TextBuffer.Length > 0)
-				Game.IssueOrder( Order.Chat( TextBuffer ) );
+					OnEnterKey(TextBuffer);
 				TextBuffer = "";
 			}
+			
+			if (e.KeyChar == '\t')
+				OnTabKey(TextBuffer);
 			
 			TypeChar(e.KeyChar);
 			return true;

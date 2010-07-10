@@ -69,6 +69,23 @@ namespace OpenRA.Widgets.Delegates
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Chrome.chatWidget = lobby.GetWidget("CHAT_DISPLAY") as ChatDisplayWidget;
+			
+			
+			bool teamChat = false;
+			var chatLabel = lobby.GetWidget("LABEL_CHATTYPE") as LabelWidget;
+			var chatTextField = lobby.GetWidget("CHAT_TEXTFIELD") as TextFieldWidget;
+			chatTextField.OnEnterKey = text =>
+			{
+				var order = (teamChat) ? Order.TeamChat( text ) : Order.Chat( text );
+				Game.IssueOrder( order );
+			};
+			
+			chatTextField.OnTabKey = text =>
+			{
+				teamChat ^= true;
+				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
+			};
+			
 		}
 		
 		void UpdatePlayerList()

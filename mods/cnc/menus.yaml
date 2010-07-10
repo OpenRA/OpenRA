@@ -500,8 +500,8 @@ Container:
 					Height:190
 					Notification: beepy2.aud
 #rabeep1.aud for ra
-				Label@LABEL_LOBBY_TEAM:
-					Id:LABEL_LOBBY_TEAM
+				Label@LABEL_CHATTYPE:
+					Id:LABEL_CHATTYPE
 					Width:70
 					Height:25
 					X:0
