@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
 	class ButtonWidget : Widget
 	{
 		public string Text = "";
+		public bool Bold = false;
 		public bool Depressed = false;
 		public int VisualHeight = 1;
 		public Func<string> GetText;
@@ -82,16 +83,16 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			var pos = DrawPosition();
-
+			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", 
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
 			
 			var text = GetText();
-			Game.chrome.renderer.BoldFont.DrawText(text,
+			font.DrawText(text,
 				new int2( pos.X + Bounds.Width / 2, pos.Y + Bounds.Height / 2)
-					- new int2(Game.chrome.renderer.BoldFont.Measure(text).X / 2,
-				Game.chrome.renderer.BoldFont.Measure(text).Y / 2) + stateOffset, Color.White);
+					- new int2(font.Measure(text).X / 2,
+				font.Measure(text).Y / 2) + stateOffset, Color.White);
 		}
 		
 		public override Widget Clone()

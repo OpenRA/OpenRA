@@ -25,6 +25,7 @@ Container:
 					Height:25
 					Text:OpenRA Main Menu
 					Align:Center
+					Bold:True
 				Button@MAINMENU_BUTTON_JOIN:
 					Id:MAINMENU_BUTTON_JOIN
 					X:45
@@ -32,6 +33,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Join Game
+					Bold:True
 				Button@MAINMENU_BUTTON_CREATE:
 					Id:MAINMENU_BUTTON_CREATE
 					X:45
@@ -39,6 +41,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Create Game
+					Bold:True
 				Button@MAINMENU_BUTTON_SETTINGS:
 					Id:MAINMENU_BUTTON_SETTINGS
 					X:45
@@ -46,6 +49,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Settings
+					Bold:True
 				Button@MAINMENU_BUTTON_QUIT:
 					Id:MAINMENU_BUTTON_QUIT
 					X:45
@@ -53,6 +57,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Quit
+					Bold:True
 				Label@VERSION_STRING:
 					Id:VERSION_STRING
 					X:WINDOW_RIGHT - PARENT_LEFT - WIDTH - 15
@@ -61,6 +66,7 @@ Container:
 					Height:35
 					Text:
 					Align:Right
+					Bold:True
 		Background@CREATESERVER_BG:
 			Id:CREATESERVER_BG
 			Delegate:CreateServerMenuDelegate
@@ -78,6 +84,7 @@ Container:
 					Height:25
 					Text:Create Server
 					Align:Center
+					Bold:True
 				Checkbox@CREATESERVER_CHECKBOX_ONLINE:
 					Id:CREATESERVER_CHECKBOX_ONLINE
 					X:100
@@ -92,6 +99,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Create
+					Bold:True
 				Button@CREATESERVER_BUTTON_CANCEL:
 					Id:CREATESERVER_BUTTON_CANCEL
 					X:270
@@ -99,6 +107,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
+					Bold:True
 		Background@SETTINGS_BG:
 			Id:SETTINGS_BG
 			Delegate:SettingsMenuDelegate
@@ -116,6 +125,7 @@ Container:
 					Height:25
 					Text:Settings
 					Align:Center
+					Bold:True
 				Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
 					Id:SETTINGS_CHECKBOX_UNITDEBUG
 					X:100
@@ -172,6 +182,7 @@ Container:
 					Width:160
 					Height:25
 					Text:OK
+					Bold:True
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
 			Delegate:ServerBrowserDelegate
@@ -189,6 +200,7 @@ Container:
 					Height:25
 					Text:Quick'n'dirty Server Browser
 					Align:Center
+					Bold:True
 				Label@JOINSERVER_PROGRESS_TITLE:
 					Id:JOINSERVER_PROGRESS_TITLE
 					X:0
@@ -204,6 +216,7 @@ Container:
 					Width:120
 					Height:25
 					Text:Direct Connect
+					Bold:True
 				Button@JOINSERVER_BUTTON_REFRESH:
 					Id:JOINSERVER_BUTTON_REFRESH
 					X:PARENT_RIGHT - 140 - 130
@@ -211,6 +224,7 @@ Container:
 					Width:120
 					Height:25
 					Text:Refresh
+					Bold:True
 				Button@JOINSERVER_BUTTON_CANCEL:
 					Id:JOINSERVER_BUTTON_CANCEL
 					X:PARENT_RIGHT - 140
@@ -218,6 +232,7 @@ Container:
 					Width:120
 					Height:25
 					Text:Cancel
+					Bold:True
 		Background@CONNECTION_FAILED_BG:
 			Id:CONNECTION_FAILED_BG
 			Delegate:ConnectionDialogsDelegate
@@ -235,6 +250,7 @@ Container:
 					Height:25
 					Text:Connection Failed
 					Align:Center
+					Bold:True
 				Label@CONNECTION_FAILED_DESC:
 					Id:CONNECTION_FAILED_DESC
 					X:0
@@ -250,6 +266,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Retry
+					Bold:True
 				Button@CONNECTION_BUTTON_CANCEL:
 					Id:CONNECTION_BUTTON_CANCEL
 					X:PARENT_RIGHT - 180
@@ -257,6 +274,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Cancel
+					Bold:True
 		Background@CONNECTING_BG:
 			Id:CONNECTING_BG
 			Delegate:ConnectionDialogsDelegate
@@ -274,6 +292,7 @@ Container:
 					Height:25
 					Text:Connecting
 					Align:Center
+					Bold:True
 				Label@CONNECTING_DESC:
 					Id:CONNECTING_DESC
 					X:0
@@ -289,6 +308,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Abort
+					Bold:True
 		Background@SERVER_LOBBY:
 			Id:SERVER_LOBBY
 			Delegate:LobbyDelegate
@@ -304,6 +324,7 @@ Container:
 					Align:Center
 					Width:800
 					Height:20
+					Bold:True
 					Text:OpenRA Multiplayer Lobby
 				Background@LOBBY_MAP_BG:
 					X:PARENT_RIGHT-268
@@ -335,7 +356,7 @@ Container:
 								TextField@NAME:
 									Id:NAME
 									Text:Name
-									Width:95
+									Width:127
 									Height:25
 									X:0
 									Y:0
@@ -344,7 +365,7 @@ Container:
 									Id:COLOR
 									Width:65
 									Height:25
-									X:100
+									X:159
 									Y:0
 									Children:
 										ColorBlock@COLORBLOCK:
@@ -355,9 +376,9 @@ Container:
 											Height:PARENT_BOTTOM-12
 								Button@FACTION:
 									Id:FACTION
-									Width:105
+									Width:110
 									Height:25
-									X:180
+									X:256
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -376,16 +397,15 @@ Container:
 								Button@TEAM:
 									Id:TEAM
 									Text:Team
-									Width:70
+									Width:25
 									Height:25
-									X:300
+									X:398
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:405
-									Y:1
-									Width:20
-									Height:20
+									X:455
+									Width:25
+									Height:25
 						Container@TEMPLATE_REMOTE:
 							Id:TEMPLATE_REMOTE
 							X:0
@@ -397,21 +417,21 @@ Container:
 								Label@NAME:
 									Id:NAME
 									Text:Name
-									Width:95
+									Width:127
 									Height:25
 									X:0
 									Y:0
 								ColorBlock@COLOR:
 									Id:COLOR
-									X:105
+									X:164
 									Y:7
 									Width:55
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Width:105
+									Width:110
 									Height:25
-									X:180
+									X:256
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -432,58 +452,64 @@ Container:
 									Text:Team
 									Width:70
 									Height:25
-									X:300
+									X:375
 									Y:0
 									Align:Center
+									Bold: false
 								Checkbox@STATUS:
 									Id:STATUS
-									X:405
-									Y:1
-									Width:20
-									Height:20
+									X:455
+									Width:25
+									Height:25
 				Container@LABEL_CONTAINER:
 					X:30
 					Y:45
 					Children:
 						Label@LABEL_LOBBY_NAME:
 							Id:LABEL_LOBBY_NAME
-							Width:95
+							Width:127
 							Height:25
 							X:0
 							Y:0
 							Text:Name
+							Align:Center
+							Bold:True
 						Label@LABEL_LOBBY_COLOR:
 							Id:LABEL_LOBBY_COLOR
 							Width:65
 							Height:25
-							X:100
+							X:159
 							Y:0
 							Text:Color
 							Align:Center
+							Bold:True
 						Label@LABEL_LOBBY_FACTION:
 							Id:LABEL_LOBBY_FACTION
-							Width:90
+							Width:110
 							Height:25
-							X:180
+							X:256
 							Y:0
 							Text:Faction
 							Align:Center
+							Bold:True
 						Label@LABEL_LOBBY_TEAM:
 							Id:LABEL_LOBBY_TEAM
 							Width:70
 							Height:25
-							X:295
+							X:375
 							Y:0
 							Text:Team
 							Align:Center
+							Bold:True
 						Label@LABEL_LOBBY_STATUS:
 							Id:LABEL_LOBBY_STATUS
-							X:380
+							X:432
 							Y:0
 							Width:70
 							Height:25
 							Text:Ready
 							Align:Center
+							Bold:True
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true
@@ -492,6 +518,7 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+					Bold:True
 				ChatDisplay@CHAT_DISPLAY:
 					Id:CHAT_DISPLAY
 					Visible:true
@@ -506,15 +533,15 @@ Container:
 					Width:70
 					Height:25
 					X:0
-					Y:PARENT_BOTTOM - 76
+					Y:PARENT_BOTTOM - 75
 					Text:Chat:
 					Align:Right
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					Visible:true
 					X:75
-					Y:PARENT_BOTTOM - 75
-					Width:700
+					Y:PARENT_BOTTOM - 74
+					Width:705
 					Height:25
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
@@ -524,6 +551,7 @@ Container:
 					Width:120
 					Height:25
 					Text:Disconnect
+					Bold:True
 				Checkbox@LOCKTEAMS_CHECKBOX:
 					Id:LOCKTEAMS_CHECKBOX
 					Visible: true
@@ -547,6 +575,7 @@ Container:
 					Width:800
 					Height:20
 					Text:Choose Map
+					Bold:True
 				Background@MAPCHOOSER_MAP_BG:
 					X:PARENT_RIGHT-268
 					Y:39
@@ -581,6 +610,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Options
+					Bold:True
 				Button@INGAME_DIPLOMACY_BUTTON:
 					Id:INGAME_DIPLOMACY_BUTTON
 					X:162
@@ -588,6 +618,7 @@ Container:
 					Width:160
 					Height:25
 					Text:Diplomacy
+					Bold:True
 				WorldTooltip@INGAME_WORLD_TOOLTIP:
 					Id:INGAME_WORLD_TOOLTIP
 				RadarBin@INGAME_RADAR_BIN:
@@ -617,6 +648,7 @@ Container:
 							Height:25
 							Text:Options
 							Align:Center
+							Bold:True
 						Button@BUTTON_RESUME:
 							Id:BUTTON_RESUME
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -624,6 +656,7 @@ Container:
 							Width:160
 							Height:25
 							Text:Resume
+							Bold:True
 						Button@BUTTON_SURRENDER:
 							Id:BUTTON_SURRENDER
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -631,6 +664,7 @@ Container:
 							Width:160
 							Height:25
 							Text:Surrender
+							Bold:True
 						Button@BUTTON_SETTINGS:
 							Id:BUTTON_SETTINGS
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -638,6 +672,7 @@ Container:
 							Width:160
 							Height:25
 							Text:Settings
+							Bold:True
 						Button@BUTTON_DISCONNECT:
 							Id:BUTTON_DISCONNECT
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -645,6 +680,7 @@ Container:
 							Width:160
 							Height:25
 							Text:Disconnect
+							Bold:True
 						Button@BUTTON_QUIT:
 							Id:BUTTON_QUIT
 							X:(PARENT_RIGHT - WIDTH)/2
@@ -652,6 +688,7 @@ Container:
 							Width:160
 							Height:25
 							Text:Quit
+							Bold:True
 				Background@DIPLOMACY_BG:
 					Id:DIPLOMACY_BG
 					Delegate:DiplomacyDelegate
@@ -669,6 +706,7 @@ Container:
 							Height:25
 							Text:Diplomacy
 							Align:Center
+							Bold:True
 		Background@PERF_BG:
 			ClickThrough:true
 			Id:PERF_BG

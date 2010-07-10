@@ -26,17 +26,21 @@ namespace OpenRA.Widgets
 	class CheckboxWidget : Widget
 	{
 		public string Text = "";
+		public int baseLine = 1;
+		public bool Bold = false;
 		public Func<bool> Checked = () => {return false;};
 		
 		public override void DrawInner(World world)
 		{
+			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var pos = DrawPosition();
 			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
 					new Size(Bounds.Height, Bounds.Height)));
 
-			Game.chrome.renderer.BoldFont.DrawText(Text,
-				new float2(rect.Left + rect.Height * 2, rect.Top), Color.White);
+			var textSize = font.Measure(Text);
+			font.DrawText(Text,
+				new float2(rect.Left + rect.Height * 1.5f, pos.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
 
 			if (Checked())
 			{

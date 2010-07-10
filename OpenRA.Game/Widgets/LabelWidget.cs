@@ -34,7 +34,7 @@ namespace OpenRA.Widgets
 		
 		public string Text = "";
 		public TextAlign Align = TextAlign.Left;
-		public bool Bold = true;
+		public bool Bold = false;
 		public Func<string> GetText;
 
 		public LabelWidget()

@@ -26,7 +26,7 @@ namespace OpenRA.Widgets
 	class TextFieldWidget : Widget
 	{
 		public string Text = "";
-		public bool Bold = true;
+		public bool Bold = false;
 		public int VisualHeight = 1;
 		public Func<bool> OnEnterKey = () => {return false;};
 		public Func<bool> OnTabKey = () => {return false;};
