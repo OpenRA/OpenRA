@@ -45,7 +45,7 @@ namespace OpenRA.Network
 						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
 						var isAlly = (world.GameHasStarted) ? 
 							player != null && Game.world.LocalPlayer != null && player.Stances[Game.world.LocalPlayer] == Stance.Ally :
-							client.Team == Game.LocalClient.Team && client.Team != 0;
+							client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
 
 						if (isAlly)
 							Chrome.chatWidget.AddLine(Game.world.PlayerColors()[client.PaletteIndex].Color, client.Name + " (Team)", order.TargetString);

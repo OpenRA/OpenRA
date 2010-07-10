@@ -338,7 +338,7 @@ Container:
 									Width:95
 									Height:25
 									X:0
-									Y:5
+									Y:0
 								Button@COLOR:
 									Id:COLOR
 									Width:65
@@ -371,7 +371,7 @@ Container:
 											Width:60
 											Height:25
 											X:40
-											Y:5
+											Y:0
 								Button@TEAM:
 									Id:TEAM
 									Text:Team
@@ -381,7 +381,7 @@ Container:
 									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:385
+									X:405
 									Y:1
 									Width:20
 									Height:20
@@ -399,7 +399,7 @@ Container:
 									Width:95
 									Height:25
 									X:0
-									Y:5
+									Y:0
 								ColorBlock@COLOR:
 									Id:COLOR
 									X:105
@@ -425,7 +425,7 @@ Container:
 											Width:60
 											Height:25
 											X:40
-											Y:5
+											Y:0
 								Label@TEAM:
 									Id:TEAM
 									Text:Team
@@ -436,13 +436,13 @@ Container:
 									Align:Center
 								Checkbox@STATUS:
 									Id:STATUS
-									X:385
+									X:405
 									Y:1
 									Width:20
 									Height:20
 				Container@LABEL_CONTAINER:
 					X:30
-					Y:50
+					Y:45
 					Children:
 						Label@LABEL_LOBBY_NAME:
 							Id:LABEL_LOBBY_NAME
@@ -479,8 +479,8 @@ Container:
 							Id:LABEL_LOBBY_STATUS
 							X:380
 							Y:0
-							Width:20
-							Height:20
+							Width:70
+							Height:25
 							Text:Ready
 							Align:Center
 				Button@CHANGEMAP_BUTTON:
@@ -505,7 +505,7 @@ Container:
 					Width:70
 					Height:25
 					X:0
-					Y:PARENT_BOTTOM - 75
+					Y:PARENT_BOTTOM - 76
 					Text:Chat:
 					Align:Right
 				TextField@CHAT_TEXTFIELD:
