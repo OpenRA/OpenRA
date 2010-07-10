@@ -491,19 +491,20 @@ Container:
 					Width:120
 					Height:25
 					Text:Change Map
+				Label@LABEL_LOBBY_TEAM:
+					Id:LABEL_LOBBY_TEAM
+					Width:70
+					Height:25
+					X:0
+					Y:PARENT_BOTTOM - 75
+					Text:Chat:
+					Align:Right
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					Visible:true
-					X:PARENT_RIGHT-550
-					Y:300
-					Width:300
-					Height:25
-				TextField@CHAT_TEXTFIELD2:
-					Id:CHAT_TEXTFIELD2
-					Visible:true
-					X:PARENT_RIGHT-550
-					Y:250
-					Width:300
+					X:75
+					Y:PARENT_BOTTOM - 75
+					Width:700
 					Height:25
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON

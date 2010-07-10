@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 {
 	class TextFieldWidget : Widget
 	{
-		string TextBuffer = "zomg text";
+		string TextBuffer = "";
 		public int VisualHeight = 1;
 
 		public TextFieldWidget()
@@ -52,23 +52,40 @@ namespace OpenRA.Widgets
 			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
 				return base.HandleInput(mi);
 			
-			
 			if (base.HandleInput(mi))
 				return true;
 			
 			if (mi.Event == MouseInputEvent.Down)
 			{
-				Chrome.selectedWidget = this;
+				Focus();
 				return true;
 			}
 			
 			return false;
 		}
 		
-		public override bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		void Focus()
 		{
+			Chrome.selectedWidget = this;
+			blinkCycle = 10;
+			showCursor = true;
+		}
+		
+		public override bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		{			
 			if (base.HandleKeyPress(e,modifiers))
 				return true;
+			
+			// Only take input if we are selected
+			if (Chrome.selectedWidget != this)
+				return false;
+			
+			if (e.KeyChar == '\r')
+			{
+				if (TextBuffer.Length > 0)
+				Game.IssueOrder( Order.Chat( TextBuffer ) );
+				TextBuffer = "";
+			}
 			
 			TypeChar(e.KeyChar);
 			return true;
@@ -101,8 +118,7 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			int margin = 5;
-			var font = Game.chrome.renderer.BoldFont;
-
+			var font = Game.chrome.renderer.RegularFont;
 
 			var text = TextBuffer + ((showCursor && Chrome.selectedWidget == this) ? "|" : "");
 			var textSize = font.Measure(TextBuffer);

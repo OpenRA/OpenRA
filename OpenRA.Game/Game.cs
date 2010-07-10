@@ -405,8 +405,8 @@ namespace OpenRA
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
 			if (orderManager.GameStarted) return;
-			chat.Reset();
-
+			Chrome.selectedWidget = null;
+			
 			world.Queries = new World.AllQueries(world);
 
 			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
@@ -497,29 +497,21 @@ namespace OpenRA
 			if (chrome.HandleKeyPress(e, modifiers))
 				return;
 
-			if (e.KeyChar == '\r')
-			{
-				chat.Toggle();
-				chat.isTeamChat = modifiers.HasModifier(Modifiers.Shift);
-			}
-			else if (Game.chat.isChatting)
-				chat.TypeChar(e.KeyChar);
-			else
-			{
-				var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
+			var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
 
-				if (c >= '0' && c <= '9')
-					Game.controller.selection.DoControlGroup(world,
-						c - '0', modifiers);
+			if (c >= '0' && c <= '9')
+				Game.controller.selection.DoControlGroup(world,
+					c - '0', modifiers);
 
-				if (c == 08)
-					Game.controller.GotoNextBase();
+			if (c == 08)
+				Game.controller.GotoNextBase();
 
-				if (c == 09)
-					BuildPaletteWidget.TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift ? true : false);
+			if (c == 09)
+				BuildPaletteWidget.TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift ? true : false);
 
-				BuildPaletteWidget.DoBuildingHotkey(c, world);
-			}
+			// Todo: move this into the widget
+			BuildPaletteWidget.DoBuildingHotkey(c, world);
+		
 
 			if (sync != Game.world.SyncHash())
 				throw new InvalidOperationException("Desync in OnKeyPress");

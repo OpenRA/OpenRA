@@ -173,7 +173,6 @@ namespace OpenRA
 			var typingBox = new Rectangle(r.Left + 20, r.Bottom - 77, r.Width - 40, 27);
 			var chatBox = new Rectangle(r.Left + 20, r.Bottom - 269, r.Width - 40, 190);
 
-			DrawDialogBackground(typingBox, "dialog2");
 			DrawDialogBackground(chatBox, "dialog3");
 
 			DrawChat(typingBox, chatBox);
@@ -192,14 +191,6 @@ namespace OpenRA
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
 			ChatWidth = chatLogArea.Width - 10;
 			
-			renderer.Device.EnableScissor(typingArea.Left, typingArea.Top, typingArea.Width, typingArea.Height);
-			if (Game.chat.isChatting)
-				RenderChatLine(new ChatLine { Owner = Game.chat.isTeamChat ? "TeamChat:" : "Chat:", Text = Game.chat.typing },
-					new int2(typingArea.X + 10, typingArea.Y + 6));
-
-			rgbaRenderer.Flush();
-			renderer.Device.DisableScissor();
-
 			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 			foreach (var line in Game.chat.recentLines.AsEnumerable().Reverse())
 			{
@@ -222,8 +213,8 @@ namespace OpenRA
 		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
-			if (selectedWidget != null)
-				return selectedWidget.HandleInput(mi);
+			if (selectedWidget != null && selectedWidget.HandleInput(mi))
+				return true;
 			
 			if (rootWidget.HandleInput(mi))
 				return true;

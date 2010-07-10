@@ -29,39 +29,7 @@ namespace OpenRA
 	class Chat
 	{
 		const int logLength = 10;
-
 		public List<ChatLine> recentLines = new List<ChatLine>();
-		public string typing = "";
-		public bool isChatting = true;
-		public bool isTeamChat = false;
-
-		public void Toggle()
-		{
-			if( isChatting && typing.Length > 0 )
-				Game.IssueOrder( isTeamChat ? Order.TeamChat( typing ) : Order.Chat( typing ) );
-
-			typing = "";
-			if( Game.orderManager.GameStarted )
-				isChatting ^= true;
-		}
-		
-		public void Reset()
-		{
-			typing = "";
-			isChatting = false;
-			recentLines.Clear();
-		}
-
-		public void TypeChar(char c)
-		{
-			if (c == '\b' || c == 0x7f)
-			{
-				if (typing.Length > 0)
-					typing = typing.Remove(typing.Length - 1);
-			}
-			else if (!char.IsControl(c))
-				typing += c;
-		}
 
 		public void AddLine(Session.Client p, string text)
 		{
