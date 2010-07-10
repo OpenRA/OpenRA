@@ -96,6 +96,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		void UpdatePlayerList()
 		{
+			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
+			// Todo: handle this nicer
 			Players.Children.Clear();
 			
 			int offset = 0;
@@ -109,7 +111,6 @@ namespace OpenRA.Widgets.Delegates
 					template = LocalPlayerTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
 					name.Text = c.Name;
-					name.OnLoseFocus = () => name.Text = c.Name;
 					name.OnEnterKey = () =>
 					{
 						name.Text = name.Text.Trim();
@@ -126,7 +127,8 @@ namespace OpenRA.Widgets.Delegates
 						Chrome.selectedWidget = null;
 						return true;
 					};
-					
+					name.OnLoseFocus = () => name.OnEnterKey();
+
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = CyclePalette;
 

@@ -24,9 +24,7 @@ using System.Collections.Generic;
 namespace OpenRA.Widgets.Delegates
 {
 	public class CreateServerMenuDelegate : IWidgetDelegate
-	{
-		static bool AdvertiseServerOnline = Game.Settings.InternetServer;
-		
+	{		
 		public CreateServerMenuDelegate()
 		{
 			var r = Chrome.rootWidget;
@@ -56,7 +54,7 @@ namespace OpenRA.Widgets.Delegates
 				int listenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 				int extPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
 				
-				Server.Server.ServerMain(AdvertiseServerOnline, Game.Settings.MasterServer,
+				Server.Server.ServerMain(Game.Settings.InternetServer, Game.Settings.MasterServer,
 										gameName, listenPort, extPort, mods, map);
 
 				Log.Write("debug", "Joining server");
@@ -66,9 +64,10 @@ namespace OpenRA.Widgets.Delegates
 			
 			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = Game.Settings.ListenPort.ToString();
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = Game.Settings.ExternalPort.ToString();
-			r.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => {return AdvertiseServerOnline;};
-			r.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
-				AdvertiseServerOnline = !AdvertiseServerOnline;
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => Game.Settings.InternetServer;
+			cs.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
+				Game.Settings.InternetServer ^= true;
+				Game.Settings.Save();
 				return true;	
 			};
 		}

@@ -141,10 +141,12 @@ namespace OpenRA.Widgets
 			// Inset text by the margin and center vertically
 			var textPos = pos + new int2( margin, (Bounds.Height - textSize.Y)/2 - VisualHeight);
 		
-			// Right align and scissor when the text overflows
+			// Right align when editing and scissor when the text overflows
 			if (textSize.X > Bounds.Width - 2*margin)
 			{
-				textPos += new int2(Bounds.Width - 2*margin - textSize.X,0);
+				if (Chrome.selectedWidget == this)
+					textPos += new int2(Bounds.Width - 2*margin - textSize.X,0);
+				
 				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2*margin, Bounds.Bottom);
 			}
 			
