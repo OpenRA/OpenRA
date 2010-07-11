@@ -36,8 +36,6 @@ namespace OpenRA
 		SpriteRenderer rgbaRenderer { get { return renderer.RgbaSpriteRenderer; } }
 		SpriteRenderer shpRenderer { get { return renderer.WorldSpriteRenderer; } }
 
-		internal MapStub currentMap;
-
 		public Chrome(Renderer r, Manifest m)
 		{
 			this.renderer = r;

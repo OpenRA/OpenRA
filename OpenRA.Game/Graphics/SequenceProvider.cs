@@ -31,13 +31,11 @@ namespace OpenRA.Graphics
 	{
 		static Dictionary<string, Dictionary<string, Sequence>> units;
 		static Dictionary<string, CursorSequence> cursors;
-		static string currentTheater;
 
-		public static void Initialize(string[] sequenceFiles, string theater)
+		public static void Initialize(string[] sequenceFiles)
 		{
 			units = new Dictionary<string, Dictionary<string, Sequence>>();
 			cursors = new Dictionary<string, CursorSequence>();
-			currentTheater = theater;
 			
 			foreach (var f in sequenceFiles)
 				LoadSequenceSource(f);

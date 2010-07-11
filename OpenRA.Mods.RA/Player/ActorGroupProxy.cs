@@ -17,8 +17,7 @@ namespace OpenRA.Mods.RA
 					.Select(id => self.World.Actors.FirstOrDefault(a => a.ActorID == id))
 						.Where(a => a != null);
 
-				var g = new Group(actors);
-			//	g.Dump();
+				new Group(actors);
 			}
 		}
 	}

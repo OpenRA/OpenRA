@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 			//if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
 				return null;
 
-			return new Order("EnterTransport", self, underCursor);
+			//return new Order("EnterTransport", self, underCursor);
 		}
 		
 		public string CursorForOrderString(string s, Actor a, int2 location)

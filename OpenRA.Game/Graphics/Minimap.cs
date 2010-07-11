@@ -32,13 +32,9 @@ namespace OpenRA.Graphics
 		readonly World world;
 		Sheet sheet;
 		SpriteRenderer rgbaRenderer;
-		LineRenderer lineRenderer;
 		Sprite sprite;
 		Bitmap terrain, customLayer;
 		Rectangle bounds;
-
-		Sprite ownedSpawnPoint;
-		Sprite unownedSpawnPoint;
 		
 		const int alpha = 230;
 
@@ -46,8 +42,6 @@ namespace OpenRA.Graphics
 		{
 			this.world = world;
 			sheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
-
-			lineRenderer = new LineRenderer(r);
 			rgbaRenderer = r.RgbaSpriteRenderer;
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			var dw = (size - world.Map.Width) / 2;
@@ -58,9 +52,6 @@ namespace OpenRA.Graphics
 			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
 		
 			shroudColor = Color.FromArgb(alpha, Color.Black);
-
-			ownedSpawnPoint = ChromeProvider.GetImage(r, "spawnpoints", "owned");
-			unownedSpawnPoint = ChromeProvider.GetImage(r, "spawnpoints", "unowned");
 		}
 
 		public static Rectangle MakeMinimapBounds(Map m)

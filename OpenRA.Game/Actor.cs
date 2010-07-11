@@ -176,7 +176,6 @@ namespace OpenRA
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
-			var rawDamage = damage;
 			var oldState = GetDamageState();
 
 			/* apply the damage modifiers, if we have any. */

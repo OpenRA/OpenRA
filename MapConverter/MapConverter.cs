@@ -126,7 +126,6 @@ namespace MapConverter
 			{Pair.New("cnc","WINTER"),Pair.New("win","winter.col")},
 		};
 		
-		TileSet tileset;
 		public void ConvertIniMap(string iniFile)
 		{
 			IniFile file = new IniFile(FileSystem.Open(iniFile));

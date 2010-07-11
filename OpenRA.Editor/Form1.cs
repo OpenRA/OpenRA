@@ -56,7 +56,6 @@ namespace OpenRA.Editor
 		}
 
 		string loadedMapName;
-		string colors;
 		string currentMod = "ra";
 		TileSet tileset;
 
