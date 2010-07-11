@@ -64,8 +64,6 @@ namespace OpenRA.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 		
-		ConnectionState lastConnectionState = ConnectionState.PreConnecting;
-		bool gameWasStarted = false;
 		public void DrawRegions( World world )
 		{
 			Timer.Time( "DrawRegions start" );
@@ -79,55 +77,7 @@ namespace OpenRA.Graphics
 			renderer.BeginFrame(r1, r2, scrollPosition.ToInt2());
 			world.WorldRenderer.Draw();
 			Timer.Time( "worldRenderer: {0}" );
-			if( Game.orderManager.GameStarted && world.LocalPlayer != null)
-			{
-				if (!gameWasStarted)
-				{
-					Chrome.rootWidget.OpenWindow("INGAME_ROOT");
-					gameWasStarted = true;
-				}
-			}
-			else
-			{
-				// Still hacky, but at least it uses widgets
-				// TODO: Clean up the logic of this beast
-				// TODO: Have a proper "In main menu" state
-				ConnectionState state = Game.orderManager.Connection.ConnectionState;
-				if (state != lastConnectionState)
-				{
-					switch( Game.orderManager.Connection.ConnectionState )
-					{
-						case ConnectionState.PreConnecting:
-							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = true;
-							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
-							break;
-						case ConnectionState.Connecting:
-							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = true;
-							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
-							break;
-						case ConnectionState.NotConnected:
-							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = true;
-							break;
-						case ConnectionState.Connected:
-							Chrome.rootWidget.GetWidget("MAINMENU_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTING_BG").Visible = false;
-							Chrome.rootWidget.GetWidget("CONNECTION_FAILED_BG").Visible = false;
-							break;
-					}
-				
-					// TODO: Kill this (hopefully!) soon
-					if (state == ConnectionState.Connected)
-						Chrome.rootWidget.OpenWindow( "SERVER_LOBBY" );
-				}
-				
-				lastConnectionState = state;
 
-				Timer.Time( "connectionState: {0}" );
-			}
 			Game.chrome.Draw(world);
 			Timer.Time( "widgets: {0}" );
 

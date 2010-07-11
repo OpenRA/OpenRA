@@ -163,7 +163,7 @@ namespace OpenRA
 			Timer.Time("----end LoadMap");
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
-
+					
 		public static void MoveViewport(int2 loc)
 		{
 			viewport.Center(loc);
@@ -256,6 +256,9 @@ namespace OpenRA
 			Log.Write("sync", "{0}", f.Second);
 		}
 
+		public static event Action ConnectionStateChanged = () => { };
+		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
+		
 		static void Tick()
 		{
 			if (packageChangePending)
@@ -274,7 +277,13 @@ namespace OpenRA
 				mapChangePending = false;
 				return;
 			}
-
+			
+			if (orderManager.Connection.ConnectionState != lastConnectionState)
+			{
+				lastConnectionState = orderManager.Connection.ConnectionState;
+				ConnectionStateChanged();
+			}
+			
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			if (dt >= Settings.Timestep)
@@ -398,6 +407,7 @@ namespace OpenRA
 			orderManager.StartGame();
 		}
 
+		public static event Action OnGameStart = () => { };
 		internal static void StartGame()
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
@@ -411,6 +421,7 @@ namespace OpenRA
 
 			viewport.GoToStartLocation(world.LocalPlayer);
 			orderManager.StartGame();
+			OnGameStart();
 		}
 
 		public static Stance ChooseInitialStance(Player p, Player q)

@@ -18,6 +18,8 @@
  */
 #endregion
 
+using OpenRA.Network;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class ConnectionDialogsDelegate : IWidgetDelegate
@@ -45,6 +47,26 @@ namespace OpenRA.Widgets.Delegates
 
 			r.GetWidget<LabelWidget>("CONNECTION_FAILED_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(Game.CurrentHost, Game.CurrentPort);
+			
+			Game.ConnectionStateChanged += () =>
+			{
+				r.CloseWindow();
+				switch( Game.orderManager.Connection.ConnectionState )
+				{
+					case ConnectionState.PreConnecting:
+						r.OpenWindow("MAINMENU_BG");
+						break;
+					case ConnectionState.Connecting:
+						r.OpenWindow("CONNECTING_BG");
+						break;
+					case ConnectionState.NotConnected:
+						r.OpenWindow("CONNECTION_FAILED_BG");
+						break;
+					case ConnectionState.Connected:
+						r.OpenWindow("SERVER_LOBBY");
+						break;
+				}
+			};
 		}
 	}
 }
