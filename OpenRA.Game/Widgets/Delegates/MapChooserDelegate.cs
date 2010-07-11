@@ -33,6 +33,7 @@ namespace OpenRA.Widgets.Delegates
 			var r = Chrome.rootWidget;
 			var bg = r.GetWidget("MAP_CHOOSER");
 			
+			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => {return Game.chrome.currentMap;};
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => {return Game.chrome.currentMap.Title;};
 			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => {return "{0}x{1}".F(Game.chrome.currentMap.Width, Game.chrome.currentMap.Height);};
 			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => {return Rules.TileSets[Game.chrome.currentMap.Tileset].Name;};

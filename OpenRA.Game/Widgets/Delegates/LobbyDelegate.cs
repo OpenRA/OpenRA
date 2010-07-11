@@ -31,13 +31,39 @@ namespace OpenRA.Widgets.Delegates
 		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
 		
 		Dictionary<string,string> CountryNames;
-		public LobbyDelegate ()
+		public LobbyDelegate()
 		{
 			var r = Chrome.rootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
 			Players = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
+			
+			
+			var map = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
+			map.Map = () => {return Game.chrome.currentMap;};
+			map.OnSpawnClick = sp =>
+			{			
+				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
+				if (sp == 0 || !owned)
+					Game.IssueOrder(Order.Chat("/spawn {0}".F(sp)));
+			};
+			
+			map.SpawnColors = () =>
+			{
+				var spawns = Game.chrome.currentMap.SpawnPoints;
+				var playerColors = Game.world.PlayerColors();
+				var sc = new Dictionary<int2,Color>();
+				
+				for (int i = 1; i <= spawns.Count(); i++)
+				{
+					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
+					if (client == null)
+						continue;
+					sc.Add(spawns.ElementAt(i-1),playerColors[client.PaletteIndex % playerColors.Count()].Color);
+				}
+				return sc;
+			};
 			
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
@@ -228,20 +254,6 @@ namespace OpenRA.Widgets.Delegates
 			Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible 
 				= (Game.IsHost && Game.LocalClient.State == Session.ClientState.Ready);
 			Game.IssueOrder(Order.Chat("/ready"));
-			return true;
-		}
-
-		bool CycleSpawnPoint(MouseInput mi)
-		{		
-			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.SpawnPoints.Count();
-
-			var newIndex = (Game.LocalClient.SpawnPoint + d) % (Game.world.Map.SpawnPoints.Count()+1);
-
-			while (!SpawnPointAvailable(newIndex) && newIndex != (int)Game.LocalClient.SpawnPoint)
-				newIndex = (newIndex + d) % (Game.world.Map.SpawnPoints.Count()+1);
-
-			Game.IssueOrder(
-				Order.Chat("/spawn " + newIndex));
 			return true;
 		}
 		

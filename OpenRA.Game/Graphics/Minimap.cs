@@ -171,33 +171,5 @@ namespace OpenRA.Graphics
 				(int)(bounds.Width * fx + bounds.Left),
 				(int)(bounds.Height * fy + bounds.Top));
 		}
-
-		public void DrawSpawnPoints(RectangleF rect)
-		{
-			var points = world.Map.SpawnPoints
-				.Select( (sp,i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault( 
-					c => c.SpawnPoint == i + 1 ) ))
-				.ToList();
-
-			foreach (var p in points)
-			{
-				var pos = CellToMinimapPixel(rect, p.First) - new int2(8, 8);
-
-				if (p.Second == null)
-					rgbaRenderer.DrawSprite(unownedSpawnPoint, pos, "chrome");
-				else
-				{
-					lineRenderer.FillRect(new RectangleF(
-						Game.viewport.Location.X + pos.X + 2,
-						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), Game.world.PlayerColors()[p.Second.PaletteIndex % Game.world.PlayerColors().Count()].Color);
-			
-					rgbaRenderer.DrawSprite(ownedSpawnPoint, pos, "chrome");
-				}
-			}
-
-			lineRenderer.Flush();
-			rgbaRenderer.Flush();
-		}
 	}
 }

@@ -15,6 +15,10 @@ namespace OpenRA.Widgets
 		bool mapPreviewDirty = true;
 		MapStub lastMap;
 		
+		public Func<MapStub> Map = () => {return null;};
+		public Action<int> OnSpawnClick = spawn => {};
+		public Func<Dictionary<int2,Color>> SpawnColors = () => {return new Dictionary<int2, Color>(); };
+		
 		public MapPreviewWidget() : base() { }
 
 		public MapPreviewWidget(Widget other)
@@ -23,28 +27,25 @@ namespace OpenRA.Widgets
 			lastMap = (other as MapPreviewWidget).lastMap;
 		}
 
-		Session.Client ClientForSpawnpoint(int i)
-		{
-			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i + 1);
-		}
-
 		const int closeEnough = 50;
-		
 		public override bool HandleInput(MouseInput mi)
 		{
 			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
 			
+			var map = Map();
+			if (map == null)
+				return false;
+			
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{
 				var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height);
-
-				var p = Game.chrome.currentMap.Waypoints
-					.Select((sp, i) => Pair.New(Game.chrome.currentMap.ConvertToPreview(sp.Value, container), i))
-					.Where(a => ClientForSpawnpoint(a.Second) == null && (a.First - mi.Location).LengthSquared < closeEnough)
+				
+				var p = map.Waypoints
+					.Select((sp, i) => Pair.New(map.ConvertToPreview(sp.Value, container), i))
+					.Where(a => (a.First - mi.Location).LengthSquared < closeEnough)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();
-
-				Game.IssueOrder(Order.Chat("/spawn {0}".F(p)));
+				OnSpawnClick(p);
 				return true;
 			}
 
@@ -55,14 +56,14 @@ namespace OpenRA.Widgets
 
 		public override void DrawInner( World world )
 		{
-			var map = Game.chrome.currentMap;
+			var map = Map();
 			if( map == null ) return;
-
 			if (lastMap != map)
 			{
 				mapPreviewDirty = true;
 				lastMap = map;
 			}
+			
 			var pos = DrawPosition();
 			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var mapRect = map.PreviewBounds( new Rectangle( rect.X, rect.Y, rect.Width, rect.Height ) );
@@ -86,30 +87,25 @@ namespace OpenRA.Widgets
 		}
 
 		void DrawSpawnPoints(MapStub map, Rectangle container, World world)
-		{
-			var points = map.Waypoints
-				.Select((sp, i) => Pair.New(sp, Game.LobbyInfo.Clients.FirstOrDefault(
-					c => c.SpawnPoint == i + 1)))
-				.ToList();
-
-			foreach (var p in points)
+		{		
+			var colors = SpawnColors();
+			foreach (var p in map.SpawnPoints)
 			{
-				var pos = map.ConvertToPreview(p.First.Value, container) - new int2(8, 8);
-
-				if (p.Second == null)
-					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
-						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "unowned"), pos, "chrome");
-				else
+				var pos = map.ConvertToPreview(p, container) - new int2(8, 8);
+				var sprite = "unowned";
+				
+				if (colors.ContainsKey(p))
 				{
-					var playerColors = Game.world.PlayerColors();
 					Game.chrome.lineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + pos.X + 2,
 						Game.viewport.Location.Y + pos.Y + 2,
-						12, 12), playerColors[p.Second.PaletteIndex % playerColors.Count()].Color);
+						12, 12), colors[p]);
 
-					Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
-						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "owned"), pos, "chrome");
+					sprite = "owned";
 				}
+				
+				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(
+						ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", sprite), pos, "chrome");
 			}
 
 			Game.chrome.lineRenderer.Flush();

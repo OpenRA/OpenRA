@@ -430,6 +430,7 @@ Container:
 					Background:dialog3
 					Children:
 						MapPreview@LOBBY_MAP_PREVIEW:
+							Id:LOBBY_MAP_PREVIEW
 							X:4
 							Y:4
 							Width:244
@@ -744,6 +745,7 @@ Container:
 					Background:dialog3
 					Children:
 						MapPreview@MAPCHOOSER_MAP_PREVIEW:
+							Id:MAPCHOOSER_MAP_PREVIEW
 							X:4
 							Y:4
 							Width:244

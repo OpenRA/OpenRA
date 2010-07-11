@@ -39,7 +39,8 @@ namespace OpenRA.FileFormats
 		public int PlayerCount;
 		public string Tileset;
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
-
+		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
+		
 		public int2 TopLeft;
 		public int2 BottomRight;
 		public int Width { get { return BottomRight.X - TopLeft.X; } }
