@@ -69,6 +69,22 @@ namespace OpenRA.GameRules
 			defaults = new UserSettings();
 			SettingsFile = Game.SupportDir + "settings.yaml";
 
+			// Override settings loading to not crash
+			var err1 = FieldLoader.UnknownFieldAction;
+			var err2 = FieldLoader.InvalidValueAction;
+			
+			FieldLoader.InvalidValueAction = (s,t,f) =>
+			{
+				object ret = defaults.GetType().GetField(f).GetValue(defaults);
+				System.Console.WriteLine("FieldLoader: Cannot parse `{0}` into `{2}:{1}`; substituting default `{3}`".F(s,t.Name,f,ret) );
+				return ret;
+			};
+			
+			FieldLoader.UnknownFieldAction = (s,f) =>
+			{
+				System.Console.WriteLine( "Ignoring unknown field `{0}` on `{1}`".F( s, f.Name ) );
+			};
+			
 			if (File.Exists(SettingsFile))
 			{
 				System.Console.WriteLine("Loading settings file {0}",SettingsFile);
@@ -79,6 +95,9 @@ namespace OpenRA.GameRules
 			foreach (var f in this.GetType().GetFields())
 				if (args.Contains(f.Name))
 					OpenRA.FileFormats.FieldLoader.LoadField( this, f.Name, args.GetValue(f.Name, "") );
+			
+			FieldLoader.UnknownFieldAction = err1;
+			FieldLoader.InvalidValueAction = err2;
 		}
 		
 		public void Save()
