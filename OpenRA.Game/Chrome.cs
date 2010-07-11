@@ -84,7 +84,7 @@ namespace OpenRA
 				lastMousePos = mi.Location;
 				ticksSinceLastMove = 0;
 			}
-			return true;
+			return false;
 		}
 
 		
