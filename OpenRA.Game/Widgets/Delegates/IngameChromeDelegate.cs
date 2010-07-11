@@ -45,7 +45,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			optionsBG.GetWidget("BUTTON_SETTINGS").OnMouseUp = mi => {
-				r.OpenWindow("SETTINGS_BG");
+				r.OpenWindow("SETTINGS_MENU");
 				return true;
 			};
 
