@@ -55,19 +55,23 @@ namespace OpenRA
 		{
 			if (channels.ContainsKey(channelName)) return;
 			
-			/* HACK: avoid sharing violations if running multiple instances */
-			StreamWriter writer = null;
-			while (writer == null)
-			{
+			var i = 0;
+			var f = filename;
+			while (File.Exists(LogPathPrefix + filename))
 				try 
 				{
-					writer = File.CreateText(LogPathPrefix + filename);
+					StreamWriter writer = File.CreateText(LogPathPrefix + filename);
+					writer.AutoFlush = true;
+					channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = writer, Diff = diff });
+					return;
 				}
-				catch(IOException){ filename = new Random().Next().ToString() + filename; }
-			}
+				catch (IOException) { filename = f + ".{0}".F(++i); }
 			
-			writer.AutoFlush = true;
-			channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = writer, Diff = diff });
+			//if no logs exist, just make it
+			StreamWriter w = File.CreateText(LogPathPrefix + filename);
+			w.AutoFlush = true;
+			channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = w, Diff = diff });
+			
 		}
 
 		public static void Write(string channel, string format, params object[] args)

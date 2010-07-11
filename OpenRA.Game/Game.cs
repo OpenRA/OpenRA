@@ -626,7 +626,11 @@ namespace OpenRA
 
 		public static void Exit() { quit = true; }
 
-		public static void Debug(string s) { Chrome.chatWidget.AddLine(Color.White, "Debug", s); }
+		public static void Debug(string s) 	
+		{
+			if (Chrome.chatWidget != null)
+				Chrome.chatWidget.AddLine(Color.White, "Debug", s); 
+		}
 
 		public static void Disconnect()
 		{
