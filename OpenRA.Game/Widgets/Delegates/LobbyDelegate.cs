@@ -31,8 +31,14 @@ namespace OpenRA.Widgets.Delegates
 		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
 		
 		Dictionary<string,string> CountryNames;
+		
+		string MapUid;
+		MapStub Map;
 		public LobbyDelegate()
 		{
+			Game.LobbyInfoChanged += UpdateCurrentMap;
+			UpdateCurrentMap();
+
 			var r = Chrome.rootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
 			Players = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
@@ -41,7 +47,7 @@ namespace OpenRA.Widgets.Delegates
 			
 			
 			var map = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
-			map.Map = () => {return Game.chrome.currentMap;};
+			map.Map = () => {return Map;};
 			map.OnSpawnClick = sp =>
 			{			
 				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
@@ -51,7 +57,7 @@ namespace OpenRA.Widgets.Delegates
 			
 			map.SpawnColors = () =>
 			{
-				var spawns = Game.chrome.currentMap.SpawnPoints;
+				var spawns = Map.SpawnPoints;
 				var playerColors = Game.world.PlayerColors();
 				var sc = new Dictionary<int2,Color>();
 				
@@ -94,6 +100,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
+			
 			Chrome.chatWidget = lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY");
 			
 			
@@ -118,6 +125,13 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
+		}
+		
+		void UpdateCurrentMap()
+		{
+			if (MapUid == Game.LobbyInfo.GlobalSettings.Map) return;
+			MapUid = Game.LobbyInfo.GlobalSettings.Map;
+			Map = Game.AvailableMaps[ MapUid ];
 		}
 		
 		void UpdatePlayerList()
