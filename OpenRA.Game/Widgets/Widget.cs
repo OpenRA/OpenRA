@@ -48,6 +48,7 @@ namespace OpenRA.Widgets
 		public static Stack<string> WindowList = new Stack<string>();
 		
 		// Common Funcs that most widgets will want
+		public Action<object> SpecialOneArg = (arg) => {};
 		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
 		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};

@@ -86,9 +86,6 @@ namespace OpenRA.Graphics
 					Chrome.rootWidget.OpenWindow("INGAME_ROOT");
 					gameWasStarted = true;
 				}
-				
-				Game.chrome.Draw( world );	
-				Timer.Time( "chromedraw: {0}" );
 			}
 			else
 			{
@@ -131,12 +128,7 @@ namespace OpenRA.Graphics
 
 				Timer.Time( "connectionState: {0}" );
 			}
-			Game.chrome.DrawWidgets(world);
-			if (Chrome.rootWidget.GetWidget("SERVER_LOBBY").Visible)
-				Game.chrome.DrawLobby();
-			else if (Chrome.rootWidget.GetWidget("MAP_CHOOSER").Visible)
-				Game.chrome.DrawMapChooser();
-
+			Game.chrome.Draw(world);
 			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );

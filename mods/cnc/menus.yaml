@@ -673,6 +673,20 @@ Container:
 					Height:20
 					Text:Choose Map
 					Bold:True
+				Container@MAP_LIST:
+					Id:MAP_LIST
+					X:50
+					Y:50
+					Width:450
+					Height:500
+					Children:
+						Button@MAP_TEMPLATE:
+							Id:MAP_TEMPLATE
+							Width:440
+							Height:25
+							X:0
+							Y:0
+							Visible:false
 				Label@CURMAP_TITLE_LABEL:
 					Id:CURMAP_TITLE_LABEL
 					X:PARENT_RIGHT - 200 - WIDTH

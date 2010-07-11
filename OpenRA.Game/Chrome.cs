@@ -30,16 +30,11 @@ namespace OpenRA
 {
 	class Chrome : IHandleInput
 	{
-		//todo: remove when have a real chat widget
-		public static int ChatWidth = 760;
-		
 		public readonly Renderer renderer;
 		public readonly LineRenderer lineRenderer;
 
 		SpriteRenderer rgbaRenderer { get { return renderer.RgbaSpriteRenderer; } }
 		SpriteRenderer shpRenderer { get { return renderer.WorldSpriteRenderer; } }
-	
-		readonly List<Pair<RectangleF, Action<bool>>> buttons = new List<Pair<RectangleF, Action<bool>>>();
 
 		internal MapStub currentMap;
 
@@ -70,67 +65,10 @@ namespace OpenRA
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
 			++ticksSinceLastMove;
-		}
-				
-		public void Draw( World world )
-		{
-			buttons.Clear();
-			renderer.Device.DisableScissor();
-		}
+		}	
 
-		public void DrawMapChooser()
-		{
-			buttons.Clear();
-
-			var w = 800;
-			var h = 600;
-			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-			var y = r.Top + 50;
-					
-			// Don't bother showing a subset of the data
-			// This will be fixed properly when we move the map list to widgets
-			foreach (var kv in Game.AvailableMaps)
-			{
-				var map = kv.Value;
-				if (!map.Selectable)
-					continue;
-
-				var itemRect = new Rectangle(r.Left + 50, y - 2, r.Width - 340, 20);
-				if (map == currentMap)
-				{
-					rgbaRenderer.Flush();
-					DrawDialogBackground(itemRect, "dialog2");
-				}
-
-				renderer.RegularFont.DrawText(map.Title, new int2(r.Left + 60, y), Color.White);
-				rgbaRenderer.Flush();
-				var closureMap = map;
-				AddButton(itemRect, _ => { currentMap = closureMap; });
-				y += 20;
-			}
-			AddButton(r, _ => { });
-		}
+		public void Draw(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
 		
-
-		public void DrawWidgets(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
-		
-		public void DrawLobby()
-		{
-			buttons.Clear();
-
-			if( Game.LobbyInfo.GlobalSettings.Map == null )
-				currentMap = null;
-			else
-				currentMap = Game.AvailableMaps[ Game.LobbyInfo.GlobalSettings.Map ];
-		}
-		
-		void AddButton(RectangleF r, Action<bool> b) { buttons.Add(Pair.New(r, b)); }
-
-		void DrawDialogBackground(Rectangle r, string collection)
-		{
-			WidgetUtils.DrawPanel(collection, r);
-		}
-
 		public int ticksSinceLastMove = 0;
 		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
@@ -146,16 +84,6 @@ namespace OpenRA
 				lastMousePos = mi.Location;
 				ticksSinceLastMove = 0;
 			}
-
-			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
-				.Select(a => a.Second).FirstOrDefault();
-
-			if (action == null)
-				return false;
-
-			if (mi.Event == MouseInputEvent.Down)
-				action(mi.Button == MouseButton.Left);
-
 			return true;
 		}
 
@@ -175,13 +103,7 @@ namespace OpenRA
 			if (selectedWidget != null)
 				return true;
 			
-			return rootWidget.HitTest(mousePos)
-				|| buttons.Any(a => a.First.Contains(mousePos.ToPoint()));
-		}
-
-		void DrawCentered(string text, int2 pos, Color c)
-		{
-			renderer.BoldFont.DrawText(text, pos - new int2(renderer.BoldFont.Measure(text).X / 2, 0), c);
+			return rootWidget.HitTest(mousePos);
 		}
 	}
 }

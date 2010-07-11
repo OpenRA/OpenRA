@@ -28,19 +28,22 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class MapChooserDelegate : IWidgetDelegate
 	{	
+		MapStub Map = null;
 		public MapChooserDelegate()
 		{
 			var r = Chrome.rootWidget;
 			var bg = r.GetWidget("MAP_CHOOSER");
+			bg.SpecialOneArg = (map) => RefreshMapList(map);
+			var ml = bg.GetWidget("MAP_LIST");
 			
-			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => {return Game.chrome.currentMap;};
-			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => {return Game.chrome.currentMap.Title;};
-			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => {return "{0}x{1}".F(Game.chrome.currentMap.Width, Game.chrome.currentMap.Height);};
-			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => {return Rules.TileSets[Game.chrome.currentMap.Tileset].Name;};
-			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => {return Game.chrome.currentMap.PlayerCount.ToString();};
+			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => {return Map;};
+			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => {return Map.Title;};
+			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => {return "{0}x{1}".F(Map.Width, Map.Height);};
+			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => {return Rules.TileSets[Map.Tileset].Name;};
+			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => {return Map.PlayerCount.ToString();};
 			
 			bg.GetWidget("BUTTON_OK").OnMouseUp = mi => {
-				Game.IssueOrder(Order.Chat("/map " + Game.chrome.currentMap.Uid));
+				Game.IssueOrder(Order.Chat("/map " + Map.Uid));
 				r.CloseWindow();
 				return true;
 			};
@@ -49,6 +52,37 @@ namespace OpenRA.Widgets.Delegates
 				r.CloseWindow();
 				return true;
 			};
+			
+			var itemTemplate = ml.GetWidget<ButtonWidget>("MAP_TEMPLATE");
+			int offset = 0;
+			foreach (var kv in Game.AvailableMaps)
+			{
+				var map = kv.Value;
+				if (!map.Selectable)
+					continue;
+				
+				var template = itemTemplate.Clone() as ButtonWidget;
+				template.Id = "MAP_{0}".F(map.Uid);
+				template.GetText = () => map.Title;
+				template.OnMouseUp = mi => {Map = map; return true;};
+				template.Parent = ml;			
+				
+				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
+				template.IsVisible = () => true;
+				ml.AddChild(template);
+				
+				offset += template.Bounds.Height + 5;
+			}
+		}
+		
+		public void RefreshMapList(object uidobj)
+		{
+			// Set the default selected map
+			var uid = uidobj as string;
+			if (uid != null)
+				Map = Game.AvailableMaps[ uid ];
+			else
+				Map = Game.AvailableMaps.FirstOrDefault().Value;
 		}
 	}
 }

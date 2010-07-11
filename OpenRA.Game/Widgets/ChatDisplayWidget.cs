@@ -66,28 +66,7 @@ namespace OpenRA.Widgets
 
 		public void AddLine(Color c, string from, string text)
 		{
-			var sizeOwner = Game.chrome.renderer.RegularFont.Measure(from);
-			var sizeText = Game.chrome.renderer.RegularFont.Measure(text);
-			
-			if (sizeOwner.X + sizeText.X + 10 <= Chrome.ChatWidth)
-				recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
-			else
-			{
-				StringBuilder sb = new StringBuilder();
-				foreach (var w in text.Split(' '))
-				{
-					if ( Game.chrome.renderer.RegularFont.Measure(sb.ToString() + ' ' + w).X > Chrome.ChatWidth )
-					{
-						recentLines.Add(new ChatLine { Color = c, Owner = from, Text = sb.ToString() } );
-						sb = new StringBuilder();
-						sb.Append(w);
-					}
-					else 
-						sb.Append( ' '  + w);
-				}
-				if (sb.Length != 0)	
-					recentLines.Add(new ChatLine { Color = c, Owner = from, Text = sb.ToString() } );
-			}
+			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
 			
 			if (Notification != null)
 				Sound.Play(Notification);
