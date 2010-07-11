@@ -155,8 +155,8 @@ Container:
 					Height:25
 					Text:Cancel
 					Bold:True
-		Background@SETTINGS_BG:
-			Id:SETTINGS_BG
+		Background@SETTINGS_MENU:
+			Id:SETTINGS_MENU
 			Delegate:SettingsMenuDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM- HEIGHT)/2
@@ -173,63 +173,159 @@ Container:
 					Text:Settings
 					Align:Center
 					Bold:True
-				Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
-					Id:SETTINGS_CHECKBOX_UNITDEBUG
-					X:100
-					Y:60
-					Width:300
-					Height:20
-					Text:Show Occupied Cells
-				Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
-					Id:SETTINGS_CHECKBOX_PATHDEBUG
-					X:100
-					Y:90
-					Width:300
-					Height:20
-					Text:Show Unit Paths
-				Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
-					Id:SETTINGS_CHECKBOX_INDEXDEBUG
-					X:100
-					Y:120
-					Width:300
-					Height:20
-					Text:Show Spatial Index Debug
-				Checkbox@SETTINGS_CHECKBOX_PERFDEBUG:
-					Id:SETTINGS_CHECKBOX_PERFDEBUG
-					X:100
-					Y:150
-					Width:300
-					Height:20
-					Text:Show Performance Information
-				Checkbox@SETTINGS_CHECKBOX_SYNCREPORTS:
-					Id:SETTINGS_CHECKBOX_SYNCREPORTS
-					X:100
-					Y:180
-					Width:300
-					Height:20
-					Text:Collect Sync Reports
-				Checkbox@SETTINGS_CHECKBOX_MUSICPLAYER:
-					Id:SETTINGS_CHECKBOX_MUSICPLAYER
-					X:100
-					Y:210
-					Width:300
-					Height:20
-					Text:Show Music Player
-				Checkbox@CHECKBOX_FULLSCREEN:
-					Id:CHECKBOX_FULLSCREEN
-					X:100
-					Y:240
-					Width:300
-					Height:20
-					Text:Fullscreen (Requires restart)
-				Button@SETTINGS_BUTTON_OK:
-					Id:SETTINGS_BUTTON_OK
+				Button@BUTTON_CLOSE:
+					Id:BUTTON_CLOSE
 					X:PARENT_RIGHT - 180
 					Y:PARENT_BOTTOM - 45
 					Width:160
 					Height:25
-					Text:OK
+					Text:Close
 					Bold:True
+				Container@TAB_CONTAINER:
+					Id:TAB_CONTAINER
+					X:0
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Children:
+						Button@GENERAL:
+							Id:GENERAL
+							X:45
+							Y:0
+							Width:90
+							Height:25
+							Text:General
+							Bold:True
+						Button@AUDIO:
+							Id:AUDIO
+							X:135
+							Y:0
+							Width:90
+							Height:25
+							Text:Audio
+							Bold:True
+						Button@DISPLAY:
+							Id:DISPLAY
+							X:225
+							Y:0
+							Width:90
+							Height:25
+							Text:Display
+							Bold:True
+						Button@DEBUG:
+							Id:DEBUG
+							X:315
+							Y:0
+							Width:90
+							Height:25
+							Text:Debug
+							Bold:True
+				Container@GENERAL_PANE:
+					Id:GENERAL_PANE
+					X:37
+					Y:100
+					Width:PARENT_RIGHT - 37
+					Height:PARENT_BOTTOM - 100
+					Visible: true
+					Children:
+						Label@SETTINGS_PLAYER_NAME:
+							Id:SETTINGS_PLAYER_NAME
+							X:0
+							Y:0
+							Text: Player Name
+						Label@SETTINGS_DOWNLOAD_MAPS:
+							Id:SETTINGS_DOWNLOAD_MAPS
+							X:0
+							Y:30
+							Text: Download Maps
+				Container@AUDIO_PANE:
+					Id:AUDIO_PANE
+					X:37
+					Y:100
+					Width:PARENT_RIGHT - 37
+					Height:PARENT_BOTTOM - 100
+					Visible: false
+					Children:
+						Label@SOUND_VOLUME_LABEL:
+							Id:SOUND_VOLUME_LABEL
+							X:0
+							Y:0
+							Text: Sound Volume
+						Label@MUSIC_VOLUME_LABEL:
+							Id:MUSIC_VOLUME_LABEL
+							X:0
+							Y:30
+							Text: Music Volume
+						Checkbox@MUSICPLAYER_CHECKBOX:
+							Id:MUSICPLAYER_CHECKBOX
+							X:0
+							Y:60
+							Width:300
+							Height:20
+							Text:Show Music Player
+				Container@DISPLAY_PANE:
+					Id:DISPLAY_PANE
+					X:37
+					Y:100
+					Width:PARENT_RIGHT - 37
+					Height:PARENT_BOTTOM - 100
+					Visible: false
+					Children:
+						Checkbox@FULLSCREEN_CHECKBOX:
+							Id:FULLSCREEN_CHECKBOX
+							X:0
+							Y:0
+							Width:300
+							Height:20
+							Text:Fullscreen (Requires restart)
+						Label@RESOLUTION_LABEL:
+							Id:RESOLUTION_LABEL
+							X:0
+							Y:40
+							Text: Screen Resolution:
+				Container@DEBUG_PANE:
+					Id:DEBUG_PANE
+					X:37
+					Y:100
+					Width:PARENT_RIGHT - 37
+					Height:PARENT_BOTTOM - 100
+					Visible: false
+					Children:
+						Checkbox@PERFDEBUG_CHECKBOX:
+							Id:PERFDEBUG_CHECKBOX
+							X:0
+							Y:0
+							Width:300
+							Height:20
+							Text:Show Performance Information
+						Checkbox@SYNCREPORTS_CHECKBOX:
+							Id:SYNCREPORTS_CHECKBOX
+							X:0
+							Y:30
+							Width:300
+							Height:20
+							Text:Collect Sync Reports
+						Checkbox@UNITDEBUG_CHECKBOX:
+							Id:UNITDEBUG_CHECKBOX
+							X:0
+							Y:60
+							Width:300
+							Height:20
+							Text:Show Occupied Cells
+						Checkbox@PATHDEBUG_CHECKBOX:
+							Id:PATHDEBUG_CHECKBOX
+							X:0
+							Y:90
+							Width:300
+							Height:20
+							Text:Show Unit Paths
+						Checkbox@INDEXDEBUG_CHECKBOX:
+							Id:INDEXDEBUG_CHECKBOX
+							X:0
+							Y:120
+							Width:300
+							Height:20
+							Text:Show Spatial Index Debug
 		Background@JOINSERVER_BG:
 			Id:JOINSERVER_BG
 			Delegate:ServerBrowserDelegate
