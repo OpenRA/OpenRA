@@ -77,15 +77,6 @@ namespace OpenRA
 			buttons.Clear();
 			renderer.Device.DisableScissor();
 		}
-		
-		void AddUiButton(int2 pos, string text, Action<bool> a)
-		{
-			var rect = new Rectangle(pos.X - 160 / 2, pos.Y - 4, 160, 24);
-			DrawDialogBackground( rect, "dialog2");
-			DrawCentered(text, new int2(pos.X, pos.Y), Color.White);
-			rgbaRenderer.Flush();
-			AddButton(rect, a);
-		}
 
 		public void DrawMapChooser()
 		{
@@ -94,22 +85,6 @@ namespace OpenRA
 			var w = 800;
 			var h = 600;
 			var r = new Rectangle( (Game.viewport.Width - w) / 2, (Game.viewport.Height - h) / 2, w, h );
-
-			AddUiButton(new int2(r.Left + 200, r.Bottom - 40), "OK",
-				_ =>
-				{
-					Game.IssueOrder(Order.Chat("/map " + currentMap.Uid));
-					Chrome.rootWidget.CloseWindow();
-				});
-
-			AddUiButton(new int2(r.Right - 200, r.Bottom - 40), "Cancel",
-				_ =>
-				{
-					Chrome.rootWidget.CloseWindow();
-				});
-
-			var mapContainer = new Rectangle(r.Right - 280, r.Top + 30, 256, 256);
-
 			var y = r.Top + 50;
 					
 			// Don't bother showing a subset of the data
@@ -133,21 +108,6 @@ namespace OpenRA
 				AddButton(itemRect, _ => { currentMap = closureMap; });
 				y += 20;
 			}
-
-			y = mapContainer.Bottom + 20;
-			DrawCentered("Title: {0}".F(currentMap.Title),
-				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
-			y += 20;
-			DrawCentered("Size: {0}x{1}".F(currentMap.Width, currentMap.Height),
-				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
-			y += 20;
-
-			DrawCentered("Theater: {0}".F(Rules.TileSets[currentMap.Tileset].Name),
-				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
-			y += 20;
-			DrawCentered("Spawnpoints: {0}".F(currentMap.PlayerCount),
-				new int2(mapContainer.Left + mapContainer.Width / 2, y), Color.White);
-
 			AddButton(r, _ => { });
 		}
 		

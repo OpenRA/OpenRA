@@ -226,6 +226,7 @@
     <Compile Include="Traits\World\HazardLayer.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
+    <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

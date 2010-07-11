@@ -623,7 +623,6 @@ Container:
 					Width:PARENT_RIGHT - 40
 					Height:190
 					Notification: beepy2.aud
-#rabeep1.aud for ra
 				Label@LABEL_CHATTYPE:
 					Id:LABEL_CHATTYPE
 					Width:65
@@ -660,6 +659,7 @@ Container:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Delegate:MapChooserDelegate
 			Width:800
 			Height:600
 			Visible:false
@@ -672,6 +672,70 @@ Container:
 					Height:20
 					Text:Choose Map
 					Bold:True
+				Label@CURMAP_TITLE_LABEL:
+					Id:CURMAP_TITLE_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:311
+					Align:Right
+					Width:70
+					Height:20
+					Text:Title:
+					Bold:True
+				Label@CURMAP_TITLE:
+					Id:CURMAP_TITLE
+					X:PARENT_RIGHT - 195
+					Y:311
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_SIZE_LABEL:
+					Id:CURMAP_SIZE_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:331
+					Align:Right
+					Width:70
+					Height:20
+					Text:Size:
+					Bold:True
+				Label@CURMAP_SIZE:
+					Id:CURMAP_SIZE
+					X:PARENT_RIGHT - 195
+					Y:331
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_THEATER_LABEL:
+					Id:CURMAP_THEATER_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:351
+					Align:Right
+					Width:70
+					Height:20
+					Text:Theater:
+					Bold:True
+				Label@CURMAP_THEATER:
+					Id:CURMAP_THEATER
+					X:PARENT_RIGHT - 195
+					Y:351
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_PLAYERS_LABEL:
+					Id:CURMAP_PLAYERS_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:371
+					Align:Right
+					Width:70
+					Height:20
+					Text:Players:
+					Bold:True
+				Label@CURMAP_PLAYERS:
+					Id:CURMAP_PLAYERS
+					X:PARENT_RIGHT - 195
+					Y:371
+					Align:Left
+					Width:70
+					Height:20
 				Background@MAPCHOOSER_MAP_BG:
 					X:PARENT_RIGHT-268
 					Y:39
@@ -684,6 +748,22 @@ Container:
 							Y:4
 							Width:244
 							Height:244
+				Button@BUTTON_OK:
+					Id:BUTTON_OK
+					X:PARENT_RIGHT - 360
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Ok
+					Bold:True
+				Button@BUTTON_CANCEL:
+					Id:BUTTON_CANCEL
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Cancel
+					Bold:True
 		Container@INGAME_ROOT:
 			Id:INGAME_ROOT
 			Delegate:IngameChromeDelegate
