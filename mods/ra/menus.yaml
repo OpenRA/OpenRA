@@ -921,9 +921,9 @@ Container:
 					Id:TEXT
 					Bold: false
 					X:20
-					Y:210
-					Width:200
-					Height:100
+					Y:205
+					Width:170
+					Height:40
 		Background@MUSIC_BG:
 			Id:MUSIC_BG
 			Delegate:MusicPlayerDelegate
