@@ -54,9 +54,10 @@ namespace OpenRA.GameRules
 		public string[] InitialMods = { "ra" };
 
 		// Server settings
+		public string LastServerTitle = "OpenRA Game";
 		public int ListenPort = 1234;
 		public int ExternalPort = 1234;
-		public bool InternetServer = true;
+		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://open-ra.org/master/";
 		
 		string SettingsFile;

@@ -41,7 +41,6 @@ namespace OpenRA.Widgets.Delegates
 			
 			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
 				r.OpenWindow("SERVER_LOBBY");
-				Log.Write("debug", "Creating server");
 				
 				// TODO: Get this from a map chooser
 				string map = Game.AvailableMaps.Keys.FirstOrDefault();
@@ -49,24 +48,24 @@ namespace OpenRA.Widgets.Delegates
 				// TODO: Get this from a mod chooser
 				var mods = Game.Settings.InitialMods;
 				
-				var gameName = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+				Game.Settings.LastServerTitle = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+				Game.Settings.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
+				Game.Settings.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
+				Game.Settings.Save();
 
-				int listenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
-				int extPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
-				
-				Server.Server.ServerMain(Game.Settings.InternetServer, Game.Settings.MasterServer,
-										gameName, listenPort, extPort, mods, map);
+				Server.Server.ServerMain(Game.Settings.AdvertiseOnline, Game.Settings.MasterServer,	Game.Settings.LastServerTitle,
+				                         Game.Settings.ListenPort, Game.Settings.ExternalPort, mods, map);
 
-				Log.Write("debug", "Joining server");
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
 			};
 			
+			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = Game.Settings.LastServerTitle;
 			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = Game.Settings.ListenPort.ToString();
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = Game.Settings.ExternalPort.ToString();
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => Game.Settings.InternetServer;
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => Game.Settings.AdvertiseOnline;
 			cs.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
-				Game.Settings.InternetServer ^= true;
+				Game.Settings.AdvertiseOnline ^= true;
 				Game.Settings.Save();
 				return true;	
 			};
