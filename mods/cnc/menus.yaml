@@ -773,7 +773,7 @@ Container:
 							Height:25
 							ClickThrough:false
 							X:2
-							Y:25
+							Y:0
 							Visible:false
 				Label@CURMAP_TITLE_LABEL:
 					Id:CURMAP_TITLE_LABEL

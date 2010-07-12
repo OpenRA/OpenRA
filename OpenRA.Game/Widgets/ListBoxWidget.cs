@@ -23,10 +23,10 @@ namespace OpenRA.Widgets
 {
 	class ListBoxWidget : Widget
 	{
-		public readonly string Background = "dialog";
+		public readonly string Background = "dialog3";
 		public readonly int ScrollbarWidth = 24;
 		public readonly float ScrollVelocity = 4f;
-		public readonly int HeaderHeight = 25;
+		public readonly int HeaderHeight = 0;
 		
 		
 		public int ContentHeight = 0;
