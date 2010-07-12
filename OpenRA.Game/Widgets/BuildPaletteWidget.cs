@@ -149,26 +149,17 @@ namespace OpenRA.Widgets
 		}
 		
 		public override bool HandleInput(MouseInput mi)
-		{
-			// Are we able to handle this event?
-			if (!IsVisible() || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-				return base.HandleInput(mi);
+		{			
+			if (mi.Event != MouseInputEvent.Down)
+				return false;
 			
-			if (base.HandleInput(mi))
-				return true;
-			
-			if (mi.Event == MouseInputEvent.Down)
-			{
-				var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
-					.Select(a => a.Second).FirstOrDefault();
-				if (action == null)
-					return false;
-		
-				action(mi);
-				return true;
-			}
-			
-			return false;
+			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
+				.Select(a => a.Second).FirstOrDefault();
+			if (action == null)
+				return false;
+	
+			action(mi);
+			return true;
 		}	
 		
 		public override void DrawInner(World world)

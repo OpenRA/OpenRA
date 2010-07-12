@@ -46,47 +46,33 @@ namespace OpenRA.Widgets
 			Bold = (widget as TextFieldWidget).Bold;
 			VisualHeight = (widget as TextFieldWidget).VisualHeight;
 		}
+		
+		public override bool LoseFocus(MouseInput mi)
+		{
+			OnLoseFocus();
+			var lose = base.LoseFocus(mi);
+			System.Console.WriteLine("{1} asked to lose focus; returning {0}",lose, this.Id);
+			return lose;
+		}
 
 		public override bool HandleInput(MouseInput mi)
 		{
-			// We get this first if we are focussed; if the click was somewhere else remove focus
-			if (Chrome.selectedWidget == this && mi.Event == MouseInputEvent.Down && !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-			{
-				OnLoseFocus();
-				Chrome.selectedWidget = null;
+			// Lose focus if they click outside the box; return false so the next widget can grab this event
+			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location.X,mi.Location.Y) && LoseFocus(mi))
 				return false;
-			}
-				
-			// Are we able to handle this event?
-			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-				return base.HandleInput(mi);
 			
-			if (base.HandleInput(mi))
-				return true;
+			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+				return false;
 			
-			if (mi.Event == MouseInputEvent.Down)
-			{
-				Focus();
-				return true;
-			}
-			
-			return false;
-		}
-		
-		void Focus()
-		{
-			Chrome.selectedWidget = this;
 			blinkCycle = 10;
 			showCursor = true;
+			return true;
 		}
 		
 		public override bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
-		{			
-			if (base.HandleKeyPress(e,modifiers))
-				return true;
-			
-			// Only take input if we are selected
-			if (Chrome.selectedWidget != this)
+		{
+			// Only take input if we are focused
+			if (!Focused)
 				return false;
 			
 			if (e.KeyChar == '\r' && OnEnterKey())
@@ -131,7 +117,7 @@ namespace OpenRA.Widgets
 		{
 			int margin = 5;
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
-			var cursor = (showCursor && Chrome.selectedWidget == this) ? "|" : "";
+			var cursor = (showCursor && Focused) ? "|" : "";
 			var textSize = font.Measure(Text + "|");
 			var pos = RenderOrigin;
 			
@@ -144,7 +130,7 @@ namespace OpenRA.Widgets
 			// Right align when editing and scissor when the text overflows
 			if (textSize.X > Bounds.Width - 2*margin)
 			{
-				if (Chrome.selectedWidget == this)
+				if (Focused)
 					textPos += new int2(Bounds.Width - 2*margin - textSize.X,0);
 				
 				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2*margin, Bounds.Bottom);

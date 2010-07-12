@@ -150,34 +150,73 @@ namespace OpenRA.Widgets
 				.Select(c => c.GetEventBounds())
 				.Aggregate(RenderBounds, Rectangle.Union);
 		}
-				
-		public virtual bool HandleInput(MouseInput mi)
+		
+		
+		public bool Focused { get { return Chrome.selectedWidget == this; } }
+		public virtual bool TakeFocus(MouseInput mi)
+		{
+			if (Focused)
+				return true;
+			
+			if (Chrome.selectedWidget != null && !Chrome.selectedWidget.LoseFocus(mi))
+				return false;
+			Chrome.selectedWidget = this;
+			return true;
+		}
+		
+		// Remove focus from this widget; return false if you don't want to give it up
+		public virtual bool LoseFocus(MouseInput mi)
+		{
+			if (Chrome.selectedWidget == this)
+				Chrome.selectedWidget = null;
+			
+			return true;
+		}
+		
+		public virtual bool HandleInput(MouseInput mi) { return false; }
+		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!IsVisible() || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
+			if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location.X,mi.Location.Y))))
+				return false;
+			
+			// Send the event to the deepest children first and bubble up if unhandled
+			foreach (var child in Children)
+				if (child.HandleMouseInputOuter(mi))
+					return true;
+
+			// Do any widgety behavior (button click etc)
+			// Return false if it can't handle any user actions
+			if (!HandleInput(mi))
+				return false;
+			
+			// Apply any special logic added by delegates; they return true if they caught the input
+			if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
+			if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
+			if (mi.Event == MouseInputEvent.Move && OnMouseMove(mi)) return true;
+			
+			return true;
+		}
+				
+		
+		public virtual bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers) { return false; }
+		public virtual bool HandleKeyPressOuter(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		{			
+			if (!IsVisible())
 				return false;
 			
 			// Can any of our children handle this?
 			foreach (var child in Children)
-				if (child.HandleInput(mi))
+				if (child.HandleKeyPressOuter(e, modifiers))
 					return true;
 
-			if (mi.Event == MouseInputEvent.Down) return OnMouseDown(mi);
-			if (mi.Event == MouseInputEvent.Up) return OnMouseUp(mi);
-			if (mi.Event == MouseInputEvent.Move) return OnMouseMove(mi);
-
-			throw new InvalidOperationException("Impossible");
-		}
-
-		public virtual bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
-		{			
-			// Can any of our children handle this?
-			foreach (var child in Children)
-				if (child.HandleKeyPress(e, modifiers))
-					return true;
-
-			// Have we been assigned an action?
-			return OnKeyPress(e,modifiers);
+			// Do any widgety behavior (enter text etc)
+			var handled = HandleKeyPress(e,modifiers);
+			
+			// Apply any special logic added by delegates; they return true if they caught the input
+			if (OnKeyPress(e,modifiers)) return true;
+			
+			return handled;
 		}
 		
 		public abstract void DrawInner( World world );

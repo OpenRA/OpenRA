@@ -71,10 +71,10 @@ namespace OpenRA
 		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
-			if (selectedWidget != null && selectedWidget.HandleInput(mi))
+			if (selectedWidget != null && selectedWidget.HandleMouseInputOuter(mi))
 				return true;
 			
-			if (rootWidget.HandleInput(mi))
+			if (rootWidget.HandleMouseInputOuter(mi))
 				return true;
 
 			if (mi.Event == MouseInputEvent.Move)
@@ -89,9 +89,9 @@ namespace OpenRA
 		public bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
 		{
 			if (selectedWidget != null)
-				return selectedWidget.HandleKeyPress(e, modifiers);
+				return selectedWidget.HandleKeyPressOuter(e, modifiers);
 			
-			if (rootWidget.HandleKeyPress(e, modifiers))
+			if (rootWidget.HandleKeyPressOuter(e, modifiers))
 				return true;
 			return false;
 		}

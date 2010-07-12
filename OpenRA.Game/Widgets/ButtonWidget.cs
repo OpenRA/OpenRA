@@ -46,38 +46,30 @@ namespace OpenRA.Widgets
 			GetText = (widget as ButtonWidget).GetText;
 		}
 		
-		public override bool HandleInput(MouseInput mi)
+		public override bool LoseFocus (MouseInput mi)
 		{
-			if (Chrome.selectedWidget == this)
-				Depressed = (GetEventBounds().Contains(mi.Location.X,mi.Location.Y)) ? true : false;
+			Depressed = false;
+			return base.LoseFocus(mi);
+		}
+		
+		public override bool HandleInput(MouseInput mi)
+		{			
+			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+				return false;
 			
-			// Relinquish focus
-			if (Chrome.selectedWidget == this && mi.Event == MouseInputEvent.Up)
+			// Only fire the onMouseUp order if we successfully lost focus, and were pressed
+			if (Focused && mi.Event == MouseInputEvent.Up)
 			{
-				Chrome.selectedWidget = null;
-				Depressed = false;
+				var wasPressed = Depressed;
+				return (LoseFocus(mi) && wasPressed);
 			}
 			
-			// Are we able to handle this event?
-			if (!Visible || !GetEventBounds().Contains(mi.Location.X,mi.Location.Y))
-				return base.HandleInput(mi);
-			
-			
-			if (base.HandleInput(mi))
-				return true;
-			
-			// Give button focus only while the mouse is down
-			// This is a bit of a hack: it will become cleaner soonish
-			// It will also steal events from any potential children
-			// We also want to play a click sound
 			if (mi.Event == MouseInputEvent.Down)
-			{
-				Chrome.selectedWidget = this;
 				Depressed = true;
-				return true;
-			}
+			else if (mi.Event == MouseInputEvent.Move && Focused)
+				Depressed = RenderBounds.Contains(mi.Location.X,mi.Location.Y);
 			
-			return false;
+			return Depressed;
 		}
 
 		public override void DrawInner(World world)

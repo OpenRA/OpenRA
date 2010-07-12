@@ -56,6 +56,7 @@ namespace OpenRA.Widgets
 				Game.chrome.lineRenderer.Flush();
 			}
 		}
+		public override bool HandleInput(MouseInput mi) { return true; }
 
 		public CheckboxWidget() : base() { }
 
