@@ -43,7 +43,7 @@ namespace OpenRA.Widgets.Delegates
 			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => {return Map.PlayerCount.ToString();};
 			
 			bg.GetWidget("BUTTON_OK").OnMouseUp = mi => {
-				Game.IssueOrder(Order.Chat("/map " + Map.Uid));
+				Game.IssueOrder(Order.Command("map " + Map.Uid));
 				r.CloseWindow();
 				return true;
 			};

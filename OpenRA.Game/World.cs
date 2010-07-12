@@ -57,7 +57,7 @@ namespace OpenRA
 			localPlayerIndex = index;
 			if (Game.LobbyInfo.Clients.Count > 0 && !string.IsNullOrEmpty(Game.Settings.PlayerName) 
 				&& Game.LobbyInfo.Clients[index].Name != Game.Settings.PlayerName)
-				Game.IssueOrder(Order.Chat("/name " + Game.Settings.PlayerName));
+				Game.IssueOrder(Order.Command("name " + Game.Settings.PlayerName));
 		}
 
 		public readonly Actor WorldActor;		

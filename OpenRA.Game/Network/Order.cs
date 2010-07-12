@@ -181,6 +181,11 @@ namespace OpenRA
 		{
 			return new Order("TeamChat", null, text) { IsImmediate = true };
 		}
+		
+		public static Order Command(string text)
+		{
+			return new Order("Command", null, text) { IsImmediate = true };	
+		}
 
 		public static Order StartProduction(Player subject, string item, int count)
 		{

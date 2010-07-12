@@ -52,7 +52,7 @@ namespace OpenRA.Widgets.Delegates
 			{			
 				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
 				if (sp == 0 || !owned)
-					Game.IssueOrder(Order.Chat("/spawn {0}".F(sp)));
+					Game.IssueOrder(Order.Command("spawn {0}".F(sp)));
 			};
 			
 			map.SpawnColors = () =>
@@ -95,8 +95,8 @@ namespace OpenRA.Widgets.Delegates
 			lockTeamsCheckbox.OnMouseDown = mi =>
 			{
 				if (Game.IsHost)
-					Game.IssueOrder(Order.Chat(
-						"/lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
+					Game.IssueOrder(Order.Command(
+						"lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
 				return true;
 			};
 
@@ -162,7 +162,7 @@ namespace OpenRA.Widgets.Delegates
 						if (name.Text == c.Name)
 							return true;
 						
-						Game.IssueOrder(Order.Chat( "/name "+name.Text ));
+						Game.IssueOrder(Order.Command( "name "+name.Text ));
 						Game.Settings.PlayerName = name.Text;
 						Game.Settings.Save();
 						Chrome.selectedWidget = null;
@@ -238,7 +238,7 @@ namespace OpenRA.Widgets.Delegates
 				newIndex = (newIndex + d) % Game.world.PlayerColors().Count();
 			
 			Game.IssueOrder(
-				Order.Chat("/pal " + newIndex));
+				Order.Command("pal " + newIndex));
 			
 			return true;
 		}
@@ -258,7 +258,7 @@ namespace OpenRA.Widgets.Delegates
 			if (nextCountry == null)
 				nextCountry = countries.First();
 
-			Game.IssueOrder(Order.Chat("/race " + nextCountry));
+			Game.IssueOrder(Order.Command("race " + nextCountry));
 			
 			return true;
 		}
@@ -268,7 +268,7 @@ namespace OpenRA.Widgets.Delegates
 			//HACK: Can't set this as part of the fuction as LocalClient/State not initalised yet
 			Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible 
 				= (Game.IsHost && Game.LocalClient.State == Session.ClientState.Ready);
-			Game.IssueOrder(Order.Chat("/ready"));
+			Game.IssueOrder(Order.Command("ready"));
 			return true;
 		}
 		
@@ -279,7 +279,7 @@ namespace OpenRA.Widgets.Delegates
 			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount+1);
 
 			Game.IssueOrder(
-				Order.Chat("/team " + newIndex));
+				Order.Command("team " + newIndex));
 			return true;
 		}
 	}

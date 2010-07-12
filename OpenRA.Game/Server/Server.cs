@@ -428,35 +428,24 @@ namespace OpenRA.Server
 		{
 			switch (so.Name)
 			{
-				case "Chat":
-					if (!HandleAsCommand(conn, so))
-						foreach (var c in conns.Except(conn).ToArray())
-							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
-					break;
-				//TODO: send to those with the same team
-				case "TeamChat":
-					if (!HandleAsCommand(conn, so))
-						foreach (var c in conns.Except(conn).ToArray())
-							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
-					break;
+				case "Command":
+				{
+					if(GameStarted)
+						SendChatTo(conn, "Cannot change state when game started.");
+					else if (GetClient(conn).State == Session.ClientState.Ready && so.Data != "ready")
+						SendChatTo(conn, "Cannot change state when marked as ready.");
+					else if (!InterpretCommand(conn, so.Data))
+					{
+						Console.WriteLine("Bad server command: {0}", so.Data);
+						SendChatTo(conn, "Bad server command.");
+					};
+				}
+				break;
+				case "Chat": case "TeamChat":
+					foreach (var c in conns.Except(conn).ToArray())
+						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
+				break;
 			}
-		}
-		
-		static bool HandleAsCommand(Connection conn, ServerOrder so)
-		{
-			if (!so.Data.StartsWith("/")) return false;
-			
-			var cmd = so.Data.Substring(1);
-			if(GameStarted)
-				   SendChatTo(conn, "Cannot change state when game started.");
-			else if (GetClient(conn).State == Session.ClientState.Ready && cmd != "ready")
-				   SendChatTo(conn, "Cannot change state when marked as ready.");
-			else if (!InterpretCommand(conn, cmd))
-			{
-				Console.WriteLine("Bad server command: {0}", cmd);
-				SendChatTo(conn, "Bad server command.");
-			}
-			return true;
 		}
 
 		static Session.Client GetClient(Connection conn)
