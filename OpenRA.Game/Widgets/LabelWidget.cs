@@ -32,15 +32,18 @@ namespace OpenRA.Widgets
 			Right
 		}
 		
-		public string Text = "";
+		public string Text = null;
+		public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public bool Bold = false;
 		public Func<string> GetText;
-
+		public Func<string> GetBackground;
+		
 		public LabelWidget()
 			: base()
 		{
 			GetText = () => { return Text; };
+			GetBackground = () => { return Background; };
 		}
 
 		public LabelWidget(Widget other)
@@ -50,10 +53,16 @@ namespace OpenRA.Widgets
 			Align = (other as LabelWidget).Align;
 			Bold = (other as LabelWidget).Bold;
 			GetText = (other as LabelWidget).GetText;
+			GetBackground = (other as LabelWidget).GetBackground;
 		}
 
 		public override void DrawInner(World world)
 		{		
+			var bg = GetBackground();
+
+			if (bg != null)
+				WidgetUtils.DrawPanel(bg, RenderBounds );
+						
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var text = GetText();
 			if (text == null)

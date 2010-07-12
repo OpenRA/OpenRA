@@ -34,7 +34,7 @@ namespace OpenRA.Widgets.Delegates
 			var r = Chrome.rootWidget;
 			var bg = r.GetWidget("MAP_CHOOSER");
 			bg.SpecialOneArg = (map) => RefreshMapList(map);
-			var ml = bg.GetWidget("MAP_LIST");
+			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
 			
 			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => {return Map;};
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => {return Map.Title;};
@@ -53,7 +53,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			var itemTemplate = ml.GetWidget<ButtonWidget>("MAP_TEMPLATE");
+			var itemTemplate = ml.GetWidget<LabelWidget>("MAP_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			foreach (var kv in Game.AvailableMaps)
 			{
@@ -61,10 +61,11 @@ namespace OpenRA.Widgets.Delegates
 				if (!map.Selectable)
 					continue;
 				
-				var template = itemTemplate.Clone() as ButtonWidget;
+				var template = itemTemplate.Clone() as LabelWidget;
 				template.Id = "MAP_{0}".F(map.Uid);
-				template.GetText = () => map.Title;
-				template.OnMouseUp = mi => {Map = map; return true;};
+				template.GetText = () => "   "+map.Title;
+				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
+				template.OnMouseDown = mi => {Map = map; return true;};
 				template.Parent = ml;			
 				
 				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
@@ -72,6 +73,7 @@ namespace OpenRA.Widgets.Delegates
 				ml.AddChild(template);
 				
 				offset += template.Bounds.Height;
+				ml.ContentHeight += template.Bounds.Height;
 			}
 		}
 		

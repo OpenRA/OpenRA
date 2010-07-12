@@ -1,14 +1,5 @@
 Container:
-	ClickThrough:true
 	Children:
-		PostGame@POSTGAME_TEXT:
-			Id:POSTGAME_TEXT
-			X:0
-			Y:0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-			ClickThrough: true
-			Visible: true
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
@@ -776,10 +767,11 @@ Container:
 					Width:500
 					Height:480
 					Children:
-						Button@MAP_TEMPLATE:
+						Label@MAP_TEMPLATE:
 							Id:MAP_TEMPLATE
 							Width:PARENT_RIGHT-28
 							Height:25
+							ClickThrough:false
 							X:2
 							Y:25
 							Visible:false
@@ -881,6 +873,12 @@ Container:
 			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
+				PostGame@POSTGAME_TEXT:
+					Id:POSTGAME_TEXT
+					X:0
+					Y:0
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0
@@ -1006,14 +1004,12 @@ Container:
 			Height: 250
 			Children:
 				PerfGraph@GRAPH:
-					ClickThrough:true
 					Id:GRAPH
 					X:5
 					Y:5
 					Width:200
 					Height:200
 				Label@TEXT:
-					ClickThrough:true
 					Id:TEXT
 					Bold: false
 					X:20

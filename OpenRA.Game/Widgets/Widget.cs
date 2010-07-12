@@ -36,7 +36,7 @@ namespace OpenRA.Widgets
 		public string Width = "0";
 		public string Height = "0";
 		public string Delegate = null;
-		public bool ClickThrough = false;
+		public bool ClickThrough = true;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
@@ -173,7 +173,7 @@ namespace OpenRA.Widgets
 			return true;
 		}
 		
-		public virtual bool HandleInput(MouseInput mi) { return false; }
+		public virtual bool HandleInput(MouseInput mi) { return !ClickThrough; }
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?

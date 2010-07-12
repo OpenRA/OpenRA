@@ -28,6 +28,8 @@ namespace OpenRA.Widgets
 		public readonly float ScrollVelocity = 4f;
 		public readonly int HeaderHeight = 25;
 		
+		
+		public int ContentHeight = 0;
 		float ListOffset = 0;
 		bool UpPressed = false;
 		bool DownPressed = false;
