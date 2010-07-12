@@ -54,7 +54,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			var itemTemplate = ml.GetWidget<ButtonWidget>("MAP_TEMPLATE");
-			int offset = 0;
+			int offset = itemTemplate.Bounds.Y;
 			foreach (var kv in Game.AvailableMaps)
 			{
 				var map = kv.Value;
@@ -67,11 +67,11 @@ namespace OpenRA.Widgets.Delegates
 				template.OnMouseUp = mi => {Map = map; return true;};
 				template.Parent = ml;			
 				
-				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
+				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				ml.AddChild(template);
 				
-				offset += template.Bounds.Height + 5;
+				offset += template.Bounds.Height;
 			}
 		}
 		

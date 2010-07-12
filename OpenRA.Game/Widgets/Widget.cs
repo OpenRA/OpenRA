@@ -182,7 +182,7 @@ namespace OpenRA.Widgets
 		
 		public abstract void DrawInner( World world );
 		
-		public void Draw(World world)
+		public virtual void Draw(World world)
 		{
 			if (IsVisible())
 			{

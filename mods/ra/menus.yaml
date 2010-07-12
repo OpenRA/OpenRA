@@ -769,19 +769,19 @@ Container:
 					Height:20
 					Text:Choose Map
 					Bold:True
-				Container@MAP_LIST:
+				ListBox@MAP_LIST:
 					Id:MAP_LIST
-					X:50
+					X:20
 					Y:50
-					Width:450
-					Height:500
+					Width:500
+					Height:480
 					Children:
 						Button@MAP_TEMPLATE:
 							Id:MAP_TEMPLATE
-							Width:440
+							Width:PARENT_RIGHT-28
 							Height:25
-							X:0
-							Y:0
+							X:2
+							Y:25
 							Visible:false
 				Label@CURMAP_TITLE_LABEL:
 					Id:CURMAP_TITLE_LABEL
@@ -849,7 +849,7 @@ Container:
 					Height:20
 				Background@MAPCHOOSER_MAP_BG:
 					X:PARENT_RIGHT-268
-					Y:39
+					Y:50
 					Width:252
 					Height:252
 					Background:dialog3
@@ -1105,5 +1105,3 @@ Container:
 							Height:25
 							ImageCollection:music
 							ImageName:prev
-
-

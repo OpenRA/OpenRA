@@ -227,6 +227,7 @@
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
     <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
+    <Compile Include="Widgets\ListBoxWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
