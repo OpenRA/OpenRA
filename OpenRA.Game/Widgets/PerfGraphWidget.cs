@@ -34,8 +34,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
+			var rect = RenderBounds;
 			float2 origin = Game.viewport.Location + new float2(rect.Right,rect.Bottom);
 			float2 basis = new float2(-rect.Width/100,-rect.Height/100);
 

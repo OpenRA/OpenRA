@@ -60,7 +60,7 @@ namespace OpenRA.Widgets
 				return;
 			
 			int2 textSize = font.Measure(text);
-			int2 position = DrawPosition() + new int2(0, (Bounds.Height - textSize.Y)/2);
+			int2 position = RenderOrigin + new int2(0, (Bounds.Height - textSize.Y)/2);
 
 			if (Align == TextAlign.Center)
 				position += new int2((Bounds.Width - textSize.X)/2, 0);

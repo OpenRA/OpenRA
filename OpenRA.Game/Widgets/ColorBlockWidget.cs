@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
-			var pos = DrawPosition();
+			var pos = RenderOrigin;
 			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X, pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
 			Game.chrome.lineRenderer.FillRect(paletteRect, GetColor());
 		}

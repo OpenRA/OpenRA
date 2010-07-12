@@ -42,7 +42,7 @@ namespace OpenRA.Widgets
 
 		public override void DrawInner(World world)
 		{
-			var pos = DrawPosition();
+			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
 			WidgetUtils.DrawPanel("dialog3", chatLogArea);

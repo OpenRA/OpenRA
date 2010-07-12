@@ -82,15 +82,13 @@ namespace OpenRA.Widgets
 
 		public override void DrawInner(World world)
 		{
-			var pos = DrawPosition();
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", 
-				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
+			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds );
 			
 			var text = GetText();
 			font.DrawText(text,
-				new int2( pos.X + Bounds.Width / 2, pos.Y + Bounds.Height / 2)
+				new int2( RenderOrigin.X + Bounds.Width / 2, RenderOrigin.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2) + stateOffset, Color.White);
 		}

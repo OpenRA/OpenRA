@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 			
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{
-				var container = new Rectangle(DrawPosition().X, DrawPosition().Y, Parent.Bounds.Width, Parent.Bounds.Height);
+				var container = new Rectangle(RenderOrigin.X, RenderOrigin.Y, Parent.Bounds.Width, Parent.Bounds.Height);
 				
 				var p = map.Waypoints
 					.Select((sp, i) => Pair.New(map.ConvertToPreview(sp.Value, container), i))
@@ -64,9 +64,7 @@ namespace OpenRA.Widgets
 				lastMap = map;
 			}
 			
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
-			var mapRect = map.PreviewBounds( new Rectangle( rect.X, rect.Y, rect.Width, rect.Height ) );
+			var mapRect = map.PreviewBounds( RenderBounds );
 
 			if( mapPreviewDirty )
 			{
@@ -83,7 +81,7 @@ namespace OpenRA.Widgets
 				"chrome",
 				new float2( mapRect.Size ) );
 
-			DrawSpawnPoints( map, new Rectangle(pos.X, pos.Y, Parent.Bounds.Width, Parent.Bounds.Height ), world );
+			DrawSpawnPoints( map, new Rectangle(RenderOrigin.X, RenderOrigin.Y, Parent.Bounds.Width, Parent.Bounds.Height ), world );
 		}
 
 		void DrawSpawnPoints(MapStub map, Rectangle container, World world)

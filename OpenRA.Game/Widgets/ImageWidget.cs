@@ -36,8 +36,7 @@ namespace OpenRA.Widgets
 		{		
 			var name = GetImageName();
 			var collection = GetImageCollection();
-			var position = DrawPosition();
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, collection, name), position);
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, collection, name), RenderOrigin);
 		}
 	}
 }

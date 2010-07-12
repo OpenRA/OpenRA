@@ -33,8 +33,8 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
+			var pos = RenderOrigin;
+			var rect = RenderBounds;
 			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
 					new Size(Bounds.Height, Bounds.Height)));
 

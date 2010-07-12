@@ -133,7 +133,7 @@ namespace OpenRA.Widgets
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var cursor = (showCursor && Chrome.selectedWidget == this) ? "|" : "";
 			var textSize = font.Measure(Text + "|");
-			var pos = DrawPosition();
+			var pos = RenderOrigin;
 			
 			WidgetUtils.DrawPanel("dialog3", 
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );

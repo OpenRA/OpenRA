@@ -85,16 +85,15 @@ namespace OpenRA.Widgets
 		
 		public abstract Widget Clone();
 		
-		public int2 DrawPosition()
+		public virtual int2 RenderOrigin
 		{
-			return new int2(Bounds.X, Bounds.Y) + ParentPosition();
+			get {
+				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
+				return new int2(Bounds.X, Bounds.Y) + offset;
+			}
 		}
-		
-		public int2 ParentPosition()
-		{
-			return (Parent == null) ? int2.Zero : Parent.DrawPosition();
-		}
-		
+		public virtual int2 ChildOrigin	{ get { return RenderOrigin; } }
+		public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
 		
 		public virtual void Initialize()
 		{
@@ -139,21 +138,17 @@ namespace OpenRA.Widgets
 		public bool HitTest(int2 xy)
 		{
 			if (!IsVisible()) return false;
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X,  pos.Y, Bounds.Width, Bounds.Height);
-			if (rect.Contains(xy.ToPoint()) && !ClickThrough) return true;
+			if (RenderBounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
 			
 			return Children.Any(c => c.HitTest(xy));
 		}
 		
 		public Rectangle GetEventBounds()
 		{
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			return Children
 				.Where(c => c.Visible)
 				.Select(c => c.GetEventBounds())
-				.Aggregate(rect, Rectangle.Union);
+				.Aggregate(RenderBounds, Rectangle.Union);
 		}
 				
 		public virtual bool HandleInput(MouseInput mi)

@@ -87,8 +87,8 @@ namespace OpenRA.Widgets
 			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
 			var numPowers = powers.Count(p => p.IsAvailable);
 			if (numPowers == 0) return;
-			var position = DrawPosition();
-			var rectBounds = new Rectangle(position.X, position.Y, Bounds.Width, Bounds.Height);
+			var position = RenderOrigin;
+			var rectBounds = RenderBounds;
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));

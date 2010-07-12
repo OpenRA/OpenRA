@@ -27,9 +27,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
-			var pos = DrawPosition();
-			var rect = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
-			WidgetUtils.DrawPanel(Background, rect);
+			WidgetUtils.DrawPanel(Background, RenderBounds);
 		}
 		
 		public BackgroundWidget() : base() { }
