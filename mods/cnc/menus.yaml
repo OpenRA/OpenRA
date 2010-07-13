@@ -222,13 +222,16 @@ Container:
 						Label@SETTINGS_PLAYER_NAME:
 							Id:SETTINGS_PLAYER_NAME
 							X:0
+							Y:10
+							Text: Player Name:
+						TextField@NAME:
+							Id:NAME
+							Text:Name
+							Width:139
+							Height:25
+							X:90
 							Y:0
-							Text: Player Name
-						Label@SETTINGS_DOWNLOAD_MAPS:
-							Id:SETTINGS_DOWNLOAD_MAPS
-							X:0
-							Y:30
-							Text: Download Maps
+							MaxLength:16
 				Container@AUDIO_PANE:
 					Id:AUDIO_PANE
 					X:37
@@ -240,17 +243,31 @@ Container:
 						Label@SOUND_VOLUME_LABEL:
 							Id:SOUND_VOLUME_LABEL
 							X:0
+							Y:10
+							Text: Sound Volume		
+						Slider@SOUND_VOLUME:
+							Id:SOUND_VOLUME
+							X:100
 							Y:0
-							Text: Sound Volume
+							Width:250
+							Height:20
+							Ticks:5
 						Label@MUSIC_VOLUME_LABEL:
 							Id:MUSIC_VOLUME_LABEL
 							X:0
-							Y:30
+							Y:40
 							Text: Music Volume
+						Slider@MUSIC_VOLUME:
+							Id:MUSIC_VOLUME
+							X:100
+							Y:30
+							Width:250
+							Height:20
+							Ticks:5
 						Checkbox@MUSICPLAYER_CHECKBOX:
 							Id:MUSICPLAYER_CHECKBOX
 							X:0
-							Y:60
+							Y:70
 							Width:300
 							Height:20
 							Text:Show Music Player
@@ -268,12 +285,38 @@ Container:
 							Y:0
 							Width:300
 							Height:20
-							Text:Fullscreen (Requires restart)
+							Text:Fullscreen
 						Label@RESOLUTION_LABEL:
 							Id:RESOLUTION_LABEL
 							X:0
+							Y:50
+							Text: Window Resolution:
+						TextField@SCREEN_WIDTH:
+							Id:SCREEN_WIDTH
+							Text:Width
+							Width:50
+							Height:25
+							X:130
 							Y:40
-							Text: Screen Resolution:
+							MaxLength:5
+						Label@X:
+							Id:X
+							Text:x
+							X:185
+							Y:50
+						TextField@SCREEN_HEIGHT:
+							Id:SCREEN_HEIGHT
+							Text:Height
+							Width:50
+							Height:25
+							X:195
+							Y:40
+							MaxLength:5
+						Label@RESTART:
+							Id:RESTART
+							Text: Restart Game To Apply Changes
+							X:0
+							Y:PARENT_BOTTOM - 30
 				Container@DEBUG_PANE:
 					Id:DEBUG_PANE
 					X:37

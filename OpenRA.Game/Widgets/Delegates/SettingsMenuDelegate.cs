@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.FileFormats.Graphics;
+using System.Windows.Forms;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -21,11 +22,37 @@ namespace OpenRA.Widgets.Delegates
 			tabs.GetWidget<ButtonWidget>("DEBUG").OnMouseUp = mi => FlipToTab("DEBUG_PANE");
 			FlipToTab("GENERAL_PANE");
 			
+			//General
+			var general = bg.GetWidget("GENERAL_PANE");
+			
+			var name = general.GetWidget<TextFieldWidget>("NAME");
+			name.Text = Game.Settings.PlayerName;
+			name.OnLoseFocus = () =>
+			{
+				name.Text = name.Text.Trim();
+		
+				if (name.Text.Length == 0)
+					name.Text = Game.Settings.PlayerName;
+				else
+				{
+					Game.Settings.PlayerName = name.Text;
+					Game.Settings.Save();
+				}
+			};
+			name.OnEnterKey = () => { name.LoseFocus(); return true; };
 			
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
-			var music = audio.GetWidget<CheckboxWidget>("MUSICPLAYER_CHECKBOX");
 			
+			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
+			soundslider.OnChange += x => { Sound.Volume = x; };
+			soundslider.GetOffset = () => { return Sound.Volume; };
+			
+			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
+			musicslider.OnChange += x => { Sound.MusicVolume = x; };
+			musicslider.GetOffset = () => { return Sound.MusicVolume; };
+			
+			var music = audio.GetWidget<CheckboxWidget>("MUSICPLAYER_CHECKBOX");
 			music.Checked = () => { return Game.Settings.MusicPlayer; };
 			music.OnMouseDown = mi =>
 			{
@@ -45,6 +72,44 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.Save();
 				return true;
 			};
+			
+			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
+			width.Text = Game.Settings.WindowedSize.X.ToString();
+			width.OnLoseFocus = () =>
+			{
+				try {
+					var w = int.Parse(width.Text);
+					if (w > 800 && w <= Screen.PrimaryScreen.Bounds.Size.Width){
+						Game.Settings.WindowedSize = new int2(w, Game.Settings.WindowedSize.Y);
+						Game.Settings.Save();	
+					}
+					else
+						width.Text = Game.Settings.WindowedSize.X.ToString();
+				}
+				catch (FormatException e) {
+					width.Text = Game.Settings.WindowedSize.X.ToString();
+				}
+			};
+			width.OnEnterKey = () => { width.LoseFocus(); return true; };
+			
+			var height = display.GetWidget<TextFieldWidget>("SCREEN_HEIGHT");
+			height.Text = Game.Settings.WindowedSize.Y.ToString();
+			height.OnLoseFocus = () =>
+			{
+				try {
+					var h = int.Parse(height.Text);
+					if (h > 600  && h <= Screen.PrimaryScreen.Bounds.Size.Height){
+						Game.Settings.WindowedSize = new int2(Game.Settings.WindowedSize.X, h);
+						Game.Settings.Save();	
+					}
+					else 
+						height.Text = Game.Settings.WindowedSize.Y.ToString();
+				}
+				catch (System.FormatException) {
+					height.Text = Game.Settings.WindowedSize.Y.ToString();
+				}
+			};
+			height.OnEnterKey = () => { height.LoseFocus(); return true; };
 			
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
