@@ -31,7 +31,6 @@ namespace OpenRA.FileFormats
 		public enum ClientState
 		{
 			NotReady,
-			Downloading,
 			Ready
 		}
 
@@ -49,7 +48,6 @@ namespace OpenRA.FileFormats
 		public class Global
 		{
 			public string Map;
-			public string[] Packages = {};	// filename:sha1 pairs.
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;
 			public int RandomSeed = 0;

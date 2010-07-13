@@ -359,25 +359,6 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
-				{ "addpkg",
-					s => 
-					{
-						Console.WriteLine("** Added package: `{0}`", s);
-						try
-						{
-							lobbyInfo.GlobalSettings.Packages = 
-								lobbyInfo.GlobalSettings.Packages.Concat( new string[] {
-									MakePackageString(s)}).ToArray();
-							SyncLobbyInfo();
-							return true;
-						}
-						catch
-						{
-							Console.WriteLine("Adding the package failed.");
-							SendChatTo( conn, "Adding the package failed." );
-							return true;
-						}
-					}},
 				{ "mods",
 					s =>
 					{
