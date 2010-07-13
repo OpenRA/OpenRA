@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public void Tick( World world )
 		{
-			if( PlayerIsAllowedToRepair( world ) )
+			if( !PlayerIsAllowedToRepair( world ) )
 				Game.controller.CancelInputMode();
 		}
 
