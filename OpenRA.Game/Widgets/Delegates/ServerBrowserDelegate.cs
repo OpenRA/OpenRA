@@ -31,68 +31,16 @@ namespace OpenRA.Widgets.Delegates
 	{
 		static List<Widget> GameButtons = new List<Widget>();
 
+		GameServer currentServer = null;
+		Widget ServerTemplate;
+
 		public ServerBrowserDelegate()
 		{
 			var r = Chrome.rootWidget;	
 			var bg = r.GetWidget("JOINSERVER_BG");
 			var dc = r.GetWidget("DIRECTCONNECT_BG");
-			
-			MasterServerQuery.OnComplete += games =>
-				{
-					if (games == null)
-					{
-						r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-						r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Failed to contact master server.";
-						return;
-					}
-
-					if (games.Length == 0)
-					{
-						r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-						r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";
-						return;
-					}
-
-					r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
-
-					var margin = 20;
-					int height = 50;
-					int i = 0;
-
-					foreach (var game in games.Where( g => g.State == 1 ))	/* only "waiting for players" */
-					{
-						var g = game;
-						var b = new ButtonWidget
-						{
-							Bounds = new Rectangle(margin, height, bg.Bounds.Width - 2 * margin, 25),
-							Id = "JOIN_GAME_{0}".F(i),
-							Text = "{0} ({2}/8, {3}) {1}".F(			/* /8 = hack */
-								game.Name, 
-								game.Address, 
-								game.Players, 
-								string.Join( ",", game.Mods )),
-							Delegate = "ServerBrowserDelegate",
-
-							OnMouseUp = nmi =>
-							{
-								r.GetWidget("JOINSERVER_BG").Visible = false;
-							
-								Game.Settings.LastServer = g.Address;
-								Game.Settings.Save();
-							
-								Game.JoinServer(g.Address.Split(':')[0], int.Parse(g.Address.Split(':')[1]));
-								Game.SetGameId(g.Id);
-								return true;
-							},
-						};
-
-						bg.AddChild(b);
-						GameButtons.Add(b);
-
-						height += 35;
-					}
-
-				};
+						
+			MasterServerQuery.OnComplete += games => RefreshServerList(games);
 
 			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi =>
 			{
@@ -108,8 +56,29 @@ namespace OpenRA.Widgets.Delegates
 
 				return true;
 			};
+			
+			bg.GetWidget("SERVER_INFO").IsVisible = () => currentServer != null;
+			bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => CurrentMap();
+			bg.GetWidget("MAP_CONTAINER").IsVisible = () => CurrentMap() != null;
+			
+			bg.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
+			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => string.Join( ",", currentServer.Mods );
+			bg.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
+			bg.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () =>
+			{
+				if (currentServer == null)
+					return "";
+				string ret = currentServer.Players.ToString();
+				if (CurrentMap() != null)
+					ret += "/"+CurrentMap().PlayerCount.ToString();
+				return ret;
+			};
+			
+			
+			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
+			ServerTemplate = sl.GetWidget<LabelWidget>("SERVER_TEMPLATE");
 
-			bg.GetWidget("JOINSERVER_BUTTON_REFRESH").OnMouseUp = mi =>
+			bg.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
 			{
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
@@ -122,13 +91,14 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
-			bg.GetWidget("JOINSERVER_BUTTON_CANCEL").OnMouseUp = mi =>
+			bg.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 			{
 				r.CloseWindow();
 				return true;
 			};
 
-			bg.GetWidget("JOINSERVER_BUTTON_DIRECTCONNECT").OnMouseUp = mi => {
+			bg.GetWidget("DIRECTCONNECT_BUTTON").OnMouseUp = mi =>
+			{
 				r.CloseWindow();
 				
 				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.LastServer;
@@ -136,7 +106,37 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			dc.GetWidget("BUTTON_START").OnMouseUp = mi => {
+			bg.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
+			{
+				if (currentServer == null)
+					return false;
+				
+				// Todo: Add an error dialog explaining why we aren't letting them join
+				// Or even better, reject them server side and display the error in the connection failed dialog.
+				
+				// Don't bother joining a server with different mods... its only going to crash
+				if (currentServer.Mods.SymmetricDifference(Game.LobbyInfo.GlobalSettings.Mods).Any())
+				{
+					System.Console.WriteLine("Player has different mods to server; not connecting to avoid crash");
+					System.Console.WriteLine("FIX THIS BUG YOU NOOB!");
+					return false;
+				}
+				
+				// Prevent user joining a full server
+				if (CurrentMap() != null && currentServer.Players >= CurrentMap().PlayerCount)
+				{
+					System.Console.WriteLine("Server is full; not connecting");
+					return false;
+				}
+				
+				r.CloseWindow();
+				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
+				Game.SetGameId(currentServer.Id);
+				return true;
+			};
+			
+			// Direct Connect
+			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi => {
 				
 				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
 				var cpts = address.Split(':').ToArray();
@@ -151,10 +151,65 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			dc.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
+			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi => {
 				r.CloseWindow();
 				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};
+		}
+		
+		MapStub CurrentMap()
+		{
+			return (currentServer == null || !Game.AvailableMaps.ContainsKey(currentServer.Map)) ? null : Game.AvailableMaps[currentServer.Map];	
+		}
+		
+		void RefreshServerList(IEnumerable<GameServer> games)
+		{
+			var r = Chrome.rootWidget;	
+			var bg = r.GetWidget("JOINSERVER_BG");
+			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
+
+			sl.Children.Clear();
+			currentServer = null;
+			
+			if (games == null)
+			{
+				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Failed to contact master server.";
+				return;
+			}
+
+			if (games.Count() == 0)
+			{
+				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";
+				return;
+			}
+
+			r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
+	
+			int offset = ServerTemplate.Bounds.Y;
+			int i = 0;
+			foreach (var game in games.Where( g => g.State == 1 ))	/* only "waiting for players" */
+			{						
+				var template = ServerTemplate.Clone() as LabelWidget;
+				template.Id = "JOIN_GAME_{0}".F(i);
+				template.GetText = () => "   {0} ({1})".F(			/* /8 = hack */
+						game.Name, 
+						game.Address);
+				template.GetBackground = () => ((currentServer == game) ? "dialog2" : null);
+				template.OnMouseDown = mi => {currentServer = game; return true;};
+				template.Parent = sl;			
+				
+				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
+				template.IsVisible = () => true;
+				sl.AddChild(template);
+				
+				if (i == 0) currentServer = game;
+				
+				offset += template.Bounds.Height;
+				sl.ContentHeight += template.Bounds.Height;
+				i++;
+			}
 		}
 	}
 }

@@ -322,45 +322,155 @@ Container:
 			Delegate:ServerBrowserDelegate
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:450
-			Height:400
+			Width:700
+			Height:410
 			Visible:false
 			Children:
 				Label@JOINSERVER_LABEL_TITLE:
 					Id:JOINSERVER_LABEL_TITLE
 					X:0
 					Y:20
-					Width:450
+					Width:PARENT_RIGHT
 					Height:25
-					Text:Quick'n'dirty Server Browser
+					Text:Join Server
 					Align:Center
 					Bold:True
+				ListBox@SERVER_LIST:
+					Id:SERVER_LIST
+					X:20
+					Y:50
+					Width:390
+					Height:300
+					Children:
+						Label@SERVER_TEMPLATE:
+							Id:SERVER_TEMPLATE
+							Width:PARENT_RIGHT-28
+							Height:25
+							ClickThrough:false
+							X:2
+							Y:0
+							Visible:false
 				Label@JOINSERVER_PROGRESS_TITLE:
 					Id:JOINSERVER_PROGRESS_TITLE
-					X:0
+					X:150
 					Y:PARENT_BOTTOM / 2 - HEIGHT
-					Width:450
-					Height:25
+					Width:150
+					Height:30
+					Background:dialog4
 					Text:Fetching games...
 					Align:Center
-				Button@JOINSERVER_BUTTON_DIRECTCONNECT:
-					Id:JOINSERVER_BUTTON_DIRECTCONNECT
-					X:PARENT_RIGHT - 140 - 130 - 130
+				Container@SERVER_INFO:
+					Id:SERVER_INFO
+					X:0
+					Y:0
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Visible:false
+					Children:
+						Label@SERVER_IP_LABEL:
+							Id:SERVER_IP_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:50
+							Align:Right
+							Width:70
+							Height:20
+							Text:Server:
+							Bold:True
+						Label@SERVER_IP:
+							Id:SERVER_IP
+							X:PARENT_RIGHT - 195
+							Y:50
+							Align:Left
+							Width:70
+							Height:20
+						Label@SERVER_MODS_LABEL:
+							Id:SERVER_MODS_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:70
+							Align:Right
+							Width:70
+							Height:20
+							Text:Mods:
+							Bold:True
+						Label@SERVER_MODS:
+							Id:SERVER_MODS
+							X:PARENT_RIGHT - 195
+							Y:70
+							Align:Left
+							Width:70
+							Height:20
+						Label@MAP_TITLE_LABEL:
+							Id:MAP_TITLE_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:90
+							Align:Right
+							Width:70
+							Height:20
+							Text:Map:
+							Bold:True
+						Label@MAP_TITLE:
+							Id:MAP_TITLE
+							X:PARENT_RIGHT - 195
+							Y:90
+							Align:Left
+							Width:70
+							Height:20
+						Label@MAP_PLAYERS_LABEL:
+							Id:MAP_PLAYERS_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:110
+							Align:Right
+							Width:70
+							Height:20
+							Text:Players:
+							Bold:True
+						Label@MAP_PLAYERS:
+							Id:MAP_PLAYERS
+							X:PARENT_RIGHT - 195
+							Y:110
+							Align:Left
+							Width:70
+							Height:20
+						Background@MAP_CONTAINER:
+							Id:MAP_CONTAINER
+							X:PARENT_RIGHT-245
+							Y:140
+							Width:200
+							Height:200
+							Background:dialog3
+							Children:
+								MapPreview@MAP_PREVIEW:
+									Id:MAP_PREVIEW
+									X:4
+									Y:4
+									Width:192
+									Height:192
+				Button@DIRECTCONNECT_BUTTON:
+					Id:DIRECTCONNECT_BUTTON
+					X:20
 					Y:PARENT_BOTTOM - 45
 					Width:120
 					Height:25
 					Text:Direct Connect
 					Bold:True
-				Button@JOINSERVER_BUTTON_REFRESH:
-					Id:JOINSERVER_BUTTON_REFRESH
-					X:PARENT_RIGHT - 140 - 130
+				Button@REFRESH_BUTTON:
+					Id:REFRESH_BUTTON
+					X:160
 					Y:PARENT_BOTTOM - 45
 					Width:120
 					Height:25
 					Text:Refresh
 					Bold:True
-				Button@JOINSERVER_BUTTON_CANCEL:
-					Id:JOINSERVER_BUTTON_CANCEL
+				Button@JOIN_BUTTON:
+					Id:JOIN_BUTTON
+					X:PARENT_RIGHT - 140 - 130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Join
+					Bold:True
+				Button@CANCEL_BUTTON:
+					Id:CANCEL_BUTTON
 					X:PARENT_RIGHT - 140
 					Y:PARENT_BOTTOM - 45
 					Width:120
@@ -400,16 +510,16 @@ Container:
 					Width:200
 					MaxLength:50
 					Height:25
-				Button@BUTTON_START:
-					Id:BUTTON_START
+				Button@JOIN_BUTTON:
+					Id:JOIN_BUTTON
 					X:130
 					Y:PARENT_BOTTOM - 45
 					Width:120
 					Height:25
 					Text:Join
 					Bold:True
-				Button@BUTTON_CANCEL:
-					Id:BUTTON_CANCEL
+				Button@CANCEL_BUTTON:
+					Id:CANCEL_BUTTON
 					X:260
 					Y:PARENT_BOTTOM - 45
 					Width:120
@@ -775,6 +885,19 @@ Container:
 							X:2
 							Y:0
 							Visible:false
+				Background@MAPCHOOSER_MAP_BG:
+					X:PARENT_RIGHT-268
+					Y:50
+					Width:252
+					Height:252
+					Background:dialog3
+					Children:
+						MapPreview@MAPCHOOSER_MAP_PREVIEW:
+							Id:MAPCHOOSER_MAP_PREVIEW
+							X:4
+							Y:4
+							Width:244
+							Height:244
 				Label@CURMAP_TITLE_LABEL:
 					Id:CURMAP_TITLE_LABEL
 					X:PARENT_RIGHT - 200 - WIDTH
@@ -839,19 +962,6 @@ Container:
 					Align:Left
 					Width:70
 					Height:20
-				Background@MAPCHOOSER_MAP_BG:
-					X:PARENT_RIGHT-268
-					Y:50
-					Width:252
-					Height:252
-					Background:dialog3
-					Children:
-						MapPreview@MAPCHOOSER_MAP_PREVIEW:
-							Id:MAPCHOOSER_MAP_PREVIEW
-							X:4
-							Y:4
-							Width:244
-							Height:244
 				Button@BUTTON_OK:
 					Id:BUTTON_OK
 					X:PARENT_RIGHT - 360
@@ -1101,5 +1211,3 @@ Container:
 							Height:25
 							ImageCollection:music
 							ImageName:prev
-
-
