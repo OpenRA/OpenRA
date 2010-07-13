@@ -51,12 +51,14 @@ namespace OpenRA.Widgets
 		{
 			OnLoseFocus();
 			var lose = base.LoseFocus(mi);
-			System.Console.WriteLine("{1} asked to lose focus; returning {0}",lose, this.Id);
 			return lose;
 		}
 
 		public override bool HandleInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Move)
+				return false;
+			
 			// Lose focus if they click outside the box; return false so the next widget can grab this event
 			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location.X,mi.Location.Y) && LoseFocus(mi))
 				return false;
