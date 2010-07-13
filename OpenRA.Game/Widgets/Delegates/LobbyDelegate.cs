@@ -50,6 +50,7 @@ namespace OpenRA.Widgets.Delegates
 			map.Map = () => {return Map;};
 			map.OnSpawnClick = sp =>
 			{			
+				if (Game.LocalClient.State == Session.ClientState.Ready) return;
 				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
 				if (sp == 0 || !owned)
 					Game.IssueOrder(Order.Command("spawn {0}".F(sp)));

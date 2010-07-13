@@ -29,9 +29,7 @@ namespace OpenRA.Widgets
 
 		const int closeEnough = 50;
 		public override bool HandleInput(MouseInput mi)
-		{
-			if (Game.LocalClient.State == Session.ClientState.Ready) return false;
-			
+		{			
 			var map = Map();
 			if (map == null)
 				return false;
