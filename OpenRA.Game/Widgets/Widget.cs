@@ -152,23 +152,30 @@ namespace OpenRA.Widgets
 		}
 		
 		
-		public bool Focused { get { return Chrome.selectedWidget == this; } }
+		public static Widget SelectedWidget;
+		public bool Focused { get { return SelectedWidget == this; } }
 		public virtual bool TakeFocus(MouseInput mi)
 		{
 			if (Focused)
 				return true;
 			
-			if (Chrome.selectedWidget != null && !Chrome.selectedWidget.LoseFocus(mi))
+			if (SelectedWidget != null && !SelectedWidget.LoseFocus(mi))
 				return false;
-			Chrome.selectedWidget = this;
+			SelectedWidget = this;
 			return true;
 		}
 		
 		// Remove focus from this widget; return false if you don't want to give it up
 		public virtual bool LoseFocus(MouseInput mi)
 		{
-			if (Chrome.selectedWidget == this)
-				Chrome.selectedWidget = null;
+			// Some widgets may need to override focus depending on mouse click
+			return LoseFocus();
+		}
+		
+		public virtual bool LoseFocus()
+		{
+			if (SelectedWidget == this)
+				SelectedWidget = null;
 			
 			return true;
 		}

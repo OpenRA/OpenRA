@@ -48,13 +48,10 @@ namespace OpenRA
 				rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
 				rootWidget.Initialize();
 				rootWidget.InitDelegates();
-				Widget.WindowList.Push("MAINMENU_BG");
 			}
 		}
 
 		public static Widget rootWidget = null;
-		public static Widget selectedWidget;
-		public static ChatDisplayWidget chatWidget;
 
 		public void Tick(World world)
 		{
@@ -71,7 +68,7 @@ namespace OpenRA
 		public int2 lastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
-			if (selectedWidget != null && selectedWidget.HandleMouseInputOuter(mi))
+			if (Widget.SelectedWidget != null && Widget.SelectedWidget.HandleMouseInputOuter(mi))
 				return true;
 			
 			if (rootWidget.HandleMouseInputOuter(mi))
@@ -88,8 +85,8 @@ namespace OpenRA
 		
 		public bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
 		{
-			if (selectedWidget != null)
-				return selectedWidget.HandleKeyPressOuter(e, modifiers);
+			if (Widget.SelectedWidget != null)
+				return Widget.SelectedWidget.HandleKeyPressOuter(e, modifiers);
 			
 			if (rootWidget.HandleKeyPressOuter(e, modifiers))
 				return true;
@@ -98,7 +95,7 @@ namespace OpenRA
 		
 		public bool HitTest(int2 mousePos)
 		{
-			if (selectedWidget != null)
+			if (Widget.SelectedWidget != null)
 				return true;
 			
 			return rootWidget.HitTest(mousePos);

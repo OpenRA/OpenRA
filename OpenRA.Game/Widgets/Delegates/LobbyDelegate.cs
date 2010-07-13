@@ -101,9 +101,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
-			
-			Chrome.chatWidget = lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY");
-			
+			Game.AddChatLine += (c,n,s) => lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c,n,s);
 			
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
@@ -158,14 +156,13 @@ namespace OpenRA.Widgets.Delegates
 						if (name.Text.Length == 0)
 							name.Text = c.Name;
 						
-						Chrome.selectedWidget = null;
+						name.LoseFocus();
 						if (name.Text == c.Name)
 							return true;
 						
 						Game.IssueOrder(Order.Command( "name "+name.Text ));
 						Game.Settings.PlayerName = name.Text;
 						Game.Settings.Save();
-						Chrome.selectedWidget = null;
 						return true;
 					};
 					name.OnLoseFocus = () => name.OnEnterKey();

@@ -412,7 +412,7 @@ namespace OpenRA
 		{
 			LoadMap(LobbyInfo.GlobalSettings.Map);
 			if (orderManager.GameStarted) return;
-			Chrome.selectedWidget = null;
+			Widget.SelectedWidget = null;
 			
 			world.Queries = new World.AllQueries(world);
 
@@ -625,11 +625,12 @@ namespace OpenRA
 		}
 
 		public static void Exit() { quit = true; }
+		
+		public static Action<Color,string,string> AddChatLine = (c,n,s) => {};
 
 		public static void Debug(string s) 	
 		{
-			if (Chrome.chatWidget != null)
-				Chrome.chatWidget.AddLine(Color.White, "Debug", s); 
+			AddChatLine(Color.White, "Debug", s); 
 		}
 
 		public static void Disconnect()
