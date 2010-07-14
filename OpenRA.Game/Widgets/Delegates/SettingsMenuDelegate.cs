@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenRA.FileFormats.Graphics;
 using System.Windows.Forms;
+using OpenRA.GameRules;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -69,38 +70,38 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
-			Game.Settings.WindowedSize.X = (Game.Settings.WindowedSize.X < Game.Settings.MinResolution.X)?
-				Game.Settings.MinResolution.X : Game.Settings.WindowedSize.X;
+			Game.Settings.WindowedSize.X = (Game.Settings.WindowedSize.X < UserSettings.MinResolution.X)?
+				UserSettings.MinResolution.X : Game.Settings.WindowedSize.X;
 			width.Text = Game.Settings.WindowedSize.X.ToString();
 			width.OnLoseFocus = () =>
 			{
 				try {
 					var w = int.Parse(width.Text);
-					if (w > Game.Settings.MinResolution.X && w <= Screen.PrimaryScreen.Bounds.Size.Width)
+					if (w > UserSettings.MinResolution.X && w <= Screen.PrimaryScreen.Bounds.Size.Width)
 						Game.Settings.WindowedSize = new int2(w, Game.Settings.WindowedSize.Y);
 					else
 						width.Text = Game.Settings.WindowedSize.X.ToString();
 				}
-				catch (FormatException e) {
+				catch (FormatException) {
 					width.Text = Game.Settings.WindowedSize.X.ToString();
 				}
 			};
 			width.OnEnterKey = () => { width.LoseFocus(); return true; };
 			
 			var height = display.GetWidget<TextFieldWidget>("SCREEN_HEIGHT");
-			Game.Settings.WindowedSize.Y = (Game.Settings.WindowedSize.Y < Game.Settings.MinResolution.Y)?
-				Game.Settings.MinResolution.Y : Game.Settings.WindowedSize.Y;
+			Game.Settings.WindowedSize.Y = (Game.Settings.WindowedSize.Y < UserSettings.MinResolution.Y)?
+				UserSettings.MinResolution.Y : Game.Settings.WindowedSize.Y;
 			height.Text = Game.Settings.WindowedSize.Y.ToString();
 			height.OnLoseFocus = () =>
 			{
 				try {
 					var h = int.Parse(height.Text);
-					if (h > Game.Settings.MinResolution.Y  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
+					if (h > UserSettings.MinResolution.Y  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
 						Game.Settings.WindowedSize = new int2(Game.Settings.WindowedSize.X, h);	
 					else 
 						height.Text = Game.Settings.WindowedSize.Y.ToString();
 				}
-				catch (System.FormatException) {
+				catch (FormatException) {
 					height.Text = Game.Settings.WindowedSize.Y.ToString();
 				}
 			};
