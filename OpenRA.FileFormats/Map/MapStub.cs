@@ -20,8 +20,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
@@ -50,8 +50,6 @@ namespace OpenRA.FileFormats
 		static List<string> Fields = new List<string>() {
 			"Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
-
-		public MapStub() { }
 
 		public MapStub(IFolder package)
 		{
