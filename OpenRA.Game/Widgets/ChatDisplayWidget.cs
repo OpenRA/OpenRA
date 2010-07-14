@@ -28,6 +28,7 @@ namespace OpenRA.Widgets
 	{
 		const int logLength = 10;
 		public string Notification = "";
+		public bool DrawBackground = true;
 
 		public List<ChatLine> recentLines = new List<ChatLine>();
 
@@ -42,7 +43,9 @@ namespace OpenRA.Widgets
 			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
-			WidgetUtils.DrawPanel("dialog3", chatLogArea);
+			
+			if (DrawBackground)
+				WidgetUtils.DrawPanel("dialog3", chatLogArea);
 
 			var renderer = Game.chrome.renderer;
 			var font = renderer.RegularFont;

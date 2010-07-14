@@ -5,21 +5,6 @@ Container@ROOT:
 			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
-				ChatDisplay@INGAME_CHAT_DISPLAY:
-					Id:INGAME_CHAT_DISPLAY
-					X:220
-					Y:WINDOW_BOTTOM - HEIGHT - 30
-					Width: 760
-					Height: 200
-					Visible: True
-					Delegate: ChatDelegate
-				ChatEntry@INGAME_CHAT_ENTRY:
-					Id:INGAME_CHAT_ENTRY
-					X:220
-					Y:WINDOW_BOTTOM - HEIGHT
-					Width: 760
-					Height: 30
-					Visible: True
 				PostGame@POSTGAME_TEXT:
 					Id:POSTGAME_TEXT
 					X:0
@@ -140,6 +125,24 @@ Container@ROOT:
 							Text:Diplomacy
 							Align:Center
 							Bold:True
+				ChatDisplay@INGAME_CHAT_DISPLAY:
+					Id:INGAME_CHAT_DISPLAY
+					X:250
+					Y:WINDOW_BOTTOM - HEIGHT - 30
+					Width: 760
+					Height: 200
+					Visible: True
+					Delegate: ChatDelegate
+					ClickThrough: True
+					DrawBackground: False
+				ChatEntry@INGAME_CHAT_ENTRY:
+					Id:INGAME_CHAT_ENTRY
+					X:250
+					Y:WINDOW_BOTTOM - HEIGHT
+					Width: 760
+					Height: 30
+					Visible: True
+					ClickThrough: True
 		Background@PERF_BG:
 			ClickThrough:true
 			Id:PERF_BG

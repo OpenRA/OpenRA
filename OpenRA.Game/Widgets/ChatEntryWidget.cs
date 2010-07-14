@@ -26,20 +26,27 @@ namespace OpenRA.Widgets
 	// a dirty hack of a widget, which likes to steal the focus when \r is pressed, and then
 	// refuse to give it up until \r is pressed again.
 
+	// this emulates the previous chat support, with one improvement: shift+enter can toggle the
+	// team/all mode *while* composing, not just on beginning to compose.
+
 	class ChatEntryWidget : Widget
 	{
 		string content = "";
-		bool composing = true;
+		bool composing = false;
+		bool teamChat = false;
 
 		public override void DrawInner(World world)
 		{
-			//if (!composing)
-			//	return;
+			if (composing)
+			{
+				var text = teamChat ? "Chat (Team): " : "Chat (All): ";
+				var w = Game.chrome.renderer.BoldFont.Measure(text).X;
 
-			Game.chrome.renderer.BoldFont.DrawText("Chat:", RenderOrigin + new float2(3, 7), Color.White);
-			Game.chrome.renderer.RegularFont.DrawText(content, RenderOrigin + new float2(40, 7), Color.White);
+				Game.chrome.renderer.BoldFont.DrawText(text, RenderOrigin + new float2(3, 7), Color.White);
+				Game.chrome.renderer.RegularFont.DrawText(content, RenderOrigin + new float2(3 + w, 7), Color.White);
 
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			}
 		}
 
 		public override bool LoseFocus(MouseInput mi)
@@ -47,15 +54,25 @@ namespace OpenRA.Widgets
 			return composing ? false : base.LoseFocus(mi);
 		}
 
+		public override bool HandleInput(MouseInput mi) { return false; }
+
 		public override bool HandleKeyPress(KeyPressEventArgs e, Modifiers modifiers)
 		{
 			if (e.KeyChar == '\r')
 			{
 				if (composing)
 				{
+					if (modifiers.HasModifier(Modifiers.Shift))
+					{
+						teamChat ^= true;
+						return true;
+					}
+
 					composing = false;
 					if (content != "")
-						Game.IssueOrder(Order.Chat(content));
+						Game.IssueOrder(teamChat
+							? Order.TeamChat(content)
+							: Order.Chat(content));
 					content = "";
 
 					LoseFocus();
@@ -64,6 +81,8 @@ namespace OpenRA.Widgets
 				else
 				{
 					TakeFocus(new MouseInput());
+					composing = true;
+					teamChat ^= modifiers.HasModifier(Modifiers.Shift);
 					return true;
 				}
 			}
@@ -74,6 +93,7 @@ namespace OpenRA.Widgets
 				{
 					if (content.Length > 0)
 						content = content.Remove(content.Length - 1);
+					return true;
 				}
 				else if (!char.IsControl(e.KeyChar))
 				{
