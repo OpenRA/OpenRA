@@ -18,12 +18,9 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System;
 
 namespace OpenRA.Widgets
 {
@@ -33,12 +30,12 @@ namespace OpenRA.Widgets
 		public string Notification = "";
 
 		public List<ChatLine> recentLines = new List<ChatLine>();
-		
+
 		public ChatDisplayWidget()
-			: base() {}
-		
-		public ChatDisplayWidget(Widget widget)
-			:base(widget) {}
+			: base() { }
+
+		protected ChatDisplayWidget(Widget widget)
+			: base(widget) { }
 
 		public override void DrawInner(World world)
 		{
@@ -46,10 +43,10 @@ namespace OpenRA.Widgets
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
 			WidgetUtils.DrawPanel("dialog3", chatLogArea);
-			
+
 			var renderer = Game.chrome.renderer;
 			var font = renderer.RegularFont;
-			
+
 			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
@@ -67,18 +64,20 @@ namespace OpenRA.Widgets
 		public void AddLine(Color c, string from, string text)
 		{
 			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
-			
+
 			if (Notification != null)
 				Sound.Play(Notification);
-			
+
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
-		
-		public override Widget Clone()
-		{	
-			return new ChatDisplayWidget(this);
-		}
-	}
-	class ChatLine { public Color Color = Color.White; public string Owner, Text; public bool wrapped = false; }
 
+		public override Widget Clone() { return new ChatDisplayWidget(this); }
+	}
+
+	class ChatLine
+	{
+		public Color Color = Color.White;
+		public string Owner, Text;
+		public bool wrapped = false;
+	}
 }

@@ -18,8 +18,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OpenRA.Widgets
 {
@@ -29,24 +29,24 @@ namespace OpenRA.Widgets
 		public int MaxLength = 0;
 		public bool Bold = false;
 		public int VisualHeight = 1;
-		public Func<bool> OnEnterKey = () => {return false;};
-		public Func<bool> OnTabKey = () => {return false;};
-		public Action OnLoseFocus = () => {};
+		public Func<bool> OnEnterKey = () => false;
+		public Func<bool> OnTabKey = () => false;
+		public Action OnLoseFocus = () => { };
 
 		public TextFieldWidget()
 			: base()
 		{
 		}
-		
-		public TextFieldWidget(Widget widget)
-			:base(widget)
+
+		protected TextFieldWidget(TextFieldWidget widget)
+			: base(widget)
 		{
-			Text = (widget as TextFieldWidget).Text;
-			MaxLength = (widget as TextFieldWidget).MaxLength;
-			Bold = (widget as TextFieldWidget).Bold;
-			VisualHeight = (widget as TextFieldWidget).VisualHeight;
+			Text = widget.Text;
+			MaxLength = widget.MaxLength;
+			Bold = widget.Bold;
+			VisualHeight = widget.VisualHeight;
 		}
-		
+
 		public override bool LoseFocus(MouseInput mi)
 		{
 			OnLoseFocus();
@@ -58,35 +58,35 @@ namespace OpenRA.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
-			
+
 			// Lose focus if they click outside the box; return false so the next widget can grab this event
-			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location.X,mi.Location.Y) && LoseFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location.X, mi.Location.Y) && LoseFocus(mi))
 				return false;
-			
+
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
-			
+
 			blinkCycle = 10;
 			showCursor = true;
 			return true;
 		}
-		
+
 		public override bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
 		{
 			// Only take input if we are focused
 			if (!Focused)
 				return false;
-			
+
 			if (e.KeyChar == '\r' && OnEnterKey())
 				return true;
-			
+
 			if (e.KeyChar == '\t' && OnTabKey())
 				return true;
-			
+
 			TypeChar(e.KeyChar);
 			return true;
 		}
-		
+
 		public void TypeChar(char c)
 		{
 			if (c == '\b' || c == 0x7f)
@@ -98,11 +98,11 @@ namespace OpenRA.Widgets
 			{
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
-				
+
 				Text += c;
 			}
 		}
-		
+
 		int blinkCycle = 10;
 		bool showCursor = true;
 		public override void Tick(World world)
@@ -114,7 +114,7 @@ namespace OpenRA.Widgets
 			}
 			base.Tick(world);
 		}
-		
+
 		public override void DrawInner(World world)
 		{
 			int margin = 5;
@@ -122,34 +122,31 @@ namespace OpenRA.Widgets
 			var cursor = (showCursor && Focused) ? "|" : "";
 			var textSize = font.Measure(Text + "|");
 			var pos = RenderOrigin;
-			
-			WidgetUtils.DrawPanel("dialog3", 
-				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height ) );
-			
+
+			WidgetUtils.DrawPanel("dialog3",
+				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
+
 			// Inset text by the margin and center vertically
-			var textPos = pos + new int2( margin, (Bounds.Height - textSize.Y)/2 - VisualHeight);
-		
+			var textPos = pos + new int2(margin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
+
 			// Right align when editing and scissor when the text overflows
-			if (textSize.X > Bounds.Width - 2*margin)
+			if (textSize.X > Bounds.Width - 2 * margin)
 			{
 				if (Focused)
-					textPos += new int2(Bounds.Width - 2*margin - textSize.X,0);
-				
-				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2*margin, Bounds.Bottom);
+					textPos += new int2(Bounds.Width - 2 * margin - textSize.X, 0);
+
+				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
 			}
-			
+
 			font.DrawText(Text + cursor, textPos, Color.White);
-			
-			if (textSize.X > Bounds.Width - 2*margin)
+
+			if (textSize.X > Bounds.Width - 2 * margin)
 			{
 				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 				Game.chrome.renderer.Device.DisableScissor();
 			}
 		}
-		
-		public override Widget Clone()
-		{	
-			return new TextFieldWidget(this);
-		}
+
+		public override Widget Clone() { return new TextFieldWidget(this); }
 	}
 }

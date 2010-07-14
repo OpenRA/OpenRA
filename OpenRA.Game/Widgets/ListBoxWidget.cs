@@ -1,4 +1,3 @@
-using System.Drawing;
 #region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
@@ -18,6 +17,8 @@ using System.Drawing;
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
+
+using System.Drawing;
 
 namespace OpenRA.Widgets
 {
@@ -39,17 +40,17 @@ namespace OpenRA.Widgets
 		Rectangle scrollbarRect;
 		
 		public ListBoxWidget() : base() {}
-		public ListBoxWidget(Widget other)
+		protected ListBoxWidget(ListBoxWidget other)
 			: base(other)
 		{
-			Background = (other as ListBoxWidget).Background;
-			upButtonRect = (other as ListBoxWidget).upButtonRect;
-			downButtonRect = (other as ListBoxWidget).downButtonRect;
-			scrollbarRect = (other as ListBoxWidget).scrollbarRect;
-			backgroundRect = (other as ListBoxWidget).backgroundRect;
+			Background = other.Background;
+			upButtonRect = other.upButtonRect;
+			downButtonRect = other.downButtonRect;
+			scrollbarRect = other.scrollbarRect;
+			backgroundRect = other.backgroundRect;
 			
-			UpPressed = (other as ListBoxWidget).UpPressed;	
-			DownPressed = (other as ListBoxWidget).DownPressed;
+			UpPressed = other.UpPressed;	
+			DownPressed = other.DownPressed;
 		}
 		
 		public override void DrawInner(World world) {}
@@ -57,31 +58,30 @@ namespace OpenRA.Widgets
 		{
 			if (!IsVisible())
 				return;
-			
+
 			backgroundRect = new Rectangle(RenderBounds.X, RenderBounds.Y, RenderBounds.Width - ScrollbarWidth, RenderBounds.Height);
 			upButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y, ScrollbarWidth, ScrollbarWidth);
 			downButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, RenderBounds.Height - 2*ScrollbarWidth);
+			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, RenderBounds.Height - 2 * ScrollbarWidth);
 
 			string upButtonBg = (UpPressed) ? "dialog3" : "dialog2";
 			string downButtonBg = (DownPressed) ? "dialog3" : "dialog2";
-			string scrolbarBg = "dialog3";
-			string scrollbarButton = "dialog2";
-			
+			string scrollbarBg = "dialog3";
+
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
 			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
-			WidgetUtils.DrawPanel(scrolbarBg, scrollbarRect);
-			
-			
+			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
+
 			Game.chrome.renderer.Device.EnableScissor(backgroundRect.X, backgroundRect.Y + HeaderHeight, backgroundRect.Width, backgroundRect.Height - HeaderHeight);
 
 			foreach (var child in Children)
-					child.Draw(world);
-			
+				child.Draw(world);
+
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			Game.chrome.renderer.Device.DisableScissor();
 		}
+
 		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)ListOffset); } }
 
 		public override void Tick (World world)

@@ -28,10 +28,6 @@ namespace OpenRA.Widgets
 	{
 		public PostGameWidget() : base() { }
 
-		public PostGameWidget(Widget other)	: base(other) { }
-
-		public override Widget Clone() { return new PostGameWidget(this); }
-
 		bool AreMutualAllies(Player a, Player b) { return a.Stances[b] == Stance.Ally && b.Stances[a] == Stance.Ally; }
 		
 		// todo: all this shit needs to move, probably to Player.

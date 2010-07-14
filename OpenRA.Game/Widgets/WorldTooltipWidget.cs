@@ -18,12 +18,11 @@
  */
 #endregion
 
-
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
@@ -32,10 +31,6 @@ namespace OpenRA.Widgets
 		const int worldTooltipDelay = 10;		/* ticks */
 
 		public WorldTooltipWidget() : base() { }
-
-		public WorldTooltipWidget(Widget other) : base(other) { }
-
-		public override Widget Clone() { return new WorldTooltipWidget(this); }
 		
 		public override void DrawInner(World world)
 		{
@@ -80,7 +75,9 @@ namespace OpenRA.Widgets
 				renderer.RegularFont.DrawText(text3,
 					new float2(Game.chrome.lastMousePos.X + 65 + sz2.X, Game.chrome.lastMousePos.Y + 50), Color.White);
 
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, "flags", actor.Owner.Country.Race), new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 50));
+				WidgetUtils.DrawRGBA(
+					ChromeProvider.GetImage(Game.chrome.renderer, "flags", actor.Owner.Country.Race),
+					new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 50));
 			}
 			
 			renderer.RgbaSpriteRenderer.Flush();

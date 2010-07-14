@@ -18,19 +18,14 @@
  */
 #endregion
 
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OpenRA.Widgets
 {
 	class LabelWidget : Widget
 	{
-		public enum TextAlign
-		{
-			Left,
-			Center,
-			Right
-		}
+		public enum TextAlign { Left, Center, Right }
 		
 		public string Text = null;
 		public string Background = null;
@@ -46,14 +41,14 @@ namespace OpenRA.Widgets
 			GetBackground = () => { return Background; };
 		}
 
-		public LabelWidget(Widget other)
+		protected LabelWidget(LabelWidget other)
 			: base(other)
 		{
-			Text = (other as LabelWidget).Text;
-			Align = (other as LabelWidget).Align;
-			Bold = (other as LabelWidget).Bold;
-			GetText = (other as LabelWidget).GetText;
-			GetBackground = (other as LabelWidget).GetBackground;
+			Text = other.Text;
+			Align = other.Align;
+			Bold = other.Bold;
+			GetText = other.GetText;
+			GetBackground = other.GetBackground;
 		}
 
 		public override void DrawInner(World world)
@@ -79,10 +74,7 @@ namespace OpenRA.Widgets
 
 			font.DrawText(text, position, Color.White);
 		}
-		
-		public override Widget Clone()
-		{	
-			return new LabelWidget(this);
-		}
+
+		public override Widget Clone() { return new LabelWidget(this); }
 	}
 }

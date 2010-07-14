@@ -17,7 +17,7 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-using System;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class MusicPlayerDelegate : IWidgetDelegate
@@ -26,8 +26,9 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var bg = Chrome.rootWidget.GetWidget("MUSIC_BG");
 			bg.Visible = Game.Settings.MusicPlayer;
-			
-			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
+			{
 				if (Sound.MusicStopped)
 					Sound.PlayMusic(GetSong());
 				Sound.MusicStopped = false;
@@ -36,19 +37,25 @@ namespace OpenRA.Widgets.Delegates
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 				return true;
 			};
-			bg.GetWidget("BUTTON_PAUSE").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_PAUSE").OnMouseUp = mi =>
+			{
 				Sound.MusicPaused = true;
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
 				return true;
 			};
-			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi =>
+			{
 				Sound.MusicStopped = true;
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
 				return true;
 			};
-			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi =>
+			{
 				Sound.PlayMusic(GetNextSong());
 				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
@@ -56,7 +63,9 @@ namespace OpenRA.Widgets.Delegates
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 				return true;
 			};
-			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi =>
+			{
 				Sound.PlayMusic(GetPrevSong());
 				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
@@ -65,21 +74,23 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 		}
-		
-		string GetNextSong() 
+
+		string GetNextSong()
 		{
 			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetNext(); 
+			return Rules.Music["allmusic"].Pool.GetNext();
 		}
-		string GetPrevSong() 
-		{ 
+
+		string GetPrevSong()
+		{
 			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetPrev(); 
+			return Rules.Music["allmusic"].Pool.GetPrev();
 		}
-		string GetSong() 
-		{ 
+
+		string GetSong()
+		{
 			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetCurrent(); 
+			return Rules.Music["allmusic"].Pool.GetCurrent();
 		}
 	}
 }

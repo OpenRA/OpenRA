@@ -11,32 +11,31 @@ namespace OpenRA.Widgets
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
 
-		public ImageWidget ()
+		public ImageWidget()
 			: base()
 		{
 			GetImageName = () => { return ImageName; };
 			GetImageCollection = () => { return ImageCollection; };
 		}
-		
-		public ImageWidget(Widget other)
+
+		protected ImageWidget(ImageWidget other)
 			: base(other)
 		{
-			ImageName = (other as ImageWidget).ImageName;
-			GetImageName = (other as ImageWidget).GetImageName;
-			ImageCollection = (other as ImageWidget).ImageCollection;
-			GetImageCollection = (other as ImageWidget).GetImageCollection;
+			ImageName = other.ImageName;
+			GetImageName = other.GetImageName;
+			ImageCollection = other.ImageCollection;
+			GetImageCollection = other.GetImageCollection;
 		}
-		
-		public override Widget Clone()
-		{	
-			return new ImageWidget(this);
-		}
-		
+
+		public override Widget Clone() { return new ImageWidget(this); }
+
 		public override void DrawInner(World world)
-		{		
+		{
 			var name = GetImageName();
 			var collection = GetImageCollection();
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, collection, name), RenderOrigin);
+			WidgetUtils.DrawRGBA(
+				ChromeProvider.GetImage(Game.chrome.renderer, collection, name), 
+				RenderOrigin);
 		}
 	}
 }

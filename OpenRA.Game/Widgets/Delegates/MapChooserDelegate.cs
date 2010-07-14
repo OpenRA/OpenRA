@@ -18,8 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -27,7 +25,7 @@ using OpenRA.FileFormats;
 namespace OpenRA.Widgets.Delegates
 {
 	public class MapChooserDelegate : IWidgetDelegate
-	{	
+	{
 		MapStub Map = null;
 		public MapChooserDelegate()
 		{
@@ -35,24 +33,26 @@ namespace OpenRA.Widgets.Delegates
 			var bg = r.GetWidget("MAP_CHOOSER");
 			bg.SpecialOneArg = (map) => RefreshMapList(map);
 			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
-			
-			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => {return Map;};
-			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => {return Map.Title;};
-			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => {return "{0}x{1}".F(Map.Width, Map.Height);};
-			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => {return Rules.TileSets[Map.Tileset].Name;};
-			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => {return Map.PlayerCount.ToString();};
-			
-			bg.GetWidget("BUTTON_OK").OnMouseUp = mi => {
+
+			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => Map;
+			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
+			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Width, Map.Height);
+			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
+			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
+
+			bg.GetWidget("BUTTON_OK").OnMouseUp = mi =>
+			{
 				Game.IssueOrder(Order.Command("map " + Map.Uid));
 				r.CloseWindow();
 				return true;
 			};
-			
-			bg.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
+
+			bg.GetWidget("BUTTON_CANCEL").OnMouseUp = mi =>
+			{
 				r.CloseWindow();
 				return true;
 			};
-			
+
 			var itemTemplate = ml.GetWidget<LabelWidget>("MAP_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			foreach (var kv in Game.AvailableMaps)
@@ -60,29 +60,29 @@ namespace OpenRA.Widgets.Delegates
 				var map = kv.Value;
 				if (!map.Selectable)
 					continue;
-				
+
 				var template = itemTemplate.Clone() as LabelWidget;
 				template.Id = "MAP_{0}".F(map.Uid);
-				template.GetText = () => "   "+map.Title;
+				template.GetText = () => "   " + map.Title;
 				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
-				template.OnMouseDown = mi => {Map = map; return true;};
-				template.Parent = ml;			
-				
+				template.OnMouseDown = mi => { Map = map; return true; };
+				template.Parent = ml;
+
 				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				ml.AddChild(template);
-				
+
 				offset += template.Bounds.Height;
 				ml.ContentHeight += template.Bounds.Height;
 			}
 		}
-		
+
 		public void RefreshMapList(object uidobj)
 		{
 			// Set the default selected map
 			var uid = uidobj as string;
 			if (uid != null)
-				Map = Game.AvailableMaps[ uid ];
+				Map = Game.AvailableMaps[uid];
 			else
 				Map = Game.AvailableMaps.FirstOrDefault().Value;
 		}

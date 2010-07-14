@@ -18,8 +18,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OpenRA.Widgets
 {
@@ -30,45 +30,45 @@ namespace OpenRA.Widgets
 		public bool Depressed = false;
 		public int VisualHeight = 1;
 		public Func<string> GetText;
-		
+
 		public ButtonWidget()
 			: base()
 		{
 			GetText = () => { return Text; };
 		}
-		
-		public ButtonWidget(Widget widget)
-			:base(widget)
+
+		protected ButtonWidget(ButtonWidget widget)
+			: base(widget)
 		{
-			Text = (widget as ButtonWidget).Text;
-			Depressed = (widget as ButtonWidget).Depressed;
-			VisualHeight = (widget as ButtonWidget).VisualHeight;
-			GetText = (widget as ButtonWidget).GetText;
+			Text = widget.Text;
+			Depressed = widget.Depressed;
+			VisualHeight = widget.VisualHeight;
+			GetText = widget.GetText;
 		}
-		
-		public override bool LoseFocus (MouseInput mi)
+
+		public override bool LoseFocus(MouseInput mi)
 		{
 			Depressed = false;
 			return base.LoseFocus(mi);
 		}
-		
+
 		public override bool HandleInput(MouseInput mi)
-		{			
+		{
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
-			
+
 			// Only fire the onMouseUp order if we successfully lost focus, and were pressed
 			if (Focused && mi.Event == MouseInputEvent.Up)
 			{
 				var wasPressed = Depressed;
 				return (LoseFocus(mi) && wasPressed);
 			}
-			
+
 			if (mi.Event == MouseInputEvent.Down)
 				Depressed = true;
 			else if (mi.Event == MouseInputEvent.Move && Focused)
-				Depressed = RenderBounds.Contains(mi.Location.X,mi.Location.Y);
-			
+				Depressed = RenderBounds.Contains(mi.Location.X, mi.Location.Y);
+
 			return Depressed;
 		}
 
@@ -76,19 +76,16 @@ namespace OpenRA.Widgets
 		{
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds );
-			
+			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds);
+
 			var text = GetText();
 			font.DrawText(text,
-				new int2( RenderOrigin.X + Bounds.Width / 2, RenderOrigin.Y + Bounds.Height / 2)
+				new int2(RenderOrigin.X + Bounds.Width / 2, RenderOrigin.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2) + stateOffset, Color.White);
 		}
-		
-		public override Widget Clone()
-		{	
-			return new ButtonWidget(this);
-		}
-			
+
+		public override Widget Clone() { return new ButtonWidget(this); }
+
 	}
 }

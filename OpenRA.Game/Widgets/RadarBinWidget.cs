@@ -44,10 +44,10 @@ namespace OpenRA.Widgets
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.
 
-			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2, 
+			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
 				192, radarMinimapHeight);
 
-			if (!mapRect.Contains(mi.Location.ToPointF())) 
+			if (!mapRect.Contains(mi.Location.ToPointF()))
 				return false;
 
 			var loc = Game.world.Minimap.MinimapPixelToCell(mapRect, mi.Location);
@@ -59,10 +59,10 @@ namespace OpenRA.Widgets
 			{
 				// fake a mousedown/mouseup here
 
-				var fakemi = new MouseInput 
+				var fakemi = new MouseInput
 				{
-					Event = MouseInputEvent.Down, 
-					Button = MouseButton.Right, 
+					Event = MouseInputEvent.Down,
+					Button = MouseButton.Right,
 					Modifiers = mi.Modifiers,
 					Location = (loc * Game.CellSize - Game.viewport.Location).ToInt2()
 				};
@@ -75,8 +75,6 @@ namespace OpenRA.Widgets
 
 			return true;
 		}
-		
-		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning RadarBin?"); }
 
 		public override void DrawInner(World world)
 		{
@@ -143,7 +141,7 @@ namespace OpenRA.Widgets
 				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
 
 			// Animation is complete
-			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength+radarActivateAnimationLength : 0))
+			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
 				radarAnimating = false;
 		}
 	}

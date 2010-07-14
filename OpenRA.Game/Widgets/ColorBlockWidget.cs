@@ -23,31 +23,32 @@ using System.Drawing;
 
 namespace OpenRA.Widgets
 {
-	class ColorBlockWidget : Widget 
+	class ColorBlockWidget : Widget
 	{
 		public Func<Color> GetColor;
-		
+
 		public ColorBlockWidget()
 			: base()
 		{
 			GetColor = () => Color.White;
 		}
-		
-		public ColorBlockWidget(Widget widget)
-			:base(widget)
+
+		protected ColorBlockWidget(ColorBlockWidget widget)
+			: base(widget)
 		{
-			GetColor = (widget as ColorBlockWidget).GetColor;
+			GetColor = widget.GetColor;
 		}
-		
+
 		public override Widget Clone()
-		{	
+		{
 			return new ColorBlockWidget(this);
 		}
-		
+
 		public override void DrawInner(World world)
 		{
 			var pos = RenderOrigin;
-			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X, pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
+			var paletteRect = new RectangleF(pos.X + Game.viewport.Location.X,
+				pos.Y + Game.viewport.Location.Y, Bounds.Width, Bounds.Height);
 			Game.chrome.lineRenderer.FillRect(paletteRect, GetColor());
 		}
 	}

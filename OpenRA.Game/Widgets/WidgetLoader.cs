@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;

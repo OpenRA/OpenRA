@@ -18,15 +18,14 @@
  */
 #endregion
 
-using System.Drawing;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA;
-using OpenRA.Traits;
-using OpenRA.Graphics;
-using OpenRA.FileFormats;
-using OpenRA.Orders;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
@@ -52,14 +51,6 @@ namespace OpenRA.Widgets
 		List<string> visibleTabs = new List<string>();
 		
 		public BuildPaletteWidget() : base() { }
-
-		public BuildPaletteWidget(Widget other)
-			: base(other)
-		{
-			throw new NotImplementedException("Why are you Cloning BuildPalette?");
-		}
-
-		public override Widget Clone() { return new BuildPaletteWidget(this); }
 		
 		public override void Initialize()
 		{

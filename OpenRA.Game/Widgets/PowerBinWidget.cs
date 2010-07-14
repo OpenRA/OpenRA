@@ -25,22 +25,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
-
 	public class PowerBinWidget : Widget
-	{		
+	{
 		// Power bar 
 		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
 		static Size powerSize = new Size(138, 5);
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		string powerCollection;
-		
-		public override Widget Clone() { throw new NotImplementedException("Why are you Cloning PowerBin?"); }
-		
+
 		public override void DrawInner(World world)
 		{
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
-			
+
 			var resources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
 
 			// Nothing to draw

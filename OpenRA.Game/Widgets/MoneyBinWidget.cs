@@ -36,12 +36,12 @@ namespace OpenRA.Widgets
 		/* legacy crap!!! */
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle, Action<MouseInput>>>();
 		void AddButton(Rectangle r, Action<MouseInput> b) { buttons.Add(Pair.New(r, b)); }
-	
+
 		public MoneyBinWidget() : base() { }
-		public MoneyBinWidget(Widget other) : base(other) { }
+		protected MoneyBinWidget(Widget other) : base(other) { }
 
 		public override Widget Clone() { return new MoneyBinWidget(this); }
-		
+
 		public override void DrawInner(World world)
 		{
 			var playerResources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
@@ -54,7 +54,7 @@ namespace OpenRA.Widgets
 				new float2(Bounds.Left, 0), "chrome");
 
 			// Cash
-			var cashDigits = (SplitOreAndCash ? playerResources.DisplayCash 
+			var cashDigits = (SplitOreAndCash ? playerResources.DisplayCash
 				: (playerResources.DisplayCash + playerResources.DisplayOre)).ToString();
 			var x = Bounds.Right - 65;
 
@@ -149,6 +149,6 @@ namespace OpenRA.Widgets
 			}
 
 			return false;
-		}		
+		}
 	}
 }

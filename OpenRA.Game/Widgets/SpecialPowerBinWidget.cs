@@ -18,14 +18,14 @@
  */
 #endregion
 
-using System.Drawing;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA;
-using OpenRA.Traits;
-using OpenRA.Graphics;
-using OpenRA.FileFormats;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Traits;
+
 namespace OpenRA.Widgets
 {
 	class SpecialPowerBinWidget : Widget
@@ -36,16 +36,6 @@ namespace OpenRA.Widgets
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 		
 		public SpecialPowerBinWidget() : base() { }
-
-		public SpecialPowerBinWidget(Widget other)
-			: base(other)
-		{
-			ready = (other as SpecialPowerBinWidget).ready;
-			clock = (other as SpecialPowerBinWidget).clock;
-			buttons = (other as SpecialPowerBinWidget).buttons;
-		}
-
-		public override Widget Clone() { return new SpecialPowerBinWidget(this); }
 		
 		public override void Initialize()
 		{

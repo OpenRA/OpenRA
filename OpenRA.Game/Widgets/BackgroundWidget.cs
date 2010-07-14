@@ -1,4 +1,3 @@
-using System.Drawing;
 #region Copyright & License Information
 /*
  * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
@@ -32,10 +31,10 @@ namespace OpenRA.Widgets
 		
 		public BackgroundWidget() : base() { }
 
-		public BackgroundWidget(Widget other)
+		protected BackgroundWidget(BackgroundWidget other)
 			: base(other)
 		{
-			Background = (other as BackgroundWidget).Background;
+			Background = other.Background;
 		}
 
 		public override Widget Clone() { return new BackgroundWidget(this); }

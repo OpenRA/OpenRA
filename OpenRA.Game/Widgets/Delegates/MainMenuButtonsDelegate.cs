@@ -17,8 +17,9 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-using System;
+
 using OpenRA.FileFormats;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class MainMenuButtonsDelegate : IWidgetDelegate
@@ -27,10 +28,10 @@ namespace OpenRA.Widgets.Delegates
 		{
 			// Main menu is the default window
 			Widget.WindowList.Push("MAINMENU_BG");
-			Chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => {Game.Exit(); return true;};
-			
+			Chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+
 			var version = Chrome.rootWidget.GetWidget("MAINMENU_BG").GetWidget<LabelWidget>("VERSION_STRING");
-			
+
 			if (FileSystem.Exists("VERSION"))
 			{
 				var s = FileSystem.Open("VERSION");

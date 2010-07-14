@@ -17,8 +17,8 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
+
 using System.Drawing;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Support;
 
@@ -28,18 +28,14 @@ namespace OpenRA.Widgets
 	{
 		public PerfGraphWidget() : base() { }
 
-		public PerfGraphWidget(Widget other)	: base(other) { }
-
-		public override Widget Clone() { return new PerfGraphWidget(this); }
-		
 		public override void DrawInner(World world)
 		{
 			var rect = RenderBounds;
-			float2 origin = Game.viewport.Location + new float2(rect.Right,rect.Bottom);
-			float2 basis = new float2(-rect.Width/100,-rect.Height/100);
+			float2 origin = Game.viewport.Location + new float2(rect.Right, rect.Bottom);
+			float2 basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
 			Game.chrome.lineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
-			Game.chrome.lineRenderer.DrawLine(origin + new float2(100,0) * basis, origin + new float2(100,100) * basis, Color.White, Color.White);
+			Game.chrome.lineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
 
 			foreach (var item in PerfHistory.items.Values)
 			{
@@ -48,7 +44,7 @@ namespace OpenRA.Widgets
 				{
 					Game.chrome.lineRenderer.DrawLine(
 						origin + new float2(n, (float)a) * basis,
-						origin + new float2(n+1, (float)b) * basis,
+						origin + new float2(n + 1, (float)b) * basis,
 						item.c, item.c);
 					++n;
 					return b;

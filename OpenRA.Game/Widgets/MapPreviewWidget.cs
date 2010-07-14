@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRA.Graphics;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -14,25 +13,26 @@ namespace OpenRA.Widgets
 		Sprite mapChooserSprite;
 		bool mapPreviewDirty = true;
 		MapStub lastMap;
-		
-		public Func<MapStub> Map = () => {return null;};
+
+		public Func<MapStub> Map = () => null;
 		public Action<int> OnSpawnClick = spawn => {};
-		public Func<Dictionary<int2,Color>> SpawnColors = () => {return new Dictionary<int2, Color>(); };
+		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
 		
 		public MapPreviewWidget() : base() { }
 
-		public MapPreviewWidget(Widget other)
+		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
-			lastMap = (other as MapPreviewWidget).lastMap;
-			Map = (other as MapPreviewWidget).Map;
-			OnSpawnClick = (other as MapPreviewWidget).OnSpawnClick;
-			SpawnColors = (other as MapPreviewWidget).SpawnColors;
+			lastMap = other.lastMap;
+			Map = other.Map;
+			OnSpawnClick = other.OnSpawnClick;
+			SpawnColors = other.SpawnColors;
 		}
 		
 		static Sprite UnownedSpawn = null;
 		static Sprite OwnedSpawn = null;
 		const int closeEnough = 50;
+
 		public override bool HandleInput(MouseInput mi)
 		{			
 			var map = Map();

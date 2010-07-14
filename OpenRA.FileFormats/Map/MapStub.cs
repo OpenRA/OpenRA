@@ -65,9 +65,9 @@ namespace OpenRA.FileFormats
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
 			}
-			
+
 			Preview = Lazy.New(
-				() => { return new Bitmap(Package.GetContent("preview.png")); }
+				() => new Bitmap(Package.GetContent("preview.png"))
 			);
 
 			Uid = Package.GetContent("map.uid").ReadAllText();

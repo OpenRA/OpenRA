@@ -17,8 +17,7 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-using System;
-using OpenRA.FileFormats;
+
 using OpenRA.Support;
 
 namespace OpenRA.Widgets.Delegates
@@ -29,19 +28,17 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Chrome.rootWidget;
 			var perfRoot = r.GetWidget("PERF_BG");
-			perfRoot.IsVisible = () => {return (perfRoot.Visible && Game.Settings.PerfDebug);};
-			
+			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.PerfDebug;
+
 			// Perf text
 			var perfText = perfRoot.GetWidget<LabelWidget>("TEXT");
-			perfText.GetText = () => {
-				return "Render {0} ({5}={2:F1} ms)\nTick {4} ({3:F1} ms)".F(
+			perfText.GetText = () => "Render {0} ({5}={2:F1} ms)\nTick {4} ({3:F1} ms)".F(
 					Game.RenderFrame,
 					Game.orderManager.FrameNumber,
 					PerfHistory.items["render"].LastValue,
 					PerfHistory.items["tick_time"].LastValue,
 					Game.LocalTick,
 					PerfHistory.items["batches"].LastValue);
-			};
 		}
 	}
 }

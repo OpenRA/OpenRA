@@ -22,8 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
-using OpenRA.Widgets.Delegates;
 
 namespace OpenRA.Widgets
 {
@@ -49,10 +49,10 @@ namespace OpenRA.Widgets
 		
 		// Common Funcs that most widgets will want
 		public Action<object> SpecialOneArg = (arg) => {};
-		public Func<MouseInput,bool> OnMouseDown = mi => {return false;};
-		public Func<MouseInput,bool> OnMouseUp = mi => {return false;};
-		public Func<MouseInput,bool> OnMouseMove = mi => {return false;};
-		public Func<System.Windows.Forms.KeyPressEventArgs, Modifiers,bool> OnKeyPress = (e,modifiers) => {return false;};
+		public Func<MouseInput, bool> OnMouseDown = mi => false;
+		public Func<MouseInput, bool> OnMouseUp = mi => false;
+		public Func<MouseInput, bool> OnMouseMove = mi => false;
+		public Func<KeyPressEventArgs, Modifiers, bool> OnKeyPress = (e, modifiers) => false;
 
 		public Func<bool> IsVisible;
 
@@ -82,49 +82,54 @@ namespace OpenRA.Widgets
 			foreach(var child in widget.Children)
 				AddChild(child.Clone());
 		}
-		
-		public abstract Widget Clone();
-		
+
+		public virtual Widget Clone()
+		{
+			throw new InvalidOperationException("Widget type `{0}` is not cloneable.".F(GetType().Name));
+		}
+
 		public virtual int2 RenderOrigin
 		{
-			get {
+			get
+			{
 				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
 				return new int2(Bounds.X, Bounds.Y) + offset;
 			}
 		}
+
 		public virtual int2 ChildOrigin	{ get { return RenderOrigin; } }
 		public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
-		
+
 		public virtual void Initialize()
 		{
 			// Parse the YAML equations to find the widget bounds
-			Rectangle parentBounds = (Parent == null) 
-				? new Rectangle(0,0,Game.viewport.Width,Game.viewport.Height) 
+			var parentBounds = (Parent == null)
+				? new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height)
 				: Parent.Bounds;
-			
-			Dictionary<string, int> substitutions = new Dictionary<string, int>();
-				substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
-				substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
-				substitutions.Add("PARENT_RIGHT", parentBounds.Width);
-				substitutions.Add("PARENT_LEFT", parentBounds.Left);
-				substitutions.Add("PARENT_TOP", parentBounds.Top);
-				substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+
+			var substitutions = new Dictionary<string, int>();
+			substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
+			substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
+			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
+			substitutions.Add("PARENT_LEFT", parentBounds.Left);
+			substitutions.Add("PARENT_TOP", parentBounds.Top);
+			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
 			int width = Evaluator.Evaluate(Width, substitutions);
 			int height = Evaluator.Evaluate(Height, substitutions);
-					
+
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
-			
+
 			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
-			                       Evaluator.Evaluate(Y, substitutions),
-			                       width,
-			                       height);
-			
+								   Evaluator.Evaluate(Y, substitutions),
+								   width,
+								   height);
+
 			// Non-static func definitions
-			
+
 			if (Delegate != null && !Delegates.Contains(Delegate))
-					Delegates.Add(Delegate);
-			
+				Delegates.Add(Delegate);
+
 			foreach (var child in Children)
 				child.Initialize();
 		}

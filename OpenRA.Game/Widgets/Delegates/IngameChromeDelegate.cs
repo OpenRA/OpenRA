@@ -17,9 +17,6 @@
  *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
  */
 #endregion
-using System;
-using OpenRA.FileFormats;
-using OpenRA.Support;
 
 namespace OpenRA.Widgets.Delegates
 {

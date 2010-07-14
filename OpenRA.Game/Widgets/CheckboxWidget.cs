@@ -56,15 +56,16 @@ namespace OpenRA.Widgets
 				Game.chrome.lineRenderer.Flush();
 			}
 		}
+
 		public override bool HandleInput(MouseInput mi) { return true; }
 
 		public CheckboxWidget() : base() { }
 
-		public CheckboxWidget(Widget other)
+		protected CheckboxWidget(CheckboxWidget other)
 			: base(other)
 		{
-			Text = (other as CheckboxWidget).Text;
-			Checked = (other as CheckboxWidget).Checked;
+			Text = other.Text;
+			Checked = other.Checked;
 		}
 
 		public override Widget Clone() { return new CheckboxWidget(this); }
