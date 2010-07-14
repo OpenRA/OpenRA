@@ -23,6 +23,7 @@ using OpenRA.FileFormats.Graphics;
 using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace OpenRA.GameRules
 {
@@ -30,20 +31,21 @@ namespace OpenRA.GameRules
 	{
 		// Debug settings
 		public bool UnitDebug = false;
-		public bool PathDebug = true;
-		public bool PerfDebug = true;
+		public bool PathDebug = false;
+		public bool PerfDebug = false;
 		public bool IndexDebug = false;
 		public bool RecordSyncReports = true;
 		
 		// Window settings
 		public WindowMode WindowMode = WindowMode.PseudoFullscreen;
-		public int2 FullscreenSize = new int2(0,0);
+		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width,Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024,768);
+		public readonly static int2 MinResolution = new int2(800, 600);
 		
 		//Sound Settings
 		public float SoundVolume = 0.5f;
 		public float MusicVolume = 0.5f;
-		public bool MusicPlayer = true;
+		public bool MusicPlayer = false;
 		
 		// Internal game settings
 		public int Timestep = 40;
@@ -52,7 +54,7 @@ namespace OpenRA.GameRules
 		// External game settings
 		public string LastServer = "localhost:1234";
 		public string Replay = null;
-		public string PlayerName = null;
+		public string PlayerName = "Newbie";
 		public string[] InitialMods = { "ra" };
 
 		// Server settings
