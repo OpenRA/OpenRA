@@ -1,0 +1,168 @@
+Container@ROOT:
+	Children:
+		Background@MAINMENU_BG:
+			Id:MAINMENU_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:250
+			Height:250
+			Delegate:MainMenuButtonsDelegate
+			Children:
+				Label@MAINMENU_LABEL_TITLE:
+					Id:MAINMENU_LABEL_TITLE
+					X:0
+					Y:20
+					Width:250
+					Height:25
+					Text:OpenRA Main Menu
+					Align:Center
+					Bold:True
+				Button@MAINMENU_BUTTON_JOIN:
+					Id:MAINMENU_BUTTON_JOIN
+					X:45
+					Y:70
+					Width:160
+					Height:25
+					Text:Join Game
+					Bold:True
+				Button@MAINMENU_BUTTON_CREATE:
+					Id:MAINMENU_BUTTON_CREATE
+					X:45
+					Y:110
+					Width:160
+					Height:25
+					Text:Create Game
+					Bold:True
+				Button@MAINMENU_BUTTON_SETTINGS:
+					Id:MAINMENU_BUTTON_SETTINGS
+					X:45
+					Y:150
+					Width:160
+					Height:25
+					Text:Settings
+					Bold:True
+				Button@MAINMENU_BUTTON_QUIT:
+					Id:MAINMENU_BUTTON_QUIT
+					X:45
+					Y:190
+					Width:160
+					Height:25
+					Text:Quit
+					Bold:True
+				Label@VERSION_STRING:
+					Id:VERSION_STRING
+					X:WINDOW_RIGHT - PARENT_LEFT - WIDTH - 15
+					Y:WINDOW_BOTTOM - PARENT_TOP - 25
+					Width:400
+					Height:35
+					Text:
+					Align:Right
+					Bold:True
+		Background@PERF_BG:
+			ClickThrough:true
+			Id:PERF_BG
+			Background:dialog4
+			Delegate:PerfDebugDelegate
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
+			Children:
+				PerfGraph@GRAPH:
+					Id:GRAPH
+					X:5
+					Y:5
+					Width:200
+					Height:200
+				Label@TEXT:
+					Id:TEXT
+					Bold: false
+					X:20
+					Y:205
+					Width:170
+					Height:40
+		Background@MUSIC_BG:
+			Id:MUSIC_BG
+			Delegate:MusicPlayerDelegate
+			X:WINDOW_RIGHT - 175
+			Y:WINDOW_BOTTOM - 95
+			Width: 160
+			Height: 55
+			Visible: true
+			Children:
+				Button@BUTTON_PLAY:
+					Id:BUTTON_PLAY
+					Visible:false
+					X:50
+					Y:15
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PLAY:
+							Id:IMAGE_PLAY
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:play
+				Button@BUTTON_PAUSE:
+					Id:BUTTON_PAUSE
+					X:50
+					Y:15
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PAUSE:
+							Id:IMAGE_PAUSE
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:pause
+				Button@BUTTON_STOP:
+					Id:BUTTON_STOP
+					X:85
+					Y:15
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_STOP:
+							Id:IMAGE_STOP
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:stop
+				Button@BUTTON_NEXT:
+					Id:BUTTON_NEXT
+					X:120
+					Y:15
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_NEXT:
+							Id:IMAGE_NEXT
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:next
+				Button@BUTTON_PREV:
+					Id:BUTTON_PREV
+					X:15
+					Y:15
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PREV:
+							Id:IMAGE_PREV
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:prev

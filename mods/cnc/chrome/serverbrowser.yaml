@@ -1,0 +1,367 @@
+Container@ROOT:
+	Children:
+		Background@CREATESERVER_BG:
+			Id:CREATESERVER_BG
+			Delegate:CreateServerMenuDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:400
+			Height:210
+			Visible:false
+			Children:
+				Label@LABEL_TITLE:
+					Id:LABEL_TITLE
+					X:0
+					Y:20
+					Width:400
+					Height:25
+					Text:Create Server
+					Align:Center
+					Bold:True
+				Label@GAME_TITLE_LABEL:
+					Id:GAME_TITLE_LABEL
+					X:50
+					Y:59
+					Width:95
+					Height:25
+					Align: Right
+					Text:Game Title:
+				TextField@GAME_TITLE:
+					Id:GAME_TITLE
+					X:150
+					Y:60
+					Width:210
+					MaxLength:50
+					Height:25
+					Text:OpenRA Game
+				Label@EXTERNAL_PORT_LABEL:
+					Id:EXTERNAL_PORT_LABEL
+					X:50
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:External Port:
+				TextField@EXTERNAL_PORT:
+					Id:EXTERNAL_PORT
+					X:150
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+					Text:OpenRA Game
+				Label@LISTEN_PORT_LABEL:
+					Id:LISTEN_PORT_LABEL
+					X:210
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:Listen Port:
+				TextField@LISTEN_PORT:
+					Id:LISTEN_PORT
+					X:310
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+				Checkbox@CHECKBOX_ONLINE:
+					Id:CHECKBOX_ONLINE
+					X:165
+					Y:130
+					Width:300
+					Height:20
+					Text:Advertise game Online
+				Button@BUTTON_START:
+					Id:BUTTON_START
+					X:130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Create
+					Bold:True
+				Button@BUTTON_CANCEL:
+					Id:BUTTON_CANCEL
+					X:260
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Cancel
+					Bold:True
+		Background@JOINSERVER_BG:
+			Id:JOINSERVER_BG
+			Delegate:ServerBrowserDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:700
+			Height:410
+			Visible:false
+			Children:
+				Label@JOINSERVER_LABEL_TITLE:
+					Id:JOINSERVER_LABEL_TITLE
+					X:0
+					Y:20
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Join Server
+					Align:Center
+					Bold:True
+				ListBox@SERVER_LIST:
+					Id:SERVER_LIST
+					X:20
+					Y:50
+					Width:390
+					Height:300
+					Children:
+						Label@SERVER_TEMPLATE:
+							Id:SERVER_TEMPLATE
+							Width:PARENT_RIGHT-28
+							Height:25
+							ClickThrough:false
+							X:2
+							Y:0
+							Visible:false
+				Label@JOINSERVER_PROGRESS_TITLE:
+					Id:JOINSERVER_PROGRESS_TITLE
+					X:150
+					Y:PARENT_BOTTOM / 2 - HEIGHT
+					Width:150
+					Height:30
+					Background:dialog4
+					Text:Fetching games...
+					Align:Center
+				Container@SERVER_INFO:
+					Id:SERVER_INFO
+					X:0
+					Y:0
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Visible:false
+					Children:
+						Label@SERVER_IP_LABEL:
+							Id:SERVER_IP_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:50
+							Align:Right
+							Width:70
+							Height:20
+							Text:Server:
+							Bold:True
+						Label@SERVER_IP:
+							Id:SERVER_IP
+							X:PARENT_RIGHT - 195
+							Y:50
+							Align:Left
+							Width:70
+							Height:20
+						Label@SERVER_MODS_LABEL:
+							Id:SERVER_MODS_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:70
+							Align:Right
+							Width:70
+							Height:20
+							Text:Mods:
+							Bold:True
+						Label@SERVER_MODS:
+							Id:SERVER_MODS
+							X:PARENT_RIGHT - 195
+							Y:70
+							Align:Left
+							Width:70
+							Height:20
+						Label@MAP_TITLE_LABEL:
+							Id:MAP_TITLE_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:90
+							Align:Right
+							Width:70
+							Height:20
+							Text:Map:
+							Bold:True
+						Label@MAP_TITLE:
+							Id:MAP_TITLE
+							X:PARENT_RIGHT - 195
+							Y:90
+							Align:Left
+							Width:70
+							Height:20
+						Label@MAP_PLAYERS_LABEL:
+							Id:MAP_PLAYERS_LABEL
+							X:PARENT_RIGHT - 200 - WIDTH
+							Y:110
+							Align:Right
+							Width:70
+							Height:20
+							Text:Players:
+							Bold:True
+						Label@MAP_PLAYERS:
+							Id:MAP_PLAYERS
+							X:PARENT_RIGHT - 195
+							Y:110
+							Align:Left
+							Width:70
+							Height:20
+						MapPreview@MAP_PREVIEW:
+							Id:MAP_PREVIEW
+							X:PARENT_RIGHT-241
+							Y:140
+							Width:192
+							Height:192
+				Button@DIRECTCONNECT_BUTTON:
+					Id:DIRECTCONNECT_BUTTON
+					X:20
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Direct Connect
+					Bold:True
+				Button@REFRESH_BUTTON:
+					Id:REFRESH_BUTTON
+					X:160
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Refresh
+					Bold:True
+				Button@JOIN_BUTTON:
+					Id:JOIN_BUTTON
+					X:PARENT_RIGHT - 140 - 130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Join
+					Bold:True
+				Button@CANCEL_BUTTON:
+					Id:CANCEL_BUTTON
+					X:PARENT_RIGHT - 140
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Cancel
+					Bold:True
+		Background@DIRECTCONNECT_BG:
+			Id:DIRECTCONNECT_BG
+			Delegate:ServerBrowserDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:400
+			Height:155
+			Visible:false
+			Children:
+				Label@DIRECTCONNECT_LABEL_TITLE:
+					Id:DIRECTCONNECT_LABEL_TITLE
+					X:0
+					Y:20
+					Width:400
+					Height:25
+					Text:Direct Connect
+					Align:Center
+					Bold:True
+				Label@ADDRESS_LABEL:
+					Id:ADDRESS_LABEL
+					X:50
+					Y:59
+					Width:95
+					Height:25
+					Align:Right
+					Text:Server Address:
+				TextField@SERVER_ADDRESS:
+					Id:SERVER_ADDRESS
+					X:150
+					Y:60
+					Width:200
+					MaxLength:50
+					Height:25
+				Button@JOIN_BUTTON:
+					Id:JOIN_BUTTON
+					X:130
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Join
+					Bold:True
+				Button@CANCEL_BUTTON:
+					Id:CANCEL_BUTTON
+					X:260
+					Y:PARENT_BOTTOM - 45
+					Width:120
+					Height:25
+					Text:Cancel
+					Bold:True
+		Background@CONNECTION_FAILED_BG:
+			Id:CONNECTION_FAILED_BG
+			Delegate:ConnectionDialogsDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:450
+			Height:150
+			Visible:false
+			Children:
+				Label@CONNECTION_FAILED_TITLE:
+					Id:CONNECTION_FAILED_TITLE
+					X:0
+					Y:20
+					Width:450
+					Height:25
+					Text:Connection Failed
+					Align:Center
+					Bold:True
+				Label@CONNECTION_FAILED_DESC:
+					Id:CONNECTION_FAILED_DESC
+					X:0
+					Y:60
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
+					Align:Center
+				Button@CONNECTION_BUTTON_RETRY:
+					Id:CONNECTION_BUTTON_RETRY
+					X:PARENT_RIGHT - 360
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Retry
+					Bold:True
+				Button@CONNECTION_BUTTON_CANCEL:
+					Id:CONNECTION_BUTTON_CANCEL
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Cancel
+					Bold:True
+		Background@CONNECTING_BG:
+			Id:CONNECTING_BG
+			Delegate:ConnectionDialogsDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:450
+			Height:150
+			Visible:false
+			Children:
+				Label@CONNECTING_TITLE:
+					Id:CONNECTING_TITLE
+					X:0
+					Y:20
+					Width:450
+					Height:25
+					Text:Connecting
+					Align:Center
+					Bold:True
+				Label@CONNECTING_DESC:
+					Id:CONNECTING_DESC
+					X:0
+					Y:60
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
+					Align:Center
+				Button@CONNECTION_BUTTON_ABORT:
+					Id:CONNECTION_BUTTON_ABORT
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Abort
+					Bold:True

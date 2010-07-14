@@ -40,8 +40,12 @@ Assemblies:
 	mods/cnc/OpenRA.Mods.Cnc.dll: Cnc mod traits
 
 ChromeLayout:
-	mods/cnc/menus.yaml:
-	
+	mods/cnc/chrome/mainmenu.yaml:
+	mods/cnc/chrome/settings.yaml:
+	mods/cnc/chrome/gamelobby.yaml:
+	mods/cnc/chrome/serverbrowser.yaml:
+	mods/cnc/chrome/ingame.yaml:
+
 Weapons:
 	mods/cnc/weapons.yaml:
 	
