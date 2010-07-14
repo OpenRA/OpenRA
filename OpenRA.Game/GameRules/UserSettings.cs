@@ -40,7 +40,9 @@ namespace OpenRA.GameRules
 		public int2 FullscreenSize = new int2(0,0);
 		public int2 WindowedSize = new int2(1024,768);
 		
-		
+		//Sound Settings
+		public float SoundVolume = 0.5f;
+		public float MusicVolume = 0.5f;
 		public bool MusicPlayer = true;
 		
 		// Internal game settings

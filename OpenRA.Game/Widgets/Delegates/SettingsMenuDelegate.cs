@@ -45,8 +45,8 @@ namespace OpenRA.Widgets.Delegates
 			var audio = bg.GetWidget("AUDIO_PANE");
 			
 			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
-			soundslider.OnChange += x => { Sound.Volume = x; };
-			soundslider.GetOffset = () => { return Sound.Volume; };
+			soundslider.OnChange += x => { Sound.SoundVolume = x; };
+			soundslider.GetOffset = () => { return Sound.SoundVolume; };
 			
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
 			musicslider.OnChange += x => { Sound.MusicVolume = x; };

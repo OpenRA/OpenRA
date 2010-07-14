@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -35,11 +36,6 @@ namespace OpenRA
 		static bool paused;
 		static bool stopped;
 
-		//TODO: read these from somewhere?
-		static float soundVolume;
-		static float musicVolume;
-
-
 		static ISoundSource LoadSound(string filename)
 		{
 			var data = AudLoader.LoadSound(FileSystem.Open(filename));
@@ -51,8 +47,6 @@ namespace OpenRA
 			soundEngine = new OpenAlSoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
-			soundVolume = soundEngine.Volume;
-			musicVolume = soundEngine.Volume;
 			paused = false;
 			stopped = false;
 		}
@@ -65,7 +59,7 @@ namespace OpenRA
 				return;
 
 			var sound = sounds[name];
-			soundEngine.Play2D(sound, false, true, float2.Zero);
+			soundEngine.Play2D(sound, false, true, float2.Zero, SoundVolume);
 		}
 
 		public static void Play(string name, float2 pos)
@@ -74,7 +68,7 @@ namespace OpenRA
 				return;
 			
 			var sound = sounds[name];
-			soundEngine.Play2D(sound, false, false, pos);
+			soundEngine.Play2D(sound, false, false, pos, SoundVolume);
 		}
 
 		public static void PlayToPlayer(Player player, string name)
@@ -98,8 +92,7 @@ namespace OpenRA
 				soundEngine.StopSound(music);
 			
 			var sound = sounds[name];
-			music = soundEngine.Play2D(sound, true, true, float2.Zero);
-			music.Volume = musicVolume;
+			music = soundEngine.Play2D(sound, true, true, float2.Zero, MusicVolume);
 		}
 
 		public static bool MusicPaused
@@ -122,22 +115,28 @@ namespace OpenRA
 			}
 		}
 
-		public static float Volume
+		public static float GlobalVolume
 		{
-			get { return soundVolume; }
+			get { return soundEngine.Volume; }
+			set { soundEngine.Volume = value;}
+		}
+		
+		public static float SoundVolume
+		{
+			get { return Game.Settings.SoundVolume; }
 			set
 			{
-				soundVolume = value;
-				soundEngine.Volume = value;
+				Game.Settings.SoundVolume = value;
+				soundEngine.SetSoundVolume(value, music);
 			}
 		}
 
 		public static float MusicVolume
 		{
-			get { return musicVolume; }
+			get { return Game.Settings.MusicVolume; }
 			set
 			{
-				musicVolume = value;
+				Game.Settings.MusicVolume = value;
 				if (music != null)
 					music.Volume = value;
 			}
@@ -175,13 +174,14 @@ namespace OpenRA
 	interface ISoundEngine
 	{
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
-		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos);
+		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume);
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);
 		void SetAllSoundsPaused(bool paused);
 		void StopAllSounds();
 		void SetListenerPosition(float2 position);
+		void SetSoundVolume(float volume, ISound music);
 	}
 
 	interface ISoundSource {}
@@ -257,10 +257,10 @@ namespace OpenRA
 			return new OpenAlSoundSource(data, channels, sampleBits, sampleRate);
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos)
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
 		{
 			int source = GetSourceFromPool();
-			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos);
+			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume);
 		}
 
 		public float Volume
@@ -291,6 +291,21 @@ namespace OpenRA
 				else if (state == Al.AL_PAUSED && !paused)
 					Al.alSourcePlay(key);
 					
+			}
+		}
+					
+		public void SetSoundVolume(float volume, ISound music)
+		{
+			var sounds = sourcePool.Select(s => s.Key).Where( b => 
+			{ 
+				int state;
+				Al.alGetSourcei(b, Al.AL_SOURCE_STATE, out state);
+				return ((state == Al.AL_PLAYING || state == Al.AL_PAUSED) && 
+					   ((music != null)? b != ((OpenAlSound) music).source : true));
+			}).ToList();
+			foreach (var s in sounds)
+			{
+				Al.alSourcef(s, Al.AL_GAIN, volume);
 			}
 		}
 		
@@ -348,7 +363,7 @@ namespace OpenRA
 		public readonly int source = -1;
 		float volume = 1f;
 
-		public OpenAlSound(int source, int buffer, bool looping, bool relative, float2 pos)
+		public OpenAlSound(int source, int buffer, bool looping, bool relative, float2 pos, float volume)
 		{
 			if (source == -1) return;
 			this.source = source;
@@ -361,6 +376,7 @@ namespace OpenRA
 			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
 			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 200);
 			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 1500);
+			Volume = volume;
 
 			Al.alSourcePlay(source);
 		}
