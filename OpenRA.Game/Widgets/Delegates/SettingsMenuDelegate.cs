@@ -34,10 +34,7 @@ namespace OpenRA.Widgets.Delegates
 				if (name.Text.Length == 0)
 					name.Text = Game.Settings.PlayerName;
 				else
-				{
 					Game.Settings.PlayerName = name.Text;
-					Game.Settings.Save();
-				}
 			};
 			name.OnEnterKey = () => { name.LoseFocus(); return true; };
 			
@@ -58,7 +55,6 @@ namespace OpenRA.Widgets.Delegates
 			{
 				Game.Settings.MusicPlayer ^= true;
 				Chrome.rootWidget.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
-				Game.Settings.Save();
 				return true;
 			};
 			
@@ -69,7 +65,6 @@ namespace OpenRA.Widgets.Delegates
 			fullscreen.OnMouseDown = mi =>
 			{
 				Game.Settings.WindowMode = (Game.Settings.WindowMode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
-				Game.Settings.Save();
 				return true;
 			};
 			
@@ -79,10 +74,8 @@ namespace OpenRA.Widgets.Delegates
 			{
 				try {
 					var w = int.Parse(width.Text);
-					if (w > 800 && w <= Screen.PrimaryScreen.Bounds.Size.Width){
+					if (w > 800 && w <= Screen.PrimaryScreen.Bounds.Size.Width)
 						Game.Settings.WindowedSize = new int2(w, Game.Settings.WindowedSize.Y);
-						Game.Settings.Save();	
-					}
 					else
 						width.Text = Game.Settings.WindowedSize.X.ToString();
 				}
@@ -98,10 +91,8 @@ namespace OpenRA.Widgets.Delegates
 			{
 				try {
 					var h = int.Parse(height.Text);
-					if (h > 600  && h <= Screen.PrimaryScreen.Bounds.Size.Height){
-						Game.Settings.WindowedSize = new int2(Game.Settings.WindowedSize.X, h);
-						Game.Settings.Save();	
-					}
+					if (h > 600  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
+						Game.Settings.WindowedSize = new int2(Game.Settings.WindowedSize.X, h);	
 					else 
 						height.Text = Game.Settings.WindowedSize.Y.ToString();
 				}
@@ -118,7 +109,6 @@ namespace OpenRA.Widgets.Delegates
 			perfdebug.OnMouseDown = mi =>
 			{
 				Game.Settings.PerfDebug ^= true;
-				Game.Settings.Save();
 				return true;
 			};
 			
@@ -127,7 +117,6 @@ namespace OpenRA.Widgets.Delegates
 			syncreports.OnMouseDown = mi =>
 			{
 				Game.Settings.RecordSyncReports ^= true;
-				Game.Settings.Save();
 				return true;
 			};
 			
@@ -156,6 +145,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
+				Game.Settings.Save();
 				Chrome.rootWidget.CloseWindow();
 				return true;
 			};
