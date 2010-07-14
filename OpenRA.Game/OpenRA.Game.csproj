@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -87,6 +87,8 @@
     <Compile Include="Traits\Player\TechTreeCache.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
+    <Compile Include="Widgets\ChatEntryWidget.cs" />
+    <Compile Include="Widgets\Delegates\ChatDelegate.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
     <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
     <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
@@ -264,9 +266,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Traits\" />
-    <Folder Include="Traits\" />
-    <Folder Include="Traits\Activities\" />
-  </ItemGroup>
 </Project>
