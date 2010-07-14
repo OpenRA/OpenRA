@@ -474,20 +474,12 @@ Container:
 							Align:Left
 							Width:70
 							Height:20
-						Background@MAP_CONTAINER:
-							Id:MAP_CONTAINER
-							X:PARENT_RIGHT-245
+						MapPreview@MAP_PREVIEW:
+							Id:MAP_PREVIEW
+							X:PARENT_RIGHT-241
 							Y:140
-							Width:200
-							Height:200
-							Background:dialog3
-							Children:
-								MapPreview@MAP_PREVIEW:
-									Id:MAP_PREVIEW
-									X:4
-									Y:4
-									Width:192
-									Height:192
+							Width:192
+							Height:192
 				Button@DIRECTCONNECT_BUTTON:
 					Id:DIRECTCONNECT_BUTTON
 					X:20

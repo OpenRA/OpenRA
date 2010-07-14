@@ -58,8 +58,9 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			bg.GetWidget("SERVER_INFO").IsVisible = () => currentServer != null;
-			bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => CurrentMap();
-			bg.GetWidget("MAP_CONTAINER").IsVisible = () => CurrentMap() != null;
+			var preview = bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+			preview.Map = () => CurrentMap();
+			preview.IsVisible = () => CurrentMap() != null;
 			
 			bg.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
 			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => string.Join( ",", currentServer.Mods );
