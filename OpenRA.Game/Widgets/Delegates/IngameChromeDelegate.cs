@@ -62,6 +62,8 @@ namespace OpenRA.Widgets.Delegates
 				Game.Exit();
 				return true;
 			};
+			
+			Game.AddChatLine += gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
 		}
 	}
 }

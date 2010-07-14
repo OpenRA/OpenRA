@@ -49,7 +49,8 @@ namespace OpenRA.Widgets
 
 			var renderer = Game.chrome.renderer;
 			var font = renderer.RegularFont;
-
+			
+			renderer.RgbaSpriteRenderer.Flush();
 			renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{

@@ -103,7 +103,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			Game.LobbyInfoChanged += UpdatePlayerList;
-			Game.AddChatLine += (c, n, s) => lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, n, s);
+			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
 
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
