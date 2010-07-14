@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using OpenRA.FileFormats;
@@ -424,30 +423,8 @@ namespace OpenRA.Server
 
 			DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 			
-			if (conns.Count == 0) OnServerEmpty();
-			else SyncLobbyInfo();
-		}
-
-		static void OnServerEmpty()
-		{
-			Console.WriteLine("Server emptied out; doing a bit of housekeeping to prepare for next game..");
-			inFlightFrames.Clear();
-			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = initialMods;
-			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
-			GameStarted = false;
-		}
-
-		static string MakePackageString(string a)
-		{
-			return "{0}:{1}".F(a, CalculateSHA1(a));
-		}
-
-		static string CalculateSHA1(string filename)
-		{
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(File.ReadAllBytes(filename))
-					.SelectMany(a => a.ToString("x2")).ToArray());
+			if (conns.Count != 0)
+				SyncLobbyInfo();
 		}
 
 		static void SyncLobbyInfo()
