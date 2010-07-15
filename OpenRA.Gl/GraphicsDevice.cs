@@ -225,28 +225,29 @@ namespace OpenRA.GlRenderer
 
 					case Sdl.SDL_KEYDOWN:
 						{
-							bool handled = true;
-
 							var keyEvent = new KeyInput
 							{
 								Modifiers = mods,
 								KeyChar = (char) e.key.keysym.unicode,
-								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym )
+								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
+								VirtKey = e.key.keysym.sym
 							};
 
 							if (!HandleSpecialKey(keyEvent))
-								Game.HandleKeyPress(keyEvent);
+								Game.HandleKeyDown(keyEvent);
 						} break;
 
 					case Sdl.SDL_KEYUP:
 						{
-							switch (e.key.keysym.sym)
+							var keyEvent = new KeyInput
 							{
-								case Sdl.SDLK_UP: Game.HandleArrowKeyScroll("up", false); break;
-								case Sdl.SDLK_LEFT: Game.HandleArrowKeyScroll("left", false); break;
-								case Sdl.SDLK_DOWN: Game.HandleArrowKeyScroll("down", false); break;
-								case Sdl.SDLK_RIGHT: Game.HandleArrowKeyScroll("right", false); break;
-							}
+								Modifiers = mods,
+								KeyChar = (char) e.key.keysym.unicode,
+								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
+								VirtKey = e.key.keysym.sym
+							};
+
+							Game.HandleKeyUp(keyEvent);
 						} break;
 				}
 			}

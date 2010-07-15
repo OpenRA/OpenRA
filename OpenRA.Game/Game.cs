@@ -484,38 +484,40 @@ namespace OpenRA
 			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
 		}
 
-		static Dictionary<char, char> RemapKeys = new Dictionary<char, char>
-		{
-			{ '!', '1' },
-			{ '@', '2' },
-			{ '#', '3' },
-			{ '$', '4' },
-			{ '%', '5' },
-			{ '^', '6' },
-			{ '&', '7' },
-			{ '*', '8' },
-			{ '(', '9' },
-			{ ')', '0' },
-		};
-
-		public static void HandleKeyPress(KeyInput e)
+		public static void HandleKeyDown(KeyInput e)
 		{
 			int sync = world.SyncHash();
 			
 			if (chrome.HandleKeyPress(e))
 				return;
 
-			var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
+			switch (e.KeyName)
+			{
+				case "up": scrollUp = true; break;
+				case "down": scrollDown = true; break;
+				case "left": scrollLeft = true; break;
+				case "right": scrollRight = true; break;
+			}
 
-			if (c >= '0' && c <= '9')
-				Game.controller.selection.DoControlGroup(world,
-					c - '0', e.Modifiers);
-
-			if (c == 08)
+			if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
+				Game.controller.selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
+			
+			if (e.KeyChar == 08)
 				Game.controller.GotoNextBase();
 
 			if (sync != Game.world.SyncHash())
 				throw new InvalidOperationException("Desync in OnKeyPress");
+		}
+
+		public static void HandleKeyUp(KeyInput e)
+		{
+			switch (e.KeyName)
+			{
+				case "up": scrollUp = false; break;
+				case "down": scrollDown = false; break;
+				case "left": scrollLeft = false; break;
+				case "right": scrollRight = false; break;
+			}
 		}
 
 		public static void HandleArrowKeyScroll(String k, Boolean pressed)
