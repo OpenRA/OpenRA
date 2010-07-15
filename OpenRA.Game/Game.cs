@@ -498,18 +498,18 @@ namespace OpenRA
 			{ ')', '0' },
 		};
 
-		public static void HandleKeyPress(KeyPressEventArgs e, Modifiers modifiers)
+		public static void HandleKeyPress(KeyInput e)
 		{
 			int sync = world.SyncHash();
 			
-			if (chrome.HandleKeyPress(e, modifiers))
+			if (chrome.HandleKeyPress(e))
 				return;
 
 			var c = RemapKeys.ContainsKey(e.KeyChar) ? RemapKeys[e.KeyChar] : e.KeyChar;
 
 			if (c >= '0' && c <= '9')
 				Game.controller.selection.DoControlGroup(world,
-					c - '0', modifiers);
+					c - '0', e.Modifiers);
 
 			if (c == 08)
 				Game.controller.GotoNextBase();

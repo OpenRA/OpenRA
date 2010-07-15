@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
@@ -52,7 +51,7 @@ namespace OpenRA.Widgets
 		public Func<MouseInput, bool> OnMouseDown = mi => false;
 		public Func<MouseInput, bool> OnMouseUp = mi => false;
 		public Func<MouseInput, bool> OnMouseMove = mi => false;
-		public Func<KeyPressEventArgs, Modifiers, bool> OnKeyPress = (e, modifiers) => false;
+		public Func<KeyInput, bool> OnKeyPress = e => false;
 
 		public Func<bool> IsVisible;
 
@@ -211,22 +210,22 @@ namespace OpenRA.Widgets
 		}
 				
 		
-		public virtual bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers) { return false; }
-		public virtual bool HandleKeyPressOuter(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		public virtual bool HandleKeyPress(KeyInput e) { return false; }
+		public virtual bool HandleKeyPressOuter(KeyInput e)
 		{			
 			if (!IsVisible())
 				return false;
 			
 			// Can any of our children handle this?
 			foreach (var child in Children)
-				if (child.HandleKeyPressOuter(e, modifiers))
+				if (child.HandleKeyPressOuter(e))
 					return true;
 
 			// Do any widgety behavior (enter text etc)
-			var handled = HandleKeyPress(e,modifiers);
+			var handled = HandleKeyPress(e);
 			
 			// Apply any special logic added by delegates; they return true if they caught the input
-			if (OnKeyPress(e,modifiers)) return true;
+			if (OnKeyPress(e)) return true;
 			
 			return handled;
 		}

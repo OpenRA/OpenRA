@@ -23,6 +23,16 @@ using System.Windows.Forms;
 
 namespace OpenRA
 {
+	public struct MouseInput
+	{
+		public MouseInputEvent Event;
+		public int2 Location;
+		public MouseButton Button;
+		public Modifiers Modifiers;
+	}
+
+	public enum MouseInputEvent { Down, Move, Up };
+
 	[Flags]
 	public enum MouseButton
 	{
@@ -41,13 +51,11 @@ namespace OpenRA
 		Ctrl = (int)Keys.Control,
 	}
 
-	public struct MouseInput
+	public struct KeyInput
 	{
-		public MouseInputEvent Event;
-		public int2 Location;
-		public MouseButton Button;
+		public char KeyChar;
+		public string KeyName;
 		public Modifiers Modifiers;
+		public int VirtKey;
 	}
-
-	public enum MouseInputEvent { Down, Move, Up };
 }

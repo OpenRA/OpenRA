@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
-		public override bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			// Only take input if we are focused
 			if (!Focused)

@@ -26,7 +26,6 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
-using System.Windows.Forms;
 
 namespace OpenRA.Widgets
 {
@@ -142,12 +141,12 @@ namespace OpenRA.Widgets
 			paletteOpen = true;
 			currentTab = produces;
 		}
-		
-		public override bool HandleKeyPress (KeyPressEventArgs e, Modifiers modifiers)
+
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.KeyChar == 09)
-				TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift);
-			
+				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
+
 			DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
 			return true;
 		}

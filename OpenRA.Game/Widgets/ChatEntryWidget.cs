@@ -19,7 +19,6 @@
 #endregion
 
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace OpenRA.Widgets
 {
@@ -56,13 +55,13 @@ namespace OpenRA.Widgets
 
 		public override bool HandleInput(MouseInput mi) { return false; }
 
-		public override bool HandleKeyPress(KeyPressEventArgs e, Modifiers modifiers)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.KeyChar == '\r')
 			{
 				if (composing)
 				{
-					if (modifiers.HasModifier(Modifiers.Shift))
+					if (e.Modifiers.HasModifier(Modifiers.Shift))
 					{
 						teamChat ^= true;
 						return true;
@@ -82,7 +81,7 @@ namespace OpenRA.Widgets
 				{
 					TakeFocus(new MouseInput());
 					composing = true;
-					teamChat ^= modifiers.HasModifier(Modifiers.Shift);
+					teamChat ^= e.Modifiers.HasModifier(Modifiers.Shift);
 					return true;
 				}
 			}
@@ -104,7 +103,7 @@ namespace OpenRA.Widgets
 				return false;
 			}
 
-			return base.HandleKeyPress(e, modifiers);
+			return base.HandleKeyPress(e);
 		}
 	}
 }

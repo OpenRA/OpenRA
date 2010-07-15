@@ -18,9 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
@@ -83,12 +80,12 @@ namespace OpenRA
 		}
 
 		
-		public bool HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e, Modifiers modifiers)
+		public bool HandleKeyPress(KeyInput e)
 		{
 			if (Widget.SelectedWidget != null)
-				return Widget.SelectedWidget.HandleKeyPressOuter(e, modifiers);
+				return Widget.SelectedWidget.HandleKeyPressOuter(e);
 			
-			if (rootWidget.HandleKeyPressOuter(e, modifiers))
+			if (rootWidget.HandleKeyPressOuter(e))
 				return true;
 			return false;
 		}

@@ -157,6 +157,29 @@ namespace OpenRA.GlRenderer
 				| ((raw & Sdl.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
+		bool HandleSpecialKey(KeyInput k)
+		{
+			switch (k.VirtKey)
+			{
+				case Sdl.SDLK_F13:
+					var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) 
+						+ Path.DirectorySeparatorChar + DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ") + ".bmp";
+					Sdl.SDL_SaveBMP(surf, path);
+					return true;
+
+				case Sdl.SDLK_F4:
+					if (k.Modifiers.HasModifier(Modifiers.Alt))
+					{
+						OpenRA.Game.Exit();
+						return true;
+					}
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
 		public void Present()
 		{
 			Sdl.SDL_GL_SwapBuffers();
@@ -203,33 +226,16 @@ namespace OpenRA.GlRenderer
 					case Sdl.SDL_KEYDOWN:
 						{
 							bool handled = true;
-							switch (e.key.keysym.sym)
-							{
-								case Sdl.SDLK_UP: Game.HandleArrowKeyScroll("up", true); break;
-								case Sdl.SDLK_LEFT: Game.HandleArrowKeyScroll("left", true); break;
-								case Sdl.SDLK_DOWN: Game.HandleArrowKeyScroll("down", true); break;
-								case Sdl.SDLK_RIGHT: Game.HandleArrowKeyScroll("right", true); break;
-						
-								case Sdl.SDLK_F13:
-										string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ")+".bmp";
-										Sdl.SDL_SaveBMP(surf,path);
-						                break;
-								default:
-									handled = false;
-									break;
-							}
 
-							if (e.key.keysym.unicode != 0 && !handled)
-								Game.HandleKeyPress(new KeyPressEventArgs((char)e.key.keysym.unicode), mods);
-
-							else if (mods != 0)
+							var keyEvent = new KeyInput
 							{
-								var keyName = Sdl.SDL_GetKeyName(e.key.keysym.sym);
-								if (keyName.Length == 1)
-									Game.HandleKeyPress(new KeyPressEventArgs(keyName[0]), mods);
-								else if (keyName == "f4" && ((mods & Modifiers.Alt) != 0))
-									OpenRA.Game.Exit();
-							}
+								Modifiers = mods,
+								KeyChar = (char) e.key.keysym.unicode,
+								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym )
+							};
+
+							if (!HandleSpecialKey(keyEvent))
+								Game.HandleKeyPress(keyEvent);
 						} break;
 
 					case Sdl.SDL_KEYUP:
