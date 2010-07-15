@@ -33,7 +33,9 @@ namespace OpenRA.Network
 			case "Chat":
 				{
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
-					Game.AddChatLine(Game.world.PlayerColors()[client.PaletteIndex].Color, client.Name, order.TargetString);
+					if (client != null)
+						Game.AddChatLine(Game.world.PlayerColors()[client.PaletteIndex].Color, 
+							client.Name, order.TargetString);
 					break;
 				}
 			case "TeamChat":
