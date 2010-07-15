@@ -101,6 +101,8 @@ namespace OpenRA.GlRenderer
 			CheckGlError();
 			Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
 			CheckGlError();
+
+			Sdl.SDL_SetModState(0);	// i have had enough.
 		}
 
 		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
