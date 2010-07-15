@@ -162,5 +162,43 @@ namespace OpenRA.Graphics
 				(int)(bounds.Width * fx + bounds.Left),
 				(int)(bounds.Height * fy + bounds.Top));
 		}
+		
+		
+		static int NextPowerOf2(int v)
+		{
+			--v;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			++v;
+			return v;
+		}
+		
+		public static Bitmap RenderMapPreview(MapStub stub)
+		{
+			Map map = stub.Map;
+			var tileset = Rules.TileSets[map.Tileset];
+			var size = NextPowerOf2(Math.Max(map.Width, map.Height));
+			Bitmap terrain = new Bitmap(size, size);
+			
+			for (var x = 0; x < map.Width; x++)
+				for (var y = 0; y < map.Height; y++)
+				{
+					var mapX = x + map.TopLeft.X;
+					var mapY = y + map.TopLeft.Y;
+					var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
+					string res = null;
+					if (map.MapResources[mapX, mapY].type != 0)
+						res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
+							.Where(t => t.ResourceType == map.MapResources[mapX, mapY].type)
+							.Select(t => t.TerrainType).FirstOrDefault();
+					if (res != null)
+						type = res;
+					
+					terrain.SetPixel(x, y, tileset.Terrain[type].Color);
+				}
+			return terrain;
+		}
 	}
 }

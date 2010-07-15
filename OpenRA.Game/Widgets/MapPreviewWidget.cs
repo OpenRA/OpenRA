@@ -20,6 +20,8 @@ namespace OpenRA.Widgets
 		
 		public MapPreviewWidget() : base() { }
 
+		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview(stub));
+		
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
@@ -74,10 +76,11 @@ namespace OpenRA.Widgets
 
 			if( mapPreviewDirty )
 			{
-				if( mapChooserSheet == null || mapChooserSheet.Size.Width != map.Width || mapChooserSheet.Size.Height != map.Height )
-					mapChooserSheet = new Sheet( Game.renderer, new Size( map.Width, map.Height ) );
+				var preview = PreviewCache[map];
+				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
+					mapChooserSheet = new Sheet( Game.renderer, new Size( preview.Width, preview.Height ) );
 
-				mapChooserSheet.Texture.SetData( map.Preview.Value );
+				mapChooserSheet.Texture.SetData( preview );
 				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Width, map.Height ), TextureChannel.Alpha );
 				mapPreviewDirty = false;
 			}

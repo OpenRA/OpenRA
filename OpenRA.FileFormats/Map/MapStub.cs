@@ -45,8 +45,8 @@ namespace OpenRA.FileFormats
 		public int2 BottomRight;
 		public int Width { get { return BottomRight.X - TopLeft.X; } }
 		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
-		public Lazy<Bitmap> Preview;
-
+		public Map Map { get { return new Map(Package); }}
+	
 		static List<string> Fields = new List<string>() {
 			"Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
 		};
@@ -63,10 +63,6 @@ namespace OpenRA.FileFormats
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
 			}
-
-			Preview = Lazy.New(
-				() => new Bitmap(Package.GetContent("preview.png"))
-			);
 
 			Uid = Package.GetContent("map.uid").ReadAllText();
 		}
