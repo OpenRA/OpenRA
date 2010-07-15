@@ -5,6 +5,10 @@ Container@ROOT:
 			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
+				Timer@GAME_TIMER:
+					Id:GAME_TIMER
+					X: WINDOW_BOTTOM - 30
+					Y: 10
 				PostGame@POSTGAME_TEXT:
 					Id:POSTGAME_TEXT
 					X:0

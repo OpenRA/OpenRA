@@ -230,6 +230,7 @@
     <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
     <Compile Include="Widgets\ListBoxWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
+    <Compile Include="Widgets\TimerWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

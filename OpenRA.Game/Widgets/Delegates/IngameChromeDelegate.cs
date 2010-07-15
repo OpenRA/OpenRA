@@ -29,6 +29,7 @@ namespace OpenRA.Widgets.Delegates
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
 			Game.OnGameStart += () => r.OpenWindow("INGAME_ROOT");
+			Game.OnGameStart += () => gameRoot.GetWidget<TimerWidget>("GAME_TIMER").Stopwatch.Reset();
 
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
 				optionsBG.Visible = !optionsBG.Visible;

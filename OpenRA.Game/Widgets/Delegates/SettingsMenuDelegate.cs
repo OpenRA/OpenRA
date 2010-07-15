@@ -149,6 +149,14 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
+			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
+			timedebug.Checked = () => {return Game.Settings.ShowGameTimer;};
+			timedebug.OnMouseDown = mi => 
+			{
+				Game.Settings.ShowGameTimer ^= true;
+				return true;
+			};
+			
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
 				Chrome.rootWidget.CloseWindow();

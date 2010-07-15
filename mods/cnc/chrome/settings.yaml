@@ -214,3 +214,10 @@ Container@ROOT:
 							Width:300
 							Height:20
 							Text:Show Spatial Index Debug
+						Checkbox@GAMETIME_CHECKBOX:
+							Id:GAMETIME_CHECKBOX
+							X:0
+							Y:150
+							Width:300
+							Height:20
+							Text:Show Game Time Counter 
