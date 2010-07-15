@@ -220,7 +220,10 @@ namespace OpenRA
 			var seconds = ticks / 25;
 			var minutes = seconds / 60;
 
-			return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
+			if (minutes >= 60)
+				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
+			else
+				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
 
 		public static bool HasVoice(this Actor a)
