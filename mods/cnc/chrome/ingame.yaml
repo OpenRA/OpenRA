@@ -21,6 +21,9 @@ Container@ROOT:
 					Y:280
 					Width:250
 					Height:500
+					TabClick: button.aud
+					BuildPaletteOpen: appear1.aud 
+					BuildPaletteClose: appear1.aud
 				Button@INGAME_OPTIONS_BUTTON:
 					Id:INGAME_OPTIONS_BUTTON
 					X:0

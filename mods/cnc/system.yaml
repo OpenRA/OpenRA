@@ -194,11 +194,8 @@ World:
 	SpawnMapActors:
 	SpawnDefaultUnits:
 	EvaAlerts:
-		TabClick: button.aud
 		RadarUp: comcntr1.aud
 		RadarDown: powrdn1.aud
-		BuildPaletteOpen: appear1.aud 
-		BuildPaletteClose: appear1.aud
 		BuildingSelectAudio: bldging1.aud
 		BuildingReadyAudio: constru1.aud
 		BuildingCannotPlaceAudio: deploy1.aud
