@@ -308,7 +308,7 @@ MSAM:
 		Description: Rocket Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
-		HP: 100
+		HP: 120
 		Armor: light
 		Crewed: yes
 		Sight: 6
@@ -318,6 +318,8 @@ MSAM:
 	AttackTurreted:
 		PrimaryWeapon: 227mm
 		PrimaryOffset: 0,5,0,0
+		SecondaryWeapon: 227mm
+		SecondaryOffset: 0,-5,0,0
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:

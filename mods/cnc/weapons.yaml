@@ -129,9 +129,9 @@ Rockets:
 		Damage: 30
 		
 Rockets.Orca: 
-	ROF: 200
+	ROF: 150
 	Range: 6
-	Burst: 3
+	Burst: 2
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Missile:
@@ -407,6 +407,7 @@ Tomahawk:
 	ROF: 40
 	Range: 6
 	Report: ROCKET2
+	ValidTargets: Ground, Air
 	Missile:
 		Arm: 5
 		High: yes
