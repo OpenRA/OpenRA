@@ -70,15 +70,22 @@ namespace OpenRA.Graphics
 		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
 		{
 			var terrain = new Bitmap(map.MapSize.X, map.MapSize.Y);
-			
-			for (var x = 0; x < map.MapSize.X; x++)
-				for (var y = 0; y < map.MapSize.Y; y++)
-				{
-					var type = tileset.GetTerrainType(map.MapTiles[x, y]);
-					terrain.SetPixel(x, y, map.IsInMap(x, y)
-						? Color.FromArgb(alpha, tileset.Terrain[type].Color)
-						: shroudColor);
-				}
+			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+
+				for (var x = 0; x < map.MapSize.X; x++)
+					for (var y = 0; y < map.MapSize.Y; y++)
+					{
+						var type = tileset.GetTerrainType(map.MapTiles[x, y]);
+						*(c + (y * bitmapData.Stride >> 2) + x) = map.IsInMap(x, y)
+							? Color.FromArgb(alpha, tileset.Terrain[type].Color).ToArgb()
+							: shroudColor.ToArgb();
+					}
+			}
+			terrain.UnlockBits(bitmapData);
 			return terrain;
 		}
 
@@ -182,22 +189,32 @@ namespace OpenRA.Graphics
 			var size = NextPowerOf2(Math.Max(map.Width, map.Height));
 			Bitmap terrain = new Bitmap(size, size);
 			
-			for (var x = 0; x < map.Width; x++)
-				for (var y = 0; y < map.Height; y++)
-				{
-					var mapX = x + map.TopLeft.X;
-					var mapY = y + map.TopLeft.Y;
-					var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
-					string res = null;
-					if (map.MapResources[mapX, mapY].type != 0)
-						res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
-							.Where(t => t.ResourceType == map.MapResources[mapX, mapY].type)
-							.Select(t => t.TerrainType).FirstOrDefault();
-					if (res != null)
-						type = res;
-					
-					terrain.SetPixel(x, y, tileset.Terrain[type].Color);
-				}
+			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+
+				for (var x = 0; x < map.Width; x++)
+					for (var y = 0; y < map.Height; y++)
+					{
+						var mapX = x + map.TopLeft.X;
+						var mapY = y + map.TopLeft.Y;
+						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
+						string res = null;
+						if (map.MapResources[mapX, mapY].type != 0)
+							res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
+								.Where(t => t.ResourceType == map.MapResources[mapX, mapY].type)
+								.Select(t => t.TerrainType).FirstOrDefault();
+						if (res != null)
+							type = res;
+						
+						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
+					}
+			}
+			terrain.UnlockBits(bitmapData);
+
 			return terrain;
 		}
 	}
