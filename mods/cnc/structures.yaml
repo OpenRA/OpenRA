@@ -257,7 +257,7 @@ NUK2:
 		BuildPaletteOrder: 90
 		Prerequisites: hq
 		Owner: gdi,nod
-		Cost: 700
+		Cost: 500
 		Description: Advanced Power Plant
 		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 	Building:

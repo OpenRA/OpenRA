@@ -7,7 +7,7 @@ Container@ROOT:
 			Children:
 				Timer@GAME_TIMER:
 					Id:GAME_TIMER
-					X: WINDOW_BOTTOM - 30
+					X: WINDOW_RIGHT/2
 					Y: 10
 				PostGame@POSTGAME_TEXT:
 					Id:POSTGAME_TEXT
