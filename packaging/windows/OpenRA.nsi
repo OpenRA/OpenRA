@@ -58,8 +58,6 @@ Section "Client" Client
 	File "..\..\COPYING"
 	File "..\..\HACKING"
 	File "..\..\INSTALL"
-	File "..\..\settings-netplay-cnc.ini"
-	File "..\..\settings-netplay-ra.ini"
 	File "..\..\*.ttf"
 	
 	File "..\..\OpenRA.Game\OpenRA.ico"
