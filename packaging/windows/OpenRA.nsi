@@ -99,6 +99,7 @@ SectionGroup /e "Mods"
 			SetOutPath "$INSTDIR\mods\ra"
 			File "..\..\mods\ra\*.*"
 			File /r "..\..\mods\ra\maps"
+			File /r "..\..\mods\ra\chrome"
 		SectionEnd
 		Section "Download content" RA_Content
 			AddSize 10137
@@ -119,6 +120,7 @@ SectionGroup /e "Mods"
 			SetOutPath "$INSTDIR\mods\cnc"
 			File "..\..\mods\cnc\*.*"
 			File /r "..\..\mods\cnc\maps"
+			File /r "..\..\mods\cnc\chrome"
 		SectionEnd
 		Section "Download content" CNC_Content
 			AddSize 9431
