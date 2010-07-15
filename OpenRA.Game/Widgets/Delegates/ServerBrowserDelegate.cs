@@ -192,8 +192,9 @@ namespace OpenRA.Widgets.Delegates
 
 			int offset = ServerTemplate.Bounds.Y;
 			int i = 0;
-			foreach (var game in games.Where(g => g.State == 1))	/* only "waiting for players" */
+			foreach (var loop in games.Where(g => g.State == 1))	/* only "waiting for players" */
 			{
+				var game = loop;
 				var template = ServerTemplate.Clone() as LabelWidget;
 				template.Id = "JOIN_GAME_{0}".F(i);
 				template.GetText = () => "   {0} ({1})".F(			/* /8 = hack */
