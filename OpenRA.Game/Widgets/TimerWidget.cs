@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 using OpenRA.Support;
 
@@ -10,17 +9,17 @@ namespace OpenRA.Widgets
 		
 		public TimerWidget ()
 		{
-			Stopwatch = new Stopwatch();
 			IsVisible = () => Game.Settings.ShowGameTimer;
 		}
-		
-		public override void DrawInner (World world)
-		{			
-			var s = WorldUtils.FormatTime((int) Stopwatch.ElapsedTime() * 25);
-			var size = Game.chrome.renderer.RegularFont.Measure(s);
-			var padding = 5;
-			WidgetUtils.DrawPanel("dialog4",new Rectangle(RenderBounds.Top - padding, RenderBounds.Left - padding, size.X + 2*padding, size.Y + 2*padding));
-			Game.chrome.renderer.RegularFont.DrawText(s, new float2(RenderBounds.Top, RenderBounds.Left), Color.White);
+
+		public override void DrawInner(World world)
+		{
+			var s = WorldUtils.FormatTime(Game.LocalTick);
+			var f = Game.chrome.renderer.TitleFont;
+			var size = f.Measure(s);
+//			var padding = 5;
+//			WidgetUtils.DrawPanel("dialog4", new Rectangle(RenderBounds.Left - padding, RenderBounds.Top - padding, size.X + 2 * padding, size.Y + 2 * padding));
+			f.DrawText(s, new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top - 20), Color.White);
 		}
 	}
 }
