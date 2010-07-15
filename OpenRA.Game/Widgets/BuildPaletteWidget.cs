@@ -144,11 +144,13 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.KeyChar == 09)
+			if (e.KeyChar == '\t')
+			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
+				return true;
+			}
 
-			DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
-			return true;
+			return DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
 		}
 		
 		public override bool HandleInput(MouseInput mi)
@@ -506,7 +508,7 @@ namespace OpenRA.Widgets
 
         bool DoBuildingHotkey(char c, World world)
         {
-			if (!paletteOpen) return true;
+			if (!paletteOpen) return false;
 			
             var buildable = Rules.TechTree.BuildableItems(world.LocalPlayer, currentTab);
 
@@ -516,9 +518,10 @@ namespace OpenRA.Widgets
 			{
 				Sound.Play(TabClick);
 		    	HandleBuildPalette(world, toBuild, true);
+				return true;
 			}
-			return true;
 
+			return false;
         }
          
 		void TabChange(bool shift)
