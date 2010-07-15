@@ -26,6 +26,7 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using System.Windows.Forms;
 
 namespace OpenRA.Widgets
 {
@@ -34,7 +35,7 @@ namespace OpenRA.Widgets
 		public int Columns = 3;
 		public int Rows = 5;
 		
-		string currentTab = "Building";
+		string currentTab = null;
 		bool paletteOpen = false;
 		Dictionary<string, string[]> tabImageNames;
 		Dictionary<string, Sprite> tabSprites;
@@ -45,9 +46,13 @@ namespace OpenRA.Widgets
 		int paletteAnimationFrame = 0;
 		bool paletteAnimating = false;
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
+		List<Pair<Rectangle, Action<MouseInput>>> tabs = new List<Pair<Rectangle, Action<MouseInput>>>();
 		Animation cantBuild;
 		Animation ready;
 		Animation clock;
+		public readonly string BuildPaletteOpen = "bleep13.aud";
+		public readonly string BuildPaletteClose = "bleep13.aud";
+		public readonly string TabClick = "ramenu1.aud";
 		List<string> visibleTabs = new List<string>();
 		
 		public BuildPaletteWidget() : base() { }
@@ -76,6 +81,7 @@ namespace OpenRA.Widgets
 						n => i.ToString())))
 				.ToDictionary(a => a.First, a => a.Second);
 
+			IsVisible = () => { return currentTab != null || (currentTab == null && !paletteOpen);  };
 		}
 		
 		public override void Tick(World world)
@@ -112,16 +118,14 @@ namespace OpenRA.Widgets
 			// Calculate palette position
 			if (paletteAnimationFrame <= paletteAnimationLength)
 				paletteOrigin = float2.Lerp(paletteClosedOrigin, paletteOpenOrigin, paletteAnimationFrame * 1.0f / paletteAnimationLength);
-
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			
 			// Play palette-open sound at the start of the activate anim (open)
 			if (paletteAnimationFrame == 1 && paletteOpen)
-				Sound.Play(eva.BuildPaletteOpen);
+				Sound.Play(BuildPaletteOpen);
 
 			// Play palette-close sound at the start of the activate anim (close)
 			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
-				Sound.Play(eva.BuildPaletteClose);
+				Sound.Play(BuildPaletteClose);
 
 			// Animation is complete
 			if ((paletteAnimationFrame == 0 && !paletteOpen)
@@ -139,13 +143,26 @@ namespace OpenRA.Widgets
 			currentTab = produces;
 		}
 		
+		public override bool HandleKeyPress (KeyPressEventArgs e, Modifiers modifiers)
+		{
+			if (e.KeyChar == 09)
+				TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift);
+			
+			DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
+			return true;
+		}
+		
 		public override bool HandleInput(MouseInput mi)
 		{			
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 			
-			var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
+			var action = tabs.Where(a => a.First.Contains(mi.Location.ToPoint()))
 				.Select(a => a.Second).FirstOrDefault();
+			if (action == null && paletteOpen)
+				action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
+					.Select(a => a.Second).FirstOrDefault();
+			
 			if (action == null)
 				return false;
 	
@@ -155,6 +172,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{	
+			if (!IsVisible()) return;
 			int paletteHeight = DrawPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
 		}
@@ -285,21 +303,11 @@ namespace OpenRA.Widgets
 		Action<MouseInput> HandleClick(string name, World world)
 		{
 			return mi => {
-				var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-				Sound.Play(eva.TabClick);
+				Sound.Play(TabClick);
 				
 				if (name != null)
 					HandleBuildPalette(world, name, (mi.Button == MouseButton.Left));
 			};
-		}
-
-        static void Hotkey(World world, String name)
-		{
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			Sound.Play(eva.TabClick);
-			
-			if (name != null)
-			    HandleBuildPalette(world, name, true);
 		}
 		
 		Action<MouseInput> HandleTabClick(string button, World world)
@@ -308,8 +316,7 @@ namespace OpenRA.Widgets
 				if (mi.Button != MouseButton.Left)
 					return;
 				
-				var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-				Sound.Play(eva.TabClick);
+				Sound.Play(TabClick);
 				var wasOpen = paletteOpen;
 				paletteOpen = (currentTab == button && wasOpen) ? false : true;
 				currentTab = button;
@@ -326,7 +333,7 @@ namespace OpenRA.Widgets
 				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<ValuedInfo>().Description;
 		}
 		
-		static void HandleBuildPalette( World world, string item, bool isLmb )
+		void HandleBuildPalette( World world, string item, bool isLmb )
 		{
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
@@ -373,7 +380,7 @@ namespace OpenRA.Widgets
 			}
 		}
 		
-		static void StartProduction( World world, string item )
+		void StartProduction( World world, string item )
 		{
 			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var unit = Rules.Info[item];
@@ -399,6 +406,7 @@ namespace OpenRA.Widgets
 			var x = paletteOrigin.X - tabWidth;
 			var y = paletteOrigin.Y + 9;
 			
+			tabs.Clear();
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
 			
 			foreach (var q in tabImageNames)
@@ -414,7 +422,7 @@ namespace OpenRA.Widgets
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
 				
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
-				buttons.Add(Pair.New(rect, HandleTabClick(groupName, world)));
+				tabs.Add(Pair.New(rect, HandleTabClick(groupName, world)));
 
 				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
 				{
@@ -497,37 +505,42 @@ namespace OpenRA.Widgets
 			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 		}
 
-        public static void DoBuildingHotkey(char c, World world)
+        bool DoBuildingHotkey(char c, World world)
         {
-            if (Game.world.LocalPlayer == null) return;
-
-            var buildable = Rules.TechTree.BuildableItems(Game.world.LocalPlayer, Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE").currentTab);
+			if (!paletteOpen) return true;
+			
+            var buildable = Rules.TechTree.BuildableItems(world.LocalPlayer, currentTab);
 
             var toBuild = buildable.FirstOrDefault(b => Rules.Info[b.ToLowerInvariant()].Traits.Get<BuildableInfo>().Hotkey == c.ToString());
 
-            if (toBuild != null) Hotkey(world, toBuild);
+            if ( toBuild != null )
+			{
+				Sound.Play(TabClick);
+		    	HandleBuildPalette(world, toBuild, true);
+			}
+			return true;
 
         }
-        public static void TabChange(bool shift)
+         
+		void TabChange(bool shift)
         {
-            var p = Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE");
-            int size = p.visibleTabs.Count();
+            int size = visibleTabs.Count();
             if (size > 0)
             {
-                int current = p.visibleTabs.IndexOf(p.currentTab);
+                int current = visibleTabs.IndexOf(currentTab);
                 if (!shift)
                 {
                     if (current + 1 >= size)
-                        p.SetCurrentTab(p.visibleTabs.FirstOrDefault());
+                        SetCurrentTab(visibleTabs.FirstOrDefault());
                     else
-                        p.SetCurrentTab(p.visibleTabs[current + 1]);
+                        SetCurrentTab(visibleTabs[current + 1]);
                 }
                 else
                 {
                     if (current - 1 < 0)
-                        p.SetCurrentTab(p.visibleTabs.LastOrDefault());
+                        SetCurrentTab(visibleTabs.LastOrDefault());
                     else
-                        p.SetCurrentTab(p.visibleTabs[current - 1]);
+                        SetCurrentTab(visibleTabs[current - 1]);
                 }
             }
         }

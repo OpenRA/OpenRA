@@ -514,13 +514,6 @@ namespace OpenRA
 			if (c == 08)
 				Game.controller.GotoNextBase();
 
-			if (c == 09)
-				BuildPaletteWidget.TabChange((Control.ModifierKeys & Keys.Shift) == Keys.Shift ? true : false);
-
-			// Todo: move this into the widget
-			BuildPaletteWidget.DoBuildingHotkey(c, world);
-		
-
 			if (sync != Game.world.SyncHash())
 				throw new InvalidOperationException("Desync in OnKeyPress");
 		}

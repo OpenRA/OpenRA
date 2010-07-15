@@ -24,7 +24,6 @@ namespace OpenRA.Traits
 	public class EvaAlertsInfo : TraitInfo<EvaAlerts>
 	{
 		// Sound effects
-		public readonly string TabClick = "ramenu1.aud";
 		public readonly string RadarUp = "radaron2.aud";
 		public readonly string RadarDown = "radardn1.aud";
 
@@ -32,8 +31,6 @@ namespace OpenRA.Traits
 		public readonly string CashTickDown = "cashdn1.aud";
 		
 		// Build Palette
-		public readonly string BuildPaletteOpen = "bleep13.aud";
-		public readonly string BuildPaletteClose = "bleep13.aud";
 		public readonly string BuildingSelectAudio = "abldgin1.aud";
 		public readonly string BuildingReadyAudio = "conscmp1.aud";
 		public readonly string BuildingCannotPlaceAudio = "nodeply1.aud";
