@@ -329,25 +329,6 @@ namespace OpenRA.Editor
 			}
 		}
 		
-		void SavePreviewImage(string filepath)
-		{
-			var Map = surface1.Map;
-
-			var xs = Map.TopLeft.X;
-			var ys = Map.TopLeft.Y;
-
-			var bitmap = new Bitmap(Map.Width, Map.Height);
-			for (var x = 0; x < Map.Width; x++)
-				for (var y = 0; y < Map.Height; y++)
-					bitmap.SetPixel(x, y, tileset.Terrain[tileset.GetTerrainType(Map.MapTiles[x + xs, y + ys])].Color);
-
-			for (var x = 0; x < Map.Width; x++)
-				for (var y = 0; y < Map.Height; y++)
-					if (Map.MapResources[x + xs, y + ys].type > 0)
-						bitmap.SetPixel(x, y, tileset.Terrain["Ore"].Color);
-			bitmap.Save(filepath, ImageFormat.Png);
-		}
-
 		void SaveClicked(object sender, EventArgs e)
 		{
 			if (loadedMapName == null)
@@ -356,7 +337,6 @@ namespace OpenRA.Editor
 			{
 				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
 				surface1.Map.Package = new Folder(loadedMapName);
-				SavePreviewImage(Path.Combine(loadedMapName, "preview.png"));
 				surface1.Map.Save(loadedMapName);
 			}
 		}
