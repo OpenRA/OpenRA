@@ -251,6 +251,89 @@ Container@ROOT:
 					Width: 80
 					Height: 20
 					Text: Lock Teams
+				Background@COLOR_CHOOSER:
+					Id:COLOR_CHOOSER
+					Width:500
+					Height:195
+					X:(WINDOW_RIGHT - WIDTH)/2 - PARENT_LEFT
+					Y:100	
+					Visible:false
+					Children:
+						Button@BUTTON_OK:
+							Id:BUTTON_OK
+							X:PARENT_RIGHT - 180
+							Y:PARENT_BOTTOM - 45
+							Width:160
+							Height:25
+							Text:Ok
+							Bold:True
+						ShpImage@MCV:
+							Id:MCV
+							X:PARENT_RIGHT - 90
+							Y:20
+							Image:mcv
+							Frame:8
+						ShpImage@FACT:
+							Id:FACT
+							X:PARENT_RIGHT - 100
+							Y:70
+							Image:fact
+						Label@HUE_LABEL:
+							X:0
+							Y:30
+							Width:110
+							Height:20
+							Align: Right
+							Text: Hue:
+						Slider@HUE:
+							Id:HUE_SLIDER
+							X:120
+							Y:30
+							Width:260
+							Height:20
+							Ticks:5
+						Label@SAT_LABEL:
+							X:0
+							Y:60
+							Width:110
+							Height:20
+							Align: Right
+							Text: Saturation:	
+						Slider@SAT:
+							Id:SAT_SLIDER
+							X:120
+							Y:60
+							Width:260
+							Height:20
+							Ticks:5
+						Label@LUM_LABEL:
+							X:0
+							Y:90
+							Width:110
+							Height:20
+							Align: Right
+							Text: Brightness:	
+						Slider@LUM:
+							Id:LUM_SLIDER
+							X:120
+							Y:90
+							Width:260
+							Height:20
+							Ticks:5
+						Label@RANGE_LABEL:
+							X:0
+							Y:120
+							Width:110
+							Height:20
+							Align: Right
+							Text: Range:	
+						Slider@RANGE:
+							Id:RANGE_SLIDER
+							X:120
+							Y:120
+							Width:260
+							Height:20
+							Ticks:5
 		Background@MAP_CHOOSER:
 			Id:MAP_CHOOSER
 			X:(WINDOW_RIGHT - WIDTH)/2

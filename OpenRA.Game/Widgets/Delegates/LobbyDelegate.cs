@@ -124,7 +124,13 @@ namespace OpenRA.Widgets.Delegates
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
-
+			
+			var colorChooser = lobby.GetWidget("COLOR_CHOOSER");
+			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
+			{
+				colorChooser.IsVisible = () => false;
+				return true;
+			};
 		}
 
 		void UpdateCurrentMap()
@@ -169,7 +175,11 @@ namespace OpenRA.Widgets.Delegates
 					name.OnLoseFocus = () => name.OnEnterKey();
 
 					var color = template.GetWidget<ButtonWidget>("COLOR");
-					//color.OnMouseUp = CyclePalette;
+					color.OnMouseUp = mi =>
+					{
+						Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER").IsVisible = () => true;
+						return true;
+					};
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.Color;

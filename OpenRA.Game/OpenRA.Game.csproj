@@ -231,6 +231,7 @@
     <Compile Include="Widgets\ListBoxWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TimerWidget.cs" />
+    <Compile Include="Widgets\ShpImageWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
