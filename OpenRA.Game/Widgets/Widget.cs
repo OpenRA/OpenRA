@@ -192,7 +192,7 @@ namespace OpenRA.Widgets
 				return false;
 			
 			// Send the event to the deepest children first and bubble up if unhandled
-			foreach (var child in Children)
+			foreach (var child in Children.OfType<Widget>().Reverse())
 				if (child.HandleMouseInputOuter(mi))
 					return true;
 
