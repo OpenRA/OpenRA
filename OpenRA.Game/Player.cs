@@ -36,7 +36,8 @@ namespace OpenRA
 
 		public readonly string Palette;
 		public readonly Color Color;
-		
+		public readonly Color Color2;
+
 		public readonly string PlayerName;
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
@@ -52,14 +53,18 @@ namespace OpenRA
 			Shroud = new ShroudRenderer(this, world.Map);
 
 			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
-
+			
 			Index = index;
-			Palette = pr.Palette;
-			Color = world.PlayerColors().Where(c => c.Name == pr.Palette).FirstOrDefault().Color;
+			Palette = "player"+index;
+			Color = Util.ArrayToColor(new int[] {93,194,165});
+			Color2 = Util.ArrayToColor(new int[] {0,32,32});
+			
 			PlayerName = InternalName = pr.Name;
 			NonCombatant = pr.NonCombatant;
 			Country = world.GetCountries()
 				.FirstOrDefault(c => pr.Race == c.Race);
+			
+			RegisterPlayerColor(world, Palette);
 		}
 		
 		public Player( World world, Session.Client client )
@@ -70,15 +75,26 @@ namespace OpenRA
 			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
 			
 			Index = client.Index;
-			Palette = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Name;
-			Color = world.PlayerColors()[client.PaletteIndex % world.PlayerColors().Count()].Color;
+			Palette = "player"+client.Index;
+			Color = Util.ArrayToColor(new int[] {93,194,165});
+			Color2 = Util.ArrayToColor(new int[] {0,32,32});
 			PlayerName = client.Name;
 			InternalName = "Multi{0}".F(client.Index);
 			Country = world.GetCountries()
 				.FirstOrDefault(c => client != null && client.Country == c.Race)
 				?? world.GetCountries().Random(world.SharedRandom);
+			
+			RegisterPlayerColor(world, Palette);
 		}
-	
+		
+		public void RegisterPlayerColor(World world, string palette)
+		{			
+			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
+			var newpal = new Palette(world.WorldRenderer.GetPalette(info.BasePalette),
+			                 new PlayerColorRemap(Color, Color2, info.SplitRamp));
+			world.WorldRenderer.AddPalette(palette, newpal);	
+		}
+		
 		public void GiveAdvice(string advice)
 		{
 			// todo: store the condition or something.

@@ -210,11 +210,6 @@ namespace OpenRA
 			return new float2(Gauss1D(r, samples), Gauss1D(r, samples));
 		}
 
-		public static List<PlayerColorPaletteInfo> PlayerColors(this World world)
-		{
-			return world.WorldActor.Info.Traits.WithInterface<PlayerColorPaletteInfo>().ToList();
-		}
-		
 		public static string FormatTime(int ticks)
 		{
 			var seconds = ticks / 25;

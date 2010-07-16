@@ -37,7 +37,7 @@ namespace OpenRA.FileFormats
 		public class Client
 		{
 			public int Index;
-			public int PaletteIndex;
+			public System.Drawing.Color Color;
 			public string Country;
 			public int SpawnPoint;
 			public string Name;

@@ -20,9 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
-
 namespace OpenRA.FileFormats
 {
 	public static class FieldLoader
@@ -102,13 +102,14 @@ namespace OpenRA.FileFormats
 			else if (fieldType == typeof(string))
 				return x;
 			
-			else if (fieldType == typeof(System.Drawing.Color))
+			else if (fieldType == typeof(Color))
 			{
 				var parts = x.Split(',');
-				if (parts.Length != 3)
-					return InvalidValueAction(x,fieldType, field);
-				
-				return System.Drawing.Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+				if (parts.Length == 3)
+					return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+				if (parts.Length == 4)
+					return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+				return InvalidValueAction(x,fieldType, field);
 			}
 			
 			else if (fieldType.IsEnum)
@@ -183,6 +184,13 @@ namespace OpenRA.FileFormats
 			if (v == null)
 				return "";
 
+			// Color.ToString() does the wrong thing; force it to format as an array
+			if (f.FieldType == typeof(Color))
+			{
+				var c = (Color)v;
+				return "{0},{1},{2},{3}".F(c.A,c.R,c.G,c.B);
+			}
+			
 			return f.FieldType.IsArray
 				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
 				: v.ToString();

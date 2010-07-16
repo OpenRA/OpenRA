@@ -58,7 +58,6 @@ namespace OpenRA.Widgets.Delegates
 			mapPreview.SpawnColors = () =>
 			{
 				var spawns = Map.SpawnPoints;
-				var playerColors = Game.world.PlayerColors();
 				var sc = new Dictionary<int2, Color>();
 
 				for (int i = 1; i <= spawns.Count(); i++)
@@ -66,7 +65,7 @@ namespace OpenRA.Widgets.Delegates
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
 					if (client == null)
 						continue;
-					sc.Add(spawns.ElementAt(i - 1), playerColors[client.PaletteIndex % playerColors.Count()].Color);
+					sc.Add(spawns.ElementAt(i - 1), client.Color);
 				}
 				return sc;
 			};
@@ -170,10 +169,10 @@ namespace OpenRA.Widgets.Delegates
 					name.OnLoseFocus = () => name.OnEnterKey();
 
 					var color = template.GetWidget<ButtonWidget>("COLOR");
-					color.OnMouseUp = CyclePalette;
+					//color.OnMouseUp = CyclePalette;
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
+					colorBlock.GetColor = () => c.Color;
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
@@ -196,7 +195,7 @@ namespace OpenRA.Widgets.Delegates
 					template = RemotePlayerTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => Game.world.PlayerColors()[c.PaletteIndex % Game.world.PlayerColors().Count].Color;
+					color.GetColor = () => c.Color;
 
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
@@ -224,24 +223,7 @@ namespace OpenRA.Widgets.Delegates
 			}
 		}
 
-		bool PaletteAvailable(int index) { return Game.LobbyInfo.Clients.All(c => c.PaletteIndex != index) && Game.world.PlayerColors()[index % Game.world.PlayerColors().Count].Playable; }
 		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-
-		bool CyclePalette(MouseInput mi)
-		{
-			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.PlayerColors().Count() - 1;
-
-			var newIndex = ((int)Game.LocalClient.PaletteIndex + d) % Game.world.PlayerColors().Count();
-
-			while (!PaletteAvailable(newIndex) && newIndex != (int)Game.LocalClient.PaletteIndex)
-				newIndex = (newIndex + d) % Game.world.PlayerColors().Count();
-
-			Game.IssueOrder(
-				Order.Command("pal " + newIndex));
-
-			return true;
-		}
-
 		bool CycleRace(MouseInput mi)
 		{
 			var countries = CountryNames.Select(a => a.Key);

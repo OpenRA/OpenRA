@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			{
 				// TODO: This shouldn't rely on a base palette
 				var wr = world.WorldRenderer;
-				var pal = wr.GetPalette("player0");
+				var pal = wr.GetPalette("terrain");
 				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))));
 			}
 		}

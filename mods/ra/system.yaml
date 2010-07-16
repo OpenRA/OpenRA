@@ -103,77 +103,8 @@ World:
 		WaterChance: .2
 	PaletteFromCurrentTheatre:
 		Name: terrain
-	PlayerColorPalette@player0:
-		Name: player0
-		DisplayName: Gold
+	PlayerColorPalette:
 		BasePalette: terrain
-		DisplayColor: 228, 200, 112
-		Color1: 246,214,121
-		Color2: 40,32,8
-	PlayerColorPalette@player1:
-		Name: player1
-		DisplayName: Blue
-		BasePalette: terrain
-		DisplayColor: 56, 72, 125
-		Color1: 30,85,204
-		Color2: 8,20,52
-	PlayerColorPalette@player2:
-		Name: player2
-		DisplayName: Red
-		BasePalette: terrain
-		DisplayColor: 238,0,0
-		Color1: 255,20,0
-		Color2: 56,0,0
-	PlayerColorPalette@player3:
-		Name: player3
-		DisplayName: Orange
-		BasePalette: terrain
-		DisplayColor: 198,97,0
-		Color1: 255,107,0
-		Color2: 56,0,0
-	PlayerColorPalette@player4:
-		Name: player4
-		DisplayName: Teal
-		BasePalette: terrain
-		DisplayColor: 28,109,97
-		Color1: 93,194,165
-		Color2: 0,32,32
-	PlayerColorPalette@player5:
-		Name: player5
-		DisplayName: Salmon
-		BasePalette: terrain
-		DisplayColor: 153,76,53
-		Color1: 210,153,125
-		Color2: 56,0,0
-	PlayerColorPalette@player6:
-		Name: player6
-		DisplayName: Green
-		BasePalette: terrain
-		DisplayColor: 76,101,60
-		Color1: 160,240,140
-		Color2: 20,20,20
-	PlayerColorPalette@player7:
-		Name: player7
-		DisplayName: White
-		BasePalette: terrain
-		DisplayColor: 255,255,255
-		Color1: 255,255,255
-		Color2: 75,75,75
-	PlayerColorPalette@player8:
-		Name: player8
-		DisplayName: Black
-		BasePalette: terrain
-		DisplayColor: 30,30,30
-		Color1: 80,80,80
-		Color2: 5,5,5
-	PlayerColorPalette@neutral:
-		Name: neutral
-		DisplayName: Neutral
-		BasePalette: terrain
-		DisplayColor: 133,113,101
-		Color1: 238,238,238
-		Color2: 44,28,24
-		Playable: no
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

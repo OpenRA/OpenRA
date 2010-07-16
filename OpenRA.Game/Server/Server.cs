@@ -148,7 +148,7 @@ namespace OpenRA.Server
 					new Session.Client()
 					{
 						Index = newConn.PlayerIndex,
-						PaletteIndex = ChooseFreePalette(),
+						Color = System.Drawing.Color.FromArgb(93,194,165),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
 						Country = "random",
 						State = Session.ClientState.NotReady,
@@ -323,6 +323,8 @@ namespace OpenRA.Server
 				{ "pal",
 					s =>
 					{
+						return true;
+						/*
 						int pali;
 						
 						if (!int.TryParse(s, out pali))
@@ -340,6 +342,7 @@ namespace OpenRA.Server
 						GetClient(conn).PaletteIndex = pali;
 						SyncLobbyInfo();
 						return true;
+						*/
 					}},
 				{ "map",
 					s =>
