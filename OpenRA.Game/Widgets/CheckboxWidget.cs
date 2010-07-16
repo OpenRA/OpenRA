@@ -35,24 +35,18 @@ namespace OpenRA.Widgets
 			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
 			var pos = RenderOrigin;
 			var rect = RenderBounds;
-			WidgetUtils.DrawPanel("dialog3", new Rectangle(rect.Location,
-					new Size(Bounds.Height, Bounds.Height)));
+			var check = new Rectangle(rect.Location,
+					new Size(Bounds.Height, Bounds.Height));
+			WidgetUtils.DrawPanel("dialog3", check);
 
 			var textSize = font.Measure(Text);
 			font.DrawText(Text,
 				new float2(rect.Left + rect.Height * 1.5f, pos.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
 
 			if (Checked())
-			{
+			{				
 				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-
-				Game.chrome.lineRenderer.FillRect(
-					new RectangleF( 
-						Game.viewport.Location.X + rect.Left + 4, 
-						Game.viewport.Location.Y + rect.Top + 5,
-						rect.Height - 9,
-						rect.Height - 9), 
-						Color.White);
+				WidgetUtils.FillRectWithColor(check.InflateBy(-4,-5,-4,-5),Color.White);
 				Game.chrome.lineRenderer.Flush();
 			}
 		}

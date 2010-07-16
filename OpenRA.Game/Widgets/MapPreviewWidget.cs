@@ -9,19 +9,14 @@ namespace OpenRA.Widgets
 {
 	class MapPreviewWidget : Widget
 	{
-		Sheet mapChooserSheet;
-		Sprite mapChooserSprite;
-		bool mapPreviewDirty = true;
-		MapStub lastMap;
-
+		public int SpawnClickRadius = 50;
+		
 		public Func<MapStub> Map = () => null;
 		public Action<int> OnSpawnClick = spawn => {};
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
-		
-		public MapPreviewWidget() : base() { }
-
 		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview(stub));
-		
+
+		public MapPreviewWidget() : base() { }
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
@@ -30,11 +25,14 @@ namespace OpenRA.Widgets
 			OnSpawnClick = other.OnSpawnClick;
 			SpawnColors = other.SpawnColors;
 		}
-		
-		static Sprite UnownedSpawn = null;
-		static Sprite OwnedSpawn = null;
-		const int closeEnough = 50;
+		public override Widget Clone() { return new MapPreviewWidget(this); }
 
+		
+		public int2 ConvertToPreview(MapStub map, int2 point)
+		{
+			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.TopLeft.X)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.TopLeft.Y)));
+		}
+		
 		public override bool HandleInput(MouseInput mi)
 		{			
 			var map = Map();
@@ -44,8 +42,8 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{			
 				var p = map.Waypoints
-					.Select((sp, i) => Pair.New(map.ConvertToPreview(sp.Value, RenderBounds), i))
-					.Where(a => (a.First - mi.Location).LengthSquared < closeEnough)
+					.Select((sp, i) => Pair.New(ConvertToPreview(map, sp.Value), i))
+					.Where(a => (a.First - mi.Location).LengthSquared < SpawnClickRadius)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();
 				OnSpawnClick(p);
@@ -55,8 +53,13 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		public override Widget Clone() { return new MapPreviewWidget(this); }
-
+		Sheet mapChooserSheet;
+		Sprite mapChooserSprite;
+		MapStub lastMap;
+		Rectangle MapRect;
+		float PreviewScale = 0;
+		static Sprite UnownedSpawn = null;
+		static Sprite OwnedSpawn = null;
 		public override void DrawInner( World world )
 		{
 			if (UnownedSpawn == null)
@@ -66,39 +69,37 @@ namespace OpenRA.Widgets
 			
 			var map = Map();
 			if( map == null ) return;
+			
 			if (lastMap != map)
 			{
-				mapPreviewDirty = true;
 				lastMap = map;
-			}
-			
-			var mapRect = map.PreviewBounds( RenderBounds );
 
-			if( mapPreviewDirty )
-			{
+				// Update image data
 				var preview = PreviewCache[map];
 				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
 					mapChooserSheet = new Sheet( Game.renderer, new Size( preview.Width, preview.Height ) );
 
 				mapChooserSheet.Texture.SetData( preview );
 				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Width, map.Height ), TextureChannel.Alpha );
-				mapPreviewDirty = false;
+				
+				// Update map rect
+				PreviewScale = Math.Min(RenderBounds.Width * 1.0f / map.Width, RenderBounds.Height * 1.0f / map.Height);
+				var size = Math.Max(map.Width, map.Height);
+				var dw = (int)(PreviewScale * (size - map.Width)) / 2;
+				var dh = (int)(PreviewScale * (size - map.Height)) / 2;
+				MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Width * PreviewScale), (int)(map.Height * PreviewScale));
 			}
 
 			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
-				new float2( mapRect.Location ),
+				new float2(MapRect.Location),
 				"chrome",
-				new float2( mapRect.Size ) );
+				new float2( MapRect.Size ) );
 
-			DrawSpawnPoints( map, world );
-		}
-
-		void DrawSpawnPoints(MapStub map, World world)
-		{		
+			// Overlay spawnpoints
 			var colors = SpawnColors();
 			foreach (var p in map.SpawnPoints)
 			{
-				var pos = map.ConvertToPreview(p, RenderBounds);
+				var pos = ConvertToPreview(map, p);
 				var sprite = UnownedSpawn;
 				var offset = new int2(-UnownedSpawn.bounds.Width/2, -UnownedSpawn.bounds.Height/2);
 
@@ -106,13 +107,8 @@ namespace OpenRA.Widgets
 				{
 					sprite = OwnedSpawn;
 					offset = new int2(-OwnedSpawn.bounds.Width/2, -OwnedSpawn.bounds.Height/2);
-					
-					Game.chrome.lineRenderer.FillRect(new RectangleF(
-						Game.viewport.Location.X + pos.X + offset.X + 2,
-						Game.viewport.Location.Y + pos.Y + offset.Y + 2,
-						12, 12), colors[p]);
+					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
 				}
-				
 				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset, "chrome");
 			}
 

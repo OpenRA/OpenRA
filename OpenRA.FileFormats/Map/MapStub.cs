@@ -66,27 +66,5 @@ namespace OpenRA.FileFormats
 
 			Uid = Package.GetContent("map.uid").ReadAllText();
 		}
-		
-		public int2 ConvertToPreview(int2 point, Rectangle container)
-		{
-			float scale = Math.Min(container.Width * 1.0f / Width, container.Height * 1.0f / Height);
-
-			var size = Math.Max(Width, Height);
-			var dw = (int)(scale * (size - Width)) / 2;
-			var dh = (int)(scale * (size - Height)) / 2;
-
-			return new int2(container.X + dw + (int)(scale*(point.X - TopLeft.X)) , container.Y + dh + (int)(scale*(point.Y - TopLeft.Y)));
-		}
-		
-		public Rectangle PreviewBounds(Rectangle container)
-		{
-			float scale = Math.Min(container.Width * 1.0f / Width, container.Height * 1.0f / Height);
-
-			var size = Math.Max(Width, Height);
-			var dw = (int)(scale * (size - Width)) / 2;
-			var dh = (int)(scale * (size - Height)) / 2;
-
-			return new Rectangle(container.X + dw, container.Y + dh, (int)(Width * scale), (int)(Height * scale));
-		}
 	}
 }

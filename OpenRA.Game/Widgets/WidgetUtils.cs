@@ -63,7 +63,15 @@ namespace OpenRA.Widgets
 					DrawRGBA(ss, new float2(x, y));
 				}
 		}
-
+		
+		public static void FillRectWithColor(Rectangle r, Color c)
+		{
+			Game.chrome.lineRenderer.FillRect(new RectangleF(
+						Game.viewport.Location.X + r.X,
+						Game.viewport.Location.Y + r.Y,
+						r.Width, r.Height), c);
+		}
+		
 		public static int[] GetBorderSizes(string collection)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
