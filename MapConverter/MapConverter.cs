@@ -95,7 +95,6 @@ namespace MapConverter
 		int MapSize;
 		int ActorCount = 0; 
 		Map Map = new Map();
-		Manifest manifest;
 
 		public MapConverter(string[] args)
 		{
@@ -105,27 +104,24 @@ namespace MapConverter
 				return;
 			}
 
-			var mods = args[0].Split(',');
-			manifest = new Manifest(mods);
-
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
-			
+			Game.InitializeEngineWithMods(args[0].Split(','));
 			ConvertIniMap(args[1]);
 			Save(args[2]);
 		}
+
+		enum IniMapFormat { RedAlert = 3, /* otherwise, cnc (2 variants exist, we don't care to differentiate) */ };
 		
 		public void ConvertIniMap(string iniFile)
 		{
-			IniFile file = new IniFile(FileSystem.Open(iniFile));
-			IniSection basic = file.GetSection("Basic");
-			IniSection map = file.GetSection("Map");
-			var INIFormat = int.Parse(basic.GetValue("NewINIFormat", "0"));
+			var file = new IniFile(FileSystem.Open(iniFile));
+			var basic = file.GetSection("Basic");
+			var map = file.GetSection("Map");
+			var legacyMapFormat = (IniMapFormat)int.Parse(basic.GetValue("NewINIFormat", "0"));
 			var XOffset = int.Parse(map.GetValue("X", "0"));
 			var YOffset = int.Parse(map.GetValue("Y", "0"));
 			var Width = int.Parse(map.GetValue("Width", "0"));
 			var Height = int.Parse(map.GetValue("Height", "0"));
-			MapSize = (INIFormat == 3) ? 128 : 64;
+			MapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 			
 			Map.Title = basic.GetValue("Name", "(null)");
 			Map.Author = "Westwood Studios";
@@ -135,8 +131,8 @@ namespace MapConverter
 			Map.TopLeft = new int2 (XOffset, YOffset);
 			Map.BottomRight = new int2(XOffset+Width,YOffset+Height);
 			Map.Selectable = true;
-			
-			if (INIFormat == 3) // RA map
+
+			if (legacyMapFormat == IniMapFormat.RedAlert)
 			{
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
 				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
@@ -161,7 +157,8 @@ namespace MapConverter
 		
 			var wp = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
-					.Select(kv => Pair.New(int.Parse(kv.Key), new int2(int.Parse(kv.Value) % MapSize, int.Parse(kv.Value) / MapSize)))
+					.Select(kv => Pair.New(int.Parse(kv.Key), 
+						LocationFromMapOffset( int.Parse( kv.Value ), MapSize )))
 					.Where(a => a.First < 8)
 					.ToArray();
 			
@@ -169,6 +166,11 @@ namespace MapConverter
 			
 			foreach (var kv in wp)
 				Map.Waypoints.Add("spawn"+kv.First, kv.Second);
+		}
+
+		static int2 LocationFromMapOffset(int offset, int mapSize)
+		{
+			return new int2(offset % mapSize, offset / mapSize);
 		}
 		
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)

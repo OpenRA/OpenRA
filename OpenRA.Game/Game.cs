@@ -679,5 +679,18 @@ namespace OpenRA
 			file.Flush();
 			file.Close();
 		}
+
+		public static void InitializeEngineWithMods(string[] mods)
+		{
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+			var manifest = new Manifest(mods);
+			LoadModAssemblies(manifest);
+
+			FileSystem.UnmountAll();
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+
+			Rules.LoadRules(manifest, new Map());
+		}
 	}
 }

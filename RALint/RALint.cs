@@ -11,20 +11,6 @@ namespace RALint
 {
 	static class RALint
 	{
-		/* todo: move this into the engine? dpstool, seqed, editor, etc all need it (or something similar) */
-		static void InitializeEngineWithMods(string[] mods)
-		{
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			var manifest = new Manifest(mods);
-			Game.LoadModAssemblies(manifest);
-
-			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
-
-			Rules.LoadRules(manifest, new Map());
-		}
-
 		static int errors = 0;
 
 		static void EmitError(string e)
@@ -37,7 +23,7 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
-			InitializeEngineWithMods(args);
+			Game.InitializeEngineWithMods(args);
 
 			// all the @something names which actually EXIST.
 			var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
