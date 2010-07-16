@@ -126,12 +126,53 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			var colorChooser = lobby.GetWidget("COLOR_CHOOSER");
+			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");		
+			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
+			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
+
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
 			{
 				colorChooser.IsVisible = () => false;
+				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
 				return true;
 			};
 		}
+		
+		void UpdatePlayerColor(float hf, float sf, float lf)
+		{
+			var c = ColorFromHSL(hf*360, sf, lf);
+			Game.IssueOrder(Order.Command("color {0},{1},{2}".F(c.R,c.G,c.B)));
+		}
+		
+		Color ColorFromHSL(float h, float s, float l)
+		{		
+			// Convert from HSL to RGB
+			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);
+			var p = 2 * l - q;
+			var hk = h / 360.0f;
+			
+			double[] trgb = { hk + 1 / 3.0f,
+							  hk,
+							  hk - 1/3.0f };
+			double[] rgb = { 0, 0, 0 };
+			
+			for (int k = 0; k < 3; k++)
+			{
+				while (trgb[k] < 0) trgb[k] += 1.0f;
+				while (trgb[k] > 1) trgb[k] -= 1.0f;
+			}
+			
+			for (int k = 0; k < 3; k++)
+			{
+				if (trgb[k] < 1 / 6.0f) { rgb[k] = (p + ((q - p) * 6 * trgb[k])); }
+				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5) { rgb[k] = q; }
+				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3) { rgb[k] = (p + ((q - p) * 6 * (2.0f / 3 - trgb[k]))); }
+				else { rgb[k] = p; }
+			}
+			
+			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
+		}
+
 
 		void UpdateCurrentMap()
 		{
@@ -177,7 +218,17 @@ namespace OpenRA.Widgets.Delegates
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = mi =>
 					{
-						Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER").IsVisible = () => true;
+						var colorChooser = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
+						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
+						hueSlider.Offset = Game.LocalClient.Color.GetHue()/360f;
+						
+						var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
+						satSlider.Offset = Game.LocalClient.Color.GetSaturation();
+			
+						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
+						lumSlider.Offset = Game.LocalClient.Color.GetBrightness();
+						
+						colorChooser.IsVisible = () => true;
 						return true;
 					};
 

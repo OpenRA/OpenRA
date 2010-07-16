@@ -320,29 +320,13 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
-				{ "pal",
+				{ "color",
 					s =>
 					{
+						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
+						GetClient(conn).Color = System.Drawing.Color.FromArgb(c[0],c[1],c[2]);
+						SyncLobbyInfo();		
 						return true;
-						/*
-						int pali;
-						
-						if (!int.TryParse(s, out pali))
-						{
-							Console.WriteLine("Invalid palette: {0}", s);
-							return false;
-						}
-
-						if (lobbyInfo.Clients.Where( c => c != GetClient(conn) ).Any( c => c.PaletteIndex == pali ))
-						{
-							SendChatTo( conn, "You can't be the same color as another player" );
-							return true;
-						}
-
-						GetClient(conn).PaletteIndex = pali;
-						SyncLobbyInfo();
-						return true;
-						*/
 					}},
 				{ "map",
 					s =>
