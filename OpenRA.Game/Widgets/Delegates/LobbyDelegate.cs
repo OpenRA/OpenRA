@@ -133,15 +133,17 @@ namespace OpenRA.Widgets.Delegates
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");		
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
 			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-			
-			hueSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
-			satSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
-			lumSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
-			
+			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
+
+			hueSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			satSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			lumSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			rangeSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
 			{
 				colorChooser.IsVisible = () => false;
-				UpdatePlayerColor(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+				UpdatePlayerColor(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				return true;
 			};
 			
@@ -152,17 +154,17 @@ namespace OpenRA.Widgets.Delegates
 			Game.world.WorldRenderer.AddPalette("colorpicker",BasePlayerPalette);
 		}
 		
-		void UpdatePlayerColor(float hf, float sf, float lf)
+		void UpdatePlayerColor(float hf, float sf, float lf, float r)
 		{
 			var c1 = ColorFromHSL(hf, sf, lf);
-			var c2 = ColorFromHSL(hf, sf, 0.5f*lf);
+			var c2 = ColorFromHSL(hf, sf, r*lf);
 			Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
 		
-		void UpdateColorPreview(float hf, float sf, float lf)
+		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
 			var c1 = ColorFromHSL(hf, sf, lf);
-			var c2 = ColorFromHSL(hf, sf, 0.5f*lf);
+			var c2 = ColorFromHSL(hf, sf, r*lf);
 			Game.world.WorldRenderer.UpdatePalette("colorpicker", new Palette(BasePlayerPalette, new PlayerColorRemap(c1, c2, SplitPlayerPalette)));
 		}
 		
@@ -250,7 +252,10 @@ namespace OpenRA.Widgets.Delegates
 						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
 						lumSlider.Offset = Game.LocalClient.Color1.GetBrightness();
 						
-						UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+						var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
+						rangeSlider.Offset = Game.LocalClient.Color2.GetBrightness()/Game.LocalClient.Color1.GetBrightness();
+
+						UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 						colorChooser.IsVisible = () => true;
 						return true;
 					};
