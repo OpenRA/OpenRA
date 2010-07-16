@@ -95,10 +95,5 @@ namespace RALint
 					EmitError("{0}.{1}.{2}: Missing {3} `{4}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, type, v));
 		}
-
-		static bool HasAttribute<T>(this MemberInfo mi)
-		{
-			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
-		}
 	}
 }

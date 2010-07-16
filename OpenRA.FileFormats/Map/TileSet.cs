@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
@@ -32,11 +33,8 @@ namespace OpenRA.FileFormats
 		public bool AcceptSmudge = true;
 		public bool IsWater = false;
 		public Color Color;
-		
-		public TerrainTypeInfo(MiniYaml my)
-		{
-			FieldLoader.Load(this, my);
-		}
+
+		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 	}
 	
 	public class TileTemplate
@@ -49,10 +47,10 @@ namespace OpenRA.FileFormats
 		
 		static List<string> fields = new List<string>() {"Id", "Image", "Size", "PickAny"};
 
-		public TileTemplate(Dictionary<string,MiniYaml> my)
+		public TileTemplate(MiniYaml my)
 		{
-			FieldLoader.LoadFields(this, my, fields);
-			foreach (var tt in my["Tiles"].Nodes)
+			FieldLoader.LoadFields(this, my.Nodes, fields);
+			foreach (var tt in my.Nodes["Tiles"].Nodes)
 				Tiles.Add(byte.Parse(tt.Key), tt.Value.Value);
 		}
 	}
@@ -75,18 +73,12 @@ namespace OpenRA.FileFormats
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			foreach (var tt in yaml["Terrain"].Nodes)
-			{
-				var t = new TerrainTypeInfo(tt.Value);
-				Terrain.Add(t.Type, t);
-			}
-			
+			Terrain = yaml["Terrain"].Nodes.Values
+				.Select(y => new TerrainTypeInfo(y)).ToDictionary(t => t.Type);
+
 			// Templates
-			foreach (var tt in yaml["Templates"].Nodes)
-			{
-				var t = new TileTemplate(tt.Value.Nodes);
-				Templates.Add(t.Id, t);
-			}
+			Templates = yaml["Templates"].Nodes.Values
+				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
 		}
 		
 		public void LoadTiles()

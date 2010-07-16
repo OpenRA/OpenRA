@@ -139,10 +139,5 @@ namespace OpenRA
 				return p.Index * 0x567;
 			return 0;
 		}
-
-		static bool HasAttribute<T>( this MemberInfo mi )
-		{
-			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
-		}
 	}
 }

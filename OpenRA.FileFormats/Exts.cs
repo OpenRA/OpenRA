@@ -73,5 +73,10 @@ namespace OpenRA
 						yield return line;
 				}
 		}
+
+		public static bool HasAttribute<T>(this MemberInfo mi)
+		{
+			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
+		}
 	}
 }

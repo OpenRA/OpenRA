@@ -36,18 +36,14 @@ namespace OpenRA.FileFormats
 		{
 			throw new NotImplementedException( "FieldLoader: Missing field `{0}` on `{1}`".F( s, f.Name ) );
 		};
-		
-		public static void Load(object self, IniSection ini)
-		{
-			foreach (var x in ini)
-				LoadField(self, x.Key, x.Value);
-		}
 
-		public static void Load(object self, MiniYaml my)
+		public static void Load(object self, MiniYaml my) { Load(self, my.Nodes); }
+
+		public static void Load(object self, Dictionary<string, MiniYaml> my)
 		{
-			foreach (var x in my.Nodes)
+			foreach (var x in my)
 				if (!x.Key.StartsWith("-"))
-					LoadField( self, x.Key, x.Value.Value );
+					LoadField(self, x.Key, x.Value.Value);
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -62,7 +58,7 @@ namespace OpenRA.FileFormats
 			foreach (var field in fields)
 			{
 				if (!my.ContainsKey(field)) continue;
-				FieldLoader.LoadField(self,field,my[field].Value);
+				LoadField(self,field,my[field].Value);
 			}
 		}
 
