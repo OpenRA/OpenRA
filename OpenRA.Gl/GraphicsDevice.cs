@@ -20,9 +20,7 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
@@ -257,13 +255,15 @@ namespace OpenRA.GlRenderer
 
 		public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices)
 		{
-			Gl.glDrawElements(ModeFromPrimitiveType(pt), indices.End - indices.Start, Gl.GL_UNSIGNED_SHORT, new IntPtr(indices.Start * 2));
+			Gl.glDrawElements(ModeFromPrimitiveType(pt), indices.End - indices.Start, 
+				Gl.GL_UNSIGNED_SHORT, new IntPtr(indices.Start * 2));
 			CheckGlError();
 		}
 
 		public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives)
 		{
-			Gl.glDrawElements(ModeFromPrimitiveType(pt), numPrimitives * IndicesPerPrimitive(pt), Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
+			Gl.glDrawElements(ModeFromPrimitiveType(pt), numPrimitives * IndicesPerPrimitive(pt), 
+				Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
 			CheckGlError();
 		}
 
@@ -289,231 +289,9 @@ namespace OpenRA.GlRenderer
 			throw new NotImplementedException();
 		}
 
-		#region IGraphicsDevice Members
-
-		public IVertexBuffer<Vertex> CreateVertexBuffer(int size)
-		{
-			return new VertexBuffer<Vertex>(this, size);
-		}
-
-		public IIndexBuffer CreateIndexBuffer(int size)
-		{
-			return new IndexBuffer(this, size);
-		}
-
-		public ITexture CreateTexture(Bitmap bitmap)
-		{
-			return new Texture(this, bitmap);
-		}
-
-		public IShader CreateShader(Stream stream)
-		{
-			return new Shader(this, stream);
-		}
-
-		#endregion
-	}
-
-	public class VertexBuffer<T> : IVertexBuffer<T>, IDisposable
-		where T : struct
-	{
-		int buffer;
-
-		public VertexBuffer(GraphicsDevice dev, int size)
-		{
-			Gl.glGenBuffers(1, out buffer);
-			GraphicsDevice.CheckGlError();
-		}
-
-		public void SetData(T[] data)
-		{
-			Bind();
-			Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
-				new IntPtr(Marshal.SizeOf(typeof(T)) * data.Length), data, Gl.GL_DYNAMIC_DRAW);
-			GraphicsDevice.CheckGlError();
-		}
-
-		public void Bind()
-		{
-			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, buffer);
-			GraphicsDevice.CheckGlError();
-			Gl.glVertexPointer(3, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), new IntPtr(12));
-			GraphicsDevice.CheckGlError();
-		}
-
-		bool disposed;
-		public void Dispose()
-		{
-			if (disposed) return;
-			GC.SuppressFinalize(this);
-			Gl.glDeleteBuffers(1, ref buffer);
-			GraphicsDevice.CheckGlError();
-			disposed = true;
-		}
-
-		//~VertexBuffer() { Dispose(); }
-	}
-
-	public class IndexBuffer : IIndexBuffer, IDisposable
-	{
-		int buffer;
-
-		public IndexBuffer(GraphicsDevice dev, int size)
-		{
-			Gl.glGenBuffers(1, out buffer);
-			GraphicsDevice.CheckGlError();
-		}
-
-		public void SetData(ushort[] data)
-		{
-			Bind();
-			Gl.glBufferData(Gl.GL_ELEMENT_ARRAY_BUFFER,
-				new IntPtr(2 * data.Length), data, Gl.GL_DYNAMIC_DRAW);
-			GraphicsDevice.CheckGlError();
-		}
-
-		public void Bind()
-		{
-			Gl.glBindBuffer(Gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-			GraphicsDevice.CheckGlError();
-		}
-
-		bool disposed;
-		public void Dispose()
-		{
-			if (disposed) return;
-			GC.SuppressFinalize(this);
-			Gl.glDeleteBuffers(1, ref buffer);
-			GraphicsDevice.CheckGlError();
-			disposed = true;
-		}
-
-		//~IndexBuffer() { Dispose(); }
-	}
-
-	public class Shader : IShader
-	{
-		IntPtr effect;
-		IntPtr technique;
-		GraphicsDevice dev;
-
-		public Shader(GraphicsDevice dev, Stream s)
-		{
-			this.dev = dev;
-			string code;
-			using (var file = new StreamReader(s))
-				code = file.ReadToEnd();
-			effect = Cg.cgCreateEffect(dev.cgContext, code, null);
-
-			if (effect == IntPtr.Zero)
-			{
-				var err = Cg.cgGetErrorString(Cg.cgGetError());
-				var results = Cg.cgGetLastListing(dev.cgContext);
-				throw new InvalidOperationException(
-					string.Format("Cg compile failed ({0}):\n{1}", err, results));
-			}
-
-			technique = Cg.cgGetFirstTechnique(effect);
-			if (technique == IntPtr.Zero)
-				throw new InvalidOperationException("No techniques");
-			while (Cg.cgValidateTechnique(technique) == 0)
-			{
-				technique = Cg.cgGetNextTechnique(technique);
-				if (technique == IntPtr.Zero)
-					throw new InvalidOperationException("No valid techniques");
-			}
-		}
-
-		public void Render(Action a)
-		{
-			CgGl.cgGLEnableProfile(dev.vertexProfile);
-			CgGl.cgGLEnableProfile(dev.fragmentProfile);
-
-			var pass = Cg.cgGetFirstPass(technique);
-			while (pass != IntPtr.Zero)
-			{
-				Cg.cgSetPassState(pass);
-				a();
-				Cg.cgResetPassState(pass);
-				pass = Cg.cgGetNextPass(pass);
-			}
-
-			CgGl.cgGLDisableProfile(dev.fragmentProfile);
-			CgGl.cgGLDisableProfile(dev.vertexProfile);
-		}
-
-		public void SetValue(string name, ITexture t)
-		{
-			var texture = (Texture)t;
-			var param = Cg.cgGetNamedEffectParameter(effect, name);
-			if (param != IntPtr.Zero && texture != null)
-				CgGl.cgGLSetupSampler(param, texture.texture);
-		}
-
-		public void SetValue(string name, float x, float y)
-		{
-			var param = Cg.cgGetNamedEffectParameter(effect, name);
-			if (param != IntPtr.Zero)
-				CgGl.cgGLSetParameter2f(param, x, y);
-		}
-
-		public void Commit() { }
-	}
-
-	public class Texture : ITexture
-	{
-		internal int texture;
-
-		public Texture(GraphicsDevice dev, Bitmap bitmap)
-		{
-			Gl.glGenTextures(1, out texture);
-			GraphicsDevice.CheckGlError();
-			SetData(bitmap);
-		}
-
-		public void SetData(Bitmap bitmap)
-		{
-			if (!IsPowerOf2(bitmap.Width) || !IsPowerOf2(bitmap.Height))
-			{
-				//throw new InvalidOperationException( "non-power-of-2-texture" );
-				bitmap = new Bitmap(bitmap, new Size(NextPowerOf2(bitmap.Width), NextPowerOf2(bitmap.Height)));
-			}
-
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-			GraphicsDevice.CheckGlError();
-
-			var bits = bitmap.LockBits(
-				new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-				ImageLockMode.ReadOnly,
-				PixelFormat.Format32bppArgb);
-
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height,
-				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
-			GraphicsDevice.CheckGlError();
-
-			bitmap.UnlockBits(bits);
-		}
-
-		bool IsPowerOf2(int v)
-		{
-			return (v & (v - 1)) == 0;
-		}
-
-		int NextPowerOf2(int v)
-		{
-			--v;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			++v;
-			return v;
-		}
+		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(this, size); }
+		public IIndexBuffer CreateIndexBuffer(int size) { return new IndexBuffer(this, size); }
+		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(this, bitmap); }
+		public IShader CreateShader(Stream stream) { return new Shader(this, stream); }
 	}
 }
