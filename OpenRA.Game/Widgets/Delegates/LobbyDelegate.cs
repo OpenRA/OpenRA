@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA.Widgets.Delegates
@@ -104,7 +105,7 @@ namespace OpenRA.Widgets.Delegates
 						"lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
 				return true;
 			};
-
+			Game.LobbyInfoChanged += JoinedServer;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
 
@@ -158,6 +159,10 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var c1 = ColorFromHSL(hf, sf, lf);
 			var c2 = ColorFromHSL(hf, sf, r*lf);
+			
+			Game.Settings.PlayerColor1 = c1;
+			Game.Settings.PlayerColor2 = c2;
+			Game.Settings.Save();
 			Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
 		
@@ -205,6 +210,24 @@ namespace OpenRA.Widgets.Delegates
 			Map = Game.AvailableMaps[MapUid];
 		}
 
+		
+		bool hasJoined = false;
+		void JoinedServer()
+		{
+			if (hasJoined)
+				return;
+			hasJoined = true;
+			
+			if (Game.LocalClient.Name != Game.Settings.PlayerName)
+				Game.IssueOrder(Order.Command("name " + Game.Settings.PlayerName));
+			
+			if (Game.LocalClient.Color1 != Game.Settings.PlayerColor1 || Game.LocalClient.Color2 != Game.Settings.PlayerColor2)
+			{
+				var c1 = Game.Settings.PlayerColor1;
+				var c2 = Game.Settings.PlayerColor2;
+				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
+			}
+		}
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)

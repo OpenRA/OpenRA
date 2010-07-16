@@ -56,6 +56,9 @@ namespace OpenRA.GameRules
 		public string LastServer = "localhost:1234";
 		public string Replay = null;
 		public string PlayerName = "Newbie";
+		public Color PlayerColor1 = Color.FromArgb(255,160,238);
+		public Color PlayerColor2 = Color.FromArgb(68,0,56);
+
 		public string[] InitialMods = { "ra" };
 
 		// Server settings
