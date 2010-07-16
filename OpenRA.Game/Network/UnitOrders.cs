@@ -34,7 +34,7 @@ namespace OpenRA.Network
 				{
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
 					if (client != null)
-						Game.AddChatLine(client.Color, 
+						Game.AddChatLine(client.Color1, 
 							client.Name, order.TargetString);
 					break;
 				}
@@ -49,7 +49,7 @@ namespace OpenRA.Network
 							client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
 
 						if (isAlly)
-							Game.AddChatLine(client.Color, client.Name + " (Team)", order.TargetString);
+							Game.AddChatLine(client.Color1, client.Name + " (Team)", order.TargetString);
 					}
 					break;
 				}

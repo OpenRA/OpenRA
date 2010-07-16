@@ -273,11 +273,13 @@ Container@ROOT:
 							Y:20
 							Image:mcv
 							Frame:8
+							Palette:colorpicker
 						ShpImage@FACT:
 							Id:FACT
 							X:PARENT_RIGHT - 100
 							Y:70
 							Image:fact
+							Palette:colorpicker
 						Label@HUE_LABEL:
 							X:0
 							Y:30

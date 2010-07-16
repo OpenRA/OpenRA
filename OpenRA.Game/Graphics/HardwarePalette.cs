@@ -72,7 +72,18 @@ namespace OpenRA.Graphics
 			}
 			return allocated++;
 		}
-
+		
+		public void UpdatePalette(string name, Palette p)	
+		{
+			palettes[name] = p;
+			var j = indices[name];
+			
+			for (int i = 0; i < 256; i++)
+			{
+				this[new Point(i, j)] = p.GetColor(i);
+			}
+		}
+		
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			var b = new Bitmap(Bitmap);

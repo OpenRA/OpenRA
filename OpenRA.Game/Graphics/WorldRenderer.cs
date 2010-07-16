@@ -70,6 +70,11 @@ namespace OpenRA.Graphics
 			palette.AddPalette(name, pal);
 		}
 		
+		public void UpdatePalette(string name, Palette pal)
+		{
+			palette.UpdatePalette(name, pal);
+		}
+		
 		void DrawSpriteList(IEnumerable<Renderable> images)
 		{
 			foreach (var image in images)

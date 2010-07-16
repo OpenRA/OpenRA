@@ -148,7 +148,8 @@ namespace OpenRA.Server
 					new Session.Client()
 					{
 						Index = newConn.PlayerIndex,
-						Color = System.Drawing.Color.FromArgb(93,194,165),
+						Color1 = System.Drawing.Color.FromArgb(246,214,121),
+						Color2 = System.Drawing.Color.FromArgb(40,32,8),
 						Name = "Player {0}".F(1 + newConn.PlayerIndex),
 						Country = "random",
 						State = Session.ClientState.NotReady,
@@ -324,7 +325,8 @@ namespace OpenRA.Server
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
-						GetClient(conn).Color = System.Drawing.Color.FromArgb(c[0],c[1],c[2]);
+						GetClient(conn).Color1 = System.Drawing.Color.FromArgb(c[0],c[1],c[2]);
+						GetClient(conn).Color2 = System.Drawing.Color.FromArgb(c[3],c[4],c[5]);
 						SyncLobbyInfo();		
 						return true;
 					}},

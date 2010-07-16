@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -33,6 +34,9 @@ namespace OpenRA.Widgets.Delegates
 
 		string MapUid;
 		MapStub Map;
+		
+		bool SplitPlayerPalette = false;
+		Palette BasePlayerPalette = null;
 		public LobbyDelegate()
 		{
 			Game.LobbyInfoChanged += UpdateCurrentMap;
@@ -65,7 +69,7 @@ namespace OpenRA.Widgets.Delegates
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
 					if (client == null)
 						continue;
-					sc.Add(spawns.ElementAt(i - 1), client.Color);
+					sc.Add(spawns.ElementAt(i - 1), client.Color1);
 				}
 				return sc;
 			};
@@ -128,20 +132,38 @@ namespace OpenRA.Widgets.Delegates
 			var colorChooser = lobby.GetWidget("COLOR_CHOOSER");
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");		
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-
+			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
+			
+			hueSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+			satSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+			lumSlider.OnChange += _ => UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+			
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
 			{
 				colorChooser.IsVisible = () => false;
-				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
+				UpdatePlayerColor(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
 				return true;
 			};
+			
+			// Copy the base palette for the colorpicker
+			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
+			BasePlayerPalette = Game.world.WorldRenderer.GetPalette(info.BasePalette);
+			SplitPlayerPalette = info.SplitRamp;
+			Game.world.WorldRenderer.AddPalette("colorpicker",BasePlayerPalette);
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf)
 		{
-			var c = ColorFromHSL(hf*360, sf, lf);
-			Game.IssueOrder(Order.Command("color {0},{1},{2}".F(c.R,c.G,c.B)));
+			var c1 = ColorFromHSL(hf, sf, lf);
+			var c2 = ColorFromHSL(hf, sf, 0.5f*lf);
+			Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
+		}
+		
+		void UpdateColorPreview(float hf, float sf, float lf)
+		{
+			var c1 = ColorFromHSL(hf, sf, lf);
+			var c2 = ColorFromHSL(hf, sf, 0.5f*lf);
+			Game.world.WorldRenderer.UpdatePalette("colorpicker", new Palette(BasePlayerPalette, new PlayerColorRemap(c1, c2, SplitPlayerPalette)));
 		}
 		
 		Color ColorFromHSL(float h, float s, float l)
@@ -220,20 +242,21 @@ namespace OpenRA.Widgets.Delegates
 					{
 						var colorChooser = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
 						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-						hueSlider.Offset = Game.LocalClient.Color.GetHue()/360f;
+						hueSlider.Offset = Game.LocalClient.Color1.GetHue()/360f;
 						
 						var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-						satSlider.Offset = Game.LocalClient.Color.GetSaturation();
+						satSlider.Offset = Game.LocalClient.Color1.GetSaturation();
 			
 						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-						lumSlider.Offset = Game.LocalClient.Color.GetBrightness();
+						lumSlider.Offset = Game.LocalClient.Color1.GetBrightness();
 						
+						UpdateColorPreview(360*hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset());
 						colorChooser.IsVisible = () => true;
 						return true;
 					};
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => c.Color;
+					colorBlock.GetColor = () => c.Color1;
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseUp = CycleRace;
@@ -256,7 +279,7 @@ namespace OpenRA.Widgets.Delegates
 					template = RemotePlayerTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => c.Color;
+					color.GetColor = () => c.Color1;
 
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
