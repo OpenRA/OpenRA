@@ -115,17 +115,6 @@ namespace MapConverter
 			Save(args[2]);
 		}
 		
-		
-		static Dictionary<Pair<string,string>,Pair<string,string> > fileMapping = new Dictionary<Pair<string,string>,Pair<string,string> >()
-		{
-			{Pair.New("ra","TEMPERAT"),Pair.New("tem","temperat.col")},
-			{Pair.New("ra","SNOW"),Pair.New("sno","snow.col")},
-			{Pair.New("ra","INTERIOR"),Pair.New("int","temperat.col")},
-			{Pair.New("cnc","DESERT"),Pair.New("des","desert.col")},
-			{Pair.New("cnc","TEMPERAT"),Pair.New("tem","temperat.col")},
-			{Pair.New("cnc","WINTER"),Pair.New("win","winter.col")},
-		};
-		
 		public void ConvertIniMap(string iniFile)
 		{
 			IniFile file = new IniFile(FileSystem.Open(iniFile));
