@@ -19,9 +19,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace OpenRA.FileFormats
@@ -35,6 +34,7 @@ namespace OpenRA.FileFormats
 		public Color Color;
 
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
+		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
 	
 	public class TileTemplate
@@ -50,8 +50,10 @@ namespace OpenRA.FileFormats
 		public TileTemplate(MiniYaml my)
 		{
 			FieldLoader.LoadFields(this, my.Nodes, fields);
-			foreach (var tt in my.Nodes["Tiles"].Nodes)
-				Tiles.Add(byte.Parse(tt.Key), tt.Value.Value);
+
+			Tiles = my.Nodes["Tiles"].Nodes.ToDictionary(
+				t => byte.Parse(t.Key),
+				t => t.Value.Value);
 		}
 	}
 	
