@@ -19,23 +19,23 @@ BottomRight: 118,93
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
-		Palette: neutral
 		Race: allies
 		OwnsWorld: True
 		NonCombatant: True
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Palette: player1
+		Color: 85,130,204
+		Color2: 17,33,71
 		Race: allies
 		OwnsWorld: False
 		NonCombatant: False
 	PlayerReference@Greece:
 		Name: Greece
-		Palette: player4
+		Color: 255,20,0
+		Color2: 56,0,0
 		Race: soviet
 		OwnsWorld: False
 		NonCombatant: False
-
 Actors:
 	ActorReference@Actor0:
 		Id: Actor0

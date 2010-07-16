@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System.Drawing;
 namespace OpenRA.FileFormats
 {
 	public class PlayerReference
@@ -27,6 +28,8 @@ namespace OpenRA.FileFormats
 		public readonly string Race;
 		public readonly bool OwnsWorld = false;
 		public readonly bool NonCombatant = false;
+		public readonly Color Color = Color.FromArgb(238,238,238);
+		public readonly Color Color2 = Color.FromArgb(44,28,24);
 		
 		public PlayerReference(MiniYaml my)
 		{

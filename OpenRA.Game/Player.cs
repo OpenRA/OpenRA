@@ -56,8 +56,8 @@ namespace OpenRA
 			
 			Index = index;
 			Palette = "player"+index;
-			Color = Util.ArrayToColor(new int[] {93,194,165});
-			Color2 = Util.ArrayToColor(new int[] {0,32,32});
+			Color = pr.Color;
+			Color2 = pr.Color2;
 			
 			PlayerName = InternalName = pr.Name;
 			NonCombatant = pr.NonCombatant;
@@ -76,8 +76,8 @@ namespace OpenRA
 			
 			Index = client.Index;
 			Palette = "player"+client.Index;
-			Color = Util.ArrayToColor(new int[] {93,194,165});
-			Color2 = Util.ArrayToColor(new int[] {0,32,32});
+			Color = client.Color1;
+			Color2 = client.Color2;
 			PlayerName = client.Name;
 			InternalName = "Multi{0}".F(client.Index);
 			Country = world.GetCountries()
@@ -92,7 +92,7 @@ namespace OpenRA
 			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
 			var newpal = new Palette(world.WorldRenderer.GetPalette(info.BasePalette),
 			                 new PlayerColorRemap(Color, Color2, info.SplitRamp));
-			world.WorldRenderer.AddPalette(palette, newpal);	
+			world.WorldRenderer.AddPalette(palette, newpal);
 		}
 		
 		public void GiveAdvice(string advice)
