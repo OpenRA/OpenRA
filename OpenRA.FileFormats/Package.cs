@@ -131,7 +131,58 @@ namespace OpenRA.FileFormats
 			dataStart = s.Position;
 			return items;
 		}
+		
+		public static void CreateMix(string filename, List<string> contents)
+		{
+			// Construct a list of entries for the file header
+			ushort numFiles = 0;
+			uint dataSize = 0;
+			List<PackageEntry> items = new List<PackageEntry>();
+			foreach (var file in contents)
+			{				
+				uint length = (uint) new FileInfo(file).Length;
+				uint hash = PackageEntry.HashFilename(Path.GetFileName(file));
+				items.Add(new PackageEntry(hash, dataSize, length));
+				dataSize += length;
+				numFiles++;
+			}
+			
+			
+			Stream s = new FileStream(filename, FileMode.Create);
+			var writer = new BinaryWriter(s);
+			// Write file header
+			writer.Write(numFiles);
+			writer.Write(dataSize);
+			foreach(var item in items)
+				item.Write(writer);
+			
+			writer.Flush();
+			
+			// Copy file data
+			foreach (var file in contents)
+			{
+				var f = File.Open(file,FileMode.Open);
+				CopyStream(f,s);
+				f.Close();
+			}
+			
+			writer.Close();
+			s.Close();
+		}
+		
+		static void CopyStream (Stream readStream, Stream writeStream)
+		{
+   			var Length = 256;
+			Byte[] buffer = new Byte[Length];
+   			int bytesRead = readStream.Read(buffer,0,Length);
 
+ 			while( bytesRead > 0 ) 
+    		{
+        		writeStream.Write(buffer,0,bytesRead);
+        		bytesRead = readStream.Read(buffer,0,Length);
+    		}
+		}
+		
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;

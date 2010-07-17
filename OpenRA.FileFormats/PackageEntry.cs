@@ -30,11 +30,26 @@ namespace OpenRA.FileFormats
 		public readonly uint Offset;
 		public readonly uint Length;
 
+		
+		public PackageEntry(uint hash, uint offset, uint length)
+		{
+			Hash = hash;
+			Offset = offset;
+			Length = length;
+		}
+		
 		public PackageEntry(BinaryReader r)
 		{
 			Hash = r.ReadUInt32();
 			Offset = r.ReadUInt32();
 			Length = r.ReadUInt32();
+		}
+		
+		public void Write(BinaryWriter w)
+		{
+			w.Write(Hash);
+			w.Write(Offset);
+			w.Write(Length);
 		}
 
 		public override string ToString()
