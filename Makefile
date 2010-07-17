@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint filex
+PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint filex tsbuild
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -83,10 +83,17 @@ filex_KIND		= winexe
 filex_DEPS		= $(fileformats_TARGET)
 filex_LIBS		= $(COMMON_LIBS) $(filex_DEPS)
 
+tsbuild_SRCS		= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
+tsbuild_TARGET		= TilesetBuilder.exe
+tsbuild_KIND		= winexe
+tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
+tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
+
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor ralint seqed mapcvtr filex
+.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor tsbuild ralint seqed mapcvtr filex
 
 game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
 
@@ -156,8 +163,10 @@ ralint: $(ralint_TARGET)
 seqed: $(seqed_TARGET)
 mapcvtr: $(mapcvtr_TARGET)
 filex: $(filex_TARGET)
-
-tools: editor ralint seqed mapcvtr filex
+tsbuild: tsbuild_res $(tsbuild_TARGET)
+tsbuild_res:
+	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources
+tools: editor ralint seqed mapcvtr filex tsbuild
 all: game tools
 
 define BUILD_ASSEMBLY
