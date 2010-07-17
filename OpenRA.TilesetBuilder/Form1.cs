@@ -107,6 +107,7 @@ namespace OpenRA.TilesetBuilder
 			// Create a Tileset definition
 			// Todo: Pull this info from the gui
 			var tilesetFile = "tileset-arrakis.yaml";
+			var mixFile = "arrakis.mix";
 			var tileset = new TileSet()
 			{
 				Name = "Arrakis",
@@ -115,13 +116,16 @@ namespace OpenRA.TilesetBuilder
 				Extensions = new string[] {".arr", ".shp"}
 			};
 			
-			// export palette (use the embedded palette)
+			// List of files to add to the mix file
+			List<string> fileList = new List<string>();
+			
+			// Export palette (use the embedded palette)
 			var p = surface1.Image.Palette.Entries.ToList();
-			ExportPalette(p, Path.Combine(dir, tileset.Palette));
+			fileList.Add(ExportPalette(p, Path.Combine(dir, tileset.Palette)));
 			
 			// Export tile artwork
 			foreach (var t in surface1.Templates)
-				ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir);			
+				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir));		
 			
 			// Add the terraintypes
 			// Todo: add support for multiple/different terraintypes
@@ -156,17 +160,24 @@ namespace OpenRA.TilesetBuilder
 			}
 			
 			tileset.Save(Path.Combine(dir, tilesetFile));
+			Package.CreateMix(Path.Combine(dir, mixFile),fileList);
+			
+			// Cleanup
+			foreach (var file in fileList)
+				File.Delete(file);
+			
 			System.Console.WriteLine("Finished export");
 		}
 		
-		void ExportPalette(List<Color> p, string file)
+		string ExportPalette(List<Color> p, string file)
 		{
 			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
 			var paletteData = p.Take(256).SelectMany(c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
 			File.WriteAllBytes(file, paletteData);
+			return file;
 		}
 
-		void ExportTemplate(Template t, int n, string suffix, string dir)
+		string ExportTemplate(Template t, int n, string suffix, string dir)
 		{
 			var filename = Path.Combine(dir, "t{0:00}{1}".F(n, suffix));
 			var totalTiles = t.Width * t.Height;
@@ -243,6 +254,8 @@ namespace OpenRA.TilesetBuilder
 
 				File.WriteAllBytes(filename, bytes);
 			}
+			
+			return filename;
 		}
 	}
 
