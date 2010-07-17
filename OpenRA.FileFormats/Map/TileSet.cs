@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace OpenRA.FileFormats
 {
@@ -33,6 +34,7 @@ namespace OpenRA.FileFormats
 		public bool IsWater = false;
 		public Color Color;
 
+		public TerrainTypeInfo() {}
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
@@ -47,6 +49,7 @@ namespace OpenRA.FileFormats
 		
 		static List<string> fields = new List<string>() {"Id", "Image", "Size", "PickAny"};
 
+		public TileTemplate() {}
 		public TileTemplate(MiniYaml my)
 		{
 			FieldLoader.LoadFields(this, my.Nodes, fields);
@@ -55,18 +58,38 @@ namespace OpenRA.FileFormats
 				t => byte.Parse(t.Key),
 				t => t.Value.Value);
 		}
+		
+		public MiniYaml Save()
+		{
+			var root = new Dictionary<string, MiniYaml>();
+			foreach (var field in fields)
+			{
+				FieldInfo f = this.GetType().GetField(field);
+				if (f.GetValue(this) == null) continue;
+				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+			}
+
+			root.Add("Tiles",
+				new MiniYaml(null, Tiles.ToDictionary(
+					p => p.Key.ToString(),
+					p => new MiniYaml(p.Value))));
+			
+			return new MiniYaml(null, root);
+		}
 	}
 	
 	public class TileSet
 	{
-		public readonly string Name;
-		public readonly string Id;
-		public readonly string Palette;
-		public readonly string[] Extensions;
-		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
-		public readonly Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
-		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
-		
+		public string Name;
+		public string Id;
+		public string Palette;
+		public string[] Extensions;
+		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
+		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
+		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		static List<string> fields = new List<string>() {"Name", "Id", "Palette", "Extensions"};
+
+		public TileSet() {}
 		public TileSet( string filepath )
 		{
 			var yaml = MiniYaml.FromFile(filepath);
@@ -92,6 +115,37 @@ namespace OpenRA.FileFormats
 						Tiles.Add( t.Key, new Terrain( s ) );
 				}
 		}
+		
+		public void Save(string filepath)
+		{			
+			var root = new Dictionary<string, MiniYaml>();
+			foreach (var field in fields)
+			{
+				FieldInfo f = this.GetType().GetField(field);
+				if (f.GetValue(this) == null) continue;
+				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+			}
+			
+			var gen = new Dictionary<string, MiniYaml>();
+			foreach (var field in fields)
+			{
+				FieldInfo f = this.GetType().GetField(field);
+				if (f.GetValue(this) == null) continue;
+				gen.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+			}
+			root.Add("General", new MiniYaml(null, gen)); 
+			
+			root.Add("Terrain",
+				new MiniYaml(null, Terrain.ToDictionary(
+					t => "TerrainType@{0}".F(t.Value.Type),
+					t => t.Value.Save())));
+			
+			root.Add("Templates",
+				new MiniYaml(null, Templates.ToDictionary(
+					t => "Template@{0}".F(t.Value.Id),
+					t => t.Value.Save())));
+			root.WriteToFile(filepath);
+		} 
 				
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{

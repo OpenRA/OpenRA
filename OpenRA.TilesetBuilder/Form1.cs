@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-
+using OpenRA.FileFormats;
 namespace OpenRA.TilesetBuilder
 {
 	public partial class Form1 : Form
@@ -104,31 +104,71 @@ namespace OpenRA.TilesetBuilder
 			var dir = Path.Combine(Path.GetDirectoryName(srcfile), "output");
 			Directory.CreateDirectory(dir);
 
+			// Create a Tileset definition
+			// Todo: Pull this info from the gui
+			var tilesetFile = "tileset-arrakis.yaml";
+			var tileset = new TileSet()
+			{
+				Name = "Arrakis",
+				Id = "ARRAKIS",
+				Palette = "arrakis.pal",
+				Extensions = new string[] {".arr", ".shp"}
+			};
+			
 			// export palette (use the embedded palette)
 			var p = surface1.Image.Palette.Entries.ToList();
-			while (p.Count < 256) p.Add(Color.Black);				// pad the palette out with extra blacks
-			var paletteData = p.Take(256).SelectMany(c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
-			File.WriteAllBytes(Path.Combine(dir, "terrain.pal"), paletteData);
-
-			// todo: write out a TMP for each template
+			ExportPalette(p, Path.Combine(dir, tileset.Palette));
+			
+			// Export tile artwork
 			foreach (var t in surface1.Templates)
-				ExportTemplate(t, surface1.Templates.IndexOf(t), dir);
+				ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir);			
+			
+			// Add the terraintypes
+			// Todo: add support for multiple/different terraintypes
+			var terraintype = new TerrainTypeInfo()
+			{
+				Type = "clear",
+				Buildable = true,
+				AcceptSmudge = true,
+				IsWater = false,
+				Color = Color.White
+			};
+			tileset.Terrain.Add("clear", terraintype);
+			
+			// Add the templates
+			ushort cur = 0;
+			foreach (var tp in surface1.Templates)
+			{
+				var template = new TileTemplate()
+				{
+					Id = cur,
+					Image = "t{0:00}".F(cur),
+					Size = new int2(tp.Width,tp.Height),
+				};
+				
+				// Todo: add support for different terraintypes
+				// Todo: restrict cells? this doesn't work: .Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
+				foreach (var t in tp.Cells)
+					template.Tiles.Add((byte)((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top)), "clear");
 
-			// todo: write out a tileset definition
-			var tileset = surface1.Templates.SelectMany((t, i) => new[] { ";", "A", "1", i.ToString("x4"), "t{0:00}".F(i), "" }).ToArray();
-			File.WriteAllLines(Path.Combine(dir, "tileset.til"), tileset);
-
-			// todo: write out a templates ini
-			var templates = surface1.Templates.SelectMany((t, i) => new[] { "[t{0:00}]".F(i), "Name=t{0:00}".F(i), "width={0}".F(t.Width), "height={0}".F(t.Height) }
-				.Concat( t.Cells.Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
-					.Select( c => "tiletype{0}={1}".F( (c.Key.X - t.Left) + t.Width * (c.Key.Y - t.Top), surface1.TerrainTypes[c.Key.X, c.Key.Y] )))
-				.Concat(new[] { "" })).ToArray();
-			File.WriteAllLines(Path.Combine(dir, "templates.ini"), templates);
+				tileset.Templates.Add(cur, template);
+				cur++;
+			}
+			
+			tileset.Save(Path.Combine(dir, tilesetFile));
+			System.Console.WriteLine("Finished export");
+		}
+		
+		void ExportPalette(List<Color> p, string file)
+		{
+			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
+			var paletteData = p.Take(256).SelectMany(c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
+			File.WriteAllBytes(file, paletteData);
 		}
 
-		void ExportTemplate(Template t, int n, string dir)
+		void ExportTemplate(Template t, int n, string suffix, string dir)
 		{
-			var filename = Path.Combine(dir, "t{0:00}.arr".F(n));
+			var filename = Path.Combine(dir, "t{0:00}{1}".F(n, suffix));
 			var totalTiles = t.Width * t.Height;
 
 			var ms = new MemoryStream();
