@@ -378,8 +378,7 @@ namespace OpenRA.Editor
 					map.TopLeft = new int2((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value);
 					map.BottomRight = new int2((int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
 					map.Tileset = nmd.theater.SelectedItem as string;
-
-
+					map.Players.Add("Neutral", new PlayerReference("Neutral", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 					NewMap(map);
 				}
 			}

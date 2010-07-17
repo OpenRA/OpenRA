@@ -68,7 +68,7 @@ editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources
 mapcvtr_SRCS		= $(shell find MapConverter/ -iname '*.cs')
 mapcvtr_TARGET		= MapConverter.exe
 mapcvtr_KIND		= winexe
-mapcvtr_DEPS		= $(fileformats_TARGET)
+mapcvtr_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
 
 ralint_SRCS		= $(shell find RALint/ -iname '*.cs')

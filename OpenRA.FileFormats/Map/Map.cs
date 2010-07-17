@@ -92,9 +92,6 @@ namespace OpenRA.FileFormats
 			TopLeft = new int2(0, 0);
 			BottomRight = new int2(0, 0);
 
-			Tileset = "TEMPERAT";
-			Players.Add("Neutral", new PlayerReference("Neutral", "neutral", "allies", true, true));
-
 			Title = "Name your map here";
 			Description = "Describe your map here";
 			Author = "Your name here";
@@ -118,7 +115,7 @@ namespace OpenRA.FileFormats
 			// Players
 			if (MapFormat == 1)
 			{
-				Players.Add("Neutral", new PlayerReference("Neutral", "neutral", "allies", true, true));
+				Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
 			}
 			else
 			{
