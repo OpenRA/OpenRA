@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -28,6 +29,32 @@ namespace OpenRA.Mods.RA
 				var wr = world.WorldRenderer;
 				var pal = wr.GetPalette("terrain");
 				wr.AddPalette(info.Name, new Palette(pal, new ShroudPaletteRemap(info.IsFog)));
+		}
+	}
+
+	class ShroudPaletteRemap : IPaletteRemap
+	{
+		bool isFog;
+
+		public ShroudPaletteRemap(bool isFog) { this.isFog = isFog; }
+		public Color GetRemappedColor(Color original, int index)
+		{
+			if (isFog)
+				return new[] { 
+					Color.Transparent, Color.Green, 
+					Color.Blue, Color.Yellow, 
+					Color.FromArgb(128,0,0,0), 
+					Color.FromArgb(128,0,0,0), 
+					Color.FromArgb(128,0,0,0), 
+					Color.FromArgb(64,0,0,0)}[index % 8];
+			else
+				return new[] { 
+					Color.Transparent, Color.Green, 
+					Color.Blue, Color.Yellow, 
+					Color.Black, 
+					Color.FromArgb(128,0,0,0), 
+					Color.Transparent, 
+					Color.Transparent}[index % 8];
 		}
 	}
 }

@@ -14,6 +14,8 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
+	// TODO: ship this out of here.
+
 	public class PlayerColorRemap : IPaletteRemap
 	{
 		Dictionary<int, Color> remapColors;

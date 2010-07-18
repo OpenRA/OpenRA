@@ -50,6 +50,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.Sdl.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evaluator.cs" />
@@ -69,8 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thirdparty\Random.cs" />
     <Compile Include="Session.cs" />
-    <Compile Include="ShroudPaletteRemap.cs" />
-    <Compile Include="SingleColorRemap.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\Timer.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Map\MapStub.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\PlayerReference.cs" />
+    <Compile Include="CompressedPackage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
