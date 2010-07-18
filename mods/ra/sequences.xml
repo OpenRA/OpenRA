@@ -937,4 +937,7 @@
     <sequence name="up" start="0" length="4" src="atomicup" />
     <sequence name="down" start="0" length="4" src="atomicdn" />
   </unit>
+  <unit name="msub">
+    <sequence name="idle" start="0" facings="16" />
+  </unit>
 </sequences>

@@ -372,9 +372,9 @@ SS:
 	Unit:
 		HP: 120
 		Armor: light
-		ROT: 7
+		ROT: 4
 		Sight: 6
-		Speed: 6
+		Speed: 5
 		WaterBound: yes
 	RenderUnit:
 	Cloak:
@@ -384,6 +384,37 @@ SS:
 		UncloakSound: subshow1.aud
 	AttackBase:
 		PrimaryWeapon: TorpTube
+		PrimaryLocalOffset: -4,0,0,4,0,0
+		FireDelay: 2
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+MSUB:
+	Inherits: ^Ship
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: spen,stek
+		BuiltAt: spen
+		Owner: soviet
+		Cost: 1600
+		Description: Missile Submarine
+		LongDesc: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+	Unit:
+		HP: 200
+		Armor: light
+		ROT: 3
+		Sight: 6
+		Speed: 3
+		WaterBound: yes
+	RenderUnit:
+	Cloak:
+		InitialDelay: .4
+		CloakDelay: 2.0
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+	AttackBase:
+		PrimaryWeapon: SubMissile
 		FireDelay: 2
 	Chronoshiftable:
 	IronCurtainable:

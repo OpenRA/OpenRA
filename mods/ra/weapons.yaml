@@ -485,8 +485,8 @@ RedEye:
 		Damage: 50
 
 8Inch:
-	ROF: 200
-	Range: 22
+	ROF: 250
+	Range: 18
 	Burst: 2
 	Report: TURRET1
 	Bullet:
@@ -503,6 +503,29 @@ RedEye:
 		InfDeath: 2
 		SmudgeType: Crater
 		Damage: 250
+		ImpactSound: kaboom12
+		WaterImpactSound: splash9
+
+SubMissile:
+	ROF: 220
+	Range: 18
+	Burst: 2
+	Report: MISSILE6
+	Bullet:
+		Speed: 6
+		High: true
+		Angle: .4
+		Inaccuracy: 70
+		Image: MISSILE
+		Trail: smokey
+	Warhead:
+		Spread: 10
+		Verses: 40%,100%,30%,30%,100%
+		Explosion: large_explosion
+		WaterExplosion: large_splash
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 400
 		ImpactSound: kaboom12
 		WaterImpactSound: splash9
 
@@ -532,14 +555,16 @@ Stinger:
 		Damage: 30
 		
 TorpTube:
-	ROF: 60
+	ROF: 100
 	Range: 9
 	Report: TORPEDO1
 	ValidTargets: Ground
 	Underwater: yes
+	Burst: 2
+	BurstDelay: 1
 	Bullet:
 		Image: MISSILE
-		Speed: 15
+		Speed: 6
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
