@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -76,9 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chrome.cs" />
+    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
+    <Compile Include="Server\ProtocolVersion.cs" />
     <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
@@ -102,8 +104,6 @@
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
-    <Compile Include="Effects\RepairIndicator.cs" />
-    <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
@@ -135,7 +135,6 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Cursor.cs" />
-    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="Graphics\Animation.cs" />

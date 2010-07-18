@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,9 +75,11 @@
     <Compile Include="Combat.cs" />
     <Compile Include="ConstructionYard.cs" />
     <Compile Include="Effects\Bullet.cs" />
+    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
     <Compile Include="Effects\Missile.cs" />
+    <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Hazardous.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
@@ -124,7 +126,7 @@
     <Compile Include="Explodes.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Harvester.cs" />
-    <Compile Include="HasUnitOnBuild.cs" />
+    <Compile Include="FreeActor.cs" />
     <Compile Include="Helicopter.cs" />
     <Compile Include="Husk.cs" />
     <Compile Include="InvisibleToOthers.cs" />

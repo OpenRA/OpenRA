@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -61,14 +61,13 @@
     <Compile Include="Folder.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="IPaletteRemap.cs" />
     <Compile Include="MiniYaml.cs" />
     <Compile Include="PackageEntry.cs" />
     <Compile Include="Package.cs" />
+    <Compile Include="PackageWriter.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PlayerColorRemap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolVersion.cs" />
     <Compile Include="Thirdparty\Random.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="ShroudPaletteRemap.cs" />

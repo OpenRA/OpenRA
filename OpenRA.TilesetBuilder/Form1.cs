@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -7,6 +17,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using OpenRA.FileFormats;
+
 namespace OpenRA.TilesetBuilder
 {
 	public partial class Form1 : Form
@@ -160,19 +171,20 @@ namespace OpenRA.TilesetBuilder
 			}
 			
 			tileset.Save(Path.Combine(dir, tilesetFile));
-			Package.CreateMix(Path.Combine(dir, mixFile),fileList);
+			PackageWriter.CreateMix(Path.Combine(dir, mixFile),fileList);
 			
 			// Cleanup
 			foreach (var file in fileList)
 				File.Delete(file);
 			
-			System.Console.WriteLine("Finished export");
+			Console.WriteLine("Finished export");
 		}
 		
 		string ExportPalette(List<Color> p, string file)
 		{
 			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
-			var paletteData = p.Take(256).SelectMany(c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
+			var paletteData = p.Take(256).SelectMany(
+				c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
 			File.WriteAllBytes(file, paletteData);
 			return file;
 		}

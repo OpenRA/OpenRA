@@ -1,20 +1,10 @@
 #region Copyright & License Information
 /*
- * Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
- * This file is part of OpenRA.
- * 
- *  OpenRA is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- * 
- *  OpenRA is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- * 
- *  You should have received a copy of the GNU General Public License
- *  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
  */
 #endregion
 
@@ -130,57 +120,6 @@ namespace OpenRA.FileFormats
 
 			dataStart = s.Position;
 			return items;
-		}
-		
-		public static void CreateMix(string filename, List<string> contents)
-		{
-			// Construct a list of entries for the file header
-			ushort numFiles = 0;
-			uint dataSize = 0;
-			List<PackageEntry> items = new List<PackageEntry>();
-			foreach (var file in contents)
-			{				
-				uint length = (uint) new FileInfo(file).Length;
-				uint hash = PackageEntry.HashFilename(Path.GetFileName(file));
-				items.Add(new PackageEntry(hash, dataSize, length));
-				dataSize += length;
-				numFiles++;
-			}
-			
-			
-			Stream s = new FileStream(filename, FileMode.Create);
-			var writer = new BinaryWriter(s);
-			// Write file header
-			writer.Write(numFiles);
-			writer.Write(dataSize);
-			foreach(var item in items)
-				item.Write(writer);
-			
-			writer.Flush();
-			
-			// Copy file data
-			foreach (var file in contents)
-			{
-				var f = File.Open(file,FileMode.Open);
-				CopyStream(f,s);
-				f.Close();
-			}
-			
-			writer.Close();
-			s.Close();
-		}
-		
-		static void CopyStream (Stream readStream, Stream writeStream)
-		{
-   			var Length = 256;
-			Byte[] buffer = new Byte[Length];
-   			int bytesRead = readStream.Read(buffer,0,Length);
-
- 			while( bytesRead > 0 ) 
-    		{
-        		writeStream.Write(buffer,0,bytesRead);
-        		bytesRead = readStream.Read(buffer,0,Length);
-    		}
 		}
 		
 		public Stream GetContent(uint hash)
