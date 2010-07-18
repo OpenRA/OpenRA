@@ -317,10 +317,11 @@ MSAM:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 227mm
-		PrimaryOffset: 0,5,0,0
 		SecondaryWeapon: 227mm
-		SecondaryOffset: 0,-5,0,0
-		Recoil: 3
+		PrimaryOffset: 0,8,0,0
+		PrimaryLocalOffset: -4,0,0
+		SecondaryLocalOffset: 4,0,0
+		Recoil: 0
 	RenderUnitTurreted:
 	AutoTarget:
 
