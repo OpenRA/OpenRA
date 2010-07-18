@@ -52,8 +52,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectedComponents.cs" />
-    <Compile Include="DisposableAction.cs" />
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
@@ -67,6 +65,7 @@
     <Compile Include="PackageWriter.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PlayerColorRemap.cs" />
+    <Compile Include="Primitives\DisposableAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thirdparty\Random.cs" />
     <Compile Include="Session.cs" />
