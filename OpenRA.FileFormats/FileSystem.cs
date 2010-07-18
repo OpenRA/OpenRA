@@ -33,15 +33,23 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		static IFolder OpenPackage(string filename)
+		{
+			if (filename.EndsWith(".mix"))
+				return new Package(filename);
+			else if (filename.EndsWith(".zip"))
+				return new CompressedPackage(filename);
+			else
+				return new Folder(filename);
+		}
+
 		public static void Mount(string name)
 		{
 			name = name.ToLowerInvariant();
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 
-			var a = name.EndsWith(".mix")
-				? (Action)(() => FileSystem.MountInner(new Package(name)))
-				: () => FileSystem.MountInner(new Folder(name));
+			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
 
 			if (optional)
 				try { a(); }
