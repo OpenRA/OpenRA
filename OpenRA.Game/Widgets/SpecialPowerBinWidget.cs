@@ -41,6 +41,11 @@ namespace OpenRA.Widgets
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
 		}
+
+		public override Rectangle RenderBounds
+		{
+			get { return buttons.Any() ? buttons.Select(b => b.First).Aggregate(Rectangle.Union) : Bounds; }
+		}
 		
 		public override bool HandleInput(MouseInput mi)
 		{			
