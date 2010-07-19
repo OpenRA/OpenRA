@@ -82,6 +82,7 @@
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="Hazardous.cs" />
+    <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
     <Compile Include="Render\RenderBuilding.cs" />

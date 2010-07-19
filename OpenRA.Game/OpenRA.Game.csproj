@@ -171,7 +171,6 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
-    <Compile Include="Traits\LimitedAmmo.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
