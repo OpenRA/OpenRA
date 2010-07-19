@@ -397,7 +397,7 @@ MSUB:
 		Prerequisites: spen,stek
 		BuiltAt: spen
 		Owner: soviet
-		Cost: 1600
+		Cost: 2400
 		Description: Missile Submarine
 		LongDesc: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Unit:
@@ -456,15 +456,15 @@ CA:
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
-		Cost: 2000
+		Cost: 3200
 		Description: Cruiser
 		LongDesc: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Unit:
-		HP: 700
+		HP: 800
 		Armor: heavy
-		ROT: 5
+		ROT: 2
 		Sight: 7
-		Speed: 4
+		Speed: 2
 		WaterBound: yes
 	Turreted:
 		ROT: 3

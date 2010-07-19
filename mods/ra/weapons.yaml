@@ -486,7 +486,7 @@ RedEye:
 
 8Inch:
 	ROF: 250
-	Range: 18
+	Range: 16
 	Burst: 2
 	Report: TURRET1
 	Bullet:
@@ -507,8 +507,8 @@ RedEye:
 		WaterImpactSound: splash9
 
 SubMissile:
-	ROF: 220
-	Range: 18
+	ROF: 300
+	Range: 16
 	Burst: 2
 	Report: MISSILE6
 	Bullet:
