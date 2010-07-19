@@ -73,10 +73,12 @@ Vulcan:
 		Delay: 10
 		
 Maverick:
-	ROF: 3
-	Range: 6
+	ROF: 30
+	Range: 9
 	Report: MISSILE7
-	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 7
+	ValidTargets: Ground
 	Missile:
 		Speed: 30
 		Arm: 2
@@ -84,10 +86,10 @@ Maverick:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
-		Inaccuracy: 3
+		Inaccuracy: 12
 		Image: DRAGON
 		ROT: 5
-		RangeLimit: 20
+		RangeLimit: 60
 	Warhead:
 		Spread: 3
 		Verses: 30%,75%,75%,100%,50%
@@ -95,7 +97,7 @@ Maverick:
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 60
 		
 FireballLauncher:
 	ROF: 50

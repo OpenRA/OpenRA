@@ -553,12 +553,14 @@ MIG:
 	AttackPlane:
 		PrimaryWeapon: Maverick
 		SecondaryWeapon: Maverick
+		PrimaryLocalOffset: -15,0,-10,-12,0,6
+		SecondaryLocalOffset: 15,0,10,12,0,6
 	Plane:
 		RearmBuildings: afld
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 3
+		Ammo: 8
 	IronCurtainable:
 	ReturnOnIdle:
 
