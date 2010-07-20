@@ -63,7 +63,7 @@
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
 	Selectable:
-		Voice: GenericVoice
+		Voice: ShipVoice
 	HiddenUnderFog:
 	RevealsShroud:
 	GainsExperience:

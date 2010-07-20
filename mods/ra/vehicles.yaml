@@ -389,8 +389,6 @@ SS:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 MSUB:
 	Inherits: ^Ship
@@ -421,8 +419,6 @@ MSUB:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 DD:
 	Inherits: ^Ship
@@ -452,8 +448,6 @@ DD:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 CA:
 	Inherits: ^Ship
@@ -487,8 +481,6 @@ CA:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 LST:
 	Inherits: ^Ship
@@ -511,8 +503,6 @@ LST:
 		Passengers: 5
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 PT:
 	Inherits: ^Ship
@@ -542,8 +532,6 @@ PT:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	Selectable:
-		Voice: ShipVoice
 
 MIG:
 	Inherits: ^Plane
