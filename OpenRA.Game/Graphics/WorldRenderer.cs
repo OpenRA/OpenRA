@@ -56,8 +56,6 @@ namespace OpenRA.Graphics
 		
 		public void AddPalette(string name, Palette pal)
 		{
-			System.Console.WriteLine("Registering Palette "+name);
-
 			palette.AddPalette(name, pal);
 		}
 		
