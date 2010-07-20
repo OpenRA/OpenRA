@@ -103,7 +103,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		void TriggerCheatingMessage()
 		{
-			Game.Debug("{0} has used a developer mode option that is considered a cheat!".F(Game.world.LocalPlayer.PlayerName.ToString()));
+			var order = Order.Chat("I used a developer mode option that is considered a cheat!".F(Game.world.LocalPlayer.PlayerName.ToString()));
+			Game.IssueOrder(order);
 		}
 	}
 }
