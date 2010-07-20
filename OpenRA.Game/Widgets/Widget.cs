@@ -129,10 +129,12 @@ namespace OpenRA.Widgets
 				Game.CreateObject<IWidgetDelegate>(d);
 		}
 		
+		public virtual Rectangle EventBounds { get { return RenderBounds; } }
+		
 		public bool HitTest(int2 xy)
 		{
 			if (!IsVisible()) return false;
-			if (RenderBounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
+			if (EventBounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
 			
 			return Children.Any(c => c.HitTest(xy));
 		}
@@ -142,7 +144,7 @@ namespace OpenRA.Widgets
 			return Children
 				.Where(c => c.IsVisible())
 				.Select(c => c.GetEventBounds())
-				.Aggregate(RenderBounds, Rectangle.Union);
+				.Aggregate(EventBounds, Rectangle.Union);
 		}
 		
 		

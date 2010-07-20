@@ -42,7 +42,7 @@ namespace OpenRA.Widgets
 			clock = new Animation("clock");
 		}
 
-		public override Rectangle RenderBounds
+		public override Rectangle EventBounds
 		{
 			get { return buttons.Any() ? buttons.Select(b => b.First).Aggregate(Rectangle.Union) : Bounds; }
 		}
