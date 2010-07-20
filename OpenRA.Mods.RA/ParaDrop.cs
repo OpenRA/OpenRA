@@ -43,17 +43,17 @@ namespace OpenRA.Mods.RA
 
 			if ((self.Location - lz).LengthSquared <= r * r && !droppedAt.Contains(self.Location))
 			{
-				if (!IsSuitableCell(self, self.Location))
-					return;
-
-				// unload a dude here
-				droppedAt.Add(self.Location);
-
 				var cargo = self.traits.Get<Cargo>();
 				if (cargo.IsEmpty(self))
 					FinishedDropping(self);
 				else
 				{
+					if (!IsSuitableCell(cargo.Peek(self), self.Location))
+						return;
+
+					// unload a dude here
+					droppedAt.Add(self.Location);
+
 					var a = cargo.Unload(self);
 					var rs = a.traits.Get<RenderSimple>();
 
