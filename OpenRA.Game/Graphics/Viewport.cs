@@ -69,7 +69,7 @@ namespace OpenRA.Graphics
 			Game.chrome.Draw(world);
 			Timer.Time( "widgets: {0}" );
 
-			var cursorName = Game.chrome.HitTest(mousePos) ? "default" : Game.controller.ChooseCursor( world );
+			var cursorName = Chrome.rootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
 			Timer.Time( "cursors: {0}" );

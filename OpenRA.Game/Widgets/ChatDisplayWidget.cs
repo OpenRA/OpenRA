@@ -28,6 +28,7 @@ namespace OpenRA.Widgets
 		protected ChatDisplayWidget(Widget widget)
 			: base(widget) { }
 
+		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 		public override void DrawInner(World world)
 		{
 			var pos = RenderOrigin;

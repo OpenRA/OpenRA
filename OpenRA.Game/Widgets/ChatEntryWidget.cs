@@ -37,7 +37,8 @@ namespace OpenRA.Widgets
 				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
 			}
 		}
-
+		
+		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 		public override bool LoseFocus(MouseInput mi)
 		{
 			return composing ? false : base.LoseFocus(mi);

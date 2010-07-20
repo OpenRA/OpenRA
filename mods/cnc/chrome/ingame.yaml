@@ -11,10 +11,6 @@ Container@ROOT:
 					Y: 10
 				PostGame@POSTGAME_TEXT:
 					Id:POSTGAME_TEXT
-					X:0
-					Y:0
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0

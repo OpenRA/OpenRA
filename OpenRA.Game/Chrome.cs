@@ -69,7 +69,6 @@ namespace OpenRA
 			return false;
 		}
 
-		
 		public bool HandleKeyPress(KeyInput e)
 		{
 			if (Widget.SelectedWidget != null)
@@ -78,14 +77,6 @@ namespace OpenRA
 			if (rootWidget.HandleKeyPressOuter(e))
 				return true;
 			return false;
-		}
-		
-		public bool HitTest(int2 mousePos)
-		{
-			if (Widget.SelectedWidget != null)
-				return true;
-			
-			return rootWidget.HitTest(mousePos);
 		}
 	}
 }

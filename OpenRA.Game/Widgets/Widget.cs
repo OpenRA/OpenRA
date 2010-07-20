@@ -130,15 +130,6 @@ namespace OpenRA.Widgets
 		}
 		
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
-		
-		public bool HitTest(int2 xy)
-		{
-			if (!IsVisible()) return false;
-			if (EventBounds.Contains(xy.ToPoint()) && !ClickThrough) return true;
-			
-			return Children.Any(c => c.HitTest(xy));
-		}
-		
 		public Rectangle GetEventBounds()
 		{
 			return Children
@@ -146,7 +137,6 @@ namespace OpenRA.Widgets
 				.Select(c => c.GetEventBounds())
 				.Aggregate(EventBounds, Rectangle.Union);
 		}
-		
 		
 		public static Widget SelectedWidget;
 		public bool Focused { get { return SelectedWidget == this; } }
@@ -174,6 +164,24 @@ namespace OpenRA.Widgets
 				SelectedWidget = null;
 			
 			return true;
+		}
+		
+		public virtual string GetCursor(int2 pos) { return "default"; }
+		public string GetCursorOuter(int2 pos)
+		{
+			// Is the cursor on top of us?
+			if (!(IsVisible() && GetEventBounds().Contains(pos.ToPoint())))
+				return null;
+			
+			// Do any of our children specify a cursor?
+			foreach (var child in Children.OfType<Widget>().Reverse())
+			{
+				var cc = child.GetCursorOuter(pos);
+				if (cc != null)
+					return cc;
+			}
+
+			return EventBounds.Contains(pos.ToPoint()) ? GetCursor(pos) : null;
 		}
 		
 		public virtual bool HandleInput(MouseInput mi) { return !ClickThrough; }
@@ -290,7 +298,8 @@ namespace OpenRA.Widgets
 		public ContainerWidget(Widget other) : base(other) { }
 
 		public override void DrawInner( World world ) { }
-
+		
+		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }
 	}
 	public interface IWidgetDelegate { }
