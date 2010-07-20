@@ -100,21 +100,21 @@ Maverick:
 		Damage: 60
 		
 FireballLauncher:
-	ROF: 50
+	ROF: 45
 	Range: 4
 	Bullet:
 		Speed: 12
 		Trail: fb2
 		Image: FB1
 	Warhead:
-		Spread: 4
+		Spread: 5
 		Verses: 90%,100%,60%,25%,50%
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
-		Damage: 125
+		Damage: 150
 		
 Flamer:
 	ROF: 50
