@@ -24,7 +24,7 @@ namespace OpenRA
 			// brutal hack
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 
-			if (Debugger.IsAttached)
+			if (Debugger.IsAttached || args.Contains("--just-die"))
 			{
 				Run(args);
 				return;
