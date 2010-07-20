@@ -158,8 +158,8 @@ Container@ROOT:
 					Delegate:DeveloperModeDelegate
 					X:(WINDOW_RIGHT - WIDTH)/2
 					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:450
-					Height:400
+					Width:300
+					Height:300
 					Visible:false
 					Children:
 						Label@LABEL_TITLE:
@@ -172,47 +172,47 @@ Container@ROOT:
 							Align:Center
 						Checkbox@SETTINGS_CHECKBOX_SHROUD
 							Id:SETTINGS_CHECKBOX_SHROUD
-							X:100
+							X:30
 							Y:50
 							Height:20
 							Width:20
 							Text:Disable Shroud
 						Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
 							Id:SETTINGS_CHECKBOX_UNITDEBUG
-							X:100
+							X:30
 							Y:80
 							Width:300
 							Height:20
 							Text:Show Occupied Cells
 						Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
 							Id:SETTINGS_CHECKBOX_PATHDEBUG
-							X:100
+							X:30
 							Y:110
 							Width:300
 							Height:20
 							Text:Show Unit Paths
 						Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
 							Id:SETTINGS_CHECKBOX_INDEXDEBUG
-							X:100
+							X:30
 							Y:140
 							Width:300
 							Height:20
 							Text:Show Spatial Index Debug
 						Label@LABEL_MP_WARNING
 							Id:LABEL_MP_WARNING
-							X:100
-							Y:170
+							X:30
+							Y:180
 							Text:May cause errors under multiplayer:
 						Button@SETTINGS_GIVE_CASH
 							Id:SETTINGS_GIVE_CASH
-							X:100
+							X:30
 							Y:200
 							Width:150
 							Height:20
 							Text: Give Cash
 						Checkbox@SETTINGS_BUILD_SPEED
 							Id:SETTINGS_BUILD_SPEED
-							X:100
+							X:30
 							Y:230
 							Width:20
 							Height:20
