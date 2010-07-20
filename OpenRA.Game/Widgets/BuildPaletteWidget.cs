@@ -73,6 +73,11 @@ namespace OpenRA.Widgets
 			IsVisible = () => { return currentTab != null || (currentTab == null && !paletteOpen);  };
 		}
 		
+		public override Rectangle EventBounds
+		{
+			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, paletteHeight + 9); }
+		}
+		
 		public override void Tick(World world)
 		{
 			visibleTabs.Clear();
@@ -159,12 +164,13 @@ namespace OpenRA.Widgets
 	
 			action(mi);
 			return true;
-		}	
+		}
 		
+		int paletteHeight = 0;
 		public override void DrawInner(World world)
 		{	
 			if (!IsVisible()) return;
-			int paletteHeight = DrawPalette(world, currentTab);
+			paletteHeight = DrawPalette(world, currentTab);
 			DrawBuildTabs(world, paletteHeight);
 		}
 
