@@ -21,6 +21,7 @@ namespace OpenRA.GameRules
 		public readonly string[] Move = { };
 		public readonly string[] Attack = null;
 		public readonly string[] Die = { };
+		public readonly string[] Lost = { };
 
 		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
 
@@ -35,6 +36,7 @@ namespace OpenRA.GameRules
 					{ "Move", new VoicePool(Move) },
 					{ "Attack", new VoicePool( Attack ?? Move ) },
 					{ "Die", new VoicePool(Die) },
+					{ "Lost", new VoicePool(Lost) },
 				});
 		}
 	}

@@ -16,7 +16,7 @@ namespace OpenRA.Traits
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 
-		public object Create( ActorInitializer init ) { return new Unit( init.self ); }
+		public object Create( ActorInitializer init ) { return new Unit(); }
 	}
 
 	public class Unit : INotifyDamage
@@ -26,14 +26,11 @@ namespace OpenRA.Traits
 		[Sync]
 		public int Altitude;
 
-		public Unit(Actor self) { }
-
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
-					Sound.PlayToPlayer(self.Owner,
-						self.Info.Traits.Get<OwnedActorInfo>().WaterBound ? eva.NavalUnitLost : eva.UnitLost);
+				Sound.PlayVoice("Lost", self);
 		}
 	}
 }
