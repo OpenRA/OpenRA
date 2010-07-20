@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+using System.Linq;
 namespace OpenRA.Widgets.Delegates
 {
 	public class IngameChromeDelegate : IWidgetDelegate
@@ -54,6 +56,35 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			Game.AddChatLine += gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
+			
+			
+			var postgameBG = gameRoot.GetWidget("POSTGAME_BG");
+			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
+			postgameBG.IsVisible = () =>
+			{
+				var conds = Game.world.Queries.WithTrait<IVictoryConditions>()
+						.Where(c => !c.Actor.Owner.NonCombatant);
+				
+				if (Game.world.LocalPlayer != null && conds.Count() > 1)
+				{
+					if (conds.Any(c => c.Actor.Owner == Game.world.LocalPlayer && c.Trait.HasLost)
+						|| conds.All(c => AreMutualAllies(c.Actor.Owner, Game.world.LocalPlayer) || c.Trait.HasLost))	
+						return true;
+				}
+				
+				return false;
+			};
+			
+			postgameText.GetText = () =>
+			{
+				var lost = Game.world.Queries.WithTrait<IVictoryConditions>()
+						.Where(c => c.Actor.Owner == Game.world.LocalPlayer)
+						.Any(c => c.Trait.HasLost);
+				
+				return (lost) ? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS";
+			};
 		}
+		bool AreMutualAllies(Player a, Player b) { return a.Stances[b] == Stance.Ally && b.Stances[a] == Stance.Ally; }
+
 	}
 }

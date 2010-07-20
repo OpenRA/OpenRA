@@ -9,8 +9,23 @@ Container@ROOT:
 					Id:GAME_TIMER
 					X: WINDOW_RIGHT/2
 					Y: 10
-				PostGame@POSTGAME_TEXT:
-					Id:POSTGAME_TEXT
+				Background@POSTGAME_BG:
+					Id:POSTGAME_BG
+					X:(WINDOW_RIGHT - WIDTH)/2
+					Y:(WINDOW_BOTTOM - HEIGHT)/2
+					Width:400
+					Height:100
+					Background:dialog4
+					Visible:false
+					Children:
+						Label@TEXT:
+							Id:TEXT
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:(PARENT_BOTTOM - HEIGHT)/2
+							Width:200
+							Height:40
+							Align:Center
+							Bold:True
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					X:0

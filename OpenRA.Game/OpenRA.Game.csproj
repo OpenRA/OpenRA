@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -99,7 +99,6 @@
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\MapPreviewWidget.cs" />
-    <Compile Include="Widgets\PostGameWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
@@ -237,7 +236,7 @@
       <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
- </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
