@@ -55,24 +55,15 @@ namespace OpenRA.Orders
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )
 		{
-			return ChooseCursor(world, mi);
-		}
+			var c = Order(world, xy, mi)
+				.Select(o => o.Subject.traits.WithInterface<IProvideCursor>()
+					.Select(pc => pc.CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation)).FirstOrDefault(a => a != null))
+				.FirstOrDefault(a => a != null);
 
-		string ChooseCursor(World world, MouseInput mi)
-		{
-			//using (new PerfSample("cursor"))
-			{
-				var p = Game.controller.MousePosition;
-				var c = Order(world, p.ToInt2(), mi)
-					.Select(o => o.Subject.traits.WithInterface<IProvideCursor>()
-						.Select(pc => pc.CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation)).FirstOrDefault(a => a != null))
-					.FirstOrDefault(a => a != null);
-
-				return c ??
-					(world.SelectActorsInBox(Game.CellSize * p,
-					Game.CellSize * p).Any()
-						? "select" : "default");
-			}
+			return c ??
+				(world.SelectActorsInBox(Game.CellSize * xy,
+				Game.CellSize * xy).Any()
+					? "select" : "default");
 		}
 	}
 }

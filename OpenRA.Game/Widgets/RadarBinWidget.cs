@@ -29,6 +29,27 @@ namespace OpenRA.Widgets
 
 		string radarCollection;
 
+		public override string GetCursor(int2 pos)
+		{		
+			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
+				192, radarMinimapHeight);
+			
+			var loc = Game.world.Minimap.MinimapPixelToCell(mapRect, pos);
+
+			var mi = new MouseInput
+			{
+				Location = loc,
+				Button = MouseButton.Right,
+				Modifiers = Game.controller.GetModifiers()
+			};
+
+			var cursor = Game.controller.orderGenerator.GetCursor( Game.world, loc, mi );
+			if (cursor == null)
+				return "default";
+			
+			return SequenceProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
+		}
+
 		public override bool HandleInput(MouseInput mi)
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.

@@ -78,6 +78,11 @@ namespace OpenRA.Graphics
 		{
 			return units[unit].ContainsKey(seq);
 		}
+		
+		public static bool HasCursorSequence(string cursor)
+		{
+			return cursors.ContainsKey(cursor);
+		}
 
 		public static CursorSequence GetCursorSequence(string cursor)
 		{

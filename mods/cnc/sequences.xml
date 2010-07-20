@@ -13,7 +13,7 @@
     <sequence name="select" start="12" length="6" x="12" y="12" />
     <sequence name="attackmove" start="18" length="8" x="12" y="12" />
     <sequence name="move-minimap" start="26" length="1" />
-    <sequence name="blocked-minimap" start="27" length="1" />
+    <sequence name="move-blocked-minimap" start="27" length="1" />
     <sequence name="repair" start="29" length="24" x="12" y="12" />
     <sequence name="deploy" start="53" length="9" x="12" y="12" />
     <sequence name="sell" start="62" length="24" x="12" y="12" />
