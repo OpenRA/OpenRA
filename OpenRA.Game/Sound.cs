@@ -138,6 +138,7 @@ namespace OpenRA
 
 			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (mi == null) return;
+			if (mi.Voice == null) return;
 
 			var vi = Rules.Voices[mi.Voice.ToLowerInvariant()];
 
