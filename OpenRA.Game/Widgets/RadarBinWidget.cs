@@ -65,6 +65,12 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
+		public override Rectangle RenderBounds
+		{
+			get { return new Rectangle((int)radarOrigin.X + 9, (int)(radarOrigin.Y + (192 - radarMinimapHeight) / 2),
+				192, (int)radarMinimapHeight);}
+		}
+
 		public override void DrawInner(World world)
 		{
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
