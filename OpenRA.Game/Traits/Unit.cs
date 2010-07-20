@@ -30,7 +30,8 @@ namespace OpenRA.Traits
 		{
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
-				Sound.PlayVoice("Lost", self);
+				if (self.Owner == self.World.LocalPlayer)
+					Sound.PlayVoice("Lost", self);
 		}
 	}
 }
