@@ -57,6 +57,7 @@ seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
 seqed_DEPS			= $(fileformats_TARGET)
 seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
+seqed_EXTRA			= -resource:SequenceEditor.Form1.resources
 
 editor_SRCS			= $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET		= OpenRA.Editor.exe
@@ -156,15 +157,17 @@ mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
 	mono RALint.exe cnc
 mods: mod_ra mod_cnc
 
-editor_res:
+OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources
-editor: editor_res $(editor_TARGET)
+editor: OpenRA.Editor.Form1.resources $(editor_TARGET)
 ralint: $(ralint_TARGET)
-seqed: $(seqed_TARGET)
+seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
+SequenceEditor.Form1.resources:
+	resgen2 SequenceEditor/Form1.resx SequenceEditor.Form1.resources
 mapcvtr: $(mapcvtr_TARGET)
 filex: $(filex_TARGET)
-tsbuild: tsbuild_res $(tsbuild_TARGET)
-tsbuild_res:
+tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
+OpenRA.TilesetBuilder.Form1.resources:
 	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources
 tools: editor ralint seqed mapcvtr filex tsbuild
 all: game tools
