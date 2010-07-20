@@ -49,6 +49,7 @@ namespace OpenRA.Widgets.Delegates
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
 				Game.world.LocalPlayer.Shroud.Disabled ^= true;
+				TriggerCheatingMessage();
 				return true;
 			};
 			
@@ -56,6 +57,7 @@ namespace OpenRA.Widgets.Delegates
 				() => {return Game.Settings.UnitDebug;};
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
 				Game.Settings.UnitDebug ^= true;
+				TriggerCheatingMessage();
 				return true;
 			};
 			
@@ -63,6 +65,7 @@ namespace OpenRA.Widgets.Delegates
 				() => {return Game.Settings.PathDebug;};
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => {
 				Game.Settings.PathDebug ^= true;
+				TriggerCheatingMessage();
 				return true;
 			};
 			
@@ -70,13 +73,17 @@ namespace OpenRA.Widgets.Delegates
 				() => {return Game.Settings.IndexDebug;};
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => {
 				Game.Settings.IndexDebug ^= true;
+				TriggerCheatingMessage();
 				return true;
 			};
 			
-			//danger will robinson
 			devmodeBG.GetWidget<ButtonWidget>("SETTINGS_GIVE_CASH").OnMouseUp = mi =>
 			{
-				Game.world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GiveCash(5000);
+				Game.world.AddFrameEndTask(w =>
+				{
+					Game.world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GiveCash(5000);
+				});
+				TriggerCheatingMessage();
 				return true;
 			};
 			
@@ -85,12 +92,18 @@ namespace OpenRA.Widgets.Delegates
 				oldBuildSpeed = (!slowed)? Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed : oldBuildSpeed;
 				Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed = (slowed)? oldBuildSpeed : 0;
 				slowed ^= true;
+				TriggerCheatingMessage();
 				return true;	
 			};
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
 				() => {return slowed;};
 				
 			devModeButton.IsVisible = () => { return Game.Settings.DeveloperMode; };
+		}
+		
+		void TriggerCheatingMessage()
+		{
+			Game.Debug("{0} has used a developer mode option that is considered a cheat!".F(Game.world.LocalPlayer.PlayerName.ToString()));
 		}
 	}
 }
