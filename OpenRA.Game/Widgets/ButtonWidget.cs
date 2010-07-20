@@ -13,7 +13,7 @@ using System.Drawing;
 
 namespace OpenRA.Widgets
 {
-	class ButtonWidget : Widget
+	public class ButtonWidget : Widget
 	{
 		public string Text = "";
 		public bool Bold = false;

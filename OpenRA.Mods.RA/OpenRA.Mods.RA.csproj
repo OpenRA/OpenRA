@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -107,7 +107,6 @@
     <Compile Include="CanPowerDown.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
-    <Compile Include="Chrome\PowerDownButton.cs" />
     <Compile Include="Crates\LevelUpCrateAction.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
@@ -208,6 +207,7 @@
     <Compile Include="TransformsOnDeploy.cs" />
     <Compile Include="Activities\TransformIntoActor.cs" />
     <Compile Include="PaletteFromCurrentTheatre.cs" />
+    <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -236,6 +236,6 @@ ralint ra</PostBuildEvent>
   <ItemGroup>
     <Folder Include="Widgets\" />
     <Folder Include="Widgets\Delegates\" />
-    <Folder Include="Widgets\Delegates\" />
+    <Folder Include="Chrome\" />
   </ItemGroup>
 </Project>

@@ -150,16 +150,6 @@ namespace OpenRA.Traits
 		void Cancel(Actor self);
 	}
 
-	public interface IChromeButton
-	{
-		string Image { get; }
-		bool Enabled { get; }
-		bool Pressed { get; }
-		void OnClick();
-		string Description { get; }
-		string LongDesc { get; }
-	}
-
 	public interface IRenderOverlay { void Render(); }
 	public interface INotifyIdle { void Idle(Actor self); }
 

@@ -48,9 +48,6 @@ namespace OpenRA.Mods.RA.Orders
 
 		public static bool PlayerIsAllowedToRepair( World world )
 		{
-			if( !world.WorldActor.Info.Traits.Get<RepairButtonInfo>().RequiresConstructionYard )
-				return true;
-
 			return Game.world.Queries.OwnedBy[ Game.world.LocalPlayer ]
 				.WithTrait<Production>().Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( "Building" ) )
 				.Any();

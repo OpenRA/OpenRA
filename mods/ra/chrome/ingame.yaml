@@ -74,6 +74,37 @@ Container@ROOT:
 					Width:320
 					Height: 32
 					SplitOreAndCash:No
+					Children:
+						OrderButton@SELL:
+							Id:SELL
+							Delegate:OrderButtonsChromeDelegate
+							X:3
+							Y:0
+							Width:30
+							Height:30
+							Image:sell
+							Description:Sell
+							LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
+						OrderButton@POWER_DOWN:
+							Id:POWER_DOWN
+							Delegate:OrderButtonsChromeDelegate
+							X:39
+							Y:0
+							Width:30
+							Height:30
+							Image:power
+							Description:Powerdown
+							LongDesc:Disable unneeded structures so their \npower can be used elsewhere
+						OrderButton@REPAIR:
+							Id:REPAIR
+							Delegate:OrderButtonsChromeDelegate
+							X:75
+							Y:0
+							Width:30
+							Height:30
+							Image:repair
+							Description:Repair
+							LongDesc:Repair damaged buildings
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2

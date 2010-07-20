@@ -148,9 +148,6 @@ World:
 	Country@1:
 		Name: Soviet
 		Race: soviet
-	SellButton:
-	RepairButton:
-	PowerDownButton:
 	BibLayer:
 	ResourceLayer:
 	ResourceType@ore:
