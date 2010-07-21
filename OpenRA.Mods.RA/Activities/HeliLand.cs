@@ -27,10 +27,9 @@ namespace OpenRA.Mods.RA.Activities
 			if (unit.Altitude == 0)
 				return NextActivity;
 
-			// Todo: check if we can land here
-			//if (requireSpace && !self.World.IsPathableCell(self.Location, UnitMovementType.Foot))
-			//	return this;	// fail to land if no space
-
+			if (requireSpace && !self.traits.Get<IMove>().CanEnterCell(self.Location))
+				return this;
+			
 			--unit.Altitude;
 			return this;
 		}
