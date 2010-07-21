@@ -123,16 +123,17 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: hvydoor1.aud
-		SellSounds: cashturn.aud
 		Capturable: false
 		BaseNormal: no
 		Crewed: no
 		Sight: 0
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
+		Adjacent: 7
 	Wall:
 		CrushClasses: wall
 	LineBuild:
+		Range: 8
 	Selectable:
 		Priority: 1
 	RenderBuildingWall:

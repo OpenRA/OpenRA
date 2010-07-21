@@ -412,12 +412,12 @@ CYCL:
 		Icon:cyclicnh
 		BuildPaletteOrder: 10
 		Prerequisites: fact
-		Owner: gdi,nod
-		Cost: 75
+		Owner: nod
+		Cost: 25
 		Description: Chain Link Barrier
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Building:
-		HP: 100
+		HP: 300
 		Armor: none
 	RenderBuildingWall:
 		DamageStates: 3
@@ -429,12 +429,12 @@ SBAG:
 		Icon:sbagicnh
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Owner: gdi,nod
-		Cost: 50
+		Owner: gdi
+		Cost: 25
 		Description: Sandbag Barrier
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Building:
-		HP: 100
+		HP: 250
 		Armor: none
 
 BRIK:
@@ -449,8 +449,8 @@ BRIK:
 		Description: Concrete Barrier
 		LongDesc: Stop units and blocks enemy fire.
 	Building:
-		HP: 100
-		Armor: none
+		HP: 1000
+		Armor: heavy
 	RenderBuildingWall:
 		DamageStates: 4
 	Wall:
