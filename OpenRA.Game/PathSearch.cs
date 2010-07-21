@@ -91,7 +91,7 @@ namespace OpenRA
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (checkForBlocked && !mobile.CanEnterCell(newHere, ignoreBuilding, checkForBlocked))
+				if (!mobile.CanEnterCell(newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
