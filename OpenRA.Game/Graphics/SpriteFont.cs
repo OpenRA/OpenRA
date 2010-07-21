@@ -19,12 +19,10 @@ namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
-		Renderer renderer;
 		int size;
 
-		public SpriteFont(Renderer r, string name, int size)
+		public SpriteFont(string name, int size)
 		{
-			this.renderer = r;
 			this.size = size;
 
 			if (0 != FT.FT_New_Face(library, name, 0, out face))
@@ -34,7 +32,7 @@ namespace OpenRA.Graphics
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph);
 
 			// setup a 1-channel SheetBuilder for our private use
-			if (builder == null) builder = new SheetBuilder(r, TextureChannel.Alpha);
+			if (builder == null) builder = new SheetBuilder(TextureChannel.Alpha);
 
 			PrecacheColor(Color.White);
 			PrecacheColor(Color.Red);
@@ -63,7 +61,7 @@ namespace OpenRA.Graphics
 				}
 				
 				var g = glyphs[Pair.New(s, c)];
-				renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
 					new float2(
 						(int)Math.Round(p.X + g.Offset.X, 0),
 						p.Y + g.Offset.Y), 

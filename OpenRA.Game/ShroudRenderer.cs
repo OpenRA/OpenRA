@@ -122,7 +122,7 @@ namespace OpenRA
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}
 
-		internal void Draw(SpriteRenderer r)
+		internal void Draw()
 		{
 			if (disabled)
 				return;
@@ -157,21 +157,21 @@ namespace OpenRA
 
 					if (starti != i)
 					{
-						r.DrawSprite(fogSprites[starti, j],
+						Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
 						    Game.CellSize * new float2(starti, j),
 						    shroudPalette,
 						    new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i+1;
 					}
 
-					r.DrawSprite(fogSprites[i, j],
+					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[i, j],
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i+1;
 				}
 
 				if (starti < maxx)
-					r.DrawSprite(fogSprites[starti, j],
+					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
@@ -189,21 +189,21 @@ namespace OpenRA
 
 					if (starti != i)
 					{
-						r.DrawSprite(sprites[starti, j],
+						Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
 							Game.CellSize * new float2(starti, j),
 							shroudPalette,
 							new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i + 1;
 					}
 
-					r.DrawSprite(sprites[i, j],
+					Game.Renderer.SpriteRenderer.DrawSprite(sprites[i, j],
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i + 1;
 				}
 
 				if (starti < maxx)
-					r.DrawSprite(sprites[starti, j],
+					Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));

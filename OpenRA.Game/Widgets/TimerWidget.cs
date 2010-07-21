@@ -25,9 +25,8 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			var s = WorldUtils.FormatTime(Game.LocalTick);
-			var f = Game.Renderer.TitleFont;
-			var size = f.Measure(s);
-			f.DrawText(s, new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top - 20), Color.White);
+			var size = Game.Renderer.TitleFont.Measure(s);
+			Game.Renderer.TitleFont.DrawText(s, new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top - 20), Color.White);
 		}
 	}
 }

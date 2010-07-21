@@ -19,16 +19,10 @@ namespace OpenRA.Traits
 
 	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ITerrainTypeModifier
 	{		
-		SpriteRenderer sr;
 		World world;
 
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
-
-		public ResourceLayer()
-		{
-			sr = Game.Renderer.SpriteRenderer;
-		}
 		
 		public void Render()
 		{
@@ -50,7 +44,7 @@ namespace OpenRA.Traits
 
 					var c = content[x, y];
 					if (c.image != null)
-						sr.DrawSprite(c.image[c.density],
+						Game.Renderer.SpriteRenderer.DrawSprite(c.image[c.density],
 							Game.CellSize * new int2(x, y),
 							c.type.info.Palette);
 				}

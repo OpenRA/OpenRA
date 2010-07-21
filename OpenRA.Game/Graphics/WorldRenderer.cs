@@ -28,9 +28,9 @@ namespace OpenRA.Graphics
 		{
 			this.world = world;
 
-			terrainRenderer = new TerrainRenderer(world, Game.Renderer, this);
-			uiOverlay = new UiOverlay(Game.Renderer.SpriteRenderer);
-			palette = new HardwarePalette(Game.Renderer, world.Map);
+			terrainRenderer = new TerrainRenderer(world, this);
+			uiOverlay = new UiOverlay();
+			palette = new HardwarePalette(world.Map);
 		}
 		
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
@@ -134,7 +134,7 @@ namespace OpenRA.Graphics
 				Game.controller.orderGenerator.Render(world);
 
 			if (world.LocalPlayer != null)
-				world.LocalPlayer.Shroud.Draw(Game.Renderer.SpriteRenderer);
+				world.LocalPlayer.Shroud.Draw();
 
 			Game.Renderer.SpriteRenderer.Flush();
 

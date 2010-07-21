@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 								 int.Parse(e.GetAttribute("height")));
 		}
 
-		public Sprite GetImage(Renderer r, Sheet s)
+		public Sprite GetImage(Sheet s)
 		{
 			return new Sprite(s, rect, TextureChannel.Alpha);
 		}

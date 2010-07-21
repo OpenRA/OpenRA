@@ -16,20 +16,17 @@ namespace OpenRA.Graphics
 {
 	public class Sheet
 	{
-		readonly Renderer renderer;
 		protected readonly Bitmap bitmap;
 		ITexture texture;
 		bool dirty;
 
-		internal Sheet(Renderer renderer, Size size)
+		internal Sheet(Size size)
 		{
-			this.renderer = renderer;
 			this.bitmap = new Bitmap(size.Width, size.Height);
 		}
 
-		internal Sheet(Renderer renderer, string filename)
+		internal Sheet(string filename)
 		{
-			this.renderer = renderer;
 			this.bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 		}
 
@@ -38,7 +35,7 @@ namespace OpenRA.Graphics
 			get
 			{
 				if (texture == null)
-					texture = renderer.Device.CreateTexture(bitmap);
+					texture = Game.Renderer.Device.CreateTexture(bitmap);
 
 				if (dirty)
 				{

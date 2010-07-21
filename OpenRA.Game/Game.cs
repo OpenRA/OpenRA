@@ -118,7 +118,7 @@ namespace OpenRA
 			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
 			LoadModAssemblies(Manifest);
-			SheetBuilder.Initialize(Renderer);
+			SheetBuilder.Initialize();
 			LoadModPackages();
 			Timer.Time("load assemblies, packages: {0}");
 			packageChangePending = false;
@@ -129,7 +129,7 @@ namespace OpenRA
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
-			SheetBuilder.Initialize(Renderer);
+			SheetBuilder.Initialize();
 			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
 

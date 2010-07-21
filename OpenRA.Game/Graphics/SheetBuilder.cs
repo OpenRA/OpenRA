@@ -15,14 +15,13 @@ namespace OpenRA.Graphics
 	public class SheetBuilder
 	{
 		public static SheetBuilder SharedInstance;
-		internal static void Initialize(Renderer r)
+		internal static void Initialize()
 		{
-			SharedInstance = new SheetBuilder(r, TextureChannel.Red);
+			SharedInstance = new SheetBuilder(TextureChannel.Red);
 		}
 
-		internal SheetBuilder(Renderer r, TextureChannel ch)
+		internal SheetBuilder(TextureChannel ch)
 		{
-			renderer = r;
 			current = null;
 			rowHeight = 0;
 			channel = null;
@@ -45,9 +44,8 @@ namespace OpenRA.Graphics
 			return Add(data, size);
 		}
 
-		Sheet NewSheet() { return new Sheet( renderer, new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
-
-		Renderer renderer;
+		Sheet NewSheet() { return new Sheet(new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
+		
 		Sheet current = null;
 		int rowHeight = 0;
 		Point p;

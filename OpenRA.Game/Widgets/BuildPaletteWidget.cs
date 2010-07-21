@@ -201,13 +201,12 @@ namespace OpenRA.Widgets
 			var numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
 
 			// Palette Background
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
 			for (var w = 0; w < numActualRows; w++)
 				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage(Game.Renderer, paletteCollection,
-					"bg-" + (w % 4).ToString()),
+					ChromeProvider.GetImage(paletteCollection, "bg-" + (w % 4).ToString()),
 					new float2(origin.X - 9, origin.Y + 48 * w));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "bottom"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
 				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 
@@ -283,14 +282,14 @@ namespace OpenRA.Widgets
 					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 
 			// Palette Dock
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-top"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-top"),
 				new float2(Game.viewport.Width - 14, origin.Y - 23));
 
 			for (int i = 0; i < numActualRows; i++)
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-" + (i % 4).ToString()),
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4).ToString()),
 					new float2(Game.viewport.Width - 14, origin.Y + 48 * i));
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-bottom"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-bottom"),
 				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows));
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 
@@ -416,7 +415,7 @@ namespace OpenRA.Widgets
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				var race = world.LocalPlayer.Country.Race;
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
 				
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(groupName, world)));

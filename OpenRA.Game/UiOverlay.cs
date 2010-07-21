@@ -19,13 +19,10 @@ namespace OpenRA
 {
 	class UiOverlay
 	{
-		SpriteRenderer spriteRenderer;
 		Sprite buildOk, buildBlocked, unitDebug;
 
-		public UiOverlay(SpriteRenderer spriteRenderer)
+		public UiOverlay()
 		{
-			this.spriteRenderer = spriteRenderer;
-
 			buildOk = SynthesizeTile(0x0f);
 			buildBlocked = SynthesizeTile(0x08);
 			unitDebug = SynthesizeTile(0x04);
@@ -51,7 +48,7 @@ namespace OpenRA
 				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
 					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
 						if (uim.GetUnitsAt(new int2(i, j)).Any())
-							spriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
+							Game.Renderer.SpriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
 			}
 		}
 
@@ -65,7 +62,7 @@ namespace OpenRA
 			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
 			{
 				foreach (var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi))
-					spriteRenderer.DrawSprite(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t)
+					Game.Renderer.SpriteRenderer.DrawSprite(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t)
 						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
 			}
 			else
@@ -73,11 +70,11 @@ namespace OpenRA
 				var res = world.WorldActor.traits.Get<ResourceLayer>();
 				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 				foreach (var t in Footprint.Tiles(name, bi, topLeft))
-					spriteRenderer.DrawSprite((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null)
+					Game.Renderer.SpriteRenderer.DrawSprite((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null)
 						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
 			}
 			
-			spriteRenderer.Flush();
+			Game.Renderer.SpriteRenderer.Flush();
 		}
 	}
 

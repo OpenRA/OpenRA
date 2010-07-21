@@ -27,14 +27,12 @@ namespace OpenRA.Traits
 	public class SmudgeLayer: IRenderOverlay, ILoadWorldHook
 	{		
 		public SmudgeLayerInfo Info;
-		SpriteRenderer spriteRenderer;
 		TileReference<byte,byte>[,] tiles;
 		Sprite[][] smudgeSprites;
 		World world;
 
 		public SmudgeLayer(SmudgeLayerInfo info)
 		{
-			spriteRenderer = Game.Renderer.SpriteRenderer;
 			this.Info = info;
 			smudgeSprites = Info.Types.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 		}
@@ -86,7 +84,7 @@ namespace OpenRA.Traits
 					var t = new int2(x, y);
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
 	
-					spriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
+					Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
 						Game.CellSize * t, "terrain");
 				}
 		}

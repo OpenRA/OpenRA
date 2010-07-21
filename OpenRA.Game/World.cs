@@ -104,7 +104,7 @@ namespace OpenRA
 			PathFinder = new PathFinder(this);
 			Timer.Time( "hooks, pathing: {0}" );
 
-			Minimap = new Minimap(this, Game.Renderer);
+			Minimap = new Minimap(this);
 			Timer.Time( "minimap: {0}" );
 
 			Timer.Time( "----end World.ctor" );

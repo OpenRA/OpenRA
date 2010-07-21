@@ -25,8 +25,8 @@ namespace OpenRA.Graphics
 		// We should probably try to fix this somehow
 		static Dictionary<string, Palette> palettes;
 		static Dictionary<string, int> indices;
-		public HardwarePalette(Renderer renderer, Map map)
-			: base(renderer,new Size(256, MaxPalettes))
+		public HardwarePalette(Map map)
+			: base(new Size(256, MaxPalettes))
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();

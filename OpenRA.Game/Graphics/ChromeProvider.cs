@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 			collections.Add(elementName, images);
 		}
 
-		public static Sprite GetImage(Renderer renderer, string collection, string image)
+		public static Sprite GetImage(string collection, string image)
 		{
 			// Cached sprite
 			if (cachedSprites.ContainsKey(collection) && cachedSprites[collection].ContainsKey(image))
@@ -72,14 +72,14 @@ namespace OpenRA.Graphics
 				sheet = cachedSheets[mi.Src];
 			else
 			{
-				sheet = new Sheet(renderer, mi.Src);
+				sheet = new Sheet(mi.Src);
 				cachedSheets.Add(mi.Src, sheet);
 			}
 
 			// Cache the sprite
 			if (!cachedSprites.ContainsKey(collection))
 				cachedSprites.Add(collection, new Dictionary<string, Sprite>());
-			cachedSprites[collection].Add(image, mi.GetImage(renderer, sheet));
+			cachedSprites[collection].Add(image, mi.GetImage(sheet));
 
 			return cachedSprites[collection][image];
 		}

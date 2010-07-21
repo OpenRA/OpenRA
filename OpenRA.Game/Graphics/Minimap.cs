@@ -21,18 +21,16 @@ namespace OpenRA.Graphics
 	{
 		readonly World world;
 		Sheet sheet;
-		SpriteRenderer rgbaRenderer;
 		Sprite sprite;
 		Bitmap terrain, customLayer;
 		Rectangle bounds;
 		
 		const int alpha = 230;
 
-		public Minimap(World world, Renderer r)
+		public Minimap(World world)
 		{
 			this.world = world;
-			sheet = new Sheet(r, new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
-			rgbaRenderer = r.RgbaSpriteRenderer;
+			sheet = new Sheet( new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			var dw = (size - world.Map.Width) / 2;
 			var dh = (size - world.Map.Height) / 2;
@@ -135,9 +133,9 @@ namespace OpenRA.Graphics
 
 		public void Draw(RectangleF rect)
 		{
-			rgbaRenderer.DrawSprite(sprite, 
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, 
 				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
-			rgbaRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
 		int2 CellToMinimapPixel(RectangleF viewRect, int2 p)

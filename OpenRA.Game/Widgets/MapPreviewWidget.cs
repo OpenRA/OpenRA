@@ -73,9 +73,9 @@ namespace OpenRA.Widgets
 		public override void DrawInner( World world )
 		{
 			if (UnownedSpawn == null)
-				UnownedSpawn = ChromeProvider.GetImage(Game.Renderer, "spawnpoints", "unowned");
+				UnownedSpawn = ChromeProvider.GetImage("spawnpoints", "unowned");
 			if (OwnedSpawn == null)
-				OwnedSpawn = ChromeProvider.GetImage(Game.Renderer, "spawnpoints", "owned");
+				OwnedSpawn = ChromeProvider.GetImage("spawnpoints", "owned");
 			
 			var map = Map();
 			if( map == null ) return;
@@ -87,7 +87,7 @@ namespace OpenRA.Widgets
 				// Update image data
 				var preview = PreviewCache[map];
 				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
-					mapChooserSheet = new Sheet( Game.Renderer, new Size( preview.Width, preview.Height ) );
+					mapChooserSheet = new Sheet(new Size( preview.Width, preview.Height ) );
 
 				mapChooserSheet.Texture.SetData( preview );
 				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Width, map.Height ), TextureChannel.Alpha );

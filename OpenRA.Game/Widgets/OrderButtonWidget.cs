@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner (World world)
 		{
-			var image = ChromeProvider.GetImage(Game.Renderer, Image + "-button", GetImage());
+			var image = ChromeProvider.GetImage(Image + "-button", GetImage());
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);
 			
 			if (rect.Contains(Widget.LastMousePos.ToPoint()))

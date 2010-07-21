@@ -54,9 +54,9 @@ namespace OpenRA.Graphics
 			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
 			LineRenderer = new LineRenderer(this);
 
-			RegularFont = new SpriteFont(this, "FreeSans.ttf", 14);
-			BoldFont = new SpriteFont(this, "FreeSansBold.ttf", 14);
-			TitleFont = new SpriteFont(this, "titles.ttf", 48);
+			RegularFont = new SpriteFont("FreeSans.ttf", 14);
+			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
+			TitleFont = new SpriteFont("titles.ttf", 48);
 		}
 
 		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )

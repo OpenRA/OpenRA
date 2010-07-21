@@ -25,7 +25,6 @@ namespace OpenRA.Traits
 
 	class BibLayer: IRenderOverlay, ILoadWorldHook
 	{		
-		SpriteRenderer spriteRenderer;
 		World world;
 		BibLayerInfo info;
 		
@@ -34,7 +33,6 @@ namespace OpenRA.Traits
 		
 		public BibLayer(Actor self, BibLayerInfo info)
 		{
-			spriteRenderer = Game.Renderer.SpriteRenderer;
 			this.info = info;
 			bibSprites = info.BibTypes.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 			
@@ -90,7 +88,7 @@ namespace OpenRA.Traits
 					var t = new int2(x, y);
 					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
 
-					spriteRenderer.DrawSprite(bibSprites[tiles[x, y].type - 1][tiles[x, y].image],
+					Game.Renderer.SpriteRenderer.DrawSprite(bibSprites[tiles[x, y].type - 1][tiles[x, y].image],
 						Game.CellSize * t, "terrain");
 				}
 		}

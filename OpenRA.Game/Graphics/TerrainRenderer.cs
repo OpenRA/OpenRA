@@ -23,13 +23,11 @@ namespace OpenRA.Graphics
 		Sheet terrainSheet;
 
 		World world;
-		Renderer renderer;
 		Map map;
 
-		public TerrainRenderer(World world, Renderer renderer, WorldRenderer wr)
+		public TerrainRenderer(World world, WorldRenderer wr)
 		{
 			this.world = world;
-			this.renderer = renderer;
 			this.map = world.Map;
 
 			Size tileSize = new Size( Game.CellSize, Game.CellSize );
@@ -58,10 +56,10 @@ namespace OpenRA.Graphics
 						throw new InvalidOperationException("Terrain sprites span multiple sheets");
 				}
 
-			vertexBuffer = renderer.Device.CreateVertexBuffer( vertices.Length );
+			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer( vertices.Length );
 			vertexBuffer.SetData( vertices );
 
-			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
+			indexBuffer = Game.Renderer.Device.CreateIndexBuffer( indices.Length );
 			indexBuffer.SetData( indices );
 		}
 
@@ -93,12 +91,12 @@ namespace OpenRA.Graphics
 
 			if( lastRow < firstRow ) lastRow = firstRow;
 
-			renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
-			renderer.SpriteShader.Render(() =>
-				renderer.DrawBatch(vertexBuffer, indexBuffer,
+			Game.Renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
+			Game.Renderer.SpriteShader.Render(() =>
+				Game.Renderer.DrawBatch(vertexBuffer, indexBuffer,
 					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
-					PrimitiveType.TriangleList, renderer.SpriteShader));
+					PrimitiveType.TriangleList, Game.Renderer.SpriteShader));
 
 			foreach (var r in world.WorldActor.traits.WithInterface<IRenderOverlay>())
 				r.Render();

@@ -35,10 +35,6 @@ namespace OpenRA.Widgets
 				&& resources.PowerDrained == 0)
 				return;
 
-			var renderer = Game.Renderer;
-			var lineRenderer = Game.Renderer.LineRenderer;
-			var rgbaRenderer = renderer.RgbaSpriteRenderer;
-
 			// Draw bar horizontally
 			var barStart = powerOrigin + RadarBinWidget.radarOrigin;
 			var barEnd = barStart + new float2(powerSize.Width, 0);
@@ -70,18 +66,18 @@ namespace OpenRA.Widgets
 					leftOffset.X += 1;
 					rightOffset.X -= 1;
 				}
-				lineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
+				Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
 			}
-			lineRenderer.Flush();
+			Game.Renderer.LineRenderer.Flush();
 
 			// Power usage indicator
-			var indicator = ChromeProvider.GetImage(renderer, powerCollection, "power-indicator");
+			var indicator = ChromeProvider.GetImage( powerCollection, "power-indicator");
 			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (resources.PowerDrained / powerScaleBy);
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
-			rgbaRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
-			rgbaRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }

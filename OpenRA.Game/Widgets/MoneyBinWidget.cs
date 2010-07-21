@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-				ChromeProvider.GetImage(Game.Renderer, chromeCollection, "moneybin"),
+				ChromeProvider.GetImage(chromeCollection, "moneybin"),
 				new float2(Bounds.Left, 0), "chrome");
 
 			// Cash
@@ -51,7 +51,7 @@ namespace OpenRA.Widgets
 			foreach (var d in cashDigits.Reverse())
 			{
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-					ChromeProvider.GetImage(Game.Renderer, digitCollection, (d - '0').ToString()),
+					ChromeProvider.GetImage(digitCollection, (d - '0').ToString()),
 					new float2(x, 6), "chrome");
 				x -= 14;
 			}
@@ -65,7 +65,7 @@ namespace OpenRA.Widgets
 				foreach (var d in oreDigits.Reverse())
 				{
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-						ChromeProvider.GetImage(Game.Renderer, digitCollection, (d - '0').ToString()),
+						ChromeProvider.GetImage( digitCollection, (d - '0').ToString()),
 						new float2(x, 6), "chrome");
 					x -= 14;
 				}
