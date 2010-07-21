@@ -25,7 +25,7 @@ namespace OpenRA.Network
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
 					if (client != null)
 					{
-						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
+						var player = world.players.Values.FirstOrDefault(p => p.Index == client.Index);
 						if (player != null && player.WinState == WinState.Lost)
 							Game.AddChatLine(client.Color1, client.Name + " (Dead)", order.TargetString);
 						else
@@ -38,9 +38,9 @@ namespace OpenRA.Network
 					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
 					if (client != null)
 					{
-						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
+						var player = world.players.Values.FirstOrDefault(p => p.Index == client.Index);
 						var display = (world.GameHasStarted) ? 
-							player != null && (Game.world.LocalPlayer != null && player.Stances[Game.world.LocalPlayer] == Stance.Ally 
+							player != null && (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
 								|| player.WinState == WinState.Lost) :
 							client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
 						

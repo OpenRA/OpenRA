@@ -251,8 +251,8 @@ namespace OpenRA.Traits
 				return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 
-			if (self.GetCurrentActivity() is Move)
-				return;		/* we're *already* moving; nudging isn't going to help */
+			if (!self.IsIdle)
+				return;		/* don't nudge if we're busy doing something! */
 
 			// pick an adjacent available cell.
 			var availCells = new List<int2>();
