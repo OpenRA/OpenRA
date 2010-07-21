@@ -17,20 +17,21 @@ namespace OpenRA.Mods.RA
 
 	class ConquestVictoryConditions : ITick, IVictoryConditions, IResolveOrder
 	{
-		public bool HasLost { get; private set; }
-		public bool HasWon { get; private set; }
-
 		public void Tick(Actor self)
 		{
+			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
+			
 			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<MustBeDestroyed>().Any();
 
-			var hasLost = !hasAnything && !self.Owner.NonCombatant;
-
-			if (hasLost && !HasLost)
+			if (!hasAnything && !self.Owner.NonCombatant)
 				Surrender(self);
-
-			HasLost = hasLost;
+			
+			var others = self.World.players.Where( p => !p.Value.NonCombatant && p.Value != self.Owner && p.Value.Stances[self.Owner] != Stance.Ally );
+			if (others.Count() == 0) return;	
+			
+			if(others.All(p => p.Value.WinState == WinState.Lost))
+				Win(self);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -41,12 +42,24 @@ namespace OpenRA.Mods.RA
 
 		void Surrender(Actor self)
 		{
+			if (self.Owner.WinState == WinState.Lost) return;
+			self.Owner.WinState = WinState.Lost;
+			
 			Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
 			foreach (var a in self.World.Queries.OwnedBy[self.Owner])
 				a.InflictDamage(a, a.Health, null);
 
 			self.Owner.Shroud.Disabled = true;
-			HasLost = true;
+
+		}
+		
+		void Win(Actor self)	
+		{
+			if (self.Owner.WinState == WinState.Won) return;
+			self.Owner.WinState = WinState.Won;
+			
+			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
+			self.Owner.Shroud.Disabled = true;
 		}
 	}
 

@@ -16,7 +16,7 @@ namespace OpenRA.Widgets
 {
 	class ChatDisplayWidget : Widget
 	{
-		const int logLength = 10;
+		const int logLength = 9;
 		public string Notification = "";
 		public bool DrawBackground = true;
 

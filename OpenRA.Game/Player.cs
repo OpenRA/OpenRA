@@ -17,12 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum PowerState { Normal, Low, Critical };
-
+	public enum WinState { Won, Lost, Undefined }; 
+	
 	public class Player
 	{
 		public Actor PlayerActor;
 		public int Kills;
 		public int Deaths;
+		public WinState WinState = WinState.Undefined;
 
 		public readonly string Palette;
 		public readonly Color Color;

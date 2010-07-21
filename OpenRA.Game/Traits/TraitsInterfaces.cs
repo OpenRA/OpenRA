@@ -154,6 +154,6 @@ namespace OpenRA.Traits
 	public interface IRenderOverlay { void Render(); }
 	public interface INotifyIdle { void Idle(Actor self); }
 
-	public interface IVictoryConditions { bool HasLost { get; } bool HasWon { get; } }
+	public interface IVictoryConditions { }
 	public interface IBlocksBullets { }
 }
