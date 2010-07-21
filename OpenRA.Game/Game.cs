@@ -231,11 +231,10 @@ namespace OpenRA
 			return sb.ToString();
 		}
 
-		#pragma warning disable 0472, 0162
 		internal static void DumpSyncReport(int frame)
 		{
 			var f = syncReports.FirstOrDefault(a => a.First == frame);
-			if (f == null)
+			if (f == default(Pair<int, string>))
 			{
 				Log.Write("sync", "No sync report available!");
 				return;
