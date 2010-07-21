@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			int margin = 5;
-			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var cursor = (showCursor && Focused) ? "|" : "";
 			var textSize = font.Measure(Text + "|");
 			var pos = RenderOrigin;
@@ -125,15 +125,15 @@ namespace OpenRA.Widgets
 				if (Focused)
 					textPos += new int2(Bounds.Width - 2 * margin - textSize.X, 0);
 
-				Game.chrome.renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
+				Game.Renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
 			}
 
 			font.DrawText(Text + cursor, textPos, Color.White);
 
 			if (textSize.X > Bounds.Width - 2 * margin)
 			{
-				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
-				Game.chrome.renderer.Device.DisableScissor();
+				Game.Renderer.RgbaSpriteRenderer.Flush();
+				Game.Renderer.Device.DisableScissor();
 			}
 		}
 

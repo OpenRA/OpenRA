@@ -37,7 +37,7 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
-			Game.chrome.lineRenderer.Flush();
+			Game.Renderer.LineRenderer.Flush();
 		}
 	}
 }

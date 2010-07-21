@@ -105,7 +105,7 @@ namespace OpenRA.Widgets
 
 			hasRadar = hasNewRadar;
 
-			var renderer = Game.chrome.renderer;
+			var renderer = Game.Renderer;
 			var rgbaRenderer = renderer.RgbaSpriteRenderer;
 
 			rgbaRenderer.DrawSprite(ChromeProvider.GetImage(renderer, radarCollection, "left"), radarOrigin, "chrome");

@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
-			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var pos = RenderOrigin;
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location,
@@ -35,9 +35,9 @@ namespace OpenRA.Widgets
 
 			if (Checked())
 			{				
-				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+				Game.Renderer.RgbaSpriteRenderer.Flush();
 				WidgetUtils.FillRectWithColor(check.InflateBy(-4,-5,-4,-5),Color.White);
-				Game.chrome.lineRenderer.Flush();
+				Game.Renderer.LineRenderer.Flush();
 			}
 		}
 

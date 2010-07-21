@@ -81,7 +81,7 @@ namespace OpenRA.Graphics
 				mod.AdjustPalette(b);
 
 			Texture.SetData(b);
-			Game.renderer.PaletteTexture = Texture;
+			Game.Renderer.PaletteTexture = Texture;
 		}
 	}
 }

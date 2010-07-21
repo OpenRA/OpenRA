@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 
 		public ResourceLayer()
 		{
-			sr = Game.renderer.SpriteRenderer;
+			sr = Game.Renderer.SpriteRenderer;
 		}
 		
 		public void Render()

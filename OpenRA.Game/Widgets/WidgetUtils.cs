@@ -19,17 +19,17 @@ namespace OpenRA.Widgets
 	{
 		public static Sprite GetChromeImage(World world, string name)
 		{
-			return ChromeProvider.GetImage(Game.chrome.renderer, "chrome-" + world.LocalPlayer.Country.Race, name);
+			return ChromeProvider.GetImage(Game.Renderer, "chrome-" + world.LocalPlayer.Country.Race, name);
 		}
 		
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
-			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(s,pos,"chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
 		
 		public static void DrawSHP(Sprite s, float2 pos)
 		{
-			Game.chrome.renderer.WorldSpriteRenderer.DrawSprite(s,pos,"chrome");
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos,"chrome");
 		}
 
 		public static void DrawPanel(string collection, Rectangle Bounds)
@@ -55,7 +55,7 @@ namespace OpenRA.Widgets
 		
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
-			Game.chrome.lineRenderer.FillRect(new RectangleF(
+			Game.Renderer.LineRenderer.FillRect(new RectangleF(
 						Game.viewport.Location.X + r.X,
 						Game.viewport.Location.Y + r.Y,
 						r.Width, r.Height), c);
@@ -64,7 +64,7 @@ namespace OpenRA.Widgets
 		public static int[] GetBorderSizes(string collection)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
-			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, "dialog4", i)).ToArray();
+			var ss = images.Select(i => ChromeProvider.GetImage(Game.Renderer, "dialog4", i)).ToArray();
 			return new[] { (int)ss[0].size.Y, (int)ss[1].size.Y, (int)ss[2].size.X, (int)ss[3].size.X };
 		}
 
@@ -78,7 +78,7 @@ namespace OpenRA.Widgets
 		public static void DrawPanelPartial(string collection, Rectangle Bounds, PanelSides ps)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
-			var ss = images.Select(i => ChromeProvider.GetImage(Game.chrome.renderer, collection, i)).ToArray();
+			var ss = images.Select(i => ChromeProvider.GetImage(Game.Renderer, collection, i)).ToArray();
 
 			// Background
 			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
@@ -128,7 +128,7 @@ namespace OpenRA.Widgets
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
 				DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
 
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 

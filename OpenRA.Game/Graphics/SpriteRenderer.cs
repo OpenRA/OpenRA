@@ -12,7 +12,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	class SpriteRenderer
+	public class SpriteRenderer
 	{
 		IVertexBuffer<Vertex> vertexBuffer;
 		IIndexBuffer indexBuffer;

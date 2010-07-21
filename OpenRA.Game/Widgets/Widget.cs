@@ -48,7 +48,21 @@ namespace OpenRA.Widgets
 
 		public Widget() { IsVisible = () => Visible; }
 		
-		public static Widget RootWidget = null;
+		public static Widget RootWidget {
+			get 
+			{ 
+				if (rootWidget == null)
+				{
+					var widgetYaml = Game.Manifest.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
+					
+					rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
+					rootWidget.Initialize();
+					rootWidget.InitDelegates();
+				}
+				return rootWidget;
+			}
+		}
+		private static Widget rootWidget = null;
 		
 		public Widget(Widget widget)
 		{	
@@ -189,20 +203,20 @@ namespace OpenRA.Widgets
 		
 		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough; }
 		
-		public static int ticksSinceLastMove = 0;
-		public static int2 lastMousePos;
+		public static int TicksSinceLastMove = 0;
+		public static int2 LastMousePos;
 		public bool HandleInput(World world, MouseInput mi)
 		{
 			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
 				return true;
 			
-			if (Widget.RootWidget.HandleMouseInputOuter(mi))
+			if (RootWidget.HandleMouseInputOuter(mi))
 				return true;
 
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				lastMousePos = mi.Location;
-				ticksSinceLastMove = 0;
+				LastMousePos = mi.Location;
+				TicksSinceLastMove = 0;
 			}
 			return false;
 		}
@@ -308,19 +322,33 @@ namespace OpenRA.Widgets
 		
 		public void CloseWindow()
 		{
-			Widget.RootWidget.GetWidget(WindowList.Pop()).Visible = false;
+			RootWidget.GetWidget(WindowList.Pop()).Visible = false;
 			if (WindowList.Count > 0)
-				Widget.RootWidget.GetWidget(WindowList.Peek()).Visible = true;
+				RootWidget.GetWidget(WindowList.Peek()).Visible = true;
 		}
 
 		public Widget OpenWindow(string id)
 		{
 			if (WindowList.Count > 0)
-				Widget.RootWidget.GetWidget(WindowList.Peek()).Visible = false;
+				RootWidget.GetWidget(WindowList.Peek()).Visible = false;
 			WindowList.Push(id);
-			var window = Widget.RootWidget.GetWidget(id);
+			var window = RootWidget.GetWidget(id);
 			window.Visible = true;
 			return window;
+		}
+		
+		public static void DoTick(World world)
+		{
+			RootWidget.Tick(world);
+			
+			if (!world.GameHasStarted) return;
+			if (world.LocalPlayer == null) return;
+			++TicksSinceLastMove;
+		}
+		
+		public static void DoDraw(World world)
+		{
+			RootWidget.Draw(world);
 		}
 	}
 

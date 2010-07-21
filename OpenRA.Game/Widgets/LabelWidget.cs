@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 			if (bg != null)
 				WidgetUtils.DrawPanel(bg, RenderBounds );
 						
-			var font = (Bold) ? Game.chrome.renderer.BoldFont : Game.chrome.renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var text = GetText();
 			if (text == null)
 				return;

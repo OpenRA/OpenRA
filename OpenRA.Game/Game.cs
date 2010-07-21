@@ -38,7 +38,6 @@ namespace OpenRA
 		public static World world;
 		internal static Viewport viewport;
 		public static Controller controller;
-		internal static Chrome chrome;
 		internal static UserSettings Settings;
 
 		internal static OrderManager orderManager;
@@ -47,7 +46,7 @@ namespace OpenRA
 
 		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
-		internal static Renderer renderer;
+		public static Renderer Renderer;
 		static int2 clientSize;
 		static string mapName;
 		public static Session LobbyInfo = new Session();
@@ -60,13 +59,13 @@ namespace OpenRA
 		static internal bool scrollLeft = false;
 		static internal bool scrollRight = false;
 
-		static void LoadModPackages(Manifest manifest)
+		static void LoadModPackages()
 		{
 			FileSystem.UnmountAll();
 			Timer.Time("reset: {0}");
 
-			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			foreach (var dir in Manifest.Folders) FileSystem.Mount(dir);
+			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
 
 			Timer.Time("mount temporary packages: {0}");
 		}
@@ -116,20 +115,22 @@ namespace OpenRA
 		static void ChangeMods()
 		{
 			Timer.Time("----ChangeMods");
-			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
-			LoadModAssemblies(manifest);
-			SheetBuilder.Initialize(renderer);
-			LoadModPackages(manifest);
+			LoadModAssemblies(Manifest);
+			SheetBuilder.Initialize(Renderer);
+			LoadModPackages();
 			Timer.Time("load assemblies, packages: {0}");
 			packageChangePending = false;
 		}
-
+		
+		public static Manifest Manifest;
+		
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
-			SheetBuilder.Initialize(renderer);
-			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			SheetBuilder.Initialize(Renderer);
+			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
 
 			if (!Game.AvailableMaps.ContainsKey(mapName))
@@ -137,18 +138,15 @@ namespace OpenRA
 
 			var map = new Map(Game.AvailableMaps[mapName].Package);
 
-			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, renderer);
+			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
-			ChromeProvider.Initialize(manifest.Chrome);
+			ChromeProvider.Initialize(Manifest.Chrome);
 			Timer.Time("viewport, ChromeProvider: {0}");
-			world = new World(manifest, map);
+			world = new World(Manifest, map);
 			Timer.Time("world: {0}");
 
-			SequenceProvider.Initialize(manifest.Sequences);
+			SequenceProvider.Initialize(Manifest.Sequences);
 			Timer.Time("ChromeProv, SeqProv: {0}");
-
-			chrome = new Chrome(renderer, manifest);
-			Timer.Time("chrome: {0}");
 
 			Timer.Time("----end LoadMap");
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
@@ -281,7 +279,7 @@ namespace OpenRA
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Timestep;
-					chrome.Tick(world);
+					Widget.DoTick(world);
 
 					orderManager.TickImmediate(world);
 
@@ -566,15 +564,16 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log", true, true);
 
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
+			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 
 			// Load the default mod to access required files
-			LoadModPackages(new Manifest(LobbyInfo.GlobalSettings.Mods));
+			LoadModPackages();
 
 			Renderer.SheetSize = Settings.SheetSize;
 
 			var resolution = GetResolution(settings, Game.Settings.WindowMode);
-			renderer = new Renderer(resolution, Game.Settings.WindowMode);
-			resolution = renderer.Resolution;
+			Renderer = new Renderer(resolution, Game.Settings.WindowMode);
+			resolution = Renderer.Resolution;
 
 			controller = new Controller();
 			clientSize = new int2(resolution);
@@ -593,7 +592,7 @@ namespace OpenRA
 			else
 				JoinLocal();
 
-			LoadShellMap(new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid);
+			LoadShellMap(Manifest.ShellmapUid);
 
 			ResetTimer();
 
@@ -620,7 +619,7 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			var shellmap = new Manifest(LobbyInfo.GlobalSettings.Mods).ShellmapUid;
+			var shellmap = Manifest.ShellmapUid;
 			LobbyInfo = new Session();
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			JoinLocal();
@@ -673,14 +672,14 @@ namespace OpenRA
 		public static void InitializeEngineWithMods(string[] mods)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			var manifest = new Manifest(mods);
-			LoadModAssemblies(manifest);
+			Manifest = new Manifest(mods);
+			LoadModAssemblies(Manifest);
 
 			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			foreach (var folder in Manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
 
-			Rules.LoadRules(manifest, new Map());
+			Rules.LoadRules(Manifest, new Map());
 		}
 	}
 }

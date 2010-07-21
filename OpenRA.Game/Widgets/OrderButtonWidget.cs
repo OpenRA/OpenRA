@@ -21,17 +21,17 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner (World world)
 		{
-			var image = ChromeProvider.GetImage(Game.chrome.renderer, Image + "-button", GetImage());
+			var image = ChromeProvider.GetImage(Game.Renderer, Image + "-button", GetImage());
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);
 			
-			if (rect.Contains(Widget.lastMousePos.ToPoint()))
+			if (rect.Contains(Widget.LastMousePos.ToPoint()))
 			{
 					rect = rect.InflateBy(3, 3, 3, 3);
 					var pos = new int2(rect.Left, rect.Top);
 					var m = pos + new int2(rect.Width, rect.Height);
 					var br = pos + new int2(rect.Width, rect.Height + 20);
 
-					var u = Game.chrome.renderer.RegularFont.Measure(GetLongDesc().Replace("\\n", "\n"));
+					var u = Game.Renderer.RegularFont.Measure(GetLongDesc().Replace("\\n", "\n"));
 
 					br.X -= u.X;
 					br.Y += u.Y;
@@ -53,13 +53,13 @@ namespace OpenRA.Widgets
 
 					pos.X = br.X + 8;
 					pos.Y = m.Y + 8;
-					Game.chrome.renderer.BoldFont.DrawText(GetDescription(), pos, Color.White);
+					Game.Renderer.BoldFont.DrawText(GetDescription(), pos, Color.White);
 
 					pos += new int2(0, 20);
-					Game.chrome.renderer.RegularFont.DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
+					Game.Renderer.RegularFont.DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
 			}
 			
-			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y), "chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y), "chrome");
 		}
 	}
 }

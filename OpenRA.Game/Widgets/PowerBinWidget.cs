@@ -35,8 +35,8 @@ namespace OpenRA.Widgets
 				&& resources.PowerDrained == 0)
 				return;
 
-			var renderer = Game.chrome.renderer;
-			var lineRenderer = Game.chrome.lineRenderer;
+			var renderer = Game.Renderer;
+			var lineRenderer = Game.Renderer.LineRenderer;
 			var rgbaRenderer = renderer.RgbaSpriteRenderer;
 
 			// Draw bar horizontally

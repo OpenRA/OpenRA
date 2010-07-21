@@ -73,9 +73,9 @@ namespace OpenRA.Widgets
 		public override void DrawInner( World world )
 		{
 			if (UnownedSpawn == null)
-				UnownedSpawn = ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "unowned");
+				UnownedSpawn = ChromeProvider.GetImage(Game.Renderer, "spawnpoints", "unowned");
 			if (OwnedSpawn == null)
-				OwnedSpawn = ChromeProvider.GetImage(Game.chrome.renderer, "spawnpoints", "owned");
+				OwnedSpawn = ChromeProvider.GetImage(Game.Renderer, "spawnpoints", "owned");
 			
 			var map = Map();
 			if( map == null ) return;
@@ -87,7 +87,7 @@ namespace OpenRA.Widgets
 				// Update image data
 				var preview = PreviewCache[map];
 				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
-					mapChooserSheet = new Sheet( Game.renderer, new Size( preview.Width, preview.Height ) );
+					mapChooserSheet = new Sheet( Game.Renderer, new Size( preview.Width, preview.Height ) );
 
 				mapChooserSheet.Texture.SetData( preview );
 				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Width, map.Height ), TextureChannel.Alpha );
@@ -100,7 +100,7 @@ namespace OpenRA.Widgets
 				MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Width * PreviewScale), (int)(map.Height * PreviewScale));
 			}
 
-			Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
 				new float2(MapRect.Location),
 				"chrome",
 				new float2( MapRect.Size ) );
@@ -119,11 +119,10 @@ namespace OpenRA.Widgets
 					offset = new int2(-OwnedSpawn.bounds.Width/2, -OwnedSpawn.bounds.Height/2);
 					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
 				}
-				Game.chrome.renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset, "chrome");
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset, "chrome");
 			}
 
-			Game.chrome.lineRenderer.Flush();
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.Flush();
 		}
 	}
 }

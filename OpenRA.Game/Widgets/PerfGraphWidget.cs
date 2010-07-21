@@ -24,15 +24,15 @@ namespace OpenRA.Widgets
 			float2 origin = Game.viewport.Location + new float2(rect.Right, rect.Bottom);
 			float2 basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
-			Game.chrome.lineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
-			Game.chrome.lineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
 
 			foreach (var item in PerfHistory.items.Values)
 			{
 				int n = 0;
 				item.Samples().Aggregate((a, b) =>
 				{
-					Game.chrome.lineRenderer.DrawLine(
+					Game.Renderer.LineRenderer.DrawLine(
 						origin + new float2(n, (float)a) * basis,
 						origin + new float2(n + 1, (float)b) * basis,
 						item.c, item.c);
@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 				});
 			}
 
-			Game.chrome.lineRenderer.Flush();
+			Game.Renderer.LineRenderer.Flush();
 		}
 	}
 }

@@ -18,7 +18,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
-	internal class Renderer
+	public class Renderer
 	{
 		internal static int SheetSize;
 
@@ -32,6 +32,7 @@ namespace OpenRA.Graphics
 		public SpriteRenderer SpriteRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
+		public LineRenderer LineRenderer { get; private set; }
 
 		public ITexture PaletteTexture;
 
@@ -51,6 +52,7 @@ namespace OpenRA.Graphics
 			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
 			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
 			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
+			LineRenderer = new LineRenderer(this);
 
 			RegularFont = new SpriteFont(this, "FreeSans.ttf", 14);
 			BoldFont = new SpriteFont(this, "FreeSansBold.ttf", 14);
@@ -117,6 +119,13 @@ namespace OpenRA.Graphics
 			device.DrawIndexedPrimitives(type, vertexPool, numPrimitives);
 
 			PerfHistory.Increment("batches", 1);
+		}
+		
+		public void Flush()
+		{
+			WorldSpriteRenderer.Flush();
+			RgbaSpriteRenderer.Flush();
+			LineRenderer.Flush();
 		}
 	}
 }

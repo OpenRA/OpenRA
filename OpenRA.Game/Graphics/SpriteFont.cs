@@ -17,7 +17,7 @@ using Tao.FreeType;
 
 namespace OpenRA.Graphics
 {
-	class SpriteFont
+	public class SpriteFont
 	{
 		Renderer renderer;
 		int size;

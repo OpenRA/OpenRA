@@ -29,12 +29,12 @@ namespace OpenRA.Widgets
 			if (composing)
 			{
 				var text = teamChat ? "Chat (Team): " : "Chat (All): ";
-				var w = Game.chrome.renderer.BoldFont.Measure(text).X;
+				var w = Game.Renderer.BoldFont.Measure(text).X;
 
-				Game.chrome.renderer.BoldFont.DrawText(text, RenderOrigin + new float2(3, 7), Color.White);
-				Game.chrome.renderer.RegularFont.DrawText(content, RenderOrigin + new float2(3 + w, 7), Color.White);
+				Game.Renderer.BoldFont.DrawText(text, RenderOrigin + new float2(3, 7), Color.White);
+				Game.Renderer.RegularFont.DrawText(content, RenderOrigin + new float2(3 + w, 7), Color.White);
 
-				Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+				Game.Renderer.RgbaSpriteRenderer.Flush();
 			}
 		}
 		

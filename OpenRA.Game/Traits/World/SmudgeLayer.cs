@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 
 		public SmudgeLayer(SmudgeLayerInfo info)
 		{
-			spriteRenderer = Game.renderer.SpriteRenderer;
+			spriteRenderer = Game.Renderer.SpriteRenderer;
 			this.Info = info;
 			smudgeSprites = Info.Types.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 		}

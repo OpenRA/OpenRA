@@ -201,15 +201,15 @@ namespace OpenRA.Widgets
 			var numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
 
 			// Palette Background
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
 			for (var w = 0; w < numActualRows; w++)
 				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection,
+					ChromeProvider.GetImage(Game.Renderer, paletteCollection,
 					"bg-" + (w % 4).ToString()),
 					new float2(origin.X - 9, origin.Y + 48 * w));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "bottom"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "bottom"),
 				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 
 			// Icons
@@ -223,7 +223,7 @@ namespace OpenRA.Widgets
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
-				if (rect.Contains(Widget.lastMousePos.ToPoint()))
+				if (rect.Contains(Widget.LastMousePos.ToPoint()))
 					tooltipItem = item.Name;
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
@@ -275,7 +275,7 @@ namespace OpenRA.Widgets
 			foreach (var ob in overlayBits)
 				WidgetUtils.DrawSHP(ob.First, ob.Second);
 
-			Game.chrome.renderer.WorldSpriteRenderer.Flush();
+			Game.Renderer.WorldSpriteRenderer.Flush();
 
 			// Tooltip
 			if (tooltipItem != null && !paletteAnimating && paletteOpen)
@@ -283,16 +283,16 @@ namespace OpenRA.Widgets
 					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 
 			// Palette Dock
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-top"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-top"),
 				new float2(Game.viewport.Width - 14, origin.Y - 23));
 
 			for (int i = 0; i < numActualRows; i++)
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-" + (i % 4).ToString()),
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-" + (i % 4).ToString()),
 					new float2(Game.viewport.Width - 14, origin.Y + 48 * i));
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer, paletteCollection, "dock-bottom"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer, paletteCollection, "dock-bottom"),
 				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows));
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 			return 48 * y + 9;
 		}
@@ -416,33 +416,33 @@ namespace OpenRA.Widgets
 				var producing = queue.CurrentItem(groupName);
 				var index = q.Key == currentTab ? 2 : (producing != null && producing.Done) ? 1 : 0;
 				var race = world.LocalPlayer.Country.Race;
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.chrome.renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(Game.Renderer,"tabs-"+tabKeys[index], race+"-"+q.Key), new float2(x, y));
 				
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(groupName, world)));
 
-				if (rect.Contains(Widget.lastMousePos.ToPoint()))
+				if (rect.Contains(Widget.LastMousePos.ToPoint()))
 				{
 					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
-					var sz = Game.chrome.renderer.BoldFont.Measure(text);
+					var sz = Game.Renderer.BoldFont.Measure(text);
 					WidgetUtils.DrawPanelPartial("dialog4",
 						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
 						PanelSides.All);
 
-					Game.chrome.renderer.BoldFont.DrawText(text, 
+					Game.Renderer.BoldFont.DrawText(text, 
 						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
 				}
 
 				y += tabHeight;
 			}
 			
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
-			Game.chrome.renderer.BoldFont.DrawText(text, 
-				pos - new int2(Game.chrome.renderer.BoldFont.Measure(text).X, 0), c);
+			Game.Renderer.BoldFont.DrawText(text, 
+				pos - new int2(Game.Renderer.BoldFont.Measure(text).X, 0), c);
 		}
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
@@ -458,12 +458,12 @@ namespace OpenRA.Widgets
 			var buildings = Rules.TechTree.GatherBuildings( pl );
 			var canBuildThis = Rules.TechTree.CanBuild(info, pl, buildings);
 
-			var longDescSize = Game.chrome.renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
+			var longDescSize = Game.Renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
 			
-			Game.chrome.renderer.BoldFont.DrawText(
+			Game.Renderer.BoldFont.DrawText(
 				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
 
@@ -487,7 +487,7 @@ namespace OpenRA.Widgets
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
-				Game.chrome.renderer.RegularFont.DrawText(
+				Game.Renderer.RegularFont.DrawText(
 					"Requires {0}".F(string.Join(", ", prereqs.ToArray())), 
 					p.ToInt2(),
 					Color.White);
@@ -496,10 +496,10 @@ namespace OpenRA.Widgets
 			}
 
 			p += new int2(0, 15);
-			Game.chrome.renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), 
+			Game.Renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), 
 				p.ToInt2(), Color.White);
 
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
         bool DoBuildingHotkey(char c, World world)

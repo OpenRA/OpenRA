@@ -67,7 +67,7 @@ namespace OpenRA.Graphics
 			world.WorldRenderer.Draw();
 			Timer.Time( "worldRenderer: {0}" );
 
-			Game.chrome.Draw(world);
+			Widget.DoDraw(world);
 			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );

@@ -13,7 +13,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	class LineRenderer
+	public class LineRenderer
 	{
 		Renderer renderer;
 		IVertexBuffer<Vertex> vertexBuffer;

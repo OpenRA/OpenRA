@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chrome.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />

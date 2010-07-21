@@ -77,7 +77,7 @@ namespace OpenRA.Widgets
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
-			Game.chrome.renderer.RgbaSpriteRenderer.Flush();
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 			
 			// Hack Hack Hack
 			rectBounds.Width = 69;
@@ -92,7 +92,7 @@ namespace OpenRA.Widgets
 					var drawPos = new float2(rectBounds.X + 5, y);
 					var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
 
-					if (rect.Contains(Widget.lastMousePos.ToPoint()))
+					if (rect.Contains(Widget.LastMousePos.ToPoint()))
 					{
 						var pos = drawPos.ToInt2();					
 						var tl = new int2(pos.X-3,pos.Y-3);
@@ -100,7 +100,7 @@ namespace OpenRA.Widgets
 						var br = tl + new int2(64+3+20,60);
 						
 						if (sp.Info.LongDesc != null)
-							br += Game.chrome.renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
+							br += Game.Renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
 						else
 							br += new int2(300,0);
 
@@ -114,16 +114,16 @@ namespace OpenRA.Widgets
 							PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
 						
 						pos += new int2(77, 5);
-						Game.chrome.renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
+						Game.Renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
 						
 						pos += new int2(0,20);
-						Game.chrome.renderer.BoldFont.DrawText(WorldUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.chrome.renderer.BoldFont.DrawText("/ {0}".F(WorldUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						Game.Renderer.BoldFont.DrawText(WorldUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.Renderer.BoldFont.DrawText("/ {0}".F(WorldUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
 						
 						if (sp.Info.LongDesc != null)
 						{
 							pos += new int2(0, 20);
-							Game.chrome.renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+							Game.Renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 						}
 					}
 
@@ -147,7 +147,7 @@ namespace OpenRA.Widgets
 					y += 51;
 				}
 			}
-			Game.chrome.renderer.WorldSpriteRenderer.Flush();
+			Game.Renderer.WorldSpriteRenderer.Flush();
 		}
 		
 		Action<MouseInput> HandleSupportPower(SupportPower sp)

@@ -61,7 +61,7 @@ namespace OpenRA.Widgets
 				cachedFrame = frame;
 			}
 			
-			Game.chrome.renderer.WorldSpriteRenderer.DrawSprite(sprite,RenderOrigin, palette);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite,RenderOrigin, palette);
 		}
 	}
 }

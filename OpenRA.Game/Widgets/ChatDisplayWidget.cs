@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 			if (DrawBackground)
 				WidgetUtils.DrawPanel("dialog3", chatLogArea);
 
-			var renderer = Game.chrome.renderer;
+			var renderer = Game.Renderer;
 			var font = renderer.RegularFont;
 			
 			renderer.RgbaSpriteRenderer.Flush();

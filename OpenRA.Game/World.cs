@@ -71,7 +71,7 @@ namespace OpenRA
 			TileSet.LoadTiles();
 			Timer.Time( "Tileset: {0}" );
 
-			WorldRenderer = new WorldRenderer(this, Game.renderer);
+			WorldRenderer = new WorldRenderer(this, Game.Renderer);
 			Timer.Time("renderer: {0}");
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
@@ -105,7 +105,7 @@ namespace OpenRA
 			PathFinder = new PathFinder(this);
 			Timer.Time( "hooks, pathing: {0}" );
 
-			Minimap = new Minimap(this, Game.renderer);
+			Minimap = new Minimap(this, Game.Renderer);
 			Timer.Time( "minimap: {0}" );
 
 			Timer.Time( "----end World.ctor" );
