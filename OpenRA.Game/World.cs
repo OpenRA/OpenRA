@@ -62,7 +62,6 @@ namespace OpenRA
 			Timer.Time( "----World.ctor" );
 			Map = map;
 			
-
 			Rules.LoadRules(manifest,Map);
 			Timer.Time( "load rules: {0}" );
 
@@ -71,7 +70,7 @@ namespace OpenRA
 			TileSet.LoadTiles();
 			Timer.Time( "Tileset: {0}" );
 
-			WorldRenderer = new WorldRenderer(this, Game.Renderer);
+			WorldRenderer = new WorldRenderer(this);
 			Timer.Time("renderer: {0}");
 			
 			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);

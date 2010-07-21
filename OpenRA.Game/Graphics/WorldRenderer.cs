@@ -21,27 +21,21 @@ namespace OpenRA.Graphics
 	{
 		readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
-		internal readonly SpriteRenderer spriteRenderer;
-		internal readonly LineRenderer lineRenderer;
 		internal readonly UiOverlay uiOverlay;
-		internal readonly Renderer renderer;
 		internal readonly HardwarePalette palette;
 
-		internal WorldRenderer(World world, Renderer renderer)
+		internal WorldRenderer(World world)
 		{
 			this.world = world;
-			this.renderer = renderer;
 
-			terrainRenderer = new TerrainRenderer(world, renderer, this);
-			spriteRenderer = renderer.SpriteRenderer;
-			lineRenderer = new LineRenderer(renderer);
-			uiOverlay = new UiOverlay(spriteRenderer);
-			palette = new HardwarePalette(renderer, world.Map);
+			terrainRenderer = new TerrainRenderer(world, Game.Renderer, this);
+			uiOverlay = new UiOverlay(Game.Renderer.SpriteRenderer);
+			palette = new HardwarePalette(Game.Renderer, world.Map);
 		}
 		
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
 		{
-			lineRenderer.DrawLine(start,end,startColor,endColor);
+			Game.Renderer.LineRenderer.DrawLine(start,end,startColor,endColor);
 		}
 		
 		public int GetPaletteIndex(string name)
@@ -67,7 +61,7 @@ namespace OpenRA.Graphics
 		void DrawSpriteList(IEnumerable<Renderable> images)
 		{
 			foreach (var image in images)
-				spriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
+				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
 		}
 
 		class SpriteComparer : IComparer<Renderable>
@@ -127,24 +121,24 @@ namespace OpenRA.Graphics
 		public void Draw()
 		{
 			var bounds = GetBoundsRect();
-			renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+			Game.Renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(Game.viewport);
 
 			DrawSpriteList(worldSprites);
 			uiOverlay.Draw(world);
-			spriteRenderer.Flush();
+			Game.Renderer.SpriteRenderer.Flush();
 			DrawBandBox();
 
 			if (Game.controller.orderGenerator != null)
 				Game.controller.orderGenerator.Render(world);
 
 			if (world.LocalPlayer != null)
-				world.LocalPlayer.Shroud.Draw(spriteRenderer);
+				world.LocalPlayer.Shroud.Draw(Game.Renderer.SpriteRenderer);
 
-			spriteRenderer.Flush();
+			Game.Renderer.SpriteRenderer.Flush();
 
-			renderer.Device.DisableScissor();
+			Game.Renderer.Device.DisableScissor();
 
 			if (Game.Settings.IndexDebug)
 			{
@@ -152,7 +146,7 @@ namespace OpenRA.Graphics
 				DrawBins(bounds);
 			}
 
-			lineRenderer.Flush();
+			Game.Renderer.LineRenderer.Flush();
 		}
 
 		void DrawBox(RectangleF r, Color color)
@@ -160,10 +154,10 @@ namespace OpenRA.Graphics
 			var a = new float2(r.Left, r.Top);
 			var b = new float2(r.Right - a.X, 0);
 			var c = new float2(0, r.Bottom - a.Y);
-			lineRenderer.DrawLine(a, a + b, color, color);
-			lineRenderer.DrawLine(a + b, a + b + c, color, color);
-			lineRenderer.DrawLine(a + b + c, a + c, color, color);
-			lineRenderer.DrawLine(a, a + c, color, color);
+			Game.Renderer.LineRenderer.DrawLine(a, a + b, color, color);
+			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, color, color);
+			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, color, color);
+			Game.Renderer.LineRenderer.DrawLine(a, a + c, color, color);
 		}
 
 		void DrawBins(RectangleF bounds)
@@ -175,8 +169,8 @@ namespace OpenRA.Graphics
 			for (var j = 0; j < world.Map.MapSize.Y;
 				j += world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
 			{
-				lineRenderer.DrawLine(new float2(0, j * 24), new float2(world.Map.MapSize.X * 24, j * 24), Color.Black, Color.Black);
-				lineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, world.Map.MapSize.Y * 24), Color.Black, Color.Black);
+				Game.Renderer.LineRenderer.DrawLine(new float2(0, j * 24), new float2(world.Map.MapSize.X * 24, j * 24), Color.Black, Color.Black);
+				Game.Renderer.LineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, world.Map.MapSize.Y * 24), Color.Black, Color.Black);
 			}
 		}
 
@@ -189,10 +183,10 @@ namespace OpenRA.Graphics
 			var b = new float2(selbox.Value.Second.X - a.X, 0);
 			var c = new float2(0, selbox.Value.Second.Y - a.Y);
 
-			lineRenderer.DrawLine(a, a + b, Color.White, Color.White);
-			lineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
-			lineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
-			lineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a, a + b, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
 			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
 				DrawSelectionBox(u, Color.Yellow, false);
@@ -207,15 +201,15 @@ namespace OpenRA.Graphics
 			var xY = new float2(bounds.Left, bounds.Bottom);
 			var XY = new float2(bounds.Right, bounds.Bottom);
 
-			lineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
-			lineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
-			lineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
-			lineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
+			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
 
-			lineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
-			lineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
-			lineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
-			lineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
+			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
 
 			if (drawHealthBar)
 			{
@@ -262,8 +256,8 @@ namespace OpenRA.Graphics
 		void DrawHealthBar(Actor selectedUnit, float2 xy, float2 Xy)
 		{
 			var c = Color.Gray;
-			lineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
-			lineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
 			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Traits.Get<OwnedActorInfo>().HP;
 			var healthColor = (healthAmount < selectedUnit.World.Defaults.ConditionRed) ? Color.Red
@@ -278,12 +272,12 @@ namespace OpenRA.Graphics
 
 			var z = float2.Lerp(xy, Xy, healthAmount);
 
-			lineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			lineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
+			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
-			lineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
-			lineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
-			lineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
 		}
 
 		// depends on the order of pips in TraitsInterfaces.cs!
@@ -298,7 +292,7 @@ namespace OpenRA.Graphics
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			spriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), "chrome");
+			Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), "chrome");
 		}
 
 		void DrawPips(Actor selectedUnit, float2 basePosition)
@@ -318,7 +312,7 @@ namespace OpenRA.Graphics
 					}
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					spriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
+					Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
 					pipxyOffset += new float2(4, 0);
 				}
 				// Increment row
@@ -342,7 +336,7 @@ namespace OpenRA.Graphics
 						
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					spriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, "chrome");
+					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, "chrome");
 					
 					// Increment row
 					tagxyOffset.Y += 8;
@@ -356,16 +350,16 @@ namespace OpenRA.Graphics
 			foreach (var t in dict.Keys)
 			{
 				if (!dict.ContainsKey(t + new int2(-1, 0)))
-					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
+					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(1, 0)))
-					lineRenderer.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
+					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(0, -1)))
-					lineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
+					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(0, 1)))
-					lineRenderer.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
+					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 			}
 		}
@@ -376,7 +370,7 @@ namespace OpenRA.Graphics
 			for (var i = 1; i <= 32; i++)
 			{
 				var pos = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 8);
-				lineRenderer.DrawLine(prev, pos, c, c);
+				Game.Renderer.LineRenderer.DrawLine(prev, pos, c, c);
 				prev = pos;
 			}
 		}
