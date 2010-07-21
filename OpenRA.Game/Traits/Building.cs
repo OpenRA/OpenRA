@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
@@ -47,7 +48,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace
+	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -159,6 +160,16 @@ namespace OpenRA.Traits
 		public IEnumerable<int2> OccupiedCells()
 		{
 			return Footprint.UnpathableTiles( self.Info.Name, Info, TopLeft );
+		}
+		
+		public IEnumerable<int2> RadarSignatureCells(Actor self)
+		{
+			return Footprint.Tiles(self);
+		}
+		
+		public Color RadarSignatureColor(Actor self)
+		{
+			return self.Owner.Color;
 		}
 	}
 }

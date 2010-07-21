@@ -55,6 +55,12 @@ namespace OpenRA.Traits
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface INudge { void OnNudge(Actor self, Actor nudger); }
 
+	public interface IRadarSignature
+	{
+		IEnumerable<int2> RadarSignatureCells(Actor self);
+		Color RadarSignatureColor(Actor self);
+	}
+	
 	public interface IOccupySpace
 	{
 		int2 TopLeft { get; }

@@ -8,6 +8,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
+
 namespace OpenRA.Traits
 {
 	public class UnitInfo : OwnedActorInfo, ITraitInfo
@@ -19,7 +22,7 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new Unit(); }
 	}
 
-	public class Unit : INotifyDamage
+	public class Unit : INotifyDamage, IRadarSignature
 	{
 		[Sync]
 		public int Facing;
@@ -31,6 +34,16 @@ namespace OpenRA.Traits
 			if (e.DamageState == DamageState.Dead)
 				if (self.Owner == self.World.LocalPlayer)
 					Sound.PlayVoice("Lost", self);
+		}
+		
+		public IEnumerable<int2> RadarSignatureCells(Actor self)
+		{
+			yield return self.Location;
+		}
+		
+		public Color RadarSignatureColor(Actor self)
+		{
+			return self.Owner.Color;
 		}
 	}
 }

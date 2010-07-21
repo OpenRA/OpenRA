@@ -126,10 +126,16 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				foreach (var a in world.Queries.WithTrait<Unit>().Where(a => a.Actor.Owner != null && a.Actor.IsVisible()))
-					*(c + ((a.Actor.Location.Y - world.Map.TopLeft.Y)* bitmapData.Stride >> 2) + a.Actor.Location.X - world.Map.TopLeft.X) =
-						a.Actor.Owner.Color.ToArgb();
-
+				foreach (var t in world.Queries.WithTraitMultiple<IRadarSignature>())
+				{
+					var color = t.Trait.RadarSignatureColor(t.Actor);
+					if (color == null)
+						continue;
+					
+					foreach( var cell in t.Trait.RadarSignatureCells(t.Actor))
+						*(c + ((cell.Y - world.Map.TopLeft.Y)* bitmapData.Stride >> 2) + cell.X - world.Map.TopLeft.X) = color.ToArgb();
+				}
+				
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
@@ -146,10 +152,6 @@ namespace OpenRA.Graphics
 							*(c + (y * bitmapData.Stride >> 2) + x) = Util.LerpARGBColor(fogOpacity, *(c + (y * bitmapData.Stride >> 2) + x), shroud);
 							continue;
 						}
-						
-						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(mapX, mapY));
-						if (b != null)
-							*(c + (y * bitmapData.Stride >> 2) + x) = b.Owner.Color.ToArgb();
 					}
 			}
 
