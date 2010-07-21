@@ -239,19 +239,22 @@ namespace OpenRA.Graphics
 			var mobile = selectedUnit.traits.WithInterface<IMove>().FirstOrDefault();
 			if (mobile != null)
 			{
+				var unit = selectedUnit.traits.Get<Unit>();
+				var alt = (unit != null)? new float2(0, -unit.Altitude) : float2.Zero;
 				var path = mobile.GetCurrentPath(selectedUnit);
-				var start = selectedUnit.CenterLocation;
+				var start = selectedUnit.CenterLocation + alt;
 
 				var c = Color.Green;
 
 				foreach (var step in path)
 				{
-					lineRenderer.DrawLine(step + new float2(-1, -1), step + new float2(-1, 1), c, c);
-					lineRenderer.DrawLine(step + new float2(-1, 1), step + new float2(1, 1), c, c);
-					lineRenderer.DrawLine(step + new float2(1, 1), step + new float2(1, -1), c, c);
-					lineRenderer.DrawLine(step + new float2(1, -1), step + new float2(-1, -1), c, c);
-					lineRenderer.DrawLine(start, step, c, c);
-					start = step;
+					var stp = step + alt;
+					DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
+					DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
+					DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);
+					DrawLine(stp + new float2(1, -1), stp + new float2(-1, -1), c, c);
+					DrawLine(start, stp, c, c);
+					start = stp;
 				}
 			}
 		}
