@@ -47,9 +47,7 @@ namespace OpenRA.Widgets
 
 		public Widget() { IsVisible = () => Visible; }
 		
-		public static Widget RootWidget {
-			get { return Chrome.rootWidget; }
-		}
+		public static Widget RootWidget = null;
 		
 		public Widget(Widget widget)
 		{	

@@ -30,26 +30,24 @@ namespace OpenRA
 					
 			var widgetYaml = m.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
 			
-			if (rootWidget == null)
+			if (Widget.RootWidget == null)
 			{
-				rootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
-				rootWidget.Initialize();
-				rootWidget.InitDelegates();
+				Widget.RootWidget = WidgetLoader.LoadWidget( widgetYaml.FirstOrDefault() );
+				Widget.RootWidget.Initialize();
+				Widget.RootWidget.InitDelegates();
 			}
 		}
 
-		public static Widget rootWidget = null;
-
 		public void Tick(World world)
 		{
-			rootWidget.Tick(world);
+			Widget.RootWidget.Tick(world);
 			
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
 			++ticksSinceLastMove;
 		}	
 
-		public void Draw(World world) { rootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
+		public void Draw(World world) { Widget.RootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
 		
 		public int ticksSinceLastMove = 0;
 		public int2 lastMousePos;
@@ -58,7 +56,7 @@ namespace OpenRA
 			if (Widget.SelectedWidget != null && Widget.SelectedWidget.HandleMouseInputOuter(mi))
 				return true;
 			
-			if (rootWidget.HandleMouseInputOuter(mi))
+			if (Widget.RootWidget.HandleMouseInputOuter(mi))
 				return true;
 
 			if (mi.Event == MouseInputEvent.Move)
@@ -74,7 +72,7 @@ namespace OpenRA
 			if (Widget.SelectedWidget != null)
 				return Widget.SelectedWidget.HandleKeyPressOuter(e);
 			
-			if (rootWidget.HandleKeyPressOuter(e))
+			if (Widget.RootWidget.HandleKeyPressOuter(e))
 				return true;
 			return false;
 		}
