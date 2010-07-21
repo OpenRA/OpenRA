@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -225,7 +227,7 @@ namespace OpenRA.Traits
 		
 		public IEnumerable<float2> GetCurrentPath(Actor self)
 		{
-			var move = self.GetCurrentActivity() as Activities.Move;
+			var move = self.GetCurrentActivity() as Move;
 			if (move == null || move.path == null) return new float2[] { };
 			
 			return Enumerable.Reverse(move.path).Select( c => Util.CenterOfCell(c) );
@@ -243,11 +245,38 @@ namespace OpenRA.Traits
 
 		public void OnNudge(Actor self, Actor nudger)
 		{
+			/* initial fairly braindead implementation. */
+
 			if (self.Owner.Stances[nudger.Owner] != Stance.Ally)
 				return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 
+			if (self.GetCurrentActivity() is Move)
+				return;		/* we're *already* moving; nudging isn't going to help */
 
+			// pick an adjacent available cell.
+			var availCells = new List<int2>();
+			var notStupidCells = new List<int2>();
+
+			for( var i = -1; i < 2; i++ )
+				for (var j = -1; j < 2; j++)
+				{
+					var p = self.Location + new int2(i, j);
+					if (CanEnterCell(p))
+						availCells.Add(p);
+					else
+						if (p != nudger.Location && p != self.Location)
+							notStupidCells.Add(p);
+				}
+
+			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
+				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (int2?)null;
+
+			if (moveTo.HasValue)
+			{
+				self.CancelActivity();
+				self.QueueActivity(new Move(moveTo.Value, 0));
+			}
 		}
 	}
 }
