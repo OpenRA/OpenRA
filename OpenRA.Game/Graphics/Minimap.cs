@@ -102,7 +102,7 @@ namespace OpenRA.Graphics
 							var tt = t.GetTerrainType(xy);
 							if (tt != null)
 							{
-								*(c + (xy.Y * bitmapData.Stride >> 2) + xy.X) = world.TileSet.Terrain[tt].Color.ToArgb();
+								*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[tt].Color.ToArgb();
 								break;
 							}
 						}			
