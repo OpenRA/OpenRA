@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
-	public interface INudge { void OnNudge(Actor self); }
+	public interface INudge { void OnNudge(Actor self, Actor nudger); }
 
 	public interface IOccupySpace
 	{

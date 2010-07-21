@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove, IProvideCursor
+	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove, IProvideCursor, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -239,6 +239,15 @@ namespace OpenRA.Traits
 		public virtual void RemoveInfluence()
 		{
 			self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, this );
+		}
+
+		public void OnNudge(Actor self, Actor nudger)
+		{
+			if (self.Owner.Stances[nudger.Owner] != Stance.Ally)
+				return;		/* don't allow ourselves to be pushed around
+							 * by the enemy! */
+
+
 		}
 	}
 }

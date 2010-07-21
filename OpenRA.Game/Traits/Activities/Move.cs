@@ -161,7 +161,7 @@ namespace OpenRA.Traits.Activities
 
 			var nudge = blocker.traits.GetOrDefault<INudge>();
 			if (nudge != null)
-				nudge.OnNudge(blocker);
+				nudge.OnNudge(blocker, self);
 		}
 
 		int2? PopPath( Actor self, Mobile mobile )
