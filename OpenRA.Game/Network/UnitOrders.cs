@@ -39,17 +39,16 @@ namespace OpenRA.Network
 					if (client != null)
 					{
 						var player = Game.world.players.Values.FirstOrDefault(p => p.Index == client.Index);
-						if (player != null)
+						var display = (world.GameHasStarted) ? 
+							player != null && (Game.world.LocalPlayer != null && player.Stances[Game.world.LocalPlayer] == Stance.Ally 
+								|| player.WinState == WinState.Lost) :
+							client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
+						
+						if (display)
 						{
-							var isAlly = (world.GameHasStarted) ? 
-								player != null && Game.world.LocalPlayer != null && player.Stances[Game.world.LocalPlayer] == Stance.Ally :
-								client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
-
-							if (isAlly && player.WinState != WinState.Lost)
-								Game.AddChatLine(client.Color1, client.Name + " (Team)", order.TargetString);
+							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : " (Team)";
+							Game.AddChatLine(client.Color1, client.Name + suffix, order.TargetString);
 						}
-						else if (player != null && player.WinState == WinState.Lost)
-							Game.AddChatLine(client.Color1, client.Name + " (Dead)", order.TargetString);
 					}
 					break;
 				}
