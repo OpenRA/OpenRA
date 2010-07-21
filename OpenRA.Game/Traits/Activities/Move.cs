@@ -151,7 +151,18 @@ namespace OpenRA.Traits.Activities
 		}
 
 		bool hasWaited;
+		bool hasNudged;
 		int waitTicksRemaining;
+
+		void NudgeBlocker(Actor self, int2 nextCell)
+		{
+			var blocker = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(nextCell).FirstOrDefault();
+			if (blocker == null) return;
+
+			var nudge = blocker.traits.GetOrDefault<INudge>();
+			if (nudge != null)
+				nudge.OnNudge(blocker);
+		}
 
 		int2? PopPath( Actor self, Mobile mobile )
 		{
@@ -163,6 +174,12 @@ namespace OpenRA.Traits.Activities
 				{
 					path.Clear();
 					return null;
+				}
+
+				if (!hasNudged)
+				{
+					NudgeBlocker(self, nextCell);
+					hasNudged = true;
 				}
 
 				if (!hasWaited)
@@ -187,6 +204,7 @@ namespace OpenRA.Traits.Activities
 
 				return null;
 			}
+			hasNudged = false;
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
 			return nextCell;
