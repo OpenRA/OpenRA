@@ -68,7 +68,7 @@ namespace OpenRA.FileFormats
 			BinaryReader reader2 = new BinaryReader(ms);
 
 			ushort numFiles = reader2.ReadUInt16();
-			uint datasize = reader2.ReadUInt32();
+			reader2.ReadUInt32(); /*datasize*/
 
 			s.Position = headerStart;
 			reader = new BinaryReader(s);

@@ -29,7 +29,6 @@ namespace OpenRA.Server
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo;
 		static bool GameStarted = false;
-		static string[] initialMods;
 		static string Name;
 		static WebClient wc = new WebClient();
 		static int ExternalPort;
@@ -51,7 +50,6 @@ namespace OpenRA.Server
 			Server.masterServerUrl = masterServerUrl;
 			isInternetServer = internetServer;
 			listener = new TcpListener(IPAddress.Any, port);
-			initialMods = mods;
 			Name = name;
 			ExternalPort = extport;
 			randomSeed = (int)DateTime.Now.ToBinary();

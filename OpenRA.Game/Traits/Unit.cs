@@ -28,7 +28,6 @@ namespace OpenRA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (e.DamageState == DamageState.Dead)
 				if (self.Owner == self.World.LocalPlayer)
 					Sound.PlayVoice("Lost", self);

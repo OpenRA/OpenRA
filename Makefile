@@ -158,17 +158,17 @@ mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
 mods: mod_ra mod_cnc
 
 OpenRA.Editor.Form1.resources:
-	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources
+	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
 editor: OpenRA.Editor.Form1.resources $(editor_TARGET)
 ralint: $(ralint_TARGET)
 seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
 SequenceEditor.Form1.resources:
-	resgen2 SequenceEditor/Form1.resx SequenceEditor.Form1.resources
+	resgen2 SequenceEditor/Form1.resx SequenceEditor.Form1.resources 1> /dev/null
 mapcvtr: $(mapcvtr_TARGET)
 filex: $(filex_TARGET)
 tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
 OpenRA.TilesetBuilder.Form1.resources:
-	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources
+	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
 tools: editor ralint seqed mapcvtr filex tsbuild
 all: game tools
 

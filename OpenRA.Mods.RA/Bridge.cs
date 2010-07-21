@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool Long = false;
 		
+		#pragma warning disable 0649
 		public readonly ushort Template;
 		public readonly ushort DamagedTemplate;
 		public readonly ushort DestroyedTemplate;
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.RA
 		public readonly ushort DestroyedPlusNorthTemplate;
 		public readonly ushort DestroyedPlusSouthTemplate;
 		public readonly ushort DestroyedPlusBothTemplate;
+		#pragma warning restore 0649
 		public readonly string[] ShorePieces = {"br1", "br2"};
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
