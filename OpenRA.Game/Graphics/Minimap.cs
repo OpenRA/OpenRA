@@ -18,97 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Graphics
 {
 	class Minimap
-	{
-		readonly World world;
-		Sheet sheet;
-		Sprite sprite;
-		Bitmap terrain, customLayer;
-		Rectangle bounds;
-		
-		const int alpha = 230;
-
-		public Minimap(World world)
-		{
-			this.world = world;
-			sheet = new Sheet( new Size(world.Map.MapSize.X, world.Map.MapSize.Y));
-			var size = Math.Max(world.Map.Width, world.Map.Height);
-			var dw = (size - world.Map.Width) / 2;
-			var dh = (size - world.Map.Height) / 2;
-
-			bounds = new Rectangle(world.Map.TopLeft.X - dw, world.Map.TopLeft.Y - dh, size, size);
-
-			sprite = new Sprite(sheet, bounds, TextureChannel.Alpha);
-		
-			shroudColor = Color.FromArgb(alpha, Color.Black);
-		}
-
-		public static Rectangle MakeMinimapBounds(Map m)
-		{
-			var size = Math.Max(m.Width, m.Height);
-			var dw = (size - m.Width) / 2;
-			var dh = (size - m.Height) / 2;
-
-			return new Rectangle(m.TopLeft.X - dw, m.TopLeft.Y - dh, size, size);
-		}
-		
-		static Color shroudColor;
-
-		public void InvalidateCustom() { customLayer = null; }
-
-		public void Update()
-		{			
-			if (terrain == null)
-				terrain = RenderTerrainBitmap(world.Map);
-
-			
-			// Custom terrain layer
-			if (customLayer == null)
-				customLayer = AddCustomTerrain(world,terrain);		
-
-			if (!world.GameHasStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
-				return;
-			
-			sheet.Texture.SetData(AddActors(world, customLayer));
-		}
-
-		public void Draw(RectangleF rect)
-		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, 
-				new float2(rect.X, rect.Y), "chrome", new float2(rect.Width, rect.Height));
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-		}
-
-		public static int2 CellToMinimapPixel(Map map, RectangleF viewRect, int2 p)
-		{
-			var size = Math.Max(map.Width, map.Height);
-			var dw = (size - map.Width) / 2;
-			var dh = (size - map.Height) / 2;
-			var bounds = new Rectangle(map.TopLeft.X - dw, map.TopLeft.Y - dh, size, size);
-
-			var fx = (float)(p.X - bounds.X) / bounds.Width;
-			var fy = (float)(p.Y - bounds.Y) / bounds.Height;
-
-			return new int2(
-				(int)(viewRect.Width * fx + viewRect.Left),
-				(int)(viewRect.Height * fy + viewRect.Top));
-		}
-
-		public static int2 MinimapPixelToCell(Map map, RectangleF viewRect, int2 p)
-		{
-			var size = Math.Max(map.Width, map.Height);
-			var dw = (size - map.Width) / 2;
-			var dh = (size - map.Height) / 2;
-			var bounds = new Rectangle(map.TopLeft.X - dw, map.TopLeft.Y - dh, size, size);
-			
-			var fx = (float)(p.X - viewRect.Left) / viewRect.Width;
-			var fy = (float)(p.Y - viewRect.Top) / viewRect.Height;
-
-			return new int2(
-				(int)(bounds.Width * fx + bounds.Left),
-				(int)(bounds.Height * fy + bounds.Top));
-		}
-		
-		
+	{				
 		static int NextPowerOf2(int v)
 		{
 			--v;
@@ -139,9 +49,7 @@ namespace OpenRA.Graphics
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
 						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
-						*(c + (y * bitmapData.Stride >> 2) + x) = map.IsInMap(mapX, mapY)
-							? Color.FromArgb(alpha, tileset.Terrain[type].Color).ToArgb()
-							: shroudColor.ToArgb();
+						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
 					}
 			}
 			terrain.UnlockBits(bitmapData);
@@ -220,6 +128,11 @@ namespace OpenRA.Graphics
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
+			var shroud = Color.Black.ToArgb();
+			var fogOpacity = 0.5f;
+			
+			
+			
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -234,11 +147,17 @@ namespace OpenRA.Graphics
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
 						
-						if (!world.LocalPlayer.Shroud.DisplayOnRadar(mapX, mapY))
+						if (!world.LocalPlayer.Shroud.IsExplored(mapX, mapY))
 						{
-							*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
+							*(c + (y * bitmapData.Stride >> 2) + x) = shroud;
 							continue;
 						}
+						if (!world.LocalPlayer.Shroud.IsVisible(mapX,mapY))
+						{
+							*(c + (y * bitmapData.Stride >> 2) + x) = Util.Lerp(fogOpacity, Color.FromArgb(*(c + (y * bitmapData.Stride >> 2) + x)), Color.Black).ToArgb();
+							continue;
+						}
+						
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(mapX, mapY));
 						
 						if (b != null)

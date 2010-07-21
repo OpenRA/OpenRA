@@ -7,7 +7,7 @@
  * see LICENSE.
  */
 #endregion
-
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -27,16 +27,38 @@ namespace OpenRA.Widgets
 		bool radarAnimating = false;
 		bool hasRadar = false;
 
+		Sheet radarSheet;
+		Sprite radarSprite;
+		
 		string radarCollection;
+		
+		
+		World world;
+		float previewScale = 0;
+		RectangleF mapRect = Rectangle.Empty;
+		int2 previewOrigin;
+		Bitmap terrainBitmap = null;
+		public void SetWorld(World world)
+		{
+			this.world = world;
+			var size = Math.Max(world.Map.Width, world.Map.Height);
+			
+			previewScale = Math.Min(192f / world.Map.Width, 192f / world.Map.Height);
+			
+			previewOrigin = new int2(9 + (int)(previewScale * (size - world.Map.Width)) / 2, (int)(previewScale * (size - world.Map.Height)) / 2);
+			mapRect = new RectangleF(radarOrigin.X + previewOrigin.X, radarOrigin.Y + previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
+			
+			terrainBitmap = Minimap.RenderTerrainBitmap(world.Map);
+			radarSheet = new Sheet(new Size( terrainBitmap.Width, terrainBitmap.Height ) );
+			radarSprite = new Sprite( radarSheet, new Rectangle( 0, 0, world.Map.Width, world.Map.Height ), TextureChannel.Alpha );
+		}
+		
 		public override string GetCursor(int2 pos)
 		{		
-			if (minimap == null)
+			if (world == null)
 				return "default";
-			
-			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
-				192, radarMinimapHeight);
-			
-			var loc = Minimap.MinimapPixelToCell(Game.world.Map, mapRect, pos);
+						
+			var loc = MinimapPixelToCell(pos);
 
 			var mi = new MouseInput
 			{
@@ -45,7 +67,7 @@ namespace OpenRA.Widgets
 				Modifiers = Game.controller.GetModifiers()
 			};
 
-			var cursor = Game.controller.orderGenerator.GetCursor( Game.world, loc, mi );
+			var cursor = Game.controller.orderGenerator.GetCursor( world, loc, mi );
 			if (cursor == null)
 				return "default";
 			
@@ -56,14 +78,10 @@ namespace OpenRA.Widgets
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.
 
-			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
-				192, radarMinimapHeight);
-
-			if (!mapRect.Contains(mi.Location.ToPointF()) || minimap == null)
+			if (!mapRect.Contains(mi.Location.ToPointF()))
 				return false;
 
-			var loc = Minimap.MinimapPixelToCell(Game.world.Map, mapRect, mi.Location);
-
+			var loc = MinimapPixelToCell(mi.Location);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
 				Game.viewport.Center(loc);
 
@@ -90,13 +108,11 @@ namespace OpenRA.Widgets
 
 		public override Rectangle EventBounds
 		{
-			get { return new Rectangle((int)radarOrigin.X + 9, (int)(radarOrigin.Y + (192 - radarMinimapHeight) / 2),
-				192, (int)radarMinimapHeight);}
+			get { return new Rectangle((int)mapRect.X, (int)mapRect.Y, (int)mapRect.Width, (int)mapRect.Height);}
 		}
 
-		Minimap minimap = null;
 		public override void DrawInner(World world)
-		{
+		{			
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 
 			var hasNewRadar = world.Queries.OwnedBy[world.LocalPlayer]
@@ -111,57 +127,68 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin, "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");
-
-			if (radarAnimating)
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
-
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.Flush();
-
-			if (minimap == null)
-				minimap = new Minimap(world);
+			
+			// Custom terrain layer
+			var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
+			var final = Minimap.AddActors(world, custom);
+			radarSheet.Texture.SetData(final);
 			
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
-				var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2, 192, radarMinimapHeight);
-				minimap.Draw(mapRect);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite( radarSprite,
+					new float2(mapRect.Location), "chrome",	new float2(mapRect.Size) );
 			}
 		}
 
-		public override void Tick(World world)
+		public override void Tick(World w)
 		{
-			if (world.LocalPlayer != null && minimap != null)
-				minimap.Update();
-
-			if (!radarAnimating)
+			if (world == null)
 				return;
-
-			// Increment frame
-			if (hasRadar)
-				radarAnimationFrame++;
-			else
-				radarAnimationFrame--;
-
-			// Calculate radar bin position
-			if (radarAnimationFrame <= radarSlideAnimationLength)
-				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
-
-			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-
-			// Play radar-on sound at the start of the activate anim (open)
-			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-				Sound.Play(eva.RadarUp);
-
-			// Play radar-on sound at the start of the activate anim (close)
-			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
-				Sound.Play(eva.RadarDown);
-
-			// Minimap height
-			if (radarAnimationFrame >= radarSlideAnimationLength)
-				radarMinimapHeight = float2.Lerp(0, 192, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
-
-			// Animation is complete
-			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
-				radarAnimating = false;
+			
+			if (radarAnimating)
+			{
+				// Increment frame
+				if (hasRadar)
+					radarAnimationFrame++;
+				else
+					radarAnimationFrame--;
+	
+				// Calculate radar bin position
+				if (radarAnimationFrame <= radarSlideAnimationLength)
+					radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
+	
+				var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
+	
+				// Play radar-on sound at the start of the activate anim (open)
+				if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
+					Sound.Play(eva.RadarUp);
+	
+				// Play radar-on sound at the start of the activate anim (close)
+				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
+					Sound.Play(eva.RadarDown);
+	
+				// Minimap height
+				if (radarAnimationFrame >= radarSlideAnimationLength)
+					radarMinimapHeight = float2.Lerp(0, 1, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
+	
+				// Animation is complete
+				if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
+					radarAnimating = false;
+			}
+			
+			mapRect = new RectangleF(radarOrigin.X + previewOrigin.X, radarOrigin.Y + previewOrigin.Y + (int)(world.Map.Height * previewScale * (1 - radarMinimapHeight)/2), (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale * radarMinimapHeight));
+		}
+				
+		int2 CellToMinimapPixel(int2 p)
+		{
+			return new int2((int)(mapRect.X +previewScale*(p.X - world.Map.TopLeft.X)), (int)(mapRect.Y + previewScale*(p.Y - world.Map.TopLeft.Y)));
+		}
+		
+		int2 MinimapPixelToCell(int2 p)
+		{
+			return new int2(world.Map.TopLeft.X + (int)((p.X - mapRect.X)/previewScale), world.Map.TopLeft.Y + (int)((p.Y - mapRect.Y)/previewScale));
 		}
 	}
 }

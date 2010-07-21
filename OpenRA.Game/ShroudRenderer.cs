@@ -44,15 +44,21 @@ namespace OpenRA
 		}
 
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
-		bool IsExplored(int x, int y)
+		public bool IsExplored(int x, int y)
 		{
 			if (disabled)
 				return true;
 			return shroud.exploredCells[x,y];
 		}
 
-		public bool DisplayOnRadar(int x, int y) { return IsExplored(x, y); }
-
+		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
+		public bool IsVisible(int x, int y)
+		{
+			if (disabled)
+				return true;
+			return shroud.visibleCells[x,y] != 0;
+		}
+		
 		static readonly byte[][] SpecialShroudTiles =
 		{
 			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
