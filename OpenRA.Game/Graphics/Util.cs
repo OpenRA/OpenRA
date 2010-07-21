@@ -112,10 +112,30 @@ namespace OpenRA.Graphics
 				LerpChannel(t, a.G, b.G),
 				LerpChannel(t, a.B, b.B));
 		}
+		
+		public static int LerpARGBColor(float t, int c1, int c2)
+		{
+			int a = LerpChannel(t, (c1 >> 24) & 255, (c2 >> 24) & 255);
+			int r = LerpChannel(t, (c1 >> 16) & 255, (c2 >> 16) & 255);
+			int g = LerpChannel(t, (c1 >> 8) & 255, (c2 >> 8) & 255);
+			int b = LerpChannel(t, c1 & 255, c2 & 255);
+			return (a << 24) | (r << 16) | (g << 8) | b;
+		}
 
 		public static int LerpChannel(float t, int a, int b)
 		{
 			return (int)((1 - t) * a + t * b);
+		}
+		
+		public static int NextPowerOf2(int v)
+		{
+			--v;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			++v;
+			return v;
 		}
 	}
 }

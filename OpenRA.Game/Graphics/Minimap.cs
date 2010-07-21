@@ -18,22 +18,11 @@ using OpenRA.Traits;
 namespace OpenRA.Graphics
 {
 	class Minimap
-	{				
-		static int NextPowerOf2(int v)
-		{
-			--v;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			++v;
-			return v;
-		}
-		
+	{		
 		public static Bitmap RenderTerrainBitmap(Map map)
 		{
 			var tileset = Rules.TileSets[map.Tileset];
-			var size = NextPowerOf2(Math.Max(map.Width, map.Height));
+			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
 			Bitmap terrain = new Bitmap(size, size);
 			
 			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
@@ -108,9 +97,12 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
+						
+						// This is extremely slow (~7ms). TODO: cache this information and only update when it changes
 						var customTerrain = world.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
 							.Select( t => t.GetTerrainType(new int2(mapX, mapY)) )
 							.FirstOrDefault( t => t != null );
+					
 						if (customTerrain == null) continue;
 						
 						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[customTerrain].Color.ToArgb();
@@ -120,7 +112,7 @@ namespace OpenRA.Graphics
 			bitmap.UnlockBits(bitmapData);
 			return bitmap;
 		}
-		
+				
 		public static Bitmap AddActors(World world, Bitmap terrain)
 		{	
 			var map = world.Map;
@@ -151,13 +143,12 @@ namespace OpenRA.Graphics
 							continue;
 						}
 						if (!world.LocalPlayer.Shroud.IsVisible(mapX,mapY))
-						{
-							*(c + (y * bitmapData.Stride >> 2) + x) = Util.Lerp(fogOpacity, Color.FromArgb(*(c + (y * bitmapData.Stride >> 2) + x)), Color.Black).ToArgb();
+						{						
+							*(c + (y * bitmapData.Stride >> 2) + x) = Util.LerpARGBColor(fogOpacity, *(c + (y * bitmapData.Stride >> 2) + x), shroud);
 							continue;
 						}
 						
 						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(mapX, mapY));
-						
 						if (b != null)
 							*(c + (y * bitmapData.Stride >> 2) + x) = b.Owner.Color.ToArgb();
 					}
