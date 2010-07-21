@@ -118,6 +118,7 @@ namespace OpenRA.Widgets
 					sprite = OwnedSpawn;
 					offset = new int2(-OwnedSpawn.bounds.Width/2, -OwnedSpawn.bounds.Height/2);
 					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
+					Game.Renderer.LineRenderer.Flush();
 				}
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset, "chrome");
 			}
