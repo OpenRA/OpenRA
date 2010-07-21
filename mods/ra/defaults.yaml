@@ -106,10 +106,11 @@
 		Sight: 0
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
-		Adjacent: 4
+		Adjacent: 7
 	Wall:
 		CrushClasses: wall
 	LineBuild:
+		Range: 8
 	Selectable:
 		Priority: 1
 	RenderBuildingWall:

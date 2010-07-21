@@ -852,7 +852,7 @@ SBAG:
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: b
 	Building:
-		HP: 100
+		HP: 300
 		Armor: none
 
 FENC:
@@ -867,7 +867,7 @@ FENC:
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: n
 	Building:
-		HP: 100
+		HP: 300
 		Armor: none
 
 BRIK:
@@ -882,7 +882,7 @@ BRIK:
 		LongDesc: Stop units and blocks enemy fire.
 		Hotkey: w
 	Building:
-		HP: 100
+		HP: 1500
 		Armor: none
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud
