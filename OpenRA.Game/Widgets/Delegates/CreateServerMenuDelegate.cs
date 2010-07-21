@@ -17,8 +17,8 @@ namespace OpenRA.Widgets.Delegates
 	{		
 		public CreateServerMenuDelegate()
 		{
-			var r = Chrome.rootWidget;
-			var cs = Chrome.rootWidget.GetWidget("CREATESERVER_BG");
+			var r = Widget.RootWidget;
+			var cs = r.GetWidget("CREATESERVER_BG");
 			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
 				r.OpenWindow("CREATESERVER_BG");
 				return true;

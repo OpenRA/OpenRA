@@ -19,7 +19,7 @@ namespace OpenRA.Widgets.Delegates
 		MapStub Map = null;
 		public MapChooserDelegate()
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var bg = r.GetWidget("MAP_CHOOSER");
 			bg.SpecialOneArg = (map) => RefreshMapList(map);
 			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");

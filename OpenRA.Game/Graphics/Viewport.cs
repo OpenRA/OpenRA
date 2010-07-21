@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Graphics
 {
@@ -69,7 +70,7 @@ namespace OpenRA.Graphics
 			Game.chrome.Draw(world);
 			Timer.Time( "widgets: {0}" );
 
-			var cursorName = Chrome.rootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );
+			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
 			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
 			Timer.Time( "cursors: {0}" );

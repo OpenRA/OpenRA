@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 			if (produces == null)
 				return;
 
-			Chrome.rootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
 				.SetCurrentTab(produces);
 		}
 	}

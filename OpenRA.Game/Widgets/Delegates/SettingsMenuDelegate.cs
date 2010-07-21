@@ -20,7 +20,7 @@ namespace OpenRA.Widgets.Delegates
 		Widget bg;
 		public SettingsMenuDelegate()
 		{
-			bg = Chrome.rootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
+			bg = Widget.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.GetWidget<ContainerWidget>("TAB_CONTAINER");
 			
 			//Tabs
@@ -62,7 +62,7 @@ namespace OpenRA.Widgets.Delegates
 			music.OnMouseDown = mi =>
 			{
 				Game.Settings.MusicPlayer ^= true;
-				Chrome.rootWidget.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
+				Widget.RootWidget.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
 				return true;
 			};
 			
@@ -166,13 +166,13 @@ namespace OpenRA.Widgets.Delegates
 			
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
-				Chrome.rootWidget.CloseWindow();
+				Widget.RootWidget.CloseWindow();
 				return true;
 			};
 			
 			// Menu Buttons
-			Chrome.rootWidget.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
-				Chrome.rootWidget.OpenWindow("SETTINGS_MENU");
+			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
+				Widget.RootWidget.OpenWindow("SETTINGS_MENU");
 				return true;
 			};
 			

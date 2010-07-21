@@ -25,7 +25,7 @@ namespace OpenRA.Widgets.Delegates
 
 		public ServerBrowserDelegate()
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var bg = r.GetWidget("JOINSERVER_BG");
 			var dc = r.GetWidget("DIRECTCONNECT_BG");
 
@@ -157,7 +157,7 @@ namespace OpenRA.Widgets.Delegates
 
 		void RefreshServerList(IEnumerable<GameServer> games)
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var bg = r.GetWidget("JOINSERVER_BG");
 			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
 

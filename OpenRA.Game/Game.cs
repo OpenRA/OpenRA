@@ -38,9 +38,6 @@ namespace OpenRA
 		public static World world;
 		internal static Viewport viewport;
 		public static Controller controller;
-		public static Widget RootWidget {
-			get { return Chrome.rootWidget; }
-		}
 		internal static Chrome chrome;
 		internal static UserSettings Settings;
 
@@ -629,8 +626,8 @@ namespace OpenRA
 			JoinLocal();
 			LoadShellMap(shellmap);
 
-			Chrome.rootWidget.CloseWindow();
-			Chrome.rootWidget.OpenWindow("MAINMENU_BG");
+			Widget.RootWidget.CloseWindow();
+			Widget.RootWidget.OpenWindow("MAINMENU_BG");
 		}
 		
 		static string baseSupportDir = null;

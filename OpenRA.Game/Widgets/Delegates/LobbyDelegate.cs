@@ -32,9 +32,9 @@ namespace OpenRA.Widgets.Delegates
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
 
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
-			Players = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
+			Players = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 
@@ -254,7 +254,7 @@ namespace OpenRA.Widgets.Delegates
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = mi =>
 					{
-						var colorChooser = Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
+						var colorChooser = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
 						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 						hueSlider.Offset = Game.LocalClient.Color1.GetHue()/360f;
 						
@@ -348,7 +348,7 @@ namespace OpenRA.Widgets.Delegates
 		bool CycleReady(MouseInput mi)
 		{
 			//HACK: Can't set this as part of the fuction as LocalClient/State not initalised yet
-			Chrome.rootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible
+			Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible
 				= (Game.IsHost && Game.LocalClient.State == Session.ClientState.Ready);
 			Game.IssueOrder(Order.Command("ready"));
 			return true;

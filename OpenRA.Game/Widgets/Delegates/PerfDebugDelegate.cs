@@ -16,7 +16,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public PerfDebugDelegate()
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var perfRoot = r.GetWidget("PERF_BG");
 			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.PerfDebug;
 

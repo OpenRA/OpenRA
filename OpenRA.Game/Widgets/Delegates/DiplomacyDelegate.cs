@@ -22,9 +22,9 @@ namespace OpenRA.Widgets.Delegates
 
 		public DiplomacyDelegate()
 		{
-			var diplomacyBG = Chrome.rootWidget.GetWidget("DIPLOMACY_BG");
+			var diplomacyBG = Widget.RootWidget.GetWidget("DIPLOMACY_BG");
 
-			Chrome.rootWidget.GetWidget("INGAME_DIPLOMACY_BUTTON").OnMouseUp = mi =>
+			Widget.RootWidget.GetWidget("INGAME_DIPLOMACY_BUTTON").OnMouseUp = mi =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
 				if (diplomacyBG.IsVisible())

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	{
 		public OrderButtonsChromeDelegate()
 		{
-			var r = Game.RootWidget;
+			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");

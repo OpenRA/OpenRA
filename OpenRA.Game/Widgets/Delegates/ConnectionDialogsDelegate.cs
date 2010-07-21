@@ -16,7 +16,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public ConnectionDialogsDelegate()
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			r.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
 				r.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
 				Game.Disconnect();

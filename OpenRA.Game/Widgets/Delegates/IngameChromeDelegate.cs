@@ -16,7 +16,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		public IngameChromeDelegate()
 		{
-			var r = Chrome.rootWidget;
+			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			

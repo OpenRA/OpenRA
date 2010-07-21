@@ -18,9 +18,9 @@ namespace OpenRA.Widgets.Delegates
 		{
 			// Main menu is the default window
 			Widget.WindowList.Push("MAINMENU_BG");
-			Chrome.rootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
 
-			var version = Chrome.rootWidget.GetWidget("MAINMENU_BG").GetWidget<LabelWidget>("VERSION_STRING");
+			var version = Widget.RootWidget.GetWidget("MAINMENU_BG").GetWidget<LabelWidget>("VERSION_STRING");
 
 			if (FileSystem.Exists("VERSION"))
 			{

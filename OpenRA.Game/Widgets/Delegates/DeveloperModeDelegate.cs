@@ -35,8 +35,8 @@ namespace OpenRA.Widgets.Delegates
 
 		public DeveloperModeDelegate ()
 		{
-			var devmodeBG = Chrome.rootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
-			var devModeButton = Chrome.rootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
+			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
+			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
 			
 			devModeButton.OnMouseUp = mi =>
 			{	

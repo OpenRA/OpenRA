@@ -47,6 +47,10 @@ namespace OpenRA.Widgets
 
 		public Widget() { IsVisible = () => Visible; }
 		
+		public static Widget RootWidget {
+			get { return Chrome.rootWidget; }
+		}
+		
 		public Widget(Widget widget)
 		{	
 			Id = widget.Id;
@@ -276,17 +280,17 @@ namespace OpenRA.Widgets
 		
 		public void CloseWindow()
 		{
-			Chrome.rootWidget.GetWidget(WindowList.Pop()).Visible = false;
+			Widget.RootWidget.GetWidget(WindowList.Pop()).Visible = false;
 			if (WindowList.Count > 0)
-				Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = true;
+				Widget.RootWidget.GetWidget(WindowList.Peek()).Visible = true;
 		}
 
 		public Widget OpenWindow(string id)
 		{
 			if (WindowList.Count > 0)
-				Chrome.rootWidget.GetWidget(WindowList.Peek()).Visible = false;
+				Widget.RootWidget.GetWidget(WindowList.Peek()).Visible = false;
 			WindowList.Push(id);
-			var window = Chrome.rootWidget.GetWidget(id);
+			var window = Widget.RootWidget.GetWidget(id);
 			window.Visible = true;
 			return window;
 		}
