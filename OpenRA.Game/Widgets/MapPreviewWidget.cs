@@ -24,7 +24,7 @@ namespace OpenRA.Widgets
 		public Func<MapStub> Map = () => null;
 		public Action<int> OnSpawnClick = spawn => {};
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
-		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview(stub));
+		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview(stub.Map));
 
 		public MapPreviewWidget() : base() { }
 		protected MapPreviewWidget(MapPreviewWidget other)

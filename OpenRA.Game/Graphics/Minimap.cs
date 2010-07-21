@@ -55,80 +55,20 @@ namespace OpenRA.Graphics
 
 		public void InvalidateCustom() { customLayer = null; }
 
-		public static Bitmap RenderTerrainBitmap(Map map, TileSet tileset)
-		{
-			var terrain = new Bitmap(map.MapSize.X, map.MapSize.Y);
-			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			unsafe
-			{
-				int* c = (int*)bitmapData.Scan0;
-
-				for (var x = 0; x < map.MapSize.X; x++)
-					for (var y = 0; y < map.MapSize.Y; y++)
-					{
-						var type = tileset.GetTerrainType(map.MapTiles[x, y]);
-						*(c + (y * bitmapData.Stride >> 2) + x) = map.IsInMap(x, y)
-							? Color.FromArgb(alpha, tileset.Terrain[type].Color).ToArgb()
-							: shroudColor.ToArgb();
-					}
-			}
-			terrain.UnlockBits(bitmapData);
-			return terrain;
-		}
-
 		public void Update()
 		{			
 			if (terrain == null)
-				terrain = RenderTerrainBitmap(world.Map, world.TileSet);
+				terrain = RenderTerrainBitmap(world.Map);
 
+			
 			// Custom terrain layer
 			if (customLayer == null)
-			{
-				customLayer = new Bitmap(terrain);
-				for (var x = world.Map.TopLeft.X; x < world.Map.BottomRight.X; x++)
-					for (var y = world.Map.TopLeft.Y; y < world.Map.BottomRight.Y; y++)
-					{
-						var customTerrain = world.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-							.Select( t => t.GetTerrainType(new int2(x,y)) )
-							.FirstOrDefault( t => t != null );
-						if (customTerrain == null) continue;
-						customLayer.SetPixel(x, y, Color.FromArgb(alpha, world.TileSet.Terrain[customTerrain].Color));
-					}							
-			}
+				customLayer = AddCustomTerrain(world,terrain);		
 
 			if (!world.GameHasStarted || !world.Queries.OwnedBy[world.LocalPlayer].WithTrait<ProvidesRadar>().Any())
 				return;
-
-			var bitmap = new Bitmap(customLayer);
-			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			unsafe
-			{
-				int* c = (int*)bitmapData.Scan0;
-
-				foreach (var a in world.Queries.WithTrait<Unit>().Where(a => a.Actor.Owner != null && a.Actor.IsVisible()))
-					*(c + (a.Actor.Location.Y * bitmapData.Stride >> 2) + a.Actor.Location.X) =
-						Color.FromArgb(alpha, a.Actor.Owner.Color).ToArgb();
-
-				for (var x = world.Map.TopLeft.X; x < world.Map.BottomRight.X; x++)
-					for (var y = world.Map.TopLeft.Y; y < world.Map.BottomRight.Y; y++)
-					{
-						if (!world.LocalPlayer.Shroud.DisplayOnRadar(x, y))
-						{
-							*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
-							continue;
-						}
-						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(x, y));
-						
-						if (b != null)
-							*(c + (y * bitmapData.Stride >> 2) + x) = Color.FromArgb(alpha, b.Owner.Color).ToArgb();
-					}
-			}
-
-			bitmap.UnlockBits(bitmapData);
-			sheet.Texture.SetData(bitmap);
+			
+			sheet.Texture.SetData(AddActors(world, customLayer));
 		}
 
 		public void Draw(RectangleF rect)
@@ -138,8 +78,13 @@ namespace OpenRA.Graphics
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
-		int2 CellToMinimapPixel(RectangleF viewRect, int2 p)
+		public static int2 CellToMinimapPixel(Map map, RectangleF viewRect, int2 p)
 		{
+			var size = Math.Max(map.Width, map.Height);
+			var dw = (size - map.Width) / 2;
+			var dh = (size - map.Height) / 2;
+			var bounds = new Rectangle(map.TopLeft.X - dw, map.TopLeft.Y - dh, size, size);
+
 			var fx = (float)(p.X - bounds.X) / bounds.Width;
 			var fy = (float)(p.Y - bounds.Y) / bounds.Height;
 
@@ -148,8 +93,13 @@ namespace OpenRA.Graphics
 				(int)(viewRect.Height * fy + viewRect.Top));
 		}
 
-		public int2 MinimapPixelToCell(RectangleF viewRect, int2 p)
+		public static int2 MinimapPixelToCell(Map map, RectangleF viewRect, int2 p)
 		{
+			var size = Math.Max(map.Width, map.Height);
+			var dw = (size - map.Width) / 2;
+			var dh = (size - map.Height) / 2;
+			var bounds = new Rectangle(map.TopLeft.X - dw, map.TopLeft.Y - dh, size, size);
+			
 			var fx = (float)(p.X - viewRect.Left) / viewRect.Width;
 			var fy = (float)(p.Y - viewRect.Top) / viewRect.Height;
 
@@ -170,13 +120,41 @@ namespace OpenRA.Graphics
 			return v;
 		}
 		
-		public static Bitmap RenderMapPreview(MapStub stub)
+		public static Bitmap RenderTerrainBitmap(Map map)
 		{
-			Map map = stub.Map;
 			var tileset = Rules.TileSets[map.Tileset];
 			var size = NextPowerOf2(Math.Max(map.Width, map.Height));
 			Bitmap terrain = new Bitmap(size, size);
 			
+			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+
+				for (var x = 0; x < map.Width; x++)
+					for (var y = 0; y < map.Height; y++)
+					{
+						var mapX = x + map.TopLeft.X;
+						var mapY = y + map.TopLeft.Y;
+						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
+						*(c + (y * bitmapData.Stride >> 2) + x) = map.IsInMap(mapX, mapY)
+							? Color.FromArgb(alpha, tileset.Terrain[type].Color).ToArgb()
+							: shroudColor.ToArgb();
+					}
+			}
+			terrain.UnlockBits(bitmapData);
+			return terrain;
+		}
+		
+		// Add the static resources defined in the map; if the map lives
+		// in a world use AddCustomTerrain instead
+		public static Bitmap AddStaticResources(Map map, Bitmap terrainBitmap)
+		{
+			Bitmap terrain = new Bitmap(terrainBitmap);
+			var tileset = Rules.TileSets[map.Tileset];
+
 			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
@@ -188,22 +166,94 @@ namespace OpenRA.Graphics
 					for (var y = 0; y < map.Height; y++)
 					{
 						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;
-						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
-						string res = null;
-						if (map.MapResources[mapX, mapY].type != 0)
-							res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
+						var mapY = y + map.TopLeft.Y;	
+						if (map.MapResources[mapX, mapY].type == 0)
+							continue;
+					
+						var res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
 								.Where(t => t.ResourceType == map.MapResources[mapX, mapY].type)
 								.Select(t => t.TerrainType).FirstOrDefault();
-						if (res != null)
-							type = res;
+						if (res == null)
+							continue;
 						
-						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
+						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[res].Color.ToArgb();
 					}
 			}
 			terrain.UnlockBits(bitmapData);
 
 			return terrain;
+		}
+		
+		public static Bitmap AddCustomTerrain(World world, Bitmap terrainBitmap)
+		{
+			var map = world.Map;
+			var bitmap = new Bitmap(terrainBitmap);
+			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+					
+				for (var x = 0; x < map.Width; x++)
+					for (var y = 0; y < map.Height; y++)
+					{
+						var mapX = x + map.TopLeft.X;
+						var mapY = y + map.TopLeft.Y;
+						var customTerrain = world.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
+							.Select( t => t.GetTerrainType(new int2(mapX, mapY)) )
+							.FirstOrDefault( t => t != null );
+						if (customTerrain == null) continue;
+						
+						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[customTerrain].Color.ToArgb();
+					}
+			}
+			
+			bitmap.UnlockBits(bitmapData);
+			return bitmap;
+		}
+		
+		public static Bitmap AddActors(World world, Bitmap terrain)
+		{	
+			var map = world.Map;
+			var bitmap = new Bitmap(terrain);
+			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+
+				foreach (var a in world.Queries.WithTrait<Unit>().Where(a => a.Actor.Owner != null && a.Actor.IsVisible()))
+					*(c + ((a.Actor.Location.Y - world.Map.TopLeft.Y)* bitmapData.Stride >> 2) + a.Actor.Location.X - world.Map.TopLeft.X) =
+						a.Actor.Owner.Color.ToArgb();
+
+				for (var x = 0; x < map.Width; x++)
+					for (var y = 0; y < map.Height; y++)
+					{
+						var mapX = x + map.TopLeft.X;
+						var mapY = y + map.TopLeft.Y;
+						
+						if (!world.LocalPlayer.Shroud.DisplayOnRadar(mapX, mapY))
+						{
+							*(c + (y * bitmapData.Stride >> 2) + x) = shroudColor.ToArgb();
+							continue;
+						}
+						var b = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(new int2(mapX, mapY));
+						
+						if (b != null)
+							*(c + (y * bitmapData.Stride >> 2) + x) = b.Owner.Color.ToArgb();
+					}
+			}
+
+			bitmap.UnlockBits(bitmapData);
+			return bitmap;
+		}
+		
+		public static Bitmap RenderMapPreview(Map map)
+		{
+			Bitmap terrain = RenderTerrainBitmap(map);
+			return AddStaticResources(map, terrain);
 		}
 	}
 }
