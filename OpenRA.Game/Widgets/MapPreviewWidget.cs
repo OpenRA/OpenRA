@@ -43,7 +43,7 @@ namespace OpenRA.Widgets
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.TopLeft.X)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.TopLeft.Y)));
 		}
 		
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{			
 			var map = Map();
 			if (map == null)

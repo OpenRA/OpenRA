@@ -44,9 +44,9 @@ namespace OpenRA.Widgets
 			return composing ? false : base.LoseFocus(mi);
 		}
 
-		public override bool HandleInput(MouseInput mi) { return false; }
+		public override bool HandleInputInner(MouseInput mi) { return false; }
 
-		public override bool HandleKeyPress(KeyInput e)
+		public override bool HandleKeyPressInner(KeyInput e)
 		{
 			if (e.KeyChar == '\r')
 			{
@@ -94,7 +94,7 @@ namespace OpenRA.Widgets
 				return false;
 			}
 
-			return base.HandleKeyPress(e);
+			return base.HandleKeyPressInner(e);
 		}
 	}
 }

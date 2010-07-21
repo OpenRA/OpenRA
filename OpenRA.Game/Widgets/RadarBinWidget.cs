@@ -50,7 +50,7 @@ namespace OpenRA.Widgets
 			return SequenceProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
 		}
 
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.
 

@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public abstract class Widget
+	public abstract class Widget : IHandleInput
 	{
 		// Info defined in YAML
 		public string Id = null;
@@ -186,7 +187,26 @@ namespace OpenRA.Widgets
 			return EventBounds.Contains(pos.ToPoint()) ? GetCursor(pos) : null;
 		}
 		
-		public virtual bool HandleInput(MouseInput mi) { return !ClickThrough; }
+		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough; }
+		
+		public static int ticksSinceLastMove = 0;
+		public static int2 lastMousePos;
+		public bool HandleInput(World world, MouseInput mi)
+		{
+			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
+				return true;
+			
+			if (Widget.RootWidget.HandleMouseInputOuter(mi))
+				return true;
+
+			if (mi.Event == MouseInputEvent.Move)
+			{
+				lastMousePos = mi.Location;
+				ticksSinceLastMove = 0;
+			}
+			return false;
+		}
+		
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?
@@ -200,7 +220,7 @@ namespace OpenRA.Widgets
 
 			// Do any widgety behavior (button click etc)
 			// Return false if it can't handle any user actions
-			if (!HandleInput(mi))
+			if (!HandleInputInner(mi))
 				return false;
 			
 			// Apply any special logic added by delegates; they return true if they caught the input
@@ -212,7 +232,7 @@ namespace OpenRA.Widgets
 		}
 				
 		
-		public virtual bool HandleKeyPress(KeyInput e) { return false; }
+		public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
 		public virtual bool HandleKeyPressOuter(KeyInput e)
 		{			
 			if (!IsVisible())
@@ -224,12 +244,22 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Do any widgety behavior (enter text etc)
-			var handled = HandleKeyPress(e);
+			var handled = HandleKeyPressInner(e);
 			
 			// Apply any special logic added by delegates; they return true if they caught the input
 			if (OnKeyPress(e)) return true;
 			
 			return handled;
+		}
+		
+		public static bool HandleKeyPress(KeyInput e)
+		{
+			if (SelectedWidget != null)
+				return SelectedWidget.HandleKeyPressOuter(e);
+			
+			if (RootWidget.HandleKeyPressOuter(e))
+				return true;
+			return false;
 		}
 		
 		public abstract void DrawInner( World world );

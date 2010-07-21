@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override bool HandleInput(MouseInput mi) { return true; }
+		public override bool HandleInputInner(MouseInput mi) { return true; }
 
 		public CheckboxWidget() : base() { }
 

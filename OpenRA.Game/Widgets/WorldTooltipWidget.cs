@@ -24,10 +24,10 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner(World world)
 		{
-			if (Game.chrome.ticksSinceLastMove < worldTooltipDelay || world == null || world.LocalPlayer == null)
+			if (Widget.ticksSinceLastMove < worldTooltipDelay || world == null || world.LocalPlayer == null)
 				return;
 
-			var actor = world.FindUnitsAtMouse(Game.chrome.lastMousePos).FirstOrDefault();
+			var actor = world.FindUnitsAtMouse(Widget.lastMousePos).FirstOrDefault();
 			if (actor == null) return;
 
 			var text = actor.Info.Traits.Contains<ValuedInfo>()
@@ -51,23 +51,23 @@ namespace OpenRA.Widgets
 			sz.Y += 24;
 
 			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
-				Game.chrome.lastMousePos.X + 20, Game.chrome.lastMousePos.Y + 20,
-				Game.chrome.lastMousePos.X + sz.X + 20, Game.chrome.lastMousePos.Y + sz.Y + 20));
+				Widget.lastMousePos.X + 20, Widget.lastMousePos.Y + 20,
+				Widget.lastMousePos.X + sz.X + 20, Widget.lastMousePos.Y + sz.Y + 20));
 
 			renderer.BoldFont.DrawText(text,
-				new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 30), Color.White);
+				new float2(Widget.lastMousePos.X + 30, Widget.lastMousePos.Y + 30), Color.White);
 			
 			if (text2 != "")
 			{
 				renderer.RegularFont.DrawText(text2,
-					new float2(Game.chrome.lastMousePos.X + 65, Game.chrome.lastMousePos.Y + 50), actor.Owner.Color);
+					new float2(Widget.lastMousePos.X + 65, Widget.lastMousePos.Y + 50), actor.Owner.Color);
 				
 				renderer.RegularFont.DrawText(text3,
-					new float2(Game.chrome.lastMousePos.X + 65 + sz2.X, Game.chrome.lastMousePos.Y + 50), Color.White);
+					new float2(Widget.lastMousePos.X + 65 + sz2.X, Widget.lastMousePos.Y + 50), Color.White);
 
 				WidgetUtils.DrawRGBA(
 					ChromeProvider.GetImage(Game.chrome.renderer, "flags", actor.Owner.Country.Race),
-					new float2(Game.chrome.lastMousePos.X + 30, Game.chrome.lastMousePos.Y + 50));
+					new float2(Widget.lastMousePos.X + 30, Widget.lastMousePos.Y + 50));
 			}
 			
 			renderer.RgbaSpriteRenderer.Flush();

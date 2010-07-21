@@ -86,7 +86,7 @@ namespace OpenRA.Widgets
 			return base.LoseFocus(mi);
 		}
 		
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{						
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;

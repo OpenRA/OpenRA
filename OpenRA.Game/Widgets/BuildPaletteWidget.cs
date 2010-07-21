@@ -137,7 +137,7 @@ namespace OpenRA.Widgets
 			currentTab = produces;
 		}
 
-		public override bool HandleKeyPress(KeyInput e)
+		public override bool HandleKeyPressInner(KeyInput e)
 		{
 			if (e.KeyChar == '\t')
 			{
@@ -148,7 +148,7 @@ namespace OpenRA.Widgets
 			return DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
 		}
 		
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{			
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
@@ -223,7 +223,7 @@ namespace OpenRA.Widgets
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
-				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+				if (rect.Contains(Widget.lastMousePos.ToPoint()))
 					tooltipItem = item.Name;
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
@@ -421,7 +421,7 @@ namespace OpenRA.Widgets
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(groupName, world)));
 
-				if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+				if (rect.Contains(Widget.lastMousePos.ToPoint()))
 				{
 					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
 					var sz = Game.chrome.renderer.BoldFont.Measure(text);

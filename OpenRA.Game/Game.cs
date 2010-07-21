@@ -478,7 +478,7 @@ namespace OpenRA
 		{
 			int sync = world.SyncHash();
 			
-			if (chrome.HandleKeyPress(e))
+			if (Widget.HandleKeyPress(e))
 				return;
 
 			switch (e.KeyName)

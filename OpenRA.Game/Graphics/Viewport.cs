@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 			scrollPosition = scrollPosition + delta;
 		}
 
-		public IEnumerable<IHandleInput> regions { get { return new IHandleInput[] { Game.chrome, Game.controller }; } }
+		public IEnumerable<IHandleInput> regions { get { return new IHandleInput[] { Widget.RootWidget, Game.controller }; } }
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{

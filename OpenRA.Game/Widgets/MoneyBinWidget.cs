@@ -72,7 +72,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Down)
 			{

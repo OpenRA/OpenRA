@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	class Chrome : IHandleInput
+	class Chrome
 	{
 		public readonly Renderer renderer;
 		public readonly LineRenderer lineRenderer;
@@ -44,37 +44,10 @@ namespace OpenRA
 			
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
-			++ticksSinceLastMove;
+			++Widget.ticksSinceLastMove;
 		}	
 
 		public void Draw(World world) { Widget.RootWidget.Draw(world); shpRenderer.Flush(); rgbaRenderer.Flush(); lineRenderer.Flush(); }
-		
-		public int ticksSinceLastMove = 0;
-		public int2 lastMousePos;
-		public bool HandleInput(World world, MouseInput mi)
-		{
-			if (Widget.SelectedWidget != null && Widget.SelectedWidget.HandleMouseInputOuter(mi))
-				return true;
-			
-			if (Widget.RootWidget.HandleMouseInputOuter(mi))
-				return true;
 
-			if (mi.Event == MouseInputEvent.Move)
-			{
-				lastMousePos = mi.Location;
-				ticksSinceLastMove = 0;
-			}
-			return false;
-		}
-
-		public bool HandleKeyPress(KeyInput e)
-		{
-			if (Widget.SelectedWidget != null)
-				return Widget.SelectedWidget.HandleKeyPressOuter(e);
-			
-			if (Widget.RootWidget.HandleKeyPressOuter(e))
-				return true;
-			return false;
-		}
 	}
 }

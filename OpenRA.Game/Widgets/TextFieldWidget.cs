@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			return lose;
 		}
 
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
@@ -61,7 +61,7 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
-		public override bool HandleKeyPress(KeyInput e)
+		public override bool HandleKeyPressInner(KeyInput e)
 		{
 			// Only take input if we are focused
 			if (!Focused)

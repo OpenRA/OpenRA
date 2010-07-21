@@ -47,7 +47,7 @@ namespace OpenRA.Widgets
 			get { return buttons.Any() ? buttons.Select(b => b.First).Aggregate(Rectangle.Union) : Bounds; }
 		}
 		
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{			
 			if (mi.Event == MouseInputEvent.Down)
 			{
@@ -92,7 +92,7 @@ namespace OpenRA.Widgets
 					var drawPos = new float2(rectBounds.X + 5, y);
 					var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
 
-					if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+					if (rect.Contains(Widget.lastMousePos.ToPoint()))
 					{
 						var pos = drawPos.ToInt2();					
 						var tl = new int2(pos.X-3,pos.Y-3);

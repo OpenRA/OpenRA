@@ -24,7 +24,7 @@ namespace OpenRA.Widgets
 			var image = ChromeProvider.GetImage(Game.chrome.renderer, Image + "-button", GetImage());
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);
 			
-			if (rect.Contains(Game.chrome.lastMousePos.ToPoint()))
+			if (rect.Contains(Widget.lastMousePos.ToPoint()))
 			{
 					rect = rect.InflateBy(3, 3, 3, 3);
 					var pos = new int2(rect.Left, rect.Top);

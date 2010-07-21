@@ -43,7 +43,7 @@ namespace OpenRA.Widgets
 			isMoving = other.isMoving;
 		}
 
-		public override bool HandleInput(MouseInput mi)
+		public override bool HandleInputInner(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
