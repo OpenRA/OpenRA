@@ -31,7 +31,8 @@ namespace OpenRA.Mods.RA
 	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
-		public object Create(ActorInitializer init) { return new Crate(init); }
+		public readonly string[] TerrainTypes = {};
+		public object Create(ActorInitializer init) { return new Crate(init, this); }
 	}
 
 	// IMove is required for paradrop
@@ -44,10 +45,12 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public int2 Location;
 
-		public Crate(ActorInitializer init)
+		CrateInfo Info;
+		public Crate(ActorInitializer init, CrateInfo info)
 		{
 			this.self = init.self;
 			this.Location = init.location;
+			this.Info = info;
 		}
 
 		public void OnCollected(Actor crusher)
@@ -89,9 +92,17 @@ namespace OpenRA.Mods.RA
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
 
-		public bool CanEnterCell(int2 location) { return self.World.GetTerrainInfo(location).Buildable; }
+		public bool CanEnterCell(int2 cell) { return MovementCostForCell(self, cell) < float.PositiveInfinity; }
 
-		public float MovementCostForCell(Actor self, int2 cell) { return 0; }
+		public float MovementCostForCell(Actor self, int2 cell)
+		{
+			if (!self.World.Map.IsInMap(cell.X,cell.Y))
+				return float.PositiveInfinity;
+			
+			var type = self.World.GetTerrainType(cell);
+			return Info.TerrainTypes.Contains(type) ? 0f : float.PositiveInfinity;
+		}
+		
 		public float MovementSpeedForCell(Actor self, int2 cell) { return 1; }
 		public IEnumerable<float2> GetCurrentPath(Actor self) { return new float2[] {}; }
 

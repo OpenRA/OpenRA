@@ -212,6 +212,7 @@ CRATE:
 		Description: Crate
 	Crate:
 		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
 	SpeedUpgradeCrateAction:
 		Multiplier: 1.7
 		SelectionShares: 10

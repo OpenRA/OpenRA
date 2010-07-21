@@ -149,6 +149,7 @@ CRATE:
 		Description: Crate
 	Crate:
 		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Ore, Beach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
