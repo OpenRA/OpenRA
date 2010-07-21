@@ -130,9 +130,7 @@ namespace OpenRA.Graphics
 
 			var shroud = Color.Black.ToArgb();
 			var fogOpacity = 0.5f;
-			
-			
-			
+						
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;

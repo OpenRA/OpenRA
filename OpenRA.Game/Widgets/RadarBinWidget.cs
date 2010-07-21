@@ -45,8 +45,8 @@ namespace OpenRA.Widgets
 			
 			previewScale = Math.Min(192f / world.Map.Width, 192f / world.Map.Height);
 			
-			previewOrigin = new int2(9 + (int)(previewScale * (size - world.Map.Width)) / 2, (int)(previewScale * (size - world.Map.Height)) / 2);
-			mapRect = new RectangleF(radarOrigin.X + previewOrigin.X, radarOrigin.Y + previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
+			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Height)/2));
+			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
 			
 			terrainBitmap = Minimap.RenderTerrainBitmap(world.Map);
 			radarSheet = new Sheet(new Size( terrainBitmap.Width, terrainBitmap.Height ) );
@@ -115,70 +115,68 @@ namespace OpenRA.Widgets
 		{			
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 
-			var hasNewRadar = world.Queries.OwnedBy[world.LocalPlayer]
-				.WithTrait<ProvidesRadar>()
-				.Any(a => a.Trait.IsActive);
-
-			if (hasNewRadar != hasRadar)
-				radarAnimating = true;
-
-			hasRadar = hasNewRadar;
-
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin, "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.Flush();
-			
-			// Custom terrain layer
-			var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
-			var final = Minimap.AddActors(world, custom);
-			radarSheet.Texture.SetData(final);
-			
+				
+			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
+				// Build the radar image
+				var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
+				var final = Minimap.AddActors(world, custom);
+				radarSheet.Texture.SetData(final);
+				
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite( radarSprite,
-					new float2(mapRect.Location), "chrome",	new float2(mapRect.Size) );
+					new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2),
+				          "chrome",
+				    new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight) );
 			}
 		}
 
 		public override void Tick(World w)
 		{
-			if (world == null)
+			var hasRadarNew = world.Queries.OwnedBy[world.LocalPlayer]
+				.WithTrait<ProvidesRadar>()
+				.Any(a => a.Trait.IsActive);
+			
+			if (hasRadarNew != hasRadar)
+				radarAnimating = true;
+			
+			hasRadar = hasRadarNew;
+			
+			if (!radarAnimating)
 				return;
 			
-			if (radarAnimating)
-			{
-				// Increment frame
-				if (hasRadar)
-					radarAnimationFrame++;
-				else
-					radarAnimationFrame--;
-	
-				// Calculate radar bin position
-				if (radarAnimationFrame <= radarSlideAnimationLength)
-					radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
-	
-				var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-	
-				// Play radar-on sound at the start of the activate anim (open)
-				if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-					Sound.Play(eva.RadarUp);
-	
-				// Play radar-on sound at the start of the activate anim (close)
-				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
-					Sound.Play(eva.RadarDown);
-	
-				// Minimap height
-				if (radarAnimationFrame >= radarSlideAnimationLength)
-					radarMinimapHeight = float2.Lerp(0, 1, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
-	
-				// Animation is complete
-				if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
-					radarAnimating = false;
-			}
-			
-			mapRect = new RectangleF(radarOrigin.X + previewOrigin.X, radarOrigin.Y + previewOrigin.Y + (int)(world.Map.Height * previewScale * (1 - radarMinimapHeight)/2), (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale * radarMinimapHeight));
+			// Increment frame
+			if (hasRadar)
+				radarAnimationFrame++;
+			else
+				radarAnimationFrame--;
+
+			// Calculate radar bin position
+			if (radarAnimationFrame <= radarSlideAnimationLength)
+				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
+
+			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
+
+			// Play radar-on sound at the start of the activate anim (open)
+			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
+				Sound.Play(eva.RadarUp);
+
+			// Play radar-on sound at the start of the activate anim (close)
+			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
+				Sound.Play(eva.RadarDown);
+
+			// Minimap height
+			if (radarAnimationFrame >= radarSlideAnimationLength)
+				radarMinimapHeight = float2.Lerp(0, 1, (radarAnimationFrame - radarSlideAnimationLength) * 1.0f / radarActivateAnimationLength);
+
+			// Animation is complete
+			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
+				radarAnimating = false;
 		}
 				
 		int2 CellToMinimapPixel(int2 p)
