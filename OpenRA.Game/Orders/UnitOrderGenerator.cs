@@ -61,8 +61,8 @@ namespace OpenRA.Orders
 				.FirstOrDefault(a => a != null);
 
 			return c ??
-				(world.SelectActorsInBox(Game.CellSize * xy,
-				Game.CellSize * xy).Any()
+				(world.FindUnitsAtMouse(mi.Location)
+				.Any(a => a.Info.Traits.Contains<SelectableInfo>())
 					? "select" : "default");
 		}
 	}
