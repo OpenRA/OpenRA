@@ -55,7 +55,6 @@ namespace OpenRA
 		public GlobalDefaultsInfo Defaults { get {return WorldActor.Info.Traits.Get<GlobalDefaultsInfo>();}}
 
 		public readonly WorldRenderer WorldRenderer;
-		internal readonly Minimap Minimap;
 		
 		public World(Manifest manifest, Map map)
 		{
@@ -103,9 +102,6 @@ namespace OpenRA
 
 			PathFinder = new PathFinder(this);
 			Timer.Time( "hooks, pathing: {0}" );
-
-			Minimap = new Minimap(this);
-			Timer.Time( "minimap: {0}" );
 
 			Timer.Time( "----end World.ctor" );
 		}

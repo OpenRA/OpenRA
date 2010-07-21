@@ -28,13 +28,16 @@ namespace OpenRA.Widgets
 		bool hasRadar = false;
 
 		string radarCollection;
-
+		Minimap Minimap = null;
 		public override string GetCursor(int2 pos)
 		{		
+			if (Minimap == null)
+				return "default";
+			
 			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
 				192, radarMinimapHeight);
 			
-			var loc = Game.world.Minimap.MinimapPixelToCell(mapRect, pos);
+			var loc = Minimap.MinimapPixelToCell(mapRect, pos);
 
 			var mi = new MouseInput
 			{
@@ -57,10 +60,10 @@ namespace OpenRA.Widgets
 			var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2,
 				192, radarMinimapHeight);
 
-			if (!mapRect.Contains(mi.Location.ToPointF()))
+			if (!mapRect.Contains(mi.Location.ToPointF()) || Minimap == null)
 				return false;
 
-			var loc = Game.world.Minimap.MinimapPixelToCell(mapRect, mi.Location);
+			var loc = Minimap.MinimapPixelToCell(mapRect, mi.Location);
 
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
 				Game.viewport.Center(loc);
@@ -114,17 +117,20 @@ namespace OpenRA.Widgets
 
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 
+			if (Minimap == null)
+				Minimap = new Minimap(world);
+			
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
 				var mapRect = new RectangleF(radarOrigin.X + 9, radarOrigin.Y + (192 - radarMinimapHeight) / 2, 192, radarMinimapHeight);
-				world.Minimap.Draw(mapRect);
+				Minimap.Draw(mapRect);
 			}
 		}
 
 		public override void Tick(World world)
 		{
-			if (world.LocalPlayer != null)
-				world.Minimap.Update();
+			if (world.LocalPlayer != null && Minimap != null)
+				Minimap.Update();
 
 			if (!radarAnimating)
 				return;
