@@ -88,6 +88,7 @@ namespace OpenRA.Graphics
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
+			var customTerrain = world.WorldActor.traits.WithInterface<ITerrainTypeModifier>();
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -95,20 +96,18 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
-						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;
-						
-						// This is extremely slow (~7ms). TODO: cache this information and only update when it changes
-						var customTerrain = world.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-							.Select( t => t.GetTerrainType(new int2(mapX, mapY)) )
-							.FirstOrDefault( t => t != null );
-					
-						if (customTerrain == null) continue;
-						
-						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[customTerrain].Color.ToArgb();
+						var xy = new int2(x + map.TopLeft.X, y + map.TopLeft.Y);
+						foreach (var t in customTerrain)
+						{
+							var tt = t.GetTerrainType(xy);
+							if (tt != null)
+							{
+								*(c + (xy.Y * bitmapData.Stride >> 2) + xy.X) = world.TileSet.Terrain[tt].Color.ToArgb();
+								break;
+							}
+						}			
 					}
 			}
-			
 			bitmap.UnlockBits(bitmapData);
 			return bitmap;
 		}
