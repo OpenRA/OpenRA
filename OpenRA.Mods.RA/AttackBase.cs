@@ -135,8 +135,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var weapon = Rules.Weapons[weaponName.ToLowerInvariant()];
-			if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return false;
 
+			//if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return false;
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
 			var numOffsets = (localOffset.Length + 2) / 3;
