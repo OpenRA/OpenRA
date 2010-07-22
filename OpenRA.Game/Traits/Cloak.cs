@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Cloak(init.self); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage
+	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IRadarVisibilityModifier
 	{
 		[Sync]
 		int remainingTime;
@@ -78,6 +78,12 @@ namespace OpenRA.Traits
 
 		public bool Cloaked { get { return remainingTime > 0; } }
 
+		
+		public bool VisibleOnRadar(Actor self)
+		{
+			return !Cloaked || self.Owner == self.World.LocalPlayer;
+		}
+		
 		public void Decloak(int time)
 		{
 			DoSurface();
