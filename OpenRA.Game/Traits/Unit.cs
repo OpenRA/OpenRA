@@ -39,17 +39,18 @@ namespace OpenRA.Traits
 		
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
 		{
-			foreach (var mod in self.World.Queries.WithTraitMultiple<IRadarVisibilityModifier>())
-				if (!mod.Trait.VisibleOnRadar(self))
+			foreach (var mod in self.traits.WithInterface<IRadarVisibilityModifier>())
+				if (!mod.VisibleOnRadar(self))
 					yield break;
-				
+			
 			yield return self.Location;
 		}
 		
 		public Color RadarSignatureColor(Actor self)
 		{
-			foreach (var mod in self.World.Queries.WithTraitMultiple<IRadarColorModifier>())
-				return mod.Trait.RadarColorOverride(self);
+			var mod = self.traits.WithInterface<IRadarColorModifier>().FirstOrDefault();
+			if (mod != null)
+				return mod.RadarColorOverride(self);
 			
 			return self.Owner.Color;
 		}
