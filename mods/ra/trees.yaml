@@ -125,6 +125,8 @@ MINE:
 	Valued:
 		Description: Ore Mine
 	SeedsResource:
+	RadarColorFromTerrain:
+		Terrain: Ore
 
 BOXES01:
 	Inherits: ^Tree

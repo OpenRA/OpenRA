@@ -208,6 +208,7 @@
     <Compile Include="Activities\TransformIntoActor.cs" />
     <Compile Include="PaletteFromCurrentTheatre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
+    <Compile Include="RadarColorFromTerrain.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

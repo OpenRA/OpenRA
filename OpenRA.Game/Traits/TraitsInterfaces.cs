@@ -61,6 +61,11 @@ namespace OpenRA.Traits
 		Color RadarSignatureColor(Actor self);
 	}
 	
+	public interface IRadarSignatureModifier
+	{
+		Color RadarColorOverride(Actor self);
+	}
+	
 	public interface IOccupySpace
 	{
 		int2 TopLeft { get; }

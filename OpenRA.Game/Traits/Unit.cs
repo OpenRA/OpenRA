@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Traits
 {
@@ -43,6 +44,10 @@ namespace OpenRA.Traits
 		
 		public Color RadarSignatureColor(Actor self)
 		{
+			var mod = self.traits.WithInterface<IRadarSignatureModifier>().FirstOrDefault();
+			if (mod != null)
+				return mod.RadarColorOverride(self);
+			
 			return self.Owner.Color;
 		}
 	}

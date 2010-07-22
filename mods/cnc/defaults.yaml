@@ -151,7 +151,8 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-
+	RadarColorFromTerrain:
+		Terrain: Tree
 ^Rock:
 	Category: Building
 	Valued:
@@ -161,6 +162,9 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	RadarColorFromTerrain:
+		Terrain: Tree
+
 ^Husk:
 	Category: Vehicle
 	Unit:
@@ -188,3 +192,5 @@
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
 		HP: 1000
+	RadarColorFromTerrain:
+		Terrain: Road
