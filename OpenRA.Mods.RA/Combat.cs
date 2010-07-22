@@ -113,16 +113,16 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public static void DoExplosion(Actor attacker, string weapontype, int2 location, int altitude)
+		public static void DoExplosion(Actor attacker, string weapontype, Target _target, int altitude)
 		{
 			var args = new ProjectileArgs
 			{
-				src = location,
-				dest = location,
+				src = Util.CellContaining(_target.CenterLocation),
+				dest = Util.CellContaining(_target.CenterLocation),
 				srcAltitude = altitude,
 				destAltitude = altitude,
 				firedBy = attacker,
-				target = null,
+				target = _target,
 				weapon = Rules.Weapons[ weapontype.ToLowerInvariant() ],
 				facing = 0
 			};

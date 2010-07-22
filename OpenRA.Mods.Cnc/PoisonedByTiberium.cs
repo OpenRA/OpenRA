@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc
 						destAltitude = 0,
 						facing = 0,
 						firedBy = self,
-						target = self,
+						target = Target.FromActor(self),
 						weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()]
 					});
 

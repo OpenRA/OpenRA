@@ -36,11 +36,10 @@ namespace OpenRA.Mods.Aftermath
 			var unit = self.traits.GetOrDefault<Unit>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			var altitude = unit != null ? unit.Altitude : 0;
-			int2 detonateLocation = self.CenterLocation.ToInt2();
 
 			self.World.AddFrameEndTask( w =>
 			{
-				Combat.DoExplosion(self, info.PrimaryWeapon, detonateLocation, altitude);
+				Combat.DoExplosion(self, info.PrimaryWeapon, Target.FromActor(self), altitude);
 				var report = self.GetPrimaryWeapon().Report;
 				if (report != null)
 					Sound.Play(report + ".aud", self.CenterLocation);

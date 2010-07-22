@@ -75,8 +75,9 @@ namespace OpenRA.Mods.RA.Effects
 
 			var targetPosition = Args.target.CenterLocation + offset;
 
-			var targetUnit = Args.target.traits.GetOrDefault<Unit>();
-			var targetAltitude = targetUnit != null ? targetUnit.Altitude : 0;
+			var targetAltitude = 0;
+			if (Args.target.IsActor && Args.target.Actor.traits.GetOrDefault<Unit>() != null)
+				targetAltitude =  Args.target.Actor.traits.GetOrDefault<Unit>().Altitude;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
 			Traits.Util.TickFacing(ref Facing,
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 
 			var dist = targetPosition - Pos;
-			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || Args.target.IsDead)
+			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || !Args.target.IsValid )
 				Explode(world);
 
 			var speed = Scale * Info.Speed * ((targetAltitude > 0 && Info.TurboBoost) ? 1.5f : 1f);

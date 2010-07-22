@@ -30,7 +30,8 @@ namespace OpenRA.Mods.RA
 			if (self.GetCurrentActivity() is Leap) return;
 
 			var weapon = self.GetPrimaryWeapon();
-			if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return;
+			if (weapon.Range * Game.CellSize * weapon.Range * Game.CellSize
+			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return;
 
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var info = self.Info.Traits.Get<MineInfo>();
-			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation.ToInt2(), 0);
+			Combat.DoExplosion(self, info.Weapon, Target.FromActor(crusher), 0);
 			self.QueueActivity(new RemoveSelf());
 		}
 		

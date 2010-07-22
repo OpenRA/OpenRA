@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.GameRules
 {
@@ -55,7 +56,7 @@ namespace OpenRA.GameRules
 		public int2 src;
 		public int srcAltitude;
 		public int facing;
-		public Actor target;
+		public Target target;
 		public int2 dest;
 		public int destAltitude;
 	}
