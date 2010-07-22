@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init.self); }
 	}
 
-	class FrozenUnderFog : IRenderModifier
+	class FrozenUnderFog : IRenderModifier, IRadarVisibilityModifier
 	{
 		Shroud shroud;
 		Renderable[] cache = { };
@@ -34,6 +34,11 @@ namespace OpenRA.Traits
 				|| self.Owner == self.World.LocalPlayer
 				|| self.World.LocalPlayer.Shroud.Disabled
 				|| Shroud.GetVisOrigins(self).Any(o => self.World.Map.IsInMap(o) && shroud.visibleCells[o.X, o.Y] != 0);
+		}
+		
+		public bool VisibleOnRadar(Actor self)
+		{
+			return IsVisible(self);
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

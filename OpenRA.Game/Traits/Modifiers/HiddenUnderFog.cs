@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new HiddenUnderFog(init.self); }
 	}
 
-	class HiddenUnderFog : IRenderModifier
+	class HiddenUnderFog : IRenderModifier, IRadarVisibilityModifier
 	{
 		Shroud shroud;
 
@@ -32,6 +32,11 @@ namespace OpenRA.Traits
 				|| self.Owner == self.World.LocalPlayer
 				|| self.World.LocalPlayer.Shroud.Disabled
 				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
+		}
+		
+		public bool VisibleOnRadar(Actor self)
+		{
+			return IsVisible(self);
 		}
 
 		static Renderable[] Nothing = { };

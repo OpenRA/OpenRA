@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new RadarColorFromTerrain(init.self,Terrain); }
 	}
 
-	public class RadarColorFromTerrain : IRadarSignatureModifier
+	public class RadarColorFromTerrain : IRadarColorModifier
 	{
 		Color c;
 		public RadarColorFromTerrain(Actor self, string terrain)
@@ -29,6 +29,7 @@ namespace OpenRA.Traits
 			c = self.World.TileSet.Terrain[terrain].Color;
 		}
 		
+		public bool VisibleOnRadar(Actor self) { return true; }
 		public Color RadarColorOverride(Actor self)
 		{
 			return c;
