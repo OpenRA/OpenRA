@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
 	}
 
-	class BridgeLayer : ILoadWorldHook, ITerrainTypeModifier
+	class BridgeLayer : ILoadWorldHook
 	{
 		readonly BridgeLayerInfo Info;
 		readonly World world;
@@ -104,13 +104,6 @@ namespace OpenRA.Mods.RA
 				Bridges[x,y] = bridge;
 			}
 			bridge.Create(tile, subTiles);
-		}
-		
-		public string GetTerrainType(int2 cell)
-		{
-			if (Bridges[ cell.X, cell.Y ] != null)
-				return Bridges[ cell.X, cell.Y ].GetTerrainType(cell);
-			return null;
 		}
 		
 		// Used to check for neighbouring bridges

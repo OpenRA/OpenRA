@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, ILoadWorldHook, ITerrainTypeModifier
+	public class ResourceLayer: IRenderOverlay, ILoadWorldHook
 	{		
 		World world;
 
@@ -75,15 +75,7 @@ namespace OpenRA.Traits
 					if (content[x, y].type != null)
 						content[x, y].density = GetIdealDensity(x, y);
 		}
-		
-		public string GetTerrainType(int2 cell)
-		{
-			if (content[cell.X,cell.Y].type == null)
-				return null;
-			
-			return content[cell.X,cell.Y].type.info.TerrainType;
-		}
-				
+
 		Sprite[] ChooseContent(ResourceType t)
 		{
 			return t.info.Sprites[world.SharedRandom.Next(t.info.Sprites.Length)];
@@ -120,6 +112,8 @@ namespace OpenRA.Traits
 			content[i, j].density = Math.Min(
 				content[i, j].image.Length - 1, 
 				content[i, j].density + n);
+			
+			world.Map.CustomTerrain[i,j] = t.info.TerrainType;
 		}
 
 		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
@@ -133,6 +127,7 @@ namespace OpenRA.Traits
 			{
 				content[p.X, p.Y].type = null;
 				content[p.X, p.Y].image = null;
+				world.Map.CustomTerrain[p.X, p.Y] = null;
 			}
 			return type;
 		}

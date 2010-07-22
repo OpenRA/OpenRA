@@ -53,7 +53,7 @@ namespace OpenRA.FileFormats
 
 		public TileReference<ushort, byte>[,] MapTiles;
 		public TileReference<byte, byte>[,] MapResources;
-
+		public string [,] CustomTerrain;
 
 		// Temporary compat hacks
 		public int XOffset { get { return TopLeft.X; } }
@@ -148,6 +148,7 @@ namespace OpenRA.FileFormats
 			// Rules
 			Rules = yaml["Rules"].Nodes;
 
+			CustomTerrain = new string[MapSize.X, MapSize.Y];			
 			LoadUid();
 			LoadBinaryData();
 		}

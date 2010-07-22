@@ -171,6 +171,10 @@ namespace OpenRA.Mods.RA
 			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
 							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
 
+			// Update map
+			foreach (var c in TileSprites[currentTemplate].Keys)
+				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
+
 			if (Info.Long && ds == DamageState.Dead)
 			{
 				// Long bridges have custom art for multiple segments being destroyed

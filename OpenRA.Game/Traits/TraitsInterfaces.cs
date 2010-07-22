@@ -48,7 +48,6 @@ namespace OpenRA.Traits
 	public interface IAvoidHazard { string Type { get; } }
 	public interface IStoreOre { int Capacity { get; }}
 
-	public interface ITerrainTypeModifier { string GetTerrainType(int2 cell); }
 	public interface ITerrainCost { float GetTerrainCost(int2 cell, Actor forActor); }
 
 	public interface IDisable { bool Disabled { get; } }

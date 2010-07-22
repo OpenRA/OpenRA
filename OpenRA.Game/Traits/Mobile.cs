@@ -192,13 +192,8 @@ namespace OpenRA.Traits
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
-			
-			// Custom terrain types don't stack: pick one
-			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-				.Select( t => t.GetTerrainType(cell) )
-				.FirstOrDefault( t => t != null );
-			
-			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
+
+			var type = self.World.GetTerrainType(cell);
 			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
 				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
 			
@@ -210,13 +205,8 @@ namespace OpenRA.Traits
 			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
 			if( unitInfo == null )
 			   return 0f;
-			
-			// Custom terrain types don't stack: pick one
-			var customTerrain = self.World.WorldActor.traits.WithInterface<ITerrainTypeModifier>()
-				.Select( t => t.GetTerrainType(cell) )
-				.FirstOrDefault( t => t != null );
-			
-			var type = (customTerrain != null) ? customTerrain : self.World.GetTerrainType(cell);
+
+			var type = self.World.GetTerrainType(cell);
 
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
