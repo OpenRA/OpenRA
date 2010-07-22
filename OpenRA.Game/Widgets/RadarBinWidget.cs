@@ -124,11 +124,6 @@ namespace OpenRA.Widgets
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
-				// Build the radar image
-				var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
-				var final = Minimap.AddActors(world, custom);
-				radarSheet.Texture.SetData(final);
-				
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite( radarSprite,
 					new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2),
 				          "chrome",
@@ -146,6 +141,14 @@ namespace OpenRA.Widgets
 				radarAnimating = true;
 			
 			hasRadar = hasRadarNew;
+			
+			if (hasRadar)
+			{
+				// Build the radar image
+				var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
+				var final = Minimap.AddActors(world, custom);
+				radarSheet.Texture.SetData(final);
+			}
 			
 			if (!radarAnimating)
 				return;
