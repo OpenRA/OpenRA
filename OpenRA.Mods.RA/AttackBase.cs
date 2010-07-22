@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button == MouseButton.Left) return null;
 			if (self == underCursor) return null;
 
-			var target = underCursor == null ? Target.FromPos(Util.CenterOfCell(xy)) : Target.FromActor(underCursor);
+			var target = underCursor == null ? Target.FromCell(xy) : Target.FromActor(underCursor);
 
 			var isHeal = self.GetPrimaryWeapon().Warheads.First().Damage < 0;
 			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
