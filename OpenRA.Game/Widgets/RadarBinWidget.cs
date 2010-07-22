@@ -26,11 +26,7 @@ namespace OpenRA.Widgets
 		int radarAnimationFrame = 0;
 		bool radarAnimating = false;
 		bool hasRadar = false;
-
-		
-		
 		string radarCollection;
-		
 		
 		World world;
 		float previewScale = 0;
@@ -46,9 +42,7 @@ namespace OpenRA.Widgets
 		{
 			this.world = world;
 			var size = Math.Max(world.Map.Width, world.Map.Height);
-			
 			previewScale = Math.Min(192f / world.Map.Width, 192f / world.Map.Height);
-			
 			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Height)/2));
 			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
 			
@@ -132,7 +126,6 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 			
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
@@ -143,8 +136,27 @@ namespace OpenRA.Widgets
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, "chrome", s);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, "chrome", s);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, "chrome", s);
-
+				
+				// Draw viewport rect
+				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength)
+				{
+					var tl = CellToMinimapPixel(new int2((int)(Game.viewport.Location.X/Game.CellSize), (int)(Game.viewport.Location.Y/Game.CellSize)));
+					var br = CellToMinimapPixel(new int2((int)((Game.viewport.Location.X + Game.viewport.Width)/Game.CellSize), (int)((Game.viewport.Location.Y + Game.viewport.Height)/Game.CellSize)));
+					var tr = new int2(br.X, tl.Y);
+					var bl = new int2(tl.X, br.Y);
+					
+					Game.Renderer.RgbaSpriteRenderer.Flush();
+					Game.Renderer.Device.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
+					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + tl, Game.viewport.Location + tr, Color.White, Color.White);
+					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + tr, Game.viewport.Location + br, Color.White, Color.White);
+					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + br, Game.viewport.Location + bl, Color.White, Color.White);
+					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + bl, Game.viewport.Location + tl, Color.White, Color.White);
+					Game.Renderer.LineRenderer.Flush();
+					Game.Renderer.Device.DisableScissor();
+				}
 			}
+			
+
 		}
 
 		int updateTicks = 0;

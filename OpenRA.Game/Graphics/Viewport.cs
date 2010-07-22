@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 
 		public float2 ViewToWorld(MouseInput mi)
 		{
-			return (1 / 24.0f) * (new float2(mi.Location.X, mi.Location.Y) + Location);
+			return (1f / Game.CellSize) * (new float2(mi.Location.X, mi.Location.Y) + Location);
 		}
 		
 		public void Center(int2 loc)
