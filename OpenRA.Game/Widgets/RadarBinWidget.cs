@@ -147,6 +147,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		int updateTicks = 0;
 		public override void Tick(World w)
 		{
 			var hasRadarNew = world.Queries.OwnedBy[world.LocalPlayer]
@@ -158,12 +159,21 @@ namespace OpenRA.Widgets
 			
 			hasRadar = hasRadarNew;
 			
+			// Build the radar image
 			if (hasRadar)
 			{
-				// Build the radar image
-				customTerrainSprite.sheet.Texture.SetData(Minimap.CustomTerrainBitmap(world));
-				actorSprite.sheet.Texture.SetData(Minimap.ActorsBitmap(world));
-				shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
+				--updateTicks;
+				if (updateTicks <= 0)
+				{
+					updateTicks = 12;
+					customTerrainSprite.sheet.Texture.SetData(Minimap.CustomTerrainBitmap(world));
+				}
+				
+				if (updateTicks == 8)
+					actorSprite.sheet.Texture.SetData(Minimap.ActorsBitmap(world));
+				
+				if (updateTicks == 4)
+					shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
 			}
 			
 			if (!radarAnimating)
