@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 {
 	class Minimap
 	{		
-		public static Bitmap RenderTerrainBitmap(Map map)
+		public static Bitmap TerrainBitmap(Map map)
 		{
 			var tileset = Rules.TileSets[map.Tileset];
 			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
@@ -81,10 +81,11 @@ namespace OpenRA.Graphics
 			return terrain;
 		}
 		
-		public static Bitmap AddCustomTerrain(World world, Bitmap terrainBitmap)
+		public static Bitmap CustomTerrainBitmap(World world)
 		{
 			var map = world.Map;
-			var bitmap = new Bitmap(terrainBitmap);
+			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			Bitmap bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
@@ -107,16 +108,14 @@ namespace OpenRA.Graphics
 			return bitmap;
 		}
 				
-		public static Bitmap AddActors(World world, Bitmap terrain)
+		public static Bitmap ActorsBitmap(World world)
 		{	
 			var map = world.Map;
-			var bitmap = new Bitmap(terrain);
+			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			Bitmap bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			var shroud = Color.Black.ToArgb();
-			var fogOpacity = 0.5f;
-						
+		
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -127,23 +126,36 @@ namespace OpenRA.Graphics
 					foreach( var cell in t.Trait.RadarSignatureCells(t.Actor))
 						*(c + ((cell.Y - world.Map.TopLeft.Y)* bitmapData.Stride >> 2) + cell.X - world.Map.TopLeft.X) = color.ToArgb();
 				}
+			}
+
+			bitmap.UnlockBits(bitmapData);
+			return bitmap;
+		}
+		
+		public static Bitmap ShroudBitmap(World world)
+		{	
+			var map = world.Map;
+			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			Bitmap bitmap = new Bitmap(size, size);
+			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			var shroud = Color.Black.ToArgb();
+			var fog = Color.FromArgb(128, Color.Black).ToArgb();
+						
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
 				
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
-						
 						if (!world.LocalPlayer.Shroud.IsExplored(mapX, mapY))
-						{
 							*(c + (y * bitmapData.Stride >> 2) + x) = shroud;
-							continue;
-						}
-						if (!world.LocalPlayer.Shroud.IsVisible(mapX,mapY))
-						{						
-							*(c + (y * bitmapData.Stride >> 2) + x) = Util.LerpARGBColor(fogOpacity, *(c + (y * bitmapData.Stride >> 2) + x), shroud);
-							continue;
-						}
+						else if (!world.LocalPlayer.Shroud.IsVisible(mapX,mapY))					
+							*(c + (y * bitmapData.Stride >> 2) + x) = fog;
 					}
 			}
 
@@ -153,7 +165,7 @@ namespace OpenRA.Graphics
 		
 		public static Bitmap RenderMapPreview(Map map)
 		{
-			Bitmap terrain = RenderTerrainBitmap(map);
+			Bitmap terrain = TerrainBitmap(map);
 			return AddStaticResources(map, terrain);
 		}
 	}

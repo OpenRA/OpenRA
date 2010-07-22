@@ -73,7 +73,10 @@ namespace OpenRA.Traits
 			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 					if (content[x, y].type != null)
+					{
 						content[x, y].density = GetIdealDensity(x, y);
+						w.Map.CustomTerrain[x, y] = content[x, y].type.info.TerrainType;
+					}
 		}
 
 		Sprite[] ChooseContent(ResourceType t)

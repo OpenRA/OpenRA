@@ -27,8 +27,7 @@ namespace OpenRA.Widgets
 		bool radarAnimating = false;
 		bool hasRadar = false;
 
-		Sheet radarSheet;
-		Sprite radarSprite;
+		
 		
 		string radarCollection;
 		
@@ -37,7 +36,12 @@ namespace OpenRA.Widgets
 		float previewScale = 0;
 		RectangleF mapRect = Rectangle.Empty;
 		int2 previewOrigin;
-		Bitmap terrainBitmap = null;
+		
+		Sprite terrainSprite;
+		Sprite customTerrainSprite;
+		Sprite actorSprite;
+		Sprite shroudSprite;
+		
 		public void SetWorld(World world)
 		{
 			this.world = world;
@@ -48,9 +52,18 @@ namespace OpenRA.Widgets
 			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Height)/2));
 			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
 			
-			terrainBitmap = Minimap.RenderTerrainBitmap(world.Map);
-			radarSheet = new Sheet(new Size( terrainBitmap.Width, terrainBitmap.Height ) );
-			radarSprite = new Sprite( radarSheet, new Rectangle( 0, 0, world.Map.Width, world.Map.Height ), TextureChannel.Alpha );
+
+			// Only needs to be done once
+			var terrainBitmap = Minimap.TerrainBitmap(world.Map);
+			var r = new Rectangle( 0, 0, world.Map.Width, world.Map.Height );
+			var s = new Size( terrainBitmap.Width, terrainBitmap.Height );
+			terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+			terrainSprite.sheet.Texture.SetData(terrainBitmap);
+			
+			// Data is set in Tick()
+			customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+			actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+			shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 		}
 		
 		public override string GetCursor(int2 pos)
@@ -120,14 +133,17 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
 			Game.Renderer.RgbaSpriteRenderer.Flush();
-				
+			
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite( radarSprite,
-					new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2),
-				          "chrome",
-				    new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight) );
+				var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2);
+				var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(terrainSprite, o, "chrome", s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, "chrome", s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, "chrome", s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, "chrome", s);
+
 			}
 		}
 
@@ -145,9 +161,9 @@ namespace OpenRA.Widgets
 			if (hasRadar)
 			{
 				// Build the radar image
-				var custom = Minimap.AddCustomTerrain(world,terrainBitmap);
-				var final = Minimap.AddActors(world, custom);
-				radarSheet.Texture.SetData(final);
+				customTerrainSprite.sheet.Texture.SetData(Minimap.CustomTerrainBitmap(world));
+				actorSprite.sheet.Texture.SetData(Minimap.ActorsBitmap(world));
+				shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
 			}
 			
 			if (!radarAnimating)
