@@ -55,8 +55,8 @@ namespace OpenRA.Widgets
 		
 		public override string GetCursor(int2 pos)
 		{		
-			if (world == null)
-				return "default";
+			if (world == null || !hasRadar)
+				return null;
 						
 			var loc = MinimapPixelToCell(pos);
 
