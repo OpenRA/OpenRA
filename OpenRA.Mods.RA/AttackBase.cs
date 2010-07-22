@@ -136,7 +136,9 @@ namespace OpenRA.Mods.RA
 
 			var weapon = Rules.Weapons[weaponName.ToLowerInvariant()];
 
-			//if (weapon.Range * weapon.Range < (target.CenterLocation - self.Location).LengthSquared) return false;
+			if (weapon.Range * weapon.Range * Game.CellSize * Game.CellSize
+			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
+			
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
 			var numOffsets = (localOffset.Length + 2) / 3;
@@ -165,7 +167,7 @@ namespace OpenRA.Mods.RA
 				weapon = Rules.Weapons[weaponName.ToLowerInvariant()],
 
 				firedBy = self,
-				target = target.Actor,
+				target = this.target,
 
 				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
 				srcAltitude = unit != null ? unit.Altitude : 0,

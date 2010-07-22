@@ -170,7 +170,7 @@ namespace OpenRA.Traits
 		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
-		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : pos; } }
+		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : Util.CenterOfCell(pos.ToInt2()); } }
 
 		public Actor Actor { get { return actor; } }
 		public bool IsActor { get { return actor != null; } }
