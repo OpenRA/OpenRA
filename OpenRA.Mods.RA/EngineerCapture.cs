@@ -34,19 +34,22 @@ namespace OpenRA.Mods.RA
 			var isCapture = underCursor.Health <= self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage &&
 				self.Owner.Stances[underCursor.Owner] != Stance.Ally;
 
-			return new Order(isCapture ? "Capture" : "Infiltrate",
+			var isHeal = self.Owner.Stances[underCursor.Owner] == Stance.Ally;
+			return new Order(isCapture ? "Capture" :
+			                 isHeal ? "Repair" : "Infiltrate",
 				self, underCursor);
 		}
 
 		public string CursorForOrderString(string s, Actor a, int2 location)
 		{
 			return (s == "Infiltrate") ? "enter" : 
-				   (s == "Capture")    ? "capture" : null;
+				   (s == "Repair") ? "goldwrench" :
+				   (s == "Capture") ? "capture" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture")
+			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture" || order.OrderString == "Repair")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));

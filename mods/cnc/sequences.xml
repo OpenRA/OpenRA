@@ -47,6 +47,8 @@
     <sequence name="heal-minimap" start="1" length="1" x="12" y="12" />
     <sequence name="capture" start="119" length="3" x="12" y="12" />
     <sequence name="capture-minimap" start="148" length="3" x="12" y="12" />
+    <sequence name="goldwrench" start="29" length="24" x="12" y="12" />
+    <sequence name="goldwrench-blocked" start="126" length="1" x="12" y="12" />
   </cursor>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />
