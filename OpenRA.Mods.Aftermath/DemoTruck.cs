@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Aftermath
 
 			self.World.AddFrameEndTask( w =>
 			{
-				Combat.DoExplosion(self, info.PrimaryWeapon, Target.FromActor(self), altitude);
+				Combat.DoExplosion(self, info.PrimaryWeapon, self.CenterLocation, altitude);
 				var report = self.GetPrimaryWeapon().Report;
 				if (report != null)
 					Sound.Play(report + ".aud", self.CenterLocation);

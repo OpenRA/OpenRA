@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 				{
 					var unit = self.traits.GetOrDefault<Unit>();
 					var altitude = unit != null ? unit.Altitude : 0;
-					Combat.DoExplosion(e.Attacker, weapon, Target.FromActor(self), altitude);
+					Combat.DoExplosion(e.Attacker, weapon, self.CenterLocation, altitude);
 				}
 			}
 		}
