@@ -13,10 +13,6 @@
     <sequence name="default-minimap" start="86" length="1" />
     <sequence name="generic-blocked" start="9" x="12" y="12" />
     <sequence name="generic-blocked-minimap" start="27" x="12" y="12" />
-    <sequence name="move" start="10" length="1" x="12" y="12" />
-    <sequence name="move-minimap" start="26" length="1" x="12" y="12" />
-    <sequence name="move-blocked" start="11" x="12" y="12" />
-    <sequence name="move-blocked-minimap" start="27" length="1" x="12" y="12" />
     <sequence name="attack" start="18" length="8" x="12" y="12" />
     <sequence name="attack-minimap" start="140" length="8" x="12" y="12" />
     <sequence name="attackmove" start="18" length="8" x="12" y="12" />
@@ -38,6 +34,12 @@
     <sequence name="nuke" start="96" length="7" x="12" y="12" />
     <sequence name="ioncannon" start="103" length="16" x="12" y="12" />
     <sequence name="sell-vehicle" start="154" length="24" x="12" y="12" />
+  </cursor>
+  <cursor src="mouse4" palette="cursor">
+    <sequence name="move" start="0" length="8" x="12" y="12" />
+    <sequence name="move-blocked" start="8" x="12" y="12" />
+    <sequence name="move-minimap" start="9" length="4" x="12" y="12" />
+    <sequence name="move-blocked-minimap" start="13" length="1" x="12" y="12" />
   </cursor>
   <cursor src="mouse3" palette="cursor2">
     <sequence name="enter-blocked" start="212" length="1" x="12" y="12" />
