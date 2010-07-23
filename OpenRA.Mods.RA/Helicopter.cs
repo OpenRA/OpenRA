@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -38,27 +39,28 @@ namespace OpenRA.Mods.RA
 			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor == null)
-			{
 				if (self.traits.GetOrDefault<IMove>().CanEnterCell(xy))
 					return new Order("Move", self, xy);
-			}
 
 			if (AircraftCanEnter(self, underCursor)
-				&& underCursor.Owner == self.Owner
-				&& !Reservable.IsReserved(underCursor))
+				&& underCursor.Owner == self.Owner)
 				return new Order("Enter", self, underCursor);
-
+			
 			return null;
 		}
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Enter") ? "enter" : null;
+			if (order.OrderString == "Move") return "move";
+			if (order.OrderString == "Enter")
+				return Reservable.IsReserved(order.TargetActor) ? "enter-blocked" : "enter";
+			
+			return null;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Move") ? "Move" : null;
+			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
@@ -71,6 +73,9 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "Move")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
 				
@@ -91,7 +96,10 @@ namespace OpenRA.Mods.RA
 				var productionInfo = order.TargetActor.Info.Traits.GetOrDefault<ProductionInfo>();
 				var offset = productionInfo != null ? productionInfo.SpawnOffset : null;
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
-
+				
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
 				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));

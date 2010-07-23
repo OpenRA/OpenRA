@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -32,10 +33,9 @@ namespace OpenRA.Mods.RA
 			
 			if (underCursor == null)
 				return new Order("Move", self, xy);
-
+			
 			if (AircraftCanEnter(self, underCursor)
-				&& underCursor.Owner == self.Owner
-				&& !Reservable.IsReserved(underCursor))
+				&& underCursor.Owner == self.Owner)
 				return new Order("Enter", self, underCursor);
 
 			return null;
@@ -43,12 +43,16 @@ namespace OpenRA.Mods.RA
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Enter") ? "enter" : null;
+			if (order.OrderString == "Move") return "move";
+			if (order.OrderString == "Enter")
+				return Reservable.IsReserved(order.TargetActor) ? "enter-blocked" : "enter";
+			
+			return null;
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Move") ? "Move" : null;
+			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
@@ -61,6 +65,9 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "Move")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 			}
@@ -74,6 +81,9 @@ namespace OpenRA.Mods.RA
 
 				var info = self.Info.Traits.Get<PlaneInfo>();
 
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(

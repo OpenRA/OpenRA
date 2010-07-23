@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 
@@ -97,6 +98,7 @@ namespace OpenRA.Traits
 			}
 			if (MovementSpeedForCell(self, self.Location) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
+			
 			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
@@ -106,11 +108,11 @@ namespace OpenRA.Traits
 			{
 				if (self.traits.GetOrDefault<IMove>().CanEnterCell(order.TargetLocation))
 				{
+					if (self.Owner == self.World.LocalPlayer)
+						self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+					
 					if( !order.Queued ) self.CancelActivity();
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
-					
-					if (self.Owner == self.World.LocalPlayer)
-						self.World.Add(new Effects.MoveFlash(self.World, Game.CellSize * (order.TargetLocation + new float2(0.5f, 0.5f))));
 				}
 			}
 		}

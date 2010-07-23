@@ -14,11 +14,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
-	class MoveFlash : IEffect
+	public class MoveFlash : IEffect
 	{
 		Animation anim = new Animation("moveflsh");
 		float2 pos;
 
+		
+		public MoveFlash( World world, int2 cell )
+		{
+			this.pos = Game.CellSize * (cell + new float2(0.5f, 0.5f));
+			anim.PlayThen( "idle", 
+				() => world.AddFrameEndTask( 
+					w => w.Remove( this ) ) );
+		}
+		
 		public MoveFlash( World world, float2 pos )
 		{
 			this.pos = pos;
