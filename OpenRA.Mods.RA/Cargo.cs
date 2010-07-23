@@ -21,39 +21,57 @@ namespace OpenRA.Mods.RA
 		public readonly int UnloadFacing = 0;
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		List<Actor> cargo = new List<Actor>();
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			// todo: check if there is an unoccupied `land` tile adjacent
-			if (mi.Button == MouseButton.Right && underCursor == self && cargo.Count > 0)
-			{
-				var unit = underCursor.traits.GetOrDefault<Unit>();
-				if (unit != null && unit.Altitude > 0) return null;
-
-				return new Order("Deploy", self);
-			}
-
-			return null;
+			if (mi.Button != MouseButton.Right || underCursor != self)
+				return null;
+			
+			return new Order("Unload", self);				
 		}
-
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy")
+			if (order.OrderString == "Unload")
 			{
-				// todo: eject the units
+				if (!CanUnload(self))
+					return;
+				
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo());
 			}
 		}
 		
+		bool CanUnload(Actor self)
+		{
+			if (IsEmpty(self))
+				return false;
+			
+			// Cannot unload mid-air
+			var unit = self.traits.GetOrDefault<Unit>();
+			if (unit != null && unit.Altitude > 0)
+				return false;
+			
+			// Todo: Check if there is a free tile to unload to
+			return true;
+		}
+		
+		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Deploy") ? "deploy" : null;
+			if (order.OrderString != "Unload") return null;
+			return CanUnload(self) ? "deploy" : "deploy-blocked";
 		}
 
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			if (order.OrderString != "Unload" || IsEmpty(self)) return null;			
+			return "Move";
+		}
+		
 		public bool IsFull(Actor self)
 		{
 			return cargo.Count == self.Info.Traits.Get<CargoInfo>().Passengers;

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -19,10 +20,13 @@ namespace OpenRA.Mods.RA
 		public readonly PipType ColorOfCargoPip = PipType.Green;
 	}
 
-	class Passenger : IIssueOrder, IResolveOrder, IOrderCursor
+	class Passenger : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
+			// Disable cargo support until someone fixes it
+			return null;
+			
 			if (mi.Button != MouseButton.Right) 
 				return null;
 
@@ -30,26 +34,41 @@ namespace OpenRA.Mods.RA
 				return null;
 
 			var cargo = underCursor.traits.GetOrDefault<Cargo>();
-			if (cargo == null || cargo.IsFull(underCursor))
+			if (cargo == null)
 				return null;
 
-			// Todo: Use something better for cargo management
-			//var umt = self.traits.Get<IMove>().GetMovementType();
-			//if (!underCursor.Info.Traits.Get<CargoInfo>().PassengerTypes.Contains(umt))
-				return null;
-
-			//return new Order("EnterTransport", self, underCursor);
+			// Todo: Check if we can enter the transport
+			
+			return new Order("EnterTransport", self, underCursor);
+		}
+		
+		bool CanEnter(Actor self, Actor a)
+		{
+			var cargo = a.traits.GetOrDefault<Cargo>();
+			return (cargo != null && !cargo.IsFull(a));
 		}
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "EnterTransport") ? "enter" : null;
+			if (order.OrderString != "EnterTransport") return null;
+			return CanEnter(self, order.TargetActor) ? "enter" : "enter-blocked";
 		}
 
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			if (order.OrderString != "EnterTransport" || !CanEnter(self, order.TargetActor)) return null;			
+			return "Move";
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "EnterTransport")
 			{
+				if (!CanEnter(self, order.TargetActor)) return;
+				
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor.Location, 1));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
