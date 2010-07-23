@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] NoTransformSounds = null;
 	}
 
-	class TransformsOnDeploy : IIssueOrder, IResolveOrder, IOrderCursor
+	class TransformsOnDeploy : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -35,6 +35,11 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "DeployTransform") ? "Move" : null;
+		}
+		
 		public void ResolveOrder( Actor self, Order order )
 		{
 			if (order.OrderString == "DeployTransform")

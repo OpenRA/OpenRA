@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.RA
 {
 	class RepairableInfo : TraitInfo<Repairable> { public readonly string[] RepairBuildings = { "fix" }; }
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderCursor
+	class Repairable : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -26,22 +27,40 @@ namespace OpenRA.Mods.RA
 
 			if (self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(underCursor.Info.Name)
 				&& underCursor.Owner == self.Owner)
-				return new Order("Enter", self, underCursor);
+				return new Order("Repair", self, underCursor);
 
 			return null;
 		}
-
+		
+		bool CanRepair(Actor self)
+		{
+			var li = self.traits.GetOrDefault<LimitedAmmo>();
+			return (self.Health < self.GetMaxHP() || (li != null && !li.FullAmmo()) );
+		}
+		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Enter") ? "enter" : null;
+			if (order.OrderString != "Repair") return null;
+			return CanRepair(self) ? "enter" : "enter-blocked";
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "Repair" && CanRepair(self)) ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Enter")
+			if (order.OrderString == "Repair")
 			{
-                var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
+                if (!CanRepair(self))
+					return;
+				
+				var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
 
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new Move(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm());

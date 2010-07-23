@@ -13,12 +13,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class LimitedAmmoInfo : ITraitInfo
+	public class LimitedAmmoInfo : ITraitInfo
 	{
 		public readonly int Ammo = 0;
 		public readonly int PipCount = 0;
 
-		public object Create(ActorInitializer init) { return new LimitedAmmo(init.self); }
+		public object Create(ActorInitializer init) { return new LimitedAmmo(init.self, this); }
 	}
 
 	public class LimitedAmmo : INotifyAttack, IPips
@@ -26,17 +26,20 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		int ammo;
 		Actor self;
-
-		public LimitedAmmo(Actor self)
+		LimitedAmmoInfo Info;
+		
+		public LimitedAmmo(Actor self, LimitedAmmoInfo info)
 		{
-			ammo = self.Info.Traits.Get<LimitedAmmoInfo>().Ammo;
+			ammo = info.Ammo;
 			this.self = self;
+			Info = info;
 		}
 
+		public bool FullAmmo() { return ammo == Info.Ammo; }
 		public bool HasAmmo() { return ammo > 0; }
 		public bool GiveAmmo()
 		{
-			if (ammo >= self.Info.Traits.Get<LimitedAmmoInfo>().Ammo) return false;
+			if (ammo >= Info.Ammo) return false;
 			++ammo;
 			return true;
 		}
@@ -45,10 +48,9 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var info = self.Info.Traits.Get<LimitedAmmoInfo>();
-			var pips = info.PipCount != 0 ? info.PipCount : info.Ammo;
+			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
 			return Graphics.Util.MakeArray(pips, 
-				i => (ammo * pips) / info.Ammo > i ? PipType.Green : PipType.Transparent);
+				i => (ammo * pips) / Info.Ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}
 }
