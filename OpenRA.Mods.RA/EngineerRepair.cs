@@ -15,10 +15,7 @@ using OpenRA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerRepairInfo : TraitInfo<EngineerRepair>
-	{
-		public readonly bool RepairsBridges = true;
-	}
+	class EngineerRepairInfo : TraitInfo<EngineerRepair> {}
 
 	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
@@ -33,10 +30,8 @@ namespace OpenRA.Mods.RA
 		
 		bool CanRepair(Actor self, Actor a)
 		{
-			if (!a.traits.Contains<Building>()) return false;
-			bool bridge = a.traits.Contains<Bridge>() && !self.Info.Traits.Get<EngineerRepairInfo>().RepairsBridges;
-			
-			return (bridge || self.Owner.Stances[a.Owner] == Stance.Ally);
+			if (!a.traits.Contains<Building>()) return false;			
+			return (self.Owner.Stances[a.Owner] == Stance.Ally);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
