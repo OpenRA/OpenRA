@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (reservation != null)
 			{
-				Game.Debug("Disposing reservation.");
+		//		Game.Debug("Disposing reservation.");
 				reservation.Dispose();
 				reservation = null;
 			}
