@@ -24,7 +24,7 @@ namespace OpenRA.Server
 	static class Server
 	{
 		static List<Connection> conns = new List<Connection>();
-		static TcpListener listener;
+		static TcpListener listener = null;
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo;
@@ -423,6 +423,14 @@ namespace OpenRA.Server
 			
 			if (conns.Count != 0)
 				SyncLobbyInfo();
+		}
+		
+		public static void CloseServer()
+		{
+			while (conns.Count() != 0)
+				DropClient(conns.ElementAt(conns.Count() - 1), null);
+			if (listener != null)
+				listener.Stop();
 		}
 
 		static void SyncLobbyInfo()
