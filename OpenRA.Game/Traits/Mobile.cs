@@ -57,6 +57,7 @@ namespace OpenRA.Traits
 			AddInfluence();
 		}
 
+		Shroud shroud;
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
 			this.self = init.self;
@@ -75,6 +76,7 @@ namespace OpenRA.Traits
 				TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
 				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
 			}
+			shroud = self.World.WorldActor.traits.Get<Shroud>();
 		}
 
 		public void SetPosition(Actor self, int2 cell)
@@ -122,12 +124,14 @@ namespace OpenRA.Traits
 			if (order.OrderString != "Move")
 				return null;
 			
-			return (CanEnterCell(order.TargetLocation)) ? "move" : "move-blocked";
+			var xy = order.TargetLocation;
+			return (!shroud.exploredCells[xy.X, xy.Y] || CanEnterCell(xy)) ? "move" : "move-blocked";
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Move" && CanEnterCell(order.TargetLocation)) ? "Move" : null;
+			var xy = order.TargetLocation;
+			return (order.OrderString == "Move" && (!shroud.exploredCells[xy.X, xy.Y] || CanEnterCell(xy))) ? "Move" : null;
 		}
 
 		public int2 TopLeft { get { return toCell; } }
