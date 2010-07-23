@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier, IOrderCursor
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier, IOrderCursor, IOrderVoice
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
@@ -91,14 +92,14 @@ namespace OpenRA.Mods.RA
 
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
-				&& underCursor.traits.Contains<IAcceptOre>() && !IsEmpty)
-			{	
+				&& underCursor.traits.Contains<IAcceptOre>())
+			{
 				return new Order("Deliver", self, underCursor);
 			}
 			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
 			var info = self.Info.Traits.Get<HarvesterInfo>();
 
-			if (underCursor == null && res != null && info.Resources.Contains(res.info.Name))
+			if (underCursor == null && res != null && info.Resources.Contains(res.info.Name) && !IsFull)
 				return new Order("Harvest", self, xy);
 
 			return null;
@@ -106,22 +107,29 @@ namespace OpenRA.Mods.RA
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Deliver") ? "enter" : 
-				   (order.OrderString == "Harvest") ? "attackmove" : null;
+			if (order.OrderString == "Harvest") return "attackmove";
+			if (order.OrderString == "Deliver") return IsEmpty ? "enter-blocked" : "enter";
+			return null;
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "Harvest" || (order.OrderString == "Deliver" && !IsEmpty)) ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+				
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetLocation, 0));
 				self.QueueActivity(new Harvest());
 			}
 			else if (order.OrderString == "Deliver")
 			{
-				self.CancelActivity();
-
 				if (order.TargetActor != LinkedProc)
 				{
 					if (LinkedProc != null)
@@ -130,6 +138,13 @@ namespace OpenRA.Mods.RA
 					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
 				}
 				
+				if (IsEmpty)
+					return;
+				
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
+				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
 		}
