@@ -19,37 +19,30 @@ namespace OpenRA.Mods.RA
 		public readonly int EngineerDamage = 300;
 	}
 
-	class EngineerCapture : IIssueOrder, IResolveOrder, IProvideCursor
+	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
+			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy) return null;
 			if (!underCursor.traits.Contains<Building>()) return null;
-			
-			// todo: other bits
-			if (underCursor.Owner == null) return null;	// don't allow capturing of bridges, etc.
+			var isCapture = underCursor.Health <= self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage;
 
-			var isCapture = underCursor.Health <= self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage &&
-				self.Owner.Stances[underCursor.Owner] != Stance.Ally;
-
-			var isHeal = self.Owner.Stances[underCursor.Owner] == Stance.Ally;
-			return new Order(isCapture ? "Capture" :
-			                 isHeal ? "Repair" : "Infiltrate",
+			return new Order(isCapture ? "Capture" : "Infiltrate",
 				self, underCursor);
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Infiltrate") ? "enter" : 
-				   (s == "Repair") ? "goldwrench" :
-				   (s == "Capture") ? "capture" : null;
+			return (order.OrderString == "Infiltrate") ? "enter" : 
+				   (order.OrderString == "Capture") ? "capture" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture" || order.OrderString == "Repair")
+			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));

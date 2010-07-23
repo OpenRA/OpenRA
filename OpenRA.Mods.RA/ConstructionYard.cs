@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class ConstructionYardInfo : TraitInfo<ConstructionYard> { }
 
-	public class ConstructionYard : IIssueOrder, IResolveOrder, IProvideCursor
+	public class ConstructionYard : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -27,9 +27,9 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Deploy") ? "deploy" : null;
+			return (order.OrderString == "Deploy") ? "deploy" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

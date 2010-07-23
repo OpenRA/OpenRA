@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IProvideCursor
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor
 	{
 		public Target target;
 
@@ -253,9 +253,9 @@ namespace OpenRA.Mods.RA
 				target = Target.None;
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			switch (s)
+			switch (order.OrderString)
 			{
 				case "Attack": return "attack";
 				case "Heal": return "heal";

@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 		public readonly string[] Produces = { };
 	}
 
-	public class Production : IIssueOrder, IResolveOrder, ITags, IProvideCursor
+	public class Production : IIssueOrder, IResolveOrder, ITags, IOrderCursor
 	{	
 		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
 		{
@@ -99,9 +99,9 @@ namespace OpenRA.Traits
 			return null;
 		}
 		
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Deploy") ? "deploy" : null;
+			return (order.OrderString == "Deploy") ? "deploy" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

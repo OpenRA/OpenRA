@@ -123,6 +123,7 @@ E6:
 	TakeCover:
 	Passenger:
 		ColorOfCargoPip: Yellow
+	EngineerRepair:
 	EngineerCapture:
 		EngineerDamage: 9999999
 	-AutoTarget:

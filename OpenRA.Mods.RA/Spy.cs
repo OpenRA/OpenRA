@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	class SpyInfo : TraitInfo<Spy> { }
 
-	class Spy : IIssueOrder, IResolveOrder, IProvideCursor
+	class Spy : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -28,9 +28,9 @@ namespace OpenRA.Mods.RA
 			return new Order("Infiltrate", self, underCursor);
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Infiltrate") ? "enter" : null;
+			return (order.OrderString == "Infiltrate") ? "enter" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

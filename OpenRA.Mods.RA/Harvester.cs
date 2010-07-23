@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier, IProvideCursor
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier, IOrderCursor
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
@@ -104,10 +104,10 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 		
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Deliver") ? "enter" : 
-				   (s == "Harvest") ? "attackmove" : null;
+			return (order.OrderString == "Deliver") ? "enter" : 
+				   (order.OrderString == "Harvest") ? "attackmove" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

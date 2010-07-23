@@ -56,8 +56,8 @@ namespace OpenRA.Orders
 		public string GetCursor( World world, int2 xy, MouseInput mi )
 		{
 			var c = Order(world, xy, mi)
-				.Select(o => o.Subject.traits.WithInterface<IProvideCursor>()
-					.Select(pc => pc.CursorForOrderString(o.OrderString, o.Subject, o.TargetLocation)).FirstOrDefault(a => a != null))
+				.Select(o => o.Subject.traits.WithInterface<IOrderCursor>()
+					.Select(pc => pc.CursorForOrder(o.Subject, o)).FirstOrDefault(a => a != null))
 				.FirstOrDefault(a => a != null);
 
 			return c ??

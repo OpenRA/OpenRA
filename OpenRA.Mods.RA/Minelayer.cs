@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IProvideCursor
+	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 		/* [Sync] when sync can cope with arrays! */ public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
@@ -39,9 +39,9 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "BeginMinefield") ? "ability" : null;
+			return (order.OrderString == "BeginMinefield") ? "ability" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

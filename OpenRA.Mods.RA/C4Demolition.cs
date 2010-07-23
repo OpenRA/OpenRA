@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 		public readonly float C4Delay = 0;
 	}
 
-	class C4Demolition : IIssueOrder, IResolveOrder, IProvideCursor
+	class C4Demolition : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -42,9 +42,9 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "C4") ? "c4" : null;
+			return (order.OrderString == "C4") ? "c4" : null;
 		}
 	}
 }

@@ -209,6 +209,8 @@
     <Compile Include="PaletteFromCurrentTheatre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
+    <Compile Include="EngineerRepair.cs" />
+    <Compile Include="Activities\RepairBuilding.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

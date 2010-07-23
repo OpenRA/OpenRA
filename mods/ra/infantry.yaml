@@ -119,6 +119,7 @@ E6:
 		Speed: 4
 	Passenger:
 		ColorOfCargoPip: Yellow
+	EngineerRepair:
 	EngineerCapture:
 	TakeCover:
 	-AutoTarget:

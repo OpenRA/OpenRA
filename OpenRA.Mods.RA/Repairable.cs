@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class RepairableInfo : TraitInfo<Repairable> { public readonly string[] RepairBuildings = { "fix" }; }
 
-	class Repairable : IIssueOrder, IResolveOrder, IProvideCursor
+	class Repairable : IIssueOrder, IResolveOrder, IOrderCursor
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public string CursorForOrderString(string s, Actor a, int2 location)
+		public string CursorForOrder(Actor self, Order order)
 		{
-			return (s == "Enter") ? "enter" : null;
+			return (order.OrderString == "Enter") ? "enter" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
