@@ -75,7 +75,8 @@ namespace OpenRA.Widgets
 		
 		public override Rectangle EventBounds
 		{
-			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, paletteHeight + 9); }
+			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, 48 * numActualRows);
+			}
 		}
 		
 		public override void Tick(World world)
@@ -167,6 +168,7 @@ namespace OpenRA.Widgets
 		}
 		
 		int paletteHeight = 0;
+		int numActualRows = 0;
 		public override void DrawInner(World world)
 		{	
 			if (!IsVisible()) return;
@@ -198,7 +200,7 @@ namespace OpenRA.Widgets
 			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
-			var numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
+			numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
 
 			// Palette Background
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
