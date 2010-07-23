@@ -23,8 +23,6 @@
     <sequence name="attackmove-minimap" start="140" length="8" x="12" y="12" />
     <sequence name="enter" start="119" length="3" x="12" y="12" />
     <sequence name="enter-minimap" start="148" length="3" x="12" y="12" />
-    <sequence name="enter-blocked" start="9" length="1" x="12" y="12" />
-    <sequence name="enter-blocked-minimap" start="27" length="1" x="12" y="12" />
     <sequence name="c4" start="122" length="3" x="12" y="12" />
     <sequence name="c4-minimap" start="127" length="3" x="12" y="12" />
     <sequence name="guard" start="153" length="1" x="12" y="12" />
@@ -32,7 +30,6 @@
 
 	<!-- Need minimap cursors -->
     <sequence name="deploy" start="53" length="9" x="12" y="12" />
-    <sequence name="deploy-blocked" start="11" length="1" x="12" y="12" />
     <sequence name="repair" start="29" length="24" x="12" y="12" />
     <sequence name="repair-blocked" start="126" length="1" x="12" y="12" />
     <sequence name="sell" start="62" length="24" x="12" y="12" />
@@ -41,14 +38,18 @@
     <sequence name="nuke" start="96" length="7" x="12" y="12" />
     <sequence name="ioncannon" start="103" length="16" x="12" y="12" />
     <sequence name="sell-vehicle" start="154" length="24" x="12" y="12" />
-	
-	<!-- Need cursors -->
-	<sequence name="heal" start="88" length="8" x="12" y="12" />
-    <sequence name="heal-minimap" start="1" length="1" x="12" y="12" />
-    <sequence name="capture" start="119" length="3" x="12" y="12" />
-    <sequence name="capture-minimap" start="148" length="3" x="12" y="12" />
-    <sequence name="goldwrench" start="29" length="24" x="12" y="12" />
-    <sequence name="goldwrench-blocked" start="126" length="1" x="12" y="12" />
+  </cursor>
+  <cursor src="mouse3" palette="cursor2">
+    <sequence name="enter-blocked" start="212" length="1" x="12" y="12" />
+    <sequence name="enter-blocked-minimap" start="33" />
+    <sequence name="capture" start="164" length="3" x="12" y="12" />
+    <sequence name="capture-minimap" start="167" length="3" x="12" y="12" />
+    <sequence name="heal" start="160" length="4" x="12" y="12" />
+    <sequence name="heal-minimap" start="194" length="1" x="12" y="12" />
+    <sequence name="ability-minimap" start="214" length="8" x="12" y="12" />
+    <sequence name="deploy-blocked" start="211" length="1" x="12" y="12" />
+    <sequence name="goldwrench" start="170" length="24" x="12" y="12" />
+    <sequence name="goldwrench-blocked" start="213" length="1" x="12" y="12" />
   </cursor>
   <unit name="120mm">
     <sequence name="idle" start="0" length="1" />

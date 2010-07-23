@@ -66,6 +66,10 @@ World:
 		Name: cursor
 		Filename: temperat.pal
 		Transparent: no
+	PaletteFromFile@cursor2:
+		Name: cursor2
+		Filename: mouse3.pal
+		Transparent: no
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
