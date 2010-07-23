@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOccupySpace, IMove, IOrderCursor, INudge
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -108,6 +108,9 @@ namespace OpenRA.Traits
 				{
 					if( !order.Queued ) self.CancelActivity();
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
+					
+					if (self.Owner == self.World.LocalPlayer)
+						self.World.Add(new Effects.MoveFlash(self.World, Game.CellSize * (order.TargetLocation + new float2(0.5f, 0.5f))));
 				}
 			}
 		}
@@ -118,6 +121,11 @@ namespace OpenRA.Traits
 				return null;
 			
 			return (CanEnterCell(order.TargetLocation)) ? "move" : "move-blocked";
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "Move") ? "Move" : null;
 		}
 
 		public int2 TopLeft { get { return toCell; } }

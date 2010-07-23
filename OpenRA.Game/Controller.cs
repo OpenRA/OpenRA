@@ -44,20 +44,20 @@ namespace OpenRA
 
 			var orders = orderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
 			Game.orderManager.IssueOrders( orders );
-
-			var voicedActor = orders.Select(o => o.Subject)
-				.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasVoice());
-
-			var isMove = orders.Any(o => o.OrderString == "Move");
-			var isAttack = orders.Any( o => o.OrderString == "Attack" );
-
-			if (voicedActor != null)
+			
+			// Find an actor with a phrase to say
+			var done = false;
+			foreach (var o in orders)
 			{
-				if(voicedActor.traits.GetOrDefault<IMove>().CanEnterCell(xy.ToInt2()))
-					Sound.PlayVoice(isAttack ? "Attack" : "Move", voicedActor);
-
-				if (isMove)
-					world.Add(new Effects.MoveFlash(world, Game.CellSize * xy));
+				foreach (var v in o.Subject.traits.WithInterface<IOrderVoice>())
+				{
+					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject))
+					{
+						done = true;
+						break;
+					}
+				}
+				if (done) break;
 			}
 		}
 

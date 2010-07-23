@@ -132,24 +132,26 @@ namespace OpenRA
 			}
 		}
 		
-		public static void PlayVoice(string phrase, Actor voicedUnit)
+		// Returns true if it played a phrase
+		public static bool PlayVoice(string phrase, Actor voicedUnit)
 		{
-			if (voicedUnit == null) return;
+			if (voicedUnit == null) return false;
+			if (phrase == null) return false;
 
 			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (mi == null) return;
-			if (mi.Voice == null) return;
+			if (mi == null) return false;
+			if (mi.Voice == null) return false;
 
 			var vi = Rules.Voices[mi.Voice.ToLowerInvariant()];
 
 			var clip = vi.Pools.Value[phrase].GetNext();
 			if (clip == null)
-				return;
+				return false;
 
 			if (clip.Contains("."))		/* no variants! */
 			{
 				Play(clip);
-				return;
+				return true;
 			}
 
 			// todo: fix this
@@ -159,6 +161,7 @@ namespace OpenRA
 			var variant = variants[voicedUnit.ActorID % variants.Length];
 
 			Play(clip + variant);
+			return true;
 		}
 	}
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor, IOrderVoice
 	{
 		public Target target;
 
@@ -261,6 +261,11 @@ namespace OpenRA.Mods.RA
 				case "Heal": return "heal";
 				default: return null;
 			}
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "Attack" || order.OrderString == "Heal") ? "Attack" : null;
 		}
 		
 		protected virtual void QueueAttack(Actor self, Order order)
