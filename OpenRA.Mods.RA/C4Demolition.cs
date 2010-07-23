@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly float C4Delay = 0;
 	}
 
-	class C4Demolition : IIssueOrder, IResolveOrder, IOrderCursor
+	class C4Demolition : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -35,8 +36,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "C4")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 2));
+				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new Demolish(order.TargetActor));
 				self.QueueActivity(new Move(self.Location, 0));
 			}
@@ -45,6 +49,11 @@ namespace OpenRA.Mods.RA
 		public string CursorForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "C4") ? "c4" : null;
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "C4") ? "Attack" : null;
 		}
 	}
 }

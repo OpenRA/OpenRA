@@ -11,6 +11,7 @@
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool RepairsBridges = true;
 	}
 
-	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderCursor
+	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -46,12 +47,21 @@ namespace OpenRA.Mods.RA
 			return (order.TargetActor.Health == order.TargetActor.GetMaxHP()) ? "goldwrench-blocked" : "goldwrench";
 		}
 		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "EngineerRepair" 
+			        && order.TargetActor.Health < order.TargetActor.GetMaxHP()) ? "Attack" : null;
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "EngineerRepair" && order.TargetActor.Health < order.TargetActor.GetMaxHP())
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 1));
+				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new RepairBuilding(order.TargetActor));
 			}
 		}
