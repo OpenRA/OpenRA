@@ -23,9 +23,9 @@ namespace OpenRA.Mods.RA
 
 	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier, IStoreOre
 	{		
-		readonly PlayerResources Player;
 		readonly StoresOreInfo Info;
 		
+		PlayerResources Player;
 		public StoresOre(Actor self, StoresOreInfo info)
 		{
 			Player = self.Owner.PlayerActor.traits.Get<PlayerResources>();
@@ -34,10 +34,11 @@ namespace OpenRA.Mods.RA
 		
 		public int Capacity { get { return Info.Capacity; } }
 		
-		public void OnCapture(Actor self, Actor captor)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var ore = Stored(self);
 			Player.TakeOre(ore);
+			Player = newOwner.PlayerActor.traits.Get<PlayerResources>();
 			Player.GiveOre(ore);
 		}
 		

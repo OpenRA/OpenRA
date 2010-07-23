@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA
 			self.traits.Get<IAcceptOreDockAction>().OnDock(self, harv, dockOrder);
 		}
 		
-		public void OnCapture (Actor self, Actor captor)
+		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{		
 			// Unlink any non-docked harvs
 			foreach (var harv in LinkedHarv)

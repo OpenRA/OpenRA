@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc
 				 CancelDock(self, dockedHarv);
 		}
 		
-		public void OnCapture (Actor self, Actor captor)
+		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			if (dockedHarv == null)
 				return;

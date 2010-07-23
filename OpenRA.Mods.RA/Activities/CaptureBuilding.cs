@@ -27,17 +27,16 @@ namespace OpenRA.Mods.RA.Activities
 			target.World.AddFrameEndTask(w =>
 			{
 				// momentarily remove from world so the ownership queries don't get confused
+				var oldOwner = target.Owner;
 				w.Remove(target);
 				target.Owner = self.Owner;
 				w.Add(target);
 				
 				foreach (var t in target.traits.WithInterface<INotifyCapture>())
-					t.OnCapture(target, self);
+					t.OnCapture(target, self, oldOwner, self.Owner);
+				
+				w.Remove(self);
 			});
-
-			// the engineer is sacrificed.
-			self.World.AddFrameEndTask(w => w.Remove(self));
-
 			return NextActivity;
 		}
 

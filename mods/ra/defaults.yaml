@@ -93,7 +93,8 @@
 	MustBeDestroyed:
 	GivesExperience:
 	FrozenUnderFog:
-
+	CaptureNotification:
+		Notification: strucap1.aud
 ^Wall:
 	Category: Building
 	Building:
