@@ -127,7 +127,7 @@ namespace OpenRA.Traits
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Move") ? "Move" : null;
+			return (order.OrderString == "Move" && CanEnterCell(order.TargetLocation)) ? "Move" : null;
 		}
 
 		public int2 TopLeft { get { return toCell; } }
