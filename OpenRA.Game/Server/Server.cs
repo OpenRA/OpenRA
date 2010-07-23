@@ -431,6 +431,7 @@ namespace OpenRA.Server
 				DropClient(conns.ElementAt(conns.Count() - 1), null);
 			if (listener != null)
 				listener.Stop();
+			GameStarted = false;
 		}
 
 		static void SyncLobbyInfo()

@@ -30,6 +30,8 @@ namespace OpenRA.Widgets.Delegates
 			
 			optionsBG.GetWidget("BUTTON_DISCONNECT").OnMouseUp = mi => {
 				optionsBG.Visible = false;
+				if (Game.IsHost)
+					Server.Server.CloseServer();
 				Game.Disconnect();
 				return true;
 			};

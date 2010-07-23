@@ -55,6 +55,7 @@ namespace OpenRA.Widgets.Delegates
 					case ConnectionState.Connected:
 						r.OpenWindow("SERVER_LOBBY");
 						r.GetWidget("SERVER_LOBBY").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+						r.GetWidget("INGAME_ROOT").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
 						break;
 				}
 			};

@@ -33,7 +33,6 @@ namespace OpenRA.Graphics
 		public int Width { get { return (int)screenSize.X; } }
 		public int Height { get { return (int)screenSize.Y; } }
 
-		SpriteRenderer cursorRenderer;
 		int2 mousePos;
 		float cursorFrame = 0f;
 
@@ -48,7 +47,6 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			cursorRenderer = renderer.SpriteRenderer;
 
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
