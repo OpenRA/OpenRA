@@ -68,6 +68,8 @@ namespace OpenRA.Widgets
 				}
 				Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
 			}
+			// Draw on top of the sprite
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 			Game.Renderer.LineRenderer.Flush();
 
 			// Power usage indicator
