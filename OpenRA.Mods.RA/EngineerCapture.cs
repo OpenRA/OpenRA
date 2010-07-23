@@ -9,43 +9,44 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerCaptureInfo : TraitInfo<EngineerCapture>
+	class EngineerCaptureInfo : TraitInfo<EngineerCapture> {}
+	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
-		public readonly int EngineerDamage = 300;
-	}
-
-	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderCursor
-	{
-
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy) return null;
 			if (!underCursor.traits.Contains<Building>()) return null;
-			var isCapture = underCursor.Health <= self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage;
 
-			return new Order(isCapture ? "Capture" : "Infiltrate",
-				self, underCursor);
+			return new Order("CaptureBuilding", self, underCursor);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Infiltrate") ? "enter" : 
-				   (order.OrderString == "Capture") ? "capture" : null;
+			return (order.OrderString == "CaptureBuilding") ? "capture" : null;
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "CaptureBuilding") ? "Attack" : null;			
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Infiltrate" || order.OrderString == "Capture")
+			if (order.OrderString == "CaptureBuilding")
 			{
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 1));
+				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new CaptureBuilding(order.TargetActor));
 			}
 		}

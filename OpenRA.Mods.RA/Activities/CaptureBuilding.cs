@@ -23,25 +23,17 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead) return NextActivity;
-			var damage = self.Info.Traits.Get<EngineerCaptureInfo>().EngineerDamage;
 
-			if (target.Health - damage <= 0)
+			target.World.AddFrameEndTask(w =>
 			{
-				target.World.AddFrameEndTask(w =>
-					{
-						// momentarily remove from world so the ownership queries don't get confused
-						w.Remove(target);
-						target.Owner = self.Owner;
-						w.Add(target);
-						
-						foreach (var t in target.traits.WithInterface<INotifyCapture>())
-							t.OnCapture(target, self);
-					});
-
-				target.InflictDamage(self, target.Health - damage, null);
-			}
-			else
-				target.InflictDamage(self, damage, null);
+				// momentarily remove from world so the ownership queries don't get confused
+				w.Remove(target);
+				target.Owner = self.Owner;
+				w.Add(target);
+				
+				foreach (var t in target.traits.WithInterface<INotifyCapture>())
+					t.OnCapture(target, self);
+			});
 
 			// the engineer is sacrificed.
 			self.World.AddFrameEndTask(w => w.Remove(self));

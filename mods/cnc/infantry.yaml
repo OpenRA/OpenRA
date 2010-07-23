@@ -125,7 +125,6 @@ E6:
 		ColorOfCargoPip: Yellow
 	EngineerRepair:
 	EngineerCapture:
-		EngineerDamage: 9999999
 	-AutoTarget:
 
 RMBO:
