@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 			var targetCell = Util.CellContaining(Target.CenterLocation);
 
 			if ((targetCell - self.Location).LengthSquared >= Range * Range)
-				return new Move( targetCell, Range ) { NextActivity = this };
+				return new Move( Target, Range ) { NextActivity = this };
 
 			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);
 			var renderUnit = self.traits.GetOrDefault<RenderUnit>();
