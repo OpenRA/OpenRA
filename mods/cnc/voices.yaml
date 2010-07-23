@@ -4,12 +4,14 @@ GenericVoice:
 	Select: await1,ready,report1,yessir1
 	Move: ackno,affirm1,noprob,ritaway,roger,ugotit
 	Die: nuyell1.aud,nuyell3.aud,nuyell4.aud,nuyell5.aud
+	Lost: unitlost.aud
 
 VehicleVoice: 
 	SovietVariants: .v00,.v02
 	AlliedVariants: .v00,.v02
 	Select: vehic1,yessir1,report1,await1,unit1
 	Move: ackno,affirm1,movout1
+	Lost: unitlost.aud
 
 CivilianMaleVoice: 
 	Select: guyyeah1

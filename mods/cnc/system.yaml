@@ -131,8 +131,6 @@ World:
 		CashTickDown:
 		LowPower: lopower1.aud
 		SilosNeeded: silos1.aud
-		UnitLost: unitlost.aud
-		NavalUnitLost: unitlost.aud
 		PrimaryBuildingSelected: pribldg1.aud
 		AbilityInsufficientPower: nopower1.aud
 		LevelUp: text2.aud

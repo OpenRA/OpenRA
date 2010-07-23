@@ -36,10 +36,7 @@ namespace OpenRA.Traits
 		// Eva speech
 		public readonly string LowPower = "lopower1.aud";
 		public readonly string SilosNeeded = "silond1.aud";
-		public readonly string UnitLost = "unitlst1.aud";
-		public readonly string NavalUnitLost = "navylst1.aud";
 		public readonly string PrimaryBuildingSelected = "pribldg1.aud";
-		public readonly string CreditsStolen = "credit1.aud";
 		
 		// Special powers
 		public readonly string AbilityInsufficientPower = "nopowr1.aud";
