@@ -619,6 +619,7 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
+			orderManager.Dispose();
 			var shellmap = Manifest.ShellmapUid;
 			LobbyInfo = new Session();
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;

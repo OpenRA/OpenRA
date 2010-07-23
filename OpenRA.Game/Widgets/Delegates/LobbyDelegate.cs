@@ -80,8 +80,6 @@ namespace OpenRA.Widgets.Delegates
 			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
 			disconnectButton.OnMouseUp = mi =>
 			{
-				if (Game.IsHost)
-					Server.Server.CloseServer();
 				Game.Disconnect();
 				return true;
 			};

@@ -90,6 +90,13 @@ namespace OpenRA.Server
 
 					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
 						PingMasterServer();
+					
+					if (conns.Count() == 0)
+					{
+						listener.Stop();
+						GameStarted = false;
+						break;
+					}
 				}
 			} ) { IsBackground = true }.Start();
 		}
@@ -423,15 +430,6 @@ namespace OpenRA.Server
 			
 			if (conns.Count != 0)
 				SyncLobbyInfo();
-		}
-		
-		public static void CloseServer()
-		{
-			while (conns.Count() != 0)
-				DropClient(conns.ElementAt(conns.Count() - 1), null);
-			if (listener != null)
-				listener.Stop();
-			GameStarted = false;
 		}
 
 		static void SyncLobbyInfo()

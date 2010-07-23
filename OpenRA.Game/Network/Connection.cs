@@ -74,15 +74,16 @@ namespace OpenRA.Network
 		}
 	}
 
-	class NetworkConnection : EchoConnection
+	class NetworkConnection : EchoConnection, IDisposable
 	{
 		TcpClient socket;
 		int clientId;
 		ConnectionState connectionState = ConnectionState.Connecting;
+		Thread t;
 
 		public NetworkConnection( string host, int port )
 		{
-			new Thread( _ =>
+			t = new Thread( _ =>
 			{
 				try
 				{
@@ -115,7 +116,8 @@ namespace OpenRA.Network
 					connectionState = ConnectionState.NotConnected;
 				}
 			}
-			) { IsBackground = true }.Start();
+			) { IsBackground = true };
+			t.Start();
 		}
 
 		public override int LocalClientId { get { return clientId; } }
@@ -136,6 +138,18 @@ namespace OpenRA.Network
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
 		}
+		bool disposed = false;
+		public void Dispose ()
+		{
+			if (disposed) return;
+			disposed = true;
+			GC.SuppressFinalize( this );
+
+			socket.Close();
+			t.Abort();
+		}
+		
+		~NetworkConnection() { Dispose(); }
 	}
 
 	class ReplayConnection : IConnection
