@@ -54,27 +54,36 @@ namespace OpenRA.Mods.RA
 		{
 			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
-		
-		public void ResolveOrder(Actor self, Order order)
+
+		void UnReserve()
 		{
 			if (reservation != null)
 			{
+				Game.Debug("Disposing reservation.");
 				reservation.Dispose();
 				reservation = null;
 			}
-
+		}
+		
+		public void ResolveOrder(Actor self, Order order)
+		{
 			if (order.OrderString == "Move")
 			{
+				UnReserve();
+
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 			}
 
-			if (order.OrderString == "Enter")
+			else if (order.OrderString == "Enter")
 			{
 				if (Reservable.IsReserved(order.TargetActor)) return;
+
+				UnReserve();
+
 				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
 				if (res != null)
 					reservation = res.Reserve(self);
@@ -83,13 +92,15 @@ namespace OpenRA.Mods.RA
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(
 					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
 						? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
+			else
+				UnReserve();
 		}
 	}
 }
