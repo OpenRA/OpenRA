@@ -15,21 +15,23 @@ namespace OpenRA.Graphics
 	public class CursorSequence
 	{
 		readonly int start, length;
+		readonly string palette;
 
 		public int Start { get { return start; } }
 		public int End { get { return start + length; } }
 		public int Length { get { return length; } }
-
+		public string Palette { get { return palette; } }
 		public readonly int2 Hotspot;
 
 		Sprite[] sprites;
 
-		public CursorSequence(string cursorSrc, XmlElement e)
+		public CursorSequence(string cursorSrc, string palette, XmlElement e)
 		{
 			sprites = CursorSheetBuilder.LoadAllSprites(cursorSrc);
 
 			start = int.Parse(e.GetAttribute("start"));
-
+			this.palette = palette;
+			
 			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")
 				length = sprites.Length - start;
 			else if (e.HasAttribute("length"))

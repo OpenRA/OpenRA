@@ -19,8 +19,10 @@ namespace OpenRA
 		{
 			sequence = SequenceProvider.GetCursorSequence(cursor);
 		}
-
-		public Sprite GetSprite(int frame) { return sequence.GetSprite(frame); }
-		public int2 GetHotspot() { return sequence.Hotspot; }
+		
+		public void Draw(int frame, float2 pos)
+		{
+			Game.Renderer.SpriteRenderer.DrawSprite(sequence.GetSprite(frame), pos - sequence.Hotspot, sequence.Palette);
+		}
 	}
 }

@@ -72,7 +72,7 @@ namespace OpenRA.Graphics
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );
 			var c = new Cursor(cursorName);
-			cursorRenderer.DrawSprite(c.GetSprite((int)cursorFrame), mousePos + Location - c.GetHotspot(), "cursor");
+			c.Draw((int)cursorFrame, mousePos + Location); 
 			Timer.Time( "cursors: {0}" );
 
 			renderer.RgbaSpriteRenderer.Flush();

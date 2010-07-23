@@ -46,9 +46,10 @@ namespace OpenRA.Graphics
 		static void LoadSequencesForCursor(XmlElement eCursor)
 		{
 			string cursorSrc = eCursor.GetAttribute("src");
+			string palette = eCursor.GetAttribute("palette");
 
 			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
-				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, eSequence));
+				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, palette, eSequence));
 
 		}
 
