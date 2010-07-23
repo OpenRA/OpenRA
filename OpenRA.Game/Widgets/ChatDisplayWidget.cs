@@ -16,9 +16,12 @@ namespace OpenRA.Widgets
 {
 	class ChatDisplayWidget : Widget
 	{
+		public readonly int RemoveTime = 0;
+		
 		const int logLength = 9;
 		public string Notification = "";
 		public bool DrawBackground = true;
+		int ticksUntilRemove = 0;
 
 		public List<ChatLine> recentLines = new List<ChatLine>();
 
@@ -52,15 +55,34 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 			Game.Renderer.Device.DisableScissor();
 		}
-
+		
 		public void AddLine(Color c, string from, string text)
 		{
 			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
-
+			ticksUntilRemove = RemoveTime;
+			
 			if (Notification != null)
 				Sound.Play(Notification);
 
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
+		}
+		
+		public void RemoveLine()
+		{
+			if (recentLines.Count > 0) recentLines.RemoveAt(0);	
+		}
+		
+		public void ClearChat()
+		{
+			recentLines = new List<ChatLine>();	
+		}
+		
+		public override void Tick (World world)
+		{
+			if (RemoveTime == 0) return;
+			if (--ticksUntilRemove > 0) return;
+			ticksUntilRemove = RemoveTime;
+			RemoveLine();
 		}
 
 		public override Widget Clone() { return new ChatDisplayWidget(this); }

@@ -181,6 +181,7 @@ Container@ROOT:
 					Height: 200
 					ClickThrough: True
 					DrawBackground: False
+					RemoveTime:250
 				ChatEntry@CHAT_ENTRY:
 					Id:CHAT_ENTRY
 					X:250
