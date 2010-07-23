@@ -21,11 +21,29 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Plane( init ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, ITick
 	{
 		public IDisposable reservation;
 
 		public Plane( ActorInitializer init ) : base( init ) { }
+
+		bool firstTick = true;
+		public void Tick(Actor self)
+		{
+			if (firstTick)
+			{
+				firstTick = false;
+				if (self.traits.Get<Unit>().Altitude == 0)
+				{	
+					/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
+					var res = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
+						.Select( a => a.traits.GetOrDefault<Reservable>() ).FirstOrDefault( a => a != null );
+
+					if (res != null)
+						reservation = res.Reserve(self);
+				}
+			}
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
