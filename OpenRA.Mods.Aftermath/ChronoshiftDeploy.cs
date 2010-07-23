@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Effects;
 using OpenRA.Mods.Aftermath.Orders;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Aftermath
 		public readonly int ChargeTime = 120; // Seconds
 	}
 
-	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IOrderCursor
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IOrderCursor, IOrderVoice
 	{
 		// Recharge logic
 		[Sync]
@@ -35,15 +36,15 @@ namespace OpenRA.Mods.Aftermath
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button == MouseButton.Right && xy == self.Location && chargeTick <= 0)
-				return new Order("Deploy", self);
+			if (mi.Button == MouseButton.Right && xy == self.Location)
+				return new Order("ChronoshiftDeploy", self);
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy")
+			if (order.OrderString == "ChronoshiftDeploy")
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					Game.controller.orderGenerator = new SetChronoTankDestination(self);
@@ -54,8 +55,11 @@ namespace OpenRA.Mods.Aftermath
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				if (self.Owner == self.World.LocalPlayer)
+				{
 					Game.controller.CancelInputMode();
-
+					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+				}
+				
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud", self.CenterLocation);
@@ -69,7 +73,15 @@ namespace OpenRA.Mods.Aftermath
 
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Deploy") ? "deploy" : null;
+			if (order.OrderString != "ChronoshiftDeploy")
+				return null;
+			
+			return (chargeTick <= 0) ? "deploy" : "deploy-blocked";
+		}
+		
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "ChronoshiftDeploy" && chargeTick <= 0) ? "Move" : null;
 		}
 		
 		// Display 5 pips indicating the current charge status
