@@ -44,6 +44,7 @@ namespace OpenRA.Widgets.Delegates
 				() => Game.world.LocalPlayer.Shroud.Disabled;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
+				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
 				Game.world.LocalPlayer.Shroud.Disabled ^= true;
 				TriggerCheatingMessage();
 				return true;
@@ -51,7 +52,9 @@ namespace OpenRA.Widgets.Delegates
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = 
 				() => {return Game.Settings.UnitDebug;};
-			devmodeBG.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => {
+			devmodeBG.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
+			{
+				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
 				Game.Settings.UnitDebug ^= true;
 				TriggerCheatingMessage();
 				return true;
@@ -59,7 +62,9 @@ namespace OpenRA.Widgets.Delegates
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = 
 				() => {return Game.Settings.PathDebug;};
-			devmodeBG.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => {
+			devmodeBG.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
+			{
+				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
 				Game.Settings.PathDebug ^= true;
 				TriggerCheatingMessage();
 				return true;
@@ -67,7 +72,9 @@ namespace OpenRA.Widgets.Delegates
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = 
 				() => {return Game.Settings.IndexDebug;};
-			devmodeBG.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => {
+			devmodeBG.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => 
+			{
+				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
 				Game.Settings.IndexDebug ^= true;
 				TriggerCheatingMessage();
 				return true;
@@ -101,7 +108,7 @@ namespace OpenRA.Widgets.Delegates
 		
 		void TriggerCheatingMessage()
 		{
-			var order = Order.Chat("I used a developer mode option that is considered a cheat!".F(Game.world.LocalPlayer.PlayerName.ToString()));
+			var order = Order.Chat("I used a developer mode option");
 			Game.IssueOrder(order);
 		}
 	}

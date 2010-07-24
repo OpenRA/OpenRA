@@ -44,7 +44,7 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.Save();
 
 				Server.Server.ServerMain(Game.Settings.AdvertiseOnline, Game.Settings.MasterServer,	Game.Settings.LastServerTitle,
-				                         Game.Settings.ListenPort, Game.Settings.ExternalPort, mods, map);
+				                         Game.Settings.ListenPort, Game.Settings.ExternalPort, mods, map, Game.Settings.DeveloperMode);
 
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;

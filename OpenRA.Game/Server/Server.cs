@@ -45,7 +45,7 @@ namespace OpenRA.Server
 		static string masterServerUrl;
 		static bool isInitialPing;
 
-		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map)
+		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map, bool cheats)
 		{
 			isInitialPing = true;
 			Server.masterServerUrl = masterServerUrl;
@@ -59,6 +59,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.Mods = mods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
+			lobbyInfo.GlobalSettings.AllowCheats = cheats;
 			
 			Console.WriteLine("Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
