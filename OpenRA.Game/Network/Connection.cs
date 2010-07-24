@@ -115,6 +115,8 @@ namespace OpenRA.Network
 				{
 					connectionState = ConnectionState.NotConnected;
 				}
+				catch ( IOException ) { socket.Close(); }
+				catch (ThreadAbortException ) { socket.Close(); }
 			}
 			) { IsBackground = true };
 			t.Start();
@@ -145,8 +147,8 @@ namespace OpenRA.Network
 			disposed = true;
 			GC.SuppressFinalize( this );
 
-			socket.Close();
 			t.Abort();
+			t.Join();
 		}
 		
 		~NetworkConnection() { Dispose(); }
