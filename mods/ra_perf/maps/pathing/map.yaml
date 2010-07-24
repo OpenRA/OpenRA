@@ -1,0 +1,39 @@
+Selectable: True
+
+MapFormat: 2
+
+Title: (TEST) Pathing Performance
+
+Description: (TEST) Pathing Performance
+
+Author: Chris Forbes
+
+PlayerCount: 1
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+
+Waypoints:
+	wp2: 66,49
+
+Smudges:
+
+Rules:
+

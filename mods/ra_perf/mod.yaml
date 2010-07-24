@@ -1,0 +1,15 @@
+# RA Performance Tests -- Package Manifest
+
+Folders:
+	./mods/ra_perf
+
+Packages:
+Rules:
+Sequences:
+Chrome:
+Assemblies:
+ChromeLayout:
+Weapons:
+Voices:
+TileSets:
+Music:
