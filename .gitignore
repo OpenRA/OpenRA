@@ -23,7 +23,7 @@ log.txt
 /*.dll
 *.pdb
 *.mdb
-/*.exe
+*.exe
 OpenRA
 OpenRA.app
 

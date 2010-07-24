@@ -135,10 +135,10 @@ Global
 		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = OpenRA.Game\OpenRA.Game.csproj
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = OpenRA.FileFormats\OpenRA.FileFormats.csproj
 	EndGlobalSection
 EndGlobal
