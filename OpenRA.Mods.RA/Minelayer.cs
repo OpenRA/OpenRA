@@ -26,9 +26,10 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor
+	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor, IRenderSelection
 	{
-		/* [Sync] when sync can cope with arrays! */ public int2[] minefield = null;
+		/* [Sync] when sync can cope with arrays! */ 
+		public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -64,7 +65,6 @@ namespace OpenRA.Mods.RA
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
-				/* todo: start the mnly actually laying mines there */
 				self.CancelActivity();
 				self.QueueActivity(new LayMines());
 			}
@@ -131,6 +131,12 @@ namespace OpenRA.Mods.RA
 			}
 
 			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
+		}
+
+		public void Render(Actor self)
+		{
+			if (minefield != null)
+				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
 		}
 	}
 }
