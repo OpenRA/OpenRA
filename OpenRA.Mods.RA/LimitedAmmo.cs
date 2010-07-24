@@ -18,20 +18,18 @@ namespace OpenRA.Mods.RA
 		public readonly int Ammo = 0;
 		public readonly int PipCount = 0;
 
-		public object Create(ActorInitializer init) { return new LimitedAmmo(init.self, this); }
+		public object Create(ActorInitializer init) { return new LimitedAmmo(this); }
 	}
 
 	public class LimitedAmmo : INotifyAttack, IPips
 	{
 		[Sync]
 		int ammo;
-		Actor self;
 		LimitedAmmoInfo Info;
 		
-		public LimitedAmmo(Actor self, LimitedAmmoInfo info)
+		public LimitedAmmo(LimitedAmmoInfo info)
 		{
 			ammo = info.Ammo;
-			this.self = self;
 			Info = info;
 		}
 

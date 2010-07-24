@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
 
-	class Mine : ICrushable, IOccupySpace
+	class Mine : ICrushable, IOccupySpace, IRadarVisibilityModifier, IRadarColorModifier
 	{
 		readonly Actor self;
 		readonly MineInfo info;
@@ -55,6 +56,16 @@ namespace OpenRA.Mods.RA
 		public int2 TopLeft { get { return location; } }
 
 		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
+		
+		public bool VisibleOnRadar(Actor self)
+		{
+			return self.Owner == self.World.LocalPlayer;
+		}
+		
+		public Color RadarColorOverride(Actor self)
+		{
+			return Color.FromArgb(128, self.Owner.Color);
+		}
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

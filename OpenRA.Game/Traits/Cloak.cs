@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
@@ -24,7 +25,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Cloak(init.self); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IRadarVisibilityModifier
+	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IRadarVisibilityModifier, IRadarColorModifier
 	{
 		[Sync]
 		int remainingTime;
@@ -76,12 +77,20 @@ namespace OpenRA.Traits
 			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound, self.CenterLocation);
 		}
 
-		public bool Cloaked { get { return remainingTime > 0; } }
+		public bool Cloaked { get { return remainingTime == 0; } }
 
 		
 		public bool VisibleOnRadar(Actor self)
 		{
 			return !Cloaked || self.Owner == self.World.LocalPlayer;
+		}
+		
+		public Color RadarColorOverride(Actor self)
+		{
+			var c = self.Owner.Color;
+			if (self.Owner == self.World.LocalPlayer && Cloaked)
+				c = Color.FromArgb(128, c);
+			return c;
 		}
 		
 		public void Decloak(int time)
