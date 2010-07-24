@@ -29,10 +29,6 @@ namespace OpenRA.Widgets.Delegates
 
 	public class DeveloperModeDelegate : IWidgetDelegate
 	{
-		
-		float oldBuildSpeed = 0;
-		bool slowed = false;
-
 		public DeveloperModeDelegate ()
 		{
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
@@ -77,26 +73,28 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			devmodeBG.GetWidget<ButtonWidget>("SETTINGS_GIVE_CASH").OnMouseUp = mi =>
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_GIVE_CASH").Checked = 
+				() => true;
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_GIVE_CASH").OnMouseDown = mi =>
 			{
-				Game.world.AddFrameEndTask(w =>
-				{
-					Game.world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>().GiveCash(5000);
-				});
-				TriggerCheatingMessage();
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
 			{
-				oldBuildSpeed = (!slowed)? Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed : oldBuildSpeed;
-				Game.world.LocalPlayer.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed = (slowed)? oldBuildSpeed : 0;
-				slowed ^= true;
-				TriggerCheatingMessage();
-				return true;	
-			};
+				return true;
+			};	
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
-				() => {return slowed;};
+				() => true;
+			
+			
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
+			{
+				return true;
+			};
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").Checked = 
+				() => true;
+			
 				
 			devModeButton.IsVisible = () => { return Game.Settings.DeveloperMode; };
 		}

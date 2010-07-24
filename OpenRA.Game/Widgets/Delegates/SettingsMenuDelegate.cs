@@ -132,35 +132,19 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			var unitdebug = debug.GetWidget<CheckboxWidget>("UNITDEBUG_CHECKBOX");
-			unitdebug.Checked = () => {return Game.Settings.UnitDebug;};
-			unitdebug.OnMouseDown = mi => 
-			{
-				Game.Settings.UnitDebug ^= true;
-				return true;
-			};
-			
-			var pathdebug = debug.GetWidget<CheckboxWidget>("PATHDEBUG_CHECKBOX");
-			pathdebug.Checked = () => {return Game.Settings.PathDebug;};
-			pathdebug.OnMouseDown = mi => 
-			{
-				Game.Settings.PathDebug ^= true;
-				return true;
-			};
-			
-			var indexdebug = debug.GetWidget<CheckboxWidget>("INDEXDEBUG_CHECKBOX");
-			indexdebug.Checked = () => {return Game.Settings.IndexDebug;};
-			indexdebug.OnMouseDown = mi => 
-			{
-				Game.Settings.IndexDebug ^= true;
-				return true;
-			};
-			
 			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
 			timedebug.Checked = () => {return Game.Settings.ShowGameTimer;};
 			timedebug.OnMouseDown = mi => 
 			{
 				Game.Settings.ShowGameTimer ^= true;
+				return true;
+			};
+			
+			var devmode = debug.GetWidget<CheckboxWidget>("DEV_MODE_ENABLED");
+			devmode.Checked = () => Game.Settings.DeveloperMode;
+			devmode.OnMouseDown = mi =>
+			{
+				Game.Settings.DeveloperMode ^= true;
 				return true;
 			};
 			

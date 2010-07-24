@@ -203,7 +203,7 @@ Container@ROOT:
 					Delegate:DeveloperModeDelegate
 					X:(WINDOW_RIGHT - WIDTH)/2
 					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:300
+					Width:350
 					Height:300
 					Visible:false
 					Children:
@@ -220,45 +220,52 @@ Container@ROOT:
 							X:30
 							Y:50
 							Height:20
-							Width:20
+							Width:PARENT_RIGHT - 30
 							Text:Disable Shroud
 						Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
 							Id:SETTINGS_CHECKBOX_UNITDEBUG
 							X:30
 							Y:80
-							Width:300
+							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Show Occupied Cells
 						Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
 							Id:SETTINGS_CHECKBOX_PATHDEBUG
 							X:30
 							Y:110
-							Width:300
+							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Show Unit Paths
 						Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
 							Id:SETTINGS_CHECKBOX_INDEXDEBUG
 							X:30
 							Y:140
-							Width:300
+							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Show Spatial Index Debug
 						Label@LABEL_MP_WARNING
 							Id:LABEL_MP_WARNING
 							X:30
 							Y:180
-							Text:May cause errors under multiplayer:
-						Button@SETTINGS_GIVE_CASH
+							Text:Must be identical for all multiplayer players:
+						Checkbox@SETTINGS_GIVE_CASH
 							Id:SETTINGS_GIVE_CASH
 							X:30
 							Y:200
-							Width:150
+							Width:PARENT_RIGHT - 30
 							Height:20
 							Text: Give Cash
 						Checkbox@SETTINGS_BUILD_SPEED
 							Id:SETTINGS_BUILD_SPEED
 							X:30
 							Y:230
-							Width:20
+							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Instant Build Speed
+						Checkbox@SETTINGS_CHARGE_TIME
+							Id:SETTINGS_CHARGE_TIME
+							X:30
+							Y:260
+							Width:PARENT_RIGHT - 30
+							Height:20
+							Text:Instant Charge Time (Special Powers)

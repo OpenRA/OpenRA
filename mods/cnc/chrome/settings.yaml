@@ -193,31 +193,17 @@ Container@ROOT:
 							Width:300
 							Height:20
 							Text:Collect Sync Reports
-						Checkbox@UNITDEBUG_CHECKBOX:
-							Id:UNITDEBUG_CHECKBOX
+						Checkbox@GAMETIME_CHECKBOX:
+							Id:GAMETIME_CHECKBOX
 							X:0
 							Y:60
 							Width:300
 							Height:20
-							Text:Show Occupied Cells
-						Checkbox@PATHDEBUG_CHECKBOX:
-							Id:PATHDEBUG_CHECKBOX
+							Text:Show Game Time Counter 
+						Checkbox:DEV_MODE_ENABLED
+							Id:DEV_MODE_ENABLED
 							X:0
 							Y:90
 							Width:300
 							Height:20
-							Text:Show Unit Paths
-						Checkbox@INDEXDEBUG_CHECKBOX:
-							Id:INDEXDEBUG_CHECKBOX
-							X:0
-							Y:120
-							Width:300
-							Height:20
-							Text:Show Spatial Index Debug
-						Checkbox@GAMETIME_CHECKBOX:
-							Id:GAMETIME_CHECKBOX
-							X:0
-							Y:150
-							Width:300
-							Height:20
-							Text:Show Game Time Counter 
+							Text:Enable Developer Mode
