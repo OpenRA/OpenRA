@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class DetectCloakedInfo : TraitInfo<DetectCloaked>
 	{
@@ -22,7 +23,8 @@ namespace OpenRA.Traits
 
 	class DetectCloaked : ITick
 	{
-		[Sync] int ticks;
+		[Sync]
+		int ticks;
 
 		public void Tick(Actor self)
 		{
@@ -42,7 +44,4 @@ namespace OpenRA.Traits
 			}
 		}
 	}
-
-	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle> { }
-	class RenderRangeCircle { }
 }

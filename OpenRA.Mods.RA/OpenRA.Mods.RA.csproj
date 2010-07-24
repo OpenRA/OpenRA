@@ -80,6 +80,7 @@
     <Compile Include="AttackBase.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="ConstructionYard.cs" />
+    <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
+    <Compile Include="RenderDetectionCircle.cs" />
+    <Compile Include="RenderRangeCircle.cs" />
     <Compile Include="Render\RenderBuilding.cs" />
     <Compile Include="Render\RenderBuildingTurreted.cs" />
     <Compile Include="Render\RenderUnit.cs" />
@@ -232,6 +235,9 @@
       <Name>OpenRA.Game</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Chrome\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -246,8 +252,4 @@ copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"
 ralint ra</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Widgets\" />
-    <Folder Include="Widgets\Delegates\" />
-  </ItemGroup>
 </Project>

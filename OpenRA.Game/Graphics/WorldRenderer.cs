@@ -37,26 +37,11 @@ namespace OpenRA.Graphics
 		{
 			Game.Renderer.LineRenderer.DrawLine(start,end,startColor,endColor);
 		}
-		
-		public int GetPaletteIndex(string name)
-		{
-			return palette.GetPaletteIndex(name);
-		}
 
-		public Palette GetPalette(string name)
-		{
-			return palette.GetPalette(name);
-		}
-		
-		public void AddPalette(string name, Palette pal)
-		{
-			palette.AddPalette(name, pal);
-		}
-		
-		public void UpdatePalette(string name, Palette pal)
-		{
-			palette.UpdatePalette(name, pal);
-		}
+		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
+		public Palette GetPalette(string name) { return palette.GetPalette(name); }
+		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
+		public void UpdatePalette(string name, Palette pal) { palette.UpdatePalette(name, pal); }
 		
 		void DrawSpriteList(IEnumerable<Renderable> images)
 		{
@@ -369,7 +354,7 @@ namespace OpenRA.Graphics
 			var prev = location + Game.CellSize * range * float2.FromAngle(0);
 			for (var i = 1; i <= 32; i++)
 			{
-				var pos = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 8);
+				var pos = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
 				Game.Renderer.LineRenderer.DrawLine(prev, pos, c, c);
 				prev = pos;
 			}

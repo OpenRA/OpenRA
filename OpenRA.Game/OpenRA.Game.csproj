@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -81,7 +81,6 @@
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Server\ProtocolVersion.cs" />
     <Compile Include="Traits\BaseBuilding.cs" />
-    <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
