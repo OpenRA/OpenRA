@@ -82,6 +82,7 @@ Player:
 	PlayerResources:
 		InitialCash: 5000
 	ActorGroupProxy:
+	DeveloperMode:
 		
 
 World:

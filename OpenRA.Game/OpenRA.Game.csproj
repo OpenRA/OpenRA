@@ -229,6 +229,7 @@
     <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\ViewportScrollControllerWidget.cs" />
+    <Compile Include="Traits\Player\DeveloperMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
