@@ -348,7 +348,7 @@ namespace OpenRA.Widgets
 					if (producing.Done)
 					{
 						if (unit.Traits.Contains<BuildingInfo>())
-							Game.controller.orderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
+							world.OrderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
 						return;
 					}
 

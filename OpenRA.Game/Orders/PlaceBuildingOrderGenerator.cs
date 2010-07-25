@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 
 			return InnerOrder(world, xy, mi);
 		}
@@ -58,7 +58,7 @@ namespace OpenRA.Orders
 		{
 			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
 			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 		}
 
 		public void RenderAfterWorld( World world ) {}

@@ -51,13 +51,13 @@ namespace OpenRA.Mods.RA
 			{
 				minefieldStart = order.TargetLocation;
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.orderGenerator = new MinefieldOrderGenerator(self);
+					self.World.OrderGenerator = new MinefieldOrderGenerator(self);
 			}
 
 			if (order.OrderString == "PlaceMinefield")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				var movement = self.traits.Get<IMove>();
 
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 					yield break;
 				}
 
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 			public void Tick(World world)
 			{
 				if (minelayer.IsDead || !minelayer.IsInWorld)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 			}
 
 			int2 lastMousePos;

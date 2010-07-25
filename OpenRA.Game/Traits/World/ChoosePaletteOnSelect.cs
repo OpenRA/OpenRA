@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 	{
 		public void SelectionChanged()
 		{
-			var firstItem = Game.controller.selection.Actors.FirstOrDefault(
+			var firstItem = Game.world.Selection.Actors.FirstOrDefault(
 				a => a.World.LocalPlayer == a.Owner && a.traits.Contains<Production>());
 
 			if (firstItem == null)

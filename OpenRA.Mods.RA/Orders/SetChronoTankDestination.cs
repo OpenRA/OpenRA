@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 				yield break;
 			}
 

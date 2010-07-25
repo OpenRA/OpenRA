@@ -26,23 +26,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var sell = moneybin.GetWidget<OrderButtonWidget>("SELL");
 			if (sell != null)
 			{
-				sell.Pressed = () => Game.controller.orderGenerator is SellOrderGenerator;
-				sell.OnMouseDown = mi => { Game.controller.ToggleInputMode<SellOrderGenerator>(); return true; };
+				sell.Pressed = () => Game.world.OrderGenerator is SellOrderGenerator;
+				sell.OnMouseDown = mi => { Game.world.ToggleInputMode<SellOrderGenerator>(); return true; };
 			}
 			
 			var powerdown = moneybin.GetWidget<OrderButtonWidget>("POWER_DOWN");
 			if (powerdown != null)
 			{
-				powerdown.Pressed = () => Game.controller.orderGenerator is PowerDownOrderGenerator;
-				powerdown.OnMouseDown = mi => { Game.controller.ToggleInputMode<PowerDownOrderGenerator>(); return true; };
+				powerdown.Pressed = () => Game.world.OrderGenerator is PowerDownOrderGenerator;
+				powerdown.OnMouseDown = mi => { Game.world.ToggleInputMode<PowerDownOrderGenerator>(); return true; };
 			}
 			
 			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
 			if (repair != null)
 			{
 				repair.Enabled = () => { return RepairOrderGenerator.PlayerIsAllowedToRepair( Game.world ); };
-				repair.Pressed = () => Game.controller.orderGenerator is RepairOrderGenerator;
-				repair.OnMouseDown = mi => { Game.controller.ToggleInputMode<RepairOrderGenerator>(); return true; };
+				repair.Pressed = () => Game.world.OrderGenerator is RepairOrderGenerator;
+				repair.OnMouseDown = mi => { Game.world.ToggleInputMode<RepairOrderGenerator>(); return true; };
 				repair.GetLongDesc = () => { return repair.Enabled() ? repair.LongDesc : repair.LongDesc + "\n\nRequires: Construction Yard"; };
 			}
 		}

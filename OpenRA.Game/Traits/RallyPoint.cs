@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Renderable> Render(Actor self)
 		{
-			if (self.Owner == self.World.LocalPlayer && Game.controller.selection.Actors.Contains(self))
+			if (self.Owner == self.World.LocalPlayer && self.World.Selection.Actors.Contains(self))
 				yield return Util.Centered(self,
 					anim.Image, Util.CenterOfCell(rallyPoint));
 		}

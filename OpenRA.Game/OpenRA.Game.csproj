@@ -130,7 +130,6 @@
     <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Actor.cs" />
-    <Compile Include="Controller.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\Rules.cs" />

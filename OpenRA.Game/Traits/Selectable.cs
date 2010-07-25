@@ -88,7 +88,7 @@ namespace OpenRA.Traits
 
 		void DrawControlGroup(Actor self, float2 basePosition)
 		{
-			var group = Game.controller.selection.GetControlGroupForActor(self);
+			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null) return;
 
 			var pipImages = new Animation("pips");

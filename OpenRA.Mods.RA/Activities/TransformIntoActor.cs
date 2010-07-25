@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var selected = Game.controller.selection.Contains(self);
+				var selected = w.Selection.Contains(self);
 				
 				self.World.Remove(self);
 				foreach (var s in sounds)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 				a.Health = GetHealthToTransfer(self, a, transferPercentage);
 				
 				if (selected)
-					Game.controller.selection.Add(w, a);
+					w.Selection.Add(w, a);
 			});
 			return this;
 		}

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = 
+			Game.world.OrderGenerator = 
 				new GenericSelectTarget( Owner.PlayerActor, "ParatroopersActivate", "ability" );
 		}
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "ParatroopersActivate")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				DoParadrop(Owner, order.TargetLocation, 
 					self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems);

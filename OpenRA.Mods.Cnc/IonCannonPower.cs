@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc
 					});
 
 				if (Owner == Owner.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				FinishActivate();
 			}
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator =
+			Game.world.OrderGenerator =
 				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
 		}
 	}

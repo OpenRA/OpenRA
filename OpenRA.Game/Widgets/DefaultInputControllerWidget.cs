@@ -9,9 +9,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
@@ -19,7 +22,26 @@ namespace OpenRA.Widgets
 	{
 		public DefaultInputControllerWidget() : base()	{}
 		protected DefaultInputControllerWidget(DefaultInputControllerWidget widget) : base(widget) {}
-		public override void DrawInner( World world ) { }
+		
+		public override void DrawInner( World world )
+		{
+			var selbox = SelectionBox;
+			if (selbox == null) return;
+
+			var a = selbox.Value.First;
+			var b = new float2(selbox.Value.Second.X - a.X, 0);
+			var c = new float2(0, selbox.Value.Second.Y - a.Y);
+
+			Game.Renderer.LineRenderer.DrawLine(a, a + b, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+
+			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
+				world.WorldRenderer.DrawSelectionBox(u, Color.Yellow);
+			
+			Game.Renderer.LineRenderer.Flush();
+		}
 		
 		static internal bool scrollUp = false;
 		static internal bool scrollDown = false;
@@ -36,7 +58,7 @@ namespace OpenRA.Widgets
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				dragStart = dragEnd = xy;
-				Game.controller.ApplyOrders(world, xy, mi);
+				ApplyOrders(world, xy, mi);
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
@@ -44,10 +66,10 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (Game.controller.orderGenerator is UnitOrderGenerator)
+				if (world.OrderGenerator is UnitOrderGenerator)
 				{
 					var newSelection = Game.world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
-					Game.controller.selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
 				dragStart = dragEnd = xy;
@@ -62,11 +84,40 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				Game.controller.ApplyOrders(world, xy, mi);
-
-			Game.controller.dragStart = dragStart;
-			Game.controller.dragEnd = dragEnd;
+				ApplyOrders(world, xy, mi);
 			return true;
+		}
+		
+		public Pair<float2, float2>? SelectionBox
+		{
+			get
+			{
+				if (dragStart == dragEnd) return null;
+				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
+			}
+		}
+		
+		public void ApplyOrders(World world, float2 xy, MouseInput mi)
+		{
+			if (world.OrderGenerator == null) return;
+
+			var orders = world.OrderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
+			Game.orderManager.IssueOrders( orders );
+			
+			// Find an actor with a phrase to say
+			var done = false;
+			foreach (var o in orders)
+			{
+				foreach (var v in o.Subject.traits.WithInterface<IOrderVoice>())
+				{
+					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject))
+					{
+						done = true;
+						break;
+					}
+				}
+				if (done) break;
+			}
 		}
 		
 		public override string GetCursor(int2 pos)
@@ -85,7 +136,7 @@ namespace OpenRA.Widgets
 					Modifiers = Game.GetModifierKeys()
 				};
 
-				return Game.controller.orderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
+				return Game.world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
 			}
 			finally
 			{
@@ -117,7 +168,7 @@ namespace OpenRA.Widgets
 				}
 	
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
-					Game.controller.selection.DoControlGroup(Game.world, e.KeyName[0] - '0', e.Modifiers);
+					Game.world.Selection.DoControlGroup(Game.world, e.KeyName[0] - '0', e.Modifiers);
 				
 				if (e.KeyChar == 08)
 					GotoNextBase();
@@ -151,20 +202,21 @@ namespace OpenRA.Widgets
 		
 		public void GotoNextBase()
 		{
-			var bases = Game.world.Queries.OwnedBy[Game.world.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
+			var world = Game.world;
+			var bases = world.Queries.OwnedBy[world.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
 			if (!bases.Any()) return;
 
 			var next = bases
 				.Select( b => b.Actor )
-				.SkipWhile(b => Game.controller.selection.Actors.Contains(b))
+				.SkipWhile(b => world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
 				next = bases.Select(b => b.Actor).First();
 
-			Game.controller.selection.Combine(Game.world, new Actor[] { next }, false, true);
-			Game.viewport.Center(Game.controller.selection.Actors);
+			world.Selection.Combine(world, new Actor[] { next }, false, true);
+			Game.viewport.Center(world.Selection.Actors);
 		}
 		
 		public override Widget Clone() { return new DefaultInputControllerWidget(this); }

@@ -99,8 +99,8 @@ namespace OpenRA.Graphics
 
 			terrainRenderer.Draw(Game.viewport);
 
-			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.RenderBeforeWorld(world);
+			if (world.OrderGenerator != null)
+				world.OrderGenerator.RenderBeforeWorld(world);
 
 			Game.Renderer.SpriteRenderer.Flush();
 			Game.Renderer.LineRenderer.Flush();
@@ -109,10 +109,9 @@ namespace OpenRA.Graphics
 				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
 			uiOverlay.Draw(world);
 			Game.Renderer.SpriteRenderer.Flush();
-			DrawBandBox();
 
-			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.RenderAfterWorld(world);
+			if (world.OrderGenerator != null)
+				world.OrderGenerator.RenderAfterWorld(world);
 
 			if (world.LocalPlayer != null)
 				world.LocalPlayer.Shroud.Draw();
@@ -153,24 +152,6 @@ namespace OpenRA.Graphics
 				Game.Renderer.LineRenderer.DrawLine(new float2(0, j * 24), new float2(world.Map.MapSize.X * 24, j * 24), Color.Black, Color.Black);
 				Game.Renderer.LineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, world.Map.MapSize.Y * 24), Color.Black, Color.Black);
 			}
-		}
-
-		void DrawBandBox()
-		{
-			var selbox = Game.controller.SelectionBox;
-			if (selbox == null) return;
-
-			var a = selbox.Value.First;
-			var b = new float2(selbox.Value.Second.X - a.X, 0);
-			var c = new float2(0, selbox.Value.Second.Y - a.Y);
-
-			Game.Renderer.LineRenderer.DrawLine(a, a + b, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
-
-			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
-				DrawSelectionBox(u, Color.Yellow);
 		}
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c)

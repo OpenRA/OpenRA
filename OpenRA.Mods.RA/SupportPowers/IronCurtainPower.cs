@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "ironrdy1.aud"); }
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new SelectTarget();
+			Game.world.OrderGenerator = new SelectTarget();
 			Sound.Play("slcttgt1.aud");
 		}
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "IronCurtain")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				var curtain = self.World.Queries.WithTrait<IronCurtain>()
 					.Where(a => a.Actor.Owner != null)
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 
 				return OrderInner(world, xy, mi);
 			}
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 					.Any();
 
 				if (!hasStructure)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 			}
 
 			public void RenderAfterWorld(World world) { }

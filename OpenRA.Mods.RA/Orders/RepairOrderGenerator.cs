@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Orders
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 
 			return OrderInner(world, xy, mi);
 		}
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Orders
 		public void Tick( World world )
 		{
 			if( !PlayerIsAllowedToRepair( world ) )
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 		}
 
 		public static bool PlayerIsAllowedToRepair( World world )

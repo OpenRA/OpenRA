@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "ChronoshiftDeploy")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.orderGenerator = new SetChronoTankDestination(self);
+					self.World.OrderGenerator = new SetChronoTankDestination(self);
 				return;
 			}
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (self.Owner == self.World.LocalPlayer)
 				{
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
 				}
 				

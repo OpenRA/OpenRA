@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
+			Game.world.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 					});
 
 				if (Owner == Owner.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				FinishActivate();
 			}

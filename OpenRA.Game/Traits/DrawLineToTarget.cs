@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		
 		public void RenderAfterWorld (Actor self)
 		{
-			var force = Game.controller.GetModifiers().HasModifier(Modifiers.Alt);
+			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return;
 			

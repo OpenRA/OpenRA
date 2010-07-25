@@ -19,7 +19,7 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
-			var orders = Game.controller.selection.Actors
+			var orders = world.Selection.Actors
 				.Select(a => a.Order(xy, mi))
 				.Where(o => o != null)
 				.ToArray();
@@ -37,14 +37,14 @@ namespace OpenRA.Orders
 
 		public void RenderBeforeWorld(World world)
 		{
-			foreach (var a in Game.controller.selection.Actors)
+			foreach (var a in world.Selection.Actors)
 				foreach (var t in a.traits.WithInterface<IPreRenderSelection>())
 					t.RenderBeforeWorld(a);
 		}
 
 		public void RenderAfterWorld( World world )
 		{
-			foreach (var a in Game.controller.selection.Actors)
+			foreach (var a in world.Selection.Actors)
 				foreach (var t in a.traits.WithInterface<IPostRenderSelection>())
 					t.RenderAfterWorld(a);
 		}

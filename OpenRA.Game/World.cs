@@ -15,6 +15,7 @@ using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Orders;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -55,6 +56,25 @@ namespace OpenRA
 		public GlobalDefaultsInfo Defaults { get {return WorldActor.Info.Traits.Get<GlobalDefaultsInfo>();}}
 
 		public readonly WorldRenderer WorldRenderer;
+		
+		public IOrderGenerator OrderGenerator = new UnitOrderGenerator();
+		public Selection Selection = new Selection();
+
+		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
+
+		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
+		{
+			if (OrderGenerator is T)
+			{
+				CancelInputMode();
+				return false;
+			}
+			else
+			{
+				OrderGenerator = new T();
+				return true;
+			}
+		}
 		
 		public World(Manifest manifest, Map map)
 		{

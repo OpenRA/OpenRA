@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		void DoUndeploy(World w, Actor self)
 		{
-			var selected = Game.controller.selection.Contains(self);
+			var selected = w.Selection.Contains(self);
 			w.Remove(self);
 			
 			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 			mcv.traits.Get<Unit>().Facing = 96;
 			
 			if (selected)
-				Game.controller.selection.Add(w, mcv);
+				w.Selection.Add(w, mcv);
 		}
 
 		public IActivity Tick(Actor self)

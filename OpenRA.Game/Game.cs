@@ -37,7 +37,6 @@ namespace OpenRA
 
 		public static World world;
 		internal static Viewport viewport;
-		public static Controller controller;
 		internal static UserSettings Settings;
 
 		internal static OrderManager orderManager;
@@ -286,9 +285,8 @@ namespace OpenRA
 
 						if (isNetTick) orderManager.Tick(world);
 
-						controller.orderGenerator.Tick(world);
-						controller.selection.Tick(world);
-
+						world.OrderGenerator.Tick(world);
+						world.Selection.Tick(world);
 						world.Tick();
 
 						PerfHistory.Tick();
@@ -501,8 +499,6 @@ namespace OpenRA
 			var resolution = GetResolution(settings, Game.Settings.WindowMode);
 			Renderer = new Renderer(resolution, Game.Settings.WindowMode);
 			resolution = Renderer.Resolution;
-
-			controller = new Controller();
 			clientSize = new int2(resolution);
 
 			Sound.Initialize();

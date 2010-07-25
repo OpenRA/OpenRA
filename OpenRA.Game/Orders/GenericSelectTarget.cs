@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 			return OrderInner(world, xy, mi);
 		}
 
@@ -60,7 +60,7 @@ namespace OpenRA.Orders
 					.Any();
 
 			if (!hasStructure)
-				Game.controller.CancelInputMode();
+				world.CancelInputMode();
 		}
 	}
 

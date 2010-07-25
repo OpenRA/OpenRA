@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 	
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator =
+			Game.world.OrderGenerator =
 				new GenericSelectTargetWithBuilding<NukeSilo>(Owner.PlayerActor, "NuclearMissile", "nuke");
 		}
 
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				
 				silo.traits.Get<NukeSilo>().Attack(order.TargetLocation);
 				
-				Game.controller.CancelInputMode();
+				self.World.CancelInputMode();
 				FinishActivate();
 			}
 		}

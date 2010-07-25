@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "spypln1.aud"); }
 		protected override void OnActivate()
 		{
-			Game.controller.orderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
+			Game.world.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
 			Sound.Play("slcttgt1.aud");
 		}
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 				FinishActivate();
 
 				if (order.Player == Owner.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 
 				var enterCell = self.World.ChooseRandomEdgeCell();
 

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	class ChronoshiftPower : SupportPower, IResolveOrder
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnActivate() { Game.controller.orderGenerator = new SelectTarget(); }
+		protected override void OnActivate() { Game.world.OrderGenerator = new SelectTarget(); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -32,13 +32,13 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
 			{
-				Game.controller.orderGenerator = new SelectDestination(order.TargetActor);
+				self.World.OrderGenerator = new SelectDestination(order.TargetActor);
 			}
 			
 			if (order.OrderString == "ChronosphereActivate")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					Game.controller.CancelInputMode();
+					self.World.CancelInputMode();
 				
 				// Ensure the target cell is valid for the unit
 				var movement = order.TargetActor.traits.GetOrDefault<IMove>();
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 
 				return OrderInner(world, xy, mi);
 			}
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 					.Any();
 
 				if (!hasChronosphere)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 					
 				// TODO: Check if the selected unit is still alive
 			}
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (mi.Button == MouseButton.Right)
 				{
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 					yield break;
 				}
 
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA
 					.Any();
 
 				if (!hasChronosphere)
-					Game.controller.CancelInputMode();
+					world.CancelInputMode();
 
 				// TODO: Check if the selected unit is still alive
 			}
