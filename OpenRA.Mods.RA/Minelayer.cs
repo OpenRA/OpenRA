@@ -135,6 +135,9 @@ namespace OpenRA.Mods.RA
 
 		public void Render(Actor self)
 		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+			
 			if (minefield != null)
 				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
 		}

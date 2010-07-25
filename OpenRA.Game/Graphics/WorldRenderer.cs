@@ -32,22 +32,11 @@ namespace OpenRA.Graphics
 			uiOverlay = new UiOverlay();
 			palette = new HardwarePalette(world.Map);
 		}
-		
-		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
-		{
-			Game.Renderer.LineRenderer.DrawLine(start,end,startColor,endColor);
-		}
 
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
 		public Palette GetPalette(string name) { return palette.GetPalette(name); }
 		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
 		public void UpdatePalette(string name, Palette pal) { palette.UpdatePalette(name, pal); }
-		
-		void DrawSpriteList(IEnumerable<Renderable> images)
-		{
-			foreach (var image in images)
-				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
-		}
 
 		class SpriteComparer : IComparer<Renderable>
 		{
@@ -109,8 +98,8 @@ namespace OpenRA.Graphics
 			Game.Renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(Game.viewport);
-
-			DrawSpriteList(worldSprites);
+			foreach (var image in worldSprites)
+				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
 			uiOverlay.Draw(world);
 			Game.Renderer.SpriteRenderer.Flush();
 			DrawBandBox();
@@ -174,10 +163,10 @@ namespace OpenRA.Graphics
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
 			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
-				DrawSelectionBox(u, Color.Yellow, false);
+				DrawSelectionBox(u, Color.Yellow);
 		}
 
-		public void DrawSelectionBox(Actor selectedUnit, Color c, bool drawHealthBar)
+		public void DrawSelectionBox(Actor selectedUnit, Color c)
 		{
 			var bounds = selectedUnit.GetBounds(true);
 
@@ -195,140 +184,8 @@ namespace OpenRA.Graphics
 			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
-
-			if (drawHealthBar)
-			{
-				DrawHealthBar(selectedUnit, xy, Xy);
-				DrawControlGroup(selectedUnit, xy);
-
-				// Only display pips and tags to the owner
-				if (selectedUnit.Owner == world.LocalPlayer)
-				{
-					DrawPips(selectedUnit, xY);
-					DrawTags(selectedUnit, new float2(.5f * (bounds.Left + bounds.Right ), xy.Y));
-				}
-			}	
-
-			if (Game.Settings.PathDebug)
-				DrawUnitPath(selectedUnit);
-		}
-
-		void DrawUnitPath(Actor selectedUnit)
-		{
-			var mobile = selectedUnit.traits.WithInterface<IMove>().FirstOrDefault();
-			if (mobile != null)
-			{
-				var unit = selectedUnit.traits.Get<Unit>();
-				var alt = (unit != null)? new float2(0, -unit.Altitude) : float2.Zero;
-				var path = mobile.GetCurrentPath(selectedUnit);
-				var start = selectedUnit.CenterLocation + alt;
-
-				var c = Color.Green;
-
-				foreach (var step in path)
-				{
-					var stp = step + alt;
-					DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
-					DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
-					DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);
-					DrawLine(stp + new float2(1, -1), stp + new float2(-1, -1), c, c);
-					DrawLine(start, stp, c, c);
-					start = stp;
-				}
-			}
-		}
-
-		void DrawHealthBar(Actor selectedUnit, float2 xy, float2 Xy)
-		{
-			var c = Color.Gray;
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
-
-			var healthAmount = (float)selectedUnit.Health / selectedUnit.Info.Traits.Get<OwnedActorInfo>().HP;
-			var healthColor = (healthAmount < selectedUnit.World.Defaults.ConditionRed) ? Color.Red
-				: (healthAmount < selectedUnit.World.Defaults.ConditionYellow) ? Color.Yellow
-				: Color.LimeGreen;
-
-			var healthColor2 = Color.FromArgb(
-				255,
-				healthColor.R / 2,
-				healthColor.G / 2,
-				healthColor.B / 2);
-
-			var z = float2.Lerp(xy, Xy, healthAmount);
-
-			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
-
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
-		}
-
-		// depends on the order of pips in TraitsInterfaces.cs!
-		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
-		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
-
-		void DrawControlGroup(Actor selectedUnit, float2 basePosition)
-		{
-			var group = Game.controller.selection.GetControlGroupForActor(selectedUnit);
-			if (group == null) return;
-
-			var pipImages = new Animation("pips");
-			pipImages.PlayFetchIndex("groups", () => (int)group);
-			pipImages.Tick();
-			Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), "chrome");
-		}
-
-		void DrawPips(Actor selectedUnit, float2 basePosition)
-		{
-			// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-			var pipxyBase = basePosition + new float2(-12, -7); // Correct for the offset in the shp file
-			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
-
-			foreach (var pips in selectedUnit.traits.WithInterface<IPips>())
-			{
-				foreach (var pip in pips.GetPips(selectedUnit))
-				{
-					if (pipxyOffset.X+5 > selectedUnit.GetBounds(false).Width)
-					{
-						pipxyOffset.X = 0;
-						pipxyOffset.Y -= 4;
-					}
-					var pipImages = new Animation("pips");
-					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
-					pipxyOffset += new float2(4, 0);
-				}
-				// Increment row
-				pipxyOffset.X = 0;
-				pipxyOffset.Y -= 5;
-			}
 		}
 		
-		void DrawTags(Actor selectedUnit, float2 basePosition)
-		{
-			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
-			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
-			var tagxyOffset = new float2(0, 0); // Correct for offset due to multiple rows
-
-			foreach (var tags in selectedUnit.traits.WithInterface<ITags>())
-			{
-				foreach (var tag in tags.GetTags())
-				{
-					if (tag == TagType.None)
-						continue;
-						
-					var tagImages = new Animation("pips");
-					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, "chrome");
-					
-					// Increment row
-					tagxyOffset.Y += 8;
-				}
-			}
-		}
-
 		public void DrawLocus(Color c, int2[] cells)
 		{
 			var dict = cells.ToDictionary(a => a, a => 0);

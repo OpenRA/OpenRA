@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Effects
 			float2 norm = new float2(-unit.Y, unit.X);
 			
 			for (int i = -radius; i < radius; i++)
-				Game.world.WorldRenderer.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
+				Game.Renderer.LineRenderer.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
 			
 			yield break;
 		}

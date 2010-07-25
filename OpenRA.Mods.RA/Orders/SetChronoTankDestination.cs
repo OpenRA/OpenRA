@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Orders
 		public void Tick( World world ) { }
 		public void Render( World world )
 		{
-			world.WorldRenderer.DrawSelectionBox(self, Color.White, true);
+			world.WorldRenderer.DrawSelectionBox(self, Color.White);
 		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi)

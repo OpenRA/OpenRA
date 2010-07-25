@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA
 			
 			public void Render(World world)
 			{
-				world.WorldRenderer.DrawSelectionBox(self, Color.Red, true);
+				world.WorldRenderer.DrawSelectionBox(self, Color.Red);
 			}
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)

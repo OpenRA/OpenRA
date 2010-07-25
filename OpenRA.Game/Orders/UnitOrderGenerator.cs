@@ -39,10 +39,8 @@ namespace OpenRA.Orders
 		{
 			foreach (var a in Game.controller.selection.Actors)
 			{
-				world.WorldRenderer.DrawSelectionBox(a, Color.White, true);
-				if (a.Owner == world.LocalPlayer)
-					foreach (var t in a.traits.WithInterface<IRenderSelection>())
-						t.Render(a);
+				foreach (var t in a.traits.WithInterface<IRenderSelection>())
+					t.Render(a);
 			}
 		}
 

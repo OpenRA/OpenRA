@@ -18,6 +18,9 @@ namespace OpenRA.Mods.RA
 	{
 		public void Render(Actor self)
 		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+			
 			self.World.WorldRenderer.DrawRangeCircle(
 				Color.FromArgb(128, Color.LimeGreen),
 				self.CenterLocation, self.Info.Traits.Get<DetectCloakedInfo>().Range);
