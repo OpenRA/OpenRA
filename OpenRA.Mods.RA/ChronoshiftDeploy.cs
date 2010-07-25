@@ -15,7 +15,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Aftermath
+namespace OpenRA.Mods.RA
 {
 	class ChronoshiftDeployInfo : TraitInfo<ChronoshiftDeploy>
 	{

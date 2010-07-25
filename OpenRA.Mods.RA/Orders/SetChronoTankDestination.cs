@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Aftermath.Orders
+namespace OpenRA.Mods.RA.Orders
 {
 	class SetChronoTankDestination : IOrderGenerator
 	{

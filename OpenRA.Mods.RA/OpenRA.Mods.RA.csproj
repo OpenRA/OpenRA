@@ -17,15 +17,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\mods\ra\</OutputPath>
+    <OutputPath>..\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ../OpenRA.Mods.RA.dll ../mods/ra" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\mods\ra\</OutputPath>
+    <OutputPath>..\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -212,6 +217,9 @@
     <Compile Include="EngineerRepair.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="BuildingCaptureNotification.cs" />
+    <Compile Include="ChronoshiftDeploy.cs" />
+    <Compile Include="DemoTruck.cs" />
+    <Compile Include="Orders\SetChronoTankDestination.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -240,6 +248,5 @@ ralint ra</PostBuildEvent>
   <ItemGroup>
     <Folder Include="Widgets\" />
     <Folder Include="Widgets\Delegates\" />
-    <Folder Include="Chrome\" />
   </ItemGroup>
 </Project>

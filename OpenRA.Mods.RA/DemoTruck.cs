@@ -11,7 +11,7 @@
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Aftermath
+namespace OpenRA.Mods.RA
 {
 	class DemoTruckInfo : TraitInfo<DemoTruck> { }
 

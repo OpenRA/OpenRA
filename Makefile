@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc aftermath seqed mapcvtr editor ralint filex tsbuild
+PROGRAMS	=fileformats gl game ra cnc seqed mapcvtr editor ralint filex tsbuild
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -46,12 +46,6 @@ cnc_KIND			=	library
 cnc_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
 cnc_LIBS			= $(COMMON_LIBS) $(cnc_DEPS)
 
-aftermath_SRCS		=	$(shell find OpenRA.Mods.Aftermath/ -iname '*.cs')
-aftermath_TARGET	=	mods/aftermath/OpenRA.Mods.Aftermath.dll
-aftermath_KIND		=	library
-aftermath_DEPS		= $(fileformats_TARGET) $(game_TARGET) $(ra_TARGET)
-aftermath_LIBS		= $(COMMON_LIBS) $(aftermath_DEPS)
-
 seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
 seqed_TARGET		= SequenceEditor.exe
 seqed_KIND			= winexe
@@ -94,9 +88,9 @@ tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_aftermath mod_cnc install uninstall editor_res editor tsbuild ralint seqed mapcvtr filex
+.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed mapcvtr filex
 
-game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(aftermath_TARGET)
+game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -109,12 +103,7 @@ install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
-	
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/aftermath
-	@$(INSTALL_PROGRAM) $(aftermath_TARGET) $(INSTALL_DIR)/mods/aftermath
-	@-cp $(foreach f,$(shell ls mods/aftermath --hide=*.dll),mods/aftermath/$(f)) $(INSTALL_DIR)/mods/aftermath
-	@cp -r mods/aftermath/packages $(INSTALL_DIR)/mods/aftermath
-	
+		
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(cnc_TARGET) $(INSTALL_DIR)/mods/cnc
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
@@ -151,8 +140,6 @@ uninstall:
 
 mod_ra: $(ra_TARGET) $(ralint_TARGET)
 	mono RALint.exe ra
-mod_aftermath: $(aftermath_TARGET) $(ralint_TARGET)
-	mono RALint.exe ra aftermath
 mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
 	mono RALint.exe cnc
 mods: mod_ra mod_cnc
