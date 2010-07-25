@@ -173,7 +173,7 @@ namespace OpenRA.Widgets
 					return true;
 				}
 
-				if (e.KeyChar == 08)
+				if (e.KeyChar == '\b')
 				{
 					GotoNextBase();
 					return true;
