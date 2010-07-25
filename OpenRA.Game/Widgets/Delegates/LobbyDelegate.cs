@@ -83,6 +83,15 @@ namespace OpenRA.Widgets.Delegates
 				Game.Disconnect();
 				return true;
 			};
+			
+			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
+			startGameButton.OnMouseUp = mi =>
+			{
+				mapButton.Visible = false;
+				Game.IssueOrder(Order.Command("startgame"));
+				return true;
+			};
+			startGameButton.IsVisible = () => Game.IsHost && Game.LobbyInfo.Clients.All(c => c.State == Session.ClientState.Ready);
 
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsVisible = () => true;
@@ -347,9 +356,6 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleReady(MouseInput mi)
 		{
-			//HACK: Can't set this as part of the fuction as LocalClient/State not initalised yet
-			Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget<ButtonWidget>("CHANGEMAP_BUTTON").Visible
-				= (Game.IsHost && Game.LocalClient.State == Session.ClientState.Ready);
 			Game.IssueOrder(Order.Command("ready"));
 			return true;
 		}

@@ -240,11 +240,13 @@ namespace OpenRA.Server
 							conn.socket.RemoteEndPoint, client.State);
 
 						SyncLobbyInfo();
-
-						// start the game if everyone is ready.
+						return true;
+					}},
+				{ "startgame", 
+					s => 
+					{
 						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
 						{
-							Console.WriteLine("All players are ready. Starting the game!");
 							GameStarted = true;
 							foreach( var c in conns )
 								foreach( var d in conns )
@@ -255,7 +257,6 @@ namespace OpenRA.Server
 
 							PingMasterServer();
 						}
-
 						return true;
 					}},
 				{ "name", 
@@ -396,7 +397,7 @@ namespace OpenRA.Server
 				{
 					if(GameStarted)
 						SendChatTo(conn, "Cannot change state when game started.");
-					else if (GetClient(conn).State == Session.ClientState.Ready && so.Data != "ready")
+					else if (GetClient(conn).State == Session.ClientState.Ready && !(so.Data == "ready" || so.Data == "startgame") )
 						SendChatTo(conn, "Cannot change state when marked as ready.");
 					else if (!InterpretCommand(conn, so.Data))
 					{

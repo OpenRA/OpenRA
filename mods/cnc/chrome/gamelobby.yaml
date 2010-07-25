@@ -234,10 +234,19 @@ Container@ROOT:
 					Y:PARENT_BOTTOM - 74
 					Width:710
 					Height:25
+				Button@START_GAME_BUTTON:
+					Id:START_GAME_BUTTON
+					Visible:true
+					X:PARENT_RIGHT-140
+					Y:PARENT_BOTTOM-43
+					Width:120
+					Height:25
+					Text:Start Game
+					Bold:True
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
 					Visible:true
-					X:PARENT_RIGHT-140
+					X:20
 					Y:PARENT_BOTTOM-43
 					Width:120
 					Height:25
