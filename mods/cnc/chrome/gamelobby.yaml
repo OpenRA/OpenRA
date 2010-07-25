@@ -205,8 +205,8 @@ Container@ROOT:
 				Button@CHANGEMAP_BUTTON:
 					Id:CHANGEMAP_BUTTON
 					Visible:true
-					X:PARENT_RIGHT-140
-					Y:300
+					X:PARENT_RIGHT-160
+					Y:PARENT_BOTTOM-269
 					Width:120
 					Height:25
 					Text:Change Map
@@ -215,30 +215,30 @@ Container@ROOT:
 					Id:CHAT_DISPLAY
 					Visible:true
 					X:20
-					Y:PARENT_BOTTOM - 269
-					Width:PARENT_RIGHT - 40
-					Height:190
 					Notification: beepy2.aud
+					Height:230
+					Y:PARENT_BOTTOM - 289
+					Width:PARENT_RIGHT - 200
 				Label@LABEL_CHATTYPE:
 					Id:LABEL_CHATTYPE
 					Width:65
 					Height:25
 					X:0
-					Y:PARENT_BOTTOM - 75
+					Y:PARENT_BOTTOM - 50
 					Text:Chat:
 					Align:Right
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					Visible:true
 					X:70
-					Y:PARENT_BOTTOM - 74
-					Width:710
+					Y:PARENT_BOTTOM - 49
+					Width:550
 					Height:25
 				Button@START_GAME_BUTTON:
 					Id:START_GAME_BUTTON
 					Visible:true
-					X:PARENT_RIGHT-140
-					Y:PARENT_BOTTOM-43
+					X:PARENT_RIGHT-160
+					Y:PARENT_BOTTOM-49
 					Width:120
 					Height:25
 					Text:Start Game
@@ -246,8 +246,8 @@ Container@ROOT:
 				Button@DISCONNECT_BUTTON:
 					Id:DISCONNECT_BUTTON
 					Visible:true
-					X:20
-					Y:PARENT_BOTTOM-43
+					X:PARENT_RIGHT-160
+					Y:PARENT_BOTTOM-189
 					Width:120
 					Height:25
 					Text:Disconnect
@@ -255,8 +255,8 @@ Container@ROOT:
 				Checkbox@LOCKTEAMS_CHECKBOX:
 					Id:LOCKTEAMS_CHECKBOX
 					Visible: true
-					X: PARENT_RIGHT-300
-					Y: PARENT_BOTTOM-38
+					X: PARENT_RIGHT-160
+					Y: PARENT_BOTTOM-229
 					Width: 80
 					Height: 20
 					Text: Lock Teams

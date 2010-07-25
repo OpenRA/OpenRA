@@ -83,18 +83,9 @@ namespace OpenRA.Widgets.Delegates
 				Game.Disconnect();
 				return true;
 			};
-			
-			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
-			startGameButton.OnMouseUp = mi =>
-			{
-				mapButton.Visible = false;
-				Game.IssueOrder(Order.Command("startgame"));
-				return true;
-			};
-			startGameButton.IsVisible = () => Game.IsHost && Game.LobbyInfo.Clients.All(c => c.State == Session.ClientState.Ready);
 
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
-			lockTeamsCheckbox.IsVisible = () => true;
+			lockTeamsCheckbox.IsVisible = () => lockTeamsCheckbox.Visible && true;
 			lockTeamsCheckbox.Checked = () => Game.LobbyInfo.GlobalSettings.LockTeams;
 			lockTeamsCheckbox.OnMouseDown = mi =>
 			{
@@ -103,6 +94,18 @@ namespace OpenRA.Widgets.Delegates
 						"lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
 				return true;
 			};
+			
+			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
+			startGameButton.OnMouseUp = mi =>
+			{
+				mapButton.Visible = false;
+				disconnectButton.Visible = false;
+				lockTeamsCheckbox.Visible = false;
+				Game.IssueOrder(Order.Command("startgame"));
+				return true;
+			};
+			startGameButton.IsVisible = () => Game.IsHost;
+			
 			Game.LobbyInfoChanged += JoinedServer;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;

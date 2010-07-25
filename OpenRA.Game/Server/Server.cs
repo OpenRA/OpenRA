@@ -240,23 +240,24 @@ namespace OpenRA.Server
 							conn.socket.RemoteEndPoint, client.State);
 
 						SyncLobbyInfo();
+						
+						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
+							InterpretCommand(conn, "startgame");
+						
 						return true;
 					}},
 				{ "startgame", 
 					s => 
 					{
-						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
-						{
-							GameStarted = true;
-							foreach( var c in conns )
-								foreach( var d in conns )
-									DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
+						GameStarted = true;
+						foreach( var c in conns )
+							foreach( var d in conns )
+								DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
-							DispatchOrders(null, 0,
-								new ServerOrder("StartGame", "").Serialize());
+						DispatchOrders(null, 0,
+							new ServerOrder("StartGame", "").Serialize());
 
-							PingMasterServer();
-						}
+						PingMasterServer();
 						return true;
 					}},
 				{ "name", 
