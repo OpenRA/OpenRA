@@ -41,8 +41,10 @@ namespace OpenRA
 		Ctrl = (int)Keys.Control,
 	}
 
+	public enum KeyInputEvent { Down, Up };
 	public struct KeyInput
 	{
+		public KeyInputEvent Event;
 		public char KeyChar;
 		public string KeyName;
 		public Modifiers Modifiers;

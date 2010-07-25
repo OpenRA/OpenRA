@@ -140,6 +140,8 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
+			if (e.Event == KeyInputEvent.Up) return false;
+
 			if (e.KeyChar == '\t')
 			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));

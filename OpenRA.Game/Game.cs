@@ -54,11 +54,6 @@ namespace OpenRA
 		static bool mapChangePending;
 		static Pair<Assembly, string>[] ModAssemblies;
 
-		static internal bool scrollUp = false;
-		static internal bool scrollDown = false;
-		static internal bool scrollLeft = false;
-		static internal bool scrollRight = false;
-
 		static void LoadModPackages()
 		{
 			FileSystem.UnmountAll();
@@ -304,15 +299,6 @@ namespace OpenRA
 				}
 			}
 
-			if (scrollUp == true)
-				viewport.Scroll(new float2(0, -10));
-			if (scrollRight == true)
-				viewport.Scroll(new float2(10, 0));
-			if (scrollDown == true)
-				viewport.Scroll(new float2(0, 10));
-			if (scrollLeft == true)
-				viewport.Scroll(new float2(-10, 0));
-
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
@@ -431,33 +417,20 @@ namespace OpenRA
 			return LobbyInfo.Clients.Single(c => c.Index == p.Index);
 		}
 
-		static int2 lastPos;
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
 			int sync = world.SyncHash();
 			var initialWorld = world;
 
-			if (ev == MouseInputEvent.Down)
-				lastPos = new int2(e.Location);
-
-			if (ev == MouseInputEvent.Move &&
-				(e.Button == MouseButtons.Middle ||
-				e.Button == (MouseButtons.Left | MouseButtons.Right)))
+			var mi = new MouseInput
 			{
-				var p = new int2(e.Location);
-				viewport.Scroll(lastPos - p);
-				lastPos = p;
-			}
-
-			viewport.DispatchMouseInput(world,
-				new MouseInput
-				{
-					Button = (MouseButton)(int)e.Button,
-					Event = ev,
-					Location = new int2(e.Location),
-					Modifiers = modifierKeys,
-				});
-
+				Button = (MouseButton)(int)e.Button,
+				Event = ev,
+				Location = new int2(e.Location),
+				Modifiers = modifierKeys,
+			};
+			Widget.HandleInput(world, mi);
+			
 			if (sync != world.SyncHash() && world == initialWorld)
 				throw new InvalidOperationException("Desync in DispatchMouseInput");
 		}
@@ -472,60 +445,15 @@ namespace OpenRA
 			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
 		}
 
-		public static void HandleKeyDown(KeyInput e)
+		public static void HandleKeyEvent(KeyInput e)
 		{
 			int sync = world.SyncHash();
 			
 			if (Widget.HandleKeyPress(e))
 				return;
 
-			switch (e.KeyName)
-			{
-				case "up": scrollUp = true; break;
-				case "down": scrollDown = true; break;
-				case "left": scrollLeft = true; break;
-				case "right": scrollRight = true; break;
-			}
-
-			if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
-				Game.controller.selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
-			
-			if (e.KeyChar == 08)
-				Game.controller.GotoNextBase();
-
 			if (sync != Game.world.SyncHash())
 				throw new InvalidOperationException("Desync in OnKeyPress");
-		}
-
-		public static void HandleKeyUp(KeyInput e)
-		{
-			switch (e.KeyName)
-			{
-				case "up": scrollUp = false; break;
-				case "down": scrollDown = false; break;
-				case "left": scrollLeft = false; break;
-				case "right": scrollRight = false; break;
-			}
-		}
-
-		public static void HandleArrowKeyScroll(String k, Boolean pressed)
-		{
-			if (k == "up")
-			{
-				scrollUp = pressed;
-			}
-			if (k == "left")
-			{
-				scrollLeft = pressed;
-			}
-			if (k == "down")
-			{
-				scrollDown = pressed;
-			}
-			if (k == "right")
-			{
-				scrollRight = pressed;
-			}
 		}
 
 		public static void HandleModifierKeys(Modifiers mods)

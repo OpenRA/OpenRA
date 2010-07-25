@@ -28,7 +28,6 @@ namespace OpenRA.Graphics
 		public int Width { get { return (int)screenSize.X; } }
 		public int Height { get { return (int)screenSize.Y; } }
 
-		int2 mousePos;
 		float cursorFrame = 0f;
 
 		public void Scroll(float2 delta)
@@ -61,9 +60,9 @@ namespace OpenRA.Graphics
 			Widget.DoDraw(world);
 			Timer.Time( "widgets: {0}" );
 
-			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? "default";
+			var cursorName = Widget.RootWidget.GetCursorOuter(Widget.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);
-			c.Draw((int)cursorFrame, mousePos + Location); 
+			c.Draw((int)cursorFrame, Widget.LastMousePos + Location); 
 			Timer.Time( "cursors: {0}" );
 
 			renderer.RgbaSpriteRenderer.Flush();
@@ -77,14 +76,6 @@ namespace OpenRA.Graphics
 		public void Tick()
 		{
 			cursorFrame += 0.5f;
-		}
-
-		public void DispatchMouseInput(World world, MouseInput mi)
-		{
-			if (mi.Event == MouseInputEvent.Move)
-				mousePos = mi.Location;
-			
-			Widget.HandleInput(world, mi);
 		}
 
 		public float2 ViewToWorld(MouseInput mi)

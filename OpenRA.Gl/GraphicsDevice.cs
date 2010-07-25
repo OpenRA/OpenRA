@@ -215,6 +215,7 @@ namespace OpenRA.GlRenderer
 						{
 							var keyEvent = new KeyInput
 							{
+								Event = KeyInputEvent.Down,
 								Modifiers = mods,
 								KeyChar = (char) e.key.keysym.unicode,
 								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
@@ -222,20 +223,21 @@ namespace OpenRA.GlRenderer
 							};
 
 							if (!HandleSpecialKey(keyEvent))
-								Game.HandleKeyDown(keyEvent);
+								Game.HandleKeyEvent(keyEvent);
 						} break;
 
 					case Sdl.SDL_KEYUP:
 						{
 							var keyEvent = new KeyInput
 							{
+								Event = KeyInputEvent.Up,
 								Modifiers = mods,
 								KeyChar = (char) e.key.keysym.unicode,
 								KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
 								VirtKey = e.key.keysym.sym
 							};
-
-							Game.HandleKeyUp(keyEvent);
+							
+							Game.HandleKeyEvent(keyEvent);
 						} break;
 				}
 			}

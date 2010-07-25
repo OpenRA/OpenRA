@@ -207,18 +207,19 @@ namespace OpenRA.Widgets
 		public static int2 LastMousePos;
 		public static bool HandleInput(World world, MouseInput mi)
 		{
+			bool handled = false;
 			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
-				return true;
+				handled = true;
 			
-			if (RootWidget.HandleMouseInputOuter(mi))
-				return true;
+			if (!handled && RootWidget.HandleMouseInputOuter(mi))
+				handled = true;
 
 			if (mi.Event == MouseInputEvent.Move)
 			{
 				LastMousePos = mi.Location;
 				TicksSinceLastMove = 0;
 			}
-			return false;
+			return handled;
 		}
 		
 		public bool HandleMouseInputOuter(MouseInput mi)

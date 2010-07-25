@@ -63,6 +63,8 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
+			if (e.Event == KeyInputEvent.Up) return false;
+			
 			// Only take input if we are focused
 			if (!Focused)
 				return false;
