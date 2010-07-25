@@ -29,8 +29,8 @@ GAME_PATH=$RESOURCES_PATH
 SUPPORT_PATH=~/Library/"Application Support"/OpenRA
 
 # Downloadable content
-DEPS_PACKAGE="osx-deps-v1.zip"
-DEPS_URL="http://open-ra.org/releases/mac/osx-deps-v1.zip"
+DEPS_PACKAGE="osx-deps-v2.zip"
+DEPS_URL="http://open-ra.org/releases/mac/osx-deps-v2.zip"
 RA_PACKAGE="ra-packages.zip"
 RA_URL="http://open-ra.org/packages/ra-packages.zip"
 CNC_PACKAGE="cnc-packages.zip"

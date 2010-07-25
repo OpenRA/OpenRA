@@ -11,7 +11,8 @@ PWD=`pwd`
 PACKAGING_PATH="$PWD/osxbuild"
 BINARY_PATH="$PACKAGING_PATH/deps"
 LIB_PATH="$BINARY_PATH/lib"
-SYSTEM_MONO="/Library/Frameworks/Mono.framework/Versions/2.6.3"
+MONO_VERSION="2.6.7"
+SYSTEM_MONO="/Library/Frameworks/Mono.framework/Versions/"${MONO_VERSION}
 
 # dylibs referred to by dlls in the gac; won't show up to otool
 GAC_DYLIBS="$SYSTEM_MONO/lib/libMonoPosixHelper.dylib $SYSTEM_MONO/lib/libgdiplus.dylib "
@@ -73,7 +74,7 @@ for i in $DLLS; do
 			
 			echo "Patching config: $CONFIG"
 			# Remove any references to the hardcoded mono framework; the game will look in the right location anyway
-			sed "s/\/Library\/Frameworks\/Mono.framework\/Versions\/2.6.3\///" "$i.config" > "${CONFIG}_1"
+			sed "s/\/Library\/Frameworks\/Mono.framework\/Versions\/${MONO_VERSION}\///" "$i.config" > "${CONFIG}_1"
 			sed "s/\/Library\/Frameworks\/Cg.framework/lib/" "${CONFIG}_1" > "${CONFIG}_2"
 			sed "s/\/Library\/Frameworks\/SDL.framework/lib/" "${CONFIG}_2" > $CONFIG
 			rm "${CONFIG}_1" "${CONFIG}_2"
@@ -97,8 +98,8 @@ cp -X /Library/Frameworks/SDL.framework/SDL $LIB_PATH
 chmod 755 $LIB_PATH/SDL
 
 cd "$BINARY_PATH"
-zip osx-deps-v1 -r -9 *
-mv osx-deps-v1.zip "$PACKAGING_PATH"
+zip osx-deps-v2 -r -9 *
+mv osx-deps-v2.zip "$PACKAGING_PATH"
 rm -rf "$BINARY_PATH"
 
 echo "All Done!"
