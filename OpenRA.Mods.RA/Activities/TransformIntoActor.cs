@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -36,14 +38,19 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (isCanceled) return NextActivity;
 
-			self.World.AddFrameEndTask(_ =>
+			self.World.AddFrameEndTask(w =>
 			{
+				var selected = Game.controller.selection.Contains(self);
+				
 				self.World.Remove(self);
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
 				var a = self.World.CreateActor(actor, self.Location + offset, self.Owner);
 				a.Health = GetHealthToTransfer(self, a, transferPercentage);
+				
+				if (selected)
+					Game.controller.selection.Add(w, a);
 			});
 			return this;
 		}

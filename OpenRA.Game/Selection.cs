@@ -18,7 +18,17 @@ namespace OpenRA
 	public class Selection
 	{
 		List<Actor> actors = new List<Actor>();
-
+		public void Add(World w, Actor a)
+		{
+			actors.Add(a);
+			foreach (var ns in w.WorldActor.traits.WithInterface<INotifySelection>())
+				ns.SelectionChanged();
+		}
+		
+		public bool Contains(Actor a)
+		{
+			return actors.AsEnumerable().Contains(a);
+		}
 		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
 			var oldSelection = actors.AsEnumerable();

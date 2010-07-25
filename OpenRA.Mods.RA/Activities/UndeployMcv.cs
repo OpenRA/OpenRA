@@ -18,13 +18,17 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity NextActivity { get; set; }
 		bool started;
 
-		void DoUndeploy(World w,Actor self)
+		void DoUndeploy(World w, Actor self)
 		{
+			var selected = Game.controller.selection.Contains(self);
 			w.Remove(self);
 			
 			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
 			mcv.Health = TransformIntoActor.GetHealthToTransfer(self, mcv, true);
 			mcv.traits.Get<Unit>().Facing = 96;
+			
+			if (selected)
+				Game.controller.selection.Add(w, mcv);
 		}
 
 		public IActivity Tick(Actor self)
