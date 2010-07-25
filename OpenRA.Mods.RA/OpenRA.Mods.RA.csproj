@@ -24,6 +24,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp ../OpenRA.Mods.RA.dll ../mods/ra" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="mono RALint.exe ra" workingdir="${ProjectDir}/../" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
