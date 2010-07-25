@@ -456,10 +456,9 @@ namespace OpenRA
 				throw new InvalidOperationException("Desync in OnKeyPress");
 		}
 
-		public static void HandleModifierKeys(Modifiers mods)
-		{
-			controller.SetModifiers(mods);
-		}
+		static Modifiers modifiers;
+		public static Modifiers GetModifierKeys() { return modifiers; }
+		public static void HandleModifierKeys(Modifiers mods) {	modifiers = mods; }
 
 		static Size GetResolution(Settings settings, WindowMode windowmode)
 		{

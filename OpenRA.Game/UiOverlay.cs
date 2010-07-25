@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -54,7 +55,7 @@ namespace OpenRA
 
 		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
 		{
-			var position = Game.controller.MousePosition.ToInt2();
+			var position = Game.viewport.ViewToWorld(Widget.LastMousePos).ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
 			
 			// Linebuild for walls.

@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 			{
 				Location = loc,
 				Button = MouseButton.Right,
-				Modifiers = Game.controller.GetModifiers()
+				Modifiers = Game.GetModifierKeys()
 			};
 
 			var cursor = Game.controller.orderGenerator.GetCursor( world, loc, mi );

@@ -70,11 +70,5 @@ namespace OpenRA
 				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
 			}
 		}
-
-		public float2 MousePosition { get { return dragEnd; } }
-		Modifiers modifiers;
-
-		public void SetModifiers(Modifiers mods) { modifiers = mods; }
-		public Modifiers GetModifiers() { return modifiers; }
 	}
 }
