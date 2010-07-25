@@ -161,30 +161,36 @@ namespace OpenRA.Widgets
 			{
 				switch (e.KeyName)
 				{
-					case "up": scrollUp = true; break;
-					case "down": scrollDown = true; break;
-					case "left": scrollLeft = true; break;
-					case "right": scrollRight = true; break;
+					case "up": scrollUp = true; return true;
+					case "down": scrollDown = true; return true;
+					case "left": scrollLeft = true; return true;
+					case "right": scrollRight = true; return true;
 				}
-	
+
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
+				{
 					Game.world.Selection.DoControlGroup(Game.world, e.KeyName[0] - '0', e.Modifiers);
-				
+					return true;
+				}
+
 				if (e.KeyChar == 08)
+				{
 					GotoNextBase();
+					return true;
+				}
 			}
 			else
 			{
 				switch (e.KeyName)
 				{
-					case "up": scrollUp = false; break;
-					case "down": scrollDown = false; break;
-					case "left": scrollLeft = false; break;
-					case "right": scrollRight = false; break;
+					case "up": scrollUp = false; return true;
+					case "down": scrollDown = false; return true;
+					case "left": scrollLeft = false; return true;
+					case "right": scrollRight = false; return true;
 				}
 			}
 			
-			return true;
+			return false;
 		}
 		
 		public override void Tick(World world)
