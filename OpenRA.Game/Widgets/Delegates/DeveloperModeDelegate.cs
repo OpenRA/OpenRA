@@ -84,19 +84,21 @@ namespace OpenRA.Widgets.Delegates
 				() => true;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_GIVE_CASH").OnMouseDown = mi =>
 			{
+				Game.IssueOrder(new Order("DevModeGiveCash", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
 			{
+				Game.IssueOrder(new Order("DevModeFastBuild", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};	
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
 				() => true;
 			
-			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
 			{
+				Game.IssueOrder(new Order("DevModeFastCharge", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").Checked = 

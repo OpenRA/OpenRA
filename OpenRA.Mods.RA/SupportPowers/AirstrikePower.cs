@@ -16,7 +16,7 @@ using OpenRA.Traits.Activities;
 namespace OpenRA.Mods.RA
 {
 	class AirstrikePowerInfo : SupportPowerInfo
-	{
+	{ 
 		[ActorReference]
 		public readonly string UnitType = "badr.bomber";
 		[ActorReference]

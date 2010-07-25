@@ -13,34 +13,44 @@ namespace OpenRA.Traits
 {
 	public class DeveloperModeInfo : ITraitInfo
 	{
-		public int InitialCash = 20000;
-		public int BuildSpeed = 1;
-		public int ChargeTime = 1;
+		public int Cash = 20000;
+		public bool FastBuild = false;
+		public bool FastCharge = false;
 		
-		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
-		
+		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
 	
 	public class DeveloperMode : IResolveOrder
 	{
 		DeveloperModeInfo Info;
-		public DeveloperMode (DeveloperModeInfo info)
+		[Sync]
+		public bool FastCharge;
+		public bool FastBuild;
+		
+		public DeveloperMode(DeveloperModeInfo info)
 		{
 			Info = info;
+			FastBuild = Info.FastBuild;
+			FastCharge = Info.FastCharge;
 		}
-	
+		
 		public void ResolveOrder (Actor self, Order order)
 		{
-			switch (order.OrderString)
+			switch(order.OrderString)
 			{
-				case "DevModeGiveCash":
-					self.World.AddFrameEndTask( w =>
-					{
-						self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(Info.InitialCash);
-					});
-				break;
+			case "DevModeFastCharge":
+				{
+					FastCharge ^= true;
+					break;
+				}
+			case "DevModeFastBuild":
+				{
+					FastBuild ^= true;
+					break;
+				}
 			}
 		}
+		
 	}
 }
 
