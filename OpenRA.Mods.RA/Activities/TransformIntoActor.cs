@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
-				var a = self.World.CreateActor(actor, self.Location + offset, self.Owner);
+				var a = w.CreateActor(actor, self.Location + offset, self.Owner);
 				a.Health = GetHealthToTransfer(self, a, transferPercentage);
 				
 				if (selected)
