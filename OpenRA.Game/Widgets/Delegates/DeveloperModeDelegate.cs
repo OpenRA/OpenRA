@@ -80,29 +80,30 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_GIVE_CASH").Checked = 
-				() => true;
-			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_GIVE_CASH").OnMouseDown = mi =>
+			devmodeBG.GetWidget<ButtonWidget>("SETTINGS_GIVE_CASH").OnMouseUp = mi =>
 			{
 				Game.IssueOrder(new Order("DevModeGiveCash", Game.world.LocalPlayer.PlayerActor));
+				TriggerCheatingMessage();
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
 			{
 				Game.IssueOrder(new Order("DevModeFastBuild", Game.world.LocalPlayer.PlayerActor));
+				TriggerCheatingMessage();
 				return true;
 			};	
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
-				() => true;
+				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastBuild;
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
 			{
+				TriggerCheatingMessage();
 				Game.IssueOrder(new Order("DevModeFastCharge", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").Checked = 
-				() => true;
+				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastCharge;
 			
 				
 			devModeButton.IsVisible = () => { return Game.Settings.DeveloperMode; };

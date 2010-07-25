@@ -162,7 +162,6 @@ namespace OpenRA
 			CurrentPort = port;
 
 			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
-			Game.Settings.DeveloperMode = LobbyInfo.GlobalSettings.AllowCheats;
 		}
 
 		static string ChooseReplayFilename()
