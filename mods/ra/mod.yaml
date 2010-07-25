@@ -39,11 +39,11 @@ Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll:	Traits used
 
 ChromeLayout:
+	mods/ra/chrome/ingame.yaml:	
 	mods/ra/chrome/mainmenu.yaml:
 	mods/ra/chrome/settings.yaml:
 	mods/ra/chrome/gamelobby.yaml:
 	mods/ra/chrome/serverbrowser.yaml:
-	mods/ra/chrome/ingame.yaml:	
 
 Weapons:
 	mods/ra/weapons.yaml

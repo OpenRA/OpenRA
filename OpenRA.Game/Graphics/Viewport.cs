@@ -17,11 +17,6 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Graphics
 {
-	interface IHandleInput
-	{
-		bool HandleInput(World world, MouseInput mi);
-	}
-
 	class Viewport
 	{
 		readonly float2 screenSize;
@@ -40,8 +35,6 @@ namespace OpenRA.Graphics
 		{
 			scrollPosition = scrollPosition + delta;
 		}
-
-		public IEnumerable<IHandleInput> regions { get { return new IHandleInput[] { Widget.RootWidget, Game.controller }; } }
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
@@ -68,7 +61,7 @@ namespace OpenRA.Graphics
 			Widget.DoDraw(world);
 			Timer.Time( "widgets: {0}" );
 
-			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? Game.controller.ChooseCursor( world );
+			var cursorName = Widget.RootWidget.GetCursorOuter(mousePos) ?? "default";
 			var c = new Cursor(cursorName);
 			c.Draw((int)cursorFrame, mousePos + Location); 
 			Timer.Time( "cursors: {0}" );
@@ -86,21 +79,12 @@ namespace OpenRA.Graphics
 			cursorFrame += 0.5f;
 		}
 
-		IHandleInput dragRegion = null;
 		public void DispatchMouseInput(World world, MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				mousePos = mi.Location;
-
-			if (dragRegion != null) {
-				dragRegion.HandleInput( world, mi );
-				if (mi.Event == MouseInputEvent.Up) dragRegion = null;
-				return;
-			}
-
-			dragRegion = regions.FirstOrDefault(r => r.HandleInput(world, mi));
-			if (mi.Event != MouseInputEvent.Down)
-				dragRegion = null;
+			
+			Widget.HandleInput(world, mi);
 		}
 
 		public float2 ViewToWorld(MouseInput mi)

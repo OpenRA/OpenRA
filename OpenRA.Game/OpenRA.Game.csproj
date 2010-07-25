@@ -228,6 +228,7 @@
     <Compile Include="Widgets\TimerWidget.cs" />
     <Compile Include="Widgets\ShpImageWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />
+    <Compile Include="Widgets\DefaultInputControllerWidget.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
   </ItemGroup>
   <ItemGroup>

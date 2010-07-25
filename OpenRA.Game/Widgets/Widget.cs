@@ -17,7 +17,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public abstract class Widget : IHandleInput
+	public abstract class Widget
 	{
 		// Info defined in YAML
 		public string Id = null;
@@ -205,7 +205,7 @@ namespace OpenRA.Widgets
 		
 		public static int TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
-		public bool HandleInput(World world, MouseInput mi)
+		public static bool HandleInput(World world, MouseInput mi)
 		{
 			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
 				return true;

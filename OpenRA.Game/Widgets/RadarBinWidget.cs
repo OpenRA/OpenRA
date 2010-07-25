@@ -104,10 +104,10 @@ namespace OpenRA.Widgets
 					Location = (loc * Game.CellSize - Game.viewport.Location).ToInt2()
 				};
 
-				Game.controller.HandleInput(Game.world, fakemi);
+				Widget.HandleInput(Game.world, fakemi);
 
 				fakemi.Event = MouseInputEvent.Up;
-				Game.controller.HandleInput(Game.world, fakemi);
+				Widget.HandleInput(Game.world, fakemi);
 			}
 
 			return true;
