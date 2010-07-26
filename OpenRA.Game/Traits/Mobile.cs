@@ -174,6 +174,7 @@ namespace OpenRA.Traits
 			if (MovementCostForCell(self, cell) == float.PositiveInfinity)
 				return false;
 
+
 			// Check for buildings
 			var building = bim.GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
@@ -211,7 +212,7 @@ namespace OpenRA.Traits
 					if (Info.Crushes == null && nonshareable.Count() > 0)
 						return false;
 
-					if (nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
+					if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
 												 a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
 						return false;
 				}
@@ -219,8 +220,6 @@ namespace OpenRA.Traits
 
 			return true;
 		}
-
-		static readonly Actor[] Nothing = { };
 		
 		public virtual void FinishedMoving(Actor self)
 		{
