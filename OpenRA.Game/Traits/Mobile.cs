@@ -15,6 +15,7 @@ using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using System.Drawing;
+using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
@@ -167,46 +168,59 @@ namespace OpenRA.Traits
 		{
 			return CanEnterCell(p, null, true);
 		}
-		
+
 		public virtual bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
 		{
+			if (MovementCostForCell(self, cell) == float.PositiveInfinity)
+				return false;
+
 			// Check for buildings
 			var building = bim.GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
 			{
 				if (Info.Crushes == null)
 					return false;
-				
+
 				var crushable = building.traits.WithInterface<ICrushable>();
 				if (crushable.Count() == 0)
 					return false;
-				
+
 				if (!crushable.Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))
 					return false;
 			}
-			
+
 			// Check mobile actors
 			if (checkTransientActors)
 			{
-				var actors = uim.GetUnitsAt(cell).Where(a => a != self && a != ignoreActor);
-				var nonshareable = actors.Where(a => !(canShareCell && a.traits.Contains<SharesCell>()));
-				var shareable = actors.Where(a => canShareCell && a.traits.Contains<SharesCell>());
-				
-				// only allow 5 in a cell
-				if (shareable.Count() >= 5)
-					return false;
+				var actors = uim.GetUnitsAt(cell);
+				if (actors.Any())
+				{
+					var actors2 = actors.Where(a => a != self && a != ignoreActor).ToArray();
+					var nonshareable = canShareCell ? actors2 : actors2.Where(a => !a.traits.Contains<SharesCell>()).ToArray();
 
-				// We can enter a cell with nonshareable units only if we can crush all of them
-				if (Info.Crushes == null && nonshareable.Count() > 0)
-					return false;
+					if (canShareCell)
+					{
+						var shareable = actors2.Where(a => a.traits.Contains<SharesCell>());
 
-				if (nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
-						                     a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
-					return false;
+						// only allow 5 in a cell
+						if (shareable.Count() >= 5)
+							return false;
+					}
+
+					// We can enter a cell with nonshareable units only if we can crush all of them
+					if (Info.Crushes == null && nonshareable.Count() > 0)
+						return false;
+
+					if (nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
+												 a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
+						return false;
+				}
 			}
-			
-			return MovementCostForCell(self, cell) < float.PositiveInfinity;
+
+			return true;
 		}
+
+		static readonly Actor[] Nothing = { };
 		
 		public virtual void FinishedMoving(Actor self)
 		{
