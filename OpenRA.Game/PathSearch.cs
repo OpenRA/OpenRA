@@ -26,12 +26,14 @@ namespace OpenRA
 		public Actor ignoreBuilding;
 		Actor self;
 		public bool inReverse;
+		Mobile mobile;
 
 		public PathSearch(Actor self)
 		{
 			this.self = self;
 			world = self.World;
 			cellInfo = InitCellInfo();
+			mobile = self.traits.Get<Mobile>();
 			queue = new PriorityQueue<PathDistance>();
 		}
 
@@ -78,7 +80,6 @@ namespace OpenRA
 
 			cellInfo[p.Location.X, p.Location.Y].Seen = true;
 			
-			var mobile = self.traits.Get<Mobile>();
 			var thisCost = mobile.MovementCostForCell(self, p.Location);
 
 			if (thisCost == float.PositiveInfinity) 
