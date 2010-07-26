@@ -65,6 +65,11 @@ namespace OpenRA.Traits
 			return influence[ a.X, a.Y ];
 		}
 
+		public bool AnyUnitsAt(int2 a)
+		{
+			return map.IsInMap(a) && influence[a.X, a.Y].Count > 0;
+		}
+
 		public void Add( Actor self, IOccupySpace unit )
 		{
 			foreach( var c in unit.OccupiedCells() )

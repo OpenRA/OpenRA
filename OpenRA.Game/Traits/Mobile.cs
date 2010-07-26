@@ -191,32 +191,29 @@ namespace OpenRA.Traits
 			}
 
 			// Check mobile actors
-			if (checkTransientActors)
+			if (checkTransientActors && uim.AnyUnitsAt(cell))
 			{
-				var actors = uim.GetUnitsAt(cell);
-				if (actors.Any())
+				var actors = uim.GetUnitsAt(cell).Where(a => a != self && a != ignoreActor).ToArray();
+				var nonshareable = canShareCell ? actors : actors.Where(a => !a.traits.Contains<SharesCell>()).ToArray();
+
+				if (canShareCell)
 				{
-					var actors2 = actors.Where(a => a != self && a != ignoreActor).ToArray();
-					var nonshareable = canShareCell ? actors2 : actors2.Where(a => !a.traits.Contains<SharesCell>()).ToArray();
+					var shareable = actors.Where(a => a.traits.Contains<SharesCell>());
 
-					if (canShareCell)
-					{
-						var shareable = actors2.Where(a => a.traits.Contains<SharesCell>());
-
-						// only allow 5 in a cell
-						if (shareable.Count() >= 5)
-							return false;
-					}
-
-					// We can enter a cell with nonshareable units only if we can crush all of them
-					if (Info.Crushes == null && nonshareable.Length > 0)
-						return false;
-
-					if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
-												 a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
+					// only allow 5 in a cell
+					if (shareable.Count() >= 5)
 						return false;
 				}
+
+				// We can enter a cell with nonshareable units only if we can crush all of them
+				if (Info.Crushes == null && nonshareable.Length > 0)
+					return false;
+
+				if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
+											 a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
+					return false;
 			}
+
 
 			return true;
 		}
