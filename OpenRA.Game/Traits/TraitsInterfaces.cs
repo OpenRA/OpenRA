@@ -45,11 +45,7 @@ namespace OpenRA.Traits
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
-	public interface IProvideHazard { IEnumerable<HazardLayer.Hazard> HazardCells(Actor self); }
-	public interface IAvoidHazard { string Type { get; } }
 	public interface IStoreOre { int Capacity { get; }}
-
-	public interface ITerrainCost { float GetTerrainCost(int2 cell, Actor forActor); }
 
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }

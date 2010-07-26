@@ -215,10 +215,7 @@ namespace OpenRA.Traits
 				return float.PositiveInfinity;
 
 			var type = self.World.GetTerrainType(cell);
-			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
-				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
-			
-			return TerrainCost[type] + additionalCost;
+			return TerrainCost[type];
 		}
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)

@@ -54,13 +54,7 @@ namespace OpenRA.Traits
 		
 		public override float MovementCostForCell(Actor self, int2 cell)
 		{
-			if (!self.World.Map.IsInMap(cell.X,cell.Y))
-				return float.PositiveInfinity;
-			
-			var additionalCost = self.World.WorldActor.traits.WithInterface<ITerrainCost>()
-				.Select( t => t.GetTerrainCost(cell, self) ).Sum();
-			
-			return additionalCost;
+			return (!self.World.Map.IsInMap(cell.X,cell.Y)) ? float.PositiveInfinity : 0;
 		}
 
 		public override float MovementSpeedForCell(Actor self, int2 cell)

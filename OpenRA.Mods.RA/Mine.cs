@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(new RemoveSelf());
 		}
 		
-		// TODO: Re-implement friendly-mine avoidance using a Hazard
+		// TODO: Re-implement friendly-mine avoidance
 		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
 		
 		public int2 TopLeft { get { return location; } }
