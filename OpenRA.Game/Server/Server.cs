@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -108,12 +109,6 @@ namespace OpenRA.Server
 					return i;
 
 			throw new InvalidOperationException("Already got 8 players");
-		}
-
-		static int ChooseFreePalette()
-		{
-			// TODO: Query the list of palettes from somewhere, and pick one
-			return 0;
 		}
 
 		static void AcceptConnection()
@@ -321,8 +316,8 @@ namespace OpenRA.Server
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
-						GetClient(conn).Color1 = System.Drawing.Color.FromArgb(c[0],c[1],c[2]);
-						GetClient(conn).Color2 = System.Drawing.Color.FromArgb(c[3],c[4],c[5]);
+						GetClient(conn).Color1 = Color.FromArgb(c[0],c[1],c[2]);
+						GetClient(conn).Color2 = Color.FromArgb(c[3],c[4],c[5]);
 						SyncLobbyInfo();		
 						return true;
 					}},
