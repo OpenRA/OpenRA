@@ -40,7 +40,7 @@ cd $EXE_PATH
 
 # Download and install game dependencies if needed
 if [[ ! -e "mono" ]]; then
-	./download_package "$DEPS_PACKAGE" "$EXE_PATH" "17.2 Mb" "required game dependencies" $DEPS_URL
+	./download_package "$DEPS_PACKAGE" "$EXE_PATH" "14.5 Mb" "required game dependencies" $DEPS_URL
 	if [[ ! -e "mono" ]]; then
 		./display_error "Installation failed" "Package install failed."
 		exit 1
