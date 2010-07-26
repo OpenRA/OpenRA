@@ -509,8 +509,6 @@ SAM:
 	AttackTurreted:
 		PrimaryWeapon: Nike
 	AutoTarget:
-	AntiAir:
-		Badness: 10
 	-RenderBuilding:
 	RenderRangeCircle:
 	
