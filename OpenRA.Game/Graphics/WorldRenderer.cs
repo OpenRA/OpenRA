@@ -120,12 +120,6 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.Device.DisableScissor();
 
-			if (Game.Settings.IndexDebug)
-			{
-				bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
-				DrawBins(bounds);
-			}
-
 			Game.Renderer.LineRenderer.Flush();
 		}
 

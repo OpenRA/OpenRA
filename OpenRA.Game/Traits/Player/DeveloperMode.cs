@@ -49,55 +49,41 @@ namespace OpenRA.Traits
 				case "DevFastCharge":
 					{
 						FastCharge ^= true;
-						IssueNotification(FastCharge);
 						break;
 					}
 				case "DevFastBuild":
 					{
 						FastBuild ^= true;
-						IssueNotification(FastBuild);
 						break;
 					}
 				case "DevGiveCash":
 					{
 						self.traits.Get<PlayerResources>().GiveCash(Info.Cash);
-						IssueNotification(true);
 						break;
 					}
 				case "DevShroud":
 					{
-						DisableShroud ^= true;
-						Game.world.LocalPlayer.Shroud.Disabled = DisableShroud;
-						IssueNotification(DisableShroud);
+						if (self.World.LocalPlayer == self.Owner)
+						{
+							DisableShroud ^= true;
+							Game.world.LocalPlayer.Shroud.Disabled = DisableShroud;
+						}
 						break;	
 					}
 				case "DevPathDebug":
 					{
-						PathDebug ^= true;
-						IssueNotification(PathDebug);
-						break;
-					}
-				case "DevIndexDebug":
-					{
-						Game.Settings.IndexDebug ^= true;
-						IssueNotification(Game.Settings.IndexDebug);
+						if (self.World.LocalPlayer == self.Owner)
+							PathDebug ^= true;
 						break;
 					}
 				case "DevUnitDebug":
 					{
-						Game.Settings.UnitDebug ^= true;
-						IssueNotification(Game.Settings.UnitDebug);
+						if (self.World.LocalPlayer == self.Owner)
+							Game.Settings.UnitDebug ^= true;
 						break;
 					}
 			}
 		}
-		
-		void IssueNotification(bool enabled)
-		{
-			if (enabled)
-				Game.IssueOrder(Order.Chat("I used a devmode option"));
-		}
-		
 	}
 }
 

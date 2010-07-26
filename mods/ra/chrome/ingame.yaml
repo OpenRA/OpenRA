@@ -245,31 +245,24 @@ Container@ROOT:
 							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Show Unit Paths
-						Checkbox@SETTINGS_CHECKBOX_INDEXDEBUG:
-							Id:SETTINGS_CHECKBOX_INDEXDEBUG
-							X:30
-							Y:140
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Show Spatial Index Debug
 						Button@SETTINGS_GIVE_CASH
 							Id:SETTINGS_GIVE_CASH
 							X:30
-							Y:170
+							Y:140
 							Width:200
 							Height:20
 							Text: Give Cash
 						Checkbox@SETTINGS_BUILD_SPEED
 							Id:SETTINGS_BUILD_SPEED
 							X:30
-							Y:200
+							Y:170
 							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Instant Build Speed
 						Checkbox@SETTINGS_CHARGE_TIME
 							Id:SETTINGS_CHARGE_TIME
 							X:30
-							Y:230
+							Y:200
 							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Instant Charge Time (Special Powers)

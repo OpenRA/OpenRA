@@ -64,14 +64,6 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = 
-				() => Game.Settings.IndexDebug;
-			devmodeBG.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => 
-			{
-				Game.IssueOrder(new Order("DevIndexDebug", Game.world.LocalPlayer.PlayerActor));
-				return true;
-			};
-			
 			devmodeBG.GetWidget<ButtonWidget>("SETTINGS_GIVE_CASH").OnMouseUp = mi =>
 			{
 				Game.IssueOrder(new Order("DevGiveCash", Game.world.LocalPlayer.PlayerActor));
