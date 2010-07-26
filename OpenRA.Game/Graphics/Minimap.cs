@@ -123,8 +123,9 @@ namespace OpenRA.Graphics
 				foreach (var t in world.Queries.WithTraitMultiple<IRadarSignature>())
 				{
 					var color = t.Trait.RadarSignatureColor(t.Actor);
-					foreach( var cell in t.Trait.RadarSignatureCells(t.Actor))
-						*(c + ((cell.Y - world.Map.TopLeft.Y)* bitmapData.Stride >> 2) + cell.X - world.Map.TopLeft.X) = color.ToArgb();
+					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
+						if (world.Map.IsInMap(cell))
+							*(c + ((cell.Y - world.Map.TopLeft.Y) * bitmapData.Stride >> 2) + cell.X - world.Map.TopLeft.X) = color.ToArgb();
 				}
 			}
 
