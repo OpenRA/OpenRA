@@ -28,19 +28,19 @@ namespace OpenRA.Mods.RA
 			// Disable cargo support until someone fixes it
 			return null;
 			
-			if (mi.Button != MouseButton.Right) 
-				return null;
+			//if (mi.Button != MouseButton.Right) 
+			//    return null;
 
-			if (underCursor == null || underCursor.Owner != self.Owner)
-				return null;
+			//if (underCursor == null || underCursor.Owner != self.Owner)
+			//    return null;
 
-			var cargo = underCursor.traits.GetOrDefault<Cargo>();
-			if (cargo == null)
-				return null;
+			//var cargo = underCursor.traits.GetOrDefault<Cargo>();
+			//if (cargo == null)
+			//    return null;
 
-			// Todo: Check if we can enter the transport
+			//// Todo: Check if we can enter the transport
 			
-			return new Order("EnterTransport", self, underCursor);
+			//return new Order("EnterTransport", self, underCursor);
 		}
 		
 		bool CanEnter(Actor self, Actor a)
