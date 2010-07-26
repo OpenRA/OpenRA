@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class ConquestVictoryConditionsInfo : TraitInfo<ConquestVictoryConditions> { }
 
-	class ConquestVictoryConditions : ITick, IVictoryConditions, IResolveOrder
+	class ConquestVictoryConditions : ITick, IResolveOrder
 	{
 		public void Tick(Actor self)
 		{
