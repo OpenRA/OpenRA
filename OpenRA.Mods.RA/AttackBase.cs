@@ -255,8 +255,8 @@ namespace OpenRA.Mods.RA
 						
 						var line = self.traits.GetOrDefault<DrawLineToTarget>();
 						if (line != null)
-							if (order.TargetActor != null) line.SetTarget(self, order.TargetActor, Color.Red);
-							else line.SetTarget(self, order.TargetLocation, Color.Red);
+							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
+							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
 			}
 			else

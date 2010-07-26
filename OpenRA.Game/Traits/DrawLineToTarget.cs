@@ -27,19 +27,11 @@ namespace OpenRA.Traits
 			this.Info = info;
 		}
 		
-		Actor target;
-		float2 pos;
+		Target target;
 		int lifetime;
 		Color c;
-		public void SetTarget(Actor self, int2 cell, Color c)
-		{
-			pos = Game.CellSize * (cell + new float2(0.5f, 0.5f));
-			lifetime = Info.Ticks;
-			target = null;
-			this.c = c;
-		}
 		
-		public void SetTarget(Actor self, Actor target, Color c)
+		public void SetTarget(Actor self, Target target, Color c)
 		{
 			this.target = target;
 			lifetime = Info.Ticks;
@@ -52,7 +44,7 @@ namespace OpenRA.Traits
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return;
 			
-			var p = (target != null) ? target.CenterLocation : pos;
+			var p = target.CenterLocation;
 			
 			Game.Renderer.LineRenderer.DrawLine(self.CenterLocation, p, c, c);
 			for (bool b = false; !b; p = self.CenterLocation, b = true) 

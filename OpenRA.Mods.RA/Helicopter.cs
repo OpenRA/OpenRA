@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
 						var line = self.traits.GetOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, order.TargetLocation, Color.Green);
+							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
 				
 				self.CancelActivity();
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 						w.Add(new FlashTarget(order.TargetActor));
 						var line = self.traits.GetOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, order.TargetActor, Color.Green);
+							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
 				
 				self.CancelActivity();

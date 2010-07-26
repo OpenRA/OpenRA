@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 						w.Add(new FlashTarget(order.TargetActor));
 						var line = self.traits.GetOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, order.TargetActor, Color.Red);
+							line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
 				
 				self.CancelActivity();

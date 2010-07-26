@@ -117,7 +117,7 @@ namespace OpenRA.Traits
 							w.Add(new MoveFlash(self.World, order.TargetLocation));
 							var line = self.traits.GetOrDefault<DrawLineToTarget>();
 							if (line != null)
-								line.SetTarget(self, order.TargetLocation, Color.Green);
+								line.SetTarget(self, Target.FromOrder(order), Color.Green);
 						});
 					
 					if( !order.Queued ) self.CancelActivity();
