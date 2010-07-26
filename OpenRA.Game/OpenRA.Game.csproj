@@ -227,8 +227,8 @@
     <Compile Include="Widgets\TimerWidget.cs" />
     <Compile Include="Widgets\ShpImageWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />
-    <Compile Include="Widgets\DefaultInputControllerWidget.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
+    <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\ViewportScrollControllerWidget.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,18 +18,35 @@ namespace OpenRA.Widgets
 {
 	public class WorldTooltipWidget : Widget
 	{
-		const int worldTooltipDelay = 10;		/* ticks */
-
+		public int TooltipDelay = 10;
 		public WorldTooltipWidget() : base() { }
-		
 		public override void DrawInner(World world)
 		{
-			if (Widget.TicksSinceLastMove < worldTooltipDelay || world == null || world.LocalPlayer == null)
+			if (Widget.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)
 				return;
 
+			var cell = Game.viewport.ViewToWorld(Widget.LastMousePos).ToInt2();
+			if (!world.Map.IsInMap(cell)) return;
+			
+			if (!world.LocalPlayer.Shroud.IsExplored(cell))
+			{
+				var utext = "Unexplored Terrain";
+				var usz = Game.Renderer.BoldFont.Measure(utext) + new int2(20, 24);
+				
+				WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
+					Widget.LastMousePos.X + 20, Widget.LastMousePos.Y + 20,
+					Widget.LastMousePos.X + usz.X + 20, Widget.LastMousePos.Y + usz.Y + 20));
+	
+				Game.Renderer.BoldFont.DrawText(utext,
+					new float2(Widget.LastMousePos.X + 30, Widget.LastMousePos.Y + 30), Color.White);
+					
+				return;
+			}
+			
 			var actor = world.FindUnitsAtMouse(Widget.LastMousePos).FirstOrDefault();
-			if (actor == null) return;
-
+			if (actor == null || !actor.IsVisible())
+				return;
+		
 			var text = actor.Info.Traits.Contains<ValuedInfo>()
 				? actor.Info.Traits.Get<ValuedInfo>().Description
 				: actor.Info.Name;
@@ -68,7 +85,6 @@ namespace OpenRA.Widgets
 					ChromeProvider.GetImage("flags", actor.Owner.Country.Race),
 					new float2(Widget.LastMousePos.X + 30, Widget.LastMousePos.Y + 50));
 			}
-			
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}

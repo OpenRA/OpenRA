@@ -5,7 +5,7 @@ Container@ROOT:
 			Delegate:IngameChromeDelegate
 			Visible:false
 			Children:
-				DefaultInputController:
+				WorldInteractionController:
 					X:0
 					Y:0
 					Width:WINDOW_RIGHT
@@ -115,6 +115,7 @@ Container@ROOT:
 							Image:repair
 							Description:Repair
 							LongDesc:Repair damaged buildings
+				WorldTooltip:
 				Background@INGAME_OPTIONS_BG:
 					Id:INGAME_OPTIONS_BG
 					X:(WINDOW_RIGHT - WIDTH)/2

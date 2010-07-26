@@ -18,10 +18,10 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
-	class DefaultInputControllerWidget : Widget
+	class WorldInteractionControllerWidget : Widget
 	{
-		public DefaultInputControllerWidget() : base()	{}
-		protected DefaultInputControllerWidget(DefaultInputControllerWidget widget) : base(widget) {}
+		public WorldInteractionControllerWidget() : base()	{}
+		protected WorldInteractionControllerWidget(WorldInteractionControllerWidget widget) : base(widget) {}
 		
 		public override void DrawInner( World world )
 		{
@@ -171,6 +171,6 @@ namespace OpenRA.Widgets
 			Game.viewport.Center(world.Selection.Actors);
 		}
 		
-		public override Widget Clone() { return new DefaultInputControllerWidget(this); }
+		public override Widget Clone() { return new WorldInteractionControllerWidget(this); }
 	}
 }
