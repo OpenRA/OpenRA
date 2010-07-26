@@ -152,7 +152,7 @@ namespace OpenRA.Traits
 		
 		void DrawUnitPath(Actor self)
 		{
-			if (!Game.Settings.PathDebug) return;
+			if (!Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().PathDebug) return;
 			
 			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
 			if (mobile != null)
