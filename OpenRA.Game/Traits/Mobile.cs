@@ -209,7 +209,7 @@ namespace OpenRA.Traits
 					}
 
 					// We can enter a cell with nonshareable units only if we can crush all of them
-					if (Info.Crushes == null && nonshareable.Count() > 0)
+					if (Info.Crushes == null && nonshareable.Length > 0)
 						return false;
 
 					if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
