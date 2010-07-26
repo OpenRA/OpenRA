@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	class RenderDetectionCircleInfo : TraitInfo<RenderDetectionCircle> { }
-	class RenderDetectionCircle : IPostRenderSelection
+	class RenderDetectionCircle : IPreRenderSelection
 	{
-		public void RenderAfterWorld(Actor self)
+		public void RenderBeforeWorld(Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
