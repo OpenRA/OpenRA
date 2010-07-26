@@ -229,6 +229,7 @@
     <Compile Include="Widgets\OrderButtonWidget.cs" />
     <Compile Include="Widgets\DefaultInputControllerWidget.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
+    <Compile Include="Widgets\ViewportScrollControllerWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

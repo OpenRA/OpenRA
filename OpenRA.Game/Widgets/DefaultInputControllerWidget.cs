@@ -43,13 +43,6 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.Flush();
 		}
 		
-		static internal bool scrollUp = false;
-		static internal bool scrollDown = false;
-		static internal bool scrollLeft = false;
-		static internal bool scrollRight = false;
-		
-		// TODO: need a mechanism to say "i'll only handle this info if NOTHING else has"
-		// For now, ensure that this widget recieves the input last or it will eat it
 		float2 dragStart, dragEnd;
 		public override bool HandleInputInner(MouseInput mi)
 		{			
@@ -74,11 +67,6 @@ namespace OpenRA.Widgets
 
 				dragStart = dragEnd = xy;
 			}
-			
-			if (mi.Event == MouseInputEvent.Move &&
-				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
-				Game.viewport.Scroll(Widget.LastMousePos - mi.Location);
-			
 
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
 				dragStart = dragEnd = xy;
@@ -145,28 +133,10 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override bool LoseFocus (MouseInput mi)
-		{
-			scrollUp = scrollDown = scrollLeft = scrollRight = false;
-			return base.LoseFocus(mi);
-		}
-		
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
-			// Take the input if *nothing* else is focused
-			if (!Focused && Widget.SelectedWidget != null)
-				return false;
-
 			if (e.Event == KeyInputEvent.Down)
 			{
-				switch (e.KeyName)
-				{
-					case "up": scrollUp = true; return true;
-					case "down": scrollDown = true; return true;
-					case "left": scrollLeft = true; return true;
-					case "right": scrollRight = true; return true;
-				}
-
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
 				{
 					Game.world.Selection.DoControlGroup(Game.world, e.KeyName[0] - '0', e.Modifiers);
@@ -179,31 +149,7 @@ namespace OpenRA.Widgets
 					return true;
 				}
 			}
-			else
-			{
-				switch (e.KeyName)
-				{
-					case "up": scrollUp = false; return true;
-					case "down": scrollDown = false; return true;
-					case "left": scrollLeft = false; return true;
-					case "right": scrollRight = false; return true;
-				}
-			}
-			
 			return false;
-		}
-		
-		public override void Tick(World world)
-		{
-			
-			if (scrollUp == true)
-				Game.viewport.Scroll(new float2(0, -10));
-			if (scrollRight == true)
-				Game.viewport.Scroll(new float2(10, 0));
-			if (scrollDown == true)
-				Game.viewport.Scroll(new float2(0, 10));
-			if (scrollLeft == true)
-				Game.viewport.Scroll(new float2(-10, 0));
 		}
 		
 		public void GotoNextBase()
