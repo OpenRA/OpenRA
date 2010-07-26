@@ -29,6 +29,7 @@ OpenRA.app
 
 # backup files by various editors
 *~
+*.orig
 # dependency DLLs (different for every platform!)
 cg.dll
 cgGL.dll
