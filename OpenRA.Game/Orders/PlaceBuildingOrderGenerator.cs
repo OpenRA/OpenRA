@@ -61,12 +61,12 @@ namespace OpenRA.Orders
 				Game.controller.CancelInputMode();
 		}
 
-		public void RenderAfterWorld( World world )
-		{
-			world.WorldRenderer.uiOverlay.DrawBuildingGrid( world, Building, BuildingInfo );
-		}
+		public void RenderAfterWorld( World world ) {}
 
-		public void RenderBeforeWorld(World world) { }
+		public void RenderBeforeWorld(World world)
+		{
+			world.WorldRenderer.uiOverlay.DrawBuildingGrid(world, Building, BuildingInfo);
+		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }
 	}
