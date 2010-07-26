@@ -70,7 +70,13 @@ namespace OpenRA
 		public int2 Expand( World world )
 		{
 			var p = queue.Pop();
-			cellInfo[ p.Location.X, p.Location.Y ].Seen = true;
+			while (cellInfo[p.Location.X, p.Location.Y].Seen)
+				if (queue.Empty)
+					return p.Location;
+				else
+					p = queue.Pop();
+
+			cellInfo[p.Location.X, p.Location.Y].Seen = true;
 			
 			var mobile = self.traits.Get<Mobile>();
 			var thisCost = mobile.MovementCostForCell(self, p.Location);
