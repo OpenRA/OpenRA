@@ -47,6 +47,8 @@ namespace OpenRA.Server
 
 		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map, bool cheats)
 		{
+			Log.AddChannel("server", "server.log", false, false);
+
 			isInitialPing = true;
 			Server.masterServerUrl = masterServerUrl;
 			isInternetServer = internetServer;
@@ -61,11 +63,11 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.Map = map;
 			lobbyInfo.GlobalSettings.AllowCheats = cheats;
 			
-			Console.WriteLine("Initial mods: ");
+			Log.Write("server", "Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
-				Console.WriteLine("- {0}", m);
+				Log.Write("server","- {0}", m);
 			
-			Console.WriteLine("Initial map: {0}",lobbyInfo.GlobalSettings.Map);
+			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
 			
 			try
 			{
@@ -119,7 +121,7 @@ namespace OpenRA.Server
 			{
 				if (GameStarted)
 				{
-					Console.WriteLine("Rejected connection from {0}; game is already started.", 
+					Log.Write("server", "Rejected connection from {0}; game is already started.", 
 						newConn.socket.RemoteEndPoint);
 					newConn.socket.Close();
 					return;
@@ -147,7 +149,7 @@ namespace OpenRA.Server
 						Team = 0,
 					});
 
-				Console.WriteLine("Client {0}: Accepted connection from {1}",
+				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
 				SendChat(newConn, "has joined the game.");
@@ -232,7 +234,7 @@ namespace OpenRA.Server
 						else if (client.State == Session.ClientState.Ready)
 							client.State = Session.ClientState.NotReady;
 
-						Console.WriteLine("Player @{0} is {1}",
+						Log.Write("server", "Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
 
 						SyncLobbyInfo();
@@ -259,7 +261,7 @@ namespace OpenRA.Server
 				{ "name", 
 					s => 
 					{
-						Console.WriteLine("Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
+						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 						GetClient(conn).Name = s;
 						SyncLobbyInfo();
 						return true;
@@ -268,9 +270,9 @@ namespace OpenRA.Server
 					s =>
 					{
 						int lag;
-						if (!int.TryParse(s, out lag)) { Console.WriteLine("Invalid order lag: {0}", s); return false; }
+						if (!int.TryParse(s, out lag)) { Log.Write("server", "Invalid order lag: {0}", s); return false; }
 
-						Console.WriteLine("Order lag is now {0} frames.", lag);
+						Log.Write("server", "Order lag is now {0} frames.", lag);
 
 						lobbyInfo.GlobalSettings.OrderLatency = lag;
 						SyncLobbyInfo();
@@ -287,7 +289,7 @@ namespace OpenRA.Server
 					s => 
 					{
 						int team;
-						if (!int.TryParse(s, out team)) { Console.WriteLine("Invalid team: {0}", s ); return false; }
+						if (!int.TryParse(s, out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
 
 						GetClient(conn).Team = team;
 						SyncLobbyInfo();
@@ -299,7 +301,7 @@ namespace OpenRA.Server
 						int spawnPoint;
 						if (!int.TryParse(s, out spawnPoint) || spawnPoint < 0 || spawnPoint > 8) //TODO: SET properly!
 						{
-							Console.WriteLine("Invalid spawn point: {0}", s);
+							Log.Write("server", "Invalid spawn point: {0}", s);
 							return false;
 						}
 						
@@ -371,7 +373,7 @@ namespace OpenRA.Server
 			if (!dict.TryGetValue(cmdName, out a))
 				return false;
 
-			Console.WriteLine( "Client {0} sent server command: {1}", conn.PlayerIndex, cmd );
+			Log.Write("server", "Client {0} sent server command: {1}", conn.PlayerIndex, cmd );
 			return a(cmdValue);
 		}
 
@@ -398,7 +400,7 @@ namespace OpenRA.Server
 						SendChatTo(conn, "Cannot change state when marked as ready.");
 					else if (!InterpretCommand(conn, so.Data))
 					{
-						Console.WriteLine("Bad server command: {0}", so.Data);
+						Log.Write("server", "Bad server command: {0}", so.Data);
 						SendChatTo(conn, "Bad server command.");
 					};
 				}
@@ -417,7 +419,7 @@ namespace OpenRA.Server
 
 		public static void DropClient(Connection toDrop, Exception e)
 		{
-			Console.WriteLine("Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
+			Log.Write("server", "Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
 
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
@@ -471,11 +473,23 @@ namespace OpenRA.Server
 
 		static void PingMasterServerResponse(object sender, DownloadDataCompletedEventArgs e)
 		{
+			if (e.Error != null)
+			{
+				Log.Write("server", "Error pinging Master Server; {0}", e.Error.Message);
+				return;
+			}
+			
+			if (e.Result.Length == 0)
+			{
+				Log.Write("server", "Error pinging Master Server; Empty Response");
+				return;
+			}
+			
 			string s = Encoding.UTF8.GetString(e.Result);
 			int gameId;
 			if (int.TryParse(s.Trim(), out gameId))
 				Game.SetGameId(gameId);
-			Log.Write("debug", "Game ID: {0}", gameId);
+			Log.Write("server", "Game ID: {0}", gameId);
 		}
 	}
 }
