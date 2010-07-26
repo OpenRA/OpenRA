@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor, IRenderSelection
+	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor, IPostRenderSelection
 	{
 		/* [Sync] when sync can cope with arrays! */ 
 		public int2[] minefield = null;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			int2 lastMousePos;
-			public void Render(World world)
+			public void RenderAfterWorld(World world)
 			{
 				var ml = minelayer.traits.Get<Minelayer>();
 				var movement = minelayer.traits.Get<IMove>();
@@ -130,10 +130,12 @@ namespace OpenRA.Mods.RA
 				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
 			}
 
+			public void RenderBeforeWorld(World world) { }
+
 			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
 		}
 
-		public void Render(Actor self)
+		public void RenderAfterWorld(Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;

@@ -14,9 +14,10 @@ namespace OpenRA
 {
 	public interface IOrderGenerator
 	{
-		IEnumerable<Order> Order( World world, int2 xy, MouseInput mi );
-		void Tick( World world );
-		void Render( World world );
-		string GetCursor( World world, int2 xy, MouseInput mi );
+		IEnumerable<Order> Order(World world, int2 xy, MouseInput mi);
+		void Tick(World world);
+		void RenderBeforeWorld(World world);
+		void RenderAfterWorld(World world);
+		string GetCursor(World world, int2 xy, MouseInput mi);
 	}
 }

@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
 	}
 
-	public class DrawLineToTarget :IRenderSelection
+	public class DrawLineToTarget :IPostRenderSelection
 	{
 		DrawLineToTargetInfo Info;
 		public DrawLineToTarget(DrawLineToTargetInfo info)
@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 			this.c = c;
 		}	
 		
-		public void Render (Actor self)
+		public void RenderAfterWorld (Actor self)
 		{
 			var force = Game.controller.GetModifiers().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)

@@ -35,13 +35,18 @@ namespace OpenRA.Orders
 
 		public void Tick( World world ) {}
 
-		public void Render( World world )
+		public void RenderBeforeWorld(World world)
 		{
 			foreach (var a in Game.controller.selection.Actors)
-			{
-				foreach (var t in a.traits.WithInterface<IRenderSelection>())
-					t.Render(a);
-			}
+				foreach (var t in a.traits.WithInterface<IPreRenderSelection>())
+					t.RenderBeforeWorld(a);
+		}
+
+		public void RenderAfterWorld( World world )
+		{
+			foreach (var a in Game.controller.selection.Actors)
+				foreach (var t in a.traits.WithInterface<IPostRenderSelection>())
+					t.RenderAfterWorld(a);
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )

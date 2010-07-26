@@ -38,7 +38,8 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public void Tick(World world) { }
-		public void Render(World world) { }
+		public void RenderAfterWorld(World world) { }
+		public void RenderBeforeWorld(World world) { }
 
 		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{

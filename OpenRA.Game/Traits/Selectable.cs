@@ -23,13 +23,13 @@ namespace OpenRA.Traits
 		public readonly float Radius = 10;
 	}
 
-	public class Selectable : IRenderSelection
+	public class Selectable : IPostRenderSelection
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
 		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
 		
-		public void Render (Actor self)
+		public void RenderAfterWorld (Actor self)
 		{
 			var bounds = self.GetBounds(true);
 

@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle> { }
-	class RenderRangeCircle : IRenderSelection
+	class RenderRangeCircle : IPostRenderSelection
 	{
-		public void Render(Actor self)
+		public void RenderAfterWorld(Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;

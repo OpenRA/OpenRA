@@ -93,7 +93,8 @@ namespace OpenRA.Mods.RA
 				// TODO: Check if the selected unit is still alive
 			}
 
-			public void Render( World world ) { }
+			public void RenderAfterWorld( World world ) { }
+			public void RenderBeforeWorld(World world) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
@@ -133,10 +134,12 @@ namespace OpenRA.Mods.RA
 				// TODO: Check if the selected unit is still alive
 			}
 			
-			public void Render(World world)
+			public void RenderAfterWorld(World world)
 			{
 				world.WorldRenderer.DrawSelectionBox(self, Color.Red);
 			}
+
+			public void RenderBeforeWorld(World world) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{

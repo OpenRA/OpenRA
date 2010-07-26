@@ -165,7 +165,8 @@ namespace OpenRA.Traits
 
 	public interface IBlocksBullets { }
 
-	public interface IRenderSelection { void Render(Actor self); }
+	public interface IPostRenderSelection { void RenderAfterWorld(Actor self); }
+	public interface IPreRenderSelection { void RenderBeforeWorld(Actor self); }
 
 	public struct Target		// a target: either an actor, or a fixed location.
 	{

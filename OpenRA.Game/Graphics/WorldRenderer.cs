@@ -98,6 +98,13 @@ namespace OpenRA.Graphics
 			Game.Renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(Game.viewport);
+
+			if (Game.controller.orderGenerator != null)
+				Game.controller.orderGenerator.RenderBeforeWorld(world);
+
+			Game.Renderer.SpriteRenderer.Flush();
+			Game.Renderer.LineRenderer.Flush();
+
 			foreach (var image in worldSprites)
 				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
 			uiOverlay.Draw(world);
@@ -105,7 +112,7 @@ namespace OpenRA.Graphics
 			DrawBandBox();
 
 			if (Game.controller.orderGenerator != null)
-				Game.controller.orderGenerator.Render(world);
+				Game.controller.orderGenerator.RenderAfterWorld(world);
 
 			if (world.LocalPlayer != null)
 				world.LocalPlayer.Shroud.Draw();
