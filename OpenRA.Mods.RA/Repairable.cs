@@ -13,6 +13,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -59,7 +60,13 @@ namespace OpenRA.Mods.RA
 				var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
 
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new FlashTarget(order.TargetActor));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetActor, Color.Green);
+					});
 				
 				self.CancelActivity();
 				self.QueueActivity(new Move(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));

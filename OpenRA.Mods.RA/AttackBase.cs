@@ -15,6 +15,7 @@ using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -246,8 +247,17 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				QueueAttack(self, order);
 
-				if (self.Owner == self.World.LocalPlayer && order.TargetActor != null)
-					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w =>
+					{
+						if (order.TargetActor != null)
+							w.Add(new FlashTarget(order.TargetActor));
+						
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							if (order.TargetActor != null) line.SetTarget(self, order.TargetActor, Color.Red);
+							else line.SetTarget(self, order.TargetLocation, Color.Red);
+					});
 			}
 			else
 				target = Target.None;

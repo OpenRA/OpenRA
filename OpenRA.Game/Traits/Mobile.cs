@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
@@ -111,7 +112,13 @@ namespace OpenRA.Traits
 				if (self.traits.GetOrDefault<IMove>().CanEnterCell(order.TargetLocation))
 				{
 					if (self.Owner == self.World.LocalPlayer)
-						self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+						self.World.AddFrameEndTask(w =>
+						{
+							w.Add(new MoveFlash(self.World, order.TargetLocation));
+							var line = self.traits.GetOrDefault<DrawLineToTarget>();
+							if (line != null)
+								line.SetTarget(self, order.TargetLocation, Color.Green);
+						});
 					
 					if( !order.Queued ) self.CancelActivity();
 					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
@@ -201,7 +208,7 @@ namespace OpenRA.Traits
 					b.OnCrush(self);
 			}
 		}
-		
+				
 		public virtual float MovementCostForCell(Actor self, int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X,cell.Y))

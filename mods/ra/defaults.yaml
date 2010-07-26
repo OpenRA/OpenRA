@@ -16,6 +16,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Tank:
 	Category: Vehicle
@@ -35,6 +36,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Infantry:
 	Category: Infantry
@@ -55,6 +57,7 @@
 	TeslaInstantKills:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Ship:
 	Category: Ship
@@ -68,6 +71,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Plane:
 	Category: Plane
@@ -79,6 +83,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Building:
 	Category: Building

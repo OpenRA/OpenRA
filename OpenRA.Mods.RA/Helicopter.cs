@@ -15,6 +15,7 @@ using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -74,7 +75,13 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Move")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new MoveFlash(self.World, order.TargetLocation));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetLocation, Color.Green);
+					});
 				
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
@@ -98,7 +105,13 @@ namespace OpenRA.Mods.RA
 				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
 				
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new FlashTarget(order.TargetActor));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetActor, Color.Green);
+					});
 				
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));

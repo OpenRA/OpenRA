@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -90,7 +91,13 @@ namespace OpenRA.Mods.RA
 				UnReserve();
 
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new MoveFlash(self.World, order.TargetLocation));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetLocation, Color.Green);
+					});
 
 				self.CancelActivity();
 				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
@@ -109,8 +116,14 @@ namespace OpenRA.Mods.RA
 				var info = self.Info.Traits.Get<PlaneInfo>();
 
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
-
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new FlashTarget(order.TargetActor));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetActor, Color.Green);
+					});
+				
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(

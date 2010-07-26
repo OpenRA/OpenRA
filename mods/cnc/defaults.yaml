@@ -15,6 +15,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Tank:
 	Category: Vehicle
@@ -34,6 +35,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Helicopter:
 	Category: Plane
@@ -49,6 +51,7 @@
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
 	AvoidsAA:
+	DrawLineToTarget:
 
 ^Infantry:
 	Category: Infantry
@@ -69,6 +72,7 @@
 	GainsExperience:
 	GivesExperience:
 #	SharesCell:
+	DrawLineToTarget:
 
 ^Plane:
 	Category: Plane
@@ -80,6 +84,7 @@
 	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
+	DrawLineToTarget:
 
 ^Building:
 	Category: Building

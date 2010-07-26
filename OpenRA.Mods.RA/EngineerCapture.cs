@@ -12,6 +12,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -43,7 +44,13 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "CaptureBuilding")
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w => w.Add(new FlashTarget(order.TargetActor)));
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new FlashTarget(order.TargetActor));
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, order.TargetActor, Color.Red);
+					});
 				
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
