@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
@@ -46,6 +47,10 @@ namespace OpenRA.Traits
 		
 		public void RenderAfterWorld (Actor self)
 		{
+			var activity = self.GetCurrentActivity();
+			if (activity == null || activity is Idle)
+				return;
+			
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return;
