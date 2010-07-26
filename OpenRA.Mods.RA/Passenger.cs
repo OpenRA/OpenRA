@@ -8,11 +8,11 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -57,7 +57,8 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "EnterTransport" || !CanEnter(self, order.TargetActor)) return null;			
+			if (order.OrderString != "EnterTransport" ||
+				!CanEnter(self, order.TargetActor)) return null;
 			return "Move";
 		}
 		
