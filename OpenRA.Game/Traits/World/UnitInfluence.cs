@@ -67,7 +67,7 @@ namespace OpenRA.Traits
 
 		public bool AnyUnitsAt(int2 a)
 		{
-			return map.IsInMap(a) && influence[a.X, a.Y].Count > 0;
+			return /*map.IsInMap(a) && */influence[a.X, a.Y].Count > 0;
 		}
 
 		public void Add( Actor self, IOccupySpace unit )

@@ -174,7 +174,6 @@ namespace OpenRA.Traits
 			if (MovementCostForCell(self, cell) == float.PositiveInfinity)
 				return false;
 
-
 			// Check for buildings
 			var building = bim.GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
