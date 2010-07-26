@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA
 {
 	class RevealsShroudInfo : TraitInfo<RevealsShroud> { }
 
-	class RevealsShroud : ITick
+	class RevealsShroud : ITick, IRevealShroud
 	{
 		int2 previousLocation;
 
