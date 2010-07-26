@@ -16,6 +16,8 @@ namespace OpenRA.Traits
 		public int Cash = 20000;
 		public bool FastBuild = false;
 		public bool FastCharge = false;
+		public bool DisableShroud = false;
+		public bool PathDebug = false;
 		
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -26,29 +28,74 @@ namespace OpenRA.Traits
 		[Sync]
 		public bool FastCharge;
 		public bool FastBuild;
+		public bool DisableShroud;
+		public bool PathDebug;
 		
 		public DeveloperMode(DeveloperModeInfo info)
 		{
 			Info = info;
 			FastBuild = Info.FastBuild;
 			FastCharge = Info.FastCharge;
+			DisableShroud = Info.DisableShroud;
+			PathDebug = Info.PathDebug;
 		}
 		
 		public void ResolveOrder (Actor self, Order order)
 		{
+			if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return;
+			
 			switch(order.OrderString)
 			{
-			case "DevModeFastCharge":
-				{
-					FastCharge ^= true;
-					break;
-				}
-			case "DevModeFastBuild":
-				{
-					FastBuild ^= true;
-					break;
-				}
+				case "DevFastCharge":
+					{
+						FastCharge ^= true;
+						IssueNotification(FastCharge);
+						break;
+					}
+				case "DevFastBuild":
+					{
+						FastBuild ^= true;
+						IssueNotification(FastBuild);
+						break;
+					}
+				case "DevGiveCash":
+					{
+						self.traits.Get<PlayerResources>().GiveCash(Info.Cash);
+						IssueNotification(true);
+						break;
+					}
+				case "DevShroud":
+					{
+						DisableShroud ^= true;
+						Game.world.LocalPlayer.Shroud.Disabled = DisableShroud;
+						IssueNotification(DisableShroud);
+						break;	
+					}
+				case "DevPathDebug":
+					{
+						PathDebug ^= true;
+						IssueNotification(PathDebug);
+						break;
+					}
+				case "DevIndexDebug":
+					{
+						Game.Settings.IndexDebug ^= true;
+						IssueNotification(Game.Settings.IndexDebug);
+						break;
+					}
+				case "DevUnitDebug":
+					{
+						Game.Settings.UnitDebug ^= true;
+						IssueNotification(Game.Settings.UnitDebug);
+						break;
+					}
 			}
+		}
+		
+		void IssueNotification(bool enabled)
+		{
+			if (enabled)
+				Game.IssueOrder(Order.Chat("I used a devmode option"));
 		}
 		
 	}

@@ -32,12 +32,12 @@ namespace OpenRA.Graphics
 			uiOverlay = new UiOverlay();
 			palette = new HardwarePalette(world.Map);
 		}
-
+		
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
 		public Palette GetPalette(string name) { return palette.GetPalette(name); }
 		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
 		public void UpdatePalette(string name, Palette pal) { palette.UpdatePalette(name, pal); }
-
+		
 		class SpriteComparer : IComparer<Renderable>
 		{
 			public int Compare(Renderable x, Renderable y)
@@ -172,8 +172,8 @@ namespace OpenRA.Graphics
 			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
-		}
-		
+				}
+
 		public void DrawLocus(Color c, int2[] cells)
 		{
 			var dict = cells.ToDictionary(a => a, a => 0);

@@ -69,7 +69,7 @@ namespace OpenRA.Traits
 			
 			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
 			{
-				if (self.traits.Get<DeveloperMode>().FastCharge) RemainingTime = 0;
+				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.traits.Get<DeveloperMode>().FastCharge) RemainingTime = 0;
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
 				{

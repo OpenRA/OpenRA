@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self); }
 	}
 
-	public class PlayerResources : ITick, IResolveOrder
+	public class PlayerResources : ITick
 	{
 		Player Owner;
 		int AdviceInterval;
@@ -186,23 +186,6 @@ namespace OpenRA.Traits
 		{
 			TickPower();
 			TickOre(self);
-		}
-	
-		public void ResolveOrder (Actor self, Order order)
-		{
-			switch (order.OrderString)
-			{
-				case "DevModeGiveCash":
-					{
-						if (!Game.LobbyInfo.GlobalSettings.AllowCheats) break;
-						self.World.AddFrameEndTask( w =>
-						{
-							var amt = order.Subject.Info.Traits.Get<DeveloperModeInfo>().Cash;
-							GiveCash(amt);
-						});
-					}
-				break;
-			}
 		}
 	}
 }

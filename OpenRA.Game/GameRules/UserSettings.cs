@@ -20,13 +20,12 @@ namespace OpenRA.GameRules
 	public class UserSettings
 	{
 		// Debug settings
-		public bool UnitDebug = false;
-		public bool PathDebug = false;
 		public bool PerfDebug = false;
-		public bool IndexDebug = false;
 		public bool RecordSyncReports = true;
 		public bool ShowGameTimer = true;
 		public bool DeveloperMode = false;
+		public bool UnitDebug = false;
+		public bool IndexDebug = false;
 		
 		// Window settings
 		public WindowMode WindowMode = WindowMode.PseudoFullscreen;

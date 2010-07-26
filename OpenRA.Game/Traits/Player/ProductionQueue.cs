@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 			
-			if (self.traits.Get<DeveloperMode>().FastBuild) return 0;
+			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.traits.Get<DeveloperMode>().FastBuild) return 0;
 			var ui = unit.Traits.Get<BuildableInfo>();
 			var time = ui.Cost
 				* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */

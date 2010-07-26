@@ -41,78 +41,60 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").Checked = 
-				() => Game.world.LocalPlayer.Shroud.Disabled;
+				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().DisableShroud;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
-				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
-				Game.world.LocalPlayer.Shroud.Disabled ^= true;
-				TriggerCheatingMessage();
+				Game.IssueOrder(new Order("DevShroud", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = 
-				() => {return Game.Settings.UnitDebug;};
+				() => Game.Settings.UnitDebug;
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
 			{
-				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
-				Game.Settings.UnitDebug ^= true;
-				TriggerCheatingMessage();
+				Game.IssueOrder(new Order("DevUnitDebug", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = 
-				() => {return Game.Settings.PathDebug;};
+				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().PathDebug;
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
 			{
-				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
-				Game.Settings.PathDebug ^= true;
-				TriggerCheatingMessage();
+				Game.IssueOrder(new Order("DevPathDebug", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_INDEXDEBUG").Checked = 
-				() => {return Game.Settings.IndexDebug;};
+				() => Game.Settings.IndexDebug;
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_INDEXDEBUG").OnMouseDown = mi => 
 			{
-				if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return true;
-				Game.Settings.IndexDebug ^= true;
-				TriggerCheatingMessage();
+				Game.IssueOrder(new Order("DevIndexDebug", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<ButtonWidget>("SETTINGS_GIVE_CASH").OnMouseUp = mi =>
 			{
-				Game.IssueOrder(new Order("DevModeGiveCash", Game.world.LocalPlayer.PlayerActor));
-				TriggerCheatingMessage();
+				Game.IssueOrder(new Order("DevGiveCash", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
-			{
-				Game.IssueOrder(new Order("DevModeFastBuild", Game.world.LocalPlayer.PlayerActor));
-				TriggerCheatingMessage();
-				return true;
-			};	
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
 				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastBuild;
-			
-			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
 			{
-				TriggerCheatingMessage();
-				Game.IssueOrder(new Order("DevModeFastCharge", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevFastBuild", Game.world.LocalPlayer.PlayerActor));
 				return true;
-			};
+			};	
+
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").Checked = 
 				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastCharge;
-			
+			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
+			{
+				Game.IssueOrder(new Order("DevFastCharge", Game.world.LocalPlayer.PlayerActor));
+				return true;
+			};
 				
-			devModeButton.IsVisible = () => { return Game.Settings.DeveloperMode; };
-		}
-		
-		void TriggerCheatingMessage()
-		{
-			var order = Order.Chat("I used a developer mode option");
-			Game.IssueOrder(order);
+			devModeButton.IsVisible = () => { return Game.LobbyInfo.GlobalSettings.AllowCheats; };
 		}
 	}
 }
