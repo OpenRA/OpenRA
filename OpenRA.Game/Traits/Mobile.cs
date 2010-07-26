@@ -59,11 +59,23 @@ namespace OpenRA.Traits
 		}
 
 		Shroud shroud;
+		UnitInfluence uim;
+		UnitInfo unitInfo;
+		BuildingInfluence bim;
+		bool canShareCell;
+		
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
 			this.self = init.self;
 			this.Info = info;
 			this.__fromCell = this.__toCell = init.location;
+			
+			shroud = self.World.WorldActor.traits.Get<Shroud>();
+			uim = self.World.WorldActor.traits.Get<UnitInfluence>();
+			bim = self.World.WorldActor.traits.Get<BuildingInfluence>();
+			unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
+			canShareCell = self.traits.Contains<SharesCell>();
+			
 			AddInfluence();
 			
 			TerrainCost = new Dictionary<string, float>();
@@ -77,7 +89,6 @@ namespace OpenRA.Traits
 				TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
 				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
 			}
-			shroud = self.World.WorldActor.traits.Get<Shroud>();
 		}
 
 		public void SetPosition(Actor self, int2 cell)
@@ -160,7 +171,7 @@ namespace OpenRA.Traits
 		public virtual bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			// Check for buildings
-			var building = self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingBlocking(cell);
+			var building = bim.GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
 			{
 				if (Info.Crushes == null)
@@ -177,10 +188,9 @@ namespace OpenRA.Traits
 			// Check mobile actors
 			if (checkTransientActors)
 			{
-				var canShare = self.traits.Contains<SharesCell>();
-				var actors = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Where(a => a != self && a != ignoreActor);
-				var nonshareable = actors.Where(a => !(canShare && a.traits.Contains<SharesCell>()));
-				var shareable = actors.Where(a => canShare && a.traits.Contains<SharesCell>());
+				var actors = uim.GetUnitsAt(cell).Where(a => a != self && a != ignoreActor);
+				var nonshareable = actors.Where(a => !(canShareCell && a.traits.Contains<SharesCell>()));
+				var shareable = actors.Where(a => canShareCell && a.traits.Contains<SharesCell>());
 				
 				// only allow 5 in a cell
 				if (shareable.Count() >= 5)
@@ -200,7 +210,7 @@ namespace OpenRA.Traits
 		
 		public virtual void FinishedMoving(Actor self)
 		{
-			var crushable = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(self.Location).Where(a => a != self && a.traits.Contains<ICrushable>());
+			var crushable = uim.GetUnitsAt(self.Location).Where(a => a != self && a.traits.Contains<ICrushable>());
 			foreach (var a in crushable)
 			{
 				var crushActions = a.traits.WithInterface<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
@@ -220,7 +230,6 @@ namespace OpenRA.Traits
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)
 		{		
-			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
 			if( unitInfo == null )
 			   return 0f;
 
@@ -243,12 +252,12 @@ namespace OpenRA.Traits
 		
 		public virtual void AddInfluence()
 		{
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, this );
+			uim.Add( self, this );
 		}
 		
 		public virtual void RemoveInfluence()
 		{
-			self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, this );
+			uim.Remove( self, this );
 		}
 
 		public void OnNudge(Actor self, Actor nudger)
