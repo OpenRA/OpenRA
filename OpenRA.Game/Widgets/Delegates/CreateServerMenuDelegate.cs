@@ -44,7 +44,7 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.Save();
 
 				Server.Server.ServerMain(Game.Settings.AdvertiseOnline, Game.Settings.MasterServer,	Game.Settings.LastServerTitle,
-				                         Game.Settings.ListenPort, Game.Settings.ExternalPort, mods, map, Game.Settings.DeveloperMode);
+				                         Game.Settings.ListenPort, Game.Settings.ExternalPort, mods, map, Game.Settings.AllowCheats);
 
 				Game.JoinServer(IPAddress.Loopback.ToString(), Game.Settings.ListenPort);
 				return true;
@@ -58,6 +58,12 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.AdvertiseOnline ^= true;
 				Game.Settings.Save();
 				return true;	
+			};
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Checked = () => Game.Settings.AllowCheats;
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").OnMouseDown = mi => {
+				Game.Settings.AllowCheats ^=true;
+				Game.Settings.Save();
+				return true;
 			};
 		}
 	}

@@ -6,7 +6,7 @@ Container@ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:400
-			Height:210
+			Height:240
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -72,6 +72,13 @@ Container@ROOT:
 					Width:300
 					Height:20
 					Text:Advertise game Online
+				Checkbox@CHECKBOX_CHEATS:
+					Id:CHECKBOX_CHEATS
+					X:165
+					Y:160
+					Width:300
+					Height:20
+					Text:Allow Cheats
 				Button@BUTTON_START:
 					Id:BUTTON_START
 					X:130

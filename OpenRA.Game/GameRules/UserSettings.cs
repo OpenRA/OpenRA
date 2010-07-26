@@ -56,6 +56,7 @@ namespace OpenRA.GameRules
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://open-ra.org/master/";
+		public bool AllowCheats = false;
 		
 		string SettingsFile;
 		UserSettings defaults;
