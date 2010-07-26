@@ -5,7 +5,14 @@
     <sequence name="idle" start="0" length="*" src="hclock" />
   </unit>
   <cursor src="mouse2" palette="cursor">
-    <sequence name="scroll" start="1" length="8" x="12" y="12" />
+	<sequence name="scroll-t" start="1" x="12" y="12" />
+	<sequence name="scroll-tr" start="2" x="12" y="12" />
+	<sequence name="scroll-r" start="3" x="12" y="12" />
+	<sequence name="scroll-br" start="4" x="12" y="12" />
+	<sequence name="scroll-b" start="5" x="12" y="12" />
+	<sequence name="scroll-bl" start="6" x="12" y="12" />
+	<sequence name="scroll-l" start="7" x="12" y="12" />
+	<sequence name="scroll-tl" start="8" x="12" y="12" />
     <sequence name="scroll-blocked" start="130" length="8" x="12" y="12" />
     <sequence name="select" start="12" length="6" x="12" y="12" />
 	

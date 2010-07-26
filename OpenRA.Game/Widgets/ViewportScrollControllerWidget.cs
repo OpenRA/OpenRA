@@ -30,15 +30,23 @@ namespace OpenRA.Widgets
 		
 	class ViewportScrollControllerWidget : Widget
 	{
+		public int EdgeScrollThreshold = 15;
+		public bool EdgeScroll = true;
+		public bool KeyboardScroll = true;
+		public bool MouseScroll = true;
+		
+		ScrollDirection Keyboard;
+		ScrollDirection Edge;
+		
 		public ViewportScrollControllerWidget() : base()	{}
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
-		
 		public override void DrawInner( World world ) {}
 		
-
-		ScrollDirection Scroll;
 		public override bool HandleInputInner(MouseInput mi)
 		{						
+			if (!MouseScroll)
+				return false;
+			
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
@@ -50,38 +58,74 @@ namespace OpenRA.Widgets
 		
 		public override string GetCursor(int2 pos)
 		{
+			if (!EdgeScroll)
+				return null;
+			
+			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Left))
+				return "scroll-tl";
+			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Right))
+				return "scroll-tr";
+			if (Edge.Includes(ScrollDirection.Down) && Edge.Includes(ScrollDirection.Left))
+				return "scroll-bl";
+			if (Edge.Includes(ScrollDirection.Down) && Edge.Includes(ScrollDirection.Right))
+				return "scroll-br";
+			
+			if (Edge.Includes(ScrollDirection.Up))
+				return "scroll-t";
+			if (Edge.Includes(ScrollDirection.Down))
+				return "scroll-b";
+			if (Edge.Includes(ScrollDirection.Left))
+				return "scroll-l";
+			if (Edge.Includes(ScrollDirection.Right))
+				return "scroll-r";
+			
 			return null;
 		}
 
 		public override bool LoseFocus (MouseInput mi)
 		{
-			Scroll = ScrollDirection.None;
+			Keyboard = ScrollDirection.None;
 			return base.LoseFocus(mi);
 		}
 		
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
+			if (!KeyboardScroll)
+				return false;
 			
 			switch (e.KeyName)
 			{
-				case "up": Scroll = Scroll.Set(ScrollDirection.Up, (e.Event == KeyInputEvent.Down)); return true;
-				case "down": Scroll = Scroll.Set(ScrollDirection.Down, (e.Event == KeyInputEvent.Down)); return true;
-				case "left": Scroll = Scroll.Set(ScrollDirection.Left, (e.Event == KeyInputEvent.Down)); return true;
-				case "right": Scroll = Scroll.Set(ScrollDirection.Right, (e.Event == KeyInputEvent.Down)); return true;
+				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, (e.Event == KeyInputEvent.Down)); return true;
+				case "down": Keyboard = Keyboard.Set(ScrollDirection.Down, (e.Event == KeyInputEvent.Down)); return true;
+				case "left": Keyboard = Keyboard.Set(ScrollDirection.Left, (e.Event == KeyInputEvent.Down)); return true;
+				case "right": Keyboard = Keyboard.Set(ScrollDirection.Right, (e.Event == KeyInputEvent.Down)); return true;
 			}
 			return false;
 		}
 		
 		public override void Tick(World world)
 		{
+			Edge = ScrollDirection.None;
+			if (EdgeScroll)
+			{
+				// Check for edge-scroll
+				if (Widget.LastMousePos.X < EdgeScrollThreshold)
+					Edge = Edge.Set(ScrollDirection.Left, true);
+				if (Widget.LastMousePos.Y < EdgeScrollThreshold)
+					Edge = Edge.Set(ScrollDirection.Up, true);
+				if (Widget.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
+					Edge = Edge.Set(ScrollDirection.Right, true);
+				if (Widget.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
+					Edge = Edge.Set(ScrollDirection.Down, true);
+			}
 			var scroll = new float2(0,0);
-			if (Scroll.Includes(ScrollDirection.Up))
+			if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up))
 				scroll += new float2(0, -10);
-			if (Scroll.Includes(ScrollDirection.Right))
+			if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
 				scroll += new float2(10, 0);
-			if (Scroll.Includes(ScrollDirection.Down))
+			if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down))
 				scroll += new float2(0, 10);
-			if (Scroll.Includes(ScrollDirection.Left))
+			if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left))
 				scroll += new float2(-10, 0);
 			
 			Game.viewport.Scroll(scroll);
