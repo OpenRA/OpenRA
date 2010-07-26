@@ -12,6 +12,7 @@ using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -47,6 +48,13 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask( w =>
+					{
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTargetSilently(self, Target.FromActor(order.TargetActor), Color.Green);
+					});
 				self.QueueActivity(new Repair(order.TargetActor));
 			}
 		}

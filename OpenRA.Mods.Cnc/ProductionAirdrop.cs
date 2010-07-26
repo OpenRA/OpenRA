@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
@@ -62,6 +63,12 @@ namespace OpenRA.Mods.Cnc
 						actor.CancelActivity();
 						actor.QueueActivity(new Move(self.Location + exitOffset, self));
 						actor.QueueActivity(new Move(rp.rallyPoint, 0));
+						if (actor.Owner == self.World.LocalPlayer)
+						{
+							var line = actor.traits.GetOrDefault<DrawLineToTarget>();
+							if (line != null)
+								line.SetTargetSilently(actor, Target.FromCell(rp.rallyPoint), Color.Green);	
+						}
 
 						foreach (var t in self.traits.WithInterface<INotifyProduction>())
 							t.UnitProduced(self, actor);

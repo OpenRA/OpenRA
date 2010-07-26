@@ -12,6 +12,7 @@ using System.Linq;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -71,6 +72,12 @@ namespace OpenRA.Mods.RA.Activities
 				actor.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
 				actor.CancelActivity();
 				actor.QueueActivity(new Move(exitTile.Value, 0));
+				if (actor.Owner == self.World.LocalPlayer)
+				{
+					var line = actor.traits.GetOrDefault<DrawLineToTarget>();
+					if (line != null)
+						line.SetTargetSilently(self, Target.FromCell(exitTile.Value), Color.Green);
+				}
 			});
 
 			return this;

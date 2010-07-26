@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Render;
@@ -51,7 +52,16 @@ namespace OpenRA.Mods.Cnc
 					harv.QueueActivity( new Drag(endDock, startDock, 12) );
 					harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
 					if (harvester.LastHarvestedCell != int2.Zero)
+					{
 						harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+						if (harv.Owner == self.World.LocalPlayer)
+							self.World.AddFrameEndTask( w =>
+							{
+								var line = harv.traits.GetOrDefault<DrawLineToTarget>();
+								if (line != null)
+									line.SetTargetSilently(harv, Target.FromCell(harvester.LastHarvestedCell), Color.Green);                           
+							});
+					}
 				}
 				harv.QueueActivity( new Harvest() );	
 			}) );

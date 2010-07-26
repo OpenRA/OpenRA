@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using System.Drawing;
 
 namespace OpenRA.Traits
 {
@@ -63,11 +64,28 @@ namespace OpenRA.Traits
 				var mobile = newUnit.traits.GetOrDefault<Mobile>();
 				if (mobile != null)
 				{
+					int2? target = null;
 					if (pi.ExitOffset != null)
-						newUnit.QueueActivity(new Activities.Move(ExitLocation(self, producee).Value, 1));
+					{
+						target = ExitLocation(self, producee).Value;
+						newUnit.QueueActivity(new Activities.Move(target.Value, 1));
+					}
 
 					if (rp != null)
-						newUnit.QueueActivity(new Activities.Move(rp.rallyPoint, 1));
+					{
+						target = rp.rallyPoint;
+						newUnit.QueueActivity(new Activities.Move(target.Value, 1));
+					}
+					
+					if (target != null && newUnit.Owner == self.World.LocalPlayer)
+					{
+						self.World.AddFrameEndTask(w =>
+						{
+							var line = newUnit.traits.GetOrDefault<DrawLineToTarget>();
+							if (line != null)
+								line.SetTargetSilently(newUnit, Target.FromCell(target.Value), Color.Green);
+						});
+					}
 				}
 			}
 

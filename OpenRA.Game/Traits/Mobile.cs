@@ -286,6 +286,13 @@ namespace OpenRA.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w =>
+					{
+						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTargetSilently(self, Target.FromCell(moveTo.Value), Color.Green);
+					});
 				self.QueueActivity(new Move(moveTo.Value, 0));
 			}
 		}

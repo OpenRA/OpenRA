@@ -38,6 +38,12 @@ namespace OpenRA.Traits
 			this.c = c;
 		}
 		
+		public void SetTargetSilently(Actor self, Target target, Color c)
+		{
+			this.target = target;
+			this.c = c;
+		}	
+		
 		public void Render (Actor self)
 		{
 			var force = Game.controller.GetModifiers().HasModifier(Modifiers.Alt);
