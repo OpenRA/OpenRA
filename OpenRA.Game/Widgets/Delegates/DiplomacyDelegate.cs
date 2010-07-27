@@ -20,17 +20,22 @@ namespace OpenRA.Widgets.Delegates
 	{
 		static List<Widget> controls = new List<Widget>();
 
+		int validPlayers = 0;
 		public DiplomacyDelegate()
 		{
-			var diplomacyBG = Widget.RootWidget.GetWidget("DIPLOMACY_BG");
-
-			Widget.RootWidget.GetWidget("INGAME_DIPLOMACY_BUTTON").OnMouseUp = mi =>
+			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");
+			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
+			var diplomacy = root.GetWidget("INGAME_DIPLOMACY_BUTTON");
+			diplomacy.OnMouseUp = mi =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
 				if (diplomacyBG.IsVisible())
 					LayoutDialog(diplomacyBG);
 				return true;
 			};
+			
+			Game.OnGameStart += () => validPlayers = Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.NonCombatant).Count();
+			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
 
 		void LayoutDialog(Widget bg)
