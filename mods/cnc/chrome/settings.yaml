@@ -86,6 +86,13 @@ Container@ROOT:
 							X:90
 							Y:0
 							MaxLength:16
+						Checkbox@EDGE_SCROLL:
+							Id:EDGE_SCROLL
+							X:0
+							Y:30
+							Width:200
+							Height:20
+							Text: Enable Edge Scrolling
 				Container@AUDIO_PANE:
 					Id:AUDIO_PANE
 					X:37

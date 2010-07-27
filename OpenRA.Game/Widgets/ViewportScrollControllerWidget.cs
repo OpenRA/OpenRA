@@ -27,14 +27,11 @@ namespace OpenRA.Widgets
 		Down = 4,
 		Right = 8
 	}
-		
+	
 	class ViewportScrollControllerWidget : Widget
 	{
 		public int EdgeScrollThreshold = 15;
-		public bool EdgeScroll = true;
-		public bool KeyboardScroll = true;
-		public bool MouseScroll = true;
-		
+
 		ScrollDirection Keyboard;
 		ScrollDirection Edge;
 		
@@ -43,10 +40,7 @@ namespace OpenRA.Widgets
 		public override void DrawInner( World world ) {}
 		
 		public override bool HandleInputInner(MouseInput mi)
-		{						
-			if (!MouseScroll)
-				return false;
-			
+		{									
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
@@ -58,7 +52,7 @@ namespace OpenRA.Widgets
 		
 		public override string GetCursor(int2 pos)
 		{
-			if (!EdgeScroll)
+			if (!Game.Settings.ViewportEdgeScroll)
 				return null;
 			
 			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Left))
@@ -89,10 +83,7 @@ namespace OpenRA.Widgets
 		}
 		
 		public override bool HandleKeyPressInner(KeyInput e)
-		{
-			if (!KeyboardScroll)
-				return false;
-			
+		{			
 			switch (e.KeyName)
 			{
 				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, (e.Event == KeyInputEvent.Down)); return true;
@@ -106,7 +97,7 @@ namespace OpenRA.Widgets
 		public override void Tick(World world)
 		{
 			Edge = ScrollDirection.None;
-			if (EdgeScroll)
+			if (Game.Settings.ViewportEdgeScroll)
 			{
 				// Check for edge-scroll
 				if (Widget.LastMousePos.X < EdgeScrollThreshold)
