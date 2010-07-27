@@ -13,7 +13,6 @@
 	Passenger: 
 	IronCurtainable: 
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -33,7 +32,6 @@
 	Passenger: 
 	IronCurtainable: 
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -53,7 +51,6 @@
 	AutoTarget:
 	Passenger:
 	HiddenUnderFog:
-	RevealsShroud:
 	TeslaInstantKills:
 	GainsExperience:
 	GivesExperience:
@@ -68,7 +65,6 @@
 	Selectable:
 		Voice: ShipVoice
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -80,7 +76,6 @@
 	Selectable:
 		Voice: GenericVoice
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -164,7 +159,6 @@
 	Selectable: 
 		Priority: -1
 	HiddenUnderFog:
-	RevealsShroud:
 	Burns:
 
 ^Bridge:

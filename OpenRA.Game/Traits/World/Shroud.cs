@@ -67,11 +67,8 @@ namespace OpenRA.Traits
 			if (a.traits.WithInterface<IRevealShroud>().Count() == 0)
 				return;
 			
-			bool shareShroud = true; // Todo: make this a server flag
-			
 			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
 			    || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
-			if (!shareShroud &&  a.Owner != a.Owner.World.LocalPlayer) return;
 
 			if (vis.ContainsKey(a))
 			{

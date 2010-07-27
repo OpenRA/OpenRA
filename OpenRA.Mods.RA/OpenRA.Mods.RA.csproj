@@ -183,7 +183,6 @@
     <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ReturnOnIdle.cs" />
-    <Compile Include="RevealsShroud.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="ShroudPalette.cs" />

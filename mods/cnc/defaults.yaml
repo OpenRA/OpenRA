@@ -12,7 +12,6 @@
 	Passenger: 
 	IronCurtainable: 
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -32,7 +31,6 @@
 	Passenger: 
 	IronCurtainable: 
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -44,7 +42,6 @@
 	Selectable:
 		Voice: VehicleVoice
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	MobileAir:
@@ -67,7 +64,6 @@
 	Passenger:
 	HiddenUnderFog:
 	PoisonedByTiberium:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 #	SharesCell:
@@ -80,7 +76,6 @@
 	Selectable:
 		Voice: GenericVoice
 	HiddenUnderFog:
-	RevealsShroud:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
@@ -186,7 +181,6 @@
 	Selectable: 
 		Priority: -1
 	HiddenUnderFog:
-	RevealsShroud:
 	Burns:
 
 ^Bridge:

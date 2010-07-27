@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature
+	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature, IRevealShroud
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
