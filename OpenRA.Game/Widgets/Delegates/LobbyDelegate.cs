@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -107,7 +108,9 @@ namespace OpenRA.Widgets.Delegates
 			startGameButton.IsVisible = () => Game.IsHost;
 			
 			Game.LobbyInfoChanged += JoinedServer;
+			Game.ConnectionStateChanged += ResetConnectionState;
 			Game.LobbyInfoChanged += UpdatePlayerList;
+			
 			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
 
 			bool teamChat = false;
@@ -229,6 +232,13 @@ namespace OpenRA.Widgets.Delegates
 				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 			}
 		}
+		
+		void ResetConnectionState()
+		{
+			if (Game.orderManager.Connection.ConnectionState == ConnectionState.PreConnecting)
+				hasJoined = false;
+		}
+		
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)

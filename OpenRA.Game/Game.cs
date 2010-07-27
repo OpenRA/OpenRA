@@ -161,6 +161,9 @@ namespace OpenRA
 			CurrentHost = host;
 			CurrentPort = port;
 
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged();
+			
 			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
 		}
 
@@ -171,6 +174,9 @@ namespace OpenRA
 
 		static void JoinLocal()
 		{
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged();
+			
 			if (orderManager != null) orderManager.Dispose();
 			orderManager = new OrderManager(new EchoConnection());
 		}

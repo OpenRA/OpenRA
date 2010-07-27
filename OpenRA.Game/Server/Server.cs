@@ -136,13 +136,14 @@ namespace OpenRA.Server
 				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
 				conns.Add(newConn);
 
+				var defaults = new GameRules.UserSettings();
 				lobbyInfo.Clients.Add(
 					new Session.Client()
 					{
 						Index = newConn.PlayerIndex,
-						Color1 = System.Drawing.Color.FromArgb(246,214,121),
-						Color2 = System.Drawing.Color.FromArgb(40,32,8),
-						Name = "Player {0}".F(1 + newConn.PlayerIndex),
+						Color1 = defaults.PlayerColor1,
+						Color2 = defaults.PlayerColor2,
+						Name = defaults.PlayerName,
 						Country = "random",
 						State = Session.ClientState.NotReady,
 						SpawnPoint = 0,
