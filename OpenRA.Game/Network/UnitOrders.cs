@@ -66,9 +66,14 @@ namespace OpenRA.Network
 			case "SetStance":
 				{
 					var targetPlayer = order.Player.World.players[order.TargetLocation.X];
+					var oldStance = order.Player.Stances[targetPlayer];
 					order.Player.Stances[targetPlayer] = (Stance)order.TargetLocation.Y;
+					
+					if (targetPlayer == world.LocalPlayer)
+						world.WorldActor.traits.Get<Shroud>().UpdatePlayerStance(world, order.Player, oldStance, order.Player.Stances[targetPlayer]);
+					
 					Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
-						order.Player.PlayerName, targetPlayer.PlayerName, (Stance)order.TargetLocation.Y));
+						order.Player.PlayerName, targetPlayer.PlayerName, order.Player.Stances[targetPlayer]));
 					break;
 				}
 			default:

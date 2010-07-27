@@ -101,6 +101,24 @@ namespace OpenRA.Traits
 
 			Dirty();
 		}
+		
+		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
+		{
+			if (oldStance == newStance)
+				return;
+			
+			// No longer our ally; remove unit vis
+			if (oldStance == Stance.Ally)
+			{
+				var toRemove = new List<Actor>(vis.Select(a => a.Key).Where(a => a.Owner == player));
+				foreach (var a in toRemove)
+					RemoveActor(a);
+			}
+			// Is now our ally; add unit vis
+			if (newStance == Stance.Ally)
+				foreach (var a in w.Queries.OwnedBy[player])
+					AddActor(a);
+		}
 
 		public static IEnumerable<int2> GetVisOrigins(Actor a)
 		{
@@ -135,7 +153,9 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner == null || a.Owner != a.Owner.World.LocalPlayer) return;
+			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
+			    || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
+
 			RemoveActor(a); AddActor(a);
 		}
 
