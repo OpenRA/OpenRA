@@ -59,7 +59,6 @@ namespace OpenRA.Traits
 	
 	public interface IVisibilityModifier { bool IsVisible(Actor self); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-	public interface IRevealShroud {}
 	public interface IOccupySpace
 	{
 		int2 TopLeft { get; }

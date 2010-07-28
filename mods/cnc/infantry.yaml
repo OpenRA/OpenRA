@@ -143,7 +143,8 @@ RMBO:
 	Unit:
 		HP: 200
 		Speed: 5
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	AttackBase:
 		PrimaryWeapon: Sniper
 	TakeCover:
@@ -160,8 +161,9 @@ C1:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -175,8 +177,9 @@ C2:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -190,8 +193,9 @@ C3:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -205,8 +209,9 @@ C4:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 		
@@ -220,8 +225,9 @@ C5:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -235,8 +241,9 @@ C6:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -250,8 +257,9 @@ C7:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 C8:
@@ -264,8 +272,9 @@ C8:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -279,8 +288,9 @@ C9:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -294,7 +304,8 @@ C10:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol

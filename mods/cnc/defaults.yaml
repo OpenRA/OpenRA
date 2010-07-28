@@ -53,7 +53,8 @@
 	Category: Infantry
 	Unit:
 		Armor: none
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Mobile:
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 90%, 80%, 0%
@@ -130,7 +131,6 @@
 		BuildSounds: hvydoor1.aud
 		Capturable: false
 		BaseNormal: no
-		Sight: 0
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Adjacent: 7

@@ -22,7 +22,6 @@ namespace OpenRA.Traits
 	{
 		public readonly int HP = 0;
 		public readonly ArmorType Armor = ArmorType.none;
-		public readonly int Sight = 0;
 		public readonly string[] TargetType = {"Ground"};
 	}
 
@@ -47,7 +46,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature, IRevealShroud
+	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;

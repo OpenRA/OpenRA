@@ -13,8 +13,9 @@ MCV:
 	Unit:
 		HP: 600
 		Armor: light
-		Sight: 4
 		Speed: 6
+	RevealsShroud:
+		Range: 4
 	TransformsOnDeploy:
 		TransformsInto: fact
 		Offset:-1,-1
@@ -44,8 +45,9 @@ HARV:
 	Unit:
 		HP: 600
 		Armor: light
-		Sight: 4
 		Speed: 6
+	RevealsShroud:
+		Range: 4
 	RenderUnit:
 
 APC:
@@ -62,8 +64,9 @@ APC:
 		HP: 200
 		Armor: heavy
 		ROT: 5
-		Sight: 5
 		Speed: 15
+	RevealsShroud:
+		Range: 5
 	AttackBase:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,0,0,-4
@@ -90,8 +93,9 @@ ARTY:
 		HP: 75
 		Armor: light
 		ROT: 2
-		Sight: 6
 		Speed: 6
+	RevealsShroud:
+		Range: 6
 	AttackBase:
 		PrimaryWeapon: Ballistic
 	RenderUnit:
@@ -112,8 +116,9 @@ FTNK:
 		HP: 300
 		Armor: heavy
 		ROT: 5
-		Sight: 4
 		Speed: 9
+	RevealsShroud:
+		Range: 4
 	AttackBase:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 0,0,0,-2
@@ -135,8 +140,9 @@ BGGY:
 		HP: 140
 		Armor: light
 		ROT: 10
-		Sight: 5
 		Speed: 18
+	RevealsShroud:
+		Range: 5
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -160,8 +166,9 @@ BIKE:
 		HP: 160
 		Armor: none
 		ROT: 10
-		Sight: 7
 		Speed: 20
+	RevealsShroud:
+		Range: 7
 	AttackBase:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-2
@@ -186,8 +193,9 @@ JEEP:
 		HP: 150
 		Armor: light
 		ROT: 10
-		Sight: 7
 		Speed: 15
+	RevealsShroud:
+		Range: 7
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -210,8 +218,9 @@ LTNK:
 	Unit:
 		HP: 300
 		Armor: Heavy
-		Sight: 4
 		Speed: 9
+	RevealsShroud:
+		Range: 4
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -238,8 +247,9 @@ MTNK:
 	Unit:
 		HP: 400
 		Armor: heavy
-		Sight: 5
 		Speed: 9
+	RevealsShroud:
+		Range: 5
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -266,8 +276,9 @@ HTNK:
 	Unit:
 		HP: 600
 		Armor: heavy
-		Sight: 6
 		Speed: 3
+	RevealsShroud:
+		Range: 6
 	Turreted:
 		ROT: 2
 	AttackTurreted:
@@ -300,8 +311,9 @@ MSAM:
 	Unit:
 		HP: 120
 		Armor: light
-		Sight: 6
 		Speed: 6
+	RevealsShroud:
+		Range: 6
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -327,8 +339,9 @@ MLRS:
 	Unit:
 		HP: 120
 		Armor: light
-		Sight: 10
 		Speed: 6
+	RevealsShroud:
+		Range: 10
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -350,8 +363,9 @@ STNK:
 	Unit:
 		HP: 110
 		Armor: light
-		Sight: 4
 		Speed: 15
+	RevealsShroud:
+		Range: 4
 	Cloak:
 		InitialDelay: .4
 		CloakDelay: 2.0
@@ -378,8 +392,9 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 8
 		Speed: 15
+	RevealsShroud:
+		Range: 8
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -404,8 +419,9 @@ HELI:
 		Armor: heavy
 		InitialFacing: 20
 		ROT: 4
-		Sight: 8
 		Speed: 20
+	RevealsShroud:
+		Range: 8
 	AttackBase:
 		PrimaryWeapon: HighV
 		SecondaryWeapon: HighV
@@ -431,8 +447,9 @@ ORCA:
 		Armor: heavy
 		InitialFacing: 20
 		ROT: 4
-		Sight: 8
 		Speed: 20
+	RevealsShroud:
+		Range: 8
 	AttackBase:
 		PrimaryWeapon: Rockets.Orca
 		SecondaryWeapon: Rockets.Orca
@@ -450,7 +467,6 @@ C17:
 		HP: 25
 		Armor: light
 		ROT: 5
-		Sight: 0
 		Speed: 25
 	Plane:
 	RenderUnit:
@@ -467,7 +483,6 @@ A10:
 		HP: 60
 		Armor: light
 		ROT: 4
-		Sight: 0
 		Speed: 25
 	Plane:
 	RenderUnit:

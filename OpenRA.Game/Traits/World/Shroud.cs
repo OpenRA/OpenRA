@@ -64,9 +64,9 @@ namespace OpenRA.Traits
 
 		void AddActor(Actor a)
 		{
-			if (a.traits.WithInterface<IRevealShroud>().Count() == 0)
+			if (!a.traits.Contains<RevealsShroud>())
 				return;
-			
+						
 			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
 			    || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 
 			var v = new ActorVisibility
 			{
-				range = a.Info.Traits.Get<OwnedActorInfo>().Sight,
+				range = a.traits.Get<RevealsShroud>().RevealRange,
 				vis = GetVisOrigins(a).ToArray()
 			};
 

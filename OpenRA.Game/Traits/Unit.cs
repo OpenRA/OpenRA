@@ -23,22 +23,12 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new Unit(); }
 	}
 
-	public class Unit : INotifyDamage, IRadarSignature, IRevealShroud, ITick
+	public class Unit : INotifyDamage, IRadarSignature
 	{
 		[Sync]
 		public int Facing;
 		[Sync]
 		public int Altitude;
-
-		int2 previousLocation;
-		public void Tick(Actor self)
-		{	
-			if (!self.IsIdle && previousLocation != self.Location)
-			{
-				previousLocation = self.Location;
-				self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
-			}
-		}
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
