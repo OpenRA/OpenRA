@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy) return null;
-			if (!underCursor.traits.Contains<Building>()) return null;
+			if (!underCursor.traits.Contains<Building>() || !underCursor.Info.Traits.Get<BuildingInfo>().Capturable) return null;
 
 			return new Order("CaptureBuilding", self, underCursor);
 		}

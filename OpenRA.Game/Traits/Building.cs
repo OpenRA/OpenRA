@@ -34,7 +34,6 @@ namespace OpenRA.Traits
 		public readonly bool Capturable = false;
 		public readonly bool Repairable = true;
 		public readonly string Footprint = "x";
-		public readonly string[] Produces = { };		// does this go somewhere else?
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool Unsellable = false;
 
