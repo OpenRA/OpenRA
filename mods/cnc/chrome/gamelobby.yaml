@@ -96,8 +96,9 @@ Container@ROOT:
 								Checkbox@STATUS:
 									Id:STATUS
 									X:455
-									Width:25
-									Height:25
+									Y:2
+									Width:20
+									Height:20
 						Container@TEMPLATE_REMOTE:
 							Id:TEMPLATE_REMOTE
 							X:0
@@ -151,8 +152,9 @@ Container@ROOT:
 								Checkbox@STATUS:
 									Id:STATUS
 									X:455
-									Width:25
-									Height:25
+									Y:2
+									Width:20
+									Height:20
 				Container@LABEL_CONTAINER:
 					X:30
 					Y:45

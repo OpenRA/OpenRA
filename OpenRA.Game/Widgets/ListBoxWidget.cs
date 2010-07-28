@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -62,6 +63,15 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
 			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
 			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
+
+			var upOffset = UpPressed ? 4 : 3;
+			var downOffset = DownPressed ? 4 : 3;
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "up_arrow"),
+				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
+				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 			Game.Renderer.Device.EnableScissor(backgroundRect.X, backgroundRect.Y + HeaderHeight, backgroundRect.Width, backgroundRect.Height - HeaderHeight);
 

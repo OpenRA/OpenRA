@@ -9,12 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using OpenRA.Orders;
-using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
@@ -34,8 +28,8 @@ namespace OpenRA.Widgets
 
 		ScrollDirection Keyboard;
 		ScrollDirection Edge;
-		
-		public ViewportScrollControllerWidget() : base()	{}
+
+		public ViewportScrollControllerWidget() : base() { }
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
 		public override void DrawInner( World world ) {}
 		

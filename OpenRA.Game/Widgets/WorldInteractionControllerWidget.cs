@@ -9,12 +9,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Orders;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {

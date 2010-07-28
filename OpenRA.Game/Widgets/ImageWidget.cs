@@ -23,8 +23,8 @@ namespace OpenRA.Widgets
 		public ImageWidget()
 			: base()
 		{
-			GetImageName = () => { return ImageName; };
-			GetImageCollection = () => { return ImageCollection; };
+			GetImageName = () => ImageName;
+			GetImageCollection = () => ImageCollection;
 		}
 
 		protected ImageWidget(ImageWidget other)

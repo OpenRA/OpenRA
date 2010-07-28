@@ -13,11 +13,8 @@
 		<image name="bg" x="306" y="31" width="192" height="192" />
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
-    	
 	<collection name="power-gdi" src="chrome-gdi.png">
-		
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
-	
 	</collection>
 	<collection name="palette-gdi" src="chrome-gdi.png">
 		<image name="top" x="297" y="288" width="201" height="9" />
@@ -59,11 +56,8 @@
 		<image name="bg" x="306" y="31" width="192" height="192" />
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
 	</collection>
-    
 	<collection name="power-nod" src="chrome-nod.png">
-		
 		<image name="power-indicator" x="187" y="4" width="4" height="7" />
-	
 	</collection>
 	<collection name="palette-nod" src="chrome-nod.png">
 		<image name="top" x="297" y="288" width="201" height="9" />
@@ -155,7 +149,7 @@
 		<image name="corner-bl" x="0" y="82" width="1" height="1" />
 		<image name="corner-br" x="82" y="82" width="1" height="1" />
 	</collection>
-		<collection name="dialog3" src="dialog3.png">
+	<collection name="dialog3" src="dialog3.png">
 		<image name="background" x="1" y="1" width="126" height="126" />
 		<image name="border-r" x="127" y="1" width="1" height="126" />
 		<image name="border-l" x="0" y="1" width="1" height="126" />
@@ -201,11 +195,18 @@
 		<image name="nod" x="0" y="84" width="30" height="15" />
 		<image name="random" x="60" y="84" width="30" height="15" />
 	</collection>
-    <collection name="music" src="musicplayer.png">
-        <image name="pause" x="0" y="0" width="25" height="25" />
-        <image name="stop" x="28" y="0" width="25" height="25" />
-        <image name="play" x="56" y="0" width="25" height="25" />
-        <image name="next" x="84" y="0" width="25" height="25" />
-        <image name="prev" x="112" y="0" width="25" height="25" />
-    </collection>
+	<collection name="music" src="musicplayer.png">
+		<image name="pause" x="0" y="0" width="25" height="25" />
+		<image name="stop" x="28" y="0" width="25" height="25" />
+		<image name="play" x="56" y="0" width="25" height="25" />
+		<image name="next" x="84" y="0" width="25" height="25" />
+		<image name="prev" x="112" y="0" width="25" height="25" />
+	</collection>
+	<collection name="scrollbar" src="buttons.png">
+		<image name="down_arrow" x="16" y="112" width="16" height="16" />
+		<image name="up_arrow" x="32" y="112" width="16" height="16" />
+	</collection>
+	<collection name="checkbox" src="buttons.png">
+		<image name="checked" x="0" y="112" width="16" height="16" />
+	</collection>
 </chrome>

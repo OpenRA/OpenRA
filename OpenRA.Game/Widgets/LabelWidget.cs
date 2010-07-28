@@ -27,8 +27,8 @@ namespace OpenRA.Widgets
 		public LabelWidget()
 			: base()
 		{
-			GetText = () => { return Text; };
-			GetBackground = () => { return Background; };
+			GetText = () => Text;
+			GetBackground = () => Background;
 		}
 
 		protected LabelWidget(LabelWidget other)
