@@ -185,7 +185,6 @@ MINP:
 		AvoidFriendly: yes
 	Unit:
 		HP: 1
-		TargetType: special
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
@@ -198,7 +197,6 @@ MINV:
 		AvoidFriendly: yes
 	Unit:
 		HP: 1
-		TargetType: special
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
@@ -252,14 +250,12 @@ CAMERA:
 	Aircraft:
 	Unit:
 		HP:1000
-		TargetType: special
 	RevealsShroud:
 		Range: 10
 
 FLARE:
 	Unit:
 		HP:1000
-		TargetType: special
 	RevealsShroud:
 		Range: 3
 	RenderFlare:

@@ -8,6 +8,8 @@
 		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 90%, 40%, 0%
 	Selectable: 
 		Voice: VehicleVoice
+	Targetable:
+		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -27,6 +29,8 @@
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 90%, 70%, 0%
 	Selectable: 
 		Voice: VehicleVoice
+	Targetable:
+		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -48,6 +52,8 @@
 		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 100%, 80%, 0%
 	Selectable:
 		Voice: GenericVoice
+	Targetable:
+		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
 	Passenger:
@@ -60,12 +66,13 @@
 ^Ship:
 	Category: Ship
 	Unit:
-		TargetType: Ground, Water
 	Mobile:
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
 	Selectable:
 		Voice: ShipVoice
+	Targetable:
+		TargetTypes: Ground, Water
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -74,9 +81,10 @@
 ^Plane:
 	Category: Plane
 	Unit:
-		TargetType: Air
 	Selectable:
 		Voice: GenericVoice
+	Targetable:
+		TargetTypes: Air
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -86,6 +94,8 @@
 	Category: Building
 	Selectable:
 		Priority: 3
+	Targetable:
+		TargetTypes: Ground
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -114,6 +124,8 @@
 		Range: 8
 	Selectable:
 		Priority: 1
+	Targetable:
+		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
@@ -154,7 +166,6 @@
 		Speed: 0
 		HP: 140
 		Armor: Heavy
-		TargetType: Special
 	Husk:
 	Selectable: 
 		Priority: -1
@@ -165,11 +176,10 @@
 	Category: Building
 	Valued:
 		Description: Bridge
-#	Selectable:
-#		Bounds: 96,48
 	BelowUnits:
+	Targetable:
+		TargetTypes: Ground, Water
 	Building:
-		TargetType: Ground, Water
 		Footprint: ____ ____
 		Dimensions: 4,2
 		HP: 1000

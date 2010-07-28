@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA
 			if (!WeaponValidForTarget(args.weapon, Target.FromActor(target))) return 0f;
 
 			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
-			var radius = selectable != null ? selectable.Radius : 0;
+			var radius = selectable != null ? selectable.Radius : 0;			
 			var distance = (int)Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
 			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 			var rawDamage = (float)(warhead.Damage * modifier * falloff);
@@ -167,13 +167,11 @@ namespace OpenRA.Mods.RA
 				|| (weapon.ValidTargets.Contains("Water") && 
 					Game.world.GetTerrainType(Util.CellContaining(target.CenterLocation)) == "Water"); // even bigger hack!
 
-			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
-
-			
-			
-			if (!weapon.ValidTargets.Intersect(ownedInfo.TargetType).Any())
+			var targetable = target.Actor.Info.Traits.GetOrDefault<TargetableInfo>();
+			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
-
+			
+			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
 			if (weapon.Warheads.All( w => w.EffectivenessAgainst(ownedInfo.Armor) <= 0))
 				return false;
 

@@ -81,17 +81,6 @@ namespace OpenRA
 					if (r * r >= (new int2(i, j) - a).LengthSquared)
 						yield return new int2(i, j);
 		}
-
-		public static IEnumerable<Actor> SelectActorsInBox(this World world, float2 a, float2 b)
-		{
-			return world.FindUnits(a, b)
-				.Where( x => x.traits.Contains<Selectable>() && x.IsVisible() )
-				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
-				.OrderByDescending(g => g.Key)
-				.Select( g => g.AsEnumerable() )
-				.DefaultIfEmpty( new Actor[] {} )
-				.FirstOrDefault();
-		}
 		
 		public static string GetTerrainType(this World world, int2 cell)
 		{

@@ -22,7 +22,6 @@ namespace OpenRA.Traits
 	{
 		public readonly int HP = 0;
 		public readonly ArmorType Armor = ArmorType.none;
-		public readonly string[] TargetType = {"Ground"};
 	}
 
 	public class BuildingInfo : OwnedActorInfo, ITraitInfo

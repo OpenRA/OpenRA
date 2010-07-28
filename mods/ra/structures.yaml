@@ -59,8 +59,9 @@ SPEN:
 		Description: Sub Pen
 		LongDesc: Produces and repairs submarines and \ntransports
 		Hotkey: s
+	Targetable:
+		TargetTypes: Ground, Water
 	Building:
-		TargetType: Ground, Water
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -89,8 +90,9 @@ SYRD:
 		Description: Shipyard
 		LongDesc: Produces and repairs ships
 		Hotkey: s
+	Targetable:
+		TargetTypes: Ground, Water
 	Building:
-		TargetType: Ground, Water
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -794,8 +796,9 @@ SYRF:
 #		Description: Fake Shipyard
 #		LongDesc: Looks like a Shipyard
 #		Hotkey: z
+	Targetable:
+		TargetTypes: Ground, Water
 	Building:
-		TargetType: Ground, Water
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -813,8 +816,9 @@ SYRF:
 
 SPEF:
 	Inherits: ^Building
+	Targetable:
+		TargetTypes: Ground, Water
 	Building:
-		TargetType: Ground, Water
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3

@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Widgets
 {
@@ -36,7 +37,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
-			foreach (var u in world.SelectActorsInBox(selbox.Value.First, selbox.Value.Second))
+			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
 				world.WorldRenderer.DrawSelectionBox(u, Color.Yellow);
 			
 			Game.Renderer.LineRenderer.Flush();
@@ -60,7 +61,7 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					var newSelection = Game.world.SelectActorsInBox(Game.CellSize * dragStart, Game.CellSize * xy);
+					var newSelection = SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * xy);
 					world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
@@ -168,6 +169,17 @@ namespace OpenRA.Widgets
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
 			Game.viewport.Center(world.Selection.Actors);
+		}
+		
+		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)
+		{
+			return world.FindUnits(a, b)
+				.Where( x => x.traits.Contains<Selectable>() && x.IsVisible() )
+				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
+				.OrderByDescending(g => g.Key)
+				.Select( g => g.AsEnumerable() )
+				.DefaultIfEmpty( new Actor[] {} )
+				.FirstOrDefault();
 		}
 		
 		public override Widget Clone() { return new WorldInteractionControllerWidget(this); }

@@ -164,8 +164,7 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
-#	Selectable:
-#		Bounds: 120,48
+
 BRIDGE2:
 	Inherits: ^Bridge
 	Bridge:
@@ -175,5 +174,3 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
-#	Selectable:
-#		Bounds: 120,48

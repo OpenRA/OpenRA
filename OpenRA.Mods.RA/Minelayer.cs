@@ -105,8 +105,8 @@ namespace OpenRA.Mods.RA
 				}
 
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Info.Traits.Contains<SelectableInfo>())
-					.OrderByDescending(a => a.Info.Traits.Get<SelectableInfo>().Priority)
+					//.Where(a => a.Info.Traits.Contains<SelectableInfo>())
+					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 					.FirstOrDefault();
 
 				if (mi.Button == MouseButton.Right && underCursor == null)

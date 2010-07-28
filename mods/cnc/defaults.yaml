@@ -7,6 +7,8 @@
 		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 50%, 40%, 0%
 	Selectable: 
 		Voice: VehicleVoice
+	Targetable:
+		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -26,6 +28,8 @@
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 70%, 70%, 0%
 	Selectable: 
 		Voice: VehicleVoice
+	Targetable:
+		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -38,7 +42,8 @@
 ^Helicopter:
 	Category: Plane
 	Unit:
-		TargetType: Air
+	Targetable:
+		TargetTypes: Air
 	Selectable:
 		Voice: VehicleVoice
 	HiddenUnderFog:
@@ -60,6 +65,8 @@
 		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 90%, 80%, 0%
 	Selectable:
 		Voice: GenericVoice
+	Targetable:
+		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
 	Passenger:
@@ -73,9 +80,10 @@
 ^Plane:
 	Category: Plane
 	Unit:
-		TargetType: Air
 	Selectable:
 		Voice: GenericVoice
+	Targetable:
+		TargetTypes: Air
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -85,6 +93,8 @@
 	Category: Building
 	Selectable:
 		Priority: 3
+	Targetable:
+		TargetTypes: Ground
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -186,11 +196,10 @@
 	Category: Building
 	Valued:
 		Description: Bridge
-	Selectable:
-		Bounds: 96,96
+	Targetable:
+		TargetTypes: Ground, Water
 	BelowUnits:
 	Building:
-		TargetType: Ground, Water
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Footprint: ______ ______ ______ ______
