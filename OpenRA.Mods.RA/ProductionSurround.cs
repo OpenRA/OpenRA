@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 
 		public override int2? CreationLocation(Actor self, ActorInfo producee)
 		{
-			return FindAdjacentTile(self, producee.Traits.Get<OwnedActorInfo>().WaterBound);
+			return FindAdjacentTile(self, self.Info.Traits.Get<BuildingInfo>().WaterBound);
 		}
 
 		public override int CreationFacing(Actor self, Actor newUnit)

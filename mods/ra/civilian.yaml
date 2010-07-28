@@ -7,7 +7,6 @@ FCOM:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 

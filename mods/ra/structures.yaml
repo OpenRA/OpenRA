@@ -17,7 +17,6 @@ MSLO:
 		Dimensions: 2,1
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 	IronCurtainable:
 	
@@ -44,7 +43,6 @@ GAP:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	IronCurtainable:
 
@@ -60,6 +58,7 @@ SPEN:
 		LongDesc: Produces and repairs submarines and \ntransports
 		Hotkey: s
 	Building:
+		TargetType: Ground, Water
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -88,6 +87,7 @@ SYRD:
 		LongDesc: Produces and repairs ships
 		Hotkey: s
 	Building:
+		TargetType: Ground, Water
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -124,7 +124,6 @@ IRON:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	IronCurtainable:
@@ -150,7 +149,6 @@ PDOX:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	Chronosphere:
@@ -177,7 +175,6 @@ TSLA:
 		Dimensions: 1,2
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 8
 	RenderBuildingCharge:
 	AttackTesla:
@@ -207,7 +204,6 @@ AGUN:
 		Dimensions: 1,2
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 6
 	Turreted:
 		ROT: 15
@@ -240,7 +236,6 @@ DOME:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	ProvidesRadar:
@@ -261,7 +256,6 @@ PBOX:
 		Power: -15
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
@@ -284,7 +278,6 @@ HBOX:
 		Power: -15
 		HP: 600
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
@@ -307,7 +300,6 @@ GUN:
 		Power: -40
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 7
 	Turreted:
 		ROT: 12
@@ -335,7 +327,6 @@ FTUR:
 		Power: -20
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: FireballLauncher
@@ -361,7 +352,6 @@ SAM:
 		Dimensions: 2,1
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 	Turreted:
 		ROT: 30
@@ -392,7 +382,6 @@ ATEK:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	IronCurtainable:
@@ -415,7 +404,6 @@ WEAP:
 		Capturable: true
 		HP: 1000
 		Armor: light
-		Crewed: yes
 		Sight: 4
 	Bib:
 	RenderWarFactory:
@@ -433,7 +421,6 @@ FACT:
 		Capturable: true
 		HP: 1000
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 	Bib:
 	Production:
@@ -464,7 +451,6 @@ PROC:
 		Capturable: true
 		HP: 900
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	Bib:
 	OreRefinery:
@@ -503,6 +489,7 @@ SILO:
 		Capacity: 1500
 	IronCurtainable:
 	-RenderBuilding:
+	-EmitInfantryOnSell:
 
 HPAD:
 	Inherits: ^Building
@@ -521,7 +508,6 @@ HPAD:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	Production:
@@ -548,7 +534,6 @@ AFLD:
 		Capturable: true
 		HP: 1000
 		Armor: heavy
-		Crewed: yes
 		Sight: 7
 	Production:
 		Produces: Plane
@@ -573,7 +558,6 @@ POWR:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 4
 	Bib:
 	IronCurtainable:
@@ -596,7 +580,6 @@ APWR:
 		Capturable: true
 		HP: 700
 		Armor: wood
-		Crewed: yes
 		Sight: 4
 	Bib:
 	IronCurtainable:
@@ -619,7 +602,6 @@ STEK:
 		Capturable: true
 		HP: 600
 		Armor: wood
-		Crewed: yes
 		Sight: 4
 	Bib:
 	IronCurtainable:
@@ -642,7 +624,6 @@ BARR:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	RallyPoint:
@@ -668,7 +649,6 @@ TENT:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	RallyPoint:
@@ -695,6 +675,7 @@ KENN:
 	Production:
 		Produces: Infantry
 	IronCurtainable:
+	-EmitInfantryOnSell:
 
 FIX:
 	Inherits: ^Building
@@ -713,7 +694,6 @@ FIX:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	BelowUnits:
 	Reservable:
@@ -743,6 +723,7 @@ FACF:
 		Image: FACT
 	Fake:
 	IronCurtainable:
+	-EmitInfantryOnSell:
 
 WEAF:
 	Inherits: ^Building
@@ -768,6 +749,7 @@ WEAF:
 		Image: WEAP
 	Fake:
 	IronCurtainable:
+	-EmitInfantryOnSell:
 
 SYRF:
 	Inherits: ^Building
@@ -783,6 +765,7 @@ SYRF:
 #		LongDesc: Looks like a Shipyard
 #		Hotkey: z
 	Building:
+		TargetType: Ground, Water
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -800,6 +783,7 @@ SYRF:
 SPEF:
 	Inherits: ^Building
 	Building:
+		TargetType: Ground, Water
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -839,6 +823,7 @@ DOMF:
 	RenderBuilding:
 		Image: DOME
 	Fake:
+	-EmitInfantryOnSell:
 
 SBAG:
 	Category: Defense

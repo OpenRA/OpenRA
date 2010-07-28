@@ -22,16 +22,15 @@ namespace OpenRA.Traits
 	{
 		public readonly int HP = 0;
 		public readonly ArmorType Armor = ArmorType.none;
-		public readonly bool Crewed = false;		// replace with trait?
 		public readonly int Sight = 0;
-		public readonly bool WaterBound = false;
-		public readonly string TargetType = "Ground";
+		public readonly string[] TargetType = {"Ground"};
 	}
 
 	public class BuildingInfo : OwnedActorInfo, ITraitInfo
 	{
 		public readonly int Power = 0;
 		public readonly bool BaseNormal = true;
+		public readonly bool WaterBound = false;
 		public readonly int Adjacent = 2;
 		public readonly bool Capturable = false;
 		public readonly bool Repairable = true;

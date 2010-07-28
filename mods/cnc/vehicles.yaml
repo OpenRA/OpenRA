@@ -13,7 +13,6 @@ MCV:
 	Unit:
 		HP: 600
 		Armor: light
-		Crewed: yes
 		Sight: 4
 		Speed: 6
 	TransformsOnDeploy:
@@ -45,7 +44,6 @@ HARV:
 	Unit:
 		HP: 600
 		Armor: light
-		Crewed: yes
 		Sight: 4
 		Speed: 6
 	RenderUnit:
@@ -91,7 +89,6 @@ ARTY:
 	Unit:
 		HP: 75
 		Armor: light
-		Crewed: yes
 		ROT: 2
 		Sight: 6
 		Speed: 6
@@ -114,7 +111,6 @@ FTNK:
 	Unit:
 		HP: 300
 		Armor: heavy
-		Crewed: yes
 		ROT: 5
 		Sight: 4
 		Speed: 9
@@ -138,7 +134,6 @@ BGGY:
 	Unit:
 		HP: 140
 		Armor: light
-		Crewed: yes
 		ROT: 10
 		Sight: 5
 		Speed: 18
@@ -165,7 +160,6 @@ BIKE:
 		HP: 160
 		Armor: none
 		ROT: 10
-		Crewed: yes
 		Sight: 7
 		Speed: 20
 	AttackBase:
@@ -191,7 +185,6 @@ JEEP:
 	Unit:
 		HP: 150
 		Armor: light
-		Crewed: yes
 		ROT: 10
 		Sight: 7
 		Speed: 15
@@ -217,7 +210,6 @@ LTNK:
 	Unit:
 		HP: 300
 		Armor: Heavy
-		Crewed: yes
 		Sight: 4
 		Speed: 9
 	Turreted:
@@ -246,7 +238,6 @@ MTNK:
 	Unit:
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 		Speed: 9
 	Turreted:
@@ -275,7 +266,6 @@ HTNK:
 	Unit:
 		HP: 600
 		Armor: heavy
-		Crewed: yes
 		Sight: 6
 		Speed: 3
 	Turreted:
@@ -310,7 +300,6 @@ MSAM:
 	Unit:
 		HP: 120
 		Armor: light
-		Crewed: yes
 		Sight: 6
 		Speed: 6
 	Turreted:
@@ -338,7 +327,6 @@ MLRS:
 	Unit:
 		HP: 120
 		Armor: light
-		Crewed: yes
 		Sight: 10
 		Speed: 6
 	Turreted:
@@ -362,7 +350,6 @@ STNK:
 	Unit:
 		HP: 110
 		Armor: light
-		Crewed: yes
 		Sight: 4
 		Speed: 15
 	Cloak:
@@ -415,7 +402,6 @@ HELI:
 	Unit:
 		HP: 125
 		Armor: heavy
-		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
 		Sight: 8
@@ -443,7 +429,6 @@ ORCA:
 	Unit:
 		HP: 125
 		Armor: heavy
-		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
 		Sight: 8

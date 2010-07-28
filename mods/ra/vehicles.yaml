@@ -50,7 +50,6 @@ V2RL:
 	Unit:
 		HP: 150
 		Armor: light
-		Crewed: yes
 		Sight: 5
 		Speed: 7
 	AttackBase:
@@ -73,7 +72,6 @@ V2RL:
 	Unit:
 		HP: 300
 		Armor: heavy
-		Crewed: yes
 		Sight: 4
 		Speed: 9
 	Turreted:
@@ -101,7 +99,6 @@ V2RL:
 	Unit:
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 		Speed: 8
 	Turreted:
@@ -129,7 +126,6 @@ V2RL:
 	Unit:
 		HP: 550
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 		Speed: 6
 	Turreted:
@@ -157,7 +153,6 @@ V2RL:
 	Unit:
 		HP: 750
 		Armor: heavy
-		Crewed: yes
 		Sight: 6
 		Speed: 3
 	Turreted:
@@ -192,7 +187,6 @@ ARTY:
 	Unit:
 		HP: 75
 		Armor: light
-		Crewed: yes
 		ROT: 2
 		Sight: 5
 		Speed: 6
@@ -219,7 +213,6 @@ HARV:
 	Unit:
 		HP: 600
 		Armor: heavy
-		Crewed: yes
 		Sight: 4
 		Speed: 6
 	RenderUnit:
@@ -238,7 +231,6 @@ MCV:
 	Unit:
 		HP: 600
 		Armor: light
-		Crewed: yes
 		Sight: 4
 		Speed: 6
 	TransformsOnDeploy:
@@ -263,7 +255,6 @@ JEEP:
 	Unit:
 		HP: 150
 		Armor: light
-		Crewed: yes
 		ROT: 10
 		Sight: 8
 		Speed: 12
@@ -315,7 +306,6 @@ MNLY.AP:
 	Unit:
 		HP: 100
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 		Speed: 9
 	RenderUnit:
@@ -339,7 +329,6 @@ MNLY.AT:
 	Unit:
 		HP: 100
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 		Speed: 9
 	RenderUnit:
@@ -375,7 +364,6 @@ SS:
 		ROT: 4
 		Sight: 6
 		Speed: 5
-		WaterBound: yes
 	RenderUnit:
 	Cloak:
 		InitialDelay: .4
@@ -406,7 +394,6 @@ MSUB:
 		ROT: 3
 		Sight: 6
 		Speed: 3
-		WaterBound: yes
 	RenderUnit:
 	Cloak:
 		InitialDelay: .4
@@ -436,7 +423,6 @@ DD:
 		ROT: 7
 		Sight: 6
 		Speed: 6
-		WaterBound: yes
 	Turreted:
 		ROT: 7
 	AttackTurreted:
@@ -465,7 +451,6 @@ CA:
 		ROT: 2
 		Sight: 7
 		Speed: 2
-		WaterBound: yes
 	Turreted:
 		ROT: 3
 	AttackTurreted:
@@ -496,7 +481,6 @@ LST:
 		ROT: 10
 		Sight: 6
 		Speed: 14
-		WaterBound: yes
 	RenderUnit:
 	Cargo:
 		PassengerTypes: Foot,Wheel,Track
@@ -520,7 +504,6 @@ PT:
 		ROT: 7
 		Sight: 7
 		Speed: 9
-		WaterBound: yes
 	Turreted:
 		ROT: 7
 	AttackTurreted:
@@ -577,7 +560,6 @@ YAK:
 	Unit:
 		HP: 60
 		Armor: light
-		Crewed: yes
 		InitialFacing: 192
 		ROT: 5
 		Sight: 10
@@ -636,7 +618,6 @@ HELI:
 	Unit:
 		HP: 120
 		Armor: light
-		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
 		Sight: 12
@@ -668,7 +649,6 @@ HIND:
 	Unit:
 		HP: 120
 		Armor: light
-		Crewed: yes
 		InitialFacing: 20
 		ROT: 4
 		Sight: 12

@@ -130,7 +130,6 @@
 		BuildSounds: hvydoor1.aud
 		Capturable: false
 		BaseNormal: no
-		Crewed: no
 		Sight: 0
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
@@ -191,6 +190,7 @@
 		Bounds: 96,96
 	BelowUnits:
 	Building:
+		TargetType: Ground, Water
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Footprint: ______ ______ ______ ______

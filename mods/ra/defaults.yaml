@@ -59,6 +59,7 @@
 ^Ship:
 	Category: Ship
 	Unit:
+		TargetType: Ground, Water
 	Mobile:
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
@@ -103,7 +104,6 @@
 		BuildSounds: placbldg.aud
 		Capturable: false
 		BaseNormal: no
-		Crewed: no
 		Sight: 0
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
@@ -169,6 +169,7 @@
 #		Bounds: 96,48
 	BelowUnits:
 	Building:
+		TargetType: Ground, Water
 		Footprint: ____ ____
 		Dimensions: 4,2
 		HP: 1000

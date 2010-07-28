@@ -163,17 +163,18 @@ namespace OpenRA.Mods.RA
 		{
 			// todo: fix this properly.
 			if (!target.IsValid) return false;
-			if (!target.IsActor) return weapon.ValidTargets.Contains("Ground");		// hack!
+			if (!target.IsActor) return weapon.ValidTargets.Contains("Ground") // hack!
+				|| (weapon.ValidTargets.Contains("Water") && 
+					Game.world.GetTerrainType(Util.CellContaining(target.CenterLocation)) == "Water"); // even bigger hack!
 
 			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
 
-			if (!weapon.ValidTargets.Contains(ownedInfo.TargetType))
+			
+			
+			if (!weapon.ValidTargets.Intersect(ownedInfo.TargetType).Any())
 				return false;
 
 			if (weapon.Warheads.All( w => w.EffectivenessAgainst(ownedInfo.Armor) <= 0))
-				return false;
-
-			if (weapon.Underwater && !ownedInfo.WaterBound)
 				return false;
 
 			return true;

@@ -10,7 +10,6 @@ FACT:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	Production:
@@ -33,7 +32,6 @@ NUKE:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 4
 	Bib:
 
@@ -54,7 +52,6 @@ PROC.proxy:
 		Capturable: true
 		HP: 900
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	ReplaceWithActor:
 		Actor: proc
@@ -72,7 +69,6 @@ PROC:
 		Capturable: true
 		HP: 900
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	Bib:
 	OreRefinery:
@@ -121,6 +117,7 @@ SILO:
 		PipColor: Green
 		Capacity: 1000
 	-RenderBuilding:
+	-EmitInfantryOnSell:
 
 PYLE:
 	Inherits: ^Building
@@ -140,7 +137,6 @@ PYLE:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	RallyPoint:
@@ -165,7 +161,6 @@ HAND:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	RallyPoint:
@@ -190,7 +185,6 @@ AFLD:
 		Capturable: true
 		HP: 1000
 		Armor: heavy
-		Crewed: yes
 		Sight: 7
 	Bib:
 	RallyPoint:
@@ -216,7 +210,6 @@ WEAP:
 		Capturable: true
 		HP: 400
 		Armor: light
-		Crewed: yes
 		Sight: 4
 	Bib:
 	RenderWarFactory:
@@ -243,7 +236,6 @@ HQ:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	ProvidesRadar:
@@ -267,7 +259,6 @@ NUK2:
 		Capturable: true
 		HP: 600
 		Armor: wood
-		Crewed: yes
 		Sight: 4
 	Bib:
 		
@@ -288,7 +279,6 @@ FIX:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	BelowUnits:
 	Reservable:
@@ -312,7 +302,6 @@ HPAD:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Crewed: yes
 		Sight: 5
 	Bib:
 	Production:
@@ -343,7 +332,6 @@ EYE:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Crewed: yes
 		Sight: 10
 	Bib:
 	ProvidesRadar:
@@ -369,7 +357,6 @@ TMPL:
 		Capturable: false
 		HP: 2000
 		Armor: light
-		Crewed: yes
 		Sight: 6
 	Bib:
 	NukeSilo:
@@ -393,7 +380,6 @@ OBLI:
 		Dimensions: 1,2
 		HP: 400
 		Armor: light
-		Crewed: no
 		Sight: 8
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
@@ -404,6 +390,7 @@ OBLI:
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
+	-EmitInfantryOnSell:
 
 CYCL:
 	Category: Defense
@@ -471,7 +458,6 @@ GUN:
 		Power: -20
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 7
 	Turreted:
 		ROT: 12
@@ -500,7 +486,6 @@ SAM:
 		Dimensions: 2,1
 		HP: 400
 		Armor: heavy
-		Crewed: yes
 		Sight: 5
 	Turreted:
 		ROT: 30
@@ -527,7 +512,6 @@ GTWR:
 		Power: -10
 		HP: 400
 		Armor: wood
-		Crewed: yes
 		Sight: 6
 	AttackOmni:
 		PrimaryWeapon: HighV
@@ -551,7 +535,6 @@ ATWR:
 		Power: -20
 		HP: 600
 		Armor: light
-		Crewed: yes
 		Sight: 8
 	AttackOmni:
 		PrimaryWeapon: Tomahawk
