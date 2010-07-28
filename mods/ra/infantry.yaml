@@ -13,8 +13,9 @@ DOG:
 		Bounds: 12,17,-1,-4
 	Unit:
 		HP: 12
-		Sight: 5
 		Speed: 7
+	RevealsShroud:
+		Range: 5
 	AutoTarget:
 	AttackLeap:
 		PrimaryWeapon: DogJaw
@@ -139,8 +140,9 @@ SPY:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 25
-		Sight: 5
 		Speed: 4
+	RevealsShroud:
+		Range: 5
 	Passenger:
 		ColorOfCargoPip: Yellow
 	RenderSpy:
@@ -164,8 +166,9 @@ E7:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 100
-		Sight: 6
 		Speed: 5
+	RevealsShroud:
+		Range: 6
 	C4Demolition:
 		C4Delay: .03
 	AttackBase:
@@ -188,8 +191,9 @@ MEDI:
 		Bounds: 12,17,0,-9
 	Unit:
 		HP: 80
-		Sight: 3
 		Speed: 4
+	RevealsShroud:
+		Range: 3
 	Passenger:
 		ColorOfCargoPip: Yellow
 	AutoHeal:
@@ -208,8 +212,9 @@ C1:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
 
@@ -223,7 +228,8 @@ C2:
 		Description: Technician
 	Unit:
 		HP: 20
-		Sight: 2
 		Speed: 4
+	RevealsShroud:
+		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol

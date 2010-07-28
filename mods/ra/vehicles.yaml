@@ -6,7 +6,6 @@ BADR:
 		HP: 60
 		Armor: light
 		ROT: 5
-		Sight: 0
 		Speed: 16
 	Plane:
 	RenderUnit:
@@ -26,7 +25,6 @@ BADR.bomber:
 		HP: 60
 		Armor: light
 		ROT: 5
-		Sight: 0
 		Speed: 16
 	Plane:
 	LimitedAmmo:
@@ -50,8 +48,9 @@ V2RL:
 	Unit:
 		HP: 150
 		Armor: light
-		Sight: 5
 		Speed: 7
+	RevealsShroud:
+		Range: 5
 	AttackBase:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
@@ -72,8 +71,9 @@ V2RL:
 	Unit:
 		HP: 300
 		Armor: heavy
-		Sight: 4
 		Speed: 9
+	RevealsShroud:
+		Range: 4
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -99,8 +99,9 @@ V2RL:
 	Unit:
 		HP: 400
 		Armor: heavy
-		Sight: 5
 		Speed: 8
+	RevealsShroud:
+		Range: 5
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -126,8 +127,9 @@ V2RL:
 	Unit:
 		HP: 550
 		Armor: heavy
-		Sight: 5
 		Speed: 6
+	RevealsShroud:
+		Range: 5
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -153,8 +155,9 @@ V2RL:
 	Unit:
 		HP: 750
 		Armor: heavy
-		Sight: 6
 		Speed: 3
+	RevealsShroud:
+		Range: 6
 	Turreted:
 		ROT: 2
 	AttackTurreted:
@@ -188,8 +191,9 @@ ARTY:
 		HP: 75
 		Armor: light
 		ROT: 2
-		Sight: 5
 		Speed: 6
+	RevealsShroud:
+		Range: 5
 	AttackBase:
 		PrimaryWeapon: 155mm
 	RenderUnit:
@@ -213,8 +217,9 @@ HARV:
 	Unit:
 		HP: 600
 		Armor: heavy
-		Sight: 4
 		Speed: 6
+	RevealsShroud:
+		Range: 4
 	RenderUnit:
 
 MCV:
@@ -231,8 +236,9 @@ MCV:
 	Unit:
 		HP: 600
 		Armor: light
-		Sight: 4
 		Speed: 6
+	RevealsShroud:
+		Range: 4
 	TransformsOnDeploy:
 		TransformsInto: fact
 		Offset:-1,-1
@@ -256,8 +262,9 @@ JEEP:
 		HP: 150
 		Armor: light
 		ROT: 10
-		Sight: 8
 		Speed: 12
+	RevealsShroud:
+		Range: 8
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -279,8 +286,9 @@ APC:
 	Unit:
 		HP: 200
 		Armor: heavy
-		Sight: 5
 		Speed: 10
+	RevealsShroud:
+		Range: 5
 	AttackBase:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
@@ -306,8 +314,9 @@ MNLY.AP:
 	Unit:
 		HP: 100
 		Armor: heavy
-		Sight: 5
 		Speed: 9
+	RevealsShroud:
+		Range: 5
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
@@ -329,8 +338,9 @@ MNLY.AT:
 	Unit:
 		HP: 100
 		Armor: heavy
-		Sight: 5
 		Speed: 9
+	RevealsShroud:
+		Range: 5
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
@@ -344,8 +354,9 @@ TRUK:
 	Unit:
 		HP: 110
 		Armor: light
-		Sight: 3
 		Speed: 10
+	RevealsShroud:
+		Range: 3
 	RenderUnit:
 
 SS:
@@ -362,8 +373,9 @@ SS:
 		HP: 120
 		Armor: light
 		ROT: 4
-		Sight: 6
 		Speed: 5
+	RevealsShroud:
+		Range: 6
 	RenderUnit:
 	Cloak:
 		InitialDelay: .4
@@ -392,8 +404,9 @@ MSUB:
 		HP: 200
 		Armor: light
 		ROT: 3
-		Sight: 6
 		Speed: 3
+	RevealsShroud:
+		Range: 6
 	RenderUnit:
 	Cloak:
 		InitialDelay: .4
@@ -421,8 +434,9 @@ DD:
 		HP: 400
 		Armor: heavy
 		ROT: 7
-		Sight: 6
 		Speed: 6
+	RevealsShroud:
+		Range: 6
 	Turreted:
 		ROT: 7
 	AttackTurreted:
@@ -449,8 +463,9 @@ CA:
 		HP: 800
 		Armor: heavy
 		ROT: 2
-		Sight: 7
 		Speed: 2
+	RevealsShroud:
+		Range: 7
 	Turreted:
 		ROT: 3
 	AttackTurreted:
@@ -479,8 +494,9 @@ LST:
 		HP: 350
 		Armor: heavy
 		ROT: 10
-		Sight: 6
 		Speed: 14
+	RevealsShroud:
+		Range: 6
 	RenderUnit:
 	Cargo:
 		PassengerTypes: Foot,Wheel,Track
@@ -502,8 +518,9 @@ PT:
 		HP: 200
 		Armor: heavy
 		ROT: 7
-		Sight: 7
 		Speed: 9
+	RevealsShroud:
+		Range: 7
 	Turreted:
 		ROT: 7
 	AttackTurreted:
@@ -531,8 +548,9 @@ MIG:
 		Armor: light
 		InitialFacing: 192
 		ROT: 5
-		Sight: 12
 		Speed: 20
+	RevealsShroud:
+		Range: 12
 	AttackPlane:
 		PrimaryWeapon: Maverick
 		SecondaryWeapon: Maverick
@@ -562,8 +580,9 @@ YAK:
 		Armor: light
 		InitialFacing: 192
 		ROT: 5
-		Sight: 10
 		Speed: 16
+	RevealsShroud:
+		Range: 10
 	AttackPlane:
 		PrimaryWeapon: ChainGun
 		SecondaryWeapon: ChainGun
@@ -592,8 +611,9 @@ TRAN:
 		Armor: light
 		InitialFacing: 20
 		ROT: 5
-		Sight: 12
 		Speed: 12
+	RevealsShroud:
+		Range: 12
 	Helicopter:
 		RearmBuildings: hpad
 	RenderUnitRotor:
@@ -620,8 +640,9 @@ HELI:
 		Armor: light
 		InitialFacing: 20
 		ROT: 4
-		Sight: 12
 		Speed: 16
+	RevealsShroud:
+		Range: 12
 	AttackHeli:
 		PrimaryWeapon: Hellfire
 		SecondaryWeapon: Hellfire
@@ -651,8 +672,9 @@ HIND:
 		Armor: light
 		InitialFacing: 20
 		ROT: 4
-		Sight: 12
 		Speed: 12
+	RevealsShroud:
+		Range: 12
 	AttackHeli:
 		PrimaryWeapon: ChainGun
 		PrimaryOffset: -5,0,0,2
@@ -671,7 +693,6 @@ U2:
 		HP: 2000
 		Armor: heavy
 		ROT: 7
-		Sight: 0
 		Speed: 40
 	Plane:
 	RenderUnit:

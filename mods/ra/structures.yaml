@@ -17,7 +17,8 @@ MSLO:
 		Dimensions: 2,1
 		HP: 400
 		Armor: heavy
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	IronCurtainable:
 	
 GAP:
@@ -43,7 +44,8 @@ GAP:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Sight: 10
+	RevealsShroud:
+		Range: 10
 	IronCurtainable:
 
 SPEN:
@@ -68,7 +70,8 @@ SPEN:
 		HP: 1000
 		Armor: light
 		WaterBound: yes
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	ProductionSurround:
 		Produces: Ship
 	IronCurtainable:
@@ -97,7 +100,8 @@ SYRD:
 		HP: 1000
 		Armor: light
 		WaterBound: yes
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	ProductionSurround:
 		Produces: Ship
 	IronCurtainable:
@@ -124,7 +128,8 @@ IRON:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Sight: 10
+	RevealsShroud:
+		Range: 10
 	Bib:
 	IronCurtainable:
 	IronCurtain:
@@ -149,7 +154,8 @@ PDOX:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Sight: 10
+	RevealsShroud:
+		Range: 10
 	Bib:
 	Chronosphere:
 		Duration: 180
@@ -175,7 +181,8 @@ TSLA:
 		Dimensions: 1,2
 		HP: 400
 		Armor: heavy
-		Sight: 8
+	RevealsShroud:
+		Range: 8
 	RenderBuildingCharge:
 	AttackTesla:
 		PrimaryWeapon: TeslaZap
@@ -204,7 +211,8 @@ AGUN:
 		Dimensions: 1,2
 		HP: 400
 		Armor: heavy
-		Sight: 6
+	RevealsShroud:
+		Range: 6
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
@@ -236,7 +244,8 @@ DOME:
 		Capturable: true
 		HP: 1000
 		Armor: wood
-		Sight: 10
+	RevealsShroud:
+		Range: 10
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
@@ -256,7 +265,8 @@ PBOX:
 		Power: -15
 		HP: 400
 		Armor: wood
-		Sight: 6
+	RevealsShroud:
+		Range: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -278,7 +288,8 @@ HBOX:
 		Power: -15
 		HP: 600
 		Armor: wood
-		Sight: 6
+	RevealsShroud:
+		Range: 6
 	AttackOmni:
 		PrimaryWeapon: Vulcan
 	AutoTarget:
@@ -300,7 +311,8 @@ GUN:
 		Power: -40
 		HP: 400
 		Armor: heavy
-		Sight: 7
+	RevealsShroud:
+		Range: 7
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -327,7 +339,8 @@ FTUR:
 		Power: -20
 		HP: 400
 		Armor: heavy
-		Sight: 6
+	RevealsShroud:
+		Range: 6
 	AttackOmni:
 		PrimaryWeapon: FireballLauncher
 		PrimaryOffset: 0,0,12,8
@@ -352,7 +365,8 @@ SAM:
 		Dimensions: 2,1
 		HP: 400
 		Armor: heavy
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
@@ -382,7 +396,8 @@ ATEK:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Sight: 10
+	RevealsShroud:
+		Range: 10
 	Bib:
 	IronCurtainable:
 	GpsLaunchSite:
@@ -404,7 +419,8 @@ WEAP:
 		Capturable: true
 		HP: 1000
 		Armor: light
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	RenderWarFactory:
 	RallyPoint:
@@ -421,7 +437,8 @@ FACT:
 		Capturable: true
 		HP: 1000
 		Armor: heavy
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -451,7 +468,8 @@ PROC:
 		Capturable: true
 		HP: 900
 		Armor: wood
-		Sight: 6
+	RevealsShroud:
+		Range: 6
 	Bib:
 	OreRefinery:
 	OreRefineryDockAction:
@@ -482,7 +500,8 @@ SILO:
 		Capturable: true
 		HP: 300
 		Armor: wood
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	RenderBuildingOre:
 	StoresOre:
 		PipCount: 5
@@ -508,7 +527,8 @@ HPAD:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	Bib:
 	Production:
 		SpawnOffset: 0,-4
@@ -534,7 +554,8 @@ AFLD:
 		Capturable: true
 		HP: 1000
 		Armor: heavy
-		Sight: 7
+	RevealsShroud:
+		Range: 7
 	Production:
 		Produces: Plane
 	BelowUnits:
@@ -558,7 +579,8 @@ POWR:
 		Capturable: true
 		HP: 400
 		Armor: wood
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	IronCurtainable:
 
@@ -580,7 +602,8 @@ APWR:
 		Capturable: true
 		HP: 700
 		Armor: wood
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	IronCurtainable:
 
@@ -602,7 +625,8 @@ STEK:
 		Capturable: true
 		HP: 600
 		Armor: wood
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	IronCurtainable:
 
@@ -624,7 +648,8 @@ BARR:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	Bib:
 	RallyPoint:
 	Production:
@@ -649,7 +674,8 @@ TENT:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	Bib:
 	RallyPoint:
 	Production:
@@ -670,7 +696,8 @@ KENN:
 		Power: -10
 		HP: 400
 		Armor: wood
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	RallyPoint:
 	Production:
 		Produces: Infantry
@@ -694,7 +721,8 @@ FIX:
 		Capturable: true
 		HP: 800
 		Armor: wood
-		Sight: 5
+	RevealsShroud:
+		Range: 5
 	BelowUnits:
 	Reservable:
 	RallyPoint:
@@ -717,7 +745,8 @@ FACF:
 		Capturable: true
 		BaseNormal: no
 		HP: 30
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	RenderBuilding:
 		Image: FACT
@@ -742,7 +771,8 @@ WEAF:
 		Capturable: true
 		BaseNormal: no
 		HP: 30
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	RenderWarFactory:
 	RenderBuilding:
@@ -774,7 +804,8 @@ SYRF:
 		Adjacent: 8
 		HP: 30
 		WaterBound: yes
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	RenderBuilding:
 		Image: SYRD
 	Fake:
@@ -792,7 +823,8 @@ SPEF:
 		Adjacent: 8
 		HP: 30
 		WaterBound: yes
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	RenderBuilding:
 		Image: SPEN
 	Fake:
@@ -818,7 +850,8 @@ DOMF:
 		Capturable: true
 		BaseNormal: no
 		HP: 30
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Bib:
 	RenderBuilding:
 		Image: DOME

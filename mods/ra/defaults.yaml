@@ -40,7 +40,8 @@
 	Category: Infantry
 	Unit:
 		Armor: none
-		Sight: 4
+	RevealsShroud:
+		Range: 4
 	Mobile:
 		Crushes: apmine
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -104,7 +105,6 @@
 		BuildSounds: placbldg.aud
 		Capturable: false
 		BaseNormal: no
-		Sight: 0
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
 		Adjacent: 7
