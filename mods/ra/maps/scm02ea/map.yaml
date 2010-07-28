@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 1
+MapFormat: 2
 
 Title: Middle Mayhem
 
@@ -8,7 +8,7 @@ Description:
 
 Author: Westwood Studios
 
-PlayerCount: 2
+PlayerCount: 4
 
 Tileset: SNOW
 
@@ -18,46 +18,198 @@ TopLeft: 27,26
 
 BottomRight: 102,91
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
 Actors:
-	Actor0: tc05 62,58 62,58
-	Actor1: tc04 64,63 64,63
-	Actor2: tc03 73,60 73,60
-	Actor3: tc03 55,48 55,48
-	Actor4: tc01 58,51 58,51
-	Actor5: tc01 54,68 54,68
-	Actor6: t17 60,68 60,68
-	Actor7: tc02 48,57 48,57
-	Actor8: tc05 68,63 68,63
-	Actor9: t16 71,63 71,63
-	Actor10: t16 70,55 70,55
-	Actor11: tc01 83,57 83,57
-	Actor12: tc02 62,54 62,54
-	Actor13: t08 62,56 62,56
-	Actor14: t01 49,80 49,80
-	Actor15: tc04 50,81 50,81
-	Actor16: t16 53,82 53,82
-	Actor17: tc02 42,79 42,79
-	Actor18: tc03 27,26 27,26
-	Actor19: t01 29,48 29,48
-	Actor20: t02 31,50 31,50
-	Actor21: t03 32,59 32,59
-	Actor22: tc05 56,88 56,88
-	Actor23: tc03 54,89 54,89
-	Actor24: t16 56,89 56,89
-	Actor25: t15 52,89 52,89
-	Actor26: t14 64,78 64,78
-	Actor27: tc01 27,44 27,44
-	Actor28: tc01 45,39 45,39
-	Actor29: t17 76,26 76,26
-	Actor30: mine 68,53 68,53
-	Actor31: mine 54,57 54,57
-	Actor32: mine 53,65 53,65
-	Actor33: mine 65,68 65,68
-	Actor34: mine 80,61 80,61
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: tc05
+		Location: 62,58
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: tc04
+		Location: 64,63
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: tc03
+		Location: 73,60
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: tc03
+		Location: 55,48
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: tc01
+		Location: 58,51
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: tc01
+		Location: 54,68
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: t17
+		Location: 60,68
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: tc02
+		Location: 48,57
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: tc05
+		Location: 68,63
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: t16
+		Location: 71,63
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: t16
+		Location: 70,55
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: tc01
+		Location: 83,57
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: tc02
+		Location: 62,54
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: t08
+		Location: 62,56
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: t01
+		Location: 49,80
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: tc04
+		Location: 50,81
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: t16
+		Location: 53,82
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: tc02
+		Location: 42,79
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: tc03
+		Location: 27,26
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: t01
+		Location: 29,48
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: t02
+		Location: 31,50
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: t03
+		Location: 32,59
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: tc05
+		Location: 56,88
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: tc03
+		Location: 54,89
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: t16
+		Location: 56,89
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: t15
+		Location: 52,89
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: t14
+		Location: 64,78
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: tc01
+		Location: 27,44
+		Owner: Neutral
+	ActorReference@Actor28:
+		Id: Actor28
+		Type: tc01
+		Location: 45,39
+		Owner: Neutral
+	ActorReference@Actor29:
+		Id: Actor29
+		Type: t17
+		Location: 76,26
+		Owner: Neutral
+	ActorReference@Actor30:
+		Id: Actor30
+		Type: mine
+		Location: 68,53
+		Owner: Neutral
+	ActorReference@Actor31:
+		Id: Actor31
+		Type: mine
+		Location: 54,57
+		Owner: Neutral
+	ActorReference@Actor32:
+		Id: Actor32
+		Type: mine
+		Location: 53,65
+		Owner: Neutral
+	ActorReference@Actor33:
+		Id: Actor33
+		Type: mine
+		Location: 65,68
+		Owner: Neutral
+	ActorReference@Actor34:
+		Id: Actor34
+		Type: mine
+		Location: 80,61
+		Owner: Neutral
 
 Waypoints:
 	spawn0: 34,84
 	spawn1: 35,34
+	wp0: 95,34
+	wp1: 94,83
 
 Smudges:
 
