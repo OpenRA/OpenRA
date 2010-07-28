@@ -162,11 +162,7 @@ namespace OpenRA.Traits
 		}
 		
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
-		{
-			foreach (var mod in self.traits.WithInterface<IRadarVisibilityModifier>())
-				if (!mod.VisibleOnRadar(self))
-					return new int2[] {};
-				
+		{				
 			return Footprint.Tiles(self);
 		}
 		

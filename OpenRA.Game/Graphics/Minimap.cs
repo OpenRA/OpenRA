@@ -119,9 +119,12 @@ namespace OpenRA.Graphics
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
-
+				
 				foreach (var t in world.Queries.WithTraitMultiple<IRadarSignature>())
 				{
+					if (!t.Actor.IsVisible())
+						continue;
+					
 					var color = t.Trait.RadarSignatureColor(t.Actor);
 					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 						if (world.Map.IsInMap(cell))

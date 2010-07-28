@@ -222,6 +222,9 @@
     <Compile Include="ChronoshiftDeploy.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="Orders\SetChronoTankDestination.cs" />
+    <Compile Include="Cloak.cs" />
+    <Compile Include="Modifiers\FrozenUnderFog.cs" />
+    <Compile Include="Modifiers\HiddenUnderFog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

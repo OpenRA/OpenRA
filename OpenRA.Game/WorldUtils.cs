@@ -121,12 +121,7 @@ namespace OpenRA
 			if (!Shroud.GetVisOrigins(a).Any(o => a.World.Map.IsInMap(o) && shroud.exploredCells[o.X, o.Y]))		// covered by shroud
 				return false;
 
-			var huf = a.traits.GetOrDefault<HiddenUnderFog>();							// hidden under fog
-			if (huf != null && !huf.IsVisible(a))
-				return false;
-
-			var cloak = a.traits.GetOrDefault<Cloak>();
-			if (cloak != null && cloak.Cloaked && a.Owner != a.World.LocalPlayer)
+			if (a.traits.WithInterface<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
 
 			return true;

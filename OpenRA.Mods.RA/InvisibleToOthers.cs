@@ -9,14 +9,25 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class InvisibleToOthersInfo : TraitInfo<InvisibleToOthers> { }
 
-	class InvisibleToOthers : IRenderModifier
+	class InvisibleToOthers : IRenderModifier, IVisibilityModifier, IRadarColorModifier
 	{
+		public bool IsVisible(Actor self)
+		{
+			return self.Owner == self.World.LocalPlayer;
+		}
+		
+		public Color RadarColorOverride(Actor self)
+		{
+			return Color.FromArgb(128, self.Owner.Color);
+		}
+		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			return self.World.LocalPlayer == self.Owner

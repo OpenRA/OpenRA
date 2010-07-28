@@ -57,7 +57,7 @@ namespace OpenRA.Traits
 		Color RadarSignatureColor(Actor self);
 	}
 	
-	public interface IRadarVisibilityModifier { bool VisibleOnRadar(Actor self); }
+	public interface IVisibilityModifier { bool IsVisible(Actor self); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 	public interface IRevealShroud {}
 	public interface IOccupySpace

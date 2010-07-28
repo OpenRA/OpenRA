@@ -12,8 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class CloakInfo : ITraitInfo
 	{
@@ -25,7 +26,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Cloak(init.self); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IRadarVisibilityModifier, IRadarColorModifier
+	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IVisibilityModifier, IRadarColorModifier
 	{
 		[Sync]
 		int remainingTime;
@@ -80,7 +81,7 @@ namespace OpenRA.Traits
 		public bool Cloaked { get { return remainingTime == 0; } }
 
 		
-		public bool VisibleOnRadar(Actor self)
+		public bool IsVisible(Actor self)
 		{
 			return !Cloaked || self.Owner == self.World.LocalPlayer;
 		}

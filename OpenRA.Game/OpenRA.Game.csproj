@@ -82,10 +82,8 @@
     <Compile Include="Server\ProtocolVersion.cs" />
     <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
-    <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Player\TechTreeCache.cs" />
-    <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\ChatEntryWidget.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
@@ -179,7 +177,6 @@
     <Compile Include="Traits\Production.cs" />
     <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
-    <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\Unit.cs" />
@@ -266,4 +263,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Traits\" />
+  </ItemGroup>
 </Project>

@@ -9,19 +9,22 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	class HiddenUnderFogInfo : ITraitInfo
+	class FrozenUnderFogInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new HiddenUnderFog(init.self); }
+		public object Create(ActorInitializer init) { return new FrozenUnderFog(init.self); }
 	}
 
-	class HiddenUnderFog : IRenderModifier, IRadarVisibilityModifier
+	class FrozenUnderFog : IRenderModifier, IVisibilityModifier
 	{
 		Shroud shroud;
+		Renderable[] cache = { };
 
-		public HiddenUnderFog(Actor self)
+		public FrozenUnderFog(Actor self)
 		{
 			shroud = self.World.WorldActor.traits.Get<Shroud>();
 		}
@@ -31,18 +34,15 @@ namespace OpenRA.Traits
 			return self.World.LocalPlayer == null
 				|| self.Owner == self.World.LocalPlayer
 				|| self.World.LocalPlayer.Shroud.Disabled
-				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
-		}
-		
-		public bool VisibleOnRadar(Actor self)
-		{
-			return IsVisible(self);
+				|| Shroud.GetVisOrigins(self).Any(o => self.World.Map.IsInMap(o) && shroud.visibleCells[o.X, o.Y] != 0);
 		}
 
-		static Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return IsVisible(self) ? r : Nothing;
+			if (IsVisible(self))
+				cache = r.ToArray();
+
+			return cache;
 		}
 	}
 }
