@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		bool CanRepair(Actor self)
 		{
 			var li = self.traits.GetOrDefault<LimitedAmmo>();
-			return (Health.HPFraction < 1f || (li != null && !li.FullAmmo()) );
+			return (Health.ExtendedDamageState != ExtendedDamageState.Undamaged || (li != null && !li.FullAmmo()) );
 		}
 		
 		public string CursorForOrder(Actor self, Order order)

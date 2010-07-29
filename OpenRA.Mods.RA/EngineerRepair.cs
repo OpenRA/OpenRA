@@ -39,25 +39,19 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString != "EngineerRepair") return null;
 			if (order.TargetActor == null) return null;
-			var health = order.TargetActor.traits.GetOrDefault<Health>();
-			if (health == null) return null;
-			return (health.HP == health.MaxHP) ? "goldwrench-blocked" : "goldwrench";
+			return (order.TargetActor.GetExtendedDamageState() == ExtendedDamageState.Undamaged) ? "goldwrench-blocked" : "goldwrench";
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			var health = order.TargetActor.traits.GetOrDefault<Health>();
-			if (health == null) return null;
-			return (order.OrderString == "EngineerRepair" 
-			        && health.HP < health.MaxHP) ? "Attack" : null;
+			return (order.OrderString == "EngineerRepair"
+			        && order.TargetActor.GetExtendedDamageState() != ExtendedDamageState.Undamaged) ? "Attack" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			var health = order.TargetActor.traits.GetOrDefault<Health>();
-			if (health == null) return;
-			
-			if (order.OrderString == "EngineerRepair" && health.HP < health.MaxHP)
+			if (order.OrderString == "EngineerRepair"
+			    && order.TargetActor.GetExtendedDamageState() != ExtendedDamageState.Undamaged)
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>

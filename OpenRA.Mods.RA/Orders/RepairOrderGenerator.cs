@@ -34,9 +34,8 @@ namespace OpenRA.Mods.RA.Orders
 				if (underCursor == null)
 					yield break;
 				
-				var health = underCursor.traits.GetOrDefault<Health>();
-				var repairable = health != null && underCursor.Info.Traits.Contains<RepairableBuildingInfo>();
-				if (repairable && health.HPFraction < 1f)
+				if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>()
+				    && underCursor.GetExtendedDamageState() != ExtendedDamageState.Undamaged)
 					yield return new Order("Repair", underCursor);
 			}
 		}
