@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class WallInfo : ITraitInfo
+	public class WallInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
 	{
 		public readonly string[] CrushClasses = { };
 

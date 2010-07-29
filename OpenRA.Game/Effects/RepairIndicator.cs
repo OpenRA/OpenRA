@@ -23,7 +23,7 @@ namespace OpenRA.Effects
 		public RepairIndicator(Actor a) 
 		{ 
 			this.a = a; anim.PlayRepeating("repair"); 
-			framesLeft =  (int)(a.World.Defaults.RepairRate * 25 * 60 / 2);
+			framesLeft =  (int)(a.Info.Traits.Get<RepairableBuildingInfo>().RepairRate * 25 * 60 / 2);
 		}
 
 		public void Tick( World world )

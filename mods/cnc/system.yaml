@@ -43,7 +43,6 @@ Player:
 	DeveloperMode:
 	
 World:
-	GlobalDefaults:
 	ScreenShaker:
 #	WaterPaletteRotation:
 	BuildingInfluence:

@@ -20,7 +20,6 @@ namespace OpenRA.Mods.RA
 	class RepairableInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{ 
 		public readonly string[] RepairBuildings = { "fix" };
-	
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
 	}
 

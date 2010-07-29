@@ -25,11 +25,11 @@ namespace OpenRA.Traits
 		public readonly bool WaterBound = false;
 		public readonly int Adjacent = 2;
 		public readonly bool Capturable = false;
-		public readonly bool Repairable = true;
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool Unsellable = false;
-
+		public readonly float RefundPercent = 0.5f;
+		
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
 		public readonly string DamagedSound = "kaboom1.aud";

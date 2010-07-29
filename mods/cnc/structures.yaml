@@ -14,6 +14,7 @@ FACT:
 	RevealsShroud:
 		Range: 5
 	Bib:
+	AllowsBuildingRepair:
 	Production:
 		Produces: Building,Defense
 	ConstructionYard:

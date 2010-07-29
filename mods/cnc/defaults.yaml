@@ -98,6 +98,7 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground
+	RepairableBuilding:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -124,7 +125,7 @@
 		HP: 400
 		Armor: wood
 	Building:
-		Repairable: false
+	-RepairableBuilding:
 	Valued:
 		Description: Civilian Building
 

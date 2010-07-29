@@ -24,7 +24,7 @@ namespace OpenRA.Traits.Activities
 			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
 			
 			var health = self.traits.GetOrDefault<Health>();
-			var refundFraction = self.World.Defaults.RefundPercent * (health == null ? 1f : health.HPFraction);
+			var refundFraction = self.Info.Traits.Get<BuildingInfo>().RefundPercent * (health == null ? 1f : health.HPFraction);
 
 			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)(refundFraction * cost));
 			self.Kill(self);

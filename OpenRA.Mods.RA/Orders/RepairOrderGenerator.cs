@@ -29,14 +29,14 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Owner == world.LocalPlayer
-						&& a.traits.Contains<Building>()
-						&& a.traits.Contains<Selectable>()).FirstOrDefault();
+					.Where(a => a.Owner == world.LocalPlayer && a.traits.Contains<RepairableBuilding>()).FirstOrDefault();
 
-				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
-				var health = underCursor != null ? underCursor.traits.GetOrDefault<Health>() : null;
+				if (underCursor == null)
+					yield break;
 				
-				if (building != null && building.Repairable && health != null && health.HPFraction < 1f)
+				var health = underCursor.traits.GetOrDefault<Health>();
+				var repairable = health != null && underCursor.Info.Traits.Contains<RepairableBuildingInfo>();
+				if (repairable && health.HPFraction < 1f)
 					yield return new Order("Repair", underCursor);
 			}
 		}
@@ -48,10 +48,8 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public static bool PlayerIsAllowedToRepair( World world )
-		{
-			return Game.world.Queries.OwnedBy[ Game.world.LocalPlayer ]
-				.WithTrait<Production>().Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( "Building" ) )
-				.Any();
+		{		
+			return Game.world.Queries.OwnedBy[ Game.world.LocalPlayer ].WithTrait<AllowsBuildingRepair>().Any();
 		}
 
 		public void RenderAfterWorld( World world ) {}

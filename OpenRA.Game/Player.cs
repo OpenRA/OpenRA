@@ -89,8 +89,6 @@ namespace OpenRA
 		
 		public void GiveAdvice(string advice)
 		{
-			// todo: store the condition or something.
-			// repeat after World.Defaults.SpeakDelay, as long as the condition holds.
 			Sound.PlayToPlayer(this, advice);
 		}
 

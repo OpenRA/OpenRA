@@ -144,7 +144,6 @@ V33:
 
 BARB:
 	Inherits: ^Wall
-	Building:
 	Health:
 		HP: 100
 		Armor: none
@@ -152,7 +151,6 @@ BARB:
 		Description: Wire Fence
 WOOD:
 	Inherits: ^Wall
-	Building:
 	Health:
 		HP: 100
 		Armor: none

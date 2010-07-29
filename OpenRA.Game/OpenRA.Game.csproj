@@ -199,7 +199,6 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
-    <Compile Include="Traits\World\GlobalDefaults.cs" />
     <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />
     <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />

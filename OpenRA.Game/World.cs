@@ -53,7 +53,6 @@ namespace OpenRA
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
-		public GlobalDefaultsInfo Defaults { get {return WorldActor.Info.Traits.Get<GlobalDefaultsInfo>();}}
 
 		public readonly WorldRenderer WorldRenderer;
 		
