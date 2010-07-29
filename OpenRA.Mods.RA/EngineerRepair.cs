@@ -45,13 +45,13 @@ namespace OpenRA.Mods.RA
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "EngineerRepair"
-			        && order.TargetActor.GetExtendedDamageState() != ExtendedDamageState.Undamaged) ? "Attack" : null;
+			        && order.TargetActor.GetExtendedDamageState() < ExtendedDamageState.Undamaged) ? "Attack" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "EngineerRepair"
-			    && order.TargetActor.GetExtendedDamageState() != ExtendedDamageState.Undamaged)
+			    && order.TargetActor.GetExtendedDamageState() < ExtendedDamageState.Undamaged)
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>

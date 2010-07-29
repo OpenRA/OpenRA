@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 
 		protected virtual string GetPrefix(Actor self)
 		{
-			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
+			return self.GetExtendedDamageState() <= ExtendedDamageState.Half ? "damaged-" : "";
 		}
 
 		public void PlayCustomAnim(Actor self, string name)

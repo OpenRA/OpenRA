@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
 			var health = self.traits.GetOrDefault<Health>();
-			if (health == null)
+			if (self.IsDead() || health == null)
 				return;
 			
 			var c = Color.Gray;

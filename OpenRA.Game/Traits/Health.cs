@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum ExtendedDamageState { Undamaged, Normal, ThreeQuarter, Half, Quarter, Dead };
+	public enum ExtendedDamageState { Dead, Quarter, Half, ThreeQuarter, Normal, Undamaged };
 	
 	public class Health
 	{
@@ -140,24 +140,12 @@ namespace OpenRA.Traits
 	
 	public static class HealthExts
 	{
-		public static int Health(this Actor self)
-		{
-			var health = self.traits.GetOrDefault<Health>();
-			return (health == null) ? 0 : health.HP;
-		}
-		
 		public static bool IsDead(this Actor self)
 		{
 			var health = self.traits.GetOrDefault<Health>();
 			return (health == null) ? true : health.IsDead;
 		}
-		
-		public static DamageState GetDamageState(this Actor self)
-		{
-			var health = self.traits.GetOrDefault<Health>();
-			return (health == null) ? DamageState.Normal : health.DamageState;
-		}
-		
+				
 		public static ExtendedDamageState GetExtendedDamageState(this Actor self)
 		{
 			var health = self.traits.GetOrDefault<Health>();

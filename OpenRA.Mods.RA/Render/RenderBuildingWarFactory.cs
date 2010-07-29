@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 
 		string GetPrefix(Actor self)
 		{
-			return self.GetDamageState() == DamageState.Half ? "damaged-" : "";
+			return self.GetExtendedDamageState() <= ExtendedDamageState.Half ? "damaged-" : "";
 		}
 
 		public RenderWarFactory(Actor self)
