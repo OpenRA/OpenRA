@@ -59,8 +59,9 @@ namespace OpenRA.Mods.RA
 
 			return inRange
 				.Where(a => a != self && self.Owner.Stances[ a.Owner ] == Stance.Ally)
-				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
+				.Where(a => !a.IsDead())
 				.Where(a => a.traits.Contains<Health>() && a.GetExtendedDamageState() < ExtendedDamageState.Undamaged)
+				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}

@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
+			if (self.IsDead())
+				return;
+			
 			var info = self.Info.Traits.Get<SelfHealingInfo>();
 			if (self.traits.Get<Health>().HPFraction >= info.HealIfBelow)
 				return;
