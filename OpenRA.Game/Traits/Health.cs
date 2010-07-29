@@ -22,11 +22,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int HP = 0;
 		public readonly int InitialHP = 0;
-		public readonly ArmorType Armor = ArmorType.none;
-
-		public readonly float ConditionRed = 0.25f;
-		public readonly float ConditionYellow = 0.5f;
-		
+		public readonly ArmorType Armor = ArmorType.none;		
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
@@ -52,16 +48,6 @@ namespace OpenRA.Traits
 		
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
-
-		public Color HealthColor
-		{
-			get
-			{
-				return (hp < Info.ConditionRed) ? Color.Red
-					: (hp < Info.ConditionYellow) ? Color.Yellow
-					: Color.LimeGreen;
-			}
-		}
 		
 		public DamageState DamageState
 		{
@@ -70,7 +56,7 @@ namespace OpenRA.Traits
 				if (hp <= 0)
 					return DamageState.Dead;
 				
-				if (hp < MaxHP * Info.ConditionYellow)
+				if (hp < MaxHP * 0.5f)
 					return DamageState.Half;
 	
 				return DamageState.Normal;
@@ -84,13 +70,13 @@ namespace OpenRA.Traits
 				if (hp <= 0)
 					return ExtendedDamageState.Dead;
 	
-				if (hp < MaxHP * Info.ConditionRed)
+				if (hp < MaxHP * 0.25f)
 					return ExtendedDamageState.Quarter;
 	
-				if (hp < MaxHP * Info.ConditionYellow)
+				if (hp < MaxHP * 0.5f)
 					return ExtendedDamageState.Half;
 	
-				if (hp < MaxHP * 0.75)
+				if (hp < MaxHP * 0.75f)
 					return ExtendedDamageState.ThreeQuarter;
 	
 				return ExtendedDamageState.Normal;
