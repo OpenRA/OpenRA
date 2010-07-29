@@ -81,6 +81,9 @@ namespace OpenRA
 			ModAssemblies = asms.ToArray();
 		}
 
+		public static Action<string> MissingTypeAction = 
+			s => { throw new InvalidOperationException("Cannot locate type: {0}".F(s)); };
+
 		public static T CreateObject<T>(string classname)
 		{
 			foreach (var mod in ModAssemblies)
@@ -91,7 +94,8 @@ namespace OpenRA
 					return (T)obj;
 			}
 
-			throw new InvalidOperationException("Cannot locate type: {0}".F(classname));
+			MissingTypeAction(classname);
+			return default(T);
 		}
 
 		public static Dictionary<string, MapStub> AvailableMaps;

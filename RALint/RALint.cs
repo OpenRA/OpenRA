@@ -15,6 +15,7 @@ using System.Reflection;
 using OpenRA;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace RALint
 {
@@ -32,8 +33,12 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
-			Game.InitializeEngineWithMods(args);
+			// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
+			Game.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
+			FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
+			Game.InitializeEngineWithMods(args);
+			
 			// all the @something names which actually EXIST.
 			var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
 				.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
