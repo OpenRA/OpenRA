@@ -73,13 +73,9 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			var cell = Util.CellContaining(self.CenterLocation);
+			
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
-				self.World.AddFrameEndTask(w => w.Remove(self));
-
-			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
-			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
-				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
+				self.World.AddFrameEndTask(w => w.Remove(self));			
 		}
 
 		public int2 TopLeft { get { return Location; } }
@@ -96,6 +92,10 @@ namespace OpenRA.Mods.RA
 		{
 			Location = cell;
 			self.CenterLocation = Util.CenterOfCell(cell);
+
+			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
+			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
+				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}
 
 		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }
