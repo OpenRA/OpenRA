@@ -99,13 +99,18 @@ namespace OpenRA.Traits
 	public interface IPaletteModifier { void AdjustPalette(Bitmap b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
-	public interface IMove
+
+	public interface ITeleportable /* crap name! */
 	{
 		bool CanEnterCell(int2 location);
+		void SetPosition(Actor self, int2 cell);
+	}
+
+	public interface IMove : ITeleportable
+	{
 		float MovementCostForCell(Actor self, int2 cell);
 		float MovementSpeedForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
-		void SetPosition(Actor self, int2 cell);
 	}
 	
 	public interface IOffsetCenterLocation { float2 CenterOffset { get; } }

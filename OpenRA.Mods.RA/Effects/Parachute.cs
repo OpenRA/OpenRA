@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Effects
 						var loc = Traits.Util.CellContaining(location);
 						cargo.CancelActivity();
 						
-						var mobile = cargo.traits.WithInterface<IMove>().FirstOrDefault();
+						var mobile = cargo.traits.GetOrDefault<ITeleportable>();
 
 						if (mobile != null)
 							mobile.SetPosition(cargo, loc);

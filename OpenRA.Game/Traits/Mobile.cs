@@ -121,7 +121,7 @@ namespace OpenRA.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				if (self.traits.GetOrDefault<IMove>().CanEnterCell(order.TargetLocation))
+				if (CanEnterCell(order.TargetLocation))
 				{
 					if (self.Owner == self.World.LocalPlayer)
 						self.World.AddFrameEndTask(w =>

@@ -67,9 +67,9 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		bool IsSuitableCell(Actor self, int2 p)
+		bool IsSuitableCell(Actor actorToDrop, int2 p)
 		{
-			return self.traits.WithInterface<IMove>().FirstOrDefault().CanEnterCell(p);
+			return actorToDrop.traits.Get<ITeleportable>().CanEnterCell(p);
 		}
 
 		void FinishedDropping(Actor self)

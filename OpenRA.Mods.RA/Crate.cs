@@ -31,12 +31,12 @@ namespace OpenRA.Mods.RA
 	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
-		public readonly string[] TerrainTypes = {};
+		public readonly string[] TerrainTypes = { };
 		public object Create(ActorInitializer init) { return new Crate(init, this); }
 	}
 
-	// IMove is required for paradrop
-	class Crate : ITick, IOccupySpace, IMove
+	// ITeleportable is required for paradrop
+	class Crate : ITick, IOccupySpace, ITeleportable
 	{
 		readonly Actor self;
 		[Sync]
@@ -81,30 +81,23 @@ namespace OpenRA.Mods.RA
 			}
 
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
-				self.World.AddFrameEndTask(w =>	w.Remove(self));
+				self.World.AddFrameEndTask(w => w.Remove(self));
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
 			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
 		}
-		
-		public int2 TopLeft	{get { return Location; }}
+
+		public int2 TopLeft { get { return Location; } }
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
 
-		public bool CanEnterCell(int2 cell) { return MovementCostForCell(self, cell) < float.PositiveInfinity; }
-
-		public float MovementCostForCell(Actor self, int2 cell)
+		public bool CanEnterCell(int2 cell)
 		{
-			if (!self.World.Map.IsInMap(cell.X,cell.Y))
-				return float.PositiveInfinity;
-			
+			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
 			var type = self.World.GetTerrainType(cell);
-			return Info.TerrainTypes.Contains(type) ? 0f : float.PositiveInfinity;
+			return Info.TerrainTypes.Contains(type);
 		}
-		
-		public float MovementSpeedForCell(Actor self, int2 cell) { return 1; }
-		public IEnumerable<float2> GetCurrentPath(Actor self) { return new float2[] {}; }
 
 		public void SetPosition(Actor self, int2 cell)
 		{
