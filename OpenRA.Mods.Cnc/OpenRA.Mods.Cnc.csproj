@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -87,6 +87,6 @@
     <PostBuildEvent>mkdir "$(SolutionDir)mods/cnc/"
 copy "$(TargetPath)" "$(SolutionDir)mods/cnc/"
 cd "$(SolutionDir)"
-ralint ra</PostBuildEvent>
+ralint cnc</PostBuildEvent>
   </PropertyGroup>
 </Project>

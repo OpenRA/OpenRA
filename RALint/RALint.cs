@@ -33,29 +33,37 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
-			// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
-			Game.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
-			FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
-
-			Game.InitializeEngineWithMods(args);
-			
-			// all the @something names which actually EXIST.
-			var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
-				.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
-
-			ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
-
-			foreach (var actorInfo in Rules.Info)
-				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
-					CheckTrait(actorInfo.Value, traitInfo);
-
-			if (errors > 0)
+			try
 			{
-				Console.WriteLine("Errors: {0}", errors);
+				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
+				Game.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
+				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
+
+				Game.InitializeEngineWithMods(args);
+
+				// all the @something names which actually EXIST.
+				var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
+					.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
+
+				ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
+
+				foreach (var actorInfo in Rules.Info)
+					foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
+						CheckTrait(actorInfo.Value, traitInfo);
+
+				if (errors > 0)
+				{
+					Console.WriteLine("Errors: {0}", errors);
+					return 1;
+				}
+
+				return 0;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Failed with exception: {0}".F(e));
 				return 1;
 			}
-
-			return 0;
 		}
 
 		static void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo)
