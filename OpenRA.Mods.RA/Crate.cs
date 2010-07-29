@@ -90,12 +90,18 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, int2 cell)
 		{
+			var uim = self.World.WorldActor.traits.Get<UnitInfluence>();
+
+			uim.Remove(self, this);
+
 			Location = cell;
 			self.CenterLocation = Util.CenterOfCell(cell);
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
 			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
 				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
+
+			uim.Add(self, this);
 		}
 
 		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }
