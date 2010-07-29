@@ -16,7 +16,7 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableNearInfo : TraitInfo<RepairableNear>
+	class RepairableNearInfo : TraitInfo<RepairableNear>, ITraitPrerequisite<HealthInfo>
 	{
 		[ActorReference]
 		public readonly string[] Buildings = { "spen", "syrd" };
@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
-
+			
 			if (underCursor.Owner == self.Owner &&
 				self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( underCursor.Info.Name ) &&
-				self.Health < self.GetMaxHP())
+				self.traits.Get<Health>().HPFraction < 1f)
 				return new Order("Enter", self, underCursor);
 
 			return null;

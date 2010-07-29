@@ -34,13 +34,6 @@ namespace OpenRA
 			return xs.Aggregate(1f, (a, x) => a * x);
 		}
 
-		public static int GetMaxHP(this Actor self)
-		{
-			var oai = self.Info.Traits.GetOrDefault<OwnedActorInfo>();
-			if (oai == null) return 0;
-			return oai.HP;
-		}
-
 		public static V GetOrAdd<K, V>( this Dictionary<K, V> d, K k )
 			where V : new()
 		{

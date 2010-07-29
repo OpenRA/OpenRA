@@ -34,8 +34,9 @@ namespace OpenRA.Mods.RA.Orders
 						&& a.traits.Contains<Selectable>()).FirstOrDefault();
 
 				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
-
-				if (building != null && building.Repairable && underCursor.Health < building.HP)
+				var health = underCursor != null ? underCursor.traits.GetOrDefault<Health>() : null;
+				
+				if (building != null && building.Repairable && health != null && health.HPFraction < 1f)
 					yield return new Order("Repair", underCursor);
 			}
 		}

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || target.IsDead) return NextActivity;
+			if (target == null || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
 			foreach (var t in target.traits.WithInterface<IAcceptSpy>())

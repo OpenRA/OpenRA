@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SelfHealingInfo : TraitInfo<SelfHealing>
+	class SelfHealingInfo : TraitInfo<SelfHealing>, ITraitPrerequisite<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
@@ -27,8 +27,7 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
 			var info = self.Info.Traits.Get<SelfHealingInfo>();
-
-			if ((float)self.Health / self.GetMaxHP() >= info.HealIfBelow)
+			if (self.traits.Get<Health>().HPFraction >= info.HealIfBelow)
 				return;
 
 			if (--ticks <= 0)

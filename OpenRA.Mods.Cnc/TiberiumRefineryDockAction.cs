@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc
 		
 		public void Damaged (Actor self, AttackInfo e)
 		{
-			if (self.IsDead)
+			if (e.DamageState == DamageState.Dead)
 				 CancelDock(self, dockedHarv);
 		}
 		

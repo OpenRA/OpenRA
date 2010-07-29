@@ -28,11 +28,13 @@ namespace OpenRA.Mods.RA.Activities
 			if (isCanceled) return NextActivity;
 			if (remainingTicks == 0)
 			{
+				var health = self.traits.GetOrDefault<Health>();
+				if (health == null) return NextActivity;
+				
 				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
-				var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
 
-				var costPerHp = (host.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / hp;
-				var hpToRepair = Math.Min(host.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, hp - self.Health);
+				var costPerHp = (host.Info.Traits.Get<RepairsUnitsInfo>().URepairPercent * unitCost) / health.MaxHP;
+				var hpToRepair = Math.Min(host.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, health.MaxHP - health.HP);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
 				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
 				{
@@ -41,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 				}
 
 				self.InflictDamage(self, -hpToRepair, null);
-				if (self.Health == hp)
+				if (health.MaxHP == health.HP)
 					return NextActivity;
 
 				if (host != null)

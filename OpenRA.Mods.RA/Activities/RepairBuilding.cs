@@ -22,11 +22,12 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || target.IsDead) return NextActivity;
-			if (target.Health == target.GetMaxHP())
+			if (target == null || target.IsDead()) return NextActivity;
+			var health = target.traits.Get<Health>();
+			if (health.HP == health.MaxHP)
 				return NextActivity;
 			
-			target.InflictDamage(self, -target.GetMaxHP(), null);			
+			target.InflictDamage(self, -health.MaxHP, null);			
 			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return NextActivity;

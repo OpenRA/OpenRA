@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 					Sound.Play(report + ".aud", self.CenterLocation);
 				
 				// Remove from world
-				self.Health = 0;
+				self.Kill(self);
 				detonatedBy.Owner.Kills++;
 				self.Owner.Deaths++;
 				w.Remove(self);

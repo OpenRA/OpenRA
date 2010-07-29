@@ -58,6 +58,7 @@
 ^Infantry:
 	Category: Infantry
 	Unit:
+	Health:
 		Armor: none
 	RevealsShroud:
 		Range: 4
@@ -119,10 +120,11 @@
 
 ^CivBuilding:
 	Inherits: ^Building
-	Building:
-		Repairable: false
+	Health:
 		HP: 400
 		Armor: wood
+	Building:
+		Repairable: false
 	Valued:
 		Description: Civilian Building
 
@@ -186,6 +188,7 @@
 	Unit:
 		ROT: 0
 		Speed: 0
+	Health:
 		HP: 140
 		Armor: Heavy
 	Husk:
@@ -201,11 +204,12 @@
 	Targetable:
 		TargetTypes: Ground, Water
 	BelowUnits:
+	Health:
+		HP: 1000
 	Building:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
-		HP: 1000
 	RadarColorFromTerrain:
 		Terrain: Road

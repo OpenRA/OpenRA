@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class BridgeInfo : ITraitInfo
+	class BridgeInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{
 		public readonly bool Long = false;
 		
@@ -75,11 +75,13 @@ namespace OpenRA.Mods.RA
 		BridgeInfo Info;
 		public string Type;
 		Bridge northNeighbour, southNeighbour;
-
+		Health Health;
+		
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
-			self.RemoveOnDeath = false;
+			Health = self.traits.Get<Health>();
+			Health.RemoveOnDeath = false;
 			this.Info = info;
 			this.Type = self.Info.Name;
 		}
@@ -88,9 +90,9 @@ namespace OpenRA.Mods.RA
 		{
 			currentTemplate = template;
 			if (template == Info.DamagedTemplate)
-				self.Health = (int)(self.World.Defaults.ConditionYellow*self.GetMaxHP());
+				Health.InflictDamage(self, self, Health.MaxHP/2, null);
 			else if (template != Info.Template)
-				self.Health = 0;
+				Health.InflictDamage(self, self, Health.MaxHP, null);
 				
 			// Create a new cache to store the tile data
 			if (cachedTileset != self.World.Map.Tileset)
@@ -141,7 +143,7 @@ namespace OpenRA.Mods.RA
 		
 		bool IsIntact(Bridge b)
 		{
-			return b != null && b.self.IsInWorld && b.self.Health > 0;
+			return b != null && b.self.IsInWorld && !b.self.IsDead();
 		}
 
 		void KillUnitsOnBridge()
@@ -151,23 +153,21 @@ namespace OpenRA.Mods.RA
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				foreach (var a in uim.GetUnitsAt(c))
 					if (!a.traits.Get<IMove>().CanEnterCell(c))
-						a.InflictDamage(self, a.Health, null);
+						a.Kill(self);
 		}
 		
 		bool dead = false;
 		void UpdateState()
-		{			
-			var ds = self.GetDamageState();
-			
+		{						
 			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
-			if (Info.Long && ds != DamageState.Dead &&
+			if (Info.Long && Health.DamageState != DamageState.Dead &&
 			    ((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
 				(northNeighbour != null && Info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
 			{
-				self.Health = 0;
-				ds = DamageState.Dead;
+				self.Kill(self); // this changes the damagestate
 			}
 
+			var ds = Health.DamageState;
 			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
 							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
 

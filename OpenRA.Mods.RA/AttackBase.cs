@@ -218,10 +218,16 @@ namespace OpenRA.Mods.RA
 			{
 				// we can never "heal ground"; that makes no sense.
 				if (!target.IsActor) return null;
+				
 				// unless forced, only heal allies.
 				if (self.Owner.Stances[underCursor.Owner] != Stance.Ally && !forceFire) return null;
+				
+				// we can only heal actors with health
+				var health = underCursor.traits.GetOrDefault<Health>();
+				if (health == null) return null;
+				
 				// don't allow healing of fully-healed stuff!
-				if (underCursor.Health >= underCursor.GetMaxHP()) return null;
+				if (health.HP >= health.MaxHP) return null;
 			}
 			else
 			{

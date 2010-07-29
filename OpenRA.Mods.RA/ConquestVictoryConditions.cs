@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 			
 			Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
 			foreach (var a in self.World.Queries.OwnedBy[self.Owner])
-				a.InflictDamage(a, a.Health, null);
+				a.Kill(a);
 
 			self.Owner.Shroud.Disabled = true;
 

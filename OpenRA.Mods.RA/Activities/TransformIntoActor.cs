@@ -47,8 +47,12 @@ namespace OpenRA.Mods.RA.Activities
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
 				var a = w.CreateActor(actor, self.Location + offset, self.Owner);
-				a.Health = GetHealthToTransfer(self, a, transferPercentage);
-				
+				var health = a.traits.GetOrDefault<Health>();
+				if (health != null)
+				{
+					health.TransferHPFromActor(a, self, transferPercentage);
+				}
+								
 				if (selected)
 					w.Selection.Add(w, a);
 			});
@@ -56,14 +60,5 @@ namespace OpenRA.Mods.RA.Activities
 		}
 		
 		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
-
-		public static int GetHealthToTransfer(Actor from, Actor to, bool transferPercentage)
-		{
-			var oldHP = from.GetMaxHP();
-			var newHP = to.GetMaxHP();
-			return (transferPercentage) 
-				? (int)((float)from.Health / oldHP * newHP) 
-				: Math.Min(from.Health, newHP);
-		}
 	}
 }

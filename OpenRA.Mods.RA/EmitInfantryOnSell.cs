@@ -34,8 +34,9 @@ namespace OpenRA.Mods.RA
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
-			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
-			var hpFraction = Math.Max(info.MinHpFraction, hp / self.GetMaxHP());
+			
+			var health = self.traits.GetOrDefault<Health>();
+			var hpFraction = (health == null) ? 1f : health.HPFraction;
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
 			var eligibleLocations = Footprint.Tiles(self).ToList();
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();

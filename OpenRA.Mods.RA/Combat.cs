@@ -94,8 +94,7 @@ namespace OpenRA.Mods.RA
 						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
 							foreach (var unit in world.FindUnits(Game.CellSize * t, Game.CellSize * (t + new float2(1,1))))
 								unit.InflictDamage(args.firedBy,
-									(int)(warhead.Damage * warhead.EffectivenessAgainst(
-									unit.Info.Traits.Get<OwnedActorInfo>().Armor)), warhead);
+									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
 					} break;
 			}
 		}
@@ -154,7 +153,7 @@ namespace OpenRA.Mods.RA
 			var distance = (int)Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
 			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 			var rawDamage = (float)(warhead.Damage * modifier * falloff);
-			var multiplier = (float)warhead.EffectivenessAgainst(target.Info.Traits.Get<OwnedActorInfo>().Armor);
+			var multiplier = (float)warhead.EffectivenessAgainst(target);
 
 			return (float)(rawDamage * multiplier);
 		}
@@ -171,8 +170,7 @@ namespace OpenRA.Mods.RA
 			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 			
-			var ownedInfo = target.Actor.Info.Traits.GetOrDefault<OwnedActorInfo>();
-			if (weapon.Warheads.All( w => w.EffectivenessAgainst(ownedInfo.Armor) <= 0))
+			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target.Actor) <= 0))
 				return false;
 
 			return true;

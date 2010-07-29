@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 			if (reservedFor == null) 
 				return;		/* nothing to do */
 
-			if (reservedFor.IsDead) reservedFor = null;		/* not likely to arrive now. */
+			if (reservedFor.IsDead()) reservedFor = null;		/* not likely to arrive now. */
 		}
 
 		public IDisposable Reserve(Actor forActor)

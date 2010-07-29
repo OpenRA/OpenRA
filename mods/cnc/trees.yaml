@@ -1,5 +1,5 @@
 SPLIT2:
-	Inherits: ^Building
+	Inherits: ^Tree
 	RenderBuilding:
 		Palette: terrain
 	SeedsResource:
@@ -11,7 +11,7 @@ SPLIT2:
 		Terrain: Ore
 
 SPLIT3:
-	Inherits: ^Building
+	Inherits: ^Tree
 	RenderBuilding:
 		Palette: terrain
 	SeedsResource:

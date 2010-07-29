@@ -31,8 +31,6 @@ namespace OpenRA
 		public int2 Location { get { return traits.Get<IOccupySpace>().TopLeft; } }
 		[Sync]
 		public Player Owner;
-		[Sync]
-		public int Health;
 
 		IActivity currentActivity;
 		public Group Group;
@@ -51,8 +49,6 @@ namespace OpenRA
 					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
 
 				Info = Rules.Info[name.ToLowerInvariant()];
-				Health = this.GetMaxHP();
-
 				foreach (var trait in Info.TraitsInConstructOrder())
 					traits.Add(trait.Create(init));
 			}
@@ -147,66 +143,7 @@ namespace OpenRA
 			return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 		}
 
-		public bool IsDead { get { return Health <= 0; } }
 		public bool IsInWorld { get; set; }
-		public bool RemoveOnDeath = true;
-
-		public DamageState GetDamageState()
-		{
-			if (Health <= 0)
-				return DamageState.Dead;
-			
-			if (Health < this.GetMaxHP() * World.Defaults.ConditionYellow)
-				return DamageState.Half;
-
-			return DamageState.Normal;
-		}
-
-		public void InflictDamage(Actor attacker, int damage, WarheadInfo warhead)
-		{
-			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
-
-			var oldState = GetDamageState();
-
-			/* apply the damage modifiers, if we have any. */
-			var modifier = (float)traits.WithInterface<IDamageModifier>()
-				.Select(t => t.GetDamageModifier(warhead)).Product();
-
-			damage = (int)(damage * modifier);
-
-			Health -= damage;
-			if (Health <= 0)
-			{
-				Health = 0;
-
-				attacker.Owner.Kills++;
-				Owner.Deaths++;
-
-				if (RemoveOnDeath)
-					World.AddFrameEndTask(w => w.Remove(this));
-
-				Log.Write("debug", "{0} #{1} killed by {2} #{3}", Info.Name, ActorID, attacker.Info.Name, attacker.ActorID);
-			}
-
-			var maxHP = this.GetMaxHP();
-
-			if (Health > maxHP)	Health = maxHP;
-
-//			Log.Write("debug", "InflictDamage: {0} #{1} -> {2} #{3} raw={4} adj={5} hp={6} mod={7}",
-//				attacker.Info.Name, attacker.ActorID, Info.Name, ActorID, rawDamage, damage, Health, modifier);
-
-			var newState = GetDamageState();
-
-			foreach (var nd in traits.WithInterface<INotifyDamage>())
-				nd.Damaged(this, new AttackInfo
-				{
-					Attacker = attacker,
-					Damage = damage,
-					DamageState = newState,
-					DamageStateChanged = newState != oldState,
-					Warhead = warhead
-				});
-		}
 
 		public void QueueActivity( IActivity nextActivity )
 		{

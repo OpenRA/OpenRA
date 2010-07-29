@@ -17,10 +17,21 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableInfo : TraitInfo<Repairable> { public readonly string[] RepairBuildings = { "fix" }; }
+	class RepairableInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	{ 
+		public readonly string[] RepairBuildings = { "fix" };
+	
+		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
+	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
+		Health Health;
+		public Repairable(Actor self)
+		{
+			Health = self.traits.Get<Health>();
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
@@ -36,7 +47,7 @@ namespace OpenRA.Mods.RA
 		bool CanRepair(Actor self)
 		{
 			var li = self.traits.GetOrDefault<LimitedAmmo>();
-			return (self.Health < self.GetMaxHP() || (li != null && !li.FullAmmo()) );
+			return (Health.HPFraction < 1f || (li != null && !li.FullAmmo()) );
 		}
 		
 		public string CursorForOrder(Actor self, Order order)

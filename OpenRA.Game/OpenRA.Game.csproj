@@ -229,6 +229,8 @@
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Targetable.cs" />
+    <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\RepairableBuilding.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

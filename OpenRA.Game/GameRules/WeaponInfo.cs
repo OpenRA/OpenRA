@@ -31,7 +31,13 @@ namespace OpenRA.GameRules
 		public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
 		public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
 
-		public float EffectivenessAgainst(ArmorType at) { return Verses[(int)at]; }
+		public float EffectivenessAgainst(Actor self)
+		{
+			var health = self.Info.Traits.GetOrDefault<HealthInfo>();
+			if (health == null) return 0f;
+			
+			return Verses[(int)(health.Armor)];
+		}
 	}
 
 	public enum ArmorType

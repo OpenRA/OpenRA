@@ -22,11 +22,13 @@ namespace OpenRA.Traits.Activities
 		{
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
-			var hp = self.Info.Traits.Get<OwnedActorInfo>().HP;
-			var refund = self.World.Defaults.RefundPercent * self.Health * cost / hp;
+			
+			var health = self.traits.GetOrDefault<Health>();
+			var refundFraction = self.World.Defaults.RefundPercent * (health == null ? 1f : health.HPFraction);
 
-			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)refund);
-			self.Health = 0;
+			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)(refundFraction * cost));
+			self.Kill(self);
+			
 			foreach (var ns in self.traits.WithInterface<INotifySold>())
 				ns.Sold(self);
 			self.World.AddFrameEndTask( _ => self.World.Remove( self ) );

@@ -10,8 +10,9 @@ E1:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 50
 		Speed: 4
+	Health:
+		HP: 50
 	AttackBase:
 		PrimaryWeapon: M16
 	TakeCover:
@@ -29,8 +30,9 @@ E2:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 50
 		Speed: 4
+	Health:
+		HP: 50
 	AttackBase:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-10
@@ -49,8 +51,9 @@ E3:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 45
 		Speed: 3
+	Health:
+		HP: 45
 	AttackBase:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-10
@@ -70,8 +73,9 @@ E4:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 90
 		Speed: 4
+	Health:
+		HP: 90
 	AttackBase:
 		PrimaryWeapon: Flamethrower
 		PrimaryOffset: 0,0,0,-5
@@ -94,8 +98,9 @@ E5:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 90
 		Speed: 4
+	Health:
+		HP: 90
 	AttackBase:
 		PrimaryWeapon: Chemspray
 		PrimaryOffset: 0,0,0,-5
@@ -118,8 +123,9 @@ E6:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Unit:
-		HP: 25
 		Speed: 4
+	Health:
+		HP: 25
 	TakeCover:
 	Passenger:
 		ColorOfCargoPip: Yellow
@@ -141,8 +147,9 @@ RMBO:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice
 	Unit:
-		HP: 200
 		Speed: 5
+	Health:
+		HP: 200
 	RevealsShroud:
 		Range: 5
 	AttackBase:
@@ -160,8 +167,9 @@ C1:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -176,8 +184,9 @@ C2:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -192,8 +201,9 @@ C3:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -208,8 +218,9 @@ C4:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -224,8 +235,9 @@ C5:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -240,8 +252,9 @@ C6:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -256,8 +269,9 @@ C7:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -271,8 +285,9 @@ C8:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -287,8 +302,9 @@ C9:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:
@@ -303,8 +319,9 @@ C10:
 		Cost: 70
 		Description: Technician
 	Unit:
-		HP: 20
 		Speed: 4
+	Health:
+		HP: 20
 	RevealsShroud:
 		Range: 2
 	AttackBase:

@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.IsDead && Player.GetSiloFullness() > 0)
+			if (self.IsDead() && Player.GetSiloFullness() > 0)
 				Player.TakeOre(Stored(self));		// Lose the stored ore
 		}
 		

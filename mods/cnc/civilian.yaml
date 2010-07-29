@@ -145,6 +145,7 @@ V33:
 BARB:
 	Inherits: ^Wall
 	Building:
+	Health:
 		HP: 100
 		Armor: none
 	Valued:
@@ -152,6 +153,7 @@ BARB:
 WOOD:
 	Inherits: ^Wall
 	Building:
+	Health:
 		HP: 100
 		Armor: none
 	Valued:

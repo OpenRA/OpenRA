@@ -33,6 +33,6 @@ namespace OpenRA.Mods.RA
 		}
 		
 		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
-		public void OnCrush(Actor crusher) { self.InflictDamage(crusher, self.Health, null); }
+		public void OnCrush(Actor crusher) { self.Kill(crusher); }
 	}
 }

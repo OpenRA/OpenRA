@@ -28,7 +28,7 @@ namespace OpenRA.Effects
 
 		public void Tick( World world )
 		{
-			if (--framesLeft == 0 || a.IsDead)
+			if (--framesLeft == 0 || a.IsDead())
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 

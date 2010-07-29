@@ -31,37 +31,13 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}
 
-		enum ExtendedDamageState { Normal, ThreeQuarter, Half, Quarter, Dead };
-
-		ExtendedDamageState GetExtendedState( Actor self, int damage )
-		{
-			var effectiveHealth = self.Health + damage;
-
-			if (effectiveHealth <= 0)
-				return ExtendedDamageState.Dead;
-
-			if (effectiveHealth < self.GetMaxHP() * self.World.Defaults.ConditionRed)
-				return ExtendedDamageState.Quarter;
-
-			if (effectiveHealth < self.GetMaxHP() * self.World.Defaults.ConditionYellow)
-				return ExtendedDamageState.Half;
-
-			if (effectiveHealth < self.GetMaxHP() * 0.75)
-				return ExtendedDamageState.ThreeQuarter;
-
-			return ExtendedDamageState.Normal;
-		}
-
 		public override void Damaged(Actor self, AttackInfo e)
 		{
-			var oldState = GetExtendedState(self, e.Damage);
-			var newState = GetExtendedState(self, 0);
-
 			var numStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
 
-			if (oldState == newState) return;
+			if (!e.ExtendedDamageStateChanged) return;
 
-			switch (newState)
+			switch (e.ExtendedDamageState)
 			{
 				case ExtendedDamageState.Normal:
 					seqName = "idle";

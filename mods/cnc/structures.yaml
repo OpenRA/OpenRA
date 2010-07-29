@@ -8,6 +8,7 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -31,6 +32,7 @@ NUKE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -52,6 +54,7 @@ PROC.proxy:
 		Footprint: ___xx xxxxx xxx__ xxx__
 		Dimensions: 5,4
 		Capturable: true
+	Health:
 		HP: 900
 		Armor: wood
 	RevealsShroud:
@@ -70,6 +73,7 @@ PROC:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 900
 		Armor: wood
 	RevealsShroud:
@@ -112,6 +116,7 @@ SILO:
 		Footprint: xx
 		Dimensions: 2,1
 		Capturable: true
+	Health:
 		HP: 300
 		Armor: wood
 	RevealsShroud:
@@ -140,6 +145,7 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -165,6 +171,7 @@ HAND:
 		Footprint: __ xx xx
 		Dimensions: 2,3
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -190,6 +197,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: heavy
 	RevealsShroud:
@@ -216,6 +224,7 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: light
 	RevealsShroud:
@@ -243,6 +252,7 @@ HQ:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: wood
 	RevealsShroud:
@@ -267,6 +277,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 600
 		Armor: wood
 	RevealsShroud:
@@ -288,6 +299,7 @@ FIX:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -312,6 +324,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -343,6 +356,7 @@ EYE:
 		Footprint: __ xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: wood
 	RevealsShroud:
@@ -369,6 +383,7 @@ TMPL:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 		Capturable: false
+	Health:
 		HP: 2000
 		Armor: light
 	RevealsShroud:
@@ -393,6 +408,7 @@ OBLI:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
+	Health:
 		HP: 400
 		Armor: light
 	RevealsShroud:
@@ -419,7 +435,7 @@ CYCL:
 		Cost: 25
 		Description: Chain Link Barrier
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-	Building:
+	Health:
 		HP: 300
 		Armor: none
 	RenderBuildingWall:
@@ -436,7 +452,7 @@ SBAG:
 		Cost: 25
 		Description: Sandbag Barrier
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-	Building:
+	Health:
 		HP: 250
 		Armor: none
 
@@ -451,7 +467,7 @@ BRIK:
 		Cost: 100
 		Description: Concrete Barrier
 		LongDesc: Stop units and blocks enemy fire.
-	Building:
+	Health:
 		HP: 1000
 		Armor: heavy
 	RenderBuildingWall:
@@ -472,6 +488,7 @@ GUN:
 		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -20
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -501,6 +518,7 @@ SAM:
 		Power: -20
 		Footprint: xx
 		Dimensions: 2,1
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -528,6 +546,7 @@ GTWR:
 		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -10
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -552,6 +571,7 @@ ATWR:
 		LongDesc: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
 	Building:
 		Power: -20
+	Health:
 		HP: 600
 		Armor: light
 	RevealsShroud:

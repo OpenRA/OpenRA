@@ -61,22 +61,22 @@ namespace OpenRA.Traits
 		
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
+			var health = self.traits.GetOrDefault<Health>();
+			if (health == null)
+				return;
+			
 			var c = Color.Gray;
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
-			var healthAmount = (float)self.Health / self.Info.Traits.Get<OwnedActorInfo>().HP;
-			var healthColor = (healthAmount < self.World.Defaults.ConditionRed) ? Color.Red
-				: (healthAmount < self.World.Defaults.ConditionYellow) ? Color.Yellow
-				: Color.LimeGreen;
-
+			var healthColor = health.HealthColor;
 			var healthColor2 = Color.FromArgb(
 				255,
 				healthColor.R / 2,
 				healthColor.G / 2,
 				healthColor.B / 2);
 
-			var z = float2.Lerp(xy, Xy, healthAmount);
+			var z = float2.Lerp(xy, Xy, health.HPFraction);
 
 			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);

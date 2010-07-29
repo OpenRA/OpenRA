@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || target.IsDead) return NextActivity;
+			if (target == null || target.IsDead()) return NextActivity;
 
 			target.World.AddFrameEndTask(w =>
 			{

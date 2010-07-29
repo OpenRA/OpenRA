@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Activities
 					.SetPosition(self, Util.CellContaining(target.CenterLocation));
 
 				if (target.IsActor)
-					target.Actor.InflictDamage(self, target.Actor.Health, null);	// kill it
+					target.Actor.Kill(self);
 				return NextActivity;
 			}
 

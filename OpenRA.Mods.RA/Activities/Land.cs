@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			if (Structure != null && Structure.IsDead)
+			if (Structure != null && Structure.IsDead())
 			{
 				Structure = null;
 				isCanceled = true;

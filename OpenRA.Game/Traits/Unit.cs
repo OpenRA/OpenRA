@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public class UnitInfo : OwnedActorInfo, ITraitInfo
+	public class UnitInfo : ITraitInfo
 	{
 		public readonly int InitialFacing = 128;
 		public readonly int ROT = 255;

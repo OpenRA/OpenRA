@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 
 			public void Tick(World world)
 			{
-				if (minelayer.IsDead || !minelayer.IsInWorld)
+				if (minelayer.IsDead() || !minelayer.IsInWorld)
 					world.CancelInputMode();
 			}
 

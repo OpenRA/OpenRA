@@ -19,10 +19,6 @@ namespace OpenRA.Traits
 		public readonly float RepairPercent = 0.2f;
 		public readonly float RepairRate = 0.016f;
 		public readonly int RepairStep = 7;
-		
-		/* Audo/Visual Map Controls */
-		public readonly float ConditionRed = 0.25f;
-		public readonly float ConditionYellow = 0.5f;
 	}
 
 	public class GlobalDefaults {}

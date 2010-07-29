@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 		public void Update(Actor self, IOccupySpace unit)
 		{
 			Remove(self, unit);
-			if (!self.IsDead) Add(self, unit);
+			if (!self.IsDead()) Add(self, unit);
 		}
 	}
 }

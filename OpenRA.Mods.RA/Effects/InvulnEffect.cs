@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick( World world )
 		{
-			if (a.IsDead || b.GetDamageModifier(null) > 0)
+			if (a.IsDead() || b.GetDamageModifier(null) > 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc
 				a.QueueActivity(new Land(self));
 				a.QueueActivity(new CallFunc(() => 
 				{
-					if (self.IsDead)
+					if (self.IsDead())
 						return;
 					
 					var actor = cargo.Unload(self);

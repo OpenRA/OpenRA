@@ -24,10 +24,10 @@ namespace OpenRA.Mods.RA.Activities
 		}
 
 		public IActivity Tick(Actor self)
-		{
-			if (target == null || target.IsDead) return NextActivity;
+		{			
+			if (target == null || target.IsDead()) return NextActivity;
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25 * 2,
-				() => target.InflictDamage(self, target.Health, null))));
+				() => target.Kill(self))));
 			return NextActivity;
 		}
 

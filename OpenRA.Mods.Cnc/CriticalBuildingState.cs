@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class CriticalBuildingStateInfo : ITraitInfo
+	class CriticalBuildingStateInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{
 		public readonly int LingerTime = 20;
 		public object Create(ActorInitializer init) { return new CriticalBuildingState(init.self, this); }
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc
 		public CriticalBuildingState(Actor self, CriticalBuildingStateInfo info)
 		{
 			this.info = info;
-			self.RemoveOnDeath = false;
+			self.traits.Get<Health>().RemoveOnDeath = false;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

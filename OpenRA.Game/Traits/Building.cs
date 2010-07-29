@@ -18,13 +18,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	public class OwnedActorInfo
-	{
-		public readonly int HP = 0;
-		public readonly ArmorType Armor = ArmorType.none;
-	}
-
-	public class BuildingInfo : OwnedActorInfo, ITraitInfo
+	public class BuildingInfo : ITraitInfo
 	{
 		public readonly int Power = 0;
 		public readonly bool BaseNormal = true;
@@ -44,14 +38,12 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, ITick, IRenderModifier, IOccupySpace, IRadarSignature
+	public class Building : INotifyDamage, IResolveOrder, IRenderModifier, IOccupySpace, IRadarSignature
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
 		[Sync]
 		readonly int2 topLeft;
-		[Sync]
-		bool isRepairing = false;
 
 		public bool Disabled
 		{
@@ -73,11 +65,13 @@ namespace OpenRA.Traits
 				.WithInterface<IPowerModifier>()
 				.Select(t => t.GetPowerModifier())
 				.Product();
-				
-			var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
-
+			
 			if (Info.Power > 0)
-				return (int)(modifier*(self.Health * Info.Power) / maxHP);
+			{
+				var health = self.traits.GetOrDefault<Health>();
+				var healthFraction = (health == null) ? 1f : health.HPFraction;
+				return (int)(modifier * healthFraction * Info.Power);
+			}
 			else
 				return (int)(modifier * Info.Power);
 		}
@@ -98,44 +92,6 @@ namespace OpenRA.Traits
 				self.CancelActivity();
 				self.QueueActivity(new Sell());
 			}
-
-			if (order.OrderString == "Repair")
-			{
-				isRepairing = !isRepairing;
-			}
-		}
-
-		int remainingTicks;
-
-		public void Tick(Actor self)
-		{
-			if (!isRepairing) return;
-
-			if (remainingTicks == 0)
-			{
-				var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-				var buildingValue = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
-				var maxHP = self.Info.Traits.Get<BuildingInfo>().HP;
-				var costPerHp = (self.World.Defaults.RepairPercent * buildingValue) / maxHP;
-				var hpToRepair = Math.Min(self.World.Defaults.RepairStep, maxHP - self.Health);
-				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
-				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
-				{
-					remainingTicks = 1;
-					return;
-				}
-
-				self.World.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
-				self.InflictDamage(self, -hpToRepair, null);
-				if (self.Health == maxHP)
-				{
-					isRepairing = false;
-					return;
-				}
-				remainingTicks = (int)(self.World.Defaults.RepairRate * 60 * 25);
-			}
-			else
-				--remainingTicks;
 		}
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

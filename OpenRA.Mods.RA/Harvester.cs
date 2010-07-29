@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.IsDead)
+			if (e.DamageState == DamageState.Dead)
 				if (LinkedProc != null)
 					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 		}

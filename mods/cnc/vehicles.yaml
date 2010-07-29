@@ -11,9 +11,10 @@ MCV:
 	Selectable:
 		Priority: 3
 	Unit:
+		Speed: 6
+	Health:
 		HP: 600
 		Armor: light
-		Speed: 6
 	RevealsShroud:
 		Range: 4
 	TransformsOnDeploy:
@@ -43,9 +44,10 @@ HARV:
 		PipColor: Green
 		Capacity: 28
 	Unit:
+		Speed: 6
+	Health:
 		HP: 600
 		Armor: light
-		Speed: 6
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
@@ -61,10 +63,11 @@ APC:
 		Description: Armored Personnel Carrier
 		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
-		HP: 200
-		Armor: heavy
 		ROT: 5
 		Speed: 15
+	Health:
+		HP: 200
+		Armor: heavy
 	RevealsShroud:
 		Range: 5
 	AttackBase:
@@ -90,10 +93,11 @@ ARTY:
 		Description: Artillery
 		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
-		HP: 75
-		Armor: light
 		ROT: 2
 		Speed: 6
+	Health:
+		HP: 75
+		Armor: light
 	RevealsShroud:
 		Range: 6
 	AttackBase:
@@ -113,10 +117,11 @@ FTNK:
 		Description: Flame Tank
 		LongDesc: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Unit:
-		HP: 300
-		Armor: heavy
 		ROT: 5
 		Speed: 9
+	Health:
+		HP: 300
+		Armor: heavy
 	RevealsShroud:
 		Range: 4
 	AttackBase:
@@ -137,10 +142,11 @@ BGGY:
 		Description: Nod Buggy
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:
-		HP: 140
-		Armor: light
 		ROT: 10
 		Speed: 18
+	Health:
+		HP: 140
+		Armor: light
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -163,10 +169,11 @@ BIKE:
 		Description: Recon Bike
 		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Unit:
-		HP: 160
-		Armor: none
 		ROT: 10
 		Speed: 20
+	Health:
+		HP: 160
+		Armor: none
 	RevealsShroud:
 		Range: 7
 	AttackBase:
@@ -190,10 +197,11 @@ JEEP:
 		Description: Hum-Vee
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:
-		HP: 150
-		Armor: light
 		ROT: 10
 		Speed: 15
+	Health:
+		HP: 150
+		Armor: light
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -216,9 +224,10 @@ LTNK:
 		Description: Light Tank
 		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
+		Speed: 9
+	Health:
 		HP: 300
 		Armor: Heavy
-		Speed: 9
 	RevealsShroud:
 		Range: 4
 	Turreted:
@@ -245,9 +254,10 @@ MTNK:
 		Description: Medium Tank
 		LongDesc: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
+		Speed: 9
+	Health:
 		HP: 400
 		Armor: heavy
-		Speed: 9
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -274,9 +284,10 @@ HTNK:
 		Description: Mammoth Tank
 		LongDesc: Heavily armored GDI Tank.\n  Strong vs Everything
 	Unit:
+		Speed: 3
+	Health:
 		HP: 600
 		Armor: heavy
-		Speed: 3
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -309,9 +320,10 @@ MSAM:
 		Description: Rocket Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
+		Speed: 6
+	Health:
 		HP: 120
 		Armor: light
-		Speed: 6
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -337,9 +349,10 @@ MLRS:
 		Description: SSM Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 	Unit:
+		Speed: 6
+	Health:
 		HP: 120
 		Armor: light
-		Speed: 6
 	RevealsShroud:
 		Range: 10
 	Turreted:
@@ -361,9 +374,10 @@ STNK:
 		Description: Stealth Tank
 		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Unit:
+		Speed: 15
+	Health:
 		HP: 110
 		Armor: light
-		Speed: 15
 	RevealsShroud:
 		Range: 4
 	Cloak:
@@ -388,11 +402,12 @@ TRAN:
 		Description: Chinook Transport
 		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
 	Unit:
-		HP: 90
-		Armor: light
 		InitialFacing: 20
 		ROT: 5
 		Speed: 15
+	Health:
+		HP: 90
+		Armor: light
 	RevealsShroud:
 		Range: 8
 	RenderUnitRotor:
@@ -415,11 +430,12 @@ HELI:
 		Description: Apache Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
-		HP: 125
-		Armor: heavy
 		InitialFacing: 20
 		ROT: 4
 		Speed: 20
+	Health:
+		HP: 125
+		Armor: heavy
 	RevealsShroud:
 		Range: 8
 	AttackBase:
@@ -443,11 +459,12 @@ ORCA:
 		Description: Orca
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
-		HP: 125
-		Armor: heavy
 		InitialFacing: 20
 		ROT: 4
 		Speed: 20
+	Health:
+		HP: 125
+		Armor: heavy
 	RevealsShroud:
 		Range: 8
 	AttackBase:
@@ -463,10 +480,11 @@ C17:
 		LZRange: 1
 	Inherits: ^Plane
 	Unit:
-		HP: 25
-		Armor: light
 		ROT: 5
 		Speed: 25
+	Health:
+		HP: 25
+		Armor: light
 	Plane:
 	RenderUnit:
 	WithShadow:
@@ -480,10 +498,11 @@ C17:
 A10:
 	Inherits: ^Plane
 	Unit:
-		HP: 60
-		Armor: light
 		ROT: 4
 		Speed: 25
+	Health:
+		HP: 60
+		Armor: light
 	Plane:
 	RenderUnit:
 	WithShadow:

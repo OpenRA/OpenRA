@@ -37,8 +37,9 @@ namespace OpenRA.Mods.RA
 				return true;	// he's dead.
 			if ((attack.target.CenterLocation - self.Location).LengthSquared > range * range + 2)
 				return true;	// wandered off faster than we could follow
-			if (attack.target.IsActor && attack.target.Actor.Health 
-				== attack.target.Actor.Info.Traits.Get<OwnedActorInfo>().HP)
+			
+			var health = attack.target.Actor.traits.GetOrDefault<Health>();
+			if (attack.target.IsActor && health.HP == health.MaxHP)
 				return true;	// fully healed
 
 			return false;
@@ -59,7 +60,7 @@ namespace OpenRA.Mods.RA
 			return inRange
 				.Where(a => a != self && self.Owner.Stances[ a.Owner ] == Stance.Ally)
 				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
-				.Where(a => a.Health < a.Info.Traits.Get<OwnedActorInfo>().HP)
+				.Where(a => a.traits.Contains<Health>() && a.traits.Get<Health>().HPFraction < 1f)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
