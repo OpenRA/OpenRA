@@ -10,12 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
-using System.Drawing;
-using OpenRA.Support;
 
 namespace OpenRA.Traits
 {

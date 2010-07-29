@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable
+	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable
 	{
 		readonly Actor self;
 		[Sync]
@@ -53,9 +53,10 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 		}
 
-		public void OnCollected(Actor crusher)
+		public void OnCrush(Actor crusher)
 		{
-			var shares = self.traits.WithInterface<CrateAction>().Select(a => Pair.New(a, a.GetSelectionShares(crusher)));
+			var shares = self.traits.WithInterface<CrateAction>().Select(
+				a => Pair.New(a, a.GetSelectionShares(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 
@@ -73,13 +74,6 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
 			var cell = Util.CellContaining(self.CenterLocation);
-			var collector = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).FirstOrDefault();
-			if (collector != null)
-			{
-				OnCollected(collector);
-				return;
-			}
-
 			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
 				self.World.AddFrameEndTask(w => w.Remove(self));
 
@@ -89,8 +83,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public int2 TopLeft { get { return Location; } }
-		int2[] noCells = new int2[] { };
-		public IEnumerable<int2> OccupiedCells() { return noCells; }
+		public IEnumerable<int2> OccupiedCells() { return new int2[] { Location }; }
 
 		public bool CanEnterCell(int2 cell)
 		{
@@ -104,5 +97,7 @@ namespace OpenRA.Mods.RA
 			Location = cell;
 			self.CenterLocation = Util.CenterOfCell(cell);
 		}
+
+		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }
 	}
 }

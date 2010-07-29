@@ -3,7 +3,7 @@
 	Unit:
 		ROT: 5
 	Mobile:
-		Crushes: atmine
+		Crushes: atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 90%, 40%, 0%
 	Selectable: 
@@ -24,7 +24,7 @@
 	Unit:
 		ROT: 5
 	Mobile:
-		Crushes: wall, atmine
+		Crushes: wall, atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 90%, 70%, 0%
 	Selectable: 
@@ -47,7 +47,7 @@
 	RevealsShroud:
 		Range: 4
 	Mobile:
-		Crushes: apmine
+		Crushes: apmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 100%, 80%, 0%
 	Selectable:
@@ -67,6 +67,7 @@
 	Category: Ship
 	Unit:
 	Mobile:
+		Crushes: crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
 	Selectable:
