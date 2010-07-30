@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -78,6 +78,7 @@
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="Crates\GiveUnitCrateAction.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Explosion.cs" />
