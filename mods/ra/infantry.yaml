@@ -244,3 +244,23 @@ C2:
 		Range: 2
 	AttackBase:
 		PrimaryWeapon: Pistol
+
+SHOK:
+	Inherits: ^Infantry
+	Buildable:
+		Prerequisites: stek,tsla
+		Owner: soviet
+		Cost: 900
+		Description: Tesla Trooper
+	Selectable:
+		Voice: ShokVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 80
+	Unit:
+		Speed: 3
+	RevealsShroud:
+		Range: 4
+	AttackBase:
+		PrimaryWeapon: PortaTesla
+	TakeCover:

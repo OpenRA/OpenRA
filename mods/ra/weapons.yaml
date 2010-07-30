@@ -739,7 +739,8 @@ Demolish:
 PortaTesla:
 	ROF: 70
 	Range: 3.5
-	Report: SHKTROP1
+	Report: TESLA1
+#	Report: SHKTROP1
 	Charges: yes
 	TeslaZap:
 	Warhead:
