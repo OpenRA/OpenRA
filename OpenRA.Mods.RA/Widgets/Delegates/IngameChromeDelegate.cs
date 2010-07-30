@@ -9,8 +9,9 @@
 #endregion
 
 using OpenRA.Traits;
-using System.Linq;
-namespace OpenRA.Widgets.Delegates
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class IngameChromeDelegate : IWidgetDelegate
 	{

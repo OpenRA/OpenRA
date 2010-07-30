@@ -1,7 +1,9 @@
 using System;
-using OpenRA.Graphics;
 using System.Drawing;
-namespace OpenRA.Widgets
+using OpenRA.Graphics;
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.RA.Widgets
 {
 	public class OrderButtonWidget : ButtonWidget
 	{

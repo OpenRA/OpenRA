@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 
 		readonly float2[] uvhax;
 
-		internal Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
+		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 		{
 			this.bounds = bounds;
 			this.sheet = sheet;

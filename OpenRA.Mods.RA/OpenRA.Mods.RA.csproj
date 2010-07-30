@@ -201,6 +201,12 @@
     <Compile Include="Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
+    <Compile Include="Widgets\MoneyBinWidget.cs" />
+    <Compile Include="Widgets\OrderButtonWidget.cs" />
+    <Compile Include="Widgets\PowerBinWidget.cs" />
+    <Compile Include="Widgets\RadarBinWidget.cs" />
+    <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />
     <Compile Include="NukePaletteEffect.cs" />

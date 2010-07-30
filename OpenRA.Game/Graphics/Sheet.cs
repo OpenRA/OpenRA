@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		ITexture texture;
 		bool dirty;
 
-		internal Sheet(Size size)
+		public Sheet(Size size)
 		{
 			this.bitmap = new Bitmap(size.Width, size.Height);
 		}

@@ -13,7 +13,7 @@ using System.Drawing;
 
 namespace OpenRA.Widgets
 {
-	class LabelWidget : Widget
+	public class LabelWidget : Widget
 	{
 		public enum TextAlign { Left, Center, Right }
 		

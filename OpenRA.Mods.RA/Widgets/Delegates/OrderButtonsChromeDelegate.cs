@@ -1,4 +1,3 @@
-
 #region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
@@ -9,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Widgets;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {

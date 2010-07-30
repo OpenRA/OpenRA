@@ -16,8 +16,9 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.RA.Widgets
 {
 	class BuildPaletteWidget : Widget
 	{

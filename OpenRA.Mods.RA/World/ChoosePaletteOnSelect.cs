@@ -9,9 +9,10 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Widgets
 {
 	class ChoosePaletteOnSelectInfo : TraitInfo<ChoosePaletteOnSelect> { }
 

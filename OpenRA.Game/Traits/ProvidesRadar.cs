@@ -12,9 +12,9 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
+	public class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
 
-	class ProvidesRadar : ITick
+	public class ProvidesRadar : ITick
 	{
 		public bool IsActive { get; private set; }
 

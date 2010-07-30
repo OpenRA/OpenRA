@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Widgets
 {
-	class ChatDisplayWidget : Widget
+	public class ChatDisplayWidget : Widget
 	{
 		public readonly int RemoveTime = 0;
 		
@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 		public bool DrawBackground = true;
 		int ticksUntilRemove = 0;
 
-		public List<ChatLine> recentLines = new List<ChatLine>();
+		internal List<ChatLine> recentLines = new List<ChatLine>();
 
 		public ChatDisplayWidget()
 			: base() { }
