@@ -21,7 +21,7 @@ FACT:
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
-		Facing: 96
+		Facing: 108
 NUKE:
 	Inherits: ^Building
 	Buildable:

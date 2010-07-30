@@ -39,6 +39,11 @@ namespace OpenRA.Mods.RA.Activities
 		
 		void DoTransform(Actor self)
 		{
+			// Hack: repeat the first frame of the make anim instead
+			// of flashing the full structure for a frame
+			if (rb != null)
+				rb.PlayCustomAnim(self, "make");
+			
 			self.World.AddFrameEndTask(w =>
 			{
 				var selected = w.Selection.Contains(self);
