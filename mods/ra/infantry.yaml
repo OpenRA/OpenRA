@@ -11,8 +11,9 @@ DOG:
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
-	Unit:
+	Health:
 		HP: 12
+	Unit:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
@@ -32,8 +33,9 @@ E1:
 		BuiltAt: barr,tent
 	Selectable:
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 50
+	Unit:
 		Speed: 4
 	AttackBase:
 		PrimaryWeapon: M1Carbine
@@ -51,8 +53,9 @@ E2:
 		BuiltAt: barr
 	Selectable:
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 50
+	Unit:
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: Grenade
@@ -72,8 +75,9 @@ E3:
 		BuiltAt: barr,tent
 	Selectable:
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 45
+	Unit:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: RedEye
@@ -93,8 +97,9 @@ E4:
 		BuiltAt: barr,tent
 	Selectable:
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 40
+	Unit:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: Flamer
@@ -115,8 +120,9 @@ E6:
 	Selectable:
 		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 25
+	Unit:
 		Speed: 4
 	Passenger:
 		ColorOfCargoPip: Yellow
@@ -138,8 +144,9 @@ SPY:
 	Selectable:
 		Voice: SpyVoice
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 25
+	Unit:
 		Speed: 4
 	RevealsShroud:
 		Range: 5
@@ -164,8 +171,9 @@ E7:
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 100
+	Unit:
 		Speed: 5
 	RevealsShroud:
 		Range: 6
@@ -189,8 +197,9 @@ MEDI:
 	Selectable:
 		Voice: MedicVoice
 		Bounds: 12,17,0,-9
-	Unit:
+	Health:
 		HP: 80
+	Unit:
 		Speed: 4
 	RevealsShroud:
 		Range: 3
@@ -210,8 +219,9 @@ C1:
 	Valued:
 		Cost: 70
 		Description: Technician
-	Unit:
+	Health:
 		HP: 20
+	Unit:
 		Speed: 4
 	RevealsShroud:
 		Range: 2
@@ -226,8 +236,9 @@ C2:
 	Valued:
 		Cost: 70
 		Description: Technician
-	Unit:
+	Health:
 		HP: 20
+	Unit:
 		Speed: 4
 	RevealsShroud:
 		Range: 2

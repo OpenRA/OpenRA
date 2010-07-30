@@ -86,7 +86,6 @@ Player:
 		
 
 World:
-	GlobalDefaults:
 	ScreenShaker:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
@@ -184,6 +183,7 @@ MINP:
 		CrushClasses: apmine
 		AvoidFriendly: yes
 	Unit:
+	Health:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
@@ -196,6 +196,7 @@ MINV:
 		CrushClasses: atmine
 		AvoidFriendly: yes
 	Unit:
+	Health:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
@@ -241,20 +242,20 @@ CRATE:
 		Power: AirstrikePower
 		SelectionShares: 5
 		Effect: parabombs
-	Unit:
-		HP: 1
 	RenderUnit:
 	BelowUnits:
 
 CAMERA:
 	Aircraft:
 	Unit:
+	Health:
 		HP:1000
 	RevealsShroud:
 		Range: 10
 
 FLARE:
 	Unit:
+	Health:
 		HP:1000
 	RevealsShroud:
 		Range: 3

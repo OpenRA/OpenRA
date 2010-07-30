@@ -5,6 +5,7 @@ FCOM:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -91,10 +92,11 @@ BARL:
 	Inherits: ^Building
 	Selectable:
 		Priority: 0
+	-RepairableBuilding:
 	Building:
-		Repairable: false
 		BaseNormal: no
 		Adjacent: 0
+	Health:
 		HP: 10
 	Explodes:
 	Valued:
@@ -104,10 +106,11 @@ BRL3:
 	Inherits: ^Building
 	Selectable:
 		Priority: 0
+	-RepairableBuilding:
 	Building:
-		Repairable: false
 		BaseNormal: no
 		Adjacent: 0
+	Health:
 		HP: 10
 	Explodes:
 	Valued:
@@ -121,6 +124,7 @@ MISS:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	Bib:

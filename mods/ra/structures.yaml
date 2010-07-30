@@ -15,6 +15,7 @@ MSLO:
 		Power: -100
 		Footprint: xx
 		Dimensions: 2,1
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -42,6 +43,7 @@ GAP:
 		Footprint: _ x
 		Dimensions: 1,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: wood
 	RevealsShroud:
@@ -68,9 +70,10 @@ SPEN:
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
+		WaterBound: yes
+	Health:
 		HP: 1000
 		Armor: light
-		WaterBound: yes
 	RevealsShroud:
 		Range: 4
 	ProductionSurround:
@@ -99,9 +102,10 @@ SYRD:
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
+		WaterBound: yes
+	Health:
 		HP: 1000
 		Armor: light
-		WaterBound: yes
 	RevealsShroud:
 		Range: 4
 	ProductionSurround:
@@ -128,6 +132,7 @@ IRON:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -154,6 +159,7 @@ PDOX:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -181,6 +187,7 @@ TSLA:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -211,6 +218,7 @@ AGUN:
 		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -244,6 +252,7 @@ DOME:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: wood
 	RevealsShroud:
@@ -265,6 +274,7 @@ PBOX:
 		Hotkey: x
 	Building:
 		Power: -15
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -288,6 +298,7 @@ HBOX:
 		Hotkey: c
 	Building:
 		Power: -15
+	Health:
 		HP: 600
 		Armor: wood
 	RevealsShroud:
@@ -311,6 +322,7 @@ GUN:
 		Hotkey: t
 	Building:
 		Power: -40
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -339,6 +351,7 @@ FTUR:
 		Hotkey: f
 	Building:
 		Power: -20
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -365,6 +378,7 @@ SAM:
 		Power: -20
 		Footprint: xx
 		Dimensions: 2,1
+	Health:
 		HP: 400
 		Armor: heavy
 	RevealsShroud:
@@ -396,6 +410,7 @@ ATEK:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -419,6 +434,7 @@ WEAP:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: light
 	RevealsShroud:
@@ -437,6 +453,7 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: heavy
 	RevealsShroud:
@@ -452,6 +469,7 @@ FACT:
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
+	AllowsBuildingRepair:
 
 PROC:
 	Inherits: ^Building
@@ -468,6 +486,7 @@ PROC:
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 900
 		Armor: wood
 	RevealsShroud:
@@ -500,6 +519,7 @@ SILO:
 	Building:
 		Power: -10
 		Capturable: true
+	Health:
 		HP: 300
 		Armor: wood
 	RevealsShroud:
@@ -527,6 +547,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -554,6 +575,7 @@ AFLD:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
+	Health:
 		HP: 1000
 		Armor: heavy
 	RevealsShroud:
@@ -579,6 +601,7 @@ POWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -602,6 +625,7 @@ APWR:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 700
 		Armor: wood
 	RevealsShroud:
@@ -625,6 +649,7 @@ STEK:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
+	Health:
 		HP: 600
 		Armor: wood
 	RevealsShroud:
@@ -648,6 +673,7 @@ BARR:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -674,6 +700,7 @@ TENT:
 		Footprint: xx xx
 		Dimensions: 2,2
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -696,6 +723,7 @@ KENN:
 		Hotkey: k
 	Building:
 		Power: -10
+	Health:
 		HP: 400
 		Armor: wood
 	RevealsShroud:
@@ -721,6 +749,7 @@ FIX:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 		Capturable: true
+	Health:
 		HP: 800
 		Armor: wood
 	RevealsShroud:
@@ -746,6 +775,7 @@ FACF:
 		Dimensions: 3,3
 		Capturable: true
 		BaseNormal: no
+	Health:
 		HP: 30
 	RevealsShroud:
 		Range: 4
@@ -772,6 +802,7 @@ WEAF:
 		Dimensions: 3,2
 		Capturable: true
 		BaseNormal: no
+	Health:
 		HP: 30
 	RevealsShroud:
 		Range: 4
@@ -805,8 +836,9 @@ SYRF:
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
-		HP: 30
 		WaterBound: yes
+	Health:
+		HP: 30
 	RevealsShroud:
 		Range: 4
 	RenderBuilding:
@@ -825,8 +857,9 @@ SPEF:
 		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
-		HP: 30
 		WaterBound: yes
+	Health:
+		HP: 30
 	RevealsShroud:
 		Range: 4
 	RenderBuilding:
@@ -853,6 +886,7 @@ DOMF:
 		Dimensions: 2,2
 		Capturable: true
 		BaseNormal: no
+	Health:
 		HP: 30
 	RevealsShroud:
 		Range: 4
@@ -873,7 +907,7 @@ SBAG:
 		Description: Sandbag Wall
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: b
-	Building:
+	Health:
 		HP: 300
 		Armor: none
 
@@ -888,7 +922,7 @@ FENC:
 		Description: Wire Fence
 		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: n
-	Building:
+	Health:
 		HP: 300
 		Armor: none
 
@@ -904,17 +938,18 @@ BRIK:
 		LongDesc: Stop units and blocks enemy fire.
 		Hotkey: w
 	Building:
-		HP: 1500
-		Armor: none
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud
+	Health:
+		HP: 1500
+		Armor: none
 	RenderBuildingWall:
 		DamageStates: 4
 	Wall:
 		CrushClasses: heavywall
 CYCL:
 	Inherits: ^Wall
-	Building:
+	Health:
 		HP: 100
 		Armor: none
 	RenderBuildingWall:
@@ -922,12 +957,12 @@ CYCL:
 		
 BARB:
 	Inherits: ^Wall
-	Building:
+	Health:
 		HP: 100
 		Armor: none
 
 WOOD:
 	Inherits: ^Wall
-	Building:
+	Health:
 		HP: 100
 		Armor: none

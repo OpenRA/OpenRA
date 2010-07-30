@@ -42,7 +42,7 @@
 
 ^Infantry:
 	Category: Infantry
-	Unit:
+	Health:
 		Armor: none
 	RevealsShroud:
 		Range: 4
@@ -101,6 +101,7 @@
 		Dimensions: 1,1
 		Footprint: x
 	RenderBuilding:
+	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6
 	MustBeDestroyed:
@@ -135,8 +136,8 @@
 
 ^CivBuilding:
 	Inherits: ^Building
-	Building:
-		Repairable: false
+	-RepairableBuilding:
+	Health:
 		HP: 400
 		Armor: wood
 	Valued:
@@ -165,6 +166,7 @@
 	Unit:
 		ROT: 0
 		Speed: 0
+	Health:
 		HP: 140
 		Armor: Heavy
 	Husk:
@@ -183,6 +185,7 @@
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2
+	Health:
 		HP: 1000
 	RadarColorFromTerrain:
 		Terrain: Road
